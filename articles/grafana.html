@@ -79,7 +79,7 @@
 <li><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a><ul></ul></li></ul></li>
 <li><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a><ul></ul></li>
 <li><a href="#decode-cbor-payload">7 Decode CBOR Payload</a><ul>
-<li><a href="#convert-type">7.1 Convert Type</a><ul></ul></li></ul></li>
+<li><a href="#convert-cbor-type">7.1 Convert CBOR Type</a><ul></ul></li></ul></li>
 <li><a href="#troubleshooting">8 Troubleshooting</a><ul></ul></li>
 <li><a href="#store-data-with-prometheus">9 Store Data with Prometheus</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
@@ -428,6 +428,7 @@ func jsonMessagesToFrame(topic string, messages []mqtt.Message) *data.Frame {
     keys = append(keys, key)
   }
   sort.Strings(keys) // keys stable field order.</code></pre></div>
+<p>(We’ll see “<code>get_type</code>” in the next chapter)</p>
 <p>Now we do the same for the <strong>remaining messages</strong>…</p>
 <div class="example-wrap"><pre class="language-go"><code>  //  Transform the messages after the first one
   for row, m := range messages {
@@ -480,7 +481,7 @@ func set_error(frame *data.Frame, err error) *data.Frame {
 <p><img src="https://lupyuen.github.io/images/grafana-code.png" alt="Transforming MQTT Messages" /></p>
 </blockquote>
 <h1 id="decode-cbor-payload" class="section-header"><a href="#decode-cbor-payload">7 Decode CBOR Payload</a></h1>
-<p>We’ve seen the Message Transformation Logic, now we <strong>decode the CBOR payload</strong>: <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190">pkg/plugin/message.go</a></p>
+<p>We’ve seen the Message Transformation Logic, now we <strong>decode the CBOR payload</strong> in the MQTT Message: <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Decode the CBOR payload in the JSON message.
 //  See sample messages: https://github.com/lupyuen/the-things-network-datasource#mqtt-log
 func decodeCborPayload(msg string) (map[string]interface{}, error) {
@@ -490,7 +491,10 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
   if err != nil {
     return nil, err
   }</code></pre></div>
-<p>TODO</p>
+<p>We start by <strong>deserialising the JSON message</strong>.</p>
+<p>Remember that our <strong>Message Payload</strong> is located at…</p>
+<div class="example-wrap"><pre class="language-text"><code>uplink_message → frm_payload</code></pre></div>
+<p>We <strong>extract the Message Payload</strong> like so…</p>
 <div class="example-wrap"><pre class="language-go"><code>  //  Get the Uplink Message
   uplink_message, ok := doc[&quot;uplink_message&quot;].(map[string]interface{})
   if !ok {
@@ -502,20 +506,21 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
   if !ok {
     return nil, errors.New(&quot;frm_payload missing&quot;)
   }</code></pre></div>
-<p>TODO</p>
+<p>Message Payload is <strong>encoded with Base64</strong>, thus we decode it…</p>
 <div class="example-wrap"><pre class="language-go"><code>  //  Base64 decode the Payload
   payload, err := base64.StdEncoding.DecodeString(frm_payload)
   if err != nil {
     return nil, err
   }</code></pre></div>
-<p>TODO</p>
+<p>Next we <strong>decode the CBOR payload</strong>…</p>
 <div class="example-wrap"><pre class="language-go"><code>  //  Decode CBOR payload to a map of String → interface{}
   var body map[string]interface{}
   err = cbor.Unmarshal(payload, &amp;body)
   if err != nil {
     return nil, err
   }</code></pre></div>
-<p>TODO</p>
+<p>(Yep we’ve seen this earlier)</p>
+<p>To support filtering by Device ID, we <strong>extract the Device ID</strong> from the MQTT Message…</p>
 <div class="example-wrap"><pre class="language-go"><code>  //  Add the Device ID to the body: end_device_ids → device_id
   end_device_ids, ok := doc[&quot;end_device_ids&quot;].(map[string]interface{})
   if ok {
@@ -526,10 +531,12 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
   }
   return body, nil
 }</code></pre></div>
+<p>Finally we return the decoded CBOR payload.</p>
+<p>(Containing “<code>t</code>”, “<code>l</code>” and the Device ID)</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/grafana-code2.png" alt="Decoding the CBOR Payload" /></p>
 </blockquote>
-<h2 id="convert-type" class="section-header"><a href="#convert-type">7.1 Convert Type</a></h2>
+<h2 id="convert-cbor-type" class="section-header"><a href="#convert-cbor-type">7.1 Convert CBOR Type</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Return the Data Frame Type for the CBOR decoded value
