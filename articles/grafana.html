@@ -538,7 +538,7 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
 <p><img src="https://lupyuen.github.io/images/grafana-code2.png" alt="Decoding the CBOR Payload" /></p>
 </blockquote>
 <h2 id="convert-cbor-type" class="section-header"><a href="#convert-cbor-type">7.1 Convert CBOR Type</a></h2>
-<p>Note we need to specify the <strong>types of Data Fields</strong> when populating a Grafana Data Frame.</p>
+<p>Note that we need to specify the <strong>types of Data Fields</strong> when populating a Grafana Data Frame.</p>
 <p>We call this function to <strong>map CBOR Types</strong> to Grafana Data Field Types: <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Return the Data Frame Type for the CBOR decoded value
 func get_type(val interface{}) data.FieldType {
