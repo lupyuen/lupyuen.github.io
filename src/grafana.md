@@ -662,9 +662,9 @@ Indeed. That's why we wrote another Go program to test the transformation by cal
 
 # Troubleshooting
 
-TODO
+If we have problems with the Data Source, enabling __Debug Logging__ might help.
 
-To __enable Debug Logs__, edit...
+Edit the __Grafana Configuration File__...
 
 ```text
 ## For Linux:
@@ -677,14 +677,16 @@ To __enable Debug Logs__, edit...
 C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini
 ```
 
-And set...
+Set the __Log Level__...
 
 ```text
 [log]
 level = debug
 ```
 
-In case of problems, check the __Grafana Log__ at...
+Save the file and restart the Grafana Server.
+
+Check the __Grafana Log__ at...
 
 ```text
 ## For Linux:
@@ -701,15 +703,29 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log
 
 # Store Data with Prometheus
 
+Today we have __streamed Sensor Data__ from The Things Network to Grafana over MQTT...
+
+![Visualising The Things Network Sensor Data with Grafana](https://lupyuen.github.io/images/grafana-flow.jpg)
+
+_Wait... We're streaming the Sensor Data without storing it?_
+
+Yep this __streaming setup for Grafana__ requires fewer components because it doesn't store the data.
+
+But it has limitations.
+
 TODO
 
-![](https://lupyuen.github.io/images/grafana-flow2.jpg)
+![Storing The Things Network Sensor Data with Prometheus](https://lupyuen.github.io/images/grafana-flow2.jpg)
 
 # What's Next
 
 TODO
 
-PineDio Stack BL604
+In the next article we shall head back to [__PineDio Stack BL604__](https://lupyuen.github.io/articles/ttn) and transmit actual Sensor Data to The Things Network, encoded with CBOR.
+
+[(Check this Twitter Thread for updates)](https://twitter.com/MisterTechBlog/status/1441626008931602433)
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
