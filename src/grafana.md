@@ -203,13 +203,17 @@ Our Data Source for The Things Network assumes that the Message Payload is __enc
 
 To experiment with CBOR, try the [__CBOR Playground__](http://cbor.me/)...
 
-![CBOR Playground](https://lupyuen.github.io/images/grafana-cbor5.jpg)
+![CBOR Playground](https://lupyuen.github.io/images/grafana-cbor5.png)
 
 [(More about CBOR implementations)](https://cbor.io/impls.html)
 
 ## Decode CBOR in Go
 
-TODO
+Our Data Source calls this __Go Library__ to decode CBOR Message Payloads...
+
+-   [__fxamacker/cbor__](https://github.com/fxamacker/cbor)
+
+We call the library like so...
 
 ```go
 import "github.com/fxamacker/cbor/v2"
@@ -226,6 +230,14 @@ if err == nil {
   fmt.Printf("%v\n", body)
 }
 ```
+
+We'll see the decoding logic in our Data Source in a while.
+
+## Message Payload
+
+_Where is the Message Payload?_
+
+TODO
 
 ![](https://lupyuen.github.io/images/grafana-cbor2.png)
 
