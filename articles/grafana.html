@@ -592,9 +592,28 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/grafana-flow.jpg" alt="Visualising The Things Network Sensor Data with Grafana" /></p>
 <p><em>Wait… We’re streaming the Sensor Data without storing it?</em></p>
 <p>Yep this <strong>streaming setup for Grafana</strong> requires fewer components because it doesn’t store the data.</p>
-<p>But it has limitations.</p>
-<p>TODO</p>
+<p>But this streaming setup has <strong>limitations</strong>…</p>
+<ol>
+<li>
+<p>What happens when we <strong>restart our Grafana Server</strong>?</p>
+<p>All our Sensor Data is lost!</p>
+</li>
+<li>
+<p>We’re remembering only the <strong>last 1,000 messages</strong>.</p>
+<p>Which is OK for checking real-time Sensor Data transmitted by our devices…</p>
+<p>But not OK for observing <strong>Sensor Data trends over time</strong>!</p>
+</li>
+</ol>
+<p><em>Can we store the Sensor Data?</em></p>
+<p>We can store the Sensor Data in <a href="https://prometheus.io/"><strong>Prometheus</strong></a>, the open source <strong>Time-Series Data Store</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/grafana-flow2.jpg" alt="Storing The Things Network Sensor Data with Prometheus" /></p>
+<p>Grafana supports <strong>Prometheus as a Data Source</strong>, so pushing our Sensor Data from Prometheus to Grafana is easy.</p>
+<p>To <strong>ingest MQTT Messages</strong> from The Things Network into Prometheus, we need an
+<strong>MQTT Gateway</strong> like this…</p>
+<ul>
+<li><a href="https://github.com/hikhvar/mqtt2prometheus"><strong>hikhvar/mqtt2prometheus</strong></a></li>
+</ul>
+<p>This Grafana setup looks more complicated, but it works well for visualising historical Sensor Data.</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>In the next article we shall head back to <a href="https://lupyuen.github.io/articles/ttn"><strong>PineDio Stack BL604</strong></a> and transmit actual Sensor Data to The Things Network, encoded with CBOR.</p>
