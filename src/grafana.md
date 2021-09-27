@@ -231,19 +231,40 @@ if err == nil {
 }
 ```
 
-We'll see the decoding logic in our Data Source in a while.
+Later we'll see the decoding logic in our Data Source.
 
 ## Message Payload
 
 _Where is the Message Payload?_
 
-TODO
+The __CBOR Message Payload__ is embedded deep inside the MQTT Message from The Things Network...
 
-![](https://lupyuen.github.io/images/grafana-cbor2.png)
+```json
+{
+    "end_device_ids": {
+        "device_id": "eui-YOUR_DEVICE_EUI",
+        "application_ids": {
+            "application_id": "luppy-application"
+        },
+        "dev_eui": "YOUR_DEVICE_EUI",
+        "join_eui": "0000000000000000",
+        "dev_addr": "YOUR_DEV_ADDR"
+    },
+    "correlation_ids": [ ... ],
+    "received_at": "2021-09-25T13:46:17.083379844Z",
+    "uplink_message": {
+        "session_key_id": "YOUR_SESSION_KEY_ID",
+        "f_port": 2,
+        "frm_payload": "omF0GQTSYWwZA+g=",
+```
 
-TODO
+__frm_payload__ contains our CBOR Message Payload, encoded with Base64.
 
-![](https://lupyuen.github.io/images/grafana-payload.jpg)
+We'll see the extraction of the CBOR Message Payload in a while.
+
+[(Source)](https://github.com/lupyuen/the-things-network-datasource#mqtt-log)
+
+> ![Message Payload in MQTT Message](https://lupyuen.github.io/images/grafana-payload.jpg)
 
 # MQTT Integration
 
