@@ -740,7 +740,7 @@ This Grafana setup looks more complicated, but it works well for visualising his
 
 # What's Next
 
-I hope you have enjoyed our exploration today: Streaming Sensor Data from The Things Network to Grafana over MQTT.
+I hope you enjoyed our exploration today: Streaming Sensor Data from The Things Network to Grafana over MQTT.
 
 In the next article we shall head back to [__PineDio Stack BL604__](https://lupyuen.github.io/articles/ttn) and transmit actual Sensor Data to The Things Network, encoded with CBOR.
 
