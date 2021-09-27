@@ -210,14 +210,16 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <p>Which might be <strong>too much</strong> for The Things Network.</p>
 <p><em>What are the message limits for The Things Network?</em></p>
 <p>The Things Network is <strong>Free for Fair Use</strong>, with limits on the <strong>size of messages</strong> and <strong>how often</strong> we may send them.</p>
-<p>If we expect to send 10 messages per hour, our message payload size should not exceed <strong>12 bytes</strong>.</p>
-<p>Thus our message payload is <strong>too small for JSON!</strong> We’ll encode with CBOR instead.</p>
+<p>If we expect to send 10 messages per hour, our Message Payload should not exceed <strong>12 bytes</strong>.</p>
+<p>Thus our Message Payload is <strong>too small for JSON!</strong> We’ll encode with CBOR instead.</p>
 <p><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">(More about The Things Network limits)</a></p>
 <p><em>What is CBOR?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a> works like a binary, compressed form of JSON…</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor4.jpg" alt="Sensor Data encoded as CBOR" /></p>
-<p>TODO</p>
-<p><a href="http://cbor.me/">(Source)</a></p>
+<p>Our Data Source for The Things Network assumes that the Message Payload is <strong>encoded with CBOR</strong>.</p>
+<p>To experiment with CBOR, try the <a href="http://cbor.me/"><strong>CBOR Playground</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/grafana-cbor5.jpg" alt="CBOR Playground" /></p>
+<p><a href="https://cbor.io/impls.html">(More about CBOR implementations)</a></p>
 <h2 id="decode-cbor-in-go" class="section-header"><a href="#decode-cbor-in-go">4.1 Decode CBOR in Go</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-go"><code>import &quot;github.com/fxamacker/cbor/v2&quot;
