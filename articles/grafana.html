@@ -655,11 +655,34 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 </li>
 <li>
 <p>Why is the temperature transmitted as an <strong>integer</strong>: <code>1234</code>?</p>
-<p>That’s because <strong>floating-point numbers compress poorly</strong> with CBOR.</p>
-<p>(Roughly 9 bytes per float)</p>
+<p>That’s because <strong>floating-point numbers compress poorly</strong> with CBOR unless we select the proper encoding.</p>
+<p>(Either 3 bytes, 5 bytes or 9 bytes per float. See the next note)</p>
 <p>Instead we assume that our integer data has been <strong>scaled up 100 times</strong>.</p>
 <p>(So <code>1234</code> actually means <code>12.34</code>)</p>
 <p>We may configure Grafana to divide our integer data by 100 when rendering the values.</p>
+</li>
+<li>
+<p>If we’re actually <strong>encoding floats in CBOR</strong>, how do we select the proper encoding?</p>
+<p>The CBOR spec says that there are <a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-"><strong>3 ways to encode floats</strong></a>…</p>
+<ul>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format">IEEE 754 <strong>Half-Precision</strong> Float (16 bits)</a></p>
+<p>(<strong>3.3</strong> significant decimal digits)</p>
+</li>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format">IEEE 754 <strong>Single-Precision</strong> Float (32 bits)</a></p>
+<p>(<strong>6 to 9</strong> significant decimal digits)</p>
+</li>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754 <strong>Double-Precision</strong> Float (64 bits)</a></p>
+<p>(<strong>15 to 17</strong> significant decimal digits)</p>
+</li>
+</ul>
+<p>What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?</p>
+<p>This means that we need <strong>4 significant decimal digits</strong>.</p>
+<p>Which is too many for Half-Precision Floats (16 bit), but OK for Single-Precision Floats (32 bits).</p>
+<p>Thus we need <strong>5 bytes</strong> to encode the float. (Including the CBOR Initial Byte)</p>
+<p>(Thanks to <a href="https://chaos.social/@chrysn/107003343164025849"><strong>@chrysn</strong></a> for highlighting this!)</p>
 </li>
 </ol>
 <h1 id="appendix-install-grafana-and-data-source" class="section-header"><a href="#appendix-install-grafana-and-data-source">12 Appendix: Install Grafana and Data Source</a></h1>
