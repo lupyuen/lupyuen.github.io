@@ -750,6 +750,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss the article on Reddit](https://www.reddit.com/r/grafana/comments/pw9hnz/grafana_data_source_for_the_things_network/)
+
 -   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
