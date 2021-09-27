@@ -626,9 +626,9 @@ Finally we return the decoded CBOR payload.
 
 ## Convert CBOR Type
 
-TODO
+Note we need to specify the __types of Data Fields__ when populating a Grafana Data Frame.
 
-From [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229)
+We call this function to __map CBOR Types__ to Grafana Data Field Types: [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229)
 
 ```go
 //  Return the Data Frame Type for the CBOR decoded value
@@ -651,6 +651,8 @@ func get_type(val interface{}) data.FieldType {
   case string:
     return data.FieldTypeNullableString
 ```
+
+## Testing the Data Source
 
 _Testing the MQTT Message Transformation looks painful!_
 
