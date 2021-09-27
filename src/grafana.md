@@ -187,9 +187,9 @@ _What are the message limits for The Things Network?_
 
 The Things Network is __Free for Fair Use__, with limits on the __size of messages__ and __how often__ we may send them.
 
-If we expect to send 10 messages per hour, our message payload size should not exceed __12 bytes__.
+If we expect to send 10 messages per hour, our Message Payload should not exceed __12 bytes__.
 
-Thus our message payload is __too small for JSON!__ We'll encode with CBOR instead.
+Thus our Message Payload is __too small for JSON!__ We'll encode with CBOR instead.
 
 [(More about The Things Network limits)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
 
@@ -199,9 +199,13 @@ _What is CBOR?_
 
 ![Sensor Data encoded as CBOR](https://lupyuen.github.io/images/grafana-cbor4.jpg)
 
-TODO
+Our Data Source for The Things Network assumes that the Message Payload is __encoded with CBOR__.
 
-[(Source)](http://cbor.me/)
+To experiment with CBOR, try the [__CBOR Playground__](http://cbor.me/)...
+
+![CBOR Playground](https://lupyuen.github.io/images/grafana-cbor5.jpg)
+
+[(More about CBOR implementations)](https://cbor.io/impls.html)
 
 ## Decode CBOR in Go
 
