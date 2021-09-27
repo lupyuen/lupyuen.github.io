@@ -258,11 +258,11 @@ Our __CBOR Message Payload__ is embedded deep inside the MQTT Message from The T
     "frm_payload":     "omF0GQTSYWwZA+g=",
 ```
 
+[(Source)](https://github.com/lupyuen/the-things-network-datasource#mqtt-log)
+
 __frm_payload__ contains our CBOR Message Payload, __encoded with Base64__.
 
 We'll watch the extraction of the Message Payload in a while.
-
-[(Source)](https://github.com/lupyuen/the-things-network-datasource#mqtt-log)
 
 > ![Message Payload in MQTT Message](https://lupyuen.github.io/images/grafana-payload.jpg)
 
