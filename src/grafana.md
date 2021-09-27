@@ -783,15 +783,41 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     
 1.  Why is the temperature transmitted as an __integer__: `1234`?
 
-    That's because __floating-point numbers compress poorly__ with CBOR.
+    That's because __floating-point numbers compress poorly__ with CBOR unless we select the proper encoding.
 
-    (Roughly 9 bytes per float)
+    (Either 3 bytes, 5 bytes or 9 bytes per float. See the next note)
 
     Instead we assume that our integer data has been __scaled up 100 times__.
 
     (So `1234` actually means `12.34`)
 
     We may configure Grafana to divide our integer data by 100 when rendering the values.
+
+1.  If we're actually __encoding floats in CBOR__, how do we select the proper encoding?
+
+    The CBOR spec says that there are [__3 ways to encode floats__](https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-)...
+
+    -   [IEEE 754 __Half-Precision__ Float (16 bits)](https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format)
+
+        (__3.3__ significant decimal digits)
+
+    -   [IEEE 754 __Single-Precision__ Float (32 bits)](https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format)
+
+        (__6 to 9__ significant decimal digits)
+
+    -   [IEEE 754 __Double-Precision__ Float (64 bits)](https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format)
+
+        (__15 to 17__ significant decimal digits)
+
+    What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?
+
+    This means that we need __4 significant decimal digits__.
+
+    Which is too many for Half-Precision Floats (16 bit), but OK for Single-Precision Floats (32 bits).
+
+    Thus we need __5 bytes__ to encode the float. (Including the CBOR Initial Byte)
+
+    (Thanks to [__@chrysn__](https://chaos.social/@chrysn/107003343164025849) for highlighting this!)
 
 # Appendix: Install Grafana and Data Source
 
