@@ -789,7 +789,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Instead we assume that our integer data has been __scaled up 100 times__.
 
-    (So `1234` actually means `12.34`)
+    (So `1234` actually means `12.34` ºC)
 
     We may configure Grafana to divide our integer data by 100 when rendering the values.
 
@@ -818,6 +818,20 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     Thus we need __5 bytes__ to encode the float. (Including the CBOR Initial Byte)
 
     (Thanks to [__@chrysn__](https://chaos.social/@chrysn/107003343164025849) for highlighting this!)
+
+1.  Is it meaningful to record temperatures that are accurate to 0.01 ºC?
+
+    How much accuracy do we need for Sensor Data anyway?
+
+    The accuracy for our Sensor Data depends on...
+
+    1. Our monitoring requirements, and
+
+    1. Accuracy of our sensors
+
+    Learn more about Accuracy and Precision of Sensor Data...
+
+    ["IoT’s Lesser Known Power: “Good Enough” Data Accuracy"](https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/)
 
 # Appendix: Install Grafana and Data Source
 
