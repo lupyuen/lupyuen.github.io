@@ -563,8 +563,8 @@ func get_type(val interface{}) data.FieldType {
 <p>Indeed. That’s why we wrote another Go program to test the transformation by calling <strong>jsonMessagesToFrame</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/grafana-test.png" alt="Testing the MQTT Message Transformation" /></p>
 <h1 id="troubleshooting" class="section-header"><a href="#troubleshooting">8 Troubleshooting</a></h1>
-<p>TODO</p>
-<p>To <strong>enable Debug Logs</strong>, edit…</p>
+<p>If we have problems with the Data Source, enabling <strong>Debug Logging</strong> might help.</p>
+<p>Edit the <strong>Grafana Configuration File</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code># For Linux:
 /usr/share/grafana/conf/defaults.ini
 
@@ -573,10 +573,11 @@ func get_type(val interface{}) data.FieldType {
 
 # For Windows:
 C:\Program Files\GrafanaLabs\grafana\conf\defaults.ini</code></pre></div>
-<p>And set…</p>
+<p>Set the <strong>Log Level</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>[log]
 level = debug</code></pre></div>
-<p>In case of problems, check the <strong>Grafana Log</strong> at…</p>
+<p>Save the file and restart the Grafana Server.</p>
+<p>Check the <strong>Grafana Log</strong> at…</p>
 <div class="example-wrap"><pre class="language-text"><code># For Linux:
 /var/log/grafana/grafana.log
 
@@ -587,11 +588,18 @@ level = debug</code></pre></div>
 C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
 <h1 id="store-data-with-prometheus" class="section-header"><a href="#store-data-with-prometheus">9 Store Data with Prometheus</a></h1>
+<p>Today we have <strong>streamed Sensor Data</strong> from The Things Network to Grafana over MQTT…</p>
+<p><img src="https://lupyuen.github.io/images/grafana-flow.jpg" alt="Visualising The Things Network Sensor Data with Grafana" /></p>
+<p><em>Wait… We’re streaming the Sensor Data without storing it?</em></p>
+<p>Yep this <strong>streaming setup for Grafana</strong> requires fewer components because it doesn’t store the data.</p>
+<p>But it has limitations.</p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/grafana-flow2.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/grafana-flow2.jpg" alt="Storing The Things Network Sensor Data with Prometheus" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
-<p>PineDio Stack BL604</p>
+<p>In the next article we shall head back to <a href="https://lupyuen.github.io/articles/ttn"><strong>PineDio Stack BL604</strong></a> and transmit actual Sensor Data to The Things Network, encoded with CBOR.</p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1441626008931602433">(Check this Twitter Thread for updates)</a></p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
