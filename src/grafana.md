@@ -766,6 +766,33 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1440459917828050946)
 
+1.  What exactly are __"`t`"__ and __"`l`"__ in our Sensor Data?
+
+    ```json
+    { 
+      "t": 1234, 
+      "l": 2345 
+    }
+    ```
+
+    "`t`" and "`l`" represent our (imaginary) __Temperature Sensor__ and __Light Sensor__.
+
+    We __shortened the Field Names__ to fit the Sensor Data into 11 bytes of CBOR.
+
+    With Grafana we can map "`t`" and "`l`" to their full names for display.
+    
+1.  Why is the temperature transmitted as an __integer__: `1234`?
+
+    That's because __floating-point numbers compress poorly__ with CBOR.
+
+    (Roughly 9 bytes per float)
+
+    Instead we assume that our integer data has been __scaled up 100 times__.
+
+    (So `1234` actually means `12.34`)
+
+    We may configure Grafana to divide our integer data by 100 when rendering the values.
+
 # Appendix: Install Grafana and Data Source
 
 Here are the steps to install Grafana and our Data Source for The Things Network.
