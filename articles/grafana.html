@@ -72,7 +72,8 @@
 <li><a href="#view-raw-data">3.1 View Raw Data</a><ul></ul></li>
 <li><a href="#filter-data">3.2 Filter Data</a><ul></ul></li></ul></li>
 <li><a href="#cbor-concise-binary-object-representation">4 CBOR: Concise Binary Object Representation</a><ul>
-<li><a href="#decode-cbor-in-go">4.1 Decode CBOR in Go</a><ul></ul></li></ul></li>
+<li><a href="#decode-cbor-in-go">4.1 Decode CBOR in Go</a><ul></ul></li>
+<li><a href="#message-payload">4.2 Message Payload</a><ul></ul></li></ul></li>
 <li><a href="#mqtt-integration">5 MQTT Integration</a><ul>
 <li><a href="#subscribe-to-mqtt">5.1 Subscribe to MQTT</a><ul></ul></li>
 <li><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a><ul></ul></li></ul></li>
@@ -218,10 +219,14 @@ mosquitto_sub -h au1.cloud.thethings.network -t &quot;#&quot; -u &quot;luppy-app
 <p><img src="https://lupyuen.github.io/images/grafana-cbor4.jpg" alt="Sensor Data encoded as CBOR" /></p>
 <p>Our Data Source for The Things Network assumes that the Message Payload is <strong>encoded with CBOR</strong>.</p>
 <p>To experiment with CBOR, try the <a href="http://cbor.me/"><strong>CBOR Playground</strong></a>…</p>
-<p><img src="https://lupyuen.github.io/images/grafana-cbor5.jpg" alt="CBOR Playground" /></p>
+<p><img src="https://lupyuen.github.io/images/grafana-cbor5.png" alt="CBOR Playground" /></p>
 <p><a href="https://cbor.io/impls.html">(More about CBOR implementations)</a></p>
 <h2 id="decode-cbor-in-go" class="section-header"><a href="#decode-cbor-in-go">4.1 Decode CBOR in Go</a></h2>
-<p>TODO</p>
+<p>Our Data Source calls this <strong>Go Library</strong> to decode CBOR Message Payloads…</p>
+<ul>
+<li><a href="https://github.com/fxamacker/cbor"><strong>fxamacker/cbor</strong></a></li>
+</ul>
+<p>We call the library like so…</p>
 <div class="example-wrap"><pre class="language-go"><code>import &quot;github.com/fxamacker/cbor/v2&quot;
 
 //  Encoded CBOR payload for { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
@@ -235,6 +240,10 @@ err := cbor.Unmarshal(payload, &amp;body)
 if err == nil {
   fmt.Printf(&quot;%v\n&quot;, body)
 }</code></pre></div>
+<p>We’ll see the decoding logic in our Data Source in a while.</p>
+<h2 id="message-payload" class="section-header"><a href="#message-payload">4.2 Message Payload</a></h2>
+<p><em>Where is the Message Payload?</em></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/grafana-payload.jpg" alt="" /></p>
