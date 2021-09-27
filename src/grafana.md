@@ -473,6 +473,8 @@ We compose the __Data Fields__ (like "`t`" and "`l`") for the first message...
   sort.Strings(keys) // keys stable field order.
 ```
 
+(We'll see "`get_type`" in the next chapter)
+
 Now we do the same for the __remaining messages__...
 
 ```go
@@ -540,7 +542,7 @@ func set_error(frame *data.Frame, err error) *data.Frame {
 
 # Decode CBOR Payload
 
-We've seen the Message Transformation Logic, now we __decode the CBOR payload__: [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190)
+We've seen the Message Transformation Logic, now we __decode the CBOR payload__ in the MQTT Message: [pkg/plugin/message.go](https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L131-L190)
 
 ```go
 //  Decode the CBOR payload in the JSON message.
@@ -554,7 +556,15 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
   }
 ```
 
-TODO
+We start by __deserialising the JSON message__.
+
+Remember that our __Message Payload__ is located at...
+
+```text
+uplink_message → frm_payload
+```
+
+We __extract the Message Payload__ like so...
 
 ```go
   //  Get the Uplink Message
@@ -570,7 +580,7 @@ TODO
   }
 ```
 
-TODO
+Message Payload is __encoded with Base64__, thus we decode it...
 
 ```go
   //  Base64 decode the Payload
@@ -580,7 +590,7 @@ TODO
   }
 ```
 
-TODO
+Next we __decode the CBOR payload__...
 
 ```go
   //  Decode CBOR payload to a map of String → interface{}
@@ -591,7 +601,9 @@ TODO
   }
 ```
 
-TODO
+(Yep we've seen this earlier)
+
+To support filtering by Device ID, we __extract the Device ID__ from the MQTT Message...
 
 ```go
   //  Add the Device ID to the body: end_device_ids → device_id
@@ -606,9 +618,13 @@ TODO
 }
 ```
 
+Finally we return the decoded CBOR payload.
+
+(Containing "`t`", "`l`" and the Device ID)
+
 > ![Decoding the CBOR Payload](https://lupyuen.github.io/images/grafana-code2.png)
 
-## Convert Type
+## Convert CBOR Type
 
 TODO
 
