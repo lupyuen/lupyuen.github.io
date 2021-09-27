@@ -711,11 +711,32 @@ _Wait... We're streaming the Sensor Data without storing it?_
 
 Yep this __streaming setup for Grafana__ requires fewer components because it doesn't store the data.
 
-But it has limitations.
+But this streaming setup has __limitations__...
 
-TODO
+1.  What happens when we __restart our Grafana Server__?
+
+    All our Sensor Data is lost!
+
+1.  We're remembering only the __last 1,000 messages__.
+
+    Which is OK for checking real-time Sensor Data transmitted by our devices...
+
+    But not OK for observing __Sensor Data trends over time__!
+
+_Can we store the Sensor Data?_
+
+We can store the Sensor Data in [__Prometheus__](https://prometheus.io/), the open source __Time-Series Data Store__...
 
 ![Storing The Things Network Sensor Data with Prometheus](https://lupyuen.github.io/images/grafana-flow2.jpg)
+
+Grafana supports __Prometheus as a Data Source__, so pushing our Sensor Data from Prometheus to Grafana is easy.
+
+To __ingest MQTT Messages__ from The Things Network into Prometheus, we need an
+__MQTT Gateway__ like this...
+
+-   [__hikhvar/mqtt2prometheus__](https://github.com/hikhvar/mqtt2prometheus)
+
+This Grafana setup looks more complicated, but it works well for visualising historical Sensor Data.
 
 # What's Next
 
