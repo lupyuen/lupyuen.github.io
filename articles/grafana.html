@@ -240,13 +240,32 @@ err := cbor.Unmarshal(payload, &amp;body)
 if err == nil {
   fmt.Printf(&quot;%v\n&quot;, body)
 }</code></pre></div>
-<p>We’ll see the decoding logic in our Data Source in a while.</p>
+<p>Later we’ll see the decoding logic in our Data Source.</p>
 <h2 id="message-payload" class="section-header"><a href="#message-payload">4.2 Message Payload</a></h2>
 <p><em>Where is the Message Payload?</em></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/grafana-cbor2.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/grafana-payload.jpg" alt="" /></p>
+<p>The <strong>CBOR Message Payload</strong> is embedded deep inside the MQTT Message from The Things Network…</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;end_device_ids&quot;: {
+        &quot;device_id&quot;: &quot;eui-YOUR_DEVICE_EUI&quot;,
+        &quot;application_ids&quot;: {
+            &quot;application_id&quot;: &quot;luppy-application&quot;
+        },
+        &quot;dev_eui&quot;: &quot;YOUR_DEVICE_EUI&quot;,
+        &quot;join_eui&quot;: &quot;0000000000000000&quot;,
+        &quot;dev_addr&quot;: &quot;YOUR_DEV_ADDR&quot;
+    },
+    &quot;correlation_ids&quot;: [ ... ],
+    &quot;received_at&quot;: &quot;2021-09-25T13:46:17.083379844Z&quot;,
+    &quot;uplink_message&quot;: {
+        &quot;session_key_id&quot;: &quot;YOUR_SESSION_KEY_ID&quot;,
+        &quot;f_port&quot;: 2,
+        &quot;frm_payload&quot;: &quot;omF0GQTSYWwZA+g=&quot;,</code></pre></div>
+<p><strong>frm_payload</strong> contains our CBOR Message Payload, encoded with Base64.</p>
+<p>We’ll see the extraction of the CBOR Message Payload in a while.</p>
+<p><a href="https://github.com/lupyuen/the-things-network-datasource#mqtt-log">(Source)</a></p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/grafana-payload.jpg" alt="Message Payload in MQTT Message" /></p>
+</blockquote>
 <h1 id="mqtt-integration" class="section-header"><a href="#mqtt-integration">5 MQTT Integration</a></h1>
 <p>Let’s look at the <strong>Go Source Code</strong> for our Data Source…</p>
 <ul>
