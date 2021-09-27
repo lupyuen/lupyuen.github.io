@@ -79,7 +79,8 @@
 <li><a href="#receive-mqtt-messages">5.2 Receive MQTT Messages</a><ul></ul></li></ul></li>
 <li><a href="#transform-mqtt-messages">6 Transform MQTT Messages</a><ul></ul></li>
 <li><a href="#decode-cbor-payload">7 Decode CBOR Payload</a><ul>
-<li><a href="#convert-cbor-type">7.1 Convert CBOR Type</a><ul></ul></li></ul></li>
+<li><a href="#convert-cbor-type">7.1 Convert CBOR Type</a><ul></ul></li>
+<li><a href="#testing-the-data-source">7.2 Testing the Data Source</a><ul></ul></li></ul></li>
 <li><a href="#troubleshooting">8 Troubleshooting</a><ul></ul></li>
 <li><a href="#store-data-with-prometheus">9 Store Data with Prometheus</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
@@ -537,8 +538,8 @@ func decodeCborPayload(msg string) (map[string]interface{}, error) {
 <p><img src="https://lupyuen.github.io/images/grafana-code2.png" alt="Decoding the CBOR Payload" /></p>
 </blockquote>
 <h2 id="convert-cbor-type" class="section-header"><a href="#convert-cbor-type">7.1 Convert CBOR Type</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229">pkg/plugin/message.go</a></p>
+<p>Note we need to specify the <strong>types of Data Fields</strong> when populating a Grafana Data Frame.</p>
+<p>We call this function to <strong>map CBOR Types</strong> to Grafana Data Field Types: <a href="https://github.com/lupyuen/the-things-network-datasource/blob/main/pkg/plugin/message.go#L192-L229">pkg/plugin/message.go</a></p>
 <div class="example-wrap"><pre class="language-go"><code>//  Return the Data Frame Type for the CBOR decoded value
 func get_type(val interface{}) data.FieldType {
   //  Based on https://github.com/fxamacker/cbor/blob/master/decode.go#L43-L53
@@ -557,7 +558,7 @@ func get_type(val interface{}) data.FieldType {
 
   //  CBOR text strings decode to string.
   case string:
-    return data.FieldTypeNullableString</code></pre></div>
+    return data.FieldTypeNullableString</code></pre></div><h2 id="testing-the-data-source" class="section-header"><a href="#testing-the-data-source">7.2 Testing the Data Source</a></h2>
 <p><em>Testing the MQTT Message Transformation looks painful!</em></p>
 <p>Indeed. That’s why we wrote another Go program to test the transformation by calling <strong>jsonMessagesToFrame</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/grafana-test.png" alt="Testing the MQTT Message Transformation" /></p>
