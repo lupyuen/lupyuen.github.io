@@ -813,7 +813,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     This means that we need __4 significant decimal digits__.
 
-    Which is too many for Half-Precision Floats (16 bit), but OK for Single-Precision Floats (32 bits).
+    Which is too many for a Half-Precision Float (16 bits), but OK for a __Single-Precision__ Float (32 bits).
 
     Thus we need __5 bytes__ to encode the float. (Including the CBOR Initial Byte)
 
