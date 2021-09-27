@@ -658,7 +658,7 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <p>That’s because <strong>floating-point numbers compress poorly</strong> with CBOR unless we select the proper encoding.</p>
 <p>(Either 3 bytes, 5 bytes or 9 bytes per float. See the next note)</p>
 <p>Instead we assume that our integer data has been <strong>scaled up 100 times</strong>.</p>
-<p>(So <code>1234</code> actually means <code>12.34</code>)</p>
+<p>(So <code>1234</code> actually means <code>12.34</code> ºC)</p>
 <p>We may configure Grafana to divide our integer data by 100 when rendering the values.</p>
 </li>
 <li>
@@ -683,6 +683,21 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision</strong> Float (32 bits).</p>
 <p>Thus we need <strong>5 bytes</strong> to encode the float. (Including the CBOR Initial Byte)</p>
 <p>(Thanks to <a href="https://chaos.social/@chrysn/107003343164025849"><strong>@chrysn</strong></a> for highlighting this!)</p>
+</li>
+<li>
+<p>Is it meaningful to record temperatures that are accurate to 0.01 ºC?</p>
+<p>How much accuracy do we need for Sensor Data anyway?</p>
+<p>The accuracy for our Sensor Data depends on…</p>
+<ol>
+<li>
+<p>Our monitoring requirements, and</p>
+</li>
+<li>
+<p>Accuracy of our sensors</p>
+</li>
+</ol>
+<p>Learn more about Accuracy and Precision of Sensor Data…</p>
+<p><a href="https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/">“IoT’s Lesser Known Power: “Good Enough” Data Accuracy”</a></p>
 </li>
 </ol>
 <h1 id="appendix-install-grafana-and-data-source" class="section-header"><a href="#appendix-install-grafana-and-data-source">12 Appendix: Install Grafana and Data Source</a></h1>
