@@ -4,6 +4,19 @@
 
 📝 _6 Oct 2021_
 
+Suppose we're transmitting __Sensor Data__ from our Temperature Sensor and Light Sensor...
+
+```json
+{ 
+    "t": 1234, 
+    "l": 2345 
+}
+```
+
+Over a __low-power wireless network__ like LoRa or Bluetooth LE.
+
+We could transmit __19 bytes of JSON__. But there's a more compact way to do it....
+
 TODO
 
 The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
