@@ -1,25 +1,37 @@
 # Encode Sensor Data with CBOR on BL602
 
-![Encoding Sensor Data with CBOR on BL602](https://lupyuen.github.io/images/cbor-title.jpg)
-
 📝 _6 Oct 2021_
 
-Suppose we're transmitting __Sensor Data__ from our Temperature Sensor and Light Sensor...
+Suppose we're transmitting __Sensor Data__ from our __Temperature Sensor__ and __Light Sensor__...
 
 ```json
 { 
-    "t": 1234, 
-    "l": 2345 
+  "t": 1234, 
+  "l": 2345 
 }
 ```
 
-Over a __low-power wireless network__ like LoRa or Bluetooth LE.
+(Located in a Greenhouse perhaps)
+
+And we're transmitting over a __low-power wireless network__ like LoRa, Zigbee or Bluetooth LE.
 
 We could transmit __19 bytes of JSON__. But there's a more compact way to do it....
+
+[__Concise Binary Object Representation (CBOR)__](https://en.wikipedia.org/wiki/CBOR)
+
+And we need only __11 bytes of CBOR__!
+
+![Encoding Sensor Data with CBOR on BL602](https://lupyuen.github.io/images/cbor-title.jpg)
 
 TODO
 
 The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
+
+_Must we scrimp and save every single byte?_
+
+Yes, every single byte matters for low-power wireless networks!
+
+TODO
 
 # What's Next
 
