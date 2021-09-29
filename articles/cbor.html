@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Encode Sensor Data with CBOR on BL602</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Encode Sensor Data with CBOR on BL602" 
+    data-rh="true">
+<meta property="og:description" 
+    content=""
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/cbor-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Encode Sensor Data with CBOR on BL602</h1>
+    <nav id="TOC"><ul>
+<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
+<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/cbor-title.jpg" alt="" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/cbor.md"><code>lupyuen.github.io/src/cbor.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<ol>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1441626008931602433">this Twitter Thread</a></p>
+</li>
+<li>
+<p>What exactly are <strong>“<code>t</code>”</strong> and <strong>“<code>l</code>”</strong> in our Sensor Data?</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234, 
+  &quot;l&quot;: 2345 
+}</code></pre></div>
+<p>“<code>t</code>” and “<code>l</code>” represent our (imaginary) <strong>Temperature Sensor</strong> and <strong>Light Sensor</strong>.</p>
+<p>We <strong>shortened the Field Names</strong> to fit the Sensor Data into 11 bytes of CBOR.</p>
+<p>With Grafana we can map “<code>t</code>” and “<code>l</code>” to their full names for display.</p>
+</li>
+<li>
+<p>Why is the temperature transmitted as an <strong>integer</strong>: <code>1234</code>?</p>
+<p>That’s because <strong>floating-point numbers compress poorly</strong> with CBOR unless we select the proper encoding.</p>
+<p>(Either 3 bytes, 5 bytes or 9 bytes per float. See the next note)</p>
+<p>Instead we assume that our integer data has been <strong>scaled up 100 times</strong>.</p>
+<p>(So <code>1234</code> actually means <code>12.34</code> ºC)</p>
+<p>We may configure Grafana to divide our integer data by 100 when rendering the values.</p>
+</li>
+<li>
+<p>If we’re actually <strong>encoding floats in CBOR</strong>, how do we select the proper encoding?</p>
+<p>The CBOR spec says that there are <a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-"><strong>3 ways to encode floats</strong></a>…</p>
+<ul>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format">IEEE 754 <strong>Half-Precision</strong> Float (16 bits)</a></p>
+<p>(<strong>3.3</strong> significant decimal digits)</p>
+</li>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format">IEEE 754 <strong>Single-Precision</strong> Float (32 bits)</a></p>
+<p>(<strong>6 to 9</strong> significant decimal digits)</p>
+</li>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754 <strong>Double-Precision</strong> Float (64 bits)</a></p>
+<p>(<strong>15 to 17</strong> significant decimal digits)</p>
+</li>
+</ul>
+<p>What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?</p>
+<p>This means that we need <strong>4 significant decimal digits</strong>.</p>
+<p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision</strong> Float (32 bits).</p>
+<p>Thus we need <strong>5 bytes</strong> to encode the float. (Including the CBOR Initial Byte)</p>
+<p>(Thanks to <a href="https://chaos.social/@chrysn/107003343164025849"><strong>@chrysn</strong></a> for highlighting this!)</p>
+</li>
+<li>
+<p>Is it meaningful to record temperatures that are accurate to 0.01 ºC?</p>
+<p>How much accuracy do we need for Sensor Data anyway?</p>
+<p>The accuracy for our Sensor Data depends on…</p>
+<ol>
+<li>
+<p>Our monitoring requirements, and</p>
+</li>
+<li>
+<p>Accuracy of our sensors</p>
+</li>
+</ol>
+<p>Learn more about Accuracy and Precision of Sensor Data…</p>
+<p><a href="https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/">“IoT’s Lesser Known Power: “Good Enough” Data Accuracy”</a></p>
+</li>
+</ol>
+
+    
+</body>
+</html>
