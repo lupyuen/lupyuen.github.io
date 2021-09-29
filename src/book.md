@@ -160,6 +160,8 @@ Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, l
 
 -   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
 
+-   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
+
 Below are the older articles for __LoRa SX1276 Transceiver__...
 
 -   ["Connect PineCone BL602 to LoRa Transceiver (SX1276)"](https://lupyuen.github.io/articles/lora)

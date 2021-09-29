@@ -561,6 +561,8 @@ Select the __Region__ (like US915), enter the __Message Payload Size__ (say 12 b
 
 In the next article, PineDio Stack shall transmit __Real-Time Sensor Data__ from a Temperature Sensor to The Things Network. (Encoded with CBOR)
 
+-   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
+
 And we shall __visualise the Sensor Data__ with [__Grafana and MQTT__](https://grafana.com/blog/2021/08/12/streaming-real-time-sensor-data-to-grafana-using-mqtt-and-grafana-live/). (With CBOR decoding)
 
 -   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)

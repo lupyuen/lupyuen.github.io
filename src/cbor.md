@@ -1,0 +1,97 @@
+# Encode Sensor Data with CBOR on BL602
+
+📝 _6 Oct 2021_
+
+TODO
+
+![](https://lupyuen.github.io/images/cbor-title.jpg)
+
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
+
+-   [Check out my articles](https://lupyuen.github.io)
+
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[`lupyuen.github.io/src/cbor.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/cbor.md)
+
+# Notes
+
+1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1441626008931602433)
+
+1.  What exactly are __"`t`"__ and __"`l`"__ in our Sensor Data?
+
+    ```json
+    { 
+      "t": 1234, 
+      "l": 2345 
+    }
+    ```
+
+    "`t`" and "`l`" represent our (imaginary) __Temperature Sensor__ and __Light Sensor__.
+
+    We __shortened the Field Names__ to fit the Sensor Data into 11 bytes of CBOR.
+
+    With Grafana we can map "`t`" and "`l`" to their full names for display.
+    
+1.  Why is the temperature transmitted as an __integer__: `1234`?
+
+    That's because __floating-point numbers compress poorly__ with CBOR unless we select the proper encoding.
+
+    (Either 3 bytes, 5 bytes or 9 bytes per float. See the next note)
+
+    Instead we assume that our integer data has been __scaled up 100 times__.
+
+    (So `1234` actually means `12.34` ºC)
+
+    We may configure Grafana to divide our integer data by 100 when rendering the values.
+
+1.  If we're actually __encoding floats in CBOR__, how do we select the proper encoding?
+
+    The CBOR spec says that there are [__3 ways to encode floats__](https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-)...
+
+    -   [IEEE 754 __Half-Precision__ Float (16 bits)](https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format)
+
+        (__3.3__ significant decimal digits)
+
+    -   [IEEE 754 __Single-Precision__ Float (32 bits)](https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format)
+
+        (__6 to 9__ significant decimal digits)
+
+    -   [IEEE 754 __Double-Precision__ Float (64 bits)](https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format)
+
+        (__15 to 17__ significant decimal digits)
+
+    What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?
+
+    This means that we need __4 significant decimal digits__.
+
+    Which is too many for a Half-Precision Float (16 bits), but OK for a __Single-Precision__ Float (32 bits).
+
+    Thus we need __5 bytes__ to encode the float. (Including the CBOR Initial Byte)
+
+    (Thanks to [__@chrysn__](https://chaos.social/@chrysn/107003343164025849) for highlighting this!)
+
+1.  Is it meaningful to record temperatures that are accurate to 0.01 ºC?
+
+    How much accuracy do we need for Sensor Data anyway?
+
+    The accuracy for our Sensor Data depends on...
+
+    1. Our monitoring requirements, and
+
+    1. Accuracy of our sensors
+
+    Learn more about Accuracy and Precision of Sensor Data...
+
+    ["IoT’s Lesser Known Power: “Good Enough” Data Accuracy"](https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/)
+
