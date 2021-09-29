@@ -1,10 +1,12 @@
 # Encode Sensor Data with CBOR on BL602
 
+![Encoding Sensor Data with CBOR on BL602](https://lupyuen.github.io/images/cbor-title.jpg)
+
 📝 _6 Oct 2021_
 
 TODO
 
-![](https://lupyuen.github.io/images/cbor-title.jpg)
+The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
 
 # What's Next
 
