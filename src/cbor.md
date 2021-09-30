@@ -57,11 +57,13 @@ We start by encoding one data field into CBOR...
 }
 ```
 
-We call this a __CBOR Map__ that maps one __Key ("`t`")__ to a __Value (`1234`)__.
+We call this a __CBOR Map__ that maps one __Key ("`t`")__ to a __Value (`1234`)__...
+
+![CBOR Map with 1 Key-Value Pair](https://lupyuen.github.io/images/cbor-map.png)
 
 Below is the code from our [__pinedio_cbor__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor) firmware that encodes the above into CBOR.
 
-## Initialise Output Buffer and CBOR Encoder
+## Output Buffer and CBOR Encoder
 
 TODO
 
@@ -204,6 +206,8 @@ Now we __add another field__ to our CBOR Encoding...
 ```
 
 And watch how our program changes to accommodate the second field.
+
+![CBOR Map with 2 Key-Value Pairs](https://lupyuen.github.io/images/cbor-map2.png)
 
 TODO
 
