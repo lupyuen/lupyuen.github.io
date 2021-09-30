@@ -89,7 +89,7 @@
 <ul>
 <li><a href="https://github.com/lupyuen/tinycbor-bl602"><strong>lupyuen/tinycbor-bl602</strong></a></li>
 </ul>
-<p>The lbrary has been tested on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>, but it should work on <strong>any BL602 or BL604 Board</strong>: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, …</p>
+<p>The library has been tested on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>, but it should work on <strong>any BL602 or BL604 Board</strong>: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, …</p>
 <p><em>Must we scrimp and save every single byte?</em></p>
 <p>Yes, <strong>every single byte matters</strong> for low-power wireless networks!</p>
 <ol>
@@ -106,6 +106,13 @@
 </li>
 </ol>
 <h1 id="encode-sensor-data-with-tinycbor" class="section-header"><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a></h1>
+<p>We start by encoding one data field into CBOR…</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234
+}</code></pre></div>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor">bl_iot_sdk/customer_app/pinedio_cbor</a></li>
+</ul>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234 }
@@ -178,6 +185,12 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   0xd2</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/cbor-code.png" alt="" /></p>
 <h1 id="add-another-field" class="section-header"><a href="#add-another-field">2 Add Another Field</a></h1>
+<p>Now we <strong>add another field</strong> to our CBOR Encoding…</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234, 
+  &quot;l&quot;: 2345 
+}</code></pre></div>
+<p>And watch how our program changes to accommodate the second field.</p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
