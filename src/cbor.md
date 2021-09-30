@@ -41,7 +41,7 @@ Yes, __every single byte matters__ for low-power wireless networks!
 
 1.  When we transmit LoRa packets to __The Things Network__ (the free public global LoRa network), we're limited by their __Fair Use__ policy.
 
-    (Roughly __12 bytes__ per message, assuming 10 messages per hour)
+    [(Roughly __12 bytes__ per message, assuming 10 messages per hour)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
 
     JSON is too big for this. But CBOR works well!
 
