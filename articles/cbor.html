@@ -65,9 +65,14 @@
 
     <h1 class="title">Encode Sensor Data with CBOR on BL602</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
-<p>Suppose we’re transmitting <strong>Sensor Data</strong> from our <strong>Temperature Sensor</strong> and <strong>Light Sensor</strong>…</p>
+<li><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a><ul></ul></li>
+<li><a href="#build-and-run-the-firmware">2 Build and Run the Firmware</a><ul></ul></li>
+<li><a href="#floating-point-numbers">3 Floating-Point Numbers</a><ul></ul></li>
+<li><a href="#the-things-network">4 The Things Network</a><ul></ul></li>
+<li><a href="#accuracy-vs-precision">5 Accuracy vs Precision</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
+<p>Suppose we’re creating an IoT Gadget that transmits <strong>Sensor Data</strong> from a <strong>Temperature Sensor</strong> and a <strong>Light Sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
   &quot;l&quot;: 2345 
@@ -75,15 +80,40 @@
 <p>(Located in a Greenhouse perhaps)</p>
 <p>And we’re transmitting over a <strong>low-power wireless network</strong> like LoRa, Zigbee or Bluetooth LE.</p>
 <p>We could transmit <strong>19 bytes of JSON</strong>. But there’s a more compact way to do it….</p>
-<p><a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a></p>
+<p><a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a>, which works like a binary, compressed form of JSON.</p>
 <p>And we need only <strong>11 bytes of CBOR</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/cbor-title.jpg" alt="Encoding Sensor Data with CBOR on BL602" /></p>
-<p>TODO</p>
-<p>The firmware has been tested on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>, but it should work on <strong>any BL602 or BL604 Board</strong>: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, …</p>
+<p>Today we’ll learn to encode Sensor Data with the <strong>TinyCBOR Library</strong> that we have ported to BL602 and BL604…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/tinycbor-bl602"><strong>lupyuen/tinycbor-bl602</strong></a></li>
+</ul>
+<p>The lbrary has been tested on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>, but it should work on <strong>any BL602 or BL604 Board</strong>: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, …</p>
 <p><em>Must we scrimp and save every single byte?</em></p>
-<p>Yes, every single byte matters for low-power wireless networks!</p>
+<p>Yes, <strong>every single byte matters</strong> for low-power wireless networks!</p>
+<ol>
+<li>
+<p>Low-power wireless networks operate on Radio Frequency Bands that are <strong>shared with many other gadgets</strong>.</p>
+<p>They are prone to <strong>collisions and interference</strong>.</p>
+<p>The <strong>smaller the data packet</strong>, the higher the chance that it will be <strong>transmitted successfully</strong>!</p>
+</li>
+<li>
+<p>When we transmit LoRa packets to <strong>The Things Network</strong> (the free public global LoRa network), we’re limited by their <strong>Fair Use</strong> policy.</p>
+<p>(Roughly <strong>12 bytes</strong> per message, assuming 10 messages per hour)</p>
+<p>JSON is too big for this. But CBOR works well!</p>
+<p>In a while we’ll watch the TinyCBOR Library in action for encoding Sensor Data in The Things Network.</p>
+</li>
+</ol>
+<h1 id="encode-sensor-data-with-tinycbor" class="section-header"><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a></h1>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">2 Build and Run the Firmware</a></h1>
+<p>TODO</p>
+<h1 id="floating-point-numbers" class="section-header"><a href="#floating-point-numbers">3 Floating-Point Numbers</a></h1>
+<p>TODO</p>
+<h1 id="the-things-network" class="section-header"><a href="#the-things-network">4 The Things Network</a></h1>
+<p>TODO</p>
+<h1 id="accuracy-vs-precision" class="section-header"><a href="#accuracy-vs-precision">5 Accuracy vs Precision</a></h1>
+<p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -102,7 +132,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/cbor.md"><code>lupyuen.github.io/src/cbor.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1441626008931602433">this Twitter Thread</a></p>
