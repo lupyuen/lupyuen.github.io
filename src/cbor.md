@@ -2,7 +2,7 @@
 
 📝 _6 Oct 2021_
 
-Suppose we're transmitting __Sensor Data__ from our __Temperature Sensor__ and __Light Sensor__...
+Suppose we're creating an IoT Gadget that transmits __Sensor Data__ from a __Temperature Sensor__ and a __Light Sensor__...
 
 ```json
 { 
@@ -17,19 +17,53 @@ And we're transmitting over a __low-power wireless network__ like LoRa, Zigbee o
 
 We could transmit __19 bytes of JSON__. But there's a more compact way to do it....
 
-[__Concise Binary Object Representation (CBOR)__](https://en.wikipedia.org/wiki/CBOR)
+[__Concise Binary Object Representation (CBOR)__](https://en.wikipedia.org/wiki/CBOR), which works like a binary, compressed form of JSON.
 
 And we need only __11 bytes of CBOR__!
 
 ![Encoding Sensor Data with CBOR on BL602](https://lupyuen.github.io/images/cbor-title.jpg)
 
-TODO
+Today we'll learn to encode Sensor Data with the __TinyCBOR Library__ that we have ported to BL602 and BL604...
 
-The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
+-   [__lupyuen/tinycbor-bl602__](https://github.com/lupyuen/tinycbor-bl602)
+
+The lbrary has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
 
 _Must we scrimp and save every single byte?_
 
-Yes, every single byte matters for low-power wireless networks!
+Yes, __every single byte matters__ for low-power wireless networks!
+
+1.  Low-power wireless networks operate on Radio Frequency Bands that are __shared with many other gadgets__.
+
+    They are prone to __collisions and interference__.
+
+    The __smaller the data packet__, the higher the chance that it will be __transmitted successfully__!
+
+1.  When we transmit LoRa packets to __The Things Network__ (the free public global LoRa network), we're limited by their __Fair Use__ policy.
+
+    (Roughly __12 bytes__ per message, assuming 10 messages per hour)
+
+    JSON is too big for this. But CBOR works well!
+
+    In a while we'll watch the TinyCBOR Library in action for encoding Sensor Data in The Things Network.
+
+# Encode Sensor Data with TinyCBOR
+
+TODO
+
+# Build and Run the Firmware
+
+TODO
+
+# Floating-Point Numbers
+
+TODO
+
+# The Things Network
+
+TODO
+
+# Accuracy vs Precision
 
 TODO
 
