@@ -65,7 +65,13 @@
 
     <h1 class="title">Encode Sensor Data with CBOR on BL602</h1>
     <nav id="TOC"><ul>
-<li><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a><ul></ul></li>
+<li><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a><ul>
+<li><a href="#initialise-output-buffer-and-cbor-encoder">1.1 Initialise Output Buffer and CBOR Encoder</a><ul></ul></li>
+<li><a href="#create-map-encoder">1.2 Create Map Encoder</a><ul></ul></li>
+<li><a href="#encode-key-and-value">1.3 Encode Key and Value</a><ul></ul></li>
+<li><a href="#close-map-encoder">1.4 Close Map Encoder</a><ul></ul></li>
+<li><a href="#get-encoded-output">1.5 Get Encoded Output</a><ul></ul></li>
+<li><a href="#magic-happens">1.6 Magic Happens</a><ul></ul></li></ul></li>
 <li><a href="#add-another-field">2 Add Another Field</a><ul></ul></li>
 <li><a href="#other-data-types">3 Other Data Types</a><ul></ul></li>
 <li><a href="#build-and-run-the-firmware">4 Build and Run the Firmware</a><ul></ul></li>
@@ -110,69 +116,73 @@
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234
 }</code></pre></div>
-<ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor">bl_iot_sdk/customer_app/pinedio_cbor</a></li>
-</ul>
+<p>We call this a <strong>CBOR Map</strong> that maps one <strong>Key (“<code>t</code>”)</strong> to a <strong>Value (<code>1234</code>)</strong>.</p>
+<p>Below is the code from our <a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>pinedio_cbor</strong></a> firmware that encodes the above into CBOR.</p>
+<h2 id="initialise-output-buffer-and-cbor-encoder" class="section-header"><a href="#initialise-output-buffer-and-cbor-encoder">1.1 Initialise Output Buffer and CBOR Encoder</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234 }
 static void test_cbor(char *buf, int len, int argc, char **argv) {
   //  Max output size is 50 bytes (which fits in a LoRa packet)
-  uint8_t output[50];
-
-  //  Our CBOR Encoder and Map Encoder
-  CborEncoder encoder, mapEncoder;
-
-  //  Init our CBOR Encoder
+  uint8_t output[50];</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Our CBOR Encoder and Map Encoder
+  CborEncoder encoder, mapEncoder;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Init our CBOR Encoder
   cbor_encoder_init(
     &amp;encoder,        //  CBOR Encoder
     output,          //  Output Buffer
     sizeof(output),  //  Output Buffer Size
     0                //  Options
-  );
-
-  //  Create a Map Encoder that maps keys to values
+  );</code></pre></div><h2 id="create-map-encoder" class="section-header"><a href="#create-map-encoder">1.2 Create Map Encoder</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Create a Map Encoder that maps keys to values
   CborError res = cbor_encoder_create_map(
     &amp;encoder,     //  CBOR Encoder
     &amp;mapEncoder,  //  Map Encoder
     1             //  Number of Key-Value Pairs
   );    
-  assert(res == CborNoError);
-
-  //  First Key-Value Pair: Map the Key
+  assert(res == CborNoError);</code></pre></div><h2 id="encode-key-and-value" class="section-header"><a href="#encode-key-and-value">1.3 Encode Key and Value</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
     &amp;mapEncoder,  //  Map Encoder
     &quot;t&quot;           //  Key
   );    
-  assert(res == CborNoError);
-
-  //  First Key-Value Pair: Map the Value
+  assert(res == CborNoError);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Value
   res = cbor_encode_int(
     &amp;mapEncoder,  //  Map Encoder 
     1234          //  Value
   );
-  assert(res == CborNoError);
-
-  //  Close the Map Encoder
+  assert(res == CborNoError);</code></pre></div><h2 id="close-map-encoder" class="section-header"><a href="#close-map-encoder">1.4 Close Map Encoder</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Close the Map Encoder
   res = cbor_encoder_close_container(
     &amp;encoder,    //  CBOR Encoder
     &amp;mapEncoder  //  Map Encoder
   );
-  assert(res == CborNoError);
-
-  //  How many bytes were encoded
+  assert(res == CborNoError);</code></pre></div><h2 id="get-encoded-output" class="section-header"><a href="#get-encoded-output">1.5 Get Encoded Output</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  How many bytes were encoded
   size_t output_len = cbor_encoder_get_buffer_size(
     &amp;encoder,  //  CBOR Encoder
     output     //  Output Buffer
   );
-  printf(&quot;CBOR Output: %d bytes\r\n&quot;, output_len);
-
-  //  Dump the encoded CBOR output (6 bytes):
+  printf(&quot;CBOR Output: %d bytes\r\n&quot;, output_len);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Dump the encoded CBOR output (6 bytes):
   //  0xa1 0x61 0x74 0x19 0x04 0xd2
   for (int i = 0; i &lt; output_len; i++) {
     printf(&quot;  0x%02x\r\n&quot;, output[i]);
   }
 }</code></pre></div>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/cbor-code.png" alt="" /></p>
+</blockquote>
+<h2 id="magic-happens" class="section-header"><a href="#magic-happens">1.6 Magic Happens</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>test_cbor</code></pre></div>
 <p>TODO</p>
@@ -183,7 +193,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   0x19
   0x04
   0xd2</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/cbor-code.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/cbor-output.png" alt="" /></p>
 <h1 id="add-another-field" class="section-header"><a href="#add-another-field">2 Add Another Field</a></h1>
 <p>Now we <strong>add another field</strong> to our CBOR Encoding…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
@@ -283,7 +293,9 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
 <p>To experiment with CBOR, try the <a href="http://cbor.me/"><strong>CBOR Playground</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor5.png" alt="CBOR Playground" /></p>
 <p><a href="https://cbor.io/impls.html">(More about CBOR implementations)</a></p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-code2.png" alt="" /></p>
+</blockquote>
 <h1 id="other-data-types" class="section-header"><a href="#other-data-types">3 Other Data Types</a></h1>
 <p>TODO</p>
 <p>What exactly are <strong>“<code>t</code>”</strong> and <strong>“<code>l</code>”</strong> in our Sensor Data?</p>
