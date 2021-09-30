@@ -116,8 +116,10 @@
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234
 }</code></pre></div>
-<p>We call this a <strong>CBOR Map</strong> that maps one <strong>Key (“<code>t</code>”)</strong> to a <strong>Value (<code>1234</code>)</strong>…</p>
+<p>We call this a <strong>CBOR Map</strong> that maps a <strong>Key</strong> (“<code>t</code>”) to a <strong>Value</strong> (<code>1234</code>)…</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-map.png" alt="CBOR Map with 1 Key-Value Pair" /></p>
+</blockquote>
 <p>Below is the code from our <a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>pinedio_cbor</strong></a> firmware that encodes the above into CBOR.</p>
 <h2 id="output-buffer-and-cbor-encoder" class="section-header"><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a></h2>
 <p>TODO</p>
@@ -202,7 +204,9 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   &quot;l&quot;: 2345 
 }</code></pre></div>
 <p>And watch how our program changes to accommodate the second field.</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-map2.png" alt="CBOR Map with 2 Key-Value Pairs" /></p>
+</blockquote>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
