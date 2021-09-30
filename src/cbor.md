@@ -23,7 +23,7 @@ And we need only __11 bytes of CBOR__!
 
 ![Encoding Sensor Data with CBOR on BL602](https://lupyuen.github.io/images/cbor-title.jpg)
 
-Today we'll learn to encode Sensor Data with the __TinyCBOR Library__ that we have ported to BL602 and BL604...
+Today we'll learn to encode Sensor Data with the __TinyCBOR Library__ that we have ported to the [__BL602__](https://lupyuen.github.io/articles/pinecone) and [__BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V SoCs...
 
 -   [__lupyuen/tinycbor-bl602__](https://github.com/lupyuen/tinycbor-bl602)
 
@@ -51,6 +51,205 @@ Yes, __every single byte matters__ for low-power wireless networks!
 
 TODO
 
+From [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66)
+
+```c
+/// Test CBOR Encoding for { "t": 1234 }
+static void test_cbor(char *buf, int len, int argc, char **argv) {
+  //  Max output size is 50 bytes (which fits in a LoRa packet)
+  uint8_t output[50];
+
+  //  Our CBOR Encoder and Map Encoder
+  CborEncoder encoder, mapEncoder;
+
+  //  Init our CBOR Encoder
+  cbor_encoder_init(
+    &encoder,        //  CBOR Encoder
+    output,          //  Output Buffer
+    sizeof(output),  //  Output Buffer Size
+    0                //  Options
+  );
+
+  //  Create a Map Encoder that maps keys to values
+  CborError res = cbor_encoder_create_map(
+    &encoder,     //  CBOR Encoder
+    &mapEncoder,  //  Map Encoder
+    1             //  Number of Key-Value Pairs
+  );    
+  assert(res == CborNoError);
+
+  //  First Key-Value Pair: Map the Key
+  res = cbor_encode_text_stringz(
+    &mapEncoder,  //  Map Encoder
+    "t"           //  Key
+  );    
+  assert(res == CborNoError);
+
+  //  First Key-Value Pair: Map the Value
+  res = cbor_encode_int(
+    &mapEncoder,  //  Map Encoder 
+    1234          //  Value
+  );
+  assert(res == CborNoError);
+
+  //  Close the Map Encoder
+  res = cbor_encoder_close_container(
+    &encoder,    //  CBOR Encoder
+    &mapEncoder  //  Map Encoder
+  );
+  assert(res == CborNoError);
+
+  //  How many bytes were encoded
+  size_t output_len = cbor_encoder_get_buffer_size(
+    &encoder,  //  CBOR Encoder
+    output     //  Output Buffer
+  );
+  printf("CBOR Output: %d bytes\r\n", output_len);
+
+  //  Dump the encoded CBOR output (6 bytes):
+  //  0xa1 0x61 0x74 0x19 0x04 0xd2
+  for (int i = 0; i < output_len; i++) {
+    printf("  0x%02x\r\n", output[i]);
+  }
+}
+```
+
+TODO
+
+```bash
+test_cbor
+```
+
+TODO
+
+```text
+CBOR Output: 6 bytes
+  0xa1
+  0x61
+  0x74
+  0x19
+  0x04
+  0xd2
+```
+
+![](https://lupyuen.github.io/images/cbor-code.png)
+
+# Add Another Field
+
+TODO
+
+From [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139)
+
+```c
+/// Test CBOR Encoding for { "t": 1234, "l": 2345 }
+static void test_cbor2(char *buf, int len, int argc, char **argv) {
+  //  Max output size is 50 bytes (which fits in a LoRa packet)
+  uint8_t output[50];
+
+  //  Our CBOR Encoder and Map Encoder
+  CborEncoder encoder, mapEncoder;
+
+  //  Init our CBOR Encoder
+  cbor_encoder_init(
+    &encoder,        //  CBOR Encoder
+    output,          //  Output Buffer
+    sizeof(output),  //  Output Buffer Size
+    0                //  Options
+  );
+
+  //  Create a Map Encoder that maps keys to values
+  CborError res = cbor_encoder_create_map(
+    &encoder,     //  CBOR Encoder
+    &mapEncoder,  //  Map Encoder
+    2             //  Number of Key-Value Pairs
+  );    
+  assert(res == CborNoError);
+
+  //  First Key-Value Pair: Map the Key
+  res = cbor_encode_text_stringz(
+    &mapEncoder,  //  Map Encoder
+    "t"           //  Key
+  );    
+  assert(res == CborNoError);
+
+  //  First Key-Value Pair: Map the Value
+  res = cbor_encode_int(
+    &mapEncoder,  //  Map Encoder 
+    1234          //  Value
+  );
+  assert(res == CborNoError);
+
+  //  Second Key-Value Pair: Map the Key
+  res = cbor_encode_text_stringz(
+    &mapEncoder,  //  Map Encoder
+    "l"           //  Key
+  );    
+  assert(res == CborNoError);
+
+  //  Second Key-Value Pair: Map the Value
+  res = cbor_encode_int(
+    &mapEncoder,  //  Map Encoder 
+    2345          //  Value
+  );
+  assert(res == CborNoError);
+
+  //  Close the Map Encoder
+  res = cbor_encoder_close_container(
+    &encoder,    //  CBOR Encoder
+    &mapEncoder  //  Map Encoder
+  );
+  assert(res == CborNoError);
+
+  //  How many bytes were encoded
+  size_t output_len = cbor_encoder_get_buffer_size(
+    &encoder,  //  CBOR Encoder
+    output     //  Output Buffer
+  );
+  printf("CBOR Output: %d bytes\r\n", output_len);
+
+  //  Dump the encoded CBOR output (11 bytes):
+  //  0xa2 0x61 0x74 0x19 0x04 0xd2 0x61 0x6c 0x19 0x09 0x29
+  for (int i = 0; i < output_len; i++) {
+    printf("  0x%02x\r\n", output[i]);
+  }
+}
+```
+
+TODO
+
+```bash
+test_cbor2
+```
+
+TODO
+
+```text
+CBOR Output: 11 bytes
+  0xa2
+  0x61
+  0x74
+  0x19
+  0x04
+  0xd2
+  0x61
+  0x6c
+  0x19
+  0x09
+  0x29
+```
+
+To experiment with CBOR, try the [__CBOR Playground__](http://cbor.me/)...
+
+![CBOR Playground](https://lupyuen.github.io/images/grafana-cbor5.png)
+
+[(More about CBOR implementations)](https://cbor.io/impls.html)
+
+![](https://lupyuen.github.io/images/cbor-code2.png)
+
+# Other Data Types
+
+TODO
+
 # Build and Run the Firmware
 
 TODO
@@ -62,6 +261,8 @@ TODO
 # The Things Network
 
 TODO
+
+![](https://lupyuen.github.io/images/cbor-code3.png)
 
 # Accuracy vs Precision
 
