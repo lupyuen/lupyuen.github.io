@@ -57,7 +57,11 @@ We start by encoding one data field into CBOR...
 }
 ```
 
--   [bl_iot_sdk/customer_app/pinedio_cbor](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
+We call this a __CBOR Map__ that maps one __Key ("`t`")__ to a __Value (`1234`)__.
+
+Below is the code from our [__pinedio_cbor__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor) firmware that encodes the above into CBOR.
+
+## Initialise Output Buffer and CBOR Encoder
 
 TODO
 
@@ -68,10 +72,18 @@ From [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/custo
 static void test_cbor(char *buf, int len, int argc, char **argv) {
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];
+```
 
+TODO
+
+```c
   //  Our CBOR Encoder and Map Encoder
   CborEncoder encoder, mapEncoder;
+```
 
+TODO
+
+```c
   //  Init our CBOR Encoder
   cbor_encoder_init(
     &encoder,        //  CBOR Encoder
@@ -79,7 +91,13 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
     sizeof(output),  //  Output Buffer Size
     0                //  Options
   );
+```
 
+## Create Map Encoder
+
+TODO
+
+```c
   //  Create a Map Encoder that maps keys to values
   CborError res = cbor_encoder_create_map(
     &encoder,     //  CBOR Encoder
@@ -87,35 +105,61 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
     1             //  Number of Key-Value Pairs
   );    
   assert(res == CborNoError);
+```
 
+## Encode Key and Value
+
+TODO
+
+```c
   //  First Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
     &mapEncoder,  //  Map Encoder
     "t"           //  Key
   );    
   assert(res == CborNoError);
+```
 
+TODO
+
+```c
   //  First Key-Value Pair: Map the Value
   res = cbor_encode_int(
     &mapEncoder,  //  Map Encoder 
     1234          //  Value
   );
   assert(res == CborNoError);
+```
 
+## Close Map Encoder
+
+TODO
+
+```c
   //  Close the Map Encoder
   res = cbor_encoder_close_container(
     &encoder,    //  CBOR Encoder
     &mapEncoder  //  Map Encoder
   );
   assert(res == CborNoError);
+```
 
+## Get Encoded Output
+
+TODO
+
+```c
   //  How many bytes were encoded
   size_t output_len = cbor_encoder_get_buffer_size(
     &encoder,  //  CBOR Encoder
     output     //  Output Buffer
   );
   printf("CBOR Output: %d bytes\r\n", output_len);
+```
 
+TODO
+
+```c
   //  Dump the encoded CBOR output (6 bytes):
   //  0xa1 0x61 0x74 0x19 0x04 0xd2
   for (int i = 0; i < output_len; i++) {
@@ -123,6 +167,10 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   }
 }
 ```
+
+> ![](https://lupyuen.github.io/images/cbor-code.png)
+
+## Magic Happens
 
 TODO
 
@@ -142,7 +190,7 @@ CBOR Output: 6 bytes
   0xd2
 ```
 
-![](https://lupyuen.github.io/images/cbor-code.png)
+![](https://lupyuen.github.io/images/cbor-output.png)
 
 # Add Another Field
 
@@ -265,7 +313,7 @@ To experiment with CBOR, try the [__CBOR Playground__](http://cbor.me/)...
 
 [(More about CBOR implementations)](https://cbor.io/impls.html)
 
-![](https://lupyuen.github.io/images/cbor-code2.png)
+> ![](https://lupyuen.github.io/images/cbor-code2.png)
 
 # Other Data Types
 
