@@ -27,7 +27,7 @@ Today we'll learn to encode Sensor Data with the __TinyCBOR Library__ that we ha
 
 -   [__lupyuen/tinycbor-bl602__](https://github.com/lupyuen/tinycbor-bl602)
 
-The lbrary has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
+The library has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
 
 _Must we scrimp and save every single byte?_
 
@@ -48,6 +48,16 @@ Yes, __every single byte matters__ for low-power wireless networks!
     In a while we'll watch the TinyCBOR Library in action for encoding Sensor Data in The Things Network.
 
 # Encode Sensor Data with TinyCBOR
+
+We start by encoding one data field into CBOR...
+
+```json
+{ 
+  "t": 1234
+}
+```
+
+-   [bl_iot_sdk/customer_app/pinedio_cbor](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
 
 TODO
 
@@ -135,6 +145,17 @@ CBOR Output: 6 bytes
 ![](https://lupyuen.github.io/images/cbor-code.png)
 
 # Add Another Field
+
+Now we __add another field__ to our CBOR Encoding...
+
+```json
+{ 
+  "t": 1234, 
+  "l": 2345 
+}
+```
+
+And watch how our program changes to accommodate the second field.
 
 TODO
 
