@@ -49,7 +49,7 @@ Yes, __every single byte matters__ for low-power wireless networks!
 
 # Encode Sensor Data with TinyCBOR
 
-We start by encoding one data field into CBOR...
+We begin by encoding one data field into CBOR...
 
 ```json
 { 
@@ -61,29 +61,36 @@ We call this a __CBOR Map__ that maps a __Key__ ("`t`") to a __Value__ (`1234`).
 
 > ![CBOR Map with 1 Key-Value Pair](https://lupyuen.github.io/images/cbor-map.png)
 
-Below is the code from our [__pinedio_cbor__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor) firmware that encodes the above into CBOR.
+Let's look at the code from our firmware that encodes the above into CBOR...
+
+-   [__pinedio_cbor Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
 
 ## Output Buffer and CBOR Encoder
 
-TODO
-
-From [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66)
+First we create an __Output Buffer__ that will hold the encoded CBOR data: [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66)
 
 ```c
 /// Test CBOR Encoding for { "t": 1234 }
 static void test_cbor(char *buf, int len, int argc, char **argv) {
+
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];
 ```
 
-TODO
+(We chose 50 bytes, the maximum size of a LoRa packet for The Things Network)
+
+__Output Buffer Size__ is important: Calls to the __TinyCBOR library will fail__ if we run out of buffer space!
+
+Next we define the __CBOR Encoder__ (from TinyCBOR) that will encode our data...
 
 ```c
   //  Our CBOR Encoder and Map Encoder
   CborEncoder encoder, mapEncoder;
 ```
 
-TODO
+As well as the __Map Encoder__ that will encode our CBOR Map.
+
+We __initialise the CBOR Encoder__ like so...
 
 ```c
   //  Init our CBOR Encoder
@@ -91,7 +98,7 @@ TODO
     &encoder,        //  CBOR Encoder
     output,          //  Output Buffer
     sizeof(output),  //  Output Buffer Size
-    0                //  Options
+    0                //  Options (always 0)
   );
 ```
 
@@ -322,6 +329,8 @@ To experiment with CBOR, try the [__CBOR Playground__](http://cbor.me/)...
 # Other Data Types
 
 TODO
+
+-   [__TinyCBOR Docs__](https://intel.github.io/tinycbor/current/)
 
 What exactly are __"`t`"__ and __"`l`"__ in our Sensor Data?
 
