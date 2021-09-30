@@ -112,7 +112,7 @@
 </li>
 </ol>
 <h1 id="encode-sensor-data-with-tinycbor" class="section-header"><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a></h1>
-<p>We start by encoding one data field into CBOR…</p>
+<p>We begin by encoding one data field into CBOR…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234
 }</code></pre></div>
@@ -120,24 +120,30 @@
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-map.png" alt="CBOR Map with 1 Key-Value Pair" /></p>
 </blockquote>
-<p>Below is the code from our <a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>pinedio_cbor</strong></a> firmware that encodes the above into CBOR.</p>
+<p>Let’s look at the code from our firmware that encodes the above into CBOR…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>pinedio_cbor Firmware</strong></a></li>
+</ul>
 <h2 id="output-buffer-and-cbor-encoder" class="section-header"><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66">pinedio_cbor/demo.c</a></p>
+<p>First we create an <strong>Output Buffer</strong> that will hold the encoded CBOR data: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234 }
 static void test_cbor(char *buf, int len, int argc, char **argv) {
+
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];</code></pre></div>
-<p>TODO</p>
+<p>(We chose 50 bytes, the maximum size of a LoRa packet for The Things Network)</p>
+<p><strong>Output Buffer Size</strong> is important: Calls to the <strong>TinyCBOR library will fail</strong> if we run out of buffer space!</p>
+<p>Next we define the <strong>CBOR Encoder</strong> (from TinyCBOR) that will encode our data…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Our CBOR Encoder and Map Encoder
   CborEncoder encoder, mapEncoder;</code></pre></div>
-<p>TODO</p>
+<p>As well as the <strong>Map Encoder</strong> that will encode our CBOR Map.</p>
+<p>We <strong>initialise the CBOR Encoder</strong> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Init our CBOR Encoder
   cbor_encoder_init(
     &amp;encoder,        //  CBOR Encoder
     output,          //  Output Buffer
     sizeof(output),  //  Output Buffer Size
-    0                //  Options
+    0                //  Options (always 0)
   );</code></pre></div><h2 id="create-map-encoder" class="section-header"><a href="#create-map-encoder">1.2 Create Map Encoder</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Create a Map Encoder that maps keys to values
@@ -304,6 +310,9 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
 </blockquote>
 <h1 id="other-data-types" class="section-header"><a href="#other-data-types">3 Other Data Types</a></h1>
 <p>TODO</p>
+<ul>
+<li><a href="https://intel.github.io/tinycbor/current/"><strong>TinyCBOR Docs</strong></a></li>
+</ul>
 <p>What exactly are <strong>“<code>t</code>”</strong> and <strong>“<code>l</code>”</strong> in our Sensor Data?</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
     &quot;t&quot;: 1234, 
