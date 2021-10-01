@@ -300,7 +300,7 @@ We encode the __First Key and Value__ the same way as before...
 
 ## Encode Second Key and Value
 
-This part is new: We encode the __Second Key and Value__ (`"l": 2345`)...
+This part is new: We encode the __Second Key and Value__ ("`l`" and `2345`)...
 
 ```c
   //  Second Key-Value Pair: Map the Key
@@ -339,7 +339,9 @@ Recap: To add a data field to our CBOR Encoding, we...
 
 1.  Modify the call to __cbor_encoder_create_map__ and update the __Number of Key-Value Pairs__ (`2`)
 
-1.  Add the new __Key and Value__ to the CBOR Map
+1.  Add the new __Key and Value__  ("`l`" and `2345`) to the CBOR Map
+
+Everything else stays the same.
 
 > ![Add a second field](https://lupyuen.github.io/images/cbor-code2.png)
 
