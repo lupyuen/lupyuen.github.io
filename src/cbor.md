@@ -472,6 +472,8 @@ That's why in this article we __scale up 100 times__ for the Temperature Data an
 
 __2 bytes__ saved!
 
+(Our scaling of Sensor Data is similar to [Fixed-Point Representation](https://en.wikipedia.org/wiki/Fixed-point_arithmetic#Fixed-point_representation))
+
 ## Accuracy and Precision
 
 _Is it meaningful to record temperatures that are accurate to 0.01 ºC?_
