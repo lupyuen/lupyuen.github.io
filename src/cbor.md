@@ -378,11 +378,11 @@ __8 bytes__ saved!
 
 ![Encoding Sensor Data with CBOR on BL602](https://lupyuen.github.io/images/cbor-title.jpg)
 
-# Other Data Types
+# CBOR Data Types
 
 _We've been encoding 64-bit Signed Integers. What other Data Types can we encode?_
 
-Below are the __Data Types__ that we can encode with TinyCBOR Library...
+Below are the __CBOR Data Types__ and their respective __Encoder Functions__ from the TinyCBOR Library...
 
 ## Numbers
 
@@ -414,7 +414,7 @@ Below are the __Data Types__ that we can encode with TinyCBOR Library...
 
 -   __Byte String__: [cbor_encode_byte_string](https://intel.github.io/tinycbor/current/a00046.html#ga1260b72bb0f067fd3c68d49a6b5f58d0)
 
-    TODO
+    (For strings containing binary data)
 
 ## Other Types
 
@@ -424,28 +424,49 @@ Below are the __Data Types__ that we can encode with TinyCBOR Library...
 
 -   __Undefined__: [cbor_encode_undefined](https://intel.github.io/tinycbor/current/a00046.html#ga9d9f0668e2cf69352a45095006efab4f)
 
+For the complete list of CBOR Encoder Functions, refer to the TinyCBOR docs...
+
+-   [__TinyCBOR: Encoding To CBOR__](https://intel.github.io/tinycbor/current/a00046.html)
+
+CBOR Data Types are explained in the CBOR Specification...
+
+-   [__CBOR Data Models__](https://www.rfc-editor.org/rfc/rfc8949.html#name-cbor-data-models)
+
+To experiment with CBOR Encoding and Decoding, try the [__CBOR Playground__](http://cbor.me/)...
+
+![CBOR Playground](https://lupyuen.github.io/images/grafana-cbor5.png)
+
+# Floating-Point Numbers
+
+The CBOR spec says that there are [__3 ways to encode floats__](https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-)...
+
+-   [__Half-Precision Float__](https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format) (16 bits): [cbor_encode_half_float](https://intel.github.io/tinycbor/current/a00046.html#gad8e5a125cfaceb9a32528e620e003bc6)
+
+    (__3.3__ significant decimal digits. [See this](https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format#IEEE_754_half-precision_binary_floating-point_format:_binary16))
+
+-   [__Single-Precision Float__](https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format) (32 bits): [cbor_encode_float](https://intel.github.io/tinycbor/current/a00046.html#gae981ee934ef22ce4c5b52f8069e1b15c)
+
+    (__6 to 9__ significant decimal digits. [See this](https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format#IEEE_754_single-precision_binary_floating-point_format:_binary32))
+
+-   [__Double-Precision Float__](https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format) (64 bits): [cbor_encode_double](https://intel.github.io/tinycbor/current/a00046.html#ga211aa80dc5b793ee8dd74d24cb9e7ca6)
+
+    (__15 to 17__ significant decimal digits. [See this](https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format#IEEE_754_double-precision_binary_floating-point_format:_binary64))
+
+_How do we select the proper float encoding?_
+
 TODO
 
--   [__Encoding To CBOR__](https://intel.github.io/tinycbor/current/a00046.html)
+What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?
 
--   [__TinyCBOR Docs__](https://intel.github.io/tinycbor/current/)
+This means that we need __4 significant decimal digits__.
 
-What exactly are __"`t`"__ and __"`l`"__ in our Sensor Data?
+Which is too many for a Half-Precision Float (16 bits), but OK for a __Single-Precision__ Float (32 bits).
 
-```json
-{ 
-    "t": 1234, 
-    "l": 2345 
-}
-```
-
-"`t`" and "`l`" represent our (imaginary) __Temperature Sensor__ and __Light Sensor__.
-
-We __shortened the Field Names__ to fit the Sensor Data into 11 bytes of CBOR.
-
-With Grafana we can map "`t`" and "`l`" to their full names for display.
+Thus we need __5 bytes__ to encode the float. (Including the CBOR Initial Byte)
     
-Why is the temperature transmitted as an __integer__: `1234`?
+_Why is the temperature transmitted as an __integer__: `1234`?_
+
+TODO
 
 That's because __floating-point numbers compress poorly__ with CBOR unless we select the proper encoding.
 
@@ -457,56 +478,7 @@ Instead we assume that our integer data has been __scaled up 100 times__.
 
 We may configure Grafana to divide our integer data by 100 when rendering the values.
 
-To experiment with CBOR, try the [__CBOR Playground__](http://cbor.me/)...
-
-![CBOR Playground](https://lupyuen.github.io/images/grafana-cbor5.png)
-
-[(More about CBOR implementations)](https://cbor.io/impls.html)
-
-# Floating-Point Numbers
-
-TODO
-
--   __Half Float__ (16 bits): [cbor_encode_half_float](https://intel.github.io/tinycbor/current/a00046.html#gad8e5a125cfaceb9a32528e620e003bc6)
-
-CborError 	cbor_encode_half_float (CborEncoder *encoder, const void *value)
- 	Appends the IEEE 754 half-precision (16-bit) floating point value pointed to by value to the CBOR stream provided by encoder. More...
-
--   __Single-Precision Float__ (32 bits): [cbor_encode_float](https://intel.github.io/tinycbor/current/a00046.html#gae981ee934ef22ce4c5b52f8069e1b15c)
-
-CborError 	cbor_encode_float (CborEncoder *encoder, float value)
- 	Appends the IEEE 754 single-precision (32-bit) floating point value value to the CBOR stream provided by encoder. More...
-
--   __Double-Precision Float__ (64 bits): [cbor_encode_double](https://intel.github.io/tinycbor/current/a00046.html#ga211aa80dc5b793ee8dd74d24cb9e7ca6)
-
-CborError 	cbor_encode_double (CborEncoder *encoder, double value)
- 	Appends the IEEE 754 double-precision (64-bit) floating point value value to the CBOR stream provided by encoder. More...
-
-If we're actually __encoding floats in CBOR__, how do we select the proper encoding?
-
-The CBOR spec says that there are [__3 ways to encode floats__](https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-)...
-
--   [IEEE 754 __Half-Precision__ Float (16 bits)](https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format)
-
-    (__3.3__ significant decimal digits)
-
--   [IEEE 754 __Single-Precision__ Float (32 bits)](https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format)
-
-    (__6 to 9__ significant decimal digits)
-
--   [IEEE 754 __Double-Precision__ Float (64 bits)](https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format)
-
-    (__15 to 17__ significant decimal digits)
-
-What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?
-
-This means that we need __4 significant decimal digits__.
-
-Which is too many for a Half-Precision Float (16 bits), but OK for a __Single-Precision__ Float (32 bits).
-
-Thus we need __5 bytes__ to encode the float. (Including the CBOR Initial Byte)
-
-# CBOR on LoRaWAN
+# LoRaWAN With CBOR
 
 TODO
 
