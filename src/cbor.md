@@ -360,7 +360,11 @@ CBOR Output: 11 bytes
   0x29
 ```
 
-![Encoded CBOR Output](https://lupyuen.github.io/images/cbor-output.png)
+We have just compressed __19 bytes of JSON__ into __11 bytes of CBOR__.
+
+__8 bytes__ saved!
+
+![Encoding Sensor Data with CBOR on BL602](https://lupyuen.github.io/images/cbor-title.jpg)
 
 # Other Data Types
 
