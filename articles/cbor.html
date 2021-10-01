@@ -275,7 +275,7 @@ static void test_cbor2( ... ) {
   assert(res == CborNoError);</code></pre></div>
 <p>(Yep no changes above)</p>
 <h2 id="encode-second-key-and-value" class="section-header"><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a></h2>
-<p>This part is new: We encode the <strong>Second Key and Value</strong> (<code>&quot;l&quot;: 2345</code>)…</p>
+<p>This part is new: We encode the <strong>Second Key and Value</strong> (“<code>l</code>” and <code>2345</code>)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Second Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
     &amp;mapEncoder,  //  Map Encoder
@@ -308,9 +308,10 @@ static void test_cbor2( ... ) {
 <p>Modify the call to <strong>cbor_encoder_create_map</strong> and update the <strong>Number of Key-Value Pairs</strong> (<code>2</code>)</p>
 </li>
 <li>
-<p>Add the new <strong>Key and Value</strong> to the CBOR Map</p>
+<p>Add the new <strong>Key and Value</strong>  (“<code>l</code>” and <code>2345</code>) to the CBOR Map</p>
 </li>
 </ol>
+<p>Everything else stays the same.</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-code2.png" alt="Add a second field" /></p>
 </blockquote>
