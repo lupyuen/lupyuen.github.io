@@ -39,7 +39,7 @@ Yes, __every single byte matters__ for low-power wireless networks!
 
     The __smaller the data packet__, the higher the chance that it will be __transmitted successfully__!
 
-1.  When we transmit LoRa packets to __The Things Network__ (the free public global LoRa network), we're limited by their __Fair Use__ policy.
+1.  When we transmit LoRa packets to __The Things Network__ (the free public global LoRa network), we're limited by their [__Fair Use Policy__](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network).
 
     [(Roughly __12 bytes__ per message, assuming 10 messages per hour)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
 
@@ -77,7 +77,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   uint8_t output[50];
 ```
 
-(We chose 50 bytes, the maximum packet size for The Things Network AS923 DR2)
+[(50 bytes is the max packet size for The Things Network AS923 DR2)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
 
 __Output Buffer Size__ is important: Calls to the __TinyCBOR library will fail__ if we run out of buffer space!
 
