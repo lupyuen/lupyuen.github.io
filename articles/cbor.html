@@ -85,7 +85,7 @@
 <li><a href="#encode-floats-as-integers">4.1 Encode Floats as Integers</a><ul></ul></li>
 <li><a href="#accuracy-and-precision">4.2 Accuracy and Precision</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a><ul></ul></li>
-<li><a href="#decoding-cbor">6 Decoding CBOR</a><ul></ul></li>
+<li><a href="#decode-cbor">6 Decode CBOR</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li>
 <li><a href="#appendix-build-and-run-cbor-firmware">9 Appendix: Build And Run CBOR Firmware</a><ul></ul></li>
@@ -454,39 +454,15 @@ static void test_cbor2( ... ) {
 ///   { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
 /// To port 2, unconfirmed (0).
 void
-las_cmd_app_tx_cbor(char *buf0, int len0, int argc, char **argv) {
-  int rc;
-  //  Validate number of arguments
-  if (argc &lt; 5) {
-    printf(&quot;Invalid # of arguments\r\n&quot;);
-    goto cmd_app_tx_cbor_err;
-  }
-  //  Get port number
-  uint8_t port = parse_ull_bounds(argv[1], 1, 255, &amp;rc);
-  if (rc != 0) {
-    printf(&quot;Invalid port %s. Must be 1 - 255\r\n&quot;, argv[1]);
-    return;
-  }
-  //  Get unconfirmed / confirmed packet type
-  uint8_t pkt_type = parse_ull_bounds(argv[2], 0, 1, &amp;rc);
-  if (rc != 0) {
-    printf(&quot;Invalid type. Must be 0 (unconfirmed) or 1 (confirmed)\r\n&quot;);
-    return;
-  }
-  //  Get t value
+las_cmd_app_tx_cbor( ... ) {
+  ...
+  //  Get the &quot;t&quot; value from command args
   uint16_t t = parse_ull_bounds(argv[3], 0, 65535, &amp;rc);
-  if (rc != 0) {
-    printf(&quot;Invalid t value %s. Must be 0 - 65535\r\n&quot;, argv[3]);
-    return;
-  }
-  //  Get l value
-  uint16_t l = parse_ull_bounds(argv[4], 0, 65535, &amp;rc);
-  if (rc != 0) {
-    printf(&quot;Invalid l value %s. Must be 0 - 65535\r\n&quot;, argv[4]);
-    return;
-  }
-
-  //  Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
+    
+  //  Get the &quot;l&quot; value from command args
+  uint16_t l = parse_ull_bounds(argv[4], 0, 65535, &amp;rc);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];
 
@@ -494,22 +470,12 @@ las_cmd_app_tx_cbor(char *buf0, int len0, int argc, char **argv) {
   CborEncoder encoder, mapEncoder;
 
   //  Init our CBOR Encoder
-  cbor_encoder_init(
-    &amp;encoder,        //  CBOR Encoder
-    output,          //  Output Buffer
-    sizeof(output),  //  Output Buffer Size
-    0                //  Options
-  );
+  cbor_encoder_init( ... );
 
-  //  Create a Map Encoder that maps keys to values
-  CborError res = cbor_encoder_create_map(
-    &amp;encoder,     //  CBOR Encoder
-    &amp;mapEncoder,  //  Map Encoder
-    2             //  Number of Key-Value Pairs
-  );    
-  assert(res == CborNoError);
-
-  //  First Key-Value Pair: Map the Key
+  //  Create a Map Encoder that maps keys to values (2 pairs)
+  CborError res = cbor_encoder_create_map( ... );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key (&quot;t&quot;)
   res = cbor_encode_text_stringz(
     &amp;mapEncoder,  //  Map Encoder
     &quot;t&quot;           //  Key
@@ -521,9 +487,9 @@ las_cmd_app_tx_cbor(char *buf0, int len0, int argc, char **argv) {
     &amp;mapEncoder,  //  Map Encoder 
     t             //  Value
   );
-  assert(res == CborNoError);
-
-  //  Second Key-Value Pair: Map the Key
+  assert(res == CborNoError);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Second Key-Value Pair: Map the Key (&quot;l&quot;)
   res = cbor_encode_text_stringz(
     &amp;mapEncoder,  //  Map Encoder
     &quot;l&quot;           //  Key
@@ -535,82 +501,42 @@ las_cmd_app_tx_cbor(char *buf0, int len0, int argc, char **argv) {
     &amp;mapEncoder,  //  Map Encoder 
     l             //  Value
   );
-  assert(res == CborNoError);
-
-  //  Close the Map Encoder
-  res = cbor_encoder_close_container(
-    &amp;encoder,    //  CBOR Encoder
-    &amp;mapEncoder  //  Map Encoder
-  );
-  assert(res == CborNoError);
+  assert(res == CborNoError);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Close the Map Encoder
+  res = cbor_encoder_close_container( ... );
 
   //  How many bytes were encoded
-  size_t output_len = cbor_encoder_get_buffer_size(
-    &amp;encoder,  //  CBOR Encoder
-    output     //  Output Buffer
-  );
-  printf(&quot;CBOR Output: %d bytes\r\n&quot;, output_len);
-
-  //  Dump the encoded CBOR output (11 bytes):
-  //  0xa2 0x61 0x74 0x19 0x04 0xd2 0x61 0x6c 0x19 0x09 0x29
-  for (int i = 0; i &lt; output_len; i++) {
-    printf(&quot;  0x%02x\r\n&quot;, output[i]);
-  }    
-
-  //  Validate the output size
+  size_t output_len = cbor_encoder_get_buffer_size( ... );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Validate the output size
   if (lora_app_mtu() &lt; output_len) {
     printf(&quot;Can send at max %d bytes\r\n&quot;, lora_app_mtu());
     return;
   }
 
-  //  Attempt to allocate a pbuf
+  //  Attempt to allocate a Packet Buffer
   struct pbuf *om = lora_pkt_alloc(output_len);
   if (!om) {
     printf(&quot;Unable to allocate pbuf\r\n&quot;);
     return;
-  }
-
-  //  Set unconfirmed / confirmed packet type
-  Mcps_t mcps_type;
-  if (pkt_type == 0) {
-    mcps_type = MCPS_UNCONFIRMED;
-  } else {
-    mcps_type = MCPS_CONFIRMED;
-  }
-
-  //  Copy the encoded CBOR into the pbuf
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Copy the encoded CBOR into the Packet Buffer
   rc = pbuf_copyinto(om, 0, output, output_len);
-  assert(rc == 0);
-
-  //  Send the pbuf
+  assert(rc == 0);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Send the Packet Buffer
   rc = lora_app_port_send(port, mcps_type, om);
-  if (rc) {
-    printf(&quot;Failed to send to port %u err=%d\r\n&quot;, port, rc);
-    pbuf_free(om);
-  } else {
-    printf(&quot;Packet sent on port %u\r\n&quot;, port);
-  }
 
-  return;
-
-cmd_app_tx_cbor_err:
-  printf(&quot;Usage:\r\n&quot;);
-  printf(&quot;\tlas_app_tx_cbor &lt;port&gt; &lt;type&gt; &lt;t&gt; &lt;l&gt;\r\n&quot;);
-  printf(&quot;Where:\r\n&quot;);
-  printf(&quot;\tport = port number on which to send\r\n&quot;);
-  printf(&quot;\ttype = 0 for unconfirmed, 1 for confirmed\r\n&quot;);
-  printf(&quot;\tt    = Value for t\r\n&quot;);
-  printf(&quot;\tl    = Value for l\r\n&quot;);
-  printf(&quot;\tex: las_app_tx_cbor 2 0 1234 2345\r\n&quot;);
-
-  return;
-}</code></pre></div>
+  //  Omitted: Check the return code</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/cbor-code3.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/cbor-grafana.jpg" alt="" /></p>
-<h1 id="decoding-cbor" class="section-header"><a href="#decoding-cbor">6 Decoding CBOR</a></h1>
+<h1 id="decode-cbor" class="section-header"><a href="#decode-cbor">6 Decode CBOR</a></h1>
 <p>TODO</p>
+<p>Cloud, Node.js, Go, Rust</p>
 <p><a href="https://cbor.io/impls.html">(More about CBOR implementations)</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
