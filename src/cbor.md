@@ -163,7 +163,7 @@ Our CBOR Encoding is complete!
 
 ## Get Encoded Output
 
-TODO
+To work with the Encoded CBOR Output, we need to know __how many bytes__ have been encoded...
 
 ```c
   //  How many bytes were encoded
@@ -174,7 +174,7 @@ TODO
   printf("CBOR Output: %d bytes\r\n", output_len);
 ```
 
-TODO
+For the demo we __dump the encoded CBOR data__ to the console...
 
 ```c
   //  Dump the encoded CBOR output (6 bytes):
@@ -185,17 +185,23 @@ TODO
 }
 ```
 
-> ![](https://lupyuen.github.io/images/cbor-code.png)
+And that's how we call the TinyCBOR Library to work with CBOR data!
+
+Let's watch what happens when we run the firmware...
+
+> ![Calling the TinyCBOR Library](https://lupyuen.github.io/images/cbor-code.png)
 
 ## Magic Happens
 
-TODO
+Follow the steps in the Appendix to __build, flash and run__ the firmware.
+
+At the BL602 / BL604 Command Prompt, enter...
 
 ```bash
 test_cbor
 ```
 
-TODO
+We'll see 6 bytes of __Encoded CBOR Output__...
 
 ```text
 CBOR Output: 6 bytes
@@ -207,7 +213,19 @@ CBOR Output: 6 bytes
   0xd2
 ```
 
-![](https://lupyuen.github.io/images/cbor-output.png)
+We have just compressed __10 bytes of JSON__...
+
+```json
+{ 
+  "t": 1234
+}
+```
+
+Into __6 bytes of CBOR__.
+
+We have scrimped and saved __4 bytes__!
+
+![Encoded CBOR Output](https://lupyuen.github.io/images/cbor-output2.png)
 
 # Add Another Field
 
@@ -325,6 +343,8 @@ CBOR Output: 11 bytes
   0x09
   0x29
 ```
+
+![Encoded CBOR Output](https://lupyuen.github.io/images/cbor-output.png)
 
 To experiment with CBOR, try the [__CBOR Playground__](http://cbor.me/)...
 
