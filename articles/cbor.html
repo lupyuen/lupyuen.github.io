@@ -145,35 +145,42 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
     sizeof(output),  //  Output Buffer Size
     0                //  Options (always 0)
   );</code></pre></div><h2 id="create-map-encoder" class="section-header"><a href="#create-map-encoder">1.2 Create Map Encoder</a></h2>
-<p>TODO</p>
+<p>Now we create the <strong>Map Encoder</strong> that will encode our CBOR Map…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Create a Map Encoder that maps keys to values
   CborError res = cbor_encoder_create_map(
     &amp;encoder,     //  CBOR Encoder
     &amp;mapEncoder,  //  Map Encoder
     1             //  Number of Key-Value Pairs
   );    
-  assert(res == CborNoError);</code></pre></div><h2 id="encode-key-and-value" class="section-header"><a href="#encode-key-and-value">1.3 Encode Key and Value</a></h2>
-<p>TODO</p>
+  assert(res == CborNoError);</code></pre></div>
+<p>The last parameter (<code>1</code>) is important: It must match the <strong>number of Key-Value Pairs</strong> (like <code>&quot;t&quot;: 1234</code>) that we shall encode.</p>
+<h2 id="encode-key-and-value" class="section-header"><a href="#encode-key-and-value">1.3 Encode Key and Value</a></h2>
+<p>We encode the <strong>Key</strong> (“<code>t</code>”) into the CBOR Map…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
     &amp;mapEncoder,  //  Map Encoder
     &quot;t&quot;           //  Key
   );    
   assert(res == CborNoError);</code></pre></div>
-<p>TODO</p>
+<p>Followed by the <strong>Value</strong> (<code>1234</code>)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Value
   res = cbor_encode_int(
     &amp;mapEncoder,  //  Map Encoder 
     1234          //  Value
   );
-  assert(res == CborNoError);</code></pre></div><h2 id="close-map-encoder" class="section-header"><a href="#close-map-encoder">1.4 Close Map Encoder</a></h2>
-<p>TODO</p>
+  assert(res == CborNoError);</code></pre></div>
+<p><strong>cbor_encode_int</strong> encodes <strong>64-bit Signed Integers</strong>.</p>
+<p>(We’ll look at other data types in a while)</p>
+<h2 id="close-map-encoder" class="section-header"><a href="#close-map-encoder">1.4 Close Map Encoder</a></h2>
+<p>We’re done with our CBOR Map, so we <strong>close the Map Encoder</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Close the Map Encoder
   res = cbor_encoder_close_container(
     &amp;encoder,    //  CBOR Encoder
     &amp;mapEncoder  //  Map Encoder
   );
-  assert(res == CborNoError);</code></pre></div><h2 id="get-encoded-output" class="section-header"><a href="#get-encoded-output">1.5 Get Encoded Output</a></h2>
+  assert(res == CborNoError);</code></pre></div>
+<p>Our CBOR Encoding is complete!</p>
+<h2 id="get-encoded-output" class="section-header"><a href="#get-encoded-output">1.5 Get Encoded Output</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  How many bytes were encoded
   size_t output_len = cbor_encoder_get_buffer_size(
