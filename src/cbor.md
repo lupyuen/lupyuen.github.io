@@ -388,7 +388,7 @@ Below are the __Data Types__ that we can encode with TinyCBOR Library...
 
 -   __Signed Integer__ (64 bits): [cbor_encode_int](https://intel.github.io/tinycbor/current/a00046.html#gabbf6e10fd963d673f5ad293dff4a67a9)
 
-    (We have called this. Works for positive and negative integers)
+    (We called this earlier. Works for positive and negative integers)
 
 -   __Unsigned Integer__ (64 bits): [cbor_encode_uint](https://intel.github.io/tinycbor/current/a00046.html#ga2b898ce6f5821c5aba8b6f0020c4b5ba)
 
@@ -410,7 +410,7 @@ Below are the __Data Types__ that we can encode with TinyCBOR Library...
 
 -   __Null-Terminated String__: [cbor_encode_text_stringz](https://intel.github.io/tinycbor/current/a00046.html#ga6df3eff486535322f66584dc5431f9e9)
 
-    (We called this to encode our Keys)
+    (We called this earlier to encode our Keys)
 
 -   __Text String__: [cbor_encode_text_string](https://intel.github.io/tinycbor/current/a00046.html#ga4fa673c63e85b1fd6f8067aca4ccdde4)
 
