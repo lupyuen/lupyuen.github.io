@@ -81,15 +81,16 @@
 <li><a href="#numbers">3.1 Numbers</a><ul></ul></li>
 <li><a href="#strings">3.2 Strings</a><ul></ul></li>
 <li><a href="#other-types">3.3 Other Types</a><ul></ul></li></ul></li>
-<li><a href="#floating-point-numbers">4 Floating-Point Numbers</a><ul></ul></li>
+<li><a href="#floating-point-numbers">4 Floating-Point Numbers</a><ul>
+<li><a href="#encode-floats-as-integers">4.1 Encode Floats as Integers</a><ul></ul></li>
+<li><a href="#accuracy-and-precision">4.2 Accuracy and Precision</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a><ul></ul></li>
 <li><a href="#decoding-cbor">6 Decoding CBOR</a><ul></ul></li>
-<li><a href="#accuracy-vs-precision">7 Accuracy vs Precision</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#notes">9 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-cbor-firmware">10 Appendix: Build And Run CBOR Firmware</a><ul></ul></li>
-<li><a href="#appendix-add-tinycbor-to-your-project">11 Appendix: Add TinyCBOR To Your Project</a><ul></ul></li>
-<li><a href="#appendix-porting-tinycbor-to-bl602">12 Appendix: Porting TinyCBOR To BL602</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-and-run-cbor-firmware">9 Appendix: Build And Run CBOR Firmware</a><ul></ul></li>
+<li><a href="#appendix-add-tinycbor-to-your-project">10 Appendix: Add TinyCBOR To Your Project</a><ul></ul></li>
+<li><a href="#appendix-porting-tinycbor-to-bl602">11 Appendix: Porting TinyCBOR To BL602</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
 <p>Suppose we’re creating an IoT Gadget that transmits <strong>Sensor Data</strong> from a <strong>Temperature Sensor</strong> and a <strong>Light Sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
@@ -415,18 +416,31 @@ static void test_cbor2( ... ) {
 </li>
 </ul>
 <p><em>How do we select the proper float encoding?</em></p>
-<p>TODO</p>
-<p>What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?</p>
+<p>Suppose we’re encoding Temperature Data (like <code>12.34</code> ºC) that could range from <strong><code>0.00</code> ºC to <code>99.99</code> ºC</strong>.</p>
 <p>This means that we need <strong>4 significant decimal digits</strong>.</p>
-<p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision</strong> Float (32 bits).</p>
-<p>Thus we need <strong>5 bytes</strong> to encode the float. (Including the CBOR Initial Byte)</p>
-<p><em>Why is the temperature transmitted as an <strong>integer</strong>: <code>1234</code>?</em></p>
-<p>TODO</p>
-<p>That’s because <strong>floating-point numbers compress poorly</strong> with CBOR unless we select the proper encoding.</p>
-<p>(Either 3 bytes, 5 bytes or 9 bytes per float. See the next note)</p>
-<p>Instead we assume that our integer data has been <strong>scaled up 100 times</strong>.</p>
+<p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision Float</strong> (32 bits).</p>
+<p>Thus we need <strong>5 bytes</strong> to encode the Temperature Data. (Including the CBOR Initial Byte)</p>
+<h2 id="encode-floats-as-integers" class="section-header"><a href="#encode-floats-as-integers">4.1 Encode Floats as Integers</a></h2>
+<p><em>Huh? If we encode an integer like <code>1234</code>, we need only <strong>3 bytes</strong>!</em></p>
+<p>That’s why in this article we <strong>scale up 100 times</strong> for the Temperature Data and <strong>encode as an integer</strong> instead.</p>
 <p>(So <code>1234</code> actually means <code>12.34</code> ºC)</p>
-<p>We may configure Grafana to divide our integer data by 100 when rendering the values.</p>
+<p><strong>2 bytes</strong> saved!</p>
+<h2 id="accuracy-and-precision" class="section-header"><a href="#accuracy-and-precision">4.2 Accuracy and Precision</a></h2>
+<p><em>Is it meaningful to record temperatures that are accurate to 0.01 ºC?</em></p>
+<p><em>How much accuracy do we need for Sensor Data anyway?</em></p>
+<p>The accuracy for our Sensor Data depends on…</p>
+<ol>
+<li>
+<p>Our monitoring requirements, and</p>
+</li>
+<li>
+<p>Accuracy of our sensors</p>
+</li>
+</ol>
+<p>Learn more about Accuracy and Precision of Sensor Data…</p>
+<ul>
+<li><a href="https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/">IoT’s Lesser Known Power: “Good Enough” Data Accuracy</a></li>
+</ul>
 <h1 id="lorawan-with-cbor" class="section-header"><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
@@ -594,24 +608,7 @@ cmd_app_tx_cbor_err:
 <h1 id="decoding-cbor" class="section-header"><a href="#decoding-cbor">6 Decoding CBOR</a></h1>
 <p>TODO</p>
 <p><a href="https://cbor.io/impls.html">(More about CBOR implementations)</a></p>
-<h1 id="accuracy-vs-precision" class="section-header"><a href="#accuracy-vs-precision">7 Accuracy vs Precision</a></h1>
-<p>TODO</p>
-<p>Is it meaningful to record temperatures that are accurate to 0.01 ºC?</p>
-<p>How much accuracy do we need for Sensor Data anyway?</p>
-<p>The accuracy for our Sensor Data depends on…</p>
-<ol>
-<li>
-<p>Our monitoring requirements, and</p>
-</li>
-<li>
-<p>Accuracy of our sensors</p>
-</li>
-</ol>
-<p>Learn more about Accuracy and Precision of Sensor Data…</p>
-<ul>
-<li><a href="https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/">“IoT’s Lesser Known Power: “Good Enough” Data Accuracy”</a></li>
-</ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -630,21 +627,21 @@ cmd_app_tx_cbor_err:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/cbor.md"><code>lupyuen.github.io/src/cbor.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1441626008931602433">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-build-and-run-cbor-firmware" class="section-header"><a href="#appendix-build-and-run-cbor-firmware">10 Appendix: Build And Run CBOR Firmware</a></h1>
+<h1 id="appendix-build-and-run-cbor-firmware" class="section-header"><a href="#appendix-build-and-run-cbor-firmware">9 Appendix: Build And Run CBOR Firmware</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>bl_iot_sdk/customer_app/pinedio_cbor</strong></a></li>
 </ul>
-<h1 id="appendix-add-tinycbor-to-your-project" class="section-header"><a href="#appendix-add-tinycbor-to-your-project">11 Appendix: Add TinyCBOR To Your Project</a></h1>
+<h1 id="appendix-add-tinycbor-to-your-project" class="section-header"><a href="#appendix-add-tinycbor-to-your-project">10 Appendix: Add TinyCBOR To Your Project</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/tinycbor-bl602"><strong>lupyuen/tinycbor-bl602</strong></a></li>
 </ul>
-<h1 id="appendix-porting-tinycbor-to-bl602" class="section-header"><a href="#appendix-porting-tinycbor-to-bl602">12 Appendix: Porting TinyCBOR To BL602</a></h1>
+<h1 id="appendix-porting-tinycbor-to-bl602" class="section-header"><a href="#appendix-porting-tinycbor-to-bl602">11 Appendix: Porting TinyCBOR To BL602</a></h1>
 <p>TODO</p>
 
     
