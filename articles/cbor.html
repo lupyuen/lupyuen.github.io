@@ -181,27 +181,30 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   assert(res == CborNoError);</code></pre></div>
 <p>Our CBOR Encoding is complete!</p>
 <h2 id="get-encoded-output" class="section-header"><a href="#get-encoded-output">1.5 Get Encoded Output</a></h2>
-<p>TODO</p>
+<p>To work with the Encoded CBOR Output, we need to know <strong>how many bytes</strong> have been encoded…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  How many bytes were encoded
   size_t output_len = cbor_encoder_get_buffer_size(
     &amp;encoder,  //  CBOR Encoder
     output     //  Output Buffer
   );
   printf(&quot;CBOR Output: %d bytes\r\n&quot;, output_len);</code></pre></div>
-<p>TODO</p>
+<p>For the demo we <strong>dump the encoded CBOR data</strong> to the console…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Dump the encoded CBOR output (6 bytes):
   //  0xa1 0x61 0x74 0x19 0x04 0xd2
   for (int i = 0; i &lt; output_len; i++) {
     printf(&quot;  0x%02x\r\n&quot;, output[i]);
   }
 }</code></pre></div>
+<p>And that’s how we call the TinyCBOR Library to work with CBOR data!</p>
+<p>Let’s watch what happens when we run the firmware…</p>
 <blockquote>
-<p><img src="https://lupyuen.github.io/images/cbor-code.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/cbor-code.png" alt="Calling the TinyCBOR Library" /></p>
 </blockquote>
 <h2 id="magic-happens" class="section-header"><a href="#magic-happens">1.6 Magic Happens</a></h2>
-<p>TODO</p>
+<p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the firmware.</p>
+<p>At the BL602 / BL604 Command Prompt, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>test_cbor</code></pre></div>
-<p>TODO</p>
+<p>We’ll see 6 bytes of <strong>Encoded CBOR Output</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CBOR Output: 6 bytes
   0xa1
   0x61
@@ -209,7 +212,13 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   0x19
   0x04
   0xd2</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/cbor-output.png" alt="" /></p>
+<p>We have just compressed <strong>10 bytes of JSON</strong>…</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234
+}</code></pre></div>
+<p>Into <strong>6 bytes of CBOR</strong>.</p>
+<p>We have scrimped and saved <strong>4 bytes</strong>!</p>
+<p><img src="https://lupyuen.github.io/images/cbor-output2.png" alt="Encoded CBOR Output" /></p>
 <h1 id="add-another-field" class="section-header"><a href="#add-another-field">2 Add Another Field</a></h1>
 <p>Now we <strong>add another field</strong> to our CBOR Encoding…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
@@ -309,6 +318,7 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
   0x19
   0x09
   0x29</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/cbor-output.png" alt="Encoded CBOR Output" /></p>
 <p>To experiment with CBOR, try the <a href="http://cbor.me/"><strong>CBOR Playground</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor5.png" alt="CBOR Playground" /></p>
 <p><a href="https://cbor.io/impls.html">(More about CBOR implementations)</a></p>
