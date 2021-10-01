@@ -242,13 +242,16 @@ And watch how our program changes to accommodate the second field.
 
 > ![CBOR Map with 2 Key-Value Pairs](https://lupyuen.github.io/images/cbor-map2.png)
 
+## Modify Map Encoder
+
 TODO
 
 From [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139)
 
 ```c
 /// Test CBOR Encoding for { "t": 1234, "l": 2345 }
-static void test_cbor2(char *buf, int len, int argc, char **argv) {
+static void test_cbor2( ... ) {
+
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];
 
@@ -256,13 +259,12 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
   CborEncoder encoder, mapEncoder;
 
   //  Init our CBOR Encoder
-  cbor_encoder_init(
-    &encoder,        //  CBOR Encoder
-    output,          //  Output Buffer
-    sizeof(output),  //  Output Buffer Size
-    0                //  Options
-  );
+  cbor_encoder_init( ... );
+```
 
+TODO
+
+```c  
   //  Create a Map Encoder that maps keys to values
   CborError res = cbor_encoder_create_map(
     &encoder,     //  CBOR Encoder
@@ -270,7 +272,13 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
     2             //  Number of Key-Value Pairs
   );    
   assert(res == CborNoError);
+```
 
+## Encode First Key and Value
+
+TODO
+
+```c
   //  First Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
     &mapEncoder,  //  Map Encoder
@@ -284,7 +292,13 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
     1234          //  Value
   );
   assert(res == CborNoError);
+```
 
+## Encode Second Key and Value
+
+TODO
+
+```c
   //  Second Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
     &mapEncoder,  //  Map Encoder
@@ -298,20 +312,16 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
     2345          //  Value
   );
   assert(res == CborNoError);
+```
 
+TODO
+
+```c
   //  Close the Map Encoder
-  res = cbor_encoder_close_container(
-    &encoder,    //  CBOR Encoder
-    &mapEncoder  //  Map Encoder
-  );
-  assert(res == CborNoError);
+  res = cbor_encoder_close_container( ... );
 
   //  How many bytes were encoded
-  size_t output_len = cbor_encoder_get_buffer_size(
-    &encoder,  //  CBOR Encoder
-    output     //  Output Buffer
-  );
-  printf("CBOR Output: %d bytes\r\n", output_len);
+  size_t output_len = cbor_encoder_get_buffer_size( ... );
 
   //  Dump the encoded CBOR output (11 bytes):
   //  0xa2 0x61 0x74 0x19 0x04 0xd2 0x61 0x6c 0x19 0x09 0x29
@@ -320,6 +330,12 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
   }
 }
 ```
+
+TODO
+
+> ![Add a second field](https://lupyuen.github.io/images/cbor-code2.png)
+
+## Watch the Magic
 
 TODO
 
@@ -345,14 +361,6 @@ CBOR Output: 11 bytes
 ```
 
 ![Encoded CBOR Output](https://lupyuen.github.io/images/cbor-output.png)
-
-To experiment with CBOR, try the [__CBOR Playground__](http://cbor.me/)...
-
-![CBOR Playground](https://lupyuen.github.io/images/grafana-cbor5.png)
-
-[(More about CBOR implementations)](https://cbor.io/impls.html)
-
-> ![](https://lupyuen.github.io/images/cbor-code2.png)
 
 # Other Data Types
 
@@ -386,6 +394,12 @@ Instead we assume that our integer data has been __scaled up 100 times__.
 (So `1234` actually means `12.34` ºC)
 
 We may configure Grafana to divide our integer data by 100 when rendering the values.
+
+To experiment with CBOR, try the [__CBOR Playground__](http://cbor.me/)...
+
+![CBOR Playground](https://lupyuen.github.io/images/grafana-cbor5.png)
+
+[(More about CBOR implementations)](https://cbor.io/impls.html)
 
 # Floating-Point Numbers
 
