@@ -107,7 +107,7 @@
 <p>The <strong>smaller the data packet</strong>, the higher the chance that it will be <strong>transmitted successfully</strong>!</p>
 </li>
 <li>
-<p>When we transmit LoRa packets to <strong>The Things Network</strong> (the free public global LoRa network), we’re limited by their <strong>Fair Use</strong> policy.</p>
+<p>When we transmit LoRa packets to <strong>The Things Network</strong> (the free public global LoRa network), we’re limited by their <a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network"><strong>Fair Use Policy</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">(Roughly <strong>12 bytes</strong> per message, assuming 10 messages per hour)</a></p>
 <p>JSON is too big for this. But CBOR works well!</p>
 <p>In a while we’ll watch the TinyCBOR Library in action for encoding Sensor Data in The Things Network.</p>
@@ -133,7 +133,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
 
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];</code></pre></div>
-<p>(We chose 50 bytes, the maximum packet size for The Things Network AS923 DR2)</p>
+<p><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">(50 bytes is the max packet size for The Things Network AS923 DR2)</a></p>
 <p><strong>Output Buffer Size</strong> is important: Calls to the <strong>TinyCBOR library will fail</strong> if we run out of buffer space!</p>
 <p>Next we define the <strong>CBOR Encoder</strong> (from TinyCBOR) that will encode our data…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Our CBOR Encoder and Map Encoder
