@@ -74,12 +74,13 @@
 <li><a href="#magic-happens">1.6 Magic Happens</a><ul></ul></li></ul></li>
 <li><a href="#add-another-field">2 Add Another Field</a><ul></ul></li>
 <li><a href="#other-data-types">3 Other Data Types</a><ul></ul></li>
-<li><a href="#build-and-run-the-firmware">4 Build and Run the Firmware</a><ul></ul></li>
-<li><a href="#floating-point-numbers">5 Floating-Point Numbers</a><ul></ul></li>
-<li><a href="#the-things-network">6 The Things Network</a><ul></ul></li>
+<li><a href="#floating-point-numbers">4 Floating-Point Numbers</a><ul></ul></li>
+<li><a href="#cbor-on-lorawan">5 CBOR on LoRaWAN</a><ul></ul></li>
+<li><a href="#decoding-cbor">6 Decoding CBOR</a><ul></ul></li>
 <li><a href="#accuracy-vs-precision">7 Accuracy vs Precision</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
+<li><a href="#notes">9 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-and-run-the-cbor-firmware">10 Appendix: Build and Run the CBOR Firmware</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
 <p>Suppose we’re creating an IoT Gadget that transmits <strong>Sensor Data</strong> from a <strong>Temperature Sensor</strong> and a <strong>Light Sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
@@ -344,12 +345,7 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
 <p>Instead we assume that our integer data has been <strong>scaled up 100 times</strong>.</p>
 <p>(So <code>1234</code> actually means <code>12.34</code> ºC)</p>
 <p>We may configure Grafana to divide our integer data by 100 when rendering the values.</p>
-<h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">4 Build and Run the Firmware</a></h1>
-<p>TODO</p>
-<ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor">bl_iot_sdk/customer_app/pinedio_cbor</a></li>
-</ul>
-<h1 id="floating-point-numbers" class="section-header"><a href="#floating-point-numbers">5 Floating-Point Numbers</a></h1>
+<h1 id="floating-point-numbers" class="section-header"><a href="#floating-point-numbers">4 Floating-Point Numbers</a></h1>
 <p>TODO</p>
 <p>If we’re actually <strong>encoding floats in CBOR</strong>, how do we select the proper encoding?</p>
 <p>The CBOR spec says that there are <a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-"><strong>3 ways to encode floats</strong></a>…</p>
@@ -371,7 +367,7 @@ static void test_cbor2(char *buf, int len, int argc, char **argv) {
 <p>This means that we need <strong>4 significant decimal digits</strong>.</p>
 <p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision</strong> Float (32 bits).</p>
 <p>Thus we need <strong>5 bytes</strong> to encode the float. (Including the CBOR Initial Byte)</p>
-<h1 id="the-things-network" class="section-header"><a href="#the-things-network">6 The Things Network</a></h1>
+<h1 id="cbor-on-lorawan" class="section-header"><a href="#cbor-on-lorawan">5 CBOR on LoRaWAN</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Transmit CBOR payload to LoRaWAN. The command
@@ -535,6 +531,9 @@ cmd_app_tx_cbor_err:
 <p><img src="https://lupyuen.github.io/images/cbor-code3.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/cbor-grafana.jpg" alt="" /></p>
+<h1 id="decoding-cbor" class="section-header"><a href="#decoding-cbor">6 Decoding CBOR</a></h1>
+<p>TODO</p>
+<p><a href="https://cbor.io/impls.html">(More about CBOR implementations)</a></p>
 <h1 id="accuracy-vs-precision" class="section-header"><a href="#accuracy-vs-precision">7 Accuracy vs Precision</a></h1>
 <p>TODO</p>
 <p>Is it meaningful to record temperatures that are accurate to 0.01 ºC?</p>
@@ -575,6 +574,11 @@ cmd_app_tx_cbor_err:
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1441626008931602433">this Twitter Thread</a></li>
 </ol>
+<h1 id="appendix-build-and-run-the-cbor-firmware" class="section-header"><a href="#appendix-build-and-run-the-cbor-firmware">10 Appendix: Build and Run the CBOR Firmware</a></h1>
+<p>TODO</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor">bl_iot_sdk/customer_app/pinedio_cbor</a></li>
+</ul>
 
     
 </body>
