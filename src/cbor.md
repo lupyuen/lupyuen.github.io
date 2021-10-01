@@ -454,29 +454,39 @@ The CBOR spec says that there are [__3 ways to encode floats__](https://www.rfc-
 
 _How do we select the proper float encoding?_
 
-TODO
-
-What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?
+Suppose we're encoding Temperature Data (like `12.34` ºC) that could range from __`0.00` ºC to `99.99` ºC__.
 
 This means that we need __4 significant decimal digits__.
 
-Which is too many for a Half-Precision Float (16 bits), but OK for a __Single-Precision__ Float (32 bits).
+Which is too many for a Half-Precision Float (16 bits), but OK for a __Single-Precision Float__ (32 bits).
 
-Thus we need __5 bytes__ to encode the float. (Including the CBOR Initial Byte)
-    
-_Why is the temperature transmitted as an __integer__: `1234`?_
+Thus we need __5 bytes__ to encode the Temperature Data. (Including the CBOR Initial Byte)
 
-TODO
+## Encode Floats as Integers
 
-That's because __floating-point numbers compress poorly__ with CBOR unless we select the proper encoding.
+_Huh? If we encode an integer like `1234`, we need only __3 bytes__!_
 
-(Either 3 bytes, 5 bytes or 9 bytes per float. See the next note)
-
-Instead we assume that our integer data has been __scaled up 100 times__.
+That's why in this article we __scale up 100 times__ for the Temperature Data and __encode as an integer__ instead.
 
 (So `1234` actually means `12.34` ºC)
 
-We may configure Grafana to divide our integer data by 100 when rendering the values.
+__2 bytes__ saved!
+
+## Accuracy and Precision
+
+_Is it meaningful to record temperatures that are accurate to 0.01 ºC?_
+
+_How much accuracy do we need for Sensor Data anyway?_
+
+The accuracy for our Sensor Data depends on...
+
+1. Our monitoring requirements, and
+
+1. Accuracy of our sensors
+
+Learn more about Accuracy and Precision of Sensor Data...
+
+-   [IoT’s Lesser Known Power: “Good Enough” Data Accuracy](https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/)
 
 # LoRaWAN With CBOR
 
@@ -657,24 +667,6 @@ TODO
 TODO
 
 [(More about CBOR implementations)](https://cbor.io/impls.html)
-
-# Accuracy vs Precision
-
-TODO
-
-Is it meaningful to record temperatures that are accurate to 0.01 ºC?
-
-How much accuracy do we need for Sensor Data anyway?
-
-The accuracy for our Sensor Data depends on...
-
-1. Our monitoring requirements, and
-
-1. Accuracy of our sensors
-
-Learn more about Accuracy and Precision of Sensor Data...
-
--   ["IoT’s Lesser Known Power: “Good Enough” Data Accuracy"](https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/)
 
 # What's Next
 
