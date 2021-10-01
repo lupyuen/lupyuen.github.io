@@ -159,7 +159,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
     1             //  Number of Key-Value Pairs
   );    
   assert(res == CborNoError);</code></pre></div>
-<p>The last parameter (<code>1</code>) is important: It must match the <strong>number of Key-Value Pairs</strong> (like <code>&quot;t&quot;: 1234</code>) that we shall encode.</p>
+<p>The last parameter (<code>1</code>) is important: It must match the <strong>Number of Key-Value Pairs</strong> (like <code>&quot;t&quot;: 1234</code>) that we shall encode.</p>
 <h2 id="encode-key-and-value" class="section-header"><a href="#encode-key-and-value">1.3 Encode Key and Value</a></h2>
 <p>We encode the <strong>Key</strong> (“<code>t</code>”) into the CBOR Map…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key
@@ -236,8 +236,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
 <p><img src="https://lupyuen.github.io/images/cbor-map2.png" alt="CBOR Map with 2 Key-Value Pairs" /></p>
 </blockquote>
 <h2 id="modify-map-encoder" class="section-header"><a href="#modify-map-encoder">2.1 Modify Map Encoder</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139">pinedio_cbor/demo.c</a></p>
+<p>We begin the same way as before: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
 static void test_cbor2( ... ) {
 
@@ -249,15 +248,18 @@ static void test_cbor2( ... ) {
 
   //  Init our CBOR Encoder
   cbor_encoder_init( ... );</code></pre></div>
-<p>TODO</p>
+<p>Now we <strong>create the Map Encoder</strong> with a tiny modification…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Create a Map Encoder that maps keys to values
   CborError res = cbor_encoder_create_map(
     &amp;encoder,     //  CBOR Encoder
     &amp;mapEncoder,  //  Map Encoder
     2             //  Number of Key-Value Pairs
   );    
-  assert(res == CborNoError);</code></pre></div><h2 id="encode-first-key-and-value" class="section-header"><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a></h2>
-<p>TODO</p>
+  assert(res == CborNoError);</code></pre></div>
+<p>We changed the <strong>Number of Key-Value Pairs</strong> to <code>2</code>.</p>
+<p>(Previously it was <code>1</code>)</p>
+<h2 id="encode-first-key-and-value" class="section-header"><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a></h2>
+<p>We encode the <strong>First Key and Value</strong> the same way as before…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
     &amp;mapEncoder,  //  Map Encoder
@@ -270,8 +272,10 @@ static void test_cbor2( ... ) {
     &amp;mapEncoder,  //  Map Encoder 
     1234          //  Value
   );
-  assert(res == CborNoError);</code></pre></div><h2 id="encode-second-key-and-value" class="section-header"><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a></h2>
-<p>TODO</p>
+  assert(res == CborNoError);</code></pre></div>
+<p>(Yep no changes above)</p>
+<h2 id="encode-second-key-and-value" class="section-header"><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a></h2>
+<p>This part is new: We encode the <strong>Second Key and Value</strong> (<code>&quot;l&quot;: 2345</code>)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Second Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
     &amp;mapEncoder,  //  Map Encoder
@@ -285,7 +289,7 @@ static void test_cbor2( ... ) {
     2345          //  Value
   );
   assert(res == CborNoError);</code></pre></div>
-<p>TODO</p>
+<p>And the rest of the code is the same…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Close the Map Encoder
   res = cbor_encoder_close_container( ... );
 
@@ -298,7 +302,15 @@ static void test_cbor2( ... ) {
     printf(&quot;  0x%02x\r\n&quot;, output[i]);
   }
 }</code></pre></div>
-<p>TODO</p>
+<p>Recap: To add a data field to our CBOR Encoding, we…</p>
+<ol>
+<li>
+<p>Modify the call to <strong>cbor_encoder_create_map</strong> and update the <strong>Number of Key-Value Pairs</strong> (<code>2</code>)</p>
+</li>
+<li>
+<p>Add the new <strong>Key and Value</strong> to the CBOR Map</p>
+</li>
+</ol>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-code2.png" alt="Add a second field" /></p>
 </blockquote>
