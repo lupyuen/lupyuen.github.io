@@ -665,6 +665,12 @@ TODO
 
 -   [__lupyuen/tinycbor-bl602__](https://github.com/lupyuen/tinycbor-bl602)
 
+# Appendix: LoRaWAN Firmware
+
+TODO
+
+-   [__bl_iot_sdk/customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan)
+
 # Appendix: Porting TinyCBOR To BL602
 
 TODO
