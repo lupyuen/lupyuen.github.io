@@ -387,12 +387,6 @@ Instead we assume that our integer data has been __scaled up 100 times__.
 
 We may configure Grafana to divide our integer data by 100 when rendering the values.
 
-# Build and Run the Firmware
-
-TODO
-
--   [bl_iot_sdk/customer_app/pinedio_cbor](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
-
 # Floating-Point Numbers
 
 TODO
@@ -421,7 +415,7 @@ Which is too many for a Half-Precision Float (16 bits), but OK for a __Single-Pr
 
 Thus we need __5 bytes__ to encode the float. (Including the CBOR Initial Byte)
 
-# The Things Network
+# CBOR on LoRaWAN
 
 TODO
 
@@ -595,6 +589,12 @@ TODO
 
 ![](https://lupyuen.github.io/images/cbor-grafana.jpg)
 
+# Decoding CBOR
+
+TODO
+
+[(More about CBOR implementations)](https://cbor.io/impls.html)
+
 # Accuracy vs Precision
 
 TODO
@@ -634,3 +634,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1441626008931602433)
+
+# Appendix: Build and Run the CBOR Firmware
+
+TODO
+
+-   [bl_iot_sdk/customer_app/pinedio_cbor](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
