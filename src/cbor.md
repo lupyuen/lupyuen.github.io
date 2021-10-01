@@ -77,7 +77,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   uint8_t output[50];
 ```
 
-(We chose 50 bytes, the maximum size of a LoRa packet for The Things Network)
+(We chose 50 bytes, the maximum packet size for The Things Network AS923 DR2)
 
 __Output Buffer Size__ is important: Calls to the __TinyCBOR library will fail__ if we run out of buffer space!
 
@@ -635,8 +635,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1441626008931602433)
 
-# Appendix: Build and Run the CBOR Firmware
+# Appendix: Build And Run CBOR Firmware
 
 TODO
 
--   [bl_iot_sdk/customer_app/pinedio_cbor](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
+-   [__bl_iot_sdk/customer_app/pinedio_cbor__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
+
+# Appendix: Add TinyCBOR To Your Project
+
+TODO
+
+-   [__lupyuen/tinycbor-bl602__](https://github.com/lupyuen/tinycbor-bl602)
