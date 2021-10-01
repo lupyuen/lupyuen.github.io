@@ -104,7 +104,7 @@ We __initialise the CBOR Encoder__ like so...
 
 ## Create Map Encoder
 
-TODO
+Now we create the __Map Encoder__ that will encode our CBOR Map...
 
 ```c
   //  Create a Map Encoder that maps keys to values
@@ -116,9 +116,11 @@ TODO
   assert(res == CborNoError);
 ```
 
+The last parameter (`1`) is important: It must match the __number of Key-Value Pairs__ (like `"t": 1234`) that we shall encode.
+
 ## Encode Key and Value
 
-TODO
+We encode the __Key__ ("`t`") into the CBOR Map...
 
 ```c
   //  First Key-Value Pair: Map the Key
@@ -129,7 +131,7 @@ TODO
   assert(res == CborNoError);
 ```
 
-TODO
+Followed by the __Value__ (`1234`)...
 
 ```c
   //  First Key-Value Pair: Map the Value
@@ -140,9 +142,13 @@ TODO
   assert(res == CborNoError);
 ```
 
+__cbor_encode_int__ encodes __64-bit Signed Integers__.
+
+(We'll look at other data types in a while)
+
 ## Close Map Encoder
 
-TODO
+We're done with our CBOR Map, so we __close the Map Encoder__...
 
 ```c
   //  Close the Map Encoder
@@ -152,6 +158,8 @@ TODO
   );
   assert(res == CborNoError);
 ```
+
+Our CBOR Encoding is complete!
 
 ## Get Encoded Output
 
