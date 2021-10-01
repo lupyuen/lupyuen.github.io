@@ -77,7 +77,10 @@
 <li><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a><ul></ul></li>
 <li><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a><ul></ul></li>
 <li><a href="#watch-the-magic">2.4 Watch the Magic</a><ul></ul></li></ul></li>
-<li><a href="#other-data-types">3 Other Data Types</a><ul></ul></li>
+<li><a href="#other-data-types">3 Other Data Types</a><ul>
+<li><a href="#numbers">3.1 Numbers</a><ul></ul></li>
+<li><a href="#strings">3.2 Strings</a><ul></ul></li>
+<li><a href="#other-types">3.3 Other Types</a><ul></ul></li></ul></li>
 <li><a href="#floating-point-numbers">4 Floating-Point Numbers</a><ul></ul></li>
 <li><a href="#cbor-on-lorawan">5 CBOR on LoRaWAN</a><ul></ul></li>
 <li><a href="#decoding-cbor">6 Decoding CBOR</a><ul></ul></li>
@@ -338,73 +341,57 @@ static void test_cbor2( ... ) {
 <p><img src="https://lupyuen.github.io/images/cbor-title.jpg" alt="Encoding Sensor Data with CBOR on BL602" /></p>
 <h1 id="other-data-types" class="section-header"><a href="#other-data-types">3 Other Data Types</a></h1>
 <p><em>We’ve been encoding 64-bit Signed Integers. What other Data Types can we encode?</em></p>
-<p>Here are the <strong>Data Types</strong> that we can encode with the TinyCBOR Library…</p>
+<p>Below are the <strong>Data Types</strong> that we can encode with TinyCBOR Library…</p>
+<h2 id="numbers" class="section-header"><a href="#numbers">3.1 Numbers</a></h2>
+<ul>
+<li>
+<p><strong>Signed Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gabbf6e10fd963d673f5ad293dff4a67a9">cbor_encode_int</a></p>
+<p>(We have called this. Works for positive and negative integers)</p>
+</li>
+<li>
+<p><strong>Unsigned Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga2b898ce6f5821c5aba8b6f0020c4b5ba">cbor_encode_uint</a></p>
+<p>(Positive integers only)</p>
+</li>
+<li>
+<p><strong>Negative Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga0e84daa854e0480f4a3758bcb46b9b60">cbor_encode_negative_int</a></p>
+<p>(Negative integers only)</p>
+</li>
+<li>
+<p><strong>Floating-Point Number</strong> (16, 32 or 64 bits): </p>
+<p>(See the next chapter)</p>
+</li>
+<li>
+<p><strong>Simple Value</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga923a63a01dae47a3dd46f74a3f744008">cbor_encode_simple_value</a></p>
 <p>TODO</p>
-<ul>
-<li><strong>Unsigned Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga2b898ce6f5821c5aba8b6f0020c4b5ba">cbor_encode_uint</a></li>
+</li>
 </ul>
-<p>CborError 	cbor_encode_uint (CborEncoder *encoder, uint64_t value)
-Appends the unsigned 64-bit integer value to the CBOR stream provided by encoder. More…</p>
+<h2 id="strings" class="section-header"><a href="#strings">3.2 Strings</a></h2>
 <ul>
-<li><strong>Negative Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga0e84daa854e0480f4a3758bcb46b9b60">cbor_encode_negative_int</a></li>
+<li>
+<p><strong>Null-Terminated String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga6df3eff486535322f66584dc5431f9e9">cbor_encode_text_stringz</a></p>
+<p>(We called this to encode our Keys)</p>
+</li>
+<li>
+<p><strong>Text String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga4fa673c63e85b1fd6f8067aca4ccdde4">cbor_encode_text_string</a></p>
+<p>(For strings that are not null-terminated)</p>
+</li>
+<li>
+<p><strong>Byte String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga1260b72bb0f067fd3c68d49a6b5f58d0">cbor_encode_byte_string</a></p>
+<p>TODO</p>
+</li>
 </ul>
-<p>CborError 	cbor_encode_negative_int (CborEncoder *encoder, uint64_t absolute_value)
-Appends the negative 64-bit integer whose absolute value is absolute_value to the CBOR stream provided by encoder. More…</p>
+<h2 id="other-types" class="section-header"><a href="#other-types">3.3 Other Types</a></h2>
 <ul>
-<li><strong>Signed Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gabbf6e10fd963d673f5ad293dff4a67a9">cbor_encode_int</a></li>
+<li>
+<p><strong>Boolean</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga857154b97cad978f4afb3e2f809051bd">cbor_encode_boolean</a></p>
+</li>
+<li>
+<p><strong>Null</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga30b769ff1da73ed8b4536f551347c5ed">cbor_encode_null</a></p>
+</li>
+<li>
+<p><strong>Undefined</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga9d9f0668e2cf69352a45095006efab4f">cbor_encode_undefined</a></p>
+</li>
 </ul>
-<p>CborError 	cbor_encode_int (CborEncoder *encoder, int64_t value)
-Appends the signed 64-bit integer value to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Simple Value</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga923a63a01dae47a3dd46f74a3f744008">cbor_encode_simple_value</a></li>
-</ul>
-<p>CborError 	cbor_encode_simple_value (CborEncoder *encoder, uint8_t value)
-Appends the CBOR Simple Type of value value to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Byte String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga1260b72bb0f067fd3c68d49a6b5f58d0">cbor_encode_byte_string</a></li>
-</ul>
-<p>CborError 	cbor_encode_byte_string (CborEncoder *encoder, const uint8_t *string, size_t length)
-Appends the text string string of length length to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Text String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga4fa673c63e85b1fd6f8067aca4ccdde4">cbor_encode_text_string</a></li>
-</ul>
-<p>CborError 	cbor_encode_text_string (CborEncoder *encoder, const char *string, size_t length)
-Appends the byte string string of length length to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Null-Terminated String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga6df3eff486535322f66584dc5431f9e9">cbor_encode_text_stringz</a></li>
-</ul>
-<p>CborError 	cbor_encode_text_stringz (CborEncoder *encoder, const char *string)
-Appends the null-terminated text string string to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Boolean</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga857154b97cad978f4afb3e2f809051bd">cbor_encode_boolean</a></li>
-</ul>
-<p>CborError 	cbor_encode_boolean (CborEncoder *encoder, bool value)
-Appends the boolean value value to the CBOR stream provided by encoder.</p>
-<ul>
-<li><strong>Null</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga30b769ff1da73ed8b4536f551347c5ed">cbor_encode_null</a></li>
-</ul>
-<p>CborError 	cbor_encode_null (CborEncoder *encoder)
-Appends the CBOR type representing a null value to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Undefined</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga9d9f0668e2cf69352a45095006efab4f">cbor_encode_undefined</a></li>
-</ul>
-<p>CborError 	cbor_encode_undefined (CborEncoder *encoder)
-Appends the CBOR type representing an undefined value to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Half Float</strong> (16 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gad8e5a125cfaceb9a32528e620e003bc6">cbor_encode_half_float</a></li>
-</ul>
-<p>CborError 	cbor_encode_half_float (CborEncoder *encoder, const void *value)
-Appends the IEEE 754 half-precision (16-bit) floating point value pointed to by value to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Single-Precision Float</strong> (32 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gae981ee934ef22ce4c5b52f8069e1b15c">cbor_encode_float</a></li>
-</ul>
-<p>CborError 	cbor_encode_float (CborEncoder *encoder, float value)
-Appends the IEEE 754 single-precision (32-bit) floating point value value to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Double-Precision Float</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga211aa80dc5b793ee8dd74d24cb9e7ca6">cbor_encode_double</a></li>
-</ul>
-<p>CborError 	cbor_encode_double (CborEncoder *encoder, double value)
-Appends the IEEE 754 double-precision (64-bit) floating point value value to the CBOR stream provided by encoder. More…</p>
 <p>TODO</p>
 <ul>
 <li><a href="https://intel.github.io/tinycbor/current/"><strong>TinyCBOR Docs</strong></a></li>
@@ -428,6 +415,21 @@ Appends the IEEE 754 double-precision (64-bit) floating point value value to the
 <p><a href="https://cbor.io/impls.html">(More about CBOR implementations)</a></p>
 <h1 id="floating-point-numbers" class="section-header"><a href="#floating-point-numbers">4 Floating-Point Numbers</a></h1>
 <p>TODO</p>
+<ul>
+<li><strong>Half Float</strong> (16 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gad8e5a125cfaceb9a32528e620e003bc6">cbor_encode_half_float</a></li>
+</ul>
+<p>CborError 	cbor_encode_half_float (CborEncoder *encoder, const void *value)
+Appends the IEEE 754 half-precision (16-bit) floating point value pointed to by value to the CBOR stream provided by encoder. More…</p>
+<ul>
+<li><strong>Single-Precision Float</strong> (32 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gae981ee934ef22ce4c5b52f8069e1b15c">cbor_encode_float</a></li>
+</ul>
+<p>CborError 	cbor_encode_float (CborEncoder *encoder, float value)
+Appends the IEEE 754 single-precision (32-bit) floating point value value to the CBOR stream provided by encoder. More…</p>
+<ul>
+<li><strong>Double-Precision Float</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga211aa80dc5b793ee8dd74d24cb9e7ca6">cbor_encode_double</a></li>
+</ul>
+<p>CborError 	cbor_encode_double (CborEncoder *encoder, double value)
+Appends the IEEE 754 double-precision (64-bit) floating point value value to the CBOR stream provided by encoder. More…</p>
 <p>If we’re actually <strong>encoding floats in CBOR</strong>, how do we select the proper encoding?</p>
 <p>The CBOR spec says that there are <a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-"><strong>3 ways to encode floats</strong></a>…</p>
 <ul>
