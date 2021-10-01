@@ -80,7 +80,8 @@
 <li><a href="#accuracy-vs-precision">7 Accuracy vs Precision</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
 <li><a href="#notes">9 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-and-run-the-cbor-firmware">10 Appendix: Build and Run the CBOR Firmware</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
+<li><a href="#appendix-build-and-run-cbor-firmware">10 Appendix: Build And Run CBOR Firmware</a><ul></ul></li>
+<li><a href="#appendix-add-tinycbor-to-your-project">11 Appendix: Add TinyCBOR To Your Project</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
 <p>Suppose we’re creating an IoT Gadget that transmits <strong>Sensor Data</strong> from a <strong>Temperature Sensor</strong> and a <strong>Light Sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
@@ -132,7 +133,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
 
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];</code></pre></div>
-<p>(We chose 50 bytes, the maximum size of a LoRa packet for The Things Network)</p>
+<p>(We chose 50 bytes, the maximum packet size for The Things Network AS923 DR2)</p>
 <p><strong>Output Buffer Size</strong> is important: Calls to the <strong>TinyCBOR library will fail</strong> if we run out of buffer space!</p>
 <p>Next we define the <strong>CBOR Encoder</strong> (from TinyCBOR) that will encode our data…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Our CBOR Encoder and Map Encoder
@@ -574,10 +575,15 @@ cmd_app_tx_cbor_err:
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1441626008931602433">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-build-and-run-the-cbor-firmware" class="section-header"><a href="#appendix-build-and-run-the-cbor-firmware">10 Appendix: Build and Run the CBOR Firmware</a></h1>
+<h1 id="appendix-build-and-run-cbor-firmware" class="section-header"><a href="#appendix-build-and-run-cbor-firmware">10 Appendix: Build And Run CBOR Firmware</a></h1>
 <p>TODO</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor">bl_iot_sdk/customer_app/pinedio_cbor</a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>bl_iot_sdk/customer_app/pinedio_cbor</strong></a></li>
+</ul>
+<h1 id="appendix-add-tinycbor-to-your-project" class="section-header"><a href="#appendix-add-tinycbor-to-your-project">11 Appendix: Add TinyCBOR To Your Project</a></h1>
+<p>TODO</p>
+<ul>
+<li><a href="https://github.com/lupyuen/tinycbor-bl602"><strong>lupyuen/tinycbor-bl602</strong></a></li>
 </ul>
 
     
