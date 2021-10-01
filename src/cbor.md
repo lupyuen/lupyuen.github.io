@@ -402,10 +402,6 @@ Below are the __Data Types__ that we can encode with TinyCBOR Library...
 
     (See the next chapter)
 
--   __Simple Value__: [cbor_encode_simple_value](https://intel.github.io/tinycbor/current/a00046.html#ga923a63a01dae47a3dd46f74a3f744008)
-
-    TODO
-
 ## Strings
 
 -   __Null-Terminated String__: [cbor_encode_text_stringz](https://intel.github.io/tinycbor/current/a00046.html#ga6df3eff486535322f66584dc5431f9e9)
@@ -429,6 +425,8 @@ Below are the __Data Types__ that we can encode with TinyCBOR Library...
 -   __Undefined__: [cbor_encode_undefined](https://intel.github.io/tinycbor/current/a00046.html#ga9d9f0668e2cf69352a45095006efab4f)
 
 TODO
+
+-   [__Encoding To CBOR__](https://intel.github.io/tinycbor/current/a00046.html)
 
 -   [__TinyCBOR Docs__](https://intel.github.io/tinycbor/current/)
 
