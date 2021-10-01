@@ -84,7 +84,10 @@
 <li><a href="#floating-point-numbers">4 Floating-Point Numbers</a><ul>
 <li><a href="#encode-floats-as-integers">4.1 Encode Floats as Integers</a><ul></ul></li>
 <li><a href="#accuracy-and-precision">4.2 Accuracy and Precision</a><ul></ul></li></ul></li>
-<li><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a><ul></ul></li>
+<li><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a><ul>
+<li><a href="#encode-sensor-data">5.1 Encode Sensor Data</a><ul></ul></li>
+<li><a href="#send-lorawan-packet">5.2 Send LoRaWAN Packet</a><ul></ul></li>
+<li><a href="#cbor-in-action">5.3 CBOR In Action</a><ul></ul></li></ul></li>
 <li><a href="#decode-cbor">6 Decode CBOR</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li>
@@ -447,6 +450,7 @@ static void test_cbor2( ... ) {
 <p><em>PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)</em></p>
 <h1 id="lorawan-with-cbor" class="section-header"><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a></h1>
 <p>Let’s watch CBOR in action on a real wireless network… As <a href="https://lupyuen.github.io/articles/lorawan2"><strong>PineDio Stack BL604</strong></a> talks to <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network over LoRaWAN</strong></a>!</p>
+<h2 id="encode-sensor-data" class="section-header"><a href="#encode-sensor-data">5.1 Encode Sensor Data</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Transmit CBOR payload to LoRaWAN. The command
@@ -508,20 +512,14 @@ las_cmd_app_tx_cbor( ... ) {
   res = cbor_encoder_close_container( ... );
 
   //  How many bytes were encoded
-  size_t output_len = cbor_encoder_get_buffer_size( ... );</code></pre></div>
+  size_t output_len = cbor_encoder_get_buffer_size( ... );</code></pre></div><h2 id="send-lorawan-packet" class="section-header"><a href="#send-lorawan-packet">5.2 Send LoRaWAN Packet</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Validate the output size
-  if (lora_app_mtu() &lt; output_len) {
-    printf(&quot;Can send at max %d bytes\r\n&quot;, lora_app_mtu());
-    return;
-  }
+  if (lora_app_mtu() &lt; output_len) { return; }  //  Output too big
 
   //  Attempt to allocate a Packet Buffer
   struct pbuf *om = lora_pkt_alloc(output_len);
-  if (!om) {
-    printf(&quot;Unable to allocate pbuf\r\n&quot;);
-    return;
-  }</code></pre></div>
+  if (!om) { return; }  //  Unable to allocate Packet Buffer</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Copy the encoded CBOR into the Packet Buffer
   rc = pbuf_copyinto(om, 0, output, output_len);
@@ -533,7 +531,9 @@ las_cmd_app_tx_cbor( ... ) {
   //  Omitted: Check the return code</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/cbor-code3.png" alt="" /></p>
+<h2 id="cbor-in-action" class="section-header"><a href="#cbor-in-action">5.3 CBOR In Action</a></h2>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1234 2345</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/cbor-grafana.jpg" alt="" /></p>
 <p>TODO</p>
 <ul>
