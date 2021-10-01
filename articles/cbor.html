@@ -77,12 +77,12 @@
 <li><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a><ul></ul></li>
 <li><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a><ul></ul></li>
 <li><a href="#watch-the-magic">2.4 Watch the Magic</a><ul></ul></li></ul></li>
-<li><a href="#other-data-types">3 Other Data Types</a><ul>
+<li><a href="#cbor-data-types">3 CBOR Data Types</a><ul>
 <li><a href="#numbers">3.1 Numbers</a><ul></ul></li>
 <li><a href="#strings">3.2 Strings</a><ul></ul></li>
 <li><a href="#other-types">3.3 Other Types</a><ul></ul></li></ul></li>
 <li><a href="#floating-point-numbers">4 Floating-Point Numbers</a><ul></ul></li>
-<li><a href="#cbor-on-lorawan">5 CBOR on LoRaWAN</a><ul></ul></li>
+<li><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a><ul></ul></li>
 <li><a href="#decoding-cbor">6 Decoding CBOR</a><ul></ul></li>
 <li><a href="#accuracy-vs-precision">7 Accuracy vs Precision</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
@@ -339,9 +339,9 @@ static void test_cbor2( ... ) {
 <p>We have just compressed <strong>19 bytes of JSON</strong> into <strong>11 bytes of CBOR</strong>.</p>
 <p><strong>8 bytes</strong> saved!</p>
 <p><img src="https://lupyuen.github.io/images/cbor-title.jpg" alt="Encoding Sensor Data with CBOR on BL602" /></p>
-<h1 id="other-data-types" class="section-header"><a href="#other-data-types">3 Other Data Types</a></h1>
+<h1 id="cbor-data-types" class="section-header"><a href="#cbor-data-types">3 CBOR Data Types</a></h1>
 <p><em>We’ve been encoding 64-bit Signed Integers. What other Data Types can we encode?</em></p>
-<p>Below are the <strong>Data Types</strong> that we can encode with TinyCBOR Library…</p>
+<p>Below are the <strong>CBOR Data Types</strong> and their respective <strong>Encoder Functions</strong> from the TinyCBOR Library…</p>
 <h2 id="numbers" class="section-header"><a href="#numbers">3.1 Numbers</a></h2>
 <ul>
 <li>
@@ -373,7 +373,7 @@ static void test_cbor2( ... ) {
 </li>
 <li>
 <p><strong>Byte String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga1260b72bb0f067fd3c68d49a6b5f58d0">cbor_encode_byte_string</a></p>
-<p>TODO</p>
+<p>(For strings containing binary data)</p>
 </li>
 </ul>
 <h2 id="other-types" class="section-header"><a href="#other-types">3.3 Other Types</a></h2>
@@ -388,70 +388,46 @@ static void test_cbor2( ... ) {
 <p><strong>Undefined</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga9d9f0668e2cf69352a45095006efab4f">cbor_encode_undefined</a></p>
 </li>
 </ul>
-<p>TODO</p>
+<p>For the complete list of CBOR Encoder Functions, refer to the TinyCBOR docs…</p>
+<ul>
+<li><a href="https://intel.github.io/tinycbor/current/a00046.html"><strong>TinyCBOR: Encoding To CBOR</strong></a></li>
+</ul>
+<p>CBOR Data Types are explained in the CBOR Specification…</p>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-cbor-data-models"><strong>CBOR Data Models</strong></a></li>
+</ul>
+<p>To experiment with CBOR Encoding and Decoding, try the <a href="http://cbor.me/"><strong>CBOR Playground</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/grafana-cbor5.png" alt="CBOR Playground" /></p>
+<h1 id="floating-point-numbers" class="section-header"><a href="#floating-point-numbers">4 Floating-Point Numbers</a></h1>
+<p>The CBOR spec says that there are <a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-"><strong>3 ways to encode floats</strong></a>…</p>
 <ul>
 <li>
-<p><a href="https://intel.github.io/tinycbor/current/a00046.html"><strong>Encoding To CBOR</strong></a></p>
+<p><a href="https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format"><strong>Half-Precision Float</strong></a> (16 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gad8e5a125cfaceb9a32528e620e003bc6">cbor_encode_half_float</a></p>
+<p>(<strong>3.3</strong> significant decimal digits. <a href="https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format#IEEE_754_half-precision_binary_floating-point_format:_binary16">See this</a>)</p>
 </li>
 <li>
-<p><a href="https://intel.github.io/tinycbor/current/"><strong>TinyCBOR Docs</strong></a></p>
+<p><a href="https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format"><strong>Single-Precision Float</strong></a> (32 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gae981ee934ef22ce4c5b52f8069e1b15c">cbor_encode_float</a></p>
+<p>(<strong>6 to 9</strong> significant decimal digits. <a href="https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format#IEEE_754_single-precision_binary_floating-point_format:_binary32">See this</a>)</p>
+</li>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format"><strong>Double-Precision Float</strong></a> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga211aa80dc5b793ee8dd74d24cb9e7ca6">cbor_encode_double</a></p>
+<p>(<strong>15 to 17</strong> significant decimal digits. <a href="https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format#IEEE_754_double-precision_binary_floating-point_format:_binary64">See this</a>)</p>
 </li>
 </ul>
-<p>What exactly are <strong>“<code>t</code>”</strong> and <strong>“<code>l</code>”</strong> in our Sensor Data?</p>
-<div class="example-wrap"><pre class="language-json"><code>{ 
-    &quot;t&quot;: 1234, 
-    &quot;l&quot;: 2345 
-}</code></pre></div>
-<p>“<code>t</code>” and “<code>l</code>” represent our (imaginary) <strong>Temperature Sensor</strong> and <strong>Light Sensor</strong>.</p>
-<p>We <strong>shortened the Field Names</strong> to fit the Sensor Data into 11 bytes of CBOR.</p>
-<p>With Grafana we can map “<code>t</code>” and “<code>l</code>” to their full names for display.</p>
-<p>Why is the temperature transmitted as an <strong>integer</strong>: <code>1234</code>?</p>
+<p><em>How do we select the proper float encoding?</em></p>
+<p>TODO</p>
+<p>What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?</p>
+<p>This means that we need <strong>4 significant decimal digits</strong>.</p>
+<p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision</strong> Float (32 bits).</p>
+<p>Thus we need <strong>5 bytes</strong> to encode the float. (Including the CBOR Initial Byte)</p>
+<p><em>Why is the temperature transmitted as an <strong>integer</strong>: <code>1234</code>?</em></p>
+<p>TODO</p>
 <p>That’s because <strong>floating-point numbers compress poorly</strong> with CBOR unless we select the proper encoding.</p>
 <p>(Either 3 bytes, 5 bytes or 9 bytes per float. See the next note)</p>
 <p>Instead we assume that our integer data has been <strong>scaled up 100 times</strong>.</p>
 <p>(So <code>1234</code> actually means <code>12.34</code> ºC)</p>
 <p>We may configure Grafana to divide our integer data by 100 when rendering the values.</p>
-<p>To experiment with CBOR, try the <a href="http://cbor.me/"><strong>CBOR Playground</strong></a>…</p>
-<p><img src="https://lupyuen.github.io/images/grafana-cbor5.png" alt="CBOR Playground" /></p>
-<p><a href="https://cbor.io/impls.html">(More about CBOR implementations)</a></p>
-<h1 id="floating-point-numbers" class="section-header"><a href="#floating-point-numbers">4 Floating-Point Numbers</a></h1>
-<p>TODO</p>
-<ul>
-<li><strong>Half Float</strong> (16 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gad8e5a125cfaceb9a32528e620e003bc6">cbor_encode_half_float</a></li>
-</ul>
-<p>CborError 	cbor_encode_half_float (CborEncoder *encoder, const void *value)
-Appends the IEEE 754 half-precision (16-bit) floating point value pointed to by value to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Single-Precision Float</strong> (32 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gae981ee934ef22ce4c5b52f8069e1b15c">cbor_encode_float</a></li>
-</ul>
-<p>CborError 	cbor_encode_float (CborEncoder *encoder, float value)
-Appends the IEEE 754 single-precision (32-bit) floating point value value to the CBOR stream provided by encoder. More…</p>
-<ul>
-<li><strong>Double-Precision Float</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga211aa80dc5b793ee8dd74d24cb9e7ca6">cbor_encode_double</a></li>
-</ul>
-<p>CborError 	cbor_encode_double (CborEncoder *encoder, double value)
-Appends the IEEE 754 double-precision (64-bit) floating point value value to the CBOR stream provided by encoder. More…</p>
-<p>If we’re actually <strong>encoding floats in CBOR</strong>, how do we select the proper encoding?</p>
-<p>The CBOR spec says that there are <a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-"><strong>3 ways to encode floats</strong></a>…</p>
-<ul>
-<li>
-<p><a href="https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format">IEEE 754 <strong>Half-Precision</strong> Float (16 bits)</a></p>
-<p>(<strong>3.3</strong> significant decimal digits)</p>
-</li>
-<li>
-<p><a href="https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format">IEEE 754 <strong>Single-Precision</strong> Float (32 bits)</a></p>
-<p>(<strong>6 to 9</strong> significant decimal digits)</p>
-</li>
-<li>
-<p><a href="https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754 <strong>Double-Precision</strong> Float (64 bits)</a></p>
-<p>(<strong>15 to 17</strong> significant decimal digits)</p>
-</li>
-</ul>
-<p>What would be the proper encoding for a float (like 12.34) that could range from 0.00 to 99.99?</p>
-<p>This means that we need <strong>4 significant decimal digits</strong>.</p>
-<p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision</strong> Float (32 bits).</p>
-<p>Thus we need <strong>5 bytes</strong> to encode the float. (Including the CBOR Initial Byte)</p>
-<h1 id="cbor-on-lorawan" class="section-header"><a href="#cbor-on-lorawan">5 CBOR on LoRaWAN</a></h1>
+<h1 id="lorawan-with-cbor" class="section-header"><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Transmit CBOR payload to LoRaWAN. The command
