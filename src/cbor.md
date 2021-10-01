@@ -488,7 +488,13 @@ Learn more about Accuracy and Precision of Sensor Data...
 
 -   [IoT’s Lesser Known Power: “Good Enough” Data Accuracy](https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/)
 
+![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
+
+_PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)_
+
 # LoRaWAN With CBOR
+
+Let's watch CBOR in action on a real wireless network... As [__PineDio Stack BL604__](https://lupyuen.github.io/articles/lorawan2) talks to [__The Things Network over LoRaWAN__](https://lupyuen.github.io/articles/ttn)!
 
 TODO
 
