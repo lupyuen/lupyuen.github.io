@@ -498,6 +498,8 @@ _PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via
 
 Let's watch CBOR in action on a real wireless network... As [__PineDio Stack BL604__](https://lupyuen.github.io/articles/lorawan2) talks to [__The Things Network over LoRaWAN__](https://lupyuen.github.io/articles/ttn)!
 
+## Encode Sensor Data
+
 TODO
 
 From [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050)
@@ -581,21 +583,17 @@ TODO
   size_t output_len = cbor_encoder_get_buffer_size( ... );
 ```
 
+## Send LoRaWAN Packet
+
 TODO
 
 ```c
   //  Validate the output size
-  if (lora_app_mtu() < output_len) {
-    printf("Can send at max %d bytes\r\n", lora_app_mtu());
-    return;
-  }
+  if (lora_app_mtu() < output_len) { return; }  //  Output too big
 
   //  Attempt to allocate a Packet Buffer
   struct pbuf *om = lora_pkt_alloc(output_len);
-  if (!om) {
-    printf("Unable to allocate pbuf\r\n");
-    return;
-  }
+  if (!om) { return; }  //  Unable to allocate Packet Buffer
 ```
 
 TODO
@@ -619,7 +617,13 @@ TODO
 
 ![](https://lupyuen.github.io/images/cbor-code3.png)
 
+## CBOR In Action
+
 TODO
+
+```bash
+las_app_tx_cbor 2 0 1234 2345
+```
 
 ![](https://lupyuen.github.io/images/cbor-grafana.jpg)
 
