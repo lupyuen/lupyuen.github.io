@@ -545,7 +545,9 @@ This JSON Payload occupies __10 bytes__...
 
 While the CBOR version needs only __6 bytes__!
 
-[(More about CBOR)](https://cbor.io/impls.html)
+To learn more about CBOR...
+
+-   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
 
 _Wow... Fair Use sounds complicated!_
 
