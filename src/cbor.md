@@ -380,6 +380,93 @@ __8 bytes__ saved!
 
 # Other Data Types
 
+_We've been encoding 64-bit Signed Integers. What other Data Types can we encode?_
+
+Here are the __Data Types__ that we can encode with the TinyCBOR Library...
+
+TODO
+
+-   __Unsigned Integer__ (64 bits): [cbor_encode_uint](https://intel.github.io/tinycbor/current/a00046.html#ga2b898ce6f5821c5aba8b6f0020c4b5ba)
+
+CborError 	cbor_encode_uint (CborEncoder *encoder, uint64_t value)
+ 	Appends the unsigned 64-bit integer value to the CBOR stream provided by encoder. More...
+
+-   __Negative Integer__ (64 bits): [cbor_encode_negative_int](https://intel.github.io/tinycbor/current/a00046.html#ga0e84daa854e0480f4a3758bcb46b9b60)
+
+CborError 	cbor_encode_negative_int (CborEncoder *encoder, uint64_t absolute_value)
+ 	Appends the negative 64-bit integer whose absolute value is absolute_value to the CBOR stream provided by encoder. More...
+
+
+-   __Signed Integer__ (64 bits): [cbor_encode_int](https://intel.github.io/tinycbor/current/a00046.html#gabbf6e10fd963d673f5ad293dff4a67a9)
+
+CborError 	cbor_encode_int (CborEncoder *encoder, int64_t value)
+ 	Appends the signed 64-bit integer value to the CBOR stream provided by encoder. More...
+
+-   __Simple Value__: [cbor_encode_simple_value](https://intel.github.io/tinycbor/current/a00046.html#ga923a63a01dae47a3dd46f74a3f744008)
+
+CborError 	cbor_encode_simple_value (CborEncoder *encoder, uint8_t value)
+ 	Appends the CBOR Simple Type of value value to the CBOR stream provided by encoder. More...
+
+
+
+-   __Byte String__: [cbor_encode_byte_string](https://intel.github.io/tinycbor/current/a00046.html#ga1260b72bb0f067fd3c68d49a6b5f58d0)
+
+CborError 	cbor_encode_byte_string (CborEncoder *encoder, const uint8_t *string, size_t length)
+ 	Appends the text string string of length length to the CBOR stream provided by encoder. More...
+
+
+
+-   __Text String__: [cbor_encode_text_string](https://intel.github.io/tinycbor/current/a00046.html#ga4fa673c63e85b1fd6f8067aca4ccdde4  )
+
+CborError 	cbor_encode_text_string (CborEncoder *encoder, const char *string, size_t length)
+ 	Appends the byte string string of length length to the CBOR stream provided by encoder. More...
+
+   
+ 
+-   __Null-Terminated String__: [cbor_encode_text_stringz](https://intel.github.io/tinycbor/current/a00046.html#ga6df3eff486535322f66584dc5431f9e9)
+
+CborError 	cbor_encode_text_stringz (CborEncoder *encoder, const char *string)
+ 	Appends the null-terminated text string string to the CBOR stream provided by encoder. More...
+
+
+
+-   __Boolean__: [cbor_encode_boolean](https://intel.github.io/tinycbor/current/a00046.html#ga857154b97cad978f4afb3e2f809051bd)
+
+CborError 	cbor_encode_boolean (CborEncoder *encoder, bool value)
+ 	Appends the boolean value value to the CBOR stream provided by encoder.
+
+
+
+-   __Null__: [cbor_encode_null](https://intel.github.io/tinycbor/current/a00046.html#ga30b769ff1da73ed8b4536f551347c5ed)
+
+CborError 	cbor_encode_null (CborEncoder *encoder)
+ 	Appends the CBOR type representing a null value to the CBOR stream provided by encoder. More...
+
+
+
+-   __Undefined__: [cbor_encode_undefined](https://intel.github.io/tinycbor/current/a00046.html#ga9d9f0668e2cf69352a45095006efab4f)
+
+CborError 	cbor_encode_undefined (CborEncoder *encoder)
+ 	Appends the CBOR type representing an undefined value to the CBOR stream provided by encoder. More...
+
+
+-   __Half Float__ (16 bits): [cbor_encode_half_float](https://intel.github.io/tinycbor/current/a00046.html#gad8e5a125cfaceb9a32528e620e003bc6)
+
+CborError 	cbor_encode_half_float (CborEncoder *encoder, const void *value)
+ 	Appends the IEEE 754 half-precision (16-bit) floating point value pointed to by value to the CBOR stream provided by encoder. More...
+
+
+
+-   __Single-Precision Float__ (32 bits): [cbor_encode_float](https://intel.github.io/tinycbor/current/a00046.html#gae981ee934ef22ce4c5b52f8069e1b15c)
+
+CborError 	cbor_encode_float (CborEncoder *encoder, float value)
+ 	Appends the IEEE 754 single-precision (32-bit) floating point value value to the CBOR stream provided by encoder. More...
+
+-   __Double-Precision Float__ (64 bits): [cbor_encode_double](https://intel.github.io/tinycbor/current/a00046.html#ga211aa80dc5b793ee8dd74d24cb9e7ca6)
+
+CborError 	cbor_encode_double (CborEncoder *encoder, double value)
+ 	Appends the IEEE 754 double-precision (64-bit) floating point value value to the CBOR stream provided by encoder. More...
+
 TODO
 
 -   [__TinyCBOR Docs__](https://intel.github.io/tinycbor/current/)
