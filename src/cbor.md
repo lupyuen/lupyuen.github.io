@@ -347,13 +347,15 @@ Everything else stays the same.
 
 ## Watch the Magic
 
-TODO
+Follow the steps in the Appendix to __build, flash and run__ the firmware.
+
+At the BL602 / BL604 Command Prompt, enter...
 
 ```bash
 test_cbor2
 ```
 
-TODO
+This time we'll see 11 bytes of __Encoded CBOR Output__...
 
 ```text
 CBOR Output: 11 bytes
