@@ -116,7 +116,7 @@ Now we create the __Map Encoder__ that will encode our CBOR Map...
   assert(res == CborNoError);
 ```
 
-The last parameter (`1`) is important: It must match the __number of Key-Value Pairs__ (like `"t": 1234`) that we shall encode.
+The last parameter (`1`) is important: It must match the __Number of Key-Value Pairs__ (like `"t": 1234`) that we shall encode.
 
 ## Encode Key and Value
 
@@ -244,9 +244,7 @@ And watch how our program changes to accommodate the second field.
 
 ## Modify Map Encoder
 
-TODO
-
-From [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139)
+We begin the same way as before: [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139)
 
 ```c
 /// Test CBOR Encoding for { "t": 1234, "l": 2345 }
@@ -262,7 +260,7 @@ static void test_cbor2( ... ) {
   cbor_encoder_init( ... );
 ```
 
-TODO
+Now we __create the Map Encoder__ with a tiny modification...
 
 ```c  
   //  Create a Map Encoder that maps keys to values
@@ -274,9 +272,13 @@ TODO
   assert(res == CborNoError);
 ```
 
+We changed the __Number of Key-Value Pairs__ to `2`.
+
+(Previously it was `1`)
+
 ## Encode First Key and Value
 
-TODO
+We encode the __First Key and Value__ the same way as before...
 
 ```c
   //  First Key-Value Pair: Map the Key
@@ -294,9 +296,11 @@ TODO
   assert(res == CborNoError);
 ```
 
+(Yep no changes above)
+
 ## Encode Second Key and Value
 
-TODO
+This part is new: We encode the __Second Key and Value__ (`"l": 2345`)...
 
 ```c
   //  Second Key-Value Pair: Map the Key
@@ -314,7 +318,7 @@ TODO
   assert(res == CborNoError);
 ```
 
-TODO
+And the rest of the code is the same...
 
 ```c
   //  Close the Map Encoder
@@ -331,7 +335,11 @@ TODO
 }
 ```
 
-TODO
+Recap: To add a data field to our CBOR Encoding, we...
+
+1.  Modify the call to __cbor_encoder_create_map__ and update the __Number of Key-Value Pairs__ (`2`)
+
+1.  Add the new __Key and Value__ to the CBOR Map
 
 > ![Add a second field](https://lupyuen.github.io/images/cbor-code2.png)
 
