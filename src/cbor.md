@@ -788,7 +788,13 @@ We assume that our Firmware Binary File `pinedio_lorawan.bin` has been copied to
 
 Set BL602 / BL604 to __Flashing Mode__ and restart the board...
 
-__For PineCone:__
+__For PineDio Stack BL604:__
+
+1.  Set the __GPIO 8 Jumper__ to __High__ [(Like this)](https://lupyuen.github.io/images/pinedio-high.jpg)
+
+1.  Press the Reset Button
+
+__For PineCone BL602:__
 
 1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
 
@@ -838,7 +844,13 @@ cargo run flash pinedio_lorawan.bin --port COM5
 
 Set BL602 / BL604 to __Normal Mode__ (Non-Flashing) and restart the board...
 
-__For PineCone:__
+__For PineDio Stack BL604:__
+
+1.  Set the __GPIO 8 Jumper__ to __Low__ [(Like this)](https://lupyuen.github.io/images/pinedio-low.jpg)
+
+1.  Press the Reset Button
+
+__For PineCone BL602:__
 
 1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
@@ -876,11 +888,15 @@ __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.githu
 
 Let's enter some LoRaWAN Commands to join The Things Network and transmit a Data Packet!
 
-1.  Get the following from The Things Network: __Device EUI, Application EUI and Application Key__...
+1.  Log on to The Things Network, browse to our Device and copy these values...
 
-    -   [__"LoRaWAN Application (ChirpStack)"__](https://lupyuen.github.io/articles/wisgate#lorawan-application)
+    __JoinEUI__ (Join Extended Unique Identifier)
 
-    We shall use them in a while to join the LoRaWAN Network.
+    __DevEUI__ (Device Extended Unique Identifier)
+
+    __AppKey__ (Application Key)
+
+    [(Instructions here)](https://lupyuen.github.io/articles/ttn#join-device-to-the-things-network)
 
 1.  In the BL602 / BL604 terminal, press Enter to reveal the command prompt.
 
