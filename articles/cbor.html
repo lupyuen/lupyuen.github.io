@@ -783,7 +783,7 @@ include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk</code></pre></div>
 <p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan"><strong>LoRaWAN firmware and driver source code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the cbor branch of lupyuen&#39;s bl_iot_sdk
 git clone --recursive --branch cbor https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
-<p>In the <code>customer_app/pinedio_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/pinedio_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
+<p>In the <code>customer_app/pinedio_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
 <div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1</code></pre></div>
 <p>Change “<code>1</code>” to your LoRa Region…</p>
 <table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
