@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Encode Sensor Data with CBOR on BL602",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-10-05",
+      "website": "https://lupyuen.github.io/articles/cbor",
+      "summary": "How we compress Sensor Data with CBOR... And transmit over LoRaWAN on the BL602 / BL604 RISC-V SoC"
+    },
+    {
       "name": "Grafana Data Source for The Things Network",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-09-27",
