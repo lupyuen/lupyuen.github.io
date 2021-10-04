@@ -535,10 +535,10 @@ void las_cmd_app_tx_cbor( ... ) {
 <p><img src="https://lupyuen.github.io/images/cbor-code3.png" alt="Encoding Sensor Data and transmitting over LoRaWAN" /></p>
 <h2 id="cbor-in-action" class="section-header"><a href="#cbor-in-action">5.3 CBOR In Action</a></h2>
 <p>Follow the instructions in the Appendix to <strong>build, flash and run</strong> the LoRaWAN Firmware.</p>
-<p>At the BL602 / BL604 Command Prompt, enter this command</p>
+<p>At the BL602 / BL604 Command Prompt, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1234 2345</code></pre></div>
 <p>This means…</p>
-<ol>
+<ul>
 <li>
 <p>Transmit a LoRaWAN Packet to <strong>Port 2</strong></p>
 </li>
@@ -549,17 +549,23 @@ void las_cmd_app_tx_cbor( ... ) {
 <p><code>0</code> means that this is an <strong>Unconfirmed Message</strong></p>
 <p>(Because we’re not expecting an acknowledgement)</p>
 </li>
-</ol>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/cbor-grafana.jpg" alt="" /></p>
-<p>TODO</p>
+</ul>
+<p>Our Sensor Data has been transmitted via LoRaWAN to The Things Network!</p>
+<p><em>How do we see the Sensor Data in The Things Network?</em></p>
+<p>We could use <strong>Grafana</strong>, the open source tool for data visualisation…</p>
+<p><img src="https://lupyuen.github.io/images/cbor-grafana.jpg" alt="Sensor Data visualised with Grafana" /></p>
+<p>Check out this article for the details…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/grafana"><strong>“Grafana Data Source for The Things Network”</strong></a></li>
 </ul>
 <h1 id="decode-cbor" class="section-header"><a href="#decode-cbor">6 Decode CBOR</a></h1>
 <p>TODO</p>
 <p>Cloud, Node.js, Go, Rust</p>
+<p>Lua</p>
 <ul>
+<li>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network">lupyuen/roblox-the-things-network</a></p>
+</li>
 <li>
 <p><a href="https://cbor.io/impls.html"><strong>CBOR Implementations</strong></a></p>
 </li>
