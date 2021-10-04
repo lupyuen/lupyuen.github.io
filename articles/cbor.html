@@ -468,7 +468,7 @@ las_cmd_app_tx_cbor( ... ) {
 <p>(Our sensors are simulated for now)</p>
 <p>Watch how we encode “<code>t</code>” and “<code>l</code>” and transmit them…</p>
 <h2 id="encode-sensor-data" class="section-header"><a href="#encode-sensor-data">5.1 Encode Sensor Data</a></h2>
-<p>TODO</p>
+<p>This part looks super familiar: We initialise our <strong>CBOR Encoder and Map Encoder</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];
@@ -481,7 +481,7 @@ las_cmd_app_tx_cbor( ... ) {
 
   //  Create a Map Encoder that maps keys to values (2 pairs)
   CborError res = cbor_encoder_create_map( ... );</code></pre></div>
-<p>TODO</p>
+<p>Next we encode the <strong>Key and Value for “<code>t</code>”</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key (&quot;t&quot;)
   res = cbor_encode_text_stringz(
     &amp;mapEncoder,  //  Map Encoder
@@ -495,7 +495,7 @@ las_cmd_app_tx_cbor( ... ) {
     t             //  Value
   );
   assert(res == CborNoError);</code></pre></div>
-<p>TODO</p>
+<p>Then we encode the <strong>Key and Value for “<code>l</code>”</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Second Key-Value Pair: Map the Key (&quot;l&quot;)
   res = cbor_encode_text_stringz(
     &amp;mapEncoder,  //  Map Encoder
@@ -509,7 +509,7 @@ las_cmd_app_tx_cbor( ... ) {
     l             //  Value
   );
   assert(res == CborNoError);</code></pre></div>
-<p>TODO</p>
+<p>And we <strong>close the Map Encoder</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Close the Map Encoder
   res = cbor_encoder_close_container( ... );
 
