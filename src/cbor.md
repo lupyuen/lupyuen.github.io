@@ -656,17 +656,28 @@ Check out this article for the details...
 
 # Decode CBOR
 
-TODO
+_For decoding CBOR packets, can we call the TinyCBOR Library?_
 
-Cloud, Node.js, Go, Rust
+Sure, we can call the __Decoder Functions__ in the TinyCBOR Library...
 
-Lua
+-   [__TinyCBOR: Parsing CBOR streams__](https://intel.github.io/tinycbor/current/a00047.html)
 
--   [lupyuen/roblox-the-things-network](https://github.com/lupyuen/roblox-the-things-network)
+-   [__TinyCBOR: Converting CBOR to text__](https://intel.github.io/tinycbor/current/a00048.html)
+
+-   [__TinyCBOR: Converting CBOR to JSON__](https://intel.github.io/tinycbor/current/a00049.html)
+
+
+If we're transmitting CBOR packets to a server (or cloud), we can decode them with a __CBOR Library for Node.js, Go, Rust,__ ...
 
 -   [__CBOR Implementations__](https://cbor.io/impls.html)
 
--   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
+For Grafana we used a __Go Library for CBOR__...
+
+-   [__"Decode CBOR in Go"__](https://lupyuen.github.io/articles/grafana#decode-cbor-in-go)
+
+There's even a CBOR Library for __Roblox and Lua Scripting__...
+
+-   [__"Decode Base64 and CBOR in Roblox"__](https://github.com/lupyuen/roblox-the-things-network#decode-base64-and-cbor-in-roblox)
 
 # What's Next
 
