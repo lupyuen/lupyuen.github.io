@@ -673,7 +673,16 @@ cp build_out/pinedio_lorawan.bin ~/blflash</code></pre></div>
 </ol>
 <p>We assume that our Firmware Binary File <code>pinedio_lorawan.bin</code> has been copied to the <code>blflash</code> folder.</p>
 <p>Set BL602 / BL604 to <strong>Flashing Mode</strong> and restart the board…</p>
-<p><strong>For PineCone:</strong></p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>High</strong> <a href="https://lupyuen.github.io/images/pinedio-high.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
 <ol>
 <li>
 <p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
@@ -728,7 +737,16 @@ cargo run flash pinedio_lorawan.bin --port COM5</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-lorawan-firmware" class="section-header"><a href="#run-lorawan-firmware">11.3 Run LoRaWAN Firmware</a></h2>
 <p>Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
-<p><strong>For PineCone:</strong></p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>Low</strong> <a href="https://lupyuen.github.io/images/pinedio-low.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
 <ol>
 <li>
 <p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
@@ -764,11 +782,11 @@ cargo run flash pinedio_lorawan.bin --port COM5</code></pre></div>
 <p>Let’s enter some LoRaWAN Commands to join The Things Network and transmit a Data Packet!</p>
 <ol>
 <li>
-<p>Get the following from The Things Network: <strong>Device EUI, Application EUI and Application Key</strong>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/wisgate#lorawan-application"><strong>“LoRaWAN Application (ChirpStack)”</strong></a></li>
-</ul>
-<p>We shall use them in a while to join the LoRaWAN Network.</p>
+<p>Log on to The Things Network, browse to our Device and copy these values…</p>
+<p><strong>JoinEUI</strong> (Join Extended Unique Identifier)</p>
+<p><strong>DevEUI</strong> (Device Extended Unique Identifier)</p>
+<p><strong>AppKey</strong> (Application Key)</p>
+<p><a href="https://lupyuen.github.io/articles/ttn#join-device-to-the-things-network">(Instructions here)</a></p>
 </li>
 <li>
 <p>In the BL602 / BL604 terminal, press Enter to reveal the command prompt.</p>
