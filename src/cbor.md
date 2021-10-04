@@ -862,15 +862,15 @@ git submodule add https://github.com/lupyuen/tinycbor-bl602
 Edit the __Makefile__ for your project...
 
 ```text
-# Insert this line into the COMPONENTS block
+## Insert this line into the COMPONENTS block
 COMPONENTS_TINYCBOR := tinycbor-bl602
 ...
 
-# Insert this line into INCLUDE_COMPONENTS block
+## Insert this line into INCLUDE_COMPONENTS block
 INCLUDE_COMPONENTS += $(COMPONENTS_TINYCBOR)
 ...
 
-# This should appear after INCLUDE_COMPONENTS block
+## This should appear after INCLUDE_COMPONENTS block
 include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk
 ```
 
