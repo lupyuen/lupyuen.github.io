@@ -715,13 +715,13 @@ TODO
 
 # Appendix: LoRaWAN Firmware
 
-Here are the steps to build, flash and run the LoRaWAN Firmware for PineDio Stack BL604...
+Here are the steps to build, flash and run the __LoRaWAN Firmware for PineDio Stack BL604__...
 
 -   [__bl_iot_sdk/customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan)
 
 ## Build LoRaWAN Firmware
 
-Download the [LoRaWAN firmware and driver source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/pinedio_lorawan)...
+Download the [__LoRaWAN firmware and driver source code__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan)...
 
 ```bash
 ## Download the cbor branch of lupyuen's bl_iot_sdk
@@ -886,9 +886,9 @@ __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.githu
 
 ## Enter LoRaWAN Commands
 
-Let's enter some LoRaWAN Commands to join The Things Network and transmit a Data Packet!
+Let's enter the LoRaWAN Commands to join The Things Network and transmit a Data Packet!
 
-1.  Log on to The Things Network, browse to our Device and copy these values...
+1.  Log on to __The Things Network__. Browse to our Device and copy these values...
 
     __JoinEUI__ (Join Extended Unique Identifier)
 
