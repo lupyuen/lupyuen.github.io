@@ -506,8 +506,7 @@ Our CBOR Encoding happens inside this LoRaWAN Function: [pinedio_lorawan/lorawan
 /// Will transmit the CBOR payload
 ///   { "t": 1234, "l": 2345 }
 /// To port 2, unconfirmed (0).
-void
-las_cmd_app_tx_cbor( ... ) {
+void las_cmd_app_tx_cbor( ... ) {
   ...
   //  Get the "t" value from command args
   uint16_t t = parse_ull_bounds(argv[3], 0, 65535, &rc);
@@ -589,7 +588,9 @@ And we __close the Map Encoder__...
 
 ## Send LoRaWAN Packet
 
-TODO
+We're ready to transmit our encoded Sensor Data!
+
+First we __allocate a Packet Buffer__ for our LoRaWAN Packet...
 
 ```c
   //  Validate the output size
@@ -600,7 +601,7 @@ TODO
   if (!om) { return; }  //  Unable to allocate Packet Buffer
 ```
 
-TODO
+Next we __copy our encoded Sensor Data__ into the Packet Buffer...
 
 ```c
   //  Copy the encoded CBOR into the Packet Buffer
@@ -608,7 +609,7 @@ TODO
   assert(rc == 0);
 ```
 
-TODO
+Finally we __transmit the Packet Buffer__...
 
 ```c
   //  Send the Packet Buffer
@@ -617,9 +618,9 @@ TODO
   //  Omitted: Check the return code
 ```
 
-TODO
+That's how we encode Sensor Data and transmit over LoRaWAN!
 
-![](https://lupyuen.github.io/images/cbor-code3.png)
+![Encoding Sensor Data and transmitting over LoRaWAN](https://lupyuen.github.io/images/cbor-code3.png)
 
 ## CBOR In Action
 
