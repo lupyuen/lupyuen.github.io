@@ -626,7 +626,7 @@ That's how we encode Sensor Data and transmit over LoRaWAN!
 
 Follow the instructions in the Appendix to __build, flash and run__ the LoRaWAN Firmware.
 
-At the BL602 / BL604 Command Prompt, enter this command
+At the BL602 / BL604 Command Prompt, enter this command...
 
 ```bash
 las_app_tx_cbor 2 0 1234 2345
@@ -634,19 +634,23 @@ las_app_tx_cbor 2 0 1234 2345
 
 This means...
 
-1.  Transmit a LoRaWAN Packet to __Port 2__
+-   Transmit a LoRaWAN Packet to __Port 2__
 
-1.  That contains the values __`t=1234`__ (Temperature), __`l=2345`__ (Light Level)
+-   That contains the values __`t=1234`__ (Temperature), __`l=2345`__ (Light Level)
 
-1.  `0` means that this is an __Unconfirmed Message__
+-   `0` means that this is an __Unconfirmed Message__
 
     (Because we're not expecting an acknowledgement)
 
-TODO
+Our Sensor Data has been transmitted via LoRaWAN to The Things Network!
 
-![](https://lupyuen.github.io/images/cbor-grafana.jpg)
+_How do we see the Sensor Data in The Things Network?_
 
-TODO
+We could use __Grafana__, the open source tool for data visualisation...
+
+![Sensor Data visualised with Grafana](https://lupyuen.github.io/images/cbor-grafana.jpg)
+
+Check out this article for the details...
 
 -   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
 
@@ -655,6 +659,10 @@ TODO
 TODO
 
 Cloud, Node.js, Go, Rust
+
+Lua
+
+-   [lupyuen/roblox-the-things-network](https://github.com/lupyuen/roblox-the-things-network)
 
 -   [__CBOR Implementations__](https://cbor.io/impls.html)
 
