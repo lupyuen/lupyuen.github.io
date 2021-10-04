@@ -701,11 +701,148 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1441626008931602433)
 
-# Appendix: Build And Run CBOR Firmware
+# Appendix: CBOR Firmware
 
-TODO
+Here are the steps to build, flash and run the __CBOR Firmware for BL602 and BL604__...
 
 -   [__bl_iot_sdk/customer_app/pinedio_cbor__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
+
+(If you wish to add the TinyCBOR Library to an existing BL602 / BL604 project, check the next chapter)
+
+## Build CBOR Firmware
+
+Download the firmware...
+
+```bash
+## Download the cbor branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch cbor https://github.com/lupyuen/bl_iot_sdk
+```
+
+Build the Firmware Binary File `pinedio_cbor.bin`...
+
+```bash
+## TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+
+cd bl_iot_sdk/customer_app/pinedio_cbor
+make
+
+## TODO: Change ~/blflash to the full path of blflash
+cp build_out/pinedio_cbor.bin ~/blflash
+```
+
+[More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
+
+(Remember to use the __`cbor`__ branch, not the default __`master`__ branch)
+
+## Flash CBOR Firmware
+
+Follow these steps to install `blflash`...
+
+1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
+
+1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+
+We assume that our Firmware Binary File `pinedio_cbor.bin` has been copied to the `blflash` folder.
+
+Set BL602 / BL604 to __Flashing Mode__ and restart the board...
+
+__For PineDio Stack BL604:__
+
+1.  Set the __GPIO 8 Jumper__ to __High__ [(Like this)](https://lupyuen.github.io/images/pinedio-high.jpg)
+
+1.  Press the Reset Button
+
+__For PineCone BL602:__
+
+1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Connect BL10 to the USB port
+
+1.  Press and hold the __D8 Button (GPIO 8)__
+
+1.  Press and release the __EN Button (Reset)__
+
+1.  Release the D8 Button
+
+__For Pinenut and MagicHome BL602:__
+
+1.  Disconnect the board from the USB Port
+
+1.  Connect __GPIO 8__ to __3.3V__
+
+1.  Reconnect the board to the USB port
+
+Enter these commands to flash `pinedio_cbor.bin` to BL602 / BL604 over UART...
+
+```bash
+## TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+## For Linux:
+sudo cargo run flash pinedio_cbor.bin \
+    --port /dev/ttyUSB0
+
+## For macOS:
+cargo run flash pinedio_cbor.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+## For Windows: Change COM5 to the BL602 / BL604 Serial Port
+cargo run flash pinedio_cbor.bin --port COM5
+```
+
+[More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+## Run CBOR Firmware
+
+Set BL602 / BL604 to __Normal Mode__ (Non-Flashing) and restart the board...
+
+__For PineDio Stack BL604:__
+
+1.  Set the __GPIO 8 Jumper__ to __Low__ [(Like this)](https://lupyuen.github.io/images/pinedio-low.jpg)
+
+1.  Press the Reset Button
+
+__For PineCone BL602:__
+
+1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Press and release the __EN Button (Reset)__
+
+__For Pinenut and MagicHome BL602:__
+
+1.  Disconnect the board from the USB Port
+
+1.  Connect __GPIO 8__ to __GND__
+
+1.  Reconnect the board to the USB port
+
+After restarting, connect to BL602 / BL604's UART Port at 2 Mbps like so...
+
+__For Linux:__
+
+```bash
+sudo screen /dev/ttyUSB0 2000000
+```
+
+__For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+[More details on connecting to BL602 / BL604](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
 # Appendix: Add TinyCBOR To Your Project
 
