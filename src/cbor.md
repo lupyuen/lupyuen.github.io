@@ -524,7 +524,7 @@ Watch how we encode "`t`" and "`l`" and transmit them...
 
 ## Encode Sensor Data
 
-TODO
+This part looks super familiar: We initialise our __CBOR Encoder and Map Encoder__...
 
 ```c
   //  Encode into CBOR for { "t": ????, "l": ???? }
@@ -541,7 +541,7 @@ TODO
   CborError res = cbor_encoder_create_map( ... );
 ```
 
-TODO
+Next we encode the __Key and Value for "`t`"__...
 
 ```c
   //  First Key-Value Pair: Map the Key ("t")
@@ -559,7 +559,7 @@ TODO
   assert(res == CborNoError);
 ```
 
-TODO
+Then we encode the __Key and Value for "`l`"__...
 
 ```c
   //  Second Key-Value Pair: Map the Key ("l")
@@ -577,7 +577,7 @@ TODO
   assert(res == CborNoError);
 ```
 
-TODO
+And we __close the Map Encoder__...
 
 ```c
   //  Close the Map Encoder
