@@ -456,8 +456,7 @@ static void test_cbor2( ... ) {
 /// Will transmit the CBOR payload
 ///   { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
 /// To port 2, unconfirmed (0).
-void
-las_cmd_app_tx_cbor( ... ) {
+void las_cmd_app_tx_cbor( ... ) {
   ...
   //  Get the &quot;t&quot; value from command args
   uint16_t t = parse_ull_bounds(argv[3], 0, 65535, &amp;rc);
@@ -515,24 +514,25 @@ las_cmd_app_tx_cbor( ... ) {
 
   //  How many bytes were encoded
   size_t output_len = cbor_encoder_get_buffer_size( ... );</code></pre></div><h2 id="send-lorawan-packet" class="section-header"><a href="#send-lorawan-packet">5.2 Send LoRaWAN Packet</a></h2>
-<p>TODO</p>
+<p>We’re ready to transmit our encoded Sensor Data!</p>
+<p>First we <strong>allocate a Packet Buffer</strong> for our LoRaWAN Packet…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Validate the output size
   if (lora_app_mtu() &lt; output_len) { return; }  //  Output too big
 
   //  Attempt to allocate a Packet Buffer
   struct pbuf *om = lora_pkt_alloc(output_len);
   if (!om) { return; }  //  Unable to allocate Packet Buffer</code></pre></div>
-<p>TODO</p>
+<p>Next we <strong>copy our encoded Sensor Data</strong> into the Packet Buffer…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Copy the encoded CBOR into the Packet Buffer
   rc = pbuf_copyinto(om, 0, output, output_len);
   assert(rc == 0);</code></pre></div>
-<p>TODO</p>
+<p>Finally we <strong>transmit the Packet Buffer</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Send the Packet Buffer
   rc = lora_app_port_send(port, mcps_type, om);
 
   //  Omitted: Check the return code</code></pre></div>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/cbor-code3.png" alt="" /></p>
+<p>That’s how we encode Sensor Data and transmit over LoRaWAN!</p>
+<p><img src="https://lupyuen.github.io/images/cbor-code3.png" alt="Encoding Sensor Data and transmitting over LoRaWAN" /></p>
 <h2 id="cbor-in-action" class="section-header"><a href="#cbor-in-action">5.3 CBOR In Action</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1234 2345</code></pre></div>
