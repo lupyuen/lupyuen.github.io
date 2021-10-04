@@ -622,12 +622,12 @@ void las_cmd_app_tx_cbor( ... ) {
 <li><a href="https://github.com/lupyuen/tinycbor-bl602"><strong>lupyuen/tinycbor-bl602</strong></a></li>
 </ul>
 <h1 id="appendix-lorawan-firmware" class="section-header"><a href="#appendix-lorawan-firmware">11 Appendix: LoRaWAN Firmware</a></h1>
-<p>Here are the steps to build, flash and run the LoRaWAN Firmware for PineDio Stack BL604…</p>
+<p>Here are the steps to build, flash and run the <strong>LoRaWAN Firmware for PineDio Stack BL604</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan"><strong>bl_iot_sdk/customer_app/pinedio_lorawan</strong></a></li>
 </ul>
 <h2 id="build-lorawan-firmware" class="section-header"><a href="#build-lorawan-firmware">11.1 Build LoRaWAN Firmware</a></h2>
-<p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/pinedio_lorawan">LoRaWAN firmware and driver source code</a>…</p>
+<p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan"><strong>LoRaWAN firmware and driver source code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the cbor branch of lupyuen&#39;s bl_iot_sdk
 git clone --recursive --branch cbor https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
 <p>In the <code>customer_app/pinedio_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/pinedio_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
@@ -779,10 +779,10 @@ cargo run flash pinedio_lorawan.bin --port COM5</code></pre></div>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602 / BL604</a></p>
 <h2 id="enter-lorawan-commands" class="section-header"><a href="#enter-lorawan-commands">11.4 Enter LoRaWAN Commands</a></h2>
-<p>Let’s enter some LoRaWAN Commands to join The Things Network and transmit a Data Packet!</p>
+<p>Let’s enter the LoRaWAN Commands to join The Things Network and transmit a Data Packet!</p>
 <ol>
 <li>
-<p>Log on to The Things Network, browse to our Device and copy these values…</p>
+<p>Log on to <strong>The Things Network</strong>. Browse to our Device and copy these values…</p>
 <p><strong>JoinEUI</strong> (Join Extended Unique Identifier)</p>
 <p><strong>DevEUI</strong> (Device Extended Unique Identifier)</p>
 <p><strong>AppKey</strong> (Application Key)</p>
