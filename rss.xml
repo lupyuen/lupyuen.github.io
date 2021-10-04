@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Encode Sensor Data with CBOR on BL602</title>
+            <link>https://lupyuen.github.io/articles/cbor</link>
+            <description><![CDATA[How we compress Sensor Data with CBOR... And transmit over LoRaWAN on the BL602 / BL604 RISC-V SoC]]></description>
+            <guid>https://lupyuen.github.io/articles/cbor</guid>
+            <pubDate>Tue, 05 Oct 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Grafana Data Source for The Things Network</title>
             <link>https://lupyuen.github.io/articles/grafana</link>
             <description><![CDATA[How we visualise Sensor Data from The Things Network... With a Custom MQTT Data Source in Grafana]]></description>
