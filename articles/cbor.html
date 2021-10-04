@@ -763,12 +763,15 @@ cargo run flash pinedio_cbor.bin --port COM5</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>cd bl_iot_sdk/components/3rdparty
 git submodule add https://github.com/lupyuen/tinycbor-bl602</code></pre></div>
 <p>Edit the <strong>Makefile</strong> for your project…</p>
-<div class="example-wrap"><pre class="language-text"><code>COMPONENTS_TINYCBOR := tinycbor-bl602
+<div class="example-wrap"><pre class="language-text"><code># Insert this line into the COMPONENTS block
+COMPONENTS_TINYCBOR := tinycbor-bl602
 ...
 
+# Insert this line into INCLUDE_COMPONENTS block
 INCLUDE_COMPONENTS += $(COMPONENTS_TINYCBOR)
 ...
 
+# This should appear after INCLUDE_COMPONENTS block
 include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/Makefile#L21-L36">(See a sample Makefile)</a></p>
 <h1 id="appendix-build-and-run-lorawan-firmware" class="section-header"><a href="#appendix-build-and-run-lorawan-firmware">11 Appendix: Build and Run LoRaWAN Firmware</a></h1>
