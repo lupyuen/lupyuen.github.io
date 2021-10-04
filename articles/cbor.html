@@ -12,7 +12,7 @@
     content="Encode Sensor Data with CBOR on BL602" 
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="How we compress Sensor Data with CBOR... And transmit over LoRaWAN on the BL602 / BL604 RISC-V SoC"
     data-rh="true">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/cbor-title.jpg">
@@ -101,7 +101,7 @@
 <li><a href="#flash-lorawan-firmware">11.2 Flash LoRaWAN Firmware</a><ul></ul></li>
 <li><a href="#run-lorawan-firmware">11.3 Run LoRaWAN Firmware</a><ul></ul></li>
 <li><a href="#enter-lorawan-commands">11.4 Enter LoRaWAN Commands</a><ul></ul></li></ul></li>
-<li><a href="#appendix-porting-tinycbor-to-bl602">12 Appendix: Porting TinyCBOR to BL602</a><ul></ul></li></ul></nav><p>📝 <em>6 Oct 2021</em></p>
+<li><a href="#appendix-porting-tinycbor-to-bl602">12 Appendix: Porting TinyCBOR to BL602</a><ul></ul></li></ul></nav><p>📝 <em>5 Oct 2021</em></p>
 <p>Suppose we’re creating an IoT Gadget that transmits <strong>Sensor Data</strong> from a <strong>Temperature Sensor</strong> and a <strong>Light Sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
@@ -223,7 +223,10 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
 <p><img src="https://lupyuen.github.io/images/cbor-code.png" alt="Calling the TinyCBOR Library" /></p>
 </blockquote>
 <h2 id="magic-happens" class="section-header"><a href="#magic-happens">1.6 Magic Happens</a></h2>
-<p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the firmware.</p>
+<p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the CBOR Firmware…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware"><strong>“Build and Run CBOR Firmware”</strong></a></li>
+</ul>
 <p>At the BL602 / BL604 Command Prompt, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>test_cbor</code></pre></div>
 <p>We’ll see 6 bytes of <strong>Encoded CBOR Output</strong>…</p>
@@ -332,7 +335,10 @@ static void test_cbor2( ... ) {
 <p><img src="https://lupyuen.github.io/images/cbor-code2.png" alt="Add a second field" /></p>
 </blockquote>
 <h2 id="watch-the-magic" class="section-header"><a href="#watch-the-magic">2.4 Watch the Magic</a></h2>
-<p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the firmware.</p>
+<p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the CBOR Firmware…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware"><strong>“Build and Run CBOR Firmware”</strong></a></li>
+</ul>
 <p>At the BL602 / BL604 Command Prompt, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>test_cbor2</code></pre></div>
 <p>This time we’ll see 11 bytes of <strong>Encoded CBOR Output</strong>…</p>
@@ -350,6 +356,10 @@ static void test_cbor2( ... ) {
   0x29</code></pre></div>
 <p>We have just compressed <strong>19 bytes of JSON</strong> into <strong>11 bytes of CBOR</strong>.</p>
 <p><strong>8 bytes</strong> saved!</p>
+<p>If we wish to call TinyCBOR from an existing BL602 / BL604 project, check the Appendix…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor#appendix-add-tinycbor-to-your-project"><strong>“Add TinyCBOR to Your Project”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/cbor-title.jpg" alt="Encoding Sensor Data with CBOR on BL602" /></p>
 <h1 id="cbor-data-types" class="section-header"><a href="#cbor-data-types">3 CBOR Data Types</a></h1>
 <p><em>We’ve been encoding 64-bit Signed Integers. What other Data Types can we encode?</em></p>
@@ -541,7 +551,10 @@ void las_cmd_app_tx_cbor( ... ) {
 <p>That’s how we encode Sensor Data and transmit over LoRaWAN!</p>
 <p><img src="https://lupyuen.github.io/images/cbor-code3.png" alt="Encoding Sensor Data and transmitting over LoRaWAN" /></p>
 <h2 id="cbor-in-action" class="section-header"><a href="#cbor-in-action">5.3 CBOR In Action</a></h2>
-<p>Follow the instructions in the Appendix to <strong>build, flash and run</strong> the LoRaWAN Firmware.</p>
+<p>Follow the instructions in the Appendix to <strong>build, flash and run</strong> the LoRaWAN Firmware…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></li>
+</ul>
 <p>At the BL602 / BL604 Command Prompt, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1234 2345</code></pre></div>
 <p>This means…</p>
@@ -592,7 +605,9 @@ void las_cmd_app_tx_cbor( ... ) {
 <li><a href="https://github.com/lupyuen/roblox-the-things-network#decode-base64-and-cbor-in-roblox"><strong>“Decode Base64 and CBOR in Roblox”</strong></a></li>
 </ul>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
-<p>TODO</p>
+<p>For the next article we shall take a quick detour and explore PineDio Stack transmitting data to <strong>Roblox via The Things Network</strong>.</p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1443824711050301444">(Follow this Twitter Thread for updates)</a></p>
+<p>Then we shall head back to BL602 and BL604 and transmit BL602 / BL604’s <strong>Internal Temperature Sensor Data</strong> to The Things Network.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -619,7 +634,7 @@ void las_cmd_app_tx_cbor( ... ) {
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>bl_iot_sdk/customer_app/pinedio_cbor</strong></a></li>
 </ul>
-<p>(If you wish to add the TinyCBOR Library to an existing BL602 / BL604 project, check the next chapter)</p>
+<p>(If we wish to add the TinyCBOR Library to an existing BL602 / BL604 project, check the next chapter)</p>
 <h2 id="build-cbor-firmware" class="section-header"><a href="#build-cbor-firmware">9.1 Build CBOR Firmware</a></h2>
 <p>Download the firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the cbor branch of lupyuen&#39;s bl_iot_sdk
@@ -758,11 +773,11 @@ cargo run flash pinedio_cbor.bin --port COM5</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/tinycbor-bl602"><strong>lupyuen/tinycbor-bl602</strong></a></li>
 </ul>
-<p>We assume you have an existing <strong>bl_iot_sdk</strong> folder.</p>
+<p>We assume there’s an existing <strong>bl_iot_sdk</strong> folder.</p>
 <p>Add <strong>tinycbor-bl602</strong> as a submodule under <strong>bl_iot_sdk/components/3rdparty</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd bl_iot_sdk/components/3rdparty
 git submodule add https://github.com/lupyuen/tinycbor-bl602</code></pre></div>
-<p>Edit the <strong>Makefile</strong> for your project…</p>
+<p>Edit the <strong>Makefile</strong> for our project…</p>
 <div class="example-wrap"><pre class="language-text"><code># Insert this line into the COMPONENTS block
 COMPONENTS_TINYCBOR := tinycbor-bl602
 ...
@@ -774,6 +789,10 @@ INCLUDE_COMPONENTS += $(COMPONENTS_TINYCBOR)
 # This should appear after INCLUDE_COMPONENTS block
 include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/Makefile#L21-L36">(See a sample Makefile)</a></p>
+<p>Include <strong>“cbor.h”</strong> in our source file…</p>
+<div class="example-wrap"><pre class="language-c"><code>#include &quot;cbor.h&quot;  //  For Tiny CBOR Library</code></pre></div>
+<p>And start coding with TinyCBOR!</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c">(See a sample source file)</a></p>
 <h1 id="appendix-build-and-run-lorawan-firmware" class="section-header"><a href="#appendix-build-and-run-lorawan-firmware">11 Appendix: Build and Run LoRaWAN Firmware</a></h1>
 <p>Here are the steps to build, flash and run the <strong>LoRaWAN Firmware for PineDio Stack BL604</strong>…</p>
 <ul>
@@ -1010,16 +1029,16 @@ cargo run flash pinedio_lorawan.bin --port COM5</code></pre></div>
 <p>Below are the fixes we made while porting the TinyCBOR library to BL602 / BL604…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/tinycbor-bl602/commit/971dca84b0b036a4ed44aa808e6eb18033161170">Fix fall through</a></p>
+<p><a href="https://github.com/lupyuen/tinycbor-bl602/commit/971dca84b0b036a4ed44aa808e6eb18033161170">“Fix fall through”</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/tinycbor-bl602/commit/c32bbc7696a54578f050467f1e182f4fd0f9bb9a">Fix RetType, LenType</a></p>
+<p><a href="https://github.com/lupyuen/tinycbor-bl602/commit/c32bbc7696a54578f050467f1e182f4fd0f9bb9a">“Fix RetType, LenType”</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/tinycbor-bl602/commit/65f857a3f2c8f0169ff215047fbcf7cd956eb55a">Fix open_memstream</a></p>
+<p><a href="https://github.com/lupyuen/tinycbor-bl602/commit/65f857a3f2c8f0169ff215047fbcf7cd956eb55a">“Fix open_memstream”</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/tinycbor-bl602/commit/0594d2f29646f65db22a60102d25c7aa675e9cae">Don’t use memstream</a></p>
+<p><a href="https://github.com/lupyuen/tinycbor-bl602/commit/0594d2f29646f65db22a60102d25c7aa675e9cae">“Don’t use memstream”</a></p>
 </li>
 </ul>
 
