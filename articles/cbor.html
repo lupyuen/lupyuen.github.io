@@ -534,8 +534,23 @@ void las_cmd_app_tx_cbor( ... ) {
 <p>That’s how we encode Sensor Data and transmit over LoRaWAN!</p>
 <p><img src="https://lupyuen.github.io/images/cbor-code3.png" alt="Encoding Sensor Data and transmitting over LoRaWAN" /></p>
 <h2 id="cbor-in-action" class="section-header"><a href="#cbor-in-action">5.3 CBOR In Action</a></h2>
-<p>TODO</p>
+<p>Follow the instructions in the Appendix to <strong>build, flash and run</strong> the LoRaWAN Firmware.</p>
+<p>At the BL602 / BL604 Command Prompt, enter this command</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1234 2345</code></pre></div>
+<p>This means…</p>
+<ol>
+<li>
+<p>Transmit a LoRaWAN Packet to <strong>Port 2</strong></p>
+</li>
+<li>
+<p>That contains the values <strong><code>t=1234</code></strong> (Temperature), <strong><code>l=2345</code></strong> (Light Level)</p>
+</li>
+<li>
+<p><code>0</code> means that this is an <strong>Unconfirmed Message</strong></p>
+<p>(Because we’re not expecting an acknowledgement)</p>
+</li>
+</ol>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/cbor-grafana.jpg" alt="" /></p>
 <p>TODO</p>
 <ul>
