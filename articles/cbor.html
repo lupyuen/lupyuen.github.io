@@ -450,9 +450,7 @@ static void test_cbor2( ... ) {
 <p><em>PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)</em></p>
 <h1 id="lorawan-with-cbor" class="section-header"><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a></h1>
 <p>Let’s watch CBOR in action on a real wireless network… As <a href="https://lupyuen.github.io/articles/lorawan2"><strong>PineDio Stack BL604</strong></a> talks to <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network over LoRaWAN</strong></a>!</p>
-<h2 id="encode-sensor-data" class="section-header"><a href="#encode-sensor-data">5.1 Encode Sensor Data</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
+<p>Our CBOR Encoding happens inside this LoRaWAN Function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Transmit CBOR payload to LoRaWAN. The command
 ///   las_app_tx_cbor 2 0 1234 2345
 /// Will transmit the CBOR payload
@@ -466,6 +464,10 @@ las_cmd_app_tx_cbor( ... ) {
     
   //  Get the &quot;l&quot; value from command args
   uint16_t l = parse_ull_bounds(argv[4], 0, 65535, &amp;rc);</code></pre></div>
+<p>In the code above we get the values of <strong>“<code>t</code>”</strong> (Temperature Sensor) and <strong>“<code>l</code>”</strong> (Light Sensor) from the command line arguments.</p>
+<p>(Our sensors are simulated for now)</p>
+<p>Watch how we encode “<code>t</code>” and “<code>l</code>” and transmit them…</p>
+<h2 id="encode-sensor-data" class="section-header"><a href="#encode-sensor-data">5.1 Encode Sensor Data</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
   //  Max output size is 50 bytes (which fits in a LoRa packet)
