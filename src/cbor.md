@@ -891,7 +891,7 @@ Download the [__LoRaWAN firmware and driver source code__](https://github.com/lu
 git clone --recursive --branch cbor https://github.com/lupyuen/bl_iot_sdk
 ```
 
-In the `customer_app/pinedio_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/pinedio_lorawan/Makefile) and find this setting...
+In the `customer_app/pinedio_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/Makefile) and find this setting...
 
 ```text
 CFLAGS += -DCONFIG_LORA_NODE_REGION=1
