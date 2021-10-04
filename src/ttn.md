@@ -359,11 +359,15 @@ At the PineDio Stack Command Prompt, enter these commands to __join PineDio Stac
     create_task
     ```
 
+    [(`create_task` is explained here)](https://lupyuen.github.io/articles/lora2#event-queue)
+
 1.  Next we initialise the __LoRa SX1262 and LoRaWAN Drivers__...
 
     ```bash
     init_lorawan
     ```
+
+    [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L168-L174)
 
 1.  Set the __DevEUI__...
 
@@ -401,7 +405,9 @@ At the PineDio Stack Command Prompt, enter these commands to __join PineDio Stac
     las_join 1
     ```
 
-    ("`1`" means try only once)
+    "`1`" means try only once.
+
+    [(`las_join` is explained here)](https://lupyuen.github.io/articles/lorawan#join-network-request)
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 
@@ -429,7 +435,9 @@ At the PineDio Stack Command Prompt, enter these commands...
     las_app_port open 2
     ```
 
-    ("`2`" is the Application Port Number)
+    "`2`" is the Application Port Number
+
+    [(`las_app_port` is explained here)](https://lupyuen.github.io/articles/lorawan#open-lorawan-port)
 
 1.  Then we __send a Data Packet__ containing 5 bytes of data (`0x00`) to The Things Network at Port 2...
 
@@ -438,6 +446,10 @@ At the PineDio Stack Command Prompt, enter these commands...
     ```
 
     ("`0`" means that this is an Unconfirmed Message, we're not expecting an acknowledgement from The Things Network)
+
+    [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
+
+    [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 

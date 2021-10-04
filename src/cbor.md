@@ -715,9 +715,264 @@ TODO
 
 # Appendix: LoRaWAN Firmware
 
-TODO
+Here are the steps to build, flash and run the LoRaWAN Firmware for PineDio Stack BL604...
 
 -   [__bl_iot_sdk/customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan)
+
+## Build LoRaWAN Firmware
+
+Download the [LoRaWAN firmware and driver source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/pinedio_lorawan)...
+
+```bash
+## Download the cbor branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch cbor https://github.com/lupyuen/bl_iot_sdk
+```
+
+In the `customer_app/pinedio_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/pinedio_lorawan/Makefile) and find this setting...
+
+```text
+CFLAGS += -DCONFIG_LORA_NODE_REGION=1
+```
+
+Change "`1`" to your LoRa Region...
+
+| Value | Region 
+| :---  | :---
+| 0 | No region
+| 1 | AS band on 923MHz
+| 2 | Australian band on 915MHz
+| 3 | Chinese band on 470MHz
+| 4 | Chinese band on 779MHz
+| 5 | European band on 433MHz
+| 6 | European band on 868MHz
+| 7 | South Korean band on 920MHz
+| 8 | India band on 865MHz
+| 9 | North American band on 915MHz
+| 10 | North American band on 915MHz with a maximum of 16 channels
+
+The __GPIO Pin Numbers__ for LoRa SX1262 are defined in...
+
+```text
+components/3rdparty/lora-sx1262/include/sx126x-board.h
+```
+
+They have been configured for PineDio Stack. (So no changes needed)
+
+Build the Firmware Binary File `pinedio_lorawan.bin`...
+
+```bash
+## TODO: Change this to the full path of bl_iot_sdk
+export BL60X_SDK_PATH=$HOME/bl_iot_sdk
+export CONFIG_CHIP_NAME=BL602
+
+cd bl_iot_sdk/customer_app/pinedio_lorawan
+make
+
+## TODO: Change ~/blflash to the full path of blflash
+cp build_out/pinedio_lorawan.bin ~/blflash
+```
+
+[More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
+
+(Remember to use the __`cbor`__ branch, not the default __`master`__ branch)
+
+## Flash LoRaWAN Firmware
+
+Follow these steps to install `blflash`...
+
+1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
+
+1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+
+We assume that our Firmware Binary File `pinedio_lorawan.bin` has been copied to the `blflash` folder.
+
+Set BL602 / BL604 to __Flashing Mode__ and restart the board...
+
+__For PineCone:__
+
+1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Connect BL10 to the USB port
+
+1.  Press and hold the __D8 Button (GPIO 8)__
+
+1.  Press and release the __EN Button (Reset)__
+
+1.  Release the D8 Button
+
+__For Pinenut and MagicHome BL602:__
+
+1.  Disconnect the board from the USB Port
+
+1.  Connect __GPIO 8__ to __3.3V__
+
+1.  Reconnect the board to the USB port
+
+Enter these commands to flash `pinedio_lorawan.bin` to BL602 / BL604 over UART...
+
+```bash
+## TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+## For Linux:
+sudo cargo run flash pinedio_lorawan.bin \
+    --port /dev/ttyUSB0
+
+## For macOS:
+cargo run flash pinedio_lorawan.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+## For Windows: Change COM5 to the BL602 / BL604 Serial Port
+cargo run flash pinedio_lorawan.bin --port COM5
+```
+
+[More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+## Run LoRaWAN Firmware
+
+Set BL602 / BL604 to __Normal Mode__ (Non-Flashing) and restart the board...
+
+__For PineCone:__
+
+1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Press and release the __EN Button (Reset)__
+
+__For Pinenut and MagicHome BL602:__
+
+1.  Disconnect the board from the USB Port
+
+1.  Connect __GPIO 8__ to __GND__
+
+1.  Reconnect the board to the USB port
+
+After restarting, connect to BL602 / BL604's UART Port at 2 Mbps like so...
+
+__For Linux:__
+
+```bash
+sudo screen /dev/ttyUSB0 2000000
+```
+
+__For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+[More details on connecting to BL602 / BL604](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+## Enter LoRaWAN Commands
+
+Let's enter some LoRaWAN Commands to join The Things Network and transmit a Data Packet!
+
+1.  Get the following from The Things Network: __Device EUI, Application EUI and Application Key__...
+
+    -   [__"LoRaWAN Application (ChirpStack)"__](https://lupyuen.github.io/articles/wisgate#lorawan-application)
+
+    We shall use them in a while to join the LoRaWAN Network.
+
+1.  In the BL602 / BL604 terminal, press Enter to reveal the command prompt.
+
+1.  First we start the __Background Task__ that will handle LoRa packets...
+
+    Enter this command...
+
+    ```text
+    create_task
+    ```
+
+    [(`create_task` is explained here)](https://lupyuen.github.io/articles/lora2#event-queue)
+
+1.  Next we initialise the __LoRa SX1262 and LoRaWAN Drivers__...
+
+    ```bash
+    init_lorawan
+    ```
+
+    [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L168-L174)
+
+1.  Set the __DevEUI__...
+
+    ```bash
+    las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
+    ```
+
+    Change "`0xAB:0xBA:...`" to your __DevEUI__
+
+    (Remember to change the __"`,`"__ delimiter to __"`:`"__)
+
+1.  Set the __JoinEUI__...
+
+    ```bash
+    las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
+    ```
+
+    Change "`0x00:0x00:...`" to your __JoinEUI__
+
+    (Yep change the __"`,`"__ delimiter to __"`:`"__)
+
+1.  Set the __AppKey__...
+
+    ```bash
+    las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
+    ```
+
+    Change "`0xAB:0xBA:...`" to your __AppKey__
+
+    (Again change __"`,`"__ to __"`:`"__)
+    
+1.  We send a request to __join The Things Network__...
+
+    ```bash
+    las_join 1
+    ```
+
+    "`1`" means try only once.
+
+    [(`las_join` is explained here)](https://lupyuen.github.io/articles/lorawan#join-network-request)
+
+1.  We open an __Application Port__ that will connect to The Things Network...
+
+    ```bash
+    las_app_port open 2
+    ```
+
+    "`2`" is the Application Port Number
+
+    [(`las_app_port` is explained here)](https://lupyuen.github.io/articles/lorawan#open-lorawan-port)
+
+1.  Finally we __send a data packet to The Things Network__ over LoRaWAN...
+
+    ```bash
+    las_app_tx_cbor 2 0 1234 2345
+    ```
+
+    This means...
+
+    -   Transmit a LoRaWAN Packet to __Port 2__
+
+    -   That contains the values __`t=1234`__ (Temperature), __`l=2345`__ (Light Level)
+
+    -   `0` means that this is an __Unconfirmed Message__
+
+        (Because we're not expecting an acknowledgement)
+
+    Our Sensor Data has been transmitted via LoRaWAN to The Things Network!
+
+    [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
+
+    [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
 
 # Appendix: Porting TinyCBOR To BL602
 
