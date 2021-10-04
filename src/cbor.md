@@ -498,11 +498,7 @@ _PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via
 
 Let's watch CBOR in action on a real wireless network... As [__PineDio Stack BL604__](https://lupyuen.github.io/articles/lorawan2) talks to [__The Things Network over LoRaWAN__](https://lupyuen.github.io/articles/ttn)!
 
-## Encode Sensor Data
-
-TODO
-
-From [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050)
+Our CBOR Encoding happens inside this LoRaWAN Function: [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050)
 
 ```c
 /// Transmit CBOR payload to LoRaWAN. The command
@@ -519,6 +515,14 @@ las_cmd_app_tx_cbor( ... ) {
   //  Get the "l" value from command args
   uint16_t l = parse_ull_bounds(argv[4], 0, 65535, &rc);
 ```
+
+In the code above we get the values of __"`t`"__ (Temperature Sensor) and __"`l`"__ (Light Sensor) from the command line arguments.
+
+(Our sensors are simulated for now)
+
+Watch how we encode "`t`" and "`l`" and transmit them...
+
+## Encode Sensor Data
 
 TODO
 
