@@ -624,11 +624,25 @@ That's how we encode Sensor Data and transmit over LoRaWAN!
 
 ## CBOR In Action
 
-TODO
+Follow the instructions in the Appendix to __build, flash and run__ the LoRaWAN Firmware.
+
+At the BL602 / BL604 Command Prompt, enter this command
 
 ```bash
 las_app_tx_cbor 2 0 1234 2345
 ```
+
+This means...
+
+1.  Transmit a LoRaWAN Packet to __Port 2__
+
+1.  That contains the values __`t=1234`__ (Temperature), __`l=2345`__ (Light Level)
+
+1.  `0` means that this is an __Unconfirmed Message__
+
+    (Because we're not expecting an acknowledgement)
+
+TODO
 
 ![](https://lupyuen.github.io/images/cbor-grafana.jpg)
 
