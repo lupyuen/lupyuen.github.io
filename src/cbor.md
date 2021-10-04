@@ -701,7 +701,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1441626008931602433)
 
-# Appendix: CBOR Firmware
+# Appendix: Build and Run CBOR Firmware
 
 Here are the steps to build, flash and run the __CBOR Firmware for BL602 and BL604__...
 
@@ -844,13 +844,39 @@ __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.githu
 
 [More details on connecting to BL602 / BL604](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
-# Appendix: Add TinyCBOR To Your Project
+# Appendix: Add TinyCBOR to Your Project
 
-TODO
+Here are the steps for __adding the TinyCBOR Library__ to an existing BL602 or BL604 project...
 
 -   [__lupyuen/tinycbor-bl602__](https://github.com/lupyuen/tinycbor-bl602)
 
-# Appendix: LoRaWAN Firmware
+We assume you have an existing __bl_iot_sdk__ folder.
+
+Add __tinycbor-bl602__ as a submodule under __bl_iot_sdk/components/3rdparty__...
+
+```bash
+cd bl_iot_sdk/components/3rdparty
+git submodule add https://github.com/lupyuen/tinycbor-bl602
+```
+
+Edit the __Makefile__ for your project...
+
+```text
+# Insert this line into the COMPONENTS block
+COMPONENTS_TINYCBOR := tinycbor-bl602
+...
+
+# Insert this line into INCLUDE_COMPONENTS block
+INCLUDE_COMPONENTS += $(COMPONENTS_TINYCBOR)
+...
+
+# This should appear after INCLUDE_COMPONENTS block
+include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk
+```
+
+[(See a sample Makefile)](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/Makefile#L21-L36)
+
+# Appendix: Build and Run LoRaWAN Firmware
 
 Here are the steps to build, flash and run the __LoRaWAN Firmware for PineDio Stack BL604__...
 
@@ -1127,6 +1153,14 @@ Let's enter the LoRaWAN Commands to join The Things Network and transmit a Data 
 
     [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
 
-# Appendix: Porting TinyCBOR To BL602
+# Appendix: Porting TinyCBOR to BL602
 
-TODO
+Below are the fixes we made while porting the TinyCBOR library to BL602 / BL604...
+ 
+-   [Fix fall through](https://github.com/lupyuen/tinycbor-bl602/commit/971dca84b0b036a4ed44aa808e6eb18033161170)
+
+-   [Fix RetType, LenType](https://github.com/lupyuen/tinycbor-bl602/commit/c32bbc7696a54578f050467f1e182f4fd0f9bb9a)
+
+-   [Fix open_memstream](https://github.com/lupyuen/tinycbor-bl602/commit/65f857a3f2c8f0169ff215047fbcf7cd956eb55a)
+
+-   [Don't use memstream](https://github.com/lupyuen/tinycbor-bl602/commit/0594d2f29646f65db22a60102d25c7aa675e9cae)
