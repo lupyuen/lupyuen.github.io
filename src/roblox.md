@@ -2,9 +2,9 @@
 
 📝 _12 Oct 2021_
 
-[__Roblox__](https://developer.roblox.com/en-us/) is a Multiplayer Virtual World that lets us create 3D Objects and interact with them. (Free to create and play)
+[__Roblox__](https://developer.roblox.com/en-us/) is a __Multiplayer Virtual World__ that lets us create __3D Objects__ and interact with them. (Free to create and play)
 
-[__The Things Network__](https://lupyuen.github.io/articles/ttn) is a Public Wireless Network that connects many IoT Gadgets around the world. (It's free too)
+[__The Things Network__](https://lupyuen.github.io/articles/ttn) is a __Public Wireless Network__ that connects many __IoT Gadgets__ around the world. (It's free too)
 
 _Can we connect Roblox to The Things Network... To Monitor and Control Real-World Gadgets?_
 
