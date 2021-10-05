@@ -70,19 +70,17 @@ In fact we'll show __10,000 Levels of Hotness / Coldness__, thanks to a little M
 
 _What magic makes this mirroring possible?_
 
-TODO
+This mirroring real things in Roblox is possible because...
 
-In Roblox we shall call the HTTP + JSON API...
+1.  Robox lets us write __Lua Scripts__ that can make __HTTP Requests__ to the internet
 
-[HttpService](https://developer.roblox.com/en-us/api-reference/class/HttpService)
+1.  The Things Network exposes a __HTTP Service__ that lets us retrieve the __Sensor Data__ (like Temperature) sent by IoT Gadgets
 
-To access the Live Sensor Data at The Things Network...
+Connect (1) to (2) and we'll get a Roblox Gadget that __mirrors the Hot / Cold State__ of a Real Gadget.
 
-[Retrieve Uplink Messages](https://www.thethingsindustries.com/docs/integrations/storage/retrieve/)
+[(More about Roblox Lua Scripting)](https://education.roblox.com/en-us/resources/intro-to-coding-coding-1-create-a-script)
 
-More about The Things Network...
-
--   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
+[(More about The Things Network)](https://lupyuen.github.io/articles/ttn)
 
 # Fetch Sensor Data from The Things Network
 
@@ -497,3 +495,5 @@ Click "Create" in top bar
 Click "Start Creating"
 
 For macOS: Delete Roblox Studio under the __Applications Folder__. Reboot and reinstall.
+
+For Linux: [See this](https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux)
