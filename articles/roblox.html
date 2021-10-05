@@ -125,9 +125,9 @@
 </ul>
 <p>TODO</p>
 <p>In Roblox we shall call the HTTP + JSON API…</p>
-<p>https://developer.roblox.com/en-us/api-reference/class/HttpService</p>
+<p><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService">HttpService</a></p>
 <p>To access the Live Sensor Data at The Things Network…</p>
-<p>https://www.thethingsindustries.com/docs/integrations/storage/retrieve/</p>
+<p><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/">Retrieve Uplink Messages</a></p>
 <p>More about The Things Network…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ttn">“The Things Network on PineDio Stack BL604 RISC-V Board”</a></li>
@@ -135,7 +135,7 @@
 <h1 id="fetch-sensor-data-from-the-things-network" class="section-header"><a href="#fetch-sensor-data-from-the-things-network">2 Fetch Sensor Data from The Things Network</a></h1>
 <p>TODO</p>
 <p>The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device…</p>
-<p>https://www.thethingsindustries.com/docs/integrations/storage/retrieve/</p>
+<p><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/">Retrieve Uplink Messages</a></p>
 <p>Here’s the command to fetch the latest Uplink Message…</p>
 <div class="example-wrap"><pre class="language-bash"><code>curl \
     -G &quot;https://au1.cloud.thethings.network/api/v3/as/applications/$YOUR_APPLICATION_ID/packages/storage/uplink_message&quot; \
@@ -277,8 +277,8 @@ sensorData:
     [&quot;t&quot;] = 1236
 }</code></pre></div>
 <p>The ModuleScripts were copied from…</p>
-<p>https://github.com/iskolbin/lbase64/blob/master/base64.lua</p>
-<p>https://github.com/Zash/lua-cbor/blob/master/cbor.lua</p>
+<p><a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">iskolbin/lbase64</a></p>
+<p><a href="https://github.com/Zash/lua-cbor/blob/master/cbor.lua">Zash/lua-cbor</a></p>
 <p>This line in <a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">base64.lua</a> was changed from…</p>
 <div class="example-wrap"><pre class="language-lua"><code>local extract = _G.bit32 and _G.bit32.extract</code></pre></div>
 <p>To…</p>
@@ -420,7 +420,9 @@ for t = T_MAX, T_MIN, -600 do
 	wait(4)
 end</code></pre></div>
 <p>Here’s how the Interpolating Particle Emitter looks…</p>
-<p>https://www.youtube.com/watch?v=3CP7ELTAFLg</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
+</ul>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>We shall head back and transmit BL602 / BL604’s <strong>Internal Temperature Sensor Data</strong> to The Things Network.</p>
