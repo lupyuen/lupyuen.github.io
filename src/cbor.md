@@ -691,11 +691,11 @@ There's even a CBOR Library for __Roblox and Lua Scripting__...
 
 # What's Next
 
-For the next article we shall take a quick detour and explore PineDio Stack transmitting data to __Roblox via The Things Network__.
+For the next article we shall take a quick detour and explore PineDio Stack transmitting Sensor Data to [__Roblox via The Things Network__](https://github.com/lupyuen/roblox-the-things-network).
 
 [(Follow this Twitter Thread for updates)](https://twitter.com/MisterTechBlog/status/1443824711050301444)
 
-Then we shall head back to BL602 and BL604 and transmit BL602 / BL604's __Internal Temperature Sensor Data__ to The Things Network.
+Then we shall head back and transmit BL602 / BL604's __Internal Temperature Sensor Data__ to The Things Network.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
