@@ -68,7 +68,7 @@ In fact we'll show __10,000 Levels of Hotness / Coldness__, thanks to a little M
 
 -   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
 
-_What is the magic that makes this mirroring possible?_
+_What magic makes this mirroring possible?_
 
 TODO
 
