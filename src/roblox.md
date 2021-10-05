@@ -188,7 +188,7 @@ Here's how we call it to fetch the Sensor Data from The Things Network...
 
 -   [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
-Enable HTTP Requests: Click Home -> Game Settings -> Security -> Allow HTTP Requests
+Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests
 
 Under `Workspace`, create a `Part`.
 
@@ -479,3 +479,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1443824711050301444)
+
+# Appendix: Install Roblox Studio
+
+TODO
+
+Sign up
+
+Login
+
+Click "Create" in top bar
+
+Click "Start Creating"
+
+For macOS: Delete Roblox Studio under the __Applications Folder__. Reboot and reinstall.
