@@ -26,11 +26,11 @@ Think of the possibilities...
 
     How __Sensors and Actuators__ work, and how they impact our lives.
 
-Sounds very "Free Guy" and "Matrix"-ish, but this is actually a well-known concept in IoT: __Digital Twin__.
+Sounds very "Free Guy" and "Matrix"-ish, but the above is actually a well-known concept in IoT: __Digital Twin__.
 
 _What's a Digital Twin?_
 
-A Digital Twin is a Virtual Object that __mirrors a Real-World Object__ through Sensors and Actuators. (See pic above)
+A Digital Twin is a Virtual Object that __mirrors a Real-World Object__ through __Sensors and Actuators__. (See pic above)
 
 For today's experiment we shall take this IoT Gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio)...
 
@@ -46,7 +46,23 @@ All __Roblox Scripts__ may be found in this repo...
 
 ![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title.jpg)
 
-# Digital Twin
+# Roblox Mirrors Real Life
+
+The pic shows what we shall accomplish with Roblox... 
+
+A Virtual Object that __visualises the Live Temperature__ of our Real Object (PineDio Stack)
+
+-   __Freezing Cold__ (left)
+
+-   __Normal Temperature__ (middle)
+
+    (Think Shrek and green fireflies)
+
+-   __Fiery Hot__ (right)
+
+In fact we'll show __10,000 Levels of Hotness / Coldness__, thanks to a little Math. [(And Linear Interpolation)](https://en.wikipedia.org/wiki/Linear_interpolation)
+
+-   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
 
 TODO
 
@@ -57,8 +73,6 @@ https://developer.roblox.com/en-us/api-reference/class/HttpService
 To access the Live Sensor Data at The Things Network...
 
 https://www.thethingsindustries.com/docs/integrations/storage/retrieve/
-
-This will be useful for educating kids about IoT, by creating digital mirrors of real-world objects.
 
 More about The Things Network...
 
