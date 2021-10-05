@@ -180,11 +180,11 @@ TODO
 
 Roblox provides a Lua Scripting API that fetches External HTTP URLs (GET and POST)
 
-https://developer.roblox.com/en-us/api-reference/class/HttpService
+[HttpService](https://developer.roblox.com/en-us/api-reference/class/HttpService)
 
 Here's how we call it to fetch the Sensor Data from The Things Network...
 
--   [`DigitalTwin.lua`](DigitalTwin.lua)
+-   [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
 Enable HTTP Requests: Click Home -> Game Settings -> Security -> Allow HTTP Requests
 
@@ -192,11 +192,11 @@ Under `Workspace`, create a `Part`.
 
 Under the `Part`, create a `Script`.
 
-Copy and paste the script from [`DigitalTwin.lua`](DigitalTwin.lua)
+Copy and paste the script from [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
 Follow the steps in the next section to copy and paste the ModuleScripts for `Base64` and `Cbor`
 
-To fetch the Sensor Data from The Things Network, we call `getSensorData` in [`DigitalTwin.lua`](DigitalTwin.lua)
+To fetch the Sensor Data from The Things Network, we call `getSensorData` in [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
 When we run this Roblox Script...
 
@@ -228,9 +228,9 @@ Under `ServerStorage`, create two __ModuleScripts__: `Base64` and `Cbor`.
 
 Copy and paste the ModuleScripts from...
 
--   [`Base64`](Base64.lua)
+-   [`Base64`](https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua)
 
--   [`Cbor`](Cbor.lua)
+-   [`Cbor`](https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua)
 
 (Yep they need to be __ModuleScripts__. Normal Scripts won't work)
 
@@ -288,8 +288,8 @@ local extract = bit32 and bit32.extract
 
 Let's use a Roblox Particle Emitter to show the Temperature (t) of our object...
 
-https://youtu.be/38VcndHc2B0
-    
+![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
+
 We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).
 
 To render the Temperature, we shall do Linear Interpolation of the 3 Particle Emitters...
