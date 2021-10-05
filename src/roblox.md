@@ -14,13 +14,12 @@ TODO
 
 Smart home
 
-https://medium.com/@camden.o.b/how-we-could-make-a-roblox-smart-home-that-connects-to-the-real-world-e4d89b309516
+[(Check out this excellent article by Camden Bruce)](https://medium.com/@camden.o.b/how-we-could-make-a-roblox-smart-home-that-connects-to-the-real-world-e4d89b309516)
+
 
 farm crops and livestock
 
-Cow Sensors
-
-https://www.thethingsindustries.com/news/implementing-gps-cattle-tracking-solution-lorawan/
+[(Yep there are Cow Sensors)](https://www.thethingsindustries.com/news/implementing-gps-cattle-tracking-solution-lorawan/)
 
 TODO
 
@@ -32,7 +31,7 @@ _PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via
 
 (Apologies if my Roblox looks rough... This is my first time using Roblox 🙏)
 
-![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
+![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title.jpg)
 
 # What's Next
 
