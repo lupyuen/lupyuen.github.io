@@ -30,7 +30,7 @@ Sounds very "Free Guy" and "Matrix"-ish, but the above is actually a well-known 
 
 _What's a Digital Twin?_
 
-A Digital Twin is a Virtual Object that __mirrors a Real-World Object__ through __Sensors and Actuators__. (See pic above)
+A [__Digital Twin__](https://en.m.wikipedia.org/wiki/Digital_twin) is a Virtual Object that __mirrors a Real-World Object__ through __Sensors and Actuators__. (Like the pic above)
 
 For today's experiment we shall take this IoT Gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio)...
 
