@@ -65,26 +65,346 @@
 
     <h1 class="title">IoT Digital Twin with Roblox and The Things Network</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>12 Oct 2021</em></p>
-<p><a href="https://developer.roblox.com/en-us/"><strong>Roblox</strong></a> is a Multiplayer Virtual World that lets us create 3D Objects and interact with them. (Free to play)</p>
-<p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a Public Wireless Network that connects many IoT Gadgets around the world. (Free for Fair Use)</p>
+<li><a href="#digital-twin">1 Digital Twin</a><ul></ul></li>
+<li><a href="#fetch-sensor-data-from-the-things-network">2 Fetch Sensor Data from The Things Network</a><ul></ul></li>
+<li><a href="#roblox-fetching-sensor-data-from-the-things-network">3 Roblox Fetching Sensor Data From The Things Network</a><ul></ul></li>
+<li><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a><ul></ul></li>
+<li><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>12 Oct 2021</em></p>
+<p><a href="https://developer.roblox.com/en-us/"><strong>Roblox</strong></a> is a Multiplayer Virtual World that lets us create 3D Objects and interact with them. (Free to create and play)</p>
+<p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a Public Wireless Network that connects many IoT Gadgets around the world. (It’s free too)</p>
 <p><em>Can we connect Roblox to The Things Network… To Monitor and Control Real-World Gadgets?</em></p>
 <p><img src="https://lupyuen.github.io/images/digital-twin.jpg" alt="Digital Twin" /></p>
-<p>TODO</p>
-<p>Smart home</p>
+<p>Think of the possibilities…</p>
+<ol>
+<li>
+<p>Walk around a <strong>Roblox House</strong> to <strong>monitor the temperature</strong> in our Smart Home. </p>
+<p>Flip the lights on and off in the Virtual House, to <strong>control the lights</strong> in our Real Home.</p>
 <p><a href="https://medium.com/@camden.o.b/how-we-could-make-a-roblox-smart-home-that-connects-to-the-real-world-e4d89b309516">(Check out this excellent article by Camden Bruce)</a></p>
-<p>farm crops and livestock</p>
-<p><a href="https://www.thethingsindustries.com/news/implementing-gps-cattle-tracking-solution-lorawan/">(Yep there are Cow Sensors)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
-<p><em>PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)</em></p>
+</li>
+<li>
+<p>Wander about a <strong>Roblox Farm</strong> to check on <strong>Farm Crops and Livestock</strong> in real life.</p>
+<p><a href="https://www.thethingsindustries.com/news/implementing-gps-cattle-tracking-solution-lorawan/">(Yes there are Cow Sensors)</a></p>
+</li>
+<li>
+<p>Teaching young learners about <strong>Internet of Things (IoT)</strong>…</p>
+<p>How <strong>Sensors and Actuators</strong> work, and how they impact our lives.</p>
+</li>
+</ol>
+<p>Sounds very “Free Guy” and “Matrix”-ish, but this is actually a well-known concept in IoT: <strong>Digital Twin</strong>.</p>
+<p><em>What’s a Digital Twin?</em></p>
+<p>A Digital Twin is a Virtual Object that <strong>mirrors a Real-World Object</strong> through Sensors and Actuators. (See pic above)</p>
+<p>For today’s experiment we shall take this IoT Gadget: <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604 RISC-V Board</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt=" (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
+<p>And turn it into a <strong>Virtual Gadget in Roblox</strong>.</p>
+<p>All <strong>Roblox Scripts</strong> may be found in this repo…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/roblox-the-things-network"><strong>lupyuen/roblox-the-things-network</strong></a></li>
 </ul>
 <p>(Apologies if my Roblox looks rough… This is my first time using Roblox 🙏)</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="digital-twin" class="section-header"><a href="#digital-twin">1 Digital Twin</a></h1>
+<p>TODO</p>
+<p>In Roblox we shall call the HTTP + JSON API…</p>
+<p>https://developer.roblox.com/en-us/api-reference/class/HttpService</p>
+<p>To access the Live Sensor Data at The Things Network…</p>
+<p>https://www.thethingsindustries.com/docs/integrations/storage/retrieve/</p>
+<p>This will be useful for educating kids about IoT, by creating digital mirrors of real-world objects.</p>
+<p>More about The Things Network…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ttn">“The Things Network on PineDio Stack BL604 RISC-V Board”</a></li>
+</ul>
+<h1 id="fetch-sensor-data-from-the-things-network" class="section-header"><a href="#fetch-sensor-data-from-the-things-network">2 Fetch Sensor Data from The Things Network</a></h1>
+<p>TODO</p>
+<p>The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device…</p>
+<p>https://www.thethingsindustries.com/docs/integrations/storage/retrieve/</p>
+<p>Here’s the command to fetch the latest Uplink Message…</p>
+<div class="example-wrap"><pre class="language-bash"><code>curl \
+    -G &quot;https://au1.cloud.thethings.network/api/v3/as/applications/$YOUR_APPLICATION_ID/packages/storage/uplink_message&quot; \
+    -H &quot;Authorization: Bearer $YOUR_API_KEY&quot; \
+    -H &quot;Accept: text/event-stream&quot; \
+    -d &quot;limit=1&quot; \
+    -d &quot;order=-received_at&quot;</code></pre></div>
+<p>Which returns…</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+    &quot;result&quot;: {
+        &quot;end_device_ids&quot;: {
+            &quot;device_id&quot;: &quot;eui-YOUR_DEVICE_EUI&quot;,
+            &quot;application_ids&quot;: {
+                &quot;application_id&quot;: &quot;luppy-application&quot;
+            },
+            &quot;dev_eui&quot;: &quot;YOUR_DEVICE_EUI&quot;,
+            &quot;dev_addr&quot;: &quot;YOUR_DEVICE_ADDR&quot;
+        },
+        &quot;received_at&quot;: &quot;2021-10-02T12:10:54.594006440Z&quot;,
+        &quot;uplink_message&quot;: {
+            &quot;f_port&quot;: 2,
+            &quot;f_cnt&quot;: 3,
+            &quot;frm_payload&quot;: &quot;omF0GQTUYWwZCSs=&quot;,
+            &quot;rx_metadata&quot;: [
+                {
+                    &quot;gateway_ids&quot;: {
+                        &quot;gateway_id&quot;: &quot;luppy-wisgate-rak7248&quot;,
+                        &quot;eui&quot;: &quot;YOUR_GATEWAY_EUI&quot;
+                    },
+                    &quot;time&quot;: &quot;2021-10-02T13:04:34.552513Z&quot;,
+                    &quot;timestamp&quot;: 3576406949,
+                    &quot;rssi&quot;: -53,
+                    &quot;channel_rssi&quot;: -53,
+                    &quot;snr&quot;: 12.2,
+                    &quot;location&quot;: {
+                        &quot;latitude&quot;: 1.27125,
+                        &quot;longitude&quot;: 103.80795,
+                        &quot;altitude&quot;: 70,
+                        &quot;source&quot;: &quot;SOURCE_REGISTRY&quot;
+                    },
+                    &quot;channel_index&quot;: 4
+                }
+            ],
+            &quot;settings&quot;: {
+                &quot;data_rate&quot;: {
+                    &quot;lora&quot;: {
+                        &quot;bandwidth&quot;: 125000,
+                        &quot;spreading_factor&quot;: 10
+                    }
+                },
+                &quot;data_rate_index&quot;: 2,
+                &quot;coding_rate&quot;: &quot;4/5&quot;,
+                &quot;frequency&quot;: &quot;922600000&quot;,
+                &quot;timestamp&quot;: 3576406949,
+                &quot;time&quot;: &quot;2021-10-02T13:04:34.552513Z&quot;
+            },
+            &quot;received_at&quot;: &quot;2021-10-02T12:10:54.385972437Z&quot;,
+            &quot;consumed_airtime&quot;: &quot;0.370688s&quot;,
+            &quot;network_ids&quot;: {
+                &quot;net_id&quot;: &quot;000013&quot;,
+                &quot;tenant_id&quot;: &quot;ttn&quot;,
+                &quot;cluster_id&quot;: &quot;ttn-au1&quot;
+            }
+        }
+    }
+}</code></pre></div>
+<p><code>result.uplink_message.frm_payload</code> contains the Sensor Data that we need, encoded with Base64 and CBOR…</p>
+<div class="example-wrap"><pre class="language-json"><code>&quot;frm_payload&quot;: &quot;omF0GQTUYWwZCSs=&quot;</code></pre></div>
+<p>Our Sensor Data is encoded with <a href="https://en.wikipedia.org/wiki/CBOR">CBOR</a> to keep the LoRa Packets small (max 12 bytes), due to the Fair Use Policy of The Things Network…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">“Fair Use of The Things Network”</a></li>
+</ul>
+<p>More about CBOR Encoding…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor">“Encode Sensor Data with CBOR on BL602”</a></li>
+</ul>
+<h1 id="roblox-fetching-sensor-data-from-the-things-network" class="section-header"><a href="#roblox-fetching-sensor-data-from-the-things-network">3 Roblox Fetching Sensor Data From The Things Network</a></h1>
+<p>TODO</p>
+<p>Roblox provides a Lua Scripting API that fetches External HTTP URLs (GET and POST)</p>
+<p>https://developer.roblox.com/en-us/api-reference/class/HttpService</p>
+<p>Here’s how we call it to fetch the Sensor Data from The Things Network…</p>
+<ul>
+<li><a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></li>
+</ul>
+<p>Enable HTTP Requests: Click Home -&gt; Game Settings -&gt; Security -&gt; Allow HTTP Requests</p>
+<p>Under <code>Workspace</code>, create a <code>Part</code>.</p>
+<p>Under the <code>Part</code>, create a <code>Script</code>.</p>
+<p>Copy and paste the script from <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<p>Follow the steps in the next section to copy and paste the ModuleScripts for <code>Base64</code> and <code>Cbor</code></p>
+<p>To fetch the Sensor Data from The Things Network, we call <code>getSensorData</code> in <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<p>When we run this Roblox Script…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Fetch the Sensor Data from The Things Network (LoRa)
+local sensorData = getSensorData()
+
+-- Show the Temperature
+if sensorData then
+	print(&quot;Temperature:&quot;)
+	print(sensorData.t)
+else
+	print(&quot;Failed to get sensor data&quot;)
+end</code></pre></div>
+<p>We should see the Temperature Sensor Data fetched from The Things Network…</p>
+<div class="example-wrap"><pre class="language-text"><code>Temperature:
+1236</code></pre></div><h1 id="decode-base64-and-cbor-in-roblox" class="section-header"><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a></h1>
+<p>TODO</p>
+<p>Under <code>ServerStorage</code>, create two <strong>ModuleScripts</strong>: <code>Base64</code> and <code>Cbor</code>.</p>
+<p>Copy and paste the ModuleScripts from…</p>
+<ul>
+<li>
+<p><a href="Base64.lua"><code>Base64</code></a></p>
+</li>
+<li>
+<p><a href="Cbor.lua"><code>Cbor</code></a></p>
+</li>
+</ul>
+<p>(Yep they need to be <strong>ModuleScripts</strong>. Normal Scripts won’t work)</p>
+<p>To test Base64 and CBOR Decoding…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Load the Base64 and CBOR ModuleScripts from ServerStorage
+local ServerStorage = game:GetService(&quot;ServerStorage&quot;)
+local base64 = require(ServerStorage.Base64)
+local cbor = require(ServerStorage.Cbor)
+
+-- Base64 Decode the Message Payload
+payload = base64.decode(&#39;omF0GQTUYWwZCSs=&#39;)
+print(&quot;payload:&quot;)
+print(payload)
+
+-- Decode the CBOR Map
+sensorData = cbor.decode(payload)
+print(&quot;sensorData:&quot;)
+print(sensorData)</code></pre></div>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>payload:
+�at�al
+
+sensorData:
+{
+    [&quot;l&quot;] = 2347,
+    [&quot;t&quot;] = 1236
+}</code></pre></div>
+<p>The ModuleScripts were copied from…</p>
+<p>https://github.com/iskolbin/lbase64/blob/master/base64.lua</p>
+<p>https://github.com/Zash/lua-cbor/blob/master/cbor.lua</p>
+<p>This line in <a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">base64.lua</a> was changed from…</p>
+<div class="example-wrap"><pre class="language-lua"><code>local extract = _G.bit32 and _G.bit32.extract</code></pre></div>
+<p>To…</p>
+<div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract</code></pre></div><h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
+<p>Let’s use a Roblox Particle Emitter to show the Temperature (t) of our object…</p>
+<p>https://youtu.be/38VcndHc2B0</p>
+<p>We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).</p>
+<p>To render the Temperature, we shall do Linear Interpolation of the 3 Particle Emitters…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>COLD Particle Emitter (t=0)
+  Acceleration: 0, 0, 0
+  Color: 0 0.333333 1 1 0 1 0.333333 1 1 0 
+  Drag: 5
+  EmissionDirection: Enum.NormalId.Top
+  Lifetime: 5 10 
+  LightEmission: 1
+  LightInfluence: 1
+  Orientation: Enum.ParticleOrientation.FacingCamera
+  Rate: 20
+  Rotation: 0 180 
+  RotSpeed: -170 -170 
+  Size: 0 1 0 1 1 0 
+  Speed: 0 0 
+  SpreadAngle: 10, 10
+  Texture: rbxasset:textures/particles/sparkles_main.dds
+  TimeScale: 1
+  Transparency: 0 0 0 1 0 0 
+  VelocityInheritance: 0
+  ZOffset: 0
+
+NORMAL Particle Emitter (t=5000)
+  Acceleration: 0, 0, 0
+  Color: 0 0.333333 0.666667 0 0 1 0.333333 0.666667 0 0 
+  Drag: 10
+  EmissionDirection: Enum.NormalId.Top
+  Lifetime: 5 10 
+  LightEmission: 0
+  LightInfluence: 1
+  Orientation: Enum.ParticleOrientation.FacingCamera
+  Rate: 20
+  Rotation: 0 0 
+  RotSpeed: 0 0 
+  Size: 0 0.2 0 1 0.2 0 
+  Speed: 5 5 
+  SpreadAngle: 50, 50
+  Texture: rbxasset:textures/particles/sparkles_main.dds
+  TimeScale: 1
+  Transparency: 0 0 0 1 0 0 
+  VelocityInheritance: 0
+  ZOffset: 0
+
+HOT Particle Emitter (t=10000)
+  Acceleration: 0, 0, 0
+  Color: 0 1 0.333333 0 0 1 1 0.333333 0 0 
+  Drag: 0
+  EmissionDirection: Enum.NormalId.Top
+  Lifetime: 5 10 
+  LightEmission: 0
+  LightInfluence: 0
+  Orientation: Enum.ParticleOrientation.FacingCamera
+  Rate: 20
+  Rotation: 0 0 
+  RotSpeed: 0 0 
+  Size: 0 0.4 0 1 0.4 0 
+  Speed: 1 1 
+  SpreadAngle: 50, 50
+  Texture: rbxasset:textures/particles/sparkles_main.dds
+  TimeScale: 1
+  Transparency: 0 0 0 1 0 0 
+  VelocityInheritance: 0
+  ZOffset: 0</code></pre></div>
+<p>Values to be interpolated…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>Color:
+  COLD:
+    0 0.333333 1 1 0 
+    1 0.333333 1 1 0 
+  NORMAL:
+    0 0.333333 0.666667 0 0 
+    1 0.333333 0.666667 0 0 
+  HOT:
+    0 1 0.333333 0 0 
+    1 1 0.333333 0 0 
+
+Drag:
+  COLD: 5
+  NORMAL: 10
+  HOT: 0
+
+LightEmission: 
+  COLD: 1
+  NORMAL: 0
+  HOT: 0
+
+LightInfluence: 
+  COLD: 1
+  NORMAL: 1
+  HOT: 0
+
+Rotation: 
+  COLD: 0 180 
+  NORMAL: 0 0 
+  HOT: 0 0 
+
+RotSpeed: 
+  COLD: -170 -170 
+  NORMAL: 0 0 
+  HOT: 0 0 
+
+Size: 
+  COLD: 0 1 0 1 1 0 
+  NORMAL: 0 0.2 0 1 0.2 0 
+  HOT: 0 0.4 0 1 0.4 0 
+  
+Speed: 
+  COLD: 0 0 
+  NORMAL: 5 5 
+  HOT: 1 1 
+
+SpreadAngle: 
+  COLD: 10, 10
+  NORMAL: 50, 50
+  HOT: 50, 50</code></pre></div>
+<p>The properties of the Particle Emitters were dumped with the <code>dumpParticleEmitter</code> function in <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a>.</p>
+<p>Note that <code>rbxasset</code> won’t work for setting the Texture…</p>
+<div class="example-wrap"><pre class="language-lua"><code>emitter.Texture = &quot;rbxasset:textures/particles/sparkles_main.dds&quot;</code></pre></div>
+<p>But <code>rbxassetid</code> works OK…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Texture for the particles: &quot;star sparkle particle&quot; by @Vupatu
+-- https://www.roblox.com/library/6490035152/star-sparkle-particle
+emitter.Texture = &quot;rbxassetid://6490035152&quot;</code></pre></div>
+<p>To create a Particle Emitter for Normal Temperature, we call <code>createParticleEmitter</code> in <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Create a Particle Emitter for Normal Temperature
+local emitter = createParticleEmitter()</code></pre></div>
+<p>To interpolate the Particle Emitter for High / Mid / Low Temperatures, we call <code>updateParticleEmitter</code> in <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Gradually update the emitter for Temperature=10,000 to 0
+updateParticleEmitter(emitter, T_MAX)
+wait(5)
+for t = T_MAX, T_MIN, -600 do
+	print(string.format(&quot;t: %d&quot;, t))
+	updateParticleEmitter(emitter, t)
+	wait(4)
+end</code></pre></div>
+<p>Here’s how the Interpolating Particle Emitter looks…</p>
+<p>https://www.youtube.com/watch?v=3CP7ELTAFLg</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>We shall head back and transmit BL602 / BL604’s <strong>Internal Temperature Sensor Data</strong> to The Things Network.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -104,7 +424,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/roblox.md"><code>lupyuen.github.io/src/roblox.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1443824711050301444">this Twitter Thread</a></li>
 </ol>
