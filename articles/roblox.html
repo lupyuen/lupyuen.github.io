@@ -132,16 +132,19 @@
 <ul>
 <li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
 </ul>
-<p><em>What is the magic that makes this mirroring possible?</em></p>
-<p>TODO</p>
-<p>In Roblox we shall call the HTTP + JSON API…</p>
-<p><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService">HttpService</a></p>
-<p>To access the Live Sensor Data at The Things Network…</p>
-<p><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/">Retrieve Uplink Messages</a></p>
-<p>More about The Things Network…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/ttn">“The Things Network on PineDio Stack BL604 RISC-V Board”</a></li>
-</ul>
+<p><em>What magic makes this mirroring possible?</em></p>
+<p>This mirroring real things in Roblox is possible because…</p>
+<ol>
+<li>
+<p>Robox lets us write <strong>Lua Scripts</strong> that can make <strong>HTTP Requests</strong> to the internet</p>
+</li>
+<li>
+<p>The Things Network exposes a <strong>HTTP Service</strong> that lets us retrieve the <strong>Sensor Data</strong> (like Temperature) sent by IoT Gadgets</p>
+</li>
+</ol>
+<p>Connect (1) to (2) and we’ll get a Roblox Gadget that <strong>mirrors the Hot / Cold State</strong> of a Real Gadget.</p>
+<p><a href="https://education.roblox.com/en-us/resources/intro-to-coding-coding-1-create-a-script">(More about Roblox Lua Scripting)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ttn">(More about The Things Network)</a></p>
 <h1 id="fetch-sensor-data-from-the-things-network" class="section-header"><a href="#fetch-sensor-data-from-the-things-network">2 Fetch Sensor Data from The Things Network</a></h1>
 <p>TODO</p>
 <p>The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device…</p>
@@ -464,6 +467,7 @@ end</code></pre></div>
 <p>Click “Create” in top bar</p>
 <p>Click “Start Creating”</p>
 <p>For macOS: Delete Roblox Studio under the <strong>Applications Folder</strong>. Reboot and reinstall.</p>
+<p>For Linux: <a href="https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux">See this</a></p>
 
     
 </body>
