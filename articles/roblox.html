@@ -65,7 +65,7 @@
 
     <h1 class="title">IoT Digital Twin with Roblox and The Things Network</h1>
     <nav id="TOC"><ul>
-<li><a href="#digital-twin">1 Digital Twin</a><ul></ul></li>
+<li><a href="#roblox-mirrors-real-life">1 Roblox Mirrors Real Life</a><ul></ul></li>
 <li><a href="#fetch-sensor-data-from-the-things-network">2 Fetch Sensor Data from The Things Network</a><ul></ul></li>
 <li><a href="#roblox-fetching-sensor-data-from-the-things-network">3 Roblox Fetching Sensor Data From The Things Network</a><ul></ul></li>
 <li><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a><ul></ul></li>
@@ -92,9 +92,9 @@
 <p>How <strong>Sensors and Actuators</strong> work, and how they impact our lives.</p>
 </li>
 </ol>
-<p>Sounds very “Free Guy” and “Matrix”-ish, but this is actually a well-known concept in IoT: <strong>Digital Twin</strong>.</p>
+<p>Sounds very “Free Guy” and “Matrix”-ish, but the above is actually a well-known concept in IoT: <strong>Digital Twin</strong>.</p>
 <p><em>What’s a Digital Twin?</em></p>
-<p>A Digital Twin is a Virtual Object that <strong>mirrors a Real-World Object</strong> through Sensors and Actuators. (See pic above)</p>
+<p>A Digital Twin is a Virtual Object that <strong>mirrors a Real-World Object</strong> through <strong>Sensors and Actuators</strong>. (See pic above)</p>
 <p>For today’s experiment we shall take this IoT Gadget: <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604 RISC-V Board</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <p>And turn it into a <strong>Virtual Gadget in Roblox</strong>.</p>
@@ -104,13 +104,30 @@
 </ul>
 <p>(Apologies if my Roblox looks rough… This is my first time using Roblox 🙏)</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
-<h1 id="digital-twin" class="section-header"><a href="#digital-twin">1 Digital Twin</a></h1>
+<h1 id="roblox-mirrors-real-life" class="section-header"><a href="#roblox-mirrors-real-life">1 Roblox Mirrors Real Life</a></h1>
+<p>The pic shows what we shall accomplish with Roblox… </p>
+<p>A Virtual Object that <strong>visualises the Live Temperature</strong> of our Real Object (PineDio Stack)</p>
+<ul>
+<li>
+<p><strong>Freezing Cold</strong> (left)</p>
+</li>
+<li>
+<p><strong>Normal Temperature</strong> (middle)</p>
+<p>(Think Shrek and green fireflies)</p>
+</li>
+<li>
+<p><strong>Fiery Hot</strong> (right)</p>
+</li>
+</ul>
+<p>In fact we’ll show <strong>10,000 Levels of Hotness / Coldness</strong>, thanks to a little Math. <a href="https://en.wikipedia.org/wiki/Linear_interpolation">(And Linear Interpolation)</a></p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
+</ul>
 <p>TODO</p>
 <p>In Roblox we shall call the HTTP + JSON API…</p>
 <p>https://developer.roblox.com/en-us/api-reference/class/HttpService</p>
 <p>To access the Live Sensor Data at The Things Network…</p>
 <p>https://www.thethingsindustries.com/docs/integrations/storage/retrieve/</p>
-<p>This will be useful for educating kids about IoT, by creating digital mirrors of real-world objects.</p>
 <p>More about The Things Network…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ttn">“The Things Network on PineDio Stack BL604 RISC-V Board”</a></li>
