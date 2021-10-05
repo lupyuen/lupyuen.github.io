@@ -36,7 +36,11 @@ For today's experiment we shall take this IoT Gadget: [__PineDio Stack BL604 RIS
 
 ![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
 
-And turn it into a __Virtual Gadget in Roblox__.
+And turn it into a __Virtual Gadget in Roblox__ such that...
+
+-  If our __Real Gadget__ feels hot...
+
+-  Then our __Virtual Gadget__ looks hot too!
 
 All __Roblox Scripts__ may be found in this repo...
 
