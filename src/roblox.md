@@ -68,11 +68,11 @@ TODO
 
 In Roblox we shall call the HTTP + JSON API...
 
-https://developer.roblox.com/en-us/api-reference/class/HttpService
+[HttpService](https://developer.roblox.com/en-us/api-reference/class/HttpService)
 
 To access the Live Sensor Data at The Things Network...
 
-https://www.thethingsindustries.com/docs/integrations/storage/retrieve/
+[Retrieve Uplink Messages](https://www.thethingsindustries.com/docs/integrations/storage/retrieve/)
 
 More about The Things Network...
 
@@ -84,7 +84,7 @@ TODO
 
 The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device...
 
-https://www.thethingsindustries.com/docs/integrations/storage/retrieve/
+[Retrieve Uplink Messages](https://www.thethingsindustries.com/docs/integrations/storage/retrieve/)
 
 Here's the command to fetch the latest Uplink Message...
 
@@ -268,9 +268,9 @@ sensorData:
 
 The ModuleScripts were copied from...
 
-https://github.com/iskolbin/lbase64/blob/master/base64.lua
+[iskolbin/lbase64](https://github.com/iskolbin/lbase64/blob/master/base64.lua)
 
-https://github.com/Zash/lua-cbor/blob/master/cbor.lua
+[Zash/lua-cbor](https://github.com/Zash/lua-cbor/blob/master/cbor.lua)
 
 This line in [base64.lua](https://github.com/iskolbin/lbase64/blob/master/base64.lua) was changed from...
 
@@ -452,7 +452,7 @@ end
 
 Here's how the Interpolating Particle Emitter looks...
 
-https://www.youtube.com/watch?v=3CP7ELTAFLg
+-   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
 
 # What's Next
 
