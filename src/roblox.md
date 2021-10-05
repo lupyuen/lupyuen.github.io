@@ -34,7 +34,7 @@ A Digital Twin is a Virtual Object that __mirrors a Real-World Object__ through 
 
 For today's experiment we shall take this IoT Gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio)...
 
-![ (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
+![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
 
 And turn it into a __Virtual Gadget in Roblox__.
 
