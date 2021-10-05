@@ -82,6 +82,8 @@ Connect (1) to (2) and we'll get a Roblox Gadget that __mirrors the Hot / Cold S
 
 [(More about The Things Network)](https://lupyuen.github.io/articles/ttn)
 
+![Roblox talking to The Things Network](https://lupyuen.github.io/images/roblox-http.jpg)
+
 # Fetch Sensor Data from The Things Network
 
 TODO
@@ -178,6 +180,10 @@ More about CBOR Encoding...
 
 -   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
 
+TODO10
+
+![](https://lupyuen.github.io/images/roblox-ttn.jpg)
+
 # Roblox Fetching Sensor Data From The Things Network
 
 TODO
@@ -223,6 +229,14 @@ We should see the Temperature Sensor Data fetched from The Things Network...
 Temperature:
 1236
 ```
+
+TODO5
+
+![](https://lupyuen.github.io/images/roblox-script.png)
+
+TODO6
+
+![](https://lupyuen.github.io/images/roblox-script2.png)
 
 # Decode Base64 and CBOR in Roblox
 
@@ -287,6 +301,18 @@ To...
 ```lua
 local extract = bit32 and bit32.extract
 ```
+
+TODO7
+
+![](https://lupyuen.github.io/images/roblox-script3.png)
+
+TODO8
+
+![](https://lupyuen.github.io/images/roblox-script4.png)
+
+TODO9
+
+![](https://lupyuen.github.io/images/roblox-script5.png)
 
 # Render Temperature With Roblox Particle Emitter
 
@@ -457,6 +483,18 @@ end
 Here's how the Interpolating Particle Emitter looks...
 
 -   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
+
+TODO2
+
+![](https://lupyuen.github.io/images/roblox-emitter.png)
+
+TODO4
+
+![](https://lupyuen.github.io/images/roblox-interpolate.png)
+
+TODO1
+
+![](https://lupyuen.github.io/images/roblox-ar.jpg)
 
 # What's Next
 
