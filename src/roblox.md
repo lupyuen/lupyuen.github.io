@@ -2,13 +2,25 @@
 
 📝 _12 Oct 2021_
 
-TODO
+[__Roblox__](https://developer.roblox.com/en-us/) is a Multiplayer Virtual World that lets us create 3D Objects and interact with them. (Free to play)
+
+[__The Things Network__](https://lupyuen.github.io/articles/ttn) is a Public Wireless Network that connects many IoT Gadgets around the world. (Free for Fair Use)
+
+_Can we connect Roblox to The Things Network... To Monitor and Control Real-World Gadgets?_
 
 ![Digital Twin](https://lupyuen.github.io/images/digital-twin.jpg)
 
 TODO
 
-![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
+Smart home
+
+https://medium.com/@camden.o.b/how-we-could-make-a-roblox-smart-home-that-connects-to-the-real-world-e4d89b309516
+
+farm crops and livestock
+
+Cow Sensors
+
+https://www.thethingsindustries.com/news/implementing-gps-cattle-tracking-solution-lorawan/
 
 TODO
 
@@ -17,6 +29,10 @@ TODO
 _PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)_
 
 -   [__lupyuen/roblox-the-things-network__](https://github.com/lupyuen/roblox-the-things-network)
+
+(Apologies if my Roblox looks rough... This is my first time using Roblox 🙏)
+
+![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
 
 # What's Next
 
