@@ -215,17 +215,17 @@
 <h1 id="roblox-fetching-sensor-data-from-the-things-network" class="section-header"><a href="#roblox-fetching-sensor-data-from-the-things-network">3 Roblox Fetching Sensor Data From The Things Network</a></h1>
 <p>TODO</p>
 <p>Roblox provides a Lua Scripting API that fetches External HTTP URLs (GET and POST)</p>
-<p>https://developer.roblox.com/en-us/api-reference/class/HttpService</p>
+<p><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService">HttpService</a></p>
 <p>Here’s how we call it to fetch the Sensor Data from The Things Network…</p>
 <ul>
-<li><a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></li>
+<li><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></li>
 </ul>
 <p>Enable HTTP Requests: Click Home -&gt; Game Settings -&gt; Security -&gt; Allow HTTP Requests</p>
 <p>Under <code>Workspace</code>, create a <code>Part</code>.</p>
 <p>Under the <code>Part</code>, create a <code>Script</code>.</p>
-<p>Copy and paste the script from <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<p>Copy and paste the script from <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
 <p>Follow the steps in the next section to copy and paste the ModuleScripts for <code>Base64</code> and <code>Cbor</code></p>
-<p>To fetch the Sensor Data from The Things Network, we call <code>getSensorData</code> in <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<p>To fetch the Sensor Data from The Things Network, we call <code>getSensorData</code> in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
 <p>When we run this Roblox Script…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Fetch the Sensor Data from The Things Network (LoRa)
 local sensorData = getSensorData()
@@ -245,10 +245,10 @@ end</code></pre></div>
 <p>Copy and paste the ModuleScripts from…</p>
 <ul>
 <li>
-<p><a href="Base64.lua"><code>Base64</code></a></p>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua"><code>Base64</code></a></p>
 </li>
 <li>
-<p><a href="Cbor.lua"><code>Cbor</code></a></p>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua"><code>Cbor</code></a></p>
 </li>
 </ul>
 <p>(Yep they need to be <strong>ModuleScripts</strong>. Normal Scripts won’t work)</p>
@@ -284,7 +284,7 @@ sensorData:
 <p>To…</p>
 <div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract</code></pre></div><h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
 <p>Let’s use a Roblox Particle Emitter to show the Temperature (t) of our object…</p>
-<p>https://youtu.be/38VcndHc2B0</p>
+<p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
 <p>We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).</p>
 <p>To render the Temperature, we shall do Linear Interpolation of the 3 Particle Emitters…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>COLD Particle Emitter (t=0)
