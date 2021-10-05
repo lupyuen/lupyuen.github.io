@@ -689,6 +689,14 @@ There's even a CBOR Library for __Roblox and Lua Scripting__...
 
 -   [__"Decode Base64 and CBOR in Roblox"__](https://github.com/lupyuen/roblox-the-things-network#decode-base64-and-cbor-in-roblox)
 
+TinyCBOR is available on various __Embedded Operating Systems__...
+
+-   [__Apache Mynewt__](https://github.com/apache/mynewt-core/tree/master/encoding/tinycbor)
+
+-   [__RIOT__](https://doc.riot-os.org/group__pkg__tinycbor.html)
+
+-   [__Zephyr__](https://docs.zephyrproject.org/latest/reference/kconfig/CONFIG_TINYCBOR.html)
+
 # What's Next
 
 For the next article we shall take a quick detour and explore PineDio Stack transmitting Sensor Data to [__Roblox via The Things Network__](https://github.com/lupyuen/roblox-the-things-network).
