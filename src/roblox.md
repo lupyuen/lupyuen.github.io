@@ -127,7 +127,7 @@ Let's study the code inside our [__getSensorData__](https://github.com/lupyuen/r
 
 ## Define Constants
 
-We begin by defining the constants for accessing The Things Network: [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71)
+We begin by __defining the constants__ for accessing The Things Network: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71)
 
 ```lua
 -- TODO: Change this to your Application ID for The Things Network
@@ -286,7 +286,7 @@ Under `Workspace`, create a `Part`.
 
 Under the `Part`, create a `Script`.
 
-Copy and paste the script from [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
+Copy and paste the script from [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
 Follow the steps in the next section to copy and paste the ModuleScripts for `Base64` and `Cbor`
 
@@ -498,7 +498,7 @@ SpreadAngle:
   HOT: 50, 50
 ```
 
-The properties of the Particle Emitters were dumped with the `dumpParticleEmitter` function in [`DigitalTwin.lua`](DigitalTwin.lua).
+The properties of the Particle Emitters were dumped with the `dumpParticleEmitter` function in [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua).
 
 Note that `rbxasset` won't work for setting the Texture...
 
@@ -514,14 +514,14 @@ But `rbxassetid` works OK...
 emitter.Texture = "rbxassetid://6490035152"
 ```
 
-To create a Particle Emitter for Normal Temperature, we call `createParticleEmitter` in [`DigitalTwin.lua`](DigitalTwin.lua)
+To create a Particle Emitter for Normal Temperature, we call `createParticleEmitter` in [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
 ```lua
 -- Create a Particle Emitter for Normal Temperature
 local emitter = createParticleEmitter()
 ```
 
-To interpolate the Particle Emitter for High / Mid / Low Temperatures, we call `updateParticleEmitter` in [`DigitalTwin.lua`](DigitalTwin.lua)
+To interpolate the Particle Emitter for High / Mid / Low Temperatures, we call `updateParticleEmitter` in [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
 ```lua
 -- Gradually update the emitter for Temperature=10,000 to 0
