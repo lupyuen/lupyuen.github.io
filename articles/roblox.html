@@ -179,7 +179,7 @@ end</code></pre></div>
 <p>(This means <code>12.36</code> ºC, our values have been scaled by 100)</p>
 <p>Let’s study the code inside our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71"><strong>getSensorData</strong></a> function.</p>
 <h2 id="define-constants" class="section-header"><a href="#define-constants">2.1 Define Constants</a></h2>
-<p>We begin by defining the constants for accessing The Things Network: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71"><code>DigitalTwin.lua</code></a></p>
+<p>We begin by <strong>defining the constants</strong> for accessing The Things Network: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your Application ID for The Things Network
 -- (Must have permission to Read Application Traffic)
 local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;
@@ -270,7 +270,7 @@ end</code></pre></div><h1 id="roblox-mirroring-in-action" class="section-header"
 <p>Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests</p>
 <p>Under <code>Workspace</code>, create a <code>Part</code>.</p>
 <p>Under the <code>Part</code>, create a <code>Script</code>.</p>
-<p>Copy and paste the script from <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<p>Copy and paste the script from <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><strong>DigitalTwin.lua</strong></a></p>
 <p>Follow the steps in the next section to copy and paste the ModuleScripts for <code>Base64</code> and <code>Cbor</code></p>
 <h1 id="decode-base64-and-cbor-in-roblox" class="section-header"><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a></h1>
 <p>TODO</p>
@@ -441,17 +441,17 @@ SpreadAngle:
   COLD: 10, 10
   NORMAL: 50, 50
   HOT: 50, 50</code></pre></div>
-<p>The properties of the Particle Emitters were dumped with the <code>dumpParticleEmitter</code> function in <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a>.</p>
+<p>The properties of the Particle Emitters were dumped with the <code>dumpParticleEmitter</code> function in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><strong>DigitalTwin.lua</strong></a>.</p>
 <p>Note that <code>rbxasset</code> won’t work for setting the Texture…</p>
 <div class="example-wrap"><pre class="language-lua"><code>emitter.Texture = &quot;rbxasset:textures/particles/sparkles_main.dds&quot;</code></pre></div>
 <p>But <code>rbxassetid</code> works OK…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Texture for the particles: &quot;star sparkle particle&quot; by @Vupatu
 -- https://www.roblox.com/library/6490035152/star-sparkle-particle
 emitter.Texture = &quot;rbxassetid://6490035152&quot;</code></pre></div>
-<p>To create a Particle Emitter for Normal Temperature, we call <code>createParticleEmitter</code> in <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<p>To create a Particle Emitter for Normal Temperature, we call <code>createParticleEmitter</code> in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><strong>DigitalTwin.lua</strong></a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Create a Particle Emitter for Normal Temperature
 local emitter = createParticleEmitter()</code></pre></div>
-<p>To interpolate the Particle Emitter for High / Mid / Low Temperatures, we call <code>updateParticleEmitter</code> in <a href="DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<p>To interpolate the Particle Emitter for High / Mid / Low Temperatures, we call <code>updateParticleEmitter</code> in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><strong>DigitalTwin.lua</strong></a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Gradually update the emitter for Temperature=10,000 to 0
 updateParticleEmitter(emitter, T_MAX)
 wait(5)
