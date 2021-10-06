@@ -88,27 +88,21 @@ Let's talk about Roblox Lua Scripts and HTTP Requests...
 
 # Roblox Fetches Sensor Data
 
-TODO
+Roblox provides the __HttpService API__ that we may call in our Lua Scripts to fetch External HTTP URLs (GET and POST)...
 
-Roblox provides a Lua Scripting API that fetches External HTTP URLs (GET and POST)
+-   [__Roblox HttpService API__](https://developer.roblox.com/en-us/api-reference/class/HttpService)
 
-[HttpService](https://developer.roblox.com/en-us/api-reference/class/HttpService)
+Below we see HttpService in action, fetching the current __latitude and longitude of International Space Station__...
 
 ![Roblox Lua Script calls HttpService](https://lupyuen.github.io/images/roblox-script.png)
+
+[(Source code at the bottom of this page)](https://developer.roblox.com/en-us/api-reference/class/HttpService)
+
+TODO
 
 Here's how we call it to fetch the Sensor Data from The Things Network...
 
 -   [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
-
-Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests
-
-Under `Workspace`, create a `Part`.
-
-Under the `Part`, create a `Script`.
-
-Copy and paste the script from [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
-
-Follow the steps in the next section to copy and paste the ModuleScripts for `Base64` and `Cbor`
 
 To fetch the Sensor Data from The Things Network, we call `getSensorData` in [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
@@ -137,6 +131,20 @@ Temperature:
 TODO6
 
 ![](https://lupyuen.github.io/images/roblox-script2.png)
+
+# Roblox Mirroring In Action
+
+TODO
+
+Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests
+
+Under `Workspace`, create a `Part`.
+
+Under the `Part`, create a `Script`.
+
+Copy and paste the script from [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
+
+Follow the steps in the next section to copy and paste the ModuleScripts for `Base64` and `Cbor`
 
 # Decode Base64 and CBOR in Roblox
 
