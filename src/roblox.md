@@ -96,7 +96,7 @@ Below we see HttpService in action, fetching the current __latitude and longitud
 
 ![Roblox Lua Script calls HttpService](https://lupyuen.github.io/images/roblox-script.png)
 
-[(Source code at the bottom of this page)](https://developer.roblox.com/en-us/api-reference/class/HttpService)
+[(Source code)](https://developer.roblox.com/en-us/api-reference/function/HttpService/GetAsync)
 
 To __fetch Sensor Data__ from The Things Network, we have created a __getSensorData__ function in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71).
 
@@ -121,7 +121,7 @@ We should see the __Temperature Sensor Data__ fetched from The Things Network...
 Temperature: 1236
 ```
 
-(This means `12.36` ºC, our values have been scaled by 100)
+(This means `12.36` ºC, our values have been scaled up by 100 times)
 
 Let's study the code inside our [__getSensorData__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71) function.
 
@@ -229,9 +229,9 @@ Then we __fetch the URL__ (via HTTP GET), passing the API Key in the headers...
     response = HttpService:GetAsync(TTN_URL, false, headers)
 ```
 
-[(GetAsync is documented here)](https://developer.roblox.com/en-us/api-reference/class/HttpService#getasync-string-url-bool-nocache-variant-headers-)
+[(GetAsync is documented here)](https://developer.roblox.com/en-us/api-reference/function/HttpService/GetAsync)
 
-_What's "pcall"?_
+_What is "pcall"?_
 
 We wrap our code with __"pcall"__ to catch any errors returned by the HTTP Fetching. 
 
@@ -240,6 +240,8 @@ We wrap our code with __"pcall"__ to catch any errors returned by the HTTP Fetch
 If any error occurs, execution resumes __after the "pcall" block__.
 
 And we'll check for errors then.
+
+[(pcall is documented here)](https://developer.roblox.com/en-us/api-reference/lua-docs/Lua-Globals)
 
 ![JSON HTTP Response decoded as Lua Table](https://lupyuen.github.io/images/roblox-script2.png)
 
@@ -253,6 +255,8 @@ First we __parse the JSON__ returned by The Things Network...
     -- Decode the JSON response into a Lua Table
     data = HttpService:JSONDecode(response)
 ```
+
+[(JSONDecode is documented here)](https://developer.roblox.com/en-us/api-reference/function/HttpService/JSONDecode)
 
 This returns a __Lua Table__ that contains the JSON Fields.
 
@@ -284,7 +288,7 @@ We call the Base64 and CBOR ModuleScripts to __decode the Sensor Data__...
 
 (More about Base64 and CBOR in a while)
 
-__sensorData__ now contains meaningful Sensor Data...
+__sensorData__ now contains meaningful Sensor Data in a Lua Table...
 
 ```lua
 {
@@ -293,7 +297,7 @@ __sensorData__ now contains meaningful Sensor Data...
 }
 ```
 
-(Above are the values recorded by our Temperature Sensor and Light Sensor, scaled up by 100)
+Above are the values recorded by our __Light Sensor__ and __Temperature Sensor__, scaled up by 100 times.
 
 Note that our __"pcall" block__ ends here. So we check the errors next.
 
@@ -301,9 +305,7 @@ Note that our __"pcall" block__ ends here. So we check the errors next.
 
 We're at the spot after the "pcall" block.
 
-We __check for errors__ that could have occurred inside the "pcall" block.
-
-(HTTP request errors or decoding errors)
+We __check for errors__ that could have occurred inside the "pcall" block...
 
 ```lua  
   -- Show the error
@@ -320,9 +322,11 @@ We __check for errors__ that could have occurred inside the "pcall" block.
   end
 ```
 
+This code checks for HTTP Request Errors and Decoding Errors.
+
 ## Return Sensor Data
 
-Finally we __return the Sensor Data__ to the caller...
+Finally we __return the Sensor Data__ (as a Lua Table) to the caller...
 
 ```lua
   -- sensorData will be nil if our request failed or JSON failed to parse
@@ -331,7 +335,7 @@ Finally we __return the Sensor Data__ to the caller...
 end
 ```
 
-Our Sensor Data is returned as __"nil"__ in case of error.
+Our Sensor Data is returned as __nil__ in case of error.
 
 # Roblox Mirroring In Action
 
