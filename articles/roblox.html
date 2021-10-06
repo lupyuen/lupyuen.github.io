@@ -145,6 +145,7 @@
 <p>Connect (1) to (2) and we’ll get a Roblox Gadget that <strong>mirrors the Hot / Cold State</strong> of a Real Gadget.</p>
 <p><a href="https://education.roblox.com/en-us/resources/intro-to-coding-coding-1-create-a-script">(More about Roblox Lua Scripting)</a></p>
 <p><a href="https://lupyuen.github.io/articles/ttn">(More about The Things Network)</a></p>
+<p><img src="https://lupyuen.github.io/images/roblox-http.jpg" alt="Roblox talking to The Things Network" /></p>
 <h1 id="fetch-sensor-data-from-the-things-network" class="section-header"><a href="#fetch-sensor-data-from-the-things-network">2 Fetch Sensor Data from The Things Network</a></h1>
 <p>TODO</p>
 <p>The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device…</p>
@@ -225,6 +226,8 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/cbor">“Encode Sensor Data with CBOR on BL602”</a></li>
 </ul>
+<p>TODO10</p>
+<p><img src="https://lupyuen.github.io/images/roblox-ttn.jpg" alt="" /></p>
 <h1 id="roblox-fetching-sensor-data-from-the-things-network" class="section-header"><a href="#roblox-fetching-sensor-data-from-the-things-network">3 Roblox Fetching Sensor Data From The Things Network</a></h1>
 <p>TODO</p>
 <p>Roblox provides a Lua Scripting API that fetches External HTTP URLs (GET and POST)</p>
@@ -252,7 +255,12 @@ else
 end</code></pre></div>
 <p>We should see the Temperature Sensor Data fetched from The Things Network…</p>
 <div class="example-wrap"><pre class="language-text"><code>Temperature:
-1236</code></pre></div><h1 id="decode-base64-and-cbor-in-roblox" class="section-header"><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a></h1>
+1236</code></pre></div>
+<p>TODO5</p>
+<p><img src="https://lupyuen.github.io/images/roblox-script.png" alt="" /></p>
+<p>TODO6</p>
+<p><img src="https://lupyuen.github.io/images/roblox-script2.png" alt="" /></p>
+<h1 id="decode-base64-and-cbor-in-roblox" class="section-header"><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a></h1>
 <p>TODO</p>
 <p>Under <code>ServerStorage</code>, create two <strong>ModuleScripts</strong>: <code>Base64</code> and <code>Cbor</code>.</p>
 <p>Copy and paste the ModuleScripts from…</p>
@@ -295,7 +303,14 @@ sensorData:
 <p>This line in <a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">base64.lua</a> was changed from…</p>
 <div class="example-wrap"><pre class="language-lua"><code>local extract = _G.bit32 and _G.bit32.extract</code></pre></div>
 <p>To…</p>
-<div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract</code></pre></div><h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
+<div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract</code></pre></div>
+<p>TODO7</p>
+<p><img src="https://lupyuen.github.io/images/roblox-script3.png" alt="" /></p>
+<p>TODO8</p>
+<p><img src="https://lupyuen.github.io/images/roblox-script4.png" alt="" /></p>
+<p>TODO9</p>
+<p><img src="https://lupyuen.github.io/images/roblox-script5.png" alt="" /></p>
+<h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
 <p>Let’s use a Roblox Particle Emitter to show the Temperature (t) of our object…</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
 <p>We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).</p>
@@ -436,6 +451,12 @@ end</code></pre></div>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
 </ul>
+<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/roblox-emitter.png" alt="" /></p>
+<p>TODO4</p>
+<p><img src="https://lupyuen.github.io/images/roblox-interpolate.png" alt="" /></p>
+<p>TODO1</p>
+<p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>We shall head back and transmit BL602 / BL604’s <strong>Internal Temperature Sensor Data</strong> to The Things Network.</p>
