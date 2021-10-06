@@ -353,13 +353,15 @@ Before heading deeper into our Roblox Scripts, let's watch our __Virtual Gadget 
 
     At the top bar, click __Home → Game Settings → Security → Allow HTTP Requests__
 
-## Create Part and Script
+![Create Part in Roblox Studio](https://lupyuen.github.io/images/roblox-studio.png)
 
-TODO
+## Create Part and Script
 
 1.  At __Explorer → Workspace__ (at right)...
 
     Click __(+)__ and create a __Part__
+
+    (See pic above)
 
 1.  Under our __Part__...
 
@@ -369,9 +371,9 @@ TODO
 
     -   [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
-## Edit Settings
+![Create Script in Roblox Studio](https://lupyuen.github.io/images/roblox-studio2.png)
 
-TODO
+## Edit Settings
 
 1.  If we have an IoT Gadget connected to The Things Network: 
 
@@ -397,9 +399,9 @@ TODO
 
     The script will run in __Demo Mode__, simulating a real gadget.
 
-## Create ModuleScripts
+![Create Base64 ModuleScript in Roblox Studio](https://lupyuen.github.io/images/roblox-studio3.png)
 
-TODO
+## Create ModuleScripts
 
 1.  At __Explorer → ServerStorage__ (at right)...
 
@@ -407,13 +409,17 @@ TODO
     
     __`Base64`__ and __`Cbor`__
 
+    (See pic above)
+
 1.  Copy and paste the the contents of these links into the ModuleScripts...
 
-    -   [__`Base64`__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua)
+    -   [__`Base64`__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua) (See pic above)
 
-    -   [__`Cbor`__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua)
+    -   [__`Cbor`__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua) (See pic below)
 
     (Yep they need to be __ModuleScripts__. Normal Scripts won't work)
+
+![Create Cbor ModuleScript in Roblox Studio](https://lupyuen.github.io/images/roblox-studio4.png)
 
 ## Watch It Run
 
@@ -421,7 +427,7 @@ At the top bar, click __Home → Play__
 
 (Or press __F5__)
 
-Our Virtual Gadget is rendered with its Hot / Cold state!
+Roblox renders our Virtual Gadget in its __Hot / Cold State__!
 
 [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
 
