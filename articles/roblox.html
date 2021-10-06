@@ -179,10 +179,7 @@ end</code></pre></div>
 <p>(This means <code>12.36</code> ºC, our values have been scaled by 100)</p>
 <p>Let’s study the code inside our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71"><strong>getSensorData</strong></a> function.</p>
 <h2 id="define-constants" class="section-header"><a href="#define-constants">2.1 Define Constants</a></h2>
-<p>TODO</p>
-<ul>
-<li><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71"><code>DigitalTwin.lua</code></a></li>
-</ul>
+<p>We begin by defining the constants for accessing The Things Network: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71"><code>DigitalTwin.lua</code></a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your Application ID for The Things Network
 -- (Must have permission to Read Application Traffic)
 local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;
@@ -193,17 +190,22 @@ local TTN_API_KEY = &quot;YOUR_API_KEY&quot;
 -- TODO: Change this to your region-specific URL for The Things Network
 local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
 <p>(“<code>..</code>” in Lua means concatenate the strings)</p>
-<h2 id="import-modules" class="section-header"><a href="#import-modules">2.2 Import Modules</a></h2>
-<p>TODO</p>
+<p>Our URL for The Things Network (<strong>TTN_URL</strong>) looks like…</p>
+<div class="example-wrap"><pre class="language-uri"><code>https://au1.cloud.thethings.network/api/v3/as/
+  applications/YOUR_APPLICATION_ID/
+  packages/storage/uplink_message</code></pre></div><h2 id="import-modules" class="section-header"><a href="#import-modules">2.2 Import Modules</a></h2>
+<p>Next we get the <strong>HttpService</strong> from Roblox…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Get the HttpService for making HTTP Requests
+local HttpService = game:GetService(&quot;HttpService&quot;)</code></pre></div>
+<p><strong>HTTP Requests must be enabled</strong> in Roblox…</p>
+<p>Click Home → Game Settings → Security → Allow HTTP Requests</p>
+<p>We import the <strong>ModuleScripts</strong> that will be called to decode our Sensor Data…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Load the Base64 and CBOR ModuleScripts from ServerStorage
 local ServerStorage = game:GetService(&quot;ServerStorage&quot;)
 local base64 = require(ServerStorage.Base64)
 local cbor   = require(ServerStorage.Cbor)</code></pre></div>
-<p>(We’ll talk about Base64 and CBOR in a while)</p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-lua"><code>-- Get the HttpService for making HTTP Requests
-local HttpService = game:GetService(&quot;HttpService&quot;)</code></pre></div>
-<p>Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests</p>
+<p>We’ll talk about Base64 and CBOR in a while.</p>
+<p><a href="https://education.roblox.com/en-us/resources/intro-to-module-scripts">(More about Roblox ModuleScripts)</a></p>
 <h2 id="send-http-request" class="section-header"><a href="#send-http-request">2.3 Send HTTP Request</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Fetch Sensor Data from The Things Network (LoRa) as a Lua Table
