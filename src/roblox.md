@@ -341,7 +341,7 @@ Our Sensor Data is returned as __nil__ in case of error.
 
 # Roblox Mirroring In Action
 
-TODO
+Before heading deeper into our Roblox Scripts, let's watch our __Virtual Gadget in action__!
 
 1.  Download and install __Roblox Studio__...
 
