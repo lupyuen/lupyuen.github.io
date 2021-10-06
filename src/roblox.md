@@ -151,6 +151,8 @@ https://au1.cloud.thethings.network/api/v3/as/
   packages/storage/uplink_message
 ```
 
+(More about these settings in the Appendix)
+
 ## Import Modules
 
 Next we get the __HttpService__ from Roblox...
@@ -179,7 +181,7 @@ We'll talk about Base64 and CBOR in a while.
 
 ## Send HTTP Request
 
-TODO
+Our function begins by __declaring the variables__...
 
 ```lua
 -- Fetch Sensor Data from The Things Network (LoRa) as a Lua Table
@@ -196,7 +198,17 @@ local function getSensorData()
   local sensorData = nil
 ```
 
-TODO
+-   __response__: Contains the HTTP Response (JSON format) returned by The Things Network
+
+-   __data__: Lua Table we get after parsing the JSON HTTP Response
+
+-   __frmPayload__: Encoded Sensor Data, extracted from our Parsed JSON Response
+
+-   __payload__: Sensor Data after Base64 Decoding
+
+-   __sensorData__: Sensor Data after CBOR Decoding
+
+We set the __API Key__ in the HTTP Request Header (as "Authorization")...
 
 ```lua  
   -- Set the API Key in the HTTP Request Header	
@@ -205,7 +217,9 @@ TODO
   }
 ```
 
-TODO
+("`..`" in Lua means concatenate the strings)
+
+Then we __fetch the URL__ (via HTTP GET), passing the API Key in the headers...
 
 ```lua
   -- Wrap with pcall in case something goes wrong
@@ -214,6 +228,18 @@ TODO
     -- Fetch the data from The Things Network, no caching
     response = HttpService:GetAsync(TTN_URL, false, headers)
 ```
+
+[(GetAsync is documented here)](https://developer.roblox.com/en-us/api-reference/class/HttpService#getasync-string-url-bool-nocache-variant-headers-)
+
+_What's "pcall"?_
+
+We wrap our code with __"pcall"__ to catch any errors returned by the HTTP Fetching. 
+
+(Also for catching Decoding Errors)
+
+If any error occurs, execution resumes __after the "pcall" block__.
+
+And we'll check for errors then.
 
 ![JSON HTTP Response decoded as Lua Table](https://lupyuen.github.io/images/roblox-script2.png)
 
@@ -245,6 +271,8 @@ TODO
 ```
 
 (More about Base64 and CBOR in a while)
+
+End of pcall block
 
 ## Check Errors
 
@@ -288,11 +316,23 @@ Under the `Part`, create a `Script`.
 
 Copy and paste the script from [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
-Follow the steps in the next section to copy and paste the ModuleScripts for `Base64` and `Cbor`
+If we have an IoT Gadget connected to The Things Network: Edit these settings...
 
-# Decode Base64 and CBOR in Roblox
+```lua
+-- TODO: Change this to your Application ID for The Things Network
+-- (Must have permission to Read Application Traffic)
+local TTN_APPLICATION_ID = "YOUR_APPLICATION_ID"
 
-TODO
+-- TODO: Change this to your API Key for The Things Network
+local TTN_API_KEY = "YOUR_API_KEY"
+
+-- TODO: Change this to your region-specific URL for The Things Network
+local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" .. TTN_APPLICATION_ID .. "/packages/storage/uplink_message?limit=1&order=-received_at"
+```
+
+(More about these settings in the Appendix)
+
+If we don't have an IoT Gadget: Leave the above settings as is. The script will run in __Demo Mode__, simulating a real gadget.
 
 Under `ServerStorage`, create two __ModuleScripts__: `Base64` and `Cbor`.
 
@@ -303,6 +343,10 @@ Copy and paste the ModuleScripts from...
 -   [`Cbor`](https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua)
 
 (Yep they need to be __ModuleScripts__. Normal Scripts won't work)
+
+# Decode Base64 and CBOR in Roblox
+
+TODO
 
 To test Base64 and CBOR Decoding...
 
