@@ -387,7 +387,7 @@ To test Base64 and CBOR Decoding...
 -- Load the Base64 and CBOR ModuleScripts from ServerStorage
 local ServerStorage = game:GetService("ServerStorage")
 local base64 = require(ServerStorage.Base64)
-local cbor = require(ServerStorage.Cbor)
+local cbor   = require(ServerStorage.Cbor)
 
 -- Base64 Decode the Message Payload
 payload = base64.decode('omF0GQTUYWwZCSs=')
@@ -667,6 +667,8 @@ For macOS: Delete Roblox Studio under the __Applications Folder__. Reboot and re
 
 For Linux: [See this](https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux)
 
+If we're in China: [See this](https://roblox.fandom.com/wiki/Roblox_China)
+
 # Appendix: Fetch Sensor Data from The Things Network
 
 TODO
@@ -766,4 +768,3 @@ More about CBOR Encoding...
 TODO10
 
 ![](https://lupyuen.github.io/images/roblox-ttn.jpg)
-
