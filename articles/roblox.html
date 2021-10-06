@@ -318,6 +318,8 @@ local function getSensorData()
   return sensorData
 end</code></pre></div>
 <p>Our Sensor Data is returned as <strong>nil</strong> in case of error.</p>
+<p>And that’s how our Roblox Script fetches Sensor Data from The Things Network!</p>
+<p><img src="https://lupyuen.github.io/images/roblox-script3.png" alt="Roblox Fetches Sensor Data" /></p>
 <h1 id="roblox-mirroring-in-action" class="section-header"><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a></h1>
 <p>Before heading deeper into our Roblox Scripts, let’s watch our <strong>Virtual Gadget in action</strong>!</p>
 <ol>
@@ -422,6 +424,7 @@ print(payload)
 sensorData = cbor.decode(payload)
 print(&quot;sensorData:&quot;)
 print(sensorData)</code></pre></div>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L345-L353">(Source)</a></p>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>payload:
 �at�al
@@ -432,14 +435,18 @@ sensorData:
   [&quot;t&quot;] = 1236
 }</code></pre></div>
 <p>The ModuleScripts were copied from…</p>
-<p><a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">iskolbin/lbase64</a></p>
-<p><a href="https://github.com/Zash/lua-cbor/blob/master/cbor.lua">Zash/lua-cbor</a></p>
+<ul>
+<li>
+<p><a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua"><strong>iskolbin/lbase64</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/Zash/lua-cbor/blob/master/cbor.lua"><strong>Zash/lua-cbor</strong></a></p>
+</li>
+</ul>
 <p>This line in <a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">base64.lua</a> was changed from…</p>
 <div class="example-wrap"><pre class="language-lua"><code>local extract = _G.bit32 and _G.bit32.extract</code></pre></div>
 <p>To…</p>
 <div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract</code></pre></div>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/roblox-script3.png" alt="" /></p>
 <p>TODO8</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script4.png" alt="" /></p>
 <p>TODO9</p>
