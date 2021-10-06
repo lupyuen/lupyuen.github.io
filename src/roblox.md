@@ -741,6 +741,44 @@ If we're in China, Roblox works a little differently. See this...
 
 -   [__"Roblox China"__](https://roblox.fandom.com/wiki/Roblox_China)
 
+# Appendix: The Things Network Settings
+
+TODO
+
+-  [__The Things Network: Storage Integration__](https://www.thethingsindustries.com/docs/integrations/storage/)
+
+Stores messages for roughly 2 or 3 days.
+
+```lua
+-- TODO: Change this to your Application ID for The Things Network
+-- (Must have permission to Read Application Traffic)
+local TTN_APPLICATION_ID = "YOUR_APPLICATION_ID"
+
+-- TODO: Change this to your API Key for The Things Network
+local TTN_API_KEY = "YOUR_API_KEY"
+
+-- TODO: Change this to your region-specific URL for The Things Network
+local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" .. TTN_APPLICATION_ID .. "/packages/storage/uplink_message?limit=1&order=-received_at"
+```
+
+("`..`" in Lua means concatenate the strings)
+
+Our URL for The Things Network (__TTN_URL__) looks like...
+
+```uri
+https://au1.cloud.thethings.network/api/v3/as/
+  applications/YOUR_APPLICATION_ID/
+  packages/storage/uplink_message
+```
+
+TODO
+
+![](https://lupyuen.github.io/images/roblox-ttn2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/roblox-ttn3.png)
+
 # Appendix: Fetch Sensor Data from The Things Network
 
 TODO
