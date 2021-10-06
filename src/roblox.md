@@ -367,6 +367,8 @@ Before heading deeper into our Roblox Scripts, let's watch our __Virtual Gadget 
 
     Click __(+)__ and create a __Script__
 
+    (See pic below)
+
 1.  Copy and paste the contents of this link into the script...
 
     -   [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
