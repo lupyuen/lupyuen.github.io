@@ -78,7 +78,8 @@
 <li><a href="#edit-settings">3.2 Edit Settings</a><ul></ul></li>
 <li><a href="#create-modulescripts">3.3 Create ModuleScripts</a><ul></ul></li>
 <li><a href="#watch-it-run">3.4 Watch It Run</a><ul></ul></li></ul></li>
-<li><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a><ul></ul></li>
+<li><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a><ul>
+<li><a href="#base64-and-cbor-modulescripts">4.1 Base64 and CBOR ModuleScripts</a><ul></ul></li></ul></li>
 <li><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#notes">7 Notes</a><ul></ul></li>
@@ -408,8 +409,44 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
 <h1 id="decode-base64-and-cbor-in-roblox" class="section-header"><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a></h1>
-<p>TODO</p>
-<p>To test Base64 and CBOR Decoding…</p>
+<p><em>Why do we need CBOR Decoding?</em></p>
+<p>Normally IoT Gadgets will transmit <strong>Sensor Data in JSON</strong> like so….</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1236, 
+  &quot;l&quot;: 2347 
+}</code></pre></div>
+<p>That’s <strong>19 bytes of JSON</strong> for Temperature Sensor and Light Sensor Data.</p>
+<p>But this won’t fit into the <strong>Maximum Message Size</strong> for The Things Network: <strong>12 bytes</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">(Assuming 10 messages per hour)</a></p>
+<p>Instead we compress the Sensor Data into <a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a> Format.</p>
+<p>(CBOR works like a compact, binary form of JSON)</p>
+<p>And we need only <strong>11 bytes of CBOR!</strong></p>
+<div class="example-wrap"><pre class="language-text"><code>a2 61 74 19 04 d4 61 6c 19 09 2b</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/cbor">(More about CBOR)</a></p>
+<p><img src="https://lupyuen.github.io/images/cbor-title.jpg" alt="Encoding Sensor Data with CBOR on BL602" /></p>
+<p><a href="https://lupyuen.github.io/articles/cbor">(Source)</a></p>
+<p><em>What about the Base64 Decoding?</em></p>
+<p>Our IoT Gadget transmits Sensor Data to The Things Network in <strong>Binary (CBOR) Format</strong>.</p>
+<p>But our Roblox script fetches the Sensor Data in <strong>JSON Format</strong>, which can’t embed Binary Data.</p>
+<p>Hence our Binary Data is converted to text format with <strong>Base64 Encoding</strong>, when fetched by Roblox.</p>
+<p>Our Sensor Data <strong>encoded with CBOR</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>a2 61 74 19 04 d4 61 6c 19 09 2b</code></pre></div>
+<p>Becomes this text string when <strong>encoded with Base64</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>omF0GQTUYWwZCSs=</code></pre></div>
+<p>This explains the two stages of decoding: <strong>Base64 followed by CBOR</strong>.</p>
+<p><img src="https://lupyuen.github.io/images/roblox-studio3.png" alt="Create Base64 ModuleScript in Roblox Studio" /></p>
+<h2 id="base64-and-cbor-modulescripts" class="section-header"><a href="#base64-and-cbor-modulescripts">4.1 Base64 and CBOR ModuleScripts</a></h2>
+<p><em>How do we decode Base64 and CBOR Data in Roblox?</em></p>
+<p>We call these two ModuleScripts in ServerStorage…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua"><strong><code>Base64</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua"><strong><code>Cbor</code></strong></a></p>
+</li>
+</ul>
+<p>Like so…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Load the Base64 and CBOR ModuleScripts from ServerStorage
 local ServerStorage = game:GetService(&quot;ServerStorage&quot;)
 local base64 = require(ServerStorage.Base64)
@@ -434,7 +471,8 @@ sensorData:
   [&quot;l&quot;] = 2347,
   [&quot;t&quot;] = 1236
 }</code></pre></div>
-<p>The ModuleScripts were copied from…</p>
+<p><em>Did we create the ModuleScripts from scratch?</em></p>
+<p>Nope, they were copied from <strong>existing Lua Libraries</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua"><strong>iskolbin/lbase64</strong></a></p>
@@ -443,14 +481,13 @@ sensorData:
 <p><a href="https://github.com/Zash/lua-cbor/blob/master/cbor.lua"><strong>Zash/lua-cbor</strong></a></p>
 </li>
 </ul>
-<p>This line in <a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">base64.lua</a> was changed from…</p>
+<p><em>Was it difficult to port the Lua Libraries into Roblox?</em></p>
+<p>Not at all! We changed only one line of code in <a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">base64.lua</a> from…</p>
 <div class="example-wrap"><pre class="language-lua"><code>local extract = _G.bit32 and _G.bit32.extract</code></pre></div>
 <p>To…</p>
 <div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract</code></pre></div>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/roblox-script4.png" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/roblox-script5.png" alt="" /></p>
+<p>And the ModuleScripts worked perfectly!</p>
+<p><img src="https://lupyuen.github.io/images/roblox-script5.png" alt="Porting Lua Libraries into Roblox" /></p>
 <h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
 <p>TODO</p>
 <p>Let’s use a Roblox Particle Emitter to show the Temperature (t) of our object…</p>
