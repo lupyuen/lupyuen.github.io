@@ -245,21 +245,31 @@ And we'll check for errors then.
 
 ## Decode HTTP Response
 
-TODO
+Now we __decode the HTTP Response__ (JSON format) from The Things Network.
+
+First we __parse the JSON__ returned by The Things Network...
 
 ```lua    
     -- Decode the JSON response into a Lua Table
     data = HttpService:JSONDecode(response)
 ```
 
-TODO
+This returns a __Lua Table__ that contains the JSON Fields.
+
+(See the pic above)
+
+As shown in the pic, we need to __extract the Encoded Sensor Data__ from the field: __result → uplink_message → frm_payload__
 
 ```lua    
     -- Get the Message Payload. If missing, pcall will catch the error.
     frmPayload = data.result.uplink_message.frm_payload
 ```
 
-TODO
+__frmPayload__ contains the Sensor Data encoded with Base64 and CBOR.
+
+(Looks like gibberish: "`omF0GQTUYWwZCSs=`")
+
+We call the Base64 and CBOR ModuleScripts to __decode the Sensor Data__...
 
 ```lua    
     -- Base64 Decode the Message Payload
@@ -267,16 +277,33 @@ TODO
 
     -- Decode the CBOR Map to get Sensor Data
     sensorData = cbor.decode(payload)
-  end)	
+
+  -- End of pcall block
+  end)
 ```
 
 (More about Base64 and CBOR in a while)
 
-End of pcall block
+__sensorData__ now contains meaningful Sensor Data...
+
+```lua
+{
+  ["l"] = 2347,
+  ["t"] = 1236
+}
+```
+
+(Above are the values recorded by our Temperature Sensor and Light Sensor, scaled up by 100)
+
+Note that our __"pcall" block__ ends here. So we check the errors next.
 
 ## Check Errors
 
-TODO
+We're at the spot after the "pcall" block.
+
+We __check for errors__ that could have occurred inside the "pcall" block.
+
+(HTTP request errors or decoding errors)
 
 ```lua  
   -- Show the error
@@ -295,7 +322,7 @@ TODO
 
 ## Return Sensor Data
 
-TODO
+Finally we __return the Sensor Data__ to the caller...
 
 ```lua
   -- sensorData will be nil if our request failed or JSON failed to parse
@@ -303,6 +330,8 @@ TODO
   return sensorData
 end
 ```
+
+Our Sensor Data is returned as __"nil"__ in case of error.
 
 # Roblox Mirroring In Action
 
