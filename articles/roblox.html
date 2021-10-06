@@ -347,7 +347,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <div class="example-wrap"><pre class="language-lua"><code>-- Load the Base64 and CBOR ModuleScripts from ServerStorage
 local ServerStorage = game:GetService(&quot;ServerStorage&quot;)
 local base64 = require(ServerStorage.Base64)
-local cbor = require(ServerStorage.Cbor)
+local cbor   = require(ServerStorage.Cbor)
 
 -- Base64 Decode the Message Payload
 payload = base64.decode(&#39;omF0GQTUYWwZCSs=&#39;)
@@ -560,6 +560,7 @@ end</code></pre></div>
 <p>Click “Start Creating”</p>
 <p>For macOS: Delete Roblox Studio under the <strong>Applications Folder</strong>. Reboot and reinstall.</p>
 <p>For Linux: <a href="https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux">See this</a></p>
+<p>If we’re in China: <a href="https://roblox.fandom.com/wiki/Roblox_China">See this</a></p>
 <h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">9 Appendix: Fetch Sensor Data from The Things Network</a></h1>
 <p>TODO</p>
 <p>The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device…</p>
