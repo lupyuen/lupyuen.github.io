@@ -96,9 +96,9 @@ Below we see HttpService in action, fetching the current __latitude and longitud
 
 ![Roblox Lua Script calls HttpService](https://lupyuen.github.io/images/roblox-script.png)
 
-[(Source code)](https://developer.roblox.com/en-us/api-reference/function/HttpService/GetAsync)
+[(Source)](https://developer.roblox.com/en-us/api-reference/function/HttpService/GetAsync)
 
-To __fetch Sensor Data__ from The Things Network, we have created a __getSensorData__ function in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71).
+To __fetch Sensor Data__ from The Things Network, we have created a __getSensorData__ function in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L74).
 
 When we run this Roblox Script...
 
@@ -115,6 +115,8 @@ else
 end
 ```
 
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L309-L335)
+
 We should see the __Temperature Sensor Data__ fetched from The Things Network...
 
 ```text
@@ -123,11 +125,11 @@ Temperature: 1236
 
 (This means `12.36` ºC, our values have been scaled up by 100 times)
 
-Let's study the code inside our [__getSensorData__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71) function.
+Let's study the code inside our [__getSensorData__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L74) function.
 
 ## Define Constants
 
-We begin by __defining the constants__ for accessing The Things Network: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71)
+We begin by __defining the constants__ for accessing The Things Network: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L74)
 
 ```lua
 -- TODO: Change this to your Application ID for The Things Network
@@ -341,41 +343,89 @@ Our Sensor Data is returned as __nil__ in case of error.
 
 TODO
 
-Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests
+1.  Download and install __Roblox Studio__...
 
-Under `Workspace`, create a `Part`.
+    [__"Install Roblox Studio"__](https://lupyuen.github.io/articles/roblox#appendix-install-roblox-studio)
 
-Under the `Part`, create a `Script`.
+1.  In Roblox Studio, click __New → Classic Baseplate__
 
-Copy and paste the script from [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
+1.  We need to enable HTTP Requests...
 
-If we have an IoT Gadget connected to The Things Network: Edit these settings...
+    At the top bar, click __Home → Game Settings → Security → Allow HTTP Requests__
 
-```lua
--- TODO: Change this to your Application ID for The Things Network
--- (Must have permission to Read Application Traffic)
-local TTN_APPLICATION_ID = "YOUR_APPLICATION_ID"
+## Create Part and Script
 
--- TODO: Change this to your API Key for The Things Network
-local TTN_API_KEY = "YOUR_API_KEY"
+TODO
 
--- TODO: Change this to your region-specific URL for The Things Network
-local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" .. TTN_APPLICATION_ID .. "/packages/storage/uplink_message?limit=1&order=-received_at"
-```
+1.  At __Explorer → Workspace__ (at right)...
 
-(More about these settings in the Appendix)
+    Click __(+)__ and create a __Part__
 
-If we don't have an IoT Gadget: Leave the above settings as is. The script will run in __Demo Mode__, simulating a real gadget.
+1.  Under our __Part__...
 
-Under `ServerStorage`, create two __ModuleScripts__: `Base64` and `Cbor`.
+    Click __(+)__ and create a __Script__
 
-Copy and paste the ModuleScripts from...
+1.  Copy and paste the contents of this link into the script...
 
--   [`Base64`](https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua)
+    -   [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
--   [`Cbor`](https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua)
+## Edit Settings
 
-(Yep they need to be __ModuleScripts__. Normal Scripts won't work)
+TODO
+
+1.  If we have an IoT Gadget connected to The Things Network: 
+
+    Edit these settings...
+
+    ```lua
+    -- TODO: Change this to your Application ID for The Things Network
+    -- (Must have permission to Read Application Traffic)
+    local TTN_APPLICATION_ID = "YOUR_APPLICATION_ID"
+
+    -- TODO: Change this to your API Key for The Things Network
+    local TTN_API_KEY = "YOUR_API_KEY"
+
+    -- TODO: Change this to your region-specific URL for The Things Network
+    local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" .. TTN_APPLICATION_ID .. "/packages/storage/uplink_message?limit=1&order=-received_at"
+    ```
+
+    (More about this in the Appendix)
+
+1.  If we don't have an IoT Gadget: 
+
+    Leave the above settings as is. 
+
+    The script will run in __Demo Mode__, simulating a real gadget.
+
+## Create ModuleScripts
+
+TODO
+
+1.  At __Explorer → ServerStorage__ (at right)...
+
+    Click __(+)__ and create two __ModuleScripts__: 
+    
+    __`Base64`__ and __`Cbor`__
+
+1.  Copy and paste the the contents of these links into the ModuleScripts...
+
+    -   [__`Base64`__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua)
+
+    -   [__`Cbor`__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua)
+
+    (Yep they need to be __ModuleScripts__. Normal Scripts won't work)
+
+## Watch It Run
+
+At the top bar, click __Home → Play__
+
+(Or press __F5__)
+
+Our Virtual Gadget is rendered with its Hot / Cold state!
+
+[__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
+
+![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
 
 # Decode Base64 and CBOR in Roblox
 
@@ -653,21 +703,35 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Install Roblox Studio
 
-TODO
+Here are the steps to download and install __Roblox Studio for macOS and Windows__...
 
-Sign up for a free account at 
+1.  Sign up for a free account at [__roblox.com__](https://www.roblox.com/home)
 
-Login
+1.  Log in to [__roblox.com__](https://www.roblox.com/home)
 
-Click "Create" in top bar
+1.  Click __"Create"__ at the top bar
 
-Click "Start Creating"
+1.  Click __"Start Creating"__
 
-For macOS: Delete Roblox Studio under the __Applications Folder__. Reboot and reinstall.
+1.  The Roblox Studio Installer will be downloaded.
 
-For Linux: [See this](https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux)
+    Click the Installer to install Roblox Studio.
 
-If we're in China: [See this](https://roblox.fandom.com/wiki/Roblox_China)
+1.  __For macOS:__ If the Installer fails...
+
+    Delete Roblox Studio in the __Applications Folder__.
+    
+    Reboot and reinstall Roblox Studio.
+
+    (That's how I fixed Roblox Studio on macOS)
+
+To install __Roblox Studio on Linux__, see this...
+
+-   [__"Using Roblox on Linux"__](https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux)
+
+If we're in China, Roblox works a little differently. See this...
+
+-   [__"Roblox China"__](https://roblox.fandom.com/wiki/Roblox_China)
 
 # Appendix: Fetch Sensor Data from The Things Network
 
