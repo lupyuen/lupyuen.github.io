@@ -161,7 +161,7 @@
 </ul>
 <p>Below we see HttpService in action, fetching the current <strong>latitude and longitude of International Space Station</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script.png" alt="Roblox Lua Script calls HttpService" /></p>
-<p><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService">(Source code at the bottom of this page)</a></p>
+<p><a href="https://developer.roblox.com/en-us/api-reference/function/HttpService/GetAsync">(Source code)</a></p>
 <p>To <strong>fetch Sensor Data</strong> from The Things Network, we have created a <strong>getSensorData</strong> function in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71">DigitalTwin.lua</a>.</p>
 <p>When we run this Roblox Script…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Fetch the Sensor Data from The Things Network (LoRa)
@@ -176,7 +176,7 @@ else
 end</code></pre></div>
 <p>We should see the <strong>Temperature Sensor Data</strong> fetched from The Things Network…</p>
 <div class="example-wrap"><pre class="language-text"><code>Temperature: 1236</code></pre></div>
-<p>(This means <code>12.36</code> ºC, our values have been scaled by 100)</p>
+<p>(This means <code>12.36</code> ºC, our values have been scaled up by 100 times)</p>
 <p>Let’s study the code inside our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71"><strong>getSensorData</strong></a> function.</p>
 <h2 id="define-constants" class="section-header"><a href="#define-constants">2.1 Define Constants</a></h2>
 <p>We begin by <strong>defining the constants</strong> for accessing The Things Network: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71">DigitalTwin.lua</a></p>
@@ -251,18 +251,20 @@ local function getSensorData()
 
     -- Fetch the data from The Things Network, no caching
     response = HttpService:GetAsync(TTN_URL, false, headers)</code></pre></div>
-<p><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService#getasync-string-url-bool-nocache-variant-headers-">(GetAsync is documented here)</a></p>
-<p><em>What’s “pcall”?</em></p>
+<p><a href="https://developer.roblox.com/en-us/api-reference/function/HttpService/GetAsync">(GetAsync is documented here)</a></p>
+<p><em>What is “pcall”?</em></p>
 <p>We wrap our code with <strong>“pcall”</strong> to catch any errors returned by the HTTP Fetching. </p>
 <p>(Also for catching Decoding Errors)</p>
 <p>If any error occurs, execution resumes <strong>after the “pcall” block</strong>.</p>
 <p>And we’ll check for errors then.</p>
+<p><a href="https://developer.roblox.com/en-us/api-reference/lua-docs/Lua-Globals">(pcall is documented here)</a></p>
 <p><img src="https://lupyuen.github.io/images/roblox-script2.png" alt="JSON HTTP Response decoded as Lua Table" /></p>
 <h2 id="decode-http-response" class="section-header"><a href="#decode-http-response">2.4 Decode HTTP Response</a></h2>
 <p>Now we <strong>decode the HTTP Response</strong> (JSON format) from The Things Network.</p>
 <p>First we <strong>parse the JSON</strong> returned by The Things Network…</p>
 <div class="example-wrap"><pre class="language-lua"><code>    -- Decode the JSON response into a Lua Table
     data = HttpService:JSONDecode(response)</code></pre></div>
+<p><a href="https://developer.roblox.com/en-us/api-reference/function/HttpService/JSONDecode">(JSONDecode is documented here)</a></p>
 <p>This returns a <strong>Lua Table</strong> that contains the JSON Fields.</p>
 <p>(See the pic above)</p>
 <p>As shown in the pic, we need to <strong>extract the Encoded Sensor Data</strong> from the field: <strong>result → uplink_message → frm_payload</strong></p>
@@ -280,17 +282,16 @@ local function getSensorData()
   -- End of pcall block
   end)</code></pre></div>
 <p>(More about Base64 and CBOR in a while)</p>
-<p><strong>sensorData</strong> now contains meaningful Sensor Data…</p>
+<p><strong>sensorData</strong> now contains meaningful Sensor Data in a Lua Table…</p>
 <div class="example-wrap"><pre class="language-lua"><code>{
   [&quot;l&quot;] = 2347,
   [&quot;t&quot;] = 1236
 }</code></pre></div>
-<p>(Above are the values recorded by our Temperature Sensor and Light Sensor, scaled up by 100)</p>
+<p>Above are the values recorded by our <strong>Light Sensor</strong> and <strong>Temperature Sensor</strong>, scaled up by 100 times.</p>
 <p>Note that our <strong>“pcall” block</strong> ends here. So we check the errors next.</p>
 <h2 id="check-errors" class="section-header"><a href="#check-errors">2.5 Check Errors</a></h2>
 <p>We’re at the spot after the “pcall” block.</p>
-<p>We <strong>check for errors</strong> that could have occurred inside the “pcall” block.</p>
-<p>(HTTP request errors or decoding errors)</p>
+<p>We <strong>check for errors</strong> that could have occurred inside the “pcall” block…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Show the error
   if response == nil then
     print(&quot;Error returned by The Things Network&quot;)
@@ -302,13 +303,15 @@ local function getSensorData()
     print(&quot;Base64 decoding failed&quot;)
   elseif sensorData == nil then
     print(&quot;CBOR decoding failed&quot;)
-  end</code></pre></div><h2 id="return-sensor-data" class="section-header"><a href="#return-sensor-data">2.6 Return Sensor Data</a></h2>
-<p>Finally we <strong>return the Sensor Data</strong> to the caller…</p>
+  end</code></pre></div>
+<p>This code checks for HTTP Request Errors and Decoding Errors.</p>
+<h2 id="return-sensor-data" class="section-header"><a href="#return-sensor-data">2.6 Return Sensor Data</a></h2>
+<p>Finally we <strong>return the Sensor Data</strong> (as a Lua Table) to the caller…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- sensorData will be nil if our request failed or JSON failed to parse
   -- or Message Payload missing or Base64 / CBOR decoding failed
   return sensorData
 end</code></pre></div>
-<p>Our Sensor Data is returned as <strong>“nil”</strong> in case of error.</p>
+<p>Our Sensor Data is returned as <strong>nil</strong> in case of error.</p>
 <h1 id="roblox-mirroring-in-action" class="section-header"><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a></h1>
 <p>TODO</p>
 <p>Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests</p>
