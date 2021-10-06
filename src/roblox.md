@@ -339,6 +339,10 @@ end
 
 Our Sensor Data is returned as __nil__ in case of error.
 
+And that's how our Roblox Script fetches Sensor Data from The Things Network!
+
+![Roblox Fetches Sensor Data](https://lupyuen.github.io/images/roblox-script3.png)
+
 # Roblox Mirroring In Action
 
 Before heading deeper into our Roblox Scripts, let's watch our __Virtual Gadget in action__!
@@ -458,6 +462,8 @@ print("sensorData:")
 print(sensorData)
 ```
 
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L345-L353)
+
 We should see...
 
 ```text
@@ -473,9 +479,9 @@ sensorData:
 
 The ModuleScripts were copied from...
 
-[iskolbin/lbase64](https://github.com/iskolbin/lbase64/blob/master/base64.lua)
+-   [__iskolbin/lbase64__](https://github.com/iskolbin/lbase64/blob/master/base64.lua)
 
-[Zash/lua-cbor](https://github.com/Zash/lua-cbor/blob/master/cbor.lua)
+-   [__Zash/lua-cbor__](https://github.com/Zash/lua-cbor/blob/master/cbor.lua)
 
 This line in [base64.lua](https://github.com/iskolbin/lbase64/blob/master/base64.lua) was changed from...
 
@@ -488,10 +494,6 @@ To...
 ```lua
 local extract = bit32 and bit32.extract
 ```
-
-TODO7
-
-![](https://lupyuen.github.io/images/roblox-script3.png)
 
 TODO8
 
