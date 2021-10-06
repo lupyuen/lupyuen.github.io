@@ -200,9 +200,12 @@ TODO
 ```lua
   -- Wrap with pcall in case something goes wrong
   pcall(function ()
+
     -- Fetch the data from The Things Network, no caching
     response = HttpService:GetAsync(TTN_URL, false, headers)
 ```
+
+![JSON HTTP Response decoded as Lua Table](https://lupyuen.github.io/images/roblox-script2.png)
 
 ## Decode HTTP Response
 
@@ -225,15 +228,13 @@ TODO
 ```lua    
     -- Base64 Decode the Message Payload
     payload = base64.decode(frmPayload)
-```
 
-TODO
-
-```lua
     -- Decode the CBOR Map to get Sensor Data
     sensorData = cbor.decode(payload)
   end)	
 ```
+
+(More about Base64 and CBOR in a while)
 
 ## Check Errors
 
@@ -264,10 +265,6 @@ TODO
   return sensorData
 end
 ```
-
-TODO6
-
-![](https://lupyuen.github.io/images/roblox-script2.png)
 
 # Roblox Mirroring In Action
 
@@ -571,7 +568,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
-Sign up
+Sign up for a free account at 
 
 Login
 
@@ -583,7 +580,7 @@ For macOS: Delete Roblox Studio under the __Applications Folder__. Reboot and re
 
 For Linux: [See this](https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux)
 
-# Appendix: Fetching Sensor Data from The Things Network
+# Appendix: Fetch Sensor Data from The Things Network
 
 TODO
 
