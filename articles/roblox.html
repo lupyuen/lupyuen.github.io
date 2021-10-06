@@ -67,12 +67,13 @@
     <nav id="TOC"><ul>
 <li><a href="#roblox-mirrors-real-life">1 Roblox Mirrors Real Life</a><ul></ul></li>
 <li><a href="#roblox-fetches-sensor-data">2 Roblox Fetches Sensor Data</a><ul></ul></li>
-<li><a href="#decode-base64-and-cbor-in-roblox">3 Decode Base64 and CBOR in Roblox</a><ul></ul></li>
-<li><a href="#render-temperature-with-roblox-particle-emitter">4 Render Temperature With Roblox Particle Emitter</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
-<li><a href="#notes">6 Notes</a><ul></ul></li>
-<li><a href="#appendix-install-roblox-studio">7 Appendix: Install Roblox Studio</a><ul></ul></li>
-<li><a href="#appendix-fetching-sensor-data-from-the-things-network">8 Appendix: Fetching Sensor Data from The Things Network</a><ul></ul></li></ul></nav><p>📝 <em>12 Oct 2021</em></p>
+<li><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a><ul></ul></li>
+<li><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a><ul></ul></li>
+<li><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#notes">7 Notes</a><ul></ul></li>
+<li><a href="#appendix-install-roblox-studio">8 Appendix: Install Roblox Studio</a><ul></ul></li>
+<li><a href="#appendix-fetching-sensor-data-from-the-things-network">9 Appendix: Fetching Sensor Data from The Things Network</a><ul></ul></li></ul></nav><p>📝 <em>12 Oct 2021</em></p>
 <p><a href="https://developer.roblox.com/en-us/"><strong>Roblox</strong></a> is a <strong>Multiplayer Virtual World</strong> that lets us create <strong>3D Objects</strong> and interact with them. (Free to create and play)</p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a <strong>Public Wireless Network</strong> that connects many <strong>IoT Gadgets</strong> around the world. (It’s free too)</p>
 <p><em>Can we connect Roblox to The Things Network… To Monitor and Control Real-World Gadgets?</em></p>
@@ -148,19 +149,18 @@
 <p><a href="https://lupyuen.github.io/articles/ttn">(More about The Things Network)</a></p>
 <p><img src="https://lupyuen.github.io/images/roblox-http.jpg" alt="Roblox talking to The Things Network" /></p>
 <h1 id="roblox-fetches-sensor-data" class="section-header"><a href="#roblox-fetches-sensor-data">2 Roblox Fetches Sensor Data</a></h1>
-<p>TODO</p>
-<p>Roblox provides a Lua Scripting API that fetches External HTTP URLs (GET and POST)</p>
-<p><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService">HttpService</a></p>
+<p>Roblox provides the <strong>HttpService API</strong> that we may call in our Lua Scripts to fetch External HTTP URLs (GET and POST)…</p>
+<ul>
+<li><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService"><strong>Roblox HttpService API</strong></a></li>
+</ul>
+<p>Below we see HttpService in action, fetching the current <strong>latitude and longitude of International Space Station</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script.png" alt="Roblox Lua Script calls HttpService" /></p>
+<p><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService">(Source code at the bottom of this page)</a></p>
+<p>TODO</p>
 <p>Here’s how we call it to fetch the Sensor Data from The Things Network…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></li>
 </ul>
-<p>Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests</p>
-<p>Under <code>Workspace</code>, create a <code>Part</code>.</p>
-<p>Under the <code>Part</code>, create a <code>Script</code>.</p>
-<p>Copy and paste the script from <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
-<p>Follow the steps in the next section to copy and paste the ModuleScripts for <code>Base64</code> and <code>Cbor</code></p>
 <p>To fetch the Sensor Data from The Things Network, we call <code>getSensorData</code> in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
 <p>When we run this Roblox Script…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Fetch the Sensor Data from The Things Network (LoRa)
@@ -178,7 +178,14 @@ end</code></pre></div>
 1236</code></pre></div>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script2.png" alt="" /></p>
-<h1 id="decode-base64-and-cbor-in-roblox" class="section-header"><a href="#decode-base64-and-cbor-in-roblox">3 Decode Base64 and CBOR in Roblox</a></h1>
+<h1 id="roblox-mirroring-in-action" class="section-header"><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a></h1>
+<p>TODO</p>
+<p>Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests</p>
+<p>Under <code>Workspace</code>, create a <code>Part</code>.</p>
+<p>Under the <code>Part</code>, create a <code>Script</code>.</p>
+<p>Copy and paste the script from <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<p>Follow the steps in the next section to copy and paste the ModuleScripts for <code>Base64</code> and <code>Cbor</code></p>
+<h1 id="decode-base64-and-cbor-in-roblox" class="section-header"><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a></h1>
 <p>TODO</p>
 <p>Under <code>ServerStorage</code>, create two <strong>ModuleScripts</strong>: <code>Base64</code> and <code>Cbor</code>.</p>
 <p>Copy and paste the ModuleScripts from…</p>
@@ -228,7 +235,7 @@ sensorData:
 <p><img src="https://lupyuen.github.io/images/roblox-script4.png" alt="" /></p>
 <p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script5.png" alt="" /></p>
-<h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">4 Render Temperature With Roblox Particle Emitter</a></h1>
+<h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
 <p>Let’s use a Roblox Particle Emitter to show the Temperature (t) of our object…</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
 <p>We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).</p>
@@ -375,7 +382,7 @@ end</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/roblox-interpolate.png" alt="" /></p>
 <p>TODO1</p>
 <p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">5 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>We shall head back and transmit BL602 / BL604’s <strong>Internal Temperature Sensor Data</strong> to The Things Network.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -395,11 +402,11 @@ end</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/roblox.md"><code>lupyuen.github.io/src/roblox.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">6 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1443824711050301444">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-install-roblox-studio" class="section-header"><a href="#appendix-install-roblox-studio">7 Appendix: Install Roblox Studio</a></h1>
+<h1 id="appendix-install-roblox-studio" class="section-header"><a href="#appendix-install-roblox-studio">8 Appendix: Install Roblox Studio</a></h1>
 <p>TODO</p>
 <p>Sign up</p>
 <p>Login</p>
@@ -407,7 +414,7 @@ end</code></pre></div>
 <p>Click “Start Creating”</p>
 <p>For macOS: Delete Roblox Studio under the <strong>Applications Folder</strong>. Reboot and reinstall.</p>
 <p>For Linux: <a href="https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux">See this</a></p>
-<h1 id="appendix-fetching-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetching-sensor-data-from-the-things-network">8 Appendix: Fetching Sensor Data from The Things Network</a></h1>
+<h1 id="appendix-fetching-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetching-sensor-data-from-the-things-network">9 Appendix: Fetching Sensor Data from The Things Network</a></h1>
 <p>TODO</p>
 <p>The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device…</p>
 <p><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/">Retrieve Uplink Messages</a></p>
