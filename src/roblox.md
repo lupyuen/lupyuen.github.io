@@ -88,7 +88,7 @@ Let's talk about Roblox Lua Scripts and HTTP Requests...
 
 # Roblox Fetches Sensor Data
 
-Roblox provides the __HttpService API__ that we may call in our Lua Scripts to fetch External HTTP URLs (GET and POST)...
+Roblox provides a __HttpService API__ that we may call in our Lua Scripts to __fetch External HTTP URLs__ (via GET and POST)...
 
 -   [__Roblox HttpService API__](https://developer.roblox.com/en-us/api-reference/class/HttpService)
 
@@ -98,13 +98,7 @@ Below we see HttpService in action, fetching the current __latitude and longitud
 
 [(Source code at the bottom of this page)](https://developer.roblox.com/en-us/api-reference/class/HttpService)
 
-TODO
-
-Here's how we call it to fetch the Sensor Data from The Things Network...
-
--   [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
-
-To fetch the Sensor Data from The Things Network, we call `getSensorData` in [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
+To __fetch Sensor Data__ from The Things Network, we have created a __getSensorData__ function in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71).
 
 When we run this Roblox Script...
 
@@ -114,18 +108,161 @@ local sensorData = getSensorData()
 
 -- Show the Temperature
 if sensorData then
-	print("Temperature:")
-	print(sensorData.t)
+  print("Temperature:")
+  print(sensorData.t)
 else
-	print("Failed to get sensor data")
+  print("Failed to get sensor data")
 end
 ```
 
-We should see the Temperature Sensor Data fetched from The Things Network...
+We should see the __Temperature Sensor Data__ fetched from The Things Network...
 
 ```text
-Temperature:
-1236
+Temperature: 1236
+```
+
+(This means `12.36` ºC, our values have been scaled by 100)
+
+Let's study the code inside our [__getSensorData__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71) function.
+
+## Define Constants
+
+TODO
+
+-   [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71)
+
+```lua
+-- TODO: Change this to your Application ID for The Things Network
+-- (Must have permission to Read Application Traffic)
+local TTN_APPLICATION_ID = "YOUR_APPLICATION_ID"
+
+-- TODO: Change this to your API Key for The Things Network
+local TTN_API_KEY = "YOUR_API_KEY"
+
+-- TODO: Change this to your region-specific URL for The Things Network
+local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" .. TTN_APPLICATION_ID .. "/packages/storage/uplink_message?limit=1&order=-received_at"
+```
+
+("`..`" in Lua means concatenate the strings)
+
+## Import Modules
+
+TODO
+
+```lua
+-- Load the Base64 and CBOR ModuleScripts from ServerStorage
+local ServerStorage = game:GetService("ServerStorage")
+local base64 = require(ServerStorage.Base64)
+local cbor   = require(ServerStorage.Cbor)
+```
+
+(We'll talk about Base64 and CBOR in a while)
+
+TODO
+
+```lua
+-- Get the HttpService for making HTTP Requests
+local HttpService = game:GetService("HttpService")
+```
+
+Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests
+
+## Send HTTP Request
+
+TODO
+
+```lua
+-- Fetch Sensor Data from The Things Network (LoRa) as a Lua Table
+local function getSensorData()
+  -- HTTPS JSON Response from The Things Network
+  local response = nil
+  -- Lua Table parsed from JSON response
+  local data = nil
+  -- Message Payload from the Lua Table (encoded with Base64)
+  local frmPayload = nil
+  -- Message Payload after Base64 Decoding
+  local payload = nil
+  -- Lua Table of Sensor Data after CBOR Decoding
+  local sensorData = nil
+```
+
+TODO
+
+```lua  
+  -- Set the API Key in the HTTP Request Header	
+  local headers = {
+    ["Authorization"] = "Bearer " .. TTN_API_KEY,
+  }
+```
+
+TODO
+
+```lua
+  -- Wrap with pcall in case something goes wrong
+  pcall(function ()
+    -- Fetch the data from The Things Network, no caching
+    response = HttpService:GetAsync(TTN_URL, false, headers)
+```
+
+## Decode HTTP Response
+
+TODO
+
+```lua    
+    -- Decode the JSON response into a Lua Table
+    data = HttpService:JSONDecode(response)
+```
+
+TODO
+
+```lua    
+    -- Get the Message Payload. If missing, pcall will catch the error.
+    frmPayload = data.result.uplink_message.frm_payload
+```
+
+TODO
+
+```lua    
+    -- Base64 Decode the Message Payload
+    payload = base64.decode(frmPayload)
+```
+
+TODO
+
+```lua
+    -- Decode the CBOR Map to get Sensor Data
+    sensorData = cbor.decode(payload)
+  end)	
+```
+
+## Check Errors
+
+TODO
+
+```lua  
+  -- Show the error
+  if response == nil then
+    print("Error returned by The Things Network")
+  elseif data == nil then
+    print("Failed to parse JSON response from The Things Network")
+  elseif frmPayload == nil then
+    print("Missing message payload")
+  elseif payload == nil then
+    print("Base64 decoding failed")
+  elseif sensorData == nil then
+    print("CBOR decoding failed")
+  end
+```
+
+## Return Sensor Data
+
+TODO
+
+```lua
+  -- sensorData will be nil if our request failed or JSON failed to parse
+  -- or Message Payload missing or Base64 / CBOR decoding failed
+  return sensorData
+end
 ```
 
 TODO6
@@ -187,8 +324,8 @@ payload:
 
 sensorData:
 {
-    ["l"] = 2347,
-    ["t"] = 1236
+  ["l"] = 2347,
+  ["t"] = 1236
 }
 ```
 
@@ -223,6 +360,8 @@ TODO9
 ![](https://lupyuen.github.io/images/roblox-script5.png)
 
 # Render Temperature With Roblox Particle Emitter
+
+TODO
 
 Let's use a Roblox Particle Emitter to show the Temperature (t) of our object...
 
@@ -382,9 +521,9 @@ To interpolate the Particle Emitter for High / Mid / Low Temperatures, we call `
 updateParticleEmitter(emitter, T_MAX)
 wait(5)
 for t = T_MAX, T_MIN, -600 do
-	print(string.format("t: %d", t))
-	updateParticleEmitter(emitter, t)
-	wait(4)
+  print(string.format("t: %d", t))
+  updateParticleEmitter(emitter, t)
+  wait(4)
 end
 ```
 
@@ -456,73 +595,73 @@ Here's the command to fetch the latest Uplink Message...
 
 ```bash
 curl \
-    -G "https://au1.cloud.thethings.network/api/v3/as/applications/$YOUR_APPLICATION_ID/packages/storage/uplink_message" \
-    -H "Authorization: Bearer $YOUR_API_KEY" \
-    -H "Accept: text/event-stream" \
-    -d "limit=1" \
-    -d "order=-received_at"
+  -G "https://au1.cloud.thethings.network/api/v3/as/applications/$YOUR_APPLICATION_ID/packages/storage/uplink_message" \
+  -H "Authorization: Bearer $YOUR_API_KEY" \
+  -H "Accept: text/event-stream" \
+  -d "limit=1" \
+  -d "order=-received_at"
 ```
 
 Which returns...
 
 ```json
 {
-    "result": {
-        "end_device_ids": {
-            "device_id": "eui-YOUR_DEVICE_EUI",
-            "application_ids": {
-                "application_id": "luppy-application"
-            },
-            "dev_eui": "YOUR_DEVICE_EUI",
-            "dev_addr": "YOUR_DEVICE_ADDR"
-        },
-        "received_at": "2021-10-02T12:10:54.594006440Z",
-        "uplink_message": {
-            "f_port": 2,
-            "f_cnt": 3,
-            "frm_payload": "omF0GQTUYWwZCSs=",
-            "rx_metadata": [
-                {
-                    "gateway_ids": {
-                        "gateway_id": "luppy-wisgate-rak7248",
-                        "eui": "YOUR_GATEWAY_EUI"
-                    },
-                    "time": "2021-10-02T13:04:34.552513Z",
-                    "timestamp": 3576406949,
-                    "rssi": -53,
-                    "channel_rssi": -53,
-                    "snr": 12.2,
-                    "location": {
-                        "latitude": 1.27125,
-                        "longitude": 103.80795,
-                        "altitude": 70,
-                        "source": "SOURCE_REGISTRY"
-                    },
-                    "channel_index": 4
-                }
-            ],
-            "settings": {
-                "data_rate": {
-                    "lora": {
-                        "bandwidth": 125000,
-                        "spreading_factor": 10
-                    }
-                },
-                "data_rate_index": 2,
-                "coding_rate": "4/5",
-                "frequency": "922600000",
-                "timestamp": 3576406949,
-                "time": "2021-10-02T13:04:34.552513Z"
-            },
-            "received_at": "2021-10-02T12:10:54.385972437Z",
-            "consumed_airtime": "0.370688s",
-            "network_ids": {
-                "net_id": "000013",
-                "tenant_id": "ttn",
-                "cluster_id": "ttn-au1"
-            }
+  "result": {
+    "end_device_ids": {
+      "device_id": "eui-YOUR_DEVICE_EUI",
+      "application_ids": {
+        "application_id": "luppy-application"
+      },
+      "dev_eui": "YOUR_DEVICE_EUI",
+      "dev_addr": "YOUR_DEVICE_ADDR"
+    },
+    "received_at": "2021-10-02T12:10:54.594006440Z",
+    "uplink_message": {
+      "f_port": 2,
+      "f_cnt": 3,
+      "frm_payload": "omF0GQTUYWwZCSs=",
+      "rx_metadata": [
+        {
+          "gateway_ids": {
+            "gateway_id": "luppy-wisgate-rak7248",
+            "eui": "YOUR_GATEWAY_EUI"
+          },
+          "time": "2021-10-02T13:04:34.552513Z",
+          "timestamp": 3576406949,
+          "rssi": -53,
+          "channel_rssi": -53,
+          "snr": 12.2,
+          "location": {
+            "latitude": 1.27125,
+            "longitude": 103.80795,
+            "altitude": 70,
+            "source": "SOURCE_REGISTRY"
+          },
+          "channel_index": 4
         }
+      ],
+      "settings": {
+        "data_rate": {
+          "lora": {
+            "bandwidth": 125000,
+            "spreading_factor": 10
+          }
+        },
+        "data_rate_index": 2,
+        "coding_rate": "4/5",
+        "frequency": "922600000",
+        "timestamp": 3576406949,
+        "time": "2021-10-02T13:04:34.552513Z"
+      },
+      "received_at": "2021-10-02T12:10:54.385972437Z",
+      "consumed_airtime": "0.370688s",
+      "network_ids": {
+        "net_id": "000013",
+        "tenant_id": "ttn",
+        "cluster_id": "ttn-au1"
+      }
     }
+  }
 }
 ```
 
