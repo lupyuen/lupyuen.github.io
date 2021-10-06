@@ -441,9 +441,74 @@ Roblox renders our Virtual Gadget in its __Hot / Cold State__!
 
 # Decode Base64 and CBOR in Roblox
 
-TODO
+_Why do we need CBOR Decoding?_
 
-To test Base64 and CBOR Decoding...
+Normally IoT Gadgets will transmit __Sensor Data in JSON__ like so....
+
+```json
+{ 
+  "t": 1236, 
+  "l": 2347 
+}
+```
+
+That's __19 bytes of JSON__ for Temperature Sensor and Light Sensor Data.
+
+But this won't fit into the __Maximum Message Size__ for The Things Network: __12 bytes__.
+
+[(Assuming 10 messages per hour)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
+
+Instead we compress the Sensor Data into [__Concise Binary Object Representation (CBOR)__](https://en.wikipedia.org/wiki/CBOR) Format.
+
+(CBOR works like a compact, binary form of JSON)
+
+And we need only __11 bytes of CBOR!__
+
+```text
+a2 61 74 19 04 d4 61 6c 19 09 2b
+```
+
+[(More about CBOR)](https://lupyuen.github.io/articles/cbor)
+
+![Encoding Sensor Data with CBOR on BL602](https://lupyuen.github.io/images/cbor-title.jpg)
+
+[(Source)](https://lupyuen.github.io/articles/cbor)
+
+_What about the Base64 Decoding?_
+
+Our IoT Gadget transmits Sensor Data to The Things Network in __Binary (CBOR) Format__.
+
+But our Roblox script fetches the Sensor Data in __JSON Format__, which can't embed Binary Data.
+
+Hence our Binary Data is converted to text format with __Base64 Encoding__, when fetched by Roblox.
+
+Our Sensor Data __encoded with CBOR__...
+
+```text
+a2 61 74 19 04 d4 61 6c 19 09 2b
+```
+
+Becomes this text string when __encoded with Base64__...
+
+```text
+omF0GQTUYWwZCSs=
+```
+
+This explains the two stages of decoding: __Base64 followed by CBOR__.
+
+![Create Base64 ModuleScript in Roblox Studio](https://lupyuen.github.io/images/roblox-studio3.png)
+
+## Base64 and CBOR ModuleScripts
+
+_How do we decode Base64 and CBOR Data in Roblox?_
+
+We call these two ModuleScripts in ServerStorage...
+
+-   [__`Base64`__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua)
+
+-   [__`Cbor`__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua)
+
+Like so...
 
 ```lua
 -- Load the Base64 and CBOR ModuleScripts from ServerStorage
@@ -477,13 +542,17 @@ sensorData:
 }
 ```
 
-The ModuleScripts were copied from...
+_Did we create the ModuleScripts from scratch?_
+
+Nope, they were copied from __existing Lua Libraries__...
 
 -   [__iskolbin/lbase64__](https://github.com/iskolbin/lbase64/blob/master/base64.lua)
 
 -   [__Zash/lua-cbor__](https://github.com/Zash/lua-cbor/blob/master/cbor.lua)
 
-This line in [base64.lua](https://github.com/iskolbin/lbase64/blob/master/base64.lua) was changed from...
+_Was it difficult to port the Lua Libraries into Roblox?_
+
+Not at all! We changed only one line of code in [base64.lua](https://github.com/iskolbin/lbase64/blob/master/base64.lua) from...
 
 ```lua
 local extract = _G.bit32 and _G.bit32.extract
@@ -495,13 +564,9 @@ To...
 local extract = bit32 and bit32.extract
 ```
 
-TODO8
+And the ModuleScripts worked perfectly!
 
-![](https://lupyuen.github.io/images/roblox-script4.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/roblox-script5.png)
+![Porting Lua Libraries into Roblox](https://lupyuen.github.io/images/roblox-script5.png)
 
 # Render Temperature With Roblox Particle Emitter
 
