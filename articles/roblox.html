@@ -259,23 +259,38 @@ local function getSensorData()
 <p>And we’ll check for errors then.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script2.png" alt="JSON HTTP Response decoded as Lua Table" /></p>
 <h2 id="decode-http-response" class="section-header"><a href="#decode-http-response">2.4 Decode HTTP Response</a></h2>
-<p>TODO</p>
+<p>Now we <strong>decode the HTTP Response</strong> (JSON format) from The Things Network.</p>
+<p>First we <strong>parse the JSON</strong> returned by The Things Network…</p>
 <div class="example-wrap"><pre class="language-lua"><code>    -- Decode the JSON response into a Lua Table
     data = HttpService:JSONDecode(response)</code></pre></div>
-<p>TODO</p>
+<p>This returns a <strong>Lua Table</strong> that contains the JSON Fields.</p>
+<p>(See the pic above)</p>
+<p>As shown in the pic, we need to <strong>extract the Encoded Sensor Data</strong> from the field: <strong>result → uplink_message → frm_payload</strong></p>
 <div class="example-wrap"><pre class="language-lua"><code>    -- Get the Message Payload. If missing, pcall will catch the error.
     frmPayload = data.result.uplink_message.frm_payload</code></pre></div>
-<p>TODO</p>
+<p><strong>frmPayload</strong> contains the Sensor Data encoded with Base64 and CBOR.</p>
+<p>(Looks like gibberish: “<code>omF0GQTUYWwZCSs=</code>”)</p>
+<p>We call the Base64 and CBOR ModuleScripts to <strong>decode the Sensor Data</strong>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>    -- Base64 Decode the Message Payload
     payload = base64.decode(frmPayload)
 
     -- Decode the CBOR Map to get Sensor Data
     sensorData = cbor.decode(payload)
-  end)	</code></pre></div>
+
+  -- End of pcall block
+  end)</code></pre></div>
 <p>(More about Base64 and CBOR in a while)</p>
-<p>End of pcall block</p>
+<p><strong>sensorData</strong> now contains meaningful Sensor Data…</p>
+<div class="example-wrap"><pre class="language-lua"><code>{
+  [&quot;l&quot;] = 2347,
+  [&quot;t&quot;] = 1236
+}</code></pre></div>
+<p>(Above are the values recorded by our Temperature Sensor and Light Sensor, scaled up by 100)</p>
+<p>Note that our <strong>“pcall” block</strong> ends here. So we check the errors next.</p>
 <h2 id="check-errors" class="section-header"><a href="#check-errors">2.5 Check Errors</a></h2>
-<p>TODO</p>
+<p>We’re at the spot after the “pcall” block.</p>
+<p>We <strong>check for errors</strong> that could have occurred inside the “pcall” block.</p>
+<p>(HTTP request errors or decoding errors)</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Show the error
   if response == nil then
     print(&quot;Error returned by The Things Network&quot;)
@@ -288,11 +303,13 @@ local function getSensorData()
   elseif sensorData == nil then
     print(&quot;CBOR decoding failed&quot;)
   end</code></pre></div><h2 id="return-sensor-data" class="section-header"><a href="#return-sensor-data">2.6 Return Sensor Data</a></h2>
-<p>TODO</p>
+<p>Finally we <strong>return the Sensor Data</strong> to the caller…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- sensorData will be nil if our request failed or JSON failed to parse
   -- or Message Payload missing or Base64 / CBOR decoding failed
   return sensorData
-end</code></pre></div><h1 id="roblox-mirroring-in-action" class="section-header"><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a></h1>
+end</code></pre></div>
+<p>Our Sensor Data is returned as <strong>“nil”</strong> in case of error.</p>
+<h1 id="roblox-mirroring-in-action" class="section-header"><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a></h1>
 <p>TODO</p>
 <p>Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests</p>
 <p>Under <code>Workspace</code>, create a <code>Part</code>.</p>
