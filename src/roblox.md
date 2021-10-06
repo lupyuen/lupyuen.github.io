@@ -127,9 +127,7 @@ Let's study the code inside our [__getSensorData__](https://github.com/lupyuen/r
 
 ## Define Constants
 
-TODO
-
--   [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71)
+We begin by defining the constants for accessing The Things Network: [`DigitalTwin.lua`](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71)
 
 ```lua
 -- TODO: Change this to your Application ID for The Things Network
@@ -145,9 +143,28 @@ local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" ..
 
 ("`..`" in Lua means concatenate the strings)
 
+Our URL for The Things Network (__TTN_URL__) looks like...
+
+```uri
+https://au1.cloud.thethings.network/api/v3/as/
+  applications/YOUR_APPLICATION_ID/
+  packages/storage/uplink_message
+```
+
 ## Import Modules
 
-TODO
+Next we get the __HttpService__ from Roblox...
+
+```lua
+-- Get the HttpService for making HTTP Requests
+local HttpService = game:GetService("HttpService")
+```
+
+__HTTP Requests must be enabled__ in Roblox...
+
+Click Home → Game Settings → Security → Allow HTTP Requests
+
+We import the __ModuleScripts__ that will be called to decode our Sensor Data...
 
 ```lua
 -- Load the Base64 and CBOR ModuleScripts from ServerStorage
@@ -156,16 +173,9 @@ local base64 = require(ServerStorage.Base64)
 local cbor   = require(ServerStorage.Cbor)
 ```
 
-(We'll talk about Base64 and CBOR in a while)
+We'll talk about Base64 and CBOR in a while.
 
-TODO
-
-```lua
--- Get the HttpService for making HTTP Requests
-local HttpService = game:GetService("HttpService")
-```
-
-Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests
+[(More about Roblox ModuleScripts)](https://education.roblox.com/en-us/resources/intro-to-module-scripts)
 
 ## Send HTTP Request
 
