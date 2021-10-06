@@ -66,7 +66,13 @@
     <h1 class="title">IoT Digital Twin with Roblox and The Things Network</h1>
     <nav id="TOC"><ul>
 <li><a href="#roblox-mirrors-real-life">1 Roblox Mirrors Real Life</a><ul></ul></li>
-<li><a href="#roblox-fetches-sensor-data">2 Roblox Fetches Sensor Data</a><ul></ul></li>
+<li><a href="#roblox-fetches-sensor-data">2 Roblox Fetches Sensor Data</a><ul>
+<li><a href="#define-constants">2.1 Define Constants</a><ul></ul></li>
+<li><a href="#import-modules">2.2 Import Modules</a><ul></ul></li>
+<li><a href="#send-http-request">2.3 Send HTTP Request</a><ul></ul></li>
+<li><a href="#decode-http-response">2.4 Decode HTTP Response</a><ul></ul></li>
+<li><a href="#check-errors">2.5 Check Errors</a><ul></ul></li>
+<li><a href="#return-sensor-data">2.6 Return Sensor Data</a><ul></ul></li></ul></li>
 <li><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a><ul></ul></li>
 <li><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a><ul></ul></li>
 <li><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a><ul></ul></li>
@@ -149,33 +155,110 @@
 <p><a href="https://lupyuen.github.io/articles/ttn">(More about The Things Network)</a></p>
 <p><img src="https://lupyuen.github.io/images/roblox-http.jpg" alt="Roblox talking to The Things Network" /></p>
 <h1 id="roblox-fetches-sensor-data" class="section-header"><a href="#roblox-fetches-sensor-data">2 Roblox Fetches Sensor Data</a></h1>
-<p>Roblox provides the <strong>HttpService API</strong> that we may call in our Lua Scripts to fetch External HTTP URLs (GET and POST)…</p>
+<p>Roblox provides a <strong>HttpService API</strong> that we may call in our Lua Scripts to <strong>fetch External HTTP URLs</strong> (via GET and POST)…</p>
 <ul>
 <li><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService"><strong>Roblox HttpService API</strong></a></li>
 </ul>
 <p>Below we see HttpService in action, fetching the current <strong>latitude and longitude of International Space Station</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script.png" alt="Roblox Lua Script calls HttpService" /></p>
 <p><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService">(Source code at the bottom of this page)</a></p>
-<p>TODO</p>
-<p>Here’s how we call it to fetch the Sensor Data from The Things Network…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></li>
-</ul>
-<p>To fetch the Sensor Data from The Things Network, we call <code>getSensorData</code> in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><code>DigitalTwin.lua</code></a></p>
+<p>To <strong>fetch Sensor Data</strong> from The Things Network, we have created a <strong>getSensorData</strong> function in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71">DigitalTwin.lua</a>.</p>
 <p>When we run this Roblox Script…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Fetch the Sensor Data from The Things Network (LoRa)
 local sensorData = getSensorData()
 
 -- Show the Temperature
 if sensorData then
-	print(&quot;Temperature:&quot;)
-	print(sensorData.t)
+  print(&quot;Temperature:&quot;)
+  print(sensorData.t)
 else
-	print(&quot;Failed to get sensor data&quot;)
+  print(&quot;Failed to get sensor data&quot;)
 end</code></pre></div>
-<p>We should see the Temperature Sensor Data fetched from The Things Network…</p>
-<div class="example-wrap"><pre class="language-text"><code>Temperature:
-1236</code></pre></div>
+<p>We should see the <strong>Temperature Sensor Data</strong> fetched from The Things Network…</p>
+<div class="example-wrap"><pre class="language-text"><code>Temperature: 1236</code></pre></div>
+<p>(This means <code>12.36</code> ºC, our values have been scaled by 100)</p>
+<p>Let’s study the code inside our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L71"><strong>getSensorData</strong></a> function.</p>
+<h2 id="define-constants" class="section-header"><a href="#define-constants">2.1 Define Constants</a></h2>
+<p>TODO</p>
+<ul>
+<li><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L71"><code>DigitalTwin.lua</code></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your Application ID for The Things Network
+-- (Must have permission to Read Application Traffic)
+local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;
+
+-- TODO: Change this to your API Key for The Things Network
+local TTN_API_KEY = &quot;YOUR_API_KEY&quot;
+
+-- TODO: Change this to your region-specific URL for The Things Network
+local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
+<p>(“<code>..</code>” in Lua means concatenate the strings)</p>
+<h2 id="import-modules" class="section-header"><a href="#import-modules">2.2 Import Modules</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Load the Base64 and CBOR ModuleScripts from ServerStorage
+local ServerStorage = game:GetService(&quot;ServerStorage&quot;)
+local base64 = require(ServerStorage.Base64)
+local cbor   = require(ServerStorage.Cbor)</code></pre></div>
+<p>(We’ll talk about Base64 and CBOR in a while)</p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Get the HttpService for making HTTP Requests
+local HttpService = game:GetService(&quot;HttpService&quot;)</code></pre></div>
+<p>Enable HTTP Requests: Click Home → Game Settings → Security → Allow HTTP Requests</p>
+<h2 id="send-http-request" class="section-header"><a href="#send-http-request">2.3 Send HTTP Request</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Fetch Sensor Data from The Things Network (LoRa) as a Lua Table
+local function getSensorData()
+  -- HTTPS JSON Response from The Things Network
+  local response = nil
+  -- Lua Table parsed from JSON response
+  local data = nil
+  -- Message Payload from the Lua Table (encoded with Base64)
+  local frmPayload = nil
+  -- Message Payload after Base64 Decoding
+  local payload = nil
+  -- Lua Table of Sensor Data after CBOR Decoding
+  local sensorData = nil</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- Set the API Key in the HTTP Request Header	
+  local headers = {
+    [&quot;Authorization&quot;] = &quot;Bearer &quot; .. TTN_API_KEY,
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- Wrap with pcall in case something goes wrong
+  pcall(function ()
+    -- Fetch the data from The Things Network, no caching
+    response = HttpService:GetAsync(TTN_URL, false, headers)</code></pre></div><h2 id="decode-http-response" class="section-header"><a href="#decode-http-response">2.4 Decode HTTP Response</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>    -- Decode the JSON response into a Lua Table
+    data = HttpService:JSONDecode(response)</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>    -- Get the Message Payload. If missing, pcall will catch the error.
+    frmPayload = data.result.uplink_message.frm_payload</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>    -- Base64 Decode the Message Payload
+    payload = base64.decode(frmPayload)</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>    -- Decode the CBOR Map to get Sensor Data
+    sensorData = cbor.decode(payload)
+  end)	</code></pre></div><h2 id="check-errors" class="section-header"><a href="#check-errors">2.5 Check Errors</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- Show the error
+  if response == nil then
+    print(&quot;Error returned by The Things Network&quot;)
+  elseif data == nil then
+    print(&quot;Failed to parse JSON response from The Things Network&quot;)
+  elseif frmPayload == nil then
+    print(&quot;Missing message payload&quot;)
+  elseif payload == nil then
+    print(&quot;Base64 decoding failed&quot;)
+  elseif sensorData == nil then
+    print(&quot;CBOR decoding failed&quot;)
+  end</code></pre></div><h2 id="return-sensor-data" class="section-header"><a href="#return-sensor-data">2.6 Return Sensor Data</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- sensorData will be nil if our request failed or JSON failed to parse
+  -- or Message Payload missing or Base64 / CBOR decoding failed
+  return sensorData
+end</code></pre></div>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script2.png" alt="" /></p>
 <h1 id="roblox-mirroring-in-action" class="section-header"><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a></h1>
@@ -219,8 +302,8 @@ print(sensorData)</code></pre></div>
 
 sensorData:
 {
-    [&quot;l&quot;] = 2347,
-    [&quot;t&quot;] = 1236
+  [&quot;l&quot;] = 2347,
+  [&quot;t&quot;] = 1236
 }</code></pre></div>
 <p>The ModuleScripts were copied from…</p>
 <p><a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">iskolbin/lbase64</a></p>
@@ -236,6 +319,7 @@ sensorData:
 <p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script5.png" alt="" /></p>
 <h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
+<p>TODO</p>
 <p>Let’s use a Roblox Particle Emitter to show the Temperature (t) of our object…</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
 <p>We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).</p>
@@ -368,9 +452,9 @@ local emitter = createParticleEmitter()</code></pre></div>
 updateParticleEmitter(emitter, T_MAX)
 wait(5)
 for t = T_MAX, T_MIN, -600 do
-	print(string.format(&quot;t: %d&quot;, t))
-	updateParticleEmitter(emitter, t)
-	wait(4)
+  print(string.format(&quot;t: %d&quot;, t))
+  updateParticleEmitter(emitter, t)
+  wait(4)
 end</code></pre></div>
 <p>Here’s how the Interpolating Particle Emitter looks…</p>
 <ul>
@@ -420,69 +504,69 @@ end</code></pre></div>
 <p><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/">Retrieve Uplink Messages</a></p>
 <p>Here’s the command to fetch the latest Uplink Message…</p>
 <div class="example-wrap"><pre class="language-bash"><code>curl \
-    -G &quot;https://au1.cloud.thethings.network/api/v3/as/applications/$YOUR_APPLICATION_ID/packages/storage/uplink_message&quot; \
-    -H &quot;Authorization: Bearer $YOUR_API_KEY&quot; \
-    -H &quot;Accept: text/event-stream&quot; \
-    -d &quot;limit=1&quot; \
-    -d &quot;order=-received_at&quot;</code></pre></div>
+  -G &quot;https://au1.cloud.thethings.network/api/v3/as/applications/$YOUR_APPLICATION_ID/packages/storage/uplink_message&quot; \
+  -H &quot;Authorization: Bearer $YOUR_API_KEY&quot; \
+  -H &quot;Accept: text/event-stream&quot; \
+  -d &quot;limit=1&quot; \
+  -d &quot;order=-received_at&quot;</code></pre></div>
 <p>Which returns…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
-    &quot;result&quot;: {
-        &quot;end_device_ids&quot;: {
-            &quot;device_id&quot;: &quot;eui-YOUR_DEVICE_EUI&quot;,
-            &quot;application_ids&quot;: {
-                &quot;application_id&quot;: &quot;luppy-application&quot;
-            },
-            &quot;dev_eui&quot;: &quot;YOUR_DEVICE_EUI&quot;,
-            &quot;dev_addr&quot;: &quot;YOUR_DEVICE_ADDR&quot;
-        },
-        &quot;received_at&quot;: &quot;2021-10-02T12:10:54.594006440Z&quot;,
-        &quot;uplink_message&quot;: {
-            &quot;f_port&quot;: 2,
-            &quot;f_cnt&quot;: 3,
-            &quot;frm_payload&quot;: &quot;omF0GQTUYWwZCSs=&quot;,
-            &quot;rx_metadata&quot;: [
-                {
-                    &quot;gateway_ids&quot;: {
-                        &quot;gateway_id&quot;: &quot;luppy-wisgate-rak7248&quot;,
-                        &quot;eui&quot;: &quot;YOUR_GATEWAY_EUI&quot;
-                    },
-                    &quot;time&quot;: &quot;2021-10-02T13:04:34.552513Z&quot;,
-                    &quot;timestamp&quot;: 3576406949,
-                    &quot;rssi&quot;: -53,
-                    &quot;channel_rssi&quot;: -53,
-                    &quot;snr&quot;: 12.2,
-                    &quot;location&quot;: {
-                        &quot;latitude&quot;: 1.27125,
-                        &quot;longitude&quot;: 103.80795,
-                        &quot;altitude&quot;: 70,
-                        &quot;source&quot;: &quot;SOURCE_REGISTRY&quot;
-                    },
-                    &quot;channel_index&quot;: 4
-                }
-            ],
-            &quot;settings&quot;: {
-                &quot;data_rate&quot;: {
-                    &quot;lora&quot;: {
-                        &quot;bandwidth&quot;: 125000,
-                        &quot;spreading_factor&quot;: 10
-                    }
-                },
-                &quot;data_rate_index&quot;: 2,
-                &quot;coding_rate&quot;: &quot;4/5&quot;,
-                &quot;frequency&quot;: &quot;922600000&quot;,
-                &quot;timestamp&quot;: 3576406949,
-                &quot;time&quot;: &quot;2021-10-02T13:04:34.552513Z&quot;
-            },
-            &quot;received_at&quot;: &quot;2021-10-02T12:10:54.385972437Z&quot;,
-            &quot;consumed_airtime&quot;: &quot;0.370688s&quot;,
-            &quot;network_ids&quot;: {
-                &quot;net_id&quot;: &quot;000013&quot;,
-                &quot;tenant_id&quot;: &quot;ttn&quot;,
-                &quot;cluster_id&quot;: &quot;ttn-au1&quot;
-            }
+  &quot;result&quot;: {
+    &quot;end_device_ids&quot;: {
+      &quot;device_id&quot;: &quot;eui-YOUR_DEVICE_EUI&quot;,
+      &quot;application_ids&quot;: {
+        &quot;application_id&quot;: &quot;luppy-application&quot;
+      },
+      &quot;dev_eui&quot;: &quot;YOUR_DEVICE_EUI&quot;,
+      &quot;dev_addr&quot;: &quot;YOUR_DEVICE_ADDR&quot;
+    },
+    &quot;received_at&quot;: &quot;2021-10-02T12:10:54.594006440Z&quot;,
+    &quot;uplink_message&quot;: {
+      &quot;f_port&quot;: 2,
+      &quot;f_cnt&quot;: 3,
+      &quot;frm_payload&quot;: &quot;omF0GQTUYWwZCSs=&quot;,
+      &quot;rx_metadata&quot;: [
+        {
+          &quot;gateway_ids&quot;: {
+            &quot;gateway_id&quot;: &quot;luppy-wisgate-rak7248&quot;,
+            &quot;eui&quot;: &quot;YOUR_GATEWAY_EUI&quot;
+          },
+          &quot;time&quot;: &quot;2021-10-02T13:04:34.552513Z&quot;,
+          &quot;timestamp&quot;: 3576406949,
+          &quot;rssi&quot;: -53,
+          &quot;channel_rssi&quot;: -53,
+          &quot;snr&quot;: 12.2,
+          &quot;location&quot;: {
+            &quot;latitude&quot;: 1.27125,
+            &quot;longitude&quot;: 103.80795,
+            &quot;altitude&quot;: 70,
+            &quot;source&quot;: &quot;SOURCE_REGISTRY&quot;
+          },
+          &quot;channel_index&quot;: 4
         }
+      ],
+      &quot;settings&quot;: {
+        &quot;data_rate&quot;: {
+          &quot;lora&quot;: {
+            &quot;bandwidth&quot;: 125000,
+            &quot;spreading_factor&quot;: 10
+          }
+        },
+        &quot;data_rate_index&quot;: 2,
+        &quot;coding_rate&quot;: &quot;4/5&quot;,
+        &quot;frequency&quot;: &quot;922600000&quot;,
+        &quot;timestamp&quot;: 3576406949,
+        &quot;time&quot;: &quot;2021-10-02T13:04:34.552513Z&quot;
+      },
+      &quot;received_at&quot;: &quot;2021-10-02T12:10:54.385972437Z&quot;,
+      &quot;consumed_airtime&quot;: &quot;0.370688s&quot;,
+      &quot;network_ids&quot;: {
+        &quot;net_id&quot;: &quot;000013&quot;,
+        &quot;tenant_id&quot;: &quot;ttn&quot;,
+        &quot;cluster_id&quot;: &quot;ttn-au1&quot;
+      }
     }
+  }
 }</code></pre></div>
 <p><code>result.uplink_message.frm_payload</code> contains the Sensor Data that we need, encoded with Base64 and CBOR…</p>
 <div class="example-wrap"><pre class="language-json"><code>&quot;frm_payload&quot;: &quot;omF0GQTUYWwZCSs=&quot;</code></pre></div>
