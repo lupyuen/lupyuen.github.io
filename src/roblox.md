@@ -70,7 +70,7 @@ In fact we'll show __10,000 Levels of Hotness / Coldness__, thanks to a little M
 
 _What magic makes this mirroring possible?_
 
-This mirroring real things in Roblox is possible because...
+This mirroring of real things in Roblox is possible because...
 
 1.  Roblox lets us write __Lua Scripts__ that can make __HTTP Requests__ to the internet
 
