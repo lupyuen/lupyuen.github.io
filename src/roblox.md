@@ -820,6 +820,7 @@ Color: (time, red, green, blue)
   HOT:
     0 1.0 0.3 0.0 
     1 1.0 0.3 0.0 
+    ...
 ```
 
 (See the Appendix for the complete interpolation)
