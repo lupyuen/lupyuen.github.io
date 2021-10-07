@@ -609,33 +609,34 @@ dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
   Drag:  5
   Speed: 0 0 
   Color: (time, red, green, blue)
-    0 0.3 1.0 1.0 0 
-    1 0.3 1.0 1.0 0 
+    0 0.3 1.0 1.0 
+    1 0.3 1.0 1.0 
     ...
 
 NORMAL Particle Emitter (t=5000)
   Drag:  10
   Speed: 5 5 
   Color: (time, red, green, blue)
-    0 0.3 0.6 0.0 0 
-    1 0.3 0.6 0.0 0 
+    0 0.3 0.6 0.0 
+    1 0.3 0.6 0.0 
     ...
 
 HOT Particle Emitter (t=10000)
   Drag:  0
   Speed: 1 1 
   Color: (time, red, green, blue)
-    0 1.0 0.3 0.0 0 
-    1 1.0 0.3 0.0 0 
+    0 1.0 0.3 0.0 
+    1 1.0 0.3 0.0 
     ...</code></pre></div>
+<p>(See the Appendix for the complete settings)</p>
 <p>The three emitters represent the <strong>Min / Mid / Max Temperatures</strong>…</p>
 <ul>
 <li><strong>Cold:</strong> <code>t=0</code></li>
 <li><strong>Normal:</strong> <code>t=5000</code></li>
 <li><strong>Hot:</strong> <code>t=10000</code></li>
 </ul>
-<p>TODO</p>
-<p>Values to be interpolated…</p>
+<p><em>How shall we interpolate the three emitters… To render 10,000 Levels of Hotness / Coldness?</em></p>
+<p>Based on the values above, we derive the following values that shall be <strong>interpolated as we transition</strong> between Cold / Normal / Hot…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>Drag:
   COLD:   5
   NORMAL: 10
@@ -648,14 +649,16 @@ Speed:
 
 Color: (time, red, green, blue)
   COLD:
-    0 0.3 1.0 1.0 0 
-    1 0.3 1.0 1.0 0 
+    0 0.3 1.0 1.0 
+    1 0.3 1.0 1.0 
   NORMAL:
-    0 0.3 0.6 0.0 0 
-    1 0.3 0.6 0.0 0 
+    0 0.3 0.6 0.0 
+    1 0.3 0.6 0.0 
   HOT:
-    0 1.0 0.3 0.0 0 
-    1 1.0 0.3 0.0 0 </code></pre></div>
+    0 1.0 0.3 0.0 
+    1 1.0 0.3 0.0 </code></pre></div>
+<p>(See the Appendix for the complete interpolation)</p>
+<p>TODO</p>
 <p>Here’s how the Interpolating Particle Emitter looks…</p>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
