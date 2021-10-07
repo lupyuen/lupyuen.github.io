@@ -770,9 +770,12 @@ end</code></pre></div>
 <ul>
 <li><a href="https://youtu.be/QKjtue_tPGM"><strong>Watch the Demo Video on YouTube</strong></a></li>
 </ul>
+<p>Follow the instructions here to run the <strong>LoRaWAN Firmware</strong> on PineDio Stack…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></li>
+</ul>
 <p>TODO</p>
-<p>las_app_tx_cbor 2 0 5555 0</p>
-<p>Digital Twin for PineDio Stack in Roblox</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo.png" alt="" /></p>
 <p>At left is the Serial Terminal connected to our PineDio Stack board</p>
 <p>At right is Roblox running our Digital Twin script</p>
 <p>This block is the Roblox Gadget that mirrors our real-world IoT Gadget: PineDio Stack</p>
@@ -780,17 +783,22 @@ end</code></pre></div>
 <p>We sync them thru a public wireless IoT network: The Things Network</p>
 <p>Roblox fetches the Live Temperature of PineDio Stack periodically. This is shown at lower right.</p>
 <p>The temperature is now 55.55 ⁰C. Let’s set the PineDio Stack temperature to 99.99 ⁰C</p>
-<p>las_app_tx_cbor 2 0 9999 0</p>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 9999 0</code></pre></div>
 <p>Our Roblox Gadget receives the high temperature and bursts into flames!</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo2.png" alt="" /></p>
 <p>Let’s turn down PineDio Stack to 77.77 ⁰C</p>
-<p>las_app_tx_cbor 2 0 7777 0</p>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 7777 0</code></pre></div>
 <p>Our Roblox Gadget receives the temperature over The Things Network. And cools down a little.</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo3.png" alt="" /></p>
 <p>We cool PineDio Stack down to 33.33 ⁰C</p>
-<p>las_app_tx_cbor 2 0 3333 0</p>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 3333 0</code></pre></div>
 <p>Our Roblox Gadget turns blue</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo4.png" alt="" /></p>
 <p>We start to freeze PineDio Stack at 11.11 ⁰C</p>
-<p>las_app_tx_cbor 2 0 1111 0</p>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1111 0</code></pre></div>
 <p>Our Roblox Gadget turns into ice!</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo5.png" alt="" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
