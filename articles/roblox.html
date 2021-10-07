@@ -681,7 +681,10 @@ local function updateParticleEmitter(emitter, t)
   -- HOT:    1 1
   local speed = lin(t, 0.0, 5.0, 1.0)
   emitter.Speed = NumberRange.new(speed, speed) -- Speed</code></pre></div>
-<p>TODO</p>
+<p><strong>lin</strong> is our helper function that computes <a href="https://en.wikipedia.org/wiki/Linear_interpolation"><strong>Linear Interpolation</strong></a>.</p>
+<p>(More about this in the next section)</p>
+<p>In the code above we <strong>interpolate the Drag and Speed</strong> of our Particle Emitter, based on the Temperature (t).</p>
+<p>For the color of our Particle Emitter, we compute the <strong>interpolated color</strong>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Interpolate Color: (Red, Green, Blue)
   -- COLD:   0.3, 1.0, 1.0
   -- NORMAL: 0.3, 0.6, 0.0
@@ -691,14 +694,15 @@ local function updateParticleEmitter(emitter, t)
     lin(t, 1.0, 0.6, 0.3),  -- Green
     lin(t, 1.0, 0.0, 0.0)   -- Blue
   )</code></pre></div>
-<p>TODO</p>
+<p>Then we update the <strong>Color Sequence</strong> based on the interpolated color…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  local colorKeypoints = {
     -- API: ColorSequenceKeypoint.new(time, color)
     ColorSequenceKeypoint.new(0.0, color),  -- At time=0
     ColorSequenceKeypoint.new(1.0, color)   -- At time=1
   }
   emitter.Color = ColorSequence.new(colorKeypoints)</code></pre></div>
-<p>To render the Live Temperature, we call <strong>updateParticleEmitter</strong> like so…</p>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L164-L239">(See the rest of the function here)</a></p>
+<p>And we’re done! To render the Live Temperature, we call <strong>updateParticleEmitter</strong> like so…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Create a Particle Emitter for Normal Temperature
 local emitter = createParticleEmitter()
 
