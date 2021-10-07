@@ -80,7 +80,8 @@
 <li><a href="#watch-it-run">3.4 Watch It Run</a><ul></ul></li></ul></li>
 <li><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a><ul>
 <li><a href="#base64-and-cbor-modulescripts">4.1 Base64 and CBOR ModuleScripts</a><ul></ul></li></ul></li>
-<li><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a><ul></ul></li>
+<li><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a><ul>
+<li><a href="#interpolate-the-particle-emitter">5.1 Interpolate the Particle Emitter</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#notes">7 Notes</a><ul></ul></li>
 <li><a href="#appendix-install-roblox-studio">8 Appendix: Install Roblox Studio</a><ul></ul></li>
@@ -489,9 +490,87 @@ sensorData:
 <p>And the ModuleScripts worked perfectly!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script5.png" alt="Porting Lua Libraries into Roblox" /></p>
 <h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
-<p>TODO</p>
-<p>Let’s use a Roblox Particle Emitter to show the Temperature (t) of our object…</p>
+<p><em>How did we render the Temperature of our Roblox Gadget?</em></p>
+<p><em>(The green fireflies thingy?)</em></p>
+<p>We rendered the Temperature with a <a href="https://developer.roblox.com/en-us/articles/Particle-Emitters"><strong>Roblox Particle Emitter</strong></a>.</p>
+<p>This is how we render a Particle Emitter in our Roblox Script…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Create a Particle Emitter for Normal Temperature
+local emitter = createParticleEmitter()</code></pre></div>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L285-L286">(Source)</a></p>
+<p>The code above renders our Roblox Gadget with <strong>Normal Temperature</strong>.</p>
+<p>(Yep Shrek and his green fireflies)</p>
+<p><strong>createParticleEmitter</strong> is defined in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133">DigitalTwin.lua</a>…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Create the Particle Emitter for Normal Temperature
+-- Based on https://developer.roblox.com/en-us/api-reference/class/ParticleEmitter
+local function createParticleEmitter()
+
+  -- Create an instance of Particle Emitter and enable it
+  local emitter = Instance.new(&quot;ParticleEmitter&quot;)
+  emitter.Enabled = true </code></pre></div>
+<p>We begin by <strong>creating an Instance</strong> of Particle Emitter.</p>
+<p>Next we set the <strong>rate of particles emitted</strong> and their lifetime…</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- Number of particles = Rate * Lifetime
+  emitter.Rate = 20 -- Particles per second
+  emitter.Lifetime = NumberRange.new(5, 10) -- How long the particles should be alive (min, max)</code></pre></div>
+<p>(Why these magic numbers? We’ll learn later)</p>
+<p>We set the <strong>texture of the particles</strong> to a Star Sparkle image…</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- Visual properties
+  -- Texture for the particles: &quot;star sparkle particle&quot; by @Vupatu
+  -- https://www.roblox.com/library/6490035152/star-sparkle-particle
+  emitter.Texture = &quot;rbxassetid://6490035152&quot;</code></pre></div>
+<p>(Somehow I couldn’t set the texture to “rbxasset:textures/particles/sparkles_main.dds”. Only “rbxassetid” works)</p>
+<p>Our particles can <strong>change color</strong>, but we’ll stick to green <em>(R=0.3, G=0.6, B=0.0)</em>…</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- For Color, build a ColorSequence using ColorSequenceKeypoint
+  local colorKeypoints = {
+    -- API: ColorSequenceKeypoint.new(time, color)
+    ColorSequenceKeypoint.new( 0.0, Color3.new(0.3, 0.6, 0.0)),  -- At time=0: Green
+    ColorSequenceKeypoint.new( 1.0, Color3.new(0.3, 0.6, 0.0))   -- At time=1: Green
+  }
+  emitter.Color = ColorSequence.new(colorKeypoints)</code></pre></div>
+<p>This <strong>Color Sequence</strong> says that from start <em>(time=0)</em> to end <em>(time=1)</em>, the particles stay green.</p>
+<p>We won’t vary the <strong>particle transparency</strong> either…</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- For Transparency, build a NumberSequence using NumberSequenceKeypoint
+  local numberKeypoints = {
+    -- API: NumberSequenceKeypoint.new(time, size, envelop)
+    NumberSequenceKeypoint.new( 0.0, 0.0);    -- At time=0, fully opaque
+    NumberSequenceKeypoint.new( 1.0, 0.0);    -- At time=1, fully opaque
+  }
+  emitter.Transparency = NumberSequence.new(numberKeypoints)</code></pre></div>
+<p>From start to end, our particles are fully opaque.</p>
+<p>We set the <strong>Light Emission and Influence</strong>…</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- Light Emission and Influence
+  emitter.LightEmission = 0 -- If 1: When particles overlap, multiply their color to be brighter
+  emitter.LightInfluence = 1 -- If 0: Don&#39;t be affected by world lighting</code></pre></div>
+<p>We define the <strong>speed and spread</strong> of our particles…</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- Speed properties
+  emitter.EmissionDirection = Enum.NormalId.Top -- Emit towards top
+  emitter.Speed = NumberRange.new(5.0, 5.0) -- Speed
+  emitter.Drag = 10.0 -- Apply drag to particle motion
+  emitter.VelocitySpread = NumberRange.new(0.0, 0.0)
+  emitter.VelocityInheritance = 0 -- Don&#39;t inherit parent velocity
+  emitter.Acceleration = Vector3.new(0.0, 0.0, 0.0)
+  emitter.LockedToPart = false -- Don&#39;t lock the particles to the parent 
+  emitter.SpreadAngle = Vector2.new(50.0, 50.0) -- Spread angle on X and Y</code></pre></div>
+<p>We set the <strong>size and rotation</strong> of our particles…</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- Simulation properties
+  local numberKeypoints2 = {
+    NumberSequenceKeypoint.new(0.0, 0.2);  -- Size at time=0
+    NumberSequenceKeypoint.new(1.0, 0.2);  -- Size at time=1
+  }
+  emitter.Size = NumberSequence.new(numberKeypoints2)
+  emitter.ZOffset = 0.0 -- Render in front or behind the actual position
+  emitter.Rotation = NumberRange.new(0.0, 0.0) -- Rotation
+  emitter.RotSpeed = NumberRange.new(0.0) -- Do not rotate during simulation</code></pre></div>
+<p>Finally we <strong>add the emitter</strong> to our Roblox Part…</p>
+<div class="example-wrap"><pre class="language-lua"><code>  -- Add the emitter to our Part
+  emitter.Parent = script.Parent
+  return emitter
+end</code></pre></div>
+<p>And our Roblox Gadget starts emitting green particles to represent Normal Temperature!</p>
+<p>(Centre one in the pic below)</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
+<h2 id="interpolate-the-particle-emitter" class="section-header"><a href="#interpolate-the-particle-emitter">5.1 Interpolate the Particle Emitter</a></h2>
+<p>TODO</p>
 <p>We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).</p>
 <p>To render the Temperature, we shall do Linear Interpolation of the 3 Particle Emitters…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>COLD Particle Emitter (t=0)
