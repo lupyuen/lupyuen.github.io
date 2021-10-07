@@ -494,7 +494,7 @@ Becomes this Text String when __encoded with Base64__...
 omF0GQTUYWwZCSs=
 ```
 
-This explains the two stages of decoding: __Base64 followed by CBOR__.
+This explains why we need two stages of decoding: __Base64 followed by CBOR__.
 
 ![Create Base64 ModuleScript in Roblox Studio](https://lupyuen.github.io/images/roblox-studio3.png)
 
@@ -748,7 +748,11 @@ TODO4
 
 ![](https://lupyuen.github.io/images/roblox-interpolate.png)
 
-TODO1
+TODO
+
+![](https://lupyuen.github.io/images/roblox-studio5.png)
+
+TODO
 
 ![](https://lupyuen.github.io/images/roblox-ar.jpg)
 
