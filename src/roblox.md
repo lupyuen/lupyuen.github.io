@@ -1090,27 +1090,7 @@ end
 main()
 ```
 
-__demoMode__ is defined as follows: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L264-L280)
-
-```lua
--- Demo Mode if we don't have an IoT Device connected to The Things Network.
--- Gradually update our Particle Emitter for Temperature=10,000 to 0 and back to 10,000.
-local function demoMode(emitter)
-  -- Gradually update the emitter for Temperature=10,000 to 0
-  for t = T_MAX, T_MIN, -600 do
-    print("t:", t)
-    updateParticleEmitter(emitter, t)
-    wait(4)
-  end
-  
-  -- Gradually update the emitter for Temperature=0 to 10,000
-  for t = T_MIN, T_MAX, 600 do
-    print("t:", t)
-    updateParticleEmitter(emitter, t)
-    wait(4)
-  end
-end
-```
+[(__demoMode__ is explained here)](https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings)
 
 ![](https://lupyuen.github.io/images/roblox-ar.jpg)
 
@@ -1330,14 +1310,27 @@ local emitter = createParticleEmitter()
 
 To interpolate the Particle Emitter for High / Mid / Low Temperatures, we call `updateParticleEmitter` in [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
 
+TODO
+
+__demoMode__ is defined as follows: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L264-L280)
+
 ```lua
--- Gradually update the emitter for Temperature=10,000 to 0
-updateParticleEmitter(emitter, T_MAX)
-wait(5)
-for t = T_MAX, T_MIN, -600 do
-  print(string.format("t: %d", t))
-  updateParticleEmitter(emitter, t)
-  wait(4)
+-- Demo Mode if we don't have an IoT Device connected to The Things Network.
+-- Gradually update our Particle Emitter for Temperature=10,000 to 0 and back to 10,000.
+local function demoMode(emitter)
+  -- Gradually update the emitter for Temperature=10,000 to 0
+  for t = T_MAX, T_MIN, -600 do
+    print("t:", t)
+    updateParticleEmitter(emitter, t)
+    wait(4)
+  end
+  
+  -- Gradually update the emitter for Temperature=0 to 10,000
+  for t = T_MIN, T_MAX, 600 do
+    print("t:", t)
+    updateParticleEmitter(emitter, t)
+    wait(4)
+  end
 end
 ```
 
@@ -1377,9 +1370,13 @@ https://au1.cloud.thethings.network/api/v3/as/
 
 TODO
 
+Enable storage integration
+
 ![](https://lupyuen.github.io/images/roblox-ttn2.png)
 
 TODO
+
+Add API key
 
 ![](https://lupyuen.github.io/images/roblox-ttn3.png)
 
