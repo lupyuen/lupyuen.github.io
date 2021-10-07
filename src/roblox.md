@@ -153,7 +153,7 @@ https://au1.cloud.thethings.network/api/v3/as/
   packages/storage/uplink_message
 ```
 
-(More about these settings in the Appendix)
+[(More about these settings in the Appendix)](https://lupyuen.github.io/articles/roblox#appendix-the-things-network-settings)
 
 ## Import Modules
 
@@ -397,7 +397,7 @@ Before heading deeper into our Roblox Scripts, let's watch our __Virtual Gadget 
     local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" .. TTN_APPLICATION_ID .. "/packages/storage/uplink_message?limit=1&order=-received_at"
     ```
 
-    (More about this in the Appendix)
+    [(More about this in the Appendix)](https://lupyuen.github.io/articles/roblox#appendix-the-things-network-settings)
 
 1.  If we don't have an IoT Gadget: 
 
@@ -741,7 +741,7 @@ NORMAL Particle Emitter (t=5000)
   ...
 ```
 
-(See the Appendix for the complete settings)
+[(See the complete settings)](https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings)
 
 These are the Magic Numbers that we plugged into our [__createParticleEmitter__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133) function.
 
@@ -787,7 +787,7 @@ HOT Particle Emitter (t=10000)
     ...
 ```
 
-(See the Appendix for the complete settings)
+[(See the complete settings)](https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings)
 
 The three emitters represent the __Min / Mid / Max Temperatures__...
 
@@ -823,7 +823,7 @@ Color: (time, red, green, blue)
     ...
 ```
 
-(See the Appendix for the complete interpolation)
+[(See the complete interpolation)](https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings)
 
 Let's plug the derived values into our Roblox Script.
 
