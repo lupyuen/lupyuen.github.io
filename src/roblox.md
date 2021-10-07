@@ -936,6 +936,10 @@ local T_MAX = 10000
 local T_MID = (T_MIN + T_MAX) / 2
 ```
 
+We compute the [__Linear Interpolation__](https://en.wikipedia.org/wiki/Linear_interpolation) by drawing lines between the Min, Mid and Max values...
+
+> ![Computing the Linear Interpolation](https://lupyuen.github.io/images/roblox-interpolate2.jpg)
+
 TODO
 
 From [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162)
