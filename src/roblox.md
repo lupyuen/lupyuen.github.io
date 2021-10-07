@@ -611,7 +611,7 @@ Next we set the __rate of particles emitted__ and their lifetime...
   emitter.Lifetime = NumberRange.new(5, 10) -- How long the particles should be alive (min, max)
 ```
 
-(Why these magic numbers? We'll learn later)
+(Why these Magic Numbers? We'll learn later)
 
 We set the __texture of the particles__ to a Star Sparkle image...
 
@@ -703,6 +703,58 @@ And our Roblox Gadget starts emitting green particles to represent Normal Temper
 
 ![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
 
+## Magic Numbers
+
+_All the Magic Numbers above... Where did they come from?_
+
+I created __three Particle Emitters__ for the Cold, Normal and Hot Temperatures...
+
+![Particle Emitters for Cold / Normal / Hot Temperatures](https://lupyuen.github.io/images/roblox-studio5.png)
+
+I tweaked them till they looked OK. Then I __dumped the settings__ of the Particle Emitters like so...
+
+```lua
+-- Dump the 3 Particle Emitters: Cold, Normal, Hot
+print("COLD Particle Emitter (t=0)")
+dumpParticleEmitter(script.Parent.Cold)
+
+print("NORMAL Particle Emitter (t=5000)")
+dumpParticleEmitter(script.Parent.Normal)
+
+print("HOT Particle Emitter (t=10000)")
+dumpParticleEmitter(script.Parent.Hot)
+```
+
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L345-L351)
+
+(__dumpParticleEmitter__ is defined in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L241-L262))
+
+The __Particle Emitter settings__ look like...
+
+```yaml
+NORMAL Particle Emitter (t=5000)
+  Acceleration: 0, 0, 0
+  Color: 0 0.333333 0.666667 0 0 1 0.333333 0.666667 0 0 
+  Drag: 10
+  ...
+```
+
+(See the Appendix for the complete settings)
+
+These are the Magic Numbers that we plugged into our [__createParticleEmitter__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133) function.
+
+_Why did we create the Particle Emitter in Roblox Script?_
+
+_Why not reuse the Particle Emitters that we have created manually?_
+
+That's because we want to render __10,000 Levels of Hotness / Coldness__.
+
+Our Roblox Script will __tweak the Particle Emitter at runtime__ to render the Live Temperature.
+
+Read on to learn how we do this with [__Linear Interpolation__](https://en.wikipedia.org/wiki/Linear_interpolation).
+
+![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
+
 ## Interpolate the Particle Emitter
 
 TODO
@@ -711,8 +763,9 @@ We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).
 
 To render the Temperature, we shall do Linear Interpolation of the 3 Particle Emitters...
 
-```yaml
 COLD Particle Emitter (t=0)
+
+```yaml
   Acceleration: 0, 0, 0
   Color: 0 0.333333 1 1 0 1 0.333333 1 1 0 
   Drag: 5
@@ -732,8 +785,11 @@ COLD Particle Emitter (t=0)
   Transparency: 0 0 0 1 0 0 
   VelocityInheritance: 0
   ZOffset: 0
+```
 
 NORMAL Particle Emitter (t=5000)
+
+```yaml
   Acceleration: 0, 0, 0
   Color: 0 0.333333 0.666667 0 0 1 0.333333 0.666667 0 0 
   Drag: 10
@@ -753,8 +809,11 @@ NORMAL Particle Emitter (t=5000)
   Transparency: 0 0 0 1 0 0 
   VelocityInheritance: 0
   ZOffset: 0
+```
 
 HOT Particle Emitter (t=10000)
+
+```yaml
   Acceleration: 0, 0, 0
   Color: 0 1 0.333333 0 0 1 1 0.333333 0 0 
   Drag: 0
@@ -791,44 +850,44 @@ Color:
     1 1 0.333333 0 0 
 
 Drag:
-  COLD: 5
+  COLD:   5
   NORMAL: 10
-  HOT: 0
+  HOT:    0
 
 LightEmission: 
-  COLD: 1
+  COLD:   1
   NORMAL: 0
-  HOT: 0
+  HOT:    0
 
 LightInfluence: 
-  COLD: 1
+  COLD:   1
   NORMAL: 1
-  HOT: 0
+  HOT:    0
 
 Rotation: 
-  COLD: 0 180 
+  COLD:   0 180 
   NORMAL: 0 0 
-  HOT: 0 0 
+  HOT:    0 0 
 
 RotSpeed: 
-  COLD: -170 -170 
-  NORMAL: 0 0 
-  HOT: 0 0 
+  COLD:   -170 -170 
+  NORMAL: 0    0 
+  HOT:    0    0 
 
 Size: 
-  COLD: 0 1 0 1 1 0 
+  COLD:   0 1   0 1 1   0 
   NORMAL: 0 0.2 0 1 0.2 0 
-  HOT: 0 0.4 0 1 0.4 0 
+  HOT:    0 0.4 0 1 0.4 0 
   
 Speed: 
-  COLD: 0 0 
+  COLD:   0 0 
   NORMAL: 5 5 
-  HOT: 1 1 
+  HOT:    1 1 
 
 SpreadAngle: 
-  COLD: 10, 10
+  COLD:   10, 10
   NORMAL: 50, 50
-  HOT: 50, 50
+  HOT:    50, 50
 ```
 
 The properties of the Particle Emitters were dumped with the `dumpParticleEmitter` function in [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua).
@@ -878,10 +937,6 @@ TODO2
 TODO4
 
 ![](https://lupyuen.github.io/images/roblox-interpolate.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/roblox-studio5.png)
 
 TODO
 
