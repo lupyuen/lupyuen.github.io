@@ -1022,11 +1022,13 @@ Here are the steps to download and install __Roblox Studio for macOS and Windows
 
     Click the Installer to install Roblox Studio.
 
-1.  __For macOS:__ If the Installer fails...
+1.  __For macOS:__ If the Installer (or upgrade) fails...
+
+    Reboot macOS.
 
     Delete Roblox Studio in the __Applications Folder__.
     
-    Reboot and reinstall Roblox Studio.
+    Reinstall Roblox Studio.
 
     (That's how I fixed Roblox Studio on macOS)
 
