@@ -844,24 +844,7 @@ end
 
 -- Start the Main Function
 main()</code></pre></div>
-<p><strong>demoMode</strong> is defined as follows: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L264-L280">DigitalTwin.lua</a></p>
-<div class="example-wrap"><pre class="language-lua"><code>-- Demo Mode if we don&#39;t have an IoT Device connected to The Things Network.
--- Gradually update our Particle Emitter for Temperature=10,000 to 0 and back to 10,000.
-local function demoMode(emitter)
-  -- Gradually update the emitter for Temperature=10,000 to 0
-  for t = T_MAX, T_MIN, -600 do
-    print(&quot;t:&quot;, t)
-    updateParticleEmitter(emitter, t)
-    wait(4)
-  end
-  
-  -- Gradually update the emitter for Temperature=0 to 10,000
-  for t = T_MIN, T_MAX, 600 do
-    print(&quot;t:&quot;, t)
-    updateParticleEmitter(emitter, t)
-    wait(4)
-  end
-end</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(<strong>demoMode</strong> is explained here)</a></p>
 <p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
@@ -1047,13 +1030,24 @@ emitter.Texture = &quot;rbxassetid://6490035152&quot;</code></pre></div>
 <div class="example-wrap"><pre class="language-lua"><code>-- Create a Particle Emitter for Normal Temperature
 local emitter = createParticleEmitter()</code></pre></div>
 <p>To interpolate the Particle Emitter for High / Mid / Low Temperatures, we call <code>updateParticleEmitter</code> in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><strong>DigitalTwin.lua</strong></a></p>
-<div class="example-wrap"><pre class="language-lua"><code>-- Gradually update the emitter for Temperature=10,000 to 0
-updateParticleEmitter(emitter, T_MAX)
-wait(5)
-for t = T_MAX, T_MIN, -600 do
-  print(string.format(&quot;t: %d&quot;, t))
-  updateParticleEmitter(emitter, t)
-  wait(4)
+<p>TODO</p>
+<p><strong>demoMode</strong> is defined as follows: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L264-L280">DigitalTwin.lua</a></p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Demo Mode if we don&#39;t have an IoT Device connected to The Things Network.
+-- Gradually update our Particle Emitter for Temperature=10,000 to 0 and back to 10,000.
+local function demoMode(emitter)
+  -- Gradually update the emitter for Temperature=10,000 to 0
+  for t = T_MAX, T_MIN, -600 do
+    print(&quot;t:&quot;, t)
+    updateParticleEmitter(emitter, t)
+    wait(4)
+  end
+  
+  -- Gradually update the emitter for Temperature=0 to 10,000
+  for t = T_MIN, T_MAX, 600 do
+    print(&quot;t:&quot;, t)
+    updateParticleEmitter(emitter, t)
+    wait(4)
+  end
 end</code></pre></div>
 <p>Here’s how the Interpolating Particle Emitter looks…</p>
 <ul>
@@ -1080,8 +1074,10 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
   applications/YOUR_APPLICATION_ID/
   packages/storage/uplink_message</code></pre></div>
 <p>TODO</p>
+<p>Enable storage integration</p>
 <p><img src="https://lupyuen.github.io/images/roblox-ttn2.png" alt="" /></p>
 <p>TODO</p>
+<p>Add API key</p>
 <p><img src="https://lupyuen.github.io/images/roblox-ttn3.png" alt="" /></p>
 <h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a></h1>
 <p>TODO</p>
