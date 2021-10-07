@@ -206,7 +206,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <div class="example-wrap"><pre class="language-uri"><code>https://au1.cloud.thethings.network/api/v3/as/
   applications/YOUR_APPLICATION_ID/
   packages/storage/uplink_message</code></pre></div>
-<p>(More about these settings in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/roblox#appendix-the-things-network-settings">(More about these settings in the Appendix)</a></p>
 <h2 id="import-modules" class="section-header"><a href="#import-modules">2.2 Import Modules</a></h2>
 <p>Next we get the <strong>HttpService</strong> from Roblox…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Get the HttpService for making HTTP Requests
@@ -376,7 +376,7 @@ local TTN_API_KEY = &quot;YOUR_API_KEY&quot;
 
 -- TODO: Change this to your region-specific URL for The Things Network
 local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
-<p>(More about this in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/roblox#appendix-the-things-network-settings">(More about this in the Appendix)</a></p>
 </li>
 <li>
 <p>If we don’t have an IoT Gadget: </p>
@@ -597,7 +597,7 @@ dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
     1 0.3 0.6 0 0 
   Drag: 10
   ...</code></pre></div>
-<p>(See the Appendix for the complete settings)</p>
+<p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(See the complete settings)</a></p>
 <p>These are the Magic Numbers that we plugged into our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133"><strong>createParticleEmitter</strong></a> function.</p>
 <p><em>Why did we create the Particle Emitter in Roblox Script?</em></p>
 <p><em>Why not reuse the Particle Emitters that we have created manually?</em></p>
@@ -630,7 +630,7 @@ HOT Particle Emitter (t=10000)
     0 1.0 0.3 0.0 
     1 1.0 0.3 0.0 
     ...</code></pre></div>
-<p>(See the Appendix for the complete settings)</p>
+<p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(See the complete settings)</a></p>
 <p>The three emitters represent the <strong>Min / Mid / Max Temperatures</strong>…</p>
 <ul>
 <li><strong>Cold:</strong> <code>t=0</code></li>
@@ -660,7 +660,7 @@ Color: (time, red, green, blue)
     0 1.0 0.3 0.0 
     1 1.0 0.3 0.0 
     ...</code></pre></div>
-<p>(See the Appendix for the complete interpolation)</p>
+<p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(See the complete interpolation)</a></p>
 <p>Let’s plug the derived values into our Roblox Script.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-interpolate.png" alt="Interpolating the Particle Emitter" /></p>
 <h2 id="update-the-particle-emitter" class="section-header"><a href="#update-the-particle-emitter">5.3 Update the Particle Emitter</a></h2>
