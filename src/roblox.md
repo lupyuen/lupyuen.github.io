@@ -940,9 +940,11 @@ We compute the [__Linear Interpolation__](https://en.wikipedia.org/wiki/Linear_i
 
 > ![Computing the Linear Interpolation](https://lupyuen.github.io/images/roblox-interpolate2.jpg)
 
-TODO
+Note that we compute the Linear Interpolation a little differently depending on whether the Temperature is __less or greater than 5,000__ (T_MID)...
 
-From [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162)
+> ![Computing the Linear Interpolation](https://lupyuen.github.io/images/roblox-interpolate3.jpg)
+
+Below is our __lin__ function that handles both cases: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162)
 
 ```lua
 -- Linear Interpolate the value of y, given that
