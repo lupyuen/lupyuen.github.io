@@ -970,7 +970,7 @@ end
 
 # Digital Twin Demo
 
-As promised, here is the Real-World Demo of our __Roblox Digital Twin!__
+As promised, here is the Real-Life Demo of our __Roblox Digital Twin!__
 
 TODO
 
