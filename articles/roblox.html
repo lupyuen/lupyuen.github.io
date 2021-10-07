@@ -426,9 +426,9 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p><img src="https://lupyuen.github.io/images/cbor-title.jpg" alt="Encoding Sensor Data with CBOR on BL602" /></p>
 <p><a href="https://lupyuen.github.io/articles/cbor">(Source)</a></p>
 <p><em>What about the Base64 Decoding?</em></p>
-<p>Our IoT Gadget transmits Sensor Data to The Things Network in <strong>Binary (CBOR) Format</strong>.</p>
+<p>Our IoT Gadget transmits Sensor Data to The Things Network in <strong>Binary Format (CBOR)</strong>.</p>
 <p>But our Roblox script fetches the Sensor Data in <strong>JSON Format</strong>, which can’t embed Binary Data.</p>
-<p>Hence our Binary Data is converted to Text Format with <strong>Base64 Encoding</strong>, when fetched by Roblox.</p>
+<p>Hence our Binary Data is converted to Text Format with <a href="https://en.wikipedia.org/wiki/Base64"><strong>Base64 Encoding</strong></a>, when fetched by Roblox.</p>
 <p>Our Sensor Data <strong>encoded with CBOR</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>a2 61 74 19 04 d4 61 6c 19 09 2b</code></pre></div>
 <p>Becomes this Text String when <strong>encoded with Base64</strong>…</p>
