@@ -736,8 +736,11 @@ local T_MID = (T_MIN + T_MAX) / 2</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/roblox-interpolate2.jpg" alt="Computing the Linear Interpolation" /></p>
 </blockquote>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162">DigitalTwin.lua</a></p>
+<p>Note that we compute the Linear Interpolation a little differently depending on whether the Temperature is <strong>less or greater than 5,000</strong> (T_MID)…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/roblox-interpolate3.jpg" alt="Computing the Linear Interpolation" /></p>
+</blockquote>
+<p>Below is our <strong>lin</strong> function that handles both cases: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Linear Interpolate the value of y, given that
 -- (1) x ranges from T_MIN to T_MAX
 -- (2) When x=T_MIN, y=yMin
