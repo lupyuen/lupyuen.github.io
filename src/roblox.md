@@ -115,7 +115,7 @@ else
 end
 ```
 
-[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L309-L335)
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L326-L333)
 
 We should see the __Temperature Sensor Data__ fetched from The Things Network...
 
@@ -480,7 +480,7 @@ Our IoT Gadget transmits Sensor Data to The Things Network in __Binary (CBOR) Fo
 
 But our Roblox script fetches the Sensor Data in __JSON Format__, which can't embed Binary Data.
 
-Hence our Binary Data is converted to text format with __Base64 Encoding__, when fetched by Roblox.
+Hence our Binary Data is converted to Text Format with __Base64 Encoding__, when fetched by Roblox.
 
 Our Sensor Data __encoded with CBOR__...
 
@@ -488,7 +488,7 @@ Our Sensor Data __encoded with CBOR__...
 a2 61 74 19 04 d4 61 6c 19 09 2b
 ```
 
-Becomes this text string when __encoded with Base64__...
+Becomes this Text String when __encoded with Base64__...
 
 ```text
 omF0GQTUYWwZCSs=
@@ -500,9 +500,9 @@ This explains the two stages of decoding: __Base64 followed by CBOR__.
 
 ## Base64 and CBOR ModuleScripts
 
-_How do we decode Base64 and CBOR Data in Roblox?_
+_How do we decode Base64 and CBOR in Roblox?_
 
-We call these two ModuleScripts in ServerStorage...
+We call these two __ModuleScripts in ServerStorage__...
 
 -   [__`Base64`__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua)
 
@@ -527,7 +527,7 @@ print("sensorData:")
 print(sensorData)
 ```
 
-[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L345-L353)
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L335-L343)
 
 We should see...
 
@@ -552,7 +552,7 @@ Nope, they were copied from __existing Lua Libraries__...
 
 _Was it difficult to port the Lua Libraries into Roblox?_
 
-Not at all! We changed only one line of code in [base64.lua](https://github.com/iskolbin/lbase64/blob/master/base64.lua) from...
+Not at all! We changed only one line of code in [__Base64.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua#L28-L29) from...
 
 ```lua
 local extract = _G.bit32 and _G.bit32.extract
