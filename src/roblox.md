@@ -766,26 +766,28 @@ COLD Particle Emitter (t=0)
   Drag:  5
   Speed: 0 0 
   Color: (time, red, green, blue)
-    0 0.3 1.0 1.0 0 
-    1 0.3 1.0 1.0 0 
+    0 0.3 1.0 1.0 
+    1 0.3 1.0 1.0 
     ...
 
 NORMAL Particle Emitter (t=5000)
   Drag:  10
   Speed: 5 5 
   Color: (time, red, green, blue)
-    0 0.3 0.6 0.0 0 
-    1 0.3 0.6 0.0 0 
+    0 0.3 0.6 0.0 
+    1 0.3 0.6 0.0 
     ...
 
 HOT Particle Emitter (t=10000)
   Drag:  0
   Speed: 1 1 
   Color: (time, red, green, blue)
-    0 1.0 0.3 0.0 0 
-    1 1.0 0.3 0.0 0 
+    0 1.0 0.3 0.0 
+    1 1.0 0.3 0.0 
     ...
 ```
+
+(See the Appendix for the complete settings)
 
 The three emitters represent the __Min / Mid / Max Temperatures__...
 
@@ -793,9 +795,9 @@ The three emitters represent the __Min / Mid / Max Temperatures__...
 -   __Normal:__ `t=5000`
 -   __Hot:__ `t=10000`
 
-TODO
+_How shall we interpolate the three emitters... To render 10,000 Levels of Hotness / Coldness?_
 
-Values to be interpolated...
+Based on the values above, we derive the following values that shall be __interpolated as we transition__ between Cold / Normal / Hot...
 
 ```yaml
 Drag:
@@ -810,15 +812,19 @@ Speed:
 
 Color: (time, red, green, blue)
   COLD:
-    0 0.3 1.0 1.0 0 
-    1 0.3 1.0 1.0 0 
+    0 0.3 1.0 1.0 
+    1 0.3 1.0 1.0 
   NORMAL:
-    0 0.3 0.6 0.0 0 
-    1 0.3 0.6 0.0 0 
+    0 0.3 0.6 0.0 
+    1 0.3 0.6 0.0 
   HOT:
-    0 1.0 0.3 0.0 0 
-    1 1.0 0.3 0.0 0 
+    0 1.0 0.3 0.0 
+    1 1.0 0.3 0.0 
 ```
+
+(See the Appendix for the complete interpolation)
+
+TODO
 
 Here's how the Interpolating Particle Emitter looks...
 
