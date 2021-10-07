@@ -476,11 +476,11 @@ a2 61 74 19 04 d4 61 6c 19 09 2b
 
 _What about the Base64 Decoding?_
 
-Our IoT Gadget transmits Sensor Data to The Things Network in __Binary (CBOR) Format__.
+Our IoT Gadget transmits Sensor Data to The Things Network in __Binary Format (CBOR)__.
 
 But our Roblox script fetches the Sensor Data in __JSON Format__, which can't embed Binary Data.
 
-Hence our Binary Data is converted to Text Format with __Base64 Encoding__, when fetched by Roblox.
+Hence our Binary Data is converted to Text Format with [__Base64 Encoding__](https://en.wikipedia.org/wiki/Base64), when fetched by Roblox.
 
 Our Sensor Data __encoded with CBOR__...
 
