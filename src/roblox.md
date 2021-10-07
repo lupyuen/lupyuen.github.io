@@ -1040,7 +1040,77 @@ Our Roblox Gadget turns into ice!
 
 ![](https://lupyuen.github.io/images/roblox-demo5.png)
 
-TODO
+## Demo Code
+
+Below is the __source code for the demo__ that we've seen. It calls all the functions that we've covered in this article: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L282-L324)
+
+```lua
+-- Main Function. Fetch and render the Sensor Data from The Things Network every 5 seconds.
+-- If fetch failed, show Demo Mode.
+local function main()	
+  -- Create a Particle Emitter for Normal Temperature
+  local emitter = createParticleEmitter()
+  
+  -- Loop forever fetching and rendering Sensor Data from The Things Network
+  while true do
+    -- Lua Table that will contain Sensor Data from The Things Network	
+    local sensorData = nil
+
+    -- Temperature from The Things Network. Ranges from 0 to 10,000.
+    local t = nil
+
+    -- If API Key for The Things Network is defined...
+    if TTN_API_KEY ~= "YOUR_API_KEY" then
+      -- Fetch the Sensor Data from The Things Network
+      sensorData = getSensorData()	
+
+      -- Get the Temperature if it exists
+      if sensorData then
+        t = sensorData.t
+      end
+    end
+
+    -- If Temperature was successfully fetched from The Things Network...
+    if t then
+      -- Render the Temperature with our Particle Emitter
+      print("t:", t)
+      updateParticleEmitter(emitter, t)
+    else
+      -- Else render our Particle Emitter in Demo Mode
+      print("Failed to get sensor data. Enter Demo Mode.")
+      demoMode(emitter)
+    end
+    
+    -- Sleep 5 seconds so we don't overwhelm The Things Network
+    wait(5)		
+  end
+end
+
+-- Start the Main Function
+main()
+```
+
+__demoMode__ is defined as follows: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L264-L280)
+
+```lua
+-- Demo Mode if we don't have an IoT Device connected to The Things Network.
+-- Gradually update our Particle Emitter for Temperature=10,000 to 0 and back to 10,000.
+local function demoMode(emitter)
+  -- Gradually update the emitter for Temperature=10,000 to 0
+  for t = T_MAX, T_MIN, -600 do
+    print("t:", t)
+    updateParticleEmitter(emitter, t)
+    wait(4)
+  end
+  
+  -- Gradually update the emitter for Temperature=0 to 10,000
+  for t = T_MIN, T_MAX, 600 do
+    print("t:", t)
+    updateParticleEmitter(emitter, t)
+    wait(4)
+  end
+end
+```
 
 ![](https://lupyuen.github.io/images/roblox-ar.jpg)
 
