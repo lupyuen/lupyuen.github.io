@@ -905,9 +905,29 @@ Here's how our Interpolating Particle Emitter looks...
 
 ## Linear Interpolation
 
-TODO
+_How does the __lin__ function compute Linear Interpolation?_
 
-From [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162)
+Earlier we saw this...
+
+```lua
+-- Interpolate Drag:
+-- COLD:   5
+-- NORMAL: 10
+-- HOT:    0
+emitter.Drag = lin(t, 5.0, 10.0, 0.0)
+```
+
+This code __interpolates the Drag__ of our Particle Emitter based on the Temperature (t).
+
+The values passed to __lin__...
+
+```text
+5.0, 10.0, 0.0
+```
+
+Correspond to the Drag values for __Min / Mid / Max Temperatures__.
+
+The Min / Mid / Max Temperatures are defined here: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162)
 
 ```lua
 -- Minimum, Maximum and Mid values for Temperature (t) that will be interpolated
@@ -917,6 +937,8 @@ local T_MID = (T_MIN + T_MAX) / 2
 ```
 
 TODO
+
+From [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162)
 
 ```lua
 -- Linear Interpolate the value of y, given that
@@ -933,7 +955,7 @@ local function lin(x, yMin, yMid, yMax)
     -- Interpolate between T_MID and T_MAX
     y = yMid + (yMax - yMid) * (x - T_MID) / (T_MAX - T_MID)
   end	
-  -- Force y to be between yMin and yMax
+  -- Force y to be between yMin, yMid and yMax
   if y < math.min(yMin, yMid, yMax) then
     y = math.min(yMin, yMid, yMax)
   end
