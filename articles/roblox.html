@@ -86,8 +86,9 @@
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#notes">7 Notes</a><ul></ul></li>
 <li><a href="#appendix-install-roblox-studio">8 Appendix: Install Roblox Studio</a><ul></ul></li>
-<li><a href="#appendix-the-things-network-settings">9 Appendix: The Things Network Settings</a><ul></ul></li>
-<li><a href="#appendix-fetch-sensor-data-from-the-things-network">10 Appendix: Fetch Sensor Data from The Things Network</a><ul></ul></li></ul></nav><p>📝 <em>12 Oct 2021</em></p>
+<li><a href="#appendix-particle-emitter-settings">9 Appendix: Particle Emitter Settings</a><ul></ul></li>
+<li><a href="#appendix-the-things-network-settings">10 Appendix: The Things Network Settings</a><ul></ul></li>
+<li><a href="#appendix-fetch-sensor-data-from-the-things-network">11 Appendix: Fetch Sensor Data from The Things Network</a><ul></ul></li></ul></nav><p>📝 <em>12 Oct 2021</em></p>
 <p><a href="https://developer.roblox.com/en-us/"><strong>Roblox</strong></a> is a <strong>Multiplayer Virtual World</strong> that lets us create <strong>3D Objects</strong> and interact with them. (Free to create and play)</p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a <strong>Public Wireless Network</strong> that connects many <strong>IoT Gadgets</strong> around the world. (It’s free too)</p>
 <p><em>Can we connect Roblox to The Things Network… To Monitor and Control Real-World Gadgets?</em></p>
@@ -589,7 +590,9 @@ dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
 <p>The <strong>Particle Emitter settings</strong> look like…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>NORMAL Particle Emitter (t=5000)
   Acceleration: 0, 0, 0
-  Color: 0 0.333333 0.666667 0 0 1 0.333333 0.666667 0 0 
+  Color: 
+    0 0.3 0.6 0 0 
+    1 0.3 0.6 0 0 
   Drag: 10
   ...</code></pre></div>
 <p>(See the Appendix for the complete settings)</p>
@@ -601,9 +604,128 @@ dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
 <p>Read on to learn how we do this with <a href="https://en.wikipedia.org/wiki/Linear_interpolation"><strong>Linear Interpolation</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
 <h2 id="interpolate-the-particle-emitter" class="section-header"><a href="#interpolate-the-particle-emitter">5.2 Interpolate the Particle Emitter</a></h2>
+<p>Previously we have <strong>dumped the settings</strong> for our Hot / Normal / Cold Particle Emitters…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>COLD Particle Emitter (t=0)
+  Drag:  5
+  Speed: 0 0 
+  Color: (time, red, green, blue)
+    0 0.3 1.0 1.0 0 
+    1 0.3 1.0 1.0 0 
+    ...
+
+NORMAL Particle Emitter (t=5000)
+  Drag:  10
+  Speed: 5 5 
+  Color: (time, red, green, blue)
+    0 0.3 0.6 0.0 0 
+    1 0.3 0.6 0.0 0 
+    ...
+
+HOT Particle Emitter (t=10000)
+  Drag:  0
+  Speed: 1 1 
+  Color: (time, red, green, blue)
+    0 1.0 0.3 0.0 0 
+    1 1.0 0.3 0.0 0 
+    ...</code></pre></div>
+<p>The three emitters represent the <strong>Min / Mid / Max Temperatures</strong>…</p>
+<ul>
+<li><strong>Cold:</strong> <code>t=0</code></li>
+<li><strong>Normal:</strong> <code>t=5000</code></li>
+<li><strong>Hot:</strong> <code>t=10000</code></li>
+</ul>
 <p>TODO</p>
-<p>We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).</p>
-<p>To render the Temperature, we shall do Linear Interpolation of the 3 Particle Emitters…</p>
+<p>Values to be interpolated…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>Drag:
+  COLD:   5
+  NORMAL: 10
+  HOT:    0
+
+Speed: 
+  COLD:   0 0 
+  NORMAL: 5 5 
+  HOT:    1 1 
+
+Color: (time, red, green, blue)
+  COLD:
+    0 0.3 1.0 1.0 0 
+    1 0.3 1.0 1.0 0 
+  NORMAL:
+    0 0.3 0.6 0.0 0 
+    1 0.3 0.6 0.0 0 
+  HOT:
+    0 1.0 0.3 0.0 0 
+    1 1.0 0.3 0.0 0 </code></pre></div>
+<p>Here’s how the Interpolating Particle Emitter looks…</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
+</ul>
+<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/roblox-emitter.png" alt="" /></p>
+<p>TODO4</p>
+<p><img src="https://lupyuen.github.io/images/roblox-interpolate.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
+<p>TODO</p>
+<p>We shall head back and transmit BL602 / BL604’s <strong>Internal Temperature Sensor Data</strong> to The Things Network.</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/roblox.md"><code>lupyuen.github.io/src/roblox.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1443824711050301444">this Twitter Thread</a></li>
+</ol>
+<h1 id="appendix-install-roblox-studio" class="section-header"><a href="#appendix-install-roblox-studio">8 Appendix: Install Roblox Studio</a></h1>
+<p>Here are the steps to download and install <strong>Roblox Studio for macOS and Windows</strong>…</p>
+<ol>
+<li>
+<p>Sign up for a free account at <a href="https://www.roblox.com/home"><strong>roblox.com</strong></a></p>
+</li>
+<li>
+<p>Log in to <a href="https://www.roblox.com/home"><strong>roblox.com</strong></a></p>
+</li>
+<li>
+<p>Click <strong>“Create”</strong> at the top bar</p>
+</li>
+<li>
+<p>Click <strong>“Start Creating”</strong></p>
+</li>
+<li>
+<p>The Roblox Studio Installer will be downloaded.</p>
+<p>Click the Installer to install Roblox Studio.</p>
+</li>
+<li>
+<p><strong>For macOS:</strong> If the Installer fails…</p>
+<p>Delete Roblox Studio in the <strong>Applications Folder</strong>.</p>
+<p>Reboot and reinstall Roblox Studio.</p>
+<p>(That’s how I fixed Roblox Studio on macOS)</p>
+</li>
+</ol>
+<p>To install <strong>Roblox Studio on Linux</strong>, see this…</p>
+<ul>
+<li><a href="https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux"><strong>“Using Roblox on Linux”</strong></a></li>
+</ul>
+<p>If we’re in China, Roblox works a little differently. See this…</p>
+<ul>
+<li><a href="https://roblox.fandom.com/wiki/Roblox_China"><strong>“Roblox China”</strong></a></li>
+</ul>
+<h1 id="appendix-particle-emitter-settings" class="section-header"><a href="#appendix-particle-emitter-settings">9 Appendix: Particle Emitter Settings</a></h1>
+<p>During development, we created 3 Particle Emitters…</p>
 <p>COLD Particle Emitter (t=0)</p>
 <div class="example-wrap"><pre class="language-yaml"><code>  Acceleration: 0, 0, 0
   Color: 0 0.333333 1 1 0 1 0.333333 1 1 0 
@@ -664,7 +786,8 @@ dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
   Transparency: 0 0 0 1 0 0 
   VelocityInheritance: 0
   ZOffset: 0</code></pre></div>
-<p>Values to be interpolated…</p>
+<p>To render the Temperature, we performed Linear Interpolation on the three Particle Emitters above.</p>
+<p>Based on the above values, we derive the values that will be interpolated…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>Color:
   COLD:
     0 0.333333 1 1 0 
@@ -738,71 +861,7 @@ end</code></pre></div>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
 </ul>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/roblox-emitter.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/roblox-interpolate.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
-<p>TODO</p>
-<p>We shall head back and transmit BL602 / BL604’s <strong>Internal Temperature Sensor Data</strong> to The Things Network.</p>
-<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
-<ul>
-<li>
-<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/roblox.md"><code>lupyuen.github.io/src/roblox.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
-<ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1443824711050301444">this Twitter Thread</a></li>
-</ol>
-<h1 id="appendix-install-roblox-studio" class="section-header"><a href="#appendix-install-roblox-studio">8 Appendix: Install Roblox Studio</a></h1>
-<p>Here are the steps to download and install <strong>Roblox Studio for macOS and Windows</strong>…</p>
-<ol>
-<li>
-<p>Sign up for a free account at <a href="https://www.roblox.com/home"><strong>roblox.com</strong></a></p>
-</li>
-<li>
-<p>Log in to <a href="https://www.roblox.com/home"><strong>roblox.com</strong></a></p>
-</li>
-<li>
-<p>Click <strong>“Create”</strong> at the top bar</p>
-</li>
-<li>
-<p>Click <strong>“Start Creating”</strong></p>
-</li>
-<li>
-<p>The Roblox Studio Installer will be downloaded.</p>
-<p>Click the Installer to install Roblox Studio.</p>
-</li>
-<li>
-<p><strong>For macOS:</strong> If the Installer fails…</p>
-<p>Delete Roblox Studio in the <strong>Applications Folder</strong>.</p>
-<p>Reboot and reinstall Roblox Studio.</p>
-<p>(That’s how I fixed Roblox Studio on macOS)</p>
-</li>
-</ol>
-<p>To install <strong>Roblox Studio on Linux</strong>, see this…</p>
-<ul>
-<li><a href="https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux"><strong>“Using Roblox on Linux”</strong></a></li>
-</ul>
-<p>If we’re in China, Roblox works a little differently. See this…</p>
-<ul>
-<li><a href="https://roblox.fandom.com/wiki/Roblox_China"><strong>“Roblox China”</strong></a></li>
-</ul>
-<h1 id="appendix-the-things-network-settings" class="section-header"><a href="#appendix-the-things-network-settings">9 Appendix: The Things Network Settings</a></h1>
+<h1 id="appendix-the-things-network-settings" class="section-header"><a href="#appendix-the-things-network-settings">10 Appendix: The Things Network Settings</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://www.thethingsindustries.com/docs/integrations/storage/"><strong>The Things Network: Storage Integration</strong></a></li>
@@ -826,7 +885,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p><img src="https://lupyuen.github.io/images/roblox-ttn2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/roblox-ttn3.png" alt="" /></p>
-<h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">10 Appendix: Fetch Sensor Data from The Things Network</a></h1>
+<h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">11 Appendix: Fetch Sensor Data from The Things Network</a></h1>
 <p>TODO</p>
 <p>The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device…</p>
 <p><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/">Retrieve Uplink Messages</a></p>
