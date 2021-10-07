@@ -797,7 +797,7 @@ The three emitters represent the __Min / Mid / Max Temperatures__...
 
 _How shall we interpolate the three emitters... To render 10,000 Levels of Hotness / Coldness?_
 
-Based on the values above, we derive the following values that shall be __interpolated as we transition__ between Cold / Normal / Hot...
+Based on the values above, we derive the following values that shall be __interpolated into 10,000 levels__ as we transition between Cold / Normal / Hot...
 
 ```yaml
 Drag:
@@ -825,21 +825,118 @@ Color: (time, red, green, blue)
 
 (See the Appendix for the complete interpolation)
 
+Let's plug the derived values into our Roblox Script.
+
+![Interpolating the Particle Emitter](https://lupyuen.github.io/images/roblox-interpolate.png)
+
+## Update the Particle Emitter
+
+We take the values derived above and plug them into our __updateParticleEmitter__ function from [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L164-L239)...
+
+```lua
+-- Update the Particle Emitter based on the Temperature t.
+-- t ranges from T_MIN (0) to T_MAX (10,000).
+local function updateParticleEmitter(emitter, t)
+
+  -- Interpolate Drag:
+  -- COLD:   5
+  -- NORMAL: 10
+  -- HOT:    0
+  emitter.Drag = lin(t, 5.0, 10.0, 0.0)
+
+  -- Interpolate Speed: 
+  -- COLD:   0 0
+  -- NORMAL: 5 5
+  -- HOT:    1 1
+  local speed = lin(t, 0.0, 5.0, 1.0)
+  emitter.Speed = NumberRange.new(speed, speed) -- Speed
+```
+
 TODO
 
-Here's how the Interpolating Particle Emitter looks...
+```lua
+  -- Interpolate Color: (Red, Green, Blue)
+  -- COLD:   0.3, 1.0, 1.0
+  -- NORMAL: 0.3, 0.6, 0.0
+  -- HOT:    1.0, 0.3, 0.0
+  local color = Color3.new(
+    lin(t, 0.3, 0.3, 1.0),  -- Red
+    lin(t, 1.0, 0.6, 0.3),  -- Green
+    lin(t, 1.0, 0.0, 0.0)   -- Blue
+  )
+```
+
+TODO
+
+```lua
+  local colorKeypoints = {
+    -- API: ColorSequenceKeypoint.new(time, color)
+    ColorSequenceKeypoint.new(0.0, color),  -- At time=0
+    ColorSequenceKeypoint.new(1.0, color)   -- At time=1
+  }
+  emitter.Color = ColorSequence.new(colorKeypoints)
+```
+
+To render the Live Temperature, we call __updateParticleEmitter__ like so...
+
+```lua
+-- Create a Particle Emitter for Normal Temperature
+local emitter = createParticleEmitter()
+
+-- Update the emitter to render Temperature=1234
+updateParticleEmitter(emitter, 1234)
+```
+
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L282-L321)
+
+Here's how our Interpolating Particle Emitter looks...
 
 -   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
 
-TODO2
+![Updating the Particle Emitter](https://lupyuen.github.io/images/roblox-emitter.png)
 
-![](https://lupyuen.github.io/images/roblox-emitter.png)
-
-TODO4
-
-![](https://lupyuen.github.io/images/roblox-interpolate.png)
+## Linear Interpolation
 
 TODO
+
+From [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162)
+
+```lua
+-- Minimum, Maximum and Mid values for Temperature (t) that will be interpolated
+local T_MIN = 0
+local T_MAX = 10000
+local T_MID = (T_MIN + T_MAX) / 2
+```
+
+TODO
+
+```lua
+-- Linear Interpolate the value of y, given that
+-- (1) x ranges from T_MIN to T_MAX
+-- (2) When x=T_MIN, y=yMin
+-- (3) When x=T_MID, y=yMid
+-- (4) When x=T_MAX, y=yMax
+local function lin(x, yMin, yMid, yMax)
+  local y
+  if x < T_MID then
+    -- Interpolate between T_MIN and T_MID
+    y = yMin + (yMid - yMin) * (x - T_MIN) / (T_MID - T_MIN)
+  else
+    -- Interpolate between T_MID and T_MAX
+    y = yMid + (yMax - yMid) * (x - T_MID) / (T_MAX - T_MID)
+  end	
+  -- Force y to be between yMin and yMax
+  if y < math.min(yMin, yMid, yMax) then
+    y = math.min(yMin, yMid, yMax)
+  end
+  if y > math.max(yMin, yMid, yMax) then
+    y = math.max(yMin, yMid, yMax)
+  end
+  return y
+end
+```
+
+TODO4
 
 ![](https://lupyuen.github.io/images/roblox-ar.jpg)
 
