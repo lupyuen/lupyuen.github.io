@@ -978,7 +978,49 @@ end
 
 As promised, here is the Real-Life Demo of our __Roblox Digital Twin!__
 
+-   [__Watch the Demo Video on YouTube__](https://youtu.be/QKjtue_tPGM)
+
 TODO
+
+las_app_tx_cbor 2 0 5555 0
+
+Digital Twin for PineDio Stack in Roblox
+
+At left is the Serial Terminal connected to our PineDio Stack board
+
+At right is Roblox running our Digital Twin script
+
+This block is the Roblox Gadget that mirrors our real-world IoT Gadget: PineDio Stack
+
+When PineDio Stack gets hot, the Roblox Gadget will look hot too
+
+We sync them thru a public wireless IoT network: The Things Network
+
+Roblox fetches the Live Temperature of PineDio Stack periodically. This is shown at lower right.
+
+The temperature is now 55.55 ⁰C. Let's set the PineDio Stack temperature to 99.99 ⁰C
+
+las_app_tx_cbor 2 0 9999 0
+
+Our Roblox Gadget receives the high temperature and bursts into flames!
+
+Let's turn down PineDio Stack to 77.77 ⁰C
+
+las_app_tx_cbor 2 0 7777 0
+
+Our Roblox Gadget receives the temperature over The Things Network. And cools down a little.
+
+We cool PineDio Stack down to 33.33 ⁰C
+
+las_app_tx_cbor 2 0 3333 0
+
+Our Roblox Gadget turns blue
+
+We start to freeze PineDio Stack at 11.11 ⁰C
+
+las_app_tx_cbor 2 0 1111 0
+
+Our Roblox Gadget turns into ice!
 
 ![](https://lupyuen.github.io/images/roblox-ar.jpg)
 
