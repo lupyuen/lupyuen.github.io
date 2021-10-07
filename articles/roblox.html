@@ -85,7 +85,8 @@
 <li><a href="#interpolate-the-particle-emitter">5.2 Interpolate the Particle Emitter</a><ul></ul></li>
 <li><a href="#update-the-particle-emitter">5.3 Update the Particle Emitter</a><ul></ul></li>
 <li><a href="#linear-interpolation">5.4 Linear Interpolation</a><ul></ul></li></ul></li>
-<li><a href="#digital-twin-demo">6 Digital Twin Demo</a><ul></ul></li>
+<li><a href="#digital-twin-demo">6 Digital Twin Demo</a><ul>
+<li><a href="#demo-code">6.1 Demo Code</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li>
 <li><a href="#appendix-install-roblox-studio">9 Appendix: Install Roblox Studio</a><ul></ul></li>
@@ -798,7 +799,69 @@ end</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1111 0</code></pre></div>
 <p>Our Roblox Gadget turns into ice!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-demo5.png" alt="" /></p>
-<p>TODO</p>
+<h2 id="demo-code" class="section-header"><a href="#demo-code">6.1 Demo Code</a></h2>
+<p>Below is the <strong>source code for the demo</strong> that we’ve seen. It calls all the functions that we’ve covered in this article: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L282-L324">DigitalTwin.lua</a></p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Main Function. Fetch and render the Sensor Data from The Things Network every 5 seconds.
+-- If fetch failed, show Demo Mode.
+local function main()	
+  -- Create a Particle Emitter for Normal Temperature
+  local emitter = createParticleEmitter()
+  
+  -- Loop forever fetching and rendering Sensor Data from The Things Network
+  while true do
+    -- Lua Table that will contain Sensor Data from The Things Network	
+    local sensorData = nil
+
+    -- Temperature from The Things Network. Ranges from 0 to 10,000.
+    local t = nil
+
+    -- If API Key for The Things Network is defined...
+    if TTN_API_KEY ~= &quot;YOUR_API_KEY&quot; then
+      -- Fetch the Sensor Data from The Things Network
+      sensorData = getSensorData()	
+
+      -- Get the Temperature if it exists
+      if sensorData then
+        t = sensorData.t
+      end
+    end
+
+    -- If Temperature was successfully fetched from The Things Network...
+    if t then
+      -- Render the Temperature with our Particle Emitter
+      print(&quot;t:&quot;, t)
+      updateParticleEmitter(emitter, t)
+    else
+      -- Else render our Particle Emitter in Demo Mode
+      print(&quot;Failed to get sensor data. Enter Demo Mode.&quot;)
+      demoMode(emitter)
+    end
+    
+    -- Sleep 5 seconds so we don&#39;t overwhelm The Things Network
+    wait(5)		
+  end
+end
+
+-- Start the Main Function
+main()</code></pre></div>
+<p><strong>demoMode</strong> is defined as follows: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L264-L280">DigitalTwin.lua</a></p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Demo Mode if we don&#39;t have an IoT Device connected to The Things Network.
+-- Gradually update our Particle Emitter for Temperature=10,000 to 0 and back to 10,000.
+local function demoMode(emitter)
+  -- Gradually update the emitter for Temperature=10,000 to 0
+  for t = T_MAX, T_MIN, -600 do
+    print(&quot;t:&quot;, t)
+    updateParticleEmitter(emitter, t)
+    wait(4)
+  end
+  
+  -- Gradually update the emitter for Temperature=0 to 10,000
+  for t = T_MIN, T_MAX, 600 do
+    print(&quot;t:&quot;, t)
+    updateParticleEmitter(emitter, t)
+    wait(4)
+  end
+end</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
