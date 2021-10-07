@@ -570,11 +570,142 @@ And the ModuleScripts worked perfectly!
 
 # Render Temperature With Roblox Particle Emitter
 
-TODO
+_How did we render the Temperature of our Roblox Gadget?_
 
-Let's use a Roblox Particle Emitter to show the Temperature (t) of our object...
+_(The green fireflies thingy?)_
+
+We rendered the Temperature with a [__Roblox Particle Emitter__](https://developer.roblox.com/en-us/articles/Particle-Emitters).
+
+This is how we render a Particle Emitter in our Roblox Script...
+
+```lua
+-- Create a Particle Emitter for Normal Temperature
+local emitter = createParticleEmitter()
+```
+
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L285-L286)
+
+The code above renders our Roblox Gadget with __Normal Temperature__.
+
+(Yep Shrek and his green fireflies)
+
+__createParticleEmitter__ is defined in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133)...
+
+```lua
+-- Create the Particle Emitter for Normal Temperature
+-- Based on https://developer.roblox.com/en-us/api-reference/class/ParticleEmitter
+local function createParticleEmitter()
+
+  -- Create an instance of Particle Emitter and enable it
+  local emitter = Instance.new("ParticleEmitter")
+  emitter.Enabled = true 
+```
+
+We begin by __creating an Instance__ of Particle Emitter.
+
+Next we set the __rate of particles emitted__ and their lifetime...
+
+```lua
+  -- Number of particles = Rate * Lifetime
+  emitter.Rate = 20 -- Particles per second
+  emitter.Lifetime = NumberRange.new(5, 10) -- How long the particles should be alive (min, max)
+```
+
+(Why these magic numbers? We'll learn later)
+
+We set the __texture of the particles__ to a Star Sparkle image...
+
+```lua
+  -- Visual properties
+  -- Texture for the particles: "star sparkle particle" by @Vupatu
+  -- https://www.roblox.com/library/6490035152/star-sparkle-particle
+  emitter.Texture = "rbxassetid://6490035152"
+```
+
+(Somehow I couldn't set the texture to "rbxasset:textures/particles/sparkles_main.dds". Only "rbxassetid" works)
+
+Our particles can __change color__, but we'll stick to green _(R=0.3, G=0.6, B=0.0)_...
+
+```lua
+  -- For Color, build a ColorSequence using ColorSequenceKeypoint
+  local colorKeypoints = {
+    -- API: ColorSequenceKeypoint.new(time, color)
+    ColorSequenceKeypoint.new( 0.0, Color3.new(0.3, 0.6, 0.0)),  -- At time=0: Green
+    ColorSequenceKeypoint.new( 1.0, Color3.new(0.3, 0.6, 0.0))   -- At time=1: Green
+  }
+  emitter.Color = ColorSequence.new(colorKeypoints)
+```
+
+This __Color Sequence__ says that from start _(time=0)_ to end _(time=1)_, the particles stay green.
+
+We won't vary the __particle transparency__ either...
+
+```lua
+  -- For Transparency, build a NumberSequence using NumberSequenceKeypoint
+  local numberKeypoints = {
+    -- API: NumberSequenceKeypoint.new(time, size, envelop)
+    NumberSequenceKeypoint.new( 0.0, 0.0);    -- At time=0, fully opaque
+    NumberSequenceKeypoint.new( 1.0, 0.0);    -- At time=1, fully opaque
+  }
+  emitter.Transparency = NumberSequence.new(numberKeypoints)
+```
+
+From start to end, our particles are fully opaque.
+
+We set the __Light Emission and Influence__...
+
+```lua
+  -- Light Emission and Influence
+  emitter.LightEmission = 0 -- If 1: When particles overlap, multiply their color to be brighter
+  emitter.LightInfluence = 1 -- If 0: Don't be affected by world lighting
+```
+
+We define the __speed and spread__ of our particles...
+
+```lua
+  -- Speed properties
+  emitter.EmissionDirection = Enum.NormalId.Top -- Emit towards top
+  emitter.Speed = NumberRange.new(5.0, 5.0) -- Speed
+  emitter.Drag = 10.0 -- Apply drag to particle motion
+  emitter.VelocitySpread = NumberRange.new(0.0, 0.0)
+  emitter.VelocityInheritance = 0 -- Don't inherit parent velocity
+  emitter.Acceleration = Vector3.new(0.0, 0.0, 0.0)
+  emitter.LockedToPart = false -- Don't lock the particles to the parent 
+  emitter.SpreadAngle = Vector2.new(50.0, 50.0) -- Spread angle on X and Y
+```
+
+We set the __size and rotation__ of our particles...
+
+```lua
+  -- Simulation properties
+  local numberKeypoints2 = {
+    NumberSequenceKeypoint.new(0.0, 0.2);  -- Size at time=0
+    NumberSequenceKeypoint.new(1.0, 0.2);  -- Size at time=1
+  }
+  emitter.Size = NumberSequence.new(numberKeypoints2)
+  emitter.ZOffset = 0.0 -- Render in front or behind the actual position
+  emitter.Rotation = NumberRange.new(0.0, 0.0) -- Rotation
+  emitter.RotSpeed = NumberRange.new(0.0) -- Do not rotate during simulation
+```
+
+Finally we __add the emitter__ to our Roblox Part...
+
+```lua  
+  -- Add the emitter to our Part
+  emitter.Parent = script.Parent
+  return emitter
+end
+```
+
+And our Roblox Gadget starts emitting green particles to represent Normal Temperature!
+
+(Centre one in the pic below)
 
 ![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
+
+## Interpolate the Particle Emitter
+
+TODO
 
 We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).
 
