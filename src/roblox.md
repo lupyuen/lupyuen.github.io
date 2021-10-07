@@ -151,6 +151,7 @@ Our URL for The Things Network (__TTN_URL__) looks like...
 https://au1.cloud.thethings.network/api/v3/as/
   applications/YOUR_APPLICATION_ID/
   packages/storage/uplink_message
+  ?limit=1&order=-received_at
 ```
 
 [(More about these settings in the Appendix)](https://lupyuen.github.io/articles/roblox#appendix-the-things-network-settings)
@@ -1366,6 +1367,7 @@ Our URL for The Things Network (__TTN_URL__) looks like...
 https://au1.cloud.thethings.network/api/v3/as/
   applications/YOUR_APPLICATION_ID/
   packages/storage/uplink_message
+  ?limit=1&order=-received_at
 ```
 
 TODO
