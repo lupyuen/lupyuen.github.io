@@ -180,7 +180,7 @@ if sensorData then
 else
   print(&quot;Failed to get sensor data&quot;)
 end</code></pre></div>
-<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L309-L335">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L326-L333">(Source)</a></p>
 <p>We should see the <strong>Temperature Sensor Data</strong> fetched from The Things Network…</p>
 <div class="example-wrap"><pre class="language-text"><code>Temperature: 1236</code></pre></div>
 <p>(This means <code>12.36</code> ºC, our values have been scaled up by 100 times)</p>
@@ -428,16 +428,16 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p><em>What about the Base64 Decoding?</em></p>
 <p>Our IoT Gadget transmits Sensor Data to The Things Network in <strong>Binary (CBOR) Format</strong>.</p>
 <p>But our Roblox script fetches the Sensor Data in <strong>JSON Format</strong>, which can’t embed Binary Data.</p>
-<p>Hence our Binary Data is converted to text format with <strong>Base64 Encoding</strong>, when fetched by Roblox.</p>
+<p>Hence our Binary Data is converted to Text Format with <strong>Base64 Encoding</strong>, when fetched by Roblox.</p>
 <p>Our Sensor Data <strong>encoded with CBOR</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>a2 61 74 19 04 d4 61 6c 19 09 2b</code></pre></div>
-<p>Becomes this text string when <strong>encoded with Base64</strong>…</p>
+<p>Becomes this Text String when <strong>encoded with Base64</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>omF0GQTUYWwZCSs=</code></pre></div>
 <p>This explains the two stages of decoding: <strong>Base64 followed by CBOR</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-studio3.png" alt="Create Base64 ModuleScript in Roblox Studio" /></p>
 <h2 id="base64-and-cbor-modulescripts" class="section-header"><a href="#base64-and-cbor-modulescripts">4.1 Base64 and CBOR ModuleScripts</a></h2>
-<p><em>How do we decode Base64 and CBOR Data in Roblox?</em></p>
-<p>We call these two ModuleScripts in ServerStorage…</p>
+<p><em>How do we decode Base64 and CBOR in Roblox?</em></p>
+<p>We call these two <strong>ModuleScripts in ServerStorage</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua"><strong><code>Base64</code></strong></a></p>
@@ -461,7 +461,7 @@ print(payload)
 sensorData = cbor.decode(payload)
 print(&quot;sensorData:&quot;)
 print(sensorData)</code></pre></div>
-<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L345-L353">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L335-L343">(Source)</a></p>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>payload:
 �at�al
@@ -482,7 +482,7 @@ sensorData:
 </li>
 </ul>
 <p><em>Was it difficult to port the Lua Libraries into Roblox?</em></p>
-<p>Not at all! We changed only one line of code in <a href="https://github.com/iskolbin/lbase64/blob/master/base64.lua">base64.lua</a> from…</p>
+<p>Not at all! We changed only one line of code in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua#L28-L29"><strong>Base64.lua</strong></a> from…</p>
 <div class="example-wrap"><pre class="language-lua"><code>local extract = _G.bit32 and _G.bit32.extract</code></pre></div>
 <p>To…</p>
 <div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract</code></pre></div>
