@@ -734,7 +734,9 @@ The __Particle Emitter settings__ look like...
 ```yaml
 NORMAL Particle Emitter (t=5000)
   Acceleration: 0, 0, 0
-  Color: 0 0.333333 0.666667 0 0 1 0.333333 0.666667 0 0 
+  Color: 
+    0 0.3 0.6 0 0 
+    1 0.3 0.6 0 0 
   Drag: 10
   ...
 ```
@@ -757,11 +759,142 @@ Read on to learn how we do this with [__Linear Interpolation__](https://en.wikip
 
 ## Interpolate the Particle Emitter
 
+Previously we have __dumped the settings__ for our Hot / Normal / Cold Particle Emitters...
+
+```yaml
+COLD Particle Emitter (t=0)
+  Drag:  5
+  Speed: 0 0 
+  Color: (time, red, green, blue)
+    0 0.3 1.0 1.0 0 
+    1 0.3 1.0 1.0 0 
+    ...
+
+NORMAL Particle Emitter (t=5000)
+  Drag:  10
+  Speed: 5 5 
+  Color: (time, red, green, blue)
+    0 0.3 0.6 0.0 0 
+    1 0.3 0.6 0.0 0 
+    ...
+
+HOT Particle Emitter (t=10000)
+  Drag:  0
+  Speed: 1 1 
+  Color: (time, red, green, blue)
+    0 1.0 0.3 0.0 0 
+    1 1.0 0.3 0.0 0 
+    ...
+```
+
+The three emitters represent the __Min / Mid / Max Temperatures__...
+
+-   __Cold:__ `t=0`
+-   __Normal:__ `t=5000`
+-   __Hot:__ `t=10000`
+
 TODO
 
-We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).
+Values to be interpolated...
 
-To render the Temperature, we shall do Linear Interpolation of the 3 Particle Emitters...
+```yaml
+Drag:
+  COLD:   5
+  NORMAL: 10
+  HOT:    0
+
+Speed: 
+  COLD:   0 0 
+  NORMAL: 5 5 
+  HOT:    1 1 
+
+Color: (time, red, green, blue)
+  COLD:
+    0 0.3 1.0 1.0 0 
+    1 0.3 1.0 1.0 0 
+  NORMAL:
+    0 0.3 0.6 0.0 0 
+    1 0.3 0.6 0.0 0 
+  HOT:
+    0 1.0 0.3 0.0 0 
+    1 1.0 0.3 0.0 0 
+```
+
+Here's how the Interpolating Particle Emitter looks...
+
+-   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
+
+TODO2
+
+![](https://lupyuen.github.io/images/roblox-emitter.png)
+
+TODO4
+
+![](https://lupyuen.github.io/images/roblox-interpolate.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/roblox-ar.jpg)
+
+# What's Next
+
+TODO
+
+We shall head back and transmit BL602 / BL604's __Internal Temperature Sensor Data__ to The Things Network.
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
+
+-   [Check out my articles](https://lupyuen.github.io)
+
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[`lupyuen.github.io/src/roblox.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/roblox.md)
+
+# Notes
+
+1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1443824711050301444)
+
+# Appendix: Install Roblox Studio
+
+Here are the steps to download and install __Roblox Studio for macOS and Windows__...
+
+1.  Sign up for a free account at [__roblox.com__](https://www.roblox.com/home)
+
+1.  Log in to [__roblox.com__](https://www.roblox.com/home)
+
+1.  Click __"Create"__ at the top bar
+
+1.  Click __"Start Creating"__
+
+1.  The Roblox Studio Installer will be downloaded.
+
+    Click the Installer to install Roblox Studio.
+
+1.  __For macOS:__ If the Installer fails...
+
+    Delete Roblox Studio in the __Applications Folder__.
+    
+    Reboot and reinstall Roblox Studio.
+
+    (That's how I fixed Roblox Studio on macOS)
+
+To install __Roblox Studio on Linux__, see this...
+
+-   [__"Using Roblox on Linux"__](https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux)
+
+If we're in China, Roblox works a little differently. See this...
+
+-   [__"Roblox China"__](https://roblox.fandom.com/wiki/Roblox_China)
+
+# Appendix: Particle Emitter Settings
+
+During development, we created 3 Particle Emitters...
 
 COLD Particle Emitter (t=0)
 
@@ -835,7 +968,9 @@ HOT Particle Emitter (t=10000)
   ZOffset: 0
 ```
 
-Values to be interpolated...
+To render the Temperature, we performed Linear Interpolation on the three Particle Emitters above.
+
+Based on the above values, we derive the values that will be interpolated...
 
 ```yaml
 Color:
@@ -929,74 +1064,6 @@ end
 Here's how the Interpolating Particle Emitter looks...
 
 -   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
-
-TODO2
-
-![](https://lupyuen.github.io/images/roblox-emitter.png)
-
-TODO4
-
-![](https://lupyuen.github.io/images/roblox-interpolate.png)
-
-TODO
-
-![](https://lupyuen.github.io/images/roblox-ar.jpg)
-
-# What's Next
-
-TODO
-
-We shall head back and transmit BL602 / BL604's __Internal Temperature Sensor Data__ to The Things Network.
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
-
--   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
-
--   [Check out my articles](https://lupyuen.github.io)
-
--   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[`lupyuen.github.io/src/roblox.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/roblox.md)
-
-# Notes
-
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1443824711050301444)
-
-# Appendix: Install Roblox Studio
-
-Here are the steps to download and install __Roblox Studio for macOS and Windows__...
-
-1.  Sign up for a free account at [__roblox.com__](https://www.roblox.com/home)
-
-1.  Log in to [__roblox.com__](https://www.roblox.com/home)
-
-1.  Click __"Create"__ at the top bar
-
-1.  Click __"Start Creating"__
-
-1.  The Roblox Studio Installer will be downloaded.
-
-    Click the Installer to install Roblox Studio.
-
-1.  __For macOS:__ If the Installer fails...
-
-    Delete Roblox Studio in the __Applications Folder__.
-    
-    Reboot and reinstall Roblox Studio.
-
-    (That's how I fixed Roblox Studio on macOS)
-
-To install __Roblox Studio on Linux__, see this...
-
--   [__"Using Roblox on Linux"__](https://roblox.fandom.com/wiki/Tutorial:Using_Roblox_on_Linux)
-
-If we're in China, Roblox works a little differently. See this...
-
--   [__"Roblox China"__](https://roblox.fandom.com/wiki/Roblox_China)
 
 # Appendix: The Things Network Settings
 
