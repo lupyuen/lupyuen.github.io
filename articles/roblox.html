@@ -81,7 +81,8 @@
 <li><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a><ul>
 <li><a href="#base64-and-cbor-modulescripts">4.1 Base64 and CBOR ModuleScripts</a><ul></ul></li></ul></li>
 <li><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a><ul>
-<li><a href="#interpolate-the-particle-emitter">5.1 Interpolate the Particle Emitter</a><ul></ul></li></ul></li>
+<li><a href="#magic-numbers">5.1 Magic Numbers</a><ul></ul></li>
+<li><a href="#interpolate-the-particle-emitter">5.2 Interpolate the Particle Emitter</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#notes">7 Notes</a><ul></ul></li>
 <li><a href="#appendix-install-roblox-studio">8 Appendix: Install Roblox Studio</a><ul></ul></li>
@@ -512,7 +513,7 @@ local function createParticleEmitter()
 <div class="example-wrap"><pre class="language-lua"><code>  -- Number of particles = Rate * Lifetime
   emitter.Rate = 20 -- Particles per second
   emitter.Lifetime = NumberRange.new(5, 10) -- How long the particles should be alive (min, max)</code></pre></div>
-<p>(Why these magic numbers? We’ll learn later)</p>
+<p>(Why these Magic Numbers? We’ll learn later)</p>
 <p>We set the <strong>texture of the particles</strong> to a Star Sparkle image…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Visual properties
   -- Texture for the particles: &quot;star sparkle particle&quot; by @Vupatu
@@ -569,12 +570,42 @@ end</code></pre></div>
 <p>And our Roblox Gadget starts emitting green particles to represent Normal Temperature!</p>
 <p>(Centre one in the pic below)</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
-<h2 id="interpolate-the-particle-emitter" class="section-header"><a href="#interpolate-the-particle-emitter">5.1 Interpolate the Particle Emitter</a></h2>
+<h2 id="magic-numbers" class="section-header"><a href="#magic-numbers">5.1 Magic Numbers</a></h2>
+<p><em>All the Magic Numbers above… Where did they come from?</em></p>
+<p>I created <strong>three Particle Emitters</strong> for the Cold, Normal and Hot Temperatures…</p>
+<p><img src="https://lupyuen.github.io/images/roblox-studio5.png" alt="Particle Emitters for Cold / Normal / Hot Temperatures" /></p>
+<p>I tweaked them till they looked OK. Then I <strong>dumped the settings</strong> of the Particle Emitters like so…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Dump the 3 Particle Emitters: Cold, Normal, Hot
+print(&quot;COLD Particle Emitter (t=0)&quot;)
+dumpParticleEmitter(script.Parent.Cold)
+
+print(&quot;NORMAL Particle Emitter (t=5000)&quot;)
+dumpParticleEmitter(script.Parent.Normal)
+
+print(&quot;HOT Particle Emitter (t=10000)&quot;)
+dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
+<p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L345-L351">(Source)</a></p>
+<p>(<strong>dumpParticleEmitter</strong> is defined in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L241-L262">DigitalTwin.lua</a>)</p>
+<p>The <strong>Particle Emitter settings</strong> look like…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>NORMAL Particle Emitter (t=5000)
+  Acceleration: 0, 0, 0
+  Color: 0 0.333333 0.666667 0 0 1 0.333333 0.666667 0 0 
+  Drag: 10
+  ...</code></pre></div>
+<p>(See the Appendix for the complete settings)</p>
+<p>These are the Magic Numbers that we plugged into our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133"><strong>createParticleEmitter</strong></a> function.</p>
+<p><em>Why did we create the Particle Emitter in Roblox Script?</em></p>
+<p><em>Why not reuse the Particle Emitters that we have created manually?</em></p>
+<p>That’s because we want to render <strong>10,000 Levels of Hotness / Coldness</strong>.</p>
+<p>Our Roblox Script will <strong>tweak the Particle Emitter at runtime</strong> to render the Live Temperature.</p>
+<p>Read on to learn how we do this with <a href="https://en.wikipedia.org/wiki/Linear_interpolation"><strong>Linear Interpolation</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
+<h2 id="interpolate-the-particle-emitter" class="section-header"><a href="#interpolate-the-particle-emitter">5.2 Interpolate the Particle Emitter</a></h2>
 <p>TODO</p>
 <p>We have defined 3 Particle Emitters: Cold (t=0), Normal (t=5000), Hot (t=10000).</p>
 <p>To render the Temperature, we shall do Linear Interpolation of the 3 Particle Emitters…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>COLD Particle Emitter (t=0)
-  Acceleration: 0, 0, 0
+<p>COLD Particle Emitter (t=0)</p>
+<div class="example-wrap"><pre class="language-yaml"><code>  Acceleration: 0, 0, 0
   Color: 0 0.333333 1 1 0 1 0.333333 1 1 0 
   Drag: 5
   EmissionDirection: Enum.NormalId.Top
@@ -592,10 +623,9 @@ end</code></pre></div>
   TimeScale: 1
   Transparency: 0 0 0 1 0 0 
   VelocityInheritance: 0
-  ZOffset: 0
-
-NORMAL Particle Emitter (t=5000)
-  Acceleration: 0, 0, 0
+  ZOffset: 0</code></pre></div>
+<p>NORMAL Particle Emitter (t=5000)</p>
+<div class="example-wrap"><pre class="language-yaml"><code>  Acceleration: 0, 0, 0
   Color: 0 0.333333 0.666667 0 0 1 0.333333 0.666667 0 0 
   Drag: 10
   EmissionDirection: Enum.NormalId.Top
@@ -613,10 +643,9 @@ NORMAL Particle Emitter (t=5000)
   TimeScale: 1
   Transparency: 0 0 0 1 0 0 
   VelocityInheritance: 0
-  ZOffset: 0
-
-HOT Particle Emitter (t=10000)
-  Acceleration: 0, 0, 0
+  ZOffset: 0</code></pre></div>
+<p>HOT Particle Emitter (t=10000)</p>
+<div class="example-wrap"><pre class="language-yaml"><code>  Acceleration: 0, 0, 0
   Color: 0 1 0.333333 0 0 1 1 0.333333 0 0 
   Drag: 0
   EmissionDirection: Enum.NormalId.Top
@@ -648,44 +677,44 @@ HOT Particle Emitter (t=10000)
     1 1 0.333333 0 0 
 
 Drag:
-  COLD: 5
+  COLD:   5
   NORMAL: 10
-  HOT: 0
+  HOT:    0
 
 LightEmission: 
-  COLD: 1
+  COLD:   1
   NORMAL: 0
-  HOT: 0
+  HOT:    0
 
 LightInfluence: 
-  COLD: 1
+  COLD:   1
   NORMAL: 1
-  HOT: 0
+  HOT:    0
 
 Rotation: 
-  COLD: 0 180 
+  COLD:   0 180 
   NORMAL: 0 0 
-  HOT: 0 0 
+  HOT:    0 0 
 
 RotSpeed: 
-  COLD: -170 -170 
-  NORMAL: 0 0 
-  HOT: 0 0 
+  COLD:   -170 -170 
+  NORMAL: 0    0 
+  HOT:    0    0 
 
 Size: 
-  COLD: 0 1 0 1 1 0 
+  COLD:   0 1   0 1 1   0 
   NORMAL: 0 0.2 0 1 0.2 0 
-  HOT: 0 0.4 0 1 0.4 0 
+  HOT:    0 0.4 0 1 0.4 0 
   
 Speed: 
-  COLD: 0 0 
+  COLD:   0 0 
   NORMAL: 5 5 
-  HOT: 1 1 
+  HOT:    1 1 
 
 SpreadAngle: 
-  COLD: 10, 10
+  COLD:   10, 10
   NORMAL: 50, 50
-  HOT: 50, 50</code></pre></div>
+  HOT:    50, 50</code></pre></div>
 <p>The properties of the Particle Emitters were dumped with the <code>dumpParticleEmitter</code> function in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><strong>DigitalTwin.lua</strong></a>.</p>
 <p>Note that <code>rbxasset</code> won’t work for setting the Texture…</p>
 <div class="example-wrap"><pre class="language-lua"><code>emitter.Texture = &quot;rbxasset:textures/particles/sparkles_main.dds&quot;</code></pre></div>
@@ -713,8 +742,6 @@ end</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/roblox-emitter.png" alt="" /></p>
 <p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/roblox-interpolate.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/roblox-studio5.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
