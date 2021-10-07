@@ -715,13 +715,24 @@ updateParticleEmitter(emitter, 1234)</code></pre></div>
 </ul>
 <p><img src="https://lupyuen.github.io/images/roblox-emitter.png" alt="Updating the Particle Emitter" /></p>
 <h2 id="linear-interpolation" class="section-header"><a href="#linear-interpolation">5.4 Linear Interpolation</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162">DigitalTwin.lua</a></p>
+<p><em>How does the <strong>lin</strong> function compute Linear Interpolation?</em></p>
+<p>Earlier we saw this…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Interpolate Drag:
+-- COLD:   5
+-- NORMAL: 10
+-- HOT:    0
+emitter.Drag = lin(t, 5.0, 10.0, 0.0)</code></pre></div>
+<p>This code <strong>interpolates the Drag</strong> of our Particle Emitter based on the Temperature (t).</p>
+<p>The values passed to <strong>lin</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>5.0, 10.0, 0.0</code></pre></div>
+<p>Correspond to the Drag values for <strong>Min / Mid / Max Temperatures</strong>.</p>
+<p>The Min / Mid / Max Temperatures are defined here: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Minimum, Maximum and Mid values for Temperature (t) that will be interpolated
 local T_MIN = 0
 local T_MAX = 10000
 local T_MID = (T_MIN + T_MAX) / 2</code></pre></div>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Linear Interpolate the value of y, given that
 -- (1) x ranges from T_MIN to T_MAX
 -- (2) When x=T_MIN, y=yMin
@@ -736,7 +747,7 @@ local function lin(x, yMin, yMid, yMax)
     -- Interpolate between T_MID and T_MAX
     y = yMid + (yMax - yMid) * (x - T_MID) / (T_MAX - T_MID)
   end	
-  -- Force y to be between yMin and yMax
+  -- Force y to be between yMin, yMid and yMax
   if y &lt; math.min(yMin, yMid, yMax) then
     y = math.min(yMin, yMid, yMax)
   end
