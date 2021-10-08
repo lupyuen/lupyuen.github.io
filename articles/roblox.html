@@ -1084,8 +1084,29 @@ local TTN_API_KEY = &quot;YOUR_API_KEY&quot;
 -- TODO: Change this to your region-specific URL for The Things Network
 local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
 <p>This chapter explains the steps for getting the settings from The Things Network.</p>
-<p>For <strong>TTN_APPLICATION_ID</strong>: Log on to The Things Network, click <strong>Menu → Console</strong> and copy this setting…</p>
+<p>We assume that we have created an <strong>Application and Device</strong> in The Things Network…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network"><strong>“Add Device to The Things Network”</strong></a></li>
+</ul>
+<p>To get the <strong>TTN_APPLICATION_ID</strong>…</p>
+<ol>
+<li>
+<p>Log on to <a href="https://www.thethingsnetwork.org/"><strong>The Things Network</strong></a></p>
+</li>
+<li>
+<p>Click <strong>Menu → Console</strong></p>
+<p>Select our region: <strong>Europe, North America or Australia</strong>.</p>
+</li>
+<li>
+<p>Copy this setting…</p>
 <p><strong>(Your Region) → Applications → (Your Application) → Application ID</strong></p>
+</li>
+<li>
+<p>Paste it here…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your Application ID for The Things Network
+-- (Must have permission to Read Application Traffic)
+local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;</code></pre></div></li>
+</ol>
 <h2 id="storage-integration" class="section-header"><a href="#storage-integration">11.1 Storage Integration</a></h2>
 <p>For Roblox to fetch Sensor Data from The Things Network, we shall enable <strong>Storage Integration</strong>…</p>
 <ul>
@@ -1116,14 +1137,21 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <div class="example-wrap"><pre class="language-text"><code>?limit=1&amp;order=-received_at</code></pre></div>
 <p>More about this in the next chapter.</p>
 <h2 id="api-key" class="section-header"><a href="#api-key">11.2 API Key</a></h2>
-<p>TODO</p>
-<p>Add API key</p>
+<p>Roblox needs an <strong>API Key</strong> to access the stored Uplink Messages from The Things Network.</p>
+<p>To create an API Key, click…</p>
+<p><strong>(Your Application) → API Keys → Add API Key</strong></p>
 <p><img src="https://lupyuen.github.io/images/roblox-ttn3.png" alt="The Things Network API Key" /></p>
+<p>Click <strong>“Grant Individual Rights”</strong></p>
+<p>Click <strong>“Read application traffic (uplink and downlink)”</strong></p>
+<p>Click <strong>“Create API Key”</strong></p>
+<p>Copy the API Key and paste here…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your API Key for The Things Network
 local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a></h1>
-<p>TODO</p>
-<p>The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device…</p>
-<p><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/">Retrieve Uplink Messages</a></p>
+<p>The Things Network exposes a HTTP GET API to <strong>fetch the Uplink Messages</strong> transmitted by our IoT Device…</p>
+<ul>
+<li><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/"><strong>“Retrieve Uplink Messages”</strong></a></li>
+</ul>
+<p>(Assuming that Storage Integration is enabled. Saved messages will disappear after 2 or 3 days)</p>
 <p>Here’s the command to fetch the latest Uplink Message…</p>
 <div class="example-wrap"><pre class="language-bash"><code>curl \
   -G &quot;https://au1.cloud.thethings.network/api/v3/as/applications/$YOUR_APPLICATION_ID/packages/storage/uplink_message&quot; \
@@ -1131,6 +1159,7 @@ local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h1 id="appendix-
   -H &quot;Accept: text/event-stream&quot; \
   -d &quot;limit=1&quot; \
   -d &quot;order=-received_at&quot;</code></pre></div>
+<p>(See the previous chapter for <strong>$YOUR_APPLICATION_ID</strong> and <strong>$YOUR_API_KEY</strong>)</p>
 <p>Which returns…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
   &quot;result&quot;: {
@@ -1190,18 +1219,16 @@ local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h1 id="appendix-
     }
   }
 }</code></pre></div>
-<p><code>result.uplink_message.frm_payload</code> contains the Sensor Data that we need, encoded with Base64 and CBOR…</p>
+<p><strong>result.uplink_message.frm_payload</strong> contains the Sensor Data that we need, encoded with Base64 and CBOR…</p>
 <div class="example-wrap"><pre class="language-json"><code>&quot;frm_payload&quot;: &quot;omF0GQTUYWwZCSs=&quot;</code></pre></div>
-<p>Our Sensor Data is encoded with <a href="https://en.wikipedia.org/wiki/CBOR">CBOR</a> to keep the LoRa Packets small (max 12 bytes), due to the Fair Use Policy of The Things Network…</p>
+<p>Our Sensor Data is encoded with <a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a> to keep the LoRa Packets small (max 12 bytes), due to the Fair Use Policy of The Things Network…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">“Fair Use of The Things Network”</a></li>
+<li><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network"><strong>“Fair Use of The Things Network”</strong></a></li>
 </ul>
 <p>More about CBOR Encoding…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/cbor">“Encode Sensor Data with CBOR on BL602”</a></li>
+<li><a href="https://lupyuen.github.io/articles/cbor"><strong>“Encode Sensor Data with CBOR on BL602”</strong></a></li>
 </ul>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/roblox-ttn.jpg" alt="" /></p>
 
     
 </body>
