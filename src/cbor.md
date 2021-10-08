@@ -701,7 +701,7 @@ TinyCBOR is available on various __Embedded Operating Systems__...
 
 For the next article we shall take a quick detour and explore PineDio Stack transmitting Sensor Data to [__Roblox via The Things Network__](https://github.com/lupyuen/roblox-the-things-network).
 
-[(Follow this Twitter Thread for updates)](https://twitter.com/MisterTechBlog/status/1443824711050301444)
+-   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox)
 
 Then we shall head back and transmit BL602 / BL604's __Internal Temperature Sensor Data__ to The Things Network.
 
