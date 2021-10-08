@@ -768,38 +768,53 @@ local function lin(x, yMin, yMid, yMax)
 end</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <h1 id="digital-twin-demo" class="section-header"><a href="#digital-twin-demo">6 Digital Twin Demo</a></h1>
-<p>As promised, here is the Real-Life Demo of our <strong>Roblox Digital Twin!</strong></p>
+<p>As promised, here’s the Real-Life Demo of our <strong>Roblox Digital Twin</strong> featuring <strong>PineDio Stack</strong>! (Pic above)</p>
 <ul>
 <li><a href="https://youtu.be/QKjtue_tPGM"><strong>Watch the Demo Video on YouTube</strong></a></li>
 </ul>
-<p>Follow the instructions here to run the <strong>LoRaWAN Firmware</strong> on PineDio Stack…</p>
+<p>We follow the instructions below to run the <strong>LoRaWAN Firmware</strong> on PineDio Stack…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></li>
 </ul>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/roblox-demo.png" alt="" /></p>
-<p>At left is the Serial Terminal connected to our PineDio Stack board</p>
-<p>At right is Roblox running our Digital Twin script</p>
-<p>This block is the Roblox Gadget that mirrors our real-world IoT Gadget: PineDio Stack</p>
-<p>When PineDio Stack gets hot, the Roblox Gadget will look hot too</p>
-<p>We sync them thru a public wireless IoT network: The Things Network</p>
-<p>Roblox fetches the Live Temperature of PineDio Stack periodically. This is shown at lower right.</p>
-<p>The temperature is now 55.55 ⁰C. Let’s set the PineDio Stack temperature to 99.99 ⁰C</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo.png" alt="Digital Twin 55.55 ⁰C" /></p>
+<p>Our demo setup…</p>
+<ul>
+<li>
+<p><strong>At Left</strong>: Serial Terminal connected to our <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack board</strong></a></p>
+<p>(We control PineDio Stack by entering commands into the Serial Terminal)</p>
+</li>
+<li>
+<p><strong>At Right</strong>: Roblox running our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua"><strong>Digital Twin Script</strong></a></p>
+<p>(With <strong><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua">Base64</a></strong> and <strong><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/Cbor.lua">Cbor</a></strong> ModuleScripts)</p>
+</li>
+<li>
+<p>Grey block is the <strong>Roblox Gadget</strong> that mirrors our real-world IoT Gadget (PineDio Stack)…</p>
+<p>When <strong>PineDio Stack</strong> gets hot, the <strong>Roblox Gadget</strong> will look hot too!</p>
+</li>
+<li>
+<p>We sync PineDio Stack (left) with Roblox Gadget (right) via <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a>, the public wireless IoT network</p>
+</li>
+<li>
+<p>Through The Things Network, Roblox fetches the <strong>Live Temperature</strong> of PineDio Stack every 5 seconds.</p>
+<p>(Shown at lower right: <code>5555</code>)</p>
+</li>
+</ul>
+<p>The temperature is now <strong>55.55 ⁰C</strong>. Let’s set the PineDio Stack temperature to <strong>99.99 ⁰C</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 9999 0</code></pre></div>
-<p>Our Roblox Gadget receives the high temperature and bursts into flames!</p>
-<p><img src="https://lupyuen.github.io/images/roblox-demo2.png" alt="" /></p>
-<p>Let’s turn down PineDio Stack to 77.77 ⁰C</p>
+<p>Our Roblox Gadget <strong>receives the high temperature</strong> and bursts into flames!</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo2.png" alt="Digital Twin at 99.99 ⁰C" /></p>
+<p>Let’s turn down PineDio Stack to <strong>77.77 ⁰C</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 7777 0</code></pre></div>
-<p>Our Roblox Gadget receives the temperature over The Things Network. And cools down a little.</p>
-<p><img src="https://lupyuen.github.io/images/roblox-demo3.png" alt="" /></p>
-<p>We cool PineDio Stack down to 33.33 ⁰C</p>
+<p>Our Roblox Gadget <strong>receives the updated temperature</strong> over The Things Network. And cools down a little.</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo3.png" alt="Digital Twin at 77.77 ⁰C" /></p>
+<p>We cool PineDio Stack down to <strong>33.33 ⁰C</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 3333 0</code></pre></div>
-<p>Our Roblox Gadget turns blue</p>
-<p><img src="https://lupyuen.github.io/images/roblox-demo4.png" alt="" /></p>
-<p>We start to freeze PineDio Stack at 11.11 ⁰C</p>
+<p>Our Roblox Gadget <strong>turns blue</strong>.</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo4.png" alt="Digital Twin at 33.33 ⁰C" /></p>
+<p>We start to freeze PineDio Stack at <strong>11.11 ⁰C</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1111 0</code></pre></div>
-<p>Our Roblox Gadget turns into ice!</p>
-<p><img src="https://lupyuen.github.io/images/roblox-demo5.png" alt="" /></p>
+<p>Our Roblox Gadget <strong>turns into ice</strong>!</p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo5.png" alt="Digital Twin at 11.11 ⁰C" /></p>
 <h2 id="demo-code" class="section-header"><a href="#demo-code">6.1 Demo Code</a></h2>
 <p>Below is the <strong>source code for the demo</strong> that we’ve seen. It calls all the functions that we’ve covered in this article: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L282-L324">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Main Function. Fetch and render the Sensor Data from The Things Network every 5 seconds.
@@ -846,7 +861,8 @@ end
 -- Start the Main Function
 main()</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(<strong>demoMode</strong> is explained here)</a></p>
-<p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="" /></p>
+<p>That’s all for our demo today. Would be so fun if someday Roblox could overlay Real-World Objects through <strong>Augmented Reality</strong>… And show us Sensor Data in real time!</p>
+<p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="Digital Twin with Augmented Reality" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>We shall head back and transmit BL602 / BL604’s <strong>Internal Temperature Sensor Data</strong> to The Things Network.</p>
