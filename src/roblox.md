@@ -985,7 +985,7 @@ We follow the instructions below to run the __LoRaWAN Firmware__ on PineDio Stac
 
 -   [__"Build and Run LoRaWAN Firmware"__](https://lupyuen.github.io/articles/cbor#appendix-build-and-run-lorawan-firmware)
 
-![Digital Twin 55.55 ⁰C](https://lupyuen.github.io/images/roblox-demo.png)
+![Digital Twin 55.55 ⁰C](https://lupyuen.github.io/images/roblox-demo.jpg)
 
 Our demo setup...
 
@@ -1015,7 +1015,7 @@ las_app_tx_cbor 2 0 9999 0
 
 Our Roblox Gadget __receives the high temperature__ and bursts into flames!
 
-![Digital Twin at 99.99 ⁰C](https://lupyuen.github.io/images/roblox-demo2.png)
+![Digital Twin at 99.99 ⁰C](https://lupyuen.github.io/images/roblox-demo2.jpg)
 
 Let's turn down PineDio Stack to __77.77 ⁰C__...
 
@@ -1025,7 +1025,7 @@ las_app_tx_cbor 2 0 7777 0
 
 Our Roblox Gadget __receives the updated temperature__ over The Things Network. And cools down a little.
 
-![Digital Twin at 77.77 ⁰C](https://lupyuen.github.io/images/roblox-demo3.png)
+![Digital Twin at 77.77 ⁰C](https://lupyuen.github.io/images/roblox-demo3.jpg)
 
 We cool PineDio Stack down to __33.33 ⁰C__...
 
@@ -1035,7 +1035,7 @@ las_app_tx_cbor 2 0 3333 0
 
 Our Roblox Gadget __turns blue__.
 
-![Digital Twin at 33.33 ⁰C](https://lupyuen.github.io/images/roblox-demo4.png)
+![Digital Twin at 33.33 ⁰C](https://lupyuen.github.io/images/roblox-demo4.jpg)
 
 We start to freeze PineDio Stack at __11.11 ⁰C__...
 
@@ -1045,7 +1045,7 @@ las_app_tx_cbor 2 0 1111 0
 
 Our Roblox Gadget __turns into ice__!
 
-![Digital Twin at 11.11 ⁰C](https://lupyuen.github.io/images/roblox-demo5.png)
+![Digital Twin at 11.11 ⁰C](https://lupyuen.github.io/images/roblox-demo5.jpg)
 
 ## Demo Code
 
