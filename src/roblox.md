@@ -1349,11 +1349,7 @@ Here's how the Interpolating Particle Emitter looks...
 
 # Appendix: The Things Network Settings
 
-TODO
-
--  [__The Things Network: Storage Integration__](https://www.thethingsindustries.com/docs/integrations/storage/)
-
-Stores messages for roughly 2 or 3 days.
+Earlier we saw these settings for The Things Network in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L9)...
 
 ```lua
 -- TODO: Change this to your Application ID for The Things Network
@@ -1367,9 +1363,54 @@ local TTN_API_KEY = "YOUR_API_KEY"
 local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" .. TTN_APPLICATION_ID .. "/packages/storage/uplink_message?limit=1&order=-received_at"
 ```
 
+This chapter explains the steps for getting the settings from The Things Network.
+
+For __TTN_APPLICATION_ID__: Log on to The Things Network, click __Menu → Console__ and copy this setting...
+
+__(Your Region) → Applications → (Your Application) → Application ID__
+
+## Storage Integration
+
+For Roblox to fetch Sensor Data from The Things Network, we shall enable __Storage Integration__...
+
+-  [__The Things Network: Storage Integration__](https://www.thethingsindustries.com/docs/integrations/storage/)
+
+When Storage Integration is enabled, The Things Network will __save the Uplink Messages__ transmitted by our devices.
+
+(Saved messages will disappear after 2 or 3 days)
+
+To enable Storage Integration, click...
+
+__(Your Application) → Integrations → Storage Integration → Activate Storage Integration__
+
+![The Things Network Storage Integration](https://lupyuen.github.io/images/roblox-ttn2.png)
+
+We'll see the __Region-Specific URL__ for retrieving data...
+
+```uri
+https://au1.cloud.thethings.network/api/v3/as/
+  applications/YOUR_APPLICATION_ID/
+  packages/storage/uplink_message
+```
+
+The first part of the URL...
+
+```text
+au1.cloud.thethings.network
+```
+
+Depends on the region we're using: __Europe, North America or Australia__.
+
+Copy the first part of the URL and paste into the first part of __TTN_URL__...
+
+```lua
+-- TODO: Change this to your region-specific URL for The Things Network
+local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" .. TTN_APPLICATION_ID .. "/packages/storage/uplink_message?limit=1&order=-received_at"
+```
+
 ("`..`" in Lua means concatenate the strings)
 
-Our URL for The Things Network (__TTN_URL__) looks like...
+Our full URL for The Things Network (__TTN_URL__) looks like...
 
 ```uri
 https://au1.cloud.thethings.network/api/v3/as/
@@ -1378,17 +1419,26 @@ https://au1.cloud.thethings.network/api/v3/as/
   ?limit=1&order=-received_at
 ```
 
-TODO
+Note that we're fetching the __Latest Uplink Message__ from The Things Network...
 
-Enable storage integration
+```text
+?limit=1&order=-received_at
+```
 
-![](https://lupyuen.github.io/images/roblox-ttn2.png)
+More about this in the next chapter.
+
+## API Key
 
 TODO
 
 Add API key
 
-![](https://lupyuen.github.io/images/roblox-ttn3.png)
+![The Things Network API Key](https://lupyuen.github.io/images/roblox-ttn3.png)
+
+```lua
+-- TODO: Change this to your API Key for The Things Network
+local TTN_API_KEY = "YOUR_API_KEY"
+```
 
 # Appendix: Fetch Sensor Data from The Things Network
 
