@@ -1,6 +1,6 @@
 # IoT Digital Twin with Roblox and The Things Network
 
-📝 _12 Oct 2021_
+📝 _8 Oct 2021_
 
 [__Roblox__](https://developer.roblox.com/en-us/) is a __Multiplayer Virtual World__ that lets us create __3D Objects__ and interact with them. (Free to create and play)
 
@@ -1105,9 +1105,9 @@ That's all for our demo today. Would be so fun if someday Roblox could overlay R
 
 # What's Next
 
-TODO
+I'm new to Roblox, but I had fun connecting things in the real world to Roblox. I hope you enjoyed it too!
 
-We shall head back and transmit BL602 / BL604's __Internal Temperature Sensor Data__ to The Things Network.
+In the next article we shall head back to PineDio Stack coding, as we read and transmit PineDio Stack's __Internal Temperature Sensor__ to The Things Network.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
