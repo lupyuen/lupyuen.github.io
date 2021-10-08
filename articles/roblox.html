@@ -778,7 +778,7 @@ end</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/roblox-demo.png" alt="Digital Twin 55.55 ⁰C" /></p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo.jpg" alt="Digital Twin 55.55 ⁰C" /></p>
 <p>Our demo setup…</p>
 <ul>
 <li>
@@ -804,19 +804,19 @@ end</code></pre></div>
 <p>The temperature is now <strong>55.55 ⁰C</strong>. Let’s set the PineDio Stack temperature to <strong>99.99 ⁰C</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 9999 0</code></pre></div>
 <p>Our Roblox Gadget <strong>receives the high temperature</strong> and bursts into flames!</p>
-<p><img src="https://lupyuen.github.io/images/roblox-demo2.png" alt="Digital Twin at 99.99 ⁰C" /></p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo2.jpg" alt="Digital Twin at 99.99 ⁰C" /></p>
 <p>Let’s turn down PineDio Stack to <strong>77.77 ⁰C</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 7777 0</code></pre></div>
 <p>Our Roblox Gadget <strong>receives the updated temperature</strong> over The Things Network. And cools down a little.</p>
-<p><img src="https://lupyuen.github.io/images/roblox-demo3.png" alt="Digital Twin at 77.77 ⁰C" /></p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo3.jpg" alt="Digital Twin at 77.77 ⁰C" /></p>
 <p>We cool PineDio Stack down to <strong>33.33 ⁰C</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 3333 0</code></pre></div>
 <p>Our Roblox Gadget <strong>turns blue</strong>.</p>
-<p><img src="https://lupyuen.github.io/images/roblox-demo4.png" alt="Digital Twin at 33.33 ⁰C" /></p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo4.jpg" alt="Digital Twin at 33.33 ⁰C" /></p>
 <p>We start to freeze PineDio Stack at <strong>11.11 ⁰C</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1111 0</code></pre></div>
 <p>Our Roblox Gadget <strong>turns into ice</strong>!</p>
-<p><img src="https://lupyuen.github.io/images/roblox-demo5.png" alt="Digital Twin at 11.11 ⁰C" /></p>
+<p><img src="https://lupyuen.github.io/images/roblox-demo5.jpg" alt="Digital Twin at 11.11 ⁰C" /></p>
 <h2 id="demo-code" class="section-header"><a href="#demo-code">6.1 Demo Code</a></h2>
 <p>Below is the <strong>source code for the demo</strong> that we’ve seen. It calls all the functions that we’ve covered in this article: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L282-L324">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Main Function. Fetch and render the Sensor Data from The Things Network every 5 seconds.
