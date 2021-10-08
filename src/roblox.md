@@ -1365,9 +1365,29 @@ local TTN_URL = "https://au1.cloud.thethings.network/api/v3/as/applications/" ..
 
 This chapter explains the steps for getting the settings from The Things Network.
 
-For __TTN_APPLICATION_ID__: Log on to The Things Network, click __Menu → Console__ and copy this setting...
+We assume that we have created an __Application and Device__ in The Things Network...
 
-__(Your Region) → Applications → (Your Application) → Application ID__
+-   [__"Add Device to The Things Network"__](https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network)
+
+To get the __TTN_APPLICATION_ID__...
+
+1.  Log on to [__The Things Network__](https://www.thethingsnetwork.org/)
+
+1.  Click __Menu → Console__
+
+    Select our region: __Europe, North America or Australia__.
+
+1.  Copy this setting...
+
+    __(Your Region) → Applications → (Your Application) → Application ID__
+
+1.  Paste it here...
+
+    ```lua
+    -- TODO: Change this to your Application ID for The Things Network
+    -- (Must have permission to Read Application Traffic)
+    local TTN_APPLICATION_ID = "YOUR_APPLICATION_ID"
+    ```
 
 ## Storage Integration
 
@@ -1429,11 +1449,21 @@ More about this in the next chapter.
 
 ## API Key
 
-TODO
+Roblox needs an __API Key__ to access the stored Uplink Messages from The Things Network.
 
-Add API key
+To create an API Key, click...
+
+__(Your Application) → API Keys → Add API Key__
 
 ![The Things Network API Key](https://lupyuen.github.io/images/roblox-ttn3.png)
+
+Click __"Grant Individual Rights"__
+
+Click __"Read application traffic (uplink and downlink)"__
+
+Click __"Create API Key"__
+
+Copy the API Key and paste here...
 
 ```lua
 -- TODO: Change this to your API Key for The Things Network
@@ -1442,11 +1472,11 @@ local TTN_API_KEY = "YOUR_API_KEY"
 
 # Appendix: Fetch Sensor Data from The Things Network
 
-TODO
+The Things Network exposes a HTTP GET API to __fetch the Uplink Messages__ transmitted by our IoT Device...
 
-The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device...
+-   [__"Retrieve Uplink Messages"__](https://www.thethingsindustries.com/docs/integrations/storage/retrieve/)
 
-[Retrieve Uplink Messages](https://www.thethingsindustries.com/docs/integrations/storage/retrieve/)
+(Assuming that Storage Integration is enabled. Saved messages will disappear after 2 or 3 days)
 
 Here's the command to fetch the latest Uplink Message...
 
@@ -1458,6 +1488,8 @@ curl \
   -d "limit=1" \
   -d "order=-received_at"
 ```
+
+(See the previous chapter for __$YOUR_APPLICATION_ID__ and __$YOUR_API_KEY__)
 
 Which returns...
 
@@ -1522,20 +1554,16 @@ Which returns...
 }
 ```
 
-`result.uplink_message.frm_payload` contains the Sensor Data that we need, encoded with Base64 and CBOR...
+__result.uplink_message.frm_payload__ contains the Sensor Data that we need, encoded with Base64 and CBOR...
 
 ```json
 "frm_payload": "omF0GQTUYWwZCSs="
 ```
 
-Our Sensor Data is encoded with [CBOR](https://en.wikipedia.org/wiki/CBOR) to keep the LoRa Packets small (max 12 bytes), due to the Fair Use Policy of The Things Network...
+Our Sensor Data is encoded with [__Concise Binary Object Representation (CBOR)__](https://en.wikipedia.org/wiki/CBOR) to keep the LoRa Packets small (max 12 bytes), due to the Fair Use Policy of The Things Network...
 
--   ["Fair Use of The Things Network"](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
+-   [__"Fair Use of The Things Network"__](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
 
 More about CBOR Encoding...
 
--   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
-
-TODO10
-
-![](https://lupyuen.github.io/images/roblox-ttn.jpg)
+-   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
