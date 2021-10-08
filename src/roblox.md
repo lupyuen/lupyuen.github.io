@@ -1163,83 +1163,85 @@ If we're in China, Roblox works a little differently. See this...
 
 # Appendix: Particle Emitter Settings
 
-During development, we created 3 Particle Emitters...
+During development, we created three __Particle Emitters__...
 
-COLD Particle Emitter (t=0)
+1.  __Cold Particle Emitter__ (t=0)
 
-```yaml
-  Acceleration: 0, 0, 0
-  Color: 0 0.333333 1 1 0 1 0.333333 1 1 0 
-  Drag: 5
-  EmissionDirection: Enum.NormalId.Top
-  Lifetime: 5 10 
-  LightEmission: 1
-  LightInfluence: 1
-  Orientation: Enum.ParticleOrientation.FacingCamera
-  Rate: 20
-  Rotation: 0 180 
-  RotSpeed: -170 -170 
-  Size: 0 1 0 1 1 0 
-  Speed: 0 0 
-  SpreadAngle: 10, 10
-  Texture: rbxasset:textures/particles/sparkles_main.dds
-  TimeScale: 1
-  Transparency: 0 0 0 1 0 0 
-  VelocityInheritance: 0
-  ZOffset: 0
-```
+    ```yaml
+    Acceleration: 0, 0, 0
+    Color: 0 0.333333 1 1 0 1 0.333333 1 1 0 
+    Drag: 5
+    EmissionDirection: Enum.NormalId.Top
+    Lifetime: 5 10 
+    LightEmission: 1
+    LightInfluence: 1
+    Orientation: Enum.ParticleOrientation.FacingCamera
+    Rate: 20
+    Rotation: 0 180 
+    RotSpeed: -170 -170 
+    Size: 0 1 0 1 1 0 
+    Speed: 0 0 
+    SpreadAngle: 10, 10
+    Texture: rbxasset:textures/particles/sparkles_main.dds
+    TimeScale: 1
+    Transparency: 0 0 0 1 0 0 
+    VelocityInheritance: 0
+    ZOffset: 0
+    ```
 
-NORMAL Particle Emitter (t=5000)
+1.  __Normal Particle Emitter__ (t=5000)
 
-```yaml
-  Acceleration: 0, 0, 0
-  Color: 0 0.333333 0.666667 0 0 1 0.333333 0.666667 0 0 
-  Drag: 10
-  EmissionDirection: Enum.NormalId.Top
-  Lifetime: 5 10 
-  LightEmission: 0
-  LightInfluence: 1
-  Orientation: Enum.ParticleOrientation.FacingCamera
-  Rate: 20
-  Rotation: 0 0 
-  RotSpeed: 0 0 
-  Size: 0 0.2 0 1 0.2 0 
-  Speed: 5 5 
-  SpreadAngle: 50, 50
-  Texture: rbxasset:textures/particles/sparkles_main.dds
-  TimeScale: 1
-  Transparency: 0 0 0 1 0 0 
-  VelocityInheritance: 0
-  ZOffset: 0
-```
+    ```yaml
+    Acceleration: 0, 0, 0
+    Color: 0 0.333333 0.666667 0 0 1 0.333333 0.666667 0 0 
+    Drag: 10
+    EmissionDirection: Enum.NormalId.Top
+    Lifetime: 5 10 
+    LightEmission: 0
+    LightInfluence: 1
+    Orientation: Enum.ParticleOrientation.FacingCamera
+    Rate: 20
+    Rotation: 0 0 
+    RotSpeed: 0 0 
+    Size: 0 0.2 0 1 0.2 0 
+    Speed: 5 5 
+    SpreadAngle: 50, 50
+    Texture: rbxasset:textures/particles/sparkles_main.dds
+    TimeScale: 1
+    Transparency: 0 0 0 1 0 0 
+    VelocityInheritance: 0
+    ZOffset: 0
+    ```
 
-HOT Particle Emitter (t=10000)
+1.  __Hot Particle Emitter__ (t=10000)
 
-```yaml
-  Acceleration: 0, 0, 0
-  Color: 0 1 0.333333 0 0 1 1 0.333333 0 0 
-  Drag: 0
-  EmissionDirection: Enum.NormalId.Top
-  Lifetime: 5 10 
-  LightEmission: 0
-  LightInfluence: 0
-  Orientation: Enum.ParticleOrientation.FacingCamera
-  Rate: 20
-  Rotation: 0 0 
-  RotSpeed: 0 0 
-  Size: 0 0.4 0 1 0.4 0 
-  Speed: 1 1 
-  SpreadAngle: 50, 50
-  Texture: rbxasset:textures/particles/sparkles_main.dds
-  TimeScale: 1
-  Transparency: 0 0 0 1 0 0 
-  VelocityInheritance: 0
-  ZOffset: 0
-```
+    ```yaml
+    Acceleration: 0, 0, 0
+    Color: 0 1 0.333333 0 0 1 1 0.333333 0 0 
+    Drag: 0
+    EmissionDirection: Enum.NormalId.Top
+    Lifetime: 5 10 
+    LightEmission: 0
+    LightInfluence: 0
+    Orientation: Enum.ParticleOrientation.FacingCamera
+    Rate: 20
+    Rotation: 0 0 
+    RotSpeed: 0 0 
+    Size: 0 0.4 0 1 0.4 0 
+    Speed: 1 1 
+    SpreadAngle: 50, 50
+    Texture: rbxasset:textures/particles/sparkles_main.dds
+    TimeScale: 1
+    Transparency: 0 0 0 1 0 0 
+    VelocityInheritance: 0
+    ZOffset: 0
+    ```
 
-To render the Temperature, we performed Linear Interpolation on the three Particle Emitters above.
+(The settings were dumped with the __dumpParticleEmitter__ function in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L241-L262))
 
-Based on the above values, we derive the values that will be interpolated...
+To render the Temperature in 10,000 levels (from t=0 to t=10000), we performed __Linear Interpolation__ on the three Particle Emitters.
+
+By matching the above settings (row by row), we derive the __emitter settings that will be interpolated__...
 
 ```yaml
 Color:
@@ -1294,39 +1296,28 @@ SpreadAngle:
   HOT:    50, 50
 ```
 
-The properties of the Particle Emitters were dumped with the `dumpParticleEmitter` function in [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua).
+![Interpolating the Particle Emitter](https://lupyuen.github.io/images/roblox-interpolate.png)
 
-Note that `rbxasset` won't work for setting the Texture...
-
-```lua
-emitter.Texture = "rbxasset:textures/particles/sparkles_main.dds"
-```
-
-But `rbxassetid` works OK...
-
-```lua
--- Texture for the particles: "star sparkle particle" by @Vupatu
--- https://www.roblox.com/library/6490035152/star-sparkle-particle
-emitter.Texture = "rbxassetid://6490035152"
-```
-
-To create a Particle Emitter for Normal Temperature, we call `createParticleEmitter` in [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
+To create a Particle Emitter for Normal Temperature, we call __createParticleEmitter__ in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133)
 
 ```lua
 -- Create a Particle Emitter for Normal Temperature
 local emitter = createParticleEmitter()
 ```
 
-To interpolate the Particle Emitter for High / Mid / Low Temperatures, we call `updateParticleEmitter` in [__DigitalTwin.lua__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua)
+Then to interpolate the Particle Emitter for High / Mid / Low Temperatures, we call __updateParticleEmitter__ in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L164-L239)
 
-TODO
+(We've seen __createParticleEmitter__ and __updateParticleEmitter__ earlier)
 
-__demoMode__ is defined as follows: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L264-L280)
+Here's how our __demoMode__ function calls __updateParticleEmitter__ to render the Temperature in Demo Mode. (High to low, then back to high)
+
+From [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L264-L280):
 
 ```lua
 -- Demo Mode if we don't have an IoT Device connected to The Things Network.
 -- Gradually update our Particle Emitter for Temperature=10,000 to 0 and back to 10,000.
 local function demoMode(emitter)
+
   -- Gradually update the emitter for Temperature=10,000 to 0
   for t = T_MAX, T_MIN, -600 do
     print("t:", t)
@@ -1343,9 +1334,24 @@ local function demoMode(emitter)
 end
 ```
 
-Here's how the Interpolating Particle Emitter looks...
+Our __Interpolating Particle Emitter__ in Demo Mode looks like this...
 
 -   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
+
+Note that __rbxasset__ won't work for setting the Texture...
+
+```lua
+-- This doesn't work
+emitter.Texture = "rbxasset:textures/particles/sparkles_main.dds"
+```
+
+But __rbxassetid__ works OK...
+
+```lua
+-- Texture for the particles: "star sparkle particle" by @Vupatu
+-- https://www.roblox.com/library/6490035152/star-sparkle-particle
+emitter.Texture = "rbxassetid://6490035152"
+```
 
 # Appendix: The Things Network Settings
 
