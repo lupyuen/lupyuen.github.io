@@ -91,7 +91,9 @@
 <li><a href="#notes">8 Notes</a><ul></ul></li>
 <li><a href="#appendix-install-roblox-studio">9 Appendix: Install Roblox Studio</a><ul></ul></li>
 <li><a href="#appendix-particle-emitter-settings">10 Appendix: Particle Emitter Settings</a><ul></ul></li>
-<li><a href="#appendix-the-things-network-settings">11 Appendix: The Things Network Settings</a><ul></ul></li>
+<li><a href="#appendix-the-things-network-settings">11 Appendix: The Things Network Settings</a><ul>
+<li><a href="#storage-integration">11.1 Storage Integration</a><ul></ul></li>
+<li><a href="#api-key">11.2 API Key</a><ul></ul></li></ul></li>
 <li><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a><ul></ul></li></ul></nav><p>📝 <em>12 Oct 2021</em></p>
 <p><a href="https://developer.roblox.com/en-us/"><strong>Roblox</strong></a> is a <strong>Multiplayer Virtual World</strong> that lets us create <strong>3D Objects</strong> and interact with them. (Free to create and play)</p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a <strong>Public Wireless Network</strong> that connects many <strong>IoT Gadgets</strong> around the world. (It’s free too)</p>
@@ -1071,11 +1073,7 @@ end</code></pre></div>
 <li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
 </ul>
 <h1 id="appendix-the-things-network-settings" class="section-header"><a href="#appendix-the-things-network-settings">11 Appendix: The Things Network Settings</a></h1>
-<p>TODO</p>
-<ul>
-<li><a href="https://www.thethingsindustries.com/docs/integrations/storage/"><strong>The Things Network: Storage Integration</strong></a></li>
-</ul>
-<p>Stores messages for roughly 2 or 3 days.</p>
+<p>Earlier we saw these settings for The Things Network in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L9">DigitalTwin.lua</a>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your Application ID for The Things Network
 -- (Must have permission to Read Application Traffic)
 local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;
@@ -1085,19 +1083,44 @@ local TTN_API_KEY = &quot;YOUR_API_KEY&quot;
 
 -- TODO: Change this to your region-specific URL for The Things Network
 local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
+<p>This chapter explains the steps for getting the settings from The Things Network.</p>
+<p>For <strong>TTN_APPLICATION_ID</strong>: Log on to The Things Network, click <strong>Menu → Console</strong> and copy this setting…</p>
+<p><strong>(Your Region) → Applications → (Your Application) → Application ID</strong></p>
+<h2 id="storage-integration" class="section-header"><a href="#storage-integration">11.1 Storage Integration</a></h2>
+<p>For Roblox to fetch Sensor Data from The Things Network, we shall enable <strong>Storage Integration</strong>…</p>
+<ul>
+<li><a href="https://www.thethingsindustries.com/docs/integrations/storage/"><strong>The Things Network: Storage Integration</strong></a></li>
+</ul>
+<p>When Storage Integration is enabled, The Things Network will <strong>save the Uplink Messages</strong> transmitted by our devices.</p>
+<p>(Saved messages will disappear after 2 or 3 days)</p>
+<p>To enable Storage Integration, click…</p>
+<p><strong>(Your Application) → Integrations → Storage Integration → Activate Storage Integration</strong></p>
+<p><img src="https://lupyuen.github.io/images/roblox-ttn2.png" alt="The Things Network Storage Integration" /></p>
+<p>We’ll see the <strong>Region-Specific URL</strong> for retrieving data…</p>
+<div class="example-wrap"><pre class="language-uri"><code>https://au1.cloud.thethings.network/api/v3/as/
+  applications/YOUR_APPLICATION_ID/
+  packages/storage/uplink_message</code></pre></div>
+<p>The first part of the URL…</p>
+<div class="example-wrap"><pre class="language-text"><code>au1.cloud.thethings.network</code></pre></div>
+<p>Depends on the region we’re using: <strong>Europe, North America or Australia</strong>.</p>
+<p>Copy the first part of the URL and paste into the first part of <strong>TTN_URL</strong>…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your region-specific URL for The Things Network
+local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
 <p>(“<code>..</code>” in Lua means concatenate the strings)</p>
-<p>Our URL for The Things Network (<strong>TTN_URL</strong>) looks like…</p>
+<p>Our full URL for The Things Network (<strong>TTN_URL</strong>) looks like…</p>
 <div class="example-wrap"><pre class="language-uri"><code>https://au1.cloud.thethings.network/api/v3/as/
   applications/YOUR_APPLICATION_ID/
   packages/storage/uplink_message
   ?limit=1&amp;order=-received_at</code></pre></div>
-<p>TODO</p>
-<p>Enable storage integration</p>
-<p><img src="https://lupyuen.github.io/images/roblox-ttn2.png" alt="" /></p>
+<p>Note that we’re fetching the <strong>Latest Uplink Message</strong> from The Things Network…</p>
+<div class="example-wrap"><pre class="language-text"><code>?limit=1&amp;order=-received_at</code></pre></div>
+<p>More about this in the next chapter.</p>
+<h2 id="api-key" class="section-header"><a href="#api-key">11.2 API Key</a></h2>
 <p>TODO</p>
 <p>Add API key</p>
-<p><img src="https://lupyuen.github.io/images/roblox-ttn3.png" alt="" /></p>
-<h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a></h1>
+<p><img src="https://lupyuen.github.io/images/roblox-ttn3.png" alt="The Things Network API Key" /></p>
+<div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your API Key for The Things Network
+local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a></h1>
 <p>TODO</p>
 <p>The Things Network exposes an API (HTTP GET) to fetch the Uplink Messages transmitted by our IoT Device…</p>
 <p><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/">Retrieve Uplink Messages</a></p>
