@@ -1495,7 +1495,7 @@ curl \
   -d "order=-received_at"
 ```
 
-(See the previous chapter for __$YOUR_APPLICATION_ID__ and __$YOUR_API_KEY__)
+(See the previous chapter for __$YOUR_APPLICATION_ID__ and __$YOUR_API_KEY__. The first part of the URL is specific to our region: "au1.cloud.thethings.network")
 
 Which returns...
 
