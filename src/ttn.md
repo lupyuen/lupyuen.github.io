@@ -477,6 +477,12 @@ And fetch uplink messages with __Storage Integration and Roblox__...
 
 -   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox)
 
+The Things Network also exposes a HTTP POST API for us to __push Downlink Messages__ to our devices...
+
+-   [__The Things Network: Scheduling Downlinks__](https://www.thethingsindustries.com/docs/integrations/webhooks/scheduling-downlinks/)
+
+Which will be useful for __Remote Actuation__ of our devices.
+
 [(More about The Things Network Cloud Integration)](https://www.thethingsnetwork.org/docs/applications-and-integrations/)
 
 ![Sending messages for free to The Things Network](https://lupyuen.github.io/images/ttn-flow2.jpg)

@@ -1131,6 +1131,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1443824711050301444)
 
+1.  Can Roblox control IoT Gadgets, like flipping the lights in our Smart Home on and off?
+
+    Yes this __Remote Actuation__ is technically feasible, because The Things Network exposes a HTTP POST API for Roblox to __push Downlink Messages__ to IoT Gadgets...
+
+    -   [__The Things Network: Scheduling Downlinks__](https://www.thethingsindustries.com/docs/integrations/webhooks/scheduling-downlinks/)
+
+    Our IoT Gadget would need to __handle Downlink Messages__ and actuate accordingly. (Like switch the light on / off)
+
 # Appendix: Install Roblox Studio
 
 Here are the steps to download and install __Roblox Studio for macOS and Windows__...
