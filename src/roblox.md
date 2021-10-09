@@ -1013,6 +1013,8 @@ The temperature is now __55.55 ⁰C__. Let's set the PineDio Stack temperature t
 las_app_tx_cbor 2 0 9999 0
 ```
 
+[(__las_app_tx_cbor__ is explained here)](https://lupyuen.github.io/articles/cbor#lorawan-with-cbor)
+
 Our Roblox Gadget __receives the high temperature__ and bursts into flames!
 
 ![Digital Twin at 99.99 ⁰C](https://lupyuen.github.io/images/roblox-demo2.jpg)
