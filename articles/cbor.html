@@ -467,7 +467,22 @@ static void test_cbor2( ... ) {
 <p><em>PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)</em></p>
 <h1 id="lorawan-with-cbor" class="section-header"><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a></h1>
 <p>Let’s watch CBOR in action on a real wireless network… As <a href="https://lupyuen.github.io/articles/lorawan2"><strong>PineDio Stack BL604</strong></a> talks to <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network over LoRaWAN</strong></a>!</p>
-<p>Our CBOR Encoding happens inside this LoRaWAN Function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
+<p>In a while we shall run this LoRaWAN Command…</p>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1234 2345</code></pre></div>
+<p>This means…</p>
+<ul>
+<li>
+<p>Transmit a LoRaWAN Packet to <strong>Port 2</strong></p>
+</li>
+<li>
+<p>That contains the values <strong><code>t=1234</code></strong> (Temperature), <strong><code>l=2345</code></strong> (Light Level)</p>
+</li>
+<li>
+<p><code>0</code> means that this is an <strong>Unconfirmed Message</strong></p>
+<p>(Because we’re not expecting an acknowledgement)</p>
+</li>
+</ul>
+<p>Our CBOR Encoding happens inside the <strong>las_app_tx_cbor</strong> function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Transmit CBOR payload to LoRaWAN. The command
 ///   las_app_tx_cbor 2 0 1234 2345
 /// Will transmit the CBOR payload
