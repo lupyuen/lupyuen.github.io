@@ -506,7 +506,23 @@ _PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via
 
 Let's watch CBOR in action on a real wireless network... As [__PineDio Stack BL604__](https://lupyuen.github.io/articles/lorawan2) talks to [__The Things Network over LoRaWAN__](https://lupyuen.github.io/articles/ttn)!
 
-Our CBOR Encoding happens inside this LoRaWAN Function: [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050)
+In a while we shall run this LoRaWAN Command...
+
+```bash
+las_app_tx_cbor 2 0 1234 2345
+```
+
+This means...
+
+-   Transmit a LoRaWAN Packet to __Port 2__
+
+-   That contains the values __`t=1234`__ (Temperature), __`l=2345`__ (Light Level)
+
+-   `0` means that this is an __Unconfirmed Message__
+
+    (Because we're not expecting an acknowledgement)
+
+Our CBOR Encoding happens inside the __las_app_tx_cbor__ function: [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050)
 
 ```c
 /// Transmit CBOR payload to LoRaWAN. The command
