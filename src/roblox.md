@@ -973,6 +973,8 @@ local function lin(x, yMin, yMid, yMax)
 end
 ```
 
+[UPDATE: There's another way to do Linear Interpolation in Roblox: __TweenService__](https://developer.roblox.com/en-us/api-reference/class/TweenService)
+
 ![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
 
 # Digital Twin Demo
