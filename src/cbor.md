@@ -664,6 +664,10 @@ Check out this article for the details...
 
 -   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
 
+See also this demo of PineDio Stack with Roblox and The Things Network...
+
+-   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox#digital-twin-demo)
+
 # Decode CBOR
 
 _For decoding CBOR packets, can we call the TinyCBOR Library?_
@@ -1186,6 +1190,10 @@ Let's enter the LoRaWAN Commands to join The Things Network and transmit a Data 
     [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
     [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
+
+Check out this demo of PineDio Stack with Roblox and The Things Network...
+
+-   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox#digital-twin-demo)
 
 # Appendix: Porting TinyCBOR to BL602
 

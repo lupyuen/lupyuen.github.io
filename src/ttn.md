@@ -467,15 +467,15 @@ _Sending 5 bytes of data to the network doesn't sound particularly exciting?_
 
 Yep we're just getting started! 
 
-In the next article, PineDio Stack shall send __Temperature Sensor Data__ in real time to The Things Network.
+In future articles we shall explore The Thing Network's __Cloud Integration__ features for processing our sensor data: MQTT, Webhooks, Storage, ...
 
-(Just like a real IoT Device!)
+We'll visualise our sensor data with __MQTT and Grafana__...
 
-We shall also explore The Thing Network's __Cloud Integration__ features for processing our sensor data: MQTT, Webhooks, Storage, ...
+-   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
 
-And we'll do basic __Sensor Data Visualisation__.
+And fetch uplink messages with __Storage Integration and Roblox__...
 
-[(Maybe with Grafana and MQTT)](https://twitter.com/MisterTechBlog/status/1440459917828050946)
+-   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox)
 
 [(More about The Things Network Cloud Integration)](https://www.thethingsnetwork.org/docs/applications-and-integrations/)
 
