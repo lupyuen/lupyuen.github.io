@@ -196,7 +196,10 @@ end</code></pre></div>
 <p>Let’s study the code inside our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L74"><strong>getSensorData</strong></a> function.</p>
 <h2 id="define-constants" class="section-header"><a href="#define-constants">2.1 Define Constants</a></h2>
 <p>We begin by <strong>defining the constants</strong> for accessing The Things Network: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L74">DigitalTwin.lua</a></p>
-<div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your Application ID for The Things Network
+<div class="example-wrap"><pre class="language-lua"><code>-- Enable type checking
+--!strict
+
+-- TODO: Change this to your Application ID for The Things Network
 -- (Must have permission to Read Application Traffic)
 local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;
 
@@ -212,12 +215,17 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
   packages/storage/uplink_message
   ?limit=1&amp;order=-received_at</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-the-things-network-settings">(More about these settings in the Appendix)</a></p>
+<p>Note that we enable <strong>Type Checking</strong> at the top…</p>
+<div class="example-wrap"><pre class="language-lua"><code>-- Enable type checking
+--!strict</code></pre></div>
+<p>This is super helpful for catching incorrect parameters passed to function calls.</p>
+<p>Click <strong>View → Script Analysis</strong> to see the warnings.</p>
 <h2 id="import-modules" class="section-header"><a href="#import-modules">2.2 Import Modules</a></h2>
 <p>Next we get the <strong>HttpService</strong> from Roblox…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Get the HttpService for making HTTP Requests
 local HttpService = game:GetService(&quot;HttpService&quot;)</code></pre></div>
 <p><strong>HTTP Requests must be enabled</strong> in Roblox…</p>
-<p>Click Home → Game Settings → Security → Allow HTTP Requests</p>
+<p>Click <strong>Home → Game Settings → Security → Allow HTTP Requests</strong></p>
 <p>We import the <strong>ModuleScripts</strong> that will be called to decode our Sensor Data…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Load the Base64 and CBOR ModuleScripts from ServerStorage
 local ServerStorage = game:GetService(&quot;ServerStorage&quot;)
@@ -749,8 +757,8 @@ local T_MID = (T_MIN + T_MAX) / 2</code></pre></div>
 -- (2) When x=T_MIN, y=yMin
 -- (3) When x=T_MID, y=yMid
 -- (4) When x=T_MAX, y=yMax
-local function lin(x, yMin, yMid, yMax)
-  local y
+local function lin(x: number, yMin: number, yMid: number, yMax: number) : number
+  local y: number
   if x &lt; T_MID then
     -- Interpolate between T_MIN and T_MID
     y = yMin + (yMid - yMin) * (x - T_MIN) / (T_MID - T_MIN)
@@ -758,7 +766,7 @@ local function lin(x, yMin, yMid, yMax)
     -- Interpolate between T_MID and T_MAX
     y = yMid + (yMax - yMid) * (x - T_MID) / (T_MAX - T_MID)
   end	
-  -- Force y to be between yMin, yMid and yMax
+  -- Force y to be between yMin and yMax
   if y &lt; math.min(yMin, yMid, yMax) then
     y = math.min(yMin, yMid, yMax)
   end
@@ -901,6 +909,17 @@ main()</code></pre></div>
 <li><a href="https://www.thethingsindustries.com/docs/integrations/webhooks/scheduling-downlinks/"><strong>The Things Network: Scheduling Downlinks</strong></a></li>
 </ul>
 <p>Our IoT Gadget would need to <strong>handle Downlink Messages</strong> and actuate accordingly. (Like switch the light on / off)</p>
+</li>
+<li>
+<p>We may ignore these two <strong>Type Checking Warnings</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>-- Base64 Decode the Message Payload
+payload = base64.decode(frmPayload)
+
+W000: (53,27) Argument count mismatch. Function expects 3 arguments, but only 1 is specified</code></pre></div><div class="example-wrap"><pre class="language-text"><code>-- Decode the CBOR Map to get Sensor Data
+sensorData = cbor.decode(payload)
+
+W000: (56,28) Argument count mismatch. Function expects 2 arguments, but only 1 is specified</code></pre></div>
+<p>That’s because the imported ModuleScripts (<strong>Base64</strong> and <strong>Cbor</strong>) don’t support Type Checking.</p>
 </li>
 </ol>
 <h1 id="appendix-install-roblox-studio" class="section-header"><a href="#appendix-install-roblox-studio">9 Appendix: Install Roblox Studio</a></h1>
