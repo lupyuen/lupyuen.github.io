@@ -1212,6 +1212,10 @@ __Remember to log in__ when browsing the [__Roblox Developer Forum__](https://de
 
 This lets us __"level up"__ quicker to receive posting privileges. [(See this)](https://devforum.roblox.com/t/how-to-level-up-on-the-roblox-developer-forum/320109)
 
+(We need roughly 3 hours of "Read Time" to get posting privilege)
+
+![Roblox Developer Forum](https://lupyuen.github.io/images/roblox-forum.png)
+
 # Appendix: Particle Emitter Settings
 
 During development, we created three __Particle Emitters__...
