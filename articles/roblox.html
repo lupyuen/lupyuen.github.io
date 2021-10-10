@@ -923,6 +923,13 @@ sensorData = cbor.decode(payload)
 W000: (56,28) Argument count mismatch. Function expects 2 arguments, but only 1 is specified</code></pre></div>
 <p>That’s because the imported ModuleScripts (<strong>Base64</strong> and <strong>Cbor</strong>) don’t support Type Checking.</p>
 </li>
+<li>
+<p>Is our Roblox Script running on the Roblox Server or Client?</p>
+<p>Our script runs on the <strong>Roblox Server</strong>. So the API Key is not visible by players.</p>
+<p>Does the Roblox Server run our script all the time?</p>
+<p>When a player joins the game, <strong>Roblox starts a server</strong> to run our script. (Up to 50 players per server)</p>
+<p>When all players leave the game, Roblox shuts down the server.</p>
+</li>
 </ol>
 <h1 id="appendix-install-roblox-studio" class="section-header"><a href="#appendix-install-roblox-studio">9 Appendix: Install Roblox Studio</a></h1>
 <p>Here are the steps to download and install <strong>Roblox Studio for macOS and Windows</strong>…</p>
