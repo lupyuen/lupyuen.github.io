@@ -1174,6 +1174,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     That's because the imported ModuleScripts (__Base64__ and __Cbor__) don't support Type Checking.
 
+1.  Is our Roblox Script running on the Roblox Server or Client?
+
+    Our script runs on the __Roblox Server__. So the API Key is not visible by players.
+
+    Does the Roblox Server run our script all the time?
+
+    When a player joins the game, __Roblox starts a server__ to run our script. (Up to 50 players per server)
+
+    When all players leave the game, Roblox shuts down the server.
+
 # Appendix: Install Roblox Studio
 
 Here are the steps to download and install __Roblox Studio for macOS and Windows__...
