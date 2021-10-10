@@ -668,7 +668,6 @@ We define the __speed and spread__ of our particles...
   emitter.EmissionDirection = Enum.NormalId.Top -- Emit towards top
   emitter.Speed = NumberRange.new(5.0, 5.0) -- Speed
   emitter.Drag = 10.0 -- Apply drag to particle motion
-  emitter.VelocitySpread = NumberRange.new(0.0, 0.0)
   emitter.VelocityInheritance = 0 -- Don't inherit parent velocity
   emitter.Acceleration = Vector3.new(0.0, 0.0, 0.0)
   emitter.LockedToPart = false -- Don't lock the particles to the parent 
