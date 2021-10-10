@@ -1208,6 +1208,10 @@ If we're in China, Roblox works a little differently. See this...
 
 -   [__"Roblox China"__](https://roblox.fandom.com/wiki/Roblox_China)
 
+__Remember to log in__ when browsing the [__Roblox Developer Forum__](https://devforum.roblox.com/).
+
+This lets us __"level up"__ quicker to receive posting privileges. [(See this)](https://devforum.roblox.com/t/how-to-level-up-on-the-roblox-developer-forum/320109)
+
 # Appendix: Particle Emitter Settings
 
 During development, we created three __Particle Emitters__...
