@@ -426,7 +426,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p>(Or press <strong>F5</strong>)</p>
 <p>Roblox renders our Virtual Gadget in its <strong>Hot / Cold State</strong>!</p>
 <p><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
+<p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Normal / Hot IoT Objects rendered in Roblox" /></p>
 <h1 id="decode-base64-and-cbor-in-roblox" class="section-header"><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a></h1>
 <p><em>Why do we need CBOR Decoding?</em></p>
 <p>Normally IoT Gadgets will transmit <strong>Sensor Data in JSON</strong> like so….</p>
@@ -585,7 +585,7 @@ local function createParticleEmitter()
 end</code></pre></div>
 <p>And our Roblox Gadget starts emitting green particles to represent Normal Temperature!</p>
 <p>(Centre one in the pic below)</p>
-<p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
+<p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Normal / Hot IoT Objects rendered in Roblox" /></p>
 <h2 id="magic-numbers" class="section-header"><a href="#magic-numbers">5.1 Magic Numbers</a></h2>
 <p><em>All the Magic Numbers above… Where did they come from?</em></p>
 <p>I created <strong>three Particle Emitters</strong> for the Cold, Normal and Hot Temperatures…</p>
@@ -617,7 +617,7 @@ dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
 <p>That’s because we want to render <strong>10,000 Levels of Hotness / Coldness</strong>.</p>
 <p>Our Roblox Script will <strong>tweak the Particle Emitter at runtime</strong> to render the Live Temperature.</p>
 <p>Read on to learn how we do this with <a href="https://en.wikipedia.org/wiki/Linear_interpolation"><strong>Linear Interpolation</strong></a>.</p>
-<p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
+<p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Normal / Hot IoT Objects rendered in Roblox" /></p>
 <h2 id="interpolate-the-particle-emitter" class="section-header"><a href="#interpolate-the-particle-emitter">5.2 Interpolate the Particle Emitter</a></h2>
 <p>Previously we have <strong>dumped the settings</strong> for our Hot / Normal / Cold Particle Emitters…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>COLD Particle Emitter (t=0)
@@ -964,6 +964,7 @@ W000: (56,28) Argument count mismatch. Function expects 2 arguments, but only 1 
 <p><img src="https://lupyuen.github.io/images/roblox-forum.png" alt="Roblox Developer Forum" /></p>
 <h1 id="appendix-particle-emitter-settings" class="section-header"><a href="#appendix-particle-emitter-settings">10 Appendix: Particle Emitter Settings</a></h1>
 <p>During development, we created three <strong>Particle Emitters</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Normal / Hot Particle Emitters" /></p>
 <ol>
 <li>
 <p><strong>Cold Particle Emitter</strong> (t=0)</p>
