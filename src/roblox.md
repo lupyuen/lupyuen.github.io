@@ -1533,6 +1533,21 @@ Copy the API Key and paste here...
 local TTN_API_KEY = "YOUR_API_KEY"
 ```
 
+## Security
+
+If we publish our game for the public to join, players may see these (potentially sensitive) details in __Roblox's Server-Side Network Log__...
+
+-   Application ID
+-   Device EUI
+-   Gateway EUI
+-   Gateway Latitude / Longitude (which may reveal the location of our device)
+
+(API Key is not visible fortunately)
+
+So be careful when publishing our game for public access.
+
+![Roblox's Server-Side Network Log](https://lupyuen.github.io/images/roblox-log.jpg)
+
 # Appendix: Fetch Sensor Data from The Things Network
 
 The Things Network exposes a HTTP GET API to __fetch the Uplink Messages__ transmitted by our IoT Device...
