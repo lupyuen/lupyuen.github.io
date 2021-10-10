@@ -93,7 +93,8 @@
 <li><a href="#appendix-particle-emitter-settings">10 Appendix: Particle Emitter Settings</a><ul></ul></li>
 <li><a href="#appendix-the-things-network-settings">11 Appendix: The Things Network Settings</a><ul>
 <li><a href="#storage-integration">11.1 Storage Integration</a><ul></ul></li>
-<li><a href="#api-key">11.2 API Key</a><ul></ul></li></ul></li>
+<li><a href="#api-key">11.2 API Key</a><ul></ul></li>
+<li><a href="#security">11.3 Security</a><ul></ul></li></ul></li>
 <li><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a><ul></ul></li></ul></nav><p>📝 <em>8 Oct 2021</em></p>
 <p><a href="https://developer.roblox.com/en-us/"><strong>Roblox</strong></a> is a <strong>Multiplayer Virtual World</strong> that lets us create <strong>3D Objects</strong> and interact with them. (Free to create and play)</p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a <strong>Public Wireless Network</strong> that connects many <strong>IoT Gadgets</strong> around the world. (It’s free too)</p>
@@ -1193,7 +1194,18 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p>Click <strong>“Create API Key”</strong></p>
 <p>Copy the API Key and paste here…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your API Key for The Things Network
-local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a></h1>
+local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h2 id="security" class="section-header"><a href="#security">11.3 Security</a></h2>
+<p>If we publish our game for the public to join, players may see these (potentially sensitive) details in <strong>Roblox’s Server-Side Network Log</strong>…</p>
+<ul>
+<li>Application ID</li>
+<li>Device EUI</li>
+<li>Gateway EUI</li>
+<li>Gateway Latitude / Longitude (which may reveal the location of our device)</li>
+</ul>
+<p>(API Key is not visible fortunately)</p>
+<p>So be careful when publishing our game for public access.</p>
+<p><img src="https://lupyuen.github.io/images/roblox-log.jpg" alt="Roblox’s Server-Side Network Log" /></p>
+<h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a></h1>
 <p>The Things Network exposes a HTTP GET API to <strong>fetch the Uplink Messages</strong> transmitted by our IoT Device…</p>
 <ul>
 <li><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/"><strong>“Retrieve Uplink Messages”</strong></a></li>
