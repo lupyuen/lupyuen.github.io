@@ -454,7 +454,7 @@ Roblox renders our Virtual Gadget in its __Hot / Cold State__!
 
 [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=3CP7ELTAFLg)
 
-![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
+![Cold / Normal / Hot IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
 
 # Decode Base64 and CBOR in Roblox
 
@@ -717,7 +717,7 @@ And our Roblox Gadget starts emitting green particles to represent Normal Temper
 
 (Centre one in the pic below)
 
-![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
+![Cold / Normal / Hot IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
 
 ## Magic Numbers
 
@@ -771,7 +771,7 @@ Our Roblox Script will __tweak the Particle Emitter at runtime__ to render the L
 
 Read on to learn how we do this with [__Linear Interpolation__](https://en.wikipedia.org/wiki/Linear_interpolation).
 
-![Cold / Hot / Normal IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
+![Cold / Normal / Hot IoT Objects rendered in Roblox](https://lupyuen.github.io/images/roblox-title2.jpg)
 
 ## Interpolate the Particle Emitter
 
@@ -1219,6 +1219,8 @@ This lets us __"level up"__ quicker to receive posting privileges. [(See this)](
 # Appendix: Particle Emitter Settings
 
 During development, we created three __Particle Emitters__...
+
+![Cold / Normal / Hot Particle Emitters](https://lupyuen.github.io/images/roblox-title2.jpg)
 
 1.  __Cold Particle Emitter__ (t=0)
 
