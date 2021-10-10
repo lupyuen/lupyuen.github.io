@@ -132,6 +132,9 @@ Let's study the code inside our [__getSensorData__](https://github.com/lupyuen/r
 We begin by __defining the constants__ for accessing The Things Network: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L74)
 
 ```lua
+-- Enable type checking
+--!strict
+
 -- TODO: Change this to your Application ID for The Things Network
 -- (Must have permission to Read Application Traffic)
 local TTN_APPLICATION_ID = "YOUR_APPLICATION_ID"
@@ -156,6 +159,17 @@ https://au1.cloud.thethings.network/api/v3/as/
 
 [(More about these settings in the Appendix)](https://lupyuen.github.io/articles/roblox#appendix-the-things-network-settings)
 
+Note that we enable __Type Checking__ at the top...
+
+```lua
+-- Enable type checking
+--!strict
+```
+
+This is super helpful for catching incorrect parameters passed to function calls.
+
+Click __View → Script Analysis__ to see the warnings.
+
 ## Import Modules
 
 Next we get the __HttpService__ from Roblox...
@@ -167,7 +181,7 @@ local HttpService = game:GetService("HttpService")
 
 __HTTP Requests must be enabled__ in Roblox...
 
-Click Home → Game Settings → Security → Allow HTTP Requests
+Click __Home → Game Settings → Security → Allow HTTP Requests__
 
 We import the __ModuleScripts__ that will be called to decode our Sensor Data...
 
@@ -952,8 +966,8 @@ Below is our __lin__ function that handles both cases: [DigitalTwin.lua](https:/
 -- (2) When x=T_MIN, y=yMin
 -- (3) When x=T_MID, y=yMid
 -- (4) When x=T_MAX, y=yMax
-local function lin(x, yMin, yMid, yMax)
-  local y
+local function lin(x: number, yMin: number, yMid: number, yMax: number) : number
+  local y: number
   if x < T_MID then
     -- Interpolate between T_MIN and T_MID
     y = yMin + (yMid - yMin) * (x - T_MIN) / (T_MID - T_MIN)
@@ -961,7 +975,7 @@ local function lin(x, yMin, yMid, yMax)
     -- Interpolate between T_MID and T_MAX
     y = yMid + (yMax - yMid) * (x - T_MID) / (T_MAX - T_MID)
   end	
-  -- Force y to be between yMin, yMid and yMax
+  -- Force y to be between yMin and yMax
   if y < math.min(yMin, yMid, yMax) then
     y = math.min(yMin, yMid, yMax)
   end
@@ -1139,6 +1153,24 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     -   [__The Things Network: Scheduling Downlinks__](https://www.thethingsindustries.com/docs/integrations/webhooks/scheduling-downlinks/)
 
     Our IoT Gadget would need to __handle Downlink Messages__ and actuate accordingly. (Like switch the light on / off)
+
+1.  We may ignore these two __Type Checking Warnings__...
+
+    ```text
+	-- Base64 Decode the Message Payload
+	payload = base64.decode(frmPayload)
+
+    W000: (53,27) Argument count mismatch. Function expects 3 arguments, but only 1 is specified
+    ```
+
+    ```text
+	-- Decode the CBOR Map to get Sensor Data
+	sensorData = cbor.decode(payload)
+
+    W000: (56,28) Argument count mismatch. Function expects 2 arguments, but only 1 is specified
+    ```
+
+    That's because the imported ModuleScripts (__Base64__ and __Cbor__) don't support Type Checking.
 
 # Appendix: Install Roblox Studio
 
