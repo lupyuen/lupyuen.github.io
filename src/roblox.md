@@ -98,7 +98,7 @@ Below we see HttpService in action, fetching the current __latitude and longitud
 
 [(Source)](https://developer.roblox.com/en-us/api-reference/function/HttpService/GetAsync)
 
-To __fetch Sensor Data__ from The Things Network, we have created a __getSensorData__ function in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L74).
+To __fetch Sensor Data__ from The Things Network, we have created a __getSensorData__ function in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L22-L77).
 
 When we run this Roblox Script...
 
@@ -115,7 +115,7 @@ else
 end
 ```
 
-[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L326-L333)
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L328-L335)
 
 We should see the __Temperature Sensor Data__ fetched from The Things Network...
 
@@ -125,11 +125,11 @@ Temperature: 1236
 
 (This means `12.36` ºC, our values have been scaled up by 100 times)
 
-Let's study the code inside our [__getSensorData__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L19-L74) function.
+Let's study the code inside our [__getSensorData__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L22-L77) function.
 
 ## Define Constants
 
-We begin by __defining the constants__ for accessing The Things Network: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L74)
+We begin by __defining the constants__ for accessing The Things Network: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L77)
 
 ```lua
 -- Enable type checking
@@ -169,6 +169,8 @@ Note that we enable __Type Checking__ at the top...
 This is super helpful for catching incorrect parameters passed to function calls.
 
 Click __View → Script Analysis__ to see the warnings.
+
+[(Ignore the two warnings for "Argument count mismatch")](https://lupyuen.github.io/articles/roblox#notes)
 
 ## Import Modules
 
@@ -542,7 +544,7 @@ print("sensorData:")
 print(sensorData)
 ```
 
-[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L335-L343)
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L337-L345)
 
 We should see...
 
@@ -598,13 +600,13 @@ This is how we render a Particle Emitter in our Roblox Script...
 local emitter = createParticleEmitter()
 ```
 
-[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L285-L286)
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L287-L288)
 
 The code above renders our Roblox Gadget with __Normal Temperature__.
 
 (Yep Shrek and his green fireflies)
 
-__createParticleEmitter__ is defined in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133)...
+__createParticleEmitter__ is defined in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L79-L135)...
 
 ```lua
 -- Create the Particle Emitter for Normal Temperature
@@ -739,9 +741,9 @@ print("HOT Particle Emitter (t=10000)")
 dumpParticleEmitter(script.Parent.Hot)
 ```
 
-[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L345-L351)
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L347-L353)
 
-(__dumpParticleEmitter__ is defined in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L241-L262))
+(__dumpParticleEmitter__ is defined in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L243-L264))
 
 The __Particle Emitter settings__ look like...
 
@@ -757,7 +759,7 @@ NORMAL Particle Emitter (t=5000)
 
 [(See the complete settings)](https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings)
 
-These are the Magic Numbers that we plugged into our [__createParticleEmitter__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133) function.
+These are the Magic Numbers that we plugged into our [__createParticleEmitter__](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L79-L135) function.
 
 _Why did we create the Particle Emitter in Roblox Script?_
 
@@ -845,7 +847,7 @@ Let's plug the derived values into our Roblox Script.
 
 ## Update the Particle Emitter
 
-We take the values derived above and plug them into our __updateParticleEmitter__ function from [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L164-L239)...
+We take the values derived above and plug them into our __updateParticleEmitter__ function from [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L166-L241)...
 
 ```lua
 -- Update the Particle Emitter based on the Temperature t.
@@ -897,7 +899,7 @@ Then we update the __Color Sequence__ based on the interpolated color...
   emitter.Color = ColorSequence.new(colorKeypoints)
 ```
 
-[(See the rest of the function here)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L164-L239)
+[(See the rest of the function here)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L166-L241)
 
 And we're done! To render the Live Temperature, we call __updateParticleEmitter__ like so...
 
@@ -909,7 +911,7 @@ local emitter = createParticleEmitter()
 updateParticleEmitter(emitter, 1234)
 ```
 
-[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L282-L321)
+[(Source)](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L284-L323)
 
 Here's how our Interpolating Particle Emitter looks...
 
@@ -941,7 +943,7 @@ The values passed to __lin__...
 
 Correspond to the Drag values for __Min / Mid / Max Temperatures__.
 
-The Min / Mid / Max Temperatures are defined here: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162)
+The Min / Mid / Max Temperatures are defined here: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L137-L164)
 
 ```lua
 -- Minimum, Maximum and Mid values for Temperature (t) that will be interpolated
@@ -958,7 +960,7 @@ Note that we compute the Linear Interpolation a little differently depending on 
 
 > ![Computing the Linear Interpolation](https://lupyuen.github.io/images/roblox-interpolate3.jpg)
 
-Below is our __lin__ function that handles both cases: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L135-L162)
+Below is our __lin__ function that handles both cases: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L137-L164)
 
 ```lua
 -- Linear Interpolate the value of y, given that
@@ -1066,7 +1068,7 @@ Our Roblox Gadget __turns into ice__!
 
 ## Demo Code
 
-Below is the __source code for the demo__ that we've seen. It calls all the functions that we've covered in this article: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L282-L324)
+Below is the __source code for the demo__ that we've seen. It calls all the functions that we've covered in this article: [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L284-L323)
 
 ```lua
 -- Main Function. Fetch and render the Sensor Data from The Things Network every 5 seconds.
@@ -1282,7 +1284,7 @@ During development, we created three __Particle Emitters__...
     ZOffset: 0
     ```
 
-(The settings were dumped with the __dumpParticleEmitter__ function in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L241-L262))
+(The settings were dumped with the __dumpParticleEmitter__ function in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L243-L264))
 
 To render the Temperature in 10,000 levels (from t=0 to t=10000), we performed __Linear Interpolation__ on the three Particle Emitters.
 
@@ -1343,20 +1345,20 @@ SpreadAngle:
 
 ![Interpolating the Particle Emitter](https://lupyuen.github.io/images/roblox-interpolate.png)
 
-To create a Particle Emitter for Normal Temperature, we call __createParticleEmitter__ in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L76-L133)
+To create a Particle Emitter for Normal Temperature, we call __createParticleEmitter__ in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L79-L135)
 
 ```lua
 -- Create a Particle Emitter for Normal Temperature
 local emitter = createParticleEmitter()
 ```
 
-Then to interpolate the Particle Emitter for High / Mid / Low Temperatures, we call __updateParticleEmitter__ in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L164-L239)
+Then to interpolate the Particle Emitter for High / Mid / Low Temperatures, we call __updateParticleEmitter__ in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L166-L241)
 
 (We've seen __createParticleEmitter__ and __updateParticleEmitter__ earlier)
 
 Here's how our __demoMode__ function calls __updateParticleEmitter__ to render the Temperature in Demo Mode. (High to low, then back to high)
 
-From [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L264-L280):
+From [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L266-L282):
 
 ```lua
 -- Demo Mode if we don't have an IoT Device connected to The Things Network.
@@ -1400,7 +1402,7 @@ emitter.Texture = "rbxassetid://6490035152"
 
 # Appendix: The Things Network Settings
 
-Earlier we saw these settings for The Things Network in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L9)...
+Earlier we saw these settings for The Things Network in [DigitalTwin.lua](https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L12)...
 
 ```lua
 -- TODO: Change this to your Application ID for The Things Network
