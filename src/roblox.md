@@ -1128,6 +1128,8 @@ I'm new to Roblox, but I had fun connecting things in the real world to Roblox. 
 
 In the next article we shall head back to PineDio Stack coding, as we read and transmit PineDio Stack's __Internal Temperature Sensor__ to The Things Network.
 
+[(Follow the updates in this Twitter Thread)](https://twitter.com/MisterTechBlog/status/1447635784228487169)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
