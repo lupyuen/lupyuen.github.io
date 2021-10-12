@@ -668,7 +668,7 @@ _What's the difference between LoRa, LoRaWAN and The Things Network?_
 
     Our garden sensors could connect to The Things Network... So that we may browse the sensor data conveniently.
 
-    [(More about The Things Network)](https://www.thethingsnetwork.org/)
+    [(More about The Things Network)](https://lupyuen.github.io/articles/ttn)
 
     (There are commercial LoRaWAN networks, like [Helium](https://www.helium.com/lorawan) and potentially [Amazon Sidewalk](https://enterpriseiotinsights.com/20201208/channels/news/lora-alliance-semtech-in-talks-with-amazon-to-switch-sidewalk-over-to-lorawan))
 
@@ -689,6 +689,16 @@ Read the followup articles here...
 -   [__"Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"__](https://lupyuen.github.io/articles/wisgate)
 
 -   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
+
+-   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
+
+-   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
+
+-   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
+
+-   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
+
+-   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox)
 
 [(Many thanks to RAKwireless for providing the WisBlock Connected Box!)](https://store.rakwireless.com/products/wisblock-connected-box)
 

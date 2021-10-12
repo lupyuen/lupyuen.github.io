@@ -16,7 +16,7 @@ Today we shall create the LoRa Firmware for BL602 that will __Receive LoRa Packe
 
 _Why do we need to receive LoRa Packets... If our BL602 LoRa Sensor will only transmit sensor data?_
 
-Because we'll soon connect our BL602 LoRa Sensor to a __secure, managed LoRaWAN Network__ like [__The Things Network__](https://www.thethingsnetwork.org/). (Or maybe [__Helium__](https://www.helium.com/lorawan))
+Because we'll soon connect our BL602 LoRa Sensor to a __secure, managed LoRaWAN Network__ like [__The Things Network__](https://lupyuen.github.io/articles/ttn). (Or maybe [__Helium__](https://www.helium.com/lorawan))
 
 Our BL602 gadget can't join these networks unless it can receive packets and respond to the network.
 
@@ -1879,9 +1879,13 @@ Let's move on to __LoRa Levels Two and Three__...
 
     -   [__"Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"__](https://lupyuen.github.io/articles/wisgate)
 
+    -   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
+
 1.  But before that, we shall port the __LoRaWAN Driver from Apache Mynewt OS to BL602__
 
     -   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
+
+    -   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
 
 1.  And before that, we shall clean up and reorganise the __library files for NimBLE and SX1276__
 

@@ -826,6 +826,10 @@ To learn more about LoRaWAN Security, I recommend this article...
 
 # What's Next
 
+To learn about configuring WisGate for __The Things Network__, check out this article...
+
+-   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
+
 This has been a fun experience for me, diving deep into LoRaWAN with the RAKwireless WisGate LoRaWAN Gateway... __My first time using LoRaWAN!__
 
 I hope you find this article useful. Now that I know some LoRaWAN, I'm heading back to [__PineCone BL602__](https://lupyuen.github.io/articles/lora2) to finish what I started...
