@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(32 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(33 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -124,7 +124,7 @@ How we read __Analog Inputs with ADC__ on BL602 and BL604.
 
 -   ["BL602 ADC in C"](https://lupyuen.github.io/articles/adc#bl602-adc-in-c)
 
--   ["BL602 Internal Temperature Sensor"](https://lupyuen.github.io/articles/adc#notes)
+-   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
 
 ![WiFi on BL602](https://lupyuen.github.io/images/book-wifi.jpg)
 
@@ -157,6 +157,8 @@ Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, l
 -   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
 
 -   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
+
+-   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
 
 -   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
 
@@ -285,6 +287,8 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 -   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
 
 -   ["IoT Digital Twin with Roblox and The Things Network"](https://lupyuen.github.io/articles/roblox)
+
+-   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
 
 ![BL706 Audio Video Board](https://lupyuen.github.io/images/book-bl706.jpg)
 
