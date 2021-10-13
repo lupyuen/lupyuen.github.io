@@ -73,11 +73,22 @@
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>20 Oct 2021</em></p>
 <p>This may surprise most folks… The BL602 and BL604 RISC-V SoCs have an <strong>Internal Temperature Sensor</strong>!</p>
-<p>The Internal Temperature Sensor is not documented in the BL602 / BL604 Datasheet. But it’s in the BL602 / BL604 Reference Manual.</p>
-<p>(Under the Analog-to-Digital Converter)</p>
-<p>TODO</p>
+<p>The Internal Temperature Sensor is not documented in the BL602 / BL604 Datasheet. But it’s buried deep inside the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 / BL604 Reference Manual</strong></a>.</p>
+<p>(Under “Analog-to-Digital Converter”)</p>
+<p>Today we shall…</p>
+<ol>
+<li>
+<p><strong>Read the Internal Temperature Sensor</strong> on BL602 and BL604</p>
+</li>
+<li>
+<p><strong>Transmit the temperature</strong> over LoRaWAN to <strong>The Things Network</strong> (with CBOR Encoding)</p>
+</li>
+<li>
+<p><strong>Chart the temperature</strong> with <strong>Grafana</strong> (the open-source visualisation tool)</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/tsen-title.jpg" alt="Internal Temperature Sensor visualised with Grafana" /></p>
 <p>The firmware has been tested on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>, but it should work on <strong>any BL602 or BL604 Board</strong>: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, …</p>
-<p><img src="https://lupyuen.github.io/images/tsen-title.jpg" alt="" /></p>
 <h1 id="wheres-the-internal-temperature-sensor" class="section-header"><a href="#wheres-the-internal-temperature-sensor">1 Where’s the Internal Temperature Sensor?</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tsen-ref3.png" alt="" /></p>
