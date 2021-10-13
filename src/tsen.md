@@ -2,7 +2,15 @@
 
 📝 _20 Oct 2021_
 
+This may surprise most folks... The BL602 and BL604 RISC-V SoCs have an __Internal Temperature Sensor__!
+
+The Internal Temperature Sensor is not documented in the BL602 / BL604 Datasheet. But it's in the BL602 / BL604 Reference Manual.
+
+(Under the Analog-to-Digital Converter)
+
 TODO
+
+The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
 
 ![](https://lupyuen.github.io/images/tsen-title.jpg)
 
