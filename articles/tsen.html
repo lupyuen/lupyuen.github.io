@@ -67,7 +67,7 @@
     <nav id="TOC"><ul>
 <li><a href="#wheres-the-internal-temperature-sensor">1 Where’s the Internal Temperature Sensor?</a><ul></ul></li>
 <li><a href="#the-quicker-way">2 The Quicker Way</a><ul></ul></li>
-<li><a href="#the-longer-way">3 The Longer Way</a><ul></ul></li>
+<li><a href="#the-accurate-way">3 The Accurate Way</a><ul></ul></li>
 <li><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a><ul></ul></li>
 <li><a href="#grafana-and-roblox">5 Grafana and Roblox</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
@@ -96,20 +96,299 @@
 <p><img src="https://lupyuen.github.io/images/tsen-ref4.png" alt="" /></p>
 <h1 id="the-quicker-way" class="section-header"><a href="#the-quicker-way">2 The Quicker Way</a></h1>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29">pinedio_tsen/demo.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_adc.h&gt;     //  For BL602 Internal Temperature Sensor
+
+/// Read BL602 / BL604&#39;s Internal Temperature Sensor as Integer
+void read_tsen(char *buf, int len, int argc, char **argv) {
+  //  Temperature in Celsius
+  int16_t temp = 0;
+
+  //  Read the Internal Temperature Sensor as Integer
+  int rc = bl_tsen_adc_get(
+    &amp;temp,  //  Temperature in Celsius
+    1       //  0 to disable logging, 1 to enable logging
+  );
+  assert(rc == 0);
+
+  //  Show the temperature
+  printf(&quot;Returned Temperature = %d Celsius\r\n&quot;, temp);
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/tsen-code4.png" alt="" /></p>
 <p>TODO13</p>
 <p><img src="https://lupyuen.github.io/images/tsen-output3.png" alt="" /></p>
-<h1 id="the-longer-way" class="section-header"><a href="#the-longer-way">3 The Longer Way</a></h1>
+<h1 id="the-accurate-way" class="section-header"><a href="#the-accurate-way">3 The Accurate Way</a></h1>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L113">pinedio_tsen/demo.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_adc.h&gt;     //  For BL602 ADC HAL
+#include &lt;bl602_adc.h&gt;  //  For BL602 ADC Standard Driver
+#include &lt;bl602_glb.h&gt;  //  For BL602 Global Register Standard Driver
+#include &lt;FreeRTOS.h&gt;   //  For FreeRTOS
+#include &lt;task.h&gt;       //  For vTaskDelay
+
+/// Read the Internal Temperature Sensor as Float. Returns 0 if successful.
+/// Based on bl_tsen_adc_get in https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282
+static int get_tsen_adc(
+    float *temp,      //  Pointer to float to store the temperature
+    uint8_t log_flag  //  0 to disable logging, 1 to enable logging
+) {
+    assert(temp != NULL);
+    static uint16_t tsen_offset = 0xFFFF;
+    float val = 0.0;
+
+    if (0xFFFF == tsen_offset) {
+        tsen_offset = 0;
+        ADC_CFG_Type adcCfg = {
+            .v18Sel=ADC_V18_SEL_1P82V,                /*!&lt; ADC 1.8V select */
+            .v11Sel=ADC_V11_SEL_1P1V,                 /*!&lt; ADC 1.1V select */
+            .clkDiv=ADC_CLK_DIV_32,                   /*!&lt; Clock divider */
+            .gain1=ADC_PGA_GAIN_1,                    /*!&lt; PGA gain 1 */
+            .gain2=ADC_PGA_GAIN_1,                    /*!&lt; PGA gain 2 */
+            .chopMode=ADC_CHOP_MOD_AZ_PGA_ON,         /*!&lt; ADC chop mode select */
+            .biasSel=ADC_BIAS_SEL_MAIN_BANDGAP,       /*!&lt; ADC current form main bandgap or aon bandgap */
+            .vcm=ADC_PGA_VCM_1V,                      /*!&lt; ADC VCM value */
+            .vref=ADC_VREF_2V,                        /*!&lt; ADC voltage reference */
+            .inputMode=ADC_INPUT_SINGLE_END,          /*!&lt; ADC input signal type */
+            .resWidth=ADC_DATA_WIDTH_16_WITH_256_AVERAGE,  /*!&lt; ADC resolution and oversample rate */
+            .offsetCalibEn=0,                         /*!&lt; Offset calibration enable */
+            .offsetCalibVal=0,                        /*!&lt; Offset calibration value */
+        };
+
+
+        ADC_FIFO_Cfg_Type adcFifoCfg = {
+            .fifoThreshold = ADC_FIFO_THRESHOLD_1,
+            .dmaEn = DISABLE,
+        };
+
+        GLB_Set_ADC_CLK(ENABLE,GLB_ADC_CLK_96M, 7);
+
+        ADC_Disable();
+        ADC_Enable();
+
+        ADC_Reset();
+
+        ADC_Init(&amp;adcCfg);
+        ADC_Channel_Config(ADC_CHAN_TSEN_P, ADC_CHAN_GND, 0);
+        ADC_Tsen_Init(ADC_TSEN_MOD_INTERNAL_DIODE);
+
+        ADC_FIFO_Cfg(&amp;adcFifoCfg);
+
+        if (ADC_Trim_TSEN(&amp;tsen_offset) == ERROR) {
+            printf(&quot;read efuse data failed\r\n&quot;);
+        }
+        assert(ADC_Trim_TSEN(&amp;tsen_offset) != ERROR);
+
+        //  Must wait 100 milliseconds or returned temperature will be negative
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
+    val = TSEN_Get_Temp(tsen_offset);
+    if (log_flag) {
+        printf(&quot;offset = %d\r\n&quot;, tsen_offset);
+        printf(&quot;temperature = %f Celsius\r\n&quot;, val);
+    }
+
+    if (temp) {
+        *temp = val;
+    }
+
+    return 0;
+}</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45">pinedio_tsen/demo.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Read BL602 / BL604&#39;s Internal Temperature Sensor as Float
+void read_tsen2(char *buf, int len, int argc, char **argv) {
+    //  Temperature in Celsius
+    float temp = 0;
+
+    //  Read the Internal Temperature Sensor as Float
+    int rc = get_tsen_adc(
+        &amp;temp,  //  Temperature in Celsius
+        1       //  0 to disable logging, 1 to enable logging
+    );
+    assert(rc == 0);
+
+    //  Show the temperature
+    printf(&quot;Returned Temperature = %f Celsius\r\n&quot;, temp);
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/tsen-code5.png" alt="" /></p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/tsen-code6.png" alt="" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/tsen-output4.png" alt="" /></p>
 <h1 id="lorawan-and-the-things-network" class="section-header"><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a></h1>
-<p>TODO8</p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tsen-command2.png" alt="" /></p>
-<h1 id="grafana-and-roblox" class="section-header"><a href="#grafana-and-roblox">5 Grafana and Roblox</a></h1>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227">pinedio_lorawan/lorawan.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Transmit Internal Temperature Sensor Data to LoRaWAN, encoded with CBOR. The command
+///   las_app_tx_tsen 2 0 2345 10 60
+/// Will transmit the CBOR payload
+///   { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
+/// To port 2, unconfirmed (0), for 10 times, with a 60 second interval.
+/// Assuming that the Internal Temperature Sensor returns 12.34 degrees Celsius.
+void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
+    int rc = 0;
+    //  Validate number of arguments
+    if (argc &lt; 6) { printf(&quot;Invalid # of arguments\r\n&quot;); goto cmd_app_tx_tsen_err; }
+
+    //  Get port number
+    uint8_t port = parse_ull_bounds(argv[1], 1, 255, &amp;rc);
+    if (rc != 0) { printf(&quot;Invalid port %s. Must be 1 - 255\r\n&quot;, argv[1]); return;}
+
+    //  Get unconfirmed / confirmed packet type
+    uint8_t pkt_type = parse_ull_bounds(argv[2], 0, 1, &amp;rc);
+    if (rc != 0) { printf(&quot;Invalid type %s. Must be 0 (unconfirmed) or 1 (confirmed)\r\n&quot;, argv[2]); return; }
+
+    //  Get l value
+    uint16_t l = parse_ull_bounds(argv[3], 0, 65535, &amp;rc);
+    if (rc != 0) { printf(&quot;Invalid l value %s. Must be 0 - 65535\r\n&quot;, argv[3]); return; }
+
+    //  Get count
+    uint16_t count = parse_ull_bounds(argv[4], 0, 65535, &amp;rc);
+    if (rc != 0) { printf(&quot;Invalid count %s. Must be 0 - 65535\r\n&quot;, argv[4]); return; }
+
+    //  Get interval
+    uint16_t interval = parse_ull_bounds(argv[5], 0, 65535, &amp;rc);
+    if (rc != 0) { printf(&quot;Invalid interval %s. Must be 0 - 65535\r\n&quot;, argv[5]); return; }
+
+    //  Repeat count times
+    for (int i = 0; i &lt; count; i++) {
+        //  Wait for interval seconds
+        if (i &gt; 0) { vTaskDelay(interval * 1000 / portTICK_PERIOD_MS); }
+
+        //  Read Internal Temperature Sensor as a Float
+        float temp = 0;
+        int rc = get_tsen_adc(
+            &amp;temp,  //  Temperature in Celsius
+            1       //  0 to disable logging, 1 to enable logging
+        );
+        assert(rc == 0);
+
+        //  Scale the temperature up 100 times and truncate
+        int16_t t = temp * 100;
+        printf(&quot;Encode CBOR: { t: %d, l: %d }\r\n&quot;, t, l);
+
+        //  Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
+        //  Max output size is 50 bytes (which fits in a LoRa packet)
+        uint8_t output[50];
+
+        //  Our CBOR Encoder and Map Encoder
+        CborEncoder encoder, mapEncoder;
+
+        //  Init our CBOR Encoder
+        cbor_encoder_init(
+            &amp;encoder,        //  CBOR Encoder
+            output,          //  Output Buffer
+            sizeof(output),  //  Output Buffer Size
+            0                //  Options
+        );
+
+        //  Create a Map Encoder that maps keys to values
+        CborError res = cbor_encoder_create_map(
+            &amp;encoder,     //  CBOR Encoder
+            &amp;mapEncoder,  //  Map Encoder
+            2             //  Number of Key-Value Pairs
+        );    
+        assert(res == CborNoError);
+
+        //  First Key-Value Pair: Map the Key
+        res = cbor_encode_text_stringz(
+            &amp;mapEncoder,  //  Map Encoder
+            &quot;t&quot;           //  Key
+        );    
+        assert(res == CborNoError);
+
+        //  First Key-Value Pair: Map the Value
+        res = cbor_encode_int(
+            &amp;mapEncoder,  //  Map Encoder 
+            t             //  Value
+        );
+        assert(res == CborNoError);
+
+        //  Second Key-Value Pair: Map the Key
+        res = cbor_encode_text_stringz(
+            &amp;mapEncoder,  //  Map Encoder
+            &quot;l&quot;           //  Key
+        );    
+        assert(res == CborNoError);
+
+        //  Second Key-Value Pair: Map the Value
+        res = cbor_encode_int(
+            &amp;mapEncoder,  //  Map Encoder 
+            l             //  Value
+        );
+        assert(res == CborNoError);
+
+        //  Close the Map Encoder
+        res = cbor_encoder_close_container(
+            &amp;encoder,    //  CBOR Encoder
+            &amp;mapEncoder  //  Map Encoder
+        );
+        assert(res == CborNoError);
+
+        //  How many bytes were encoded
+        size_t output_len = cbor_encoder_get_buffer_size(
+            &amp;encoder,  //  CBOR Encoder
+            output     //  Output Buffer
+        );
+        printf(&quot;CBOR Output: %d bytes\r\n  &quot;, output_len);
+
+        //  Dump the encoded CBOR output (11 bytes):
+        //  0xa2 0x61 0x74 0x19 0x04 0xd2 0x61 0x6c 0x19 0x09 0x29
+        for (int i = 0; i &lt; output_len; i++) {
+            printf(&quot;0x%02x &quot;, output[i]);
+        }    
+        printf(&quot;\r\n&quot;);
+
+        //  Validate the output size
+        if (lora_app_mtu() &lt; output_len) {
+            printf(&quot;Can send at max %d bytes\r\n&quot;, lora_app_mtu());
+            return;
+        }
+
+        //  Attempt to allocate a pbuf
+        struct pbuf *om = lora_pkt_alloc(output_len);
+        if (!om) {
+            printf(&quot;Unable to allocate pbuf\r\n&quot;);
+            return;
+        }
+
+        //  Set unconfirmed / confirmed packet type
+        Mcps_t mcps_type;
+        if (pkt_type == 0) {
+            mcps_type = MCPS_UNCONFIRMED;
+        } else {
+            mcps_type = MCPS_CONFIRMED;
+        }
+
+        //  Copy the encoded CBOR into the pbuf
+        rc = pbuf_copyinto(om, 0, output, output_len);
+        assert(rc == 0);
+
+        //  Send the pbuf
+        rc = lora_app_port_send(port, mcps_type, om);
+        if (rc) {
+            printf(&quot;Failed to send to port %u err=%d\r\n&quot;, port, rc);
+            pbuf_free(om);
+        } else {
+            printf(&quot;Packet sent on port %u\r\n&quot;, port);
+        }        
+    }
+    return;
+
+cmd_app_tx_tsen_err:
+    printf(&quot;Transmit Internal Temperature Sensor Data to LoRaWAN, encoded with CBOR. Usage:\r\n&quot;);
+    printf(&quot;\tlas_app_tx_tsen &lt;port&gt; &lt;type&gt; &lt;l&gt; &lt;count&gt; &lt;delay&gt;\r\n&quot;);
+    printf(&quot;Where:\r\n&quot;);
+    printf(&quot;\tport  = Port number on which to send\r\n&quot;);
+    printf(&quot;\ttype  = 0 for unconfirmed, 1 for confirmed\r\n&quot;);
+    printf(&quot;\tl     = Value for l\r\n&quot;);
+    printf(&quot;\tcount = Number of messages to transmit\r\n&quot;);
+    printf(&quot;\tdelay = Delay between transmissions (seconds)\r\n&quot;);
+    printf(&quot;\tex: las_app_tx_tsen 2 0 2345 10 60\r\n&quot;);
+}</code></pre></div><h1 id="grafana-and-roblox" class="section-header"><a href="#grafana-and-roblox">5 Grafana and Roblox</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tsen-grafana2.png" alt="" /></p>
 <p>TODO</p>
