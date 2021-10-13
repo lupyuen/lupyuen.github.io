@@ -14,6 +14,46 @@ The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github
 
 ![](https://lupyuen.github.io/images/tsen-title.jpg)
 
+# Where's the Internal Temperature Sensor?
+
+TODO
+
+![](https://lupyuen.github.io/images/tsen-ref3.png)
+
+TODO18
+
+![](https://lupyuen.github.io/images/tsen-ref4.png)
+
+# The Quicker Way
+
+TODO
+
+![](https://lupyuen.github.io/images/tsen-code4.png)
+
+TODO13
+
+![](https://lupyuen.github.io/images/tsen-output3.png)
+
+# The Longer Way
+
+TODO
+
+![](https://lupyuen.github.io/images/tsen-code5.png)
+
+TODO6
+
+![](https://lupyuen.github.io/images/tsen-code6.png)
+
+TODO14
+
+![](https://lupyuen.github.io/images/tsen-output4.png)
+
+# LoRaWAN and The Things Network
+
+TODO8
+
+![](https://lupyuen.github.io/images/tsen-command2.png)
+
 # Grafana and Roblox
 
 TODO
@@ -45,37 +85,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1447635784228487169)
-
-
-TODO4
-
-![](https://lupyuen.github.io/images/tsen-code4.png)
-
-TODO5
-
-![](https://lupyuen.github.io/images/tsen-code5.png)
-
-TODO6
-
-![](https://lupyuen.github.io/images/tsen-code6.png)
-
-TODO8
-
-![](https://lupyuen.github.io/images/tsen-command2.png)
-
-TODO13
-
-![](https://lupyuen.github.io/images/tsen-output3.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/tsen-output4.png)
-
-TODO17
-
-![](https://lupyuen.github.io/images/tsen-ref3.png)
-
-TODO18
-
-![](https://lupyuen.github.io/images/tsen-ref4.png)
-
