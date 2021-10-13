@@ -4,15 +4,21 @@
 
 This may surprise most folks... The BL602 and BL604 RISC-V SoCs have an __Internal Temperature Sensor__!
 
-The Internal Temperature Sensor is not documented in the BL602 / BL604 Datasheet. But it's in the BL602 / BL604 Reference Manual.
+The Internal Temperature Sensor is not documented in the BL602 / BL604 Datasheet. But it's buried deep inside the [__BL602 / BL604 Reference Manual__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en).
 
-(Under the Analog-to-Digital Converter)
+(Under "Analog-to-Digital Converter")
 
-TODO
+Today we shall...
+
+1.  __Read the Internal Temperature Sensor__ on BL602 and BL604
+
+1.  __Transmit the temperature__ over LoRaWAN to __The Things Network__ (with CBOR Encoding)
+
+1.  __Chart the temperature__ with __Grafana__ (the open-source visualisation tool)
+
+![Internal Temperature Sensor visualised with Grafana](https://lupyuen.github.io/images/tsen-title.jpg)
 
 The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
-
-![](https://lupyuen.github.io/images/tsen-title.jpg)
 
 # Where's the Internal Temperature Sensor?
 
