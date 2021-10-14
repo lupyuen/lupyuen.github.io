@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Internal Temperature Sensor on BL602",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-10-14",
+      "website": "https://lupyuen.github.io/articles/tsen",
+      "summary": "How we read the Internal Temperature Sensor on the BL602 and BL604 RISC-V SoCs... And transmit to The Things Network"
+    },
+    {
       "name": "IoT Digital Twin with Roblox and The Things Network",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-08",

@@ -1,6 +1,6 @@
 # Internal Temperature Sensor on BL602
 
-📝 _20 Oct 2021_
+📝 _14 Oct 2021_
 
 This may surprise most folks... The BL602 and BL604 RISC-V SoCs have an __Internal Temperature Sensor__!
 
@@ -502,11 +502,15 @@ And the output log shows our temperature, scaled by 100 times.
 
 [(Sounds rather warm, even for Sunny Singapore. Is it correct? 🤔 Lemme know what's your BL602 / BL604 temperature!)](https://twitter.com/SravanSenthiln1/status/1448485854536613888)
 
+![Visualising The Things Network Sensor Data with Grafana](https://lupyuen.github.io/images/grafana-flow.jpg)
+
+[(Source)](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus)
+
 # What's Next
 
 Today we have turned BL602 and BL604 into a basic __IoT Sensor Device__ that transmits its Internal Temperature to __LoRaWAN and The Things Network__.
 
-TODO
+In the next article we shall revisit Grafana and The Things Network... And build a better __IoT Monitoring System__ that stores the [__Sensor Data with Prometheus__](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus).
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
