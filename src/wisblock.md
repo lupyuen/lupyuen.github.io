@@ -674,6 +674,8 @@ Read the next article here...
 
 -   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
 
+-   [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
+
 -   [__More about the 3 Levels of LoRa__](https://lupyuen.github.io/articles/lora#lora-vs-lorawan)
 
 -   [__More about the LoRaWAN Specifications on this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1370224529222500352?s=20)

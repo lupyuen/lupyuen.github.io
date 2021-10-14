@@ -1311,6 +1311,8 @@ Today we have completed __Levels One and Two__ of our epic quest for the [__Thre
 
 1.  And eventually we shall build __BL602 Sensor Devices for The Things Network__!
 
+    -   [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
+
 But first we shall...
 
 1.  Install ChirpStack on our pre-production __Pine64 LoRa Gateway__...

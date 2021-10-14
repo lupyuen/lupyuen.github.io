@@ -284,11 +284,11 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 
 -   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
 
+-   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
+
 -   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
 
 -   ["IoT Digital Twin with Roblox and The Things Network"](https://lupyuen.github.io/articles/roblox)
-
--   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
 
 ![BL706 Audio Video Board](https://lupyuen.github.io/images/book-bl706.jpg)
 

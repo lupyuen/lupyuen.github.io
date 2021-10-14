@@ -746,7 +746,7 @@ In the next article we shall head back to [__PineDio Stack BL604__](https://lupy
 
 -   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
 
--   [Check this Twitter Thread for updates](https://twitter.com/MisterTechBlog/status/1441626008931602433)
+-   [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 

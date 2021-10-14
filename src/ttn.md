@@ -583,6 +583,8 @@ In the next article, PineDio Stack shall transmit __Real-Time Sensor Data__ from
 
 -   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
 
+-   [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
+
 And we shall __visualise the Sensor Data__ with [__Grafana and MQTT__](https://grafana.com/blog/2021/08/12/streaming-real-time-sensor-data-to-grafana-using-mqtt-and-grafana-live/). (With CBOR decoding)
 
 -   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)

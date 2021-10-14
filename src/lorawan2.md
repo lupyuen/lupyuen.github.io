@@ -608,6 +608,8 @@ In the next article, PineDio Stack shall transmit data to the cloud via the publ
 
 -   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
 
+-   [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
+
 (Sorry for griping... But why doesn't Singapore have decent coverage for The Things Network? 🙄)
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
