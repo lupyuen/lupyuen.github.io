@@ -70,7 +70,9 @@
 <li><a href="#quick-but-inaccurate">2.1 Quick But Inaccurate</a><ul></ul></li></ul></li>
 <li><a href="#the-accurate-way">3 The Accurate Way</a><ul>
 <li><a href="#read-temperature-as-float">3.1 Read Temperature as Float</a><ul></ul></li></ul></li>
-<li><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a><ul></ul></li>
+<li><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a><ul>
+<li><a href="#lorawan-command">4.1 LoRaWAN Command</a><ul></ul></li>
+<li><a href="#run-the-lorawan-firmware">4.2 Run the LoRaWAN Firmware</a><ul></ul></li></ul></li>
 <li><a href="#grafana-and-roblox">5 Grafana and Roblox</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>20 Oct 2021</em></p>
@@ -326,6 +328,7 @@ Returned Temperature = 43.596027 Celsius</code></pre></div>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/tsen-command2.png" alt="Transmit internal temperature to LoRaWAN" /></p>
+<h2 id="lorawan-command" class="section-header"><a href="#lorawan-command">4.1 LoRaWAN Command</a></h2>
 <p><strong>las_app_tx_tsen</strong> is defined like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227">pinedio_lorawan/lorawan.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Transmit Internal Temperature Sensor Data to LoRaWAN, encoded with CBOR. The command
 ///   las_app_tx_tsen 2 0 2345 10 60
@@ -377,7 +380,7 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
     rc = pbuf_copyinto(om, 0, output, output_len);
 
     //  Send the pbuf
-    rc = lora_app_port_send(port, mcps_type, om);</code></pre></div>
+    rc = lora_app_port_send(port, mcps_type, om);</code></pre></div><h2 id="run-the-lorawan-firmware" class="section-header"><a href="#run-the-lorawan-firmware">4.2 Run the LoRaWAN Firmware</a></h2>
 <p>Let’s build, flash and run the updated LoRaWAN Firmware…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan"><strong>customer_app/pinedio_lorawan</strong></a></li>
