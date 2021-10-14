@@ -464,13 +464,43 @@ Let's check the transmitted Sensor Data with Grafana and Roblox.
 
 # Grafana and Roblox
 
-TODO
+In an earlier article we have configured __Grafana__ (the open source visualisation tool) to read Sensor Data from __The Things Network__. And chart the Sensor Data in real time...
 
-![](https://lupyuen.github.io/images/tsen-grafana2.png)
+-   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
 
-TODO
+Follow the instructions below to __install and configure Grafana__...
 
-![](https://lupyuen.github.io/images/tsen-roblox2.png)
+-   [__"Configure Grafana Data Source"__](https://lupyuen.github.io/articles/grafana#configure-grafana-data-source)
+
+Start the Grafana service and run the __las_app_tx_tsen__ command from the previous chapter.
+
+We should see this chart in Grafana after 10 minutes...
+
+![PineDio Stack BL604 Internal Temperature rendered with Grafana](https://lupyuen.github.io/images/tsen-grafana2.png)
+
+(Note that the temperatures have been scaled up 100 times)
+
+## The Fun Way
+
+There's another way to see the Sensor Data (in a fun way): __Roblox__...
+
+-   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox)
+
+(Yep the multiplayer 3D world!)
+
+Follow the instructions below to __install and configure Roblox__...
+
+-   [__"Roblox Mirroring In Action"__](https://lupyuen.github.io/articles/roblox#roblox-mirroring-in-action)
+
+We should see the temperature rendered by Roblox as a glowing thing...
+
+![PineDio Stack BL604 Internal Temperature rendered with Roblox](https://lupyuen.github.io/images/tsen-roblox2.png)
+
+And the output log shows our temperature, scaled by 100 times.
+
+(Like `4875` for `48.75` ºC)
+
+[(Yes this sounds rather warm, even for Sunny Singapore. Is it correct? 🤔)](https://twitter.com/SravanSenthiln1/status/1448485854536613888)
 
 # What's Next
 
