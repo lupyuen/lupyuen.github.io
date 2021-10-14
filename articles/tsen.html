@@ -166,7 +166,7 @@ Returned Temperature = 43 Celsius</code></pre></div>
 <p>(Instead of Integer)</p>
 </li>
 </ol>
-<p>Below is <strong>get_tsen_adc</strong>, our modded function with the fixes: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109">pinedio_tsen/demo.c</a></p>
+<p>Below is <strong>get_tsen_adc</strong>, our modded function (with all the fixings): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109">pinedio_tsen/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_adc.h&gt;     //  For BL602 ADC HAL
 #include &lt;bl602_adc.h&gt;  //  For BL602 ADC Standard Driver
 #include &lt;bl602_glb.h&gt;  //  For BL602 Global Register Standard Driver
@@ -297,7 +297,7 @@ Returned Temperature = 43.596027 Celsius
 offset = 2175
 temperature = 43.596027 Celsius
 Returned Temperature = 43.596027 Celsius</code></pre></div>
-<p>(No more sub-zero temperatures!)</p>
+<p>(No more Sub-Zero Temperatures!)</p>
 <p>And the temperature is returned as Float.</p>
 <p>(No more Integers!)</p>
 <p><img src="https://lupyuen.github.io/images/tsen-output4.png" alt="Reading the Internal Temperatue Sensor the Accurate Way" /></p>
@@ -315,31 +315,22 @@ Returned Temperature = 43.596027 Celsius</code></pre></div>
 /// To port 2, unconfirmed (0), for 10 times, with a 60 second interval.
 /// Assuming that the Internal Temperature Sensor returns 12.34 degrees Celsius.
 void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
-  int rc = 0;
-  //  Validate number of arguments
-  if (argc &lt; 6) { printf(&quot;Invalid # of arguments\r\n&quot;); goto cmd_app_tx_tsen_err; }
-
   //  Get port number
   uint8_t port = parse_ull_bounds(argv[1], 1, 255, &amp;rc);
-  if (rc != 0) { printf(&quot;Invalid port %s. Must be 1 - 255\r\n&quot;, argv[1]); return;}
 
   //  Get unconfirmed / confirmed packet type
   uint8_t pkt_type = parse_ull_bounds(argv[2], 0, 1, &amp;rc);
-  if (rc != 0) { printf(&quot;Invalid type %s. Must be 0 (unconfirmed) or 1 (confirmed)\r\n&quot;, argv[2]); return; }
 
   //  Get l value
   uint16_t l = parse_ull_bounds(argv[3], 0, 65535, &amp;rc);
-  if (rc != 0) { printf(&quot;Invalid l value %s. Must be 0 - 65535\r\n&quot;, argv[3]); return; }
 
   //  Get count
   uint16_t count = parse_ull_bounds(argv[4], 0, 65535, &amp;rc);
-  if (rc != 0) { printf(&quot;Invalid count %s. Must be 0 - 65535\r\n&quot;, argv[4]); return; }
 
   //  Get interval
-  uint16_t interval = parse_ull_bounds(argv[5], 0, 65535, &amp;rc);
-  if (rc != 0) { printf(&quot;Invalid interval %s. Must be 0 - 65535\r\n&quot;, argv[5]); return; }
-
-  //  Repeat count times
+  uint16_t interval = parse_ull_bounds(argv[5], 0, 65535, &amp;rc);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Repeat count times
   for (int i = 0; i &lt; count; i++) {
     //  Wait for interval seconds
     if (i &gt; 0) { vTaskDelay(interval * 1000 / portTICK_PERIOD_MS); }
@@ -350,118 +341,24 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
       &amp;temp,  //  Temperature in Celsius
       1       //  0 to disable logging, 1 to enable logging
     );
-    assert(rc == 0);
-
-    //  Scale the temperature up 100 times and truncate
+    assert(rc == 0);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  Scale the temperature up 100 times and truncate as integer:
+    //  12.34 ºC becomes 1234
     int16_t t = temp * 100;
-    printf(&quot;Encode CBOR: { t: %d, l: %d }\r\n&quot;, t, l);
 
-    //  Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
-    //  Max output size is 50 bytes (which fits in a LoRa packet)
+    //  Omitted: Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
     uint8_t output[50];
-
-    //  Our CBOR Encoder and Map Encoder
-    CborEncoder encoder, mapEncoder;
-
-    //  Init our CBOR Encoder
-    cbor_encoder_init(
-      &amp;encoder,        //  CBOR Encoder
-      output,          //  Output Buffer
-      sizeof(output),  //  Output Buffer Size
-      0                //  Options
-    );
-
-    //  Create a Map Encoder that maps keys to values
-    CborError res = cbor_encoder_create_map(
-      &amp;encoder,     //  CBOR Encoder
-      &amp;mapEncoder,  //  Map Encoder
-      2             //  Number of Key-Value Pairs
-    );    
-    assert(res == CborNoError);
-
-    //  First Key-Value Pair: Map the Key
-    res = cbor_encode_text_stringz(
-      &amp;mapEncoder,  //  Map Encoder
-      &quot;t&quot;           //  Key
-    );    
-    assert(res == CborNoError);
-
-    //  First Key-Value Pair: Map the Value
-    res = cbor_encode_int(
-      &amp;mapEncoder,  //  Map Encoder 
-      t             //  Value
-    );
-    assert(res == CborNoError);
-
-    //  Second Key-Value Pair: Map the Key
-    res = cbor_encode_text_stringz(
-      &amp;mapEncoder,  //  Map Encoder
-      &quot;l&quot;           //  Key
-    );    
-    assert(res == CborNoError);
-
-    //  Second Key-Value Pair: Map the Value
-    res = cbor_encode_int(
-      &amp;mapEncoder,  //  Map Encoder 
-      l             //  Value
-    );
-    assert(res == CborNoError);
-
-    //  Close the Map Encoder
-    res = cbor_encoder_close_container(
-      &amp;encoder,    //  CBOR Encoder
-      &amp;mapEncoder  //  Map Encoder
-    );
-    assert(res == CborNoError);
-
-    //  How many bytes were encoded
-    size_t output_len = cbor_encoder_get_buffer_size(
-      &amp;encoder,  //  CBOR Encoder
-      output     //  Output Buffer
-    );
-    printf(&quot;CBOR Output: %d bytes\r\n  &quot;, output_len);
-
-    //  Dump the encoded CBOR output (11 bytes):
-    //  0xa2 0x61 0x74 0x19 0x04 0xd2 0x61 0x6c 0x19 0x09 0x29
-    for (int i = 0; i &lt; output_len; i++) {
-      printf(&quot;0x%02x &quot;, output[i]);
-    }    
-    printf(&quot;\r\n&quot;);
-
-    //  Validate the output size
-    if (lora_app_mtu() &lt; output_len) {
-      printf(&quot;Can send at max %d bytes\r\n&quot;, lora_app_mtu());
-      return;
-    }
-
-    //  Attempt to allocate a pbuf
+    ...</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  Allocate a pbuf
     struct pbuf *om = lora_pkt_alloc(output_len);
-    if (!om) {
-      printf(&quot;Unable to allocate pbuf\r\n&quot;);
-      return;
-    }
-
-    //  Set unconfirmed / confirmed packet type
-    Mcps_t mcps_type;
-    if (pkt_type == 0) {
-      mcps_type = MCPS_UNCONFIRMED;
-    } else {
-      mcps_type = MCPS_CONFIRMED;
-    }
 
     //  Copy the encoded CBOR into the pbuf
     rc = pbuf_copyinto(om, 0, output, output_len);
-    assert(rc == 0);
 
     //  Send the pbuf
-    rc = lora_app_port_send(port, mcps_type, om);
-    if (rc) {
-      printf(&quot;Failed to send to port %u err=%d\r\n&quot;, port, rc);
-      pbuf_free(om);
-    } else {
-      printf(&quot;Packet sent on port %u\r\n&quot;, port);
-    }        
-  }</code></pre></div><h1 id="grafana-and-roblox" class="section-header"><a href="#grafana-and-roblox">5 Grafana and Roblox</a></h1>
+    rc = lora_app_port_send(port, mcps_type, om);</code></pre></div><h1 id="grafana-and-roblox" class="section-header"><a href="#grafana-and-roblox">5 Grafana and Roblox</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tsen-grafana2.png" alt="" /></p>
 <p>TODO</p>
