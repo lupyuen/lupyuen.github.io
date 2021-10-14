@@ -85,7 +85,7 @@
 <li><a href="#build-lorawan-firmware">9.1 Build LoRaWAN Firmware</a><ul></ul></li>
 <li><a href="#flash-lorawan-firmware">9.2 Flash LoRaWAN Firmware</a><ul></ul></li>
 <li><a href="#run-lorawan-firmware">9.3 Run LoRaWAN Firmware</a><ul></ul></li>
-<li><a href="#enter-lorawan-commands">9.4 Enter LoRaWAN Commands</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>20 Oct 2021</em></p>
+<li><a href="#enter-lorawan-commands">9.4 Enter LoRaWAN Commands</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>14 Oct 2021</em></p>
 <p>This may surprise most folks… The BL602 and BL604 RISC-V SoCs have an <strong>Internal Temperature Sensor</strong>!</p>
 <p>The Internal Temperature Sensor is not documented in the BL602 / BL604 Datasheet. But it’s buried deep inside the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 / BL604 Reference Manual</strong></a>.</p>
 <p>(Under “Analog-to-Digital Converter”)</p>
@@ -467,9 +467,11 @@ CBOR Output: 11 bytes
 <p>And the output log shows our temperature, scaled by 100 times.</p>
 <p>(Like <code>4875</code> for <code>48.75</code> ºC)</p>
 <p><a href="https://twitter.com/SravanSenthiln1/status/1448485854536613888">(Sounds rather warm, even for Sunny Singapore. Is it correct? 🤔 Lemme know what’s your BL602 / BL604 temperature!)</a></p>
+<p><img src="https://lupyuen.github.io/images/grafana-flow.jpg" alt="Visualising The Things Network Sensor Data with Grafana" /></p>
+<p><a href="https://lupyuen.github.io/articles/grafana#store-data-with-prometheus">(Source)</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
 <p>Today we have turned BL602 and BL604 into a basic <strong>IoT Sensor Device</strong> that transmits its Internal Temperature to <strong>LoRaWAN and The Things Network</strong>.</p>
-<p>TODO</p>
+<p>In the next article we shall revisit Grafana and The Things Network… And build a better <strong>IoT Monitoring System</strong> that stores the <a href="https://lupyuen.github.io/articles/grafana#store-data-with-prometheus"><strong>Sensor Data with Prometheus</strong></a>.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
