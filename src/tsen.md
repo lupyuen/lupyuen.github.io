@@ -500,7 +500,7 @@ And the output log shows our temperature, scaled by 100 times.
 
 (Like `4875` for `48.75` ºC)
 
-[(Yes this sounds rather warm, even for Sunny Singapore. Is it correct? 🤔)](https://twitter.com/SravanSenthiln1/status/1448485854536613888)
+[(Sounds rather warm, even for Sunny Singapore. Is it correct? 🤔 Lemme know what's your BL602 / BL604 temperature!)](https://twitter.com/SravanSenthiln1/status/1448485854536613888)
 
 # What's Next
 
