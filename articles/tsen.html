@@ -90,10 +90,17 @@
 <p><img src="https://lupyuen.github.io/images/tsen-title.jpg" alt="Internal Temperature Sensor visualised with Grafana" /></p>
 <p>The firmware has been tested on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>, but it should work on <strong>any BL602 or BL604 Board</strong>: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, …</p>
 <h1 id="wheres-the-internal-temperature-sensor" class="section-header"><a href="#wheres-the-internal-temperature-sensor">1 Where’s the Internal Temperature Sensor?</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/tsen-ref3.png" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/tsen-ref4.png" alt="" /></p>
+<p>The Internal Temperature Sensor is inside the <strong>Analog-to-Digital Converter (ADC)</strong> on BL602 and BL604…</p>
+<p><img src="https://lupyuen.github.io/images/tsen-ref3.png" alt="Internal Temperatuer Sensor in ADC" /></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(From BL602 / BL604 Reference Manual)</a></p>
+<p>The Internal Temperature Sensor behaves like an <strong>Analog Input</strong>. Which we call the ADC to measure.</p>
+<p><a href="https://lupyuen.github.io/articles/adc#bl602-adc-in-c">(More about BL602 ADC)</a></p>
+<p>The steps for reading the Internal Temperature Sensor seem complicated…</p>
+<p><img src="https://lupyuen.github.io/images/tsen-ref4.png" alt="Reading the Internal Temperatuer Sensor" /></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(From BL602 / BL604 Reference Manual)</a></p>
+<p>But thankfully there’s an (undocumented) function in the BL602 IoT SDK that <strong>reads the Internal Temperature Sensor</strong>!</p>
+<p>Let’s call the function now.</p>
+<p>(Internal Temperature Sensors based on ADC are available on many microcontrollers, like <a href="https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt">STM32 Blue Pill</a>)</p>
 <h1 id="the-quick-way" class="section-header"><a href="#the-quick-way">2 The Quick Way</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29">pinedio_tsen/demo.c</a></p>
