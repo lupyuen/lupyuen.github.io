@@ -504,6 +504,8 @@ And the output log shows our temperature, scaled by 100 times.
 
 # What's Next
 
+Today we have turned BL602 and BL604 into a basic __IoT Sensor Device__ that transmits its Internal Temperature to __LoRaWAN and The Things Network__.
+
 TODO
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
