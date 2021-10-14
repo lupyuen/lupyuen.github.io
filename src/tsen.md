@@ -44,14 +44,14 @@ Let's call the function now.
 
 (Internal Temperature Sensors based on ADC are available on many microcontrollers, like [STM32 Blue Pill](https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt))
 
+![Reading the Internal Temperatue Sensor the Quick Way](https://lupyuen.github.io/images/tsen-code4.png)
+
 # The Quick Way
 
-TODO
-
-From [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29)
+To read the Internal Temperature Sensor the Quick Way, we call [__bl_tsen_adc_get__](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282) from the __ADC Hardware Abstraction Layer (HAL)__: [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29)
 
 ```c
-#include <bl_adc.h>     //  For BL602 Internal Temperature Sensor
+#include <bl_adc.h>  //  For BL602 Internal Temperature Sensor
 
 /// Read BL602 / BL604's Internal Temperature Sensor as Integer
 void read_tsen(char *buf, int len, int argc, char **argv) {
@@ -70,11 +70,46 @@ void read_tsen(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-![](https://lupyuen.github.io/images/tsen-code4.png)
+Let's build, flash and run the demo firmware...
 
-TODO13
+-   [__customer_app/pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen)
 
-![](https://lupyuen.github.io/images/tsen-output3.png)
+Enter the command...
+
+```bash
+read_tsen
+```
+
+The first result will look odd...
+
+```text
+temperature = -90.932541 Celsius
+Returned Temperature = -90 Celsius
+```
+
+Running __read_tsen__ again will produce the right result...
+
+```text
+temperature = 43.467045 Celsius
+Returned Temperature = 43 Celsius
+```
+
+## Quick But Inaccurate
+
+We discover __two issues with the Quick Way__ of reading the Internal Temperature Sensor...
+
+1.  TODO: First result is way too low
+
+1.  TODO: Float
+
+    ```text
+    temperature = 43.467045 Celsius
+    Returned Temperature = 43 Celsius
+    ```
+
+TODO: Quick but inaccurate
+
+![Reading the Internal Temperatue Sensor the Quick Way](https://lupyuen.github.io/images/tsen-output3.png)
 
 # The Accurate Way
 
@@ -185,6 +220,32 @@ TODO6
 ![](https://lupyuen.github.io/images/tsen-code6.png)
 
 TODO14
+
+Build, flash and run the demo firmware...
+
+-   [__customer_app/pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen)
+
+Enter this command a few times...
+
+```bash
+read_tsen2
+```
+
+TODO
+
+```text
+offset = 2175
+temperature = 44.369923 Celsius
+Returned Temperature = 44.369923 Celsius
+
+offset = 2175
+temperature = 43.596027 Celsius
+Returned Temperature = 43.596027 Celsius
+
+offset = 2175
+temperature = 43.596027 Celsius
+Returned Temperature = 43.596027 Celsius
+```
 
 ![](https://lupyuen.github.io/images/tsen-output4.png)
 
