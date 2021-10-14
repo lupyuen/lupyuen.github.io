@@ -330,6 +330,8 @@ Which means...
 
 ![Transmit internal temperature to LoRaWAN](https://lupyuen.github.io/images/tsen-command2.png)
 
+## LoRaWAN Command
+
 __las_app_tx_tsen__ is defined like so: [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227)
 
 ```c
@@ -397,6 +399,8 @@ TODO
     //  Send the pbuf
     rc = lora_app_port_send(port, mcps_type, om);
 ```
+
+## Run the LoRaWAN Firmware
 
 Let's build, flash and run the updated LoRaWAN Firmware...
 
