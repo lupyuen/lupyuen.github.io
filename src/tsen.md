@@ -236,9 +236,19 @@ Let's call __get_tsen_adc__ now.
 
 ## Read Temperature as Float
 
-TODO
+We're ready to read the Internal Temperature Sensor the __Accurate Way__!
 
-From [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45)
+The code below looks similar to the earlier code except...
+
+1.  We now call our modded function __get_tsen_adc__
+
+    (Instead of the BL602 ADC HAL)
+
+1.  Which __returns a Float__
+
+    (Instead of Integer)
+
+From [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45)...
 
 ```c
 /// Read BL602 / BL604's Internal Temperature Sensor as Float
@@ -258,9 +268,7 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-TODO
-
-Build, flash and run the demo firmware...
+Let's build, flash and run the demo firmware...
 
 -   [__customer_app/pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen)
 
@@ -270,7 +278,7 @@ Enter this command a few times...
 read_tsen2
 ```
 
-TODO
+The results look consistent...
 
 ```text
 offset = 2175
@@ -286,7 +294,13 @@ temperature = 43.596027 Celsius
 Returned Temperature = 43.596027 Celsius
 ```
 
-![](https://lupyuen.github.io/images/tsen-output4.png)
+(No more sub-zero temperatures!)
+
+And the temperature is returned as Float.
+
+(No more Integers!)
+
+![Reading the Internal Temperatue Sensor the Accurate Way](https://lupyuen.github.io/images/tsen-output4.png)
 
 # LoRaWAN and The Things Network
 
