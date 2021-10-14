@@ -304,6 +304,26 @@ Returned Temperature = 43.596027 Celsius</code></pre></div>
 <h1 id="lorawan-and-the-things-network" class="section-header"><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
+<p>This means…</p>
+<ul>
+<li>
+<p>Transmit to <strong>LoRaWAN Port 2</strong></p>
+</li>
+<li>
+<p>That contains the values <strong><code>t</code></strong> (Internal Temperature) and <strong><code>l=4000</code></strong> (Light Level)</p>
+<p>(Encoded with CBOR)</p>
+</li>
+<li>
+<p><code>0</code> means that this is an <strong>Unconfirmed Message</strong></p>
+<p>(Because we’re not expecting an acknowledgement)</p>
+</li>
+<li>
+<p>Transmit <strong><code>10</code> times</strong></p>
+</li>
+<li>
+<p>At intervals of <strong><code>60</code> seconds</strong></p>
+</li>
+</ul>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tsen-command2.png" alt="" /></p>
 <p>TODO</p>
@@ -358,7 +378,46 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
     rc = pbuf_copyinto(om, 0, output, output_len);
 
     //  Send the pbuf
-    rc = lora_app_port_send(port, mcps_type, om);</code></pre></div><h1 id="grafana-and-roblox" class="section-header"><a href="#grafana-and-roblox">5 Grafana and Roblox</a></h1>
+    rc = lora_app_port_send(port, mcps_type, om);</code></pre></div>
+<p>Let’s build, flash and run the updated LoRaWAN Firmware…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan"><strong>customer_app/pinedio_lorawan</strong></a></li>
+</ul>
+<p>Enter this command…</p>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
+<p>This means…</p>
+<ul>
+<li>
+<p>Transmit to <strong>LoRaWAN Port 2</strong></p>
+</li>
+<li>
+<p>That contains the values <strong><code>t</code></strong> (Internal Temperature) and <strong><code>l=4000</code></strong> (Light Level)</p>
+<p>(Encoded with CBOR)</p>
+</li>
+<li>
+<p><code>0</code> means that this is an <strong>Unconfirmed Message</strong></p>
+<p>(Because we’re not expecting an acknowledgement)</p>
+</li>
+<li>
+<p>Transmit <strong><code>10</code> times</strong></p>
+</li>
+<li>
+<p>At intervals of <strong><code>60</code> seconds</strong></p>
+</li>
+</ul>
+<p>We should see the Internal Temperature transmitted over LoRaWAN every 60 seconds…</p>
+<div class="example-wrap"><pre class="language-text"><code>temperature = 44.885849 Celsius
+Encode CBOR: { t: 4488, l: 4000 }
+CBOR Output: 11 bytes
+  0xa2 0x61 0x74 0x19 0x11 0x88 0x61 0x6c 0x19 0x0f 0xa0
+  ...
+temperature = 47.207531 Celsius
+Encode CBOR: { t: 4720, l: 4000 }
+CBOR Output: 11 bytes
+  0xa2 0x61 0x74 0x19 0x12 0x70 0x61 0x6c 0x19 0x0f 0xa0
+  ...</code></pre></div>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan#output-log">(See the complete log)</a></p>
+<h1 id="grafana-and-roblox" class="section-header"><a href="#grafana-and-roblox">5 Grafana and Roblox</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tsen-grafana2.png" alt="" /></p>
 <p>TODO</p>
