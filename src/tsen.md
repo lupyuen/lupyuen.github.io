@@ -2,7 +2,7 @@
 
 📝 _14 Oct 2021_
 
-This may surprise most folks... The BL602 and BL604 RISC-V SoCs have an __Internal Temperature Sensor__!
+This may surprise most folks... The [__BL602 and BL604 RISC-V SoCs__](https://lupyuen.github.io/articles/pinecone) have an __Internal Temperature Sensor__!
 
 The Internal Temperature Sensor is not documented in the BL602 / BL604 Datasheet. But it's buried deep inside the [__BL602 / BL604 Reference Manual__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en).
 
