@@ -502,7 +502,7 @@ And the output log shows our temperature, scaled by 100 times.
 
 [(Sounds rather warm, even for Sunny Singapore. Is it correct? 🤔 Lemme know what's your BL602 / BL604 temperature!)](https://twitter.com/SravanSenthiln1/status/1448485854536613888)
 
-![Visualising The Things Network Sensor Data with Grafana](https://lupyuen.github.io/images/grafana-flow.jpg)
+![Storing The Things Network Sensor Data with Prometheus](https://lupyuen.github.io/images/grafana-flow2.jpg)
 
 [(Source)](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus)
 
