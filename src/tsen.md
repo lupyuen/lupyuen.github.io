@@ -304,35 +304,33 @@ And the temperature is returned as Float.
 
 # LoRaWAN and The Things Network
 
-TODO
+Since we have an __Onboard Temperature Sensor__ (though it runs a little hot), let's turn BL602 and BL604 into an __IoT Sensor Device__ for LoRaWAN and The Things Network!
+
+We'll create this LoRaWAN Command for BL602 and BL604...
 
 ```bash
 las_app_tx_tsen 2 0 4000 10 60
 ```
 
-This means...
+Which means...
 
 -   Transmit to __LoRaWAN Port 2__
 
--   That contains the values __`t`__ (Internal Temperature) and __`l=4000`__ (Light Level)
+-   With sensor values __`t`__ (Internal Temperature) and __`l`__ (Light Level: `4000`)
 
     (Encoded with CBOR)
-
--   `0` means that this is an __Unconfirmed Message__
-
-    (Because we're not expecting an acknowledgement)
 
 -   Transmit __`10` times__
 
 -   At intervals of __`60` seconds__
 
-TODO
+-   `0` means that this is an __Unconfirmed Message__
 
-![](https://lupyuen.github.io/images/tsen-command2.png)
+    (Because we're not expecting an acknowledgement)
 
-TODO
+![Transmit internal temperature to LoRaWAN](https://lupyuen.github.io/images/tsen-command2.png)
 
-From [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227)
+__las_app_tx_tsen__ is defined like so: [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227)
 
 ```c
 /// Transmit Internal Temperature Sensor Data to LoRaWAN, encoded with CBOR. The command
@@ -414,17 +412,17 @@ This means...
 
 -   Transmit to __LoRaWAN Port 2__
 
--   That contains the values __`t`__ (Internal Temperature) and __`l=4000`__ (Light Level)
+-   With sensor values __`t`__ (Internal Temperature) and __`l`__ (Light Level: `4000`)
 
     (Encoded with CBOR)
-
--   `0` means that this is an __Unconfirmed Message__
-
-    (Because we're not expecting an acknowledgement)
 
 -   Transmit __`10` times__
 
 -   At intervals of __`60` seconds__
+
+-   `0` means that this is an __Unconfirmed Message__
+
+    (Because we're not expecting an acknowledgement)
 
 We should see the Internal Temperature transmitted over LoRaWAN every 60 seconds...
 
