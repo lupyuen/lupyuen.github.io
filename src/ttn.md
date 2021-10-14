@@ -265,43 +265,13 @@ Which calls the following __LoRaWAN and SX1262 Drivers__...
 
 -   [__`lora-sx1262` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262)
 
-Follow these instructions to __build and flash__ the firmware...
+Follow these instructions to __build, flash and run__ the firmware...
 
-1.  [__"BL604 Blinky (Build the Firmware)"__](https://lupyuen.github.io/articles/pinedio#bl604-blinky)
+1.  [__"Build LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen#build-lorawan-firmware)
 
-1.  [__"Flash Firmware To BL604"__](https://lupyuen.github.io/articles/pinedio#flash-firmware-to-bl604)
+1.  [__"Flash LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen#flash-lorawan-firmware)
 
-With these modifications...
-
--   Change the branch __`3wire`__ to __`pinedio`__
-
--   Change the firmware __`pinedio_blinky`__ to __`pinedio_lorawan`__
-
--   In the `customer_app/sdk_app_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/sdk_app_lorawan/Makefile) and find this setting...
-
-    ```text
-    CFLAGS += -DCONFIG_LORA_NODE_REGION=1
-    ```
-
-    Change "`1`" to your LoRa Region...
-
-    | Value | Region 
-    | :---  | :---
-    | 0 | No region
-    | 1 | AS band on 923MHz
-    | 2 | Australian band on 915MHz
-    | 3 | Chinese band on 470MHz
-    | 4 | Chinese band on 779MHz
-    | 5 | European band on 433MHz
-    | 6 | European band on 868MHz
-    | 7 | South Korean band on 920MHz
-    | 8 | India band on 865MHz
-    | 9 | North American band on 915MHz
-    | 10 | North American band on 915MHz with a maximum of 16 channels
-
-__Flash and boot__ the firmware on PineDio Stack.
-
-Open a __Serial Terminal__ and connect to PineDio Stack at 2 Mbps.
+1.  [__"Run LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen#run-lorawan-firmware)
 
 We're ready to...
 

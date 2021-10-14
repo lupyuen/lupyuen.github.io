@@ -411,9 +411,11 @@ We encode the temperature (and light level) with CBOR and __transmit as a LoRaWA
     rc = lora_app_port_send(port, mcps_type, om);
 ```
 
-Which goes all the way to __The Things Network__!
+Which goes all the way to __The Things Network__! Assuming that we have configured our LoRaWAN settings for The Things Network.
 
-(Assuming that we have configured our LoRaWAN settings for The Things Network)
+[(CBOR Encoding is explained here)](https://lupyuen.github.io/articles/cbor#encode-sensor-data-with-tinycbor)
+
+[(Sending a LoRaWAN Packet is explained here)](https://lupyuen.github.io/articles/cbor#send-lorawan-packet)
 
 ## Run the LoRaWAN Firmware
 
