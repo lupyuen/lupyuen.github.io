@@ -70,9 +70,9 @@ void read_tsen(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-Let's build, flash and run the demo firmware...
+Let's build, flash and run the [__pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen) demo firmware...
 
--   [__customer_app/pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen)
+-   [__"Build and Run Internal Temperature Sensor Firmware"__](https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-internal-temperature-sensor-firmware)
 
 At the BL602 / BL604 Command Prompt, enter this command...
 
@@ -268,9 +268,9 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-Let's build, flash and run the demo firmware...
+Let's build, flash and run the [__pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen) demo firmware...
 
--   [__customer_app/pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen)
+-   [__"Build and Run Internal Temperature Sensor Firmware"__](https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-internal-temperature-sensor-firmware)
 
 At the BL602 / BL604 Command Prompt, enter this command a few times...
 
@@ -417,9 +417,9 @@ Which goes all the way to __The Things Network__!
 
 ## Run the LoRaWAN Firmware
 
-Let's build, flash and run the updated LoRaWAN Firmware...
+Let's build, flash and run the updated LoRaWAN Firmware: [__pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan)
 
--   [__customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan)
+-   [__"Build and Run LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-lorawan-firmware)
 
 At the BL602 / BL604 Command Prompt, enter this command...
 
