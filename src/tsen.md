@@ -98,16 +98,29 @@ Returned Temperature = 43 Celsius
 
 We discover __two issues with the Quick Way__ of reading the Internal Temperature Sensor...
 
-1.  TODO: First result is way too low
+1.  First Result is __way too low__...
 
-1.  TODO: Float
+    ```text
+    temperature = -90.932541 Celsius
+    Returned Temperature = -90 Celsius
+    ```
+
+    (Workaround: Discard the first result returned by __bl_tsen_adc_get__)
+
+1.  According to the internal log, the temperature is a __Floating-Point Number__...
 
     ```text
     temperature = 43.467045 Celsius
     Returned Temperature = 43 Celsius
     ```
 
-TODO: Quick but inaccurate
+    But the returned value is a __Truncated Integer!__
+
+    (Sorry, no workaround for this)
+
+Yep our Quick Way is also the __Inaccurate Way__!
+
+Let's fix both issues.
 
 ![Reading the Internal Temperatue Sensor the Quick Way](https://lupyuen.github.io/images/tsen-output3.png)
 
