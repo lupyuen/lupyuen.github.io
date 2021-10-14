@@ -74,7 +74,7 @@ Let's build, flash and run the demo firmware...
 
 -   [__customer_app/pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen)
 
-Enter the command...
+At the BL602 / BL604 Command Prompt, enter this command...
 
 ```bash
 read_tsen
@@ -272,7 +272,7 @@ Let's build, flash and run the demo firmware...
 
 -   [__customer_app/pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen)
 
-Enter this command a few times...
+At the BL602 / BL604 Command Prompt, enter this command a few times...
 
 ```bash
 read_tsen2
@@ -358,11 +358,14 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
   uint16_t interval = parse_ull_bounds(argv[5], 0, 65535, &rc);
 ```
 
-TODO
+We begin by fetching the __command-line arguments__.
+
+For each message that we shall transmit...
 
 ```c
   //  Repeat count times
   for (int i = 0; i < count; i++) {
+
     //  Wait for interval seconds
     if (i > 0) { vTaskDelay(interval * 1000 / portTICK_PERIOD_MS); }
 
@@ -375,7 +378,9 @@ TODO
     assert(rc == 0);
 ```
 
-TODO
+We __read the Internal Temperature Sensor__ as a Float.
+
+Next we __scale up the temperature 100 times__ and truncate as Integer...
 
 ```c
     //  Scale the temperature up 100 times and truncate as integer:
@@ -387,7 +392,9 @@ TODO
     ...
 ```
 
-TODO
+[(Because encoding the temperature as `1234` requires fewer bytes than `12.34`)](https://lupyuen.github.io/articles/cbor#floating-point-numbers)
+
+We encode the temperature (and light level) with CBOR and __transmit as a LoRaWAN message__...
 
 ```c
     //  Allocate a pbuf
@@ -400,13 +407,17 @@ TODO
     rc = lora_app_port_send(port, mcps_type, om);
 ```
 
+Which goes all the way to __The Things Network__!
+
+(Assuming that we have configured our LoRaWAN settings for The Things Network)
+
 ## Run the LoRaWAN Firmware
 
 Let's build, flash and run the updated LoRaWAN Firmware...
 
 -   [__customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan)
 
-Enter this command...
+At the BL602 / BL604 Command Prompt, enter this command...
 
 ```bash
 las_app_tx_tsen 2 0 4000 10 60
@@ -444,6 +455,8 @@ CBOR Output: 11 bytes
 ```
 
 [(See the complete log)](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan#output-log)
+
+TODO
 
 # Grafana and Roblox
 
