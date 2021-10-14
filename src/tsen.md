@@ -136,7 +136,7 @@ To read the Internal Temperature Sensor the __Accurate Way__, we copy the [__bl_
 
     (Instead of Integer)
 
-Below is __get_tsen_adc__, our modded function with the fixes: [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109)
+Below is __get_tsen_adc__, our modded function (with all the fixings): [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109)
 
 ```c
 #include <bl_adc.h>     //  For BL602 ADC HAL
@@ -294,7 +294,7 @@ temperature = 43.596027 Celsius
 Returned Temperature = 43.596027 Celsius
 ```
 
-(No more sub-zero temperatures!)
+(No more Sub-Zero Temperatures!)
 
 And the temperature is returned as Float.
 
@@ -326,30 +326,25 @@ From [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen
 /// To port 2, unconfirmed (0), for 10 times, with a 60 second interval.
 /// Assuming that the Internal Temperature Sensor returns 12.34 degrees Celsius.
 void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
-  int rc = 0;
-  //  Validate number of arguments
-  if (argc < 6) { printf("Invalid # of arguments\r\n"); goto cmd_app_tx_tsen_err; }
-
   //  Get port number
   uint8_t port = parse_ull_bounds(argv[1], 1, 255, &rc);
-  if (rc != 0) { printf("Invalid port %s. Must be 1 - 255\r\n", argv[1]); return;}
 
   //  Get unconfirmed / confirmed packet type
   uint8_t pkt_type = parse_ull_bounds(argv[2], 0, 1, &rc);
-  if (rc != 0) { printf("Invalid type %s. Must be 0 (unconfirmed) or 1 (confirmed)\r\n", argv[2]); return; }
 
   //  Get l value
   uint16_t l = parse_ull_bounds(argv[3], 0, 65535, &rc);
-  if (rc != 0) { printf("Invalid l value %s. Must be 0 - 65535\r\n", argv[3]); return; }
 
   //  Get count
   uint16_t count = parse_ull_bounds(argv[4], 0, 65535, &rc);
-  if (rc != 0) { printf("Invalid count %s. Must be 0 - 65535\r\n", argv[4]); return; }
 
   //  Get interval
   uint16_t interval = parse_ull_bounds(argv[5], 0, 65535, &rc);
-  if (rc != 0) { printf("Invalid interval %s. Must be 0 - 65535\r\n", argv[5]); return; }
+```
 
+TODO
+
+```c
   //  Repeat count times
   for (int i = 0; i < count; i++) {
     //  Wait for interval seconds
@@ -362,117 +357,31 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
       1       //  0 to disable logging, 1 to enable logging
     );
     assert(rc == 0);
+```
 
-    //  Scale the temperature up 100 times and truncate
+TODO
+
+```c
+    //  Scale the temperature up 100 times and truncate as integer:
+    //  12.34 ºC becomes 1234
     int16_t t = temp * 100;
-    printf("Encode CBOR: { t: %d, l: %d }\r\n", t, l);
 
-    //  Encode into CBOR for { "t": ????, "l": ???? }
-    //  Max output size is 50 bytes (which fits in a LoRa packet)
+    //  Omitted: Encode into CBOR for { "t": ????, "l": ???? }
     uint8_t output[50];
+    ...
+```
 
-    //  Our CBOR Encoder and Map Encoder
-    CborEncoder encoder, mapEncoder;
+TODO
 
-    //  Init our CBOR Encoder
-    cbor_encoder_init(
-      &encoder,        //  CBOR Encoder
-      output,          //  Output Buffer
-      sizeof(output),  //  Output Buffer Size
-      0                //  Options
-    );
-
-    //  Create a Map Encoder that maps keys to values
-    CborError res = cbor_encoder_create_map(
-      &encoder,     //  CBOR Encoder
-      &mapEncoder,  //  Map Encoder
-      2             //  Number of Key-Value Pairs
-    );    
-    assert(res == CborNoError);
-
-    //  First Key-Value Pair: Map the Key
-    res = cbor_encode_text_stringz(
-      &mapEncoder,  //  Map Encoder
-      "t"           //  Key
-    );    
-    assert(res == CborNoError);
-
-    //  First Key-Value Pair: Map the Value
-    res = cbor_encode_int(
-      &mapEncoder,  //  Map Encoder 
-      t             //  Value
-    );
-    assert(res == CborNoError);
-
-    //  Second Key-Value Pair: Map the Key
-    res = cbor_encode_text_stringz(
-      &mapEncoder,  //  Map Encoder
-      "l"           //  Key
-    );    
-    assert(res == CborNoError);
-
-    //  Second Key-Value Pair: Map the Value
-    res = cbor_encode_int(
-      &mapEncoder,  //  Map Encoder 
-      l             //  Value
-    );
-    assert(res == CborNoError);
-
-    //  Close the Map Encoder
-    res = cbor_encoder_close_container(
-      &encoder,    //  CBOR Encoder
-      &mapEncoder  //  Map Encoder
-    );
-    assert(res == CborNoError);
-
-    //  How many bytes were encoded
-    size_t output_len = cbor_encoder_get_buffer_size(
-      &encoder,  //  CBOR Encoder
-      output     //  Output Buffer
-    );
-    printf("CBOR Output: %d bytes\r\n  ", output_len);
-
-    //  Dump the encoded CBOR output (11 bytes):
-    //  0xa2 0x61 0x74 0x19 0x04 0xd2 0x61 0x6c 0x19 0x09 0x29
-    for (int i = 0; i < output_len; i++) {
-      printf("0x%02x ", output[i]);
-    }    
-    printf("\r\n");
-
-    //  Validate the output size
-    if (lora_app_mtu() < output_len) {
-      printf("Can send at max %d bytes\r\n", lora_app_mtu());
-      return;
-    }
-
-    //  Attempt to allocate a pbuf
+```c
+    //  Allocate a pbuf
     struct pbuf *om = lora_pkt_alloc(output_len);
-    if (!om) {
-      printf("Unable to allocate pbuf\r\n");
-      return;
-    }
-
-    //  Set unconfirmed / confirmed packet type
-    Mcps_t mcps_type;
-    if (pkt_type == 0) {
-      mcps_type = MCPS_UNCONFIRMED;
-    } else {
-      mcps_type = MCPS_CONFIRMED;
-    }
 
     //  Copy the encoded CBOR into the pbuf
     rc = pbuf_copyinto(om, 0, output, output_len);
-    assert(rc == 0);
 
     //  Send the pbuf
     rc = lora_app_port_send(port, mcps_type, om);
-    if (rc) {
-      printf("Failed to send to port %u err=%d\r\n", port, rc);
-      pbuf_free(om);
-    } else {
-      printf("Packet sent on port %u\r\n", port);
-    }        
-  }
 ```
 
 # Grafana and Roblox
