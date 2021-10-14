@@ -462,6 +462,10 @@ CBOR Output: 11 bytes
 
 Let's check the transmitted Sensor Data with Grafana and Roblox.
 
+![Visualising The Things Network Sensor Data with Grafana](https://lupyuen.github.io/images/grafana-flow.jpg)
+
+[(Source)](https://lupyuen.github.io/articles/grafana)
+
 # Grafana and Roblox
 
 In an earlier article we have configured __Grafana__ (the open source visualisation tool) to read Sensor Data from __The Things Network__. And chart the Sensor Data in real time...

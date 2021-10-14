@@ -1416,7 +1416,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  We may also use BL602 ADC HAL to read the __BL602 Internal Temperature Sensor__...
 
-    -   [Read BL602 Internal Temperature Sensor via ADC Low Level HAL](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282)
+    [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
 
 1.  Is there a __simpler way to code ADC Firmware__ in C?
 
