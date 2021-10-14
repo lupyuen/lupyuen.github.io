@@ -137,14 +137,21 @@ Returned Temperature = 43 Celsius</code></pre></div><h2 id="quick-but-inaccurate
 <p>We discover <strong>two issues with the Quick Way</strong> of reading the Internal Temperature Sensor…</p>
 <ol>
 <li>
-<p>TODO: First result is way too low</p>
+<p>First Result is <strong>way too low</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>temperature = -90.932541 Celsius
+Returned Temperature = -90 Celsius</code></pre></div>
+<p>(Workaround: Discard the first result returned by <strong>bl_tsen_adc_get</strong>)</p>
 </li>
 <li>
-<p>TODO: Float</p>
+<p>According to the internal log, the temperature is a <strong>Floating-Point Number</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>temperature = 43.467045 Celsius
-Returned Temperature = 43 Celsius</code></pre></div></li>
+Returned Temperature = 43 Celsius</code></pre></div>
+<p>But the returned value is a <strong>Truncated Integer!</strong></p>
+<p>(Sorry, no workaround for this)</p>
+</li>
 </ol>
-<p>TODO: Quick but inaccurate</p>
+<p>Yep our Quick Way is also the <strong>Inaccurate Way</strong>!</p>
+<p>Let’s fix both issues.</p>
 <p><img src="https://lupyuen.github.io/images/tsen-output3.png" alt="Reading the Internal Temperatue Sensor the Quick Way" /></p>
 <h1 id="the-accurate-way" class="section-header"><a href="#the-accurate-way">3 The Accurate Way</a></h1>
 <p>TODO</p>
