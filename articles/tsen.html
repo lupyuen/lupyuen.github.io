@@ -327,6 +327,8 @@ Returned Temperature = 43.596027 Celsius</code></pre></div>
 <p>(Because we’re not expecting an acknowledgement)</p>
 </li>
 </ul>
+<p><a href="https://lupyuen.github.io/articles/cbor">(More about CBOR)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ttn">(More about The Things Network)</a></p>
 <p><img src="https://lupyuen.github.io/images/tsen-command2.png" alt="Transmit internal temperature to LoRaWAN" /></p>
 <h2 id="lorawan-command" class="section-header"><a href="#lorawan-command">4.1 LoRaWAN Command</a></h2>
 <p><strong>las_app_tx_tsen</strong> is defined like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227">pinedio_lorawan/lorawan.c</a></p>
@@ -370,14 +372,14 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
 <p>Next we <strong>scale up the temperature 100 times</strong> and truncate as Integer…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Scale the temperature up 100 times and truncate as integer:
     //  12.34 ºC becomes 1234
-    int16_t t = temp * 100;
-
-    //  Omitted: Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
-    uint8_t output[50];
-    ...</code></pre></div>
+    int16_t t = temp * 100;</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Because encoding the temperature as <code>1234</code> requires fewer bytes than <code>12.34</code>)</a></p>
 <p>We encode the temperature (and light level) with CBOR and <strong>transmit as a LoRaWAN message</strong>…</p>
-<div class="example-wrap"><pre class="language-c"><code>    //  Allocate a pbuf
+<div class="example-wrap"><pre class="language-c"><code>    //  Omitted: Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
+    uint8_t output[50];
+    ...
+    
+    //  Allocate a pbuf
     struct pbuf *om = lora_pkt_alloc(output_len);
 
     //  Copy the encoded CBOR into the pbuf
