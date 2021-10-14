@@ -310,6 +310,22 @@ TODO
 las_app_tx_tsen 2 0 4000 10 60
 ```
 
+This means...
+
+-   Transmit to __LoRaWAN Port 2__
+
+-   That contains the values __`t`__ (Internal Temperature) and __`l=4000`__ (Light Level)
+
+    (Encoded with CBOR)
+
+-   `0` means that this is an __Unconfirmed Message__
+
+    (Because we're not expecting an acknowledgement)
+
+-   Transmit __`10` times__
+
+-   At intervals of __`60` seconds__
+
 TODO
 
 ![](https://lupyuen.github.io/images/tsen-command2.png)
@@ -383,6 +399,49 @@ TODO
     //  Send the pbuf
     rc = lora_app_port_send(port, mcps_type, om);
 ```
+
+Let's build, flash and run the updated LoRaWAN Firmware...
+
+-   [__customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan)
+
+Enter this command...
+
+```bash
+las_app_tx_tsen 2 0 4000 10 60
+```
+
+This means...
+
+-   Transmit to __LoRaWAN Port 2__
+
+-   That contains the values __`t`__ (Internal Temperature) and __`l=4000`__ (Light Level)
+
+    (Encoded with CBOR)
+
+-   `0` means that this is an __Unconfirmed Message__
+
+    (Because we're not expecting an acknowledgement)
+
+-   Transmit __`10` times__
+
+-   At intervals of __`60` seconds__
+
+We should see the Internal Temperature transmitted over LoRaWAN every 60 seconds...
+
+```text
+temperature = 44.885849 Celsius
+Encode CBOR: { t: 4488, l: 4000 }
+CBOR Output: 11 bytes
+  0xa2 0x61 0x74 0x19 0x11 0x88 0x61 0x6c 0x19 0x0f 0xa0
+  ...
+temperature = 47.207531 Celsius
+Encode CBOR: { t: 4720, l: 4000 }
+CBOR Output: 11 bytes
+  0xa2 0x61 0x74 0x19 0x12 0x70 0x61 0x6c 0x19 0x0f 0xa0
+  ...
+```
+
+[(See the complete log)](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan#output-log)
 
 # Grafana and Roblox
 
