@@ -328,6 +328,10 @@ Which means...
 
     (Because we're not expecting an acknowledgement)
 
+[(More about CBOR)](https://lupyuen.github.io/articles/cbor)
+
+[(More about The Things Network)](https://lupyuen.github.io/articles/ttn)
+
 ![Transmit internal temperature to LoRaWAN](https://lupyuen.github.io/images/tsen-command2.png)
 
 ## LoRaWAN Command
@@ -386,10 +390,6 @@ Next we __scale up the temperature 100 times__ and truncate as Integer...
     //  Scale the temperature up 100 times and truncate as integer:
     //  12.34 ºC becomes 1234
     int16_t t = temp * 100;
-
-    //  Omitted: Encode into CBOR for { "t": ????, "l": ???? }
-    uint8_t output[50];
-    ...
 ```
 
 [(Because encoding the temperature as `1234` requires fewer bytes than `12.34`)](https://lupyuen.github.io/articles/cbor#floating-point-numbers)
@@ -397,6 +397,10 @@ Next we __scale up the temperature 100 times__ and truncate as Integer...
 We encode the temperature (and light level) with CBOR and __transmit as a LoRaWAN message__...
 
 ```c
+    //  Omitted: Encode into CBOR for { "t": ????, "l": ???? }
+    uint8_t output[50];
+    ...
+    
     //  Allocate a pbuf
     struct pbuf *om = lora_pkt_alloc(output_len);
 
