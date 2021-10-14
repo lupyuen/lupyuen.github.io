@@ -68,7 +68,8 @@
 <li><a href="#wheres-the-internal-temperature-sensor">1 Where’s the Internal Temperature Sensor?</a><ul></ul></li>
 <li><a href="#the-quick-way">2 The Quick Way</a><ul>
 <li><a href="#quick-but-inaccurate">2.1 Quick But Inaccurate</a><ul></ul></li></ul></li>
-<li><a href="#the-accurate-way">3 The Accurate Way</a><ul></ul></li>
+<li><a href="#the-accurate-way">3 The Accurate Way</a><ul>
+<li><a href="#read-temperature-as-float">3.1 Read Temperature as Float</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a><ul></ul></li>
 <li><a href="#grafana-and-roblox">5 Grafana and Roblox</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
@@ -154,8 +155,18 @@ Returned Temperature = 43 Celsius</code></pre></div>
 <p>Let’s fix both issues.</p>
 <p><img src="https://lupyuen.github.io/images/tsen-output3.png" alt="Reading the Internal Temperatue Sensor the Quick Way" /></p>
 <h1 id="the-accurate-way" class="section-header"><a href="#the-accurate-way">3 The Accurate Way</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L113">pinedio_tsen/demo.c</a></p>
+<p>To read the Internal Temperature Sensor the <strong>Accurate Way</strong>, we copy the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282"><strong>bl_tsen_adc_get</strong></a> function and <strong>change two things</strong>…</p>
+<ol>
+<li>
+<p><strong>Wait a while</strong> as we initialise the ADC for the first time</p>
+<p>(100 milliseconds)</p>
+</li>
+<li>
+<p><strong>Return the temperature as Float</strong></p>
+<p>(Instead of Integer)</p>
+</li>
+</ol>
+<p>Below is <strong>get_tsen_adc</strong>, our modded function with the fixes: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109">pinedio_tsen/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_adc.h&gt;     //  For BL602 ADC HAL
 #include &lt;bl602_adc.h&gt;  //  For BL602 ADC Standard Driver
 #include &lt;bl602_glb.h&gt;  //  For BL602 Global Register Standard Driver
@@ -165,14 +176,16 @@ Returned Temperature = 43 Celsius</code></pre></div>
 /// Read the Internal Temperature Sensor as Float. Returns 0 if successful.
 /// Based on bl_tsen_adc_get in https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282
 static int get_tsen_adc(
-    float *temp,      //  Pointer to float to store the temperature
-    uint8_t log_flag  //  0 to disable logging, 1 to enable logging
+  float *temp,      //  Pointer to float to store the temperature
+  uint8_t log_flag  //  0 to disable logging, 1 to enable logging
 ) {
   assert(temp != NULL);
   static uint16_t tsen_offset = 0xFFFF;
   float val = 0.0;
 
+  //  If the offset has not been fetched...
   if (0xFFFF == tsen_offset) {
+    //  Define the ADC configuration
     tsen_offset = 0;
     ADC_CFG_Type adcCfg = {
       .v18Sel=ADC_V18_SEL_1P82V,                /*!&lt; ADC 1.8V select */
@@ -189,44 +202,55 @@ static int get_tsen_adc(
       .offsetCalibEn=0,                         /*!&lt; Offset calibration enable */
       .offsetCalibVal=0,                        /*!&lt; Offset calibration value */
     };
-
     ADC_FIFO_Cfg_Type adcFifoCfg = {
       .fifoThreshold = ADC_FIFO_THRESHOLD_1,
       .dmaEn = DISABLE,
     };
 
+    //  Enable and reset the ADC
     GLB_Set_ADC_CLK(ENABLE,GLB_ADC_CLK_96M, 7);
-
     ADC_Disable();
     ADC_Enable();
-
     ADC_Reset();
 
+    //  Configure the ADC and Internal Temperature Sensor
     ADC_Init(&amp;adcCfg);
     ADC_Channel_Config(ADC_CHAN_TSEN_P, ADC_CHAN_GND, 0);
     ADC_Tsen_Init(ADC_TSEN_MOD_INTERNAL_DIODE);
-
     ADC_FIFO_Cfg(&amp;adcFifoCfg);
 
-    if (ADC_Trim_TSEN(&amp;tsen_offset) == ERROR) {
-      printf(&quot;read efuse data failed\r\n&quot;);
-    }
-    assert(ADC_Trim_TSEN(&amp;tsen_offset) != ERROR);
+    //  Fetch the offset
+    BL_Err_Type rc = ADC_Trim_TSEN(&amp;tsen_offset);
+    assert(rc != ERROR);  //  Read efuse data failed
 
     //  Must wait 100 milliseconds or returned temperature will be negative
     vTaskDelay(100 / portTICK_PERIOD_MS);
   }
+  //  Read the temperature based on the offset
   val = TSEN_Get_Temp(tsen_offset);
   if (log_flag) {
     printf(&quot;offset = %d\r\n&quot;, tsen_offset);
     printf(&quot;temperature = %f Celsius\r\n&quot;, val);
   }
-
-  if (temp) {
-    *temp = val;
-  }
+  //  Return the temperature
+  *temp = val;
   return 0;
 }</code></pre></div>
+<p>Note that <strong>get_tsen_adc</strong> now returns the temperature as <strong>Float</strong> (instead of Integer)…</p>
+<div class="example-wrap"><pre class="language-c"><code>static int get_tsen_adc(
+  float *temp,      //  Pointer to float to store the temperature
+  uint8_t log_flag  //  0 to disable logging, 1 to enable logging
+);</code></pre></div>
+<p>And we added a <strong>100-millisecond delay</strong> when initialising the ADC for the first time…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  If the offset has not been fetched...
+if (0xFFFF == tsen_offset) {
+  ...
+  //  Must wait 100 milliseconds or 
+  //  returned temperature will be negative
+  vTaskDelay(100 / portTICK_PERIOD_MS);</code></pre></div>
+<p>Let’s call <strong>get_tsen_adc</strong> now.</p>
+<p><img src="https://lupyuen.github.io/images/tsen-code5.png" alt="Reading the Internal Temperatue Sensor the Accurate Way" /></p>
+<h2 id="read-temperature-as-float" class="section-header"><a href="#read-temperature-as-float">3.1 Read Temperature as Float</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45">pinedio_tsen/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Read BL602 / BL604&#39;s Internal Temperature Sensor as Float
@@ -244,10 +268,7 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
   //  Show the temperature
   printf(&quot;Returned Temperature = %f Celsius\r\n&quot;, temp);
 }</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/tsen-code5.png" alt="" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/tsen-code6.png" alt="" /></p>
-<p>TODO14</p>
+<p>TODO</p>
 <p>Build, flash and run the demo firmware…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen"><strong>customer_app/pinedio_tsen</strong></a></li>
