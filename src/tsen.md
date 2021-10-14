@@ -22,13 +22,27 @@ The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github
 
 # Where's the Internal Temperature Sensor?
 
-TODO
+The Internal Temperature Sensor is inside the __Analog-to-Digital Converter (ADC)__ on BL602 and BL604...
 
-![](https://lupyuen.github.io/images/tsen-ref3.png)
+![Internal Temperatuer Sensor in ADC](https://lupyuen.github.io/images/tsen-ref3.png)
 
-TODO18
+[(From BL602 / BL604 Reference Manual)](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en)
 
-![](https://lupyuen.github.io/images/tsen-ref4.png)
+The Internal Temperature Sensor behaves like an __Analog Input__. Which we call the ADC to measure.
+
+[(More about BL602 ADC)](https://lupyuen.github.io/articles/adc#bl602-adc-in-c)
+
+The steps for reading the Internal Temperature Sensor seem complicated...
+
+![Reading the Internal Temperatuer Sensor](https://lupyuen.github.io/images/tsen-ref4.png)
+
+[(From BL602 / BL604 Reference Manual)](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en)
+
+But thankfully there's an (undocumented) function in the BL602 IoT SDK that __reads the Internal Temperature Sensor__!
+
+Let's call the function now.
+
+(Internal Temperature Sensors based on ADC are available on many microcontrollers, like [STM32 Blue Pill](https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt))
 
 # The Quick Way
 
