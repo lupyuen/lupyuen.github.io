@@ -66,7 +66,8 @@
     <h1 class="title">Internal Temperature Sensor on BL602</h1>
     <nav id="TOC"><ul>
 <li><a href="#wheres-the-internal-temperature-sensor">1 Where’s the Internal Temperature Sensor?</a><ul></ul></li>
-<li><a href="#the-quick-way">2 The Quick Way</a><ul></ul></li>
+<li><a href="#the-quick-way">2 The Quick Way</a><ul>
+<li><a href="#quick-but-inaccurate">2.1 Quick But Inaccurate</a><ul></ul></li></ul></li>
 <li><a href="#the-accurate-way">3 The Accurate Way</a><ul></ul></li>
 <li><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a><ul></ul></li>
 <li><a href="#grafana-and-roblox">5 Grafana and Roblox</a><ul></ul></li>
@@ -101,10 +102,10 @@
 <p>But thankfully there’s an (undocumented) function in the BL602 IoT SDK that <strong>reads the Internal Temperature Sensor</strong>!</p>
 <p>Let’s call the function now.</p>
 <p>(Internal Temperature Sensors based on ADC are available on many microcontrollers, like <a href="https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt">STM32 Blue Pill</a>)</p>
+<p><img src="https://lupyuen.github.io/images/tsen-code4.png" alt="Reading the Internal Temperatue Sensor the Quick Way" /></p>
 <h1 id="the-quick-way" class="section-header"><a href="#the-quick-way">2 The Quick Way</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29">pinedio_tsen/demo.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_adc.h&gt;     //  For BL602 Internal Temperature Sensor
+<p>To read the Internal Temperature Sensor the Quick Way, we call <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282"><strong>bl_tsen_adc_get</strong></a> from the <strong>ADC Hardware Abstraction Layer (HAL)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29">pinedio_tsen/demo.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_adc.h&gt;  //  For BL602 Internal Temperature Sensor
 
 /// Read BL602 / BL604&#39;s Internal Temperature Sensor as Integer
 void read_tsen(char *buf, int len, int argc, char **argv) {
@@ -121,9 +122,30 @@ void read_tsen(char *buf, int len, int argc, char **argv) {
   //  Show the temperature
   printf(&quot;Returned Temperature = %d Celsius\r\n&quot;, temp);
 }</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/tsen-code4.png" alt="" /></p>
-<p>TODO13</p>
-<p><img src="https://lupyuen.github.io/images/tsen-output3.png" alt="" /></p>
+<p>Let’s build, flash and run the demo firmware…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen"><strong>customer_app/pinedio_tsen</strong></a></li>
+</ul>
+<p>Enter the command…</p>
+<div class="example-wrap"><pre class="language-bash"><code>read_tsen</code></pre></div>
+<p>The first result will look odd…</p>
+<div class="example-wrap"><pre class="language-text"><code>temperature = -90.932541 Celsius
+Returned Temperature = -90 Celsius</code></pre></div>
+<p>Running <strong>read_tsen</strong> again will produce the right result…</p>
+<div class="example-wrap"><pre class="language-text"><code>temperature = 43.467045 Celsius
+Returned Temperature = 43 Celsius</code></pre></div><h2 id="quick-but-inaccurate" class="section-header"><a href="#quick-but-inaccurate">2.1 Quick But Inaccurate</a></h2>
+<p>We discover <strong>two issues with the Quick Way</strong> of reading the Internal Temperature Sensor…</p>
+<ol>
+<li>
+<p>TODO: First result is way too low</p>
+</li>
+<li>
+<p>TODO: Float</p>
+<div class="example-wrap"><pre class="language-text"><code>temperature = 43.467045 Celsius
+Returned Temperature = 43 Celsius</code></pre></div></li>
+</ol>
+<p>TODO: Quick but inaccurate</p>
+<p><img src="https://lupyuen.github.io/images/tsen-output3.png" alt="Reading the Internal Temperatue Sensor the Quick Way" /></p>
 <h1 id="the-accurate-way" class="section-header"><a href="#the-accurate-way">3 The Accurate Way</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L113">pinedio_tsen/demo.c</a></p>
@@ -219,6 +241,24 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/tsen-code6.png" alt="" /></p>
 <p>TODO14</p>
+<p>Build, flash and run the demo firmware…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen"><strong>customer_app/pinedio_tsen</strong></a></li>
+</ul>
+<p>Enter this command a few times…</p>
+<div class="example-wrap"><pre class="language-bash"><code>read_tsen2</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>offset = 2175
+temperature = 44.369923 Celsius
+Returned Temperature = 44.369923 Celsius
+
+offset = 2175
+temperature = 43.596027 Celsius
+Returned Temperature = 43.596027 Celsius
+
+offset = 2175
+temperature = 43.596027 Celsius
+Returned Temperature = 43.596027 Celsius</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/tsen-output4.png" alt="" /></p>
 <h1 id="lorawan-and-the-things-network" class="section-header"><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a></h1>
 <p>TODO</p>
