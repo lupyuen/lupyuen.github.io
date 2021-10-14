@@ -397,8 +397,9 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
 
     //  Send the pbuf
     rc = lora_app_port_send(port, mcps_type, om);</code></pre></div>
-<p>Which goes all the way to <strong>The Things Network</strong>!</p>
-<p>(Assuming that we have configured our LoRaWAN settings for The Things Network)</p>
+<p>Which goes all the way to <strong>The Things Network</strong>! Assuming that we have configured our LoRaWAN settings for The Things Network.</p>
+<p><a href="https://lupyuen.github.io/articles/cbor#encode-sensor-data-with-tinycbor">(CBOR Encoding is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/cbor#send-lorawan-packet">(Sending a LoRaWAN Packet is explained here)</a></p>
 <h2 id="run-the-lorawan-firmware" class="section-header"><a href="#run-the-lorawan-firmware">4.2 Run the LoRaWAN Firmware</a></h2>
 <p>Let’s build, flash and run the updated LoRaWAN Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan"><strong>pinedio_lorawan</strong></a></p>
 <ul>

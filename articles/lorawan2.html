@@ -251,44 +251,19 @@ void SX126xIoInit( void ) {
 <p><img src="https://lupyuen.github.io/images/lorawan2-swap.png" alt="Swap SPI Pins and tweak the SPI Polarity-Phase" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202">(Source)</a></p>
 <h1 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3 Run The Firmware</a></h1>
-<p>We <strong>build and flash the LoRaWAN Firmware</strong> to PineDio Stack with these steps…</p>
+<p>We <strong>build, flash and run the LoRaWAN Firmware</strong> for PineDio Stack with these steps…</p>
 <ol>
 <li>
-<p><a href="https://lupyuen.github.io/articles/pinedio#bl604-blinky"><strong>“BL604 Blinky (Build the Firmware)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/tsen#build-lorawan-firmware"><strong>“Build LoRaWAN Firmware”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/pinedio#flash-firmware-to-bl604"><strong>“Flash Firmware To BL604”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/tsen#flash-lorawan-firmware"><strong>“Flash LoRaWAN Firmware”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/tsen#run-lorawan-firmware"><strong>“Run LoRaWAN Firmware”</strong></a></p>
 </li>
 </ol>
-<p>And these modifications…</p>
-<ul>
-<li>
-<p>Change the branch <strong><code>3wire</code></strong> to <strong><code>pinedio</code></strong></p>
-</li>
-<li>
-<p>Change the firmware <strong><code>pinedio_blinky</code></strong> to <strong><code>pinedio_lorawan</code></strong></p>
-</li>
-<li>
-<p>In the <code>customer_app/sdk_app_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/sdk_app_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
-<div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1</code></pre></div>
-<p>Change “<code>1</code>” to your LoRa Region…</p>
-<table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
-<tr><td align="left">0</td><td align="left">No region</td></tr>
-<tr><td align="left">1</td><td align="left">AS band on 923MHz</td></tr>
-<tr><td align="left">2</td><td align="left">Australian band on 915MHz</td></tr>
-<tr><td align="left">3</td><td align="left">Chinese band on 470MHz</td></tr>
-<tr><td align="left">4</td><td align="left">Chinese band on 779MHz</td></tr>
-<tr><td align="left">5</td><td align="left">European band on 433MHz</td></tr>
-<tr><td align="left">6</td><td align="left">European band on 868MHz</td></tr>
-<tr><td align="left">7</td><td align="left">South Korean band on 920MHz</td></tr>
-<tr><td align="left">8</td><td align="left">India band on 865MHz</td></tr>
-<tr><td align="left">9</td><td align="left">North American band on 915MHz</td></tr>
-<tr><td align="left">10</td><td align="left">North American band on 915MHz with a maximum of 16 channels</td></tr>
-</tbody></table>
-</li>
-</ul>
-<p>Flash and boot the firmware on PineDio Stack.</p>
-<p>Now we run the <strong>LoRaWAN commands</strong> to…</p>
+<p>Now we enter the <strong>LoRaWAN commands</strong> to…</p>
 <ol>
 <li>
 <p><strong>Join a LoRaWAN Network</strong></p>
