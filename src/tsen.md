@@ -400,7 +400,7 @@ We encode the temperature (and light level) with CBOR and __transmit as a LoRaWA
     //  Omitted: Encode into CBOR for { "t": ????, "l": ???? }
     uint8_t output[50];
     ...
-    
+
     //  Allocate a pbuf
     struct pbuf *om = lora_pkt_alloc(output_len);
 
@@ -460,7 +460,7 @@ CBOR Output: 11 bytes
 
 [(See the complete log)](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan#output-log)
 
-TODO
+Let's check the transmitted Sensor Data with Grafana and Roblox.
 
 # Grafana and Roblox
 
