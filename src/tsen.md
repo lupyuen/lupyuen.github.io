@@ -126,9 +126,17 @@ Let's fix both issues.
 
 # The Accurate Way
 
-TODO
+To read the Internal Temperature Sensor the __Accurate Way__, we copy the [__bl_tsen_adc_get__](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282) function and __change two things__...
 
-From [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L113)
+1.  __Wait a while__ as we initialise the ADC for the first time
+
+    (100 milliseconds)
+
+1.  __Return the temperature as Float__
+
+    (Instead of Integer)
+
+Below is __get_tsen_adc__, our modded function with the fixes: [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109)
 
 ```c
 #include <bl_adc.h>     //  For BL602 ADC HAL
@@ -140,14 +148,16 @@ From [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/custo
 /// Read the Internal Temperature Sensor as Float. Returns 0 if successful.
 /// Based on bl_tsen_adc_get in https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282
 static int get_tsen_adc(
-    float *temp,      //  Pointer to float to store the temperature
-    uint8_t log_flag  //  0 to disable logging, 1 to enable logging
+  float *temp,      //  Pointer to float to store the temperature
+  uint8_t log_flag  //  0 to disable logging, 1 to enable logging
 ) {
   assert(temp != NULL);
   static uint16_t tsen_offset = 0xFFFF;
   float val = 0.0;
 
+  //  If the offset has not been fetched...
   if (0xFFFF == tsen_offset) {
+    //  Define the ADC configuration
     tsen_offset = 0;
     ADC_CFG_Type adcCfg = {
       .v18Sel=ADC_V18_SEL_1P82V,                /*!< ADC 1.8V select */
@@ -164,45 +174,67 @@ static int get_tsen_adc(
       .offsetCalibEn=0,                         /*!< Offset calibration enable */
       .offsetCalibVal=0,                        /*!< Offset calibration value */
     };
-
     ADC_FIFO_Cfg_Type adcFifoCfg = {
       .fifoThreshold = ADC_FIFO_THRESHOLD_1,
       .dmaEn = DISABLE,
     };
 
+    //  Enable and reset the ADC
     GLB_Set_ADC_CLK(ENABLE,GLB_ADC_CLK_96M, 7);
-
     ADC_Disable();
     ADC_Enable();
-
     ADC_Reset();
 
+    //  Configure the ADC and Internal Temperature Sensor
     ADC_Init(&adcCfg);
     ADC_Channel_Config(ADC_CHAN_TSEN_P, ADC_CHAN_GND, 0);
     ADC_Tsen_Init(ADC_TSEN_MOD_INTERNAL_DIODE);
-
     ADC_FIFO_Cfg(&adcFifoCfg);
 
-    if (ADC_Trim_TSEN(&tsen_offset) == ERROR) {
-      printf("read efuse data failed\r\n");
-    }
-    assert(ADC_Trim_TSEN(&tsen_offset) != ERROR);
+    //  Fetch the offset
+    BL_Err_Type rc = ADC_Trim_TSEN(&tsen_offset);
+    assert(rc != ERROR);  //  Read efuse data failed
 
     //  Must wait 100 milliseconds or returned temperature will be negative
     vTaskDelay(100 / portTICK_PERIOD_MS);
   }
+  //  Read the temperature based on the offset
   val = TSEN_Get_Temp(tsen_offset);
   if (log_flag) {
     printf("offset = %d\r\n", tsen_offset);
     printf("temperature = %f Celsius\r\n", val);
   }
-
-  if (temp) {
-    *temp = val;
-  }
+  //  Return the temperature
+  *temp = val;
   return 0;
 }
 ```
+
+Note that __get_tsen_adc__ now returns the temperature as __Float__ (instead of Integer)...
+
+```c
+static int get_tsen_adc(
+  float *temp,      //  Pointer to float to store the temperature
+  uint8_t log_flag  //  0 to disable logging, 1 to enable logging
+);
+```
+
+And we added a __100-millisecond delay__ when initialising the ADC for the first time...
+
+```c
+//  If the offset has not been fetched...
+if (0xFFFF == tsen_offset) {
+  ...
+  //  Must wait 100 milliseconds or 
+  //  returned temperature will be negative
+  vTaskDelay(100 / portTICK_PERIOD_MS);
+```
+
+Let's call __get_tsen_adc__ now.
+
+![Reading the Internal Temperatue Sensor the Accurate Way](https://lupyuen.github.io/images/tsen-code5.png)
+
+## Read Temperature as Float
 
 TODO
 
@@ -226,13 +258,7 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-![](https://lupyuen.github.io/images/tsen-code5.png)
-
-TODO6
-
-![](https://lupyuen.github.io/images/tsen-code6.png)
-
-TODO14
+TODO
 
 Build, flash and run the demo firmware...
 
