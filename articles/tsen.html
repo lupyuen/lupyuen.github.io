@@ -129,7 +129,7 @@ void read_tsen(char *buf, int len, int argc, char **argv) {
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen"><strong>customer_app/pinedio_tsen</strong></a></li>
 </ul>
-<p>Enter the command…</p>
+<p>At the BL602 / BL604 Command Prompt, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>read_tsen</code></pre></div>
 <p>The first result will look odd…</p>
 <div class="example-wrap"><pre class="language-text"><code>temperature = -90.932541 Celsius
@@ -285,7 +285,7 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen"><strong>customer_app/pinedio_tsen</strong></a></li>
 </ul>
-<p>Enter this command a few times…</p>
+<p>At the BL602 / BL604 Command Prompt, enter this command a few times…</p>
 <div class="example-wrap"><pre class="language-bash"><code>read_tsen2</code></pre></div>
 <p>The results look consistent…</p>
 <div class="example-wrap"><pre class="language-text"><code>offset = 2175
@@ -351,9 +351,11 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
 
   //  Get interval
   uint16_t interval = parse_ull_bounds(argv[5], 0, 65535, &amp;rc);</code></pre></div>
-<p>TODO</p>
+<p>We begin by fetching the <strong>command-line arguments</strong>.</p>
+<p>For each message that we shall transmit…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Repeat count times
   for (int i = 0; i &lt; count; i++) {
+
     //  Wait for interval seconds
     if (i &gt; 0) { vTaskDelay(interval * 1000 / portTICK_PERIOD_MS); }
 
@@ -364,7 +366,8 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
       1       //  0 to disable logging, 1 to enable logging
     );
     assert(rc == 0);</code></pre></div>
-<p>TODO</p>
+<p>We <strong>read the Internal Temperature Sensor</strong> as a Float.</p>
+<p>Next we <strong>scale up the temperature 100 times</strong> and truncate as Integer…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Scale the temperature up 100 times and truncate as integer:
     //  12.34 ºC becomes 1234
     int16_t t = temp * 100;
@@ -372,7 +375,8 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
     //  Omitted: Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
     uint8_t output[50];
     ...</code></pre></div>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Because encoding the temperature as <code>1234</code> requires fewer bytes than <code>12.34</code>)</a></p>
+<p>We encode the temperature (and light level) with CBOR and <strong>transmit as a LoRaWAN message</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Allocate a pbuf
     struct pbuf *om = lora_pkt_alloc(output_len);
 
@@ -380,12 +384,15 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
     rc = pbuf_copyinto(om, 0, output, output_len);
 
     //  Send the pbuf
-    rc = lora_app_port_send(port, mcps_type, om);</code></pre></div><h2 id="run-the-lorawan-firmware" class="section-header"><a href="#run-the-lorawan-firmware">4.2 Run the LoRaWAN Firmware</a></h2>
+    rc = lora_app_port_send(port, mcps_type, om);</code></pre></div>
+<p>Which goes all the way to <strong>The Things Network</strong>!</p>
+<p>(Assuming that we have configured our LoRaWAN settings for The Things Network)</p>
+<h2 id="run-the-lorawan-firmware" class="section-header"><a href="#run-the-lorawan-firmware">4.2 Run the LoRaWAN Firmware</a></h2>
 <p>Let’s build, flash and run the updated LoRaWAN Firmware…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan"><strong>customer_app/pinedio_lorawan</strong></a></li>
 </ul>
-<p>Enter this command…</p>
+<p>At the BL602 / BL604 Command Prompt, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
 <p>This means…</p>
 <ul>
@@ -419,6 +426,7 @@ CBOR Output: 11 bytes
   0xa2 0x61 0x74 0x19 0x12 0x70 0x61 0x6c 0x19 0x0f 0xa0
   ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan#output-log">(See the complete log)</a></p>
+<p>TODO</p>
 <h1 id="grafana-and-roblox" class="section-header"><a href="#grafana-and-roblox">5 Grafana and Roblox</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/tsen-grafana2.png" alt="" /></p>
