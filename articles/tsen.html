@@ -251,8 +251,19 @@ if (0xFFFF == tsen_offset) {
 <p>Let’s call <strong>get_tsen_adc</strong> now.</p>
 <p><img src="https://lupyuen.github.io/images/tsen-code5.png" alt="Reading the Internal Temperatue Sensor the Accurate Way" /></p>
 <h2 id="read-temperature-as-float" class="section-header"><a href="#read-temperature-as-float">3.1 Read Temperature as Float</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45">pinedio_tsen/demo.c</a></p>
+<p>We’re ready to read the Internal Temperature Sensor the <strong>Accurate Way</strong>!</p>
+<p>The code below looks similar to the earlier code except…</p>
+<ol>
+<li>
+<p>We now call our modded function <strong>get_tsen_adc</strong></p>
+<p>(Instead of the BL602 ADC HAL)</p>
+</li>
+<li>
+<p>Which <strong>returns a Float</strong></p>
+<p>(Instead of Integer)</p>
+</li>
+</ol>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45">pinedio_tsen/demo.c</a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Read BL602 / BL604&#39;s Internal Temperature Sensor as Float
 void read_tsen2(char *buf, int len, int argc, char **argv) {
   //  Temperature in Celsius
@@ -268,14 +279,13 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
   //  Show the temperature
   printf(&quot;Returned Temperature = %f Celsius\r\n&quot;, temp);
 }</code></pre></div>
-<p>TODO</p>
-<p>Build, flash and run the demo firmware…</p>
+<p>Let’s build, flash and run the demo firmware…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen"><strong>customer_app/pinedio_tsen</strong></a></li>
 </ul>
 <p>Enter this command a few times…</p>
 <div class="example-wrap"><pre class="language-bash"><code>read_tsen2</code></pre></div>
-<p>TODO</p>
+<p>The results look consistent…</p>
 <div class="example-wrap"><pre class="language-text"><code>offset = 2175
 temperature = 44.369923 Celsius
 Returned Temperature = 44.369923 Celsius
@@ -287,7 +297,10 @@ Returned Temperature = 43.596027 Celsius
 offset = 2175
 temperature = 43.596027 Celsius
 Returned Temperature = 43.596027 Celsius</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/tsen-output4.png" alt="" /></p>
+<p>(No more sub-zero temperatures!)</p>
+<p>And the temperature is returned as Float.</p>
+<p>(No more Integers!)</p>
+<p><img src="https://lupyuen.github.io/images/tsen-output4.png" alt="Reading the Internal Temperatue Sensor the Accurate Way" /></p>
 <h1 id="lorawan-and-the-things-network" class="section-header"><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
