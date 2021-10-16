@@ -520,6 +520,8 @@ Today we have turned BL602 and BL604 into a basic __IoT Sensor Device__ that tra
 
 In the next article we shall revisit Grafana and The Things Network... And build a better __IoT Monitoring System__ that stores the [__Sensor Data with Prometheus__](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus).
 
+[(Follow the updates in this Twitter Thread)](https://twitter.com/MisterTechBlog/status/1448846003608567809)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
