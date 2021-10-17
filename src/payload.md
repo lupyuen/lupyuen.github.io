@@ -10,15 +10,33 @@ And our device __transmits Sensor Data__ to The Things Network in __CBOR Format_
 
 -   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
 
-_What's the best way to process the CBOR Sensor Data transmitted by our device?_
+> ![IoT Sensor Device transmits CBOR Sensor Data to The Things Network](https://lupyuen.github.io/images/grafana-flow3.jpg)
 
-TODO6
+_How shall we process the CBOR Sensor Data transmitted by our device?_
 
-![](https://lupyuen.github.io/images/payload-flow3.jpg)
+We could let __each Application fetch and decode__ the CBOR Sensor Data from The Things Network...
+
+![Each Application fetches and decodes the CBOR Sensor Data from The Things Network](https://lupyuen.github.io/images/payload-flow3.jpg)
+
+Like we've done for Grafana and Roblox...
+
+-   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
+
+-   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox)
+
+_Erm this solution doesn't scale well if we have many Applications..._
+
+Exactly! For every Application that we add (like Prometheus), we would need to __decode the CBOR Sensor Data again and again__.
+
+_What's the right solution then?_
+
+The proper solution is to configure a __Payload Formatter__ at The Things Network that will __decode our CBOR Sensor Data once__...
+
+![CBOR Payload Formatter for The Things Network](https://lupyuen.github.io/images/payload-title.jpg)
+
+And __distribute the Decoded Sensor Data__ to all Applications.
 
 TODO
-
-![](https://lupyuen.github.io/images/payload-title.jpg)
 
 # TODO
 
