@@ -70,6 +70,8 @@ TODO
 
 ![](https://lupyuen.github.io/images/payload-config2.png)
 
+![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
+
 # Run Payload Formatter
 
 TODO

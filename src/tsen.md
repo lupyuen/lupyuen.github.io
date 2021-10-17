@@ -26,7 +26,7 @@ The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github
 
 The Internal Temperature Sensor is inside the __Analog-to-Digital Converter (ADC)__ on BL602 and BL604...
 
-![Internal Temperatuer Sensor in ADC](https://lupyuen.github.io/images/tsen-ref3.png)
+![Internal Temperature Sensor in ADC](https://lupyuen.github.io/images/tsen-ref3.png)
 
 [(From BL602 / BL604 Reference Manual)](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en)
 
@@ -36,7 +36,7 @@ The Internal Temperature Sensor behaves like an __Analog Input__. Which we call 
 
 The steps for reading the Internal Temperature Sensor seem complicated...
 
-![Reading the Internal Temperatuer Sensor](https://lupyuen.github.io/images/tsen-ref4.png)
+![Reading the Internal Temperature Sensor](https://lupyuen.github.io/images/tsen-ref4.png)
 
 [(From BL602 / BL604 Reference Manual)](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en)
 
@@ -46,7 +46,7 @@ Let's call the function now.
 
 (Internal Temperature Sensors based on ADC are available on many microcontrollers, like [STM32 Blue Pill](https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt))
 
-![Reading the Internal Temperatue Sensor the Quick Way](https://lupyuen.github.io/images/tsen-code4.png)
+![Reading the Internal Temperature Sensor the Quick Way](https://lupyuen.github.io/images/tsen-code4.png)
 
 # The Quick Way
 
@@ -124,7 +124,7 @@ Yep our Quick Way is also the __Inaccurate Way__!
 
 Let's fix both issues.
 
-![Reading the Internal Temperatue Sensor the Quick Way](https://lupyuen.github.io/images/tsen-output3.png)
+![Reading the Internal Temperature Sensor the Quick Way](https://lupyuen.github.io/images/tsen-output3.png)
 
 # The Accurate Way
 
@@ -234,7 +234,7 @@ if (0xFFFF == tsen_offset) {
 
 Let's call __get_tsen_adc__ now.
 
-![Reading the Internal Temperatue Sensor the Accurate Way](https://lupyuen.github.io/images/tsen-code5.png)
+![Reading the Internal Temperature Sensor the Accurate Way](https://lupyuen.github.io/images/tsen-code5.png)
 
 ## Read Temperature as Float
 
@@ -302,7 +302,7 @@ And the temperature is returned as Float.
 
 (No more Integers!)
 
-![Reading the Internal Temperatue Sensor the Accurate Way](https://lupyuen.github.io/images/tsen-output4.png)
+![Reading the Internal Temperature Sensor the Accurate Way](https://lupyuen.github.io/images/tsen-output4.png)
 
 # LoRaWAN and The Things Network
 
