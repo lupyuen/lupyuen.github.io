@@ -38,21 +38,119 @@ And __distribute the Decoded Sensor Data__ to all Applications.
 
 Read on to learn how we created a __CBOR Payload Formatter__ for The Things Network.
 
+![Payload Formatter](https://lupyuen.github.io/images/payload-formatter.png)
+
+[(Source)](https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/)
+
 # What's a Payload Formatter?
+
+A __Payload Formatter is JavaScript Code__ that runs on the __servers at The Things Network__ to decode our LoRaWAN Message Payload. (Which contains our CBOR-Encoded Sensor Data)
+
+Inside the Payload Formatter we need to provide a JavaScript Function named __decodeUplink__ that will decode our LoRaWAN Message Payload...
+
+```javascript
+//  Decode the Payload in the Uplink Message
+function decodeUplink(input) {
+  //  `input.fPort` contains the LoRaWAN Port Number (like 2)
+  //  `input.bytes` contains the LoRaWAN Message Payload bytes like...
+  //  [ 0xa2, 0x61, 0x74, 0x19, 0x12, 0x3d, 0x61, 0x6c, 0x19, 0x0f, 0xa0 ]
+
+  //  TODO: Data and warnings to be returned to The Things Network
+  var data     = { "t": 4669, "l": 4000 };  
+  var warnings = [];
+
+  //  Return the decoded data and warnings
+  return {
+    data:     data,
+    warnings: warnings
+  };
+}
+```
+
+In the above example we return the Decoded Data as...
+
+```json
+{
+    "t": 4669,
+    "l": 4000
+}
+```
+
+(Let's pretend that's the Sensor Data for our Temperature Sensor and Light Sensor)
+
+_Can we run all kinds of JavaScript in a Payload Formatter?_
 
 TODO
 
-![](https://lupyuen.github.io/images/payload-formatter.png)
+[__JavaScript (ECMAScript) 5.1__](https://www.ecma-international.org/ecma-262/5.1/) a.k.a "Plain Old JavaScript"
 
-TODO9
+let, const and arrow functions (`x => {...}`)
 
-![](https://lupyuen.github.io/images/payload-formatter2.png)
+For security, the runtime does not support modules, 
 
-[Helium Payload Decoder](https://docs.helium.com/use-the-network/console/functions/)
+__require(...)__
+
+__import(...)__
+
+Input / output
+
+__console.log(...)__ will fail!
+
+[(More about Payload Formatters)](https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/)
+
+[(Helium has a similar Payload Decoder)](https://docs.helium.com/use-the-network/console/functions/)
+
+![decodeUplink Function](https://lupyuen.github.io/images/payload-formatter2.png)
+
+[(Source)](https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/#decode-uplink-example-the-things-node)
 
 # CBOR Payload Formatter
 
 TODO
+
+From [`cbor.js`](https://github.com/lupyuen/cbor-the-things-network/blob/master/cbor.js#L410-L441)
+
+```javascript
+//  The Things Network Payload Formatter for CBOR
+//  Based on https://github.com/paroga/cbor-js/blob/master/cbor.js
+(function(global, undefined) { 
+    function decode(...) { ... }
+})(this);
+
+//  Decode the CBOR Payload in the Uplink Message
+function decodeUplink(input) {
+  //  Data and warnings to be returned to The Things Network
+  var data = {};  
+  var warnings = [];
+
+  //  Catch any exceptions and return them as warnings.
+  try {
+    //  Convert payload bytes to ArrayBuffer.
+    //  `input.bytes` contains CBOR bytes like...
+    //  [ 0xa2, 0x61, 0x74, 0x19, 0x12, 0x3d, 0x61, 0x6c, 0x19, 0x0f, 0xa0 ]
+    var array = new Uint8Array(input.bytes);
+    var buf = array.buffer;
+
+    //  Decode the ArrayBuffer
+    data = CBOR.decode(buf);
+
+    //  `data` contains Key-Value Pairs like...
+    //  { "l": 4000, "t": 4669 }
+
+  } catch (error) {
+    //  Catch any exceptions and return them as warnings.
+    //  The Things Network will drop the message if we return errors.
+    warnings.push(error);
+  }
+
+  //  Return the decoded data
+  return {
+    data: data,
+    warnings: warnings
+  };
+}
+
+```
 
 ![](https://lupyuen.github.io/images/payload-cbor.png)
 
