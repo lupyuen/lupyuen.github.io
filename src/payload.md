@@ -36,11 +36,23 @@ The proper solution is to configure a __Payload Formatter__ at The Things Networ
 
 And __distribute the Decoded Sensor Data__ to all Applications.
 
+Read on to learn how we created a __CBOR Payload Formatter__ for The Things Network.
+
+# What's a Payload Formatter?
+
 TODO
 
-# TODO
+![](https://lupyuen.github.io/images/payload-formatter.png)
 
-TODO1
+TODO9
+
+![](https://lupyuen.github.io/images/payload-formatter2.png)
+
+[Helium Payload Decoder](https://docs.helium.com/use-the-network/console/functions/)
+
+# CBOR Payload Formatter
+
+TODO
 
 ![](https://lupyuen.github.io/images/payload-cbor.png)
 
@@ -52,19 +64,15 @@ TODO3
 
 ![](https://lupyuen.github.io/images/payload-code4.png)
 
-TODO5
+# Configure Payload Formatter
+
+TODO
 
 ![](https://lupyuen.github.io/images/payload-config2.png)
 
-TODO8
+# Run Payload Formatter
 
-![](https://lupyuen.github.io/images/payload-formatter.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/payload-formatter2.png)
-
-TODO10
+TODO
 
 ![](https://lupyuen.github.io/images/payload-ttn3.png)
 
