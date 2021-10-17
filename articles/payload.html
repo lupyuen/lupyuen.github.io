@@ -122,21 +122,32 @@ function decodeUplink(input) {
     warnings: warnings
   };
 }</code></pre></div>
-<p>In the above example we return the Decoded Data as…</p>
+<p>In the above example we return the <strong>Decoded Data</strong> as…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
     &quot;t&quot;: 4669,
     &quot;l&quot;: 4000
 }</code></pre></div>
 <p>(Let’s pretend that’s the Sensor Data for our Temperature Sensor and Light Sensor)</p>
-<p><em>Can we run all kinds of JavaScript in a Payload Formatter?</em></p>
-<p>TODO</p>
-<p><a href="https://www.ecma-international.org/ecma-262/5.1/"><strong>JavaScript (ECMAScript) 5.1</strong></a> a.k.a “Plain Old JavaScript”</p>
-<p>let, const and arrow functions (<code>x =&gt; {...}</code>)</p>
-<p>For security, the runtime does not support modules, </p>
-<p><strong>require(…)</strong></p>
-<p><strong>import(…)</strong></p>
-<p>Input / output</p>
-<p><strong>console.log(…)</strong> will fail!</p>
+<p><em>Can we run any kind of JavaScript in a Payload Formatter?</em></p>
+<p>Nope, here are the Rules for Squid Game <em>(oops)</em> <strong>Payload Formatter</strong>…</p>
+<ol>
+<li>
+<p>Only <a href="https://www.ecma-international.org/ecma-262/5.1/"><strong>JavaScript (ECMAScript) 5.1</strong></a> is supported</p>
+<p>(a.k.a “Plain Old JavaScript”)</p>
+</li>
+<li>
+<p>Which means we don’t allow <strong>let</strong>, <strong>const</strong> and <strong>Arrow Functions</strong></p>
+<p>(Like <code>x =&gt; {...}</code>)</p>
+</li>
+<li>
+<p><strong>JavaScript Modules</strong> are not supported</p>
+<p>(Like <strong>require</strong> and <strong>import</strong>)</p>
+</li>
+<li>
+<p><strong>Input / Output</strong> are not supported</p>
+<p>(<strong>console.log</strong> will fail!)</p>
+</li>
+</ol>
 <p><a href="https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/">(More about Payload Formatters)</a></p>
 <p><a href="https://docs.helium.com/use-the-network/console/functions/">(Helium has a similar Payload Decoder)</a></p>
 <p><img src="https://lupyuen.github.io/images/payload-formatter2.png" alt="decodeUplink Function" /></p>
