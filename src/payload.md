@@ -67,7 +67,7 @@ function decodeUplink(input) {
 }
 ```
 
-In the above example we return the Decoded Data as...
+In the above example we return the __Decoded Data__ as...
 
 ```json
 {
@@ -78,23 +78,25 @@ In the above example we return the Decoded Data as...
 
 (Let's pretend that's the Sensor Data for our Temperature Sensor and Light Sensor)
 
-_Can we run all kinds of JavaScript in a Payload Formatter?_
+_Can we run any kind of JavaScript in a Payload Formatter?_
 
-TODO
+Nope, here are the Rules for Squid Game _(oops)_ __Payload Formatter__...
 
-[__JavaScript (ECMAScript) 5.1__](https://www.ecma-international.org/ecma-262/5.1/) a.k.a "Plain Old JavaScript"
+1.  Only [__JavaScript (ECMAScript) 5.1__](https://www.ecma-international.org/ecma-262/5.1/) is supported
 
-let, const and arrow functions (`x => {...}`)
+    (a.k.a "Plain Old JavaScript")
 
-For security, the runtime does not support modules, 
+1.  Which means we don't allow __let__, __const__ and __Arrow Functions__
 
-__require(...)__
+    (Like `x => {...}`)
 
-__import(...)__
+1.  __JavaScript Modules__ are not supported
 
-Input / output
+    (Like __require__ and __import__)
 
-__console.log(...)__ will fail!
+1.  __Input / Output__ are not supported
+
+    (__console.log__ will fail!)
 
 [(More about Payload Formatters)](https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/)
 
