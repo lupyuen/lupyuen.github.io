@@ -2,6 +2,20 @@
 
 📝 _24 Oct 2021_
 
+Suppose we have an __IoT Sensor Device__ (like [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio)) connected to __The Things Network__ (via LoRaWAN)...
+
+-   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
+
+And our device __transmits Sensor Data__ to The Things Network in __CBOR Format__ (because it requires fewer bytes than JSON)...
+
+-   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
+
+_What's the best way to process the CBOR Sensor Data transmitted by our device?_
+
+TODO6
+
+![](https://lupyuen.github.io/images/payload-flow3.jpg)
+
 TODO
 
 ![](https://lupyuen.github.io/images/payload-title.jpg)
@@ -23,10 +37,6 @@ TODO3
 TODO5
 
 ![](https://lupyuen.github.io/images/payload-config2.png)
-
-TODO6
-
-![](https://lupyuen.github.io/images/payload-flow3.jpg)
 
 TODO8
 
