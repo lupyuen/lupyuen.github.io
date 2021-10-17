@@ -124,8 +124,8 @@ function decodeUplink(input) {
 }</code></pre></div>
 <p>In the above example we return the <strong>Decoded Data</strong> as…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
-    &quot;t&quot;: 4669,
-    &quot;l&quot;: 4000
+  &quot;t&quot;: 4669,
+  &quot;l&quot;: 4000
 }</code></pre></div>
 <p>(Let’s pretend that’s the Sensor Data for our Temperature Sensor and Light Sensor)</p>
 <p><em>Can we run any kind of JavaScript in a Payload Formatter?</em></p>
@@ -158,7 +158,8 @@ function decodeUplink(input) {
 <div class="example-wrap"><pre class="language-javascript"><code>//  The Things Network Payload Formatter for CBOR
 //  Based on https://github.com/paroga/cbor-js/blob/master/cbor.js
 (function(global, undefined) { 
-    function decode(...) { ... }
+  function decode(...) { ... }
+  ...
 })(this);
 
 //  Decode the CBOR Payload in the Uplink Message
