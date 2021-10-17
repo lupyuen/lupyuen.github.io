@@ -65,9 +65,12 @@
 
     <h1 class="title">CBOR Payload Formatter for The Things Network</h1>
     <nav id="TOC"><ul>
-<li><a href="#todo">1 TODO</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li>
-<li><a href="#notes">3 Notes</a><ul></ul></li></ul></nav><p>📝 <em>24 Oct 2021</em></p>
+<li><a href="#whats-a-payload-formatter">1 What’s a Payload Formatter?</a><ul></ul></li>
+<li><a href="#cbor-payload-formatter">2 CBOR Payload Formatter</a><ul></ul></li>
+<li><a href="#configure-payload-formatter">3 Configure Payload Formatter</a><ul></ul></li>
+<li><a href="#run-payload-formatter">4 Run Payload Formatter</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
+<li><a href="#notes">6 Notes</a><ul></ul></li></ul></nav><p>📝 <em>24 Oct 2021</em></p>
 <p>Suppose we have an <strong>IoT Sensor Device</strong> (like <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>) connected to <strong>The Things Network</strong> (via LoRaWAN)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ttn"><strong>“The Things Network on PineDio Stack BL604 RISC-V Board”</strong></a></li>
@@ -97,27 +100,31 @@
 <p>The proper solution is to configure a <strong>Payload Formatter</strong> at The Things Network that will <strong>decode our CBOR Sensor Data once</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/payload-title.jpg" alt="CBOR Payload Formatter for The Things Network" /></p>
 <p>And <strong>distribute the Decoded Sensor Data</strong> to all Applications.</p>
+<p>Read on to learn how we created a <strong>CBOR Payload Formatter</strong> for The Things Network.</p>
+<h1 id="whats-a-payload-formatter" class="section-header"><a href="#whats-a-payload-formatter">1 What’s a Payload Formatter?</a></h1>
 <p>TODO</p>
-<h1 id="todo" class="section-header"><a href="#todo">1 TODO</a></h1>
-<p>TODO1</p>
+<p><img src="https://lupyuen.github.io/images/payload-formatter.png" alt="" /></p>
+<p>TODO9</p>
+<p><img src="https://lupyuen.github.io/images/payload-formatter2.png" alt="" /></p>
+<p><a href="https://docs.helium.com/use-the-network/console/functions/">Helium Payload Decoder</a></p>
+<h1 id="cbor-payload-formatter" class="section-header"><a href="#cbor-payload-formatter">2 CBOR Payload Formatter</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/payload-cbor.png" alt="" /></p>
 <p>TODO2</p>
 <p><img src="https://lupyuen.github.io/images/payload-code3.png" alt="" /></p>
 <p>TODO3</p>
 <p><img src="https://lupyuen.github.io/images/payload-code4.png" alt="" /></p>
-<p>TODO5</p>
+<h1 id="configure-payload-formatter" class="section-header"><a href="#configure-payload-formatter">3 Configure Payload Formatter</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/payload-config2.png" alt="" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/payload-formatter.png" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/payload-formatter2.png" alt="" /></p>
-<p>TODO10</p>
+<h1 id="run-payload-formatter" class="section-header"><a href="#run-payload-formatter">4 Run Payload Formatter</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/payload-ttn3.png" alt="" /></p>
 <p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/payload-ttn4.png" alt="" /></p>
 <p><img src="https://lupyuen.github.io/images/grafana-flow2.jpg" alt="Storing The Things Network Sensor Data with Prometheus" /></p>
 <p><a href="https://lupyuen.github.io/articles/grafana#store-data-with-prometheus">(Source)</a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">2 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">5 What’s Next</a></h1>
 <p>TODO</p>
 <p>Today we have turned BL602 and BL604 into a basic <strong>IoT Sensor Device</strong> that transmits its Internal Temperature to <strong>LoRaWAN and The Things Network</strong>.</p>
 <p>In the next article we shall revisit Grafana and The Things Network… And build a better <strong>IoT Monitoring System</strong> that stores the <a href="https://lupyuen.github.io/articles/grafana#store-data-with-prometheus"><strong>Sensor Data with Prometheus</strong></a>.</p>
@@ -138,7 +145,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/payload.md"><code>lupyuen.github.io/src/payload.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">3 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">6 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1448846003608567809">this Twitter Thread</a></li>
 </ol>
