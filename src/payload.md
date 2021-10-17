@@ -71,8 +71,8 @@ In the above example we return the __Decoded Data__ as...
 
 ```json
 {
-    "t": 4669,
-    "l": 4000
+  "t": 4669,
+  "l": 4000
 }
 ```
 
@@ -116,7 +116,8 @@ From [`cbor.js`](https://github.com/lupyuen/cbor-the-things-network/blob/master/
 //  The Things Network Payload Formatter for CBOR
 //  Based on https://github.com/paroga/cbor-js/blob/master/cbor.js
 (function(global, undefined) { 
-    function decode(...) { ... }
+  function decode(...) { ... }
+  ...
 })(this);
 
 //  Decode the CBOR Payload in the Uplink Message
