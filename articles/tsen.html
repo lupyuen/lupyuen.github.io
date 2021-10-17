@@ -106,17 +106,17 @@
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <h1 id="wheres-the-internal-temperature-sensor" class="section-header"><a href="#wheres-the-internal-temperature-sensor">1 Where’s the Internal Temperature Sensor?</a></h1>
 <p>The Internal Temperature Sensor is inside the <strong>Analog-to-Digital Converter (ADC)</strong> on BL602 and BL604…</p>
-<p><img src="https://lupyuen.github.io/images/tsen-ref3.png" alt="Internal Temperatuer Sensor in ADC" /></p>
+<p><img src="https://lupyuen.github.io/images/tsen-ref3.png" alt="Internal Temperature Sensor in ADC" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(From BL602 / BL604 Reference Manual)</a></p>
 <p>The Internal Temperature Sensor behaves like an <strong>Analog Input</strong>. Which we call the ADC to measure.</p>
 <p><a href="https://lupyuen.github.io/articles/adc#bl602-adc-in-c">(More about BL602 ADC)</a></p>
 <p>The steps for reading the Internal Temperature Sensor seem complicated…</p>
-<p><img src="https://lupyuen.github.io/images/tsen-ref4.png" alt="Reading the Internal Temperatuer Sensor" /></p>
+<p><img src="https://lupyuen.github.io/images/tsen-ref4.png" alt="Reading the Internal Temperature Sensor" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(From BL602 / BL604 Reference Manual)</a></p>
 <p>But thankfully there’s an (undocumented) function in the BL602 IoT SDK that <strong>reads the Internal Temperature Sensor</strong>!</p>
 <p>Let’s call the function now.</p>
 <p>(Internal Temperature Sensors based on ADC are available on many microcontrollers, like <a href="https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt">STM32 Blue Pill</a>)</p>
-<p><img src="https://lupyuen.github.io/images/tsen-code4.png" alt="Reading the Internal Temperatue Sensor the Quick Way" /></p>
+<p><img src="https://lupyuen.github.io/images/tsen-code4.png" alt="Reading the Internal Temperature Sensor the Quick Way" /></p>
 <h1 id="the-quick-way" class="section-header"><a href="#the-quick-way">2 The Quick Way</a></h1>
 <p>To read the Internal Temperature Sensor the Quick Way, we call <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282"><strong>bl_tsen_adc_get</strong></a> from the <strong>ADC Hardware Abstraction Layer (HAL)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29">pinedio_tsen/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_adc.h&gt;  //  For BL602 Internal Temperature Sensor
@@ -166,7 +166,7 @@ Returned Temperature = 43 Celsius</code></pre></div>
 </ol>
 <p>Yep our Quick Way is also the <strong>Inaccurate Way</strong>!</p>
 <p>Let’s fix both issues.</p>
-<p><img src="https://lupyuen.github.io/images/tsen-output3.png" alt="Reading the Internal Temperatue Sensor the Quick Way" /></p>
+<p><img src="https://lupyuen.github.io/images/tsen-output3.png" alt="Reading the Internal Temperature Sensor the Quick Way" /></p>
 <h1 id="the-accurate-way" class="section-header"><a href="#the-accurate-way">3 The Accurate Way</a></h1>
 <p>To read the Internal Temperature Sensor the <strong>Accurate Way</strong>, we copy the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282"><strong>bl_tsen_adc_get</strong></a> function and <strong>change two things</strong>…</p>
 <ol>
@@ -262,7 +262,7 @@ if (0xFFFF == tsen_offset) {
   //  returned temperature will be negative
   vTaskDelay(100 / portTICK_PERIOD_MS);</code></pre></div>
 <p>Let’s call <strong>get_tsen_adc</strong> now.</p>
-<p><img src="https://lupyuen.github.io/images/tsen-code5.png" alt="Reading the Internal Temperatue Sensor the Accurate Way" /></p>
+<p><img src="https://lupyuen.github.io/images/tsen-code5.png" alt="Reading the Internal Temperature Sensor the Accurate Way" /></p>
 <h2 id="read-temperature-as-float" class="section-header"><a href="#read-temperature-as-float">3.1 Read Temperature as Float</a></h2>
 <p>We’re ready to read the Internal Temperature Sensor the <strong>Accurate Way</strong>!</p>
 <p>The code below looks similar to the earlier code except…</p>
@@ -313,7 +313,7 @@ Returned Temperature = 43.596027 Celsius</code></pre></div>
 <p>(No more Sub-Zero Temperatures!)</p>
 <p>And the temperature is returned as Float.</p>
 <p>(No more Integers!)</p>
-<p><img src="https://lupyuen.github.io/images/tsen-output4.png" alt="Reading the Internal Temperatue Sensor the Accurate Way" /></p>
+<p><img src="https://lupyuen.github.io/images/tsen-output4.png" alt="Reading the Internal Temperature Sensor the Accurate Way" /></p>
 <h1 id="lorawan-and-the-things-network" class="section-header"><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a></h1>
 <p>Since we have an <strong>Onboard Temperature Sensor</strong> (though it runs a little hot), let’s turn BL602 and BL604 into an <strong>IoT Sensor Device</strong> for LoRaWAN and The Things Network!</p>
 <p>We’ll create this LoRaWAN Command for BL602 and BL604…</p>
