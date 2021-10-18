@@ -287,6 +287,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&utm_medium=web2x&context=3)
+
 -   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
