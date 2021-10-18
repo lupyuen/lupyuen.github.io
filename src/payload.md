@@ -205,9 +205,22 @@ And that's how we decode CBOR Sensor Data in our Payload Formatter!
 
 # Configure Payload Formatter
 
-TODO
+Now we __configure The Things Network__ with our Payload Formatter...
 
-![](https://lupyuen.github.io/images/payload-config2.png)
+1.  Log on to The Things Network Console
+
+1.  Click __Applications → (Your Application) → Payload Formatters → Uplink__
+
+    ![Configure Payload Formatter](https://lupyuen.github.io/images/payload-config2.png)
+
+1.  Set the __Formatter Type__ to __JavaScript__
+
+1.  Copy and paste the contents of [__cbor.js__](https://github.com/lupyuen/cbor-the-things-network/blob/master/cbor.js)
+ into the __Formatter Parameter__ box
+
+1.  Click __Save Changes__
+
+Let's test our CBOR Payload Formatter!
 
 ![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
 
