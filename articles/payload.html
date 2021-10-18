@@ -85,7 +85,7 @@
 <p><em>How shall we process the CBOR Sensor Data transmitted by our device?</em></p>
 <p>We could let <strong>each Application fetch and decode</strong> the CBOR Sensor Data from The Things Network…</p>
 <p><img src="https://lupyuen.github.io/images/payload-flow3.jpg" alt="Each Application fetches and decodes the CBOR Sensor Data from The Things Network" /></p>
-<p>Like we’ve done for Grafana and Roblox…</p>
+<p>Each Application would <strong>decode CBOR into JSON</strong> before processing, like we’ve done for Grafana and Roblox…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/grafana"><strong>“Grafana Data Source for The Things Network”</strong></a></p>
@@ -94,12 +94,13 @@
 <p><a href="https://lupyuen.github.io/articles/roblox"><strong>“IoT Digital Twin with Roblox and The Things Network”</strong></a></p>
 </li>
 </ul>
+<p>(Assuming that JSON is supported natively by each Application)</p>
 <p><em>Erm this solution doesn’t scale well if we have many Applications…</em></p>
-<p>Exactly! For every Application that we add (like Prometheus), we would need to <strong>decode the CBOR Sensor Data again and again</strong>.</p>
+<p>Exactly! For every Application that we add (like Prometheus), we would need to <strong>decode the CBOR Sensor Data into JSON again and again</strong>.</p>
 <p><em>What’s the right solution then?</em></p>
-<p>The proper solution is to configure a <strong>Payload Formatter</strong> at The Things Network that will <strong>decode our CBOR Sensor Data once</strong>…</p>
+<p>The proper solution is to configure a <strong>Payload Formatter</strong> at The Things Network that will <strong>decode our CBOR Sensor Data into JSON once</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/payload-title.jpg" alt="CBOR Payload Formatter for The Things Network" /></p>
-<p>And <strong>distribute the Decoded Sensor Data</strong> to all Applications.</p>
+<p>And <strong>distribute the Decoded Sensor Data</strong> (as JSON) to all Applications.</p>
 <p>Read on to learn how we created a <strong>CBOR Payload Formatter</strong> for The Things Network.</p>
 <p><img src="https://lupyuen.github.io/images/payload-formatter.jpg" alt="Payload Formatter" /></p>
 <p><a href="https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/">(Source)</a></p>
