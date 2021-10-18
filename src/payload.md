@@ -277,7 +277,7 @@ Congratulations, we have successfully decoded our CBOR Message Payload in The Th
 
 # What's Next
 
-Now that can decode CBOR Sensor Data in The Things Network, it becomes a lot easier to __ingest the Sensor Data into Prometheus__ (the open source Time Series Database).
+Now that we can decode CBOR Sensor Data in The Things Network, it becomes a lot easier to __ingest the Sensor Data into Prometheus__ (the open source Time Series Database).
 
 In the next article we shall build an __IoT Monitoring System__ that stores the [__Sensor Data with Prometheus__](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus) and visualises the data in a __Grafana Dashboard__. Stay tuned!
 
