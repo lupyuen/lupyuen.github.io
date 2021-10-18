@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>CBOR Payload Formatter for The Things Network</title>
+            <link>https://lupyuen.github.io/articles/payload</link>
+            <description><![CDATA[How we decode CBOR Sensor Data inside The Things Network... With a CBOR Payload Formatter]]></description>
+            <guid>https://lupyuen.github.io/articles/payload</guid>
+            <pubDate>Mon, 18 Oct 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Internal Temperature Sensor on BL602</title>
             <link>https://lupyuen.github.io/articles/tsen</link>
             <description><![CDATA[How we read the Internal Temperature Sensor on the BL602 and BL604 RISC-V SoCs... And transmit to The Things Network]]></description>
