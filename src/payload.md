@@ -18,23 +18,25 @@ We could let __each Application fetch and decode__ the CBOR Sensor Data from The
 
 ![Each Application fetches and decodes the CBOR Sensor Data from The Things Network](https://lupyuen.github.io/images/payload-flow3.jpg)
 
-Like we've done for Grafana and Roblox...
+Each Application would __decode CBOR into JSON__ before processing, like we've done for Grafana and Roblox...
 
 -   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
 
 -   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox)
 
+(Assuming that JSON is supported natively by each Application)
+
 _Erm this solution doesn't scale well if we have many Applications..._
 
-Exactly! For every Application that we add (like Prometheus), we would need to __decode the CBOR Sensor Data again and again__.
+Exactly! For every Application that we add (like Prometheus), we would need to __decode the CBOR Sensor Data into JSON again and again__.
 
 _What's the right solution then?_
 
-The proper solution is to configure a __Payload Formatter__ at The Things Network that will __decode our CBOR Sensor Data once__...
+The proper solution is to configure a __Payload Formatter__ at The Things Network that will __decode our CBOR Sensor Data into JSON once__...
 
 ![CBOR Payload Formatter for The Things Network](https://lupyuen.github.io/images/payload-title.jpg)
 
-And __distribute the Decoded Sensor Data__ to all Applications.
+And __distribute the Decoded Sensor Data__ (as JSON) to all Applications.
 
 Read on to learn how we created a __CBOR Payload Formatter__ for The Things Network.
 
