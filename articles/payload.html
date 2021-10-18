@@ -236,10 +236,42 @@ into the <strong>Formatter Parameter</strong> box</p>
 <p>Let’s test our CBOR Payload Formatter!</p>
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <h1 id="run-payload-formatter" class="section-header"><a href="#run-payload-formatter">4 Run Payload Formatter</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/payload-ttn3.png" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/payload-ttn4.png" alt="" /></p>
+<p>To <strong>test our CBOR Payload Formatter</strong>, we need a LoRaWAN Device that will transmit CBOR Payloads to The Things Network.</p>
+<p>Today we shall use <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> (pic above)</p>
+<ol>
+<li>
+<p>Follow the instructions below to <strong>build, flash and run</strong> the LoRaWAN Firmware for PineDio Stack…</p>
+<p><a href="https://lupyuen.github.io/articles/tsen#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></p>
+</li>
+<li>
+<p>Enter the command to <strong>transmit Temperature Sensor Data</strong> to The Things Network, encoded with CBOR…</p>
+<p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware"><strong>“Run the LoRaWAN Firmware”</strong></a></p>
+</li>
+<li>
+<p>Log on to The Things Network Console</p>
+</li>
+<li>
+<p>Click <strong>Applications → (Your Application) → Live Data</strong></p>
+</li>
+<li>
+<p>Our <strong>Decoded Sensor Data</strong> should appear in the Live Data Table…</p>
+<div class="example-wrap"><pre class="language-json"><code>{ &quot;l&quot;: 4000, &quot;t&quot;: 4669 }</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/payload-ttn3.png" alt="Decoded Sensor Data in the Live Data Table" /></p>
+</li>
+<li>
+<p>Click on a message in the Live Data Table. </p>
+<p>We should see the <strong>decoded_payload</strong> field with our Decoded Sensor Data…</p>
+<div class="example-wrap"><pre class="language-json"><code>&quot;decoded_payload&quot;: {
+  &quot;l&quot;: 4000,
+  &quot;t&quot;: 4656
+}</code></pre></div>
+<p>(Our decoder warnings will also appear here)</p>
+<p><img src="https://lupyuen.github.io/images/payload-ttn4.png" alt="decoded_payload Field" /></p>
+<p><a href="https://github.com/lupyuen/cbor-the-things-network#mqtt-log">(See the complete message)</a></p>
+</li>
+</ol>
+<p>Congratulations, we have successfully decoded our CBOR Message Payload in The Things Network… Ready to be consumed by multiple Applications!</p>
+<p>(Like Prometheus, the open source Time Series Database for IoT Sensor Data)</p>
 <p><img src="https://lupyuen.github.io/images/grafana-flow2.jpg" alt="Storing The Things Network Sensor Data with Prometheus" /></p>
 <p><a href="https://lupyuen.github.io/articles/grafana#store-data-with-prometheus">(Source)</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">5 What’s Next</a></h1>
