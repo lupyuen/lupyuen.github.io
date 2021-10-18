@@ -201,7 +201,7 @@ function decodeUplink(input) {
     warnings.push(error);
   }</code></pre></div>
 <p>Finally we return the <strong>Decoded Data and Decoder Warnings</strong> to The Things Network…</p>
-<div class="example-wrap"><pre class="language-javascript"><code>  //  Return the decoded data
+<div class="example-wrap"><pre class="language-javascript"><code>  //  Return the decoded data and decoder warnings
   return {
     data:     data,
     warnings: warnings
@@ -320,10 +320,34 @@ into the <strong>Formatter Parameter</strong> box</p>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1448846003608567809">this Twitter Thread</a></p>
 </li>
 <li>
-<p>Be careful when decoding CBOR with our Payload Formatter!</p>
+<p><strong>Be careful when decoding CBOR</strong> with our Payload Formatter!</p>
 <p>Some Data Types in CBOR don’t exist in JSON, and might throw errors.</p>
 <p><a href="https://json.nlohmann.me/features/binary_formats/cbor/#deserialization">(See this mapping of CBOR to JSON types)</a></p>
 <p>When we’re encoding Sensor Data with CBOR, use Data Types that are supported in JSON: Integers, Floats, Strings and Maps.</p>
+</li>
+<li>
+<p>Here’s a tip for <strong>debugging Payload Formatters</strong>…</p>
+<p>We can’t use <strong>console.log</strong> for logging Debug Messages, but we can return Debug Messages as <strong>Decoder Warnings</strong>…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>//  Decode the payload in the Uplink Message
+function decodeUplink(input) {
+  //  Data and warnings to be returned to The Things Network
+  var data     = {};  
+  var warnings = [];
+
+  //  Omitted: Decode the payload
+  ...
+
+  //  For Debugging: Show the contents of
+  //  `input.bytes` in the decoder warnings
+  warnings.push(input.bytes);
+
+  //  Return the decoded data and decoder warnings
+  return {
+    data:     data,
+    warnings: warnings
+  };
+}</code></pre></div>
+<p>The Decoder Warnings (and our Debug Messages) will be shown when we click on a message in <strong>Applications → (Your Application) → Live Data</strong>.</p>
 </li>
 </ol>
 
