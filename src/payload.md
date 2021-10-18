@@ -38,7 +38,7 @@ And __distribute the Decoded Sensor Data__ to all Applications.
 
 Read on to learn how we created a __CBOR Payload Formatter__ for The Things Network.
 
-![Payload Formatter](https://lupyuen.github.io/images/payload-formatter.png)
+![Payload Formatter](https://lupyuen.github.io/images/payload-formatter.jpg)
 
 [(Source)](https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/)
 
@@ -102,7 +102,7 @@ Nope, here are the Rules for Squid Game _(oops)_ __Payload Formatter__...
 
 [(Helium has a similar Payload Decoder)](https://docs.helium.com/use-the-network/console/functions/)
 
-![decodeUplink Function](https://lupyuen.github.io/images/payload-formatter2.png)
+![decodeUplink Function](https://lupyuen.github.io/images/payload-formatter2.jpg)
 
 [(Source)](https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/#decode-uplink-example-the-things-node)
 
