@@ -30,6 +30,8 @@ _Erm this solution doesn't scale well if we have many Applications..._
 
 Exactly! For every Application that we add (like Prometheus), we would need to __decode the CBOR Sensor Data into JSON again and again__.
 
+(And some Applications might need code changes to support CBOR)
+
 _What's the right solution then?_
 
 The proper solution is to configure a __Payload Formatter__ at The Things Network that will __decode our CBOR Sensor Data into JSON once__...
@@ -304,3 +306,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1448846003608567809)
+
+1.  Be careful when decoding CBOR with our Payload Formatter!
+
+    Some Data Types in CBOR don't exist in JSON, and might throw errors.
+    
+    [(See this mapping of CBOR to JSON types)](https://json.nlohmann.me/features/binary_formats/cbor/#deserialization)
+
+    When we're encoding Sensor Data with CBOR, use Data Types that are supported in JSON: Integers, Floats, Strings and Maps.
