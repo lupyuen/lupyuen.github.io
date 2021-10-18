@@ -1,6 +1,6 @@
 # CBOR Payload Formatter for The Things Network
 
-📝 _24 Oct 2021_
+📝 _18 Oct 2021_
 
 Suppose we have an __IoT Sensor Device__ (like [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio)) connected to __The Things Network__ (via LoRaWAN)...
 
@@ -269,7 +269,7 @@ Today we shall use [__PineDio Stack BL604__](https://lupyuen.github.io/articles/
 
 Congratulations, we have successfully decoded our CBOR Message Payload in The Things Network... Ready to be consumed by multiple Applications!
 
-(Like Prometheus, the open source Time Series Database for IoT Sensor Data)
+(Like __Prometheus__, the open source Time Series Database for IoT Sensor Data)
 
 ![Storing The Things Network Sensor Data with Prometheus](https://lupyuen.github.io/images/grafana-flow2.jpg)
 
@@ -277,13 +277,11 @@ Congratulations, we have successfully decoded our CBOR Message Payload in The Th
 
 # What's Next
 
-TODO
+Now that can decode CBOR Sensor Data in The Things Network, it becomes a lot easier to __ingest the Sensor Data into Prometheus__ (the open source Time Series Database).
 
-Today we have turned BL602 and BL604 into a basic __IoT Sensor Device__ that transmits its Internal Temperature to __LoRaWAN and The Things Network__.
+In the next article we shall build an __IoT Monitoring System__ that stores the [__Sensor Data with Prometheus__](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus) and visualises the data in a __Grafana Dashboard__. Stay tuned!
 
-In the next article we shall revisit Grafana and The Things Network... And build a better __IoT Monitoring System__ that stores the [__Sensor Data with Prometheus__](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus).
-
-![](https://lupyuen.github.io/images/prometheus-grafana4.png)
+![Monitoring Devices on The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-grafana4.png)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 

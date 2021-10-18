@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "CBOR Payload Formatter for The Things Network",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-10-18",
+      "website": "https://lupyuen.github.io/articles/payload",
+      "summary": "How we decode CBOR Sensor Data inside The Things Network... With a CBOR Payload Formatter"
+    },
+    {
       "name": "Internal Temperature Sensor on BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-14",
