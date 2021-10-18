@@ -267,9 +267,17 @@ Today we shall use [__PineDio Stack BL604__](https://lupyuen.github.io/articles/
 
     (Our decoder warnings will also appear here)
 
+1.  __decoded_payload__ will be visible to Applications that are connected to The Things Network via...
+
+    -   [__MQTT__](https://github.com/lupyuen/cbor-the-things-network#mqtt-log)
+
+    -   [__Storage API__](https://github.com/lupyuen/cbor-the-things-network#storage-log) (over HTTPS)
+
+    -   And [__other supported protocols__](https://www.thethingsnetwork.org/docs/applications-and-integrations/)
+
     ![decoded_payload Field](https://lupyuen.github.io/images/payload-ttn4.png)
 
-    [(See the complete message)](https://github.com/lupyuen/cbor-the-things-network#mqtt-log)
+    [(Source)](https://github.com/lupyuen/cbor-the-things-network#mqtt-log)
 
 Congratulations, we have successfully decoded our CBOR Message Payload in The Things Network... Ready to be consumed by multiple Applications!
 
