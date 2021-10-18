@@ -108,9 +108,7 @@ Nope, here are the Rules for Squid Game _(oops)_ __Payload Formatter__...
 
 # CBOR Payload Formatter
 
-TODO
-
-From [`cbor.js`](https://github.com/lupyuen/cbor-the-things-network/blob/master/cbor.js#L410-L441)
+Let's study the JavaScript for our __CBOR Payload Formatter__: [`cbor.js`](https://github.com/lupyuen/cbor-the-things-network/blob/master/cbor.js#L410-L441)
 
 ```javascript
 //  The Things Network Payload Formatter for CBOR
@@ -119,51 +117,91 @@ From [`cbor.js`](https://github.com/lupyuen/cbor-the-things-network/blob/master/
   function decode(...) { ... }
   ...
 })(this);
+```
 
+The script begins by including the entire contents of this __JavaScript Decoder for CBOR__...
+
+-   [__paroga/cbor-js__](https://github.com/paroga/cbor-js/blob/master/cbor.js)
+
+> ![CBOR Payload Formatter](https://lupyuen.github.io/images/payload-code3.png)
+
+This defines the CBOR Decoder Function __CBOR.decode__, which we'll call in a while.
+
+(Yep, this decoder is all Plain Old JavaScript)
+
+Next we define the __decodeUplink__ function that will be called by The Things Network...
+
+```javascript
 //  Decode the CBOR Payload in the Uplink Message
 function decodeUplink(input) {
   //  Data and warnings to be returned to The Things Network
-  var data = {};  
+  var data     = {};  
   var warnings = [];
+```
 
+Soon we shall compose the __Decoded Data and Decoder Warnings__ that will be returned to The Things Network.
+
+__input.bytes__ contains a byte array of CBOR-Encoded Sensor Data...
+
+```javascript
+[ 0xa2, 0x61, 0x74, 0x19, 0x12, 0x3d, 0x61, 0x6c, 0x19, 0x0f, 0xa0 ]
+```
+
+We convert it to an __ArrayBuffer__...
+
+```javascript
   //  Catch any exceptions and return them as warnings.
   try {
     //  Convert payload bytes to ArrayBuffer.
     //  `input.bytes` contains CBOR bytes like...
     //  [ 0xa2, 0x61, 0x74, 0x19, 0x12, 0x3d, 0x61, 0x6c, 0x19, 0x0f, 0xa0 ]
     var array = new Uint8Array(input.bytes);
-    var buf = array.buffer;
+    var buf   = array.buffer;
+```
 
+And we call our __CBOR Decoder__ to decode the ArrayBuffer...
+
+```javascript
     //  Decode the ArrayBuffer
     data = CBOR.decode(buf);
 
     //  `data` contains Key-Value Pairs like...
     //  { "l": 4000, "t": 4669 }
+```
 
+In case of errors, we catch them and __return as warnings__...
+
+```javascript
   } catch (error) {
     //  Catch any exceptions and return them as warnings.
     //  The Things Network will drop the message if we return errors.
     warnings.push(error);
   }
+```
 
+Finally we return the __Decoded Data and Decoder Warnings__ to The Things Network...
+
+```javascript
   //  Return the decoded data
   return {
-    data: data,
+    data:     data,
     warnings: warnings
   };
 }
-
 ```
 
-![](https://lupyuen.github.io/images/payload-cbor.png)
+The __Decoded Data__ will look like this...
 
-TODO2
+```json
+{
+  "t": 4669,
+  "l": 4000
+}
+```
 
-![](https://lupyuen.github.io/images/payload-code3.png)
+And that's how we decode CBOR Sensor Data in our Payload Formatter!
 
-TODO3
-
-![](https://lupyuen.github.io/images/payload-code4.png)
+![decodeUplink Function](https://lupyuen.github.io/images/payload-code4.png)
 
 # Configure Payload Formatter
 
