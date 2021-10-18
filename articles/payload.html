@@ -213,8 +213,27 @@ function decodeUplink(input) {
 <p>And that’s how we decode CBOR Sensor Data in our Payload Formatter!</p>
 <p><img src="https://lupyuen.github.io/images/payload-code4.png" alt="decodeUplink Function" /></p>
 <h1 id="configure-payload-formatter" class="section-header"><a href="#configure-payload-formatter">3 Configure Payload Formatter</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/payload-config2.png" alt="" /></p>
+<p>Now we <strong>configure The Things Network</strong> with our Payload Formatter…</p>
+<ol>
+<li>
+<p>Log on to The Things Network Console</p>
+</li>
+<li>
+<p>Click <strong>Applications → (Your Application) → Payload Formatters → Uplink</strong></p>
+<p><img src="https://lupyuen.github.io/images/payload-config2.png" alt="Configure Payload Formatter" /></p>
+</li>
+<li>
+<p>Set the <strong>Formatter Type</strong> to <strong>JavaScript</strong></p>
+</li>
+<li>
+<p>Copy and paste the contents of <a href="https://github.com/lupyuen/cbor-the-things-network/blob/master/cbor.js"><strong>cbor.js</strong></a>
+into the <strong>Formatter Parameter</strong> box</p>
+</li>
+<li>
+<p>Click <strong>Save Changes</strong></p>
+</li>
+</ol>
+<p>Let’s test our CBOR Payload Formatter!</p>
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <h1 id="run-payload-formatter" class="section-header"><a href="#run-payload-formatter">4 Run Payload Formatter</a></h1>
 <p>TODO</p>
