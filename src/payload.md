@@ -186,7 +186,7 @@ In case of errors, we catch them and __return as warnings__...
 Finally we return the __Decoded Data and Decoder Warnings__ to The Things Network...
 
 ```javascript
-  //  Return the decoded data
+  //  Return the decoded data and decoder warnings
   return {
     data:     data,
     warnings: warnings
@@ -315,10 +315,38 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1448846003608567809)
 
-1.  Be careful when decoding CBOR with our Payload Formatter!
+1.  __Be careful when decoding CBOR__ with our Payload Formatter!
 
     Some Data Types in CBOR don't exist in JSON, and might throw errors.
     
     [(See this mapping of CBOR to JSON types)](https://json.nlohmann.me/features/binary_formats/cbor/#deserialization)
 
     When we're encoding Sensor Data with CBOR, use Data Types that are supported in JSON: Integers, Floats, Strings and Maps.
+
+1.  Here's a tip for __debugging Payload Formatters__...
+
+    We can't use __console.log__ for logging Debug Messages, but we can return Debug Messages as __Decoder Warnings__...
+
+    ```javascript
+    //  Decode the payload in the Uplink Message
+    function decodeUplink(input) {
+      //  Data and warnings to be returned to The Things Network
+      var data     = {};  
+      var warnings = [];
+
+      //  Omitted: Decode the payload
+      ...
+
+      //  For Debugging: Show the contents of
+      //  `input.bytes` in the decoder warnings
+      warnings.push(input.bytes);
+
+      //  Return the decoded data and decoder warnings
+      return {
+        data:     data,
+        warnings: warnings
+      };
+    }
+    ```
+
+    The Decoder Warnings (and our Debug Messages) will be shown when we click on a message in __Applications → (Your Application) → Live Data__.
