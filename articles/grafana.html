@@ -614,6 +614,7 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <li><a href="https://github.com/hikhvar/mqtt2prometheus"><strong>hikhvar/mqtt2prometheus</strong></a></li>
 </ul>
 <p>This Grafana setup looks more complicated, but it works well for visualising historical Sensor Data.</p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1450262680795713538"><strong>UPDATE: We’re now connecting Prometheus and Grafana to The Things Network. Follow the updates on Twitter</strong></a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>I hope you enjoyed our exploration today: Streaming Sensor Data from The Things Network to Grafana over MQTT.</p>
 <p>In the next article we shall head back to <a href="https://lupyuen.github.io/articles/ttn"><strong>PineDio Stack BL604</strong></a> and transmit actual Sensor Data to The Things Network, encoded with CBOR.</p>
@@ -705,6 +706,11 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 </ol>
 <p>Learn more about Accuracy and Precision of Sensor Data…</p>
 <p><a href="https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/">“IoT’s Lesser Known Power: “Good Enough” Data Accuracy”</a></p>
+</li>
+<li>
+<p>It’s possible to <strong>decode CBOR in The Things Network servers</strong> with a Payload Formatter.</p>
+<p>If we do this, we can skip the CBOR decoding in our Grafana Data Source. See this…</p>
+<p><a href="https://lupyuen.github.io/articles/payload"><strong>“CBOR Payload Formatter for The Things Network”</strong></a></p>
 </li>
 </ol>
 <h1 id="appendix-install-grafana-and-data-source" class="section-header"><a href="#appendix-install-grafana-and-data-source">12 Appendix: Install Grafana and Data Source</a></h1>
