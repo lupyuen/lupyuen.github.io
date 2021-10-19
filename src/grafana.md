@@ -738,6 +738,8 @@ __MQTT Gateway__ like this...
 
 This Grafana setup looks more complicated, but it works well for visualising historical Sensor Data.
 
+[__UPDATE: We're now connecting Prometheus and Grafana to The Things Network. Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1450262680795713538)
+
 # What's Next
 
 I hope you enjoyed our exploration today: Streaming Sensor Data from The Things Network to Grafana over MQTT.
@@ -834,6 +836,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     Learn more about Accuracy and Precision of Sensor Data...
 
     ["IoT’s Lesser Known Power: “Good Enough” Data Accuracy"](https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/)
+
+1.  It's possible to __decode CBOR in The Things Network servers__ with a Payload Formatter.
+
+    If we do this, we can skip the CBOR decoding in our Grafana Data Source. See this...
+
+    [__"CBOR Payload Formatter for The Things Network"__](https://lupyuen.github.io/articles/payload)
 
 # Appendix: Install Grafana and Data Source
 

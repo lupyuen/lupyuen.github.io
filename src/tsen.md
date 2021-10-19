@@ -524,6 +524,8 @@ In the next article we shall revisit Grafana and The Things Network... And build
 
 -   [__"Prometheus and Grafana for The Things Network (MQTT)"__](https://github.com/lupyuen/prometheus-the-things-network)
 
+    [(Follow the updates on Twitter)](https://twitter.com/MisterTechBlog/status/1450262680795713538)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)

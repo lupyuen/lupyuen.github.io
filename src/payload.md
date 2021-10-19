@@ -293,6 +293,8 @@ Now that we can decode CBOR Sensor Data in The Things Network, it becomes a lot 
 
 In the next article we shall build an __IoT Monitoring System__ that stores the [__Sensor Data with Prometheus__](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus) and visualises the data in a __Grafana Dashboard__. Stay tuned!
 
+[(Follow the updates on Twitter)](https://twitter.com/MisterTechBlog/status/1450262680795713538)
+
 ![Monitoring Devices on The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-grafana4.png)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
