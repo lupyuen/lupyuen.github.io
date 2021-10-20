@@ -14,13 +14,13 @@ TODO
 
 ![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
 
-Today we'll demo this Prometheus + Grafana Integration with [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio) (pic above)
+Today we'll demo this Prometheus + Grafana Integration with __PineDio Stack BL604 RISC-V Board__ (pic above)
 
 -   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
 
-But it should work for any LoRaWAN Device connected to The Things Network
+But it should work for __any LoRaWAN Device__ connected to The Things Network...
 
-Payload Formatter
+Assuming that we have a suitable __Payload Formatter__ configured in The Things Network. Read on to learn more...
 
 # Payload Formatter
 
@@ -29,6 +29,90 @@ TODO
 [Post a comment here and let's solve it together!](https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&utm_medium=web2x&context=3)
 
 ## Checkpoint Alpha
+
+TODO
+
+# MQTT Gateway for Prometheus
+
+TODO
+
+![](https://lupyuen.github.io/images/prometheus-flow3.jpg)
+
+TODO
+
+![](https://lupyuen.github.io/images/prometheus-flow2.jpg)
+
+TODO10
+
+![](https://lupyuen.github.io/images/prometheus-config7.png)
+
+TODO14
+
+![](https://lupyuen.github.io/images/prometheus-config4.png)
+
+TODO12
+
+![](https://lupyuen.github.io/images/prometheus-config5.png)
+
+## Checkpoint Bravo
+
+TODO
+
+![](https://lupyuen.github.io/images/prometheus-metric3.png)
+
+# Prometheus Time Series Database
+
+TODO5
+
+![](https://lupyuen.github.io/images/prometheus-flow.jpg)
+
+TODO8
+
+![](https://lupyuen.github.io/images/prometheus-flow5.jpg)
+
+TODO13
+
+![](https://lupyuen.github.io/images/prometheus-config6.png)
+
+## Checkpoint Charlie
+
+TODO
+
+![](https://lupyuen.github.io/images/prometheus-metric2.png)
+
+# Grafana Dashboard
+
+TODO
+
+![](https://lupyuen.github.io/images/prometheus-flow4.jpg)
+
+TODO15
+
+![](https://lupyuen.github.io/images/prometheus-grafana5.png)
+
+TODO16
+
+![](https://lupyuen.github.io/images/prometheus-grafana6.png)
+
+## Checkpoint Delta
+
+TODO
+
+![Monitoring Devices on The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-grafana4.png)
+
+# MQTT with TLS Encryption
+
+TODO11
+
+![](https://lupyuen.github.io/images/prometheus-tls.png)
+
+## Checkpoint Echo
+
+TODO
+
+![](https://lupyuen.github.io/images/prometheus-wireshark2.png)
+
+# Prometheus Alerts
 
 TODO
 
@@ -54,62 +138,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1450262680795713538)
 
-TODO5
-
-![](https://lupyuen.github.io/images/prometheus-flow.jpg)
-
-TODO6
-
-![](https://lupyuen.github.io/images/prometheus-flow3.jpg)
-
-TODO7
-
-![](https://lupyuen.github.io/images/prometheus-flow4.jpg)
-
-TODO8
-
-![](https://lupyuen.github.io/images/prometheus-flow5.jpg)
-
-TODO9
-
-![](https://lupyuen.github.io/images/prometheus-flow2.jpg)
-
-TODO10
-
-![](https://lupyuen.github.io/images/prometheus-config7.png)
-
-TODO11
-
-![](https://lupyuen.github.io/images/prometheus-tls.png)
-
-TODO12
-
-![](https://lupyuen.github.io/images/prometheus-config5.png)
-
-TODO13
-
-![](https://lupyuen.github.io/images/prometheus-config6.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/prometheus-config4.png)
-
-TODO15
-
-![](https://lupyuen.github.io/images/prometheus-grafana5.png)
-
-TODO16
-
-![](https://lupyuen.github.io/images/prometheus-grafana6.png)
-
-TODO17
-
-![](https://lupyuen.github.io/images/prometheus-metric3.png)
-
-TODO18
-
-![](https://lupyuen.github.io/images/prometheus-metric2.png)
-
-TODO19
-
-![](https://lupyuen.github.io/images/prometheus-wireshark2.png)
