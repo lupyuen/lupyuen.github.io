@@ -44,11 +44,25 @@ But it should work for __any LoRaWAN Device__ connected to The Things Network...
 
 # Payload Formatter
 
-TODO
+_What's a Payload Formatter in The Things Network?_
 
-[Post a comment here and let's solve it together!](https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&utm_medium=web2x&context=3)
+A __Payload Formatter__ is JavaScript Code that we configure in The Things Network to __decode the Sensor Data__ in the LoRaWAN Message Payload.
+
+For PineDio Stack our Sensor Data is encoded with CBOR (Concise Binary Object Representation), so we use this __CBOR Payload Formatter__...
+
+-   [__"CBOR Payload Formatter for The Things Network"__](https://lupyuen.github.io/articles/payload)
+
+_Is it mandatory to use a Payload Formatter?_
+
+Yes, our MQTT Gateway will work only if we __configure a suitable Payload Formatter__ that will decode our Sensor Data.
+
+_What if we can't find a suitable Payload Formatter?_
+
+Let's solve it together! [Post a comment here](https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&utm_medium=web2x&context=3)
 
 ## Checkpoint Alpha
+
+Let's verify that our __Payload Formatter works OK__ for decoding our Sensor Data...
 
 TODO
 
