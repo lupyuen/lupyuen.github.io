@@ -83,36 +83,34 @@
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/grafana-flow3.jpg" alt="IoT Devices transmitting Sensor Data to The Things Network" /></p>
 </blockquote>
-<p><em>How would we monitor the Sensor Data transmitted by the IoT Devices?</em></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-title.jpg" alt="" /></p>
-<p>TODO</p>
+<p><em>How shall we monitor the Sensor Data transmitted by the IoT Devices?</em></p>
+<p>Today we shall monitor the IoT Sensor Data by connecting open source <strong>Prometheus and Grafana</strong> to The Things Network…</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-title.jpg" alt="Monitoring IoT Devices in The Things Network with Prometheus and Grafana" /></p>
 <ol>
 <li>
-<p>MQTT: TODO</p>
+<p><strong>The Things Network</strong> delivers our <strong>Sensor Data over MQTT</strong></p>
 </li>
 <li>
-<p>MQTT Gateway: TODO</p>
+<p>Our <strong>MQTT Gateway</strong> consumes the Sensor Data and publishes the data to…</p>
 </li>
 <li>
-<p>Prometheus: TODO</p>
-<p>(Because Prometheus works great for storing and querying IoT Sensor Data)</p>
+<p>Our <strong>Prometheus Time Series Database</strong>…</p>
 </li>
 <li>
-<p>Grafana: TODO</p>
-<p>(Because Grafana works well with Prometheus for charting IoT Sensor Data)</p>
+<p>Which gets rendered as a <strong>Grafana Dashboard</strong> that looks like this…</p>
 </li>
 </ol>
-<p>Here’s the outcome…</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-grafana4.png" alt="Monitoring Devices on The Things Network with Prometheus and Grafana" /></p>
-<p>TODO</p>
+<p><em>Why Prometheus and Grafana?</em></p>
+<p>Prometheus works great for <strong>storing and querying</strong> IoT Sensor Data.</p>
+<p>And Grafana works well with Prometheus for <strong>visualising IoT Sensor Data</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
-<p>Today we’ll demo this Prometheus + Grafana Integration with <strong>PineDio Stack BL604 RISC-V Board</strong> (pic above)</p>
+<p>In a while we shall demo this Prometheus + Grafana Integration with <strong>PineDio Stack BL604 RISC-V Board</strong> (pic above)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ttn"><strong>“The Things Network on PineDio Stack BL604 RISC-V Board”</strong></a></li>
 </ul>
-<p>But it should work for <strong>any LoRaWAN Device</strong> connected to The Things Network…</p>
-<p>Assuming that we have a suitable <strong>Payload Formatter</strong> configured in The Things Network. Read on to learn more…</p>
+<p>But it should work for <strong>any LoRaWAN Device</strong> connected to The Things Network… Assuming that we have configured a suitable <strong>Payload Formatter</strong> in The Things Network. </p>
+<p>(Read on to learn how)</p>
 <p><img src="https://lupyuen.github.io/images/payload-title.jpg" alt="CBOR Payload Formatter for The Things Network" /></p>
 <h1 id="payload-formatter" class="section-header"><a href="#payload-formatter">1 Payload Formatter</a></h1>
 <p>TODO</p>
