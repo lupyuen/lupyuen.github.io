@@ -10,7 +10,7 @@ Suppose we have some __IoT Devices__ that transmit __Sensor Data__ (via LoRa and
 
 _How shall we monitor the Sensor Data transmitted by the IoT Devices?_
 
-Today we shall monitor the IoT Sensor Data by connecting open source __Prometheus and Grafana__ to The Things Network...
+Today we shall monitor IoT Sensor Data by connecting open source __Prometheus and Grafana__ to The Things Network...
 
 ![Monitoring IoT Devices in The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-title.jpg)
 
