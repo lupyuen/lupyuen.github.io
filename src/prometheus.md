@@ -78,7 +78,7 @@ Let's verify that our __Payload Formatter works OK__ for decoding our Sensor Dat
 
 1.  Click on a message in the Live Data Table. 
 
-    We should see the __decoded_payload__ field with our Decoded Sensor Data...
+    We should see the __decoded_payload__ field containing our Decoded Sensor Data like so...
 
     ```json
     "decoded_payload": {
