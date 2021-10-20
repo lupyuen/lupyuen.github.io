@@ -66,7 +66,9 @@ We can make one together! [Post a comment here](https://www.reddit.com/r/TheThin
 
 Let's verify that our __Payload Formatter works OK__ for decoding our Sensor Data...
 
-1.  Start the __LoRaWAN Firmware__ on our LoRaWAN Device (PineDio Stack)...
+1.  Start the __LoRaWAN Firmware__ on our LoRaWAN Device (PineDio Stack).
+
+    Transmit some Sensor Data every minute...
 
     [__"Run the LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
 
@@ -99,7 +101,9 @@ Let's verify that our __Payload Formatter works OK__ for decoding our Sensor Dat
 
 Also verify that the __MQTT Server works OK__ at The Things Network...
 
-1.  Start the __LoRaWAN Firmware__ on our LoRaWAN Device (PineDio Stack)...
+1.  Start the __LoRaWAN Firmware__ on our LoRaWAN Device (PineDio Stack).
+
+    Transmit some Sensor Data every minute...
 
     [__"Run the LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
 
@@ -109,7 +113,7 @@ Also verify that the __MQTT Server works OK__ at The Things Network...
 
 1.  Install the __command-line tools for MQTT__...
 
-    [__Eclipse Mosquitto__](https://mosquitto.org/download/)
+    [__"Download Eclipse Mosquitto"__](https://mosquitto.org/download/)
 
 1.  Enter this at the command line...
 
