@@ -285,15 +285,15 @@ Congratulations, we have successfully decoded our CBOR Message Payload in The Th
 
 ![Storing The Things Network Sensor Data with Prometheus](https://lupyuen.github.io/images/grafana-flow2.jpg)
 
-[(Source)](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus)
+[(Source)](https://lupyuen.github.io/articles/prometheus)
 
 # What's Next
 
 Now that we can decode CBOR Sensor Data in The Things Network, it becomes a lot easier to __ingest the Sensor Data into Prometheus__ (the open source Time Series Database).
 
-In the next article we shall build an __IoT Monitoring System__ that stores the [__Sensor Data with Prometheus__](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus) and visualises the data in a __Grafana Dashboard__. Stay tuned!
+In the next article we shall build an __IoT Monitoring System__ that stores the __Sensor Data with Prometheus__ and visualises the data in a __Grafana Dashboard__...
 
-[(Follow the updates on Twitter)](https://twitter.com/MisterTechBlog/status/1450262680795713538)
+-   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
 
 ![Monitoring Devices on The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-grafana4.png)
 

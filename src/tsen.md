@@ -518,13 +518,9 @@ And the output log shows our temperature, scaled by 100 times.
 
 Today we have turned BL602 and BL604 into a basic __IoT Sensor Device__ that transmits its Internal Temperature to __LoRaWAN and The Things Network__.
 
-In the next article we shall revisit Grafana and The Things Network... And build a better __IoT Monitoring System__ that stores the [__Sensor Data with Prometheus__](https://lupyuen.github.io/articles/grafana#store-data-with-prometheus).
+In the next article we shall build a better __IoT Monitoring System__ that stores the __Sensor Data with Prometheus__ and visualises the data in a __Grafana Dashboard__...
 
--   [__"CBOR Payload Formatter for The Things Network"__](https://lupyuen.github.io/articles/payload)
-
--   [__"Prometheus and Grafana for The Things Network (MQTT)"__](https://github.com/lupyuen/prometheus-the-things-network)
-
-    [(Follow the updates on Twitter)](https://twitter.com/MisterTechBlog/status/1450262680795713538)
+-   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 

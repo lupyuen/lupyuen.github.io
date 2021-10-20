@@ -736,9 +736,9 @@ __MQTT Gateway__ like this...
 
 -   [__hikhvar/mqtt2prometheus__](https://github.com/hikhvar/mqtt2prometheus)
 
-This Grafana setup looks more complicated, but it works well for visualising historical Sensor Data.
+This Grafana setup looks more complicated, but it works well for visualising historical Sensor Data. See this...
 
-[__UPDATE: We're now connecting Prometheus and Grafana to The Things Network. Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1450262680795713538)
+-   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
 
 # What's Next
 

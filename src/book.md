@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _17 Oct 2021_
+📝 _20 Oct 2021_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(34 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(35 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -156,19 +156,19 @@ Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, l
 
 -   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
 
+-   ["Monitor IoT Devices in The Things Network with Prometheus and Grafana"](https://lupyuen.github.io/articles/prometheus)
+
 -   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
 
 -   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
 
--   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
-
 -   ["IoT Digital Twin with Roblox and The Things Network"](https://lupyuen.github.io/articles/roblox)
+
+-   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
 
 -   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
 
 -   ["CBOR Payload Formatter for The Things Network"](https://lupyuen.github.io/articles/payload)
-
--   ["Prometheus and Grafana for The Things Network (MQTT)"](https://github.com/lupyuen/prometheus-the-things-network)
 
 Below are the older articles for __LoRa SX1276 Transceiver__...
 
@@ -288,11 +288,13 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 
 -   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
 
+-   ["Monitor IoT Devices in The Things Network with Prometheus and Grafana"](https://lupyuen.github.io/articles/prometheus)
+
 -   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
 
--   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
-
 -   ["IoT Digital Twin with Roblox and The Things Network"](https://lupyuen.github.io/articles/roblox)
+
+-   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
 
 ![BL706 Audio Video Board](https://lupyuen.github.io/images/book-bl706.jpg)
 
