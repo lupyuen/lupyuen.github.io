@@ -125,19 +125,19 @@ Also verify that the __MQTT Server works OK__ at The Things Network...
 
     ## For macOS and Linux:
     mosquitto_sub \
-        -h au1.cloud.thethings.network \
-        -t "#" \
-        -u "YOUR_USERNAME" \
-        -P "YOUR_PASSWORD" \
-        -d
+      -h au1.cloud.thethings.network \
+      -t "#" \
+      -u "YOUR_USERNAME" \
+      -P "YOUR_PASSWORD" \
+      -d
 
     ## For Windows:
     "c:\Program Files\Mosquitto\mosquitto_sub" ^
-        -h au1.cloud.thethings.network ^
-        -t "#" ^
-        -u "YOUR_USERNAME" ^
-        -P "YOUR_PASSWORD" ^
-        -d
+      -h au1.cloud.thethings.network ^
+      -t "#" ^
+      -u "YOUR_USERNAME" ^
+      -P "YOUR_PASSWORD" ^
+      -d
     ```
 
 1.  We should see the __messages transmitted__ by our LoRaWAN Device...
