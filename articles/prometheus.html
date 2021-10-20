@@ -113,9 +113,18 @@
 <p>(Read on to learn how)</p>
 <p><img src="https://lupyuen.github.io/images/payload-title.jpg" alt="CBOR Payload Formatter for The Things Network" /></p>
 <h1 id="payload-formatter" class="section-header"><a href="#payload-formatter">1 Payload Formatter</a></h1>
-<p>TODO</p>
-<p><a href="https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Post a comment here and let’s solve it together!</a></p>
+<p><em>What’s a Payload Formatter in The Things Network?</em></p>
+<p>A <strong>Payload Formatter</strong> is JavaScript Code that we configure in The Things Network to <strong>decode the Sensor Data</strong> in the LoRaWAN Message Payload.</p>
+<p>For PineDio Stack our Sensor Data is encoded with CBOR (Concise Binary Object Representation), so we use this <strong>CBOR Payload Formatter</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/payload"><strong>“CBOR Payload Formatter for The Things Network”</strong></a></li>
+</ul>
+<p><em>Is it mandatory to use a Payload Formatter?</em></p>
+<p>Yes, our MQTT Gateway will work only if we <strong>configure a suitable Payload Formatter</strong> that will decode our Sensor Data.</p>
+<p><em>What if we can’t find a suitable Payload Formatter?</em></p>
+<p>Let’s solve it together! <a href="https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Post a comment here</a></p>
 <h2 id="checkpoint-alpha" class="section-header"><a href="#checkpoint-alpha">1.1 Checkpoint Alpha</a></h2>
+<p>Let’s verify that our <strong>Payload Formatter works OK</strong> for decoding our Sensor Data…</p>
 <p>TODO</p>
 <h1 id="mqtt-gateway-for-prometheus" class="section-header"><a href="#mqtt-gateway-for-prometheus">2 MQTT Gateway for Prometheus</a></h1>
 <p>TODO</p>
