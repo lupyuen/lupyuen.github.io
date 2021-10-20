@@ -4,7 +4,7 @@
 
 Suppose we have some __IoT Devices__ that transmit __Sensor Data__ (via LoRa and LoRaWAN) to __The Things Network__...
 
-[(Free-to-use public global wireless network for IoT Devices)](https://lupyuen.github.io/articles/ttn)
+[(That's the free-to-use public global wireless network for IoT Devices)](https://lupyuen.github.io/articles/ttn)
 
 > ![IoT Devices transmitting Sensor Data to The Things Network](https://lupyuen.github.io/images/grafana-flow3.jpg)
 
@@ -43,6 +43,8 @@ Today we'll demo this Prometheus + Grafana Integration with __PineDio Stack BL60
 But it should work for __any LoRaWAN Device__ connected to The Things Network...
 
 Assuming that we have a suitable __Payload Formatter__ configured in The Things Network. Read on to learn more...
+
+![CBOR Payload Formatter for The Things Network](https://lupyuen.github.io/images/payload-title.jpg)
 
 # Payload Formatter
 
