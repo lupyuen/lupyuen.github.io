@@ -88,13 +88,13 @@
 <p><img src="https://lupyuen.github.io/images/prometheus-title.jpg" alt="Monitoring IoT Devices in The Things Network with Prometheus and Grafana" /></p>
 <ol>
 <li>
-<p><strong>The Things Network</strong> delivers our <strong>Sensor Data over MQTT</strong></p>
+<p><strong>The Things Network</strong> pushes our <strong>Sensor Data over MQTT</strong> in real time</p>
 </li>
 <li>
-<p>Our <strong>MQTT Gateway</strong> consumes the Sensor Data and publishes the data to…</p>
+<p>Our <strong>MQTT Gateway</strong> consumes the Sensor Data…</p>
 </li>
 <li>
-<p>Our <strong>Prometheus Time Series Database</strong>…</p>
+<p>And publishes the Sensor Data to our <strong>Prometheus Time Series Database</strong>…</p>
 </li>
 <li>
 <p>Which gets rendered as a <strong>Grafana Dashboard</strong> that looks like this…</p>
@@ -105,7 +105,7 @@
 <p>Prometheus works great for <strong>storing and querying</strong> IoT Sensor Data.</p>
 <p>And Grafana works well with Prometheus for <strong>visualising IoT Sensor Data</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
-<p>In a while we shall demo this Prometheus + Grafana Integration with <strong>PineDio Stack BL604 RISC-V Board</strong> (pic above)</p>
+<p>In a while we shall demo this Prometheus + Grafana Setup with <strong>PineDio Stack BL604 RISC-V Board</strong> (pic above)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ttn"><strong>“The Things Network on PineDio Stack BL604 RISC-V Board”</strong></a></li>
 </ul>
@@ -121,38 +121,89 @@
 </ul>
 <p><em>Is it mandatory to use a Payload Formatter?</em></p>
 <p>Yes, our MQTT Gateway will work only if we <strong>configure a suitable Payload Formatter</strong> that will decode our Sensor Data.</p>
+<p><a href="https://lupyuen.github.io/articles/payload#whats-a-payload-formatter">(More about Payload Formatters)</a></p>
 <p><em>What if we can’t find a suitable Payload Formatter?</em></p>
-<p>We can solve it together! <a href="https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Post a comment here</a></p>
+<p>We can make one together! <a href="https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Post a comment here</a></p>
 <h2 id="checkpoint-alpha" class="section-header"><a href="#checkpoint-alpha">1.1 Checkpoint Alpha</a></h2>
 <p>Let’s verify that our <strong>Payload Formatter works OK</strong> for decoding our Sensor Data…</p>
 <ol>
 <li>
-<p>Log on to The Things Network Console</p>
+<p>Start the <strong>LoRaWAN Firmware</strong> on our LoRaWAN Device (PineDio Stack)…</p>
+<p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware"><strong>“Run the LoRaWAN Firmware”</strong></a></p>
+</li>
+<li>
+<p>Log on to <strong>The Things Network Console</strong></p>
 </li>
 <li>
 <p>Click <strong>Applications → (Your Application) → Live Data</strong></p>
 </li>
 <li>
 <p>Our <strong>Decoded Sensor Data</strong> should appear in the Live Data Table like so…</p>
-<div class="example-wrap"><pre class="language-json"><code>{ &quot;l&quot;: 4000, &quot;t&quot;: 4669 }</code></pre></div>
+<div class="example-wrap"><pre class="language-json"><code>Payload: { l: 4000, t: 4669 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/payload-ttn3.png" alt="Decoded Sensor Data in the Live Data Table" /></p>
 </li>
 <li>
-<p>Click on a message in the Live Data Table. </p>
-<p>We should see the <strong>decoded_payload</strong> field containing our Decoded Sensor Data like so…</p>
-<div class="example-wrap"><pre class="language-json"><code>&quot;decoded_payload&quot;: {
-  &quot;l&quot;: 4000,
-  &quot;t&quot;: 4656
-}</code></pre></div></li>
+<p>Click on a message in the <strong>Live Data Table</strong>. </p>
+<p>We should see the <strong>decoded_payload</strong> field containing our Decoded Sensor Data…</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+  ...
+  &quot;uplink_message&quot;: {
+    ...
+    &quot;decoded_payload&quot;: {
+      &quot;l&quot;: 4000,
+      &quot;t&quot;: 4656
+    }    </code></pre></div></li>
 </ol>
 <p>Also verify that the <strong>MQTT Server works OK</strong> at The Things Network…</p>
 <ol>
 <li>
+<p>Start the <strong>LoRaWAN Firmware</strong> on our LoRaWAN Device (PineDio Stack)…</p>
+<p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware"><strong>“Run the LoRaWAN Firmware”</strong></a></p>
+</li>
+<li>
 <p>Copy the <strong>MQTT Public Address, Username and Password</strong> from The Things Network…</p>
 <p><a href="https://lupyuen.github.io/articles/grafana#configure-the-things-network-mqtt"><strong>“Configure The Things Network MQTT”</strong></a></p>
 </li>
+<li>
+<p>Install the <strong>command-line tools for MQTT</strong>…</p>
+<p><a href="https://mosquitto.org/download/"><strong>Eclipse Mosquitto</strong></a></p>
+</li>
+<li>
+<p>Enter this at the command line…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Change au1.cloud.thethings.network to our 
+# MQTT Public Address (without the port number)
+# Change YOUR_USERNAME to our MQTT Username
+# Change YOUR_PASSWORD to our MQTT Password
+
+# For macOS and Linux:
+mosquitto_sub \
+    -h au1.cloud.thethings.network \
+    -t &quot;#&quot; \
+    -u &quot;YOUR_USERNAME&quot; \
+    -P &quot;YOUR_PASSWORD&quot; \
+    -d
+
+# For Windows:
+&quot;c:\Program Files\Mosquitto\mosquitto_sub&quot; ^
+    -h au1.cloud.thethings.network ^
+    -t &quot;#&quot; ^
+    -u &quot;YOUR_USERNAME&quot; ^
+    -P &quot;YOUR_PASSWORD&quot; ^
+    -d</code></pre></div></li>
+<li>
+<p>We should see the <strong>messages transmitted</strong> by our LoRaWAN Device…</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+  ...
+  &quot;uplink_message&quot;: {
+    ...
+    &quot;decoded_payload&quot;: {
+      &quot;l&quot;: 4000,
+      &quot;t&quot;: 4656
+    }    </code></pre></div>
+<p>Including <strong>decoded_payload</strong> and the Decoded Sensor Data.</p>
+<p><a href="https://github.com/lupyuen/cbor-the-things-network#mqtt-log">(See the complete message)</a></p>
+</li>
 </ol>
-<p>TODO</p>
 <h1 id="mqtt-gateway-for-prometheus" class="section-header"><a href="#mqtt-gateway-for-prometheus">2 MQTT Gateway for Prometheus</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-flow3.jpg" alt="" /></p>
