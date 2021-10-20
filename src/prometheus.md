@@ -58,11 +58,40 @@ Yes, our MQTT Gateway will work only if we __configure a suitable Payload Format
 
 _What if we can't find a suitable Payload Formatter?_
 
-Let's solve it together! [Post a comment here](https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&utm_medium=web2x&context=3)
+We can solve it together! [Post a comment here](https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&utm_medium=web2x&context=3)
 
 ## Checkpoint Alpha
 
 Let's verify that our __Payload Formatter works OK__ for decoding our Sensor Data...
+
+1.  Log on to The Things Network Console
+
+1.  Click __Applications → (Your Application) → Live Data__
+
+1.  Our __Decoded Sensor Data__ should appear in the Live Data Table like so...
+
+    ```json
+    { "l": 4000, "t": 4669 }
+    ```
+
+    ![Decoded Sensor Data in the Live Data Table](https://lupyuen.github.io/images/payload-ttn3.png)
+
+1.  Click on a message in the Live Data Table. 
+
+    We should see the __decoded_payload__ field with our Decoded Sensor Data...
+
+    ```json
+    "decoded_payload": {
+      "l": 4000,
+      "t": 4656
+    }
+    ```
+
+Also verify that the __MQTT Server works OK__ at The Things Network...
+
+1.  Copy the __MQTT Public Address, Username and Password__ from The Things Network...
+
+    [__"Configure The Things Network MQTT"__](https://lupyuen.github.io/articles/grafana#configure-the-things-network-mqtt)
 
 TODO
 
