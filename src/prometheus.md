@@ -2,11 +2,33 @@
 
 📝 _27 Oct 2021_
 
+Suppose we have some __IoT Devices__ that transmit __Sensor Data__ (via LoRa and LoRaWAN) to __The Things Network__...
+
+[(Free-to-use public global wireless network for IoT Devices)](https://lupyuen.github.io/articles/ttn)
+
+> ![IoT Devices transmitting Sensor Data to The Things Network](https://lupyuen.github.io/images/grafana-flow3.jpg)
+
+_How would we monitor the Sensor Data transmitted by the IoT Devices?_
+
 TODO
 
 ![](https://lupyuen.github.io/images/prometheus-title.jpg)
 
 TODO
+
+1.  MQTT: TODO
+
+1.  MQTT Gateway: TODO
+
+1.  Prometheus: TODO
+
+    (Because Prometheus works great for storing and querying IoT Sensor Data)
+
+1.  Grafana: TODO
+
+    (Because Grafana works well with Prometheus for charting IoT Sensor Data)
+
+Here's the outcome...
 
 ![Monitoring Devices on The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-grafana4.png)
 
