@@ -8,41 +8,37 @@ Suppose we have some __IoT Devices__ that transmit __Sensor Data__ (via LoRa and
 
 > ![IoT Devices transmitting Sensor Data to The Things Network](https://lupyuen.github.io/images/grafana-flow3.jpg)
 
-_How would we monitor the Sensor Data transmitted by the IoT Devices?_
+_How shall we monitor the Sensor Data transmitted by the IoT Devices?_
 
-TODO
+Today we shall monitor the IoT Sensor Data by connecting open source __Prometheus and Grafana__ to The Things Network...
 
-![](https://lupyuen.github.io/images/prometheus-title.jpg)
+![Monitoring IoT Devices in The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-title.jpg)
 
-TODO
+1.  __The Things Network__ delivers our __Sensor Data over MQTT__
 
-1.  MQTT: TODO
+1.  Our __MQTT Gateway__ consumes the Sensor Data and publishes the data to...
 
-1.  MQTT Gateway: TODO
+1.  Our __Prometheus Time Series Database__...
 
-1.  Prometheus: TODO
-
-    (Because Prometheus works great for storing and querying IoT Sensor Data)
-
-1.  Grafana: TODO
-
-    (Because Grafana works well with Prometheus for charting IoT Sensor Data)
-
-Here's the outcome...
+1.  Which gets rendered as a __Grafana Dashboard__ that looks like this...
 
 ![Monitoring Devices on The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-grafana4.png)
 
-TODO
+_Why Prometheus and Grafana?_
+
+Prometheus works great for __storing and querying__ IoT Sensor Data.
+
+And Grafana works well with Prometheus for __visualising IoT Sensor Data__.
 
 ![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
 
-Today we'll demo this Prometheus + Grafana Integration with __PineDio Stack BL604 RISC-V Board__ (pic above)
+In a while we shall demo this Prometheus + Grafana Integration with __PineDio Stack BL604 RISC-V Board__ (pic above)
 
 -   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
 
-But it should work for __any LoRaWAN Device__ connected to The Things Network...
+But it should work for __any LoRaWAN Device__ connected to The Things Network... Assuming that we have configured a suitable __Payload Formatter__ in The Things Network. 
 
-Assuming that we have a suitable __Payload Formatter__ configured in The Things Network. Read on to learn more...
+(Read on to learn how)
 
 ![CBOR Payload Formatter for The Things Network](https://lupyuen.github.io/images/payload-title.jpg)
 
