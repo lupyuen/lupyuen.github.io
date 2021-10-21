@@ -555,6 +555,8 @@ Finally we __install and configure Grafana__ to pull the Metrics from Prometheus
 
 1.  Look for __"Prometheus"__ and click __"Select"__
 
+    ![Prometheus Data Source for Grafana](https://lupyuen.github.io/images/prometheus-datasource.png)
+
 1.  Set the __HTTP URL__ to...
 
     ```uri
