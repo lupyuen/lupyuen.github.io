@@ -224,13 +224,80 @@ In this article we shall use "Sensor Data" and "Metric" interchangeably, since P
 
 Let's define the Sensor Data / Metrics that will be __ingested by our MQTT Gateway__...
 
-TODO
+1.  Edit [__ttn-mqtt.yaml__](https://github.com/lupyuen/prometheus-the-things-network/blob/main/ttn-mqtt.yaml)
 
-![](https://lupyuen.github.io/images/prometheus-config5.png)
+    Look for the __metrics__ section...
 
-TODO
+    ![Prometheus Metrics for MQTT Gateway](https://lupyuen.github.io/images/prometheus-config5.png)
 
-![](https://lupyuen.github.io/images/prometheus-config7.png)
+1.  We define the __Metric for Temperature__ like so...
+
+    ```yaml
+    ## Temperature Metric
+    ## Name of the metric in prometheus
+    - prom_name: t
+
+      ## Name of the metric in a MQTT JSON message
+      mqtt_name: "uplink_message.decoded_payload.t"
+
+      ## Prometheus help text for this metric
+      help: "Temperature"
+
+      ## Prometheus type for this metric.
+      ## Valid values are: "gauge" and "counter"
+      type: gauge
+
+      ## Map of string to string for constant labels.
+      ## The labels will be attached to every Prometheus metric.
+      const_labels:
+        sensor_type: t    
+    ```
+
+1.  This tells MQTT Gateway: Our LoRaWAN Device (PineDio Stack) transmits a __Temperature Value__ (named "t") at this JSON Path...
+
+    ```javascript
+    uplink_message.decoded_payload.t
+    ```
+
+    Which matches our __JSON Message Format__ from Checkpoint Alpha...
+
+    ```json
+    {
+      ...
+      "uplink_message": {
+        ...
+        "decoded_payload": {
+          "l": 4000,
+          "t": 4656
+        }    
+    ```
+
+    [(Our Temperature Values are scaled up 100 times... `4656` means `46.56` ºC)](https://lupyuen.github.io/articles/cbor#floating-point-numbers)
+
+    ![Prometheus Metrics for MQTT Gateway](https://lupyuen.github.io/images/prometheus-config7.png)
+
+1.  We define other Metrics the same way, like this __Light Level Metric__ that's transmitted by PineDio Stack...
+
+    ```yaml
+    ## Light Level Metric
+    ## Name of the metric in prometheus
+    - prom_name: l
+
+      ## Name of the metric in a MQTT JSON message
+      mqtt_name: "uplink_message.decoded_payload.l"
+
+      ## Prometheus help text for this metric
+      help: "Light Level"
+
+      ## Prometheus type for this metric.
+      ## Valid values are: "gauge" and "counter"
+      type: gauge
+
+      ## Map of string to string for constant labels.
+      ## The labels will be attached to every Prometheus metric.
+      const_labels:
+        sensor_type: l
+    ```
 
 ## Checkpoint Bravo
 
