@@ -368,9 +368,40 @@ Let's check the __Sensor Data ingested__ by our MQTT Gateway...
     curl -v http://localhost:9641/metrics
     ```
 
-1.  TODO
+1.  We should see our Sensor Data (Temperature and Light Level) ingested as __Prometheus Metrics__...
 
-    ![Checking the metrics ingested by MQTT Gateway](https://lupyuen.github.io/images/prometheus-metric3.png)
+    ```text
+    # HELP l Light Level
+    # TYPE l gauge
+    l{sensor="eui-YOUR_DEVICE_EUI",
+    sensor_type="l",
+    topic="v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up"
+    } 4000 1634364863274
+    ...    
+
+    # HELP t Temperature
+    # TYPE t gauge
+    t{sensor="eui-YOUR_DEVICE_EUI",
+    sensor_type="t",
+    topic="v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up"
+    } 5056 1634364863274
+    ```
+
+    This says that the Light Level is `4000` and the Temperature is `50.56` ºC, recorded at the Timestamp of `1634364863274`.
+
+1.  Also watch for __received_messages__...
+
+    ```text
+    # HELP received_messages received messages per topic and status
+    # TYPE received_messages counter
+    received_messages{status="success",
+    topic="v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up"
+    } 3
+    ```
+
+    This says that our MQTT Gateway has successfully processed 3 messages from The Things Network.
+
+    Let's move on to Prometheus...
 
     ![Prometheus Time Series Database](https://lupyuen.github.io/images/prometheus-flow3.jpg)
 
