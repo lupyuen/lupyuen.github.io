@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Monitor IoT Devices in The Things Network with Prometheus and Grafana",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-10-21",
+      "website": "https://lupyuen.github.io/articles/prometheus",
+      "summary": "How we monitor our IoT Sensor Devices connected to The Things Network... With Prometheus Time Series Database and Grafana Dashboards"
+    },
+    {
       "name": "CBOR Payload Formatter for The Things Network",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-18",

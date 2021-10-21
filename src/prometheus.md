@@ -1,6 +1,6 @@
 # Monitor IoT Devices in The Things Network with Prometheus and Grafana
 
-📝 _27 Oct 2021_
+📝 _21 Oct 2021_
 
 Suppose we have some __IoT Devices__ that transmit __Sensor Data__ (via LoRa and LoRaWAN) to __The Things Network__...
 
@@ -725,7 +725,11 @@ Drop me a note if you're keen to learn about Prometheus Alerts!
 
 # What's Next
 
-TODO
+I had fun integrating The Things Network with Prometheus and Grafana... It's something I always wanted to do. I hope you enjoyed it too!
+
+In the next article I'll head back to [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) and run more IoT Experiments with LoRaWAN and The Things Network.
+
+(Thankfully we now have a proper platform for Sensor Data visualisation and analysis: Prometheus + Grafana!)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -744,4 +748,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1450262680795713538)
-
