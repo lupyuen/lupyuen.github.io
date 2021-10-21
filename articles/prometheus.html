@@ -272,7 +272,7 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre
 # Name of the metric in prometheus
 - prom_name: t
 
-  # Name of the metric in a MQTT JSON message
+  # JSON Path of the metric in our MQTT JSON message
   mqtt_name: &quot;uplink_message.decoded_payload.t&quot;
 
   # Prometheus help text for this metric
@@ -307,7 +307,7 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre
 # Name of the metric in prometheus
 - prom_name: l
 
-  # Name of the metric in a MQTT JSON message
+  # JSON Path of the metric in our MQTT JSON message
   mqtt_name: &quot;uplink_message.decoded_payload.l&quot;
 
   # Prometheus help text for this metric
@@ -371,7 +371,7 @@ Got message
     }</code></pre></div></li>
 </ol>
 <h2 id="checkpoint-bravo" class="section-header"><a href="#checkpoint-bravo">2.3 Checkpoint Bravo</a></h2>
-<p>TODO</p>
+<p>Let’s check the <strong>Sensor Data ingested</strong> by our MQTT Gateway…</p>
 <ol>
 <li>
 <p>Start our <strong>LoRaWAN Firmware</strong> and transmit Sensor Data every minute</p>
