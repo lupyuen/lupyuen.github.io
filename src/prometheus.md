@@ -299,11 +299,71 @@ Let's define the Sensor Data / Metrics that will be __ingested by our MQTT Gatew
         sensor_type: l
     ```
 
+## Start MQTT Gateway
+
+We're ready to __start our MQTT Gateway__!
+
+Follow these steps to download and run __MQTT2Prometheus__...
+
+1.  Install the __latest version of Go__...
+
+    [__`golang.org`__](https://golang.org)
+
+1.  Enter this at the command line...
+
+    ```bash
+    ## Download mqtt2prometheus
+    go get github.com/hikhvar/mqtt2prometheus
+
+    ## For macOS and Linux:
+    cd $GOPATH/src/github.com/hikhvar/mqtt2prometheus
+
+    ## For Windows:
+    cd %GOPATH%\src\github.com\hikhvar\mqtt2prometheus
+
+    ## Build mqtt2prometheus
+    go build ./cmd
+
+    ## Run mqtt2prometheus.
+    ## Change "ttn-mqtt.yaml" to the full path of our
+    ## MQTT Gateway Configuration File.
+    go run ./cmd -log-level debug -config ttn-mqtt.yaml
+    ```
+
+1.  We should see our MQTT Gateway __ingesting Sensor Data__ from The Things Network...
+
+    ```text
+    mqttclient/mqttClient.go:20     
+    Connected to MQTT Broker
+
+    mqttclient/mqttClient.go:21     
+    Will subscribe to topic{"topic": "#"}
+
+    web/tls_config.go:191           
+    {"level": "info", "msg": "TLS is disabled.", "http2": false}
+
+    metrics/ingest.go:42    
+    Got message     
+    {"topic": "v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up", "payload": 
+    {
+      ...
+      "uplink_message": {
+        "decoded_payload": {
+          "l": 4000,
+          "t": 5017
+        }
+    ```
+
 ## Checkpoint Bravo
 
 TODO
 
-![](https://lupyuen.github.io/images/prometheus-metric3.png)
+1.  Start our __LoRaWAN Firmware__ and transmit Sensor Data every minute
+
+    [(Like this)](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
+
+    ![Checking the metrics ingested by MQTT Gateway](https://lupyuen.github.io/images/prometheus-metric3.png)
+
 
 # Prometheus Time Series Database
 
