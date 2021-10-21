@@ -707,6 +707,12 @@ The Alertmanager handles alerts sent by client applications such as the Promethe
 
 -   [__Prometheus Alert Manager__](https://prometheus.io/docs/alerting/latest/alertmanager/)
 
+Drop me a note if you're keen to learn more about Prometheus Alerts!
+
+![Prometheus Architecture](https://lupyuen.github.io/images/prometheus-arch.png)
+
+[(Source)](https://prometheus.io/docs/introduction/overview/)
+
 # What's Next
 
 TODO
