@@ -509,15 +509,15 @@ Let's check the __Metrics scraped by Prometheus__ from MQTT Gateway...
     http://localhost:9090
     ```
 
-    ![Checking the Metrics scraped by Prometheus from MQTT Gateway](https://lupyuen.github.io/images/prometheus-metric2.png)
-
 1.  Enter the __name of our Metric__ (like for Temperature)...
 
     ```text
     t
     ```
 
-    (See pic above)
+    Like this...
+
+    ![Checking the Metrics scraped by Prometheus from MQTT Gateway](https://lupyuen.github.io/images/prometheus-metric2.png)
 
 1.  Click __Execute__ and __Graph__
 
@@ -573,15 +573,57 @@ For our final checkpoint let's render our Sensor Data in a __Grafana Dashboard__
 
     [(Like this)](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
 
-1.  TODO
+1.  In Grafana, click __"Add Panel"__ (top right)
 
-    ![](https://lupyuen.github.io/images/prometheus-grafana6.png)
+    Click __"Add An Empty Panel"__
 
-1.  TODO
+    ![Add Panel](https://lupyuen.github.io/images/grafana-dashboard3.png)
+
+1.  Set the __Data Source__ to __"Prometheus"__
+
+    Under __Metric Browser__: Enter the name of our Metric (like for Temperature)...
+
+    ```text
+    t
+    ```
+
+    Like this...
+
+    ![Grafana Panel for Prometheus](https://lupyuen.github.io/images/prometheus-grafana6.png)
+
+1.  Click the __"Save"__ button (top right)
+
+1.  Our __Sensor Data from The Things Network__ appears in the Grafana Dashboard!
 
     ![Monitoring Devices on The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-grafana4.png)
 
     (Remember: Our Temperature Values are scaled up 100 times)
+
+To see the __Raw Sensor Data__ as a table...
+
+1.  Click __"Panel Title"__ and __"Edit"__
+
+1.  Click __"Table View"__
+
+    TODO
+
+To __filter the Sensor Data__ that will be rendered in the dashboard...
+
+1.  Click the __"Transform"__ Tab
+
+1.  Select __"Filter Data By Values"__
+
+1.  Set the Conditions and click __"Apply"__
+
+    TODO
+
+1.  The above filter matches the __Device ID__ with the Regular Expression...
+
+    ```text
+    eui-70b3.*
+    ```
+
+    Which means that only Device IDs starting with __"eui-70b3"__ will be rendered.
 
 # MQTT with TLS Encryption
 
