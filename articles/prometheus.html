@@ -245,7 +245,10 @@ password: YOUR_API_KEY</code></pre></div></li>
 topic_path: &quot;#&quot;</code></pre></div></li>
 <li>
 <p>Our MQTT Gateway shall extract the <strong>Device ID</strong> from the MQTT Topic Path…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre></div>
+<div class="example-wrap"><pre class="language-yaml"><code># Extract the device ID (eui-YOUR_DEVICE_EUI) 
+# from the topic path, which looks like...
+# v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up
+device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre></div>
 <p>(Which will be helpful for filtering our Sensor Data by Device ID in Grafana)</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-config4.png" alt="MQTT Configuration File" /></p>
 </li>
