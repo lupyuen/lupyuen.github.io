@@ -274,7 +274,7 @@ Let's define the Sensor Data / Metrics that will be __ingested by our MQTT Gatew
 
     [(Our Temperature Values are scaled up 100 times... `4656` means `46.56` ºC)](https://lupyuen.github.io/articles/cbor#floating-point-numbers)
 
-    ![Prometheus Metrics for MQTT Gateway](https://lupyuen.github.io/images/prometheus-config7.png)
+    ![Prometheus Metrics for MQTT Gateway](https://lupyuen.github.io/images/prometheus-config7.jpg)
 
 1.  We define other Metrics the same way, like this __Light Level Metric__ that's transmitted by PineDio Stack...
 
@@ -687,7 +687,7 @@ To secure our MQTT Password with __TLS Encryption__, follow the instructions her
 
 -   [__"MQTT with TLS Encryption"__](https://github.com/lupyuen/prometheus-the-things-network#mqtt-with-tls)
 
-![MQTT with TLS Encryption](https://lupyuen.github.io/images/prometheus-tls.png)
+![MQTT with TLS Encryption](https://lupyuen.github.io/images/prometheus-tls.jpg)
 
 ## Checkpoint Echo
 
