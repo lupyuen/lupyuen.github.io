@@ -605,13 +605,13 @@ For our final checkpoint let's render our Sensor Data in a __Grafana Dashboard__
 
 _Can we tweak the display of Sensor Data in Grafana?_
 
-Grafana lets us __transform the filter__ the Sensor Data for our Dashboard.
+Grafana lets us __transform and filter__ the Sensor Data for our Dashboard.
 
 First we show the __Raw Sensor Data__ as a table...
 
 1.  Click __"Panel Title"__ and __"Edit"__
 
-1.  Click __"Table View"__
+1.  Click __"Table View"__ (at top)
 
     ![Table View for Grafana Panel](https://lupyuen.github.io/images/prometheus-table.png)
 
@@ -619,7 +619,7 @@ First we show the __Raw Sensor Data__ as a table...
 
     Let's __split our Time Series Data__ into separate columns.
 
-1.  Click the __"Transform"__ Tab
+1.  Click __"Transform"__ Tab (at bottom)
 
     Click __"Add Transformation"__
 
@@ -633,13 +633,13 @@ First we show the __Raw Sensor Data__ as a table...
 
 Next we __filter the Sensor Data__ that will be rendered in our Dashboard...
 
-1.  Click the __"Transform"__ Tab
+1.  Click __"Transform"__ Tab (at bottom)
 
     Click __"Add Transformation"__
 
     Select __"Filter Data By Values"__
 
-1.  Click __"Add Condition"__ and set the Conditions...
+1.  Click __"Add Condition"__ and set the Condition...
 
     ![Grafana Panel with Filter](https://lupyuen.github.io/images/prometheus-filter.png)
 
