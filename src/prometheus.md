@@ -362,6 +362,12 @@ Let's check the __Sensor Data ingested__ by our MQTT Gateway...
 
     [(Like this)](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
 
+1.  Enter this at the command-line...
+
+    ```bash
+    curl -v http://localhost:9641/metrics
+    ```
+
 1.  TODO
 
     ![Checking the metrics ingested by MQTT Gateway](https://lupyuen.github.io/images/prometheus-metric3.png)
