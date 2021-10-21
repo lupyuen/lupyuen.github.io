@@ -601,23 +601,39 @@ For our final checkpoint let's render our Sensor Data in a __Grafana Dashboard__
 
     (Remember: Our Temperature Values are scaled up 100 times)
 
-To see the __Raw Sensor Data__ as a table...
+# Transform and Filter Sensor Data
+
+_Can we tweak the display of Sensor Data in Grafana?_
+
+Grafana lets us __transform the filter__ the Sensor Data for our Dashboard.
+
+First we show the __Raw Sensor Data__ as a table...
 
 1.  Click __"Panel Title"__ and __"Edit"__
 
 1.  Click __"Table View"__
 
-    TODO
+    ![Table View for Grafana Panel](https://lupyuen.github.io/images/prometheus-table.png)
 
-To __filter the Sensor Data__ that will be rendered in the dashboard...
+1.  TODO
+
+1.  Click the __"Transform"__ Tab
+
+1.  Select __"Labels to Fields"__
+
+1.  TODO
+
+    ![Labels to Fields for Grafana Panel](https://lupyuen.github.io/images/prometheus-transform.png)
+
+Now we __filter the Sensor Data__ that will be rendered in our Dashboard...
 
 1.  Click the __"Transform"__ Tab
 
 1.  Select __"Filter Data By Values"__
 
-1.  Set the Conditions and click __"Apply"__
+1.  Click __"Add Condition"__ and set the Conditions...
 
-    TODO
+    ![Grafana Panel with Filter](https://lupyuen.github.io/images/prometheus-filter.png)
 
 1.  The above filter matches the __Device ID__ with the Regular Expression...
 
@@ -626,6 +642,8 @@ To __filter the Sensor Data__ that will be rendered in the dashboard...
     ```
 
     Which means that only Device IDs starting with __"eui-70b3"__ will be rendered.
+
+1.  When we're done, click the __"Apply"__ button (top right)
 
 # MQTT with TLS Encryption
 
