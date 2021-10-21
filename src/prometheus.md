@@ -615,21 +615,29 @@ First we show the __Raw Sensor Data__ as a table...
 
     ![Table View for Grafana Panel](https://lupyuen.github.io/images/prometheus-table.png)
 
-1.  TODO
+1.  Not quite what we expected... Everything gets lumped into a __single column__!
+
+    Let's __split our Time Series Data__ into separate columns.
 
 1.  Click the __"Transform"__ Tab
 
-1.  Select __"Labels to Fields"__
+    Click __"Add Transformation"__
 
-1.  TODO
+    Select __"Labels To Fields"__
+
+1.  We should see this...
 
     ![Labels to Fields for Grafana Panel](https://lupyuen.github.io/images/prometheus-transform.png)
 
-Now we __filter the Sensor Data__ that will be rendered in our Dashboard...
+    Much better! Our __Device ID__ ("sensor"), __Sensor Type__ ("t") and __Value__ are now in separate columns.
+
+Next we __filter the Sensor Data__ that will be rendered in our Dashboard...
 
 1.  Click the __"Transform"__ Tab
 
-1.  Select __"Filter Data By Values"__
+    Click __"Add Transformation"__
+
+    Select __"Filter Data By Values"__
 
 1.  Click __"Add Condition"__ and set the Conditions...
 
@@ -652,6 +660,8 @@ TODO11
 ![](https://lupyuen.github.io/images/prometheus-tls.png)
 
 ## Checkpoint Echo
+
+_What if we have problems enabling TLS Encryption for MQTT?_
 
 TODO
 
