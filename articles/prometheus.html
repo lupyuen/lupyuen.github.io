@@ -381,8 +381,26 @@ Got message
 <p>Enter this at the command-line…</p>
 <div class="example-wrap"><pre class="language-bash"><code>curl -v http://localhost:9641/metrics</code></pre></div></li>
 <li>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-metric3.png" alt="Checking the metrics ingested by MQTT Gateway" /></p>
+<p>We should see our Sensor Data (Temperature and Light Level) ingested as <strong>Prometheus Metrics</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>l{sensor=&quot;eui-YOUR_DEVICE_EUI&quot;,
+sensor_type=&quot;l&quot;,
+topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
+} 4000 1634364863274
+...    
+
+t{sensor=&quot;eui-YOUR_DEVICE_EUI&quot;,
+sensor_type=&quot;t&quot;,
+topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
+} 5056 1634364863274</code></pre></div>
+<p>This says that the Light Level is <code>4000</code> and the Temperature is <code>50.56</code> ºC, recorded at the Timestamp of <code>1634364863274</code>.</p>
+</li>
+<li>
+<p>Also watch for <strong>received_messages</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>received_messages{status=&quot;success&quot;,
+topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
+} 3</code></pre></div>
+<p>This says that our MQTT Gateway has successfully processed 3 messages from The Things Network.</p>
+<p>Let’s move on to Prometheus…</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-flow3.jpg" alt="Prometheus Time Series Database" /></p>
 </li>
 </ol>
