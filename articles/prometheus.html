@@ -596,6 +596,10 @@ main.go:794
 <p><img src="https://lupyuen.github.io/images/prometheus-transform.png" alt="Labels to Fields for Grafana Panel" /></p>
 <p>Much better! Our <strong>Device ID</strong> (“sensor”), <strong>Sensor Type</strong> (“t”) and <strong>Value</strong> are now in separate columns.</p>
 </li>
+<li>
+<p>If we’re rendering <strong>Multiple Devices or Sensor Types</strong>, we should set the <strong>Value Field Name</strong></p>
+<p><a href="https://lupyuen.github.io/articles/prometheus#notes">(See this)</a></p>
+</li>
 </ol>
 <p>Next we <strong>filter the Sensor Data</strong> that will be rendered in our Dashboard…</p>
 <ol>
@@ -698,8 +702,24 @@ main.go:794
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/prometheus.md"><code>lupyuen.github.io/src/prometheus.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1450262680795713538">this Twitter Thread</a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1450262680795713538">this Twitter Thread</a></p>
+</li>
+<li>
+<p>If we’re rendering <strong>Multiple Sensor Types</strong> in a Grafana Panel (like Temperature and Light Level)…</p>
+<p>Set <strong>Labels To Fields</strong> → <strong>Value Field Name</strong> to <strong>“sensor_type”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-transform2.png" alt="Rendering multiple Sensor Types" /></p>
+<p>This fixes the graph to plot one line per Sensor Type.</p>
+</li>
+<li>
+<p>If we’re rendering <strong>Multiple Devices</strong> in a Grafana Panel…</p>
+<p>Set <strong>Labels To Fields</strong> → <strong>Value Field Name</strong> to <strong>“sensor”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-transform3.png" alt="Rendering multiple Sensor Devices" /></p>
+<p>This fixes the graph to plot one line per Device.</p>
+</li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/prometheus-refresh5.png" alt="Grafana rendering PineDio Stack’s Internal Temperature over a one-hour period" /></p>
+<p><em>Grafana rendering PineDio Stack’s Internal Temperature over a one-hour period</em></p>
 
     
 </body>
