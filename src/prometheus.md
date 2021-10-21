@@ -216,6 +216,14 @@ Follow these steps to __configure our MQTT Gateway__...
 
 ## Prometheus Metrics
 
+_What's a Prometheus Metric?_
+
+A Metric is an item of __Monitoring Data__ that's collected and reported by Prometheus.
+
+(Think of Metrics like CPU Utilisation and RAM Utilisation... Prometheus was originally created for monitoring servers)
+
+In this article we shall use "Sensor Data" and "Metric" interchangeably, since Prometheus treats our Sensor Data as Metrics.
+
 TODO
 
 ![](https://lupyuen.github.io/images/prometheus-config5.png)
