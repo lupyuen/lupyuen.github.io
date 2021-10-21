@@ -582,25 +582,25 @@ main.go:794
 <p><img src="https://lupyuen.github.io/images/prometheus-table.png" alt="Table View for Grafana Panel" /></p>
 </li>
 <li>
-<p>TODO</p>
+<p>Not quite what we expected… Everything gets lumped into a <strong>single column</strong>!</p>
+<p>Let’s <strong>split our Time Series Data</strong> into separate columns.</p>
 </li>
 <li>
 <p>Click the <strong>“Transform”</strong> Tab</p>
+<p>Click <strong>“Add Transformation”</strong></p>
+<p>Select <strong>“Labels To Fields”</strong></p>
 </li>
 <li>
-<p>Select <strong>“Labels to Fields”</strong></p>
-</li>
-<li>
-<p>TODO</p>
+<p>We should see this…</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-transform.png" alt="Labels to Fields for Grafana Panel" /></p>
+<p>Much better! Our <strong>Device ID</strong> (“sensor”), <strong>Sensor Type</strong> (“t”) and <strong>Value</strong> are now in separate columns.</p>
 </li>
 </ol>
-<p>Now we <strong>filter the Sensor Data</strong> that will be rendered in our Dashboard…</p>
+<p>Next we <strong>filter the Sensor Data</strong> that will be rendered in our Dashboard…</p>
 <ol>
 <li>
 <p>Click the <strong>“Transform”</strong> Tab</p>
-</li>
-<li>
+<p>Click <strong>“Add Transformation”</strong></p>
 <p>Select <strong>“Filter Data By Values”</strong></p>
 </li>
 <li>
@@ -620,6 +620,7 @@ main.go:794
 <p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-tls.png" alt="" /></p>
 <h2 id="checkpoint-echo" class="section-header"><a href="#checkpoint-echo">6.1 Checkpoint Echo</a></h2>
+<p><em>What if we have problems enabling TLS Encryption for MQTT?</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-wireshark2.png" alt="" /></p>
 <h1 id="prometheus-alerts" class="section-header"><a href="#prometheus-alerts">7 Prometheus Alerts</a></h1>
