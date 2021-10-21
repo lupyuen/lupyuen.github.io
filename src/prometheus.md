@@ -753,8 +753,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1450262680795713538)
-
 1.  If we're rendering __Multiple Sensor Types__ in a Grafana Panel (like Temperature and Light Level)...
 
     Set __Labels To Fields__ → __Value Field Name__ to __"sensor_type"__...
@@ -771,6 +769,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     This fixes the graph to plot one line per Device.
 
-![Grafana rendering PineDio Stack's Internal Temperature over a one-hour period](https://lupyuen.github.io/images/prometheus-refresh5.png)
+1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1450262680795713538)
 
-_Grafana rendering PineDio Stack's Internal Temperature over a one-hour period_
+![Grafana rendering PineDio Stack's Internal Temperature over a one-hour period, thanks to Prometheus and The Things Network](https://lupyuen.github.io/images/prometheus-refresh5.png)
+
+_Grafana rendering PineDio Stack's Internal Temperature over a one-hour period, thanks to Prometheus and The Things Network_
