@@ -531,19 +531,29 @@ We're ready for our final step... Connecting Prometheus to Grafana!
 
 # Grafana Dashboard
 
-TODO
+Finally we __install and configure Grafana__ to pull the Metrics from Prometheus (over HTTP) for rendering in a Grafana Dashboard...
 
-![](https://lupyuen.github.io/images/prometheus-grafana5.png)
+1.  Follow the steps below to download and install __Grafana__...
 
-TODO16
+    [__"Install Grafana"__](https://lupyuen.github.io/articles/grafana#install-grafana)
 
-![](https://lupyuen.github.io/images/prometheus-grafana6.png)
+1.  TODO
+
+    ![](https://lupyuen.github.io/images/prometheus-grafana5.png)
 
 ## Checkpoint Delta
 
 TODO
 
-![Monitoring Devices on The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-grafana4.png)
+1.  TODO
+
+    ![](https://lupyuen.github.io/images/prometheus-grafana6.png)
+
+1.  TODO
+
+    ![Monitoring Devices on The Things Network with Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-grafana4.png)
+
+    (Remember: Our Temperature Values are scaled up 100 times)
 
 # MQTT with TLS Encryption
 
