@@ -703,6 +703,10 @@ The certificates should appear like this...
 
 TODO
 
+The Alertmanager handles alerts sent by client applications such as the Prometheus server. It takes care of deduplicating, grouping, and routing them to the correct receiver integration such as email, PagerDuty, or OpsGenie. It also takes care of silencing and inhibition of alerts.
+
+-   [__Prometheus Alert Manager__](https://prometheus.io/docs/alerting/latest/alertmanager/)
+
 # What's Next
 
 TODO
