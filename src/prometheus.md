@@ -533,17 +533,45 @@ We're ready for our final step... Connecting Prometheus to Grafana!
 
 Finally we __install and configure Grafana__ to pull the Metrics from Prometheus (over HTTP) for rendering in a Grafana Dashboard...
 
-1.  Follow the steps below to download and install __Grafana__...
+1.  Follow the steps below to __download and install Grafana__...
 
     [__"Install Grafana"__](https://lupyuen.github.io/articles/grafana#install-grafana)
 
-1.  TODO
+1.  Browse to our __Grafana Server__...
 
-    ![](https://lupyuen.github.io/images/prometheus-grafana5.png)
+    __`http://localhost:3000`__
+
+    __Username:__ admin
+
+    __Password:__ admin
+
+1.  In the left menu bar, click...
+
+    __Configuration__ → __Data Sources__
+
+    Click __"Add Data Source"__
+
+    ![Add Data Source](https://lupyuen.github.io/images/grafana-datasource4.png)
+
+1.  Look for __"Prometheus"__ and click __"Select"__
+
+1.  Set the __HTTP URL__ to...
+
+    ```uri
+    http://localhost:9090
+    ```
+
+    ![Grafana Data Source for Prometheus](https://lupyuen.github.io/images/prometheus-grafana5.png)
+
+1.  Click __"Save & Test"__
 
 ## Checkpoint Delta
 
-TODO
+For our final checkpoint let's render our Sensor Data in a __Grafana Dashboard__!
+
+1.  Start our __LoRaWAN Firmware__ and transmit Sensor Data every minute
+
+    [(Like this)](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
 
 1.  TODO
 
