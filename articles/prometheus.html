@@ -485,8 +485,28 @@ main.go:794
 </li>
 </ol>
 <h2 id="checkpoint-charlie" class="section-header"><a href="#checkpoint-charlie">3.1 Checkpoint Charlie</a></h2>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-metric2.png" alt="" /></p>
+<p>Let’s check the <strong>Metrics scraped by Prometheus</strong> from MQTT Gateway…</p>
+<ol>
+<li>
+<p>Start our <strong>LoRaWAN Firmware</strong> and transmit Sensor Data every minute</p>
+<p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware">(Like this)</a></p>
+</li>
+<li>
+<p>Browse to our <strong>Prometheus Server</strong>…</p>
+<div class="example-wrap"><pre class="language-uri"><code>http://localhost:9090</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/prometheus-metric2.png" alt="Checking the Metrics scraped by Prometheus from MQTT Gateway" /></p>
+</li>
+<li>
+<p>Enter the <strong>name of our Metric</strong> (like for Temperature)…</p>
+<div class="example-wrap"><pre class="language-text"><code>t</code></pre></div>
+<p>(See pic above)</p>
+</li>
+<li>
+<p>Click <strong>Execute</strong> and <strong>Graph</strong></p>
+<p>Our Metric appears in the graph.</p>
+<p>(See pic above)</p>
+</li>
+</ol>
 <h1 id="grafana-dashboard" class="section-header"><a href="#grafana-dashboard">4 Grafana Dashboard</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-flow4.jpg" alt="" /></p>
