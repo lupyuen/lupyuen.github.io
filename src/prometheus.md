@@ -661,11 +661,11 @@ No worries! This neat trick will __auto-refresh our Grafana Dashboard__ to rende
 
 1.  In our Grafana Dashboard, click the __"Settings"__ button (top right)
 
-    TODO
+    ![Dashboard Settings](https://lupyuen.github.io/images/prometheus-refresh3.png)
 
 1.  Under __"Time Options"__, uncheck __"Hide Time Picker"__
 
-    TODO
+    ![Hide Time Picker](https://lupyuen.github.io/images/prometheus-refresh2.png)
 
 1.  Click __"Save Dashboard"__
 
@@ -673,9 +673,9 @@ No worries! This neat trick will __auto-refresh our Grafana Dashboard__ to rende
 
     Select __"5 Seconds"__
 
-    TODO
+    ![Refresh Interval](https://lupyuen.github.io/images/prometheus-refresh3.png)
 
-1.  Now our Grafana Dashboard will auto-refresh every 5 seconds!
+    Now our Grafana Dashboard auto-refreshes every 5 seconds!
 
 # MQTT with TLS Encryption
 
