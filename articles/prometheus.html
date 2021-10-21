@@ -503,7 +503,7 @@ main.go:794
 <p><img src="https://lupyuen.github.io/images/prometheus-metric2.png" alt="Checking the Metrics scraped by Prometheus from MQTT Gateway" /></p>
 </li>
 <li>
-<p>Click <strong>Execute</strong> and <strong>Graph</strong></p>
+<p>Click <strong>“Execute”</strong> and <strong>“Graph”</strong></p>
 <p>Our Metric appears in the graph.</p>
 <p>(See pic above)</p>
 </li>
@@ -620,7 +620,27 @@ main.go:794
 <h2 id="auto-dashboard-refresh" class="section-header"><a href="#auto-dashboard-refresh">5.1 Auto Dashboard Refresh</a></h2>
 <p><em>Our Grafana Dashboard doesn’t refresh automatically for real-time Sensor Data?</em></p>
 <p>No worries! This neat trick will <strong>auto-refresh our Grafana Dashboard</strong> to render real-time Sensor Data…</p>
+<ol>
+<li>
+<p>In our Grafana Dashboard, click the <strong>“Settings”</strong> button (top right)</p>
 <p>TODO</p>
+</li>
+<li>
+<p>Under <strong>“Time Options”</strong>, uncheck <strong>“Hide Time Picker”</strong></p>
+<p>TODO</p>
+</li>
+<li>
+<p>Click <strong>“Save Dashboard”</strong></p>
+</li>
+<li>
+<p>Click the <strong>“Refresh Interval”</strong> (top right)</p>
+<p>Select <strong>“5 Seconds”</strong></p>
+<p>TODO</p>
+</li>
+<li>
+<p>Now our Grafana Dashboard will auto-refresh every 5 seconds!</p>
+</li>
+</ol>
 <h1 id="mqtt-with-tls-encryption" class="section-header"><a href="#mqtt-with-tls-encryption">6 MQTT with TLS Encryption</a></h1>
 <p>There’s a <strong>Security Risk</strong> in our configuration of MQTT Gateway…</p>
 <p>Our <strong>MQTT Password is transmitted in clear text</strong> from our computer to The Things Network!</p>
