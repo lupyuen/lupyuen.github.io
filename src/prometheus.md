@@ -140,7 +140,7 @@ Also verify that the __MQTT Server works OK__ at The Things Network...
       -d
     ```
 
-1.  We should see the __messages transmitted__ by our LoRaWAN Device...
+1.  We should see the __Uplink Messages transmitted__ by our LoRaWAN Device...
 
     ```json
     {
@@ -157,27 +157,72 @@ Also verify that the __MQTT Server works OK__ at The Things Network...
 
     [(See the complete message)](https://github.com/lupyuen/cbor-the-things-network#mqtt-log)
 
+![MQTT Gateway for Prometheus](https://lupyuen.github.io/images/prometheus-flow2.jpg)
+
 # MQTT Gateway for Prometheus
 
+Now we connect our MQTT Gateway to The Things Network...
+
+-   [__MQTT2Prometheus MQTT Gateway__](https://github.com/hikhvar/mqtt2prometheus)
+
+Our MQTT Gateway shall...
+
+-   __Subscribe to all MQTT Topics__ published on The Things Network
+
+    (Including the Uplink Messages transmitted by our device)
+
+-   __Ingest the Decoded Sensor Data__ from the Uplink Messages
+
+    (As Prometheus Metrics)
+
+Follow these steps to __configure our MQTT Gateway__...
+
+1.  Download the __MQTT Gateway Configuration File__...
+
+    [__ttn-mqtt.yaml__](https://github.com/lupyuen/prometheus-the-things-network/blob/main/ttn-mqtt.yaml)
+
+1.  Edit the file. Fill in the __MQTT Public Address, Username and Password__ for The Things Network [(from here)](https://lupyuen.github.io/articles/grafana#configure-the-things-network-mqtt)...
+
+    ```yaml    
+    ## Change au1.cloud.thethings.network to our MQTT Public Address
+    server: tcp://au1.cloud.thethings.network:1883
+
+    ## Change luppy-application@ttn to our MQTT Username
+    user: luppy-application@ttn
+
+    ## Change YOUR_API_KEY to our MQTT Password
+    password: YOUR_API_KEY
+    ```
+
+1.  Note that we're subscribing to __all MQTT Topics__...
+
+    ```yaml
+    ## Topic path to subscribe to. "#" means All Topics.
+    topic_path: "#"
+    ```
+
+1.  Our MQTT Gateway shall extract the __Device ID__ from the MQTT Topic Path...
+
+    ```yaml
+    # Extract the device ID (eui-YOUR_DEVICE_EUI) 
+    # from the topic path, which looks like...
+    # v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up
+    device_id_regex: "(.*/)?devices/(?P<deviceid>.*)/.*"
+    ```
+
+    (Which will be helpful for filtering our Sensor Data by Device ID in Grafana)
+
+    ![MQTT Configuration File](https://lupyuen.github.io/images/prometheus-config4.png)
+
+## Prometheus Metrics
+
 TODO
-
-![](https://lupyuen.github.io/images/prometheus-flow3.jpg)
-
-TODO
-
-![](https://lupyuen.github.io/images/prometheus-flow2.jpg)
-
-TODO10
-
-![](https://lupyuen.github.io/images/prometheus-config7.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/prometheus-config4.png)
-
-TODO12
 
 ![](https://lupyuen.github.io/images/prometheus-config5.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/prometheus-config7.png)
 
 ## Checkpoint Bravo
 
@@ -186,6 +231,10 @@ TODO
 ![](https://lupyuen.github.io/images/prometheus-metric3.png)
 
 # Prometheus Time Series Database
+
+TODO
+
+![](https://lupyuen.github.io/images/prometheus-flow3.jpg)
 
 TODO5
 
