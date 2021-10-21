@@ -407,6 +407,12 @@ Let's check the __Sensor Data ingested__ by our MQTT Gateway...
 
 # Prometheus Time Series Database
 
+_How do we push the Sensor Data / Metrics from MQTT Gateway to Prometheus?_
+
+Prometheus collects Metrics by __scraping them over HTTP__.
+
+(Much like the __curl__ command from Checkpoint Bravo)
+
 TODO
 
 ![](https://lupyuen.github.io/images/prometheus-config6.png)
