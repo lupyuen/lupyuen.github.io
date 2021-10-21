@@ -497,9 +497,33 @@ Let's __configure and start Prometheus__ to scrape the Metrics from our MQTT Gat
 
 ## Checkpoint Charlie
 
-TODO
+Let's check the __Metrics scraped by Prometheus__ from MQTT Gateway...
 
-![](https://lupyuen.github.io/images/prometheus-metric2.png)
+1.  Start our __LoRaWAN Firmware__ and transmit Sensor Data every minute
+
+    [(Like this)](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
+
+1.  Browse to our __Prometheus Server__...
+
+    ```uri
+    http://localhost:9090
+    ```
+
+    ![Checking the Metrics scraped by Prometheus from MQTT Gateway](https://lupyuen.github.io/images/prometheus-metric2.png)
+
+1.  Enter the __name of our Metric__ (like for Temperature)...
+
+    ```text
+    t
+    ```
+
+    (See pic above)
+
+1.  Click __Execute__ and __Graph__
+
+    Our Metric appears in the graph.
+
+    (See pic above)
 
 # Grafana Dashboard
 
