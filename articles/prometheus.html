@@ -571,14 +571,14 @@ main.go:794
 </ol>
 <h1 id="transform-and-filter-sensor-data" class="section-header"><a href="#transform-and-filter-sensor-data">5 Transform and Filter Sensor Data</a></h1>
 <p><em>Can we tweak the display of Sensor Data in Grafana?</em></p>
-<p>Grafana lets us <strong>transform the filter</strong> the Sensor Data for our Dashboard.</p>
+<p>Grafana lets us <strong>transform and filter</strong> the Sensor Data for our Dashboard.</p>
 <p>First we show the <strong>Raw Sensor Data</strong> as a table…</p>
 <ol>
 <li>
 <p>Click <strong>“Panel Title”</strong> and <strong>“Edit”</strong></p>
 </li>
 <li>
-<p>Click <strong>“Table View”</strong></p>
+<p>Click <strong>“Table View”</strong> (at top)</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-table.png" alt="Table View for Grafana Panel" /></p>
 </li>
 <li>
@@ -586,7 +586,7 @@ main.go:794
 <p>Let’s <strong>split our Time Series Data</strong> into separate columns.</p>
 </li>
 <li>
-<p>Click the <strong>“Transform”</strong> Tab</p>
+<p>Click <strong>“Transform”</strong> Tab (at bottom)</p>
 <p>Click <strong>“Add Transformation”</strong></p>
 <p>Select <strong>“Labels To Fields”</strong></p>
 </li>
@@ -599,12 +599,12 @@ main.go:794
 <p>Next we <strong>filter the Sensor Data</strong> that will be rendered in our Dashboard…</p>
 <ol>
 <li>
-<p>Click the <strong>“Transform”</strong> Tab</p>
+<p>Click <strong>“Transform”</strong> Tab (at bottom)</p>
 <p>Click <strong>“Add Transformation”</strong></p>
 <p>Select <strong>“Filter Data By Values”</strong></p>
 </li>
 <li>
-<p>Click <strong>“Add Condition”</strong> and set the Conditions…</p>
+<p>Click <strong>“Add Condition”</strong> and set the Condition…</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-filter.png" alt="Grafana Panel with Filter" /></p>
 </li>
 <li>
