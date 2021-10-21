@@ -68,7 +68,8 @@
 <li><a href="#payload-formatter">1 Payload Formatter</a><ul>
 <li><a href="#checkpoint-alpha">1.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
 <li><a href="#mqtt-gateway-for-prometheus">2 MQTT Gateway for Prometheus</a><ul>
-<li><a href="#checkpoint-bravo">2.1 Checkpoint Bravo</a><ul></ul></li></ul></li>
+<li><a href="#prometheus-metrics">2.1 Prometheus Metrics</a><ul></ul></li>
+<li><a href="#checkpoint-bravo">2.2 Checkpoint Bravo</a><ul></ul></li></ul></li>
 <li><a href="#prometheus-time-series-database">3 Prometheus Time Series Database</a><ul>
 <li><a href="#checkpoint-charlie">3.1 Checkpoint Charlie</a><ul></ul></li></ul></li>
 <li><a href="#grafana-dashboard">4 Grafana Dashboard</a><ul>
@@ -193,7 +194,7 @@ mosquitto_sub \
   -P &quot;YOUR_PASSWORD&quot; ^
   -d</code></pre></div></li>
 <li>
-<p>We should see the <strong>messages transmitted</strong> by our LoRaWAN Device…</p>
+<p>We should see the <strong>Uplink Messages transmitted</strong> by our LoRaWAN Device…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
   ...
   &quot;uplink_message&quot;: {
@@ -206,21 +207,61 @@ mosquitto_sub \
 <p><a href="https://github.com/lupyuen/cbor-the-things-network#mqtt-log">(See the complete message)</a></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/prometheus-flow2.jpg" alt="MQTT Gateway for Prometheus" /></p>
 <h1 id="mqtt-gateway-for-prometheus" class="section-header"><a href="#mqtt-gateway-for-prometheus">2 MQTT Gateway for Prometheus</a></h1>
+<p>Now we connect our MQTT Gateway to The Things Network…</p>
+<ul>
+<li><a href="https://github.com/hikhvar/mqtt2prometheus"><strong>MQTT2Prometheus MQTT Gateway</strong></a></li>
+</ul>
+<p>Our MQTT Gateway shall…</p>
+<ul>
+<li>
+<p><strong>Subscribe to all MQTT Topics</strong> published on The Things Network</p>
+<p>(Including the Uplink Messages transmitted by our device)</p>
+</li>
+<li>
+<p><strong>Ingest the Decoded Sensor Data</strong> from the Uplink Messages</p>
+<p>(As Prometheus Metrics)</p>
+</li>
+</ul>
+<p>Follow these steps to <strong>configure our MQTT Gateway</strong>…</p>
+<ol>
+<li>
+<p>Download the <strong>MQTT Gateway Configuration File</strong>…</p>
+<p><a href="https://github.com/lupyuen/prometheus-the-things-network/blob/main/ttn-mqtt.yaml"><strong>ttn-mqtt.yaml</strong></a></p>
+</li>
+<li>
+<p>Edit the file. Fill in the <strong>MQTT Public Address, Username and Password</strong> for The Things Network <a href="https://lupyuen.github.io/articles/grafana#configure-the-things-network-mqtt">(from here)</a>…</p>
+<div class="example-wrap"><pre class="language-yaml"><code># Change au1.cloud.thethings.network to our MQTT Public Address
+server: tcp://au1.cloud.thethings.network:1883
+
+# Change luppy-application@ttn to our MQTT Username
+user: luppy-application@ttn
+
+# Change YOUR_API_KEY to our MQTT Password
+password: YOUR_API_KEY</code></pre></div></li>
+<li>
+<p>Note that we’re subscribing to <strong>all MQTT Topics</strong>…</p>
+<div class="example-wrap"><pre class="language-yaml"><code># Topic path to subscribe to. &quot;#&quot; means All Topics.
+topic_path: &quot;#&quot;</code></pre></div></li>
+<li>
+<p>Our MQTT Gateway shall extract the <strong>Device ID</strong> from the MQTT Topic Path…</p>
+<div class="example-wrap"><pre class="language-yaml"><code>device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre></div>
+<p>(Which will be helpful for filtering our Sensor Data by Device ID in Grafana)</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-config4.png" alt="MQTT Configuration File" /></p>
+</li>
+</ol>
+<h2 id="prometheus-metrics" class="section-header"><a href="#prometheus-metrics">2.1 Prometheus Metrics</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-flow3.jpg" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-flow2.jpg" alt="" /></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-config7.png" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-config4.png" alt="" /></p>
-<p>TODO12</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-config5.png" alt="" /></p>
-<h2 id="checkpoint-bravo" class="section-header"><a href="#checkpoint-bravo">2.1 Checkpoint Bravo</a></h2>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-config7.png" alt="" /></p>
+<h2 id="checkpoint-bravo" class="section-header"><a href="#checkpoint-bravo">2.2 Checkpoint Bravo</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-metric3.png" alt="" /></p>
 <h1 id="prometheus-time-series-database" class="section-header"><a href="#prometheus-time-series-database">3 Prometheus Time Series Database</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-flow3.jpg" alt="" /></p>
 <p>TODO5</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-flow.jpg" alt="" /></p>
 <p>TODO8</p>
