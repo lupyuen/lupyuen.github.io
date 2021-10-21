@@ -525,13 +525,13 @@ Let's check the __Metrics scraped by Prometheus__ from MQTT Gateway...
 
     (See pic above)
 
+We're ready for our final step... Connecting Prometheus to Grafana!
+
+![Grafana Dashboard for Prometheus](https://lupyuen.github.io/images/prometheus-flow4.jpg)
+
 # Grafana Dashboard
 
 TODO
-
-![](https://lupyuen.github.io/images/prometheus-flow4.jpg)
-
-TODO15
 
 ![](https://lupyuen.github.io/images/prometheus-grafana5.png)
 
