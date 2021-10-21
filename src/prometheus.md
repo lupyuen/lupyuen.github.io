@@ -631,6 +631,10 @@ First we show the __Raw Sensor Data__ as a table...
 
     Much better! Our __Device ID__ ("sensor"), __Sensor Type__ ("t") and __Value__ are now in separate columns.
 
+1.  If we're rendering __Multiple Devices or Sensor Types__, we should set the __Value Field Name__
+
+    [(See this)](https://lupyuen.github.io/articles/prometheus#notes)
+
 Next we __filter the Sensor Data__ that will be rendered in our Dashboard...
 
 1.  Click __"Transform"__ Tab (at bottom)
@@ -750,3 +754,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1450262680795713538)
+
+1.  If we're rendering __Multiple Sensor Types__ in a Grafana Panel (like Temperature and Light Level)...
+
+    Set __Labels To Fields__ → __Value Field Name__ to __"sensor_type"__...
+
+    ![Rendering multiple Sensor Types](https://lupyuen.github.io/images/prometheus-transform2.png)
+
+    This fixes the graph to plot one line per Sensor Type.
+
+1.  If we're rendering __Multiple Devices__ in a Grafana Panel...
+
+    Set __Labels To Fields__ → __Value Field Name__ to __"sensor"__...
+
+    ![Rendering multiple Sensor Devices](https://lupyuen.github.io/images/prometheus-transform3.png)
+
+    This fixes the graph to plot one line per Device.
+
+![Grafana rendering PineDio Stack's Internal Temperature over a one-hour period](https://lupyuen.github.io/images/prometheus-refresh5.png)
+
+_Grafana rendering PineDio Stack's Internal Temperature over a one-hour period_
