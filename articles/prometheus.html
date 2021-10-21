@@ -69,7 +69,8 @@
 <li><a href="#checkpoint-alpha">1.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
 <li><a href="#mqtt-gateway-for-prometheus">2 MQTT Gateway for Prometheus</a><ul>
 <li><a href="#prometheus-metrics">2.1 Prometheus Metrics</a><ul></ul></li>
-<li><a href="#checkpoint-bravo">2.2 Checkpoint Bravo</a><ul></ul></li></ul></li>
+<li><a href="#start-mqtt-gateway">2.2 Start MQTT Gateway</a><ul></ul></li>
+<li><a href="#checkpoint-bravo">2.3 Checkpoint Bravo</a><ul></ul></li></ul></li>
 <li><a href="#prometheus-time-series-database">3 Prometheus Time Series Database</a><ul>
 <li><a href="#checkpoint-charlie">3.1 Checkpoint Charlie</a><ul></ul></li></ul></li>
 <li><a href="#grafana-dashboard">4 Grafana Dashboard</a><ul>
@@ -321,9 +322,63 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre
   const_labels:
     sensor_type: l</code></pre></div></li>
 </ol>
-<h2 id="checkpoint-bravo" class="section-header"><a href="#checkpoint-bravo">2.2 Checkpoint Bravo</a></h2>
+<h2 id="start-mqtt-gateway" class="section-header"><a href="#start-mqtt-gateway">2.2 Start MQTT Gateway</a></h2>
+<p>We’re ready to <strong>start our MQTT Gateway</strong>!</p>
+<p>Follow these steps to download and run <strong>MQTT2Prometheus</strong>…</p>
+<ol>
+<li>
+<p>Install the <strong>latest version of Go</strong>…</p>
+<p><a href="https://golang.org"><strong><code>golang.org</code></strong></a></p>
+</li>
+<li>
+<p>Enter this at the command line…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Download mqtt2prometheus
+go get github.com/hikhvar/mqtt2prometheus
+
+# For macOS and Linux:
+cd $GOPATH/src/github.com/hikhvar/mqtt2prometheus
+
+# For Windows:
+cd %GOPATH%\src\github.com\hikhvar\mqtt2prometheus
+
+# Build mqtt2prometheus
+go build ./cmd
+
+# Run mqtt2prometheus.
+# Change &quot;ttn-mqtt.yaml&quot; to the full path of our
+# MQTT Gateway Configuration File.
+go run ./cmd -log-level debug -config ttn-mqtt.yaml</code></pre></div></li>
+<li>
+<p>We should see our MQTT Gateway <strong>ingesting Sensor Data</strong> from The Things Network…</p>
+<div class="example-wrap"><pre class="language-text"><code>mqttclient/mqttClient.go:20     
+Connected to MQTT Broker
+
+mqttclient/mqttClient.go:21     
+Will subscribe to topic{&quot;topic&quot;: &quot;#&quot;}
+
+web/tls_config.go:191           
+{&quot;level&quot;: &quot;info&quot;, &quot;msg&quot;: &quot;TLS is disabled.&quot;, &quot;http2&quot;: false}
+
+metrics/ingest.go:42    
+Got message     
+{&quot;topic&quot;: &quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;, &quot;payload&quot;: 
+{
+  ...
+  &quot;uplink_message&quot;: {
+    &quot;decoded_payload&quot;: {
+      &quot;l&quot;: 4000,
+      &quot;t&quot;: 5017
+    }</code></pre></div></li>
+</ol>
+<h2 id="checkpoint-bravo" class="section-header"><a href="#checkpoint-bravo">2.3 Checkpoint Bravo</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-metric3.png" alt="" /></p>
+<ol>
+<li>
+<p>Start our <strong>LoRaWAN Firmware</strong> and transmit Sensor Data every minute</p>
+<p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware">(Like this)</a></p>
+<p><img src="https://lupyuen.github.io/images/prometheus-metric3.png" alt="Checking the metrics ingested by MQTT Gateway" /></p>
+</li>
+</ol>
 <h1 id="prometheus-time-series-database" class="section-header"><a href="#prometheus-time-series-database">3 Prometheus Time Series Database</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-flow3.jpg" alt="" /></p>
