@@ -301,7 +301,7 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre
       &quot;t&quot;: 4656
     }    </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Our Temperature Values are scaled up 100 times… <code>4656</code> means <code>46.56</code> ºC)</a></p>
-<p><img src="https://lupyuen.github.io/images/prometheus-config7.png" alt="Prometheus Metrics for MQTT Gateway" /></p>
+<p><img src="https://lupyuen.github.io/images/prometheus-config7.jpg" alt="Prometheus Metrics for MQTT Gateway" /></p>
 </li>
 <li>
 <p>We define other Metrics the same way, like this <strong>Light Level Metric</strong> that’s transmitted by PineDio Stack…</p>
@@ -646,7 +646,7 @@ main.go:794
 <ul>
 <li><a href="https://github.com/lupyuen/prometheus-the-things-network#mqtt-with-tls"><strong>“MQTT with TLS Encryption”</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/prometheus-tls.png" alt="MQTT with TLS Encryption" /></p>
+<p><img src="https://lupyuen.github.io/images/prometheus-tls.jpg" alt="MQTT with TLS Encryption" /></p>
 <h2 id="checkpoint-echo" class="section-header"><a href="#checkpoint-echo">6.1 Checkpoint Echo</a></h2>
 <p><em>What if we have problems enabling TLS Encryption for MQTT?</em></p>
 <p>Run <a href="https://www.wireshark.org/"><strong>Wireshark</strong></a> on our computer and trace the <strong>TLS Certificates</strong> that are presented by The Things Network and by our computer.</p>
