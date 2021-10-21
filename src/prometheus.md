@@ -237,7 +237,7 @@ Let's define the Sensor Data / Metrics that will be __ingested by our MQTT Gatew
     ## Name of the metric in prometheus
     - prom_name: t
 
-      ## Name of the metric in a MQTT JSON message
+      ## JSON Path of the metric in our MQTT JSON message
       mqtt_name: "uplink_message.decoded_payload.t"
 
       ## Prometheus help text for this metric
@@ -283,7 +283,7 @@ Let's define the Sensor Data / Metrics that will be __ingested by our MQTT Gatew
     ## Name of the metric in prometheus
     - prom_name: l
 
-      ## Name of the metric in a MQTT JSON message
+      ## JSON Path of the metric in our MQTT JSON message
       mqtt_name: "uplink_message.decoded_payload.l"
 
       ## Prometheus help text for this metric
@@ -356,7 +356,7 @@ Follow these steps to download and run __MQTT2Prometheus__...
 
 ## Checkpoint Bravo
 
-TODO
+Let's check the __Sensor Data ingested__ by our MQTT Gateway...
 
 1.  Start our __LoRaWAN Firmware__ and transmit Sensor Data every minute
 
