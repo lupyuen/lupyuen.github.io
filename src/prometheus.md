@@ -362,24 +362,15 @@ TODO
 
     [(Like this)](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
 
+1.  TODO
+
     ![Checking the metrics ingested by MQTT Gateway](https://lupyuen.github.io/images/prometheus-metric3.png)
 
+    ![Prometheus Time Series Database](https://lupyuen.github.io/images/prometheus-flow3.jpg)
 
 # Prometheus Time Series Database
 
 TODO
-
-![](https://lupyuen.github.io/images/prometheus-flow3.jpg)
-
-TODO5
-
-![](https://lupyuen.github.io/images/prometheus-flow.jpg)
-
-TODO8
-
-![](https://lupyuen.github.io/images/prometheus-flow5.jpg)
-
-TODO13
 
 ![](https://lupyuen.github.io/images/prometheus-config6.png)
 
