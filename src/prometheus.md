@@ -673,7 +673,7 @@ No worries! This neat trick will __auto-refresh our Grafana Dashboard__ to rende
 
     Select __"5 Seconds"__
 
-    ![Refresh Interval](https://lupyuen.github.io/images/prometheus-refresh3.png)
+    ![Refresh Interval](https://lupyuen.github.io/images/prometheus-refresh4.png)
 
     Now our Grafana Dashboard auto-refreshes every 5 seconds!
 
