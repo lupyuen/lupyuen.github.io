@@ -653,6 +653,10 @@ Next we __filter the Sensor Data__ that will be rendered in our Dashboard...
 
 1.  When we're done, click the __"Apply"__ button (top right)
 
+## Auto Dashboard Refresh
+
+TODO
+
 # MQTT with TLS Encryption
 
 TODO11
