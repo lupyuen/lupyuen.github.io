@@ -519,7 +519,7 @@ Let's check the __Metrics scraped by Prometheus__ from MQTT Gateway...
 
     ![Checking the Metrics scraped by Prometheus from MQTT Gateway](https://lupyuen.github.io/images/prometheus-metric2.png)
 
-1.  Click __Execute__ and __Graph__
+1.  Click __"Execute"__ and __"Graph"__
 
     Our Metric appears in the graph.
 
@@ -659,7 +659,23 @@ _Our Grafana Dashboard doesn't refresh automatically for real-time Sensor Data?_
 
 No worries! This neat trick will __auto-refresh our Grafana Dashboard__ to render real-time Sensor Data...
 
-TODO
+1.  In our Grafana Dashboard, click the __"Settings"__ button (top right)
+
+    TODO
+
+1.  Under __"Time Options"__, uncheck __"Hide Time Picker"__
+
+    TODO
+
+1.  Click __"Save Dashboard"__
+
+1.  Click the __"Refresh Interval"__ (top right)
+
+    Select __"5 Seconds"__
+
+    TODO
+
+1.  Now our Grafana Dashboard will auto-refresh every 5 seconds!
 
 # MQTT with TLS Encryption
 
