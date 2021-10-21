@@ -178,7 +178,7 @@
 # Change YOUR_USERNAME to our MQTT Username
 # Change YOUR_PASSWORD to our MQTT Password
 
-# For macOS and Linux:
+# For Linux and macOS:
 mosquitto_sub \
   -h au1.cloud.thethings.network \
   -t &quot;#&quot; \
@@ -335,7 +335,7 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre
 <div class="example-wrap"><pre class="language-bash"><code># Download mqtt2prometheus
 go get github.com/hikhvar/mqtt2prometheus
 
-# For macOS and Linux:
+# For Linux and macOS:
 cd $GOPATH/src/github.com/hikhvar/mqtt2prometheus
 
 # For Windows:
@@ -348,6 +348,10 @@ go build ./cmd
 # Change &quot;ttn-mqtt.yaml&quot; to the full path of our
 # MQTT Gateway Configuration File.
 go run ./cmd -log-level debug -config ttn-mqtt.yaml</code></pre></div></li>
+<li>
+<p>For Windows: Click <strong>“Private Network: Allow Access”</strong> when prompted</p>
+<p>(That’s because our MQTT Gateway starts a HTTP Server at port 9641)</p>
+</li>
 <li>
 <p>We should see our MQTT Gateway <strong>ingesting Sensor Data</strong> from The Things Network…</p>
 <div class="example-wrap"><pre class="language-text"><code>mqttclient/mqttClient.go:20     
@@ -369,6 +373,9 @@ Got message
       &quot;l&quot;: 4000,
       &quot;t&quot;: 5017
     }</code></pre></div></li>
+<li>
+<p>MQTT Gateway is now ingesting our Sensor Data and listening for <strong>HTTP Requests at port 9641</strong>!</p>
+</li>
 </ol>
 <h2 id="checkpoint-bravo" class="section-header"><a href="#checkpoint-bravo">2.3 Checkpoint Bravo</a></h2>
 <p>Let’s check the <strong>Sensor Data ingested</strong> by our MQTT Gateway…</p>
@@ -382,12 +389,16 @@ Got message
 <div class="example-wrap"><pre class="language-bash"><code>curl -v http://localhost:9641/metrics</code></pre></div></li>
 <li>
 <p>We should see our Sensor Data (Temperature and Light Level) ingested as <strong>Prometheus Metrics</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>l{sensor=&quot;eui-YOUR_DEVICE_EUI&quot;,
+<div class="example-wrap"><pre class="language-text"><code># HELP l Light Level
+# TYPE l gauge
+l{sensor=&quot;eui-YOUR_DEVICE_EUI&quot;,
 sensor_type=&quot;l&quot;,
 topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
 } 4000 1634364863274
 ...    
 
+# HELP t Temperature
+# TYPE t gauge
 t{sensor=&quot;eui-YOUR_DEVICE_EUI&quot;,
 sensor_type=&quot;t&quot;,
 topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
@@ -396,7 +407,9 @@ topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
 </li>
 <li>
 <p>Also watch for <strong>received_messages</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>received_messages{status=&quot;success&quot;,
+<div class="example-wrap"><pre class="language-text"><code># HELP received_messages received messages per topic and status
+# TYPE received_messages counter
+received_messages{status=&quot;success&quot;,
 topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
 } 3</code></pre></div>
 <p>This says that our MQTT Gateway has successfully processed 3 messages from The Things Network.</p>
@@ -406,10 +419,71 @@ topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
 </ol>
 <h1 id="prometheus-time-series-database" class="section-header"><a href="#prometheus-time-series-database">3 Prometheus Time Series Database</a></h1>
 <p><em>How do we push the Sensor Data / Metrics from MQTT Gateway to Prometheus?</em></p>
-<p>Prometheus collects Metrics by <strong>scraping them over HTTP</strong>.</p>
+<p>Prometheus collects Metrics by <strong>scraping them over HTTP</strong>…</p>
 <p>(Much like the <strong>curl</strong> command from Checkpoint Bravo)</p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-config6.png" alt="" /></p>
+<p>And stores the Metrics in its <strong>Time Series Database</strong>.</p>
+<p>(Which is super efficient for querying sensor values that vary over time)</p>
+<p>Let’s <strong>configure and start Prometheus</strong> to scrape the Metrics from our MQTT Gateway…</p>
+<ol>
+<li>
+<p>Download and unzip <strong>Prometheus</strong>…</p>
+<p><a href="https://prometheus.io/download/"><strong>“Prometheus Download”</strong></a></p>
+</li>
+<li>
+<p>In the unzipped folder, edit the Prometheus Configuration File…</p>
+<p><a href="https://github.com/lupyuen/prometheus-the-things-network#configure-prometheus"><strong>prometheus.yml</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/prometheus-config6.png" alt="Prometheus Configuration for MQTT Gateway" /></p>
+</li>
+<li>
+<p>Under the <strong><code>scrape_configs</code></strong> section, add the following…</p>
+<div class="example-wrap"><pre class="language-yaml"><code># Scrape configuration containing the endpoints to scrape
+scrape_configs:
+...
+
+  # Scrape The Things Network Metrics from MQTT2Prometheus
+  - job_name: &quot;ttn&quot;
+
+    # Metrics will be scraped from MQTT2Prometheus
+    # at http://localhost:9641/metrics
+    static_configs:
+      - targets: [&quot;localhost:9641&quot;]</code></pre></div></li>
+<li>
+<p>Note that Prometheus will scrape the Metrics from MQTT Gateway <strong>every 15 seconds</strong>…</p>
+<div class="example-wrap"><pre class="language-yaml"><code># Global Configuration
+global:
+
+  # Set the scrape interval to every 15 seconds
+  scrape_interval: 15s</code></pre></div></li>
+<li>
+<p>Start the <strong>Prometheus Server</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Change this to the unzipped path of Prometheus
+cd prometheus
+
+# For Linux and macOS:
+./prometheus
+
+# For Windows:
+prometheus.exe</code></pre></div></li>
+<li>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>main.go:400
+&quot;No time or size retention was set so using the default time retention&quot; duration=15d
+
+main.go:438
+&quot;Starting Prometheus&quot; version=&quot;(version=2.30.3, branch=HEAD, revision=f29caccc42557f6a8ec30ea9b3c8c089391bd5df)&quot;
+
+web.go:541
+&quot;Start listening for connections&quot; address=0.0.0.0:9090
+
+main.go:852
+&quot;TSDB started&quot;    
+
+main.go:794
+&quot;Server is ready to receive web requests.&quot;</code></pre></div></li>
+<li>
+<p>Prometheus is now listening for <strong>HTTP Requests at port 9090</strong>!</p>
+</li>
+</ol>
 <h2 id="checkpoint-charlie" class="section-header"><a href="#checkpoint-charlie">3.1 Checkpoint Charlie</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-metric2.png" alt="" /></p>
