@@ -259,10 +259,68 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre
 <p>(Think of Metrics like CPU Usage and RAM Utilisation… Prometheus was originally created for monitoring servers)</p>
 <p>In this article we shall use “Sensor Data” and “Metric” interchangeably, since Prometheus treats our <strong>Sensor Data as Metrics</strong>.</p>
 <p>Let’s define the Sensor Data / Metrics that will be <strong>ingested by our MQTT Gateway</strong>…</p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-config5.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-config7.png" alt="" /></p>
+<ol>
+<li>
+<p>Edit <a href="https://github.com/lupyuen/prometheus-the-things-network/blob/main/ttn-mqtt.yaml"><strong>ttn-mqtt.yaml</strong></a></p>
+<p>Look for the <strong>metrics</strong> section…</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-config5.png" alt="Prometheus Metrics for MQTT Gateway" /></p>
+</li>
+<li>
+<p>We define the <strong>Metric for Temperature</strong> like so…</p>
+<div class="example-wrap"><pre class="language-yaml"><code># Temperature Metric
+# Name of the metric in prometheus
+- prom_name: t
+
+  # Name of the metric in a MQTT JSON message
+  mqtt_name: &quot;uplink_message.decoded_payload.t&quot;
+
+  # Prometheus help text for this metric
+  help: &quot;Temperature&quot;
+
+  # Prometheus type for this metric.
+  # Valid values are: &quot;gauge&quot; and &quot;counter&quot;
+  type: gauge
+
+  # Map of string to string for constant labels.
+  # The labels will be attached to every Prometheus metric.
+  const_labels:
+    sensor_type: t    </code></pre></div></li>
+<li>
+<p>This tells MQTT Gateway: Our LoRaWAN Device (PineDio Stack) transmits a <strong>Temperature Value</strong> (named “t”) at this JSON Path…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>uplink_message.decoded_payload.t</code></pre></div>
+<p>Which matches our <strong>JSON Message Format</strong> from Checkpoint Alpha…</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+  ...
+  &quot;uplink_message&quot;: {
+    ...
+    &quot;decoded_payload&quot;: {
+      &quot;l&quot;: 4000,
+      &quot;t&quot;: 4656
+    }    </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Our Temperature Values are scaled up 100 times… <code>4656</code> means <code>46.56</code> ºC)</a></p>
+<p><img src="https://lupyuen.github.io/images/prometheus-config7.png" alt="Prometheus Metrics for MQTT Gateway" /></p>
+</li>
+<li>
+<p>We define other Metrics the same way, like this <strong>Light Level Metric</strong> that’s transmitted by PineDio Stack…</p>
+<div class="example-wrap"><pre class="language-yaml"><code># Light Level Metric
+# Name of the metric in prometheus
+- prom_name: l
+
+  # Name of the metric in a MQTT JSON message
+  mqtt_name: &quot;uplink_message.decoded_payload.l&quot;
+
+  # Prometheus help text for this metric
+  help: &quot;Light Level&quot;
+
+  # Prometheus type for this metric.
+  # Valid values are: &quot;gauge&quot; and &quot;counter&quot;
+  type: gauge
+
+  # Map of string to string for constant labels.
+  # The labels will be attached to every Prometheus metric.
+  const_labels:
+    sensor_type: l</code></pre></div></li>
+</ol>
 <h2 id="checkpoint-bravo" class="section-header"><a href="#checkpoint-bravo">2.2 Checkpoint Bravo</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-metric3.png" alt="" /></p>
