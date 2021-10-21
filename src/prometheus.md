@@ -681,7 +681,7 @@ No worries! This neat trick will __auto-refresh our Grafana Dashboard__ to rende
 
 There's a __Security Risk__ in our configuration of MQTT Gateway...
 
-Our __MQTT Password is transmitted in clear text__ from our computer to The Things Network!
+Our __MQTT Password is transmitted as clear text__ from our computer to The Things Network!
 
 To secure our MQTT Password with __TLS Encryption__, follow the instructions here...
 
