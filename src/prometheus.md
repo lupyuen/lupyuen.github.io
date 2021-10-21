@@ -202,9 +202,9 @@ Follow these steps to __configure our MQTT Gateway__...
 1.  Our MQTT Gateway shall extract the __Device ID__ from the MQTT Topic Path...
 
     ```yaml
-    # Extract the device ID (eui-YOUR_DEVICE_EUI) 
-    # from the topic path, which looks like...
-    # v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up
+    ## Extract the device ID (eui-YOUR_DEVICE_EUI) 
+    ## from the topic path, which looks like...
+    ## v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up
     device_id_regex: "(.*/)?devices/(?P<deviceid>.*)/.*"
     ```
 
@@ -223,8 +223,6 @@ A Metric is an item of __Monitoring Data__ that's collected and reported by Prom
 In this article we shall use "Sensor Data" and "Metric" interchangeably, since Prometheus treats our __Sensor Data as Metrics__.
 
 Let's define the Sensor Data / Metrics that will be __ingested by our MQTT Gateway__...
-
-
 
 TODO
 
