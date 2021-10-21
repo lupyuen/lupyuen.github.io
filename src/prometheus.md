@@ -699,19 +699,29 @@ The certificates should appear like this...
 
 ![Tracing MQTT with TLS Encryption](https://lupyuen.github.io/images/prometheus-wireshark2.png)
 
-# Prometheus Alerts
+# Sensor Data Alerts
 
-TODO
+_Can we create Alerts for monitoring our Sensor Data?_
 
-The Alertmanager handles alerts sent by client applications such as the Prometheus server. It takes care of deduplicating, grouping, and routing them to the correct receiver integration such as email, PagerDuty, or OpsGenie. It also takes care of silencing and inhibition of alerts.
+_Like when the Temperature gets too hot?_
+
+Yes that's possible with __Prometheus Alert Manager__!
+
+> "The Alertmanager handles alerts sent by client applications such as the Prometheus server."
+
+> "It takes care of __deduplicating, grouping, and routing__ them to the correct receiver integration such as __email, PagerDuty, or OpsGenie__."
+
+> "It also takes care of __silencing and inhibition__ of alerts."
+
+More details here...
 
 -   [__Prometheus Alert Manager__](https://prometheus.io/docs/alerting/latest/alertmanager/)
 
-Drop me a note if you're keen to learn more about Prometheus Alerts!
+Drop me a note if you're keen to learn about Prometheus Alerts!
 
 ![Prometheus Architecture](https://lupyuen.github.io/images/prometheus-arch.png)
 
-[(Source)](https://prometheus.io/docs/introduction/overview/)
+[(Prometheus Architecture)](https://prometheus.io/docs/introduction/overview/)
 
 # What's Next
 
