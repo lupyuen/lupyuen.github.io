@@ -101,11 +101,9 @@ Let's verify that our __Payload Formatter works OK__ for decoding our Sensor Dat
 
 Also verify that the __MQTT Server works OK__ at The Things Network...
 
-1.  Start the __LoRaWAN Firmware__ on our LoRaWAN Device (PineDio Stack).
+1.  Start our __LoRaWAN Firmware__ and transmit Sensor Data every minute
 
-    Transmit some Sensor Data every minute...
-
-    [__"Run the LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
+    [(Like this)](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
 
 1.  Copy the __MQTT Public Address, Username and Password__ from The Things Network...
 
@@ -220,9 +218,13 @@ _What's a Prometheus Metric?_
 
 A Metric is an item of __Monitoring Data__ that's collected and reported by Prometheus.
 
-(Think of Metrics like CPU Utilisation and RAM Utilisation... Prometheus was originally created for monitoring servers)
+(Think of Metrics like CPU Usage and RAM Utilisation... Prometheus was originally created for monitoring servers)
 
-In this article we shall use "Sensor Data" and "Metric" interchangeably, since Prometheus treats our Sensor Data as Metrics.
+In this article we shall use "Sensor Data" and "Metric" interchangeably, since Prometheus treats our __Sensor Data as Metrics__.
+
+Let's define the Sensor Data / Metrics that will be __ingested by our MQTT Gateway__...
+
+
 
 TODO
 
