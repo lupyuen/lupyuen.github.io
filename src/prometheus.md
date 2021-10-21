@@ -341,14 +341,14 @@ Follow these steps to download and run __MQTT2Prometheus__...
     Connected to MQTT Broker
 
     mqttclient/mqttClient.go:21     
-    Will subscribe to topic{"topic": "#"}
+    Will subscribe to topic "#"
 
     web/tls_config.go:191           
-    {"level": "info", "msg": "TLS is disabled.", "http2": false}
+    "TLS is disabled.", "http2": false
 
     metrics/ingest.go:42    
     Got message     
-    {"topic": "v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up", "payload": 
+    "topic": "v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up", "payload": 
     {
       ...
       "uplink_message": {
@@ -358,7 +358,7 @@ Follow these steps to download and run __MQTT2Prometheus__...
         }
     ```
 
-1.  MQTT Gateway is now ingesting our Sensor Data and listening for __HTTP Requests at port 9641__!
+1.  MQTT Gateway is now listening for __HTTP Requests at port 9641__!
 
 ## Checkpoint Bravo
 
