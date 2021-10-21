@@ -693,9 +693,11 @@ To secure our MQTT Password with __TLS Encryption__, follow the instructions her
 
 _What if we have problems enabling TLS Encryption for MQTT?_
 
-TODO
+Run [__Wireshark__](https://www.wireshark.org/) on our computer and trace the __TLS Certificates__ that are presented by The Things Network and by our computer.
 
-![](https://lupyuen.github.io/images/prometheus-wireshark2.png)
+The certificates should appear like this...
+
+![Tracing MQTT with TLS Encryption](https://lupyuen.github.io/images/prometheus-wireshark2.png)
 
 # Prometheus Alerts
 
