@@ -493,13 +493,12 @@ main.go:794
 </li>
 <li>
 <p>Browse to our <strong>Prometheus Server</strong>…</p>
-<div class="example-wrap"><pre class="language-uri"><code>http://localhost:9090</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/prometheus-metric2.png" alt="Checking the Metrics scraped by Prometheus from MQTT Gateway" /></p>
-</li>
+<div class="example-wrap"><pre class="language-uri"><code>http://localhost:9090</code></pre></div></li>
 <li>
 <p>Enter the <strong>name of our Metric</strong> (like for Temperature)…</p>
 <div class="example-wrap"><pre class="language-text"><code>t</code></pre></div>
-<p>(See pic above)</p>
+<p>Like this…</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-metric2.png" alt="Checking the Metrics scraped by Prometheus from MQTT Gateway" /></p>
 </li>
 <li>
 <p>Click <strong>Execute</strong> and <strong>Graph</strong></p>
@@ -548,13 +547,52 @@ main.go:794
 <p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware">(Like this)</a></p>
 </li>
 <li>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/prometheus-grafana6.png" alt="" /></p>
+<p>In Grafana, click <strong>“Add Panel”</strong> (top right)</p>
+<p>Click <strong>“Add An Empty Panel”</strong></p>
+<p><img src="https://lupyuen.github.io/images/grafana-dashboard3.png" alt="Add Panel" /></p>
 </li>
 <li>
-<p>TODO</p>
+<p>Set the <strong>Data Source</strong> to <strong>“Prometheus”</strong></p>
+<p>Under <strong>Metric Browser</strong>: Enter the name of our Metric (like for Temperature)…</p>
+<div class="example-wrap"><pre class="language-text"><code>t</code></pre></div>
+<p>Like this…</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-grafana6.png" alt="Grafana Panel for Prometheus" /></p>
+</li>
+<li>
+<p>Click the <strong>“Save”</strong> button (top right)</p>
+</li>
+<li>
+<p>Our <strong>Sensor Data from The Things Network</strong> appears in the Grafana Dashboard!</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-grafana4.png" alt="Monitoring Devices on The Things Network with Prometheus and Grafana" /></p>
 <p>(Remember: Our Temperature Values are scaled up 100 times)</p>
+</li>
+</ol>
+<p>To see the <strong>Raw Sensor Data</strong> as a table…</p>
+<ol>
+<li>
+<p>Click <strong>“Panel Title”</strong> and <strong>“Edit”</strong></p>
+</li>
+<li>
+<p>Click <strong>“Table View”</strong></p>
+<p>TODO</p>
+</li>
+</ol>
+<p>To <strong>filter the Sensor Data</strong> that will be rendered in the dashboard…</p>
+<ol>
+<li>
+<p>Click the <strong>“Transform”</strong> Tab</p>
+</li>
+<li>
+<p>Select <strong>“Filter Data By Values”</strong></p>
+</li>
+<li>
+<p>Set the Conditions and click <strong>“Apply”</strong></p>
+<p>TODO</p>
+</li>
+<li>
+<p>The above filter matches the <strong>Device ID</strong> with the Regular Expression…</p>
+<div class="example-wrap"><pre class="language-text"><code>eui-70b3.*</code></pre></div>
+<p>Which means that only Device IDs starting with <strong>“eui-70b3”</strong> will be rendered.</p>
 </li>
 </ol>
 <h1 id="mqtt-with-tls-encryption" class="section-header"><a href="#mqtt-with-tls-encryption">5 MQTT with TLS Encryption</a></h1>
