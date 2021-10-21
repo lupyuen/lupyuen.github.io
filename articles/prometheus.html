@@ -358,14 +358,14 @@ go run ./cmd -log-level debug -config ttn-mqtt.yaml</code></pre></div></li>
 Connected to MQTT Broker
 
 mqttclient/mqttClient.go:21     
-Will subscribe to topic{&quot;topic&quot;: &quot;#&quot;}
+Will subscribe to topic &quot;#&quot;
 
 web/tls_config.go:191           
-{&quot;level&quot;: &quot;info&quot;, &quot;msg&quot;: &quot;TLS is disabled.&quot;, &quot;http2&quot;: false}
+&quot;TLS is disabled.&quot;, &quot;http2&quot;: false
 
 metrics/ingest.go:42    
 Got message     
-{&quot;topic&quot;: &quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;, &quot;payload&quot;: 
+&quot;topic&quot;: &quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;, &quot;payload&quot;: 
 {
   ...
   &quot;uplink_message&quot;: {
@@ -374,7 +374,7 @@ Got message
       &quot;t&quot;: 5017
     }</code></pre></div></li>
 <li>
-<p>MQTT Gateway is now ingesting our Sensor Data and listening for <strong>HTTP Requests at port 9641</strong>!</p>
+<p>MQTT Gateway is now listening for <strong>HTTP Requests at port 9641</strong>!</p>
 </li>
 </ol>
 <h2 id="checkpoint-bravo" class="section-header"><a href="#checkpoint-bravo">2.3 Checkpoint Bravo</a></h2>
