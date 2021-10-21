@@ -159,9 +159,8 @@
 <p>Also verify that the <strong>MQTT Server works OK</strong> at The Things Network…</p>
 <ol>
 <li>
-<p>Start the <strong>LoRaWAN Firmware</strong> on our LoRaWAN Device (PineDio Stack).</p>
-<p>Transmit some Sensor Data every minute…</p>
-<p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware"><strong>“Run the LoRaWAN Firmware”</strong></a></p>
+<p>Start our <strong>LoRaWAN Firmware</strong> and transmit Sensor Data every minute</p>
+<p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware">(Like this)</a></p>
 </li>
 <li>
 <p>Copy the <strong>MQTT Public Address, Username and Password</strong> from The Things Network…</p>
@@ -254,8 +253,9 @@ topic_path: &quot;#&quot;</code></pre></div></li>
 <h2 id="prometheus-metrics" class="section-header"><a href="#prometheus-metrics">2.1 Prometheus Metrics</a></h2>
 <p><em>What’s a Prometheus Metric?</em></p>
 <p>A Metric is an item of <strong>Monitoring Data</strong> that’s collected and reported by Prometheus.</p>
-<p>(Think of Metrics like CPU Utilisation and RAM Utilisation… Prometheus was originally created for monitoring servers)</p>
-<p>In this article we shall use “Sensor Data” and “Metric” interchangeably, since Prometheus treats our Sensor Data as Metrics.</p>
+<p>(Think of Metrics like CPU Usage and RAM Utilisation… Prometheus was originally created for monitoring servers)</p>
+<p>In this article we shall use “Sensor Data” and “Metric” interchangeably, since Prometheus treats our <strong>Sensor Data as Metrics</strong>.</p>
+<p>Let’s define the Sensor Data / Metrics that will be <strong>ingested by our MQTT Gateway</strong>…</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-config5.png" alt="" /></p>
 <p>TODO</p>
