@@ -121,7 +121,7 @@ Also verify that the __MQTT Server works OK__ at The Things Network...
     ## Change YOUR_USERNAME to our MQTT Username
     ## Change YOUR_PASSWORD to our MQTT Password
 
-    ## For macOS and Linux:
+    ## For Linux and macOS:
     mosquitto_sub \
       -h au1.cloud.thethings.network \
       -t "#" \
@@ -315,7 +315,7 @@ Follow these steps to download and run __MQTT2Prometheus__...
     ## Download mqtt2prometheus
     go get github.com/hikhvar/mqtt2prometheus
 
-    ## For macOS and Linux:
+    ## For Linux and macOS:
     cd $GOPATH/src/github.com/hikhvar/mqtt2prometheus
 
     ## For Windows:
@@ -329,6 +329,10 @@ Follow these steps to download and run __MQTT2Prometheus__...
     ## MQTT Gateway Configuration File.
     go run ./cmd -log-level debug -config ttn-mqtt.yaml
     ```
+
+1.  For Windows: Click __"Private Network: Allow Access"__ when prompted
+
+    (That's because our MQTT Gateway starts a HTTP Server at port 9641)
 
 1.  We should see our MQTT Gateway __ingesting Sensor Data__ from The Things Network...
 
@@ -354,6 +358,8 @@ Follow these steps to download and run __MQTT2Prometheus__...
         }
     ```
 
+1.  MQTT Gateway is now ingesting our Sensor Data and listening for __HTTP Requests at port 9641__!
+
 ## Checkpoint Bravo
 
 Let's check the __Sensor Data ingested__ by our MQTT Gateway...
@@ -371,16 +377,16 @@ Let's check the __Sensor Data ingested__ by our MQTT Gateway...
 1.  We should see our Sensor Data (Temperature and Light Level) ingested as __Prometheus Metrics__...
 
     ```text
-    # HELP l Light Level
-    # TYPE l gauge
+    ## HELP l Light Level
+    ## TYPE l gauge
     l{sensor="eui-YOUR_DEVICE_EUI",
     sensor_type="l",
     topic="v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up"
     } 4000 1634364863274
     ...    
 
-    # HELP t Temperature
-    # TYPE t gauge
+    ## HELP t Temperature
+    ## TYPE t gauge
     t{sensor="eui-YOUR_DEVICE_EUI",
     sensor_type="t",
     topic="v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up"
@@ -392,8 +398,8 @@ Let's check the __Sensor Data ingested__ by our MQTT Gateway...
 1.  Also watch for __received_messages__...
 
     ```text
-    # HELP received_messages received messages per topic and status
-    # TYPE received_messages counter
+    ## HELP received_messages received messages per topic and status
+    ## TYPE received_messages counter
     received_messages{status="success",
     topic="v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up"
     } 3
@@ -409,13 +415,85 @@ Let's check the __Sensor Data ingested__ by our MQTT Gateway...
 
 _How do we push the Sensor Data / Metrics from MQTT Gateway to Prometheus?_
 
-Prometheus collects Metrics by __scraping them over HTTP__.
+Prometheus collects Metrics by __scraping them over HTTP__...
 
 (Much like the __curl__ command from Checkpoint Bravo)
 
-TODO
+And stores the Metrics in its __Time Series Database__.
 
-![](https://lupyuen.github.io/images/prometheus-config6.png)
+(Which is super efficient for querying sensor values that vary over time)
+
+Let's __configure and start Prometheus__ to scrape the Metrics from our MQTT Gateway...
+
+1.  Download and unzip __Prometheus__...
+
+    [__"Prometheus Download"__](https://prometheus.io/download/)
+
+1.  In the unzipped folder, edit the Prometheus Configuration File...
+
+    [__prometheus.yml__](https://github.com/lupyuen/prometheus-the-things-network#configure-prometheus)
+
+    ![Prometheus Configuration for MQTT Gateway](https://lupyuen.github.io/images/prometheus-config6.png)
+
+1.  Under the __`scrape_configs`__ section, add the following...
+
+    ```yaml
+    ## Scrape configuration containing the endpoints to scrape
+    scrape_configs:
+    ...
+
+      ## Scrape The Things Network Metrics from MQTT2Prometheus
+      - job_name: "ttn"
+
+        ## Metrics will be scraped from MQTT2Prometheus
+        ## at http://localhost:9641/metrics
+        static_configs:
+          - targets: ["localhost:9641"]
+    ```
+
+1.  Note that Prometheus will scrape the Metrics from MQTT Gateway __every 15 seconds__...
+
+    ```yaml
+    ## Global Configuration
+    global:
+
+      ## Set the scrape interval to every 15 seconds
+      scrape_interval: 15s
+    ```
+
+1.  Start the __Prometheus Server__...
+
+    ```bash
+    ## Change this to the unzipped path of Prometheus
+    cd prometheus
+
+    ## For Linux and macOS:
+    ./prometheus
+
+    ## For Windows:
+    prometheus.exe
+    ```
+
+1.  We should see...
+
+    ```text
+    main.go:400
+    "No time or size retention was set so using the default time retention" duration=15d
+
+    main.go:438
+    "Starting Prometheus" version="(version=2.30.3, branch=HEAD, revision=f29caccc42557f6a8ec30ea9b3c8c089391bd5df)"
+
+    web.go:541
+    "Start listening for connections" address=0.0.0.0:9090
+
+    main.go:852
+    "TSDB started"    
+
+    main.go:794
+    "Server is ready to receive web requests."
+    ```
+
+1.  Prometheus is now listening for __HTTP Requests at port 9090__!
 
 ## Checkpoint Charlie
 
