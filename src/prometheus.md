@@ -655,13 +655,23 @@ Next we __filter the Sensor Data__ that will be rendered in our Dashboard...
 
 ## Auto Dashboard Refresh
 
+_Our Grafana Dashboard doesn't refresh automatically for real-time Sensor Data?_
+
+No worries! This neat trick will __auto-refresh our Grafana Dashboard__ to render real-time Sensor Data...
+
 TODO
 
 # MQTT with TLS Encryption
 
-TODO11
+There's a __Security Risk__ in our configuration of MQTT Gateway...
 
-![](https://lupyuen.github.io/images/prometheus-tls.png)
+Our __MQTT Password is transmitted in clear text__ from our computer to The Things Network!
+
+To secure our MQTT Password with __TLS Encryption__, follow the instructions here...
+
+-   [__"MQTT with TLS Encryption"__](https://github.com/lupyuen/prometheus-the-things-network#mqtt-with-tls)
+
+![MQTT with TLS Encryption](https://lupyuen.github.io/images/prometheus-tls.png)
 
 ## Checkpoint Echo
 
