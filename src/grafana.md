@@ -740,6 +740,52 @@ This Grafana setup looks more complicated, but it works well for visualising his
 
 -   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
 
+More about this in the next chapter...
+
+# Shortcomings
+
+We've seen two ways of connecting Grafana to The Things Network...
+
+1.  Via __Grafana Data Source for The Things Network__
+
+    (As explained in this article)
+
+1.  Via __Prometheus with an MQTT Gateway__
+
+    [(See this)](https://lupyuen.github.io/articles/prometheus)
+
+_How do they compare?_
+
+Well the approach described in this article has __some serious shortcomings__...
+
+-   __Fixed Payload Format:__ Only CBOR Payloads are supported
+
+    (Prometheus uses a configurable [__Payload Formatter__](https://lupyuen.github.io/articles/prometheus#payload-formatter) that supports multiple payload formats)
+
+-   __Fixed MQTT Topic:__ Only one MQTT Topic is supported ("#")
+
+    (Prometheus supports configurable [__MQTT Topics__](https://lupyuen.github.io/articles/prometheus#mqtt-gateway-for-prometheus))
+
+-   __Fixed Fields:__ Only specific fields are extracted (Device ID and Sensor Data)
+
+    (Prometheus extracts multiple Metrics based on configurable [__JSON Paths__](https://lupyuen.github.io/articles/prometheus#prometheus-metrics))
+
+-   __No TLS Encryption:__ Our MQTT Password is transmitted in the clear
+
+    (Prometheus supports [__TLS Encryption for MQTT__](https://lupyuen.github.io/articles/prometheus#mqtt-with-tls-encryption))
+
+-   __No Persistence:__ Our Sensor Data disappears when we restart Grafana Server
+
+    (Prometheus stores Sensor Data in a [__Time Series Database__](https://lupyuen.github.io/articles/prometheus#prometheus-time-series-database))
+
+-   __Custom Coding:__ Our Data Source requires custom coding. And it's incomplete.
+
+    (Prometheus works without custom coding, except for the [__Custom Payload Formatter__](https://lupyuen.github.io/articles/prometheus#payload-formatter). And a minor patch for [__TLS Encryption__](https://lupyuen.github.io/articles/prometheus#mqtt-with-tls-encryption))
+
+Thus Prometheus is the recommended way to connect Grafana to The Things Network...
+
+-   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
+
 # What's Next
 
 I hope you enjoyed our exploration today: Streaming Sensor Data from The Things Network to Grafana over MQTT.
@@ -749,6 +795,8 @@ In the next article we shall head back to [__PineDio Stack BL604__](https://lupy
 -   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
 
 -   [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
+
+-   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
