@@ -107,7 +107,7 @@ Also verify that the __MQTT Server works OK__ at The Things Network...
 
 1.  Copy the __MQTT Public Address, Username and Password__ from The Things Network...
 
-    [__"Configure The Things Network MQTT"__](https://lupyuen.github.io/articles/grafana#configure-the-things-network-mqtt)
+    [__"Configure The Things Network MQTT"__](https://lupyuen.github.io/articles/prometheus#appendix-configure-the-things-network-mqtt)
 
 1.  Install the __command-line tools for MQTT__...
 
@@ -179,7 +179,7 @@ Follow these steps to __configure our MQTT Gateway__...
 
     [__ttn-mqtt.yaml__](https://github.com/lupyuen/prometheus-the-things-network/blob/main/ttn-mqtt.yaml)
 
-1.  Edit the file. Fill in the __MQTT Public Address, Username and Password__ for The Things Network [(from here)](https://lupyuen.github.io/articles/grafana#configure-the-things-network-mqtt)...
+1.  Edit the file. Fill in the __MQTT Public Address, Username and Password__ for The Things Network [(from here)](https://lupyuen.github.io/articles/prometheus#appendix-configure-the-things-network-mqtt)...
 
     ```yaml    
     ## Change au1.cloud.thethings.network to our MQTT Public Address
@@ -535,7 +535,7 @@ Finally we __install and configure Grafana__ to pull the Metrics from Prometheus
 
 1.  Follow the steps below to __download and install Grafana__...
 
-    [__"Install Grafana"__](https://lupyuen.github.io/articles/grafana#install-grafana)
+    [__"Install Grafana"__](https://lupyuen.github.io/articles/prometheus#appendix-install-grafana)
 
 1.  Browse to our __Grafana Server__...
 
