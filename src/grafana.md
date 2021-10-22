@@ -2,6 +2,8 @@
 
 📝 _27 Sep 2021_
 
+[__UPDATE: There's a better way to connect Grafana to The Things Network, see this__](https://lupyuen.github.io/articles/prometheus)
+
 [__The Things Network__](https://lupyuen.github.io/articles/ttn) is a public global __wireless network for IoT devices__...
 
 (And it's free for fair use!)

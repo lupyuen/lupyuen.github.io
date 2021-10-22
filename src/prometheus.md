@@ -771,6 +771,41 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1450262680795713538)
 
+# Appendix: Install Grafana
+
+Here are the steps to install Grafana on Linux, macOS and Windows...
+
+1.  Browse to [__grafana.com/oss/grafana__](https://grafana.com/oss/grafana/)
+
+    Click __"Get Grafana → Self-Managed → Download Grafana"__
+
+1.  For __"Edition"__ select __"OSS"__
+
+1.  Click Linux, macOS, Windows, Arm or Docker
+
+    (Grafana for Linux works on WSL too)
+
+1.  Follow the instructions to download and install Grafana
+
+1.  For Linux and macOS: Start the Grafana Server
+
+    ```bash
+    ## For Ubuntu and WSL
+    sudo service grafana-server restart
+    sudo service grafana-server status
+
+    ## For macOS
+    brew services start grafana
+    ```
+
+1.  To test Grafana, browse to 
+
+    __`http://localhost:3000`__
+
+    __Username:__ admin
+
+    __Password:__ admin
+
 ![Grafana rendering PineDio Stack's Internal Temperature over a one-hour period, thanks to Prometheus and The Things Network](https://lupyuen.github.io/images/prometheus-refresh5.png)
 
 _Grafana rendering PineDio Stack's Internal Temperature over a one-hour period, thanks to Prometheus and The Things Network_
