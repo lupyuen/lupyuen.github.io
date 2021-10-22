@@ -81,7 +81,8 @@
 <li><a href="#checkpoint-echo">6.1 Checkpoint Echo</a><ul></ul></li></ul></li>
 <li><a href="#sensor-data-alerts">7 Sensor Data Alerts</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>21 Oct 2021</em></p>
+<li><a href="#notes">9 Notes</a><ul></ul></li>
+<li><a href="#appendix-install-grafana">10 Appendix: Install Grafana</a><ul></ul></li></ul></nav><p>📝 <em>21 Oct 2021</em></p>
 <p>Suppose we have some <strong>IoT Devices</strong> that transmit <strong>Sensor Data</strong> (via LoRa and LoRaWAN) to <strong>The Things Network</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/ttn">(That’s the free-to-use public global wireless network for IoT Devices)</a></p>
 <blockquote>
@@ -716,6 +717,38 @@ main.go:794
 </li>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1450262680795713538">this Twitter Thread</a></p>
+</li>
+</ol>
+<h1 id="appendix-install-grafana" class="section-header"><a href="#appendix-install-grafana">10 Appendix: Install Grafana</a></h1>
+<p>Here are the steps to install Grafana on Linux, macOS and Windows…</p>
+<ol>
+<li>
+<p>Browse to <a href="https://grafana.com/oss/grafana/"><strong>grafana.com/oss/grafana</strong></a></p>
+<p>Click <strong>“Get Grafana → Self-Managed → Download Grafana”</strong></p>
+</li>
+<li>
+<p>For <strong>“Edition”</strong> select <strong>“OSS”</strong></p>
+</li>
+<li>
+<p>Click Linux, macOS, Windows, Arm or Docker</p>
+<p>(Grafana for Linux works on WSL too)</p>
+</li>
+<li>
+<p>Follow the instructions to download and install Grafana</p>
+</li>
+<li>
+<p>For Linux and macOS: Start the Grafana Server</p>
+<div class="example-wrap"><pre class="language-bash"><code># For Ubuntu and WSL
+sudo service grafana-server restart
+sudo service grafana-server status
+
+# For macOS
+brew services start grafana</code></pre></div></li>
+<li>
+<p>To test Grafana, browse to </p>
+<p><strong><code>http://localhost:3000</code></strong></p>
+<p><strong>Username:</strong> admin</p>
+<p><strong>Password:</strong> admin</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/prometheus-refresh5.png" alt="Grafana rendering PineDio Stack’s Internal Temperature over a one-hour period, thanks to Prometheus and The Things Network" /></p>
