@@ -771,9 +771,29 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1450262680795713538)
 
+# Appendix: Configure The Things Network MQTT
+
+Follow these steps to __enable the MQTT Server__ in The Things Network...
+
+1.  Log on to __The Things Network Console__
+
+1.  Click __Applications__ → _(Your Application)_ → __Integrations__ → __MQTT__
+
+    ![Configure The Things Network MQTT Server](https://lupyuen.github.io/images/grafana-ttn.png)
+
+1.  Click __"Generate New API Key"__ and copy the values for...
+
+    -   __Public Address__
+
+    -   __Username__
+
+    -   __Password__
+
+    (This is the only time we can see the password. Don't forget to copy it!)
+
 # Appendix: Install Grafana
 
-Here are the steps to install Grafana on Linux, macOS and Windows...
+Follow these steps to __install Grafana__ on Linux, macOS and Windows...
 
 1.  Browse to [__grafana.com/oss/grafana__](https://grafana.com/oss/grafana/)
 
