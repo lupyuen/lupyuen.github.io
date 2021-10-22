@@ -83,13 +83,14 @@
 <li><a href="#testing-the-data-source">7.2 Testing the Data Source</a><ul></ul></li></ul></li>
 <li><a href="#troubleshooting">8 Troubleshooting</a><ul></ul></li>
 <li><a href="#store-data-with-prometheus">9 Store Data with Prometheus</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li>
-<li><a href="#appendix-install-grafana-and-data-source">12 Appendix: Install Grafana and Data Source</a><ul>
-<li><a href="#install-grafana">12.1 Install Grafana</a><ul></ul></li>
-<li><a href="#build-data-source">12.2 Build Data Source</a><ul></ul></li>
-<li><a href="#enable-data-source">12.3 Enable Data Source</a><ul></ul></li></ul></li>
-<li><a href="#appendix-install-build-tools-for-macos">13 Appendix: Install Build Tools for macOS</a><ul></ul></li></ul></nav><p>📝 <em>27 Sep 2021</em></p>
+<li><a href="#shortcomings">10 Shortcomings</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li>
+<li><a href="#appendix-install-grafana-and-data-source">13 Appendix: Install Grafana and Data Source</a><ul>
+<li><a href="#install-grafana">13.1 Install Grafana</a><ul></ul></li>
+<li><a href="#build-data-source">13.2 Build Data Source</a><ul></ul></li>
+<li><a href="#enable-data-source">13.3 Enable Data Source</a><ul></ul></li></ul></li>
+<li><a href="#appendix-install-build-tools-for-macos">14 Appendix: Install Build Tools for macOS</a><ul></ul></li></ul></nav><p>📝 <em>27 Sep 2021</em></p>
 <p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> is a public global <strong>wireless network for IoT devices</strong>…</p>
 <p>(And it’s free for fair use!)</p>
 <p><a href="https://grafana.com/oss/grafana/"><strong>Grafana</strong></a> is a open source tool for <strong>visualising all kinds of real-time data</strong>…</p>
@@ -617,7 +618,52 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/prometheus"><strong>“Monitor IoT Devices in The Things Network with Prometheus and Grafana”</strong></a></li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<p>More about this in the next chapter…</p>
+<h1 id="shortcomings" class="section-header"><a href="#shortcomings">10 Shortcomings</a></h1>
+<p>We’ve seen two ways of connecting Grafana to The Things Network…</p>
+<ol>
+<li>
+<p>Via <strong>Grafana Data Source for The Things Network</strong></p>
+<p>(As explained in this article)</p>
+</li>
+<li>
+<p>Via <strong>Prometheus with an MQTT Gateway</strong></p>
+<p><a href="https://lupyuen.github.io/articles/prometheus">(See this)</a></p>
+</li>
+</ol>
+<p><em>How do they compare?</em></p>
+<p>Well the approach described in this article has <strong>some serious shortcomings</strong>…</p>
+<ul>
+<li>
+<p><strong>Fixed Payload Format:</strong> Only CBOR Payloads are supported</p>
+<p>(Prometheus uses a configurable <a href="https://lupyuen.github.io/articles/prometheus#payload-formatter"><strong>Payload Formatter</strong></a> that supports multiple payload formats)</p>
+</li>
+<li>
+<p><strong>Fixed MQTT Topic:</strong> Only one MQTT Topic is supported (“#”)</p>
+<p>(Prometheus supports configurable <a href="https://lupyuen.github.io/articles/prometheus#mqtt-gateway-for-prometheus"><strong>MQTT Topics</strong></a>)</p>
+</li>
+<li>
+<p><strong>Fixed Fields:</strong> Only specific fields are extracted (Device ID and Sensor Data)</p>
+<p>(Prometheus extracts multiple Metrics based on configurable <a href="https://lupyuen.github.io/articles/prometheus#prometheus-metrics"><strong>JSON Paths</strong></a>)</p>
+</li>
+<li>
+<p><strong>No TLS Encryption:</strong> Our MQTT Password is transmitted in the clear</p>
+<p>(Prometheus supports <a href="https://lupyuen.github.io/articles/prometheus#mqtt-with-tls-encryption"><strong>TLS Encryption for MQTT</strong></a>)</p>
+</li>
+<li>
+<p><strong>No Persistence:</strong> Our Sensor Data disappears when we restart Grafana Server</p>
+<p>(Prometheus stores Sensor Data in a <a href="https://lupyuen.github.io/articles/prometheus#prometheus-time-series-database"><strong>Time Series Database</strong></a>)</p>
+</li>
+<li>
+<p><strong>Custom Coding:</strong> Our Data Source requires custom coding. And it’s incomplete.</p>
+<p>(Prometheus works without custom coding, except for the <a href="https://lupyuen.github.io/articles/prometheus#payload-formatter"><strong>Custom Payload Formatter</strong></a>. And a minor patch for <a href="https://lupyuen.github.io/articles/prometheus#mqtt-with-tls-encryption"><strong>TLS Encryption</strong></a>)</p>
+</li>
+</ul>
+<p>Thus Prometheus is the recommended way to connect Grafana to The Things Network…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/prometheus"><strong>“Monitor IoT Devices in The Things Network with Prometheus and Grafana”</strong></a></li>
+</ul>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>I hope you enjoyed our exploration today: Streaming Sensor Data from The Things Network to Grafana over MQTT.</p>
 <p>In the next article we shall head back to <a href="https://lupyuen.github.io/articles/ttn"><strong>PineDio Stack BL604</strong></a> and transmit actual Sensor Data to The Things Network, encoded with CBOR.</p>
 <ul>
@@ -626,6 +672,9 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/tsen"><strong>“Internal Temperature Sensor on BL602”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/prometheus"><strong>“Monitor IoT Devices in The Things Network with Prometheus and Grafana”</strong></a></p>
 </li>
 </ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -648,7 +697,7 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/grafana.md"><code>lupyuen.github.io/src/grafana.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1440459917828050946">this Twitter Thread</a></p>
@@ -715,9 +764,9 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/payload"><strong>“CBOR Payload Formatter for The Things Network”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-install-grafana-and-data-source" class="section-header"><a href="#appendix-install-grafana-and-data-source">12 Appendix: Install Grafana and Data Source</a></h1>
+<h1 id="appendix-install-grafana-and-data-source" class="section-header"><a href="#appendix-install-grafana-and-data-source">13 Appendix: Install Grafana and Data Source</a></h1>
 <p>Here are the steps to install Grafana and our Data Source for The Things Network.</p>
-<h2 id="install-grafana" class="section-header"><a href="#install-grafana">12.1 Install Grafana</a></h2>
+<h2 id="install-grafana" class="section-header"><a href="#install-grafana">13.1 Install Grafana</a></h2>
 <ol>
 <li>
 <p>Browse to <a href="https://grafana.com/oss/grafana/"><strong>grafana.com/oss/grafana</strong></a></p>
@@ -748,7 +797,7 @@ brew services start grafana</code></pre></div></li>
 <p><strong>Password:</strong> admin</p>
 </li>
 </ol>
-<h2 id="build-data-source" class="section-header"><a href="#build-data-source">12.2 Build Data Source</a></h2>
+<h2 id="build-data-source" class="section-header"><a href="#build-data-source">13.2 Build Data Source</a></h2>
 <p>(Note: Our Data Source uses the Grafana Live Streaming API, please use Grafana version 8.0 or later)</p>
 <ol>
 <li>
@@ -805,7 +854,7 @@ brew services restart grafana
 net stop grafana
 net start grafana</code></pre></div></li>
 </ol>
-<h2 id="enable-data-source" class="section-header"><a href="#enable-data-source">12.3 Enable Data Source</a></h2>
+<h2 id="enable-data-source" class="section-header"><a href="#enable-data-source">13.3 Enable Data Source</a></h2>
 <ol>
 <li>
 <p>Edit the <strong>Grafana Configuration File</strong>…</p>
@@ -850,7 +899,7 @@ C:\Program Files\GrafanaLabs\grafana\data\log\grafana.log</code></pre></div>
 <p><a href="https://github.com/lupyuen/the-things-network-datasource#grafana-log">(See sample Grafana Log)</a></p>
 </li>
 </ol>
-<h1 id="appendix-install-build-tools-for-macos" class="section-header"><a href="#appendix-install-build-tools-for-macos">13 Appendix: Install Build Tools for macOS</a></h1>
+<h1 id="appendix-install-build-tools-for-macos" class="section-header"><a href="#appendix-install-build-tools-for-macos">14 Appendix: Install Build Tools for macOS</a></h1>
 <p>To install the tools for building our Grafana Data Source on macOS…</p>
 <ol>
 <li>
