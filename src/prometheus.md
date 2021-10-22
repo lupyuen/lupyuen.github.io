@@ -99,6 +99,10 @@ Let's verify that our __Payload Formatter works OK__ for decoding our Sensor Dat
         }    
     ```
 
+    These are the __Light Sensor__ ("`l`") and __Temperature Sensor__ ("`t`") values transmitted by our LoRaWAN Device (PineDio Stack).
+
+    [(Our Temperature Values are scaled up 100 times... `4656` means `46.56` ºC)](https://lupyuen.github.io/articles/cbor#floating-point-numbers)
+
 Also verify that the __MQTT Server works OK__ at The Things Network...
 
 1.  Start our __LoRaWAN Firmware__ and transmit Sensor Data every minute
