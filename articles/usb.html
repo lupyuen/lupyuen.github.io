@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Build a Linux Driver for PineDio LoRa SX1262 USB Adapter</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Build a Linux Driver for PineDio LoRa SX1262 USB Adapter" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How we build a LoRa SX1262 Driver for PineDio USB Adapter... And test it on PineBook Pro"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/usb-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Build a Linux Driver for PineDio LoRa SX1262 USB Adapter</h1>
+    <nav id="TOC"><ul>
+<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
+<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
+<p>TODO</p>
+<p>How we build a LoRa SX1262 Driver for PineDio USB Adapter… And test it on PineBook Pro</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262"><strong>github.com/lupyuen/lora-sx1262</strong></a></li>
+</ul>
+<p>userland library not kernel driver
+tho someday </p>
+<p><img src="https://lupyuen.github.io/images/usb-title.jpg" alt="PineDio LoRa SX1262 USB Adapter" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb.md"><code>lupyuen.github.io/src/usb.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1451548895461326858">this Twitter Thread</a></li>
+</ol>
+<p>TODO17</p>
+<p><img src="https://lupyuen.github.io/images/usb-chirp2.png" alt="" /></p>
+<p>TODO18</p>
+<p><img src="https://lupyuen.github.io/images/usb-receive4.png" alt="" /></p>
+<p>TODO19</p>
+<p><img src="https://lupyuen.github.io/images/usb-receive5.png" alt="" /></p>
+<p>TODO20</p>
+<p><img src="https://lupyuen.github.io/images/usb-registers3.png" alt="" /></p>
+<p>TODO21</p>
+<p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="" /></p>
+<p>TODO22</p>
+<p><img src="https://lupyuen.github.io/images/usb-spi6.png" alt="" /></p>
+<p>TODO23</p>
+<p><img src="https://lupyuen.github.io/images/usb-spi7.png" alt="" /></p>
+<p>TODO24</p>
+<p><img src="https://lupyuen.github.io/images/usb-spi8.png" alt="" /></p>
+<p>TODO25</p>
+<p><img src="https://lupyuen.github.io/images/usb-spi5.png" alt="" /></p>
+<p>TODO26</p>
+<p><img src="https://lupyuen.github.io/images/usb-transmit2.png" alt="" /></p>
+<p>TODO27</p>
+<p><img src="https://lupyuen.github.io/images/usb-wisblock5.png" alt="" /></p>
+<p>TODO28</p>
+<p><img src="https://lupyuen.github.io/images/usb-wisblock6.png" alt="" /></p>
+<p>TODO29</p>
+<p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="" /></p>
+
+    
+</body>
+</html>
