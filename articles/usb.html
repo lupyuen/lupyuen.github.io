@@ -65,8 +65,14 @@
 
     <h1 class="title">Build a Linux Driver for PineDio LoRa SX1262 USB Adapter</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
+<li><a href="#read-sx1262-registers">1 Read SX1262 Registers</a><ul></ul></li>
+<li><a href="#transmit-lora-message">2 Transmit LoRa Message</a><ul></ul></li>
+<li><a href="#receive-lora-message">3 Receive LoRa Message</a><ul></ul></li>
+<li><a href="#sleep">4 Sleep</a><ul></ul></li>
+<li><a href="#ch341-spi">5 CH341 SPI</a><ul></ul></li>
+<li><a href="#wisblock">6 WisBlock</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
 <p>TODO</p>
 <p>How we build a LoRa SX1262 Driver for PineDio USB Adapter… And test it on PineBook Pro</p>
 <ul>
@@ -75,7 +81,39 @@
 <p>userland library not kernel driver
 tho someday </p>
 <p><img src="https://lupyuen.github.io/images/usb-title.jpg" alt="PineDio LoRa SX1262 USB Adapter" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="read-sx1262-registers" class="section-header"><a href="#read-sx1262-registers">1 Read SX1262 Registers</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/usb-registers3.png" alt="" /></p>
+<h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">2 Transmit LoRa Message</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/usb-transmit2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/usb-chirp2.png" alt="" /></p>
+<h1 id="receive-lora-message" class="section-header"><a href="#receive-lora-message">3 Receive LoRa Message</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/usb-receive4.png" alt="" /></p>
+<p>TODO19</p>
+<p><img src="https://lupyuen.github.io/images/usb-receive5.png" alt="" /></p>
+<h1 id="sleep" class="section-header"><a href="#sleep">4 Sleep</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="" /></p>
+<h1 id="ch341-spi" class="section-header"><a href="#ch341-spi">5 CH341 SPI</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/usb-spi6.png" alt="" /></p>
+<p>TODO23</p>
+<p><img src="https://lupyuen.github.io/images/usb-spi7.png" alt="" /></p>
+<p>TODO24</p>
+<p><img src="https://lupyuen.github.io/images/usb-spi8.png" alt="" /></p>
+<p>TODO25</p>
+<p><img src="https://lupyuen.github.io/images/usb-spi5.png" alt="" /></p>
+<h1 id="wisblock" class="section-header"><a href="#wisblock">6 WisBlock</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/usb-wisblock5.png" alt="" /></p>
+<p>TODO28</p>
+<p><img src="https://lupyuen.github.io/images/usb-wisblock6.png" alt="" /></p>
+<p>TODO29</p>
+<p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -94,36 +132,10 @@ tho someday </p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb.md"><code>lupyuen.github.io/src/usb.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1451548895461326858">this Twitter Thread</a></li>
 </ol>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/usb-chirp2.png" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/usb-receive4.png" alt="" /></p>
-<p>TODO19</p>
-<p><img src="https://lupyuen.github.io/images/usb-receive5.png" alt="" /></p>
-<p>TODO20</p>
-<p><img src="https://lupyuen.github.io/images/usb-registers3.png" alt="" /></p>
-<p>TODO21</p>
-<p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="" /></p>
-<p>TODO22</p>
-<p><img src="https://lupyuen.github.io/images/usb-spi6.png" alt="" /></p>
-<p>TODO23</p>
-<p><img src="https://lupyuen.github.io/images/usb-spi7.png" alt="" /></p>
-<p>TODO24</p>
-<p><img src="https://lupyuen.github.io/images/usb-spi8.png" alt="" /></p>
-<p>TODO25</p>
-<p><img src="https://lupyuen.github.io/images/usb-spi5.png" alt="" /></p>
-<p>TODO26</p>
-<p><img src="https://lupyuen.github.io/images/usb-transmit2.png" alt="" /></p>
-<p>TODO27</p>
-<p><img src="https://lupyuen.github.io/images/usb-wisblock5.png" alt="" /></p>
-<p>TODO28</p>
-<p><img src="https://lupyuen.github.io/images/usb-wisblock6.png" alt="" /></p>
-<p>TODO29</p>
-<p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="" /></p>
 
     
 </body>
