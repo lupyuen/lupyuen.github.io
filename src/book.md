@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(35 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(36 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -169,6 +169,10 @@ Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, l
 -   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
 
 -   ["CBOR Payload Formatter for The Things Network"](https://lupyuen.github.io/articles/payload)
+
+We're updating the LoRa SX1262 Driver for PineDio Stack to support __PineDio USB__...
+
+-   ["Build a Linux Driver for PineDio LoRa SX1262 USB Adapter"](https://lupyuen.github.io/articles/usb)
 
 Below are the older articles for __LoRa SX1276 Transceiver__...
 
