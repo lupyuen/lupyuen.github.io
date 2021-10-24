@@ -65,14 +65,17 @@
 
     <h1 class="title">Build a Linux Driver for PineDio LoRa SX1262 USB Adapter</h1>
     <nav id="TOC"><ul>
-<li><a href="#read-sx1262-registers">1 Read SX1262 Registers</a><ul></ul></li>
-<li><a href="#transmit-lora-message">2 Transmit LoRa Message</a><ul></ul></li>
-<li><a href="#receive-lora-message">3 Receive LoRa Message</a><ul></ul></li>
-<li><a href="#sleep">4 Sleep</a><ul></ul></li>
-<li><a href="#ch341-spi">5 CH341 SPI</a><ul></ul></li>
-<li><a href="#wisblock">6 WisBlock</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
+<li><a href="#bl602-driver">1 BL602 Driver</a><ul></ul></li>
+<li><a href="#read-sx1262-registers">2 Read SX1262 Registers</a><ul></ul></li>
+<li><a href="#transmit-lora-message">3 Transmit LoRa Message</a><ul></ul></li>
+<li><a href="#receive-lora-message">4 Receive LoRa Message</a><ul></ul></li>
+<li><a href="#sleep">5 Sleep</a><ul></ul></li>
+<li><a href="#ch341-spi">6 CH341 SPI</a><ul></ul></li>
+<li><a href="#ch341-gpio">7 CH341 GPIO</a><ul></ul></li>
+<li><a href="#wisblock">8 WisBlock</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#notes">10 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-pinedio-usb-driver">11 Appendix: Build PineDio USB Driver</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
 <p>TODO</p>
 <p>How we build a LoRa SX1262 Driver for PineDio USB Adapter… And test it on PineBook Pro</p>
 <ul>
@@ -81,24 +84,60 @@
 <p>userland library not kernel driver
 tho someday </p>
 <p><img src="https://lupyuen.github.io/images/usb-title.jpg" alt="PineDio LoRa SX1262 USB Adapter" /></p>
-<h1 id="read-sx1262-registers" class="section-header"><a href="#read-sx1262-registers">1 Read SX1262 Registers</a></h1>
+<h1 id="bl602-driver" class="section-header"><a href="#bl602-driver">1 BL602 Driver</a></h1>
+<p>TODO</p>
+<p>Read the articles…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan">“PineCone BL602 Talks LoRaWAN”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan2">“LoRaWAN on PineDio Stack BL604 RISC-V Board”</a></p>
+</li>
+</ul>
+<p>The design of the SX1262 Driver is similar to the SX1276 Driver, which is explained in these articles…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora">“Connect PineCone BL602 to LoRa Transceiver”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora2">“PineCone BL602 RISC-V Board Receives LoRa Packets”</a></p>
+</li>
+</ul>
+<p><strong>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</strong></p>
+<p><strong>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</strong></p>
+<p>(CH341 SPI seems to have trouble transferring a block of 32 bytes)</p>
+<p>Ported from Semtech’s Reference Implementation of SX1262 Driver…</p>
+<p>https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x</p>
+<h1 id="read-sx1262-registers" class="section-header"><a href="#read-sx1262-registers">2 Read SX1262 Registers</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-registers3.png" alt="" /></p>
-<h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">2 Transmit LoRa Message</a></h1>
+<h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">3 Transmit LoRa Message</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-transmit2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-chirp2.png" alt="" /></p>
-<h1 id="receive-lora-message" class="section-header"><a href="#receive-lora-message">3 Receive LoRa Message</a></h1>
+<h1 id="receive-lora-message" class="section-header"><a href="#receive-lora-message">4 Receive LoRa Message</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-receive4.png" alt="" /></p>
 <p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/usb-receive5.png" alt="" /></p>
-<h1 id="sleep" class="section-header"><a href="#sleep">4 Sleep</a></h1>
+<h1 id="sleep" class="section-header"><a href="#sleep">5 Sleep</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="" /></p>
-<h1 id="ch341-spi" class="section-header"><a href="#ch341-spi">5 CH341 SPI</a></h1>
+<h1 id="ch341-spi" class="section-header"><a href="#ch341-spi">6 CH341 SPI</a></h1>
 <p>TODO</p>
+<ul>
+<li>
+<p><a href="http://www.wch-ic.com/downloads/CH340DS1_PDF.html">CH340 Datasheet (English)</a></p>
+</li>
+<li>
+<p><a href="http://www.wch.cn/downloads/CH341DS1_PDF.html">CH341 Datasheet (Chinese)</a></p>
+</li>
+<li>
+<p><a href="http://www.wch.cn/downloads/CH341DS2_PDF.html">CH341 Interfaces (Chinese)</a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/usb-spi6.png" alt="" /></p>
 <p>TODO23</p>
 <p><img src="https://lupyuen.github.io/images/usb-spi7.png" alt="" /></p>
@@ -106,14 +145,45 @@ tho someday </p>
 <p><img src="https://lupyuen.github.io/images/usb-spi8.png" alt="" /></p>
 <p>TODO25</p>
 <p><img src="https://lupyuen.github.io/images/usb-spi5.png" alt="" /></p>
-<h1 id="wisblock" class="section-header"><a href="#wisblock">6 WisBlock</a></h1>
+<h1 id="ch341-gpio" class="section-header"><a href="#ch341-gpio">7 CH341 GPIO</a></h1>
+<p>TODO</p>
+<p>Note that the CH341 GPIO programming is incomplete. We need to…</p>
+<ol>
+<li>
+<p>Init the GPIO Pins: <code>SX126xIoInit</code></p>
+<p>https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77</p>
+</li>
+<li>
+<p>Register GPIO Interrupt Handler for DIO1: <code>SX126xIoIrqInit</code></p>
+<p>https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L79-L91</p>
+</li>
+<li>
+<p>Reset SX1262 via GPIO: <code>SX126xReset</code></p>
+<p>(For now we reset SX1262 by manually unplugging PineDio USB)</p>
+<p>https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L149-L169</p>
+</li>
+<li>
+<p>Check SX1262 Busy State via GPIO: <code>SX126xWaitOnBusy</code></p>
+<p>(For now we sleep 10 milliseconds)</p>
+<p>https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L171-L182</p>
+</li>
+<li>
+<p>Get DIO1 Pin State: <code>SX126xGetDio1PinState</code></p>
+<p>https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L337-L344</p>
+</li>
+</ol>
+<p>We also need Background Threads to receive LoRa Messages in the background…</p>
+<p>https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L355-L408</p>
+<p>More about PineDio USB and CH341 GPIO:</p>
+<p>https://wiki.pine64.org/wiki/JF%27s_note_on_PineDio_devices#RAW_LoRa_communication_between_USB_LoRa_adapter_and_PineDio_STACK</p>
+<h1 id="wisblock" class="section-header"><a href="#wisblock">8 WisBlock</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock5.png" alt="" /></p>
 <p>TODO28</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock6.png" alt="" /></p>
 <p>TODO29</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -132,10 +202,68 @@ tho someday </p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb.md"><code>lupyuen.github.io/src/usb.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1451548895461326858">this Twitter Thread</a></li>
 </ol>
+<h1 id="appendix-build-pinedio-usb-driver" class="section-header"><a href="#appendix-build-pinedio-usb-driver">11 Appendix: Build PineDio USB Driver</a></h1>
+<p>TODO</p>
+<p>To build PineDio USB Driver on Pinebook Pro Manjaro Arm64…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Install DKMS
+sudo pacman -Syu dkms base-devel --needed
+
+# Install Kernel Headers for Manjaro: https://linuxconfig.org/manjaro-linux-kernel-headers-installation
+uname -r 
+# Should show &quot;5.14.12-1-MANJARO-ARM&quot; or similar
+sudo pacman -S linux-headers
+pacman -Q | grep headers
+# Should show &quot;linux-headers 5.14.12-1&quot; or similar
+
+# Reboot to be safe
+sudo reboot now
+
+# Install CH341 SPI Driver
+git clone https://github.com/rogerjames99/spi-ch341-usb.git
+pushd spi-ch341-usb
+# TODO: Edit Makefile and change...
+#   KERNEL_DIR  = /usr/src/linux-headers-$(KVERSION)/
+# To...
+#   KERNEL_DIR  = /lib/modules/$(KVERSION)/build
+make
+sudo make install
+popd
+
+# Unload the module ch341 if it has been automatically loaded
+lsmod | grep ch341
+sudo rmmod ch341
+
+# Load the new module
+sudo modprobe spi-ch341-usb
+
+# Plug in PineDio USB and check that the module has been correctly loaded.
+# See dmesg Log below. This needs to be checked every time we reboot
+# our computer and when we plug in PineDio USB.
+dmesg
+
+# If we see &quot;spi_ch341_usb: loading out-of-tree module taints kernel&quot;,
+# Unplug PineDio USB, run &quot;sudo rmmod ch341&quot;, plug in PineDio USB again
+# and recheck dmesg.
+
+# Download PineDio USB Driver
+git clone --recursive https://github.com/lupyuen/lora-sx1262
+cd lora-sx1262
+
+# TODO: Edit src/main.c and uncomment READ_REGISTERS, SEND_MESSAGE or RECEIVE_MESSAGE.
+# See &quot;PineDio USB Operations&quot; below
+
+# Build PineDio USB Driver
+make
+
+# Run PineDio USB Driver Demo.
+# See Output Log below.
+sudo ./lora-sx1262</code></pre></div>
+<p>More about PineDio USB and CH341 SPI:</p>
+<p>https://wiki.pine64.org/wiki/JF%27s_note_on_PineDio_devices#RAW_LoRa_communication_between_USB_LoRa_adapter_and_PineDio_STACK</p>
 
     
 </body>
