@@ -13,6 +13,70 @@ tho someday
 
 ![PineDio LoRa SX1262 USB Adapter](https://lupyuen.github.io/images/usb-title.jpg)
 
+# Read SX1262 Registers
+
+TODO
+
+![](https://lupyuen.github.io/images/usb-registers3.png)
+
+# Transmit LoRa Message
+
+TODO
+
+![](https://lupyuen.github.io/images/usb-transmit2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/usb-chirp2.png)
+
+# Receive LoRa Message
+
+TODO
+
+![](https://lupyuen.github.io/images/usb-receive4.png)
+
+TODO19
+
+![](https://lupyuen.github.io/images/usb-receive5.png)
+
+# Sleep
+
+TODO
+
+![](https://lupyuen.github.io/images/usb-sleep3.png)
+
+# CH341 SPI
+
+TODO
+
+![](https://lupyuen.github.io/images/usb-spi6.png)
+
+TODO23
+
+![](https://lupyuen.github.io/images/usb-spi7.png)
+
+TODO24
+
+![](https://lupyuen.github.io/images/usb-spi8.png)
+
+TODO25
+
+![](https://lupyuen.github.io/images/usb-spi5.png)
+
+# WisBlock
+
+TODO
+
+![](https://lupyuen.github.io/images/usb-wisblock5.png)
+
+TODO28
+
+![](https://lupyuen.github.io/images/usb-wisblock6.png)
+
+TODO29
+
+![](https://lupyuen.github.io/images/usb-wisblock4.png)
+
 # What's Next
 
 TODO
@@ -34,55 +98,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1451548895461326858)
-
-TODO17
-
-![](https://lupyuen.github.io/images/usb-chirp2.png)
-
-TODO18
-
-![](https://lupyuen.github.io/images/usb-receive4.png)
-
-TODO19
-
-![](https://lupyuen.github.io/images/usb-receive5.png)
-
-TODO20
-
-![](https://lupyuen.github.io/images/usb-registers3.png)
-
-TODO21
-
-![](https://lupyuen.github.io/images/usb-sleep3.png)
-
-TODO22
-
-![](https://lupyuen.github.io/images/usb-spi6.png)
-
-TODO23
-
-![](https://lupyuen.github.io/images/usb-spi7.png)
-
-TODO24
-
-![](https://lupyuen.github.io/images/usb-spi8.png)
-
-TODO25
-
-![](https://lupyuen.github.io/images/usb-spi5.png)
-
-TODO26
-
-![](https://lupyuen.github.io/images/usb-transmit2.png)
-
-TODO27
-
-![](https://lupyuen.github.io/images/usb-wisblock5.png)
-
-TODO28
-
-![](https://lupyuen.github.io/images/usb-wisblock6.png)
-
-TODO29
-
-![](https://lupyuen.github.io/images/usb-wisblock4.png)
