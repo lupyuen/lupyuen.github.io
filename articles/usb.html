@@ -86,7 +86,7 @@
 <p><em>What if a Laptop Computer could talk to other devices over a long-range, low-bandwidth wireless network like LoRa?</em></p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
 <p>Yep that’s possible today… With <a href="https://wiki.pine64.org/wiki/Pinebook_Pro"><strong>Pinebook Pro</strong></a> and the <a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter"><strong>PineDio LoRa SX1262 USB Adapter</strong></a>! (Pic below)</p>
-<p>This article explains how we built the <strong>LoRa SX1262 Driver</strong> for PineDio USB Adapter and tested the driver on Pinebook Pro (Manjaro Linux Arm64)…</p>
+<p>This article explains how we built the <strong>LoRa SX1262 Driver</strong> for PineDio USB Adapter and tested it on Pinebook Pro (Manjaro Linux Arm64)…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/lora-sx1262"><strong>github.com/lupyuen/lora-sx1262</strong></a></li>
 </ul>
@@ -94,8 +94,19 @@
 <p>Read on to learn more…</p>
 <p><img src="https://lupyuen.github.io/images/usb-title.jpg" alt="PineDio LoRa SX1262 USB Adapter" /></p>
 <h1 id="lora-sx1262-driver" class="section-header"><a href="#lora-sx1262-driver">1 LoRa SX1262 Driver</a></h1>
-<p>TODO</p>
-<p>First ported to BL602 and tested on PineDio Stack BL604…</p>
+<p>PineDio LoRa USB Adapter looks like a simple dongle…</p>
+<ol>
+<li>
+<p>Take a <a href="http://www.wch-ic.com/products/CH341.html"><strong>CH341 USB-to-Serial Interface Module</strong></a></p>
+</li>
+<li>
+<p>Connect it to a <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 LoRa Module</strong></a> over SPI</p>
+</li>
+</ol>
+<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">(See this)</a></p>
+<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter">(Schematic)</a></p>
+<p><em>Where did the LoRa SX1262 Driver come from?</em></p>
+<p>Believe it or not… The LoRa SX1262 Driver is the exact same driver running on <strong>PineCone BL602 and PineDio Stack BL604</strong>!</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lorawan"><strong>“PineCone BL602 Talks LoRaWAN”</strong></a></p>
@@ -104,6 +115,7 @@
 <p><a href="https://lupyuen.github.io/articles/lorawan2"><strong>“LoRaWAN on PineDio Stack BL604 RISC-V Board”</strong></a></p>
 </li>
 </ul>
+<p>(The SPI Interfaces have been modified to talk to CH341)</p>
 <p>The design of the SX1262 Driver is similar to the SX1276 Driver, which is explained in these articles…</p>
 <ul>
 <li>
@@ -147,10 +159,7 @@
 <p>TODO</p>
 <ul>
 <li>
-<p><a href="http://www.wch-ic.com/downloads/CH340DS1_PDF.html">CH340 Datasheet (English)</a></p>
-</li>
-<li>
-<p><a href="http://www.wch.cn/downloads/CH341DS1_PDF.html">CH341 Datasheet (Chinese)</a></p>
+<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter">CH341 Datasheet</a></p>
 </li>
 <li>
 <p><a href="http://www.wch.cn/downloads/CH341DS2_PDF.html">CH341 Interfaces (Chinese)</a></p>
