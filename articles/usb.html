@@ -83,13 +83,15 @@
 <li><a href="#connect-usb">12.1 Connect USB</a><ul></ul></li>
 <li><a href="#send-message">12.2 Send Message</a><ul></ul></li>
 <li><a href="#receive-message">12.3 Receive Message</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
-<p>TODO</p>
-<p>How we build a LoRa SX1262 Driver for PineDio USB Adapter… And test it on PineBook Pro</p>
+<p><em>What if a Laptop Computer could talk to other devices over a long-range, low-bandwidth wireless network like LoRa?</em></p>
+<p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
+<p>Yep that’s possible today… With <a href="https://wiki.pine64.org/wiki/Pinebook_Pro"><strong>Pinebook Pro</strong></a> and the <a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter"><strong>PineDio LoRa SX1262 USB Adapter</strong></a>! (Pic below)</p>
+<p>This article explains how we built the <strong>LoRa SX1262 Driver</strong> for PineDio USB Adapter and tested the driver on Pinebook Pro (Manjaro Linux Arm64)…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/lora-sx1262"><strong>github.com/lupyuen/lora-sx1262</strong></a></li>
 </ul>
-<p>userland library not kernel driver
-tho someday </p>
+<p>Our LoRa SX1262 Driver is <strong>still incomplete</strong> (it’s not a Kernel Driver yet), but the driver <strong>talks OK to other LoRa Devices</strong>. (With some limitations)</p>
+<p>Read on to learn more…</p>
 <p><img src="https://lupyuen.github.io/images/usb-title.jpg" alt="PineDio LoRa SX1262 USB Adapter" /></p>
 <h1 id="lora-sx1262-driver" class="section-header"><a href="#lora-sx1262-driver">1 LoRa SX1262 Driver</a></h1>
 <p>TODO</p>
@@ -201,6 +203,9 @@ tho someday </p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
+<p>LoRa Gateway for Internet</p>
+<p>LoRaWAN</p>
+<p>Backport to PineDio Stack</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
