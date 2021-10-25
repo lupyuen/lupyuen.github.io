@@ -30,7 +30,7 @@ And we get the PineDio LoRa USB Adapter!
 
 -   [__PineDio LoRa USB Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
 
--   [__PineDio LoRa USB Adapter Schematic)](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
+-   [__PineDio LoRa USB Adapter Schematic__](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
 TODO
 
