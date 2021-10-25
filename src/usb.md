@@ -8,7 +8,7 @@ _What if a Laptop Computer could talk to other devices over a long-range, low-ba
 
 Yep that's possible today... With [__Pinebook Pro__](https://wiki.pine64.org/wiki/Pinebook_Pro) and the [__PineDio LoRa SX1262 USB Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)! (Pic below)
 
-This article explains how we built the __LoRa SX1262 Driver__ for PineDio USB Adapter and tested the driver on Pinebook Pro (Manjaro Linux Arm64)...
+This article explains how we built the __LoRa SX1262 Driver__ for PineDio USB Adapter and tested it on Pinebook Pro (Manjaro Linux Arm64)...
 
 -   [__github.com/lupyuen/lora-sx1262__](https://github.com/lupyuen/lora-sx1262)
 
@@ -20,13 +20,25 @@ Read on to learn more...
 
 # LoRa SX1262 Driver
 
-TODO
+PineDio LoRa USB Adapter looks like a simple dongle...
 
-First ported to BL602 and tested on PineDio Stack BL604...
+1.  Take a [__CH341 USB-to-Serial Interface Module__](http://www.wch-ic.com/products/CH341.html)
+
+1.  Connect it to a [__Semtech SX1262 LoRa Module__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262) over SPI
+
+[(See this)](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
+
+[(Schematic)](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
+
+_Where did the LoRa SX1262 Driver come from?_
+
+Believe it or not... The LoRa SX1262 Driver is the exact same driver running on __PineCone BL602 and PineDio Stack BL604__!
 
 -   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
 
 -   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
+
+(The SPI Interfaces have been modified to talk to CH341)
 
 The design of the SX1262 Driver is similar to the SX1276 Driver, which is explained in these articles...
 
@@ -94,9 +106,7 @@ TODO
 
 TODO
 
--   [CH340 Datasheet (English)](http://www.wch-ic.com/downloads/CH340DS1_PDF.html)
-
--   [CH341 Datasheet (Chinese)](http://www.wch.cn/downloads/CH341DS1_PDF.html)
+-   [CH341 Datasheet](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
 -   [CH341 Interfaces (Chinese)](http://www.wch.cn/downloads/CH341DS2_PDF.html)
 
