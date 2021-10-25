@@ -2,14 +2,19 @@
 
 📝 _30 Oct 2021_
 
-TODO
+_What if a Laptop Computer could talk to other devices over a long-range, low-bandwidth wireless network like LoRa?_
 
-How we build a LoRa SX1262 Driver for PineDio USB Adapter... And test it on PineBook Pro
+[(Up to 5 km or 3 miles in urban areas... 15 km or 10 miles in rural areas!)](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/)
+
+Yep that's possible today... With [__Pinebook Pro__](https://wiki.pine64.org/wiki/Pinebook_Pro) and the [__PineDio LoRa SX1262 USB Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)! (Pic below)
+
+This article explains how we built the __LoRa SX1262 Driver__ for PineDio USB Adapter and tested the driver on Pinebook Pro (Manjaro Linux Arm64)...
 
 -   [__github.com/lupyuen/lora-sx1262__](https://github.com/lupyuen/lora-sx1262)
 
-userland library not kernel driver
-tho someday 
+Our LoRa SX1262 Driver is __still incomplete__ (it's not a Kernel Driver yet), but the driver __talks OK to other LoRa Devices__. (With some limitations)
+
+Read on to learn more...
 
 ![PineDio LoRa SX1262 USB Adapter](https://lupyuen.github.io/images/usb-title.jpg)
 
@@ -164,6 +169,12 @@ TODO29
 # What's Next
 
 TODO
+
+LoRa Gateway for Internet
+
+LoRaWAN
+
+Backport to PineDio Stack
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
