@@ -18,7 +18,7 @@ Read on to learn more...
 
 ![PineDio LoRa SX1262 USB Adapter](https://lupyuen.github.io/images/usb-title.jpg)
 
-# LoRa SX1262 Driver
+# PineDio LoRa USB Adapter
 
 PineDio LoRa USB Adapter looks like a simple dongle...
 
@@ -26,25 +26,27 @@ PineDio LoRa USB Adapter looks like a simple dongle...
 
 1.  Connect it to a [__Semtech SX1262 LoRa Module__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262) over SPI
 
-[(See this)](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
+And we get the PineDio LoRa USB Adapter!
 
-[(Schematic)](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
+-   [__PineDio LoRa USB Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
 
-_Where did the LoRa SX1262 Driver come from?_
+-   [__PineDio LoRa USB Adapter Schematic)](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
-Believe it or not... The LoRa SX1262 Driver is the exact same driver running on __PineCone BL602 and PineDio Stack BL604__!
+TODO
+
+CH341
+
+# LoRa SX1262 Driver for PineDio USB
+
+_Where did the PineDio USB LoRa Driver come from?_
+
+Believe it or not... The PineDio USB LoRa Driver is the exact same driver running on __PineCone BL602 and PineDio Stack BL604__!
 
 -   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
 
 -   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
 
-(The SPI Interfaces have been modified to talk to CH341)
-
-The design of the SX1262 Driver is similar to the SX1276 Driver, which is explained in these articles...
-
--   [__"Connect PineCone BL602 to LoRa Transceiver"__](https://lupyuen.github.io/articles/lora)
-
--   [__"PineCone BL602 RISC-V Board Receives LoRa Packets"__](https://lupyuen.github.io/articles/lora2)
+(But modified to talk to CH341 SPI on PineDio USB)
 
 __CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!__
 
@@ -63,6 +65,12 @@ TODO
 ## NimBLE Porting Layer
 
 TODO
+
+The design of the SX1262 Driver is similar to the SX1276 Driver, which is explained in these articles...
+
+-   [__"Connect PineCone BL602 to LoRa Transceiver"__](https://lupyuen.github.io/articles/lora)
+
+-   [__"PineCone BL602 RISC-V Board Receives LoRa Packets"__](https://lupyuen.github.io/articles/lora2)
 
 # Read SX1262 Registers
 
