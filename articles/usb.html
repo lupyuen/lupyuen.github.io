@@ -65,24 +65,25 @@
 
     <h1 class="title">Build a Linux Driver for PineDio LoRa SX1262 USB Adapter</h1>
     <nav id="TOC"><ul>
-<li><a href="#lora-sx1262-driver">1 LoRa SX1262 Driver</a><ul>
-<li><a href="#lorawan-support">1.1 LoRaWAN Support</a><ul></ul></li>
-<li><a href="#nimble-porting-layer">1.2 NimBLE Porting Layer</a><ul></ul></li></ul></li>
-<li><a href="#read-sx1262-registers">2 Read SX1262 Registers</a><ul></ul></li>
-<li><a href="#transmit-lora-message">3 Transmit LoRa Message</a><ul></ul></li>
-<li><a href="#receive-lora-message">4 Receive LoRa Message</a><ul></ul></li>
-<li><a href="#sleep">5 Sleep</a><ul></ul></li>
-<li><a href="#ch341-spi">6 CH341 SPI</a><ul></ul></li>
-<li><a href="#ch341-gpio">7 CH341 GPIO</a><ul></ul></li>
-<li><a href="#wisblock">8 WisBlock</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-pinedio-usb-driver">11 Appendix: Build PineDio USB Driver</a><ul>
-<li><a href="#pinedio-usb-operations">11.1 PineDio USB Operations</a><ul></ul></li></ul></li>
-<li><a href="#appendix-pinedio-usb-dmesg-log">12 Appendix: PineDio USB dmesg Log</a><ul>
-<li><a href="#connect-usb">12.1 Connect USB</a><ul></ul></li>
-<li><a href="#send-message">12.2 Send Message</a><ul></ul></li>
-<li><a href="#receive-message">12.3 Receive Message</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
+<li><a href="#pinedio-lora-usb-adapter">1 PineDio LoRa USB Adapter</a><ul></ul></li>
+<li><a href="#lora-sx1262-driver-for-pinedio-usb">2 LoRa SX1262 Driver for PineDio USB</a><ul>
+<li><a href="#lorawan-support">2.1 LoRaWAN Support</a><ul></ul></li>
+<li><a href="#nimble-porting-layer">2.2 NimBLE Porting Layer</a><ul></ul></li></ul></li>
+<li><a href="#read-sx1262-registers">3 Read SX1262 Registers</a><ul></ul></li>
+<li><a href="#transmit-lora-message">4 Transmit LoRa Message</a><ul></ul></li>
+<li><a href="#receive-lora-message">5 Receive LoRa Message</a><ul></ul></li>
+<li><a href="#sleep">6 Sleep</a><ul></ul></li>
+<li><a href="#ch341-spi">7 CH341 SPI</a><ul></ul></li>
+<li><a href="#ch341-gpio">8 CH341 GPIO</a><ul></ul></li>
+<li><a href="#wisblock">9 WisBlock</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-pinedio-usb-driver">12 Appendix: Build PineDio USB Driver</a><ul>
+<li><a href="#pinedio-usb-operations">12.1 PineDio USB Operations</a><ul></ul></li></ul></li>
+<li><a href="#appendix-pinedio-usb-dmesg-log">13 Appendix: PineDio USB dmesg Log</a><ul>
+<li><a href="#connect-usb">13.1 Connect USB</a><ul></ul></li>
+<li><a href="#send-message">13.2 Send Message</a><ul></ul></li>
+<li><a href="#receive-message">13.3 Receive Message</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
 <p><em>What if a Laptop Computer could talk to other devices over a long-range, low-bandwidth wireless network like LoRa?</em></p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
 <p>Yep that’s possible today… With <a href="https://wiki.pine64.org/wiki/Pinebook_Pro"><strong>Pinebook Pro</strong></a> and the <a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter"><strong>PineDio LoRa SX1262 USB Adapter</strong></a>! (Pic below)</p>
@@ -93,7 +94,7 @@
 <p>Our LoRa SX1262 Driver is <strong>still incomplete</strong> (it’s not a Kernel Driver yet), but the driver <strong>talks OK to other LoRa Devices</strong>. (With some limitations)</p>
 <p>Read on to learn more…</p>
 <p><img src="https://lupyuen.github.io/images/usb-title.jpg" alt="PineDio LoRa SX1262 USB Adapter" /></p>
-<h1 id="lora-sx1262-driver" class="section-header"><a href="#lora-sx1262-driver">1 LoRa SX1262 Driver</a></h1>
+<h1 id="pinedio-lora-usb-adapter" class="section-header"><a href="#pinedio-lora-usb-adapter">1 PineDio LoRa USB Adapter</a></h1>
 <p>PineDio LoRa USB Adapter looks like a simple dongle…</p>
 <ol>
 <li>
@@ -103,10 +104,20 @@
 <p>Connect it to a <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 LoRa Module</strong></a> over SPI</p>
 </li>
 </ol>
-<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">(See this)</a></p>
-<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter">(Schematic)</a></p>
-<p><em>Where did the LoRa SX1262 Driver come from?</em></p>
-<p>Believe it or not… The LoRa SX1262 Driver is the exact same driver running on <strong>PineCone BL602 and PineDio Stack BL604</strong>!</p>
+<p>And we get the PineDio LoRa USB Adapter!</p>
+<ul>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter"><strong>PineDio LoRa USB Adapter</strong></a></p>
+</li>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter">__PineDio LoRa USB Adapter Schematic)</a></p>
+</li>
+</ul>
+<p>TODO</p>
+<p>CH341</p>
+<h1 id="lora-sx1262-driver-for-pinedio-usb" class="section-header"><a href="#lora-sx1262-driver-for-pinedio-usb">2 LoRa SX1262 Driver for PineDio USB</a></h1>
+<p><em>Where did the PineDio USB LoRa Driver come from?</em></p>
+<p>Believe it or not… The PineDio USB LoRa Driver is the exact same driver running on <strong>PineCone BL602 and PineDio Stack BL604</strong>!</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lorawan"><strong>“PineCone BL602 Talks LoRaWAN”</strong></a></p>
@@ -115,7 +126,18 @@
 <p><a href="https://lupyuen.github.io/articles/lorawan2"><strong>“LoRaWAN on PineDio Stack BL604 RISC-V Board”</strong></a></p>
 </li>
 </ul>
-<p>(The SPI Interfaces have been modified to talk to CH341)</p>
+<p>(But modified to talk to CH341 SPI on PineDio USB)</p>
+<p><strong>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</strong></p>
+<p><strong>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</strong></p>
+<p>(CH341 SPI seems to have trouble transferring a block of 32 bytes)</p>
+<p>Ported from Semtech’s Reference Implementation of SX1262 Driver…</p>
+<ul>
+<li><a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x">LoRaMac-node/radio/sx126x</a></li>
+</ul>
+<h2 id="lorawan-support" class="section-header"><a href="#lorawan-support">2.1 LoRaWAN Support</a></h2>
+<p>TODO</p>
+<h2 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">2.2 NimBLE Porting Layer</a></h2>
+<p>TODO</p>
 <p>The design of the SX1262 Driver is similar to the SX1276 Driver, which is explained in these articles…</p>
 <ul>
 <li>
@@ -125,37 +147,26 @@
 <p><a href="https://lupyuen.github.io/articles/lora2"><strong>“PineCone BL602 RISC-V Board Receives LoRa Packets”</strong></a></p>
 </li>
 </ul>
-<p><strong>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</strong></p>
-<p><strong>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</strong></p>
-<p>(CH341 SPI seems to have trouble transferring a block of 32 bytes)</p>
-<p>Ported from Semtech’s Reference Implementation of SX1262 Driver…</p>
-<ul>
-<li><a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x">LoRaMac-node/radio/sx126x</a></li>
-</ul>
-<h2 id="lorawan-support" class="section-header"><a href="#lorawan-support">1.1 LoRaWAN Support</a></h2>
-<p>TODO</p>
-<h2 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">1.2 NimBLE Porting Layer</a></h2>
-<p>TODO</p>
-<h1 id="read-sx1262-registers" class="section-header"><a href="#read-sx1262-registers">2 Read SX1262 Registers</a></h1>
+<h1 id="read-sx1262-registers" class="section-header"><a href="#read-sx1262-registers">3 Read SX1262 Registers</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#read-registers">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-registers3.png" alt="" /></p>
-<h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">3 Transmit LoRa Message</a></h1>
+<h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">4 Transmit LoRa Message</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#send-message">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-transmit2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-chirp2.png" alt="" /></p>
-<h1 id="receive-lora-message" class="section-header"><a href="#receive-lora-message">4 Receive LoRa Message</a></h1>
+<h1 id="receive-lora-message" class="section-header"><a href="#receive-lora-message">5 Receive LoRa Message</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-receive4.png" alt="" /></p>
 <p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/usb-receive5.png" alt="" /></p>
-<h1 id="sleep" class="section-header"><a href="#sleep">5 Sleep</a></h1>
+<h1 id="sleep" class="section-header"><a href="#sleep">6 Sleep</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="" /></p>
-<h1 id="ch341-spi" class="section-header"><a href="#ch341-spi">6 CH341 SPI</a></h1>
+<h1 id="ch341-spi" class="section-header"><a href="#ch341-spi">7 CH341 SPI</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -172,7 +183,7 @@
 <p><img src="https://lupyuen.github.io/images/usb-spi8.png" alt="" /></p>
 <p>TODO25</p>
 <p><img src="https://lupyuen.github.io/images/usb-spi5.png" alt="" /></p>
-<h1 id="ch341-gpio" class="section-header"><a href="#ch341-gpio">7 CH341 GPIO</a></h1>
+<h1 id="ch341-gpio" class="section-header"><a href="#ch341-gpio">8 CH341 GPIO</a></h1>
 <p>TODO</p>
 <p>Note that the CH341 GPIO programming is incomplete. We need to…</p>
 <ol>
@@ -203,14 +214,14 @@
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L355-L408">main.c</a></p>
 <p>More about PineDio USB and CH341 GPIO:</p>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">PineDio Wiki</a></p>
-<h1 id="wisblock" class="section-header"><a href="#wisblock">8 WisBlock</a></h1>
+<h1 id="wisblock" class="section-header"><a href="#wisblock">9 WisBlock</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock5.png" alt="" /></p>
 <p>TODO28</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock6.png" alt="" /></p>
 <p>TODO29</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>LoRa Gateway for Internet</p>
 <p>LoRaWAN</p>
@@ -232,11 +243,11 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb.md"><code>lupyuen.github.io/src/usb.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1451548895461326858">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-build-pinedio-usb-driver" class="section-header"><a href="#appendix-build-pinedio-usb-driver">11 Appendix: Build PineDio USB Driver</a></h1>
+<h1 id="appendix-build-pinedio-usb-driver" class="section-header"><a href="#appendix-build-pinedio-usb-driver">12 Appendix: Build PineDio USB Driver</a></h1>
 <p>TODO</p>
 <p>To build PineDio USB Driver on Pinebook Pro Manjaro Arm64…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Install DKMS
@@ -294,7 +305,7 @@ make
 sudo ./lora-sx1262</code></pre></div>
 <p>More about PineDio USB and CH341 SPI:</p>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">PineDio Wiki</a></p>
-<h2 id="pinedio-usb-operations" class="section-header"><a href="#pinedio-usb-operations">11.1 PineDio USB Operations</a></h2>
+<h2 id="pinedio-usb-operations" class="section-header"><a href="#pinedio-usb-operations">12.1 PineDio USB Operations</a></h2>
 <p>The PineDio USB Demo supports 3 operations…</p>
 <ol>
 <li>
@@ -316,7 +327,7 @@ sudo ./lora-sx1262</code></pre></div>
 <p>(See the Receive Message Log below)</p>
 </li>
 </ol>
-<h1 id="appendix-pinedio-usb-dmesg-log" class="section-header"><a href="#appendix-pinedio-usb-dmesg-log">12 Appendix: PineDio USB dmesg Log</a></h1><h2 id="connect-usb" class="section-header"><a href="#connect-usb">12.1 Connect USB</a></h2>
+<h1 id="appendix-pinedio-usb-dmesg-log" class="section-header"><a href="#appendix-pinedio-usb-dmesg-log">13 Appendix: PineDio USB dmesg Log</a></h1><h2 id="connect-usb" class="section-header"><a href="#connect-usb">13.1 Connect USB</a></h2>
 <p><a href="https://github.com/lupyuen/lora-sx1262#connect-usb">(See the complete log)</a></p>
 <p>dmesg Log when plugging PineDio USB to Pinebook Pro…</p>
 <div class="example-wrap"><pre class="language-text"><code>usb 3-1:
@@ -428,7 +439,7 @@ usbcore: registered new interface driver spi-ch341-usb</code></pre></div>
 <p>And recheck the messages.</p>
 </li>
 </ol>
-<h2 id="send-message" class="section-header"><a href="#send-message">12.2 Send Message</a></h2>
+<h2 id="send-message" class="section-header"><a href="#send-message">13.2 Send Message</a></h2>
 <p><a href="https://github.com/lupyuen/lora-sx1262#send-message-1">(See the complete log)</a></p>
 <p>dmesg Log when PineDio USB is transmitting a 29-byte LoRa Packet…</p>
 <p><strong>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</strong></p>
@@ -474,7 +485,7 @@ spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=31, csChange=1, result=31
 spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
 audit: type=1701 audit(1634994203.075:1271): auid=1000 uid=0 gid=0 ses=4 subj==unconfined pid=72111 comm=&quot;lora-sx1262&quot; exe=&quot;/home/luppy/lora-sx1262/lora-sx1262&quot; sig=6 res=1</code></pre></div>
 <p>Note that if we try to transmit a 64-byte packet, it won’t appear in the dmesg Log.</p>
-<h2 id="receive-message" class="section-header"><a href="#receive-message">12.3 Receive Message</a></h2>
+<h2 id="receive-message" class="section-header"><a href="#receive-message">13.3 Receive Message</a></h2>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message-1">(See the complete log)</a></p>
 <p>dmesg Log when PineDio USB is receiving a 28-byte LoRa Packet…</p>
 <p><strong>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</strong></p>
