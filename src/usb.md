@@ -255,7 +255,7 @@ Note that the values above will change when we __transmit and receive LoRa Messa
 
 Let's do that next.
 
-![Reading SX1262 Registers](https://lupyuen.github.io/images/usb-registers3.png)
+![Reading SX1262 Registers on PineDio USB](https://lupyuen.github.io/images/usb-registers3.png)
 
 ## Source Files for Linux
 
