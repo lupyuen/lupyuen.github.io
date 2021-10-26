@@ -124,11 +124,124 @@ So we're really fortunate that NimBLE Porting Layer complies on Arm64 Linux as w
 
 # Read SX1262 Registers
 
+_What's the simplest way to test our USB PineDio Driver?_
+
+To test whether our USB PineDio Driver is working with CH341 SPI, we can read the __LoRa SX1262 Registers__.
+
+Here's how: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L81)
+
+```c
+/// Main Function
+int main(void) {
+  //  Read SX1262 registers 0x00 to 0x0F
+  read_registers();
+}
+
+/// Read SX1262 registers
+static void read_registers(void) {
+  //  Init the SPI port
+  SX126xIoInit();
+
+  //  Read and print the first 16 registers: 0 to 15
+  for (uint16_t addr = 0; addr < 0x10; addr++) {
+    //  Read the register
+    uint8_t val = SX126xReadRegister(addr);
+
+    //  Print the register value
+    printf("Register 0x%02x = 0x%02x\r\n", addr, val);
+  }
+}
+```
+
+TODO
+
+From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L268-L281)
+
+```c
+/// Read an SX1262 Register at the specified address
+uint8_t SX126xReadRegister(uint16_t address) {
+  //  Read one register and return the value
+  uint8_t data;
+  SX126xReadRegisters(address, &data, 1);
+  return data;
+}
+
+/// Read one or more SX1262 Registers at the specified address.
+/// `size` is the number of registers to read.
+void SX126xReadRegisters(uint16_t address, uint8_t *buffer, uint16_t size) {
+  //  Wake up SX1262 if sleeping
+  SX126xCheckDeviceReady();
+
+  //  Read the SX1262 registers
+  int rc = sx126x_read_register(NULL, address, buffer, size);
+  assert(rc == 0);
+
+  //  Wait for SX1262 to be ready
+  SX126xWaitOnBusy();
+}
+```
+
+TODO
+
+(We'll see __SX126xCheckDeviceReady__ and __SX126xWaitOnBusy__ in a while)
+
+From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L486-L495)
+
+```c
+/// Send a Read Register Command to SX1262 over SPI
+/// and return the results in `buffer`. `size` is the
+/// number of registers to read.
+static int sx126x_read_register(const void* context, const uint16_t address, uint8_t* buffer, const uint8_t size) {
+    //  Reserve 4 bytes for our SX1262 Command Buffer
+    uint8_t buf[SX126X_SIZE_READ_REGISTER] = { 0 };
+
+    //  Init the SX1262 Command Buffer
+    buf[0] = RADIO_READ_REGISTER;       //  Command ID
+    buf[1] = (uint8_t) (address >> 8);  //  MSB of Register ID
+    buf[2] = (uint8_t) (address >> 0);  //  LSB of Register ID
+    buf[3] = 0;                         //  Unused
+
+    //  Transmit the Command Buffer over SPI 
+    //  and receive the Result Buffer
+    int status = sx126x_hal_read( 
+        context,  //  Context (unsued)
+        buf,      //  Command Buffer
+        SX126X_SIZE_READ_REGISTER,  //  Command Buffer Size: 4 bytes
+        buffer,   //  Result Buffer
+        size,     //  Result Buffer Size
+        NULL      //  Status not required
+    );
+    return status;
+}
+```
+
 TODO
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#read-registers)
 
 ![](https://lupyuen.github.io/images/usb-registers3.png)
+
+## Source Files for Linux
+
+TODO
+
+The only source files __specific to Linux__ are...
+
+-   [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c)
+
+    (Main Program for Linux)
+
+-   [__src/sx126x-linux.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c)
+
+    (Linux Interface for SX1262 Driver)
+
+-   [__npl/linux/src__](https://github.com/lupyuen/lora-sx1262/tree/master/npl/linux/src)
+
+    (NimBLE Porting Layer for Linux)
+
+The other source files are shared by Linux, BL602 and BL604.
+
+(Except [__sx126x-board.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c) which is specific to BL602 and BL604)
 
 # Transmit LoRa Message
 
