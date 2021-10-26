@@ -250,8 +250,21 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 <p><a href="https://github.com/lupyuen/lora-sx1262#read-registers">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-registers3.png" alt="" /></p>
 <h2 id="source-files-for-linux" class="section-header"><a href="#source-files-for-linux">3.1 Source Files for Linux</a></h2>
-<p>TODO</p>
-<p>The only source files <strong>specific to Linux</strong> are…</p>
+<p><em>We’re seeing layers of code, like an onion? (Or Shrek)</em></p>
+<p>Yep we have <strong>layers of Source Files</strong> in our SX1262 Driver…</p>
+<ol>
+<li>
+<p>Source Files <strong>specific to Linux</strong></p>
+</li>
+<li>
+<p>Source Files <strong>specific to BL602 and BL604</strong></p>
+</li>
+<li>
+<p>Source Files <strong>common to all platforms</strong></p>
+<p>(Linux, BL602 and BL604)</p>
+</li>
+</ol>
+<p>The only Source Files <strong>specific to Linux</strong> are…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a></p>
@@ -267,7 +280,7 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 </li>
 </ul>
 <p>The other source files are shared by Linux, BL602 and BL604.</p>
-<p>(Except <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c"><strong>sx126x-board.c</strong></a> which is specific to BL602 and BL604)</p>
+<p>(Except <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c"><strong>sx126x-board.c</strong></a> which is the BL602 / BL604 Interface for SX1262)</p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">4 Transmit LoRa Message</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#send-message">(See the complete log)</a></p>
