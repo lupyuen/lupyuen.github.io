@@ -120,9 +120,10 @@
 <p>Pinebook Pro shall control these pins via the <strong>GPIO Interface on CH341</strong>, as we’ll see in a while.</p>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">(More about PineDio USB)</a></p>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter">(CH341 Datasheet)</a></p>
+<p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <h1 id="lora-sx1262-driver-for-pinedio-usb" class="section-header"><a href="#lora-sx1262-driver-for-pinedio-usb">2 LoRa SX1262 Driver for PineDio USB</a></h1>
 <p><em>Where did the PineDio USB LoRa Driver come from?</em></p>
-<p>Believe it or not… The PineDio USB LoRa Driver is the exact same driver running on <strong>PineCone BL602 and PineDio Stack BL604</strong>!</p>
+<p>Believe it or not… The PineDio USB LoRa Driver is the exact same driver running on <strong>PineCone BL602</strong> and <strong>PineDio Stack BL604</strong>! (Pic above)</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lorawan"><strong>“PineCone BL602 Talks LoRaWAN”</strong></a></p>
@@ -132,15 +133,11 @@
 </li>
 </ul>
 <p>But modified to talk to <strong>CH341 SPI for PineDio USB</strong>.</p>
-<p>TODO</p>
-<p>Ported from Semtech’s Reference Implementation of SX1262 Driver…</p>
+<p>(And compiled for Arm64 instead of RISC-V 32-bit)</p>
+<p>The BL602 / BL604 LoRa Driver was ported from <strong>Semtech’s Reference Implementation</strong> of SX1262 Driver…</p>
 <ul>
-<li><a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x">LoRaMac-node/radio/sx126x</a></li>
+<li><a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x"><strong>LoRaMac-node/radio/sx126x</strong></a></li>
 </ul>
-<p>TODO</p>
-<p>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</p>
-<p>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</p>
-<p>(CH341 SPI seems to have trouble transferring a block of 32 bytes)</p>
 <h2 id="lorawan-support" class="section-header"><a href="#lorawan-support">2.1 LoRaWAN Support</a></h2>
 <p>TODO</p>
 <h2 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">2.2 NimBLE Porting Layer</a></h2>
@@ -183,6 +180,9 @@
 <p><a href="http://www.wch.cn/downloads/CH341DS2_PDF.html">CH341 Interfaces (Chinese)</a></p>
 </li>
 </ul>
+<p>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</p>
+<p>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</p>
+<p>(CH341 SPI seems to have trouble transferring a block of 32 bytes)</p>
 <p><img src="https://lupyuen.github.io/images/usb-spi6.png" alt="" /></p>
 <p>TODO23</p>
 <p><img src="https://lupyuen.github.io/images/usb-spi7.png" alt="" /></p>
