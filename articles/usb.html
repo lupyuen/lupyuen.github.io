@@ -158,6 +158,15 @@
 <p><a href="https://github.com/Lora-net/sx126x_driver">(I tried porting this new driver by Semtech… But gave up when I discovered it doesn’t support LoRaWAN)</a></p>
 <h2 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">2.2 NimBLE Porting Layer</a></h2>
 <p>TODO</p>
+<p><em>Do we call any open source libraries in our PineDio USB Driver?</em></p>
+<p>Yes we call the NimBLE Porting Layer for Multithreading Functions…</p>
+<p>Multitask with NimBLE Porting Layer</p>
+<p>https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer</p>
+<p>To transmit and receive LoRa Messages we need Timers and Background Threads. Which are provided by NimBLE Porting Layer</p>
+<p><em>Have we used NimBLE Porting Layer before?</em></p>
+<p>Yep we used NimBLE Porting Layer in the LoRa SX1262 and SX1276 Drivers for BL602…</p>
+<p>So we’re really fortunate that NimBLE Porting Layer complies on Arm64 Linux as well.</p>
+<p>(It’s part of PineTime InfiniTime too!)</p>
 <p>The design of the SX1262 Driver is similar to the SX1276 Driver, which is explained in these articles…</p>
 <ul>
 <li>
