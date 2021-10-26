@@ -249,15 +249,23 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 <p>And the values of the registers are returned by SX1262 over SPI.</p>
 <p>(More about <strong>sx126x_hal_read</strong> later)</p>
 <h2 id="run-the-driver" class="section-header"><a href="#run-the-driver">3.1 Run the Driver</a></h2>
-<p>Follow the instructions in the Appendix to <strong>build and run</strong> the PineDio USB Driver.</p>
-<p>Watch for these <strong>SX1262 Register Values</strong>…</p>
+<p>Follow the instructions in the Appendix to <strong>download, build and run</strong> the PineDio USB Driver.</p>
+<p>Remember to edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define READ_REGISTERS</code></pre></div>
+<p>Build and run the PineDio USB Driver…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Build PineDio USB Driver
+make
+
+# Run PineDio USB Driver
+sudo ./lora-sx1262</code></pre></div>
+<p>And watch for these <strong>SX1262 Register Values</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Register 0x00 = 0x00
 ...
 Register 0x08 = 0x80
 Register 0x09 = 0x00
 Register 0x0a = 0x01</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#read-registers">(See the complete log)</a></p>
-<p>If we see this… Our PineDio USB Driver is talking correctly to CH341 SPI and SX1262!</p>
+<p>If we see these values… Our PineDio USB Driver is talking correctly to CH341 SPI and SX1262!</p>
 <p>Note that the values above will change when we <strong>transmit and receive LoRa Messages</strong>.</p>
 <p>Let’s do that next.</p>
 <p><img src="https://lupyuen.github.io/images/usb-registers3.png" alt="Reading SX1262 Registers" /></p>
@@ -457,19 +465,19 @@ sudo ./lora-sx1262</code></pre></div>
 <ol>
 <li>
 <p>Read SX1262 Registers:</p>
-<p>Edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><code>src/main.c</code></a> and uncomment…</p>
+<p>Edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define READ_REGISTERS</code></pre></div>
 <p>(See the Read Register Log below)</p>
 </li>
 <li>
 <p>Send LoRa Message:</p>
-<p>Edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><code>src/main.c</code></a> and uncomment…</p>
+<p>Edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define SEND_MESSAGE</code></pre></div>
 <p>(See the Send Message Log below)</p>
 </li>
 <li>
 <p>Receive LoRa Message:</p>
-<p>Edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><code>src/main.c</code></a> and uncomment…</p>
+<p>Edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define RECEIVE_MESSAGE</code></pre></div>
 <p>(See the Receive Message Log below)</p>
 </li>
