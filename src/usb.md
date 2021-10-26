@@ -2,7 +2,9 @@
 
 📝 _30 Oct 2021_
 
-_What if a Laptop Computer could talk to other devices over a long-range, low-bandwidth wireless network like LoRa?_
+_What if our Laptop Computer could talk to other devices..._
+
+_Over a Long Range, Low Bandwidth wireless network like LoRa?_
 
 [(Up to 5 km or 3 miles in urban areas... 15 km or 10 miles in rural areas!)](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/)
 
@@ -24,17 +26,37 @@ PineDio LoRa USB Adapter looks like a simple dongle...
 
 1.  Take a [__CH341 USB-to-Serial Interface Module__](http://www.wch-ic.com/products/CH341.html)
 
+    (Top half of pic below)
+
 1.  Connect it to a [__Semtech SX1262 LoRa Module__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262) over SPI
+
+    (Bottom half of pic below)
 
 And we get the PineDio LoRa USB Adapter!
 
--   [__PineDio LoRa USB Adapter__](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
+![Schematic for PineDio LoRa SX1262 USB Adapter](https://lupyuen.github.io/images/usb-schematic.jpg)
 
--   [__PineDio LoRa USB Adapter Schematic__](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
+[(Source)](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
-TODO
+_So CH341 exposes the SPI Interface for SX1262 over USB?_
 
-CH341
+Yep Pinebook Pro shall __control SX1262 over SPI__, bridged by CH341.
+
+Which means that we need to install a __CH341 SPI Driver__ on Pinebook Pro.
+
+(More about this in a while)
+
+_What about other pins on SX1262: DIO1 and NRESET?_
+
+__DIO1__ is used by SX1262 to signal that a LoRa Packet has been received.
+
+__NRESET__ is toggled by our computer to reset the SX1262 module.
+
+Pinebook Pro shall control these pins via the __GPIO Interface on CH341__, as we'll see in a while.
+
+[(More about PineDio USB)](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
+
+[(CH341 Datasheet)](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
 # LoRa SX1262 Driver for PineDio USB
 
@@ -46,17 +68,21 @@ Believe it or not... The PineDio USB LoRa Driver is the exact same driver runnin
 
 -   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
 
-(But modified to talk to CH341 SPI on PineDio USB)
+But modified to talk to __CH341 SPI for PineDio USB__.
 
-__CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!__
-
-__CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!__
-
-(CH341 SPI seems to have trouble transferring a block of 32 bytes)
+TODO
 
 Ported from Semtech's Reference Implementation of SX1262 Driver...
 
 -   [LoRaMac-node/radio/sx126x](https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x)
+
+TODO
+
+CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!
+
+CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!
+
+(CH341 SPI seems to have trouble transferring a block of 32 bytes)
 
 ## LoRaWAN Support
 
