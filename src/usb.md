@@ -78,9 +78,29 @@ The BL602 / BL604 LoRa Driver was ported from __Semtech's Reference Implementati
 
 -   [__LoRaMac-node/radio/sx126x__](https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x)
 
+![The Things Network in Singapore](https://lupyuen.github.io/images/lorawan2-ttn3.png)
+
+[(Source)](https://lupyuen.github.io/articles/lorawan2#seeking-volunteers)
+
 ## LoRaWAN Support
 
-TODO
+_There are many LoRa Drivers out there, why did we port Semtech's Reference Driver?_
+
+That's because Semtech's Reference Driver __supports LoRaWAN__, which adds security features to low-level LoRa.
+
+[(Like for authentication and encryption)](https://lupyuen.github.io/articles/lorawan2#security)
+
+_How useful is LoRaWAN? Will we be using it?_
+
+Someday we might connect PineDio USB to a __LoRaWAN Network__ like...
+
+-   [__The Things Network__](https://lupyuen.github.io/articles/ttn): Free-to-use public global LoRaWAN Network for IoT devices. (Pic above)
+
+-   [__Helium__](https://www.helium.com/lorawan): Commercial global LoRaWAN Network for IoT devices.
+
+Thus it's good to build a LoRa Driver for PineDio USB that will support LoRaWAN in future.
+
+[(I tried porting this new driver by Semtech... But gave up when I discovered it doesn't support LoRaWAN)](https://github.com/Lora-net/sx126x_driver)
 
 ## NimBLE Porting Layer
 
