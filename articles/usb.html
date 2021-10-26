@@ -138,8 +138,24 @@
 <ul>
 <li><a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x"><strong>LoRaMac-node/radio/sx126x</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/lorawan2-ttn3.png" alt="The Things Network in Singapore" /></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan2#seeking-volunteers">(Source)</a></p>
 <h2 id="lorawan-support" class="section-header"><a href="#lorawan-support">2.1 LoRaWAN Support</a></h2>
-<p>TODO</p>
+<p><em>There are many LoRa Drivers out there, why did we port Semtech’s Reference Driver?</em></p>
+<p>That’s because Semtech’s Reference Driver <strong>supports LoRaWAN</strong>, which adds security features to low-level LoRa.</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan2#security">(Like for authentication and encryption)</a></p>
+<p><em>How useful is LoRaWAN? Will we be using it?</em></p>
+<p>Someday we might connect PineDio USB to a <strong>LoRaWAN Network</strong> like…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a>: Free-to-use public global LoRaWAN Network for IoT devices. (Pic above)</p>
+</li>
+<li>
+<p><a href="https://www.helium.com/lorawan"><strong>Helium</strong></a>: Commercial global LoRaWAN Network for IoT devices.</p>
+</li>
+</ul>
+<p>Thus it’s good to build a LoRa Driver for PineDio USB that will support LoRaWAN in future.</p>
+<p><a href="https://github.com/Lora-net/sx126x_driver">(I tried porting this new driver by Semtech… But gave up when I discovered it doesn’t support LoRaWAN)</a></p>
 <h2 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">2.2 NimBLE Porting Layer</a></h2>
 <p>TODO</p>
 <p>The design of the SX1262 Driver is similar to the SX1276 Driver, which is explained in these articles…</p>
