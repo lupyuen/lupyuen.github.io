@@ -58,11 +58,13 @@ Pinebook Pro shall control these pins via the __GPIO Interface on CH341__, as we
 
 [(CH341 Datasheet)](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
+![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
+
 # LoRa SX1262 Driver for PineDio USB
 
 _Where did the PineDio USB LoRa Driver come from?_
 
-Believe it or not... The PineDio USB LoRa Driver is the exact same driver running on __PineCone BL602 and PineDio Stack BL604__!
+Believe it or not... The PineDio USB LoRa Driver is the exact same driver running on __PineCone BL602__ and __PineDio Stack BL604__! (Pic above)
 
 -   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
 
@@ -70,19 +72,11 @@ Believe it or not... The PineDio USB LoRa Driver is the exact same driver runnin
 
 But modified to talk to __CH341 SPI for PineDio USB__.
 
-TODO
+(And compiled for Arm64 instead of RISC-V 32-bit)
 
-Ported from Semtech's Reference Implementation of SX1262 Driver...
+The BL602 / BL604 LoRa Driver was ported from __Semtech's Reference Implementation__ of SX1262 Driver...
 
--   [LoRaMac-node/radio/sx126x](https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x)
-
-TODO
-
-CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!
-
-CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!
-
-(CH341 SPI seems to have trouble transferring a block of 32 bytes)
+-   [__LoRaMac-node/radio/sx126x__](https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x)
 
 ## LoRaWAN Support
 
@@ -143,6 +137,12 @@ TODO
 -   [CH341 Datasheet](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
 -   [CH341 Interfaces (Chinese)](http://www.wch.cn/downloads/CH341DS2_PDF.html)
+
+CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!
+
+CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!
+
+(CH341 SPI seems to have trouble transferring a block of 32 bytes)
 
 ![](https://lupyuen.github.io/images/usb-spi6.png)
 
