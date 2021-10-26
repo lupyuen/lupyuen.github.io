@@ -223,9 +223,19 @@ TODO
 
 ## Source Files for Linux
 
-TODO
+_We're seeing layers of code, like an onion? (Or Shrek)_
 
-The only source files __specific to Linux__ are...
+Yep we have __layers of Source Files__ in our SX1262 Driver...
+
+1.  Source Files __specific to Linux__
+
+1.  Source Files __specific to BL602 and BL604__
+
+1.  Source Files __common to all platforms__
+
+    (Linux, BL602 and BL604)
+
+The only Source Files __specific to Linux__ are...
 
 -   [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c)
 
@@ -241,7 +251,7 @@ The only source files __specific to Linux__ are...
 
 The other source files are shared by Linux, BL602 and BL604.
 
-(Except [__sx126x-board.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c) which is specific to BL602 and BL604)
+(Except [__sx126x-board.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c) which is the BL602 / BL604 Interface for SX1262)
 
 # Transmit LoRa Message
 
