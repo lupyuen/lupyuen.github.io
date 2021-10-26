@@ -104,33 +104,23 @@ Thus it's good to build a LoRa Driver for PineDio USB that will support LoRaWAN 
 
 ## NimBLE Porting Layer
 
-TODO
-
 _Do we call any open source libraries in our PineDio USB Driver?_
 
-Yes we call the NimBLE Porting Layer for Multithreading Functions...
+Yes we call __NimBLE Porting Layer__, the open source library for Multithreading Functions...
 
-Multitask with NimBLE Porting Layer
+-   [__Multitask with NimBLE Porting Layer__](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
-https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer
-
-To transmit and receive LoRa Messages we need Timers and Background Threads. Which are provided by NimBLE Porting Layer
+To transmit and receive LoRa Messages we need __Timers and Background Threads__. Which are provided by NimBLE Porting Layer.
 
 _Have we used NimBLE Porting Layer before?_
 
-Yep we used NimBLE Porting Layer in the LoRa SX1262 and SX1276 Drivers for BL602...
+Yep we used NimBLE Porting Layer in the __LoRa SX1262 and SX1276 Drivers__ for BL602...
+
+-   [__"PineCone BL602 RISC-V Board Receives LoRa Packets"__](https://lupyuen.github.io/articles/lora2)
 
 So we're really fortunate that NimBLE Porting Layer complies on Arm64 Linux as well.
 
 (It's part of PineTime InfiniTime too!)
-
-
-
-The design of the SX1262 Driver is similar to the SX1276 Driver, which is explained in these articles...
-
--   [__"Connect PineCone BL602 to LoRa Transceiver"__](https://lupyuen.github.io/articles/lora)
-
--   [__"PineCone BL602 RISC-V Board Receives LoRa Packets"__](https://lupyuen.github.io/articles/lora2)
 
 # Read SX1262 Registers
 
