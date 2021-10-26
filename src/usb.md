@@ -219,9 +219,25 @@ And the values of the registers are returned by SX1262 over SPI.
 
 ## Run the Driver
 
-Follow the instructions in the Appendix to __build and run__ the PineDio USB Driver.
+Follow the instructions in the Appendix to __download, build and run__ the PineDio USB Driver.
 
-Watch for these __SX1262 Register Values__...
+Remember to edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
+
+```c
+#define READ_REGISTERS
+```
+
+Build and run the PineDio USB Driver...
+
+```bash
+## Build PineDio USB Driver
+make
+
+## Run PineDio USB Driver
+sudo ./lora-sx1262
+```
+
+And watch for these __SX1262 Register Values__...
 
 ```text
 Register 0x00 = 0x00
@@ -233,7 +249,7 @@ Register 0x0a = 0x01
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#read-registers)
 
-If we see this... Our PineDio USB Driver is talking correctly to CH341 SPI and SX1262!
+If we see these values... Our PineDio USB Driver is talking correctly to CH341 SPI and SX1262!
 
 Note that the values above will change when we __transmit and receive LoRa Messages__.
 
@@ -487,7 +503,7 @@ The PineDio USB Demo supports 3 operations...
 
 1.  Read SX1262 Registers:
 
-    Edit [`src/main.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
+    Edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
 
     ```c
     #define READ_REGISTERS
@@ -497,7 +513,7 @@ The PineDio USB Demo supports 3 operations...
 
 1.  Send LoRa Message:
 
-    Edit [`src/main.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
+    Edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
 
     ```c
     #define SEND_MESSAGE
@@ -507,7 +523,7 @@ The PineDio USB Demo supports 3 operations...
 
 1.  Receive LoRa Message:
 
-    Edit [`src/main.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
+    Edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
 
     ```c
     #define RECEIVE_MESSAGE
