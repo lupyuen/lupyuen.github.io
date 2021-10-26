@@ -69,7 +69,8 @@
 <li><a href="#lora-sx1262-driver-for-pinedio-usb">2 LoRa SX1262 Driver for PineDio USB</a><ul>
 <li><a href="#lorawan-support">2.1 LoRaWAN Support</a><ul></ul></li>
 <li><a href="#nimble-porting-layer">2.2 NimBLE Porting Layer</a><ul></ul></li></ul></li>
-<li><a href="#read-sx1262-registers">3 Read SX1262 Registers</a><ul></ul></li>
+<li><a href="#read-sx1262-registers">3 Read SX1262 Registers</a><ul>
+<li><a href="#source-files-for-linux">3.1 Source Files for Linux</a><ul></ul></li></ul></li>
 <li><a href="#transmit-lora-message">4 Transmit LoRa Message</a><ul></ul></li>
 <li><a href="#receive-lora-message">5 Receive LoRa Message</a><ul></ul></li>
 <li><a href="#sleep">6 Sleep</a><ul></ul></li>
@@ -171,9 +172,102 @@
 <p>So we’re really fortunate that NimBLE Porting Layer complies on Arm64 Linux as well.</p>
 <p>(It’s part of PineTime InfiniTime too!)</p>
 <h1 id="read-sx1262-registers" class="section-header"><a href="#read-sx1262-registers">3 Read SX1262 Registers</a></h1>
+<p><em>What’s the simplest way to test our USB PineDio Driver?</em></p>
+<p>To test whether our USB PineDio Driver is working with CH341 SPI, we can read the <strong>LoRa SX1262 Registers</strong>.</p>
+<p>Here’s how: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L81">main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Main Function
+int main(void) {
+  //  Read SX1262 registers 0x00 to 0x0F
+  read_registers();
+}
+
+/// Read SX1262 registers
+static void read_registers(void) {
+  //  Init the SPI port
+  SX126xIoInit();
+
+  //  Read and print the first 16 registers: 0 to 15
+  for (uint16_t addr = 0; addr &lt; 0x10; addr++) {
+    //  Read the register
+    uint8_t val = SX126xReadRegister(addr);
+
+    //  Print the register value
+    printf(&quot;Register 0x%02x = 0x%02x\r\n&quot;, addr, val);
+  }
+}</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L268-L281">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Read an SX1262 Register at the specified address
+uint8_t SX126xReadRegister(uint16_t address) {
+  //  Read one register and return the value
+  uint8_t data;
+  SX126xReadRegisters(address, &amp;data, 1);
+  return data;
+}
+
+/// Read one or more SX1262 Registers at the specified address.
+/// `size` is the number of registers to read.
+void SX126xReadRegisters(uint16_t address, uint8_t *buffer, uint16_t size) {
+  //  Wake up SX1262 if sleeping
+  SX126xCheckDeviceReady();
+
+  //  Read the SX1262 registers
+  int rc = sx126x_read_register(NULL, address, buffer, size);
+  assert(rc == 0);
+
+  //  Wait for SX1262 to be ready
+  SX126xWaitOnBusy();
+}</code></pre></div>
+<p>TODO</p>
+<p>(We’ll see <strong>SX126xCheckDeviceReady</strong> and <strong>SX126xWaitOnBusy</strong> in a while)</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L486-L495">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Send a Read Register Command to SX1262 over SPI
+/// and return the results in `buffer`. `size` is the
+/// number of registers to read.
+static int sx126x_read_register(const void* context, const uint16_t address, uint8_t* buffer, const uint8_t size) {
+    //  Reserve 4 bytes for our SX1262 Command Buffer
+    uint8_t buf[SX126X_SIZE_READ_REGISTER] = { 0 };
+
+    //  Init the SX1262 Command Buffer
+    buf[0] = RADIO_READ_REGISTER;       //  Command ID
+    buf[1] = (uint8_t) (address &gt;&gt; 8);  //  MSB of Register ID
+    buf[2] = (uint8_t) (address &gt;&gt; 0);  //  LSB of Register ID
+    buf[3] = 0;                         //  Unused
+
+    //  Transmit the Command Buffer over SPI 
+    //  and receive the Result Buffer
+    int status = sx126x_hal_read( 
+        context,  //  Context (unsued)
+        buf,      //  Command Buffer
+        SX126X_SIZE_READ_REGISTER,  //  Command Buffer Size: 4 bytes
+        buffer,   //  Result Buffer
+        size,     //  Result Buffer Size
+        NULL      //  Status not required
+    );
+    return status;
+}</code></pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#read-registers">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-registers3.png" alt="" /></p>
+<h2 id="source-files-for-linux" class="section-header"><a href="#source-files-for-linux">3.1 Source Files for Linux</a></h2>
+<p>TODO</p>
+<p>The only source files <strong>specific to Linux</strong> are…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a></p>
+<p>(Main Program for Linux)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c"><strong>src/sx126x-linux.c</strong></a></p>
+<p>(Linux Interface for SX1262 Driver)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/tree/master/npl/linux/src"><strong>npl/linux/src</strong></a></p>
+<p>(NimBLE Porting Layer for Linux)</p>
+</li>
+</ul>
+<p>The other source files are shared by Linux, BL602 and BL604.</p>
+<p>(Except <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c"><strong>sx126x-board.c</strong></a> which is specific to BL602 and BL604)</p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">4 Transmit LoRa Message</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#send-message">(See the complete log)</a></p>
