@@ -153,9 +153,9 @@ static void read_registers(void) {
 }
 ```
 
-TODO
+In our Main Function we call __read_registers__ and __SX126xReadRegister__ to read a bunch of SX1262 Registers. (`0x00` to `0x0F`)
 
-From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L268-L281)
+In our PineDio USB Driver, __SX126xReadRegister__ calls __SX126xReadRegisters__ and __sx126x_read_register__ to read each register: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L268-L281)
 
 ```c
 /// Read an SX1262 Register at the specified address
@@ -181,45 +181,65 @@ void SX126xReadRegisters(uint16_t address, uint8_t *buffer, uint16_t size) {
 }
 ```
 
-TODO
-
 (We'll see __SX126xCheckDeviceReady__ and __SX126xWaitOnBusy__ in a while)
 
-From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L486-L495)
+__sx126x_read_register__ reads a register by sending the Read Register Command to SX1262 over SPI: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L486-L495)
 
 ```c
 /// Send a Read Register Command to SX1262 over SPI
 /// and return the results in `buffer`. `size` is the
 /// number of registers to read.
 static int sx126x_read_register(const void* context, const uint16_t address, uint8_t* buffer, const uint8_t size) {
-    //  Reserve 4 bytes for our SX1262 Command Buffer
-    uint8_t buf[SX126X_SIZE_READ_REGISTER] = { 0 };
+  //  Reserve 4 bytes for our SX1262 Command Buffer
+  uint8_t buf[SX126X_SIZE_READ_REGISTER] = { 0 };
 
-    //  Init the SX1262 Command Buffer
-    buf[0] = RADIO_READ_REGISTER;       //  Command ID
-    buf[1] = (uint8_t) (address >> 8);  //  MSB of Register ID
-    buf[2] = (uint8_t) (address >> 0);  //  LSB of Register ID
-    buf[3] = 0;                         //  Unused
+  //  Init the SX1262 Command Buffer
+  buf[0] = RADIO_READ_REGISTER;       //  Command ID
+  buf[1] = (uint8_t) (address >> 8);  //  MSB of Register ID
+  buf[2] = (uint8_t) (address >> 0);  //  LSB of Register ID
+  buf[3] = 0;                         //  Unused
 
-    //  Transmit the Command Buffer over SPI 
-    //  and receive the Result Buffer
-    int status = sx126x_hal_read( 
-        context,  //  Context (unsued)
-        buf,      //  Command Buffer
-        SX126X_SIZE_READ_REGISTER,  //  Command Buffer Size: 4 bytes
-        buffer,   //  Result Buffer
-        size,     //  Result Buffer Size
-        NULL      //  Status not required
-    );
-    return status;
+  //  Transmit the Command Buffer over SPI 
+  //  and receive the Result Buffer
+  int status = sx126x_hal_read( 
+    context,  //  Context (unsued)
+    buf,      //  Command Buffer
+    SX126X_SIZE_READ_REGISTER,  //  Command Buffer Size: 4 bytes
+    buffer,   //  Result Buffer
+    size,     //  Result Buffer Size
+    NULL      //  Status not required
+  );
+  return status;
 }
 ```
 
-TODO
+And the values of the registers are returned by SX1262 over SPI.
+
+(More about __sx126x_hal_read__ later)
+
+## Run the Driver
+
+Follow the instructions in the Appendix to __build and run__ the PineDio USB Driver.
+
+Watch for these __SX1262 Register Values__...
+
+```text
+Register 0x00 = 0x00
+...
+Register 0x08 = 0x80
+Register 0x09 = 0x00
+Register 0x0a = 0x01
+```
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#read-registers)
 
-![](https://lupyuen.github.io/images/usb-registers3.png)
+If we see this... Our PineDio USB Driver is talking correctly to CH341 SPI and SX1262!
+
+Note that the values above will change when we __transmit and receive LoRa Messages__.
+
+Let's do that next.
+
+![Reading SX1262 Registers](https://lupyuen.github.io/images/usb-registers3.png)
 
 ## Source Files for Linux
 
@@ -229,13 +249,17 @@ Yep we have __layers of Source Files__ in our SX1262 Driver...
 
 1.  Source Files __specific to Linux__
 
+    (For PineDio USB and Pinebook Pro)
+
 1.  Source Files __specific to BL602 and BL604__
+
+    (For PineCone BL602 and PineDio Stack BL604)
 
 1.  Source Files __common to all platforms__
 
-    (Linux, BL602 and BL604)
+    (For Linux, BL602 and BL604)
 
-The only Source Files __specific to Linux__ are...
+The Source Files __specific to Linux__ are...
 
 -   [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c)
 
@@ -249,7 +273,7 @@ The only Source Files __specific to Linux__ are...
 
     (NimBLE Porting Layer for Linux)
 
-The other source files are shared by Linux, BL602 and BL604.
+All other Source Files are shared by Linux, BL602 and BL604.
 
 (Except [__sx126x-board.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c) which is the BL602 / BL604 Interface for SX1262)
 
