@@ -389,6 +389,8 @@ More about PineDio USB and CH341 GPIO:
 
 [PineDio Wiki](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
 
+![](https://lupyuen.github.io/images/lora2-handler.png)
+
 # WisBlock
 
 TODO
