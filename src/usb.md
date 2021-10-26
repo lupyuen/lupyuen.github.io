@@ -120,7 +120,7 @@ Yep we used NimBLE Porting Layer in the __LoRa SX1262 and SX1276 Drivers__ for B
 
 So we're really fortunate that NimBLE Porting Layer complies on Arm64 Linux as well.
 
-(It's part of PineTime InfiniTime too!)
+[(It's part of PineTime InfiniTime too!)](https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime)
 
 # Read SX1262 Registers
 
