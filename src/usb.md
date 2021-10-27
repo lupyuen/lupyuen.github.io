@@ -1000,7 +1000,7 @@ static int sx126x_write_buffer(const void* context, const uint8_t offset, const 
 }
 ```
 
-In this code we prepare a __SX1262 Write Buffer Command__ and pass the Command Buffer (plus Data Buffer) to __sx126x_hal_write__.
+In this code we prepare a __SX1262 Write Buffer Command__ (2 bytes) and pass the Command Buffer (plus Data Buffer) to __sx126x_hal_write__.
 
 (Data Buffer contains the LoRa Message to be transmitted)
 
@@ -1093,7 +1093,7 @@ static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t
 }
 ```
 
-In this code we prepare a __SX1262 Read Buffer Command__ and pass the Command Buffer (plus Data Buffer) to __sx126x_hal_read__.
+In this code we prepare a __SX1262 Read Buffer Command__ (3 bytes) and pass the Command Buffer (plus Data Buffer) to __sx126x_hal_read__.
 
 (Data Buffer will contain the received LoRa Message)
 
@@ -1153,7 +1153,7 @@ __sx126x_hal_read__ returns the Data Buffer that has been read over SPI.
 
 __sx126x_hal_read__ calls __transfer_spi__ to transfer the SPI Data.
 
-Now __transfer_spi__ is doubly sus... The same function is called to transmit and receive Long LoRa Messages!
+Now __transfer_spi__ is doubly sus... The same function is called to transmit AND receive Long LoRa Messages!
 
 ## SPI Transfer Fails with 32 Bytes
 
