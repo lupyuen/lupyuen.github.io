@@ -154,6 +154,8 @@ static void read_registers(void) {
 }
 ```
 
+[(__SX126xIoInit__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77)
+
 In our Main Function we call __read_registers__ and __SX126xReadRegister__ to read a bunch of SX1262 Registers. (`0x00` to `0x0F`)
 
 In our PineDio USB Driver, __SX126xReadRegister__ calls __SX126xReadRegisters__ and __sx126x_read_register__ to read each register: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L268-L281)
@@ -891,6 +893,8 @@ static int init_spi(void) {
   return 0;
 }
 ```
+
+(__init_spi__ is called by [__SX126xIoInit__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77), which is called by [__RadioInit__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559) and [__init_driver__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203))
 
 TODO
 
