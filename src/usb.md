@@ -296,9 +296,13 @@ All other Source Files are shared by Linux, BL602 and BL604.
 
 # LoRa Parameters
 
-TODO
+Before we transmit and receive LoRa Messages on PineDio USB, let's talk about the __LoRa Parameters__.
 
-We set the __LoRa Frequency__ in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L25) like so...
+To find out which __LoRa Frequency__ we should use for our region...
+
+-  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+We set the __LoRa Frequency__ like so: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L25)
 
 ```c
 /// TODO: We are using LoRa Frequency 923 MHz 
@@ -306,25 +310,11 @@ We set the __LoRa Frequency__ in [main.c](https://github.com/lupyuen/lora-sx1262
 #define USE_BAND_923
 ```
 
-Change `USE_BAND_923` to `USE_BAND_433`, `780`, `868` or `915`. Here's the complete list...
+Change __USE_BAND_923__ to __USE_BAND_433__, __780__, __868__ or __915__.
 
-```c
-#if defined(USE_BAND_433)
-  #define RF_FREQUENCY               434000000 /* Hz */
-#elif defined(USE_BAND_780)
-  #define RF_FREQUENCY               780000000 /* Hz */
-#elif defined(USE_BAND_868)
-  #define RF_FREQUENCY               868000000 /* Hz */
-#elif defined(USE_BAND_915)
-  #define RF_FREQUENCY               915000000 /* Hz */
-#elif defined(USE_BAND_923)
-  #define RF_FREQUENCY               923000000 /* Hz */
-#else
-  #error "Please define a frequency band in the compiler options."
-#endif
-```
+[(See the complete list)](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L25)
 
-The __LoRa Parameters__ are also defined in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L27-L46)
+Below are the other __LoRa Parameters__: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L27-L46)
 
 ```c
 /// LoRa Parameters
@@ -349,23 +339,37 @@ The __LoRa Parameters__ are also defined in [main.c](https://github.com/lupyuen/
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 ```
 
-These should match the LoRa Parameters used by the LoRa Transmitter / Receiver.
+[(More about LoRa Parameters)](https://www.thethingsnetwork.org/docs/lorawan/spreading-factors/)
 
-I used this __LoRa Transmitter and Receiver__ (based on RAKwireless WisBlock) for testing our LoRa Driver...
+During testing, these should __match the LoRa Parameters__ used by the LoRa Transmitter / Receiver.
+
+These are __LoRa Transmitter and Receiver__ programs based on [__RAKwireless WisBlock__](https://lupyuen.github.io/articles/wisblock) (pic below) that I used for testing PineDio USB...
 
 -   [__wisblock-lora-transmitter__](https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio)
 
-    [(LoRa Parameters for transmitter)](https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L38-L58)
+    [(LoRa Parameters for Transmitter)](https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L38-L58)
 
 -   [__wisblock-lora-receiver__](https://github.com/lupyuen/wisblock-lora-receiver)
 
-    [(LoRa Parameters for receiver)](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56)
+    [(LoRa Parameters for Receiver)](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56)
 
 Thus the LoRa Parameters for PineDio USB should match the above.
 
+_Are there practical limits on the LoRa Parameters?_
+
+Yes we need to comply with the __Local Regulations__ on the usage of [__ISM Radio Bands__](https://en.wikipedia.org/wiki/ISM_radio_band): FCC, ETSI, ...
+
+(Blasting LoRa Messages non-stop is no-no!)
+
+When we connect PineDio USB to __The Things Network__, we need to comply with their Fair Use Policy...
+
+-   [__"Fair Use of The Things Network"__](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
+
+![RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board](https://lupyuen.github.io/images/wisblock-title.jpg)
+
 ## Initialise LoRa SX1262
 
-The __init_driver__ function initialises the LoRa SX1262 like so: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203)
+Our __init_driver__ function takes the above LoRa Parameters and initialises LoRa SX1262 like so: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203)
 
 ```c
 /// Command to initialise the LoRa Driver.
@@ -381,7 +385,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
   radio_events.RxError   = on_rx_error;    //  Receive Error
 ```
 
-Here we set the __Callback Functions__ that will be called when a LoRa Packet has been transmitted or received, also when we encounter a transmit / receive timeout or error.
+Here we set the __Callback Functions__ that will be called when a LoRa Message has been transmitted or received, also when we encounter a transmit / receive timeout or error.
 
 (We'll see the Callback Functions in a while)
 
@@ -439,15 +443,17 @@ Finally we set the __LoRa Receive Parameters__...
 }
 ```
 
-The __Radio__ functions are defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c) ...
+The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c) ...
 
--   [__RadioInit__ - Init LoRa Transceiver](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559)
+-   [__RadioInit:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559) Init LoRa SX1262
 
--   [__RadioSetChannel__ - Set LoRa Frequency](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604)
+-   [__RadioSetChannel:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604) Set LoRa Frequency
 
--   [__RadioSetTxConfig__ - Set LoRa Transmit Configuration](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908)
+-   [__RadioSetTxConfig:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908) Set LoRa Transmit Configuration
 
--   [__RadioSetRxConfig__ - Set LoRa Receive Configuration](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786)
+-   [__RadioSetRxConfig:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786) Set LoRa Receive Configuration
+
+(The __Radio__ functions will also be called later when we implement LoRaWAN)
 
 # Transmit LoRa Message
 
