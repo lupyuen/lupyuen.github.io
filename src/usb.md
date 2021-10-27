@@ -987,7 +987,7 @@ static int sx126x_write_buffer(const void* context, const uint8_t offset, const 
   //  Prepare the Write Buffer Command (2 bytes)
   uint8_t buf[SX126X_SIZE_WRITE_BUFFER] = { 0 };
   buf[0] = RADIO_WRITE_BUFFER;  //  Write Buffer Command
-  buf[1] = offset;              //  Offset to write
+  buf[1] = offset;              //  Write Buffer Offset
 
   //  Transfer the Write Buffer Command to SX1262 over SPI
   return sx126x_hal_write(
@@ -1004,7 +1004,7 @@ In this code we prepare a __SX1262 Write Buffer Command__ (2 bytes) and pass the
 
 (Data Buffer contains the LoRa Message to be transmitted)
 
-Note that __Offset is always 0__, because of [__SX126xSetPayload__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147) and [__SX126xWriteBuffer__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289).
+Note that __Write Buffer Offset is always 0__, because of [__SX126xSetPayload__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147) and [__SX126xWriteBuffer__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289).
 
 __sx126x_hal_write__ transfers the Command Buffer and Data Buffer over SPI: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L532-L569)
 
@@ -1079,7 +1079,7 @@ static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t
   //  Prepare the Read Buffer Command (3 bytes)
   uint8_t buf[SX126X_SIZE_READ_BUFFER] = { 0 };
   buf[0] = RADIO_READ_BUFFER;  //  Read Buffer Command
-  buf[1] = offset;             //  Offset to read
+  buf[1] = offset;             //  Read Buffer Offset
   buf[2] = 0;                  //  NOP
 
   //  Transfer the Read Buffer Command to SX1262 over SPI
@@ -1099,7 +1099,7 @@ In this code we prepare a __SX1262 Read Buffer Command__ (3 bytes) and pass the 
 
 (Data Buffer will contain the received LoRa Message)
 
-Note that __Offset is always 0__, because of [__SX126xGetPayload__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L149-L160) and [__SX126xReadBuffer__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297).
+Note that __Read Buffer Offset is always 0__, because of [__SX126xGetPayload__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L149-L160) and [__SX126xReadBuffer__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297).
 
 __sx126x_hal_read__ transfers the Command Buffer over SPI: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L571-L615)
 
@@ -1157,11 +1157,21 @@ __sx126x_hal_read__ also calls __transfer_spi__ to transfer the SPI Data.
 
 Now __transfer_spi__ is doubly sus... The same function is called to transmit AND receive Long LoRa Messages!
 
+![CH341 SPI Driver fails when transferring 32 bytes](https://lupyuen.github.io/images/usb-spi8.png)
+
+[(Source)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691)
+
 ## SPI Transfer Fails with 32 Bytes
 
-TODO
+_Does __transfer_spi__ impose a limit on the size of SPI Transfers?_
 
-From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691)
+With some tweaking, we discover that __transfer_spi fails when transferring 32 bytes or more__!
+
+This seems to be a limitation of the __CH341 SPI Driver__.
+
+[(Due to __CH341_USB_MAX_BULK_SIZE__ maybe?)](https://github.com/rogerjames99/spi-ch341-usb/blob/master/spi-ch341-usb.c#L68)
+
+Hence we limit all SPI Transfers to __31 bytes__: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691)
 
 ```c
 /// Blocking call to transmit and receive buffers on SPI. Return 0 on success.
@@ -1171,7 +1181,15 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
   assert(len <= 31);
 ```
 
-But wait! We might have a fix for long LoRa Messages...
+_Why 29 bytes for the max transmit size? And 28 bytes for the max receive size?_
+
+That's because...
+
+-   SX1262 Write Buffer Command (for transmit) occupies __2 SPI bytes__
+
+-   SX1262 Read Buffer Command (for receive) occupies __3 SPI bytes__
+
+But wait! We might have a fix for Long LoRa Messages...
 
 ![SX1262 Commands for WriteBuffer and ReadBuffer](https://lupyuen.github.io/images/usb-buffer.png)
 
@@ -1253,25 +1271,7 @@ Thus __28 bytes might be sufficient__ for many LoRa Applications.
 
 [(But lemme know if you would like me to fix this!)](https://github.com/lupyuen/lora-sx1262/issues)
 
-TODO
-
-![](https://lupyuen.github.io/images/usb-receive4.png)
-
-TODO1
-
-![](https://lupyuen.github.io/images/usb-spi6.png)
-
-TODO23
-
-![](https://lupyuen.github.io/images/usb-spi7.png)
-
-TODO24
-
-![](https://lupyuen.github.io/images/usb-spi8.png)
-
-TODO25
-
-![](https://lupyuen.github.io/images/usb-spi5.png)
+![](https://lupyuen.github.io/images/lora2-handler.png)
 
 # CH341 GPIO Interface
 
@@ -1314,10 +1314,6 @@ More about PineDio USB and CH341 GPIO:
 TODO
 
 ![](https://lupyuen.github.io/images/usb-sleep3.png)
-
-TODO2
-
-![](https://lupyuen.github.io/images/lora2-handler.png)
 
 # What's Next
 
