@@ -502,7 +502,7 @@ static void send_once(int is_ping) {
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098">(<strong>RadioSend</strong> is defined here)</a></p>
 <p>Our PineDio USB Driver has an issue with <strong>CH341 SPI Transfers</strong>…</p>
-<p><strong>Transmitting a LoRa Message on PineDio USB above 29 bytes will cause message corruption!</strong></p>
+<p><strong>Transmitting a LoRa Message on PineDio USB longer than 29 bytes will cause message corruption!</strong></p>
 <p>Thus we limit the Transmit LoRa Message Size to <strong>29 bytes</strong>.</p>
 <p>(There’s a way to fix this… More about CH341 later)</p>
 <p>When the LoRa Message has been transmitted, the LoRa Driver calls our Callback Function <strong>on_tx_done</strong> defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L253-L266">main.c</a></p>
@@ -673,7 +673,7 @@ receive_message</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock6.png" alt="PineDio USB receives a 28-byte LoRa Message from RAKwireless WisBlock" /></p>
 <p><em>Why 28 bytes?</em></p>
 <p>Our PineDio USB Driver has an issue with <strong>CH341 SPI Transfers</strong>…</p>
-<p><strong>Receiving a LoRa Message on PineDio USB above 28 bytes will cause message corruption!</strong></p>
+<p><strong>Receiving a LoRa Message on PineDio USB longer than 28 bytes will cause message corruption!</strong></p>
 <p>Thus we limit the Receive LoRa Message Size to <strong>28 bytes</strong>.</p>
 <p>(There’s a way to fix this… More about CH341 later)</p>
 <h1 id="sleep" class="section-header"><a href="#sleep">7 Sleep</a></h1>
@@ -693,9 +693,15 @@ receive_message</code></pre></div>
 <p><em>What happens when we transmit a LoRa Message longer than 29 bytes?</em></p>
 <p>TODO</p>
 <p>(Garbled consistently, so it’s not RF Interference)</p>
-<p>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</p>
-<p>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</p>
-<p>(CH341 SPI seems to have trouble transferring a block of 32 bytes)</p>
+<p>CH341 SPI seems to have trouble transferring a block of 32 bytes</p>
+<ul>
+<li>
+<p><strong>Transmitting a LoRa Message on PineDio USB longer than 29 bytes will cause message corruption!</strong></p>
+</li>
+<li>
+<p><strong>Receiving a LoRa Message on PineDio USB longer than 28 bytes will cause message corruption!</strong></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/usb-buffer.png" alt="SX1262 Commands for WriteBuffer and ReadBuffer" /></p>
 <p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(From Semtech SX1262 Datasheet)</a></p>
 <p><em>Is there a way to fix this?</em></p>
