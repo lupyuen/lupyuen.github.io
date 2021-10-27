@@ -455,11 +455,11 @@ The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [
 
 (The __Radio__ functions will also be called later when we implement LoRaWAN)
 
+![Transmitting a LoRa Message](https://lupyuen.github.io/images/usb-transmit2.png)
+
 # Transmit LoRa Message
 
-TODO
-
-From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119)
+Now we're ready to __transmit a LoRa Message__! Here's how: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119)
 
 ```c
 /// Main Function
@@ -476,9 +476,11 @@ int main(void) {
 }
 ```
 
-TODO
+We begin by calling __init_driver__ to set the LoRa Parameters and the Callback Functions.
 
-To transmit a LoRa Packet, __send_message__ calls __send_once__ in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L205-L211) ... 
+(We've seen __init_driver__ in the previous section)
+
+To transmit a LoRa Message, __send_message__ calls __send_once__: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L205-L211)
 
 ```c
 /// Send a LoRa message. Assume that SX1262 driver has been initialised.
@@ -488,9 +490,7 @@ static void send_message(void) {
 }
 ```
 
-__`send_once`__ prepares a LoRa Packet containing the string "`PING`"...
-
-From [demo.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239) :
+__send_once__ prepares a 64-byte LoRa Message containing the string "`PING`": [demo.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239)
 
 ```c
 /// We send a "PING" message and expect a "PONG" response
@@ -511,7 +511,7 @@ static void send_once(int is_ping) {
   }
 ```
 
-Then we pad the packet with values 0, 1, 2, ...
+Then we __pad the 64-byte message__ with values 0, 1, 2, ...
 
 ```c
   //  Fill up the remaining space in the 
@@ -522,15 +522,18 @@ Then we pad the packet with values 0, 1, 2, ...
   }
 ```
 
-And transmit the LoRa Packet...
+And we __transmit the LoRa Message__...
 
 ```c
-  //  We send the transmit buffer, limited to 29 bytes.
+  //  We compute the message length, up to max 29 bytes.
   //  CAUTION: Anything more will cause message corruption!
   #define MAX_MESSAGE_SIZE 29
   uint8_t size = sizeof loraping_buffer > MAX_MESSAGE_SIZE
     ? MAX_MESSAGE_SIZE 
     : sizeof loraping_buffer;
+
+  //  We send the transmit buffer, limited to 29 bytes.
+  //  CAUTION: Anything more will cause message corruption!
   Radio.Send(loraping_buffer, size);
 
   //  TODO: Previously we send 64 bytes, which gets garbled consistently.
@@ -542,7 +545,15 @@ And transmit the LoRa Packet...
 
 [(__RadioSend__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
 
-When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function __on_tx_done__ ...
+We have an issue with __CH341 SPI Transfers__...
+
+__Transmitting a LoRa Message on PineDio USB above 29 bytes will cause message corruption!__
+
+Thus we limit the message size to __29 bytes__.
+
+(More about CH341 SPI later)
+
+When the LoRa Message has been transmitted, the LoRa Driver calls our Callback Function __on_tx_done__ ...
 
 ```c
 /// Callback Function that is called when our LoRa message has been transmitted
@@ -556,15 +567,276 @@ static void on_tx_done(void) {
 }
 ```
 
-TODO
+[(__RadioSleep__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109)
+
+Here we log the number of packets transmitted, and put LoRa SX1262 into __low power, sleep mode__.
+
+Note: __on_tx_done__ won't actually be called in the current driver implementation, because we haven't implemented Multithreading. (More about this in a while)
+
+## Run the Driver
+
+Follow the instructions in the Appendix to __download, build and run__ the PineDio USB Driver.
+
+Remember to edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
+
+```c
+#define SEND_MESSAGE
+```
+
+Also edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L46) and set the __LoRa Parameters__. (As explained earlier)
+
+Build and run the PineDio USB Driver...
+
+```bash
+## Build PineDio USB Driver
+make
+
+## Run PineDio USB Driver
+sudo ./lora-sx1262
+```
+
+We should see...
+
+```text
+init_driver
+TODO: SX126xReset
+SX126xIoInit
+TODO: SX126X interrupt init
+SX126xWakeup
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: c0 00 
+spi rx: ac 2c 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 80 00 
+spi rx: ac ac 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 9d 01 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 80 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 96 01 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=2
+spi tx: 8f 00 00 
+spi rx: a2 a2 a2 
+TODO: SX126xWaitOnBusy
+SX126xSetTxParams: power=22, rampTime=7
+SX126xGetDeviceId: SX1262
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=1
+spi tx: 1d 08 d8 00 00 
+spi rx: a2 a2 a2 a2 fe 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 d8 fe 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 95 04 07 00 01 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 e7 38 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=2
+spi tx: 8e 16 07 
+spi rx: a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=8
+spi tx: 08 ff ff ff ff 00 00 00 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=9
+spi tx: 1d 02 9f 00 00 00 00 00 00 00 00 00 00 
+spi rx: a2 a2 a2 a2 02 08 ac 08 89 3a a1 65 9a 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=9
+spi tx: 1d 02 9f 00 00 00 00 00 00 00 00 00 00 
+spi rx: a2 a2 a2 a2 02 08 ac 08 89 3a a1 65 9a 
+TODO: SX126xWaitOnBusy
+TimerInit
+TimerInit
+RadioSetChannel: freq=923000000
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=2
+spi tx: 98 e1 e9 
+spi rx: a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 86 39 b0 00 00 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetTxConfig: modem=1, power=14, fdev=0, bandwidth=0, datarate=7, coderate=1, preambleLen=8, fixLen=0, crcOn=1, freqHopOn=0, hopPeriod=0, iqInverted=0, timeout=3000
+RadioSetTxConfig: SpreadingFactor=7, Bandwidth=4, CodingRate=1, LowDatarateOptimize=0, PreambleLength=8, HeaderType=0, PayloadLength=255, CrcMode=1, InvertIQ=0
+RadioStandby
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 80 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetModem
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 8a 01 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 8b 07 04 01 00 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=6
+spi tx: 8c 00 08 00 ff 01 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=1
+spi tx: 1d 08 89 00 00 
+spi rx: a2 a2 a2 a2 04 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 89 04 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+SX126xSetRfTxPower
+SX126xSetTxParams: power=14, rampTime=7
+SX126xGetDeviceId: SX1262
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=1
+spi tx: 1d 08 d8 00 00 
+spi rx: a2 a2 a2 a2 fe 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 d8 fe 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 95 04 07 00 01 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 e7 38 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=2
+spi tx: 8e 0e 07 
+spi rx: a2 a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetRxConfig
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 9f 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+RadioStandby
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 80 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetModem
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 8a 01 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 8b 07 04 01 00 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=6
+spi tx: 8c 00 08 00 ff 01 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: a0 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=1
+spi tx: 1d 07 36 00 00 
+spi rx: a2 a2 a2 a2 0d 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 07 36 0d 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetRxConfig done
+send_message
+RadioSend: size=29
+50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=8
+spi tx: 08 02 01 02 01 00 00 00 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSend: PreambleLength=8, HeaderType=0, PayloadLength=29, CrcMode=1, InvertIQ=0
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=6
+spi tx: 8c 00 08 00 1d 01 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=2, data_length=29
+spi tx: 0e 00 50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
+spi rx: a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=3
+spi tx: 83 00 00 00 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TimerStart
+TimerStop
+Done!
+```
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#send-message)
 
-![](https://lupyuen.github.io/images/usb-transmit2.png)
+TODO
+
+## Spectrum Analysis with SDR
 
 TODO
 
 ![](https://lupyuen.github.io/images/usb-chirp2.png)
+
+TODO
+
+-   [__"Visualise LoRa with Software Defined Radio"__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
 
 # Receive LoRa Message
 
@@ -575,7 +847,6 @@ From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-
 ```c
 /// Main Function
 int main(void) {
-
   //  TODO: Create a Background Thread to handle LoRa Events
   create_task();
 
@@ -674,6 +945,30 @@ static void on_rx_timeout(void) {
 ```
 
 We switch the LoRa Transceiver into sleep mode and log the timeout.
+
+## Run the Driver
+
+Follow the instructions in the Appendix to __download, build and run__ the PineDio USB Driver.
+
+Remember to edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
+
+```c
+#define RECEIVE_MESSAGE
+```
+
+Also edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L46) and set the __LoRa Parameters__. (As explained earlier)
+
+Build and run the PineDio USB Driver...
+
+```bash
+## Build PineDio USB Driver
+make
+
+## Run PineDio USB Driver
+sudo ./lora-sx1262
+```
+
+TODO
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#receive-message)
 
@@ -780,6 +1075,8 @@ LoRa Gateway for Internet
 LoRaWAN
 
 Backport to PineDio Stack
+
+PinePhone: I2C bridge to SPI
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
