@@ -135,6 +135,7 @@ Here's how: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main
 int main(void) {
   //  Read SX1262 registers 0x00 to 0x0F
   read_registers();
+  return 0;
 }
 
 /// Read SX1262 registers
@@ -297,6 +298,110 @@ All other Source Files are shared by Linux, BL602 and BL604.
 
 TODO
 
+From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L46)
+
+```c
+/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
+#define USE_BAND_923
+
+#if defined(USE_BAND_433)
+    #define RF_FREQUENCY               434000000 /* Hz */
+#elif defined(USE_BAND_780)
+    #define RF_FREQUENCY               780000000 /* Hz */
+#elif defined(USE_BAND_868)
+    #define RF_FREQUENCY               868000000 /* Hz */
+#elif defined(USE_BAND_915)
+    #define RF_FREQUENCY               915000000 /* Hz */
+#elif defined(USE_BAND_923)
+    #define RF_FREQUENCY               923000000 /* Hz */
+#else
+    #error "Please define a frequency band in the compiler options."
+#endif
+
+/// LoRa Parameters
+#define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
+
+#define LORAPING_BANDWIDTH                  0         /* [0: 125 kHz, */
+                                                      /*  1: 250 kHz, */
+                                                      /*  2: 500 kHz, */
+                                                      /*  3: Reserved] */
+#define LORAPING_SPREADING_FACTOR           7         /* [SF7..SF12] */
+#define LORAPING_CODINGRATE                 1         /* [1: 4/5, */
+                                                      /*  2: 4/6, */
+                                                      /*  3: 4/7, */
+                                                      /*  4: 4/8] */
+#define LORAPING_PREAMBLE_LENGTH            8         /* Same for Tx and Rx */
+#define LORAPING_SYMBOL_TIMEOUT             5         /* Symbols */
+#define LORAPING_FIX_LENGTH_PAYLOAD_ON      false
+#define LORAPING_IQ_INVERSION_ON            false
+
+#define LORAPING_TX_TIMEOUT_MS              3000    /* ms */
+#define LORAPING_RX_TIMEOUT_MS              10000    /* ms */
+#define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
+```
+
+TODO
+
+From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119)
+
+```c
+int main(void) {
+    //  Init SX1262 driver
+    init_driver();
+
+    //  TODO: Do we need to wait?
+    sleep(1);
+
+    //  Send a LoRa message
+    send_message();
+    return 0;
+}
+```
+
+TODO
+
+From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L205-L239)
+
+```c
+/// Send a LoRa message. Assume that SX1262 driver has been initialised.
+static void send_message(void) {
+    puts("send_message");
+
+    //  Send the "PING" message
+    send_once(1);
+}
+
+/// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
+static void send_once(int is_ping) {
+    //  Copy the "PING" or "PONG" message to the transmit buffer
+    if (is_ping) {
+        memcpy(loraping_buffer, loraping_ping_msg, 4);
+    } else {
+        memcpy(loraping_buffer, loraping_pong_msg, 4);
+    }
+
+    //  Fill up the remaining space in the transmit buffer (64 bytes) with values 0, 1, 2, ...
+    for (int i = 4; i < sizeof loraping_buffer; i++) {
+        loraping_buffer[i] = i - 4;
+    }
+
+    //  We send the transmit buffer, limited to 29 bytes.
+    //  CAUTION: Anything more will cause message corruption!
+    #define MAX_MESSAGE_SIZE 29
+    uint8_t size = sizeof loraping_buffer > MAX_MESSAGE_SIZE
+        ? MAX_MESSAGE_SIZE 
+        : sizeof loraping_buffer;
+    Radio.Send(loraping_buffer, size);
+
+    //  TODO: Previously we send 64 bytes, which gets garbled consistently.
+    //  Does CH341 limit SPI transfers to 31 bytes?
+    //  (Including 2 bytes for SX1262 SPI command header)
+    //  Radio.Send(loraping_buffer, sizeof loraping_buffer);
+}
+```
+
+TODO
+
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#send-message)
 
 ![](https://lupyuen.github.io/images/usb-transmit2.png)
@@ -308,6 +413,57 @@ TODO
 # Receive LoRa Message
 
 TODO
+
+https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119
+
+```c
+int main(void) {
+
+//  Uncomment to read SX1262 registers
+//  #define READ_REGISTERS
+#ifdef READ_REGISTERS
+    //  Read SX1262 registers 0x00 to 0x0F
+    read_registers();
+#endif  //  READ_REGISTERS
+
+    //  TODO: Create a Background Thread to handle LoRa Events
+    create_task();
+
+    //  Init SX1262 driver
+    init_driver();
+
+    //  TODO: Do we need to wait?
+    sleep(1);
+
+//  Uncomment to send a LoRa message
+//  #define SEND_MESSAGE
+#ifdef SEND_MESSAGE
+    //  Send a LoRa message
+    send_message();
+#endif  //  SEND_MESSAGE
+
+//  Uncomment to receive a LoRa message
+#define RECEIVE_MESSAGE
+#ifdef RECEIVE_MESSAGE
+    //  Handle LoRa events for the next 10 seconds
+    for (int i = 0; i < 10; i++) {
+        //  Prepare to receive a LoRa message
+        receive_message();
+
+        //  Process the received LoRa message, if any
+        RadioOnDioIrq(NULL);
+        
+        //  Sleep for 1 second
+        usleep(1000 * 1000);
+    }
+#endif  //  RECEIVE_MESSAGE
+
+    //  TODO: Close the SPI Bus
+    //  close(spi);
+    puts("Done!");
+    return 0;
+}
+```
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#receive-message)
 
