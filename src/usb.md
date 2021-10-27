@@ -653,7 +653,8 @@ This is how we do it: [main.c](https://github.com/lupyuen/lora-sx1262/blob/maste
 ```c
 /// Main Function
 int main(void) {
-  //  TODO: Create a Background Thread to handle LoRa Events
+  //  TODO: Create a Background Thread 
+  //  to handle LoRa Events
   create_task();
 ```
 
@@ -693,7 +694,7 @@ For the next __10 seconds__ we handle LoRa Events (like Message Received)...
 
 We call __receive_message__ to get SX1262 ready to receive a single LoRa Message.
 
-Then we call __RadioOnDioIrq__ to handle the Message Received Event.
+Then we call __RadioOnDioIrq__ to handle the Message Received Event. (If any)
 
 [(__RadioOnDioIrq__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1460)
 
@@ -817,6 +818,8 @@ receive_message
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#receive-message)
 
 PineDio USB has successfully received a 28-byte LoRa Message from RAKwireless WisBlock!
+
+_Why 28 bytes?_
 
 Our PineDio USB Driver has an issue with __CH341 SPI Transfers__...
 
