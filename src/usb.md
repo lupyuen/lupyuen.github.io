@@ -545,13 +545,13 @@ And we __transmit the LoRa Message__...
 
 [(__RadioSend__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
 
-We have an issue with __CH341 SPI Transfers__...
+Our PineDio USB Driver has an issue with __CH341 SPI Transfers__...
 
 __Transmitting a LoRa Message on PineDio USB above 29 bytes will cause message corruption!__
 
-Thus we limit the LoRa Message Size to __29 bytes__.
+Thus we limit the Transmit LoRa Message Size to __29 bytes__.
 
-(More about CH341 SPI later)
+(There's a way to fix this... More about CH341 later)
 
 When the LoRa Message has been transmitted, the LoRa Driver calls our Callback Function __on_tx_done__ defined in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L253-L266)
 
@@ -571,7 +571,7 @@ static void on_tx_done(void) {
 
 Here we log the number of packets transmitted, and put LoRa SX1262 into __low power, sleep mode__.
 
-Note: __on_tx_done__ won't actually be called in the current driver implementation, because we haven't implemented Multithreading. (More about this in a while)
+Note: __on_tx_done__ won't actually be called in the current driver, because we haven't implemented Multithreading. (More about this later)
 
 ## Run the Driver
 
@@ -772,7 +772,7 @@ sudo ./lora-sx1262
 
 TODO
 
-Switch over to [__RAKwireless WisBlock__](https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio) and transmit a 29-byte LoRa Message...
+Switch over to [__RAKwireless WisBlock__](https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio) and transmit a 28-byte LoRa Message...
 
 ```text
 LoRap2p Tx Test
@@ -784,7 +784,7 @@ OnTxDone
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#wisblock-transmitter-log)
 
-On __PineDio USB__ we should see the same 29-byte LoRa Message...
+On __PineDio USB__ we should see the same 28-byte LoRa Message...
 
 ```text
 IRQ_RX_DONE
@@ -796,7 +796,15 @@ receive_message
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#receive-message)
 
-PineDio USB has successfully received a 29-byte LoRa Message from RAKwireless WisBlock!
+PineDio USB has successfully received a 28-byte LoRa Message from RAKwireless WisBlock!
+
+Our PineDio USB Driver has an issue with __CH341 SPI Transfers__...
+
+__Receiving a LoRa Message on PineDio USB above 28 bytes will cause message corruption!__
+
+Thus we limit the Receive LoRa Message Size to __28 bytes__.
+
+(There's a way to fix this... More about CH341 later)
 
 ![](https://lupyuen.github.io/images/usb-receive4.png)
 
