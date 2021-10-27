@@ -72,22 +72,22 @@
 <li><a href="#read-sx1262-registers">3 Read SX1262 Registers</a><ul>
 <li><a href="#run-the-driver">3.1 Run the Driver</a><ul></ul></li>
 <li><a href="#source-files-for-linux">3.2 Source Files for Linux</a><ul></ul></li></ul></li>
-<li><a href="#transmit-lora-message">4 Transmit LoRa Message</a><ul>
-<li><a href="#configure-lora-sx1262">4.1 Configure LoRa SX1262</a><ul></ul></li>
-<li><a href="#transmit-message">4.2 Transmit Message</a><ul></ul></li></ul></li>
-<li><a href="#receive-lora-message">5 Receive LoRa Message</a><ul></ul></li>
-<li><a href="#sleep">6 Sleep</a><ul></ul></li>
-<li><a href="#ch341-spi">7 CH341 SPI</a><ul></ul></li>
-<li><a href="#ch341-gpio">8 CH341 GPIO</a><ul></ul></li>
-<li><a href="#wisblock">9 WisBlock</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-pinedio-usb-driver">12 Appendix: Build PineDio USB Driver</a><ul>
-<li><a href="#pinedio-usb-operations">12.1 PineDio USB Operations</a><ul></ul></li></ul></li>
-<li><a href="#appendix-pinedio-usb-dmesg-log">13 Appendix: PineDio USB dmesg Log</a><ul>
-<li><a href="#connect-usb">13.1 Connect USB</a><ul></ul></li>
-<li><a href="#send-message">13.2 Send Message</a><ul></ul></li>
-<li><a href="#receive-message">13.3 Receive Message</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
+<li><a href="#lora-parameters">4 LoRa Parameters</a><ul>
+<li><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a><ul></ul></li></ul></li>
+<li><a href="#transmit-lora-message">5 Transmit LoRa Message</a><ul></ul></li>
+<li><a href="#receive-lora-message">6 Receive LoRa Message</a><ul></ul></li>
+<li><a href="#sleep">7 Sleep</a><ul></ul></li>
+<li><a href="#ch341-spi">8 CH341 SPI</a><ul></ul></li>
+<li><a href="#ch341-gpio">9 CH341 GPIO</a><ul></ul></li>
+<li><a href="#wisblock">10 WisBlock</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-pinedio-usb-driver">13 Appendix: Build PineDio USB Driver</a><ul>
+<li><a href="#pinedio-usb-operations">13.1 PineDio USB Operations</a><ul></ul></li></ul></li>
+<li><a href="#appendix-pinedio-usb-dmesg-log">14 Appendix: PineDio USB dmesg Log</a><ul>
+<li><a href="#connect-usb">14.1 Connect USB</a><ul></ul></li>
+<li><a href="#send-message">14.2 Send Message</a><ul></ul></li>
+<li><a href="#receive-message">14.3 Receive Message</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
 <p><em>What if our Laptop Computer could talk to other devices…</em></p>
 <p><em>Over a Long Range, Low Bandwidth wireless network like LoRa?</em></p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
@@ -306,26 +306,25 @@ Register 0x0a = 0x01</code></pre></div>
 </ul>
 <p>All other Source Files are shared by Linux, BL602 and BL604.</p>
 <p>(Except <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c"><strong>sx126x-board.c</strong></a> which is the BL602 / BL604 Interface for SX1262)</p>
-<h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">4 Transmit LoRa Message</a></h1>
+<h1 id="lora-parameters" class="section-header"><a href="#lora-parameters">4 LoRa Parameters</a></h1>
 <p>TODO</p>
-<h2 id="configure-lora-sx1262" class="section-header"><a href="#configure-lora-sx1262">4.1 Configure LoRa SX1262</a></h2>
 <p>We set the <strong>LoRa Frequency</strong> in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L25">main.c</a> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
 #define USE_BAND_923</code></pre></div>
 <p>Change <code>USE_BAND_923</code> to <code>USE_BAND_433</code>, <code>780</code>, <code>868</code> or <code>915</code>. Here’s the complete list…</p>
 <div class="example-wrap"><pre class="language-c"><code>#if defined(USE_BAND_433)
-    #define RF_FREQUENCY               434000000 /* Hz */
+  #define RF_FREQUENCY               434000000 /* Hz */
 #elif defined(USE_BAND_780)
-    #define RF_FREQUENCY               780000000 /* Hz */
+  #define RF_FREQUENCY               780000000 /* Hz */
 #elif defined(USE_BAND_868)
-    #define RF_FREQUENCY               868000000 /* Hz */
+  #define RF_FREQUENCY               868000000 /* Hz */
 #elif defined(USE_BAND_915)
-    #define RF_FREQUENCY               915000000 /* Hz */
+  #define RF_FREQUENCY               915000000 /* Hz */
 #elif defined(USE_BAND_923)
-    #define RF_FREQUENCY               923000000 /* Hz */
+  #define RF_FREQUENCY               923000000 /* Hz */
 #else
-    #error &quot;Please define a frequency band in the compiler options.&quot;
+  #error &quot;Please define a frequency band in the compiler options.&quot;
 #endif</code></pre></div>
 <p>The <strong>LoRa Parameters</strong> are also defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L27-L46">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// LoRa Parameters
@@ -349,31 +348,111 @@ Register 0x0a = 0x01</code></pre></div>
 #define LORAPING_RX_TIMEOUT_MS              10000    /* ms */
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */</code></pre></div>
 <p>These should match the LoRa Parameters used by the LoRa Transmitter / Receiver.</p>
-<p>I used this LoRa Receiver (based on RAKwireless WisBlock) for testing our LoRa Driver…</p>
+<p>I used this <strong>LoRa Transmitter and Receiver</strong> (based on RAKwireless WisBlock) for testing our LoRa Driver…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lora2#start-the-rakwireless-wisblock-transmitter"><strong>“RAKwireless WisBlock Transmitter”</strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio"><strong>wisblock-lora-transmitter</strong></a></p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L38-L58">(LoRa Parameters for transmitter)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/wisblock-lora-receiver"><strong>wisblock-lora-receiver</strong></a></p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56">(LoRa Parameters for receiver)</a></p>
+</li>
 </ul>
-<h2 id="transmit-message" class="section-header"><a href="#transmit-message">4.2 Transmit Message</a></h2>
+<p>Thus the LoRa Parameters for PineDio USB should match the above.</p>
+<h2 id="initialise-lora-sx1262" class="section-header"><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a></h2>
+<p>The <strong>init_driver</strong> function initialises the LoRa SX1262 like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203">main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Command to initialise the LoRa Driver.
+/// Assume that create_task has been called to init the Event Queue.
+static void init_driver(char *buf, int len, int argc, char **argv) {
+  //  Set the LoRa Callback Functions
+  RadioEvents_t radio_events;
+  memset(&amp;radio_events, 0, sizeof(radio_events));  //  Must init radio_events to null, because radio_events lives on stack!
+  radio_events.TxDone    = on_tx_done;     //  Packet has been transmitted
+  radio_events.RxDone    = on_rx_done;     //  Packet has been received
+  radio_events.TxTimeout = on_tx_timeout;  //  Transmit Timeout
+  radio_events.RxTimeout = on_rx_timeout;  //  Receive Timeout
+  radio_events.RxError   = on_rx_error;    //  Receive Error</code></pre></div>
+<p>Here we set the <strong>Callback Functions</strong> that will be called when a LoRa Packet has been transmitted or received, also when we encounter a transmit / receive timeout or error.</p>
+<p>(We’ll see the Callback Functions in a while)</p>
+<p>Next we initialise the LoRa Transceiver and set the <strong>LoRa Frequency</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Init the SPI Port and the LoRa Transceiver
+  Radio.Init(&amp;radio_events);
+
+  //  Set the LoRa Frequency
+  Radio.SetChannel(RF_FREQUENCY);</code></pre></div>
+<p>We set the <strong>LoRa Transmit Parameters</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Configure the LoRa Transceiver for transmitting messages
+  Radio.SetTxConfig(
+    MODEM_LORA,
+    LORAPING_TX_OUTPUT_POWER,
+    0,        //  Frequency deviation: Unused with LoRa
+    LORAPING_BANDWIDTH,
+    LORAPING_SPREADING_FACTOR,
+    LORAPING_CODINGRATE,
+    LORAPING_PREAMBLE_LENGTH,
+    LORAPING_FIX_LENGTH_PAYLOAD_ON,
+    true,     //  CRC enabled
+    0,        //  Frequency hopping disabled
+    0,        //  Hop period: N/A
+    LORAPING_IQ_INVERSION_ON,
+    LORAPING_TX_TIMEOUT_MS
+  );</code></pre></div>
+<p>Finally we set the <strong>LoRa Receive Parameters</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Configure the LoRa Transceiver for receiving messages
+  Radio.SetRxConfig(
+    MODEM_LORA,
+    LORAPING_BANDWIDTH,
+    LORAPING_SPREADING_FACTOR,
+    LORAPING_CODINGRATE,
+    0,        //  AFC bandwidth: Unused with LoRa
+    LORAPING_PREAMBLE_LENGTH,
+    LORAPING_SYMBOL_TIMEOUT,
+    LORAPING_FIX_LENGTH_PAYLOAD_ON,
+    0,        //  Fixed payload length: N/A
+    true,     //  CRC enabled
+    0,        //  Frequency hopping disabled
+    0,        //  Hop period: N/A
+    LORAPING_IQ_INVERSION_ON,
+    true      //  Continuous receive mode
+  );    
+}</code></pre></div>
+<p>The <strong>Radio</strong> functions are defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c">radio.c</a> …</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit</strong> - Init LoRa Transceiver</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604"><strong>RadioSetChannel</strong> - Set LoRa Frequency</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908"><strong>RadioSetTxConfig</strong> - Set LoRa Transmit Configuration</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786"><strong>RadioSetRxConfig</strong> - Set LoRa Receive Configuration</a></p>
+</li>
+</ul>
+<h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">5 Transmit LoRa Message</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Main Function
 int main(void) {
-    //  Init SX1262 driver
-    init_driver();
+  //  Init SX1262 driver
+  init_driver();
 
-    //  TODO: Do we need to wait?
-    sleep(1);
+  //  TODO: Do we need to wait?
+  sleep(1);
 
-    //  Send a LoRa message
-    send_message();
-    return 0;
+  //  Send a LoRa message
+  send_message();
+  return 0;
 }</code></pre></div>
 <p>TODO</p>
 <p>To transmit a LoRa Packet, <strong>send_message</strong> calls <strong>send_once</strong> in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L205-L211">main.c</a> … </p>
 <div class="example-wrap"><pre class="language-c"><code>/// Send a LoRa message. Assume that SX1262 driver has been initialised.
 static void send_message(void) {
-    //  Send the &quot;PING&quot; message
-    send_once(1);
+  //  Send the &quot;PING&quot; message
+  send_once(1);
 }</code></pre></div>
 <p><strong><code>send_once</code></strong> prepares a LoRa Packet containing the string “<code>PING</code>”…</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239">demo.c</a> :</p>
@@ -386,81 +465,135 @@ static uint8_t loraping_buffer[LORAPING_BUFFER_SIZE];
 
 /// Send a LoRa message. If is_ping is 0, send &quot;PONG&quot;. Otherwise send &quot;PING&quot;.
 static void send_once(int is_ping) {
-    //  Copy the &quot;PING&quot; or &quot;PONG&quot; message 
-    //  to the transmit buffer
-    if (is_ping) {
-        memcpy(loraping_buffer, loraping_ping_msg, 4);
-    } else {
-        memcpy(loraping_buffer, loraping_pong_msg, 4);
-    }</code></pre></div>
+  //  Copy the &quot;PING&quot; or &quot;PONG&quot; message 
+  //  to the transmit buffer
+  if (is_ping) {
+    memcpy(loraping_buffer, loraping_ping_msg, 4);
+  } else {
+    memcpy(loraping_buffer, loraping_pong_msg, 4);
+  }</code></pre></div>
 <p>Then we pad the packet with values 0, 1, 2, …</p>
-<div class="example-wrap"><pre class="language-c"><code>    //  Fill up the remaining space in the 
-    //  transmit buffer (64 bytes) with values 
-    //  0, 1, 2, ...
-    for (int i = 4; i &lt; sizeof loraping_buffer; i++) {
-        loraping_buffer[i] = i - 4;
-    }</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>  //  Fill up the remaining space in the 
+  //  transmit buffer (64 bytes) with values 
+  //  0, 1, 2, ...
+  for (int i = 4; i &lt; sizeof loraping_buffer; i++) {
+    loraping_buffer[i] = i - 4;
+  }</code></pre></div>
 <p>And transmit the LoRa Packet…</p>
-<div class="example-wrap"><pre class="language-c"><code>    //  We send the transmit buffer, limited to 29 bytes.
-    //  CAUTION: Anything more will cause message corruption!
-    #define MAX_MESSAGE_SIZE 29
-    uint8_t size = sizeof loraping_buffer &gt; MAX_MESSAGE_SIZE
-        ? MAX_MESSAGE_SIZE 
-        : sizeof loraping_buffer;
-    Radio.Send(loraping_buffer, size);
+<div class="example-wrap"><pre class="language-c"><code>  //  We send the transmit buffer, limited to 29 bytes.
+  //  CAUTION: Anything more will cause message corruption!
+  #define MAX_MESSAGE_SIZE 29
+  uint8_t size = sizeof loraping_buffer &gt; MAX_MESSAGE_SIZE
+    ? MAX_MESSAGE_SIZE 
+    : sizeof loraping_buffer;
+  Radio.Send(loraping_buffer, size);
 
-    //  TODO: Previously we send 64 bytes, which gets garbled consistently.
-    //  Does CH341 limit SPI transfers to 31 bytes?
-    //  (Including 2 bytes for SX1262 SPI command header)
-    //  Radio.Send(loraping_buffer, sizeof loraping_buffer);
+  //  TODO: Previously we send 64 bytes, which gets garbled consistently.
+  //  Does CH341 limit SPI transfers to 31 bytes?
+  //  (Including 2 bytes for SX1262 SPI command header)
+  //  Radio.Send(loraping_buffer, sizeof loraping_buffer);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098">(<strong>RadioSend</strong> is defined here)</a></p>
 <p>When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function <strong>on_tx_done</strong> …</p>
+<div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when our LoRa message has been transmitted
+static void on_tx_done(void) {
+  //  Log the success status
+  loraping_stats.tx_success++;
+
+  //  Switch the LoRa Transceiver to 
+  //  low power, sleep mode
+  Radio.Sleep();
+}</code></pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#send-message">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-transmit2.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-chirp2.png" alt="" /></p>
-<h1 id="receive-lora-message" class="section-header"><a href="#receive-lora-message">5 Receive LoRa Message</a></h1>
+<h1 id="receive-lora-message" class="section-header"><a href="#receive-lora-message">6 Receive LoRa Message</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Main Function
 int main(void) {
 
-    //  TODO: Create a Background Thread to handle LoRa Events
-    create_task();
+  //  TODO: Create a Background Thread to handle LoRa Events
+  create_task();
 
-    //  Init SX1262 driver
-    init_driver();
+  //  Init SX1262 driver
+  init_driver();
 
-    //  TODO: Do we need to wait?
-    sleep(1);
+  //  TODO: Do we need to wait?
+  sleep(1);
 
-    //  Handle LoRa events for the next 10 seconds
-    for (int i = 0; i &lt; 10; i++) {
-        //  Prepare to receive a LoRa message
-        receive_message();
+  //  Handle LoRa events for the next 10 seconds
+  for (int i = 0; i &lt; 10; i++) {
+    //  Prepare to receive a LoRa message
+    receive_message();
 
-        //  Process the received LoRa message, if any
-        RadioOnDioIrq(NULL);
-        
-        //  Sleep for 1 second
-        usleep(1000 * 1000);
-    }
-    return 0;
+    //  Process the received LoRa message, if any
+    RadioOnDioIrq(NULL);
+    
+    //  Sleep for 1 second
+    usleep(1000 * 1000);
+  }
+  return 0;
 }</code></pre></div>
-<p>I used this LoRa Transmitter (based on RAKwireless WisBlock) for testing our LoRa Driver…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/lora2#start-the-rakwireless-wisblock-transmitter"><strong>“RAKwireless WisBlock Transmitter”</strong></a></li>
-</ul>
+<p>Here’s how <strong>receive_message</strong> receives a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L241-L248">main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Receive a LoRa message. Assume that SX1262 driver has been initialised.
+/// Assume that create_task has been called to init the Event Queue.
+static void receive_message(void) {
+  //  Receive a LoRa message within the timeout period
+  Radio.Rx(LORAPING_RX_TIMEOUT_MS);
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138">(<strong>RadioRx</strong> is defined here)</a></p>
+<p>When the LoRa Driver receives a LoRa Packet, it calls our Callback Function <strong>on_rx_done</strong>…</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L268-L298">main.c</a> :</p>
+<div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when a LoRa message has been received
+static void on_rx_done(
+  uint8_t *payload,  //  Buffer containing received LoRa message
+  uint16_t size,     //  Size of the LoRa message
+  int16_t rssi,      //  Signal strength
+  int8_t snr) {      //  Signal To Noise ratio
+
+  //  Switch the LoRa Transceiver to low power, sleep mode
+  Radio.Sleep();
+
+  //  Log the signal strength, signal to noise ratio
+  loraping_rxinfo_rxed(rssi, snr);</code></pre></div>
+<p><strong>on_rx_done</strong> switches the LoRa Transceiver to low power, sleep mode and logs the received packet.</p>
+<p>Next we <strong>copy the received packet</strong> into a buffer…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Copy the received packet
+  if (size &gt; sizeof loraping_buffer) {
+    size = sizeof loraping_buffer;
+  }
+  loraping_rx_size = size;
+  memcpy(loraping_buffer, payload, size);</code></pre></div>
+<p>Finally we <strong>dump the buffer</strong> containing the received packet…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Dump the contents of the received packet
+  for (int i = 0; i &lt; loraping_rx_size; i++) {
+    printf(&quot;%02x &quot;, loraping_buffer[i]);
+  }
+  printf(&quot;\r\n&quot;);
+}</code></pre></div>
+<p><em>What happens when we don’t receive a packet in 5 seconds?</em></p>
+<p>The LoRa Driver calls our Callback Function <strong>on_rx_timeout</strong> …</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L314-L327">main.c</a> :</p>
+<div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when no LoRa messages could be received due to timeout
+static void on_rx_timeout(void) {
+  //  Switch the LoRa Transceiver to low power, sleep mode
+  Radio.Sleep();
+
+  //  Log the timeout
+  loraping_stats.rx_timeout++;
+}</code></pre></div>
+<p>We switch the LoRa Transceiver into sleep mode and log the timeout.</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-receive4.png" alt="" /></p>
 <p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/usb-receive5.png" alt="" /></p>
-<h1 id="sleep" class="section-header"><a href="#sleep">6 Sleep</a></h1>
+<h1 id="sleep" class="section-header"><a href="#sleep">7 Sleep</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="" /></p>
-<h1 id="ch341-spi" class="section-header"><a href="#ch341-spi">7 CH341 SPI</a></h1>
+<h1 id="ch341-spi" class="section-header"><a href="#ch341-spi">8 CH341 SPI</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -480,7 +613,7 @@ int main(void) {
 <p><img src="https://lupyuen.github.io/images/usb-spi8.png" alt="" /></p>
 <p>TODO25</p>
 <p><img src="https://lupyuen.github.io/images/usb-spi5.png" alt="" /></p>
-<h1 id="ch341-gpio" class="section-header"><a href="#ch341-gpio">8 CH341 GPIO</a></h1>
+<h1 id="ch341-gpio" class="section-header"><a href="#ch341-gpio">9 CH341 GPIO</a></h1>
 <p>TODO</p>
 <p>Note that the CH341 GPIO programming is incomplete. We need to…</p>
 <ol>
@@ -512,14 +645,14 @@ int main(void) {
 <p>More about PineDio USB and CH341 GPIO:</p>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">PineDio Wiki</a></p>
 <p><img src="https://lupyuen.github.io/images/lora2-handler.png" alt="" /></p>
-<h1 id="wisblock" class="section-header"><a href="#wisblock">9 WisBlock</a></h1>
+<h1 id="wisblock" class="section-header"><a href="#wisblock">10 WisBlock</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock5.png" alt="" /></p>
 <p>TODO28</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock6.png" alt="" /></p>
 <p>TODO29</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>LoRa Gateway for Internet</p>
 <p>LoRaWAN</p>
@@ -541,11 +674,11 @@ int main(void) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb.md"><code>lupyuen.github.io/src/usb.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1451548895461326858">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-build-pinedio-usb-driver" class="section-header"><a href="#appendix-build-pinedio-usb-driver">12 Appendix: Build PineDio USB Driver</a></h1>
+<h1 id="appendix-build-pinedio-usb-driver" class="section-header"><a href="#appendix-build-pinedio-usb-driver">13 Appendix: Build PineDio USB Driver</a></h1>
 <p>TODO</p>
 <p>To build PineDio USB Driver on Pinebook Pro Manjaro Arm64…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Install DKMS
@@ -603,7 +736,7 @@ make
 sudo ./lora-sx1262</code></pre></div>
 <p>More about PineDio USB and CH341 SPI:</p>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">PineDio Wiki</a></p>
-<h2 id="pinedio-usb-operations" class="section-header"><a href="#pinedio-usb-operations">12.1 PineDio USB Operations</a></h2>
+<h2 id="pinedio-usb-operations" class="section-header"><a href="#pinedio-usb-operations">13.1 PineDio USB Operations</a></h2>
 <p>The PineDio USB Demo supports 3 operations…</p>
 <ol>
 <li>
@@ -625,7 +758,7 @@ sudo ./lora-sx1262</code></pre></div>
 <p>(See the Receive Message Log below)</p>
 </li>
 </ol>
-<h1 id="appendix-pinedio-usb-dmesg-log" class="section-header"><a href="#appendix-pinedio-usb-dmesg-log">13 Appendix: PineDio USB dmesg Log</a></h1><h2 id="connect-usb" class="section-header"><a href="#connect-usb">13.1 Connect USB</a></h2>
+<h1 id="appendix-pinedio-usb-dmesg-log" class="section-header"><a href="#appendix-pinedio-usb-dmesg-log">14 Appendix: PineDio USB dmesg Log</a></h1><h2 id="connect-usb" class="section-header"><a href="#connect-usb">14.1 Connect USB</a></h2>
 <p><a href="https://github.com/lupyuen/lora-sx1262#connect-usb">(See the complete log)</a></p>
 <p>dmesg Log when plugging PineDio USB to Pinebook Pro…</p>
 <div class="example-wrap"><pre class="language-text"><code>usb 3-1:
@@ -737,7 +870,7 @@ usbcore: registered new interface driver spi-ch341-usb</code></pre></div>
 <p>And recheck the messages.</p>
 </li>
 </ol>
-<h2 id="send-message" class="section-header"><a href="#send-message">13.2 Send Message</a></h2>
+<h2 id="send-message" class="section-header"><a href="#send-message">14.2 Send Message</a></h2>
 <p><a href="https://github.com/lupyuen/lora-sx1262#send-message-1">(See the complete log)</a></p>
 <p>dmesg Log when PineDio USB is transmitting a 29-byte LoRa Packet…</p>
 <p><strong>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</strong></p>
@@ -783,7 +916,7 @@ spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=31, csChange=1, result=31
 spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
 audit: type=1701 audit(1634994203.075:1271): auid=1000 uid=0 gid=0 ses=4 subj==unconfined pid=72111 comm=&quot;lora-sx1262&quot; exe=&quot;/home/luppy/lora-sx1262/lora-sx1262&quot; sig=6 res=1</code></pre></div>
 <p>Note that if we try to transmit a 64-byte packet, it won’t appear in the dmesg Log.</p>
-<h2 id="receive-message" class="section-header"><a href="#receive-message">13.3 Receive Message</a></h2>
+<h2 id="receive-message" class="section-header"><a href="#receive-message">14.3 Receive Message</a></h2>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message-1">(See the complete log)</a></p>
 <p>dmesg Log when PineDio USB is receiving a 28-byte LoRa Packet…</p>
 <p><strong>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</strong></p>
