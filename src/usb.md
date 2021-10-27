@@ -220,6 +220,8 @@ And the values of the registers are returned by SX1262 over SPI.
 
 ## Run the Driver
 
+Follow the instructions in the Appendix to __install the CH341 SPI Driver__.
+
 Follow the instructions in the Appendix to __download, build and run__ the PineDio USB Driver.
 
 Remember to edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
@@ -575,6 +577,8 @@ Note: __on_tx_done__ won't actually be called in our current driver, because we 
 
 ## Run the Driver
 
+Follow the instructions in the Appendix to __install the CH341 SPI Driver__.
+
 Follow the instructions in the Appendix to __download, build and run__ the PineDio USB Driver.
 
 Remember to edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
@@ -774,6 +778,8 @@ We switch the LoRa Transceiver into sleep mode and log the timeout.
 Note: __on_rx_timeout__ won't actually be called in our current driver, because we haven't implemented Multithreading. (More about this later)
 
 ## Run the Driver
+
+Follow the instructions in the Appendix to __install the CH341 SPI Driver__.
 
 Follow the instructions in the Appendix to __download, build and run__ the PineDio USB Driver.
 
