@@ -79,7 +79,8 @@
 <li><a href="#spectrum-analysis-with-sdr">5.2 Spectrum Analysis with SDR</a><ul></ul></li></ul></li>
 <li><a href="#receive-lora-message">6 Receive LoRa Message</a><ul>
 <li><a href="#run-the-driver-2">6.1 Run the Driver</a><ul></ul></li></ul></li>
-<li><a href="#ch341-spi-interface">7 CH341 SPI Interface</a><ul></ul></li>
+<li><a href="#ch341-spi-interface">7 CH341 SPI Interface</a><ul>
+<li><a href="#long-spi-transfers-are-garbled">7.1 Long SPI Transfers are Garbled</a><ul></ul></li></ul></li>
 <li><a href="#ch341-gpio-interface">8 CH341 GPIO Interface</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li>
@@ -707,7 +708,64 @@ receive_message</code></pre></div>
 <p><a href="http://www.wch.cn/downloads/CH341DS2_PDF.html"><strong>CH341 Interfaces (Chinese)</strong></a></p>
 </li>
 </ul>
+<p>TODO</p>
+<p>We’re using this <strong>CH341 SPI Driver</strong>…</p>
+<ul>
+<li><a href="https://github.com/rogerjames99/spi-ch341-usb"><strong>rogerjames99/spi-ch341-usb</strong></a></li>
+</ul>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L651-L667">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// SPI Bus
+static int spi = 0;
+
+/// Init the SPI Bus. Return 0 on success.
+static int init_spi(void) {
+  //  Open the SPI Bus
+  spi = open(&quot;/dev/spidev1.0&quot;, O_RDWR);
+  assert(spi &gt; 0);
+
+  //  Set to SPI Mode 0
+  uint8_t mmode = SPI_MODE_0;
+  int rc = ioctl(spi, SPI_IOC_WR_MODE, &amp;mmode);
+  assert(rc == 0);
+
+  //  Set LSB/MSB Mode
+  uint8_t lsb = 0;
+  rc = ioctl(spi, SPI_IOC_WR_LSB_FIRST, &amp;lsb);
+  assert(rc == 0);
+  return 0;
+}</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Blocking call to transmit and receive buffers on SPI. Return 0 on success.
+static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
+  assert(spi &gt; 0);
+  assert(len &gt; 0);
+  assert(len &lt;= 31);  //  CAUTION: CH341 SPI doesn&#39;t seem to support 32-byte SPI transfers 
+
+  //  Prepare SPI Transfer
+  struct spi_ioc_transfer spi_trans;
+  memset(&amp;spi_trans, 0, sizeof(spi_trans));
+  spi_trans.tx_buf = (unsigned long) tx_buf;  //  Transmit Buffer
+  spi_trans.rx_buf = (unsigned long) rx_buf;  //  Receive Buffer
+  spi_trans.cs_change = true;   //  Set SPI Chip Select to Low
+  spi_trans.len       = len;    //  How many bytes
+  printf(&quot;spi tx: &quot;); for (int i = 0; i &lt; len; i++) { printf(&quot;%02x &quot;, tx_buf[i]); } printf(&quot;\n&quot;);
+
+  //  Transfer and receive the SPI buffers
+  int rc = ioctl(spi, SPI_IOC_MESSAGE(1), &amp;spi_trans);
+  assert(rc &gt;= 0);
+  assert(rc == len);
+
+  printf(&quot;spi rx: &quot;); for (int i = 0; i &lt; len; i++) { printf(&quot;%02x &quot;, rx_buf[i]); } printf(&quot;\n&quot;);
+  return 0;
+}</code></pre></div>
+<p>We’ll explain this in a while…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  CAUTION: CH341 SPI doesn&#39;t seem to 
+//  support 32-byte SPI transfers 
+assert(len &lt;= 31);</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="PineDio USB transmits a garbled 64-byte LoRa Message to RAKwireless WisBlock" /></p>
+<h2 id="long-spi-transfers-are-garbled" class="section-header"><a href="#long-spi-transfers-are-garbled">7.1 Long SPI Transfers are Garbled</a></h2>
 <p><em>What happens when we transmit a LoRa Message longer than 29 bytes?</em></p>
 <p>TODO</p>
 <p>(Garbled consistently, so it’s not RF Interference)</p>
@@ -720,6 +778,137 @@ receive_message</code></pre></div>
 <p><strong>Receiving a LoRa Message on PineDio USB longer than 28 bytes will cause message corruption!</strong></p>
 </li>
 </ul>
+<p>TODO</p>
+<p>Let’s trace the code.</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L505-L513">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t* buffer, const uint8_t size) {
+  uint8_t buf[SX126X_SIZE_READ_BUFFER] = { 0 };
+  int status = -1;
+  buf[0] = RADIO_READ_BUFFER;
+  buf[1] = offset;
+  buf[2] = 0;
+  status = sx126x_hal_read( 
+    context,  //  Context
+    buf,      //  Command Buffer
+    SX126X_SIZE_READ_BUFFER,  //  Command Buffer Size (3 bytes)
+    buffer,   //  Read Data Buffer
+    size,     //  Read Data Buffer Size
+    NULL      //  Ignore the status
+  );
+  return status;
+}</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L497-L503">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static int sx126x_write_buffer(const void* context, const uint8_t offset, const uint8_t* buffer, const uint8_t size) {
+  uint8_t buf[SX126X_SIZE_WRITE_BUFFER] = { 0 };
+  buf[0] = RADIO_WRITE_BUFFER;
+  buf[1] = offset;
+  return sx126x_hal_write(
+    context,  //  Context
+    buf,      //  Command Buffer
+    SX126X_SIZE_WRITE_BUFFER,  //  Command Buffer Size (2 bytes)
+    buffer,   //  Write Data Buffer
+    size      //  Write Data Buffer Size
+  );
+}</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L521-L528">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Max size of SPI transfers
+#define SPI_BUFFER_SIZE 1024
+
+/// SPI Transmit Buffer
+static uint8_t spi_tx_buf[SPI_BUFFER_SIZE];
+
+/// SPI Receive Buffer
+static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L532-L569">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/**
+ * Radio data transfer - write
+ *
+ * @remark Shall be implemented by the user
+ *
+ * @param [in] context          Radio implementation parameters
+ * @param [in] command          Pointer to the buffer to be transmitted
+ * @param [in] command_length   Buffer size to be transmitted
+ * @param [in] data             Pointer to the buffer to be transmitted
+ * @param [in] data_length      Buffer size to be transmitted
+ *
+ * @returns Operation status
+ */
+static int sx126x_hal_write( 
+  const void* context, const uint8_t* command, const uint16_t command_length,
+  const uint8_t* data, const uint16_t data_length ) {
+  printf(&quot;sx126x_hal_write: command_length=%d, data_length=%d\n&quot;, command_length, data_length);
+
+  //  Total length is command + data length
+  uint16_t len = command_length + data_length;
+  assert(len &gt; 0);
+  assert(len &lt;= SPI_BUFFER_SIZE);
+
+  //  Clear the SPI Transmit and Receive buffers
+  memset(&amp;spi_tx_buf, 0, len);
+  memset(&amp;spi_rx_buf, 0, len);
+
+  //  Copy command bytes to SPI Transmit Buffer
+  memcpy(&amp;spi_tx_buf, command, command_length);
+
+  //  Copy data bytes to SPI Transmit Buffer
+  memcpy(&amp;spi_tx_buf[command_length], data, data_length);
+
+  //  Transmit and receive the SPI buffers
+  int rc = transfer_spi(spi_tx_buf, spi_rx_buf, len);
+  assert(rc == 0);
+  return 0;
+}</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L571-L615">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/**
+ * Radio data transfer - read
+ *
+ * @remark Shall be implemented by the user
+ *
+ * @param [in] context          Radio implementation parameters
+ * @param [in] command          Pointer to the buffer to be transmitted
+ * @param [in] command_length   Buffer size to be transmitted
+ * @param [in] data             Pointer to the buffer to be received
+ * @param [in] data_length      Buffer size to be received
+ * @param [out] status          If not null, return the second SPI byte received as status
+ *
+ * @returns Operation status
+ */
+static int sx126x_hal_read( 
+  const void* context, const uint8_t* command, const uint16_t command_length,
+  uint8_t* data, const uint16_t data_length, uint8_t *status ) {
+  printf(&quot;sx126x_hal_read: command_length=%d, data_length=%d\n&quot;, command_length, data_length);
+
+  //  Total length is command + data length
+  uint16_t len = command_length + data_length;
+  assert(len &gt; 0);
+  assert(len &lt;= SPI_BUFFER_SIZE);
+
+  //  Clear the SPI Transmit and Receive buffers
+  memset(&amp;spi_tx_buf, 0, len);
+  memset(&amp;spi_rx_buf, 0, len);
+
+  //  Copy command bytes to SPI Transmit Buffer
+  memcpy(&amp;spi_tx_buf, command, command_length);
+
+  //  Transmit and receive the SPI buffers
+  int rc = transfer_spi(spi_tx_buf, spi_rx_buf, len);
+  assert(rc == 0);
+
+  //  Copy SPI Receive buffer to data buffer
+  memcpy(data, &amp;spi_rx_buf[command_length], data_length);
+
+  //  Return the second SPI byte received as status
+  if (status != NULL) {
+    assert(len &gt;= 2);
+    *status = spi_rx_buf[1];
+  }
+  return 0;
+}</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-buffer.png" alt="SX1262 Commands for WriteBuffer and ReadBuffer" /></p>
 <p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(From Semtech SX1262 Datasheet)</a></p>
 <p><em>Is there a way to fix this?</em></p>
@@ -873,8 +1062,7 @@ receive_message</code></pre></div>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1451548895461326858">this Twitter Thread</a></li>
 </ol>
 <h1 id="appendix-install-ch341-spi-driver" class="section-header"><a href="#appendix-install-ch341-spi-driver">11 Appendix: Install CH341 SPI Driver</a></h1>
-<p>TODO</p>
-<p>To install CH341 SPI Driver on Pinebook Pro Manjaro Arm64…</p>
+<p>To install <strong>CH341 SPI Driver</strong> on <strong>Pinebook Pro Manjaro Arm64</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Install DKMS
 sudo pacman -Syu dkms base-devel --needed
 
@@ -934,6 +1122,7 @@ sudo rmmod ch341</code></pre></div></li>
 <p>And recheck the messages.</p>
 </li>
 </ol>
+<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">(More about CH341 SPI Driver)</a></p>
 <h2 id="when-rebooting" class="section-header"><a href="#when-rebooting">11.1 When Rebooting</a></h2>
 <p>TODO</p>
 <p>Whenever we reboot our computer…</p>
@@ -966,11 +1155,8 @@ sudo rmmod ch341</code></pre></div></li>
 <p>And recheck the messages.</p>
 </li>
 </ol>
-<p>More about CH341 SPI Driver:</p>
-<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">PineDio Wiki</a></p>
 <h1 id="appendix-build-pinedio-usb-driver" class="section-header"><a href="#appendix-build-pinedio-usb-driver">12 Appendix: Build PineDio USB Driver</a></h1>
-<p>TODO</p>
-<p>To build PineDio USB Driver on Pinebook Pro Manjaro Arm64…</p>
+<p>To build <strong>PineDio USB Driver</strong> on <strong>Pinebook Pro Manjaro Arm64</strong>…</p>
 <p>Follow the instructions in the previous section to install CH341 SPI Driver.</p>
 <p>Check that the CH341 SPI Driver has been loaded. (<code>dmesg</code>)</p>
 <p>Enter at the command prompt…</p>
@@ -991,8 +1177,7 @@ make
 # Run PineDio USB Driver Demo
 sudo ./lora-sx1262</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#pinedio-usb-output-log">(See the Output Log)</a></p>
-<p>More about PineDio USB:</p>
-<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">PineDio Wiki</a></p>
+<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">(More about PineDio USB)</a></p>
 <h2 id="pinedio-usb-operations" class="section-header"><a href="#pinedio-usb-operations">12.1 PineDio USB Operations</a></h2>
 <p>The PineDio USB Demo supports 3 operations…</p>
 <ol>
