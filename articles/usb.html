@@ -80,8 +80,13 @@
 <li><a href="#receive-lora-message">6 Receive LoRa Message</a><ul>
 <li><a href="#run-the-driver-2">6.1 Run the Driver</a><ul></ul></li></ul></li>
 <li><a href="#ch341-spi-interface">7 CH341 SPI Interface</a><ul>
-<li><a href="#long-messages-are-garbled">7.1 Long Messages are Garbled</a><ul></ul></li>
-<li><a href="#fix-long-messages">7.2 Fix Long Messages</a><ul></ul></li></ul></li>
+<li><a href="#initialise-spi">7.1 Initialise SPI</a><ul></ul></li>
+<li><a href="#transfer-spi">7.2 Transfer SPI</a><ul></ul></li>
+<li><a href="#long-messages-are-garbled">7.3 Long Messages are Garbled</a><ul></ul></li>
+<li><a href="#transmit-long-messages">7.4 Transmit Long Messages</a><ul></ul></li>
+<li><a href="#receive-long-messages">7.5 Receive Long Messages</a><ul></ul></li>
+<li><a href="#spi-transfer-fails-with-32-bytes">7.6 SPI Transfer Fails with 32 Bytes</a><ul></ul></li>
+<li><a href="#fix-long-messages">7.7 Fix Long Messages</a><ul></ul></li></ul></li>
 <li><a href="#ch341-gpio-interface">8 CH341 GPIO Interface</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li>
@@ -699,9 +704,11 @@ receive_message</code></pre></div>
 <p>Our PineDio USB Driver has an issue with <strong>CH341 SPI Transfers</strong>…</p>
 <p><strong>Receiving a LoRa Message on PineDio USB longer than 28 bytes will cause message corruption!</strong></p>
 <p>Thus we limit the Receive LoRa Message Size to <strong>28 bytes</strong>.</p>
-<p>(There’s a way to fix this… More about CH341 later)</p>
+<p>There’s a way to fix this… Coming up next!</p>
+<p><img src="https://lupyuen.github.io/images/usb-schematic.jpg" alt="Schematic for PineDio LoRa SX1262 USB Adapter" /></p>
+<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter">(Source)</a></p>
 <h1 id="ch341-spi-interface" class="section-header"><a href="#ch341-spi-interface">7 CH341 SPI Interface</a></h1>
-<p>TODO</p>
+<p>Remember that PineDio USB Dongle contains a <a href="http://www.wch-ic.com/products/CH341.html"><strong>CH341 USB-to-Serial Interface Module</strong></a> that talks to LoRa SX1262 (over SPI)…</p>
 <ul>
 <li>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter"><strong>CH341 Datasheet</strong></a></p>
@@ -710,13 +717,18 @@ receive_message</code></pre></div>
 <p><a href="http://www.wch.cn/downloads/CH341DS2_PDF.html"><strong>CH341 Interfaces (Chinese)</strong></a></p>
 </li>
 </ul>
-<p>TODO</p>
-<p>We’re using this <strong>CH341 SPI Driver</strong>…</p>
+<p>Pinebook Pro (Manjaro Linux Arm64) has a built-in driver for CH341… But it <strong>doesn’t support SPI</strong>.</p>
+<p>Thus for our PineDio USB Driver we’re calling this <strong>CH341 SPI Driver</strong>…</p>
 <ul>
 <li><a href="https://github.com/rogerjames99/spi-ch341-usb"><strong>rogerjames99/spi-ch341-usb</strong></a></li>
 </ul>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L651-L667">sx126x-linux.c</a></p>
+<p>We install the CH341 SPI Driver with these steps…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver"><strong>“Install CH341 SPI Driver”</strong></a></li>
+</ul>
+<p>Now let’s call the CH341 SPI Driver from our PineDio USB Driver.</p>
+<h2 id="initialise-spi" class="section-header"><a href="#initialise-spi">7.1 Initialise SPI</a></h2>
+<p>Here’s how our PineDio USB Driver calls CH341 SPI Driver to <strong>initialise the SPI Bus</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L651-L667">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// SPI Bus
 static int spi = 0;
 
@@ -737,9 +749,10 @@ static int init_spi(void) {
   assert(rc == 0);
   return 0;
 }</code></pre></div>
-<p>(<strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203"><strong>init_driver</strong></a>)</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
+<p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203"><strong>init_driver</strong></a></p>
+<p>(We’ve seen <strong>init_driver</strong> earlier)</p>
+<h2 id="transfer-spi" class="section-header"><a href="#transfer-spi">7.2 Transfer SPI</a></h2>
+<p>To <strong>transfer SPI Data</strong> between PineDio USB and CH341 / SX1262, we do this: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Blocking call to transmit and receive buffers on SPI. Return 0 on success.
 static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
   assert(spi &gt; 0);
@@ -763,46 +776,41 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
   printf(&quot;spi rx: &quot;); for (int i = 0; i &lt; len; i++) { printf(&quot;%02x &quot;, rx_buf[i]); } printf(&quot;\n&quot;);
   return 0;
 }</code></pre></div>
-<p>We’ll explain this in a while…</p>
+<p>(<strong>transfer_spi</strong> will be called by our PineDio USB Driver, as we’ll see later)</p>
+<p><strong>transfer_spi</strong> has a strange assertion that stops large SPI transfers…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  CAUTION: CH341 SPI doesn&#39;t seem to 
 //  support 32-byte SPI transfers 
 assert(len &lt;= 31);</code></pre></div>
+<p>We’ll learn why in a while.</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="PineDio USB transmits a garbled 64-byte LoRa Message to RAKwireless WisBlock" /></p>
-<h2 id="long-messages-are-garbled" class="section-header"><a href="#long-messages-are-garbled">7.1 Long Messages are Garbled</a></h2>
+<h2 id="long-messages-are-garbled" class="section-header"><a href="#long-messages-are-garbled">7.3 Long Messages are Garbled</a></h2>
 <p><em>What happens when we transmit a LoRa Message longer than 29 bytes?</em></p>
-<p>TODO</p>
-<p>(Garbled consistently, so it’s not RF Interference)</p>
-<p>CH341 SPI seems to have trouble transferring a block of 32 bytes</p>
-<ul>
+<p>The pic above shows what happens when we <strong>transmit a long message</strong> (64 bytes) from PineDio USB to RAKwireless WisBlock…</p>
+<ol>
+<li>
+<p>Our <strong>64-byte message is garbled</strong> when received</p>
+<p>(By RAKwireless WisBlock)</p>
+</li>
+<li>
+<p>But the message is <strong>consistently garbled</strong></p>
+<p>(RAKwireless WisBlock receives the same garbled message twice, not any random message)</p>
+</li>
+<li>
+<p>Which means it’s <strong>not due to Radio Interference</strong></p>
+<p>(Radio Interference would garble the messages randomly)</p>
+</li>
+</ol>
+<p>By tweaking our PineDio USB Driver, we discover two shocking truths…</p>
+<ol>
 <li>
 <p><strong>Transmitting a LoRa Message on PineDio USB longer than 29 bytes will cause message corruption!</strong></p>
 </li>
 <li>
 <p><strong>Receiving a LoRa Message on PineDio USB longer than 28 bytes will cause message corruption!</strong></p>
 </li>
-</ul>
-<p>TODO</p>
-<p>Let’s trace the code.</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L505-L513">sx126x-linux.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t* buffer, const uint8_t size) {
-  //  Prepare the Read Buffer Command (3 bytes)
-  uint8_t buf[SX126X_SIZE_READ_BUFFER] = { 0 };
-  int status = -1;
-  buf[0] = RADIO_READ_BUFFER;  //  Read Buffer Command
-  buf[1] = offset;             //  Offset to read
-  buf[2] = 0;                  //  NOP
-
-  //  Transfer the Read Buffer Command to SX1262 over SPI
-  status = sx126x_hal_read( 
-    context,  //  Context
-    buf,      //  Command Buffer
-    SX126X_SIZE_READ_BUFFER,  //  Command Buffer Size (3 bytes)
-    buffer,   //  Read Data Buffer
-    size,     //  Read Data Buffer Size
-    NULL      //  Ignore the status
-  );
-  return status;
-}</code></pre></div>
+</ol>
+<p>Let’s trace the code and solve this mystery.</p>
+<h2 id="transmit-long-messages" class="section-header"><a href="#transmit-long-messages">7.4 Transmit Long Messages</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L497-L503">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sx126x_write_buffer(const void* context, const uint8_t offset, const uint8_t* buffer, const uint8_t size) {
@@ -869,6 +877,26 @@ static int sx126x_hal_write(
   int rc = transfer_spi(spi_tx_buf, spi_rx_buf, len);
   assert(rc == 0);
   return 0;
+}</code></pre></div><h2 id="receive-long-messages" class="section-header"><a href="#receive-long-messages">7.5 Receive Long Messages</a></h2>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L505-L513">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t* buffer, const uint8_t size) {
+  //  Prepare the Read Buffer Command (3 bytes)
+  uint8_t buf[SX126X_SIZE_READ_BUFFER] = { 0 };
+  buf[0] = RADIO_READ_BUFFER;  //  Read Buffer Command
+  buf[1] = offset;             //  Offset to read
+  buf[2] = 0;                  //  NOP
+
+  //  Transfer the Read Buffer Command to SX1262 over SPI
+  int status = sx126x_hal_read( 
+    context,  //  Context
+    buf,      //  Command Buffer
+    SX126X_SIZE_READ_BUFFER,  //  Command Buffer Size (3 bytes)
+    buffer,   //  Read Data Buffer
+    size,     //  Read Data Buffer Size
+    NULL      //  Ignore the status
+  );
+  return status;
 }</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L571-L615">sx126x-linux.c</a></p>
@@ -916,12 +944,19 @@ static int sx126x_hal_read(
     *status = spi_rx_buf[1];
   }
   return 0;
-}</code></pre></div>
+}</code></pre></div><h2 id="spi-transfer-fails-with-32-bytes" class="section-header"><a href="#spi-transfer-fails-with-32-bytes">7.6 SPI Transfer Fails with 32 Bytes</a></h2>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Blocking call to transmit and receive buffers on SPI. Return 0 on success.
+static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
+  //  CAUTION: CH341 SPI doesn&#39;t seem to 
+  //  support 32-byte SPI transfers 
+  assert(len &lt;= 31);</code></pre></div>
+<p>But wait! We might have a fix for long LoRa Messages…</p>
 <p><img src="https://lupyuen.github.io/images/usb-buffer.png" alt="SX1262 Commands for WriteBuffer and ReadBuffer" /></p>
 <p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(From Semtech SX1262 Datasheet)</a></p>
-<h2 id="fix-long-messages" class="section-header"><a href="#fix-long-messages">7.2 Fix Long Messages</a></h2>
-<p><em>Is there a way to fix this?</em></p>
+<h2 id="fix-long-messages" class="section-header"><a href="#fix-long-messages">7.7 Fix Long Messages</a></h2>
+<p><em>Is there a way to fix Long LoRa Messages on PineDio USB?</em></p>
 <p>TODO</p>
 <p>Right now we’re transferring over SPI…</p>
 <ol>
@@ -998,7 +1033,18 @@ static int sx126x_hal_read(
 <p><strong>ReadBuffer Data:</strong> Transfer next 28 bytes</p>
 </li>
 </ol>
-<p><a href="https://github.com/lupyuen/lora-sx1262/issues">(Lemme know if you would like me to fix this!)</a></p>
+<p>TODO</p>
+<p><em>But is this fix for Long LoRa Messages really necessary?</em></p>
+<p>Maybe not! </p>
+<p>Remember we need to comply with the <strong>Local Regulations</strong> on the usage of <a href="https://en.wikipedia.org/wiki/ISM_radio_band"><strong>ISM Radio Bands</strong></a>: FCC, ETSI, …</p>
+<p>(Blasting Long LoRa Messages non-stop is no-no!)</p>
+<p>When we connect PineDio USB to <strong>The Things Network</strong>, we need to comply with their Fair Use Policy…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network"><strong>“Fair Use of The Things Network”</strong></a></li>
+</ul>
+<p>With <strong>CBOR Encoding</strong>, we can compress simple LoRa Messages (Sensor Data) into 12 bytes roughly. <a href="https://lupyuen.github.io/articles/cbor">(See this)</a></p>
+<p>Thus <strong>28 bytes might be sufficient</strong> for many LoRa Applications.</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/issues">(But lemme know if you would like me to fix this!)</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-receive4.png" alt="" /></p>
 <p>TODO1</p>
