@@ -838,6 +838,58 @@ CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will
 
 [(From Semtech SX1262 Datasheet)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
 
+Right now we're transmitting...
+
+1.  __WriteBuffer Command:__ `0x0E`
+
+1.  __WriteBuffer Offset:__ `0x00`
+
+1.  __WriteBuffer Data:__ Write 29 bytes (max)
+
+Instead we should transmit...
+
+1.  __WriteBuffer Command:__ `0x0E`
+
+1.  __WriteBuffer Offset:__ `0x00`
+
+1.  __WriteBuffer Data:__ Write first 29 bytes
+
+1.  __WriteBuffer Command:__ `0x0E`
+
+1.  __WriteBuffer Offset:__ `0x1D` (29 decimal)
+
+1.  __WriteBuffer Data:__ Write next 29 bytes
+
+For ReadBuffer:
+
+1.  __ReadBuffer Command:__ `0x0E`
+
+1.  __ReadBuffer Offset:__ `0x00`
+
+1.  __ReadBuffer NOP:__ `0x00`
+
+1.  __ReadBuffer Data:__ Read 28 bytes (max)
+
+Instead we should transmit:
+
+1.  __ReadBuffer Command:__ `0x0E`
+
+1.  __ReadBuffer Offset:__ `0x00`
+
+1.  __ReadBuffer NOP:__ `0x00`
+
+1.  __ReadBuffer Data:__ Read first 28 bytes
+
+1.  __ReadBuffer Command:__ `0x0E`
+
+1.  __ReadBuffer Offset:__ `0x1C` (28 decimal)
+
+1.  __ReadBuffer NOP:__ `0x00`
+
+1.  __ReadBuffer Data:__ Read next 28 bytes
+
+[(Lemme know if you would like me to fix this!)](https://github.com/lupyuen/lora-sx1262/issues)
+
 ![](https://lupyuen.github.io/images/usb-spi6.png)
 
 TODO23
