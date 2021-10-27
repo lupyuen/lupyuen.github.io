@@ -571,7 +571,7 @@ static void on_tx_done(void) {
 
 Here we log the number of packets transmitted, and put LoRa SX1262 into __low power, sleep mode__.
 
-Note: __on_tx_done__ won't actually be called in the current driver, because we haven't implemented Multithreading. (More about this later)
+Note: __on_tx_done__ won't actually be called in our current driver, because we haven't implemented Multithreading. (More about this later)
 
 ## Run the Driver
 
@@ -642,24 +642,40 @@ More about LoRa Chirps and Software Defined Radio...
 
 -   [__"Visualise LoRa with Software Defined Radio"__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
 
+![Receiving a LoRa Message with PineDio USB](https://lupyuen.github.io/images/usb-receive5.png)
+
 # Receive LoRa Message
 
-TODO
+Let's __receive a LoRa Message__ on PineDio USB!
 
-From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119)
+This is how we do it: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119)
 
 ```c
 /// Main Function
 int main(void) {
   //  TODO: Create a Background Thread to handle LoRa Events
   create_task();
+```
 
+We start by creating a Background Thread to handle LoRa Events.
+
+(__create_task__ doesn't do anything because we haven't implemented Multithreading. More about this later)
+
+Next we set the __LoRa Parameters__ and the __Callback Functions__...
+
+```c
   //  Init SX1262 driver
   init_driver();
 
   //  TODO: Do we need to wait?
   sleep(1);
+```
 
+(Yep the same __init_driver__ we've seen earlier)
+
+For the next __10 seconds__ we handle LoRa Events (like Message Received)...
+
+```c
   //  Handle LoRa events for the next 10 seconds
   for (int i = 0; i < 10; i++) {
     //  Prepare to receive a LoRa message
@@ -675,7 +691,13 @@ int main(void) {
 }
 ```
 
-Here's how __receive_message__ receives a LoRa Message: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L241-L248)
+We call __receive_message__ to get SX1262 ready to receive a single LoRa Message.
+
+Then we call __RadioOnDioIrq__ to handle the Message Received Event.
+
+[(__RadioOnDioIrq__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1460)
+
+__receive_message__ is defined like so: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L241-L248)
 
 ```c
 /// Receive a LoRa message. Assume that SX1262 driver has been initialised.
@@ -688,9 +710,7 @@ static void receive_message(void) {
 
 [(__RadioRx__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138)
 
-When the LoRa Driver receives a LoRa Packet, it calls our Callback Function __on_rx_done__...
-
-From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L268-L298) :
+When the LoRa Driver receives a LoRa Message, it calls our Callback Function __on_rx_done__ defined in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L268-L298)
 
 ```c
 /// Callback Function that is called when a LoRa message has been received
@@ -731,11 +751,9 @@ Finally we __dump the buffer__ containing the received packet...
 }
 ```
 
-_What happens when we don't receive a packet in 5 seconds?_
+_What happens when we don't receive a packet in 10 seconds? (LORAPING_RX_TIMEOUT_MS)_
 
-The LoRa Driver calls our Callback Function __on_rx_timeout__ ...
-
-From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L314-L327) :
+The LoRa Driver calls our Callback Function __on_rx_timeout__ defined in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L314-L327)
 
 ```c
 /// Callback Function that is called when no LoRa messages could be received due to timeout
@@ -749,6 +767,8 @@ static void on_rx_timeout(void) {
 ```
 
 We switch the LoRa Transceiver into sleep mode and log the timeout.
+
+Note: __on_rx_timeout__ won't actually be called in our current driver, because we haven't implemented Multithreading. (More about this later)
 
 ## Run the Driver
 
@@ -771,8 +791,6 @@ make
 ## Run PineDio USB Driver
 sudo ./lora-sx1262
 ```
-
-TODO
 
 Switch over to [__RAKwireless WisBlock__](https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio) and transmit a 28-byte LoRa Message...
 
@@ -807,12 +825,6 @@ __Receiving a LoRa Message on PineDio USB above 28 bytes will cause message corr
 Thus we limit the Receive LoRa Message Size to __28 bytes__.
 
 (There's a way to fix this... More about CH341 later)
-
-![](https://lupyuen.github.io/images/usb-receive4.png)
-
-TODO19
-
-![](https://lupyuen.github.io/images/usb-receive5.png)
 
 # Sleep
 
@@ -889,6 +901,12 @@ Instead we should transfer over SPI...
 1.  __ReadBuffer Data:__ Transfer next 28 bytes
 
 [(Lemme know if you would like me to fix this!)](https://github.com/lupyuen/lora-sx1262/issues)
+
+TODO
+
+![](https://lupyuen.github.io/images/usb-receive4.png)
+
+TODO1
 
 ![](https://lupyuen.github.io/images/usb-spi6.png)
 
