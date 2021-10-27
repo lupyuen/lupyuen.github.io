@@ -547,7 +547,7 @@ And we __transmit the LoRa Message__...
 
 Our PineDio USB Driver has an issue with __CH341 SPI Transfers__...
 
-__Transmitting a LoRa Message on PineDio USB above 29 bytes will cause message corruption!__
+__Transmitting a LoRa Message on PineDio USB longer than 29 bytes will cause message corruption!__
 
 Thus we limit the Transmit LoRa Message Size to __29 bytes__.
 
@@ -827,7 +827,7 @@ _Why 28 bytes?_
 
 Our PineDio USB Driver has an issue with __CH341 SPI Transfers__...
 
-__Receiving a LoRa Message on PineDio USB above 28 bytes will cause message corruption!__
+__Receiving a LoRa Message on PineDio USB longer than 28 bytes will cause message corruption!__
 
 Thus we limit the Receive LoRa Message Size to __28 bytes__.
 
@@ -855,11 +855,11 @@ TODO
 
 (Garbled consistently, so it's not RF Interference)
 
-CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!
+CH341 SPI seems to have trouble transferring a block of 32 bytes
 
-CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!
+-   __Transmitting a LoRa Message on PineDio USB longer than 29 bytes will cause message corruption!__
 
-(CH341 SPI seems to have trouble transferring a block of 32 bytes)
+-   __Receiving a LoRa Message on PineDio USB longer than 28 bytes will cause message corruption!__
 
 ![SX1262 Commands for WriteBuffer and ReadBuffer](https://lupyuen.github.io/images/usb-buffer.png)
 
