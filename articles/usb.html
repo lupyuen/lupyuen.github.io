@@ -689,6 +689,82 @@ receive_message</code></pre></div>
 <p>(CH341 SPI seems to have trouble transferring a block of 32 bytes)</p>
 <p><img src="https://lupyuen.github.io/images/usb-buffer.png" alt="" /></p>
 <p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(From Semtech SX1262 Datasheet)</a></p>
+<p>Right now we’re transmitting…</p>
+<ol>
+<li>
+<p><strong>WriteBuffer Command:</strong> <code>0x0E</code></p>
+</li>
+<li>
+<p><strong>WriteBuffer Offset:</strong> <code>0x00</code></p>
+</li>
+<li>
+<p><strong>WriteBuffer Data:</strong> Write 29 bytes (max)</p>
+</li>
+</ol>
+<p>Instead we should transmit…</p>
+<ol>
+<li>
+<p><strong>WriteBuffer Command:</strong> <code>0x0E</code></p>
+</li>
+<li>
+<p><strong>WriteBuffer Offset:</strong> <code>0x00</code></p>
+</li>
+<li>
+<p><strong>WriteBuffer Data:</strong> Write first 29 bytes</p>
+</li>
+<li>
+<p><strong>WriteBuffer Command:</strong> <code>0x0E</code></p>
+</li>
+<li>
+<p><strong>WriteBuffer Offset:</strong> <code>0x1D</code> (29 decimal)</p>
+</li>
+<li>
+<p><strong>WriteBuffer Data:</strong> Write next 29 bytes</p>
+</li>
+</ol>
+<p>For ReadBuffer:</p>
+<ol>
+<li>
+<p><strong>ReadBuffer Command:</strong> <code>0x0E</code></p>
+</li>
+<li>
+<p><strong>ReadBuffer Offset:</strong> <code>0x00</code></p>
+</li>
+<li>
+<p><strong>ReadBuffer NOP:</strong> <code>0x00</code></p>
+</li>
+<li>
+<p><strong>ReadBuffer Data:</strong> Read 28 bytes (max)</p>
+</li>
+</ol>
+<p>Instead we should transmit:</p>
+<ol>
+<li>
+<p><strong>ReadBuffer Command:</strong> <code>0x0E</code></p>
+</li>
+<li>
+<p><strong>ReadBuffer Offset:</strong> <code>0x00</code></p>
+</li>
+<li>
+<p><strong>ReadBuffer NOP:</strong> <code>0x00</code></p>
+</li>
+<li>
+<p><strong>ReadBuffer Data:</strong> Read first 28 bytes</p>
+</li>
+<li>
+<p><strong>ReadBuffer Command:</strong> <code>0x0E</code></p>
+</li>
+<li>
+<p><strong>ReadBuffer Offset:</strong> <code>0x1C</code> (28 decimal)</p>
+</li>
+<li>
+<p><strong>ReadBuffer NOP:</strong> <code>0x00</code></p>
+</li>
+<li>
+<p><strong>ReadBuffer Data:</strong> Read next 28 bytes</p>
+</li>
+</ol>
+<p><a href="https://github.com/lupyuen/lora-sx1262/issues">(Lemme know if you would like me to fix this!)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-spi6.png" alt="" /></p>
 <p>TODO23</p>
 <p><img src="https://lupyuen.github.io/images/usb-spi7.png" alt="" /></p>
