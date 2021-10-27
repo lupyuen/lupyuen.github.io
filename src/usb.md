@@ -294,11 +294,9 @@ All other Source Files are shared by Linux, BL602 and BL604.
 
 (Except [__sx126x-board.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c) which is the BL602 / BL604 Interface for SX1262)
 
-# Transmit LoRa Message
+# LoRa Parameters
 
 TODO
-
-## Configure LoRa SX1262
 
 We set the __LoRa Frequency__ in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L25) like so...
 
@@ -312,17 +310,17 @@ Change `USE_BAND_923` to `USE_BAND_433`, `780`, `868` or `915`. Here's the compl
 
 ```c
 #if defined(USE_BAND_433)
-    #define RF_FREQUENCY               434000000 /* Hz */
+  #define RF_FREQUENCY               434000000 /* Hz */
 #elif defined(USE_BAND_780)
-    #define RF_FREQUENCY               780000000 /* Hz */
+  #define RF_FREQUENCY               780000000 /* Hz */
 #elif defined(USE_BAND_868)
-    #define RF_FREQUENCY               868000000 /* Hz */
+  #define RF_FREQUENCY               868000000 /* Hz */
 #elif defined(USE_BAND_915)
-    #define RF_FREQUENCY               915000000 /* Hz */
+  #define RF_FREQUENCY               915000000 /* Hz */
 #elif defined(USE_BAND_923)
-    #define RF_FREQUENCY               923000000 /* Hz */
+  #define RF_FREQUENCY               923000000 /* Hz */
 #else
-    #error "Please define a frequency band in the compiler options."
+  #error "Please define a frequency band in the compiler options."
 #endif
 ```
 
@@ -353,11 +351,105 @@ The __LoRa Parameters__ are also defined in [main.c](https://github.com/lupyuen/
 
 These should match the LoRa Parameters used by the LoRa Transmitter / Receiver.
 
-I used this LoRa Receiver (based on RAKwireless WisBlock) for testing our LoRa Driver...
+I used this __LoRa Transmitter and Receiver__ (based on RAKwireless WisBlock) for testing our LoRa Driver...
 
--   [__"RAKwireless WisBlock Transmitter"__](https://lupyuen.github.io/articles/lora2#start-the-rakwireless-wisblock-transmitter)
+-   [__wisblock-lora-transmitter__](https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio)
 
-## Transmit Message
+    [(LoRa Parameters for transmitter)](https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L38-L58)
+
+-   [__wisblock-lora-receiver__](https://github.com/lupyuen/wisblock-lora-receiver)
+
+    [(LoRa Parameters for receiver)](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56)
+
+Thus the LoRa Parameters for PineDio USB should match the above.
+
+## Initialise LoRa SX1262
+
+The __init_driver__ function initialises the LoRa SX1262 like so: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203)
+
+```c
+/// Command to initialise the LoRa Driver.
+/// Assume that create_task has been called to init the Event Queue.
+static void init_driver(char *buf, int len, int argc, char **argv) {
+  //  Set the LoRa Callback Functions
+  RadioEvents_t radio_events;
+  memset(&radio_events, 0, sizeof(radio_events));  //  Must init radio_events to null, because radio_events lives on stack!
+  radio_events.TxDone    = on_tx_done;     //  Packet has been transmitted
+  radio_events.RxDone    = on_rx_done;     //  Packet has been received
+  radio_events.TxTimeout = on_tx_timeout;  //  Transmit Timeout
+  radio_events.RxTimeout = on_rx_timeout;  //  Receive Timeout
+  radio_events.RxError   = on_rx_error;    //  Receive Error
+```
+
+Here we set the __Callback Functions__ that will be called when a LoRa Packet has been transmitted or received, also when we encounter a transmit / receive timeout or error.
+
+(We'll see the Callback Functions in a while)
+
+Next we initialise the LoRa Transceiver and set the __LoRa Frequency__...
+
+```c
+  //  Init the SPI Port and the LoRa Transceiver
+  Radio.Init(&radio_events);
+
+  //  Set the LoRa Frequency
+  Radio.SetChannel(RF_FREQUENCY);
+```
+
+We set the __LoRa Transmit Parameters__...
+
+```c
+  //  Configure the LoRa Transceiver for transmitting messages
+  Radio.SetTxConfig(
+    MODEM_LORA,
+    LORAPING_TX_OUTPUT_POWER,
+    0,        //  Frequency deviation: Unused with LoRa
+    LORAPING_BANDWIDTH,
+    LORAPING_SPREADING_FACTOR,
+    LORAPING_CODINGRATE,
+    LORAPING_PREAMBLE_LENGTH,
+    LORAPING_FIX_LENGTH_PAYLOAD_ON,
+    true,     //  CRC enabled
+    0,        //  Frequency hopping disabled
+    0,        //  Hop period: N/A
+    LORAPING_IQ_INVERSION_ON,
+    LORAPING_TX_TIMEOUT_MS
+  );
+```
+
+Finally we set the __LoRa Receive Parameters__...
+
+```c
+  //  Configure the LoRa Transceiver for receiving messages
+  Radio.SetRxConfig(
+    MODEM_LORA,
+    LORAPING_BANDWIDTH,
+    LORAPING_SPREADING_FACTOR,
+    LORAPING_CODINGRATE,
+    0,        //  AFC bandwidth: Unused with LoRa
+    LORAPING_PREAMBLE_LENGTH,
+    LORAPING_SYMBOL_TIMEOUT,
+    LORAPING_FIX_LENGTH_PAYLOAD_ON,
+    0,        //  Fixed payload length: N/A
+    true,     //  CRC enabled
+    0,        //  Frequency hopping disabled
+    0,        //  Hop period: N/A
+    LORAPING_IQ_INVERSION_ON,
+    true      //  Continuous receive mode
+  );    
+}
+```
+
+The __Radio__ functions are defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c) ...
+
+-   [__RadioInit__ - Init LoRa Transceiver](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559)
+
+-   [__RadioSetChannel__ - Set LoRa Frequency](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604)
+
+-   [__RadioSetTxConfig__ - Set LoRa Transmit Configuration](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908)
+
+-   [__RadioSetRxConfig__ - Set LoRa Receive Configuration](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786)
+
+# Transmit LoRa Message
 
 TODO
 
@@ -366,15 +458,15 @@ From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-
 ```c
 /// Main Function
 int main(void) {
-    //  Init SX1262 driver
-    init_driver();
+  //  Init SX1262 driver
+  init_driver();
 
-    //  TODO: Do we need to wait?
-    sleep(1);
+  //  TODO: Do we need to wait?
+  sleep(1);
 
-    //  Send a LoRa message
-    send_message();
-    return 0;
+  //  Send a LoRa message
+  send_message();
+  return 0;
 }
 ```
 
@@ -385,8 +477,8 @@ To transmit a LoRa Packet, __send_message__ calls __send_once__ in [main.c](http
 ```c
 /// Send a LoRa message. Assume that SX1262 driver has been initialised.
 static void send_message(void) {
-    //  Send the "PING" message
-    send_once(1);
+  //  Send the "PING" message
+  send_once(1);
 }
 ```
 
@@ -404,47 +496,59 @@ static uint8_t loraping_buffer[LORAPING_BUFFER_SIZE];
 
 /// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
 static void send_once(int is_ping) {
-    //  Copy the "PING" or "PONG" message 
-    //  to the transmit buffer
-    if (is_ping) {
-        memcpy(loraping_buffer, loraping_ping_msg, 4);
-    } else {
-        memcpy(loraping_buffer, loraping_pong_msg, 4);
-    }
+  //  Copy the "PING" or "PONG" message 
+  //  to the transmit buffer
+  if (is_ping) {
+    memcpy(loraping_buffer, loraping_ping_msg, 4);
+  } else {
+    memcpy(loraping_buffer, loraping_pong_msg, 4);
+  }
 ```
 
 Then we pad the packet with values 0, 1, 2, ...
 
 ```c
-    //  Fill up the remaining space in the 
-    //  transmit buffer (64 bytes) with values 
-    //  0, 1, 2, ...
-    for (int i = 4; i < sizeof loraping_buffer; i++) {
-        loraping_buffer[i] = i - 4;
-    }
+  //  Fill up the remaining space in the 
+  //  transmit buffer (64 bytes) with values 
+  //  0, 1, 2, ...
+  for (int i = 4; i < sizeof loraping_buffer; i++) {
+    loraping_buffer[i] = i - 4;
+  }
 ```
 
 And transmit the LoRa Packet...
 
 ```c
-    //  We send the transmit buffer, limited to 29 bytes.
-    //  CAUTION: Anything more will cause message corruption!
-    #define MAX_MESSAGE_SIZE 29
-    uint8_t size = sizeof loraping_buffer > MAX_MESSAGE_SIZE
-        ? MAX_MESSAGE_SIZE 
-        : sizeof loraping_buffer;
-    Radio.Send(loraping_buffer, size);
+  //  We send the transmit buffer, limited to 29 bytes.
+  //  CAUTION: Anything more will cause message corruption!
+  #define MAX_MESSAGE_SIZE 29
+  uint8_t size = sizeof loraping_buffer > MAX_MESSAGE_SIZE
+    ? MAX_MESSAGE_SIZE 
+    : sizeof loraping_buffer;
+  Radio.Send(loraping_buffer, size);
 
-    //  TODO: Previously we send 64 bytes, which gets garbled consistently.
-    //  Does CH341 limit SPI transfers to 31 bytes?
-    //  (Including 2 bytes for SX1262 SPI command header)
-    //  Radio.Send(loraping_buffer, sizeof loraping_buffer);
+  //  TODO: Previously we send 64 bytes, which gets garbled consistently.
+  //  Does CH341 limit SPI transfers to 31 bytes?
+  //  (Including 2 bytes for SX1262 SPI command header)
+  //  Radio.Send(loraping_buffer, sizeof loraping_buffer);
 }
 ```
 
 [(__RadioSend__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
 
 When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function __on_tx_done__ ...
+
+```c
+/// Callback Function that is called when our LoRa message has been transmitted
+static void on_tx_done(void) {
+  //  Log the success status
+  loraping_stats.tx_success++;
+
+  //  Switch the LoRa Transceiver to 
+  //  low power, sleep mode
+  Radio.Sleep();
+}
+```
 
 TODO
 
@@ -466,34 +570,104 @@ From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-
 /// Main Function
 int main(void) {
 
-    //  TODO: Create a Background Thread to handle LoRa Events
-    create_task();
+  //  TODO: Create a Background Thread to handle LoRa Events
+  create_task();
 
-    //  Init SX1262 driver
-    init_driver();
+  //  Init SX1262 driver
+  init_driver();
 
-    //  TODO: Do we need to wait?
-    sleep(1);
+  //  TODO: Do we need to wait?
+  sleep(1);
 
-    //  Handle LoRa events for the next 10 seconds
-    for (int i = 0; i < 10; i++) {
-        //  Prepare to receive a LoRa message
-        receive_message();
+  //  Handle LoRa events for the next 10 seconds
+  for (int i = 0; i < 10; i++) {
+    //  Prepare to receive a LoRa message
+    receive_message();
 
-        //  Process the received LoRa message, if any
-        RadioOnDioIrq(NULL);
-        
-        //  Sleep for 1 second
-        usleep(1000 * 1000);
-    }
-    return 0;
+    //  Process the received LoRa message, if any
+    RadioOnDioIrq(NULL);
+    
+    //  Sleep for 1 second
+    usleep(1000 * 1000);
+  }
+  return 0;
 }
 ```
 
-I used this LoRa Transmitter (based on RAKwireless WisBlock) for testing our LoRa Driver...
+Here's how __receive_message__ receives a LoRa Message: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L241-L248)
 
--   [__"RAKwireless WisBlock Transmitter"__](https://lupyuen.github.io/articles/lora2#start-the-rakwireless-wisblock-transmitter)
+```c
+/// Receive a LoRa message. Assume that SX1262 driver has been initialised.
+/// Assume that create_task has been called to init the Event Queue.
+static void receive_message(void) {
+  //  Receive a LoRa message within the timeout period
+  Radio.Rx(LORAPING_RX_TIMEOUT_MS);
+}
+```
 
+[(__RadioRx__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138)
+
+When the LoRa Driver receives a LoRa Packet, it calls our Callback Function __on_rx_done__...
+
+From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L268-L298) :
+
+```c
+/// Callback Function that is called when a LoRa message has been received
+static void on_rx_done(
+  uint8_t *payload,  //  Buffer containing received LoRa message
+  uint16_t size,     //  Size of the LoRa message
+  int16_t rssi,      //  Signal strength
+  int8_t snr) {      //  Signal To Noise ratio
+
+  //  Switch the LoRa Transceiver to low power, sleep mode
+  Radio.Sleep();
+
+  //  Log the signal strength, signal to noise ratio
+  loraping_rxinfo_rxed(rssi, snr);
+```
+
+__on_rx_done__ switches the LoRa Transceiver to low power, sleep mode and logs the received packet.
+
+Next we __copy the received packet__ into a buffer...
+
+```c
+  //  Copy the received packet
+  if (size > sizeof loraping_buffer) {
+    size = sizeof loraping_buffer;
+  }
+  loraping_rx_size = size;
+  memcpy(loraping_buffer, payload, size);
+```
+
+Finally we __dump the buffer__ containing the received packet...
+
+```c
+  //  Dump the contents of the received packet
+  for (int i = 0; i < loraping_rx_size; i++) {
+    printf("%02x ", loraping_buffer[i]);
+  }
+  printf("\r\n");
+}
+```
+
+_What happens when we don't receive a packet in 5 seconds?_
+
+The LoRa Driver calls our Callback Function __on_rx_timeout__ ...
+
+From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L314-L327) :
+
+```c
+/// Callback Function that is called when no LoRa messages could be received due to timeout
+static void on_rx_timeout(void) {
+  //  Switch the LoRa Transceiver to low power, sleep mode
+  Radio.Sleep();
+
+  //  Log the timeout
+  loraping_stats.rx_timeout++;
+}
+```
+
+We switch the LoRa Transceiver into sleep mode and log the timeout.
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#receive-message)
 
