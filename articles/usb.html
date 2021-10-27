@@ -982,8 +982,8 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(From Semtech SX1262 Datasheet)</a></p>
 <h2 id="fix-long-messages" class="section-header"><a href="#fix-long-messages">7.7 Fix Long Messages</a></h2>
 <p><em>Is there a way to fix Long LoRa Messages on PineDio USB?</em></p>
-<p>TODO</p>
-<p>Right now we’re transferring over SPI…</p>
+<p>Let’s look back at our code in <a href="https://lupyuen.github.io/articles/usb#transmit-long-message"><strong>sx126x_write_buffer</strong></a>.</p>
+<p>To transmit a LoRa Message, we send the <strong>WriteBuffer Command</strong> to SX1262 over SPI…</p>
 <ol>
 <li>
 <p><strong>WriteBuffer Command:</strong> <code>0x0E</code></p>
@@ -995,7 +995,10 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p><strong>WriteBuffer Data:</strong> Transfer 29 bytes (max)</p>
 </li>
 </ol>
-<p>Instead we should transfer over SPI…</p>
+<p>This copies the <strong>entire LoRa Message</strong> into the SX1262 Transmit Buffer as a <strong>single (huge) chunk</strong>.</p>
+<p>If we try to transmit a LoRa Message that’s <strong>longer than 29 bytes</strong>, the SPI Transfer fails.</p>
+<p><em>Can we transfer in smaller chunks instead?</em></p>
+<p>Yes! According to the <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>SX1262 Datasheet</strong></a> (pic above), we can copy the LoRa Message in <strong>smaller chunks</strong> (29 bytes), by changing the <strong>WriteBuffer Offset</strong>…</p>
 <ol>
 <li>
 <p><strong>WriteBuffer Command:</strong> <code>0x0E</code></p>
@@ -1016,7 +1019,9 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p><strong>WriteBuffer Data:</strong> Transfer next 29 bytes</p>
 </li>
 </ol>
-<p>Right now we’re transferring over SPI…</p>
+<p>We need to mod the code in <a href="https://lupyuen.github.io/articles/usb#transmit-long-message"><strong>sx126x_write_buffer</strong></a> to copy the LoRa Message in <strong>29-byte chunks</strong>.</p>
+<p><em>Awesome! Will this work for receiving Long LoRa Messages?</em></p>
+<p>Yep! To receive a LoRa Message, <a href="https://lupyuen.github.io/articles/usb#receive-long-message"><strong>sx126x_read_buffer</strong></a> sends this <strong>ReadBuffer Command</strong> to SX1262 over SPI…</p>
 <ol>
 <li>
 <p><strong>ReadBuffer Command:</strong> <code>0x0E</code></p>
@@ -1031,7 +1036,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p><strong>ReadBuffer Data:</strong> Transfer 28 bytes (max)</p>
 </li>
 </ol>
-<p>Instead we should transfer over SPI…</p>
+<p>Instead of reading the <strong>entire LoRa Message</strong> (from SX1262 Receive Buffer) in a single chunk, we should read it in <strong>28-byte chunks</strong>…</p>
 <ol>
 <li>
 <p><strong>ReadBuffer Command:</strong> <code>0x0E</code></p>
@@ -1058,8 +1063,8 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p><strong>ReadBuffer Data:</strong> Transfer next 28 bytes</p>
 </li>
 </ol>
-<p>TODO</p>
-<p><em>But is this fix for Long LoRa Messages really necessary?</em></p>
+<p>We need to fix <a href="https://lupyuen.github.io/articles/usb#receive-long-message"><strong>sx126x_read_buffer</strong></a> to read the LoRa Message in <strong>28-byte chunks</strong>.</p>
+<p><em>Is this fix for Long LoRa Messages really necessary?</em></p>
 <p>Maybe not! </p>
 <p>Remember we need to comply with the <strong>Local Regulations</strong> on the usage of <a href="https://en.wikipedia.org/wiki/ISM_radio_band"><strong>ISM Radio Bands</strong></a>: FCC, ETSI, …</p>
 <p>(Blasting Long LoRa Messages non-stop is no-no!)</p>
