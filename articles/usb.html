@@ -951,8 +951,8 @@ static int sx126x_hal_read(
   }
   return 0;
 }</code></pre></div>
-<p><strong>sx126x_hal_read</strong> returns the Data Buffer that has been read over SPI.</p>
-<p><strong>sx126x_hal_read</strong> calls <strong>transfer_spi</strong> to transfer the SPI Data.</p>
+<p>And returns the Data Buffer that has been read over SPI.</p>
+<p><strong>sx126x_hal_read</strong> also calls <strong>transfer_spi</strong> to transfer the SPI Data.</p>
 <p>Now <strong>transfer_spi</strong> is doubly sus… The same function is called to transmit AND receive Long LoRa Messages!</p>
 <h2 id="spi-transfer-fails-with-32-bytes" class="section-header"><a href="#spi-transfer-fails-with-32-bytes">7.6 SPI Transfer Fails with 32 Bytes</a></h2>
 <p>TODO</p>
