@@ -307,26 +307,18 @@ Register 0x0a = 0x01</code></pre></div>
 <p>All other Source Files are shared by Linux, BL602 and BL604.</p>
 <p>(Except <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c"><strong>sx126x-board.c</strong></a> which is the BL602 / BL604 Interface for SX1262)</p>
 <h1 id="lora-parameters" class="section-header"><a href="#lora-parameters">4 LoRa Parameters</a></h1>
-<p>TODO</p>
-<p>We set the <strong>LoRa Frequency</strong> in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L25">main.c</a> like so…</p>
+<p>Before we transmit and receive LoRa Messages on PineDio USB, let’s talk about the <strong>LoRa Parameters</strong>.</p>
+<p>To find out which <strong>LoRa Frequency</strong> we should use for our region…</p>
+<ul>
+<li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
+</ul>
+<p>We set the <strong>LoRa Frequency</strong> like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L25">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
 #define USE_BAND_923</code></pre></div>
-<p>Change <code>USE_BAND_923</code> to <code>USE_BAND_433</code>, <code>780</code>, <code>868</code> or <code>915</code>. Here’s the complete list…</p>
-<div class="example-wrap"><pre class="language-c"><code>#if defined(USE_BAND_433)
-  #define RF_FREQUENCY               434000000 /* Hz */
-#elif defined(USE_BAND_780)
-  #define RF_FREQUENCY               780000000 /* Hz */
-#elif defined(USE_BAND_868)
-  #define RF_FREQUENCY               868000000 /* Hz */
-#elif defined(USE_BAND_915)
-  #define RF_FREQUENCY               915000000 /* Hz */
-#elif defined(USE_BAND_923)
-  #define RF_FREQUENCY               923000000 /* Hz */
-#else
-  #error &quot;Please define a frequency band in the compiler options.&quot;
-#endif</code></pre></div>
-<p>The <strong>LoRa Parameters</strong> are also defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L27-L46">main.c</a></p>
+<p>Change <strong>USE_BAND_923</strong> to <strong>USE_BAND_433</strong>, <strong>780</strong>, <strong>868</strong> or <strong>915</strong>.</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L25">(See the complete list)</a></p>
+<p>Below are the other <strong>LoRa Parameters</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L27-L46">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
@@ -347,21 +339,30 @@ Register 0x0a = 0x01</code></pre></div>
 #define LORAPING_TX_TIMEOUT_MS              3000    /* ms */
 #define LORAPING_RX_TIMEOUT_MS              10000    /* ms */
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */</code></pre></div>
-<p>These should match the LoRa Parameters used by the LoRa Transmitter / Receiver.</p>
-<p>I used this <strong>LoRa Transmitter and Receiver</strong> (based on RAKwireless WisBlock) for testing our LoRa Driver…</p>
+<p><a href="https://www.thethingsnetwork.org/docs/lorawan/spreading-factors/">(More about LoRa Parameters)</a></p>
+<p>During testing, these should <strong>match the LoRa Parameters</strong> used by the LoRa Transmitter / Receiver.</p>
+<p>These are <strong>LoRa Transmitter and Receiver</strong> programs based on <a href="https://lupyuen.github.io/articles/wisblock"><strong>RAKwireless WisBlock</strong></a> (pic below) that I used for testing PineDio USB…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio"><strong>wisblock-lora-transmitter</strong></a></p>
-<p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L38-L58">(LoRa Parameters for transmitter)</a></p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L38-L58">(LoRa Parameters for Transmitter)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/wisblock-lora-receiver"><strong>wisblock-lora-receiver</strong></a></p>
-<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56">(LoRa Parameters for receiver)</a></p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56">(LoRa Parameters for Receiver)</a></p>
 </li>
 </ul>
 <p>Thus the LoRa Parameters for PineDio USB should match the above.</p>
+<p><em>Are there practical limits on the LoRa Parameters?</em></p>
+<p>Yes we need to comply with the <strong>Local Regulations</strong> on the usage of <a href="https://en.wikipedia.org/wiki/ISM_radio_band"><strong>ISM Radio Bands</strong></a>: FCC, ETSI, …</p>
+<p>(Blasting LoRa Messages non-stop is no-no!)</p>
+<p>When we connect PineDio USB to <strong>The Things Network</strong>, we need to comply with their Fair Use Policy…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network"><strong>“Fair Use of The Things Network”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <h2 id="initialise-lora-sx1262" class="section-header"><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a></h2>
-<p>The <strong>init_driver</strong> function initialises the LoRa SX1262 like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203">main.c</a></p>
+<p>Our <strong>init_driver</strong> function takes the above LoRa Parameters and initialises LoRa SX1262 like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to initialise the LoRa Driver.
 /// Assume that create_task has been called to init the Event Queue.
 static void init_driver(char *buf, int len, int argc, char **argv) {
@@ -373,7 +374,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
   radio_events.TxTimeout = on_tx_timeout;  //  Transmit Timeout
   radio_events.RxTimeout = on_rx_timeout;  //  Receive Timeout
   radio_events.RxError   = on_rx_error;    //  Receive Error</code></pre></div>
-<p>Here we set the <strong>Callback Functions</strong> that will be called when a LoRa Packet has been transmitted or received, also when we encounter a transmit / receive timeout or error.</p>
+<p>Here we set the <strong>Callback Functions</strong> that will be called when a LoRa Message has been transmitted or received, also when we encounter a transmit / receive timeout or error.</p>
 <p>(We’ll see the Callback Functions in a while)</p>
 <p>Next we initialise the LoRa Transceiver and set the <strong>LoRa Frequency</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Init the SPI Port and the LoRa Transceiver
@@ -417,21 +418,22 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     true      //  Continuous receive mode
   );    
 }</code></pre></div>
-<p>The <strong>Radio</strong> functions are defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c">radio.c</a> …</p>
+<p>The <strong>Radio</strong> functions are Platform-Independent (Linux and BL602), defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c">radio.c</a> …</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit</strong> - Init LoRa Transceiver</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit:</strong></a> Init LoRa SX1262</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604"><strong>RadioSetChannel</strong> - Set LoRa Frequency</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604"><strong>RadioSetChannel:</strong></a> Set LoRa Frequency</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908"><strong>RadioSetTxConfig</strong> - Set LoRa Transmit Configuration</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908"><strong>RadioSetTxConfig:</strong></a> Set LoRa Transmit Configuration</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786"><strong>RadioSetRxConfig</strong> - Set LoRa Receive Configuration</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786"><strong>RadioSetRxConfig:</strong></a> Set LoRa Receive Configuration</p>
 </li>
 </ul>
+<p>(The <strong>Radio</strong> functions will also be called later when we implement LoRaWAN)</p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">5 Transmit LoRa Message</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119">main.c</a></p>
