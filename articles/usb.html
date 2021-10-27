@@ -80,8 +80,8 @@
 <li><a href="#receive-lora-message">6 Receive LoRa Message</a><ul>
 <li><a href="#run-the-driver-2">6.1 Run the Driver</a><ul></ul></li></ul></li>
 <li><a href="#sleep">7 Sleep</a><ul></ul></li>
-<li><a href="#ch341-spi">8 CH341 SPI</a><ul></ul></li>
-<li><a href="#ch341-gpio">9 CH341 GPIO</a><ul></ul></li>
+<li><a href="#ch341-spi-interface">8 CH341 SPI Interface</a><ul></ul></li>
+<li><a href="#ch341-gpio-interface">9 CH341 GPIO Interface</a><ul></ul></li>
 <li><a href="#wisblock">10 WisBlock</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li>
@@ -669,7 +669,7 @@ receive_message</code></pre></div>
 <h1 id="sleep" class="section-header"><a href="#sleep">7 Sleep</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="" /></p>
-<h1 id="ch341-spi" class="section-header"><a href="#ch341-spi">8 CH341 SPI</a></h1>
+<h1 id="ch341-spi-interface" class="section-header"><a href="#ch341-spi-interface">8 CH341 SPI Interface</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -682,6 +682,8 @@ receive_message</code></pre></div>
 <p>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</p>
 <p>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</p>
 <p>(CH341 SPI seems to have trouble transferring a block of 32 bytes)</p>
+<p><img src="https://lupyuen.github.io/images/usb-buffer.png" alt="" /></p>
+<p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(From Semtech SX1262 Datasheet)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-spi6.png" alt="" /></p>
 <p>TODO23</p>
 <p><img src="https://lupyuen.github.io/images/usb-spi7.png" alt="" /></p>
@@ -689,7 +691,7 @@ receive_message</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/usb-spi8.png" alt="" /></p>
 <p>TODO25</p>
 <p><img src="https://lupyuen.github.io/images/usb-spi5.png" alt="" /></p>
-<h1 id="ch341-gpio" class="section-header"><a href="#ch341-gpio">9 CH341 GPIO</a></h1>
+<h1 id="ch341-gpio-interface" class="section-header"><a href="#ch341-gpio-interface">9 CH341 GPIO Interface</a></h1>
 <p>TODO</p>
 <p>Note that the CH341 GPIO programming is incomplete. We need to…</p>
 <ol>
