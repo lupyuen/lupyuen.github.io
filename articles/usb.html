@@ -83,7 +83,8 @@
 <li><a href="#ch341-gpio-interface">8 CH341 GPIO Interface</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-install-ch341-spi-driver">11 Appendix: Install CH341 SPI Driver</a><ul></ul></li>
+<li><a href="#appendix-install-ch341-spi-driver">11 Appendix: Install CH341 SPI Driver</a><ul>
+<li><a href="#when-rebooting">11.1 When Rebooting</a><ul></ul></li></ul></li>
 <li><a href="#appendix-build-pinedio-usb-driver">12 Appendix: Build PineDio USB Driver</a><ul>
 <li><a href="#pinedio-usb-operations">12.1 PineDio USB Operations</a><ul></ul></li></ul></li>
 <li><a href="#appendix-pinedio-usb-dmesg-log">13 Appendix: PineDio USB dmesg Log</a><ul>
@@ -880,31 +881,22 @@ make
 sudo make install
 popd
 
-# Unload the module ch341 if it has been automatically loaded
+# Unload the CH341 Non-SPI Driver if it has been automatically loaded
 lsmod | grep ch341
 sudo rmmod ch341
 
-# Load the new module
-sudo modprobe spi-ch341-usb
-
-# Plug in PineDio USB
-
-# Check that the module has been correctly loaded
-dmesg
-
-# We should see &quot;ch341_gpio_probe: registered GPIOs from 496 to 511&quot;
-
-# If we see &quot;spi_ch341_usb: loading out-of-tree module taints kernel&quot;,
-# Unplug PineDio USB, run &quot;sudo rmmod ch341&quot;, plug in PineDio USB again
-# and recheck dmesg.</code></pre></div>
-<p>Whenever we reboot our computer…</p>
-<p>Plug in PineDio USB and check that the module has been correctly loaded.</p>
+# Load the CH341 SPI Driver
+sudo modprobe spi-ch341-usb</code></pre></div>
+<p>Plug in PineDio USB.</p>
+<p>Check that the CH341 SPI Driver has been correctly loaded…</p>
 <div class="example-wrap"><pre class="language-bash"><code>dmesg</code></pre></div>
 <p>We should see…</p>
-<div class="example-wrap"><pre class="language-text"><code>ch341_gpio_probe: registered GPIOs from 496 to 511</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>ch341_gpio_probe: 
+registered GPIOs from 496 to 511</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#connect-usb">(See the complete log)</a></p>
 <p>If we see…</p>
-<div class="example-wrap"><pre class="language-text"><code>spi_ch341_usb: loading out-of-tree module taints kernel</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>spi_ch341_usb: 
+loading out-of-tree module taints kernel</code></pre></div>
 <p>It means the older CH341 Non-SPI Driver has been loaded.</p>
 <p>To fix this…</p>
 <ol>
@@ -913,7 +905,40 @@ dmesg
 </li>
 <li>
 <p>Enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo rmmod ch341</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code># Unload the CH341 Non-SPI Driver
+sudo rmmod ch341</code></pre></div></li>
+<li>
+<p>Plug in PineDio USB</p>
+</li>
+<li>
+<p>Enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>dmesg</code></pre></div>
+<p>And recheck the messages.</p>
+</li>
+</ol>
+<h2 id="when-rebooting" class="section-header"><a href="#when-rebooting">11.1 When Rebooting</a></h2>
+<p>TODO</p>
+<p>Whenever we reboot our computer…</p>
+<p>Plug in PineDio USB.</p>
+<p>Check that the CH341 SPI Driver has been correctly loaded…</p>
+<div class="example-wrap"><pre class="language-bash"><code>dmesg</code></pre></div>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>ch341_gpio_probe: 
+registered GPIOs from 496 to 511</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262#connect-usb">(See the complete log)</a></p>
+<p>If we see…</p>
+<div class="example-wrap"><pre class="language-text"><code>spi_ch341_usb: 
+loading out-of-tree module taints kernel</code></pre></div>
+<p>It means the older CH341 Non-SPI Driver has been loaded.</p>
+<p>To fix this…</p>
+<ol>
+<li>
+<p>Unplug PineDio USB</p>
+</li>
+<li>
+<p>Enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Unload the CH341 Non-SPI Driver
+sudo rmmod ch341</code></pre></div></li>
 <li>
 <p>Plug in PineDio USB</p>
 </li>
@@ -929,22 +954,25 @@ dmesg
 <p>TODO</p>
 <p>To build PineDio USB Driver on Pinebook Pro Manjaro Arm64…</p>
 <p>Follow the instructions in the previous section to install CH341 SPI Driver.</p>
+<p>Check that the CH341 SPI Driver has been loaded. (<code>dmesg</code>)</p>
+<p>Enter at the command prompt…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download PineDio USB Driver
 git clone --recursive https://github.com/lupyuen/lora-sx1262
 cd lora-sx1262
 
-# TODO: Edit src/main.c and uncomment READ_REGISTERS, SEND_MESSAGE or RECEIVE_MESSAGE.
-# See &quot;PineDio USB Operations&quot; below
+# TODO: Edit src/main.c and uncomment 
+# READ_REGISTERS, SEND_MESSAGE or RECEIVE_MESSAGE.
+# See &quot;PineDio USB Operations&quot; below.
 
-# TODO: Edit src/main.c and update the LoRa Parameters
-# See &quot;LoRa Parameters&quot; above
+# TODO: Edit src/main.c and update the LoRa Parameters.
+# See &quot;LoRa Parameters&quot; above.
 
 # Build PineDio USB Driver
 make
 
 # Run PineDio USB Driver Demo
 sudo ./lora-sx1262</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262#pinedio-usb-output-log">(See output log)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#pinedio-usb-output-log">(See the Output Log)</a></p>
 <p>More about PineDio USB:</p>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">PineDio Wiki</a></p>
 <h2 id="pinedio-usb-operations" class="section-header"><a href="#pinedio-usb-operations">12.1 PineDio USB Operations</a></h2>
@@ -954,19 +982,19 @@ sudo ./lora-sx1262</code></pre></div>
 <p>Read SX1262 Registers:</p>
 <p>Edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define READ_REGISTERS</code></pre></div>
-<p>(See the Read Register Log below)</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#read-registers">(See the Read Register Log)</a></p>
 </li>
 <li>
 <p>Send LoRa Message:</p>
 <p>Edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define SEND_MESSAGE</code></pre></div>
-<p>(See the Send Message Log below)</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#send-message">(See the Send Message Log)</a></p>
 </li>
 <li>
 <p>Receive LoRa Message:</p>
 <p>Edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define RECEIVE_MESSAGE</code></pre></div>
-<p>(See the Receive Message Log below)</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the Receive Message Log)</a></p>
 </li>
 </ol>
 <h1 id="appendix-pinedio-usb-dmesg-log" class="section-header"><a href="#appendix-pinedio-usb-dmesg-log">13 Appendix: PineDio USB dmesg Log</a></h1>
