@@ -833,12 +833,6 @@ Thus we limit the Receive LoRa Message Size to __28 bytes__.
 
 (There's a way to fix this... More about CH341 later)
 
-# Sleep
-
-TODO
-
-![](https://lupyuen.github.io/images/usb-sleep3.png)
-
 # CH341 SPI Interface
 
 TODO
@@ -979,6 +973,12 @@ More about PineDio USB and CH341 GPIO:
 
 [PineDio Wiki](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
 
+TODO
+
+![](https://lupyuen.github.io/images/usb-sleep3.png)
+
+TODO2
+
 ![](https://lupyuen.github.io/images/lora2-handler.png)
 
 # What's Next
@@ -1011,11 +1011,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1451548895461326858)
 
-# Appendix: Build PineDio USB Driver
+# Appendix: Install CH341 SPI Driver
 
 TODO
 
-To build PineDio USB Driver on Pinebook Pro Manjaro Arm64...
+To install CH341 SPI Driver on Pinebook Pro Manjaro Arm64...
 
 ```bash
 ## Install DKMS
@@ -1049,15 +1049,75 @@ sudo rmmod ch341
 ## Load the new module
 sudo modprobe spi-ch341-usb
 
-## Plug in PineDio USB and check that the module has been correctly loaded.
-## See dmesg Log below. This needs to be checked every time we reboot
-## our computer and when we plug in PineDio USB.
+## Plug in PineDio USB
+
+## Check that the module has been correctly loaded
 dmesg
+
+## We should see "ch341_gpio_probe: registered GPIOs from 496 to 511"
 
 ## If we see "spi_ch341_usb: loading out-of-tree module taints kernel",
 ## Unplug PineDio USB, run "sudo rmmod ch341", plug in PineDio USB again
 ## and recheck dmesg.
+```
 
+Whenever we reboot our computer...
+
+Plug in PineDio USB and check that the module has been correctly loaded.
+
+```bash
+dmesg
+```
+
+We should see...
+
+```text
+ch341_gpio_probe: registered GPIOs from 496 to 511
+```
+
+[(See the complete log)](https://github.com/lupyuen/lora-sx1262#connect-usb)
+
+If we see...
+
+```text
+spi_ch341_usb: loading out-of-tree module taints kernel
+```
+
+It means the older CH341 Non-SPI Driver has been loaded.
+
+To fix this...
+
+1.  Unplug PineDio USB
+
+1.  Enter...
+
+    ```bash
+    sudo rmmod ch341
+    ```
+
+1.  Plug in PineDio USB
+
+1.  Enter...
+
+    ```bash
+    dmesg
+    ```
+
+    And recheck the messages.
+
+More about CH341 SPI Driver:
+
+[PineDio Wiki](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
+
+# Appendix: Build PineDio USB Driver
+
+TODO
+
+To build PineDio USB Driver on Pinebook Pro Manjaro Arm64...
+
+Follow the instructions in the previous section to install CH341 SPI Driver.
+
+```bash
 ## Download PineDio USB Driver
 git clone --recursive https://github.com/lupyuen/lora-sx1262
 cd lora-sx1262
@@ -1065,15 +1125,19 @@ cd lora-sx1262
 ## TODO: Edit src/main.c and uncomment READ_REGISTERS, SEND_MESSAGE or RECEIVE_MESSAGE.
 ## See "PineDio USB Operations" below
 
+## TODO: Edit src/main.c and update the LoRa Parameters
+## See "LoRa Parameters" above
+
 ## Build PineDio USB Driver
 make
 
-## Run PineDio USB Driver Demo.
-## See Output Log below.
+## Run PineDio USB Driver Demo
 sudo ./lora-sx1262
 ```
 
-More about PineDio USB and CH341 SPI:
+[(See output log)](https://github.com/lupyuen/lora-sx1262#pinedio-usb-output-log)
+
+More about PineDio USB:
 
 [PineDio Wiki](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
 
@@ -1113,134 +1177,11 @@ The PineDio USB Demo supports 3 operations...
 
 # Appendix: PineDio USB dmesg Log
 
-## Connect USB
-
-[(See the complete log)](https://github.com/lupyuen/lora-sx1262#connect-usb)
-
-dmesg Log when plugging PineDio USB to Pinebook Pro...
-
-```text
-usb 3-1:
-new full-speed USB device number 2 using xhci-hcd
-New USB device found, idVendor=1a86, idProduct=5512, bcdDevice= 3.04
-New USB device strings: Mfr=0, Product=2, SerialNumber=0
-Product: USB UART-LPT
-
-spi-ch341-usb 3-1:1.0:
-  ch341_usb_probe:
-    connect device
-    bNumEndpoints=3
-      endpoint=0 type=2 dir=1 addr=2
-      endpoint=1 type=2 dir=0 addr=2
-      endpoint=2 type=3 dir=1 addr=1
-
-  ch341_cfg_probe:
-    output cs0 SPI slave with cs=0
-    output cs0    gpio=0  irq=0 
-    output cs1 SPI slave with cs=1
-    output cs1    gpio=1  irq=1 
-    output cs2 SPI slave with cs=2
-    output cs2    gpio=2  irq=2 
-    input  gpio4  gpio=3  irq=3 
-    input  gpio6  gpio=4  irq=4 
-    input  err    gpio=5  irq=5 
-    input  pemp   gpio=6  irq=6 
-    input  int    gpio=7  irq=7 (hwirq)
-    input  slct   gpio=8  irq=8 
-    input  wait   gpio=9  irq=9 
-    input  autofd gpio=10 irq=10 
-    input  addr   gpio=11 irq=11 
-    output ini    gpio=12 irq=12 
-    output write  gpio=13 irq=13 
-    output scl    gpio=14 irq=14 
-    output sda    gpio=15 irq=15 
-
-  ch341_spi_probe:
-    start
-    SPI master connected to SPI bus 1
-    SPI device /dev/spidev1.0 created
-    SPI device /dev/spidev1.1 created
-    SPI device /dev/spidev1.2 created
-    done
-
-  ch341_irq_probe:
-    start
-    irq_base=94
-    done
-
-  ch341_gpio_probe: 
-    start
-
-  ch341_gpio_get_direction:
-    gpio=cs0    dir=0
-    gpio=cs1    dir=0
-    gpio=cs2    dir=0
-    gpio=gpio4  dir=1
-    gpio=gpio6  dir=1
-    gpio=err    dir=1
-    gpio=pemp   dir=1
-    gpio=int    dir=1
-    gpio=slct   dir=1
-    gpio=wait   dir=1
-    gpio=autofd dir=1
-    gpio=addr   dir=1
-    gpio=ini    dir=0
-    gpio=write  dir=0
-    gpio=scl    dir=0
-    gpio=sda    dir=0
-
-  ch341_gpio_probe:
-    registered GPIOs from 496 to 511
-    done
-    connected
-
-  ch341_gpio_poll_function:
-    start
-
-usbcore: registered new interface driver ch341
-usbserial: USB Serial support registered for ch341-uart
-```
-
-This means that the newer CH341 SPI Driver has been loaded.
-
-If we see this instead...
-
-```text
-usb 3-1: new full-speed USB device number 2 using xhci-hcd
-usb 3-1: New USB device found, idVendor=1a86, idProduct=5512, bcdDevice= 3.04
-usb 3-1: New USB device strings: Mfr=0, Product=2, SerialNumber=0
-usb 3-1: Product: USB UART-LPT
-usbcore: registered new interface driver ch341
-usbserial: USB Serial support registered for ch341-uart
-ch341 3-1:1.0: ch341-uart converter detected
-usb 3-1: ch341-uart converter now attached to ttyUSB0
-spi_ch341_usb: loading out-of-tree module taints kernel.
-usbcore: registered new interface driver spi-ch341-usb
-```
-
-It means the older CH341 Non-SPI Driver has been loaded.
-
-To fix this...
-
-1.  Unplug PineDio USB
-
-1.  Enter...
-
-    ```bash
-    sudo rmmod ch341
-    ```
-
-1.  Plug in PineDio USB
-
-1.  Enter...
-
-    ```bash
-    dmesg
-    ```
-
-    And recheck the messages.
+TODO
 
 ## Send Message
+
+TODO
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#send-message-1)
 
@@ -1295,6 +1236,8 @@ audit: type=1701 audit(1634994203.075:1271): auid=1000 uid=0 gid=0 ses=4 subj==u
 Note that if we try to transmit a 64-byte packet, it won't appear in the dmesg Log.
 
 ## Receive Message
+
+TODO
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#receive-message-1)
 
