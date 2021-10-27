@@ -1133,7 +1133,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 </ol>
 <h1 id="appendix-install-ch341-spi-driver" class="section-header"><a href="#appendix-install-ch341-spi-driver">11 Appendix: Install CH341 SPI Driver</a></h1>
 <p>To install <strong>CH341 SPI Driver</strong> on <strong>Pinebook Pro Manjaro Arm64</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Install DKMS
+<div class="example-wrap"><pre class="language-bash"><code># Install DKMS so that we may load Kernel Drivers dynamically
 sudo pacman -Syu dkms base-devel --needed
 
 # Install Kernel Headers for Manjaro: https://linuxconfig.org/manjaro-linux-kernel-headers-installation
