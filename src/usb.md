@@ -1165,7 +1165,7 @@ Now __transfer_spi__ is doubly sus... The same function is called to transmit AN
 
 _Does __transfer_spi__ impose a limit on the size of SPI Transfers?_
 
-With some tweaking, we discover that __transfer_spi fails when transferring 32 bytes or more__!
+With some tweaking, we discover that __transfer_spi garbles the data when transferring 32 bytes or more__!
 
 This seems to be a limitation of the __CH341 SPI Driver__.
 
