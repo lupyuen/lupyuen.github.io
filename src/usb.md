@@ -620,6 +620,8 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 
 PineDio USB has successfully transmitted a 29-byte LoRa Message to RAKwireless WisBlock!
 
+![RAKwireless WisBlock receives 29-byte LoRa Message from RAKwireless WisBlock](https://lupyuen.github.io/images/usb-wisblock5.png)
+
 ## Spectrum Analysis with SDR
 
 _What if nothing appears in our LoRa Receiver?_
@@ -674,7 +676,7 @@ Next we set the __LoRa Parameters__ and the __Callback Functions__...
 
 (Yep the same __init_driver__ we've seen earlier)
 
-For the next __10 seconds__ we handle LoRa Events (like Message Received)...
+For the next __10 seconds__ we poll and handle LoRa Events (like Message Received)...
 
 ```c
   //  Handle LoRa events for the next 10 seconds
@@ -819,6 +821,8 @@ receive_message
 
 PineDio USB has successfully received a 28-byte LoRa Message from RAKwireless WisBlock!
 
+![PineDio USB receives a 28-byte LoRa Message from RAKwireless WisBlock](https://lupyuen.github.io/images/usb-wisblock6.png)
+
 _Why 28 bytes?_
 
 Our PineDio USB Driver has an issue with __CH341 SPI Transfers__...
@@ -839,9 +843,17 @@ TODO
 
 TODO
 
--   [CH341 Datasheet](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
+-   [__CH341 Datasheet__](https://wiki.pine64.org/wiki/Pinedio#USB_LoRa_adapter)
 
--   [CH341 Interfaces (Chinese)](http://www.wch.cn/downloads/CH341DS2_PDF.html)
+-   [__CH341 Interfaces (Chinese)__](http://www.wch.cn/downloads/CH341DS2_PDF.html)
+
+![PineDio USB transmits a garbled 64-byte LoRa Message to RAKwireless WisBlock](https://lupyuen.github.io/images/usb-wisblock4.png)
+
+_What happens when we transmit a LoRa Message longer than 29 bytes?_
+
+TODO
+
+(Garbled consistently, so it's not RF Interference)
 
 CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!
 
@@ -849,9 +861,13 @@ CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will
 
 (CH341 SPI seems to have trouble transferring a block of 32 bytes)
 
-![](https://lupyuen.github.io/images/usb-buffer.png)
+![SX1262 Commands for WriteBuffer and ReadBuffer](https://lupyuen.github.io/images/usb-buffer.png)
 
 [(From Semtech SX1262 Datasheet)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
+
+_Is there a way to fix this?_
+
+TODO
 
 Right now we're transferring over SPI...
 
@@ -964,20 +980,6 @@ More about PineDio USB and CH341 GPIO:
 [PineDio Wiki](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
 
 ![](https://lupyuen.github.io/images/lora2-handler.png)
-
-# WisBlock
-
-TODO
-
-![](https://lupyuen.github.io/images/usb-wisblock5.png)
-
-TODO28
-
-![](https://lupyuen.github.io/images/usb-wisblock6.png)
-
-TODO29
-
-![](https://lupyuen.github.io/images/usb-wisblock4.png)
 
 # What's Next
 
