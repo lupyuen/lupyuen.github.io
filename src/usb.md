@@ -810,7 +810,7 @@ TODO
 
 ![](https://lupyuen.github.io/images/usb-sleep3.png)
 
-# CH341 SPI
+# CH341 SPI Interface
 
 TODO
 
@@ -823,6 +823,10 @@ CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will c
 CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!
 
 (CH341 SPI seems to have trouble transferring a block of 32 bytes)
+
+![](https://lupyuen.github.io/images/usb-buffer.png)
+
+[(From Semtech SX1262 Datasheet)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
 
 ![](https://lupyuen.github.io/images/usb-spi6.png)
 
@@ -838,7 +842,7 @@ TODO25
 
 ![](https://lupyuen.github.io/images/usb-spi5.png)
 
-# CH341 GPIO
+# CH341 GPIO Interface
 
 TODO
 
