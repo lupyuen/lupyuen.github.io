@@ -502,10 +502,10 @@ static void send_once(int is_ping) {
   //  Radio.Send(loraping_buffer, sizeof loraping_buffer);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098">(<strong>RadioSend</strong> is defined here)</a></p>
-<p>We have an issue with <strong>CH341 SPI Transfers</strong>…</p>
+<p>Our PineDio USB Driver has an issue with <strong>CH341 SPI Transfers</strong>…</p>
 <p><strong>Transmitting a LoRa Message on PineDio USB above 29 bytes will cause message corruption!</strong></p>
-<p>Thus we limit the LoRa Message Size to <strong>29 bytes</strong>.</p>
-<p>(More about CH341 SPI later)</p>
+<p>Thus we limit the Transmit LoRa Message Size to <strong>29 bytes</strong>.</p>
+<p>(There’s a way to fix this… More about CH341 later)</p>
 <p>When the LoRa Message has been transmitted, the LoRa Driver calls our Callback Function <strong>on_tx_done</strong> defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L253-L266">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when our LoRa message has been transmitted
 static void on_tx_done(void) {
@@ -518,7 +518,7 @@ static void on_tx_done(void) {
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109">(<strong>RadioSleep</strong> is defined here)</a></p>
 <p>Here we log the number of packets transmitted, and put LoRa SX1262 into <strong>low power, sleep mode</strong>.</p>
-<p>Note: <strong>on_tx_done</strong> won’t actually be called in the current driver implementation, because we haven’t implemented Multithreading. (More about this in a while)</p>
+<p>Note: <strong>on_tx_done</strong> won’t actually be called in the current driver, because we haven’t implemented Multithreading. (More about this later)</p>
 <h2 id="run-the-driver-1" class="section-header"><a href="#run-the-driver-1">5.1 Run the Driver</a></h2>
 <p>Follow the instructions in the Appendix to <strong>download, build and run</strong> the PineDio USB Driver.</p>
 <p>Remember to edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
@@ -649,20 +649,24 @@ make
 # Run PineDio USB Driver
 sudo ./lora-sx1262</code></pre></div>
 <p>TODO</p>
-<p>Switch over to <a href="https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio"><strong>RAKwireless WisBlock</strong></a> and transmit a 29-byte LoRa Message…</p>
+<p>Switch over to <a href="https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio"><strong>RAKwireless WisBlock</strong></a> and transmit a 28-byte LoRa Message…</p>
 <div class="example-wrap"><pre class="language-text"><code>LoRap2p Tx Test
 send: 48 65 6c 6c 6f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 
 OnTxDone</code></pre></div>
 <p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L124-L148">(“<code>Hello</code>” followed by 0, 1, 2, …)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#wisblock-transmitter-log">(See the complete log)</a></p>
-<p>On <strong>PineDio USB</strong> we should see the same 29-byte LoRa Message…</p>
+<p>On <strong>PineDio USB</strong> we should see the same 28-byte LoRa Message…</p>
 <div class="example-wrap"><pre class="language-text"><code>IRQ_RX_DONE
 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 48 65 6c 6c 6f 00 01 02 
 IRQ_PREAMBLE_DETECTED
 IRQ_HEADER_VALID
 receive_message</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the complete log)</a></p>
-<p>PineDio USB has successfully received a 29-byte LoRa Message from RAKwireless WisBlock!</p>
+<p>PineDio USB has successfully received a 28-byte LoRa Message from RAKwireless WisBlock!</p>
+<p>Our PineDio USB Driver has an issue with <strong>CH341 SPI Transfers</strong>…</p>
+<p><strong>Receiving a LoRa Message on PineDio USB above 28 bytes will cause message corruption!</strong></p>
+<p>Thus we limit the Receive LoRa Message Size to <strong>28 bytes</strong>.</p>
+<p>(There’s a way to fix this… More about CH341 later)</p>
 <p><img src="https://lupyuen.github.io/images/usb-receive4.png" alt="" /></p>
 <p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/usb-receive5.png" alt="" /></p>
