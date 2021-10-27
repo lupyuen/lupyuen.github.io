@@ -74,8 +74,11 @@
 <li><a href="#source-files-for-linux">3.2 Source Files for Linux</a><ul></ul></li></ul></li>
 <li><a href="#lora-parameters">4 LoRa Parameters</a><ul>
 <li><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a><ul></ul></li></ul></li>
-<li><a href="#transmit-lora-message">5 Transmit LoRa Message</a><ul></ul></li>
-<li><a href="#receive-lora-message">6 Receive LoRa Message</a><ul></ul></li>
+<li><a href="#transmit-lora-message">5 Transmit LoRa Message</a><ul>
+<li><a href="#run-the-driver-1">5.1 Run the Driver</a><ul></ul></li>
+<li><a href="#spectrum-analysis-with-sdr">5.2 Spectrum Analysis with SDR</a><ul></ul></li></ul></li>
+<li><a href="#receive-lora-message">6 Receive LoRa Message</a><ul>
+<li><a href="#run-the-driver-2">6.1 Run the Driver</a><ul></ul></li></ul></li>
 <li><a href="#sleep">7 Sleep</a><ul></ul></li>
 <li><a href="#ch341-spi">8 CH341 SPI</a><ul></ul></li>
 <li><a href="#ch341-gpio">9 CH341 GPIO</a><ul></ul></li>
@@ -434,9 +437,9 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 </li>
 </ul>
 <p>(The <strong>Radio</strong> functions will also be called later when we implement LoRaWAN)</p>
+<p><img src="https://lupyuen.github.io/images/usb-transmit2.png" alt="Transmitting a LoRa Message" /></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">5 Transmit LoRa Message</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119">main.c</a></p>
+<p>Now we’re ready to <strong>transmit a LoRa Message</strong>! Here’s how: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Main Function
 int main(void) {
   //  Init SX1262 driver
@@ -449,15 +452,15 @@ int main(void) {
   send_message();
   return 0;
 }</code></pre></div>
-<p>TODO</p>
-<p>To transmit a LoRa Packet, <strong>send_message</strong> calls <strong>send_once</strong> in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L205-L211">main.c</a> … </p>
+<p>We begin by calling <strong>init_driver</strong> to set the LoRa Parameters and the Callback Functions.</p>
+<p>(We’ve seen <strong>init_driver</strong> in the previous section)</p>
+<p>To transmit a LoRa Message, <strong>send_message</strong> calls <strong>send_once</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L205-L211">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Send a LoRa message. Assume that SX1262 driver has been initialised.
 static void send_message(void) {
   //  Send the &quot;PING&quot; message
   send_once(1);
 }</code></pre></div>
-<p><strong><code>send_once</code></strong> prepares a LoRa Packet containing the string “<code>PING</code>”…</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239">demo.c</a> :</p>
+<p><strong>send_once</strong> prepares a 64-byte LoRa Message containing the string “<code>PING</code>”: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239">demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// We send a &quot;PING&quot; message and expect a &quot;PONG&quot; response
 const uint8_t loraping_ping_msg[] = &quot;PING&quot;;
 const uint8_t loraping_pong_msg[] = &quot;PONG&quot;;
@@ -474,20 +477,23 @@ static void send_once(int is_ping) {
   } else {
     memcpy(loraping_buffer, loraping_pong_msg, 4);
   }</code></pre></div>
-<p>Then we pad the packet with values 0, 1, 2, …</p>
+<p>Then we <strong>pad the 64-byte message</strong> with values 0, 1, 2, …</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Fill up the remaining space in the 
   //  transmit buffer (64 bytes) with values 
   //  0, 1, 2, ...
   for (int i = 4; i &lt; sizeof loraping_buffer; i++) {
     loraping_buffer[i] = i - 4;
   }</code></pre></div>
-<p>And transmit the LoRa Packet…</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  We send the transmit buffer, limited to 29 bytes.
+<p>And we <strong>transmit the LoRa Message</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  We compute the message length, up to max 29 bytes.
   //  CAUTION: Anything more will cause message corruption!
   #define MAX_MESSAGE_SIZE 29
   uint8_t size = sizeof loraping_buffer &gt; MAX_MESSAGE_SIZE
     ? MAX_MESSAGE_SIZE 
     : sizeof loraping_buffer;
+
+  //  We send the transmit buffer, limited to 29 bytes.
+  //  CAUTION: Anything more will cause message corruption!
   Radio.Send(loraping_buffer, size);
 
   //  TODO: Previously we send 64 bytes, which gets garbled consistently.
@@ -496,7 +502,11 @@ static void send_once(int is_ping) {
   //  Radio.Send(loraping_buffer, sizeof loraping_buffer);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098">(<strong>RadioSend</strong> is defined here)</a></p>
-<p>When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function <strong>on_tx_done</strong> …</p>
+<p>We have an issue with <strong>CH341 SPI Transfers</strong>…</p>
+<p><strong>Transmitting a LoRa Message on PineDio USB above 29 bytes will cause message corruption!</strong></p>
+<p>Thus we limit the message size to <strong>29 bytes</strong>.</p>
+<p>(More about CH341 SPI later)</p>
+<p>When the LoRa Message has been transmitted, the LoRa Driver calls our Callback Function <strong>on_tx_done</strong> …</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when our LoRa message has been transmitted
 static void on_tx_done(void) {
   //  Log the success status
@@ -506,17 +516,259 @@ static void on_tx_done(void) {
   //  low power, sleep mode
   Radio.Sleep();
 }</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109">(<strong>RadioSleep</strong> is defined here)</a></p>
+<p>Here we log the number of packets transmitted, and put LoRa SX1262 into <strong>low power, sleep mode</strong>.</p>
+<p>Note: <strong>on_tx_done</strong> won’t actually be called in the current driver implementation, because we haven’t implemented Multithreading. (More about this in a while)</p>
+<h2 id="run-the-driver-1" class="section-header"><a href="#run-the-driver-1">5.1 Run the Driver</a></h2>
+<p>Follow the instructions in the Appendix to <strong>download, build and run</strong> the PineDio USB Driver.</p>
+<p>Remember to edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define SEND_MESSAGE</code></pre></div>
+<p>Also edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L46"><strong>src/main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
+<p>Build and run the PineDio USB Driver…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Build PineDio USB Driver
+make
+
+# Run PineDio USB Driver
+sudo ./lora-sx1262</code></pre></div>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>init_driver
+TODO: SX126xReset
+SX126xIoInit
+TODO: SX126X interrupt init
+SX126xWakeup
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: c0 00 
+spi rx: ac 2c 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 80 00 
+spi rx: ac ac 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 9d 01 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 80 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 96 01 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=2
+spi tx: 8f 00 00 
+spi rx: a2 a2 a2 
+TODO: SX126xWaitOnBusy
+SX126xSetTxParams: power=22, rampTime=7
+SX126xGetDeviceId: SX1262
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=1
+spi tx: 1d 08 d8 00 00 
+spi rx: a2 a2 a2 a2 fe 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 d8 fe 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 95 04 07 00 01 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 e7 38 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=2
+spi tx: 8e 16 07 
+spi rx: a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=8
+spi tx: 08 ff ff ff ff 00 00 00 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=9
+spi tx: 1d 02 9f 00 00 00 00 00 00 00 00 00 00 
+spi rx: a2 a2 a2 a2 02 08 ac 08 89 3a a1 65 9a 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=9
+spi tx: 1d 02 9f 00 00 00 00 00 00 00 00 00 00 
+spi rx: a2 a2 a2 a2 02 08 ac 08 89 3a a1 65 9a 
+TODO: SX126xWaitOnBusy
+TimerInit
+TimerInit
+RadioSetChannel: freq=923000000
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=2
+spi tx: 98 e1 e9 
+spi rx: a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 86 39 b0 00 00 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetTxConfig: modem=1, power=14, fdev=0, bandwidth=0, datarate=7, coderate=1, preambleLen=8, fixLen=0, crcOn=1, freqHopOn=0, hopPeriod=0, iqInverted=0, timeout=3000
+RadioSetTxConfig: SpreadingFactor=7, Bandwidth=4, CodingRate=1, LowDatarateOptimize=0, PreambleLength=8, HeaderType=0, PayloadLength=255, CrcMode=1, InvertIQ=0
+RadioStandby
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 80 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetModem
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 8a 01 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 8b 07 04 01 00 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=6
+spi tx: 8c 00 08 00 ff 01 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=1
+spi tx: 1d 08 89 00 00 
+spi rx: a2 a2 a2 a2 04 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 89 04 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+SX126xSetRfTxPower
+SX126xSetTxParams: power=14, rampTime=7
+SX126xGetDeviceId: SX1262
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=1
+spi tx: 1d 08 d8 00 00 
+spi rx: a2 a2 a2 a2 fe 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 d8 fe 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1 
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 95 04 07 00 01 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 08 e7 38 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=2
+spi tx: 8e 0e 07 
+spi rx: a2 a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetRxConfig
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 9f 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+RadioStandby
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 80 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetModem
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: 8a 01 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=4
+spi tx: 8b 07 04 01 00 
+spi rx: a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=6
+spi tx: 8c 00 08 00 ff 01 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=1
+spi tx: a0 00 
+spi rx: a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_read: command_length=4, data_length=1
+spi tx: 1d 07 36 00 00 
+spi rx: a2 a2 a2 a2 0d 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=3, data_length=1
+spi tx: 0d 07 36 0d 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSetRxConfig done
+send_message
+RadioSend: size=29
+50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=8
+spi tx: 08 02 01 02 01 00 00 00 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+RadioSend: PreambleLength=8, HeaderType=0, PayloadLength=29, CrcMode=1, InvertIQ=0
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=6
+spi tx: 8c 00 08 00 1d 01 00 
+spi rx: a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=2, data_length=29
+spi tx: 0e 00 50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
+spi rx: a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TODO: SX126xWaitOnBusy
+sx126x_hal_write: command_length=1, data_length=3
+spi tx: 83 00 00 00 
+spi rx: a2 a2 a2 a2 
+TODO: SX126xWaitOnBusy
+TimerStart
+TimerStop
+Done!</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#send-message">(See the complete log)</a></p>
-<p><img src="https://lupyuen.github.io/images/usb-transmit2.png" alt="" /></p>
+<p>TODO</p>
+<h2 id="spectrum-analysis-with-sdr" class="section-header"><a href="#spectrum-analysis-with-sdr">5.2 Spectrum Analysis with SDR</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-chirp2.png" alt="" /></p>
+<p>TODO</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></li>
+</ul>
 <h1 id="receive-lora-message" class="section-header"><a href="#receive-lora-message">6 Receive LoRa Message</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Main Function
 int main(void) {
-
   //  TODO: Create a Background Thread to handle LoRa Events
   create_task();
 
@@ -588,6 +840,18 @@ static void on_rx_timeout(void) {
   loraping_stats.rx_timeout++;
 }</code></pre></div>
 <p>We switch the LoRa Transceiver into sleep mode and log the timeout.</p>
+<h2 id="run-the-driver-2" class="section-header"><a href="#run-the-driver-2">6.1 Run the Driver</a></h2>
+<p>Follow the instructions in the Appendix to <strong>download, build and run</strong> the PineDio USB Driver.</p>
+<p>Remember to edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define RECEIVE_MESSAGE</code></pre></div>
+<p>Also edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L46"><strong>src/main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
+<p>Build and run the PineDio USB Driver…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Build PineDio USB Driver
+make
+
+# Run PineDio USB Driver
+sudo ./lora-sx1262</code></pre></div>
+<p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-receive4.png" alt="" /></p>
 <p>TODO19</p>
@@ -659,6 +923,7 @@ static void on_rx_timeout(void) {
 <p>LoRa Gateway for Internet</p>
 <p>LoRaWAN</p>
 <p>Backport to PineDio Stack</p>
+<p>PinePhone: I2C bridge to SPI</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
