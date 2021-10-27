@@ -254,8 +254,14 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 <p>And the values of the registers are returned by SX1262 over SPI.</p>
 <p>(More about <strong>sx126x_hal_read</strong> later)</p>
 <h2 id="run-the-driver" class="section-header"><a href="#run-the-driver">3.1 Run the Driver</a></h2>
-<p>Follow the instructions in the Appendix to <strong>install the CH341 SPI Driver</strong>.</p>
-<p>Follow the instructions in the Appendix to <strong>download, build and run</strong> the PineDio USB Driver.</p>
+<p>Follow the instructions to <strong>install the CH341 SPI Driver</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver"><strong>“Install CH341 SPI Driver”</strong></a></li>
+</ul>
+<p>Follow the instructions to <strong>download, build and run</strong> the PineDio USB Driver…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb#appendix-build-pinedio-usb-driver"><strong>“Appendix: Build PineDio USB Driver”</strong></a></li>
+</ul>
 <p>Remember to edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define READ_REGISTERS</code></pre></div>
 <p>Build and run the PineDio USB Driver…</p>
@@ -520,8 +526,14 @@ static void on_tx_done(void) {
 <p>Here we log the number of packets transmitted, and put LoRa SX1262 into <strong>low power, sleep mode</strong>.</p>
 <p>Note: <strong>on_tx_done</strong> won’t actually be called in our current driver, because we haven’t implemented Multithreading. (More about this later)</p>
 <h2 id="run-the-driver-1" class="section-header"><a href="#run-the-driver-1">5.1 Run the Driver</a></h2>
-<p>Follow the instructions in the Appendix to <strong>install the CH341 SPI Driver</strong>.</p>
-<p>Follow the instructions in the Appendix to <strong>download, build and run</strong> the PineDio USB Driver.</p>
+<p>Follow the instructions to <strong>install the CH341 SPI Driver</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver"><strong>“Install CH341 SPI Driver”</strong></a></li>
+</ul>
+<p>Follow the instructions to <strong>download, build and run</strong> the PineDio USB Driver…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb#appendix-build-pinedio-usb-driver"><strong>“Appendix: Build PineDio USB Driver”</strong></a></li>
+</ul>
 <p>Remember to edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define SEND_MESSAGE</code></pre></div>
 <p>Also edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L46"><strong>src/main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
@@ -648,8 +660,14 @@ static void on_rx_timeout(void) {
 <p>We switch the LoRa Transceiver into sleep mode and log the timeout.</p>
 <p>Note: <strong>on_rx_timeout</strong> won’t actually be called in our current driver, because we haven’t implemented Multithreading. (More about this later)</p>
 <h2 id="run-the-driver-2" class="section-header"><a href="#run-the-driver-2">6.1 Run the Driver</a></h2>
-<p>Follow the instructions in the Appendix to <strong>install the CH341 SPI Driver</strong>.</p>
-<p>Follow the instructions in the Appendix to <strong>download, build and run</strong> the PineDio USB Driver.</p>
+<p>Follow the instructions to <strong>install the CH341 SPI Driver</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver"><strong>“Install CH341 SPI Driver”</strong></a></li>
+</ul>
+<p>Follow the instructions to <strong>download, build and run</strong> the PineDio USB Driver…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb#appendix-build-pinedio-usb-driver"><strong>“Appendix: Build PineDio USB Driver”</strong></a></li>
+</ul>
 <p>Remember to edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c"><strong>src/main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define RECEIVE_MESSAGE</code></pre></div>
 <p>Also edit <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L46"><strong>src/main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
