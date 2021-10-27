@@ -958,7 +958,7 @@ static int sx126x_hal_read(
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">(Source)</a></p>
 <h2 id="spi-transfer-fails-with-32-bytes" class="section-header"><a href="#spi-transfer-fails-with-32-bytes">7.6 SPI Transfer Fails with 32 Bytes</a></h2>
 <p><em>Does <strong>transfer_spi</strong> impose a limit on the size of SPI Transfers?</em></p>
-<p>With some tweaking, we discover that <strong>transfer_spi fails when transferring 32 bytes or more</strong>!</p>
+<p>With some tweaking, we discover that <strong>transfer_spi garbles the data when transferring 32 bytes or more</strong>!</p>
 <p>This seems to be a limitation of the <strong>CH341 SPI Driver</strong>.</p>
 <p><a href="https://github.com/rogerjames99/spi-ch341-usb/blob/master/spi-ch341-usb.c#L68">(Due to <strong>CH341_USB_MAX_BULK_SIZE</strong> maybe?)</a></p>
 <p>Hence we limit all SPI Transfers to <strong>31 bytes</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
