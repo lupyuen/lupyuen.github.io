@@ -622,7 +622,9 @@ PineDio USB has successfully transmitted a 29-byte LoRa Message to RAKwireless W
 
 ## Spectrum Analysis with SDR
 
-Sometimes it's helpful to use a __Spectrum Analyser__ (like a __Software Defined Radio__) to sniff the airwaves and check whether our LoRa Message is transmitted...
+_What if nothing appears in our LoRa Receiver?_
+
+Use a __Spectrum Analyser__ (like a __Software Defined Radio__) to sniff the airwaves and check whether our LoRa Message is transmitted...
 
 1.  At the right __Radio Frequency__
 
