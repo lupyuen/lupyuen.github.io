@@ -1350,7 +1350,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 To install __CH341 SPI Driver__ on __Pinebook Pro Manjaro Arm64__...
 
 ```bash
-## Install DKMS
+## Install DKMS so that we may load Kernel Drivers dynamically
 sudo pacman -Syu dkms base-devel --needed
 
 ## Install Kernel Headers for Manjaro: https://linuxconfig.org/manjaro-linux-kernel-headers-installation
