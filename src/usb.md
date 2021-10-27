@@ -936,7 +936,7 @@ assert(len <= 31);
 
 ![PineDio USB transmits a garbled 64-byte LoRa Message to RAKwireless WisBlock](https://lupyuen.github.io/images/usb-wisblock4.png)
 
-## Long SPI Transfers are Garbled
+## Long Messages are Garbled
 
 _What happens when we transmit a LoRa Message longer than 29 bytes?_
 
@@ -958,11 +958,14 @@ From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx1
 
 ```c
 static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t* buffer, const uint8_t size) {
+  //  Prepare the Read Buffer Command (3 bytes)
   uint8_t buf[SX126X_SIZE_READ_BUFFER] = { 0 };
   int status = -1;
-  buf[0] = RADIO_READ_BUFFER;
-  buf[1] = offset;
-  buf[2] = 0;
+  buf[0] = RADIO_READ_BUFFER;  //  Read Buffer Command
+  buf[1] = offset;             //  Offset to read
+  buf[2] = 0;                  //  NOP
+
+  //  Transfer the Read Buffer Command to SX1262 over SPI
   status = sx126x_hal_read( 
     context,  //  Context
     buf,      //  Command Buffer
@@ -981,9 +984,12 @@ From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx1
 
 ```c
 static int sx126x_write_buffer(const void* context, const uint8_t offset, const uint8_t* buffer, const uint8_t size) {
+  //  Prepare the Write Buffer Command (2 bytes)
   uint8_t buf[SX126X_SIZE_WRITE_BUFFER] = { 0 };
-  buf[0] = RADIO_WRITE_BUFFER;
-  buf[1] = offset;
+  buf[0] = RADIO_WRITE_BUFFER;  //  Write Buffer Command
+  buf[1] = offset;              //  Offset to write
+
+  //  Transfer the Write Buffer Command to SX1262 over SPI
   return sx126x_hal_write(
     context,  //  Context
     buf,      //  Command Buffer
@@ -1111,6 +1117,8 @@ TODO
 ![SX1262 Commands for WriteBuffer and ReadBuffer](https://lupyuen.github.io/images/usb-buffer.png)
 
 [(From Semtech SX1262 Datasheet)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
+
+## Fix Long Messages
 
 _Is there a way to fix this?_
 
