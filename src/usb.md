@@ -220,9 +220,13 @@ And the values of the registers are returned by SX1262 over SPI.
 
 ## Run the Driver
 
-Follow the instructions in the Appendix to __install the CH341 SPI Driver__.
+Follow the instructions to __install the CH341 SPI Driver__...
 
-Follow the instructions in the Appendix to __download, build and run__ the PineDio USB Driver.
+-   [__"Install CH341 SPI Driver"__](https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver)
+
+Follow the instructions to __download, build and run__ the PineDio USB Driver...
+
+-   [__"Appendix: Build PineDio USB Driver"__](https://lupyuen.github.io/articles/usb#appendix-build-pinedio-usb-driver)
 
 Remember to edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
 
@@ -577,9 +581,13 @@ Note: __on_tx_done__ won't actually be called in our current driver, because we 
 
 ## Run the Driver
 
-Follow the instructions in the Appendix to __install the CH341 SPI Driver__.
+Follow the instructions to __install the CH341 SPI Driver__...
 
-Follow the instructions in the Appendix to __download, build and run__ the PineDio USB Driver.
+-   [__"Install CH341 SPI Driver"__](https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver)
+
+Follow the instructions to __download, build and run__ the PineDio USB Driver...
+
+-   [__"Appendix: Build PineDio USB Driver"__](https://lupyuen.github.io/articles/usb#appendix-build-pinedio-usb-driver)
 
 Remember to edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
 
@@ -779,9 +787,13 @@ Note: __on_rx_timeout__ won't actually be called in our current driver, because 
 
 ## Run the Driver
 
-Follow the instructions in the Appendix to __install the CH341 SPI Driver__.
+Follow the instructions to __install the CH341 SPI Driver__...
 
-Follow the instructions in the Appendix to __download, build and run__ the PineDio USB Driver.
+-   [__"Install CH341 SPI Driver"__](https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver)
+
+Follow the instructions to __download, build and run__ the PineDio USB Driver...
+
+-   [__"Appendix: Build PineDio USB Driver"__](https://lupyuen.github.io/articles/usb#appendix-build-pinedio-usb-driver)
 
 Remember to edit [__src/main.c__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c) and uncomment...
 
