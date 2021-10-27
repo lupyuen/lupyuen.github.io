@@ -568,7 +568,8 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p>This is how we do it: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Main Function
 int main(void) {
-  //  TODO: Create a Background Thread to handle LoRa Events
+  //  TODO: Create a Background Thread 
+  //  to handle LoRa Events
   create_task();</code></pre></div>
 <p>We start by creating a Background Thread to handle LoRa Events.</p>
 <p>(<strong>create_task</strong> doesn’t do anything because we haven’t implemented Multithreading. More about this later)</p>
@@ -594,7 +595,7 @@ int main(void) {
   return 0;
 }</code></pre></div>
 <p>We call <strong>receive_message</strong> to get SX1262 ready to receive a single LoRa Message.</p>
-<p>Then we call <strong>RadioOnDioIrq</strong> to handle the Message Received Event.</p>
+<p>Then we call <strong>RadioOnDioIrq</strong> to handle the Message Received Event. (If any)</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1460">(<strong>RadioOnDioIrq</strong> is defined here)</a></p>
 <p><strong>receive_message</strong> is defined like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L241-L248">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Receive a LoRa message. Assume that SX1262 driver has been initialised.
@@ -669,6 +670,7 @@ IRQ_HEADER_VALID
 receive_message</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the complete log)</a></p>
 <p>PineDio USB has successfully received a 28-byte LoRa Message from RAKwireless WisBlock!</p>
+<p><em>Why 28 bytes?</em></p>
 <p>Our PineDio USB Driver has an issue with <strong>CH341 SPI Transfers</strong>…</p>
 <p><strong>Receiving a LoRa Message on PineDio USB above 28 bytes will cause message corruption!</strong></p>
 <p>Thus we limit the Receive LoRa Message Size to <strong>28 bytes</strong>.</p>
