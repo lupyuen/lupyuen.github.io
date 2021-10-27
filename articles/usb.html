@@ -202,6 +202,7 @@ static void read_registers(void) {
     printf(&quot;Register 0x%02x = 0x%02x\r\n&quot;, addr, val);
   }
 }</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77">(<strong>SX126xIoInit</strong> is defined here)</a></p>
 <p>In our Main Function we call <strong>read_registers</strong> and <strong>SX126xReadRegister</strong> to read a bunch of SX1262 Registers. (<code>0x00</code> to <code>0x0F</code>)</p>
 <p>In our PineDio USB Driver, <strong>SX126xReadRegister</strong> calls <strong>SX126xReadRegisters</strong> and <strong>sx126x_read_register</strong> to read each register: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L268-L281">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Read an SX1262 Register at the specified address
@@ -735,6 +736,7 @@ static int init_spi(void) {
   assert(rc == 0);
   return 0;
 }</code></pre></div>
+<p>(<strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203"><strong>init_driver</strong></a>)</p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Blocking call to transmit and receive buffers on SPI. Return 0 on success.
