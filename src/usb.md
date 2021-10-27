@@ -595,7 +595,7 @@ make
 sudo ./lora-sx1262
 ```
 
-We should see PineDio USB transmitting our 29-byte LoRa Message...
+We should see __PineDio USB transmitting__ our 29-byte LoRa Message...
 
 ```text
 send_message
@@ -603,29 +603,40 @@ RadioSend: size=29
 50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
 ```
 
-[(That's "`PING`" followed by 0, 1, 2, ...)](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239)
+[("`PING`" followed by 0, 1, 2, ...)](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239)
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#send-message)
 
-TODO
+On [__RAKwireless WisBlock__](https://github.com/lupyuen/wisblock-lora-receiver) we should see the same 29-byte LoRa Message received...
 
 ```text
 LoRaP2P Rx Test
 Starting Radio.Rx
-OnRxDone: Timestamp=18, RssiValue=-28 dBm, SnrValue=13, Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 
+OnRxDone: Timestamp=18, RssiValue=-28 dBm, SnrValue=13, 
+Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 
 ```
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#wisblock-receiver-log)
 
-TODO
+PineDio USB has successfully transmitted a 29-byte LoRa Message to RAKwireless WisBlock!
 
 ## Spectrum Analysis with SDR
 
-TODO
+Sometimes it's helpful to use a __Spectrum Analyser__ (like a __Software Defined Radio__) to sniff the airwaves and check whether our LoRa Message is transmitted...
 
-![](https://lupyuen.github.io/images/usb-chirp2.png)
+1.  At the right __Radio Frequency__
 
-TODO
+    (923 MHz below)
+
+1.  With __sufficient power__
+
+    (Red stripe below)
+
+![LoRa Message captured with Software Defined Radio](https://lupyuen.github.io/images/usb-chirp2.png)
+
+LoRa Messages have a characteristic criss-cross shape: __LoRa Chirp__. (Like above)
+
+More about LoRa Chirps and Software Defined Radio...
 
 -   [__"Visualise LoRa with Software Defined Radio"__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
 
@@ -761,17 +772,19 @@ sudo ./lora-sx1262
 
 TODO
 
+Switch over to [__RAKwireless WisBlock__](https://github.com/lupyuen/wisblock-lora-transmitter/tree/pinedio) and transmit a 29-byte LoRa Message...
+
 ```text
 LoRap2p Tx Test
 send: 48 65 6c 6c 6f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 
 OnTxDone
 ```
 
-[(That's "`Hello`" followed by 0, 1, 2, ...)](https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L124-L148)
+[("`Hello`" followed by 0, 1, 2, ...)](https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L124-L148)
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#wisblock-transmitter-log)
 
-TODO
+On __PineDio USB__ we should see the same 29-byte LoRa Message...
 
 ```text
 IRQ_RX_DONE
@@ -782,6 +795,8 @@ receive_message
 ```
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#receive-message)
+
+PineDio USB has successfully received a 29-byte LoRa Message from RAKwireless WisBlock!
 
 ![](https://lupyuen.github.io/images/usb-receive4.png)
 
