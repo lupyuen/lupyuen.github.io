@@ -978,11 +978,9 @@ By tweaking our PineDio USB Driver, we discover two shocking truths...
 
 Let's trace the code and solve this mystery.
 
-## Transmit Long Messages
+## Transmit Long Message
 
-TODO
-
-From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L497-L503)
+Our PineDio USB Driver calls this function to __transmit a LoRa Message__: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L497-L503)
 
 ```c
 static int sx126x_write_buffer(const void* context, const uint8_t offset, const uint8_t* buffer, const uint8_t size) {
@@ -1002,24 +1000,13 @@ static int sx126x_write_buffer(const void* context, const uint8_t offset, const 
 }
 ```
 
-TODO
+In this code we prepare a __SX1262 Write Buffer Command__ and pass the Command Buffer (plus Data Buffer) to __sx126x_hal_write__.
 
-From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L521-L528)
+(Data Buffer contains the LoRa Message to be transmitted)
 
-```c
-/// Max size of SPI transfers
-#define SPI_BUFFER_SIZE 1024
+Note that __Offset is always 0__, because of [__SX126xSetPayload__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147) and [__SX126xWriteBuffer__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289).
 
-/// SPI Transmit Buffer
-static uint8_t spi_tx_buf[SPI_BUFFER_SIZE];
-
-/// SPI Receive Buffer
-static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];
-```
-
-TODO
-
-From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L532-L569)
+__sx126x_hal_write__ transfers the Command Buffer and Data Buffer over SPI: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L532-L569)
 
 ```c
 /**
@@ -1062,11 +1049,28 @@ static int sx126x_hal_write(
 }
 ```
 
-## Receive Long Messages
+We use an internal __1024-byte buffer for SPI Transfers__, so we're hunky dory here: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L521-L528)
 
-TODO
+```c
+/// Max size of SPI transfers
+#define SPI_BUFFER_SIZE 1024
 
-From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L505-L513)
+/// SPI Transmit Buffer
+static uint8_t spi_tx_buf[SPI_BUFFER_SIZE];
+
+/// SPI Receive Buffer
+static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];
+```
+
+__sx126x_hal_write__ calls __transfer_spi__ to transfer the SPI Data.
+
+Thus __transfer_spi__ looks highly sus for transmitting Long LoRa Messages.
+
+What about receiving Long LoRa Messages?
+
+## Receive Long Message
+
+Our PineDio USB Driver calls this function to __receive a LoRa Message__: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L505-L513)
 
 ```c
 static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t* buffer, const uint8_t size) {
@@ -1089,9 +1093,13 @@ static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t
 }
 ```
 
-TODO
+In this code we prepare a __SX1262 Read Buffer Command__ and pass the Command Buffer (plus Data Buffer) to __sx126x_hal_read__.
 
-From [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L571-L615)
+(Data Buffer will contain the received LoRa Message)
+
+Note that __Offset is always 0__, because of [__SX126xGetPayload__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L149-L160) and [__SX126xReadBuffer__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297).
+
+__sx126x_hal_read__ transfers the Command Buffer over SPI: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L571-L615)
 
 ```c
 /**
@@ -1140,6 +1148,12 @@ static int sx126x_hal_read(
   return 0;
 }
 ```
+
+__sx126x_hal_read__ returns the Data Buffer that has been read over SPI.
+
+__sx126x_hal_read__ calls __transfer_spi__ to transfer the SPI Data.
+
+Now __transfer_spi__ is doubly sus... The same function is called to transmit and receive Long LoRa Messages!
 
 ## SPI Transfer Fails with 32 Bytes
 
