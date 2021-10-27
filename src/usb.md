@@ -298,12 +298,19 @@ All other Source Files are shared by Linux, BL602 and BL604.
 
 TODO
 
-From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L46)
+## Configure LoRa SX1262
+
+We set the __LoRa Frequency__ in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-L25) like so...
 
 ```c
-/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
+/// TODO: We are using LoRa Frequency 923 MHz 
+/// for Singapore. Change this for your region.
 #define USE_BAND_923
+```
 
+Change `USE_BAND_923` to `USE_BAND_433`, `780`, `868` or `915`. Here's the complete list...
+
+```c
 #if defined(USE_BAND_433)
     #define RF_FREQUENCY               434000000 /* Hz */
 #elif defined(USE_BAND_780)
@@ -317,7 +324,11 @@ From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-
 #else
     #error "Please define a frequency band in the compiler options."
 #endif
+```
 
+The __LoRa Parameters__ are also defined in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L27-L46)
+
+```c
 /// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
@@ -340,11 +351,20 @@ From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L10-
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 ```
 
+These should match the LoRa Parameters used by the LoRa Transmitter / Receiver.
+
+I used this LoRa Receiver (based on RAKwireless WisBlock) for testing our LoRa Driver...
+
+-   [__"RAKwireless WisBlock Transmitter"__](https://lupyuen.github.io/articles/lora2#start-the-rakwireless-wisblock-transmitter)
+
+## Transmit Message
+
 TODO
 
 From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119)
 
 ```c
+/// Main Function
 int main(void) {
     //  Init SX1262 driver
     init_driver();
@@ -360,31 +380,53 @@ int main(void) {
 
 TODO
 
-From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L205-L239)
+To transmit a LoRa Packet, __send_message__ calls __send_once__ in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L205-L211) ... 
 
 ```c
 /// Send a LoRa message. Assume that SX1262 driver has been initialised.
 static void send_message(void) {
-    puts("send_message");
-
     //  Send the "PING" message
     send_once(1);
 }
+```
+
+__`send_once`__ prepares a LoRa Packet containing the string "`PING`"...
+
+From [demo.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239) :
+
+```c
+/// We send a "PING" message and expect a "PONG" response
+const uint8_t loraping_ping_msg[] = "PING";
+const uint8_t loraping_pong_msg[] = "PONG";
+
+/// 64-byte buffer for our LoRa message
+static uint8_t loraping_buffer[LORAPING_BUFFER_SIZE];
 
 /// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
 static void send_once(int is_ping) {
-    //  Copy the "PING" or "PONG" message to the transmit buffer
+    //  Copy the "PING" or "PONG" message 
+    //  to the transmit buffer
     if (is_ping) {
         memcpy(loraping_buffer, loraping_ping_msg, 4);
     } else {
         memcpy(loraping_buffer, loraping_pong_msg, 4);
     }
+```
 
-    //  Fill up the remaining space in the transmit buffer (64 bytes) with values 0, 1, 2, ...
+Then we pad the packet with values 0, 1, 2, ...
+
+```c
+    //  Fill up the remaining space in the 
+    //  transmit buffer (64 bytes) with values 
+    //  0, 1, 2, ...
     for (int i = 4; i < sizeof loraping_buffer; i++) {
         loraping_buffer[i] = i - 4;
     }
+```
 
+And transmit the LoRa Packet...
+
+```c
     //  We send the transmit buffer, limited to 29 bytes.
     //  CAUTION: Anything more will cause message corruption!
     #define MAX_MESSAGE_SIZE 29
@@ -400,6 +442,10 @@ static void send_once(int is_ping) {
 }
 ```
 
+[(__RadioSend__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
+
+When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function __on_tx_done__ ...
+
 TODO
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#send-message)
@@ -414,17 +460,11 @@ TODO
 
 TODO
 
-https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119
+From [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L74-L119)
 
 ```c
+/// Main Function
 int main(void) {
-
-//  Uncomment to read SX1262 registers
-//  #define READ_REGISTERS
-#ifdef READ_REGISTERS
-    //  Read SX1262 registers 0x00 to 0x0F
-    read_registers();
-#endif  //  READ_REGISTERS
 
     //  TODO: Create a Background Thread to handle LoRa Events
     create_task();
@@ -435,16 +475,6 @@ int main(void) {
     //  TODO: Do we need to wait?
     sleep(1);
 
-//  Uncomment to send a LoRa message
-//  #define SEND_MESSAGE
-#ifdef SEND_MESSAGE
-    //  Send a LoRa message
-    send_message();
-#endif  //  SEND_MESSAGE
-
-//  Uncomment to receive a LoRa message
-#define RECEIVE_MESSAGE
-#ifdef RECEIVE_MESSAGE
     //  Handle LoRa events for the next 10 seconds
     for (int i = 0; i < 10; i++) {
         //  Prepare to receive a LoRa message
@@ -456,14 +486,14 @@ int main(void) {
         //  Sleep for 1 second
         usleep(1000 * 1000);
     }
-#endif  //  RECEIVE_MESSAGE
-
-    //  TODO: Close the SPI Bus
-    //  close(spi);
-    puts("Done!");
     return 0;
 }
 ```
+
+I used this LoRa Transmitter (based on RAKwireless WisBlock) for testing our LoRa Driver...
+
+-   [__"RAKwireless WisBlock Transmitter"__](https://lupyuen.github.io/articles/lora2#start-the-rakwireless-wisblock-transmitter)
+
 
 [(See the complete log)](https://github.com/lupyuen/lora-sx1262#receive-message)
 
