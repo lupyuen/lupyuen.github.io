@@ -1064,6 +1064,8 @@ static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];
 
 __sx126x_hal_write__ calls __transfer_spi__ to transfer the SPI Data.
 
+(We've seen __transfer_spi__ earlier)
+
 Thus __transfer_spi__ looks highly sus for transmitting Long LoRa Messages.
 
 What about receiving Long LoRa Messages?
