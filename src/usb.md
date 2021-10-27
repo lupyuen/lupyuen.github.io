@@ -1151,9 +1151,9 @@ static int sx126x_hal_read(
 }
 ```
 
-__sx126x_hal_read__ returns the Data Buffer that has been read over SPI.
+And returns the Data Buffer that has been read over SPI.
 
-__sx126x_hal_read__ calls __transfer_spi__ to transfer the SPI Data.
+__sx126x_hal_read__ also calls __transfer_spi__ to transfer the SPI Data.
 
 Now __transfer_spi__ is doubly sus... The same function is called to transmit AND receive Long LoRa Messages!
 
