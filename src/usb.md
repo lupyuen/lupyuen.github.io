@@ -443,7 +443,7 @@ Finally we set the __LoRa Receive Parameters__...
 }
 ```
 
-The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c) ...
+The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c)
 
 -   [__RadioInit:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559) Init LoRa SX1262
 
@@ -549,11 +549,11 @@ We have an issue with __CH341 SPI Transfers__...
 
 __Transmitting a LoRa Message on PineDio USB above 29 bytes will cause message corruption!__
 
-Thus we limit the message size to __29 bytes__.
+Thus we limit the LoRa Message Size to __29 bytes__.
 
 (More about CH341 SPI later)
 
-When the LoRa Message has been transmitted, the LoRa Driver calls our Callback Function __on_tx_done__ ...
+When the LoRa Message has been transmitted, the LoRa Driver calls our Callback Function __on_tx_done__
 
 ```c
 /// Callback Function that is called when our LoRa message has been transmitted
