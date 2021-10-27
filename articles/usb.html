@@ -83,8 +83,8 @@
 <li><a href="#initialise-spi">7.1 Initialise SPI</a><ul></ul></li>
 <li><a href="#transfer-spi">7.2 Transfer SPI</a><ul></ul></li>
 <li><a href="#long-messages-are-garbled">7.3 Long Messages are Garbled</a><ul></ul></li>
-<li><a href="#transmit-long-messages">7.4 Transmit Long Messages</a><ul></ul></li>
-<li><a href="#receive-long-messages">7.5 Receive Long Messages</a><ul></ul></li>
+<li><a href="#transmit-long-message">7.4 Transmit Long Message</a><ul></ul></li>
+<li><a href="#receive-long-message">7.5 Receive Long Message</a><ul></ul></li>
 <li><a href="#spi-transfer-fails-with-32-bytes">7.6 SPI Transfer Fails with 32 Bytes</a><ul></ul></li>
 <li><a href="#fix-long-messages">7.7 Fix Long Messages</a><ul></ul></li></ul></li>
 <li><a href="#ch341-gpio-interface">8 CH341 GPIO Interface</a><ul></ul></li>
@@ -810,9 +810,8 @@ assert(len &lt;= 31);</code></pre></div>
 </li>
 </ol>
 <p>Let’s trace the code and solve this mystery.</p>
-<h2 id="transmit-long-messages" class="section-header"><a href="#transmit-long-messages">7.4 Transmit Long Messages</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L497-L503">sx126x-linux.c</a></p>
+<h2 id="transmit-long-message" class="section-header"><a href="#transmit-long-message">7.4 Transmit Long Message</a></h2>
+<p>Our PineDio USB Driver calls this function to <strong>transmit a LoRa Message</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L497-L503">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sx126x_write_buffer(const void* context, const uint8_t offset, const uint8_t* buffer, const uint8_t size) {
   //  Prepare the Write Buffer Command (2 bytes)
   uint8_t buf[SX126X_SIZE_WRITE_BUFFER] = { 0 };
@@ -828,18 +827,10 @@ assert(len &lt;= 31);</code></pre></div>
     size      //  Write Data Buffer Size
   );
 }</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L521-L528">sx126x-linux.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/// Max size of SPI transfers
-#define SPI_BUFFER_SIZE 1024
-
-/// SPI Transmit Buffer
-static uint8_t spi_tx_buf[SPI_BUFFER_SIZE];
-
-/// SPI Receive Buffer
-static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L532-L569">sx126x-linux.c</a></p>
+<p>In this code we prepare a <strong>SX1262 Write Buffer Command</strong> and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_write</strong>.</p>
+<p>(Data Buffer contains the LoRa Message to be transmitted)</p>
+<p>Note that <strong>Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147"><strong>SX126xSetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289"><strong>SX126xWriteBuffer</strong></a>.</p>
+<p><strong>sx126x_hal_write</strong> transfers the Command Buffer and Data Buffer over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L532-L569">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/**
  * Radio data transfer - write
  *
@@ -877,9 +868,21 @@ static int sx126x_hal_write(
   int rc = transfer_spi(spi_tx_buf, spi_rx_buf, len);
   assert(rc == 0);
   return 0;
-}</code></pre></div><h2 id="receive-long-messages" class="section-header"><a href="#receive-long-messages">7.5 Receive Long Messages</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L505-L513">sx126x-linux.c</a></p>
+}</code></pre></div>
+<p>We use an internal <strong>1024-byte buffer for SPI Transfers</strong>, so we’re hunky dory here: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L521-L528">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Max size of SPI transfers
+#define SPI_BUFFER_SIZE 1024
+
+/// SPI Transmit Buffer
+static uint8_t spi_tx_buf[SPI_BUFFER_SIZE];
+
+/// SPI Receive Buffer
+static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div>
+<p><strong>sx126x_hal_write</strong> calls <strong>transfer_spi</strong> to transfer the SPI Data.</p>
+<p>Thus <strong>transfer_spi</strong> looks highly sus for transmitting Long LoRa Messages.</p>
+<p>What about receiving Long LoRa Messages?</p>
+<h2 id="receive-long-message" class="section-header"><a href="#receive-long-message">7.5 Receive Long Message</a></h2>
+<p>Our PineDio USB Driver calls this function to <strong>receive a LoRa Message</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L505-L513">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t* buffer, const uint8_t size) {
   //  Prepare the Read Buffer Command (3 bytes)
   uint8_t buf[SX126X_SIZE_READ_BUFFER] = { 0 };
@@ -898,8 +901,10 @@ static int sx126x_hal_write(
   );
   return status;
 }</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L571-L615">sx126x-linux.c</a></p>
+<p>In this code we prepare a <strong>SX1262 Read Buffer Command</strong> and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_read</strong>.</p>
+<p>(Data Buffer will contain the received LoRa Message)</p>
+<p>Note that <strong>Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L149-L160"><strong>SX126xGetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297"><strong>SX126xReadBuffer</strong></a>.</p>
+<p><strong>sx126x_hal_read</strong> transfers the Command Buffer over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L571-L615">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/**
  * Radio data transfer - read
  *
@@ -944,7 +949,11 @@ static int sx126x_hal_read(
     *status = spi_rx_buf[1];
   }
   return 0;
-}</code></pre></div><h2 id="spi-transfer-fails-with-32-bytes" class="section-header"><a href="#spi-transfer-fails-with-32-bytes">7.6 SPI Transfer Fails with 32 Bytes</a></h2>
+}</code></pre></div>
+<p><strong>sx126x_hal_read</strong> returns the Data Buffer that has been read over SPI.</p>
+<p><strong>sx126x_hal_read</strong> calls <strong>transfer_spi</strong> to transfer the SPI Data.</p>
+<p>Now <strong>transfer_spi</strong> is doubly sus… The same function is called to transmit and receive Long LoRa Messages!</p>
+<h2 id="spi-transfer-fails-with-32-bytes" class="section-header"><a href="#spi-transfer-fails-with-32-bytes">7.6 SPI Transfer Fails with 32 Bytes</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Blocking call to transmit and receive buffers on SPI. Return 0 on success.
