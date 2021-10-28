@@ -1103,6 +1103,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 </li>
 </ul>
 <p>But the current PineDio USB Driver <strong>doesn’t use GPIO yet</strong>.</p>
+<p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="Controlling SX1262 without GPIO" /></p>
 <p><em>Huh? SX1262 works without GPIO control?</em></p>
 <p>We found some sneaky workarounds to <strong>control LoRa SX1262 without GPIO</strong>…</p>
 <ul>
@@ -1151,7 +1152,6 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p>More about PineDio USB and CH341 GPIO:</p>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">PineDio Wiki</a></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>LoRa Gateway for Internet</p>
