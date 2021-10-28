@@ -1417,6 +1417,8 @@ static void create_task(void) {
 
 And we shall implement the GPIO Interrupt Handler Function [__handle_gpio_interrupt__](https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler) for Linux.
 
+[(We don't need to code the Event Queue, it has been done here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L343-L413)
+
 # What's Next
 
 TODO
