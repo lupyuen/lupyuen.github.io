@@ -1383,17 +1383,35 @@ This is especially useful when we implement __LoRaWAN on PineDio USB__, because 
 
 _How will we implement the Background Thread and Event Queue?_
 
-TODO
+We'll call __NimBLE Porting Layer__, the open source library for Multithreading Functions...
 
-We also need Background Threads to receive LoRa Messages in the background...
+-   [__Multitask with NimBLE Porting Layer__](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
-[main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L355-L408)
+Which has been compiled into our PineDio USB Driver...
 
-More about PineDio USB and CH341 GPIO:
+-   [__npl/linux/src__](https://github.com/lupyuen/lora-sx1262/tree/master/npl/linux/src)
 
-[PineDio Wiki](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
+This code needs to be updated to __start the Background Thread__: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L343-L413)
 
-TODO
+```c
+/// TODO: Create a Background Thread to handle LoRa Events
+static void create_task(void) {
+  //  Init the Event Queue
+  ble_npl_eventq_init(&event_queue);
+
+  //  Init the Event
+  ble_npl_event_init(
+    &event,        //  Event
+    handle_event,  //  Event Handler Function
+    NULL           //  Argument to be passed to Event Handler
+  );
+
+  //  TODO: Create a Background Thread to process the Event Queue
+  //  nimble_port_freertos_init(task_callback);
+}
+```
+
+And we need to implement [__handle_gpio_interrupt__](https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler) for Linux.
 
 # What's Next
 
