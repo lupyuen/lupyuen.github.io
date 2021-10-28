@@ -285,7 +285,7 @@ sudo ./lora-sx1262</code></pre></div>
 Register 0x08 = 0x80
 Register 0x09 = 0x00
 Register 0x0a = 0x01</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262#read-registers">(See the complete log)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#read-registers">(See the Output Log)</a></p>
 <p>If we see these values… Our PineDio USB Driver is talking correctly to CH341 SPI and SX1262!</p>
 <p>Note that the values above will change when we <strong>transmit and receive LoRa Messages</strong>.</p>
 <p>Let’s do that next.</p>
@@ -560,13 +560,14 @@ sudo ./lora-sx1262</code></pre></div>
 RadioSend: size=29
 50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 </code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239">(“<code>PING</code>” followed by 0, 1, 2, …)</a></p>
-<p><a href="https://github.com/lupyuen/lora-sx1262#send-message">(See the complete log)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#send-message">(See the Output Log)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#send-message-1">(See the dmesg Log)</a></p>
 <p>On <a href="https://github.com/lupyuen/wisblock-lora-receiver"><strong>RAKwireless WisBlock</strong></a> we should see the same 29-byte LoRa Message received…</p>
 <div class="example-wrap"><pre class="language-text"><code>LoRaP2P Rx Test
 Starting Radio.Rx
 OnRxDone: Timestamp=18, RssiValue=-28 dBm, SnrValue=13, 
 Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 </code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262#wisblock-receiver-log">(See the complete log)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#wisblock-receiver-log">(See the WisBlock Log)</a></p>
 <p>PineDio USB has successfully transmitted a 29-byte LoRa Message to RAKwireless WisBlock!</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock5.jpg" alt="RAKwireless WisBlock receives 29-byte LoRa Message from RAKwireless WisBlock" /></p>
 <h2 id="spectrum-analysis-with-sdr" class="section-header"><a href="#spectrum-analysis-with-sdr">5.2 Spectrum Analysis with SDR</a></h2>
@@ -694,14 +695,15 @@ sudo ./lora-sx1262</code></pre></div>
 send: 48 65 6c 6c 6f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 
 OnTxDone</code></pre></div>
 <p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L124-L148">(“<code>Hello</code>” followed by 0, 1, 2, …)</a></p>
-<p><a href="https://github.com/lupyuen/lora-sx1262#wisblock-transmitter-log">(See the complete log)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#wisblock-transmitter-log">(See the WisBlock Log)</a></p>
 <p>On <strong>PineDio USB</strong> we should see the same 28-byte LoRa Message…</p>
 <div class="example-wrap"><pre class="language-text"><code>IRQ_RX_DONE
 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 48 65 6c 6c 6f 00 01 02 
 IRQ_PREAMBLE_DETECTED
 IRQ_HEADER_VALID
 receive_message</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the complete log)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the Output Log)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#receive-message-1">(See the dmesg Log)</a></p>
 <p>PineDio USB has successfully received a 28-byte LoRa Message from RAKwireless WisBlock!</p>
 <p><img src="https://lupyuen.github.io/images/usb-wisblock6.jpg" alt="PineDio USB receives a 28-byte LoRa Message from RAKwireless WisBlock" /></p>
 <p><em>Why 28 bytes?</em></p>
