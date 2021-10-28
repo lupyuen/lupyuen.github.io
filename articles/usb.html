@@ -1153,7 +1153,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p>When SX1262 receives a LoRa Message, it triggers a <strong>GPIO Interrupt</strong> on Pin DIO1</p>
 </li>
 <li>
-<p>CH341 Driver forwards the GPIO Interrupt to our Interrupt Handler Function <strong>handle_gpio_interrupt</strong></p>
+<p>CH341 Driver forwards the GPIO Interrupt to our Interrupt Handler Function <a href="https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler"><strong>handle_gpio_interrupt</strong></a></p>
 </li>
 <li>
 <p><strong>handle_gpio_interrupt</strong> enqueues an Event into our <strong>Event Queue</strong></p>
@@ -1167,6 +1167,10 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <li><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-gpio-interrupts"><strong>“BL602 GPIO Interrupts”</strong></a></li>
 </ul>
 <p><em>Why do we need a Background Thread?</em></p>
+<p>This will allow our LoRa Application to <strong>run without blocking</strong> (waiting) on incoming LoRa Messages.</p>
+<p>This is especially useful when we implement <strong>LoRaWAN on PineDio USB</strong>, because LoRaWAN needs to handle <strong>asynchronous messages</strong> in the background.</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan#join-network-request">(Like when we join a LoRaWAN Network)</a></p>
+<p><em>How will we implement the Background Thread and Event Queue?</em></p>
 <p>TODO</p>
 <p>We also need Background Threads to receive LoRa Messages in the background…</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L355-L408">main.c</a></p>
