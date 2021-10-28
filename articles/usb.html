@@ -1185,7 +1185,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <ul>
 <li><a href="https://github.com/lupyuen/lora-sx1262/tree/master/npl/linux/src"><strong>npl/linux/src</strong></a></li>
 </ul>
-<p>This code needs to be updated to <strong>start the Background Thread</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L343-L413">main.c</a></p>
+<p>The code below shall be updated to <strong>start the Background Thread</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L343-L413">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: Create a Background Thread to handle LoRa Events
 static void create_task(void) {
   //  Init the Event Queue
@@ -1201,7 +1201,7 @@ static void create_task(void) {
   //  TODO: Create a Background Thread to process the Event Queue
   //  nimble_port_freertos_init(task_callback);
 }</code></pre></div>
-<p>And we need to implement <a href="https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler"><strong>handle_gpio_interrupt</strong></a> for Linux.</p>
+<p>And we shall implement the GPIO Interrupt Handler Function <a href="https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler"><strong>handle_gpio_interrupt</strong></a> for Linux.</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>LoRa Gateway for Internet</p>
