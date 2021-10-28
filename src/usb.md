@@ -104,6 +104,8 @@ Thus it's good to build a LoRa Driver for PineDio USB that will support LoRaWAN 
 
 [(I tried porting this new driver by Semtech... But gave up when I discovered it doesn't support LoRaWAN)](https://github.com/Lora-net/sx126x_driver)
 
+[(Looking for security on LoRa without LoRaWAN? Check out the alternatives to LoRaWAN)](https://lupyuen.github.io/articles/lorawan2#lorawan-alternatives)
+
 ## NimBLE Porting Layer
 
 _Do we call any open source libraries in our PineDio USB Driver?_

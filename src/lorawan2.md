@@ -518,6 +518,8 @@ These newer __Peer-to-Peer Messaging Protocols__ will probably work with PineDio
 
 -   [__QMesh__](https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network): Voice Mesh Network for LoRa
 
+-   [__Mycelium Mesh__](https://mycelium-mesh.net/): Text Mesh Network for LoRa
+
 There is an __experimental Matrix protocol__ for IoT devices...
 
 -   [Ultra Low Bandwidth Transport for Matrix (Experimental)](https://matrix.org/blog/2019/03/12/breaking-the-100-bps-barrier-with-matrix-meshsim-coap-proxy)
