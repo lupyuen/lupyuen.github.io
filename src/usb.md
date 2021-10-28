@@ -126,6 +126,8 @@ So we're really fortunate that NimBLE Porting Layer complies on Arm64 Linux as w
 
 [(It's part of PineTime InfiniTime too!)](https://lupyuen.github.io/pinetime-rust-mynewt/articles/dfu#nimble-stack-for-bluetooth-le-on-pinetime)
 
+![Pinebook Pro with PineDio USB Adapter](https://lupyuen.github.io/images/usb-pinedio3.jpg)
+
 # Read SX1262 Registers
 
 _What's the simplest way to test our USB PineDio Driver?_
