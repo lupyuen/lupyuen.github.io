@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Build a Linux Driver for PineDio LoRa SX1262 USB Adapter</title>
+            <link>https://lupyuen.github.io/articles/usb</link>
+            <description><![CDATA[How we build a LoRa SX1262 Driver for PineDio USB Adapter... And test it on Pinebook Pro]]></description>
+            <guid>https://lupyuen.github.io/articles/usb</guid>
+            <pubDate>Thu, 28 Oct 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Monitor IoT Devices in The Things Network with Prometheus and Grafana</title>
             <link>https://lupyuen.github.io/articles/prometheus</link>
             <description><![CDATA[How we monitor our IoT Sensor Devices connected to The Things Network... With Prometheus Time Series Database and Grafana Dashboards]]></description>
