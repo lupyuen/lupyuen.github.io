@@ -262,7 +262,7 @@ Register 0x09 = 0x00
 Register 0x0a = 0x01
 ```
 
-[(See the complete log)](https://github.com/lupyuen/lora-sx1262#read-registers)
+[(See the Output Log)](https://github.com/lupyuen/lora-sx1262#read-registers)
 
 If we see these values... Our PineDio USB Driver is talking correctly to CH341 SPI and SX1262!
 
@@ -627,7 +627,9 @@ RadioSend: size=29
 
 [("`PING`" followed by 0, 1, 2, ...)](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239)
 
-[(See the complete log)](https://github.com/lupyuen/lora-sx1262#send-message)
+[(See the Output Log)](https://github.com/lupyuen/lora-sx1262#send-message)
+
+[(See the dmesg Log)](https://github.com/lupyuen/lora-sx1262#send-message-1)
 
 On [__RAKwireless WisBlock__](https://github.com/lupyuen/wisblock-lora-receiver) we should see the same 29-byte LoRa Message received...
 
@@ -638,7 +640,7 @@ OnRxDone: Timestamp=18, RssiValue=-28 dBm, SnrValue=13,
 Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 
 ```
 
-[(See the complete log)](https://github.com/lupyuen/lora-sx1262#wisblock-receiver-log)
+[(See the WisBlock Log)](https://github.com/lupyuen/lora-sx1262#wisblock-receiver-log)
 
 PineDio USB has successfully transmitted a 29-byte LoRa Message to RAKwireless WisBlock!
 
@@ -833,7 +835,7 @@ OnTxDone
 
 [("`Hello`" followed by 0, 1, 2, ...)](https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L124-L148)
 
-[(See the complete log)](https://github.com/lupyuen/lora-sx1262#wisblock-transmitter-log)
+[(See the WisBlock Log)](https://github.com/lupyuen/lora-sx1262#wisblock-transmitter-log)
 
 On __PineDio USB__ we should see the same 28-byte LoRa Message...
 
@@ -845,7 +847,9 @@ IRQ_HEADER_VALID
 receive_message
 ```
 
-[(See the complete log)](https://github.com/lupyuen/lora-sx1262#receive-message)
+[(See the Output Log)](https://github.com/lupyuen/lora-sx1262#receive-message)
+
+[(See the dmesg Log)](https://github.com/lupyuen/lora-sx1262#receive-message-1)
 
 PineDio USB has successfully received a 28-byte LoRa Message from RAKwireless WisBlock!
 
