@@ -1359,7 +1359,7 @@ After we have implemented [__GPIO Interrupts__](https://github.com/rogerjames99/
 
 1.  When SX1262 receives a LoRa Message, it triggers a __GPIO Interrupt__ on Pin DIO1
 
-1.  CH341 Driver forwards the GPIO Interrupt to our Interrupt Handler Function __handle_gpio_interrupt__
+1.  CH341 Driver forwards the GPIO Interrupt to our Interrupt Handler Function [__handle_gpio_interrupt__](https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler)
 
 1.  __handle_gpio_interrupt__ enqueues an Event into our __Event Queue__
 
@@ -1370,6 +1370,14 @@ We handle GPIO Interrupts the same way in our __LoRa SX1262 Driver for BL602__..
 -   [__"BL602 GPIO Interrupts"__](https://lupyuen.github.io/articles/lorawan#appendix-bl602-gpio-interrupts)
 
 _Why do we need a Background Thread?_
+
+This will allow our LoRa Application to __run without blocking__ (waiting) on incoming LoRa Messages.
+
+This is especially useful when we implement __LoRaWAN on PineDio USB__, because LoRaWAN needs to handle __asynchronous messages__ in the background.
+
+[(Like when we join a LoRaWAN Network)](https://lupyuen.github.io/articles/lorawan#join-network-request)
+
+_How will we implement the Background Thread and Event Queue?_
 
 TODO
 
