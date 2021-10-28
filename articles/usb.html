@@ -1177,12 +1177,31 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p>This is especially useful when we implement <strong>LoRaWAN on PineDio USB</strong>, because LoRaWAN needs to handle <strong>asynchronous messages</strong> in the background.</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#join-network-request">(Like when we join a LoRaWAN Network)</a></p>
 <p><em>How will we implement the Background Thread and Event Queue?</em></p>
-<p>TODO</p>
-<p>We also need Background Threads to receive LoRa Messages in the background…</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L355-L408">main.c</a></p>
-<p>More about PineDio USB and CH341 GPIO:</p>
-<p><a href="https://wiki.pine64.org/wiki/Pinedio#USB_adapter">PineDio Wiki</a></p>
-<p>TODO</p>
+<p>We’ll call <strong>NimBLE Porting Layer</strong>, the open source library for Multithreading Functions…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer"><strong>Multitask with NimBLE Porting Layer</strong></a></li>
+</ul>
+<p>Which has been compiled into our PineDio USB Driver…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262/tree/master/npl/linux/src"><strong>npl/linux/src</strong></a></li>
+</ul>
+<p>This code needs to be updated to <strong>start the Background Thread</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L343-L413">main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// TODO: Create a Background Thread to handle LoRa Events
+static void create_task(void) {
+  //  Init the Event Queue
+  ble_npl_eventq_init(&amp;event_queue);
+
+  //  Init the Event
+  ble_npl_event_init(
+    &amp;event,        //  Event
+    handle_event,  //  Event Handler Function
+    NULL           //  Argument to be passed to Event Handler
+  );
+
+  //  TODO: Create a Background Thread to process the Event Queue
+  //  nimble_port_freertos_init(task_callback);
+}</code></pre></div>
+<p>And we need to implement <a href="https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler"><strong>handle_gpio_interrupt</strong></a> for Linux.</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>LoRa Gateway for Internet</p>
