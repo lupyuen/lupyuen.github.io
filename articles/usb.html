@@ -171,7 +171,7 @@
 </ul>
 <p>Thus it’s good to build a LoRa Driver for PineDio USB that will support LoRaWAN in future.</p>
 <p><a href="https://github.com/Lora-net/sx126x_driver">(I tried porting this new driver by Semtech… But gave up when I discovered it doesn’t support LoRaWAN)</a></p>
-<p><a href="https://lupyuen.github.io/articles/lorawan2#lorawan-alternatives">(Looking for security on LoRa without LoRaWAN? Check out the alternatives to LoRaWAN)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan2#lorawan-alternatives">(Seeking security on LoRa without LoRaWAN? Check out the LoRaWAN alternatives)</a></p>
 <h2 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">2.2 NimBLE Porting Layer</a></h2>
 <p><em>Do we call any open source libraries in our PineDio USB Driver?</em></p>
 <p>Yes we call <strong>NimBLE Porting Layer</strong>, the open source library for Multithreading Functions…</p>
@@ -1071,7 +1071,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 </ol>
 <p>We need to fix <a href="https://lupyuen.github.io/articles/usb#receive-long-message"><strong>sx126x_read_buffer</strong></a> to read the LoRa Message in <strong>28-byte chunks</strong>.</p>
 <p><em>Is this fix for Long LoRa Messages really necessary?</em></p>
-<p>Maybe not! </p>
+<p>Maybe not!</p>
 <p>Remember we need to comply with the <strong>Local Regulations</strong> on the usage of <a href="https://en.wikipedia.org/wiki/ISM_radio_band"><strong>ISM Radio Bands</strong></a>: FCC, ETSI, …</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/"><strong>“Regional Parameters”</strong></a></li>
@@ -1083,6 +1083,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 </ul>
 <p>With <strong>CBOR Encoding</strong>, we can compress simple LoRa Messages (Sensor Data) into 12 bytes roughly. <a href="https://lupyuen.github.io/articles/cbor">(See this)</a></p>
 <p>Thus <strong>28 bytes might be sufficient</strong> for many LoRa Applications.</p>
+<p>(Long LoRa Messages are more prone to Radio Interference and Collisions as well)</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/issues">(But lemme know if you would like me to fix this!)</a></p>
 <h1 id="ch341-gpio-interface" class="section-header"><a href="#ch341-gpio-interface">8 CH341 GPIO Interface</a></h1>
 <p><em>Besides SPI, what Interfaces do we need to control LoRa SX1262?</em></p>
