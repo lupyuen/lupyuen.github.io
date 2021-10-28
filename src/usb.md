@@ -1391,7 +1391,7 @@ Which has been compiled into our PineDio USB Driver...
 
 -   [__npl/linux/src__](https://github.com/lupyuen/lora-sx1262/tree/master/npl/linux/src)
 
-This code needs to be updated to __start the Background Thread__: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L343-L413)
+The code below shall be updated to __start the Background Thread__: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L343-L413)
 
 ```c
 /// TODO: Create a Background Thread to handle LoRa Events
@@ -1411,7 +1411,7 @@ static void create_task(void) {
 }
 ```
 
-And we need to implement [__handle_gpio_interrupt__](https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler) for Linux.
+And we shall implement the GPIO Interrupt Handler Function [__handle_gpio_interrupt__](https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler) for Linux.
 
 # What's Next
 
