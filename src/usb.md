@@ -369,6 +369,8 @@ _Are there practical limits on the LoRa Parameters?_
 
 Yes we need to comply with the __Local Regulations__ on the usage of [__ISM Radio Bands__](https://en.wikipedia.org/wiki/ISM_radio_band): FCC, ETSI, ...
 
+-   [__"Regional Parameters"__](https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/)
+
 (Blasting LoRa Messages non-stop is no-no!)
 
 When we connect PineDio USB to __The Things Network__, we need to comply with their Fair Use Policy...
@@ -1270,6 +1272,8 @@ _Is this fix for Long LoRa Messages really necessary?_
 Maybe not! 
 
 Remember we need to comply with the __Local Regulations__ on the usage of [__ISM Radio Bands__](https://en.wikipedia.org/wiki/ISM_radio_band): FCC, ETSI, ...
+
+-   [__"Regional Parameters"__](https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/)
 
 (Blasting Long LoRa Messages non-stop is no-no!)
 
