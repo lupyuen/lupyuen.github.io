@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Build a Linux Driver for PineDio LoRa SX1262 USB Adapter",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-10-28",
+      "website": "https://lupyuen.github.io/articles/usb",
+      "summary": "How we build a LoRa SX1262 Driver for PineDio USB Adapter... And test it on Pinebook Pro"
+    },
+    {
       "name": "Monitor IoT Devices in The Things Network with Prometheus and Grafana",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-21",
