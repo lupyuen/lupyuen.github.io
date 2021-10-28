@@ -104,7 +104,7 @@ Thus it's good to build a LoRa Driver for PineDio USB that will support LoRaWAN 
 
 [(I tried porting this new driver by Semtech... But gave up when I discovered it doesn't support LoRaWAN)](https://github.com/Lora-net/sx126x_driver)
 
-[(Looking for security on LoRa without LoRaWAN? Check out the alternatives to LoRaWAN)](https://lupyuen.github.io/articles/lorawan2#lorawan-alternatives)
+[(Seeking security on LoRa without LoRaWAN? Check out the LoRaWAN alternatives)](https://lupyuen.github.io/articles/lorawan2#lorawan-alternatives)
 
 ## NimBLE Porting Layer
 
@@ -1271,7 +1271,7 @@ We need to fix [__sx126x_read_buffer__](https://lupyuen.github.io/articles/usb#r
 
 _Is this fix for Long LoRa Messages really necessary?_
 
-Maybe not! 
+Maybe not!
 
 Remember we need to comply with the __Local Regulations__ on the usage of [__ISM Radio Bands__](https://en.wikipedia.org/wiki/ISM_radio_band): FCC, ETSI, ...
 
@@ -1286,6 +1286,8 @@ When we connect PineDio USB to __The Things Network__, we need to comply with th
 With __CBOR Encoding__, we can compress simple LoRa Messages (Sensor Data) into 12 bytes roughly. [(See this)](https://lupyuen.github.io/articles/cbor)
 
 Thus __28 bytes might be sufficient__ for many LoRa Applications.
+
+(Long LoRa Messages are more prone to Radio Interference and Collisions as well)
 
 [(But lemme know if you would like me to fix this!)](https://github.com/lupyuen/lora-sx1262/issues)
 
