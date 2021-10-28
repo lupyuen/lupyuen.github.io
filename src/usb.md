@@ -1285,6 +1285,8 @@ Thus __28 bytes might be sufficient__ for many LoRa Applications.
 
 # CH341 GPIO Interface
 
+_Besides SPI, what Interfaces do we need to control LoRa SX1262?_
+
 TODO
 
 Note that the CH341 GPIO programming is incomplete. We need to...
