@@ -1307,6 +1307,8 @@ We may call the GPIO Interface that's provided by the __CH341 SPI Driver__...
 
 But the current PineDio USB Driver __doesn't use GPIO yet__.
 
+![Controlling SX1262 without GPIO](https://lupyuen.github.io/images/usb-sleep3.png)
+
 _Huh? SX1262 works without GPIO control?_
 
 We found some sneaky workarounds to __control LoRa SX1262 without GPIO__...
@@ -1362,8 +1364,6 @@ More about PineDio USB and CH341 GPIO:
 [PineDio Wiki](https://wiki.pine64.org/wiki/Pinedio#USB_adapter)
 
 TODO
-
-![](https://lupyuen.github.io/images/usb-sleep3.png)
 
 # What's Next
 
