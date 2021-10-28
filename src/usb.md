@@ -1349,9 +1349,27 @@ When we have implemented [__GPIO Interrupts__](https://github.com/rogerjames99/s
 
 Here's how we'll do multithreading...
 
-![Multithreading with NimBLE Porting Layer](https://lupyuen.github.io/images/lorawan-handler.png)
+![Multithreading with NimBLE Porting Layer](https://lupyuen.github.io/images/usb-handler.jpg)
 
 # Multithreading with NimBLE Porting Layer
+
+_How will we receive LoRa Messages with GPIO Interrupts?_
+
+After we have implemented [__GPIO Interrupts__](https://github.com/rogerjames99/spi-ch341-usb#reacting-on-gpio-input-interrupt) in our PineDio USB Driver, this is how we'll __receive LoRa Messages__ (see pic above)...
+
+1.  When SX1262 receives a LoRa Message, it triggers a __GPIO Interrupt__ on Pin DIO1
+
+1.  CH341 Driver forwards the GPIO Interrupt to our Interrupt Handler Function __handle_gpio_interrupt__
+
+1.  __handle_gpio_interrupt__ enqueues an Event into our __Event Queue__
+
+1.  Our __Background Thread__ removes the Event from the Event Queue and calls [__RadioOnDioIrq__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1312) to process the received LoRa Message
+
+We handle GPIO Interrupts the same way in our __LoRa SX1262 Driver for BL602__...
+
+-   [__"BL602 GPIO Interrupts"__](https://lupyuen.github.io/articles/lorawan#appendix-bl602-gpio-interrupts)
+
+_Why do we need a Background Thread?_
 
 TODO
 
@@ -1432,31 +1450,33 @@ sudo rmmod ch341
 sudo modprobe spi-ch341-usb
 ```
 
-Plug in PineDio USB.
+Then do this...
 
-Check that the CH341 SPI Driver has been correctly loaded...
+1.  Plug in PineDio USB
 
-```bash
-dmesg
-```
+1.  Check that the CH341 SPI Driver has been correctly loaded...
 
-We should see...
+    ```bash
+    dmesg
+    ```
 
-```text
-ch341_gpio_probe: 
-registered GPIOs from 496 to 511
-```
+1.  We should see...
 
-[(See the complete log)](https://github.com/lupyuen/lora-sx1262#connect-usb)
+    ```text
+    ch341_gpio_probe: 
+    registered GPIOs from 496 to 511
+    ```
 
-If we see...
+    [(See the complete log)](https://github.com/lupyuen/lora-sx1262#connect-usb)
 
-```text
-spi_ch341_usb: 
-loading out-of-tree module taints kernel
-```
+1.  If we see...
 
-It means the older CH341 Non-SPI Driver has been loaded.
+    ```text
+    spi_ch341_usb: 
+    loading out-of-tree module taints kernel
+    ```
+
+    It means the older CH341 Non-SPI Driver has been loaded.
 
 To fix this...
 
@@ -1483,35 +1503,33 @@ To fix this...
 
 ## When Rebooting
 
-TODO
-
 Whenever we reboot our computer...
 
-Plug in PineDio USB.
+1.  Plug in PineDio USB
 
-Check that the CH341 SPI Driver has been correctly loaded...
+1.  Check that the CH341 SPI Driver has been correctly loaded...
 
-```bash
-dmesg
-```
+    ```bash
+    dmesg
+    ```
 
-We should see...
+1.  We should see...
 
-```text
-ch341_gpio_probe: 
-registered GPIOs from 496 to 511
-```
+    ```text
+    ch341_gpio_probe: 
+    registered GPIOs from 496 to 511
+    ```
 
-[(See the complete log)](https://github.com/lupyuen/lora-sx1262#connect-usb)
+    [(See the complete log)](https://github.com/lupyuen/lora-sx1262#connect-usb)
 
-If we see...
+1.  If we see...
 
-```text
-spi_ch341_usb: 
-loading out-of-tree module taints kernel
-```
+    ```text
+    spi_ch341_usb: 
+    loading out-of-tree module taints kernel
+    ```
 
-It means the older CH341 Non-SPI Driver has been loaded.
+    It means the older CH341 Non-SPI Driver has been loaded.
 
 To fix this...
 
