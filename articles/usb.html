@@ -94,10 +94,7 @@
 <li><a href="#appendix-install-ch341-spi-driver">12 Appendix: Install CH341 SPI Driver</a><ul>
 <li><a href="#when-rebooting">12.1 When Rebooting</a><ul></ul></li></ul></li>
 <li><a href="#appendix-build-pinedio-usb-driver">13 Appendix: Build PineDio USB Driver</a><ul>
-<li><a href="#pinedio-usb-operations">13.1 PineDio USB Operations</a><ul></ul></li></ul></li>
-<li><a href="#appendix-pinedio-usb-dmesg-log">14 Appendix: PineDio USB dmesg Log</a><ul>
-<li><a href="#send-message">14.1 Send Message</a><ul></ul></li>
-<li><a href="#receive-message">14.2 Receive Message</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Oct 2021</em></p>
+<li><a href="#pinedio-usb-operations">13.1 PineDio USB Operations</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Oct 2021</em></p>
 <p><em>What if our Laptop Computer could talk to other devices…</em></p>
 <p><em>Over a Long Range, Low Bandwidth wireless network like LoRa?</em></p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
@@ -570,7 +567,7 @@ OnRxDone: Timestamp=18, RssiValue=-28 dBm, SnrValue=13,
 Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 </code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#wisblock-receiver-log">(See the complete log)</a></p>
 <p>PineDio USB has successfully transmitted a 29-byte LoRa Message to RAKwireless WisBlock!</p>
-<p><img src="https://lupyuen.github.io/images/usb-wisblock5.png" alt="RAKwireless WisBlock receives 29-byte LoRa Message from RAKwireless WisBlock" /></p>
+<p><img src="https://lupyuen.github.io/images/usb-wisblock5.jpg" alt="RAKwireless WisBlock receives 29-byte LoRa Message from RAKwireless WisBlock" /></p>
 <h2 id="spectrum-analysis-with-sdr" class="section-header"><a href="#spectrum-analysis-with-sdr">5.2 Spectrum Analysis with SDR</a></h2>
 <p><em>What if nothing appears in our LoRa Receiver?</em></p>
 <p>Use a <strong>Spectrum Analyser</strong> (like a <strong>Software Defined Radio</strong>) to sniff the airwaves and check whether our LoRa Message is transmitted…</p>
@@ -584,7 +581,7 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p>(Red stripe below)</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/usb-chirp2.png" alt="LoRa Message captured with Software Defined Radio" /></p>
+<p><img src="https://lupyuen.github.io/images/usb-chirp2.jpg" alt="LoRa Message captured with Software Defined Radio" /></p>
 <p>LoRa Messages have a characteristic criss-cross shape: <strong>LoRa Chirp</strong>. (Like above)</p>
 <p>More about LoRa Chirps and Software Defined Radio…</p>
 <ul>
@@ -705,7 +702,7 @@ IRQ_HEADER_VALID
 receive_message</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the complete log)</a></p>
 <p>PineDio USB has successfully received a 28-byte LoRa Message from RAKwireless WisBlock!</p>
-<p><img src="https://lupyuen.github.io/images/usb-wisblock6.png" alt="PineDio USB receives a 28-byte LoRa Message from RAKwireless WisBlock" /></p>
+<p><img src="https://lupyuen.github.io/images/usb-wisblock6.jpg" alt="PineDio USB receives a 28-byte LoRa Message from RAKwireless WisBlock" /></p>
 <p><em>Why 28 bytes?</em></p>
 <p>Our PineDio USB Driver has an issue with <strong>CH341 SPI Transfers</strong>…</p>
 <p><strong>Receiving a LoRa Message on PineDio USB longer than 28 bytes will cause message corruption!</strong></p>
@@ -788,7 +785,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 //  support 32-byte SPI transfers 
 assert(len &lt;= 31);</code></pre></div>
 <p>We’ll learn why in a while.</p>
-<p><img src="https://lupyuen.github.io/images/usb-wisblock4.png" alt="PineDio USB transmits a garbled 64-byte LoRa Message to RAKwireless WisBlock" /></p>
+<p><img src="https://lupyuen.github.io/images/usb-wisblock4.jpg" alt="PineDio USB transmits a garbled 64-byte LoRa Message to RAKwireless WisBlock" /></p>
 <h2 id="long-messages-are-garbled" class="section-header"><a href="#long-messages-are-garbled">7.3 Long Messages are Garbled</a></h2>
 <p><em>What happens when we transmit a LoRa Message longer than 29 bytes?</em></p>
 <p>The pic above shows what happens when we <strong>transmit a long message</strong> (64 bytes) from PineDio USB to RAKwireless WisBlock…</p>
@@ -1205,12 +1202,34 @@ static void create_task(void) {
 }</code></pre></div>
 <p>And we shall implement the GPIO Interrupt Handler Function <a href="https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler"><strong>handle_gpio_interrupt</strong></a> for Linux.</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L343-L413">(We don’t need to code the Event Queue, it has been done here)</a></p>
+<p><img src="https://lupyuen.github.io/images/lorawan2-pine64.jpg" alt="" /></p>
+<p><em>PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
-<p>TODO</p>
-<p>LoRa Gateway for Internet</p>
-<p>LoRaWAN</p>
-<p>Backport to PineDio Stack</p>
-<p>PinePhone: I2C bridge to SPI</p>
+<p>Now that we have a <strong>Basic LoRa Driver for PineDio USB</strong>, we can explore all kinds of fun possibilities…</p>
+<ol>
+<li>
+<p>Merge the PineDio USB Driver back into <a href="https://github.com/lupyuen/bl_iot_sdk"><strong>BL602 IoT SDK</strong></a></p>
+<p>(So we can maintain a single LoRa Driver for for PineDio USB and <a href="https://lupyuen.github.io/articles/lorawan2"><strong>PineDio Stack BL604</strong></a>)</p>
+</li>
+<li>
+<p>Implement <strong>LoRaWAN on PineDio USB</strong></p>
+<p>(So we can connect Pinebook Pro to <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> and <a href="https://www.helium.com/lorawan"><strong>Helium</strong></a>)</p>
+</li>
+<li>
+<p>Explore <strong>LoRa Mesh Networks</strong> for PineDio USB…</p>
+<p><a href="https://meshtastic.org/"><strong>Meshtastic</strong></a> (Data Mesh), <a href="https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network"><strong>QMesh</strong></a> (Voice Mesh), <a href="https://mycelium-mesh.net/"><strong>Mycelium Mesh</strong></a> (Text Mesh)</p>
+</li>
+<li>
+<p>Maybe code a <strong>LoRa Gateway for Internet</strong>?</p>
+<p>(That will route LoRa Messages from PineDio USB to the internet?)</p>
+</li>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/Pinedio#Pinephone_backplate"><strong>PinePhone LoRa Backplate</strong></a> (pic above) is an intriguing accessory…</p>
+<p>The Backplate connects PinePhone to <strong>LoRa SX1262</strong> via <strong>ATtiny84</strong>… Which runs an <a href="https://github.com/zschroeder6212/tiny-i2c-spi"><strong>Arduino I2C-To-SPI Bridge</strong></a>!</p>
+<p>(Our PineDio USB Driver might run on PinePhone if we talk to I2C instead of SPI)</p>
+</li>
+</ol>
+<p>Lemme know what you would like to see!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -1276,16 +1295,18 @@ sudo modprobe spi-ch341-usb</code></pre></div>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>ch341_gpio_probe: 
 registered GPIOs from 496 to 511</code></pre></div>
+<p>The CH341 SPI Driver has been loaded successfully.</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#connect-usb">(See the complete log)</a></p>
 </li>
 <li>
 <p>If we see…</p>
 <div class="example-wrap"><pre class="language-text"><code>spi_ch341_usb: 
 loading out-of-tree module taints kernel</code></pre></div>
-<p>It means the older CH341 Non-SPI Driver has been loaded.</p>
+<p>It means the <strong>older CH341 Non-SPI Driver</strong> has been loaded.</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#connect-usb-failed">(See the complete log)</a></p>
 </li>
 </ol>
-<p>To fix this…</p>
+<p>To remove the <strong>older CH341 Non-SPI Driver</strong>…</p>
 <ol>
 <li>
 <p>Unplug PineDio USB</p>
@@ -1317,16 +1338,18 @@ sudo rmmod ch341</code></pre></div></li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>ch341_gpio_probe: 
 registered GPIOs from 496 to 511</code></pre></div>
+<p>The CH341 SPI Driver has been loaded successfully.</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#connect-usb">(See the complete log)</a></p>
 </li>
 <li>
 <p>If we see…</p>
 <div class="example-wrap"><pre class="language-text"><code>spi_ch341_usb: 
 loading out-of-tree module taints kernel</code></pre></div>
-<p>It means the older CH341 Non-SPI Driver has been loaded.</p>
+<p>It means the <strong>older CH341 Non-SPI Driver</strong> has been loaded.</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262#connect-usb-failed">(See the complete log)</a></p>
 </li>
 </ol>
-<p>To fix this…</p>
+<p>To remove the <strong>older CH341 Non-SPI Driver</strong>…</p>
 <ol>
 <li>
 <p>Unplug PineDio USB</p>
@@ -1346,9 +1369,17 @@ sudo rmmod ch341</code></pre></div></li>
 </ol>
 <h1 id="appendix-build-pinedio-usb-driver" class="section-header"><a href="#appendix-build-pinedio-usb-driver">13 Appendix: Build PineDio USB Driver</a></h1>
 <p>To build <strong>PineDio USB Driver</strong> on <strong>Pinebook Pro Manjaro Arm64</strong>…</p>
+<ol>
+<li>
 <p>Follow the instructions in the previous section to install CH341 SPI Driver.</p>
+</li>
+<li>
 <p>Check that the CH341 SPI Driver has been loaded. (<code>dmesg</code>)</p>
+</li>
+<li>
 <p>Enter at the command prompt…</p>
+</li>
+</ol>
 <div class="example-wrap"><pre class="language-bash"><code># Download PineDio USB Driver
 git clone --recursive https://github.com/lupyuen/lora-sx1262
 cd lora-sx1262
@@ -1389,162 +1420,8 @@ sudo ./lora-sx1262</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the Receive Message Log)</a></p>
 </li>
 </ol>
-<h1 id="appendix-pinedio-usb-dmesg-log" class="section-header"><a href="#appendix-pinedio-usb-dmesg-log">14 Appendix: PineDio USB dmesg Log</a></h1>
-<p>TODO</p>
-<h2 id="send-message" class="section-header"><a href="#send-message">14.1 Send Message</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262#send-message-1">(See the complete log)</a></p>
-<p>dmesg Log when PineDio USB is transmitting a 29-byte LoRa Packet…</p>
-<p><strong>CAUTION: Sending a LoRa Message on PineDio USB (not BL602) above 29 bytes will cause message corruption!</strong></p>
-<div class="example-wrap"><pre class="language-text"><code>audit: type=1105 audit(1634994194.295:1270): pid=72110 uid=1000 auid=1000 ses=4 subj==unconfined msg=&#39;op=PAM:session_open grantors=pam_limits,pam_unix,pam_permit acct=&quot;root&quot; exe=&quot;/usr/bin/sudo&quot; hostname=? addr=? terminal=/dev/pts/3 res=success&#39;
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=13, csChange=1, result=13
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=13, csChange=1, result=13
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=7, csChange=1, result=7
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=7, csChange=1, result=7
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=7, csChange=1, result=7
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=31, csChange=1, result=31
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-audit: type=1701 audit(1634994203.075:1271): auid=1000 uid=0 gid=0 ses=4 subj==unconfined pid=72111 comm=&quot;lora-sx1262&quot; exe=&quot;/home/luppy/lora-sx1262/lora-sx1262&quot; sig=6 res=1</code></pre></div>
-<p>Note that if we try to transmit a 64-byte packet, it won’t appear in the dmesg Log.</p>
-<h2 id="receive-message" class="section-header"><a href="#receive-message">14.2 Receive Message</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262#receive-message-1">(See the complete log)</a></p>
-<p>dmesg Log when PineDio USB is receiving a 28-byte LoRa Packet…</p>
-<p><strong>CAUTION: Receiving a LoRa Message on PineDio USB (not BL602) above 28 bytes will cause message corruption!</strong></p>
-<div class="example-wrap"><pre class="language-text"><code>audit: type=1105 audit(1635046697.907:371): pid=29045 uid=1000 auid=1000 ses=7 subj==unconfined msg=&#39;op=PAM:session_open grantors=pam_limits,pam_unix,pam_permit acct=&quot;root&quot; exe=&quot;/usr/bin/sudo&quot; hostname=? addr=? terminal=/dev/pts/5 res=success&#39;
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=13, csChange=1, result=13
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=13, csChange=1, result=13
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=7, csChange=1, result=7
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=7, csChange=1, result=7
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=31, csChange=1, result=31
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=31, csChange=1, result=31
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=31, csChange=1, result=31
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=5, csChange=1, result=5
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=2, csChange=1, result=2
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=9, csChange=1, result=9
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=4, csChange=1, result=4
-spi-ch341-usb 3-1:1.0: ch341_spi_transfer_low: len=3, csChange=1, result=3
-audit: type=1106 audit(1635046711.037:372): pid=29045 uid=1000 auid=1000 ses=7 subj==unconfined msg=&#39;op=PAM:session_close grantors=pam_limits,pam_unix,pam_permit acct=&quot;root&quot; exe=&quot;/usr/bin/sudo&quot; hostname=? addr=? terminal=/dev/pts/5 res=success&#39;</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/usb-pinedio2.jpg" alt="Pinebook Pro with PineDio USB Adapter" /></p>
+
     
 </body>
 </html>
