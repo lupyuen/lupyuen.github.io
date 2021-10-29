@@ -264,6 +264,8 @@ Register 0x0a = 0x01
 
 [(See the Output Log)](https://github.com/lupyuen/lora-sx1262#read-registers)
 
+[(See the dmesg Log)](https://github.com/lupyuen/lora-sx1262#read-registers-1)
+
 If we see these values... Our PineDio USB Driver is talking correctly to CH341 SPI and SX1262!
 
 Note that the values above will change when we __transmit and receive LoRa Messages__.
