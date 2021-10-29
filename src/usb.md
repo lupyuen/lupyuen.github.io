@@ -1225,6 +1225,18 @@ This copies the __entire LoRa Message__ into the SX1262 Transmit Buffer as a __s
 
 If we try to transmit a LoRa Message that's __longer than 29 bytes__, the SPI Transfer fails.
 
+This appears in the [__Output Log__](https://github.com/lupyuen/lora-sx1262#send-message) as...
+
+```text
+sx126x_hal_write: 
+  command_length=2, 
+  data_length=29
+spi tx: 
+  0e 00 50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
+spi rx: 
+  a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 
+```
+
 _Can we transfer in smaller chunks instead?_
 
 Yes! According to the [__SX1262 Datasheet__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262) (pic above), we can copy the LoRa Message in __smaller chunks__ (29 bytes), by changing the __WriteBuffer Offset__...
@@ -1254,6 +1266,18 @@ Yep! To receive a LoRa Message, [__sx126x_read_buffer__](https://lupyuen.github.
 1.  __ReadBuffer NOP:__ `0x00`
 
 1.  __ReadBuffer Data:__ Transfer 28 bytes (max)
+
+Which appears in the [__Output Log__](https://github.com/lupyuen/lora-sx1262#receive-message) as...
+
+```text
+sx126x_hal_read: 
+  command_length=3, 
+  data_length=28
+spi tx: 
+  1e 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+spi rx: 
+  d2 d2 d2 48 65 6c 6c 6f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 
+```
 
 Instead of reading the __entire LoRa Message__ (from SX1262 Receive Buffer) in a single chunk, we should read it in __28-byte chunks__...
 
