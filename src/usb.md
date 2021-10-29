@@ -1232,10 +1232,14 @@ sx126x_hal_write:
   command_length=2, 
   data_length=29
 spi tx: 
-  0e 00 50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
+  0e 00 
+  50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
 spi rx: 
-  a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 
+  a2 a2 
+  a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 
 ```
+
+[("`50 49 4e 47`" is "`PING`" followed by 0, 1, 2, ...)](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239)
 
 _Can we transfer in smaller chunks instead?_
 
@@ -1274,10 +1278,14 @@ sx126x_hal_read:
   command_length=3, 
   data_length=28
 spi tx: 
-  1e 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  1e 00 00 
+  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 spi rx: 
-  d2 d2 d2 48 65 6c 6c 6f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 
+  d2 d2 d2 
+  48 65 6c 6c 6f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 
 ```
+
+[("`48 65 6c 6c 6f`" is "`Hello`" followed by 0, 1, 2, ...)](https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L124-L148)
 
 Instead of reading the __entire LoRa Message__ (from SX1262 Receive Buffer) in a single chunk, we should read it in __28-byte chunks__...
 
