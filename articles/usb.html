@@ -1008,9 +1008,12 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
   command_length=2, 
   data_length=29
 spi tx: 
-  0e 00 50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
+  0e 00 
+  50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 
 spi rx: 
-  a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 </code></pre></div>
+  a2 a2 
+  a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 </code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L213-L239">(“<code>50 49 4e 47</code>” is “<code>PING</code>” followed by 0, 1, 2, …)</a></p>
 <p><em>Can we transfer in smaller chunks instead?</em></p>
 <p>Yes! According to the <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>SX1262 Datasheet</strong></a> (pic above), we can copy the LoRa Message in <strong>smaller chunks</strong> (29 bytes), by changing the <strong>WriteBuffer Offset</strong>…</p>
 <ol>
@@ -1055,9 +1058,12 @@ spi rx:
   command_length=3, 
   data_length=28
 spi tx: 
-  1e 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+  1e 00 00 
+  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 spi rx: 
-  d2 d2 d2 48 65 6c 6c 6f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 </code></pre></div>
+  d2 d2 d2 
+  48 65 6c 6c 6f 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 </code></pre></div>
+<p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/pinedio/src/main.cpp#L124-L148">(“<code>48 65 6c 6c 6f</code>” is “<code>Hello</code>” followed by 0, 1, 2, …)</a></p>
 <p>Instead of reading the <strong>entire LoRa Message</strong> (from SX1262 Receive Buffer) in a single chunk, we should read it in <strong>28-byte chunks</strong>…</p>
 <ol>
 <li>
