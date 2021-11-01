@@ -1558,10 +1558,11 @@ sudo ./lora-sx1262</code></pre></div>
     IRQ_RADIO_NONE 
   );</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470">(<strong>SX126xSetDioIrqParams</strong> is defined here)</a></p>
-<p>TODO</p>
+<p>We define the SX1262 Registers that will be restored from <strong>Retention Memory</strong> when waking up from Warm Start Mode…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Add registers to the retention list (4 is the maximum possible number)
   RadioAddRegisterToRetentionList( REG_RX_GAIN );
   RadioAddRegisterToRetentionList( REG_TX_MODULATION );</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1167-L1195">(<strong>RadioAddRegisterToRetentionList</strong> is defined here)</a></p>
 <p>Finally we init the Timeout Timers (from NimBLE Porting Layer) for <strong>Transmit Timeout</strong> and <strong>Receive Timeout</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Initialize driver timeout timers
   TimerInit( &amp;TxTimeoutTimer, RadioOnTxTimeoutIrq );
