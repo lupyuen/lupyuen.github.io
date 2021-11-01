@@ -1562,7 +1562,7 @@ sudo ./lora-sx1262</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>  //  Add registers to the retention list (4 is the maximum possible number)
   RadioAddRegisterToRetentionList( REG_RX_GAIN );
   RadioAddRegisterToRetentionList( REG_TX_MODULATION );</code></pre></div>
-<p>TODO</p>
+<p>Finally we init the Timeout Timers (from NimBLE Porting Layer) for <strong>Transmit Timeout</strong> and <strong>Receive Timeout</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Initialize driver timeout timers
   TimerInit( &amp;TxTimeoutTimer, RadioOnTxTimeoutIrq );
   TimerInit( &amp;RxTimeoutTimer, RadioOnRxTimeoutIrq );
@@ -1570,7 +1570,7 @@ sudo ./lora-sx1262</code></pre></div>
   //  Interrupt not fired yet
   IrqFired = false;
 }</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L361-L380">(<strong>TimerInit</strong> is defined here)</a></p>
 <h2 id="radiosetchannel" class="section-header"><a href="#radiosetchannel">14.2 RadioSetChannel</a></h2>
 <p><strong>RadioSetChannel</strong> sets the LoRa Frequency and is defined at…</p>
 <ul>
