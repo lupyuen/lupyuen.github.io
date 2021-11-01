@@ -2166,26 +2166,90 @@ TODO
 
 ## RadioSend
 
-__RadioSend__ transmits a LoRa Message and is defined at...
-
--   [__RadioSend__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
+__RadioSend__ transmits a LoRa Message: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
 
 TODO
+
+```c
+void RadioSend( uint8_t *buffer, uint8_t size ) {
+  SX126xSetDioIrqParams( 
+    IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
+    IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
+    IRQ_RADIO_NONE,
+    IRQ_RADIO_NONE 
+  );
+```
+
+TODO
+
+```c
+  if( SX126xGetPacketType( ) == PACKET_TYPE_LORA ) {
+    SX126x.PacketParams.Params.LoRa.PayloadLength = size;
+  } else {
+    SX126x.PacketParams.Params.Gfsk.PayloadLength = size;
+  }
+
+  SX126xSetPacketParams( &SX126x.PacketParams );
+```
+
+TODO
+
+```c
+  SX126xSendPayload( buffer, size, 0 );
+  TimerStart( &TxTimeoutTimer, TxTimeout );
+}
+```
 
 ## RadioRx
 
-__RadioRx__ receives a single LoRa Message and is defined at...
-
--   [__RadioRx__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138)
+__RadioRx__ receives a single LoRa Message: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138)
 
 TODO
+
+```c
+void RadioRx( uint32_t timeout ) {
+  SX126xSetDioIrqParams( 
+    IRQ_RADIO_ALL,
+    IRQ_RADIO_ALL,
+    IRQ_RADIO_NONE,
+    IRQ_RADIO_NONE 
+  );
+```
+
+TODO
+
+```c
+  if( timeout != 0 ) {
+    TimerStart( &RxTimeoutTimer, timeout );
+  }
+```
+
+TODO
+
+```c
+  if( RxContinuous == true ) {
+    SX126xSetRx( 0xFFFFFF ); // Rx Continuous
+  } else {
+    SX126xSetRx( RxTimeout << 6 );
+  }
+}
+```
 
 ## RadioSleep
 
-__RadioSleep__ switches SX1262 to low-power sleep mode and is defined at...
-
--   [__RadioSleep__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109)
+__RadioSleep__ switches SX1262 to low-power sleep mode: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109)
 
 TODO
+
+```c
+void RadioSleep( void ) {
+  SleepParams_t params = { 0 };
+
+  params.Fields.WarmStart = 1;
+  SX126xSetSleep( params );
+
+  DelayMs( 2 );
+}
+```
 
 ![Pinebook Pro with PineDio USB Adapter](https://lupyuen.github.io/images/usb-pinedio2.jpg)
