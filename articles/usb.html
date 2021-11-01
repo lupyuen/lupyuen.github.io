@@ -1168,6 +1168,7 @@ spi rx:
 </li>
 <li>
 <p>Check SX1262 Busy State via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L171-L182"><strong>SX126xWaitOnBusy</strong></a></p>
+<p>(<strong>SX126xWaitOnBusy</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L133-L142"><strong>SX126xCheckDeviceReady</strong></a>, which wakes up SX1262 before checking if SX1262 is busy)</p>
 </li>
 <li>
 <p>Get DIO1 Pin State: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L337-L344"><strong>SX126xGetDio1PinState</strong></a></p>
