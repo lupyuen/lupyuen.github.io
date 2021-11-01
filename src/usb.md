@@ -1730,3 +1730,23 @@ The PineDio USB Demo supports 3 operations...
     [(See the Receive Message Log)](https://github.com/lupyuen/lora-sx1262#receive-message)
 
 ![Pinebook Pro with PineDio USB Adapter](https://lupyuen.github.io/images/usb-pinedio2.jpg)
+
+## Appendix: TODO
+
+TODO: Explain these functions in SX1262 Driver
+
+The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c)
+
+-   [__RadioInit:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559) Initialise LoRa SX1262
+
+-   [__RadioSetChannel:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604) Set LoRa Frequency
+
+-   [__RadioSetTxConfig:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908) Set LoRa Transmit Configuration
+
+-   [__RadioSetRxConfig:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786) Set LoRa Receive Configuration
+
+-   [__RadioSend:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098) Transmit a LoRa Message
+
+-   [__RadioRx:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138) Receive one LoRa Message
+
+-   [__RadioSleep:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109) Switch SX1262 to low-power sleep mode
