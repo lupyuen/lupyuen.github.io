@@ -1601,10 +1601,76 @@ sudo ./lora-sx1262</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L812-L826">(<strong>SX126xConvertFreqInHzToPllStep</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
 <h2 id="radiosettxconfig" class="section-header"><a href="#radiosettxconfig">14.3 RadioSetTxConfig</a></h2>
-<p><strong>RadioSetTxConfig</strong> sets the LoRa Transmit Configuration and is defined at…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908"><strong>RadioSetTxConfig</strong></a></li>
-</ul>
+<p><strong>RadioSetTxConfig</strong> sets the LoRa Transmit Configuration: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908">radio.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void RadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
+  uint32_t bandwidth, uint32_t datarate,
+  uint8_t coderate, uint16_t preambleLen,
+  bool fixLen, bool crcOn, bool freqHopOn,
+  uint8_t hopPeriod, bool iqInverted, uint32_t timeout ) {
+
+  switch( modem ) {
+    case MODEM_FSK:
+      //  Omitted: FSK Modulation
+      ...</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>    case MODEM_LORA:
+      //  LoRa Modulation
+      SX126x.ModulationParams.PacketType = PACKET_TYPE_LORA;
+      SX126x.ModulationParams.Params.LoRa.SpreadingFactor = ( RadioLoRaSpreadingFactors_t ) datarate;
+      SX126x.ModulationParams.Params.LoRa.Bandwidth =  Bandwidths[bandwidth];
+      SX126x.ModulationParams.Params.LoRa.CodingRate= ( RadioLoRaCodingRates_t )coderate;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>      if( ( ( bandwidth == 0 ) &amp;&amp; ( ( datarate == 11 ) || ( datarate == 12 ) ) ) ||
+      ( ( bandwidth == 1 ) &amp;&amp; ( datarate == 12 ) ) ) {
+        SX126x.ModulationParams.Params.LoRa.LowDatarateOptimize = 0x01;
+      } else {
+        SX126x.ModulationParams.Params.LoRa.LowDatarateOptimize = 0x00;
+      }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>      SX126x.PacketParams.PacketType = PACKET_TYPE_LORA;
+
+      if( ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor == LORA_SF5 ) ||
+        ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor == LORA_SF6 ) ) {
+        if( preambleLen &lt; 12 ) {
+          SX126x.PacketParams.Params.LoRa.PreambleLength = 12;
+        } else {
+          SX126x.PacketParams.Params.LoRa.PreambleLength = preambleLen;
+        }
+      } else {
+        SX126x.PacketParams.Params.LoRa.PreambleLength = preambleLen;
+      }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>      SX126x.PacketParams.Params.LoRa.HeaderType = 
+        ( RadioLoRaPacketLengthsMode_t )fixLen;
+      SX126x.PacketParams.Params.LoRa.PayloadLength = 
+        MaxPayloadLength;
+      SX126x.PacketParams.Params.LoRa.CrcMode = 
+        ( RadioLoRaCrcModes_t )crcOn;
+      SX126x.PacketParams.Params.LoRa.InvertIQ = 
+        ( RadioLoRaIQModes_t )iqInverted;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>      RadioStandby( );
+      RadioSetModem( 
+        ( SX126x.ModulationParams.PacketType == PACKET_TYPE_GFSK ) 
+        ? MODEM_FSK 
+        : MODEM_LORA
+      );
+      SX126xSetModulationParams( &amp;SX126x.ModulationParams );
+      SX126xSetPacketParams( &amp;SX126x.PacketParams );
+      break;
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // WORKAROUND - Modulation Quality with 500 kHz LoRa Bandwidth, see DS_SX1261-2_V1.2 datasheet chapter 15.1
+  if( ( modem == MODEM_LORA ) &amp;&amp; ( SX126x.ModulationParams.Params.LoRa.Bandwidth == LORA_BW_500 ) ) {
+    SX126xWriteRegister( REG_TX_MODULATION, SX126xReadRegister( REG_TX_MODULATION ) &amp; ~( 1 &lt;&lt; 2 ) );
+  } else {
+    SX126xWriteRegister( REG_TX_MODULATION, SX126xReadRegister( REG_TX_MODULATION ) | ( 1 &lt;&lt; 2 ) );
+  }
+  // WORKAROUND END</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  SX126xSetRfTxPower( power );
+  TxTimeout = timeout;
+}</code></pre></div>
 <p>TODO</p>
 <h2 id="radiosetrxconfig" class="section-header"><a href="#radiosetrxconfig">14.4 RadioSetRxConfig</a></h2>
 <p><strong>RadioSetRxConfig</strong> sets the LoRa Receive Configuration and is defined at…</p>
