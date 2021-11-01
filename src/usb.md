@@ -1844,7 +1844,7 @@ We set the __Transmit Power__ and the __Ramp Up Time__...
 
 [(__SX126xSetTxParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L528-L576)
 
-(__Ramp Up Time__ is the time needed for SX1262's Power Amplifier to ramp up to the configured Transmit Power)
+__Ramp Up Time__ is the duration (in microseconds) we need to wait for SX1262's Power Amplifier to ramp up (charge up) to the configured Transmit Power.
 
 For easier testing we have set the Transmit Power to __22 dBm__ (highest power) and Ramp Up Time to __3400 microseconds__ (longest duration).
 
