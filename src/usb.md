@@ -1391,6 +1391,8 @@ We need to mod these functions to call the __CH341 GPIO Interface__...
 
 1.  Check SX1262 Busy State via GPIO: [__SX126xWaitOnBusy__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L171-L182)
 
+    (__SX126xWaitOnBusy__ is called by [__SX126xCheckDeviceReady__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L133-L142), which wakes up SX1262 before checking if SX1262 is busy)
+
 1.  Get DIO1 Pin State: [__SX126xGetDio1PinState__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L337-L344)
 
 When we have implemented [__GPIO Interrupts__](https://github.com/rogerjames99/spi-ch341-usb#reacting-on-gpio-input-interrupt) in our driver, we can remove the [__Event Polling__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L102-L112). And we run a __Background Thread__ to handle LoRa Events.
