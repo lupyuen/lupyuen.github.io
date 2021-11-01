@@ -1762,23 +1762,57 @@ sudo ./lora-sx1262</code></pre></div>
       break;
   }
 }</code></pre></div><h2 id="radiosend" class="section-header"><a href="#radiosend">14.5 RadioSend</a></h2>
-<p><strong>RadioSend</strong> transmits a LoRa Message and is defined at…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098"><strong>RadioSend</strong></a></li>
-</ul>
+<p><strong>RadioSend</strong> transmits a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098">radio.c</a></p>
 <p>TODO</p>
-<h2 id="radiorx" class="section-header"><a href="#radiorx">14.6 RadioRx</a></h2>
-<p><strong>RadioRx</strong> receives a single LoRa Message and is defined at…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138"><strong>RadioRx</strong></a></li>
-</ul>
+<div class="example-wrap"><pre class="language-c"><code>void RadioSend( uint8_t *buffer, uint8_t size ) {
+  SX126xSetDioIrqParams( 
+    IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
+    IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
+    IRQ_RADIO_NONE,
+    IRQ_RADIO_NONE 
+  );</code></pre></div>
 <p>TODO</p>
-<h2 id="radiosleep" class="section-header"><a href="#radiosleep">14.7 RadioSleep</a></h2>
-<p><strong>RadioSleep</strong> switches SX1262 to low-power sleep mode and is defined at…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109"><strong>RadioSleep</strong></a></li>
-</ul>
+<div class="example-wrap"><pre class="language-c"><code>  if( SX126xGetPacketType( ) == PACKET_TYPE_LORA ) {
+    SX126x.PacketParams.Params.LoRa.PayloadLength = size;
+  } else {
+    SX126x.PacketParams.Params.Gfsk.PayloadLength = size;
+  }
+
+  SX126xSetPacketParams( &amp;SX126x.PacketParams );</code></pre></div>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  SX126xSendPayload( buffer, size, 0 );
+  TimerStart( &amp;TxTimeoutTimer, TxTimeout );
+}</code></pre></div><h2 id="radiorx" class="section-header"><a href="#radiorx">14.6 RadioRx</a></h2>
+<p><strong>RadioRx</strong> receives a single LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138">radio.c</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>void RadioRx( uint32_t timeout ) {
+  SX126xSetDioIrqParams( 
+    IRQ_RADIO_ALL,
+    IRQ_RADIO_ALL,
+    IRQ_RADIO_NONE,
+    IRQ_RADIO_NONE 
+  );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  if( timeout != 0 ) {
+    TimerStart( &amp;RxTimeoutTimer, timeout );
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  if( RxContinuous == true ) {
+    SX126xSetRx( 0xFFFFFF ); // Rx Continuous
+  } else {
+    SX126xSetRx( RxTimeout &lt;&lt; 6 );
+  }
+}</code></pre></div><h2 id="radiosleep" class="section-header"><a href="#radiosleep">14.7 RadioSleep</a></h2>
+<p><strong>RadioSleep</strong> switches SX1262 to low-power sleep mode: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109">radio.c</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>void RadioSleep( void ) {
+  SleepParams_t params = { 0 };
+
+  params.Fields.WarmStart = 1;
+  SX126xSetSleep( params );
+
+  DelayMs( 2 );
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/usb-pinedio2.jpg" alt="Pinebook Pro with PineDio USB Adapter" /></p>
 
     
