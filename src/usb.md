@@ -1868,7 +1868,7 @@ TODO
   RadioAddRegisterToRetentionList( REG_TX_MODULATION );
 ```
 
-TODO
+Finally we init the Timeout Timers (from NimBLE Porting Layer) for __Transmit Timeout__ and __Receive Timeout__...
 
 ```c
   //  Initialize driver timeout timers
@@ -1880,7 +1880,7 @@ TODO
 }
 ```
 
-TODO
+[(__TimerInit__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L361-L380)
 
 ## RadioSetChannel
 
