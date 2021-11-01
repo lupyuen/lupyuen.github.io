@@ -1860,13 +1860,15 @@ We configure which __LoRa Events will trigger interrupts__ on each DIO Pin...
 
 [(__SX126xSetDioIrqParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470)
 
-TODO
+We define the SX1262 Registers that will be restored from __Retention Memory__ when waking up from Warm Start Mode...
 
 ```c
   //  Add registers to the retention list (4 is the maximum possible number)
   RadioAddRegisterToRetentionList( REG_RX_GAIN );
   RadioAddRegisterToRetentionList( REG_TX_MODULATION );
 ```
+
+[(__RadioAddRegisterToRetentionList__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1167-L1195)
 
 Finally we init the Timeout Timers (from NimBLE Porting Layer) for __Transmit Timeout__ and __Receive Timeout__...
 
