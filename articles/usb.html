@@ -1485,10 +1485,55 @@ sudo ./lora-sx1262</code></pre></div>
 </li>
 </ul>
 <h2 id="radioinit" class="section-header"><a href="#radioinit">14.1 RadioInit</a></h2>
-<p><strong>RadioInit</strong> initialises the LoRa SX1262 Module and is defined at…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit</strong></a></li>
-</ul>
+<p><strong>RadioInit</strong> initialises the LoRa SX1262 Module: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559">radio.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void RadioInit( RadioEvents_t *events ) {
+  //  We copy the Event Callbacks from &quot;events&quot;, because
+  //  &quot;events&quot; may be stored on the stack
+  assert(events != NULL);
+  memcpy(&amp;RadioEvents, events, sizeof(RadioEvents));
+  //  Previously: RadioEvents = events;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Init SPI and GPIO Ports, wake up the LoRa Module,
+  //  init TCXO Control and RF Switch Control.
+  SX126xInit( RadioOnDioIrq );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Set LoRa Module to standby mode
+  SX126xSetStandby( STDBY_RC );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  TODO: Declare the power regulation used to power the device
+  //  This command allows the user to specify if DC-DC or LDO is used for power regulation.
+  //  Using only LDO implies that the Rx or Tx current is doubled
+
+  //  #warning SX126x is set to LDO power regulator mode (instead of DC-DC)
+  //  SX126xSetRegulatorMode( USE_LDO );   //  Use LDO
+
+  //  #warning SX126x is set to DC-DC power regulator mode (instead of LDO)
+  SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC
+
+  SX126xSetBufferBaseAddress( 0x00, 0x00 );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  TODO: Set the correct transmit power and ramp up time
+  SX126xSetTxParams( 22, RADIO_RAMP_3400_US );
+  //  TODO: Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  SX126xSetDioIrqParams(
+    IRQ_RADIO_ALL, 
+    IRQ_RADIO_ALL, 
+    IRQ_RADIO_NONE, 
+    IRQ_RADIO_NONE 
+  );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Add registers to the retention list (4 is the maximum possible number)
+  RadioAddRegisterToRetentionList( REG_RX_GAIN );
+  RadioAddRegisterToRetentionList( REG_TX_MODULATION );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Initialize driver timeout timers
+  TimerInit( &amp;TxTimeoutTimer, RadioOnTxTimeoutIrq );
+  TimerInit( &amp;RxTimeoutTimer, RadioOnRxTimeoutIrq );
+
+  //  Interrupt not fired yet
+  IrqFired = false;
+}</code></pre></div>
 <p>TODO</p>
 <h2 id="radiosetchannel" class="section-header"><a href="#radiosetchannel">14.2 RadioSetChannel</a></h2>
 <p><strong>RadioSetChannel</strong> sets the LoRa Frequency and is defined at…</p>
