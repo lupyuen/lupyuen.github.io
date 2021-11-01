@@ -2038,11 +2038,131 @@ TODO
 
 ## RadioSetRxConfig
 
-__RadioSetRxConfig__ sets the LoRa Receive Configuration and is defined at...
-
--   [__RadioSetRxConfig__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786)
+__RadioSetRxConfig__ sets the LoRa Receive Configuration: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786)
 
 TODO
+
+```c
+void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
+  uint32_t datarate, uint8_t coderate,
+  uint32_t bandwidthAfc, uint16_t preambleLen,
+  uint16_t symbTimeout, bool fixLen,
+  uint8_t payloadLen,
+  bool crcOn, bool freqHopOn, uint8_t hopPeriod,
+  bool iqInverted, bool rxContinuous ) {
+
+  RxContinuous = rxContinuous;
+  if( rxContinuous == true ) {
+    symbTimeout = 0;
+  }
+  if( fixLen == true ) {
+    MaxPayloadLength = payloadLen;
+  }
+  else {
+    MaxPayloadLength = 0xFF;
+  }
+```
+
+TODO
+
+```c
+  switch( modem )
+  {
+    case MODEM_FSK:
+      //  Omitted: FSK Modulation
+      ...
+```
+
+TODO
+
+```c
+    case MODEM_LORA:
+      //  LoRa Modulation
+      SX126xSetStopRxTimerOnPreambleDetect( false );
+      SX126x.ModulationParams.PacketType = PACKET_TYPE_LORA;
+      SX126x.ModulationParams.Params.LoRa.SpreadingFactor = ( RadioLoRaSpreadingFactors_t )datarate;
+      SX126x.ModulationParams.Params.LoRa.Bandwidth = Bandwidths[bandwidth];
+      SX126x.ModulationParams.Params.LoRa.CodingRate = ( RadioLoRaCodingRates_t )coderate;
+```
+
+TODO
+
+```c
+      if( ( ( bandwidth == 0 ) && ( ( datarate == 11 ) || ( datarate == 12 ) ) ) ||
+      ( ( bandwidth == 1 ) && ( datarate == 12 ) ) ) {
+        SX126x.ModulationParams.Params.LoRa.LowDatarateOptimize = 0x01;
+      } else {
+        SX126x.ModulationParams.Params.LoRa.LowDatarateOptimize = 0x00;
+      }
+```
+
+TODO
+
+```c
+      SX126x.PacketParams.PacketType = PACKET_TYPE_LORA;
+
+      if( ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor == LORA_SF5 ) ||
+          ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor == LORA_SF6 ) ){
+        if( preambleLen < 12 ) {
+          SX126x.PacketParams.Params.LoRa.PreambleLength = 12;
+        } else {
+          SX126x.PacketParams.Params.LoRa.PreambleLength = preambleLen;
+        }
+      } else {
+        SX126x.PacketParams.Params.LoRa.PreambleLength = preambleLen;
+      }
+```
+
+TODO
+
+```c
+      SX126x.PacketParams.Params.LoRa.HeaderType = 
+        ( RadioLoRaPacketLengthsMode_t )fixLen;
+
+      SX126x.PacketParams.Params.LoRa.PayloadLength = 
+        MaxPayloadLength;
+      SX126x.PacketParams.Params.LoRa.CrcMode = 
+        ( RadioLoRaCrcModes_t )crcOn;
+      SX126x.PacketParams.Params.LoRa.InvertIQ = 
+        ( RadioLoRaIQModes_t )iqInverted;
+```
+
+TODO
+
+```c
+      RadioStandby( );
+      RadioSetModem( 
+          ( SX126x.ModulationParams.PacketType == PACKET_TYPE_GFSK ) 
+          ? MODEM_FSK 
+          : MODEM_LORA 
+      );
+      SX126xSetModulationParams( &SX126x.ModulationParams );
+      SX126xSetPacketParams( &SX126x.PacketParams );
+      SX126xSetLoRaSymbNumTimeout( symbTimeout );
+```
+
+TODO
+
+```c
+      // WORKAROUND - Optimizing the Inverted IQ Operation, see DS_SX1261-2_V1.2 datasheet chapter 15.4
+      if( SX126x.PacketParams.Params.LoRa.InvertIQ == LORA_IQ_INVERTED ) {
+        SX126xWriteRegister( REG_IQ_POLARITY, SX126xReadRegister( REG_IQ_POLARITY ) & ~( 1 << 2 ) );
+      } else {
+        SX126xWriteRegister( REG_IQ_POLARITY, SX126xReadRegister( REG_IQ_POLARITY ) | ( 1 << 2 ) );
+      }
+      // WORKAROUND END
+```
+
+TODO
+
+```c
+      // Timeout Max, Timeout handled directly in SetRx function
+      RxTimeout = 0xFFFF;
+
+      break;
+  }
+}
+```
 
 ## RadioSend
 
