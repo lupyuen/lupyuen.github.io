@@ -1548,7 +1548,7 @@ sudo ./lora-sx1262</code></pre></div>
   SX126xSetTxParams( 22, RADIO_RAMP_3400_US );
   //  TODO: Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L528-L576">(<strong>SX126xSetTxParams</strong> is defined here)</a></p>
-<p>(<strong>Ramp Up Time</strong> is the time needed for SX1262’s Power Amplifier to ramp up to the configured Transmit Power)</p>
+<p><strong>Ramp Up Time</strong> is the duration (in microseconds) we need to wait for SX1262’s Power Amplifier to ramp up (charge up) to the configured Transmit Power.</p>
 <p>For easier testing we have set the Transmit Power to <strong>22 dBm</strong> (highest power) and Ramp Up Time to <strong>3400 microseconds</strong> (longest duration).</p>
 <p>(To give sufficient time for the Power Amplifier to ramp up to the highest Transmit Power)</p>
 <p>After testing we should revert to the <strong>Default Transmit Power</strong> (0) and <strong>Ramp Up Time</strong> (200 microseconds).</p>
