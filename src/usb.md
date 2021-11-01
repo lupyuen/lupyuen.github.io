@@ -1729,9 +1729,7 @@ The PineDio USB Demo supports 3 operations...
 
     [(See the Receive Message Log)](https://github.com/lupyuen/lora-sx1262#receive-message)
 
-![Pinebook Pro with PineDio USB Adapter](https://lupyuen.github.io/images/usb-pinedio2.jpg)
-
-## Appendix: TODO
+# Appendix: Radio Functions
 
 TODO: Explain these functions in SX1262 Driver
 
@@ -1750,3 +1748,5 @@ The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [
 -   [__RadioRx:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138) Receive one LoRa Message
 
 -   [__RadioSleep:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109) Switch SX1262 to low-power sleep mode
+
+![Pinebook Pro with PineDio USB Adapter](https://lupyuen.github.io/images/usb-pinedio2.jpg)
