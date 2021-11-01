@@ -1749,9 +1749,86 @@ In this section we explain the Platform-Independent (Linux and BL602) __Radio Fu
 
 ## RadioInit
 
-__RadioInit__ initialises the LoRa SX1262 Module and is defined at...
+__RadioInit__ initialises the LoRa SX1262 Module: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559)
 
--   [__RadioInit__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559)
+```c
+void RadioInit( RadioEvents_t *events ) {
+  //  We copy the Event Callbacks from "events", because
+  //  "events" may be stored on the stack
+  assert(events != NULL);
+  memcpy(&RadioEvents, events, sizeof(RadioEvents));
+  //  Previously: RadioEvents = events;
+```
+
+TODO
+
+```c
+  //  Init SPI and GPIO Ports, wake up the LoRa Module,
+  //  init TCXO Control and RF Switch Control.
+  SX126xInit( RadioOnDioIrq );
+```
+
+TODO
+
+```c
+  //  Set LoRa Module to standby mode
+  SX126xSetStandby( STDBY_RC );
+```
+
+TODO
+
+```c
+  //  TODO: Declare the power regulation used to power the device
+  //  This command allows the user to specify if DC-DC or LDO is used for power regulation.
+  //  Using only LDO implies that the Rx or Tx current is doubled
+
+  //  #warning SX126x is set to LDO power regulator mode (instead of DC-DC)
+  //  SX126xSetRegulatorMode( USE_LDO );   //  Use LDO
+
+  //  #warning SX126x is set to DC-DC power regulator mode (instead of LDO)
+  SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC
+
+  SX126xSetBufferBaseAddress( 0x00, 0x00 );
+```
+
+TODO
+
+```c
+  //  TODO: Set the correct transmit power and ramp up time
+  SX126xSetTxParams( 22, RADIO_RAMP_3400_US );
+  //  TODO: Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );
+```
+
+TODO
+
+```c
+  SX126xSetDioIrqParams(
+    IRQ_RADIO_ALL, 
+    IRQ_RADIO_ALL, 
+    IRQ_RADIO_NONE, 
+    IRQ_RADIO_NONE 
+  );
+```
+
+TODO
+
+```c
+  //  Add registers to the retention list (4 is the maximum possible number)
+  RadioAddRegisterToRetentionList( REG_RX_GAIN );
+  RadioAddRegisterToRetentionList( REG_TX_MODULATION );
+```
+
+TODO
+
+```c
+  //  Initialize driver timeout timers
+  TimerInit( &TxTimeoutTimer, RadioOnTxTimeoutIrq );
+  TimerInit( &RxTimeoutTimer, RadioOnRxTimeoutIrq );
+
+  //  Interrupt not fired yet
+  IrqFired = false;
+}
+```
 
 TODO
 
