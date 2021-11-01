@@ -250,6 +250,8 @@ The "`Radio`" functions are defined in [`radio.c`](https://github.com/lupyuen/bl
 
 -   [__`RadioInit`__ - Init LoRa Transceiver](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559)
 
+    [(`RadioInit` is explained here)](https://lupyuen.github.io/articles/usb#radioinit)
+
 -   [__`RadioSetChannel`__ - Set LoRa Frequency](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L600-L604)
 
 -   [__`RadioSetTxConfig`__ - Set LoRa Transmit Configuration](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L788-L908)

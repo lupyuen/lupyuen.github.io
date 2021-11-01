@@ -465,6 +465,8 @@ The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [
 
 -   [__RadioInit:__](https://lupyuen.github.io/articles/usb#radioinit) Init LoRa SX1262
 
+    [(__RadioInit__ is explained here)](https://lupyuen.github.io/articles/usb#radioinit)
+
 -   [__RadioSetChannel:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604) Set LoRa Frequency
 
 -   [__RadioSetTxConfig:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908) Set LoRa Transmit Configuration
