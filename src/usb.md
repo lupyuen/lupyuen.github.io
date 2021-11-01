@@ -467,11 +467,17 @@ The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [
 
     [(__RadioInit__ is explained here)](https://lupyuen.github.io/articles/usb#radioinit)
 
--   [__RadioSetChannel:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604) Set LoRa Frequency
+-   [__RadioSetChannel:__](https://lupyuen.github.io/articles/usb#radiosetchannel) Set LoRa Frequency
 
--   [__RadioSetTxConfig:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908) Set LoRa Transmit Configuration
+    [(__RadioSetChannel__ is explained here)](https://lupyuen.github.io/articles/usb#radiosetchannel)
 
--   [__RadioSetRxConfig:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786) Set LoRa Receive Configuration
+-   [__RadioSetTxConfig:__](https://lupyuen.github.io/articles/usb#radiosettxconfig) Set LoRa Transmit Configuration
+
+    [(__RadioSetTxConfig__ is explained here)](https://lupyuen.github.io/articles/usb#radiosettxconfig)
+
+-   [__RadioSetRxConfig:__](https://lupyuen.github.io/articles/usb#radiosetrxconfig) Set LoRa Receive Configuration
+
+    [(__RadioSetRxConfig__ is explained here)](https://lupyuen.github.io/articles/usb#radiosetrxconfig)
 
 (The __Radio__ functions will also be called later when we implement LoRaWAN)
 
@@ -1890,11 +1896,39 @@ Finally we init the Timeout Timers (from NimBLE Porting Layer) for __Transmit Ti
 
 ## RadioSetChannel
 
-__RadioSetChannel__ sets the LoRa Frequency and is defined at...
+__RadioSetChannel__ sets the LoRa Frequency: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604)
 
--   [__RadioSetChannel__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604)
+```c
+void RadioSetChannel( uint32_t freq ) {
+  SX126xSetRfFrequency( freq );
+}
+```
 
-TODO
+__RadioSetChannel__ passes the LoRa Frequency (like `923000000` for 923 MHz) to __SX126xSetRfFrequency__.
+
+__SX126xSetRfFrequency__ is defined as follows: [sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L497-L514)
+
+```c
+void SX126xSetRfFrequency( uint32_t frequency ) {
+  uint8_t buf[4];
+  if( ImageCalibrated == false ) {
+    SX126xCalibrateImage( frequency );
+    ImageCalibrated = true;
+  }
+  uint32_t freqInPllSteps = SX126xConvertFreqInHzToPllStep( frequency );
+  buf[0] = ( uint8_t )( ( freqInPllSteps >> 24 ) & 0xFF );
+  buf[1] = ( uint8_t )( ( freqInPllSteps >> 16 ) & 0xFF );
+  buf[2] = ( uint8_t )( ( freqInPllSteps >> 8 ) & 0xFF );
+  buf[3] = ( uint8_t )( freqInPllSteps & 0xFF );
+  SX126xWriteCommand( RADIO_SET_RFFREQUENCY, buf, 4 );
+}
+```
+
+[(__SX126xCalibrateImage__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L408-L438)
+
+[(__SX126xConvertFreqInHzToPllStep__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L812-L826)
+
+[(__SX126xWriteCommand__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217)
 
 ## RadioSetTxConfig
 

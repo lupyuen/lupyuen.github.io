@@ -248,15 +248,21 @@ Finally we set the __LoRa Receive Parameters__...
 
 The "`Radio`" functions are defined in [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c) ...
 
--   [__`RadioInit`__ - Init LoRa Transceiver](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559)
+-   [__`RadioInit`:__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559) Init LoRa Transceiver
 
     [(`RadioInit` is explained here)](https://lupyuen.github.io/articles/usb#radioinit)
 
--   [__`RadioSetChannel`__ - Set LoRa Frequency](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L600-L604)
+-   [__`RadioSetChannel`:__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L600-L604) Set LoRa Frequency
 
--   [__`RadioSetTxConfig`__ - Set LoRa Transmit Configuration](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L788-L908)
+    [(`RadioSetChannel` is explained here)](https://lupyuen.github.io/articles/usb#radiosetchannel)
 
--   [__`RadioSetRxConfig`__ - Set LoRa Receive Configuration](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L661-L786)
+-   [__`RadioSetTxConfig`:__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L788-L908) Set LoRa Transmit Configuration
+
+    [(`RadioSetTxConfig` is explained here)](https://lupyuen.github.io/articles/usb#radiosettxconfig)
+
+-   [__`RadioSetRxConfig`:__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L661-L786) Set LoRa Receive Configuration
+
+    [(`RadioSetRxConfig` is explained here)](https://lupyuen.github.io/articles/usb#radiosetrxconfig)
 
 ## Transmit LoRa Packet
 
