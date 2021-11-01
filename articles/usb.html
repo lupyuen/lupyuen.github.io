@@ -451,7 +451,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 <p>The <strong>Radio</strong> functions are Platform-Independent (Linux and BL602), defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c">radio.c</a></p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit:</strong></a> Init LoRa SX1262</p>
+<p><a href="https://lupyuen.github.io/articles/usb#radioinit"><strong>RadioInit:</strong></a> Init LoRa SX1262</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604"><strong>RadioSetChannel:</strong></a> Set LoRa Frequency</p>
@@ -764,7 +764,7 @@ static int init_spi(void) {
   assert(rc == 0);
   return 0;
 }</code></pre></div>
-<p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203"><strong>init_driver</strong></a></p>
+<p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/usb#radioinit"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203"><strong>init_driver</strong></a></p>
 <p>(We’ve seen <strong>init_driver</strong> earlier)</p>
 <h2 id="transfer-spi" class="section-header"><a href="#transfer-spi">7.2 Transfer SPI</a></h2>
 <p>To <strong>transfer SPI Data</strong> between PineDio USB and CH341 / SX1262, we do this: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
