@@ -95,7 +95,14 @@
 <li><a href="#when-rebooting">12.1 When Rebooting</a><ul></ul></li></ul></li>
 <li><a href="#appendix-build-pinedio-usb-driver">13 Appendix: Build PineDio USB Driver</a><ul>
 <li><a href="#pinedio-usb-operations">13.1 PineDio USB Operations</a><ul></ul></li></ul></li>
-<li><a href="#appendix-radio-functions">14 Appendix: Radio Functions</a><ul></ul></li></ul></nav><p>📝 <em>28 Oct 2021</em></p>
+<li><a href="#appendix-radio-functions">14 Appendix: Radio Functions</a><ul>
+<li><a href="#radioinit">14.1 RadioInit</a><ul></ul></li>
+<li><a href="#radiosetchannel">14.2 RadioSetChannel</a><ul></ul></li>
+<li><a href="#radiosettxconfig">14.3 RadioSetTxConfig</a><ul></ul></li>
+<li><a href="#radiosetrxconfig">14.4 RadioSetRxConfig</a><ul></ul></li>
+<li><a href="#radiosend">14.5 RadioSend</a><ul></ul></li>
+<li><a href="#radiorx">14.6 RadioRx</a><ul></ul></li>
+<li><a href="#radiosleep">14.7 RadioSleep</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Oct 2021</em></p>
 <p><em>What if our Laptop Computer could talk to other devices…</em></p>
 <p><em>Over a Long Range, Low Bandwidth wireless network like LoRa?</em></p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
@@ -1453,8 +1460,7 @@ sudo ./lora-sx1262</code></pre></div>
 </li>
 </ol>
 <h1 id="appendix-radio-functions" class="section-header"><a href="#appendix-radio-functions">14 Appendix: Radio Functions</a></h1>
-<p>TODO: Explain these functions in SX1262 Driver</p>
-<p>The <strong>Radio</strong> functions are Platform-Independent (Linux and BL602), defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c">radio.c</a></p>
+<p>In this section we explain the Platform-Independent (Linux and BL602) <strong>Radio Functions</strong>, which are defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c">radio.c</a></p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit:</strong></a> Initialise LoRa SX1262</p>
@@ -1478,6 +1484,48 @@ sudo ./lora-sx1262</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109"><strong>RadioSleep:</strong></a> Switch SX1262 to low-power sleep mode</p>
 </li>
 </ul>
+<h2 id="radioinit" class="section-header"><a href="#radioinit">14.1 RadioInit</a></h2>
+<p><strong>RadioInit</strong> initialises the LoRa SX1262 Module and is defined at…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559"><strong>RadioInit</strong></a></li>
+</ul>
+<p>TODO</p>
+<h2 id="radiosetchannel" class="section-header"><a href="#radiosetchannel">14.2 RadioSetChannel</a></h2>
+<p><strong>RadioSetChannel</strong> sets the LoRa Frequency and is defined at…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604"><strong>RadioSetChannel</strong></a></li>
+</ul>
+<p>TODO</p>
+<h2 id="radiosettxconfig" class="section-header"><a href="#radiosettxconfig">14.3 RadioSetTxConfig</a></h2>
+<p><strong>RadioSetTxConfig</strong> sets the LoRa Transmit Configuration and is defined at…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908"><strong>RadioSetTxConfig</strong></a></li>
+</ul>
+<p>TODO</p>
+<h2 id="radiosetrxconfig" class="section-header"><a href="#radiosetrxconfig">14.4 RadioSetRxConfig</a></h2>
+<p><strong>RadioSetRxConfig</strong> sets the LoRa Receive Configuration and is defined at…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786"><strong>RadioSetRxConfig</strong></a></li>
+</ul>
+<p>TODO</p>
+<h2 id="radiosend" class="section-header"><a href="#radiosend">14.5 RadioSend</a></h2>
+<p><strong>RadioSend</strong> transmits a LoRa Message and is defined at…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098"><strong>RadioSend</strong></a></li>
+</ul>
+<p>TODO</p>
+<h2 id="radiorx" class="section-header"><a href="#radiorx">14.6 RadioRx</a></h2>
+<p><strong>RadioRx</strong> receives a single LoRa Message and is defined at…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138"><strong>RadioRx</strong></a></li>
+</ul>
+<p>TODO</p>
+<h2 id="radiosleep" class="section-header"><a href="#radiosleep">14.7 RadioSleep</a></h2>
+<p><strong>RadioSleep</strong> switches SX1262 to low-power sleep mode and is defined at…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109"><strong>RadioSleep</strong></a></li>
+</ul>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/usb-pinedio2.jpg" alt="Pinebook Pro with PineDio USB Adapter" /></p>
 
     
