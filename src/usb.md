@@ -463,7 +463,7 @@ Finally we set the __LoRa Receive Parameters__...
 
 The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c)
 
--   [__RadioInit:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559) Init LoRa SX1262
+-   [__RadioInit:__](https://lupyuen.github.io/articles/usb#radioinit) Init LoRa SX1262
 
 -   [__RadioSetChannel:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604) Set LoRa Frequency
 
@@ -918,7 +918,7 @@ static int init_spi(void) {
 }
 ```
 
-__init_spi__ is called by [__SX126xIoInit__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77), which is called by [__RadioInit__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559) and [__init_driver__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203)
+__init_spi__ is called by [__SX126xIoInit__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77), which is called by [__RadioInit__](https://lupyuen.github.io/articles/usb#radioinit) and [__init_driver__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203)
 
 (We've seen __init_driver__ earlier)
 
