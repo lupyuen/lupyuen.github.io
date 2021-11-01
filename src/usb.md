@@ -1947,18 +1947,24 @@ void RadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
       ...
 ```
 
-TODO
+Since we're using __LoRa Modulation__ instead of FSK Modulation, we skip the section on FSK Modulation.
+
+We begin by populating the __Modulation Parameters__: Spreading Factor, Bandwidth and Coding Rate...
 
 ```c
     case MODEM_LORA:
       //  LoRa Modulation
-      SX126x.ModulationParams.PacketType = PACKET_TYPE_LORA;
-      SX126x.ModulationParams.Params.LoRa.SpreadingFactor = ( RadioLoRaSpreadingFactors_t ) datarate;
-      SX126x.ModulationParams.Params.LoRa.Bandwidth =  Bandwidths[bandwidth];
-      SX126x.ModulationParams.Params.LoRa.CodingRate= ( RadioLoRaCodingRates_t )coderate;
+      SX126x.ModulationParams.PacketType = 
+        PACKET_TYPE_LORA;
+      SX126x.ModulationParams.Params.LoRa.SpreadingFactor = 
+        ( RadioLoRaSpreadingFactors_t ) datarate;
+      SX126x.ModulationParams.Params.LoRa.Bandwidth =  
+        Bandwidths[bandwidth];
+      SX126x.ModulationParams.Params.LoRa.CodingRate = 
+        ( RadioLoRaCodingRates_t )coderate;
 ```
 
-TODO
+Depending on the LoRa Parameters, we optimise for __Low Data Rate__...
 
 ```c
       if( ( ( bandwidth == 0 ) && ( ( datarate == 11 ) || ( datarate == 12 ) ) ) ||
@@ -1969,11 +1975,12 @@ TODO
       }
 ```
 
-TODO
+Next we populate the __Packet Parameters__: Preamble Length, Header Type, Payload Length, CRC Mode and Invert IQ...
 
 ```c
       SX126x.PacketParams.PacketType = PACKET_TYPE_LORA;
 
+      //  Populate Preamble Length
       if( ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor == LORA_SF5 ) ||
         ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor == LORA_SF6 ) ) {
         if( preambleLen < 12 ) {
@@ -1984,11 +1991,8 @@ TODO
       } else {
         SX126x.PacketParams.Params.LoRa.PreambleLength = preambleLen;
       }
-```
 
-TODO
-
-```c
+      //  Populate Header Type, Payload Length, CRC Mode and Invert IQ
       SX126x.PacketParams.Params.LoRa.HeaderType = 
         ( RadioLoRaPacketLengthsMode_t )fixLen;
       SX126x.PacketParams.Params.LoRa.PayloadLength = 
@@ -1999,7 +2003,7 @@ TODO
         ( RadioLoRaIQModes_t )iqInverted;
 ```
 
-TODO
+We set the LoRa Module to __Standby Mode__ and configure it for __LoRa Modulation__ (or FSK Modulation)...
 
 ```c
       RadioStandby( );
@@ -2008,13 +2012,26 @@ TODO
         ? MODEM_FSK 
         : MODEM_LORA
       );
+```
+
+[(__RadioStandby__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1111-L1115)
+
+[(__RadioSetModem__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L576-L598)
+
+We configure the LoRa Module with the __Modulation Parameters__ and __Packet Parameters__...
+
+```c
       SX126xSetModulationParams( &SX126x.ModulationParams );
       SX126xSetPacketParams( &SX126x.PacketParams );
       break;
   }
 ```
 
-TODO
+[(__SX126xSetModulationParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L578-L621)
+
+[(__SX126xSetPacketParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L623-L680)
+
+This is a Workaround for __Modulation Quality__ with __500 kHz Bandwidth__...
 
 ```c
   // WORKAROUND - Modulation Quality with 500 kHz LoRa Bandwidth, see DS_SX1261-2_V1.2 datasheet chapter 15.1
@@ -2026,7 +2043,9 @@ TODO
   // WORKAROUND END
 ```
 
-TODO
+[(__SX126xWriteRegister__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266)
+
+We finish by setting the __Transmit Power__ and __Transmit Timeout__...
 
 ```c
   SX126xSetRfTxPower( power );
@@ -2034,13 +2053,22 @@ TODO
 }
 ```
 
-TODO
+__SX126xSetRfTxPower__ is defined in [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L299-L304)...
+
+```c
+void SX126xSetRfTxPower( int8_t power ) {
+  //  TODO: Previously: SX126xSetTxParams( power, RADIO_RAMP_40_US );
+  SX126xSetTxParams( power, RADIO_RAMP_3400_US );  //  TODO
+}
+```
+
+For easier testing we have set the Ramp Up Time to __3400 microseconds__ (longest duration).
+
+After testing we should revert to the __Default Ramp Up Time__ (40 microseconds).
 
 ## RadioSetRxConfig
 
 __RadioSetRxConfig__ sets the LoRa Receive Configuration: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786)
-
-TODO
 
 ```c
 void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
@@ -2051,10 +2079,13 @@ void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
   bool crcOn, bool freqHopOn, uint8_t hopPeriod,
   bool iqInverted, bool rxContinuous ) {
 
+  //  Set Symbol Timeout
   RxContinuous = rxContinuous;
   if( rxContinuous == true ) {
     symbTimeout = 0;
   }
+
+  //  Set Max Payload Length
   if( fixLen == true ) {
     MaxPayloadLength = payloadLen;
   }
@@ -2063,7 +2094,9 @@ void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
   }
 ```
 
-TODO
+We begin by setting the __Symbol Timeout__ and __Max Payload Length__.
+
+Since we're using __LoRa Modulation__ instead of FSK Modulation, we skip the section on FSK Modulation...
 
 ```c
   switch( modem )
@@ -2073,19 +2106,23 @@ TODO
       ...
 ```
 
-TODO
+We populate the __Modulation Parameters__: Spreading Factor, Bandwidth and Coding Rate...
 
 ```c
     case MODEM_LORA:
       //  LoRa Modulation
       SX126xSetStopRxTimerOnPreambleDetect( false );
-      SX126x.ModulationParams.PacketType = PACKET_TYPE_LORA;
-      SX126x.ModulationParams.Params.LoRa.SpreadingFactor = ( RadioLoRaSpreadingFactors_t )datarate;
-      SX126x.ModulationParams.Params.LoRa.Bandwidth = Bandwidths[bandwidth];
-      SX126x.ModulationParams.Params.LoRa.CodingRate = ( RadioLoRaCodingRates_t )coderate;
+      SX126x.ModulationParams.PacketType = 
+        PACKET_TYPE_LORA;
+      SX126x.ModulationParams.Params.LoRa.SpreadingFactor = 
+        ( RadioLoRaSpreadingFactors_t )datarate;
+      SX126x.ModulationParams.Params.LoRa.Bandwidth = 
+        Bandwidths[bandwidth];
+      SX126x.ModulationParams.Params.LoRa.CodingRate = 
+        ( RadioLoRaCodingRates_t )coderate;
 ```
 
-TODO
+Depending on the LoRa Parameters, we optimise for __Low Data Rate__...
 
 ```c
       if( ( ( bandwidth == 0 ) && ( ( datarate == 11 ) || ( datarate == 12 ) ) ) ||
@@ -2096,11 +2133,12 @@ TODO
       }
 ```
 
-TODO
+We populate the __Packet Parameters__: Preamble Length, Header Type, Payload Length, CRC Mode and Invert IQ...
 
 ```c
       SX126x.PacketParams.PacketType = PACKET_TYPE_LORA;
 
+      //  Populate Preamble Length
       if( ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor == LORA_SF5 ) ||
           ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor == LORA_SF6 ) ){
         if( preambleLen < 12 ) {
@@ -2111,14 +2149,10 @@ TODO
       } else {
         SX126x.PacketParams.Params.LoRa.PreambleLength = preambleLen;
       }
-```
 
-TODO
-
-```c
+      //  Populate Header Type, Payload Length, CRC Mode and Invert IQ
       SX126x.PacketParams.Params.LoRa.HeaderType = 
         ( RadioLoRaPacketLengthsMode_t )fixLen;
-
       SX126x.PacketParams.Params.LoRa.PayloadLength = 
         MaxPayloadLength;
       SX126x.PacketParams.Params.LoRa.CrcMode = 
@@ -2127,7 +2161,7 @@ TODO
         ( RadioLoRaIQModes_t )iqInverted;
 ```
 
-TODO
+We set the LoRa Module to __Standby Mode__ and configure it for __LoRa Modulation__ (or FSK Modulation)...
 
 ```c
       RadioStandby( );
@@ -2136,12 +2170,27 @@ TODO
           ? MODEM_FSK 
           : MODEM_LORA 
       );
+```
+
+[(__RadioStandby__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1111-L1115)
+
+[(__RadioSetModem__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L576-L598)
+
+We configure the LoRa Module with the __Modulation Parameters__, __Packet Parameters__ and Symbol Timeout...
+
+```c
       SX126xSetModulationParams( &SX126x.ModulationParams );
       SX126xSetPacketParams( &SX126x.PacketParams );
       SX126xSetLoRaSymbNumTimeout( symbTimeout );
 ```
 
-TODO
+[(__SX126xSetModulationParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L578-L621)
+
+[(__SX126xSetPacketParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L623-L680)
+
+[(__SX126xSetLoRaSymbNumTimeout__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L366-L388)
+
+This is a Workaround that __optimises the Inverted IQ Operation__...
 
 ```c
       // WORKAROUND - Optimizing the Inverted IQ Operation, see DS_SX1261-2_V1.2 datasheet chapter 15.4
@@ -2153,12 +2202,13 @@ TODO
       // WORKAROUND END
 ```
 
-TODO
+[(__SX126xWriteRegister__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266)
+
+We finish by setting the __Receive Timeout__ to the default maximum value...
 
 ```c
       // Timeout Max, Timeout handled directly in SetRx function
       RxTimeout = 0xFFFF;
-
       break;
   }
 }
