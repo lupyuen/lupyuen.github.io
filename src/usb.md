@@ -1731,9 +1731,7 @@ The PineDio USB Demo supports 3 operations...
 
 # Appendix: Radio Functions
 
-TODO: Explain these functions in SX1262 Driver
-
-The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c)
+In this section we explain the Platform-Independent (Linux and BL602) __Radio Functions__, which are defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c)
 
 -   [__RadioInit:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559) Initialise LoRa SX1262
 
@@ -1748,5 +1746,61 @@ The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [
 -   [__RadioRx:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138) Receive one LoRa Message
 
 -   [__RadioSleep:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109) Switch SX1262 to low-power sleep mode
+
+## RadioInit
+
+__RadioInit__ initialises the LoRa SX1262 Module and is defined at...
+
+-   [__RadioInit__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559)
+
+TODO
+
+## RadioSetChannel
+
+__RadioSetChannel__ sets the LoRa Frequency and is defined at...
+
+-   [__RadioSetChannel__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604)
+
+TODO
+
+## RadioSetTxConfig
+
+__RadioSetTxConfig__ sets the LoRa Transmit Configuration and is defined at...
+
+-   [__RadioSetTxConfig__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908)
+
+TODO
+
+## RadioSetRxConfig
+
+__RadioSetRxConfig__ sets the LoRa Receive Configuration and is defined at...
+
+-   [__RadioSetRxConfig__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786)
+
+TODO
+
+## RadioSend
+
+__RadioSend__ transmits a LoRa Message and is defined at...
+
+-   [__RadioSend__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
+
+TODO
+
+## RadioRx
+
+__RadioRx__ receives a single LoRa Message and is defined at...
+
+-   [__RadioRx__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138)
+
+TODO
+
+## RadioSleep
+
+__RadioSleep__ switches SX1262 to low-power sleep mode and is defined at...
+
+-   [__RadioSleep__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109)
+
+TODO
 
 ![Pinebook Pro with PineDio USB Adapter](https://lupyuen.github.io/images/usb-pinedio2.jpg)
