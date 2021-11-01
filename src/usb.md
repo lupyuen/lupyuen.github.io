@@ -1760,7 +1760,23 @@ void RadioInit( RadioEvents_t *events ) {
   //  Previously: RadioEvents = events;
 ```
 
-TODO
+The function begins by copying the list of __Radio Event Callbacks__...
+
+-   __TxDone__: Called when a LoRa Message has been transmitted
+
+-   __RxDone__: Called when a LoRa Message has been received
+
+-   __TxTimeout__: Called upon timeout when transmitting a LoRa Message
+
+-   __RxTimeout__: Called upon timeout when receiving a LoRa Message
+
+-   __RxError__: Called when a LoRa Message has been received with CRC Error
+
+This differs from the Semtech Reference Implementation, which copies the pointer to __RadioEvents_t__ instead of the entire __RadioEvents_t__.
+
+(Which causes problems when __RadioEvents_t__ lives on the stack)
+
+Next we __init the SPI and GPIO Ports__, wake up the LoRa Module, and init the TCXO Control and RF Switch Control.
 
 ```c
   //  Init SPI and GPIO Ports, wake up the LoRa Module,
@@ -1768,14 +1784,16 @@ TODO
   SX126xInit( RadioOnDioIrq );
 ```
 
-TODO
+[(__SX126xInit__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L112-L131)
+
+We set the LoRa Module to __Standby Mode__...
 
 ```c
   //  Set LoRa Module to standby mode
   SX126xSetStandby( STDBY_RC );
 ```
 
-TODO
+We set the __Power Regulation: LDO or DC-DC__...
 
 ```c
   //  TODO: Declare the power regulation used to power the device
@@ -1787,11 +1805,28 @@ TODO
 
   //  #warning SX126x is set to DC-DC power regulator mode (instead of LDO)
   SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC
+```
 
+[(__SX126xSetRegulatorMode__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L390-L393)
+
+This depends on how our LoRa Module is wired for power.
+
+For now we're using __DC-DC__ Power Regulation. (To be verified)
+
+[(More about LDO vs DC-DC Power Regulation)](https://lupyuen.github.io/articles/lorawan#dc-dc-vs-ldo)
+
+We set the __Base Addresses__ of the Read and Write Buffers to 0...
+
+```c
+  //  Set the base addresses of the Read and Write Buffers to 0
   SX126xSetBufferBaseAddress( 0x00, 0x00 );
 ```
 
-TODO
+[(__SX126xSetBufferBaseAddress__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L697-L704)
+
+The Read and Write Buffers are accessed by [__sx126x_read_buffer__](https://lupyuen.github.io/articles/usb#receive-long-message) and [__sx126x_write_buffer__](https://lupyuen.github.io/articles/usb#transmit-long-message).
+
+We set the __Transmit Power__ and the __Ramp Up Time__...
 
 ```c
   //  TODO: Set the correct transmit power and ramp up time
@@ -1799,9 +1834,22 @@ TODO
   //  TODO: Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );
 ```
 
-TODO
+[(__SX126xSetTxParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L528-L576)
+
+(Ramp Up Time is the time needed for the Power Amplifier to ramp up to the desired transmit power)
+
+For easier testing we have set the Transmit Power to __22 dBm__ and Ramp Up Time to __3400 microseconds__.
+
+After testing we should revert to the Default Transmit Power (0) and Ramp Up Time (200 microseconds).
+
+[(More about the Transmit Power)](https://lupyuen.github.io/articles/lorawan#transmit-power)
+
+[(Over Current Protection in __SX126xSetTxParams__)](https://lupyuen.github.io/articles/lorawan#over-current-protection)
+
+We configure which __LoRa Events will trigger interrupts__ on each DIO Pin...
 
 ```c
+  //  Set the DIO Interrupt Events
   SX126xSetDioIrqParams(
     IRQ_RADIO_ALL, 
     IRQ_RADIO_ALL, 
@@ -1809,6 +1857,8 @@ TODO
     IRQ_RADIO_NONE 
   );
 ```
+
+[(__SX126xSetDioIrqParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470)
 
 TODO
 
