@@ -1999,7 +1999,7 @@ void RadioIrqProcess( void ) {
     }
     CRITICAL_SECTION_END( );</code></pre></div><h3 id="transmit-done" class="section-header"><a href="#transmit-done">14.7.1 Transmit Done</a></h3>
 <p>TODO</p>
-<p>[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_TX_DONE ) == IRQ_TX_DONE ) {
       printf(&quot;IRQ_TX_DONE\r\n&quot;);
       TimerStop( &amp;TxTimeoutTimer );
@@ -2011,7 +2011,7 @@ void RadioIrqProcess( void ) {
       }
     }</code></pre></div><h3 id="receive-done" class="section-header"><a href="#receive-done">14.7.2 Receive Done</a></h3>
 <p>TODO</p>
-<p>[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_RX_DONE ) == IRQ_RX_DONE ) {
       printf(&quot;IRQ_RX_DONE\r\n&quot;);
       TimerStop( &amp;RxTimeoutTimer );
@@ -2044,7 +2044,7 @@ void RadioIrqProcess( void ) {
       }
     }</code></pre></div><h3 id="cad-done" class="section-header"><a href="#cad-done">14.7.3 CAD Done</a></h3>
 <p>TODO</p>
-<p>[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
       printf(&quot;IRQ_CAD_DONE\r\n&quot;);
       //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
@@ -2054,7 +2054,7 @@ void RadioIrqProcess( void ) {
       }
     }</code></pre></div><h3 id="transmit-timeout" class="section-header"><a href="#transmit-timeout">14.7.4 Transmit Timeout</a></h3>
 <p>TODO</p>
-<p>[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
       printf(&quot;IRQ_RX_TX_TIMEOUT\r\n&quot;);
       if( SX126xGetOperatingMode( ) == MODE_TX ) {
@@ -2077,25 +2077,33 @@ void RadioIrqProcess( void ) {
       }
     }</code></pre></div><h3 id="preamble-detected" class="section-header"><a href="#preamble-detected">14.7.5 Preamble Detected</a></h3>
 <p>TODO</p>
-<p>[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
       printf(&quot;IRQ_PREAMBLE_DETECTED\r\n&quot;);
       //__NOP( );
     }</code></pre></div><h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">14.7.6 Sync Word Valid</a></h3>
 <p>TODO</p>
-<p>[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
       printf(&quot;IRQ_SYNCWORD_VALID\r\n&quot;);
       //__NOP( );
-    }</code></pre></div><h3 id="irq-header-valid" class="section-header"><a href="#irq-header-valid">14.7.7 IRQ Header Valid</a></h3>
+    }</code></pre></div>
+<p>Note that the <strong>Sync Word differs for LoRaWAN</strong> vs Private LoRa Networks…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Syncword for Private LoRa networks
+#define LORA_MAC_PRIVATE_SYNCWORD                   0x1424
+
+//  Syncword for Public LoRa networks (LoRaWAN)
+#define LORA_MAC_PUBLIC_SYNCWORD                    0x3444</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word">(More about Sync Word)</a></p>
+<h3 id="irq-header-valid" class="section-header"><a href="#irq-header-valid">14.7.7 IRQ Header Valid</a></h3>
 <p>TODO</p>
-<p>[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
       printf(&quot;IRQ_HEADER_VALID\r\n&quot;);
       //__NOP( );
     }</code></pre></div><h3 id="irq-header-error" class="section-header"><a href="#irq-header-error">14.7.8 IRQ Header Error</a></h3>
 <p>TODO</p>
-<p>[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
       printf(&quot;IRQ_HEADER_ERROR\r\n&quot;);
       TimerStop( &amp;RxTimeoutTimer );
