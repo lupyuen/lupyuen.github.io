@@ -646,7 +646,7 @@ int main(void) {
 }</code></pre></div>
 <p>We call <strong>receive_message</strong> to get SX1262 ready to receive a single LoRa Message.</p>
 <p>Then we call <strong>RadioOnDioIrq</strong> to handle the Message Received Event. (If any)</p>
-<p><a href="https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts">(<strong>RadioOnDioIrq</strong> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radioondioirq">(<strong>RadioOnDioIrq</strong> is explained here)</a></p>
 <p><strong>receive_message</strong> is defined like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L241-L248">main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Receive a LoRa message. Assume that SX1262 driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
@@ -1241,7 +1241,7 @@ spi rx:
 <p><strong>handle_gpio_interrupt</strong> enqueues an Event into our <strong>Event Queue</strong></p>
 </li>
 <li>
-<p>Our <strong>Background Thread</strong> removes the Event from the Event Queue and calls <a href="https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts"><strong>RadioOnDioIrq</strong></a> to process the received LoRa Message</p>
+<p>Our <strong>Background Thread</strong> removes the Event from the Event Queue and calls <a href="https://lupyuen.github.io/articles/usb#radioondioirq"><strong>RadioOnDioIrq</strong></a> to process the received LoRa Message</p>
 </li>
 </ol>
 <p>We handle GPIO Interrupts the same way in our <strong>LoRa SX1262 Driver for BL602</strong>…</p>
@@ -1562,7 +1562,7 @@ sudo ./lora-sx1262</code></pre></div>
   //  init TCXO Control and RF Switch Control.
   SX126xInit( RadioOnDioIrq );</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L112-L131">(<strong>SX126xInit</strong> is defined here)</a></p>
-<p><a href="https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts">(<strong>RadioOnDioIrq</strong> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radioondioirq">(<strong>RadioOnDioIrq</strong> is explained here)</a></p>
 <p>We set the LoRa Module to <strong>Standby Mode</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set LoRa Module to standby mode
   SX126xSetStandby( STDBY_RC );</code></pre></div>
@@ -2109,7 +2109,7 @@ void RadioIrqProcess( void ) {
     }
   }
 }</code></pre></div><h3 id="radioondioirq" class="section-header"><a href="#radioondioirq">14.7.9 RadioOnDioIrq</a></h3>
-<p><strong>RadioIrqProcess</strong> is called by <strong>RadioOnDioIrq</strong> to handle LoRa Transmit and Receive Events: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1312">radio.c</a></p>
+<p><strong>RadioIrqProcess</strong> (as defined above) is called by <strong>RadioOnDioIrq</strong> to handle LoRa Transmit and Receive Events: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1312">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function for Transmit and Receive Interrupts.
 /// This function runs in the context of the Background Application Task.
 /// So we are safe to call printf and SPI Functions now.
