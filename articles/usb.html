@@ -2072,8 +2072,7 @@ void RadioIrqProcess( void ) {
       SX126xSetOperatingMode( MODE_STDBY_RC );
 
       //  Call the Callback Function for Transmit Done
-      if( ( RadioEvents.TxDone != NULL ) )
-      {
+      if( ( RadioEvents.TxDone != NULL ) ) {
         RadioEvents.TxDone( );
       }
     }</code></pre></div>
@@ -2167,8 +2166,7 @@ void RadioIrqProcess( void ) {
         SX126xSetOperatingMode( MODE_STDBY_RC );
 
         //  Call the Callback Function for Transmit Timeout
-        if( ( RadioEvents.TxTimeout != NULL ) )
-        {
+        if( ( RadioEvents.TxTimeout != NULL ) ) {
           RadioEvents.TxTimeout( );
         }
       }</code></pre></div>
@@ -2184,22 +2182,25 @@ void RadioIrqProcess( void ) {
         SX126xSetOperatingMode( MODE_STDBY_RC );
 
         //  Call the Callback Function for Receive Timeout
-        if( ( RadioEvents.RxTimeout != NULL ) )
-        {
+        if( ( RadioEvents.RxTimeout != NULL ) ) {
           RadioEvents.RxTimeout( );
         }
       }
     }</code></pre></div>
 <p><strong>RxTimeout</strong> points to the <strong>on_rx_timeout</strong> Callback Function that we’ve seen earlier.</p>
 <h3 id="preamble-detected" class="section-header"><a href="#preamble-detected">14.7.5 Preamble Detected</a></h3>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431">radio.c</a></p>
+<p>Preamble is the Radio Signal that <strong>precedes the LoRa Message</strong>. When the LoRa Module detects the Preamble Signal, it knows that it’s about to receive a LoRa Message.</p>
+<p>We don’t need to handle the Preamble Signal, the LoRa Module does it for us: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If LoRa Preamble was detected...
     if( ( irqRegs &amp; IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
       //__NOP( );
-    }</code></pre></div><h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">14.7.6 Sync Word Valid</a></h3>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437">radio.c</a></p>
+    }</code></pre></div>
+<p>Our <a href="https://github.com/lupyuen/lora-sx1262#receive-message"><strong>Receive Message Log</strong></a> shows that the Preamble Signal (<strong>IRQ_PREAMBLE_DETECTED</strong>) is always detected before receiving a LoRa Message.</p>
+<p>(<strong>IRQ_PREAMBLE_DETECTED</strong> appears just before the LoRa Header: <strong>IRQ_HEADER_VALID</strong>)</p>
+<p><a href="https://www.link-labs.com/blog/what-is-lora">(More about LoRa Preamble)</a></p>
+<h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">14.7.6 Sync Word Valid</a></h3>
+<p><strong>Sync Words</strong> are 16-bit values that differentiate the types of LoRa Networks.</p>
+<p>The LoRa Module detects Sync Words when it receives LoRa Messages: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a valid Sync Word was detected...
     if( ( irqRegs &amp; IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
       //__NOP( );
@@ -2210,28 +2211,29 @@ void RadioIrqProcess( void ) {
 
 //  Syncword for Public LoRa networks (LoRaWAN)
 #define LORA_MAC_PUBLIC_SYNCWORD                    0x3444</code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word">(More about Sync Word)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word">(More about Sync Words)</a></p>
 <h3 id="header-valid" class="section-header"><a href="#header-valid">14.7.7 Header Valid</a></h3>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443">radio.c</a></p>
+<p>The LoRa Module checks for a <strong>valid LoRa Header</strong> when receiving a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a valid Header was received...
     if( ( irqRegs &amp; IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
       //__NOP( );
-    }</code></pre></div><h3 id="header-error" class="section-header"><a href="#header-error">14.7.8 Header Error</a></h3>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458">radio.c</a></p>
+    }</code></pre></div>
+<p>Our <a href="https://github.com/lupyuen/lora-sx1262#receive-message"><strong>Receive Message Log</strong></a> shows that the LoRa Header (<strong>IRQ_HEADER_VALID</strong>) is always detected before receiving a LoRa Message.</p>
+<p>(<strong>IRQ_HEADER_VALID</strong> appears right after the Preamble Signal: <strong>IRQ_PREAMBLE_DETECTED</strong>)</p>
+<h3 id="header-error" class="section-header"><a href="#header-error">14.7.8 Header Error</a></h3>
+<p>When the LoRa Module detects a <strong>LoRa Header with CRC Error</strong>, it stops the Receive Timer and calls the Callback Function for Receive Timeout: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a Header with CRC Error was received...
     if( ( irqRegs &amp; IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
 
       //  Stop the Receive Timer
-      TimerStop( &amp;RxTimeoutTimer );</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>      if( RxContinuous == false ) {
+      TimerStop( &amp;RxTimeoutTimer );
+
+      if( RxContinuous == false ) {
         //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
-      }</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>      //  Call the Callback Function for Receive Timeout
+      }
+
+      //  Call the Callback Function for Receive Timeout
       if( ( RadioEvents.RxTimeout != NULL ) ) {
         RadioEvents.RxTimeout( );
       }
