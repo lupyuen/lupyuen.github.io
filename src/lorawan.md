@@ -1393,6 +1393,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: LoRa Transmit Power
 
+[__UPDATE:__ The same code produces the right Transmit Power on PineDio Stack BL604 with SX1262. So the Low Transmit Power problem is probably specific to our Pine64 RFM90 LoRa Module](https://lupyuen.github.io/articles/lorawan2)
+
 Our PineCone BL602 connected to Pine64 RFM90 LoRa Module seems to be __transmitting with lower power__ compared with other devices... Perhaps someone could help to fix this issue. (Hardware or Firmware?)
 
 Here's __RFM90 (left)__ compared with __WisGate D4H LoRaWAN Gateway (right)__...

@@ -2467,8 +2467,6 @@ void SX126xSetRx( uint32_t timeout ) {
 
 __RadioIrqProcess__ processes the interrupts that are triggered when a LoRa Message is transmitted and received: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1314-L1460)
 
-TODO
-
 ```c
 /// Process Transmit and Receive Interrupts.
 /// For BL602: Must be run in the Application
@@ -2483,19 +2481,31 @@ void RadioIrqProcess( void ) {
   CRITICAL_SECTION_END( );
 ```
 
-TODO
-
 [(Note: Critical Sections are not yet implemented)](https://github.com/lupyuen/lora-sx1262/blob/master/include/sx126x-board.h#L58-L60)
+
+The function begins by copying the __Interrupt Flag__ and clearing the flag.
+
+[(The Interrupt Flag is set by __RadioOnDioIrq__)](https://lupyuen.github.io/articles/usb#radioondioirq)
+
+The rest of the function will run only if the __Interrupt Flag was originally set__...
 
 ```c
   //  IrqFired must be true to process interrupts
   if( isIrqFired == true ) {
     //  Get the Interrupt Status
     uint16_t irqRegs = SX126xGetIrqStatus( );
+
+    //  Clear the Interrupt Status
     SX126xClearIrqStatus( irqRegs );
 ```
 
-TODO
+[(__SX126xGetIrqStatus__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L472-L478)
+
+[(__SX126xClearIrqStatus__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L803-L810)
+
+This code fetches the __Interrupt Status__ from the LoRa Module and clears the Interrupt Status.
+
+If DIO1 is still High, we set the __Interrupt Flag__ for future processing...
 
 ```c
     //  Check if DIO1 pin is High. If it is the case revert IrqFired to true
@@ -2506,7 +2516,23 @@ TODO
     CRITICAL_SECTION_END( );
 ```
 
-TODO
+__Interrupt Status__ tells us which LoRa Events have just occurred. We handle the LoRa Events accordingly...
+
+-   Transmit Done
+
+-   Receive Done
+
+-   CAD Done
+
+-   Transmit Timeout
+
+-   Preamble Detected
+
+-   Sync Word Valid
+
+-   Header Valid
+
+-   Header Error
 
 ### Transmit Done
 
@@ -2660,7 +2686,7 @@ Note that the __Sync Word differs for LoRaWAN__ vs Private LoRa Networks...
 
 [(More about Sync Word)](https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word)
 
-### IRQ Header Valid
+### Header Valid
 
 TODO
 
@@ -2668,12 +2694,11 @@ TODO
 
 ```c
     if( ( irqRegs & IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
-      printf("IRQ_HEADER_VALID\r\n");
       //__NOP( );
     }
 ```
 
-### IRQ Header Error
+### Header Error
 
 TODO
 
@@ -2681,12 +2706,13 @@ TODO
 
 ```c
     if( ( irqRegs & IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
-      printf("IRQ_HEADER_ERROR\r\n");
       TimerStop( &RxTimeoutTimer );
+
       if( RxContinuous == false ) {
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
       }
+
       if( ( RadioEvents.RxTimeout != NULL ) ) {
         RadioEvents.RxTimeout( );
       }
@@ -2701,9 +2727,11 @@ __RadioIrqProcess__ (as defined above) is called by __RadioOnDioIrq__ to handle 
 
 ```c
 /// Callback Function for Transmit and Receive Interrupts.
-/// This function runs in the context of the Background Application Task.
-/// So we are safe to call printf and SPI Functions now.
+/// For BL602: This function runs in the context of the 
+/// Background Application Task. So we are safe to call 
+/// printf and SPI Functions now.
 void RadioOnDioIrq( struct ble_npl_event *ev ) {
+  //  Set the Interrupt Flag
   IrqFired = true;
 
   //  BL602 Note: It's OK to process the interrupt here because we are in
