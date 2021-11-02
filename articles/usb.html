@@ -96,13 +96,13 @@
 <li><a href="#appendix-build-pinedio-usb-driver">13 Appendix: Build PineDio USB Driver</a><ul>
 <li><a href="#pinedio-usb-operations">13.1 PineDio USB Operations</a><ul></ul></li></ul></li>
 <li><a href="#appendix-radio-functions">14 Appendix: Radio Functions</a><ul>
-<li><a href="#radioinit">14.1 RadioInit</a><ul></ul></li>
-<li><a href="#radiosetchannel">14.2 RadioSetChannel</a><ul></ul></li>
-<li><a href="#radiosettxconfig">14.3 RadioSetTxConfig</a><ul></ul></li>
-<li><a href="#radiosetrxconfig">14.4 RadioSetRxConfig</a><ul></ul></li>
-<li><a href="#radiosend">14.5 RadioSend</a><ul></ul></li>
-<li><a href="#radiorx">14.6 RadioRx</a><ul></ul></li>
-<li><a href="#radiosleep">14.7 RadioSleep</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Oct 2021</em></p>
+<li><a href="#radioinit-initialise-lora-module">14.1 RadioInit: Initialise LoRa Module</a><ul></ul></li>
+<li><a href="#radiosetchannel-set-lora-frequency">14.2 RadioSetChannel: Set LoRa Frequency</a><ul></ul></li>
+<li><a href="#radiosettxconfig-set-transmit-configuration">14.3 RadioSetTxConfig: Set Transmit Configuration</a><ul></ul></li>
+<li><a href="#radiosetrxconfig-set-receive-configuration">14.4 RadioSetRxConfig: Set Receive Configuration</a><ul></ul></li>
+<li><a href="#radiosend-transmit-message">14.5 RadioSend: Transmit Message</a><ul></ul></li>
+<li><a href="#radiorx-receive-message">14.6 RadioRx: Receive Message</a><ul></ul></li>
+<li><a href="#radiosleep-switch-to-sleep-mode">14.7 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Oct 2021</em></p>
 <p><em>What if our Laptop Computer could talk to other devices…</em></p>
 <p><em>Over a Long Range, Low Bandwidth wireless network like LoRa?</em></p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
@@ -1488,7 +1488,7 @@ sudo ./lora-sx1262</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109"><strong>RadioSleep:</strong></a> Switch SX1262 to low-power sleep mode</p>
 </li>
 </ul>
-<h2 id="radioinit" class="section-header"><a href="#radioinit">14.1 RadioInit</a></h2>
+<h2 id="radioinit-initialise-lora-module" class="section-header"><a href="#radioinit-initialise-lora-module">14.1 RadioInit: Initialise LoRa Module</a></h2>
 <p><strong>RadioInit</strong> initialises the LoRa SX1262 Module: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioInit( RadioEvents_t *events ) {
   //  We copy the Event Callbacks from &quot;events&quot;, because
@@ -1577,7 +1577,7 @@ sudo ./lora-sx1262</code></pre></div>
   IrqFired = false;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L361-L380">(<strong>TimerInit</strong> is defined here)</a></p>
-<h2 id="radiosetchannel" class="section-header"><a href="#radiosetchannel">14.2 RadioSetChannel</a></h2>
+<h2 id="radiosetchannel-set-lora-frequency" class="section-header"><a href="#radiosetchannel-set-lora-frequency">14.2 RadioSetChannel: Set LoRa Frequency</a></h2>
 <p><strong>RadioSetChannel</strong> sets the LoRa Frequency: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetChannel( uint32_t freq ) {
   SX126xSetRfFrequency( freq );
@@ -1600,7 +1600,7 @@ sudo ./lora-sx1262</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L408-L438">(<strong>SX126xCalibrateImage</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L812-L826">(<strong>SX126xConvertFreqInHzToPllStep</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
-<h2 id="radiosettxconfig" class="section-header"><a href="#radiosettxconfig">14.3 RadioSetTxConfig</a></h2>
+<h2 id="radiosettxconfig-set-transmit-configuration" class="section-header"><a href="#radiosettxconfig-set-transmit-configuration">14.3 RadioSetTxConfig: Set Transmit Configuration</a></h2>
 <p><strong>RadioSetTxConfig</strong> sets the LoRa Transmit Configuration: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
   uint32_t bandwidth, uint32_t datarate,
@@ -1691,7 +1691,7 @@ sudo ./lora-sx1262</code></pre></div>
 }</code></pre></div>
 <p>For easier testing we have set the Ramp Up Time to <strong>3400 microseconds</strong> (longest duration).</p>
 <p>After testing we should revert to the <strong>Default Ramp Up Time</strong> (40 microseconds).</p>
-<h2 id="radiosetrxconfig" class="section-header"><a href="#radiosetrxconfig">14.4 RadioSetRxConfig</a></h2>
+<h2 id="radiosetrxconfig-set-receive-configuration" class="section-header"><a href="#radiosetrxconfig-set-receive-configuration">14.4 RadioSetRxConfig: Set Receive Configuration</a></h2>
 <p><strong>RadioSetRxConfig</strong> sets the LoRa Receive Configuration: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
   uint32_t datarate, uint8_t coderate,
@@ -1794,7 +1794,7 @@ sudo ./lora-sx1262</code></pre></div>
       RxTimeout = 0xFFFF;
       break;
   }
-}</code></pre></div><h2 id="radiosend" class="section-header"><a href="#radiosend">14.5 RadioSend</a></h2>
+}</code></pre></div><h2 id="radiosend-transmit-message" class="section-header"><a href="#radiosend-transmit-message">14.5 RadioSend: Transmit Message</a></h2>
 <p><strong>RadioSend</strong> transmits a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSend( uint8_t *buffer, uint8_t size ) {
 
@@ -1824,7 +1824,7 @@ sudo ./lora-sx1262</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>  TimerStart( &amp;TxTimeoutTimer, TxTimeout );
 }</code></pre></div>
 <p>TODO</p>
-<h2 id="radiorx" class="section-header"><a href="#radiorx">14.6 RadioRx</a></h2>
+<h2 id="radiorx-receive-message" class="section-header"><a href="#radiorx-receive-message">14.6 RadioRx: Receive Message</a></h2>
 <p><strong>RadioRx</strong> receives a single LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioRx( uint32_t timeout ) {
 
@@ -1847,7 +1847,7 @@ sudo ./lora-sx1262</code></pre></div>
   } else {
     SX126xSetRx( RxTimeout &lt;&lt; 6 );
   }
-}</code></pre></div><h2 id="radiosleep" class="section-header"><a href="#radiosleep">14.7 RadioSleep</a></h2>
+}</code></pre></div><h2 id="radiosleep-switch-to-sleep-mode" class="section-header"><a href="#radiosleep-switch-to-sleep-mode">14.7 RadioSleep: Switch to Sleep Mode</a></h2>
 <p><strong>RadioSleep</strong> switches SX1262 to low-power sleep mode: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109">radio.c</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSleep( void ) {
