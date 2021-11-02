@@ -1796,35 +1796,47 @@ sudo ./lora-sx1262</code></pre></div>
   }
 }</code></pre></div><h2 id="radiosend" class="section-header"><a href="#radiosend">14.5 RadioSend</a></h2>
 <p><strong>RadioSend</strong> transmits a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098">radio.c</a></p>
-<p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSend( uint8_t *buffer, uint8_t size ) {
+
+  //  Set the DIO Interrupt Events
   SX126xSetDioIrqParams( 
     IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
     IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
     IRQ_RADIO_NONE,
     IRQ_RADIO_NONE 
   );</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>  if( SX126xGetPacketType( ) == PACKET_TYPE_LORA ) {
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470">(<strong>SX126xSetDioIrqParams</strong> is defined here)</a></p>
+<p>We begin by configuring which <strong>LoRa Events will trigger interrupts</strong> on each DIO Pin.</p>
+<p>Next we configure the <strong>Packet Parameters</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Populate the payload length
+  if( SX126xGetPacketType( ) == PACKET_TYPE_LORA ) {
     SX126x.PacketParams.Params.LoRa.PayloadLength = size;
   } else {
     SX126x.PacketParams.Params.Gfsk.PayloadLength = size;
   }
-
+  //  Configure the packet parameters
   SX126xSetPacketParams( &amp;SX126x.PacketParams );</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L523-L526">(<strong>SX126xGetPacketType</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L623-L680">(<strong>SX126xSetPacketParams</strong> is defined here)</a></p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>  SX126xSendPayload( buffer, size, 0 );
-  TimerStart( &amp;TxTimeoutTimer, TxTimeout );
-}</code></pre></div><h2 id="radiorx" class="section-header"><a href="#radiorx">14.6 RadioRx</a></h2>
+<div class="example-wrap"><pre class="language-c"><code>  SX126xSendPayload( buffer, size, 0 );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  TimerStart( &amp;TxTimeoutTimer, TxTimeout );
+}</code></pre></div>
+<p>TODO</p>
+<h2 id="radiorx" class="section-header"><a href="#radiorx">14.6 RadioRx</a></h2>
 <p><strong>RadioRx</strong> receives a single LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138">radio.c</a></p>
-<p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioRx( uint32_t timeout ) {
+
+  //  Set the DIO Interrupt Events
   SX126xSetDioIrqParams( 
     IRQ_RADIO_ALL,
     IRQ_RADIO_ALL,
     IRQ_RADIO_NONE,
     IRQ_RADIO_NONE 
   );</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470">(<strong>SX126xSetDioIrqParams</strong> is defined here)</a></p>
+<p>We begin by configuring which <strong>LoRa Events will trigger interrupts</strong> on each DIO Pin.</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  if( timeout != 0 ) {
     TimerStart( &amp;RxTimeoutTimer, timeout );
