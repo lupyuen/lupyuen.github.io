@@ -2584,8 +2584,7 @@ When a LoRa Message has been transmitted successfully, we stop the Transmit Time
       SX126xSetOperatingMode( MODE_STDBY_RC );
 
       //  Call the Callback Function for Transmit Done
-      if( ( RadioEvents.TxDone != NULL ) )
-      {
+      if( ( RadioEvents.TxDone != NULL ) ) {
         RadioEvents.TxDone( );
       }
     }
@@ -2715,8 +2714,7 @@ When the LoRa Module __fails to transmit__ a LoRa Message due to Timeout, we sto
         SX126xSetOperatingMode( MODE_STDBY_RC );
 
         //  Call the Callback Function for Transmit Timeout
-        if( ( RadioEvents.TxTimeout != NULL ) )
-        {
+        if( ( RadioEvents.TxTimeout != NULL ) ) {
           RadioEvents.TxTimeout( );
         }
       }
@@ -2737,8 +2735,7 @@ When the LoRa Module __fails to receive__ a LoRa Message due to Timeout, we stop
         SX126xSetOperatingMode( MODE_STDBY_RC );
 
         //  Call the Callback Function for Receive Timeout
-        if( ( RadioEvents.RxTimeout != NULL ) )
-        {
+        if( ( RadioEvents.RxTimeout != NULL ) ) {
           RadioEvents.RxTimeout( );
         }
       }
@@ -2749,9 +2746,9 @@ __RxTimeout__ points to the __on_rx_timeout__ Callback Function that we've seen 
 
 ### Preamble Detected
 
-TODO
+Preamble is the Radio Signal that __precedes the LoRa Message__. When the LoRa Module detects the Preamble Signal, it knows that it's about to receive a LoRa Message.
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431)
+We don't need to handle the Preamble Signal, the LoRa Module does it for us: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431)
 
 ```c
     //  If LoRa Preamble was detected...
@@ -2760,11 +2757,17 @@ TODO
     }
 ```
 
+Our [__Receive Message Log__](https://github.com/lupyuen/lora-sx1262#receive-message) shows that the Preamble Signal (__IRQ_PREAMBLE_DETECTED__) is always detected before receiving a LoRa Message.
+
+(__IRQ_PREAMBLE_DETECTED__ appears just before the LoRa Header: __IRQ_HEADER_VALID__)
+
+[(More about LoRa Preamble)](https://www.link-labs.com/blog/what-is-lora)
+
 ### Sync Word Valid
 
-TODO
+__Sync Words__ are 16-bit values that differentiate the types of LoRa Networks.
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437)
+The LoRa Module detects Sync Words when it receives LoRa Messages: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437)
 
 ```c
     //  If a valid Sync Word was detected...
@@ -2783,13 +2786,11 @@ Note that the __Sync Word differs for LoRaWAN__ vs Private LoRa Networks...
 #define LORA_MAC_PUBLIC_SYNCWORD                    0x3444
 ```
 
-[(More about Sync Word)](https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word)
+[(More about Sync Words)](https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word)
 
 ### Header Valid
 
-TODO
-
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443)
+The LoRa Module checks for a __valid LoRa Header__ when receiving a LoRa Message: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443)
 
 ```c
     //  If a valid Header was received...
@@ -2798,11 +2799,13 @@ TODO
     }
 ```
 
+Our [__Receive Message Log__](https://github.com/lupyuen/lora-sx1262#receive-message) shows that the LoRa Header (__IRQ_HEADER_VALID__) is always detected before receiving a LoRa Message.
+
+(__IRQ_HEADER_VALID__ appears right after the Preamble Signal: __IRQ_PREAMBLE_DETECTED__)
+
 ### Header Error
 
-TODO
-
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458)
+When the LoRa Module detects a __LoRa Header with CRC Error__, it stops the Receive Timer and calls the Callback Function for Receive Timeout: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458)
 
 ```c
     //  If a Header with CRC Error was received...
@@ -2810,20 +2813,12 @@ TODO
 
       //  Stop the Receive Timer
       TimerStop( &RxTimeoutTimer );
-```
 
-TODO
-
-```c
       if( RxContinuous == false ) {
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
       }
-```
 
-TODO
-
-```c
       //  Call the Callback Function for Receive Timeout
       if( ( RadioEvents.RxTimeout != NULL ) ) {
         RadioEvents.RxTimeout( );
