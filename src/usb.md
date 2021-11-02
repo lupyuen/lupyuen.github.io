@@ -2390,6 +2390,10 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 
 [(__SX126xWaitOnBusy__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L171-L182)
 
+When the LoRa Message is transmitted (successfully or unsuccessfully), the LoRa Module triggers a __DIO1 Interrupt__.
+
+Our driver calls __RadioIrqProcess__ to process the interrupt. [(See this)](https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts)
+
 ## RadioRx: Receive Message
 
 __RadioRx__ receives a single LoRa Message: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138)
@@ -2462,6 +2466,10 @@ void SX126xSetRx( uint32_t timeout ) {
 [(__SX126xWriteRegister__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266)
 
 [(__SX126xWriteCommand__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217)
+
+When a LoRa Message is received (successfully or unsuccessfully), the LoRa Module triggers a __DIO1 Interrupt__.
+
+Our driver calls __RadioIrqProcess__ to process the interrupt, which is explained next...
 
 ## RadioIrqProcess: Process Transmit and Receive Interrupts
 
@@ -2541,7 +2549,7 @@ TODO
 [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349)
 
 ```c
-    //  If a LoRa Message was transmitted...
+    //  If a LoRa Message was transmitted successfully...
     if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE ) {
       TimerStop( &TxTimeoutTimer );
 
@@ -2556,6 +2564,8 @@ TODO
     }
 ```
 
+__TxDone__ points to the __on_tx_done__ Callback Function that we've seen earlier.
+
 ### Receive Done
 
 TODO
@@ -2565,19 +2575,35 @@ TODO
 ```c
     //  If a LoRa Message was received...
     if( ( irqRegs & IRQ_RX_DONE ) == IRQ_RX_DONE ) {
-      TimerStop( &RxTimeoutTimer );
 
+      //  Stop the Receive Timer
+      TimerStop( &RxTimeoutTimer );
+```
+
+TODO
+
+```c
       if( ( irqRegs & IRQ_CRC_ERROR ) == IRQ_CRC_ERROR ) {
+        //  If the received message has CRC Error...
         if( RxContinuous == false ) {
           //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
           SX126xSetOperatingMode( MODE_STDBY_RC );
         }
+
+        //  Call the Callback Function for Receive Error
         if( ( RadioEvents.RxError ) ) {
           RadioEvents.RxError( );
         }
+```
+
+TODO
+
+```c
       } else {
+        //  If the received message has no CRC Error...
         uint8_t size;
 
+        //  If we are receiving continously...
         if( RxContinuous == false ) {
           //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
           SX126xSetOperatingMode( MODE_STDBY_RC );
@@ -2590,11 +2616,21 @@ TODO
           );
           // WORKAROUND END
         }
+```
 
+TODO
+
+```c
+        //  Copy the Message Payload
         SX126xGetPayload( RadioRxPayload, &size , 255 );
         
+        //  Get the Packet Status
         SX126xGetPacketStatus( &RadioPktStatus );
+```
 
+TODO
+
+```c
         //  Call the Callback Function for Receive Done
         if( ( RadioEvents.RxDone != NULL ) ) {
           RadioEvents.RxDone( 
@@ -2607,6 +2643,8 @@ TODO
       }
     }
 ```
+
+__RxDone__ points to the __on_rx_done__ Callback Function that we've seen earlier.
 
 ### CAD Done
 
@@ -2623,9 +2661,14 @@ We won't be using Channel Activity Detection today.
 ```c
     //  If Channel Activity Detection is complete...
     if( ( irqRegs & IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
+
       //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
+```
 
+TODO
+
+```c
       //  Call Callback Function for CAD Done
       if( ( RadioEvents.CadDone != NULL ) ) {
         RadioEvents.CadDone( ( 
@@ -2646,8 +2689,10 @@ TODO
     //  If a LoRa Message failed to Transmit or Receive due to Timeout...
     if( ( irqRegs & IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
 
-      //  If a LoRa Message failed to Transmit due to Timeout...
+      //  If the message failed to Transmit due to Timeout...
       if( SX126xGetOperatingMode( ) == MODE_TX ) {
+
+        //  Stop the Transmit Timer
         TimerStop( &TxTimeoutTimer );
 
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
@@ -2659,9 +2704,15 @@ TODO
           RadioEvents.TxTimeout( );
         }
       }
+```
 
-      //  If a LoRa Message failed to Receive due to Timeout...
+TODO
+
+```c
+      //  If the message failed to Receive due to Timeout...
       else if( SX126xGetOperatingMode( ) == MODE_RX ) {
+
+        //  Stop the Transmit Timer
         TimerStop( &RxTimeoutTimer );
 
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
@@ -2675,6 +2726,8 @@ TODO
       }
     }
 ```
+
+__RxTimeout__ points to the __on_rx_timeout__ Callback Function that we've seen earlier.
 
 ### Preamble Detected
 
@@ -2736,13 +2789,23 @@ TODO
 ```c
     //  If a Header with CRC Error was received...
     if( ( irqRegs & IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
-      TimerStop( &RxTimeoutTimer );
 
+      //  Stop the Receive Timer
+      TimerStop( &RxTimeoutTimer );
+```
+
+TODO
+
+```c
       if( RxContinuous == false ) {
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
       }
+```
 
+TODO
+
+```c
       //  Call the Callback Function for Receive Timeout
       if( ( RadioEvents.RxTimeout != NULL ) ) {
         RadioEvents.RxTimeout( );
@@ -2751,6 +2814,8 @@ TODO
   }
 }
 ```
+
+__RxTimeout__ points to the __on_rx_timeout__ Callback Function that we've seen earlier.
 
 ### RadioOnDioIrq
 
