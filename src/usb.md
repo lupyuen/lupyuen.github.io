@@ -2524,7 +2524,7 @@ __Interrupt Status__ tells us which LoRa Events have just occurred. We handle th
 
 -   CAD Done
 
--   Transmit Timeout
+-   Transmit / Receive Timeout
 
 -   Preamble Detected
 
@@ -2541,11 +2541,14 @@ TODO
 [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349)
 
 ```c
+    //  If a LoRa Message was transmitted...
     if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE ) {
       TimerStop( &TxTimeoutTimer );
 
       //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
+
+      //  Call the Callback Function for Transmit Done
       if( ( RadioEvents.TxDone != NULL ) )
       {
         RadioEvents.TxDone( );
@@ -2560,6 +2563,7 @@ TODO
 [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389)
 
 ```c
+    //  If a LoRa Message was received...
     if( ( irqRegs & IRQ_RX_DONE ) == IRQ_RX_DONE ) {
       TimerStop( &RxTimeoutTimer );
 
@@ -2586,8 +2590,12 @@ TODO
           );
           // WORKAROUND END
         }
+
         SX126xGetPayload( RadioRxPayload, &size , 255 );
+        
         SX126xGetPacketStatus( &RadioPktStatus );
+
+        //  Call the Callback Function for Receive Done
         if( ( RadioEvents.RxDone != NULL ) ) {
           RadioEvents.RxDone( 
             RadioRxPayload, 
@@ -2604,12 +2612,21 @@ TODO
 
 TODO
 
+Channel Activity Detection
+
+The transceiver lets us __detect whether there's any ongoing transmission__ in a LoRa Radio Channel, in a power-efficient way.
+
+We won't be using Channel Activity Detection today.
+
 [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400)
 
 ```c
+    //  If Channel Activity Detection is complete...
     if( ( irqRegs & IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
       //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
+
+      //  Call Callback Function for CAD Done
       if( ( RadioEvents.CadDone != NULL ) ) {
         RadioEvents.CadDone( ( 
             ( irqRegs & IRQ_CAD_ACTIVITY_DETECTED ) 
@@ -2619,29 +2636,38 @@ TODO
     }
 ```
 
-### Transmit Timeout
+### Transmit / Receive Timeout
 
 TODO
 
 [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425)
 
 ```c
+    //  If a LoRa Message failed to Transmit or Receive due to Timeout...
     if( ( irqRegs & IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
+
+      //  If a LoRa Message failed to Transmit due to Timeout...
       if( SX126xGetOperatingMode( ) == MODE_TX ) {
         TimerStop( &TxTimeoutTimer );
 
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
+
+        //  Call the Callback Function for Transmit Timeout
         if( ( RadioEvents.TxTimeout != NULL ) )
         {
           RadioEvents.TxTimeout( );
         }
       }
+
+      //  If a LoRa Message failed to Receive due to Timeout...
       else if( SX126xGetOperatingMode( ) == MODE_RX ) {
         TimerStop( &RxTimeoutTimer );
 
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
+
+        //  Call the Callback Function for Receive Timeout
         if( ( RadioEvents.RxTimeout != NULL ) )
         {
           RadioEvents.RxTimeout( );
@@ -2657,6 +2683,7 @@ TODO
 [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431)
 
 ```c
+    //  If LoRa Preamble was detected...
     if( ( irqRegs & IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
       //__NOP( );
     }
@@ -2669,6 +2696,7 @@ TODO
 [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437)
 
 ```c
+    //  If a valid Sync Word was detected...
     if( ( irqRegs & IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
       //__NOP( );
     }
@@ -2693,6 +2721,7 @@ TODO
 [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443)
 
 ```c
+    //  If a valid Header was received...
     if( ( irqRegs & IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
       //__NOP( );
     }
@@ -2705,6 +2734,7 @@ TODO
 [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458)
 
 ```c
+    //  If a Header with CRC Error was received...
     if( ( irqRegs & IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
       TimerStop( &RxTimeoutTimer );
 
@@ -2713,6 +2743,7 @@ TODO
         SX126xSetOperatingMode( MODE_STDBY_RC );
       }
 
+      //  Call the Callback Function for Receive Timeout
       if( ( RadioEvents.RxTimeout != NULL ) ) {
         RadioEvents.RxTimeout( );
       }
