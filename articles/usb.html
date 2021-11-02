@@ -1875,8 +1875,8 @@ sudo ./lora-sx1262</code></pre></div>
     IRQ_RADIO_NONE   //  Interrupt Events for DIO3
   );</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470">(<strong>SX126xSetDioIrqParams</strong> is defined here)</a></p>
-<p>(Transmit Done and Transmit Timeout will trigger interrupts on DIO1)</p>
 <p>We begin by configuring which <strong>LoRa Events will trigger interrupts</strong> on each DIO Pin.</p>
+<p>(Transmit Done and Transmit Timeout will trigger interrupts on DIO1)</p>
 <p>Next we configure the <strong>Packet Parameters</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Populate the payload length
   if( SX126xGetPacketType( ) == PACKET_TYPE_LORA ) {
