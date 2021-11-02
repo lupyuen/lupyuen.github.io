@@ -463,21 +463,21 @@ Finally we set the __LoRa Receive Parameters__...
 
 The __Radio__ functions are Platform-Independent (Linux and BL602), defined in [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c)
 
--   [__RadioInit:__](https://lupyuen.github.io/articles/usb#radioinit) Init LoRa SX1262
+-   [__RadioInit:__](https://lupyuen.github.io/articles/usb#radioinit-initialise-lora-module) Init LoRa SX1262
 
-    [(__RadioInit__ is explained here)](https://lupyuen.github.io/articles/usb#radioinit)
+    [(__RadioInit__ is explained here)](https://lupyuen.github.io/articles/usb#radioinit-initialise-lora-module)
 
--   [__RadioSetChannel:__](https://lupyuen.github.io/articles/usb#radiosetchannel) Set LoRa Frequency
+-   [__RadioSetChannel:__](https://lupyuen.github.io/articles/usb#radiosetchannel-set-lora-frequency) Set LoRa Frequency
 
-    [(__RadioSetChannel__ is explained here)](https://lupyuen.github.io/articles/usb#radiosetchannel)
+    [(__RadioSetChannel__ is explained here)](https://lupyuen.github.io/articles/usb#radiosetchannel-set-lora-frequency)
 
--   [__RadioSetTxConfig:__](https://lupyuen.github.io/articles/usb#radiosettxconfig) Set LoRa Transmit Configuration
+-   [__RadioSetTxConfig:__](https://lupyuen.github.io/articles/usb#radiosettxconfig-set-transmit-configuration) Set LoRa Transmit Configuration
 
-    [(__RadioSetTxConfig__ is explained here)](https://lupyuen.github.io/articles/usb#radiosettxconfig)
+    [(__RadioSetTxConfig__ is explained here)](https://lupyuen.github.io/articles/usb#radiosettxconfig-set-transmit-configuration)
 
--   [__RadioSetRxConfig:__](https://lupyuen.github.io/articles/usb#radiosetrxconfig) Set LoRa Receive Configuration
+-   [__RadioSetRxConfig:__](https://lupyuen.github.io/articles/usb#radiosetrxconfig-set-receive-configuration) Set LoRa Receive Configuration
 
-    [(__RadioSetRxConfig__ is explained here)](https://lupyuen.github.io/articles/usb#radiosetrxconfig)
+    [(__RadioSetRxConfig__ is explained here)](https://lupyuen.github.io/articles/usb#radiosetrxconfig-set-receive-configuration)
 
 (The __Radio__ functions will also be called later when we implement LoRaWAN)
 
@@ -569,7 +569,7 @@ And we __transmit the LoRa Message__...
 }
 ```
 
-[(__RadioSend__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
+[(__RadioSend__ is explained here)](https://lupyuen.github.io/articles/usb#radiosend-transmit-message)
 
 Our PineDio USB Driver has an issue with __CH341 SPI Transfers__...
 
@@ -745,7 +745,7 @@ static void receive_message(void) {
 }
 ```
 
-[(__RadioRx__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138)
+[(__RadioRx__ is explained here)](https://lupyuen.github.io/articles/usb#radiorx-receive-message)
 
 When the LoRa Driver receives a LoRa Message, it calls our Callback Function __on_rx_done__ defined in [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L268-L298)
 
@@ -926,9 +926,11 @@ static int init_spi(void) {
 }
 ```
 
-__init_spi__ is called by [__SX126xIoInit__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77), which is called by [__RadioInit__](https://lupyuen.github.io/articles/usb#radioinit) and [__init_driver__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203)
+__init_spi__ is called by [__SX126xIoInit__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L65-L77), which is called by [__RadioInit__](https://lupyuen.github.io/articles/usb#radioinit-initialise-lora-module) and [__init_driver__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L149-L203)
 
 (We've seen __init_driver__ earlier)
+
+[(__RadioInit__ is explained here)](https://lupyuen.github.io/articles/usb#radioinit-initialise-lora-module)
 
 ## Transfer SPI
 
