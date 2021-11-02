@@ -2306,9 +2306,9 @@ void RadioSend( uint8_t *buffer, uint8_t size ) {
 
 [(__SX126xSetDioIrqParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470)
 
-(Transmit Done and Transmit Timeout will trigger interrupts on DIO1)
-
 We begin by configuring which __LoRa Events will trigger interrupts__ on each DIO Pin.
+
+(Transmit Done and Transmit Timeout will trigger interrupts on DIO1)
 
 Next we configure the __Packet Parameters__...
 
