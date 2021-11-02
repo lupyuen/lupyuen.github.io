@@ -2413,7 +2413,7 @@ We begin by configuring which __LoRa Events will trigger interrupts__ on each DI
 
 (All LoRa Events will trigger interrupts on DIO1)
 
-We start the __Receiver Timer__ to catch Receive Timeouts...
+We start the __Receive Timer__ to catch Receive Timeouts...
 
 ```c
   //  Start the Receive Timer
@@ -2471,9 +2471,11 @@ TODO
 
 ```c
 /// Process Transmit and Receive Interrupts.
-/// Must be run in the Application Task Context, not Interrupt Context
-/// because we will be calling printf and SPI Functions here.
+/// For BL602: Must be run in the Application
+/// Task Context, not Interrupt Context because 
+/// we will call printf and SPI Functions here.
 void RadioIrqProcess( void ) {
+
   //  Remember and clear Interrupt Flag
   CRITICAL_SECTION_BEGIN( );
   const bool isIrqFired = IrqFired;
@@ -2514,8 +2516,8 @@ TODO
 
 ```c
     if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE ) {
-      printf("IRQ_TX_DONE\r\n");
       TimerStop( &TxTimeoutTimer );
+
       //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
       if( ( RadioEvents.TxDone != NULL ) )
@@ -2533,7 +2535,6 @@ TODO
 
 ```c
     if( ( irqRegs & IRQ_RX_DONE ) == IRQ_RX_DONE ) {
-      printf("IRQ_RX_DONE\r\n");
       TimerStop( &RxTimeoutTimer );
 
       if( ( irqRegs & IRQ_CRC_ERROR ) == IRQ_CRC_ERROR ) {
@@ -2553,13 +2554,21 @@ TODO
 
           // WORKAROUND - Implicit Header Mode Timeout Behavior, see DS_SX1261-2_V1.2 datasheet chapter 15.3
           SX126xWriteRegister( REG_RTC_CTRL, 0x00 );
-          SX126xWriteRegister( REG_EVT_CLR, SX126xReadRegister( REG_EVT_CLR ) | ( 1 << 1 ) );
+          SX126xWriteRegister( 
+            REG_EVT_CLR, 
+            SX126xReadRegister( REG_EVT_CLR ) | ( 1 << 1 ) 
+          );
           // WORKAROUND END
         }
         SX126xGetPayload( RadioRxPayload, &size , 255 );
         SX126xGetPacketStatus( &RadioPktStatus );
         if( ( RadioEvents.RxDone != NULL ) ) {
-          RadioEvents.RxDone( RadioRxPayload, size, RadioPktStatus.Params.LoRa.RssiPkt, RadioPktStatus.Params.LoRa.SnrPkt );
+          RadioEvents.RxDone( 
+            RadioRxPayload, 
+            size, 
+            RadioPktStatus.Params.LoRa.RssiPkt, 
+            RadioPktStatus.Params.LoRa.SnrPkt 
+          );
         }
       }
     }
@@ -2573,11 +2582,13 @@ TODO
 
 ```c
     if( ( irqRegs & IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
-      printf("IRQ_CAD_DONE\r\n");
       //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
       if( ( RadioEvents.CadDone != NULL ) ) {
-        RadioEvents.CadDone( ( ( irqRegs & IRQ_CAD_ACTIVITY_DETECTED ) == IRQ_CAD_ACTIVITY_DETECTED ) );
+        RadioEvents.CadDone( ( 
+            ( irqRegs & IRQ_CAD_ACTIVITY_DETECTED ) 
+            == IRQ_CAD_ACTIVITY_DETECTED 
+        ) );
       }
     }
 ```
@@ -2590,9 +2601,9 @@ TODO
 
 ```c
     if( ( irqRegs & IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
-      printf("IRQ_RX_TX_TIMEOUT\r\n");
       if( SX126xGetOperatingMode( ) == MODE_TX ) {
         TimerStop( &TxTimeoutTimer );
+
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
         if( ( RadioEvents.TxTimeout != NULL ) )
@@ -2602,6 +2613,7 @@ TODO
       }
       else if( SX126xGetOperatingMode( ) == MODE_RX ) {
         TimerStop( &RxTimeoutTimer );
+
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
         if( ( RadioEvents.RxTimeout != NULL ) )
@@ -2620,7 +2632,6 @@ TODO
 
 ```c
     if( ( irqRegs & IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
-      printf("IRQ_PREAMBLE_DETECTED\r\n");
       //__NOP( );
     }
 ```
@@ -2633,7 +2644,6 @@ TODO
 
 ```c
     if( ( irqRegs & IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
-      printf("IRQ_SYNCWORD_VALID\r\n");
       //__NOP( );
     }
 ```
