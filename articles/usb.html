@@ -1982,22 +1982,27 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 /// Must be run in the Application Task Context, not Interrupt Context
 /// because we will be calling printf and SPI Functions here.
 void RadioIrqProcess( void ) {
+  //  Remember and clear Interrupt Flag
   CRITICAL_SECTION_BEGIN( );
-  // Clear IRQ flag
   const bool isIrqFired = IrqFired;
   IrqFired = false;
-  CRITICAL_SECTION_END( );
-
+  CRITICAL_SECTION_END( );</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/include/sx126x-board.h#L58-L60">(Note: Critical Sections are not yet implemented)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>  //  IrqFired must be true to process interrupts
   if( isIrqFired == true ) {
+    //  Get the Interrupt Status
     uint16_t irqRegs = SX126xGetIrqStatus( );
-    SX126xClearIrqStatus( irqRegs );
-
-    // Check if DIO1 pin is High. If it is the case revert IrqFired to true
+    SX126xClearIrqStatus( irqRegs );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  Check if DIO1 pin is High. If it is the case revert IrqFired to true
     CRITICAL_SECTION_BEGIN( );
     if( SX126xGetDio1PinState( ) == 1 ) {
       IrqFired = true;
     }
-    CRITICAL_SECTION_END( );</code></pre></div><h3 id="transmit-done" class="section-header"><a href="#transmit-done">14.7.1 Transmit Done</a></h3>
+    CRITICAL_SECTION_END( );</code></pre></div>
+<p>TODO</p>
+<h3 id="transmit-done" class="section-header"><a href="#transmit-done">14.7.1 Transmit Done</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_TX_DONE ) == IRQ_TX_DONE ) {
