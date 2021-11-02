@@ -106,7 +106,7 @@
 <li><a href="#transmit-done">14.7.1 Transmit Done</a><ul></ul></li>
 <li><a href="#receive-done">14.7.2 Receive Done</a><ul></ul></li>
 <li><a href="#cad-done">14.7.3 CAD Done</a><ul></ul></li>
-<li><a href="#transmit-timeout">14.7.4 Transmit Timeout</a><ul></ul></li>
+<li><a href="#transmit--receive-timeout">14.7.4 Transmit / Receive Timeout</a><ul></ul></li>
 <li><a href="#preamble-detected">14.7.5 Preamble Detected</a><ul></ul></li>
 <li><a href="#sync-word-valid">14.7.6 Sync Word Valid</a><ul></ul></li>
 <li><a href="#header-valid">14.7.7 Header Valid</a><ul></ul></li>
@@ -2024,7 +2024,7 @@ void RadioIrqProcess( void ) {
 <p>CAD Done</p>
 </li>
 <li>
-<p>Transmit Timeout</p>
+<p>Transmit / Receive Timeout</p>
 </li>
 <li>
 <p>Preamble Detected</p>
@@ -2042,11 +2042,14 @@ void RadioIrqProcess( void ) {
 <h3 id="transmit-done" class="section-header"><a href="#transmit-done">14.7.1 Transmit Done</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349">radio.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_TX_DONE ) == IRQ_TX_DONE ) {
+<div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was transmitted...
+    if( ( irqRegs &amp; IRQ_TX_DONE ) == IRQ_TX_DONE ) {
       TimerStop( &amp;TxTimeoutTimer );
 
       //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
+
+      //  Call the Callback Function for Transmit Done
       if( ( RadioEvents.TxDone != NULL ) )
       {
         RadioEvents.TxDone( );
@@ -2054,7 +2057,8 @@ void RadioIrqProcess( void ) {
     }</code></pre></div><h3 id="receive-done" class="section-header"><a href="#receive-done">14.7.2 Receive Done</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389">radio.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_RX_DONE ) == IRQ_RX_DONE ) {
+<div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was received...
+    if( ( irqRegs &amp; IRQ_RX_DONE ) == IRQ_RX_DONE ) {
       TimerStop( &amp;RxTimeoutTimer );
 
       if( ( irqRegs &amp; IRQ_CRC_ERROR ) == IRQ_CRC_ERROR ) {
@@ -2080,8 +2084,12 @@ void RadioIrqProcess( void ) {
           );
           // WORKAROUND END
         }
+
         SX126xGetPayload( RadioRxPayload, &amp;size , 255 );
+        
         SX126xGetPacketStatus( &amp;RadioPktStatus );
+
+        //  Call the Callback Function for Receive Done
         if( ( RadioEvents.RxDone != NULL ) ) {
           RadioEvents.RxDone( 
             RadioRxPayload, 
@@ -2093,35 +2101,50 @@ void RadioIrqProcess( void ) {
       }
     }</code></pre></div><h3 id="cad-done" class="section-header"><a href="#cad-done">14.7.3 CAD Done</a></h3>
 <p>TODO</p>
+<p>Channel Activity Detection</p>
+<p>The transceiver lets us <strong>detect whether there’s any ongoing transmission</strong> in a LoRa Radio Channel, in a power-efficient way.</p>
+<p>We won’t be using Channel Activity Detection today.</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400">radio.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
+<div class="example-wrap"><pre class="language-c"><code>    //  If Channel Activity Detection is complete...
+    if( ( irqRegs &amp; IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
       //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
+
+      //  Call Callback Function for CAD Done
       if( ( RadioEvents.CadDone != NULL ) ) {
         RadioEvents.CadDone( ( 
             ( irqRegs &amp; IRQ_CAD_ACTIVITY_DETECTED ) 
             == IRQ_CAD_ACTIVITY_DETECTED 
         ) );
       }
-    }</code></pre></div><h3 id="transmit-timeout" class="section-header"><a href="#transmit-timeout">14.7.4 Transmit Timeout</a></h3>
+    }</code></pre></div><h3 id="transmit--receive-timeout" class="section-header"><a href="#transmit--receive-timeout">14.7.4 Transmit / Receive Timeout</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425">radio.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
+<div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message failed to Transmit or Receive due to Timeout...
+    if( ( irqRegs &amp; IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
+
+      //  If a LoRa Message failed to Transmit due to Timeout...
       if( SX126xGetOperatingMode( ) == MODE_TX ) {
         TimerStop( &amp;TxTimeoutTimer );
 
         //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
+
+        //  Call the Callback Function for Transmit Timeout
         if( ( RadioEvents.TxTimeout != NULL ) )
         {
           RadioEvents.TxTimeout( );
         }
       }
+
+      //  If a LoRa Message failed to Receive due to Timeout...
       else if( SX126xGetOperatingMode( ) == MODE_RX ) {
         TimerStop( &amp;RxTimeoutTimer );
 
         //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
+
+        //  Call the Callback Function for Receive Timeout
         if( ( RadioEvents.RxTimeout != NULL ) )
         {
           RadioEvents.RxTimeout( );
@@ -2130,12 +2153,14 @@ void RadioIrqProcess( void ) {
     }</code></pre></div><h3 id="preamble-detected" class="section-header"><a href="#preamble-detected">14.7.5 Preamble Detected</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431">radio.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
+<div class="example-wrap"><pre class="language-c"><code>    //  If LoRa Preamble was detected...
+    if( ( irqRegs &amp; IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
       //__NOP( );
     }</code></pre></div><h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">14.7.6 Sync Word Valid</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437">radio.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
+<div class="example-wrap"><pre class="language-c"><code>    //  If a valid Sync Word was detected...
+    if( ( irqRegs &amp; IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
       //__NOP( );
     }</code></pre></div>
 <p>Note that the <strong>Sync Word differs for LoRaWAN</strong> vs Private LoRa Networks…</p>
@@ -2148,12 +2173,14 @@ void RadioIrqProcess( void ) {
 <h3 id="header-valid" class="section-header"><a href="#header-valid">14.7.7 Header Valid</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443">radio.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
+<div class="example-wrap"><pre class="language-c"><code>    //  If a valid Header was received...
+    if( ( irqRegs &amp; IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
       //__NOP( );
     }</code></pre></div><h3 id="header-error" class="section-header"><a href="#header-error">14.7.8 Header Error</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458">radio.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
+<div class="example-wrap"><pre class="language-c"><code>    //  If a Header with CRC Error was received...
+    if( ( irqRegs &amp; IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
       TimerStop( &amp;RxTimeoutTimer );
 
       if( RxContinuous == false ) {
@@ -2161,6 +2188,7 @@ void RadioIrqProcess( void ) {
         SX126xSetOperatingMode( MODE_STDBY_RC );
       }
 
+      //  Call the Callback Function for Receive Timeout
       if( ( RadioEvents.RxTimeout != NULL ) ) {
         RadioEvents.RxTimeout( );
       }
