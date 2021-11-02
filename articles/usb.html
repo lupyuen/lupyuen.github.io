@@ -1744,12 +1744,19 @@ sudo ./lora-sx1262</code></pre></div>
 <p>This is a Workaround for <strong>Modulation Quality</strong> with <strong>500 kHz Bandwidth</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // WORKAROUND - Modulation Quality with 500 kHz LoRa Bandwidth, see DS_SX1261-2_V1.2 datasheet chapter 15.1
   if( ( modem == MODEM_LORA ) &amp;&amp; ( SX126x.ModulationParams.Params.LoRa.Bandwidth == LORA_BW_500 ) ) {
-    SX126xWriteRegister( REG_TX_MODULATION, SX126xReadRegister( REG_TX_MODULATION ) &amp; ~( 1 &lt;&lt; 2 ) );
+    SX126xWriteRegister( 
+      REG_TX_MODULATION, 
+      SX126xReadRegister( REG_TX_MODULATION ) &amp; ~( 1 &lt;&lt; 2 ) 
+    );
   } else {
-    SX126xWriteRegister( REG_TX_MODULATION, SX126xReadRegister( REG_TX_MODULATION ) | ( 1 &lt;&lt; 2 ) );
+    SX126xWriteRegister( 
+      REG_TX_MODULATION, 
+      SX126xReadRegister( REG_TX_MODULATION ) | ( 1 &lt;&lt; 2 ) 
+    );
   }
   // WORKAROUND END</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266">(<strong>SX126xWriteRegister</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L276-L281">(<strong>SX126xReadRegister</strong> is defined here)</a></p>
 <p>We finish by setting the <strong>Transmit Power</strong> and <strong>Transmit Timeout</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set Transmit Power
   SX126xSetRfTxPower( power );
@@ -1867,12 +1874,19 @@ sudo ./lora-sx1262</code></pre></div>
 <p>This is a Workaround that <strong>optimises the Inverted IQ Operation</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>      // WORKAROUND - Optimizing the Inverted IQ Operation, see DS_SX1261-2_V1.2 datasheet chapter 15.4
       if( SX126x.PacketParams.Params.LoRa.InvertIQ == LORA_IQ_INVERTED ) {
-        SX126xWriteRegister( REG_IQ_POLARITY, SX126xReadRegister( REG_IQ_POLARITY ) &amp; ~( 1 &lt;&lt; 2 ) );
+        SX126xWriteRegister( 
+          REG_IQ_POLARITY, 
+          SX126xReadRegister( REG_IQ_POLARITY ) &amp; ~( 1 &lt;&lt; 2 ) 
+        );
       } else {
-        SX126xWriteRegister( REG_IQ_POLARITY, SX126xReadRegister( REG_IQ_POLARITY ) | ( 1 &lt;&lt; 2 ) );
+        SX126xWriteRegister( 
+          REG_IQ_POLARITY, 
+          SX126xReadRegister( REG_IQ_POLARITY ) | ( 1 &lt;&lt; 2 ) 
+        );
       }
       // WORKAROUND END</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266">(<strong>SX126xWriteRegister</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L276-L281">(<strong>SX126xReadRegister</strong> is defined here)</a></p>
 <p>We finish by setting the <strong>Receive Timeout</strong> to No Timeout (always receiving)…</p>
 <div class="example-wrap"><pre class="language-c"><code>      // Timeout Max, Timeout handled directly in SetRx function
       RxTimeout = 0xFFFF;
@@ -2076,6 +2090,8 @@ void RadioIrqProcess( void ) {
         RadioEvents.TxDone( );
       }
     }</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L382-L394">(<strong>TimerStop</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L126-L147">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p><strong>TxDone</strong> points to the <strong>on_tx_done</strong> Callback Function that we’ve seen earlier.</p>
 <h3 id="receive-done" class="section-header"><a href="#receive-done">14.7.2 Receive Done</a></h3>
 <p>When we receive a LoRa Message, we stop the Receive Timer: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389">radio.c</a></p>
@@ -2116,12 +2132,17 @@ void RadioIrqProcess( void ) {
           );
           // WORKAROUND END
         }</code></pre></div>
-<p>Then we copy the <strong>Message Payload</strong> and get the <strong>Packet Status</strong>…</p>
-<div class="example-wrap"><pre class="language-c"><code>        //  Copy the Message Payload (max 255 bytes)
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266">(<strong>SX126xWriteRegister</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L276-L281">(<strong>SX126xReadRegister</strong> is defined here)</a></p>
+<p>Then we copy the <strong>Received Message Payload</strong> and get the <strong>Packet Status</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>        //  Copy the Received Message Payload (max 255 bytes)
         SX126xGetPayload( RadioRxPayload, &amp;size , 255 );
         
-        //  Get the Packet Status
+        //  Get the Packet Status:
+        //  Packet Signal Strength (RSSI), Signal-to-Noise Ratio (SNR),
+        //  Signal RSSI, Frequency Error
         SX126xGetPacketStatus( &amp;RadioPktStatus );</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L746-L778">(<strong>SX126xGetPacketStatus</strong> is defined here)</a></p>
 <p>And we call the <strong>Callback Function for Receive Done</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>        //  Call the Callback Function for Receive Done
         if( ( RadioEvents.RxDone != NULL ) ) {
@@ -2135,9 +2156,42 @@ void RadioIrqProcess( void ) {
       }
     }</code></pre></div>
 <p><strong>RxDone</strong> points to the <strong>on_rx_done</strong> Callback Function that we’ve seen earlier.</p>
+<p><strong>SX126xGetPayload</strong> copies the received message payload from the SX1262 <strong>Receive Buffer</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L149-L160">sx126x.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Copy message payload from Receive Buffer
+uint8_t SX126xGetPayload( uint8_t *buffer, uint8_t *size,  uint8_t maxSize ) {
+  uint8_t offset = 0;
+
+  //  Get the size and offset of the received message
+  //  in the Receive Buffer
+  SX126xGetRxBufferStatus( size, &amp;offset );
+  if( *size &gt; maxSize ) {
+    return 1;
+  }
+
+  //  Copy message payload from Receive Buffer
+  SX126xReadBuffer( offset, buffer, *size );
+  return 0;
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L727-L744">(<strong>SX126xGetRxBufferStatus</strong> is defined here)</a></p>
+<p><strong>SX126xReadBuffer</strong> akes up the LoRa Module, reads from the Receive Buffer and waits for the operation to be completed: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297">sx126x-linux.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Copy message payload from Receive Buffer
+void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
+  //  Wake up SX1262 if sleeping
+  SX126xCheckDeviceReady( );
+
+  //  Copy message payload from Receive Buffer
+  int rc = sx126x_read_buffer(NULL, offset, buffer, size);
+  assert(rc == 0);
+
+  //  Wait for SX1262 to be ready
+  SX126xWaitOnBusy( );
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L133-L142">(<strong>SX126xCheckDeviceReady</strong> is defined here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#receive-long-message">(<strong>sx126x_read_buffer</strong> is explained here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L171-L182">(<strong>SX126xWaitOnBusy</strong> is defined here)</a></p>
 <h3 id="cad-done" class="section-header"><a href="#cad-done">14.7.3 CAD Done</a></h3>
 <p><strong>Channel Activity Detection</strong> lets us <strong>detect whether there’s any ongoing transmission</strong> in a LoRa Radio Channel, in a power-efficient way.</p>
-<p>We won’t be using Channel Activity Detection in our driver: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400">radio.c</a></p>
+<p>We won’t be doing Channel Activity Detection in our driver: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If Channel Activity Detection is complete...
     if( ( irqRegs &amp; IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
 
@@ -2170,6 +2224,7 @@ void RadioIrqProcess( void ) {
           RadioEvents.TxTimeout( );
         }
       }</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L121-L124">(<strong>SX126xGetOperatingMode</strong> is defined here)</a></p>
 <p><strong>TxTimeout</strong> points to the <strong>on_tx_timeout</strong> Callback Function that we’ve seen earlier.</p>
 <p>When the LoRa Module <strong>fails to receive</strong> a LoRa Message due to Timeout, we stop the Receive Timer and call the <strong>Callback Function for Receive Timeout</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>      //  If the message failed to Receive due to Timeout...
@@ -2265,6 +2320,28 @@ void RadioOnDioIrq( struct ble_npl_event *ev ) {
   SX126xSetSleep( params );
 
   DelayMs( 2 );
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L253-L268">sx126x.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void SX126xSetSleep( SleepParams_t sleepConfig ) {
+  //  Switch off antenna (not used)
+  SX126xAntSwOff( );
+
+  //  Compute Sleep Parameter
+  uint8_t value = ( 
+      ( ( uint8_t )sleepConfig.Fields.WarmStart &lt;&lt; 2 ) |
+      ( ( uint8_t )sleepConfig.Fields.Reset &lt;&lt; 1 ) |
+      ( ( uint8_t )sleepConfig.Fields.WakeUpRTC ) 
+  );
+
+  if( sleepConfig.Fields.WarmStart == 0 ) {
+    // Force image calibration
+    ImageCalibrated = false;
+  }
+
+  //  Enter Sleep Mode
+  SX126xWriteCommand( RADIO_SET_SLEEP, &amp;value, 1 );
+  SX126xSetOperatingMode( MODE_SLEEP );
 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/usb-pinedio2.jpg" alt="Pinebook Pro with PineDio USB Adapter" /></p>
 
