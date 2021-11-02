@@ -250,9 +250,8 @@ void setup() {
   if (err_code != 0) { return; }</code></pre></div>
 <p>(More about <code>g_lora_callbacks</code> in a while)</p>
 <p>Finally we send the <strong>Join LoRaWAN Network Request</strong> to WisGate…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Start Join procedure</span>
-  <span class="ident">lmh_join</span>();
+<div class="example-wrap"><pre class="language-c"><code>  //  Start Join procedure
+  lmh_join();
 }</code></pre></div>
 <p><em>What’s in <code>g_lora_callbacks</code>?</em></p>
 <p><code>g_lora_callbacks</code> contains a list of Callback Functions that will be called by the LoRaWAN Client: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L87-L97"><code>main.cpp</code></a></p>
