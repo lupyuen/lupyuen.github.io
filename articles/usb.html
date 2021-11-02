@@ -2076,7 +2076,7 @@ void RadioIrqProcess( void ) {
 </li>
 </ul>
 <h3 id="transmit-done" class="section-header"><a href="#transmit-done">14.7.1 Transmit Done</a></h3>
-<p>When a LoRa Message has been transmitted successfully, we stop the Transmit Timer and call the <strong>Callback Function for Transmit Done</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349">radio.c</a></p>
+<p>When the LoRa Module has transmitted a LoRa Message successfully, we stop the Transmit Timer and call the <strong>Callback Function for Transmit Done</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was transmitted successfully...
     if( ( irqRegs &amp; IRQ_TX_DONE ) == IRQ_TX_DONE ) {
 
@@ -2095,7 +2095,7 @@ void RadioIrqProcess( void ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L126-L147">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p><strong>TxDone</strong> points to the <strong>on_tx_done</strong> Callback Function that we’ve seen earlier.</p>
 <h3 id="receive-done" class="section-header"><a href="#receive-done">14.7.2 Receive Done</a></h3>
-<p>When we receive a LoRa Message, we stop the Receive Timer: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389">radio.c</a></p>
+<p>When the LoRa Module receives a LoRa Message, we stop the Receive Timer: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was received...
     if( ( irqRegs &amp; IRQ_RX_DONE ) == IRQ_RX_DONE ) {
 
@@ -2256,7 +2256,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://www.link-labs.com/blog/what-is-lora">(More about LoRa Preamble)</a></p>
 <h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">14.7.6 Sync Word Valid</a></h3>
 <p><strong>Sync Words</strong> are 16-bit values that differentiate the types of LoRa Networks.</p>
-<p>The LoRa Module detects Sync Words when it receives LoRa Messages: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437">radio.c</a></p>
+<p>The LoRa Module detects the Sync Words when it receive a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a valid Sync Word was detected...
     if( ( irqRegs &amp; IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
       //__NOP( );
@@ -2277,7 +2277,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p>Our <a href="https://github.com/lupyuen/lora-sx1262#receive-message"><strong>Receive Message Log</strong></a> shows that the LoRa Header (<strong>IRQ_HEADER_VALID</strong>) is always detected before receiving a LoRa Message.</p>
 <p>(<strong>IRQ_HEADER_VALID</strong> appears right after the Preamble Signal: <strong>IRQ_PREAMBLE_DETECTED</strong>)</p>
 <h3 id="header-error" class="section-header"><a href="#header-error">14.7.8 Header Error</a></h3>
-<p>When the LoRa Module detects a <strong>LoRa Header with CRC Error</strong>, it stops the Receive Timer and calls the Callback Function for Receive Timeout: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458">radio.c</a></p>
+<p>When the LoRa Module detects a <strong>LoRa Header with CRC Error</strong>, we stop the Receive Timer and call the Callback Function for Receive Timeout: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a Header with CRC Error was received...
     if( ( irqRegs &amp; IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
 
