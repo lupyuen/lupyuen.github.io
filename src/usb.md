@@ -2472,23 +2472,37 @@ TODO
 /// Must be run in the Application Task Context, not Interrupt Context
 /// because we will be calling printf and SPI Functions here.
 void RadioIrqProcess( void ) {
+  //  Remember and clear Interrupt Flag
   CRITICAL_SECTION_BEGIN( );
-  // Clear IRQ flag
   const bool isIrqFired = IrqFired;
   IrqFired = false;
   CRITICAL_SECTION_END( );
+```
 
+TODO
+
+[(Note: Critical Sections are not yet implemented)](https://github.com/lupyuen/lora-sx1262/blob/master/include/sx126x-board.h#L58-L60)
+
+```c
+  //  IrqFired must be true to process interrupts
   if( isIrqFired == true ) {
+    //  Get the Interrupt Status
     uint16_t irqRegs = SX126xGetIrqStatus( );
     SX126xClearIrqStatus( irqRegs );
+```
 
-    // Check if DIO1 pin is High. If it is the case revert IrqFired to true
+TODO
+
+```c
+    //  Check if DIO1 pin is High. If it is the case revert IrqFired to true
     CRITICAL_SECTION_BEGIN( );
     if( SX126xGetDio1PinState( ) == 1 ) {
       IrqFired = true;
     }
     CRITICAL_SECTION_END( );
 ```
+
+TODO
 
 ### Transmit Done
 
