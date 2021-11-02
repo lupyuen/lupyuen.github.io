@@ -1755,7 +1755,7 @@ In this section we explain the Platform-Independent (Linux and BL602) __Radio Fu
 
 -   [__RadioSleep:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109) Switch SX1262 to low-power sleep mode
 
-## RadioInit
+## RadioInit: Initialise LoRa Module
 
 __RadioInit__ initialises the LoRa SX1262 Module: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559)
 
@@ -1894,7 +1894,7 @@ Finally we init the Timeout Timers (from NimBLE Porting Layer) for __Transmit Ti
 
 [(__TimerInit__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L361-L380)
 
-## RadioSetChannel
+## RadioSetChannel: Set LoRa Frequency
 
 __RadioSetChannel__ sets the LoRa Frequency: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604)
 
@@ -1930,7 +1930,7 @@ void SX126xSetRfFrequency( uint32_t frequency ) {
 
 [(__SX126xWriteCommand__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217)
 
-## RadioSetTxConfig
+## RadioSetTxConfig: Set Transmit Configuration
 
 __RadioSetTxConfig__ sets the LoRa Transmit Configuration: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908)
 
@@ -2066,7 +2066,7 @@ For easier testing we have set the Ramp Up Time to __3400 microseconds__ (longes
 
 After testing we should revert to the __Default Ramp Up Time__ (40 microseconds).
 
-## RadioSetRxConfig
+## RadioSetRxConfig: Set Receive Configuration
 
 __RadioSetRxConfig__ sets the LoRa Receive Configuration: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786)
 
@@ -2214,7 +2214,7 @@ We finish by setting the __Receive Timeout__ to the default maximum value...
 }
 ```
 
-## RadioSend
+## RadioSend: Transmit Message
 
 __RadioSend__ transmits a LoRa Message: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
 
@@ -2266,7 +2266,7 @@ TODO
 
 TODO
 
-## RadioRx
+## RadioRx: Receive Message
 
 __RadioRx__ receives a single LoRa Message: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138)
 
@@ -2305,7 +2305,7 @@ TODO
 }
 ```
 
-## RadioSleep
+## RadioSleep: Switch to Sleep Mode
 
 __RadioSleep__ switches SX1262 to low-power sleep mode: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109)
 
