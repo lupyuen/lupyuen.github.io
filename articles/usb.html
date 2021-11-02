@@ -1597,14 +1597,16 @@ sudo ./lora-sx1262</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan#transmit-power">(More about the Transmit Power)</a></p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#over-current-protection">(Over Current Protection in <strong>SX126xSetTxParams</strong>)</a></p>
 <p>We configure which <strong>LoRa Events will trigger interrupts</strong> on each DIO Pin…</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Set the DIO Interrupt Events
+<div class="example-wrap"><pre class="language-c"><code>  //  Set the DIO Interrupt Events:
+  //  All LoRa Events will trigger interrupts on DIO1
   SX126xSetDioIrqParams(
-    IRQ_RADIO_ALL, 
-    IRQ_RADIO_ALL, 
-    IRQ_RADIO_NONE, 
-    IRQ_RADIO_NONE 
+    IRQ_RADIO_ALL,   //  Interrupt Mask
+    IRQ_RADIO_ALL,   //  Interrupt Events for DIO1
+    IRQ_RADIO_NONE,  //  Interrupt Events for DIO2
+    IRQ_RADIO_NONE   //  Interrupt Events for DIO3
   );</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470">(<strong>SX126xSetDioIrqParams</strong> is defined here)</a></p>
+<p>(All LoRa Events will trigger interrupts on DIO1)</p>
 <p>We define the SX1262 Registers that will be restored from <strong>Retention Memory</strong> when waking up from Warm Start Mode…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Add registers to the retention list (4 is the maximum possible number)
   RadioAddRegisterToRetentionList( REG_RX_GAIN );
@@ -1863,14 +1865,17 @@ sudo ./lora-sx1262</code></pre></div>
 <p><strong>RadioSend</strong> transmits a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSend( uint8_t *buffer, uint8_t size ) {
 
-  //  Set the DIO Interrupt Events
+  //  Set the DIO Interrupt Events:
+  //  Transmit Done and Transmit Timeout
+  //  will trigger interrupts on DIO1
   SX126xSetDioIrqParams( 
-    IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
-    IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
-    IRQ_RADIO_NONE,
-    IRQ_RADIO_NONE 
+    IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,  //  Interrupt Mask
+    IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,  //  Interrupt Events for DIO1
+    IRQ_RADIO_NONE,  //  Interrupt Events for DIO2
+    IRQ_RADIO_NONE   //  Interrupt Events for DIO3
   );</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470">(<strong>SX126xSetDioIrqParams</strong> is defined here)</a></p>
+<p>(Transmit Done and Transmit Timeout will trigger interrupts on DIO1)</p>
 <p>We begin by configuring which <strong>LoRa Events will trigger interrupts</strong> on each DIO Pin.</p>
 <p>Next we configure the <strong>Packet Parameters</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Populate the payload length
@@ -1901,15 +1906,14 @@ void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout ) {
   SX126xSetTx( timeout );
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L289-L299">(<strong>SX126xSetTx</strong> is defined here)</a></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147">sx126x.c</a></p>
+<p>This code copies the Message Payload to the SX1262 <strong>Transmit Buffer</strong> and transmits the message.</p>
+<p><strong>SX126xSetPayload</strong> copies to the Transmit Buffer by calling <strong>SX126xWriteBuffer</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147">sx126x.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Copy message payload to Transmit Buffer
 void SX126xSetPayload( uint8_t *payload, uint8_t size ) {
   //  Copy message payload to Transmit Buffer
   SX126xWriteBuffer( 0x00, payload, size );
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289">sx126x.c</a></p>
+<p><strong>SX126xWriteBuffer</strong> wakes up the LoRa Module, writes to the Transmit Buffer and waits for the operation to be completed: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289">sx126x.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Copy message payload to Transmit Buffer
 void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
   //  Wake up SX1262 if sleeping
@@ -1925,27 +1929,28 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L133-L142">(<strong>SX126xCheckDeviceReady</strong> is defined here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/usb#transmit-long-message">(<strong>sx126x_write_buffer</strong> is explained here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L171-L182">(<strong>SX126xWaitOnBusy</strong> is defined here)</a></p>
-<p>TODO</p>
 <h2 id="radiorx-receive-message" class="section-header"><a href="#radiorx-receive-message">14.6 RadioRx: Receive Message</a></h2>
 <p><strong>RadioRx</strong> receives a single LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioRx( uint32_t timeout ) {
 
-  //  Set the DIO Interrupt Events
-  SX126xSetDioIrqParams( 
-    IRQ_RADIO_ALL,
-    IRQ_RADIO_ALL,
-    IRQ_RADIO_NONE,
-    IRQ_RADIO_NONE 
+  //  Set the DIO Interrupt Events:
+  //  All LoRa Events will trigger interrupts on DIO1
+  SX126xSetDioIrqParams(
+    IRQ_RADIO_ALL,   //  Interrupt Mask
+    IRQ_RADIO_ALL,   //  Interrupt Events for DIO1
+    IRQ_RADIO_NONE,  //  Interrupt Events for DIO2
+    IRQ_RADIO_NONE   //  Interrupt Events for DIO3
   );</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470">(<strong>SX126xSetDioIrqParams</strong> is defined here)</a></p>
 <p>We begin by configuring which <strong>LoRa Events will trigger interrupts</strong> on each DIO Pin.</p>
-<p>TODO</p>
+<p>(All LoRa Events will trigger interrupts on DIO1)</p>
+<p>We start the <strong>Receiver Timer</strong> to catch Receive Timeouts…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Start the Receive Timer
   if( timeout != 0 ) {
     TimerStart( &amp;RxTimeoutTimer, timeout );
   }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L396-L421">(<strong>TimerStart</strong> is defined here)</a></p>
-<p>TODO</p>
+<p>Now we begin to <strong>receive a LoRa Message</strong> continuously, or until a timeout occurs…</p>
 <div class="example-wrap"><pre class="language-c"><code>  if( RxContinuous == true ) {
     //  Receive continuously
     SX126xSetRx( 0xFFFFFF ); // Rx Continuous
@@ -1954,8 +1959,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
     SX126xSetRx( RxTimeout &lt;&lt; 6 );
   }
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L301-L313">sx126x.c</a></p>
+<p><strong>SX126xSetRx</strong> enters Receive Mode like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L301-L313">sx126x.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void SX126xSetRx( uint32_t timeout ) {
   uint8_t buf[3];
 
@@ -1974,7 +1978,6 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L126-L147">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266">(<strong>SX126xWriteRegister</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
-<p>TODO</p>
 <h2 id="radioirqprocess-process-transmit-and-receive-interrupts" class="section-header"><a href="#radioirqprocess-process-transmit-and-receive-interrupts">14.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a></h2>
 <p><strong>RadioIrqProcess</strong> processes the interrupts that are triggered when a LoRa Message is transmitted and received: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1314-L1460">radio.c</a></p>
 <p>TODO</p>
