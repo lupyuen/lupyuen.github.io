@@ -2218,10 +2218,10 @@ We finish by setting the __Receive Timeout__ to the default maximum value...
 
 __RadioSend__ transmits a LoRa Message: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1069-L1098)
 
-TODO
-
 ```c
 void RadioSend( uint8_t *buffer, uint8_t size ) {
+
+  //  Set the DIO Interrupt Events
   SX126xSetDioIrqParams( 
     IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
     IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
@@ -2230,34 +2230,50 @@ void RadioSend( uint8_t *buffer, uint8_t size ) {
   );
 ```
 
-TODO
+[(__SX126xSetDioIrqParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470)
+
+We begin by configuring which __LoRa Events will trigger interrupts__ on each DIO Pin.
+
+Next we configure the __Packet Parameters__...
 
 ```c
+  //  Populate the payload length
   if( SX126xGetPacketType( ) == PACKET_TYPE_LORA ) {
     SX126x.PacketParams.Params.LoRa.PayloadLength = size;
   } else {
     SX126x.PacketParams.Params.Gfsk.PayloadLength = size;
   }
-
+  //  Configure the packet parameters
   SX126xSetPacketParams( &SX126x.PacketParams );
 ```
+
+[(__SX126xGetPacketType__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L523-L526)
+
+[(__SX126xSetPacketParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L623-L680)
 
 TODO
 
 ```c
   SX126xSendPayload( buffer, size, 0 );
+```
+
+TODO
+
+```c
   TimerStart( &TxTimeoutTimer, TxTimeout );
 }
 ```
+
+TODO
 
 ## RadioRx
 
 __RadioRx__ receives a single LoRa Message: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138)
 
-TODO
-
 ```c
 void RadioRx( uint32_t timeout ) {
+
+  //  Set the DIO Interrupt Events
   SX126xSetDioIrqParams( 
     IRQ_RADIO_ALL,
     IRQ_RADIO_ALL,
@@ -2265,6 +2281,10 @@ void RadioRx( uint32_t timeout ) {
     IRQ_RADIO_NONE 
   );
 ```
+
+[(__SX126xSetDioIrqParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470)
+
+We begin by configuring which __LoRa Events will trigger interrupts__ on each DIO Pin.
 
 TODO
 
