@@ -2624,7 +2624,7 @@ In case of CRC Error, we call the __Callback Function for Receive Error__...
 
 __RxError__ points to the __on_rx_error__ Callback Function that we've seen earlier.
 
-TODO
+If the received message has no CRC Error, we do this Workaround for __Implicit Header Mode Timeout Behavior__...
 
 ```c
       } else {
@@ -2646,17 +2646,17 @@ TODO
         }
 ```
 
-TODO
+Then we copy the __Message Payload__ and get the __Packet Status__...
 
 ```c
-        //  Copy the Message Payload
+        //  Copy the Message Payload (max 255 bytes)
         SX126xGetPayload( RadioRxPayload, &size , 255 );
         
         //  Get the Packet Status
         SX126xGetPacketStatus( &RadioPktStatus );
 ```
 
-TODO
+And we call the __Callback Function for Receive Done__...
 
 ```c
         //  Call the Callback Function for Receive Done
@@ -2676,15 +2676,9 @@ __RxDone__ points to the __on_rx_done__ Callback Function that we've seen earlie
 
 ### CAD Done
 
-TODO
+__Channel Activity Detection__ lets us __detect whether there's any ongoing transmission__ in a LoRa Radio Channel, in a power-efficient way.
 
-Channel Activity Detection
-
-The transceiver lets us __detect whether there's any ongoing transmission__ in a LoRa Radio Channel, in a power-efficient way.
-
-We won't be using Channel Activity Detection today.
-
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400)
+We won't be using Channel Activity Detection in our driver: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400)
 
 ```c
     //  If Channel Activity Detection is complete...
@@ -2692,11 +2686,7 @@ We won't be using Channel Activity Detection today.
 
       //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
-```
 
-TODO
-
-```c
       //  Call Callback Function for CAD Done
       if( ( RadioEvents.CadDone != NULL ) ) {
         RadioEvents.CadDone( ( 
@@ -2709,9 +2699,7 @@ TODO
 
 ### Transmit / Receive Timeout
 
-TODO
-
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425)
+When the LoRa Module __fails to transmit__ a LoRa Message due to Timeout, we stop the Transmit Timer and call the __Callback Function for Transmit Timeout__: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425)
 
 ```c
     //  If a LoRa Message failed to Transmit or Receive due to Timeout...
@@ -2736,13 +2724,13 @@ TODO
 
 __TxTimeout__ points to the __on_tx_timeout__ Callback Function that we've seen earlier.
 
-TODO
+When the LoRa Module __fails to receive__ a LoRa Message due to Timeout, we stop the Receive Timer and call the __Callback Function for Receive Timeout__...
 
 ```c
       //  If the message failed to Receive due to Timeout...
       else if( SX126xGetOperatingMode( ) == MODE_RX ) {
 
-        //  Stop the Transmit Timer
+        //  Stop the Receive Timer
         TimerStop( &RxTimeoutTimer );
 
         //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
