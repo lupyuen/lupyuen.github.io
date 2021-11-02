@@ -953,6 +953,7 @@ static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div>
 <p>In this code we prepare a <strong>SX1262 Read Buffer Command</strong> (3 bytes) and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_read</strong>.</p>
 <p>(Data Buffer will contain the received LoRa Message)</p>
 <p>Note that <strong>Read Buffer Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L149-L160"><strong>SX126xGetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297"><strong>SX126xReadBuffer</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/usb#receive-done">(<strong>SX126xGetPayload</strong> and <strong>SX126xReadBuffer</strong> are explained here)</a></p>
 <p><strong>sx126x_hal_read</strong> transfers the Command Buffer over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L571-L615">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/**
  * Radio data transfer - read
@@ -2173,7 +2174,7 @@ uint8_t SX126xGetPayload( uint8_t *buffer, uint8_t *size,  uint8_t maxSize ) {
   return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L727-L744">(<strong>SX126xGetRxBufferStatus</strong> is defined here)</a></p>
-<p><strong>SX126xReadBuffer</strong> akes up the LoRa Module, reads from the Receive Buffer and waits for the operation to be completed: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297">sx126x-linux.c</a></p>
+<p><strong>SX126xReadBuffer</strong> wakes up the LoRa Module, reads from the Receive Buffer and waits for the operation to be completed: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Copy message payload from Receive Buffer
 void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
   //  Wake up SX1262 if sleeping
@@ -2312,18 +2313,18 @@ void RadioOnDioIrq( struct ble_npl_event *ev ) {
   RadioIrqProcess();
 }</code></pre></div><h2 id="radiosleep-switch-to-sleep-mode" class="section-header"><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a></h2>
 <p><strong>RadioSleep</strong> switches SX1262 to low-power sleep mode: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109">radio.c</a></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>void RadioSleep( void ) {
+<div class="example-wrap"><pre class="language-c"><code>/// Switch to Sleep Mode
+void RadioSleep( void ) {
   SleepParams_t params = { 0 };
-
   params.Fields.WarmStart = 1;
-  SX126xSetSleep( params );
 
+  //  Switch to Sleep Mode and wait 2 milliseconds
+  SX126xSetSleep( params );
   DelayMs( 2 );
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L253-L268">sx126x.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>void SX126xSetSleep( SleepParams_t sleepConfig ) {
+<p><strong>SX126xSetSleep</strong> executes the Sleep Command on the LoRa Module: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L253-L268">sx126x.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Switch to Sleep Mode
+void SX126xSetSleep( SleepParams_t sleepConfig ) {
   //  Switch off antenna (not used)
   SX126xAntSwOff( );
 
@@ -2339,10 +2340,13 @@ void RadioOnDioIrq( struct ble_npl_event *ev ) {
     ImageCalibrated = false;
   }
 
-  //  Enter Sleep Mode
+  //  Run Sleep Command
   SX126xWriteCommand( RADIO_SET_SLEEP, &amp;value, 1 );
   SX126xSetOperatingMode( MODE_SLEEP );
 }</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L324-L329">(<strong>SX126xAntSwOff</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L126-L147">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb-pinedio2.jpg" alt="Pinebook Pro with PineDio USB Adapter" /></p>
 
     
