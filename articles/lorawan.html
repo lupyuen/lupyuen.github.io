@@ -158,6 +158,9 @@
 <p>Exposes the LoRa Radio Functions that will initialise the transceiver (<code>RadioInit</code>), send a LoRa Packet (<code>RadioSend</code>) and receive a LoRa Packet (<code>RadioRx</code>).</p>
 <p>Our Demo Firmware calls the Radio Interface to send and receive LoRa Packets. (Our LoRaWAN Driver calls the Radio Interface too)</p>
 <p>The Radio Interface is generic and works for various LoRa Transceivers (like SX1276).</p>
+<p><a href="https://lupyuen.github.io/articles/usb#radioinit-initialise-lora-module">(<code>RadioInit</code> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radiosend-transmit-message">(<code>RadioSend</code> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radiorx-receive-message">(<code>RadioRx</code> is explained here)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c"><strong>Transceiver Interface: <code>sx126x.c</code></strong></a></p>
@@ -288,19 +291,19 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559"><strong><code>RadioInit</code>:</strong></a> Init LoRa Transceiver</p>
-<p><a href="https://lupyuen.github.io/articles/usb#radioinit">(<code>RadioInit</code> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radioinit-initialise-lora-module">(<code>RadioInit</code> is explained here)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L600-L604"><strong><code>RadioSetChannel</code>:</strong></a> Set LoRa Frequency</p>
-<p><a href="https://lupyuen.github.io/articles/usb#radiosetchannel">(<code>RadioSetChannel</code> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radiosetchannel-set-lora-frequency">(<code>RadioSetChannel</code> is explained here)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L788-L908"><strong><code>RadioSetTxConfig</code>:</strong></a> Set LoRa Transmit Configuration</p>
-<p><a href="https://lupyuen.github.io/articles/usb#radiosettxconfig">(<code>RadioSetTxConfig</code> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radiosettxconfig-set-transmit-configuration">(<code>RadioSetTxConfig</code> is explained here)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L661-L786"><strong><code>RadioSetRxConfig</code>:</strong></a> Set LoRa Receive Configuration</p>
-<p><a href="https://lupyuen.github.io/articles/usb#radiosetrxconfig">(<code>RadioSetRxConfig</code> is explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radiosetrxconfig-set-receive-configuration">(<code>RadioSetRxConfig</code> is explained here)</a></p>
 </li>
 </ul>
 <h2 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">2.4 Transmit LoRa Packet</a></h2>
@@ -340,7 +343,7 @@ static void send_once(int is_ping) {
 <div class="example-wrap"><pre class="language-c"><code>    //  Send the transmit buffer (64 bytes)
     Radio.Send(loraping_buffer, sizeof loraping_buffer);
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098">(<code>RadioSend</code> is defined here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radiosend-transmit-message">(<code>RadioSend</code> is explained here)</a></p>
 <p>When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function <strong><code>on_tx_done</code></strong> …</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L399-L412"><code>demo.c</code></a> :</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when our LoRa message has been transmitted
@@ -363,7 +366,7 @@ static void receive_message(char *buf, int len, int argc, char **argv) {
     //  Receive a LoRa message within the timeout period
     Radio.Rx(LORAPING_RX_TIMEOUT_MS);  //  Timeout in 5 seconds
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1117-L1138">(<code>RadioRx</code> is defined here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radiorx-receive-message">(<code>RadioRx</code> is explained here)</a></p>
 <p>When the LoRa Driver receives a LoRa Packet, it calls our Callback Function <code>on_rx_done</code> …</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444"><code>demo.c</code></a> :</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when a LoRa message has been received
@@ -548,8 +551,8 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
     //  Send the LoRa Packet
     status = ScheduleTx();</code></pre></div>
 <p>The call chain goes…</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954"><code>Send</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1956-L2062"><code>ScheduleTx</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2379-L2426"><code>SendFrameOnChannel</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098"><code>RadioSend</code></a></p>
-<p>Eventually the Medium Access Control Layer calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1069-L1098"><strong><code>RadioSend</code></strong></a> (from our LoRa Transceiver Driver) to transmit the Join Request.</p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954"><code>Send</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1956-L2062"><code>ScheduleTx</code></a> → <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2379-L2426"><code>SendFrameOnChannel</code></a> → <a href="https://lupyuen.github.io/articles/usb#radiosend-transmit-message"><code>RadioSend</code></a></p>
+<p>Eventually the Medium Access Control Layer calls <a href="https://lupyuen.github.io/articles/usb#radiosend-transmit-message"><strong><code>RadioSend</code></strong></a> (from our LoRa Transceiver Driver) to transmit the Join Request.</p>
 <p><a href="https://lupyuen.github.io/articles/wisgate#join-network-request">(What’s inside the Join Request? Check this out)</a></p>
 <p>And that’s how our LoRaWAN Driver sends a <strong>Join Network Request</strong>…</p>
 <p>LoRaWAN Firmware → Application Layer → Node Layer → Medium Access Control Layer → LoRa Transceiver Driver!</p>
@@ -557,7 +560,7 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
 <h2 id="join-network-response" class="section-header"><a href="#join-network-response">3.3 Join Network Response</a></h2>
 <p>But wait… We’re not done yet!</p>
 <p>We’ve sent a Join Network Request to the LoRaWAN Gateway… Now we need to <strong>wait for the response from the LoRaWAN Gateway</strong>.</p>
-<p>The Medium Access Control Layer calls <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1117-L1138"><strong><code>RadioRx</code></strong></a> (from the LoRa Transceiver Driver) to receive the response packet.</p>
+<p>The Medium Access Control Layer calls <a href="https://lupyuen.github.io/articles/usb#radiorx-receive-message"><strong><code>RadioRx</code></strong></a> (from the LoRa Transceiver Driver) to receive the response packet.</p>
 <p>When the packet is received, the LoRa Transceiver Driver calls this Callback Function: <strong><code>OnRadioRxDone</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L299-L323"><code>LoRaMac.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that&#39;s called when we receive a LoRa Packet
 static void OnRadioRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
