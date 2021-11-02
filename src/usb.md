@@ -2589,7 +2589,7 @@ __Interrupt Status__ tells us which LoRa Events have just occurred. We handle th
 
 ### Transmit Done
 
-When a LoRa Message has been transmitted successfully, we stop the Transmit Timer and call the __Callback Function for Transmit Done__: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349)
+When the LoRa Module has transmitted a LoRa Message successfully, we stop the Transmit Timer and call the __Callback Function for Transmit Done__: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349)
 
 ```c
     //  If a LoRa Message was transmitted successfully...
@@ -2616,7 +2616,7 @@ __TxDone__ points to the __on_tx_done__ Callback Function that we've seen earlie
 
 ### Receive Done
 
-When we receive a LoRa Message, we stop the Receive Timer: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389)
+When the LoRa Module receives a LoRa Message, we stop the Receive Timer: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389)
 
 ```c
     //  If a LoRa Message was received...
@@ -2844,7 +2844,7 @@ Our [__Receive Message Log__](https://github.com/lupyuen/lora-sx1262#receive-mes
 
 __Sync Words__ are 16-bit values that differentiate the types of LoRa Networks.
 
-The LoRa Module detects Sync Words when it receives LoRa Messages: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437)
+The LoRa Module detects the Sync Words when it receive a LoRa Message: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437)
 
 ```c
     //  If a valid Sync Word was detected...
@@ -2882,7 +2882,7 @@ Our [__Receive Message Log__](https://github.com/lupyuen/lora-sx1262#receive-mes
 
 ### Header Error
 
-When the LoRa Module detects a __LoRa Header with CRC Error__, it stops the Receive Timer and calls the Callback Function for Receive Timeout: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458)
+When the LoRa Module detects a __LoRa Header with CRC Error__, we stop the Receive Timer and call the Callback Function for Receive Timeout: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458)
 
 ```c
     //  If a Header with CRC Error was received...
