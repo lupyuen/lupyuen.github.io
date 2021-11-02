@@ -1944,7 +1944,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L457-L470">(<strong>SX126xSetDioIrqParams</strong> is defined here)</a></p>
 <p>We begin by configuring which <strong>LoRa Events will trigger interrupts</strong> on each DIO Pin.</p>
 <p>(All LoRa Events will trigger interrupts on DIO1)</p>
-<p>We start the <strong>Receiver Timer</strong> to catch Receive Timeouts…</p>
+<p>We start the <strong>Receive Timer</strong> to catch Receive Timeouts…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Start the Receive Timer
   if( timeout != 0 ) {
     TimerStart( &amp;RxTimeoutTimer, timeout );
@@ -1982,9 +1982,11 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><strong>RadioIrqProcess</strong> processes the interrupts that are triggered when a LoRa Message is transmitted and received: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1314-L1460">radio.c</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Process Transmit and Receive Interrupts.
-/// Must be run in the Application Task Context, not Interrupt Context
-/// because we will be calling printf and SPI Functions here.
+/// For BL602: Must be run in the Application
+/// Task Context, not Interrupt Context because 
+/// we will call printf and SPI Functions here.
 void RadioIrqProcess( void ) {
+
   //  Remember and clear Interrupt Flag
   CRITICAL_SECTION_BEGIN( );
   const bool isIrqFired = IrqFired;
@@ -2009,8 +2011,8 @@ void RadioIrqProcess( void ) {
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_TX_DONE ) == IRQ_TX_DONE ) {
-      printf(&quot;IRQ_TX_DONE\r\n&quot;);
       TimerStop( &amp;TxTimeoutTimer );
+
       //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
       if( ( RadioEvents.TxDone != NULL ) )
@@ -2021,7 +2023,6 @@ void RadioIrqProcess( void ) {
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_RX_DONE ) == IRQ_RX_DONE ) {
-      printf(&quot;IRQ_RX_DONE\r\n&quot;);
       TimerStop( &amp;RxTimeoutTimer );
 
       if( ( irqRegs &amp; IRQ_CRC_ERROR ) == IRQ_CRC_ERROR ) {
@@ -2041,32 +2042,42 @@ void RadioIrqProcess( void ) {
 
           // WORKAROUND - Implicit Header Mode Timeout Behavior, see DS_SX1261-2_V1.2 datasheet chapter 15.3
           SX126xWriteRegister( REG_RTC_CTRL, 0x00 );
-          SX126xWriteRegister( REG_EVT_CLR, SX126xReadRegister( REG_EVT_CLR ) | ( 1 &lt;&lt; 1 ) );
+          SX126xWriteRegister( 
+            REG_EVT_CLR, 
+            SX126xReadRegister( REG_EVT_CLR ) | ( 1 &lt;&lt; 1 ) 
+          );
           // WORKAROUND END
         }
         SX126xGetPayload( RadioRxPayload, &amp;size , 255 );
         SX126xGetPacketStatus( &amp;RadioPktStatus );
         if( ( RadioEvents.RxDone != NULL ) ) {
-          RadioEvents.RxDone( RadioRxPayload, size, RadioPktStatus.Params.LoRa.RssiPkt, RadioPktStatus.Params.LoRa.SnrPkt );
+          RadioEvents.RxDone( 
+            RadioRxPayload, 
+            size, 
+            RadioPktStatus.Params.LoRa.RssiPkt, 
+            RadioPktStatus.Params.LoRa.SnrPkt 
+          );
         }
       }
     }</code></pre></div><h3 id="cad-done" class="section-header"><a href="#cad-done">14.7.3 CAD Done</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
-      printf(&quot;IRQ_CAD_DONE\r\n&quot;);
       //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
       SX126xSetOperatingMode( MODE_STDBY_RC );
       if( ( RadioEvents.CadDone != NULL ) ) {
-        RadioEvents.CadDone( ( ( irqRegs &amp; IRQ_CAD_ACTIVITY_DETECTED ) == IRQ_CAD_ACTIVITY_DETECTED ) );
+        RadioEvents.CadDone( ( 
+            ( irqRegs &amp; IRQ_CAD_ACTIVITY_DETECTED ) 
+            == IRQ_CAD_ACTIVITY_DETECTED 
+        ) );
       }
     }</code></pre></div><h3 id="transmit-timeout" class="section-header"><a href="#transmit-timeout">14.7.4 Transmit Timeout</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
-      printf(&quot;IRQ_RX_TX_TIMEOUT\r\n&quot;);
       if( SX126xGetOperatingMode( ) == MODE_TX ) {
         TimerStop( &amp;TxTimeoutTimer );
+
         //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
         if( ( RadioEvents.TxTimeout != NULL ) )
@@ -2076,6 +2087,7 @@ void RadioIrqProcess( void ) {
       }
       else if( SX126xGetOperatingMode( ) == MODE_RX ) {
         TimerStop( &amp;RxTimeoutTimer );
+
         //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
         if( ( RadioEvents.RxTimeout != NULL ) )
@@ -2087,13 +2099,11 @@ void RadioIrqProcess( void ) {
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
-      printf(&quot;IRQ_PREAMBLE_DETECTED\r\n&quot;);
       //__NOP( );
     }</code></pre></div><h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">14.7.6 Sync Word Valid</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
-      printf(&quot;IRQ_SYNCWORD_VALID\r\n&quot;);
       //__NOP( );
     }</code></pre></div>
 <p>Note that the <strong>Sync Word differs for LoRaWAN</strong> vs Private LoRa Networks…</p>
