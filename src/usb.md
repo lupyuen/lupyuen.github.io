@@ -2253,18 +2253,56 @@ Next we configure the __Packet Parameters__...
 
 [(__SX126xSetPacketParams__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L623-L680)
 
-TODO
+We finish by sending the __Message Payload__ and starting the __Transmit Timer__...
 
 ```c
+  //  Send message payload
   SX126xSendPayload( buffer, size, 0 );
-```
-
-TODO
-
-```c
+  //  Start Transmit Timer
   TimerStart( &TxTimeoutTimer, TxTimeout );
 }
 ```
+
+[(__TimerStart__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L396-L421)
+
+__SX126xSendPayload__ is defined below: [sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L162-L166)
+
+```c
+void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout )
+{
+    SX126xSetPayload( payload, size );
+    SX126xSetTx( timeout );
+}
+```
+
+TODO
+
+[sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147)
+
+```c
+void SX126xSetPayload( uint8_t *payload, uint8_t size ) {
+  SX126xWriteBuffer( 0x00, payload, size );
+}
+```
+
+TODO
+
+[sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289)
+
+```c
+void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
+  SX126xCheckDeviceReady( );
+  int rc = sx126x_write_buffer(NULL, offset, buffer, size);
+  assert(rc == 0);
+  SX126xWaitOnBusy( );
+}
+```
+
+[(__SX126xCheckDeviceReady__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L133-L142)
+
+[(__sx126x_write_buffer__ is explained here)](https://lupyuen.github.io/articles/usb#transmit-long-message)
+
+[(__SX126xWaitOnBusy__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L171-L182)
 
 TODO
 
@@ -2295,6 +2333,8 @@ TODO
     TimerStart( &RxTimeoutTimer, timeout );
   }
 ```
+
+[(__TimerStart__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L396-L421)
 
 TODO
 
