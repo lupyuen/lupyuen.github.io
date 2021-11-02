@@ -109,8 +109,8 @@
 <li><a href="#transmit-timeout">14.7.4 Transmit Timeout</a><ul></ul></li>
 <li><a href="#preamble-detected">14.7.5 Preamble Detected</a><ul></ul></li>
 <li><a href="#sync-word-valid">14.7.6 Sync Word Valid</a><ul></ul></li>
-<li><a href="#irq-header-valid">14.7.7 IRQ Header Valid</a><ul></ul></li>
-<li><a href="#irq-header-error">14.7.8 IRQ Header Error</a><ul></ul></li>
+<li><a href="#header-valid">14.7.7 Header Valid</a><ul></ul></li>
+<li><a href="#header-error">14.7.8 Header Error</a><ul></ul></li>
 <li><a href="#radioondioirq">14.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
 <li><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Oct 2021</em></p>
 <p><em>What if our Laptop Computer could talk to other devices…</em></p>
@@ -1980,7 +1980,6 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
 <h2 id="radioirqprocess-process-transmit-and-receive-interrupts" class="section-header"><a href="#radioirqprocess-process-transmit-and-receive-interrupts">14.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a></h2>
 <p><strong>RadioIrqProcess</strong> processes the interrupts that are triggered when a LoRa Message is transmitted and received: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1314-L1460">radio.c</a></p>
-<p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Process Transmit and Receive Interrupts.
 /// For BL602: Must be run in the Application
 /// Task Context, not Interrupt Context because 
@@ -1992,21 +1991,54 @@ void RadioIrqProcess( void ) {
   const bool isIrqFired = IrqFired;
   IrqFired = false;
   CRITICAL_SECTION_END( );</code></pre></div>
-<p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/include/sx126x-board.h#L58-L60">(Note: Critical Sections are not yet implemented)</a></p>
+<p>The function begins by copying the <strong>Interrupt Flag</strong> and clearing the flag.</p>
+<p><a href="https://lupyuen.github.io/articles/usb#radioondioirq">(The Interrupt Flag is set by <strong>RadioOnDioIrq</strong>)</a></p>
+<p>The rest of the function will run only if the <strong>Interrupt Flag was originally set</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  IrqFired must be true to process interrupts
   if( isIrqFired == true ) {
     //  Get the Interrupt Status
     uint16_t irqRegs = SX126xGetIrqStatus( );
+
+    //  Clear the Interrupt Status
     SX126xClearIrqStatus( irqRegs );</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L472-L478">(<strong>SX126xGetIrqStatus</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L803-L810">(<strong>SX126xClearIrqStatus</strong> is defined here)</a></p>
+<p>This code fetches the <strong>Interrupt Status</strong> from the LoRa Module and clears the Interrupt Status.</p>
+<p>If DIO1 is still High, we set the <strong>Interrupt Flag</strong> for future processing…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Check if DIO1 pin is High. If it is the case revert IrqFired to true
     CRITICAL_SECTION_BEGIN( );
     if( SX126xGetDio1PinState( ) == 1 ) {
       IrqFired = true;
     }
     CRITICAL_SECTION_END( );</code></pre></div>
-<p>TODO</p>
+<p><strong>Interrupt Status</strong> tells us which LoRa Events have just occurred. We handle the LoRa Events accordingly…</p>
+<ul>
+<li>
+<p>Transmit Done</p>
+</li>
+<li>
+<p>Receive Done</p>
+</li>
+<li>
+<p>CAD Done</p>
+</li>
+<li>
+<p>Transmit Timeout</p>
+</li>
+<li>
+<p>Preamble Detected</p>
+</li>
+<li>
+<p>Sync Word Valid</p>
+</li>
+<li>
+<p>Header Valid</p>
+</li>
+<li>
+<p>Header Error</p>
+</li>
+</ul>
 <h3 id="transmit-done" class="section-header"><a href="#transmit-done">14.7.1 Transmit Done</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349">radio.c</a></p>
@@ -2113,22 +2145,22 @@ void RadioIrqProcess( void ) {
 //  Syncword for Public LoRa networks (LoRaWAN)
 #define LORA_MAC_PUBLIC_SYNCWORD                    0x3444</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word">(More about Sync Word)</a></p>
-<h3 id="irq-header-valid" class="section-header"><a href="#irq-header-valid">14.7.7 IRQ Header Valid</a></h3>
+<h3 id="header-valid" class="section-header"><a href="#header-valid">14.7.7 Header Valid</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
-      printf(&quot;IRQ_HEADER_VALID\r\n&quot;);
       //__NOP( );
-    }</code></pre></div><h3 id="irq-header-error" class="section-header"><a href="#irq-header-error">14.7.8 IRQ Header Error</a></h3>
+    }</code></pre></div><h3 id="header-error" class="section-header"><a href="#header-error">14.7.8 Header Error</a></h3>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    if( ( irqRegs &amp; IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
-      printf(&quot;IRQ_HEADER_ERROR\r\n&quot;);
       TimerStop( &amp;RxTimeoutTimer );
+
       if( RxContinuous == false ) {
         //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
         SX126xSetOperatingMode( MODE_STDBY_RC );
       }
+
       if( ( RadioEvents.RxTimeout != NULL ) ) {
         RadioEvents.RxTimeout( );
       }
@@ -2137,9 +2169,11 @@ void RadioIrqProcess( void ) {
 }</code></pre></div><h3 id="radioondioirq" class="section-header"><a href="#radioondioirq">14.7.9 RadioOnDioIrq</a></h3>
 <p><strong>RadioIrqProcess</strong> (as defined above) is called by <strong>RadioOnDioIrq</strong> to handle LoRa Transmit and Receive Events: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1312">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function for Transmit and Receive Interrupts.
-/// This function runs in the context of the Background Application Task.
-/// So we are safe to call printf and SPI Functions now.
+/// For BL602: This function runs in the context of the 
+/// Background Application Task. So we are safe to call 
+/// printf and SPI Functions now.
 void RadioOnDioIrq( struct ble_npl_event *ev ) {
+  //  Set the Interrupt Flag
   IrqFired = true;
 
   //  BL602 Note: It&#39;s OK to process the interrupt here because we are in
