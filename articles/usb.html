@@ -102,7 +102,8 @@
 <li><a href="#radiosetrxconfig-set-receive-configuration">14.4 RadioSetRxConfig: Set Receive Configuration</a><ul></ul></li>
 <li><a href="#radiosend-transmit-message">14.5 RadioSend: Transmit Message</a><ul></ul></li>
 <li><a href="#radiorx-receive-message">14.6 RadioRx: Receive Message</a><ul></ul></li>
-<li><a href="#radiosleep-switch-to-sleep-mode">14.7 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Oct 2021</em></p>
+<li><a href="#radioirqprocess-process-transmit-and-receive-interrupts">14.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a><ul></ul></li>
+<li><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Oct 2021</em></p>
 <p><em>What if our Laptop Computer could talk to other devices…</em></p>
 <p><em>Over a Long Range, Low Bandwidth wireless network like LoRa?</em></p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
@@ -1513,6 +1514,9 @@ sudo ./lora-sx1262</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138"><strong>RadioRx:</strong></a> Receive one LoRa Message</p>
 </li>
 <li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1314-L1460"><strong>RadioIrqProcess:</strong></a> Process Transmit and Receive Interrupts</p>
+</li>
+<li>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109"><strong>RadioSleep:</strong></a> Switch SX1262 to low-power sleep mode</p>
 </li>
 </ul>
@@ -1961,7 +1965,156 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266">(<strong>SX126xWriteRegister</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
 <p>TODO</p>
-<h2 id="radiosleep-switch-to-sleep-mode" class="section-header"><a href="#radiosleep-switch-to-sleep-mode">14.7 RadioSleep: Switch to Sleep Mode</a></h2>
+<h2 id="radioirqprocess-process-transmit-and-receive-interrupts" class="section-header"><a href="#radioirqprocess-process-transmit-and-receive-interrupts">14.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a></h2>
+<p><strong>RadioIrqProcess</strong> processes the interrupts that are triggered when a LoRa Message is transmitted and received: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1314-L1460">radio.c</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>/// Process Transmit and Receive Interrupts.
+/// Must be run in the Application Task Context, not Interrupt Context
+/// because we will be calling printf and SPI Functions here.
+void RadioIrqProcess( void )
+{
+    printf(&quot;RadioIrqProcess\r\n&quot;);
+    CRITICAL_SECTION_BEGIN( );
+    // Clear IRQ flag
+    const bool isIrqFired = IrqFired;
+    IrqFired = false;
+    CRITICAL_SECTION_END( );
+
+    if( isIrqFired == true )
+    {
+        uint16_t irqRegs = SX126xGetIrqStatus( );
+        SX126xClearIrqStatus( irqRegs );
+
+        // Check if DIO1 pin is High. If it is the case revert IrqFired to true
+        CRITICAL_SECTION_BEGIN( );
+        if( SX126xGetDio1PinState( ) == 1 )
+        {
+            IrqFired = true;
+        }
+        CRITICAL_SECTION_END( );
+
+        if( ( irqRegs &amp; IRQ_TX_DONE ) == IRQ_TX_DONE )
+        {
+            printf(&quot;IRQ_TX_DONE\r\n&quot;);
+            TimerStop( &amp;TxTimeoutTimer );
+            //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+            SX126xSetOperatingMode( MODE_STDBY_RC );
+            if( ( RadioEvents.TxDone != NULL ) )
+            {
+                RadioEvents.TxDone( );
+            }
+        }
+
+        if( ( irqRegs &amp; IRQ_RX_DONE ) == IRQ_RX_DONE )
+        {
+            printf(&quot;IRQ_RX_DONE\r\n&quot;);
+            TimerStop( &amp;RxTimeoutTimer );
+
+            if( ( irqRegs &amp; IRQ_CRC_ERROR ) == IRQ_CRC_ERROR )
+            {
+                if( RxContinuous == false )
+                {
+                    //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+                    SX126xSetOperatingMode( MODE_STDBY_RC );
+                }
+                if( ( RadioEvents.RxError ) )
+                {
+                    RadioEvents.RxError( );
+                }
+            }
+            else
+            {
+                uint8_t size;
+
+                if( RxContinuous == false )
+                {
+                    //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+                    SX126xSetOperatingMode( MODE_STDBY_RC );
+
+                    // WORKAROUND - Implicit Header Mode Timeout Behavior, see DS_SX1261-2_V1.2 datasheet chapter 15.3
+                    SX126xWriteRegister( REG_RTC_CTRL, 0x00 );
+                    SX126xWriteRegister( REG_EVT_CLR, SX126xReadRegister( REG_EVT_CLR ) | ( 1 &lt;&lt; 1 ) );
+                    // WORKAROUND END
+                }
+                SX126xGetPayload( RadioRxPayload, &amp;size , 255 );
+                SX126xGetPacketStatus( &amp;RadioPktStatus );
+                if( ( RadioEvents.RxDone != NULL ) )
+                {
+                    RadioEvents.RxDone( RadioRxPayload, size, RadioPktStatus.Params.LoRa.RssiPkt, RadioPktStatus.Params.LoRa.SnrPkt );
+                }
+            }
+        }
+
+        if( ( irqRegs &amp; IRQ_CAD_DONE ) == IRQ_CAD_DONE )
+        {
+            printf(&quot;IRQ_CAD_DONE\r\n&quot;);
+            //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+            SX126xSetOperatingMode( MODE_STDBY_RC );
+            if( ( RadioEvents.CadDone != NULL ) )
+            {
+                RadioEvents.CadDone( ( ( irqRegs &amp; IRQ_CAD_ACTIVITY_DETECTED ) == IRQ_CAD_ACTIVITY_DETECTED ) );
+            }
+        }
+
+        if( ( irqRegs &amp; IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT )
+        {
+            printf(&quot;IRQ_RX_TX_TIMEOUT\r\n&quot;);
+            if( SX126xGetOperatingMode( ) == MODE_TX )
+            {
+                TimerStop( &amp;TxTimeoutTimer );
+                //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+                SX126xSetOperatingMode( MODE_STDBY_RC );
+                if( ( RadioEvents.TxTimeout != NULL ) )
+                {
+                    RadioEvents.TxTimeout( );
+                }
+            }
+            else if( SX126xGetOperatingMode( ) == MODE_RX )
+            {
+                TimerStop( &amp;RxTimeoutTimer );
+                //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+                SX126xSetOperatingMode( MODE_STDBY_RC );
+                if( ( RadioEvents.RxTimeout != NULL ) )
+                {
+                    RadioEvents.RxTimeout( );
+                }
+            }
+        }
+
+        if( ( irqRegs &amp; IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED )
+        {
+            printf(&quot;IRQ_PREAMBLE_DETECTED\r\n&quot;);
+            //__NOP( );
+        }
+
+        if( ( irqRegs &amp; IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID )
+        {
+            printf(&quot;IRQ_SYNCWORD_VALID\r\n&quot;);
+            //__NOP( );
+        }
+
+        if( ( irqRegs &amp; IRQ_HEADER_VALID ) == IRQ_HEADER_VALID )
+        {
+            printf(&quot;IRQ_HEADER_VALID\r\n&quot;);
+            //__NOP( );
+        }
+
+        if( ( irqRegs &amp; IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR )
+        {
+            printf(&quot;IRQ_HEADER_ERROR\r\n&quot;);
+            TimerStop( &amp;RxTimeoutTimer );
+            if( RxContinuous == false )
+            {
+                //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+                SX126xSetOperatingMode( MODE_STDBY_RC );
+            }
+            if( ( RadioEvents.RxTimeout != NULL ) )
+            {
+                RadioEvents.RxTimeout( );
+            }
+        }
+    }
+}</code></pre></div><h2 id="radiosleep-switch-to-sleep-mode" class="section-header"><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a></h2>
 <p><strong>RadioSleep</strong> switches SX1262 to low-power sleep mode: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109">radio.c</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSleep( void ) {
