@@ -732,7 +732,7 @@ We call __receive_message__ to get SX1262 ready to receive a single LoRa Message
 
 Then we call __RadioOnDioIrq__ to handle the Message Received Event. (If any)
 
-[(__RadioOnDioIrq__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1460)
+[(__RadioOnDioIrq__ is explained here)](https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts)
 
 __receive_message__ is defined like so: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L241-L248)
 
@@ -1463,7 +1463,7 @@ After we have implemented [__GPIO Interrupts__](https://github.com/rogerjames99/
 
 1.  __handle_gpio_interrupt__ enqueues an Event into our __Event Queue__
 
-1.  Our __Background Thread__ removes the Event from the Event Queue and calls [__RadioOnDioIrq__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1312) to process the received LoRa Message
+1.  Our __Background Thread__ removes the Event from the Event Queue and calls [__RadioOnDioIrq__](https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts) to process the received LoRa Message
 
 We handle GPIO Interrupts the same way in our __LoRa SX1262 Driver for BL602__...
 
@@ -1837,6 +1837,8 @@ Next we __init the SPI and GPIO Ports__, wake up the LoRa Module, and init the T
 ```
 
 [(__SX126xInit__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L112-L131)
+
+[(__RadioOnDioIrq__ is explained here)](https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts)
 
 We set the LoRa Module to __Standby Mode__...
 
@@ -2469,149 +2471,207 @@ TODO
 /// Process Transmit and Receive Interrupts.
 /// Must be run in the Application Task Context, not Interrupt Context
 /// because we will be calling printf and SPI Functions here.
-void RadioIrqProcess( void )
-{
-    printf("RadioIrqProcess\r\n");
+void RadioIrqProcess( void ) {
+  CRITICAL_SECTION_BEGIN( );
+  // Clear IRQ flag
+  const bool isIrqFired = IrqFired;
+  IrqFired = false;
+  CRITICAL_SECTION_END( );
+
+  if( isIrqFired == true ) {
+    uint16_t irqRegs = SX126xGetIrqStatus( );
+    SX126xClearIrqStatus( irqRegs );
+
+    // Check if DIO1 pin is High. If it is the case revert IrqFired to true
     CRITICAL_SECTION_BEGIN( );
-    // Clear IRQ flag
-    const bool isIrqFired = IrqFired;
-    IrqFired = false;
-    CRITICAL_SECTION_END( );
-
-    if( isIrqFired == true )
-    {
-        uint16_t irqRegs = SX126xGetIrqStatus( );
-        SX126xClearIrqStatus( irqRegs );
-
-        // Check if DIO1 pin is High. If it is the case revert IrqFired to true
-        CRITICAL_SECTION_BEGIN( );
-        if( SX126xGetDio1PinState( ) == 1 )
-        {
-            IrqFired = true;
-        }
-        CRITICAL_SECTION_END( );
-
-        if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE )
-        {
-            printf("IRQ_TX_DONE\r\n");
-            TimerStop( &TxTimeoutTimer );
-            //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
-            SX126xSetOperatingMode( MODE_STDBY_RC );
-            if( ( RadioEvents.TxDone != NULL ) )
-            {
-                RadioEvents.TxDone( );
-            }
-        }
-
-        if( ( irqRegs & IRQ_RX_DONE ) == IRQ_RX_DONE )
-        {
-            printf("IRQ_RX_DONE\r\n");
-            TimerStop( &RxTimeoutTimer );
-
-            if( ( irqRegs & IRQ_CRC_ERROR ) == IRQ_CRC_ERROR )
-            {
-                if( RxContinuous == false )
-                {
-                    //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
-                    SX126xSetOperatingMode( MODE_STDBY_RC );
-                }
-                if( ( RadioEvents.RxError ) )
-                {
-                    RadioEvents.RxError( );
-                }
-            }
-            else
-            {
-                uint8_t size;
-
-                if( RxContinuous == false )
-                {
-                    //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
-                    SX126xSetOperatingMode( MODE_STDBY_RC );
-
-                    // WORKAROUND - Implicit Header Mode Timeout Behavior, see DS_SX1261-2_V1.2 datasheet chapter 15.3
-                    SX126xWriteRegister( REG_RTC_CTRL, 0x00 );
-                    SX126xWriteRegister( REG_EVT_CLR, SX126xReadRegister( REG_EVT_CLR ) | ( 1 << 1 ) );
-                    // WORKAROUND END
-                }
-                SX126xGetPayload( RadioRxPayload, &size , 255 );
-                SX126xGetPacketStatus( &RadioPktStatus );
-                if( ( RadioEvents.RxDone != NULL ) )
-                {
-                    RadioEvents.RxDone( RadioRxPayload, size, RadioPktStatus.Params.LoRa.RssiPkt, RadioPktStatus.Params.LoRa.SnrPkt );
-                }
-            }
-        }
-
-        if( ( irqRegs & IRQ_CAD_DONE ) == IRQ_CAD_DONE )
-        {
-            printf("IRQ_CAD_DONE\r\n");
-            //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
-            SX126xSetOperatingMode( MODE_STDBY_RC );
-            if( ( RadioEvents.CadDone != NULL ) )
-            {
-                RadioEvents.CadDone( ( ( irqRegs & IRQ_CAD_ACTIVITY_DETECTED ) == IRQ_CAD_ACTIVITY_DETECTED ) );
-            }
-        }
-
-        if( ( irqRegs & IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT )
-        {
-            printf("IRQ_RX_TX_TIMEOUT\r\n");
-            if( SX126xGetOperatingMode( ) == MODE_TX )
-            {
-                TimerStop( &TxTimeoutTimer );
-                //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
-                SX126xSetOperatingMode( MODE_STDBY_RC );
-                if( ( RadioEvents.TxTimeout != NULL ) )
-                {
-                    RadioEvents.TxTimeout( );
-                }
-            }
-            else if( SX126xGetOperatingMode( ) == MODE_RX )
-            {
-                TimerStop( &RxTimeoutTimer );
-                //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
-                SX126xSetOperatingMode( MODE_STDBY_RC );
-                if( ( RadioEvents.RxTimeout != NULL ) )
-                {
-                    RadioEvents.RxTimeout( );
-                }
-            }
-        }
-
-        if( ( irqRegs & IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED )
-        {
-            printf("IRQ_PREAMBLE_DETECTED\r\n");
-            //__NOP( );
-        }
-
-        if( ( irqRegs & IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID )
-        {
-            printf("IRQ_SYNCWORD_VALID\r\n");
-            //__NOP( );
-        }
-
-        if( ( irqRegs & IRQ_HEADER_VALID ) == IRQ_HEADER_VALID )
-        {
-            printf("IRQ_HEADER_VALID\r\n");
-            //__NOP( );
-        }
-
-        if( ( irqRegs & IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR )
-        {
-            printf("IRQ_HEADER_ERROR\r\n");
-            TimerStop( &RxTimeoutTimer );
-            if( RxContinuous == false )
-            {
-                //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
-                SX126xSetOperatingMode( MODE_STDBY_RC );
-            }
-            if( ( RadioEvents.RxTimeout != NULL ) )
-            {
-                RadioEvents.RxTimeout( );
-            }
-        }
+    if( SX126xGetDio1PinState( ) == 1 ) {
+      IrqFired = true;
     }
+    CRITICAL_SECTION_END( );
+```
+
+### Transmit Done
+
+TODO
+
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349
+
+```c
+    if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE ) {
+      printf("IRQ_TX_DONE\r\n");
+      TimerStop( &TxTimeoutTimer );
+      //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+      SX126xSetOperatingMode( MODE_STDBY_RC );
+      if( ( RadioEvents.TxDone != NULL ) )
+      {
+        RadioEvents.TxDone( );
+      }
+    }
+```
+
+### Receive Done
+
+TODO
+
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389
+
+```c
+    if( ( irqRegs & IRQ_RX_DONE ) == IRQ_RX_DONE ) {
+      printf("IRQ_RX_DONE\r\n");
+      TimerStop( &RxTimeoutTimer );
+
+      if( ( irqRegs & IRQ_CRC_ERROR ) == IRQ_CRC_ERROR ) {
+        if( RxContinuous == false ) {
+          //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+          SX126xSetOperatingMode( MODE_STDBY_RC );
+        }
+        if( ( RadioEvents.RxError ) ) {
+          RadioEvents.RxError( );
+        }
+      } else {
+        uint8_t size;
+
+        if( RxContinuous == false ) {
+          //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+          SX126xSetOperatingMode( MODE_STDBY_RC );
+
+          // WORKAROUND - Implicit Header Mode Timeout Behavior, see DS_SX1261-2_V1.2 datasheet chapter 15.3
+          SX126xWriteRegister( REG_RTC_CTRL, 0x00 );
+          SX126xWriteRegister( REG_EVT_CLR, SX126xReadRegister( REG_EVT_CLR ) | ( 1 << 1 ) );
+          // WORKAROUND END
+        }
+        SX126xGetPayload( RadioRxPayload, &size , 255 );
+        SX126xGetPacketStatus( &RadioPktStatus );
+        if( ( RadioEvents.RxDone != NULL ) ) {
+          RadioEvents.RxDone( RadioRxPayload, size, RadioPktStatus.Params.LoRa.RssiPkt, RadioPktStatus.Params.LoRa.SnrPkt );
+        }
+      }
+    }
+```
+
+### CAD Done
+
+TODO
+
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400
+
+```c
+    if( ( irqRegs & IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
+      printf("IRQ_CAD_DONE\r\n");
+      //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+      SX126xSetOperatingMode( MODE_STDBY_RC );
+      if( ( RadioEvents.CadDone != NULL ) ) {
+        RadioEvents.CadDone( ( ( irqRegs & IRQ_CAD_ACTIVITY_DETECTED ) == IRQ_CAD_ACTIVITY_DETECTED ) );
+      }
+    }
+```
+
+### Transmit Timeout
+
+TODO
+
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425
+
+```c
+    if( ( irqRegs & IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
+      printf("IRQ_RX_TX_TIMEOUT\r\n");
+      if( SX126xGetOperatingMode( ) == MODE_TX ) {
+        TimerStop( &TxTimeoutTimer );
+        //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+        SX126xSetOperatingMode( MODE_STDBY_RC );
+        if( ( RadioEvents.TxTimeout != NULL ) )
+        {
+          RadioEvents.TxTimeout( );
+        }
+      }
+      else if( SX126xGetOperatingMode( ) == MODE_RX ) {
+        TimerStop( &RxTimeoutTimer );
+        //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+        SX126xSetOperatingMode( MODE_STDBY_RC );
+        if( ( RadioEvents.RxTimeout != NULL ) )
+        {
+          RadioEvents.RxTimeout( );
+        }
+      }
+    }
+```
+
+### Preamble Detected
+
+TODO
+
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431
+
+```c
+    if( ( irqRegs & IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
+      printf("IRQ_PREAMBLE_DETECTED\r\n");
+      //__NOP( );
+    }
+```
+
+### Sync Word Valid
+
+TODO
+
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437
+
+```c
+    if( ( irqRegs & IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
+      printf("IRQ_SYNCWORD_VALID\r\n");
+      //__NOP( );
+    }
+```
+
+### IRQ Header Valid
+
+TODO
+
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443
+
+```c
+    if( ( irqRegs & IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
+      printf("IRQ_HEADER_VALID\r\n");
+      //__NOP( );
+    }
+```
+
+### IRQ Header Error
+
+TODO
+
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458
+
+```c
+    if( ( irqRegs & IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
+      printf("IRQ_HEADER_ERROR\r\n");
+      TimerStop( &RxTimeoutTimer );
+      if( RxContinuous == false ) {
+        //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
+        SX126xSetOperatingMode( MODE_STDBY_RC );
+      }
+      if( ( RadioEvents.RxTimeout != NULL ) ) {
+        RadioEvents.RxTimeout( );
+      }
+    }
+  }
+}
+```
+
+### RadioOnDioIrq
+
+__RadioIrqProcess__ is called by __RadioOnDioIrq__ to handle LoRa Transmit and Receive Events: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1312)
+
+```c
+/// Callback Function for Transmit and Receive Interrupts.
+/// This function runs in the context of the Background Application Task.
+/// So we are safe to call printf and SPI Functions now.
+void RadioOnDioIrq( struct ble_npl_event *ev ) {
+  IrqFired = true;
+
+  //  BL602 Note: It's OK to process the interrupt here because we are in
+  //  Application Task Context, not Interrupt Context.
+  //  The Reference Implementation processes the interrupt in the main loop.
+  RadioIrqProcess();
 }
 ```
 

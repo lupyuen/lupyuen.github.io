@@ -1888,7 +1888,7 @@ void RadioInit( RadioEvents_t *events ) {
     SX126xInit( RadioOnDioIrq );
 ```
 
-__`RadioOnDioIrq`__ is the function that will handle the GPIO Interrupt. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1300-L1312)
+__`RadioOnDioIrq`__ is the function that will handle the GPIO Interrupt. [(See this)](https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts)
 
 __`SX126xInit`__ is defined in [`sx126x.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c#L112-L131) ...
 
@@ -1936,6 +1936,8 @@ void SX126xIoIrqInit( DioIrqHandler dioIrq ) {
     bl_irq_enable(GPIO_INT0_IRQn);
 }
 ```
+
+[(`RadioOnDioIrq` is explained here)](https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts)
 
 This code is explained here...
 
