@@ -1154,6 +1154,8 @@ In this code we prepare a __SX1262 Read Buffer Command__ (3 bytes) and pass the 
 
 Note that __Read Buffer Offset is always 0__, because of [__SX126xGetPayload__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L149-L160) and [__SX126xReadBuffer__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297).
 
+[(__SX126xGetPayload__ and __SX126xReadBuffer__ are explained here)](https://lupyuen.github.io/articles/usb#receive-done)
+
 __sx126x_hal_read__ transfers the Command Buffer over SPI: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L571-L615)
 
 ```c
@@ -2723,7 +2725,7 @@ uint8_t SX126xGetPayload( uint8_t *buffer, uint8_t *size,  uint8_t maxSize ) {
 
 [(__SX126xGetRxBufferStatus__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L727-L744)
 
-__SX126xReadBuffer__ akes up the LoRa Module, reads from the Receive Buffer and waits for the operation to be completed: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297)
+__SX126xReadBuffer__ wakes up the LoRa Module, reads from the Receive Buffer and waits for the operation to be completed: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L291-L297)
 
 ```c
 /// Copy message payload from Receive Buffer
@@ -2929,24 +2931,22 @@ void RadioOnDioIrq( struct ble_npl_event *ev ) {
 
 __RadioSleep__ switches SX1262 to low-power sleep mode: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109)
 
-TODO
-
 ```c
+/// Switch to Sleep Mode
 void RadioSleep( void ) {
   SleepParams_t params = { 0 };
-
   params.Fields.WarmStart = 1;
-  SX126xSetSleep( params );
 
+  //  Switch to Sleep Mode and wait 2 milliseconds
+  SX126xSetSleep( params );
   DelayMs( 2 );
 }
 ```
 
-TODO
-
-[sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L253-L268)
+__SX126xSetSleep__ executes the Sleep Command on the LoRa Module: [sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L253-L268)
 
 ```c
+/// Switch to Sleep Mode
 void SX126xSetSleep( SleepParams_t sleepConfig ) {
   //  Switch off antenna (not used)
   SX126xAntSwOff( );
@@ -2963,10 +2963,16 @@ void SX126xSetSleep( SleepParams_t sleepConfig ) {
     ImageCalibrated = false;
   }
 
-  //  Enter Sleep Mode
+  //  Run Sleep Command
   SX126xWriteCommand( RADIO_SET_SLEEP, &value, 1 );
   SX126xSetOperatingMode( MODE_SLEEP );
 }
 ```
+
+[(__SX126xAntSwOff__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L324-L329)
+
+[(__SX126xWriteCommand__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217)
+
+[(__SX126xSetOperatingMode__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L126-L147)
 
 ![Pinebook Pro with PineDio USB Adapter](https://lupyuen.github.io/images/usb-pinedio2.jpg)
