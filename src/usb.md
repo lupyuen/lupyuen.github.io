@@ -732,7 +732,7 @@ We call __receive_message__ to get SX1262 ready to receive a single LoRa Message
 
 Then we call __RadioOnDioIrq__ to handle the Message Received Event. (If any)
 
-[(__RadioOnDioIrq__ is explained here)](https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts)
+[(__RadioOnDioIrq__ is explained here)](https://lupyuen.github.io/articles/usb#radioondioirq)
 
 __receive_message__ is defined like so: [main.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L241-L248)
 
@@ -1463,7 +1463,7 @@ After we have implemented [__GPIO Interrupts__](https://github.com/rogerjames99/
 
 1.  __handle_gpio_interrupt__ enqueues an Event into our __Event Queue__
 
-1.  Our __Background Thread__ removes the Event from the Event Queue and calls [__RadioOnDioIrq__](https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts) to process the received LoRa Message
+1.  Our __Background Thread__ removes the Event from the Event Queue and calls [__RadioOnDioIrq__](https://lupyuen.github.io/articles/usb#radioondioirq) to process the received LoRa Message
 
 We handle GPIO Interrupts the same way in our __LoRa SX1262 Driver for BL602__...
 
@@ -1838,7 +1838,7 @@ Next we __init the SPI and GPIO Ports__, wake up the LoRa Module, and init the T
 
 [(__SX126xInit__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L112-L131)
 
-[(__RadioOnDioIrq__ is explained here)](https://lupyuen.github.io/articles/usb#radioirqprocess-process-transmit-and-receive-interrupts)
+[(__RadioOnDioIrq__ is explained here)](https://lupyuen.github.io/articles/usb#radioondioirq)
 
 We set the LoRa Module to __Standby Mode__...
 
@@ -2659,7 +2659,7 @@ TODO
 
 ### RadioOnDioIrq
 
-__RadioIrqProcess__ is called by __RadioOnDioIrq__ to handle LoRa Transmit and Receive Events: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1312)
+__RadioIrqProcess__ (as defined above) is called by __RadioOnDioIrq__ to handle LoRa Transmit and Receive Events: [radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1300-L1312)
 
 ```c
 /// Callback Function for Transmit and Receive Interrupts.
