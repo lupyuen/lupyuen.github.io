@@ -1030,6 +1030,8 @@ In this code we prepare a __SX1262 Write Buffer Command__ (2 bytes) and pass the
 
 Note that __Write Buffer Offset is always 0__, because of [__SX126xSetPayload__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147) and [__SX126xWriteBuffer__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289).
 
+[(__SX126xSetPayload__ and __SX126xWriteBuffer__ are explained here)](https://lupyuen.github.io/articles/usb#radiosend-transmit-message)
+
 __sx126x_hal_write__ transfers the Command Buffer and Data Buffer over SPI: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L532-L569)
 
 ```c
@@ -1399,11 +1401,49 @@ We need to mod these functions to call the __CH341 GPIO Interface__...
 
 1.  Reset SX1262 via GPIO: [__SX126xReset__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L149-L169)
 
+    ```c
+    void SX126xReset(void) {
+        //  TODO: Set Reset pin to Low
+        //  rc = bl_gpio_output_set(SX126X_NRESET, 1);
+        //  assert(rc == 0);
+
+        //  Wait 1 ms
+        DelayMs(1);
+
+        //  TODO: Configure Reset pin as a GPIO Input Pin, no pullup, no pulldown
+        //  rc = bl_gpio_enable_input(SX126X_NRESET, 0, 0);
+        //  assert(rc == 0);
+
+        //  Wait 6 ms
+        DelayMs(6);
+    }
+    ```
+
 1.  Check SX1262 Busy State via GPIO: [__SX126xWaitOnBusy__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L171-L182)
 
     (__SX126xWaitOnBusy__ is called by [__SX126xCheckDeviceReady__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L133-L142), which wakes up SX1262 before checking if SX1262 is busy)
 
+    ```c
+    void SX126xWaitOnBusy(void) {
+      //  TODO: Fix the GPIO check for busy state.
+      //  while( bl_gpio_input_get_value( SX126X_BUSY_PIN ) == 1 );
+
+      //  Meanwhile we sleep 10 milliseconds
+      usleep(10 * 1000);
+    }
+    ```
+
 1.  Get DIO1 Pin State: [__SX126xGetDio1PinState__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L337-L344)
+
+    ```c
+    uint32_t SX126xGetDio1PinState(void) {    
+      //  TODO: Read and return DIO1 Pin State
+      //  return bl_gpio_input_get_value( SX126X_DIO1 );
+
+      //  Meanwhile we always return 0
+      return 0;
+    }
+    ```
 
 When we have implemented [__GPIO Interrupts__](https://github.com/rogerjames99/spi-ch341-usb#reacting-on-gpio-input-interrupt) in our driver, we can remove the [__Event Polling__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L102-L112). And we run a __Background Thread__ to handle LoRa Events.
 
@@ -1943,6 +1983,7 @@ void RadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
   bool fixLen, bool crcOn, bool freqHopOn,
   uint8_t hopPeriod, bool iqInverted, uint32_t timeout ) {
 
+  //  LoRa Modulation or FSK Modulation?
   switch( modem ) {
     case MODEM_FSK:
       //  Omitted: FSK Modulation
@@ -1969,6 +2010,7 @@ We begin by populating the __Modulation Parameters__: Spreading Factor, Bandwidt
 Depending on the LoRa Parameters, we optimise for __Low Data Rate__...
 
 ```c
+      //  Optimise for Low Data Rate
       if( ( ( bandwidth == 0 ) && ( ( datarate == 11 ) || ( datarate == 12 ) ) ) ||
       ( ( bandwidth == 1 ) && ( datarate == 12 ) ) ) {
         SX126x.ModulationParams.Params.LoRa.LowDatarateOptimize = 0x01;
@@ -1980,6 +2022,7 @@ Depending on the LoRa Parameters, we optimise for __Low Data Rate__...
 Next we populate the __Packet Parameters__: Preamble Length, Header Type, Payload Length, CRC Mode and Invert IQ...
 
 ```c
+      //  Populate Packet Type
       SX126x.PacketParams.PacketType = PACKET_TYPE_LORA;
 
       //  Populate Preamble Length
@@ -2008,7 +2051,10 @@ Next we populate the __Packet Parameters__: Preamble Length, Header Type, Payloa
 We set the LoRa Module to __Standby Mode__ and configure it for __LoRa Modulation__ (or FSK Modulation)...
 
 ```c
+      //  Set LoRa Module to Standby Mode
       RadioStandby( );
+
+      //  Configure LoRa Module for LoRa Modulation (or FSK Modulation)
       RadioSetModem( 
         ( SX126x.ModulationParams.PacketType == PACKET_TYPE_GFSK ) 
         ? MODEM_FSK 
@@ -2023,7 +2069,10 @@ We set the LoRa Module to __Standby Mode__ and configure it for __LoRa Modulatio
 We configure the LoRa Module with the __Modulation Parameters__ and __Packet Parameters__...
 
 ```c
+      //  Configure Modulation Parameters
       SX126xSetModulationParams( &SX126x.ModulationParams );
+
+      //  Configure Packet Parameters
       SX126xSetPacketParams( &SX126x.PacketParams );
       break;
   }
@@ -2050,7 +2099,10 @@ This is a Workaround for __Modulation Quality__ with __500 kHz Bandwidth__...
 We finish by setting the __Transmit Power__ and __Transmit Timeout__...
 
 ```c
+  //  Set Transmit Power
   SX126xSetRfTxPower( power );
+
+  //  Set Transmit Timeout
   TxTimeout = timeout;
 }
 ```
@@ -2101,6 +2153,7 @@ We begin by setting the __Symbol Timeout__ and __Max Payload Length__.
 Since we're using __LoRa Modulation__ instead of FSK Modulation, we skip the section on FSK Modulation...
 
 ```c
+  //  LoRa Modulation or FSK Modulation?
   switch( modem )
   {
     case MODEM_FSK:
@@ -2127,6 +2180,7 @@ We populate the __Modulation Parameters__: Spreading Factor, Bandwidth and Codin
 Depending on the LoRa Parameters, we optimise for __Low Data Rate__...
 
 ```c
+      //  Optimise for Low Data Rate
       if( ( ( bandwidth == 0 ) && ( ( datarate == 11 ) || ( datarate == 12 ) ) ) ||
       ( ( bandwidth == 1 ) && ( datarate == 12 ) ) ) {
         SX126x.ModulationParams.Params.LoRa.LowDatarateOptimize = 0x01;
@@ -2138,6 +2192,7 @@ Depending on the LoRa Parameters, we optimise for __Low Data Rate__...
 We populate the __Packet Parameters__: Preamble Length, Header Type, Payload Length, CRC Mode and Invert IQ...
 
 ```c
+      //  Populate Packet Type
       SX126x.PacketParams.PacketType = PACKET_TYPE_LORA;
 
       //  Populate Preamble Length
@@ -2166,7 +2221,10 @@ We populate the __Packet Parameters__: Preamble Length, Header Type, Payload Len
 We set the LoRa Module to __Standby Mode__ and configure it for __LoRa Modulation__ (or FSK Modulation)...
 
 ```c
+      //  Set LoRa Module to Standby Mode
       RadioStandby( );
+
+      //  Configure LoRa Module for LoRa Modulation (or FSK Modulation)
       RadioSetModem( 
           ( SX126x.ModulationParams.PacketType == PACKET_TYPE_GFSK ) 
           ? MODEM_FSK 
@@ -2181,8 +2239,13 @@ We set the LoRa Module to __Standby Mode__ and configure it for __LoRa Modulatio
 We configure the LoRa Module with the __Modulation Parameters__, __Packet Parameters__ and Symbol Timeout...
 
 ```c
+      //  Configure Modulation Parameters
       SX126xSetModulationParams( &SX126x.ModulationParams );
+
+      //  Configure Packet Parameters
       SX126xSetPacketParams( &SX126x.PacketParams );
+
+      //  Configure Symbol Timeout
       SX126xSetLoRaSymbNumTimeout( symbTimeout );
 ```
 
@@ -2206,7 +2269,7 @@ This is a Workaround that __optimises the Inverted IQ Operation__...
 
 [(__SX126xWriteRegister__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266)
 
-We finish by setting the __Receive Timeout__ to the default maximum value...
+We finish by setting the __Receive Timeout__ to No Timeout (always receiving)...
 
 ```c
       // Timeout Max, Timeout handled directly in SetRx function
@@ -2258,6 +2321,7 @@ We finish by sending the __Message Payload__ and starting the __Transmit Timer__
 ```c
   //  Send message payload
   SX126xSendPayload( buffer, size, 0 );
+
   //  Start Transmit Timer
   TimerStart( &TxTimeoutTimer, TxTimeout );
 }
@@ -2268,19 +2332,26 @@ We finish by sending the __Message Payload__ and starting the __Transmit Timer__
 __SX126xSendPayload__ is defined below: [sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L162-L166)
 
 ```c
-void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout )
-{
-    SX126xSetPayload( payload, size );
-    SX126xSetTx( timeout );
+///  Send message payload
+void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout ) {
+  //  Copy message payload to Transmit Buffer
+  SX126xSetPayload( payload, size );
+
+  //  Transmit the buffer
+  SX126xSetTx( timeout );
 }
 ```
+
+[(__SX126xSetTx__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L289-L299)
 
 TODO
 
 [sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147)
 
 ```c
+/// Copy message payload to Transmit Buffer
 void SX126xSetPayload( uint8_t *payload, uint8_t size ) {
+  //  Copy message payload to Transmit Buffer
   SX126xWriteBuffer( 0x00, payload, size );
 }
 ```
@@ -2290,10 +2361,16 @@ TODO
 [sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289)
 
 ```c
+/// Copy message payload to Transmit Buffer
 void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
+  //  Wake up SX1262 if sleeping
   SX126xCheckDeviceReady( );
+
+  //  Copy message payload to Transmit Buffer
   int rc = sx126x_write_buffer(NULL, offset, buffer, size);
   assert(rc == 0);
+
+  //  Wait for SX1262 to be ready
   SX126xWaitOnBusy( );
 }
 ```
@@ -2329,6 +2406,7 @@ We begin by configuring which __LoRa Events will trigger interrupts__ on each DI
 TODO
 
 ```c
+  //  Start the Receive Timer
   if( timeout != 0 ) {
     TimerStart( &RxTimeoutTimer, timeout );
   }
@@ -2340,12 +2418,44 @@ TODO
 
 ```c
   if( RxContinuous == true ) {
+    //  Receive continuously
     SX126xSetRx( 0xFFFFFF ); // Rx Continuous
   } else {
+    //  Receive with timeout
     SX126xSetRx( RxTimeout << 6 );
   }
 }
 ```
+
+TODO
+
+[sx126x.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L301-L313)
+
+```c
+void SX126xSetRx( uint32_t timeout ) {
+  uint8_t buf[3];
+
+  //  Remember we're in Receive Mode
+  SX126xSetOperatingMode( MODE_RX );
+
+  //  Configure Receive Gain
+  SX126xWriteRegister( REG_RX_GAIN, 0x94 ); // default gain
+
+  //  Enter Receive Mode
+  buf[0] = ( uint8_t )( ( timeout >> 16 ) & 0xFF );
+  buf[1] = ( uint8_t )( ( timeout >> 8 ) & 0xFF );
+  buf[2] = ( uint8_t )( timeout & 0xFF );
+  SX126xWriteCommand( RADIO_SET_RX, buf, 3 );
+}
+```
+
+[(__SX126xSetOperatingMode__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L126-L147)
+
+[(__SX126xWriteRegister__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L263-L266)
+
+[(__SX126xWriteCommand__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L204-L217)
+
+TODO
 
 ## RadioSleep: Switch to Sleep Mode
 
