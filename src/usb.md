@@ -2494,7 +2494,7 @@ void RadioIrqProcess( void ) {
 
 TODO
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349)
 
 ```c
     if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE ) {
@@ -2513,7 +2513,7 @@ TODO
 
 TODO
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389)
 
 ```c
     if( ( irqRegs & IRQ_RX_DONE ) == IRQ_RX_DONE ) {
@@ -2553,7 +2553,7 @@ TODO
 
 TODO
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1391-L1400)
 
 ```c
     if( ( irqRegs & IRQ_CAD_DONE ) == IRQ_CAD_DONE ) {
@@ -2570,7 +2570,7 @@ TODO
 
 TODO
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1402-L1425)
 
 ```c
     if( ( irqRegs & IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
@@ -2600,7 +2600,7 @@ TODO
 
 TODO
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1427-L1431)
 
 ```c
     if( ( irqRegs & IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
@@ -2613,7 +2613,7 @@ TODO
 
 TODO
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1433-L1437)
 
 ```c
     if( ( irqRegs & IRQ_SYNCWORD_VALID ) == IRQ_SYNCWORD_VALID ) {
@@ -2622,11 +2622,23 @@ TODO
     }
 ```
 
+Note that the __Sync Word differs for LoRaWAN__ vs Private LoRa Networks...
+
+```c
+//  Syncword for Private LoRa networks
+#define LORA_MAC_PRIVATE_SYNCWORD                   0x1424
+
+//  Syncword for Public LoRa networks (LoRaWAN)
+#define LORA_MAC_PUBLIC_SYNCWORD                    0x3444
+```
+
+[(More about Sync Word)](https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word)
+
 ### IRQ Header Valid
 
 TODO
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1439-L1443)
 
 ```c
     if( ( irqRegs & IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
@@ -2639,7 +2651,7 @@ TODO
 
 TODO
 
-[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458
+[radio.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1445-L1458)
 
 ```c
     if( ( irqRegs & IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
