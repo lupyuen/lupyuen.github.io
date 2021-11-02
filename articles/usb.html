@@ -1819,11 +1819,35 @@ sudo ./lora-sx1262</code></pre></div>
   SX126xSetPacketParams( &amp;SX126x.PacketParams );</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L523-L526">(<strong>SX126xGetPacketType</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L623-L680">(<strong>SX126xSetPacketParams</strong> is defined here)</a></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>  SX126xSendPayload( buffer, size, 0 );</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>  TimerStart( &amp;TxTimeoutTimer, TxTimeout );
+<p>We finish by sending the <strong>Message Payload</strong> and starting the <strong>Transmit Timer</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Send message payload
+  SX126xSendPayload( buffer, size, 0 );
+  //  Start Transmit Timer
+  TimerStart( &amp;TxTimeoutTimer, TxTimeout );
 }</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L396-L421">(<strong>TimerStart</strong> is defined here)</a></p>
+<p><strong>SX126xSendPayload</strong> is defined below: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L162-L166">sx126x.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout )
+{
+    SX126xSetPayload( payload, size );
+    SX126xSetTx( timeout );
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L144-L147">sx126x.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void SX126xSetPayload( uint8_t *payload, uint8_t size ) {
+  SX126xWriteBuffer( 0x00, payload, size );
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L283-L289">sx126x.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
+  SX126xCheckDeviceReady( );
+  int rc = sx126x_write_buffer(NULL, offset, buffer, size);
+  assert(rc == 0);
+  SX126xWaitOnBusy( );
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L133-L142">(<strong>SX126xCheckDeviceReady</strong> is defined here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#transmit-long-message">(<strong>sx126x_write_buffer</strong> is explained here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L171-L182">(<strong>SX126xWaitOnBusy</strong> is defined here)</a></p>
 <p>TODO</p>
 <h2 id="radiorx-receive-message" class="section-header"><a href="#radiorx-receive-message">14.6 RadioRx: Receive Message</a></h2>
 <p><strong>RadioRx</strong> receives a single LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1117-L1138">radio.c</a></p>
@@ -1842,6 +1866,7 @@ sudo ./lora-sx1262</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>  if( timeout != 0 ) {
     TimerStart( &amp;RxTimeoutTimer, timeout );
   }</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L396-L421">(<strong>TimerStart</strong> is defined here)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  if( RxContinuous == true ) {
     SX126xSetRx( 0xFFFFFF ); // Rx Continuous
