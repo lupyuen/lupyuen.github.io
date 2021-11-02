@@ -35,18 +35,12 @@ function generate_article() {
     #   <code><code>...</code></code>
     # To...
     #   <code>...</code>
-    # TODO: Fix this hack for removing leading blank line in Rust code blocks
-    # Change...
-    #   <pre class="rust rust-example-rendered"><code>
-    # To...
-    #   <pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">
     cp  $html $tmp
     cat $tmp \
         | sed 's/\(<pre[^>]*>\)/\1<code>/' \
         | sed 's/<\/pre>/<\/code><\/pre>/' \
         | sed 's/<code><code>/<code>/' \
         | sed 's/<\/code><\/code>/<\/code>/' \
-        | sed 's/<pre class="rust rust-example-rendered"><code>/<pre class="rust rust-example-rendered"><code style="position: relative; top: -15px">/' \
         >$html
     rm $tmp
 }
