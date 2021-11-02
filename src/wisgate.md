@@ -263,7 +263,7 @@ Then we __initialise the LoRaWAN Client__...
 
 Finally we send the __Join LoRaWAN Network Request__ to WisGate...
 
-```
+```c
   //  Start Join procedure
   lmh_join();
 }
