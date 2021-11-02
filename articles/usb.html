@@ -560,7 +560,16 @@ static void on_tx_done(void) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109">(<strong>RadioSleep</strong> is defined here)</a></p>
 <p>Here we log the number of packets transmitted, and put LoRa SX1262 into <strong>low power, sleep mode</strong>.</p>
 <p>Note: <strong>on_tx_done</strong> won’t actually be called in our current driver, because we haven’t implemented Multithreading. (More about this later)</p>
-<h2 id="run-the-driver-1" class="section-header"><a href="#run-the-driver-1">5.1 Run the Driver</a></h2>
+<p>To handle Transmit Timeout Errors, we define the Callback Function <strong>on_tx_timeout</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L300-L312">main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when our LoRa message couldn&#39;t be transmitted due to timeout
+static void on_tx_timeout(void) {
+  //  Switch the LoRa Transceiver to 
+  //  low power, sleep mode
+  Radio.Sleep();
+
+  //  Log the timeout
+  loraping_stats.tx_timeout++;
+}</code></pre></div><h2 id="run-the-driver-1" class="section-header"><a href="#run-the-driver-1">5.1 Run the Driver</a></h2>
 <p>Follow the instructions to <strong>install the CH341 SPI Driver</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver"><strong>“Install CH341 SPI Driver”</strong></a></li>
@@ -695,7 +704,15 @@ static void on_rx_timeout(void) {
 }</code></pre></div>
 <p>We switch the LoRa Transceiver into sleep mode and log the timeout.</p>
 <p>Note: <strong>on_rx_timeout</strong> won’t actually be called in our current driver, because we haven’t implemented Multithreading. (More about this later)</p>
-<h2 id="run-the-driver-2" class="section-header"><a href="#run-the-driver-2">6.1 Run the Driver</a></h2>
+<p>To handle Receive Errors, we define the Callback Function <strong>on_rx_error</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L329-L341">main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when we couldn&#39;t receive a LoRa message due to error
+static void on_rx_error(void) {
+  //  Log the error
+  loraping_stats.rx_error++;
+
+  //  Switch the LoRa Transceiver to low power, sleep mode
+  Radio.Sleep();
+}</code></pre></div><h2 id="run-the-driver-2" class="section-header"><a href="#run-the-driver-2">6.1 Run the Driver</a></h2>
 <p>Follow the instructions to <strong>install the CH341 SPI Driver</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver"><strong>“Install CH341 SPI Driver”</strong></a></li>
@@ -2044,10 +2061,11 @@ void RadioIrqProcess( void ) {
 </li>
 </ul>
 <h3 id="transmit-done" class="section-header"><a href="#transmit-done">14.7.1 Transmit Done</a></h3>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349">radio.c</a></p>
+<p>When a LoRa Message has been transmitted successfully, we stop the Transmit Timer and call the <strong>Callback Function for Transmit Done</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1339-L1349">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was transmitted successfully...
     if( ( irqRegs &amp; IRQ_TX_DONE ) == IRQ_TX_DONE ) {
+
+      //  Stop the Transmit Timer
       TimerStop( &amp;TxTimeoutTimer );
 
       //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
@@ -2061,15 +2079,15 @@ void RadioIrqProcess( void ) {
     }</code></pre></div>
 <p><strong>TxDone</strong> points to the <strong>on_tx_done</strong> Callback Function that we’ve seen earlier.</p>
 <h3 id="receive-done" class="section-header"><a href="#receive-done">14.7.2 Receive Done</a></h3>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389">radio.c</a></p>
+<p>When we receive a LoRa Message, we stop the Receive Timer: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1351-L1389">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was received...
     if( ( irqRegs &amp; IRQ_RX_DONE ) == IRQ_RX_DONE ) {
 
       //  Stop the Receive Timer
       TimerStop( &amp;RxTimeoutTimer );</code></pre></div>
-<p>TODO</p>
+<p>In case of CRC Error, we call the <strong>Callback Function for Receive Error</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>      if( ( irqRegs &amp; IRQ_CRC_ERROR ) == IRQ_CRC_ERROR ) {
+
         //  If the received message has CRC Error...
         if( RxContinuous == false ) {
           //!&lt; Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
@@ -2080,6 +2098,7 @@ void RadioIrqProcess( void ) {
         if( ( RadioEvents.RxError ) ) {
           RadioEvents.RxError( );
         }</code></pre></div>
+<p><strong>RxError</strong> points to the <strong>on_rx_error</strong> Callback Function that we’ve seen earlier.</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>      } else {
         //  If the received message has no CRC Error...
@@ -2157,6 +2176,7 @@ void RadioIrqProcess( void ) {
           RadioEvents.TxTimeout( );
         }
       }</code></pre></div>
+<p><strong>TxTimeout</strong> points to the <strong>on_tx_timeout</strong> Callback Function that we’ve seen earlier.</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>      //  If the message failed to Receive due to Timeout...
       else if( SX126xGetOperatingMode( ) == MODE_RX ) {
