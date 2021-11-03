@@ -123,17 +123,17 @@ Change `USE_BAND_923` to `USE_BAND_433`, `780`, `868` or `915`. Here's the compl
 
 ```c
 #if defined(USE_BAND_433)
-    #define RF_FREQUENCY               434000000 /* Hz */
+  #define RF_FREQUENCY               434000000 /* Hz */
 #elif defined(USE_BAND_780)
-    #define RF_FREQUENCY               780000000 /* Hz */
+  #define RF_FREQUENCY               780000000 /* Hz */
 #elif defined(USE_BAND_868)
-    #define RF_FREQUENCY               868000000 /* Hz */
+  #define RF_FREQUENCY               868000000 /* Hz */
 #elif defined(USE_BAND_915)
-    #define RF_FREQUENCY               915000000 /* Hz */
+  #define RF_FREQUENCY               915000000 /* Hz */
 #elif defined(USE_BAND_923)
-    #define RF_FREQUENCY               923000000 /* Hz */
+  #define RF_FREQUENCY               923000000 /* Hz */
 #else
-    #error "Please define a frequency band in the compiler options."
+  #error "Please define a frequency band in the compiler options."
 #endif
 ```
 
@@ -184,14 +184,14 @@ The `init_driver` command in our Demo Firmware initialises the LoRa Transceiver 
 /// Command to initialise the LoRa Driver.
 /// Assume that create_task has been called to init the Event Queue.
 static void init_driver(char *buf, int len, int argc, char **argv) {
-    //  Set the LoRa Callback Functions
-    RadioEvents_t radio_events;
-    memset(&radio_events, 0, sizeof(radio_events));  //  Must init radio_events to null, because radio_events lives on stack!
-    radio_events.TxDone    = on_tx_done;     //  Packet has been transmitted
-    radio_events.RxDone    = on_rx_done;     //  Packet has been received
-    radio_events.TxTimeout = on_tx_timeout;  //  Transmit Timeout
-    radio_events.RxTimeout = on_rx_timeout;  //  Receive Timeout
-    radio_events.RxError   = on_rx_error;    //  Receive Error
+  //  Set the LoRa Callback Functions
+  RadioEvents_t radio_events;
+  memset(&radio_events, 0, sizeof(radio_events));  //  Must init radio_events to null, because radio_events lives on stack!
+  radio_events.TxDone    = on_tx_done;     //  Packet has been transmitted
+  radio_events.RxDone    = on_rx_done;     //  Packet has been received
+  radio_events.TxTimeout = on_tx_timeout;  //  Transmit Timeout
+  radio_events.RxTimeout = on_rx_timeout;  //  Receive Timeout
+  radio_events.RxError   = on_rx_error;    //  Receive Error
 ```
 
 Here we set the __Callback Functions__ that will be called when a LoRa Packet has been transmitted or received, also when we encounter a transmit / receive timeout or error.
@@ -201,54 +201,54 @@ Here we set the __Callback Functions__ that will be called when a LoRa Packet ha
 Next we initialise the LoRa Transceiver and set the __LoRa Frequency__...
 
 ```c
-    //  Init the SPI Port and the LoRa Transceiver
-    Radio.Init(&radio_events);
+  //  Init the SPI Port and the LoRa Transceiver
+  Radio.Init(&radio_events);
 
-    //  Set the LoRa Frequency
-    Radio.SetChannel(RF_FREQUENCY);
+  //  Set the LoRa Frequency
+  Radio.SetChannel(RF_FREQUENCY);
 ```
 
 We set the __LoRa Transmit Parameters__...
 
 ```c
-    //  Configure the LoRa Transceiver for transmitting messages
-    Radio.SetTxConfig(
-        MODEM_LORA,
-        LORAPING_TX_OUTPUT_POWER,
-        0,        //  Frequency deviation: Unused with LoRa
-        LORAPING_BANDWIDTH,
-        LORAPING_SPREADING_FACTOR,
-        LORAPING_CODINGRATE,
-        LORAPING_PREAMBLE_LENGTH,
-        LORAPING_FIX_LENGTH_PAYLOAD_ON,
-        true,     //  CRC enabled
-        0,        //  Frequency hopping disabled
-        0,        //  Hop period: N/A
-        LORAPING_IQ_INVERSION_ON,
-        LORAPING_TX_TIMEOUT_MS
-    );
+  //  Configure the LoRa Transceiver for transmitting messages
+  Radio.SetTxConfig(
+    MODEM_LORA,
+    LORAPING_TX_OUTPUT_POWER,
+    0,        //  Frequency deviation: Unused with LoRa
+    LORAPING_BANDWIDTH,
+    LORAPING_SPREADING_FACTOR,
+    LORAPING_CODINGRATE,
+    LORAPING_PREAMBLE_LENGTH,
+    LORAPING_FIX_LENGTH_PAYLOAD_ON,
+    true,     //  CRC enabled
+    0,        //  Frequency hopping disabled
+    0,        //  Hop period: N/A
+    LORAPING_IQ_INVERSION_ON,
+    LORAPING_TX_TIMEOUT_MS
+  );
 ```
 
 Finally we set the __LoRa Receive Parameters__...
 
 ```c
-    //  Configure the LoRa Transceiver for receiving messages
-    Radio.SetRxConfig(
-        MODEM_LORA,
-        LORAPING_BANDWIDTH,
-        LORAPING_SPREADING_FACTOR,
-        LORAPING_CODINGRATE,
-        0,        //  AFC bandwidth: Unused with LoRa
-        LORAPING_PREAMBLE_LENGTH,
-        LORAPING_SYMBOL_TIMEOUT,
-        LORAPING_FIX_LENGTH_PAYLOAD_ON,
-        0,        //  Fixed payload length: N/A
-        true,     //  CRC enabled
-        0,        //  Frequency hopping disabled
-        0,        //  Hop period: N/A
-        LORAPING_IQ_INVERSION_ON,
-        true      //  Continuous receive mode
-    );    
+  //  Configure the LoRa Transceiver for receiving messages
+  Radio.SetRxConfig(
+    MODEM_LORA,
+    LORAPING_BANDWIDTH,
+    LORAPING_SPREADING_FACTOR,
+    LORAPING_CODINGRATE,
+    0,        //  AFC bandwidth: Unused with LoRa
+    LORAPING_PREAMBLE_LENGTH,
+    LORAPING_SYMBOL_TIMEOUT,
+    LORAPING_FIX_LENGTH_PAYLOAD_ON,
+    0,        //  Fixed payload length: N/A
+    true,     //  CRC enabled
+    0,        //  Frequency hopping disabled
+    0,        //  Hop period: N/A
+    LORAPING_IQ_INVERSION_ON,
+    true      //  Continuous receive mode
+  );    
 }
 ```
 
@@ -279,8 +279,8 @@ To transmit a LoRa Packet, the `send_message` command in our Demo Firmware calls
 ```c
 /// Command to send a LoRa message. Assume that the LoRa Transceiver driver has been initialised.
 static void send_message(char *buf, int len, int argc, char **argv) {
-    //  Send the "PING" message
-    send_once(1);
+  //  Send the "PING" message
+  send_once(1);
 }
 ```
 
@@ -298,31 +298,31 @@ static uint8_t loraping_buffer[LORAPING_BUFFER_SIZE];
 
 /// Send a LoRa message. If is_ping is 0, send "PONG". Otherwise send "PING".
 static void send_once(int is_ping) {
-    //  Copy the "PING" or "PONG" message 
-    //  to the transmit buffer
-    if (is_ping) {
-        memcpy(loraping_buffer, loraping_ping_msg, 4);
-    } else {
-        memcpy(loraping_buffer, loraping_pong_msg, 4);
-    }
+  //  Copy the "PING" or "PONG" message 
+  //  to the transmit buffer
+  if (is_ping) {
+    memcpy(loraping_buffer, loraping_ping_msg, 4);
+  } else {
+    memcpy(loraping_buffer, loraping_pong_msg, 4);
+  }
 ```
 
 Then pads the packet with values 0, 1, 2, ...
 
 ```c
-    //  Fill up the remaining space in the 
-    //  transmit buffer (64 bytes) with values 
-    //  0, 1, 2, ...
-    for (int i = 4; i < sizeof loraping_buffer; i++) {
-        loraping_buffer[i] = i - 4;
-    }
+  //  Fill up the remaining space in the 
+  //  transmit buffer (64 bytes) with values 
+  //  0, 1, 2, ...
+  for (int i = 4; i < sizeof loraping_buffer; i++) {
+    loraping_buffer[i] = i - 4;
+  }
 ```
 
 And transmits the LoRa Packet...
 
 ```c
-    //  Send the transmit buffer (64 bytes)
-    Radio.Send(loraping_buffer, sizeof loraping_buffer);
+  //  Send the transmit buffer (64 bytes)
+  Radio.Send(loraping_buffer, sizeof loraping_buffer);
 }
 ```
 
@@ -335,12 +335,12 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/
 ```c
 /// Callback Function that is called when our LoRa message has been transmitted
 static void on_tx_done(void) {
-    //  Log the success status
-    loraping_stats.tx_success++;
+  //  Log the success status
+  loraping_stats.tx_success++;
 
-    //  Switch the LoRa Transceiver to 
-    //  low power, sleep mode
-    Radio.Sleep();
+  //  Switch the LoRa Transceiver to 
+  //  low power, sleep mode
+  Radio.Sleep();
 }
 ```
 
@@ -358,8 +358,8 @@ Here's how the `receive_message` command in our Demo Firmware receives a LoRa Pa
 /// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
 static void receive_message(char *buf, int len, int argc, char **argv) {
-    //  Receive a LoRa message within the timeout period
-    Radio.Rx(LORAPING_RX_TIMEOUT_MS);  //  Timeout in 5 seconds
+  //  Receive a LoRa message within the timeout period
+  Radio.Rx(LORAPING_RX_TIMEOUT_MS);  //  Timeout in 5 seconds
 }
 ```
 
@@ -372,16 +372,16 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/
 ```c
 /// Callback Function that is called when a LoRa message has been received
 static void on_rx_done(
-    uint8_t *payload,  //  Buffer containing received LoRa message
-    uint16_t size,     //  Size of the LoRa message
-    int16_t rssi,      //  Signal strength
-    int8_t snr) {      //  Signal To Noise ratio
+  uint8_t *payload,  //  Buffer containing received LoRa message
+  uint16_t size,     //  Size of the LoRa message
+  int16_t rssi,      //  Signal strength
+  int8_t snr) {      //  Signal To Noise ratio
 
-    //  Switch the LoRa Transceiver to low power, sleep mode
-    Radio.Sleep();
+  //  Switch the LoRa Transceiver to low power, sleep mode
+  Radio.Sleep();
 
-    //  Log the signal strength, signal to noise ratio
-    loraping_rxinfo_rxed(rssi, snr);
+  //  Log the signal strength, signal to noise ratio
+  loraping_rxinfo_rxed(rssi, snr);
 ```
 
 __`on_rx_done`__ switches the LoRa Transceiver to low power, sleep mode and logs the received packet.
@@ -389,22 +389,22 @@ __`on_rx_done`__ switches the LoRa Transceiver to low power, sleep mode and logs
 Next it __copies the received packet__ into a buffer...
 
 ```c
-    //  Copy the received packet
-    if (size > sizeof loraping_buffer) {
-        size = sizeof loraping_buffer;
-    }
-    loraping_rx_size = size;
-    memcpy(loraping_buffer, payload, size);
+  //  Copy the received packet
+  if (size > sizeof loraping_buffer) {
+    size = sizeof loraping_buffer;
+  }
+  loraping_rx_size = size;
+  memcpy(loraping_buffer, payload, size);
 ```
 
 Finally it __dumps the buffer__ containing the received packet...
 
 ```c
-    //  Dump the contents of the received packet
-    for (int i = 0; i < loraping_rx_size; i++) {
-        printf("%02x ", loraping_buffer[i]);
-    }
-    printf("\r\n");
+  //  Dump the contents of the received packet
+  for (int i = 0; i < loraping_rx_size; i++) {
+    printf("%02x ", loraping_buffer[i]);
+  }
+  printf("\r\n");
 }
 ```
 
@@ -417,12 +417,12 @@ From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/
 ```c
 /// Callback Function that is called when no LoRa messages could be received due to timeout
 static void on_rx_timeout(void) {
-    //  Switch the LoRa Transceiver to low power, sleep mode
-    Radio.Sleep();
+  //  Switch the LoRa Transceiver to low power, sleep mode
+  Radio.Sleep();
 
-    //  Log the timeout
-    loraping_stats.rx_timeout++;
-    loraping_rxinfo_timeout();
+  //  Log the timeout
+  loraping_stats.rx_timeout++;
+  loraping_rxinfo_timeout();
 }
 ```
 
@@ -519,14 +519,14 @@ From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_a
 ```c
 /// `las_join` command will send a Join Network Request
 void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
-    ...
-    //  Send a Join Network Request
-    int rc = lora_app_join(
-        g_lora_dev_eui,  //  Device EUI
-        g_lora_app_eui,  //  Application EUI
-        g_lora_app_key,  //  Application Key
-        attempts         //  Number of join attempts
-    );
+  ...
+  //  Send a Join Network Request
+  int rc = lora_app_join(
+    g_lora_dev_eui,  //  Device EUI
+    g_lora_app_eui,  //  Application EUI
+    g_lora_app_key,  //  Application Key
+    attempts         //  Number of join attempts
+  );
 ```
 
 To join a LoRaWAN Network we need to have 3 things in our BL602 firmware...
@@ -547,11 +547,11 @@ __`lora_app_join`__ is defined in the __Application Layer__ of our LoRaWAN Drive
 ```c
 /// Send a Join Network Request
 int lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t trials) {
-    //  Omitted: Validate the parameters
-    ...
+  //  Omitted: Validate the parameters
+  ...
 
-    //  Tell device to start join procedure
-    int rc = lora_node_join(dev_eui, app_eui, app_key, trials);
+  //  Tell device to start join procedure
+  int rc = lora_node_join(dev_eui, app_eui, app_key, trials);
 ```
 
 Here we validate the parameters and call `lora_node_join`.
@@ -561,20 +561,20 @@ Now we hop over from the Application Layer to the __Node Layer__: [`lora_node.c`
 ```c
 /// Perform the join process
 int lora_node_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t trials) {
-    //  Omitted: Check if we have joined the network
-    ...
+  //  Omitted: Check if we have joined the network
+  ...
 
-    //  Set the Event parameters
-    g_lm_join_ev_arg.dev_eui = dev_eui;
-    g_lm_join_ev_arg.app_eui = app_eui;
-    g_lm_join_ev_arg.app_key = app_key;
-    g_lm_join_ev_arg.trials  = trials;
+  //  Set the Event parameters
+  g_lm_join_ev_arg.dev_eui = dev_eui;
+  g_lm_join_ev_arg.app_eui = app_eui;
+  g_lm_join_ev_arg.app_key = app_key;
+  g_lm_join_ev_arg.trials  = trials;
 
-    //  Send Event to Medium Access Control Layer via Event Queue
-    ble_npl_eventq_put(
-        g_lora_mac_data.lm_evq,      //  Event Queue
-        &g_lora_mac_data.lm_join_ev  //  Event
-    );
+  //  Send Event to Medium Access Control Layer via Event Queue
+  ble_npl_eventq_put(
+    g_lora_mac_data.lm_evq,      //  Event Queue
+    &g_lora_mac_data.lm_join_ev  //  Event
+  );
 ```
 
 Here we're passing a Join Event to the __Event Queue__ that's provided by the NimBLE Porting Layer.
@@ -584,13 +584,13 @@ Again we hop, from the Node Layer to the __Medium Access Control Layer__: [`LoRa
 ```c
 /// Background Task that handles the Event Queue
 LoRaMacStatus_t LoRaMacMlmeRequest(MlmeReq_t *mlmeRequest) {
-    ...
-    //  Check the request type
-    switch (mlmeRequest->Type) {
-        //  If this is a join request...
-        case MLME_JOIN:
-            //  Compose and send the join request
-            status = Send(&macHdr, 0, NULL);
+  ...
+  //  Check the request type
+  switch (mlmeRequest->Type) {
+    //  If this is a join request...
+    case MLME_JOIN:
+      //  Compose and send the join request
+      status = Send(&macHdr, 0, NULL);
 ```
 
 __`LoRaMacMlmeRequest`__ runs as a __FreeRTOS Background Task__, processing the Events that have been enqueued in the Event Queue.
@@ -602,12 +602,12 @@ __`LoRaMacMlmeRequest`__ runs as a __FreeRTOS Background Task__, processing the 
 ```c
 //  Compose and send a packet
 LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
-    ...
-    //  Prepare the LoRa Packet
-    status = PrepareFrame(macHdr, &fCtrl, fPort, om);
+  ...
+  //  Prepare the LoRa Packet
+  status = PrepareFrame(macHdr, &fCtrl, fPort, om);
 
-    //  Send the LoRa Packet
-    status = ScheduleTx();
+  //  Send the LoRa Packet
+  status = ScheduleTx();
 ```
 
 The call chain goes...
@@ -637,15 +637,15 @@ When the packet is received, the LoRa Transceiver Driver calls this Callback Fun
 ```c
 /// Callback Function that's called when we receive a LoRa Packet
 static void OnRadioRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr) {
-    //  Put the Receive Event into the Event Queue  
-    ble_npl_eventq_put(
-        lora_node_mac_evq_get(),    //  Event Queue
-        &g_lora_mac_radio_rx_event  //  Receive Event
-    );
+  //  Put the Receive Event into the Event Queue  
+  ble_npl_eventq_put(
+    lora_node_mac_evq_get(),    //  Event Queue
+    &g_lora_mac_radio_rx_event  //  Receive Event
+  );
 
-    //  Remember the received data
-    g_lora_mac_data.rxbuf     = payload;
-    g_lora_mac_data.rxbufsize = size;
+  //  Remember the received data
+  g_lora_mac_data.rxbuf     = payload;
+  g_lora_mac_data.rxbufsize = size;
 ```
 
 __`OnRadioRxDone`__ adds the __Receive Event__ to the Event Queue for background processing.
@@ -655,24 +655,24 @@ Our __Background Task__ receives the Receive Event from the Event Queue and proc
 ```c
 /// Process the Receive Event
 static void lora_mac_process_radio_rx(struct ble_npl_event *ev) {
-    ...
-    //  Put radio to sleep
-    Radio.Sleep();
+  ...
+  //  Put radio to sleep
+  Radio.Sleep();
 
-    //  Get the payload and size
-    payload = g_lora_mac_data.rxbuf;
-    size    = g_lora_mac_data.rxbufsize;
+  //  Get the payload and size
+  payload = g_lora_mac_data.rxbuf;
+  size    = g_lora_mac_data.rxbufsize;
 
-    //  Get the header from the received frame
-    macHdr.Value = payload[0];
+  //  Get the header from the received frame
+  macHdr.Value = payload[0];
 
-    //  Check the header type
-    switch (macHdr.Bits.MType) {
-        //  If this is a Join Accept Response...
-        case FRAME_TYPE_JOIN_ACCEPT:
-            //  Process the Join Accept Response
-            lora_mac_join_accept_rxd(payload, size);
-            break;
+  //  Check the header type
+  switch (macHdr.Bits.MType) {
+    //  If this is a Join Accept Response...
+    case FRAME_TYPE_JOIN_ACCEPT:
+      //  Process the Join Accept Response
+      lora_mac_join_accept_rxd(payload, size);
+      break;
 ```
 
 (We assume that the Join Request was accepted by the LoRaWAN Gateway)
@@ -684,17 +684,17 @@ From [`LoRaMac.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.
 ```c
 /// Process the Join Accept Response
 static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
-    ...
-    //  Decrypt the response
-    LoRaMacJoinDecrypt(payload + 1, size - 1, LoRaMacAppKey, LoRaMacRxPayload + 1);
-    ...
-    //  Verify the Message Integrity Code
-    LoRaMacJoinComputeMic(LoRaMacRxPayload, size - LORAMAC_MFR_LEN, LoRaMacAppKey, &mic);
-    ...
-    //  Omitted: Update the Join Network Status
-    ...
-    //  Stop Second Receive Window
-    lora_mac_rx_win2_stop();
+  ...
+  //  Decrypt the response
+  LoRaMacJoinDecrypt(payload + 1, size - 1, LoRaMacAppKey, LoRaMacRxPayload + 1);
+  ...
+  //  Verify the Message Integrity Code
+  LoRaMacJoinComputeMic(LoRaMacRxPayload, size - LORAMAC_MFR_LEN, LoRaMacAppKey, &mic);
+  ...
+  //  Omitted: Update the Join Network Status
+  ...
+  //  Stop Second Receive Window
+  lora_mac_rx_win2_stop();
 ```
 
 __`lora_mac_join_accept_rxd`__ handles the Join Accept Response...
@@ -750,15 +750,15 @@ The __`las_app_port`__ command calls this function in [`lorawan.c`](https://gith
 ```c
 /// `las_app_port open 2` command opens LoRaWAN Application Port 2
 void las_cmd_app_port(char *buf0, int len0, int argc, char **argv) {
-    ...
-    //  If this is an `open` command...
-    if (!strcmp(argv[1], "open")) {
-        //  Call the LoRaWAN Driver to open the LoRaWAN Application Port
-        rc = lora_app_port_open(
-            port,                     //  Port Number (2)
-            lora_app_shell_txd_func,  //  Callback Function for Transmit
-            lora_app_shell_rxd_func   //  Callback Function for Receive
-        );
+  ...
+  //  If this is an `open` command...
+  if (!strcmp(argv[1], "open")) {
+    //  Call the LoRaWAN Driver to open the LoRaWAN Application Port
+    rc = lora_app_port_open(
+      port,                     //  Port Number (2)
+      lora_app_shell_txd_func,  //  Callback Function for Transmit
+      lora_app_shell_rxd_func   //  Callback Function for Receive
+    );
 ```
 
 __`las_cmd_app_port`__ calls our LoRaWAN Driver to open the LoRaWAN Port and provides two __Callback Functions__...
@@ -775,18 +775,18 @@ Here's how our LoRaWAN Driver opens the LoRaWAN Port: [`lora_app.c`](https://git
 /// datarate and retries, set the transmit done and
 /// received data callbacks, and add port to list of open ports.
 int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb) {
-    ...
-    //  Make sure port is not opened
-    avail = -1;
-    for (i = 0; i < LORA_APP_NUM_PORTS; ++i) {
-        //  If port not opened, remember first available
-        if (lora_app_ports[i].opened == 0) {
-            if (avail < 0) { avail = i; }
-        } else {
-            //  Make sure port is not already opened
-            if (lora_app_ports[i].port_num == port) { return LORA_APP_STATUS_ALREADY_OPEN; }
-        }
+  ...
+  //  Make sure port is not opened
+  avail = -1;
+  for (i = 0; i < LORA_APP_NUM_PORTS; ++i) {
+    //  If port not opened, remember first available
+    if (lora_app_ports[i].opened == 0) {
+      if (avail < 0) { avail = i; }
+    } else {
+      //  Make sure port is not already opened
+      if (lora_app_ports[i].port_num == port) { return LORA_APP_STATUS_ALREADY_OPEN; }
     }
+  }
 ```
 
 __`lora_app_port_open`__ allocates a port object for the requested port number.
@@ -794,18 +794,18 @@ __`lora_app_port_open`__ allocates a port object for the requested port number.
 Then it sets the port number, receive callback and transmit callback in the port object...
 
 ```c
-    //  Open port if available
-    if (avail >= 0) {
-        lora_app_ports[avail].port_num = port;  //  Port Number
-        lora_app_ports[avail].rxd_cb = rxd_cb;  //  Receive Callback
-        lora_app_ports[avail].txd_cb = txd_cb;  //  Transmit Callback
-        lora_app_ports[avail].retries = 8;
-        lora_app_ports[avail].opened = 1;
-        rc = LORA_APP_STATUS_OK;
-    } else {
-        rc = LORA_APP_STATUS_ENOMEM;
-    }
-    return rc;
+  //  Open port if available
+  if (avail >= 0) {
+    lora_app_ports[avail].port_num = port;  //  Port Number
+    lora_app_ports[avail].rxd_cb = rxd_cb;  //  Receive Callback
+    lora_app_ports[avail].txd_cb = txd_cb;  //  Transmit Callback
+    lora_app_ports[avail].retries = 8;
+    lora_app_ports[avail].opened = 1;
+    rc = LORA_APP_STATUS_OK;
+  } else {
+    rc = LORA_APP_STATUS_ENOMEM;
+  }
+  return rc;
 }
 ```
 
@@ -831,25 +831,25 @@ The __`las_app_tx`__ command is implemented here: [`lorawan.c`](https://github.c
 /// `las_app_tx 2 5 0` command transmits to LoRaWAN Port 2
 /// a data packet of 5 bytes, as an Unconfirmed Message (0)
 void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
-    ...
-    //  Allocate a Packet Buffer
-    om = lora_pkt_alloc(len);
-    ...
-    //  Copy the data into the Packet Buffer
-    int rc = pbuf_copyinto(
-        om,  //  Packet Buffer
-        0,   //  Offset into the Packet Buffer
-        las_cmd_app_tx_buf,  //  Data to be copied
-        len                  //  Data length
-    );
-    assert(rc == 0);
+  ...
+  //  Allocate a Packet Buffer
+  om = lora_pkt_alloc(len);
+  ...
+  //  Copy the data into the Packet Buffer
+  int rc = pbuf_copyinto(
+    om,  //  Packet Buffer
+    0,   //  Offset into the Packet Buffer
+    las_cmd_app_tx_buf,  //  Data to be copied
+    len                  //  Data length
+  );
+  assert(rc == 0);
 
-    //  Transmit the Packet Buffer
-    rc = lora_app_port_send(
-        port,       //  Port Number
-        mcps_type,  //  Message Type: Unconfirmed
-        om          //  Packet Buffer
-    );
+  //  Transmit the Packet Buffer
+  rc = lora_app_port_send(
+    port,       //  Port Number
+    mcps_type,  //  Message Type: Unconfirmed
+    om          //  Packet Buffer
+  );
 ```
 
 __`las_cmd_app_tx`__ does the following...
@@ -867,18 +867,18 @@ Now we hop from the Demo Firmware into the __Application Layer__ of the LoRaWAN 
 ```c
 /// Send a LoRaWAN Packet to a LoRaWAN Port
 int lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om) {
-    ...
-    //  Find the LoRaWAN port
-    lap = lora_app_port_find_open(port);
+  ...
+  //  Find the LoRaWAN port
+  lap = lora_app_port_find_open(port);
 
-    //  Set the header in the Packet Buffer
-    lpkt = (struct lora_pkt_info *) get_pbuf_header(om, sizeof(struct lora_pkt_info));
-    lpkt->port     = port;
-    lpkt->pkt_type = pkt_type;
-    lpkt->txdinfo.retries = lap->retries;
+  //  Set the header in the Packet Buffer
+  lpkt = (struct lora_pkt_info *) get_pbuf_header(om, sizeof(struct lora_pkt_info));
+  lpkt->port     = port;
+  lpkt->pkt_type = pkt_type;
+  lpkt->txdinfo.retries = lap->retries;
 
-    //  Call the Node Layer to transmit the Packet Buffer
-    lora_node_mcps_request(om);
+  //  Call the Node Layer to transmit the Packet Buffer
+  lora_node_mcps_request(om);
 ```
 
 __`lora_app_port_send`__ transmits the Packet Buffer by calling `lora_node_mcps_request`.
@@ -888,13 +888,13 @@ Again we hop, from the Application Layer to the __Node Layer__: [`lora_node.c`](
 ```c
 /// Transmit a LoRaWAN Packet by adding it to the Transmit Queue
 void lora_node_mcps_request(struct pbuf *om) {
-    ...
-    //  Add the Packet Buffer to the Transmit Queue
-    rc = pbuf_queue_put(
-        &g_lora_mac_data.lm_txq,  //  Transmit Queue
-        g_lora_mac_data.lm_evq,   //  Event Queue
-        om                        //  Packet Buffer
-    );
+  ...
+  //  Add the Packet Buffer to the Transmit Queue
+  rc = pbuf_queue_put(
+    &g_lora_mac_data.lm_txq,  //  Transmit Queue
+    g_lora_mac_data.lm_evq,   //  Event Queue
+    om                        //  Packet Buffer
+  );
 ```
 
 __`lora_node_mcps_request`__ adds the Packet Buffer to the __Transmit Queue__, the queue for outgoing packets.
@@ -906,14 +906,14 @@ The __Background Process__ receives the Packet Buffer from the Transmit Queue: [
 ```c
 /// Process a LoRaWAN Packet from the Transmit Queue
 static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
-    ...
-    //  Get the next Packet Buffer from the Transmit Queue.
-    //  STAILQ_FIRST returns the first node of the linked list
-    //  See https://github.com/lupyuen/lorawan/blob/main/include/node/bsd_queue.h
-    mp = STAILQ_FIRST(&g_lora_mac_data.lm_txq.mq_head);
-    ...
-    //  Call the Medium Access Layer to transmit the Packet Buffer
-    rc = LoRaMacMcpsRequest(om, lpkt);
+  ...
+  //  Get the next Packet Buffer from the Transmit Queue.
+  //  STAILQ_FIRST returns the first node of the linked list
+  //  See https://github.com/lupyuen/lorawan/blob/main/include/node/bsd_queue.h
+  mp = STAILQ_FIRST(&g_lora_mac_data.lm_txq.mq_head);
+  ...
+  //  Call the Medium Access Layer to transmit the Packet Buffer
+  rc = LoRaMacMcpsRequest(om, lpkt);
 ```
 
 (Hang in there... We're almost done!)
@@ -923,9 +923,9 @@ __`lora_mac_proc_tx_q_event`__ passes the Packet Buffer to the __Medium Access C
 ```c
 /// Transmit the Packet Buffer
 LoRaMacStatus_t LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi) {
-    ...
-    //  Send the Packet Buffer
-    status = Send(&macHdr, txi->port, om);
+  ...
+  //  Send the Packet Buffer
+  status = Send(&macHdr, txi->port, om);
 ```
 
 __`LoRaMacMcpsRequest`__ calls `Send` to transmit the packet.
