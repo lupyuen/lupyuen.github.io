@@ -593,7 +593,7 @@ static void on_tx_done(void) {
 }
 ```
 
-[(__RadioSleep__ is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109)
+[(__RadioSleep__ is explained here)](https://lupyuen.github.io/articles/usb#radiosleep-switch-to-sleep-mode)
 
 Here we log the number of packets transmitted, and put LoRa SX1262 into __low power, sleep mode__.
 
