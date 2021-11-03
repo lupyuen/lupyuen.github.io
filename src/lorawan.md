@@ -75,7 +75,7 @@ Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board
 
 ![BL602 Driver for RFM90 / SX1262](https://lupyuen.github.io/images/lorawan-transceiver.png)
 
-1.  [__Radio Interface: `radio.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c)
+1.  [__Radio Interface: `radio.c`__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c)
 
     Exposes the LoRa Radio Functions that will initialise the transceiver (`RadioInit`), send a LoRa Packet (`RadioSend`) and receive a LoRa Packet (`RadioRx`).
 
@@ -89,13 +89,13 @@ Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board
 
     [(`RadioRx` is explained here)](https://lupyuen.github.io/articles/usb#radiorx-receive-message)
 
-1.  [__Transceiver Interface: `sx126x.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c)
+1.  [__Transceiver Interface: `sx126x.c`__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c)
 
     Provides the functions specific to the SX1262 Transceiver: `SX126xInit`, `SX126xSendPayload`, `SX126xSetRx`, ...
 
     Called by the Radio Interface.
 
-1.  [__Board Interface: `sx126x-board.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c)
+1.  [__Board Interface: `sx126x-board.c`__](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c)
 
     Exposes the functions specific to our BL602 Board: __SPI, GPIO, Events and Timers.__
 
@@ -252,21 +252,21 @@ Finally we set the __LoRa Receive Parameters__...
 }
 ```
 
-The "`Radio`" functions are defined in [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c) ...
+The "`Radio`" functions are defined in [`radio.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c) ...
 
--   [__`RadioInit`:__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L559) Init LoRa Transceiver
+-   [__`RadioInit`:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L559) Init LoRa Transceiver
 
     [(`RadioInit` is explained here)](https://lupyuen.github.io/articles/usb#radioinit-initialise-lora-module)
 
--   [__`RadioSetChannel`:__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L600-L604) Set LoRa Frequency
+-   [__`RadioSetChannel`:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L600-L604) Set LoRa Frequency
 
     [(`RadioSetChannel` is explained here)](https://lupyuen.github.io/articles/usb#radiosetchannel-set-lora-frequency)
 
--   [__`RadioSetTxConfig`:__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L788-L908) Set LoRa Transmit Configuration
+-   [__`RadioSetTxConfig`:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L788-L908) Set LoRa Transmit Configuration
 
     [(`RadioSetTxConfig` is explained here)](https://lupyuen.github.io/articles/usb#radiosettxconfig-set-transmit-configuration)
 
--   [__`RadioSetRxConfig`:__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L661-L786) Set LoRa Receive Configuration
+-   [__`RadioSetRxConfig`:__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L661-L786) Set LoRa Receive Configuration
 
     [(`RadioSetRxConfig` is explained here)](https://lupyuen.github.io/articles/usb#radiosetrxconfig-set-receive-configuration)
 
@@ -346,7 +346,7 @@ static void on_tx_done(void) {
 
 Here we log the number of packets transmitted, and put the LoRa Transceiver to low power, sleep mode.
 
-[(`RadioSleep` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L1100-L1109)
+[(`RadioSleep` is defined here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109)
 
 ## Receive LoRa Packet
 
@@ -1419,7 +1419,7 @@ I might have connected the RFM90 pins incorrectly. The Semtech docs refer to __D
 
 ![SX1262: DC-DC vs LDO](https://lupyuen.github.io/images/lorawan-ldo.png)
 
-Our RFM90 / SX1262 LoRa Transceiver Driver is currently set to __DC-DC Power Regulator Mode__: [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L535-L543)
+Our RFM90 / SX1262 LoRa Transceiver Driver is currently set to __DC-DC Power Regulator Mode__: [`radio.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L535-L543)
 
 ```c
 //  TODO: Declare the power regulation used to power the device
@@ -1437,7 +1437,7 @@ SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC
 
 ## Transmit Power
 
-I have increased the __Transmit Power to max 22 dBm__. Also I have increased the __Power Amplifier Ramp Up Time__ from 200 to the max 3,400 microseconds: [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L546-L547)
+I have increased the __Transmit Power to max 22 dBm__. Also I have increased the __Power Amplifier Ramp Up Time__ from 200 to the max 3,400 microseconds: [`radio.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L546-L547)
 
 ```c
 //  Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );
@@ -1456,7 +1456,7 @@ paLut=1
 
 ## Over Current Protection
 
-I copied this __Over Current Protection__ setting from WisBlock RAK4631 (which is also based on Semtech SX1262): [`sx126x.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c#L570-L571)
+I copied this __Over Current Protection__ setting from WisBlock RAK4631 (which is also based on Semtech SX1262): [`sx126x.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L570-L571)
 
 ```c
 //  TODO: Set the current max value in the over current protection.
@@ -1786,7 +1786,7 @@ alloc_pbuf(
 
 Here's how our LoRa Transceiver Driver __initialises the BL602 SPI Port__ by calling the __BL602 SPI Hardware Abstraction Layer (HAL)__...
 
-From [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L166-L197)
+From [`sx126x-board.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L166-L197)
 
 ```c
 /// SPI Device Instance
@@ -1821,7 +1821,7 @@ void SX126xIoInit( void ) {
 }
 ```
 
-[(The pins are defined in `sx126x-board.h`)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L61)
+[(The pins are defined in `sx126x-board.h`)](https://github.com/lupyuen/lora-sx1262/blob/master/include/sx126x-board.h#L36-L61)
 
 The BL602 SPI HAL is explained in the article...
 
@@ -1831,7 +1831,7 @@ Note that the __SPI Polarity-Phase__ has been modified. [(More about this)](http
 
 Here's how our LoRa Transceiver Driver calls the BL602 SPI HAL to __transmit and receive a single byte__ to RFM90 / SX1262...
 
-From [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L120-L164)
+From [`sx126x-board.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L120-L164)
 
 ```c
 /// SPI Transmit Buffer (1 byte)
@@ -1881,7 +1881,7 @@ The LoRa Transceiver (RFM90 / SX1262) triggers a __GPIO Interrupt__ on BL602 whe
 
 ![GPIO Interrupt Handler](https://lupyuen.github.io/images/lorawan-interrupt.png)
 
-Our LoRa Transceiver Driver handles this GPIO Interrupt by registering a __GPIO Interrupt Handler__ like so: [`radio.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/radio.c#L523-L532)
+Our LoRa Transceiver Driver handles this GPIO Interrupt by registering a __GPIO Interrupt Handler__ like so: [`radio.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L523-L532)
 
 ```c
 /// Init the LoRa Transceiver
@@ -1892,7 +1892,7 @@ void RadioInit( RadioEvents_t *events ) {
 
 __`RadioOnDioIrq`__ is the function that will handle the GPIO Interrupt. [(See this)](https://lupyuen.github.io/articles/usb#radioondioirq)
 
-__`SX126xInit`__ is defined in [`sx126x.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x.c#L112-L131) ...
+__`SX126xInit`__ is defined in [`sx126x.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x.c#L112-L131) ...
 
 ```c
 /// Init the SX1262 LoRa Transceiver
@@ -1902,7 +1902,7 @@ void SX126xInit( DioIrqHandler dioIrq ) {
     SX126xIoIrqInit( dioIrq );
 ```
 
-We call __`SX126xIoIrqInit`__ to set `RadioOnDioIrq` as the GPIO Handler Function: [`sx126x-board.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lora-sx1262/src/sx126x-board.c#L199-L232)
+We call __`SX126xIoIrqInit`__ to set `RadioOnDioIrq` as the GPIO Handler Function: [`sx126x-board.c`](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L199-L232)
 
 ```c
 /// Initialise GPIO Pins and SPI Port. Register GPIO Interrupt Handler for DIO1.
