@@ -1556,7 +1556,7 @@ Now that we have a __Basic LoRa Driver for PineDio USB__, we can explore all kin
 
     (So we can connect Pinebook Pro to [__The Things Network__](https://lupyuen.github.io/articles/ttn) and [__Helium__](https://www.helium.com/lorawan))
 
-    [(We'll port the BL602 LoRaWAN Driver to Linux)](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/lorawan)
+    [(We'll port the BL602 LoRaWAN Driver to Linux)](https://github.com/lupyuen/lorawan)
 
 1.  Explore __LoRa Mesh Networks__ for PineDio USB...
 

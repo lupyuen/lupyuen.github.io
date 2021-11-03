@@ -454,7 +454,7 @@ We've seen the LoRa Transceiver Driver (for RFM90 / SX1262)... Now let's watch h
 
 The __BL602 Driver for LoRaWAN__ is located here...
 
--   [`components/3rdparty/lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/components/3rdparty/lorawan)
+-   [`components/3rdparty/lorawan`](https://github.com/lupyuen/lorawan)
 
 We shall study the source code and learn how the LoRaWAN Driver is called by our demo firmware to __join the LoRaWAN Network and transmit data packets__...
 

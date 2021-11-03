@@ -125,7 +125,7 @@ To test LoRaWAN on PineDio Stack we shall run this __LoRaWAN Firmware__...
 
 Which calls the following __LoRaWAN and SX1262 Drivers__...
 
--   [__`lorawan` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lorawan)
+-   [__`lorawan` Driver__](https://github.com/lupyuen/lorawan)
 
 -   [__`lora-sx1262` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262)
 

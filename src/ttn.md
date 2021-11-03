@@ -261,7 +261,7 @@ This is the __Source Code__ for our LoRaWAN Firmware...
 
 Which calls the following __LoRaWAN and SX1262 Drivers__...
 
--   [__`lorawan` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lorawan)
+-   [__`lorawan` Driver__](https://github.com/lupyuen/lorawan)
 
 -   [__`lora-sx1262` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262)
 
