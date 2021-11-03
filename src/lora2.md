@@ -2013,7 +2013,7 @@ Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
 
 We're now refactoring the LoRa Firmware Source Code from this article to create __reusable BL602 Libraries__...
 
-1.  [__BL602 Library for LoRa SX1276 Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/lora-sx1276)
+1.  [__BL602 Library for LoRa SX1276 Driver__](https://github.com/lupyuen/lora-sx1276)
 
 1.  [__BL602 Library for NimBLE Porting Layer__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/3rdparty/nimble-porting-layer)
 
