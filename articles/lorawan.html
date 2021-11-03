@@ -356,7 +356,7 @@ static void on_tx_done(void) {
     Radio.Sleep();
 }</code></pre></div>
 <p>Here we log the number of packets transmitted, and put the LoRa Transceiver to low power, sleep mode.</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109">(<code>RadioSleep</code> is defined here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radiosleep-switch-to-sleep-mode">(<code>RadioSleep</code> is explained here)</a></p>
 <h2 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">2.5 Receive LoRa Packet</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver calls the LoRa Driver to receive LoRa Packets, when we run the <code>las_join</code> and <code>las_app_tx</code> commands. Skip this section if we’re using LoRaWAN to receive data.)</p>
 <p>Here’s how the <code>receive_message</code> command in our Demo Firmware receives a LoRa Packet: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252"><code>demo.c</code></a></p>

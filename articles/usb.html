@@ -557,7 +557,7 @@ static void on_tx_done(void) {
   //  low power, sleep mode
   Radio.Sleep();
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L1100-L1109">(<strong>RadioSleep</strong> is defined here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/usb#radiosleep-switch-to-sleep-mode">(<strong>RadioSleep</strong> is explained here)</a></p>
 <p>Here we log the number of packets transmitted, and put LoRa SX1262 into <strong>low power, sleep mode</strong>.</p>
 <p>Note: <strong>on_tx_done</strong> won’t actually be called in our current driver, because we haven’t implemented Multithreading. (More about this later)</p>
 <p>To handle Transmit Timeout Errors, we define the Callback Function <strong>on_tx_timeout</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L300-L312">main.c</a></p>
