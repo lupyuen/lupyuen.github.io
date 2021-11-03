@@ -466,23 +466,23 @@ Our BL602 Driver for LoRaWAN has layers (like Onions, Shrek and Kueh Lapis): __A
 
 ![BL602 LoRaWAN Driver](https://lupyuen.github.io/images/lorawan-driver.png)
 
-1.  [__Application Layer: `lora_app.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c)
+1.  [__Application Layer: `lora_app.c`__](https://github.com/lupyuen/lorawan/blob/main/src/lora_app.c)
 
     The __Application Layer__ exposes functions for our Demo Firmware to...
     
-    -   Join the LoRaWAN Network: [__`lora_app_join`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L408-L437)
+    -   Join the LoRaWAN Network: [__`lora_app_join`__](https://github.com/lupyuen/lorawan/blob/main/src/lora_app.c#L408-L437)
     
-    -   Open a LoRaWAN Application Port: [__`lora_app_port_open`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205)
+    -   Open a LoRaWAN Application Port: [__`lora_app_port_open`__](https://github.com/lupyuen/lorawan/blob/main/src/lora_app.c#L148-L205)
     
-    -   Transmit a LoRaWAN Data Packet: [__`lora_app_port_send`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304)
+    -   Transmit a LoRaWAN Data Packet: [__`lora_app_port_send`__](https://github.com/lupyuen/lorawan/blob/main/src/lora_app.c#L262-L304)
 
-1.  [__Node Layer: `lora_node.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c)
+1.  [__Node Layer: `lora_node.c`__](https://github.com/lupyuen/lorawan/blob/main/src/lora_node.c)
 
     The __Node Layer__ is called by the Application Layer to handle LoRaWAN Networking requests.
 
     The Node Layer channels the networking requests to the Medium Access Control Layer via an __Event Queue__ (provided by the NimBLE Porting Layer).
 
-1.  [__Medium Access Control Layer: `LoRaMac.c`__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c)
+1.  [__Medium Access Control Layer: `LoRaMac.c`__](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c)
 
     The __Medium Access Control Layer__ implements the LoRaWAN Networking functions by calling the LoRa Transceiver Driver (for RFM90 / SX1262).
 
@@ -492,7 +492,7 @@ Our BL602 Driver for LoRaWAN has layers (like Onions, Shrek and Kueh Lapis): __A
 
     The Medium Access Control Layer runs as a __Background Task__, communicating with the Node Layer in a queued, asynchronous way via an Event Queue.
 
-1.  We're not using the __Command-Line Interface__ [`lora_cli.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_cli.c) that's bundled with our LoRaWAN Driver.
+1.  We're not using the __Command-Line Interface__ [`lora_cli.c`](https://github.com/lupyuen/lorawan/blob/main/src/lora_cli.c) that's bundled with our LoRaWAN Driver.
 
     Instead we're using the Command-Line Interface that's coded inside our Demo Firmware.
 
@@ -542,7 +542,7 @@ To join a LoRaWAN Network we need to have 3 things in our BL602 firmware...
 
 How do we get the Device EUI, Application EUI and Application Key? We'll find out in a while.
 
-__`lora_app_join`__ is defined in the __Application Layer__ of our LoRaWAN Driver: [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L408-L437)
+__`lora_app_join`__ is defined in the __Application Layer__ of our LoRaWAN Driver: [`lora_app.c`](https://github.com/lupyuen/lorawan/blob/main/src/lora_app.c#L408-L437)
 
 ```c
 /// Send a Join Network Request
@@ -556,7 +556,7 @@ int lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t 
 
 Here we validate the parameters and call `lora_node_join`.
 
-Now we hop over from the Application Layer to the __Node Layer__: [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L473-L503)
+Now we hop over from the Application Layer to the __Node Layer__: [`lora_node.c`](https://github.com/lupyuen/lorawan/blob/main/src/lora_node.c#L473-L503)
 
 ```c
 /// Perform the join process
@@ -579,7 +579,7 @@ int lora_node_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t
 
 Here we're passing a Join Event to the __Event Queue__ that's provided by the NimBLE Porting Layer.
 
-Again we hop, from the Node Layer to the __Medium Access Control Layer__: [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3086-L3139)
+Again we hop, from the Node Layer to the __Medium Access Control Layer__: [`LoRaMac.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L3086-L3139)
 
 ```c
 /// Background Task that handles the Event Queue
@@ -597,7 +597,7 @@ __`LoRaMacMlmeRequest`__ runs as a __FreeRTOS Background Task__, processing the 
 
 (That's how the Node Layer and the Medium Access Control Layer collaborate asynchronously)
 
-`LoRaMacMlmeRequest` calls __`Send`__ to compose and transmit the Join Request as a LoRa Packet: [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954)
+`LoRaMacMlmeRequest` calls __`Send`__ to compose and transmit the Join Request as a LoRa Packet: [`LoRaMac.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L1932-L1954)
 
 ```c
 //  Compose and send a packet
@@ -612,7 +612,7 @@ LoRaMacStatus_t Send(LoRaMacHeader_t *macHdr, uint8_t fPort, struct pbuf *om) {
 
 The call chain goes...
 
-[`Send`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1932-L1954) → [`ScheduleTx`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L1956-L2062) → [`SendFrameOnChannel`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2379-L2426) → [`RadioSend`](https://lupyuen.github.io/articles/usb#radiosend-transmit-message)
+[`Send`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L1932-L1954) → [`ScheduleTx`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L1956-L2062) → [`SendFrameOnChannel`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L2379-L2426) → [`RadioSend`](https://lupyuen.github.io/articles/usb#radiosend-transmit-message)
 
 Eventually the Medium Access Control Layer calls [__`RadioSend`__](https://lupyuen.github.io/articles/usb#radiosend-transmit-message) (from our LoRa Transceiver Driver) to transmit the Join Request.
 
@@ -632,7 +632,7 @@ We've sent a Join Network Request to the LoRaWAN Gateway... Now we need to __wai
 
 The Medium Access Control Layer calls [__`RadioRx`__](https://lupyuen.github.io/articles/usb#radiorx-receive-message) (from the LoRa Transceiver Driver) to receive the response packet.
 
-When the packet is received, the LoRa Transceiver Driver calls this Callback Function: __`OnRadioRxDone`__ in [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L299-L323)
+When the packet is received, the LoRa Transceiver Driver calls this Callback Function: __`OnRadioRxDone`__ in [`LoRaMac.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L299-L323)
 
 ```c
 /// Callback Function that's called when we receive a LoRa Packet
@@ -650,7 +650,7 @@ static void OnRadioRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t 
 
 __`OnRadioRxDone`__ adds the __Receive Event__ to the Event Queue for background processing.
 
-Our __Background Task__ receives the Receive Event from the Event Queue and processes the event: [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L906-L988)
+Our __Background Task__ receives the Receive Event from the Event Queue and processes the event: [`LoRaMac.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L906-L988)
 
 ```c
 /// Process the Receive Event
@@ -679,7 +679,7 @@ static void lora_mac_process_radio_rx(struct ble_npl_event *ev) {
 
 __`lora_mac_process_radio_rx`__ handles the Join Accept Response by calling __`lora_mac_join_accept_rxd`__ ...
 
-From [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L574-L667) :
+From [`LoRaMac.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L574-L667) :
 
 ```c
 /// Process the Join Accept Response
@@ -767,7 +767,7 @@ __`las_cmd_app_port`__ calls our LoRaWAN Driver to open the LoRaWAN Port and pro
 
 -   __`lora_app_shell_rxd_func`__: Called when a LoRaWAN Packet has been received
 
-Here's how our LoRaWAN Driver opens the LoRaWAN Port: [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L148-L205)
+Here's how our LoRaWAN Driver opens the LoRaWAN Port: [`lora_app.c`](https://github.com/lupyuen/lorawan/blob/main/src/lora_app.c#L148-L205)
 
 ```c
 /// Open a LoRaWAN Application Port. This function will 
@@ -862,7 +862,7 @@ __`las_cmd_app_tx`__ does the following...
 
 We use __Packet Buffers__ in the LoRaWAN Driver because they are more efficient for passing packets around. (More about Packet Buffers in the Appendix)
 
-Now we hop from the Demo Firmware into the __Application Layer__ of the LoRaWAN Driver: [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L262-L304)
+Now we hop from the Demo Firmware into the __Application Layer__ of the LoRaWAN Driver: [`lora_app.c`](https://github.com/lupyuen/lorawan/blob/main/src/lora_app.c#L262-L304)
 
 ```c
 /// Send a LoRaWAN Packet to a LoRaWAN Port
@@ -883,7 +883,7 @@ int lora_app_port_send(uint8_t port, Mcps_t pkt_type, struct pbuf *om) {
 
 __`lora_app_port_send`__ transmits the Packet Buffer by calling `lora_node_mcps_request`.
 
-Again we hop, from the Application Layer to the __Node Layer__: [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L142-L159)
+Again we hop, from the Application Layer to the __Node Layer__: [`lora_node.c`](https://github.com/lupyuen/lorawan/blob/main/src/lora_node.c#L142-L159)
 
 ```c
 /// Transmit a LoRaWAN Packet by adding it to the Transmit Queue
@@ -901,7 +901,7 @@ __`lora_node_mcps_request`__ adds the Packet Buffer to the __Transmit Queue__, t
 
 (Our Transmit Queue is implemented as a __Packet Buffer Queue__. More about Packet Buffer Queues in the Appendix.)
 
-The __Background Process__ receives the Packet Buffer from the Transmit Queue: [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L265-L413)
+The __Background Process__ receives the Packet Buffer from the Transmit Queue: [`lora_node.c`](https://github.com/lupyuen/lorawan/blob/main/src/lora_node.c#L265-L413)
 
 ```c
 /// Process a LoRaWAN Packet from the Transmit Queue
@@ -909,7 +909,7 @@ static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
     ...
     //  Get the next Packet Buffer from the Transmit Queue.
     //  STAILQ_FIRST returns the first node of the linked list
-    //  See https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/bsd_queue.h
+    //  See https://github.com/lupyuen/lorawan/blob/main/include/node/bsd_queue.h
     mp = STAILQ_FIRST(&g_lora_mac_data.lm_txq.mq_head);
     ...
     //  Call the Medium Access Layer to transmit the Packet Buffer
@@ -918,7 +918,7 @@ static void lora_mac_proc_tx_q_event(struct ble_npl_event *ev) {
 
 (Hang in there... We're almost done!)
 
-__`lora_mac_proc_tx_q_event`__ passes the Packet Buffer to the __Medium Access Control Layer__ (yep another hop): [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L3159-L3239)
+__`lora_mac_proc_tx_q_event`__ passes the Packet Buffer to the __Medium Access Control Layer__ (yep another hop): [`LoRaMac.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L3159-L3239)
 
 ```c
 /// Transmit the Packet Buffer
@@ -1489,7 +1489,7 @@ CFLAGS += -DLORA_NODE_PUBLIC_NWK=1
 
 ![LORA_NODE_PUBLIC_NWK in Makefile](https://lupyuen.github.io/images/lorawan-syncword.png)
 
-`LORA_NODE_PUBLIC_NWK` sets the Sync Word in [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2581-L2587) ...
+`LORA_NODE_PUBLIC_NWK` sets the Sync Word in [`LoRaMac.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L2581-L2587) ...
 
 ```c
 //  Syncword for Private LoRa networks
@@ -1546,7 +1546,7 @@ _What is LoRa Carrier Sensing?_
 
 In some LoRa Regions (Japan and South Korea), devices are required (by local regulation) to __sense whether the Radio Channel is in use before transmitting__.
 
-Here's the Carrier Sensing logic from the Mynewt LoRaWAN Stack: [`RegionAS923.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.c#L978-L1095)
+Here's the Carrier Sensing logic from the Mynewt LoRaWAN Stack: [`RegionAS923.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/region/RegionAS923.c#L978-L1095)
 
 ![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier2.png)
 
@@ -1560,7 +1560,7 @@ Yes, but Mynewt's version of the LoRaWAN Stack (from 2017) applies Carrier Sensi
 
 ![LoRa Carrier Sensing](https://lupyuen.github.io/images/lorawan-carrier.png)
 
-Unfortunately the Carrier Sensing code doesn't work, so __Carrier Sensing has been disabled in the BL602 LoRaWAN Driver__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.c#L1026-L1029)
+Unfortunately the Carrier Sensing code doesn't work, so __Carrier Sensing has been disabled in the BL602 LoRaWAN Driver__. [(See this)](https://github.com/lupyuen/lorawan/blob/main/src/mac/region/RegionAS923.c#L1026-L1029)
 
 (My apologies to BL602 Fans in Japan and South Korea, we will have to fix this 🙏)
 
@@ -1568,7 +1568,7 @@ After disabling the Carrier Sensing I hit a RISC-V Exception...
 
 ![Carrier Sensing Stack Trace](https://lupyuen.github.io/images/lorawan-stack.png)
 
-Which I traced (via the RISC-V Disassembly) to a Null Pointer problem in [`LoRaMac.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/LoRaMac.c#L2379-L2426) ...
+Which I traced (via the RISC-V Disassembly) to a Null Pointer problem in [`LoRaMac.c`](https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L2379-L2426) ...
 
 ![Null pointer exception](https://lupyuen.github.io/images/lorawan-nullpointer.png)
 
@@ -1578,7 +1578,7 @@ The __LoRa Region Settings seem to have major differences__ across the 3 LoRaWAN
 
 Check out the __LoRa Region Settings for AS923__ across the 3 LoRaWAN Stacks...
 
-1.  [__BL602 LoRaWAN Stack: AS923__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/mac/region/RegionAS923.h)
+1.  [__BL602 LoRaWAN Stack: AS923__](https://github.com/lupyuen/lorawan/blob/main/src/mac/region/RegionAS923.h)
 
 1.  [__SX126x-Arduino: AS923__](https://github.com/beegee-tokyo/SX126x-Arduino/blob/master/src/mac/region/RegionAS923.h)
 
@@ -1614,7 +1614,7 @@ header = get_pbuf_header(
 
 `pbuf` Packet Buffers have an unusual __Sliding Payload Pointer__ for extracting the header. 
 
-Here's how we implement `get_pbuf_header` in [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L165-L197) ...
+Here's how we implement `get_pbuf_header` in [`pbuf_queue.c`](https://github.com/lupyuen/lorawan/blob/main/src/pbuf_queue.c#L165-L197) ...
 
 ```c
 /// Return the pbuf Packet Buffer header
@@ -1660,7 +1660,7 @@ __`pbuf_add_header`__ comes from the Lightweight IP Library. It slides the `payl
 
 Because this code __mutates the Payload Pointer__, we need to be extra careful when extracting the header.
 
-[(Note: Critical Sections are needed for `pbuf_add_header` to work correctly during multitasking... But Critical Sections have not been implemented yet)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30)
+[(Note: Critical Sections are needed for `pbuf_add_header` to work correctly during multitasking... But Critical Sections have not been implemented yet)](https://github.com/lupyuen/lorawan/blob/main/src/pbuf_queue.c#L27-L30)
 
 ## Packet Buffer Queue
 
@@ -1670,7 +1670,7 @@ The Lightweight IP Stack doesn't have the equivalent of Mqueues, so we build our
 
 A __`pbuf_queue`__ Packet Buffer Queue is a __First-In First-Out List of Packet Buffers__. It supports these operations...
 
-From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L210-L322) 
+From [`pbuf_queue.c`](https://github.com/lupyuen/lorawan/blob/main/src/pbuf_queue.c#L210-L322) 
 
 ```c
 //  Initializes a pbuf_queue.  A pbuf_queue is a queue of pbufs that ties to a
@@ -1695,7 +1695,7 @@ To build a __Linked List__ of Packet Buffers, we insert a __`pbuf_list` Header__
 
 The `pbuf_list` Header points to the next Packet Buffer in the __Singly-Linked List__...
 
-From [`pbuf_queue.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58)
+From [`pbuf_queue.h`](https://github.com/lupyuen/lorawan/blob/main/include/node/pbuf_queue.h#L29-L58)
 
 ```c
 //  Structure representing a list of pbufs inside a pbuf_queue.
@@ -1713,7 +1713,7 @@ struct pbuf_list {
     struct pbuf *payload;
     //  Pointer to next node in the pbuf_list
     STAILQ_ENTRY(pbuf_list) next;
-    //  STAILQ_ENTRY is defined in https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/bsd_queue.h
+    //  STAILQ_ENTRY is defined in https://github.com/lupyuen/lorawan/blob/main/include/node/bsd_queue.h
 };
 ```
 
@@ -1723,7 +1723,7 @@ The __`next`__ field lets us link up the Packet Buffers like so...
 
 Here's how we __allocate a Packet Buffer__ and initialise both headers: `pbuf_list` Header and LoRaWAN Header...
 
-From [`pbuf_queue.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L38-L98)
+From [`pbuf_queue.c`](https://github.com/lupyuen/lorawan/blob/main/src/pbuf_queue.c#L38-L98)
 
 ```c
 /// Allocate a pbuf for LoRaWAN transmission. This returns a pbuf with 
@@ -1780,7 +1780,7 @@ alloc_pbuf(
 }
 ```
 
-[(Note: Critical Sections are needed for `pbuf_queue_get` and `pbuf_queue_put` to work correctly during multitasking... But Critical Sections have not been implemented yet)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/pbuf_queue.c#L27-L30)
+[(Note: Critical Sections are needed for `pbuf_queue_get` and `pbuf_queue_put` to work correctly during multitasking... But Critical Sections have not been implemented yet)](https://github.com/lupyuen/lorawan/blob/main/src/pbuf_queue.c#L27-L30)
 
 # Appendix: BL602 SPI Functions
 
