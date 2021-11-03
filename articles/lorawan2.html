@@ -140,7 +140,7 @@
 <p><a href="https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names">(More about SDO and SDI)</a></p>
 <p>We set the <strong>Chip Select Pin (CS)</strong> to Low to select the <strong>Active SPI Device</strong>: Either LoRa SX1262, SPI Flash or ST7789 Display…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi.jpg" alt="SPI Bus on PineDio Stack" /></p>
-<p>To test the LoRa SX1262 Transceiver, we define the <strong>GPIO Pin Numbers</strong> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50">lora-sx1262/sx126x-board.h</a></p>
+<p>To test the LoRa SX1262 Transceiver, we define the <strong>GPIO Pin Numbers</strong> like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/include/sx126x-board.h#L36-L50">lora-sx1262/sx126x-board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Below are the pin numbers for PineDio Stack BL604 with onboard SX1262.
 #define SX126X_SPI_IDX           0  //  SPI Port 0
 #define SX126X_SPI_SDI_PIN       0  //  SPI Serial Data In Pin  (formerly MISO)
@@ -209,7 +209,7 @@ int deselect_spi(void) {
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173">(Source)</a></p>
 <h2 id="swap-spi-pins" class="section-header"><a href="#swap-spi-pins">2.2 Swap SPI Pins</a></h2>
 <p>Due to a quirk in the SPI implementation on BL602 and BL604, we need to <strong>swap the SPI Pins</strong> for SDI <em>(formerly MISO)</em> and SDO <em>(formerly MOSI)</em>.</p>
-<p>We do this by calling <strong>GLB_Swap_SPI_0_MOSI_With_MISO</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202">lora-sx1262/sx126x-board.c</a> …</p>
+<p>We do this by calling <strong>GLB_Swap_SPI_0_MOSI_With_MISO</strong> in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L168-L202">lora-sx1262/sx126x-board.c</a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
 void SX126xIoInit( void ) {
   //  Configure the pins for GPIO Input / Output
@@ -249,7 +249,7 @@ void SX126xIoInit( void ) {
 <li><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus"><strong>“SPI Phase looks sus”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan2-swap.png" alt="Swap SPI Pins and tweak the SPI Polarity-Phase" /></p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L168-L202">(Source)</a></p>
 <h1 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3 Run The Firmware</a></h1>
 <p>We <strong>build, flash and run the LoRaWAN Firmware</strong> for PineDio Stack with these steps…</p>
 <ol>
