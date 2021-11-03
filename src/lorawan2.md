@@ -87,7 +87,7 @@ We set the __Chip Select Pin (CS)__ to Low to select the __Active SPI Device__: 
 
 ![SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi.jpg)
 
-To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so: [lora-sx1262/sx126x-board.h](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/include/sx126x-board.h#L36-L50)
+To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so: [lora-sx1262/sx126x-board.h](https://github.com/lupyuen/lora-sx1262/blob/master/include/sx126x-board.h#L36-L50)
 
 ```c
 //  Below are the pin numbers for PineDio Stack BL604 with onboard SX1262.
@@ -182,7 +182,7 @@ This function is called by the [__`init_lorawan` Command__](https://github.com/l
 
 Due to a quirk in the SPI implementation on BL602 and BL604, we need to __swap the SPI Pins__ for SDI _(formerly MISO)_ and SDO _(formerly MOSI)_.
 
-We do this by calling __GLB_Swap_SPI_0_MOSI_With_MISO__ in [lora-sx1262/sx126x-board.c](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202) ...
+We do this by calling __GLB_Swap_SPI_0_MOSI_With_MISO__ in [lora-sx1262/sx126x-board.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L168-L202) ...
 
 ```c
 /// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
@@ -233,7 +233,7 @@ This seems to be another quirk of the SPI implementation on BL602 and BL604...
 
 ![Swap SPI Pins and tweak the SPI Polarity-Phase](https://lupyuen.github.io/images/lorawan2-swap.png)
 
-[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/components/3rdparty/lora-sx1262/src/sx126x-board.c#L168-L202)
+[(Source)](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L168-L202)
 
 # Run The Firmware
 

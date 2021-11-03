@@ -14,7 +14,7 @@ Here's a solution: [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/a
 
 Today we shall __transmit some LoRa packets__ by connecting PineCone BL602 to a LoRa Transceiver: __Semtech SX1276__ or __Hope RF96__
 
-[__UPDATE: We have a new LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)... Check this out__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/lora-sx1262)
+[__UPDATE: We have a new LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)... Check this out__](https://github.com/lupyuen/lora-sx1262/blob/master)
 
 The LoRa Firmware in this article will run on __PineCone, Pinenut and Any BL602 Board__.
 

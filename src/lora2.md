@@ -28,7 +28,7 @@ The LoRa Firmware in this article will run on __PineCone, Pinenut and Any BL602 
 
 -   [__More about the 3 Levels of LoRa and LoRaWAN__](https://lupyuen.github.io/articles/lora#lora-vs-lorawan)
 
-[__UPDATE: We have a new LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)... Check this out__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/lora-sx1262)
+[__UPDATE: We have a new LoRa Driver for SX1262 (Pine64 RFM90 LoRa Module)... Check this out__](https://github.com/lupyuen/lora-sx1262/blob/master)
 
 ![PineCone BL602 RISC-V Board with Hope RF96 LoRa Transceiver (top) receives LoRa packets from RAKwireless WisBlock (bottom)](https://lupyuen.github.io/images/lora2-title.jpg)
 
