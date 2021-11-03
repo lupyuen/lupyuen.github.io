@@ -63,7 +63,7 @@ We shall configure BL602 to trigger a __GPIO Interrupt__ when Pin `DIO1` shifts 
 
 The __BL602 Driver for RFM90 / SX1262__ is located here...
 
--   [`components/3rdparty/lora-sx1262`](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262)
+-   [`components/3rdparty/lora-sx1262`](https://github.com/lupyuen/lora-sx1262)
 
 Let's study the source code and learn how the driver is called by our Demo Firmware to __transmit and receive LoRa Packets__...
 

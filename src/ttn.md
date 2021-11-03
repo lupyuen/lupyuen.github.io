@@ -263,7 +263,7 @@ Which calls the following __LoRaWAN and SX1262 Drivers__...
 
 -   [__`lorawan` Driver__](https://github.com/lupyuen/lorawan)
 
--   [__`lora-sx1262` Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/components/3rdparty/lora-sx1262)
+-   [__`lora-sx1262` Driver__](https://github.com/lupyuen/lora-sx1262)
 
 Follow these instructions to __build, flash and run__ the firmware...
 
