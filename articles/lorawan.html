@@ -502,7 +502,7 @@ void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
 </ol>
 <p>(EUI sounds like a Pungent Durian… But it actually means <a href="https://lora-developers.semtech.com/library/tech-papers-and-guides/the-book/deveui/"><strong>Extended Unique Identifier</strong></a>)</p>
 <p>How do we get the Device EUI, Application EUI and Application Key? We’ll find out in a while.</p>
-<p><strong><code>lora_app_join</code></strong> is defined in the <strong>Application Layer</strong> of our LoRaWAN Driver: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/a7ea4403ab39003bd7c1c71280e7ffb78426c3e0/components/3rdparty/lorawan/src/lora_app.c#L408-L437"><code>lora_app.c</code></a></p>
+<p><strong><code>lora_app_join</code></strong> is defined in the <strong>Application Layer</strong> of our LoRaWAN Driver: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L408-L437"><code>lora_app.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Send a Join Network Request
 int lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t trials) {
     //  Omitted: Validate the parameters
@@ -511,7 +511,7 @@ int lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t 
     //  Tell device to start join procedure
     int rc = lora_node_join(dev_eui, app_eui, app_key, trials);</code></pre></div>
 <p>Here we validate the parameters and call <code>lora_node_join</code>.</p>
-<p>Now we hop over from the Application Layer to the <strong>Node Layer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/b2e1635091fd539c11d56b125e36f8987c4c38e3/components/3rdparty/lorawan/src/lora_node.c#L473-L503"><code>lora_node.c</code></a></p>
+<p>Now we hop over from the Application Layer to the <strong>Node Layer</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L473-L503"><code>lora_node.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Perform the join process
 int lora_node_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t trials) {
     //  Omitted: Check if we have joined the network
@@ -1415,7 +1415,7 @@ int pbuf_queue_put(struct pbuf_queue *mq, struct ble_npl_eventq *evq, struct pbu
 <p><img src="https://lupyuen.github.io/images/lorawan-pbuf3.png" alt="pbuf Packet Buffer with pbuf_list header" /></p>
 <p>(Yes the Lightweight IP Stack allows multiple headers per Packet Buffer, because of the Sliding Payload Pointer)</p>
 <p>The <code>pbuf_list</code> Header points to the next Packet Buffer in the <strong>Singly-Linked List</strong>…</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/8f7109be292c1dbfd56ec27077d0ae83190e8376/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58"><code>pbuf_queue.h</code></a></p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58"><code>pbuf_queue.h</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Structure representing a list of pbufs inside a pbuf_queue.
 //  pbuf_list is stored in the header of the pbuf, before the LoRaWAN Header.
 struct pbuf_list {
