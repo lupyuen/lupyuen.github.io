@@ -1552,6 +1552,8 @@ Now that we have a __Basic LoRa Driver for PineDio USB__, we can explore all kin
 
     (So we can maintain a single LoRa Driver for for PineDio USB and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/lorawan2))
 
+    [__UPDATE__: We have merged PineDio USB Driver into BL602 IoT SDK!](https://github.com/lupyuen/bl_iot_sdk/commit/caae2d5219700df297411641be7286ada07f7804?diff=unified)
+
 1.  Implement __LoRaWAN on PineDio USB__
 
     (So we can connect Pinebook Pro to [__The Things Network__](https://lupyuen.github.io/articles/ttn) and [__Helium__](https://www.helium.com/lorawan))
@@ -1571,6 +1573,8 @@ Now that we have a __Basic LoRa Driver for PineDio USB__, we can explore all kin
     The Backplate connects PinePhone to __LoRa SX1262__ via __ATtiny84__... Which runs an [__Arduino I2C-To-SPI Bridge__](https://github.com/zschroeder6212/tiny-i2c-spi)!
 
     (Our PineDio USB Driver might run on PinePhone if we talk to I2C instead of SPI)
+
+    [(Check the updates here)](https://github.com/lupyuen/pinephone-lora)
 
 Lemme know what you would like to see!
 
