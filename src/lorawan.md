@@ -542,7 +542,7 @@ To join a LoRaWAN Network we need to have 3 things in our BL602 firmware...
 
 How do we get the Device EUI, Application EUI and Application Key? We'll find out in a while.
 
-__`lora_app_join`__ is defined in the __Application Layer__ of our LoRaWAN Driver: [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/a7ea4403ab39003bd7c1c71280e7ffb78426c3e0/components/3rdparty/lorawan/src/lora_app.c#L408-L437)
+__`lora_app_join`__ is defined in the __Application Layer__ of our LoRaWAN Driver: [`lora_app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_app.c#L408-L437)
 
 ```c
 /// Send a Join Network Request
@@ -556,7 +556,7 @@ int lora_app_join(uint8_t *dev_eui, uint8_t *app_eui, uint8_t *app_key, uint8_t 
 
 Here we validate the parameters and call `lora_node_join`.
 
-Now we hop over from the Application Layer to the __Node Layer__: [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/b2e1635091fd539c11d56b125e36f8987c4c38e3/components/3rdparty/lorawan/src/lora_node.c#L473-L503)
+Now we hop over from the Application Layer to the __Node Layer__: [`lora_node.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/src/lora_node.c#L473-L503)
 
 ```c
 /// Perform the join process
@@ -1695,7 +1695,7 @@ To build a __Linked List__ of Packet Buffers, we insert a __`pbuf_list` Header__
 
 The `pbuf_list` Header points to the next Packet Buffer in the __Singly-Linked List__...
 
-From [`pbuf_queue.h`](https://github.com/lupyuen/bl_iot_sdk/blob/8f7109be292c1dbfd56ec27077d0ae83190e8376/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58)
+From [`pbuf_queue.h`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/components/3rdparty/lorawan/include/node/pbuf_queue.h#L29-L58)
 
 ```c
 //  Structure representing a list of pbufs inside a pbuf_queue.
