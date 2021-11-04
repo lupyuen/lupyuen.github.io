@@ -121,7 +121,7 @@ We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [pi
 
 To test LoRaWAN on PineDio Stack we shall run this __LoRaWAN Firmware__...
 
--   [__`pinedio_lorawan` Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan)
+-   [__`pinedio_lorawan` Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan)
 
 Which calls the following __LoRaWAN and SX1262 Drivers__...
 
@@ -261,7 +261,7 @@ We'll talk to the __ChirpStack LoRaWAN Gateway__ that we have installed here...
 
 ![LoRaWAN Commands](https://lupyuen.github.io/images/lorawan2-commands.png)
 
-[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands)
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#lorawan-commands)
 
 ## LoRaWAN Commands
 
@@ -329,7 +329,7 @@ At the BL604 Command Prompt, enter these __LoRaWAN Commands__...
 
 We should see this in our PineDio Stack serial terminal...
 
--   [__Output Log for LoRaWAN Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#output-log)
+-   [__Output Log for LoRaWAN Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#output-log)
 
 -   [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=BMMIIiZG6G0)
 

@@ -257,7 +257,7 @@ Now we build, flash and run the __LoRaWAN Firmware__ for PineDio Stack!
 
 This is the __Source Code__ for our LoRaWAN Firmware...
 
--   [__`pinedio_lorawan` Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan)
+-   [__`pinedio_lorawan` Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan)
 
 Which calls the following __LoRaWAN and SX1262 Drivers__...
 
@@ -379,7 +379,7 @@ At the PineDio Stack Command Prompt, enter these commands to __join PineDio Stac
 
     [(`las_join` is explained here)](https://lupyuen.github.io/articles/lorawan#join-network-request)
 
-[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 
 ## We Are In!
 
@@ -421,7 +421,7 @@ At the PineDio Stack Command Prompt, enter these commands...
 
     [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/README.md#output-log)
 
-[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 
 Switch back to The Things Network.  Browse to our __Application__ and click __"`Live Data`"__ (in the left bar)
 
