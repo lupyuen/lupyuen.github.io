@@ -821,9 +821,9 @@ LoRaMacStatus_t LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi) {
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
 <p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan">LoRaWAN firmware and driver source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Download the lorawan branch of lupyuen&#39;s bl_iot_sdk
-git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
-<p>In the <code>customer_app/sdk_app_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
+<p>In the <code>customer_app/sdk_app_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
 <div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1</code></pre></div>
 <p>Change “<code>1</code>” to your LoRa Region…</p>
 <table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
@@ -862,7 +862,6 @@ make
 # TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_lorawan.bin ~/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<p>(Remember to use the <strong><code>lorawan</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">4.1 Flash the firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>

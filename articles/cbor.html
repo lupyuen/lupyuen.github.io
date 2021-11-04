@@ -676,8 +676,8 @@ void las_cmd_app_tx_cbor( ... ) {
 <p>(If we wish to add the TinyCBOR Library to an existing BL602 / BL604 project, check the next chapter)</p>
 <h2 id="build-cbor-firmware" class="section-header"><a href="#build-cbor-firmware">9.1 Build CBOR Firmware</a></h2>
 <p>Download the firmware…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Download the cbor branch of lupyuen&#39;s bl_iot_sdk
-git clone --recursive --branch cbor https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
 <p>Build the Firmware Binary File <code>pinedio_cbor.bin</code>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
@@ -689,7 +689,6 @@ make
 # TODO: Change ~/blflash to the full path of blflash
 cp build_out/pinedio_cbor.bin ~/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<p>(Remember to use the <strong><code>cbor</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-cbor-firmware" class="section-header"><a href="#flash-cbor-firmware">9.2 Flash CBOR Firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
@@ -839,9 +838,9 @@ include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk</code></pre></div>
 </ul>
 <h2 id="build-lorawan-firmware" class="section-header"><a href="#build-lorawan-firmware">11.1 Build LoRaWAN Firmware</a></h2>
 <p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan"><strong>LoRaWAN firmware and driver source code</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Download the cbor branch of lupyuen&#39;s bl_iot_sdk
-git clone --recursive --branch cbor https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
-<p>In the <code>customer_app/pinedio_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
+<p>In the <code>customer_app/pinedio_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
 <div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1</code></pre></div>
 <p>Change “<code>1</code>” to your LoRa Region…</p>
 <table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
@@ -871,7 +870,6 @@ make
 # TODO: Change ~/blflash to the full path of blflash
 cp build_out/pinedio_lorawan.bin ~/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<p>(Remember to use the <strong><code>cbor</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-lorawan-firmware" class="section-header"><a href="#flash-lorawan-firmware">11.2 Flash LoRaWAN Firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
