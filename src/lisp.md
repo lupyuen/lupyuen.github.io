@@ -102,7 +102,7 @@ Porting uLisp to BL602 (as a C library [`ulisp-bl602`](https://github.com/lupyue
 
 _What about porting the Arduino functions like `pinmode` and `digitalwrite`?_
 
-The [__BL602 IoT SDK__](https://github.com/lupyuen/bl_iot_sdk/tree/ulisp) doesn't have these GPIO functions. 
+The [__BL602 IoT SDK__](https://github.com/lupyuen/bl_iot_sdk/tree/master) doesn't have these GPIO functions. 
 
 So in BL602 uLisp we reimplemented these functions with the __BL602 Hardware Abstraction Layer for GPIO__.
 
@@ -122,11 +122,11 @@ In fact the uLisp Interpreter looks a little like __Wasm3__, the WebAssembly Int
 
 # Build the BL602 uLisp Firmware
 
-Download and build the [uLisp Firmware for BL602](https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp)...
+Download and build the [uLisp Firmware for BL602](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_ulisp)...
 
 ```bash
-## Download the ulisp branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch ulisp https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 
 ## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
@@ -141,8 +141,6 @@ cp build_out/sdk_app_ulisp.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`ulisp`__ branch, not the default __`master`__ branch)
 
 ## Flash the firmware
 
@@ -881,7 +879,7 @@ Not at all!
 
     Whereas on BL602, the __BL602 IoT SDK parses the Command Line__ for us.
 
-    Here's how we __define "`(`" as a Command Keyword__ in BL602: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L45-L48)
+    Here's how we __define "`(`" as a Command Keyword__ in BL602: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L45-L48)
 
     ```c
     /// List of commands. STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
@@ -894,7 +892,7 @@ Not at all!
     };          
     ```
 
-    When we enter a command like __"`( delay 1000 )`"__, the command-line interface calls our function `run_ulisp` defined in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L9-L40)
+    When we enter a command like __"`( delay 1000 )`"__, the command-line interface calls our function `run_ulisp` defined in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L9-L40)
 
     ```c
     /// Command-Line Buffer that will be passed to uLisp

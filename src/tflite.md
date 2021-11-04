@@ -104,11 +104,11 @@ Download the Firmware Binary File __`sdk_app_tflite.bin`__ from...
 
 -  [__Binary Release of `sdk_app_tflite`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v10.0.0)
 
-Alternatively, we may build the Firmware Binary File `sdk_app_tflite.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/tflite/customer_app/sdk_app_tflite)...
+Alternatively, we may build the Firmware Binary File `sdk_app_tflite.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_tflite)...
 
 ```bash
-## Download the tflite branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 
 ## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$PWD/bl_iot_sdk
@@ -123,8 +123,6 @@ cp build_out/sdk_app_tflite.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`tflite`__ branch, not the default __`master`__ branch)
 
 ## Flash the Firmware
 
@@ -338,7 +336,7 @@ We'll watch the glowing LED in a while!
 
 Let's study the code inside the TensorFlow Lite Firmware for BL602... To understand how it __loads the TensorFlow Lite Model and runs inferences.__
 
-Here are the __C++ Global Variables__ needed for TensorFlow Lite: [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L28-L39)
+Here are the __C++ Global Variables__ needed for TensorFlow Lite: [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L28-L39)
 
 ```c
 // Globals for TensorFlow Lite
@@ -370,7 +368,7 @@ Now we study the code that populates the above Global Variables.
 
 # Load TensorFlow Model
 
-Here's the __"`init`" command__ for our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L21-L24)
+Here's the __"`init`" command__ for our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L21-L24)
 
 ```c
 /// Command to load the TensorFlow Lite Model (Sine Wave)
@@ -379,7 +377,7 @@ static void init(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-The command calls __`load_model`__ to load the TensorFlow Lite Model: [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L41-L84)
+The command calls __`load_model`__ to load the TensorFlow Lite Model: [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L41-L84)
 
 ```c
 // Load the TensorFlow Lite Model into Static Memory
@@ -409,7 +407,7 @@ Next we __load the TensorFlow Lite Model__...
   }
 ```
 
-__`g_model`__ contains the __TensorFlow Lite Model Data__, as defined in [`model.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/model.cc#L28-L238)
+__`g_model`__ contains the __TensorFlow Lite Model Data__, as defined in [`model.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/model.cc#L28-L238)
 
 We create the __TensorFlow Lite Interpreter__ that will be called to run inferences...
 
@@ -454,7 +452,7 @@ Earlier we entered this command to __run an inference__ with the TensorFlow Lite
 0.160969
 ```
 
-Here's the __"`infer`" command__ in our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37)
+Here's the __"`infer`" command__ in our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L26-L37)
 
 ```c
 /// Command to infer values with TensorFlow Lite Model (Sine Wave)
@@ -479,7 +477,7 @@ We pass the floating-point number to the __`run_inference`__ function...
 
 And we __print the result__ of the inference. (Another floating-point number)
 
-__`run_inference`__ is defined in [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L86-L116) ...
+__`run_inference`__ is defined in [`main_functions.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/main_functions.cc#L86-L116) ...
 
 ```c
 // Run an inference with the loaded TensorFlow Lite Model.
@@ -548,7 +546,7 @@ The code we've seen is derived from the [TensorFlow Lite Hello World Sample](htt
 
 As promised, now we __light up the BL602 LED with TensorFlow Lite__!
 
-Here's the __"`glow`"__ command in our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L39-L96)
+Here's the __"`glow`"__ command in our BL602 Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L39-L96)
 
 ```c
 /// PineCone Blue LED is connected on BL602 GPIO 11
@@ -731,7 +729,7 @@ But let's quickly run through the steps...
 
 _Where is the TensorFlow Lite Model defined?_
 
-__`g_model`__ contains the __TensorFlow Lite Model Data__, as defined in [`model.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/model.cc#L28-L238) ...
+__`g_model`__ contains the __TensorFlow Lite Model Data__, as defined in [`model.cc`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/model.cc#L28-L238) ...
 
 ```c
 // Automatically created from a TensorFlow Lite flatbuffer using the command:
@@ -837,11 +835,11 @@ TensorFlow Lite on BL602 is split across two repositories...
 
     This `tflite` branch of BL602 IoT SDK...
 
-    [github.com/lupyuen/bl_iot_sdk/tree/tflite](https://github.com/lupyuen/bl_iot_sdk/tree/tflite)
+    [github.com/lupyuen/bl_iot_sdk/tree/master](https://github.com/lupyuen/bl_iot_sdk/tree/master)
 
     Contains the TensorFlow Lite Firmware at...
 
-    [customer_app/sdk_app_tflite](https://github.com/lupyuen/bl_iot_sdk/tree/tflite/customer_app/sdk_app_tflite)
+    [customer_app/sdk_app_tflite](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_tflite)
 
 1.  __TensorFlow Lite Library: `tflite-bl602`__
 
@@ -856,8 +854,8 @@ TensorFlow Lite on BL602 is split across two repositories...
 When we clone the BL602 IoT SDK recursively...
 
 ```bash
-## Download the tflite branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch tflite https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 ```
 
 The TensorFlow Lite Library `tflite-bl602` will be automatically cloned to `components/3rdparty`
@@ -878,9 +876,9 @@ __TensorFlow Lite Library Makefiles__
 
 __TensorFlow Lite Firmware Makefiles__
 
--   [`sdk_app_tflite/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/Makefile)
+-   [`sdk_app_tflite/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/Makefile)
 
--   [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk)
+-   [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk)
 
 The changes are described in the following sections.
 
@@ -945,7 +943,7 @@ CFLAGS   += -DTF_LITE_STATIC_MEMORY
 CPPFLAGS += -DTF_LITE_STATIC_MEMORY
 ```
 
-And here are the flags for TensorFlow Lite Firmware: [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk#L28-L41)
+And here are the flags for TensorFlow Lite Firmware: [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk#L28-L41)
 
 ```text
 ## Define the GCC compiler options:
@@ -981,7 +979,7 @@ Note: This assumes that we will not init C++ static variables in multiple tasks.
 
 ![Disable Thread-Safe Initialisation](https://lupyuen.github.io/images/tflite-initstatic.png)
 
-Note that __`CPPFLAGS`__ (for C++ compiler) should be defined in [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk) instead of [`sdk_app_tflite/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/Makefile)...
+Note that __`CPPFLAGS`__ (for C++ compiler) should be defined in [`sdk_app_tflite/bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/bouffalo.mk) instead of [`sdk_app_tflite/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/Makefile)...
 
 ![Compiler Flags](https://lupyuen.github.io/images/tflite-cppflags.png)
 
@@ -1117,7 +1115,7 @@ The build for Windows MSYS probably needs `unzip` to be installed.
 
 C++ Programs (like TensorFlow Lite) need a __Global Destructor `__dso_handle`__ that points to the Static C++ Objects that will be destroyed when the program is terminated. [(See this)](https://alex-robenko.gitbook.io/bare_metal_cpp/compiler_output/static#custom-destructors)
 
-We won't be destroying any Static C++ Objects. (Because our firmware doesn't have a shutdown command) Hence we set the Global Destructor to null: [`sdk_app_tflite/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L105-L107)
+We won't be destroying any Static C++ Objects. (Because our firmware doesn't have a shutdown command) Hence we set the Global Destructor to null: [`sdk_app_tflite/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L105-L107)
 
 ```c
 /// Global Destructor for C++, which we're not using.
@@ -1131,7 +1129,7 @@ void *__dso_handle = NULL;
 
 __`__math_oflowf`__ is called by C++ Programs to handle __Floating-Point Math Overflow__.
 
-For BL602 we halt with an __Assertion Failure__ when Math Overflow occurs: [`sdk_app_tflite/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/tflite/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L98-L103)
+For BL602 we halt with an __Assertion Failure__ when Math Overflow occurs: [`sdk_app_tflite/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_tflite/sdk_app_tflite/demo.c#L98-L103)
 
 ```c
 /// TODO: Handle math overflow.

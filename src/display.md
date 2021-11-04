@@ -81,7 +81,7 @@ _PineCone BL602 Pins connected to ST7789: 3 (Yellow), 4 (Blue), 5 (White), 11 (O
 
 To initialise BL602's SPI Port, we used the same code as the previous article, except for two modifications.
 
-Here's how our function `test_display_init` initialises the SPI Port: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L62-L97)
+Here's how our function `test_display_init` initialises the SPI Port: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L62-L97)
 
 ```c
 /// Command to init the display
@@ -151,7 +151,7 @@ spi_dev_t spi_device;
 
 For transmitting SPI Data to ST7789, the code looks highly similar to our previous article. (Except that we're not interested in the data received)
 
-Here's how our function `transmit_spi` transmits data to ST7789: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L250-L290)
+Here's how our function `transmit_spi` transmits data to ST7789: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L250-L290)
 
 ```c
 /// Write to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
@@ -210,7 +210,7 @@ Finally we flip the Chip Select Pin to end the SPI Transfer...
 }
 ```
 
-We're using the same Pin 14 as the Chip Select Pin: [`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
+We're using the same Pin 14 as the Chip Select Pin: [`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
 
 ```c
 /// Use GPIO 14 as SPI Chip Select Pin (Unused for ST7789 SPI)
@@ -236,7 +236,7 @@ transfer.rx_buf = (uint32_t) spi_rx_buf;  //  Receive Buffer
 transfer.len    = len;                    //  How many bytes
 ```
 
-`spi_rx_buf` is defined in [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L82-L91)
+`spi_rx_buf` is defined in [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L82-L91)
 
 ```c
 /// SPI Receive Buffer. We don't actually receive data, but SPI Transfer needs this.
@@ -295,7 +295,7 @@ _What???_
 
 Yep ST7789 is a little unique (and somewhat inefficient)... We need to __flip the Data / Command Pin__ when transmitting an ST7789 Command and its Parameters.
 
-Here's how `write_command` transmits the Command Code and Parameters: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L220-L238)
+Here's how `write_command` transmits the Command Code and Parameters: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L220-L238)
 
 ```c
 /// Transmit ST7789 command and parameters. `params` is the array of 
@@ -328,7 +328,7 @@ Next we transmit the Command Parameters by calling `write_data`...
 }
 ```
 
-As we expect, `write_data` flips the Data / Command Pin to High: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L238-L250)
+As we expect, `write_data` flips the Data / Command Pin to High: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L238-L250)
 
 ```c
 /// Transmit data to ST7789. `data` is the array of bytes to be transmitted, `len` is the number of bytes.
@@ -373,7 +373,7 @@ We set the Display Orientation like so...
 set_orientation(Portrait);
 ```
 
-`set_orientation` calls `write_command` (which we have seen earlier) to send the ST7789 Command (Memory Data Access Control) over SPI: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L205-L220)
+`set_orientation` calls `write_command` (which we have seen earlier) to send the ST7789 Command (Memory Data Access Control) over SPI: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L205-L220)
 
 ```c
 /// ST7789 Colour Settings
@@ -411,7 +411,7 @@ Initialising the ST7789 Display correctly!
 
 It takes __EIGHT commands__ to initialise ST7789... One wrong parameter and nothing appears!
 
-Before we watch the 8 tortuous ST7789 initialisation commands, let's meet our cast of ST7789 Pins: [`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
+Before we watch the 8 tortuous ST7789 initialisation commands, let's meet our cast of ST7789 Pins: [`demo.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/demo.h#L33-L43)
 
 ```c
 /// Use GPIO 5 as ST7789 Data/Command Pin (DC)
@@ -429,7 +429,7 @@ Before we watch the 8 tortuous ST7789 initialisation commands, let's meet our ca
 
 We've met these pins earlier when we connected BL602 to ST7789: __Data / Command, Reset, Backlight and Chip Select.__
 
-Now we peek behind the scenes of `init_display`, our function that initialises the display: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L91-L157)
+Now we peek behind the scenes of `init_display`, our function that initialises the display: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L91-L157)
 
 ```c
 /// Initialise the ST7789 display controller. 
@@ -514,7 +514,7 @@ Next we send three commands to ST7789 to __disable sleep__, define the __vertica
 
 (I won't pretend to know what they mean... [Check the ST7789 Datasheet for details](https://www.rhydolabz.com/documents/33/ST7789.pdf))
 
-We have defined `INVERTED` as `1`. [(See this)]((https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41)) This will configure our display to __invert the display colours__...
+We have defined `INVERTED` as `1`. [(See this)]((https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L39-L41)) This will configure our display to __invert the display colours__...
 
 ```c
     //  Display Inversion: Invert the display colours (light becomes dark and vice versa) (ST7789 Datasheet Pages 188, 190)
@@ -566,7 +566,7 @@ _PineCone BL602 rendering on ST7789 a photo of [Jewel Changi, Singapore](https:/
 
 Our First Act: BL602 renders an image to our ST7789 Display! [(Based on this photo)](https://lupyuen.github.io/images/display-jewel2.jpg)
 
-Prologue: We prepare a buffer for transmitting pixels to ST7789: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L82-L91)
+Prologue: We prepare a buffer for transmitting pixels to ST7789: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L82-L91)
 
 ```c
 /// SPI Transmit Buffer. We always copy pixels from Flash ROM to RAM
@@ -585,7 +585,7 @@ Both buffers are sized to store __10 rows of pixels, each row with 240 pixels, e
 
 (Our display has __240 rows of pixels__, so we'll use our buffers __24 times__ to render an image)
 
-We shall blast 10 rows of pixels to ST7789, and do it 24 times: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L157-L188)
+We shall blast 10 rows of pixels to ST7789, and do it 24 times: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L157-L188)
 
 ```c
 /// Display image on ST7789 display controller
@@ -658,7 +658,7 @@ We repeat this 24 times to render each Display Window of 10 pixel rows... And [J
 
 _Jewel Changi, Singapore looks truly awesome... But can we show a cat photo instead?_
 
-Absolutely! The photo is rendered from this `image_data` array that's compiled into BL602's Flash ROM: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L76-L82)
+Absolutely! The photo is rendered from this `image_data` array that's compiled into BL602's Flash ROM: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L76-L82)
 
 ```c
 /// RGB565 Image. Converted by https://github.com/lupyuen/pinetime-graphic
@@ -668,7 +668,7 @@ static const uint8_t image_data[] = {  //  Should be 115,200 bytes
 };
 ```
 
-Here we see that `image_data` includes this file that contains 115,200 bytes of pixel data: [`image.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/image.inc)
+Here we see that `image_data` includes this file that contains 115,200 bytes of pixel data: [`image.inc`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/image.inc)
 
 ```text
 0xa5, 0x35, 0x6b, 0x4d, 0x42, 0x49, 0x74, 0x10, 0xb5, 0xd7, 0x4a, 0x29, 0x83, 0xcf, 0xef, 0x9d,
@@ -696,7 +696,7 @@ cargo run -v image.png >image.inc
 
 ## ST7789 Display Window
 
-Before we blast pixels to ST7789, here's how `set_window` sets the ST7789 Display Window, bounded by the coordinates `(left, top)` and `(right, bottom)`: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L188-L205)
+Before we blast pixels to ST7789, here's how `set_window` sets the ST7789 Display Window, bounded by the coordinates `(left, top)` and `(right, bottom)`: [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L188-L205)
 
 ```c
 /// Set the ST7789 display window to the coordinates (left, top), (right, bottom)
@@ -732,11 +732,11 @@ Download the Firmware Binary File __`sdk_app_st7789.bin`__ from...
 
 -  [__`sdk_app_st7789` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1)
 
-Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)...
+Alternatively, we may build the Firmware Binary File `sdk_app_st7789.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_st7789)...
 
 ```bash
-## Download the st7789 branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch st7789 https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_st7789
 
 ## TODO: Replace sdk_app_st7789/image.inc
@@ -752,8 +752,6 @@ cp build_out/sdk_app_st7789.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`st7789`__ branch, not the default __`master`__ branch)
 
 ## Flash the firmware
 
@@ -1021,7 +1019,7 @@ static lv_obj_t *btn = NULL;
 static lv_obj_t *label = NULL;
 ```
 
-We create the button and set its position and size like so: [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64)
+We create the button and set its position and size like so: [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L50-L64)
 
 ```c
 /// Create a Button Widget and a Label Widget
@@ -1059,7 +1057,7 @@ _Updated LVGL label_
 
 Static screens don't look terribly exciting on IoT Gadgets... Let's make our screens dynamic! (Like the pic above)
 
-Here's our function `lvgl_update` that will change the label text every time it's called: [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78)
+Here's our function `lvgl_update` that will change the label text every time it's called: [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L66-L78)
 
 ```c
 /// Update the Widgets
@@ -1096,7 +1094,7 @@ LVGL was designed for interactive displays (like touchscreens).
 
 It refreshes the display efficiently without consuming too much CPU and RAM. (Which are scarce on IoT Gadgets)
 
-Here's how we tell LVGL to render the screen that we have created (or updated): [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91)
+Here's how we tell LVGL to render the screen that we have created (or updated): [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L80-L91)
 
 ```c
 /// Render the LVGL display
@@ -1119,7 +1117,7 @@ The rendering code in `lvgl_render` looks unusual... But that's because we're pr
 
 (One last thing before the demo...)
 
-Here's how we initialise the LVGL Library: [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48)
+Here's how we initialise the LVGL Library: [`lvgl.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/lvgl.c#L25-L48)
 
 ```c
 /// Set to true if LVGL has already been lvgl_initialised
@@ -1154,7 +1152,7 @@ Now we run the LVGL Demo Firmware for BL602... Which happens to be the same ST77
 
 -  [__`sdk_app_st7789` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v4.0.1)
 
--  [__`sdk_app_st7789` Source Code__](https://github.com/lupyuen/bl_iot_sdk/tree/st7789/customer_app/sdk_app_st7789)
+-  [__`sdk_app_st7789` Source Code__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_st7789)
 
 Follow these steps...
 
@@ -1431,7 +1429,7 @@ _Button and label rendered by LVGL on Sunday morning_
 
     [__Watch the Demo Video on YouTube__](https://www.youtube.com/watch?v=PkP-CeYLXUA)
 
-    [__How to run a Command at Startup__](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222)
+    [__How to run a Command at Startup__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222)
     
     [__Check out the complete log__](https://gist.github.com/lupyuen/9f26626d7c8081ae64d58eba70e07a80)
 
@@ -1443,7 +1441,7 @@ _Updated LVGL label_
 
 Let's find out how the __ST7789 Display Driver__ for LVGL calls __`write_data`__ and __`transmit_spi`__ to blast pixels over SPI DMA.
 
-Here are the __ST7789 Specifications__ for LVGL: [`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41)
+Here are the __ST7789 Specifications__ for LVGL: [`lv_conf.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h#L24-L41)
 
 ```c
 /// Number of rows in SPI Transmit and Receive Buffers. 
@@ -1465,7 +1463,7 @@ Note that LVGL is buffering 10 pixel rows of data in RAM.
 
 (It's the same buffer we used for rendering photos: __`spi_tx_buf`__)
 
-This function __`disp_flush`__ is called by LVGL to blast a Display Window of pixels from RAM to the ST7789 Display: [`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154)
+This function __`disp_flush`__ is called by LVGL to blast a Display Window of pixels from RAM to the ST7789 Display: [`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L126-L154)
 
 ```c
 /// ST7789 Command for Memory Write. From https://github.com/almindor/st7789/blob/master/src/instruction.rs
@@ -1519,7 +1517,7 @@ _How does LVGL call `disp_flush`?_
 
 When we register our ST7789 Display Driver with LVGL, we set `disp_flush` as the __Callback Function__ for rendering a Display Window of pixels.
 
-Here's how we __register our ST7789 Display Driver__ with LVGL: [`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113)
+Here's how we __register our ST7789 Display Driver__ with LVGL: [`lv_port_disp.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/lv_port_disp.c#L64-L113)
 
 ```c
 void lv_port_disp_init(void) {
@@ -1597,7 +1595,7 @@ _Why is this a strange place?_
 
 Because the BL602 SDK Makefile doesn't recognise subfolders under `sdk_app_st7789`.
 
-Here's the hack we added to a Common Makefile to support LVGL: [`make_scripts_riscv/ component_wrapper.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/make_scripts_riscv/component_wrapper.mk#L42-L51)
+Here's the hack we added to a Common Makefile to support LVGL: [`make_scripts_riscv/ component_wrapper.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/component_wrapper.mk#L42-L51)
 
 ```text
 # TODO: Add LVGL to build in a cleaner way
@@ -1656,7 +1654,7 @@ Here are some possible causes for __SPI DMA Transfers failing beyond 4 Mbps...__
 
 _How do we set an SPI Timeout for easier troubleshooting... So that it doesn't hang?_
 
-Here's how we modify the BL602 SPI HAL to set the SPI Timeout to 100 milliseconds: [`components/hal_drv/ bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/components/hal_drv/bl602_hal/hal_spi.c#L341-L354)
+Here's how we modify the BL602 SPI HAL to set the SPI Timeout to 100 milliseconds: [`components/hal_drv/ bl602_hal/hal_spi.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_spi.c#L341-L354)
 
 ```c
 static void hal_spi_dma_trans(...) {
@@ -1675,7 +1673,7 @@ static void hal_spi_dma_trans(...) {
     );
 ```
 
-Then enter the `display_result` command to dump the Interrupt Counters and Error Codes. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L116-L130)
+Then enter the `display_result` command to dump the Interrupt Counters and Error Codes. [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L116-L130)
 
 Remember to enable Assertion Failure messages in our firmware. [(See this)](https://lupyuen.github.io/articles/display#appendix-show-assertion-failures-in-bl602-firmware)
 
@@ -1755,7 +1753,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this meandering Twitter Thread](https://twitter.com/MisterTechBlog/status/1358691021073178624?s=20)
 
-1.  To run a command at startup (like in the photos above and below), modify the function __`cli_init`__ in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222)
+1.  To run a command at startup (like in the photos above and below), modify the function __`cli_init`__ in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L210-L222)
 
     ```c
     /// Init the command-line interface
@@ -1785,7 +1783,7 @@ assert(false);
 
 (Not so productive for troubleshooting firmware problems!)
 
-To show Assertion Failure messages, we add this function to our BL602 programs: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235)
+To show Assertion Failure messages, we add this function to our BL602 programs: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/demo.c#L224-L235)
 
 ```c
 /// TODO: We now show assertion failures 
@@ -1809,7 +1807,7 @@ void __assert_func(const char *file, int line,
 
 # Appendix: macOS Script to Build, Flash and Run BL602 Firmware
 
-Here's the script I use on macOS to automate the building, flashing and running of BL602 firmware: [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/run.sh#L1-L32)
+Here's the script I use on macOS to automate the building, flashing and running of BL602 firmware: [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/run.sh#L1-L32)
 
 ```bash
 #!/usr/bin/env bash
@@ -1856,7 +1854,7 @@ Let's cover the remaining ST7789 functions for Reset, Backlight and Delay.
 
 We execute a Hard Reset of ST7789 Display by toggling the Reset Pin to High, then Low, then High again...
 
-From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300)
+From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L290-L300)
 
 ```c
 /// Reset the display controller
@@ -1874,7 +1872,7 @@ static int hard_reset(void) {
 
 To switch on the backlight, we set the Backlight Pin to High...
 
-From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314)
+From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L300-L314)
 
 ```c
 /// Switch on backlight
@@ -1895,7 +1893,7 @@ Then set the PWM Duty Cycle to control the brightness. [(See this)](https://lupy
 
 To switch off the backlight, we set the Backlight Pin to Low...
 
-From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323)
+From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L314-L323)
 
 ```c
 /// Switch off backlight
@@ -1912,7 +1910,7 @@ int backlight_off(void) {
 
 This function sleeps for the specified number of milliseconds...
 
-From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328)
+From [`display.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/display.c#L323-L328)
 
 ```c
 /// Delay for the specified number of milliseconds
@@ -1932,7 +1930,7 @@ Here's how we configured LVGL for BL602 and ST7789.
 
 We compare the modified and original LVGL configurations...
 
--   [__LVGL Configuration for BL602 and ST7789: `lv_conf.h`__](https://github.com/lupyuen/bl_iot_sdk/blob/st7789/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h)
+-   [__LVGL Configuration for BL602 and ST7789: `lv_conf.h`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_st7789/sdk_app_st7789/lv_conf.h)
 
 -   [__LVGL Configuration Template: `lv_conf_template.h`__](https://github.com/lvgl/lvgl/blob/e6de537952c3c2d9f37096938dd5b876c6ba6802/lv_conf_template.h)
 

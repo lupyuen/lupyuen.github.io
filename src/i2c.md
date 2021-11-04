@@ -28,11 +28,11 @@ BL602's IoT SDK contains an __I2C Hardware Abstraction Layer (HAL)__ that we may
 
 BL602's I2C HAL is packaged as two levels...
 
-1.  __Low Level HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)__: This runs on BL602 Bare Metal. 
+1.  __Low Level HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c)__: This runs on BL602 Bare Metal. 
 
     The Low Level HAL manipulates the BL602 I2C Registers directly to perform I2C functions.
 
-1.  __High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c)__: This calls the Low Level HAL, and uses the Device Tree and FreeRTOS.  
+1.  __High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c)__: This calls the Low Level HAL, and uses the Device Tree and FreeRTOS.  
 
     The High Level HAL is called by the [AliOS Firmware](https://github.com/alibaba/AliOS-Things) created by the BL602 IoT SDK.
 
@@ -40,7 +40,7 @@ BL602's I2C HAL is packaged as two levels...
 
     (Why does the High Level HAL use FreeRTOS? We'll learn in a while)
 
-Today we shall use the __Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)__ because...
+Today we shall use the __Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c)__ because...
 
 -   The Low Level I2C HAL is __simpler to understand__. 
 
@@ -58,7 +58,7 @@ Today we shall use the __Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyu
 
     We'll see in a while that the Low Level HAL requires an Embedded Operating System to function properly. (Which is beyond the scope of this article)
 
-We shall test BL602 I2C with this BL602 Command-Line Firmware (modded from BL602 IoT SDK): [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c)
+We shall test BL602 I2C with this BL602 Command-Line Firmware (modded from BL602 IoT SDK): [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_i2c)
 
 ![BL602 Command-Line Firmware sdk_app_i2c](https://lupyuen.github.io/images/i2c-fail.jpg)
 
@@ -139,7 +139,7 @@ To sum up: We need to reproduce on BL602 the two `[Start] ... [Stop]` transactio
 
 # Initialise I2C Port
 
-Remember our Command-Line Firmware [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c) for testing I2C on BL602?
+Remember our Command-Line Firmware [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_i2c) for testing I2C on BL602?
 
 Here's the command for initialising the I2C Port...
 
@@ -147,7 +147,7 @@ Here's the command for initialising the I2C Port...
  i2c_init
 ```
 
-Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369)
+Let's discover how this command calls the Low Level I2C HAL to initialise the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369)
 
 ## Select I2C Port
 
@@ -218,19 +218,19 @@ static i2c_msg_t *gpstmsg;
 
 Let's list down the HAL Functions called above and where they are defined...
 
-The following functions are defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
+The following functions are defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c)
 
 ```text
 i2c_gpio_init, i2c_set_freq
 ```
 
-These functions are defined in the __BL602 Interrupt HAL__: [`bl_irq.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_irq.c)
+These functions are defined in the __BL602 Interrupt HAL__: [`bl_irq.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_irq.c)
 
 ```text
 bl_irq_enable, bl_irq_register_with_ctx
 ```
 
-And these functions are defined in the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_i2c.c)
+And these functions are defined in the __BL602 Standard Driver__: [`bl602_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_i2c.c)
 
 ```text
 I2C_Disable, I2C_IntMask
@@ -246,7 +246,7 @@ Our objective is to __read Register `0xD0`__ from our BME280 Sensor with __Devic
 
 We specify these details in an __I2C Message Struct `i2c_msg_t`__ that's defined in the Low Level I2C HAL.
 
-Here's how we create an I2C Message: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L424-L442)
+Here's how we create an I2C Message: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L424-L442)
 
 ## Define I2C Message and Buffer
 
@@ -343,7 +343,7 @@ To begin reading data from our BME280 Sensor, we enter this command...
  i2c_start_read
 ```
 
-Let's find out what happens inside that command: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448)
+Let's find out what happens inside that command: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448)
 
 ## Create I2C Message
 
@@ -397,7 +397,7 @@ We point `gpstmsg` to our I2C Message. (Will be used for saving data into our bu
 
 Then we call `i2c_transfer_start` to start the I2C data transfer and enable the I2C Interrupts.
 
-`i2c_transfer_start` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
+`i2c_transfer_start` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c)
 
 _How does BL602 receive the I2C data from our BME280 Sensor?_
 
@@ -424,7 +424,7 @@ bl_irq_register_with_ctx(
 
 And the current I2C Message `gpstmsg` will be passed as our Interrupt Context.
 
-Let's find out how our Interrupt Handler handles I2C Interrupts: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L273-L328)
+Let's find out how our Interrupt Handler handles I2C Interrupts: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L273-L328)
 
 ## Get I2C Message and Interrupt Reason
 
@@ -565,7 +565,7 @@ BL602 I2C has a __FIFO Queue (First In First Out) of 4 bytes__ for transmitting 
 
 Our I2C Interrupt Handler calls `test_i2c_transferbytes` to transmit and receive data in 4-byte chunks.
 
-Here's how it works for I2C Write and I2C Read Operations: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271)
+Here's how it works for I2C Write and I2C Read Operations: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271)
 
 ## I2C Write Operation
 
@@ -588,7 +588,7 @@ static void test_i2c_transferbytes(i2c_msg_t *msg) {
 
 If there is no more data to be transmitted, we suppress the I2C Data Transmitted Interrupts.
 
-`do_write_data` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
+`do_write_data` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c)
 
 ## I2C Read Operation
 
@@ -610,9 +610,9 @@ In an I2C Read Operation, we handle the I2C Data Received Interrupt by __copying
 
 If there is no more data to be received, we suppress the I2C Data Received Interrupts.
 
-`do_read_data` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
+`do_read_data` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c)
 
-(FYI: `test_i2c_transferbytes` is the fixed version of `i2c_transferbytes` from the High Level I2C HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c). [Here's the fix](https://lupyuen.github.io/images/i2c-transferbytes.png))
+(FYI: `test_i2c_transferbytes` is the fixed version of `i2c_transferbytes` from the High Level I2C HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c). [Here's the fix](https://lupyuen.github.io/images/i2c-transferbytes.png))
 
 ![Stop I2C Read](https://lupyuen.github.io/images/i2c-cartoon5.png)
 
@@ -624,7 +624,7 @@ Here's the final command that we'll enter into the BL602 Firmware... It terminat
  i2c_stop_read
 ```
 
-This command calls `test_i2c_stop` to close the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L450-L460)
+This command calls `test_i2c_stop` to close the I2C Port: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L450-L460)
 
 ```c
 /// Stop reading data from I2C device
@@ -641,7 +641,7 @@ static void test_i2c_stop_read(char *buf, int len, int argc, char **argv) {
 
 The command also dumps the data received in the I2C Message Buffer.
 
-`test_i2c_stop` closes the I2C Port like so: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247)
+`test_i2c_stop` closes the I2C Port like so: [`sdk_app_i2c/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247)
 
 ```c
 /// Stop the I2C Transfer. Called by I2C Interrupt Handler. 
@@ -658,7 +658,7 @@ static void test_i2c_stop(i2c_msg_t *msg) {
 }
 ```
 
-`i2c_clear_status` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c)
+`i2c_clear_status` is defined in the __Low Level I2C HAL__: [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c)
 
 ![Reading BME280 with sdk_app_i2c firmware](https://lupyuen.github.io/images/i2c-success.png)
 
@@ -666,7 +666,7 @@ _Reading BME280 with sdk_app_i2c firmware_
 
 # Build and Run the Firmware
 
-We've read the I2C code... Let's download, flash and run the modded [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c) firmware!
+We've read the I2C code... Let's download, flash and run the modded [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_i2c) firmware!
 
 ## Build the firmware
 
@@ -674,11 +674,11 @@ Download the Firmware Binary File __`sdk_app_i2c.bin`__ from...
 
 -  [__Binary Release of `sdk_app_i2c`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v2.0.0)
 
-Alternatively, we may build the Firmware Binary File `sdk_app_i2c.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/i2c/customer_app/sdk_app_i2c)...
+Alternatively, we may build the Firmware Binary File `sdk_app_i2c.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_i2c)...
 
 ```bash
-## Download the i2c branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch i2c https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_i2c
 
 ## TODO: Change this to the full path of bl_iot_sdk
@@ -691,8 +691,6 @@ cp build_out/sdk_app_i2c.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`i2c`__ branch, not the default __`master`__ branch)
 
 ## Flash the firmware
 
@@ -913,7 +911,7 @@ We have 2 problems when calling the Low Level I2C HAL...
 
 _What happens when we implement the two Solutions in FreeRTOS?_
 
-When we implement these two Solutions in FreeRTOS... We'll get the __High Level I2C HAL!__ (See [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
+When we implement these two Solutions in FreeRTOS... We'll get the __High Level I2C HAL!__ (See [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c))
 
 Hence the High Level I2C HAL (which calls FreeRTOS) is __fully functional today__ for processing I2C Sensor Data.
 
@@ -925,11 +923,11 @@ Here's the list of functions we've seen in this article, and their equivalent fu
 
 | Function In <br> This Article | Function In <br> High Level HAL |
 |:---|:---|
-| [`test_i2c`<br>`_init`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369) | [`hal_i2c`<br>`_init`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L272-L298)
-| [`test_i2c`<br>`_start_read`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448) | [`hal_i2c`<br>`_read_block`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L300-L324)
-| [`test_i2c`<br>`_interrupt`<br>`_entry`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L273-L328) | [`i2c`<br>`_interrupt`<br>`_entry`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133)
-| [`test_i2c`<br>`_transferbytes`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271) | [`i2c`<br>`_transferbytes`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L74-L95) 
-| [`test_i2c`<br>`_stop`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247) | [`i2c`<br>`_callback`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L52-L72)
+| [`test_i2c`<br>`_init`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369) | [`hal_i2c`<br>`_init`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L272-L298)
+| [`test_i2c`<br>`_start_read`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448) | [`hal_i2c`<br>`_read_block`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L300-L324)
+| [`test_i2c`<br>`_interrupt`<br>`_entry`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L273-L328) | [`i2c`<br>`_interrupt`<br>`_entry`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133)
+| [`test_i2c`<br>`_transferbytes`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271) | [`i2c`<br>`_transferbytes`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L74-L95) 
+| [`test_i2c`<br>`_stop`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247) | [`i2c`<br>`_callback`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L52-L72)
 
 -   [See the Chinese docs for High Level I2C HAL](https://help.aliyun.com/document_detail/161064.html?spm=a2c4g.11186623.6.577.492c4564jOCOjU)
 
@@ -995,7 +993,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  We talked about reading I2C Registers... What about __writing to I2C Registers__?
 
-    The code should be similar. The demo program contains code for writing to I2C Registers, but it hasn't been tested. And it needs cleaning up. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L376-L418)
+    The code should be similar. The demo program contains code for writing to I2C Registers, but it hasn't been tested. And it needs cleaning up. [See this](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L376-L418)
 
 1.  Why aren't we using __DMA for I2C__?
 
@@ -1013,7 +1011,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__Here's The Answer__](https://twitter.com/MisterTechBlog/status/1351441955637534720?s=20)
 
-    (From Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c))
+    (From Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c))
 
 1.  __Another Quiz for the Reader:__ Why does this code look dubious?
     
@@ -1021,7 +1019,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__Here's The Answer__](https://github.com/bouffalolab/bl_iot_sdk/issues/33)
 
-    (From High Level I2C HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c))
+    (From High Level I2C HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c))
 
 ![Bug](https://lupyuen.github.io/images/i2c-cartoon8.png)
 
@@ -1031,7 +1029,7 @@ Here's how I tracked down my first RISC-V Exception and fixed it...
 
 ![RISC-V Exception in sdk_app_i2c](https://lupyuen.github.io/images/i2c-exception.png)
 
-When our program [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/) is sending I2C data, the program crashes with the RISC-V Exception shown above...
+When our program [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/) is sending I2C data, the program crashes with the RISC-V Exception shown above...
 
 ```text
 start_write_data
@@ -1067,19 +1065,19 @@ Let's track down code address `0x2300 8fe2` and find out why it caused the excep
 
 1. According to the RISC-V Disassembly [`sdk_app_i2c.S`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.1/sdk_app_i2c.S), the code address `0x2300 8fe2` is located in the I2C Interrupt Handler of the BL602 I2C HAL (See pic)
 
-    - [`i2c_interrupt_entry` in `hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133)
+    - [`i2c_interrupt_entry` in `hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133)
 
 1. Why did it crash? Because the Interrupt Context `ctx` is null!
 
     In fact, the I2C Interrupt Handler `i2c_interrupt_entry` shouldn't have been called.
     
-    It comes from the High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/hal_i2c.c), but we're actually using the Low Level HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/components/hal_drv/bl602_hal/bl_i2c.c).
+    It comes from the High Level HAL [`hal_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c), but we're actually using the Low Level HAL [`bl_i2c.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_i2c.c).
 
 1. Why was `i2c_interrupt_entry` set as the I2C Interrupt Handler?
 
     Because `hal_i2c_init` was called here...
 
-    - [`aos_loop_proc` in `main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/sdk_app_i2c/main.c#L159-L199)
+    - [`aos_loop_proc` in `main.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/main.c#L159-L199)
 
 ![I2C Init HAL](https://lupyuen.github.io/images/i2c-inithal.png)
 
@@ -1109,11 +1107,11 @@ riscv-none-embed-objdump \
 
 _Is it safe to comment out `hal_i2c_init`?_
 
-Not quite. When we comment out `hal_i2c_init`, we disable the High Level I2C HAL functions in our demo firmware [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/)
+Not quite. When we comment out `hal_i2c_init`, we disable the High Level I2C HAL functions in our demo firmware [`sdk_app_i2c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/)
 
 That's the reason why we haven't merged the `i2c` branch to the `master` branch...
 
--   [__`i2c` Branch__](https://github.com/lupyuen/bl_iot_sdk/blob/i2c/customer_app/sdk_app_i2c/) is used for testing Low Level I2C HAL
+-   [__`i2c` Branch__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/) is used for testing Low Level I2C HAL
 
 -   [__`master` Branch__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/) is used for testing High Level I2C HAL
 

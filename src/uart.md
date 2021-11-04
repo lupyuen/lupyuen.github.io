@@ -54,7 +54,7 @@ Today we shall use the __Low Level UART HAL [`bl_uart.c`](https://github.com/lup
 
     (Not just FreeRTOS)
 
-We shall call the BL602 Low Level UART HAL to control the Grove E-Ink Display with this BL602 Command-Line Firmware: [__`sdk_app_uart_eink`__](https://github.com/lupyuen/bl_iot_sdk/tree/eink/customer_app/sdk_app_uart_eink)
+We shall call the BL602 Low Level UART HAL to control the Grove E-Ink Display with this BL602 Command-Line Firmware: [__`sdk_app_uart_eink`__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_uart_eink)
 
 The firmware will work on all BL602 boards, including PineCone and Pinenut.
 
@@ -338,11 +338,11 @@ Download the Firmware Binary File __`sdk_app_uart_eink.bin`__ from...
 
 -  [__`sdk_app_uart_eink` Binary Release__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v5.0.0)
 
-Alternatively, we may build the Firmware Binary File `sdk_app_uart_eink.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/eink/customer_app/sdk_app_uart_eink)...
+Alternatively, we may build the Firmware Binary File `sdk_app_uart_eink.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_uart_eink)...
 
 ```bash
-## Download the eink branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch eink https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_uart_eink
 
 ## TODO: Change this to the full path of bl_iot_sdk
@@ -355,8 +355,6 @@ cp build_out/sdk_app_uart_eink.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`eink`__ branch, not the default __`master`__ branch)
 
 ## Flash the firmware
 

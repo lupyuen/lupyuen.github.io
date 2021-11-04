@@ -496,8 +496,8 @@ Download the Firmware Binary File __`sdk_app_spi_demo.bin`__ from...
 Alternatively, we may build the Firmware Binary File `sdk_app_spi_demo.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_spi_demo)...
 
 ```bash
-## Download the spi branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch spi https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_spi_demo
 
 ## TODO: Change this to the full path of bl_iot_sdk
@@ -510,8 +510,6 @@ cp build_out/sdk_app_spi_demo.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`spi`__ branch, not the default __`master`__ branch)
 
 ## Flash the firmware
 
