@@ -1953,14 +1953,14 @@ Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
 
     __Delete the `build_out` folder__ if it exists.
 
-1.  __Edit the `Makefile`__ in the new folder and set the Project Name: [`sdk_app_lorawan/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile)
+1.  __Edit the `Makefile`__ in the new folder and set the Project Name: [`sdk_app_lorawan/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile)
 
     ```text
     ##  Set the project name
     PROJECT_NAME := sdk_app_lorawan
     ```
 
-1.  Set the __GCC Compiler Options__ in the `Makefile` (if any): [`sdk_app_lorawan/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile)
+1.  Set the __GCC Compiler Options__ in the `Makefile` (if any): [`sdk_app_lorawan/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile)
 
     ```text
     ## Define the GCC compiler options
@@ -1974,7 +1974,7 @@ Follow these steps to create a new BL602 Project (like `sdk_app_lorawan`)...
 
     __UPDATE:__ The above flags won't work for C++ programs. Instead we should set __`CFLAGS` and `CPPFLAGS`__ in __`bouffalo.mk`__ inside the Sub Folder. [(Here's an example for TensorFlow Lite Firmware)](https://lupyuen.github.io/articles/tflite#compiler-flags)
 
-1.  __For macOS Only__: Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_lorawan/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/run.sh)
+1.  __For macOS Only__: Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_lorawan/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/run.sh)
 
     ```bash
     ##  Set the project name

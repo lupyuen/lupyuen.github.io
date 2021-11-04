@@ -50,7 +50,7 @@ For light sensing, we shall __read the voltage__ from this LED GPIO with BL602's
 
 (Because LEDs will produce a current when exposed to light. [See this](https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227))
 
-Let's study the __C Firmware for BL602 ADC__: [`sdk_app_adc2`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/)
+Let's study the __C Firmware for BL602 ADC__: [`sdk_app_adc2`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/)
 
 By calling the [__BL602 ADC Low Level HAL__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c) (Hardware Abstraction Layer), we shall...
 
@@ -60,7 +60,7 @@ By calling the [__BL602 ADC Low Level HAL__](https://github.com/lupyuen/bl_iot_s
 
 ## Definitions
 
-We start by defining the __GPIO Pin Number__ that will be read via ADC: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L13-L31)
+We start by defining the __GPIO Pin Number__ that will be read via ADC: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L13-L31)
 
 ```c
 /// GPIO Pin Number that will be configured as ADC Input.
@@ -106,7 +106,7 @@ More about ADC Gain in a while.
 
 ## Initialise the ADC Channel
 
-Here's how we __initialise the ADC Channel__ for reading our LED GPIO: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L36-L77)
+Here's how we __initialise the ADC Channel__ for reading our LED GPIO: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L36-L77)
 
 ```c
 /// Command to init the ADC Channel and start reading the ADC Samples.
@@ -209,7 +209,7 @@ BL602 ADC Controller will __read the ADC Samples continuously__ (from the GPIO P
 
 _After starting the ADC Channel, how do we fetch the ADC Samples that have been read?_
 
-Let's find out in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L79-L116) ...
+Let's find out in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L79-L116) ...
 
 ```c
 /// Command to compute the average value of the ADC Samples that have just been read.
@@ -278,7 +278,7 @@ And that's how we code BL602 ADC Firmware in C!
 
 ## Run the C Firmware
 
-Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk_app_adc2`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/)
+Watch what happens when we __flash and run__ the C Firmware for BL602 ADC: [`sdk_app_adc2`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/)
 
 1.  Enter this command to __initialise the ADC Channel__...
 
@@ -357,7 +357,7 @@ Sadly no. We need to go really low-level and call the [__BL602 Standard Driver f
 
 (The BL602 Standard Driver directly manipulates the BL602 Hardware Registers)
 
-Here's the low-level code that __sets the ADC Gain__: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L118-L146)
+Here's the low-level code that __sets the ADC Gain__: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L118-L146)
 
 ```c
 /// Enable ADC Gain to increase the ADC sensitivity.
@@ -413,31 +413,31 @@ Before diving into the Rust Firmware, let's walk through the steps for __creatin
 
     __Delete the `build_out` folder__ if it exists.
 
-1.  __Edit the `Makefile`__ in the new folder and set the Project Name: [`sdk_app_rust_adc/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/Makefile)
+1.  __Edit the `Makefile`__ in the new folder and set the Project Name: [`sdk_app_rust_adc/Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/Makefile)
 
     ```text
     ##  Set the project name
     PROJECT_NAME := sdk_app_rust_adc
     ```
 
-1.  Set the __GCC Compiler Options__ (if any) in the Makefile [`sdk_app_rust_adc / sdk_app_rust_adc / bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/bouffalo.mk)
+1.  Set the __GCC Compiler Options__ (if any) in the Makefile [`sdk_app_rust_adc / sdk_app_rust_adc / bouffalo.mk`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/bouffalo.mk)
 
-1.  Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_rust_adc/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh)
+1.  Edit the __`run.sh` script__ in the new folder and set the Project Name: [`sdk_app_rust_adc/run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/run.sh)
 
     ```bash
     ##  Set the project name
     export APP_NAME=sdk_app_rust_adc
     ```
 
-1.  Replace the __Rust Source Code__ in [`sdk_app_rust_adc/ rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs) 
+1.  Replace the __Rust Source Code__ in [`sdk_app_rust_adc/ rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs) 
 
-1.  See the Appendix for the steps to define the __Rust Commands__ for the Command-Line Interface in [`sdk_app_rust_adc / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
+1.  See the Appendix for the steps to define the __Rust Commands__ for the Command-Line Interface in [`sdk_app_rust_adc / demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
 
 1.  Remember to edit __`README.md`__ and fill in the project details
 
 # BL602 ADC in Rust
 
-Now we study the __Rust Firmware for BL602 ADC__: [`sdk_app_rust_adc`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc)
+Now we study the __Rust Firmware for BL602 ADC__: [`sdk_app_rust_adc`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc)
 
 We have __converted the C Firmware to Rust__ line by line, so the Rust code will look highly similar to C.
 
@@ -451,7 +451,7 @@ Here is the Rust implementation...
 
 ## Definitions
 
-We start by declaring to the Rust Compiler that we're calling the __Rust Core Library__ (instead of Rust Standard Library): [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L1-L37)
+We start by declaring to the Rust Compiler that we're calling the __Rust Core Library__ (instead of Rust Standard Library): [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L1-L37)
 
 ```rust
 #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
@@ -528,7 +528,7 @@ const ADC_PGA_GAIN_1: u32 = 1;  //  From <https://github.com/lupyuen/bl_iot_sdk/
 
 ## Initialise the ADC Channel
 
-Here's our Rust Function __`init_adc`__ that will be called by the BL602 Command-Line Interface: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L39-L100)
+Here's our Rust Function __`init_adc`__ that will be called by the BL602 Command-Line Interface: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L39-L100)
 
 ```rust
 /// Command to init the ADC Channel and start reading the ADC Samples.
@@ -657,7 +657,7 @@ BL602 ADC Controller will __read the ADC Samples continuously__ (from the GPIO P
 
 _Our ADC Channel has been started, how do we average the ADC Samples that have been read?_
 
-Let's check out the Rust Function __`read_adc`__ in [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165) ...
+Let's check out the Rust Function __`read_adc`__ in [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165) ...
 
 ```rust
 /// Command to compute the average value of the ADC Samples that have just been read.
@@ -896,7 +896,7 @@ Or follow these steps to build the Rust Firmware `sdk_app_rust_adc.bin`...
 
 Check out the complete build log here...
 
--   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh#L135-L497)
+-   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/run.sh#L135-L497)
 
 [More about the build script](https://lupyuen.github.io/articles/rust#appendix-build-script-for-bl602-rust-firmware)
 
@@ -1290,7 +1290,7 @@ Today our BL602 Rust Wrapper supports...
 
 _How do we add the BL602 Rust Wrapper to our Rust Project?_
 
-Just add __`bl602-sdk`__ to the Rust project configuration: [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
+Just add __`bl602-sdk`__ to the Rust project configuration: [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11)
 
 ```text
 ## External Rust libraries used by this module.  See crates.io.
@@ -1316,7 +1316,7 @@ Here's a sample project that calls the Rust Wrapper for GPIO...
 
 ![Rust Wrapper for GPIO](https://lupyuen.github.io/images/adc-gpio.png)
 
-[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_gpio/rust/src/lib.rs)
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_gpio/rust/src/lib.rs)
 
 # Why Sunlight?
 
@@ -1428,7 +1428,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     ![BL602 ADC High Level HAL](https://lupyuen.github.io/images/adc-highlevel.png)
 
-    [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc/sdk_app_adc/demo.c)
+    [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc/sdk_app_adc/demo.c)
 
     But the ADC High Level HAL won't let us set the __ADC Gain__.
 
@@ -1436,7 +1436,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     ![Setting the ADC Gain by patching the ADC High Level HAL](https://lupyuen.github.io/images/adc-gain.png)
 
-    [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/adc/components/hal_drv/bl602_hal/bl_adc.c#L339-L389)
+    [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L339-L389)
 
     Also note that the ADC High Level HAL doesn't allow us to compute the __average of the ADC Samples__.
 
@@ -1456,14 +1456,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _How do we call our own C Functions from Rust?_
 
-Earlier we saw this Rust code that __sets the ADC Gain__: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66)
+Earlier we saw this Rust code that __sets the ADC Gain__: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66)
 
 ```rust
 //  In Rust: Enable ADC Gain to increase the ADC sensitivity
 unsafe { set_adc_gain(ADC_GAIN1, ADC_GAIN2) };  //  Unsafe because we are calling C function
 ```
 
-This calls the C Function `set_adc_gain`, which we have __imported into Rust__ here: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184)
+This calls the C Function `set_adc_gain`, which we have __imported into Rust__ here: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184)
 
 ```rust
 //  In Rust: Import C Function
@@ -1474,13 +1474,13 @@ extern "C" {
 }
 ```
 
-__`set_adc_gain`__ is defined in this C source file: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L11-L42)
+__`set_adc_gain`__ is defined in this C source file: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L11-L42)
 
-_What about the rest of the code in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c)?_
+_What about the rest of the code in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c)?_
 
-The rest of the C code in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c) is needed to set up the __Command-Line Interface__ for our BL602 Firmware.
+The rest of the C code in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c) is needed to set up the __Command-Line Interface__ for our BL602 Firmware.
 
-We define the __Rust Commands__ for the Command-Line Interface like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
+We define the __Rust Commands__ for the Command-Line Interface like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L47-L55)
 
 ```c
 /// In C: Import Rust functions from customer_app/sdk_app_rust_adc/rust/src/lib.rs
@@ -1500,7 +1500,7 @@ This defines the commands `init_adc` and `read_adc`, which are mapped to the res
 
 _How do we cast C Pointers in Rust?_
 
-In the C version of our ADC Firmware, we implicitly cast a "`void *`" pointer to "`adc_ctx *`" pointer like this: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L88-L90)
+In the C version of our ADC Firmware, we implicitly cast a "`void *`" pointer to "`adc_ctx *`" pointer like this: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L88-L90)
 
 ```c
 //  In C: Get the pointer (void *) for DMA Context
@@ -1512,7 +1512,7 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;
 
 Here we're [Downcasting](https://en.wikipedia.org/wiki/Downcasting) a General Type (`void *`) to a Specific Type (`adc_ctx *`).
 
-To do the same in Rust, we need to be super explicit about __what we're casting__: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129)
+To do the same in Rust, we need to be super explicit about __what we're casting__: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129)
 
 ```rust
 //  In Rust: Get the C Pointer (void *) for DMA Context
@@ -1555,7 +1555,7 @@ Where...
 
 _How do we copy memory with C Pointers?_
 
-Earlier we saw this code in our C Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106)
+Earlier we saw this code in our C Firmware: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106)
 
 ```c
 //  Array that will store ADC Samples
@@ -1571,7 +1571,7 @@ memcpy(
 
 This code __copies the ADC Samples__ from the DMA buffer to the array `adc_data`.
 
-Here's the equivalent code in Rust: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149)
+Here's the equivalent code in Rust: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149)
 
 ```rust
 //  Array that will store the last 100 ADC Samples (`ADC_SAMPLES` is 100)

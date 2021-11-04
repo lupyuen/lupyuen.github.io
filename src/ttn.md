@@ -337,7 +337,7 @@ At the PineDio Stack Command Prompt, enter these commands to __join PineDio Stac
     init_lorawan
     ```
 
-    [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L168-L174)
+    [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L168-L174)
 
 1.  Set the __DevEUI__...
 
@@ -419,7 +419,7 @@ At the PineDio Stack Command Prompt, enter these commands...
 
     [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
-    [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
+    [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/README.md#output-log)
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio/customer_app/pinedio_lorawan#lorawan-commands-for-the-things-network)
 

@@ -85,7 +85,7 @@ Now let's code-switch to Rust.
 
 # BL602 Blinky in Rust
 
-Here's our BL602 Blinky Firmware, coded in Rust: [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8)
+Here's our BL602 Blinky Firmware, coded in Rust: [`rust/src/lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8)
 
 ```rust
 //!  Main Rust Application for BL602 Firmware
@@ -104,7 +104,7 @@ First we tell the Rust Compiler to use the __Rust Core Library__.
 
 We import `PanicInfo` and `FromStr` to handle Errors and String Conversion. (We'll see later)
 
-Our Rust Blinky Function looks similar to the C version: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44)
+Our Rust Blinky Function looks similar to the C version: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44)
 
 ```rust
 /// `rust_main` will be called by the BL602 command-line interface
@@ -158,7 +158,7 @@ The rest of the Rust function looks similar to C...
 
 (Yep the `for` loop looks a little different in Rust)
 
-For Embedded Rust we need to include a __Panic Handler__ that will handle errors (like Expect / Assertion Failures): [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57)
+For Embedded Rust we need to include a __Panic Handler__ that will handle errors (like Expect / Assertion Failures): [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57)
 
 ```rust
 /// This function is called on panic, like an assertion failure
@@ -187,7 +187,7 @@ Here's our code switching from C to Rust so far...
 
 As we import the functions from BL602 IoT SDK into Rust, let's create __Wrapper Functions__ that will expose a cleaner, neater interface to our Rust callers.
 
-We start with __`bl_gpio_output_set`__, the function from BL602 GPIO HAL (Hardware Abstraction Layer) that sets the GPIO Pin output: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141)
+We start with __`bl_gpio_output_set`__, the function from BL602 GPIO HAL (Hardware Abstraction Layer) that sets the GPIO Pin output: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141)
 
 ```rust
 /// Set the GPIO pin output to high or low.
@@ -252,7 +252,7 @@ Strings are terminated by null in C, but not in Rust.
 
 (Rust strings have an internal field that remembers the string length)
 
-To pass strings from C to Rust, our wrapper needs to __copy the string and pad it with null__.  Here's how: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90)
+To pass strings from C to Rust, our wrapper needs to __copy the string and pad it with null__.  Here's how: [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90)
 
 ```rust
 /// Print a message to the serial console.
@@ -318,7 +318,7 @@ Finally we __fetch the pointer__ to our null-terminated string, and pass it to t
 
 __`String`__ is a custom __heapless string__ type that's allocated on the stack or static memory. (Instead of heap memory)
 
-We define `String` in [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180)...
+We define `String` in [`lib.rs`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180)...
 
 ```rust
 /// Limit Strings to 64 chars, similar to `char[64]` in C
@@ -327,7 +327,7 @@ type String = heapless::String::<heapless::consts::U64>;
 
 For safety, we limit our strings to __64 characters__.
 
-`String` uses the __heapless library__, as specified in [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11)...
+`String` uses the __heapless library__, as specified in [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11)...
 
 ```text
 ## External Rust libraries used by this module.  See crates.io.
@@ -368,7 +368,7 @@ Strictly speaking this isn't [__Embedded Rust__](https://docs.rust-embedded.org/
 
 Instead we're running __Rust on top of an Embedded Operating System__ (BL602 IoT SDK + FreeRTOS). It's similar to running Rust on Linux / macOS / Windows.
 
-That's why we compile our Rust code into a __static library__ that will be linked into the BL602 Firmware. See [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18)...
+That's why we compile our Rust code into a __static library__ that will be linked into the BL602 Firmware. See [`rust/Cargo.toml`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/Cargo.toml#L14-L18)...
 
 ```text
 ## Build this module as a Rust library, 
@@ -499,7 +499,7 @@ Here are the steps to build the BL602 Rust Firmware `sdk_app_rust.bin`...
 
 Check out the complete build log here...
 
--   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L135-L523)
+-   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L135-L523)
 
 (See the Appendix for more about `run.sh`)
 
@@ -757,7 +757,7 @@ BL602 IoT SDK was compiled with this GCC command...
 gcc -march=rv32imfc -mabi=ilp32f ...
 ```
 
-[(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/rust/make_scripts_riscv/project.mk#L223-L224)
+[(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223-L224)
 
 This produces binaries that contain RISC-V __Floating-Point Instructions__.
 
@@ -823,7 +823,7 @@ We're creating a __Custom Rust Target__ for BL602 because...
 
 -   Existing 32-bit RISC-V Rust Targets __don't support Hardware Floating-Point__
 
-Here's how we create the Custom Rust Target for BL602: [`riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
+Here's how we create the Custom Rust Target for BL602: [`riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
 
 1.  We __export an existing Rust Target__ `riscv32imac-unknown-none-elf`...
 
@@ -837,7 +837,7 @@ Here's how we create the Custom Rust Target for BL602: [`riscv32imacf-unknown-no
 
     Here's the JSON Target File for `riscv32imac-unknown-none-elf`...
 
-    -   [riscv32imac-unknown-none-elf.json: Software Floating-Point](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json)
+    -   [riscv32imac-unknown-none-elf.json: Software Floating-Point](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/riscv32imac-unknown-none-elf.json)
 
 
 1.  We __modify the JSON Target File__ to support Hardware Floating-Point.
@@ -860,7 +860,7 @@ Here's how we create the Custom Rust Target for BL602: [`riscv32imacf-unknown-no
     gcc -march=rv32imfc -mabi=ilp32f ...
     ```
 
-    [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/rust/make_scripts_riscv/project.mk#L223-L224)
+    [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223-L224)
 
 1.  We set __"`is-builtin`"__ to false since this is a Custom Rust Target...
 
@@ -886,7 +886,7 @@ Here's how we create the Custom Rust Target for BL602: [`riscv32imacf-unknown-no
 
     We specify "`-Z build-std=core`" so that the Rust Compiler will __rebuild the Rust Core Library__ for our Custom Rust Target.
 
-Here's our Custom Rust Target for Hardware Floating-Point: [`riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
+Here's our Custom Rust Target for Hardware Floating-Point: [`riscv32imacf-unknown-none-elf.json`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/riscv32imacf-unknown-none-elf.json)
 
 ```json
 {
@@ -1025,7 +1025,7 @@ _Auto-generating Rust Wrappers for BL602 IoT SDK with `bl602-rust-wrapper`_
 
 # Appendix: Build Script for BL602 Rust Firmware
 
-Let's look inside the script that builds, flashes and runs our Rust Firmware for BL602: [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L10-L23)
+Let's look inside the script that builds, flashes and runs our Rust Firmware for BL602: [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L10-L23)
 
 1.  The script begins with the build and flash settings...
 
@@ -1052,7 +1052,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 1.  Next we define the Custom Rust Target that supports Hardware Floating-Point...
 
-    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L29-L33)
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L29-L33)
 
     ```bash
     ##  Rust target: Custom target for llvm-abiname=ilp32f
@@ -1064,7 +1064,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 1.  We remove the Stub Library and the Rust Library is they exist...
 
-    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L61-L71)
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L61-L71)
 
     ```bash
     ##  Remove the Stub Library if it exists:
@@ -1084,7 +1084,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 1.  We build the BL602 firmware with the Stub Library...
 
-    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L77-L78)
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L77-L78)
 
     ```bash
     ##  Build the firmware with the Stub Library
@@ -1095,7 +1095,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 1.  We compile the Rust Library with our Custom Rust Target that supports Hardware Floating-Point...
 
-    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L84-L88)
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L84-L88)
 
     ```bash
     ##  Build the Rust Library
@@ -1115,7 +1115,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 1.  We overwrite the Stub Library by the compiled Rust Library...
 
-    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L90-L94)
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L90-L94)
 
     ```bash
     ##  Replace the Stub Library by the compiled Rust Library
@@ -1126,7 +1126,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 1.  We link the compiled Rust Library into the BL602 Firmware...
 
-    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L100-L101)
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L100-L101)
 
     ```bash
     ##  Link the Rust Library to the firmware
@@ -1141,7 +1141,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 1.  We copy the BL602 Rust Firmware file to the `blflash` folder and flash to BL602...
 
-    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L110-L124)
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L110-L124)
 
     ```bash
     ##  Copy firmware to blflash
@@ -1161,7 +1161,7 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 1.  Finally we launch CoolTerm to run the BL602 Rust Firmware...
 
-    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L130-L131)
+    From [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L130-L131)
 
     ```bash
     ##  Run the firmware
@@ -1172,17 +1172,17 @@ Let's look inside the script that builds, flashes and runs our Rust Firmware for
 
 Check out the complete build log here...
 
--   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh#L135-L523)
+-   [__Build Log for BL602 Rust Firmware__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L135-L523)
 
 # Appendix: Stub Library for BL602 Rust
 
-The build script [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/run.sh) links the compiled Rust code into the BL602 firmware by overwriting the compiled `rust_app` Stub Library...
+The build script [`run.sh`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh) links the compiled Rust code into the BL602 firmware by overwriting the compiled `rust_app` Stub Library...
 
-- [`rust-app`: BL602 Stub Library for Rust Application](https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/rust-app)
+- [`rust-app`: BL602 Stub Library for Rust Application](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/rust-app)
 
 This library contains a stub function for `rust_main`...
 
-From [`rust-app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/rust-app/src/rust-app.c)
+From [`rust-app.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/rust-app/src/rust-app.c)
 
 ```c
 /// Main function in Rust.
@@ -1196,7 +1196,7 @@ _Why do we need the stub function `rust_main`?_
 
 Because `rust_main` is referenced by our C code when defining the commands for our Command-Line Interface...
 
-From [`sdk_app_rust/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/sdk_app_rust/demo.c#L7-L16)
+From [`sdk_app_rust/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/sdk_app_rust/demo.c#L7-L16)
 
 ```c
 //  TODO: Sync with components/3rdparty/rust-app/src/rust-app.c
@@ -1218,7 +1218,7 @@ If we omit `rust_main` from our Stub Library, our GitHub Actions build will fail
 
 Many functions from the [NimBLE Porting Layer](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer) are declared as "`static inline`"...
 
-From [`nimble_npl_os.h`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/components/3rdparty/nimble-porting-layer/include/nimble_npl_os.h#L270-L274)
+From [`nimble_npl_os.h`](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/include/nimble_npl_os.h#L270-L274)
 
 ```c
 //  static inline function
@@ -1245,7 +1245,7 @@ void ble_npl_time_delay(ble_npl_time_t ticks) { ... }
 
 Here's how we implement this for our BL602 Rust Firmware...
 
-[From `sdk_app_rust/nimble.c`](https://github.com/lupyuen/bl_iot_sdk/blob/rust/customer_app/sdk_app_rust/sdk_app_rust/nimble.c)
+[From `sdk_app_rust/nimble.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/sdk_app_rust/nimble.c)
 
 ```c
 //  Export the inline functions for NimBLE Porting Layer to Rust

@@ -107,7 +107,7 @@ To test the LoRa SX1262 Transceiver, we define the __GPIO Pin Numbers__ like so:
 
 (`SX126X_DEBUG_CS_PIN` should be set to `-1` if we're not debugging. More about the Debug CS Pin later)
 
-We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [pinedio_lorawan/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105)
+We define the __Chip Select Pins__ for SPI Flash and ST7789 Display as well: [pinedio_lorawan/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105)
 
 ```c
 /// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
@@ -139,7 +139,7 @@ Here are the changes we made for PineDio Stack.
 
 While testing LoRaWAN (and LoRa SX1262), we need to __deselect all other SPI Peripherals__ (SPI Flash and ST7789 Display).
 
-From [pinedio_lorawan/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130) ...
+From [pinedio_lorawan/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130) ...
 
 ```c
 /// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
@@ -172,11 +172,11 @@ Then we set the __Chip Select Pins to High__, to deselect the SPI Peripherals...
 
 (More about `SX126X_DEBUG_CS_PIN` when we talk about the Logic Analyser)
 
-This function is called by the [__`init_lorawan` Command__](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173), which we'll run in a while...
+This function is called by the [__`init_lorawan` Command__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173), which we'll run in a while...
 
 ![Deselect SPI Peripherals](https://lupyuen.github.io/images/lorawan2-deselect.png)
 
-[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173)
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173)
 
 ## Swap SPI Pins
 

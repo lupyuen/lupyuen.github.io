@@ -111,7 +111,7 @@ The LoRa Driver was ported to BL602 from __Semtech's Reference Implementation of
 
 (__Note on LoRa vs LoRaWAN:__ We configure LoRaWAN via `Makefile`, not `#define`. Skip this section if we're using LoRaWAN.)
 
-We set the __LoRa Frequency__ in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80) like so...
+We set the __LoRa Frequency__ in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80) like so...
 
 ```c
 /// TODO: We are using LoRa Frequency 923 MHz 
@@ -137,7 +137,7 @@ Change `USE_BAND_923` to `USE_BAND_433`, `780`, `868` or `915`. Here's the compl
 #endif
 ```
 
-The __LoRa Parameters__ are also defined in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80)
+The __LoRa Parameters__ are also defined in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80)
 
 ```c
 /// LoRa Parameters
@@ -178,7 +178,7 @@ I used this LoRa Transmitter and Receiver (based on RAKwireless WisBlock) for te
 
 (__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver initialises the LoRa Transceiver for us, when we run the `init_lorawan` command. Skip this section if we're using LoRaWAN.)
 
-The `init_driver` command in our Demo Firmware initialises the LoRa Transceiver like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212)
+The `init_driver` command in our Demo Firmware initialises the LoRa Transceiver like so: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212)
 
 ```c
 /// Command to initialise the LoRa Driver.
@@ -274,7 +274,7 @@ The "`Radio`" functions are defined in [`radio.c`](https://github.com/lupyuen/lo
 
 (__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver calls the LoRa Driver to transmit LoRa Packets, when we run the `las_join` and `las_app_tx` commands. Skip this section if we're using LoRaWAN to transmit data.)
 
-To transmit a LoRa Packet, the `send_message` command in our Demo Firmware calls `send_once` in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L214-L219) ... 
+To transmit a LoRa Packet, the `send_message` command in our Demo Firmware calls `send_once` in [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L214-L219) ... 
 
 ```c
 /// Command to send a LoRa message. Assume that the LoRa Transceiver driver has been initialised.
@@ -286,7 +286,7 @@ static void send_message(char *buf, int len, int argc, char **argv) {
 
 __`send_once`__ prepares a LoRa Packet containing the string "`PING`"...
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244) :
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244) :
 
 ```c
 /// We send a "PING" message and expect a "PONG" response
@@ -330,7 +330,7 @@ And transmits the LoRa Packet...
 
 When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function __`on_tx_done`__ ...
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L399-L412) :
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L399-L412) :
 
 ```c
 /// Callback Function that is called when our LoRa message has been transmitted
@@ -352,7 +352,7 @@ Here we log the number of packets transmitted, and put the LoRa Transceiver to l
 
 (__Note on LoRa vs LoRaWAN:__ Our LoRaWAN Driver calls the LoRa Driver to receive LoRa Packets, when we run the `las_join` and `las_app_tx` commands. Skip this section if we're using LoRaWAN to receive data.)
 
-Here's how the `receive_message` command in our Demo Firmware receives a LoRa Packet: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252)
+Here's how the `receive_message` command in our Demo Firmware receives a LoRa Packet: [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252)
 
 ```c
 /// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
@@ -367,7 +367,7 @@ static void receive_message(char *buf, int len, int argc, char **argv) {
 
 When the LoRa Driver receives a LoRa Packet, it calls our Callback Function `on_rx_done` ...
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444) :
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444) :
 
 ```c
 /// Callback Function that is called when a LoRa message has been received
@@ -412,7 +412,7 @@ _What happens when we don't receive a packet in 5 seconds?_
 
 The LoRa Driver calls our Callback Function `on_rx_timeout` ...
 
-From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475) :
+From [`demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475) :
 
 ```c
 /// Callback Function that is called when no LoRa messages could be received due to timeout
@@ -514,7 +514,7 @@ las_join 3
 
 Let's study what happens inside the __`las_join`__ command...
 
-From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L901-L935) :
+From [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L901-L935) :
 
 ```c
 /// `las_join` command will send a Join Network Request
@@ -745,7 +745,7 @@ las_app_port open 2
 
 (Port #2 seems to be a common port used by LoRaWAN Applications)
 
-The __`las_app_port`__ command calls this function in [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808) ...
+The __`las_app_port`__ command calls this function in [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808) ...
 
 ```c
 /// `las_app_port open 2` command opens LoRaWAN Application Port 2
@@ -825,7 +825,7 @@ This is the preferred way for a low-power LoRaWAN device to transmit sensor data
 
 (It's OK if a LoRaWAN Data Packet gets lost due to noise or inteference... LoRaWAN sensor devices are supposed to transmit data packets periodically anyway)
 
-The __`las_app_tx`__ command is implemented here: [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885)
+The __`las_app_tx`__ command is implemented here: [`lorawan.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885)
 
 ```c
 /// `las_app_tx 2 5 0` command transmits to LoRaWAN Port 2
@@ -1153,7 +1153,7 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
     init_lorawan
     ```
 
-    [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168)
+    [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168)
 
 1.  Let's get ready to join the LoRaWAN Network. Enter the __Device EUI__...
 
@@ -1205,13 +1205,13 @@ Let's enter some commands to join the LoRaWAN Network and transmit a LoRaWAN Dat
 
     [__Watch the demo video on YouTube__](https://youtu.be/BMMIIiZG6G0)
 
-    [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
+    [__See the output log__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/README.md#output-log)
 
 To see the available commands, enter `help`...
 
 ![LoRaWAN Firmware Commands](https://lupyuen.github.io/images/lorawan-help.png)
 
-[(The commands are defined in `demo.c`)](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L343-L372)
+[(The commands are defined in `demo.c`)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L343-L372)
 
 [(The LoRaWAN commands were ported to BL602 from Apache Mynewt OS)](https://mynewt.apache.org/latest/tutorials/lora/lorawanapp.html)
 
@@ -1273,7 +1273,7 @@ If our LoRaWAN Gateway didn't receive the data packet from BL602, here are some 
     
     (Instead of the Private Sync Word `0x1424`)
     
-    This is defined in the [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69) as...
+    This is defined in the [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile#L66-L69) as...
 
     ```text
     CFLAGS += -DLORA_NODE_PUBLIC_NWK=1
@@ -1442,7 +1442,7 @@ I have increased the __Transmit Power to max 22 dBm__. Also I have increased the
 SX126xSetTxParams( 22, RADIO_RAMP_3400_US );
 ```
 
-According to the log, the Power Amplifier seems to be enabled at the max settings: [`README.md`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log)
+According to the log, the Power Amplifier seems to be enabled at the max settings: [`README.md`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/README.md#output-log)
 
 ```text
 SX126xSetPaConfig: 
@@ -1476,7 +1476,7 @@ Typical LoRaWAN Networks will use the __Public LoRa Sync Word `0x3444`__.
 
 The LoRaWAN Gateway will __not respond to our packets if we transmit the wrong Sync Word__.
 
-__`LORA_NODE_PUBLIC_NWK`__ should be set to __`1`__ in the [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69) ...
+__`LORA_NODE_PUBLIC_NWK`__ should be set to __`1`__ in the [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile#L66-L69) ...
 
 ```text
 # Sets public or private lora network. A value of 1 means

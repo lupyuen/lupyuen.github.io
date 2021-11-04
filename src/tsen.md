@@ -50,7 +50,7 @@ Let's call the function now.
 
 # The Quick Way
 
-To read the Internal Temperature Sensor the Quick Way, we call [__bl_tsen_adc_get__](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282) from the __ADC Hardware Abstraction Layer (HAL)__: [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29)
+To read the Internal Temperature Sensor the Quick Way, we call [__bl_tsen_adc_get__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282) from the __ADC Hardware Abstraction Layer (HAL)__: [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29)
 
 ```c
 #include <bl_adc.h>  //  For BL602 Internal Temperature Sensor
@@ -128,7 +128,7 @@ Let's fix both issues.
 
 # The Accurate Way
 
-To read the Internal Temperature Sensor the __Accurate Way__, we copy the [__bl_tsen_adc_get__](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282) function and __change two things__...
+To read the Internal Temperature Sensor the __Accurate Way__, we copy the [__bl_tsen_adc_get__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282) function and __change two things__...
 
 1.  __Wait a while__ as we initialise the ADC for the first time
 
@@ -138,7 +138,7 @@ To read the Internal Temperature Sensor the __Accurate Way__, we copy the [__bl_
 
     (Instead of Integer)
 
-Below is __get_tsen_adc__, our modded function (with all the fixings): [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109)
+Below is __get_tsen_adc__, our modded function (with all the fixings): [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109)
 
 ```c
 #include <bl_adc.h>     //  For BL602 ADC HAL
@@ -148,7 +148,7 @@ Below is __get_tsen_adc__, our modded function (with all the fixings): [pinedio_
 #include <task.h>       //  For vTaskDelay
 
 /// Read the Internal Temperature Sensor as Float. Returns 0 if successful.
-/// Based on bl_tsen_adc_get in https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282
+/// Based on bl_tsen_adc_get in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282
 static int get_tsen_adc(
   float *temp,      //  Pointer to float to store the temperature
   uint8_t log_flag  //  0 to disable logging, 1 to enable logging
@@ -250,7 +250,7 @@ The code below looks similar to the earlier code except...
 
     (Instead of Integer)
 
-From [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45)...
+From [pinedio_tsen/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45)...
 
 ```c
 /// Read BL602 / BL604's Internal Temperature Sensor as Float
@@ -338,7 +338,7 @@ Which means...
 
 ## LoRaWAN Command
 
-__las_app_tx_tsen__ is defined like so: [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227)
+__las_app_tx_tsen__ is defined like so: [pinedio_lorawan/lorawan.c](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227)
 
 ```c
 /// Transmit Internal Temperature Sensor Data to LoRaWAN, encoded with CBOR. The command
@@ -882,7 +882,7 @@ Let's enter the LoRaWAN Commands to join The Things Network and transmit a Data 
     init_lorawan
     ```
 
-    [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L175-L181)
+    [(`init_lorawan` is defined here)](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L175-L181)
 
 1.  Set the __DevEUI__...
 
