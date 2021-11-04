@@ -1186,6 +1186,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     When all players leave the game, Roblox shuts down the server.
 
+1.  If we don't wish to decode CBOR in the Roblox Script, there's another solution: Decode CBOR in The Things Network with a __Payload Formatter__...
+
+    [__"CBOR Payload Formatter for The Things Network"__](https://lupyuen.github.io/articles/payload)
+
 # Appendix: Install Roblox Studio
 
 Here are the steps to download and install __Roblox Studio for macOS and Windows__...
