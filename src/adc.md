@@ -809,12 +809,12 @@ Or follow these steps to build the Rust Firmware `sdk_app_rust_adc.bin`...
 1.  Download the __source code__ for the BL602 Rust Firmware...
 
     ```bash
-    ## Download the adc branch of lupyuen's bl_iot_sdk
-    git clone --recursive --branch adc https://github.com/lupyuen/bl_iot_sdk
+    ## Download the master branch of lupyuen's bl_iot_sdk
+    git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
     cd bl_iot_sdk/customer_app/sdk_app_rust_adc
     ```
 
-1.  Edit the script [__`run.sh`__](https://github.com/lupyuen/bl_iot_sdk/blob/adc/customer_app/sdk_app_rust_adc/run.sh) in the `sdk_app_rust_adc` folder.
+1.  Edit the script [__`run.sh`__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/run.sh) in the `sdk_app_rust_adc` folder.
 
     This build script was created for macOS, but can be modified to run on Linux x64 and Windows WSL.
 

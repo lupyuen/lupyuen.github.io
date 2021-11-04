@@ -760,8 +760,8 @@ Here are the steps to build, flash and run the __CBOR Firmware for BL602 and BL6
 Download the firmware...
 
 ```bash
-## Download the cbor branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch cbor https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 ```
 
 Build the Firmware Binary File `pinedio_cbor.bin`...
@@ -779,8 +779,6 @@ cp build_out/pinedio_cbor.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`cbor`__ branch, not the default __`master`__ branch)
 
 ## Flash CBOR Firmware
 
@@ -943,11 +941,11 @@ Here are the steps to build, flash and run the __LoRaWAN Firmware for PineDio St
 Download the [__LoRaWAN firmware and driver source code__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan)...
 
 ```bash
-## Download the cbor branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch cbor https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 ```
 
-In the `customer_app/pinedio_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/Makefile) and find this setting...
+In the `customer_app/pinedio_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/Makefile) and find this setting...
 
 ```text
 CFLAGS += -DCONFIG_LORA_NODE_REGION=1
@@ -992,8 +990,6 @@ cp build_out/pinedio_lorawan.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`cbor`__ branch, not the default __`master`__ branch)
 
 ## Flash LoRaWAN Firmware
 

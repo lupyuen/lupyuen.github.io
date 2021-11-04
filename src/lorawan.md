@@ -965,11 +965,11 @@ Find out which __LoRa Frequency__ we should use for your region...
 Download the [LoRaWAN firmware and driver source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)...
 
 ```bash
-## Download the lorawan branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch lorawan https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 ```
 
-In the `customer_app/sdk_app_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile) and find this setting...
+In the `customer_app/sdk_app_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile) and find this setting...
 
 ```text
 CFLAGS += -DCONFIG_LORA_NODE_REGION=1
@@ -1026,8 +1026,6 @@ cp build_out/sdk_app_lorawan.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`lorawan`__ branch, not the default __`master`__ branch)
 
 ## Flash the firmware
 

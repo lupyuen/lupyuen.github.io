@@ -546,15 +546,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Here are the steps to build, flash and run the __Internal Temperature Sensor Firmware for BL602 and BL604__...
 
--   [__bl_iot_sdk/customer_app/pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen)
+-   [__bl_iot_sdk/customer_app/pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_tsen)
 
 ## Build Internal Temperature Sensor Firmware
 
 Download the firmware...
 
 ```bash
-## Download the tsen branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch tsen https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 ```
 
 Build the Firmware Binary File `pinedio_tsen.bin`...
@@ -572,8 +572,6 @@ cp build_out/pinedio_tsen.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`tsen`__ branch, not the default __`master`__ branch)
 
 ## Flash Internal Temperature Sensor Firmware
 
@@ -687,18 +685,18 @@ __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.githu
 
 Here are the steps to build, flash and run the __LoRaWAN Firmware for PineDio Stack BL604__...
 
--   [__bl_iot_sdk/customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan)
+-   [__bl_iot_sdk/customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan)
 
 ## Build LoRaWAN Firmware
 
 Download the [__LoRaWAN firmware and driver source code__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan)...
 
 ```bash
-## Download the tsen branch of lupyuen's bl_iot_sdk
-git clone --recursive --branch tsen https://github.com/lupyuen/bl_iot_sdk
+## Download the master branch of lupyuen's bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 ```
 
-In the `customer_app/pinedio_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/Makefile) and find this setting...
+In the `customer_app/pinedio_lorawan` folder, edit [`Makefile`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/Makefile) and find this setting...
 
 ```text
 CFLAGS += -DCONFIG_LORA_NODE_REGION=1
@@ -743,8 +741,6 @@ cp build_out/pinedio_lorawan.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
-
-(Remember to use the __`tsen`__ branch, not the default __`master`__ branch)
 
 ## Flash LoRaWAN Firmware
 
