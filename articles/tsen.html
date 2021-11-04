@@ -136,7 +136,7 @@ void read_tsen(char *buf, int len, int argc, char **argv) {
   //  Show the temperature
   printf(&quot;Returned Temperature = %d Celsius\r\n&quot;, temp);
 }</code></pre></div>
-<p>Let’s build, flash and run the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen"><strong>pinedio_tsen</strong></a> demo firmware…</p>
+<p>Let’s build, flash and run the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_tsen"><strong>pinedio_tsen</strong></a> demo firmware…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-internal-temperature-sensor-firmware"><strong>“Build and Run Internal Temperature Sensor Firmware”</strong></a></li>
 </ul>
@@ -292,7 +292,7 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
   //  Show the temperature
   printf(&quot;Returned Temperature = %f Celsius\r\n&quot;, temp);
 }</code></pre></div>
-<p>Let’s build, flash and run the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen"><strong>pinedio_tsen</strong></a> demo firmware…</p>
+<p>Let’s build, flash and run the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_tsen"><strong>pinedio_tsen</strong></a> demo firmware…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-internal-temperature-sensor-firmware"><strong>“Build and Run Internal Temperature Sensor Firmware”</strong></a></li>
 </ul>
@@ -402,7 +402,7 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
 <p><a href="https://lupyuen.github.io/articles/cbor#encode-sensor-data-with-tinycbor">(CBOR Encoding is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/cbor#send-lorawan-packet">(Sending a LoRaWAN Packet is explained here)</a></p>
 <h2 id="run-the-lorawan-firmware" class="section-header"><a href="#run-the-lorawan-firmware">4.2 Run the LoRaWAN Firmware</a></h2>
-<p>Let’s build, flash and run the updated LoRaWAN Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan"><strong>pinedio_lorawan</strong></a></p>
+<p>Let’s build, flash and run the updated LoRaWAN Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong>pinedio_lorawan</strong></a></p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></li>
 </ul>
@@ -439,7 +439,7 @@ Encode CBOR: { t: 4720, l: 4000 }
 CBOR Output: 11 bytes
   0xa2 0x61 0x74 0x19 0x12 0x70 0x61 0x6c 0x19 0x0f 0xa0
   ...</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan#output-log">(See the complete log)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#output-log">(See the complete log)</a></p>
 <p>Let’s check the transmitted Sensor Data with Grafana and Roblox.</p>
 <p><img src="https://lupyuen.github.io/images/grafana-flow.jpg" alt="Visualising The Things Network Sensor Data with Grafana" /></p>
 <p><a href="https://lupyuen.github.io/articles/grafana">(Source)</a></p>
@@ -646,7 +646,7 @@ cargo run flash pinedio_tsen.bin --port COM5</code></pre></div>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong>bl_iot_sdk/customer_app/pinedio_lorawan</strong></a></li>
 </ul>
 <h2 id="build-lorawan-firmware" class="section-header"><a href="#build-lorawan-firmware">9.1 Build LoRaWAN Firmware</a></h2>
-<p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan"><strong>LoRaWAN firmware and driver source code</strong></a>…</p>
+<p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong>LoRaWAN firmware and driver source code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
 git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
 <p>In the <code>customer_app/pinedio_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
@@ -849,7 +849,7 @@ cargo run flash pinedio_lorawan.bin --port COM5</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_port open 2</code></pre></div>
 <p>“<code>2</code>” is the Application Port Number</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#open-lorawan-port">(<code>las_app_port</code> is explained here)</a></p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan#output-log">(See the complete log)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#output-log">(See the complete log)</a></p>
 </li>
 </ol>
 

@@ -147,7 +147,7 @@
 </ul>
 <p>Let’s study the source code and learn how the driver is called by our Demo Firmware to <strong>transmit and receive LoRa Packets</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan"><code>customer_app/sdk_app_lorawan</code></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lorawan"><code>customer_app/sdk_app_lorawan</code></a></li>
 </ul>
 <h2 id="how-it-works" class="section-header"><a href="#how-it-works">2.1 How It Works</a></h2>
 <p>Our LoRa Driver has 3 layers: <strong>Radio Interface, Transceiver Interface and Board Interface</strong>…</p>
@@ -431,7 +431,7 @@ static void on_rx_timeout(void) {
 </ul>
 <p>We shall study the source code and learn how the LoRaWAN Driver is called by our demo firmware to <strong>join the LoRaWAN Network and transmit data packets</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan"><code>customer_app/sdk_app_lorawan</code></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lorawan"><code>customer_app/sdk_app_lorawan</code></a></li>
 </ul>
 <h2 id="whats-inside" class="section-header"><a href="#whats-inside">3.1 What’s Inside</a></h2>
 <p>Our BL602 Driver for LoRaWAN has layers (like Onions, Shrek and Kueh Lapis): <strong>Application Layer, Node Layer and Medium Access Control Layer</strong>…</p>
@@ -820,7 +820,7 @@ LoRaMacStatus_t LoRaMacMcpsRequest(struct pbuf *om, struct lora_pkt_info *txi) {
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan">LoRaWAN firmware and driver source code</a>…</p>
+<p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lorawan">LoRaWAN firmware and driver source code</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
 git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
 <p>In the <code>customer_app/sdk_app_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>

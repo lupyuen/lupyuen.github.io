@@ -144,7 +144,7 @@
 </blockquote>
 <p>Let’s look at the code from our firmware that encodes the above into CBOR…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>pinedio_cbor Firmware</strong></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_cbor"><strong>pinedio_cbor Firmware</strong></a></li>
 </ul>
 <h2 id="output-buffer-and-cbor-encoder" class="section-header"><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a></h2>
 <p>First we create an <strong>Output Buffer</strong> that will hold the encoded CBOR data: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66">pinedio_cbor/demo.c</a></p>
@@ -671,7 +671,7 @@ void las_cmd_app_tx_cbor( ... ) {
 <h1 id="appendix-build-and-run-cbor-firmware" class="section-header"><a href="#appendix-build-and-run-cbor-firmware">9 Appendix: Build and Run CBOR Firmware</a></h1>
 <p>Here are the steps to build, flash and run the <strong>CBOR Firmware for BL602 and BL604</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>bl_iot_sdk/customer_app/pinedio_cbor</strong></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_cbor"><strong>bl_iot_sdk/customer_app/pinedio_cbor</strong></a></li>
 </ul>
 <p>(If we wish to add the TinyCBOR Library to an existing BL602 / BL604 project, check the next chapter)</p>
 <h2 id="build-cbor-firmware" class="section-header"><a href="#build-cbor-firmware">9.1 Build CBOR Firmware</a></h2>
@@ -834,10 +834,10 @@ include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk</code></pre></div>
 <h1 id="appendix-build-and-run-lorawan-firmware" class="section-header"><a href="#appendix-build-and-run-lorawan-firmware">11 Appendix: Build and Run LoRaWAN Firmware</a></h1>
 <p>Here are the steps to build, flash and run the <strong>LoRaWAN Firmware for PineDio Stack BL604</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan"><strong>bl_iot_sdk/customer_app/pinedio_lorawan</strong></a></li>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong>bl_iot_sdk/customer_app/pinedio_lorawan</strong></a></li>
 </ul>
 <h2 id="build-lorawan-firmware" class="section-header"><a href="#build-lorawan-firmware">11.1 Build LoRaWAN Firmware</a></h2>
-<p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan"><strong>LoRaWAN firmware and driver source code</strong></a>…</p>
+<p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong>LoRaWAN firmware and driver source code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
 git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
 <p>In the <code>customer_app/pinedio_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
