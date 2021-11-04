@@ -125,7 +125,7 @@
 <p>(Not just FreeRTOS)</p>
 </li>
 </ul>
-<p>We shall call the BL602 Low Level UART HAL to control the Grove E-Ink Display with this BL602 Command-Line Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/eink/customer_app/sdk_app_uart_eink"><strong><code>sdk_app_uart_eink</code></strong></a></p>
+<p>We shall call the BL602 Low Level UART HAL to control the Grove E-Ink Display with this BL602 Command-Line Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_uart_eink"><strong><code>sdk_app_uart_eink</code></strong></a></p>
 <p>The firmware will work on all BL602 boards, including PineCone and Pinenut.</p>
 <p><img src="https://lupyuen.github.io/images/uart-connect2.jpg" alt="PineCone BL602 connected to Grove E-Ink Display" /></p>
 <p><em>PineCone BL602 connected to Grove E-Ink Display</em></p>
@@ -321,9 +321,9 @@ static void send_data(const uint8_t* data, uint32_t data_len) {
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v5.0.0"><strong><code>sdk_app_uart_eink</code> Binary Release</strong></a></li>
 </ul>
-<p>Alternatively, we may build the Firmware Binary File <code>sdk_app_uart_eink.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/eink/customer_app/sdk_app_uart_eink">source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Download the eink branch of lupyuen&#39;s bl_iot_sdk
-git clone --recursive --branch eink https://github.com/lupyuen/bl_iot_sdk
+<p>Alternatively, we may build the Firmware Binary File <code>sdk_app_uart_eink.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_uart_eink">source code</a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_uart_eink
 
 # TODO: Change this to the full path of bl_iot_sdk
@@ -334,7 +334,6 @@ make
 # TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_uart_eink.bin ~/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<p>(Remember to use the <strong><code>eink</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">6.1 Flash the firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>

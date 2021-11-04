@@ -154,7 +154,7 @@
 <p>Porting uLisp to BL602 (as a C library <a href="https://github.com/lupyuen/ulisp-bl602"><code>ulisp-bl602</code></a>) was quick and easy.</p>
 <p>(More about this in a while.)</p>
 <p><em>What about porting the Arduino functions like <code>pinmode</code> and <code>digitalwrite</code>?</em></p>
-<p>The <a href="https://github.com/lupyuen/bl_iot_sdk/tree/ulisp"><strong>BL602 IoT SDK</strong></a> doesn’t have these GPIO functions. </p>
+<p>The <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master"><strong>BL602 IoT SDK</strong></a> doesn’t have these GPIO functions. </p>
 <p>So in BL602 uLisp we reimplemented these functions with the <strong>BL602 Hardware Abstraction Layer for GPIO</strong>.</p>
 <p>(While exposing the same old names to uLisp programs: <code>pinmode</code> and <code>digitalwrite</code>)</p>
 <p><em>Anything else we should know about uLisp?</em></p>
@@ -164,9 +164,9 @@
 <p>We still see bits of Lisp today in <strong>WebAssembly</strong>… Like the <strong>Stack Machine and S-Expressions</strong>. <a href="https://developer.mozilla.org/en-US/docs/WebAssembly/Understanding_the_text_format">(See this)</a></p>
 <p>In fact the uLisp Interpreter looks a little like <strong>Wasm3</strong>, the WebAssembly Interpreter for Microcontrollers. <a href="https://github.com/wasm3/wasm3">(See this)</a></p>
 <h1 id="build-the-bl602-ulisp-firmware" class="section-header"><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a></h1>
-<p>Download and build the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp">uLisp Firmware for BL602</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Download the ulisp branch of lupyuen&#39;s bl_iot_sdk
-git clone --recursive --branch ulisp https://github.com/lupyuen/bl_iot_sdk
+<p>Download and build the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_ulisp">uLisp Firmware for BL602</a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 
 # TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
@@ -179,7 +179,6 @@ make
 # TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_ulisp.bin ~/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<p>(Remember to use the <strong><code>ulisp</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">2.1 Flash the firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
@@ -743,7 +742,7 @@ object *sp_loop (object *args, object *env) {
 <p><strong>BL602 cares about the Command Line</strong></p>
 <p>On Arduino we read and parse the Serial Input, byte by byte.</p>
 <p>Whereas on BL602, the <strong>BL602 IoT SDK parses the Command Line</strong> for us.</p>
-<p>Here’s how we <strong>define “<code>(</code>” as a Command Keyword</strong> in BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L45-L48"><code>demo.c</code></a></p>
+<p>Here’s how we <strong>define “<code>(</code>” as a Command Keyword</strong> in BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L45-L48"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// List of commands. STATIC_CLI_CMD_ATTRIBUTE makes this(these) command(s) static
 const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {
@@ -752,7 +751,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
         run_ulisp
     },
 };          </code></pre></div>
-<p>When we enter a command like <strong>“<code>( delay 1000 )</code>”</strong>, the command-line interface calls our function <code>run_ulisp</code> defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/ulisp/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L9-L40"><code>demo.c</code></a></p>
+<p>When we enter a command like <strong>“<code>( delay 1000 )</code>”</strong>, the command-line interface calls our function <code>run_ulisp</code> defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_ulisp/sdk_app_ulisp/demo.c#L9-L40"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command-Line Buffer that will be passed to uLisp
 static char cmd_buf[1024] = { 0 };
 

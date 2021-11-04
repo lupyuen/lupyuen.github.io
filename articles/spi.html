@@ -526,8 +526,8 @@ static void test_spi_transfer(char *buf, int len, int argc, char **argv) {
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0"><strong>Binary Release of <code>sdk_app_spi_demo</code></strong></a></li>
 </ul>
 <p>Alternatively, we may build the Firmware Binary File <code>sdk_app_spi_demo.bin</code> from the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_spi_demo">source code</a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Download the spi branch of lupyuen&#39;s bl_iot_sdk
-git clone --recursive --branch spi https://github.com/lupyuen/bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 cd bl_iot_sdk/customer_app/sdk_app_spi_demo
 
 # TODO: Change this to the full path of bl_iot_sdk
@@ -538,7 +538,6 @@ make
 # TODO: Change ~/blflash to the full path of blflash
 cp build_out/sdk_app_spi_demo.bin ~/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<p>(Remember to use the <strong><code>spi</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">6.1 Flash the firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
