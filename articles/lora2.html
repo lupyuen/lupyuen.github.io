@@ -1653,11 +1653,11 @@ void __assert_func(const char *file, int line, const char *func, const char *fai
 <p><strong>Delete the <code>build_out</code> folder</strong> if it exists.</p>
 </li>
 <li>
-<p><strong>Edit the <code>Makefile</code></strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile"><code>sdk_app_lorawan/Makefile</code></a></p>
+<p><strong>Edit the <code>Makefile</code></strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile"><code>sdk_app_lorawan/Makefile</code></a></p>
 <div class="example-wrap"><pre class="language-text"><code>#  Set the project name
 PROJECT_NAME := sdk_app_lorawan</code></pre></div></li>
 <li>
-<p>Set the <strong>GCC Compiler Options</strong> in the <code>Makefile</code> (if any): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile"><code>sdk_app_lorawan/Makefile</code></a></p>
+<p>Set the <strong>GCC Compiler Options</strong> in the <code>Makefile</code> (if any): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile"><code>sdk_app_lorawan/Makefile</code></a></p>
 <div class="example-wrap"><pre class="language-text"><code># Define the GCC compiler options
 
 # Set LoRa Region to 1 (AS923). See components/3rdparty/lorawan/include/node/lora_band.h
@@ -1668,7 +1668,7 @@ CFLAGS += -DLORA_APP_AUTO_JOIN=0</code></pre></div>
 <p><strong>UPDATE:</strong> The above flags won’t work for C++ programs. Instead we should set <strong><code>CFLAGS</code> and <code>CPPFLAGS</code></strong> in <strong><code>bouffalo.mk</code></strong> inside the Sub Folder. <a href="https://lupyuen.github.io/articles/tflite#compiler-flags">(Here’s an example for TensorFlow Lite Firmware)</a></p>
 </li>
 <li>
-<p><strong>For macOS Only</strong>: Edit the <strong><code>run.sh</code> script</strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/run.sh"><code>sdk_app_lorawan/run.sh</code></a></p>
+<p><strong>For macOS Only</strong>: Edit the <strong><code>run.sh</code> script</strong> in the new folder and set the Project Name: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/run.sh"><code>sdk_app_lorawan/run.sh</code></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Set the project name
 export APP_NAME=sdk_app_lorawan</code></pre></div></li>
 <li>

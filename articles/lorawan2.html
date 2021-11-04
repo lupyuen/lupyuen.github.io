@@ -155,7 +155,7 @@
 #define SX126X_TCXO_WAKEUP_TIME  5  //  Time required for the TCXO to wakeup (milliseconds)
 #define SX126X_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)</code></pre></div>
 <p>(<code>SX126X_DEBUG_CS_PIN</code> should be set to <code>-1</code> if we’re not debugging. More about the Debug CS Pin later)</p>
-<p>We define the <strong>Chip Select Pins</strong> for SPI Flash and ST7789 Display as well: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105">pinedio_lorawan/demo.c</a></p>
+<p>We define the <strong>Chip Select Pins</strong> for SPI Flash and ST7789 Display as well: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L101-L105">pinedio_lorawan/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// GPIO for SPI Flash Chip Select Pin. We must set this to High to deselect SPI Flash.
 #define FLASH_CS_PIN     14
 
@@ -181,7 +181,7 @@
 <p>Here are the changes we made for PineDio Stack.</p>
 <h2 id="deselect-spi-peripherals" class="section-header"><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a></h2>
 <p>While testing LoRaWAN (and LoRa SX1262), we need to <strong>deselect all other SPI Peripherals</strong> (SPI Flash and ST7789 Display).</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130">pinedio_lorawan/demo.c</a> …</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130">pinedio_lorawan/demo.c</a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
 int deselect_spi(void) {
   //  Configure Chip Select pins as GPIO Output Pins (instead of GPIO Input)
@@ -204,9 +204,9 @@ int deselect_spi(void) {
   return 0;
 }</code></pre></div>
 <p>(More about <code>SX126X_DEBUG_CS_PIN</code> when we talk about the Logic Analyser)</p>
-<p>This function is called by the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173"><strong><code>init_lorawan</code> Command</strong></a>, which we’ll run in a while…</p>
+<p>This function is called by the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173"><strong><code>init_lorawan</code> Command</strong></a>, which we’ll run in a while…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-deselect.png" alt="Deselect SPI Peripherals" /></p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/pinedio/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173">(Source)</a></p>
 <h2 id="swap-spi-pins" class="section-header"><a href="#swap-spi-pins">2.2 Swap SPI Pins</a></h2>
 <p>Due to a quirk in the SPI implementation on BL602 and BL604, we need to <strong>swap the SPI Pins</strong> for SDI <em>(formerly MISO)</em> and SDO <em>(formerly MOSI)</em>.</p>
 <p>We do this by calling <strong>GLB_Swap_SPI_0_MOSI_With_MISO</strong> in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L168-L202">lora-sx1262/sx126x-board.c</a> …</p>

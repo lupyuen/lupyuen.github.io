@@ -147,7 +147,7 @@
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor"><strong>pinedio_cbor Firmware</strong></a></li>
 </ul>
 <h2 id="output-buffer-and-cbor-encoder" class="section-header"><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a></h2>
-<p>First we create an <strong>Output Buffer</strong> that will hold the encoded CBOR data: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66">pinedio_cbor/demo.c</a></p>
+<p>First we create an <strong>Output Buffer</strong> that will hold the encoded CBOR data: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234 }
 static void test_cbor(char *buf, int len, int argc, char **argv) {
 
@@ -255,7 +255,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
 <p><img src="https://lupyuen.github.io/images/cbor-map2.png" alt="CBOR Map with 2 Key-Value Pairs" /></p>
 </blockquote>
 <h2 id="modify-map-encoder" class="section-header"><a href="#modify-map-encoder">2.1 Modify Map Encoder</a></h2>
-<p>We begin the same way as before: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139">pinedio_cbor/demo.c</a></p>
+<p>We begin the same way as before: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
 static void test_cbor2( ... ) {
 
@@ -482,7 +482,7 @@ static void test_cbor2( ... ) {
 <p>(Because we’re not expecting an acknowledgement)</p>
 </li>
 </ul>
-<p>Our CBOR Encoding happens inside the <strong>las_app_tx_cbor</strong> function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
+<p>Our CBOR Encoding happens inside the <strong>las_app_tx_cbor</strong> function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L893-L1050">pinedio_lorawan/lorawan.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Transmit CBOR payload to LoRaWAN. The command
 ///   las_app_tx_cbor 2 0 1234 2345
 /// Will transmit the CBOR payload
@@ -826,11 +826,11 @@ INCLUDE_COMPONENTS += $(COMPONENTS_TINYCBOR)
 
 # This should appear after INCLUDE_COMPONENTS block
 include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/Makefile#L21-L36">(See a sample Makefile)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/Makefile#L21-L36">(See a sample Makefile)</a></p>
 <p>Include <strong>“cbor.h”</strong> in our source file…</p>
 <div class="example-wrap"><pre class="language-c"><code>#include &quot;cbor.h&quot;  //  For Tiny CBOR Library</code></pre></div>
 <p>And start coding with TinyCBOR!</p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_cbor/pinedio_cbor/demo.c">(See a sample source file)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c">(See a sample source file)</a></p>
 <h1 id="appendix-build-and-run-lorawan-firmware" class="section-header"><a href="#appendix-build-and-run-lorawan-firmware">11 Appendix: Build and Run LoRaWAN Firmware</a></h1>
 <p>Here are the steps to build, flash and run the <strong>LoRaWAN Firmware for PineDio Stack BL604</strong>…</p>
 <ul>
@@ -1009,7 +1009,7 @@ cargo run flash pinedio_lorawan.bin --port COM5</code></pre></div>
 <li>
 <p>Next we initialise the <strong>LoRa SX1262 and LoRaWAN Drivers</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>init_lorawan</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/cbor/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L168-L174">(<code>init_lorawan</code> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L168-L174">(<code>init_lorawan</code> is defined here)</a></p>
 </li>
 <li>
 <p>Set the <strong>DevEUI</strong>…</p>
@@ -1059,7 +1059,7 @@ cargo run flash pinedio_lorawan.bin --port COM5</code></pre></div>
 </ul>
 <p>Our Sensor Data has been transmitted via LoRaWAN to The Things Network!</p>
 <p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log"><strong>See the output log</strong></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/README.md#output-log"><strong>See the output log</strong></a></p>
 </li>
 </ol>
 <p>Check out this demo of PineDio Stack with Roblox and The Things Network…</p>

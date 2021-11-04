@@ -178,7 +178,7 @@
 <p>The LoRa Driver was ported to BL602 from <strong>Semtech’s Reference Implementation of the SX1262 Driver</strong>. <a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x">(See this)</a></p>
 <h2 id="configure-lora-transceiver" class="section-header"><a href="#configure-lora-transceiver">2.2 Configure LoRa Transceiver</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> We configure LoRaWAN via <code>Makefile</code>, not <code>#define</code>. Skip this section if we’re using LoRaWAN.)</p>
-<p>We set the <strong>LoRa Frequency</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a> like so…</p>
+<p>We set the <strong>LoRa Frequency</strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
 #define USE_BAND_923</code></pre></div>
@@ -196,7 +196,7 @@
 #else
   #error &quot;Please define a frequency band in the compiler options.&quot;
 #endif</code></pre></div>
-<p>The <strong>LoRa Parameters</strong> are also defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a></p>
+<p>The <strong>LoRa Parameters</strong> are also defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L44-L80"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
@@ -231,7 +231,7 @@
 </ul>
 <h2 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2.3 Initialise LoRa Transceiver</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver initialises the LoRa Transceiver for us, when we run the <code>init_lorawan</code> command. Skip this section if we’re using LoRaWAN.)</p>
-<p>The <code>init_driver</code> command in our Demo Firmware initialises the LoRa Transceiver like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212"><code>demo.c</code></a></p>
+<p>The <code>init_driver</code> command in our Demo Firmware initialises the LoRa Transceiver like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L159-L212"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to initialise the LoRa Driver.
 /// Assume that create_task has been called to init the Event Queue.
 static void init_driver(char *buf, int len, int argc, char **argv) {
@@ -308,14 +308,14 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 </ul>
 <h2 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">2.4 Transmit LoRa Packet</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver calls the LoRa Driver to transmit LoRa Packets, when we run the <code>las_join</code> and <code>las_app_tx</code> commands. Skip this section if we’re using LoRaWAN to transmit data.)</p>
-<p>To transmit a LoRa Packet, the <code>send_message</code> command in our Demo Firmware calls <code>send_once</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L214-L219"><code>demo.c</code></a> … </p>
+<p>To transmit a LoRa Packet, the <code>send_message</code> command in our Demo Firmware calls <code>send_once</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L214-L219"><code>demo.c</code></a> … </p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to send a LoRa message. Assume that the LoRa Transceiver driver has been initialised.
 static void send_message(char *buf, int len, int argc, char **argv) {
   //  Send the &quot;PING&quot; message
   send_once(1);
 }</code></pre></div>
 <p><strong><code>send_once</code></strong> prepares a LoRa Packet containing the string “<code>PING</code>”…</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244"><code>demo.c</code></a> :</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L221-L244"><code>demo.c</code></a> :</p>
 <div class="example-wrap"><pre class="language-c"><code>/// We send a &quot;PING&quot; message and expect a &quot;PONG&quot; response
 const uint8_t loraping_ping_msg[] = &quot;PING&quot;;
 const uint8_t loraping_pong_msg[] = &quot;PONG&quot;;
@@ -345,7 +345,7 @@ static void send_once(int is_ping) {
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/usb#radiosend-transmit-message">(<code>RadioSend</code> is explained here)</a></p>
 <p>When the LoRa Packet is transmitted, the LoRa Driver calls our Callback Function <strong><code>on_tx_done</code></strong> …</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L399-L412"><code>demo.c</code></a> :</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L399-L412"><code>demo.c</code></a> :</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when our LoRa message has been transmitted
 static void on_tx_done(void) {
   //  Log the success status
@@ -359,7 +359,7 @@ static void on_tx_done(void) {
 <p><a href="https://lupyuen.github.io/articles/usb#radiosleep-switch-to-sleep-mode">(<code>RadioSleep</code> is explained here)</a></p>
 <h2 id="receive-lora-packet" class="section-header"><a href="#receive-lora-packet">2.5 Receive LoRa Packet</a></h2>
 <p>(<strong>Note on LoRa vs LoRaWAN:</strong> Our LoRaWAN Driver calls the LoRa Driver to receive LoRa Packets, when we run the <code>las_join</code> and <code>las_app_tx</code> commands. Skip this section if we’re using LoRaWAN to receive data.)</p>
-<p>Here’s how the <code>receive_message</code> command in our Demo Firmware receives a LoRa Packet: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252"><code>demo.c</code></a></p>
+<p>Here’s how the <code>receive_message</code> command in our Demo Firmware receives a LoRa Packet: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L246-L252"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to receive a LoRa message. Assume that LoRa Transceiver driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
 static void receive_message(char *buf, int len, int argc, char **argv) {
@@ -368,7 +368,7 @@ static void receive_message(char *buf, int len, int argc, char **argv) {
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/usb#radiorx-receive-message">(<code>RadioRx</code> is explained here)</a></p>
 <p>When the LoRa Driver receives a LoRa Packet, it calls our Callback Function <code>on_rx_done</code> …</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444"><code>demo.c</code></a> :</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L414-L444"><code>demo.c</code></a> :</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when a LoRa message has been received
 static void on_rx_done(
   uint8_t *payload,  //  Buffer containing received LoRa message
@@ -398,7 +398,7 @@ static void on_rx_done(
 }</code></pre></div>
 <p><em>What happens when we don’t receive a packet in 5 seconds?</em></p>
 <p>The LoRa Driver calls our Callback Function <code>on_rx_timeout</code> …</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475"><code>demo.c</code></a> :</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L461-L475"><code>demo.c</code></a> :</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when no LoRa messages could be received due to timeout
 static void on_rx_timeout(void) {
   //  Switch the LoRa Transceiver to low power, sleep mode
@@ -477,7 +477,7 @@ static void on_rx_timeout(void) {
 <p>In the Demo Firmware, we enter this command to join the LoRaWAN Network (up to 3 attempts)…</p>
 <div class="example-wrap"><pre class="language-text"><code>las_join 3</code></pre></div>
 <p>Let’s study what happens inside the <strong><code>las_join</code></strong> command…</p>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L901-L935"><code>lorawan.c</code></a> :</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L901-L935"><code>lorawan.c</code></a> :</p>
 <div class="example-wrap"><pre class="language-c"><code>/// `las_join` command will send a Join Network Request
 void las_cmd_join(char *buf0, int len0, int argc, char **argv) {
   ...
@@ -644,7 +644,7 @@ static void lora_mac_join_accept_rxd(uint8_t *payload, uint16_t size) {
 <p>In our Demo Firmware we enter this command to open LoRaWAN Application Port Number 2…</p>
 <div class="example-wrap"><pre class="language-text"><code>las_app_port open 2</code></pre></div>
 <p>(Port #2 seems to be a common port used by LoRaWAN Applications)</p>
-<p>The <strong><code>las_app_port</code></strong> command calls this function in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808"><code>lorawan.c</code></a> …</p>
+<p>The <strong><code>las_app_port</code></strong> command calls this function in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L735-L808"><code>lorawan.c</code></a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>/// `las_app_port open 2` command opens LoRaWAN Application Port 2
 void las_cmd_app_port(char *buf0, int len0, int argc, char **argv) {
   ...
@@ -705,7 +705,7 @@ int lora_app_port_open(uint8_t port, lora_txd_func txd_cb, lora_rxd_func rxd_cb)
 <p>The “<code>0</code>” at the end indicates that this is an <strong>Unconfirmed Message</strong>: We don’t expect any acknowledgement from the LoRaWAN Gateway.</p>
 <p>This is the preferred way for a low-power LoRaWAN device to transmit sensor data, since it <strong>doesn’t need to wait for the acknowledgement</strong> (and consume additional power).</p>
 <p>(It’s OK if a LoRaWAN Data Packet gets lost due to noise or inteference… LoRaWAN sensor devices are supposed to transmit data packets periodically anyway)</p>
-<p>The <strong><code>las_app_tx</code></strong> command is implemented here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885"><code>lorawan.c</code></a></p>
+<p>The <strong><code>las_app_tx</code></strong> command is implemented here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L810-L885"><code>lorawan.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// `las_app_tx 2 5 0` command transmits to LoRaWAN Port 2
 /// a data packet of 5 bytes, as an Unconfirmed Message (0)
 void las_cmd_app_tx(char *buf0, int len0, int argc, char **argv) {
@@ -984,7 +984,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5</code></pre></div>
 <p>Then we <strong>initialise our LoRaWAN Driver</strong>. </p>
 <p>Enter this command…</p>
 <div class="example-wrap"><pre class="language-text"><code>init_lorawan</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168">(<code>init_lorawan</code> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/lorawan.c#L166-L168">(<code>init_lorawan</code> is defined here)</a></p>
 </li>
 <li>
 <p>Let’s get ready to join the LoRaWAN Network. Enter the <strong>Device EUI</strong>…</p>
@@ -1016,12 +1016,12 @@ cargo run flash sdk_app_lorawan.bin --port COM5</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>las_app_tx 2 5 0</code></pre></div>
 <p>This calls the <code>las_cmd_app_tx</code> function that we’ve seen earlier.</p>
 <p><a href="https://youtu.be/BMMIIiZG6G0"><strong>Watch the demo video on YouTube</strong></a></p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log"><strong>See the output log</strong></a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/README.md#output-log"><strong>See the output log</strong></a></p>
 </li>
 </ol>
 <p>To see the available commands, enter <code>help</code>…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-help.png" alt="LoRaWAN Firmware Commands" /></p>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L343-L372">(The commands are defined in <code>demo.c</code>)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/sdk_app_lorawan/demo.c#L343-L372">(The commands are defined in <code>demo.c</code>)</a></p>
 <p><a href="https://mynewt.apache.org/latest/tutorials/lora/lorawanapp.html">(The LoRaWAN commands were ported to BL602 from Apache Mynewt OS)</a></p>
 <h1 id="view-received-lorawan-packets" class="section-header"><a href="#view-received-lorawan-packets">5 View Received LoRaWAN Packets</a></h1>
 <p><em>How will we know if our LoRaWAN Gateway has received the data packet from BL602?</em></p>
@@ -1076,7 +1076,7 @@ cargo run flash sdk_app_lorawan.bin --port COM5</code></pre></div>
 <p><strong>Check the LoRa Sync Word</strong></p>
 <p>Typical LoRaWAN Networks will use the <strong>Public LoRa Sync Word <code>0x3444</code></strong>.</p>
 <p>(Instead of the Private Sync Word <code>0x1424</code>)</p>
-<p>This is defined in the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a> as…</p>
+<p>This is defined in the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a> as…</p>
 <div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DLORA_NODE_PUBLIC_NWK=1</code></pre></div>
 <p>The LoRaWAN Gateway will not respond to our packets if we transmit the wrong Sync Word.</p>
 <p>See the Appendix for details.</p>
@@ -1242,7 +1242,7 @@ SX126xSetRegulatorMode( USE_DCDC );  //  Use DC-DC</code></pre></div>
 <p>I have increased the <strong>Transmit Power to max 22 dBm</strong>. Also I have increased the <strong>Power Amplifier Ramp Up Time</strong> from 200 to the max 3,400 microseconds: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c#L546-L547"><code>radio.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Previously: SX126xSetTxParams( 0, RADIO_RAMP_200_US );
 SX126xSetTxParams( 22, RADIO_RAMP_3400_US );</code></pre></div>
-<p>According to the log, the Power Amplifier seems to be enabled at the max settings: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/README.md#output-log"><code>README.md</code></a></p>
+<p>According to the log, the Power Amplifier seems to be enabled at the max settings: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/README.md#output-log"><code>README.md</code></a></p>
 <div class="example-wrap"><pre class="language-text"><code>SX126xSetPaConfig: 
 paDutyCycle=4, 
 hpMax=7, 
@@ -1259,7 +1259,7 @@ SX126xWriteRegister(REG_OCP, 0x38); // current max 160mA for the whole device</c
 <p>Typical LoRaWAN Networks will use the <strong>Public LoRa Sync Word <code>0x3444</code></strong>.</p>
 <p>(Instead of the Private Sync Word <code>0x1424</code>)</p>
 <p>The LoRaWAN Gateway will <strong>not respond to our packets if we transmit the wrong Sync Word</strong>.</p>
-<p><strong><code>LORA_NODE_PUBLIC_NWK</code></strong> should be set to <strong><code>1</code></strong> in the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lorawan/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a> …</p>
+<p><strong><code>LORA_NODE_PUBLIC_NWK</code></strong> should be set to <strong><code>1</code></strong> in the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile#L66-L69"><code>Makefile</code></a> …</p>
 <div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DLORA_NODE_PUBLIC_NWK=1</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/lorawan-syncword.png" alt="LORA_NODE_PUBLIC_NWK in Makefile" /></p>
 <p><code>LORA_NODE_PUBLIC_NWK</code> sets the Sync Word in <a href="https://github.com/lupyuen/lorawan/blob/main/src/mac/LoRaMac.c#L2581-L2587"><code>LoRaMac.c</code></a> …</p>

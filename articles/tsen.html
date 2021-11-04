@@ -118,7 +118,7 @@
 <p>(Internal Temperature Sensors based on ADC are available on many microcontrollers, like <a href="https://lupyuen.github.io/articles/connect-stm32-blue-pill-to-esp8266-with-apache-mynewt">STM32 Blue Pill</a>)</p>
 <p><img src="https://lupyuen.github.io/images/tsen-code4.png" alt="Reading the Internal Temperature Sensor the Quick Way" /></p>
 <h1 id="the-quick-way" class="section-header"><a href="#the-quick-way">2 The Quick Way</a></h1>
-<p>To read the Internal Temperature Sensor the Quick Way, we call <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282"><strong>bl_tsen_adc_get</strong></a> from the <strong>ADC Hardware Abstraction Layer (HAL)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29">pinedio_tsen/demo.c</a></p>
+<p>To read the Internal Temperature Sensor the Quick Way, we call <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282"><strong>bl_tsen_adc_get</strong></a> from the <strong>ADC Hardware Abstraction Layer (HAL)</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L15-L29">pinedio_tsen/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_adc.h&gt;  //  For BL602 Internal Temperature Sensor
 
 /// Read BL602 / BL604&#39;s Internal Temperature Sensor as Integer
@@ -168,7 +168,7 @@ Returned Temperature = 43 Celsius</code></pre></div>
 <p>Let’s fix both issues.</p>
 <p><img src="https://lupyuen.github.io/images/tsen-output3.png" alt="Reading the Internal Temperature Sensor the Quick Way" /></p>
 <h1 id="the-accurate-way" class="section-header"><a href="#the-accurate-way">3 The Accurate Way</a></h1>
-<p>To read the Internal Temperature Sensor the <strong>Accurate Way</strong>, we copy the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282"><strong>bl_tsen_adc_get</strong></a> function and <strong>change two things</strong>…</p>
+<p>To read the Internal Temperature Sensor the <strong>Accurate Way</strong>, we copy the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282"><strong>bl_tsen_adc_get</strong></a> function and <strong>change two things</strong>…</p>
 <ol>
 <li>
 <p><strong>Wait a while</strong> as we initialise the ADC for the first time</p>
@@ -179,7 +179,7 @@ Returned Temperature = 43 Celsius</code></pre></div>
 <p>(Instead of Integer)</p>
 </li>
 </ol>
-<p>Below is <strong>get_tsen_adc</strong>, our modded function (with all the fixings): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109">pinedio_tsen/demo.c</a></p>
+<p>Below is <strong>get_tsen_adc</strong>, our modded function (with all the fixings): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L47-L109">pinedio_tsen/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_adc.h&gt;     //  For BL602 ADC HAL
 #include &lt;bl602_adc.h&gt;  //  For BL602 ADC Standard Driver
 #include &lt;bl602_glb.h&gt;  //  For BL602 Global Register Standard Driver
@@ -187,7 +187,7 @@ Returned Temperature = 43 Celsius</code></pre></div>
 #include &lt;task.h&gt;       //  For vTaskDelay
 
 /// Read the Internal Temperature Sensor as Float. Returns 0 if successful.
-/// Based on bl_tsen_adc_get in https://github.com/lupyuen/bl_iot_sdk/blob/tsen/components/hal_drv/bl602_hal/bl_adc.c#L224-L282
+/// Based on bl_tsen_adc_get in https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/bl_adc.c#L224-L282
 static int get_tsen_adc(
   float *temp,      //  Pointer to float to store the temperature
   uint8_t log_flag  //  0 to disable logging, 1 to enable logging
@@ -276,7 +276,7 @@ if (0xFFFF == tsen_offset) {
 <p>(Instead of Integer)</p>
 </li>
 </ol>
-<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45">pinedio_tsen/demo.c</a>…</p>
+<p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_tsen/pinedio_tsen/demo.c#L31-L45">pinedio_tsen/demo.c</a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Read BL602 / BL604&#39;s Internal Temperature Sensor as Float
 void read_tsen2(char *buf, int len, int argc, char **argv) {
   //  Temperature in Celsius
@@ -342,7 +342,7 @@ Returned Temperature = 43.596027 Celsius</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/ttn">(More about The Things Network)</a></p>
 <p><img src="https://lupyuen.github.io/images/tsen-command2.png" alt="Transmit internal temperature to LoRaWAN" /></p>
 <h2 id="lorawan-command" class="section-header"><a href="#lorawan-command">4.1 LoRaWAN Command</a></h2>
-<p><strong>las_app_tx_tsen</strong> is defined like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227">pinedio_lorawan/lorawan.c</a></p>
+<p><strong>las_app_tx_tsen</strong> is defined like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L1059-L1227">pinedio_lorawan/lorawan.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Transmit Internal Temperature Sensor Data to LoRaWAN, encoded with CBOR. The command
 ///   las_app_tx_tsen 2 0 2345 10 60
 /// Will transmit the CBOR payload
@@ -818,7 +818,7 @@ cargo run flash pinedio_lorawan.bin --port COM5</code></pre></div>
 <li>
 <p>Next we initialise the <strong>LoRa SX1262 and LoRaWAN Drivers</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>init_lorawan</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/tsen/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L175-L181">(<code>init_lorawan</code> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L175-L181">(<code>init_lorawan</code> is defined here)</a></p>
 </li>
 <li>
 <p>Set the <strong>DevEUI</strong>…</p>
