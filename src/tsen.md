@@ -72,7 +72,7 @@ void read_tsen(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-Let's build, flash and run the [__pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen) demo firmware...
+Let's build, flash and run the [__pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_tsen) demo firmware...
 
 -   [__"Build and Run Internal Temperature Sensor Firmware"__](https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-internal-temperature-sensor-firmware)
 
@@ -270,7 +270,7 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
 }
 ```
 
-Let's build, flash and run the [__pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_tsen) demo firmware...
+Let's build, flash and run the [__pinedio_tsen__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_tsen) demo firmware...
 
 -   [__"Build and Run Internal Temperature Sensor Firmware"__](https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-internal-temperature-sensor-firmware)
 
@@ -421,7 +421,7 @@ Which goes all the way to __The Things Network__! Assuming that we have configur
 
 ## Run the LoRaWAN Firmware
 
-Let's build, flash and run the updated LoRaWAN Firmware: [__pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan)
+Let's build, flash and run the updated LoRaWAN Firmware: [__pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan)
 
 -   [__"Build and Run LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-lorawan-firmware)
 
@@ -462,7 +462,7 @@ CBOR Output: 11 bytes
   ...
 ```
 
-[(See the complete log)](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan#output-log)
+[(See the complete log)](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#output-log)
 
 Let's check the transmitted Sensor Data with Grafana and Roblox.
 
@@ -689,7 +689,7 @@ Here are the steps to build, flash and run the __LoRaWAN Firmware for PineDio St
 
 ## Build LoRaWAN Firmware
 
-Download the [__LoRaWAN firmware and driver source code__](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan)...
+Download the [__LoRaWAN firmware and driver source code__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan)...
 
 ```bash
 ## Download the master branch of lupyuen's bl_iot_sdk
@@ -934,4 +934,4 @@ Let's enter the LoRaWAN Commands to join The Things Network and transmit a Data 
 
     [(`las_app_port` is explained here)](https://lupyuen.github.io/articles/lorawan#open-lorawan-port)
 
-    [(See the complete log)](https://github.com/lupyuen/bl_iot_sdk/tree/tsen/customer_app/pinedio_lorawan#output-log)
+    [(See the complete log)](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#output-log)

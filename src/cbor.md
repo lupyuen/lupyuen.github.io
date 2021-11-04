@@ -63,7 +63,7 @@ We call this a __CBOR Map__ that maps a __Key__ ("`t`") to a __Value__ (`1234`).
 
 Let's look at the code from our firmware that encodes the above into CBOR...
 
--   [__pinedio_cbor Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
+-   [__pinedio_cbor Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_cbor)
 
 ## Output Buffer and CBOR Encoder
 
@@ -751,7 +751,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Here are the steps to build, flash and run the __CBOR Firmware for BL602 and BL604__...
 
--   [__bl_iot_sdk/customer_app/pinedio_cbor__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_cbor)
+-   [__bl_iot_sdk/customer_app/pinedio_cbor__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_cbor)
 
 (If we wish to add the TinyCBOR Library to an existing BL602 / BL604 project, check the next chapter)
 
@@ -934,11 +934,11 @@ And start coding with TinyCBOR!
 
 Here are the steps to build, flash and run the __LoRaWAN Firmware for PineDio Stack BL604__...
 
--   [__bl_iot_sdk/customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan)
+-   [__bl_iot_sdk/customer_app/pinedio_lorawan__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan)
 
 ## Build LoRaWAN Firmware
 
-Download the [__LoRaWAN firmware and driver source code__](https://github.com/lupyuen/bl_iot_sdk/tree/cbor/customer_app/pinedio_lorawan)...
+Download the [__LoRaWAN firmware and driver source code__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan)...
 
 ```bash
 ## Download the master branch of lupyuen's bl_iot_sdk

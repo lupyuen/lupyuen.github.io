@@ -1059,7 +1059,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  What happens when we run the __Rhai Scripting Engine on BL602__ (configured for the smallest feature set)?
 
-    It seems to crash with a __Stack Overflow__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
+    It seems to crash with a __Stack Overflow__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_rust_script)
 
     We'll try LTO Optimisation to reduce the size of the Rust binaries.
 

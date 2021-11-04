@@ -67,7 +67,7 @@ The __BL602 Driver for RFM90 / SX1262__ is located here...
 
 Let's study the source code and learn how the driver is called by our Demo Firmware to __transmit and receive LoRa Packets__...
 
--   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)
+-   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lorawan)
 
 ## How It Works
 
@@ -458,7 +458,7 @@ The __BL602 Driver for LoRaWAN__ is located here...
 
 We shall study the source code and learn how the LoRaWAN Driver is called by our demo firmware to __join the LoRaWAN Network and transmit data packets__...
 
--   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)
+-   [`customer_app/sdk_app_lorawan`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lorawan)
 
 ## What's Inside
 
@@ -962,7 +962,7 @@ Find out which __LoRa Frequency__ we should use for your region...
 
 -  [__LoRa Frequencies by Country__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
-Download the [LoRaWAN firmware and driver source code](https://github.com/lupyuen/bl_iot_sdk/tree/lorawan/customer_app/sdk_app_lorawan)...
+Download the [LoRaWAN firmware and driver source code](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_lorawan)...
 
 ```bash
 ## Download the master branch of lupyuen's bl_iot_sdk

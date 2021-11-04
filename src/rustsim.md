@@ -1119,7 +1119,7 @@ Possibly, if we wrap the Web Browser Interface into a __Desktop App with Tauri__
 
 _Rhai Scripts run OK on our simulator with WebAssembly. But will the scripts run on Real BL602 Hardware?_
 
-Sadly no. Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
+Sadly no. Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_rust_script)
 
 But we could auto-convert / __transcode Rhai Script to uLisp__, which runs fine on BL602.
 
@@ -1209,7 +1209,7 @@ _We can run Rhai Scripts in our Web Browser thanks to WebAssembly..._
 
 _How will we run Rhai Scripts on Real BL602 Hardware?_
 
-Sadly Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/adc/customer_app/sdk_app_rust_script)
+Sadly Rhai Scripting Engine is __too heavy for BL602__. [(See this)](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_rust_script)
 
 But we could auto-convert / __transcode Rhai Script to uLisp__, which runs fine on BL602.
 
