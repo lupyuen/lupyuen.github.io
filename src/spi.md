@@ -78,7 +78,7 @@ However there are a couple of concerns over the BL602 SPI HAL...
 
 Hence we can still __write SPI programs for BL602 without AliOS__. And I'll highlight the SPI features that have special limitations.
 
-We shall test BL602 SPI with this BL602 Command-Line Firmware that I have created: [`sdk_app_spi`](https://github.com/lupyuen/bl_iot_sdk/tree/spi/customer_app/sdk_app_spi)
+We shall test BL602 SPI with this BL602 Command-Line Firmware that I have created: [`sdk_app_spi_demo`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_spi_demo)
 
 The firmware will work on __all BL602 boards,__ including PineCone and Pinenut.
 
@@ -162,7 +162,7 @@ _BL602 talks to BME280 over SPI, visualised by a Logic Analyser_
 
 Let's dive into the code for our SPI Demo Firmware!
 
-Before we initialise the SPI Port, we define these constants and variables in [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
+Before we initialise the SPI Port, we define these constants and variables in [`sdk_app_spi_demo/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100) 
 
 ```c
 /// Use SPI Port Number 0
@@ -181,7 +181,7 @@ static spi_dev_t spi;
 
 -   `spi` is the device instance of the SPI Port
 
-Our demo firmware initialises the SPI Port in the function `test_spi_init` from [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
+Our demo firmware initialises the SPI Port in the function `test_spi_init` from [`sdk_app_spi_demo/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100) 
 
 ```c
 /// Init the SPI Port
@@ -312,7 +312,7 @@ _First and Second SPI Transfers_
 
 ## Transmit and Receive Buffers
 
-First we define the __Transmit and Receive Buffers__ (one byte each) for the two SPI Transfers: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L102-L108)
+First we define the __Transmit and Receive Buffers__ (one byte each) for the two SPI Transfers: [`sdk_app_spi_demo/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L102-L108)
 
 ```c
 /// SPI Transmit and Receive Buffers for First SPI Transfer
@@ -326,7 +326,7 @@ static uint8_t rx_buf2[1];  //  We expect to receive Chip ID (0x60) from BME280
 
 ## Initialise SPI Buffers and Transfers
 
-Let's look at the function in our demo firmware that creates the two SPI Transfers and executes them: `test_spi_transfer` from [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L110-L156)
+Let's look at the function in our demo firmware that creates the two SPI Transfers and executes them: `test_spi_transfer` from [`sdk_app_spi_demo/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L110-L156)
 
 ```c
 /// Start the SPI data transfer
@@ -489,16 +489,16 @@ _SPI Demo Firmware for BL602_
 
 Let's run the SPI Demo Firmware for BL602.
 
-Download the Firmware Binary File __`sdk_app_spi.bin`__ from...
+Download the Firmware Binary File __`sdk_app_spi_demo.bin`__ from...
 
--  [__Binary Release of `sdk_app_spi`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0)
+-  [__Binary Release of `sdk_app_spi_demo`__](https://github.com/lupyuen/bl_iot_sdk/releases/tag/v3.0.0)
 
-Alternatively, we may build the Firmware Binary File `sdk_app_spi.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/spi/customer_app/sdk_app_spi)...
+Alternatively, we may build the Firmware Binary File `sdk_app_spi_demo.bin` from the [source code](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_spi_demo)...
 
 ```bash
 ## Download the spi branch of lupyuen's bl_iot_sdk
 git clone --recursive --branch spi https://github.com/lupyuen/bl_iot_sdk
-cd bl_iot_sdk/customer_app/sdk_app_spi
+cd bl_iot_sdk/customer_app/sdk_app_spi_demo
 
 ## TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
@@ -506,7 +506,7 @@ export CONFIG_CHIP_NAME=BL602
 make
 
 ## TODO: Change ~/blflash to the full path of blflash
-cp build_out/sdk_app_spi.bin ~/blflash
+cp build_out/sdk_app_spi_demo.bin ~/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
@@ -521,7 +521,7 @@ Follow these steps to install `blflash`...
 
 1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
 
-We assume that our Firmware Binary File `sdk_app_spi.bin` has been copied to the `blflash` folder.
+We assume that our Firmware Binary File `sdk_app_spi_demo.bin` has been copied to the `blflash` folder.
 
 Set BL602 to __Flashing Mode__ and restart the board.
 
@@ -549,24 +549,24 @@ __For Pinenut and MagicHome BL602:__
 
 1.  Reconnect the board to the USB port
 
-Enter these commands to flash `sdk_app_spi.bin` to BL602 over UART...
+Enter these commands to flash `sdk_app_spi_demo.bin` to BL602 over UART...
 
 ```bash
 ## TODO: Change ~/blflash to the full path of blflash
 cd ~/blflash
 
 ## For Linux:
-sudo cargo run flash sdk_app_spi.bin \
+sudo cargo run flash sdk_app_spi_demo.bin \
     --port /dev/ttyUSB0
 
 ## For macOS:
-cargo run flash sdk_app_spi.bin \
+cargo run flash sdk_app_spi_demo.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
 ## For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_spi.bin --port COM5
+cargo run flash sdk_app_spi_demo.bin --port COM5
 ```
 
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
@@ -678,7 +678,7 @@ Let's enter some SPI commands to read our BME280 Sensor!
     spi_result
     ```
 
-    (`spi_result` is defined here in [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182))
+    (`spi_result` is defined here in [`sdk_app_spi_demo/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L158-L182))
 
 1.  We should see this...
 
@@ -763,7 +763,7 @@ BL602 is extremely versatile for Pin Functions... We may assign __any BL602 Pin 
 
 (See Table 3.1 "Pin Description", Page 27 in the [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en))
 
-We configure Pin 14 for GPIO like so: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L86-L99)
+We configure Pin 14 for GPIO like so: [`sdk_app_spi_demo/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L86-L99)
 
 ```c
 /// Use GPIO 14 as SPI Chip Select Pin
@@ -798,7 +798,7 @@ We're ready to toggle Pin 14 as a GPIO Output Pin!
 
 ## Set Chip Select to Low
 
-To set our Chip Select Pin to Low (which activates BME280), we do this: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L135-L155)
+To set our Chip Select Pin to Low (which activates BME280), we do this: [`sdk_app_spi_demo/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L135-L155)
 
 ```c
 //  Set Chip Select pin to Low, to activate BME280
@@ -863,7 +863,7 @@ This seems to be a bug in the BL602 hardware or documentation. We fix this by __
 
 This works perfectly fine, though it contradicts the BL602 Reference Manual.
 
-Because of this bug, we shall refer to __Pin 1 as Serial Data In__ _(formerly MISO)_, and __Pin 4 as Serial Data Out__ _(formerly MOSI)_: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
+Because of this bug, we shall refer to __Pin 1 as Serial Data In__ _(formerly MISO)_, and __Pin 4 as Serial Data Out__ _(formerly MOSI)_: [`sdk_app_spi_demo/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100) 
 
 ```c
 //  Configure the SPI Port
@@ -881,7 +881,7 @@ int rc = spi_init(
 
 Here's another spooky problem: __BL602 SPI Phase seems incorrect__.
 
-Earlier we have configured BL602 for __SPI Polarity 0 (CPOL), Phase 1 (CPHA)__: [`sdk_app_spi/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/spi/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L45-L100) 
+Earlier we have configured BL602 for __SPI Polarity 0 (CPOL), Phase 1 (CPHA)__: [`sdk_app_spi_demo/demo.c`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L45-L100) 
 
 ```c
 //  Configure the SPI Port
@@ -2233,7 +2233,7 @@ uint32_t g_rx_tc;      //  Receive Terminal Count  (from 0x4000c004)
 uint32_t g_rx_error;   //  Receive Error Code      (from 0x4000c00c)
 ```
 
-These values are displayed when we enter the SPI Command [`spi_result`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi/sdk_app_spi/demo.c#L158-L182).
+These values are displayed when we enter the SPI Command [`spi_result`](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_spi_demo/sdk_app_spi_demo/demo.c#L158-L182).
 
 When we complete two SPI Transfers successfully, we should see these values...
 
