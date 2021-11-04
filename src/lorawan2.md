@@ -582,7 +582,15 @@ In the next article, PineDio Stack shall transmit data to the cloud via the publ
 
 -   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
 
+-   [__"Encode Sensor Data with CBOR on BL602"__](https://lupyuen.github.io/articles/cbor)
+
 -   [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
+
+-   [__"CBOR Payload Formatter for The Things Network"__](https://lupyuen.github.io/articles/payload)
+
+-   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
+
+-   [__"IoT Digital Twin with Roblox and The Things Network"__](https://lupyuen.github.io/articles/roblox)
 
 (Sorry for griping... But why doesn't Singapore have decent coverage for The Things Network? 🙄)
 
@@ -604,4 +612,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1436128755987058691)
 
-1.  The [`pinedio` branch of my `bl_iot_sdk` repo](https://github.com/lupyuen/bl_iot_sdk/tree/pinedio) has been synced with the latest updates from [`pine64/bl_iot_sdk`](https://github.com/pine64/bl_iot_sdk)
+1.  Here's a great way run a PineDio Stack BL604 Regression Test with GPIO, ADC, SPI, SX1262, LoRa, LoRaWAN and The Things Network
+
+    [__"Run Payload Formatter"__](https://lupyuen.github.io/articles/payload#run-payload-formatter)

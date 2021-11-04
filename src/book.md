@@ -170,7 +170,7 @@ Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, l
 
 -   ["CBOR Payload Formatter for The Things Network"](https://lupyuen.github.io/articles/payload)
 
-We're updating the LoRa SX1262 Driver for PineDio Stack to support __PineDio USB__...
+__PineDio USB__ uses the same LoRa SX1262 Driver as BL602 and BL604...
 
 -   ["Build a Linux Driver for PineDio LoRa SX1262 USB Adapter"](https://lupyuen.github.io/articles/usb)
 
