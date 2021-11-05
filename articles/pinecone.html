@@ -179,6 +179,7 @@
 <p>As we can see, firmware support is not so great for newer RISC-V microcontrollers.</p>
 <p>Firmware created for Pinecil will NOT run on PineCone… Even the simplest firmware for blinking the LED!</p>
 <h2 id="hardware-abstraction-layer" class="section-header"><a href="#hardware-abstraction-layer">2.2 Hardware Abstraction Layer</a></h2>
+<p><a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>UPDATE:</strong> Bouffalo Lab has released a new version of the BL602 IoT SDK</a></p>
 <p><em>How do we create portable firmware for RISC-V?</em></p>
 <p>We’ll have to isolate the differences with a layer of low-level firmware code known as the <strong>Hardware Abstraction Layer (HAL)</strong>.</p>
 <p>So when we port the firmware from, say, Pinecil to PineCone, we need to replace the HAL for GD32 VF103 by the HAL for BL602.</p>
@@ -461,6 +462,7 @@ Program Finished</code></pre></div>
 <p>The UART flashing protocol for PineCone is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a> doc.</p>
 <p><em>(The <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 Flash Programming</a> doc seems to suggest that BL602 may also be flashed from an SD Card via Secure Digital Input/Output)</em></p>
 <h2 id="building-firmware" class="section-header"><a href="#building-firmware">4.3 Building Firmware</a></h2>
+<p><a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>UPDATE:</strong> Bouffalo Lab has released a new version of the BL602 IoT SDK</a></p>
 <p>We may use Linux, Windows or macOS to build the BL602 firmware…</p>
 <ul>
 <li>
@@ -628,6 +630,10 @@ make</code></pre></div>
 <li>
 <p>Took me a while to realise that BL602 IoT SDK is <a href="https://github.com/alibaba/AliOS-Things"><strong>built with AliOS</strong></a> (with FreeRTOS underneath)</p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1355181209404334083?s=20">See this Twitter Thread</a></p>
+</li>
+<li>
+<p><strong>UPDATE:</strong> Bouffalo Lab has released a new version of the BL602 IoT SDK</p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1456259223323508748">See this Twitter Thread</a></p>
 </li>
 </ol>
 
