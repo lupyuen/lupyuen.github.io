@@ -105,6 +105,8 @@ Firmware created for Pinecil will NOT run on PineCone... Even the simplest firmw
 
 ## Hardware Abstraction Layer
 
+[__UPDATE:__ Bouffalo Lab has released a new version of the BL602 IoT SDK](https://twitter.com/MisterTechBlog/status/1456259223323508748)
+
 _How do we create portable firmware for RISC-V?_
 
 We'll have to isolate the differences with a layer of low-level firmware code known as the __Hardware Abstraction Layer (HAL)__.
@@ -441,6 +443,8 @@ _(The [BL602 Flash Programming](https://github.com/bouffalolab/bl_docs/tree/main
 
 ## Building Firmware
 
+[__UPDATE:__ Bouffalo Lab has released a new version of the BL602 IoT SDK](https://twitter.com/MisterTechBlog/status/1456259223323508748)
+
 We may use Linux, Windows or macOS to build the BL602 firmware...
 
 -   If we haven't done so, download the PineCone __BL602 IoT SDK `bl_iot_sdk`__...
@@ -606,3 +610,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  Took me a while to realise that BL602 IoT SDK is [__built with AliOS__](https://github.com/alibaba/AliOS-Things) (with FreeRTOS underneath)
 
     [See this Twitter Thread](https://twitter.com/MisterTechBlog/status/1355181209404334083?s=20)
+
+1.  __UPDATE:__ Bouffalo Lab has released a new version of the BL602 IoT SDK
+
+    [See this Twitter Thread](https://twitter.com/MisterTechBlog/status/1456259223323508748)
