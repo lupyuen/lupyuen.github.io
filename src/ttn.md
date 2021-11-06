@@ -185,7 +185,7 @@ These are LoRa Messages from __nearby devices__ that our Gateway has helpfully r
 
 Yep we're __officially a contributor__ to the globally-connected The Things Network!
 
-In case of problems, check the log on our Gateway at...
+In case of problems, check the __Packet Forwarder Log__ on our Gateway...
 
 ```text
 /var/log/daemon.log
