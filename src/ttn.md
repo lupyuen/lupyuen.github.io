@@ -185,6 +185,12 @@ These are LoRa Messages from __nearby devices__ that our Gateway has helpfully r
 
 Yep we're __officially a contributor__ to the globally-connected The Things Network!
 
+In case of problems, check the log on our Gateway at...
+
+```text
+/var/log/daemon.log
+```
+
 # Add Device to The Things Network
 
 (If you skipped the previous chapter: Welcome back! We'll need a __free account__ on The Things Network: [__Click "Sign Up" here__](https://www.thethingsnetwork.org/))
