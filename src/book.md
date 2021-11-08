@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(36 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(37 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -158,6 +158,8 @@ Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, l
 
 -   ["Monitor IoT Devices in The Things Network with Prometheus and Grafana"](https://lupyuen.github.io/articles/prometheus)
 
+-   ["CBOR Payload Formatter for The Things Network"](https://lupyuen.github.io/articles/payload)
+
 -   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
 
 -   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
@@ -166,9 +168,9 @@ Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, l
 
 -   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
 
--   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
+-   ["PineDio LoRa Gateway: Testing The Prototype"](https://lupyuen.github.io/articles/gateway)
 
--   ["CBOR Payload Formatter for The Things Network"](https://lupyuen.github.io/articles/payload)
+-   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
 
 __PineDio USB__ uses the same LoRa SX1262 Driver as BL602 and BL604...
 
@@ -299,6 +301,8 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 -   ["IoT Digital Twin with Roblox and The Things Network"](https://lupyuen.github.io/articles/roblox)
 
 -   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
+
+-   ["PineDio LoRa Gateway: Testing The Prototype"](https://lupyuen.github.io/articles/gateway)
 
 ![BL706 Audio Video Board](https://lupyuen.github.io/images/book-bl706.jpg)
 

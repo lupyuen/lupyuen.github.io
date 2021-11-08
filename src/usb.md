@@ -1540,7 +1540,7 @@ And we shall implement the GPIO Interrupt Handler Function [__handle_gpio_interr
 
 [(We don't need to code the Event Queue, it has been done here)](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L343-L413)
 
-![](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
+![PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 
 _PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter_
 
