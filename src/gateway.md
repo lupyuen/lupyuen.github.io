@@ -20,13 +20,13 @@ _What's a LoRa Gateway? How does it differ from other LoRa gadgets?_
 
 PineDio Stack and Pinedio USB are perfectly fine for __Point-to-Point Wireless Communication__.
 
-But if we need to __relay data packets__ to multiple devices or to the internet, we need a __LoRa Gateway__. (Like PineDio Gateway)
+But if we need to __relay data packets__ to multiple devices or to the internet, we need a __LoRa Gateway__ like PineDio Gateway.
 
 (It's like a WiFi Router, but for LoRa)
 
 _LoRa works over the internet?_
 
-Yes, when we connect PineDio Gateway to [__The Things Network__](https://lupyuen.github.io/articles/ttn), the free-to-use public global network for LoRa gadgets.
+Yes when we connect PineDio Gateway to [__The Things Network__](https://lupyuen.github.io/articles/ttn), the free-to-use public global network for LoRa gadgets.
 
 (We'll learn how in a while)
 
@@ -34,23 +34,27 @@ Yes, when we connect PineDio Gateway to [__The Things Network__](https://lupyuen
 
 _The Things Network is a public LoRa network. Why do we need PineDio Gateway?_
 
-Network Coverage for The Things Network can be __spotty in some regions__.
-
-[(Check out the coverage map for The Things Network)](https://www.thethingsnetwork.org/map)
+Network Coverage for The Things Network is __spotty in some regions__.
 
 Hopefully Pine64 will make PineDio Gateway highly affordable for __Schools, Workplaces and Homes__ to install everywhere... And __grow The Things Network!__
 
+[(Coverage map for The Things Network)](https://www.thethingsnetwork.org/map)
+
 _What about other LoRa networks?_
 
+PineDio Gateway runs on an __open source__ LoRa Network Stack. (Based on Arm64 Linux)
+
+It might be possible to integrate PineDio Gateway with other __LoRa Mesh Networks__... Like [__Meshtastic__](https://meshtastic.org/) (Data Mesh), [__QMesh__](https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network) (Voice Mesh) and [__Mycelium Mesh__](https://mycelium-mesh.net/) (Text Mesh).
+
+_Will PineDio support Helium Network?_
+
+Probably not. Our pre-production PineDio Gateway doesn't have a Cryptographic Co-Processor.
+
+[(More about Cryptographic Co-Processors)](https://lupyuen.github.io/articles/lorawan2#security)
+
+# Inside PineDio Gateway
+
 TODO
-
-Will be really interesting to see how we adapt LoRa Mesh Networks to support PineDio Gateway!
-
-helium
-
-https://ralimtek.com/posts/2021/pinedio/
-
-https://codingfield.com/en/2021/05/14/discovering-the-pine64-lora-gateway/
 
 What's a LoRa Concentrator?
 
@@ -96,6 +100,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1456933165063233538)
+
+1.  Check out these excellent articles on PineDio Gateway by JF and Ben V. Brown...
+
+    [__"Discovering the Pine64 LoRa gateway"__](https://codingfield.com/en/2021/05/14/discovering-the-pine64-lora-gateway/)
+
+    [__"Setting up the PineDIO LoRaWAN Gateway"__](https://ralimtek.com/posts/2021/pinedio/)
 
 TODO1
 
