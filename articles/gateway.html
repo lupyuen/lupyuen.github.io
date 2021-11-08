@@ -66,9 +66,12 @@
     <h1 class="title">PineDio LoRa Gateway: Testing The Prototype</h1>
     <nav id="TOC"><ul>
 <li><a href="#inside-pinedio-gateway">1 Inside PineDio Gateway</a><ul></ul></li>
-<li><a href="#pinedio-stack-bl604">2 PineDio Stack BL604</a><ul></ul></li>
-<li><a href="#whats-next">3 What’s Next</a><ul></ul></li>
-<li><a href="#notes">4 Notes</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2021</em></p>
+<li><a href="#install-pinedio-gateway">2 Install PineDio Gateway</a><ul></ul></li>
+<li><a href="#connect-to-the-things-network">3 Connect to The Things Network</a><ul></ul></li>
+<li><a href="#test-with-pinedio-stack">4 Test with PineDio Stack</a><ul></ul></li>
+<li><a href="#benchmark-with-rakwireless-wisgate">5 Benchmark with RAKwireless WisGate</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#notes">7 Notes</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2021</em></p>
 <p>Previously we tested two new wireless gadgets by Pine64…</p>
 <ul>
 <li>
@@ -80,10 +83,10 @@
 </ul>
 <p>Both gadgets transmit and receive small data packets over incredible distances thanks to <a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/"><strong>LoRa</strong></a>, the <strong>Long-Range Low-Bandwidth</strong> wireless network.</p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
-<p>Today we test the third prototype LoRa gadget by Pine64: <a href="https://wiki.pine64.org/wiki/Pinedio#Gateway"><strong>PineDio LoRa Gateway</strong></a></p>
+<p>Today we test the third LoRa gadget by Pine64: <a href="https://wiki.pine64.org/wiki/Pinedio#Gateway"><strong>PineDio LoRa Gateway</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/gateway-title.jpg" alt="PineDio LoRa Gateway" /></p>
 <p><em>What’s a LoRa Gateway? How does it differ from other LoRa gadgets?</em></p>
-<p>PineDio Stack and Pinedio USB are perfectly fine for <strong>Point-to-Point Wireless Communication</strong>.</p>
+<p>PineDio Stack and PineDio USB are perfectly fine for <strong>Point-to-Point Wireless Communication</strong>.</p>
 <p>But if we need to <strong>relay data packets</strong> to multiple devices or to the internet, we need a <strong>LoRa Gateway</strong> like PineDio Gateway.</p>
 <p>(It’s like a WiFi Router, but for LoRa)</p>
 <p><em>LoRa works over the internet?</em></p>
@@ -99,24 +102,66 @@
 <p><em>What about other LoRa networks?</em></p>
 <p>PineDio Gateway runs on an <strong>open source</strong> LoRa Network Stack. (Based on Arm64 Linux)</p>
 <p>It might be possible to integrate PineDio Gateway with other <strong>LoRa Mesh Networks</strong>… Like <a href="https://meshtastic.org/"><strong>Meshtastic</strong></a> (Data Mesh), <a href="https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network"><strong>QMesh</strong></a> (Voice Mesh) and <a href="https://mycelium-mesh.net/"><strong>Mycelium Mesh</strong></a> (Text Mesh).</p>
-<p><em>Will PineDio support Helium Network?</em></p>
+<p><em>Will PineDio Gateway support Helium Network?</em></p>
 <p>Probably not. Our pre-production PineDio Gateway doesn’t have a Cryptographic Co-Processor.</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan2#security">(More about Cryptographic Co-Processors)</a></p>
 <h1 id="inside-pinedio-gateway" class="section-header"><a href="#inside-pinedio-gateway">1 Inside PineDio Gateway</a></h1>
 <p>TODO</p>
+<p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1302">Semtech SX1302</a></p>
 <p>What’s a LoRa Concentrator?</p>
-<p>https://www.semtech.com/products/wireless-rf/lora-core/sx1302</p>
 <p>The SX1302 is a digital baseband engine, capable of detecting and demodulating large amounts of LoRa® packets expected
 in the IOT networks.</p>
-<p>How do we get data out of the things network?</p>
-<p>balenaEtcher</p>
-<p>https://www.balena.io/etcher/</p>
-<h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">2 PineDio Stack BL604</a></h1>
+<p>TODO8</p>
+<p><img src="https://lupyuen.github.io/images/gateway-inside.jpg" alt="" /></p>
+<p>TODO11</p>
+<p><img src="https://lupyuen.github.io/images/gateway-under.jpg" alt="" /></p>
+<p>TODO12</p>
+<p><img src="https://lupyuen.github.io/images/gateway-back.jpg" alt="" /></p>
+<h1 id="install-pinedio-gateway" class="section-header"><a href="#install-pinedio-gateway">2 Install PineDio Gateway</a></h1>
+<p>TODO</p>
+<p><a href="https://www.balena.io/etcher/">balenaEtcher</a></p>
+<p>TODO10</p>
+<p><img src="https://lupyuen.github.io/images/gateway-boot.jpg" alt="" /></p>
+<p>TODO15</p>
+<p><img src="https://lupyuen.github.io/images/gateway-ssh.png" alt="" /></p>
+<p>TODO16</p>
+<p><img src="https://lupyuen.github.io/images/gateway-config.png" alt="" /></p>
+<p>TODO18</p>
+<p><img src="https://lupyuen.github.io/images/gateway-id.png" alt="" /></p>
+<p>TODO20</p>
+<p><img src="https://lupyuen.github.io/images/gateway-config2.png" alt="" /></p>
+<h1 id="connect-to-the-things-network" class="section-header"><a href="#connect-to-the-things-network">3 Connect to The Things Network</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/gateway-add3.png" alt="" /></p>
+<p>TODO19</p>
+<p><img src="https://lupyuen.github.io/images/gateway-add4.png" alt="" /></p>
+<p>TODO21</p>
+<p><img src="https://lupyuen.github.io/images/gateway-add.png" alt="" /></p>
+<p>TODO22</p>
+<p><img src="https://lupyuen.github.io/images/gateway-add2.png" alt="" /></p>
+<p>TODO23</p>
+<p><img src="https://lupyuen.github.io/images/gateway-config3.png" alt="" /></p>
+<p>TODO24</p>
+<p><img src="https://lupyuen.github.io/images/gateway-confg.png" alt="" /></p>
+<h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">4 Test with PineDio Stack</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="" /></p>
+<p>TODO7</p>
+<p><img src="https://lupyuen.github.io/images/gateway-stack2.png" alt="" /></p>
+<h1 id="benchmark-with-rakwireless-wisgate" class="section-header"><a href="#benchmark-with-rakwireless-wisgate">5 Benchmark with RAKwireless WisGate</a></h1>
+<p>TODO</p>
+<p>TODO13</p>
+<p><img src="https://lupyuen.github.io/images/gateway-wisgate.jpg" alt="" /></p>
+<p>TODO14</p>
+<p><img src="https://lupyuen.github.io/images/gateway-antenna.jpg" alt="" /></p>
+<p>TODO26</p>
+<p><img src="https://lupyuen.github.io/images/gateway-compare6.png" alt="" /></p>
+<p>TODO27</p>
+<p><img src="https://lupyuen.github.io/images/gateway-compare5.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-pine64.jpg" alt="PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter" /></p>
 <p><em>PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">3 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -135,7 +180,7 @@ in the IOT networks.</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/gateway.md"><code>lupyuen.github.io/src/gateway.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">4 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1456933165063233538">this Twitter Thread</a></p>
@@ -146,60 +191,8 @@ in the IOT networks.</p>
 <p><a href="https://ralimtek.com/posts/2021/pinedio/"><strong>“Setting up the PineDIO LoRaWAN Gateway”</strong></a></p>
 </li>
 </ol>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/gateway-compare2.png" alt="" /></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/gateway-compare3.png" alt="" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/gateway-ttn.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/gateway-compare4.png" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/gateway-stack.png" alt="" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/gateway-compare.png" alt="" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/gateway-stack2.png" alt="" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/gateway-inside.jpg" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/gateway-front.jpg" alt="" /></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/gateway-boot.jpg" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/gateway-under.jpg" alt="" /></p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/gateway-back.jpg" alt="" /></p>
-<p>TODO13</p>
-<p><img src="https://lupyuen.github.io/images/gateway-wisgate.jpg" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/gateway-antenna.jpg" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/gateway-ssh.png" alt="" /></p>
-<p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/gateway-config.png" alt="" /></p>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/gateway-add3.png" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/gateway-id.png" alt="" /></p>
-<p>TODO19</p>
-<p><img src="https://lupyuen.github.io/images/gateway-add4.png" alt="" /></p>
-<p>TODO20</p>
-<p><img src="https://lupyuen.github.io/images/gateway-config2.png" alt="" /></p>
-<p>TODO21</p>
-<p><img src="https://lupyuen.github.io/images/gateway-add.png" alt="" /></p>
-<p>TODO22</p>
-<p><img src="https://lupyuen.github.io/images/gateway-add2.png" alt="" /></p>
-<p>TODO23</p>
-<p><img src="https://lupyuen.github.io/images/gateway-config3.png" alt="" /></p>
-<p>TODO24</p>
-<p><img src="https://lupyuen.github.io/images/gateway-confg.png" alt="" /></p>
 <p>TODO25</p>
 <p><img src="https://lupyuen.github.io/images/gateway-image.png" alt="" /></p>
-<p>TODO26</p>
-<p><img src="https://lupyuen.github.io/images/gateway-compare6.png" alt="" /></p>
-<p>TODO27</p>
-<p><img src="https://lupyuen.github.io/images/gateway-compare5.png" alt="" /></p>
 <p>TODO28</p>
 <p><img src="https://lupyuen.github.io/images/gateway-ttn2.png" alt="" /></p>
 
