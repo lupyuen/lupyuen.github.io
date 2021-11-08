@@ -26,13 +26,13 @@ But if we need to __relay data packets__ to multiple devices or to the internet,
 
 _LoRa works over the internet?_
 
-TODO
+Yes, when we connect PineDio Gateway to [__The Things Network__](https://lupyuen.github.io/articles/ttn), the free-to-use global network for LoRa gadgets.
 
-Why does it matter?
+(This article explains how)
 
-The only free-to-use global wireless network for IoT devices (and probably simple text messaging)
+> ![PineDio Gateway relays LoRa Packets to the internet](https://lupyuen.github.io/images/gateway-flow.jpg)
 
-What's the catch?
+_What's the catch?_
 
 Gateways
 Some places have better coverage than others
