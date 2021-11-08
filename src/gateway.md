@@ -58,11 +58,19 @@ Probably not. Our pre-production PineDio Gateway doesn't have a Cryptographic Co
 
 # Inside PineDio Gateway
 
+_What's inside PineDio Gateway?_
+
+Our pre-production [__PineDio Gateway__](https://wiki.pine64.org/wiki/Pinedio#Gateway) has two boards inside...
+
+-   [__PINE A64-LTS__](https://wiki.pine64.org/wiki/PINE_A64-LTS/SOPine) Arm64 single-board computer
+
+-   [__RAKwireless RAK2287__](https://docs.rakwireless.com/Product-Categories/WisLink/RAK2287/Datasheet/) LoRa Module with [__Semtech SX1302 Concentrator__](https://www.semtech.com/products/wireless-rf/lora-core/sx1302)
+
+_What's a LoRa Concentrator? How does it differ from a LoRa Transceiver?_
+
 TODO
 
-[Semtech SX1302](https://www.semtech.com/products/wireless-rf/lora-core/sx1302)
-
-What's a LoRa Concentrator?
+Typical LoRa Transceivers (like SX1262 in PineDio Stack and PineDio USB)
 
 The SX1302 is a digital baseband engine, capable of detecting and demodulating large amounts of LoRa® packets expected
 in the IOT networks.
