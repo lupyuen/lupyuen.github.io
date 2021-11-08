@@ -42,15 +42,19 @@ Hopefully Pine64 will make PineDio Gateway highly affordable for __Schools, Work
 
 _What about other LoRa networks?_
 
-PineDio Gateway runs on an __open source__ LoRa Network Stack. (Based on Arm64 Linux)
+PineDio Gateway runs an __open source__ LoRa Network Stack. (Based on Arm64 Linux)
 
-It might be possible to integrate PineDio Gateway with other __LoRa Mesh Networks__... Like [__Meshtastic__](https://meshtastic.org/) (Data Mesh), [__QMesh__](https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network) (Voice Mesh) and [__Mycelium Mesh__](https://mycelium-mesh.net/) (Text Mesh).
+We could possibly integrate PineDio Gateway with other __LoRa Mesh Networks__... Like [__Meshtastic__](https://meshtastic.org/) (Data Mesh), [__QMesh__](https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network) (Voice Mesh) and [__Mycelium Mesh__](https://mycelium-mesh.net/) (Text Mesh).
 
 _Will PineDio Gateway support Helium Network?_
 
 Probably not. Our pre-production PineDio Gateway doesn't have a Cryptographic Co-Processor.
 
 [(More about Cryptographic Co-Processors)](https://lupyuen.github.io/articles/lorawan2#security)
+
+![Inside PineDio Gateway](https://lupyuen.github.io/images/gateway-inside.jpg)
+
+[(Source)](https://wiki.pine64.org/wiki/Pinedio#Gateway)
 
 # Inside PineDio Gateway
 
@@ -64,10 +68,6 @@ The SX1302 is a digital baseband engine, capable of detecting and demodulating l
 in the IOT networks.
 
 TODO8
-
-![](https://lupyuen.github.io/images/gateway-inside.jpg)
-
-TODO11
 
 ![](https://lupyuen.github.io/images/gateway-under.jpg)
 
