@@ -68,20 +68,37 @@ Our pre-production [__PineDio Gateway__](https://wiki.pine64.org/wiki/Pinedio#Ga
 
 _What's a LoRa Concentrator? How does it differ from a LoRa Transceiver?_
 
-TODO
+__LoRa Transceivers__ (like SX1262 in PineDio Stack and PineDio USB) are designed to talk to __one LoRa device at a time__.
 
-Typical LoRa Transceivers (like SX1262 in PineDio Stack and PineDio USB)
+__LoRa Concentrators__ (like SX1302 in PineDio Gateway) can handle data packets from __multiple LoRa devices across multiple frequencies__ at the same time.
 
-The SX1302 is a digital baseband engine, capable of detecting and demodulating large amounts of LoRa® packets expected
-in the IOT networks.
+That's why LoRa Gateways have a LoRa Concentrator inside.
 
-TODO8
+(And nope, we can't build a proper LoRa Gateway with a plain LoRa Transceiver)
 
-![](https://lupyuen.github.io/images/gateway-under.jpg)
+![Back of PineDio Gateway](https://lupyuen.github.io/images/gateway-back.jpg)
 
-TODO12
+_What ports and connectors are on PineDio Gateway?_
 
-![](https://lupyuen.github.io/images/gateway-back.jpg)
+In the pic above we see connectors for...
+
+-   GPS Antenna
+
+-   LoRa Antenna
+
+-   HDMI Output
+
+-   Ethernet (10 / 100 Mbps)
+
+-   DC Power (5V)
+
+(All these need to be connected except HDMI, which is useful for debugging)
+
+The connectors not shown are microSD, USB 2.0, Audio Input / Output.
+
+Note that we're testing the __pre-production PineDio Gateway__, so some features may change...
+
+![Underside of PineDio Gateway](https://lupyuen.github.io/images/gateway-under.jpg)
 
 # Install PineDio Gateway
 
