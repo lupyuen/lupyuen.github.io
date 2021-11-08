@@ -119,14 +119,34 @@
 </li>
 </ul>
 <p><em>What’s a LoRa Concentrator? How does it differ from a LoRa Transceiver?</em></p>
-<p>TODO</p>
-<p>Typical LoRa Transceivers (like SX1262 in PineDio Stack and PineDio USB)</p>
-<p>The SX1302 is a digital baseband engine, capable of detecting and demodulating large amounts of LoRa® packets expected
-in the IOT networks.</p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/gateway-under.jpg" alt="" /></p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/gateway-back.jpg" alt="" /></p>
+<p><strong>LoRa Transceivers</strong> (like SX1262 in PineDio Stack and PineDio USB) are designed to talk to <strong>one LoRa device at a time</strong>.</p>
+<p><strong>LoRa Concentrators</strong> (like SX1302 in PineDio Gateway) can handle data packets from <strong>multiple LoRa devices across multiple frequencies</strong> at the same time.</p>
+<p>That’s why LoRa Gateways have a LoRa Concentrator inside.</p>
+<p>(And nope, we can’t build a proper LoRa Gateway with a plain LoRa Transceiver)</p>
+<p><img src="https://lupyuen.github.io/images/gateway-back.jpg" alt="Back of PineDio Gateway" /></p>
+<p><em>What ports and connectors are on PineDio Gateway?</em></p>
+<p>In the pic above we see connectors for…</p>
+<ul>
+<li>
+<p>GPS Antenna</p>
+</li>
+<li>
+<p>LoRa Antenna</p>
+</li>
+<li>
+<p>HDMI Output</p>
+</li>
+<li>
+<p>Ethernet (10 / 100 Mbps)</p>
+</li>
+<li>
+<p>DC Power (5V)</p>
+</li>
+</ul>
+<p>(All these need to be connected except HDMI, which is useful for debugging)</p>
+<p>The connectors not shown are microSD, USB 2.0, Audio Input / Output.</p>
+<p>Note that we’re testing the <strong>pre-production PineDio Gateway</strong>, so some features may change…</p>
+<p><img src="https://lupyuen.github.io/images/gateway-under.jpg" alt="Underside of PineDio Gateway" /></p>
 <h1 id="install-pinedio-gateway" class="section-header"><a href="#install-pinedio-gateway">2 Install PineDio Gateway</a></h1>
 <p>TODO</p>
 <p><a href="https://www.balena.io/etcher/">balenaEtcher</a></p>
