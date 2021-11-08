@@ -2,17 +2,17 @@
 
 📝 _15 Nov 2021_
 
-Previously we've tested two new wireless gadgets by Pine64...
+Previously we tested two new wireless gadgets by Pine64...
 
 -   [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/lorawan2)
 
 -   [__PineDio LoRa USB Adapter__](https://lupyuen.github.io/articles/usb)
 
-Both gadgets transmit and receive data packets over incredible distances thanks to [__LoRa__](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/), the __Long-Range Low-Bandwidth__ wireless network.
+Both gadgets transmit and receive small data packets over incredible distances thanks to [__LoRa__](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/), the __Long-Range Low-Bandwidth__ wireless network.
 
 [(Up to 5 km or 3 miles in urban areas... 15 km or 10 miles in rural areas!)](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/)
 
-Today we'll look at the third LoRa gadget by Pine64: [__PineDio LoRa Gateway__](https://wiki.pine64.org/wiki/Pinedio#Gateway).
+Today we test the third prototype LoRa gadget by Pine64: [__PineDio LoRa Gateway__](https://wiki.pine64.org/wiki/Pinedio#Gateway)
 
 ![PineDio LoRa Gateway](https://lupyuen.github.io/images/gateway-title.jpg)
 
@@ -26,23 +26,23 @@ But if we need to __relay data packets__ to multiple devices or to the internet,
 
 _LoRa works over the internet?_
 
-Yes, when we connect PineDio Gateway to [__The Things Network__](https://lupyuen.github.io/articles/ttn), the free-to-use global network for LoRa gadgets.
+Yes, when we connect PineDio Gateway to [__The Things Network__](https://lupyuen.github.io/articles/ttn), the free-to-use public global network for LoRa gadgets.
 
-(This article explains how)
+(We'll learn how in a while)
 
 > ![PineDio Gateway relays LoRa Packets to the internet](https://lupyuen.github.io/images/gateway-flow.jpg)
 
-_What's the catch?_
+_The Things Network is a public LoRa network. Why do we need PineDio Gateway?_
 
-Gateways
-Some places have better coverage than others
-It's up to us to fill in the blank spots
+Network Coverage for The Things Network can be __spotty in some regions__.
 
-Affordable gateway
+[(Check out the coverage map for The Things Network)](https://www.thethingsnetwork.org/map)
 
-Schools, workplaces and homes
+Hopefully Pine64 will make PineDio Gateway highly affordable for __Schools, Workplaces and Homes__ to install everywhere... And __grow The Things Network!__
 
-Pre-production
+_What about other LoRa networks?_
+
+TODO
 
 Will be really interesting to see how we adapt LoRa Mesh Networks to support PineDio Gateway!
 
