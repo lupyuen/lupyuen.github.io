@@ -2,6 +2,30 @@
 
 📝 _15 Nov 2021_
 
+Previously we've tested two new wireless gadgets by Pine64...
+
+-   [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/lorawan2)
+
+-   [__PineDio LoRa USB Adapter__](https://lupyuen.github.io/articles/usb)
+
+Both gadgets transmit and receive data packets over incredible distances thanks to [__LoRa__](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/), the __Long-Range Low-Bandwidth__ wireless network.
+
+[(Up to 5 km or 3 miles in urban areas... 15 km or 10 miles in rural areas!)](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/)
+
+Today we'll look at the third LoRa gadget by Pine64: [__PineDio LoRa Gateway__](https://wiki.pine64.org/wiki/Pinedio#Gateway).
+
+![PineDio LoRa Gateway](https://lupyuen.github.io/images/gateway-title.jpg)
+
+_What's a LoRa Gateway? How does it differ from other LoRa gadgets?_
+
+PineDio Stack and Pinedio USB are perfectly fine for __Point-to-Point Wireless Communication__.
+
+But if we need to __relay data packets__ to multiple devices or to the internet, we need a __LoRa Gateway__. (Like PineDio Gateway)
+
+(It's like a WiFi Router, but for LoRa)
+
+_LoRa works over the internet?_
+
 TODO
 
 Why does it matter?
@@ -40,8 +64,6 @@ How do we get data out of the things network?
 balenaEtcher
 
 https://www.balena.io/etcher/
-
-![PineDio LoRa Gateway](https://lupyuen.github.io/images/gateway-title.jpg)
 
 # PineDio Stack BL604
 
