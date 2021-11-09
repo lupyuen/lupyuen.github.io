@@ -357,9 +357,11 @@ Yep we're __officially a contributor__ to the globally-connected The Things Netw
 
 In case of problems, check the __Packet Forwarder Log__ on our Gateway...
 
-```text
-/var/log/daemon.log
+```bash
+sudo tail /var/log/daemon.log
 ```
+
+(Check the Appendix for the sample log)
 
 # Test with PineDio Stack
 
@@ -429,15 +431,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Setting up the PineDIO LoRaWAN Gateway"__](https://ralimtek.com/posts/2021/pinedio/)
 
-## Appendix: Control PineDio Gateway
+# Appendix: Control PineDio Gateway
 
 TODO
+
+To check Packet Forwarder Service...
 
 ```bash
 systemctl status ttn-gateway
 ```
 
-(check your gateway service status)
+We should see...
 
 ```text
 ttn-gateway.service - The Things Network Gateway
@@ -463,19 +467,192 @@ WARNING: [gps] GPS out of sync, keeping previous time reference
 INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955
 ```
 
-TODO
+To stop Packet Forwarder Service...
 
 ```bash
 systemctl stop ttn-gateway
 ```
 
-TODO
+To disable Packet Forwarder Service...
 
 ```bash
 systemctl disable ttn-gateway
 ```
 
-disable
+# Appendix: Packet Forwarder Log
+
+Here's a sample Packet Forwarder Log for PineDio Gateway located at...
+
+```text
+/var/log/daemon.log
+```
+
+## Startup
+
+```text
+*** Packet Forwarder ***
+Version: 2.0.1
+*** SX1302 HAL library version info ***
+Version: 2.0.1;
+***
+Little endian host
+found configuration file global_conf.json, parsing it
+global_conf.json does contain a JSON object named SX130x_conf, parsing SX1302 parameters
+com_type SPI, com_path /dev/spidev0.0, lorawan_public 1, clksrc 0, full_duplex 0
+antenna_gain 0 dBi
+Configuring legacy timestamp
+no configuration for SX1261
+Configuring Tx Gain LUT for rf_chain 0 with 16 indexes for sx1250
+radio 0 enabled (type SX1250), center frequency 923000000, RSSI offset -215.399994, tx enabled 1, single input mode 0
+radio 1 enabled (type SX1250), center frequency 922000000, RSSI offset -215.399994, tx enabled 0, single input mode 0
+Lora multi-SF channel 0>  radio 0, IF 200000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 1>  radio 0, IF 400000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 2>  radio 1, IF 200000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 3>  radio 1, IF 400000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 4>  radio 0, IF -400000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 5>  radio 0, IF -200000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 6>  radio 1, IF 0 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 7>  radio 0, IF 0 Hz, 125 kHz bw, SF 5 to 12
+Lora std channel> radio 1, IF 100000 Hz, 250000 Hz bw, SF 7, Explicit header
+FSK channel> radio 1, IF -200000 Hz, 125000 Hz bw, 50000 bps datarate
+global_conf.json does contain a JSON object named gateway_conf, parsing gateway parameters
+gateway MAC address is configured to ...
+server hostname or IP address is configured to "au1.cloud.thethings.network"
+upstream port is configured to "1700"
+downstream port is configured to "1700"
+downstream keep-alive interval is configured to 10 seconds
+statistics display interval is configured to 30 seconds
+upstream PUSH_DATA time-out is configured to 100 ms
+packets received with a valid CRC will be forwarded
+packets received with a CRC error will NOT be forwarded
+packets received with no CRC will NOT be forwarded
+GPS serial port path is configured to "/dev/ttyS2"
+Reference latitude is configured to 0.000000 deg
+Reference longitude is configured to 0.000000 deg
+Reference altitude is configured to 0 meters
+Beaconing period is configured to 0 seconds
+Beaconing signal will be emitted at 923400000 Hz
+Beaconing channel number is set to 1
+Beaconing channel frequency step is set to 0Hz
+Beaconing datarate is set to SF9
+Beaconing modulation bandwidth is set to 125000Hz
+Beaconing TX power is set to 27dBm
+global_conf.json does contain a JSON object named debug_conf, parsing debug parameters
+got 2 debug reference payload
+reference payload ID 0 is 0xCAFE1234
+reference payload ID 1 is 0xCAFE2345
+setting debug log file name to loragw_hal.log
+found configuration file local_conf.json, parsing it
+local_conf.json does contain a JSON object named gateway_conf, parsing gateway parameters
+gateway MAC address is configured to ...
+packets received with a valid CRC will be forwarded
+packets received with a CRC error will NOT be forwarded
+packets received with no CRC will NOT be forwarded
+[main] TTY port /dev/ttyS2 open for GPS synchronization
+Opening SPI communication interface
+Note: chip version is 0x10 (v1.0)
+using legacy timestamp
+LoRa Service modem: configuring preamble size to 8 symbols
+ARB: dual demodulation disabled for all SF
+found temperature sensor on port 0x39
+[main] concentrator started, packet can now be received
+concentrator EUI: ...
+WARNING: [gps] GPS out of sync, keeping previous time reference
+[modify_os_time] local_time=1636450022, gps_time=1636450020
+```
+
+## Receive Packet
+
+```text
+[modify_os_time] The difference between the system time(1636450022) and the GPS time(1636450020) is less than 10 seconds. Use the system time.
+[down] PULL_ACK received in 93 ms
+[down] PULL_ACK received in 92 ms
+Received pkt from mote: 01E4BBF0 (fcnt=9969)
+JSON up: 
+{
+  "rxpk": [
+    {
+      "jver": 1,
+      "tmst": 19882284,
+      "time": "2021-11-09T09:27:19.736572Z",
+      "tmms": 1320485258736,
+      "chan": 6,
+      "rfch": 1,
+      "freq": 922.000000,
+      "mid": 8,
+      "stat": 1,
+      "modu": "LORA",
+      "datr": "SF9BW125",
+      "codr": "4/5",
+      "rssis": -115,
+      "lsnr": -9.0,
+      "foff": 5178,
+      "rssi": -107,
+      "size": 32,
+      "data": "QPC75AEA8SYrWsCiRKAGSBCQ6JnHQQFcntfm26fK1nk="
+    }
+  ]
+}
+[up] PUSH_ACK received in 94 ms
+WARNING: [gps] GPS out of sync, keeping previous time reference
+[down] PULL_ACK received in 92 ms
+```
+
+## Packet Received
+
+```text
+### [UPSTREAM] ###
+# RF packets received by concentrator: 1
+# CRC_OK: 100.00%, CRC_FAIL: 0.00%, NO_CRC: 0.00%
+# RF packets forwarded: 1 (32 bytes)
+# PUSH_DATA datagrams sent: 1 (319 bytes)
+# PUSH_DATA acknowledged: 100.00%
+
+### [DOWNSTREAM] ###
+# PULL_DATA sent: 3 (100.00% acknowledged)
+# PULL_RESP(onse) datagrams received: 0 (0 bytes)
+# RF packets sent to concentrator: 0 (0 bytes)
+# TX errors: 0
+
+### SX1302 Status ###
+# SX1302 counter (INST): 30753811
+# SX1302 counter (PPS):  26145712
+# BEACON queued: 0
+# BEACON sent so far: 0
+# BEACON rejected: 0
+
+### [JIT] ###
+src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
+#--------
+src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
+
+### [GPS] ###
+# Valid time reference (age: 0 sec)
+# GPS coordinates: latitude 1.2..., longitude 103.8..., altitude 17 m
+##### END #####
+
+JSON up:
+{
+  "stat": {
+    "time": "2021-11-09 09:27:31 GMT",
+    "lati": 1.2...,
+    "long": 103.8...,
+    "alti": 17,
+    "rxnb": 1,
+    "rxok": 1,
+    "rxfw": 1,
+    "ackr": 100.0,
+    "dwnb": 0,
+    "txnb": 0,
+    "temp": 0.0
+  }
+}
+
+[up] PUSH_ACK received in 92 ms
+[down] PULL_ACK received in 92 ms
+[down] PULL_ACK received in 92 ms
+[down] PULL_ACK received in 92 ms
+```
 
 TODO25
 

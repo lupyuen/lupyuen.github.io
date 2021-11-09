@@ -187,8 +187,8 @@ Yep we're __officially a contributor__ to the globally-connected The Things Netw
 
 In case of problems, check the __Packet Forwarder Log__ on our Gateway...
 
-```text
-/var/log/daemon.log
+```bash
+sudo tail /var/log/daemon.log
 ```
 
 # Add Device to The Things Network
