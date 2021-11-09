@@ -130,7 +130,7 @@ If HDMI Output is connected: We should see PineDio Gateway starting the services
 
 (ChirpStack is the open source LoRaWAN Gateway, we won't use it today)
 
-PineDio Gateway is now ready to be configured over SSH!
+PineDio Gateway is ready to be configured over SSH!
 
 ![SSH to PineDio Gateway](https://lupyuen.github.io/images/gateway-ssh.png)
 
@@ -158,7 +158,7 @@ Let's connect to __PineDio Gateway over SSH__...
     sudo tail /var/log/daemon.log
     ```
 
-    We should see...
+    PineDio Gateway should have started the __LoRa Concentrator__...
 
     ```text
     Note: chip version is 0x10 (v1.0)
@@ -168,7 +168,6 @@ Let's connect to __PineDio Gateway over SSH__...
     INFO: found temperature sensor on port 0x39
     INFO: [main] concentrator started, packet can now be received
     INFO: concentrator EUI: ...
-    WARNING: [gps] GPS out of sync, keeping previous time reference
     WARNING: [gps] GPS out of sync, keeping previous time reference
     INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955
     ```
@@ -201,21 +200,27 @@ Next we set the __LoRa Frequency__ that PineDio Gateway shall use for our region
     sudo gateway-config
     ```
 
+    We should see...
+
     ![Gateway Config](https://lupyuen.github.io/images/gateway-config4.png)
 
-1.  Select __Setup RAK Gateway Channel Plan__
+1.  Select __"Setup RAK Gateway Channel Plan"__
 
-    ![Gateway Config: RAK Gateway Channel Plan](https://lupyuen.github.io/images/gateway-config4.png)
+    We should see...
+
+    ![Gateway Config: RAK Gateway Channel Plan](https://lupyuen.github.io/images/gateway-config5.png)
+
+1.  Select __"Server Is TTN"__
+
+    We should see...
+
+    ![Gateway Config: LoRa Frequency](https://lupyuen.github.io/images/gateway-config6.png)
 
 1.  Select the __LoRa Frequency__ for our region based on this...
 
     [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
-    ![Gateway Config: LoRa Frequency](https://lupyuen.github.io/images/gateway-config4.png)
-
-1.  Select __Quit__ to exit
-
-![Getting Gateway ID](https://lupyuen.github.io/images/gateway-id.png)
+1.  Select __"Quit"__ to exit
 
 ## Get Gateway ID
 
@@ -234,6 +239,8 @@ Gateway ID: YOUR_GATEWAY_ID
 ```
 
 Copy the __Gateway ID__. We'll use it in the next section.
+
+![Getting Gateway ID](https://lupyuen.github.io/images/gateway-id.png)
 
 # Connect to The Things Network
 
