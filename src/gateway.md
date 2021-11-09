@@ -421,7 +421,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1456933165063233538)
 
-1.  How was the Armbian image created for PineDio Gatway? See this...
+1.  How was the Armbian image created for PineDio Gateway? See this...
 
     [__"Pinedio Project: Notes Sharing/Log"__](https://forum.pine64.org/showthread.php?tid=13682)
 
