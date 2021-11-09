@@ -180,7 +180,7 @@
 <p>If HDMI Output is connected: We should see PineDio Gateway starting the services for <strong>ChirpStack</strong> and <strong>The Things Network</strong> (Packet Forwarder)…</p>
 <p><img src="https://lupyuen.github.io/images/gateway-boot.jpg" alt="PineDio Gateway starts ChirpStack and Packet Forwarder for The Things Network" /></p>
 <p>(ChirpStack is the open source LoRaWAN Gateway, we won’t use it today)</p>
-<p>PineDio Gateway is now ready to be configured over SSH!</p>
+<p>PineDio Gateway is ready to be configured over SSH!</p>
 <p><img src="https://lupyuen.github.io/images/gateway-ssh.png" alt="SSH to PineDio Gateway" /></p>
 <h2 id="ssh-to-pinedio-gateway" class="section-header"><a href="#ssh-to-pinedio-gateway">2.1 SSH to PineDio Gateway</a></h2>
 <p>Let’s connect to <strong>PineDio Gateway over SSH</strong>…</p>
@@ -195,7 +195,7 @@
 <li>
 <p>Check the <strong>Packet Forwarder Log</strong> for The Things Network…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo tail /var/log/daemon.log</code></pre></div>
-<p>We should see…</p>
+<p>PineDio Gateway should have started the <strong>LoRa Concentrator</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Note: chip version is 0x10 (v1.0)
 INFO: using legacy timestamp
 INFO: LoRa Service modem: configuring preamble size to 8 symbols
@@ -203,7 +203,6 @@ ARB: dual demodulation disabled for all SF
 INFO: found temperature sensor on port 0x39
 INFO: [main] concentrator started, packet can now be received
 INFO: concentrator EUI: ...
-WARNING: [gps] GPS out of sync, keeping previous time reference
 WARNING: [gps] GPS out of sync, keeping previous time reference
 INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955</code></pre></div>
 <p>(See pic above)</p>
@@ -225,22 +224,27 @@ sudo reboot</code></pre></div>
 <li>
 <p>On PineDio Gateway, run this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo gateway-config</code></pre></div>
+<p>We should see…</p>
 <p><img src="https://lupyuen.github.io/images/gateway-config4.png" alt="Gateway Config" /></p>
 </li>
 <li>
-<p>Select <strong>Setup RAK Gateway Channel Plan</strong></p>
-<p><img src="https://lupyuen.github.io/images/gateway-config4.png" alt="Gateway Config: RAK Gateway Channel Plan" /></p>
+<p>Select <strong>“Setup RAK Gateway Channel Plan”</strong></p>
+<p>We should see…</p>
+<p><img src="https://lupyuen.github.io/images/gateway-config5.png" alt="Gateway Config: RAK Gateway Channel Plan" /></p>
+</li>
+<li>
+<p>Select <strong>“Server Is TTN”</strong></p>
+<p>We should see…</p>
+<p><img src="https://lupyuen.github.io/images/gateway-config6.png" alt="Gateway Config: LoRa Frequency" /></p>
 </li>
 <li>
 <p>Select the <strong>LoRa Frequency</strong> for our region based on this…</p>
 <p><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>“Frequency Plans by Country”</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/gateway-config4.png" alt="Gateway Config: LoRa Frequency" /></p>
 </li>
 <li>
-<p>Select <strong>Quit</strong> to exit</p>
+<p>Select <strong>“Quit”</strong> to exit</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/gateway-id.png" alt="Getting Gateway ID" /></p>
 <h2 id="get-gateway-id" class="section-header"><a href="#get-gateway-id">2.3 Get Gateway ID</a></h2>
 <p>Finally we fetch the unique factory-installed <strong>Gateway ID</strong> from PineDio Gateway…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gateway-version</code></pre></div>
@@ -249,6 +253,7 @@ sudo reboot</code></pre></div>
 RAKWireless gateway RAK7248 no LTE version 4.2.7R install from source code.
 Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p>Copy the <strong>Gateway ID</strong>. We’ll use it in the next section.</p>
+<p><img src="https://lupyuen.github.io/images/gateway-id.png" alt="Getting Gateway ID" /></p>
 <h1 id="connect-to-the-things-network" class="section-header"><a href="#connect-to-the-things-network">3 Connect to The Things Network</a></h1>
 <p>TODO</p>
 <p>We create a <strong>free account</strong> on The Things Network…</p>
