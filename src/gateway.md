@@ -246,33 +246,33 @@ Copy the __Gateway ID__. We'll use it in the next section.
 
 # Connect to The Things Network
 
-TODO
+We're ready to connect PineDio Gateway to The Things Network!
 
-We create a __free account__ on The Things Network...
+1.  Create a __free account__ on The Things Network...
 
--   [__"The Things Network: Sign Up"__](https://www.thethingsnetwork.org/)
+    [__"The Things Network: Sign Up"__](https://www.thethingsnetwork.org/)
 
-Log in and select the nearest region. (Either US, Europe or Australia)
+1.  Log in and select the nearest region
 
-Click __Gateways__ and __Add Gateway__...
+    (Either US, Europe or Australia)
 
-![Add Gateway](https://lupyuen.github.io/images/gateway-ttn3.jpg)
+1.  Click __Gateways__ and __Add Gateway__...
 
-1.  __Gateway ID__ needs to be globally unique.
+    ![Add Gateway](https://lupyuen.github.io/images/gateway-ttn3.jpg)
 
-    (Choose wisely!)
+1.  Fill in these fields...
 
-1.  __Gateway EUI__ (Extended Unique Identifier) comes from our LoRaWAN Gateway.
+    __Gateway ID__ needs to be globally unique. (Choose wisely!)
 
-    TODO
+    __Gateway EUI__ (Extended Unique Identifier) is the Gateway ID from the previous section.
 
-1.  __Frequency Plan__: See this...
+    __Frequency Plan__ should match the LoRa Frequency from the previous section.
 
-    [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
-
-Fill in the fields and click __"Create Gateway"__
+1.  Click __"Create Gateway"__
 
 ## Configure Gateway
+
+Next we copy the __Gatway Settings__ from The Things Network to PineDio Gateway...
 
 1.  Browse to the Gateway that we have added
 
@@ -284,7 +284,7 @@ Fill in the fields and click __"Create Gateway"__
 
     It should look like this...
 
-    ![Gateway Config](https://lupyuen.github.io/images/ttn-wisgate2.png)
+    ![Gateway Config](https://lupyuen.github.io/images/gateway-config3.png)
 
 1.  On our PineDio Gateway, run this...
 
@@ -325,6 +325,10 @@ Fill in the fields and click __"Create Gateway"__
 
     (Check the trailing commas!)
 
+1.  Our updated file should look like this...
+
+    ![Packet Forwarded Config](https://lupyuen.github.io/images/gateway-confg.png)
+
 1.  Save the file.
 
     Select __"Restart Packet Forwarder"__
@@ -341,7 +345,7 @@ We should see the __Heartbeat Messages__ (Gateway Status) received from our Gate
 
 ![Gateway Live Data](https://lupyuen.github.io/images/gateway-add3.png)
 
-TODO
+Now if we're lucky, we might see __Uplink Messages__...
 
 ![Uplink Messages](https://lupyuen.github.io/images/gateway-add4.png)
 
@@ -356,14 +360,6 @@ In case of problems, check the __Packet Forwarder Log__ on our Gateway...
 ```text
 /var/log/daemon.log
 ```
-
-TODO23
-
-![](https://lupyuen.github.io/images/gateway-config3.png)
-
-TODO24
-
-![](https://lupyuen.github.io/images/gateway-confg.png)
 
 # Test with PineDio Stack
 
