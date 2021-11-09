@@ -256,30 +256,32 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p>Copy the <strong>Gateway ID</strong>. We’ll use it in the next section.</p>
 <p><img src="https://lupyuen.github.io/images/gateway-id.png" alt="Getting Gateway ID" /></p>
 <h1 id="connect-to-the-things-network" class="section-header"><a href="#connect-to-the-things-network">3 Connect to The Things Network</a></h1>
-<p>TODO</p>
-<p>We create a <strong>free account</strong> on The Things Network…</p>
-<ul>
-<li><a href="https://www.thethingsnetwork.org/"><strong>“The Things Network: Sign Up”</strong></a></li>
-</ul>
-<p>Log in and select the nearest region. (Either US, Europe or Australia)</p>
-<p>Click <strong>Gateways</strong> and <strong>Add Gateway</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/gateway-ttn3.jpg" alt="Add Gateway" /></p>
+<p>We’re ready to connect PineDio Gateway to The Things Network!</p>
 <ol>
 <li>
-<p><strong>Gateway ID</strong> needs to be globally unique.</p>
-<p>(Choose wisely!)</p>
+<p>Create a <strong>free account</strong> on The Things Network…</p>
+<p><a href="https://www.thethingsnetwork.org/"><strong>“The Things Network: Sign Up”</strong></a></p>
 </li>
 <li>
-<p><strong>Gateway EUI</strong> (Extended Unique Identifier) comes from our LoRaWAN Gateway.</p>
-<p>TODO</p>
+<p>Log in and select the nearest region</p>
+<p>(Either US, Europe or Australia)</p>
 </li>
 <li>
-<p><strong>Frequency Plan</strong>: See this…</p>
-<p><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>“Frequency Plans by Country”</strong></a></p>
+<p>Click <strong>Gateways</strong> and <strong>Add Gateway</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/gateway-ttn3.jpg" alt="Add Gateway" /></p>
+</li>
+<li>
+<p>Fill in these fields…</p>
+<p><strong>Gateway ID</strong> needs to be globally unique. (Choose wisely!)</p>
+<p><strong>Gateway EUI</strong> (Extended Unique Identifier) is the Gateway ID from the previous section.</p>
+<p><strong>Frequency Plan</strong> should match the LoRa Frequency from the previous section.</p>
+</li>
+<li>
+<p>Click <strong>“Create Gateway”</strong></p>
 </li>
 </ol>
-<p>Fill in the fields and click <strong>“Create Gateway”</strong></p>
 <h2 id="configure-gateway" class="section-header"><a href="#configure-gateway">3.1 Configure Gateway</a></h2>
+<p>Next we copy the <strong>Gatway Settings</strong> from The Things Network to PineDio Gateway…</p>
 <ol>
 <li>
 <p>Browse to the Gateway that we have added</p>
@@ -291,7 +293,7 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <li>
 <p>Open the Downloaded <strong>global_conf.json</strong> with a text editor.</p>
 <p>It should look like this…</p>
-<p><img src="https://lupyuen.github.io/images/ttn-wisgate2.png" alt="Gateway Config" /></p>
+<p><img src="https://lupyuen.github.io/images/gateway-config3.png" alt="Gateway Config" /></p>
 </li>
 <li>
 <p>On our PineDio Gateway, run this…</p>
@@ -325,6 +327,10 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p>(Check the trailing commas!)</p>
 </li>
 <li>
+<p>Our updated file should look like this…</p>
+<p><img src="https://lupyuen.github.io/images/gateway-confg.png" alt="Packet Forwarded Config" /></p>
+</li>
+<li>
 <p>Save the file.</p>
 <p>Select <strong>“Restart Packet Forwarder”</strong></p>
 </li>
@@ -335,18 +341,13 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p>In The Things Network, browse to our Gateway and click <strong>“<code>Live Data</code>”</strong> (in the left bar)</p>
 <p>We should see the <strong>Heartbeat Messages</strong> (Gateway Status) received from our Gateway…</p>
 <p><img src="https://lupyuen.github.io/images/gateway-add3.png" alt="Gateway Live Data" /></p>
-<p>TODO</p>
+<p>Now if we’re lucky, we might see <strong>Uplink Messages</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/gateway-add4.png" alt="Uplink Messages" /></p>
 <p><em>What are the Uplink Messages?</em></p>
 <p>These are LoRa Messages from <strong>nearby devices</strong> that our Gateway has helpfully relayed to The Things Network.</p>
 <p>Yep we’re <strong>officially a contributor</strong> to the globally-connected The Things Network!</p>
 <p>In case of problems, check the <strong>Packet Forwarder Log</strong> on our Gateway…</p>
-<div class="example-wrap"><pre class="language-text"><code>/var/log/daemon.log</code></pre></div>
-<p>TODO23</p>
-<p><img src="https://lupyuen.github.io/images/gateway-config3.png" alt="" /></p>
-<p>TODO24</p>
-<p><img src="https://lupyuen.github.io/images/gateway-confg.png" alt="" /></p>
-<h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">4 Test with PineDio Stack</a></h1>
+<div class="example-wrap"><pre class="language-text"><code>/var/log/daemon.log</code></pre></div><h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">4 Test with PineDio Stack</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="" /></p>
 <p>TODO7</p>
