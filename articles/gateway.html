@@ -76,8 +76,12 @@
 <li><a href="#test-with-pinedio-stack">4 Test with PineDio Stack</a><ul></ul></li>
 <li><a href="#benchmark-with-rakwireless-wisgate">5 Benchmark with RAKwireless WisGate</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#notes">7 Notes</a><ul>
-<li><a href="#appendix-control-pinedio-gateway">7.1 Appendix: Control PineDio Gateway</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>15 Nov 2021</em></p>
+<li><a href="#notes">7 Notes</a><ul></ul></li>
+<li><a href="#appendix-control-pinedio-gateway">8 Appendix: Control PineDio Gateway</a><ul></ul></li>
+<li><a href="#appendix-packet-forwarder-log">9 Appendix: Packet Forwarder Log</a><ul>
+<li><a href="#startup">9.1 Startup</a><ul></ul></li>
+<li><a href="#receive-packet">9.2 Receive Packet</a><ul></ul></li>
+<li><a href="#packet-received">9.3 Packet Received</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>15 Nov 2021</em></p>
 <p>Previously we tested two new wireless gadgets by Pine64…</p>
 <ul>
 <li>
@@ -347,7 +351,9 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p>These are LoRa Messages from <strong>nearby devices</strong> that our Gateway has helpfully relayed to The Things Network.</p>
 <p>Yep we’re <strong>officially a contributor</strong> to the globally-connected The Things Network!</p>
 <p>In case of problems, check the <strong>Packet Forwarder Log</strong> on our Gateway…</p>
-<div class="example-wrap"><pre class="language-text"><code>/var/log/daemon.log</code></pre></div><h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">4 Test with PineDio Stack</a></h1>
+<div class="example-wrap"><pre class="language-bash"><code>sudo tail /var/log/daemon.log</code></pre></div>
+<p>(Check the Appendix for the sample log)</p>
+<h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">4 Test with PineDio Stack</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="" /></p>
 <p>TODO7</p>
@@ -399,10 +405,11 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p><a href="https://ralimtek.com/posts/2021/pinedio/"><strong>“Setting up the PineDIO LoRaWAN Gateway”</strong></a></p>
 </li>
 </ol>
-<h2 id="appendix-control-pinedio-gateway" class="section-header"><a href="#appendix-control-pinedio-gateway">7.1 Appendix: Control PineDio Gateway</a></h2>
+<h1 id="appendix-control-pinedio-gateway" class="section-header"><a href="#appendix-control-pinedio-gateway">8 Appendix: Control PineDio Gateway</a></h1>
 <p>TODO</p>
+<p>To check Packet Forwarder Service…</p>
 <div class="example-wrap"><pre class="language-bash"><code>systemctl status ttn-gateway</code></pre></div>
-<p>(check your gateway service status)</p>
+<p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>ttn-gateway.service - The Things Network Gateway
 Loaded: loaded (/lib/systemd/system/ttn-gateway.service; enabled; vendor preset: enabled)
 Active: active (running) since Sat 2021-11-06 20:29:12 EDT; 1min 22s ago
@@ -424,11 +431,145 @@ INFO: concentrator EUI: ...
 WARNING: [gps] GPS out of sync, keeping previous time reference
 WARNING: [gps] GPS out of sync, keeping previous time reference
 INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955</code></pre></div>
-<p>TODO</p>
+<p>To stop Packet Forwarder Service…</p>
 <div class="example-wrap"><pre class="language-bash"><code>systemctl stop ttn-gateway</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>systemctl disable ttn-gateway</code></pre></div>
-<p>disable</p>
+<p>To disable Packet Forwarder Service…</p>
+<div class="example-wrap"><pre class="language-bash"><code>systemctl disable ttn-gateway</code></pre></div><h1 id="appendix-packet-forwarder-log" class="section-header"><a href="#appendix-packet-forwarder-log">9 Appendix: Packet Forwarder Log</a></h1>
+<p>Here’s a sample Packet Forwarder Log for PineDio Gateway located at…</p>
+<div class="example-wrap"><pre class="language-text"><code>/var/log/daemon.log</code></pre></div><h2 id="startup" class="section-header"><a href="#startup">9.1 Startup</a></h2><div class="example-wrap"><pre class="language-text"><code>*** Packet Forwarder ***
+Version: 2.0.1
+*** SX1302 HAL library version info ***
+Version: 2.0.1;
+***
+Little endian host
+found configuration file global_conf.json, parsing it
+global_conf.json does contain a JSON object named SX130x_conf, parsing SX1302 parameters
+com_type SPI, com_path /dev/spidev0.0, lorawan_public 1, clksrc 0, full_duplex 0
+antenna_gain 0 dBi
+Configuring legacy timestamp
+no configuration for SX1261
+Configuring Tx Gain LUT for rf_chain 0 with 16 indexes for sx1250
+radio 0 enabled (type SX1250), center frequency 923000000, RSSI offset -215.399994, tx enabled 1, single input mode 0
+radio 1 enabled (type SX1250), center frequency 922000000, RSSI offset -215.399994, tx enabled 0, single input mode 0
+Lora multi-SF channel 0&gt;  radio 0, IF 200000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 1&gt;  radio 0, IF 400000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 2&gt;  radio 1, IF 200000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 3&gt;  radio 1, IF 400000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 4&gt;  radio 0, IF -400000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 5&gt;  radio 0, IF -200000 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 6&gt;  radio 1, IF 0 Hz, 125 kHz bw, SF 5 to 12
+Lora multi-SF channel 7&gt;  radio 0, IF 0 Hz, 125 kHz bw, SF 5 to 12
+Lora std channel&gt; radio 1, IF 100000 Hz, 250000 Hz bw, SF 7, Explicit header
+FSK channel&gt; radio 1, IF -200000 Hz, 125000 Hz bw, 50000 bps datarate
+global_conf.json does contain a JSON object named gateway_conf, parsing gateway parameters
+gateway MAC address is configured to ...
+server hostname or IP address is configured to &quot;au1.cloud.thethings.network&quot;
+upstream port is configured to &quot;1700&quot;
+downstream port is configured to &quot;1700&quot;
+downstream keep-alive interval is configured to 10 seconds
+statistics display interval is configured to 30 seconds
+upstream PUSH_DATA time-out is configured to 100 ms
+packets received with a valid CRC will be forwarded
+packets received with a CRC error will NOT be forwarded
+packets received with no CRC will NOT be forwarded
+GPS serial port path is configured to &quot;/dev/ttyS2&quot;
+Reference latitude is configured to 0.000000 deg
+Reference longitude is configured to 0.000000 deg
+Reference altitude is configured to 0 meters
+Beaconing period is configured to 0 seconds
+Beaconing signal will be emitted at 923400000 Hz
+Beaconing channel number is set to 1
+Beaconing channel frequency step is set to 0Hz
+Beaconing datarate is set to SF9
+Beaconing modulation bandwidth is set to 125000Hz
+Beaconing TX power is set to 27dBm
+global_conf.json does contain a JSON object named debug_conf, parsing debug parameters
+got 2 debug reference payload
+reference payload ID 0 is 0xCAFE1234
+reference payload ID 1 is 0xCAFE2345
+setting debug log file name to loragw_hal.log
+found configuration file local_conf.json, parsing it
+local_conf.json does contain a JSON object named gateway_conf, parsing gateway parameters
+gateway MAC address is configured to ...
+packets received with a valid CRC will be forwarded
+packets received with a CRC error will NOT be forwarded
+packets received with no CRC will NOT be forwarded
+[main] TTY port /dev/ttyS2 open for GPS synchronization
+Opening SPI communication interface
+Note: chip version is 0x10 (v1.0)
+using legacy timestamp
+LoRa Service modem: configuring preamble size to 8 symbols
+ARB: dual demodulation disabled for all SF
+found temperature sensor on port 0x39
+[main] concentrator started, packet can now be received
+concentrator EUI: ...
+WARNING: [gps] GPS out of sync, keeping previous time reference
+[modify_os_time] local_time=1636450022, gps_time=1636450020</code></pre></div><h2 id="receive-packet" class="section-header"><a href="#receive-packet">9.2 Receive Packet</a></h2><div class="example-wrap"><pre class="language-text"><code>[modify_os_time] The difference between the system time(1636450022) and the GPS time(1636450020) is less than 10 seconds. Use the system time.
+[down] PULL_ACK received in 93 ms
+[down] PULL_ACK received in 92 ms
+Received pkt from mote: 01E4BBF0 (fcnt=9969)
+JSON up: 
+{
+  &quot;rxpk&quot;: [
+    {
+      &quot;jver&quot;: 1,
+      &quot;tmst&quot;: 19882284,
+      &quot;time&quot;: &quot;2021-11-09T09:27:19.736572Z&quot;,
+      &quot;tmms&quot;: 1320485258736,
+      &quot;chan&quot;: 6,
+      &quot;rfch&quot;: 1,
+      &quot;freq&quot;: 922.000000,
+      &quot;mid&quot;: 8,
+      &quot;stat&quot;: 1,
+      &quot;modu&quot;: &quot;LORA&quot;,
+      &quot;datr&quot;: &quot;SF9BW125&quot;,
+      &quot;codr&quot;: &quot;4/5&quot;,
+      &quot;rssis&quot;: -115,
+      &quot;lsnr&quot;: -9.0,
+      &quot;foff&quot;: 5178,
+      &quot;rssi&quot;: -107,
+      &quot;size&quot;: 32,
+      &quot;data&quot;: &quot;QPC75AEA8SYrWsCiRKAGSBCQ6JnHQQFcntfm26fK1nk=&quot;
+    }
+  ]
+}
+[up] PUSH_ACK received in 94 ms
+WARNING: [gps] GPS out of sync, keeping previous time reference
+[down] PULL_ACK received in 92 ms</code></pre></div><h2 id="packet-received" class="section-header"><a href="#packet-received">9.3 Packet Received</a></h2><div class="example-wrap"><pre class="language-text"><code>## [UPSTREAM] ###
+
+## [DOWNSTREAM] ###
+
+## SX1302 Status ###
+
+## [JIT] ###
+src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
+#--------
+src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
+
+## [GPS] ###
+#### END #####
+
+JSON up:
+{
+  &quot;stat&quot;: {
+    &quot;time&quot;: &quot;2021-11-09 09:27:31 GMT&quot;,
+    &quot;lati&quot;: 1.2...,
+    &quot;long&quot;: 103.8...,
+    &quot;alti&quot;: 17,
+    &quot;rxnb&quot;: 1,
+    &quot;rxok&quot;: 1,
+    &quot;rxfw&quot;: 1,
+    &quot;ackr&quot;: 100.0,
+    &quot;dwnb&quot;: 0,
+    &quot;txnb&quot;: 0,
+    &quot;temp&quot;: 0.0
+  }
+}
+
+[up] PUSH_ACK received in 92 ms
+[down] PULL_ACK received in 92 ms
+[down] PULL_ACK received in 92 ms
+[down] PULL_ACK received in 92 ms</code></pre></div>
 <p>TODO25</p>
 <p><img src="https://lupyuen.github.io/images/gateway-image.png" alt="" /></p>
 <p>TODO28</p>
