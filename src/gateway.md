@@ -246,7 +246,7 @@ Copy the __Gateway ID__. We'll use it in the next section.
 
 # Connect to The Things Network
 
-We're ready to connect PineDio Gateway to The Things Network!
+We're ready to connect PineDio Gateway to __The Things Network__!
 
 1.  Create a __free account__ on The Things Network...
 
