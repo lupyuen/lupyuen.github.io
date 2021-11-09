@@ -130,13 +130,15 @@ If HDMI Output is connected: We should see PineDio Gateway starting the services
 
 (ChirpStack is the open source LoRaWAN Gateway, we won't use it today)
 
-Let's connect to PineDio Gateway over SSH...
+PineDio Gateway is now ready to be configured over SSH!
 
 ![SSH to PineDio Gateway](https://lupyuen.github.io/images/gateway-ssh.png)
 
 ##  SSH to PineDio Gateway
 
-1.  Connect to __PineDio Gateway via SSH__...
+Let's connect to __PineDio Gateway over SSH__...
+
+1.  On our computer, enter this...
 
     ```bash
     ssh pinedio@rak-gateway
@@ -189,11 +191,35 @@ Let's connect to PineDio Gateway over SSH...
 
     Rename "rak-gateway" to our desired hostname.
 
+## Set LoRa Frequency
+ 
+Next we set the __LoRa Frequency__ that PineDio Gateway shall use for our region...
+
+1.  On PineDio Gateway, run this...
+
+    ```bash
+    sudo gateway-config
+    ```
+
+    ![Gateway Config](https://lupyuen.github.io/images/gateway-config4.png)
+
+1.  Select __Setup RAK Gateway Channel Plan__
+
+    ![Gateway Config: RAK Gateway Channel Plan](https://lupyuen.github.io/images/gateway-config4.png)
+
+1.  Select the __LoRa Frequency__ for our region based on this...
+
+    [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+    ![Gateway Config: LoRa Frequency](https://lupyuen.github.io/images/gateway-config4.png)
+
+1.  Select __Quit__ to exit
+
 ![Getting Gateway ID](https://lupyuen.github.io/images/gateway-id.png)
 
 ## Get Gateway ID
 
-Now we fetch the unique factory-installed __Gateway ID__ from PineDio Gateway...
+Finally we fetch the unique factory-installed __Gateway ID__ from PineDio Gateway...
 
 ```bash
 gateway-version
@@ -207,23 +233,120 @@ RAKWireless gateway RAK7248 no LTE version 4.2.7R install from source code.
 Gateway ID: YOUR_GATEWAY_ID
 ```
 
-__Copy the Gateway ID__. We'll use it in the next chapter.
-
-## Set LoRa Frequency
- 
-TODO
-
-![](https://lupyuen.github.io/images/gateway-config.png)
-
-TODO20
-
-![](https://lupyuen.github.io/images/gateway-config2.png)
+Copy the __Gateway ID__. We'll use it in the next section.
 
 # Connect to The Things Network
 
 TODO
 
-/opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/global_conf.json
+We create a __free account__ on The Things Network...
+
+-   [__"The Things Network: Sign Up"__](https://www.thethingsnetwork.org/)
+
+Log in and select the nearest region. (Either US, Europe or Australia)
+
+Click __`Gateways`__ and __`Add Gateway`__...
+
+![Add Gateway](https://lupyuen.github.io/images/ttn-gateway.jpg)
+
+1.  __Gateway ID__ needs to be globally unique.
+
+    (Choose wisely!)
+
+1.  __Gateway EUI__ (Extended Unique Identifier) comes from our LoRaWAN Gateway.
+
+    TODO
+
+1.  __Frequency Plan__: See this...
+
+    [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+Fill in the fields and click __"`Create Gateway`"__
+
+## Configure Gateway
+
+TODO
+
+1.  Browse to the Gateway that we have added
+
+1.  Click __"`Download global_conf.json`"__
+
+    ![Our Gateway in The Things Network](https://lupyuen.github.io/images/ttn-wisgate3.png)
+
+1.  Open the Downloaded __`global_conf.json`__ with a text editor.
+
+    It should look like this...
+
+    ![Gateway Config](https://lupyuen.github.io/images/ttn-wisgate2.png)
+
+1.  On our PineDio Gateway, run this...
+
+    ```bash
+    sudo gateway-config
+    ```
+
+1.  Select __"Edit Packet Forwarder Config"__
+
+1.  Look for the __`gateway_conf`__ section...
+
+    ![Edit Packet Forwarder Config](https://lupyuen.github.io/images/ttn-gateway2.png)
+
+1.  Replace these values from the Downloaded __`global_conf.json`__...
+
+    ```json
+    "gateway_conf": {
+      "gateway_ID":     ...,
+      "server_address": ...,
+      "serv_port_up":   ...,
+      "serv_port_down": ...,
+    ```
+
+1.  Scroll down and look for the end of the __`gateway_conf`__ section (just after __`beacon_power`__)...
+
+    ![Edit Packet Forwarder Config](https://lupyuen.github.io/images/ttn-gateway3.png)
+
+1.  Insert the entire __`servers`__ section from the Downloaded __`global_conf.json`__...
+
+    ```json
+    "servers": [ {
+      "gateway_ID":     ...,
+      "server_address": ...,
+      "serv_port_up":   ...,
+      "serv_port_down": ...,
+    } ]
+    ```
+
+    (Check the trailing commas!)
+
+1.  Save the file.
+
+    Select __"Restart Packet Forwarder"__
+
+[(More about Server Address)](https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/)
+
+## Gateway Is Up!
+
+TODO
+
+_How will we know if our Gateway is connected?_
+
+In The Things Network, browse to our Gateway and click __"`Live Data`"__ (in the left bar)
+
+We should see the __Heartbeat Messages__ (Gateway Status) received from our Gateway...
+
+![Gateway Live Data](https://lupyuen.github.io/images/ttn-wisgate4.png)
+
+_What are the Uplink Messages?_
+
+These are LoRa Messages from __nearby devices__ that our Gateway has helpfully relayed to The Things Network.
+
+Yep we're __officially a contributor__ to the globally-connected The Things Network!
+
+In case of problems, check the __Packet Forwarder Log__ on our Gateway...
+
+```text
+/var/log/daemon.log
+```
 
 ![](https://lupyuen.github.io/images/gateway-add3.png)
 
