@@ -120,15 +120,15 @@ Insert the microSD Card
 
 Power on PineDio Gateway
 
-If the HDMI Output is connected: We should see PineDio Gateway starting ChirpStack and the Packet Forwarder for The Things Network...
+If the HDMI Output is connected: We should see PineDio Gateway starting the services for ChirpStack and The Things Network...
 
 ![PineDio Gateway starts ChirpStack and Packet Forwarder for The Things Network](https://lupyuen.github.io/images/gateway-boot.jpg)
+
+(ChirpStack is the open source LoRaWAN Gateway, we won't use it today)
 
 Ssh
 
 Password
-
-https://forum.pine64.org/showthread.php?tid=13682
 
 ```bash
 ssh pinedio@rak-gateway
@@ -312,6 +312,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1456933165063233538)
+
+1.  How was the Armbian image created for PineDio Gatway? See this...
+
+    [__"Pinedio Project: Notes Sharing/Log"__](https://forum.pine64.org/showthread.php?tid=13682)
 
 1.  Check out these excellent articles on PineDio Gateway by JF and Ben V. Brown...
 
