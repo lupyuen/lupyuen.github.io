@@ -143,15 +143,66 @@
 <p>DC Power (5V)</p>
 </li>
 </ul>
-<p>(All these need to be connected except HDMI, which is useful for debugging)</p>
+<p>(All these need to be connected except HDMI, which is useful for troubleshooting)</p>
 <p>The connectors not shown are microSD, USB 2.0, Audio Input / Output.</p>
 <p>Note that we’re testing the <strong>pre-production PineDio Gateway</strong>, so some features may change…</p>
 <p><img src="https://lupyuen.github.io/images/gateway-under.jpg" alt="Underside of PineDio Gateway" /></p>
 <h1 id="install-pinedio-gateway" class="section-header"><a href="#install-pinedio-gateway">2 Install PineDio Gateway</a></h1>
 <p>TODO</p>
+<p>microSD</p>
+<p>https://www.buymeacoffee.com/politictech/pinedio-armbian-image-chirpstack-ttn</p>
 <p><a href="https://www.balena.io/etcher/">balenaEtcher</a></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/gateway-boot.jpg" alt="" /></p>
+<p>On PineDio Gateway, connect the LoRa Antenna, GPS Antenna, Ethernet LAN and DC Power</p>
+<p>(HDMI Output is optional)</p>
+<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION</strong>: Always connect the Antenna before Powering On… Or the LoRa Transceiver may get damaged! See this</a></p>
+<p>Insert the microSD Card</p>
+<p>Power on PineDio Gateway</p>
+<p>If the HDMI Output is connected: We should see PineDio Gateway starting ChirpStack and the Packet Forwarder for The Things Network…</p>
+<p><img src="https://lupyuen.github.io/images/gateway-boot.jpg" alt="PineDio Gateway starts ChirpStack and Packet Forwarder for The Things Network" /></p>
+<p>Ssh</p>
+<p>Password</p>
+<p>https://forum.pine64.org/showthread.php?tid=13682</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh pinedio@rak-gateway</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>passwd</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo nano /etc/hostname
+sudo nano /etc/hosts</code></pre></div>
+<p>See log:</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo tail /var/log/daemon.log</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>gateway-version</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>SoPine with baseboard, OS &quot;11 (bullseye)&quot;, 5.10.60-sunxi64.
+RAKWireless gateway RAK7248 no LTE version 4.2.7R install from source code.
+Gateway ID: YOUR_GATEWAY_ID</code></pre></div><div class="example-wrap"><pre class="language-bash"><code>systemctl status ttn-gateway</code></pre></div>
+<p>(check your gateway service status)</p>
+<div class="example-wrap"><pre class="language-text"><code>ttn-gateway.service - The Things Network Gateway
+Loaded: loaded (/lib/systemd/system/ttn-gateway.service; enabled; vendor preset: enabled)
+Active: active (running) since Sat 2021-11-06 20:29:12 EDT; 1min 22s ago
+Main PID: 7679 (start.sh)
+Tasks: 7 (limit: 2219)
+Memory: 844.0K
+CPU: 2.152s
+CGroup: /system.slice/ttn-gateway.service
+├─7679 /bin/bash /opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/start.sh
+└─7688 ./lora_pkt_fwd
+
+Note: chip version is 0x10 (v1.0)
+INFO: using legacy timestamp
+INFO: LoRa Service modem: configuring preamble size to 8 symbols
+ARB: dual demodulation disabled for all SF
+INFO: found temperature sensor on port 0x39
+INFO: [main] concentrator started, packet can now be received
+INFO: concentrator EUI: ...
+WARNING: [gps] GPS out of sync, keeping previous time reference
+WARNING: [gps] GPS out of sync, keeping previous time reference
+INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>systemctl stop ttn-gateway</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>systemctl disable ttn-gateway</code></pre></div>
+<p>(disable</p>
 <p>TODO15</p>
 <p><img src="https://lupyuen.github.io/images/gateway-ssh.png" alt="" /></p>
 <p>TODO16</p>
@@ -162,6 +213,7 @@
 <p><img src="https://lupyuen.github.io/images/gateway-config2.png" alt="" /></p>
 <h1 id="connect-to-the-things-network" class="section-header"><a href="#connect-to-the-things-network">3 Connect to The Things Network</a></h1>
 <p>TODO</p>
+<p>/opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/global_conf.json</p>
 <p><img src="https://lupyuen.github.io/images/gateway-add3.png" alt="" /></p>
 <p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/gateway-add4.png" alt="" /></p>
