@@ -92,7 +92,7 @@ In the pic above we see connectors for...
 
 -   DC Power (5V)
 
-(All these need to be connected except HDMI, which is useful for debugging)
+(All these need to be connected except HDMI, which is useful for troubleshooting)
 
 The connectors not shown are microSD, USB 2.0, Audio Input / Output.
 
@@ -104,12 +104,113 @@ Note that we're testing the __pre-production PineDio Gateway__, so some features
 
 TODO
 
+microSD
+
+https://www.buymeacoffee.com/politictech/pinedio-armbian-image-chirpstack-ttn
+
 [balenaEtcher](https://www.balena.io/etcher/)
 
-TODO10
+On PineDio Gateway, connect the LoRa Antenna, GPS Antenna, Ethernet LAN and DC Power
 
-![](https://lupyuen.github.io/images/gateway-boot.jpg)
+(HDMI Output is optional)
 
+[__CAUTION__: Always connect the Antenna before Powering On... Or the LoRa Transceiver may get damaged! See this](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
+
+Insert the microSD Card
+
+Power on PineDio Gateway
+
+If the HDMI Output is connected: We should see PineDio Gateway starting ChirpStack and the Packet Forwarder for The Things Network...
+
+![PineDio Gateway starts ChirpStack and Packet Forwarder for The Things Network](https://lupyuen.github.io/images/gateway-boot.jpg)
+
+Ssh
+
+Password
+
+https://forum.pine64.org/showthread.php?tid=13682
+
+```bash
+ssh pinedio@rak-gateway
+```
+
+TODO
+
+```bash
+passwd
+```
+
+TODO
+
+```bash
+sudo nano /etc/hostname
+sudo nano /etc/hosts
+```
+
+See log:
+
+```bash
+sudo tail /var/log/daemon.log
+```
+
+TODO
+
+```bash
+gateway-version
+```
+
+TODO
+
+```text
+SoPine with baseboard, OS "11 (bullseye)", 5.10.60-sunxi64.
+RAKWireless gateway RAK7248 no LTE version 4.2.7R install from source code.
+Gateway ID: YOUR_GATEWAY_ID
+```
+
+```bash
+systemctl status ttn-gateway
+```
+
+(check your gateway service status)
+
+```text
+ttn-gateway.service - The Things Network Gateway
+Loaded: loaded (/lib/systemd/system/ttn-gateway.service; enabled; vendor preset: enabled)
+Active: active (running) since Sat 2021-11-06 20:29:12 EDT; 1min 22s ago
+Main PID: 7679 (start.sh)
+Tasks: 7 (limit: 2219)
+Memory: 844.0K
+CPU: 2.152s
+CGroup: /system.slice/ttn-gateway.service
+├─7679 /bin/bash /opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/start.sh
+└─7688 ./lora_pkt_fwd
+
+Note: chip version is 0x10 (v1.0)
+INFO: using legacy timestamp
+INFO: LoRa Service modem: configuring preamble size to 8 symbols
+ARB: dual demodulation disabled for all SF
+INFO: found temperature sensor on port 0x39
+INFO: [main] concentrator started, packet can now be received
+INFO: concentrator EUI: ...
+WARNING: [gps] GPS out of sync, keeping previous time reference
+WARNING: [gps] GPS out of sync, keeping previous time reference
+INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955
+```
+
+TODO
+
+```bash
+systemctl stop ttn-gateway
+```
+
+TODO
+
+```bash
+systemctl disable ttn-gateway
+```
+
+(disable
+ 
 TODO15
 
 ![](https://lupyuen.github.io/images/gateway-ssh.png)
@@ -129,6 +230,8 @@ TODO20
 # Connect to The Things Network
 
 TODO
+
+/opt/ttn-gateway/packet_forwarder/lora_pkt_fwd/global_conf.json
 
 ![](https://lupyuen.github.io/images/gateway-add3.png)
 
