@@ -224,13 +224,15 @@ Next we set the __LoRa Frequency__ that PineDio Gateway shall use for our region
 
 ## Get Gateway ID
 
-Finally we fetch the unique factory-installed __Gateway ID__ from PineDio Gateway...
+Finally we fetch the unique factory-installed __Gateway ID__ from PineDio Gateway.
+
+On PineDio Gateway, run this...
 
 ```bash
 gateway-version
 ```
 
-We should see this...
+We should see...
 
 ```text
 SoPine with baseboard, OS "11 (bullseye)", 5.10.60-sunxi64.
