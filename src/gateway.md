@@ -339,7 +339,7 @@ Next we copy the __Gatway Settings__ from The Things Network to PineDio Gateway.
 
 _How will we know if our Gateway is connected?_
 
-In The Things Network, browse to our Gateway and click __"`Live Data`"__ (in the left bar)
+In The Things Network, browse to our Gateway and click __"Live Data"__ (in the left bar)
 
 We should see the __Heartbeat Messages__ (Gateway Status) received from our Gateway...
 
