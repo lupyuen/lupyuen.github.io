@@ -1614,7 +1614,7 @@ pacman -Q | grep headers
 ## Should show "linux-headers 5.14.12-1" or similar
 
 ## Reboot to be safe
-sudo reboot now
+sudo reboot
 
 ## Install CH341 SPI Driver
 git clone https://github.com/rogerjames99/spi-ch341-usb.git
