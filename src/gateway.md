@@ -220,7 +220,7 @@ Next we set the __LoRa Frequency__ that PineDio Gateway shall use for our region
 
     [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
-1.  Select __"Quit"__ to exit
+1.  Select __Quit__ to exit
 
 ## Get Gateway ID
 
@@ -254,9 +254,9 @@ We create a __free account__ on The Things Network...
 
 Log in and select the nearest region. (Either US, Europe or Australia)
 
-Click __`Gateways`__ and __`Add Gateway`__...
+Click __Gateways__ and __Add Gateway__...
 
-![Add Gateway](https://lupyuen.github.io/images/ttn-gateway.jpg)
+![Add Gateway](https://lupyuen.github.io/images/gateway-ttn3.jpg)
 
 1.  __Gateway ID__ needs to be globally unique.
 
@@ -270,19 +270,17 @@ Click __`Gateways`__ and __`Add Gateway`__...
 
     [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
 
-Fill in the fields and click __"`Create Gateway`"__
+Fill in the fields and click __"Create Gateway"__
 
 ## Configure Gateway
 
-TODO
-
 1.  Browse to the Gateway that we have added
 
-1.  Click __"`Download global_conf.json`"__
+1.  Click __"Download global_conf.json"__
 
-    ![Our Gateway in The Things Network](https://lupyuen.github.io/images/ttn-wisgate3.png)
+    ![Our Gateway in The Things Network](https://lupyuen.github.io/images/gateway-ttn4.jpg)
 
-1.  Open the Downloaded __`global_conf.json`__ with a text editor.
+1.  Open the Downloaded __global_conf.json__ with a text editor.
 
     It should look like this...
 
@@ -296,11 +294,11 @@ TODO
 
 1.  Select __"Edit Packet Forwarder Config"__
 
-1.  Look for the __`gateway_conf`__ section...
+1.  Look for the __gateway_conf__ section...
 
     ![Edit Packet Forwarder Config](https://lupyuen.github.io/images/ttn-gateway2.png)
 
-1.  Replace these values from the Downloaded __`global_conf.json`__...
+1.  Replace these values from the Downloaded __global_conf.json__...
 
     ```json
     "gateway_conf": {
@@ -310,11 +308,11 @@ TODO
       "serv_port_down": ...,
     ```
 
-1.  Scroll down and look for the end of the __`gateway_conf`__ section (just after __`beacon_power`__)...
+1.  Scroll down and look for the end of the __gateway_conf__ section (just after __beacon_power__)...
 
     ![Edit Packet Forwarder Config](https://lupyuen.github.io/images/ttn-gateway3.png)
 
-1.  Insert the entire __`servers`__ section from the Downloaded __`global_conf.json`__...
+1.  Insert the entire __servers__ section from the Downloaded __global_conf.json__...
 
     ```json
     "servers": [ {
@@ -335,15 +333,17 @@ TODO
 
 ## Gateway Is Up!
 
-TODO
-
 _How will we know if our Gateway is connected?_
 
 In The Things Network, browse to our Gateway and click __"`Live Data`"__ (in the left bar)
 
 We should see the __Heartbeat Messages__ (Gateway Status) received from our Gateway...
 
-![Gateway Live Data](https://lupyuen.github.io/images/ttn-wisgate4.png)
+![Gateway Live Data](https://lupyuen.github.io/images/gateway-add3.png)
+
+TODO
+
+![Uplink Messages](https://lupyuen.github.io/images/gateway-add4.png)
 
 _What are the Uplink Messages?_
 
@@ -356,20 +356,6 @@ In case of problems, check the __Packet Forwarder Log__ on our Gateway...
 ```text
 /var/log/daemon.log
 ```
-
-![](https://lupyuen.github.io/images/gateway-add3.png)
-
-TODO19
-
-![](https://lupyuen.github.io/images/gateway-add4.png)
-
-TODO21
-
-![](https://lupyuen.github.io/images/gateway-add.png)
-
-TODO22
-
-![](https://lupyuen.github.io/images/gateway-add2.png)
 
 TODO23
 
