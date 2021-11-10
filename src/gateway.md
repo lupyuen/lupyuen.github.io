@@ -363,13 +363,37 @@ sudo tail /var/log/daemon.log
 
 (Check the Appendix for the sample log)
 
+![PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/lorawan2-title.jpg)
+
 # Test with PineDio Stack
 
+_PineDio Gateway works with all LoRa gadgets right?_
+
+Yep! Assuming that our LoRa gadget runs [__LoRaWAN Firmware__](https://lupyuen.github.io/articles/lorawan2).
+
+Today we shall test PineDio Gateway with [__PineDio Stack BL604__](https://lupyuen.github.io/articles/lorawan2), the 32-bit RISC-V Board with a LoRa Transceiver inside.  (Pic above)
+
+1.  Create application
+
+    TODO
+
+1.  Configure Payload Formatter
+
+    TODO
+
+1.  Build, flash and run the firmware
+    
+    TODO
+
+1.  Run the firmware
+
+    TODO
+
+1.  Check The Things Network
+
+![](https://lupyuen.github.io/images/gateway-stack.png)
+
 TODO
-
-![](https://lupyuen.github.io/images/lorawan2-title.jpg)
-
-TODO7
 
 ![](https://lupyuen.github.io/images/gateway-stack2.png)
 
