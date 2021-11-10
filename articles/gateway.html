@@ -358,31 +358,31 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p><em>PineDio Gateway works with all LoRa gadgets right?</em></p>
 <p>Yep! Assuming that our LoRa gadget runs <a href="https://lupyuen.github.io/articles/lorawan2"><strong>LoRaWAN Firmware</strong></a>.</p>
 <p>Today we shall test PineDio Gateway with <a href="https://lupyuen.github.io/articles/lorawan2"><strong>PineDio Stack BL604</strong></a>, the 32-bit RISC-V Board with a LoRa Transceiver inside.  (Pic above)</p>
+<p>This is how we <strong>transmit Sensor Data</strong> (Temperature) from PineDio Stack to <strong>The Things Network</strong> via PineDio Gateway…</p>
 <ol>
 <li>
 <p>Log on to <strong>The Things Network Console</strong></p>
 </li>
 <li>
-<p>Create application</p>
-<p>TODO</p>
+<p>Create an <strong>Application</strong> and add a <strong>Device</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network"><strong>“Add Device to The Things Network”</strong></a></p>
 </li>
 <li>
-<p>Configure Payload Formatter</p>
-<p>TODO</p>
+<p>Configure the <strong>CBOR Payload Formatter</strong> so that we will see the decoded temperature…</p>
 <p><a href="https://lupyuen.github.io/articles/payload#configure-payload-formatter"><strong>“Configure Payload Formatter”</strong></a></p>
 </li>
 <li>
-<p>Build, flash and run the <strong>LoRaWAN Firmware</strong></p>
-<p>TOTO</p>
+<p>On PineDio Stack: Build, flash and run the <strong>LoRaWAN Firmware</strong></p>
 <p><a href="https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></p>
 </li>
 <li>
-<p>Start the <strong>LoRaWAN Firmware</strong> on our LoRaWAN Device (PineDio Stack).</p>
+<p>Start the <strong>LoRaWAN Firmware</strong> on PineDio Stack…</p>
 <p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware"><strong>“Run the LoRaWAN Firmware”</strong></a></p>
-<p>Transmit some Sensor Data every minute…</p>
+</li>
+<li>
+<p>At the <strong>PineDio Stack Command Prompt</strong>, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
-<p>TODO</p>
+<p>This transmits <strong>PineDio Stack’s Internal Temperature</strong> every 60 seconds. (For the next 10 minutes)</p>
 </li>
 <li>
 <p>Switch back to <strong>The Things Network Console</strong>.</p>
@@ -390,35 +390,34 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 </li>
 <li>
 <p>Our <strong>Decoded Sensor Data</strong> should appear in the Live Data Table like so…</p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-json"><code>Payload: { l: 4000, t: 4669 }</code></pre></div>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/payload-ttn3.png" alt="Decoded Sensor Data in the Live Data Table" /></p>
+<div class="example-wrap"><pre class="language-json"><code>Payload: { l: 4000, t: 4836 }</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/gateway-stack.png" alt="Decoded Sensor Data in the Live Data Table" /></p>
 </li>
 <li>
 <p>Click on a message in the <strong>Live Data Table</strong>. </p>
 <p>We should see the <strong>decoded_payload</strong> field containing our Decoded Sensor Data…</p>
-<p>TODO</p>
 <div class="example-wrap"><pre class="language-json"><code>{
   ...
   &quot;uplink_message&quot;: {
     ...
     &quot;decoded_payload&quot;: {
       &quot;l&quot;: 4000,
-      &quot;t&quot;: 4656
+      &quot;t&quot;: 4836
     }    </code></pre></div>
-<p>These are the <strong>Light Sensor</strong> (“<code>l</code>”) and <strong>Temperature Sensor</strong> (“<code>t</code>”) values transmitted by our LoRaWAN Device (PineDio Stack).</p>
-<p>TODO</p>
-<p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Our Temperature Values are scaled up 100 times… <code>4656</code> means <code>46.56</code> ºC)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/gateway-stack.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/gateway-stack2.png" alt="" /></p>
+<p>These are the <strong>Light Sensor</strong> (“<code>l</code>”) and <strong>Temperature Sensor</strong> (“<code>t</code>”) values transmitted by PineDio Stack to The Things Network via PineDio Gateway.</p>
+<p>Yep PineDio Gateway works great with PineDio Stack!</p>
+<p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Our Temperature Values are scaled up 100 times… <code>4836</code> means <code>48.36</code> ºC)</a></p>
 </li>
 </ol>
+<p>Now here’s something interesting we might spot in the Live Data…</p>
+<p><img src="https://lupyuen.github.io/images/gateway-stack2.png" alt="" /></p>
+<p><em>Why are there two (or more) Gateways in a single message?</em></p>
+<p>Remember The Things Network is a <strong>Public Wireless Network</strong> with Gateways contributed by the community.</p>
+<p>Thus it’s perfectly OK for <strong>multiple Gateways</strong> to receive our message.</p>
+<p>(The Things Network will helpfully merge the duplicate messages into one)</p>
+<p>TODO: Which is great because </p>
 <h1 id="benchmark-with-rakwireless-wisgate" class="section-header"><a href="#benchmark-with-rakwireless-wisgate">5 Benchmark with RAKwireless WisGate</a></h1>
 <p>TODO</p>
-<p>TODO13</p>
 <p><img src="https://lupyuen.github.io/images/gateway-wisgate.jpg" alt="" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/gateway-antenna.jpg" alt="" /></p>
