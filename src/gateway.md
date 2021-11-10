@@ -373,37 +373,33 @@ Yep! Assuming that our LoRa gadget runs [__LoRaWAN Firmware__](https://lupyuen.g
 
 Today we shall test PineDio Gateway with [__PineDio Stack BL604__](https://lupyuen.github.io/articles/lorawan2), the 32-bit RISC-V Board with a LoRa Transceiver inside.  (Pic above)
 
+This is how we __transmit Sensor Data__ (Temperature) from PineDio Stack to __The Things Network__ via PineDio Gateway...
+
 1.  Log on to __The Things Network Console__
 
-1.  Create application
-
-    TODO
+1.  Create an __Application__ and add a __Device__...
 
     [__"Add Device to The Things Network"__](https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network)
 
-1.  Configure Payload Formatter
-
-    TODO
+1.  Configure the __CBOR Payload Formatter__ so that we will see the decoded temperature...
 
     [__"Configure Payload Formatter"__](https://lupyuen.github.io/articles/payload#configure-payload-formatter)
 
-1.  Build, flash and run the __LoRaWAN Firmware__
-
-    TOTO
+1.  On PineDio Stack: Build, flash and run the __LoRaWAN Firmware__
 
     [__"Build and Run LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-lorawan-firmware)
 
-1.  Start the __LoRaWAN Firmware__ on our LoRaWAN Device (PineDio Stack).
+1.  Start the __LoRaWAN Firmware__ on PineDio Stack...
 
     [__"Run the LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
 
-    Transmit some Sensor Data every minute...
+1.  At the __PineDio Stack Command Prompt__, enter this command...
 
     ```bash
     las_app_tx_tsen 2 0 4000 10 60
     ```
 
-    TODO
+    This transmits __PineDio Stack's Internal Temperature__ every 60 seconds. (For the next 10 minutes)
 
 1.  Switch back to __The Things Network Console__.
 
@@ -411,21 +407,15 @@ Today we shall test PineDio Gateway with [__PineDio Stack BL604__](https://lupyu
 
 1.  Our __Decoded Sensor Data__ should appear in the Live Data Table like so...
 
-    TODO
-
     ```json
-    Payload: { l: 4000, t: 4669 }
+    Payload: { l: 4000, t: 4836 }
     ```
 
-    TODO
-
-    ![Decoded Sensor Data in the Live Data Table](https://lupyuen.github.io/images/payload-ttn3.png)
+    ![Decoded Sensor Data in the Live Data Table](https://lupyuen.github.io/images/gateway-stack.png)
 
 1.  Click on a message in the __Live Data Table__. 
 
     We should see the __decoded_payload__ field containing our Decoded Sensor Data...
-
-    TODO
 
     ```json
     {
@@ -434,29 +424,33 @@ Today we shall test PineDio Gateway with [__PineDio Stack BL604__](https://lupyu
         ...
         "decoded_payload": {
           "l": 4000,
-          "t": 4656
+          "t": 4836
         }    
     ```
 
-    These are the __Light Sensor__ ("`l`") and __Temperature Sensor__ ("`t`") values transmitted by our LoRaWAN Device (PineDio Stack).
+    These are the __Light Sensor__ ("`l`") and __Temperature Sensor__ ("`t`") values transmitted by PineDio Stack to The Things Network via PineDio Gateway.
 
-    TODO
+    Yep PineDio Gateway works great with PineDio Stack!
 
-    [(Our Temperature Values are scaled up 100 times... `4656` means `46.56` ºC)](https://lupyuen.github.io/articles/cbor#floating-point-numbers)
+    [(Our Temperature Values are scaled up 100 times... `4836` means `48.36` ºC)](https://lupyuen.github.io/articles/cbor#floating-point-numbers)
 
-    TODO
+Now here's something interesting we might spot in the Live Data...
 
-    ![](https://lupyuen.github.io/images/gateway-stack.png)
+![](https://lupyuen.github.io/images/gateway-stack2.png)
 
-    TODO
+_Why are there two (or more) Gateways in a single message?_
 
-    ![](https://lupyuen.github.io/images/gateway-stack2.png)
+Remember The Things Network is a __Public Wireless Network__ with Gateways contributed by the community.
+
+Thus it's perfectly OK for __multiple Gateways__ to receive our message.
+
+(The Things Network will helpfully merge the duplicate messages into one)
+
+TODO: Which is great because 
 
 # Benchmark with RAKwireless WisGate
 
 TODO
-
-TODO13
 
 ![](https://lupyuen.github.io/images/gateway-wisgate.jpg)
 
