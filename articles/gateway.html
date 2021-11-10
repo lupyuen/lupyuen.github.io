@@ -360,28 +360,62 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p>Today we shall test PineDio Gateway with <a href="https://lupyuen.github.io/articles/lorawan2"><strong>PineDio Stack BL604</strong></a>, the 32-bit RISC-V Board with a LoRa Transceiver inside.  (Pic above)</p>
 <ol>
 <li>
+<p>Log on to <strong>The Things Network Console</strong></p>
+</li>
+<li>
 <p>Create application</p>
 <p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network"><strong>“Add Device to The Things Network”</strong></a></p>
 </li>
 <li>
 <p>Configure Payload Formatter</p>
 <p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/payload#configure-payload-formatter"><strong>“Configure Payload Formatter”</strong></a></p>
 </li>
 <li>
-<p>Build, flash and run the firmware</p>
+<p>Build, flash and run the <strong>LoRaWAN Firmware</strong></p>
+<p>TOTO</p>
+<p><a href="https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></p>
+</li>
+<li>
+<p>Start the <strong>LoRaWAN Firmware</strong> on our LoRaWAN Device (PineDio Stack).</p>
+<p><a href="https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware"><strong>“Run the LoRaWAN Firmware”</strong></a></p>
+<p>Transmit some Sensor Data every minute…</p>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
 <p>TODO</p>
 </li>
 <li>
-<p>Run the firmware</p>
-<p>TODO</p>
+<p>Switch back to <strong>The Things Network Console</strong>.</p>
+<p>Click <strong>Applications → (Your Application) → Live Data</strong></p>
 </li>
 <li>
-<p>Check The Things Network</p>
+<p>Our <strong>Decoded Sensor Data</strong> should appear in the Live Data Table like so…</p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-json"><code>Payload: { l: 4000, t: 4669 }</code></pre></div>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/payload-ttn3.png" alt="Decoded Sensor Data in the Live Data Table" /></p>
 </li>
-</ol>
+<li>
+<p>Click on a message in the <strong>Live Data Table</strong>. </p>
+<p>We should see the <strong>decoded_payload</strong> field containing our Decoded Sensor Data…</p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+  ...
+  &quot;uplink_message&quot;: {
+    ...
+    &quot;decoded_payload&quot;: {
+      &quot;l&quot;: 4000,
+      &quot;t&quot;: 4656
+    }    </code></pre></div>
+<p>These are the <strong>Light Sensor</strong> (“<code>l</code>”) and <strong>Temperature Sensor</strong> (“<code>t</code>”) values transmitted by our LoRaWAN Device (PineDio Stack).</p>
+<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Our Temperature Values are scaled up 100 times… <code>4656</code> means <code>46.56</code> ºC)</a></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/gateway-stack.png" alt="" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/gateway-stack2.png" alt="" /></p>
+</li>
+</ol>
 <h1 id="benchmark-with-rakwireless-wisgate" class="section-header"><a href="#benchmark-with-rakwireless-wisgate">5 Benchmark with RAKwireless WisGate</a></h1>
 <p>TODO</p>
 <p>TODO13</p>
