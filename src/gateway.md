@@ -373,29 +373,84 @@ Yep! Assuming that our LoRa gadget runs [__LoRaWAN Firmware__](https://lupyuen.g
 
 Today we shall test PineDio Gateway with [__PineDio Stack BL604__](https://lupyuen.github.io/articles/lorawan2), the 32-bit RISC-V Board with a LoRa Transceiver inside.  (Pic above)
 
+1.  Log on to __The Things Network Console__
+
 1.  Create application
 
     TODO
+
+    [__"Add Device to The Things Network"__](https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network)
 
 1.  Configure Payload Formatter
 
     TODO
 
-1.  Build, flash and run the firmware
-    
+    [__"Configure Payload Formatter"__](https://lupyuen.github.io/articles/payload#configure-payload-formatter)
+
+1.  Build, flash and run the __LoRaWAN Firmware__
+
+    TOTO
+
+    [__"Build and Run LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-lorawan-firmware)
+
+1.  Start the __LoRaWAN Firmware__ on our LoRaWAN Device (PineDio Stack).
+
+    [__"Run the LoRaWAN Firmware"__](https://lupyuen.github.io/articles/tsen#run-the-lorawan-firmware)
+
+    Transmit some Sensor Data every minute...
+
+    ```bash
+    las_app_tx_tsen 2 0 4000 10 60
+    ```
+
     TODO
 
-1.  Run the firmware
+1.  Switch back to __The Things Network Console__.
+
+    Click __Applications → (Your Application) → Live Data__
+
+1.  Our __Decoded Sensor Data__ should appear in the Live Data Table like so...
 
     TODO
 
-1.  Check The Things Network
+    ```json
+    Payload: { l: 4000, t: 4669 }
+    ```
 
-![](https://lupyuen.github.io/images/gateway-stack.png)
+    TODO
 
-TODO
+    ![Decoded Sensor Data in the Live Data Table](https://lupyuen.github.io/images/payload-ttn3.png)
 
-![](https://lupyuen.github.io/images/gateway-stack2.png)
+1.  Click on a message in the __Live Data Table__. 
+
+    We should see the __decoded_payload__ field containing our Decoded Sensor Data...
+
+    TODO
+
+    ```json
+    {
+      ...
+      "uplink_message": {
+        ...
+        "decoded_payload": {
+          "l": 4000,
+          "t": 4656
+        }    
+    ```
+
+    These are the __Light Sensor__ ("`l`") and __Temperature Sensor__ ("`t`") values transmitted by our LoRaWAN Device (PineDio Stack).
+
+    TODO
+
+    [(Our Temperature Values are scaled up 100 times... `4656` means `46.56` ºC)](https://lupyuen.github.io/articles/cbor#floating-point-numbers)
+
+    TODO
+
+    ![](https://lupyuen.github.io/images/gateway-stack.png)
+
+    TODO
+
+    ![](https://lupyuen.github.io/images/gateway-stack2.png)
 
 # Benchmark with RAKwireless WisGate
 
