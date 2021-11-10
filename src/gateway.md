@@ -602,33 +602,33 @@ WARNING: [gps] GPS out of sync, keeping previous time reference
 
 ```text
 ### [UPSTREAM] ###
-# RF packets received by concentrator: 1
-# CRC_OK: 100.00%, CRC_FAIL: 0.00%, NO_CRC: 0.00%
-# RF packets forwarded: 1 (32 bytes)
-# PUSH_DATA datagrams sent: 1 (319 bytes)
-# PUSH_DATA acknowledged: 100.00%
+RF packets received by concentrator: 1
+CRC_OK: 100.00%, CRC_FAIL: 0.00%, NO_CRC: 0.00%
+RF packets forwarded: 1 (32 bytes)
+PUSH_DATA datagrams sent: 1 (319 bytes)
+PUSH_DATA acknowledged: 100.00%
 
 ### [DOWNSTREAM] ###
-# PULL_DATA sent: 3 (100.00% acknowledged)
-# PULL_RESP(onse) datagrams received: 0 (0 bytes)
-# RF packets sent to concentrator: 0 (0 bytes)
-# TX errors: 0
+PULL_DATA sent: 3 (100.00% acknowledged)
+PULL_RESP(onse) datagrams received: 0 (0 bytes)
+RF packets sent to concentrator: 0 (0 bytes)
+TX errors: 0
 
 ### SX1302 Status ###
-# SX1302 counter (INST): 30753811
-# SX1302 counter (PPS):  26145712
-# BEACON queued: 0
-# BEACON sent so far: 0
-# BEACON rejected: 0
+SX1302 counter (INST): 30753811
+SX1302 counter (PPS):  26145712
+BEACON queued: 0
+BEACON sent so far: 0
+BEACON rejected: 0
 
 ### [JIT] ###
 src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
-#--------
+--------
 src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
 
 ### [GPS] ###
-# Valid time reference (age: 0 sec)
-# GPS coordinates: latitude 1.2..., longitude 103.8..., altitude 17 m
+Valid time reference (age: 0 sec)
+GPS coordinates: latitude 1.2..., longitude 103.8..., altitude 17 m
 ##### END #####
 
 JSON up:
