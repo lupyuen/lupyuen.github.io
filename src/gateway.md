@@ -458,15 +458,11 @@ _RAKwireless WisGate D4H Gateway (above) and PineDio Gateway (below)_
 
 _How does PineDio Gateway compare with other LoRa Gateways?_
 
-TODO
+Let's benchmark PineDio Gateway with [__RAKwireless WisGate D4H Gateway (RAK7248)__](https://lupyuen.github.io/articles/wisgate). (Pic above)
 
-[__RAKwireless WisGate D4H Gateway (RAK7248)__](https://lupyuen.github.io/articles/wisgate)
+WisGate D4H is based on the same [__RAKwireless RAK2287 + Semtech SX1302 Concentrator__](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/) as PineDio Gateway.
 
-TODO
-
-[__RAKwireless RAK2287 + Semtech SX1302 Concentrator__](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/)
-
-Thus we would expect the wireless performance to be highly similar.
+Thus we would expect the wireless performance of the two LoRa Gateways to be highly similar.
 
 ![](https://lupyuen.github.io/images/gateway-compare5.png)
 
