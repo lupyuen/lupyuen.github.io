@@ -106,7 +106,7 @@ Let's install our PineDio Gateway...
 
 1.  Download [__RTP's__](https://www.buymeacoffee.com/politictech) awesome all-in-one __Armbian Image__ for PineDio Gateway...
 
-    [__"PineDio Armbian Image"__](https://www.buymeacoffee.com/politictech/pinedio-armbian-image-chirpstack-ttn)
+    [__"Pinedio Mesh Gateway Image"__](https://www.buymeacoffee.com/politictech/pinedio-image-new-download)
 
     [(Remember to buy RTP a coffee! 👍)](https://www.buymeacoffee.com/politictech)
 
@@ -150,7 +150,7 @@ Let's connect to __PineDio Gateway over SSH__...
     SoPinePass!!!
     ```
 
-    [(Source)](https://www.buymeacoffee.com/politictech/pinedio-armbian-image-chirpstack-ttn)
+    [(Source)](https://www.buymeacoffee.com/politictech/pinedio-image-new-download)
 
 1.  Check the __Packet Forwarder Log__ for The Things Network...
 
@@ -448,23 +448,27 @@ Thus it's perfectly OK for __multiple Gateways__ to receive our message.
 
 Which is super awesome because it means we have (some) __Wireless Redundancy__ in The Things Network!
 
+![RAKwireless WisGate D4H Gateway (RAK7248) and PineDio Gateway](https://lupyuen.github.io/images/gateway-wisgate.jpg)
+
 # Benchmark with RAKwireless WisGate
+
+_How does PineDio Gateway compare with other LoRa Gateways?_
 
 TODO
 
-![](https://lupyuen.github.io/images/gateway-wisgate.jpg)
+![](https://lupyuen.github.io/images/gateway-compare6.png)
 
-TODO14
+TODO
+
+![](https://lupyuen.github.io/images/gateway-compare5.png)
+
+TODO
 
 ![](https://lupyuen.github.io/images/gateway-antenna.jpg)
 
-TODO26
+TODO
 
-![](https://lupyuen.github.io/images/gateway-compare6.png)
-
-TODO27
-
-![](https://lupyuen.github.io/images/gateway-compare5.png)
+![](https://lupyuen.github.io/images/gateway-antenna2.jpg)
 
 TODO
 
