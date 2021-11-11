@@ -480,15 +480,27 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/gateway-antenna2.jpg)
+![WisGate Antenna vs PineDio Gateway Antenna](https://lupyuen.github.io/images/gateway-antenna2.jpg)
 
-TODO
+## Antenna Length
 
-λ / 2 vs λ / 4
+_I see a pattern... Why is one antenna twice the length of the other?_
 
-923 MHz = 32 cm (rounded)
+That's because LoRa Antennas are typically __"λ / 2"__ or __"λ / 4"__ long.
 
-[(Source)](https://fccid.io/frequency-explorer.php?lower=923&upper=923)
+Let's do the math...
+
+-   In my region the __LoRa Frequency__ is __923 MHz__
+
+-   Which means that the __Wavelength (λ)__ is __32 cm__ (rounded)
+
+    [(Source)](https://fccid.io/frequency-explorer.php?lower=923&upper=923)
+
+-   __"λ / 2"__ is __16 cm__
+
+-   __"λ / 4"__ is __8 cm__
+
+Which matches our __Antenna Lengths__!
 
 ![PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 
