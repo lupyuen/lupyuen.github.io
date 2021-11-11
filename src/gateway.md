@@ -805,6 +805,6 @@ JSON up:
 [down] PULL_ACK received in 92 ms
 ```
 
-TODO28
+![PineDio Gateway and WisGate Gateway on The Things Network](https://lupyuen.github.io/images/gateway-ttn2.jpg)
 
-![](https://lupyuen.github.io/images/gateway-ttn2.png)
+_PineDio Gateway and WisGate Gateway on The Things Network_
