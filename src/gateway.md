@@ -1,6 +1,6 @@
 # PineDio LoRa Gateway: Testing The Prototype
 
-📝 _15 Nov 2021_
+📝 _11 Nov 2021_
 
 Previously we tested two new wireless gadgets by Pine64...
 
@@ -544,9 +544,19 @@ _PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and PineDio USB Adapt
 
 # What's Next
 
-TODO
+This article concludes our testing of the entire __PineDio Family of LoRa Gadgets__ by Pine64!
 
-[__"Experimenting with LoRa Backplate for PinePhone"__](https://github.com/lupyuen/pinephone-lora)
+1.  [__PineDio Stack BL604__](https://lupyuen.github.io/articles/lorawan2)
+
+1.  [__PineDio USB Adapter__](https://lupyuen.github.io/articles/usb)
+
+1.  [__PineDio Gateway__](https://lupyuen.github.io/articles/gateway)
+
+1.  [__PinePhone LoRa Backplate__](https://github.com/lupyuen/pinephone-lora)
+
+I hope Pine64 will make these awesome LoRa Gadgets available to the community real soon!
+
+[(I'm stuck at PinePhone Backplate though... Lemme know if you can help! 🙏)](https://github.com/lupyuen/pinephone-lora)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -578,11 +588,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Packet Forwarder Service
 
-TODO
+__Packet Forwarder__ is the Background Service on PineDio Gateway that relays received LoRa Packets to The Things Network.
 
-Packet Forwarder is the ???
+(Yep it's super critical to keep this service running on PineDio Gateway!)
 
-To check Packet Forwarder Service...
+To check if the __Packet Forwarder Service is running__...
 
 ```bash
 systemctl status ttn-gateway
@@ -614,17 +624,25 @@ WARNING: [gps] GPS out of sync, keeping previous time reference
 INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955
 ```
 
-To stop Packet Forwarder Service...
+To __stop the Packet Forwarder Service__...
 
 ```bash
 systemctl stop ttn-gateway
 ```
 
-To disable Packet Forwarder Service...
+To __disable the Packet Forwarder Service__...
 
 ```bash
 systemctl disable ttn-gateway
 ```
+
+To __configure the Packet Forwarder Service__...
+
+```bash
+sudo gateway-config
+```
+
+Check the next section for the Packet Forwarder Log.
 
 [(Source)](https://forum.pine64.org/showthread.php?tid=13682&pid=97358#pid97358)
 
@@ -636,7 +654,7 @@ Here's a sample __Packet Forwarder Log__ for PineDio Gateway located at...
 /var/log/daemon.log
 ```
 
-[(The log messages below are explained in this article)](https://ralimtek.com/posts/2021/pinedio/)
+[(Log messages below are explained in this article)](https://ralimtek.com/posts/2021/pinedio/)
 
 ## Startup
 

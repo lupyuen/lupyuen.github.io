@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "PineDio LoRa Gateway: Testing The Prototype",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-11-11",
+      "website": "https://lupyuen.github.io/articles/gateway",
+      "summary": "How we test the pre-production PineDio LoRa Gateway by Pine64... And connect it to The Things Network"
+    },
+    {
       "name": "Build a Linux Driver for PineDio LoRa SX1262 USB Adapter",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-10-28",
