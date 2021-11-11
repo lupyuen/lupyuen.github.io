@@ -83,7 +83,7 @@
 <li><a href="#appendix-packet-forwarder-log">9 Appendix: Packet Forwarder Log</a><ul>
 <li><a href="#startup">9.1 Startup</a><ul></ul></li>
 <li><a href="#receive-packet">9.2 Receive Packet</a><ul></ul></li>
-<li><a href="#packet-received">9.3 Packet Received</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>15 Nov 2021</em></p>
+<li><a href="#packet-received">9.3 Packet Received</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>11 Nov 2021</em></p>
 <p>Previously we tested two new wireless gadgets by Pine64…</p>
 <ul>
 <li>
@@ -494,8 +494,23 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/lorawan2-pine64.jpg" alt="PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and PineDio USB Adapter" /></p>
 <p><em>PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and PineDio USB Adapter</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-lora"><strong>“Experimenting with LoRa Backplate for PinePhone”</strong></a></p>
+<p>This article concludes our testing of the entire <strong>PineDio Family of LoRa Gadgets</strong> by Pine64!</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan2"><strong>PineDio Stack BL604</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/usb"><strong>PineDio USB Adapter</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/gateway"><strong>PineDio Gateway</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-lora"><strong>PinePhone LoRa Backplate</strong></a></p>
+</li>
+</ol>
+<p>I hope Pine64 will make these awesome LoRa Gadgets available to the community real soon!</p>
+<p><a href="https://github.com/lupyuen/pinephone-lora">(I’m stuck at PinePhone Backplate though… Lemme know if you can help! 🙏)</a></p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -529,9 +544,9 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 </li>
 </ol>
 <h1 id="appendix-packet-forwarder-service" class="section-header"><a href="#appendix-packet-forwarder-service">8 Appendix: Packet Forwarder Service</a></h1>
-<p>TODO</p>
-<p>Packet Forwarder is the ???</p>
-<p>To check Packet Forwarder Service…</p>
+<p><strong>Packet Forwarder</strong> is the Background Service on PineDio Gateway that relays received LoRa Packets to The Things Network.</p>
+<p>(Yep it’s super critical to keep this service running on PineDio Gateway!)</p>
+<p>To check if the <strong>Packet Forwarder Service is running</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>systemctl status ttn-gateway</code></pre></div>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>ttn-gateway.service - The Things Network Gateway
@@ -555,15 +570,18 @@ INFO: concentrator EUI: ...
 WARNING: [gps] GPS out of sync, keeping previous time reference
 WARNING: [gps] GPS out of sync, keeping previous time reference
 INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955</code></pre></div>
-<p>To stop Packet Forwarder Service…</p>
+<p>To <strong>stop the Packet Forwarder Service</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>systemctl stop ttn-gateway</code></pre></div>
-<p>To disable Packet Forwarder Service…</p>
+<p>To <strong>disable the Packet Forwarder Service</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>systemctl disable ttn-gateway</code></pre></div>
+<p>To <strong>configure the Packet Forwarder Service</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo gateway-config</code></pre></div>
+<p>Check the next section for the Packet Forwarder Log.</p>
 <p><a href="https://forum.pine64.org/showthread.php?tid=13682&amp;pid=97358#pid97358">(Source)</a></p>
 <h1 id="appendix-packet-forwarder-log" class="section-header"><a href="#appendix-packet-forwarder-log">9 Appendix: Packet Forwarder Log</a></h1>
 <p>Here’s a sample <strong>Packet Forwarder Log</strong> for PineDio Gateway located at…</p>
 <div class="example-wrap"><pre class="language-text"><code>/var/log/daemon.log</code></pre></div>
-<p><a href="https://ralimtek.com/posts/2021/pinedio/">(The log messages below are explained in this article)</a></p>
+<p><a href="https://ralimtek.com/posts/2021/pinedio/">(Log messages below are explained in this article)</a></p>
 <h2 id="startup" class="section-header"><a href="#startup">9.1 Startup</a></h2><div class="example-wrap"><pre class="language-text"><code>*** Packet Forwarder ***
 Version: 2.0.1
 *** SX1302 HAL library version info ***
