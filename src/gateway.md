@@ -464,6 +464,10 @@ TODO
 
 TODO
 
+[__RAKwireless RAK2287 + Semtech SX1302 Concentrator__](https://docs.rakwireless.com/Product-Categories/WisGate/RAK7248/Datasheet/)
+
+Thus we would expect the wireless performance to be highly similar.
+
 ![](https://lupyuen.github.io/images/gateway-compare5.png)
 
 TODO
