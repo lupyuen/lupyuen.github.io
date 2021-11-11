@@ -508,9 +508,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Setting up the PineDIO LoRaWAN Gateway"__](https://ralimtek.com/posts/2021/pinedio/)
 
-# Appendix: Control PineDio Gateway
+# Appendix: Packet Forwarder Service
 
 TODO
+
+Packet Forwarder is the ???
 
 To check Packet Forwarder Service...
 
@@ -555,6 +557,8 @@ To disable Packet Forwarder Service...
 ```bash
 systemctl disable ttn-gateway
 ```
+
+[(Source)](https://forum.pine64.org/showthread.php?tid=13682&pid=97358#pid97358)
 
 # Appendix: Packet Forwarder Log
 
