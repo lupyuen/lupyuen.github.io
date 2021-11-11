@@ -74,7 +74,8 @@
 <li><a href="#configure-gateway">3.1 Configure Gateway</a><ul></ul></li>
 <li><a href="#gateway-is-up">3.2 Gateway Is Up!</a><ul></ul></li></ul></li>
 <li><a href="#test-with-pinedio-stack">4 Test with PineDio Stack</a><ul></ul></li>
-<li><a href="#benchmark-with-rakwireless-wisgate">5 Benchmark with RAKwireless WisGate</a><ul></ul></li>
+<li><a href="#benchmark-with-rakwireless-wisgate">5 Benchmark with RAKwireless WisGate</a><ul>
+<li><a href="#antenna-length">5.1 Antenna Length</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#notes">7 Notes</a><ul></ul></li>
 <li><a href="#appendix-packet-forwarder-service">8 Appendix: Packet Forwarder Service</a><ul></ul></li>
@@ -432,11 +433,27 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/gateway-antenna.jpg" alt="" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/gateway-antenna2.jpg" alt="" /></p>
-<p>TODO</p>
-<p>λ / 2 vs λ / 4</p>
-<p>923 MHz = 32 cm (rounded)</p>
+<p><img src="https://lupyuen.github.io/images/gateway-antenna2.jpg" alt="WisGate Antenna vs PineDio Gateway Antenna" /></p>
+<h2 id="antenna-length" class="section-header"><a href="#antenna-length">5.1 Antenna Length</a></h2>
+<p><em>I see a pattern… Why is one antenna twice the length of the other?</em></p>
+<p>That’s because LoRa Antennas are typically <strong>“λ / 2”</strong> or <strong>“λ / 4”</strong> long.</p>
+<p>Let’s do the math…</p>
+<ul>
+<li>
+<p>In my region the <strong>LoRa Frequency</strong> is <strong>923 MHz</strong></p>
+</li>
+<li>
+<p>Which means that the <strong>Wavelength (λ)</strong> is <strong>32 cm</strong> (rounded)</p>
 <p><a href="https://fccid.io/frequency-explorer.php?lower=923&amp;upper=923">(Source)</a></p>
+</li>
+<li>
+<p><strong>“λ / 2”</strong> is <strong>16 cm</strong></p>
+</li>
+<li>
+<p><strong>“λ / 4”</strong> is <strong>8 cm</strong></p>
+</li>
+</ul>
+<p>Which matches our <strong>Antenna Lengths</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-pine64.jpg" alt="PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter" /></p>
 <p><em>PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
