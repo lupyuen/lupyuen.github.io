@@ -323,7 +323,7 @@ Next we copy the __Gatway Settings__ from The Things Network to PineDio Gateway.
     } ]
     ```
 
-    (Check the trailing commas!)
+    (Check the trailing commas, especially after __beacon_power__!)
 
 1.  Our updated file should look like this...
 
@@ -333,7 +333,7 @@ Next we copy the __Gatway Settings__ from The Things Network to PineDio Gateway.
 
     Select __"Restart Packet Forwarder"__
 
-[(More about Server Address)](https://www.thethingsnetwork.org/docs/the-things-stack/migrate-to-v3/migrate-gateways/)
+[(More about Packet Forwarder in the Appendix)](https://lupyuen.github.io/articles/gateway#appendix-packet-forwarder-service)
 
 ## Gateway Is Up!
 
@@ -361,9 +361,11 @@ In case of problems, check the __Packet Forwarder Log__ on our Gateway...
 sudo tail /var/log/daemon.log
 ```
 
-(Check the Appendix for the sample log)
+[(Check the Appendix for the sample log)](https://lupyuen.github.io/articles/gateway#appendix-packet-forwarder-log)
 
 ![PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/lorawan2-title.jpg)
+
+[(Source)](https://lupyuen.github.io/articles/lorawan2)
 
 # Test with PineDio Stack
 
@@ -450,17 +452,23 @@ Which is super awesome because it means we have (some) __Wireless Redundancy__ i
 
 ![RAKwireless WisGate D4H Gateway (RAK7248) and PineDio Gateway](https://lupyuen.github.io/images/gateway-wisgate.jpg)
 
+_RAKwireless WisGate D4H Gateway (top) and PineDio Gateway (bottom)_
+
 # Benchmark with RAKwireless WisGate
 
 _How does PineDio Gateway compare with other LoRa Gateways?_
 
 TODO
 
-![](https://lupyuen.github.io/images/gateway-compare6.png)
+[__RAKwireless WisGate D4H Gateway (RAK7248)__](https://lupyuen.github.io/articles/wisgate)
 
 TODO
 
 ![](https://lupyuen.github.io/images/gateway-compare5.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/gateway-compare6.png)
 
 TODO
 
@@ -471,6 +479,12 @@ TODO
 ![](https://lupyuen.github.io/images/gateway-antenna2.jpg)
 
 TODO
+
+λ / 2 vs λ / 4
+
+923 MHz = 32 cm (rounded)
+
+[(Source)](https://fccid.io/frequency-explorer.php?lower=923&upper=923)
 
 ![PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 
@@ -562,11 +576,13 @@ systemctl disable ttn-gateway
 
 # Appendix: Packet Forwarder Log
 
-Here's a sample Packet Forwarder Log for PineDio Gateway located at...
+Here's a sample __Packet Forwarder Log__ for PineDio Gateway located at...
 
 ```text
 /var/log/daemon.log
 ```
+
+[(The log messages below are explained in this article)](https://ralimtek.com/posts/2021/pinedio/)
 
 ## Startup
 
@@ -682,32 +698,32 @@ WARNING: [gps] GPS out of sync, keeping previous time reference
 ## Packet Received
 
 ```text
-### [UPSTREAM] ###
+#### [UPSTREAM] ###
 RF packets received by concentrator: 1
 CRC_OK: 100.00%, CRC_FAIL: 0.00%, NO_CRC: 0.00%
 RF packets forwarded: 1 (32 bytes)
 PUSH_DATA datagrams sent: 1 (319 bytes)
 PUSH_DATA acknowledged: 100.00%
 
-### [DOWNSTREAM] ###
+#### [DOWNSTREAM] ###
 PULL_DATA sent: 3 (100.00% acknowledged)
 PULL_RESP(onse) datagrams received: 0 (0 bytes)
 RF packets sent to concentrator: 0 (0 bytes)
 TX errors: 0
 
-### SX1302 Status ###
+#### SX1302 Status ###
 SX1302 counter (INST): 30753811
 SX1302 counter (PPS):  26145712
 BEACON queued: 0
 BEACON sent so far: 0
 BEACON rejected: 0
 
-### [JIT] ###
+#### [JIT] ###
 src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
 --------
 src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
 
-### [GPS] ###
+#### [GPS] ###
 Valid time reference (age: 0 sec)
 GPS coordinates: latitude 1.2..., longitude 103.8..., altitude 17 m
 ##### END #####
@@ -734,10 +750,6 @@ JSON up:
 [down] PULL_ACK received in 92 ms
 [down] PULL_ACK received in 92 ms
 ```
-
-TODO25
-
-![](https://lupyuen.github.io/images/gateway-image.png)
 
 TODO28
 

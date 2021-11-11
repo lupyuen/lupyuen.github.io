@@ -161,7 +161,7 @@ Instead we set the __Server Address__ like so...
     } ]
     ```
 
-    (Check the trailing commas!)
+    (Check the trailing commas, especially after __`beacon_power`__!)
 
 1.  Save the file.
 
