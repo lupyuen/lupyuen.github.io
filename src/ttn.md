@@ -163,6 +163,10 @@ Instead we set the __Server Address__ like so...
 
     (Check the trailing commas, especially after __`beacon_power`__!)
 
+1.  Our updated file should look like this...
+
+    ![Packet Forwarded Config](https://lupyuen.github.io/images/gateway-confg.png)
+
 1.  Save the file.
 
     Select __"Restart Packet Forwarder"__
@@ -190,6 +194,8 @@ In case of problems, check the __Packet Forwarder Log__ on our Gateway...
 ```bash
 sudo tail /var/log/daemon.log
 ```
+
+[(See sample Packet Forwarder Log)](https://lupyuen.github.io/articles/gateway#appendix-packet-forwarder-log)
 
 # Add Device to The Things Network
 
