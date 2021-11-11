@@ -452,7 +452,7 @@ Which is super awesome because it means we have (some) __Wireless Redundancy__ i
 
 ![RAKwireless WisGate D4H Gateway (RAK7248) and PineDio Gateway](https://lupyuen.github.io/images/gateway-wisgate.jpg)
 
-_RAKwireless WisGate D4H Gateway (top) and PineDio Gateway (bottom)_
+_RAKwireless WisGate D4H Gateway (above) and PineDio Gateway (below)_
 
 # Benchmark with RAKwireless WisGate
 
