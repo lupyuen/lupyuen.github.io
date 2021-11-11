@@ -528,7 +528,7 @@ Let's do the math...
 
 -   In my region the __LoRa Frequency__ is __923 MHz__
 
--   Which means that the __Wavelength (λ)__ is __32 cm__ (rounded)
+-   Which means __Wavelength (λ)__ is __32 cm__ (rounded)
 
     [(Source)](https://fccid.io/frequency-explorer.php?lower=923&upper=923)
 
