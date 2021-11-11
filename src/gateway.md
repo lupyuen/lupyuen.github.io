@@ -438,7 +438,7 @@ This is how we __transmit Sensor Data__ (Temperature) from PineDio Stack to __Th
 
 Now here's something interesting we might spot in the Live Data...
 
-![](https://lupyuen.github.io/images/gateway-stack2.png)
+![Two gateways in a single message](https://lupyuen.github.io/images/gateway-stack2.png)
 
 _Why are there two (or more) Gateways in a single message?_
 
@@ -464,17 +464,25 @@ WisGate D4H is based on the same [__RAKwireless RAK2287 + Semtech SX1302 Concent
 
 Thus we would expect the wireless performance of the two LoRa Gateways to be highly similar.
 
-![](https://lupyuen.github.io/images/gateway-compare5.png)
+## Compare LoRa Reception
+
+_How shall we benchmark the two gateways for receiving LoRa packets?_
+
+We log on to __The Things Network__, browse to the two Gateways and view the __Live Data__...
+
+![Compare PineDio Gateway with WisGate D4H](https://lupyuen.github.io/images/gateway-compare5.png)
 
 TODO
 
-![](https://lupyuen.github.io/images/gateway-compare6.png)
+![Compare PineDio Gateway with WisGate D4H](https://lupyuen.github.io/images/gateway-compare6.png)
 
 TODO
 
-![](https://lupyuen.github.io/images/gateway-antenna.jpg)
+![WisGate Antenna vs PineDio Gateway Antenna](https://lupyuen.github.io/images/gateway-antenna.jpg)
 
 TODO
+
+![Two gateways in a single message](https://lupyuen.github.io/images/gateway-stack2.png)
 
 ![WisGate Antenna vs PineDio Gateway Antenna](https://lupyuen.github.io/images/gateway-antenna2.jpg)
 
