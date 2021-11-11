@@ -446,7 +446,7 @@ Thus it's perfectly OK for __multiple Gateways__ to receive our message.
 
 (The Things Network will helpfully merge the duplicate messages into one)
 
-TODO: Which is great because 
+Which is super awesome because it means we have (some) __Wireless Redundancy__ in The Things Network!
 
 # Benchmark with RAKwireless WisGate
 
