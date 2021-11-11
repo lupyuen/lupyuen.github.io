@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>PineDio LoRa Gateway: Testing The Prototype</title>
+            <link>https://lupyuen.github.io/articles/gateway</link>
+            <description><![CDATA[How we test the pre-production PineDio LoRa Gateway by Pine64... And connect it to The Things Network]]></description>
+            <guid>https://lupyuen.github.io/articles/gateway</guid>
+            <pubDate>Thu, 11 Nov 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Build a Linux Driver for PineDio LoRa SX1262 USB Adapter</title>
             <link>https://lupyuen.github.io/articles/usb</link>
             <description><![CDATA[How we build a LoRa SX1262 Driver for PineDio USB Adapter... And test it on Pinebook Pro]]></description>
