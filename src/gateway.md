@@ -490,7 +490,7 @@ Across __multiple packets__ (pic above), we see that the Received Signal Strengt
 
 This suggests that WisGate D4H might __receive slightly more packets__ than PineDio Gateway. Especially if the packets were transmitted far from the Gateway.
 
-[(We're talking packets in the `-110` dBm to `-120` dBm range, close to the reception limit of LoRa Gateways)](https://lupyuen.github.io/articles/wisblock#analyse-the-lora-coverage)
+[(We're talking packets in the `-110` dBm to `-120` dBm range... Close to the reception limit of LoRa Gateways)](https://lupyuen.github.io/articles/wisblock#analyse-the-lora-coverage)
 
 ![Compare PineDio Gateway with WisGate D4H: Nearby packet](https://lupyuen.github.io/images/gateway-stack2.png)
 
@@ -502,7 +502,7 @@ For a packet __transmitted near the Gateways__ (pic above), the Received Signal 
 
 -   __WisGate D4H__: `-52` dBm
 
-But this shouldn't be a problem... PineDio Gateway will receive the same packets as WisGate D4H.
+But this shouldn't be a problem... Due to the __higher Signal Strength__, PineDio Gateway will __receive the same packets__ as WisGate D4H.
 
 ![_WisGate Antenna (left) vs PineDio Gateway Antenna (right)_](https://lupyuen.github.io/images/gateway-antenna.jpg)
 
@@ -510,11 +510,15 @@ _WisGate Antenna (left) vs PineDio Gateway Antenna (right)_
 
 ## Compare Antennas
 
-TODO
+_Both LoRa Gateways are based on the same LoRa Concentrator. Why the difference in LoRa Reception?_
 
-![WisGate Antenna vs PineDio Gateway Antenna](https://lupyuen.github.io/images/gateway-antenna2.jpg)
+The WisGate and PineDio Gateways have __different antennas__.
 
-## Antenna Length
+This might affect the __LoRa Reception__ for the gateways.
+
+Unfortunately we can't swap the two antennas and test... The __Antenna Connectors don't match__.
+
+![WisGate Antenna (above) vs PineDio Gateway Antenna (below)](https://lupyuen.github.io/images/gateway-antenna2.jpg)
 
 _I see a pattern... Why is one antenna twice the length of the other?_
 
@@ -534,13 +538,15 @@ Let's do the math...
 
 Which matches our __Antenna Lengths__!
 
-![PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
+![PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and PineDio USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 
-_PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and USB Adapter_
+_PineDio LoRa Family: PineDio Gateway, PinePhone Backplate and PineDio USB Adapter_
 
 # What's Next
 
 TODO
+
+[__"Experimenting with LoRa Backplate for PinePhone"__](https://github.com/lupyuen/pinephone-lora)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
