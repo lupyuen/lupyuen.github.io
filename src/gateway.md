@@ -516,7 +516,7 @@ The WisGate and PineDio Gateways have __different antennas__.
 
 This might affect the __LoRa Reception__ for the gateways.
 
-Unfortunately we can't swap the two antennas and test... The __Antenna Connectors don't match__.
+Unfortunately we can't swap the two antennas and test... The __Antenna Connectors don't match__. (Pic above)
 
 ![WisGate Antenna (above) vs PineDio Gateway Antenna (below)](https://lupyuen.github.io/images/gateway-antenna2.jpg)
 
