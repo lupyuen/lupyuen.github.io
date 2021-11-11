@@ -470,19 +470,47 @@ _How shall we benchmark the two gateways for receiving LoRa packets?_
 
 We log on to __The Things Network__, browse to the two Gateways and view the __Live Data__...
 
-![Compare PineDio Gateway with WisGate D4H](https://lupyuen.github.io/images/gateway-compare5.png)
+![Compare PineDio Gateway with WisGate D4H: Single packet](https://lupyuen.github.io/images/gateway-compare5.png)
+
+For a __single received packet__, we see that the [__Received Signal Strength (RSSI)__](https://lora.readthedocs.io/en/latest/#rssi) recorded by PineDio Gateway is __slightly weaker__ than WisGate D4H...
+
+-   __PineDio Gateway__: `-108` dBm
+
+-   __WisGate D4H__: `-103` dBm
+
+(Higher numbers are better... `-103` is better than `-108`)
+
+![Compare PineDio Gateway with WisGate D4H: Multiple packets](https://lupyuen.github.io/images/gateway-compare6.png)
+
+Across __multiple packets__ (pic above), we see that the Received Signal Strength recorded by PineDio Gateway (left) is __generally slightly weaker__ than WisGate D4H (right)...
+
+-   __PineDio Gateway__: `-106` dBm to `-110` dBm
+
+-   __WisGate D4H__: `-101` dBm to `-105` dBm
+
+This suggests that WisGate D4H might __receive slightly more packets__ than PineDio Gateway. Especially if the packets were transmitted far from the Gateway.
+
+[(We're talking packets in the `-110` dBm to `-120` dBm range, close to the reception limit of LoRa Gateways)](https://lupyuen.github.io/articles/wisblock#analyse-the-lora-coverage)
+
+![Compare PineDio Gateway with WisGate D4H: Nearby packet](https://lupyuen.github.io/images/gateway-stack2.png)
+
+_What about packets transmitted from nearby devices?_
+
+For a packet __transmitted near the Gateways__ (pic above), the Received Signal Strength for PineDio Gateway is still __slightly weaker__ than WisGate D4H...
+
+-   __PineDio Gateway__: `-57` dBm
+
+-   __WisGate D4H__: `-52` dBm
+
+But this shouldn't be a problem... PineDio Gateway will receive the same packets as WisGate D4H.
+
+![_WisGate Antenna (left) vs PineDio Gateway Antenna (right)_](https://lupyuen.github.io/images/gateway-antenna.jpg)
+
+_WisGate Antenna (left) vs PineDio Gateway Antenna (right)_
+
+## Compare Antennas
 
 TODO
-
-![Compare PineDio Gateway with WisGate D4H](https://lupyuen.github.io/images/gateway-compare6.png)
-
-TODO
-
-![WisGate Antenna vs PineDio Gateway Antenna](https://lupyuen.github.io/images/gateway-antenna.jpg)
-
-TODO
-
-![Two gateways in a single message](https://lupyuen.github.io/images/gateway-stack2.png)
 
 ![WisGate Antenna vs PineDio Gateway Antenna](https://lupyuen.github.io/images/gateway-antenna2.jpg)
 
