@@ -30,7 +30,7 @@ Yes when we connect PineDio Gateway to [__The Things Network__](https://lupyuen.
 
 (We'll learn how in a while)
 
-> ![PineDio Gateway relays LoRa Packets to the internet](https://lupyuen.github.io/images/gateway-flow.jpg)
+> ![PineDio Gateway relays LoRa Packets to The Things Network](https://lupyuen.github.io/images/gateway-flow.jpg)
 
 _The Things Network is a public LoRa network. Why do we need PineDio Gateway?_
 
@@ -39,6 +39,20 @@ Network Coverage for The Things Network is __spotty in some regions__.
 Hopefully Pine64 will make PineDio Gateway highly affordable for __Schools, Workplaces and Homes__ to install everywhere... And __grow The Things Network!__
 
 [(Coverage map for The Things Network)](https://www.thethingsnetwork.org/map)
+
+_The data packets received by The Things Network... What can we do with them?_
+
+When The Things Network receives our data packets, we can configure it to...
+
+-   Push the packets to an MQTT Queue
+
+-   Store now and fetch later over HTTP
+
+-   Trigger an IFTTT Action
+
+-   Forward to another LoRa Device
+
+-   And do much more! [(See this)](https://lupyuen.github.io/articles/ttn#doing-better)
 
 _What about other LoRa networks?_
 
@@ -377,6 +391,8 @@ Today we shall test PineDio Gateway with [__PineDio Stack BL604__](https://lupyu
 
 This is how we __transmit Sensor Data__ (Temperature) from PineDio Stack to __The Things Network__ via PineDio Gateway...
 
+> ![PineDio Gateway relays LoRa Packets to The Things Network](https://lupyuen.github.io/images/gateway-flow.jpg)
+
 1.  Log on to __The Things Network Console__
 
 1.  Create an __Application__ and add a __Device__...
@@ -436,7 +452,7 @@ This is how we __transmit Sensor Data__ (Temperature) from PineDio Stack to __Th
 
     [(Our Temperature Values are scaled up 100 times... `4836` means `48.36` ºC)](https://lupyuen.github.io/articles/cbor#floating-point-numbers)
 
-Now here's something interesting we might spot in the Live Data...
+Here's something interesting we might spot in the Live Data...
 
 ![Two gateways in a single message](https://lupyuen.github.io/images/gateway-stack2.png)
 
