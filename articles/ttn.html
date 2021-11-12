@@ -402,21 +402,28 @@
 <h2 id="doing-better" class="section-header"><a href="#doing-better">5.1 Doing Better</a></h2>
 <p><em>Sending 5 bytes of data to the network doesn’t sound particularly exciting?</em></p>
 <p>Yep we’re just getting started! </p>
-<p>In future articles we shall explore The Thing Network’s <strong>Cloud Integration</strong> features for processing our sensor data: MQTT, Webhooks, Storage, …</p>
-<p>We’ll visualise our sensor data with <strong>MQTT and Grafana</strong>…</p>
+<p>In future articles we shall explore The Thing Network’s <strong>Cloud Integration</strong> features for processing our sensor data: MQTT, Webhooks, Storage, Downlinks, Payload Formatters, …</p>
+<p>We shall visualise our sensor data with <strong>MQTT, Prometheus and Grafana</strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/grafana"><strong>“Grafana Data Source for The Things Network”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/prometheus"><strong>“Monitor IoT Devices in The Things Network with Prometheus and Grafana”</strong></a></li>
 </ul>
-<p>And fetch uplink messages with <strong>Storage Integration and Roblox</strong>…</p>
+<p>We will store the sensor data in The Things Network and fetch them with <strong>Roblox over HTTP</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/roblox"><strong>“IoT Digital Twin with Roblox and The Things Network”</strong></a></li>
 </ul>
-<p>The Things Network also exposes a HTTP POST API for us to <strong>push Downlink Messages</strong> to our devices…</p>
+<p>We may decode our sensor data in The Things Network with a <strong>Payload Formatter</strong>…</p>
 <ul>
-<li><a href="https://www.thethingsindustries.com/docs/integrations/webhooks/scheduling-downlinks/"><strong>The Things Network: Scheduling Downlinks</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/payload"><strong>“CBOR Payload Formatter for The Things Network”</strong></a></li>
+</ul>
+<p>The Things Network exposes a HTTP POST API for us to <strong>push Downlink Messages</strong> to our devices…</p>
+<ul>
+<li><a href="https://www.thethingsindustries.com/docs/integrations/webhooks/scheduling-downlinks/"><strong>“The Things Network: Scheduling Downlinks”</strong></a></li>
 </ul>
 <p>Which will be useful for <strong>Remote Actuation</strong> of our devices.</p>
-<p><a href="https://www.thethingsnetwork.org/docs/applications-and-integrations/">(More about The Things Network Cloud Integration)</a></p>
+<p>Check this doc for the complete list of Cloud Integration features…</p>
+<ul>
+<li><a href="https://www.thethingsnetwork.org/docs/applications-and-integrations/"><strong>“The Things Network: Applications &amp; Integrations”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/ttn-flow2.jpg" alt="Sending messages for free to The Things Network" /></p>
 <h1 id="the-things-network-coverage" class="section-header"><a href="#the-things-network-coverage">6 The Things Network Coverage</a></h1>
 <p>Thanks to The Things Network, we’ve just sent a tiny message to the Cloud… <strong>For Free</strong>!</p>
@@ -477,7 +484,7 @@
 <p>Select the <strong>Region</strong> (like US915), enter the <strong>Message Payload Size</strong> (say 12 bytes), look up the <strong>Data Rate</strong> (usually DR2) and our answer magically appears…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-airtime.png" alt="Airtime Calculator" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
-<p>In the next article, PineDio Stack shall transmit <strong>Real-Time Sensor Data</strong> from a Temperature Sensor to The Things Network. (Encoded with CBOR)</p>
+<p>In the next article, PineDio Stack shall transmit <strong>Real-Time Sensor Data</strong> from a Temperature Sensor to The Things Network…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/cbor"><strong>“Encode Sensor Data with CBOR on BL602”</strong></a></p>
@@ -486,9 +493,14 @@
 <p><a href="https://lupyuen.github.io/articles/tsen"><strong>“Internal Temperature Sensor on BL602”</strong></a></p>
 </li>
 </ul>
-<p>And we shall <strong>visualise the Sensor Data</strong> with <a href="https://grafana.com/blog/2021/08/12/streaming-real-time-sensor-data-to-grafana-using-mqtt-and-grafana-live/"><strong>Grafana and MQTT</strong></a>. (With CBOR decoding)</p>
+<p>And we shall <strong>visualise the Sensor Data</strong> with <strong>Prometheus and Grafana</strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/grafana"><strong>“Grafana Data Source for The Things Network”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/grafana"><strong>“Grafana Data Source for The Things Network”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/payload"><strong>“CBOR Payload Formatter for The Things Network”</strong></a></p>
+</li>
 </ul>
 <p>Stay Tuned!</p>
 <ul>
