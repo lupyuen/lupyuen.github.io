@@ -1564,9 +1564,9 @@ Now that we have a __Basic LoRa Driver for PineDio USB__, we can explore all kin
 
     [__Meshtastic__](https://meshtastic.org/) (Data Mesh), [__QMesh__](https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network) (Voice Mesh), [__Mycelium Mesh__](https://mycelium-mesh.net/) (Text Mesh)
  
-1.  Maybe code a __LoRa Gateway for Internet__?
+1.  Test PineDio USB with __PineDio LoRa Gateway__...
 
-    (That will route LoRa Messages from PineDio USB to the internet?)
+    [__"PineDio LoRa Gateway: Testing The Prototype"__](https://lupyuen.github.io/articles/gateway)
 
 1.  [__PinePhone LoRa Backplate__](https://wiki.pine64.org/wiki/Pinedio#Pinephone_backplate) (pic above) is an intriguing accessory...
 

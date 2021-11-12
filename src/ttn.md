@@ -575,6 +575,8 @@ In the next article, PineDio Stack shall transmit __Real-Time Sensor Data__ from
 
 -   [__"Internal Temperature Sensor on BL602"__](https://lupyuen.github.io/articles/tsen)
 
+-   [__"PineDio LoRa Gateway: Testing The Prototype"__](https://lupyuen.github.io/articles/gateway)
+
 And we shall __visualise the Sensor Data__ with __Prometheus and Grafana__...
 
 -   [__"Grafana Data Source for The Things Network"__](https://lupyuen.github.io/articles/grafana)
