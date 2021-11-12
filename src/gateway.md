@@ -66,6 +66,12 @@ Probably not. Our pre-production PineDio Gateway doesn't have a Cryptographic Co
 
 [(More about Cryptographic Co-Processors)](https://lupyuen.github.io/articles/lorawan2#security)
 
+_Can we run our LoRa Gateway on a local network, without connecting to the cloud?_
+
+Yep just install [__ChirpStack__](https://lupyuen.github.io/articles/wisgate#chirpstack-lorawan-stack), the open source LoRaWAN stack.
+
+(LoRa Packets received by ChirpStack will be published to a Local MQTT Queue)
+
 ![Inside PineDio Gateway](https://lupyuen.github.io/images/gateway-inside.jpg)
 
 [(Source)](https://wiki.pine64.org/wiki/Pinedio#Gateway)
