@@ -497,7 +497,9 @@ __Schools could install gateways__ for The Things Network...
 
 And share free access to The Things Network with __homes, workplaces and devices nearby!__
 
-Hopefully with __affordable, open-source gateways__ (like [__Pine64's PineDio Gateway__](https://wiki.pine64.org/wiki/Pinedio)) we'll grow The Things Network substantially.
+Hopefully with __affordable, open-source gateways__ (like __Pine64's PineDio Gateway__) we'll grow The Things Network substantially...
+
+-   [__"PineDio LoRa Gateway: Testing The Prototype"__](https://lupyuen.github.io/articles/gateway)
 
 ![PineDio Gateway, PinePhone Backplate and USB Adapter](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 

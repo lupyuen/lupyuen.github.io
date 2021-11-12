@@ -826,6 +826,10 @@ To learn more about LoRaWAN Security, I recommend this article...
 
 # What's Next
 
+Pine64's upcoming __PineDio LoRa Gateway__ works very much like WisGate, here's my hands-on experience...
+
+-   [__"PineDio LoRa Gateway: Testing The Prototype"__](https://lupyuen.github.io/articles/gateway)
+
 To learn about configuring WisGate for __The Things Network__, check out this article...
 
 -   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
