@@ -105,12 +105,31 @@
 <p>Yes when we connect PineDio Gateway to <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a>, the free-to-use public global network for LoRa gadgets.</p>
 <p>(We’ll learn how in a while)</p>
 <blockquote>
-<p><img src="https://lupyuen.github.io/images/gateway-flow.jpg" alt="PineDio Gateway relays LoRa Packets to the internet" /></p>
+<p><img src="https://lupyuen.github.io/images/gateway-flow.jpg" alt="PineDio Gateway relays LoRa Packets to The Things Network" /></p>
 </blockquote>
 <p><em>The Things Network is a public LoRa network. Why do we need PineDio Gateway?</em></p>
 <p>Network Coverage for The Things Network is <strong>spotty in some regions</strong>.</p>
 <p>Hopefully Pine64 will make PineDio Gateway highly affordable for <strong>Schools, Workplaces and Homes</strong> to install everywhere… And <strong>grow The Things Network!</strong></p>
 <p><a href="https://www.thethingsnetwork.org/map">(Coverage map for The Things Network)</a></p>
+<p><em>The data packets received by The Things Network… What can we do with them?</em></p>
+<p>When The Things Network receives our data packets, we can configure it to…</p>
+<ul>
+<li>
+<p>Push the packets to an MQTT Queue</p>
+</li>
+<li>
+<p>Store now and fetch later over HTTP</p>
+</li>
+<li>
+<p>Trigger an IFTTT Action</p>
+</li>
+<li>
+<p>Forward to another LoRa Device</p>
+</li>
+<li>
+<p>And do much more! <a href="https://lupyuen.github.io/articles/ttn#doing-better">(See this)</a></p>
+</li>
+</ul>
 <p><em>What about other LoRa networks?</em></p>
 <p>PineDio Gateway runs an <strong>open source</strong> LoRa Network Stack. (Based on Arm64 Linux)</p>
 <p>We could possibly integrate PineDio Gateway with other <strong>LoRa Mesh Networks</strong>… Like <a href="https://meshtastic.org/"><strong>Meshtastic</strong></a> (Data Mesh), <a href="https://hackaday.io/project/161491-qmesh-a-lora-based-voice-mesh-network"><strong>QMesh</strong></a> (Voice Mesh) and <a href="https://mycelium-mesh.net/"><strong>Mycelium Mesh</strong></a> (Text Mesh).</p>
@@ -362,6 +381,9 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p>Yep! Assuming that our LoRa gadget runs <a href="https://lupyuen.github.io/articles/lorawan2"><strong>LoRaWAN Firmware</strong></a>.</p>
 <p>Today we shall test PineDio Gateway with <a href="https://lupyuen.github.io/articles/lorawan2"><strong>PineDio Stack BL604</strong></a>, the 32-bit RISC-V Board with a LoRa Transceiver inside.  (Pic above)</p>
 <p>This is how we <strong>transmit Sensor Data</strong> (Temperature) from PineDio Stack to <strong>The Things Network</strong> via PineDio Gateway…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/gateway-flow.jpg" alt="PineDio Gateway relays LoRa Packets to The Things Network" /></p>
+</blockquote>
 <ol>
 <li>
 <p>Log on to <strong>The Things Network Console</strong></p>
@@ -412,7 +434,7 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Our Temperature Values are scaled up 100 times… <code>4836</code> means <code>48.36</code> ºC)</a></p>
 </li>
 </ol>
-<p>Now here’s something interesting we might spot in the Live Data…</p>
+<p>Here’s something interesting we might spot in the Live Data…</p>
 <p><img src="https://lupyuen.github.io/images/gateway-stack2.png" alt="Two gateways in a single message" /></p>
 <p><em>Why are there two (or more) Gateways in a single message?</em></p>
 <p>Remember The Things Network is a <strong>Public Wireless Network</strong> with Gateways contributed by the community.</p>
