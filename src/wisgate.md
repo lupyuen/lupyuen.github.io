@@ -838,7 +838,13 @@ This has been a fun experience for me, diving deep into LoRaWAN with the RAKwire
 
 I hope you find this article useful. Now that I know some LoRaWAN, I'm heading back to [__PineCone BL602__](https://lupyuen.github.io/articles/lora2) to finish what I started...
 
-[__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
+-   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
+
+And then to __PineDio Stack BL604__...
+
+-   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
