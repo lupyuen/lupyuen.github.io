@@ -666,6 +666,8 @@ To __configure the Packet Forwarder Service__...
 sudo gateway-config
 ```
 
+The above command also configures the __LoRa Concentrator__ to forward LoRa Packets to the Packet Forwarder Service or to ChirpStack. [(See this)](https://forum.pine64.org/showthread.php?tid=13682&pid=98431#pid98431)
+
 Check the next section for the Packet Forwarder Log.
 
 [(Source)](https://forum.pine64.org/showthread.php?tid=13682&pid=97358#pid97358)
