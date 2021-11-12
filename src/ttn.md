@@ -469,7 +469,7 @@ The Things Network exposes a HTTP POST API for us to __push Downlink Messages__ 
 
 Which will be useful for __Remote Actuation__ of our devices.
 
-Check this doc for the complete list of Cloud Integration features...
+Check this doc for the complete list of Cloud Integration features (including IFTTT and Node-RED)...
 
 -   [__"The Things Network: Applications & Integrations"__](https://www.thethingsnetwork.org/docs/applications-and-integrations/)
 
