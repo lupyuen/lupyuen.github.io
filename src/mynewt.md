@@ -28,6 +28,8 @@ It's a great way to learn the internals of BL602.  And this article will be a va
 
 [__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
 
+[__UPDATE: Zephyr is being ported to BL602 MCU SDK__](https://github.com/bouffalolab/bl_mcu_sdk/pull/18)
+
 # Adapt from Existing RISC-V Port
 
 _What's the quickest way to port Mynewt to PineCone BL602?_

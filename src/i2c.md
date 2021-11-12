@@ -52,6 +52,8 @@ Today we shall use the __Low Level I2C HAL [`bl_i2c.c`](https://github.com/lupyu
 
     [__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
 
+    [__UPDATE: Zephyr is being ported to BL602 MCU SDK__](https://github.com/bouffalolab/bl_mcu_sdk/pull/18)
+
 -   But the Low Level I2C HAL is __not functionally complete__.
 
     (Yes we said that BL602 will _talk to I2C Sensors today_... Though we won't be able to _use the sensor data meaningfully yet_)

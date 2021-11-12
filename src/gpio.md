@@ -107,6 +107,8 @@ Let's find out how we made this work.
 
     [__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
 
+    [__UPDATE: Zephyr is being ported to BL602 MCU SDK__](https://github.com/bouffalolab/bl_mcu_sdk/pull/18)
+
 >_Alrighty Nitpicky... We're left with Mynewt. But it's not as popular as Zephyr_
 
 -   __Mynewt__ was designed as a simple tiny OS... And that's OK!
