@@ -42,7 +42,7 @@ Hopefully Pine64 will make PineDio Gateway highly affordable for __Schools, Work
 
 _The data packets received by The Things Network... What can we do with them?_
 
-When The Things Network receives our data packets, we can configure it to...
+We may configure The Things Network to...
 
 -   Push the packets to an MQTT Queue
 
