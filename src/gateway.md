@@ -68,7 +68,7 @@ Probably not. Our pre-production PineDio Gateway doesn't have a Cryptographic Co
 
 _Can we run our LoRa Gateway on a local network, without connecting to the cloud?_
 
-Yep just install [__ChirpStack__](https://lupyuen.github.io/articles/wisgate#chirpstack-lorawan-stack), the open source LoRaWAN stack.
+Yep just install [__ChirpStack__](https://lupyuen.github.io/articles/wisgate#chirpstack-lorawan-stack), the open source LoRaWAN Stack.
 
 (LoRa Packets received by ChirpStack will be published to a Local MQTT Queue)
 
@@ -148,7 +148,7 @@ If HDMI Output is connected: We should see PineDio Gateway starting the services
 
 ![PineDio Gateway starts ChirpStack and Packet Forwarder for The Things Network](https://lupyuen.github.io/images/gateway-boot.jpg)
 
-(ChirpStack is the open source LoRaWAN Gateway, we won't use it today)
+([__ChirpStack__](https://lupyuen.github.io/articles/wisgate#chirpstack-lorawan-stack) is the open source LoRaWAN Stack, we won't use it today)
 
 PineDio Gateway is ready to be configured over SSH!
 
