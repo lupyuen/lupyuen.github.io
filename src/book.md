@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _20 Oct 2021_
+📝 _14 Nov 2021_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -126,6 +126,8 @@ How we read __Analog Inputs with ADC__ on BL602 and BL604.
 
 -   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
 
+-   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
+
 ![WiFi on BL602](https://lupyuen.github.io/images/book-wifi.jpg)
 
 # WiFi on BL602
@@ -156,21 +158,27 @@ Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, l
 
 -   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
 
--   ["Monitor IoT Devices in The Things Network with Prometheus and Grafana"](https://lupyuen.github.io/articles/prometheus)
-
--   ["CBOR Payload Formatter for The Things Network"](https://lupyuen.github.io/articles/payload)
-
--   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
-
--   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
-
--   ["IoT Digital Twin with Roblox and The Things Network"](https://lupyuen.github.io/articles/roblox)
-
--   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
+Connecting BL602 and BL604 to a __LoRa Gateway__...
 
 -   ["PineDio LoRa Gateway: Testing The Prototype"](https://lupyuen.github.io/articles/gateway)
 
 -   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
+
+Transmitting __Sensor Data__ on BL602 and BL604...
+
+-   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
+
+-   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
+
+-   ["CBOR Payload Formatter for The Things Network"](https://lupyuen.github.io/articles/payload)
+
+Monitoring BL602 and BL604 with __Prometheus, Grafana and Roblox__...
+
+-   ["Monitor IoT Devices in The Things Network with Prometheus and Grafana"](https://lupyuen.github.io/articles/prometheus)
+
+-   ["IoT Digital Twin with Roblox and The Things Network"](https://lupyuen.github.io/articles/roblox)
+
+-   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
 
 __PineDio USB__ uses the same LoRa SX1262 Driver as BL602 and BL604...
 
