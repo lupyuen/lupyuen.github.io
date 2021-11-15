@@ -617,6 +617,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [See this Twitter Thread](https://twitter.com/MisterTechBlog/status/1355181209404334083?s=20)
 
-1.  __UPDATE:__ Bouffalo Lab has released a new version of the BL602 IoT SDK
+1.  __UPDATE:__ Bouffalo Lab has released a revamped version of the BL602 IoT SDK based on the new "hosal" HAL.
 
-    [See this Twitter Thread](https://twitter.com/MisterTechBlog/status/1456259223323508748)
+    [(See this Twitter Thread)](https://twitter.com/MisterTechBlog/status/1456259223323508748)
+
+    We have __no plans yet to merge with the new HAL__, because it will impact all the articles and code that we have written for [__"The RISC-V BL602 / BL604 Book"__](https://lupyuen.github.io/articles/book).
+
+    How shall we proceed? Lemme know what you think! 🙏

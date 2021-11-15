@@ -612,6 +612,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1436128755987058691)
 
-1.  Here's a great way run a PineDio Stack BL604 Regression Test with GPIO, ADC, SPI, SX1262, LoRa, LoRaWAN and The Things Network
+1.  Here's a great way run a PineDio Stack BL604 __Regression Test__ with GPIO, ADC, SPI, SX1262, LoRa, LoRaWAN and The Things Network
 
     [__"Run Payload Formatter"__](https://lupyuen.github.io/articles/payload#run-payload-formatter)
+
+    This is how we tested the upstream updates from [__Pine64's BL602 IoT SDK__](https://github.com/pine64/bl_iot_sdk) before merging them. [(See this)](https://github.com/lupyuen/bl_iot_sdk/pull/28)
+
+1.  However [__Bouffalo Lab's BL602 IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk) has just been revamped with the new "hosal" HAL.
+
+    [(See this Twitter Thread)](https://twitter.com/MisterTechBlog/status/1456259223323508748)
+
+    We have __no plans yet to merge with the new HAL__, because it will impact all the articles and code that we have written for [__"The RISC-V BL602 / BL604 Book"__](https://lupyuen.github.io/articles/book).
+
+    How shall we proceed? Lemme know what you think! 🙏
