@@ -396,6 +396,18 @@ int32_t bl_pwm_init(uint8_t id, uint8_t pin, uint32_t freq);
 
 -   `freq` is the PWM Frequency (in Hz / Cycles Per Second). So `freq=2000` means that the PWM Channel will be blinked 2,000 cycles every second. `freq` must be between 2,000 and 800,000 (inclusive).
 
+-   __UPDATE:__ To set the effective PWM Frequency below 2,000 Hz, we may use the __PWM Channel Clock Divider__ (which defaults to 1).
+
+    For instance, to achieve a clock frequency of 50 Hz on the PWM, we may set an initial frequency of 6,400 Hz on channel 1, then use...
+
+    ```c
+    PWM_Channel_Set_Div(1, 128)
+    ```
+
+    Which sets channel 1's clock divider to 128, making the effective PWM Frequency 50 Hz. [(PWM_Channel_Set_Div comes from the PWM Standard Driver)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_pwm.c#L223-L241)
+
+    (Many thanks to Chandler Jearls for the tip!)
+
 Not all GPIO Pins may be assigned to a PWM Channel. Check "Table 3.1: Pin description" (Page 27) in [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en).
 
 ## PWM Frequency and Duty Cycle
