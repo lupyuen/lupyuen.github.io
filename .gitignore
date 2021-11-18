@@ -4,3 +4,4 @@ lupyuen.resume.json
 .vscode/temp.sql
 json-to-rss/target
 decode-base64/target
+.DS_Store
