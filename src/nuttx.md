@@ -12,6 +12,8 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
     Spanning popular platforms like __RISC-V, Arm, ESP32, AVR, x86,__ ...
 
+    [(See this)](https://nuttx.apache.org/docs/latest/introduction/supported_platforms.html)
+
 -   NuttX is __strictly compliant with POSIX__. [(See this)](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance)
 
     NuttX Applications access the __Microcontroller Hardware__ by calling _open(), read(), write(), ioctl(), ..._
@@ -22,7 +24,13 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
 [(NuttX is named after its creator Gregory Nutt... And X because of its POSIX Compliance)](https://en.m.wikipedia.org/wiki/NuttX)
 
-TODO
+Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Boards. (Pic above)
+
+We'll briefly explore the __internals of NuttX__ and understand how it works.
+
+Coding a microcontroller with __Linux-like (POSIX)__ functions might sound odd, but we'll discuss the benefits in a while.
+
+(And we might have an interesting way to support Embedded Rust on NuttX!)
 
 # What's Next
 
