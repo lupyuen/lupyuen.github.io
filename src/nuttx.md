@@ -174,17 +174,9 @@ TODO29
 
 ![](https://lupyuen.github.io/images/nuttx-gpio10.png)
 
-TODO30
-
-![](https://lupyuen.github.io/images/nuttx-basic.png)
-
 TODO31
 
 ![](https://lupyuen.github.io/images/nuttx-basic1.png)
-
-TODO32
-
-![](https://lupyuen.github.io/images/nuttx-basic2.png)
 
 TODO33
 
