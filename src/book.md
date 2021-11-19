@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _14 Nov 2021_
+📝 _19 Nov 2021_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(37 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(38 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -250,15 +250,15 @@ How we run __TensorFlow Lite__ on BL602 and BL604 to create a Glowing LED.
 
 ![Mynewt on BL602](https://lupyuen.github.io/images/book-mynewt.jpg)
 
-# Mynewt and NuttX on BL602
+# NuttX and Mynewt on BL602
 
-Will BL602 and BL604 run without FreeRTOS? Study the ongoing port of __Apache Mynewt and NuttX operating systems__ to BL602 / BL604.
+Will BL602 and BL604 run other operating systems (besides FreeRTOS)? Below are the BL602 / BL604 ports of __Apache NuttX__ and (incomplete) __Apache Mynewt__ operating systems.
+
+-   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
 
 -   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
 
 -   ["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
-
--   ["Apache NuttX on BL602"](https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602)
 
 ![Troubleshooting BL602](https://lupyuen.github.io/images/book-troubleshoot.jpg)
 
