@@ -2,11 +2,27 @@
 
 📝 _26 Nov 2021_
 
+![Tasty Nutty Treat on PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/nuttx-title.jpg)
+
+_Tasty Nutty Treat on PineDio Stack BL604 RISC-V Board_
+
+Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because...
+
+-   NuttX runs on __8-bit, 16-bit, 32-bit AND 64-bit__ microcontrollers...
+
+    Spanning popular platforms like __RISC-V, Arm, ESP32, AVR, x86,__ ...
+
+-   NuttX is __strictly compliant with POSIX__. [(See this)](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance)
+
+    NuttX Applications access the __Microcontroller Hardware__ by calling _open(), read(), write(), ioctl(), ..._
+
+    (Looks like Linux Lite!)
+
+-   For [__BL602 and BL604__](https://lupyuen.github.io/articles/pinecone) RISC-V SoCs: NuttX and FreeRTOS are the only operating systems supported on the SoCs.
+
+[(NuttX is named after its creator Gregory Nutt... And X because of its POSIX Compliance)](https://en.m.wikipedia.org/wiki/NuttX)
+
 TODO
-
-![](https://lupyuen.github.io/images/nuttx-title.jpg)
-
-_Nutty treat on PineDio Stack BL604 RISC-V Board_
 
 # What's Next
 
