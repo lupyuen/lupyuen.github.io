@@ -206,6 +206,8 @@ TODO33
 
 ![](https://lupyuen.github.io/images/nuttx-basic3.png)
 
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_fs.c#L1862-L1889)
+
 TODO34
 
 Blinking the #BL602 LED ... Works on #NuttX BASIC too! 🎉
@@ -216,9 +218,25 @@ Blinking the #BL602 LED ... Works on #NuttX BASIC too! 🎉
 
 TODO
 
+Spi demo: lseek, read, write
+
+[lsm330spi_test](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/lsm330spi_test/lsm330spi_test_main.c)
+
+SPI interface:
+
+[spi.h](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
+
 # Why NuttX?
 
 TODO
+
+Applications are portable
+
+Looks like Linux
+
+LoRa Driver for NuttX
+
+Copy from Linux Driver
 
 Here are the #BL602 Peripherals supported by #NuttX OS
 
