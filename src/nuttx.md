@@ -20,9 +20,11 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
     (Looks like Linux Lite!)
 
--   For [__BL602 and BL604__](https://lupyuen.github.io/articles/pinecone) RISC-V SoCs: NuttX and FreeRTOS are the only operating systems supported on the SoCs.
+-   For [__BL602 and BL604__](https://lupyuen.github.io/articles/pinecone): NuttX and FreeRTOS are the only operating systems supported on the RISC-V + WiFi + Bluetooth LE SoCs.
 
-[(NuttX is named after its creator Gregory Nutt... And X because of its POSIX Compliance)](https://en.m.wikipedia.org/wiki/NuttX)
+-   If you're wondering: NuttX is named after its creator Gregory Nutt. And X because of its POSIX Compliance.
+
+    [(See this)](https://en.m.wikipedia.org/wiki/NuttX)
 
 Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Boards. (Pic above)
 
@@ -264,7 +266,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1460322823122014211)
 
-1.  TODO: https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/
+1.  TODO: ["How to install NuttX on BL602"](https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/)
 
 # Appendix: Build, Flash and Run NuttX
 
@@ -276,7 +278,7 @@ TODO
 
 #NuttX #BL602 builds easily on WSL Ubuntu ... Uses plain "make" with "kconfig"
 
-https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html
+[BL602 NuttX](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
 
 ![](https://lupyuen.github.io/images/nuttx-build2.png)
 
