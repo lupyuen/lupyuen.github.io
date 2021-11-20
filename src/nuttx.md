@@ -66,10 +66,6 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/nuttx-pins2.png)
-
-TODO
-
 ![](https://lupyuen.github.io/images/nuttx-menu.png)
 
 TODO5
@@ -120,11 +116,33 @@ TODO54
 
 ![](https://lupyuen.github.io/images/nuttx-menu9a.png)
 
+# Configure Pins
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-pins2.png)
+
+TODO44
+
+![](https://lupyuen.github.io/images/nuttx-gpio3a.png)
+
 # GPIO Demo
 
 TODO13
 
 ![](https://lupyuen.github.io/images/nuttx-gpio.png)
+
+TODO45
+
+![](https://lupyuen.github.io/images/nuttx-gpio4a.png)
+
+TODO46
+
+![](https://lupyuen.github.io/images/nuttx-gpio4b.png)
+
+# GPIO Driver
+
+TODO
 
 # BASIC Interpreter
 
@@ -209,10 +227,6 @@ TODO
 TODO43
 
 ![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
-
-TODO44
-
-![](https://lupyuen.github.io/images/nuttx-gpio3a.png)
 
 TODO45
 
