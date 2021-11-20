@@ -124,6 +124,8 @@ TODO43
 
 TODO
 
+No device tree
+
 ![](https://lupyuen.github.io/images/nuttx-pins2.png)
 
 TODO44
