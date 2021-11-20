@@ -14,9 +14,9 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
     [(See this)](https://nuttx.apache.org/docs/latest/introduction/supported_platforms.html)
 
--   NuttX is __strictly compliant with POSIX__. [(See this)](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance)
+-   NuttX is [__strictly compliant with POSIX__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance).
 
-    NuttX Applications access the __Microcontroller Hardware__ by calling _open(), read(), write(), ioctl(), ..._
+    Which means that NuttX Applications shall access the __Microcontroller Hardware__ by calling _open(), read(), write(), ioctl(), ..._
 
     (Looks like Linux Lite!)
 
