@@ -116,6 +116,10 @@ TODO54
 
 ![](https://lupyuen.github.io/images/nuttx-menu9a.png)
 
+TODO43
+
+![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
+
 # Configure Pins
 
 TODO
@@ -143,6 +147,8 @@ TODO46
 # GPIO Driver
 
 TODO
+
+![](https://lupyuen.github.io/images/nuttx-gpio10a.png)
 
 # BASIC Interpreter
 
@@ -220,14 +226,6 @@ TODO
 
 # Appendix: Fix GPIO Output
 
-TODO
-
-![](https://lupyuen.github.io/images/nuttx-gpio10a.png)
-
-TODO43
-
-![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
-
 TODO45
 
 ![](https://lupyuen.github.io/images/nuttx-gpio4a.png)
@@ -236,17 +234,13 @@ TODO46
 
 ![](https://lupyuen.github.io/images/nuttx-gpio4b.png)
 
-TODO22
-
-![](https://lupyuen.github.io/images/nuttx-gpio5.png)
-
 TODO47
 
 ![](https://lupyuen.github.io/images/nuttx-gpio6c.png)
 
-TODO48
+TODO51
 
-![](https://lupyuen.github.io/images/nuttx-gpio6d.png)
+![](https://lupyuen.github.io/images/nuttx-gpio9a.png)
 
 TODO49
 
@@ -256,6 +250,6 @@ TODO50
 
 ![](https://lupyuen.github.io/images/nuttx-gpio8a.png)
 
-TODO51
+TODO48
 
-![](https://lupyuen.github.io/images/nuttx-gpio9a.png)
+![](https://lupyuen.github.io/images/nuttx-gpio6d.png)
