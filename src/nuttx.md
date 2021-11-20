@@ -46,11 +46,11 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/nuttx-apps.png)
-
-TODO38
-
 ![](https://lupyuen.github.io/images/nuttx-demo2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-hello.png)
 
 # Timer Demo
 
@@ -64,6 +64,36 @@ TODO
 
 ![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
 
+## Enable help and ls
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-menu10.png)
+
+TODO15
+
+![](https://lupyuen.github.io/images/nuttx-menu11.png)
+
+TODO52
+
+![](https://lupyuen.github.io/images/nuttx-menu13a.png)
+
+## Enable GPIO Driver
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-menu5.png)
+
+TODO10
+
+![](https://lupyuen.github.io/images/nuttx-menu6.png)
+
+TODO53
+
+![](https://lupyuen.github.io/images/nuttx-menu7a.png)
+
+## Enable GPIO Demo
+
 TODO
 
 ![](https://lupyuen.github.io/images/nuttx-menu.png)
@@ -72,49 +102,17 @@ TODO5
 
 ![](https://lupyuen.github.io/images/nuttx-menu2.png)
 
+TODO54
+
+![](https://lupyuen.github.io/images/nuttx-menu9a.png)
+
 TODO6
 
-![](https://lupyuen.github.io/images/nuttx-menu3.png)
-
-TODO7
-
-![](https://lupyuen.github.io/images/nuttx-menu4.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/nuttx-menu5.png)
-
-TODO10
-
-![](https://lupyuen.github.io/images/nuttx-menu6.png)
+![](https://lupyuen.github.io/images/nuttx-apps.png)
 
 TODO11
 
 ![](https://lupyuen.github.io/images/nuttx-menu8.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/nuttx-menu10.png)
-
-TODO15
-
-![](https://lupyuen.github.io/images/nuttx-menu11.png)
-
-TODO16
-
-![](https://lupyuen.github.io/images/nuttx-menu12.png)
-
-TODO52
-
-![](https://lupyuen.github.io/images/nuttx-menu13a.png)
-
-TODO53
-
-![](https://lupyuen.github.io/images/nuttx-menu7a.png)
-
-TODO54
-
-![](https://lupyuen.github.io/images/nuttx-menu9a.png)
 
 TODO43
 
@@ -174,11 +172,15 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/nuttx-dma2.png)
+![](https://lupyuen.github.io/images/nuttx-bl602.png)
 
 TODO
 
-![](https://lupyuen.github.io/images/nuttx-bl602.png)
+![](https://lupyuen.github.io/images/nuttx-hal.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-dma2.png)
 
 # Rust on NuttX
 
