@@ -36,6 +36,128 @@ Coding a microcontroller with __Linux-like (POSIX)__ functions might sound odd, 
 
 (And we might have an interesting way to support __Embedded Rust on NuttX!__)
 
+# Boot NuttX
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-boot2.png)
+
+# Hello Demo
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-apps.png)
+
+TODO38
+
+![](https://lupyuen.github.io/images/nuttx-demo2.png)
+
+# Timer Demo
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-timer2.png)
+
+# Configure NuttX
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-help.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-pins2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-menu.png)
+
+TODO5
+
+![](https://lupyuen.github.io/images/nuttx-menu2.png)
+
+TODO6
+
+![](https://lupyuen.github.io/images/nuttx-menu3.png)
+
+TODO7
+
+![](https://lupyuen.github.io/images/nuttx-menu4.png)
+
+TODO9
+
+![](https://lupyuen.github.io/images/nuttx-menu5.png)
+
+TODO10
+
+![](https://lupyuen.github.io/images/nuttx-menu6.png)
+
+TODO11
+
+![](https://lupyuen.github.io/images/nuttx-menu8.png)
+
+TODO14
+
+![](https://lupyuen.github.io/images/nuttx-menu10.png)
+
+TODO15
+
+![](https://lupyuen.github.io/images/nuttx-menu11.png)
+
+TODO16
+
+![](https://lupyuen.github.io/images/nuttx-menu12.png)
+
+TODO52
+
+![](https://lupyuen.github.io/images/nuttx-menu13a.png)
+
+TODO53
+
+![](https://lupyuen.github.io/images/nuttx-menu7a.png)
+
+TODO54
+
+![](https://lupyuen.github.io/images/nuttx-menu9a.png)
+
+# GPIO Demo
+
+TODO13
+
+![](https://lupyuen.github.io/images/nuttx-gpio.png)
+
+# BASIC Interpreter
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-basic1.png)
+
+TODO33
+
+![](https://lupyuen.github.io/images/nuttx-basic3.png)
+
+TODO34
+
+![](https://lupyuen.github.io/images/nuttx-basic2a.png)
+
+# SPI Demo
+
+TODO
+
+# Why NuttX?
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-dma2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/nuttx-bl602.png)
+
+# Rust on NuttX
+
+TODO
+
 # What's Next
 
 TODO
@@ -58,104 +180,29 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1460322823122014211)
 
-TODO4
+# Appendix: Build, Flash and Run NuttX
 
-![](https://lupyuen.github.io/images/nuttx-menu.png)
+TODO
 
-TODO5
+## Build NuttX
 
-![](https://lupyuen.github.io/images/nuttx-menu2.png)
-
-TODO6
-
-![](https://lupyuen.github.io/images/nuttx-menu3.png)
-
-TODO7
-
-![](https://lupyuen.github.io/images/nuttx-menu4.png)
-
-TODO8
-
-![](https://lupyuen.github.io/images/nuttx-demo.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/nuttx-menu5.png)
-
-TODO10
-
-![](https://lupyuen.github.io/images/nuttx-menu6.png)
-
-TODO11
-
-![](https://lupyuen.github.io/images/nuttx-menu8.png)
-
-TODO13
-
-![](https://lupyuen.github.io/images/nuttx-gpio.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/nuttx-menu10.png)
-
-TODO15
-
-![](https://lupyuen.github.io/images/nuttx-menu11.png)
-
-TODO16
-
-![](https://lupyuen.github.io/images/nuttx-menu12.png)
-
-
-TODO18
-
-![](https://lupyuen.github.io/images/nuttx-help.png)
-
-TODO22
-
-![](https://lupyuen.github.io/images/nuttx-gpio5.png)
-
-TODO31
-
-![](https://lupyuen.github.io/images/nuttx-basic1.png)
-
-TODO33
-
-![](https://lupyuen.github.io/images/nuttx-basic3.png)
-
-TODO34
-
-![](https://lupyuen.github.io/images/nuttx-basic2a.png)
-
-TODO35
-
-![](https://lupyuen.github.io/images/nuttx-apps.png)
-
-TODO36
-
-![](https://lupyuen.github.io/images/nuttx-bl602.png)
-
-TODO37
-
-![](https://lupyuen.github.io/images/nuttx-boot2.png)
-
-TODO38
-
-![](https://lupyuen.github.io/images/nuttx-demo2.png)
-
-TODO39
+TODO
 
 ![](https://lupyuen.github.io/images/nuttx-build2.png)
 
-TODO40
+## Flash NuttX
 
-![](https://lupyuen.github.io/images/nuttx-dma2.png)
-
-TODO41
+TODO
 
 ![](https://lupyuen.github.io/images/nuttx-flash2.png)
 
-TODO42
+## Run NuttX
+
+TODO
+
+# Appendix: Fix GPIO Output
+
+TODO
 
 ![](https://lupyuen.github.io/images/nuttx-gpio10a.png)
 
@@ -174,6 +221,10 @@ TODO45
 TODO46
 
 ![](https://lupyuen.github.io/images/nuttx-gpio4b.png)
+
+TODO22
+
+![](https://lupyuen.github.io/images/nuttx-gpio5.png)
 
 TODO47
 
@@ -194,23 +245,3 @@ TODO50
 TODO51
 
 ![](https://lupyuen.github.io/images/nuttx-gpio9a.png)
-
-TODO52
-
-![](https://lupyuen.github.io/images/nuttx-menu13a.png)
-
-TODO53
-
-![](https://lupyuen.github.io/images/nuttx-menu7a.png)
-
-TODO54
-
-![](https://lupyuen.github.io/images/nuttx-menu9a.png)
-
-TODO55
-
-![](https://lupyuen.github.io/images/nuttx-pins2.png)
-
-TODO56
-
-![](https://lupyuen.github.io/images/nuttx-timer2.png)
