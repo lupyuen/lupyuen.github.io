@@ -86,7 +86,7 @@ TODO
 
 #NuttX Demo Apps are configured before build with "make menuconfig"
 
-https://nuttx.apache.org/docs/latest/quickstart/configuring.html
+[Configuring NuttX](https://nuttx.apache.org/docs/latest/quickstart/configuring.html)
 
 ![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
 
