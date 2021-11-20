@@ -26,7 +26,7 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
 Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Boards. (Pic above)
 
-We'll briefly explore the __internals of NuttX__ and understand how it works...
+We'll briefly explore the __internals of NuttX__ to understand how it works...
 
 -   [__NuttX OS: incubator-nuttx__](https://github.com/apache/incubator-nuttx)
 
