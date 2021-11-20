@@ -119,20 +119,34 @@
 <p>(And we might have an interesting way to support <strong>Embedded Rust on NuttX!</strong>)</p>
 <h1 id="boot-nuttx" class="section-header"><a href="#boot-nuttx">1 Boot NuttX</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="" /></p>
+<p>TODO</p>
+<p>#NuttX boots OK on PineCone #BL602 … Also on PineDio Stack #BL604! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="" /></p>
+<p>Default #BL602 #NuttX Firmware includes 2 Demo Apps: “hello” and “timer”</p>
+<p>https://github.com/apache/incubator-nuttx-apps/tree/master/examples/hello</p>
+<p>https://github.com/apache/incubator-nuttx-apps/tree/master/examples/timer</p>
+<p>“help” shows the commands available on #BL602 #NuttX … “ls /dev” reveals the GPIO Pins that we may control … Yep everything looks like a file!</p>
 <h1 id="hello-demo" class="section-header"><a href="#hello-demo">2 Hello Demo</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-demo2.png" alt="" /></p>
-<p>TODO</p>
+<p>#BL602 #NuttX “Hello World” … Looks exactly like on Linux</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-hello.png" alt="" /></p>
+<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c">(Source)</a></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-demo2.png" alt="" /></p>
 <h1 id="timer-demo" class="section-header"><a href="#timer-demo">3 Timer Demo</a></h1>
 <p>TODO</p>
+<p>Timer Demo on #BL602 #NuttX opens “/dev/timer0” … And controls it with “ioctl” and “sigaction” … Looks like Linux</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-timer2.png" alt="" /></p>
+<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/timer/timer_main.c">(Source)</a></p>
 <h1 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">4 Configure NuttX</a></h1>
 <p>TODO</p>
+<p>#NuttX Demo Apps are configured before build with “make menuconfig”</p>
+<p>https://nuttx.apache.org/docs/latest/quickstart/configuring.html</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio2a.png" alt="" /></p>
 <h2 id="enable-help-and-ls" class="section-header"><a href="#enable-help-and-ls">4.1 Enable help and ls</a></h2>
 <p>TODO</p>
+<p>Let’s enable the “help” and “ls” Shell Commands in #BL602 #NuttX</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu10.png" alt="" /></p>
 <p>TODO15</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu11.png" alt="" /></p>
@@ -140,6 +154,7 @@
 <p><img src="https://lupyuen.github.io/images/nuttx-menu13a.png" alt="" /></p>
 <h2 id="enable-gpio-driver" class="section-header"><a href="#enable-gpio-driver">4.2 Enable GPIO Driver</a></h2>
 <p>TODO</p>
+<p>Let’s test GPIO on #BL602 #NuttX … By enabling the GPIO Driver</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu5.png" alt="" /></p>
 <p>TODO10</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu6.png" alt="" /></p>
@@ -147,6 +162,7 @@
 <p><img src="https://lupyuen.github.io/images/nuttx-menu7a.png" alt="" /></p>
 <h2 id="enable-gpio-demo" class="section-header"><a href="#enable-gpio-demo">4.3 Enable GPIO Demo</a></h2>
 <p>TODO</p>
+<p>After the GPIO Driver has been enabled, select the GPIO Demo in #BL602 #NuttX</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="" /></p>
 <p>TODO5</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu2.png" alt="" /></p>
@@ -161,11 +177,16 @@
 <h1 id="configure-pins" class="section-header"><a href="#configure-pins">5 Configure Pins</a></h1>
 <p>TODO</p>
 <p>No device tree</p>
+<p>Here are the Pin Definitions for #BL602 #NuttX … We’ll change this in a while</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-pins2.png" alt="" /></p>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h">(Source)</a></p>
 <p>TODO44</p>
+<p>How shall we flip GPIO 11, the Blue LED on PineCone #BL602? We edit the #NuttX GPIO Pin Definition … And GPIO 11 becomes “/dev/gpout1”</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio3a.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">(Source)</a></p>
 <h1 id="gpio-demo" class="section-header"><a href="#gpio-demo">6 GPIO Demo</a></h1>
 <p>TODO13</p>
+<p>GPIO Demo calls “ioctl” to control the GPIO Pins on #BL602 #NuttX</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio.png" alt="" /></p>
 <p>TODO45</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="" /></p>
@@ -174,22 +195,29 @@
 <h1 id="gpio-driver" class="section-header"><a href="#gpio-driver">7 GPIO Driver</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio10a.png" alt="" /></p>
+<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c">(Source)</a></p>
 <h1 id="basic-interpreter" class="section-header"><a href="#basic-interpreter">8 BASIC Interpreter</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic1.png" alt="" /></p>
 <p>TODO33</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic3.png" alt="" /></p>
 <p>TODO34</p>
+<p>Blinking the #BL602 LED … Works on #NuttX BASIC too! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic2a.png" alt="" /></p>
 <h1 id="spi-demo" class="section-header"><a href="#spi-demo">9 SPI Demo</a></h1>
 <p>TODO</p>
 <h1 id="why-nuttx" class="section-header"><a href="#why-nuttx">10 Why NuttX?</a></h1>
 <p>TODO</p>
+<p>Here are the #BL602 Peripherals supported by #NuttX OS</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-bl602.png" alt="" /></p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support">(Source)</a></p>
 <p>TODO</p>
+<p>As we’ve seen, #NuttX has its own HAL for #BL602 … Which differs from BL602 IoT SDK … So we expect some quirks</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-hal.png" alt="" /></p>
 <p>TODO</p>
+<p>Though SPI with DMA is not yet supported on #BL602 #NuttX OS</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-dma2.png" alt="" /></p>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761">(Source)</a></p>
 <h1 id="rust-on-nuttx" class="section-header"><a href="#rust-on-nuttx">11 Rust on NuttX</a></h1>
 <p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
@@ -213,32 +241,53 @@
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx.md"><code>lupyuen.github.io/src/nuttx.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1460322823122014211">this Twitter Thread</a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1460322823122014211">this Twitter Thread</a></p>
+</li>
+<li>
+<p>TODO: https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/</p>
+</li>
 </ol>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a></h1>
 <p>TODO</p>
 <h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">14.1 Build NuttX</a></h2>
 <p>TODO</p>
+<p>#NuttX #BL602 builds easily on WSL Ubuntu … Uses plain “make” with “kconfig”</p>
+<p>https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="" /></p>
 <h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">14.2 Flash NuttX</a></h2>
 <p>TODO</p>
+<p>We flash #NuttX Firmware to #BL602 … With the excellent “blflash” by spacemeowx2</p>
+<p>https://github.com/spacemeowx2/blflash</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="" /></p>
 <h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">14.3 Run NuttX</a></h2>
 <p>TODO</p>
+<p>#NuttX boots OK on PineCone #BL602 … Also on PineDio Stack #BL604! 🎉</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="" /></p>
 <h1 id="appendix-fix-gpio-output" class="section-header"><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a></h1>
 <p>TODO45</p>
+<p>Flipping GPIO 11 doesn’t blink the LED on #BL602 #NuttX … Let’s investigate 🤔</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="" /></p>
 <p>TODO46</p>
+<p>#NuttX writes correctly to the GPIO 11 Output Register at 0x40000188 (BL602_GPIO_CFGCTL32)</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4b.png" alt="" /></p>
 <p>TODO47</p>
+<p>#NuttX configures #BL602 GPIO 11 (0x40000114) with GPIO Input Disabled … But it doesn’t Enable GPIO Output 🤔</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio6c.png" alt="" /></p>
 <p>TODO51</p>
+<p>#BL602 Reference Manual says we should set the GPIO Output Enable Register … But it’s missing from the docs … Where is the register? 🤔</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio9a.png" alt="" /></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(Source)</a></p>
 <p>TODO49</p>
+<p>#BL602 IoT SDK says that GPIO Output Enable Register is at 0x40000190 (GLB_GPIO_CFGCTL34) … Let’s set this register in #NuttX</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio7a.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010">(Source)</a></p>
 <p>TODO50</p>
+<p>We mod #BL602 #NuttX to set the GPIO Output Enable Register at 0x40000190 (BL602_GPIO_CFGCTL34)</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio8a.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/pull/1/files">(Source)</a></p>
 <p>TODO48</p>
+<p>After fixing GPIO Output, #NuttX now blinks the Blue LED (GPIO 11) on PineCone #BL602! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio6d.png" alt="" /></p>
 
     
