@@ -40,33 +40,61 @@ Coding a microcontroller with __Linux-like (POSIX)__ functions might sound odd, 
 
 TODO
 
+![](https://lupyuen.github.io/images/nuttx-flash2.png)
+
+TODO
+
+#NuttX boots OK on PineCone #BL602 ... Also on PineDio Stack #BL604! 🎉
+
 ![](https://lupyuen.github.io/images/nuttx-boot2.png)
+
+Default #BL602 #NuttX Firmware includes 2 Demo Apps: "hello" and "timer"
+
+https://github.com/apache/incubator-nuttx-apps/tree/master/examples/hello
+
+https://github.com/apache/incubator-nuttx-apps/tree/master/examples/timer
+
+"help" shows the commands available on #BL602 #NuttX ... "ls /dev" reveals the GPIO Pins that we may control ... Yep everything looks like a file!
 
 # Hello Demo
 
 TODO
 
-![](https://lupyuen.github.io/images/nuttx-demo2.png)
+#BL602 #NuttX "Hello World" ... Looks exactly like on Linux
+
+![](https://lupyuen.github.io/images/nuttx-hello.png)
+
+[(Source)](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c)
 
 TODO
 
-![](https://lupyuen.github.io/images/nuttx-hello.png)
+![](https://lupyuen.github.io/images/nuttx-demo2.png)
 
 # Timer Demo
 
 TODO
 
+Timer Demo on #BL602 #NuttX opens "/dev/timer0" ... And controls it with "ioctl" and "sigaction" ... Looks like Linux
+
 ![](https://lupyuen.github.io/images/nuttx-timer2.png)
+
+[(Source)](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/timer/timer_main.c)
 
 # Configure NuttX
 
 TODO
+
+#NuttX Demo Apps are configured before build with "make menuconfig"
+
+https://nuttx.apache.org/docs/latest/quickstart/configuring.html
 
 ![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
 
 ## Enable help and ls
 
 TODO
+
+Let's enable the "help" and "ls" Shell Commands in #BL602 #NuttX
 
 ![](https://lupyuen.github.io/images/nuttx-menu10.png)
 
@@ -82,6 +110,8 @@ TODO52
 
 TODO
 
+Let's test GPIO on #BL602 #NuttX ... By enabling the GPIO Driver
+
 ![](https://lupyuen.github.io/images/nuttx-menu5.png)
 
 TODO10
@@ -95,6 +125,8 @@ TODO53
 ## Enable GPIO Demo
 
 TODO
+
+After the GPIO Driver has been enabled, select the GPIO Demo in #BL602 #NuttX
 
 ![](https://lupyuen.github.io/images/nuttx-menu.png)
 
@@ -124,15 +156,25 @@ TODO
 
 No device tree
 
+Here are the Pin Definitions for #BL602 #NuttX ... We'll change this in a while
+
 ![](https://lupyuen.github.io/images/nuttx-pins2.png)
+
+[(Source)](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h)
 
 TODO44
 
+How shall we flip GPIO 11, the Blue LED on PineCone #BL602? We edit the #NuttX GPIO Pin Definition ... And GPIO 11 becomes "/dev/gpout1"
+
 ![](https://lupyuen.github.io/images/nuttx-gpio3a.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
 
 # GPIO Demo
 
 TODO13
+
+GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
 
 ![](https://lupyuen.github.io/images/nuttx-gpio.png)
 
@@ -150,6 +192,8 @@ TODO
 
 ![](https://lupyuen.github.io/images/nuttx-gpio10a.png)
 
+[(Source)](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c)
+
 # BASIC Interpreter
 
 TODO
@@ -162,6 +206,8 @@ TODO33
 
 TODO34
 
+Blinking the #BL602 LED ... Works on #NuttX BASIC too! 🎉
+
 ![](https://lupyuen.github.io/images/nuttx-basic2a.png)
 
 # SPI Demo
@@ -172,15 +218,25 @@ TODO
 
 TODO
 
+Here are the #BL602 Peripherals supported by #NuttX OS
+
 ![](https://lupyuen.github.io/images/nuttx-bl602.png)
 
+[(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support)
+
 TODO
+
+As we've seen, #NuttX has its own HAL for #BL602 ... Which differs from BL602 IoT SDK ... So we expect some quirks
 
 ![](https://lupyuen.github.io/images/nuttx-hal.png)
 
 TODO
 
+Though SPI with DMA is not yet supported on #BL602 #NuttX OS
+
 ![](https://lupyuen.github.io/images/nuttx-dma2.png)
+
+[(Source)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761)
 
 # Rust on NuttX
 
@@ -208,6 +264,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1460322823122014211)
 
+1.  TODO: https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/
+
 # Appendix: Build, Flash and Run NuttX
 
 TODO
@@ -216,11 +274,19 @@ TODO
 
 TODO
 
+#NuttX #BL602 builds easily on WSL Ubuntu ... Uses plain "make" with "kconfig"
+
+https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html
+
 ![](https://lupyuen.github.io/images/nuttx-build2.png)
 
 ## Flash NuttX
 
 TODO
+
+We flash #NuttX Firmware to #BL602 ... With the excellent "blflash" by spacemeowx2
+
+https://github.com/spacemeowx2/blflash
 
 ![](https://lupyuen.github.io/images/nuttx-flash2.png)
 
@@ -228,32 +294,56 @@ TODO
 
 TODO
 
+#NuttX boots OK on PineCone #BL602 ... Also on PineDio Stack #BL604! 🎉
+
+![](https://lupyuen.github.io/images/nuttx-boot2.png)
+
 # Appendix: Fix GPIO Output
 
 TODO45
+
+Flipping GPIO 11 doesn't blink the LED on #BL602 #NuttX ... Let's investigate 🤔
 
 ![](https://lupyuen.github.io/images/nuttx-gpio4a.png)
 
 TODO46
 
+#NuttX writes correctly to the GPIO 11 Output Register at 0x40000188 (BL602_GPIO_CFGCTL32)
+
 ![](https://lupyuen.github.io/images/nuttx-gpio4b.png)
 
 TODO47
+
+#NuttX configures #BL602 GPIO 11 (0x40000114) with GPIO Input Disabled ... But it doesn't Enable GPIO Output 🤔
 
 ![](https://lupyuen.github.io/images/nuttx-gpio6c.png)
 
 TODO51
 
+#BL602 Reference Manual says we should set the GPIO Output Enable Register ... But it's missing from the docs ... Where is the register? 🤔
+
 ![](https://lupyuen.github.io/images/nuttx-gpio9a.png)
+
+[(Source)](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en)
 
 TODO49
 
+#BL602 IoT SDK says that GPIO Output Enable Register is at 0x40000190 (GLB_GPIO_CFGCTL34) ... Let's set this register in #NuttX
+
 ![](https://lupyuen.github.io/images/nuttx-gpio7a.png)
+
+[(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010)
 
 TODO50
 
+We mod #BL602 #NuttX to set the GPIO Output Enable Register at 0x40000190 (BL602_GPIO_CFGCTL34)
+
 ![](https://lupyuen.github.io/images/nuttx-gpio8a.png)
 
+[(Source)](https://github.com/lupyuen/incubator-nuttx/pull/1/files)
+
 TODO48
+
+After fixing GPIO Output, #NuttX now blinks the Blue LED (GPIO 11) on PineCone #BL602! 🎉
 
 ![](https://lupyuen.github.io/images/nuttx-gpio6d.png)
