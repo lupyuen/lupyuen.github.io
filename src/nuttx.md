@@ -58,18 +58,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1460322823122014211)
 
-TODO1
-
-![](https://lupyuen.github.io/images/nuttx-build.png)
-
-TODO2
-
-![](https://lupyuen.github.io/images/nuttx-flash.png)
-
-TODO3
-
-![](https://lupyuen.github.io/images/nuttx-boot.png)
-
 TODO4
 
 ![](https://lupyuen.github.io/images/nuttx-menu.png)
@@ -102,10 +90,6 @@ TODO11
 
 ![](https://lupyuen.github.io/images/nuttx-menu8.png)
 
-TODO12
-
-![](https://lupyuen.github.io/images/nuttx-menu9.png)
-
 TODO13
 
 ![](https://lupyuen.github.io/images/nuttx-gpio.png)
@@ -122,57 +106,14 @@ TODO16
 
 ![](https://lupyuen.github.io/images/nuttx-menu12.png)
 
-TODO17
-
-![](https://lupyuen.github.io/images/nuttx-menu13.png)
 
 TODO18
 
 ![](https://lupyuen.github.io/images/nuttx-help.png)
 
-TODO19
-
-![](https://lupyuen.github.io/images/nuttx-gpio2.png)
-
-TODO20
-
-![](https://lupyuen.github.io/images/nuttx-menu7.png)
-
-TODO21
-
-![](https://lupyuen.github.io/images/nuttx-gpio4.png)
-
 TODO22
 
 ![](https://lupyuen.github.io/images/nuttx-gpio5.png)
-
-TODO23
-
-![](https://lupyuen.github.io/images/nuttx-gpio6.png)
-
-TODO24
-
-![](https://lupyuen.github.io/images/nuttx-gpio7.png)
-
-TODO25
-
-![](https://lupyuen.github.io/images/nuttx-gpio8.png)
-
-TODO26
-
-![](https://lupyuen.github.io/images/nuttx-gpio6a.png)
-
-TODO27
-
-![](https://lupyuen.github.io/images/nuttx-gpio3.png)
-
-TODO28
-
-![](https://lupyuen.github.io/images/nuttx-gpio9.png)
-
-TODO29
-
-![](https://lupyuen.github.io/images/nuttx-gpio10.png)
 
 TODO31
 
