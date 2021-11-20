@@ -62,7 +62,7 @@ TODO
 
 TODO
 
-![](https://lupyuen.github.io/images/nuttx-help.png)
+![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
 
 TODO
 
