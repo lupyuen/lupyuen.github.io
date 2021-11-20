@@ -52,11 +52,9 @@ TODO
 
 Default #BL602 #NuttX Firmware includes 2 Demo Apps: "hello" and "timer"
 
-https://github.com/apache/incubator-nuttx-apps/tree/master/examples/hello
+-   [__NuttX Hello Demo__](https://github.com/apache/incubator-nuttx-apps/tree/master/examples/hello)
 
-https://github.com/apache/incubator-nuttx-apps/tree/master/examples/timer
-
-"help" shows the commands available on #BL602 #NuttX ... "ls /dev" reveals the GPIO Pins that we may control ... Yep everything looks like a file!
+-   [__NuttX Timer Demo__](https://github.com/apache/incubator-nuttx-apps/tree/master/examples/timer)
 
 # Hello Demo
 
@@ -149,6 +147,8 @@ TODO11
 ![](https://lupyuen.github.io/images/nuttx-menu8.png)
 
 TODO43
+
+"help" shows the commands available on #BL602 #NuttX ... "ls /dev" reveals the GPIO Pins that we may control ... Yep everything looks like a file!
 
 ![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
 
@@ -243,6 +243,12 @@ Though SPI with DMA is not yet supported on #BL602 #NuttX OS
 # Rust on NuttX
 
 TODO
+
+Implement Rust Embedded HAL on NuttX
+
+Portable to other implementations of NuttX
+
+Might become a friendlier API for NuttX
 
 # What's Next
 
