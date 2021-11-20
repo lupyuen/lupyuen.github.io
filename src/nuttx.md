@@ -86,6 +86,10 @@ TODO
 
 #NuttX Demo Apps are configured before build with "make menuconfig"
 
+```bash
+make menuconfig
+```
+
 [Configuring NuttX](https://nuttx.apache.org/docs/latest/quickstart/configuring.html)
 
 ![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
@@ -168,6 +172,20 @@ TODO44
 
 How shall we flip GPIO 11, the Blue LED on PineCone #BL602? We edit the #NuttX GPIO Pin Definition ... And GPIO 11 becomes "/dev/gpout1"
 
+From [board.h](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L42-L49)
+
+```c
+////  GPIO Output Pin:
+////  Changed GPIO_PIN1 to GPIO_PIN11 (Blue LED on PineCone BL602)
+////  Changed GPIO_PULLDOWN to GPIO_FLOAT
+#define BOARD_GPIO_OUT1   (GPIO_OUTPUT | GPIO_FLOAT | \
+                           GPIO_FUNC_SWGPIO | GPIO_PIN11)
+
+////  Previously:
+////  #define BOARD_GPIO_OUT1   (GPIO_OUTPUT | GPIO_PULLDOWN | \
+////                             GPIO_FUNC_SWGPIO | GPIO_PIN1)
+```
+
 ![](https://lupyuen.github.io/images/nuttx-gpio3a.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
@@ -176,7 +194,10 @@ How shall we flip GPIO 11, the Blue LED on PineCone #BL602? We edit the #NuttX G
 
 TODO13
 
-GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
+```bash
+gpio -o 1 /dev/gpout1
+gpio -o 0 /dev/gpout1
+```
 
 ![](https://lupyuen.github.io/images/nuttx-gpio.png)
 
@@ -192,6 +213,10 @@ TODO46
 
 TODO
 
+GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
+
+[GPIO ioctl interface](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h)
+
 ![](https://lupyuen.github.io/images/nuttx-gpio10a.png)
 
 [(Source)](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c)
@@ -204,6 +229,8 @@ TODO
 
 TODO33
 
+[Enable peek and poke](https://github.com/lupyuen/incubator-nuttx-apps/commit/cda8a79fae74ea85f276302b67d32c01adb561bc)
+
 ![](https://lupyuen.github.io/images/nuttx-basic3.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_fs.c#L1862-L1889)
@@ -211,6 +238,26 @@ TODO33
 TODO34
 
 Blinking the #BL602 LED ... Works on #NuttX BASIC too! 🎉
+
+```bash
+nsh> bas
+bas 2.4
+Copyright 1999-2014 Michael Haardt.
+This is free software with ABSOLUTELY NO WARRANTY.
+>
+>
+> print peek(&h40000188)
+ 0
+> poke &h40000188, &h800
+>
+>
+> print peek(&h40000188)
+ 2048
+> poke &h40000188, &h00
+>
+>
+>
+```
 
 ![](https://lupyuen.github.io/images/nuttx-basic2a.png)
 
@@ -300,6 +347,85 @@ TODO
 
 TODO
 
+[BL602 NuttX](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
+
+Edit .profile and .bashrc
+
+```text
+PATH="$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH"
+```
+
+[Installing NuttX](https://nuttx.apache.org/docs/latest/quickstart/install.html)
+
+```bash
+sudo apt install \
+bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
+gperf automake libtool pkg-config build-essential gperf genromfs \
+libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
+libexpat-dev gcc-multilib g++-multilib picocom u-boot-tools util-linux
+
+sudo apt install kconfig-frontends
+
+mkdir nuttx
+cd nuttx
+git clone https://github.com/apache/incubator-nuttx.git nuttx
+git clone https://github.com/apache/incubator-nuttx-apps apps
+
+cd nuttx
+./tools/configure.sh bl602evb:nsh
+```
+
+[Output Log](https://gist.github.com/lupyuen/41f40b782769e611770724510fc8db2c)
+
+```text
+  Copy files
+  Select CONFIG_HOST_LINUX=y
+  Refreshing...
+make[1]: Entering directory '/home/user/nuttx/nuttx'
+make[2]: Entering directory '/home/user/nuttx/nuttx/boards'
+make[2]: Leaving directory '/home/user/nuttx/nuttx/boards'
+make[2]: Entering directory '/home/user/nuttx/apps'
+make[3]: Entering directory '/home/user/nuttx/apps/platform'
+make[3]: Leaving directory '/home/user/nuttx/apps/platform'
+make[3]: Entering directory '/home/user/nuttx/apps/builtin'
+make[3]: Leaving directory '/home/user/nuttx/apps/builtin'
+make[2]: Leaving directory '/home/user/nuttx/apps'
+make[2]: Entering directory '/home/user/nuttx/nuttx/graphics'
+make[3]: Entering directory '/home/user/nuttx/nuttx/graphics/nxglib'
+make[3]: Leaving directory '/home/user/nuttx/nuttx/graphics/nxglib'
+make[3]: Entering directory '/home/user/nuttx/nuttx/graphics/nxglib'
+make[3]: Leaving directory '/home/user/nuttx/nuttx/graphics/nxglib'
+make[3]: Entering directory '/home/user/nuttx/nuttx/graphics/nxglib'
+make[3]: Leaving directory '/home/user/nuttx/nuttx/graphics/nxglib'
+make[2]: Leaving directory '/home/user/nuttx/nuttx/graphics'
+make[1]: Leaving directory '/home/user/nuttx/nuttx'
+LN: include/arch to arch/risc-v/include
+LN: include/arch/board to /home/user/nuttx/nuttx/boards/risc-v/bl602/bl602evb/include
+LN: include/arch/chip to arch/risc-v/include/bl602
+LN: arch/risc-v/src/board to /home/user/nuttx/nuttx/boards/risc-v/bl602/bl602evb/src
+LN: arch/risc-v/src/chip to arch/risc-v/src/bl602
+LN: /home/user/nuttx/nuttx/drivers/platform to /home/user/nuttx/nuttx/drivers/dummy
+make[1]: Entering directory '/home/user/nuttx/nuttx/boards'
+make[1]: Leaving directory '/home/user/nuttx/nuttx/boards'
+make[1]: Entering directory '/home/user/nuttx/apps'
+make[2]: Entering directory '/home/user/nuttx/apps/platform'
+LN: platform/board to /home/user/nuttx/apps/platform/dummy
+make[2]: Leaving directory '/home/user/nuttx/apps/platform'
+make[1]: Leaving directory '/home/user/nuttx/apps'
+make[1]: Entering directory '/home/user/nuttx/apps'
+make[1]: Nothing to be done for 'preconfig'.
+make[1]: Leaving directory '/home/user/nuttx/apps'
+#
+# configuration written to .config
+#
+```
+
+```bash
+make
+```
+
+[Output Log](https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746)
+
 #NuttX #BL602 builds easily on WSL Ubuntu ... Uses plain "make" with "kconfig"
 
 [BL602 NuttX](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
@@ -314,6 +440,12 @@ We flash #NuttX Firmware to #BL602 ... With the excellent "blflash" by spacemeow
 
 https://github.com/spacemeowx2/blflash
 
+```bash
+cargo run flash nuttx.bin --port COM5
+```
+
+[Output Log](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
+
 ![](https://lupyuen.github.io/images/nuttx-flash2.png)
 
 ## Run NuttX
@@ -321,6 +453,13 @@ https://github.com/spacemeowx2/blflash
 TODO
 
 #NuttX boots OK on PineCone #BL602 ... Also on PineDio Stack #BL604! 🎉
+
+Press Enter
+
+```text
+NuttShell (NSH) NuttX-10.2.0-RC0
+nsh>
+```
 
 ![](https://lupyuen.github.io/images/nuttx-boot2.png)
 
@@ -364,6 +503,21 @@ TODO50
 
 We mod #BL602 #NuttX to set the GPIO Output Enable Register at 0x40000190 (BL602_GPIO_CFGCTL34)
 
+```c
+  ...
+  modifyreg32(regaddr, mask, cfg);
+  
+  // Enable GPIO Output if requested
+  if (!(cfgset & GPIO_INPUT))
+    {
+      modifyreg32(
+        BL602_GPIO_CFGCTL34, 
+        0, 
+        (1 << pin)
+      );
+    }
+```
+
 ![](https://lupyuen.github.io/images/nuttx-gpio8a.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/pull/1/files)
@@ -372,4 +526,95 @@ TODO48
 
 After fixing GPIO Output, #NuttX now blinks the Blue LED (GPIO 11) on PineCone #BL602! 🎉
 
+```text
+nsh> gpio -o 1 /dev/gpout1
+Driver: /dev/gpout1
+  Output pin:    Value=0
+  Writing:       Value=1
+
+bl602_configgpio:
+  pin=16
+  addr=0x40000120
+  clearbits=0xffff
+  setbits=0x711
+
+
+bl602_configgpio:
+  pin=7
+  addr=0x4000010c
+  clearbits=0xffff0000
+  setbits=0x7110000
+
+
+bl602_configgpio:
+  pin=16
+  addr=0x40000120
+  clearbits=0xffff
+  setbits=0x711
+
+
+bl602_configgpio:
+  pin=7
+  addr=0x4000010c
+  clearbits=0xffff0000
+  setbits=0x7110000
+
+
+bl602_configgpio:
+  pin=0
+  addr=0x40000100
+  clearbits=0xffff
+  setbits=0xb11
+
+
+bl602_configgpio:
+  pin=11
+  addr=0x40000114
+  clearbits=0xffff0000
+  setbits=0xb000000
+
+
+bl602_configgpio enable output:
+  pin=11
+  addr=0x40000190
+  clearbits=0x0
+  setbits=0x800
+
+
+bl602_configgpio:
+  pin=2
+  addr=0x40000104
+  clearbits=0xffff
+  setbits=0xb11
+
+
+
+bl602_gpiowrite high:
+  pin=11
+  addr=0x40000188
+  clearbits=0x0
+  setbits=0x800
+
+  Verify:        Value=1
+nsh>
+nsh>
+nsh> gpio -o 0 /dev/gpout1
+Driver: /dev/gpout1
+  Output pin:    Value=1
+  Writing:       Value=0
+
+bl602_gpiowrite low:
+  pin=11
+  addr=0x40000188
+  clearbits=0x800
+  setbits=0x0
+
+  Verify:        Value=0
+nsh>
+```
+
+[(See complete log)](https://gist.github.com/lupyuen/4331ed3e326fb827c391e0f4e07c26c5)
+
 ![](https://lupyuen.github.io/images/nuttx-gpio6d.png)
+
+[Debug GPIO Output](https://github.com/lupyuen/incubator-nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052)
