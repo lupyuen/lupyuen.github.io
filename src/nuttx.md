@@ -40,23 +40,30 @@ Coding a microcontroller with __Linux-like (POSIX)__ functions might sound odd, 
 
 (And we might have an interesting way to support __Embedded Rust on NuttX!__)
 
+![Building NuttX](https://lupyuen.github.io/images/nuttx-build2.png)
+
 # Boot NuttX
 
-TODO
+Follow the steps below to __build, flash and run__ NuttX for BL602 and BL604...
 
-![](https://lupyuen.github.io/images/nuttx-flash2.png)
+-   [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/nuttx#appendix-build-flash-and-run-nuttx)
 
-TODO
+We should see the __NuttX Shell__ appear on our Serial Terminal...
 
-#NuttX boots OK on PineCone #BL602 ... Also on PineDio Stack #BL604! 🎉
+```text
+NuttShell (NSH) NuttX-10.2.0-RC0
+nsh>
+```
 
-![](https://lupyuen.github.io/images/nuttx-boot2.png)
-
-Default #BL602 #NuttX Firmware includes 2 Demo Apps: "hello" and "timer"
+The default NuttX Firmware includes two __Demo Apps__...
 
 -   [__NuttX Hello Demo__](https://github.com/apache/incubator-nuttx-apps/tree/master/examples/hello)
 
 -   [__NuttX Timer Demo__](https://github.com/apache/incubator-nuttx-apps/tree/master/examples/timer)
+
+Let's test the Demo Apps.
+
+![Booting NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
 # Hello Demo
 
