@@ -22,9 +22,7 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
 -   For [__BL602 and BL604__](https://lupyuen.github.io/articles/pinecone): NuttX and FreeRTOS are the only operating systems supported on the RISC-V + WiFi + Bluetooth LE SoCs.
 
--   If you're wondering: NuttX is named after its creator Gregory Nutt. And X because of its POSIX Compliance.
-
-    [(See this)](https://en.m.wikipedia.org/wiki/NuttX)
+-   If you're wondering: NuttX is named after its creator [__Gregory Nutt__](https://en.m.wikipedia.org/wiki/NuttX). And X because it's POSIX Compliant.
 
 Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Boards. (Pic above)
 
@@ -67,19 +65,50 @@ Let's test the Demo Apps.
 
 # Hello Demo
 
-TODO
+At the __NuttX Shell__, enter...
 
-#BL602 #NuttX "Hello World" ... Looks exactly like on Linux
+```bash
+hello
+```
 
-![](https://lupyuen.github.io/images/nuttx-hello.png)
+We should see...
 
-[(Source)](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c)
+```text
+Hello, World!!
+```
 
-TODO
+(Yep this is the plain and simple __Hello World__ app!)
 
-![](https://lupyuen.github.io/images/nuttx-demo2.png)
+The Source Code looks very familiar: [hello_main.c](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c)
+
+```c
+#include <nuttx/config.h>
+#include <stdio.h>
+
+int main(int argc, FAR char *argv[])
+{
+  printf("Hello, World!!\n");
+  return 0;
+}
+```
+
+It looks exactly like on __Linux!__ (Almost)
+
+That's because NuttX is __POSIX Compliant__. It supports Linux features like _stdio, main()_ and _printf()._
+
+Let's run the Timer Demo App.
+
+![Hello and Timer Demo Apps](https://lupyuen.github.io/images/nuttx-demo2.png)
 
 # Timer Demo
+
+At the __NuttX Shell__, enter...
+
+```bash
+timer
+```
+
+We should see some __Timeout Messages__. (Pic above)
 
 TODO
 
@@ -563,12 +592,14 @@ __For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flas
 
 __Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
 
-Press Enter to reveal the NuttX Shell...
+Press Enter to reveal the __NuttX Shell__...
 
 ```text
 NuttShell (NSH) NuttX-10.2.0-RC0
 nsh>
 ```
+
+NuttX is now running on BL602 / BL604!
 
 [(More details on connecting to BL602 / BL604)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
