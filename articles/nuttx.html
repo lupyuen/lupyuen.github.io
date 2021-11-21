@@ -200,19 +200,20 @@ int main(int argc, FAR char *argv[])
 </li>
 </ul>
 <p>(See pic above)</p>
-<p>Enter this command to <strong>configure NuttX</strong> before building NuttX…</p>
+<p>Enter this command to <strong>configure the NuttX build</strong> on our computer…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
 <p>Let’s explore the options.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/configuring.html">(More about configuring NuttX)</a></p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="Nuttx menuconfig" /></p>
 <h2 id="enable-help-and-ls" class="section-header"><a href="#enable-help-and-ls">4.1 Enable help and ls</a></h2>
-<p>TODO</p>
-<p>Let’s enable the “help” and “ls” Shell Commands in #BL602 #NuttX</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu10.png" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu11.png" alt="" /></p>
-<p>TODO52</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu13a.png" alt="" /></p>
+<p>In <strong>menuconfig</strong>, select <strong>“Application Configuration”</strong>. (Pic above)</p>
+<p>Select <strong>“NSH Library”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu10.png" alt="Application Configuration" /></p>
+<p>Select <strong>“Disable Individual Commands”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu11.png" alt="NSH Library" /></p>
+<p>Uncheck the boxes for <strong>“help”</strong> and <strong>“ls”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu13a.png" alt="Disable Individual Commands" /></p>
+<p>“help” and “ls” are now enabled in NuttX Shell!</p>
 <h2 id="enable-gpio-driver" class="section-header"><a href="#enable-gpio-driver">4.2 Enable GPIO Driver</a></h2>
 <p>TODO</p>
 <p>Let’s test GPIO on #BL602 #NuttX … By enabling the GPIO Driver</p>
