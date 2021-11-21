@@ -204,7 +204,7 @@ int main(int argc, FAR char *argv[])
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
 <p>Let’s explore the options.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/configuring.html">(More about configuring NuttX)</a></p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="Nuttx menuconfig" /></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="Top Menu" /></p>
 <h2 id="enable-help-and-ls" class="section-header"><a href="#enable-help-and-ls">4.1 Enable help and ls</a></h2>
 <p>In <strong>menuconfig</strong>, select <strong>“Application Configuration”</strong>. (Pic above)</p>
 <p>Select <strong>“NSH Library”</strong>…</p>
@@ -215,25 +215,30 @@ int main(int argc, FAR char *argv[])
 <p><img src="https://lupyuen.github.io/images/nuttx-menu13a.png" alt="Disable Individual Commands" /></p>
 <p>“help” and “ls” are now enabled in NuttX Shell!</p>
 <h2 id="enable-gpio-driver" class="section-header"><a href="#enable-gpio-driver">4.2 Enable GPIO Driver</a></h2>
-<p>TODO</p>
-<p>Let’s test GPIO on #BL602 #NuttX … By enabling the GPIO Driver</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu5.png" alt="" /></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu6.png" alt="" /></p>
-<p>TODO53</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu7a.png" alt="" /></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+<p>Select <strong>“Device Drivers”</strong>….</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu5.png" alt="Top Menu" /></p>
+<p>Select <strong>“IO Expander / GPIO Support”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu6.png" alt="Device Drivers" /></p>
+<p>Check the box for <strong>“GPIO Driver”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu7a.png" alt="IO Expander / GPIO Support" /></p>
+<p>This enables the <strong>GPIO Driver</strong> for NuttX.</p>
+<p>(If we don’t enable the GPIO Driver, NuttX won’t let us select the GPIO Demo App!)</p>
 <h2 id="enable-gpio-demo" class="section-header"><a href="#enable-gpio-demo">4.3 Enable GPIO Demo</a></h2>
-<p>TODO</p>
-<p>After the GPIO Driver has been enabled, select the GPIO Demo in #BL602 #NuttX</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu2.png" alt="" /></p>
-<p>TODO54</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu9a.png" alt="" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-apps.png" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-menu8.png" alt="" /></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+<p>Select <strong>“Application Configuration”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="Top Menu" /></p>
+<p>Select <strong>“Examples”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu2.png" alt="Application Configuration" /></p>
+<p>NuttX reveals the list of <strong>Demo Apps</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-apps.png" alt="Examples" /></p>
+<p>(Hello and Timer Demo Apps are already selected)</p>
+<p>Check the box for <strong>“GPIO Driver Example”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu9a.png" alt="GPIO Driver Example" /></p>
+<p>Hit <strong>“Save”</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu8.png" alt="Save" /></p>
+<p>Hit <strong>“OK”</strong> to save the NuttX Configuration to <strong>“.config”</strong>.</p>
+<p>Hit <strong>“Exit”</strong> until <strong>menuconfig</strong> quits.</p>
 <h2 id="rebuild-nuttx" class="section-header"><a href="#rebuild-nuttx">4.4 Rebuild NuttX</a></h2>
 <p><strong>Rebuild and copy</strong> the NuttX Firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Rebuild NuttX
@@ -245,7 +250,7 @@ cp nuttx.bin $HOME/blflash
 #  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
 #  /mnt/c/blflash refers to c:\blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
-<p><strong>Flash and run</strong> the NuttX Firmware…</p>
+<p><strong>Flash and run</strong> the NuttX Firmware with these steps…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nuttx#flash-nuttx"><strong>“Flash NuttX”</strong></a></p>
@@ -256,7 +261,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </ul>
 <p>TODO</p>
 <p>“help” shows the commands available on #BL602 #NuttX … “ls /dev” reveals the GPIO Pins that we may control … Yep everything looks like a file!</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio2a.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio2a.png" alt="help, ls and gpio commands" /></p>
 <h1 id="configure-pins" class="section-header"><a href="#configure-pins">5 Configure Pins</a></h1>
 <p>TODO</p>
 <p>No device tree</p>
