@@ -132,15 +132,27 @@ NuttX Apps really look like Linux Apps!
 
 # Configure NuttX
 
-TODO
+Let's get adventurous and __add NuttX Commands__...
 
-#NuttX Demo Apps are configured before build with "make menuconfig"
+-   __"help"__ to show the commands available
+
+-   __"ls"__ to list the devices in __/dev__
+
+-   __"gpio"__ to toggle the GPIO Output and flip an LED on/off
+
+(See pic above)
+
+Enter this command to __configure NuttX__ before building NuttX...
 
 ```bash
 make menuconfig
 ```
 
-[Configuring NuttX](https://nuttx.apache.org/docs/latest/quickstart/configuring.html)
+Let's explore the options.
+
+[(More about configuring NuttX)](https://nuttx.apache.org/docs/latest/quickstart/configuring.html)
+
+![](https://lupyuen.github.io/images/nuttx-menu.png)
 
 ## Enable help and ls
 
