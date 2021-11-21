@@ -569,7 +569,7 @@ nsh>
 
 # Appendix: Fix GPIO Output
 
-TODO45
+TODO
 
 Flipping GPIO 11 doesn't blink the LED on #BL602 #NuttX ... Let's investigate 🤔
 
