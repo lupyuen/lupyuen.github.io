@@ -46,13 +46,13 @@ Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_hellowor
 
     __For Linux:__ Install `rustup` as a Superuser with the `sudo` command
 
-    __For Windows:__ Install `rustup` under plain old Windows, not WSL
+    __For Windows:__ Install `rustup` under plain old Windows CMD, not WSL
 
 ##  Download and build blflash
 
 We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing tool created in Rust by [`spacemeowx2`](https://github.com/spacemeowx2).
 
-(For WSL: Do this under plain old Windows, not WSL, because `blflash` needs to access the COM port)
+(For WSL: Do this under plain old Windows CMD, not WSL, because `blflash` needs to access the COM port)
 
 1.  Download the `blflash` source code...
 
@@ -92,7 +92,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
 
 ##  Flash the firmware
 
-(For WSL: Do this under plain old Windows, not WSL, because `blflash` needs to access the COM port)
+(For WSL: Do this under plain old Windows CMD, not WSL, because `blflash` needs to access the COM port)
 
 1.  To flash the firmware, we set BL602 to __Flashing Mode__ and restart the board...
 

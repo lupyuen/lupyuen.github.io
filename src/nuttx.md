@@ -441,7 +441,7 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 
     (We'll cover __blflash__ in the next section)
 
-    For WSL we need to run __blflash__ under plain old Windows (not WSL) because it needs to access the COM port.
+    For WSL we need to run __blflash__ under plain old Windows CMD (not WSL) because it needs to access the COM port.
 
 1.  In case of problems, refer to the __NuttX Docs__...
 
@@ -513,7 +513,7 @@ cargo run flash nuttx.bin \
 cargo run flash nuttx.bin --port COM5
 ```
 
-(For WSL: Do this under plain old Windows, not WSL, because blflash needs to access the COM port)
+(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)
 
 [(See the Output Log)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
 

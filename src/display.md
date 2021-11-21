@@ -809,7 +809,7 @@ cargo run flash sdk_app_st7789.bin \
 cargo run flash sdk_app_st7789.bin --port COM5
 ```
 
-(For WSL: Do this under plain old Windows, not WSL, because blflash needs to access the COM port)
+(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)
 
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
