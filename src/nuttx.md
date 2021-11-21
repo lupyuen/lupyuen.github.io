@@ -38,7 +38,7 @@ Coding a microcontroller with __Linux-like (POSIX)__ functions might sound odd, 
 
 (And we might have an interesting way to support __Embedded Rust on NuttX!__)
 
-![Building NuttX](https://lupyuen.github.io/images/nuttx-build2.png)
+> ![Building NuttX](https://lupyuen.github.io/images/nuttx-build2.png)
 
 # Boot NuttX
 
@@ -478,7 +478,7 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 
     [__"Installing NuttX"__](https://nuttx.apache.org/docs/latest/quickstart/install.html)
 
-![Building NuttX](https://lupyuen.github.io/images/nuttx-build2.png)
+> ![Building NuttX](https://lupyuen.github.io/images/nuttx-build2.png)
 
 ## Flash NuttX
 
