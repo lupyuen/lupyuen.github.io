@@ -188,7 +188,29 @@ TODO11
 
 ![](https://lupyuen.github.io/images/nuttx-menu8.png)
 
-TODO43
+## Rebuild NuttX
+
+__Rebuild and copy__ the NuttX Firmware...
+
+```bash
+##  Rebuild NuttX
+make
+
+##  For Linux: Change $HOME/blflash to the full path of blflash
+cp nuttx.bin $HOME/blflash
+
+##  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
+##  /mnt/c/blflash refers to c:\blflash
+cp nuttx.bin /mnt/c/blflash
+```
+
+__Flash and run__ the NuttX Firmware...
+
+-   [__"Flash NuttX"__](https://lupyuen.github.io/articles/nuttx#flash-nuttx)
+
+-   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
+
+TODO
 
 "help" shows the commands available on #BL602 #NuttX ... "ls /dev" reveals the GPIO Pins that we may control ... Yep everything looks like a file!
 
@@ -599,7 +621,7 @@ NuttShell (NSH) NuttX-10.2.0-RC0
 nsh>
 ```
 
-NuttX is now running on BL602 / BL604!
+Congratulations NuttX is now running on BL602 / BL604!
 
 [(More details on connecting to BL602 / BL604)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
