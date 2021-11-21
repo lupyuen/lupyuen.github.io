@@ -166,16 +166,31 @@ int main(int argc, FAR char *argv[])
 <p>At the <strong>NuttX Shell</strong>, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>timer</code></pre></div>
 <p>We should see some <strong>Timeout Messages</strong>. (Pic above)</p>
+<p>This Demo App accesses the <strong>System Timer</strong> in an interesting way: <a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/timer/timer_main.c">timer_main.c</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-timer2.png" alt="Timer Demo App" /></p>
+<ol>
+<li>
+<p><strong>/dev/timer0</strong> points to the System Timer</p>
+<p>(Everything is a file… Just like Linux!)</p>
+</li>
+<li>
+<p>We call <strong>open()</strong> to open the System Timer</p>
+</li>
+<li>
+<p><strong>ioctl()</strong> to set the Timeout</p>
+</li>
+<li>
+<p><strong>sigaction()</strong> to register the Timeout Handler</p>
+</li>
+</ol>
+<p>As expected, <strong>open(), ioctl()</strong> and <strong>sigaction()</strong> </p>
 <p>TODO</p>
-<p>Timer Demo on #BL602 #NuttX opens “/dev/timer0” … And controls it with “ioctl” and “sigaction” … Looks like Linux</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-timer2.png" alt="" /></p>
-<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/timer/timer_main.c">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio2a.png" alt="" /></p>
 <h1 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">4 Configure NuttX</a></h1>
 <p>TODO</p>
 <p>#NuttX Demo Apps are configured before build with “make menuconfig”</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/configuring.html">Configuring NuttX</a></p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio2a.png" alt="" /></p>
 <h2 id="enable-help-and-ls" class="section-header"><a href="#enable-help-and-ls">4.1 Enable help and ls</a></h2>
 <p>TODO</p>
 <p>Let’s enable the “help” and “ls” Shell Commands in #BL602 #NuttX</p>
