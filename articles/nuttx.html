@@ -229,7 +229,7 @@ gpio -o 0 /dev/gpout1</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_fs.c#L1862-L1889">(Source)</a></p>
 <p>TODO34</p>
 <p>Blinking the #BL602 LED … Works on #NuttX BASIC too! 🎉</p>
-<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; bas
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; bas
 bas 2.4
 Copyright 1999-2014 Michael Haardt.
 This is free software with ABSOLUTELY NO WARRANTY.
@@ -335,16 +335,35 @@ git clone https://github.com/apache/incubator-nuttx-apps apps</code></pre></div>
 <li>
 <p>Configure NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
-./tools/configure.sh bl602evb:nsh</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/41f40b782769e611770724510fc8db2c">(See the Output Log)</a></p>
+./tools/configure.sh bl602evb:nsh</code></pre></div></li>
+<li>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>configuration written to .config</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/41f40b782769e611770724510fc8db2c">(See the complete log)</a></p>
 </li>
 <li>
 <p>Build NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the Output Log)</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
+<li>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>LD: nuttx
+CP: nuttx.hex
+CP: nuttx.bin</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log)</a></p>
 </li>
 <li>
-<p>In case of problems, refer to the <strong>NuttX docs</strong>…</p>
+<p>Copy the <strong>NuttX Firmware</strong> to the <strong>blflash</strong> directory…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  For Linux: Change $HOME/blflash to the full path of blflash
+cp nuttx.bin $HOME/blflash
+
+#  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
+#  /mnt/c/blflash refers to c:\blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
+<p>(We’ll cover <strong>blflash</strong> in the next section)</p>
+<p>For WSL we need to run <strong>blflash</strong> under plain old Windows (not WSL) because it needs to access the COM port.</p>
+</li>
+<li>
+<p>In case of problems, refer to the <strong>NuttX Docs</strong>…</p>
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html"><strong>“BL602 NuttX”</strong></a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html"><strong>“Installing NuttX”</strong></a></p>
 </li>
@@ -352,6 +371,7 @@ git clone https://github.com/apache/incubator-nuttx-apps apps</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 <h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">14.2 Flash NuttX</a></h2>
 <p>TODO</p>
+<p>For WSL we need to run <strong>blflash</strong> under plain old Windows (not WSL) because it needs to access the COM port.</p>
 <p>We flash #NuttX Firmware to #BL602 … With the excellent “blflash” by spacemeowx2</p>
 <p>https://github.com/spacemeowx2/blflash</p>
 <div class="example-wrap"><pre class="language-bash"><code>cargo run flash nuttx.bin --port COM5</code></pre></div>
