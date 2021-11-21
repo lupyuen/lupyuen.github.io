@@ -152,7 +152,7 @@ Let's explore the options.
 
 [(More about configuring NuttX)](https://nuttx.apache.org/docs/latest/quickstart/configuring.html)
 
-![Nuttx menuconfig](https://lupyuen.github.io/images/nuttx-menu.png)
+![Top Menu](https://lupyuen.github.io/images/nuttx-menu.png)
 
 ## Enable help and ls
 
@@ -174,43 +174,53 @@ Uncheck the boxes for __"help"__ and __"ls"__...
 
 ## Enable GPIO Driver
 
-TODO
+Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
-Let's test GPIO on #BL602 #NuttX ... By enabling the GPIO Driver
+Select __"Device Drivers"__....
 
-![](https://lupyuen.github.io/images/nuttx-menu5.png)
+![Top Menu](https://lupyuen.github.io/images/nuttx-menu5.png)
 
-TODO10
+Select __"IO Expander / GPIO Support"__...
 
-![](https://lupyuen.github.io/images/nuttx-menu6.png)
+![Device Drivers](https://lupyuen.github.io/images/nuttx-menu6.png)
 
-TODO53
+Check the box for __"GPIO Driver"__...
 
-![](https://lupyuen.github.io/images/nuttx-menu7a.png)
+![IO Expander / GPIO Support](https://lupyuen.github.io/images/nuttx-menu7a.png)
+
+This enables the __GPIO Driver__ for NuttX.
+
+(If we don't enable the GPIO Driver, NuttX won't let us select the GPIO Demo App!)
 
 ## Enable GPIO Demo
 
-TODO
+Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
-After the GPIO Driver has been enabled, select the GPIO Demo in #BL602 #NuttX
+Select __"Application Configuration"__...
 
-![](https://lupyuen.github.io/images/nuttx-menu.png)
+![Top Menu](https://lupyuen.github.io/images/nuttx-menu.png)
 
-TODO5
+Select __"Examples"__...
 
-![](https://lupyuen.github.io/images/nuttx-menu2.png)
+![Application Configuration](https://lupyuen.github.io/images/nuttx-menu2.png)
 
-TODO54
+NuttX reveals the list of __Demo Apps__...
 
-![](https://lupyuen.github.io/images/nuttx-menu9a.png)
+![Examples](https://lupyuen.github.io/images/nuttx-apps.png)
 
-TODO6
+(Hello and Timer Demo Apps are already selected)
 
-![](https://lupyuen.github.io/images/nuttx-apps.png)
+Check the box for __"GPIO Driver Example"__...
 
-TODO11
+![GPIO Driver Example](https://lupyuen.github.io/images/nuttx-menu9a.png)
 
-![](https://lupyuen.github.io/images/nuttx-menu8.png)
+Hit __"Save"__...
+
+![Save](https://lupyuen.github.io/images/nuttx-menu8.png)
+
+Hit __"OK"__ to save the NuttX Configuration to __".config"__.
+
+Hit __"Exit"__ until __menuconfig__ quits.
 
 ## Rebuild NuttX
 
@@ -228,7 +238,7 @@ cp nuttx.bin $HOME/blflash
 cp nuttx.bin /mnt/c/blflash
 ```
 
-__Flash and run__ the NuttX Firmware...
+__Flash and run__ the NuttX Firmware with these steps...
 
 -   [__"Flash NuttX"__](https://lupyuen.github.io/articles/nuttx#flash-nuttx)
 
@@ -238,7 +248,7 @@ TODO
 
 "help" shows the commands available on #BL602 #NuttX ... "ls /dev" reveals the GPIO Pins that we may control ... Yep everything looks like a file!
 
-![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
+![help, ls and gpio commands](https://lupyuen.github.io/images/nuttx-gpio2a.png)
 
 # Configure Pins
 
