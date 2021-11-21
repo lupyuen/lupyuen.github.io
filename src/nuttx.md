@@ -241,7 +241,7 @@ TODO34
 
 Blinking the #BL602 LED ... Works on #NuttX BASIC too! 🎉
 
-```bash
+```text
 nsh> bas
 bas 2.4
 Copyright 1999-2014 Michael Haardt.
@@ -397,7 +397,13 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
     ./tools/configure.sh bl602evb:nsh
     ```
 
-    [(See the Output Log)](https://gist.github.com/lupyuen/41f40b782769e611770724510fc8db2c)
+1.  We should see...
+
+    ```text
+    configuration written to .config
+    ```
+
+    [(See the complete log)](https://gist.github.com/lupyuen/41f40b782769e611770724510fc8db2c)
 
 1.  Build NuttX...
 
@@ -405,9 +411,32 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
     make
     ```
 
-    [(See the Output Log)](https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746)
+1.  We should see...
 
-1.  In case of problems, refer to the __NuttX docs__...
+    ```text
+    LD: nuttx
+    CP: nuttx.hex
+    CP: nuttx.bin
+    ```
+
+    [(See the complete log)](https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746)
+
+1.  Copy the __NuttX Firmware__ to the __blflash__ directory...
+
+    ```bash
+    ##  For Linux: Change $HOME/blflash to the full path of blflash
+    cp nuttx.bin $HOME/blflash
+
+    ##  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
+    ##  /mnt/c/blflash refers to c:\blflash
+    cp nuttx.bin /mnt/c/blflash
+    ```
+
+    (We'll cover __blflash__ in the next section)
+
+    For WSL we need to run __blflash__ under plain old Windows (not WSL) because it needs to access the COM port.
+
+1.  In case of problems, refer to the __NuttX Docs__...
 
     [__"BL602 NuttX"__](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
 
@@ -418,6 +447,8 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 ## Flash NuttX
 
 TODO
+
+For WSL we need to run __blflash__ under plain old Windows (not WSL) because it needs to access the COM port.
 
 We flash #NuttX Firmware to #BL602 ... With the excellent "blflash" by spacemeowx2
 
