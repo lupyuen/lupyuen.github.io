@@ -28,6 +28,8 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
 Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Boards. (Pic above)
 
+(The steps in this article should work on __any BL602 or BL604 Board__: Pinenut, DT-BL10, MagicHome BL602, ...)
+
 We'll briefly explore the __internals of NuttX__ to understand how it works...
 
 -   [__NuttX OS: incubator-nuttx__](https://github.com/apache/incubator-nuttx)
@@ -341,96 +343,77 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build, Flash and Run NuttX
 
-TODO
+Below are the steps to __build, flash and run__ NuttX on BL602 and BL604.
 
 ## Build NuttX
 
-TODO
+Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 
-[BL602 NuttX](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
+[(Instructions for other platforms)](https://nuttx.apache.org/docs/latest/quickstart/install.html)
 
-Edit .profile and .bashrc
+1.  Download the __RISC-V GCC Toolchain__ from BL602 IoT SDK...
 
-```text
-PATH="$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH"
-```
+    ```bash
+    git clone https://github.com/lupyuen/bl_iot_sdk
+    ```
 
-[Installing NuttX](https://nuttx.apache.org/docs/latest/quickstart/install.html)
+1.  Edit __~/.bashrc__ (or equivalent) and add...
 
-```bash
-sudo apt install \
-bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
-gperf automake libtool pkg-config build-essential gperf genromfs \
-libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
-libexpat-dev gcc-multilib g++-multilib picocom u-boot-tools util-linux
+    ```text
+    ##  TODO: Change $HOME/bl_iot_sdk to the full path of bl_iot_sdk
+    PATH="$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH"
+    ```
 
-sudo apt install kconfig-frontends
+1.  Update the __PATH__...
 
-mkdir nuttx
-cd nuttx
-git clone https://github.com/apache/incubator-nuttx.git nuttx
-git clone https://github.com/apache/incubator-nuttx-apps apps
+    ```bash
+    . ~/.bashrc
+    ```
 
-cd nuttx
-./tools/configure.sh bl602evb:nsh
-```
+1.  Install the __Build Tools__...
 
-[Output Log](https://gist.github.com/lupyuen/41f40b782769e611770724510fc8db2c)
+    ```bash
+    sudo apt install \
+      bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
+      gperf automake libtool pkg-config build-essential gperf genromfs \
+      libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
+      libexpat-dev gcc-multilib g++-multilib picocom u-boot-tools util-linux \
+      kconfig-frontends
+    ```
 
-```text
-  Copy files
-  Select CONFIG_HOST_LINUX=y
-  Refreshing...
-make[1]: Entering directory '/home/user/nuttx/nuttx'
-make[2]: Entering directory '/home/user/nuttx/nuttx/boards'
-make[2]: Leaving directory '/home/user/nuttx/nuttx/boards'
-make[2]: Entering directory '/home/user/nuttx/apps'
-make[3]: Entering directory '/home/user/nuttx/apps/platform'
-make[3]: Leaving directory '/home/user/nuttx/apps/platform'
-make[3]: Entering directory '/home/user/nuttx/apps/builtin'
-make[3]: Leaving directory '/home/user/nuttx/apps/builtin'
-make[2]: Leaving directory '/home/user/nuttx/apps'
-make[2]: Entering directory '/home/user/nuttx/nuttx/graphics'
-make[3]: Entering directory '/home/user/nuttx/nuttx/graphics/nxglib'
-make[3]: Leaving directory '/home/user/nuttx/nuttx/graphics/nxglib'
-make[3]: Entering directory '/home/user/nuttx/nuttx/graphics/nxglib'
-make[3]: Leaving directory '/home/user/nuttx/nuttx/graphics/nxglib'
-make[3]: Entering directory '/home/user/nuttx/nuttx/graphics/nxglib'
-make[3]: Leaving directory '/home/user/nuttx/nuttx/graphics/nxglib'
-make[2]: Leaving directory '/home/user/nuttx/nuttx/graphics'
-make[1]: Leaving directory '/home/user/nuttx/nuttx'
-LN: include/arch to arch/risc-v/include
-LN: include/arch/board to /home/user/nuttx/nuttx/boards/risc-v/bl602/bl602evb/include
-LN: include/arch/chip to arch/risc-v/include/bl602
-LN: arch/risc-v/src/board to /home/user/nuttx/nuttx/boards/risc-v/bl602/bl602evb/src
-LN: arch/risc-v/src/chip to arch/risc-v/src/bl602
-LN: /home/user/nuttx/nuttx/drivers/platform to /home/user/nuttx/nuttx/drivers/dummy
-make[1]: Entering directory '/home/user/nuttx/nuttx/boards'
-make[1]: Leaving directory '/home/user/nuttx/nuttx/boards'
-make[1]: Entering directory '/home/user/nuttx/apps'
-make[2]: Entering directory '/home/user/nuttx/apps/platform'
-LN: platform/board to /home/user/nuttx/apps/platform/dummy
-make[2]: Leaving directory '/home/user/nuttx/apps/platform'
-make[1]: Leaving directory '/home/user/nuttx/apps'
-make[1]: Entering directory '/home/user/nuttx/apps'
-make[1]: Nothing to be done for 'preconfig'.
-make[1]: Leaving directory '/home/user/nuttx/apps'
-#
-# configuration written to .config
-#
-```
+1.  Download NuttX...
 
-```bash
-make
-```
+    ```bash
+    mkdir nuttx
+    cd nuttx
+    git clone https://github.com/apache/incubator-nuttx.git nuttx
+    git clone https://github.com/apache/incubator-nuttx-apps apps
+    ```
 
-[Output Log](https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746)
+1.  Configure NuttX...
 
-#NuttX #BL602 builds easily on WSL Ubuntu ... Uses plain "make" with "kconfig"
+    ```bash
+    cd nuttx
+    ./tools/configure.sh bl602evb:nsh
+    ```
 
-[BL602 NuttX](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
+    [(See the Output Log)](https://gist.github.com/lupyuen/41f40b782769e611770724510fc8db2c)
 
-![](https://lupyuen.github.io/images/nuttx-build2.png)
+1.  Build NuttX...
+
+    ```bash
+    make
+    ```
+
+    [(See the Output Log)](https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746)
+
+1.  In case of problems, refer to the __NuttX docs__...
+
+    [__"BL602 NuttX"__](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
+
+    [__"Installing NuttX"__](https://nuttx.apache.org/docs/latest/quickstart/install.html)
+
+![Building NuttX](https://lupyuen.github.io/images/nuttx-build2.png)
 
 ## Flash NuttX
 
