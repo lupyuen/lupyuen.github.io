@@ -104,8 +104,7 @@
 <p>For <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604</strong></a>: NuttX and FreeRTOS are the only operating systems supported on the RISC-V + WiFi + Bluetooth LE SoCs.</p>
 </li>
 <li>
-<p>If you’re wondering: NuttX is named after its creator Gregory Nutt. And X because of its POSIX Compliance.</p>
-<p><a href="https://en.m.wikipedia.org/wiki/NuttX">(See this)</a></p>
+<p>If you’re wondering: NuttX is named after its creator <a href="https://en.m.wikipedia.org/wiki/NuttX"><strong>Gregory Nutt</strong></a>. And X because it’s POSIX Compliant.</p>
 </li>
 </ul>
 <p>Today we shall <strong>build, flash and run</strong> NuttX on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> and <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> RISC-V Boards. (Pic above)</p>
@@ -142,13 +141,28 @@ nsh&gt;</code></pre></div>
 <p>Let’s test the Demo Apps.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Booting NuttX" /></p>
 <h1 id="hello-demo" class="section-header"><a href="#hello-demo">2 Hello Demo</a></h1>
-<p>TODO</p>
-<p>#BL602 #NuttX “Hello World” … Looks exactly like on Linux</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-hello.png" alt="" /></p>
-<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c">(Source)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-demo2.png" alt="" /></p>
+<p>At the <strong>NuttX Shell</strong>, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>hello</code></pre></div>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>Hello, World!!</code></pre></div>
+<p>(Yep this is the plain and simple <strong>Hello World</strong> app!)</p>
+<p>The Source Code looks very familiar: <a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c">hello_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/config.h&gt;
+#include &lt;stdio.h&gt;
+
+int main(int argc, FAR char *argv[])
+{
+  printf(&quot;Hello, World!!\n&quot;);
+  return 0;
+}</code></pre></div>
+<p>It looks exactly like on <strong>Linux!</strong> (Almost)</p>
+<p>That’s because NuttX is <strong>POSIX Compliant</strong>. It supports Linux features like <em>stdio, main()</em> and <em>printf().</em></p>
+<p>Let’s run the Timer Demo App.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-demo2.png" alt="Hello and Timer Demo Apps" /></p>
 <h1 id="timer-demo" class="section-header"><a href="#timer-demo">3 Timer Demo</a></h1>
+<p>At the <strong>NuttX Shell</strong>, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>timer</code></pre></div>
+<p>We should see some <strong>Timeout Messages</strong>. (Pic above)</p>
 <p>TODO</p>
 <p>Timer Demo on #BL602 #NuttX opens “/dev/timer0” … And controls it with “ioctl” and “sigaction” … Looks like Linux</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-timer2.png" alt="" /></p>
@@ -493,9 +507,10 @@ cargo run flash nuttx.bin --port COM5</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
-<p>Press Enter to reveal the NuttX Shell…</p>
+<p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt;</code></pre></div>
+<p>NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="appendix-fix-gpio-output" class="section-header"><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a></h1>
