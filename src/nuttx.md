@@ -124,7 +124,7 @@ This Demo App accesses the __System Timer__ in an interesting way: [timer_main.c
 
 1.  __sigaction()__ to register the Timeout Handler
 
-As expected, __open(), ioctl()__ and __sigaction()__ are common functions found on Linux.
+_open(), ioctl()_ and _sigaction()_ are common functions called by Linux Apps.
 
 NuttX Apps really look like Linux Apps!
 
