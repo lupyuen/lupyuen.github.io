@@ -110,13 +110,25 @@ timer
 
 We should see some __Timeout Messages__. (Pic above)
 
+This Demo App accesses the __System Timer__ in an interesting way: [timer_main.c](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/timer/timer_main.c)
+
+![Timer Demo App](https://lupyuen.github.io/images/nuttx-timer2.png)
+
+1.  __/dev/timer0__ points to the System Timer
+
+    (Everything is a file... Just like Linux!)
+
+1.  We call __open()__ to open the System Timer
+
+1.  __ioctl()__ to set the Timeout
+
+1.  __sigaction()__ to register the Timeout Handler
+
+As expected, __open(), ioctl()__ and __sigaction()__ 
+
 TODO
 
-Timer Demo on #BL602 #NuttX opens "/dev/timer0" ... And controls it with "ioctl" and "sigaction" ... Looks like Linux
-
-![](https://lupyuen.github.io/images/nuttx-timer2.png)
-
-[(Source)](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/timer/timer_main.c)
+![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
 
 # Configure NuttX
 
@@ -129,8 +141,6 @@ make menuconfig
 ```
 
 [Configuring NuttX](https://nuttx.apache.org/docs/latest/quickstart/configuring.html)
-
-![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
 
 ## Enable help and ls
 
