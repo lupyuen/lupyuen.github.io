@@ -842,6 +842,8 @@ cargo run flash pinedio_cbor.bin \
 cargo run flash pinedio_cbor.bin --port COM5
 ```
 
+(For WSL: Do this under plain old Windows, not WSL, because blflash needs to access the COM port)
+
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
 ## Run CBOR Firmware
@@ -1052,6 +1054,8 @@ cargo run flash pinedio_lorawan.bin \
 ## For Windows: Change COM5 to the BL602 / BL604 Serial Port
 cargo run flash pinedio_lorawan.bin --port COM5
 ```
+
+(For WSL: Do this under plain old Windows, not WSL, because blflash needs to access the COM port)
 
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 

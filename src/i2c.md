@@ -750,6 +750,8 @@ cargo run flash sdk_app_i2c.bin \
 cargo run flash sdk_app_i2c.bin --port COM5
 ```
 
+(For WSL: Do this under plain old Windows, not WSL, because blflash needs to access the COM port)
+
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
 ## Run the firmware
