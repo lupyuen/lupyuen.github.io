@@ -370,20 +370,129 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </ol>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 <h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">14.2 Flash NuttX</a></h2>
-<p>TODO</p>
-<p>For WSL we need to run <strong>blflash</strong> under plain old Windows (not WSL) because it needs to access the COM port.</p>
-<p>We flash #NuttX Firmware to #BL602 … With the excellent “blflash” by spacemeowx2</p>
-<p>https://github.com/spacemeowx2/blflash</p>
-<div class="example-wrap"><pre class="language-bash"><code>cargo run flash nuttx.bin --port COM5</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">Output Log</a></p>
-<p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="" /></p>
+<p>Follow these steps to install <strong>blflash</strong>…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>“Install rustup”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>“Download and build blflash”</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <strong>nuttx.bin</strong> has been copied to the <strong>blflash</strong> folder.</p>
+<p>Set BL602 / BL604 to <strong>Flashing Mode</strong> and restart the board…</p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>High</strong> <a href="https://lupyuen.github.io/images/pinedio-high.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash nuttx.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash nuttx.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 / BL604 Serial Port
+cargo run flash nuttx.bin --port COM5</code></pre></div>
+<p>(For WSL: Do this under plain old Windows, not WSL, because blflash needs to access the COM port)</p>
+<p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">14.3 Run NuttX</a></h2>
-<p>TODO</p>
-<p>#NuttX boots OK on PineCone #BL602 … Also on PineDio Stack #BL604! 🎉</p>
-<p>Press Enter</p>
+<p>Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>Low</strong> <a href="https://lupyuen.github.io/images/pinedio-low.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
+<p><strong>For Linux:</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p>Press Enter to reveal the NuttX Shell…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt;</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="" /></p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="appendix-fix-gpio-output" class="section-header"><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a></h1>
 <p>TODO45</p>
 <p>Flipping GPIO 11 doesn’t blink the LED on #BL602 #NuttX … Let’s investigate 🤔</p>
