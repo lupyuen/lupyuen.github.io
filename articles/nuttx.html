@@ -71,7 +71,8 @@
 <li><a href="#configure-nuttx">4 Configure NuttX</a><ul>
 <li><a href="#enable-help-and-ls">4.1 Enable help and ls</a><ul></ul></li>
 <li><a href="#enable-gpio-driver">4.2 Enable GPIO Driver</a><ul></ul></li>
-<li><a href="#enable-gpio-demo">4.3 Enable GPIO Demo</a><ul></ul></li></ul></li>
+<li><a href="#enable-gpio-demo">4.3 Enable GPIO Demo</a><ul></ul></li>
+<li><a href="#rebuild-nuttx">4.4 Rebuild NuttX</a><ul></ul></li></ul></li>
 <li><a href="#configure-pins">5 Configure Pins</a><ul></ul></li>
 <li><a href="#gpio-demo">6 GPIO Demo</a><ul></ul></li>
 <li><a href="#gpio-driver">7 GPIO Driver</a><ul></ul></li>
@@ -203,7 +204,27 @@ int main(int argc, FAR char *argv[])
 <p><img src="https://lupyuen.github.io/images/nuttx-apps.png" alt="" /></p>
 <p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-menu8.png" alt="" /></p>
-<p>TODO43</p>
+<h2 id="rebuild-nuttx" class="section-header"><a href="#rebuild-nuttx">4.4 Rebuild NuttX</a></h2>
+<p><strong>Rebuild and copy</strong> the NuttX Firmware…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Rebuild NuttX
+make
+
+#  For Linux: Change $HOME/blflash to the full path of blflash
+cp nuttx.bin $HOME/blflash
+
+#  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
+#  /mnt/c/blflash refers to c:\blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
+<p><strong>Flash and run</strong> the NuttX Firmware…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#flash-nuttx"><strong>“Flash NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#run-nuttx"><strong>“Run NuttX”</strong></a></p>
+</li>
+</ul>
+<p>TODO</p>
 <p>“help” shows the commands available on #BL602 #NuttX … “ls /dev” reveals the GPIO Pins that we may control … Yep everything looks like a file!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio2a.png" alt="" /></p>
 <h1 id="configure-pins" class="section-header"><a href="#configure-pins">5 Configure Pins</a></h1>
@@ -514,7 +535,7 @@ cargo run flash nuttx.bin --port COM5</code></pre></div>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt;</code></pre></div>
-<p>NuttX is now running on BL602 / BL604!</p>
+<p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="appendix-fix-gpio-output" class="section-header"><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a></h1>
