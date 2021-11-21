@@ -142,7 +142,7 @@ Let's get adventurous and __add NuttX Commands__...
 
 (See pic above)
 
-Enter this command to __configure NuttX__ before building NuttX...
+Enter this command to __configure the NuttX build__ on our computer...
 
 ```bash
 make menuconfig
@@ -152,23 +152,25 @@ Let's explore the options.
 
 [(More about configuring NuttX)](https://nuttx.apache.org/docs/latest/quickstart/configuring.html)
 
-![](https://lupyuen.github.io/images/nuttx-menu.png)
+![Nuttx menuconfig](https://lupyuen.github.io/images/nuttx-menu.png)
 
 ## Enable help and ls
 
-TODO
+In __menuconfig__, select __"Application Configuration"__. (Pic above)
 
-Let's enable the "help" and "ls" Shell Commands in #BL602 #NuttX
+Select __"NSH Library"__...
 
-![](https://lupyuen.github.io/images/nuttx-menu10.png)
+![Application Configuration](https://lupyuen.github.io/images/nuttx-menu10.png)
 
-TODO15
+Select __"Disable Individual Commands"__...
 
-![](https://lupyuen.github.io/images/nuttx-menu11.png)
+![NSH Library](https://lupyuen.github.io/images/nuttx-menu11.png)
 
-TODO52
+Uncheck the boxes for __"help"__ and __"ls"__...
 
-![](https://lupyuen.github.io/images/nuttx-menu13a.png)
+![Disable Individual Commands](https://lupyuen.github.io/images/nuttx-menu13a.png)
+
+"help" and "ls" are now enabled in NuttX Shell!
 
 ## Enable GPIO Driver
 
