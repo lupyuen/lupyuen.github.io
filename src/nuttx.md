@@ -446,36 +446,126 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 
 ## Flash NuttX
 
-TODO
+Follow these steps to install __blflash__...
 
-For WSL we need to run __blflash__ under plain old Windows (not WSL) because it needs to access the COM port.
+1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
 
-We flash #NuttX Firmware to #BL602 ... With the excellent "blflash" by spacemeowx2
+1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
 
-https://github.com/spacemeowx2/blflash
+We assume that our Firmware Binary File __nuttx.bin__ has been copied to the __blflash__ folder.
+
+Set BL602 / BL604 to __Flashing Mode__ and restart the board...
+
+__For PineDio Stack BL604:__
+
+1.  Set the __GPIO 8 Jumper__ to __High__ [(Like this)](https://lupyuen.github.io/images/pinedio-high.jpg)
+
+1.  Press the Reset Button
+
+__For PineCone BL602:__
+
+1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Connect BL10 to the USB port
+
+1.  Press and hold the __D8 Button (GPIO 8)__
+
+1.  Press and release the __EN Button (Reset)__
+
+1.  Release the D8 Button
+
+__For Pinenut and MagicHome BL602:__
+
+1.  Disconnect the board from the USB Port
+
+1.  Connect __GPIO 8__ to __3.3V__
+
+1.  Reconnect the board to the USB port
+
+Enter these commands to flash __nuttx.bin__ to BL602 / BL604 over UART...
 
 ```bash
+## TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+## For Linux:
+sudo cargo run flash nuttx.bin \
+    --port /dev/ttyUSB0
+
+## For macOS:
+cargo run flash nuttx.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+## For Windows: Change COM5 to the BL602 / BL604 Serial Port
 cargo run flash nuttx.bin --port COM5
 ```
 
-[Output Log](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
+(For WSL: Do this under plain old Windows, not WSL, because blflash needs to access the COM port)
 
-![](https://lupyuen.github.io/images/nuttx-flash2.png)
+[(See the Output Log)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
+
+[(More details on flashing firmware)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+![Flashing NuttX](https://lupyuen.github.io/images/nuttx-flash2.png)
 
 ## Run NuttX
 
-TODO
+Set BL602 / BL604 to __Normal Mode__ (Non-Flashing) and restart the board...
 
-#NuttX boots OK on PineCone #BL602 ... Also on PineDio Stack #BL604! 🎉
+__For PineDio Stack BL604:__
 
-Press Enter
+1.  Set the __GPIO 8 Jumper__ to __Low__ [(Like this)](https://lupyuen.github.io/images/pinedio-low.jpg)
+
+1.  Press the Reset Button
+
+__For PineCone BL602:__
+
+1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Press and release the __EN Button (Reset)__
+
+__For Pinenut and MagicHome BL602:__
+
+1.  Disconnect the board from the USB Port
+
+1.  Connect __GPIO 8__ to __GND__
+
+1.  Reconnect the board to the USB port
+
+After restarting, connect to BL602 / BL604's UART Port at 2 Mbps like so...
+
+__For Linux:__
+
+```bash
+sudo screen /dev/ttyUSB0 2000000
+```
+
+__For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+Press Enter to reveal the NuttX Shell...
 
 ```text
 NuttShell (NSH) NuttX-10.2.0-RC0
 nsh>
 ```
 
-![](https://lupyuen.github.io/images/nuttx-boot2.png)
+[(More details on connecting to BL602 / BL604)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
 # Appendix: Fix GPIO Output
 
