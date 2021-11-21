@@ -187,10 +187,24 @@ int main(int argc, FAR char *argv[])
 <p>NuttX Apps really look like Linux Apps!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio2a.png" alt="help, ls and gpio commands" /></p>
 <h1 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">4 Configure NuttX</a></h1>
-<p>TODO</p>
-<p>#NuttX Demo Apps are configured before build with “make menuconfig”</p>
+<p>Let’s get adventurous and <strong>add NuttX Commands</strong>…</p>
+<ul>
+<li>
+<p><strong>“help”</strong> to show the commands available</p>
+</li>
+<li>
+<p><strong>“ls”</strong> to list the devices in <strong>/dev</strong></p>
+</li>
+<li>
+<p><strong>“gpio”</strong> to toggle the GPIO Output and flip an LED on/off</p>
+</li>
+</ul>
+<p>(See pic above)</p>
+<p>Enter this command to <strong>configure NuttX</strong> before building NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
-<p><a href="https://nuttx.apache.org/docs/latest/quickstart/configuring.html">Configuring NuttX</a></p>
+<p>Let’s explore the options.</p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/configuring.html">(More about configuring NuttX)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu.png" alt="" /></p>
 <h2 id="enable-help-and-ls" class="section-header"><a href="#enable-help-and-ls">4.1 Enable help and ls</a></h2>
 <p>TODO</p>
 <p>Let’s enable the “help” and “ls” Shell Commands in #BL602 #NuttX</p>
