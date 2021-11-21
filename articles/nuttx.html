@@ -365,7 +365,7 @@ cp nuttx.bin $HOME/blflash
 #  /mnt/c/blflash refers to c:\blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>(We’ll cover <strong>blflash</strong> in the next section)</p>
-<p>For WSL we need to run <strong>blflash</strong> under plain old Windows (not WSL) because it needs to access the COM port.</p>
+<p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
 <p>In case of problems, refer to the <strong>NuttX Docs</strong>…</p>
@@ -447,7 +447,7 @@ cargo run flash nuttx.bin \
 
 # For Windows: Change COM5 to the BL602 / BL604 Serial Port
 cargo run flash nuttx.bin --port COM5</code></pre></div>
-<p>(For WSL: Do this under plain old Windows, not WSL, because blflash needs to access the COM port)</p>
+<p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
