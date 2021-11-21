@@ -118,7 +118,7 @@ This Demo App accesses the __System Timer__ in an interesting way: [timer_main.c
 
     (Everything is a file... Just like Linux!)
 
-1.  We call __open()__ to open the System Timer
+1.  We call __open()__ to access the System Timer
 
 1.  __ioctl()__ to set the Timeout
 
