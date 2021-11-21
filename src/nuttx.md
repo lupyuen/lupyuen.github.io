@@ -124,11 +124,11 @@ This Demo App accesses the __System Timer__ in an interesting way: [timer_main.c
 
 1.  __sigaction()__ to register the Timeout Handler
 
-As expected, __open(), ioctl()__ and __sigaction()__ 
+As expected, __open(), ioctl()__ and __sigaction()__ are common functions found on Linux.
 
-TODO
+NuttX Apps really look like Linux Apps!
 
-![](https://lupyuen.github.io/images/nuttx-gpio2a.png)
+![help, ls and gpio commands](https://lupyuen.github.io/images/nuttx-gpio2a.png)
 
 # Configure NuttX
 
