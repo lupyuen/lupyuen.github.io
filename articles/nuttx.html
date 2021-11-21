@@ -121,13 +121,16 @@
 </ul>
 <p>Coding a microcontroller with <strong>Linux-like (POSIX)</strong> functions might sound odd, but we’ll discuss the benefits in a while.</p>
 <p>(And we might have an interesting way to support <strong>Embedded Rust on NuttX!</strong>)</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 <h1 id="boot-nuttx" class="section-header"><a href="#boot-nuttx">1 Boot NuttX</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="" /></p>
-<p>TODO</p>
-<p>#NuttX boots OK on PineCone #BL602 … Also on PineDio Stack #BL604! 🎉</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="" /></p>
-<p>Default #BL602 #NuttX Firmware includes 2 Demo Apps: “hello” and “timer”</p>
+<p>Follow the steps below to <strong>build, flash and run</strong> NuttX for BL602 and BL604…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></li>
+</ul>
+<p>We should see the <strong>NuttX Shell</strong> appear on our Serial Terminal…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt;</code></pre></div>
+<p>The default NuttX Firmware includes two <strong>Demo Apps</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/incubator-nuttx-apps/tree/master/examples/hello"><strong>NuttX Hello Demo</strong></a></p>
@@ -136,6 +139,8 @@
 <p><a href="https://github.com/apache/incubator-nuttx-apps/tree/master/examples/timer"><strong>NuttX Timer Demo</strong></a></p>
 </li>
 </ul>
+<p>Let’s test the Demo Apps.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Booting NuttX" /></p>
 <h1 id="hello-demo" class="section-header"><a href="#hello-demo">2 Hello Demo</a></h1>
 <p>TODO</p>
 <p>#BL602 #NuttX “Hello World” … Looks exactly like on Linux</p>
