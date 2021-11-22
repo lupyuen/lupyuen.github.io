@@ -220,6 +220,8 @@ Hit __"Save"__...
 
 Then __"OK"__ to save the NuttX Configuration to __".config"__.
 
+[(See the NuttX Configuration)](https://gist.github.com/lupyuen/dbcfd25c872ed303a060326b869b48b2)
+
 Hit __"Exit"__ until __menuconfig__ quits.
 
 ## Rebuild NuttX
@@ -318,6 +320,8 @@ GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
 # BASIC Interpreter
 
 TODO
+
+Application Configuration -> Interpreters -> Basic Interpreter Support
 
 ![](https://lupyuen.github.io/images/nuttx-basic1.png)
 
