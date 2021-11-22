@@ -246,11 +246,13 @@ __Flash and run__ the NuttX Firmware with these steps...
 
 -   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
 
-Let's run the new commands: "help", "ls" and "gpio".
+We're ready to test the new commands!
 
 ![ls and gpio commands](https://lupyuen.github.io/images/nuttx-gpio2b.png)
 
 # GPIO Demo
+
+Let's run the new commands: __"help", "ls"__ and __"gpio"__.
 
 At the NuttX Shell, enter...
 
@@ -260,22 +262,26 @@ help
 
 ("?" works too)
 
-NuttX says that the __"ls" and "gpio" commands__ are now available...
+NuttX says that the __"ls"__ and __"gpio"__ commands are now available...
 
 ```text
-?     help    ls     uname
+help usage: help [-v] [<cmd>]
+  ?  help  ls  uname
 Builtin Apps:
-bas       timer  sh        
-getprime  hello  nsh  gpio
+  timer  sh  getprime  hello  nsh  gpio
 ```
 
-TODO
+## NuttX Devices
+
+Remember everything is a file in NuttX?
+
+Let's list the __Hardware Devices__ in NuttX...
 
 ```bash
 ls /dev
 ```
 
-TODO
+NuttX reveals the devices that we may control...
 
 ```text
 /dev:
@@ -287,6 +293,12 @@ TODO
  timer0
  zero
 ```
+
+TODO
+
+![gpio command](https://lupyuen.github.io/images/nuttx-gpio.png)
+
+## Write to GPIO
 
 TODO
 
@@ -304,20 +316,6 @@ Driver: /dev/gpout1
 ```
 
 TODO
-
-"help" shows the commands available on #BL602 #NuttX ... "ls /dev" reveals the GPIO Pins that we may control ... Yep everything looks like a file!
-
-
-
-![](https://lupyuen.github.io/images/nuttx-gpio.png)
-
-TODO45
-
-![](https://lupyuen.github.io/images/nuttx-gpio4a.png)
-
-TODO46
-
-![](https://lupyuen.github.io/images/nuttx-gpio4b.png)
 
 # Configure Pins
 
