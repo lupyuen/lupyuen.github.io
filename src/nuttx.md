@@ -518,11 +518,15 @@ GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
 
 [(Source)](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c)
 
+![Enable BASIC Interpreter](https://lupyuen.github.io/images/nuttx-basic4.png)
+
 # BASIC Interpreter
 
 TODO
 
 Application Configuration → Interpreters → Basic Interpreter Support
+
+(Pic above)
 
 ![](https://lupyuen.github.io/images/nuttx-basic1.png)
 
@@ -559,6 +563,8 @@ This is free software with ABSOLUTELY NO WARRANTY.
 >
 >
 ```
+
+(OK this code isn't so legit... We ought to preserve the existing bits in the register, not overwrite them)
 
 ![](https://lupyuen.github.io/images/nuttx-basic2a.png)
 
