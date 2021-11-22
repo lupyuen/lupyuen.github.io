@@ -76,7 +76,9 @@
 <li><a href="#gpio-demo">5 GPIO Demo</a><ul>
 <li><a href="#nuttx-devices">5.1 NuttX Devices</a><ul></ul></li>
 <li><a href="#write-to-gpio">5.2 Write to GPIO</a><ul></ul></li></ul></li>
-<li><a href="#configure-pins">6 Configure Pins</a><ul></ul></li>
+<li><a href="#configure-pins">6 Configure Pins</a><ul>
+<li><a href="#gpio-glitch">6.1 GPIO Glitch</a><ul></ul></li>
+<li><a href="#rerun-nuttx">6.2 Rerun NuttX</a><ul></ul></li></ul></li>
 <li><a href="#gpio-driver">7 GPIO Driver</a><ul></ul></li>
 <li><a href="#basic-interpreter">8 BASIC Interpreter</a><ul></ul></li>
 <li><a href="#spi-demo">9 SPI Demo</a><ul></ul></li>
@@ -331,9 +333,10 @@ Builtin Apps:
 <p><img src="https://lupyuen.github.io/images/nuttx-pins2.png" alt="NuttX Pin Definitions" /></p>
 <h1 id="configure-pins" class="section-header"><a href="#configure-pins">6 Configure Pins</a></h1>
 <p><em>How do we define the Pin Numbers for GPIO, UART, PWM, I2C, SPI, …?</em></p>
-<p>We define the Pin Numbers in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h"><strong>board.h</strong></a></p>
-<p>(See pic above)</p>
-<p><em>How shall we set the GPIO Output Pin for our LED?</em></p>
+<p>We define the Pin Numbers in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h"><strong>board.h</strong></a> (Pic above)</p>
+<p><strong>Note: Some pins on BL602 and BL604 may only be assigned to specific functions.</strong></p>
+<p>Refer to the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 / BL604 Reference Manual</strong></a>, Section 3.2.8 (GPIO Function) for the Pin Description Table.</p>
+<p><em>How shall we define the GPIO Output Pin for our LED?</em></p>
 <p>On PineCone BL602 the Blue LED is connected on <strong>GPIO 11</strong>.</p>
 <p>We change the Pin Definition for <strong>BOARD_GPIO_OUT1</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO Output Pin:
@@ -347,12 +350,37 @@ Builtin Apps:
 //  #define BOARD_GPIO_OUT1 \
 //    (GPIO_OUTPUT | GPIO_PULLDOWN | \
 //      GPIO_FUNC_SWGPIO | GPIO_PIN1)</code></pre></div>
-<p>(Make sure the Pin Number isn’t used by another port!)</p>
-<p>TODO</p>
-<p>Patch GPIO Output</p>
-<p>No device tree</p>
-<p>Check ref manual</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio3a.png" alt="Updated GPIO Pin Definition" /></p>
+<p>Make sure the Pin Number isn’t used by another port!</p>
+<p><a href="https://lupyuen.github.io/articles/flash#device-tree">(FreeRTOS on BL602 uses a Device Tree to assign the pins)</a></p>
+<h2 id="gpio-glitch" class="section-header"><a href="#gpio-glitch">6.1 GPIO Glitch</a></h2>
+<p><strong>Note:</strong> There’s a glitch in the BL602 GPIO Driver that <strong>prevents the GPIO Output from being set correctly</strong>. </p>
+<p>To fix the GPIO Output, edit this file…</p>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/bl602/bl602_gpio.c</code></pre></div>
+<p>And patch the <strong>bl602_configgpio</strong> function like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137">bl602_gpio.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Existing function
+int bl602_configgpio(gpio_pinset_t cfgset)
+{
+  // Existing code
+  ...
+  modifyreg32(regaddr, mask, cfg);
+  
+  // Insert this code near the end of the function...
+  // Enable GPIO Output if requested
+  if (!(cfgset &amp; GPIO_INPUT))
+    {
+      modifyreg32(            // Modify the register...
+        BL602_GPIO_CFGCTL34,  // At address 0x40000190 (GPIO Enable Output)
+        0,                    // Don&#39;t clear any bits
+        (1 &lt;&lt; pin)            // Set the bit for the GPIO Pin
+      );
+    }
+  // End of inserted code
+
+  // Existing code
+  return OK;
+}</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/nuttx#appendix-fix-gpio-output">(More about the fix for GPIO Output)</a></p>
+<h2 id="rerun-nuttx" class="section-header"><a href="#rerun-nuttx">6.2 Rerun NuttX</a></h2>
 <p><strong>Rebuild and copy</strong> the NuttX Firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Rebuild NuttX
 make
@@ -677,18 +705,31 @@ nsh&gt;</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010">(Source)</a></p>
 <p>TODO50</p>
 <p>We mod #BL602 #NuttX to set the GPIO Output Enable Register at 0x40000190 (BL602_GPIO_CFGCTL34)</p>
-<div class="example-wrap"><pre class="language-c"><code>  ...
+<p>To fix it, edit this file…</p>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/bl602/bl602_gpio.c</code></pre></div>
+<p>And patch the <strong>bl602_configgpio</strong> function like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137">bl602_gpio.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Existing function
+int bl602_configgpio(gpio_pinset_t cfgset)
+{
+  // Existing code
+  ...
   modifyreg32(regaddr, mask, cfg);
   
+  // Insert this code near the end of the function...
   // Enable GPIO Output if requested
   if (!(cfgset &amp; GPIO_INPUT))
     {
-      modifyreg32(
-        BL602_GPIO_CFGCTL34, 
-        0, 
-        (1 &lt;&lt; pin)
+      modifyreg32(            // Modify the register...
+        BL602_GPIO_CFGCTL34,  // At address 0x40000190 (GPIO Enable Output)
+        0,                    // Don&#39;t clear any bits
+        (1 &lt;&lt; pin)            // Set the bit for the GPIO Pin
       );
-    }</code></pre></div>
+    }
+  // End of inserted code
+
+  // Existing code
+  return OK;
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio8a.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/pull/1/files">(Source)</a></p>
 <p>TODO48</p>
