@@ -263,10 +263,10 @@ help
 NuttX says that the __"ls" and "gpio" commands__ are now available...
 
 ```text
-help usage:  help [-v] [<cmd>]
-  ?      help   ls     uname
+?     help    ls     uname
 Builtin Apps:
-  bas       timer     sh        getprime  hello     nsh       gpio
+bas       timer  sh        
+getprime  hello  nsh  gpio
 ```
 
 TODO
