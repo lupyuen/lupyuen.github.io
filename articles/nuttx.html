@@ -451,7 +451,10 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>Let’s look inside NuttX to understand how the GPIO Driver works.</p>
 <p>TODO</p>
 <p>We start at the “gpio” command</p>
-<p>GPIO Demo calls “ioctl” to control the GPIO Pins on #BL602 #NuttX</p>
+<p>From the pic above we see that the “gpio” command calls…</p>
+<ul>
+<li>ioctl() to control the GPIO Pins on #BL602 #NuttX</li>
+</ul>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h">GPIO ioctl interface</a></p>
 <p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic4.png" alt="Enable BASIC Interpreter" /></p>
