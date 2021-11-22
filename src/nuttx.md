@@ -448,7 +448,11 @@ We're ready to test the LED!
 
 ![Testing the LED](https://lupyuen.github.io/images/nuttx-gpio4c.png)
 
-# GPIO Driver
+# Test the LED
+
+TODO
+
+> ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
 
 TODO
 
@@ -467,6 +471,10 @@ Driver: /dev/gpout1
 
 TODO
 
+> ![LED Off](https://lupyuen.github.io/images/nuttx-ledoff.jpg)
+
+TODO
+
 ```bash
 gpio -o 0 /dev/gpout1
 ```
@@ -479,6 +487,12 @@ Driver: /dev/gpout1
   Writing:       Value=0
   Verify:        Value=0
 ```
+
+TODO
+
+> ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
+
+# GPIO Driver
 
 TODO
 
