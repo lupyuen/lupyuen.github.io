@@ -246,11 +246,78 @@ __Flash and run__ the NuttX Firmware with these steps...
 
 -   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
 
+Let's run the new commands: "help", "ls" and "gpio".
+
+![ls and gpio commands](https://lupyuen.github.io/images/nuttx-gpio2b.png)
+
+# GPIO Demo
+
+At the NuttX Shell, enter...
+
+```bash
+help
+```
+
+("?" works too)
+
+NuttX says that the __"ls" and "gpio" commands__ are now available...
+
+```text
+help usage:  help [-v] [<cmd>]
+  ?      help   ls     uname
+Builtin Apps:
+  bas       timer     sh        getprime  hello     nsh       gpio
+```
+
+TODO
+
+```bash
+ls /dev
+```
+
+TODO
+
+```text
+/dev:
+ console
+ gpin0
+ gpint2
+ gpout1
+ null
+ timer0
+ zero
+```
+
+TODO
+
+```bash
+gpio -o 1 /dev/gpout1
+```
+
+TODO
+
+```text
+Driver: /dev/gpout1
+  Output pin:    Value=0
+  Writing:       Value=1
+  Verify:        Value=1
+```
+
 TODO
 
 "help" shows the commands available on #BL602 #NuttX ... "ls /dev" reveals the GPIO Pins that we may control ... Yep everything looks like a file!
 
-![help, ls and gpio commands](https://lupyuen.github.io/images/nuttx-gpio2a.png)
+
+
+![](https://lupyuen.github.io/images/nuttx-gpio.png)
+
+TODO45
+
+![](https://lupyuen.github.io/images/nuttx-gpio4a.png)
+
+TODO46
+
+![](https://lupyuen.github.io/images/nuttx-gpio4b.png)
 
 # Configure Pins
 
@@ -285,25 +352,6 @@ From [board.h](https://github.com/apache/incubator-nuttx/blob/master/boards/risc
 ![](https://lupyuen.github.io/images/nuttx-gpio3a.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
-
-# GPIO Demo
-
-TODO13
-
-```bash
-gpio -o 1 /dev/gpout1
-gpio -o 0 /dev/gpout1
-```
-
-![](https://lupyuen.github.io/images/nuttx-gpio.png)
-
-TODO45
-
-![](https://lupyuen.github.io/images/nuttx-gpio4a.png)
-
-TODO46
-
-![](https://lupyuen.github.io/images/nuttx-gpio4b.png)
 
 # GPIO Driver
 
