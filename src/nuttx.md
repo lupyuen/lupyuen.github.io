@@ -522,11 +522,13 @@ GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
 
 TODO
 
-Application Configuration -> Interpreters -> Basic Interpreter Support
+Application Configuration → Interpreters → Basic Interpreter Support
 
 ![](https://lupyuen.github.io/images/nuttx-basic1.png)
 
-TODO33
+TODO
+
+[Disable environment variables and folders](https://github.com/lupyuen/incubator-nuttx-apps/commit/bc68ad8a16cb60ecff53d7a8644e6c6d6b8e5fd6#diff-05996067e34eb452c24a3e0966a8f6e974f6b54c4f3d767140a92fb5c67c55ec)
 
 [Enable peek and poke](https://github.com/lupyuen/incubator-nuttx-apps/commit/cda8a79fae74ea85f276302b67d32c01adb561bc)
 
