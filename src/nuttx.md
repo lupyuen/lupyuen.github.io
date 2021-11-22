@@ -452,6 +452,36 @@ We're ready to test the LED!
 
 TODO
 
+```bash
+gpio -o 1 /dev/gpout1
+```
+
+TODO
+
+```text
+Driver: /dev/gpout1
+  Output pin:    Value=0
+  Writing:       Value=1
+  Verify:        Value=1
+```
+
+TODO
+
+```bash
+gpio -o 0 /dev/gpout1
+```
+
+TODO
+
+```text
+Driver: /dev/gpout1
+  Output pin:    Value=1
+  Writing:       Value=0
+  Verify:        Value=0
+```
+
+TODO
+
 GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
 
 [GPIO ioctl interface](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h)
