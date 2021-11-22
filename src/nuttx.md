@@ -347,39 +347,71 @@ Not yet. We haven't told NuttX which __GPIO Pin__ our LED is connected to!
 
 Let's learn how.
 
+![NuttX Pin Definitions](https://lupyuen.github.io/images/nuttx-pins2.png)
+
 # Configure Pins
+
+_How do we define the Pin Numbers for GPIO, UART, PWM, I2C, SPI, ...?_
+
+We define the Pin Numbers in [__board.h__](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h)
+
+(See pic above)
+
+_How shall we set the GPIO Output Pin for our LED?_
+
+On PineCone BL602 the Blue LED is connected on __GPIO 11__.
+
+We change the Pin Definition for __BOARD_GPIO_OUT1__ like so: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
+
+```c
+//  GPIO Output Pin:
+//  Changed GPIO_PIN1 to GPIO_PIN11 (Blue LED on PineCone BL602)
+//  Changed GPIO_PULLDOWN to GPIO_FLOAT
+#define BOARD_GPIO_OUT1 \
+  (GPIO_OUTPUT | GPIO_FLOAT | \
+    GPIO_FUNC_SWGPIO | GPIO_PIN11)
+
+//  Previously:
+//  #define BOARD_GPIO_OUT1 \
+//    (GPIO_OUTPUT | GPIO_PULLDOWN | \
+//      GPIO_FUNC_SWGPIO | GPIO_PIN1)
+```
+
+(Make sure the Pin Number isn't used by another port!)
 
 TODO
 
+Patch GPIO Output
+
 No device tree
 
-Here are the Pin Definitions for #BL602 #NuttX ... We'll change this in a while
+Check ref manual
 
-![](https://lupyuen.github.io/images/nuttx-pins2.png)
+![Updated GPIO Pin Definition](https://lupyuen.github.io/images/nuttx-gpio3a.png)
 
-[(Source)](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h)
+__Rebuild and copy__ the NuttX Firmware...
 
-TODO44
+```bash
+##  Rebuild NuttX
+make
 
-How shall we flip GPIO 11, the Blue LED on PineCone #BL602? We edit the #NuttX GPIO Pin Definition ... And GPIO 11 becomes "/dev/gpout1"
+##  For Linux: Change $HOME/blflash to the full path of blflash
+cp nuttx.bin $HOME/blflash
 
-From [board.h](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L42-L49)
-
-```c
-////  GPIO Output Pin:
-////  Changed GPIO_PIN1 to GPIO_PIN11 (Blue LED on PineCone BL602)
-////  Changed GPIO_PULLDOWN to GPIO_FLOAT
-#define BOARD_GPIO_OUT1   (GPIO_OUTPUT | GPIO_FLOAT | \
-                           GPIO_FUNC_SWGPIO | GPIO_PIN11)
-
-////  Previously:
-////  #define BOARD_GPIO_OUT1   (GPIO_OUTPUT | GPIO_PULLDOWN | \
-////                             GPIO_FUNC_SWGPIO | GPIO_PIN1)
+##  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
+##  /mnt/c/blflash refers to c:\blflash
+cp nuttx.bin /mnt/c/blflash
 ```
 
-![](https://lupyuen.github.io/images/nuttx-gpio3a.png)
+__Flash and run__ the NuttX Firmware with these steps...
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
+-   [__"Flash NuttX"__](https://lupyuen.github.io/articles/nuttx#flash-nuttx)
+
+-   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
+
+We're ready to test the LED!
+
+![Testing the LED](https://lupyuen.github.io/images/nuttx-gpio4c.png)
 
 # GPIO Driver
 
