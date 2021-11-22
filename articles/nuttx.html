@@ -404,6 +404,20 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4c.png" alt="Testing the LED" /></p>
 <h1 id="gpio-driver" class="section-header"><a href="#gpio-driver">7 GPIO Driver</a></h1>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>gpio -o 1 /dev/gpout1</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Driver: /dev/gpout1
+  Output pin:    Value=0
+  Writing:       Value=1
+  Verify:        Value=1</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>gpio -o 0 /dev/gpout1</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Driver: /dev/gpout1
+  Output pin:    Value=1
+  Writing:       Value=0
+  Verify:        Value=0</code></pre></div>
+<p>TODO</p>
 <p>GPIO Demo calls “ioctl” to control the GPIO Pins on #BL602 #NuttX</p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h">GPIO ioctl interface</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio10a.png" alt="" /></p>
