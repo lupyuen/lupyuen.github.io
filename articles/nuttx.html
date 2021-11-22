@@ -443,11 +443,11 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </blockquote>
 <p>Congratulations we have successfully tested the BL602 LED with NuttX!</p>
 <p><a href="https://nuttx.apache.org/docs/latest/reference/os/led.html">(If we’re controlling LEDs, consider using NuttX’s LED Driver)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio10a.png" alt="GPIO Demo App" /></p>
 <h1 id="gpio-driver" class="section-header"><a href="#gpio-driver">8 GPIO Driver</a></h1>
 <p>TODO</p>
 <p>GPIO Demo calls “ioctl” to control the GPIO Pins on #BL602 #NuttX</p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h">GPIO ioctl interface</a></p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio10a.png" alt="" /></p>
 <p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic4.png" alt="Enable BASIC Interpreter" /></p>
 <h1 id="basic-interpreter" class="section-header"><a href="#basic-interpreter">9 BASIC Interpreter</a></h1>
@@ -731,6 +731,7 @@ nsh&gt;</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="appendix-fix-gpio-output" class="section-header"><a href="#appendix-fix-gpio-output">16 Appendix: Fix GPIO Output</a></h1>
+<p>This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.</p>
 <p>TODO</p>
 <p>Flipping GPIO 11 doesn’t blink the LED on #BL602 #NuttX … Let’s investigate 🤔</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="" /></p>
