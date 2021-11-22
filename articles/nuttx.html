@@ -91,7 +91,10 @@
 <li><a href="#build-nuttx">15.1 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">15.2 Flash NuttX</a><ul></ul></li>
 <li><a href="#run-nuttx">15.3 Run NuttX</a><ul></ul></li></ul></li>
-<li><a href="#appendix-fix-gpio-output">16 Appendix: Fix GPIO Output</a><ul></ul></li></ul></nav><p>📝 <em>26 Nov 2021</em></p>
+<li><a href="#appendix-fix-gpio-output">16 Appendix: Fix GPIO Output</a><ul>
+<li><a href="#observe-the-glitch">16.1 Observe the glitch</a><ul></ul></li>
+<li><a href="#fix-the-glitch">16.2 Fix the glitch</a><ul></ul></li>
+<li><a href="#test-the-fix">16.3 Test the fix</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>26 Nov 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-title.jpg" alt="Tasty Nutty Treat on PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Tasty Nutty Treat on PineDio Stack BL604 RISC-V Board</em></p>
 <p>Among all Embedded Operating Systems, <strong>Apache NuttX is truly unique</strong> because…</p>
@@ -733,6 +736,7 @@ nsh&gt;</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="appendix-fix-gpio-output" class="section-header"><a href="#appendix-fix-gpio-output">16 Appendix: Fix GPIO Output</a></h1>
 <p>This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.</p>
+<h2 id="observe-the-glitch" class="section-header"><a href="#observe-the-glitch">16.1 Observe the glitch</a></h2>
 <p>TODO</p>
 <p>Flipping GPIO 11 doesn’t blink the LED on #BL602 #NuttX … Let’s investigate 🤔</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="" /></p>
@@ -750,7 +754,8 @@ nsh&gt;</code></pre></div>
 <p>#BL602 IoT SDK says that GPIO Output Enable Register is at 0x40000190 (GLB_GPIO_CFGCTL34) … Let’s set this register in #NuttX</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio7a.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010">(Source)</a></p>
-<p>TODO50</p>
+<h2 id="fix-the-glitch" class="section-header"><a href="#fix-the-glitch">16.2 Fix the glitch</a></h2>
+<p>TODO</p>
 <p>We mod #BL602 #NuttX to set the GPIO Output Enable Register at 0x40000190 (BL602_GPIO_CFGCTL34)</p>
 <p>To fix it, edit this file…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/bl602/bl602_gpio.c</code></pre></div>
@@ -779,7 +784,8 @@ int bl602_configgpio(gpio_pinset_t cfgset)
 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio8a.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/pull/1/files">(Source)</a></p>
-<p>TODO48</p>
+<h2 id="test-the-fix" class="section-header"><a href="#test-the-fix">16.3 Test the fix</a></h2>
+<p>TODO</p>
 <p>After fixing GPIO Output, #NuttX now blinks the Blue LED (GPIO 11) on PineCone #BL602! 🎉</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; gpio -o 1 /dev/gpout1
 Driver: /dev/gpout1
