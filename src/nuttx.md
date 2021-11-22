@@ -880,6 +880,8 @@ Congratulations NuttX is now running on BL602 / BL604!
 
 This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.
 
+## Observe the glitch
+
 TODO
 
 Flipping GPIO 11 doesn't blink the LED on #BL602 #NuttX ... Let's investigate 🤔
@@ -914,7 +916,9 @@ TODO49
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010)
 
-TODO50
+## Fix the glitch
+
+TODO
 
 We mod #BL602 #NuttX to set the GPIO Output Enable Register at 0x40000190 (BL602_GPIO_CFGCTL34)
 
@@ -955,7 +959,9 @@ int bl602_configgpio(gpio_pinset_t cfgset)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/pull/1/files)
 
-TODO48
+## Test the fix
+
+TODO
 
 After fixing GPIO Output, #NuttX now blinks the Blue LED (GPIO 11) on PineCone #BL602! 🎉
 
