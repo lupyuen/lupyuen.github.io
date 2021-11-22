@@ -328,26 +328,52 @@ Builtin Apps:
 <p><em>Can we do this to flip an LED on and off?</em></p>
 <p>Not yet. We haven’t told NuttX which <strong>GPIO Pin</strong> our LED is connected to!</p>
 <p>Let’s learn how.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-pins2.png" alt="NuttX Pin Definitions" /></p>
 <h1 id="configure-pins" class="section-header"><a href="#configure-pins">6 Configure Pins</a></h1>
-<p>TODO</p>
-<p>No device tree</p>
-<p>Here are the Pin Definitions for #BL602 #NuttX … We’ll change this in a while</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-pins2.png" alt="" /></p>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h">(Source)</a></p>
-<p>TODO44</p>
-<p>How shall we flip GPIO 11, the Blue LED on PineCone #BL602? We edit the #NuttX GPIO Pin Definition … And GPIO 11 becomes “/dev/gpout1”</p>
-<p>From <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L42-L49">board.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>////  GPIO Output Pin:
-////  Changed GPIO_PIN1 to GPIO_PIN11 (Blue LED on PineCone BL602)
-////  Changed GPIO_PULLDOWN to GPIO_FLOAT
-#define BOARD_GPIO_OUT1   (GPIO_OUTPUT | GPIO_FLOAT | \
-                           GPIO_FUNC_SWGPIO | GPIO_PIN11)
+<p><em>How do we define the Pin Numbers for GPIO, UART, PWM, I2C, SPI, …?</em></p>
+<p>We define the Pin Numbers in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h"><strong>board.h</strong></a></p>
+<p>(See pic above)</p>
+<p><em>How shall we set the GPIO Output Pin for our LED?</em></p>
+<p>On PineCone BL602 the Blue LED is connected on <strong>GPIO 11</strong>.</p>
+<p>We change the Pin Definition for <strong>BOARD_GPIO_OUT1</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">board.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  GPIO Output Pin:
+//  Changed GPIO_PIN1 to GPIO_PIN11 (Blue LED on PineCone BL602)
+//  Changed GPIO_PULLDOWN to GPIO_FLOAT
+#define BOARD_GPIO_OUT1 \
+  (GPIO_OUTPUT | GPIO_FLOAT | \
+    GPIO_FUNC_SWGPIO | GPIO_PIN11)
 
-////  Previously:
-////  #define BOARD_GPIO_OUT1   (GPIO_OUTPUT | GPIO_PULLDOWN | \
-////                             GPIO_FUNC_SWGPIO | GPIO_PIN1)</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio3a.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">(Source)</a></p>
+//  Previously:
+//  #define BOARD_GPIO_OUT1 \
+//    (GPIO_OUTPUT | GPIO_PULLDOWN | \
+//      GPIO_FUNC_SWGPIO | GPIO_PIN1)</code></pre></div>
+<p>(Make sure the Pin Number isn’t used by another port!)</p>
+<p>TODO</p>
+<p>Patch GPIO Output</p>
+<p>No device tree</p>
+<p>Check ref manual</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio3a.png" alt="Updated GPIO Pin Definition" /></p>
+<p><strong>Rebuild and copy</strong> the NuttX Firmware…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Rebuild NuttX
+make
+
+#  For Linux: Change $HOME/blflash to the full path of blflash
+cp nuttx.bin $HOME/blflash
+
+#  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
+#  /mnt/c/blflash refers to c:\blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
+<p><strong>Flash and run</strong> the NuttX Firmware with these steps…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#flash-nuttx"><strong>“Flash NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#run-nuttx"><strong>“Run NuttX”</strong></a></p>
+</li>
+</ul>
+<p>We’re ready to test the LED!</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio4c.png" alt="Testing the LED" /></p>
 <h1 id="gpio-driver" class="section-header"><a href="#gpio-driver">7 GPIO Driver</a></h1>
 <p>TODO</p>
 <p>GPIO Demo calls “ioctl” to control the GPIO Pins on #BL602 #NuttX</p>
