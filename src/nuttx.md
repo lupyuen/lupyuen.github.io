@@ -450,17 +450,25 @@ We're ready to test the LED!
 
 # Test the LED
 
-TODO
+Let's flip PineCone BL602's __LED on and off__!
+
+The Blue LED is wired to GPIO 11 like so...
+
+-   Blue LED is __On__ when GPIO 11 is __Low__
+
+-   Blue LED is __Off__ when GPIO 11 is __High__
+
+At startup, the Blue LED is __On__ (because the default GPIO Output is Low)...
 
 > ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
 
-TODO
+At the NuttX Shell, enter this to flip GPIO 11 to __High__...
 
 ```bash
 gpio -o 1 /dev/gpout1
 ```
 
-TODO
+NuttX flips GPIO 11 from __Low to High__...
 
 ```text
 Driver: /dev/gpout1
@@ -469,17 +477,19 @@ Driver: /dev/gpout1
   Verify:        Value=1
 ```
 
-TODO
+Our Blue LED switches __Off__...
 
 > ![LED Off](https://lupyuen.github.io/images/nuttx-ledoff.jpg)
 
-TODO
+So far so good!
+
+Enter this to flip GPIO 11 to __Low__...
 
 ```bash
 gpio -o 0 /dev/gpout1
 ```
 
-TODO
+As expected, NuttX flips GPIO 11 from __High to Low__...
 
 ```text
 Driver: /dev/gpout1
@@ -488,9 +498,13 @@ Driver: /dev/gpout1
   Verify:        Value=0
 ```
 
-TODO
+Our Blue LED switches __On__...
 
 > ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
+
+Congratulations we have successfully tested the BL602 LED with NuttX!
+
+[(If we're controlling LEDs, consider using NuttX's LED Driver)](https://nuttx.apache.org/docs/latest/reference/os/led.html)
 
 # GPIO Driver
 
