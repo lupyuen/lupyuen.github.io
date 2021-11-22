@@ -516,7 +516,9 @@ TODO
 
 We start at the "gpio" command
 
-GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
+From the pic above we see that the "gpio" command calls...
+
+-   ioctl() to control the GPIO Pins on #BL602 #NuttX
 
 [GPIO ioctl interface](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h)
 
