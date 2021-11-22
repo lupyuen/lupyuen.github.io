@@ -73,8 +73,8 @@
 <li><a href="#enable-gpio-driver">4.2 Enable GPIO Driver</a><ul></ul></li>
 <li><a href="#enable-gpio-demo">4.3 Enable GPIO Demo</a><ul></ul></li>
 <li><a href="#rebuild-nuttx">4.4 Rebuild NuttX</a><ul></ul></li></ul></li>
-<li><a href="#configure-pins">5 Configure Pins</a><ul></ul></li>
-<li><a href="#gpio-demo">6 GPIO Demo</a><ul></ul></li>
+<li><a href="#gpio-demo">5 GPIO Demo</a><ul></ul></li>
+<li><a href="#configure-pins">6 Configure Pins</a><ul></ul></li>
 <li><a href="#gpio-driver">7 GPIO Driver</a><ul></ul></li>
 <li><a href="#basic-interpreter">8 BASIC Interpreter</a><ul></ul></li>
 <li><a href="#spi-demo">9 SPI Demo</a><ul></ul></li>
@@ -260,10 +260,43 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx#run-nuttx"><strong>“Run NuttX”</strong></a></p>
 </li>
 </ul>
+<p>Let’s run the new commands: “help”, “ls” and “gpio”.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio2b.png" alt="ls and gpio commands" /></p>
+<h1 id="gpio-demo" class="section-header"><a href="#gpio-demo">5 GPIO Demo</a></h1>
+<p>At the NuttX Shell, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div>
+<p>(“?” works too)</p>
+<p>NuttX says that the <strong>“ls” and “gpio” commands</strong> are now available…</p>
+<div class="example-wrap"><pre class="language-text"><code>help usage:  help [-v] [&lt;cmd&gt;]
+  ?      help   ls     uname
+Builtin Apps:
+  bas       timer     sh        getprime  hello     nsh       gpio</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>/dev:
+ console
+ gpin0
+ gpint2
+ gpout1
+ null
+ timer0
+ zero</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>gpio -o 1 /dev/gpout1</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Driver: /dev/gpout1
+  Output pin:    Value=0
+  Writing:       Value=1
+  Verify:        Value=1</code></pre></div>
 <p>TODO</p>
 <p>“help” shows the commands available on #BL602 #NuttX … “ls /dev” reveals the GPIO Pins that we may control … Yep everything looks like a file!</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio2a.png" alt="help, ls and gpio commands" /></p>
-<h1 id="configure-pins" class="section-header"><a href="#configure-pins">5 Configure Pins</a></h1>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio.png" alt="" /></p>
+<p>TODO45</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="" /></p>
+<p>TODO46</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio4b.png" alt="" /></p>
+<h1 id="configure-pins" class="section-header"><a href="#configure-pins">6 Configure Pins</a></h1>
 <p>TODO</p>
 <p>No device tree</p>
 <p>Here are the Pin Definitions for #BL602 #NuttX … We’ll change this in a while</p>
@@ -283,15 +316,6 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 ////                             GPIO_FUNC_SWGPIO | GPIO_PIN1)</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio3a.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">(Source)</a></p>
-<h1 id="gpio-demo" class="section-header"><a href="#gpio-demo">6 GPIO Demo</a></h1>
-<p>TODO13</p>
-<div class="example-wrap"><pre class="language-bash"><code>gpio -o 1 /dev/gpout1
-gpio -o 0 /dev/gpout1</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio.png" alt="" /></p>
-<p>TODO45</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="" /></p>
-<p>TODO46</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio4b.png" alt="" /></p>
 <h1 id="gpio-driver" class="section-header"><a href="#gpio-driver">7 GPIO Driver</a></h1>
 <p>TODO</p>
 <p>GPIO Demo calls “ioctl” to control the GPIO Pins on #BL602 #NuttX</p>
