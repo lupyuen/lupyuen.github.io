@@ -298,6 +298,8 @@ NuttX reveals the devices that we may control...
 
 -   __/dev/gpin0__ reads from GPIO Input
 
+    (Because we enabled the GPIO Driver)
+
 -   __/dev/gpint2__ captures the GPIO Interrupt
 
 -   __/dev/gpout1__ writes to GPIO Output
