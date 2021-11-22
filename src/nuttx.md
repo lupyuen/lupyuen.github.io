@@ -510,7 +510,11 @@ Congratulations we have successfully tested the BL602 LED with NuttX!
 
 # GPIO Driver
 
+Let's look inside NuttX to understand how the GPIO Driver works.
+
 TODO
+
+We start at the "gpio" command
 
 GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
 
