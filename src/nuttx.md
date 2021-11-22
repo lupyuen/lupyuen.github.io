@@ -294,19 +294,43 @@ NuttX reveals the devices that we may control...
  zero
 ```
 
-TODO
+-   __/dev/console__ is the Serial (UART) Console
+
+-   __/dev/gpin0__ reads from GPIO Input
+
+-   __/dev/gpint2__ captures the GPIO Interrupt
+
+-   __/dev/gpout1__ writes to GPIO Output
+
+    (But which GPIO Pin? We'll learn in a while)
+
+-   __/dev/null__ is the Null Device
+
+    [(Same as Linux)](https://en.wikipedia.org/wiki/Null_device)
+
+-   __/dev/timer0__ is the System Timer
+
+    (We've seen this earlier)
+
+-   __/dev/zero__ is the Null Source
+
+    [(Same as Linux)](https://en.wikipedia.org/wiki//dev/zero)
+
+Let's set the GPIO Output at __/dev/gpout1__.
 
 ![gpio command](https://lupyuen.github.io/images/nuttx-gpio.png)
 
 ## Write to GPIO
 
-TODO
+Enter this to set the __GPIO Output__ to High...
 
 ```bash
 gpio -o 1 /dev/gpout1
 ```
 
-TODO
+(As explained in the pic above)
+
+The GPIO Output changes from __Low to High__...
 
 ```text
 Driver: /dev/gpout1
@@ -315,7 +339,11 @@ Driver: /dev/gpout1
   Verify:        Value=1
 ```
 
-TODO
+_Can we do this to flip an LED on and off?_
+
+Not yet. We haven't told NuttX which __GPIO Pin__ our LED is connected to!
+
+Let's learn how.
 
 # Configure Pins
 
