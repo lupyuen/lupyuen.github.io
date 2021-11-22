@@ -286,17 +286,47 @@ Builtin Apps:
  null
  timer0
  zero</code></pre></div>
-<p>TODO</p>
+<ul>
+<li>
+<p><strong>/dev/console</strong> is the Serial (UART) Console</p>
+</li>
+<li>
+<p><strong>/dev/gpin0</strong> reads from GPIO Input</p>
+</li>
+<li>
+<p><strong>/dev/gpint2</strong> captures the GPIO Interrupt</p>
+</li>
+<li>
+<p><strong>/dev/gpout1</strong> writes to GPIO Output</p>
+<p>(But which GPIO Pin? We’ll learn in a while)</p>
+</li>
+<li>
+<p><strong>/dev/null</strong> is the Null Device</p>
+<p><a href="https://en.wikipedia.org/wiki/Null_device">(Same as Linux)</a></p>
+</li>
+<li>
+<p><strong>/dev/timer0</strong> is the System Timer</p>
+<p>(We’ve seen this earlier)</p>
+</li>
+<li>
+<p><strong>/dev/zero</strong> is the Null Source</p>
+<p><a href="https://en.wikipedia.org/wiki//dev/zero">(Same as Linux)</a></p>
+</li>
+</ul>
+<p>Let’s set the GPIO Output at <strong>/dev/gpout1</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio.png" alt="gpio command" /></p>
 <h2 id="write-to-gpio" class="section-header"><a href="#write-to-gpio">5.2 Write to GPIO</a></h2>
-<p>TODO</p>
+<p>Enter this to set the <strong>GPIO Output</strong> to High…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gpio -o 1 /dev/gpout1</code></pre></div>
-<p>TODO</p>
+<p>(As explained in the pic above)</p>
+<p>The GPIO Output changes from <strong>Low to High</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Driver: /dev/gpout1
   Output pin:    Value=0
   Writing:       Value=1
   Verify:        Value=1</code></pre></div>
-<p>TODO</p>
+<p><em>Can we do this to flip an LED on and off?</em></p>
+<p>Not yet. We haven’t told NuttX which <strong>GPIO Pin</strong> our LED is connected to!</p>
+<p>Let’s learn how.</p>
 <h1 id="configure-pins" class="section-header"><a href="#configure-pins">6 Configure Pins</a></h1>
 <p>TODO</p>
 <p>No device tree</p>
