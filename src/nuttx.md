@@ -218,7 +218,7 @@ Hit __"Save"__...
 
 ![Save](https://lupyuen.github.io/images/nuttx-menu8.png)
 
-Hit __"OK"__ to save the NuttX Configuration to __".config"__.
+Then __"OK"__ to save the NuttX Configuration to __".config"__.
 
 Hit __"Exit"__ until __menuconfig__ quits.
 
