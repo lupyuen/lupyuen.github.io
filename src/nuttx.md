@@ -353,11 +353,13 @@ Let's learn how.
 
 _How do we define the Pin Numbers for GPIO, UART, PWM, I2C, SPI, ...?_
 
-We define the Pin Numbers in [__board.h__](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h)
+We define the Pin Numbers in [__board.h__](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h) (Pic above)
 
-(See pic above)
+__Note: Some pins on BL602 and BL604 may only be assigned to specific functions.__
 
-_How shall we set the GPIO Output Pin for our LED?_
+Refer to the [__BL602 / BL604 Reference Manual__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en), Section 3.2.8 (GPIO Function) for the Pin Description Table.
+
+_How shall we define the GPIO Output Pin for our LED?_
 
 On PineCone BL602 the Blue LED is connected on __GPIO 11__.
 
@@ -377,17 +379,50 @@ We change the Pin Definition for __BOARD_GPIO_OUT1__ like so: [board.h](https://
 //      GPIO_FUNC_SWGPIO | GPIO_PIN1)
 ```
 
-(Make sure the Pin Number isn't used by another port!)
+Make sure the Pin Number isn't used by another port!
 
-TODO
+[(FreeRTOS on BL602 uses a Device Tree to assign the pins)](https://lupyuen.github.io/articles/flash#device-tree)
 
-Patch GPIO Output
+## GPIO Glitch
 
-No device tree
+__Note:__ There's a glitch in the BL602 GPIO Driver that __prevents the GPIO Output from being set correctly__. 
 
-Check ref manual
+To fix the GPIO Output, edit this file...
 
-![Updated GPIO Pin Definition](https://lupyuen.github.io/images/nuttx-gpio3a.png)
+```text
+nuttx/arch/risc-v/src/bl602/bl602_gpio.c
+```
+
+And patch the __bl602_configgpio__ function like so: [bl602_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137)
+
+```c
+// Existing function
+int bl602_configgpio(gpio_pinset_t cfgset)
+{
+  // Existing code
+  ...
+  modifyreg32(regaddr, mask, cfg);
+  
+  // Insert this code near the end of the function...
+  // Enable GPIO Output if requested
+  if (!(cfgset & GPIO_INPUT))
+    {
+      modifyreg32(            // Modify the register...
+        BL602_GPIO_CFGCTL34,  // At address 0x40000190 (GPIO Enable Output)
+        0,                    // Don't clear any bits
+        (1 << pin)            // Set the bit for the GPIO Pin
+      );
+    }
+  // End of inserted code
+
+  // Existing code
+  return OK;
+}
+```
+
+[(More about the fix for GPIO Output)](https://lupyuen.github.io/articles/nuttx#appendix-fix-gpio-output)
+
+## Rerun NuttX
 
 __Rebuild and copy__ the NuttX Firmware...
 
@@ -813,19 +848,37 @@ TODO50
 
 We mod #BL602 #NuttX to set the GPIO Output Enable Register at 0x40000190 (BL602_GPIO_CFGCTL34)
 
+To fix it, edit this file...
+
+```text
+nuttx/arch/risc-v/src/bl602/bl602_gpio.c
+```
+
+And patch the __bl602_configgpio__ function like so: [bl602_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137)
+
 ```c
+// Existing function
+int bl602_configgpio(gpio_pinset_t cfgset)
+{
+  // Existing code
   ...
   modifyreg32(regaddr, mask, cfg);
   
+  // Insert this code near the end of the function...
   // Enable GPIO Output if requested
   if (!(cfgset & GPIO_INPUT))
     {
-      modifyreg32(
-        BL602_GPIO_CFGCTL34, 
-        0, 
-        (1 << pin)
+      modifyreg32(            // Modify the register...
+        BL602_GPIO_CFGCTL34,  // At address 0x40000190 (GPIO Enable Output)
+        0,                    // Don't clear any bits
+        (1 << pin)            // Set the bit for the GPIO Pin
       );
     }
+  // End of inserted code
+
+  // Existing code
+  return OK;
+}
 ```
 
 ![](https://lupyuen.github.io/images/nuttx-gpio8a.png)
