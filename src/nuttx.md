@@ -506,6 +506,8 @@ Congratulations we have successfully tested the BL602 LED with NuttX!
 
 [(If we're controlling LEDs, consider using NuttX's LED Driver)](https://nuttx.apache.org/docs/latest/reference/os/led.html)
 
+![GPIO Demo App](https://lupyuen.github.io/images/nuttx-gpio10a.png)
+
 # GPIO Driver
 
 TODO
@@ -513,8 +515,6 @@ TODO
 GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
 
 [GPIO ioctl interface](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h)
-
-![](https://lupyuen.github.io/images/nuttx-gpio10a.png)
 
 [(Source)](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c)
 
@@ -875,6 +875,8 @@ Congratulations NuttX is now running on BL602 / BL604!
 ![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
 # Appendix: Fix GPIO Output
+
+This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.
 
 TODO
 
