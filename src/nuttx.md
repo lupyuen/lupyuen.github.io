@@ -522,6 +522,8 @@ GPIO Demo calls "ioctl" to control the GPIO Pins on #BL602 #NuttX
 
 # BASIC Interpreter
 
+One of the best things about NuttX: It comes with many freebies... Like the __BASIC Interpreter!__
+
 TODO
 
 Application Configuration → Interpreters → Basic Interpreter Support
