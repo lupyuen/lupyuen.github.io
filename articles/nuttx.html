@@ -86,19 +86,19 @@
 <li><a href="#bl602-driver">8.3 BL602 Driver</a><ul></ul></li></ul></li>
 <li><a href="#basic-interpreter">9 BASIC Interpreter</a><ul>
 <li><a href="#blink-the-led">9.1 Blink the LED</a><ul></ul></li></ul></li>
-<li><a href="#spi-demo">10 SPI Demo</a><ul></ul></li>
-<li><a href="#why-nuttx">11 Why NuttX?</a><ul></ul></li>
-<li><a href="#rust-on-nuttx">12 Rust on NuttX</a><ul></ul></li>
-<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
-<li><a href="#notes">14 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">15 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#build-nuttx">15.1 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">15.2 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">15.3 Run NuttX</a><ul></ul></li></ul></li>
-<li><a href="#appendix-fix-gpio-output">16 Appendix: Fix GPIO Output</a><ul>
-<li><a href="#observe-the-glitch">16.1 Observe the glitch</a><ul></ul></li>
-<li><a href="#fix-the-glitch">16.2 Fix the glitch</a><ul></ul></li>
-<li><a href="#test-the-fix">16.3 Test the fix</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>26 Nov 2021</em></p>
+<li><a href="#why-nuttx">10 Why NuttX?</a><ul></ul></li>
+<li><a href="#rust-on-nuttx">11 Rust on NuttX</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#build-nuttx">14.1 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">14.2 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">14.3 Run NuttX</a><ul></ul></li></ul></li>
+<li><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a><ul>
+<li><a href="#observe-the-glitch">15.1 Observe the glitch</a><ul></ul></li>
+<li><a href="#fix-the-glitch">15.2 Fix the glitch</a><ul></ul></li>
+<li><a href="#test-the-fix">15.3 Test the fix</a><ul></ul></li></ul></li>
+<li><a href="#appendix-spi-demo">16 Appendix: SPI Demo</a><ul></ul></li></ul></nav><p>📝 <em>26 Nov 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-title.jpg" alt="Tasty Nutty Treat on PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Tasty Nutty Treat on PineDio Stack BL604 RISC-V Board</em></p>
 <p>Among all Embedded Operating Systems, <strong>Apache NuttX is truly unique</strong> because…</p>
@@ -613,18 +613,10 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <p>Yep it’s indeed possible to blink the LED in BASIC!</p>
 <p>(OK this code isn’t so legit… We ought to preserve the existing bits in the register, not overwrite them)</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic2a.png" alt="Blinking the LED in BASIC" /></p>
-<h1 id="spi-demo" class="section-header"><a href="#spi-demo">10 SPI Demo</a></h1>
-<p>TODO</p>
-<p>Spi demo: lseek, read, write</p>
-<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/lsm330spi_test/lsm330spi_test_main.c">lsm330spi_test</a></p>
-<p>SPI interface:</p>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">spi.h</a></p>
-<p><img src="https://lupyuen.github.io/images/nuttx-bl602.png" alt="BL602 Peripherals supported by #NuttX" /></p>
-<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support">(Source)</a></p>
-<h1 id="why-nuttx" class="section-header"><a href="#why-nuttx">11 Why NuttX?</a></h1>
+<h1 id="why-nuttx" class="section-header"><a href="#why-nuttx">10 Why NuttX?</a></h1>
 <p>Now that we understand NuttX inside out, let’s have a chat…</p>
-<p><em>I’m familiar with Embedded Coding on Arduino / STM32 / nRF52 / BL602. NuttX’s POSIX Compliance looks very strange to me: open(), read(), ioctl(), …</em></p>
-<p>Well NuttX’s <strong>POSIX Compliance</strong> might be a good thing for folks who are familiar with Linux and Single-Board Computers.</p>
+<p><em>I’m familiar with Embedded Coding on Arduino / STM32 / nRF52 / BL602. NuttX’s POSIX Interface looks very strange to me: open(), read(), ioctl(), …</em></p>
+<p>Well NuttX’s <strong>POSIX Interface</strong> might be a good thing for folks who are familiar with Linux and Single-Board Computers.</p>
 <p>The NuttX Team has done an incredible job enforcing <strong>API Consistency</strong> across all kinds of platforms. <strong>“Write once run anywhere”</strong> might be true on NuttX!</p>
 <p>In any case it’s hard to find an <strong>Open Source Embedded OS</strong> that supports so many platforms.</p>
 <p><em>For BL602 and BL604, shall I use NuttX or FreeRTOS (BL602 IoT SDK)?</em></p>
@@ -632,19 +624,17 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <p>Some features on BL602 / BL604 are <strong>not yet supported by NuttX</strong>. (Pic above)</p>
 <p>But NuttX on BL602 is <strong>getting better every day!</strong> <a href="https://github.com/apache/incubator-nuttx/commits/master/arch/risc-v/src/bl602">(See this)</a></p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761">(Though SPI with DMA is not yet supported on BL602 NuttX)</a></p>
-<p><em>Is there something we could do with Rust?</em></p>
-<p>Thanks for asking!</p>
-<p>TODO</p>
-<p>Implement Rust Embedded HAL on NuttX</p>
-<p>LoRa Driver for NuttX</p>
-<p>Copy from Linux Driver</p>
+<p><em>POSIX still looks kinda odd to me. Is there something we could do with Rust?</em></p>
+<p>Thanks for asking! Yes we could wrap the POSIX Interface into a <strong>Rust Embedded HAL</strong> that’s familiar with many Rust coders.</p>
+<p>And the Rust Embedded HAL might be <strong>portable across all NuttX platforms</strong>. Thanks to POSIX Compatibility!</p>
+<p>More about this in the next section.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-dma2.png" alt="SPI with DMA is not yet supported on BL602 NuttX" /></p>
-<h1 id="rust-on-nuttx" class="section-header"><a href="#rust-on-nuttx">12 Rust on NuttX</a></h1>
+<h1 id="rust-on-nuttx" class="section-header"><a href="#rust-on-nuttx">11 Rust on NuttX</a></h1>
 <p>TODO</p>
 <p>Implement Rust Embedded HAL on NuttX</p>
 <p>Portable to other implementations of NuttX</p>
 <p>Might become a friendlier API for NuttX</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -663,23 +653,27 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx.md"><code>lupyuen.github.io/src/nuttx.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1460322823122014211">this Twitter Thread</a></p>
 </li>
 <li>
-<p>More about NuttX on BL602…</p>
+<p>More about <strong>NuttX on BL602</strong>…</p>
 <p><a href="https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/"><strong>“How to install NuttX on BL602”</strong></a></p>
 </li>
 <li>
-<p>For NuttX on RISC-V ESP32-C3…</p>
+<p>For NuttX on <strong>RISC-V ESP32-C3</strong>…</p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en"><strong>“Installing Apache NuttX on Arch Linux for RISC-V and use it with RISC-V based ESP32-C3”</strong></a></p>
 </li>
+<li>
+<p><strong>Xiaomi</strong> is actively contributing to NuttX…</p>
+<p><a href="https://www.gizmochina.com/2020/11/05/xiaomi-launches-a-new-iot-software-platform-xiaomi-vela-based-on-nuttx-os/"><strong>“Xiaomi launches a new IoT Software Platform “Xiaomi Vela” based on NuttX OS”</strong></a></p>
+</li>
 </ol>
-<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">15 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a></h1>
 <p>Below are the steps to <strong>build, flash and run</strong> NuttX on BL602 and BL604.</p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">15.1 Build NuttX</a></h2>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">14.1 Build NuttX</a></h2>
 <p>Let’s build NuttX on <strong>Linux (Ubuntu)</strong> or <strong>WSL (Ubuntu)</strong>…</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
@@ -747,7 +741,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">15.2 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">14.2 Flash NuttX</a></h2>
 <p>Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
 <li>
@@ -824,7 +818,7 @@ cargo run flash nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">15.3 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">14.3 Run NuttX</a></h2>
 <p>Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
 <ol>
@@ -872,9 +866,9 @@ nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
-<h1 id="appendix-fix-gpio-output" class="section-header"><a href="#appendix-fix-gpio-output">16 Appendix: Fix GPIO Output</a></h1>
+<h1 id="appendix-fix-gpio-output" class="section-header"><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a></h1>
 <p>This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.</p>
-<h2 id="observe-the-glitch" class="section-header"><a href="#observe-the-glitch">16.1 Observe the glitch</a></h2>
+<h2 id="observe-the-glitch" class="section-header"><a href="#observe-the-glitch">15.1 Observe the glitch</a></h2>
 <p>TODO</p>
 <p>Flipping GPIO 11 doesn’t blink the LED on #BL602 #NuttX … Let’s investigate 🤔</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="" /></p>
@@ -892,7 +886,7 @@ nsh&gt;</code></pre></div>
 <p>#BL602 IoT SDK says that GPIO Output Enable Register is at 0x40000190 (GLB_GPIO_CFGCTL34) … Let’s set this register in #NuttX</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio7a.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010">(Source)</a></p>
-<h2 id="fix-the-glitch" class="section-header"><a href="#fix-the-glitch">16.2 Fix the glitch</a></h2>
+<h2 id="fix-the-glitch" class="section-header"><a href="#fix-the-glitch">15.2 Fix the glitch</a></h2>
 <p>TODO</p>
 <p>We mod #BL602 #NuttX to set the GPIO Output Enable Register at 0x40000190 (BL602_GPIO_CFGCTL34)</p>
 <p>To fix it, edit this file…</p>
@@ -922,7 +916,7 @@ int bl602_configgpio(gpio_pinset_t cfgset)
 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio8a.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/pull/1/files">(Source)</a></p>
-<h2 id="test-the-fix" class="section-header"><a href="#test-the-fix">16.3 Test the fix</a></h2>
+<h2 id="test-the-fix" class="section-header"><a href="#test-the-fix">15.3 Test the fix</a></h2>
 <p>TODO</p>
 <p>After fixing GPIO Output, #NuttX now blinks the Blue LED (GPIO 11) on PineCone #BL602! 🎉</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; gpio -o 1 /dev/gpout1
@@ -1012,6 +1006,14 @@ nsh&gt;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/4331ed3e326fb827c391e0f4e07c26c5">(See complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio6d.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052">Debug GPIO Output</a></p>
+<h1 id="appendix-spi-demo" class="section-header"><a href="#appendix-spi-demo">16 Appendix: SPI Demo</a></h1>
+<p>TODO</p>
+<p>Spi demo: lseek, read, write</p>
+<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/lsm330spi_test/lsm330spi_test_main.c">lsm330spi_test</a></p>
+<p>SPI interface:</p>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">spi.h</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-bl602.png" alt="BL602 Peripherals supported by #NuttX" /></p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support">(Source)</a></p>
 
     
 </body>
