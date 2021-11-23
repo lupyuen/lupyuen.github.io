@@ -560,14 +560,23 @@ The driver calls the __Board-Specific GPIO Driver__ to execute the command.
 
 _What is a Board-Specific Driver?_
 
-TODO
+PineCone BL602 and PineDio Stack BL604 are two __Dev Boards__ based on BL602 / BL604.
 
-From [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L432-L452)
+Each Dev Board has __hardware features that are specific__ to the board. Like LEDs connected on different GPIO Pins.
+
+NuttX isolates these board differences by calling a __Board-Specific Driver__.
+
+[(We're actually calling the Board-Specific Driver for BL602 EVB)](https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb)
+
+Here is our __Board-Specific GPIO Driver__: [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L432-L452)
 
 ```c
 //  Board-Specific GPIO Driver: Set the value of an output GPIO
 static int gpout_write(FAR struct gpio_dev_s *dev, bool value)
 {
+  //  Alias the GPIO Device as bl602xgpio
+  FAR struct bl602_gpio_dev_s *bl602xgpio =
+    (FAR struct bl602_gpio_dev_s *)dev;
   ...
   //  Call the BL602-Specific GPIO Driver
   bl602_gpiowrite(                  //  Set GPIO Output...
@@ -575,6 +584,12 @@ static int gpout_write(FAR struct gpio_dev_s *dev, bool value)
     value                           //  1 (High) or 0 (Low)
   );
 ```
+
+__g_gpiooutputs__ maps the GPIO Device (like "/dev/gpout1") to a __GPIO Pin Set__, which contains the __GPIO Pin Number__.
+
+(Which makes sense, because each board may map the Hardware Devices to different GPIO Pins)
+
+The Board-Specific Driver calls the __BL602-Specific GPIO Driver__ to set the GPIO Output, passing the GPIO Pin Set.
 
 ## BL602 Driver
 
@@ -586,9 +601,9 @@ From [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/arch/r
 //  BL602-Specific GPIO Driver: Set the value of an output GPIO
 void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 {
-  //  Get the GPIO Pin Number
+  //  Extract the GPIO Pin Number from Pin Set
   uint8_t pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
-  
+
   //  If we're setting the GPIO to High...
   if (value)
     {
