@@ -65,7 +65,7 @@ Let's test the Demo Apps.
 
 # Hello Demo
 
-At the __NuttX Shell__, enter...
+In the __NuttX Shell__, enter...
 
 ```bash
 hello
@@ -102,7 +102,7 @@ Let's run the Timer Demo App.
 
 # Timer Demo
 
-At the __NuttX Shell__, enter...
+In the __NuttX Shell__, enter...
 
 ```bash
 timer
@@ -254,7 +254,7 @@ We're ready to test the new commands!
 
 Let's run the new commands: __"help", "ls"__ and __"gpio"__.
 
-At the NuttX Shell, enter...
+In the NuttX Shell, enter...
 
 ```bash
 help
@@ -462,7 +462,7 @@ At startup, the Blue LED is __On__ (because the default GPIO Output is Low)...
 
 > ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
 
-At the NuttX Shell, enter this to flip GPIO 11 to __High__...
+In the NuttX Shell, enter this to flip GPIO 11 to __High__...
 
 ```bash
 gpio -o 1 /dev/gpout1
@@ -638,57 +638,87 @@ Let's try out a fun freebie for NuttX... BASIC Interpreter!
 
 One of the best things about NuttX: It comes with many freebies... Like the __BASIC Interpreter!__
 
-TODO
+Let's do some BASIC on BL602 NuttX...
 
-Application Configuration → Interpreters → Basic Interpreter Support
+1.  Configure our NuttX Build...
 
-(Pic above)
+    ```bash
+    make menuconfig
+    ```
 
-![](https://lupyuen.github.io/images/nuttx-basic1.png)
+1.  Select __"Application Configuration → Interpreters"__
+
+1.  Check the box for __"Basic Interpreter Support"__
+
+    (Pic above)
+
+1.  Save the configuration and exit __menuconfig__
+
+1.  BL602 doesn't support environment variables and folders, so we need to patch the source files...
+
+    [__"Disable environment variables and folders"__](https://github.com/lupyuen/incubator-nuttx-apps/commit/bc68ad8a16cb60ecff53d7a8644e6c6d6b8e5fd6#diff-05996067e34eb452c24a3e0966a8f6e974f6b54c4f3d767140a92fb5c67c55ec)
+
+    (See the modified files: [bas_global.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_global.c) and [bas_statement.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_statement.c))
+
+1.  We'll use "peek" and "poke" in a while. Patch the source file to enable the commands...
+
+    [__"Enable peek and poke"__](https://github.com/lupyuen/incubator-nuttx-apps/commit/cda8a79fae74ea85f276302b67d32c01adb561bc)
+
+    [(See the modified file)](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_fs.c)
+
+1.  Rebuild, reflash and rerun NuttX
+
+1.  In the NuttX Shell, enter...
+
+    ```bash
+    bas
+    ```
+
+1.  The __BASIC Interpreter__ comes to life!
+
+    ```text
+    bas 2.4
+    Copyright 1999-2014 Michael Haardt.
+    This is free software with ABSOLUTELY NO WARRANTY.
+    ```
+
+1.  Go ahead and run a __BASIC Program!__
+
+    ```bash
+    10 print "hello"
+    20 sleep 5
+    30 goto 10
+    list
+    run
+    ```
+
+![BASIC Interpreter](https://lupyuen.github.io/images/nuttx-basic1.png)
 
 (Childhood Memories 🥲)
 
-TODO
+## Blink the LED
 
-[Disable environment variables and folders](https://github.com/lupyuen/incubator-nuttx-apps/commit/bc68ad8a16cb60ecff53d7a8644e6c6d6b8e5fd6#diff-05996067e34eb452c24a3e0966a8f6e974f6b54c4f3d767140a92fb5c67c55ec)
+In the olden days we would "peek" and "poke" to [__light up pixels__](http://myoldmac.net/FAQ/Apple-II_Peek_Poke_Call.html) on our Apple ][... Let's do the same for our __BL602 LED!__
 
-[Enable peek and poke](https://github.com/lupyuen/incubator-nuttx-apps/commit/cda8a79fae74ea85f276302b67d32c01adb561bc)
-
-![](https://lupyuen.github.io/images/nuttx-basic3.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_fs.c#L1862-L1889)
-
-TODO34
-
-In the olden days we would "peek" and "poke" to light up individual pixels on our Apple ][... Let's do the same for our BL602 LED!
-
-http://myoldmac.net/FAQ/Apple-II_Peek_Poke_Call.html
-
-Blinking the #BL602 LED ... Works on #NuttX BASIC too! 🎉
+In the __BASIC Interpreter__, enter this...
 
 ```text
-nsh> bas
-bas 2.4
-Copyright 1999-2014 Michael Haardt.
-This is free software with ABSOLUTELY NO WARRANTY.
->
->
-> print peek(&h40000188)
- 0
-> poke &h40000188, &h800
->
->
-> print peek(&h40000188)
- 2048
-> poke &h40000188, &h00
->
->
->
+print peek(&h40000188)
+poke &h40000188, &h800
 ```
+
+TODO
+
+```text
+print peek(&h40000188)
+poke &h40000188, &h00
+```
+
+TODO
 
 (OK this code isn't so legit... We ought to preserve the existing bits in the register, not overwrite them)
 
-![](https://lupyuen.github.io/images/nuttx-basic2a.png)
+![Blinking the LED in BASIC](https://lupyuen.github.io/images/nuttx-basic2a.png)
 
 # SPI Demo
 
