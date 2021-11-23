@@ -744,6 +744,10 @@ The NuttX Team has done an incredible job enforcing __API Consistency__ across a
 
 In any case it's hard to find an __Open Source Embedded OS__ that supports so many platforms.
 
+![BL602 Peripherals supported by #NuttX](https://lupyuen.github.io/images/nuttx-bl602.png)
+
+[(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support)
+
 _For BL602 and BL604, shall I use NuttX or FreeRTOS (BL602 IoT SDK)?_
 
 Remember that the NuttX Team has built their own __Hardware Abstraction Layer (HAL)__ for BL602 / BL604. [(See this)](https://lupyuen.github.io/images/nuttx-hal.png)
@@ -754,6 +758,8 @@ But NuttX on BL602 is __getting better every day!__ [(See this)](https://github.
 
 [(Though SPI with DMA is not yet supported on BL602 NuttX)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761)
 
+![SPI with DMA is not yet supported on BL602 NuttX](https://lupyuen.github.io/images/nuttx-dma2.png)
+
 _POSIX still looks kinda odd to me. Is there something we could do with Rust?_
 
 Thanks for asking! Yes we could wrap the POSIX Interface into a __Rust Embedded HAL__ that's familiar with many Rust coders.
@@ -761,8 +767,6 @@ Thanks for asking! Yes we could wrap the POSIX Interface into a __Rust Embedded 
 And the Rust Embedded HAL might be __portable across all NuttX platforms__. Thanks to POSIX Compatibility!
 
 More about this in the next section.
-
-![SPI with DMA is not yet supported on BL602 NuttX](https://lupyuen.github.io/images/nuttx-dma2.png)
 
 # Rust on NuttX
 
@@ -1233,7 +1237,3 @@ Port lorawan driver for bl602
 SPI interface:
 
 [spi.h](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
-
-![BL602 Peripherals supported by #NuttX](https://lupyuen.github.io/images/nuttx-bl602.png)
-
-[(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support)
