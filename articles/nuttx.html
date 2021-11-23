@@ -491,7 +491,7 @@ static int gpio_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 <p>This is a <a href="https://nuttx.apache.org/docs/latest/components/drivers/character/index.html"><strong>Character Device Driver</strong></a> that handles each GPIO Driver Command (like GPIOC_WRITE).</p>
 <p>The driver calls the <strong>Board-Specific GPIO Driver</strong> to execute the command.</p>
 <h2 id="board-driver" class="section-header"><a href="#board-driver">8.2 Board Driver</a></h2>
-<p><em>What is a Board-Specific Driver?</em></p>
+<p><em>What’s a Board-Specific Driver?</em></p>
 <p>PineCone BL602 and PineDio Stack BL604 are two <strong>Dev Boards</strong> based on BL602 / BL604.</p>
 <p>Each Dev Board has <strong>hardware features that are specific</strong> to the board. Like LEDs connected on different GPIO Pins.</p>
 <p>NuttX isolates these board differences by calling a <strong>Board-Specific Driver</strong>.</p>
