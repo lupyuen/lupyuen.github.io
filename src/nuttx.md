@@ -772,7 +772,13 @@ TODO
 
 Implement Rust Embedded HAL on NuttX
 
-https://docs.rs/embedded-hal
+We could wrap the POSIX Interface into a __Rust Embedded HAL__ that's familiar to many Rust coders.
+
+And the Rust Embedded HAL might be __portable across all NuttX platforms__. Thanks to POSIX Compatibility!
+
+Might become a friendlier API for NuttX
+
+[Rust Embedded HAL](https://docs.rs/embedded-hal)
 
 [GPIO](https://docs.rs/embedded-hal/0.2.6/embedded_hal/digital/v2/index.html)
 
@@ -781,10 +787,6 @@ https://docs.rs/embedded-hal
 [Blocking I2C](https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/i2c/index.html)
 
 [Blocking SPI](https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/spi/index.html)
-
-Portable to other implementations of NuttX
-
-Might become a friendlier API for NuttX
 
 # What's Next
 
