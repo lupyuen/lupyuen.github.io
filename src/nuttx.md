@@ -318,7 +318,7 @@ NuttX reveals the devices that we may control...
 
     [(Same as Linux)](https://en.wikipedia.org/wiki//dev/zero)
 
-Let's set the GPIO Output at __/dev/gpout1__.
+Let's write to the GPIO Output at __/dev/gpout1__.
 
 ![gpio command](https://lupyuen.github.io/images/nuttx-gpio.png)
 
@@ -510,19 +510,137 @@ Congratulations we have successfully tested the BL602 LED with NuttX!
 
 # GPIO Driver
 
-Let's look inside NuttX to understand how the GPIO Driver works.
+Let's look inside NuttX to understand how the __GPIO Driver__ works.
+
+We start at the __"gpio"__ command: [gpio_main.c](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c)
+
+From the pic above we see that the __"gpio"__ command calls...
+
+-   __open("/dev/gpout1", ...)__ to access the GPIO Pin
+
+-   __ioctl(..., GPIOC_READ, ...)__ to read the GPIO Pin
+
+-   __ioctl(..., GPIOC_WRITE, ...)__ to write to the GPIO Pin
+
+_What are __GPIOC_READ__ and __GPIOC_WRITE__?_
+
+__GPIOC_READ__ and __GPIOC_WRITE__ are GPIO Driver Commands defined in the NuttX GPIO Interface...
+
+-   [__NuttX GPIO Interface__](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h)
+
+The __"gpio"__ command works across all NuttX Platforms because it calls the common GPIO Interface.
+
+## GPIO Interface
 
 TODO
 
-We start at the "gpio" command
+From [gpio.c](https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/gpio.c#L296-L337)
 
-From the pic above we see that the "gpio" command calls...
+```c
+/****************************************************************************
+ * Name: gpio_ioctl
+ *
+ * Description:
+ *   Standard character driver ioctl method.
+ *
+ ****************************************************************************/
 
--   ioctl() to control the GPIO Pins on #BL602 #NuttX
+static int gpio_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
+{
+  FAR struct inode *inode;
+  FAR struct gpio_dev_s *dev;
+  irqstate_t flags;
+  pid_t pid;
+  int ret;
+  int i;
+  int j = 0;
 
-[GPIO ioctl interface](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h)
+  DEBUGASSERT(filep != NULL && filep->f_inode != NULL);
+  inode = filep->f_inode;
+  DEBUGASSERT(inode->i_private != NULL);
+  dev = inode->i_private;
 
-[(Source)](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c)
+  switch (cmd)
+    {
+      /* Command:     GPIOC_WRITE
+       * Description: Set the value of an output GPIO
+       * Argument:    0=output a low value; 1=output a high value
+       */
+
+      case GPIOC_WRITE:
+        if (dev->gp_pintype == GPIO_OUTPUT_PIN ||
+            dev->gp_pintype == GPIO_OUTPUT_PIN_OPENDRAIN)
+          {
+            DEBUGASSERT(arg == 0ul || arg == 1ul);
+            ret = dev->gp_ops->go_write(dev, (bool)arg);
+          }
+        else
+          {
+            ret = -EACCES;
+          }
+        break;
+```
+
+## Board Driver
+
+TODO
+
+From [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L432-L452)
+
+```c
+/****************************************************************************
+ * Name: gpout_write
+ *
+ * Description:
+ *   write gpio.
+ *
+ ****************************************************************************/
+
+static int gpout_write(FAR struct gpio_dev_s *dev, bool value)
+{
+  FAR struct bl602_gpio_dev_s *bl602xgpio =
+    (FAR struct bl602_gpio_dev_s *)dev;
+
+  DEBUGASSERT(bl602xgpio != NULL);
+  DEBUGASSERT(bl602xgpio->id < BOARD_NGPIOOUT);
+  gpioinfo("Writing %d\n", (int)value);
+
+  bl602_gpiowrite(g_gpiooutputs[bl602xgpio->id], value);
+
+  return OK;
+}
+```
+
+## BL602 Driver
+
+TODO
+
+From [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209)
+
+```c
+/****************************************************************************
+ * Name: bl602_gpiowrite
+ *
+ * Description:
+ *   Write one or zero to the selected GPIO pin
+ *
+ ****************************************************************************/
+
+void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
+{
+  uint8_t pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
+  if (value)
+    {
+      modifyreg32(BL602_GPIO_CFGCTL32, 0, (1 << pin));
+    }
+  else
+    {
+      modifyreg32(BL602_GPIO_CFGCTL32, (1 << pin), 0);
+    }
+}
+```
+
+TODO
 
 ![Enable BASIC Interpreter](https://lupyuen.github.io/images/nuttx-basic4.png)
 
@@ -652,7 +770,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1460322823122014211)
 
-1.  TODO: ["How to install NuttX on BL602"](https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/)
+1.  More about NuttX on BL602...
+
+    [__"How to install NuttX on BL602"__](https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/)
+
+1.  For NuttX on RISC-V ESP32-C3...
+
+    [__"Installing Apache NuttX on Arch Linux for RISC-V and use it with RISC-V based ESP32-C3"__](https://popolon.org/gblog3/?p=1977&lang=en)
 
 # Appendix: Build, Flash and Run NuttX
 
