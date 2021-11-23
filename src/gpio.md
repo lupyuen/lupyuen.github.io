@@ -129,7 +129,7 @@ Let's find out how we made this work.
 
 -   Yep! Very soon we shall write embedded programs for PineCone BL602 the simpler safer way in __Rust and Mynewt__. (Without the headaches of C Pointers!)
 
-[__UPDATE: Check out Apache NuttX operating system for BL602__](https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb)
+[__UPDATE: Check out Apache NuttX operating system for BL602__](https://lupyuen.github.io/articles/nuttx)
 
 # Mynewt and BL602 Layers
 

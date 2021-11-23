@@ -943,9 +943,7 @@ In Feb 2021 [`9names`](https://github.com/9names) created a new project that run
 
 __Apache NuttX__ OS has been ported recently to BL602 (Jan 2021)...
 
--   [__"How to install NuttX on BL602"__](https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/)
-
--   [__Source Code for NuttX on BL602__](https://github.com/bouffalolab/incubator-nuttx/tree/master/arch/risc-v/src/bl602)
+-   [__"Apache NuttX OS on RISC-V BL602 and BL604"__](https://lupyuen.github.io/articles/nuttx)
 
 NuttX runs on Bare Metal BL602 in __XIP Flash Memory__ (flashed over UART), without BL602 IoT SDK.
 

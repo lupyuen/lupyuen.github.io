@@ -24,7 +24,7 @@ Since FreeRTOS is already supported on BL602 (for multitasking Bluetooth LE and 
 
 It's a great way to learn the internals of BL602.  And this article will be a valuable resource for porting to BL602 other embedded operating systems, like Zephyr and RIOT.
 
-[__UPDATE: Check out Apache NuttX operating system for BL602__](https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb)
+[__UPDATE: Check out Apache NuttX operating system for BL602__](https://lupyuen.github.io/articles/nuttx)
 
 [__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
 

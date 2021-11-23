@@ -97,7 +97,7 @@ Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontr
     -   Supported by [FreeRTOS + AliOS](https://github.com/alibaba/AliOS-Things)
     -   __Not Supported by PlatformIO, Mynewt, RIOT and Zephyr__
 
-    [__UPDATE: Check out Apache NuttX operating system for BL602__](https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb)
+    [__UPDATE: Check out Apache NuttX operating system for BL602__](https://lupyuen.github.io/articles/nuttx)
 
     [__UPDATE: Check out Zephyr for BL602__](https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst)
 
