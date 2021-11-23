@@ -513,8 +513,9 @@ static int gpout_write(FAR struct gpio_dev_s *dev, bool value)
 <p>(Which makes sense, because each board may map the Hardware Devices to different GPIO Pins)</p>
 <p>The Board-Specific Driver calls the <strong>BL602-Specific GPIO Driver</strong> to set the GPIO Output, passing the GPIO Pin Set.</p>
 <h2 id="bl602-driver" class="section-header"><a href="#bl602-driver">8.3 BL602 Driver</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209">bl602_gpio.c</a></p>
+<p>The <strong>BL602-Specific GPIO Driver</strong> manipulates the BL602 Hardware Registers to perform GPIO Functions. </p>
+<p>(The driver is called by the Board-Specific Drivers for all BL602 boards)</p>
+<p>Here’s how the BL602-Specific GPIO Driver sets the <strong>GPIO Output</strong>:  <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209">bl602_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  BL602-Specific GPIO Driver: Set the value of an output GPIO
 void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 {
@@ -535,7 +536,10 @@ void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 }</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57">(<strong>modifyreg32</strong> is defined here)</a></p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_glb.h#L167"><strong>BL602_GPIO_CFGCTL32</strong></a> is the Address of the <strong>GPIO Output Register</strong>: <code>0x40000188</code></p>
-<p>TODO</p>
+<p>This code looks similar to <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L2124-L2148"><strong>GLB_GPIO_Write</strong></a> from BL602 IoT SDK’s <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_std/bl602_std/StdDriver"><strong>Standard Driver</strong></a>.</p>
+<p>That’s because NuttX implements its own <strong>Hardware Abstraction Layer (HAL)</strong> for BL602.</p>
+<p>(Which might have quirks different from the BL602 IoT SDK)</p>
+<p>Let’s try out a fun freebie for NuttX… BASIC Interpreter!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic4.png" alt="Enable BASIC Interpreter" /></p>
 <h1 id="basic-interpreter" class="section-header"><a href="#basic-interpreter">9 BASIC Interpreter</a></h1>
 <p>One of the best things about NuttX: It comes with many freebies… Like the <strong>BASIC Interpreter!</strong></p>
@@ -634,6 +638,7 @@ This is free software with ABSOLUTELY NO WARRANTY.
 <h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">15.1 Build NuttX</a></h2>
 <p>Let’s build NuttX on <strong>Linux (Ubuntu)</strong> or <strong>WSL (Ubuntu)</strong>…</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
+<p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
 <ol>
 <li>
 <p>Download the <strong>RISC-V GCC Toolchain</strong> from BL602 IoT SDK…</p>
