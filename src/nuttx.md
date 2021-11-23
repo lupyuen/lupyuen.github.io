@@ -732,29 +732,13 @@ Yep it's indeed possible to blink the LED in BASIC!
 
 ![Blinking the LED in BASIC](https://lupyuen.github.io/images/nuttx-basic2a.png)
 
-# SPI Demo
-
-TODO
-
-Spi demo: lseek, read, write
-
-[lsm330spi_test](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/lsm330spi_test/lsm330spi_test_main.c)
-
-SPI interface:
-
-[spi.h](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
-
-![BL602 Peripherals supported by #NuttX](https://lupyuen.github.io/images/nuttx-bl602.png)
-
-[(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support)
-
 # Why NuttX?
 
 Now that we understand NuttX inside out, let's have a chat...
 
-_I'm familiar with Embedded Coding on Arduino / STM32 / nRF52 / BL602. NuttX's POSIX Compliance looks very strange to me: open(), read(), ioctl(), ..._
+_I'm familiar with Embedded Coding on Arduino / STM32 / nRF52 / BL602. NuttX's POSIX Interface looks very strange to me: open(), read(), ioctl(), ..._
 
-Well NuttX's __POSIX Compliance__ might be a good thing for folks who are familiar with Linux and Single-Board Computers.
+Well NuttX's __POSIX Interface__ might be a good thing for folks who are familiar with Linux and Single-Board Computers.
 
 The NuttX Team has done an incredible job enforcing __API Consistency__ across all kinds of platforms. __"Write once run anywhere"__ might be true on NuttX!
 
@@ -770,17 +754,13 @@ But NuttX on BL602 is __getting better every day!__ [(See this)](https://github.
 
 [(Though SPI with DMA is not yet supported on BL602 NuttX)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761)
 
-_Is there something we could do with Rust?_
+_POSIX still looks kinda odd to me. Is there something we could do with Rust?_
 
-Thanks for asking!
+Thanks for asking! Yes we could wrap the POSIX Interface into a __Rust Embedded HAL__ that's familiar with many Rust coders.
 
-TODO
+And the Rust Embedded HAL might be __portable across all NuttX platforms__. Thanks to POSIX Compatibility!
 
-Implement Rust Embedded HAL on NuttX
-
-LoRa Driver for NuttX
-
-Copy from Linux Driver
+More about this in the next section.
 
 ![SPI with DMA is not yet supported on BL602 NuttX](https://lupyuen.github.io/images/nuttx-dma2.png)
 
@@ -816,13 +796,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1460322823122014211)
 
-1.  More about NuttX on BL602...
+1.  More about __NuttX on BL602__...
 
     [__"How to install NuttX on BL602"__](https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/)
 
-1.  For NuttX on RISC-V ESP32-C3...
+1.  For NuttX on __RISC-V ESP32-C3__...
 
     [__"Installing Apache NuttX on Arch Linux for RISC-V and use it with RISC-V based ESP32-C3"__](https://popolon.org/gblog3/?p=1977&lang=en)
+
+1.  __Xiaomi__ is actively contributing to NuttX...
+
+    [__"Xiaomi launches a new IoT Software Platform “Xiaomi Vela” based on NuttX OS"__](https://www.gizmochina.com/2020/11/05/xiaomi-launches-a-new-iot-software-platform-xiaomi-vela-based-on-nuttx-os/)
 
 # Appendix: Build, Flash and Run NuttX
 
@@ -1235,3 +1219,19 @@ nsh>
 ![](https://lupyuen.github.io/images/nuttx-gpio6d.png)
 
 [Debug GPIO Output](https://github.com/lupyuen/incubator-nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052)
+
+# Appendix: SPI Demo
+
+TODO
+
+Spi demo: lseek, read, write
+
+[lsm330spi_test](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/lsm330spi_test/lsm330spi_test_main.c)
+
+SPI interface:
+
+[spi.h](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
+
+![BL602 Peripherals supported by #NuttX](https://lupyuen.github.io/images/nuttx-bl602.png)
+
+[(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support)
