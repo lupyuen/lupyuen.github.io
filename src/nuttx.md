@@ -754,15 +754,13 @@ Remember that the NuttX Team has built their own __Hardware Abstraction Layer (H
 
 Some features on BL602 / BL604 are __not yet supported by NuttX__. (Pic above)
 
-But NuttX on BL602 is __getting better every day!__ [(See this)](https://github.com/apache/incubator-nuttx/commits/master/arch/risc-v/src/bl602)
+But NuttX on BL602 is [__getting better every day!__](https://github.com/apache/incubator-nuttx/commits/master/arch/risc-v/src/bl602)
 
 [(Though SPI with DMA is not yet supported on BL602 NuttX)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761)
 
-![SPI with DMA is not yet supported on BL602 NuttX](https://lupyuen.github.io/images/nuttx-dma2.png)
-
 _POSIX still looks kinda odd to me. Is there something we could do with Rust?_
 
-Thanks for asking! Yes we could wrap the POSIX Interface into a __Rust Embedded HAL__ that's familiar with many Rust coders.
+Thanks for asking! Yes we could wrap the POSIX Interface into a __Rust Embedded HAL__ that's familiar to many Rust coders.
 
 And the Rust Embedded HAL might be __portable across all NuttX platforms__. Thanks to POSIX Compatibility!
 
