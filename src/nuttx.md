@@ -1226,6 +1226,8 @@ TODO
 
 Spi demo: lseek, read, write
 
+Port lorawan driver for bl602
+
 [lsm330spi_test](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/lsm330spi_test/lsm330spi_test_main.c)
 
 SPI interface:
