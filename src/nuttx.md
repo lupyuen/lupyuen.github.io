@@ -770,6 +770,10 @@ But NuttX on BL602 is __getting better every day!__ [(See this)](https://github.
 
 [(Though SPI with DMA is not yet supported on BL602 NuttX)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761)
 
+_Is there something we could do with Rust?_
+
+Thanks for asking!
+
 TODO
 
 Implement Rust Embedded HAL on NuttX
