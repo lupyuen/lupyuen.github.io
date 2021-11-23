@@ -593,9 +593,11 @@ The Board-Specific Driver calls the __BL602-Specific GPIO Driver__ to set the GP
 
 ## BL602 Driver
 
-TODO
+The __BL602-Specific GPIO Driver__ manipulates the BL602 Hardware Registers to perform GPIO Functions. 
 
-From [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209)
+(The driver is called by the Board-Specific Drivers for all BL602 boards)
+
+Here's how the BL602-Specific GPIO Driver sets the __GPIO Output__:  [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209)
 
 ```c
 //  BL602-Specific GPIO Driver: Set the value of an output GPIO
@@ -622,7 +624,13 @@ void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 
 [__BL602_GPIO_CFGCTL32__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_glb.h#L167) is the Address of the __GPIO Output Register__: `0x40000188`
 
-TODO
+This code looks similar to [__GLB_GPIO_Write__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L2124-L2148) from BL602 IoT SDK's [__Standard Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_std/bl602_std/StdDriver).
+
+That's because NuttX implements its own __Hardware Abstraction Layer (HAL)__ for BL602.
+
+(Which might have quirks different from the BL602 IoT SDK)
+
+Let's try out a fun freebie for NuttX... BASIC Interpreter!
 
 ![Enable BASIC Interpreter](https://lupyuen.github.io/images/nuttx-basic4.png)
 
@@ -769,6 +777,8 @@ Below are the steps to __build, flash and run__ NuttX on BL602 and BL604.
 Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 
 [(Instructions for other platforms)](https://nuttx.apache.org/docs/latest/quickstart/install.html)
+
+[(See this for Arch Linux)](https://popolon.org/gblog3/?p=1977&lang=en)
 
 1.  Download the __RISC-V GCC Toolchain__ from BL602 IoT SDK...
 
