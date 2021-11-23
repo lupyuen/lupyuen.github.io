@@ -662,6 +662,8 @@ TODO34
 
 In the olden days we would "peek" and "poke" to light up individual pixels on our Apple ][... Let's do the same for our BL602 LED!
 
+http://myoldmac.net/FAQ/Apple-II_Peek_Poke_Call.html
+
 Blinking the #BL602 LED ... Works on #NuttX BASIC too! 🎉
 
 ```text
