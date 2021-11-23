@@ -592,13 +592,25 @@ run</code></pre></div></li>
 <p>(Childhood Memories 🥲)</p>
 <h2 id="blink-the-led" class="section-header"><a href="#blink-the-led">9.1 Blink the LED</a></h2>
 <p>In the olden days we would “peek” and “poke” to <a href="http://myoldmac.net/FAQ/Apple-II_Peek_Poke_Call.html"><strong>light up pixels</strong></a> on our Apple ][… Let’s do the same for our <strong>BL602 LED!</strong></p>
+<ol>
+<li>
 <p>In the <strong>BASIC Interpreter</strong>, enter this…</p>
 <div class="example-wrap"><pre class="language-text"><code>print peek(&amp;h40000188)
 poke &amp;h40000188, &amp;h800</code></pre></div>
-<p>TODO</p>
+<p>Remember that <code>0x40000188</code> is the Address of the <strong>GPIO Output Register</strong>.</p>
+<p>Setting (or “poking”) this register to <code>0x800</code> will set <strong>GPIO 11 to High</strong>.</p>
+<p>(Because <code>0x800</code> equals <code>1 &lt;&lt; 11</code>)</p>
+<p>Which <strong>switches off</strong> the Blue LED on PineCone BL602.</p>
+</li>
+<li>
+<p>Now do this…</p>
 <div class="example-wrap"><pre class="language-text"><code>print peek(&amp;h40000188)
 poke &amp;h40000188, &amp;h00</code></pre></div>
-<p>TODO</p>
+<p>Setting the GPIO Output Register to <code>0x00</code> will set <strong>GPIO 11 to Low</strong>.</p>
+<p>Which <strong>switches on</strong> the Blue LED.</p>
+</li>
+</ol>
+<p>Yep it’s indeed possible to blink the LED in BASIC!</p>
 <p>(OK this code isn’t so legit… We ought to preserve the existing bits in the register, not overwrite them)</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic2a.png" alt="Blinking the LED in BASIC" /></p>
 <h1 id="spi-demo" class="section-header"><a href="#spi-demo">10 SPI Demo</a></h1>
