@@ -744,37 +744,41 @@ SPI interface:
 
 [spi.h](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
 
+![BL602 Peripherals supported by #NuttX](https://lupyuen.github.io/images/nuttx-bl602.png)
+
+[(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support)
+
 # Why NuttX?
+
+Now that we understand NuttX inside out, let's have a chat...
+
+_I'm familiar with Embedded Coding on Arduino / STM32 / nRF52 / BL602. NuttX's POSIX Compliance looks very strange to me: open(), read(), ioctl(), ..._
+
+Well NuttX's __POSIX Compliance__ might be a good thing for folks who are familiar with Linux and Single-Board Computers.
+
+The NuttX Team has done an incredible job enforcing __API Consistency__ across all kinds of platforms. __"Write once run anywhere"__ might be true on NuttX!
+
+In any case it's hard to find an __Open Source Embedded OS__ that supports so many platforms.
+
+_For BL602 and BL604, shall I use NuttX or FreeRTOS (BL602 IoT SDK)?_
+
+Remember that the NuttX Team has built their own __Hardware Abstraction Layer (HAL)__ for BL602 / BL604. [(See this)](https://lupyuen.github.io/images/nuttx-hal.png)
+
+Some features on BL602 / BL604 are __not yet supported by NuttX__. (Pic above)
+
+But NuttX on BL602 is __getting better every day!__ [(See this)](https://github.com/apache/incubator-nuttx/commits/master/arch/risc-v/src/bl602)
+
+[(Though SPI with DMA is not yet supported on BL602 NuttX)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761)
 
 TODO
 
-Applications are portable
-
-Looks like Linux
+Implement Rust Embedded HAL on NuttX
 
 LoRa Driver for NuttX
 
 Copy from Linux Driver
 
-Here are the #BL602 Peripherals supported by #NuttX OS
-
-![](https://lupyuen.github.io/images/nuttx-bl602.png)
-
-[(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support)
-
-TODO
-
-As we've seen, #NuttX has its own HAL for #BL602 ... Which differs from BL602 IoT SDK ... So we expect some quirks
-
-![](https://lupyuen.github.io/images/nuttx-hal.png)
-
-TODO
-
-Though SPI with DMA is not yet supported on #BL602 #NuttX OS
-
-![](https://lupyuen.github.io/images/nuttx-dma2.png)
-
-[(Source)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761)
+![SPI with DMA is not yet supported on BL602 NuttX](https://lupyuen.github.io/images/nuttx-dma2.png)
 
 # Rust on NuttX
 
