@@ -558,7 +558,7 @@ The driver calls the __Board-Specific GPIO Driver__ to execute the command.
 
 ## Board Driver
 
-_What is a Board-Specific Driver?_
+_What's a Board-Specific Driver?_
 
 PineCone BL602 and PineDio Stack BL604 are two __Dev Boards__ based on BL602 / BL604.
 
