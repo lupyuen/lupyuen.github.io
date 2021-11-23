@@ -700,21 +700,33 @@ Let's do some BASIC on BL602 NuttX...
 
 In the olden days we would "peek" and "poke" to [__light up pixels__](http://myoldmac.net/FAQ/Apple-II_Peek_Poke_Call.html) on our Apple ][... Let's do the same for our __BL602 LED!__
 
-In the __BASIC Interpreter__, enter this...
+1.  In the __BASIC Interpreter__, enter this...
 
-```text
-print peek(&h40000188)
-poke &h40000188, &h800
-```
+    ```text
+    print peek(&h40000188)
+    poke &h40000188, &h800
+    ```
 
-TODO
+    Remember that `0x40000188` is the Address of the __GPIO Output Register__.
 
-```text
-print peek(&h40000188)
-poke &h40000188, &h00
-```
+    Setting (or "poking") this register to `0x800` will set __GPIO 11 to High__.
 
-TODO
+    (Because `0x800` equals `1 << 11`)
+
+    Which __switches off__ the Blue LED on PineCone BL602.
+
+1.  Now do this...
+
+    ```text
+    print peek(&h40000188)
+    poke &h40000188, &h00
+    ```
+
+    Setting the GPIO Output Register to `0x00` will set __GPIO 11 to Low__.
+
+    Which __switches on__ the Blue LED.
+
+Yep it's indeed possible to blink the LED in BASIC!
 
 (OK this code isn't so legit... We ought to preserve the existing bits in the register, not overwrite them)
 
