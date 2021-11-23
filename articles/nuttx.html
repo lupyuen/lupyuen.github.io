@@ -619,16 +619,18 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <p>Well NuttX’s <strong>POSIX Interface</strong> might be a good thing for folks who are familiar with Linux and Single-Board Computers.</p>
 <p>The NuttX Team has done an incredible job enforcing <strong>API Consistency</strong> across all kinds of platforms. <strong>“Write once run anywhere”</strong> might be true on NuttX!</p>
 <p>In any case it’s hard to find an <strong>Open Source Embedded OS</strong> that supports so many platforms.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-bl602.png" alt="BL602 Peripherals supported by #NuttX" /></p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support">(Source)</a></p>
 <p><em>For BL602 and BL604, shall I use NuttX or FreeRTOS (BL602 IoT SDK)?</em></p>
 <p>Remember that the NuttX Team has built their own <strong>Hardware Abstraction Layer (HAL)</strong> for BL602 / BL604. <a href="https://lupyuen.github.io/images/nuttx-hal.png">(See this)</a></p>
 <p>Some features on BL602 / BL604 are <strong>not yet supported by NuttX</strong>. (Pic above)</p>
 <p>But NuttX on BL602 is <strong>getting better every day!</strong> <a href="https://github.com/apache/incubator-nuttx/commits/master/arch/risc-v/src/bl602">(See this)</a></p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761">(Though SPI with DMA is not yet supported on BL602 NuttX)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-dma2.png" alt="SPI with DMA is not yet supported on BL602 NuttX" /></p>
 <p><em>POSIX still looks kinda odd to me. Is there something we could do with Rust?</em></p>
 <p>Thanks for asking! Yes we could wrap the POSIX Interface into a <strong>Rust Embedded HAL</strong> that’s familiar with many Rust coders.</p>
 <p>And the Rust Embedded HAL might be <strong>portable across all NuttX platforms</strong>. Thanks to POSIX Compatibility!</p>
 <p>More about this in the next section.</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-dma2.png" alt="SPI with DMA is not yet supported on BL602 NuttX" /></p>
 <h1 id="rust-on-nuttx" class="section-header"><a href="#rust-on-nuttx">11 Rust on NuttX</a></h1>
 <p>TODO</p>
 <p>Implement Rust Embedded HAL on NuttX</p>
@@ -1013,8 +1015,6 @@ nsh&gt;</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/lsm330spi_test/lsm330spi_test_main.c">lsm330spi_test</a></p>
 <p>SPI interface:</p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">spi.h</a></p>
-<p><img src="https://lupyuen.github.io/images/nuttx-bl602.png" alt="BL602 Peripherals supported by #NuttX" /></p>
-<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support">(Source)</a></p>
 
     
 </body>
