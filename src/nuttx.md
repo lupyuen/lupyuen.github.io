@@ -772,6 +772,16 @@ TODO
 
 Implement Rust Embedded HAL on NuttX
 
+https://docs.rs/embedded-hal
+
+[GPIO](https://docs.rs/embedded-hal/0.2.6/embedded_hal/digital/v2/index.html)
+
+[UART](https://docs.rs/embedded-hal/0.2.6/embedded_hal/serial/index.html)
+
+[Blocking I2C](https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/i2c/index.html)
+
+[Blocking SPI](https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/spi/index.html)
+
 Portable to other implementations of NuttX
 
 Might become a friendlier API for NuttX
