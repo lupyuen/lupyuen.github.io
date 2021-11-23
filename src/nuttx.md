@@ -532,83 +532,48 @@ The __"gpio"__ command works across all NuttX Platforms because it calls the com
 
 ## GPIO Interface
 
-TODO
-
-From [gpio.c](https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/gpio.c#L296-L337)
+Below is the implementation of the platform-independent __GPIO Interface__ (ioctl): [gpio.c](https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/gpio.c#L296-L337)
 
 ```c
-/****************************************************************************
- * Name: gpio_ioctl
- *
- * Description:
- *   Standard character driver ioctl method.
- *
- ****************************************************************************/
-
+//  Standard character driver ioctl method
 static int gpio_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
 {
-  FAR struct inode *inode;
-  FAR struct gpio_dev_s *dev;
-  irqstate_t flags;
-  pid_t pid;
-  int ret;
-  int i;
-  int j = 0;
-
-  DEBUGASSERT(filep != NULL && filep->f_inode != NULL);
-  inode = filep->f_inode;
-  DEBUGASSERT(inode->i_private != NULL);
-  dev = inode->i_private;
-
+  ...
+  //  Handle each GPIO Driver Command...
   switch (cmd)
     {
-      /* Command:     GPIOC_WRITE
-       * Description: Set the value of an output GPIO
-       * Argument:    0=output a low value; 1=output a high value
-       */
-
+      //  If we're setting the value of an output GPIO...
       case GPIOC_WRITE:
-        if (dev->gp_pintype == GPIO_OUTPUT_PIN ||
-            dev->gp_pintype == GPIO_OUTPUT_PIN_OPENDRAIN)
-          {
-            DEBUGASSERT(arg == 0ul || arg == 1ul);
-            ret = dev->gp_ops->go_write(dev, (bool)arg);
-          }
-        else
-          {
-            ret = -EACCES;
-          }
-        break;
+        ...
+        //  Call the Board-Specific GPIO Driver
+        ret = dev->gp_ops->go_write(
+          dev,       //  GPIO Device
+          (bool)arg  //  1 (High) or 0 (Low)
+        );
 ```
 
+This is a [__Character Device Driver__](https://nuttx.apache.org/docs/latest/components/drivers/character/index.html) that handles each GPIO Driver Command (like GPIOC_WRITE).
+
+The driver calls the __Board-Specific GPIO Driver__ to execute the command.
+
 ## Board Driver
+
+_What is a Board-Specific Driver?_
 
 TODO
 
 From [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L432-L452)
 
 ```c
-/****************************************************************************
- * Name: gpout_write
- *
- * Description:
- *   write gpio.
- *
- ****************************************************************************/
-
+//  Board-Specific GPIO Driver: Set the value of an output GPIO
 static int gpout_write(FAR struct gpio_dev_s *dev, bool value)
 {
-  FAR struct bl602_gpio_dev_s *bl602xgpio =
-    (FAR struct bl602_gpio_dev_s *)dev;
-
-  DEBUGASSERT(bl602xgpio != NULL);
-  DEBUGASSERT(bl602xgpio->id < BOARD_NGPIOOUT);
-  gpioinfo("Writing %d\n", (int)value);
-
-  bl602_gpiowrite(g_gpiooutputs[bl602xgpio->id], value);
-
-  return OK;
-}
+  ...
+  //  Call the BL602-Specific GPIO Driver
+  bl602_gpiowrite(                  //  Set GPIO Output...
+    g_gpiooutputs[bl602xgpio->id],  //  GPIO Pin Set
+    value                           //  1 (High) or 0 (Low)
+  );
 ```
 
 ## BL602 Driver
@@ -618,27 +583,29 @@ TODO
 From [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209)
 
 ```c
-/****************************************************************************
- * Name: bl602_gpiowrite
- *
- * Description:
- *   Write one or zero to the selected GPIO pin
- *
- ****************************************************************************/
-
+//  BL602-Specific GPIO Driver: Set the value of an output GPIO
 void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 {
+  //  Get the GPIO Pin Number
   uint8_t pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
+  
+  //  If we're setting the GPIO to High...
   if (value)
     {
+      //  Set the pin's bit in the GPIO Output Register
       modifyreg32(BL602_GPIO_CFGCTL32, 0, (1 << pin));
     }
   else
     {
+      //  Clear the pin's bit in the GPIO Output Register
       modifyreg32(BL602_GPIO_CFGCTL32, (1 << pin), 0);
     }
 }
 ```
+
+[(__modifyreg32__ is defined here)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57)
+
+[__BL602_GPIO_CFGCTL32__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_glb.h#L167) is the Address of the __GPIO Output Register__: `0x40000188`
 
 TODO
 
