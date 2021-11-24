@@ -770,7 +770,7 @@ More about this in the next section.
 
 _Does Rust provide a standard way to access the Hardware Functions on Microcontrollers?_
 
-Yes! The Embebded Rust Community has created a __Hardware Abstraction Layer (HAL)__ that supports all kinds of Microcontrollers...
+Yes! The Embedded Rust Community has created a __Hardware Abstraction Layer (HAL)__ that supports all kinds of Microcontrollers...
 
 -   [__Rust Embedded HAL__](https://docs.rs/embedded-hal)
 
