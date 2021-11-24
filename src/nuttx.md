@@ -206,7 +206,7 @@ Select __"Examples"__...
 
 NuttX reveals the list of __Demo Apps__...
 
-![Examples](https://lupyuen.github.io/images/nuttx-apps.png)
+![Examples](https://lupyuen.github.io/images/nuttx-apps.jpg)
 
 (Hello and Timer Demo Apps are already selected)
 
@@ -705,7 +705,7 @@ The NuttX Team has done an incredible job enforcing __API Consistency__ across a
 
 In any case it's hard to find an __Open Source Embedded OS__ that supports so many platforms.
 
-![BL602 Peripherals supported by #NuttX](https://lupyuen.github.io/images/nuttx-bl602.png)
+![BL602 Peripherals supported by #NuttX](https://lupyuen.github.io/images/nuttx-bl602.jpg)
 
 [(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support)
 
@@ -727,7 +727,7 @@ And the Rust Embedded HAL might be __portable across all NuttX platforms__. Than
 
 More about this in the next section.
 
-![Rust Embedded HAL](https://lupyuen.github.io/images/nuttx-rust.png)
+![Rust Embedded HAL](https://lupyuen.github.io/images/nuttx-rust.jpg)
 
 [(Source)](https://docs.rs/embedded-hal)
 
