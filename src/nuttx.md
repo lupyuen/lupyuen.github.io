@@ -1176,13 +1176,13 @@ enable GPIO Output__ on GPIO 11.
 
 ![bl602_gpiowrite doesn't update the GPIO Output Enable Register](https://lupyuen.github.io/images/nuttx-gpio6c.png)
 
-According to the [__BL602 Reference Manual__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en), we should update the __GPIO Output Enable Register__ to enable GPIO Output...
+According to the [__BL602 Reference Manual__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Section 3.2.9 "GPIO Output", Page 27), we should update the __GPIO Output Enable Register__ to enable GPIO Output...
 
 ![](https://lupyuen.github.io/images/nuttx-gpio9a.png)
 
 [(Source)](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en)
 
-But the GPIO Output Enable Register is missing from the docs.
+But the GPIO Output Enable Register is missing from the manual.
 
 We look up __BL602 IoT SDK__ and we discover in the function [__GLB_GPIO_OUTPUT_Enable__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010) that the GPIO Output Enable Register is at `0x40000190` (GLB_GPIO_CFGCTL34)...
 
