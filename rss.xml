@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX OS on RISC-V BL602 and BL604</title>
+            <link>https://lupyuen.github.io/articles/nuttx</link>
+            <description><![CDATA[How we build, flash and test the Apache NuttX operating system on BL602 and BL604 RISC-V SoCs]]></description>
+            <guid>https://lupyuen.github.io/articles/nuttx</guid>
+            <pubDate>Wed, 24 Nov 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>PineDio LoRa Gateway: Testing The Prototype</title>
             <link>https://lupyuen.github.io/articles/gateway</link>
             <description><![CDATA[How we test the pre-production PineDio LoRa Gateway by Pine64... And connect it to The Things Network]]></description>
