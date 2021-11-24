@@ -975,15 +975,15 @@ Driver: /dev/gpout1
   addr=0x40000188
   clearbits=0x0
   setbits=0x800</code></pre></div>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209"><strong>bl602_gpiowrite</strong></a> configures GPIO 11 (<code>0x40000114</code>) with <strong>GPIO Input Disabled</strong>..</p>
+<p>At startup, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133"><strong>bl602_configgpio</strong></a> configures GPIO 11 (<code>0x40000114</code>) with <strong>GPIO Input Disabled</strong>..</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_configgpio:
   pin=11
   addr=0x40000114
   clearbits=0xffff0000
   setbits=0xb000000</code></pre></div>
-<p>But <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209"><strong>bl602_gpiowrite</strong></a> <strong>doesn’t
+<p>But <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133"><strong>bl602_configgpio</strong></a> <strong>doesn’t
 enable GPIO Output</strong> on GPIO 11.</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio6c.png" alt="bl602_gpiowrite doesn’t update the GPIO Output Enable Register" /></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio6c.png" alt="bl602_configgpio doesn’t enable GPIO Output" /></p>
 <p>According to the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a> (Section 3.2.9 “GPIO Output”, Page 27), we should update the <strong>GPIO Output Enable Register</strong> to enable GPIO Output…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio9a.png" alt="" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(Source)</a></p>
