@@ -631,16 +631,44 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <p>And the Rust Embedded HAL might be <strong>portable across all NuttX platforms</strong>. Thanks to POSIX Compatibility!</p>
 <p>More about this in the next section.</p>
 <h1 id="rust-on-nuttx" class="section-header"><a href="#rust-on-nuttx">11 Rust on NuttX</a></h1>
+<p><em>Does Rust provide a standard way to access the Hardware Functions on Microcontrollers?</em></p>
+<p>Yes! The Embebded Rust Community has created a <strong>Hardware Abstraction Layer (HAL)</strong> that supports all kinds of Microcontrollers…</p>
+<ul>
+<li><a href="https://docs.rs/embedded-hal"><strong>Rust Embedded HAL</strong></a></li>
+</ul>
+<p>Take a look at these <strong>Hardware Interfaces</strong> in Rust Embedded HAL for…</p>
+<ul>
+<li>
+<p><a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/digital/v2/index.html"><strong>GPIO</strong> (Digital)</a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/serial/index.html"><strong>UART</strong> (Serial)</a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/i2c/index.html"><strong>Blocking I2C</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/spi/index.html"><strong>Blocking SPI</strong></a></p>
+</li>
+</ul>
+<p><em>How popular is the Rust Embedded HAL?</em></p>
+<p>According to the <a href="https://github.com/rust-embedded/awesome-embedded-rust"><strong>official list</strong></a>…</p>
+<ul>
+<li>
+<p><strong>37 Microcontrollers</strong> are supported by Rust Embedded HAL</p>
+</li>
+<li>
+<p><strong>64 Device Drivers</strong> have been built with Rust Embedded HAL</p>
+</li>
+</ul>
+<p>(Would be awesome if we could run all these Device Drivers on NuttX!)</p>
+<p><em>So the Rust Embedded HAL is kinda like NuttX’s POSIX Interface?</em></p>
+<p>Conceptually yes! Rust Embedded HAL was created to allow Rust Drivers and Apps to be <strong>portable across all Microcontroller Platforms</strong>.</p>
 <p>TODO</p>
 <p>Implement Rust Embedded HAL on NuttX</p>
 <p>We could wrap the POSIX Interface into a <strong>Rust Embedded HAL</strong> that’s familiar to many Rust coders.</p>
 <p>And the Rust Embedded HAL might be <strong>portable across all NuttX platforms</strong>. Thanks to POSIX Compatibility!</p>
 <p>Might become a friendlier API for NuttX</p>
-<p><a href="https://docs.rs/embedded-hal">Rust Embedded HAL</a></p>
-<p><a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/digital/v2/index.html">GPIO</a></p>
-<p><a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/serial/index.html">UART</a></p>
-<p><a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/i2c/index.html">Blocking I2C</a></p>
-<p><a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/spi/index.html">Blocking SPI</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
