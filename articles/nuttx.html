@@ -1028,7 +1028,7 @@ int bl602_configgpio(gpio_pinset_t cfgset)
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-ledon.jpg" alt="LED On" /></p>
 </blockquote>
-<p>(Remember that LED switches on when GPIO 11 is Low)</p>
+<p>(Remember the LED switches on when GPIO 11 is Low)</p>
 <p>At startup the patched <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137"><strong>bl602_configgpio</strong></a> function correctly updates the <strong>GPIO Output Enable Register</strong> at <code>0x40000190</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_configgpio enable output:
   pin=11
