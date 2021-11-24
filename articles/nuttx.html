@@ -984,10 +984,10 @@ Driver: /dev/gpout1
 <p>But <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209"><strong>bl602_gpiowrite</strong></a> <strong>doesn’t
 enable GPIO Output</strong> on GPIO 11.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio6c.png" alt="bl602_gpiowrite doesn’t update the GPIO Output Enable Register" /></p>
-<p>According to the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a>, we should update the <strong>GPIO Output Enable Register</strong> to enable GPIO Output…</p>
+<p>According to the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a> (Section 3.2.9 “GPIO Output”, Page 27), we should update the <strong>GPIO Output Enable Register</strong> to enable GPIO Output…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio9a.png" alt="" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(Source)</a></p>
-<p>But the GPIO Output Enable Register is missing from the docs.</p>
+<p>But the GPIO Output Enable Register is missing from the manual.</p>
 <p>We look up <strong>BL602 IoT SDK</strong> and we discover in the function <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010"><strong>GLB_GPIO_OUTPUT_Enable</strong></a> that the GPIO Output Enable Register is at <code>0x40000190</code> (GLB_GPIO_CFGCTL34)…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio7a.png" alt="GPIO Output Enable Register is at 0x40000190" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010">(Source)</a></p>
