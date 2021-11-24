@@ -906,8 +906,21 @@ nsh&gt;</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="appendix-fix-gpio-output" class="section-header"><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a></h1>
 <p>This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.</p>
-<p>Summary of the GPIO Output glitch…</p>
-<p>TODO</p>
+<p>Summary of the GPIO Output glitch on BL602…</p>
+<ol>
+<li>
+<p>We have an LED connected to a <strong>GPIO Output Pin</strong></p>
+</li>
+<li>
+<p>Setting the GPIO Output to High and Low <strong>doesn’t blink the LED</strong></p>
+</li>
+<li>
+<p>We discover that the BL602 GPIO Driver doesn’t set the <strong>GPIO Output Enable Register</strong></p>
+</li>
+<li>
+<p>After <strong>patching the BL602 GPIO Driver</strong> to set the GPIO Output Enable Register, the LED blinks OK</p>
+</li>
+</ol>
 <h2 id="observe-the-glitch" class="section-header"><a href="#observe-the-glitch">15.1 Observe the glitch</a></h2>
 <p>TODO</p>
 <p>Flipping GPIO 11 doesn’t blink the LED on #BL602 #NuttX … Let’s investigate 🤔</p>
