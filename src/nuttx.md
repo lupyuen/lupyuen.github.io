@@ -1292,17 +1292,3 @@ We have submitted the __NuttX Pull Request__ here...
 ![PineCone Blue LED blinks correctly](https://lupyuen.github.io/images/nuttx-gpio6d.png)
 
 [(Source)](https://gist.github.com/lupyuen/4331ed3e326fb827c391e0f4e07c26c5)
-
-# Appendix: SPI Demo
-
-TODO
-
-Spi demo: lseek, read, write
-
-Port lorawan driver for bl602
-
-[lsm330spi_test](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/lsm330spi_test/lsm330spi_test_main.c)
-
-SPI interface:
-
-[spi.h](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
