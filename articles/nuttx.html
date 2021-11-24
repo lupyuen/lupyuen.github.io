@@ -922,9 +922,20 @@ nsh&gt;</code></pre></div>
 <p>After <strong>patching the BL602 GPIO Driver</strong> to set the GPIO Output Enable Register, the LED blinks OK</p>
 </li>
 </ol>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/nuttx-ledon.jpg" alt="LED On" /></p>
+</blockquote>
 <h2 id="observe-the-glitch" class="section-header"><a href="#observe-the-glitch">15.1 Observe the glitch</a></h2>
-<p>We observe the GPIO Output Glitch on <strong>Pine64 PineCone BL602 Board.</strong></p>
-<p>PineCone BL602 has a Blue LED connected on <strong>GPIO 11</strong>.</p>
+<p>We observe the GPIO Output Glitch on <strong>Pine64 PineCone BL602 Board.</strong> (Pic above)</p>
+<p>PineCone BL602 has a Blue LED connected on <strong>GPIO 11</strong>…</p>
+<ul>
+<li>
+<p>Blue LED is <strong>On</strong> when GPIO 11 is <strong>Low</strong></p>
+</li>
+<li>
+<p>Blue LED is <strong>Off</strong> when GPIO 11 is <strong>High</strong></p>
+</li>
+</ul>
 <p>We configure GPIO 11 as the GPIO Output Pin <strong>BOARD_GPIO_OUT1</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO Output Pin:
 //  Changed GPIO_PIN1 to GPIO_PIN11 (Blue LED on PineCone BL602)
@@ -937,7 +948,7 @@ nsh&gt;</code></pre></div>
 //  #define BOARD_GPIO_OUT1 \
 //    (GPIO_OUTPUT | GPIO_PULLDOWN | \
 //      GPIO_FUNC_SWGPIO | GPIO_PIN1)</code></pre></div>
-<p>After building and flashing NuttX to BL602, we run the <strong>NuttX GPIO Command</strong>…</p>
+<p>After building and flashing NuttX to BL602, we run the <strong>NuttX GPIO Command</strong> to toggle GPIO 11…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; gpio -o 1 /dev/gpout1
 Driver: /dev/gpout1
   Output pin:    Value=0
@@ -950,96 +961,39 @@ Driver: /dev/gpout1
   Writing:       Value=0
   Verify:        Value=0</code></pre></div>
 <p>NuttX changes GPIO 11 from <strong>Low to High</strong> and back to Low.</p>
-<p>But the LED on BL602 doesn’t blink.</p>
+<p>But the BL602 <strong>LED doesn’t blink</strong>. Let’s track down the glitch.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="Flipping GPIO 11 doesn’t blink the LED" /></p>
 <h2 id="trace-the-glitch" class="section-header"><a href="#trace-the-glitch">15.2 Trace the glitch</a></h2>
-<p>TODO</p>
-<p>To track down the glitch, we add debug logging to the </p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052">Debug GPIO Output</a></p>
-<div class="example-wrap"><pre class="language-text"><code>
-bl602_configgpio:
-  pin=16
-  addr=0x40000120
-  clearbits=0xffff
-  setbits=0x711
-
-
-bl602_configgpio:
-  pin=7
-  addr=0x4000010c
-  clearbits=0xffff0000
-  setbits=0x7110000
-
-
-bl602_configgpio:
-  pin=16
-  addr=0x40000120
-  clearbits=0xffff
-  setbits=0x711
-
-
-bl602_configgpio:
-  pin=7
-  addr=0x4000010c
-  clearbits=0xffff0000
-  setbits=0x7110000
-
-
-bl602_configgpio:
-  pin=0
-  addr=0x40000100
-  clearbits=0xffff
-  setbits=0xb11
-
-
-bl602_configgpio:
-  pin=11
-  addr=0x40000114
-  clearbits=0xffff0000
-  setbits=0xb000000
-
-
-bl602_configgpio enable output:
-  pin=11
-  addr=0x40000190
-  clearbits=0x0
-  setbits=0x800
-
-
-bl602_configgpio:
-  pin=2
-  addr=0x40000104
-  clearbits=0xffff
-  setbits=0xb11
-
-
-
-bl602_gpiowrite high:
+<p>To track down the glitch, we add debug logging to the BL602 GPIO Driver functions <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133"><strong>bl602_configgpio</strong></a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209"><strong>bl602_gpiowrite</strong></a>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052"><strong>Debug GPIO Output</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio4b.png" alt="bl602_gpiowrite writes correctly to the GPIO Output Register" /></p>
+<p>From the log we see that <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209"><strong>bl602_gpiowrite</strong></a> writes correctly to the <strong>GPIO Output Register</strong> at <code>0x40000188</code> (BL602_GPIO_CFGCTL32)…</p>
+<div class="example-wrap"><pre class="language-text"><code>bl602_gpiowrite high:
   pin=11
   addr=0x40000188
   clearbits=0x0
   setbits=0x800</code></pre></div>
-<p>Flipping GPIO 11 doesn’t blink the LED on #BL602 #NuttX … Let’s investigate 🤔</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="" /></p>
-<p>TODO46</p>
-<p>#NuttX writes correctly to the GPIO 11 Output Register at 0x40000188 (BL602_GPIO_CFGCTL32)</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio4b.png" alt="" /></p>
-<p>TODO47</p>
-<p>#NuttX configures #BL602 GPIO 11 (0x40000114) with GPIO Input Disabled … But it doesn’t Enable GPIO Output 🤔</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio6c.png" alt="" /></p>
-<p>TODO51</p>
-<p>#BL602 Reference Manual says we should set the GPIO Output Enable Register … But it’s missing from the docs … Where is the register? 🤔</p>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209"><strong>bl602_gpiowrite</strong></a> configures GPIO 11 (<code>0x40000114</code>) with <strong>GPIO Input Disabled</strong>..</p>
+<div class="example-wrap"><pre class="language-text"><code>bl602_configgpio:
+  pin=11
+  addr=0x40000114
+  clearbits=0xffff0000
+  setbits=0xb000000</code></pre></div>
+<p>But <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209"><strong>bl602_gpiowrite</strong></a> <strong>doesn’t
+enable GPIO Output</strong> on GPIO 11.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio6c.png" alt="bl602_gpiowrite doesn’t update the GPIO Output Enable Register" /></p>
+<p>According to the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a>, we should update the <strong>GPIO Output Enable Register</strong> to enable GPIO Output…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio9a.png" alt="" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(Source)</a></p>
-<p>TODO49</p>
-<p>#BL602 IoT SDK says that GPIO Output Enable Register is at 0x40000190 (GLB_GPIO_CFGCTL34) … Let’s set this register in #NuttX</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio7a.png" alt="" /></p>
+<p>But the GPIO Output Enable Register is missing from the docs.</p>
+<p>We look up <strong>BL602 IoT SDK</strong> and we discover in the function <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010"><strong>GLB_GPIO_OUTPUT_Enable</strong></a> that the GPIO Output Enable Register is at <code>0x40000190</code> (GLB_GPIO_CFGCTL34)…</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio7a.png" alt="GPIO Output Enable Register is at 0x40000190" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010">(Source)</a></p>
+<p>Let’s update the GPIO Output Enable Register in NuttX.</p>
 <h2 id="fix-the-glitch" class="section-header"><a href="#fix-the-glitch">15.3 Fix the glitch</a></h2>
-<p>TODO</p>
-<p>We mod #BL602 #NuttX to set the GPIO Output Enable Register at 0x40000190 (BL602_GPIO_CFGCTL34)</p>
-<p>To fix it, edit this file…</p>
-<div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/bl602/bl602_gpio.c</code></pre></div>
-<p>And patch the <strong>bl602_configgpio</strong> function like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137">bl602_gpio.c</a></p>
+<p>We patch the <strong>bl602_configgpio</strong> function to update the GPIO Output Enable Register: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137">bl602_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Existing function
 int bl602_configgpio(gpio_pinset_t cfgset)
 {
@@ -1062,97 +1016,49 @@ int bl602_configgpio(gpio_pinset_t cfgset)
   // Existing code
   return OK;
 }</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio8a.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/pull/1/files">(Source)</a></p>
+<p>Here is the patch…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/pull/1/files"><strong>Enable GPIO Output</strong></a></li>
+</ul>
+<p>Let’s test the patch.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio8a.png" alt="Update the GPIO Output Enable Register" /></p>
 <h2 id="test-the-fix" class="section-header"><a href="#test-the-fix">15.4 Test the fix</a></h2>
-<p>TODO</p>
-<p>After fixing GPIO Output, #NuttX now blinks the Blue LED (GPIO 11) on PineCone #BL602! 🎉</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; gpio -o 1 /dev/gpout1
-Driver: /dev/gpout1
-  Output pin:    Value=0
-  Writing:       Value=1
-
-bl602_configgpio:
-  pin=16
-  addr=0x40000120
-  clearbits=0xffff
-  setbits=0x711
-
-
-bl602_configgpio:
-  pin=7
-  addr=0x4000010c
-  clearbits=0xffff0000
-  setbits=0x7110000
-
-
-bl602_configgpio:
-  pin=16
-  addr=0x40000120
-  clearbits=0xffff
-  setbits=0x711
-
-
-bl602_configgpio:
-  pin=7
-  addr=0x4000010c
-  clearbits=0xffff0000
-  setbits=0x7110000
-
-
-bl602_configgpio:
-  pin=0
-  addr=0x40000100
-  clearbits=0xffff
-  setbits=0xb11
-
-
-bl602_configgpio:
-  pin=11
-  addr=0x40000114
-  clearbits=0xffff0000
-  setbits=0xb000000
-
-
-bl602_configgpio enable output:
+<p>We rebuild and run the patched code.</p>
+<p>At startup, the Blue LED is <strong>On</strong> (because the default GPIO Output is Low)…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/nuttx-ledon.jpg" alt="LED On" /></p>
+</blockquote>
+<p>(Remember that LED switches on when GPIO 11 is Low)</p>
+<p>At startup the patched <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137"><strong>bl602_configgpio</strong></a> function correctly updates the <strong>GPIO Output Enable Register</strong> at <code>0x40000190</code>…</p>
+<div class="example-wrap"><pre class="language-text"><code>bl602_configgpio enable output:
   pin=11
   addr=0x40000190
   clearbits=0x0
-  setbits=0x800
-
-
-bl602_configgpio:
-  pin=2
-  addr=0x40000104
-  clearbits=0xffff
-  setbits=0xb11
-
-
-
-bl602_gpiowrite high:
-  pin=11
-  addr=0x40000188
-  clearbits=0x0
-  setbits=0x800
-
-  Verify:        Value=1
-nsh&gt;
-nsh&gt;
-nsh&gt; gpio -o 0 /dev/gpout1
+  setbits=0x800</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/4331ed3e326fb827c391e0f4e07c26c5">(See complete log)</a></p>
+<p>We run the GPIO Command to set <strong>GPIO 11 to High</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; gpio -o 1 /dev/gpout1
+Driver: /dev/gpout1
+  Output pin:    Value=0
+  Writing:       Value=1
+  Verify:        Value=1</code></pre></div>
+<p>PineCone’s Blue LED on GPIO 11 correctly <strong>switches off</strong>.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/nuttx-ledoff.jpg" alt="LED Off" /></p>
+</blockquote>
+<p>We run the GPIO Command to set <strong>GPIO 11 to Low</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; gpio -o 0 /dev/gpout1
 Driver: /dev/gpout1
   Output pin:    Value=1
   Writing:       Value=0
-
-bl602_gpiowrite low:
-  pin=11
-  addr=0x40000188
-  clearbits=0x800
-  setbits=0x0
-
-  Verify:        Value=0
-nsh&gt;</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/4331ed3e326fb827c391e0f4e07c26c5">(See complete log)</a></p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio6d.png" alt="" /></p>
+  Verify:        Value=0</code></pre></div>
+<p>And PineCone’s Blue LED on GPIO 11 correctly <strong>switches on</strong>.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/nuttx-ledon.jpg" alt="LED On" /></p>
+</blockquote>
+<p>We have successfully fixed the GPIO Output glitch!</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-gpio6d.png" alt="PineCone Blue LED blinks correctly" /></p>
+<p><a href="https://gist.github.com/lupyuen/4331ed3e326fb827c391e0f4e07c26c5">(Source)</a></p>
 <h1 id="appendix-spi-demo" class="section-header"><a href="#appendix-spi-demo">16 Appendix: SPI Demo</a></h1>
 <p>TODO</p>
 <p>Spi demo: lseek, read, write</p>
