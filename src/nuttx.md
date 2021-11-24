@@ -383,45 +383,6 @@ Make sure the Pin Number isn't used by another port!
 
 [(FreeRTOS on BL602 uses a Device Tree to assign the pins)](https://lupyuen.github.io/articles/flash#device-tree)
 
-## GPIO Glitch
-
-__Note:__ There's a glitch in the BL602 GPIO Driver that __prevents the GPIO Output from being set correctly__. 
-
-To fix the GPIO Output, edit this file...
-
-```text
-nuttx/arch/risc-v/src/bl602/bl602_gpio.c
-```
-
-And patch the __bl602_configgpio__ function like so: [bl602_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137)
-
-```c
-// Existing function
-int bl602_configgpio(gpio_pinset_t cfgset)
-{
-  // Existing code
-  ...
-  modifyreg32(regaddr, mask, cfg);
-  
-  // Insert this code near the end of the function...
-  // Enable GPIO Output if requested
-  if (!(cfgset & GPIO_INPUT))
-    {
-      modifyreg32(            // Modify the register...
-        BL602_GPIO_CFGCTL34,  // At address 0x40000190 (GPIO Enable Output)
-        0,                    // Don't clear any bits
-        (1 << pin)            // Set the bit for the GPIO Pin
-      );
-    }
-  // End of inserted code
-
-  // Existing code
-  return OK;
-}
-```
-
-[(More about the fix for GPIO Output)](https://lupyuen.github.io/articles/nuttx#appendix-fix-gpio-output)
-
 ## Rerun NuttX
 
 __Rebuild and copy__ the NuttX Firmware...
@@ -1093,6 +1054,10 @@ Congratulations NuttX is now running on BL602 / BL604!
 
 This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.
 
+-   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4876)
+
+The fix has been merged into NuttX. (Thank you NuttX Maintainers! 🙏)
+
 Summary of the GPIO Output glitch on BL602...
 
 1.  We have an LED connected to a __GPIO Output Pin__
@@ -1102,10 +1067,6 @@ Summary of the GPIO Output glitch on BL602...
 1.  We discover that the BL602 GPIO Driver doesn't set the __GPIO Output Enable Register__
 
 1.  After __patching the BL602 GPIO Driver__ to set the GPIO Output Enable Register, the LED blinks OK
-
-We have submitted the __NuttX Pull Request__ here...
-
--   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4876)
 
 > ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
 
@@ -1295,7 +1256,7 @@ And PineCone's Blue LED on GPIO 11 correctly __switches on__.
 
 We have successfully fixed the GPIO Output glitch!
 
-We have submitted the __NuttX Pull Request__ here...
+The fix has been merged into NuttX...
 
 -   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4876)
 
