@@ -812,11 +812,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Xiaomi launches a new IoT Software Platform “Xiaomi Vela” based on NuttX OS"__](https://www.gizmochina.com/2020/11/05/xiaomi-launches-a-new-iot-software-platform-xiaomi-vela-based-on-nuttx-os/)
 
-1.  The __"timer"__ Demo App we've seen uses Timer Handlers that are not deterministic and may have longer latency. 
+1.  The built-in __"timer"__ Demo App we've seen uses Timer Handlers that are not deterministic and may have longer latency. 
     
     Check out the improved __"timer_gpout"__ Demo App, which catches the Timer Signal in real time...
 
-    TODO
+    [__timer_gpout Demo App__](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/timer_gpout/timer_gpout_main.c)
 
     (Thanks to [Sara Monteiro](https://www.linkedin.com/feed/update/urn:li:activity:6868285202649772032?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6868285202649772032%2C6869001192320602112%29) for the tip!)
 
