@@ -811,11 +811,9 @@ This means that we build a layer of code that translates the Rust Embedded HAL I
 
 And the Rust Embedded HAL for NuttX might be __portable across all NuttX platforms__. Thanks to POSIX Compatibility!
 
-TODO
+(Rust Embedded HAL might also become a friendlier API for NuttX)
 
-Implement Rust Embedded HAL on NuttX
-
-Might become a friendlier API for NuttX
+Shall I should work on this? Lemme know!
 
 # What's Next
 
