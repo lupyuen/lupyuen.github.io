@@ -1095,7 +1095,122 @@ Summary of the GPIO Output glitch on BL602...
 
 ## Observe the glitch
 
+We observe the GPIO Output Glitch on __Pine64 PineCone BL602 Board.__
+
+PineCone BL602 has a Blue LED connected on __GPIO 11__.
+
+We configure GPIO 11 as the GPIO Output Pin __BOARD_GPIO_OUT1__ in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
+
+```c
+//  GPIO Output Pin:
+//  Changed GPIO_PIN1 to GPIO_PIN11 (Blue LED on PineCone BL602)
+//  Changed GPIO_PULLDOWN to GPIO_FLOAT
+#define BOARD_GPIO_OUT1 \
+  (GPIO_OUTPUT | GPIO_FLOAT | \
+    GPIO_FUNC_SWGPIO | GPIO_PIN11)
+
+//  Previously:
+//  #define BOARD_GPIO_OUT1 \
+//    (GPIO_OUTPUT | GPIO_PULLDOWN | \
+//      GPIO_FUNC_SWGPIO | GPIO_PIN1)
+```
+
+After building and flashing NuttX to BL602, we run the __NuttX GPIO Command__...
+
+```bash
+nsh> gpio -o 1 /dev/gpout1
+Driver: /dev/gpout1
+  Output pin:    Value=0
+  Writing:       Value=1
+  Verify:        Value=1
+
+nsh> gpio -o 0 /dev/gpout1
+Driver: /dev/gpout1
+  Output pin:    Value=1
+  Writing:       Value=0
+  Verify:        Value=0
+```
+
+NuttX changes GPIO 11 from __Low to High__ and back to Low.
+
+But the LED on BL602 doesn't blink.
+
+## Trace the glitch
+
 TODO
+
+To track down the glitch, we add debug logging to the 
+
+[Debug GPIO Output](https://github.com/lupyuen/incubator-nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052)
+
+
+
+
+```text
+
+bl602_configgpio:
+  pin=16
+  addr=0x40000120
+  clearbits=0xffff
+  setbits=0x711
+
+
+bl602_configgpio:
+  pin=7
+  addr=0x4000010c
+  clearbits=0xffff0000
+  setbits=0x7110000
+
+
+bl602_configgpio:
+  pin=16
+  addr=0x40000120
+  clearbits=0xffff
+  setbits=0x711
+
+
+bl602_configgpio:
+  pin=7
+  addr=0x4000010c
+  clearbits=0xffff0000
+  setbits=0x7110000
+
+
+bl602_configgpio:
+  pin=0
+  addr=0x40000100
+  clearbits=0xffff
+  setbits=0xb11
+
+
+bl602_configgpio:
+  pin=11
+  addr=0x40000114
+  clearbits=0xffff0000
+  setbits=0xb000000
+
+
+bl602_configgpio enable output:
+  pin=11
+  addr=0x40000190
+  clearbits=0x0
+  setbits=0x800
+
+
+bl602_configgpio:
+  pin=2
+  addr=0x40000104
+  clearbits=0xffff
+  setbits=0xb11
+
+
+
+bl602_gpiowrite high:
+  pin=11
+  addr=0x40000188
+  clearbits=0x0
+  setbits=0x800
+```
 
 Flipping GPIO 11 doesn't blink the LED on #BL602 #NuttX ... Let's investigate 🤔
 
@@ -1268,8 +1383,6 @@ nsh>
 [(See complete log)](https://gist.github.com/lupyuen/4331ed3e326fb827c391e0f4e07c26c5)
 
 ![](https://lupyuen.github.io/images/nuttx-gpio6d.png)
-
-[Debug GPIO Output](https://github.com/lupyuen/incubator-nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052)
 
 # Appendix: SPI Demo
 
