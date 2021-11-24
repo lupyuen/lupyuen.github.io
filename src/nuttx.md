@@ -1083,6 +1083,10 @@ Congratulations NuttX is now running on BL602 / BL604!
 
 This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.
 
+Summary of the GPIO Output glitch...
+
+TODO
+
 ## Observe the glitch
 
 TODO
