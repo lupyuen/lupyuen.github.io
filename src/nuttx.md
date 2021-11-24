@@ -1161,7 +1161,7 @@ bl602_gpiowrite high:
   setbits=0x800
 ```
 
-[__bl602_gpiowrite__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209) configures GPIO 11 (`0x40000114`) with __GPIO Input Disabled__..
+At startup, [__bl602_configgpio__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133) configures GPIO 11 (`0x40000114`) with __GPIO Input Disabled__..
 
 ```text
 bl602_configgpio:
@@ -1171,10 +1171,10 @@ bl602_configgpio:
   setbits=0xb000000
 ```
 
-But [__bl602_gpiowrite__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209) __doesn't
+But [__bl602_configgpio__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133) __doesn't
 enable GPIO Output__ on GPIO 11.
 
-![bl602_gpiowrite doesn't update the GPIO Output Enable Register](https://lupyuen.github.io/images/nuttx-gpio6c.png)
+![bl602_configgpio doesn't enable GPIO Output](https://lupyuen.github.io/images/nuttx-gpio6c.png)
 
 According to the [__BL602 Reference Manual__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en) (Section 3.2.9 "GPIO Output", Page 27), we should update the __GPIO Output Enable Register__ to enable GPIO Output...
 
