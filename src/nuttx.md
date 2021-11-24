@@ -1095,7 +1095,7 @@ Summary of the GPIO Output glitch on BL602...
 
 We have submitted the __NuttX Pull Request__ here...
 
--   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4875)
+-   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4876)
 
 > ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
 
@@ -1227,7 +1227,7 @@ int bl602_configgpio(gpio_pinset_t cfgset)
 
 Here is the patch...
 
--   [__Enable GPIO Output__](https://github.com/lupyuen/incubator-nuttx/pull/1/files)
+-   [__Enable GPIO Output__](https://github.com/apache/incubator-nuttx/pull/4876/files)
 
 Let's test the patch.
 
@@ -1287,7 +1287,7 @@ We have successfully fixed the GPIO Output glitch!
 
 We have submitted the __NuttX Pull Request__ here...
 
--   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4875)
+-   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4876)
 
 ![PineCone Blue LED blinks correctly](https://lupyuen.github.io/images/nuttx-gpio6d.png)
 
