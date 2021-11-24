@@ -1083,9 +1083,15 @@ Congratulations NuttX is now running on BL602 / BL604!
 
 This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.
 
-Summary of the GPIO Output glitch...
+Summary of the GPIO Output glitch on BL602...
 
-TODO
+1.  We have an LED connected to a __GPIO Output Pin__
+
+1.  Setting the GPIO Output to High and Low __doesn't blink the LED__
+
+1.  We discover that the BL602 GPIO Driver doesn't set the __GPIO Output Enable Register__
+
+1.  After __patching the BL602 GPIO Driver__ to set the GPIO Output Enable Register, the LED blinks OK
 
 ## Observe the glitch
 
