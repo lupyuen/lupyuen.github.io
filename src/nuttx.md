@@ -1,6 +1,6 @@
 # Apache NuttX OS on RISC-V BL602 and BL604
 
-📝 _26 Nov 2021_
+📝 _24 Nov 2021_
 
 ![Tasty Nutty Treat on PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/nuttx-title.jpg)
 
@@ -780,7 +780,21 @@ Shall I should work on this? Lemme know!
 
 # What's Next
 
-TODO
+I'm new to NuttX but I had lots of fun experimenting with it. I hope you'll enjoy NuttX too!
+
+Here are some topics I might explore in future articles, lemme know if I should do these...
+
+-   __SPI Driver__: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604!
+
+    [(More about PineDio Stack BL604)](https://lupyuen.github.io/articles/lorawan2)
+
+-   __LoRa Driver__: Once we get SX1262 talking OK on SPI, we can port the LoRa Driver to NuttX!
+
+    [(LoRaWAN on PineDio Stack BL604)](https://lupyuen.github.io/articles/lorawan2)
+
+-   __Rust__: Porting the Embedded Rust HAL to NuttX sounds really interesting. We might start with GPIO and SPI to see whether the concept is feasible.
+
+(BL602 IoT SDK / FreeRTOS is revamping right now to the [__new "hosal" HAL__](https://twitter.com/MisterTechBlog/status/1456259223323508748). Terrific time to explore NuttX now!)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 

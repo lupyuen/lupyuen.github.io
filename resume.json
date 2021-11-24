@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX OS on RISC-V BL602 and BL604",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-11-24",
+      "website": "https://lupyuen.github.io/articles/nuttx",
+      "summary": "How we build, flash and test the Apache NuttX operating system on BL602 and BL604 RISC-V SoCs"
+    },
+    {
       "name": "PineDio LoRa Gateway: Testing The Prototype",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-11-11",
