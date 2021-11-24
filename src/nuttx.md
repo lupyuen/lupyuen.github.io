@@ -851,6 +851,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Xiaomi launches a new IoT Software Platform “Xiaomi Vela” based on NuttX OS"__](https://www.gizmochina.com/2020/11/05/xiaomi-launches-a-new-iot-software-platform-xiaomi-vela-based-on-nuttx-os/)
 
+1.  The __"timer"__ Demo App we've seen uses Timer Handlers that are not deterministic and may have longer latency. 
+    
+    Check out the improved __"timer_gpout"__ Demo App, which catches the Timer Signal in real time...
+
+    TODO
+
+    (Thanks to [Sara Monteiro](https://www.linkedin.com/feed/update/urn:li:activity:6868285202649772032?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6868285202649772032%2C6869001192320602112%29) for the tip!)
+
 # Appendix: Build, Flash and Run NuttX
 
 Below are the steps to __build, flash and run__ NuttX on BL602 and BL604.
