@@ -1093,6 +1093,10 @@ Summary of the GPIO Output glitch on BL602...
 
 1.  After __patching the BL602 GPIO Driver__ to set the GPIO Output Enable Register, the LED blinks OK
 
+We have submitted the __NuttX Pull Request__ here...
+
+-   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4875)
+
 > ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
 
 ## Observe the glitch
@@ -1280,6 +1284,10 @@ And PineCone's Blue LED on GPIO 11 correctly __switches on__.
 > ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
 
 We have successfully fixed the GPIO Output glitch!
+
+We have submitted the __NuttX Pull Request__ here...
+
+-   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4875)
 
 ![PineCone Blue LED blinks correctly](https://lupyuen.github.io/images/nuttx-gpio6d.png)
 
