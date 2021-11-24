@@ -766,6 +766,10 @@ And the Rust Embedded HAL might be __portable across all NuttX platforms__. Than
 
 More about this in the next section.
 
+![Rust Embedded HAL](https://lupyuen.github.io/images/nuttx-rust.png)
+
+[(Source)](https://docs.rs/embedded-hal)
+
 # Rust on NuttX
 
 _Does Rust provide a standard way to access the Hardware Functions on Microcontrollers?_
@@ -799,13 +803,17 @@ _So the Rust Embedded HAL is kinda like NuttX's POSIX Interface?_
 
 Conceptually yes! Rust Embedded HAL was created to allow Rust Drivers and Apps to be __portable across all Microcontroller Platforms__.
 
+_Can we port Rust Embedded HAL to NuttX?_
+
+We could __wrap the NuttX POSIX Interface__ into a Rust Embedded HAL.
+
+This means that we build a layer of code that translates the Rust Embedded HAL Interface into the NuttX POSIX Interface.
+
+And the Rust Embedded HAL for NuttX might be __portable across all NuttX platforms__. Thanks to POSIX Compatibility!
+
 TODO
 
 Implement Rust Embedded HAL on NuttX
-
-We could wrap the POSIX Interface into a __Rust Embedded HAL__ that's familiar to many Rust coders.
-
-And the Rust Embedded HAL might be __portable across all NuttX platforms__. Thanks to POSIX Compatibility!
 
 Might become a friendlier API for NuttX
 
