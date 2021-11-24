@@ -768,6 +768,37 @@ More about this in the next section.
 
 # Rust on NuttX
 
+_Does Rust provide a standard way to access the Hardware Functions on Microcontrollers?_
+
+Yes! The Embebded Rust Community has created a __Hardware Abstraction Layer (HAL)__ that supports all kinds of Microcontrollers...
+
+-   [__Rust Embedded HAL__](https://docs.rs/embedded-hal)
+
+Take a look at these __Hardware Interfaces__ in Rust Embedded HAL for...
+
+-   [__GPIO__ (Digital)](https://docs.rs/embedded-hal/0.2.6/embedded_hal/digital/v2/index.html)
+
+-   [__UART__ (Serial)](https://docs.rs/embedded-hal/0.2.6/embedded_hal/serial/index.html)
+
+-   [__Blocking I2C__](https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/i2c/index.html)
+
+-   [__Blocking SPI__](https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/spi/index.html)
+
+_How popular is the Rust Embedded HAL?_
+
+According to the [__official list__](https://github.com/rust-embedded/awesome-embedded-rust
+)...
+
+-   __37 Microcontrollers__ are supported by Rust Embedded HAL
+
+-   __64 Device Drivers__ have been built with Rust Embedded HAL
+
+(Would be awesome if we could run all these Device Drivers on NuttX!)
+
+_So the Rust Embedded HAL is kinda like NuttX's POSIX Interface?_
+
+Conceptually yes! Rust Embedded HAL was created to allow Rust Drivers and Apps to be __portable across all Microcontroller Platforms__.
+
 TODO
 
 Implement Rust Embedded HAL on NuttX
@@ -777,16 +808,6 @@ We could wrap the POSIX Interface into a __Rust Embedded HAL__ that's familiar t
 And the Rust Embedded HAL might be __portable across all NuttX platforms__. Thanks to POSIX Compatibility!
 
 Might become a friendlier API for NuttX
-
-[Rust Embedded HAL](https://docs.rs/embedded-hal)
-
-[GPIO](https://docs.rs/embedded-hal/0.2.6/embedded_hal/digital/v2/index.html)
-
-[UART](https://docs.rs/embedded-hal/0.2.6/embedded_hal/serial/index.html)
-
-[Blocking I2C](https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/i2c/index.html)
-
-[Blocking SPI](https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/spi/index.html)
 
 # What's Next
 
