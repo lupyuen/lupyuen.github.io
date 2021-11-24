@@ -1237,7 +1237,7 @@ At startup, the Blue LED is __On__ (because the default GPIO Output is Low)...
 
 > ![LED On](https://lupyuen.github.io/images/nuttx-ledon.jpg)
 
-(Remember that LED switches on when GPIO 11 is Low)
+(Remember the LED switches on when GPIO 11 is Low)
 
 At startup the patched [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137) function correctly updates the __GPIO Output Enable Register__ at `0x40000190`...
 
