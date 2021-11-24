@@ -709,6 +709,12 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <p><strong>Xiaomi</strong> is actively contributing to NuttX…</p>
 <p><a href="https://www.gizmochina.com/2020/11/05/xiaomi-launches-a-new-iot-software-platform-xiaomi-vela-based-on-nuttx-os/"><strong>“Xiaomi launches a new IoT Software Platform “Xiaomi Vela” based on NuttX OS”</strong></a></p>
 </li>
+<li>
+<p>The <strong>“timer”</strong> Demo App we’ve seen uses Timer Handlers that are not deterministic and may have longer latency. </p>
+<p>Check out the improved <strong>“timer_gpout”</strong> Demo App, which catches the Timer Signal in real time…</p>
+<p>TODO</p>
+<p>(Thanks to <a href="https://www.linkedin.com/feed/update/urn:li:activity:6868285202649772032?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6868285202649772032%2C6869001192320602112%29">Sara Monteiro</a> for the tip!)</p>
+</li>
 </ol>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a></h1>
 <p>Below are the steps to <strong>build, flash and run</strong> NuttX on BL602 and BL604.</p>
