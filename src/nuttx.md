@@ -815,6 +815,8 @@ And the Rust Embedded HAL for NuttX might be __portable across all NuttX platfor
 
 Shall I should work on this? Lemme know!
 
+[(UPDATE: Brennan Ashton has worked on Rust for NuttX, see this for details)](https://twitter.com/btashton/status/1463379162312306691)
+
 # What's Next
 
 TODO
