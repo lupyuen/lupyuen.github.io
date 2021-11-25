@@ -312,6 +312,8 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 
 -   ["PineDio LoRa Gateway: Testing The Prototype"](https://lupyuen.github.io/articles/gateway)
 
+-   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
+
 ![BL706 Audio Video Board](https://lupyuen.github.io/images/book-bl706.jpg)
 
 # BL706 Audio Video Board
