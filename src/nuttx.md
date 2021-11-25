@@ -20,7 +20,7 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
     (Looks like Linux Lite!)
 
--   For [__BL602 and BL604__](https://lupyuen.github.io/articles/pinecone): NuttX and FreeRTOS are the only operating systems supported on the RISC-V + WiFi + Bluetooth LE SoCs.
+-   For [__BL602 and BL604__](https://lupyuen.github.io/articles/pinecone): NuttX and FreeRTOS are the only operating systems supported on the RISC-V + WiFi + Bluetooth LE SoCs from Bouffalo Lab.
 
 -   If you're wondering: NuttX is named after its creator [__Gregory Nutt__](https://en.m.wikipedia.org/wiki/NuttX). And X because it's POSIX Compliant.
 
@@ -711,7 +711,7 @@ In any case it's hard to find an __Open Source Embedded OS__ that supports so ma
 
 _For BL602 and BL604, shall I use NuttX or FreeRTOS (BL602 IoT SDK)?_
 
-Remember that the NuttX Team has built their own __Hardware Abstraction Layer (HAL)__ for BL602 / BL604. [(See this)](https://lupyuen.github.io/images/nuttx-hal.png)
+Remember that the NuttX Team (with Bouffalo Lab) has created their own __Hardware Abstraction Layer (HAL)__ for BL602 / BL604. [(See this)](https://lupyuen.github.io/images/nuttx-hal.png)
 
 Some features on BL602 / BL604 are __not yet supported by NuttX__. (Pic above)
 
