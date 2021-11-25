@@ -113,7 +113,7 @@
 <p>(Looks like Linux Lite!)</p>
 </li>
 <li>
-<p>For <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604</strong></a>: NuttX and FreeRTOS are the only operating systems supported on the RISC-V + WiFi + Bluetooth LE SoCs.</p>
+<p>For <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604</strong></a>: NuttX and FreeRTOS are the only operating systems supported on the RISC-V + WiFi + Bluetooth LE SoCs from Bouffalo Lab.</p>
 </li>
 <li>
 <p>If you’re wondering: NuttX is named after its creator <a href="https://en.m.wikipedia.org/wiki/NuttX"><strong>Gregory Nutt</strong></a>. And X because it’s POSIX Compliant.</p>
@@ -593,7 +593,7 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-bl602.jpg" alt="BL602 Peripherals supported by #NuttX" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html#bl602-peripheral-support">(Source)</a></p>
 <p><em>For BL602 and BL604, shall I use NuttX or FreeRTOS (BL602 IoT SDK)?</em></p>
-<p>Remember that the NuttX Team has built their own <strong>Hardware Abstraction Layer (HAL)</strong> for BL602 / BL604. <a href="https://lupyuen.github.io/images/nuttx-hal.png">(See this)</a></p>
+<p>Remember that the NuttX Team (with Bouffalo Lab) has created their own <strong>Hardware Abstraction Layer (HAL)</strong> for BL602 / BL604. <a href="https://lupyuen.github.io/images/nuttx-hal.png">(See this)</a></p>
 <p>Some features on BL602 / BL604 are <strong>not yet supported by NuttX</strong>. (Pic above)</p>
 <p>But NuttX on BL602 is <a href="https://github.com/apache/incubator-nuttx/commits/master/arch/risc-v/src/bl602"><strong>getting better every day!</strong></a></p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761">(Though SPI with DMA is not yet supported on BL602 NuttX)</a></p>
