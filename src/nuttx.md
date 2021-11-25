@@ -816,6 +816,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1460322823122014211)
 
+1.  Check out the __NuttX developer forum__...
+
+    [__NuttX Dev Mail Archive__](https://www.mail-archive.com/dev@nuttx.apache.org/)
+
 1.  More about __NuttX on BL602__...
 
     [__"How to install NuttX on BL602"__](https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/)
