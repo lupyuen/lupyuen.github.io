@@ -34,7 +34,7 @@ We'll briefly explore the __internals of NuttX__ to understand how it works...
 
 -   [__NuttX Apps: incubator-nuttx-apps__](https://github.com/apache/incubator-nuttx-apps)
 
-Coding a microcontroller with __Linux-like (POSIX)__ functions might sound odd, but we'll discuss the benefits in a while.
+Coding a microcontroller with __Linux-like (POSIX)__ functions might sound odd, but we'll appreciate the benefits in a while.
 
 (And we might have an interesting way to support __Embedded Rust on NuttX!__)
 
@@ -788,7 +788,7 @@ Here are some topics I might explore in future articles, lemme know if I should 
 
     [(More about PineDio Stack BL604)](https://lupyuen.github.io/articles/lorawan2)
 
--   __LoRa Driver__: Once we get SX1262 talking OK on SPI, we can port the LoRa Driver to NuttX!
+-   __LoRaWAN Driver__: Once we get SX1262 talking OK on SPI, we can port the LoRaWAN Driver to NuttX!
 
     [(LoRaWAN on PineDio Stack BL604)](https://lupyuen.github.io/articles/lorawan2)
 
