@@ -820,6 +820,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__NuttX Dev Mail Archive__](https://www.mail-archive.com/dev@nuttx.apache.org/)
 
+1.  __History of NuttX__ on BL602, how it all started...
+
+    [__"BL602 and NuttX"__](https://www.mail-archive.com/dev@nuttx.apache.org/msg05124.html)
+
 1.  More about __NuttX on BL602__...
 
     [__"How to install NuttX on BL602"__](https://acassis.wordpress.com/2021/01/24/how-to-install-nuttx-on-bl602/)
