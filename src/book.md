@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _19 Nov 2021_
+📝 _26 Nov 2021_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -31,6 +31,14 @@ If you find this book useful... [__please sponsor me a coffee__](https://github.
 Find out what's inside the __BL602 / BL604 System-on-a-Chip (SoC)__... And why it's unique among the microcontrollers we've seen.
 
 -   ["Quick Peek of PineCone BL602 RISC-V Evaluation Board"](https://lupyuen.github.io/articles/pinecone)
+
+![NuttX on BL602](https://lupyuen.github.io/images/book-nuttx.jpg)
+
+# NuttX on BL602
+
+__Apache NuttX__ is a portable, embedded operating system that's officially supported on BL602 and BL604. (Alternative to FreeRTOS)
+
+-   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
@@ -248,18 +256,6 @@ How we run __TensorFlow Lite__ on BL602 and BL604 to create a Glowing LED.
 
 -   ["Machine Learning on RISC-V BL602 with TensorFlow Lite"](https://lupyuen.github.io/articles/tflite)
 
-![Mynewt on BL602](https://lupyuen.github.io/images/book-mynewt.jpg)
-
-# NuttX and Mynewt on BL602
-
-Will BL602 and BL604 run other operating systems (besides FreeRTOS)? Below are the BL602 / BL604 ports of __Apache NuttX__ and (incomplete) __Apache Mynewt__ operating systems.
-
--   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
-
--   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
-
--   ["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
-
 ![Troubleshooting BL602](https://lupyuen.github.io/images/book-troubleshoot.jpg)
 
 # Troubleshooting BL602
@@ -322,6 +318,16 @@ What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it diff
 
 -   ["RISC-V BL706 Audio Video Board"](https://lupyuen.github.io/articles/bl706)
 
+![Mynewt on BL602](https://lupyuen.github.io/images/book-mynewt.jpg)
+
+# Mynewt on BL602
+
+Incomplete port of __Apache Mynewt__ operating system...
+
+-   ["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
+
+-   ["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
+
 ![What's Next](https://lupyuen.github.io/images/book-next.jpg)
 
 # What's Next
@@ -329,6 +335,8 @@ What's inside the Bouffalo Lab RISC-V BL706 Audio Video Board... And how it diff
 Check this book again for future updates...
 
 1.  __IoT Education with BL602 and BL604__
+
+1.  __LoRaWAN and Rust on NuttX__
 
 ![About the Author](https://lupyuen.github.io/images/book-advocate.jpg)
 
