@@ -36,7 +36,7 @@ Find out what's inside the __BL602 / BL604 System-on-a-Chip (SoC)__... And why i
 
 # NuttX on BL602
 
-__Apache NuttX__ is a portable, embedded operating system that's officially supported on BL602 and BL604. (Alternative to FreeRTOS)
+__Apache NuttX__ is a portable, embedded operating system that's officially supported on BL602 and BL604. (Alternative to FreeRTOS and BL602 IoT SDK)
 
 -   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
 
