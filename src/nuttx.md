@@ -465,6 +465,8 @@ Our Blue LED switches __On__...
 
 Congratulations we have successfully tested the BL602 LED with NuttX!
 
+[(Got problems with GPIO? See these troubleshooting tips)](https://lupyuen.github.io/articles/nuttx#appendix-fix-gpio-output)
+
 [(If we're controlling LEDs, consider using NuttX's LED Driver)](https://nuttx.apache.org/docs/latest/reference/os/led.html)
 
 ![GPIO Demo App](https://lupyuen.github.io/images/nuttx-gpio10a.png)
@@ -590,6 +592,8 @@ This code looks similar to [__GLB_GPIO_Write__](https://github.com/lupyuen/bl_io
 That's because NuttX implements its own __Hardware Abstraction Layer (HAL)__ for BL602.
 
 (Which might have quirks different from the BL602 IoT SDK)
+
+[(Got problems with the GPIO Driver? See these troubleshooting tips)](https://lupyuen.github.io/articles/nuttx#appendix-fix-gpio-output)
 
 Let's try out a fun freebie for NuttX... BASIC Interpreter!
 
