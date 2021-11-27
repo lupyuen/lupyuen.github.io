@@ -1015,9 +1015,11 @@ cargo run flash nuttx.bin \
 cargo run flash nuttx.bin --port COM5
 ```
 
-(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)
-
 [(See the Output Log)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
+
+For WSL: Do this under plain old Windows CMD (not WSL) because __blflash__ needs to access the COM port.
+
+[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/incubator-nuttx/issues/4336)
 
 [(More details on flashing firmware)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
