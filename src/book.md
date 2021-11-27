@@ -40,6 +40,10 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 -   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
 
+-   ["GPIO on NuttX"](https://lupyuen.github.io/articles/nuttx#gpio-demo)
+
+-   ["BASIC Interpreter on NuttX"](https://lupyuen.github.io/articles/nuttx#basic-interpreter)
+
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
 # Projects and Libraries on BL602
@@ -70,13 +74,15 @@ How we __flash firmware__ to BL602 and BL604 with __command-line tools__ on Linu
 
 # GPIO on BL602
 
-Learn to call the BL602 / BL604 __GPIO Hardware Abstraction Layer (HAL)__ to blink an LED.
+Learn to call the BL602 / BL604 __GPIO Hardware Abstraction Layer (HAL)__ (or NuttX) to blink an LED.
 
 -   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
 
 -   ["Porting LoRa Driver from Mynewt to BL602: GPIO"](https://lupyuen.github.io/articles/lora#gpio)
 
 -   ["BL602 GPIO Interrupts"](https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts)
+
+-   ["GPIO on NuttX"](https://lupyuen.github.io/articles/nuttx#gpio-demo)
 
 ![PWM on BL602](https://lupyuen.github.io/images/book-pwm.jpg)
 
@@ -237,6 +243,14 @@ How we code BL602 and BL604 firmware the __safer, simpler way with Rust.__
 -   ["Rust in XIP Flash Memory by 9names"](https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways)
 
 -   ["Rust on Apache NuttX?"](https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602)
+
+![BASIC on BL602](https://lupyuen.github.io/images/book-basic.jpg)
+
+# BASIC on BL602
+
+Running the NuttX __BASIC Interpreter__ for BL602 and BL604.
+
+-   ["BASIC Interpreter on NuttX"](https://lupyuen.github.io/articles/nuttx#basic-interpreter)
 
 ![Lisp on BL602](https://lupyuen.github.io/images/book-lisp.jpg)
 
