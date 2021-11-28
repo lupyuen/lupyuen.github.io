@@ -897,6 +897,7 @@ Let's build NuttX on __Linux (Ubuntu)__, __WSL (Ubuntu)__ or __macOS__...
 
     ##  For macOS:
     brew install automake
+    ##  Build "kconfig-frontends" because the "brew install" version doesn't work
     pushd /tmp
     git clone https://bitbucket.org/nuttx/tools.git
     cd tools/kconfig-frontends
@@ -906,6 +907,7 @@ Let's build NuttX on __Linux (Ubuntu)__, __WSL (Ubuntu)__ or __macOS__...
     sudo ln -s /usr/local/bin/aclocal /usr/local/bin/aclocal-1.15
     sudo ln -s /usr/local/bin/automake /usr/local/bin/automake-1.15
     make
+    ##  Install "kconfig-frontends"
     make install
     popd
     ```
@@ -942,10 +944,10 @@ Let's build NuttX on __Linux (Ubuntu)__, __WSL (Ubuntu)__ or __macOS__...
 
     Check whether the __kconfig-frontends__ package has been installed correctly. (See above)
 
-    Then delete the configuration file so that __configure.sh__ can proceed...
+    Then delete the Build Configuration so that __configure.sh__ can proceed...
 
     ```bash
-    rm .config
+    make distclean
     ./tools/configure.sh bl602evb:nsh
     ```
 
