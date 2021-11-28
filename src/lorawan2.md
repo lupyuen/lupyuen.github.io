@@ -522,7 +522,7 @@ These newer __Peer-to-Peer Messaging Protocols__ will probably work with PineDio
 
 There is an __experimental Matrix protocol__ for IoT devices...
 
--   [Ultra Low Bandwidth Transport for Matrix (Experimental)](https://matrix.org/blog/2019/03/12/breaking-the-100-bps-barrier-with-matrix-meshsim-coap-proxy)
+-   [Low Bandwidth Matrix (Experimental)](https://matrix.org/blog/2021/06/10/low-bandwidth-matrix-an-implementation-guide)
 
 Maybe we'll see messaging protocols based on Blockchain...
 
