@@ -749,6 +749,7 @@ sudo apt install \
 
 #  For macOS:
 brew install automake
+#  Build &quot;kconfig-frontends&quot; because the &quot;brew install&quot; version doesn&#39;t work
 pushd /tmp
 git clone https://bitbucket.org/nuttx/tools.git
 cd tools/kconfig-frontends
@@ -758,6 +759,7 @@ patch &lt; ../kconfig-macos.diff -p 1
 sudo ln -s /usr/local/bin/aclocal /usr/local/bin/aclocal-1.15
 sudo ln -s /usr/local/bin/automake /usr/local/bin/automake-1.15
 make
+#  Install &quot;kconfig-frontends&quot;
 make install
 popd</code></pre></div></li>
 <li>
@@ -777,8 +779,8 @@ git clone https://github.com/apache/incubator-nuttx-apps apps</code></pre></div>
 <p>If we see this instead…</p>
 <div class="example-wrap"><pre class="language-text"><code>kconfig-tweak: command not found</code></pre></div>
 <p>Check whether the <strong>kconfig-frontends</strong> package has been installed correctly. (See above)</p>
-<p>Then delete the configuration file so that <strong>configure.sh</strong> can proceed…</p>
-<div class="example-wrap"><pre class="language-bash"><code>rm .config
+<p>Then delete the Build Configuration so that <strong>configure.sh</strong> can proceed…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make distclean
 ./tools/configure.sh bl602evb:nsh</code></pre></div></li>
 <li>
 <p>Build NuttX…</p>
