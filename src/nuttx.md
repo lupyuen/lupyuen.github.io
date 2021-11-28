@@ -940,7 +940,7 @@ Let's build NuttX on __Linux (Ubuntu)__, __WSL (Ubuntu)__ or __macOS__...
     kconfig-tweak: command not found
     ```
 
-    Check whether the __kconfig-frontends__ package has been installed correctly (see above).
+    Check whether the __kconfig-frontends__ package has been installed correctly. (See above)
 
     Then delete the configuration file so that __configure.sh__ can proceed...
 
