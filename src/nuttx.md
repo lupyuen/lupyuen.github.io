@@ -854,7 +854,7 @@ Below are the steps to __build, flash and run__ NuttX on BL602 and BL604.
 
 ## Build NuttX
 
-Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
+Let's build NuttX on __Linux (Ubuntu)__, __WSL (Ubuntu)__ or __macOS__...
 
 [(Instructions for other platforms)](https://nuttx.apache.org/docs/latest/quickstart/install.html)
 
@@ -870,7 +870,12 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 
     ```text
     ##  TODO: Change $HOME/bl_iot_sdk to the full path of bl_iot_sdk
+
+    ##  For Linux and WSL:
     PATH="$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH"
+
+    ##  For macOS:
+    PATH="$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH"
     ```
 
 1.  Update the __PATH__...
@@ -882,12 +887,27 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 1.  Install the __Build Tools__...
 
     ```bash
+    ##  For Linux and WSL:
     sudo apt install \
       bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
       gperf automake libtool pkg-config build-essential gperf genromfs \
       libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
       libexpat-dev gcc-multilib g++-multilib picocom u-boot-tools util-linux \
       kconfig-frontends
+
+    ##  For macOS:
+    brew install automake
+    pushd /tmp
+    git clone https://bitbucket.org/nuttx/tools.git
+    cd tools/kconfig-frontends
+    patch < ../kconfig-macos.diff -p 1
+    ./configure --enable-mconf --disable-shared --enable-static --disable-gconf --disable-qconf --disable-nconf
+    ##  Needed because "make" requires "aclocal-1.15" and "automake-1.15"
+    sudo ln -s /usr/local/bin/aclocal /usr/local/bin/aclocal-1.15
+    sudo ln -s /usr/local/bin/automake /usr/local/bin/automake-1.15
+    make
+    make install
+    popd
     ```
 
 1.  Download NuttX...
@@ -948,10 +968,12 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 1.  Copy the __NuttX Firmware__ to the __blflash__ directory...
 
     ```bash
-    ##  For Linux: Change $HOME/blflash to the full path of blflash
+    ##  For Linux and macOS:
+    ##  TODO: Change $HOME/blflash to the full path of blflash
     cp nuttx.bin $HOME/blflash
 
-    ##  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
+    ##  For WSL:
+    ##  TODO: Change /mnt/c/blflash to the full path of blflash in Windows
     ##  /mnt/c/blflash refers to c:\blflash
     cp nuttx.bin /mnt/c/blflash
     ```
