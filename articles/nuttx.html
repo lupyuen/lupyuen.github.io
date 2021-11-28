@@ -718,7 +718,7 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a></h1>
 <p>Below are the steps to <strong>build, flash and run</strong> NuttX on BL602 and BL604.</p>
 <h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">14.1 Build NuttX</a></h2>
-<p>Let’s build NuttX on <strong>Linux (Ubuntu)</strong> or <strong>WSL (Ubuntu)</strong>…</p>
+<p>Let’s build NuttX on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> or <strong>macOS</strong>…</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
 <ol>
@@ -728,18 +728,38 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <li>
 <p>Edit <strong>~/.bashrc</strong> (or equivalent) and add…</p>
 <div class="example-wrap"><pre class="language-text"><code>#  TODO: Change $HOME/bl_iot_sdk to the full path of bl_iot_sdk
-PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH&quot;</code></pre></div></li>
+
+#  For Linux and WSL:
+PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH&quot;
+
+#  For macOS:
+PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH&quot;</code></pre></div></li>
 <li>
 <p>Update the <strong>PATH</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>. ~/.bashrc</code></pre></div></li>
 <li>
 <p>Install the <strong>Build Tools</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo apt install \
+<div class="example-wrap"><pre class="language-bash"><code>#  For Linux and WSL:
+sudo apt install \
   bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
   gperf automake libtool pkg-config build-essential gperf genromfs \
   libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
   libexpat-dev gcc-multilib g++-multilib picocom u-boot-tools util-linux \
-  kconfig-frontends</code></pre></div></li>
+  kconfig-frontends
+
+#  For macOS:
+brew install automake
+pushd /tmp
+git clone https://bitbucket.org/nuttx/tools.git
+cd tools/kconfig-frontends
+patch &lt; ../kconfig-macos.diff -p 1
+./configure --enable-mconf --disable-shared --enable-static --disable-gconf --disable-qconf --disable-nconf
+#  Needed because &quot;make&quot; requires &quot;aclocal-1.15&quot; and &quot;automake-1.15&quot;
+sudo ln -s /usr/local/bin/aclocal /usr/local/bin/aclocal-1.15
+sudo ln -s /usr/local/bin/automake /usr/local/bin/automake-1.15
+make
+make install
+popd</code></pre></div></li>
 <li>
 <p>Download NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
@@ -772,10 +792,12 @@ CP: nuttx.bin</code></pre></div>
 </li>
 <li>
 <p>Copy the <strong>NuttX Firmware</strong> to the <strong>blflash</strong> directory…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  For Linux: Change $HOME/blflash to the full path of blflash
+<div class="example-wrap"><pre class="language-bash"><code>#  For Linux and macOS:
+#  TODO: Change $HOME/blflash to the full path of blflash
 cp nuttx.bin $HOME/blflash
 
-#  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
+#  For WSL:
+#  TODO: Change /mnt/c/blflash to the full path of blflash in Windows
 #  /mnt/c/blflash refers to c:\blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>(We’ll cover <strong>blflash</strong> in the next section)</p>
