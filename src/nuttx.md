@@ -914,6 +914,21 @@ Let's build NuttX on __Linux (Ubuntu)__ or __WSL (Ubuntu)__...
 
     [(See the complete log)](https://gist.github.com/lupyuen/41f40b782769e611770724510fc8db2c)
 
+    If we see this instead...
+
+    ```text
+    kconfig-tweak: command not found
+    ```
+
+    Check whether the __kconfig-frontends__ package has been installed correctly (see above).
+
+    Then delete the configuration file so that __configure.sh__ can proceed...
+
+    ```bash
+    rm .config
+    ./tools/configure.sh bl602evb:nsh
+    ```
+
 1.  Build NuttX...
 
     ```bash
