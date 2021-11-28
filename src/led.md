@@ -522,19 +522,13 @@ _BL602 Pulse Width Modulation_
 
 # What's Next
 
-Today we have we have explored the GPIO and PWM HAL Functions through the BL602 Demo Firmware.
+Today we have we have explored the GPIO and PWM HAL Functions through the BL602 IoT SDK.
 
-We're now ready to call the GPIO and PWM HAL Functions from a modern embedded operating system... Apache Mynewt!
+Alternatively we may access BL602 GPIO Functions through another embedded operating system: __Apache NuttX__...
 
-This will become part of the port of Mynewt to BL602, that we have started here...
+-   [__"GPIO on NuttX"__](https://lupyuen.github.io/articles/nuttx#gpio-demo)
 
-["Porting Mynewt to PineCone BL602"](https://lupyuen.github.io/articles/mynewt)
-
-Here's the updated port of Mynewt BL602 that supports GPIO...
-
-["Mynewt GPIO ported to PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/gpio)
-
-And the work on Mynewt BL602 continues... Stay Tuned!
+Stay tuned for more NuttX!
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
