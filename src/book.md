@@ -42,6 +42,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 -   ["GPIO on NuttX"](https://lupyuen.github.io/articles/nuttx#gpio-demo)
 
+-   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
+
 -   ["BASIC Interpreter on NuttX"](https://lupyuen.github.io/articles/nuttx#basic-interpreter)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
@@ -111,6 +113,8 @@ How we call the __BL602 / BL604 SPI HAL__ to access SPI Sensors, Displays and Ne
 -   ["PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"](https://lupyuen.github.io/articles/display)
 
 -   ["Porting LoRa Driver from Mynewt to BL602: SPI"](https://lupyuen.github.io/articles/lora#spi)
+
+-   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
 
 ![DMA on BL602](https://lupyuen.github.io/images/book-dma.jpg)
 
