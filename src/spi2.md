@@ -20,6 +20,8 @@ Today we shall venture into the __SPI Functions__ and discover...
 
 -   On Bouffalo Lab's __BL602 and BL604__ RISC-V SoCs
 
+We'll also study briefly the internals of the __NuttX SPI Driver__, to understand how it works.
+
 _What about ESP32? NuttX works the same across platforms right?_
 
 I realise that many of my readers are using ESP32 instead of BL602.
