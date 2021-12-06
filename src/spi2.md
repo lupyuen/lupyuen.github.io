@@ -2,6 +2,10 @@
 
 📝 _12 Dec 2021_
 
+![PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)](https://lupyuen.github.io/images/spi2-title.jpg)
+
+_PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)_
+
 Last article we explored __Apache NuttX OS__ and its __GPIO Functions__...
 
 TODO
@@ -23,10 +27,6 @@ I realise that many of my readers are using ESP32 instead of BL602.
 In this article I'll point out the tweaks needed to __run the code on ESP32__.
 
 (Watch for the __"Xref"__ tags)
-
-![PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)](https://lupyuen.github.io/images/spi2-title.jpg)
-
-_PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)_
 
 # New App
 
