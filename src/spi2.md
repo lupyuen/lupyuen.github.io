@@ -2,9 +2,29 @@
 
 📝 _12 Dec 2021_
 
-![](https://lupyuen.github.io/images/spi2-title.jpg)
+Last article we explored __Apache NuttX OS__ and its __GPIO Functions__...
 
 TODO
+
+Today we shall venture into the __SPI Functions__ and discover...
+
+-   How to transmit and receive SPI data
+
+-   By coding a simple NuttX Device Driver
+
+-   And testing with Semtech SX1282 (LoRa Transceiver)
+
+-   On Bouffalo Lab's BL602 and BL604 RISC-V SoCs
+
+_What about ESP32? Since NuttX works the same across platforms?_
+
+I realise that many of my readers are using ESP32 instead of BL602.
+
+In this article I'll point out the tweaks needed to run the code on ESP32.
+
+(Watch out for the Xref tags)
+
+![](https://lupyuen.github.io/images/spi2-title.jpg)
 
 # What's Next
 
@@ -46,7 +66,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # TODO: New App
 
-TODO1
+(For BL602 and ESP32)
+
+TODO40
 
 Let's test the #NuttX SPI Driver for #BL602
 
@@ -56,39 +78,37 @@ We create the "spi_test" Demo App in #NuttX ... By copying the "hello" Demo App
 
 https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4
 
-Fixing our "spi_test" app for #NuttX ... Rename "hello_main.c" to "spi_test_main.c"
-
-https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40
-
-In our #NuttX App "spi_test", change all "hello" to "spi_test" ... Remember to Preserve Case!
-
-https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74
-
-1️⃣ make distclean 2️⃣ configure.sh 3️⃣ make menuconfig ... Our #NuttX App "spi_test" magically appears!
-
-https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test
-
-Our #NuttX Demo App "spi_test" ... Runs OK on #BL602
-
-https://github.com/lupyuen/incubator-nuttx-apps/blob/newapp/examples/spi_test/spi_test_main.c
-
-TODO40
-
 ![](https://lupyuen.github.io/images/spi2-newapp.png)
 
 TODO41
+
+Fixing our "spi_test" app for #NuttX ... Rename "hello_main.c" to "spi_test_main.c"
+
+https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40
 
 ![](https://lupyuen.github.io/images/spi2-newapp2.png)
 
 TODO42
 
+In our #NuttX App "spi_test", change all "hello" to "spi_test" ... Remember to Preserve Case!
+
+https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74
+
 ![](https://lupyuen.github.io/images/spi2-newapp3.png)
 
 TODO43
 
+1️⃣ make distclean 2️⃣ configure.sh 3️⃣ make menuconfig ... Our #NuttX App "spi_test" magically appears!
+
+https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test
+
 ![](https://lupyuen.github.io/images/spi2-newapp4.png)
 
 TODO44
+
+Our #NuttX Demo App "spi_test" ... Runs OK on #BL602
+
+https://github.com/lupyuen/incubator-nuttx-apps/blob/newapp/examples/spi_test/spi_test_main.c
 
 ![](https://lupyuen.github.io/images/spi2-newapp5.png)
 
@@ -157,6 +177,8 @@ https://docs.google.com/spreadsheets/d/1MDps5cPe7tIgCL1Cz98iVccJAUJq1lgctpKgg9Ow
 ![](https://lupyuen.github.io/images/spi2-interface7.png)
 
 # TODO: New Driver
+
+(For BL602 and ESP32)
 
 TODO45
 
@@ -256,6 +278,8 @@ https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/
 
 # TODO: SPI Driver
 
+(For BL602 and ESP32)
+
 TODO29
 
 Every #NuttX Device Driver defines the File Operations for the device ... Here are the open(), close(), read(), write() and ioctl() operations for our SPI Test Driver
@@ -297,6 +321,8 @@ https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_dri
 ![](https://lupyuen.github.io/images/spi2-app3.png)
 
 # TODO: Logic Analyser
+
+(For BL602 only)
 
 TODO13
 
@@ -350,31 +376,9 @@ https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/b
 
 ![](https://lupyuen.github.io/images/spi2-logic2.png)
 
-# TODO: Hello
-
-![](https://lupyuen.github.io/images/spi2-hello.png)
-
-TODO2
-
-![](https://lupyuen.github.io/images/spi2-hello2.png)
-
-TODO3
-
-![](https://lupyuen.github.io/images/spi2-hello3.png)
-
-TODO4
-
-![](https://lupyuen.github.io/images/spi2-hello4.png)
-
-TODO5
-
-![](https://lupyuen.github.io/images/spi2-crash.png)
-
-TODO18
-
-![](https://lupyuen.github.io/images/spi2-pinedio10.jpg)
-
 # TODO: SX1262
+
+(For BL602 and ESP32)
 
 TODO17
 
@@ -454,6 +458,8 @@ https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2
 
 # TODO: PineDio Stack
 
+(For BL604 only)
+
 TODO15
 
 Will #NuttX run on #Pine64's PineDio Stack BL604 with onboard Semtech SX1262? Let's find out!
@@ -516,3 +522,26 @@ TODO16
 
 ![](https://lupyuen.github.io/images/spi2-pinedio4.jpg)
 
+# TODO: Hello
+
+![](https://lupyuen.github.io/images/spi2-hello.png)
+
+TODO2
+
+![](https://lupyuen.github.io/images/spi2-hello2.png)
+
+TODO3
+
+![](https://lupyuen.github.io/images/spi2-hello3.png)
+
+TODO4
+
+![](https://lupyuen.github.io/images/spi2-hello4.png)
+
+TODO5
+
+![](https://lupyuen.github.io/images/spi2-crash.png)
+
+TODO18
+
+![](https://lupyuen.github.io/images/spi2-pinedio10.jpg)
