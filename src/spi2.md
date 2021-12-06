@@ -8,7 +8,7 @@ _PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left
 
 Last article we explored __Apache NuttX OS__ and its __GPIO Functions__...
 
-TODO
+-   [__"Apache NuttX OS on RISC-V BL602 and BL604"__](https://lupyuen.github.io/articles/nuttx)
 
 Today we shall venture into the __SPI Functions__ and discover...
 
@@ -28,11 +28,11 @@ In this article I'll point out the tweaks needed to __run the code on ESP32__.
 
 (Watch for the __"Xref"__ tags)
 
-# New App
+# Create a NuttX App
 
 (For BL602 and ESP32)
 
-TODO40
+TODO
 
 Let's test the #NuttX SPI Driver for #BL602
 
@@ -82,11 +82,11 @@ TODO56
 
 ![](https://lupyuen.github.io/images/spi2-script.png)
 
-# SPI Interface
+# NuttX SPI Interface
 
 (For BL602 and ESP32)
 
-TODO36
+TODO
 
 #NuttX SPI Interface is defined here ... Let's call it from our "spi_test" app
 
@@ -142,11 +142,11 @@ Instead we copy an existing #NuttX SPI Device Driver to test the SPI Interface .
 
 ![](https://lupyuen.github.io/images/spi2-interface7.png)
 
-# New Driver
+# Create a NuttX Device Driver
 
 (For BL602 and ESP32)
 
-TODO45
+TODO
 
 We create a new #NuttX SPI Device Driver ... By copying "dat-31r5-sp.c" to "spi_test_driver.c"
 
@@ -242,11 +242,11 @@ This appears when we run our #NuttX SPI Test App ... Let's study our SPI Test Dr
 
 ![](https://lupyuen.github.io/images/spi2-app2.png)
 
-# SPI Driver
+# Inside the SPI Driver
 
 (For BL602 and ESP32)
 
-TODO29
+TODO
 
 Every #NuttX Device Driver defines the File Operations for the device ... Here are the open(), close(), read(), write() and ioctl() operations for our SPI Test Driver
 
@@ -286,11 +286,11 @@ Now we see every byte transferred by #NuttX's SPI Driver for #BL602!
 
 ![](https://lupyuen.github.io/images/spi2-app3.png)
 
-# Logic Analyser
+# Test with Logic Analyser
 
 (For BL602 only)
 
-TODO13
+TODO
 
 How to verify the #NuttX SPI Output? We sniff the #BL602 SPI Bus with a Logic Analyser
 
@@ -346,7 +346,7 @@ After swapping #BL602 MISO and MOSI at #NuttX startup ... Logic Analyser shows t
 
 (For BL602 and ESP32)
 
-TODO17
+TODO
 
 Let's test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver
 
@@ -426,7 +426,7 @@ Our #NuttX App now reads the SX1262 Register correctly! 🎉
 
 (For BL604 only)
 
-TODO15
+TODO
 
 Will #NuttX run on #Pine64's PineDio Stack BL604 with onboard Semtech SX1262? Let's find out!
 
@@ -495,9 +495,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1464898624026906625)
 
-# TODO: PineDio Stack
-
-TODO7
+TODO
 
 ![](https://lupyuen.github.io/images/spi2-pinedio2.jpg)
 
