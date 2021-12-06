@@ -16,7 +16,7 @@ Today we shall venture into the __SPI Functions__ and discover...
 
 -   By coding a simple NuttX __Device Driver__
 
--   And testing with __Semtech SX1282__ (LoRa Transceiver)
+-   And testing with __Semtech SX1262__ (LoRa Transceiver)
 
 -   On Bouffalo Lab's __BL602 and BL604__ RISC-V SoCs
 
