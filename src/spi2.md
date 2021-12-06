@@ -529,26 +529,6 @@ TODO16
 
 ![](https://lupyuen.github.io/images/spi2-pinedio4.jpg)
 
-# TODO: Hello
-
-![](https://lupyuen.github.io/images/spi2-hello.png)
-
-TODO2
-
-![](https://lupyuen.github.io/images/spi2-hello2.png)
-
-TODO3
-
-![](https://lupyuen.github.io/images/spi2-hello3.png)
-
-TODO4
-
-![](https://lupyuen.github.io/images/spi2-hello4.png)
-
-TODO5
-
-![](https://lupyuen.github.io/images/spi2-crash.png)
-
 TODO18
 
 ![](https://lupyuen.github.io/images/spi2-pinedio10.jpg)
