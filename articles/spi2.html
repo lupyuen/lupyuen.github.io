@@ -437,13 +437,15 @@ cd nuttx/nuttx
 # Preserve the Build Config
 cp .config ../config
 
-# Erase the Kconfig files
+# Erase the Build Config and Kconfig files
 make distclean
 
-# Configure the build for BL602
+# For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-# For ESP32: Change &quot;bl602evb:nsh&quot; to &quot;esp32-devkitc:nsh&quot; (or equivalent)
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
 
 # Restore the Build Config
 cp ../config .config
