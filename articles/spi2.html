@@ -66,15 +66,17 @@
     <h1 class="title">SPI on Apache NuttX OS</h1>
     <nav id="TOC"><ul>
 <li><a href="#spi-test-app-and-driver">1 SPI Test App and Driver</a><ul></ul></li>
-<li><a href="#create-a-nuttx-app">2 Create a NuttX App</a><ul></ul></li>
-<li><a href="#nuttx-spi-interface">3 NuttX SPI Interface</a><ul></ul></li>
-<li><a href="#create-a-nuttx-device-driver">4 Create a NuttX Device Driver</a><ul></ul></li>
-<li><a href="#inside-the-spi-driver">5 Inside the SPI Driver</a><ul></ul></li>
-<li><a href="#test-with-logic-analyser">6 Test with Logic Analyser</a><ul></ul></li>
-<li><a href="#test-with-semtech-sx1262">7 Test with Semtech SX1262</a><ul></ul></li>
-<li><a href="#test-with-pinedio-stack">8 Test with PineDio Stack</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>12 Dec 2021</em></p>
+<li><a href="#create-spi-test-driver">2 Create SPI Test Driver</a><ul></ul></li>
+<li><a href="#create-spi-test-app">3 Create SPI Test App</a><ul></ul></li>
+<li><a href="#test-with-logic-analyser">4 Test with Logic Analyser</a><ul></ul></li>
+<li><a href="#test-with-semtech-sx1262">5 Test with Semtech SX1262</a><ul></ul></li>
+<li><a href="#test-with-pinedio-stack">6 Test with PineDio Stack</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li>
+<li><a href="#appendix-create-a-nuttx-device-driver">9 Appendix: Create a NuttX Device Driver</a><ul></ul></li>
+<li><a href="#appendix-create-a-nuttx-app">10 Appendix: Create a NuttX App</a><ul></ul></li>
+<li><a href="#appendix-nuttx-spi-interface">11 Appendix: NuttX SPI Interface</a><ul></ul></li>
+<li><a href="#appendix-pinedio-stack-bl604">12 Appendix: PineDio Stack BL604</a><ul></ul></li></ul></nav><p>📝 <em>12 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)" /></p>
 <p><em>PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)</em></p>
 <p>Last article we explored <strong>Apache NuttX OS</strong> and its <strong>GPIO Functions</strong>…</p>
@@ -147,64 +149,165 @@
 <p><em>Must everything be done through the read() and write() interfaces?</em></p>
 <p>There’s another POSIX Interface that’s supported by NuttX: <strong>ioctl()</strong>.</p>
 <p>We’ll see this when we cover the NuttX Device Driver for Semtech SX1276.</p>
-<h1 id="create-a-nuttx-app" class="section-header"><a href="#create-a-nuttx-app">2 Create a NuttX App</a></h1>
+<h1 id="create-spi-test-driver" class="section-header"><a href="#create-spi-test-driver">2 Create SPI Test Driver</a></h1>
+<p><em>(For BL602 and ESP32)</em></p>
+<p>TODO</p>
+<p>Every #NuttX Device Driver defines the File Operations for the device … Here are the open(), close(), read(), write() and ioctl() operations for our SPI Test Driver</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver2a.png" alt="" /></p>
+<p>TODO23</p>
+<p>In the write() operation for our #NuttX SPI Test Driver, we 1️⃣ Lock the SPI Bus 2️⃣ Config the SPI Interface 3️⃣ Select the SPI Device 4️⃣ Transfer SPI Data 5️⃣ Deselect and Unlock</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver2.png" alt="" /></p>
+<p>TODO24</p>
+<p>Here’s how we configure the #NuttX SPI Interface</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L95-L117">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver3.png" alt="" /></p>
+<h1 id="create-spi-test-app" class="section-header"><a href="#create-spi-test-app">3 Create SPI Test App</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>TODO</p>
 <p>Let’s test the #NuttX SPI Driver for #BL602</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/drivers/special/spi.html">(Source)</a></p>
-<p>We create the “spi_test” Demo App in #NuttX … By copying the “hello” Demo App</p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4">(Source)</a></p>
-<p>TODO41</p>
-<p>Fixing our “spi_test” app for #NuttX … Rename “hello_main.c” to “spi_test_main.c”</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp2.png" alt="" /></p>
-<p>TODO42</p>
-<p>In our #NuttX App “spi_test”, change all “hello” to “spi_test” … Remember to Preserve Case!</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp3.png" alt="" /></p>
-<p>TODO43</p>
-<p>1️⃣ make distclean 2️⃣ configure.sh 3️⃣ make menuconfig … Our #NuttX App “spi_test” magically appears!</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp4.png" alt="" /></p>
-<p>TODO44</p>
-<p>Our #NuttX Demo App “spi_test” … Runs OK on #BL602</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/newapp/examples/spi_test/spi_test_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp5.png" alt="" /></p>
-<p>Build, Flash and Run #NuttX OS on #BL602 … Here’s the script I use for macOS</p>
-<p>TODO56</p>
-<p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="" /></p>
-<h1 id="nuttx-spi-interface" class="section-header"><a href="#nuttx-spi-interface">3 NuttX SPI Interface</a></h1>
+<p>Back to our #NuttX SPI Test App … Here’s how we open the SPI Test Driver and write data</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-app4.png" alt="" /></p>
+<p>TODO19</p>
+<p>This appears when we run our #NuttX SPI Test App … Let’s study our SPI Test Driver</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-app2.png" alt="" /></p>
+<p>TODO25</p>
+<p>To watch what happens inside #NuttX’s SPI Driver for #BL602 … Turn on SPI Debug Logging</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver4.png" alt="" /></p>
+<p>TODO20</p>
+<p>Now we see every byte transferred by #NuttX’s SPI Driver for #BL602!</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-app3.png" alt="" /></p>
+<h1 id="test-with-logic-analyser" class="section-header"><a href="#test-with-logic-analyser">4 Test with Logic Analyser</a></h1>
+<p><em>(For BL602 only)</em></p>
+<p>TODO</p>
+<p>How to verify the #NuttX SPI Output? We sniff the #BL602 SPI Bus with a Logic Analyser</p>
+<p><a href="https://lupyuen.github.io/articles/spi#appendix-troubleshoot-bl602-spi-with-logic-analyser">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-logic4.jpg" alt="" /></p>
+<p>TODO26</p>
+<p>In #NuttX the SPI Pins for #BL602 are defined in “board.h” … MOSI is GPIO 1, MISO is GPIO 0</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L87-L92">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver5.png" alt="" /></p>
+<p>TODO27</p>
+<p>#NuttX’s SPI Pins match the #BL602 Reference Manual: MOSI = GPIO 1, MISO = GPIO 0 … But we’re about to witness a BL602 SPI Quirk</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver6.png" alt="" /></p>
+<p>TODO37</p>
+<p>Logic Analyser connected to #BL602 shows that MISO and MOSI are swapped! This happens in BL602 IoT SDK … Also in #NuttX!</p>
+<p><a href="https://lupyuen.github.io/articles/spi#spi-data-pins-are-flipped">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-logic.png" alt="" /></p>
+<p>TODO28</p>
+<p>We can swap MISO and MOSI on #BL602 by setting a Hardware Register … Let’s do this on #NuttX</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped">(Source)</a></p>
+<p>Here’s how we swap #BL602 MOSI and MISO on #NuttX … So that the SPI Pins are consistent with the BL602 Reference Manual</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver7.png" alt="" /></p>
+<p>TODO38</p>
+<p>After swapping #BL602 MISO and MOSI at #NuttX startup … Logic Analyser shows that the SPI Pins are now consistent with BL602 Reference Manual! 🎉</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="" /></p>
+<h1 id="test-with-semtech-sx1262" class="section-header"><a href="#test-with-semtech-sx1262">5 Test with Semtech SX1262</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>TODO</p>
-<p>#NuttX SPI Interface is defined here … Let’s call it from our “spi_test” app</p>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface.png" alt="" /></p>
-<p>TODO30</p>
-<p>Can our #NuttX App directly call the SPI Interface? Let’s find out! 🤔</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface2.png" alt="" /></p>
-<p>TODO31</p>
-<p>#NuttX SPI Interface needs an SPI Device “spi_dev_s” … How do we get an SPI Device? 🤔</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface3.png" alt="" /></p>
-<p>TODO32</p>
-<p>Tracing thru #NuttX Virtual File System … We see that ioctl() maps the File Descriptor to a File Struct</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/fs/vfs/fs_ioctl.c#L118-L138">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface4.png" alt="" /></p>
-<p>TODO33</p>
-<p>#NuttX File Struct contains a Private Pointer to the SPI Driver “spi_driver_s”</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L112-L147">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface5.png" alt="" /></p>
-<p>TODO34</p>
-<p>#NuttX SPI Driver “spi_driver_s” contains the SPI Device “spi_dev_s” … That we need for testing the SPI Interface! But the SPI Device is private and hidden from apps 🙁</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface6.png" alt="" /></p>
-<p>TODO35</p>
-<p>Instead we copy an existing #NuttX SPI Device Driver to test the SPI Interface … We pick the simplest smallest SPI Device Driver: dat-31r5-sp</p>
-<p><a href="https://docs.google.com/spreadsheets/d/1MDps5cPe7tIgCL1Cz98iVccJAUJq1lgctpKgg9OwztI/edit#gid=0">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface7.png" alt="" /></p>
-<h1 id="create-a-nuttx-device-driver" class="section-header"><a href="#create-a-nuttx-device-driver">4 Create a NuttX Device Driver</a></h1>
+<p>Let’s test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver</p>
+<p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="" /></p>
+<p>TODO59</p>
+<p>We implement the Read Operation for our #NuttX SPI Driver … So that we can fetch the SPI Response from SX1262</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L210-L233">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx3.png" alt="" /></p>
+<p>TODO60</p>
+<p>Our #NuttX App transmits an SPI Command to SX1262 … And reads the SPI Response from SX1262</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L54-L84">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx4.png" alt="" /></p>
+<p>TODO39</p>
+<p>#BL602 SPI Chip Select has a problem … It goes High after EVERY byte … Which is no-no for SX1262 … Solution: We control Chip Select via GPIO</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-logic3.png" alt="" /></p>
+<p>TODO61</p>
+<p>Here’s our #NuttX App controlling SPI Chip Select via GPIO</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx5.png" alt="" /></p>
+<p>TODO62</p>
+<p>Now our #NuttX App is ready to read an SX1262 Register over SPI!</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx6.png" alt="" /></p>
+<p>TODO58</p>
+<p>Our #NuttX App reads an SX1262 Register … But it returns garbage! There’s a workaround for this #BL602 SPI Quirk</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx2.png" alt="" /></p>
+<p>TODO63</p>
+<p>#BL602 has an SPI Quirk … We must use SPI Mode 1 instead of Mode 0 … Let’s fix this in #NuttX</p>
+<p><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(Source)</a></p>
+<p>For #NuttX on #BL602, we use SPI Mode 1 instead of Mode 0 … To work around the SPI Mode Quirk</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx7.png" alt="" /></p>
+<p>TODO57</p>
+<p>Our #NuttX App now reads the SX1262 Register correctly! 🎉</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="" /></p>
+<h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">6 Test with PineDio Stack</a></h1>
+<p><em>(For BL604 only)</em></p>
+<p>TODO</p>
+<p>Will #NuttX run on #Pine64’s PineDio Stack BL604 with onboard Semtech SX1262? Let’s find out!</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio.jpg" alt="" /></p>
+<p>TODO55</p>
+<p>Here’s how Semtech SX1262 is wired onboard #PineDio Stack #BL604 … Let’s update the Pin Definitions in NuttX</p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="" /></p>
+<p>TODO53</p>
+<p>Here are the #NuttX Pin Definitions for PineDio Stack BL604 with onboard SX1262 … As derived from the schematic</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio.png" alt="" /></p>
+<p>TODO54</p>
+<p>Our #NuttX App runs OK on PineDio Stack BL604 with onboard SX1262! 🎉</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio2.png" alt="" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
+<p>TODO</p>
+<p>I’m new to NuttX but I had lots of fun experimenting with it. I hope you’ll enjoy NuttX too!</p>
+<p>Here are some topics I might explore in future articles, lemme know if I should do these…</p>
+<ul>
+<li>
+<p><strong>SPI Driver</strong>: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604!</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan2">(More about PineDio Stack BL604)</a></p>
+</li>
+<li>
+<p><strong>LoRaWAN Driver</strong>: Once we get SX1262 talking OK on SPI, we can port the LoRaWAN Driver to NuttX!</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan2">(LoRaWAN on PineDio Stack BL604)</a></p>
+</li>
+<li>
+<p><strong>Rust</strong>: Porting the Embedded Rust HAL to NuttX sounds really interesting. We might start with GPIO and SPI to see whether the concept is feasible.</p>
+</li>
+</ul>
+<p>(BL602 IoT SDK / FreeRTOS is revamping right now to the <a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>new “hosal” HAL</strong></a>. Terrific time to explore NuttX now!)</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi2.md"><code>lupyuen.github.io/src/spi2.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1464898624026906625">this Twitter Thread</a></li>
+</ol>
+<h1 id="appendix-create-a-nuttx-device-driver" class="section-header"><a href="#appendix-create-a-nuttx-device-driver">9 Appendix: Create a NuttX Device Driver</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>TODO</p>
 <p>We create a new #NuttX SPI Device Driver … By copying “dat-31r5-sp.c” to “spi_test_driver.c”</p>
@@ -246,160 +349,62 @@
 <p>Build, flash and run #NuttX … Our SPI Test Driver appears as “/dev/spitest0”! 🎉</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="" /></p>
-<p>TODO21</p>
-<p>Back to our #NuttX SPI Test App … Here’s how we open the SPI Test Driver and write data</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-app4.png" alt="" /></p>
-<p>TODO19</p>
-<p>This appears when we run our #NuttX SPI Test App … Let’s study our SPI Test Driver</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-app2.png" alt="" /></p>
-<h1 id="inside-the-spi-driver" class="section-header"><a href="#inside-the-spi-driver">5 Inside the SPI Driver</a></h1>
+<p>TODO35</p>
+<p>Instead we copy an existing #NuttX SPI Device Driver to test the SPI Interface … We pick the simplest smallest SPI Device Driver: dat-31r5-sp</p>
+<p><a href="https://docs.google.com/spreadsheets/d/1MDps5cPe7tIgCL1Cz98iVccJAUJq1lgctpKgg9OwztI/edit#gid=0">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface7.png" alt="" /></p>
+<h1 id="appendix-create-a-nuttx-app" class="section-header"><a href="#appendix-create-a-nuttx-app">10 Appendix: Create a NuttX App</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>TODO</p>
-<p>Every #NuttX Device Driver defines the File Operations for the device … Here are the open(), close(), read(), write() and ioctl() operations for our SPI Test Driver</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver2a.png" alt="" /></p>
-<p>TODO23</p>
-<p>In the write() operation for our #NuttX SPI Test Driver, we 1️⃣ Lock the SPI Bus 2️⃣ Config the SPI Interface 3️⃣ Select the SPI Device 4️⃣ Transfer SPI Data 5️⃣ Deselect and Unlock</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver2.png" alt="" /></p>
-<p>TODO24</p>
-<p>Here’s how we configure the #NuttX SPI Interface</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L95-L117">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver3.png" alt="" /></p>
-<p>TODO25</p>
-<p>To watch what happens inside #NuttX’s SPI Driver for #BL602 … Turn on SPI Debug Logging</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver4.png" alt="" /></p>
-<p>TODO20</p>
-<p>Now we see every byte transferred by #NuttX’s SPI Driver for #BL602!</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-app3.png" alt="" /></p>
-<h1 id="test-with-logic-analyser" class="section-header"><a href="#test-with-logic-analyser">6 Test with Logic Analyser</a></h1>
-<p><em>(For BL602 only)</em></p>
-<p>TODO</p>
-<p>How to verify the #NuttX SPI Output? We sniff the #BL602 SPI Bus with a Logic Analyser</p>
-<p><a href="https://lupyuen.github.io/articles/spi#appendix-troubleshoot-bl602-spi-with-logic-analyser">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-logic4.jpg" alt="" /></p>
-<p>TODO26</p>
-<p>In #NuttX the SPI Pins for #BL602 are defined in “board.h” … MOSI is GPIO 1, MISO is GPIO 0</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L87-L92">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver5.png" alt="" /></p>
-<p>TODO27</p>
-<p>#NuttX’s SPI Pins match the #BL602 Reference Manual: MOSI = GPIO 1, MISO = GPIO 0 … But we’re about to witness a BL602 SPI Quirk</p>
-<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver6.png" alt="" /></p>
-<p>TODO37</p>
-<p>Logic Analyser connected to #BL602 shows that MISO and MOSI are swapped! This happens in BL602 IoT SDK … Also in #NuttX!</p>
-<p><a href="https://lupyuen.github.io/articles/spi#spi-data-pins-are-flipped">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-logic.png" alt="" /></p>
-<p>TODO28</p>
-<p>We can swap MISO and MOSI on #BL602 by setting a Hardware Register … Let’s do this on #NuttX</p>
-<p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped">(Source)</a></p>
-<p>Here’s how we swap #BL602 MOSI and MISO on #NuttX … So that the SPI Pins are consistent with the BL602 Reference Manual</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver7.png" alt="" /></p>
-<p>TODO38</p>
-<p>After swapping #BL602 MISO and MOSI at #NuttX startup … Logic Analyser shows that the SPI Pins are now consistent with BL602 Reference Manual! 🎉</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="" /></p>
-<h1 id="test-with-semtech-sx1262" class="section-header"><a href="#test-with-semtech-sx1262">7 Test with Semtech SX1262</a></h1>
+<p>We create the “spi_test” Demo App in #NuttX … By copying the “hello” Demo App</p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4">(Source)</a></p>
+<p>TODO41</p>
+<p>Fixing our “spi_test” app for #NuttX … Rename “hello_main.c” to “spi_test_main.c”</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp2.png" alt="" /></p>
+<p>TODO42</p>
+<p>In our #NuttX App “spi_test”, change all “hello” to “spi_test” … Remember to Preserve Case!</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp3.png" alt="" /></p>
+<p>TODO43</p>
+<p>1️⃣ make distclean 2️⃣ configure.sh 3️⃣ make menuconfig … Our #NuttX App “spi_test” magically appears!</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp4.png" alt="" /></p>
+<p>TODO44</p>
+<p>Our #NuttX Demo App “spi_test” … Runs OK on #BL602</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/newapp/examples/spi_test/spi_test_main.c">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp5.png" alt="" /></p>
+<p>Build, Flash and Run #NuttX OS on #BL602 … Here’s the script I use for macOS</p>
+<p>TODO56</p>
+<p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="" /></p>
+<h1 id="appendix-nuttx-spi-interface" class="section-header"><a href="#appendix-nuttx-spi-interface">11 Appendix: NuttX SPI Interface</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>TODO</p>
-<p>Let’s test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver</p>
-<p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="" /></p>
-<p>TODO59</p>
-<p>We implement the Read Operation for our #NuttX SPI Driver … So that we can fetch the SPI Response from SX1262</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L210-L233">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx3.png" alt="" /></p>
-<p>TODO60</p>
-<p>Our #NuttX App transmits an SPI Command to SX1262 … And reads the SPI Response from SX1262</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L54-L84">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx4.png" alt="" /></p>
-<p>TODO39</p>
-<p>#BL602 SPI Chip Select has a problem … It goes High after EVERY byte … Which is no-no for SX1262 … Solution: We control Chip Select via GPIO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-logic3.png" alt="" /></p>
-<p>TODO61</p>
-<p>Here’s our #NuttX App controlling SPI Chip Select via GPIO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx5.png" alt="" /></p>
-<p>TODO62</p>
-<p>Now our #NuttX App is ready to read an SX1262 Register over SPI!</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx6.png" alt="" /></p>
-<p>TODO58</p>
-<p>Our #NuttX App reads an SX1262 Register … But it returns garbage! There’s a workaround for this #BL602 SPI Quirk</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx2.png" alt="" /></p>
-<p>TODO63</p>
-<p>#BL602 has an SPI Quirk … We must use SPI Mode 1 instead of Mode 0 … Let’s fix this in #NuttX</p>
-<p><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(Source)</a></p>
-<p>For #NuttX on #BL602, we use SPI Mode 1 instead of Mode 0 … To work around the SPI Mode Quirk</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx7.png" alt="" /></p>
-<p>TODO57</p>
-<p>Our #NuttX App now reads the SX1262 Register correctly! 🎉</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="" /></p>
-<h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">8 Test with PineDio Stack</a></h1>
-<p><em>(For BL604 only)</em></p>
-<p>TODO</p>
-<p>Will #NuttX run on #Pine64’s PineDio Stack BL604 with onboard Semtech SX1262? Let’s find out!</p>
-<p><a href="https://lupyuen.github.io/articles/pinedio">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio.jpg" alt="" /></p>
-<p>TODO55</p>
-<p>Here’s how Semtech SX1262 is wired onboard #PineDio Stack #BL604 … Let’s update the Pin Definitions in NuttX</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="" /></p>
-<p>TODO53</p>
-<p>Here are the #NuttX Pin Definitions for PineDio Stack BL604 with onboard SX1262 … As derived from the schematic</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio.png" alt="" /></p>
-<p>TODO54</p>
-<p>Our #NuttX App runs OK on PineDio Stack BL604 with onboard SX1262! 🎉</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio2.png" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
-<p>TODO</p>
-<p>I’m new to NuttX but I had lots of fun experimenting with it. I hope you’ll enjoy NuttX too!</p>
-<p>Here are some topics I might explore in future articles, lemme know if I should do these…</p>
-<ul>
-<li>
-<p><strong>SPI Driver</strong>: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604!</p>
-<p><a href="https://lupyuen.github.io/articles/lorawan2">(More about PineDio Stack BL604)</a></p>
-</li>
-<li>
-<p><strong>LoRaWAN Driver</strong>: Once we get SX1262 talking OK on SPI, we can port the LoRaWAN Driver to NuttX!</p>
-<p><a href="https://lupyuen.github.io/articles/lorawan2">(LoRaWAN on PineDio Stack BL604)</a></p>
-</li>
-<li>
-<p><strong>Rust</strong>: Porting the Embedded Rust HAL to NuttX sounds really interesting. We might start with GPIO and SPI to see whether the concept is feasible.</p>
-</li>
-</ul>
-<p>(BL602 IoT SDK / FreeRTOS is revamping right now to the <a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>new “hosal” HAL</strong></a>. Terrific time to explore NuttX now!)</p>
-<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
-<ul>
-<li>
-<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi2.md"><code>lupyuen.github.io/src/spi2.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
-<ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1464898624026906625">this Twitter Thread</a></li>
-</ol>
+<p>#NuttX SPI Interface is defined here … Let’s call it from our “spi_test” app</p>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface.png" alt="" /></p>
+<p>TODO30</p>
+<p>Can our #NuttX App directly call the SPI Interface? Let’s find out! 🤔</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface2.png" alt="" /></p>
+<p>TODO31</p>
+<p>#NuttX SPI Interface needs an SPI Device “spi_dev_s” … How do we get an SPI Device? 🤔</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface3.png" alt="" /></p>
+<p>TODO32</p>
+<p>Tracing thru #NuttX Virtual File System … We see that ioctl() maps the File Descriptor to a File Struct</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/fs/vfs/fs_ioctl.c#L118-L138">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface4.png" alt="" /></p>
+<p>TODO33</p>
+<p>#NuttX File Struct contains a Private Pointer to the SPI Driver “spi_driver_s”</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L112-L147">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface5.png" alt="" /></p>
+<p>TODO34</p>
+<p>#NuttX SPI Driver “spi_driver_s” contains the SPI Device “spi_dev_s” … That we need for testing the SPI Interface! But the SPI Device is private and hidden from apps 🙁</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface6.png" alt="" /></p>
+<h1 id="appendix-pinedio-stack-bl604" class="section-header"><a href="#appendix-pinedio-stack-bl604">12 Appendix: PineDio Stack BL604</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2.jpg" alt="" /></p>
 <p>TODO8</p>
