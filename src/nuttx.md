@@ -917,7 +917,7 @@ Let's build NuttX on __Linux (Ubuntu)__, __WSL (Ubuntu)__ or __macOS__...
     ```bash
     mkdir nuttx
     cd nuttx
-    git clone https://github.com/apache/incubator-nuttx.git nuttx
+    git clone https://github.com/apache/incubator-nuttx nuttx
     git clone https://github.com/apache/incubator-nuttx-apps apps
     ```
 

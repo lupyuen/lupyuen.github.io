@@ -459,49 +459,90 @@ Instead we copy an existing #NuttX SPI Device Driver to test the SPI Interface .
 
 _(For BL602 and ESP32)_
 
+This section explains the steps to create a __NuttX App__ named __"spi_test"__.
+
+(Change "spi_test" to the desired name of our app)
+
+1.  Browse to the __"nuttx/apps/examples"__ folder
+
+1.  Copy the __"hello"__ subfolder and paste it as __"spi_test"__
+
+    ![Copy the "hello" subfolder and paste it as "spi_test"](https://lupyuen.github.io/images/spi2-newapp.png)
+
+    [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4)
+
+1.  Inside the __"spi_test"__ folder, rename __"hello_main.c"__ to __"spi_test_main.c"__
+
+    ![Rename "hello_main.c" to "spi_test_main.c"](https://lupyuen.github.io/images/spi2-newapp2.png)
+
+    [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40)
+
+
+1.  Inside the __"spi_test"__ folder, search and replace all __"hello"__ by __"spi_test"__
+
+    Be sure to __Preserve Case!__
+
+    ![Change all "hello" to "spi_test"](https://lupyuen.github.io/images/spi2-newapp3.png)
+
+    [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74)
+
+    [(See "spi_test" folder)](https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test)
+
+1.  Enter the following...
+
+    ```bash
+    ## TODO: Change this to the path of our "incubator-nuttx" folder
+    cd nuttx/nuttx
+
+    ## Preserve the Build Config
+    cp .config ../config
+
+    ## Erase the Kconfig files
+    make distclean
+
+    ## Configure the build for BL602
+    ./tools/configure.sh bl602evb:nsh
+
+    ## For ESP32: See "Supported Boards" for the Build Configurations
+    ## https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html
+
+    ## Restore the Build Config
+    cp ../config .config
+
+    ## Edit the Build Config
+    make menuconfig 
+    ```
+
+    ![Select "spi_test" in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.png)
+
+1.  In __menuconfig__, select __"Application Configuration"__ → __"Examples"__
+
+    Check the box for __"spi_test"__
+
+    Hit __"Save"__ then __"OK"__ to save the NuttX Configuration to __".config"__
+
+    Hit __"Exit"__ until __menuconfig__ quits
+
+
+1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32.
+
+    In the NuttX Shell, enter...
+
+    ```bash
+    spi_test
+    ```
+
+    We should see the output below. Congratulations we have created the __"spi_test"__ app!
+
+    !["spi_test" running on BL602](https://lupyuen.github.io/images/spi2-newapp5.png)
+
+# Appendix: Build, Flash and Run Nuttx
+
+_(For BL602 and ESP32)_
+
 TODO
 
-We create the "spi_test" Demo App in #NuttX ... By copying the "hello" Demo App
-
-![](https://lupyuen.github.io/images/spi2-newapp.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4)
-
-TODO41
-
-Fixing our "spi_test" app for #NuttX ... Rename "hello_main.c" to "spi_test_main.c"
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40)
-
-![](https://lupyuen.github.io/images/spi2-newapp2.png)
-
-TODO42
-
-In our #NuttX App "spi_test", change all "hello" to "spi_test" ... Remember to Preserve Case!
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74)
-
-![](https://lupyuen.github.io/images/spi2-newapp3.png)
-
-TODO43
-
-1️⃣ make distclean 2️⃣ configure.sh 3️⃣ make menuconfig ... Our #NuttX App "spi_test" magically appears!
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test)
-
-![](https://lupyuen.github.io/images/spi2-newapp4.png)
-
-TODO44
-
-Our #NuttX Demo App "spi_test" ... Runs OK on #BL602
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/newapp/examples/spi_test/spi_test_main.c)
-
-![](https://lupyuen.github.io/images/spi2-newapp5.png)
-
 Build, Flash and Run #NuttX OS on #BL602 ... Here's the script I use for macOS
-
-TODO56
 
 ![](https://lupyuen.github.io/images/spi2-script.png)
 
