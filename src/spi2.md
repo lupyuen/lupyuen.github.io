@@ -30,6 +30,8 @@ In this article I'll point out the tweaks needed to __run the code on ESP32__.
 
 (Watch for the __"Xref"__ tags)
 
+![SPI Test App calls SPI Test Driver to access SPI Driver](https://lupyuen.github.io/images/spi2-plan.jpg)
+
 # Create a NuttX App
 
 (For BL602 and ESP32)
