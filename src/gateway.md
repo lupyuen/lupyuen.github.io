@@ -580,6 +580,14 @@ I hope Pine64 will make these awesome LoRa Gadgets available to the community re
 
 [(I'm stuck at PinePhone Backplate though... Lemme know if you can help! 🙏)](https://github.com/lupyuen/pinephone-lora)
 
+__UPDATE:__ See these excellent articles by JF...
+
+-   [__"First look at the LoRa backplate for the Pinephone"__](https://codingfield.com/blog/2021-11/first-look-at-lora-pinephone-backplate/)
+
+-   [__"Flashing the LoRa backplate for the PinePhone"__](https://codingfield.com/blog/2021-11/flash-the-lora-pinephone-backplate/)
+
+-   [__"A driver for the LoRa backplate for the PinePhone"__](https://codingfield.com/blog/2021-11/a-driver-for-the-pinephone-lora-backplate/)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
