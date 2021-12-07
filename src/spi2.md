@@ -32,6 +32,57 @@ In this article I'll point out the tweaks needed to __run the code on ESP32__.
 
 ![SPI Test App calls SPI Test Driver to access SPI Driver](https://lupyuen.github.io/images/spi2-plan.jpg)
 
+# SPI Test App and Driver
+
+Here's our plan for today (pic above)...
+
+1.  We create an __SPI Test App__ that will transfer data over SPI.
+
+    (A tiny program with a few lines of code)
+
+1.  We create an __SPI Test Driver__ (called by SPI Test App) that will handle the SPI Operations.
+
+    (To transmit and receive data over SPI)
+
+1.  Our SPI Test Driver exposes a NuttX [__Character Device Interface__](https://nuttx.apache.org/docs/latest/components/drivers/character/index.html): open(), write(), read() and close().
+
+    (Yep it looks like Linux, because NuttX is POSIX-Compliant)
+
+1.  Our SPI Test Driver executes the SPI Operations by calling the __BL602 or ESP32 SPI Driver__.
+
+    (Which is equivalent to the Hardware Abstraction Layer in other operating systems)
+
+_Hmmm this looks complex. Is there a simpler way?_
+
+Yes we have options for doing __SPI on NuttX__...
+
+1.  If our SPI Device is supported by an __existing NuttX Device Driver__, just go ahead and use the driver!
+
+    [(Browse the NuttX Device Drivers)](https://github.com/apache/incubator-nuttx/tree/master/drivers)
+
+1.  If we're transferring data over SPI __for testing only__ (not for a real app), we may call the [__SPI Transfer Interface__](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi_transfer.h)
+
+    [(Here's how)](https://github.com/apache/incubator-nuttx-apps/blob/master/system/spi/spi_main.c)
+
+1.  But today we're experimenting with a __Custom Device Driver__ that will talk to our own SPI Device.
+
+    That's why we're building the __SPI Test Driver__.
+
+    (Eventually we'll build a LoRaWAN Driver for Semtech SX1262)
+
+TODO
+
+Call directly?
+Memory protection
+Calling directly into Linux kernel, which is no-no
+Posix
+Appendix
+
+Limiting?
+Ioctl
+Examples later
+Semtech Sx1276 driver
+
 # Create a NuttX App
 
 (For BL602 and ESP32)
