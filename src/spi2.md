@@ -367,89 +367,132 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _(For BL602 and ESP32)_
 
-TODO
+This section explains the steps to create a __NuttX Device Driver__ named __"spi_test_driver"__.
 
-We create a new #NuttX SPI Device Driver ... By copying "dat-31r5-sp.c" to "spi_test_driver.c"
+(Change "spi_test_driver" to the desired name of our driver)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
+1.  Browse to the [__"nuttx/drivers/rf"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf) folder
 
-![](https://lupyuen.github.io/images/spi2-newdriver.png)
+1.  Copy the file __"dat-31r5-sp.c"__ and paste it as __"spi_test_driver.c"__
 
-TODO46
+    ![Copy "dat-31r5-sp.c" to "spi_test_driver.c"](https://lupyuen.github.io/images/spi2-newdriver.png)
 
-In our SPI Test Driver: Change all "dat31r5sp" to "spi_test_driver" ... Remember to Preserve Case!
+    [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/commit/8fee69215163180b77dc9d5b9e7449ebe00ac1cc)
+1.  Inside the __"spi_test_driver.c"__ file, search and replace all __"dat31r5sp"__ by __"spi_test_driver"__
 
-![](https://lupyuen.github.io/images/spi2-newdriver2.png)
+    Be sure to __Preserve Case!__
 
-TODO48
+    ![Change all "dat31r5sp" to "spi_test_driver"](https://lupyuen.github.io/images/spi2-newdriver2.png)
 
-Do the same to create the Header File for our #NuttX Driver: spi_test_driver.h
+    [(Source)](https://github.com/lupyuen/incubator-nuttx/commit/8fee69215163180b77dc9d5b9e7449ebe00ac1cc)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf/spi_test_driver.h)
+1.  Browse to the [__"nuttx/include/nuttx/rf"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf) folder
 
-![](https://lupyuen.github.io/images/spi2-newdriver3.png)
+1.  Copy the file __"dat-31r5-sp.h"__ and paste it as __"spi_test_driver.h"__
 
-TODO49
+1.  Inside the __"spi_test_driver.h"__ file, search and replace all __"dat31r5sp"__ by __"spi_test_driver"__
 
-At #NuttX Startup, register our SPI Test Driver as "/dev/spitest0"
+    Remember to __Preserve Case!__
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
+    The Header File should look like this...
 
-![](https://lupyuen.github.io/images/spi2-newdriver4.png)
+    ![spi_test_driver.h](https://lupyuen.github.io/images/spi2-newdriver3.png)
 
-TODO50
+    [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf/spi_test_driver.h)
 
-Add our SPI Test Driver to #NuttX Kconfig
+## Update Makefile and Kconfig
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
+Now we update the Makefile so that NuttX will build our Device Driver...
 
-![](https://lupyuen.github.io/images/spi2-newdriver5.png)
+1.  Browse to the [__"nuttx/drivers/rf"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf) folder
+
+1.  Edit the file __"Make.defs"__
+
+    Insert this section...
+
+    ```text
+    ifeq ($(CONFIG_RF_SPI_TEST_DRIVER),y)
+      CSRCS += spi_test_driver.c
+      RFDEPPATH = --dep-path rf
+      RFVPATH = :rf
+    endif
+    ```
+
+    As shown below...
+
+    ![Update "Make.defs"](https://lupyuen.github.io/images/spi2-newdriver9.png)
+
+    [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Make.defs#L33-L37)
+
+1.  Edit the file __"Kconfig"__
+
+    Insert this section...
+
+    ```text
+    config RF_SPI_TEST_DRIVER
+        bool "SPI Test Driver"
+        default n
+        select SPI
+        ---help---
+            Enable SPI Test Driver.
+    ```
+
+    As shown below...
+
+    ![Update "Kconfig"](https://lupyuen.github.io/images/spi2-newdriver5.png)
+
+    [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
 
 TODO51
 
 Our SPI Test Driver for #NuttX appears in "make menuconfig"!
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
-
 ![](https://lupyuen.github.io/images/spi2-newdriver6.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
 
 TODO6
 
 Remember to enable "SPI0" and "SPI Character Driver" in #NuttX ... Or our SPI Test Driver won't start
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
-
 ![](https://lupyuen.github.io/images/spi2-debug.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
 
 TODO22
 
 Here's what happens when we make a boo-boo and #NuttX won't start
 
-[(Source)](https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323)
-
 ![](https://lupyuen.github.io/images/spi2-crash2.png)
 
-TODO52
+[(Source)](https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323)
 
-Update the Makefile "Make.defs" ... So that #NuttX will build our SPI Test Driver
+## Register Device Driver
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Make.defs#L33-L37)
+1.  Browse to the [__"nuttx/boards/risc-v/bl602/bl602evb"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src) folder
 
-![](https://lupyuen.github.io/images/spi2-newdriver9.png)
+TODO
+
+At #NuttX Startup, register our SPI Test Driver as "/dev/spitest0"
+
+![](https://lupyuen.github.io/images/spi2-newdriver4.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
 
 TODO47
 
 Build, flash and run #NuttX ... Our SPI Test Driver appears as "/dev/spitest0"! 🎉
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
-
 ![](https://lupyuen.github.io/images/spi2-newdriver10.png)
 
-TODO35
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
 
-Instead we copy an existing #NuttX SPI Device Driver to test the SPI Interface ... We pick the simplest smallest SPI Device Driver: dat-31r5-sp
+_Why did we choose the "dat-31r5-sp" driver for cloning?_
+
+TODO
+
+We picked the simplest smallest SPI Device Driver: dat-31r5-sp
 
 [(Source)](https://docs.google.com/spreadsheets/d/1MDps5cPe7tIgCL1Cz98iVccJAUJq1lgctpKgg9OwztI/edit#gid=0)
 
@@ -463,7 +506,7 @@ This section explains the steps to create a __NuttX App__ named __"spi_test"__.
 
 (Change "spi_test" to the desired name of our app)
 
-1.  Browse to the __"nuttx/apps/examples"__ folder
+1.  Browse to the [__"nuttx/apps/examples"__](https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples) folder
 
 1.  Copy the __"hello"__ subfolder and paste it as __"spi_test"__
 
@@ -503,8 +546,7 @@ This section explains the steps to create a __NuttX App__ named __"spi_test"__.
     ## Configure the build for BL602
     ./tools/configure.sh bl602evb:nsh
 
-    ## For ESP32: See "Supported Boards" for the Build Configurations
-    ## https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html
+    ## For ESP32: Change "bl602evb:nsh" to "esp32-devkitc:nsh" (or equivalent)
 
     ## Restore the Build Config
     cp ../config .config
