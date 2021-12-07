@@ -540,13 +540,15 @@ This section explains the steps to create a __NuttX App__ named __"spi_test"__.
     ## Preserve the Build Config
     cp .config ../config
 
-    ## Erase the Kconfig files
+    ## Erase the Build Config and Kconfig files
     make distclean
 
-    ## Configure the build for BL602
+    ## For BL602: Configure the build for BL602
     ./tools/configure.sh bl602evb:nsh
 
-    ## For ESP32: Change "bl602evb:nsh" to "esp32-devkitc:nsh" (or equivalent)
+    ## For ESP32: Configure the build for ESP32.
+    ## TODO: Change "esp32-devkitc" to our ESP32 board.
+    ./tools/configure.sh esp32-devkitc:nsh
 
     ## Restore the Build Config
     cp ../config .config
