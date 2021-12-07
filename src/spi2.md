@@ -34,7 +34,9 @@ In this article I'll point out the tweaks needed to __run the code on ESP32__.
 
 # SPI Test App and Driver
 
-Here's our plan for today (pic above)...
+_(For BL602 and ESP32)_
+
+Our plan for today (pic above)...
 
 1.  We create an __SPI Test App__ that will transfer data over SPI.
 
@@ -46,13 +48,13 @@ Here's our plan for today (pic above)...
 
 1.  Our SPI Test Driver exposes a NuttX [__Character Device Interface__](https://nuttx.apache.org/docs/latest/components/drivers/character/index.html): open(), write(), read() and close().
 
-    (Yep it looks like Linux, because NuttX is POSIX-Compliant)
+    (Yep it looks like Linux, because NuttX is POSIX Compliant)
 
 1.  Our SPI Test Driver executes the SPI Operations by calling the __BL602 or ESP32 SPI Driver__.
 
     (Which is equivalent to the Hardware Abstraction Layer in other operating systems)
 
-_Hmmm this looks complex. Is there a simpler way?_
+_This looks complex. Is there a simpler way?_
 
 Yes we have options for doing __SPI on NuttX__...
 
@@ -64,28 +66,29 @@ Yes we have options for doing __SPI on NuttX__...
 
     [(Here's how)](https://github.com/apache/incubator-nuttx-apps/blob/master/system/spi/spi_main.c)
 
-1.  But today we're experimenting with a __Custom Device Driver__ that will talk to our own SPI Device.
+1.  But today we experiment with a __Custom Device Driver__ that will talk to our own SPI Device.
 
     That's why we're building the __SPI Test Driver__.
 
     (Eventually we'll build a LoRaWAN Driver for Semtech SX1262)
 
-TODO
+_Can our app call the BL602 / ESP32 SPI Driver directly?_
 
-Call directly?
-Memory protection
-Calling directly into Linux kernel, which is no-no
-Posix
-Appendix
+Nope that's not supported by NuttX. It might seemingly work on BL602 and ESP32, but it will fail on platforms with __Memory Protection__.
 
-Limiting?
-Ioctl
-Examples later
-Semtech Sx1276 driver
+(Imagine a Linux App directly calling a Kernel Driver... That's no-no!)
+
+Later we'll see the layers of code that abstract the BL602 / ESP32 SPI Driver from our NuttX App.
+
+_Must everything be done through the read() and write() interfaces?_
+
+There's another POSIX Interface that's supported by NuttX: __ioctl()__.
+
+We'll see this when we cover the NuttX Device Driver for Semtech SX1276.
 
 # Create a NuttX App
 
-(For BL602 and ESP32)
+_(For BL602 and ESP32)_
 
 TODO
 
@@ -139,7 +142,7 @@ TODO56
 
 # NuttX SPI Interface
 
-(For BL602 and ESP32)
+_(For BL602 and ESP32)_
 
 TODO
 
@@ -199,7 +202,7 @@ Instead we copy an existing #NuttX SPI Device Driver to test the SPI Interface .
 
 # Create a NuttX Device Driver
 
-(For BL602 and ESP32)
+_(For BL602 and ESP32)_
 
 TODO
 
@@ -299,7 +302,7 @@ This appears when we run our #NuttX SPI Test App ... Let's study our SPI Test Dr
 
 # Inside the SPI Driver
 
-(For BL602 and ESP32)
+_(For BL602 and ESP32)_
 
 TODO
 
@@ -343,7 +346,7 @@ Now we see every byte transferred by #NuttX's SPI Driver for #BL602!
 
 # Test with Logic Analyser
 
-(For BL602 only)
+_(For BL602 only)_
 
 TODO
 
@@ -399,7 +402,7 @@ After swapping #BL602 MISO and MOSI at #NuttX startup ... Logic Analyser shows t
 
 # Test with Semtech SX1262
 
-(For BL602 and ESP32)
+_(For BL602 and ESP32)_
 
 TODO
 
@@ -479,7 +482,7 @@ Our #NuttX App now reads the SX1262 Register correctly! 🎉
 
 # Test with PineDio Stack
 
-(For BL604 only)
+_(For BL604 only)_
 
 TODO
 
