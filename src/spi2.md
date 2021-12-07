@@ -86,221 +86,7 @@ There's another POSIX Interface that's supported by NuttX: __ioctl()__.
 
 We'll see this when we cover the NuttX Device Driver for Semtech SX1276.
 
-# Create a NuttX App
-
-_(For BL602 and ESP32)_
-
-TODO
-
-Let's test the #NuttX SPI Driver for #BL602
-
-[(Source)](https://nuttx.apache.org/docs/latest/components/drivers/special/spi.html)
-
-We create the "spi_test" Demo App in #NuttX ... By copying the "hello" Demo App
-
-![](https://lupyuen.github.io/images/spi2-newapp.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4)
-
-TODO41
-
-Fixing our "spi_test" app for #NuttX ... Rename "hello_main.c" to "spi_test_main.c"
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40)
-
-![](https://lupyuen.github.io/images/spi2-newapp2.png)
-
-TODO42
-
-In our #NuttX App "spi_test", change all "hello" to "spi_test" ... Remember to Preserve Case!
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74)
-
-![](https://lupyuen.github.io/images/spi2-newapp3.png)
-
-TODO43
-
-1️⃣ make distclean 2️⃣ configure.sh 3️⃣ make menuconfig ... Our #NuttX App "spi_test" magically appears!
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test)
-
-![](https://lupyuen.github.io/images/spi2-newapp4.png)
-
-TODO44
-
-Our #NuttX Demo App "spi_test" ... Runs OK on #BL602
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/newapp/examples/spi_test/spi_test_main.c)
-
-![](https://lupyuen.github.io/images/spi2-newapp5.png)
-
-Build, Flash and Run #NuttX OS on #BL602 ... Here's the script I use for macOS
-
-TODO56
-
-![](https://lupyuen.github.io/images/spi2-script.png)
-
-# NuttX SPI Interface
-
-_(For BL602 and ESP32)_
-
-TODO
-
-#NuttX SPI Interface is defined here ... Let's call it from our "spi_test" app
-
-[(Source)](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
-
-![](https://lupyuen.github.io/images/spi2-interface.png)
-
-TODO30
-
-Can our #NuttX App directly call the SPI Interface? Let's find out! 🤔
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
-
-![](https://lupyuen.github.io/images/spi2-interface2.png)
-
-TODO31
-
-#NuttX SPI Interface needs an SPI Device "spi_dev_s" ... How do we get an SPI Device? 🤔
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967)
-
-![](https://lupyuen.github.io/images/spi2-interface3.png)
-
-TODO32
-
-Tracing thru #NuttX Virtual File System ... We see that ioctl() maps the File Descriptor to a File Struct
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/fs/vfs/fs_ioctl.c#L118-L138)
-
-![](https://lupyuen.github.io/images/spi2-interface4.png)
-
-TODO33
-
-#NuttX File Struct contains a Private Pointer to the SPI Driver "spi_driver_s"
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L112-L147)
-
-![](https://lupyuen.github.io/images/spi2-interface5.png)
-
-TODO34
-
-#NuttX SPI Driver "spi_driver_s" contains the SPI Device "spi_dev_s" ... That we need for testing the SPI Interface! But the SPI Device is private and hidden from apps 🙁
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65)
-
-![](https://lupyuen.github.io/images/spi2-interface6.png)
-
-TODO35
-
-Instead we copy an existing #NuttX SPI Device Driver to test the SPI Interface ... We pick the simplest smallest SPI Device Driver: dat-31r5-sp
-
-[(Source)](https://docs.google.com/spreadsheets/d/1MDps5cPe7tIgCL1Cz98iVccJAUJq1lgctpKgg9OwztI/edit#gid=0)
-
-![](https://lupyuen.github.io/images/spi2-interface7.png)
-
-# Create a NuttX Device Driver
-
-_(For BL602 and ESP32)_
-
-TODO
-
-We create a new #NuttX SPI Device Driver ... By copying "dat-31r5-sp.c" to "spi_test_driver.c"
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
-
-![](https://lupyuen.github.io/images/spi2-newdriver.png)
-
-TODO46
-
-In our SPI Test Driver: Change all "dat31r5sp" to "spi_test_driver" ... Remember to Preserve Case!
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/commit/8fee69215163180b77dc9d5b9e7449ebe00ac1cc)
-
-![](https://lupyuen.github.io/images/spi2-newdriver2.png)
-
-TODO48
-
-Do the same to create the Header File for our #NuttX Driver: spi_test_driver.h
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf/spi_test_driver.h)
-
-![](https://lupyuen.github.io/images/spi2-newdriver3.png)
-
-TODO49
-
-At #NuttX Startup, register our SPI Test Driver as "/dev/spitest0"
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
-
-![](https://lupyuen.github.io/images/spi2-newdriver4.png)
-
-TODO50
-
-Add our SPI Test Driver to #NuttX Kconfig
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
-
-![](https://lupyuen.github.io/images/spi2-newdriver5.png)
-
-TODO51
-
-Our SPI Test Driver for #NuttX appears in "make menuconfig"!
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
-
-![](https://lupyuen.github.io/images/spi2-newdriver6.png)
-
-TODO6
-
-Remember to enable "SPI0" and "SPI Character Driver" in #NuttX ... Or our SPI Test Driver won't start
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
-
-![](https://lupyuen.github.io/images/spi2-debug.png)
-
-TODO22
-
-Here's what happens when we make a boo-boo and #NuttX won't start
-
-[(Source)](https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323)
-
-![](https://lupyuen.github.io/images/spi2-crash2.png)
-
-TODO52
-
-Update the Makefile "Make.defs" ... So that #NuttX will build our SPI Test Driver
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Make.defs#L33-L37)
-
-![](https://lupyuen.github.io/images/spi2-newdriver9.png)
-
-TODO47
-
-Build, flash and run #NuttX ... Our SPI Test Driver appears as "/dev/spitest0"! 🎉
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
-
-![](https://lupyuen.github.io/images/spi2-newdriver10.png)
-
-TODO21
-
-Back to our #NuttX SPI Test App ... Here's how we open the SPI Test Driver and write data
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
-
-![](https://lupyuen.github.io/images/spi2-app4.png)
-
-TODO19
-
-This appears when we run our #NuttX SPI Test App ... Let's study our SPI Test Driver
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
-
-![](https://lupyuen.github.io/images/spi2-app2.png)
-
-# Inside the SPI Driver
+# Create SPI Test Driver
 
 _(For BL602 and ESP32)_
 
@@ -327,6 +113,30 @@ Here's how we configure the #NuttX SPI Interface
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L95-L117)
 
 ![](https://lupyuen.github.io/images/spi2-driver3.png)
+
+# Create SPI Test App
+
+_(For BL602 and ESP32)_
+
+TODO
+
+Let's test the #NuttX SPI Driver for #BL602
+
+[(Source)](https://nuttx.apache.org/docs/latest/components/drivers/special/spi.html)
+
+Back to our #NuttX SPI Test App ... Here's how we open the SPI Test Driver and write data
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
+
+![](https://lupyuen.github.io/images/spi2-app4.png)
+
+TODO19
+
+This appears when we run our #NuttX SPI Test App ... Let's study our SPI Test Driver
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
+
+![](https://lupyuen.github.io/images/spi2-app2.png)
 
 TODO25
 
@@ -552,6 +362,202 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1464898624026906625)
+
+# Appendix: Create a NuttX Device Driver
+
+_(For BL602 and ESP32)_
+
+TODO
+
+We create a new #NuttX SPI Device Driver ... By copying "dat-31r5-sp.c" to "spi_test_driver.c"
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
+
+![](https://lupyuen.github.io/images/spi2-newdriver.png)
+
+TODO46
+
+In our SPI Test Driver: Change all "dat31r5sp" to "spi_test_driver" ... Remember to Preserve Case!
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/commit/8fee69215163180b77dc9d5b9e7449ebe00ac1cc)
+
+![](https://lupyuen.github.io/images/spi2-newdriver2.png)
+
+TODO48
+
+Do the same to create the Header File for our #NuttX Driver: spi_test_driver.h
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf/spi_test_driver.h)
+
+![](https://lupyuen.github.io/images/spi2-newdriver3.png)
+
+TODO49
+
+At #NuttX Startup, register our SPI Test Driver as "/dev/spitest0"
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
+
+![](https://lupyuen.github.io/images/spi2-newdriver4.png)
+
+TODO50
+
+Add our SPI Test Driver to #NuttX Kconfig
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
+
+![](https://lupyuen.github.io/images/spi2-newdriver5.png)
+
+TODO51
+
+Our SPI Test Driver for #NuttX appears in "make menuconfig"!
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
+
+![](https://lupyuen.github.io/images/spi2-newdriver6.png)
+
+TODO6
+
+Remember to enable "SPI0" and "SPI Character Driver" in #NuttX ... Or our SPI Test Driver won't start
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
+
+![](https://lupyuen.github.io/images/spi2-debug.png)
+
+TODO22
+
+Here's what happens when we make a boo-boo and #NuttX won't start
+
+[(Source)](https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323)
+
+![](https://lupyuen.github.io/images/spi2-crash2.png)
+
+TODO52
+
+Update the Makefile "Make.defs" ... So that #NuttX will build our SPI Test Driver
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Make.defs#L33-L37)
+
+![](https://lupyuen.github.io/images/spi2-newdriver9.png)
+
+TODO47
+
+Build, flash and run #NuttX ... Our SPI Test Driver appears as "/dev/spitest0"! 🎉
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
+
+![](https://lupyuen.github.io/images/spi2-newdriver10.png)
+
+TODO35
+
+Instead we copy an existing #NuttX SPI Device Driver to test the SPI Interface ... We pick the simplest smallest SPI Device Driver: dat-31r5-sp
+
+[(Source)](https://docs.google.com/spreadsheets/d/1MDps5cPe7tIgCL1Cz98iVccJAUJq1lgctpKgg9OwztI/edit#gid=0)
+
+![](https://lupyuen.github.io/images/spi2-interface7.png)
+
+# Appendix: Create a NuttX App
+
+_(For BL602 and ESP32)_
+
+TODO
+
+We create the "spi_test" Demo App in #NuttX ... By copying the "hello" Demo App
+
+![](https://lupyuen.github.io/images/spi2-newapp.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4)
+
+TODO41
+
+Fixing our "spi_test" app for #NuttX ... Rename "hello_main.c" to "spi_test_main.c"
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40)
+
+![](https://lupyuen.github.io/images/spi2-newapp2.png)
+
+TODO42
+
+In our #NuttX App "spi_test", change all "hello" to "spi_test" ... Remember to Preserve Case!
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74)
+
+![](https://lupyuen.github.io/images/spi2-newapp3.png)
+
+TODO43
+
+1️⃣ make distclean 2️⃣ configure.sh 3️⃣ make menuconfig ... Our #NuttX App "spi_test" magically appears!
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test)
+
+![](https://lupyuen.github.io/images/spi2-newapp4.png)
+
+TODO44
+
+Our #NuttX Demo App "spi_test" ... Runs OK on #BL602
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/newapp/examples/spi_test/spi_test_main.c)
+
+![](https://lupyuen.github.io/images/spi2-newapp5.png)
+
+Build, Flash and Run #NuttX OS on #BL602 ... Here's the script I use for macOS
+
+TODO56
+
+![](https://lupyuen.github.io/images/spi2-script.png)
+
+# Appendix: NuttX SPI Interface
+
+_(For BL602 and ESP32)_
+
+TODO
+
+#NuttX SPI Interface is defined here ... Let's call it from our "spi_test" app
+
+[(Source)](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
+
+![](https://lupyuen.github.io/images/spi2-interface.png)
+
+TODO30
+
+Can our #NuttX App directly call the SPI Interface? Let's find out! 🤔
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
+
+![](https://lupyuen.github.io/images/spi2-interface2.png)
+
+TODO31
+
+#NuttX SPI Interface needs an SPI Device "spi_dev_s" ... How do we get an SPI Device? 🤔
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967)
+
+![](https://lupyuen.github.io/images/spi2-interface3.png)
+
+TODO32
+
+Tracing thru #NuttX Virtual File System ... We see that ioctl() maps the File Descriptor to a File Struct
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/fs/vfs/fs_ioctl.c#L118-L138)
+
+![](https://lupyuen.github.io/images/spi2-interface4.png)
+
+TODO33
+
+#NuttX File Struct contains a Private Pointer to the SPI Driver "spi_driver_s"
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L112-L147)
+
+![](https://lupyuen.github.io/images/spi2-interface5.png)
+
+TODO34
+
+#NuttX SPI Driver "spi_driver_s" contains the SPI Device "spi_dev_s" ... That we need for testing the SPI Interface! But the SPI Device is private and hidden from apps 🙁
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65)
+
+![](https://lupyuen.github.io/images/spi2-interface6.png)
+
+# Appendix: PineDio Stack BL604
 
 TODO
 
