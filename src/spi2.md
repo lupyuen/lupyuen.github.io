@@ -64,7 +64,7 @@ Yes we have options for doing __SPI on NuttX__...
 
 1.  If we're transferring data over SPI __for testing only__ (not for a real app), we may call the [__SPI Transfer Interface__](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi_transfer.h)
 
-    [(Here's how)](https://github.com/apache/incubator-nuttx-apps/blob/master/system/spi/spi_main.c)
+    [(Here's how... It's complicated)](https://github.com/apache/incubator-nuttx-apps/blob/master/system/spi/spi_main.c)
 
 1.  But today we experiment with a __Custom Device Driver__ that will talk to our own SPI Device.
 
