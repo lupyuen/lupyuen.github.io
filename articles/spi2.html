@@ -75,8 +75,9 @@
 <li><a href="#notes">8 Notes</a><ul></ul></li>
 <li><a href="#appendix-create-a-nuttx-device-driver">9 Appendix: Create a NuttX Device Driver</a><ul></ul></li>
 <li><a href="#appendix-create-a-nuttx-app">10 Appendix: Create a NuttX App</a><ul></ul></li>
-<li><a href="#appendix-nuttx-spi-interface">11 Appendix: NuttX SPI Interface</a><ul></ul></li>
-<li><a href="#appendix-pinedio-stack-bl604">12 Appendix: PineDio Stack BL604</a><ul></ul></li></ul></nav><p>📝 <em>12 Dec 2021</em></p>
+<li><a href="#appendix-build-flash-and-run-nuttx">11 Appendix: Build, Flash and Run Nuttx</a><ul></ul></li>
+<li><a href="#appendix-nuttx-spi-interface">12 Appendix: NuttX SPI Interface</a><ul></ul></li>
+<li><a href="#appendix-pinedio-stack-bl604">13 Appendix: PineDio Stack BL604</a><ul></ul></li></ul></nav><p>📝 <em>12 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)" /></p>
 <p><em>PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)</em></p>
 <p>Last article we explored <strong>Apache NuttX OS</strong> and its <strong>GPIO Functions</strong>…</p>
@@ -355,30 +356,73 @@
 <p><img src="https://lupyuen.github.io/images/spi2-interface7.png" alt="" /></p>
 <h1 id="appendix-create-a-nuttx-app" class="section-header"><a href="#appendix-create-a-nuttx-app">10 Appendix: Create a NuttX App</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
-<p>TODO</p>
-<p>We create the “spi_test” Demo App in #NuttX … By copying the “hello” Demo App</p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp.png" alt="" /></p>
+<p>This section explains the steps to create a <strong>NuttX App</strong> named <strong>“spi_test”</strong>.</p>
+<p>(Change “spi_test” to the desired name of our app)</p>
+<ol>
+<li>
+<p>Browse to the <strong>“nuttx/apps/examples”</strong> folder</p>
+</li>
+<li>
+<p>Copy the <strong>“hello”</strong> subfolder and paste it as <strong>“spi_test”</strong></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp.png" alt="Copy the “hello” subfolder and paste it as “spi_test”" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4">(Source)</a></p>
-<p>TODO41</p>
-<p>Fixing our “spi_test” app for #NuttX … Rename “hello_main.c” to “spi_test_main.c”</p>
+</li>
+<li>
+<p>Inside the <strong>“spi_test”</strong> folder, rename <strong>“hello_main.c”</strong> to <strong>“spi_test_main.c”</strong></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp2.png" alt="Rename “hello_main.c” to “spi_test_main.c”" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp2.png" alt="" /></p>
-<p>TODO42</p>
-<p>In our #NuttX App “spi_test”, change all “hello” to “spi_test” … Remember to Preserve Case!</p>
+</li>
+<li>
+<p>Inside the <strong>“spi_test”</strong> folder, search and replace all <strong>“hello”</strong> by <strong>“spi_test”</strong></p>
+<p>Be sure to <strong>Preserve Case!</strong></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp3.png" alt="Change all “hello” to “spi_test”" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp3.png" alt="" /></p>
-<p>TODO43</p>
-<p>1️⃣ make distclean 2️⃣ configure.sh 3️⃣ make menuconfig … Our #NuttX App “spi_test” magically appears!</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp4.png" alt="" /></p>
-<p>TODO44</p>
-<p>Our #NuttX Demo App “spi_test” … Runs OK on #BL602</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/newapp/examples/spi_test/spi_test_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp5.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test">(See “spi_test” folder)</a></p>
+</li>
+<li>
+<p>Enter the following…</p>
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
+cd nuttx/nuttx
+
+# Preserve the Build Config
+cp .config ../config
+
+# Erase the Kconfig files
+make distclean
+
+# Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+# For ESP32: See &quot;Supported Boards&quot; for the Build Configurations
+# https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html
+
+# Restore the Build Config
+cp ../config .config
+
+# Edit the Build Config
+make menuconfig </code></pre></div>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp4.png" alt="Select “spi_test” in menuconfig" /></p>
+</li>
+<li>
+<p>In <strong>menuconfig</strong>, select <strong>“Application Configuration”</strong> → <strong>“Examples”</strong></p>
+<p>Check the box for <strong>“spi_test”</strong></p>
+<p>Hit <strong>“Save”</strong> then <strong>“OK”</strong> to save the NuttX Configuration to <strong>“.config”</strong></p>
+<p>Hit <strong>“Exit”</strong> until <strong>menuconfig</strong> quits</p>
+</li>
+<li>
+<p>Build (“make”), flash and run the NuttX Firmware on BL602 or ESP32.</p>
+<p>In the NuttX Shell, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>spi_test</code></pre></div>
+<p>We should see the output below. Congratulations we have created the <strong>“spi_test”</strong> app!</p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp5.png" alt="“spi_test” running on BL602" /></p>
+</li>
+</ol>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">11 Appendix: Build, Flash and Run Nuttx</a></h1>
+<p><em>(For BL602 and ESP32)</em></p>
+<p>TODO</p>
 <p>Build, Flash and Run #NuttX OS on #BL602 … Here’s the script I use for macOS</p>
-<p>TODO56</p>
 <p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="" /></p>
-<h1 id="appendix-nuttx-spi-interface" class="section-header"><a href="#appendix-nuttx-spi-interface">11 Appendix: NuttX SPI Interface</a></h1>
+<h1 id="appendix-nuttx-spi-interface" class="section-header"><a href="#appendix-nuttx-spi-interface">12 Appendix: NuttX SPI Interface</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>TODO</p>
 <p>#NuttX SPI Interface is defined here … Let’s call it from our “spi_test” app</p>
@@ -404,7 +448,7 @@
 <p>#NuttX SPI Driver “spi_driver_s” contains the SPI Device “spi_dev_s” … That we need for testing the SPI Interface! But the SPI Device is private and hidden from apps 🙁</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-interface6.png" alt="" /></p>
-<h1 id="appendix-pinedio-stack-bl604" class="section-header"><a href="#appendix-pinedio-stack-bl604">12 Appendix: PineDio Stack BL604</a></h1>
+<h1 id="appendix-pinedio-stack-bl604" class="section-header"><a href="#appendix-pinedio-stack-bl604">13 Appendix: PineDio Stack BL604</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2.jpg" alt="" /></p>
 <p>TODO8</p>
