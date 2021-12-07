@@ -65,15 +65,16 @@
 
     <h1 class="title">SPI on Apache NuttX OS</h1>
     <nav id="TOC"><ul>
-<li><a href="#create-a-nuttx-app">1 Create a NuttX App</a><ul></ul></li>
-<li><a href="#nuttx-spi-interface">2 NuttX SPI Interface</a><ul></ul></li>
-<li><a href="#create-a-nuttx-device-driver">3 Create a NuttX Device Driver</a><ul></ul></li>
-<li><a href="#inside-the-spi-driver">4 Inside the SPI Driver</a><ul></ul></li>
-<li><a href="#test-with-logic-analyser">5 Test with Logic Analyser</a><ul></ul></li>
-<li><a href="#test-with-semtech-sx1262">6 Test with Semtech SX1262</a><ul></ul></li>
-<li><a href="#test-with-pinedio-stack">7 Test with PineDio Stack</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>12 Dec 2021</em></p>
+<li><a href="#spi-test-app-and-driver">1 SPI Test App and Driver</a><ul></ul></li>
+<li><a href="#create-a-nuttx-app">2 Create a NuttX App</a><ul></ul></li>
+<li><a href="#nuttx-spi-interface">3 NuttX SPI Interface</a><ul></ul></li>
+<li><a href="#create-a-nuttx-device-driver">4 Create a NuttX Device Driver</a><ul></ul></li>
+<li><a href="#inside-the-spi-driver">5 Inside the SPI Driver</a><ul></ul></li>
+<li><a href="#test-with-logic-analyser">6 Test with Logic Analyser</a><ul></ul></li>
+<li><a href="#test-with-semtech-sx1262">7 Test with Semtech SX1262</a><ul></ul></li>
+<li><a href="#test-with-pinedio-stack">8 Test with PineDio Stack</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>12 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)" /></p>
 <p><em>PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)</em></p>
 <p>Last article we explored <strong>Apache NuttX OS</strong> and its <strong>GPIO Functions</strong>…</p>
@@ -101,7 +102,54 @@
 <p>In this article I’ll point out the tweaks needed to <strong>run the code on ESP32</strong>.</p>
 <p>(Watch for the <strong>“Xref”</strong> tags)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-plan.jpg" alt="SPI Test App calls SPI Test Driver to access SPI Driver" /></p>
-<h1 id="create-a-nuttx-app" class="section-header"><a href="#create-a-nuttx-app">1 Create a NuttX App</a></h1>
+<h1 id="spi-test-app-and-driver" class="section-header"><a href="#spi-test-app-and-driver">1 SPI Test App and Driver</a></h1>
+<p>Here’s our plan for today (pic above)…</p>
+<ol>
+<li>
+<p>We create an <strong>SPI Test App</strong> that will transfer data over SPI.</p>
+<p>(A tiny program with a few lines of code)</p>
+</li>
+<li>
+<p>We create an <strong>SPI Test Driver</strong> (called by SPI Test App) that will handle the SPI Operations.</p>
+<p>(To transmit and receive data over SPI)</p>
+</li>
+<li>
+<p>Our SPI Test Driver exposes a NuttX <a href="https://nuttx.apache.org/docs/latest/components/drivers/character/index.html"><strong>Character Device Interface</strong></a>: open(), write(), read() and close().</p>
+<p>(Yep it looks like Linux, because NuttX is POSIX-Compliant)</p>
+</li>
+<li>
+<p>Our SPI Test Driver executes the SPI Operations by calling the <strong>BL602 or ESP32 SPI Driver</strong>.</p>
+<p>(Which is equivalent to the Hardware Abstraction Layer in other operating systems)</p>
+</li>
+</ol>
+<p><em>Hmmm this looks complex. Is there a simpler way?</em></p>
+<p>Yes we have options for doing <strong>SPI on NuttX</strong>…</p>
+<ol>
+<li>
+<p>If our SPI Device is supported by an <strong>existing NuttX Device Driver</strong>, just go ahead and use the driver!</p>
+<p><a href="https://github.com/apache/incubator-nuttx/tree/master/drivers">(Browse the NuttX Device Drivers)</a></p>
+</li>
+<li>
+<p>If we’re transferring data over SPI <strong>for testing only</strong> (not for a real app), we may call the <a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi_transfer.h"><strong>SPI Transfer Interface</strong></a></p>
+<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/system/spi/spi_main.c">(Here’s how)</a></p>
+</li>
+<li>
+<p>But today we’re experimenting with a <strong>Custom Device Driver</strong> that will talk to our own SPI Device.</p>
+<p>That’s why we’re building the <strong>SPI Test Driver</strong>.</p>
+<p>(Eventually we’ll build a LoRaWAN Driver for Semtech SX1262)</p>
+</li>
+</ol>
+<p>TODO</p>
+<p>Call directly?
+Memory protection
+Calling directly into Linux kernel, which is no-no
+Posix
+Appendix</p>
+<p>Limiting?
+Ioctl
+Examples later
+Semtech Sx1276 driver</p>
+<h1 id="create-a-nuttx-app" class="section-header"><a href="#create-a-nuttx-app">2 Create a NuttX App</a></h1>
 <p>(For BL602 and ESP32)</p>
 <p>TODO</p>
 <p>Let’s test the #NuttX SPI Driver for #BL602</p>
@@ -128,7 +176,7 @@
 <p>Build, Flash and Run #NuttX OS on #BL602 … Here’s the script I use for macOS</p>
 <p>TODO56</p>
 <p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="" /></p>
-<h1 id="nuttx-spi-interface" class="section-header"><a href="#nuttx-spi-interface">2 NuttX SPI Interface</a></h1>
+<h1 id="nuttx-spi-interface" class="section-header"><a href="#nuttx-spi-interface">3 NuttX SPI Interface</a></h1>
 <p>(For BL602 and ESP32)</p>
 <p>TODO</p>
 <p>#NuttX SPI Interface is defined here … Let’s call it from our “spi_test” app</p>
@@ -158,7 +206,7 @@
 <p>Instead we copy an existing #NuttX SPI Device Driver to test the SPI Interface … We pick the simplest smallest SPI Device Driver: dat-31r5-sp</p>
 <p><a href="https://docs.google.com/spreadsheets/d/1MDps5cPe7tIgCL1Cz98iVccJAUJq1lgctpKgg9OwztI/edit#gid=0">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-interface7.png" alt="" /></p>
-<h1 id="create-a-nuttx-device-driver" class="section-header"><a href="#create-a-nuttx-device-driver">3 Create a NuttX Device Driver</a></h1>
+<h1 id="create-a-nuttx-device-driver" class="section-header"><a href="#create-a-nuttx-device-driver">4 Create a NuttX Device Driver</a></h1>
 <p>(For BL602 and ESP32)</p>
 <p>TODO</p>
 <p>We create a new #NuttX SPI Device Driver … By copying “dat-31r5-sp.c” to “spi_test_driver.c”</p>
@@ -208,7 +256,7 @@
 <p>This appears when we run our #NuttX SPI Test App … Let’s study our SPI Test Driver</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-app2.png" alt="" /></p>
-<h1 id="inside-the-spi-driver" class="section-header"><a href="#inside-the-spi-driver">4 Inside the SPI Driver</a></h1>
+<h1 id="inside-the-spi-driver" class="section-header"><a href="#inside-the-spi-driver">5 Inside the SPI Driver</a></h1>
 <p>(For BL602 and ESP32)</p>
 <p>TODO</p>
 <p>Every #NuttX Device Driver defines the File Operations for the device … Here are the open(), close(), read(), write() and ioctl() operations for our SPI Test Driver</p>
@@ -230,7 +278,7 @@
 <p>Now we see every byte transferred by #NuttX’s SPI Driver for #BL602!</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-app3.png" alt="" /></p>
-<h1 id="test-with-logic-analyser" class="section-header"><a href="#test-with-logic-analyser">5 Test with Logic Analyser</a></h1>
+<h1 id="test-with-logic-analyser" class="section-header"><a href="#test-with-logic-analyser">6 Test with Logic Analyser</a></h1>
 <p>(For BL602 only)</p>
 <p>TODO</p>
 <p>How to verify the #NuttX SPI Output? We sniff the #BL602 SPI Bus with a Logic Analyser</p>
@@ -258,7 +306,7 @@
 <p>After swapping #BL602 MISO and MOSI at #NuttX startup … Logic Analyser shows that the SPI Pins are now consistent with BL602 Reference Manual! 🎉</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="" /></p>
-<h1 id="test-with-semtech-sx1262" class="section-header"><a href="#test-with-semtech-sx1262">6 Test with Semtech SX1262</a></h1>
+<h1 id="test-with-semtech-sx1262" class="section-header"><a href="#test-with-semtech-sx1262">7 Test with Semtech SX1262</a></h1>
 <p>(For BL602 and ESP32)</p>
 <p>TODO</p>
 <p>Let’s test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver</p>
@@ -298,7 +346,7 @@
 <p>Our #NuttX App now reads the SX1262 Register correctly! 🎉</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="" /></p>
-<h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">7 Test with PineDio Stack</a></h1>
+<h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">8 Test with PineDio Stack</a></h1>
 <p>(For BL604 only)</p>
 <p>TODO</p>
 <p>Will #NuttX run on #Pine64’s PineDio Stack BL604 with onboard Semtech SX1262? Let’s find out!</p>
@@ -315,7 +363,7 @@
 <p>Our #NuttX App runs OK on PineDio Stack BL604 with onboard SX1262! 🎉</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2.png" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>I’m new to NuttX but I had lots of fun experimenting with it. I hope you’ll enjoy NuttX too!</p>
 <p>Here are some topics I might explore in future articles, lemme know if I should do these…</p>
@@ -350,7 +398,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/spi2.md"><code>lupyuen.github.io/src/spi2.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1464898624026906625">this Twitter Thread</a></li>
 </ol>
