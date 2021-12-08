@@ -140,7 +140,11 @@ static const struct file_operations g_spi_test_driver_fops =
 
 /* In spi_test_driver_register() we register the character driver */
 
-ret = register_driver(devpath, &g_spi_test_driver_fops, 0666, priv);
+register_driver(
+  devpath, 
+  &g_spi_test_driver_fops, 
+  0666, 
+  priv);
 ```
 
 __spi_test_driver_register()__ and __register_driver()__ are called during NuttX Startup, as explained here...
