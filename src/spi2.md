@@ -147,9 +147,21 @@ __spi_test_driver_register()__ and __register_driver()__ are called during NuttX
 
 -   [__"Register Device Driver"__](https://lupyuen.github.io/articles/spi2#register-device-driver)
 
-Our driver implements the __write()__ and __read()__ operations to transfer SPI data.
+Our driver implements the __write()__ and __read()__ operations to transfer data over SPI.
 
-(They will be called by the __SPI Test App__, as we'll see later)
+(They will be called by our __SPI Test App__, as we'll see later)
+
+_SPI is a full-duplex protocol. How will we implement read() and write()?_
+
+To simplify our SPI Test Driver, the __read operation shall be buffered__...
+
+1.  __write()__ transmits the provided data over SPI
+
+1.  And saves the received data into the __Receive Buffer__
+
+1.  Then __read()__ returns the received data from the __Receive Buffer__
+
+Let's dive into the write() and read() operations.
 
 ## Write Operation
 
