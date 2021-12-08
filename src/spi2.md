@@ -100,15 +100,54 @@ We created the SPI Test Driver by cloning another device driver, as explained he
 
 -   [__"Create a NuttX Device Driver"__](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-device-driver)
 
-## File Operations
+In the following sections we explain the SPI features that we have implemented in the driver.
 
-TODO
-
-Every #NuttX Device Driver defines the File Operations for the device ... Here are the open(), close(), read(), write() and ioctl() operations for our SPI Test Driver
+![File operations implemented by our driver](https://lupyuen.github.io/images/spi2-driver2a.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89)
 
-![](https://lupyuen.github.io/images/spi2-driver2a.png)
+## File Operations
+
+Every [__NuttX Character Device Driver__](https://nuttx.apache.org/docs/latest/components/drivers/character/index.html) defines a list of supported __File Operations__...
+
+-   __open()__: Open the driver
+
+-   __close()__: Close the driver
+
+-   __read()__: Read data
+
+-   __write()__: Write data
+
+-   __ioctl()__: Other operations
+
+(Plus others: seek(), poll(), ...)
+
+Our driver defines the File Operations like so: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89)
+
+```c
+static const struct file_operations g_spi_test_driver_fops =
+{
+  spi_test_driver_open,
+  spi_test_driver_close,
+  spi_test_driver_read,
+  spi_test_driver_write,
+  NULL,  /* Seek not implemented */
+  spi_test_driver_ioctl,
+  NULL   /* Poll not implemented */
+};
+
+...
+
+/* In spi_test_driver_register() we register the character driver */
+
+ret = register_driver(devpath, &g_spi_test_driver_fops, 0666, priv);
+```
+
+__spi_test_driver_register()__ and __register_driver()__ are called during NuttX Startup, as explained here...
+
+-   [__"Register Device Driver"__](https://lupyuen.github.io/articles/spi2#register-device-driver)
+
+Our driver implements the __write()__ and __read()__ operations to transfer SPI data.
 
 ## Write Operation
 
