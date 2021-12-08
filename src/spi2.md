@@ -144,8 +144,6 @@ To watch what happens inside #NuttX's SPI Driver for #BL602 ... Turn on SPI Debu
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c)
 
-![](https://lupyuen.github.io/images/spi2-driver4.png)
-
 TODO20
 
 Now we see every byte transferred by #NuttX's SPI Driver for #BL602!
@@ -506,15 +504,17 @@ We enable SPI and our Device Driver as follows...
 
 ## Enable Logging
 
-Next we enable SPI logging...
+Next we enable SPI logging for easier troubleshooting...
 
 1.  In __menuconfig__, select __"Build Setup"__ → __"Debug Options"__ 
 
 1.  Check the boxes for the following...
 
     ```text
+    Enable Debug Features
     Enable Error Output
     Enable Warnings Output
+    Enable Informational Debug Output
     Enable Debug Assertions
     GPIO Debug Features
     GPIO Error Output
@@ -526,13 +526,17 @@ Next we enable SPI logging...
     SPI Informational Output
     ```
 
+    (See pic below)
+
 1.  Hit __"Save"__ then __"OK"__ to save the NuttX Configuration to __".config"__
 
 1.  Hit __"Exit"__ until __menuconfig__ quits
 
+    ![Enable logging](https://lupyuen.github.io/images/spi2-driver4.png)
+
 ## Register Device Driver
 
-During NuttX startup, we need to register our Device Driver. Follow these steps...
+During NuttX startup, we need to register our Device Driver like so...
 
 1.  Browse to the __Board Folder__...
 
