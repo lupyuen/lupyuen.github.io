@@ -474,7 +474,17 @@ SPI Informational Output</code></pre></div>
 </li>
 <li>
 <p>Edit the function <strong>bl602_bringup()</strong> to register our Device Driver as <strong>“/dev/spitest0”</strong>…</p>
-<div class="example-wrap"><pre class="language-c"><code>int bl602_bringup(void)
+<div class="example-wrap"><pre class="language-c"><code>/* Insert this code after the #include block */
+
+#ifdef CONFIG_RF_SPI_TEST_DRIVER
+#include &lt;nuttx/rf/spi_test_driver.h&gt;
+#endif /* CONFIG_RF_SPI_TEST_DRIVER */
+
+/* End of inserted code */
+
+...
+
+int bl602_bringup(void)
 {
   /* Omitted: Existing code in the function */
 
@@ -505,6 +515,7 @@ SPI Informational Output</code></pre></div>
   return ret;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/4cae36747314bacb49ff0bba3632fbb8136f3f66#diff-387529ed7b85b38e4e96d58de6cab8a83e706c26c97e9fc71db5ea5ff20be297">(See the changes)</a></p>
 <p>For ESP32: Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup()</strong></a> and insert the code above.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver4.png" alt="Register our device driver at startup" /></p>
 </li>
