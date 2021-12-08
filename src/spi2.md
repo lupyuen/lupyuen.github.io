@@ -149,6 +149,8 @@ __spi_test_driver_register()__ and __register_driver()__ are called during NuttX
 
 Our driver implements the __write()__ and __read()__ operations to transfer SPI data.
 
+(They will be called by the __SPI Test App__, as we'll see later)
+
 ## Write Operation
 
 TODO
