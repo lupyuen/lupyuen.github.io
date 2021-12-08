@@ -233,32 +233,32 @@ ret = register_driver(devpath, &amp;g_spi_test_driver_fops, 0666, priv);</code><
 <p>Then <strong>read()</strong> returns the received data from the <strong>Receive Buffer</strong></p>
 </li>
 </ol>
-<p>Let’s dive into the write() and read() operations.</p>
-<h2 id="write-operation" class="section-header"><a href="#write-operation">2.2 Write Operation</a></h2>
-<p>TODO</p>
-<p>In the write() operation for our #NuttX SPI Test Driver, we</p>
-<ol>
-<li>
-<p>Lock the SPI Bus</p>
-</li>
-<li>
-<p>Config the SPI Interface</p>
-</li>
-<li>
-<p>Select the SPI Device</p>
-</li>
-<li>
-<p>Transfer SPI Data</p>
-</li>
-<li>
-<p>Deselect and Unlock</p>
-</li>
-</ol>
+<p>The <strong>Receive Buffer</strong> is defined like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L99-L101">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static char recv_buffer[256];  /* Buffer for SPI response */
 
-static int recv_buffer_len = 0;  /* Length of SPI response */
-
-/* Write the buffer to the SPI device */
+static int recv_buffer_len = 0;  /* Length of SPI response */</code></pre></div>
+<p>Let’s dive into the write() and read() operations.</p>
+<h2 id="write-operation" class="section-header"><a href="#write-operation">2.2 Write Operation</a></h2>
+<p>In the write() operation for our SPI Test Driver, we…</p>
+<ol>
+<li>
+<p><strong>Lock</strong> the SPI Bus</p>
+</li>
+<li>
+<p><strong>Configure</strong> the SPI Interface</p>
+</li>
+<li>
+<p><strong>Select</strong> the SPI Device</p>
+</li>
+<li>
+<p><strong>Transfer</strong> SPI Data</p>
+</li>
+<li>
+<p><strong>Deselect</strong> the device and <strong>unlock</strong> the bus</p>
+</li>
+</ol>
+<p>Below is the implementation: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239">spi_test_driver.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Write the buffer to the SPI device */
 
 static ssize_t spi_test_driver_write(
   FAR struct file *filep,
@@ -274,24 +274,29 @@ static ssize_t spi_test_driver_write(
   FAR struct inode *inode = filep-&gt;f_inode;
   DEBUGASSERT(inode != NULL);
   FAR struct spi_test_driver_dev_s *priv = inode-&gt;i_private;
-  DEBUGASSERT(priv != NULL);
-
-  /* Lock the SPI bus and configure the SPI interface */
+  DEBUGASSERT(priv != NULL);</code></pre></div>
+<p>We begin by fetching the <strong>SPI Interface</strong> from the File Struct.</p>
+<p>Next we lock the SPI Bus and configure the SPI Interface…</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Lock the SPI bus and configure the SPI interface */
 
   DEBUGASSERT(priv-&gt;spi != NULL);
   SPI_LOCK(priv-&gt;spi, true);
-  spi_test_driver_configspi(priv-&gt;spi);
+  spi_test_driver_configspi(priv-&gt;spi);</code></pre></div>
+<p>(We’ll see <strong>spi_test_driver_configspi()</strong> in a while)</p>
+<p>We select the SPI Device by pulling SPI Chip Select to Low…</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Select the SPI device (unused for BL602) */
 
-  /* Select the SPI device (unused for BL602) */
-
-  SPI_SELECT(priv-&gt;spi, priv-&gt;spidev, true);
-
-  /* Transmit buffer to SPI device and receive the response */
+  SPI_SELECT(priv-&gt;spi, priv-&gt;spidev, true);</code></pre></div>
+<p>(This has no effect on BL602. The SPI Hardware automatically sets Chip Select to Low during SPI transfer)</p>
+<p>TODO</p>
+<p><strong>Transfer</strong> SPI Data</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Transmit buffer to SPI device and receive the response */
 
   SPI_EXCHANGE(priv-&gt;spi, buffer, recv_buffer, buflen);
-  recv_buffer_len = buflen;
-
-  /* Deselect the SPI device (unused for BL602) */
+  recv_buffer_len = buflen;</code></pre></div>
+<p>TODO</p>
+<p><strong>Deselect</strong> the device and <strong>unlock</strong> the bus</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Deselect the SPI device (unused for BL602) */
 
   SPI_SELECT(priv-&gt;spi, priv-&gt;spidev, false);
 
@@ -301,7 +306,7 @@ static ssize_t spi_test_driver_write(
 
   return buflen;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239">(Source)</a></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi2-driver2.png" alt="" /></p>
 <h2 id="read-operation" class="section-header"><a href="#read-operation">2.3 Read Operation</a></h2>
 <p>TODO</p>
