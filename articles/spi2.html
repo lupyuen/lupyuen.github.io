@@ -186,7 +186,6 @@
 <p>TODO25</p>
 <p>To watch what happens inside #NuttX’s SPI Driver for #BL602 … Turn on SPI Debug Logging</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver4.png" alt="" /></p>
 <p>TODO20</p>
 <p>Now we see every byte transferred by #NuttX’s SPI Driver for #BL602!</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c">(Source)</a></p>
@@ -429,15 +428,17 @@ make menuconfig </code></pre></div></li>
 </li>
 </ol>
 <h2 id="enable-logging" class="section-header"><a href="#enable-logging">9.3 Enable Logging</a></h2>
-<p>Next we enable SPI logging…</p>
+<p>Next we enable SPI logging for easier troubleshooting…</p>
 <ol>
 <li>
 <p>In <strong>menuconfig</strong>, select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong> </p>
 </li>
 <li>
 <p>Check the boxes for the following…</p>
-<div class="example-wrap"><pre class="language-text"><code>Enable Error Output
+<div class="example-wrap"><pre class="language-text"><code>Enable Debug Features
+Enable Error Output
 Enable Warnings Output
+Enable Informational Debug Output
 Enable Debug Assertions
 GPIO Debug Features
 GPIO Error Output
@@ -446,16 +447,19 @@ GPIO Informational Output
 SPI Debug Features
 SPI Error Output
 SPI Warnings Output
-SPI Informational Output</code></pre></div></li>
+SPI Informational Output</code></pre></div>
+<p>(See pic below)</p>
+</li>
 <li>
 <p>Hit <strong>“Save”</strong> then <strong>“OK”</strong> to save the NuttX Configuration to <strong>“.config”</strong></p>
 </li>
 <li>
 <p>Hit <strong>“Exit”</strong> until <strong>menuconfig</strong> quits</p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver4.png" alt="Enable logging" /></p>
 </li>
 </ol>
 <h2 id="register-device-driver" class="section-header"><a href="#register-device-driver">9.4 Register Device Driver</a></h2>
-<p>During NuttX startup, we need to register our Device Driver. Follow these steps…</p>
+<p>During NuttX startup, we need to register our Device Driver like so…</p>
 <ol>
 <li>
 <p>Browse to the <strong>Board Folder</strong>…</p>
