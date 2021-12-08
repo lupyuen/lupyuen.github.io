@@ -716,7 +716,9 @@ We scanned the NuttX SPI Device Drivers ("grep" and "wc") and picked __"dat-31r5
 
 1.  It's the __only driver__ in the RF Category
 
-    (Easier to modify the Makefile and Kconfig)
+    (Quick to modify the Makefile and Kconfig)
+
+Remember to move our driver to the correct category before releasing it!
 
 ![dat-31r5-sp is the simplest smallest SPI Device Driver](https://lupyuen.github.io/images/spi2-interface7.png)
 
