@@ -444,23 +444,102 @@ Now we update the Makefile so that NuttX will build our Device Driver...
 
     [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
 
+1.  Enter the following...
+
+    ```bash
+    ## TODO: Change this to the path of our "incubator-nuttx" folder
+    cd nuttx/nuttx
+
+    ## Preserve the Build Config
+    cp .config ../config
+
+    ## Erase the Build Config and Kconfig files
+    make distclean
+
+    ## For BL602: Configure the build for BL602
+    ./tools/configure.sh bl602evb:nsh
+
+    ## For ESP32: Configure the build for ESP32.
+    ## TODO: Change "esp32-devkitc" to our ESP32 board.
+    ./tools/configure.sh esp32-devkitc:nsh
+
+    ## Restore the Build Config
+    cp ../config .config
+
+    ## Edit the Build Config
+    make menuconfig 
+    ```
+
+1.  In __menuconfig__, select __"System Type"__
+
+    For BL602: Check the box for __"BL602 Peripheral Support"__ → __"SPI0"__
+
+    For ESP32: Check the box for __"ESP32 Peripheral Select"__ → __"SPI 2"__
+
+    Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
+
+    ![Enable SPI](https://lupyuen.github.io/images/spi2-debug.png)
+
+1.  At the Top Menu, select __"Device Drivers"__
+
+    Select __"SPI Driver"__
+
+    Check the box for __"SPI Character Driver"__
+
+    (__"SPI Exchange"__ should already be checked)
+
+    Hit __"Exit"__ to return to "Device Drivers"
+
+1.  Under "Device Drivers", check the box for __"RF Device Support"__
+
+    Go inside __"RF Device Support"__
+
+    Check the box for __"SPI Test Driver"__
+
+    Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
+
+    ![Select SPI Test Driver](https://lupyuen.github.io/images/spi2-newdriver6.png)
+
+## Enable SPI Logging
+
+Next we enable SPI logging...
+
+1.  TODO
+
+1.  Hit __"Save"__ then __"OK"__ to save the NuttX Configuration to __".config"__
+
+    Hit __"Exit"__ until __menuconfig__ quits
+
+1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32.
+
+    In the NuttX Shell, enter...
+
+    ```bash
+    ls /dev
+    ```
+
+    We should see the output below. Congratulations we have created the __"spi_test"__ app!
+
 TODO51
 
-Our SPI Test Driver for #NuttX appears in "make menuconfig"!
+Build Setup → Debug Options → 
+  Enable Error Output
+  Enable Warnings Output
+  Enable Debug Assertions
+  GPIO Debug Features
+  GPIO Error Output
+  GPIO Warnings Output
+  GPIO Informational Output
+  SPI Debug Features
+  SPI Error Output
+  SPI Warnings Output
+  SPI Informational Output
 
-![](https://lupyuen.github.io/images/spi2-newdriver6.png)
+Our SPI Test Driver for #NuttX appears in "make menuconfig"!
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
 
 TODO6
-
-Remember to enable "SPI0" and "SPI Character Driver" in #NuttX ... Or our SPI Test Driver won't start
-
-![](https://lupyuen.github.io/images/spi2-debug.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
-
-TODO22
 
 Here's what happens when we make a boo-boo and #NuttX won't start
 
