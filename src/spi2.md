@@ -613,17 +613,17 @@ During NuttX startup, we need to register our Device Driver like so...
 
 1.  Browse to the __Board Folder__...
 
-    For BL602: [__"nuttx/nuttx/boards/risc-v/bl602/bl602evb"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src) 
+    For BL602: [__nuttx/nuttx/boards/ risc-v/bl602/bl602evb__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src) 
 
-    For ESP32: [__"nuttx/nuttx/boards/xtensa/esp32/esp32-devkitc"__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src)
+    For ESP32: [__nuttx/nuttx/boards/ xtensa/esp32/esp32-devkitc__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src)
 
     (Change "esp32-devkitc" to our ESP32 board)
 
 1.  Edit the __Bringup Code__...
 
-    For BL602: [__"bl602_bringup.c"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
+    For BL602: [__bl602_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
 
-    For ESP32: [__"esp32_bringup.c"__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426)
+    For ESP32: [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426)
 
 1.  Edit the function __bl602_bringup()__ to register our Device Driver as __"/dev/spitest0"__...
 
@@ -674,7 +674,7 @@ During NuttX startup, we need to register our Device Driver like so...
 
     [(See the changes)](https://github.com/lupyuen/incubator-nuttx/commit/4cae36747314bacb49ff0bba3632fbb8136f3f66#diff-387529ed7b85b38e4e96d58de6cab8a83e706c26c97e9fc71db5ea5ff20be297)
 
-    For ESP32: Edit the function [__esp32_bringup()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) and insert the code above.
+    For ESP32: Edit the function [__esp32_bringup()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) and insert the code above. Change __"bl602_spibus_initialize"__ to __"esp32_spibus_initialize"__. [(Like this)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72)
 
     ![Register our device driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
 
