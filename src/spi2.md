@@ -555,6 +555,16 @@ During NuttX startup, we need to register our Device Driver like so...
 1.  Edit the function __bl602_bringup()__ to register our Device Driver as __"/dev/spitest0"__...
 
     ```c
+    /* Insert this code after the #include block */
+
+    #ifdef CONFIG_RF_SPI_TEST_DRIVER
+    #include <nuttx/rf/spi_test_driver.h>
+    #endif /* CONFIG_RF_SPI_TEST_DRIVER */
+
+    /* End of inserted code */
+
+    ...
+
     int bl602_bringup(void)
     {
       /* Omitted: Existing code in the function */
@@ -588,6 +598,8 @@ During NuttX startup, we need to register our Device Driver like so...
     ```
 
     [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
+
+    [(See the changes)](https://github.com/lupyuen/incubator-nuttx/commit/4cae36747314bacb49ff0bba3632fbb8136f3f66#diff-387529ed7b85b38e4e96d58de6cab8a83e706c26c97e9fc71db5ea5ff20be297)
 
     For ESP32: Edit the function [__esp32_bringup()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) and insert the code above.
 
