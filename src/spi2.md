@@ -167,15 +167,88 @@ In the write() operation for our #NuttX SPI Test Driver, we
 
 1.  Deselect and Unlock
 
-![](https://lupyuen.github.io/images/spi2-driver2.png)
+```c
+static char recv_buffer[256];  /* Buffer for SPI response */
+
+static int recv_buffer_len = 0;  /* Length of SPI response */
+
+/* Write the buffer to the SPI device */
+
+static ssize_t spi_test_driver_write(
+  FAR struct file *filep,
+  FAR const char *buffer,
+  size_t buflen)
+{
+  DEBUGASSERT(buflen <= sizeof(recv_buffer));  /* TODO: Range eheck */
+  DEBUGASSERT(buffer != NULL);
+  DEBUGASSERT(filep  != NULL);
+
+  /* Get the SPI interface */
+
+  FAR struct inode *inode = filep->f_inode;
+  DEBUGASSERT(inode != NULL);
+  FAR struct spi_test_driver_dev_s *priv = inode->i_private;
+  DEBUGASSERT(priv != NULL);
+
+  /* Lock the SPI bus and configure the SPI interface */
+
+  DEBUGASSERT(priv->spi != NULL);
+  SPI_LOCK(priv->spi, true);
+  spi_test_driver_configspi(priv->spi);
+
+  /* Select the SPI device (unused for BL602) */
+
+  SPI_SELECT(priv->spi, priv->spidev, true);
+
+  /* Transmit buffer to SPI device and receive the response */
+
+  SPI_EXCHANGE(priv->spi, buffer, recv_buffer, buflen);
+  recv_buffer_len = buflen;
+
+  /* Deselect the SPI device (unused for BL602) */
+
+  SPI_SELECT(priv->spi, priv->spidev, false);
+
+  /* Unlock the SPI bus */
+
+  SPI_LOCK(priv->spi, false);
+
+  return buflen;
+}
+```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239)
+
+![](https://lupyuen.github.io/images/spi2-driver2.png)
 
 ## Read Operation
 
 TODO
 
 We implement the Read Operation for our #NuttX SPI Driver ... So that we can fetch the SPI Response from SX1262
+
+```c
+/* Return the data received from the SPI device */
+
+static ssize_t spi_test_driver_read(
+  FAR struct file *filep, 
+  FAR char *buffer,
+  size_t buflen)
+{
+  DEBUGASSERT(filep  != NULL);
+  DEBUGASSERT(buffer != NULL);
+
+  /* Copy the SPI response to the buffer */
+
+  DEBUGASSERT(recv_buffer_len >= 0);
+  DEBUGASSERT(recv_buffer_len <= buflen);  /* TODO: Range check */
+  memcpy(buffer, recv_buffer, recv_buffer_len);
+
+  /* Return the number of bytes read */
+
+  return recv_buffer_len;
+}
+```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L210-L233)
 
@@ -186,6 +259,23 @@ We implement the Read Operation for our #NuttX SPI Driver ... So that we can fet
 TODO
 
 Here's how we configure the #NuttX SPI Interface
+
+```c
+static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
+{
+  DEBUGASSERT(spi != NULL);
+
+  /* Set SPI Mode (Polarity and Phase) and Transfer Size (8 bits) */
+
+  SPI_SETMODE(spi, SPI_TEST_DRIVER_SPI_MODE);
+  SPI_SETBITS(spi, 8);
+
+  /* Set SPI Hardware Features and Frequency */
+
+  SPI_HWFEATURES(spi, 0);
+  SPI_SETFREQUENCY(spi, CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY);
+}
+```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L95-L117)
 
