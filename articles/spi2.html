@@ -213,7 +213,11 @@
 
 /* In spi_test_driver_register() we register the character driver */
 
-ret = register_driver(devpath, &amp;g_spi_test_driver_fops, 0666, priv);</code></pre></div>
+register_driver(
+  devpath, 
+  &amp;g_spi_test_driver_fops, 
+  0666, 
+  priv);</code></pre></div>
 <p><strong>spi_test_driver_register()</strong> and <strong>register_driver()</strong> are called during NuttX Startup, as explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#register-device-driver"><strong>“Register Device Driver”</strong></a></li>
