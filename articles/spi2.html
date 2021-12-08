@@ -218,8 +218,22 @@ ret = register_driver(devpath, &amp;g_spi_test_driver_fops, 0666, priv);</code><
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#register-device-driver"><strong>“Register Device Driver”</strong></a></li>
 </ul>
-<p>Our driver implements the <strong>write()</strong> and <strong>read()</strong> operations to transfer SPI data.</p>
-<p>(They will be called by the <strong>SPI Test App</strong>, as we’ll see later)</p>
+<p>Our driver implements the <strong>write()</strong> and <strong>read()</strong> operations to transfer data over SPI.</p>
+<p>(They will be called by our <strong>SPI Test App</strong>, as we’ll see later)</p>
+<p><em>SPI is a full-duplex protocol. How will we implement read() and write()?</em></p>
+<p>To simplify our SPI Test Driver, the <strong>read operation shall be buffered</strong>…</p>
+<ol>
+<li>
+<p><strong>write()</strong> transmits the provided data over SPI</p>
+</li>
+<li>
+<p>And saves the received data into the <strong>Receive Buffer</strong></p>
+</li>
+<li>
+<p>Then <strong>read()</strong> returns the received data from the <strong>Receive Buffer</strong></p>
+</li>
+</ol>
+<p>Let’s dive into the write() and read() operations.</p>
 <h2 id="write-operation" class="section-header"><a href="#write-operation">2.2 Write Operation</a></h2>
 <p>TODO</p>
 <p>In the write() operation for our #NuttX SPI Test Driver, we</p>
