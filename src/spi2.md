@@ -470,6 +470,10 @@ Now we update the Makefile so that NuttX will build our Device Driver...
     make menuconfig 
     ```
 
+## Enable SPI
+
+We enable SPI and our Device Driver as follows...
+
 1.  In __menuconfig__, select __"System Type"__
 
     For BL602: Check the box for __"BL602 Peripheral Support"__ → __"SPI0"__
@@ -486,7 +490,7 @@ Now we update the Makefile so that NuttX will build our Device Driver...
 
     Check the box for __"SPI Character Driver"__
 
-    (__"SPI Exchange"__ should already be checked)
+    (__"SPI Exchange"__ should already be checked, see pic above)
 
     Hit __"Exit"__ to return to "Device Drivers"
 
@@ -500,82 +504,134 @@ Now we update the Makefile so that NuttX will build our Device Driver...
 
     ![Select SPI Test Driver](https://lupyuen.github.io/images/spi2-newdriver6.png)
 
-## Enable SPI Logging
+## Enable Logging
 
 Next we enable SPI logging...
 
-1.  TODO
+1.  In __menuconfig__, select __"Build Setup"__ → __"Debug Options"__ 
+
+1.  Check the boxes for the following...
+
+    ```text
+    Enable Error Output
+    Enable Warnings Output
+    Enable Debug Assertions
+    GPIO Debug Features
+    GPIO Error Output
+    GPIO Warnings Output
+    GPIO Informational Output
+    SPI Debug Features
+    SPI Error Output
+    SPI Warnings Output
+    SPI Informational Output
+    ```
 
 1.  Hit __"Save"__ then __"OK"__ to save the NuttX Configuration to __".config"__
 
-    Hit __"Exit"__ until __menuconfig__ quits
+1.  Hit __"Exit"__ until __menuconfig__ quits
+
+## Register Device Driver
+
+During NuttX startup, we need to register our Device Driver. Follow these steps...
+
+1.  Browse to the __Board Folder__...
+
+    For BL602: [__"nuttx/boards/risc-v/bl602/bl602evb"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src) 
+
+    For ESP32: [__"nuttx/boards/xtensa/esp32/esp32-devkitc"__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src)
+
+    (Change "esp32-devkitc" to our ESP32 board)
+
+1.  Edit the __Bringup Code__...
+
+    For BL602: [__"bl602_bringup.c"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
+
+    For ESP32: [__"esp32_bringup.c"__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426)
+
+1.  Edit the function __bl602_bringup()__ to register our Device Driver as __"/dev/spitest0"__...
+
+    ```c
+    int bl602_bringup(void)
+    {
+      /* Omitted: Existing code in the function */
+
+      /* Insert this code just before the "return" statement */
+
+    #ifdef CONFIG_RF_SPI_TEST_DRIVER
+
+      /* Init SPI bus again */
+
+      struct spi_dev_s *spitest = bl602_spibus_initialize(0);
+      if (!spitest)
+        {
+          _err("ERROR: Failed to initialize SPI %d bus\n", 0);
+        }
+
+      /* Register the SPI Test Driver */
+
+      ret = spi_test_driver_register("/dev/spitest0", spitest, 0);
+      if (ret < 0)
+        {
+          _err("ERROR: Failed to register SPI Test Driver\n");
+        }
+
+    #endif /* CONFIG_RF_SPI_TEST_DRIVER */
+
+      /* End of inserted code */
+
+      return ret;
+    }
+    ```
+
+    [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
+
+    For ESP32: Edit the function [__esp32_bringup()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) and insert the code above.
+
+    ![Register our device driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
+
+## Verify Device Driver
+
+Finally we run the NuttX Firmware and check for our Device Driver...
 
 1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32.
 
-    In the NuttX Shell, enter...
+1.  In the NuttX Shell, enter...
 
     ```bash
     ls /dev
     ```
 
-    We should see the output below. Congratulations we have created the __"spi_test"__ app!
+    Our Device Driver appears as __"/dev/spitest0"__.
+    
+    Congratulations our Device Driver is now running on NuttX!
 
-TODO51
+    ![Our Device Driver appears as "/dev/spitest0"](https://lupyuen.github.io/images/spi2-newdriver10.png)
 
-Build Setup → Debug Options → 
-  Enable Error Output
-  Enable Warnings Output
-  Enable Debug Assertions
-  GPIO Debug Features
-  GPIO Error Output
-  GPIO Warnings Output
-  GPIO Informational Output
-  SPI Debug Features
-  SPI Error Output
-  SPI Warnings Output
-  SPI Informational Output
+1.  Look what happens if we forget to enable "SPI0" (BL602) or "SPI 2" (ESP32) and NuttX won't start...
 
-Our SPI Test Driver for #NuttX appears in "make menuconfig"!
+    ![NuttX fails to start if we don't enable SPI](https://lupyuen.github.io/images/spi2-crash2.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27)
-
-TODO6
-
-Here's what happens when we make a boo-boo and #NuttX won't start
-
-![](https://lupyuen.github.io/images/spi2-crash2.png)
-
-[(Source)](https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323)
-
-## Register Device Driver
-
-1.  Browse to the [__"nuttx/boards/risc-v/bl602/bl602evb"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src) folder
-
-TODO
-
-At #NuttX Startup, register our SPI Test Driver as "/dev/spitest0"
-
-![](https://lupyuen.github.io/images/spi2-newdriver4.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
-
-TODO47
-
-Build, flash and run #NuttX ... Our SPI Test Driver appears as "/dev/spitest0"! 🎉
-
-![](https://lupyuen.github.io/images/spi2-newdriver10.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c)
+    [(Source)](https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323)
 
 _Why did we choose the "dat-31r5-sp" driver for cloning?_
 
-TODO
+We scanned the NuttX SPI Device Drivers ("grep" and "wc") and picked __"dat-31r5-sp"__ because...
 
-We picked the simplest smallest SPI Device Driver: dat-31r5-sp
+1.  The driver code is __simple__
+
+    (No dependencies on other modules)
+
+1.  It has the __fewest lines of code__
+
+    (Easier to customise)
+
+1.  It's the __only driver__ in the RF Category
+
+    (Easier to modify the Makefile and Kconfig)
+
+![dat-31r5-sp is the simplest smallest SPI Device Driver](https://lupyuen.github.io/images/spi2-interface7.png)
 
 [(Source)](https://docs.google.com/spreadsheets/d/1MDps5cPe7tIgCL1Cz98iVccJAUJq1lgctpKgg9OwztI/edit#gid=0)
-
-![](https://lupyuen.github.io/images/spi2-interface7.png)
 
 # Appendix: Create a NuttX App
 
@@ -638,24 +694,33 @@ This section explains the steps to create a __NuttX App__ named __"spi_test"__.
 
     ![Select "spi_test" in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.png)
 
+## Enable App
+
+Next we enable our app (pic above)...
+
 1.  In __menuconfig__, select __"Application Configuration"__ → __"Examples"__
 
-    Check the box for __"spi_test"__
+1.  Check the box for __"spi_test"__
 
-    Hit __"Save"__ then __"OK"__ to save the NuttX Configuration to __".config"__
+1.  Hit __"Save"__ then __"OK"__ to save the NuttX Configuration to __".config"__
 
-    Hit __"Exit"__ until __menuconfig__ quits
+1.  Hit __"Exit"__ until __menuconfig__ quits
 
+## Run the App
+
+Finally we run the NuttX Firmware and start our app...
 
 1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32.
 
-    In the NuttX Shell, enter...
+1.  In the NuttX Shell, enter...
 
     ```bash
     spi_test
     ```
 
-    We should see the output below. Congratulations we have created the __"spi_test"__ app!
+1.  We should see the output below.
+
+    Congratulations we have created the __"spi_test"__ app!
 
     !["spi_test" running on BL602](https://lupyuen.github.io/images/spi2-newapp5.png)
 
