@@ -90,6 +90,18 @@ We'll see this when we cover the NuttX Device Driver for Semtech SX1276.
 
 _(For BL602 and ESP32)_
 
+Let's study the code in our __SPI Test Driver__...
+
+-   [__drivers/rf/spi_test_driver.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c)
+
+    [(Header File)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/include/nuttx/rf/spi_test_driver.h)
+
+We created the SPI Test Driver by cloning another device driver, as explained here...
+
+-   [__"Create a NuttX Device Driver"__](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-device-driver)
+
+## File Operations
+
 TODO
 
 Every #NuttX Device Driver defines the File Operations for the device ... Here are the open(), close(), read(), write() and ioctl() operations for our SPI Test Driver
@@ -98,15 +110,39 @@ Every #NuttX Device Driver defines the File Operations for the device ... Here a
 
 ![](https://lupyuen.github.io/images/spi2-driver2a.png)
 
-TODO23
+## Write Operation
 
-In the write() operation for our #NuttX SPI Test Driver, we 1️⃣ Lock the SPI Bus 2️⃣ Config the SPI Interface 3️⃣ Select the SPI Device 4️⃣ Transfer SPI Data 5️⃣ Deselect and Unlock
+TODO
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239)
+In the write() operation for our #NuttX SPI Test Driver, we
+
+1.  Lock the SPI Bus
+
+1.  Config the SPI Interface
+
+1.  Select the SPI Device
+
+1.  Transfer SPI Data
+
+1.  Deselect and Unlock
 
 ![](https://lupyuen.github.io/images/spi2-driver2.png)
 
-TODO24
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239)
+
+## Read Operation
+
+TODO
+
+We implement the Read Operation for our #NuttX SPI Driver ... So that we can fetch the SPI Response from SX1262
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L210-L233)
+
+![](https://lupyuen.github.io/images/spi2-sx3.png)
+
+## Configure SPI
+
+TODO
 
 Here's how we configure the #NuttX SPI Interface
 
@@ -118,13 +154,17 @@ Here's how we configure the #NuttX SPI Interface
 
 _(For BL602 and ESP32)_
 
+Now we study the code in our __SPI Test App__...
+
+-   [__examples/spi_test__](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test)
+
+We created the SPI Test App by cloning another app, as explained here...
+
+-   [__"Create a NuttX App"__](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-app)
+
 TODO
 
-Let's test the #NuttX SPI Driver for #BL602
-
-[(Source)](https://nuttx.apache.org/docs/latest/components/drivers/special/spi.html)
-
-Back to our #NuttX SPI Test App ... Here's how we open the SPI Test Driver and write data
+Here's how we open the SPI Test Driver and write data
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
 
@@ -219,14 +259,6 @@ Let's test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver
 [(Source)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
 
 ![](https://lupyuen.github.io/images/spi2-title.jpg)
-
-TODO59
-
-We implement the Read Operation for our #NuttX SPI Driver ... So that we can fetch the SPI Response from SX1262
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L210-L233)
-
-![](https://lupyuen.github.io/images/spi2-sx3.png)
 
 TODO60
 
