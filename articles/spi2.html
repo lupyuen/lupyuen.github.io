@@ -174,11 +174,51 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-device-driver"><strong>“Create a NuttX Device Driver”</strong></a></li>
 </ul>
-<h2 id="file-operations" class="section-header"><a href="#file-operations">2.1 File Operations</a></h2>
-<p>TODO</p>
-<p>Every #NuttX Device Driver defines the File Operations for the device … Here are the open(), close(), read(), write() and ioctl() operations for our SPI Test Driver</p>
+<p>In the following sections we explain the SPI features that we have implemented in the driver.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver2a.png" alt="File operations implemented by our driver" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver2a.png" alt="" /></p>
+<h2 id="file-operations" class="section-header"><a href="#file-operations">2.1 File Operations</a></h2>
+<p>Every <a href="https://nuttx.apache.org/docs/latest/components/drivers/character/index.html"><strong>NuttX Character Device Driver</strong></a> defines a list of supported <strong>File Operations</strong>…</p>
+<ul>
+<li>
+<p><strong>open()</strong>: Open the driver</p>
+</li>
+<li>
+<p><strong>close()</strong>: Close the driver</p>
+</li>
+<li>
+<p><strong>read()</strong>: Read data</p>
+</li>
+<li>
+<p><strong>write()</strong>: Write data</p>
+</li>
+<li>
+<p><strong>ioctl()</strong>: Other operations</p>
+</li>
+</ul>
+<p>(Plus others: seek(), poll(), …)</p>
+<p>Our driver defines the File Operations like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89">spi_test_driver.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct file_operations g_spi_test_driver_fops =
+{
+  spi_test_driver_open,
+  spi_test_driver_close,
+  spi_test_driver_read,
+  spi_test_driver_write,
+  NULL,  /* Seek not implemented */
+  spi_test_driver_ioctl,
+  NULL   /* Poll not implemented */
+};
+
+...
+
+/* In spi_test_driver_register() we register the character driver */
+
+ret = register_driver(devpath, &amp;g_spi_test_driver_fops, 0666, priv);</code></pre></div>
+<p><strong>spi_test_driver_register()</strong> and <strong>register_driver()</strong> are called during NuttX Startup, as explained here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#register-device-driver"><strong>“Register Device Driver”</strong></a></li>
+</ul>
+<p>Our driver implements the <strong>write()</strong> and <strong>read()</strong> operations to transfer SPI data.</p>
 <h2 id="write-operation" class="section-header"><a href="#write-operation">2.2 Write Operation</a></h2>
 <p>TODO</p>
 <p>In the write() operation for our #NuttX SPI Test Driver, we</p>
