@@ -442,7 +442,7 @@ This section explains the steps to create a __NuttX Device Driver__ named __"spi
 
 (Change "spi_test_driver" to the desired name of our driver)
 
-1.  Browse to the [__"nuttx/drivers/rf"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf) folder
+1.  Browse to the [__"nuttx/nuttx/drivers/rf"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf) folder
 
 1.  Copy the file __"dat-31r5-sp.c"__ and paste it as __"spi_test_driver.c"__
 
@@ -458,7 +458,7 @@ This section explains the steps to create a __NuttX Device Driver__ named __"spi
 
     [(Source)](https://github.com/lupyuen/incubator-nuttx/commit/8fee69215163180b77dc9d5b9e7449ebe00ac1cc)
 
-1.  Browse to the [__"nuttx/include/nuttx/rf"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf) folder
+1.  Browse to the [__"nuttx/nuttx/include/nuttx/rf"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf) folder
 
 1.  Copy the file __"dat-31r5-sp.h"__ and paste it as __"spi_test_driver.h"__
 
@@ -476,7 +476,7 @@ This section explains the steps to create a __NuttX Device Driver__ named __"spi
 
 Now we update the Makefile so that NuttX will build our Device Driver...
 
-1.  Browse to the [__"nuttx/drivers/rf"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf) folder
+1.  Browse to the [__"nuttx/nuttx/drivers/rf"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf) folder
 
 1.  Edit the file __"Make.defs"__
 
@@ -613,9 +613,9 @@ During NuttX startup, we need to register our Device Driver like so...
 
 1.  Browse to the __Board Folder__...
 
-    For BL602: [__"nuttx/boards/risc-v/bl602/bl602evb"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src) 
+    For BL602: [__"nuttx/nuttx/boards/risc-v/bl602/bl602evb"__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src) 
 
-    For ESP32: [__"nuttx/boards/xtensa/esp32/esp32-devkitc"__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src)
+    For ESP32: [__"nuttx/nuttx/boards/xtensa/esp32/esp32-devkitc"__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src)
 
     (Change "esp32-devkitc" to our ESP32 board)
 
