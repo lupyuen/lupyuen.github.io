@@ -161,29 +161,33 @@ To simplify our SPI Test Driver, the __read operation shall be buffered__...
 
 1.  Then __read()__ returns the received data from the __Receive Buffer__
 
-Let's dive into the write() and read() operations.
-
-## Write Operation
-
-TODO
-
-In the write() operation for our #NuttX SPI Test Driver, we
-
-1.  Lock the SPI Bus
-
-1.  Config the SPI Interface
-
-1.  Select the SPI Device
-
-1.  Transfer SPI Data
-
-1.  Deselect and Unlock
+The __Receive Buffer__ is defined like so: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L99-L101)
 
 ```c
 static char recv_buffer[256];  /* Buffer for SPI response */
 
 static int recv_buffer_len = 0;  /* Length of SPI response */
+```
 
+Let's dive into the write() and read() operations.
+
+## Write Operation
+
+In the write() operation for our SPI Test Driver, we...
+
+1.  __Lock__ the SPI Bus
+
+1.  __Configure__ the SPI Interface
+
+1.  __Select__ the SPI Device
+
+1.  __Transfer__ SPI Data
+
+1.  __Deselect__ the device and __unlock__ the bus
+
+Below is the implementation: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239)
+
+```c
 /* Write the buffer to the SPI device */
 
 static ssize_t spi_test_driver_write(
@@ -201,22 +205,48 @@ static ssize_t spi_test_driver_write(
   DEBUGASSERT(inode != NULL);
   FAR struct spi_test_driver_dev_s *priv = inode->i_private;
   DEBUGASSERT(priv != NULL);
+```
 
+We begin by fetching the __SPI Interface__ from the File Struct.
+
+Next we lock the SPI Bus and configure the SPI Interface...
+
+```c
   /* Lock the SPI bus and configure the SPI interface */
 
   DEBUGASSERT(priv->spi != NULL);
   SPI_LOCK(priv->spi, true);
   spi_test_driver_configspi(priv->spi);
+```
 
+(We'll see __spi_test_driver_configspi()__ in a while)
+
+We select the SPI Device by pulling SPI Chip Select to Low...
+
+```c
   /* Select the SPI device (unused for BL602) */
 
   SPI_SELECT(priv->spi, priv->spidev, true);
+```
 
+(This has no effect on BL602. The SPI Hardware automatically sets Chip Select to Low during SPI transfer)
+
+TODO
+
+__Transfer__ SPI Data
+
+```c
   /* Transmit buffer to SPI device and receive the response */
 
   SPI_EXCHANGE(priv->spi, buffer, recv_buffer, buflen);
   recv_buffer_len = buflen;
+```
 
+TODO
+
+__Deselect__ the device and __unlock__ the bus
+
+```c
   /* Deselect the SPI device (unused for BL602) */
 
   SPI_SELECT(priv->spi, priv->spidev, false);
@@ -229,7 +259,7 @@ static ssize_t spi_test_driver_write(
 }
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239)
+TODO
 
 ![](https://lupyuen.github.io/images/spi2-driver2.png)
 
