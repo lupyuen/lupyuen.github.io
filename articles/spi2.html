@@ -403,7 +403,7 @@ ret = register_driver(devpath, &amp;g_spi_test_driver_fops, 0666, priv);</code><
 <p>(Change “spi_test_driver” to the desired name of our driver)</p>
 <ol>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/drivers/rf”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/nuttx/drivers/rf”</strong></a> folder</p>
 </li>
 <li>
 <p>Copy the file <strong>“dat-31r5-sp.c”</strong> and paste it as <strong>“spi_test_driver.c”</strong></p>
@@ -417,7 +417,7 @@ ret = register_driver(devpath, &amp;g_spi_test_driver_fops, 0666, priv);</code><
 <p><a href="https://github.com/lupyuen/incubator-nuttx/commit/8fee69215163180b77dc9d5b9e7449ebe00ac1cc">(Source)</a></p>
 </li>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf"><strong>“nuttx/include/nuttx/rf”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf"><strong>“nuttx/nuttx/include/nuttx/rf”</strong></a> folder</p>
 </li>
 <li>
 <p>Copy the file <strong>“dat-31r5-sp.h”</strong> and paste it as <strong>“spi_test_driver.h”</strong></p>
@@ -434,7 +434,7 @@ ret = register_driver(devpath, &amp;g_spi_test_driver_fops, 0666, priv);</code><
 <p>Now we update the Makefile so that NuttX will build our Device Driver…</p>
 <ol>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/drivers/rf”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/nuttx/drivers/rf”</strong></a> folder</p>
 </li>
 <li>
 <p>Edit the file <strong>“Make.defs”</strong></p>
@@ -546,8 +546,8 @@ SPI Informational Output</code></pre></div>
 <ol>
 <li>
 <p>Browse to the <strong>Board Folder</strong>…</p>
-<p>For BL602: <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src"><strong>“nuttx/boards/risc-v/bl602/bl602evb”</strong></a> </p>
-<p>For ESP32: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src"><strong>“nuttx/boards/xtensa/esp32/esp32-devkitc”</strong></a></p>
+<p>For BL602: <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src"><strong>“nuttx/nuttx/boards/risc-v/bl602/bl602evb”</strong></a> </p>
+<p>For ESP32: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src"><strong>“nuttx/nuttx/boards/xtensa/esp32/esp32-devkitc”</strong></a></p>
 <p>(Change “esp32-devkitc” to our ESP32 board)</p>
 </li>
 <li>
