@@ -219,6 +219,7 @@ ret = register_driver(devpath, &amp;g_spi_test_driver_fops, 0666, priv);</code><
 <li><a href="https://lupyuen.github.io/articles/spi2#register-device-driver"><strong>“Register Device Driver”</strong></a></li>
 </ul>
 <p>Our driver implements the <strong>write()</strong> and <strong>read()</strong> operations to transfer SPI data.</p>
+<p>(They will be called by the <strong>SPI Test App</strong>, as we’ll see later)</p>
 <h2 id="write-operation" class="section-header"><a href="#write-operation">2.2 Write Operation</a></h2>
 <p>TODO</p>
 <p>In the write() operation for our #NuttX SPI Test Driver, we</p>
