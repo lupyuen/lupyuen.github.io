@@ -852,37 +852,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Below are the steps to __build, flash and run__ NuttX on BL602 and BL604.
 
-## Build NuttX
-
-Let's build NuttX on __Linux (Ubuntu)__, __WSL (Ubuntu)__ or __macOS__...
+The instructions below will work on __Linux (Ubuntu)__, __WSL (Ubuntu)__ and __macOS__.
 
 [(Instructions for other platforms)](https://nuttx.apache.org/docs/latest/quickstart/install.html)
 
 [(See this for Arch Linux)](https://popolon.org/gblog3/?p=1977&lang=en)
 
-1.  Download the __RISC-V GCC Toolchain__ from BL602 IoT SDK...
+## Install Prerequisites
 
-    ```bash
-    git clone https://github.com/lupyuen/bl_iot_sdk
-    ```
-
-1.  Edit __~/.bashrc__ (or equivalent) and add...
-
-    ```text
-    ##  TODO: Change $HOME/bl_iot_sdk to the full path of bl_iot_sdk
-
-    ##  For Linux and WSL:
-    PATH="$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH"
-
-    ##  For macOS:
-    PATH="$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH"
-    ```
-
-1.  Update the __PATH__...
-
-    ```bash
-    . ~/.bashrc
-    ```
+First we install the build prerequisites...
 
 1.  Install the __Build Tools__...
 
@@ -911,6 +889,36 @@ Let's build NuttX on __Linux (Ubuntu)__, __WSL (Ubuntu)__ or __macOS__...
     make install
     popd
     ```
+
+1.  Download the __RISC-V GCC Toolchain__ from BL602 IoT SDK...
+
+    ```bash
+    git clone https://github.com/lupyuen/bl_iot_sdk
+    ```
+
+    [(For ESP32: Instructions here)](https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html)
+
+1.  Edit __~/.bashrc__ (or equivalent) and add the BL602 toolchain to the PATH...
+
+    ```text
+    ##  TODO: Change $HOME/bl_iot_sdk to the full path of bl_iot_sdk
+
+    ##  For Linux and WSL:
+    PATH="$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH"
+
+    ##  For macOS:
+    PATH="$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH"
+    ```
+
+1.  Update the __PATH__ to enable the toolchain...
+
+    ```bash
+    . ~/.bashrc
+    ```
+
+## Build NuttX
+
+Next we download and build NuttX...
 
 1.  Download NuttX...
 
