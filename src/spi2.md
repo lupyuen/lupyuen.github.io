@@ -366,6 +366,67 @@ BL602 uses __SPI Mode 1__ (instead of Mode 0) because of an __SPI Mode Quirk__ i
 
 (More about this in the Appendix)
 
+![SPI Test Driver](https://lupyuen.github.io/images/spi2-plan2.jpg)
+
+# Load the SPI Test Driver
+
+TODO
+
+1.  Download the source code...
+
+1.  Configure the build...
+
+    ```bash
+    ## TODO: Change this to the path of our "incubator-nuttx" folder
+    cd nuttx/nuttx
+
+    ## For BL602: Configure the build for BL602
+    ./tools/configure.sh bl602evb:nsh
+
+    ## For ESP32: Configure the build for ESP32.
+    ## TODO: Change "esp32-devkitc" to our ESP32 board.
+    ./tools/configure.sh esp32-devkitc:nsh
+
+    ## Edit the Build Config
+    make menuconfig 
+    ```
+
+1.  We enable SPI...
+
+    [__"Enable SPI"__](https://lupyuen.github.io/articles/spi2#enable-spi)
+
+    ![Enable SPI](https://lupyuen.github.io/images/spi2-debug.png)
+
+1.  We enable our SPI Test Driver...
+
+    ![Select SPI Test Driver](https://lupyuen.github.io/images/spi2-newdriver6.png)
+
+1.  We enable SPI logging for easier troubleshooting...
+
+    [__"Enable Logging"__](https://lupyuen.github.io/articles/spi2#enable-logging)
+
+    ![Enable logging](https://lupyuen.github.io/images/spi2-driver4.png)
+
+1.  During NuttX startup, we register our SPI Test Driver...
+
+    [__"Register Device Driver"__](https://lupyuen.github.io/articles/spi2#register-device-driver)
+
+    ![Register SPI Test Driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
+
+1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32.
+
+1.  In the NuttX Shell, enter...
+
+    ```bash
+    ls /dev
+    ```
+
+    Our Device Driver appears as __"/dev/spitest0"__.
+    
+    Congratulations our Device Driver is now loaded on NuttX!
+
+    ![Our Device Driver appears as "/dev/spitest0"](https://lupyuen.github.io/images/spi2-newdriver10.png)
+
 ![SPI Test App](https://lupyuen.github.io/images/spi2-plan3.jpg)
 
 # Inside the SPI Test App
@@ -386,17 +447,56 @@ TODO
 
 TODO
 
+From [spi_test_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
+
+```c
+int main(int argc, FAR char *argv[])
+{
+  /* Open SPI Test Driver */
+
+  int fd = open("/dev/spitest0", O_RDWR);
+  assert(fd >= 0);  /* TODO: Handle error */
+```
+
+TODO
+
 ## Transmit SPI Data
 
 TODO
+
+```c
+  /* Write to SPI Test Driver */
+
+  static char data[] = "Hello World";
+  int bytes_written = write(fd, data, sizeof(data));
+  assert(bytes_written == sizeof(data));
+```
 
 ## Receive SPI Data
 
 TODO
 
+```c
+  /* Read response from SPI Test Driver */
+
+  static char rx_data[256];  /* Buffer for SPI response */
+  int bytes_read = read(fd, rx_data, sizeof(rx_data));
+  assert(bytes_read == sizeof(get_status));
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L65-L69)
+
 ## Close SPI Test Driver
 
 TODO
+
+```c
+  /* Close SPI Test Driver */
+
+  close(fd);
+  return 0;
+}
+```
 
 Here's how we open the SPI Test Driver and write data
 
@@ -404,28 +504,27 @@ Here's how we open the SPI Test Driver and write data
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
 
+![SPI Test App](https://lupyuen.github.io/images/spi2-plan3.jpg)
 
-TODO19
+# Run the SPI Test App
 
-This appears when we run our #NuttX SPI Test App ... Let's study our SPI Test Driver
+TODO
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
+1.  We enable our app...
 
-![](https://lupyuen.github.io/images/spi2-app2.png)
+    ![Select "spi_test" in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.png)
 
-TODO25
+1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32.
 
-To watch what happens inside #NuttX's SPI Driver for #BL602 ... Turn on SPI Debug Logging
+1.  In the NuttX Shell, enter...
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c)
+    ```bash
+    spi_test
+    ```
 
-TODO20
+1.  Now we see every byte transferred by #NuttX's SPI Driver for #BL602!
 
-Now we see every byte transferred by #NuttX's SPI Driver for #BL602!
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c)
-
-![](https://lupyuen.github.io/images/spi2-app3.png)
+    ![SPI Test App](https://lupyuen.github.io/images/spi2-app3.png)
 
 # Test with Logic Analyser
 
