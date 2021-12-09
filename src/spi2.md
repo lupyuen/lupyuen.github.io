@@ -367,13 +367,48 @@ BL602 uses __SPI Mode 1__ (instead of Mode 0) because of an __SPI Mode Quirk__ i
 
 (More about this in the Appendix)
 
-![SPI Test Driver](https://lupyuen.github.io/images/spi2-plan2.jpg)
+![Register SPI Test Driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
 
 # Load the SPI Test Driver
 
 _(For BL602 and ESP32)_
 
-TODO
+_How do we load our SPI Test Driver at startup?_
+
+During NuttX Startup, we __load our SPI Test Driver__ like so: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
+
+```c
+int bl602_bringup(void)
+{
+  ...
+#ifdef CONFIG_RF_SPI_TEST_DRIVER
+
+  /* Init SPI bus again */
+
+  struct spi_dev_s *spitest = bl602_spibus_initialize(0);
+  if (!spitest)
+    {
+      _err("ERROR: Failed to initialize SPI %d bus\n", 0);
+    }
+
+  /* Register the SPI Test Driver */
+
+  ret = spi_test_driver_register("/dev/spitest0", spitest, 0);
+  if (ret < 0)
+    {
+      _err("ERROR: Failed to register SPI Test Driver\n");
+    }
+
+#endif /* CONFIG_RF_SPI_TEST_DRIVER */
+```
+
+[__bl602_bringup__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L367-L620) is the NuttX Startup Function for BL602.
+
+([__esp32_bringup__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) for ESP32)
+
+We have modified the Startup Function to __register our SPI Test Driver__, which loads the driver into NuttX at startup.
 
 Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads correctly__...
 
@@ -406,7 +441,7 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
     make menuconfig 
     ```
 
-1.  Enable the SPI functions in menuconfig...
+1.  Enable the SPI Peripheral and SPI Character Driver in menuconfig...
 
     [__"Enable SPI"__](https://lupyuen.github.io/articles/spi2#enable-spi)
 
@@ -418,7 +453,7 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
 
     ![Select SPI Test Driver](https://lupyuen.github.io/images/spi2-newdriver6.png)
 
-1.  We enable SPI logging for easier troubleshooting...
+1.  Enable SPI logging for easier troubleshooting...
 
     [__"Enable Logging"__](https://lupyuen.github.io/articles/spi2#enable-logging)
 
@@ -426,7 +461,7 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
 
 1.  Save the configuration and exit menuconfig
 
-1.  For ESP32: TODO
+1.  For ESP32: Edit [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) to register our SPI Test Driver [(See this)](https://lupyuen.github.io/articles/spi2#register-device-driver)
 
 1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32
 
@@ -436,17 +471,13 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
     ls /dev
     ```
 
-    Our Device Driver appears as __"/dev/spitest0"__.
+    Our Device Driver appears as __"/dev/spitest0"__
     
-    Congratulations our Device Driver is now loaded on NuttX!
-
     ![Our Device Driver appears as "/dev/spitest0"](https://lupyuen.github.io/images/spi2-newdriver10.png)
 
-1.  During NuttX startup, we register our SPI Test Driver...
+    Congratulations NuttX has loaded our Device Driver!
 
-    [__"Register Device Driver"__](https://lupyuen.github.io/articles/spi2#register-device-driver)
-
-    ![Register SPI Test Driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
+    Let's proceed to the SPI Test App.
 
 ![SPI Test App](https://lupyuen.github.io/images/spi2-plan3.jpg)
 
