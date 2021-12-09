@@ -351,15 +351,15 @@ __SPI Mode__ and __SPI Frequency__ are defined below: [spi_test_driver.c](https:
 /* We set SPI Frequency to 1 MHz */
 
 #ifndef CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY
-#  define CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY 1000000
+#define CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY 1000000
 #endif /* CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY */
 
 /* For BL602 we use SPI Mode 1 instead of Mode 0 due to SPI quirk */
 
 #ifdef CONFIG_BL602_SPI0
-#  define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE1) /* SPI Mode 1: Workaround for BL602 */
+#define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE1) /* SPI Mode 1: Workaround for BL602 */
 #else
-#  define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
+#define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
 #endif /* CONFIG_BL602_SPI0 */
 ```
 
