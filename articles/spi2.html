@@ -155,12 +155,15 @@
 </li>
 </ol>
 <p><em>Can our app call the BL602 / ESP32 SPI Driver directly?</em></p>
-<p>Nope that’s not supported by NuttX. It might seemingly work on BL602 and ESP32, but it will fail on platforms with <strong>Memory Protection</strong>.</p>
+<p>Nope that’s not supported by NuttX. (Unlike other embedded operating systems)</p>
+<p>It might seemingly work on BL602 and ESP32, but it will fail on platforms with <strong>Memory Protection</strong>.</p>
 <p>(Imagine a Linux App directly calling a Kernel Driver… That’s no-no!)</p>
 <p>Later we’ll see the layers of code that abstract the BL602 / ESP32 SPI Driver from our NuttX App.</p>
+<p><a href="https://www.linkedin.com/feed/update/urn:li:activity:6871062176673742848/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6871062176673742848%2C6871868918772846592%29&amp;replyUrn=urn%3Ali%3Acomment%3A%28activity%3A6871062176673742848%2C6871912576393986048%29">(Thanks to Alan Carvalho de Assis for the tip!)</a></p>
 <p><em>Must everything be done through the read() and write() interfaces?</em></p>
 <p>There’s another POSIX Interface that’s supported by NuttX: <strong>ioctl()</strong>.</p>
 <p>We’ll see this when we cover the NuttX Device Driver for Semtech SX1276.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-plan2.jpg" alt="SPI Test Driver" /></p>
 <h1 id="inside-the-spi-test-driver" class="section-header"><a href="#inside-the-spi-test-driver">2 Inside the SPI Test Driver</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Let’s study the code in our <strong>SPI Test Driver</strong>…</p>
@@ -197,7 +200,7 @@
 </li>
 </ul>
 <p>(Plus others: seek(), poll(), …)</p>
-<p>Our driver defines the File Operations like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89">spi_test_driver.c</a></p>
+<p>Our driver defines the File Operations like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L88-L97">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct file_operations g_spi_test_driver_fops =
 {
   spi_test_driver_open,
@@ -261,7 +264,7 @@ static int recv_buffer_len = 0;  /* Length of SPI response */</code></pre></div>
 <p><strong>Deselect</strong> the device and <strong>unlock</strong> the bus</p>
 </li>
 </ol>
-<p>Below is the implementation: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239">spi_test_driver.c</a></p>
+<p>Below is the implementation: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Write the buffer to the SPI device */
 
 static ssize_t spi_test_driver_write(
@@ -280,26 +283,26 @@ static ssize_t spi_test_driver_write(
   FAR struct spi_test_driver_dev_s *priv = inode-&gt;i_private;
   DEBUGASSERT(priv != NULL);</code></pre></div>
 <p>We begin by fetching the <strong>SPI Interface</strong> from the File Struct.</p>
-<p>Next we lock the SPI Bus and configure the SPI Interface…</p>
+<p>Next we <strong>lock the SPI Bus</strong> and <strong>configure the SPI Interface</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Lock the SPI bus and configure the SPI interface */
 
   DEBUGASSERT(priv-&gt;spi != NULL);
   SPI_LOCK(priv-&gt;spi, true);
   spi_test_driver_configspi(priv-&gt;spi);</code></pre></div>
-<p>(We’ll see <strong>spi_test_driver_configspi()</strong> in a while)</p>
-<p>We select the SPI Device by pulling SPI Chip Select to Low…</p>
+<p>(We’ll see <strong>spi_test_driver_configspi</strong> in a while)</p>
+<p>We <strong>select the SPI Device</strong> by pulling SPI Chip Select to Low…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Select the SPI device (unused for BL602) */
 
   SPI_SELECT(priv-&gt;spi, priv-&gt;spidev, true);</code></pre></div>
 <p>(This has no effect on BL602. The SPI Hardware automatically sets Chip Select to Low during SPI transfer)</p>
-<p>TODO</p>
-<p><strong>Transfer</strong> SPI Data</p>
+<p>Then we <strong>transfer the data</strong> over SPI (transmit and receive)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Transmit buffer to SPI device and receive the response */
 
   SPI_EXCHANGE(priv-&gt;spi, buffer, recv_buffer, buflen);
   recv_buffer_len = buflen;</code></pre></div>
-<p>TODO</p>
-<p><strong>Deselect</strong> the device and <strong>unlock</strong> the bus</p>
+<p>Note that the received data goes into our <strong>Receive Buffer</strong>.</p>
+<p>(Which will be returned in the read() operation)</p>
+<p>Finally we <strong>deselect the device</strong> and <strong>unlock the bus</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Deselect the SPI device (unused for BL602) */
 
   SPI_SELECT(priv-&gt;spi, priv-&gt;spidev, false);
@@ -310,8 +313,12 @@ static ssize_t spi_test_driver_write(
 
   return buflen;
 }</code></pre></div>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver2.png" alt="" /></p>
+<p>The return value is the number of bytes transferred.</p>
+<p>(Deselect has no effect on BL602. The SPI Hardware automatically sets Chip Select to High after SPI transfer)</p>
+<p><em>What are SPI_LOCK, SPI_SELECT and SPI_EXCHANGE?</em></p>
+<p>That’s the <strong>SPI Interface</strong> for NuttX. We’ll cover this in the Appendix.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver2.png" alt="Write Operation" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">(Source)</a></p>
 <h2 id="read-operation" class="section-header"><a href="#read-operation">2.3 Read Operation</a></h2>
 <p>TODO</p>
 <p>We implement the Read Operation for our #NuttX SPI Driver … So that we can fetch the SPI Response from SX1262</p>
@@ -354,8 +361,9 @@ static ssize_t spi_test_driver_read(
   SPI_HWFEATURES(spi, 0);
   SPI_SETFREQUENCY(spi, CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY);
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L95-L117">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-driver3.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L107-L129">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-plan3.jpg" alt="SPI Test App" /></p>
 <h1 id="inside-the-spi-test-app" class="section-header"><a href="#inside-the-spi-test-app">3 Inside the SPI Test App</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Now we study the code in our <strong>SPI Test App</strong>…</p>
