@@ -142,8 +142,6 @@ static const struct file_operations g_spi_test_driver_fops =
   NULL   /* Poll not implemented */
 };
 
-...
-
 /* In spi_test_driver_register() we register the character driver */
 
 register_driver(
