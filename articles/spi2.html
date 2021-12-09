@@ -393,11 +393,11 @@ static ssize_t spi_test_driver_read(
 <p>(More about this in the Appendix)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-plan2.jpg" alt="SPI Test Driver" /></p>
 <h1 id="load-the-spi-test-driver" class="section-header"><a href="#load-the-spi-test-driver">3 Load the SPI Test Driver</a></h1>
-<p>TODO</p>
+<p>Let’s run NuttX on BL602 / ESP32 and check that our <strong>SPI Test Driver loads correctly</strong>…</p>
 <ol>
 <li>
-<p>Install prerequisites…</p>
-<p>TODO</p>
+<p>Install the build prerequisites…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
 </li>
 <li>
 <p>Download the source code…</p>
@@ -419,12 +419,12 @@ git clone --branch spi_test https://github.com/lupyuen/incubator-nuttx-apps apps
 # Edit the Build Config
 make menuconfig </code></pre></div></li>
 <li>
-<p>We enable SPI…</p>
+<p>Enable the SPI functions in menuconfig…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-debug.png" alt="Enable SPI" /></p>
 </li>
 <li>
-<p>We enable our SPI Test Driver…</p>
+<p>Enable our SPI Test Driver…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver6.png" alt="Select SPI Test Driver" /></p>
 </li>
@@ -434,12 +434,10 @@ make menuconfig </code></pre></div></li>
 <p><img src="https://lupyuen.github.io/images/spi2-driver4.png" alt="Enable logging" /></p>
 </li>
 <li>
-<p>During NuttX startup, we register our SPI Test Driver…</p>
-<p><a href="https://lupyuen.github.io/articles/spi2#register-device-driver"><strong>“Register Device Driver”</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newdriver4.png" alt="Register SPI Test Driver at startup" /></p>
+<p>Save the configuration and exit menuconfig</p>
 </li>
 <li>
-<p>Build (“make”), flash and run the NuttX Firmware on BL602 or ESP32.</p>
+<p>Build (“make”), flash and run the NuttX Firmware on BL602 or ESP32</p>
 </li>
 <li>
 <p>In the NuttX Shell, enter…</p>
@@ -447,6 +445,11 @@ make menuconfig </code></pre></div></li>
 <p>Our Device Driver appears as <strong>“/dev/spitest0”</strong>.</p>
 <p>Congratulations our Device Driver is now loaded on NuttX!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="Our Device Driver appears as “/dev/spitest0”" /></p>
+</li>
+<li>
+<p>During NuttX startup, we register our SPI Test Driver…</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#register-device-driver"><strong>“Register Device Driver”</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newdriver4.png" alt="Register SPI Test Driver at startup" /></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/spi2-plan3.jpg" alt="SPI Test App" /></p>
