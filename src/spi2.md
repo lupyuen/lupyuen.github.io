@@ -281,9 +281,9 @@ That's the __SPI Interface__ for NuttX. We'll cover this in the Appendix.
 
 ## Read Operation
 
-TODO
+Remember that the write() operation has saved the received SPI data into the __Receive Buffer__.
 
-We implement the Read Operation for our #NuttX SPI Driver ... So that we can fetch the SPI Response from SX1262
+Thus for the read() operation we simply return the data in the Receive Buffer: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L210-L233)
 
 ```c
 /* Return the data received from the SPI device */
@@ -308,18 +308,13 @@ static ssize_t spi_test_driver_read(
 }
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L210-L233)
-
-![](https://lupyuen.github.io/images/spi2-sx3.png)
-
 ## Configure SPI
 
-TODO
+Earlier we called __spi_test_driver_configspi__ to configure the SPI Interface.
 
-Here's how we configure the #NuttX SPI Interface
+Below is the implementation: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L107-L129)
 
-```c
-static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
+```cstatic inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
 {
   DEBUGASSERT(spi != NULL);
 
@@ -335,9 +330,41 @@ static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
 }
 ```
 
-![](https://lupyuen.github.io/images/spi2-driver3.png)
+(SPI_SETMODE, SPI_SETBITS, SPI_HWFEATURES and SPI_SETFREQUENCY are defined in the NuttX SPI Interface)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L107-L129)
+The code above configures the SPI Interface as follows...
+
+-   __SPI Mode__ (Polarity Phase): 0
+
+    (For BL602 we're using Mode 1)
+
+-   __SPI Transfer Size__: 8 bits
+
+-   __SPI Hardware Features__: None
+
+-   __SPI Frequency__: 1 MHz
+
+__SPI Mode__ and __SPI Frequency__ are defined below: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L45-L57)
+
+```c
+/* We set SPI Frequency to 1 MHz */
+
+#ifndef CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY
+#  define CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY 1000000
+#endif /* CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY */
+
+/* For BL602 we use SPI Mode 1 instead of Mode 0 due to SPI quirk */
+
+#ifdef CONFIG_BL602_SPI0
+#  define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE1) /* SPI Mode 1: Workaround for BL602 */
+#else
+#  define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
+#endif /* CONFIG_BL602_SPI0 */
+```
+
+BL602 uses __SPI Mode 1__ (instead of Mode 0) because of an __SPI Mode Quirk__ in BL602. 
+
+(More about this in the Appendix)
 
 ![SPI Test App](https://lupyuen.github.io/images/spi2-plan3.jpg)
 
@@ -345,7 +372,7 @@ static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
 
 _(For BL602 and ESP32)_
 
-Now we study the code in our __SPI Test App__...
+We've seen the write() and read() operations in our SPI Test Driver.  Now we watch how they are called by our __SPI Test App__...
 
 -   [__examples/spi_test__](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test)
 
