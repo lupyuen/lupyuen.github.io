@@ -66,12 +66,12 @@
     <h1 class="title">SPI on Apache NuttX OS</h1>
     <nav id="TOC"><ul>
 <li><a href="#spi-test-app-and-driver">1 SPI Test App and Driver</a><ul></ul></li>
-<li><a href="#create-spi-test-driver">2 Create SPI Test Driver</a><ul>
+<li><a href="#inside-the-spi-test-driver">2 Inside the SPI Test Driver</a><ul>
 <li><a href="#file-operations">2.1 File Operations</a><ul></ul></li>
 <li><a href="#write-operation">2.2 Write Operation</a><ul></ul></li>
 <li><a href="#read-operation">2.3 Read Operation</a><ul></ul></li>
 <li><a href="#configure-spi">2.4 Configure SPI</a><ul></ul></li></ul></li>
-<li><a href="#create-spi-test-app">3 Create SPI Test App</a><ul></ul></li>
+<li><a href="#inside-the-spi-test-app">3 Inside the SPI Test App</a><ul></ul></li>
 <li><a href="#test-with-logic-analyser">4 Test with Logic Analyser</a><ul></ul></li>
 <li><a href="#test-with-semtech-sx1262">5 Test with Semtech SX1262</a><ul></ul></li>
 <li><a href="#test-with-pinedio-stack">6 Test with PineDio Stack</a><ul></ul></li>
@@ -161,7 +161,7 @@
 <p><em>Must everything be done through the read() and write() interfaces?</em></p>
 <p>There’s another POSIX Interface that’s supported by NuttX: <strong>ioctl()</strong>.</p>
 <p>We’ll see this when we cover the NuttX Device Driver for Semtech SX1276.</p>
-<h1 id="create-spi-test-driver" class="section-header"><a href="#create-spi-test-driver">2 Create SPI Test Driver</a></h1>
+<h1 id="inside-the-spi-test-driver" class="section-header"><a href="#inside-the-spi-test-driver">2 Inside the SPI Test Driver</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Let’s study the code in our <strong>SPI Test Driver</strong>…</p>
 <ul>
@@ -356,7 +356,7 @@ static ssize_t spi_test_driver_read(
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L95-L117">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-driver3.png" alt="" /></p>
-<h1 id="create-spi-test-app" class="section-header"><a href="#create-spi-test-app">3 Create SPI Test App</a></h1>
+<h1 id="inside-the-spi-test-app" class="section-header"><a href="#inside-the-spi-test-app">3 Inside the SPI Test App</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Now we study the code in our <strong>SPI Test App</strong>…</p>
 <ul>
