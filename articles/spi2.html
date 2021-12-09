@@ -425,7 +425,7 @@ static ssize_t spi_test_driver_read(
 #endif /* CONFIG_RF_SPI_TEST_DRIVER */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L367-L620"><strong>bl602_bringup</strong></a> is the NuttX Startup Function for BL602.</p>
 <p>(<a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup</strong></a> for ESP32)</p>
-<p>We have modified the Startup Function to <strong>register our SPI Test Driver</strong>, which loads the driver into NuttX at startup.</p>
+<p>We modified the Startup Function to <strong>register our SPI Test Driver</strong>, which loads the driver into NuttX at startup.</p>
 <p>Let’s run NuttX on BL602 / ESP32 and check that our <strong>SPI Test Driver loads correctly</strong>…</p>
 <ol>
 <li>
@@ -433,7 +433,7 @@ static ssize_t spi_test_driver_read(
 <p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
 </li>
 <li>
-<p>Download the source code…</p>
+<p>Download the modified source code…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --branch spi_test https://github.com/lupyuen/incubator-nuttx nuttx
