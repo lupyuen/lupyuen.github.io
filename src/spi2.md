@@ -408,7 +408,7 @@ int bl602_bringup(void)
 
 ([__esp32_bringup__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) for ESP32)
 
-We have modified the Startup Function to __register our SPI Test Driver__, which loads the driver into NuttX at startup.
+We modified the Startup Function to __register our SPI Test Driver__, which loads the driver into NuttX at startup.
 
 Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads correctly__...
 
@@ -416,7 +416,7 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
 
     [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
-1.  Download the source code...
+1.  Download the modified source code...
 
     ```bash
     mkdir nuttx
