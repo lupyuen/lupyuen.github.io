@@ -348,7 +348,8 @@ static ssize_t spi_test_driver_read(
 }</code></pre></div><h2 id="configure-spi" class="section-header"><a href="#configure-spi">2.4 Configure SPI</a></h2>
 <p>Earlier we called <strong>spi_test_driver_configspi</strong> to configure the SPI Interface.</p>
 <p>Below is the implementation: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L107-L129">spi_test_driver.c</a></p>
-<div class="example-wrap"><pre class="language-cstatic inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)"><code>{
+<div class="example-wrap"><pre class="language-c"><code>static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
+{
   DEBUGASSERT(spi != NULL);
 
   /* Set SPI Mode (Polarity and Phase) and Transfer Size (8 bits) */
