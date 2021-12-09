@@ -90,9 +90,10 @@
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
 <li><a href="#notes">13 Notes</a><ul></ul></li>
 <li><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#build-nuttx">14.1 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">14.2 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">14.3 Run NuttX</a><ul></ul></li></ul></li>
+<li><a href="#install-prerequisites">14.1 Install Prerequisites</a><ul></ul></li>
+<li><a href="#build-nuttx">14.2 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">14.3 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">14.4 Run NuttX</a><ul></ul></li></ul></li>
 <li><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a><ul>
 <li><a href="#observe-the-glitch">15.1 Observe the glitch</a><ul></ul></li>
 <li><a href="#trace-the-glitch">15.2 Trace the glitch</a><ul></ul></li>
@@ -717,26 +718,12 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 </ol>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a></h1>
 <p>Below are the steps to <strong>build, flash and run</strong> NuttX on BL602 and BL604.</p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">14.1 Build NuttX</a></h2>
-<p>Let’s build NuttX on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> or <strong>macOS</strong>…</p>
+<p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
+<h2 id="install-prerequisites" class="section-header"><a href="#install-prerequisites">14.1 Install Prerequisites</a></h2>
+<p>First we install the build prerequisites…</p>
 <ol>
-<li>
-<p>Download the <strong>RISC-V GCC Toolchain</strong> from BL602 IoT SDK…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen/bl_iot_sdk</code></pre></div></li>
-<li>
-<p>Edit <strong>~/.bashrc</strong> (or equivalent) and add…</p>
-<div class="example-wrap"><pre class="language-text"><code>#  TODO: Change $HOME/bl_iot_sdk to the full path of bl_iot_sdk
-
-#  For Linux and WSL:
-PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH&quot;
-
-#  For macOS:
-PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH&quot;</code></pre></div></li>
-<li>
-<p>Update the <strong>PATH</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>. ~/.bashrc</code></pre></div></li>
 <li>
 <p>Install the <strong>Build Tools</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  For Linux and WSL:
@@ -762,6 +749,27 @@ make
 #  Install &quot;kconfig-frontends&quot;
 make install
 popd</code></pre></div></li>
+<li>
+<p>Download the <strong>RISC-V GCC Toolchain</strong> from BL602 IoT SDK…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html">(For ESP32: Instructions here)</a></p>
+</li>
+<li>
+<p>Edit <strong>~/.bashrc</strong> (or equivalent) and add the BL602 toolchain to the PATH…</p>
+<div class="example-wrap"><pre class="language-text"><code>#  TODO: Change $HOME/bl_iot_sdk to the full path of bl_iot_sdk
+
+#  For Linux and WSL:
+PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH&quot;
+
+#  For macOS:
+PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH&quot;</code></pre></div></li>
+<li>
+<p>Update the <strong>PATH</strong> to enable the toolchain…</p>
+<div class="example-wrap"><pre class="language-bash"><code>. ~/.bashrc</code></pre></div></li>
+</ol>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">14.2 Build NuttX</a></h2>
+<p>Next we download and build NuttX…</p>
+<ol>
 <li>
 <p>Download NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
@@ -814,7 +822,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">14.2 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">14.3 Flash NuttX</a></h2>
 <p>Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
 <li>
@@ -892,7 +900,7 @@ cargo run flash nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">14.3 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">14.4 Run NuttX</a></h2>
 <p>Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
 <ol>
