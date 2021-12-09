@@ -370,11 +370,11 @@ BL602 uses __SPI Mode 1__ (instead of Mode 0) because of an __SPI Mode Quirk__ i
 
 # Load the SPI Test Driver
 
-TODO
+Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads correctly__...
 
-1.  Install prerequisites...
+1.  Install the build prerequisites...
 
-    TODO
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
 1.  Download the source code...
 
@@ -401,13 +401,13 @@ TODO
     make menuconfig 
     ```
 
-1.  We enable SPI...
+1.  Enable the SPI functions in menuconfig...
 
     [__"Enable SPI"__](https://lupyuen.github.io/articles/spi2#enable-spi)
 
     ![Enable SPI](https://lupyuen.github.io/images/spi2-debug.png)
 
-1.  We enable our SPI Test Driver...
+1.  Enable our SPI Test Driver...
 
     [__"Enable SPI"__](https://lupyuen.github.io/articles/spi2#enable-spi)
 
@@ -419,13 +419,9 @@ TODO
 
     ![Enable logging](https://lupyuen.github.io/images/spi2-driver4.png)
 
-1.  During NuttX startup, we register our SPI Test Driver...
+1.  Save the configuration and exit menuconfig
 
-    [__"Register Device Driver"__](https://lupyuen.github.io/articles/spi2#register-device-driver)
-
-    ![Register SPI Test Driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
-
-1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32.
+1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32
 
 1.  In the NuttX Shell, enter...
 
@@ -438,6 +434,12 @@ TODO
     Congratulations our Device Driver is now loaded on NuttX!
 
     ![Our Device Driver appears as "/dev/spitest0"](https://lupyuen.github.io/images/spi2-newdriver10.png)
+
+1.  During NuttX startup, we register our SPI Test Driver...
+
+    [__"Register Device Driver"__](https://lupyuen.github.io/articles/spi2#register-device-driver)
+
+    ![Register SPI Test Driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
 
 ![SPI Test App](https://lupyuen.github.io/images/spi2-plan3.jpg)
 
