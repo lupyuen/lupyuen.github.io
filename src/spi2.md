@@ -314,7 +314,8 @@ Earlier we called __spi_test_driver_configspi__ to configure the SPI Interface.
 
 Below is the implementation: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L107-L129)
 
-```cstatic inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
+```c
+static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
 {
   DEBUGASSERT(spi != NULL);
 
