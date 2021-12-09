@@ -382,11 +382,28 @@ We created the SPI Test App by cloning another app, as explained here...
 
 TODO
 
+## Open SPI Test Driver
+
+TODO
+
+## Transmit SPI Data
+
+TODO
+
+## Receive SPI Data
+
+TODO
+
+## Close SPI Test Driver
+
+TODO
+
 Here's how we open the SPI Test Driver and write data
+
+![SPI Test App](https://lupyuen.github.io/images/spi2-app4.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
 
-![](https://lupyuen.github.io/images/spi2-app4.png)
 
 TODO19
 
