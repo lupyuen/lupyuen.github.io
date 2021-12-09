@@ -109,7 +109,7 @@
 <h1 id="connect-bl602-to-lora-module" class="section-header"><a href="#connect-bl602-to-lora-module">1 Connect BL602 to LoRa Module</a></h1>
 <p>Connect BL602 to Pine64 (HopeRF) RFM90 or Semtech SX1262 as follows…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-connect.jpg" alt="PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module" /></p>
-<table><thead><tr><th align="left">BL602 Pin</th><th align="left">RFM90 / SX1262 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">BL602 Pin</th><th align="left">RFM90 / SX1262 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>GPIO 0</code></strong></td><td align="left"><code>BUSY</code></td><td align="left">Dark Green</td></tr>
 <tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left"><code>ISO</code> <em>(MISO)</em></td><td align="left">Light Green (Top)</td></tr>
 <tr><td align="left"><strong><code>GPIO 2</code></strong></td><td align="left">Do Not Connect</td><td align="left">(Unused Chip Select)</td></tr>
@@ -121,6 +121,7 @@
 <tr><td align="left"><strong><code>3V3</code></strong></td><td align="left"><code>3.3V</code></td><td align="left">Red</td></tr>
 <tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
+</div>
 <p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION: Always connect the Antenna before Powering On… Or the LoRa Module may get damaged! See this</strong></a></p>
 <p>Here’s a closer look at the pins connected on BL602…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan-connect2.jpg" alt="PineCone BL602 RISC-V Board connected to Pine64 RFM90 LoRa Module" /></p>
@@ -826,7 +827,7 @@ git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</cod
 <p>In the <code>customer_app/sdk_app_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
 <div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1</code></pre></div>
 <p>Change “<code>1</code>” to your LoRa Region…</p>
-<table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">Value</th><th align="left">Region</th></tr></thead><tbody>
 <tr><td align="left">0</td><td align="left">No region</td></tr>
 <tr><td align="left">1</td><td align="left">AS band on 923MHz</td></tr>
 <tr><td align="left">2</td><td align="left">Australian band on 915MHz</td></tr>
@@ -839,6 +840,7 @@ git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</cod
 <tr><td align="left">9</td><td align="left">North American band on 915MHz</td></tr>
 <tr><td align="left">10</td><td align="left">North American band on 915MHz with a maximum of 16 channels</td></tr>
 </tbody></table>
+</div>
 <p>Then update the <strong>GPIO Pin Numbers</strong> in…</p>
 <div class="example-wrap"><pre class="language-text"><code>components/3rdparty/lora-sx1262/include/sx126x-board.h</code></pre></div>
 <p>Below are the GPIO Pin Numbers for the connection shown at the top of this article…</p>

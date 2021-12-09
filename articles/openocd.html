@@ -172,13 +172,14 @@
 </ul>
 <p>(See the pic above)</p>
 <p>Based on the above docs, the JTAG Port is located at the following pins whenever we boot or reset PineCone…</p>
-<table><thead><tr><th align="center">JTAG Pin</th><th align="left">PineCone Pin</th></tr></thead><tbody>
+<div><table><thead><tr><th align="center">JTAG Pin</th><th align="left">PineCone Pin</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>TDO</code></strong></td><td align="left"><code>IO 11</code></td></tr>
 <tr><td align="center"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td></tr>
 <tr><td align="center"><strong><code>TCK</code></strong></td><td align="left"><code>IO 14</code></td></tr>
 <tr><td align="center"><strong><code>TDI</code></strong></td><td align="left"><code>IO 17</code></td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td></tr>
 </tbody></table>
+</div>
 <p>Before connecting PineCone to our JTAG Debugger, we need to <a href="https://lupyuen.github.io/images/pinecone-solder.jpg">solder the headers</a> to the PineCone board and expose the above JTAG Pins.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-headers.jpg" alt="Default JTAG Port connected to JTAG Debugger" /></p>
 <p><em>Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours when JTAG is active.</em></p>
@@ -196,13 +197,14 @@
 <ol>
 <li>
 <p>Connect our JTAG Debugger to the PineCone Pins</p>
-<table><thead><tr><th align="center">JTAG Debugger</th><th align="left">PineCone Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<div><table><thead><tr><th align="center">JTAG Debugger</th><th align="left">PineCone Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>TDO</code></strong></td><td align="left"><code>IO 11</code></td><td align="left">Blue</td></tr>
 <tr><td align="center"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td><td align="left">Yellow</td></tr>
 <tr><td align="center"><strong><code>TCK</code></strong></td><td align="left"><code>IO 14</code></td><td align="left">Green</td></tr>
 <tr><td align="center"><strong><code>TDI</code></strong></td><td align="left"><code>IO 17</code></td><td align="left">Red</td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
+</div>
 <p>(See pic above)</p>
 </li>
 <li>
@@ -350,11 +352,12 @@ reset init</code></pre></div>
 <h1 id="if-you-love-the-led-set-it-free" class="section-header"><a href="#if-you-love-the-led-set-it-free">7 If you love the LED… Set it free!</a></h1>
 <p><em>Why does the PineCone LED light up in colour when the JTAG Port is active?</em></p>
 <p>To solve this mystery, we dig deep into the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a> and check the BL602 Pins connected to our LED… (See pic above)</p>
-<table><thead><tr><th align="left">LED Pin</th><th align="left">BL602 Pin</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">LED Pin</th><th align="left">BL602 Pin</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>LED Blue</code></strong></td><td align="left"><code>IO 11</code></td></tr>
 <tr><td align="left"><strong><code>LED Green</code></strong></td><td align="left"><code>IO 14</code></td></tr>
 <tr><td align="left"><strong><code>LED Red</code></strong></td><td align="left"><code>IO 17</code></td></tr>
 </tbody></table>
+</div>
 <p>Aha! PineCone’s LED is connected to the same pins as the JTAG Port. Which explains the disco lights during JTAG programming!</p>
 <p>This is a problem… If we control the PineCone LED in our firmware, it will interfere with the JTAG Port.</p>
 <p><em>Can we use PineCone’s LED in our firmware… While debugging our firmware with JTAG?</em></p>
@@ -364,35 +367,36 @@ reset init</code></pre></div>
 <ol>
 <li>
 <p>We remap the three LED pins from JTAG to PWM, so that we may to control the LED…</p>
-<table><thead><tr><th align="left">LED Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">LED Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>LED Blue</code></strong></td><td align="left"><code>IO 11</code></td><td align="left">JTAG → PWM</td></tr>
 <tr><td align="left"><strong><code>LED Green</code></strong></td><td align="left"><code>IO 14</code></td><td align="left">JTAG → PWM</td></tr>
 <tr><td align="left"><strong><code>LED Red</code></strong></td><td align="left"><code>IO 17</code></td><td align="left">JTAG → PWM</td></tr>
 </tbody></table>
-</li>
+</div></li>
 <li>
 <p>Then we pick three unused BL602 Pins and remap them to JTAG…</p>
-<table><thead><tr><th align="left">JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>JTAG TDI</code></strong></td><td align="left"><code>IO 1</code></td><td align="left">SDIO → JTAG</td></tr>
 <tr><td align="left"><strong><code>JTAG TCK</code></strong></td><td align="left"><code>IO 2</code></td><td align="left">SDIO → JTAG</td></tr>
 <tr><td align="left"><strong><code>JTAG TDO</code></strong></td><td align="left"><code>IO 3</code></td><td align="left">SDIO → JTAG</td></tr>
 </tbody></table>
-</li>
+</div></li>
 <li>
 <p>We keep the JTAG TMS pin as is because it wasn’t invited to the disco party…</p>
-<table><thead><tr><th align="left">JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>JTAG TMS</code></strong></td><td align="left"><code>IO 12</code></td><td align="left">JTAG → JTAG</td></tr>
 </tbody></table>
-</li>
+</div></li>
 <li>
 <p>Finally we set the GPIO Control bits for the pins remapped to JTAG…</p>
-<table><thead><tr><th align="left">GPIO Control</th><th align="left">Value</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">GPIO Control</th><th align="left">Value</th></tr></thead><tbody>
 <tr><td align="left">Pull Down Control</td><td align="left">0</td></tr>
 <tr><td align="left">Pull Up Control</td><td align="left">0</td></tr>
 <tr><td align="left">Driving Control</td><td align="left">0</td></tr>
 <tr><td align="left">SMT Control</td><td align="left">1</td></tr>
 <tr><td align="left">Input Enable</td><td align="left">1</td></tr>
 </tbody></table>
+</div>
 <p>(These values were obtained by sniffing the GPIO Control bits for the default JTAG Port)</p>
 </li>
 </ol>
@@ -401,7 +405,7 @@ reset init</code></pre></div>
 <p><em>BL602 Configuration Register for Pins IO 0 and IO 1</em></p>
 <h1 id="remap-the-jtag-port" class="section-header"><a href="#remap-the-jtag-port">8 Remap the JTAG Port</a></h1>
 <p>Remember that we need to remap JTAG and PWM functions of the following pins…</p>
-<table><thead><tr><th align="left">LED / JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">LED / JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>JTAG TDI</code></strong></td><td align="left"><code>IO 1</code></td><td align="left">SDIO → JTAG</td></tr>
 <tr><td align="left"><strong><code>JTAG TCK</code></strong></td><td align="left"><code>IO 2</code></td><td align="left">SDIO → JTAG</td></tr>
 <tr><td align="left"><strong><code>JTAG TDO</code></strong></td><td align="left"><code>IO 3</code></td><td align="left">SDIO → JTAG</td></tr>
@@ -409,6 +413,7 @@ reset init</code></pre></div>
 <tr><td align="left"><strong><code>LED Green</code></strong></td><td align="left"><code>IO 14</code></td><td align="left">JTAG → PWM</td></tr>
 <tr><td align="left"><strong><code>LED Red</code></strong></td><td align="left"><code>IO 17</code></td><td align="left">JTAG → PWM</td></tr>
 </tbody></table>
+</div>
 <p>Here’s how we write the firmware code to remap the pins: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241"><code>sdk_app_helloworld/main.c</code></a></p>
 <ol>
 <li>
@@ -454,7 +459,7 @@ const uint32_t GPIO_FUN_JTAG = 14;  //  Pin Function for JTAG (0xe)</code></pre>
 const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <li>
 <p>We apply the above steps to remap each Pin Function and set the Pin Control bits…</p>
-<table><thead><tr><th align="left">LED / JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">LED / JTAG Pin</th><th align="left">BL602 Pin</th><th align="left">Remap Pin Function</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>JTAG TDI</code></strong></td><td align="left"><code>IO 1</code></td><td align="left">SDIO → JTAG</td></tr>
 <tr><td align="left"><strong><code>JTAG TCK</code></strong></td><td align="left"><code>IO 2</code></td><td align="left">SDIO → JTAG</td></tr>
 <tr><td align="left"><strong><code>JTAG TDO</code></strong></td><td align="left"><code>IO 3</code></td><td align="left">SDIO → JTAG</td></tr>
@@ -462,18 +467,19 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <tr><td align="left"><strong><code>LED Green</code></strong></td><td align="left"><code>IO 14</code></td><td align="left">JTAG → PWM</td></tr>
 <tr><td align="left"><strong><code>LED Red</code></strong></td><td align="left"><code>IO 17</code></td><td align="left">JTAG → PWM</td></tr>
 </tbody></table>
-</li>
+</div></li>
 </ol>
 <p>The remapping code for all 6 pins may be found here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241"><code>sdk_app_helloworld/main.c</code></a></p>
 <h2 id="before-and-after" class="section-header"><a href="#before-and-after">8.1 Before and After</a></h2>
 <p>Here are the values of the Pin Function and Pin Control registers before and after remapping…</p>
-<table><thead><tr><th align="left">Register</th><th align="left">Before</th><th align="left">After</th><th align="left">Pin</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">Register</th><th align="left">Before</th><th align="left">After</th><th align="left">Pin</th></tr></thead><tbody>
 <tr><td align="left"><code>GPIO_CFGCTL0</code></td><td align="left"><strong><code>bb</code></strong> <strong><code>17</code></strong> <code>bb</code> <code>17</code></td><td align="left"><strong><code>ee</code></strong> <strong><code>03</code></strong> <code>bb</code> <code>17</code></td><td align="left">1</td></tr>
 <tr><td align="left"><code>GPIO_CFGCTL1</code></td><td align="left"><strong><code>11</code></strong> <code>03</code> <strong><code>bb</code></strong> <strong><code>17</code></strong></td><td align="left"><strong><code>ee</code></strong> <code>03</code> <strong><code>ee</code></strong> <strong><code>03</code></strong></td><td align="left">2, 3</td></tr>
 <tr><td align="left"><code>GPIO_CFGCTL5</code></td><td align="left"><strong><code>0e</code></strong> <code>03</code> <code>0b</code> <code>03</code></td><td align="left"><strong><code>08</code></strong> <code>03</code> <code>0b</code> <code>03</code></td><td align="left">11</td></tr>
 <tr><td align="left"><code>GPIO_CFGCTL7</code></td><td align="left"><code>0b</code> <code>03</code> <strong><code>0e</code></strong> <code>03</code></td><td align="left"><code>0b</code> <code>03</code> <strong><code>08</code></strong> <code>03</code></td><td align="left">14</td></tr>
 <tr><td align="left"><code>GPIO_CFGCTL8</code></td><td align="left"><strong><code>0e</code></strong> <code>03</code> <code>07</code> <code>17</code></td><td align="left"><strong><code>08</code></strong> <code>03</code> <code>07</code> <code>17</code></td><td align="left">17</td></tr>
 </tbody></table>
+</div>
 <p>(Changed values have been highlighted)</p>
 <p>Note that the Pin Function fields (4 bits each) have been changed to <code>0xe</code> for JTAG and <code>0x8</code> for PWM.</p>
 <p>The Pin Control fields (6 bits each) have also been changed to <code>0x03</code>.</p>
@@ -490,13 +496,14 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 </li>
 <li>
 <p>Connect the remapped JTAG Pins from PineCone to our JTAG Debugger…</p>
-<table><thead><tr><th align="center">JTAG Debugger</th><th align="left">PineCone Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<div><table><thead><tr><th align="center">JTAG Debugger</th><th align="left">PineCone Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>TDI</code></strong></td><td align="left"><code>IO 1</code></td><td align="left">Red</td></tr>
 <tr><td align="center"><strong><code>TCK</code></strong></td><td align="left"><code>IO 2</code></td><td align="left">Green</td></tr>
 <tr><td align="center"><strong><code>TDO</code></strong></td><td align="left"><code>IO 3</code></td><td align="left">Blue</td></tr>
 <tr><td align="center"><strong><code>TMS</code></strong></td><td align="left"><code>IO 12</code></td><td align="left">Yellow</td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
+</div>
 <p>(See the pic above)</p>
 </li>
 <li>

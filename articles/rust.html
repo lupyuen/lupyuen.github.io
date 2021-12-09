@@ -227,7 +227,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// This function is called on panic, like an assertion failure</span>
 <span class="attribute">#[<span class="ident">panic_handler</span>]</span>
-<span class="kw">fn</span> <span class="ident">panic</span>(<span class="ident">_info</span>: <span class="kw-2">&amp;</span><span class="ident">PanicInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {  <span class="comment">//  `!` means that panic handler will never return</span>
+<span class="kw">fn</span> <span class="ident">panic</span>(<span class="ident">_info</span>: <span class="kw-2">&amp;</span><span class="ident">PanicInfo</span>) -&gt; <span class="op">!</span> {  <span class="comment">//  `!` means that panic handler will never return</span>
     <span class="comment">//  TODO: Implement the complete panic handler like this:</span>
     <span class="comment">//  https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/rust/app/src/lib.rs#L115-L146</span>
 
@@ -249,7 +249,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(
     <span class="ident">pin</span>:   <span class="ident">u8</span>,  <span class="comment">//  GPIO pin number (uint8_t)</span>
     <span class="ident">value</span>: <span class="ident">u8</span>   <span class="comment">//  0 for low, 1 to high</span>
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">i32</span><span class="op">&gt;</span> {  <span class="comment">//  Returns an error code (int)</span></code></pre></div>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">i32</span><span class="op">&gt;</span> {  <span class="comment">//  Returns an error code (int)</span></code></pre></div>
 <p><em>The C version of <code>bl_gpio_output_set</code> returns an <code>int</code> result code (0 for success, non-zero for error)…</em></p>
 <p><em>Why does the Rust version return <code>Result&lt;(),i32&gt;</code>?</em></p>
 <p>Because <strong><code>Result&lt;...&gt;</code></strong> lets us return a meaningful result to our Rust caller…</p>
@@ -266,7 +266,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
         <span class="doccomment">/// Set the GPIO pin output to high or low (from BL602 GPIO HAL)</span>
-        <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+        <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
     }</code></pre></div>
 <p>Next our wrapper <strong>calls the imported C function</strong>…</p>
 
@@ -279,8 +279,8 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Check the result code</span>
     <span class="kw">match</span> <span class="ident">res</span> {
-        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),   <span class="comment">//  If no error, return OK</span>
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">res</span>)  <span class="comment">//  Else return the result code as an error</span>
+        <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()),   <span class="comment">//  If no error, return OK</span>
+        <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">res</span>)  <span class="comment">//  Else return the result code as an error</span>
     }
 }</code></pre></div>
 <p>“<code>match</code>” works like “<code>switch...case</code>” in C. (“<code>_</code>” matches anything, similar to “<code>default</code>” in C)</p>
@@ -293,14 +293,14 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Print a message to the serial console.</span>
 <span class="doccomment">/// `&amp;str` is a reference to a string slice, similar to `const char *` in C</span>
-<span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {</code></pre></div>
+<span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">i32</span> {</code></pre></div>
 <p>Our wrapper for <code>puts</code> accepts a string and returns an <code>int</code>.</p>
 <p>“<code>&amp;str</code>” is a <strong>Reference to a String Slice</strong>. It’s similar to “<code>const char *</code>” in C.</p>
 <p>We <strong>import the <code>puts</code> function</strong> from BL602 IoT SDK (<code>stdio</code> library)…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
         <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
-        <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+        <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
     }</code></pre></div>
 <p>When importing “<code>const char *</code>” from C, we rewrite it as “<code>*const u8</code>” (const pointer to unsigned byte).</p>
 <p>Next we make a <strong>copy of the input string</strong>…</p>
@@ -659,12 +659,13 @@ bl_sys_time_now          : sys time now</code></pre></div></li>
     --target riscv32imac-unknown-none-elf</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/debug#install-rust">(We’ve previously used this for BL602)</a></p>
 <p><strong><code>riscv32imac</code></strong> describes the capabilities of our RISC-V CPU…</p>
-<table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
+<div><table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>rv32i</code></strong></td><td align="left">32-bit RISC-V with 32 registers</td></tr>
 <tr><td align="center"><strong><code>m</code></strong></td><td align="left">Integer Multiplication + Division</td></tr>
 <tr><td align="center"><strong><code>a</code></strong></td><td align="left">Atomic Instructions</td></tr>
 <tr><td align="center"><strong><code>c</code></strong></td><td align="left">Compressed Instructions</td></tr>
 </tbody></table>
+</div>
 <p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Here’s the whole list)</a></p>
 <p>When we link the compiled Rust code with BL602 IoT SDK, the GCC Linker fails with this error…</p>
 <div class="example-wrap"><pre class="language-text"><code>Can&#39;t link soft-float modules with single-float modules</code></pre></div>

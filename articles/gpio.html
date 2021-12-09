@@ -713,11 +713,12 @@ Transfer rate: 2 KB/sec, 1418 bytes/write.</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Debugger is not authenticated to target Debug Module. (dmstatus=0x0).
 Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.</code></pre></div>
 <p>That’s because PineCone’s RGB LED is <strong>connected to the same pins as the JTAG port!</strong></p>
-<table><thead><tr><th align="left">PineCone Pin</th><th align="left">LED Pin</th><th align="left">JTAG Pin</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">PineCone Pin</th><th align="left">LED Pin</th><th align="left">JTAG Pin</th></tr></thead><tbody>
 <tr><td align="left"><strong><code>GPIO 11</code></strong></td><td align="left"><code>Blue</code></td><td align="left"><code>TDO</code></td></tr>
 <tr><td align="left"><strong><code>GPIO 14</code></strong></td><td align="left"><code>Green</code></td><td align="left"><code>TCK</code></td></tr>
 <tr><td align="left"><strong><code>GPIO 17</code></strong></td><td align="left"><code>Red</code></td><td align="left"><code>TDI</code></td></tr>
 </tbody></table>
+</div>
 <p>(See <a href="https://lupyuen.github.io/articles/openocd#if-you-love-the-led-set-it-free">“If you love the LED… Set it free!”</a>)</p>
 <p>When we flip the LEDs on and off, the <strong>JTAG Debugger connection drops.</strong></p>
 <p>But our firmware is indeed flipping the LEDs correctly, so we’re done with GPIO testing on Mynewt!</p>
@@ -811,7 +812,7 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.</
 <h1 id="appendix-inventory-of-sensors-and-actuators" class="section-header"><a href="#appendix-inventory-of-sensors-and-actuators">12 Appendix: Inventory of Sensors and Actuators</a></h1>
 <p><img src="https://lupyuen.github.io/images/gpio-sensors.jpg" alt="Sensors and actuators to be tested with PineCone BL602" /></p>
 <p><em>Sensors and actuators to be tested with PineCone BL602</em></p>
-<h2 id="sensors" class="section-header"><a href="#sensors">12.1 Sensors</a></h2><table><thead><tr><th align="left">Sensor</th><th align="left">Outputs</th></tr></thead><tbody>
+<h2 id="sensors" class="section-header"><a href="#sensors">12.1 Sensors</a></h2><div><table><thead><tr><th align="left">Sensor</th><th align="left">Outputs</th></tr></thead><tbody>
 <tr><td align="left">Linear Hall</td><td align="left">Analog, Digital</td></tr>
 <tr><td align="left">Shock Switch</td><td align="left">Digital</td></tr>
 <tr><td align="left">Knock Switch</td><td align="left">Digital</td></tr>
@@ -826,16 +827,16 @@ Use `riscv authdata_read` and `riscv authdata_write` commands to authenticate.</
 <tr><td align="left">Metal Touch</td><td align="left">Analog, Digital</td></tr>
 <tr><td align="left">Flame</td><td align="left">Analog, Digital</td></tr>
 </tbody></table>
-<h2 id="actuators" class="section-header"><a href="#actuators">12.2 Actuators</a></h2><table><thead><tr><th align="left">Actuator</th><th align="left">Input</th></tr></thead><tbody>
+</div><h2 id="actuators" class="section-header"><a href="#actuators">12.2 Actuators</a></h2><div><table><thead><tr><th align="left">Actuator</th><th align="left">Input</th></tr></thead><tbody>
 <tr><td align="left">Laser Transmitter</td><td align="left">Digital</td></tr>
 <tr><td align="left">Active Buzzer</td><td align="left">Digital</td></tr>
 <tr><td align="left">Passive Buzzer</td><td align="left">Digital</td></tr>
 <tr><td align="left">Relay</td><td align="left">Digital</td></tr>
 </tbody></table>
-<h2 id="sensor--actuator" class="section-header"><a href="#sensor--actuator">12.3 Sensor + Actuator</a></h2><table><thead><tr><th align="left">Sensor + Actuator</th><th align="left">Input / Output</th></tr></thead><tbody>
+</div><h2 id="sensor--actuator" class="section-header"><a href="#sensor--actuator">12.3 Sensor + Actuator</a></h2><div><table><thead><tr><th align="left">Sensor + Actuator</th><th align="left">Input / Output</th></tr></thead><tbody>
 <tr><td align="left">Infrared Transmitter &amp; Receiver</td><td align="left">Digital</td></tr>
 </tbody></table>
-<h1 id="appendix-github-actions-environment" class="section-header"><a href="#appendix-github-actions-environment">13 Appendix: GitHub Actions Environment</a></h1>
+</div><h1 id="appendix-github-actions-environment" class="section-header"><a href="#appendix-github-actions-environment">13 Appendix: GitHub Actions Environment</a></h1>
 <p>Here’s how we dump the GitHub Actions Environmment Variables and the File System…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Show files
       run:  set ; pwd ; ls -l</code></pre></div>

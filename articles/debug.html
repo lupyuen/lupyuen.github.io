@@ -473,7 +473,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <p>Before we talk about VSCode Debugging, let’s study the Source Code for our Rust Firmware: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs">src/main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#[<span class="ident">riscv_rt::entry</span>]</span>
-<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="op">!</span> {
     <span class="kw">let</span> <span class="ident">dp</span> <span class="op">=</span> <span class="ident">pac::Peripherals::take</span>().<span class="ident">unwrap</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">dp</span>.<span class="ident">GLB</span>.<span class="ident">split</span>();
     ...
@@ -487,7 +487,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#[<span class="ident">riscv_rt::entry</span>]</span></code></pre></div>
 <p>Followed by the declaration of our Entry Function <code>main</code>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="op">!</span> {</code></pre></div>
 <p>This means that our Rust Function <code>main</code> will be called when the firmware starts, after initialising the registers and RAM. (<a href="https://github.com/rust-embedded/riscv-rt/blob/master/asm.S">More details</a>) </p>
 <p>(The return type “<code>-&gt; !</code>” means that the function will loop forever, never returning)</p>
 <h2 id="fetch-the-peripheral-registers" class="section-header"><a href="#fetch-the-peripheral-registers">5.2 Fetch the Peripheral Registers</a></h2>

@@ -129,7 +129,7 @@
 <p>Our <strong>LoRa SX1262 Transceiver</strong> is wired onboard like so…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-lora.png" alt="LoRa SX1262 Transceiver wired to PineDio Stack BL604" /></p>
 <p>Note that the above SPI Pins are shared with the <strong>SPI Flash and ST7789 Display</strong>…</p>
-<table><thead><tr><th align="center">GPIO Number</th><th align="left">SPI Pin</th></tr></thead><tbody>
+<div><table><thead><tr><th align="center">GPIO Number</th><th align="left">SPI Pin</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>17</code></strong></td><td align="left">Common SDO <em>(MOSI)</em></td></tr>
 <tr><td align="center"><strong><code>0</code></strong></td><td align="left">Common SDI <em>(MISO)</em></td></tr>
 <tr><td align="center"><strong><code>11</code></strong></td><td align="left">Common SCK</td></tr>
@@ -137,6 +137,7 @@
 <tr><td align="center"><strong><code>20</code></strong></td><td align="left">CS for ST7789</td></tr>
 <tr><td align="center"><strong><code>15</code></strong></td><td align="left">CS for SX1262</td></tr>
 </tbody></table>
+</div>
 <p><a href="https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names">(More about SDO and SDI)</a></p>
 <p>We set the <strong>Chip Select Pin (CS)</strong> to Low to select the <strong>Active SPI Device</strong>: Either LoRa SX1262, SPI Flash or ST7789 Display…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi.jpg" alt="SPI Bus on PineDio Stack" /></p>
@@ -368,12 +369,13 @@ void SX126xIoInit( void ) {
 <p>PineDio Stack’s <strong>GPIO Connector</strong> exposes the SPI Pins: SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-gpio2.jpg" alt="PineDio Stack GPIO Connector" /></p>
 <p>We <strong>connect our Logic Analyser</strong> to the GPIO Connector like so…</p>
-<table><thead><tr><th align="center">GPIO Number</th><th align="left">SPI Pin</th><th align="center">Connector Pin</th></tr></thead><tbody>
+<div><table><thead><tr><th align="center">GPIO Number</th><th align="left">SPI Pin</th><th align="center">Connector Pin</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>17</code></strong></td><td align="left">Common SDO <em>(MOSI)</em></td><td align="center"><code>7</code></td></tr>
 <tr><td align="center"><strong><code>0</code></strong></td><td align="left">Common SDI <em>(MISO)</em></td><td align="center"><code>17</code></td></tr>
 <tr><td align="center"><strong><code>11</code></strong></td><td align="left">Common SCK</td><td align="center"><code>4</code></td></tr>
 <tr><td align="center"><strong><code>5</code></strong></td><td align="left">Debug CS</td><td align="center"><code>2</code></td></tr>
 </tbody></table>
+</div>
 <p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="Logic Analyser connected to PineDio Stack" /></p>
 <p><em>What about the SX1262 Chip Select Pin: GPIO 15?</em></p>
 <p>Unfortunately <strong>GPIO 15 is not exposed</strong> on the GPIO Connector.</p>

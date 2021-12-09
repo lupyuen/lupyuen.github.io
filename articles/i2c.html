@@ -165,12 +165,13 @@
 <p>Let’s connect BL602 to the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Bosch BME280 I2C Sensor for Temperature, Humidity and Air Pressure</strong></a></p>
 <p>(Air Pressure is very useful for sensing which level of a building we’re on!)</p>
 <p>Connect BL602 to BME280 according to the pic above…</p>
-<table><thead><tr><th align="center">BL602 Pin</th><th align="center">BME280 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<div><table><thead><tr><th align="center">BL602 Pin</th><th align="center">BME280 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>GPIO 3</code></strong></td><td align="center"><code>SDA</code></td><td align="left">Green</td></tr>
 <tr><td align="center"><strong><code>GPIO 4</code></strong></td><td align="center"><code>SCL</code></td><td align="left">Blue</td></tr>
 <tr><td align="center"><strong><code>3V3</code></strong></td><td align="center"><code>3.3V</code></td><td align="left">Red</td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
+</div>
 <p>(The steps in this article will work for BMP280 too)</p>
 <p>The Low Level I2C HAL assigns GPIO 3 and 4 to the I2C Port on BL602. (See <strong>“Section 3.2.8: GPIO Function”</strong> in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a>)</p>
 <p>(If we’re using the High Level I2C HAL, the I2C Pins are defined in the Device Tree)</p>
@@ -740,13 +741,14 @@ static uint8_t read_buf[32];  //  Buffer for reading I2C Data</code></pre></div>
 <p><em>But the High Level I2C HAL lacks documentation… How do we use it?</em></p>
 <p>The code explained in this article looks highly similar to the High Level I2C HAL.</p>
 <p>Here’s the list of functions we’ve seen in this article, and their equivalent functions in the High Level I2C HAL…</p>
-<table><thead><tr><th align="left">Function In <br> This Article</th><th align="left">Function In <br> High Level HAL</th></tr></thead><tbody>
+<div><table><thead><tr><th align="left">Function In <br> This Article</th><th align="left">Function In <br> High Level HAL</th></tr></thead><tbody>
 <tr><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L343-L369"><code>test_i2c</code><br><code>_init</code></a></td><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L272-L298"><code>hal_i2c</code><br><code>_init</code></a></td></tr>
 <tr><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L420-L448"><code>test_i2c</code><br><code>_start_read</code></a></td><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L300-L324"><code>hal_i2c</code><br><code>_read_block</code></a></td></tr>
 <tr><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L273-L328"><code>test_i2c</code><br><code>_interrupt</code><br><code>_entry</code></a></td><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L97-L133"><code>i2c</code><br><code>_interrupt</code><br><code>_entry</code></a></td></tr>
 <tr><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L249-L271"><code>test_i2c</code><br><code>_transferbytes</code></a></td><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L74-L95"><code>i2c</code><br><code>_transferbytes</code></a></td></tr>
 <tr><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_i2c/sdk_app_i2c/demo.c#L236-L247"><code>test_i2c</code><br><code>_stop</code></a></td><td align="left"><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_i2c.c#L52-L72"><code>i2c</code><br><code>_callback</code></a></td></tr>
 </tbody></table>
+</div>
 <ul>
 <li>
 <p><a href="https://help.aliyun.com/document_detail/161064.html?spm=a2c4g.11186623.6.577.492c4564jOCOjU">See the Chinese docs for High Level I2C HAL</a></p>
@@ -930,13 +932,13 @@ msg: Store/AMO access fault</code></pre></div>
 <ol>
 <li>
 <p>Connect Bus Pirate to BME280 (or BMP280) according to the pic above…</p>
-<table><thead><tr><th align="center">Bus Pirate Pin</th><th align="center">BME280 Pin</th></tr></thead><tbody>
+<div><table><thead><tr><th align="center">Bus Pirate Pin</th><th align="center">BME280 Pin</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>MOSI</code></strong></td><td align="center"><code>SDA</code></td></tr>
 <tr><td align="center"><strong><code>CLK</code></strong></td><td align="center"><code>SCL</code></td></tr>
 <tr><td align="center"><strong><code>3.3V</code></strong></td><td align="center"><code>3.3V</code></td></tr>
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td></tr>
 </tbody></table>
-</li>
+</div></li>
 <li>
 <p>Connect Bus Pirate to our computer’s USB port.</p>
 <p>Open a Serial Terminal for Bus Pirate.</p>

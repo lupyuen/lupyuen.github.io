@@ -478,7 +478,7 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 <p>We start by validating the GPIO Pin Number and ADC Frequency…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15</span>
-  <span class="macro">assert!</span>(<span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">4</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">5</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">6</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">9</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">10</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">11</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">12</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">13</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">14</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">=</span><span class="op">=</span><span class="number">15</span>);
+  <span class="macro">assert!</span>(<span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">4</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">5</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">6</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">9</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">10</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">11</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">12</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">13</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">14</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">15</span>);
 
   <span class="comment">//  For Single-Channel Conversion Mode, frequency must be between 500 and 16,000 Hz</span>
   <span class="macro">assert!</span>(<span class="ident">ADC_FREQUENCY</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span> <span class="op">&amp;&amp;</span> <span class="ident">ADC_FREQUENCY</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">16000</span>);</code></pre></div>
@@ -497,7 +497,7 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Enable ADC Gain to increase the ADC sensitivity</span>
   <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };  <span class="comment">//  Unsafe because we are calling C function</span>
-  <span class="macro">assert!</span>(<span class="ident">rc</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
+  <span class="macro">assert!</span>(<span class="ident">rc</span> <span class="op">==</span> <span class="number">0</span>);</code></pre></div>
 <p>(This calls our C function <code>set_adc_gain</code>, which shall be explained below)</p>
 <p>BL602 ADC Controller shall transfer the ADC Samples directly into RAM, thanks to the <strong>Direct Memory Access (DMA) Controller</strong>…</p>
 
@@ -1050,11 +1050,12 @@ read_adc
 </ul>
 <p><em>Which functions from the BL602 IoT SDK are supported?</em></p>
 <p>Today our BL602 Rust Wrapper supports…</p>
-<table><thead><tr><th></th><th></th><th></th></tr></thead><tbody>
+<div><table><thead><tr><th></th><th></th><th></th></tr></thead><tbody>
 <tr><td>◾ <a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/adc/index.html"><strong>ADC</strong></a></td><td>◾ <a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/i2c/index.html"><strong>I2C</strong></a></td><td>◾ <a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/uart/index.html"><strong>UART</strong></a></td></tr>
 <tr><td>◾ <a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/dma/index.html"><strong>DMA</strong></a></td><td>◾ <a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/pwm/index.html"><strong>PWM</strong></a></td><td>◾ <a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/wifi/index.html"><strong>WiFi</strong></a></td></tr>
 <tr><td>◾ <a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/gpio/index.html"><strong>GPIO</strong></a></td><td>◾ <a href="https://docs.rs/bl602-sdk/latest/bl602_sdk/spi/index.html"><strong>SPI</strong></a></td><td></td></tr>
 </tbody></table>
+</div>
 <p><a href="https://docs.rs/bl602-sdk">(See the complete list)</a></p>
 <p><em>How do we add the BL602 Rust Wrapper to our Rust Project?</em></p>
 <p>Just add <strong><code>bl602-sdk</code></strong> to the Rust project configuration: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a></p>
@@ -1206,7 +1207,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
   <span class="doccomment">/// Enable ADC Gain to increase the ADC sensitivity.</span>
   <span class="doccomment">/// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c</span>
-  <span class="kw">fn</span> <span class="ident">set_adc_gain</span>(<span class="ident">gain1</span>: <span class="ident">u32</span>, <span class="ident">gain2</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+  <span class="kw">fn</span> <span class="ident">set_adc_gain</span>(<span class="ident">gain1</span>: <span class="ident">u32</span>, <span class="ident">gain2</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span>;
 }</code></pre></div>
 <p><strong><code>set_adc_gain</code></strong> is defined in this C source file: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L11-L42"><code>demo.c</code></a></p>
 <p><em>What about the rest of the code in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c"><code>demo.c</code></a>?</em></p>
@@ -1348,11 +1349,11 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);</code></pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Rust Bindings for BL602 GPIO generated by gen-bindings.sh</span>
 <span class="attribute">#[<span class="ident">safe_wrap</span>(<span class="kw">_</span>)]</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::cty::c_int</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>) -&gt; <span class="ident">::cty::c_int</span>;
 }
 
 <span class="attribute">#[<span class="ident">safe_wrap</span>(<span class="kw">_</span>)]</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::cty::c_int</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">::cty::c_int</span>;
 }</code></pre></div>
 <p>(<code>safe_wrap</code> was inserted by an <code>sed</code> script in <code>gen-bindings.sh</code>)</p>
 <p>When the above Rust Bindings are compiled, they invoke the <strong><code>safe_wrap</code> Procedural Macro</strong>…</p>
@@ -1367,11 +1368,11 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);</code></pre></div>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings</span>
 <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>)
-    <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    -&gt; <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="string">&quot;----------Extern Decl----------&quot;</span>;
     <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>)
-        <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::cty::c_int</span>;
+        -&gt; <span class="ident">::cty::c_int</span>;
     }
     <span class="string">&quot;----------Validation----------&quot;</span>;
     <span class="kw">unsafe</span> {
@@ -1380,31 +1381,31 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);</code></pre></div>
             <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">pullup</span> <span class="kw">as</span> <span class="ident">u8</span>,
                                     <span class="ident">pulldown</span> <span class="kw">as</span> <span class="ident">u8</span>);
         <span class="string">&quot;----------Result----------&quot;</span>;
-        <span class="kw">match</span> <span class="ident">res</span> { <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()), <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>)), }
+        <span class="kw">match</span> <span class="ident">res</span> { <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()), <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>)), }
     }
 }
 
 <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Set output value of GPIO Pin. See `bl_gpio_output_set` in \&quot;Read and Write GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="string">&quot;----------Extern Decl----------&quot;</span>;
     <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>)
-        <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::cty::c_int</span>;
+        -&gt; <span class="ident">::cty::c_int</span>;
     }
     <span class="string">&quot;----------Validation----------&quot;</span>;
     <span class="kw">unsafe</span> {
         <span class="string">&quot;----------Call----------&quot;</span>;
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>);
         <span class="string">&quot;----------Result----------&quot;</span>;
-        <span class="kw">match</span> <span class="ident">res</span> { <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()), <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>)), }
+        <span class="kw">match</span> <span class="ident">res</span> { <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()), <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>)), }
     }
 }</code></pre></div>
 <p>(More about <strong><code>doc</code></strong> in the next section)</p>
 <p>Note that the <code>safe_wrap</code> macro converts the BL602 return values to a <strong>Rust Result Type</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">match</span> <span class="ident">res</span> { 
-    <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()), 
-    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>))
+    <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()), 
+    <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>))
 }</code></pre></div>
 <p>Which enables the caller to check for errors with <strong><code>expect</code></strong>.</p>
 <p>We build the docs and the test project with this script…</p>
@@ -1435,7 +1436,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);</code></pre></div>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>) { ...
 
 <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Set output value of GPIO Pin. See `bl_gpio_output_set` in \&quot;Read and Write GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> { ...</code></pre></div>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> { ...</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/adc-doclink.png" alt="Documentation links to be injected" /></p>
 <p><em>How did we inject the doc links into the <code>doc</code> Attribute?</em></p>
 <p>For each Rust Wrapper Function, the links to <a href="https://lupyuen.github.io/articles/book">“The RISC-V BL602 Book”</a> are defined in this <strong>Markdown Text File</strong>…</p>

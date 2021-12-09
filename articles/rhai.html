@@ -183,7 +183,7 @@
 <span class="kw">loop</span> { 
   <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="number">1</span>;
   <span class="ident">print</span>(<span class="ident">a</span>);
-  <span class="kw">if</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> { <span class="kw">break</span>; }
+  <span class="kw">if</span> <span class="ident">a</span> <span class="op">==</span> <span class="number">1</span> { <span class="kw">break</span>; }
 }</code></pre></div>
 <p>See the next section for another loop that we shall support: <code>for i in range(0, 10)</code></p>
 <h2 id="rust-functions-and-modules" class="section-header"><a href="#rust-functions-and-modules">2.3 Rust Functions and Modules</a></h2>
@@ -333,7 +333,7 @@
   <span class="doccomment">/// TODO: Modified parameters from u8 to i32</span>
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_output</span>(<span class="ident">pin</span>: <span class="ident">i32</span>, <span class="ident">pullup</span>: <span class="ident">i32</span>, <span class="ident">pulldown</span>: <span class="ident">i32</span>) {
     <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-      <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+      <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
     }
     <span class="kw">unsafe</span> {
       <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">pullup</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">pulldown</span> <span class="kw">as</span> <span class="ident">u8</span>);
@@ -345,7 +345,7 @@
   <span class="doccomment">/// TODO: Modified parameters from u8 to i32</span>
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">i32</span>, <span class="ident">value</span>: <span class="ident">i32</span>) {
     <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-      <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+      <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
     }
     <span class="kw">unsafe</span> {
       <span class="kw">let</span> <span class="ident">_res</span> <span class="op">=</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>);
@@ -492,7 +492,7 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transcode the compiled Rhai Script </span>
 <span class="doccomment">/// (Abstract Syntax Tree) to uLisp</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transcode</span>(<span class="ident">ast</span>: <span class="kw-2">&amp;</span><span class="ident">AST</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transcode</span>(<span class="ident">ast</span>: <span class="kw-2">&amp;</span><span class="ident">AST</span>) -&gt; <span class="ident">String</span> {
   <span class="comment">//  Start the first uLisp Scope</span>
   <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(<span class="string">&quot;let* ()&quot;</span>);
 
@@ -509,27 +509,27 @@
 <p><strong><code>ast.walk</code></strong> calls <strong><code>transcode_node</code></strong> to transcode each node in the Abstract Syntax Tree: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L29-L59"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transcode the Rhai AST Node to uLisp</span>
-<span class="kw">fn</span> <span class="ident">transcode_node</span>(<span class="ident">nodes</span>: <span class="kw-2">&amp;</span>[<span class="ident">ASTNode</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">transcode_node</span>(<span class="ident">nodes</span>: <span class="kw-2">&amp;</span>[<span class="ident">ASTNode</span>]) -&gt; <span class="ident">bool</span> {
   <span class="comment">//  We take the root node, ignore the subnodes</span>
   <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">nodes</span>[<span class="number">0</span>];
 
   <span class="comment">//  Get the source code position</span>
   <span class="kw">let</span> <span class="ident">pos</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">node</span> {
-    <span class="ident">ASTNode::Stmt</span>(<span class="ident">stmt</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">stmt</span>.<span class="ident">position</span>(),
-    <span class="ident">ASTNode::Expr</span>(<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expr</span>.<span class="ident">position</span>(),
+    <span class="ident">ASTNode::Stmt</span>(<span class="ident">stmt</span>) =&gt; <span class="ident">stmt</span>.<span class="ident">position</span>(),
+    <span class="ident">ASTNode::Expr</span>(<span class="ident">expr</span>) =&gt; <span class="ident">expr</span>.<span class="ident">position</span>(),
   };
 
   <span class="comment">//  Skip this node if we&#39;ve already handled it</span>
   <span class="kw">unsafe</span> {
     <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">LAST_POSITION</span>: <span class="ident">Position</span> <span class="op">=</span> <span class="ident">Position::NONE</span>;
-    <span class="kw">if</span> <span class="ident">LAST_POSITION</span> <span class="op">=</span><span class="op">=</span> <span class="ident">pos</span> { <span class="kw">return</span> <span class="bool-val">true</span>; }
+    <span class="kw">if</span> <span class="ident">LAST_POSITION</span> <span class="op">==</span> <span class="ident">pos</span> { <span class="kw">return</span> <span class="bool-val">true</span>; }
     <span class="ident">LAST_POSITION</span> <span class="op">=</span> <span class="ident">pos</span>;
   }
 
   <span class="comment">//  Transcode the Node: Statement or Expression</span>
   <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">node</span> {
-    <span class="ident">ASTNode::Stmt</span>(<span class="ident">stmt</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">transcode_stmt</span>(<span class="ident">stmt</span>),
-    <span class="ident">ASTNode::Expr</span>(<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">transcode_expr</span>(<span class="ident">expr</span>),
+    <span class="ident">ASTNode::Stmt</span>(<span class="ident">stmt</span>) =&gt; <span class="ident">transcode_stmt</span>(<span class="ident">stmt</span>),
+    <span class="ident">ASTNode::Expr</span>(<span class="ident">expr</span>) =&gt; <span class="ident">transcode_expr</span>(<span class="ident">expr</span>),
   };
 
   <span class="comment">//  Add the transcoded uLisp S-Expression to the current scope</span>
@@ -561,10 +561,10 @@
 <p>Watch how we transcode the <strong><code>let</code></strong> Statement: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L89"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transcode a Rhai Statement to uLisp</span>
-<span class="kw">fn</span> <span class="ident">transcode_stmt</span>(<span class="ident">stmt</span>: <span class="kw-2">&amp;</span><span class="ident">Stmt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">transcode_stmt</span>(<span class="ident">stmt</span>: <span class="kw-2">&amp;</span><span class="ident">Stmt</span>) -&gt; <span class="ident">String</span> {
   <span class="kw">match</span> <span class="ident">stmt</span> {
     <span class="comment">//  Let or Const Statement: `let LED_GPIO = 11`</span>
-    <span class="ident">Stmt::Var</span>(<span class="ident">expr</span>, <span class="ident">ident</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="ident">Stmt::Var</span>(<span class="ident">expr</span>, <span class="ident">ident</span>, <span class="kw">_</span>, <span class="kw">_</span>) =&gt; {
       <span class="comment">//  Begin a new uLisp Scope</span>
       <span class="ident">scope::begin_scope</span>(
         <span class="macro">format!</span>(
@@ -597,7 +597,7 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="kw">match</span> <span class="ident">stmt</span> {
     ...
     <span class="comment">//  For Statement: `for i in range(0, 10) { ... }`</span>
-    <span class="ident">Stmt::For</span>(<span class="ident">expr</span>, <span class="ident">id_counter</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="ident">Stmt::For</span>(<span class="ident">expr</span>, <span class="ident">id_counter</span>, <span class="kw">_</span>) =&gt; {
       <span class="comment">//  TODO: Support `for` counter</span>
       <span class="kw">let</span> <span class="ident">id</span>    <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">id_counter</span>.<span class="number">0</span>;  <span class="comment">//  `i`</span>
       <span class="kw">let</span> <span class="ident">stmts</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">id_counter</span>.<span class="number">2</span>;  <span class="comment">//  `{ ... }`</span>
@@ -606,7 +606,7 @@
       <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">get_range</span>(<span class="ident">expr</span>);  <span class="comment">//  `[0, 10]`</span>
       <span class="kw">let</span> <span class="ident">lower_limit</span> <span class="op">=</span> <span class="ident">range</span>[<span class="number">0</span>];   <span class="comment">//  `0`</span>
       <span class="kw">let</span> <span class="ident">upper_limit</span> <span class="op">=</span> <span class="ident">range</span>[<span class="number">1</span>];   <span class="comment">//  `10`</span>
-      <span class="macro">assert!</span>(<span class="ident">lower_limit</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>);    <span class="comment">//  TODO: Allow Lower Limit to be non-zero</span>
+      <span class="macro">assert!</span>(<span class="ident">lower_limit</span> <span class="op">==</span> <span class="number">0</span>);    <span class="comment">//  TODO: Allow Lower Limit to be non-zero</span>
 
       <span class="comment">//  Begin a new uLisp Scope</span>
       <span class="kw">let</span> <span class="ident">scope_index</span> <span class="op">=</span> <span class="ident">scope::begin_scope</span>(
@@ -631,7 +631,7 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="kw">match</span> <span class="ident">stmt</span> {
     ...
     <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`</span>
-    <span class="ident">Stmt::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(
+    <span class="ident">Stmt::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) =&gt; <span class="macro">format!</span>(
       <span class="string">&quot;{}&quot;</span>,
       <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>)
     ),</code></pre></div>
@@ -672,18 +672,18 @@
 <p><strong><code>transcode_expr</code></strong> transcodes an Expression from Rhai to uLisp: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L255-L269"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transcode a Rhai Expression to uLisp</span>
-<span class="kw">fn</span> <span class="ident">transcode_expr</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">transcode_expr</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">Expr</span>) -&gt; <span class="ident">String</span> {
   <span class="kw">match</span> <span class="ident">expr</span> {
     <span class="comment">//  Integers become themselves, e.g. `1`</span>
-    <span class="ident">Expr::IntegerConstant</span>(<span class="ident">i</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">i</span>),
+    <span class="ident">Expr::IntegerConstant</span>(<span class="ident">i</span>, <span class="kw">_</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">i</span>),
 
     <span class="comment">//  Variables become their names, e.g. `a`</span>
-    <span class="ident">Expr::Variable</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">var</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">var</span>.<span class="number">2</span>),
+    <span class="ident">Expr::Variable</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">var</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">var</span>.<span class="number">2</span>),
 
     <span class="comment">//  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`</span>
-    <span class="ident">Expr::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>),
+    <span class="ident">Expr::FnCall</span>(<span class="ident">expr</span>, <span class="kw">_</span>) =&gt; <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>),
 
-    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unknown expr: {:#?}&quot;</span>, <span class="ident">expr</span>)
+    <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unknown expr: {:#?}&quot;</span>, <span class="ident">expr</span>)
   }
 }</code></pre></div>
 <p>Which means that…</p>
@@ -704,11 +704,11 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transcode a Rhai Function Call to uLisp:</span>
 <span class="doccomment">/// `gpio::enable_output(LED_GPIO, 0, 0)`</span>
-<span class="kw">fn</span> <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">FnCallExpr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">transcode_fncall</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">FnCallExpr</span>) -&gt; <span class="ident">String</span> {
   <span class="comment">//  Compose namespace e.g. `bl_gpio_` or ``</span>
   <span class="kw">let</span> <span class="ident">namespace</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">expr</span>.<span class="ident">namespace</span> {
-    <span class="prelude-val">Some</span>(<span class="ident">ns</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;bl_{:#?}_&quot;</span>, <span class="ident">ns</span>),  <span class="comment">//  TODO</span>
-    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
+    <span class="prelude-val">Some</span>(<span class="ident">ns</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;bl_{:#?}_&quot;</span>, <span class="ident">ns</span>),  <span class="comment">//  TODO</span>
+    <span class="prelude-val">None</span> =&gt; <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>()
   };</code></pre></div>
 <p><strong><code>transcode_fncall</code></strong> begins by converting the Rhai Namespace (like <strong>“<code>gpio::</code>”</strong>) to its uLisp equivalent (like <strong>“<code>bl_gpio_</code>”</strong>)</p>
 <p>Next it composes the <strong>list of arguments</strong> for the function call…</p>
@@ -718,10 +718,10 @@
     <span class="comment">//  Transcode each argument</span>
     <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">arg</span> {
       <span class="comment">//  Transcode a StackSlot by looking up the constants</span>
-      <span class="ident">Expr::Stack</span>(<span class="ident">i</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">expr</span>.<span class="ident">constants</span>[<span class="kw-2">*</span><span class="ident">i</span>]),
+      <span class="ident">Expr::Stack</span>(<span class="ident">i</span>, <span class="kw">_</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">expr</span>.<span class="ident">constants</span>[<span class="kw-2">*</span><span class="ident">i</span>]),
 
       <span class="comment">//  Transcode other expressions</span>
-      <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">transcode_expr</span>(<span class="kw-2">&amp;</span><span class="ident">arg</span>)
+      <span class="kw">_</span> =&gt; <span class="ident">transcode_expr</span>(<span class="kw-2">&amp;</span><span class="ident">arg</span>)
     };
     <span class="ident">val</span> <span class="op">+</span> <span class="string">&quot; &quot;</span>
   });</code></pre></div>
@@ -743,11 +743,11 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Rename a Rhai Function or Operator Name to uLisp:</span>
 <span class="doccomment">/// `%` becomes `mod`, `==` becomes `eq`</span>
-<span class="kw">fn</span> <span class="ident">rename_function</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">rename_function</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
   <span class="kw">match</span> <span class="ident">name</span> {
-    <span class="string">&quot;%&quot;</span>  <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;mod&quot;</span>,  <span class="comment">//  `%` becomes `mod`</span>
-    <span class="string">&quot;==&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;eq&quot;</span>,   <span class="comment">//  `==` becomes `eq`</span>
-    <span class="kw">_</span>    <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span>    <span class="comment">//  Else pass through</span>
+    <span class="string">&quot;%&quot;</span>  =&gt; <span class="string">&quot;mod&quot;</span>,  <span class="comment">//  `%` becomes `mod`</span>
+    <span class="string">&quot;==&quot;</span> =&gt; <span class="string">&quot;eq&quot;</span>,   <span class="comment">//  `==` becomes `eq`</span>
+    <span class="kw">_</span>    =&gt; <span class="ident">name</span>    <span class="comment">//  Else pass through</span>
   }.<span class="ident">to_string</span>()
 }</code></pre></div>
 <p>This means that <strong>“<code>a % b</code>”</strong> in Rhai is rewritten as <strong>“<code>( mod a b )</code>”</strong> in uLisp.</p>
