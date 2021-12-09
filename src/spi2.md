@@ -86,7 +86,7 @@ There's another POSIX Interface that's supported by NuttX: __ioctl()__.
 
 We'll see this when we cover the NuttX Device Driver for Semtech SX1276.
 
-# Create SPI Test Driver
+# Inside the SPI Test Driver
 
 _(For BL602 and ESP32)_
 
@@ -327,7 +327,7 @@ static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
 
 ![](https://lupyuen.github.io/images/spi2-driver3.png)
 
-# Create SPI Test App
+# Inside the SPI Test App
 
 _(For BL602 and ESP32)_
 
