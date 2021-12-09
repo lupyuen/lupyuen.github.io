@@ -372,7 +372,13 @@ BL602 uses __SPI Mode 1__ (instead of Mode 0) because of an __SPI Mode Quirk__ i
 
 TODO
 
+1.  Install prerequisites...
+
+    TODO
+
 1.  Download the source code...
+
+    TODO
 
 1.  Configure the build...
 
@@ -398,6 +404,8 @@ TODO
     ![Enable SPI](https://lupyuen.github.io/images/spi2-debug.png)
 
 1.  We enable our SPI Test Driver...
+
+    [__"Enable SPI"__](https://lupyuen.github.io/articles/spi2#enable-spi)
 
     ![Select SPI Test Driver](https://lupyuen.github.io/images/spi2-newdriver6.png)
 
