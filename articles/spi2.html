@@ -401,12 +401,13 @@ static ssize_t spi_test_driver_read(
 </li>
 <li>
 <p>Download the source code…</p>
-<p>TODO</p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone --branch spi_test https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --branch spi_test https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div></li>
 <li>
 <p>Configure the build…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
-cd nuttx/nuttx
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx
 
 # For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
