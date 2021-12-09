@@ -371,6 +371,10 @@ BL602 uses __SPI Mode 1__ (instead of Mode 0) because of an __SPI Mode Quirk__ i
 
 # Load the SPI Test Driver
 
+_(For BL602 and ESP32)_
+
+TODO
+
 Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads correctly__...
 
 1.  Install the build prerequisites...
@@ -524,6 +528,8 @@ Here's how we open the SPI Test Driver and write data
 ![SPI Test App](https://lupyuen.github.io/images/spi2-plan3.jpg)
 
 # Run the SPI Test App
+
+_(For BL602 and ESP32)_
 
 TODO
 
