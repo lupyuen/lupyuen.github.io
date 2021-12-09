@@ -74,17 +74,23 @@ Yes we have options for doing __SPI on NuttX__...
 
 _Can our app call the BL602 / ESP32 SPI Driver directly?_
 
-Nope that's not supported by NuttX. It might seemingly work on BL602 and ESP32, but it will fail on platforms with __Memory Protection__.
+Nope that's not supported by NuttX. (Unlike other embedded operating systems)
+
+It might seemingly work on BL602 and ESP32, but it will fail on platforms with __Memory Protection__.
 
 (Imagine a Linux App directly calling a Kernel Driver... That's no-no!)
 
 Later we'll see the layers of code that abstract the BL602 / ESP32 SPI Driver from our NuttX App.
+
+[(Thanks to Alan Carvalho de Assis for the tip!)](https://www.linkedin.com/feed/update/urn:li:activity:6871062176673742848/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6871062176673742848%2C6871868918772846592%29&replyUrn=urn%3Ali%3Acomment%3A%28activity%3A6871062176673742848%2C6871912576393986048%29)
 
 _Must everything be done through the read() and write() interfaces?_
 
 There's another POSIX Interface that's supported by NuttX: __ioctl()__.
 
 We'll see this when we cover the NuttX Device Driver for Semtech SX1276.
+
+![SPI Test Driver](https://lupyuen.github.io/images/spi2-plan2.jpg)
 
 # Inside the SPI Test Driver
 
@@ -122,7 +128,7 @@ Every [__NuttX Character Device Driver__](https://nuttx.apache.org/docs/latest/c
 
 (Plus others: seek(), poll(), ...)
 
-Our driver defines the File Operations like so: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89)
+Our driver defines the File Operations like so: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L88-L97)
 
 ```c
 static const struct file_operations g_spi_test_driver_fops =
@@ -189,7 +195,7 @@ In the write() operation for our SPI Test Driver, we...
 
 1.  __Deselect__ the device and __unlock__ the bus
 
-Below is the implementation: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L182-L239)
+Below is the implementation: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208)
 
 ```c
 /* Write the buffer to the SPI device */
@@ -213,7 +219,7 @@ static ssize_t spi_test_driver_write(
 
 We begin by fetching the __SPI Interface__ from the File Struct.
 
-Next we lock the SPI Bus and configure the SPI Interface...
+Next we __lock the SPI Bus__ and __configure the SPI Interface__...
 
 ```c
   /* Lock the SPI bus and configure the SPI interface */
@@ -223,9 +229,9 @@ Next we lock the SPI Bus and configure the SPI Interface...
   spi_test_driver_configspi(priv->spi);
 ```
 
-(We'll see __spi_test_driver_configspi()__ in a while)
+(We'll see __spi_test_driver_configspi__ in a while)
 
-We select the SPI Device by pulling SPI Chip Select to Low...
+We __select the SPI Device__ by pulling SPI Chip Select to Low...
 
 ```c
   /* Select the SPI device (unused for BL602) */
@@ -235,9 +241,7 @@ We select the SPI Device by pulling SPI Chip Select to Low...
 
 (This has no effect on BL602. The SPI Hardware automatically sets Chip Select to Low during SPI transfer)
 
-TODO
-
-__Transfer__ SPI Data
+Then we __transfer the data__ over SPI (transmit and receive)...
 
 ```c
   /* Transmit buffer to SPI device and receive the response */
@@ -246,9 +250,11 @@ __Transfer__ SPI Data
   recv_buffer_len = buflen;
 ```
 
-TODO
+Note that the received data goes into our __Receive Buffer__.
 
-__Deselect__ the device and __unlock__ the bus
+(Which will be returned in the read() operation)
+
+Finally we __deselect the device__ and __unlock the bus__...
 
 ```c
   /* Deselect the SPI device (unused for BL602) */
@@ -263,9 +269,17 @@ __Deselect__ the device and __unlock__ the bus
 }
 ```
 
-TODO
+The return value is the number of bytes transferred.
 
-![](https://lupyuen.github.io/images/spi2-driver2.png)
+(Deselect has no effect on BL602. The SPI Hardware automatically sets Chip Select to High after SPI transfer)
+
+_What are SPI_LOCK, SPI_SELECT and SPI_EXCHANGE?_
+
+That's the __SPI Interface__ for NuttX. We'll cover this in the Appendix.
+
+![Write Operation](https://lupyuen.github.io/images/spi2-driver2.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208)
 
 ## Read Operation
 
@@ -323,9 +337,11 @@ static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
 }
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L95-L117)
-
 ![](https://lupyuen.github.io/images/spi2-driver3.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L107-L129)
+
+![SPI Test App](https://lupyuen.github.io/images/spi2-plan3.jpg)
 
 # Inside the SPI Test App
 
