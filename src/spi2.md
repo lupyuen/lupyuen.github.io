@@ -422,6 +422,8 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
 
 1.  Save the configuration and exit menuconfig
 
+1.  For ESP32: TODO
+
 1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32
 
 1.  In the NuttX Shell, enter...
