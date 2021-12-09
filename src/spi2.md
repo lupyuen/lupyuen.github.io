@@ -378,13 +378,17 @@ TODO
 
 1.  Download the source code...
 
-    TODO
+    ```bash
+    mkdir nuttx
+    cd nuttx
+    git clone --branch spi_test https://github.com/lupyuen/incubator-nuttx nuttx
+    git clone --branch spi_test https://github.com/lupyuen/incubator-nuttx-apps apps
+    ```
 
 1.  Configure the build...
 
     ```bash
-    ## TODO: Change this to the path of our "incubator-nuttx" folder
-    cd nuttx/nuttx
+    cd nuttx
 
     ## For BL602: Configure the build for BL602
     ./tools/configure.sh bl602evb:nsh
