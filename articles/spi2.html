@@ -79,7 +79,8 @@
 <li><a href="#close-spi-test-driver">4.4 Close SPI Test Driver</a><ul></ul></li></ul></li>
 <li><a href="#run-the-spi-test-app">5 Run the SPI Test App</a><ul></ul></li>
 <li><a href="#test-with-logic-analyser">6 Test with Logic Analyser</a><ul></ul></li>
-<li><a href="#control-chip-select-with-gpio">7 Control Chip Select with GPIO</a><ul></ul></li>
+<li><a href="#control-chip-select-with-gpio">7 Control Chip Select with GPIO</a><ul>
+<li><a href="#gpio-output-as-chip-select">7.1 GPIO Output as Chip Select</a><ul></ul></li></ul></li>
 <li><a href="#test-with-semtech-sx1262">8 Test with Semtech SX1262</a><ul></ul></li>
 <li><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
@@ -632,15 +633,64 @@ config ESP32_SPI2_MISOPIN
 <p>(BL602 has a quirk that swaps MISO and MOSI, the fix is explained in the Appendix)</p>
 <h1 id="control-chip-select-with-gpio" class="section-header"><a href="#control-chip-select-with-gpio">7 Control Chip Select with GPIO</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
-<p>If we zoom out the display in the Logic Analyser, we see a problem with <strong>SPI Chip Select on BL602</strong>…</p>
+<p>If we zoom out the above display in the Logic Analyser, we see a problem with <strong>SPI Chip Select on BL602</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-logic3.png" alt="Chip Select goes Low after every byte" /></p>
 <p>BL602 sets Chip Select to <strong>High after EVERY byte</strong>!</p>
 <p>This will be a problem for <strong>Semtech SX1262</strong>…</p>
 <p>It expects Chip Select to be <strong>High after the entire multi-byte command</strong> has been transmitted! (Not after every byte)</p>
 <p>(I don’t think ESP32 has this problem, please lemme know! 🙏)</p>
 <p><em>Can we control SPI Chip Select ourselves?</em></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx5.png" alt="" /></p>
+<p>Yes, we may control Chip Select ourselves with the <strong>GPIO Output</strong> function in NuttX.</p>
+<p>This means we designate a <strong>GPIO Output Pin</strong> that will be used for Chip Select.</p>
+<p>And we call NuttX to flip the pin Low and High, before and after each SPI transfer.</p>
+<p><em>Is there another reason for controlling Chip Select with GPIO?</em></p>
+<p>On many BL602 / ESP32 boards, the SPI Bus (MISO, MOSI and SCK) is <strong>shared by multiple SPI Devices</strong>.</p>
+<p>But each SPI Device has its own <strong>Chip Select Pin</strong>.</p>
+<p>For such boards we’ll have to control each Chip Select Pin with GPIO.</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio">(PineDio Stack BL604 shares its SPI Bus with SX1262 Transceiver, ST7789 Display and SPI Flash)</a></p>
+<h2 id="gpio-output-as-chip-select" class="section-header"><a href="#gpio-output-as-chip-select">7.1 GPIO Output as Chip Select</a></h2>
+<p>Let’s look at the code in <strong>SPI Test App #2</strong> that controls Chip Select with GPIO: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">spi_test2_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Open GPIO Output for SPI Chip Select */
+
+int cs = open(&quot;/dev/gpout1&quot;, O_RDWR);
+assert(cs &gt;= 0);  /* TODO: Handle error */</code></pre></div>
+<p>This is new: We open the GPIO Output device <strong>“/dev/gpout1”</strong> for the SPI Chip Select Pin.</p>
+<p>Next we <strong>open our SPI Test Driver</strong> as before…</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Open SPI Test Driver */
+
+int fd = open(&quot;/dev/spitest0&quot;, O_RDWR);
+assert(fd &gt;= 0);</code></pre></div>
+<p>Then we set our <strong>GPIO Output / Chip Select</strong> to Low by calling <strong>ioctl()</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Set SPI Chip Select to Low */
+
+int ret = ioctl(cs, GPIOC_WRITE, 0);
+assert(ret &gt;= 0);</code></pre></div>
+<p>Now that the SPI Device is active, we can <strong>transmit and receive</strong> our SPI data…</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Transmit command to SX1262: Get Status */
+
+static char get_status[] = { 0xc0, 0x00 };
+int bytes_written = write(fd, get_status, sizeof(get_status));
+assert(bytes_written == sizeof(get_status));
+
+/* Read response from SX1262 */
+
+static char rx_data[256];  /* Buffer for SPI response */
+int bytes_read = read(fd, rx_data, sizeof(rx_data));
+assert(bytes_read == sizeof(get_status));</code></pre></div>
+<p>(We’ll explain <strong>get_status</strong> in the next section)</p>
+<p>Finally we set our <strong>GPIO Output / Chip Select</strong> to High… </p>
+<div class="example-wrap"><pre class="language-c"><code>/* Set SPI Chip Select to High */
+
+ret = ioctl(cs, GPIOC_WRITE, 1);
+assert(ret &gt;= 0);
+
+/* Close SPI Test Driver and GPIO Output */
+
+close(fd);
+close(cs);</code></pre></div>
+<p>And close the SPI Test Driver and GPIO Output.</p>
+<p>Let’s watch SPI Test App #2 in action with Semtech SX1262.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx5.png" alt="Control Chip Select with GPIO" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
 <h1 id="test-with-semtech-sx1262" class="section-header"><a href="#test-with-semtech-sx1262">8 Test with Semtech SX1262</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
