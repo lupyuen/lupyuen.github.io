@@ -580,13 +580,27 @@ Let's run our SPI Test App!
 
 _(For BL602 and ESP32)_
 
-TODO
+Follow these steps to run our SPI Test App...
 
-1.  We enable our app...
+1.  Assume that we have downloaded and configured our NuttX code...
 
-    ![Select "spi_test" in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.png)
+    [__"Load the SPI Test Driver"__](https://lupyuen.github.io/articles/spi2#load-the-spi-test-driver)
 
-1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32.
+1.  Edit the build configuration...
+
+    ```bash
+    make menuconfig
+    ```
+
+1.  Enable our SPI Test App in menuconfig...
+
+    [__"Enable App"__](https://lupyuen.github.io/articles/spi2#enable-app)
+
+    ![Enable SPI Test App in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.png)
+
+1.  Save the configuration and exit menuconfig
+
+1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32
 
 1.  In the NuttX Shell, enter...
 
@@ -594,13 +608,17 @@ TODO
     spi_test
     ```
 
-1.  Now we see every byte transferred by #NuttX's SPI Driver for #BL602!
+1.  We should see every byte transmitted and received over SPI...
+
+    (Thanks to SPI Logging!)
 
     ![SPI Test App](https://lupyuen.github.io/images/spi2-app3.png)
 
 # Test with Logic Analyser
 
 _(For BL602 and ESP32)_
+
+_How do we check if our app is transmitting SPI data correctly?_
 
 TODO
 
