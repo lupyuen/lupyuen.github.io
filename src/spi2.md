@@ -471,9 +471,9 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
     ls /dev
     ```
 
-    Our Device Driver appears as __"/dev/spitest0"__
+    Our SPI Test Driver appears as __"/dev/spitest0"__
     
-    ![Our Device Driver appears as "/dev/spitest0"](https://lupyuen.github.io/images/spi2-newdriver10.png)
+    ![Our SPI Test Driver appears as "/dev/spitest0"](https://lupyuen.github.io/images/spi2-newdriver10.png)
 
     Congratulations NuttX has loaded our Device Driver!
 
@@ -493,13 +493,21 @@ We created the SPI Test App by cloning another app, as explained here...
 
 -   [__"Create a NuttX App"__](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-app)
 
-TODO
+We'll do the following in our SPI Test App...
+
+1.  __Open__ our SPI Test Driver
+
+1.  __Transmit__ data over SPI
+
+1.  __Receive__ data over SPI
+
+1.  __Close__ our SPI Test Driver
 
 ## Open SPI Test Driver
 
-TODO
+Earlier we saw that our SPI Test Driver appears in NuttX as __"/dev/spitest0"__
 
-From [spi_test_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
+Let's open the driver: [spi_test_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
 
 ```c
 int main(int argc, FAR char *argv[])
@@ -510,11 +518,15 @@ int main(int argc, FAR char *argv[])
   assert(fd >= 0);  /* TODO: Handle error */
 ```
 
-TODO
+(Yep this looks very Linux-like!)
+
+__open()__ returns a __File Descriptor__ that we'll use to transmit and receive data over SPI.
 
 ## Transmit SPI Data
 
-TODO
+Our SPI Test Driver implements a __write()__ operation that will transmit SPI data.
+
+We call it like so...
 
 ```c
   /* Write to SPI Test Driver */
@@ -524,9 +536,15 @@ TODO
   assert(bytes_written == sizeof(data));
 ```
 
+This transmits the string __"Hello World"__ to our SPI Device.
+
+(Including the terminating null character)
+
 ## Receive SPI Data
 
-TODO
+Remember that the __write()__ operation will actually transmit and receive SPI data at the same time.
+
+We read the received SPI data by calling __read()__...
 
 ```c
   /* Read response from SPI Test Driver */
@@ -538,9 +556,11 @@ TODO
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L65-L69)
 
+This code isn't in our SPI Test App, we'll see this later when we test with Semtech SX1262.
+
 ## Close SPI Test Driver
 
-TODO
+Finally we close the File Descriptor for our SPI Test Driver...
 
 ```c
   /* Close SPI Test Driver */
@@ -550,13 +570,11 @@ TODO
 }
 ```
 
-Here's how we open the SPI Test Driver and write data
+Let's run our SPI Test App!
 
 ![SPI Test App](https://lupyuen.github.io/images/spi2-app4.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
-
-![SPI Test App](https://lupyuen.github.io/images/spi2-plan3.jpg)
 
 # Run the SPI Test App
 
