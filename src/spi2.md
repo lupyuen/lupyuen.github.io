@@ -485,7 +485,7 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
 
 _(For BL602 and ESP32)_
 
-We've seen the write() and read() operations in our SPI Test Driver.  Now we watch how they are called by our __SPI Test App__...
+We've seen the write() and read() operations in our SPI Test Driver.  Now we learn how they are called by our __SPI Test App__...
 
 -   [__examples/spi_test__](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test)
 
