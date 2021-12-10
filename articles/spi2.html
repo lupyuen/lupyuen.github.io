@@ -553,7 +553,7 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
 <h1 id="run-the-spi-test-app" class="section-header"><a href="#run-the-spi-test-app">5 Run the SPI Test App</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
-<p>Follow these steps to run our SPI Test App…</p>
+<p>Follow these steps to run our SPI Test App on BL602 or ESP32…</p>
 <ol>
 <li>
 <p>Assume that we have downloaded and configured our NuttX code…</p>
@@ -577,8 +577,10 @@ make menuconfig </code></pre></div></li>
 <p>In the NuttX Shell, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>spi_test</code></pre></div></li>
 <li>
-<p>We should see every byte transmitted and received over SPI…</p>
+<p>We should see every byte transmitted and received over SPI.</p>
 <p>(Thanks to SPI Logging!)</p>
+<p>The pic below shows that our app has transmitted the string <strong>“Hello World”</strong> (plus the terminating null) over SPI.</p>
+<p>But because we’re not connected to any SPI Device, we don’t receive any meaningful response. (It’s all <strong>0xFF</strong>)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-app3.png" alt="SPI Test App" /></p>
 </li>
 </ol>
