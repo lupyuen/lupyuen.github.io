@@ -580,7 +580,7 @@ Let's run our SPI Test App!
 
 _(For BL602 and ESP32)_
 
-Follow these steps to run our SPI Test App...
+Follow these steps to run our SPI Test App on BL602 or ESP32...
 
 1.  Assume that we have downloaded and configured our NuttX code...
 
@@ -608,9 +608,13 @@ Follow these steps to run our SPI Test App...
     spi_test
     ```
 
-1.  We should see every byte transmitted and received over SPI...
+1.  We should see every byte transmitted and received over SPI.
 
     (Thanks to SPI Logging!)
+
+    The pic below shows that our app has transmitted the string __"Hello World"__ (plus the terminating null) over SPI.
+
+    But because we're not connected to any SPI Device, we don't receive any meaningful response. (It's all __0xFF__)
 
     ![SPI Test App](https://lupyuen.github.io/images/spi2-app3.png)
 
