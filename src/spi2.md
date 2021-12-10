@@ -477,7 +477,7 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
 
     Congratulations NuttX has loaded our Device Driver!
 
-    Let's proceed to the SPI Test App.
+    Let's talk about our SPI Test App.
 
 ![SPI Test App](https://lupyuen.github.io/images/spi2-plan3.jpg)
 
