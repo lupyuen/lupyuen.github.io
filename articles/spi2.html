@@ -478,8 +478,8 @@ make menuconfig </code></pre></div></li>
 <li>
 <p>In the NuttX Shell, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
-<p>Our Device Driver appears as <strong>“/dev/spitest0”</strong></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="Our Device Driver appears as “/dev/spitest0”" /></p>
+<p>Our SPI Test Driver appears as <strong>“/dev/spitest0”</strong></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="Our SPI Test Driver appears as “/dev/spitest0”" /></p>
 <p>Congratulations NuttX has loaded our Device Driver!</p>
 <p>Let’s talk about our SPI Test App.</p>
 </li>
@@ -495,42 +495,62 @@ make menuconfig </code></pre></div></li>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-app"><strong>“Create a NuttX App”</strong></a></li>
 </ul>
-<p>TODO</p>
+<p>We’ll do the following in our SPI Test App…</p>
+<ol>
+<li>
+<p><strong>Open</strong> our SPI Test Driver</p>
+</li>
+<li>
+<p><strong>Transmit</strong> data over SPI</p>
+</li>
+<li>
+<p><strong>Receive</strong> data over SPI</p>
+</li>
+<li>
+<p><strong>Close</strong> our SPI Test Driver</p>
+</li>
+</ol>
 <h2 id="open-spi-test-driver" class="section-header"><a href="#open-spi-test-driver">4.1 Open SPI Test Driver</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">spi_test_main.c</a></p>
+<p>Earlier we saw that our SPI Test Driver appears in NuttX as <strong>“/dev/spitest0”</strong></p>
+<p>Let’s open the driver: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">spi_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[])
 {
   /* Open SPI Test Driver */
 
   int fd = open(&quot;/dev/spitest0&quot;, O_RDWR);
   assert(fd &gt;= 0);  /* TODO: Handle error */</code></pre></div>
-<p>TODO</p>
+<p>(Yep this looks very Linux-like!)</p>
+<p><strong>open()</strong> returns a <strong>File Descriptor</strong> that we’ll use to transmit and receive data over SPI.</p>
 <h2 id="transmit-spi-data" class="section-header"><a href="#transmit-spi-data">4.2 Transmit SPI Data</a></h2>
-<p>TODO</p>
+<p>Our SPI Test Driver implements a <strong>write()</strong> operation that will transmit SPI data.</p>
+<p>We call it like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Write to SPI Test Driver */
 
   static char data[] = &quot;Hello World&quot;;
   int bytes_written = write(fd, data, sizeof(data));
-  assert(bytes_written == sizeof(data));</code></pre></div><h2 id="receive-spi-data" class="section-header"><a href="#receive-spi-data">4.3 Receive SPI Data</a></h2>
-<p>TODO</p>
+  assert(bytes_written == sizeof(data));</code></pre></div>
+<p>This transmits the string <strong>“Hello World”</strong> to our SPI Device.</p>
+<p>(Including the terminating null character)</p>
+<h2 id="receive-spi-data" class="section-header"><a href="#receive-spi-data">4.3 Receive SPI Data</a></h2>
+<p>Remember that the <strong>write()</strong> operation will actually transmit and receive SPI data at the same time.</p>
+<p>We read the received SPI data by calling <strong>read()</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Read response from SPI Test Driver */
 
   static char rx_data[256];  /* Buffer for SPI response */
   int bytes_read = read(fd, rx_data, sizeof(rx_data));
   assert(bytes_read == sizeof(get_status));</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L65-L69">(Source)</a></p>
+<p>This code isn’t in our SPI Test App, we’ll see this later when we test with Semtech SX1262.</p>
 <h2 id="close-spi-test-driver" class="section-header"><a href="#close-spi-test-driver">4.4 Close SPI Test Driver</a></h2>
-<p>TODO</p>
+<p>Finally we close the File Descriptor for our SPI Test Driver…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Close SPI Test Driver */
 
   close(fd);
   return 0;
 }</code></pre></div>
-<p>Here’s how we open the SPI Test Driver and write data</p>
+<p>Let’s run our SPI Test App!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-app4.png" alt="SPI Test App" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-plan3.jpg" alt="SPI Test App" /></p>
 <h1 id="run-the-spi-test-app" class="section-header"><a href="#run-the-spi-test-app">5 Run the SPI Test App</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>TODO</p>
