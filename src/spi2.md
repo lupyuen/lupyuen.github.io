@@ -600,7 +600,7 @@ TODO
 
 # Test with Logic Analyser
 
-_(For BL602 only)_
+_(For BL602 and ESP32)_
 
 TODO
 
