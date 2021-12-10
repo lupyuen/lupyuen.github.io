@@ -553,25 +553,38 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
 <h1 id="run-the-spi-test-app" class="section-header"><a href="#run-the-spi-test-app">5 Run the SPI Test App</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
-<p>TODO</p>
+<p>Follow these steps to run our SPI Test App…</p>
 <ol>
 <li>
-<p>We enable our app…</p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp4.png" alt="Select “spi_test” in menuconfig" /></p>
+<p>Assume that we have downloaded and configured our NuttX code…</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#load-the-spi-test-driver"><strong>“Load the SPI Test Driver”</strong></a></p>
 </li>
 <li>
-<p>Build (“make”), flash and run the NuttX Firmware on BL602 or ESP32.</p>
+<p>Edit the build configuration…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div></li>
+<li>
+<p>Enable our SPI Test App in menuconfig…</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#enable-app"><strong>“Enable App”</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp4.png" alt="Enable SPI Test App in menuconfig" /></p>
+</li>
+<li>
+<p>Save the configuration and exit menuconfig</p>
+</li>
+<li>
+<p>Build (“make”), flash and run the NuttX Firmware on BL602 or ESP32</p>
 </li>
 <li>
 <p>In the NuttX Shell, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>spi_test</code></pre></div></li>
 <li>
-<p>Now we see every byte transferred by #NuttX’s SPI Driver for #BL602!</p>
+<p>We should see every byte transmitted and received over SPI…</p>
+<p>(Thanks to SPI Logging!)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-app3.png" alt="SPI Test App" /></p>
 </li>
 </ol>
 <h1 id="test-with-logic-analyser" class="section-header"><a href="#test-with-logic-analyser">6 Test with Logic Analyser</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
+<p><em>How do we check if our app is transmitting SPI data correctly?</em></p>
 <p>TODO</p>
 <p>How to verify the #NuttX SPI Output? We sniff the #BL602 SPI Bus with a Logic Analyser</p>
 <p><a href="https://lupyuen.github.io/articles/spi#appendix-troubleshoot-bl602-spi-with-logic-analyser">(Source)</a></p>
