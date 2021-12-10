@@ -614,7 +614,7 @@ Follow these steps to run our SPI Test App on BL602 or ESP32...
 
     The pic below shows that our app has transmitted the string __"Hello World"__ (plus the terminating null) over SPI.
 
-    But because we're not connected to any SPI Device, we don't receive any meaningful response. (It's all __0xFF__)
+    But because we're not connected to any SPI Device, we don't receive any meaningful response. (It's all `0xFF`)
 
     ![SPI Test App](https://lupyuen.github.io/images/spi2-app3.png)
 
@@ -624,57 +624,79 @@ _(For BL602 and ESP32)_
 
 _How do we check if our app is transmitting SPI data correctly?_
 
+Let's connect a __Logic Analyser__ to BL602 / ESP32 and verify the SPI output...
+
+Logic Analyser | BL602 Pin | ESP32 Pin
+:-------: | :---------: | :--------:
+__MOSI__ | GPIO 1 | GPIO 13
+__MISO__ | GPIO 0 | GPIO 12
+__SCK__  | GPIO 3 | GPIO 14
+__CS__   | GPIO 2 | GPIO 15
+__GND__  | GND | GND
+
+![Logic Analyser connected to PineCone BL602](https://lupyuen.github.io/images/spi2-logic4.jpg)
+
+_How did we get the GPIO Pin Numbers for the SPI Port?_
+
+__For BL602:__ SPI Pins are defined in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L87-L92)
+
+```c
+#define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN2)
+#define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN1)
+#define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN3)
+```
+
+__For ESP32:__ SPI Pins are defined in [Kconfig](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/xtensa/src/esp32/Kconfig#L799-L817)
+
+```text
+config ESP32_SPI2_CSPIN
+	int "SPI2 CS Pin"
+	default 15
+	range 0 39
+
+config ESP32_SPI2_CLKPIN
+	int "SPI2 CLK Pin"
+	default 14
+	range 0 39
+
+config ESP32_SPI2_MOSIPIN
+	int "SPI2 MOSI Pin"
+	default 13
+	range 0 39
+
+config ESP32_SPI2_MISOPIN
+	int "SPI2 MISO Pin"
+	default 12
+	range 0 39
+```
+
+When we run __"spi_test"__, we see this in our Logic Analyser...
+
+![Running spi_test and observing the Logic Analyser](https://lupyuen.github.io/images/spi2-logic2.png)
+
+This looks OK! Though MISO is idle because it's not connected to an SPI Device.
+
+Let's test with a real SPI Device: Semtech SX1262.
+
+(BL602 has a quirk that swaps MISO and MOSI, the fix is explained in the Appendix)
+
+![Chip Select goes Low after every byte](https://lupyuen.github.io/images/spi2-logic3.png)
+
+# Control Chip Select with GPIO
+
+_(For BL602 and ESP32)_
+
 TODO
 
-How to verify the #NuttX SPI Output? We sniff the #BL602 SPI Bus with a Logic Analyser
+#BL602 SPI Chip Select has a problem ... It goes High after EVERY byte ... Which is no-no for SX1262 ... Solution: We control Chip Select via GPIO
 
-[(Source)](https://lupyuen.github.io/articles/spi#appendix-troubleshoot-bl602-spi-with-logic-analyser)
+Here's our #NuttX App controlling SPI Chip Select via GPIO
 
-![](https://lupyuen.github.io/images/spi2-logic4.jpg)
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74)
 
-TODO26
+![](https://lupyuen.github.io/images/spi2-sx5.png)
 
-In #NuttX the SPI Pins for #BL602 are defined in "board.h" ... MOSI is GPIO 1, MISO is GPIO 0
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L87-L92)
-
-![](https://lupyuen.github.io/images/spi2-driver5.png)
-
-TODO27
-
-#NuttX's SPI Pins match the #BL602 Reference Manual: MOSI = GPIO 1, MISO = GPIO 0 ... But we're about to witness a BL602 SPI Quirk
-
-[(Source)](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en)
-
-![](https://lupyuen.github.io/images/spi2-driver6.png)
-
-TODO37
-
-Logic Analyser connected to #BL602 shows that MISO and MOSI are swapped! This happens in BL602 IoT SDK ... Also in #NuttX!
-
-[(Source)](https://lupyuen.github.io/articles/spi#spi-data-pins-are-flipped)
-
-![](https://lupyuen.github.io/images/spi2-logic.png)
-
-TODO28
-
-We can swap MISO and MOSI on #BL602 by setting a Hardware Register ... Let's do this on #NuttX
-
-[(Source)](https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped)
-
-Here's how we swap #BL602 MOSI and MISO on #NuttX ... So that the SPI Pins are consistent with the BL602 Reference Manual
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140)
-
-![](https://lupyuen.github.io/images/spi2-driver7.png)
-
-TODO38
-
-After swapping #BL602 MISO and MOSI at #NuttX startup ... Logic Analyser shows that the SPI Pins are now consistent with BL602 Reference Manual! 🎉
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140)
-
-![](https://lupyuen.github.io/images/spi2-logic2.png)
 
 # Test with Semtech SX1262
 
@@ -695,22 +717,6 @@ Our #NuttX App transmits an SPI Command to SX1262 ... And reads the SPI Response
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L54-L84)
 
 ![](https://lupyuen.github.io/images/spi2-sx4.png)
-
-TODO39
-
-#BL602 SPI Chip Select has a problem ... It goes High after EVERY byte ... Which is no-no for SX1262 ... Solution: We control Chip Select via GPIO
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74)
-
-![](https://lupyuen.github.io/images/spi2-logic3.png)
-
-TODO61
-
-Here's our #NuttX App controlling SPI Chip Select via GPIO
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74)
-
-![](https://lupyuen.github.io/images/spi2-sx5.png)
 
 TODO62
 
@@ -1263,6 +1269,62 @@ TODO34
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65)
 
 ![](https://lupyuen.github.io/images/spi2-interface6.png)
+
+# Appendix: MISO And MOSI Are Swapped
+
+_(For BL602 only)_
+
+TODO
+
+How to verify the #NuttX SPI Output? We sniff the #BL602 SPI Bus with a Logic Analyser
+
+[(Source)](https://lupyuen.github.io/articles/spi#appendix-troubleshoot-bl602-spi-with-logic-analyser)
+
+![](https://lupyuen.github.io/images/spi2-logic4.jpg)
+
+TODO26
+
+In #NuttX the SPI Pins for #BL602 are defined in "board.h" ... MOSI is GPIO 1, MISO is GPIO 0
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L87-L92)
+
+![](https://lupyuen.github.io/images/spi2-driver5.png)
+
+TODO27
+
+#NuttX's SPI Pins match the #BL602 Reference Manual: MOSI = GPIO 1, MISO = GPIO 0 ... But we're about to witness a BL602 SPI Quirk
+
+[(Source)](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en)
+
+![](https://lupyuen.github.io/images/spi2-driver6.png)
+
+TODO37
+
+Logic Analyser connected to #BL602 shows that MISO and MOSI are swapped! This happens in BL602 IoT SDK ... Also in #NuttX!
+
+[(Source)](https://lupyuen.github.io/articles/spi#spi-data-pins-are-flipped)
+
+![](https://lupyuen.github.io/images/spi2-logic.png)
+
+TODO28
+
+We can swap MISO and MOSI on #BL602 by setting a Hardware Register ... Let's do this on #NuttX
+
+[(Source)](https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped)
+
+Here's how we swap #BL602 MOSI and MISO on #NuttX ... So that the SPI Pins are consistent with the BL602 Reference Manual
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140)
+
+![](https://lupyuen.github.io/images/spi2-driver7.png)
+
+TODO38
+
+After swapping #BL602 MISO and MOSI at #NuttX startup ... Logic Analyser shows that the SPI Pins are now consistent with BL602 Reference Manual! 🎉
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140)
+
+![](https://lupyuen.github.io/images/spi2-logic2.png)
 
 # Appendix: PineDio Stack BL604
 
