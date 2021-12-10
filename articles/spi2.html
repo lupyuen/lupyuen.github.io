@@ -630,14 +630,18 @@ config ESP32_SPI2_MISOPIN
 <p>This looks OK! Though MISO is idle because it’s not connected to an SPI Device.</p>
 <p>Let’s test with a real SPI Device: Semtech SX1262.</p>
 <p>(BL602 has a quirk that swaps MISO and MOSI, the fix is explained in the Appendix)</p>
-<p><img src="https://lupyuen.github.io/images/spi2-logic3.png" alt="Chip Select goes Low after every byte" /></p>
 <h1 id="control-chip-select-with-gpio" class="section-header"><a href="#control-chip-select-with-gpio">7 Control Chip Select with GPIO</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
+<p>If we zoom out the display in the Logic Analyser, we see a problem with <strong>SPI Chip Select on BL602</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-logic3.png" alt="Chip Select goes Low after every byte" /></p>
+<p>BL602 sets Chip Select to <strong>High after EVERY byte</strong>!</p>
+<p>This will be a problem for <strong>Semtech SX1262</strong>…</p>
+<p>It expects Chip Select to be <strong>High after the entire multi-byte command</strong> has been transmitted! (Not after every byte)</p>
+<p>(I don’t think ESP32 has this problem, please lemme know! 🙏)</p>
+<p><em>Can we control SPI Chip Select ourselves?</em></p>
 <p>TODO</p>
-<p>#BL602 SPI Chip Select has a problem … It goes High after EVERY byte … Which is no-no for SX1262 … Solution: We control Chip Select via GPIO</p>
-<p>Here’s our #NuttX App controlling SPI Chip Select via GPIO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx5.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
 <h1 id="test-with-semtech-sx1262" class="section-header"><a href="#test-with-semtech-sx1262">8 Test with Semtech SX1262</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>TODO</p>
