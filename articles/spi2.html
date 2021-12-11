@@ -84,7 +84,9 @@
 <li><a href="#test-with-semtech-sx1262">8 Test with Semtech SX1262</a><ul>
 <li><a href="#connect-sx1262">8.1 Connect SX1262</a><ul></ul></li>
 <li><a href="#test-sx1262">8.2 Test SX1262</a><ul></ul></li></ul></li>
-<li><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a><ul></ul></li>
+<li><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a><ul>
+<li><a href="#pin-definitions">9.1 Pin Definitions</a><ul></ul></li>
+<li><a href="#run-nuttx-on-pinedio-stack">9.2 Run NuttX on PineDio Stack</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-create-a-nuttx-device-driver">12 Appendix: Create a NuttX Device Driver</a><ul>
@@ -832,23 +834,30 @@ SX1262 Register 8 is 0x80</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="SPI Test App #2 reads the SX1262 Register correctly" /></p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="PineDio Stack BL604" /></p>
 <h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a></h1>
 <p><em>(For BL604 only)</em></p>
+<p>Pine64 has just sent me a prototype of <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> (version 2, pic above) with onboard SX1262 Transceiver, ST7789 Display, SPI Flash, GPS, Compass, Touch Panel, Heart Rate Sensor, Vibrator, …</p>
+<p>(Yep multiple devices on the same SPI Bus)</p>
+<p>Let’s test this with NuttX!</p>
+<p>Here’s how it looks inside…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
+<p>Before testing, remember to connect the <strong>LoRa Antenna</strong> so that we don’t fry the SX1262 Transceiver as we charge up the Power Amplifier…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio10a.jpg" alt="PineDio Stack BL604 with Antenna" /></p>
+<h2 id="pin-definitions" class="section-header"><a href="#pin-definitions">9.1 Pin Definitions</a></h2>
 <p>TODO</p>
-<p>Will #NuttX run on #Pine64’s PineDio Stack BL604 with onboard Semtech SX1262? Let’s find out!</p>
-<p><a href="https://lupyuen.github.io/articles/pinedio">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio.jpg" alt="" /></p>
-<p>TODO55</p>
 <p>Here’s how Semtech SX1262 is wired onboard #PineDio Stack #BL604 … Let’s update the Pin Definitions in NuttX</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="" /></p>
 <p>TODO53</p>
 <p>Here are the #NuttX Pin Definitions for PineDio Stack BL604 with onboard SX1262 … As derived from the schematic</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio.png" alt="" /></p>
-<p>TODO54</p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio.png" alt="SX1262 Interface on PineDio Stack" /></p>
+<h2 id="run-nuttx-on-pinedio-stack" class="section-header"><a href="#run-nuttx-on-pinedio-stack">9.2 Run NuttX on PineDio Stack</a></h2>
+<p>TODO</p>
 <p>Our #NuttX App runs OK on PineDio Stack BL604 with onboard SX1262! 🎉</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2.png" alt="" /></p>
+<p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>I’m new to NuttX but I had lots of fun experimenting with it. I hope you’ll enjoy NuttX too!</p>
@@ -1302,8 +1311,6 @@ make menuconfig </code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="" /></p>
 <h1 id="appendix-pinedio-stack-bl604" class="section-header"><a href="#appendix-pinedio-stack-bl604">18 Appendix: PineDio Stack BL604</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio2.jpg" alt="" /></p>
 <p>TODO8</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio3.jpg" alt="" /></p>
 <p>TODO9</p>
@@ -1318,8 +1325,6 @@ make menuconfig </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio6.jpg" alt="" /></p>
 <p>TODO16</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio4.jpg" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio10.jpg" alt="" /></p>
 
     
 </body>
