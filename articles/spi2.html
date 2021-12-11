@@ -104,8 +104,7 @@
 <li><a href="#reproduce-the-issue">16.1 Reproduce the issue</a><ul></ul></li>
 <li><a href="#fix-the-issue">16.2 Fix the issue</a><ul></ul></li>
 <li><a href="#test-the-fix">16.3 Test the fix</a><ul></ul></li></ul></li>
-<li><a href="#appendix-spi-mode-quirk">17 Appendix: SPI Mode Quirk</a><ul></ul></li>
-<li><a href="#appendix-pinedio-stack-bl604">18 Appendix: PineDio Stack BL604</a><ul></ul></li></ul></nav><p>📝 <em>15 Dec 2021</em></p>
+<li><a href="#appendix-spi-mode-quirk">17 Appendix: SPI Mode Quirk</a><ul></ul></li></ul></nav><p>📝 <em>15 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)" /></p>
 <p><em>PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)</em></p>
 <p>Last article we explored <strong>Apache NuttX OS</strong> and its <strong>GPIO Functions</strong>…</p>
@@ -1316,6 +1315,10 @@ make menuconfig </code></pre></div>
 <h1 id="appendix-miso-and-mosi-are-swapped" class="section-header"><a href="#appendix-miso-and-mosi-are-swapped">16 Appendix: MISO And MOSI Are Swapped</a></h1>
 <p><em>(For BL602 only)</em></p>
 <p>TODO</p>
+<p>Note that the <strong>SPI Mode needs to be 1</strong> (instead of 0) for our test to succeed…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk"><strong>“SPI Mode Quirk”</strong></a></li>
+</ul>
 <h2 id="reproduce-the-issue" class="section-header"><a href="#reproduce-the-issue">16.1 Reproduce the issue</a></h2>
 <p>The SPI Pins are defined in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L78-L83">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* SPI Configuration */
@@ -1455,11 +1458,20 @@ static void bl602_spi_init(struct spi_dev_s *dev)
   bl602_swap_spi_0_mosi_with_miso(1);</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">(Source)</a></p>
 <h2 id="test-the-fix" class="section-header"><a href="#test-the-fix">16.3 Test the fix</a></h2>
-<p>TODO</p>
-<p>spi_test_app2</p>
-<p>After swapping #BL602 MISO and MOSI at #NuttX startup … Logic Analyser shows that the SPI Pins are now consistent with BL602 Reference Manual! 🎉</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="" /></p>
+<p>After applying the fix, we see that the <strong>MOSI output is now correct</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="Logic Analyser after applying the fix" /></p>
+<p>As for <strong>MISO input</strong>, we tested with PineCone BL602 connected to <strong>Semtech SX1262</strong>.  We verified that the register data was read correctly over SPI…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#test-with-semtech-sx1262"><strong>“Test with Semtech SX1262”</strong></a></li>
+</ul>
+<p>We have also tested the fix with <strong>PineDio Stack BL604</strong> and its onboard SX1262…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#test-with-pinedio-stack"><strong>“Test with PineDio Stack”</strong></a></li>
+</ul>
+<p>Note that the <strong>SPI Mode needs to be 1</strong> (instead of 0) for our test to succeed…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk"><strong>“SPI Mode Quirk”</strong></a></li>
+</ul>
 <h1 id="appendix-spi-mode-quirk" class="section-header"><a href="#appendix-spi-mode-quirk">17 Appendix: SPI Mode Quirk</a></h1>
 <p><em>(For BL602 only)</em></p>
 <p>TODO</p>
@@ -1488,21 +1500,6 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 <p>Our #NuttX App now reads the SX1262 Register correctly! 🎉</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="" /></p>
-<h1 id="appendix-pinedio-stack-bl604" class="section-header"><a href="#appendix-pinedio-stack-bl604">18 Appendix: PineDio Stack BL604</a></h1>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio3.jpg" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio8.jpg" alt="" /></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio9.jpg" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio7.jpg" alt="" /></p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio5.jpg" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio6.jpg" alt="" /></p>
-<p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio4.jpg" alt="" /></p>
 
     
 </body>
