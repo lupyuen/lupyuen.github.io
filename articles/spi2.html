@@ -1475,22 +1475,19 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 </ul>
 <h1 id="appendix-spi-mode-quirk" class="section-header"><a href="#appendix-spi-mode-quirk">17 Appendix: SPI Mode Quirk</a></h1>
 <p><em>(For BL602 only)</em></p>
+<p>Let’s watch what happens if we use <strong>SPI Mode 0</strong> (instead of Mode 1) when BL602 talks to Semtech SX1262.</p>
 <p>TODO</p>
 <p>Let’s test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver</p>
 <p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="" /></p>
 <p>TODO60</p>
 <p>Our #NuttX App transmits an SPI Command to SX1262 … And reads the SPI Response from SX1262</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L54-L84">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx4.png" alt="" /></p>
 <p>TODO62</p>
 <p>Now our #NuttX App is ready to read an SX1262 Register over SPI!</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx6.png" alt="" /></p>
 <p>TODO58</p>
 <p>Our #NuttX App reads an SX1262 Register … But it returns garbage! There’s a workaround for this #BL602 SPI Quirk</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx2.png" alt="" /></p>
 <p>TODO63</p>
 <p>#BL602 has an SPI Quirk … We must use SPI Mode 1 instead of Mode 0 … Let’s fix this in #NuttX</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(Source)</a></p>
