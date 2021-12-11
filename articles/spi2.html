@@ -407,7 +407,7 @@ static ssize_t spi_test_driver_read(
 #define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
 #endif /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p>BL602 uses <strong>SPI Mode 1</strong> (instead of Mode 0) because of an <strong>SPI Mode Quirk</strong> in BL602. </p>
-<p>(More about this in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(More about the SPI Mode Quirk)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver4.png" alt="Register SPI Test Driver at startup" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">(Source)</a></p>
 <h1 id="load-the-spi-test-driver" class="section-header"><a href="#load-the-spi-test-driver">3 Load the SPI Test Driver</a></h1>
@@ -642,7 +642,7 @@ config ESP32_SPI2_MISOPIN
 <p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="Running spi_test and observing the Logic Analyser" /></p>
 <p>This looks OK! Though MISO is idle because it’s not connected to an SPI Device.</p>
 <p>Let’s test with a real SPI Device: Semtech SX1262.</p>
-<p>(BL602 has a quirk that swaps MISO and MOSI, the fix is explained in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped">(BL602 has a quirk that swaps MISO and MOSI, the fix is explained here)</a></p>
 <h1 id="control-chip-select-with-gpio" class="section-header"><a href="#control-chip-select-with-gpio">7 Control Chip Select with GPIO</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>If we zoom out the above display in the Logic Analyser, we see a problem with <strong>SPI Chip Select on BL602</strong>…</p>
@@ -841,7 +841,7 @@ SX1262 Register 8 is 0x80</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="SPI Test App #2 reads the SX1262 Register correctly" /></p>
-<p>(BL602 has a quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(BL602 has a quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)</a></p>
 <p>Let’s run SPI Test App #2 on a new gagdet with onboard SX1262: PineDio Stack BL604.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="PineDio Stack BL604" /></p>
 <h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a></h1>
