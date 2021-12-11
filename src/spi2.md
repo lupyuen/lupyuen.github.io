@@ -28,7 +28,7 @@ I realise that many of my readers are using ESP32 instead of BL602.
 
 In this article I'll point out the tweaks needed to __run the code on ESP32__.
 
-(Watch for the __"Xref"__ tags)
+(Watch for the __"For ESP32"__ tags)
 
 ![SPI Test App calls SPI Test Driver to access SPI Driver](https://lupyuen.github.io/images/spi2-plan.jpg)
 
@@ -461,7 +461,7 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
 
 1.  Save the configuration and exit menuconfig
 
-1.  For ESP32: Edit [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) to register our SPI Test Driver [(See this)](https://lupyuen.github.io/articles/spi2#register-device-driver)
+1.  __For ESP32:__ Edit [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) to register our SPI Test Driver [(See this)](https://lupyuen.github.io/articles/spi2#register-device-driver)
 
 1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32
 
@@ -790,39 +790,96 @@ Let's watch SPI Test App #2 in action with Semtech SX1262.
 
 _(For BL602 and ESP32)_
 
+[__Semtech SX1262__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262) is a LoRa Transceiver (Radio Transmitter + Receiver) that's not yet supported by NuttX.
+
+[(Though the older model SX1276 is supported by NuttX)](https://github.com/apache/incubator-nuttx/tree/master/drivers/wireless/lpwan/sx127x)
+
+Today we shall send two short commands to SX1262 for testing...
+
+-   __Get Status:__ We transmit this sequence of bytes to SX1262...
+
+    ```text
+    C0 00
+    ```
+
+    We expect the SPI Response to look like this...
+
+    ```text
+    A2 22
+    ```
+
+    (The response might get muddled, we'll learn why in a while)
+
+-   __Read Register 0x08:__  We transmit this sequence of bytes to SX1262...
+
+    ```text
+    1D 00 08 00 00
+    ```
+
+    We expect the SPI Response to end with __`0x80`__ like this...
+
+    ```text
+    A2 A2 A2 A2 80
+    ```
+
+    [(Register `0x08` is expected to have value `0x80` at startup)](https://lupyuen.github.io/articles/lorawan#troubleshoot-lorawan)
+
+We send the "Get Status" command with this code: [spi_test2_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L59-L83)
+
+```c
+/* Transmit command to SX1262: Get Status */
+
+static char get_status[] = { 0xc0, 0x00 };
+int bytes_written = write(fd, get_status, sizeof(get_status));
+assert(bytes_written == sizeof(get_status));
+
+/* Read response from SX1262 */
+
+static char rx_data[256];  /* Buffer for SPI response */
+int bytes_read = read(fd, rx_data, sizeof(rx_data));
+assert(bytes_read == sizeof(get_status));
+
+/* Show the received status */
+
+printf("\nSX1262 Status is %d\n", (rx_data[1] >> 4) & 0b111);  /* Bits 6:4 */
+```
+
+And the "Read Register 0x08" command with this code: [spi_test2_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117)
+
+```c
+  /* Transmit command to SX1262: Read Register 8 */
+
+  static char read_reg[] = { 0x1d, 0x00, 0x08, 0x00, 0x00 };
+  bytes_written = write(fd, read_reg, sizeof(read_reg));
+  assert(bytes_written == sizeof(read_reg));
+
+  /* Read response from SX1262 */
+
+  bytes_read = read(fd, rx_data, sizeof(rx_data));
+  assert(bytes_read == sizeof(read_reg));
+
+  /* Show the received register value */
+
+  printf("\nSX1262 Register 8 is 0x%02x\n", rx_data[4]);
+```
+
+[(See the complete program)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c)
+
+![Transmit command to SX1262: Read Register 0x08](https://lupyuen.github.io/images/spi2-sx6.png)
+
+## Connect SX1262
+
 TODO
 
 Let's test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver
 
-[(Source)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
-
 ![](https://lupyuen.github.io/images/spi2-title.jpg)
 
-TODO60
+## Test SX1262
 
-Our #NuttX App transmits an SPI Command to SX1262 ... And reads the SPI Response from SX1262
+TODO
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L54-L84)
-
-![](https://lupyuen.github.io/images/spi2-sx4.png)
-
-TODO62
-
-Now our #NuttX App is ready to read an SX1262 Register over SPI!
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119)
-
-![](https://lupyuen.github.io/images/spi2-sx6.png)
-
-TODO58
-
-Our #NuttX App reads an SX1262 Register ... But it returns garbage! There's a workaround for this #BL602 SPI Quirk
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119)
-
-![](https://lupyuen.github.io/images/spi2-sx2.png)
-
-TODO63
+Enable SPI Test App #2
 
 #BL602 has an SPI Quirk ... We must use SPI Mode 1 instead of Mode 0 ... Let's fix this in #NuttX
 
@@ -1028,9 +1085,9 @@ We enable SPI and our Device Driver as follows...
 
 1.  In __menuconfig__, select __"System Type"__
 
-    For BL602: Check the box for __"BL602 Peripheral Support"__ → __"SPI0"__
+    __For BL602:__ Check the box for __"BL602 Peripheral Support"__ → __"SPI0"__
 
-    For ESP32: Check the box for __"ESP32 Peripheral Select"__ → __"SPI 2"__
+    __For ESP32:__ Check the box for __"ESP32 Peripheral Select"__ → __"SPI 2"__
 
     Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
@@ -1094,17 +1151,17 @@ During NuttX startup, we need to register our Device Driver like so...
 
 1.  Browse to the __Board Folder__...
 
-    For BL602: [__nuttx/nuttx/boards/ risc-v/bl602/bl602evb__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src) 
+    __For BL602:__ [__nuttx/nuttx/boards/ risc-v/bl602/bl602evb__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src) 
 
-    For ESP32: [__nuttx/nuttx/boards/ xtensa/esp32/esp32-devkitc__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src)
+    __For ESP32:__ [__nuttx/nuttx/boards/ xtensa/esp32/esp32-devkitc__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src)
 
     (Change "esp32-devkitc" to our ESP32 board)
 
 1.  Edit the __Bringup Code__...
 
-    For BL602: [__bl602_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
+    __For BL602:__ [__bl602_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617)
 
-    For ESP32: [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426)
+    __For ESP32:__ [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426)
 
 1.  Edit the function __bl602_bringup()__ to register our Device Driver as __"/dev/spitest0"__...
 
@@ -1155,7 +1212,7 @@ During NuttX startup, we need to register our Device Driver like so...
 
     [(See the changes)](https://github.com/lupyuen/incubator-nuttx/commit/4cae36747314bacb49ff0bba3632fbb8136f3f66#diff-387529ed7b85b38e4e96d58de6cab8a83e706c26c97e9fc71db5ea5ff20be297)
 
-    For ESP32: Edit the function [__esp32_bringup()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) and insert the code above. Change __"bl602_spibus_initialize"__ to __"esp32_spibus_initialize"__. [(Like this)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72)
+    __For ESP32:__ Edit the function [__esp32_bringup()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) and insert the code above. Change __"bl602_spibus_initialize"__ to __"esp32_spibus_initialize"__. [(Like this)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72)
 
     ![Register our device driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
 
@@ -1413,6 +1470,62 @@ After swapping #BL602 MISO and MOSI at #NuttX startup ... Logic Analyser shows t
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140)
 
 ![](https://lupyuen.github.io/images/spi2-logic2.png)
+
+# Appendix: SPI Mode Quirk
+
+_(For BL602 only)_
+
+TODO
+
+Let's test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver
+
+[(Source)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
+
+![](https://lupyuen.github.io/images/spi2-title.jpg)
+
+TODO60
+
+Our #NuttX App transmits an SPI Command to SX1262 ... And reads the SPI Response from SX1262
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L54-L84)
+
+![](https://lupyuen.github.io/images/spi2-sx4.png)
+
+TODO62
+
+Now our #NuttX App is ready to read an SX1262 Register over SPI!
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119)
+
+![](https://lupyuen.github.io/images/spi2-sx6.png)
+
+TODO58
+
+Our #NuttX App reads an SX1262 Register ... But it returns garbage! There's a workaround for this #BL602 SPI Quirk
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119)
+
+![](https://lupyuen.github.io/images/spi2-sx2.png)
+
+TODO63
+
+#BL602 has an SPI Quirk ... We must use SPI Mode 1 instead of Mode 0 ... Let's fix this in #NuttX
+
+[(Source)](https://lupyuen.github.io/articles/spi#spi-phase-looks-sus)
+
+For #NuttX on #BL602, we use SPI Mode 1 instead of Mode 0 ... To work around the SPI Mode Quirk
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57)
+
+![](https://lupyuen.github.io/images/spi2-sx7.png)
+
+TODO57
+
+Our #NuttX App now reads the SX1262 Register correctly! 🎉
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c)
+
+![](https://lupyuen.github.io/images/spi2-sx.png)
 
 # Appendix: PineDio Stack BL604
 
