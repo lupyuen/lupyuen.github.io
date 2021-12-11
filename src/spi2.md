@@ -926,33 +926,69 @@ TTGO-LoRa-ESP32 uses __GPIO 15__: [esp32_gpio.c](https://github.com/lupyuen/incu
 
 ## Test SX1262
 
-TODO
+Follow these steps to run our SPI Test App #2 on BL602 or ESP32...
 
-Enable GPIO
+1.  Assume that we have downloaded and configured our NuttX code...
 
-Enable SPI Test App #2
+    [__"Load the SPI Test Driver"__](https://lupyuen.github.io/articles/spi2#load-the-spi-test-driver)
 
-```text
-spi_test2
-```
+1.  Edit the build configuration...
 
-TODO
+    ```bash
+    make menuconfig
+    ```
 
-```text
-Get Status: received
-  8a 8a
-SX1262 Status is 0
-```
+1.  Enable the GPIO Driver...
 
-TODO
+    [__"Enable GPIO Driver"__](https://lupyuen.github.io/articles/nuttx#enable-gpio-driver)
 
-```text
-Read Register 8: received
-  a8 a8 a8 a8 80
-SX1262 Register 8 is 0x80
-```
+    ![Enable the GPIO Driver](https://lupyuen.github.io/images/nuttx-menu7a.png)
 
-BL602 has an SPI Quirk... We must use SPI Mode 1 instead of Mode 0
+1.  Hit "Exit" until the Top Menu appears
+
+    ("NuttX/x64_64 Configuration")
+
+1.  Enable SPI Test App #2...
+
+    Select __"Application Configuration"__ → __"Examples"__
+
+    Check the box for __"spi_test2"__
+
+1.  Save the configuration and exit menuconfig
+
+1.  Build ("make"), flash and run the NuttX Firmware on BL602 or ESP32
+
+1.  In the NuttX Shell, enter...
+
+    ```text
+    spi_test2
+    ```
+
+    (Pic below)
+
+1.  We should see the output from the __"Get Status"__ command...
+
+    ```text
+    Get Status: received
+      8a 8a
+    SX1262 Status is 0
+    ```
+
+    (This output is not quite correct, we'll explain why in the next section)
+
+1.  And the output from the __"Read Register 0x08"__ command...
+
+    ```text
+    Read Register 8: received
+      a8 a8 a8 a8 80
+    SX1262 Register 8 is 0x80
+    ```
+
+    The value of Register 0x08 is correct: __`0x80`__
+
+    Yep our NuttX App is working OK with SX1262!
+
+    (BL602 has an SPI Quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)
 
 ![SPI Test App #2 reads the SX1262 Register correctly](https://lupyuen.github.io/images/spi2-sx.png)
 
@@ -989,7 +1025,6 @@ Our #NuttX App runs OK on PineDio Stack BL604 with onboard SX1262! 🎉
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c)
 
 ![](https://lupyuen.github.io/images/spi2-pinedio2.png)
-
 
 # What's Next
 
