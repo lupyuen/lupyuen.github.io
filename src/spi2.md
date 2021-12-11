@@ -1052,7 +1052,7 @@ But eventually we'll use them when we port the __LoRaWAN Stack__ to PineDio Stac
 
 ## Run NuttX on PineDio Stack
 
-TODO
+Our final task for today: Run SPI Test App #2 on PineDio Stack BL604 (with onboard SX1262)...
 
 1.  Assume that we have downloaded and configured our NuttX code...
 
