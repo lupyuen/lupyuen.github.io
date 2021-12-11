@@ -1793,21 +1793,70 @@ Note that the __SPI Mode needs to be 1__ (instead of 0) for our test to succeed.
 
 _(For BL602 only)_
 
-Let's watch what happens if we use __SPI Mode 0__ (instead of Mode 1) when BL602 talks to Semtech SX1262.
+Due to an SPI Mode Quirk in BL602, we configure BL602 to talk to Semtech SX1262 with __SPI Mode 1__ (instead of Mode 0).
+
+(Which is quirky because SX1262 supports Mode 0, not Mode 1)
+
+This is defined in [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L45-L57)
+
+```c
+/* For BL602 we use SPI Mode 1 instead of Mode 0 due to SPI quirk */
+
+#ifdef CONFIG_BL602_SPI0
+#define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE1) /* SPI Mode 1: Workaround for BL602 */
+#else
+#define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
+#endif /* CONFIG_BL602_SPI0 */
+```
+
+Let's watch what happens if we use __SPI Mode 0__ (instead of Mode 1) when BL602 talks to Semtech SX1262...
+
+```c
+#define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
+```
+
+We run [spi_test2_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117) to __Read Register `0x08`__ from SX1262 over SPI...
+
+```c
+/* Transmit command to SX1262: Read Register 8 */
+
+static char read_reg[] = { 0x1d, 0x00, 0x08, 0x00, 0x00 };
+bytes_written = write(fd, read_reg, sizeof(read_reg));
+assert(bytes_written == sizeof(read_reg));
+
+/* Read response from SX1262 */
+
+bytes_read = read(fd, rx_data, sizeof(rx_data));
+assert(bytes_read == sizeof(read_reg));
+
+/* Show the received register value */
+
+printf("\nSX1262 Register 8 is 0x%02x\n", rx_data[4]);
+```
+
+We expect the value of Register `0x08` to be __0x80__.
+
+With SPI Mode 0, the value read over SPI is __incorrect__...
+
+```text
+Read Register 8: received
+  a8 a8 00 43 5a
+SX1262 Register 8 is 0x5a
+```
+
+![SPI Mode 0: Register 8 is incorrect](https://lupyuen.github.io/images/spi2-sx2.png)
+
+When we switch to SPI Mode 1, we get the correct value: __0x80__...
+
+```text
+Read Register 8: received
+  a8 a8 a8 a8 80
+SX1262 Register 8 is 0x80
+```
+
+![SPI Mode 1: Register 8 is correct](https://lupyuen.github.io/images/spi2-sx.png)
 
 TODO
-
-Let's test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver
-
-[(Source)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
-
-TODO60
-
-Our #NuttX App transmits an SPI Command to SX1262 ... And reads the SPI Response from SX1262
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L54-L84)
-
-TODO62
 
 Now our #NuttX App is ready to read an SX1262 Register over SPI!
 
@@ -1837,4 +1886,3 @@ Our #NuttX App now reads the SX1262 Register correctly! 🎉
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c)
 
-![](https://lupyuen.github.io/images/spi2-sx.png)
