@@ -869,11 +869,24 @@ And the "Read Register 0x08" command with this code: [spi_test2_main.c](https://
 
 ## Connect SX1262
 
+We connect SX1262 to BL602 / ESP32 as follows...
+
 TODO
 
-Let's test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver
+SX1262 | BL602 Pin | ESP32 Pin
+:-------: | :---------: | :--------:
+__MOSI__ | GPIO 1  | GPIO 13
+__MISO__ | GPIO 0  | GPIO 12
+__SCK__  | GPIO 3  | GPIO 14
+__CS__   | GPIO 11 | GPIO ?????
+__VCC__  | 3V3     | 3V3
+__GND__  | GND | GND
 
-![](https://lupyuen.github.io/images/spi2-title.jpg)
+![SX1262 connected to PineCone BL602](https://lupyuen.github.io/images/spi2-title.jpg)
+
+_Why did we connect Chip Select to GPIO 11?_
+
+TODO
 
 ## Test SX1262
 
