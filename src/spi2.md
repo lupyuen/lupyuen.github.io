@@ -1002,41 +1002,97 @@ Pine64 has just sent me a prototype of [__PineDio Stack BL604__](https://lupyuen
 
 (Yep multiple devices on the same SPI Bus)
 
-Let's test this with NuttX!
-
-Here's how it looks inside...
+Let's test NuttX with PineDio Stack BL604 and its __onboard SX1262__! Here are the innards...
 
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
 
-Before testing, remember to connect the __LoRa Antenna__ so that we don't fry the SX1262 Transceiver as we charge up the Power Amplifier...
+Before testing, remember to connect the __LoRa Antenna__... 
+
+(So we don't fry the SX1262 Transceiver as we charge up the Power Amplifier)
 
 ![PineDio Stack BL604 with Antenna](https://lupyuen.github.io/images/spi2-pinedio10a.jpg)
 
 ## Pin Definitions
 
-TODO
+Based on this schematic for PineDio Stack BL604 (version 2)...
 
-Here's how Semtech SX1262 is wired onboard #PineDio Stack #BL604 ... Let's update the Pin Definitions in NuttX
+> ![SX1262 Interface on PineDio Stack](https://lupyuen.github.io/images/spi2-pinedio3.png)
 
-![](https://lupyuen.github.io/images/spi2-pinedio3.png)
+We update the following Pin Definitions in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95)
 
-TODO53
+```c
+/* Busy Pin for PineDio SX1262 */
 
-Here are the #NuttX Pin Definitions for PineDio Stack BL604 with onboard SX1262 ... As derived from the schematic
+#define BOARD_GPIO_IN1    (GPIO_INPUT | GPIO_FLOAT | \
+                            GPIO_FUNC_SWGPIO | GPIO_PIN10)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95)
+/* SPI Chip Select for PineDio SX1262 */
 
-![SX1262 Interface on PineDio Stack](https://lupyuen.github.io/images/spi2-pinedio.png)
+#define BOARD_GPIO_OUT1   (GPIO_OUTPUT | GPIO_PULLUP | \
+                            GPIO_FUNC_SWGPIO | GPIO_PIN15)
+
+/* GPIO Interrupt (DIO1) for PineDio SX1262 */
+
+#define BOARD_GPIO_INT1   (GPIO_INPUT | GPIO_PULLUP | \
+                            GPIO_FUNC_SWGPIO | GPIO_PIN19)
+
+/* SPI Configuration: Chip Select is unused because we control via GPIO instead */
+
+#define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)  /* Unused */
+#define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN13)
+#define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)
+```
 
 ## Run NuttX on PineDio Stack
 
 TODO
 
-Our #NuttX App runs OK on PineDio Stack BL604 with onboard SX1262! 🎉
+1.  Assume that we have downloaded and configured our NuttX code...
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c)
+    [__"Load the SPI Test Driver"__](https://lupyuen.github.io/articles/spi2#load-the-spi-test-driver)
 
-![](https://lupyuen.github.io/images/spi2-pinedio2.png)
+    [__"Test SX1262"__](https://lupyuen.github.io/articles/spi2#test-sx1262)
+
+1.  Edit the __Pin Defitions__ as shown above...
+
+    [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95) 
+
+1.  Build ("make"), flash and run the NuttX Firmware on PineDio Stack BL604
+
+1.  In the NuttX Shell, enter...
+
+    ```text
+    spi_test2
+    ```
+
+    (Pic below)
+
+1.  We should see the output from the __"Get Status"__ command...
+
+    ```text
+    Get Status: received
+      a2 22
+    SX1262 Status is 2
+    ```
+
+    (This looks different from the BL602 output, we'll explain why in a while)
+
+1.  And the output from the __"Read Register 0x08"__ command...
+
+    ```text
+    Read Register 8: received
+      a2 a2 a2 a2 80
+    SX1262 Register 8 is 0x80
+    ```
+
+    The value of Register 0x08 is correct: __`0x80`__
+
+    Our SPI Test App #2 runs OK on PineDio Stack BL604 with onboard SX1262! 🎉
+
+![NuttX on PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio2.png)
+
+_Why did the "Get Status" command return different results?_
 
 TODO
 
