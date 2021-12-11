@@ -1610,7 +1610,7 @@ This is consistent with the __Pin Description Table__ from [__BL602 Reference Ma
 
 ![Pin Description from BL602 Reference Manual](https://lupyuen.github.io/images/spi2-driver6.png)
 
-We test the SPI Port with a __SPI Test Driver__: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208)
+We test the SPI Port with an __SPI Test Driver__: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208)
 
 ```c
 /* Write the buffer to the SPI device */
