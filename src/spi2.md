@@ -992,19 +992,29 @@ Follow these steps to run our SPI Test App #2 on BL602 or ESP32...
 
 ![SPI Test App #2 reads the SX1262 Register correctly](https://lupyuen.github.io/images/spi2-sx.png)
 
+![PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio2a.jpg)
+
 # Test with PineDio Stack
 
 _(For BL604 only)_
 
+Pine64 has just sent me a prototype of [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) (version 2, pic above) with onboard SX1262 Transceiver, ST7789 Display, SPI Flash, GPS, Compass, Touch Panel, Heart Rate Sensor, Vibrator, ...
+
+(Yep multiple devices on the same SPI Bus)
+
+Let's test this with NuttX!
+
+Here's how it looks inside...
+
+![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
+
+Before testing, remember to connect the __LoRa Antenna__ so that we don't fry the SX1262 Transceiver as we charge up the Power Amplifier...
+
+![PineDio Stack BL604 with Antenna](https://lupyuen.github.io/images/spi2-pinedio10a.jpg)
+
+## Pin Definitions
+
 TODO
-
-Will #NuttX run on #Pine64's PineDio Stack BL604 with onboard Semtech SX1262? Let's find out!
-
-[(Source)](https://lupyuen.github.io/articles/pinedio)
-
-![](https://lupyuen.github.io/images/spi2-pinedio.jpg)
-
-TODO55
 
 Here's how Semtech SX1262 is wired onboard #PineDio Stack #BL604 ... Let's update the Pin Definitions in NuttX
 
@@ -1016,15 +1026,19 @@ Here are the #NuttX Pin Definitions for PineDio Stack BL604 with onboard SX1262 
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95)
 
-![](https://lupyuen.github.io/images/spi2-pinedio.png)
+![SX1262 Interface on PineDio Stack](https://lupyuen.github.io/images/spi2-pinedio.png)
 
-TODO54
+## Run NuttX on PineDio Stack
+
+TODO
 
 Our #NuttX App runs OK on PineDio Stack BL604 with onboard SX1262! 🎉
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c)
 
 ![](https://lupyuen.github.io/images/spi2-pinedio2.png)
+
+TODO
 
 # What's Next
 
@@ -1621,10 +1635,6 @@ Our #NuttX App now reads the SX1262 Register correctly! 🎉
 
 # Appendix: PineDio Stack BL604
 
-TODO
-
-![](https://lupyuen.github.io/images/spi2-pinedio2.jpg)
-
 TODO8
 
 ![](https://lupyuen.github.io/images/spi2-pinedio3.jpg)
@@ -1652,7 +1662,3 @@ TODO14
 TODO16
 
 ![](https://lupyuen.github.io/images/spi2-pinedio4.jpg)
-
-TODO18
-
-![](https://lupyuen.github.io/images/spi2-pinedio10.jpg)
