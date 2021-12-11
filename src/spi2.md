@@ -1591,6 +1591,10 @@ _(For BL602 only)_
 
 TODO
 
+Note that the __SPI Mode needs to be 1__ (instead of 0) for our test to succeed...
+
+-   [__"SPI Mode Quirk"__](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
+
 ## Reproduce the issue
 
 The SPI Pins are defined in [board.h](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L78-L83)
@@ -1767,15 +1771,21 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 
 ## Test the fix
 
-TODO
+After applying the fix, we see that the __MOSI output is now correct__...
 
-spi_test_app2
+![Logic Analyser after applying the fix](https://lupyuen.github.io/images/spi2-logic2.png)
 
-After swapping #BL602 MISO and MOSI at #NuttX startup ... Logic Analyser shows that the SPI Pins are now consistent with BL602 Reference Manual! 🎉
+As for __MISO input__, we tested with PineCone BL602 connected to __Semtech SX1262__.  We verified that the register data was read correctly over SPI...
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140)
+-   [__"Test with Semtech SX1262"__](https://lupyuen.github.io/articles/spi2#test-with-semtech-sx1262)
 
-![](https://lupyuen.github.io/images/spi2-logic2.png)
+We have also tested the fix with __PineDio Stack BL604__ and its onboard SX1262...
+
+-   [__"Test with PineDio Stack"__](https://lupyuen.github.io/articles/spi2#test-with-pinedio-stack)
+
+Note that the __SPI Mode needs to be 1__ (instead of 0) for our test to succeed...
+
+-   [__"SPI Mode Quirk"__](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
 
 # Appendix: SPI Mode Quirk
 
@@ -1832,33 +1842,3 @@ Our #NuttX App now reads the SX1262 Register correctly! 🎉
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c)
 
 ![](https://lupyuen.github.io/images/spi2-sx.png)
-
-# Appendix: PineDio Stack BL604
-
-TODO8
-
-![](https://lupyuen.github.io/images/spi2-pinedio3.jpg)
-
-TODO9
-
-![](https://lupyuen.github.io/images/spi2-pinedio8.jpg)
-
-TODO10
-
-![](https://lupyuen.github.io/images/spi2-pinedio9.jpg)
-
-TODO11
-
-![](https://lupyuen.github.io/images/spi2-pinedio7.jpg)
-
-TODO12
-
-![](https://lupyuen.github.io/images/spi2-pinedio5.jpg)
-
-TODO14
-
-![](https://lupyuen.github.io/images/spi2-pinedio6.jpg)
-
-TODO16
-
-![](https://lupyuen.github.io/images/spi2-pinedio4.jpg)
