@@ -1327,7 +1327,7 @@ make menuconfig </code></pre></div>
 <p>This says that <strong>MISO</strong> is GPIO 0, <strong>MOSI</strong> is GPIO 1.</p>
 <p>This is consistent with the <strong>Pin Description Table</strong> from <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a> (Version 1.2, 17 Dec 2020, page 26)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-driver6.png" alt="Pin Description from BL602 Reference Manual" /></p>
-<p>We test the SPI Port with a <strong>SPI Test Driver</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
+<p>We test the SPI Port with an <strong>SPI Test Driver</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Write the buffer to the SPI device */
 
 static ssize_t spi_test_driver_write(
