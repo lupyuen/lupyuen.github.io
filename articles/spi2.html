@@ -830,10 +830,11 @@ SX1262 Status is 0</code></pre></div>
 SX1262 Register 8 is 0x80</code></pre></div>
 <p>The value of Register 0x08 is correct: <strong><code>0x80</code></strong></p>
 <p>Yep our NuttX App is working OK with SX1262!</p>
-<p>(BL602 has an SPI Quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="SPI Test App #2 reads the SX1262 Register correctly" /></p>
+<p>(BL602 has a quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)</p>
+<p>Let’s run SPI Test App #2 on a new gagdet with onboard SX1262: PineDio Stack BL604.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="PineDio Stack BL604" /></p>
 <h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a></h1>
 <p><em>(For BL604 only)</em></p>
