@@ -100,7 +100,10 @@
 <li><a href="#run-the-app">13.2 Run the App</a><ul></ul></li></ul></li>
 <li><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run Nuttx</a><ul></ul></li>
 <li><a href="#appendix-nuttx-spi-interface">15 Appendix: NuttX SPI Interface</a><ul></ul></li>
-<li><a href="#appendix-miso-and-mosi-are-swapped">16 Appendix: MISO And MOSI Are Swapped</a><ul></ul></li>
+<li><a href="#appendix-miso-and-mosi-are-swapped">16 Appendix: MISO And MOSI Are Swapped</a><ul>
+<li><a href="#reproduce-the-issue">16.1 Reproduce the issue</a><ul></ul></li>
+<li><a href="#fix-the-issue">16.2 Fix the issue</a><ul></ul></li>
+<li><a href="#test-the-fix">16.3 Test the fix</a><ul></ul></li></ul></li>
 <li><a href="#appendix-spi-mode-quirk">17 Appendix: SPI Mode Quirk</a><ul></ul></li>
 <li><a href="#appendix-pinedio-stack-bl604">18 Appendix: PineDio Stack BL604</a><ul></ul></li></ul></nav><p>📝 <em>15 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)" /></p>
@@ -1313,28 +1316,147 @@ make menuconfig </code></pre></div>
 <h1 id="appendix-miso-and-mosi-are-swapped" class="section-header"><a href="#appendix-miso-and-mosi-are-swapped">16 Appendix: MISO And MOSI Are Swapped</a></h1>
 <p><em>(For BL602 only)</em></p>
 <p>TODO</p>
-<p>How to verify the #NuttX SPI Output? We sniff the #BL602 SPI Bus with a Logic Analyser</p>
-<p><a href="https://lupyuen.github.io/articles/spi#appendix-troubleshoot-bl602-spi-with-logic-analyser">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-logic4.jpg" alt="" /></p>
-<p>TODO26</p>
-<p>In #NuttX the SPI Pins for #BL602 are defined in “board.h” … MOSI is GPIO 1, MISO is GPIO 0</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L87-L92">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver5.png" alt="" /></p>
-<p>TODO27</p>
-<p>#NuttX’s SPI Pins match the #BL602 Reference Manual: MOSI = GPIO 1, MISO = GPIO 0 … But we’re about to witness a BL602 SPI Quirk</p>
-<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver6.png" alt="" /></p>
-<p>TODO37</p>
-<p>Logic Analyser connected to #BL602 shows that MISO and MOSI are swapped! This happens in BL602 IoT SDK … Also in #NuttX!</p>
-<p><a href="https://lupyuen.github.io/articles/spi#spi-data-pins-are-flipped">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-logic.png" alt="" /></p>
-<p>TODO28</p>
-<p>We can swap MISO and MOSI on #BL602 by setting a Hardware Register … Let’s do this on #NuttX</p>
-<p><a href="https://lupyuen.github.io/articles/pinedio#spi-pins-are-swapped">(Source)</a></p>
-<p>Here’s how we swap #BL602 MOSI and MISO on #NuttX … So that the SPI Pins are consistent with the BL602 Reference Manual</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver7.png" alt="" /></p>
-<p>TODO38</p>
+<h2 id="reproduce-the-issue" class="section-header"><a href="#reproduce-the-issue">16.1 Reproduce the issue</a></h2>
+<p>The SPI Pins are defined in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L78-L83">board.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* SPI Configuration */
+
+#define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN2)
+#define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN1)
+#define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN3)</code></pre></div>
+<p>This says that <strong>MISO</strong> is GPIO 0, <strong>MOSI</strong> is GPIO 1.</p>
+<p>This is consistent with the <strong>Pin Description Table</strong> from <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a> (Version 1.2, 17 Dec 2020, page 26)</p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver6.png" alt="Pin Description from BL602 Reference Manual" /></p>
+<p>We test the SPI Port with a <strong>SPI Test Driver</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Write the buffer to the SPI device */
+
+static ssize_t spi_test_driver_write(
+  FAR struct file *filep,
+  FAR const char *buffer,
+  size_t buflen)
+{
+  ...
+  /* Transmit buffer to SPI device and receive the response */
+
+  SPI_EXCHANGE(priv-&gt;spi, buffer, recv_buffer, buflen);
+  recv_buffer_len = buflen;</code></pre></div>
+<p>Which is called by an <strong>SPI Test App</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">spi_test_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[])
+{
+  /* Open SPI Test Driver */
+
+  int fd = open(&quot;/dev/spitest0&quot;, O_RDWR);
+  assert(fd &gt;= 0);
+
+  /* Write to SPI Test Driver */
+
+  static char data[] = &quot;Hello World&quot;;
+  int bytes_written = write(fd, data, sizeof(data));
+  assert(bytes_written == sizeof(data));</code></pre></div>
+<p>We connect a <strong>Logic Analyser</strong> to PineCone BL602 and verify the SPI output…</p>
+<div><table><thead><tr><th align="center">Logic Analyser</th><th align="center">BL602 Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 1</td></tr>
+<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td></tr>
+<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 3</td></tr>
+<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 2</td></tr>
+<tr><td align="center"><strong>GND</strong></td><td align="center">GND</td></tr>
+</tbody></table>
+</div>
+<p><img src="https://lupyuen.github.io/images/spi2-logic4.jpg" alt="Logic Analyser connected to PineCone BL602" /></p>
+<p>Logic Analyser shows that <strong>MISO and MOSI are swapped</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-logic.png" alt="Logic Analyser shows that MISO and MOSI are swapped" /></p>
+<h2 id="fix-the-issue" class="section-header"><a href="#fix-the-issue">16.2 Fix the issue</a></h2>
+<p>The same issue happens in <strong>BL602 IoT SDK</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi#spi-data-pins-are-flipped"><strong>“SPI Data Pins Are Flipped”</strong></a></li>
+</ul>
+<p>On BL602 IoT SDK we fix this issue by calling <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298"><strong>GLB_Swap_SPI_0_MOSI_With_MISO</strong></a> to swap the MISO and MOSI pins…</p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************//**
+ * @brief  swap SPI0 MOSI with MISO
+ *
+ * @param  newState: ENABLE or DISABLE
+ *
+ * @return SUCCESS or ERROR
+ *
+*******************************************************************************/
+BL_Err_Type GLB_Swap_SPI_0_MOSI_With_MISO(BL_Fun_Type newState)
+{
+    uint32_t tmpVal = 0;
+
+    tmpVal=BL_RD_REG(GLB_BASE,GLB_PARM);
+    tmpVal=BL_SET_REG_BITS_VAL(tmpVal,GLB_REG_SPI_0_SWAP,newState);
+    BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
+
+    return SUCCESS;
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298">(Source)</a></p>
+<p>For NuttX we propose to port this function as <a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104"><strong>bl602_swap_spi_0_mosi_with_miso</strong></a>…</p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: bl602_swap_spi_0_mosi_with_miso
+ *
+ * Description:
+ *   Swap SPI0 MOSI with MISO
+ *
+ * Input Parameters:
+ *   swap      - Non-zero to swap MOSI and MISO
+ *
+ * Returned Value:
+ *   None
+ *
+ ****************************************************************************/
+
+static void bl602_swap_spi_0_mosi_with_miso(uint8_t swap)
+{
+  if (swap)
+    {
+      modifyreg32(BL602_GLB_GLB_PARM, 0, GLB_PARM_REG_SPI_0_SWAP);
+    }
+  else
+    {
+      modifyreg32(BL602_GLB_GLB_PARM, GLB_PARM_REG_SPI_0_SWAP, 0);
+    }
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">(Source)</a></p>
+<p>Which will be called by <a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104"><strong>bl602_spi_init</strong></a> during startup…</p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: bl602_spi_init
+ *
+ * Description:
+ *   Initialize bl602 SPI hardware interface
+ *
+ * Input Parameters:
+ *   dev      - Device-specific state data
+ *
+ * Returned Value:
+ *   None
+ *
+ ****************************************************************************/
+
+static void bl602_spi_init(struct spi_dev_s *dev)
+{
+  struct bl602_spi_priv_s *priv = (struct bl602_spi_priv_s *)dev;
+  const struct bl602_spi_config_s *config = priv-&gt;config;
+
+  /* Initialize the SPI semaphore that enforces mutually exclusive access */
+
+  nxsem_init(&amp;priv-&gt;exclsem, 0, 1);
+
+  bl602_configgpio(BOARD_SPI_CS);
+  bl602_configgpio(BOARD_SPI_MOSI);
+  bl602_configgpio(BOARD_SPI_MISO);
+  bl602_configgpio(BOARD_SPI_CLK);
+
+  /* set master mode */
+
+  bl602_set_spi_0_act_mode_sel(1);
+
+  /* swap MOSI with MISO to be consistent with BL602 Reference Manual */
+
+  bl602_swap_spi_0_mosi_with_miso(1);</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">(Source)</a></p>
+<h2 id="test-the-fix" class="section-header"><a href="#test-the-fix">16.3 Test the fix</a></h2>
+<p>TODO</p>
+<p>spi_test_app2</p>
 <p>After swapping #BL602 MISO and MOSI at #NuttX startup … Logic Analyser shows that the SPI Pins are now consistent with BL602 Reference Manual! 🎉</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1140">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="" /></p>
