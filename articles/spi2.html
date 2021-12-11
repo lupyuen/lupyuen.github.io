@@ -780,19 +780,57 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
 <div class="example-wrap"><pre class="language-c"><code>#define GPIO_OUT1    16</code></pre></div>
 <p>TTGO-LoRa-ESP32 uses <strong>GPIO 15</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/ttgo_lora_esp32/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define GPIO_OUT1    15</code></pre></div><h2 id="test-sx1262" class="section-header"><a href="#test-sx1262">8.2 Test SX1262</a></h2>
-<p>TODO</p>
-<p>Enable GPIO</p>
-<p>Enable SPI Test App #2</p>
+<p>Follow these steps to run our SPI Test App #2 on BL602 or ESP32…</p>
+<ol>
+<li>
+<p>Assume that we have downloaded and configured our NuttX code…</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#load-the-spi-test-driver"><strong>“Load the SPI Test Driver”</strong></a></p>
+</li>
+<li>
+<p>Edit the build configuration…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div></li>
+<li>
+<p>Enable the GPIO Driver…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#enable-gpio-driver"><strong>“Enable GPIO Driver”</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu7a.png" alt="Enable the GPIO Driver" /></p>
+</li>
+<li>
+<p>Hit “Exit” until the Top Menu appears</p>
+<p>(“NuttX/x64_64 Configuration”)</p>
+</li>
+<li>
+<p>Enable SPI Test App #2…</p>
+<p>Select <strong>“Application Configuration”</strong> → <strong>“Examples”</strong></p>
+<p>Check the box for <strong>“spi_test2”</strong></p>
+</li>
+<li>
+<p>Save the configuration and exit menuconfig</p>
+</li>
+<li>
+<p>Build (“make”), flash and run the NuttX Firmware on BL602 or ESP32</p>
+</li>
+<li>
+<p>In the NuttX Shell, enter…</p>
 <div class="example-wrap"><pre class="language-text"><code>spi_test2</code></pre></div>
-<p>TODO</p>
+<p>(Pic below)</p>
+</li>
+<li>
+<p>We should see the output from the <strong>“Get Status”</strong> command…</p>
 <div class="example-wrap"><pre class="language-text"><code>Get Status: received
   8a 8a
 SX1262 Status is 0</code></pre></div>
-<p>TODO</p>
+<p>(This output is not quite correct, we’ll explain why in the next section)</p>
+</li>
+<li>
+<p>And the output from the <strong>“Read Register 0x08”</strong> command…</p>
 <div class="example-wrap"><pre class="language-text"><code>Read Register 8: received
   a8 a8 a8 a8 80
 SX1262 Register 8 is 0x80</code></pre></div>
-<p>BL602 has an SPI Quirk… We must use SPI Mode 1 instead of Mode 0</p>
+<p>The value of Register 0x08 is correct: <strong><code>0x80</code></strong></p>
+<p>Yep our NuttX App is working OK with SX1262!</p>
+<p>(BL602 has an SPI Quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="SPI Test App #2 reads the SX1262 Register correctly" /></p>
 <h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a></h1>
 <p><em>(For BL604 only)</em></p>
