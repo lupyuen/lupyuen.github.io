@@ -1044,6 +1044,12 @@ We update the following Pin Definitions in [board.h](https://github.com/lupyuen/
 #define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)
 ```
 
+(Remember that GPIO Output __BOARD_GPIO_OUT1__ becomes our Chip Select)
+
+Today we won't use __BOARD_GPIO_IN1__ (Busy Pin) and __BOARD_GPIO_INT1__ (DIO1).
+
+But eventually we'll use them when we port the __LoRaWAN Stack__ to PineDio Stack BL604!
+
 ## Run NuttX on PineDio Stack
 
 TODO
