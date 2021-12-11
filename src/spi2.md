@@ -871,26 +871,62 @@ printf("\nSX1262 Register 8 is 0x%02x\n", rx_data[4]);
 
 We connect SX1262 to BL602 / ESP32 as follows...
 
-TODO
+SX1262 | BL602 Pin | ESP32 Pin | Colour
+:-------: | :---------: | :--------: | :-----:
+__MOSI__ | GPIO 1  | GPIO 13 | Yellow
+__MISO__ | GPIO 0  | GPIO 12 | Light Green
+__SCK__  | GPIO 3  | GPIO 14 | Blue
+__CS__   | GPIO 11 | GPIO 15 / 16 | Dark Green
+__VCC__  | 3V3     | 3V3 | Red
+__GND__  | GND     | GND | Black
 
-SX1262 | BL602 Pin | ESP32 Pin
-:-------: | :---------: | :--------:
-__MOSI__ | GPIO 1  | GPIO 13
-__MISO__ | GPIO 0  | GPIO 12
-__SCK__  | GPIO 3  | GPIO 14
-__CS__   | GPIO 11 | GPIO ?????
-__VCC__  | 3V3     | 3V3
-__GND__  | GND | GND
+(We don't need all the pins connected, we're testing simple commands)
+
+Here's SX1262 connected to PineCone BL602...
 
 ![SX1262 connected to PineCone BL602](https://lupyuen.github.io/images/spi2-title.jpg)
 
-_Why did we connect Chip Select to GPIO 11?_
+_Why did we connect Chip Select to GPIO 11 / 15 / 16?_
 
-TODO
+Remember that we're controlling SPI Chip Select ourselves through __GPIO Output__, which is defined as follows...
+
+__For BL602:__ GPIO Output Pin is defined as __GPIO 11__ in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49)
+
+```c
+#define BOARD_GPIO_OUT1 \
+  (GPIO_OUTPUT | GPIO_FLOAT | \
+  GPIO_FUNC_SWGPIO | GPIO_PIN11)
+```
+
+[(More about this)](https://lupyuen.github.io/articles/nuttx#configure-pins)
+
+__For ESP32:__ GPIO Output Pin depends on our ESP32 Board (and may be customised)...
+
+ESP32-DevKitC defines __GPIO 15__ as the default GPIO Output Pin: [esp32_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67)
+
+```c
+/* Output pins. GPIO15 is used as an example, any other outputs could be used. */
+
+#define GPIO_OUT1    15
+```
+
+ESP32-WROVER-KIT uses __GPIO 16__: [esp32_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-wrover-kit/src/esp32_gpio.c#L43-L67)
+
+```c
+#define GPIO_OUT1    16
+```
+
+TTGO-LoRa-ESP32 uses __GPIO 15__: [esp32_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/ttgo_lora_esp32/src/esp32_gpio.c#L43-L67)
+
+```c
+#define GPIO_OUT1    15
+```
 
 ## Test SX1262
 
 TODO
+
+Enable GPIO
 
 Enable SPI Test App #2
 
@@ -901,8 +937,6 @@ Enable SPI Test App #2
 For #NuttX on #BL602, we use SPI Mode 1 instead of Mode 0 ... To work around the SPI Mode Quirk
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57)
-
-![](https://lupyuen.github.io/images/spi2-sx7.png)
 
 TODO57
 
