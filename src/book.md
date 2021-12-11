@@ -316,6 +316,8 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 
 -   ["PineDio Stack BL604 RISC-V Board: Testing The Prototype"](https://lupyuen.github.io/articles/pinedio)
 
+-   ["PineDio Stack BL604 Version 2 (15 Sep 2021)"](https://lupyuen.github.io/articles/spi2#test-with-pinedio-stack)
+
 -   ["LoRaWAN on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/lorawan2)
 
 -   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
