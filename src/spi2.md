@@ -1,6 +1,6 @@
 # SPI on Apache NuttX OS
 
-📝 _12 Dec 2021_
+📝 _15 Dec 2021_
 
 ![PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)](https://lupyuen.github.io/images/spi2-title.jpg)
 
