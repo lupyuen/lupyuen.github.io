@@ -1890,7 +1890,7 @@ The same issue happens in __BL602 IoT SDK__...
 
 -   [__"SPI Data Pins Are Flipped"__](https://lupyuen.github.io/articles/spi#spi-data-pins-are-flipped)
 
-On BL602 IoT SDK we fix this issue by calling [__GLB_Swap_SPI_0_MOSI_With_MISO__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298) to swap the MISO and MOSI pins...
+On BL602 IoT SDK we fix this issue by calling [__GLB_Swap_SPI_0_MOSI_With_MISO()__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298) to swap the MISO and MOSI pins...
 
 ```c
 /****************************************************************************//**
@@ -1915,7 +1915,7 @@ BL_Err_Type GLB_Swap_SPI_0_MOSI_With_MISO(BL_Fun_Type newState)
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298)
 
-For NuttX we propose to port this function as [__bl602_swap_spi_0_mosi_with_miso__](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104)...
+For NuttX we propose to port this function as [__bl602_swap_spi_0_mosi_with_miso()__](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104) in [arch/risc-v/src/bl602/bl602_spi.c](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104)
 
 ```c
 /****************************************************************************
@@ -1947,7 +1947,7 @@ static void bl602_swap_spi_0_mosi_with_miso(uint8_t swap)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104)
 
-Which will be called by [__bl602_spi_init__](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104) during startup...
+Which will be called by [__bl602_spi_init()__](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104) in [arch/risc-v/src/bl602/bl602_spi.c](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104) to swap MISO and MOSI during startup...
 
 ```c
 /****************************************************************************
