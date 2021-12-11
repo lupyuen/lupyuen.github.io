@@ -693,6 +693,7 @@ close(fd);
 close(cs);</code></pre></div>
 <p>And close the SPI Test Driver and GPIO Output.</p>
 <p>Let’s watch SPI Test App #2 in action with Semtech SX1262.</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#gpio-demo">(More about GPIO Output)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx5.png" alt="Control Chip Select with GPIO" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
 <h1 id="test-with-semtech-sx1262" class="section-header"><a href="#test-with-semtech-sx1262">8 Test with Semtech SX1262</a></h1>
@@ -782,14 +783,17 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
 <p>TODO</p>
 <p>Enable GPIO</p>
 <p>Enable SPI Test App #2</p>
-<p>#BL602 has an SPI Quirk … We must use SPI Mode 1 instead of Mode 0 … Let’s fix this in #NuttX</p>
-<p><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(Source)</a></p>
-<p>For #NuttX on #BL602, we use SPI Mode 1 instead of Mode 0 … To work around the SPI Mode Quirk</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57">(Source)</a></p>
-<p>TODO57</p>
-<p>Our #NuttX App now reads the SX1262 Register correctly! 🎉</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="" /></p>
+<div class="example-wrap"><pre class="language-text"><code>spi_test2</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Get Status: received
+  8a 8a
+SX1262 Status is 0</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Read Register 8: received
+  a8 a8 a8 a8 80
+SX1262 Register 8 is 0x80</code></pre></div>
+<p>BL602 has an SPI Quirk… We must use SPI Mode 1 instead of Mode 0</p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="SPI Test App #2 reads the SX1262 Register correctly" /></p>
 <h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a></h1>
 <p><em>(For BL604 only)</em></p>
 <p>TODO</p>
