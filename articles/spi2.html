@@ -1315,13 +1315,25 @@ make menuconfig </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-interface6.png" alt="" /></p>
 <h1 id="appendix-miso-and-mosi-are-swapped" class="section-header"><a href="#appendix-miso-and-mosi-are-swapped">16 Appendix: MISO And MOSI Are Swapped</a></h1>
 <p><em>(For BL602 only)</em></p>
-<p>TODO</p>
-<p>Note that the <strong>SPI Mode needs to be 1</strong> (instead of 0) for our test to succeed…</p>
+<p>BL602 has an SPI issue that affects both NuttX and BL602 IoT SDK: <strong>MISO and MOSI pins are swapped</strong>, contrary to the Pin Descriptions in the BL602 Reference Manual.</p>
+<p>In this section we…</p>
+<ol>
+<li>
+<p>Reproduce the issue on NuttX</p>
+</li>
+<li>
+<p>Propose a fix for NuttX</p>
+</li>
+<li>
+<p>Test the fix</p>
+</li>
+</ol>
+<p>Note that the <strong>SPI Mode needs to be 1</strong> (instead of 0) for the SPI interface to operate correctly…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk"><strong>“SPI Mode Quirk”</strong></a></li>
 </ul>
 <h2 id="reproduce-the-issue" class="section-header"><a href="#reproduce-the-issue">16.1 Reproduce the issue</a></h2>
-<p>The SPI Pins are defined in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L78-L83">board.h</a></p>
+<p>The default SPI Pins for NuttX are defined in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L78-L83">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* SPI Configuration */
 
 #define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN2)
@@ -1369,6 +1381,7 @@ static ssize_t spi_test_driver_write(
 <p><img src="https://lupyuen.github.io/images/spi2-logic4.jpg" alt="Logic Analyser connected to PineCone BL602" /></p>
 <p>Logic Analyser shows that <strong>MISO and MOSI are swapped</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-logic.png" alt="Logic Analyser shows that MISO and MOSI are swapped" /></p>
+<p>Let’s examine the proposed fix for the issue.</p>
 <h2 id="fix-the-issue" class="section-header"><a href="#fix-the-issue">16.2 Fix the issue</a></h2>
 <p>The same issue happens in <strong>BL602 IoT SDK</strong>…</p>
 <ul>
