@@ -365,7 +365,7 @@ __SPI Mode__ and __SPI Frequency__ are defined below: [spi_test_driver.c](https:
 
 BL602 uses __SPI Mode 1__ (instead of Mode 0) because of an __SPI Mode Quirk__ in BL602. 
 
-(More about this in the Appendix)
+[(More about the SPI Mode Quirk)](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
 
 ![Register SPI Test Driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
 
@@ -683,7 +683,7 @@ This looks OK! Though MISO is idle because it's not connected to an SPI Device.
 
 Let's test with a real SPI Device: Semtech SX1262.
 
-(BL602 has a quirk that swaps MISO and MOSI, the fix is explained in the Appendix)
+[(BL602 has a quirk that swaps MISO and MOSI, the fix is explained here)](https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped)
 
 # Control Chip Select with GPIO
 
@@ -996,7 +996,7 @@ Follow these steps to run our SPI Test App #2 on BL602 or ESP32...
 
 ![SPI Test App #2 reads the SX1262 Register correctly](https://lupyuen.github.io/images/spi2-sx.png)
 
-(BL602 has a quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)
+[(BL602 has a quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
 
 Let's run SPI Test App #2 on a new gagdet with onboard SX1262: PineDio Stack BL604.
 
