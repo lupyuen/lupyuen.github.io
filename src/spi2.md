@@ -1793,13 +1793,13 @@ Note that the __SPI Mode needs to be 1__ (instead of 0) for our test to succeed.
 
 _(For BL602 only)_
 
+Let's watch what happens if we use __SPI Mode 0__ (instead of Mode 1) when BL602 talks to Semtech SX1262.
+
 TODO
 
 Let's test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver
 
 [(Source)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
-
-![](https://lupyuen.github.io/images/spi2-title.jpg)
 
 TODO60
 
@@ -1807,23 +1807,17 @@ Our #NuttX App transmits an SPI Command to SX1262 ... And reads the SPI Response
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L54-L84)
 
-![](https://lupyuen.github.io/images/spi2-sx4.png)
-
 TODO62
 
 Now our #NuttX App is ready to read an SX1262 Register over SPI!
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119)
 
-![](https://lupyuen.github.io/images/spi2-sx6.png)
-
 TODO58
 
 Our #NuttX App reads an SX1262 Register ... But it returns garbage! There's a workaround for this #BL602 SPI Quirk
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119)
-
-![](https://lupyuen.github.io/images/spi2-sx2.png)
 
 TODO63
 
