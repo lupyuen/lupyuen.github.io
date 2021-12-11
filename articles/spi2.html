@@ -750,9 +750,20 @@ printf(&quot;\nSX1262 Status is %d\n&quot;, (rx_data[1] &gt;&gt; 4) &amp; 0b111)
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(See the complete program)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx6.png" alt="Transmit command to SX1262: Read Register 0x08" /></p>
 <h2 id="connect-sx1262" class="section-header"><a href="#connect-sx1262">8.1 Connect SX1262</a></h2>
+<p>We connect SX1262 to BL602 / ESP32 as follows…</p>
 <p>TODO</p>
-<p>Let’s test #NuttX SPI with #BL602 and Semtech SX1262 LoRa Transceiver</p>
-<p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="" /></p>
+<div><table><thead><tr><th align="center">SX1262</th><th align="center">BL602 Pin</th><th align="center">ESP32 Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 1</td><td align="center">GPIO 13</td></tr>
+<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td><td align="center">GPIO 12</td></tr>
+<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 3</td><td align="center">GPIO 14</td></tr>
+<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 11</td><td align="center">GPIO ?????</td></tr>
+<tr><td align="center"><strong>VCC</strong></td><td align="center">3V3</td><td align="center">3V3</td></tr>
+<tr><td align="center"><strong>GND</strong></td><td align="center">GND</td><td align="center">GND</td></tr>
+</tbody></table>
+</div>
+<p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="SX1262 connected to PineCone BL602" /></p>
+<p><em>Why did we connect Chip Select to GPIO 11?</em></p>
+<p>TODO</p>
 <h2 id="test-sx1262" class="section-header"><a href="#test-sx1262">8.2 Test SX1262</a></h2>
 <p>TODO</p>
 <p>Enable SPI Test App #2</p>
