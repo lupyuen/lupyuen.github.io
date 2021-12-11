@@ -716,7 +716,7 @@ close(cs);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan#troubleshoot-lorawan">(Register <code>0x08</code> is expected to have value <code>0x80</code> at startup)</a></p>
 </li>
 </ul>
-<p>We send the “Get Status” command with this code: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L59-L83">spi_test2_main.c</a></p>
+<p>We send the <strong>“Get Status”</strong> command with this code: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L59-L83">spi_test2_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Transmit command to SX1262: Get Status */
 
 static char get_status[] = { 0xc0, 0x00 };
@@ -732,21 +732,21 @@ assert(bytes_read == sizeof(get_status));
 /* Show the received status */
 
 printf(&quot;\nSX1262 Status is %d\n&quot;, (rx_data[1] &gt;&gt; 4) &amp; 0b111);  /* Bits 6:4 */</code></pre></div>
-<p>And the “Read Register 0x08” command with this code: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117">spi_test2_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  /* Transmit command to SX1262: Read Register 8 */
+<p>And the <strong>“Read Register 0x08”</strong> command with this code: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117">spi_test2_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Transmit command to SX1262: Read Register 8 */
 
-  static char read_reg[] = { 0x1d, 0x00, 0x08, 0x00, 0x00 };
-  bytes_written = write(fd, read_reg, sizeof(read_reg));
-  assert(bytes_written == sizeof(read_reg));
+static char read_reg[] = { 0x1d, 0x00, 0x08, 0x00, 0x00 };
+bytes_written = write(fd, read_reg, sizeof(read_reg));
+assert(bytes_written == sizeof(read_reg));
 
-  /* Read response from SX1262 */
+/* Read response from SX1262 */
 
-  bytes_read = read(fd, rx_data, sizeof(rx_data));
-  assert(bytes_read == sizeof(read_reg));
+bytes_read = read(fd, rx_data, sizeof(rx_data));
+assert(bytes_read == sizeof(read_reg));
 
-  /* Show the received register value */
+/* Show the received register value */
 
-  printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></div>
+printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(See the complete program)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx6.png" alt="Transmit command to SX1262: Read Register 0x08" /></p>
 <h2 id="connect-sx1262" class="section-header"><a href="#connect-sx1262">8.1 Connect SX1262</a></h2>
