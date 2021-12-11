@@ -1098,9 +1098,11 @@ Our final task for today: Run SPI Test App #2 on PineDio Stack BL604 (with onboa
 
     Our SPI Test App #2 runs OK on PineDio Stack BL604 with onboard SX1262! 🎉
 
+    [(The results are consistent with SX1262 tested on Linux)](https://github.com/lupyuen/lora-sx1262#read-registers)
+
 ![NuttX on PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio2.png)
 
-_Why did the "Get Status" command return different results?_
+_Why did the "Get Status" command return different results on BL602 vs BL604?_
 
 TODO
 
