@@ -988,9 +988,11 @@ Follow these steps to run our SPI Test App #2 on BL602 or ESP32...
 
     Yep our NuttX App is working OK with SX1262!
 
-    (BL602 has an SPI Quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)
-
 ![SPI Test App #2 reads the SX1262 Register correctly](https://lupyuen.github.io/images/spi2-sx.png)
+
+(BL602 has a quirk: We must use SPI Mode 1 instead of Mode 0 or the register value will be garbled)
+
+Let's run SPI Test App #2 on a new gagdet with onboard SX1262: PineDio Stack BL604.
 
 ![PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio2a.jpg)
 
