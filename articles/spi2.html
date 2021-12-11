@@ -643,7 +643,7 @@ config ESP32_SPI2_MISOPIN
 <p>If we zoom out the above display in the Logic Analyser, we see a problem with <strong>SPI Chip Select on BL602</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-logic3.png" alt="Chip Select goes Low after every byte" /></p>
 <p>BL602 sets Chip Select to <strong>High after EVERY byte</strong>!</p>
-<p>This will be a problem for <strong>Semtech SX1262</strong>…</p>
+<p>This will be a problem for <strong>Semtech SX1262</strong> (LoRa Transceiver)…</p>
 <p>It expects Chip Select to be <strong>High after the entire multi-byte command</strong> has been transmitted! (Not after every byte)</p>
 <p>(I don’t think ESP32 has this problem, please lemme know! 🙏)</p>
 <p><em>Can we control SPI Chip Select ourselves?</em></p>
@@ -840,7 +840,7 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="PineDio Stack BL604" /></p>
 <h1 id="test-with-pinedio-stack" class="section-header"><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a></h1>
 <p><em>(For BL604 only)</em></p>
-<p>Pine64 has just sent me a prototype of <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> (version 2, pic above) with onboard SX1262 Transceiver, ST7789 Display, SPI Flash, GPS, Compass, Touch Panel, Heart Rate Sensor, Vibrator, …</p>
+<p>Pine64 has just sent me a prototype of <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> (version 2, pic above) with onboard SX1262 LoRa Transceiver, ST7789 Display, SPI Flash, GPS, Compass, Touch Panel, Heart Rate Sensor, Vibrator, …</p>
 <p>(Yep multiple devices on the same SPI Bus)</p>
 <p>Let’s test NuttX with PineDio Stack BL604 and its <strong>onboard SX1262</strong>! Here are the innards…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
@@ -1475,7 +1475,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 </ul>
 <h1 id="appendix-spi-mode-quirk" class="section-header"><a href="#appendix-spi-mode-quirk">17 Appendix: SPI Mode Quirk</a></h1>
 <p><em>(For BL602 only)</em></p>
-<p>Due to an SPI Mode Quirk in BL602, we configure BL602 to talk to Semtech SX1262 with <strong>SPI Mode 1</strong> (instead of Mode 0).</p>
+<p>Due to an <strong>SPI Mode Quirk</strong> in BL602, we configure BL602 to talk to Semtech SX1262 with <strong>SPI Mode 1</strong> (instead of Mode 0).</p>
 <p>(Which is quirky because SX1262 supports Mode 0, not Mode 1)</p>
 <p>This is defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L45-L57">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* For BL602 we use SPI Mode 1 instead of Mode 0 due to SPI quirk */
@@ -1503,7 +1503,7 @@ assert(bytes_read == sizeof(read_reg));
 
 printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></div>
 <p>We expect the value of Register <code>0x08</code> to be <strong>0x80</strong>.</p>
-<p>With SPI Mode 0, the value read over SPI is <strong>incorrect</strong>…</p>
+<p>With SPI Mode 0, the register value received over SPI is <strong>incorrect</strong> (<code>0x5A</code>)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Read Register 8: received
   a8 a8 00 43 5a
 SX1262 Register 8 is 0x5a</code></pre></div>
@@ -1513,21 +1513,24 @@ SX1262 Register 8 is 0x5a</code></pre></div>
   a8 a8 a8 a8 80
 SX1262 Register 8 is 0x80</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="SPI Mode 1: Register 8 is correct" /></p>
-<p>TODO</p>
-<p>Now our #NuttX App is ready to read an SX1262 Register over SPI!</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119">(Source)</a></p>
-<p>TODO58</p>
-<p>Our #NuttX App reads an SX1262 Register … But it returns garbage! There’s a workaround for this #BL602 SPI Quirk</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L90-L119">(Source)</a></p>
-<p>TODO63</p>
-<p>#BL602 has an SPI Quirk … We must use SPI Mode 1 instead of Mode 0 … Let’s fix this in #NuttX</p>
-<p><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(Source)</a></p>
-<p>For #NuttX on #BL602, we use SPI Mode 1 instead of Mode 0 … To work around the SPI Mode Quirk</p>
+<p>This SPI Mode Quirk has been observed on <strong>BL602 IoT SDK</strong> when tested with…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus"><strong>BME280 Sensor</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-spi-functions"><strong>SX1262 LoRa Transceiver</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lora#spi"><strong>SX1276 LoRa Transceiver</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/display#initialise-spi-port"><strong>ST7789 Display Controller</strong></a> (SPI Mode 3)</p>
+</li>
+</ul>
+<p>This is why we always use SPI Mode 1 instead of Mode 0 on BL602.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-sx7.png" alt="Using SPI Mode 1 instead of Mode 0 on BL602" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx7.png" alt="" /></p>
-<p>TODO57</p>
-<p>Our #NuttX App now reads the SX1262 Register correctly! 🎉</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
 
     
 </body>
