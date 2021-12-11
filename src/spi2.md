@@ -824,7 +824,7 @@ Today we shall send two short commands to SX1262 for testing...
 
     [(Register `0x08` is expected to have value `0x80` at startup)](https://lupyuen.github.io/articles/lorawan#troubleshoot-lorawan)
 
-We send the "Get Status" command with this code: [spi_test2_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L59-L83)
+We send the __"Get Status"__ command with this code: [spi_test2_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L59-L83)
 
 ```c
 /* Transmit command to SX1262: Get Status */
@@ -844,23 +844,23 @@ assert(bytes_read == sizeof(get_status));
 printf("\nSX1262 Status is %d\n", (rx_data[1] >> 4) & 0b111);  /* Bits 6:4 */
 ```
 
-And the "Read Register 0x08" command with this code: [spi_test2_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117)
+And the __"Read Register 0x08"__ command with this code: [spi_test2_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117)
 
 ```c
-  /* Transmit command to SX1262: Read Register 8 */
+/* Transmit command to SX1262: Read Register 8 */
 
-  static char read_reg[] = { 0x1d, 0x00, 0x08, 0x00, 0x00 };
-  bytes_written = write(fd, read_reg, sizeof(read_reg));
-  assert(bytes_written == sizeof(read_reg));
+static char read_reg[] = { 0x1d, 0x00, 0x08, 0x00, 0x00 };
+bytes_written = write(fd, read_reg, sizeof(read_reg));
+assert(bytes_written == sizeof(read_reg));
 
-  /* Read response from SX1262 */
+/* Read response from SX1262 */
 
-  bytes_read = read(fd, rx_data, sizeof(rx_data));
-  assert(bytes_read == sizeof(read_reg));
+bytes_read = read(fd, rx_data, sizeof(rx_data));
+assert(bytes_read == sizeof(read_reg));
 
-  /* Show the received register value */
+/* Show the received register value */
 
-  printf("\nSX1262 Register 8 is 0x%02x\n", rx_data[4]);
+printf("\nSX1262 Register 8 is 0x%02x\n", rx_data[4]);
 ```
 
 [(See the complete program)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c)
