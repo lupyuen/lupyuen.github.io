@@ -751,27 +751,41 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
 <p><img src="https://lupyuen.github.io/images/spi2-sx6.png" alt="Transmit command to SX1262: Read Register 0x08" /></p>
 <h2 id="connect-sx1262" class="section-header"><a href="#connect-sx1262">8.1 Connect SX1262</a></h2>
 <p>We connect SX1262 to BL602 / ESP32 as follows…</p>
-<p>TODO</p>
-<div><table><thead><tr><th align="center">SX1262</th><th align="center">BL602 Pin</th><th align="center">ESP32 Pin</th></tr></thead><tbody>
-<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 1</td><td align="center">GPIO 13</td></tr>
-<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td><td align="center">GPIO 12</td></tr>
-<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 3</td><td align="center">GPIO 14</td></tr>
-<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 11</td><td align="center">GPIO ?????</td></tr>
-<tr><td align="center"><strong>VCC</strong></td><td align="center">3V3</td><td align="center">3V3</td></tr>
-<tr><td align="center"><strong>GND</strong></td><td align="center">GND</td><td align="center">GND</td></tr>
+<div><table><thead><tr><th align="center">SX1262</th><th align="center">BL602 Pin</th><th align="center">ESP32 Pin</th><th align="center">Colour</th></tr></thead><tbody>
+<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 1</td><td align="center">GPIO 13</td><td align="center">Yellow</td></tr>
+<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td><td align="center">GPIO 12</td><td align="center">Light Green</td></tr>
+<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 3</td><td align="center">GPIO 14</td><td align="center">Blue</td></tr>
+<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 11</td><td align="center">GPIO 15 / 16</td><td align="center">Dark Green</td></tr>
+<tr><td align="center"><strong>VCC</strong></td><td align="center">3V3</td><td align="center">3V3</td><td align="center">Red</td></tr>
+<tr><td align="center"><strong>GND</strong></td><td align="center">GND</td><td align="center">GND</td><td align="center">Black</td></tr>
 </tbody></table>
 </div>
+<p>(We don’t need all the pins connected, we’re testing simple commands)</p>
+<p>Here’s SX1262 connected to PineCone BL602…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="SX1262 connected to PineCone BL602" /></p>
-<p><em>Why did we connect Chip Select to GPIO 11?</em></p>
+<p><em>Why did we connect Chip Select to GPIO 11 / 15 / 16?</em></p>
+<p>Remember that we’re controlling SPI Chip Select ourselves through <strong>GPIO Output</strong>, which is defined as follows…</p>
+<p><strong>For BL602:</strong> GPIO Output Pin is defined as <strong>GPIO 11</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49">board.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define BOARD_GPIO_OUT1 \
+  (GPIO_OUTPUT | GPIO_FLOAT | \
+  GPIO_FUNC_SWGPIO | GPIO_PIN11)</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/nuttx#configure-pins">(More about this)</a></p>
+<p><strong>For ESP32:</strong> GPIO Output Pin depends on our ESP32 Board (and may be customised)…</p>
+<p>ESP32-DevKitC defines <strong>GPIO 15</strong> as the default GPIO Output Pin: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Output pins. GPIO15 is used as an example, any other outputs could be used. */
+
+#define GPIO_OUT1    15</code></pre></div>
+<p>ESP32-WROVER-KIT uses <strong>GPIO 16</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-wrover-kit/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define GPIO_OUT1    16</code></pre></div>
+<p>TTGO-LoRa-ESP32 uses <strong>GPIO 15</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/ttgo_lora_esp32/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define GPIO_OUT1    15</code></pre></div><h2 id="test-sx1262" class="section-header"><a href="#test-sx1262">8.2 Test SX1262</a></h2>
 <p>TODO</p>
-<h2 id="test-sx1262" class="section-header"><a href="#test-sx1262">8.2 Test SX1262</a></h2>
-<p>TODO</p>
+<p>Enable GPIO</p>
 <p>Enable SPI Test App #2</p>
 <p>#BL602 has an SPI Quirk … We must use SPI Mode 1 instead of Mode 0 … Let’s fix this in #NuttX</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">(Source)</a></p>
 <p>For #NuttX on #BL602, we use SPI Mode 1 instead of Mode 0 … To work around the SPI Mode Quirk</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-sx7.png" alt="" /></p>
 <p>TODO57</p>
 <p>Our #NuttX App now reads the SX1262 Register correctly! 🎉</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
