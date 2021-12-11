@@ -1591,15 +1591,23 @@ TODO34
 
 _(For BL602 only)_
 
-TODO
+BL602 has an SPI issue that affects both NuttX and BL602 IoT SDK: __MISO and MOSI pins are swapped__, contrary to the Pin Descriptions in the BL602 Reference Manual.
 
-Note that the __SPI Mode needs to be 1__ (instead of 0) for our test to succeed...
+In this section we...
+
+1.  Reproduce the issue on NuttX
+
+1.  Propose a fix for NuttX
+
+1.  Test the fix
+
+Note that the __SPI Mode needs to be 1__ (instead of 0) for the SPI interface to operate correctly...
 
 -   [__"SPI Mode Quirk"__](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
 
 ## Reproduce the issue
 
-The SPI Pins are defined in [board.h](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L78-L83)
+The default SPI Pins for NuttX are defined in [board.h](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L78-L83)
 
 ```c
 /* SPI Configuration */
@@ -1665,6 +1673,8 @@ __GND__  | GND
 Logic Analyser shows that __MISO and MOSI are swapped__...
 
 ![Logic Analyser shows that MISO and MOSI are swapped](https://lupyuen.github.io/images/spi2-logic.png)
+
+Let's examine the proposed fix for the issue.
 
 ## Fix the issue
 
