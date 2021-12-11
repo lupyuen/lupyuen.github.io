@@ -782,6 +782,8 @@ And close the SPI Test Driver and GPIO Output.
 
 Let's watch SPI Test App #2 in action with Semtech SX1262.
 
+[(More about GPIO Output)](https://lupyuen.github.io/articles/nuttx#gpio-demo)
+
 ![Control Chip Select with GPIO](https://lupyuen.github.io/images/spi2-sx5.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74)
@@ -930,21 +932,29 @@ Enable GPIO
 
 Enable SPI Test App #2
 
-#BL602 has an SPI Quirk ... We must use SPI Mode 1 instead of Mode 0 ... Let's fix this in #NuttX
+```text
+spi_test2
+```
 
-[(Source)](https://lupyuen.github.io/articles/spi#spi-phase-looks-sus)
+TODO
 
-For #NuttX on #BL602, we use SPI Mode 1 instead of Mode 0 ... To work around the SPI Mode Quirk
+```text
+Get Status: received
+  8a 8a
+SX1262 Status is 0
+```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57)
+TODO
 
-TODO57
+```text
+Read Register 8: received
+  a8 a8 a8 a8 80
+SX1262 Register 8 is 0x80
+```
 
-Our #NuttX App now reads the SX1262 Register correctly! 🎉
+BL602 has an SPI Quirk... We must use SPI Mode 1 instead of Mode 0
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c)
-
-![](https://lupyuen.github.io/images/spi2-sx.png)
+![SPI Test App #2 reads the SX1262 Register correctly](https://lupyuen.github.io/images/spi2-sx.png)
 
 # Test with PineDio Stack
 
