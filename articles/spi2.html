@@ -839,24 +839,75 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p><em>(For BL604 only)</em></p>
 <p>Pine64 has just sent me a prototype of <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> (version 2, pic above) with onboard SX1262 Transceiver, ST7789 Display, SPI Flash, GPS, Compass, Touch Panel, Heart Rate Sensor, Vibrator, …</p>
 <p>(Yep multiple devices on the same SPI Bus)</p>
-<p>Let’s test this with NuttX!</p>
-<p>Here’s how it looks inside…</p>
+<p>Let’s test NuttX with PineDio Stack BL604 and its <strong>onboard SX1262</strong>! Here are the innards…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
-<p>Before testing, remember to connect the <strong>LoRa Antenna</strong> so that we don’t fry the SX1262 Transceiver as we charge up the Power Amplifier…</p>
+<p>Before testing, remember to connect the <strong>LoRa Antenna</strong>… </p>
+<p>(So we don’t fry the SX1262 Transceiver as we charge up the Power Amplifier)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio10a.jpg" alt="PineDio Stack BL604 with Antenna" /></p>
 <h2 id="pin-definitions" class="section-header"><a href="#pin-definitions">9.1 Pin Definitions</a></h2>
+<p>Based on this schematic for PineDio Stack BL604 (version 2)…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="SX1262 Interface on PineDio Stack" /></p>
+</blockquote>
+<p>We update the following Pin Definitions in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Busy Pin for PineDio SX1262 */
+
+#define BOARD_GPIO_IN1    (GPIO_INPUT | GPIO_FLOAT | \
+                            GPIO_FUNC_SWGPIO | GPIO_PIN10)
+
+/* SPI Chip Select for PineDio SX1262 */
+
+#define BOARD_GPIO_OUT1   (GPIO_OUTPUT | GPIO_PULLUP | \
+                            GPIO_FUNC_SWGPIO | GPIO_PIN15)
+
+/* GPIO Interrupt (DIO1) for PineDio SX1262 */
+
+#define BOARD_GPIO_INT1   (GPIO_INPUT | GPIO_PULLUP | \
+                            GPIO_FUNC_SWGPIO | GPIO_PIN19)
+
+/* SPI Configuration: Chip Select is unused because we control via GPIO instead */
+
+#define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)  /* Unused */
+#define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN13)
+#define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)</code></pre></div><h2 id="run-nuttx-on-pinedio-stack" class="section-header"><a href="#run-nuttx-on-pinedio-stack">9.2 Run NuttX on PineDio Stack</a></h2>
 <p>TODO</p>
-<p>Here’s how Semtech SX1262 is wired onboard #PineDio Stack #BL604 … Let’s update the Pin Definitions in NuttX</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="" /></p>
-<p>TODO53</p>
-<p>Here are the #NuttX Pin Definitions for PineDio Stack BL604 with onboard SX1262 … As derived from the schematic</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio.png" alt="SX1262 Interface on PineDio Stack" /></p>
-<h2 id="run-nuttx-on-pinedio-stack" class="section-header"><a href="#run-nuttx-on-pinedio-stack">9.2 Run NuttX on PineDio Stack</a></h2>
-<p>TODO</p>
-<p>Our #NuttX App runs OK on PineDio Stack BL604 with onboard SX1262! 🎉</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio2.png" alt="" /></p>
+<ol>
+<li>
+<p>Assume that we have downloaded and configured our NuttX code…</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#load-the-spi-test-driver"><strong>“Load the SPI Test Driver”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/spi2#test-sx1262"><strong>“Test SX1262”</strong></a></p>
+</li>
+<li>
+<p>Edit the <strong>Pin Defitions</strong> as shown above…</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">boards/risc-v/bl602/bl602evb/include/board.h</a> </p>
+</li>
+<li>
+<p>Build (“make”), flash and run the NuttX Firmware on PineDio Stack BL604</p>
+</li>
+<li>
+<p>In the NuttX Shell, enter…</p>
+<div class="example-wrap"><pre class="language-text"><code>spi_test2</code></pre></div>
+<p>(Pic below)</p>
+</li>
+<li>
+<p>We should see the output from the <strong>“Get Status”</strong> command…</p>
+<div class="example-wrap"><pre class="language-text"><code>Get Status: received
+  a2 22
+SX1262 Status is 2</code></pre></div>
+<p>(This looks different from the BL602 output, we’ll explain why in a while)</p>
+</li>
+<li>
+<p>And the output from the <strong>“Read Register 0x08”</strong> command…</p>
+<div class="example-wrap"><pre class="language-text"><code>Read Register 8: received
+  a2 a2 a2 a2 80
+SX1262 Register 8 is 0x80</code></pre></div>
+<p>The value of Register 0x08 is correct: <strong><code>0x80</code></strong></p>
+<p>Our SPI Test App #2 runs OK on PineDio Stack BL604 with onboard SX1262! 🎉</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio2.png" alt="NuttX on PineDio Stack BL604" /></p>
+<p><em>Why did the “Get Status” command return different results?</em></p>
 <p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
