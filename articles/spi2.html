@@ -870,7 +870,11 @@ SX1262 Register 8 is 0x80</code></pre></div>
 #define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)  /* Unused */
 #define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN13)
 #define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
-#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)</code></pre></div><h2 id="run-nuttx-on-pinedio-stack" class="section-header"><a href="#run-nuttx-on-pinedio-stack">9.2 Run NuttX on PineDio Stack</a></h2>
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)</code></pre></div>
+<p>(Remember that GPIO Output <strong>BOARD_GPIO_OUT1</strong> becomes our Chip Select)</p>
+<p>Today we won’t use <strong>BOARD_GPIO_IN1</strong> (Busy Pin) and <strong>BOARD_GPIO_INT1</strong> (DIO1).</p>
+<p>But eventually we’ll use them when we port the <strong>LoRaWAN Stack</strong> to PineDio Stack BL604!</p>
+<h2 id="run-nuttx-on-pinedio-stack" class="section-header"><a href="#run-nuttx-on-pinedio-stack">9.2 Run NuttX on PineDio Stack</a></h2>
 <p>TODO</p>
 <ol>
 <li>
