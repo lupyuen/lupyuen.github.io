@@ -1110,6 +1110,8 @@ Our final task for today: Run SPI Test App #2 on PineDio Stack BL604 (with onboa
 
 ![NuttX on PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio2.png)
 
+## Chip Select
+
 _Why did the "Get Status" command return different results on BL602 vs BL604?_
 
 On PineCone BL602 we configure __GPIO Output (Chip Select)__ like this...
@@ -1144,7 +1146,7 @@ _Anything else we missed?_
 
 On PineDio Stack BL604 the SPI Bus is __shared by multiple SPI Devices__: SX1262 Transceiver, ST7789 Display, SPI Flash.
 
-We ought to flip the Chip Select for other SPI Devices to High, to __prevent crosstalk__ on the SPI Bus.
+We ought to flip the Chip Select for other SPI Devices to High, to deactivate the other devices and __prevent crosstalk__ on the SPI Bus.
 
 # What's Next
 
