@@ -1737,9 +1737,9 @@ Congratulations NuttX is now running on BL602 / BL604!
 
 ![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
-Build, Flash and Run #NuttX OS on #BL602 ... Here's the script I use for macOS
+__macOS Tip:__ Here's the script I use to build, flash and run NuttX on macOS, all in a single step: [run.sh](https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af)
 
-![](https://lupyuen.github.io/images/spi2-script.png)
+![Script to build, flash and run NuttX on macOS](https://lupyuen.github.io/images/spi2-script.png)
 
 [(Source)](https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af)
 
@@ -1747,21 +1747,65 @@ Build, Flash and Run #NuttX OS on #BL602 ... Here's the script I use for macOS
 
 _(For BL602 and ESP32)_
 
-TODO
+In this section we dig deep into NuttX OS to understand how the __SPI Functions__ work.
 
-#NuttX SPI Interface is defined here ... Let's call it from our "spi_test" app
+> ![NuttX SPI Interface](https://lupyuen.github.io/images/spi2-interface.png)
 
 [(Source)](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
 
-![](https://lupyuen.github.io/images/spi2-interface.png)
+The __NuttX SPI Interface__ (pic above) is defined as C Macros in [include/nuttx/spi/spi.h](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
+
+-   __SPI_LOCK__: Lock the SPI Bus for exclusive access
+
+-   __SPI_SELECT__: Enable / disable the SPI Chip Select
+
+-   __SPI_SETFREQUENCY__: Set the SPI frequency
+
+-   __SPI_SETDELAY__: Set the SPI Delays in nanoseconds
+
+-   __SPI_SETMODE__: Set the SPI Mode
+
+-   __SPI_SETBITS__: Set the number of bits per word (Transfer size)
+
+-   __SPI_HWFEATURES__: Set hardware-specific feature flags
+
+-   __SPI_STATUS__: Get SPI/MMC status
+
+-   __SPI_CMDDATA__: Transfer 9-bit data (like for ST7789 Display)
+
+-   __SPI_SEND__: Exchange one word on SPI
+
+-   __SPI_SNDBLOCK__: Send a block of data on SPI
+
+-   __SPI_RECVBLOCK__: Receive a block of data from SPI
+
+-   __SPI_EXCHANGE__: Exchange a block of data from SPI
+
+-   __SPI_REGISTERCALLBACK__: Register a callback for media status change
+
+-   __SPI_TRIGGER__: Trigger a previously configured DMA transfer
+
+The SPI Interface is meant to be called by __NuttX Device Drivers__.
+
+_Can a NuttX App call the SPI Interface like this?_
+
+![Can a NuttX App call the SPI Interface like this?](https://lupyuen.github.io/images/spi2-interface2.png)
+
+Nope this won't work, let's find out why.
+
+```c
+int fd = open("/dev/spi0", O_RDWR);
+```
+
+In a NuttX App we may open the SPI Port __"/dev/spi0"__ to get a File Descriptor.
+
+TODO
+
+Let's call it from our "spi_test" app
 
 TODO30
 
 Can our #NuttX App directly call the SPI Interface? Let's find out! 🤔
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c)
-
-![](https://lupyuen.github.io/images/spi2-interface2.png)
 
 TODO31
 
