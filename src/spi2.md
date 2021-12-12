@@ -1112,7 +1112,7 @@ Our final task for today: Run SPI Test App #2 on PineDio Stack BL604 (with onboa
 
 _Why did the "Get Status" command return different results on BL602 vs BL604?_
 
-TODO
+On PineCone BL602 we configure __GPIO Output (Chip Select)__ like this...
 
 ```c
 #define BOARD_GPIO_OUT1 \
@@ -1122,6 +1122,8 @@ TODO
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49)
 
+On PineDio Stack BL602 we do this...
+
 ```c
 #define BOARD_GPIO_OUT1 \
   (GPIO_OUTPUT | GPIO_PULLUP | \
@@ -1130,7 +1132,19 @@ TODO
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L47-L50)
 
-See the difference?
+See the difference? PineCone BL602 configures the GPIO Output (Chip Select) as __GPIO_FLOAT__, whereas BL604 configures it as __GPIO_PULLUP__.
+
+With __GPIO_FLOAT__, Chip Select defaults to the __Low State__ at startup.
+
+Which __activates SX1262__ on the SPI Bus at startup, possibly interpreting spurious commands and causing the "Get Status" command to fail.
+
+PineDio Stack BL602 does it correctly: It sets Chip Select to the __High State__ at startup (__GPIO_PULLUP__).  Which __deactivates SX1262__ on the SPI Bus at startup.
+
+_Anything else we missed?_
+
+On PineDio Stack BL604 the SPI Bus is __shared by multiple SPI Devices__: SX1262 Transceiver, ST7789 Display, SPI Flash.
+
+We ought to flip the Chip Select for other SPI Devices to High, to __prevent crosstalk__ on the SPI Bus.
 
 # What's Next
 
