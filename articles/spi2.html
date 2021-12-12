@@ -1703,6 +1703,7 @@ BL_Err_Type GLB_Swap_SPI_0_MOSI_With_MISO(BL_Fun_Type newState)
     return SUCCESS;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298">(Source)</a></p>
+<p>This function swaps MISO and MOSI by setting the GLB Hardware Register <strong>GLB_PARM</strong> at bit <strong>GLB_REG_SPI_0_SWAP</strong>.</p>
 <p>For NuttX we propose to port this function as <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104"><strong>bl602_swap_spi_0_mosi_with_miso()</strong></a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">arch/risc-v/src/bl602/bl602_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: bl602_swap_spi_0_mosi_with_miso
