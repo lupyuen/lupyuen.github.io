@@ -928,6 +928,15 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2.png" alt="NuttX on PineDio Stack BL604" /></p>
 <p><em>Why did the “Get Status” command return different results on BL602 vs BL604?</em></p>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>#define BOARD_GPIO_OUT1 \
+  (GPIO_OUTPUT | GPIO_FLOAT | \
+  GPIO_FUNC_SWGPIO | GPIO_PIN11)</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49">(Source)</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define BOARD_GPIO_OUT1 \
+  (GPIO_OUTPUT | GPIO_PULLUP | \
+  GPIO_FUNC_SWGPIO | GPIO_PIN15)</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L47-L50">(Source)</a></p>
+<p>See the difference?</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>I’m new to NuttX but I had lots of fun experimenting with it. I hope you’ll enjoy NuttX too!</p>
