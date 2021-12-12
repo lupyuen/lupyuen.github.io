@@ -472,7 +472,7 @@ make menuconfig </code></pre></div></li>
 <li>
 <p>Enable the SPI Peripheral and SPI Character Driver in menuconfig…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-debug.png" alt="Enable SPI" /></p>
+<p><img src="https://lupyuen.github.io/images/spi2-debug.jpg" alt="Enable SPI" /></p>
 </li>
 <li>
 <p>Enable our SPI Test Driver…</p>
@@ -584,7 +584,7 @@ make menuconfig </code></pre></div></li>
 <li>
 <p>Enable our SPI Test App in menuconfig…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-app"><strong>“Enable App”</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp4.png" alt="Enable SPI Test App in menuconfig" /></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp4.jpg" alt="Enable SPI Test App in menuconfig" /></p>
 </li>
 <li>
 <p>Save the configuration and exit menuconfig</p>
@@ -1081,7 +1081,7 @@ make menuconfig </code></pre></div></li>
 <p><strong>For BL602:</strong> Check the box for <strong>“BL602 Peripheral Support”</strong> → <strong>“SPI0”</strong></p>
 <p><strong>For ESP32:</strong> Check the box for <strong>“ESP32 Peripheral Select”</strong> → <strong>“SPI 2”</strong></p>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
-<p><img src="https://lupyuen.github.io/images/spi2-debug.png" alt="Enable SPI" /></p>
+<p><img src="https://lupyuen.github.io/images/spi2-debug.jpg" alt="Enable SPI" /></p>
 </li>
 <li>
 <p>At the Top Menu, select <strong>“Device Drivers”</strong></p>
@@ -1206,7 +1206,7 @@ int bl602_bringup(void)
 </li>
 <li>
 <p>Look what happens if we forget to enable “SPI0” (BL602) or “SPI 2” (ESP32) and NuttX won’t start…</p>
-<p><img src="https://lupyuen.github.io/images/spi2-crash2.png" alt="NuttX fails to start if we don’t enable SPI" /></p>
+<p><img src="https://lupyuen.github.io/images/spi2-crash2.jpg" alt="NuttX fails to start if we don’t enable SPI" /></p>
 <p><a href="https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323">(Source)</a></p>
 </li>
 </ol>
@@ -1239,7 +1239,7 @@ int bl602_bringup(void)
 </li>
 <li>
 <p>Copy the <strong>“hello”</strong> subfolder and paste it as <strong>“spi_test”</strong></p>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp.png" alt="Copy the “hello” subfolder and paste it as “spi_test”" /></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp.jpg" alt="Copy the “hello” subfolder and paste it as “spi_test”" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4">(Source)</a></p>
 </li>
 <li>
@@ -1277,7 +1277,7 @@ cp ../config .config
 
 # Edit the Build Config
 make menuconfig </code></pre></div>
-<p><img src="https://lupyuen.github.io/images/spi2-newapp4.png" alt="Select “spi_test” in menuconfig" /></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newapp4.jpg" alt="Select “spi_test” in menuconfig" /></p>
 </li>
 </ol>
 <h2 id="enable-app" class="section-header"><a href="#enable-app">13.1 Enable App</a></h2>
@@ -1702,7 +1702,7 @@ BL_Err_Type GLB_Swap_SPI_0_MOSI_With_MISO(BL_Fun_Type newState)
     return SUCCESS;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298">(Source)</a></p>
-<p>For NuttX we propose to port this function as <a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104"><strong>bl602_swap_spi_0_mosi_with_miso()</strong></a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">arch/risc-v/src/bl602/bl602_spi.c</a></p>
+<p>For NuttX we propose to port this function as <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104"><strong>bl602_swap_spi_0_mosi_with_miso()</strong></a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">arch/risc-v/src/bl602/bl602_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: bl602_swap_spi_0_mosi_with_miso
  *
@@ -1728,8 +1728,8 @@ static void bl602_swap_spi_0_mosi_with_miso(uint8_t swap)
       modifyreg32(BL602_GLB_GLB_PARM, GLB_PARM_REG_SPI_0_SWAP, 0);
     }
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">(Source)</a></p>
-<p>Which will be called by <a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104"><strong>bl602_spi_init()</strong></a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">arch/risc-v/src/bl602/bl602_spi.c</a> to swap MISO and MOSI during startup…</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">(Source)</a></p>
+<p>The function above will be called by <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141"><strong>bl602_spi_init()</strong></a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141">arch/risc-v/src/bl602/bl602_spi.c</a> to swap MISO and MOSI during startup…</p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: bl602_spi_init
  *
@@ -1765,7 +1765,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
   /* swap MOSI with MISO to be consistent with BL602 Reference Manual */
 
   bl602_swap_spi_0_mosi_with_miso(1);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141">(Source)</a></p>
 <h2 id="test-the-fix" class="section-header"><a href="#test-the-fix">16.3 Test the fix</a></h2>
 <p>After applying the fix, we see that the <strong>MOSI output is now correct</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="Logic Analyser after applying the fix" /></p>
