@@ -445,7 +445,7 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
 
     [__"Enable SPI"__](https://lupyuen.github.io/articles/spi2#enable-spi)
 
-    ![Enable SPI](https://lupyuen.github.io/images/spi2-debug.png)
+    ![Enable SPI](https://lupyuen.github.io/images/spi2-debug.jpg)
 
 1.  Enable our SPI Test Driver...
 
@@ -598,7 +598,7 @@ Follow these steps to run our SPI Test App on BL602 or ESP32...
 
     [__"Enable App"__](https://lupyuen.github.io/articles/spi2#enable-app)
 
-    ![Enable SPI Test App in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.png)
+    ![Enable SPI Test App in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.jpg)
 
 1.  Save the configuration and exit menuconfig
 
@@ -1305,7 +1305,7 @@ We enable SPI and our Device Driver as follows...
 
     Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
-    ![Enable SPI](https://lupyuen.github.io/images/spi2-debug.png)
+    ![Enable SPI](https://lupyuen.github.io/images/spi2-debug.jpg)
 
 1.  At the Top Menu, select __"Device Drivers"__
 
@@ -1450,7 +1450,7 @@ Finally we run the NuttX Firmware and check for our Device Driver...
 
 1.  Look what happens if we forget to enable "SPI0" (BL602) or "SPI 2" (ESP32) and NuttX won't start...
 
-    ![NuttX fails to start if we don't enable SPI](https://lupyuen.github.io/images/spi2-crash2.png)
+    ![NuttX fails to start if we don't enable SPI](https://lupyuen.github.io/images/spi2-crash2.jpg)
 
     [(Source)](https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323)
 
@@ -1488,7 +1488,7 @@ This section explains the steps to create a __NuttX App__ named __"spi_test"__.
 
 1.  Copy the __"hello"__ subfolder and paste it as __"spi_test"__
 
-    ![Copy the "hello" subfolder and paste it as "spi_test"](https://lupyuen.github.io/images/spi2-newapp.png)
+    ![Copy the "hello" subfolder and paste it as "spi_test"](https://lupyuen.github.io/images/spi2-newapp.jpg)
 
     [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4)
 
@@ -1535,7 +1535,7 @@ This section explains the steps to create a __NuttX App__ named __"spi_test"__.
     make menuconfig 
     ```
 
-    ![Select "spi_test" in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.png)
+    ![Select "spi_test" in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.jpg)
 
 ## Enable App
 
@@ -2047,7 +2047,7 @@ BL_Err_Type GLB_Swap_SPI_0_MOSI_With_MISO(BL_Fun_Type newState)
 
 [(Source)](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298)
 
-For NuttX we propose to port this function as [__bl602_swap_spi_0_mosi_with_miso()__](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104) in [arch/risc-v/src/bl602/bl602_spi.c](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104)
+For NuttX we propose to port this function as [__bl602_swap_spi_0_mosi_with_miso()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104) in [arch/risc-v/src/bl602/bl602_spi.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104)
 
 ```c
 /****************************************************************************
@@ -2077,9 +2077,9 @@ static void bl602_swap_spi_0_mosi_with_miso(uint8_t swap)
 }
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104)
 
-Which will be called by [__bl602_spi_init()__](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104) in [arch/risc-v/src/bl602/bl602_spi.c](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104) to swap MISO and MOSI during startup...
+The function above will be called by [__bl602_spi_init()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141) in [arch/risc-v/src/bl602/bl602_spi.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141) to swap MISO and MOSI during startup...
 
 ```c
 /****************************************************************************
@@ -2119,7 +2119,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
   bl602_swap_spi_0_mosi_with_miso(1);
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/swap_miso_mosi/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141)
 
 ## Test the fix
 
