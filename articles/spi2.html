@@ -304,7 +304,7 @@ static ssize_t spi_test_driver_write(
   DEBUGASSERT(inode != NULL);
   FAR struct spi_test_driver_dev_s *priv = inode-&gt;i_private;
   DEBUGASSERT(priv != NULL);</code></pre></div>
-<p>We begin by fetching the <strong>SPI Interface</strong> from the File Struct.</p>
+<p>We begin by fetching the <a href="https://lupyuen.github.io/articles/spi2#appendix-nuttx-spi-interface"><strong>SPI Interface</strong></a> from the File Struct.</p>
 <p>Next we <strong>lock the SPI Bus</strong> and <strong>configure the SPI Interface</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Lock the SPI bus and configure the SPI interface */
 
@@ -338,7 +338,8 @@ static ssize_t spi_test_driver_write(
 <p>The return value is the number of bytes transferred.</p>
 <p>(Deselect has no effect on BL602. The SPI Hardware automatically sets Chip Select to High after SPI transfer)</p>
 <p><em>What are SPI_LOCK, SPI_SELECT and SPI_EXCHANGE?</em></p>
-<p>That’s the <strong>SPI Interface</strong> for NuttX. We’ll cover this in the Appendix.</p>
+<p>That’s the <strong>SPI Interface</strong> for NuttX.</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#appendix-nuttx-spi-interface">(More about NuttX SPI Interface)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-driver2.png" alt="Write Operation" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">(Source)</a></p>
 <h2 id="read-operation" class="section-header"><a href="#read-operation">2.3 Read Operation</a></h2>
@@ -380,7 +381,7 @@ static ssize_t spi_test_driver_read(
   SPI_HWFEATURES(spi, 0);
   SPI_SETFREQUENCY(spi, CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY);
 }</code></pre></div>
-<p>(SPI_SETMODE, SPI_SETBITS, SPI_HWFEATURES and SPI_SETFREQUENCY are defined in the NuttX SPI Interface)</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#appendix-nuttx-spi-interface">(SPI_SETMODE, SPI_SETBITS, SPI_HWFEATURES and SPI_SETFREQUENCY are defined in the NuttX SPI Interface)</a></p>
 <p>The code above configures the SPI Interface as follows…</p>
 <ul>
 <li>
