@@ -1114,6 +1114,24 @@ _Why did the "Get Status" command return different results on BL602 vs BL604?_
 
 TODO
 
+```c
+#define BOARD_GPIO_OUT1 \
+  (GPIO_OUTPUT | GPIO_FLOAT | \
+  GPIO_FUNC_SWGPIO | GPIO_PIN11)
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49)
+
+```c
+#define BOARD_GPIO_OUT1 \
+  (GPIO_OUTPUT | GPIO_PULLUP | \
+  GPIO_FUNC_SWGPIO | GPIO_PIN15)
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L47-L50)
+
+See the difference?
+
 # What's Next
 
 TODO
