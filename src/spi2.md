@@ -1749,7 +1749,7 @@ _(For BL602 and ESP32)_
 
 In this section we dig deep into NuttX OS to understand how the __SPI Functions__ work.
 
-> ![NuttX SPI Interface](https://lupyuen.github.io/images/spi2-interface.png)
+![NuttX SPI Interface](https://lupyuen.github.io/images/spi2-interface.png)
 
 [(Source)](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h)
 
@@ -1785,59 +1785,113 @@ The __NuttX SPI Interface__ (pic above) is defined as C Macros in [include/nuttx
 
 -   __SPI_TRIGGER__: Trigger a previously configured DMA transfer
 
-The SPI Interface is meant to be called by __NuttX Device Drivers__.
+## SPI Device
 
-_Can a NuttX App call the SPI Interface like this?_
+The SPI Interface is meant to be called by __NuttX Device Drivers__ like so: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208)
+
+```c
+/* Write the buffer to the SPI device */
+
+static ssize_t spi_test_driver_write(
+  FAR struct file *filep,
+  FAR const char *buffer,
+  size_t buflen)
+{
+  /* Get the SPI interface */
+
+  FAR struct inode *inode = filep->f_inode;
+  FAR struct spi_test_driver_dev_s *priv = inode->i_private;
+
+  /* Omitted: Lock, configure and select the SPI interface */
+
+  /* Transfer data to SPI interface */
+
+  SPI_EXCHANGE(priv->spi, buffer, recv_buffer, buflen);
+```
+
+__SPI_EXCHANGE__ is defined in the SPI Interface as...
+
+```c
+#define SPI_EXCHANGE(d,t,r,l) \
+  ((d)->ops->exchange(d,t,r,l))
+```
+
+[(Source)](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h#L372-L395)
+
+Which maps to [__bl602_spi_exchange__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L932-L967) for BL602...
+
+```c
+static void bl602_spi_exchange(
+  struct spi_dev_s *dev,
+  const void *txbuffer, 
+  void *rxbuffer,
+  size_t nwords) {
+  ...
+```
+
+(Or [__esp32_spi_exchange__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/xtensa/src/esp32/esp32_spi.c#L1132-L1174) for ESP32)
+
+Note that the SPI Interface requires an __SPI Device__ (spi_dev_s) to be passed in.
+
+Which is available to NuttX Device Drivers.
+
+_Can a NuttX App call the SPI Interface directly like this?_
 
 ![Can a NuttX App call the SPI Interface like this?](https://lupyuen.github.io/images/spi2-interface2.png)
 
-Nope this won't work, let's find out why.
+Nope this won't work, because NuttX Apps __can't access the SPI Device__ (spi_dev_s).
+
+Let's dig into NuttX OS and find out why.
+
+![SPI Interface needs an SPI Device (spi_dev_s)](https://lupyuen.github.io/images/spi2-interface3.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967)
+
+## File Descriptor
+
+In a NuttX App we may open the SPI Port __"/dev/spi0"__ to get a __File Descriptor__...
 
 ```c
 int fd = open("/dev/spi0", O_RDWR);
 ```
 
-In a NuttX App we may open the SPI Port __"/dev/spi0"__ to get a File Descriptor.
+_How is the File Descriptor linked to the SPI Device (spi_dev_s)?_
 
-TODO
+Well we use the File Descriptor to execute __File Operations__: read(), write(), ioctl(), ...
 
-Let's call it from our "spi_test" app
+Tracing through the NuttX __Virtual File System__, we see that ioctl() maps the File Descriptor to a __File Struct__...
 
-TODO30
-
-Can our #NuttX App directly call the SPI Interface? Let's find out! 🤔
-
-TODO31
-
-#NuttX SPI Interface needs an SPI Device "spi_dev_s" ... How do we get an SPI Device? 🤔
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967)
-
-![](https://lupyuen.github.io/images/spi2-interface3.png)
-
-TODO32
-
-Tracing thru #NuttX Virtual File System ... We see that ioctl() maps the File Descriptor to a File Struct
+![ioctl() maps a File Descriptor to a File Struct](https://lupyuen.github.io/images/spi2-interface4.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/fs/vfs/fs_ioctl.c#L118-L138)
 
-![](https://lupyuen.github.io/images/spi2-interface4.png)
+## File Struct
 
-TODO33
+The __File Struct__ contains a Private Pointer to the __SPI Driver__ (spi_driver_s)...
 
-#NuttX File Struct contains a Private Pointer to the SPI Driver "spi_driver_s"
+![File Struct contains a Private Pointer to the SPI Driver (spi_driver_s)](https://lupyuen.github.io/images/spi2-interface5.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L112-L147)
 
-![](https://lupyuen.github.io/images/spi2-interface5.png)
+## SPI Driver
 
-TODO34
+The __SPI Driver__ (spi_driver_s) contains the __SPI Device__ (spi_dev_s)... 
 
-#NuttX SPI Driver "spi_driver_s" contains the SPI Device "spi_dev_s" ... That we need for testing the SPI Interface! But the SPI Device is private and hidden from apps 🙁
+![SPI Driver (spi_driver_s) contains the SPI Device (spi_dev_s)](https://lupyuen.github.io/images/spi2-interface6.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65)
 
-![](https://lupyuen.github.io/images/spi2-interface6.png)
+Which is what we need for calling the __SPI Interface__!
+
+But sadly the SPI Device is __private to NuttX OS__ and we can't access it from the NuttX App.
+
+That's why we wrote our own __SPI Test Driver__ (which runs inside NuttX OS) to get access to the SPI Device and call the SPI Interface.
+
+(By calling the SPI Test Driver from our __SPI Test App__)
+
+In summary, NuttX maps a __File Descriptor__ to __SPI Device__ as follows...
+
+File Descriptor → File Struct → SPI Driver (spi_driver_s) → SPI Device (spi_dev_s)
 
 # Appendix: MISO And MOSI Are Swapped
 
