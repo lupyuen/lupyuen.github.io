@@ -102,7 +102,11 @@
 <li><a href="#build-nuttx">14.1 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">14.2 Flash NuttX</a><ul></ul></li>
 <li><a href="#run-nuttx">14.3 Run NuttX</a><ul></ul></li></ul></li>
-<li><a href="#appendix-nuttx-spi-interface">15 Appendix: NuttX SPI Interface</a><ul></ul></li>
+<li><a href="#appendix-nuttx-spi-interface">15 Appendix: NuttX SPI Interface</a><ul>
+<li><a href="#spi-device">15.1 SPI Device</a><ul></ul></li>
+<li><a href="#file-descriptor">15.2 File Descriptor</a><ul></ul></li>
+<li><a href="#file-struct">15.3 File Struct</a><ul></ul></li>
+<li><a href="#spi-driver">15.4 SPI Driver</a><ul></ul></li></ul></li>
 <li><a href="#appendix-miso-and-mosi-are-swapped">16 Appendix: MISO And MOSI Are Swapped</a><ul>
 <li><a href="#reproduce-the-issue">16.1 Reproduce the issue</a><ul></ul></li>
 <li><a href="#fix-the-issue">16.2 Fix the issue</a><ul></ul></li>
@@ -1475,9 +1479,7 @@ nsh&gt;</code></pre></div>
 <h1 id="appendix-nuttx-spi-interface" class="section-header"><a href="#appendix-nuttx-spi-interface">15 Appendix: NuttX SPI Interface</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>In this section we dig deep into NuttX OS to understand how the <strong>SPI Functions</strong> work.</p>
-<blockquote>
 <p><img src="https://lupyuen.github.io/images/spi2-interface.png" alt="NuttX SPI Interface" /></p>
-</blockquote>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">(Source)</a></p>
 <p>The <strong>NuttX SPI Interface</strong> (pic above) is defined as C Macros in <a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">include/nuttx/spi/spi.h</a></p>
 <ul>
@@ -1527,32 +1529,67 @@ nsh&gt;</code></pre></div>
 <p><strong>SPI_TRIGGER</strong>: Trigger a previously configured DMA transfer</p>
 </li>
 </ul>
-<p>The SPI Interface is meant to be called by <strong>NuttX Device Drivers</strong>.</p>
-<p><em>Can a NuttX App call the SPI Interface like this?</em></p>
+<h2 id="spi-device" class="section-header"><a href="#spi-device">15.1 SPI Device</a></h2>
+<p>The SPI Interface is meant to be called by <strong>NuttX Device Drivers</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Write the buffer to the SPI device */
+
+static ssize_t spi_test_driver_write(
+  FAR struct file *filep,
+  FAR const char *buffer,
+  size_t buflen)
+{
+  /* Get the SPI interface */
+
+  FAR struct inode *inode = filep-&gt;f_inode;
+  FAR struct spi_test_driver_dev_s *priv = inode-&gt;i_private;
+
+  /* Omitted: Lock, configure and select the SPI interface */
+
+  /* Transfer data to SPI interface */
+
+  SPI_EXCHANGE(priv-&gt;spi, buffer, recv_buffer, buflen);</code></pre></div>
+<p><strong>SPI_EXCHANGE</strong> is defined in the SPI Interface as…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define SPI_EXCHANGE(d,t,r,l) \
+  ((d)-&gt;ops-&gt;exchange(d,t,r,l))</code></pre></div>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h#L372-L395">(Source)</a></p>
+<p>Which maps to <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L932-L967"><strong>bl602_spi_exchange</strong></a> for BL602…</p>
+<div class="example-wrap"><pre class="language-c"><code>static void bl602_spi_exchange(
+  struct spi_dev_s *dev,
+  const void *txbuffer, 
+  void *rxbuffer,
+  size_t nwords) {
+  ...</code></pre></div>
+<p>(Or <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/xtensa/src/esp32/esp32_spi.c#L1132-L1174"><strong>esp32_spi_exchange</strong></a> for ESP32)</p>
+<p>Note that the SPI Interface requires an <strong>SPI Device</strong> (spi_dev_s) to be passed in.</p>
+<p>Which is available to NuttX Device Drivers.</p>
+<p><em>Can a NuttX App call the SPI Interface directly like this?</em></p>
 <p><img src="https://lupyuen.github.io/images/spi2-interface2.png" alt="Can a NuttX App call the SPI Interface like this?" /></p>
-<p>Nope this won’t work, let’s find out why.</p>
-<div class="example-wrap"><pre class="language-c"><code>int fd = open(&quot;/dev/spi0&quot;, O_RDWR);</code></pre></div>
-<p>In a NuttX App we may open the SPI Port <strong>“/dev/spi0”</strong> to get a File Descriptor.</p>
-<p>TODO</p>
-<p>Let’s call it from our “spi_test” app</p>
-<p>TODO30</p>
-<p>Can our #NuttX App directly call the SPI Interface? Let’s find out! 🤔</p>
-<p>TODO31</p>
-<p>#NuttX SPI Interface needs an SPI Device “spi_dev_s” … How do we get an SPI Device? 🤔</p>
+<p>Nope this won’t work, because NuttX Apps <strong>can’t access the SPI Device</strong> (spi_dev_s).</p>
+<p>Let’s dig into NuttX OS and find out why.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface3.png" alt="SPI Interface needs an SPI Device (spi_dev_s)" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface3.png" alt="" /></p>
-<p>TODO32</p>
-<p>Tracing thru #NuttX Virtual File System … We see that ioctl() maps the File Descriptor to a File Struct</p>
+<h2 id="file-descriptor" class="section-header"><a href="#file-descriptor">15.2 File Descriptor</a></h2>
+<p>In a NuttX App we may open the SPI Port <strong>“/dev/spi0”</strong> to get a <strong>File Descriptor</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>int fd = open(&quot;/dev/spi0&quot;, O_RDWR);</code></pre></div>
+<p><em>How is the File Descriptor linked to the SPI Device (spi_dev_s)?</em></p>
+<p>Well we use the File Descriptor to execute <strong>File Operations</strong>: read(), write(), ioctl(), …</p>
+<p>Tracing through the NuttX <strong>Virtual File System</strong>, we see that ioctl() maps the File Descriptor to a <strong>File Struct</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface4.png" alt="ioctl() maps a File Descriptor to a File Struct" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/fs/vfs/fs_ioctl.c#L118-L138">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface4.png" alt="" /></p>
-<p>TODO33</p>
-<p>#NuttX File Struct contains a Private Pointer to the SPI Driver “spi_driver_s”</p>
+<h2 id="file-struct" class="section-header"><a href="#file-struct">15.3 File Struct</a></h2>
+<p>The <strong>File Struct</strong> contains a Private Pointer to the <strong>SPI Driver</strong> (spi_driver_s)…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface5.png" alt="File Struct contains a Private Pointer to the SPI Driver (spi_driver_s)" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L112-L147">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface5.png" alt="" /></p>
-<p>TODO34</p>
-<p>#NuttX SPI Driver “spi_driver_s” contains the SPI Device “spi_dev_s” … That we need for testing the SPI Interface! But the SPI Device is private and hidden from apps 🙁</p>
+<h2 id="spi-driver" class="section-header"><a href="#spi-driver">15.4 SPI Driver</a></h2>
+<p>The <strong>SPI Driver</strong> (spi_driver_s) contains the <strong>SPI Device</strong> (spi_dev_s)… </p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface6.png" alt="SPI Driver (spi_driver_s) contains the SPI Device (spi_dev_s)" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface6.png" alt="" /></p>
+<p>Which is what we need for calling the <strong>SPI Interface</strong>!</p>
+<p>But sadly the SPI Device is <strong>private to NuttX OS</strong> and we can’t access it from the NuttX App.</p>
+<p>That’s why we wrote our own <strong>SPI Test Driver</strong> (which runs inside NuttX OS) to get access to the SPI Device and call the SPI Interface.</p>
+<p>(By calling the SPI Test Driver from our <strong>SPI Test App</strong>)</p>
+<p>In summary, NuttX maps a <strong>File Descriptor</strong> to <strong>SPI Device</strong> as follows…</p>
+<p>File Descriptor → File Struct → SPI Driver (spi_driver_s) → SPI Device (spi_dev_s)</p>
 <h1 id="appendix-miso-and-mosi-are-swapped" class="section-header"><a href="#appendix-miso-and-mosi-are-swapped">16 Appendix: MISO And MOSI Are Swapped</a></h1>
 <p><em>(For BL602 only)</em></p>
 <p>BL602 has an SPI issue that affects both NuttX and BL602 IoT SDK: <strong>MISO and MOSI pins are swapped</strong>, contrary to the Pin Descriptions in the BL602 Reference Manual.</p>
