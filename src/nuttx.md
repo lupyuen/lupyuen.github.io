@@ -788,9 +788,9 @@ I'm new to NuttX but I had lots of fun experimenting with it. I hope you'll enjo
 
 Here are some topics I might explore in future articles, lemme know if I should do these...
 
--   __SPI Driver__: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604!
+-   __SPI Driver__: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604! Which we have done here...
 
-    [(More about PineDio Stack BL604)](https://lupyuen.github.io/articles/lorawan2)
+    [__"SPI on Apache NuttX OS"__](https://lupyuen.github.io/articles/spi2)
 
 -   __LoRaWAN Driver__: Once we get SX1262 talking OK on SPI, we can port the LoRaWAN Driver to NuttX!
 

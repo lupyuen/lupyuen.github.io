@@ -1124,7 +1124,7 @@ On PineCone BL602 we configure __GPIO Output (Chip Select)__ like this...
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49)
 
-On PineDio Stack BL602 we do this...
+On PineDio Stack BL604 we do this...
 
 ```c
 #define BOARD_GPIO_OUT1 \
@@ -1140,7 +1140,7 @@ With __GPIO_FLOAT__, Chip Select defaults to the __Low State__ at startup.
 
 Which __activates SX1262__ on the SPI Bus at startup, possibly interpreting spurious commands and causing the "Get Status" command to fail.
 
-PineDio Stack BL602 does it correctly: It sets Chip Select to the __High State__ at startup (__GPIO_PULLUP__).  Which __deactivates SX1262__ on the SPI Bus at startup.
+PineDio Stack BL604 does it correctly: It sets Chip Select to the __High State__ at startup (__GPIO_PULLUP__).  Which __deactivates SX1262__ on the SPI Bus at startup.
 
 _Anything else we missed?_
 
