@@ -1469,19 +1469,74 @@ nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
-<p>Build, Flash and Run #NuttX OS on #BL602 … Here’s the script I use for macOS</p>
-<p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="" /></p>
+<p><strong>macOS Tip:</strong> Here’s the script I use to build, flash and run NuttX on macOS, all in a single step: <a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">run.sh</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
 <p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
 <h1 id="appendix-nuttx-spi-interface" class="section-header"><a href="#appendix-nuttx-spi-interface">15 Appendix: NuttX SPI Interface</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
-<p>TODO</p>
-<p>#NuttX SPI Interface is defined here … Let’s call it from our “spi_test” app</p>
+<p>In this section we dig deep into NuttX OS to understand how the <strong>SPI Functions</strong> work.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/spi2-interface.png" alt="NuttX SPI Interface" /></p>
+</blockquote>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface.png" alt="" /></p>
+<p>The <strong>NuttX SPI Interface</strong> (pic above) is defined as C Macros in <a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">include/nuttx/spi/spi.h</a></p>
+<ul>
+<li>
+<p><strong>SPI_LOCK</strong>: Lock the SPI Bus for exclusive access</p>
+</li>
+<li>
+<p><strong>SPI_SELECT</strong>: Enable / disable the SPI Chip Select</p>
+</li>
+<li>
+<p><strong>SPI_SETFREQUENCY</strong>: Set the SPI frequency</p>
+</li>
+<li>
+<p><strong>SPI_SETDELAY</strong>: Set the SPI Delays in nanoseconds</p>
+</li>
+<li>
+<p><strong>SPI_SETMODE</strong>: Set the SPI Mode</p>
+</li>
+<li>
+<p><strong>SPI_SETBITS</strong>: Set the number of bits per word (Transfer size)</p>
+</li>
+<li>
+<p><strong>SPI_HWFEATURES</strong>: Set hardware-specific feature flags</p>
+</li>
+<li>
+<p><strong>SPI_STATUS</strong>: Get SPI/MMC status</p>
+</li>
+<li>
+<p><strong>SPI_CMDDATA</strong>: Transfer 9-bit data (like for ST7789 Display)</p>
+</li>
+<li>
+<p><strong>SPI_SEND</strong>: Exchange one word on SPI</p>
+</li>
+<li>
+<p><strong>SPI_SNDBLOCK</strong>: Send a block of data on SPI</p>
+</li>
+<li>
+<p><strong>SPI_RECVBLOCK</strong>: Receive a block of data from SPI</p>
+</li>
+<li>
+<p><strong>SPI_EXCHANGE</strong>: Exchange a block of data from SPI</p>
+</li>
+<li>
+<p><strong>SPI_REGISTERCALLBACK</strong>: Register a callback for media status change</p>
+</li>
+<li>
+<p><strong>SPI_TRIGGER</strong>: Trigger a previously configured DMA transfer</p>
+</li>
+</ul>
+<p>The SPI Interface is meant to be called by <strong>NuttX Device Drivers</strong>.</p>
+<p><em>Can a NuttX App call the SPI Interface like this?</em></p>
+<p><img src="https://lupyuen.github.io/images/spi2-interface2.png" alt="Can a NuttX App call the SPI Interface like this?" /></p>
+<p>Nope this won’t work, let’s find out why.</p>
+<div class="example-wrap"><pre class="language-c"><code>int fd = open(&quot;/dev/spi0&quot;, O_RDWR);</code></pre></div>
+<p>In a NuttX App we may open the SPI Port <strong>“/dev/spi0”</strong> to get a File Descriptor.</p>
+<p>TODO</p>
+<p>Let’s call it from our “spi_test” app</p>
 <p>TODO30</p>
 <p>Can our #NuttX App directly call the SPI Interface? Let’s find out! 🤔</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-interface2.png" alt="" /></p>
 <p>TODO31</p>
 <p>#NuttX SPI Interface needs an SPI Device “spi_dev_s” … How do we get an SPI Device? 🤔</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967">(Source)</a></p>
