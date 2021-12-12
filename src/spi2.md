@@ -215,7 +215,7 @@ static ssize_t spi_test_driver_write(
   DEBUGASSERT(priv != NULL);
 ```
 
-We begin by fetching the __SPI Interface__ from the File Struct.
+We begin by fetching the [__SPI Interface__](https://lupyuen.github.io/articles/spi2#appendix-nuttx-spi-interface) from the File Struct.
 
 Next we __lock the SPI Bus__ and __configure the SPI Interface__...
 
@@ -273,7 +273,9 @@ The return value is the number of bytes transferred.
 
 _What are SPI_LOCK, SPI_SELECT and SPI_EXCHANGE?_
 
-That's the __SPI Interface__ for NuttX. We'll cover this in the Appendix.
+That's the __SPI Interface__ for NuttX.
+
+[(More about NuttX SPI Interface)](https://lupyuen.github.io/articles/spi2#appendix-nuttx-spi-interface)
 
 ![Write Operation](https://lupyuen.github.io/images/spi2-driver2.png)
 
@@ -331,7 +333,7 @@ static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
 }
 ```
 
-(SPI_SETMODE, SPI_SETBITS, SPI_HWFEATURES and SPI_SETFREQUENCY are defined in the NuttX SPI Interface)
+[(SPI_SETMODE, SPI_SETBITS, SPI_HWFEATURES and SPI_SETFREQUENCY are defined in the NuttX SPI Interface)](https://lupyuen.github.io/articles/spi2#appendix-nuttx-spi-interface)
 
 The code above configures the SPI Interface as follows...
 
