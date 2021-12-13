@@ -1837,9 +1837,11 @@ The __NuttX SPI Interface__ (pic above) is defined as C Macros in [include/nuttx
 
 -   __SPI_TRIGGER__: Trigger a previously configured DMA transfer
 
+[(More about NuttX SPI)](https://nuttx.apache.org/docs/latest/components/drivers/special/spi.html)
+
 ## SPI Device
 
-The SPI Interface is meant to be called by __NuttX Device Drivers__ like so: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208)
+The above SPI Interface is meant to be called by __NuttX Device Drivers__ like so: [spi_test_driver.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208)
 
 ```c
 /* Write the buffer to the SPI device */
