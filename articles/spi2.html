@@ -1564,8 +1564,9 @@ nsh&gt;</code></pre></div>
 <p><strong>SPI_TRIGGER</strong>: Trigger a previously configured DMA transfer</p>
 </li>
 </ul>
+<p><a href="https://nuttx.apache.org/docs/latest/components/drivers/special/spi.html">(More about NuttX SPI)</a></p>
 <h2 id="spi-device" class="section-header"><a href="#spi-device">15.1 SPI Device</a></h2>
-<p>The SPI Interface is meant to be called by <strong>NuttX Device Drivers</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
+<p>The above SPI Interface is meant to be called by <strong>NuttX Device Drivers</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Write the buffer to the SPI device */
 
 static ssize_t spi_test_driver_write(
