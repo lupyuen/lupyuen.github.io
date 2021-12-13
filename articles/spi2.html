@@ -993,8 +993,10 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1464898624026906625">this Twitter Thread</a></p>
 </li>
 <li>
-<p>TODO</p>
-<p>(BL602 IoT SDK / FreeRTOS is revamping right now to the <a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>new “hosal” HAL</strong></a>. Terrific time to explore NuttX now!)</p>
+<p>We have already ported LoRaWAN to <strong>BL602 IoT SDK</strong> <a href="https://lupyuen.github.io/articles/lorawan">(see this)</a>, why are we porting again to NuttX?</p>
+<p>Regrettably BL602 IoT SDK has been revamped (without warning) to the <strong>new “hosal” HAL</strong> <a href="https://twitter.com/MisterTechBlog/status/1456259223323508748">(see this)</a>, and the LoRaWAN Stack will <strong>no longer work</strong> on the revamped BL602 IoT SDK.</p>
+<p>For easier maintenance, we shall <strong>code our BL602 and BL604 projects with Apache NuttX OS</strong> instead.</p>
+<p>(Which won’t get revamped overnight!)</p>
 </li>
 </ol>
 <h1 id="appendix-create-a-nuttx-device-driver" class="section-header"><a href="#appendix-create-a-nuttx-device-driver">12 Appendix: Create a NuttX Device Driver</a></h1>
