@@ -1961,9 +1961,11 @@ In this section we...
 
 1.  Test the fix
 
-A __Pull Request__ has been submitted to NuttX...
+The fix has been merged into NuttX...
 
 -   [__"riscv/bl602: Swap SPI MISO and MOSI"__](https://github.com/apache/incubator-nuttx/pull/4984)
+
+(Thank you NuttX Maintainers! 🙂 )
 
 Note that the __SPI Mode needs to be 1__ (instead of 0) for the SPI interface to operate correctly...
 
@@ -2161,9 +2163,11 @@ We have also tested the fix with __PineDio Stack BL604__ and its onboard SX1262.
 
 -   [__"Test with PineDio Stack"__](https://lupyuen.github.io/articles/spi2#test-with-pinedio-stack)
 
-A __Pull Request__ has been submitted to NuttX...
+The fix has been merged into NuttX...
 
 -   [__"riscv/bl602: Swap SPI MISO and MOSI"__](https://github.com/apache/incubator-nuttx/pull/4984)
+
+(Thank you NuttX Maintainers! 🙂 )
 
 Note that the __SPI Mode needs to be 1__ (instead of 0) for our test to succeed...
 
