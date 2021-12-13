@@ -888,7 +888,7 @@ __CS__   | GPIO 11 | GPIO 15 / 16 | Dark Green
 __VCC__  | 3V3     | 3V3 | Red
 __GND__  | GND     | GND | Black
 
-(We don't need all the pins connected, we're testing simple commands)
+(We don't need to connect the Busy and DIO1 Pins, we're testing simple commands)
 
 Here's SX1262 connected to PineCone BL602...
 
