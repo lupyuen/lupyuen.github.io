@@ -1070,11 +1070,11 @@ Our final task for today: Run SPI Test App #2 on PineDio Stack BL604 (with onboa
 
     [__"Test SX1262"__](https://lupyuen.github.io/articles/spi2#test-sx1262)
 
-1.  Edit the __Pin Defitions__ as shown above...
+1.  Edit the __Pin Definitions__ as shown above...
 
     [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95) 
 
-1.  Build, flash and run the NuttX Firmware on BL602 or ESP32...
+1.  Build, flash and run the NuttX Firmware...
 
     [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/spi2#appendix-build-flash-and-run-nuttx)
 
