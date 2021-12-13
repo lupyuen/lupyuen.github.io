@@ -1,6 +1,6 @@
 # SPI on Apache NuttX OS
 
-📝 _15 Dec 2021_
+📝 _13 Dec 2021_
 
 ![PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)](https://lupyuen.github.io/images/spi2-title.jpg)
 
@@ -1152,23 +1152,29 @@ We ought to flip the Chip Select for other SPI Devices to High, to deactivate th
 
 # What's Next
 
-TODO
+Now that we have NuttX talking OK to the SX1262 LoRa Transceiver... We're ready to port __LoRa and LoRaWAN__ to NuttX!
 
-I'm new to NuttX but I had lots of fun experimenting with it. I hope you'll enjoy NuttX too!
+We'll port this LoRa + LoRaWAN Stack...
 
-Here are some topics I might explore in future articles, lemme know if I should do these...
+-   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
 
--   __SPI Driver__: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604!
+Over the next couple of articles we shall __migrate the LoRa + LoRaWAN code incrementally__ to NuttX...
 
-    [(More about PineDio Stack BL604)](https://lupyuen.github.io/articles/lorawan2)
+1.  Initially as a __NuttX App Library__ running in a NuttX App
 
--   __LoRaWAN Driver__: Once we get SX1262 talking OK on SPI, we can port the LoRaWAN Driver to NuttX!
+    (Because it's easier to code and troubleshoot)
 
-    [(LoRaWAN on PineDio Stack BL604)](https://lupyuen.github.io/articles/lorawan2)
+1.  Eventually moving into a __NuttX Device Driver__
 
--   __Rust__: Porting the Embedded Rust HAL to NuttX sounds really interesting. We might start with GPIO and SPI to see whether the concept is feasible.
+    (Because it's The Right Thing)
 
-(BL602 IoT SDK / FreeRTOS is revamping right now to the [__new "hosal" HAL__](https://twitter.com/MisterTechBlog/status/1456259223323508748). Terrific time to explore NuttX now!)
+1.  By implementing __ioctl()__ operations for LoRaWAN
+
+    [(Similar to this SX1276 Device Driver)](https://github.com/apache/incubator-nuttx/blob/master/drivers/wireless/lpwan/sx127x/sx127x.c#L954-L1162)
+
+I'm still super curious about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. We might start soon with GPIO and SPI to see whether the concept is feasible.
+
+Stay Tuned!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -1187,6 +1193,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1464898624026906625)
+
+1.  TODO
+
+    (BL602 IoT SDK / FreeRTOS is revamping right now to the [__new "hosal" HAL__](https://twitter.com/MisterTechBlog/status/1456259223323508748). Terrific time to explore NuttX now!)
 
 # Appendix: Create a NuttX Device Driver
 

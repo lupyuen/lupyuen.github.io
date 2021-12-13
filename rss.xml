@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>SPI on Apache NuttX OS</title>
+            <link>https://lupyuen.github.io/articles/spi2</link>
+            <description><![CDATA[How we transmit and receive data over SPI on Apache NuttX OS... By coding a NuttX Device Driver]]></description>
+            <guid>https://lupyuen.github.io/articles/spi2</guid>
+            <pubDate>Mon, 13 Dec 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX OS on RISC-V BL602 and BL604</title>
             <link>https://lupyuen.github.io/articles/nuttx</link>
             <description><![CDATA[How we build, flash and test the Apache NuttX operating system on BL602 and BL604 RISC-V SoCs]]></description>

@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "SPI on Apache NuttX OS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-12-13",
+      "website": "https://lupyuen.github.io/articles/spi2",
+      "summary": "How we transmit and receive data over SPI on Apache NuttX OS... By coding a NuttX Device Driver"
+    },
+    {
       "name": "Apache NuttX OS on RISC-V BL602 and BL604",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-11-24",
