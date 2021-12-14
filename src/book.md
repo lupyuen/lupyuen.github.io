@@ -40,11 +40,7 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 -   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
 
--   ["GPIO on NuttX"](https://lupyuen.github.io/articles/nuttx#gpio-demo)
-
 -   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
-
--   ["BASIC Interpreter on NuttX"](https://lupyuen.github.io/articles/nuttx#basic-interpreter)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
