@@ -674,6 +674,7 @@ config ESP32_SPI2_MISOPIN
 
 int cs = open(&quot;/dev/gpout1&quot;, O_RDWR);
 assert(cs &gt;= 0);  /* TODO: Handle error */</code></pre></div>
+<p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 <p>This is new: We open the GPIO Output device <strong>“/dev/gpout1”</strong> for the SPI Chip Select Pin.</p>
 <p>Next we <strong>open our SPI Test Driver</strong> as before…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Open SPI Test Driver */

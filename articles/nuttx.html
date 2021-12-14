@@ -296,6 +296,7 @@ Builtin Apps:
  null
  timer0
  zero</code></pre></div>
+<p>(<strong>NOTE:</strong> As of Dec 2021, gpin0 / gpout1 / gpint2 have been renamed to gpio0 / gpio1 / gpio2)</p>
 <ul>
 <li>
 <p><strong>/dev/console</strong> is the Serial (UART) Console</p>
@@ -303,13 +304,16 @@ Builtin Apps:
 <li>
 <p><strong>/dev/gpin0</strong> reads from GPIO Input</p>
 <p>(Because we enabled the GPIO Driver)</p>
+<p>(Renamed to <strong>/dev/gpio0</strong> as of Dec 2021)</p>
 </li>
 <li>
 <p><strong>/dev/gpint2</strong> captures the GPIO Interrupt</p>
+<p>(Renamed to <strong>/dev/gpio2</strong> as of Dec 2021)</p>
 </li>
 <li>
 <p><strong>/dev/gpout1</strong> writes to GPIO Output</p>
 <p>(But which GPIO Pin? We’ll learn in a while)</p>
+<p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 </li>
 <li>
 <p><strong>/dev/null</strong> is the Null Device</p>
@@ -325,11 +329,13 @@ Builtin Apps:
 </li>
 </ul>
 <p>Let’s write to the GPIO Output at <strong>/dev/gpout1</strong>.</p>
+<p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio.png" alt="gpio command" /></p>
 <h2 id="write-to-gpio" class="section-header"><a href="#write-to-gpio">5.2 Write to GPIO</a></h2>
 <p>Enter this to set the <strong>GPIO Output</strong> to High…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gpio -o 1 /dev/gpout1</code></pre></div>
 <p>(As explained in the pic above)</p>
+<p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 <p>The GPIO Output changes from <strong>Low to High</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Driver: /dev/gpout1
   Output pin:    Value=0
@@ -399,6 +405,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </blockquote>
 <p>In the NuttX Shell, enter this to flip GPIO 11 to <strong>High</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gpio -o 1 /dev/gpout1</code></pre></div>
+<p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 <p>NuttX flips GPIO 11 from <strong>Low to High</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Driver: /dev/gpout1
   Output pin:    Value=0
@@ -411,6 +418,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>So far so good!</p>
 <p>Enter this to flip GPIO 11 to <strong>Low</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gpio -o 0 /dev/gpout1</code></pre></div>
+<p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 <p>As expected, NuttX flips GPIO 11 from <strong>High to Low</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Driver: /dev/gpout1
   Output pin:    Value=1
@@ -430,7 +438,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>From the pic above we see that the <strong>“gpio”</strong> command calls…</p>
 <ul>
 <li>
-<p><strong>open(“/dev/gpout1”, …)</strong> to access the GPIO Pin</p>
+<p><strong>open(“/dev/gpio1”, …)</strong> to access the GPIO Pin</p>
 </li>
 <li>
 <p><strong>ioctl(…, GPIOC_READ, …)</strong> to read the GPIO Pin</p>
@@ -483,7 +491,7 @@ static int gpout_write(FAR struct gpio_dev_s *dev, bool value)
     g_gpiooutputs[bl602xgpio-&gt;id],  //  GPIO Pin Set
     value                           //  1 (High) or 0 (Low)
   );</code></pre></div>
-<p><strong>g_gpiooutputs</strong> maps the GPIO Device (like “/dev/gpout1”) to a <strong>GPIO Pin Set</strong>, which contains the <strong>GPIO Pin Number</strong>.</p>
+<p><strong>g_gpiooutputs</strong> maps the GPIO Device (like “/dev/gpio1”) to a <strong>GPIO Pin Set</strong>, which contains the <strong>GPIO Pin Number</strong>.</p>
 <p>(Which makes sense, because each board may map the Hardware Devices to different GPIO Pins)</p>
 <p>The Board-Specific Driver calls the <strong>BL602-Specific GPIO Driver</strong> to set the GPIO Output, passing the GPIO Pin Set.</p>
 <h2 id="bl602-driver" class="section-header"><a href="#bl602-driver">8.3 BL602 Driver</a></h2>
@@ -1007,6 +1015,7 @@ Driver: /dev/gpout1
   Output pin:    Value=1
   Writing:       Value=0
   Verify:        Value=0</code></pre></div>
+<p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 <p>NuttX changes GPIO 11 from <strong>Low to High</strong> and back to Low.</p>
 <p>But the BL602 <strong>LED doesn’t blink</strong>. Let’s track down the glitch.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="Flipping GPIO 11 doesn’t blink the LED" /></p>
@@ -1089,6 +1098,7 @@ Driver: /dev/gpout1
   Output pin:    Value=0
   Writing:       Value=1
   Verify:        Value=1</code></pre></div>
+<p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 <p>PineCone’s Blue LED on GPIO 11 correctly <strong>switches off</strong>.</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-ledoff.jpg" alt="LED Off" /></p>
@@ -1099,6 +1109,7 @@ Driver: /dev/gpout1
   Output pin:    Value=1
   Writing:       Value=0
   Verify:        Value=0</code></pre></div>
+<p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 <p>And PineCone’s Blue LED on GPIO 11 correctly <strong>switches on</strong>.</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-ledon.jpg" alt="LED On" /></p>
