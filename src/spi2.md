@@ -463,6 +463,8 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
 
 1.  Save the configuration and exit menuconfig
 
+    [(Here's the .config for BL602)](https://gist.github.com/lupyuen/93b553fdfcfa0221ccd6276706e72caf)
+
 1.  __For ESP32:__ Edit [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) to register our SPI Test Driver [(See this)](https://lupyuen.github.io/articles/spi2#register-device-driver)
 
 1.  Build, flash and run the NuttX Firmware on BL602 or ESP32...
@@ -603,6 +605,8 @@ Follow these steps to run our SPI Test App on BL602 or ESP32...
     ![Enable SPI Test App in menuconfig](https://lupyuen.github.io/images/spi2-newapp4.jpg)
 
 1.  Save the configuration and exit menuconfig
+
+    [(Here's the .config for BL602)](https://gist.github.com/lupyuen/93b553fdfcfa0221ccd6276706e72caf)
 
 1.  Build, flash and run the NuttX Firmware on BL602 or ESP32...
 
@@ -961,6 +965,8 @@ Follow these steps to run our SPI Test App #2 on BL602 or ESP32...
     Check the box for __"spi_test2"__
 
 1.  Save the configuration and exit menuconfig
+
+    [(Here's the .config for BL602)](https://gist.github.com/lupyuen/93b553fdfcfa0221ccd6276706e72caf)
 
 1.  Build, flash and run the NuttX Firmware on BL602 or ESP32...
 
@@ -1373,6 +1379,8 @@ Next we enable SPI logging for easier troubleshooting...
 
 1.  Hit __"Save"__ then __"OK"__ to save the NuttX Configuration to __".config"__
 
+    [(Here's the .config for BL602)](https://gist.github.com/lupyuen/93b553fdfcfa0221ccd6276706e72caf)
+
 1.  Hit __"Exit"__ until __menuconfig__ quits
 
     ![Enable logging](https://lupyuen.github.io/images/spi2-driver4.png)
@@ -1564,6 +1572,8 @@ Next we enable our app (pic above)...
 1.  Check the box for __"spi_test"__
 
 1.  Hit __"Save"__ then __"OK"__ to save the NuttX Configuration to __".config"__
+
+    [(Here's the .config for BL602)](https://gist.github.com/lupyuen/93b553fdfcfa0221ccd6276706e72caf)
 
 1.  Hit __"Exit"__ until __menuconfig__ quits
 
