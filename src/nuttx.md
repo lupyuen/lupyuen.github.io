@@ -294,17 +294,25 @@ NuttX reveals the devices that we may control...
  zero
 ```
 
+(__NOTE:__ As of Dec 2021, gpin0 / gpout1 / gpint2 have been renamed to gpio0 / gpio1 / gpio2)
+
 -   __/dev/console__ is the Serial (UART) Console
 
 -   __/dev/gpin0__ reads from GPIO Input
 
     (Because we enabled the GPIO Driver)
 
+    (Renamed to __/dev/gpio0__ as of Dec 2021)
+
 -   __/dev/gpint2__ captures the GPIO Interrupt
+
+    (Renamed to __/dev/gpio2__ as of Dec 2021)
 
 -   __/dev/gpout1__ writes to GPIO Output
 
     (But which GPIO Pin? We'll learn in a while)
+
+    (Renamed to __/dev/gpio1__ as of Dec 2021)
 
 -   __/dev/null__ is the Null Device
 
@@ -320,6 +328,8 @@ NuttX reveals the devices that we may control...
 
 Let's write to the GPIO Output at __/dev/gpout1__.
 
+(Renamed to __/dev/gpio1__ as of Dec 2021)
+
 ![gpio command](https://lupyuen.github.io/images/nuttx-gpio.png)
 
 ## Write to GPIO
@@ -331,6 +341,8 @@ gpio -o 1 /dev/gpout1
 ```
 
 (As explained in the pic above)
+
+(Renamed to __/dev/gpio1__ as of Dec 2021)
 
 The GPIO Output changes from __Low to High__...
 
@@ -429,6 +441,8 @@ In the NuttX Shell, enter this to flip GPIO 11 to __High__...
 gpio -o 1 /dev/gpout1
 ```
 
+(Renamed to __/dev/gpio1__ as of Dec 2021)
+
 NuttX flips GPIO 11 from __Low to High__...
 
 ```text
@@ -449,6 +463,8 @@ Enter this to flip GPIO 11 to __Low__...
 ```bash
 gpio -o 0 /dev/gpout1
 ```
+
+(Renamed to __/dev/gpio1__ as of Dec 2021)
 
 As expected, NuttX flips GPIO 11 from __High to Low__...
 
@@ -479,7 +495,7 @@ We start at the __"gpio"__ command: [gpio_main.c](https://github.com/apache/incu
 
 From the pic above we see that the __"gpio"__ command calls...
 
--   __open("/dev/gpout1", ...)__ to access the GPIO Pin
+-   __open("/dev/gpio1", ...)__ to access the GPIO Pin
 
 -   __ioctl(..., GPIOC_READ, ...)__ to read the GPIO Pin
 
@@ -548,7 +564,7 @@ static int gpout_write(FAR struct gpio_dev_s *dev, bool value)
   );
 ```
 
-__g_gpiooutputs__ maps the GPIO Device (like "/dev/gpout1") to a __GPIO Pin Set__, which contains the __GPIO Pin Number__.
+__g_gpiooutputs__ maps the GPIO Device (like "/dev/gpio1") to a __GPIO Pin Set__, which contains the __GPIO Pin Number__.
 
 (Which makes sense, because each board may map the Hardware Devices to different GPIO Pins)
 
@@ -1189,6 +1205,8 @@ Driver: /dev/gpout1
   Verify:        Value=0
 ```
 
+(Renamed to __/dev/gpio1__ as of Dec 2021)
+
 NuttX changes GPIO 11 from __Low to High__ and back to Low.
 
 But the BL602 __LED doesn't blink__. Let's track down the glitch.
@@ -1313,6 +1331,8 @@ Driver: /dev/gpout1
   Verify:        Value=1
 ```
 
+(Renamed to __/dev/gpio1__ as of Dec 2021)
+
 PineCone's Blue LED on GPIO 11 correctly __switches off__.
 
 > ![LED Off](https://lupyuen.github.io/images/nuttx-ledoff.jpg)
@@ -1326,6 +1346,8 @@ Driver: /dev/gpout1
   Writing:       Value=0
   Verify:        Value=0
 ```
+
+(Renamed to __/dev/gpio1__ as of Dec 2021)
 
 And PineCone's Blue LED on GPIO 11 correctly __switches on__.
 

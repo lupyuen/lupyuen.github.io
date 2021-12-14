@@ -736,6 +736,8 @@ int cs = open("/dev/gpout1", O_RDWR);
 assert(cs >= 0);  /* TODO: Handle error */
 ```
 
+(Renamed to __/dev/gpio1__ as of Dec 2021)
+
 This is new: We open the GPIO Output device __"/dev/gpout1"__ for the SPI Chip Select Pin.
 
 Next we __open our SPI Test Driver__ as before...
