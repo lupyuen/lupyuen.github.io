@@ -363,7 +363,7 @@ _How shall we define the GPIO Output Pin for our LED?_
 
 On PineCone BL602 the Blue LED is connected on __GPIO 11__.
 
-We change the Pin Definition for __BOARD_GPIO_OUT1__ like so: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
+We change the Pin Definition for __BOARD_GPIO_OUT1__ like so: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/gpio/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
 
 ```c
 //  GPIO Output Pin:
@@ -623,13 +623,13 @@ Let's do some BASIC on BL602 NuttX...
 
     [__"Disable environment variables and folders"__](https://github.com/lupyuen/incubator-nuttx-apps/commit/bc68ad8a16cb60ecff53d7a8644e6c6d6b8e5fd6#diff-05996067e34eb452c24a3e0966a8f6e974f6b54c4f3d767140a92fb5c67c55ec)
 
-    (See the modified files: [bas_global.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_global.c) and [bas_statement.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_statement.c))
+    (See the modified files: [bas_global.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_global.c) and [bas_statement.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_statement.c))
 
 1.  We'll use "peek" and "poke" in a while. Patch the source file to enable the commands...
 
     [__"Enable peek and poke"__](https://github.com/lupyuen/incubator-nuttx-apps/commit/cda8a79fae74ea85f276302b67d32c01adb561bc)
 
-    [(See the modified file)](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_fs.c)
+    [(See the modified file)](https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_fs.c)
 
 1.  Rebuild, reflash and rerun NuttX
 
@@ -925,8 +925,8 @@ Next we download and build NuttX...
     ```bash
     mkdir nuttx
     cd nuttx
-    git clone https://github.com/apache/incubator-nuttx nuttx
-    git clone https://github.com/apache/incubator-nuttx-apps apps
+    git clone --branch gpio https://github.com/apache/incubator-nuttx nuttx
+    git clone --branch gpio https://github.com/apache/incubator-nuttx-apps apps
     ```
 
 1.  Configure NuttX...
@@ -1157,7 +1157,7 @@ PineCone BL602 has a Blue LED connected on __GPIO 11__...
 
 -   Blue LED is __Off__ when GPIO 11 is __High__
 
-We configure GPIO 11 as the GPIO Output Pin __BOARD_GPIO_OUT1__ in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
+We configure GPIO 11 as the GPIO Output Pin __BOARD_GPIO_OUT1__ in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/gpio/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
 
 ```c
 //  GPIO Output Pin:
@@ -1246,7 +1246,7 @@ Let's update the GPIO Output Enable Register in NuttX.
 
 ## Fix the glitch
 
-We patch the __bl602_configgpio__ function to update the GPIO Output Enable Register: [bl602_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137)
+We patch the __bl602_configgpio__ function to update the GPIO Output Enable Register: [bl602_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137)
 
 ```c
 // Existing function
@@ -1291,7 +1291,7 @@ At startup, the Blue LED is __On__ (because the default GPIO Output is Low)...
 
 (Remember the LED switches on when GPIO 11 is Low)
 
-At startup the patched [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137) function correctly updates the __GPIO Output Enable Register__ at `0x40000190`...
+At startup the patched [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137) function correctly updates the __GPIO Output Enable Register__ at `0x40000190`...
 
 ```text
 bl602_configgpio enable output:
