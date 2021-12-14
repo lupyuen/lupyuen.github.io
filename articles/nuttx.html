@@ -346,7 +346,7 @@ Builtin Apps:
 <p>Refer to the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 / BL604 Reference Manual</strong></a>, Section 3.2.8 (GPIO Function) for the Pin Description Table.</p>
 <p><em>How shall we define the GPIO Output Pin for our LED?</em></p>
 <p>On PineCone BL602 the Blue LED is connected on <strong>GPIO 11</strong>.</p>
-<p>We change the Pin Definition for <strong>BOARD_GPIO_OUT1</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">board.h</a></p>
+<p>We change the Pin Definition for <strong>BOARD_GPIO_OUT1</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/gpio/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO Output Pin:
 //  Changed GPIO_PIN1 to GPIO_PIN11 (Blue LED on PineCone BL602)
 //  Changed GPIO_PULLDOWN to GPIO_FLOAT
@@ -536,12 +536,12 @@ void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 <li>
 <p>BL602 doesn’t support environment variables and folders, so we need to patch the source files…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/bc68ad8a16cb60ecff53d7a8644e6c6d6b8e5fd6#diff-05996067e34eb452c24a3e0966a8f6e974f6b54c4f3d767140a92fb5c67c55ec"><strong>“Disable environment variables and folders”</strong></a></p>
-<p>(See the modified files: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_global.c">bas_global.c</a> and <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_statement.c">bas_statement.c</a>)</p>
+<p>(See the modified files: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_global.c">bas_global.c</a> and <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_statement.c">bas_statement.c</a>)</p>
 </li>
 <li>
 <p>We’ll use “peek” and “poke” in a while. Patch the source file to enable the commands…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/cda8a79fae74ea85f276302b67d32c01adb561bc"><strong>“Enable peek and poke”</strong></a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/interpreters/bas/bas_fs.c">(See the modified file)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_fs.c">(See the modified file)</a></p>
 </li>
 <li>
 <p>Rebuild, reflash and rerun NuttX</p>
@@ -774,8 +774,8 @@ PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH&quot;</code></pre><
 <p>Download NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone https://github.com/apache/incubator-nuttx nuttx
-git clone https://github.com/apache/incubator-nuttx-apps apps</code></pre></div></li>
+git clone --branch gpio https://github.com/apache/incubator-nuttx nuttx
+git clone --branch gpio https://github.com/apache/incubator-nuttx-apps apps</code></pre></div></li>
 <li>
 <p>Configure NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
@@ -983,7 +983,7 @@ nsh&gt;</code></pre></div>
 <p>Blue LED is <strong>Off</strong> when GPIO 11 is <strong>High</strong></p>
 </li>
 </ul>
-<p>We configure GPIO 11 as the GPIO Output Pin <strong>BOARD_GPIO_OUT1</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">board.h</a></p>
+<p>We configure GPIO 11 as the GPIO Output Pin <strong>BOARD_GPIO_OUT1</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/gpio/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO Output Pin:
 //  Changed GPIO_PIN1 to GPIO_PIN11 (Blue LED on PineCone BL602)
 //  Changed GPIO_PULLDOWN to GPIO_FLOAT
@@ -1040,7 +1040,7 @@ enable GPIO Output</strong> on GPIO 11.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010">(Source)</a></p>
 <p>Let’s update the GPIO Output Enable Register in NuttX.</p>
 <h2 id="fix-the-glitch" class="section-header"><a href="#fix-the-glitch">15.3 Fix the glitch</a></h2>
-<p>We patch the <strong>bl602_configgpio</strong> function to update the GPIO Output Enable Register: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137">bl602_gpio.c</a></p>
+<p>We patch the <strong>bl602_configgpio</strong> function to update the GPIO Output Enable Register: <a href="https://github.com/lupyuen/incubator-nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137">bl602_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Existing function
 int bl602_configgpio(gpio_pinset_t cfgset)
 {
@@ -1076,7 +1076,7 @@ int bl602_configgpio(gpio_pinset_t cfgset)
 <p><img src="https://lupyuen.github.io/images/nuttx-ledon.jpg" alt="LED On" /></p>
 </blockquote>
 <p>(Remember the LED switches on when GPIO 11 is Low)</p>
-<p>At startup the patched <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137"><strong>bl602_configgpio</strong></a> function correctly updates the <strong>GPIO Output Enable Register</strong> at <code>0x40000190</code>…</p>
+<p>At startup the patched <a href="https://github.com/lupyuen/incubator-nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137"><strong>bl602_configgpio</strong></a> function correctly updates the <strong>GPIO Output Enable Register</strong> at <code>0x40000190</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_configgpio enable output:
   pin=11
   addr=0x40000190
