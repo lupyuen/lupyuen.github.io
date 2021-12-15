@@ -1172,6 +1172,8 @@ Over the next couple of articles we shall __migrate the LoRa + LoRaWAN code incr
 
     (Because it's easier to code and troubleshoot)
 
+    [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1470912715908517889)
+
 1.  Eventually moving into a __NuttX Device Driver__
 
     (Because it's The Right Thing)
