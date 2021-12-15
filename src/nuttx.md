@@ -283,6 +283,8 @@ ls /dev
 
 NuttX reveals the devices that we may control...
 
+(__NOTE:__ As of Dec 2021, gpin0 / gpout1 / gpint2 have been renamed to gpio0 / gpio1 / gpio2)
+
 ```text
 /dev:
  console
@@ -293,8 +295,6 @@ NuttX reveals the devices that we may control...
  timer0
  zero
 ```
-
-(__NOTE:__ As of Dec 2021, gpin0 / gpout1 / gpint2 have been renamed to gpio0 / gpio1 / gpio2)
 
 -   __/dev/console__ is the Serial (UART) Console
 
@@ -944,6 +944,10 @@ Next we download and build NuttX...
     git clone --branch gpio https://github.com/apache/incubator-nuttx nuttx
     git clone --branch gpio https://github.com/apache/incubator-nuttx-apps apps
     ```
+
+    __NOTE:__ This is the older "gpio" branch of NuttX that uses __"/dev/gpout1"__
+    
+    (Later versions of NuttX use __"/dev/gpio1"__ instead)
 
 1.  Configure NuttX...
 
