@@ -288,6 +288,7 @@ Builtin Apps:
 <p>Let’s list the <strong>Hardware Devices</strong> in NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
 <p>NuttX reveals the devices that we may control…</p>
+<p>(<strong>NOTE:</strong> As of Dec 2021, gpin0 / gpout1 / gpint2 have been renamed to gpio0 / gpio1 / gpio2)</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev:
  console
  gpin0
@@ -296,7 +297,6 @@ Builtin Apps:
  null
  timer0
  zero</code></pre></div>
-<p>(<strong>NOTE:</strong> As of Dec 2021, gpin0 / gpout1 / gpint2 have been renamed to gpio0 / gpio1 / gpio2)</p>
 <ul>
 <li>
 <p><strong>/dev/console</strong> is the Serial (UART) Console</p>
@@ -783,7 +783,10 @@ PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH&quot;</code></pre><
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --branch gpio https://github.com/apache/incubator-nuttx nuttx
-git clone --branch gpio https://github.com/apache/incubator-nuttx-apps apps</code></pre></div></li>
+git clone --branch gpio https://github.com/apache/incubator-nuttx-apps apps</code></pre></div>
+<p><strong>NOTE:</strong> This is the older “gpio” branch of NuttX that uses <strong>“/dev/gpout1”</strong></p>
+<p>(Later versions of NuttX use <strong>“/dev/gpio1”</strong> instead)</p>
+</li>
 <li>
 <p>Configure NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
