@@ -808,9 +808,9 @@ Here are some topics I might explore in future articles, lemme know if I should 
 
     [__"SPI on Apache NuttX OS"__](https://lupyuen.github.io/articles/spi2)
 
--   __LoRaWAN Driver__: Once we get SX1262 talking OK on SPI, we can port the LoRaWAN Driver to NuttX!
+-   __LoRaWAN Driver__: Once we get SX1262 talking OK on SPI, we can port the LoRa and LoRaWAN Drivers to NuttX!
 
-    [(LoRaWAN on PineDio Stack BL604)](https://lupyuen.github.io/articles/lorawan2)
+    [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1471179698268893188)
 
 -   __Rust__: Porting the Embedded Rust HAL to NuttX sounds really interesting. We might start with GPIO and SPI to see whether the concept is feasible.
 
