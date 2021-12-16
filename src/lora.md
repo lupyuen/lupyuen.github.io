@@ -20,7 +20,7 @@ The LoRa Firmware in this article will run on __PineCone, Pinenut and Any BL602 
 
 -   [__Watch the demo video on YouTube__](https://youtu.be/9F30uEY-nIk)
 
--   [__More about LoRa__](https://en.wikipedia.org/wiki/LoRa)
+-   [__More about LoRa__](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
 
 ![PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver](https://lupyuen.github.io/images/lora-title.jpg)
 

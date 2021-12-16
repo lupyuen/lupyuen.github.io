@@ -14,7 +14,7 @@ Today we dive into the most exciting component on PineDio Stack: __Semtech SX126
 
 _Why LoRa?_
 
-LoRa is a __Low-Power, Long-Range, Low-Bandwidth__ wireless network.
+[__LoRa__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) is a __Low-Power, Long-Range, Low-Bandwidth__ wireless network.
 
 LoRa is perfect for __IoT Sensor Devices__ that run on Battery Power. (Or Solar Power)
 
@@ -31,6 +31,8 @@ And because LoRa is a Low Power (best effort) network, __messages may get droppe
 Which is probably OK for sensor devices that send data periodically.
 
 (But not for texting your friends)
+
+[(More about LoRa)](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
 
 _Is LoRa secure?_
 
