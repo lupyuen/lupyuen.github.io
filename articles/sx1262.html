@@ -151,13 +151,13 @@
 <p>Today we do the <strong>SX1262 Library</strong> (top right)</p>
 </li>
 <li>
-<p>And we test it with our <strong>LoRa App</strong> (top left)</p>
+<p>And we test with our <strong>LoRa App</strong> (top left)</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/sx1262-library.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <ul>
 <li>
-<p>In the next article we’ll do the <strong>LoRaWAN Library</strong> and test it with our <strong>LoRaWAN App</strong></p>
+<p>In the next article we’ll do the <strong>LoRaWAN Library</strong> and test with our <strong>LoRaWAN App</strong></p>
 </li>
 <li>
 <p>Eventually we shall wrap the SX1262 and LoRaWAN Libraries as <strong>NuttX Drivers</strong></p>
@@ -183,11 +183,34 @@
 <p>(Because porting Linux code to NuttX is straightforward)</p>
 <h2 id="library-vs-driver" class="section-header"><a href="#library-vs-driver">1.3 Library vs Driver</a></h2>
 <p><em>NuttX Libraries vs Drivers… What’s the difference?</em></p>
-<p>TODO</p>
-<p>Libraries run in app and NuttX OS</p>
-<p>Easier to troubleshoot</p>
-<p>Drivers run only inside NuttX OS</p>
-<p>ioctl() interface</p>
+<p>Our LoRa SX1262 code is initially packaged as a <strong>NuttX Library</strong> (instead of NuttX Driver) because…</p>
+<ul>
+<li>
+<p>NuttX Libraries are <strong>easier to code and troubleshoot</strong></p>
+</li>
+<li>
+<p>NuttX Libraries may be called by <strong>NuttX Apps AND NuttX Drivers</strong></p>
+<p>(So we can test our library with a NuttX App)</p>
+</li>
+</ul>
+<p>Eventually our LoRa SX1262 code shall be packaged as a <strong>NuttX Driver</strong>…</p>
+<ul>
+<li>
+<p>Our code shall run inside NuttX OS, which means…</p>
+</li>
+<li>
+<p>Our driver needs to expose an <strong>ioctl()</strong> interface to NuttX Apps</p>
+<p>(Which will be cumbersome to code)</p>
+</li>
+</ul>
+<p>Check out the <strong>ioctl()</strong> interface for the existing SX1276 Driver in NuttX: <a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/wireless/lpwan/sx127x/sx127x.c#L954-L1162"><strong>sx127x.c</strong></a></p>
+<p><em>But how will our library access the NuttX SPI Interface?</em></p>
+<p>The NuttX SPI Interface is accessible by NuttX Drivers, but not NuttX Apps.</p>
+<p>Thankfully in the previous article we have created an <strong>SPI Test Driver “/dev/spitest0”</strong> that exposes the SPI Interface to NuttX Apps…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2"><strong>“SPI on Apache NuttX OS”</strong></a></li>
+</ul>
+<p>For now we’ll call this SPI Test Driver in our LoRa SX1262 Library.</p>
 <h1 id="connect-sx1262-transceiver" class="section-header"><a href="#connect-sx1262-transceiver">2 Connect SX1262 Transceiver</a></h1>
 <p>TODO</p>
 <p><em>What about other pins on SX1262: DIO1, BUSY and NRESET?</em></p>
