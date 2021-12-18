@@ -403,13 +403,13 @@ Register 0x0a = 0x01</code></pre></div>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<p>We set the <strong>LoRa Frequency</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L10-L25">sx1262_test_main.c</a></p>
+<p>We set the <strong>LoRa Frequency</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L45">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
 #define USE_BAND_923</code></pre></div>
 <p>Change <strong>USE_BAND_923</strong> to <strong>USE_BAND_433</strong>, <strong>780</strong>, <strong>868</strong> or <strong>915</strong>.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L10-L25">(See the complete list)</a></p>
-<p>Below are the other <strong>LoRa Parameters</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L27-L46">sx1262_test_main.c</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L33-L45">(See the complete list)</a></p>
+<p>Below are the other <strong>LoRa Parameters</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L47-L66">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
@@ -450,10 +450,6 @@ Register 0x0a = 0x01</code></pre></div>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/"><strong>“Regional Parameters”</strong></a></li>
 </ul>
 <p>(Blasting LoRa Messages non-stop is no-no!)</p>
-<p>When we connect our NuttX gadget to <strong>The Things Network</strong>, we need to comply with their Fair Use Policy…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network"><strong>“Fair Use of The Things Network”</strong></a></li>
-</ul>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <h2 id="initialise-lora-sx1262" class="section-header"><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a></h2>
 <p>TODO</p>
