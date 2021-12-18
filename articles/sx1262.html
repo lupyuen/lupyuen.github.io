@@ -91,24 +91,25 @@
 <li><a href="#nimble-porting-layer">9.1 NimBLE Porting Layer</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
-<li><a href="#appendix-radio-functions">12 Appendix: Radio Functions</a><ul>
-<li><a href="#radioinit-initialise-lora-module">12.1 RadioInit: Initialise LoRa Module</a><ul></ul></li>
-<li><a href="#radiosetchannel-set-lora-frequency">12.2 RadioSetChannel: Set LoRa Frequency</a><ul></ul></li>
-<li><a href="#radiosettxconfig-set-transmit-configuration">12.3 RadioSetTxConfig: Set Transmit Configuration</a><ul></ul></li>
-<li><a href="#radiosetrxconfig-set-receive-configuration">12.4 RadioSetRxConfig: Set Receive Configuration</a><ul></ul></li>
-<li><a href="#radiosend-transmit-message">12.5 RadioSend: Transmit Message</a><ul></ul></li>
-<li><a href="#radiorx-receive-message">12.6 RadioRx: Receive Message</a><ul></ul></li>
-<li><a href="#radioirqprocess-process-transmit-and-receive-interrupts">12.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a><ul>
-<li><a href="#transmit-done">12.7.1 Transmit Done</a><ul></ul></li>
-<li><a href="#receive-done">12.7.2 Receive Done</a><ul></ul></li>
-<li><a href="#cad-done">12.7.3 CAD Done</a><ul></ul></li>
-<li><a href="#transmit--receive-timeout">12.7.4 Transmit / Receive Timeout</a><ul></ul></li>
-<li><a href="#preamble-detected">12.7.5 Preamble Detected</a><ul></ul></li>
-<li><a href="#sync-word-valid">12.7.6 Sync Word Valid</a><ul></ul></li>
-<li><a href="#header-valid">12.7.7 Header Valid</a><ul></ul></li>
-<li><a href="#header-error">12.7.8 Header Error</a><ul></ul></li>
-<li><a href="#radioondioirq">12.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
-<li><a href="#radiosleep-switch-to-sleep-mode">12.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>25 Dec 2021</em></p>
+<li><a href="#appendix-create-a-nuttx-library">12 Appendix: Create a NuttX Library</a><ul></ul></li>
+<li><a href="#appendix-radio-functions">13 Appendix: Radio Functions</a><ul>
+<li><a href="#radioinit-initialise-lora-module">13.1 RadioInit: Initialise LoRa Module</a><ul></ul></li>
+<li><a href="#radiosetchannel-set-lora-frequency">13.2 RadioSetChannel: Set LoRa Frequency</a><ul></ul></li>
+<li><a href="#radiosettxconfig-set-transmit-configuration">13.3 RadioSetTxConfig: Set Transmit Configuration</a><ul></ul></li>
+<li><a href="#radiosetrxconfig-set-receive-configuration">13.4 RadioSetRxConfig: Set Receive Configuration</a><ul></ul></li>
+<li><a href="#radiosend-transmit-message">13.5 RadioSend: Transmit Message</a><ul></ul></li>
+<li><a href="#radiorx-receive-message">13.6 RadioRx: Receive Message</a><ul></ul></li>
+<li><a href="#radioirqprocess-process-transmit-and-receive-interrupts">13.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a><ul>
+<li><a href="#transmit-done">13.7.1 Transmit Done</a><ul></ul></li>
+<li><a href="#receive-done">13.7.2 Receive Done</a><ul></ul></li>
+<li><a href="#cad-done">13.7.3 CAD Done</a><ul></ul></li>
+<li><a href="#transmit--receive-timeout">13.7.4 Transmit / Receive Timeout</a><ul></ul></li>
+<li><a href="#preamble-detected">13.7.5 Preamble Detected</a><ul></ul></li>
+<li><a href="#sync-word-valid">13.7.6 Sync Word Valid</a><ul></ul></li>
+<li><a href="#header-valid">13.7.7 Header Valid</a><ul></ul></li>
+<li><a href="#header-error">13.7.8 Header Error</a><ul></ul></li>
+<li><a href="#radioondioirq">13.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
+<li><a href="#radiosleep-switch-to-sleep-mode">13.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>25 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)</em></p>
 <p><strong>LoRa</strong> is an awesome wireless technology for IoT that will transmit <strong>small packets over super long distances</strong>…</p>
@@ -217,6 +218,8 @@
 <p><strong>DIO1</strong> is used by SX1262 to signal that a LoRa Packet has been received.</p>
 <p><strong>BUSY</strong> is read by our computer to check if SX1262 is busy.</p>
 <p><strong>NRESET</strong> is toggled by our computer to reset the SX1262 module.</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-read2.png" alt="Reading SX1262 Registers" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L155-L171">(Source)</a></p>
 <h1 id="read-sx1262-registers" class="section-header"><a href="#read-sx1262-registers">3 Read SX1262 Registers</a></h1>
 <p>TODO</p>
 <p><em>What’s the simplest way to test our SX1262 Library?</em></p>
@@ -325,6 +328,8 @@ Register 0x0a = 0x01</code></pre></div>
 <p>If we see these values… Our NuttX Library is talking correctly to SX1262!</p>
 <p>Note that the values above will change when we <strong>transmit and receive LoRa Messages</strong>.</p>
 <p>Let’s do that next.</p>
+<p>TODO15</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-read5.png" alt="" /></p>
 <h2 id="source-files" class="section-header"><a href="#source-files">3.2 Source Files</a></h2>
 <p>TODO</p>
 <p><em>We’re seeing layers of code, like an onion? (Or Shrek)</em></p>
@@ -500,6 +505,9 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 </li>
 </ul>
 <p>(The <strong>Radio</strong> functions will also be called later when we implement LoRaWAN)</p>
+<p>TODO30</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-send.png" alt="Transmitting a LoRa Message" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(Source)</a></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">5 Transmit LoRa Message</a></h1>
 <p>TODO</p>
 <p>Now we’re ready to <strong>transmit a LoRa Message</strong>! Here’s how: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/main.c#L74-L119">main.c</a></p>
@@ -616,6 +624,9 @@ OnRxDone: Timestamp=18, RssiValue=-28 dBm, SnrValue=13,
 Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 15 16 17 18 </code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#wisblock-receiver-log">(See the WisBlock Log)</a></p>
 <p>Our SX1262 Library has successfully transmitted a 64-byte LoRa Message to RAKwireless WisBlock!</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-send2.png" alt="Our SX1262 Library transmits a LoRa Message to RAKwireless WisBlock" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
 <h2 id="spectrum-analysis-with-sdr" class="section-header"><a href="#spectrum-analysis-with-sdr">5.2 Spectrum Analysis with SDR</a></h2>
 <p>TODO</p>
 <p><em>What if nothing appears in our LoRa Receiver?</em></p>
@@ -630,12 +641,14 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p>(Red stripe below)</p>
 </li>
 </ol>
-<p>TODO pic</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-sdr.png" alt="Spectrum Analysis of LoRa Message with SDR" /></p>
 <p>LoRa Messages have a characteristic criss-cross shape: <strong>LoRa Chirp</strong>. (Like above)</p>
 <p>More about LoRa Chirps and Software Defined Radio…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/sx1262-receive.png" alt="Receiving a LoRa Message" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L123-L262">(Source)</a></p>
 <h1 id="receive-lora-message" class="section-header"><a href="#receive-lora-message">6 Receive LoRa Message</a></h1>
 <p>TODO</p>
 <p>Let’s <strong>receive a LoRa Message</strong> on with our SX1262 Library!</p>
@@ -756,6 +769,7 @@ receive_message</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message">(See the Output Log)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#receive-message-1">(See the dmesg Log)</a></p>
 <p>Our SX1262 Library has successfully received a 64-byte LoRa Message from RAKwireless WisBlock!</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-receive2.png" alt="Our SX1262 Library receives a LoRa Message from RAKwireless WisBlock" /></p>
 <h1 id="spi-interface" class="section-header"><a href="#spi-interface">7 SPI Interface</a></h1>
 <p>TODO</p>
 <h2 id="initialise-spi" class="section-header"><a href="#initialise-spi">7.1 Initialise SPI</a></h2>
@@ -784,6 +798,7 @@ static int init_spi(void) {
 <p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/main.c#L149-L203"><strong>init_driver</strong></a></p>
 <p>(We’ve seen <strong>init_driver</strong> earlier)</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module">(<strong>RadioInit</strong> is explained here)</a></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-driver2a.png" alt="Initialise SPI" /></p>
 <h2 id="transfer-spi" class="section-header"><a href="#transfer-spi">7.2 Transfer SPI</a></h2>
 <p>TODO</p>
 <p>To <strong>transfer SPI Data</strong> to SX1262 via our SPI Test Driver, we do this: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
@@ -811,6 +826,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
   return 0;
 }</code></pre></div>
 <p>(<strong>transfer_spi</strong> will be called by our SX1262 Library, as we’ll see later)</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-driver3.png" alt="Transfer SPI" /></p>
 <h2 id="transmit-message" class="section-header"><a href="#transmit-message">7.3 Transmit Message</a></h2>
 <p>TODO</p>
 <p>Our SX1262 Library calls this function to <strong>transmit a LoRa Message</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L497-L503">sx126x-linux.c</a></p>
@@ -1226,7 +1242,29 @@ static void create_task(void) {
 <p>(Which won’t get revamped overnight!)</p>
 </li>
 </ol>
-<h1 id="appendix-radio-functions" class="section-header"><a href="#appendix-radio-functions">12 Appendix: Radio Functions</a></h1>
+<h1 id="appendix-create-a-nuttx-library" class="section-header"><a href="#appendix-create-a-nuttx-library">12 Appendix: Create a NuttX Library</a></h1>
+<p><em>(For BL602 and ESP32)</em></p>
+<p>This section explains the steps to create a <strong>NuttX Library</strong> named <strong>“libsx1262”</strong>.</p>
+<p>(Change “libsx1262” to the desired name of our library)</p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-library3.png" alt="" /></p>
+<p>TODO22</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone1.png" alt="" /></p>
+<p>TODO16</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone2a.png" alt="" /></p>
+<p>TODO17</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone3a.png" alt="" /></p>
+<p>TODO18</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone4.png" alt="" /></p>
+<p>TODO19</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone5.png" alt="" /></p>
+<p>TODO20</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone6.png" alt="" /></p>
+<p>TODO21</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone7.png" alt="" /></p>
+<p>TODO14</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-library4.png" alt="" /></p>
+<h1 id="appendix-radio-functions" class="section-header"><a href="#appendix-radio-functions">13 Appendix: Radio Functions</a></h1>
 <p>TODO</p>
 <p>In this section we explain the Platform-Independent (Linux and BL602) <strong>Radio Functions</strong>, which are defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c">radio.c</a></p>
 <ul>
@@ -1255,7 +1293,7 @@ static void create_task(void) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1100-L1109"><strong>RadioSleep:</strong></a> Switch SX1262 to low-power sleep mode</p>
 </li>
 </ul>
-<h2 id="radioinit-initialise-lora-module" class="section-header"><a href="#radioinit-initialise-lora-module">12.1 RadioInit: Initialise LoRa Module</a></h2>
+<h2 id="radioinit-initialise-lora-module" class="section-header"><a href="#radioinit-initialise-lora-module">13.1 RadioInit: Initialise LoRa Module</a></h2>
 <p>TODO</p>
 <p><strong>RadioInit</strong> initialises the LoRa SX1262 Module: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L523-L559">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioInit( RadioEvents_t *events ) {
@@ -1348,7 +1386,7 @@ static void create_task(void) {
   IrqFired = false;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L361-L380">(<strong>TimerInit</strong> is defined here)</a></p>
-<h2 id="radiosetchannel-set-lora-frequency" class="section-header"><a href="#radiosetchannel-set-lora-frequency">12.2 RadioSetChannel: Set LoRa Frequency</a></h2>
+<h2 id="radiosetchannel-set-lora-frequency" class="section-header"><a href="#radiosetchannel-set-lora-frequency">13.2 RadioSetChannel: Set LoRa Frequency</a></h2>
 <p>TODO</p>
 <p><strong>RadioSetChannel</strong> sets the LoRa Frequency: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L600-L604">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetChannel( uint32_t freq ) {
@@ -1372,7 +1410,7 @@ static void create_task(void) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L408-L438">(<strong>SX126xCalibrateImage</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L812-L826">(<strong>SX126xConvertFreqInHzToPllStep</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
-<h2 id="radiosettxconfig-set-transmit-configuration" class="section-header"><a href="#radiosettxconfig-set-transmit-configuration">12.3 RadioSetTxConfig: Set Transmit Configuration</a></h2>
+<h2 id="radiosettxconfig-set-transmit-configuration" class="section-header"><a href="#radiosettxconfig-set-transmit-configuration">13.3 RadioSetTxConfig: Set Transmit Configuration</a></h2>
 <p>TODO</p>
 <p><strong>RadioSetTxConfig</strong> sets the LoRa Transmit Configuration: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L788-L908">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
@@ -1483,7 +1521,7 @@ static void create_task(void) {
 }</code></pre></div>
 <p>For easier testing we have set the Ramp Up Time to <strong>3400 microseconds</strong> (longest duration).</p>
 <p>After testing we should revert to the <strong>Default Ramp Up Time</strong> (40 microseconds).</p>
-<h2 id="radiosetrxconfig-set-receive-configuration" class="section-header"><a href="#radiosetrxconfig-set-receive-configuration">12.4 RadioSetRxConfig: Set Receive Configuration</a></h2>
+<h2 id="radiosetrxconfig-set-receive-configuration" class="section-header"><a href="#radiosetrxconfig-set-receive-configuration">13.4 RadioSetRxConfig: Set Receive Configuration</a></h2>
 <p>TODO</p>
 <p><strong>RadioSetRxConfig</strong> sets the LoRa Receive Configuration: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L661-L786">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
@@ -1605,7 +1643,7 @@ static void create_task(void) {
       RxTimeout = 0xFFFF;
       break;
   }
-}</code></pre></div><h2 id="radiosend-transmit-message" class="section-header"><a href="#radiosend-transmit-message">12.5 RadioSend: Transmit Message</a></h2>
+}</code></pre></div><h2 id="radiosend-transmit-message" class="section-header"><a href="#radiosend-transmit-message">13.5 RadioSend: Transmit Message</a></h2>
 <p>TODO</p>
 <p><strong>RadioSend</strong> transmits a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1069-L1098">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSend( uint8_t *buffer, uint8_t size ) {
@@ -1676,7 +1714,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L171-L182">(<strong>SX126xWaitOnBusy</strong> is defined here)</a></p>
 <p>When the LoRa Message is transmitted (successfully or unsuccessfully), the LoRa Module triggers a <strong>DIO1 Interrupt</strong>.</p>
 <p>Our driver calls <strong>RadioIrqProcess</strong> to process the interrupt. <a href="https://lupyuen.github.io/articles/sx1262#radioirqprocess-process-transmit-and-receive-interrupts">(See this)</a></p>
-<h2 id="radiorx-receive-message" class="section-header"><a href="#radiorx-receive-message">12.6 RadioRx: Receive Message</a></h2>
+<h2 id="radiorx-receive-message" class="section-header"><a href="#radiorx-receive-message">13.6 RadioRx: Receive Message</a></h2>
 <p>TODO</p>
 <p><strong>RadioRx</strong> receives a single LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1117-L1138">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioRx( uint32_t timeout ) {
@@ -1728,7 +1766,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
 <p>When a LoRa Message is received (successfully or unsuccessfully), the LoRa Module triggers a <strong>DIO1 Interrupt</strong>.</p>
 <p>Our driver calls <strong>RadioIrqProcess</strong> to process the interrupt, which is explained next…</p>
-<h2 id="radioirqprocess-process-transmit-and-receive-interrupts" class="section-header"><a href="#radioirqprocess-process-transmit-and-receive-interrupts">12.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a></h2>
+<h2 id="radioirqprocess-process-transmit-and-receive-interrupts" class="section-header"><a href="#radioirqprocess-process-transmit-and-receive-interrupts">13.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a></h2>
 <p>TODO</p>
 <p><strong>RadioIrqProcess</strong> processes the interrupts that are triggered when a LoRa Message is transmitted and received: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1314-L1460">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Process Transmit and Receive Interrupts.
@@ -1790,7 +1828,7 @@ void RadioIrqProcess( void ) {
 <p>Header Error</p>
 </li>
 </ul>
-<h3 id="transmit-done" class="section-header"><a href="#transmit-done">12.7.1 Transmit Done</a></h3>
+<h3 id="transmit-done" class="section-header"><a href="#transmit-done">13.7.1 Transmit Done</a></h3>
 <p>TODO</p>
 <p>When the LoRa Module has transmitted a LoRa Message successfully, we stop the Transmit Timer and call the <strong>Callback Function for Transmit Done</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1339-L1349">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was transmitted successfully...
@@ -1810,7 +1848,7 @@ void RadioIrqProcess( void ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L382-L394">(<strong>TimerStop</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L126-L147">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p><strong>TxDone</strong> points to the <strong>on_tx_done</strong> Callback Function that we’ve seen earlier.</p>
-<h3 id="receive-done" class="section-header"><a href="#receive-done">12.7.2 Receive Done</a></h3>
+<h3 id="receive-done" class="section-header"><a href="#receive-done">13.7.2 Receive Done</a></h3>
 <p>TODO</p>
 <p>When the LoRa Module receives a LoRa Message, we stop the Receive Timer: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1351-L1389">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was received...
@@ -1907,7 +1945,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L133-L142">(<strong>SX126xCheckDeviceReady</strong> is defined here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#long-messages">(<strong>sx126x_read_buffer</strong> is explained here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L171-L182">(<strong>SX126xWaitOnBusy</strong> is defined here)</a></p>
-<h3 id="cad-done" class="section-header"><a href="#cad-done">12.7.3 CAD Done</a></h3>
+<h3 id="cad-done" class="section-header"><a href="#cad-done">13.7.3 CAD Done</a></h3>
 <p>TODO</p>
 <p><strong>Channel Activity Detection</strong> lets us <strong>detect whether there’s any ongoing transmission</strong> in a LoRa Radio Channel, in a power-efficient way.</p>
 <p>We won’t be doing Channel Activity Detection in our driver: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1391-L1400">radio.c</a></p>
@@ -1924,7 +1962,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
             == IRQ_CAD_ACTIVITY_DETECTED 
         ) );
       }
-    }</code></pre></div><h3 id="transmit--receive-timeout" class="section-header"><a href="#transmit--receive-timeout">12.7.4 Transmit / Receive Timeout</a></h3>
+    }</code></pre></div><h3 id="transmit--receive-timeout" class="section-header"><a href="#transmit--receive-timeout">13.7.4 Transmit / Receive Timeout</a></h3>
 <p>TODO</p>
 <p>When the LoRa Module <strong>fails to transmit</strong> a LoRa Message due to Timeout, we stop the Transmit Timer and call the <strong>Callback Function for Transmit Timeout</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1402-L1425">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message failed to Transmit or Receive due to Timeout...
@@ -1963,7 +2001,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
       }
     }</code></pre></div>
 <p><strong>RxTimeout</strong> points to the <strong>on_rx_timeout</strong> Callback Function that we’ve seen earlier.</p>
-<h3 id="preamble-detected" class="section-header"><a href="#preamble-detected">12.7.5 Preamble Detected</a></h3>
+<h3 id="preamble-detected" class="section-header"><a href="#preamble-detected">13.7.5 Preamble Detected</a></h3>
 <p>TODO</p>
 <p>Preamble is the Radio Signal that <strong>precedes the LoRa Message</strong>. When the LoRa Module detects the Preamble Signal, it knows that it’s about to receive a LoRa Message.</p>
 <p>We don’t need to handle the Preamble Signal, the LoRa Module does it for us: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1427-L1431">radio.c</a></p>
@@ -1974,7 +2012,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p>Our <a href="https://github.com/lupyuen/lora-sx1262#receive-message"><strong>Receive Message Log</strong></a> shows that the Preamble Signal (<strong>IRQ_PREAMBLE_DETECTED</strong>) is always detected before receiving a LoRa Message.</p>
 <p>(<strong>IRQ_PREAMBLE_DETECTED</strong> appears just before the LoRa Header: <strong>IRQ_HEADER_VALID</strong>)</p>
 <p><a href="https://www.link-labs.com/blog/what-is-lora">(More about LoRa Preamble)</a></p>
-<h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">12.7.6 Sync Word Valid</a></h3>
+<h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">13.7.6 Sync Word Valid</a></h3>
 <p>TODO</p>
 <p><strong>Sync Words</strong> are 16-bit values that differentiate the types of LoRa Networks.</p>
 <p>The LoRa Module detects the Sync Words when it receive a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1433-L1437">radio.c</a></p>
@@ -1989,7 +2027,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 //  Syncword for Public LoRa networks (LoRaWAN)
 #define LORA_MAC_PUBLIC_SYNCWORD                    0x3444</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word">(More about Sync Words)</a></p>
-<h3 id="header-valid" class="section-header"><a href="#header-valid">12.7.7 Header Valid</a></h3>
+<h3 id="header-valid" class="section-header"><a href="#header-valid">13.7.7 Header Valid</a></h3>
 <p>TODO</p>
 <p>The LoRa Module checks for a <strong>valid LoRa Header</strong> when receiving a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1439-L1443">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a valid Header was received...
@@ -1998,7 +2036,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
     }</code></pre></div>
 <p>Our <a href="https://github.com/lupyuen/lora-sx1262#receive-message"><strong>Receive Message Log</strong></a> shows that the LoRa Header (<strong>IRQ_HEADER_VALID</strong>) is always detected before receiving a LoRa Message.</p>
 <p>(<strong>IRQ_HEADER_VALID</strong> appears right after the Preamble Signal: <strong>IRQ_PREAMBLE_DETECTED</strong>)</p>
-<h3 id="header-error" class="section-header"><a href="#header-error">12.7.8 Header Error</a></h3>
+<h3 id="header-error" class="section-header"><a href="#header-error">13.7.8 Header Error</a></h3>
 <p>TODO</p>
 <p>When the LoRa Module detects a <strong>LoRa Header with CRC Error</strong>, we stop the Receive Timer and call the Callback Function for Receive Timeout: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1445-L1458">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a Header with CRC Error was received...
@@ -2020,7 +2058,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
   }
 }</code></pre></div>
 <p><strong>RxTimeout</strong> points to the <strong>on_rx_timeout</strong> Callback Function that we’ve seen earlier.</p>
-<h3 id="radioondioirq" class="section-header"><a href="#radioondioirq">12.7.9 RadioOnDioIrq</a></h3>
+<h3 id="radioondioirq" class="section-header"><a href="#radioondioirq">13.7.9 RadioOnDioIrq</a></h3>
 <p>TODO</p>
 <p><strong>RadioIrqProcess</strong> (as defined above) is called by <strong>RadioOnDioIrq</strong> to handle LoRa Transmit and Receive Events: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1300-L1312">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function for Transmit and Receive Interrupts.
@@ -2035,7 +2073,7 @@ void RadioOnDioIrq( struct ble_npl_event *ev ) {
   //  Application Task Context, not Interrupt Context.
   //  The Reference Implementation processes the interrupt in the main loop.
   RadioIrqProcess();
-}</code></pre></div><h2 id="radiosleep-switch-to-sleep-mode" class="section-header"><a href="#radiosleep-switch-to-sleep-mode">12.8 RadioSleep: Switch to Sleep Mode</a></h2>
+}</code></pre></div><h2 id="radiosleep-switch-to-sleep-mode" class="section-header"><a href="#radiosleep-switch-to-sleep-mode">13.8 RadioSleep: Switch to Sleep Mode</a></h2>
 <p>TODO</p>
 <p><strong>RadioSleep</strong> switches SX1262 to low-power sleep mode: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1100-L1109">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Switch to Sleep Mode
@@ -2074,46 +2112,8 @@ void SX126xSetSleep( SleepParams_t sleepConfig ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L126-L147">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p>TODO5</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-clone8.png" alt="" /></p>
-<p>TODO13</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-library3.png" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-library4.png" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-read5.png" alt="" /></p>
-<p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone2a.png" alt="" /></p>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone3a.png" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone4.png" alt="" /></p>
-<p>TODO19</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone5.png" alt="" /></p>
-<p>TODO20</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone6.png" alt="" /></p>
-<p>TODO21</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone7.png" alt="" /></p>
-<p>TODO22</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone1.png" alt="" /></p>
-<p>TODO23</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-driver2a.png" alt="" /></p>
-<p>TODO24</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-driver3.png" alt="" /></p>
 <p>TODO25</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library2.jpg" alt="" /></p>
-<p>TODO26</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-read2.png" alt="" /></p>
-<p>TODO27</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-receive.png" alt="" /></p>
-<p>TODO28</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-receive2.png" alt="" /></p>
-<p>TODO29</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-sdr.png" alt="" /></p>
-<p>TODO30</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-send.png" alt="" /></p>
-<p>TODO31</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-send2.png" alt="" /></p>
-<p>TODO32</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="" /></p>
 
     
 </body>
