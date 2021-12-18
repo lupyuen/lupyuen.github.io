@@ -458,7 +458,6 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 </li>
 </ul>
 <p>(The <strong>Radio</strong> functions will also be called later when we implement LoRaWAN)</p>
-<p><img src="https://lupyuen.github.io/images/usb-transmit2.png" alt="Transmitting a LoRa Message" /></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">5 Transmit LoRa Message</a></h1>
 <p>TODO</p>
 <p>Now we’re ready to <strong>transmit a LoRa Message</strong>! Here’s how: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/main.c#L74-L119">main.c</a></p>
@@ -589,7 +588,7 @@ Data=50 49 4E 47 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 14 
 <p>(Red stripe below)</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/usb-chirp2.jpg" alt="LoRa Message captured with Software Defined Radio" /></p>
+<p>TODO pic</p>
 <p>LoRa Messages have a characteristic criss-cross shape: <strong>LoRa Chirp</strong>. (Like above)</p>
 <p>More about LoRa Chirps and Software Defined Radio…</p>
 <ul>
@@ -917,9 +916,6 @@ static int sx126x_hal_read(
 }</code></pre></div>
 <p>And returns the Data Buffer that has been read over SPI.</p>
 <p><strong>sx126x_hal_read</strong> also calls <strong>transfer_spi</strong> to transfer the SPI Data.</p>
-<p>Now <strong>transfer_spi</strong> is doubly sus… The same function is called to transmit AND receive Long LoRa Messages!</p>
-<p><img src="https://lupyuen.github.io/images/usb-spi8.png" alt="CH341 SPI Driver fails when transferring 32 bytes" /></p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-linux.c#L669-L691">(Source)</a></p>
 <h2 id="long-messages" class="section-header"><a href="#long-messages">7.5 Long Messages</a></h2>
 <p>TODO</p>
 <p>Let’s look back at our code in <a href="https://lupyuen.github.io/articles/usb#transmit-long-message"><strong>sx126x_write_buffer</strong></a>.</p>
@@ -990,7 +986,7 @@ spi rx:
 <p><strong>NRESET</strong>: Toggled by our driver to reset the SX1262 module</p>
 </li>
 </ul>
-<p>We may call the GPIO Interface that’s provided by the <strong>CH341 SPI Driver</strong>…</p>
+<p>We may call the GPIO Interface that’s provided by NuttX…</p>
 <ul>
 <li>
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#Driver_development"><strong>“Driver Development (GPIO)”</strong></a></p>
@@ -1000,7 +996,6 @@ spi rx:
 </li>
 </ul>
 <p>But the current SX1262 Library <strong>doesn’t use GPIO yet</strong>.</p>
-<p><img src="https://lupyuen.github.io/images/usb-sleep3.png" alt="Controlling SX1262 without GPIO" /></p>
 <p><em>Huh? SX1262 works without GPIO control?</em></p>
 <p>We found some sneaky workarounds to <strong>control LoRa SX1262 without GPIO</strong>…</p>
 <ul>
