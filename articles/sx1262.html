@@ -65,7 +65,7 @@
 
     <h1 class="title">LoRa SX1262 on Apache NuttX OS</h1>
     <nav id="TOC"><ul>
-<li><a href="#connect-sx1262">1 Connect SX1262</a><ul></ul></li>
+<li><a href="#connect-sx1262-transceiver">1 Connect SX1262 Transceiver</a><ul></ul></li>
 <li><a href="#lora-sx1262-library">2 LoRa SX1262 Library</a><ul>
 <li><a href="#lorawan-support">2.1 LoRaWAN Support</a><ul></ul></li>
 <li><a href="#nimble-porting-layer">2.2 NimBLE Porting Layer</a><ul></ul></li></ul></li>
@@ -107,18 +107,30 @@
 <li><a href="#header-error">12.7.8 Header Error</a><ul></ul></li>
 <li><a href="#radioondioirq">12.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
 <li><a href="#radiosleep-switch-to-sleep-mode">12.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>25 Dec 2021</em></p>
-<p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 with onboard Semtech SX1262 (left) sniffed wirelessly with Airspy R2 SDR (right)" /></p>
-<p><em>PineDio Stack BL604 with onboard Semtech SX1262 (left) sniffed wirelessly with Airspy R2 SDR (right)</em></p>
-<p><strong>LoRa</strong> is an awesome wireless technology for IoT that will transmit <strong>small packets over very long distances</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 with onboard Semtech SX1262 (left) sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
+<p><em>PineDio Stack BL604 with onboard Semtech SX1262 (left) sniffed wirelessly with Airspy R2 Software Defined Radio (right)</em></p>
+<p><strong>LoRa</strong> is an awesome wireless technology for IoT that will transmit <strong>small packets over super long distances</strong>…</p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
-<p>Let’s port LoRa to <strong>Apache NuttX OS!</strong></p>
+<p>Let’s port LoRa to <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS!</strong></a></p>
 <p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRa)</a></p>
 <p><em>Doesn’t NuttX support LoRa today?</em></p>
-<p>TODO</p>
-<p>Standalone SX1276 driver</p>
-<p>Newer SX1262 that will support LoRaWAN</p>
-<p>Why LoRaWAN?</p>
-<h1 id="connect-sx1262" class="section-header"><a href="#connect-sx1262">1 Connect SX1262</a></h1>
+<p>Yep NuttX has a standalone LoRa Driver for <strong>Semtech SX1276 Transceiver</strong> (Radio Transmitter + Receiver)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx/tree/master/drivers/wireless/lpwan/sx127x"><strong>NuttX SX127x Driver</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx-apps/tree/master/examples/sx127x_demo"><strong>NuttX SX127x Demo</strong></a></p>
+</li>
+</ul>
+<p>(That doesn’t work with LoRaWAN yet)</p>
+<p>Today we’ll start building a NuttX Driver for the (newer) <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 Transceiver</strong></a>.</p>
+<p>And our SX1262 Driver will eventually support the <strong>LoRaWAN Wireless Protocol</strong>.</p>
+<p><em>How useful is LoRaWAN? Will we be using it?</em></p>
+<p>Our LoRa SX1262 Driver will work perfectly fine for <strong>Point-to-Point Wireless Communication</strong>.</p>
+<p>But if we need to <strong>relay data packets</strong> to multiple devices or to the internet, we need <strong>LoRaWAN</strong>.</p>
+<p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRaWAN)</a></p>
+<h1 id="connect-sx1262-transceiver" class="section-header"><a href="#connect-sx1262-transceiver">1 Connect SX1262 Transceiver</a></h1>
 <p>TODO</p>
 <p><em>What about other pins on SX1262: DIO1, BUSY and NRESET?</em></p>
 <p><strong>DIO1</strong> is used by SX1262 to signal that a LoRa Packet has been received.</p>
