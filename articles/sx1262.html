@@ -212,8 +212,41 @@
 <li><a href="https://lupyuen.github.io/articles/spi2"><strong>“SPI on Apache NuttX OS”</strong></a></li>
 </ul>
 <p>For now we’ll call this SPI Test Driver in our LoRa SX1262 Library.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="connect-sx1262-transceiver" class="section-header"><a href="#connect-sx1262-transceiver">2 Connect SX1262 Transceiver</a></h1>
 <p>TODO</p>
+<p>Based on this schematic for PineDio Stack BL604 (version 2)…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="SX1262 Interface on PineDio Stack" /></p>
+</blockquote>
+<p>We update the following Pin Definitions in <a href="https://github.com/lupyuen/incubator-nuttx/blob/sx1262/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Busy Pin for PineDio SX1262 */
+
+#define BOARD_GPIO_IN1    (GPIO_INPUT | GPIO_FLOAT | \
+                            GPIO_FUNC_SWGPIO | GPIO_PIN10)
+
+/* SPI Chip Select for PineDio SX1262 */
+
+#define BOARD_GPIO_OUT1   (GPIO_OUTPUT | GPIO_PULLUP | \
+                            GPIO_FUNC_SWGPIO | GPIO_PIN15)
+
+/* GPIO Interrupt (DIO1) for PineDio SX1262 */
+
+#define BOARD_GPIO_INT1   (GPIO_INPUT | GPIO_PULLUP | \
+                            GPIO_FUNC_SWGPIO | GPIO_PIN19)
+
+/* SPI Configuration: Chip Select is unused because we control via GPIO instead */
+
+#define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)  /* Unused */
+#define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN13)
+#define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)</code></pre></div>
+<p>(Remember that GPIO Output <strong>BOARD_GPIO_OUT1</strong> becomes our Chip Select)</p>
+<p>Today we won’t use <strong>BOARD_GPIO_IN1</strong> (Busy Pin) and <strong>BOARD_GPIO_INT1</strong> (DIO1).</p>
+<p>TODO: ESP32</p>
+<p>Before testing, remember to connect the <strong>LoRa Antenna</strong>… </p>
+<p>(So we don’t fry the SX1262 Transceiver as we charge up the Power Amplifier)</p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio10a.jpg" alt="PineDio Stack BL604 with Antenna" /></p>
 <p><em>What about other pins on SX1262: DIO1, BUSY and NRESET?</em></p>
 <p><strong>DIO1</strong> is used by SX1262 to signal that a LoRa Packet has been received.</p>
 <p><strong>BUSY</strong> is read by our computer to check if SX1262 is busy.</p>
