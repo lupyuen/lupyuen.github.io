@@ -205,22 +205,32 @@
 </li>
 </ul>
 <p>Check out the <strong>ioctl()</strong> interface for the existing SX1276 Driver in NuttX: <a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/wireless/lpwan/sx127x/sx127x.c#L954-L1162"><strong>sx127x.c</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-plan2.jpg" alt="SPI Test Driver" /></p>
 <p><em>But how will our library access the NuttX SPI Interface?</em></p>
 <p>The NuttX SPI Interface is accessible by NuttX Drivers, but not NuttX Apps.</p>
-<p>Thankfully in the previous article we have created an <strong>SPI Test Driver “/dev/spitest0”</strong> that exposes the SPI Interface to NuttX Apps…</p>
+<p>Thankfully in the previous article we have created an <strong>SPI Test Driver “/dev/spitest0”</strong> that exposes the SPI Interface to NuttX Apps (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2"><strong>“SPI on Apache NuttX OS”</strong></a></li>
 </ul>
 <p>For now we’ll call this SPI Test Driver in our LoRa SX1262 Library.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="connect-sx1262-transceiver" class="section-header"><a href="#connect-sx1262-transceiver">2 Connect SX1262 Transceiver</a></h1>
-<p>Our code has been configured for <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> and its onboard SX1262 Transceiver.</p>
+<p>Our code has been configured for <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> and its onboard SX1262 Transceiver. (Pic above)</p>
 <p>Based on this schematic for PineDio Stack BL604 (version 2)…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="SX1262 Interface on PineDio Stack" /></p>
 </blockquote>
-<p>We have configured the following Pin Definitions in <a href="https://github.com/lupyuen/incubator-nuttx/blob/sx1262/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* Busy Pin for PineDio SX1262 */
+<p>We have configured the following <strong>BL604 Pin Definitions</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/sx1262/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
+<div><table><thead><tr><th align="center">SX1262</th><th align="center">BL604 Pin</th><th align="left">NuttX Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 13</td><td align="left">BOARD_SPI_MOSI</td></tr>
+<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td><td align="left">BOARD_SPI_MISO</td></tr>
+<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 11</td><td align="left">BOARD_SPI_CLK</td></tr>
+<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 15</td><td align="left">BOARD_GPIO_OUT1</td></tr>
+<tr><td align="center"><strong>BUSY</strong></td><td align="center">GPIO 10</td><td align="left">BOARD_GPIO_IN1</td></tr>
+<tr><td align="center"><strong>DIO1</strong></td><td align="center">GPIO 19</td><td align="left">BOARD_GPIO_INT1</td></tr>
+<tr><td align="center"><strong>NRESET</strong></td><td align="center">GPIO 18</td><td align="left">Not assigned yet</td></tr>
+</tbody></table>
+</div><div class="example-wrap"><pre class="language-c"><code>/* Busy Pin for PineDio SX1262 */
 
 #define BOARD_GPIO_IN1    (GPIO_INPUT | GPIO_FLOAT | \
                             GPIO_FUNC_SWGPIO | GPIO_PIN10)
@@ -242,15 +252,14 @@
 #define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
 #define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)</code></pre></div>
 <p>GPIO Output <strong>BOARD_GPIO_OUT1</strong> becomes our <strong>SPI Chip Select</strong>. <a href="https://lupyuen.github.io/articles/spi2#control-chip-select-with-gpio">(See this)</a></p>
-<p>Right now we won’t use <strong>BOARD_GPIO_IN1</strong> (Busy Pin) and <strong>BOARD_GPIO_INT1</strong> (DIO1).</p>
-<p><strong>For BL602:</strong> Connect SX1262 to <a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">these pins</a>. Update the Pin Definitions in…</p>
+<p>Right now we won’t use <strong>BOARD_GPIO_IN1</strong> (Busy Pin), <strong>BOARD_GPIO_INT1</strong> (DIO1) and <strong>NRESET</strong>.</p>
+<p><strong>For BL602:</strong> Connect SX1262 to <a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">these pins</a>. Copy the BL602 Pin Definitions from <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L36-L92">board.h</a> to…</p>
 <div class="example-wrap"><pre class="language-text"><code>boards/risc-v/bl602/bl602evb/include/board.h</code></pre></div>
-<p>According to this: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49">board.h</a></p>
 <p><strong>For ESP32:</strong> Connect SX1262 to <a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">these pins</a></p>
 <p>Before testing, remember to connect the <strong>LoRa Antenna</strong>… </p>
 <p>(So we don’t fry the SX1262 Transceiver as we charge up the Power Amplifier)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio10a.jpg" alt="PineDio Stack BL604 with Antenna" /></p>
-<p><em>What are these pins on SX1262: DIO1, BUSY and NRESET?</em></p>
+<p><em>What are these SX1262 pins: DIO1, BUSY and NRESET?</em></p>
 <p><strong>DIO1</strong> is used by SX1262 to signal that a LoRa Packet has been received.</p>
 <p><strong>BUSY</strong> is read by our computer to check if SX1262 is busy.</p>
 <p><strong>NRESET</strong> is toggled by our computer to reset the SX1262 module.</p>
@@ -258,9 +267,8 @@
 <p><img src="https://lupyuen.github.io/images/sx1262-read2.png" alt="Reading SX1262 Registers" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L155-L171">(Source)</a></p>
 <h1 id="read-sx1262-registers" class="section-header"><a href="#read-sx1262-registers">3 Read SX1262 Registers</a></h1>
-<p>TODO</p>
 <p><em>What’s the simplest way to test our SX1262 Library?</em></p>
-<p>To test whether our SX1262 Library is transferring SPI Commands correctly to the SX1262 Transceiver, we can read the <strong>SX1262 Registers</strong>.</p>
+<p>To test whether our SX1262 Library is sending SPI Commands correctly to the SX1262 Transceiver, we can read the <strong>SX1262 Registers</strong>.</p>
 <p>Here’s how: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L155-L171">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Main Function
 int main(int argc, FAR char *argv[]) {
@@ -356,11 +364,10 @@ sudo ./lora-sx1262</code></pre></div>
 Register 0x08 = 0x80
 Register 0x09 = 0x00
 Register 0x0a = 0x01</code></pre></div>
-<p><a href="">(TODO: See the Output Log)</a></p>
+<p><a href="https://gist.github.com/lupyuen/1e732f5b1e0e4a80d1eb351ab3aadede">(See the Output Log)</a></p>
 <p>If we see these values… Our NuttX Library is talking correctly to SX1262!</p>
 <p>Note that the values above will change when we <strong>transmit and receive LoRa Messages</strong>.</p>
 <p>Let’s do that next.</p>
-<p>TODO15</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-read5.png" alt="Reading SX1262 Registers" /></p>
 <h2 id="source-files" class="section-header"><a href="#source-files">3.2 Source Files</a></h2>
 <p>TODO</p>
