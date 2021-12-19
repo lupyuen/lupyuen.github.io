@@ -92,25 +92,31 @@
 <li><a href="#nimble-porting-layer">9.1 NimBLE Porting Layer</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
-<li><a href="#appendix-create-a-nuttx-library">12 Appendix: Create a NuttX Library</a><ul></ul></li>
-<li><a href="#appendix-radio-functions">13 Appendix: Radio Functions</a><ul>
-<li><a href="#radioinit-initialise-lora-module">13.1 RadioInit: Initialise LoRa Module</a><ul></ul></li>
-<li><a href="#radiosetchannel-set-lora-frequency">13.2 RadioSetChannel: Set LoRa Frequency</a><ul></ul></li>
-<li><a href="#radiosettxconfig-set-transmit-configuration">13.3 RadioSetTxConfig: Set Transmit Configuration</a><ul></ul></li>
-<li><a href="#radiosetrxconfig-set-receive-configuration">13.4 RadioSetRxConfig: Set Receive Configuration</a><ul></ul></li>
-<li><a href="#radiosend-transmit-message">13.5 RadioSend: Transmit Message</a><ul></ul></li>
-<li><a href="#radiorx-receive-message">13.6 RadioRx: Receive Message</a><ul></ul></li>
-<li><a href="#radioirqprocess-process-transmit-and-receive-interrupts">13.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a><ul>
-<li><a href="#transmit-done">13.7.1 Transmit Done</a><ul></ul></li>
-<li><a href="#receive-done">13.7.2 Receive Done</a><ul></ul></li>
-<li><a href="#cad-done">13.7.3 CAD Done</a><ul></ul></li>
-<li><a href="#transmit--receive-timeout">13.7.4 Transmit / Receive Timeout</a><ul></ul></li>
-<li><a href="#preamble-detected">13.7.5 Preamble Detected</a><ul></ul></li>
-<li><a href="#sync-word-valid">13.7.6 Sync Word Valid</a><ul></ul></li>
-<li><a href="#header-valid">13.7.7 Header Valid</a><ul></ul></li>
-<li><a href="#header-error">13.7.8 Header Error</a><ul></ul></li>
-<li><a href="#radioondioirq">13.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
-<li><a href="#radiosleep-switch-to-sleep-mode">13.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>25 Dec 2021</em></p>
+<li><a href="#appendix-create-a-nuttx-library">12 Appendix: Create a NuttX Library</a><ul>
+<li><a href="#update-makefile-and-kconfig">12.1 Update Makefile and Kconfig</a><ul></ul></li>
+<li><a href="#verify-library">12.2 Verify Library</a><ul></ul></li></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#build-nuttx">13.1 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">13.2 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">13.3 Run NuttX</a><ul></ul></li></ul></li>
+<li><a href="#appendix-radio-functions">14 Appendix: Radio Functions</a><ul>
+<li><a href="#radioinit-initialise-lora-module">14.1 RadioInit: Initialise LoRa Module</a><ul></ul></li>
+<li><a href="#radiosetchannel-set-lora-frequency">14.2 RadioSetChannel: Set LoRa Frequency</a><ul></ul></li>
+<li><a href="#radiosettxconfig-set-transmit-configuration">14.3 RadioSetTxConfig: Set Transmit Configuration</a><ul></ul></li>
+<li><a href="#radiosetrxconfig-set-receive-configuration">14.4 RadioSetRxConfig: Set Receive Configuration</a><ul></ul></li>
+<li><a href="#radiosend-transmit-message">14.5 RadioSend: Transmit Message</a><ul></ul></li>
+<li><a href="#radiorx-receive-message">14.6 RadioRx: Receive Message</a><ul></ul></li>
+<li><a href="#radioirqprocess-process-transmit-and-receive-interrupts">14.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a><ul>
+<li><a href="#transmit-done">14.7.1 Transmit Done</a><ul></ul></li>
+<li><a href="#receive-done">14.7.2 Receive Done</a><ul></ul></li>
+<li><a href="#cad-done">14.7.3 CAD Done</a><ul></ul></li>
+<li><a href="#transmit--receive-timeout">14.7.4 Transmit / Receive Timeout</a><ul></ul></li>
+<li><a href="#preamble-detected">14.7.5 Preamble Detected</a><ul></ul></li>
+<li><a href="#sync-word-valid">14.7.6 Sync Word Valid</a><ul></ul></li>
+<li><a href="#header-valid">14.7.7 Header Valid</a><ul></ul></li>
+<li><a href="#header-error">14.7.8 Header Error</a><ul></ul></li>
+<li><a href="#radioondioirq">14.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
+<li><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>25 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)</em></p>
 <p><strong>LoRa</strong> is an awesome wireless technology for IoT that will transmit <strong>small packets over super long distances</strong>…</p>
@@ -168,7 +174,7 @@
 </ul>
 <h2 id="lorawan-support" class="section-header"><a href="#lorawan-support">1.1 LoRaWAN Support</a></h2>
 <p><em>Why is LoRaWAN so complex?</em></p>
-<p>LoRaWAN works <strong>slightly differently across the worldwide regions</strong>, to comply with Local Wireless Regulations: Radio Frequency, Maximum Airtime (Duty Cycle), <a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">Listen Before Talk</a>, …</p>
+<p>LoRaWAN works <strong>slightly differently across the world regions</strong>, to comply with Local Wireless Regulations: Radio Frequency, Maximum Airtime (Duty Cycle), <a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">Listen Before Talk</a>, …</p>
 <p>Thus we should port <strong>Semtech’s LoRaWAN Stack</strong> to NuttX with <strong>minimal changes</strong>, in case of future updates. (Like for new regions)</p>
 <p>This also means that we should port <strong>Semtech’s SX1262 Driver</strong> to NuttX as-is, because of the dependencies between the LoRaWAN Stack and the SX1262 Driver.</p>
 <h2 id="lora-sx1262-library" class="section-header"><a href="#lora-sx1262-library">1.2 LoRa SX1262 Library</a></h2>
@@ -1258,12 +1264,120 @@ static void create_task(void) {
 <p><em>(For BL602 and ESP32)</em></p>
 <p>This section explains the steps to create a <strong>NuttX Library</strong> named <strong>“libsx1262”</strong>.</p>
 <p>(Change “libsx1262” to the desired name of our library)</p>
+<ol>
+<li>
+<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary/libs"><strong>“nuttx/libs”</strong></a> folder</p>
+</li>
+<li>
+<p>Copy the <strong>“libdsp”</strong> subfolder and paste it as <strong>“libsx1262”</strong></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone1.png" alt="Copy the “libdsp” subfolder and paste it as “libsx1262”" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/6596edd6eb47547f41f647e6da1e08d33faacf4f#diff-739a304e183a900711f6497e6544a814ef5367da89ccedad067fc1a3f0814b41">(Source)</a></p>
+</li>
+<li>
+<p>Inside the <strong>“libsx1262”</strong> folder, delete all source files except <strong>“lib_misc.c”</strong></p>
+</li>
+<li>
+<p>Edit <strong>“Makefile”</strong>. Remove all “CSRCS” lines except…</p>
+<div class="example-wrap"><pre class="language-text"><code>CSRCS += lib_misc.c</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/libs/libsx1262/Makefile">(See Makefile)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/08f8760ed5bfb4db8ff100f6f1eca714a256a2f2#diff-a9d844356942ef04a0efe9eac47f95390756485e2aec9cd4018831af2e8e9409">(See changes)</a></p>
+</li>
+<li>
+<p>Inside the <strong>“libsx1262”</strong> folder, search and replace all <strong>“libdsp”</strong> by <strong>“libsx1262”</strong></p>
+<p>Be sure to <strong>Preserve Case!</strong></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone2a.png" alt="Change all “libdsp” to “libsx1262”" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/9fe76d3bca389642e71ac405c8343b280384276d#diff-a9d844356942ef04a0efe9eac47f95390756485e2aec9cd4018831af2e8e9409">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary/libs/libsx1262">(See “libsx1262” folder)</a></p>
+</li>
+<li>
+<p>TODO: Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf"><strong>“nuttx/nuttx/include/nuttx/rf”</strong></a> folder</p>
+</li>
+<li>
+<p>TODO: Copy the file <strong>“dat-31r5-sp.h”</strong> and paste it as <strong>“spi_test_driver.h”</strong></p>
+</li>
+<li>
+<p>TODO: Inside the <strong>“spi_test_driver.h”</strong> file, search and replace all <strong>“dat31r5sp”</strong> by <strong>“spi_test_driver”</strong></p>
+<p>Remember to <strong>Preserve Case!</strong></p>
+<p>The Header File should look like this…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-newdriver3.png" alt="spi_test_driver.h" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf/spi_test_driver.h">(Source)</a></p>
+</li>
+</ol>
+<h2 id="update-makefile-and-kconfig" class="section-header"><a href="#update-makefile-and-kconfig">12.1 Update Makefile and Kconfig</a></h2>
+<p>Now we update the Makefile so that NuttX will build our Device Driver…</p>
+<ol>
+<li>
+<p>TODO: Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/nuttx/drivers/rf”</strong></a> folder</p>
+</li>
+<li>
+<p>TODO: Edit the file <strong>“Make.defs”</strong></p>
+<p>Insert this section…</p>
+<div class="example-wrap"><pre class="language-text"><code>ifeq ($(CONFIG_RF_SPI_TEST_DRIVER),y)
+  CSRCS += spi_test_driver.c
+  RFDEPPATH = --dep-path rf
+  RFVPATH = :rf
+endif</code></pre></div>
+<p>As shown below…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-newdriver9.png" alt="Update “Make.defs”" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Make.defs#L33-L37">(Source)</a></p>
+</li>
+<li>
+<p>TODO: Edit the file <strong>“Kconfig”</strong></p>
+<p>Insert this section…</p>
+<div class="example-wrap"><pre class="language-text"><code>config RF_SPI_TEST_DRIVER
+    bool &quot;SPI Test Driver&quot;
+    default n
+    select SPI
+    ---help---
+        Enable SPI Test Driver.</code></pre></div>
+<p>As shown below…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-newdriver5.png" alt="Update “Kconfig”" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27">(Source)</a></p>
+</li>
+<li>
+<p>TODO: Enter the following…</p>
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
+cd nuttx/nuttx
+
+# Preserve the Build Config
+cp .config ../config
+
+# Erase the Build Config and Kconfig files
+make distclean
+
+# For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
+
+# Restore the Build Config
+cp ../config .config
+
+# Edit the Build Config
+make menuconfig </code></pre></div></li>
+</ol>
+<h2 id="verify-library" class="section-header"><a href="#verify-library">12.2 Verify Library</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-library3.png" alt="" /></p>
-<p>TODO22</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone1.png" alt="" /></p>
-<p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone2a.png" alt="" /></p>
+<p>Finally we run the NuttX Firmware and check for our Device Driver…</p>
+<ol>
+<li>
+<p>Build (“make”), flash and run the NuttX Firmware on BL602 or ESP32.</p>
+</li>
+<li>
+<p>In the NuttX Shell, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<p>Our Device Driver appears as <strong>“/dev/spitest0”</strong>.</p>
+<p>Congratulations our Device Driver is now running on NuttX!</p>
+<p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="Our Device Driver appears as “/dev/spitest0”" /></p>
+</li>
+<li>
+<p>Look what happens if we forget to enable “SPI0” (BL602) or “SPI 2” (ESP32) and NuttX won’t start…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-crash2.jpg" alt="NuttX fails to start if we don’t enable SPI" /></p>
+<p><a href="https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323">(Source)</a></p>
+</li>
+</ol>
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-clone3a.png" alt="" /></p>
 <p>TODO18</p>
@@ -1276,7 +1390,190 @@ static void create_task(void) {
 <p><img src="https://lupyuen.github.io/images/sx1262-clone7.png" alt="" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library4.png" alt="" /></p>
-<h1 id="appendix-radio-functions" class="section-header"><a href="#appendix-radio-functions">13 Appendix: Radio Functions</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a></h1>
+<p><em>(For BL602 and ESP32)</em></p>
+<p>Below are the steps to build, flash and run NuttX on BL602 and ESP32.</p>
+<p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
+<p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">13.1 Build NuttX</a></h2>
+<p>Follow these steps to build NuttX for BL602 or ESP32…</p>
+<ol>
+<li>
+<p>Install the build prerequisites…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p>Assume that we have downloaded and configured our NuttX code…</p>
+<p>TODO</p>
+</li>
+<li>
+<p>Build NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
+<li>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>LD: nuttx
+CP: nuttx.hex
+CP: nuttx.bin</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log for BL602)</a></p>
+</li>
+<li>
+<p><strong>For BL602:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>blflash</strong> directory…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  For Linux and macOS:
+#  TODO: Change $HOME/blflash to the full path of blflash
+cp nuttx.bin $HOME/blflash
+
+#  For WSL:
+#  TODO: Change /mnt/c/blflash to the full path of blflash in Windows
+#  /mnt/c/blflash refers to c:\blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
+<p>(We’ll cover <strong>blflash</strong> in the next section)</p>
+<p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
+</li>
+<li>
+<p>In case of problems, refer to the <strong>NuttX Docs</strong>…</p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html"><strong>“BL602 NuttX”</strong></a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html"><strong>“ESP32 NuttX”</strong></a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html"><strong>“Installing NuttX”</strong></a></p>
+</li>
+</ol>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
+</blockquote>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">13.2 Flash NuttX</a></h2>
+<p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
+<p><strong>For BL602:</strong> Follow these steps to install <strong>blflash</strong>…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>“Install rustup”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>“Download and build blflash”</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <strong>nuttx.bin</strong> has been copied to the <strong>blflash</strong> folder.</p>
+<p>Set BL602 / BL604 to <strong>Flashing Mode</strong> and restart the board…</p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>High</strong> <a href="https://lupyuen.github.io/images/pinedio-high.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash nuttx.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash nuttx.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 / BL604 Serial Port
+cargo run flash nuttx.bin --port COM5</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
+<p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
+<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">13.3 Run NuttX</a></h2>
+<p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
+<p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
+<p><strong>For BL602:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>Low</strong> <a href="https://lupyuen.github.io/images/pinedio-low.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
+<p><strong>For Linux:</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt;</code></pre></div>
+<p>Congratulations NuttX is now running on BL602 / BL604!</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
+<p><strong>macOS Tip:</strong> Here’s the script I use to build, flash and run NuttX on macOS, all in a single step: <a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">run.sh</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
+<p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
+<h1 id="appendix-radio-functions" class="section-header"><a href="#appendix-radio-functions">14 Appendix: Radio Functions</a></h1>
 <p>TODO</p>
 <p>In this section we explain the Platform-Independent (Linux and BL602) <strong>Radio Functions</strong>, which are defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c">radio.c</a></p>
 <ul>
@@ -1305,7 +1602,7 @@ static void create_task(void) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1100-L1109"><strong>RadioSleep:</strong></a> Switch SX1262 to low-power sleep mode</p>
 </li>
 </ul>
-<h2 id="radioinit-initialise-lora-module" class="section-header"><a href="#radioinit-initialise-lora-module">13.1 RadioInit: Initialise LoRa Module</a></h2>
+<h2 id="radioinit-initialise-lora-module" class="section-header"><a href="#radioinit-initialise-lora-module">14.1 RadioInit: Initialise LoRa Module</a></h2>
 <p>TODO</p>
 <p><strong>RadioInit</strong> initialises the LoRa SX1262 Module: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L523-L559">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioInit( RadioEvents_t *events ) {
@@ -1398,7 +1695,7 @@ static void create_task(void) {
   IrqFired = false;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L361-L380">(<strong>TimerInit</strong> is defined here)</a></p>
-<h2 id="radiosetchannel-set-lora-frequency" class="section-header"><a href="#radiosetchannel-set-lora-frequency">13.2 RadioSetChannel: Set LoRa Frequency</a></h2>
+<h2 id="radiosetchannel-set-lora-frequency" class="section-header"><a href="#radiosetchannel-set-lora-frequency">14.2 RadioSetChannel: Set LoRa Frequency</a></h2>
 <p>TODO</p>
 <p><strong>RadioSetChannel</strong> sets the LoRa Frequency: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L600-L604">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetChannel( uint32_t freq ) {
@@ -1422,7 +1719,7 @@ static void create_task(void) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L408-L438">(<strong>SX126xCalibrateImage</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L812-L826">(<strong>SX126xConvertFreqInHzToPllStep</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
-<h2 id="radiosettxconfig-set-transmit-configuration" class="section-header"><a href="#radiosettxconfig-set-transmit-configuration">13.3 RadioSetTxConfig: Set Transmit Configuration</a></h2>
+<h2 id="radiosettxconfig-set-transmit-configuration" class="section-header"><a href="#radiosettxconfig-set-transmit-configuration">14.3 RadioSetTxConfig: Set Transmit Configuration</a></h2>
 <p>TODO</p>
 <p><strong>RadioSetTxConfig</strong> sets the LoRa Transmit Configuration: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L788-L908">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
@@ -1533,7 +1830,7 @@ static void create_task(void) {
 }</code></pre></div>
 <p>For easier testing we have set the Ramp Up Time to <strong>3400 microseconds</strong> (longest duration).</p>
 <p>After testing we should revert to the <strong>Default Ramp Up Time</strong> (40 microseconds).</p>
-<h2 id="radiosetrxconfig-set-receive-configuration" class="section-header"><a href="#radiosetrxconfig-set-receive-configuration">13.4 RadioSetRxConfig: Set Receive Configuration</a></h2>
+<h2 id="radiosetrxconfig-set-receive-configuration" class="section-header"><a href="#radiosetrxconfig-set-receive-configuration">14.4 RadioSetRxConfig: Set Receive Configuration</a></h2>
 <p>TODO</p>
 <p><strong>RadioSetRxConfig</strong> sets the LoRa Receive Configuration: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L661-L786">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
@@ -1655,7 +1952,7 @@ static void create_task(void) {
       RxTimeout = 0xFFFF;
       break;
   }
-}</code></pre></div><h2 id="radiosend-transmit-message" class="section-header"><a href="#radiosend-transmit-message">13.5 RadioSend: Transmit Message</a></h2>
+}</code></pre></div><h2 id="radiosend-transmit-message" class="section-header"><a href="#radiosend-transmit-message">14.5 RadioSend: Transmit Message</a></h2>
 <p>TODO</p>
 <p><strong>RadioSend</strong> transmits a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1069-L1098">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSend( uint8_t *buffer, uint8_t size ) {
@@ -1726,7 +2023,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L171-L182">(<strong>SX126xWaitOnBusy</strong> is defined here)</a></p>
 <p>When the LoRa Message is transmitted (successfully or unsuccessfully), the LoRa Module triggers a <strong>DIO1 Interrupt</strong>.</p>
 <p>Our driver calls <strong>RadioIrqProcess</strong> to process the interrupt. <a href="https://lupyuen.github.io/articles/sx1262#radioirqprocess-process-transmit-and-receive-interrupts">(See this)</a></p>
-<h2 id="radiorx-receive-message" class="section-header"><a href="#radiorx-receive-message">13.6 RadioRx: Receive Message</a></h2>
+<h2 id="radiorx-receive-message" class="section-header"><a href="#radiorx-receive-message">14.6 RadioRx: Receive Message</a></h2>
 <p>TODO</p>
 <p><strong>RadioRx</strong> receives a single LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1117-L1138">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioRx( uint32_t timeout ) {
@@ -1778,7 +2075,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L204-L217">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
 <p>When a LoRa Message is received (successfully or unsuccessfully), the LoRa Module triggers a <strong>DIO1 Interrupt</strong>.</p>
 <p>Our driver calls <strong>RadioIrqProcess</strong> to process the interrupt, which is explained next…</p>
-<h2 id="radioirqprocess-process-transmit-and-receive-interrupts" class="section-header"><a href="#radioirqprocess-process-transmit-and-receive-interrupts">13.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a></h2>
+<h2 id="radioirqprocess-process-transmit-and-receive-interrupts" class="section-header"><a href="#radioirqprocess-process-transmit-and-receive-interrupts">14.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a></h2>
 <p>TODO</p>
 <p><strong>RadioIrqProcess</strong> processes the interrupts that are triggered when a LoRa Message is transmitted and received: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1314-L1460">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Process Transmit and Receive Interrupts.
@@ -1840,7 +2137,7 @@ void RadioIrqProcess( void ) {
 <p>Header Error</p>
 </li>
 </ul>
-<h3 id="transmit-done" class="section-header"><a href="#transmit-done">13.7.1 Transmit Done</a></h3>
+<h3 id="transmit-done" class="section-header"><a href="#transmit-done">14.7.1 Transmit Done</a></h3>
 <p>TODO</p>
 <p>When the LoRa Module has transmitted a LoRa Message successfully, we stop the Transmit Timer and call the <strong>Callback Function for Transmit Done</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1339-L1349">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was transmitted successfully...
@@ -1860,7 +2157,7 @@ void RadioIrqProcess( void ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L382-L394">(<strong>TimerStop</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L126-L147">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p><strong>TxDone</strong> points to the <strong>on_tx_done</strong> Callback Function that we’ve seen earlier.</p>
-<h3 id="receive-done" class="section-header"><a href="#receive-done">13.7.2 Receive Done</a></h3>
+<h3 id="receive-done" class="section-header"><a href="#receive-done">14.7.2 Receive Done</a></h3>
 <p>TODO</p>
 <p>When the LoRa Module receives a LoRa Message, we stop the Receive Timer: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1351-L1389">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was received...
@@ -1957,7 +2254,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L133-L142">(<strong>SX126xCheckDeviceReady</strong> is defined here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#long-messages">(<strong>sx126x_read_buffer</strong> is explained here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L171-L182">(<strong>SX126xWaitOnBusy</strong> is defined here)</a></p>
-<h3 id="cad-done" class="section-header"><a href="#cad-done">13.7.3 CAD Done</a></h3>
+<h3 id="cad-done" class="section-header"><a href="#cad-done">14.7.3 CAD Done</a></h3>
 <p>TODO</p>
 <p><strong>Channel Activity Detection</strong> lets us <strong>detect whether there’s any ongoing transmission</strong> in a LoRa Radio Channel, in a power-efficient way.</p>
 <p>We won’t be doing Channel Activity Detection in our driver: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1391-L1400">radio.c</a></p>
@@ -1974,7 +2271,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
             == IRQ_CAD_ACTIVITY_DETECTED 
         ) );
       }
-    }</code></pre></div><h3 id="transmit--receive-timeout" class="section-header"><a href="#transmit--receive-timeout">13.7.4 Transmit / Receive Timeout</a></h3>
+    }</code></pre></div><h3 id="transmit--receive-timeout" class="section-header"><a href="#transmit--receive-timeout">14.7.4 Transmit / Receive Timeout</a></h3>
 <p>TODO</p>
 <p>When the LoRa Module <strong>fails to transmit</strong> a LoRa Message due to Timeout, we stop the Transmit Timer and call the <strong>Callback Function for Transmit Timeout</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1402-L1425">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message failed to Transmit or Receive due to Timeout...
@@ -2013,7 +2310,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
       }
     }</code></pre></div>
 <p><strong>RxTimeout</strong> points to the <strong>on_rx_timeout</strong> Callback Function that we’ve seen earlier.</p>
-<h3 id="preamble-detected" class="section-header"><a href="#preamble-detected">13.7.5 Preamble Detected</a></h3>
+<h3 id="preamble-detected" class="section-header"><a href="#preamble-detected">14.7.5 Preamble Detected</a></h3>
 <p>TODO</p>
 <p>Preamble is the Radio Signal that <strong>precedes the LoRa Message</strong>. When the LoRa Module detects the Preamble Signal, it knows that it’s about to receive a LoRa Message.</p>
 <p>We don’t need to handle the Preamble Signal, the LoRa Module does it for us: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1427-L1431">radio.c</a></p>
@@ -2024,7 +2321,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p>Our <a href="https://github.com/lupyuen/lora-sx1262#receive-message"><strong>Receive Message Log</strong></a> shows that the Preamble Signal (<strong>IRQ_PREAMBLE_DETECTED</strong>) is always detected before receiving a LoRa Message.</p>
 <p>(<strong>IRQ_PREAMBLE_DETECTED</strong> appears just before the LoRa Header: <strong>IRQ_HEADER_VALID</strong>)</p>
 <p><a href="https://www.link-labs.com/blog/what-is-lora">(More about LoRa Preamble)</a></p>
-<h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">13.7.6 Sync Word Valid</a></h3>
+<h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">14.7.6 Sync Word Valid</a></h3>
 <p>TODO</p>
 <p><strong>Sync Words</strong> are 16-bit values that differentiate the types of LoRa Networks.</p>
 <p>The LoRa Module detects the Sync Words when it receive a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1433-L1437">radio.c</a></p>
@@ -2039,7 +2336,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 //  Syncword for Public LoRa networks (LoRaWAN)
 #define LORA_MAC_PUBLIC_SYNCWORD                    0x3444</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word">(More about Sync Words)</a></p>
-<h3 id="header-valid" class="section-header"><a href="#header-valid">13.7.7 Header Valid</a></h3>
+<h3 id="header-valid" class="section-header"><a href="#header-valid">14.7.7 Header Valid</a></h3>
 <p>TODO</p>
 <p>The LoRa Module checks for a <strong>valid LoRa Header</strong> when receiving a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1439-L1443">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a valid Header was received...
@@ -2048,7 +2345,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
     }</code></pre></div>
 <p>Our <a href="https://github.com/lupyuen/lora-sx1262#receive-message"><strong>Receive Message Log</strong></a> shows that the LoRa Header (<strong>IRQ_HEADER_VALID</strong>) is always detected before receiving a LoRa Message.</p>
 <p>(<strong>IRQ_HEADER_VALID</strong> appears right after the Preamble Signal: <strong>IRQ_PREAMBLE_DETECTED</strong>)</p>
-<h3 id="header-error" class="section-header"><a href="#header-error">13.7.8 Header Error</a></h3>
+<h3 id="header-error" class="section-header"><a href="#header-error">14.7.8 Header Error</a></h3>
 <p>TODO</p>
 <p>When the LoRa Module detects a <strong>LoRa Header with CRC Error</strong>, we stop the Receive Timer and call the Callback Function for Receive Timeout: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1445-L1458">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a Header with CRC Error was received...
@@ -2070,7 +2367,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
   }
 }</code></pre></div>
 <p><strong>RxTimeout</strong> points to the <strong>on_rx_timeout</strong> Callback Function that we’ve seen earlier.</p>
-<h3 id="radioondioirq" class="section-header"><a href="#radioondioirq">13.7.9 RadioOnDioIrq</a></h3>
+<h3 id="radioondioirq" class="section-header"><a href="#radioondioirq">14.7.9 RadioOnDioIrq</a></h3>
 <p>TODO</p>
 <p><strong>RadioIrqProcess</strong> (as defined above) is called by <strong>RadioOnDioIrq</strong> to handle LoRa Transmit and Receive Events: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1300-L1312">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function for Transmit and Receive Interrupts.
@@ -2085,7 +2382,7 @@ void RadioOnDioIrq( struct ble_npl_event *ev ) {
   //  Application Task Context, not Interrupt Context.
   //  The Reference Implementation processes the interrupt in the main loop.
   RadioIrqProcess();
-}</code></pre></div><h2 id="radiosleep-switch-to-sleep-mode" class="section-header"><a href="#radiosleep-switch-to-sleep-mode">13.8 RadioSleep: Switch to Sleep Mode</a></h2>
+}</code></pre></div><h2 id="radiosleep-switch-to-sleep-mode" class="section-header"><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a></h2>
 <p>TODO</p>
 <p><strong>RadioSleep</strong> switches SX1262 to low-power sleep mode: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L1100-L1109">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Switch to Sleep Mode
