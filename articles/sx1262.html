@@ -369,7 +369,7 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 <div class="example-wrap"><pre class="language-text"><code>a2 a2 a2 a2 80 </code></pre></div>
 <p>The last byte is the <strong>Register Value</strong>: <code>0x80</code></p>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">3.1 Build the Firmware</a></h2>
-<p>TODO</p>
+<p>Let’s build the modified NuttX Firmware that contains our <strong>LoRa SX1262 Library and Test App</strong>…</p>
 <ol>
 <li>
 <p>Install the build prerequisites…</p>
@@ -398,29 +398,38 @@ git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx
 # Edit the Build Config
 make menuconfig </code></pre></div></li>
 <li>
-<p>Enable the SPI Peripheral and SPI Character Driver in menuconfig…</p>
+<p>Enable the <strong>GPIO Driver</strong> in menuconfig…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#enable-gpio-driver"><strong>“Enable GPIO Driver”</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-menu7a.png" alt="Enable the GPIO Driver" /></p>
+</li>
+<li>
+<p>Enable the <strong>SPI Peripheral</strong> and <strong>SPI Character Driver</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-debug.jpg" alt="Enable SPI" /></p>
 </li>
 <li>
-<p>Enable our SPI Test Driver…</p>
+<p>Enable our <strong>SPI Test Driver</strong> “/dev/spitest0”…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver6.png" alt="Select SPI Test Driver" /></p>
 </li>
 <li>
-<p>Enable SPI logging for easier troubleshooting…</p>
+<p>Enable <strong>GPIO and SPI Logging</strong> for easier troubleshooting…</p>
+<p>(Might be good to uncheck <strong>“GPIO Informational Output”</strong> and <strong>“SPI Informational Output”</strong>)</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-logging"><strong>“Enable Logging”</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-driver4.png" alt="Enable logging" /></p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver4.png" alt="Enable Logging" /></p>
 </li>
 <li>
-<p>TODO: Enable Library</p>
+<p>Enable our <strong>SX1262 Library</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#enable-library"><strong>“Enable Library”</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone7.png" alt="Enable Library" /></p>
 </li>
 <li>
-<p>TODO: Enable App</p>
+<p>Enable our <strong>SX1262 Test App</strong>…</p>
+<p>Check the box for <strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“SX1262 Test”</strong></p>
 </li>
 <li>
 <p>Save the configuration and exit menuconfig</p>
-<p><a href="https://gist.github.com/lupyuen/93b553fdfcfa0221ccd6276706e72caf">(TODO: Here’s the .config for BL602)</a></p>
+<p><a href="https://gist.github.com/lupyuen/ec97cff54064c9f9d7d1c700c035b777">(Here’s the .config for BL602)</a></p>
 </li>
 <li>
 <p><strong>For ESP32:</strong> Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a> to register our SPI Test Driver <a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
@@ -429,28 +438,31 @@ make menuconfig </code></pre></div></li>
 <p>Build, flash and run the NuttX Firmware on BL602 or ESP32…</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
 </li>
+</ol>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3.2 Run the Firmware</a></h2>
+<p>Finally we run the NuttX Firmware and test our <strong>LoRa SX1262 Library</strong>…</p>
+<ol>
 <li>
 <p>In the NuttX Shell, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
-<p>Our SPI Test Driver appears as <strong>“/dev/spitest0”</strong></p>
+<p>Our SPI Test Driver should appear as <strong>“/dev/spitest0”</strong></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="Our SPI Test Driver appears as “/dev/spitest0”" /></p>
 </li>
 <li>
-<p>TODO</p>
-</li>
-</ol>
-<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3.2 Run the Firmware</a></h2>
-<p>TODO</p>
-<p>And watch for these <strong>SX1262 Register Values</strong>…</p>
+<p>In the NuttX Shell, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sx1262_test</code></pre></div></li>
+<li>
+<p>We should see these <strong>SX1262 Register Values</strong> (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Register 0x00 = 0x00
 ...
 Register 0x08 = 0x80
 Register 0x09 = 0x00
 Register 0x0a = 0x01</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/1e732f5b1e0e4a80d1eb351ab3aadede">(See the Output Log)</a></p>
-<p>If we see these values… Our NuttX Library is talking correctly to SX1262!</p>
-<p>Note that the values above will change when we <strong>transmit and receive LoRa Messages</strong>.</p>
-<p>Let’s do that next.</p>
+<p>Our LoRa SX1262 Library talks OK to the SX1262 Transceiver!</p>
+<p>Note that the values above will change when we <strong>transmit and receive LoRa Messages</strong>. Let’s do that now.</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/sx1262-read5.png" alt="Reading SX1262 Registers" /></p>
 <h2 id="source-files" class="section-header"><a href="#source-files">3.3 Source Files</a></h2>
 <p>TODO</p>
@@ -1534,10 +1546,10 @@ int main(int argc, FAR char *argv[])
 </li>
 <li>
 <p>Assume that we have downloaded and configured our NuttX code…</p>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#build-the-firmware"><strong>“Build the Firmware”</strong></a></p>
 </li>
 <li>
-<p>Build NuttX…</p>
+<p>To build NuttX, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
 <li>
 <p>We should see…</p>
