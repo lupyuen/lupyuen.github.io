@@ -868,8 +868,17 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="SX1262 Interface on PineDio Stack" /></p>
 </blockquote>
-<p>We update the following Pin Definitions in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* Busy Pin for PineDio SX1262 */
+<p>We update the following <strong>BL604 Pin Definitions</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
+<div><table><thead><tr><th align="center">SX1262</th><th align="center">BL604 Pin</th><th align="left">NuttX Pin</th></tr></thead><tbody>
+<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 13</td><td align="left">BOARD_SPI_MOSI</td></tr>
+<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td><td align="left">BOARD_SPI_MISO</td></tr>
+<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 11</td><td align="left">BOARD_SPI_CLK</td></tr>
+<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 15</td><td align="left">BOARD_GPIO_OUT1</td></tr>
+<tr><td align="center"><strong>BUSY</strong></td><td align="center">GPIO 10</td><td align="left">BOARD_GPIO_IN1</td></tr>
+<tr><td align="center"><strong>DIO1</strong></td><td align="center">GPIO 19</td><td align="left">BOARD_GPIO_INT1</td></tr>
+<tr><td align="center"><strong>NRESET</strong></td><td align="center">GPIO 18</td><td align="left">Not assigned yet</td></tr>
+</tbody></table>
+</div><div class="example-wrap"><pre class="language-c"><code>/* Busy Pin for PineDio SX1262 */
 
 #define BOARD_GPIO_IN1    (GPIO_INPUT | GPIO_FLOAT | \
                             GPIO_FUNC_SWGPIO | GPIO_PIN10)
