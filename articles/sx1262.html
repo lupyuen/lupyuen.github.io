@@ -370,13 +370,75 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 <p>The last byte is the <strong>Register Value</strong>: <code>0x80</code></p>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">3.1 Build the Firmware</a></h2>
 <p>TODO</p>
-<p>Follow the instructions to <strong>download, build and run</strong> the NuttX Firmware…</p>
-<ul>
-<li>TODO</li>
-</ul>
-<p>Remember to edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c"><strong>sx1262_test_main.c</strong></a> and uncomment…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define READ_REGISTERS</code></pre></div>
+<ol>
+<li>
+<p>Install the build prerequisites…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p>Download the modified source code…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div></li>
+<li>
+<p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define READ_REGISTERS</code></pre></div></li>
+<li>
+<p>Configure the build…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx
+
+# For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
+
+# Edit the Build Config
+make menuconfig </code></pre></div></li>
+<li>
+<p>Enable the SPI Peripheral and SPI Character Driver in menuconfig…</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-debug.jpg" alt="Enable SPI" /></p>
+</li>
+<li>
+<p>Enable our SPI Test Driver…</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newdriver6.png" alt="Select SPI Test Driver" /></p>
+</li>
+<li>
+<p>Enable SPI logging for easier troubleshooting…</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#enable-logging"><strong>“Enable Logging”</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-driver4.png" alt="Enable logging" /></p>
+</li>
+<li>
+<p>TODO: Enable Library</p>
+</li>
+<li>
+<p>TODO: Enable App</p>
+</li>
+<li>
+<p>Save the configuration and exit menuconfig</p>
+<p><a href="https://gist.github.com/lupyuen/93b553fdfcfa0221ccd6276706e72caf">(TODO: Here’s the .config for BL602)</a></p>
+</li>
+<li>
+<p><strong>For ESP32:</strong> Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a> to register our SPI Test Driver <a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
+</li>
+<li>
+<p>Build, flash and run the NuttX Firmware on BL602 or ESP32…</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
+</li>
+<li>
+<p>In the NuttX Shell, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<p>Our SPI Test Driver appears as <strong>“/dev/spitest0”</strong></p>
+<p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="Our SPI Test Driver appears as “/dev/spitest0”" /></p>
+</li>
+<li>
 <p>TODO</p>
+</li>
+</ol>
 <h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3.2 Run the Firmware</a></h2>
 <p>TODO</p>
 <p>And watch for these <strong>SX1262 Register Values</strong>…</p>
@@ -640,11 +702,7 @@ static void on_tx_timeout(void) {
   loraping_stats.tx_timeout++;
 }</code></pre></div><h2 id="run-the-firmware-1" class="section-header"><a href="#run-the-firmware-1">5.1 Run the Firmware</a></h2>
 <p>TODO</p>
-<p>Follow the instructions to <strong>download, build and run</strong> the NuttX Firmware…</p>
-<ul>
-<li>TODO</li>
-</ul>
-<p>Remember to edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c"><strong>sx1262_test_main.c</strong></a> and uncomment…</p>
+<p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define SEND_MESSAGE</code></pre></div>
 <p>Also edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L10-L46"><strong>sx1262_test_main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
 <p>Build and run the NuttX Firmware…</p>
@@ -778,11 +836,8 @@ static void on_rx_error(void) {
   //  Switch the LoRa Transceiver to low power, sleep mode
   Radio.Sleep();
 }</code></pre></div><h2 id="run-the-firmware-2" class="section-header"><a href="#run-the-firmware-2">6.1 Run the Firmware</a></h2>
-<p>Follow the instructions to <strong>download, build and run</strong> the NuttX Firmware…</p>
-<ul>
-<li>TODO</li>
-</ul>
-<p>Remember to edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c"><strong>sx1262_test_main.c</strong></a> and uncomment…</p>
+<p>TODO</p>
+<p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define RECEIVE_MESSAGE</code></pre></div>
 <p>Also edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L10-L46"><strong>sx1262_test_main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
 <p>Build and run the NuttX Firmware…</p>
