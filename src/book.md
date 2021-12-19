@@ -60,6 +60,8 @@ How to create a simple __Blinky Project__ for BL602 / BL604 and build the projec
 
 -   ["How To Create NuttX Device Drivers"](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-device-driver)
 
+-   ["How To Create NuttX Libraries"](https://lupyuen.github.io/articles/sx1262#appendix-create-a-nuttx-library)
+
 -   ["How To Create Rust Projects"](https://lupyuen.github.io/articles/adc#create-a-bl602-rust-project)
 
 -   ["How To Build Rust Projects"](https://lupyuen.github.io/articles/adc#build-the-bl602-rust-firmware)
