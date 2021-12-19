@@ -1362,8 +1362,7 @@ endif</code></pre></div>
 <li>
 <p>Edit the files <strong>“FlatLibs.mk”</strong>, <strong>“KernelLibs.mk”</strong> and <strong>“ProtectedLibs.mk”</strong></p>
 <p>After <strong>“libopenamp”</strong>, insert this section…</p>
-<div class="example-wrap"><pre class="language-text"><code>
-ifeq ($(CONFIG_LIBSX1262),y)
+<div class="example-wrap"><pre class="language-text"><code>ifeq ($(CONFIG_LIBSX1262),y)
 NUTTXLIBS += staging$(DELIM)libsx1262$(LIBEXT)
 endif</code></pre></div>
 <p>As shown below…</p>
