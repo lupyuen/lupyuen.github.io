@@ -93,8 +93,9 @@
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-create-a-nuttx-library">12 Appendix: Create a NuttX Library</a><ul>
-<li><a href="#update-makefile-and-kconfig">12.1 Update Makefile and Kconfig</a><ul></ul></li>
-<li><a href="#verify-library">12.2 Verify Library</a><ul></ul></li></ul></li>
+<li><a href="#update-makefiles-and-kconfig">12.1 Update Makefiles and Kconfig</a><ul></ul></li>
+<li><a href="#enable-library">12.2 Enable Library</a><ul></ul></li>
+<li><a href="#verify-library">12.3 Verify Library</a><ul></ul></li></ul></li>
 <li><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a><ul>
 <li><a href="#build-nuttx">13.1 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">13.2 Flash NuttX</a><ul></ul></li>
@@ -189,6 +190,17 @@
 </ul>
 <p>And we’re porting now to <strong>NuttX</strong>.</p>
 <p>(Because porting Linux code to NuttX is straightforward)</p>
+<p><em>How did we create the LoRa SX1262 Library?</em></p>
+<p>We followed the steps below to create <strong>“nuttx/libs/libsx1262”</strong> by cloning a NuttX Library…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262#appendix-create-a-nuttx-library"><strong>“Create a NuttX Library”</strong></a></li>
+</ul>
+<p>Then we replaced the “libsx1262” folder by a <strong>Git Submodule</strong> that contains our LoRa SX1262 code… </p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx/nuttx/libs
+rm -r libsx1262
+git rm -r libsx1262
+git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx1262</code></pre></div>
+<p>(Note that we’re using the <strong>“nuttx”</strong> branch of the “lora_sx1262” repo)</p>
 <h2 id="library-vs-driver" class="section-header"><a href="#library-vs-driver">1.3 Library vs Driver</a></h2>
 <p><em>NuttX Libraries vs Drivers… What’s the difference?</em></p>
 <p>Our LoRa SX1262 code is initially packaged as a <strong>NuttX Library</strong> (instead of NuttX Driver) because…</p>
@@ -1280,62 +1292,106 @@ static void create_task(void) {
 <p>Edit <strong>“Makefile”</strong>. Remove all “CSRCS” lines except…</p>
 <div class="example-wrap"><pre class="language-text"><code>CSRCS += lib_misc.c</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/libs/libsx1262/Makefile">(See Makefile)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/08f8760ed5bfb4db8ff100f6f1eca714a256a2f2#diff-a9d844356942ef04a0efe9eac47f95390756485e2aec9cd4018831af2e8e9409">(See changes)</a></p>
 </li>
 <li>
 <p>Inside the <strong>“libsx1262”</strong> folder, search and replace all <strong>“libdsp”</strong> by <strong>“libsx1262”</strong></p>
 <p>Be sure to <strong>Preserve Case!</strong></p>
 <p><img src="https://lupyuen.github.io/images/sx1262-clone2a.png" alt="Change all “libdsp” to “libsx1262”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/9fe76d3bca389642e71ac405c8343b280384276d#diff-a9d844356942ef04a0efe9eac47f95390756485e2aec9cd4018831af2e8e9409">(Source)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary/libs/libsx1262">(See “libsx1262” folder)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/9fe76d3bca389642e71ac405c8343b280384276d#diff-a9d844356942ef04a0efe9eac47f95390756485e2aec9cd4018831af2e8e9409">(See changes)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary/libs/libsx1262">(See libsx1262 folder)</a></p>
 </li>
 <li>
-<p>TODO: Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf"><strong>“nuttx/nuttx/include/nuttx/rf”</strong></a> folder</p>
+<p>Edit the file <strong>“Kconfig”</strong></p>
+<p>Update the section <strong>“menuconfig LIBSX1262”</strong> as follows…</p>
+<div class="example-wrap"><pre class="language-text"><code>menuconfig LIBSX1262
+    bool &quot;Semtech SX1262 Library&quot;
+    default n
+    ---help---
+        Enable build for Semtech SX1262 functions    </code></pre></div>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone4.png" alt="Update Kconfig" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/libs/libsx1262/Kconfig">(Source)</a></p>
 </li>
 <li>
-<p>TODO: Copy the file <strong>“dat-31r5-sp.h”</strong> and paste it as <strong>“spi_test_driver.h”</strong></p>
+<p>Edit the file <strong>“lib_misc.c”</strong>.  Remove all the code and add…</p>
+<div class="example-wrap"><pre class="language-c"><code>#include &lt;stdio.h&gt;  /* TODO: Fix this for kernel mode */
+#include &lt;sx1262.h&gt;
+
+void test_libsx1262(void)
+{
+  puts(&quot;libsx1262 OK!&quot;);
+}</code></pre></div>
+<p>We’ll call this function in a while.</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/libs/libsx1262/lib_misc.c">(See lib_misc.c)</a></p>
 </li>
 <li>
-<p>TODO: Inside the <strong>“spi_test_driver.h”</strong> file, search and replace all <strong>“dat31r5sp”</strong> by <strong>“spi_test_driver”</strong></p>
+<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/include"><strong>“nuttx/include”</strong></a> folder</p>
+</li>
+<li>
+<p>Copy the file <strong>“dsp.h”</strong> and paste it as <strong>“sx1262.h”</strong></p>
+</li>
+<li>
+<p>Inside the file <strong>“sx1262.h”</strong>, search and replace all <strong>“dsp”</strong> by <strong>“sx1262”</strong></p>
 <p>Remember to <strong>Preserve Case!</strong></p>
-<p>The Header File should look like this…</p>
-<p><img src="https://lupyuen.github.io/images/spi2-newdriver3.png" alt="spi_test_driver.h" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf/spi_test_driver.h">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/include/sx1262.h">(See sx1262.h)</a></p>
+</li>
+<li>
+<p>Edit the file <strong>“sx1262.h”</strong>, remove all Public Functions Prototypes and add…</p>
+<div class="example-wrap"><pre class="language-c"><code>void test_libsx1262(void);</code></pre></div>
+<p>We’ll test this function in a while.</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/sx1262.h">(See sx1262.h)</a></p>
 </li>
 </ol>
-<h2 id="update-makefile-and-kconfig" class="section-header"><a href="#update-makefile-and-kconfig">12.1 Update Makefile and Kconfig</a></h2>
-<p>Now we update the Makefile so that NuttX will build our Device Driver…</p>
+<h2 id="update-makefiles-and-kconfig" class="section-header"><a href="#update-makefiles-and-kconfig">12.1 Update Makefiles and Kconfig</a></h2>
+<p>Next we update the Makefiles and Kconfig so that NuttX will build our library…</p>
 <ol>
 <li>
-<p>TODO: Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/nuttx/drivers/rf”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary/tools"><strong>“nuttx/tools”</strong></a> folder</p>
 </li>
 <li>
-<p>TODO: Edit the file <strong>“Make.defs”</strong></p>
-<p>Insert this section…</p>
-<div class="example-wrap"><pre class="language-text"><code>ifeq ($(CONFIG_RF_SPI_TEST_DRIVER),y)
-  CSRCS += spi_test_driver.c
-  RFDEPPATH = --dep-path rf
-  RFVPATH = :rf
+<p>Edit the file <strong>“Directories.mk”</strong></p>
+<p>After <strong>“libdsp”</strong>, insert this section…</p>
+<div class="example-wrap"><pre class="language-text"><code>ifeq ($(CONFIG_LIBSX1262),y)
+KERNDEPDIRS += libs$(DELIM)libsx1262
+else
+CLEANDIRS += libs$(DELIM)libsx1262
 endif</code></pre></div>
 <p>As shown below…</p>
-<p><img src="https://lupyuen.github.io/images/spi2-newdriver9.png" alt="Update “Make.defs”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Make.defs#L33-L37">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone5.png" alt="Update “Directories.mk”" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/8bd31da9abccbcfdd1b9b1ccfd22bd41803ac7f8#diff-f9d35d43770d39092a663e665e82ae1d84a9e0da3d0d10c407acada6a40cd281">(Source)</a></p>
 </li>
 <li>
-<p>TODO: Edit the file <strong>“Kconfig”</strong></p>
-<p>Insert this section…</p>
-<div class="example-wrap"><pre class="language-text"><code>config RF_SPI_TEST_DRIVER
-    bool &quot;SPI Test Driver&quot;
-    default n
-    select SPI
-    ---help---
-        Enable SPI Test Driver.</code></pre></div>
+<p>Edit the files <strong>“FlatLibs.mk”</strong>, <strong>“KernelLibs.mk”</strong> and <strong>“ProtectedLibs.mk”</strong></p>
+<p>After <strong>“libopenamp”</strong>, insert this section…</p>
+<div class="example-wrap"><pre class="language-text"><code>
+ifeq ($(CONFIG_LIBSX1262),y)
+NUTTXLIBS += staging$(DELIM)libsx1262$(LIBEXT)
+endif</code></pre></div>
 <p>As shown below…</p>
-<p><img src="https://lupyuen.github.io/images/spi2-newdriver5.png" alt="Update “Kconfig”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone6.png" alt="Update Makefiles" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/b381a99e7512d09d74db4da982826b5e40b2606a#diff-f9d35d43770d39092a663e665e82ae1d84a9e0da3d0d10c407acada6a40cd281">(Source)</a></p>
 </li>
 <li>
-<p>TODO: Enter the following…</p>
+<p>Edit the file <strong>“LibTargets.mk”</strong></p>
+<p>After <strong>“libdsp”</strong>, insert this section…</p>
+<div class="example-wrap"><pre class="language-text"><code>libs$(DELIM)libsx1262$(DELIM)libsx1262$(LIBEXT): pass2dep
+    $(Q) $(MAKE) -C libs$(DELIM)libsx1262 libsx1262$(LIBEXT) EXTRAFLAGS=&quot;$(EXTRAFLAGS)&quot;
+
+staging$(DELIM)libsx1262$(LIBEXT): libs$(DELIM)libsx1262$(DELIM)libsx1262$(LIBEXT)
+    $(Q) $(call INSTALL_LIB,$&lt;,$@)</code></pre></div>
+<p>As shown in the pic above.</p>
+</li>
+<li>
+<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary"><strong>“nuttx”</strong></a> folder</p>
+</li>
+<li>
+<p>Edit the file <strong>“Kconfig”</strong></p>
+<p>Inside the section <strong>menu “Library Routines”</strong>, add this line…</p>
+<div class="example-wrap"><pre class="language-text"><code>source &quot;libs/libsx1262/Kconfig&quot;</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone3a.png" alt="Update Root Kconfig" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/6a18348842b5fcec6a9fe8672c0de380b889086c">(Source)</a></p>
+</li>
+<li>
+<p>Run the following…</p>
 <div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
 cd nuttx/nuttx
 
@@ -1358,38 +1414,57 @@ cp ../config .config
 # Edit the Build Config
 make menuconfig </code></pre></div></li>
 </ol>
-<h2 id="verify-library" class="section-header"><a href="#verify-library">12.2 Verify Library</a></h2>
-<p>TODO</p>
-<p>Finally we run the NuttX Firmware and check for our Device Driver…</p>
+<h2 id="enable-library" class="section-header"><a href="#enable-library">12.2 Enable Library</a></h2>
+<p>We enable our library as follows…</p>
 <ol>
+<li>
+<p>In <strong>menuconfig</strong>, select <strong>“Library Routines”</strong></p>
+<p>Check the box for <strong>“Semtech SX1262 Library”</strong></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone7.png" alt="Enable Library" /></p>
+</li>
+<li>
+<p>Hit <strong>“Save”</strong> then <strong>“OK”</strong> to save the NuttX Configuration to <strong>“.config”</strong></p>
+</li>
+<li>
+<p>Hit <strong>“Exit”</strong> until <strong>menuconfig</strong> quits</p>
+</li>
+</ol>
+<h2 id="verify-library" class="section-header"><a href="#verify-library">12.3 Verify Library</a></h2>
+<p>To verify our library…</p>
+<ol>
+<li>
+<p>We create a simple NuttX App: <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/newlibrary/examples/sx1262_test"><strong>apps/examples/sx1262_test</strong></a></p>
+<div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/config.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sx1262.h&gt;
+
+int main(int argc, FAR char *argv[])
+{
+  printf(&quot;Sx1262_test, World!!\n&quot;);
+
+  /* Call SX1262 Library */
+
+  test_libsx1262();
+
+  return 0;
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/newlibrary/examples/sx1262_test/sx1262_test_main.c">(Source)</a></p>
+</li>
 <li>
 <p>Build (“make”), flash and run the NuttX Firmware on BL602 or ESP32.</p>
 </li>
 <li>
 <p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
-<p>Our Device Driver appears as <strong>“/dev/spitest0”</strong>.</p>
-<p>Congratulations our Device Driver is now running on NuttX!</p>
-<p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="Our Device Driver appears as “/dev/spitest0”" /></p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>sx1262_test</code></pre></div></li>
 <li>
-<p>Look what happens if we forget to enable “SPI0” (BL602) or “SPI 2” (ESP32) and NuttX won’t start…</p>
-<p><img src="https://lupyuen.github.io/images/spi2-crash2.jpg" alt="NuttX fails to start if we don’t enable SPI" /></p>
-<p><a href="https://gist.github.com/lupyuen/ccfd90125f9a180b4cfb459e8a57b323">(Source)</a></p>
+<p>We should see the message…</p>
+<div class="example-wrap"><pre class="language-text"><code>libsx1262 OK!</code></pre></div>
+<p>Congratulations our library is now running on NuttX!</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-library4.png" alt="Our library runs OK" /></p>
 </li>
 </ol>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone3a.png" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone4.png" alt="" /></p>
-<p>TODO19</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone5.png" alt="" /></p>
-<p>TODO20</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone6.png" alt="" /></p>
-<p>TODO21</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone7.png" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-library4.png" alt="" /></p>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602 and ESP32.</p>
