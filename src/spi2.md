@@ -1036,7 +1036,17 @@ Based on this schematic for PineDio Stack BL604 (version 2)...
 
 > ![SX1262 Interface on PineDio Stack](https://lupyuen.github.io/images/spi2-pinedio3.png)
 
-We update the following Pin Definitions in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95)
+We update the following __BL604 Pin Definitions__ in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95)
+
+SX1262 | BL604 Pin | NuttX Pin
+:-------: | :---------: | :---------
+__MOSI__ | GPIO 13 | BOARD_SPI_MOSI
+__MISO__ | GPIO 0  | BOARD_SPI_MISO
+__SCK__  | GPIO 11 | BOARD_SPI_CLK
+__CS__   | GPIO 15 | BOARD_GPIO_OUT1
+__BUSY__ | GPIO 10 | BOARD_GPIO_IN1
+__DIO1__ | GPIO 19 | BOARD_GPIO_INT1
+__NRESET__ | GPIO 18 | Not assigned yet
 
 ```c
 /* Busy Pin for PineDio SX1262 */
