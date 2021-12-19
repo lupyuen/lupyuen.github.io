@@ -71,15 +71,16 @@
 <li><a href="#library-vs-driver">1.3 Library vs Driver</a><ul></ul></li></ul></li>
 <li><a href="#connect-sx1262-transceiver">2 Connect SX1262 Transceiver</a><ul></ul></li>
 <li><a href="#read-sx1262-registers">3 Read SX1262 Registers</a><ul>
-<li><a href="#run-the-app">3.1 Run the App</a><ul></ul></li>
-<li><a href="#source-files">3.2 Source Files</a><ul></ul></li></ul></li>
+<li><a href="#build-the-firmware">3.1 Build the Firmware</a><ul></ul></li>
+<li><a href="#run-the-firmware">3.2 Run the Firmware</a><ul></ul></li>
+<li><a href="#source-files">3.3 Source Files</a><ul></ul></li></ul></li>
 <li><a href="#lora-parameters">4 LoRa Parameters</a><ul>
 <li><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a><ul></ul></li></ul></li>
 <li><a href="#transmit-lora-message">5 Transmit LoRa Message</a><ul>
-<li><a href="#run-the-app-1">5.1 Run the App</a><ul></ul></li>
+<li><a href="#run-the-firmware-1">5.1 Run the Firmware</a><ul></ul></li>
 <li><a href="#spectrum-analysis-with-sdr">5.2 Spectrum Analysis with SDR</a><ul></ul></li></ul></li>
 <li><a href="#receive-lora-message">6 Receive LoRa Message</a><ul>
-<li><a href="#run-the-app-2">6.1 Run the App</a><ul></ul></li></ul></li>
+<li><a href="#run-the-firmware-2">6.1 Run the Firmware</a><ul></ul></li></ul></li>
 <li><a href="#spi-interface">7 SPI Interface</a><ul>
 <li><a href="#initialise-spi">7.1 Initialise SPI</a><ul></ul></li>
 <li><a href="#transfer-spi">7.2 Transfer SPI</a><ul></ul></li>
@@ -325,7 +326,7 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
   uint8_t buf[SX126X_SIZE_READ_REGISTER] = { 0 };
 
   //  Init the SX1262 Command Buffer
-  buf[0] = RADIO_READ_REGISTER;       //  Command ID
+  buf[0] = RADIO_READ_REGISTER;       //  Command ID (0x1D)
   buf[1] = (uint8_t) (address &gt;&gt; 8);  //  MSB of Register ID
   buf[2] = (uint8_t) (address &gt;&gt; 0);  //  LSB of Register ID
   buf[3] = 0;                         //  Unused
@@ -342,9 +343,14 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
   );
   return status;
 }</code></pre></div>
-<p>And the values of the registers are returned by SX1262 over SPI.</p>
 <p>(More about <strong>sx126x_hal_read</strong> later)</p>
-<h2 id="run-the-app" class="section-header"><a href="#run-the-app">3.1 Run the App</a></h2>
+<p>This transmits the following <strong>Read Register Command</strong> to SX1262…</p>
+<div class="example-wrap"><pre class="language-text"><code>1d 00 08 00 00 </code></pre></div>
+<p>(<code>0x1D</code> is the Command ID, <code>0x08</code> is the Register ID)</p>
+<p>SX1262 responds with…</p>
+<div class="example-wrap"><pre class="language-text"><code>a2 a2 a2 a2 80 </code></pre></div>
+<p>The last byte is the <strong>Register Value</strong>: <code>0x80</code></p>
+<h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">3.1 Build the Firmware</a></h2>
 <p>TODO</p>
 <p>Follow the instructions to <strong>download, build and run</strong> the NuttX Firmware…</p>
 <ul>
@@ -352,12 +358,9 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 </ul>
 <p>Remember to edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c"><strong>sx1262_test_main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define READ_REGISTERS</code></pre></div>
-<p>Build and run the NuttX App…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Build NuttX App
-make
-
-# Run NuttX App
-sudo ./lora-sx1262</code></pre></div>
+<p>TODO</p>
+<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3.2 Run the Firmware</a></h2>
+<p>TODO</p>
 <p>And watch for these <strong>SX1262 Register Values</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Register 0x00 = 0x00
 ...
@@ -369,7 +372,7 @@ Register 0x0a = 0x01</code></pre></div>
 <p>Note that the values above will change when we <strong>transmit and receive LoRa Messages</strong>.</p>
 <p>Let’s do that next.</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-read5.png" alt="Reading SX1262 Registers" /></p>
-<h2 id="source-files" class="section-header"><a href="#source-files">3.2 Source Files</a></h2>
+<h2 id="source-files" class="section-header"><a href="#source-files">3.3 Source Files</a></h2>
 <p>TODO</p>
 <p><em>We’re seeing layers of code, like an onion? (Or Shrek)</em></p>
 <p>Yep we have <strong>layers of Source Files</strong> in our SX1262 Driver…</p>
@@ -617,7 +620,7 @@ static void on_tx_timeout(void) {
 
   //  Log the timeout
   loraping_stats.tx_timeout++;
-}</code></pre></div><h2 id="run-the-app-1" class="section-header"><a href="#run-the-app-1">5.1 Run the App</a></h2>
+}</code></pre></div><h2 id="run-the-firmware-1" class="section-header"><a href="#run-the-firmware-1">5.1 Run the Firmware</a></h2>
 <p>TODO</p>
 <p>Follow the instructions to <strong>download, build and run</strong> the NuttX Firmware…</p>
 <ul>
@@ -756,7 +759,7 @@ static void on_rx_error(void) {
 
   //  Switch the LoRa Transceiver to low power, sleep mode
   Radio.Sleep();
-}</code></pre></div><h2 id="run-the-app-2" class="section-header"><a href="#run-the-app-2">6.1 Run the App</a></h2>
+}</code></pre></div><h2 id="run-the-firmware-2" class="section-header"><a href="#run-the-firmware-2">6.1 Run the Firmware</a></h2>
 <p>Follow the instructions to <strong>download, build and run</strong> the NuttX Firmware…</p>
 <ul>
 <li>TODO</li>
