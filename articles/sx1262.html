@@ -466,7 +466,7 @@ Register 0x0a = 0x01</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/sx1262-read5.png" alt="Reading SX1262 Registers" /></p>
 <h2 id="source-files" class="section-header"><a href="#source-files">3.3 Source Files</a></h2>
 <p><em>We’re seeing layers of code, like an onion? (Or Shrek)</em></p>
-<p>Yep our SX1262 Library is structured as <strong>layers of Source Files</strong> because we hope to support 3 platforms…</p>
+<p>Yep our SX1262 Library is structured as <strong>layers of Source Files</strong> because we hope to support three platforms…</p>
 <ol>
 <li>
 <p><strong>NuttX</strong></p>
@@ -489,6 +489,7 @@ Register 0x0a = 0x01</code></pre></div>
 <p>(Semtech Radio Interface for LoRa Transceivers)</p>
 </li>
 </ul>
+<p>(We should minimise changes to the above files, because they will be called by Semtech’s LoRaWAN Driver)</p>
 <p>The <strong>Platform-Specific</strong> Source Files for NuttX are…</p>
 <ul>
 <li>
