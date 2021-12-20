@@ -910,7 +910,19 @@ receive_message</code></pre></div>
 </ol>
 <p><img src="https://lupyuen.github.io/images/sx1262-receive2.png" alt="Our SX1262 Library receives a LoRa Message from RAKwireless WisBlock" /></p>
 <h1 id="spi-interface" class="section-header"><a href="#spi-interface">7 SPI Interface</a></h1>
-<p>TODO</p>
+<p><em>Porting the SX1262 Library from Linux to NuttX… Was it difficult?</em></p>
+<p>Not at all! NuttX works much like Linux because of its <a href="https://lupyuen.github.io/articles/nuttx"><strong>POSIX Compliance</strong></a>.</p>
+<p>Most of the porting effort <a href="https://lupyuen.github.io/images/sx1262-git.png">(14 minutes!)</a> was spent on…</p>
+<ol>
+<li>
+<p><strong>SPI Interface</strong></p>
+</li>
+<li>
+<p><strong>GPIO Interface</strong></p>
+</li>
+</ol>
+<p>Because the interfaces work differently on NuttX vs Linux.</p>
+<p>Let’s dive into the SPI Interface.</p>
 <h2 id="initialise-spi" class="section-header"><a href="#initialise-spi">7.1 Initialise SPI</a></h2>
 <p>TODO</p>
 <p>Here’s how the SX1262 Library calls our SPI Test Driver to <strong>initialise the SPI Bus</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L663-L675">sx126x-nuttx.c</a></p>
