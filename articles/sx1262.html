@@ -923,9 +923,13 @@ receive_message</code></pre></div>
 </ol>
 <p>Because the interfaces work differently on NuttX vs Linux.</p>
 <p>Let’s dive into the SPI Interface.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-plan2.jpg" alt="SPI Test Driver" /></p>
 <h2 id="initialise-spi" class="section-header"><a href="#initialise-spi">7.1 Initialise SPI</a></h2>
-<p>TODO</p>
-<p>Here’s how the SX1262 Library calls our SPI Test Driver to <strong>initialise the SPI Bus</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L663-L675">sx126x-nuttx.c</a></p>
+<p>In the previous article we have created an <strong>SPI Test Driver “/dev/spitest0”</strong> that exposes the SPI Interface to NuttX Apps (pic above)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2"><strong>“SPI on Apache NuttX OS”</strong></a></li>
+</ul>
+<p>Our SX1262 Library opens the SPI Test Driver to <strong>initialise the SPI Bus</strong> like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L663-L675">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// SPI Bus
 static int spi = 0;
 
@@ -943,7 +947,17 @@ static int init_spi(void) {
   assert(cs &gt; 0);
   return 0;
 }</code></pre></div>
-<p>TODO: SPI Mode is defined in SPI Test Driver</p>
+<p><em>Where are the SPI Mode and SPI Frequency defined?</em></p>
+<p><strong>SPI Mode</strong> and <strong>SPI Frequency</strong> are defined in the SPI Test Driver…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#configure-spi"><strong>“Configure SPI”</strong></a></li>
+</ul>
+<p><em>Why did we use GPIO Output?</em></p>
+<p>We’re controlling the <strong>SPI Chip Select Pin</strong> ourselves via GPIO Output, as explained below…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#control-chip-select-with-gpio"><strong>“Control Chip Select with GPIO”</strong></a></li>
+</ul>
+<p>TODO</p>
 <p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227"><strong>init_driver</strong></a></p>
 <p>(We’ve seen <strong>init_driver</strong> earlier)</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module">(<strong>RadioInit</strong> is explained here)</a></p>
