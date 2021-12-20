@@ -1283,21 +1283,20 @@ spi rx:
 <p>Here’s how we’ll do multithreading…</p>
 <p><img src="https://lupyuen.github.io/images/usb-handler.jpg" alt="Multithreading with NimBLE Porting Layer" /></p>
 <h1 id="multithreading-with-nimble-porting-layer" class="section-header"><a href="#multithreading-with-nimble-porting-layer">9 Multithreading with NimBLE Porting Layer</a></h1>
-<p>TODO</p>
-<p><em>Do we call any open source libraries in our SX1262 Library?</em></p>
-<p>Yes we call <strong>NimBLE Porting Layer</strong>, the open source library for Multithreading Functions…</p>
+<p>Our SX1262 Library was designed for <strong>Multithreading</strong> by calling the open-source <strong>NimBLE Porting Layer</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer"><strong>Multitask with NimBLE Porting Layer</strong></a></li>
 </ul>
-<p>To transmit and receive LoRa Messages we need <strong>Timers and Background Threads</strong>. Which are provided by NimBLE Porting Layer.</p>
-<p><em>Have we used NimBLE Porting Layer before?</em></p>
-<p>Yep we used NimBLE Porting Layer in the <strong>LoRa SX1262 and SX1276 Drivers</strong> for BL602…</p>
+<p>To transmit and receive LoRa Messages (without polling) we need <strong>Timers, Event Queues and Background Threads</strong>. Which are provided by NimBLE Porting Layer.</p>
+<p><em>Have we used NimBLE Porting Layer on other platforms?</em></p>
+<p>Yep we used NimBLE Porting Layer in the <strong>LoRa SX1262 and SX1276 Drivers</strong> for BL602 IoT SDK…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora2"><strong>“PineCone BL602 RISC-V Board Receives LoRa Packets”</strong></a></li>
 </ul>
-<p>So we’re really fortunate that NimBLE Porting Layer complies on NuttX as well.</p>
+<p>NimBLE Porting Layer <a href="https://github.com/apache/mynewt-nimble/tree/master/porting/npl/nuttx"><strong>compiles on NuttX</strong></a> as well.</p>
+<p>(Though it’s not integrated with our SX1262 Library yet)</p>
 <p><em>How will we receive LoRa Messages with GPIO Interrupts?</em></p>
-<p>After we have implemented <strong>GPIO Interrupts</strong> in our SX1262 Library, this is how we’ll <strong>receive LoRa Messages</strong> (see pic above)…</p>
+<p>After we have implemented <strong>GPIO Interrupts</strong> in our SX1262 Library, this is how we’ll <strong>receive LoRa Messages</strong> without polling (see pic above)…</p>
 <ol>
 <li>
 <p>When SX1262 receives a LoRa Message, it triggers a <strong>GPIO Interrupt</strong> on Pin DIO1</p>
@@ -1312,7 +1311,7 @@ spi rx:
 <p>Our <strong>Background Thread</strong> removes the Event from the Event Queue and calls <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a> to process the received LoRa Message</p>
 </li>
 </ol>
-<p>We handle GPIO Interrupts the same way in our <strong>LoRa SX1262 Driver for BL602</strong>…</p>
+<p>We handle GPIO Interrupts the same way in our <strong>LoRa SX1262 Driver for BL602 IoT SDK</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-gpio-interrupts"><strong>“BL602 GPIO Interrupts”</strong></a></li>
 </ul>
@@ -1321,15 +1320,7 @@ spi rx:
 <p>This is especially useful when we implement <strong>LoRaWAN with our SX1262 Library</strong>, because LoRaWAN needs to handle <strong>asynchronous messages</strong> in the background.</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#join-network-request">(Like when we join a LoRaWAN Network)</a></p>
 <p><em>How will we implement the Background Thread and Event Queue?</em></p>
-<p>We’ll call <strong>NimBLE Porting Layer</strong>, the open source library for Multithreading Functions…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer"><strong>Multitask with NimBLE Porting Layer</strong></a></li>
-</ul>
-<p>Which has been compiled into our SX1262 Library…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/lora-sx1262/tree/nuttx/npl/linux/src"><strong>npl/linux/src</strong></a></li>
-</ul>
-<p>The code below shall be updated to <strong>start the Background Thread</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L369-L388">sx1262_test_main.c</a></p>
+<p>The code below shall be updated to <strong>start the Background Thread</strong> by calling the NimBLE Porting Layer: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L369-L388">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: Create a Background Thread to handle LoRa Events
 static void create_task(void) {
   //  Init the Event Queue
@@ -1345,7 +1336,7 @@ static void create_task(void) {
   //  TODO: Create a Background Thread to process the Event Queue
   //  nimble_port_freertos_init(task_callback);
 }</code></pre></div>
-<p>And we shall implement the GPIO Interrupt Handler Function <a href="https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler"><strong>handle_gpio_interrupt</strong></a> for Linux.</p>
+<p>And we shall implement the GPIO Interrupt Handler Function <a href="https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler"><strong>handle_gpio_interrupt</strong></a> for NuttX.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L357-L432">(We don’t need to code the Event Queue, it has been done here)</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
