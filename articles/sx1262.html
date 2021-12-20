@@ -482,11 +482,11 @@ Register 0x0a = 0x01</code></pre></div>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c"><strong>src/sx126x.c</strong></a></p>
-<p>(Semtech Driver for SX1262 Transceiver)</p>
+<p>(Semtech’s Driver for SX1262 Transceiver)</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c"><strong>src/radio.c</strong></a></p>
-<p>(Semtech Radio Interface for LoRa Transceivers)</p>
+<p>(Semtech’s Radio Interface for LoRa Transceivers)</p>
 </li>
 </ul>
 <p>(We should minimise changes to the above files, because they will be called by Semtech’s LoRaWAN Driver)</p>
@@ -554,7 +554,7 @@ Register 0x0a = 0x01</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <h2 id="initialise-lora-sx1262" class="section-header"><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a></h2>
 <p>Let’s watch how the LoRa Parameters are used to <strong>initialise the SX1262 Transceiver</strong>.</p>
-<p>The <strong>init_driver</strong> function in our library takes the LoRa Parameters and initialises LoRa SX1262 like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L149-L203">sx1262_test_main.c</a></p>
+<p>The <strong>init_driver</strong> function in our library takes the LoRa Parameters and initialises LoRa SX1262 like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to initialise the LoRa Driver.
 /// Assume that create_task has been called to init the Event Queue.
 static void init_driver(char *buf, int len, int argc, char **argv) {
@@ -629,7 +629,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 <p><a href="https://lupyuen.github.io/articles/sx1262#radiosetrxconfig-set-receive-configuration">(<strong>RadioSetRxConfig</strong> is explained here)</a></p>
 </li>
 </ul>
-<p>(The <strong>Radio</strong> functions will also be called later when we implement LoRaWAN)</p>
+<p>(The <strong>Radio</strong> functions will also be called when we implement LoRaWAN)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-send.png" alt="Transmitting a LoRa Message" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(Source)</a></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">5 Transmit LoRa Message</a></h1>
