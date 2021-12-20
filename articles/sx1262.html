@@ -1000,7 +1000,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p><img src="https://lupyuen.github.io/images/sx1262-driver3.png" alt="Transfer SPI" /></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L677-L703">(Source)</a></p>
 <h2 id="transmit-message" class="section-header"><a href="#transmit-message">7.3 Transmit Message</a></h2>
-<p>Our SX1262 Library calls this function to <strong>transmit a LoRa Message</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L506-L512">sx126x-nuttx.c</a></p>
+<p>Later as we walk through the <strong>sending of a LoRa Message</strong> <a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>RadioSend</strong>)</a>, we’ll learn that our SX1262 Driver calls this function to transfer the LoRa Message to SX1262: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L506-L512">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sx126x_write_buffer(const void* context, const uint8_t offset, const uint8_t* buffer, const uint8_t size) {
   //  Prepare the Write Buffer Command (2 bytes)
   uint8_t buf[SX126X_SIZE_WRITE_BUFFER] = { 0 };
@@ -1017,11 +1017,11 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
   );
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>sx126x_write_buffer</strong> is called by <strong>RadioSend</strong>)</a></p>
-<p>In this code we prepare a <strong>SX1262 Write Buffer Command</strong> (2 bytes) and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_write</strong>.</p>
+<p>In code above we prepare a <strong>SX1262 Write Buffer Command</strong> (<code>0x0E 0x00</code>) and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_write</strong>.</p>
 <p>(Data Buffer contains the LoRa Message to be transmitted)</p>
 <p>Note that <strong>Write Buffer Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L144-L147"><strong>SX126xSetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L283-L289"><strong>SX126xWriteBuffer</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>SX126xSetPayload</strong> and <strong>SX126xWriteBuffer</strong> are explained here)</a></p>
-<p><strong>sx126x_hal_write</strong> transfers the Command Buffer and Data Buffer over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L544-L581">sx126x-nuttx.c</a></p>
+<p><strong>sx126x_hal_write</strong> calls <strong>transfer_spi</strong> to transfer the Command Buffer and Data Buffer over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L544-L581">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/**
  * Radio data transfer - write
  *
@@ -1060,7 +1060,9 @@ static int sx126x_hal_write(
   assert(rc == 0);
   return 0;
 }</code></pre></div>
-<p>We use an internal <strong>1024-byte buffer for SPI Transfers</strong>, so we’re hunky dory here: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L533-L540">sx126x-nuttx.c</a></p>
+<p>(We’ve seen <strong>transfer_spi</strong> in the previous section)</p>
+<p><em>What are spi_tx_buf and spi_rx_buf?</em></p>
+<p>They are the internal <strong>1024-byte buffers for SPI Transfers</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L533-L540">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Max size of SPI transfers
 #define SPI_BUFFER_SIZE 1024
 
@@ -1068,12 +1070,7 @@ static int sx126x_hal_write(
 static uint8_t spi_tx_buf[SPI_BUFFER_SIZE];
 
 /// SPI Receive Buffer
-static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div>
-<p><strong>sx126x_hal_write</strong> calls <strong>transfer_spi</strong> to transfer the SPI Data.</p>
-<p>(We’ve seen <strong>transfer_spi</strong> earlier)</p>
-<p>Thus <strong>transfer_spi</strong> looks highly sus for transmitting Long LoRa Messages.</p>
-<p>What about receiving Long LoRa Messages?</p>
-<h2 id="receive-message" class="section-header"><a href="#receive-message">7.4 Receive Message</a></h2>
+static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div><h2 id="receive-message" class="section-header"><a href="#receive-message">7.4 Receive Message</a></h2>
 <p>TODO</p>
 <p>Our SX1262 Library calls this function to <strong>receive a LoRa Message</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L514-L522">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t* buffer, const uint8_t size) {
@@ -1095,7 +1092,7 @@ static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div>
   return status;
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sx1262#receive-done">(<strong>sx126x_read_buffer</strong> is called by the <strong>Receive Done Event</strong>)</a></p>
-<p>In this code we prepare a <strong>SX1262 Read Buffer Command</strong> (3 bytes) and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_read</strong>.</p>
+<p>In this code we prepare a <strong>SX1262 Read Buffer Command</strong> (<code>0x1E 0x00 0x00</code>) and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_read</strong>.</p>
 <p>(Data Buffer will contain the received LoRa Message)</p>
 <p>Note that <strong>Read Buffer Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L149-L160"><strong>SX126xGetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L291-L297"><strong>SX126xReadBuffer</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#receive-done">(<strong>SX126xGetPayload</strong> and <strong>SX126xReadBuffer</strong> are explained here)</a></p>
