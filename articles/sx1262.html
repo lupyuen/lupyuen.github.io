@@ -1197,8 +1197,7 @@ spi rx:
 <p>The <strong>64-byte LoRa Message</strong> received appears in the <strong>SPI Receive Log</strong> above: <code>48 65 6c 6c 6f...</code></p>
 <p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp#L120-L144">(“<code>48 65 6c 6c 6f...</code>” is “<code>Hello</code>” followed by 0, 1, 2, …)</a></p>
 <h1 id="gpio-interface" class="section-header"><a href="#gpio-interface">8 GPIO Interface</a></h1>
-<p>TODO</p>
-<p><em>Besides SPI, what Interfaces do we need to control LoRa SX1262?</em></p>
+<p><em>Besides SPI, what Interfaces do we need to control the SX1262 Transceiver?</em></p>
 <p>Our SX1262 Library needs a <strong>GPIO Interface</strong> to control these <strong>SX1262 Pins</strong>…</p>
 <ul>
 <li>
@@ -1206,18 +1205,14 @@ spi rx:
 <p>(<strong>DIO1</strong> shifts from Low to High when that happens)</p>
 </li>
 <li>
-<p><strong>BUSY</strong>: Read by our driver to check if SX1262 is busy</p>
+<p><strong>BUSY</strong>: Tells us whether SX1262 is busy</p>
 <p>(<strong>BUSY</strong> is High when SX1262 is busy)</p>
 </li>
 <li>
-<p><strong>NRESET</strong>: Toggled by our driver to reset the SX1262 module</p>
+<p><strong>NRESET</strong>: Toggled to reset the SX1262 module</p>
 </li>
 </ul>
-<p>We may call the GPIO Interface that’s provided by NuttX…</p>
-<ul>
-<li>TODO</li>
-</ul>
-<p>But the current SX1262 Library <strong>doesn’t use GPIO yet</strong>.</p>
+<p>But the current SX1262 Library <strong>doesn’t use these pins yet</strong>.</p>
 <p><em>Huh? SX1262 works without GPIO control?</em></p>
 <p>We found some sneaky workarounds to <strong>control LoRa SX1262 without GPIO</strong>…</p>
 <ul>
