@@ -282,7 +282,8 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 <p><strong>DIO1</strong> is used by SX1262 to signal that a LoRa Packet has been received.</p>
 <p><strong>BUSY</strong> is read by our computer to check if SX1262 is busy.</p>
 <p><strong>NRESET</strong> is toggled by our computer to reset the SX1262 module.</p>
-<p>We’ll learn more about the pins in a while.</p>
+<p>Although our SX1262 Library doesn’t use these pins, it works somewhat OK for sending and receiving LoRa Messages.</p>
+<p>(We’ll learn why in a while)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-read2.png" alt="Reading SX1262 Registers" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L155-L171">(Source)</a></p>
 <h1 id="read-sx1262-registers" class="section-header"><a href="#read-sx1262-registers">3 Read SX1262 Registers</a></h1>
