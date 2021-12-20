@@ -1306,7 +1306,7 @@ _Awesome! Will this work for receiving Long LoRa Messages?_
 
 Yep! To receive a LoRa Message, [__sx126x_read_buffer__](https://lupyuen.github.io/articles/usb#receive-long-message) sends this __ReadBuffer Command__ to SX1262 over SPI...
 
-1.  __ReadBuffer Command:__ `0x0E`
+1.  __ReadBuffer Command:__ `0x1E`
 
 1.  __ReadBuffer Offset:__ `0x00`
 
@@ -1332,7 +1332,7 @@ spi rx:
 
 Instead of reading the __entire LoRa Message__ (from SX1262 Receive Buffer) in a single chunk, we should read it in __28-byte chunks__...
 
-1.  __ReadBuffer Command:__ `0x0E`
+1.  __ReadBuffer Command:__ `0x1E`
 
 1.  __ReadBuffer Offset:__ `0x00`
 
@@ -1340,7 +1340,7 @@ Instead of reading the __entire LoRa Message__ (from SX1262 Receive Buffer) in a
 
 1.  __ReadBuffer Data:__ Transfer first 28 bytes
 
-1.  __ReadBuffer Command:__ `0x0E`
+1.  __ReadBuffer Command:__ `0x1E`
 
 1.  __ReadBuffer Offset:__ `0x1C` (28 decimal)
 
