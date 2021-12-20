@@ -1016,6 +1016,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
     size      //  Write Data Buffer Size
   );
 }</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>sx126x_write_buffer</strong> is called by <strong>RadioSend</strong>)</a></p>
 <p>In this code we prepare a <strong>SX1262 Write Buffer Command</strong> (2 bytes) and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_write</strong>.</p>
 <p>(Data Buffer contains the LoRa Message to be transmitted)</p>
 <p>Note that <strong>Write Buffer Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L144-L147"><strong>SX126xSetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L283-L289"><strong>SX126xWriteBuffer</strong></a>.</p>
@@ -1093,6 +1094,7 @@ static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div>
   );
   return status;
 }</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/sx1262#receive-done">(<strong>sx126x_read_buffer</strong> is called by the <strong>Receive Done Event</strong>)</a></p>
 <p>In this code we prepare a <strong>SX1262 Read Buffer Command</strong> (3 bytes) and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_read</strong>.</p>
 <p>(Data Buffer will contain the received LoRa Message)</p>
 <p>Note that <strong>Read Buffer Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L149-L160"><strong>SX126xGetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L291-L297"><strong>SX126xReadBuffer</strong></a>.</p>
