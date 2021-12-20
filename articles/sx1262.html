@@ -280,8 +280,8 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio10a.jpg" alt="PineDio Stack BL604 with Antenna" /></p>
 <p><em>What are these SX1262 pins: DIO1, BUSY and NRESET?</em></p>
 <p><strong>DIO1</strong> is used by SX1262 to signal that a LoRa Packet has been received.</p>
-<p><strong>BUSY</strong> is read by our computer to check if SX1262 is busy.</p>
-<p><strong>NRESET</strong> is toggled by our computer to reset the SX1262 module.</p>
+<p><strong>BUSY</strong> is tells us if SX1262 is busy.</p>
+<p><strong>NRESET</strong> is toggled to reset the SX1262 module.</p>
 <p>Although our SX1262 Library doesn’t use these pins, it works somewhat OK for sending and receiving LoRa Messages.</p>
 <p>(We’ll learn why in a while)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-read2.png" alt="Reading SX1262 Registers" /></p>
