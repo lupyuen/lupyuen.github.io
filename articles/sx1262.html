@@ -947,7 +947,10 @@ static int init_spi(void) {
   assert(cs &gt; 0);
   return 0;
 }</code></pre></div>
-<p><em>Where are the SPI Mode and SPI Frequency defined?</em></p>
+<p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227"><strong>init_driver</strong></a></p>
+<p>(We’ve seen <strong>init_driver</strong> earlier in our Test App)</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module">(<strong>RadioInit</strong> is explained here)</a></p>
+<p><em>Where are SPI Mode and SPI Frequency defined?</em></p>
 <p><strong>SPI Mode</strong> and <strong>SPI Frequency</strong> are defined in the SPI Test Driver…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#configure-spi"><strong>“Configure SPI”</strong></a></li>
@@ -957,13 +960,10 @@ static int init_spi(void) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#control-chip-select-with-gpio"><strong>“Control Chip Select with GPIO”</strong></a></li>
 </ul>
-<p>TODO</p>
-<p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227"><strong>init_driver</strong></a></p>
-<p>(We’ve seen <strong>init_driver</strong> earlier)</p>
-<p><a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module">(<strong>RadioInit</strong> is explained here)</a></p>
+<p>More about GPIO Output in the next section.</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-driver2a.png" alt="Initialise SPI" /></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L677-L703">(Source)</a></p>
 <h2 id="transfer-spi" class="section-header"><a href="#transfer-spi">7.2 Transfer SPI</a></h2>
-<p>TODO</p>
 <p>To <strong>transfer SPI Data</strong> to SX1262 via our SPI Test Driver, we do this: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L677-L703">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Blocking call to transmit and receive buffers on SPI. Return 0 on success.
 static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
@@ -993,7 +993,12 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
   return 0;
 }</code></pre></div>
 <p>(<strong>transfer_spi</strong> will be called by our SX1262 Library, as we’ll see later)</p>
+<p>Note that we control <strong>SPI Chip Select</strong> ourselves with GPIO Output. The code above is explained in…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#gpio-output-as-chip-select"><strong>“GPIO Output as Chip Select”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/sx1262-driver3.png" alt="Transfer SPI" /></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L677-L703">(Source)</a></p>
 <h2 id="transmit-message" class="section-header"><a href="#transmit-message">7.3 Transmit Message</a></h2>
 <p>TODO</p>
 <p>Our SX1262 Library calls this function to <strong>transmit a LoRa Message</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L506-L512">sx126x-nuttx.c</a></p>
