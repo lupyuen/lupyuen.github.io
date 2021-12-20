@@ -922,7 +922,7 @@ receive_message</code></pre></div>
 </li>
 </ol>
 <p>Because the interfaces work differently on NuttX vs Linux.</p>
-<p>Let’s dive into the SPI Interface.</p>
+<p>Let’s dive into the SPI Interface: How we initialise the interface and transfer data over SPI.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-plan2.jpg" alt="SPI Test Driver" /></p>
 <h2 id="initialise-spi" class="section-header"><a href="#initialise-spi">7.1 Initialise SPI</a></h2>
 <p>In the previous article we have created an <strong>SPI Test Driver “/dev/spitest0”</strong> that exposes the SPI Interface to NuttX Apps (pic above)…</p>
@@ -992,20 +992,19 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
   printf(&quot;spi rx: &quot;); for (int i = 0; i &lt; len; i++) { printf(&quot;%02x &quot;, rx_buf[i]); } printf(&quot;\n&quot;);
   return 0;
 }</code></pre></div>
-<p>(<strong>transfer_spi</strong> will be called by our SX1262 Library, as we’ll see later)</p>
 <p>Note that we control <strong>SPI Chip Select</strong> ourselves with GPIO Output. The code above is explained in…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#gpio-output-as-chip-select"><strong>“GPIO Output as Chip Select”</strong></a></li>
 </ul>
+<p>Let’s watch how <strong>transfer_spi</strong> is called by our SX1262 Library.</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-driver3.png" alt="Transfer SPI" /></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L677-L703">(Source)</a></p>
 <h2 id="transmit-message" class="section-header"><a href="#transmit-message">7.3 Transmit Message</a></h2>
-<p>TODO</p>
 <p>Our SX1262 Library calls this function to <strong>transmit a LoRa Message</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L506-L512">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sx126x_write_buffer(const void* context, const uint8_t offset, const uint8_t* buffer, const uint8_t size) {
   //  Prepare the Write Buffer Command (2 bytes)
   uint8_t buf[SX126X_SIZE_WRITE_BUFFER] = { 0 };
-  buf[0] = RADIO_WRITE_BUFFER;  //  Write Buffer Command
+  buf[0] = RADIO_WRITE_BUFFER;  //  Write Buffer Command: 0x0E
   buf[1] = offset;              //  Write Buffer Offset
 
   //  Transfer the Write Buffer Command to SX1262 over SPI
@@ -1079,7 +1078,7 @@ static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t* buffer, const uint8_t size) {
   //  Prepare the Read Buffer Command (3 bytes)
   uint8_t buf[SX126X_SIZE_READ_BUFFER] = { 0 };
-  buf[0] = RADIO_READ_BUFFER;  //  Read Buffer Command
+  buf[0] = RADIO_READ_BUFFER;  //  Read Buffer Command: 0x1E
   buf[1] = offset;             //  Read Buffer Offset
   buf[2] = 0;                  //  NOP
 
@@ -1177,7 +1176,7 @@ spi rx:
 <p>To receive a LoRa Message, <a href="https://lupyuen.github.io/articles/sx1262#receive-long-message"><strong>sx126x_read_buffer</strong></a> sends this <strong>ReadBuffer Command</strong> to SX1262 over SPI…</p>
 <ol>
 <li>
-<p><strong>ReadBuffer Command:</strong> <code>0x0E</code></p>
+<p><strong>ReadBuffer Command:</strong> <code>0x1E</code></p>
 </li>
 <li>
 <p><strong>ReadBuffer Offset:</strong> <code>0x00</code></p>

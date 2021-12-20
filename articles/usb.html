@@ -1084,7 +1084,7 @@ spi rx:
 <p>Yep! To receive a LoRa Message, <a href="https://lupyuen.github.io/articles/usb#receive-long-message"><strong>sx126x_read_buffer</strong></a> sends this <strong>ReadBuffer Command</strong> to SX1262 over SPI…</p>
 <ol>
 <li>
-<p><strong>ReadBuffer Command:</strong> <code>0x0E</code></p>
+<p><strong>ReadBuffer Command:</strong> <code>0x1E</code></p>
 </li>
 <li>
 <p><strong>ReadBuffer Offset:</strong> <code>0x00</code></p>
@@ -1110,7 +1110,7 @@ spi rx:
 <p>Instead of reading the <strong>entire LoRa Message</strong> (from SX1262 Receive Buffer) in a single chunk, we should read it in <strong>28-byte chunks</strong>…</p>
 <ol>
 <li>
-<p><strong>ReadBuffer Command:</strong> <code>0x0E</code></p>
+<p><strong>ReadBuffer Command:</strong> <code>0x1E</code></p>
 </li>
 <li>
 <p><strong>ReadBuffer Offset:</strong> <code>0x00</code></p>
@@ -1122,7 +1122,7 @@ spi rx:
 <p><strong>ReadBuffer Data:</strong> Transfer first 28 bytes</p>
 </li>
 <li>
-<p><strong>ReadBuffer Command:</strong> <code>0x0E</code></p>
+<p><strong>ReadBuffer Command:</strong> <code>0x1E</code></p>
 </li>
 <li>
 <p><strong>ReadBuffer Offset:</strong> <code>0x1C</code> (28 decimal)</p>
