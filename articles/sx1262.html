@@ -465,51 +465,44 @@ Register 0x0a = 0x01</code></pre></div>
 </ol>
 <p><img src="https://lupyuen.github.io/images/sx1262-read5.png" alt="Reading SX1262 Registers" /></p>
 <h2 id="source-files" class="section-header"><a href="#source-files">3.3 Source Files</a></h2>
-<p>TODO</p>
 <p><em>We’re seeing layers of code, like an onion? (Or Shrek)</em></p>
-<p>Yep we have <strong>layers of Source Files</strong> in our SX1262 Driver…</p>
+<p>Yep our SX1262 Library is structured as <strong>layers of Source Files</strong> because we hope to support 3 platforms…</p>
 <ol>
 <li>
-<p>TODO: NuttX</p>
+<p><strong>NuttX</strong></p>
 </li>
 <li>
-<p>Source Files <strong>specific to Linux</strong></p>
-<p>(For PineDio USB and Pinebook Pro)</p>
+<p><a href="https://lupyuen.github.io/articles/usb"><strong>Linux</strong></a> (PineDio USB)</p>
 </li>
 <li>
-<p>Source Files <strong>specific to BL602 and BL604</strong></p>
-<p>(For PineCone BL602 and PineDio Stack BL604)</p>
-</li>
-<li>
-<p>Source Files <strong>common to all platforms</strong></p>
-<p>(For Linux, BL602 and BL604)</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan"><strong>BL602 IoT SDK</strong></a></p>
 </li>
 </ol>
-<p>TODO: The Source Files <strong>specific to Linux</strong> are…</p>
+<p>The <strong>Platform-Independent</strong> Source Files shared by all platforms are…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c"><strong>sx1262_test_main.c</strong></a></p>
-<p>(Main Program for Linux)</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c"><strong>src/sx126x.c</strong></a></p>
+<p>(Semtech Driver for SX1262 Transceiver)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c"><strong>src/sx126x-nuttx.c</strong></a></p>
-<p>(Linux Interface for SX1262 Driver)</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/lora-sx1262/tree/nuttx/npl/linux/src"><strong>npl/linux/src</strong></a></p>
-<p>(NimBLE Porting Layer for Linux)</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c"><strong>src/radio.c</strong></a></p>
+<p>(Semtech Radio Interface for LoRa Transceivers)</p>
 </li>
 </ul>
-<p>All other Source Files are shared by Linux, BL602 and BL604.</p>
-<p>(Except <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-board.c"><strong>sx126x-board.c</strong></a> which is the BL602 / BL604 Interface for SX1262)</p>
+<p>The <strong>Platform-Specific</strong> Source Files for NuttX are…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c"><strong>src/sx126x-nuttx.c</strong></a></p>
+<p>(NuttX Interface for SX1262)</p>
+</li>
+</ul>
 <h1 id="lora-parameters" class="section-header"><a href="#lora-parameters">4 LoRa Parameters</a></h1>
-<p>TODO</p>
 <p>Before we transmit and receive LoRa Messages, let’s talk about the <strong>LoRa Parameters</strong>.</p>
-<p>To find out which <strong>LoRa Frequency</strong> we should use for our region…</p>
+<p>Check this doc to find out which <strong>LoRa Frequency</strong> we should use for our region…</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<p>We set the <strong>LoRa Frequency</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L45">sx1262_test_main.c</a></p>
+<p>We set the <strong>LoRa Frequency</strong> in our SX1262 Test App like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L45">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
 #define USE_BAND_923</code></pre></div>
@@ -538,7 +531,8 @@ Register 0x0a = 0x01</code></pre></div>
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */</code></pre></div>
 <p><a href="https://www.thethingsnetwork.org/docs/lorawan/spreading-factors/">(More about LoRa Parameters)</a></p>
 <p>During testing, these should <strong>match the LoRa Parameters</strong> used by the LoRa Transmitter / Receiver.</p>
-<p>These are <strong>LoRa Transmitter and Receiver</strong> programs based on <a href="https://lupyuen.github.io/articles/wisblock"><strong>RAKwireless WisBlock</strong></a> (pic below) that I used for testing our SX1262 Library…</p>
+<p>In a while we’ll use <a href="https://lupyuen.github.io/articles/wisblock"><strong>RAKwireless WisBlock</strong></a> (pic below) to test our SX1262 Library. </p>
+<p>Below are the <strong>LoRa Transmitter and Receiver</strong> programs (Arduino) that we’ll run on WisBlock…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/wisblock-lora-transmitter"><strong>wisblock-lora-transmitter</strong></a></p>
@@ -549,7 +543,7 @@ Register 0x0a = 0x01</code></pre></div>
 <p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56">(LoRa Parameters for Receiver)</a></p>
 </li>
 </ul>
-<p>Thus the LoRa Parameters for our NuttX App should match the above.</p>
+<p>The LoRa Parameters above should match the ones in our SX1262 Test App for NuttX.</p>
 <p><em>Are there practical limits on the LoRa Parameters?</em></p>
 <p>Yes we need to comply with the <strong>Local Regulations</strong> on the usage of <a href="https://en.wikipedia.org/wiki/ISM_radio_band"><strong>ISM Radio Bands</strong></a>: FCC, ETSI, …</p>
 <ul>
@@ -558,8 +552,8 @@ Register 0x0a = 0x01</code></pre></div>
 <p>(Blasting LoRa Messages non-stop is no-no!)</p>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <h2 id="initialise-lora-sx1262" class="section-header"><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a></h2>
-<p>TODO</p>
-<p>Our <strong>init_driver</strong> function takes the above LoRa Parameters and initialises LoRa SX1262 like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L149-L203">sx1262_test_main.c</a></p>
+<p>Let’s watch how the LoRa Parameters are used to <strong>initialise the SX1262 Transceiver</strong>.</p>
+<p>The <strong>init_driver</strong> function in our library takes the LoRa Parameters and initialises LoRa SX1262 like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L149-L203">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to initialise the LoRa Driver.
 /// Assume that create_task has been called to init the Event Queue.
 static void init_driver(char *buf, int len, int argc, char **argv) {
@@ -615,7 +609,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     true      //  Continuous receive mode
   );    
 }</code></pre></div>
-<p>The <strong>Radio</strong> functions are Platform-Independent (Linux and BL602), defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c">radio.c</a></p>
+<p>The <strong>Radio</strong> functions are Platform-Independent, defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c">radio.c</a></p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit:</strong></a> Init LoRa SX1262</p>
@@ -635,7 +629,6 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 </li>
 </ul>
 <p>(The <strong>Radio</strong> functions will also be called later when we implement LoRaWAN)</p>
-<p>TODO30</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-send.png" alt="Transmitting a LoRa Message" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(Source)</a></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">5 Transmit LoRa Message</a></h1>
