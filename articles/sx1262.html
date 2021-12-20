@@ -470,13 +470,13 @@ Register 0x0a = 0x01</code></pre></div>
 <p>Yep our SX1262 Library is structured as <strong>layers of Source Files</strong> because we hope to support three platforms…</p>
 <ol>
 <li>
-<p><strong>NuttX</strong></p>
+<p><strong>NuttX</strong> (In Progress)</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/usb"><strong>Linux</strong></a> (PineDio USB)</p>
+<p><a href="https://lupyuen.github.io/articles/usb"><strong>Linux</strong></a> (Completed: PineDio USB)</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/lorawan"><strong>BL602 IoT SDK</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan"><strong>BL602 IoT SDK</strong></a> (Completed)</p>
 </li>
 </ol>
 <p>The <strong>Platform-Independent</strong> Source Files shared by all platforms are…</p>
@@ -498,6 +498,8 @@ Register 0x0a = 0x01</code></pre></div>
 <p>(NuttX Interface for SX1262)</p>
 </li>
 </ul>
+<p>The Source Files are called like this…</p>
+<p><strong>Test App</strong> → <strong>radio.c</strong> → <strong>sx126x.c</strong> → <strong>sx126x-nuttx.c</strong></p>
 <h1 id="lora-parameters" class="section-header"><a href="#lora-parameters">4 LoRa Parameters</a></h1>
 <p>Before we transmit and receive LoRa Messages, let’s talk about the <strong>LoRa Parameters</strong>.</p>
 <p>Check this doc to find out which <strong>LoRa Frequency</strong> we should use for our region…</p>
@@ -1235,11 +1237,11 @@ spi rx:
 <ol>
 <li>
 <p>Initialise the GPIO Pins: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L65-L77"><strong>SX126xIoInit</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-spi-functions">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-spi-functions">(Similar to BL602 IoT SDK)</a></p>
 </li>
 <li>
 <p>Register GPIO Interrupt Handler for DIO1: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L79-L91"><strong>SX126xIoIrqInit</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-gpio-interrupts">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-gpio-interrupts">(Similar to BL602 IoT SDK)</a></p>
 </li>
 <li>
 <p>Reset SX1262 via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L149-L169"><strong>SX126xReset</strong></a></p>
