@@ -554,7 +554,7 @@ Register 0x0a = 0x01</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <h2 id="initialise-lora-sx1262" class="section-header"><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a></h2>
 <p>Let’s watch how the LoRa Parameters are used to <strong>initialise the SX1262 Transceiver</strong>.</p>
-<p>The <strong>init_driver</strong> function in our library takes the LoRa Parameters and initialises LoRa SX1262 like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227">sx1262_test_main.c</a></p>
+<p>The <strong>init_driver</strong> function in our Test App takes the LoRa Parameters and initialises LoRa SX1262 like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to initialise the LoRa Driver.
 /// Assume that create_task has been called to init the Event Queue.
 static void init_driver(char *buf, int len, int argc, char **argv) {
@@ -568,13 +568,13 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
   radio_events.RxError   = on_rx_error;    //  Receive Error</code></pre></div>
 <p>Here we set the <strong>Callback Functions</strong> that will be called when a LoRa Message has been transmitted or received, also when we encounter a transmit / receive timeout or error.</p>
 <p>(We’ll see the Callback Functions in a while)</p>
-<p>Next we initialise the LoRa Transceiver and set the <strong>LoRa Frequency</strong>…</p>
+<p>Next we call our SX1262 Library to initialise the LoRa Transceiver and set the <strong>LoRa Frequency</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Init the SPI Port and the LoRa Transceiver
   Radio.Init(&amp;radio_events);
 
   //  Set the LoRa Frequency
   Radio.SetChannel(RF_FREQUENCY);</code></pre></div>
-<p>We set the <strong>LoRa Transmit Parameters</strong>…</p>
+<p>Then we set the <strong>LoRa Transmit Parameters</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Configure the LoRa Transceiver for transmitting messages
   Radio.SetTxConfig(
     MODEM_LORA,
@@ -610,7 +610,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
     true      //  Continuous receive mode
   );    
 }</code></pre></div>
-<p>The <strong>Radio</strong> functions are Platform-Independent, defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c">radio.c</a></p>
+<p>The <strong>Radio</strong> functions are Platform-Independent, defined in our SX1262 Library: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c">radio.c</a></p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit:</strong></a> Init LoRa SX1262</p>
