@@ -1344,28 +1344,13 @@ static void create_task(void) {
 <p>(Because LoRaWAN needs multithreading to work)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
-<p>TODO</p>
-<p>Now that we have NuttX talking OK to the SX1262 LoRa Transceiver… We’re ready to port <strong>LoRa and LoRaWAN</strong> to NuttX!</p>
-<p>We’ll port this LoRa + LoRaWAN Stack…</p>
+<p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
+<p>(Which will be super interesting because of multithreading)</p>
+<p>We’ll port this LoRaWAN Stack to NuttX…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lorawan"><strong>“PineCone BL602 Talks LoRaWAN”</strong></a></li>
+<li><a href="https://github.com/lupyuen/lorawan"><strong>lupyuen/lorawan</strong></a></li>
 </ul>
-<p>Over the next couple of articles we shall <strong>migrate the LoRa + LoRaWAN code incrementally</strong> to NuttX…</p>
-<ol>
-<li>
-<p>Initially as a <strong>NuttX App Library</strong> running in a NuttX App</p>
-<p>(Because it’s easier to code and troubleshoot)</p>
-</li>
-<li>
-<p>Eventually moving into a <strong>NuttX Device Driver</strong></p>
-<p>(Because it’s The Right Thing)</p>
-</li>
-<li>
-<p>By implementing <strong>ioctl()</strong> operations for LoRaWAN</p>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/wireless/lpwan/sx127x/sx127x.c#L954-L1162">(Similar to this SX1276 Device Driver)</a></p>
-</li>
-</ol>
-<p>I’m still super curious about porting the <a href="https://lupyuen.github.io/articles/nuttx#rust-on-nuttx"><strong>Rust Embedded HAL</strong></a> to NuttX. We might start soon with GPIO and SPI to see whether the concept is feasible.</p>
+<p>(Which was ported from Apache Mynewt OS)</p>
 <p>Stay Tuned!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -1388,6 +1373,11 @@ static void create_task(void) {
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1471179698268893188">this Twitter Thread</a></p>
+</li>
+<li>
+<p>TODO: Challenges</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/master/wireless/bluetooth/nimble">NimBLE for NuttX</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33">Makefile</a></p>
 </li>
 <li>
 <p>We have already ported LoRaWAN to <strong>BL602 IoT SDK</strong> <a href="https://lupyuen.github.io/articles/lorawan">(see this)</a>, why are we porting again to NuttX?</p>
