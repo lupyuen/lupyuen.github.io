@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "LoRa SX1262 on Apache NuttX OS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2021-12-22",
+      "website": "https://lupyuen.github.io/articles/sx1262",
+      "summary": "Porting the LoRa Driver for Semtech SX1262 from Linux to Apache NuttX OS... And testing it on PineDio Stack BL604 RISC-V Board"
+    },
+    {
       "name": "SPI on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2021-12-13",
