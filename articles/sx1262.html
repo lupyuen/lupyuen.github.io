@@ -1145,7 +1145,7 @@ static int sx126x_hal_read(
 }</code></pre></div>
 <p>And returns the <strong>Data Buffer</strong> received from SX1262 over SPI.</p>
 <h2 id="spi-in-action" class="section-header"><a href="#spi-in-action">7.5 SPI In Action</a></h2>
-<p>We’ve talked about <a href="https://lupyuen.github.io/articles/sx1262#transmit-message"><strong>sx126x_write_buffer</strong></a> and <a href="https://lupyuen.github.io/articles/sx1262#receive-message"><strong>sx126x_read_buffer</strong></a>, let’s watch them in action as we <strong>transmit and receive</strong> LoRa Messages.</p>
+<p>We’ve talked about <a href="https://lupyuen.github.io/articles/sx1262#transmit-message"><strong>sx126x_write_buffer</strong></a> and <a href="https://lupyuen.github.io/articles/sx1262#receive-message"><strong>sx126x_read_buffer</strong></a>, let’s watch them in action as we <strong>transmit and receive</strong> 64-byte LoRa Messages.</p>
 <p>To transmit a LoRa Message, <a href="https://lupyuen.github.io/articles/sx1262#transmit-message"><strong>sx126x_write_buffer</strong></a> sends the <strong>WriteBuffer Command</strong> to SX1262 over SPI…</p>
 <ol>
 <li>
@@ -1155,7 +1155,7 @@ static int sx126x_hal_read(
 <p><strong>WriteBuffer Offset:</strong> <code>0x00</code></p>
 </li>
 <li>
-<p><strong>WriteBuffer Data:</strong> Transfer 29 bytes (max)</p>
+<p><strong>WriteBuffer Data:</strong> Transfer 64 bytes</p>
 </li>
 </ol>
 <p>This copies the <strong>entire 64-byte LoRa Message</strong> into the SX1262 Transmit Buffer as a <strong>single (huge) chunk</strong>.</p>
@@ -1183,7 +1183,7 @@ spi rx:
 <p><strong>ReadBuffer NOP:</strong> <code>0x00</code></p>
 </li>
 <li>
-<p><strong>ReadBuffer Data:</strong> Transfer 28 bytes (max)</p>
+<p><strong>ReadBuffer Data:</strong> Transfer 64 bytes</p>
 </li>
 </ol>
 <p>Which appears in the <a href="https://gist.github.com/lupyuen/0d78b13871fca41ac6d812407890b29b"><strong>Receive Log</strong></a> as…</p>
