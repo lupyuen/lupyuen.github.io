@@ -1908,7 +1908,7 @@ nsh&gt;</code></pre></div>
   //  Interrupt not fired yet
   IrqFired = false;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L361-L380">(<strong>TimerInit</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L361-L382">(<strong>TimerInit</strong> is defined here)</a></p>
 <h2 id="radiosetchannel-set-lora-frequency" class="section-header"><a href="#radiosetchannel-set-lora-frequency">14.2 RadioSetChannel: Set LoRa Frequency</a></h2>
 <p><strong>RadioSetChannel</strong> sets the LoRa Frequency: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/radio.c#L600-L604">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetChannel( uint32_t freq ) {
@@ -2197,7 +2197,7 @@ nsh&gt;</code></pre></div>
   //  Start Transmit Timer
   TimerStart( &amp;TxTimeoutTimer, TxTimeout );
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L396-L421">(<strong>TimerStart</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L400-L427">(<strong>TimerStart</strong> is defined here)</a></p>
 <p><strong>SX126xSendPayload</strong> is defined below: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L162-L166">sx126x.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>///  Send message payload
 void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout ) {
@@ -2253,7 +2253,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
   if( timeout != 0 ) {
     TimerStart( &amp;RxTimeoutTimer, timeout );
   }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L396-L421">(<strong>TimerStart</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L400-L427">(<strong>TimerStart</strong> is defined here)</a></p>
 <p>Now we begin to <strong>receive a LoRa Message</strong> continuously, or until a timeout occurs…</p>
 <div class="example-wrap"><pre class="language-c"><code>  if( RxContinuous == true ) {
     //  Receive continuously
@@ -2361,7 +2361,7 @@ void RadioIrqProcess( void ) {
         RadioEvents.TxDone( );
       }
     }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L382-L394">(<strong>TimerStop</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L384-L398">(<strong>TimerStop</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L126-L147">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p><strong>TxDone</strong> points to the <strong>on_tx_done</strong> Callback Function that we’ve seen earlier.</p>
 <h3 id="receive-done" class="section-header"><a href="#receive-done">14.7.2 Receive Done</a></h3>
@@ -2521,7 +2521,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
     if( ( irqRegs &amp; IRQ_PREAMBLE_DETECTED ) == IRQ_PREAMBLE_DETECTED ) {
       //__NOP( );
     }</code></pre></div>
-<p>Our <a href="https://github.com/lupyuen/lora-sx1262#receive-message"><strong>Receive Message Log</strong></a> shows that the Preamble Signal (<strong>IRQ_PREAMBLE_DETECTED</strong>) is always detected before receiving a LoRa Message.</p>
+<p>Our <a href="https://gist.github.com/lupyuen/0d78b13871fca41ac6d812407890b29b"><strong>Receive Message Log</strong></a> shows that the Preamble Signal (<strong>IRQ_PREAMBLE_DETECTED</strong>) is always detected before receiving a LoRa Message.</p>
 <p>(<strong>IRQ_PREAMBLE_DETECTED</strong> appears just before the LoRa Header: <strong>IRQ_HEADER_VALID</strong>)</p>
 <p><a href="https://www.link-labs.com/blog/what-is-lora">(More about LoRa Preamble)</a></p>
 <h3 id="sync-word-valid" class="section-header"><a href="#sync-word-valid">14.7.6 Sync Word Valid</a></h3>
