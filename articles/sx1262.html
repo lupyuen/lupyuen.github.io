@@ -1342,6 +1342,9 @@ static void create_task(void) {
 <p><em>When will we begin the implementation?</em></p>
 <p>Very soon! We shall implement the Background Thread and Event Queue as we <strong>port the LoRaWAN Stack to NuttX</strong>.</p>
 <p>(Because LoRaWAN needs multithreading to work)</p>
+<p><em>We’re porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</em></p>
+<p>Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech’s version.</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#notes">(More about this)</a></p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
@@ -1375,9 +1378,31 @@ static void create_task(void) {
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1471179698268893188">this Twitter Thread</a></p>
 </li>
 <li>
-<p>TODO: Challenges</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/master/wireless/bluetooth/nimble">NimBLE for NuttX</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33">Makefile</a></p>
+<p>We’re <strong>porting plenty of code</strong> to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</p>
+<ul>
+<li>
+<p>If we implement LoRa and LoRaWAN as <strong>NuttX Drivers</strong>, we’ll have to scrub the code to comply with the <a href="https://nuttx.apache.org/docs/latest/contributing/coding_style.html"><strong>NuttX Coding Conventions</strong></a>.</p>
+<p>This makes it <strong>harder to update</strong> the LoRaWAN Driver when there are changes in the LoRaWAN Spec. (Like for a new LoRaWAN Region)</p>
+</li>
+<li>
+<p>Alternatively we may implement LoRa and LoRaWAN as <strong>External Libraries</strong>, similar to <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/master/wireless/bluetooth/nimble"><strong>NimBLE for NuttX</strong></a>.</p>
+<p>(The <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33"><strong>Makefile</strong></a> downloads the External Library during build)</p>
+<p>But then we won’t get a proper NuttX Driver that exposes the ioctl() interface to NuttX Apps.</p>
+</li>
+</ul>
+<p>Conundrum. Lemme know your thoughts!</p>
+</li>
+<li>
+<p>How do other Embedded Operating Systems implement LoRaWAN?</p>
+<ul>
+<li>
+<p><strong>Mynewt</strong> embeds a <a href="https://github.com/apache/mynewt-core/tree/master/net/lora/node"><strong>Partial Fork</strong></a> of Semtech’s LoRaWAN Stack into its source tree.</p>
+</li>
+<li>
+<p><strong>Zephyr</strong> maintains a <a href="https://github.com/zephyrproject-rtos/loramac-node"><strong>Complete Fork</strong></a> of the entire LoRaWAN Repo by Semtech. Which gets embedded during the Zephyr build.</p>
+</li>
+</ul>
+<p>The Zephyr approach is probably the best way to <strong>keep our LoRaWAN Stack in sync</strong> with Semtech’s.</p>
 </li>
 <li>
 <p>We have already ported LoRaWAN to <strong>BL602 IoT SDK</strong> <a href="https://lupyuen.github.io/articles/lorawan">(see this)</a>, why are we porting again to NuttX?</p>
