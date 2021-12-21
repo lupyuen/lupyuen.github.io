@@ -464,7 +464,7 @@ Register 0x0a = 0x01</code></pre></div>
 <p>Note that the values above will change when we <strong>transmit and receive LoRa Messages</strong>. Let’s do that now.</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/sx1262-read5.png" alt="Reading SX1262 Registers" /></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-read5.jpg" alt="Reading SX1262 Registers" /></p>
 <h2 id="source-files" class="section-header"><a href="#source-files">3.3 Source Files</a></h2>
 <p><em>We’re seeing layers of code, like an onion? (Or Shrek)</em></p>
 <p>Yep our SX1262 Library is structured as <strong>layers of Source Files</strong> because we hope to support three platforms…</p>
@@ -633,7 +633,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 </li>
 </ul>
 <p>(The <strong>Radio</strong> functions will also be called when we implement LoRaWAN)</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-send.png" alt="Transmitting a LoRa Message" /></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-send.jpg" alt="Transmitting a LoRa Message" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(Source)</a></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">5 Transmit LoRa Message</a></h1>
 <p>Now we’re ready to <strong>transmit a LoRa Message</strong> in our SX1262 Test App! Here’s how: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L110-L121">sx1262_test_main.c</a></p>
@@ -751,7 +751,7 @@ Data=50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 
 <p>Our SX1262 Library has successfully transmitted a 64-byte LoRa Message to RAKwireless WisBlock!</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/sx1262-send2.png" alt="Our SX1262 Library transmits a LoRa Message to RAKwireless WisBlock" /></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-send2.jpg" alt="Our SX1262 Library transmits a LoRa Message to RAKwireless WisBlock" /></p>
 <p>In case of problems, try troubleshooting with a Software Defined Radio like Airspy R2…</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
 <h2 id="spectrum-analysis-with-sdr" class="section-header"><a href="#spectrum-analysis-with-sdr">5.2 Spectrum Analysis with SDR</a></h2>
@@ -767,7 +767,7 @@ Data=50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 
 <p>(Red stripe below)</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/sx1262-sdr.png" alt="Spectrum Analysis of LoRa Message with SDR" /></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-sdr.jpg" alt="Spectrum Analysis of LoRa Message with SDR" /></p>
 <p>LoRa Messages have a characteristic criss-cross shape: <strong>LoRa Chirp</strong>. (Like above)</p>
 <p>More about LoRa Chirps and Software Defined Radio…</p>
 <ul>
@@ -910,7 +910,7 @@ receive_message</code></pre></div>
 <p>Congratulations our SX1262 Library has successfully received the 64-byte LoRa Message from RAKwireless WisBlock!</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/sx1262-receive2.png" alt="Our SX1262 Library receives a LoRa Message from RAKwireless WisBlock" /></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-receive2.jpg" alt="Our SX1262 Library receives a LoRa Message from RAKwireless WisBlock" /></p>
 <h1 id="spi-interface" class="section-header"><a href="#spi-interface">7 SPI Interface</a></h1>
 <p><em>Porting the SX1262 Library from Linux to NuttX… Was it difficult?</em></p>
 <p>Not at all! NuttX works much like Linux because of its <a href="https://lupyuen.github.io/articles/nuttx"><strong>POSIX Compliance</strong></a>.</p>
@@ -999,7 +999,7 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <li><a href="https://lupyuen.github.io/articles/spi2#gpio-output-as-chip-select"><strong>“GPIO Output as Chip Select”</strong></a></li>
 </ul>
 <p>Let’s watch how <strong>transfer_spi</strong> is called by our SX1262 Library to transmit and receive LoRa Messages.</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-driver3.png" alt="Transfer SPI" /></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-driver3.jpg" alt="Transfer SPI" /></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L677-L703">(Source)</a></p>
 <h2 id="transmit-message" class="section-header"><a href="#transmit-message">7.3 Transmit Message</a></h2>
 <p>Later as we walk through the <strong>sending of a LoRa Message</strong> <a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>RadioSend</strong>)</a>, we’ll learn that our SX1262 Driver calls this function to transfer the LoRa Message to SX1262: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L506-L512">sx126x-nuttx.c</a></p>
@@ -1490,7 +1490,7 @@ endif</code></pre></div>
 NUTTXLIBS += staging$(DELIM)libsx1262$(LIBEXT)
 endif</code></pre></div>
 <p>As shown below…</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-clone6.png" alt="Update Makefiles" /></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-clone6.jpg" alt="Update Makefiles" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/commit/b381a99e7512d09d74db4da982826b5e40b2606a#diff-f9d35d43770d39092a663e665e82ae1d84a9e0da3d0d10c407acada6a40cd281">(Source)</a></p>
 </li>
 <li>
@@ -1585,7 +1585,7 @@ int main(int argc, FAR char *argv[])
 <p>We should see the message…</p>
 <div class="example-wrap"><pre class="language-text"><code>libsx1262 OK!</code></pre></div>
 <p>Congratulations our library is now running on NuttX!</p>
-<p><img src="https://lupyuen.github.io/images/sx1262-library4.png" alt="Our library runs OK" /></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-library4.jpg" alt="Our library runs OK" /></p>
 </li>
 </ol>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a></h1>
