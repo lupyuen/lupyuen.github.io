@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>LoRa SX1262 on Apache NuttX OS</title>
+            <link>https://lupyuen.github.io/articles/sx1262</link>
+            <description><![CDATA[Porting the LoRa Driver for Semtech SX1262 from Linux to Apache NuttX OS... And testing it on PineDio Stack BL604 RISC-V Board]]></description>
+            <guid>https://lupyuen.github.io/articles/sx1262</guid>
+            <pubDate>Wed, 22 Dec 2021 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>SPI on Apache NuttX OS</title>
             <link>https://lupyuen.github.io/articles/spi2</link>
             <description><![CDATA[How we transmit and receive data over SPI on Apache NuttX OS... By coding a NuttX Device Driver]]></description>
