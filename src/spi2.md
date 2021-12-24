@@ -1172,25 +1172,9 @@ We ought to flip the Chip Select for other SPI Devices to High, to deactivate th
 
 Now that we have NuttX talking OK to the SX1262 LoRa Transceiver... We're ready to port __LoRa and LoRaWAN__ to NuttX!
 
-We'll port this LoRa + LoRaWAN Stack...
-
--   [__"PineCone BL602 Talks LoRaWAN"__](https://lupyuen.github.io/articles/lorawan)
-
 Over the next couple of articles we shall __migrate the LoRa + LoRaWAN code incrementally__ to NuttX...
 
-1.  Initially as a __NuttX App Library__ running in a NuttX App
-
-    (Because it's easier to code and troubleshoot)
-
-    [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1471179698268893188)
-
-1.  Eventually moving into a __NuttX Device Driver__
-
-    (Because it's The Right Thing)
-
-1.  By implementing __ioctl()__ operations for LoRaWAN
-
-    [(Similar to this SX1276 Device Driver)](https://github.com/apache/incubator-nuttx/blob/master/drivers/wireless/lpwan/sx127x/sx127x.c#L954-L1162)
+-   [__"LoRa SX1262 on Apache NuttX OS"__](https://lupyuen.github.io/articles/sx1262)
 
 I'm still super curious about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. We might start soon with GPIO and SPI to see whether the concept is feasible.
 

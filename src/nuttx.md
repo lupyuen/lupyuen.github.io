@@ -810,7 +810,7 @@ Here are some topics I might explore in future articles, lemme know if I should 
 
 -   __LoRaWAN Driver__: Once we get SX1262 talking OK on SPI, we can port the LoRa and LoRaWAN Drivers to NuttX!
 
-    [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1471179698268893188)
+    [__"LoRa SX1262 on Apache NuttX OS"__](https://lupyuen.github.io/articles/sx1262)
 
 -   __Rust__: Porting the Embedded Rust HAL to NuttX sounds really interesting. We might start with GPIO and SPI to see whether the concept is feasible.
 
