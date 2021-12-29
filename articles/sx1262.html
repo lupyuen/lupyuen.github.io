@@ -1483,7 +1483,7 @@ void *process_dio1(void *arg) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer"><strong>“Multitask with NimBLE Porting Layer”</strong></a></li>
 </ul>
-<p>To transmit and receive LoRa Messages without polling we need <strong>Timers, Event Queues and Background Threads</strong>. Which are provided by NimBLE Porting Layer.</p>
+<p>To transmit and receive LoRa Messages without polling we need <strong>Timers and Event Queues</strong>. Which are provided by NimBLE Porting Layer.</p>
 <p><em>Have we used NimBLE Porting Layer on other platforms?</em></p>
 <p>Yep we used NimBLE Porting Layer in the <strong>LoRa SX1262 and SX1276 Drivers</strong> for BL602 IoT SDK…</p>
 <ul>
@@ -1494,20 +1494,15 @@ void *process_dio1(void *arg) {
 <li><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>lupyuen/nimble-porting-nuttx</strong></a></li>
 </ul>
 <p><em>How will we receive LoRa Messages with GPIO Interrupts?</em></p>
-<p><strong>UPDATE:</strong> NimBLE Porting Layer has been implemented, this section shall be updated shortly</p>
-<p>After we have implemented <strong>GPIO Interrupts</strong> in our SX1262 Library, this is how we’ll <strong>receive LoRa Messages</strong> without polling (see pic above)…</p>
 <ol>
 <li>
 <p>When SX1262 receives a LoRa Message, it triggers a <strong>GPIO Interrupt</strong> on Pin DIO1</p>
 </li>
 <li>
-<p>GPIO Driver forwards the GPIO Interrupt to our Interrupt Handler Function <a href="https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler"><strong>handle_gpio_interrupt</strong></a></p>
+<p>In the previous chapter we started a <strong>Background Thread</strong> that waits for GPIO Interrupts and <strong>adds an Event</strong> to our Event Queue</p>
 </li>
 <li>
-<p><strong>handle_gpio_interrupt</strong> enqueues an Event into our <strong>Event Queue</strong></p>
-</li>
-<li>
-<p>Our <strong>Background Thread</strong> removes the Event from the Event Queue and calls <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a> to process the received LoRa Message</p>
+<p>Our <strong>Foreground Thread</strong> runs an <strong>Event Loop</strong> that handles every Event in our Event Queue</p>
 </li>
 </ol>
 <p>Let’s look at the implementation of NimBLE Porting Layer for the <strong>new SX1262 Library that will support LoRaWAN</strong>.</p>
