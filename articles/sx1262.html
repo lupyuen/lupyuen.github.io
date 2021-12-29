@@ -89,10 +89,10 @@
 <li><a href="#spi-in-action">7.5 SPI In Action</a><ul></ul></li></ul></li>
 <li><a href="#gpio-interface">8 GPIO Interface</a><ul>
 <li><a href="#initialise-gpio">8.1 Initialise GPIO</a><ul></ul></li>
-<li><a href="#check-busy-state">8.2 Check Busy State</a><ul></ul></li>
-<li><a href="#start-dio1-thread">8.3 Start DIO1 Thread</a><ul></ul></li>
-<li><a href="#handle-dio1-interrupt">8.4 Handle DIO1 Interrupt</a><ul></ul></li>
-<li><a href="#check-dio1-state">8.5 Check DIO1 State</a><ul></ul></li></ul></li>
+<li><a href="#start-dio1-thread">8.2 Start DIO1 Thread</a><ul></ul></li>
+<li><a href="#handle-dio1-interrupt">8.3 Handle DIO1 Interrupt</a><ul></ul></li>
+<li><a href="#check-dio1-state">8.4 Check DIO1 State</a><ul></ul></li>
+<li><a href="#check-busy-state">8.5 Check Busy State</a><ul></ul></li></ul></li>
 <li><a href="#multithreading-with-nimble-porting-layer">9 Multithreading with NimBLE Porting Layer</a><ul>
 <li><a href="#event-queue">9.1 Event Queue</a><ul></ul></li>
 <li><a href="#event-loop">9.2 Event Loop</a><ul></ul></li></ul></li>
@@ -1271,7 +1271,8 @@ static int init_gpio(void) {
   //  Open GPIO Input for SX1262 Busy Pin
   busy = open(&quot;/dev/gpio0&quot;, O_RDWR);
   assert(busy &gt; 0);</code></pre></div>
-<p>TODO</p>
+<p>We begin by opening the GPIO Input for the <strong>Busy Pin</strong> “/dev/gpio0”.</p>
+<p>We fetch the <strong>GPIO Pin Type</strong> and verify that it’s GPIO Input…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get SX1262 Busy Pin Type
   enum gpio_pintype_e pintype;
   int ret = ioctl(busy, GPIOC_PINTYPE, (unsigned long)((uintptr_t)&amp;pintype));
@@ -1279,11 +1280,11 @@ static int init_gpio(void) {
 
   //  Verify that SX1262 Busy Pin is GPIO Input (not GPIO Output or GPIO Interrupt)
   assert(pintype == GPIO_INPUT_PIN);  //  No pullup / pulldown</code></pre></div>
-<p>TODO</p>
+<p>Next we open the GPIO Interrupt for the <strong>DIO1 Pin</strong> “/dev/gpio2”.</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Open GPIO Interrupt for SX1262 DIO1 Pin
   dio1 = open(&quot;/dev/gpio2&quot;, O_RDWR);
   assert(dio1 &gt; 0);</code></pre></div>
-<p>TODO</p>
+<p>We fetch the <strong>GPIO Pin Type</strong> and verify that it’s GPIO Interrupt…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get SX1262 DIO1 Pin Type
   ret = ioctl(dio1, GPIOC_PINTYPE, (unsigned long)((uintptr_t)&amp;pintype));
   assert(ret &gt;= 0);
@@ -1291,14 +1292,16 @@ static int init_gpio(void) {
 
   //  Verify that SX1262 DIO1 Pin is GPIO Interrupt (not GPIO Input or GPIO Output)
   assert(pintype == GPIO_INTERRUPT_PIN);</code></pre></div>
-<p>TODO</p>
+<p>Remember that <strong>DIO1 shifts from Low to High</strong> when a LoRa Packet has been transmitted or received.</p>
+<p>Thus we configure NuttX to trigger a <strong>GPIO Interrupt on Rising Edge</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Change DIO1 Pin to Trigger GPIO Interrupt on Rising Edge
   //  TODO: Crashes at ioexpander/gpio.c (line 544) because change failed apparently
   puts(&quot;init_gpio: change DIO1 to Trigger GPIO Interrupt on Rising Edge&quot;);
   ret = ioctl(dio1, GPIOC_SETPINTYPE, (unsigned long) GPIO_INTERRUPT_RISING_PIN);
   assert(ret &gt;= 0);</code></pre></div>
+<p>(This crashes NuttX with an assertion failure, so we have disabled the assertion. More about this in the Appendix)</p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Set SX1262 DIO1 Pin Type to GPIO Interrupt on Rising Edge
+<div class="example-wrap"><pre class="language-c"><code>  //  Get SX1262 DIO1 Pin Type again
   ret = ioctl(dio1, GPIOC_PINTYPE, (unsigned long)((uintptr_t)&amp;pintype));
   assert(ret &gt;= 0);
   printf(&quot;DIO1 pintype after=%d\n&quot;, pintype);
@@ -1312,50 +1315,27 @@ static int init_gpio(void) {
 <p>TODO</p>
 <p><em>Why did we verify the GPIO Pin Type? (Input / Output / Interrupt)</em></p>
 <p>TODO</p>
-<h2 id="check-busy-state" class="section-header"><a href="#check-busy-state">8.2 Check Busy State</a></h2>
-<p>TODO</p>
-<p>Check SX1262 Busy State via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200"><strong>SX126xWaitOnBusy</strong></a></p>
-<div class="example-wrap"><pre class="language-c"><code>void SX126xWaitOnBusy( void ) {
-    _info(&quot;SX126xWaitOnBusy\n&quot;);
-    assert(busy &gt; 0);
-
-    //  Loop until Busy Pin is Low
-    for (;;) {
-        //  Read Busy Pin
-        bool invalue;
-        int ret = ioctl(busy, GPIOC_READ, (unsigned long)((uintptr_t)&amp;invalue));
-        assert(ret &gt;= 0);
-
-        //  Exit if Busy Pin is Low
-        if (invalue == 0) { break; }
-    }
-}</code></pre></div>
-<p>(<strong>SX126xWaitOnBusy</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L133-L142"><strong>SX126xCheckDeviceReady</strong></a>, which wakes up SX1262 before checking if SX1262 is busy)</p>
-<h2 id="start-dio1-thread" class="section-header"><a href="#start-dio1-thread">8.3 Start DIO1 Thread</a></h2>
+<h2 id="start-dio1-thread" class="section-header"><a href="#start-dio1-thread">8.2 Start DIO1 Thread</a></h2>
 <p>TODO</p>
 <p>Register GPIO Interrupt Handler for DIO1</p>
 <p><strong>init_gpio</strong> initialises the GPIO Pins like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L725-L780">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Init the GPIO Pins. Return 0 on success.
 static int init_gpio(void) {
   //  Omitted: Open GPIO Input for SX1262 Busy Pin
-  ...
   //  Omitted: Open GPIO Interrupt for SX1262 DIO1 Pin
-  ...
   //  Omitted: Change DIO1 Pin to Trigger GPIO Interrupt on Rising Edge
   ...
-
   //  Init the Background Thread Attributes
   static pthread_attr_t attr;
   ret = pthread_attr_init(&amp;attr);
-  assert(ret == 0);
-
-  //  Start the Background Thread to process DIO1 interrupts
-  puts(&quot;Starting process_dio1&quot;);
+  assert(ret == 0);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Start the Background Thread to process DIO1 interrupts
   static pthread_t thread;
   ret = pthread_create(&amp;thread, &amp;attr, process_dio1, 0);
   assert(ret == 0);</code></pre></div>
 <p>TODO</p>
-<h2 id="handle-dio1-interrupt" class="section-header"><a href="#handle-dio1-interrupt">8.4 Handle DIO1 Interrupt</a></h2>
+<h2 id="handle-dio1-interrupt" class="section-header"><a href="#handle-dio1-interrupt">8.3 Handle DIO1 Interrupt</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L834-L896">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Event Queue containing Events to be processed
@@ -1409,7 +1389,9 @@ void *process_dio1(void *arg) {
       if (errcode == EAGAIN) { puts(&quot;DIO1 timeout&quot;); }
       else { fprintf(stderr, &quot;ERROR: Failed to wait signal %d: %d\n&quot;, SIG_DIO1, errcode); return NULL; }
     }
-  }</code></pre></div><h2 id="check-dio1-state" class="section-header"><a href="#check-dio1-state">8.5 Check DIO1 State</a></h2>
+  }</code></pre></div>
+<p>TODO</p>
+<h2 id="check-dio1-state" class="section-header"><a href="#check-dio1-state">8.4 Check DIO1 State</a></h2>
 <p>TODO</p>
 <p>Get DIO1 Pin State: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L355-L362"><strong>SX126xGetDio1PinState</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>uint32_t SX126xGetDio1PinState(void) {    
@@ -1419,6 +1401,26 @@ void *process_dio1(void *arg) {
   //  Meanwhile we always return 0
   return 0;
 }</code></pre></div>
+<p>TODO</p>
+<h2 id="check-busy-state" class="section-header"><a href="#check-busy-state">8.5 Check Busy State</a></h2>
+<p>TODO</p>
+<p>Check SX1262 Busy State via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200"><strong>SX126xWaitOnBusy</strong></a></p>
+<div class="example-wrap"><pre class="language-c"><code>void SX126xWaitOnBusy( void ) {
+    _info(&quot;SX126xWaitOnBusy\n&quot;);
+    assert(busy &gt; 0);
+
+    //  Loop until Busy Pin is Low
+    for (;;) {
+        //  Read Busy Pin
+        bool invalue;
+        int ret = ioctl(busy, GPIOC_READ, (unsigned long)((uintptr_t)&amp;invalue));
+        assert(ret &gt;= 0);
+
+        //  Exit if Busy Pin is Low
+        if (invalue == 0) { break; }
+    }
+}</code></pre></div>
+<p>(<strong>SX126xWaitOnBusy</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L133-L142"><strong>SX126xCheckDeviceReady</strong></a>, which wakes up SX1262 before checking if SX1262 is busy)</p>
 <p><img src="https://lupyuen.github.io/images/usb-handler.jpg" alt="Multithreading with NimBLE Porting Layer" /></p>
 <h1 id="multithreading-with-nimble-porting-layer" class="section-header"><a href="#multithreading-with-nimble-porting-layer">9 Multithreading with NimBLE Porting Layer</a></h1>
 <p>Our SX1262 Library was designed for <strong>Multithreading</strong> by calling the open-source <strong>NimBLE Porting Layer</strong>…</p>
