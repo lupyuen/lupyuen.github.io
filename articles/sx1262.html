@@ -958,7 +958,7 @@ static int init_spi(void) {
 <li><a href="https://lupyuen.github.io/articles/spi2#configure-spi"><strong>“Configure SPI”</strong></a></li>
 </ul>
 <p><em>Why did we use GPIO Output?</em></p>
-<p>We’re controlling the <strong>SPI Chip Select Pin</strong> ourselves via GPIO Output, as explained below…</p>
+<p>We’re controlling the <strong>SPI Chip Select Pin</strong> (/dev/gpio1) ourselves via GPIO Output, as explained below…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#control-chip-select-with-gpio"><strong>“Control Chip Select with GPIO”</strong></a></li>
 </ul>
@@ -1203,11 +1203,11 @@ spi rx:
 <p>Our SX1262 Library needs a <strong>GPIO Interface</strong> to control these <strong>SX1262 Pins</strong>…</p>
 <ul>
 <li>
-<p><strong>DIO1</strong>: Used by SX1262 to signal that a LoRa Packet has been transmitted or received</p>
+<p><strong>DIO1</strong> (/dev/gpio2): Used by SX1262 to signal that a LoRa Packet has been transmitted or received</p>
 <p>(DIO1 shifts from Low to High when that happens)</p>
 </li>
 <li>
-<p><strong>BUSY</strong>: Tells us whether SX1262 is busy</p>
+<p><strong>BUSY</strong> (/dev/gpio0): Tells us whether SX1262 is busy</p>
 <p>(BUSY is High when SX1262 is busy)</p>
 </li>
 <li>
