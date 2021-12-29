@@ -200,7 +200,7 @@
 rm -r libsx1262
 git rm -r libsx1262
 git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx1262</code></pre></div>
-<p>Note that we’re using the older <strong>“nuttx”</strong> branch of the “lora_sx1262” repo, which <strong>doesn’t use GPIO Interface and NimBLE Porting Layer</strong>. (And doesn’t support LoRaWAN)</p>
+<p>Note that we’re using the older <strong>“nuttx”</strong> branch of the “lora_sx1262” repo, which <a href="https://lupyuen.github.io/articles/sx1262#appendix-previous-sx1262-library"><strong>doesn’t use GPIO Interface and NimBLE Porting Layer</strong></a>. (And doesn’t support LoRaWAN)</p>
 <h2 id="library-vs-driver" class="section-header"><a href="#library-vs-driver">1.3 Library vs Driver</a></h2>
 <p><em>NuttX Libraries vs Drivers… What’s the difference?</em></p>
 <p>Our LoRa SX1262 code is initially packaged as a <strong>NuttX Library</strong> (instead of NuttX Driver) because…</p>
@@ -311,9 +311,9 @@ static void read_registers(void) {
     printf(&quot;Register 0x%02x = 0x%02x\n&quot;, addr, val);
   }
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L65-L77">(<strong>SX126xIoInit</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L77-L91">(<strong>SX126xIoInit</strong> is defined here)</a></p>
 <p>In our Test App we call <strong>read_registers</strong> and <strong>SX126xReadRegister</strong> to read a bunch of SX1262 Registers. (<code>0x00</code> to <code>0x0F</code>)</p>
-<p>In our SX1262 Library, <strong>SX126xReadRegister</strong> calls <strong>SX126xReadRegisters</strong> and <strong>sx126x_read_register</strong> to read each register: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L268-L281">sx126x-nuttx.c</a></p>
+<p>In our SX1262 Library, <strong>SX126xReadRegister</strong> calls <strong>SX126xReadRegisters</strong> and <strong>sx126x_read_register</strong> to read each register: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L286-L299">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Read an SX1262 Register at the specified address
 uint8_t SX126xReadRegister(uint16_t address) {
   //  Read one register and return the value
@@ -336,7 +336,7 @@ void SX126xReadRegisters(uint16_t address, uint8_t *buffer, uint16_t size) {
   SX126xWaitOnBusy();
 }</code></pre></div>
 <p>(We’ll see <strong>SX126xCheckDeviceReady</strong> and <strong>SX126xWaitOnBusy</strong> in a while)</p>
-<p><strong>sx126x_read_register</strong> reads a register by sending the Read Register Command to SX1262 over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L495-L504">sx126x-nuttx.c</a></p>
+<p><strong>sx126x_read_register</strong> reads a register by sending the Read Register Command to SX1262 over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L556-L565">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Send a Read Register Command to SX1262 over SPI
 /// and return the results in `buffer`. `size` is the
 /// number of registers to read.
@@ -382,7 +382,7 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 cd nuttx
 git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx nuttx
 git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
-<p>Note that we’re using the older <strong>“sx1262”</strong> branch of the NuttX OS and NuttX Apps repos, which <strong>don’t use GPIO Interface and NimBLE Porting Layer</strong>. (And don’t support LoRaWAN)</p>
+<p>Note that we’re using the older <strong>“sx1262”</strong> branches of the NuttX OS and NuttX Apps repos, which <a href="https://lupyuen.github.io/articles/sx1262#appendix-previous-sx1262-library"><strong>don’t use GPIO Interface and NimBLE Porting Layer</strong></a>. (And don’t support LoRaWAN)</p>
 </li>
 <li>
 <p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L100-L101"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
@@ -934,7 +934,7 @@ receive_message</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2"><strong>“SPI on Apache NuttX OS”</strong></a></li>
 </ul>
-<p>Our SX1262 Library opens the SPI Test Driver to <strong>initialise the SPI Bus</strong> like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L663-L675">sx126x-nuttx.c</a></p>
+<p>Our SX1262 Library opens the SPI Test Driver to <strong>initialise the SPI Bus</strong> like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L782-L804">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// SPI Bus
 static int spi = 0;
 
@@ -952,7 +952,7 @@ static int init_spi(void) {
   assert(cs &gt; 0);
   return 0;
 }</code></pre></div>
-<p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L65-L77"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227"><strong>init_driver</strong></a></p>
+<p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L77-L91"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227"><strong>init_driver</strong></a></p>
 <p>(We’ve seen <strong>init_driver</strong> earlier in our Test App)</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module">(<strong>RadioInit</strong> is explained here)</a></p>
 <p><em>Where are SPI Mode and SPI Frequency defined?</em></p>
@@ -967,9 +967,9 @@ static int init_spi(void) {
 </ul>
 <p>More about GPIO Output in the next section.</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-driver2a.png" alt="Initialise SPI" /></p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L677-L703">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L782-L804">(Source)</a></p>
 <h2 id="transfer-spi" class="section-header"><a href="#transfer-spi">7.2 Transfer SPI</a></h2>
-<p>To <strong>transfer SPI Data</strong> to SX1262 via our SPI Test Driver, we do this: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L677-L703">sx126x-nuttx.c</a></p>
+<p>To <strong>transfer SPI Data</strong> to SX1262 via our SPI Test Driver, we do this: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L806-L832">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Blocking call to transmit and receive buffers on SPI. Return 0 on success.
 static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
   assert(spi &gt; 0);
@@ -1003,9 +1003,9 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 </ul>
 <p>Let’s watch how <strong>transfer_spi</strong> is called by our SX1262 Library to transmit and receive LoRa Messages.</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-driver3.jpg" alt="Transfer SPI" /></p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L677-L703">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L806-L832">(Source)</a></p>
 <h2 id="transmit-message" class="section-header"><a href="#transmit-message">7.3 Transmit Message</a></h2>
-<p>Later as we walk through the <strong>sending of a LoRa Message</strong> <a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>RadioSend</strong>)</a>, we’ll learn that our SX1262 Driver calls this function to transfer the LoRa Message to SX1262: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L506-L512">sx126x-nuttx.c</a></p>
+<p>Later as we walk through the <strong>sending of a LoRa Message</strong> <a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>RadioSend</strong>)</a>, we’ll learn that our SX1262 Driver calls this function to transfer the LoRa Message to SX1262: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L567-L573">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sx126x_write_buffer(const void* context, const uint8_t offset, const uint8_t* buffer, const uint8_t size) {
   //  Prepare the Write Buffer Command (2 bytes)
   uint8_t buf[SX126X_SIZE_WRITE_BUFFER] = { 0 };
@@ -1024,9 +1024,9 @@ static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
 <p><a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>sx126x_write_buffer</strong> is called by <strong>RadioSend</strong>)</a></p>
 <p>In code above we prepare a <strong>SX1262 Write Buffer Command</strong> (<code>0x0E 0x00</code>) and pass the Command Buffer (plus Data Buffer) to <strong>sx126x_hal_write</strong>.</p>
 <p>(Data Buffer contains the 64-byte <strong>LoRa Message</strong> to be transmitted)</p>
-<p>Note that <strong>Write Buffer Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L144-L147"><strong>SX126xSetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L283-L289"><strong>SX126xWriteBuffer</strong></a>.</p>
+<p>Note that <strong>Write Buffer Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L144-L147"><strong>SX126xSetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L301-L307"><strong>SX126xWriteBuffer</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>SX126xSetPayload</strong> and <strong>SX126xWriteBuffer</strong> are explained here)</a></p>
-<p><strong>sx126x_hal_write</strong> calls <strong>transfer_spi</strong> to transfer the Command Buffer and Data Buffer over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L544-L581">sx126x-nuttx.c</a></p>
+<p><strong>sx126x_hal_write</strong> calls <strong>transfer_spi</strong> to transfer the Command Buffer and Data Buffer over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L606-L643">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/**
  * Radio data transfer - write
  *
@@ -1067,7 +1067,7 @@ static int sx126x_hal_write(
 }</code></pre></div>
 <p>(We’ve seen <strong>transfer_spi</strong> in the previous section)</p>
 <p><em>What are spi_tx_buf and spi_rx_buf?</em></p>
-<p>They are the internal <strong>1024-byte buffers for SPI Transfers</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L533-L540">sx126x-nuttx.c</a></p>
+<p>They are the internal <strong>1024-byte buffers for SPI Transfers</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L588-L601">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Max size of SPI transfers
 #define SPI_BUFFER_SIZE 1024
 
@@ -1076,7 +1076,7 @@ static uint8_t spi_tx_buf[SPI_BUFFER_SIZE];
 
 /// SPI Receive Buffer
 static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div><h2 id="receive-message" class="section-header"><a href="#receive-message">7.4 Receive Message</a></h2>
-<p>Later as we inspect the code that <strong>receives LoRa Messages</strong>, we’ll see that our SX1262 Library calls this function when a <strong>Receive Done Event</strong> is triggered: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L514-L522">sx126x-nuttx.c</a></p>
+<p>Later as we inspect the code that <strong>receives LoRa Messages</strong>, we’ll see that our SX1262 Library calls this function when a <strong>Receive Done Event</strong> is triggered: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L575-L583">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sx126x_read_buffer(const void* context, const uint8_t offset, uint8_t* buffer, const uint8_t size) {
   //  Prepare the Read Buffer Command (3 bytes)
   uint8_t buf[SX126X_SIZE_READ_BUFFER] = { 0 };
@@ -1100,7 +1100,7 @@ static uint8_t spi_rx_buf[SPI_BUFFER_SIZE];</code></pre></div><h2 id="receive-me
 <p>(Data Buffer will contain the received 64-byte <strong>LoRa Message</strong>)</p>
 <p>Note that <strong>Read Buffer Offset is always 0</strong>, because of <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L149-L160"><strong>SX126xGetPayload</strong></a> and <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L309-L315"><strong>SX126xReadBuffer</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#receive-done">(<strong>SX126xGetPayload</strong> and <strong>SX126xReadBuffer</strong> are explained here)</a></p>
-<p><strong>sx126x_hal_read</strong> calls <strong>transfer_spi</strong> to transfer the Command Buffer over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L583-L627">sx126x-nuttx.c</a></p>
+<p><strong>sx126x_hal_read</strong> calls <strong>transfer_spi</strong> to transfer the Command Buffer over SPI: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L645-L689">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/**
  * Radio data transfer - read
  *
