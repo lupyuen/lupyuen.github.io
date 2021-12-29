@@ -1803,7 +1803,7 @@ nsh&gt;</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
 <p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
 <h1 id="appendix-radio-functions" class="section-header"><a href="#appendix-radio-functions">14 Appendix: Radio Functions</a></h1>
-<p>In this section we explain the Platform-Independent <strong>Radio Functions</strong>, which are defined in <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c">radio.c</a></p>
+<p>In this section we explain the Platform-Independent <strong>Radio Functions</strong> for Semtech SX1262 Transceiver: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c">radio.c</a></p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L522-L559"><strong>RadioInit:</strong></a> Initialise LoRa SX1262</p>
@@ -1830,8 +1830,31 @@ nsh&gt;</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1099-L1109"><strong>RadioSleep:</strong></a> Switch SX1262 to low-power sleep mode</p>
 </li>
 </ul>
-<p>This code is nearly identical to <a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x"><strong><strong>Semtech’s Reference Implementation</strong></strong></a> of SX1262 Driver (29 Mar 2021).</p>
-<p>(So it should work perfectly fine with Semtech’s LoRaWAN Stack)</p>
+<p>The code is nearly identical to <a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x"><strong><strong>Semtech’s Reference Implementation</strong></strong></a> of SX1262 Driver (29 Mar 2021).</p>
+<p>(So it should work perfectly fine with Semtech’s LoRaWAN Stack, as explained in the next article)</p>
+<p>The Radio Functions will trigger the following <strong>Callback Functions</strong> to handle <strong>Radio Events</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/include/radio.h#L54-L109">radio.h</a></p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262#transmit-done"><strong>TxDone:</strong></a> Transmit Done</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262#receive-done"><strong>RxDone:</strong></a> Receive Done</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262#receive-done"><strong>RxError:</strong></a> Receive Error</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262#transmit--receive-timeout"><strong>TxTimeout:</strong></a> Transmit Timeout</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262#transmit--receive-timeout"><strong>RxTimeout:</strong></a> Receive Timeout or Header Error</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262#cad-done"><strong>CadDone:</strong></a> Channel Activity Detection Done</p>
+</li>
+</ul>
+<p>The Callback Functions are defined in our LoRa Test App.</p>
+<p>(Also in the LoRaWAN Library, as explained in the next article)</p>
 <h2 id="radioinit-initialise-lora-module" class="section-header"><a href="#radioinit-initialise-lora-module">14.1 RadioInit: Initialise LoRa Module</a></h2>
 <p><strong>RadioInit</strong> initialises the LoRa SX1262 Module: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L522-L559">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioInit( RadioEvents_t *events ) {
@@ -1843,19 +1866,19 @@ nsh&gt;</code></pre></div>
 <p>The function begins by copying the list of <strong>Radio Event Callbacks</strong>…</p>
 <ul>
 <li>
-<p><strong>TxDone</strong>: Called when a LoRa Message has been transmitted</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#transmit-done"><strong>TxDone:</strong></a> Called when a LoRa Message has been transmitted</p>
 </li>
 <li>
-<p><strong>RxDone</strong>: Called when a LoRa Message has been received</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#receive-done"><strong>RxDone:</strong></a> Called when a LoRa Message has been received</p>
 </li>
 <li>
-<p><strong>TxTimeout</strong>: Called upon timeout when transmitting a LoRa Message</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#transmit--receive-timeout"><strong>TxTimeout:</strong></a> Called upon timeout when transmitting a LoRa Message</p>
 </li>
 <li>
-<p><strong>RxTimeout</strong>: Called upon timeout when receiving a LoRa Message</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#transmit--receive-timeout"><strong>RxTimeout:</strong></a>  Called upon timeout when receiving a LoRa Message</p>
 </li>
 <li>
-<p><strong>RxError</strong>: Called when a LoRa Message has been received with CRC Error</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#receive-done"><strong>RxError:</strong></a> Called when a LoRa Message has been received with CRC Error</p>
 </li>
 </ul>
 <p>This differs from the Semtech Reference Implementation, which copies the pointer to <strong>RadioEvents_t</strong> instead of the entire <strong>RadioEvents_t</strong>.</p>
