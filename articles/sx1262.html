@@ -199,7 +199,7 @@
 rm -r libsx1262
 git rm -r libsx1262
 git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx1262</code></pre></div>
-<p>Note that we’re using the older <strong>“nuttx”</strong> branch of the “lora_sx1262” repo, which <strong>doesn’t use GPIO Interface and NimBLE Porting Layer</strong>.</p>
+<p>Note that we’re using the older <strong>“nuttx”</strong> branch of the “lora_sx1262” repo, which <strong>doesn’t use GPIO Interface and NimBLE Porting Layer</strong>. (And doesn’t support LoRaWAN)</p>
 <h2 id="library-vs-driver" class="section-header"><a href="#library-vs-driver">1.3 Library vs Driver</a></h2>
 <p><em>NuttX Libraries vs Drivers… What’s the difference?</em></p>
 <p>Our LoRa SX1262 code is initially packaged as a <strong>NuttX Library</strong> (instead of NuttX Driver) because…</p>
@@ -381,7 +381,7 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 cd nuttx
 git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx nuttx
 git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
-<p>Note that we’re using the older <strong>“sx1262”</strong> branch of the NuttX OS and NuttX Apps repos, which <strong>don’t use GPIO Interface and NimBLE Porting Layer</strong>.</p>
+<p>Note that we’re using the older <strong>“sx1262”</strong> branch of the NuttX OS and NuttX Apps repos, which <strong>don’t use GPIO Interface and NimBLE Porting Layer</strong>. (And don’t support LoRaWAN)</p>
 </li>
 <li>
 <p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L100-L101"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
@@ -1206,11 +1206,11 @@ spi rx:
 <p>Our SX1262 Library needs a <strong>GPIO Interface</strong> to control these <strong>SX1262 Pins</strong>…</p>
 <ul>
 <li>
-<p><strong>DIO1</strong> (/dev/gpio2): GPIO Interrupt used by SX1262 to signal that a LoRa Packet has been transmitted or received</p>
+<p><strong>DIO1</strong> at /dev/gpio2: GPIO Interrupt used by SX1262 to signal that a LoRa Packet has been transmitted or received</p>
 <p>(DIO1 shifts from Low to High when that happens)</p>
 </li>
 <li>
-<p><strong>BUSY</strong> (/dev/gpio0): GPIO Input that tells us whether SX1262 is busy</p>
+<p><strong>BUSY</strong> at /dev/gpio0: GPIO Input that tells us whether SX1262 is busy</p>
 <p>(BUSY is High when SX1262 is busy)</p>
 </li>
 <li>
@@ -1224,30 +1224,33 @@ spi rx:
 <li>
 <p><strong>DIO1</strong>: Because we don’t support GPIO Interrupts (yet), we <strong>poll the SX1262 Status every second</strong> to check if a LoRa Packet has been received.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L126-L136">(See this)</a></p>
+<p><strong>UPDATE:</strong> DIO1 has been implemented with GPIO Interrupt, this section shall be updated shortly</p>
 </li>
 <li>
 <p><strong>BUSY</strong>: Instead of reading this pin to check if SX1262 is busy, we <strong>sleep 10 milliseconds</strong>.</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200">(See this)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L171-L182">(See this)</a></p>
+<p><strong>UPDATE:</strong> BUSY has been implemented with GPIO Input, this section shall be updated shortly</p>
 </li>
 <li>
 <p><strong>NRESET</strong>: To reset the SX1262 module, we <strong>manually restart our NuttX gadget</strong>.</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L149-L169">(See this)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L149-L169">(See this)</a></p>
 </li>
 </ul>
 <p>These sneaky hacks will need to be fixed by calling the GPIO Interface.</p>
 <p><em>What needs to be fixed for GPIO?</em></p>
+<p><strong>UPDATE:</strong> GPIO Interfaces have been implemented, this section shall be updated shortly</p>
 <p>We need to mod these functions to call the <strong>NuttX GPIO Interface</strong>…</p>
 <ol>
 <li>
-<p>Initialise the GPIO Pins: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L65-L77"><strong>SX126xIoInit</strong></a></p>
+<p>Initialise the GPIO Pins: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L65-L77"><strong>SX126xIoInit</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-spi-functions">(Similar to BL602 IoT SDK)</a></p>
 </li>
 <li>
-<p>Register GPIO Interrupt Handler for DIO1: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L79-L91"><strong>SX126xIoIrqInit</strong></a></p>
+<p>Register GPIO Interrupt Handler for DIO1: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L79-L91"><strong>SX126xIoIrqInit</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#appendix-bl602-gpio-interrupts">(Similar to BL602 IoT SDK)</a></p>
 </li>
 <li>
-<p>Reset SX1262 via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L149-L169"><strong>SX126xReset</strong></a></p>
+<p>Reset SX1262 via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L149-L169"><strong>SX126xReset</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>void SX126xReset(void) {
     //  TODO: Set Reset pin to Low
     //  rc = bl_gpio_output_set(SX126X_NRESET, 1);
@@ -1264,8 +1267,8 @@ spi rx:
     DelayMs(6);
 }</code></pre></div></li>
 <li>
-<p>Check SX1262 Busy State via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200"><strong>SX126xWaitOnBusy</strong></a></p>
-<p>(<strong>SX126xWaitOnBusy</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L133-L142"><strong>SX126xCheckDeviceReady</strong></a>, which wakes up SX1262 before checking if SX1262 is busy)</p>
+<p>Check SX1262 Busy State via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L171-L182"><strong>SX126xWaitOnBusy</strong></a></p>
+<p>(<strong>SX126xWaitOnBusy</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L133-L142"><strong>SX126xCheckDeviceReady</strong></a>, which wakes up SX1262 before checking if SX1262 is busy)</p>
 <div class="example-wrap"><pre class="language-c"><code>void SX126xWaitOnBusy(void) {
   //  TODO: Fix the GPIO check for busy state.
   //  while( bl_gpio_input_get_value( SX126X_BUSY_PIN ) == 1 );
@@ -1274,7 +1277,7 @@ spi rx:
   usleep(10 * 1000);
 }</code></pre></div></li>
 <li>
-<p>Get DIO1 Pin State: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L337-L344"><strong>SX126xGetDio1PinState</strong></a></p>
+<p>Get DIO1 Pin State: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L337-L344"><strong>SX126xGetDio1PinState</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>uint32_t SX126xGetDio1PinState(void) {    
   //  TODO: Read and return DIO1 Pin State
   //  return bl_gpio_input_get_value( SX126X_DIO1 );
