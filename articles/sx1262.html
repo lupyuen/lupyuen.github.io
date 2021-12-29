@@ -1477,7 +1477,7 @@ void *process_dio1(void *arg) {
 }</code></pre></div>
 <p>(<strong>SX126xWaitOnBusy</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L133-L142"><strong>SX126xCheckDeviceReady</strong></a>, which wakes up SX1262 before checking if SX1262 is busy)</p>
 <p>Earlier we talked about the Event Queue, let’s dive into the NimBLE Porting Layer.</p>
-<p><img src="https://lupyuen.github.io/images/usb-handler.jpg" alt="Multithreading with NimBLE Porting Layer" /></p>
+<p><img src="https://lupyuen.github.io/images/sx1262-handler.jpg" alt="Multithreading with NimBLE Porting Layer" /></p>
 <h1 id="multithreading-with-nimble-porting-layer" class="section-header"><a href="#multithreading-with-nimble-porting-layer">9 Multithreading with NimBLE Porting Layer</a></h1>
 <p>Our SX1262 Library was designed for <strong>Multithreading</strong> by calling the open-source <strong>NimBLE Porting Layer</strong>…</p>
 <ul>
@@ -1494,6 +1494,7 @@ void *process_dio1(void *arg) {
 <li><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>lupyuen/nimble-porting-nuttx</strong></a></li>
 </ul>
 <p><em>How will we receive LoRa Messages with GPIO Interrupts?</em></p>
+<p>According to the pic above…</p>
 <ol>
 <li>
 <p>When SX1262 receives a LoRa Message, it triggers a <strong>GPIO Interrupt</strong> on Pin DIO1</p>
@@ -1502,15 +1503,25 @@ void *process_dio1(void *arg) {
 <p>In the previous chapter we started a <strong>Background Thread</strong> that waits for GPIO Interrupts and <strong>adds an Event</strong> to our Event Queue</p>
 </li>
 <li>
-<p>Our <strong>Foreground Thread</strong> runs an <strong>Event Loop</strong> that handles every Event in our Event Queue</p>
+<p>In our NuttX App, the <strong>Foreground Thread</strong> runs an <strong>Event Loop</strong> that handles every Event in our Event Queue. And processes the received message.</p>
 </li>
 </ol>
 <p>Let’s look at the implementation of NimBLE Porting Layer for the <strong>new SX1262 Library that will support LoRaWAN</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#appendix-previous-sx1262-library">(See this for the old SX1262 Library)</a></p>
 <h2 id="event-queue" class="section-header"><a href="#event-queue">9.1 Event Queue</a></h2>
-<p>TODO</p>
-<p>All Callout Timers and GPIO Interrupts</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L901-L916">sx126x-nuttx.c</a></p>
+<p><em>What Events will be added to our Event Queue?</em>_</p>
+<p>Our Event Queue will have <strong>two types of Events</strong>…</p>
+<ol>
+<li>
+<p><strong>GPIO Interrupt</strong>: Triggered via DIO1 when SX1262 has transmitted or received a LoRa Message</p>
+</li>
+<li>
+<p><strong>Timer Events</strong>: All Timers for LoRa and LoRaWAN will insert Events into our Event Queue upon timeout</p>
+</li>
+</ol>
+<p>All Events are handled <strong>First In First Out</strong> by our Event Loop.</p>
+<p><em>How do we create the Event Queue?</em></p>
+<p>Our SX1262 Library <strong>creates the Event Queue</strong> by calling NimBLE Porting Layer: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L901-L916">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Event Queue containing Events to be processed. Exposed to NuttX App for Event Loop.
 struct ble_npl_eventq event_queue;
 
@@ -1523,7 +1534,7 @@ static void init_event_queue(void) {
   if (is_event_queue_initialised) { return; }
   is_event_queue_initialised = true;
 
-  //  Init the Event Queue
+  //  Init the Event Queue by calling NimBLE Porting Queue
   ble_npl_eventq_init(&amp;event_queue);
 }</code></pre></div><h2 id="event-loop" class="section-header"><a href="#event-loop">9.2 Event Loop</a></h2>
 <p>TODO</p>
