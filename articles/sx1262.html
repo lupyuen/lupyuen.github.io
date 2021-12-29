@@ -1203,15 +1203,15 @@ spi rx:
 <p>Our SX1262 Library needs a <strong>GPIO Interface</strong> to control these <strong>SX1262 Pins</strong>…</p>
 <ul>
 <li>
-<p><strong>DIO1</strong> (/dev/gpio2): Used by SX1262 to signal that a LoRa Packet has been transmitted or received</p>
+<p><strong>DIO1</strong> (/dev/gpio2): GPIO Interrupt used by SX1262 to signal that a LoRa Packet has been transmitted or received</p>
 <p>(DIO1 shifts from Low to High when that happens)</p>
 </li>
 <li>
-<p><strong>BUSY</strong> (/dev/gpio0): Tells us whether SX1262 is busy</p>
+<p><strong>BUSY</strong> (/dev/gpio0): GPIO Input that tells us whether SX1262 is busy</p>
 <p>(BUSY is High when SX1262 is busy)</p>
 </li>
 <li>
-<p><strong>NRESET</strong>: Toggled to reset the SX1262 module</p>
+<p><strong>NRESET</strong>: GPIO Output that is toggled to reset the SX1262 module</p>
 </li>
 </ul>
 <p>But the current SX1262 Library <strong>doesn’t use these pins yet</strong>.</p>
