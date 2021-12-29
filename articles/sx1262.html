@@ -1237,17 +1237,181 @@ spi rx:
 </ul>
 <h2 id="initialise-gpio" class="section-header"><a href="#initialise-gpio">8.1 Initialise GPIO</a></h2>
 <p>TODO</p>
-<p>Initialise the GPIO Pins: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L65-L77"><strong>SX126xIoInit</strong></a></p>
-<h2 id="check-busy-state" class="section-header"><a href="#check-busy-state">8.2 Check Busy State</a></h2>
+<p>Initialise the GPIO Pins: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L75-L94"><strong>SX126xIoInit</strong></a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
+/// Note: This is different from the Reference Implementation,
+/// which initialises the GPIO Pins and SPI Port at startup.
+void SX126xIoInit( void )
+{
+    _info(&quot;SX126xIoInit\n&quot;);
+
+    //  Init the Event Queue if not initialised. 
+    //  TimerInit is called before SX126xIoInit, 
+    //  so the Event Queue should already be initialised.
+    init_event_queue();
+
+    //  Init GPIO Pins. Event Queue must be initialised before this.
+    int rc = init_gpio();
+    assert(rc == 0);
+
+    //  Init SPI Bus
+    rc = init_spi();
+    assert(rc == 0);
+}</code></pre></div>
 <p>TODO</p>
-<p>Check SX1262 Busy State via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L171-L182"><strong>SX126xWaitOnBusy</strong></a></p>
-<p>(<strong>SX126xWaitOnBusy</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x.c#L133-L142"><strong>SX126xCheckDeviceReady</strong></a>, which wakes up SX1262 before checking if SX1262 is busy)</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L725-L780">sx126x-nuttx.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// SX1262 Busy Pin (GPIO Input)
+static int busy = 0;
+
+/// SX1262 DIO1 Pin (GPIO Interrupt)
+static int dio1 = 0;
+
+/// Init the GPIO Pins. Return 0 on success.
+static int init_gpio(void) {
+    puts(&quot;init_gpio&quot;);
+
+    //  Open GPIO Input for SX1262 Busy Pin
+    busy = open(&quot;/dev/gpio0&quot;, O_RDWR);
+    assert(busy &gt; 0);
+
+    //  Get SX1262 Busy Pin Type
+    enum gpio_pintype_e pintype;
+    int ret = ioctl(busy, GPIOC_PINTYPE, (unsigned long)((uintptr_t)&amp;pintype));
+    assert(ret &gt;= 0);
+
+    //  Verify that SX1262 Busy Pin is GPIO Input (not GPIO Output or GPIO Interrupt)
+    assert(pintype == GPIO_INPUT_PIN);  //  No pullup / pulldown
+
+    //  Open GPIO Interrupt for SX1262 DIO1 Pin
+    dio1 = open(&quot;/dev/gpio2&quot;, O_RDWR);
+    assert(dio1 &gt; 0);
+
+    //  Get SX1262 DIO1 Pin Type
+    ret = ioctl(dio1, GPIOC_PINTYPE, (unsigned long)((uintptr_t)&amp;pintype));
+    assert(ret &gt;= 0);
+    printf(&quot;DIO1 pintype before=%d\n&quot;, pintype);
+
+    //  Verify that SX1262 DIO1 Pin is GPIO Interrupt (not GPIO Input or GPIO Output)
+    assert(pintype == GPIO_INTERRUPT_PIN);
+
+    //  Change DIO1 Pin to Trigger GPIO Interrupt on Rising Edge
+    //  TODO: Crashes at ioexpander/gpio.c (line 544) because change failed apparently
+    puts(&quot;init_gpio: change DIO1 to Trigger GPIO Interrupt on Rising Edge&quot;);
+    ret = ioctl(dio1, GPIOC_SETPINTYPE, (unsigned long) GPIO_INTERRUPT_RISING_PIN);
+    assert(ret &gt;= 0);
+
+    //  Set SX1262 DIO1 Pin Type to GPIO Interrupt on Rising Edge
+    ret = ioctl(dio1, GPIOC_PINTYPE, (unsigned long)((uintptr_t)&amp;pintype));
+    assert(ret &gt;= 0);
+    printf(&quot;DIO1 pintype after=%d\n&quot;, pintype);
+
+    //  Verify that SX1262 DIO1 Pin is GPIO Interrupt on Rising Edge
+    //  TODO: This fails because the Pin Type remains as GPIO_INTERRUPT_PIN
+    //  assert(pintype == GPIO_INTERRUPT_RISING_PIN);  //  Trigger interrupt on rising edge
+
+    //  Init the Background Thread Attributes
+    static pthread_attr_t attr;
+    ret = pthread_attr_init(&amp;attr);
+    assert(ret == 0);
+
+    //  Start the Background Thread to process DIO1 interrupts
+    puts(&quot;Starting process_dio1&quot;);
+    static pthread_t thread;
+    ret = pthread_create(&amp;thread, &amp;attr, process_dio1, 0);
+    assert(ret == 0);
+
+    return 0;
+}</code></pre></div><h2 id="check-busy-state" class="section-header"><a href="#check-busy-state">8.2 Check Busy State</a></h2>
+<p>TODO</p>
+<p>Check SX1262 Busy State via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200"><strong>SX126xWaitOnBusy</strong></a></p>
+<div class="example-wrap"><pre class="language-c"><code>void SX126xWaitOnBusy( void ) {
+    _info(&quot;SX126xWaitOnBusy\n&quot;);
+    assert(busy &gt; 0);
+
+    //  Loop until Busy Pin is Low
+    for (;;) {
+        //  Read Busy Pin
+        bool invalue;
+        int ret = ioctl(busy, GPIOC_READ, (unsigned long)((uintptr_t)&amp;invalue));
+        assert(ret &gt;= 0);
+
+        //  Exit if Busy Pin is Low
+        if (invalue == 0) { break; }
+    }
+}</code></pre></div>
+<p>(<strong>SX126xWaitOnBusy</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L133-L142"><strong>SX126xCheckDeviceReady</strong></a>, which wakes up SX1262 before checking if SX1262 is busy)</p>
 <h2 id="start-dio1-thread" class="section-header"><a href="#start-dio1-thread">8.3 Start DIO1 Thread</a></h2>
 <p>TODO</p>
-<p>Register GPIO Interrupt Handler for DIO1: <a href="https://github.com/lupyuen/lora-sx1262/blob/nuttx/src/sx126x-nuttx.c#L79-L91"><strong>SX126xIoIrqInit</strong></a></p>
+<p>Register GPIO Interrupt Handler for DIO1</p>
 <h2 id="handle-dio1-interrupt" class="section-header"><a href="#handle-dio1-interrupt">8.4 Handle DIO1 Interrupt</a></h2>
 <p>TODO</p>
-<h2 id="check-dio1-state" class="section-header"><a href="#check-dio1-state">8.5 Check DIO1 State</a></h2>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L834-L896">sx126x-nuttx.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Event Queue containing Events to be processed
+struct ble_npl_eventq event_queue;
+
+/// Handle DIO1 Interrupt by adding to Event Queue
+void *process_dio1(void *arg) {
+    assert(dio1 &gt; 0);
+    puts(&quot;process_dio1 started&quot;);
+
+    //  Define the DIO1 Interrupt Event
+    static struct ble_npl_event ev;
+    ble_npl_event_init(   //  Init the Event for...
+        &amp;ev,              //  Event
+        RadioOnDioIrq,    //  Event Handler Function
+        NULL              //  Argument to be passed to Event Handler
+    );
+    printf(&quot;process_dio1: event=%p\n&quot;, &amp;ev);
+
+    //  Define the signal
+    #define SIG_DIO1 1
+    struct sigevent notify;
+    notify.sigev_notify = SIGEV_SIGNAL;
+    notify.sigev_signo  = SIG_DIO1;
+
+    //  Set up to receive signal from GPIO Interrupt (DIO1 rising edge)
+    int ret = ioctl(dio1, GPIOC_REGISTER, (unsigned long)&amp;notify);
+    assert(ret &gt;= 0);
+
+    //  Add the signal to the Signal Set
+    sigset_t set;
+    sigemptyset(&amp;set);
+    sigaddset(&amp;set, SIG_DIO1);
+
+    //  Loop forever waiting for the signal (DIO1 rising edge)
+    for (;;) {
+        //  Read the pin value
+        bool invalue;
+        ret = ioctl(dio1, GPIOC_READ, (unsigned long)((uintptr_t)&amp;invalue));
+        assert(ret &gt;= 0);
+        _info(&quot;DIO1 before=%u\n&quot;, (unsigned int)invalue);
+
+        //  Wait up to 60 seconds for the Signal Set
+        struct timespec ts;
+        ts.tv_sec  = 60;
+        ts.tv_nsec = 0;
+        ret = sigtimedwait(&amp;set, NULL, &amp;ts);
+
+        if (ret &gt;= 0) {
+            //  We were signalled. Add the DIO1 Interrupt Event to the Event Queue.
+            puts(&quot;DIO1 add event&quot;);
+            ble_npl_eventq_put(&amp;event_queue, &amp;ev);
+        } else {
+            //  We were not signalled
+            int errcode = errno;
+            if (errcode == EAGAIN) { puts(&quot;DIO1 timeout&quot;); }
+            else { fprintf(stderr, &quot;ERROR: Failed to wait signal %d: %d\n&quot;, SIG_DIO1, errcode); return NULL; }
+        }
+
+        //  Re-read the pin value
+        ret = ioctl(dio1, GPIOC_READ, (unsigned long)((uintptr_t)&amp;invalue));
+        assert(ret &gt;= 0);
+        _info(&quot;DIO1 after=%u\n&quot;, (unsigned int)invalue);
+    }
+
+    ////ioctl(dio1, GPIOC_UNREGISTER, 0);
+    return NULL;
+}</code></pre></div><h2 id="check-dio1-state" class="section-header"><a href="#check-dio1-state">8.5 Check DIO1 State</a></h2>
 <p>TODO</p>
 <p>Get DIO1 Pin State: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L355-L362"><strong>SX126xGetDio1PinState</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>uint32_t SX126xGetDio1PinState(void) {    
@@ -1273,8 +1437,6 @@ spi rx:
 <ul>
 <li><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>lupyuen/nimble-porting-nuttx</strong></a></li>
 </ul>
-<h2 id="event-queue" class="section-header"><a href="#event-queue">9.1 Event Queue</a></h2>
-<p>TODO</p>
 <p><em>How will we receive LoRa Messages with GPIO Interrupts?</em></p>
 <p><strong>UPDATE:</strong> NimBLE Porting Layer has been implemented, this section shall be updated shortly</p>
 <p>After we have implemented <strong>GPIO Interrupts</strong> in our SX1262 Library, this is how we’ll <strong>receive LoRa Messages</strong> without polling (see pic above)…</p>
@@ -1292,8 +1454,72 @@ spi rx:
 <p>Our <strong>Background Thread</strong> removes the Event from the Event Queue and calls <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a> to process the received LoRa Message</p>
 </li>
 </ol>
-<h2 id="event-loop" class="section-header"><a href="#event-loop">9.2 Event Loop</a></h2>
+<h2 id="event-queue" class="section-header"><a href="#event-queue">9.1 Event Queue</a></h2>
 <p>TODO</p>
+<p>All Callout Timers and GPIO Interrupts</p>
+<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L901-L916">sx126x-nuttx.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Event Queue containing Events to be processed. Exposed to NuttX App for Event Loop.
+struct ble_npl_eventq event_queue;
+
+/// True if Event Queue has been initialised
+static bool is_event_queue_initialised = false;
+
+/// Init the Event Queue
+static void init_event_queue(void) {
+    //  Init only once
+    if (is_event_queue_initialised) { return; }
+    is_event_queue_initialised = true;
+    puts(&quot;init_event_queue&quot;);
+
+    //  Init the Event Queue
+    ble_npl_eventq_init(&amp;event_queue);
+}</code></pre></div><h2 id="event-loop" class="section-header"><a href="#event-loop">9.2 Event Loop</a></h2>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L611-L654">lorawan_test_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Event Loop that dequeues Events from the Event Queue and processes the Events
+static void handle_event_queue(void *arg) {
+    puts(&quot;handle_event_queue&quot;);
+
+    //  Loop forever handling Events from the Event Queue
+    for (;;) {
+        //  Get the next Event from the Event Queue
+        struct ble_npl_event *ev = ble_npl_eventq_get(
+            &amp;event_queue,         //  Event Queue
+            BLE_NPL_TIME_FOREVER  //  No Timeout (Wait forever for event)
+        );
+
+        //  If no Event due to timeout, wait for next Event
+        if (ev == NULL) { printf(&quot;.&quot;); continue; }
+        printf(&quot;handle_event_queue: ev=%p\n&quot;, ev);
+
+        //  Remove the Event from the Event Queue
+        ble_npl_eventq_remove(&amp;event_queue, ev);
+
+        //  Trigger the Event Handler Function (handle_event)
+        ble_npl_event_run(ev);
+
+        // Processes the LoRaMac events
+        LmHandlerProcess( );
+
+        // If we have joined the network, do the uplink
+        if (!LmHandlerIsBusy( )) {
+            UplinkProcess( );
+        }
+
+        CRITICAL_SECTION_BEGIN( );
+        if( IsMacProcessPending == 1 )
+        {
+            // Clear flag and prevent MCU to go into low power modes.
+            IsMacProcessPending = 0;
+        }
+        else
+        {
+            //  The MCU wakes up through events
+            //  TODO: BoardLowPowerHandler( );
+        }
+        CRITICAL_SECTION_END( );
+    }
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
@@ -1893,7 +2119,7 @@ nsh&gt;</code></pre></div>
   //  Interrupt not fired yet
   IrqFired = false;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L376-L395">(<strong>TimerInit</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L384-L405">(<strong>TimerInit</strong> is defined here)</a></p>
 <h2 id="radiosetchannel-set-lora-frequency" class="section-header"><a href="#radiosetchannel-set-lora-frequency">14.2 RadioSetChannel: Set LoRa Frequency</a></h2>
 <p><strong>RadioSetChannel</strong> sets the LoRa Frequency: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L599-L604">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetChannel( uint32_t freq ) {
@@ -2182,7 +2408,7 @@ nsh&gt;</code></pre></div>
   //  Start Transmit Timer
   TimerStart2( &amp;TxTimeoutTimer, TxTimeout );
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L465-L490">(<strong>TimerStart2</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L466-L491">(<strong>TimerStart2</strong> is defined here)</a></p>
 <p><strong>SX126xSendPayload</strong> is defined below: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L162-L166">sx126x.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>///  Send message payload
 void SX126xSendPayload( uint8_t *payload, uint8_t size, uint32_t timeout ) {
@@ -2238,7 +2464,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
   if( timeout != 0 ) {
     TimerStart2( &amp;RxTimeoutTimer, timeout );
   }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L465-L490">(<strong>TimerStart2</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L466-L491">(<strong>TimerStart2</strong> is defined here)</a></p>
 <p>Now we begin to <strong>receive a LoRa Message</strong> continuously, or until a timeout occurs…</p>
 <div class="example-wrap"><pre class="language-c"><code>  if( RxContinuous == true ) {
     //  Receive continuously
@@ -2346,7 +2572,7 @@ void RadioIrqProcess( void ) {
         RadioEvents.TxDone( );
       }
     }</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L397-L409">(<strong>TimerStop</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L407-L419">(<strong>TimerStop</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L140-L161">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p><strong>TxDone</strong> points to the <strong>on_tx_done</strong> Callback Function that we’ve seen earlier.</p>
 <h3 id="receive-done" class="section-header"><a href="#receive-done">14.7.2 Receive Done</a></h3>
