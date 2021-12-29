@@ -91,7 +91,7 @@
 <li><a href="#initialise-gpio">8.1 Initialise GPIO</a><ul></ul></li>
 <li><a href="#start-dio1-thread">8.2 Start DIO1 Thread</a><ul></ul></li>
 <li><a href="#handle-dio1-interrupt">8.3 Handle DIO1 Interrupt</a><ul></ul></li>
-<li><a href="#check-dio1-state">8.4 Check DIO1 State</a><ul></ul></li>
+<li><a href="#read-dio1-state">8.4 Read DIO1 State</a><ul></ul></li>
 <li><a href="#check-busy-state">8.5 Check Busy State</a><ul></ul></li></ul></li>
 <li><a href="#multithreading-with-nimble-porting-layer">9 Multithreading with NimBLE Porting Layer</a><ul>
 <li><a href="#event-queue">9.1 Event Queue</a><ul></ul></li>
@@ -1438,20 +1438,25 @@ void *process_dio1(void *arg) {
 <p>Finally this loops back perpetually, awaiting the next GPIO Interrupt (Signal) or timeout.</p>
 <p>That’s it for the Background Thread! We don’t do much here, we do all the work in the Event Loop.</p>
 <p>(Which is probably safer for Multithreading)</p>
-<h2 id="check-dio1-state" class="section-header"><a href="#check-dio1-state">8.4 Check DIO1 State</a></h2>
-<p>TODO</p>
-<p>Get DIO1 Pin State: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L355-L362"><strong>SX126xGetDio1PinState</strong></a></p>
-<div class="example-wrap"><pre class="language-c"><code>uint32_t SX126xGetDio1PinState(void) {    
-  //  TODO: Read and return DIO1 Pin State
-  //  return bl_gpio_input_get_value( SX126X_DIO1 );
+<h2 id="read-dio1-state" class="section-header"><a href="#read-dio1-state">8.4 Read DIO1 State</a></h2>
+<p>Our SX1262 Library calls this function to read the <strong>DIO1 Pin State</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L349-L361">sx126x-nuttx.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>uint32_t SX126xGetDio1PinState( void ) {
+  //  Return the value of DIO1 Pin
+  assert(dio1 &gt; 0);
 
-  //  Meanwhile we always return 0
-  return 0;
-}</code></pre></div>
-<p>TODO</p>
-<h2 id="check-busy-state" class="section-header"><a href="#check-busy-state">8.5 Check Busy State</a></h2>
-<p>TODO</p>
-<p>Check SX1262 Busy State via GPIO: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200"><strong>SX126xWaitOnBusy</strong></a></p>
+  //  Read the GPIO Input
+  bool invalue;
+  int ret = ioctl(  //  Execute a GPIO Command...
+    dio1,           //  GPIO Descriptor
+    GPIOC_READ,     //  Read GPIO Input
+    (unsigned long)((uintptr_t) &amp;invalue)  //  Returned Value
+  );
+  assert(ret &gt;= 0);
+
+  //  Return the value: 1 or 0
+  return invalue ? 1 : 0;
+}</code></pre></div><h2 id="check-busy-state" class="section-header"><a href="#check-busy-state">8.5 Check Busy State</a></h2>
+<p>The Busy Pin goes High when SX1262 is busy. We wait for SX1262 by reading the GPIO Input for the Busy Pin: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void SX126xWaitOnBusy( void ) {
   assert(busy &gt; 0);
 
@@ -1471,6 +1476,7 @@ void *process_dio1(void *arg) {
   }
 }</code></pre></div>
 <p>(<strong>SX126xWaitOnBusy</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L133-L142"><strong>SX126xCheckDeviceReady</strong></a>, which wakes up SX1262 before checking if SX1262 is busy)</p>
+<p>Earlier we talked about the Event Queue, let’s dive into the NimBLE Porting Layer.</p>
 <p><img src="https://lupyuen.github.io/images/usb-handler.jpg" alt="Multithreading with NimBLE Porting Layer" /></p>
 <h1 id="multithreading-with-nimble-porting-layer" class="section-header"><a href="#multithreading-with-nimble-porting-layer">9 Multithreading with NimBLE Porting Layer</a></h1>
 <p>Our SX1262 Library was designed for <strong>Multithreading</strong> by calling the open-source <strong>NimBLE Porting Layer</strong>…</p>
