@@ -199,7 +199,7 @@
 rm -r libsx1262
 git rm -r libsx1262
 git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx1262</code></pre></div>
-<p>(Note that we’re using the <strong>“nuttx”</strong> branch of the “lora_sx1262” repo)</p>
+<p>Note that we’re using the older <strong>“nuttx”</strong> branch of the “lora_sx1262” repo, which <strong>doesn’t use GPIO Interface and NimBLE Porting Layer</strong>.</p>
 <h2 id="library-vs-driver" class="section-header"><a href="#library-vs-driver">1.3 Library vs Driver</a></h2>
 <p><em>NuttX Libraries vs Drivers… What’s the difference?</em></p>
 <p>Our LoRa SX1262 code is initially packaged as a <strong>NuttX Library</strong> (instead of NuttX Driver) because…</p>
@@ -380,7 +380,9 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div></li>
+git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+<p>Note that we’re using the older <strong>“sx1262”</strong> branch of the NuttX OS and NuttX Apps repos, which <strong>don’t use GPIO Interface and NimBLE Porting Layer</strong>.</p>
+</li>
 <li>
 <p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L100-L101"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define READ_REGISTERS</code></pre></div></li>
@@ -1199,6 +1201,7 @@ spi rx:
 <p>The <strong>64-byte LoRa Message</strong> received appears in the <strong>SPI Receive Log</strong> above: <code>48 65 6c 6c 6f...</code></p>
 <p><a href="https://github.com/lupyuen/wisblock-lora-transmitter/blob/main/src/main.cpp#L120-L144">(“<code>48 65 6c 6c 6f...</code>” is “<code>Hello</code>” followed by 0, 1, 2, …)</a></p>
 <h1 id="gpio-interface" class="section-header"><a href="#gpio-interface">8 GPIO Interface</a></h1>
+<p><strong>UPDATE:</strong> GPIO Interfaces have been implemented, this section shall be updated shortly</p>
 <p><em>Besides SPI, what Interfaces do we need to control the SX1262 Transceiver?</em></p>
 <p>Our SX1262 Library needs a <strong>GPIO Interface</strong> to control these <strong>SX1262 Pins</strong>…</p>
 <ul>
@@ -1284,6 +1287,7 @@ spi rx:
 <p>Here’s how we’ll do multithreading…</p>
 <p><img src="https://lupyuen.github.io/images/usb-handler.jpg" alt="Multithreading with NimBLE Porting Layer" /></p>
 <h1 id="multithreading-with-nimble-porting-layer" class="section-header"><a href="#multithreading-with-nimble-porting-layer">9 Multithreading with NimBLE Porting Layer</a></h1>
+<p><strong>UPDATE:</strong> NimBLE Porting Layer has been implemented, this section shall be updated shortly</p>
 <p>Our SX1262 Library was designed for <strong>Multithreading</strong> by calling the open-source <strong>NimBLE Porting Layer</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer"><strong>“Multitask with NimBLE Porting Layer”</strong></a></li>
@@ -1352,7 +1356,7 @@ static void create_task(void) {
 <p>We’ll port Semtech’s <strong>Reference LoRaWAN Stack</strong> to NuttX…</p>
 <ul>
 <li>
-<p><a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/mac"><strong>Lora-net/LoRaMac-node/src/mac</strong></a></p>
+<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>lupyuen/LoRaMac-node-nuttx</strong></a></p>
 </li>
 <li>
 <p><a href="https://twitter.com/MisterTechBlog/status/1473593455699841027"><strong>Follow the updates on Twitter</strong></a></p>
