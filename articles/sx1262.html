@@ -1242,10 +1242,7 @@ spi rx:
 <div class="example-wrap"><pre class="language-c"><code>/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
 /// Note: This is different from the Reference Implementation,
 /// which initialises the GPIO Pins and SPI Port at startup.
-void SX126xIoInit( void )
-{
-  _info(&quot;SX126xIoInit\n&quot;);
-
+void SX126xIoInit( void ) {
   //  Init the Event Queue if not initialised. 
   //  TimerInit is called before SX126xIoInit, 
   //  so the Event Queue should already be initialised.
@@ -1314,7 +1311,7 @@ static int init_gpio(void) {
   );
   assert(ret &gt;= 0);</code></pre></div>
 <p>(This crashes NuttX with an assertion failure, so we have disabled the assertion. More about this in the Appendix)</p>
-<p>TODO</p>
+<p>We fetch the <strong>GPIO Pin Type</strong> and verify that it’s GPIO Interrupt Triggered on Rising Edge…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get SX1262 DIO1 Pin Type again
   ret = ioctl(      //  Execute a GPIO Command...
     dio1,           //  GPIO Descriptor
@@ -1330,13 +1327,13 @@ static int init_gpio(void) {
 
   //  Omitted: Start the Background Thread to process DIO1 interrupts
   ...</code></pre></div>
-<p>TODO</p>
-<p><em>Why did we verify the GPIO Pin Type? (Input / Output / Interrupt)</em></p>
-<p>TODO</p>
+<p>(But there’s a quirk in NuttX so we have disabled the assertion)</p>
+<p>In the next section we’ll create a <strong>Background Thread</strong> to handle the GPIO Interrupt.</p>
+<p><em>Why do we verify the GPIO Pin Types? (Input / Output / Interrupt)</em></p>
+<p>The GPIO Pin Names look awfully similar: <strong>/dev/gpio0</strong>, <strong>gpio1</strong>, <strong>gpio2</strong>, …</p>
+<p>It’s easy to <strong>mix up the GPIO Pins.</strong> Hence we verify the GPIO Pin Types to be sure that we got the right pin.</p>
 <h2 id="start-dio1-thread" class="section-header"><a href="#start-dio1-thread">8.2 Start DIO1 Thread</a></h2>
-<p>TODO</p>
-<p>Register GPIO Interrupt Handler for DIO1</p>
-<p><strong>init_gpio</strong> initialises the GPIO Pins like so: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L725-L780">sx126x-nuttx.c</a></p>
+<p>In the rest of <strong>init_gpio</strong> we create a <strong>Background Thread</strong> to handle GPIO Interrupts from DIO1: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L725-L780">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Init the GPIO Pins. Return 0 on success.
 static int init_gpio(void) {
   //  Omitted: Open GPIO Input for SX1262 Busy Pin
@@ -1347,17 +1344,17 @@ static int init_gpio(void) {
   static pthread_attr_t attr;
   ret = pthread_attr_init(&amp;attr);
   assert(ret == 0);</code></pre></div>
-<p>TODO</p>
+<p>After we have initialised the Thread Attributes, we <strong>create the Background Thread</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Start the Background Thread to process DIO1 interrupts
   static pthread_t thread;
-  ret = pthread_create(
-    &amp;thread, 
-    &amp;attr, 
-    process_dio1, 
-    0
+  ret = pthread_create(  //  Create a Background Thread
+    &amp;thread,             //  Returned Thread
+    &amp;attr,               //  Thread Attributes
+    process_dio1,        //  Function that will be executed by the thread
+    0                    //  Argument to pass to the thread
   );
   assert(ret == 0);</code></pre></div>
-<p>TODO</p>
+<p>Let’s look inside <strong>process_dio1</strong>, the function that will be executed by the thread.</p>
 <h2 id="handle-dio1-interrupt" class="section-header"><a href="#handle-dio1-interrupt">8.3 Handle DIO1 Interrupt</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L834-L896">sx126x-nuttx.c</a></p>
