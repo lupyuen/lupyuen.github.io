@@ -1530,11 +1530,12 @@ static bool is_event_queue_initialised = false;
 
 /// Init the Event Queue
 static void init_event_queue(void) {
+
   //  Init only once
   if (is_event_queue_initialised) { return; }
   is_event_queue_initialised = true;
 
-  //  Init the Event Queue by calling NimBLE Porting Queue
+  //  Init the Event Queue by calling NimBLE Porting Layer
   ble_npl_eventq_init(&amp;event_queue);
 }</code></pre></div><h2 id="event-loop" class="section-header"><a href="#event-loop">9.2 Event Loop</a></h2>
 <p>TODO</p>
@@ -1544,23 +1545,24 @@ static void handle_event_queue(void *arg) {
 
   //  Loop forever handling Events from the Event Queue
   for (;;) {
+
     //  Get the next Event from the Event Queue
     struct ble_npl_event *ev = ble_npl_eventq_get(
       &amp;event_queue,         //  Event Queue
       BLE_NPL_TIME_FOREVER  //  No Timeout (Wait forever for event)
-    );
-
-    //  If no Event due to timeout, wait for next Event
+    );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  If no Event due to timeout, wait for next Event
     if (ev == NULL) { printf(&quot;.&quot;); continue; }
     printf(&quot;handle_event_queue: ev=%p\n&quot;, ev);
 
     //  Remove the Event from the Event Queue
-    ble_npl_eventq_remove(&amp;event_queue, ev);
-
-    //  Trigger the Event Handler Function (handle_event)
-    ble_npl_event_run(ev);
-
-    //  For LoRaWAN: Processes the LoRaMac events
+    ble_npl_eventq_remove(&amp;event_queue, ev);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  Trigger the Event Handler Function (handle_event)
+    ble_npl_event_run(ev);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: Processes the LoRaMac events
     LmHandlerProcess( );
 
     //  For LoRaWAN: If we have joined the network, do the uplink
@@ -1570,19 +1572,17 @@ static void handle_event_queue(void *arg) {
 
     //  For LoRaWAN: Handle Low Power Mode
     CRITICAL_SECTION_BEGIN( );
-    if( IsMacProcessPending == 1 )
-    {
+    if( IsMacProcessPending == 1 ) {
       //  Clear flag and prevent MCU to go into low power modes.
       IsMacProcessPending = 0;
-    }
-    else
-    {
+    } else {
       //  The MCU wakes up through events
       //  TODO: BoardLowPowerHandler( );
     }
     CRITICAL_SECTION_END( );
   }
 }</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
