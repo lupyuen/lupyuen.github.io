@@ -1356,12 +1356,25 @@ static int init_gpio(void) {
   assert(ret == 0);</code></pre></div>
 <p>Let’s look inside <strong>process_dio1</strong>, the function that will be executed by the thread.</p>
 <h2 id="handle-dio1-interrupt" class="section-header"><a href="#handle-dio1-interrupt">8.3 Handle DIO1 Interrupt</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L834-L896">sx126x-nuttx.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/// Event Queue containing Events to be processed
-struct ble_npl_eventq event_queue;
-
-/// Handle DIO1 Interrupt by adding to Event Queue
+<p>We have created a <strong>Background Thread</strong> that will handle <strong>GPIO Interrupts from DIO1</strong>.  (Whenever a LoRa Packet is transmitted or received)</p>
+<p>The thread shall do this…</p>
+<ol>
+<li>
+<p>Define a <strong>NuttX Signal</strong> that will be signalled on GPIO Interrupt</p>
+</li>
+<li>
+<p><strong>Wait for the GPIO Interrupt (Signal)</strong> to be triggered by DIO1</p>
+</li>
+<li>
+<p><strong>Add an Event</strong> to the Event Queue</p>
+</li>
+<li>
+<p>Repeat forever</p>
+</li>
+</ol>
+<p>(Event Queue comes from NimBLE Porting Layer, explained in the next chapter)</p>
+<p>Below is the code for our <strong>Background Thread</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L834-L896">sx126x-nuttx.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Handle DIO1 Interrupt by adding to Event Queue
 void *process_dio1(void *arg) {
   assert(dio1 &gt; 0);
 
@@ -1372,13 +1385,14 @@ void *process_dio1(void *arg) {
     RadioOnDioIrq,     //  Event Handler Function
     NULL               //  Argument to be passed to Event Handler
   );</code></pre></div>
-<p>TODO</p>
+<p>The thread begins by defining the <strong>Event</strong> that will be added to the Event Queue.</p>
+<p>Next we define the <strong>NuttX Signal</strong> that will be signalled on GPIO Interrupt…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Define the signal
   #define SIG_DIO1 1
   struct sigevent notify;
   notify.sigev_notify = SIGEV_SIGNAL;
   notify.sigev_signo  = SIG_DIO1;</code></pre></div>
-<p>TODO</p>
+<p>We <strong>register the Signal</strong> that will be triggered on GPIO Interrupt…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set up to receive signal from GPIO Interrupt (DIO1 rising edge)
   int ret = ioctl(   //  Execute a GPIO Command...
     dio1,            //  GPIO Descriptor
@@ -1386,15 +1400,17 @@ void *process_dio1(void *arg) {
     (unsigned long) &amp;notify  //  Signal to be notified on GPIO Interrupt
   );
   assert(ret &gt;= 0);</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Add the signal to the Signal Set
+<p>Then we add the Signal to a <strong>Signal Set</strong> (which we shall await later)…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Create an empty Signal Set
   sigset_t set;
   sigemptyset(&amp;set);
+
+  //  Add the signal to the Signal Set
   sigaddset(
-    &amp;set, 
-    SIG_DIO1
+    &amp;set,     //  Signal Set
+    SIG_DIO1  //  Signal to be added
   );</code></pre></div>
-<p>TODO</p>
+<p>We loop forever. Inside the loop we <strong>await the Signal Set</strong> for up to 60 seconds…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Loop forever waiting for the signal (DIO1 rising edge)
   for (;;) {
 
@@ -1403,13 +1419,15 @@ void *process_dio1(void *arg) {
     ts.tv_sec  = 60;
     ts.tv_nsec = 0;
     ret = sigtimedwait(&amp;set, NULL, &amp;ts);</code></pre></div>
-<p>TODO</p>
+<p>(We should probably wait forever)</p>
+<p>If we were signalled (due to GPIO Interrupt), we <strong>add our Event</strong> to the Event Queue…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Were we signalled?
     if (ret &gt;= 0) {
       //  We were signalled. Add the DIO1 Interrupt Event to the Event Queue.
       puts(&quot;DIO1 add event&quot;);
       ble_npl_eventq_put(&amp;event_queue, &amp;ev);</code></pre></div>
-<p>TODO</p>
+<p>(Which gets handled by the Event Loop in the next chapter)</p>
+<p>If we <strong>weren’t signalled in 60 seconds</strong>, everything is hunky dory, just try again…</p>
 <div class="example-wrap"><pre class="language-c"><code>    } else {
       //  We were not signalled
       int errcode = errno;
@@ -1417,7 +1435,9 @@ void *process_dio1(void *arg) {
       else { fprintf(stderr, &quot;ERROR: Failed to wait signal %d: %d\n&quot;, SIG_DIO1, errcode); return NULL; }
     }
   }</code></pre></div>
-<p>TODO</p>
+<p>Finally this loops back perpetually, awaiting the next GPIO Interrupt (Signal) or timeout.</p>
+<p>That’s it for the Background Thread! We don’t do much here, we do all the work in the Event Loop.</p>
+<p>(Which is probably safer for Multithreading)</p>
 <h2 id="check-dio1-state" class="section-header"><a href="#check-dio1-state">8.4 Check DIO1 State</a></h2>
 <p>TODO</p>
 <p>Get DIO1 Pin State: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L355-L362"><strong>SX126xGetDio1PinState</strong></a></p>
