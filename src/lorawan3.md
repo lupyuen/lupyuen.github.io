@@ -161,6 +161,24 @@ TODO60
 
 [(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L100-L115)
 
+# Build
+
+TODO
+
+#LoRaWAN on #NuttX OS: Let's stub out the functions for Non-Volatile Memory and Real Time Clock ... And watch what happens 🌋
+
+TODO39
+
+![](https://lupyuen.github.io/images/lorawan3-build4a.png)
+
+[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c)
+
+#LoRaWAN builds OK on #NuttX OS! 🎉 ... Will it run? 🤔
+
+-   [__NuttX OS__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan)
+
+-   [__NuttX Apps__](https://github.com/lupyuen/incubator-nuttx-apps/tree/lorawan)
+
 # Join Network
 
 TODO
@@ -508,19 +526,3 @@ TODO42
 
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title2.jpg)
-
-#LoRaWAN on #NuttX OS: Let's stub out the functions for Non-Volatile Memory and Real Time Clock ... And watch what happens 🌋
-
-TODO39
-
-![](https://lupyuen.github.io/images/lorawan3-build4a.png)
-
-[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c)
-
-
-#LoRaWAN builds OK on #NuttX OS! 🎉 ... Will it run? 🤔
-
-[NuttX Apps](https://github.com/lupyuen/incubator-nuttx-apps/tree/lorawan)
-
-[NuttX OS](https://github.com/lupyuen/incubator-nuttx/tree/lorawan)
-
