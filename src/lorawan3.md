@@ -105,7 +105,41 @@ Our LoRa SX1262 Library assumes that the following __NuttX Devices__ are configu
 
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
 
-# Device EUI and App Key
+# LoRaWAN Objective
+
+_What shall we accomplish with LoRaWAN today?_
+
+We'll do the basic LoRaWAN use case on NuttX...
+
+-   Connect NuttX to the __LoRaWAN Network__
+
+-   Send a __Data Packet__ from NuttX to LoRaWAN
+
+Which works like this...
+
+TODO
+
+1.  NuttX sends a __Join Network Request__ to the LoRaWAN Gateway.
+
+    Inside the Join Network Request are...
+
+    __Device EUI:__ TODO
+
+    __Join EUI:__ TODO
+
+    __Nonce:__ TODO
+
+1.  LoRaWAN Gateway returns a __Join Network Response__
+
+1.  NuttX sends a __Data Packet__ to the LoRaWAN Network
+
+1.  NuttX uses an __App Key__ to sign the Join Network Request and the Data Packet
+
+(The App Key is stored inside NuttX, it's never exposed over the airwaves)
+
+Let's set the Device EUI, Join EUI and App Key.
+
+# Device EUI, Join EUI and App Key
 
 TODO
 
