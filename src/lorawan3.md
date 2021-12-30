@@ -129,6 +129,8 @@ For now we'll call this SPI Test Driver in our LoRa SX1262 Library.
 
 # Device EUI and App Key
 
+TODO
+
 LoRa Frequency and Sync Word are OK ... Let's fix the Device EUI and Join EUI for #LoRaWAN on #NuttX OS
 
 TODO55
@@ -161,6 +163,8 @@ TODO60
 
 # Join Network
 
+TODO
+
 Let's connect Apache #NuttX OS to a #LoRaWAN Gateway ... RAKwireless WisGate D4H with ChirpStack
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
@@ -185,6 +189,8 @@ TODO56
 
 # NimBLE Porting Layer
 
+TODO
+
 Our #NuttX App was waiting for the #LoRaWAN Join Request to be transmitted before receiving the Join Response ... But because we're polling SX1262, we missed the Join Response ... Let's fix this with the multithreading functions from NimBLE Porting Layer
 
 -   [__nimble-porting-nuttx__](https://github.com/lupyuen/nimble-porting-nuttx)
@@ -198,6 +204,8 @@ TODO57
 NimBLE Porting Layer is a portable library of Multithreading Functions ... We've used it for #LoRa on Linux and FreeRTOS ... Now we call it from Apache #NuttX OS
 
 # GPIO Interrupts
+
+TODO
 
 SX1262 will trigger a GPIO Interrupt on #NuttX OS when it receives a #LoRa Packet ... We wait for the GPIO Interrupt to be Signalled in a Background Thread
 
@@ -229,6 +237,8 @@ TODO48
 
 # Build NimBLE
 
+TODO
+
 To build NumBLE Porting Layer on #NuttX OS we need to enable: 1️⃣ POSIX Timers & Message Queues 2️⃣ Clock Monotonic 3️⃣ Work Queues 4️⃣ SIGEV_THHREAD
 
 -   [__nimble-porting-nuttx__](https://github.com/lupyuen/nimble-porting-nuttx)
@@ -243,6 +253,8 @@ TODO14
 
 # SX1262 Busy
 
+TODO
+
 Here's how we check the SX1262 Busy Pin on #NuttX OS ... By reading the GPIO Input
 
 TODO49
@@ -252,6 +264,8 @@ TODO49
 [(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L184-L199)
 
 # Event Loop
+
+TODO
 
 Here's our #LoRaWAN Event Loop for #NuttX OS ... Implemented with NimBLE Porting Library ... No more polling!
 
@@ -264,6 +278,8 @@ TODO58
 ![](https://lupyuen.github.io/images/lorawan3-run5a.png)
 
 # Nonce
+
+TODO
 
 Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway ... Which (silently) rejects the Join Request due to Duplicate Nonce ... Let's fix our Random Number Generator
 
@@ -300,6 +316,8 @@ TODO36
 
 # Random Number Generator
 
+TODO
+
 For #NuttX Random Number Generator, select the Entropy Pool ... To generate Strong Random Numbers for our #LoRaWAN Nonce
 
 TODO35
@@ -313,6 +331,8 @@ TODO52
 ![](https://lupyuen.github.io/images/lorawan3-nonce3a.png)
 
 # Logging
+
+TODO
 
 Our #NuttX App was too busy to receive the #LoRaWAN Join Response ... Let's disable the logging
 
@@ -339,6 +359,8 @@ TODO44
 [(Log)](https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89)
 
 # Message Size
+
+TODO
 
 Our #NuttX App sent an empty #LoRaWAN Message because our message is too long for LoRaWAN Data Rate 2 (max 11 bytes) ... Let's increase the Data Rate to 3
 
@@ -373,6 +395,8 @@ TODO45
 [(Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
 
 # Send Data
+
+TODO
 
 Here's how we send a #LoRaWAN Data Packet on #NuttX OS ... And validate the Packet Size before sending
 
@@ -460,6 +484,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: GPIO Issue
 
+TODO
+
 Switching a #NuttX GPIO Interrupt Pin to Trigger On Rising Edge ... Crashes with an Assertion Failure ... I'll submit a NuttX Issue, meanwhile I have disabled the assertion
 
 TODO50
@@ -469,6 +495,8 @@ TODO50
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547)
 
 # Appendix: Callout Issue
+
+TODO
 
 NimBLE Porting Layer doesn't work for multiple Callout Timers on #NuttX OS, unless we loop the thread ... Will submit a Pull Request to Apache NimBLE 👍
 
