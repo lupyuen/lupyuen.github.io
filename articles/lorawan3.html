@@ -67,8 +67,7 @@
     <nav id="TOC"><ul>
 <li><a href="#small-steps">1 Small Steps</a><ul>
 <li><a href="#lorawan-support">1.1 LoRaWAN Support</a><ul></ul></li>
-<li><a href="#lora-sx1262-library">1.2 LoRa SX1262 Library</a><ul></ul></li>
-<li><a href="#library-vs-driver">1.3 Library vs Driver</a><ul></ul></li></ul></li>
+<li><a href="#dependencies">1.2 Dependencies</a><ul></ul></li></ul></li>
 <li><a href="#device-eui-and-app-key">2 Device EUI and App Key</a><ul></ul></li>
 <li><a href="#build">3 Build</a><ul></ul></li>
 <li><a href="#join-network">4 Join Network</a><ul></ul></li>
@@ -101,87 +100,67 @@
 <p>(It will probably run on <strong>ESP32</strong>, since we’re calling standard NuttX Interfaces)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="small-steps" class="section-header"><a href="#small-steps">1 Small Steps</a></h1>
-<p>TODO</p>
-<ul>
-<li><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>LoRaMac-node-nuttx</strong></a></li>
-</ul>
-<p><em>So today we’ll build the NuttX Drivers for LoRa SX1262 and LoRaWAN?</em></p>
-<p>Not quite. Implementing LoRa AND LoRaWAN is a complex endeavour.</p>
-<p>Thus we break the implementation into small steps…</p>
-<ul>
-<li>
-<p>Today we do the <strong>SX1262 Library</strong> (top right)</p>
-</li>
-<li>
-<p>And we test with our <strong>LoRa App</strong> (top left)</p>
-</li>
-<li>
-<p>In the next article we’ll do the <strong>LoRaWAN Library</strong> and test with our <strong>LoRaWAN App</strong></p>
-</li>
-<li>
-<p>Eventually we shall wrap the SX1262 and LoRaWAN Libraries as <strong>NuttX Drivers</strong></p>
-<p>(Because that’s the proper design for NuttX)</p>
-</li>
-</ul>
-<h2 id="lorawan-support" class="section-header"><a href="#lorawan-support">1.1 LoRaWAN Support</a></h2>
-<p><em>Why is LoRaWAN so complex?</em></p>
-<p>LoRaWAN works <strong>slightly differently across the world regions</strong>, to comply with Local Wireless Regulations: Radio Frequency, Maximum Airtime (Duty Cycle), <a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">Listen Before Talk</a>, …</p>
-<p>Thus we should port <strong>Semtech’s LoRaWAN Stack</strong> to NuttX with <strong>minimal changes</strong>, in case of future updates. (Like for new regions)</p>
-<p>This also means that we should port <strong>Semtech’s SX1262 Driver</strong> to NuttX as-is, because of the dependencies between the LoRaWAN Stack and the SX1262 Driver.</p>
-<h2 id="lora-sx1262-library" class="section-header"><a href="#lora-sx1262-library">1.2 LoRa SX1262 Library</a></h2>
-<p><em>Where did the LoRa SX1262 code come from?</em></p>
-<p>Our LoRa SX1262 Library originated from <strong>Semtech’s Reference Implementation</strong> of SX1262 Driver (29 Mar 2021)…</p>
-<ul>
-<li><a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x"><strong>LoRaMac-node/radio/sx126x</strong></a></li>
-</ul>
-<p>Which we ported to <strong>Linux</strong> and <strong>BL602 IoT SDK</strong>…</p>
+<p>In the last article we created a <strong>LoRa Library for NuttX</strong> (top right) that works with <strong>Semtech SX1262 Transceiver</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>lupyuen/lora-sx1262 (lorawan branch)</strong></a></li>
 </ul>
-<p>And we’re porting now to <strong>NuttX</strong>.</p>
-<p>(Because porting Linux code to NuttX is straightforward)</p>
-<p><em>How did we create the LoRa SX1262 Library?</em></p>
-<p>We followed the steps below to create <strong>“nuttx/libs/libsx1262”</strong> by cloning a NuttX Library…</p>
+<p>Today we’ll create a <strong>LoRaWAN Library for NuttX</strong> (centre right)…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>lupyuen/LoRaMac-node-nuttx</strong></a></li>
+</ul>
+<p>That’s a near-identical fork of <strong>Semtech’s LoRaWAN Stack</strong> (dated 14 Dec 2021)…</p>
+<ul>
+<li><a href="https://github.com/Lora-net/LoRaMac-node"><strong>Lora-net/LoRaMac-node</strong></a></li>
+</ul>
+<h2 id="lorawan-support" class="section-header"><a href="#lorawan-support">1.1 LoRaWAN Support</a></h2>
+<p><em>Why did we fork Semtech’s LoRaWAN Stack? Why not build it specifically for NuttX?</em></p>
+<p>LoRaWAN works <strong>slightly differently across the world regions</strong>, to comply with Local Wireless Regulations: Radio Frequency, Maximum Airtime (Duty Cycle), <a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">Listen Before Talk</a>, …</p>
+<p>Thus we should port <strong>Semtech’s LoRaWAN Stack</strong> to NuttX with <strong>minimal changes</strong>, in case of future updates. (Like for new regions)</p>
+<p><em>How did we create the LoRaWAN Library?</em></p>
+<p>We followed the steps below to create <strong>“nuttx/libs/liblorawan”</strong> by cloning a NuttX Library…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sx1262#appendix-create-a-nuttx-library"><strong>“Create a NuttX Library”</strong></a></li>
 </ul>
-<p>Then we replaced the “libsx1262” folder by a <strong>Git Submodule</strong> that contains our LoRa SX1262 code… </p>
+<p>Then we replaced the “liblorawan” folder by a <strong>Git Submodule</strong> that contains our LoRaWAN code… </p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx/nuttx/libs
-rm -r libsx1262
-git rm -r libsx1262
-git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx1262</code></pre></div>
-<p>Note that we’re using the older <strong>“nuttx”</strong> branch of the “lora_sx1262” repo, which <a href="https://lupyuen.github.io/articles/sx1262#appendix-previous-sx1262-library"><strong>doesn’t use GPIO Interface and NimBLE Porting Layer</strong></a>. (And doesn’t support LoRaWAN)</p>
-<h2 id="library-vs-driver" class="section-header"><a href="#library-vs-driver">1.3 Library vs Driver</a></h2>
-<p><em>NuttX Libraries vs Drivers… What’s the difference?</em></p>
-<p>Our LoRa SX1262 code is initially packaged as a <strong>NuttX Library</strong> (instead of NuttX Driver) because…</p>
+rm -r liblorawan
+git rm -r liblorawan
+git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code></pre></div>
+<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx">(To add the LoRaWAN Library to your NuttX Project, see this)</a></p>
+<h2 id="dependencies" class="section-header"><a href="#dependencies">1.2 Dependencies</a></h2>
+<p>Our LoRaWAN Library should work on <strong>any NuttX platform</strong> (like ESP32), assuming that the following dependencies are installed…</p>
 <ul>
 <li>
-<p>NuttX Libraries are <strong>easier to code and troubleshoot</strong></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>lupyuen/lora-sx1262 (lorawan branch)</strong></a></p>
+<p>LoRa Library for Semtech SX1262 Transceiver</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262">(See this)</a></p>
 </li>
 <li>
-<p>NuttX Libraries may be called by <strong>NuttX Apps AND NuttX Drivers</strong></p>
-<p>(So we can test our library with a NuttX App)</p>
+<p><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>lupyuen/nimble-porting-nuttx</strong></a></p>
+<p>NimBLE Porting Layer multithreading library</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer">(See this)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf"><strong>spi_test_driver (/dev/spitest0)</strong></a></p>
+<p>SPI Test Driver</p>
+<p><a href="https://lupyuen.github.io/articles/spi2">(See this)</a></p>
 </li>
 </ul>
-<p>Eventually our LoRa SX1262 code shall be packaged as a <strong>NuttX Driver</strong>…</p>
+<p>Our LoRa SX1262 Library assumes that the following <strong>NuttX Devices</strong> are configured…</p>
 <ul>
 <li>
-<p>Our code shall run inside NuttX OS, which means…</p>
+<p><strong>/dev/gpio0</strong>: GPIO Input for SX1262 Busy Pin</p>
 </li>
 <li>
-<p>Our driver needs to expose an <strong>ioctl()</strong> interface to NuttX Apps</p>
-<p>(Which will be cumbersome to code)</p>
+<p><strong>/dev/gpio1</strong>: GPIO Output for SX1262 Chip Select</p>
+</li>
+<li>
+<p><strong>/dev/gpio2</strong>: GPIO Interrupt for SX1262 DIO1 Pin</p>
+</li>
+<li>
+<p><strong>/dev/spitest0</strong>: SPI Test Driver (see above)</p>
 </li>
 </ul>
-<p>Check out the <strong>ioctl()</strong> interface for the existing SX1276 Driver in NuttX: <a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/wireless/lpwan/sx127x/sx127x.c#L954-L1162"><strong>sx127x.c</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-plan2.jpg" alt="SPI Test Driver" /></p>
-<p><em>But how will our library access the NuttX SPI Interface?</em></p>
-<p>The NuttX SPI Interface is accessible by NuttX Drivers, but not NuttX Apps.</p>
-<p>Thankfully in the previous article we have created an <strong>SPI Test Driver “/dev/spitest0”</strong> that exposes the SPI Interface to NuttX Apps (pic above)…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/spi2"><strong>“SPI on Apache NuttX OS”</strong></a></li>
-</ul>
-<p>For now we’ll call this SPI Test Driver in our LoRa SX1262 Library.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="device-eui-and-app-key" class="section-header"><a href="#device-eui-and-app-key">2 Device EUI and App Key</a></h1>
 <p>TODO</p>
