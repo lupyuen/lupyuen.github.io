@@ -1385,7 +1385,9 @@ void *process_dio1(void *arg) {
     RadioOnDioIrq,     //  Event Handler Function
     NULL               //  Argument to be passed to Event Handler
   );</code></pre></div>
-<p>The thread begins by defining the <strong>Event</strong> that will be added to the Event Queue.</p>
+<p>The thread begins by defining the <strong>DIO1 Interrupt Event</strong> that will be added to the Event Queue.</p>
+<p>When the Event Loop receives this Event, it will call <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a>
+to process the received packet.</p>
 <p>Next we define the <strong>NuttX Signal</strong> that will be signalled on GPIO Interrupt…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Define the signal
   #define SIG_DIO1 1
@@ -1500,10 +1502,14 @@ void *process_dio1(void *arg) {
 <p>When SX1262 receives a LoRa Message, it triggers a <strong>GPIO Interrupt</strong> on Pin DIO1</p>
 </li>
 <li>
-<p>In the previous chapter we started a <strong>Background Thread</strong> that waits for GPIO Interrupts and <strong>adds an Event</strong> to our Event Queue</p>
+<p>In the previous chapter we started a <strong>Background Thread</strong> that waits for GPIO Interrupts and <strong>adds a DIO1 Interrupt Event</strong> to our Event Queue</p>
 </li>
 <li>
-<p>In our NuttX App, the <strong>Foreground Thread</strong> runs an <strong>Event Loop</strong> that handles every Event in our Event Queue. And processes the received message.</p>
+<p>In our NuttX App, the <strong>Foreground Thread</strong> runs an <strong>Event Loop</strong> that handles every Event in our Event Queue</p>
+</li>
+<li>
+<p>When the Event Loop receives the DIO1 Interrupt Event, it calls <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a>
+to process the received LoRa Message</p>
 </li>
 </ol>
 <p>Let’s look at the implementation of NimBLE Porting Layer for the <strong>new SX1262 Library that will support LoRaWAN</strong>.</p>
