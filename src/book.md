@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _18 Dec 2021_
+📝 _30 Dec 2021_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(40 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(41 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -44,6 +44,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 -   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
 
+-   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
+
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
 # Projects and Libraries on BL602
@@ -56,11 +58,15 @@ How to create a simple __Blinky Project__ for BL602 / BL604 and build the projec
 
 -   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
 
+For __Apache NuttX OS__...
+
 -   ["How To Create NuttX Apps"](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-app)
 
 -   ["How To Create NuttX Device Drivers"](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-device-driver)
 
 -   ["How To Create NuttX Libraries"](https://lupyuen.github.io/articles/sx1262#appendix-create-a-nuttx-library)
+
+For __Rust__...
 
 -   ["How To Create Rust Projects"](https://lupyuen.github.io/articles/adc#create-a-bl602-rust-project)
 
@@ -88,7 +94,11 @@ Learn to call the BL602 / BL604 __GPIO Hardware Abstraction Layer (HAL)__ (or Nu
 
 -   ["BL602 GPIO Interrupts"](https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts)
 
+For __Apache NuttX OS__...
+
 -   ["GPIO on NuttX"](https://lupyuen.github.io/articles/nuttx#gpio-demo)
+
+-   ["GPIO Interrupts on NuttX"](https://lupyuen.github.io/articles/sx1262#gpio-interface)
 
 ![PWM on BL602](https://lupyuen.github.io/images/book-pwm.jpg)
 
@@ -118,7 +128,11 @@ How we call the __BL602 / BL604 SPI HAL__ to access SPI Sensors, Displays and Ne
 
 -   ["Porting LoRa Driver from Mynewt to BL602: SPI"](https://lupyuen.github.io/articles/lora#spi)
 
+For __Apache NuttX OS__...
+
 -   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
+
+-   ["SPI Interface on NuttX"](https://lupyuen.github.io/articles/sx1262#spi-interface)
 
 ![DMA on BL602](https://lupyuen.github.io/images/book-dma.jpg)
 
@@ -180,7 +194,11 @@ Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, l
 
 -   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
 
+For __Apache NuttX OS__...
+
 -   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
+
+-   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
 
 Connecting BL602 and BL604 to a __LoRa Gateway__...
 
@@ -301,6 +319,10 @@ Tips for __troubleshooting BL602 and BL604 firmware__.
 Multitasking the easy way with __NimBLE Porting Layer__.
 
 -   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
+
+For __Apache NuttX OS__...
+
+-   ["Multithreading with NimBLE Porting Layer"](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
 
 ![Bootloader for BL602](https://lupyuen.github.io/images/book-boot.jpg)
 
