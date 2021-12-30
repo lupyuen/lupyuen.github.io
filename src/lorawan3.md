@@ -99,6 +99,8 @@ Our LoRa SX1262 Library assumes that the following __NuttX Devices__ are configu
 
 -   __/dev/gpio2__: GPIO Interrupt for SX1262 DIO1 Pin
 
+-   __/dev/spi0__: SPI Bus for SX1262
+
 -   __/dev/spitest0__: SPI Test Driver (see above)
 
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
