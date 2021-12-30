@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>LoRaWAN on Apache NuttX OS</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="LoRaWAN on Apache NuttX OS" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Porting Semtech's LoRaWAN Stack to Apache NuttX OS... And testing it on PineDio Stack BL604 RISC-V Board"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/lorawan3-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">LoRaWAN on Apache NuttX OS</h1>
+    <nav id="TOC"><ul>
+<li><a href="#small-steps">1 Small Steps</a><ul>
+<li><a href="#lorawan-support">1.1 LoRaWAN Support</a><ul></ul></li>
+<li><a href="#lora-sx1262-library">1.2 LoRa SX1262 Library</a><ul></ul></li>
+<li><a href="#library-vs-driver">1.3 Library vs Driver</a><ul></ul></li></ul></li>
+<li><a href="#whats-next">2 What’s Next</a><ul></ul></li>
+<li><a href="#notes">3 Notes</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="" /></p>
+<p>TODO</p>
+<p><strong>LoRa</strong> is an awesome wireless technology for IoT that will transmit <strong>small packets over super long distances</strong>…</p>
+<p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
+<p>Let’s port LoRa to <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS!</strong></a></p>
+<p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRa)</a></p>
+<p><em>Doesn’t NuttX support LoRa already?</em></p>
+<p>Yep NuttX has a standalone LoRa Driver for <strong>Semtech SX1276 Transceiver</strong> (Radio Transmitter + Receiver)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx/tree/master/drivers/wireless/lpwan/sx127x"><strong>NuttX SX127x Driver</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx-apps/tree/master/examples/sx127x_demo"><strong>NuttX SX127x Demo</strong></a></p>
+</li>
+</ul>
+<p>(That doesn’t work with LoRaWAN yet)</p>
+<p>Today we build a NuttX Driver for the (newer) <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 Transceiver</strong></a>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>SX1262 Library</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/master/examples/sx1262_test"><strong>SX1262 Test App</strong></a></p>
+</li>
+</ul>
+<p>Our LoRa SX1262 Driver shall be tested on Bouffalo Lab’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604 RISC-V SoCs</strong></a>.</p>
+<p>(It will probably run on <strong>ESP32</strong>, since we’re calling standard NuttX Interfaces)</p>
+<p>Eventually our LoRa SX1262 Driver will support the <strong>LoRaWAN Wireless Protocol</strong>.</p>
+<p><em>How useful is LoRaWAN? Will we be using it?</em></p>
+<p>Our LoRa SX1262 Driver will work perfectly fine for unsecured <strong>Point-to-Point Wireless Communication</strong>.</p>
+<p>But if we need to <strong>relay data packets</strong> securely to a Local Area Network or to the internet, we need <strong>LoRaWAN</strong>.</p>
+<p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRaWAN)</a></p>
+<h1 id="small-steps" class="section-header"><a href="#small-steps">1 Small Steps</a></h1>
+<p>TODO</p>
+<p><em>So today we’ll build the NuttX Drivers for LoRa SX1262 and LoRaWAN?</em></p>
+<p>Not quite. Implementing LoRa AND LoRaWAN is a complex endeavour.</p>
+<p>Thus we break the implementation into small steps…</p>
+<ul>
+<li>
+<p>Today we do the <strong>SX1262 Library</strong> (top right)</p>
+</li>
+<li>
+<p>And we test with our <strong>LoRa App</strong> (top left)</p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
+<ul>
+<li>
+<p>In the next article we’ll do the <strong>LoRaWAN Library</strong> and test with our <strong>LoRaWAN App</strong></p>
+</li>
+<li>
+<p>Eventually we shall wrap the SX1262 and LoRaWAN Libraries as <strong>NuttX Drivers</strong></p>
+<p>(Because that’s the proper design for NuttX)</p>
+</li>
+</ul>
+<h2 id="lorawan-support" class="section-header"><a href="#lorawan-support">1.1 LoRaWAN Support</a></h2>
+<p><em>Why is LoRaWAN so complex?</em></p>
+<p>LoRaWAN works <strong>slightly differently across the world regions</strong>, to comply with Local Wireless Regulations: Radio Frequency, Maximum Airtime (Duty Cycle), <a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">Listen Before Talk</a>, …</p>
+<p>Thus we should port <strong>Semtech’s LoRaWAN Stack</strong> to NuttX with <strong>minimal changes</strong>, in case of future updates. (Like for new regions)</p>
+<p>This also means that we should port <strong>Semtech’s SX1262 Driver</strong> to NuttX as-is, because of the dependencies between the LoRaWAN Stack and the SX1262 Driver.</p>
+<h2 id="lora-sx1262-library" class="section-header"><a href="#lora-sx1262-library">1.2 LoRa SX1262 Library</a></h2>
+<p><em>Where did the LoRa SX1262 code come from?</em></p>
+<p>Our LoRa SX1262 Library originated from <strong>Semtech’s Reference Implementation</strong> of SX1262 Driver (29 Mar 2021)…</p>
+<ul>
+<li><a href="https://github.com/Lora-net/LoRaMac-node/tree/master/src/radio/sx126x"><strong>LoRaMac-node/radio/sx126x</strong></a></li>
+</ul>
+<p>Which we ported to <strong>Linux</strong> and <strong>BL602 IoT SDK</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>lupyuen/lora-sx1262 (lorawan branch)</strong></a></li>
+</ul>
+<p>And we’re porting now to <strong>NuttX</strong>.</p>
+<p>(Because porting Linux code to NuttX is straightforward)</p>
+<p><em>How did we create the LoRa SX1262 Library?</em></p>
+<p>We followed the steps below to create <strong>“nuttx/libs/libsx1262”</strong> by cloning a NuttX Library…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262#appendix-create-a-nuttx-library"><strong>“Create a NuttX Library”</strong></a></li>
+</ul>
+<p>Then we replaced the “libsx1262” folder by a <strong>Git Submodule</strong> that contains our LoRa SX1262 code… </p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx/nuttx/libs
+rm -r libsx1262
+git rm -r libsx1262
+git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx1262</code></pre></div>
+<p>Note that we’re using the older <strong>“nuttx”</strong> branch of the “lora_sx1262” repo, which <a href="https://lupyuen.github.io/articles/sx1262#appendix-previous-sx1262-library"><strong>doesn’t use GPIO Interface and NimBLE Porting Layer</strong></a>. (And doesn’t support LoRaWAN)</p>
+<h2 id="library-vs-driver" class="section-header"><a href="#library-vs-driver">1.3 Library vs Driver</a></h2>
+<p><em>NuttX Libraries vs Drivers… What’s the difference?</em></p>
+<p>Our LoRa SX1262 code is initially packaged as a <strong>NuttX Library</strong> (instead of NuttX Driver) because…</p>
+<ul>
+<li>
+<p>NuttX Libraries are <strong>easier to code and troubleshoot</strong></p>
+</li>
+<li>
+<p>NuttX Libraries may be called by <strong>NuttX Apps AND NuttX Drivers</strong></p>
+<p>(So we can test our library with a NuttX App)</p>
+</li>
+</ul>
+<p>Eventually our LoRa SX1262 code shall be packaged as a <strong>NuttX Driver</strong>…</p>
+<ul>
+<li>
+<p>Our code shall run inside NuttX OS, which means…</p>
+</li>
+<li>
+<p>Our driver needs to expose an <strong>ioctl()</strong> interface to NuttX Apps</p>
+<p>(Which will be cumbersome to code)</p>
+</li>
+</ul>
+<p>Check out the <strong>ioctl()</strong> interface for the existing SX1276 Driver in NuttX: <a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/wireless/lpwan/sx127x/sx127x.c#L954-L1162"><strong>sx127x.c</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-plan2.jpg" alt="SPI Test Driver" /></p>
+<p><em>But how will our library access the NuttX SPI Interface?</em></p>
+<p>The NuttX SPI Interface is accessible by NuttX Drivers, but not NuttX Apps.</p>
+<p>Thankfully in the previous article we have created an <strong>SPI Test Driver “/dev/spitest0”</strong> that exposes the SPI Interface to NuttX Apps (pic above)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2"><strong>“SPI on Apache NuttX OS”</strong></a></li>
+</ul>
+<p>For now we’ll call this SPI Test Driver in our LoRa SX1262 Library.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">2 What’s Next</a></h1>
+<p>TODO</p>
+<p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
+<p>(Which will be super interesting because of multithreading)</p>
+<p>We’ll port Semtech’s <strong>Reference LoRaWAN Stack</strong> to NuttX…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>lupyuen/LoRaMac-node-nuttx</strong></a></li>
+</ul>
+<p><em>We’re porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</em></p>
+<p>Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech’s version.  <a href="https://lupyuen.github.io/articles/sx1262#notes">(But we shall minimise the changes)</a></p>
+<p>Stay Tuned!</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan3.md"><code>lupyuen.github.io/src/lorawan3.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">3 Notes</a></h1>
+<ol>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1473593455699841027">this Twitter Thread</a></p>
+</li>
+<li>
+<p>We’re <strong>porting plenty of code</strong> to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</p>
+<ul>
+<li>
+<p>If we implement LoRa and LoRaWAN as <strong>NuttX Drivers</strong>, we’ll have to scrub the code to comply with the <a href="https://nuttx.apache.org/docs/latest/contributing/coding_style.html"><strong>NuttX Coding Conventions</strong></a>.</p>
+<p>This makes it <strong>harder to update</strong> the LoRaWAN Driver when there are changes in the LoRaWAN Spec. (Like for a new LoRaWAN Region)</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">(Here’s an example)</a></p>
+</li>
+<li>
+<p>Alternatively we may implement LoRa and LoRaWAN as <strong>External Libraries</strong>, similar to <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/master/wireless/bluetooth/nimble"><strong>NimBLE for NuttX</strong></a>.</p>
+<p>(The <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33"><strong>Makefile</strong></a> downloads the External Library during build)</p>
+<p>But then we won’t get a proper NuttX Driver that exposes the ioctl() interface to NuttX Apps.</p>
+</li>
+</ul>
+<p>Conundrum. Lemme know your thoughts!</p>
+</li>
+<li>
+<p>How do other Embedded Operating Systems implement LoRaWAN?</p>
+<ul>
+<li>
+<p><strong>Mynewt</strong> embeds a <a href="https://github.com/apache/mynewt-core/tree/master/net/lora/node"><strong>Partial Copy</strong></a> of Semtech’s LoRaWAN Stack into its source tree.</p>
+</li>
+<li>
+<p><strong>Zephyr</strong> maintains a <a href="https://github.com/zephyrproject-rtos/loramac-node"><strong>Complete Fork</strong></a> of the entire LoRaWAN Repo by Semtech. Which gets embedded during the Zephyr build.</p>
+</li>
+</ul>
+<p>The Zephyr approach is probably the best way to <strong>keep our LoRaWAN Stack in sync</strong> with Semtech’s.</p>
+</li>
+<li>
+<p>We have already ported LoRaWAN to <strong>BL602 IoT SDK</strong> <a href="https://lupyuen.github.io/articles/lorawan">(see this)</a>, why are we porting again to NuttX?</p>
+<p>Regrettably BL602 IoT SDK has been revamped (without warning) to the <strong>new “hosal” HAL</strong> <a href="https://twitter.com/MisterTechBlog/status/1456259223323508748">(see this)</a>, and the LoRaWAN Stack will <strong>no longer work</strong> on the revamped BL602 IoT SDK.</p>
+<p>For easier maintenance, we shall <strong>code our BL602 and BL604 projects with Apache NuttX OS</strong> instead.</p>
+<p>(Which won’t get revamped overnight!)</p>
+</li>
+<li>
+<p>Will NuttX become the official OS for PineDio Stack BL604 when it goes on sale?</p>
+<p>It might! But first let’s get LoRaWAN (and ST7789) running on PineDio Stack.</p>
+</li>
+</ol>
+
+    
+</body>
+</html>
