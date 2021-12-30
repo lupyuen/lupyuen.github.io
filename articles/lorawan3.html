@@ -82,10 +82,11 @@
 <li><a href="#logging">13 Logging</a><ul></ul></li>
 <li><a href="#message-size">14 Message Size</a><ul></ul></li>
 <li><a href="#send-data">15 Send Data</a><ul></ul></li>
-<li><a href="#whats-next">16 What’s Next</a><ul></ul></li>
-<li><a href="#notes">17 Notes</a><ul></ul></li>
-<li><a href="#appendix-gpio-issue">18 Appendix: GPIO Issue</a><ul></ul></li>
-<li><a href="#appendix-callout-issue">19 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
+<li><a href="#spi-with-dma">16 SPI with DMA</a><ul></ul></li>
+<li><a href="#whats-next">17 What’s Next</a><ul></ul></li>
+<li><a href="#notes">18 Notes</a><ul></ul></li>
+<li><a href="#appendix-gpio-issue">19 Appendix: GPIO Issue</a><ul></ul></li>
+<li><a href="#appendix-callout-issue">20 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <p>Last article we got <strong>LoRa</strong> (the long-range, low-bandwidth wireless network) running on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a>…</p>
@@ -364,8 +365,11 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <ul>
 <li><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>LoRaMac-node-nuttx</strong></a></li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">16 What’s Next</a></h1>
+<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">16 SPI with DMA</a></h1>
 <p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">17 What’s Next</a></h1>
+<p>TODO</p>
+<p>CBOR, TTN, Temperature Sensor</p>
 <p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
 <p>(Which will be super interesting because of multithreading)</p>
 <p>We’ll port Semtech’s <strong>Reference LoRaWAN Stack</strong> to NuttX…</p>
@@ -392,7 +396,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan3.md"><code>lupyuen.github.io/src/lorawan3.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">17 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">18 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1473593455699841027">this Twitter Thread</a></p>
@@ -436,13 +440,13 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>It might! But first let’s get LoRaWAN (and ST7789) running on PineDio Stack.</p>
 </li>
 </ol>
-<h1 id="appendix-gpio-issue" class="section-header"><a href="#appendix-gpio-issue">18 Appendix: GPIO Issue</a></h1>
+<h1 id="appendix-gpio-issue" class="section-header"><a href="#appendix-gpio-issue">19 Appendix: GPIO Issue</a></h1>
 <p>TODO</p>
 <p>Switching a #NuttX GPIO Interrupt Pin to Trigger On Rising Edge … Crashes with an Assertion Failure … I’ll submit a NuttX Issue, meanwhile I have disabled the assertion</p>
 <p>TODO50</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-int.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547">(Source)</a></p>
-<h1 id="appendix-callout-issue" class="section-header"><a href="#appendix-callout-issue">19 Appendix: Callout Issue</a></h1>
+<h1 id="appendix-callout-issue" class="section-header"><a href="#appendix-callout-issue">20 Appendix: Callout Issue</a></h1>
 <p>TODO</p>
 <p>NimBLE Porting Layer doesn’t work for multiple Callout Timers on #NuttX OS, unless we loop the thread … Will submit a Pull Request to Apache NimBLE 👍</p>
 <p>TODO42</p>
