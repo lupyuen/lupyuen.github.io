@@ -40,6 +40,10 @@ That's a near-identical fork of __Semtech's LoRaWAN Stack__ (dated 14 Dec 2021).
 
 -   [__Lora-net/LoRaMac-node__](https://github.com/Lora-net/LoRaMac-node)
 
+We'll test with this __LoRaWAN App__ on NuttX...
+
+-   [__lupyuen/lorawan_test__](https://github.com/lupyuen/lorawan_test)
+
 ## LoRaWAN Support
 
 _Why did we fork Semtech's LoRaWAN Stack? Why not build it specifically for NuttX?_
