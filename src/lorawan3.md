@@ -12,7 +12,7 @@ Last article we got __LoRa__ (the long-range, low-bandwidth wireless network) ru
 
 Today we shall run __LoRaWAN__ on NuttX OS!
 
-_How useful is LoRaWAN? Will we be using it?_
+_Why would we need LoRaWAN?_
 
 LoRa will work perfectly fine for unsecured __Point-to-Point Wireless Communication__.
 
