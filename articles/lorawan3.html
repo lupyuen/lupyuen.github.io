@@ -71,39 +71,20 @@
 <li><a href="#library-vs-driver">1.3 Library vs Driver</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">2 What’s Next</a><ul></ul></li>
 <li><a href="#notes">3 Notes</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="" /></p>
-<p>TODO</p>
-<p><strong>LoRa</strong> is an awesome wireless technology for IoT that will transmit <strong>small packets over super long distances</strong>…</p>
-<p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
-<p>Let’s port LoRa to <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS!</strong></a></p>
-<p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRa)</a></p>
-<p><em>Doesn’t NuttX support LoRa already?</em></p>
-<p>Yep NuttX has a standalone LoRa Driver for <strong>Semtech SX1276 Transceiver</strong> (Radio Transmitter + Receiver)…</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
+<p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
+<p>Last article we got <strong>LoRa</strong> (the long-range, low-bandwidth wireless network) running on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a>…</p>
 <ul>
-<li>
-<p><a href="https://github.com/apache/incubator-nuttx/tree/master/drivers/wireless/lpwan/sx127x"><strong>NuttX SX127x Driver</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/apache/incubator-nuttx-apps/tree/master/examples/sx127x_demo"><strong>NuttX SX127x Demo</strong></a></p>
-</li>
+<li><a href="https://lupyuen.github.io/articles/sx1262"><strong>“LoRa SX1262 on Apache NuttX OS”</strong></a></li>
 </ul>
-<p>(That doesn’t work with LoRaWAN yet)</p>
-<p>Today we build a NuttX Driver for the (newer) <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 Transceiver</strong></a>…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>SX1262 Library</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/master/examples/sx1262_test"><strong>SX1262 Test App</strong></a></p>
-</li>
-</ul>
-<p>Our LoRa SX1262 Driver shall be tested on Bouffalo Lab’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604 RISC-V SoCs</strong></a>.</p>
-<p>(It will probably run on <strong>ESP32</strong>, since we’re calling standard NuttX Interfaces)</p>
-<p>Eventually our LoRa SX1262 Driver will support the <strong>LoRaWAN Wireless Protocol</strong>.</p>
+<p>Today we shall run <strong>LoRaWAN</strong> on NuttX OS!</p>
 <p><em>How useful is LoRaWAN? Will we be using it?</em></p>
-<p>Our LoRa SX1262 Driver will work perfectly fine for unsecured <strong>Point-to-Point Wireless Communication</strong>.</p>
+<p>LoRa will work perfectly fine for unsecured <strong>Point-to-Point Wireless Communication</strong>.</p>
 <p>But if we need to <strong>relay data packets</strong> securely to a Local Area Network or to the internet, we need <strong>LoRaWAN</strong>.</p>
 <p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRaWAN)</a></p>
+<p>We shall test LoRaWAN on NuttX with Bouffalo Lab’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604 RISC-V SoCs</strong></a>.</p>
+<p>(It will probably run on <strong>ESP32</strong>, since we’re calling standard NuttX Interfaces)</p>
+<p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="small-steps" class="section-header"><a href="#small-steps">1 Small Steps</a></h1>
 <p>TODO</p>
 <p><em>So today we’ll build the NuttX Drivers for LoRa SX1262 and LoRaWAN?</em></p>
@@ -116,9 +97,6 @@
 <li>
 <p>And we test with our <strong>LoRa App</strong> (top left)</p>
 </li>
-</ul>
-<p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
-<ul>
 <li>
 <p>In the next article we’ll do the <strong>LoRaWAN Library</strong> and test with our <strong>LoRaWAN App</strong></p>
 </li>
@@ -259,7 +237,7 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 <p>It might! But first let’s get LoRaWAN (and ST7789) running on PineDio Stack.</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/lorawan3-title2.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-title2.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 
     
 </body>
