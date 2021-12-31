@@ -245,7 +245,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p><em>How do we set the Device EUI, Join EUI and App Key in our code?</em></p>
 <p>Edit the file…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/peripherals/soft-se/se-identity.h</code></pre></div>
-<p>Look for these lines in <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79">se-identity.h</a></p>
+<p>Look for these lines in <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79"><strong>se-identity.h</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/*!
  * When set to 1 DevEui is LORAWAN_DEVICE_EUI
  * When set to 0 DevEui is automatically set with a value provided by MCU platform
@@ -275,7 +275,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-secure1.png" alt="Device EUI and Join EUI" /></p>
-<p>Next find this in the same file: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L98-L115">se-identity.h</a></p>
+<p>Next find this in the same file <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L98-L115"><strong>se-identity.h</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define SOFT_SE_KEY_LIST \
   { \
     { \
@@ -314,6 +314,30 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p>The App Key will be exposed if somebody dumps the firmware on our NuttX Device, but it’s probably OK during development.</p>
 <h1 id="lorawan-frequency" class="section-header"><a href="#lorawan-frequency">5 LoRaWAN Frequency</a></h1>
 <p>TODO</p>
+<ol>
+<li>
+<p>Find the <strong>LoRaWAN Frequency</strong> for our region…</p>
+<p><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>“Frequency Plans by Country”</strong></a></p>
+</li>
+<li>
+<p>Edit our <strong>LoRaWAN Test App</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/lorawan_test/lorawan_test_main.c</code></pre></div></li>
+<li>
+<p>Find this in <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L34-L40"><strong>lorawan_test_main.c</strong></a></p>
+<div class="example-wrap"><pre class="language-c"><code>#ifndef ACTIVE_REGION
+#warning &quot;No active region defined, LORAMAC_REGION_AS923 will be used as default.&quot;
+#define ACTIVE_REGION LORAMAC_REGION_AS923
+#endif</code></pre></div></li>
+<li>
+<p>Change <strong>AS923</strong> (both occurrences) to our LoRaWAN Frequency…</p>
+<p><strong>US915</strong>, <strong>CN779</strong>, <strong>EU433</strong>, <strong>AU915</strong>, <strong>AS923</strong>, <strong>CN470</strong>, <strong>KR920</strong>, <strong>IN865</strong> or <strong>RU864</strong></p>
+</li>
+<li>
+<p>Do the same for <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/common/LmHandler/LmHandler.c#L41-L47"><strong>LmHandler.c</strong></a></p>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/apps/LoRaMac/common/LmHandler/LmHandler.c</code></pre></div>
+<p>(We ought to define this parameter in Kconfig instead)</p>
+</li>
+</ol>
 <h1 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6 Run The Firmware</a></h1>
 <p>TODO</p>
 <h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">7 LoRaWAN Nonce</a></h1>
