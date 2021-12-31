@@ -168,9 +168,86 @@ Or if we prefer to __add the LoRaWAN Library__ to our NuttX Project, follow thes
 
 Let's configure the LoRaWAN code.
 
+![Device EUI from ChirpStack](https://lupyuen.github.io/images/wisgate-app2.png)
+
 # Device EUI, Join EUI and App Key
 
 _Where do we get the Device EUI, Join EUI and App Key?_
+
+We get the LoRaWAN Settings from our __LoRaWAN Gateway__, like ChirpStack (pic above)...
+
+-   [__"LoRaWAN Application (ChirpStack)"__](https://lupyuen.github.io/articles/wisgate#lorawan-application)
+
+_How do we set the Device EUI, Join EUI and App Key in our code?_
+
+Edit the file...
+
+```text
+nuttx/libs/liblorawan/src/peripherals/soft-se/se-identity.h
+```
+
+Look for these lines in [se-identity.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79)
+
+```c
+/*!
+ * When set to 1 DevEui is LORAWAN_DEVICE_EUI
+ * When set to 0 DevEui is automatically set with a value provided by MCU platform
+ */
+#define STATIC_DEVICE_EUI  1
+
+/*!
+ * end-device IEEE EUI (big endian)
+ */
+#define LORAWAN_DEVICE_EUI { 0x4b, 0xc1, 0x5e, 0xe7, 0x37, 0x7b, 0xb1, 0x5b }
+
+/*!
+ * App/Join server IEEE EUI (big endian)
+ */
+#define LORAWAN_JOIN_EUI { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+```
+
+-   __STATIC_DEVICE_EUI:__ Must be `1`
+
+-   __LORAWAN_DEVICE_EUI:__ Change this to our __LoRaWAN Device EUI__.
+
+    For ChirpStack: Get it from `Applications → app → Device EUI`
+
+-   __LORAWAN_JOIN_EUI:__ Change this to our __LoRaWAN Join EUI__.
+
+    For ChirpStack: Join EUI is not needed, thus we set it to `0000000000000000`
+
+Next find this in the same file: [se-identity.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L98-L115)
+
+```c
+#define SOFT_SE_KEY_LIST \
+  { \
+    { \
+      /*! \
+       * Application root key \
+       * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_GEN_APP_KEY \
+       */ \
+      .KeyID    = APP_KEY, \
+      .KeyValue = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d }, \
+    }, \
+    { \
+      /*! \
+       * Network root key \
+       * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_APP_KEY \
+       */ \
+      .KeyID    = NWK_KEY, \
+      .KeyValue = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d }, \
+    }, \
+```
+
+-   __APP_KEY:__ Change this to our __LoRaWAN App Key__
+
+    For ChirpStack: Get it from `Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key`
+
+-   __NWK_KEY:__ Change this to our __LoRaWAN App Key__
+
+    (Same as __APP_KEY__)
+
+_Why do we set our EUIs and App Key in "soft-se"?_
 
 TODO
 
