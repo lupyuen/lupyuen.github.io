@@ -141,13 +141,36 @@ Which works like this...
 
     (App Key is stored inside NuttX, never exposed over the airwaves)
 
-Let's set the Device EUI, Join EUI and App Key.
+In a while we'll set the Device EUI, Join EUI and App Key in our code.
 
 # Download Source Code
 
-TODO
+To run LoRaWAN on NuttX, download the modified source code for __NuttX OS and NuttX Apps__...
+
+```bash
+mkdir nuttx
+cd nuttx
+git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nuttx-apps apps
+```
+
+Or if we prefer to __add the LoRaWAN Library__ to our NuttX Project, follow these instructions...
+
+1.  [__"Install SPI Test Driver"__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf)
+
+1.  [__"Install NimBLE Porting Layer"__](https://github.com/lupyuen/nimble-porting-nuttx)
+
+1.  [__"Install LoRa SX1262 Library"__](https://github.com/lupyuen/lora-sx1262/tree/lorawan)
+
+1.  [__"Install LoRaWAN Library"__](https://github.com/lupyuen/LoRaMac-node-nuttx)
+
+1.  [__"Install LoRaWAN Test App"__](https://github.com/lupyuen/lorawan_test)
+
+Let's configure the LoRaWAN code.
 
 # Device EUI, Join EUI and App Key
+
+_Where do we get the Device EUI, Join EUI and App Key?_
 
 TODO
 
