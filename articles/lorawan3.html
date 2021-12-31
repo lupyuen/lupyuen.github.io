@@ -267,7 +267,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 </li>
 <li>
 <p><strong>LORAWAN_DEVICE_EUI:</strong> Change this to our <strong>LoRaWAN Device EUI</strong>.</p>
-<p>For ChirpStack: Get it from <code>Applications → app → Device EUI</code></p>
+<p>For ChirpStack: Copy from “Applications → app → Device EUI”</p>
 </li>
 <li>
 <p><strong>LORAWAN_JOIN_EUI:</strong> Change this to our <strong>LoRaWAN Join EUI</strong>.</p>
@@ -297,7 +297,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <ul>
 <li>
 <p><strong>APP_KEY:</strong> Change this to our <strong>LoRaWAN App Key</strong></p>
-<p>For ChirpStack: Get it from <code>Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key</code></p>
+<p>For ChirpStack: Copy from “Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key”</p>
 </li>
 <li>
 <p><strong>NWK_KEY:</strong> Change this to our <strong>LoRaWAN App Key</strong></p>
@@ -308,12 +308,12 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p><em>What’s “soft-se”? Why are our LoRaWAN Settings there?</em></p>
 <p>For LoRaWAN Devices that are designed to be <strong>super secure</strong>, they don’t expose LoRaWAN App Key in the Source Code…</p>
 <p>Instead they store the App Key in the <a href="https://encyclopedia.kaspersky.com/glossary/secure-element/"><strong>Secure Element</strong></a> hardware.</p>
-<p>Our LoRaWAN Library supports two kinds of Secure Elements: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/atecc608a-tnglora-se">Microchip ATECC608A</a> and <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/lr1110-se">Semtech LR1110</a></p>
+<p>Our LoRaWAN Library supports two kinds of Secure Elements: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/atecc608a-tnglora-se"><strong>Microchip ATECC608A</strong></a> and <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/lr1110-se"><strong>Semtech LR1110</strong></a></p>
 <p><em>But our NuttX Device doesn’t have a Secure Element right?</em></p>
 <p>That’s why we define the App Key in the <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/soft-se"><strong>“Software Secure Element (soft-se)”</strong></a> that simulates a Hardware Secure Element… Minus the actual hardware security.</p>
-<p>The App Key will be exposed if somebody dumps the firmware on our NuttX Device, but it’s probably OK during development.</p>
+<p>Our App Key will be exposed if somebody dumps the firmware on our NuttX Device. But it’s probably OK during development.</p>
 <h1 id="lorawan-frequency" class="section-header"><a href="#lorawan-frequency">5 LoRaWAN Frequency</a></h1>
-<p>TODO</p>
+<p>Let’s set the LoRaWAN Frequency…</p>
 <ol>
 <li>
 <p>Find the <strong>LoRaWAN Frequency</strong> for our region…</p>
