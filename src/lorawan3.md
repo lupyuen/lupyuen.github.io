@@ -342,12 +342,14 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
 
     [__"Enable Logging"__](https://lupyuen.github.io/articles/spi2#enable-logging)
 
+1.  TODO: POSIX Functions
+
 1.  TODO: Random Number Generator
 
 1.  Click __"Library Routines"__ and enable the following libraries...
 
     __"LoRaWAN Library"__
-    
+
     __"NimBLE Porting Layer"__
 
     __"Semtech SX1262 Library"__
@@ -380,31 +382,21 @@ Finally we run the NuttX Firmware and test our __LoRaWAN Library__...
 
     Our SPI Test Driver should appear as __"/dev/spitest0"__
     
-    ![Our SPI Test Driver appears as "/dev/spitest0"](https://lupyuen.github.io/images/spi2-newdriver10.png)
-
 1.  In the NuttX Shell, enter...
 
     ```bash
-    sx1262_test
+    lorawan_test
     ```
 
-1.  We should see these __SX1262 Register Values__ (pic below)...
+1.  We should see...
 
     ```text
-    Register 0x00 = 0x00
-    ...
-    Register 0x08 = 0x80
-    Register 0x09 = 0x00
-    Register 0x0a = 0x01
+    TODO
     ```
 
-    [(See the Output Log)](https://gist.github.com/lupyuen/1e732f5b1e0e4a80d1eb351ab3aadede)
+    [(TODO: See the Output Log)]()
 
-    Our LoRa SX1262 Library talks OK to the SX1262 Transceiver!
-
-    Note that the values above will change when we __transmit and receive LoRa Messages__. Let's do that now.
-
-# Join Network
+# Join LoRaWAN Network
 
 TODO
 
@@ -430,7 +422,7 @@ TODO56
 
 [(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
 
-# Send Data
+# Send Data To LoRaWAN
 
 TODO
 
@@ -446,7 +438,7 @@ TODO68
 
 -   [__LoRaMac-node-nuttx__](https://github.com/lupyuen/LoRaMac-node-nuttx)
 
-# Event Loop
+# LoRaWAN Event Loop
 
 TODO
 
@@ -496,40 +488,6 @@ TODO36
 ![](https://lupyuen.github.io/images/lorawan3-nonce7a.png)
 
 [(Log)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
-
-# Random Number Generator
-
-TODO
-
-For #NuttX Random Number Generator, select the Entropy Pool ... To generate Strong Random Numbers for our #LoRaWAN Nonce
-
-TODO35
-
-![](https://lupyuen.github.io/images/lorawan3-nonce4a.png)
-
-We enable the Entropy Pool in #NuttX OS ... To generate Strong Random Numbers for our #LoRaWAN Nonce
-
-TODO52
-
-![](https://lupyuen.github.io/images/lorawan3-nonce3a.png)
-
-# Build
-
-TODO
-
-#LoRaWAN on #NuttX OS: Let's stub out the functions for Non-Volatile Memory and Real Time Clock ... And watch what happens 🌋
-
-TODO39
-
-![](https://lupyuen.github.io/images/lorawan3-build4a.png)
-
-[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c)
-
-#LoRaWAN builds OK on #NuttX OS! 🎉 ... Will it run? 🤔
-
--   [__NuttX OS__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan)
-
--   [__NuttX Apps__](https://github.com/lupyuen/incubator-nuttx-apps/tree/lorawan)
 
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
 
@@ -581,22 +539,6 @@ TODO48
 
 [(Log)](https://gist.github.com/lupyuen/cad58115be4cabe8a8a49c0e498f1c95)
 
-# Build NimBLE
-
-TODO
-
-To build NumBLE Porting Layer on #NuttX OS we need to enable: 1️⃣ POSIX Timers & Message Queues 2️⃣ Clock Monotonic 3️⃣ Work Queues 4️⃣ SIGEV_THHREAD
-
--   [__nimble-porting-nuttx__](https://github.com/lupyuen/nimble-porting-nuttx)
-
-TODO33
-
-![](https://lupyuen.github.io/images/lorawan3-config1.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/lorawan3-config4.png)
-
 # SX1262 Busy
 
 TODO
@@ -609,7 +551,17 @@ TODO49
 
 [(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L184-L199)
 
-# Logging
+# Troubleshoot LoRaWAN
+
+TODO
+
+Check the LoRa Frequency, Sync Word, Device EUI and Join EUI
+
+![](https://lupyuen.github.io/images/lorawan3-run2a.png)
+
+[(Run Log)](https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0)
+
+## Logging
 
 TODO
 
@@ -637,7 +589,7 @@ TODO44
 
 [(Log)](https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89)
 
-# Message Size
+## Message Size
 
 TODO
 
@@ -672,16 +624,6 @@ TODO45
 ![](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
 
 [(Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
-
-# Troubleshoot LoRaWAN
-
-TODO
-
-Check the LoRa Frequency, Sync Word, Device EUI and Join EUI
-
-![](https://lupyuen.github.io/images/lorawan3-run2a.png)
-
-[(Run Log)](https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0)
 
 # SPI with DMA
 
@@ -760,6 +702,38 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  Will NuttX become the official OS for PineDio Stack BL604 when it goes on sale?
 
     It might! But first let's get LoRaWAN (and ST7789) running on PineDio Stack.
+
+# Appendix: POSIX Timers and Message Queues
+
+TODO
+
+To build NumBLE Porting Layer on #NuttX OS we need to enable: 1️⃣ POSIX Timers & Message Queues 2️⃣ Clock Monotonic 3️⃣ Work Queues 4️⃣ SIGEV_THHREAD
+
+-   [__nimble-porting-nuttx__](https://github.com/lupyuen/nimble-porting-nuttx)
+
+TODO33
+
+![](https://lupyuen.github.io/images/lorawan3-config1.png)
+
+TODO14
+
+![](https://lupyuen.github.io/images/lorawan3-config4.png)
+
+# Appendix: Random Number Generator with Entropy Pool
+
+TODO
+
+For #NuttX Random Number Generator, select the Entropy Pool ... To generate Strong Random Numbers for our #LoRaWAN Nonce
+
+TODO35
+
+![](https://lupyuen.github.io/images/lorawan3-nonce4a.png)
+
+We enable the Entropy Pool in #NuttX OS ... To generate Strong Random Numbers for our #LoRaWAN Nonce
+
+TODO52
+
+![](https://lupyuen.github.io/images/lorawan3-nonce3a.png)
 
 # Appendix: Build, Flash and Run NuttX
 
