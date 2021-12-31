@@ -251,6 +251,8 @@ Next find this in the same file [__se-identity.h__](https://github.com/lupyuen/L
 
 ![App Key](https://lupyuen.github.io/images/lorawan3-secure2a.png)
 
+## Secure Element
+
 _What's "soft-se"? Why are our LoRaWAN Settings there?_
 
 For LoRaWAN Devices that are designed to be __super secure__, they don't expose LoRaWAN App Key in the Source Code...
@@ -292,7 +294,7 @@ Let's set the LoRaWAN Frequency...
 
     __US915__, __CN779__, __EU433__, __AU915__, __AS923__, __CN470__, __KR920__, __IN865__ or __RU864__
 
-1.  Do the same for [__LmHandler.c__](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/common/LmHandler/LmHandler.c#L41-L47)
+1.  Do the same for the LoRaMAC Handler: [__LmHandler.c__](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/common/LmHandler/LmHandler.c#L41-L47)
 
     ```text
     nuttx/libs/liblorawan/src/apps/LoRaMac/common/LmHandler/LmHandler.c
