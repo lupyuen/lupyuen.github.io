@@ -195,9 +195,11 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 </li>
 <li>
 <p>LoRaWAN Gateway returns a <strong>Join Network Response</strong></p>
+<p>(Which contains the Device Address)</p>
 </li>
 <li>
 <p>NuttX sends a <strong>Data Packet</strong> to the LoRaWAN Network</p>
+<p>(Which has the Device Address and Payload “Hi NuttX”)</p>
 </li>
 <li>
 <p>NuttX uses an <strong>App Key</strong> to sign the Join Network Request and the Data Packet</p>
