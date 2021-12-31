@@ -127,19 +127,19 @@ Which works like this...
 
     __Nonce:__ Non-repeating number, to prevent [Replay Attacks](https://en.wikipedia.org/wiki/Replay_attack)
 
-    (EUI means Extended Unique Identifier)
+    _(EUI means Extended Unique Identifier)_
 
 1.  LoRaWAN Gateway returns a __Join Network Response__
 
-    (Which contains the Device Address)
+    _(Which contains the Device Address)_
 
 1.  NuttX sends a __Data Packet__ to the LoRaWAN Network
 
-    (Which has the Device Address and Payload "Hi NuttX")
+    _(Which has the Device Address and Payload "Hi NuttX")_
 
 1.  NuttX uses an __App Key__ to sign the Join Network Request and the Data Packet
 
-    (App Key is stored inside NuttX, never exposed over the airwaves)
+    _(App Key is stored inside NuttX, never exposed over the airwaves)_
 
 In a while we'll set the Device EUI, Join EUI and App Key in our code.
 
