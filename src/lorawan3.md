@@ -131,7 +131,11 @@ Which works like this...
 
 1.  LoRaWAN Gateway returns a __Join Network Response__
 
+    (Which contains the Device Address)
+
 1.  NuttX sends a __Data Packet__ to the LoRaWAN Network
+
+    (Which has the Device Address and Payload "Hi NuttX")
 
 1.  NuttX uses an __App Key__ to sign the Join Network Request and the Data Packet
 
