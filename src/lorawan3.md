@@ -109,7 +109,7 @@ _What shall we accomplish with LoRaWAN today?_
 
 We'll do the basic LoRaWAN use case on NuttX...
 
--   Connect NuttX to the __LoRaWAN Network__
+-   Join NuttX to the __LoRaWAN Network__
 
 -   Send a __Data Packet__ from NuttX to LoRaWAN
 
@@ -121,11 +121,13 @@ Which works like this...
 
     Inside the Join Network Request are...
 
-    __Device EUI:__ TODO
+    __Device EUI:__ Unique ID that's assigned to our LoRaWAN Device
 
-    __Join EUI:__ TODO
+    __Join EUI:__ Identifies the LoRaWAN Network that we're joining
 
-    __Nonce:__ TODO
+    __Nonce:__ Non-repeating number, to prevent replay attacks
+
+    (EUI means Extended Unique Identifier)
 
 1.  LoRaWAN Gateway returns a __Join Network Response__
 
@@ -133,7 +135,7 @@ Which works like this...
 
 1.  NuttX uses an __App Key__ to sign the Join Network Request and the Data Packet
 
-(The App Key is stored inside NuttX, it's never exposed over the airwaves)
+    (App Key is stored inside NuttX, never exposed over the airwaves)
 
 Let's set the Device EUI, Join EUI and App Key.
 
