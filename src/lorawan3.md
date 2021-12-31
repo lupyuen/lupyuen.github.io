@@ -302,9 +302,107 @@ Let's set the LoRaWAN Frequency...
 
     (We ought to define this parameter in Kconfig instead)
 
+# Build The Firmware
+
+Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
+
+1.  Install the build prerequisites...
+
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+1.  Assume that we have downloaded the NuttX Source Code with LoRaWAN Library...
+
+    [__"Download Source Code"__](https://lupyuen.github.io/articles/lorawan3#download-source-code)
+
+1.  Configure the build...
+
+    ```bash
+    cd nuttx
+
+    ## For BL602: Configure the build for BL602
+    ./tools/configure.sh bl602evb:nsh
+
+    ## For ESP32: Configure the build for ESP32.
+    ## TODO: Change "esp32-devkitc" to our ESP32 board.
+    ./tools/configure.sh esp32-devkitc:nsh
+
+    ## Edit the Build Config
+    make menuconfig 
+    ```
+
+1.  Enable the __GPIO Driver__ in menuconfig...
+
+    [__"Enable GPIO Driver"__](https://lupyuen.github.io/articles/nuttx#enable-gpio-driver)
+
+1.  Enable the __SPI Peripheral__, __SPI Character Driver__ and __SPI Test Driver__ "/dev/spitest0"...
+
+    [__"Enable SPI"__](https://lupyuen.github.io/articles/spi2#enable-spi)
+
+1.  Enable __GPIO and SPI Logging__ for easier troubleshooting, but uncheck __"Enable Informational Debug Output"__, __"GPIO Informational Output"__ and __"SPI Informational Output"__
+
+    [__"Enable Logging"__](https://lupyuen.github.io/articles/spi2#enable-logging)
+
+1.  TODO: Random Number Generator
+
+1.  Click __"Library Routines"__ and enable the following libraries...
+
+    __"LoRaWAN Library"__
+    
+    __"NimBLE Porting Layer"__
+
+    __"Semtech SX1262 Library"__
+
+1.  Enable our __LoRaWAN Test App__...
+
+    Check the box for __"Application Configuration"__ → __"Examples"__ → __"LoRaWAN Test App"__
+
+1.  Save the configuration and exit menuconfig
+
+    [(Here's the .config for BL604)](https://gist.github.com/lupyuen/d0487cda965f72ed99631d168ea4f5c8)
+
+1.  __For ESP32:__ Edit [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) to register our SPI Test Driver [(See this)](https://lupyuen.github.io/articles/spi2#register-device-driver)
+
+1.  Build, flash and run the NuttX Firmware on BL602 or ESP32...
+
+    [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/lorawan3#appendix-build-flash-and-run-nuttx)
+
 # Run The Firmware
 
 TODO
+
+Finally we run the NuttX Firmware and test our __LoRaWAN Library__...
+
+1.  In the NuttX Shell, enter...
+
+    ```bash
+    ls /dev
+    ```
+
+    Our SPI Test Driver should appear as __"/dev/spitest0"__
+    
+    ![Our SPI Test Driver appears as "/dev/spitest0"](https://lupyuen.github.io/images/spi2-newdriver10.png)
+
+1.  In the NuttX Shell, enter...
+
+    ```bash
+    sx1262_test
+    ```
+
+1.  We should see these __SX1262 Register Values__ (pic below)...
+
+    ```text
+    Register 0x00 = 0x00
+    ...
+    Register 0x08 = 0x80
+    Register 0x09 = 0x00
+    Register 0x0a = 0x01
+    ```
+
+    [(See the Output Log)](https://gist.github.com/lupyuen/1e732f5b1e0e4a80d1eb351ab3aadede)
+
+    Our LoRa SX1262 Library talks OK to the SX1262 Transceiver!
+
+    Note that the values above will change when we __transmit and receive LoRa Messages__. Let's do that now.
 
 # Join Network
 
@@ -662,6 +760,218 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  Will NuttX become the official OS for PineDio Stack BL604 when it goes on sale?
 
     It might! But first let's get LoRaWAN (and ST7789) running on PineDio Stack.
+
+# Appendix: Build, Flash and Run NuttX
+
+_(For BL602 and ESP32)_
+
+Below are the steps to build, flash and run NuttX on BL602 and ESP32.
+
+The instructions below will work on __Linux (Ubuntu)__, __WSL (Ubuntu)__ and __macOS__.
+
+[(Instructions for other platforms)](https://nuttx.apache.org/docs/latest/quickstart/install.html)
+
+[(See this for Arch Linux)](https://popolon.org/gblog3/?p=1977&lang=en)
+
+## Build NuttX
+
+Follow these steps to build NuttX for BL602 or ESP32...
+
+1.  Install the build prerequisites...
+
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+1.  Assume that we have downloaded and configured our NuttX code...
+
+    [__"Download Source Code"__](https://lupyuen.github.io/articles/lorawan3#download-source-code)
+
+    [__"Build the Firmware"__](https://lupyuen.github.io/articles/lorawan3#build-the-firmware)
+
+1.  To build NuttX, enter this command...
+
+    ```bash
+    make
+    ```
+
+1.  We should see...
+
+    ```text
+    LD: nuttx
+    CP: nuttx.hex
+    CP: nuttx.bin
+    ```
+
+    [(See the complete log for BL602)](https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746)
+
+1.  __For BL602:__ Copy the __NuttX Firmware__ to the __blflash__ directory...
+
+    ```bash
+    ##  For Linux and macOS:
+    ##  TODO: Change $HOME/blflash to the full path of blflash
+    cp nuttx.bin $HOME/blflash
+
+    ##  For WSL:
+    ##  TODO: Change /mnt/c/blflash to the full path of blflash in Windows
+    ##  /mnt/c/blflash refers to c:\blflash
+    cp nuttx.bin /mnt/c/blflash
+    ```
+
+    (We'll cover __blflash__ in the next section)
+
+    For WSL we need to run __blflash__ under plain old Windows CMD (not WSL) because it needs to access the COM port.
+
+1.  In case of problems, refer to the __NuttX Docs__...
+
+    [__"BL602 NuttX"__](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
+
+    [__"ESP32 NuttX"__](https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html)
+
+    [__"Installing NuttX"__](https://nuttx.apache.org/docs/latest/quickstart/install.html)
+
+> ![Building NuttX](https://lupyuen.github.io/images/nuttx-build2.png)
+
+## Flash NuttX
+
+__For ESP32:__ [__See instructions here__](https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing) [(Also check out this article)](https://popolon.org/gblog3/?p=1977&lang=en)
+
+__For BL602:__ Follow these steps to install __blflash__...
+
+1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
+
+1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+
+We assume that our Firmware Binary File __nuttx.bin__ has been copied to the __blflash__ folder.
+
+Set BL602 / BL604 to __Flashing Mode__ and restart the board...
+
+__For PineDio Stack BL604:__
+
+1.  Set the __GPIO 8 Jumper__ to __High__ [(Like this)](https://lupyuen.github.io/images/pinedio-high.jpg)
+
+1.  Press the Reset Button
+
+__For PineCone BL602:__
+
+1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Connect BL10 to the USB port
+
+1.  Press and hold the __D8 Button (GPIO 8)__
+
+1.  Press and release the __EN Button (Reset)__
+
+1.  Release the D8 Button
+
+__For Pinenut and MagicHome BL602:__
+
+1.  Disconnect the board from the USB Port
+
+1.  Connect __GPIO 8__ to __3.3V__
+
+1.  Reconnect the board to the USB port
+
+Enter these commands to flash __nuttx.bin__ to BL602 / BL604 over UART...
+
+```bash
+## TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+## For Linux:
+sudo cargo run flash nuttx.bin \
+    --port /dev/ttyUSB0
+
+## For macOS:
+cargo run flash nuttx.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+## For Windows: Change COM5 to the BL602 / BL604 Serial Port
+cargo run flash nuttx.bin --port COM5
+```
+
+[(See the Output Log)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
+
+For WSL: Do this under plain old Windows CMD (not WSL) because __blflash__ needs to access the COM port.
+
+[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/incubator-nuttx/issues/4336)
+
+[(More details on flashing firmware)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+![Flashing NuttX](https://lupyuen.github.io/images/nuttx-flash2.png)
+
+## Run NuttX
+
+__For ESP32:__ Use Picocom to connect to ESP32 over UART...
+
+```bash
+picocom -b 115200 /dev/ttyUSB0
+```
+
+[(More about this)](https://popolon.org/gblog3/?p=1977&lang=en)
+
+__For BL602:__ Set BL602 / BL604 to __Normal Mode__ (Non-Flashing) and restart the board...
+
+__For PineDio Stack BL604:__
+
+1.  Set the __GPIO 8 Jumper__ to __Low__ [(Like this)](https://lupyuen.github.io/images/pinedio-low.jpg)
+
+1.  Press the Reset Button
+
+__For PineCone BL602:__
+
+1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+1.  Press the Reset Button
+
+__For BL10:__
+
+1.  Press and release the __EN Button (Reset)__
+
+__For Pinenut and MagicHome BL602:__
+
+1.  Disconnect the board from the USB Port
+
+1.  Connect __GPIO 8__ to __GND__
+
+1.  Reconnect the board to the USB port
+
+After restarting, connect to BL602 / BL604's UART Port at 2 Mbps like so...
+
+__For Linux:__
+
+```bash
+sudo screen /dev/ttyUSB0 2000000
+```
+
+__For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__For Windows:__ Use `putty` ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+Press Enter to reveal the __NuttX Shell__...
+
+```text
+NuttShell (NSH) NuttX-10.2.0-RC0
+nsh>
+```
+
+Congratulations NuttX is now running on BL602 / BL604!
+
+[(More details on connecting to BL602 / BL604)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
+
+__macOS Tip:__ Here's the script I use to build, flash and run NuttX on macOS, all in a single step: [run.sh](https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af)
+
+![Script to build, flash and run NuttX on macOS](https://lupyuen.github.io/images/spi2-script.png)
+
+[(Source)](https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af)
 
 # Appendix: GPIO Issue
 
