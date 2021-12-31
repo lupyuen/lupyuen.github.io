@@ -176,7 +176,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>We’ll do the basic LoRaWAN use case on NuttX…</p>
 <ul>
 <li>
-<p>Connect NuttX to the <strong>LoRaWAN Network</strong></p>
+<p>Join NuttX to the <strong>LoRaWAN Network</strong></p>
 </li>
 <li>
 <p>Send a <strong>Data Packet</strong> from NuttX to LoRaWAN</p>
@@ -188,9 +188,10 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <li>
 <p>NuttX sends a <strong>Join Network Request</strong> to the LoRaWAN Gateway.</p>
 <p>Inside the Join Network Request are…</p>
-<p><strong>Device EUI:</strong> TODO</p>
-<p><strong>Join EUI:</strong> TODO</p>
-<p><strong>Nonce:</strong> TODO</p>
+<p><strong>Device EUI:</strong> Unique ID that’s assigned to our LoRaWAN Device</p>
+<p><strong>Join EUI:</strong> Identifies the LoRaWAN Network that we’re joining</p>
+<p><strong>Nonce:</strong> Non-repeating number, to prevent replay attacks</p>
+<p>(EUI means Extended Unique Identifier)</p>
 </li>
 <li>
 <p>LoRaWAN Gateway returns a <strong>Join Network Response</strong></p>
@@ -200,9 +201,9 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 </li>
 <li>
 <p>NuttX uses an <strong>App Key</strong> to sign the Join Network Request and the Data Packet</p>
+<p>(App Key is stored inside NuttX, never exposed over the airwaves)</p>
 </li>
 </ol>
-<p>(The App Key is stored inside NuttX, it’s never exposed over the airwaves)</p>
 <p>Let’s set the Device EUI, Join EUI and App Key.</p>
 <h1 id="download-source-code" class="section-header"><a href="#download-source-code">3 Download Source Code</a></h1>
 <p>TODO</p>
