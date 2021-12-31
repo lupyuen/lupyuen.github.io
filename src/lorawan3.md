@@ -210,7 +210,7 @@ Look for these lines in [__se-identity.h__](https://github.com/lupyuen/LoRaMac-n
 
 -   __LORAWAN_DEVICE_EUI:__ Change this to our __LoRaWAN Device EUI__.
 
-    For ChirpStack: Get it from `Applications → app → Device EUI`
+    For ChirpStack: Copy from "Applications → app → Device EUI"
 
 -   __LORAWAN_JOIN_EUI:__ Change this to our __LoRaWAN Join EUI__.
 
@@ -243,7 +243,7 @@ Next find this in the same file [__se-identity.h__](https://github.com/lupyuen/L
 
 -   __APP_KEY:__ Change this to our __LoRaWAN App Key__
 
-    For ChirpStack: Get it from `Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key`
+    For ChirpStack: Copy from "Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key"
 
 -   __NWK_KEY:__ Change this to our __LoRaWAN App Key__
 
@@ -257,17 +257,17 @@ For LoRaWAN Devices that are designed to be __super secure__, they don't expose 
 
 Instead they store the App Key in the [__Secure Element__](https://encyclopedia.kaspersky.com/glossary/secure-element/) hardware.
 
-Our LoRaWAN Library supports two kinds of Secure Elements: [Microchip ATECC608A](https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/atecc608a-tnglora-se) and [Semtech LR1110](https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/lr1110-se)
+Our LoRaWAN Library supports two kinds of Secure Elements: [__Microchip ATECC608A__](https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/atecc608a-tnglora-se) and [__Semtech LR1110__](https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/lr1110-se)
 
 _But our NuttX Device doesn't have a Secure Element right?_
 
 That's why we define the App Key in the [__"Software Secure Element (soft-se)"__](https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/soft-se) that simulates a Hardware Secure Element... Minus the actual hardware security.
 
-The App Key will be exposed if somebody dumps the firmware on our NuttX Device, but it's probably OK during development.
+Our App Key will be exposed if somebody dumps the firmware on our NuttX Device. But it's probably OK during development.
 
 # LoRaWAN Frequency
 
-TODO
+Let's set the LoRaWAN Frequency...
 
 1.  Find the __LoRaWAN Frequency__ for our region...
 
