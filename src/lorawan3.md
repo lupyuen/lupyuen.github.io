@@ -255,7 +255,7 @@ Next find this in the same file [__se-identity.h__](https://github.com/lupyuen/L
 
 _What's "soft-se"? Why are our LoRaWAN Settings there?_
 
-For LoRaWAN Devices that are designed to be __super secure__, they don't expose LoRaWAN App Key in the Source Code...
+For LoRaWAN Devices that are designed to be __super secure__, they __don't expose the LoRaWAN App Key__ in the firmware code...
 
 Instead they store the App Key in the [__Secure Element__](https://encyclopedia.kaspersky.com/glossary/secure-element/) hardware.
 
@@ -265,7 +265,7 @@ _But our NuttX Device doesn't have a Secure Element right?_
 
 That's why we define the App Key in the [__"Software Secure Element (soft-se)"__](https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/soft-se) that simulates a Hardware Secure Element... Minus the actual hardware security.
 
-Our App Key will be exposed if somebody dumps the firmware on our NuttX Device. But it's probably OK during development.
+Our App Key will be exposed if somebody dumps the firmware for our NuttX Device. But it's probably OK during development.
 
 # LoRaWAN Frequency
 
@@ -305,6 +305,62 @@ Let's set the LoRaWAN Frequency...
 # Run The Firmware
 
 TODO
+
+# Join Network
+
+TODO
+
+Let's connect Apache #NuttX OS to a #LoRaWAN Gateway ... RAKwireless WisGate D4H with ChirpStack
+
+![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
+
+[(Article)](https://lupyuen.github.io/articles/wisgate)
+
+#LoRaWAN Gateway receives the Join Request from #NuttX OS ... And accepts the Join Request! 🎉
+
+TODO43
+
+![](https://lupyuen.github.io/images/lorawan3-chirpstack.png)
+
+[(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
+
+#NuttX OS doesn't handle the Join Response from #LoRaWAN Gateway ... Let's fix this
+
+TODO56
+
+![](https://lupyuen.github.io/images/lorawan3-run3.png)
+
+[(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
+
+# Send Data
+
+TODO
+
+Here's how we send a #LoRaWAN Data Packet on #NuttX OS ... And validate the Packet Size before sending
+
+TODO68
+
+![](https://lupyuen.github.io/images/lorawan3-tx6.png)
+
+[(Source)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L311-L339)
+
+#LoRaWAN tested OK on Apache #NuttX OS ... From #PineDio Stack BL604 @ThePine64 to RAKwireless WisGate ... And back! 🎉
+
+-   [__LoRaMac-node-nuttx__](https://github.com/lupyuen/LoRaMac-node-nuttx)
+
+# Event Loop
+
+TODO
+
+Here's our #LoRaWAN Event Loop for #NuttX OS ... Implemented with NimBLE Porting Library ... No more polling!
+
+TODO54
+
+![](https://lupyuen.github.io/images/lorawan3-npl1.png)
+
+TODO58
+
+![](https://lupyuen.github.io/images/lorawan3-run5a.png)
 
 # LoRaWAN Nonce
 
@@ -378,32 +434,6 @@ TODO39
 -   [__NuttX Apps__](https://github.com/lupyuen/incubator-nuttx-apps/tree/lorawan)
 
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
-
-# Join Network
-
-TODO
-
-Let's connect Apache #NuttX OS to a #LoRaWAN Gateway ... RAKwireless WisGate D4H with ChirpStack
-
-![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
-
-[(Article)](https://lupyuen.github.io/articles/wisgate)
-
-#LoRaWAN Gateway receives the Join Request from #NuttX OS ... And accepts the Join Request! 🎉
-
-TODO43
-
-![](https://lupyuen.github.io/images/lorawan3-chirpstack.png)
-
-[(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
-
-#NuttX OS doesn't handle the Join Response from #LoRaWAN Gateway ... Let's fix this
-
-TODO56
-
-![](https://lupyuen.github.io/images/lorawan3-run3.png)
-
-[(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
 
 # NimBLE Porting Layer
 
@@ -481,20 +511,6 @@ TODO49
 
 [(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L184-L199)
 
-# Event Loop
-
-TODO
-
-Here's our #LoRaWAN Event Loop for #NuttX OS ... Implemented with NimBLE Porting Library ... No more polling!
-
-TODO54
-
-![](https://lupyuen.github.io/images/lorawan3-npl1.png)
-
-TODO58
-
-![](https://lupyuen.github.io/images/lorawan3-run5a.png)
-
 # Logging
 
 TODO
@@ -558,22 +574,6 @@ TODO45
 ![](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
 
 [(Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
-
-# Send Data
-
-TODO
-
-Here's how we send a #LoRaWAN Data Packet on #NuttX OS ... And validate the Packet Size before sending
-
-TODO68
-
-![](https://lupyuen.github.io/images/lorawan3-tx6.png)
-
-[(Source)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L311-L339)
-
-#LoRaWAN tested OK on Apache #NuttX OS ... From #PineDio Stack BL604 @ThePine64 to RAKwireless WisGate ... And back! 🎉
-
--   [__LoRaMac-node-nuttx__](https://github.com/lupyuen/LoRaMac-node-nuttx)
 
 # Troubleshoot LoRaWAN
 
