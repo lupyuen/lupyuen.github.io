@@ -206,10 +206,34 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>(App Key is stored inside NuttX, never exposed over the airwaves)</p>
 </li>
 </ol>
-<p>Let’s set the Device EUI, Join EUI and App Key.</p>
+<p>In a while we’ll set the Device EUI, Join EUI and App Key in our code.</p>
 <h1 id="download-source-code" class="section-header"><a href="#download-source-code">3 Download Source Code</a></h1>
-<p>TODO</p>
+<p>To run LoRaWAN on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+<p>Or if we prefer to <strong>add the LoRaWAN Library</strong> to our NuttX Project, follow these instructions…</p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf"><strong>“Install SPI Test Driver”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>“Install NimBLE Porting Layer”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>“Install LoRa SX1262 Library”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>“Install LoRaWAN Library”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lorawan_test"><strong>“Install LoRaWAN Test App”</strong></a></p>
+</li>
+</ol>
+<p>Let’s configure the LoRaWAN code.</p>
 <h1 id="device-eui-join-eui-and-app-key" class="section-header"><a href="#device-eui-join-eui-and-app-key">4 Device EUI, Join EUI and App Key</a></h1>
+<p><em>Where do we get the Device EUI, Join EUI and App Key?</em></p>
 <p>TODO</p>
 <p>LoRa Frequency and Sync Word are OK … Let’s fix the Device EUI and Join EUI for #LoRaWAN on #NuttX OS</p>
 <p>TODO55</p>
