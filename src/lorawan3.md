@@ -186,7 +186,7 @@ Edit the file...
 nuttx/libs/liblorawan/src/peripherals/soft-se/se-identity.h
 ```
 
-Look for these lines in [se-identity.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79)
+Look for these lines in [__se-identity.h__](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79)
 
 ```c
 /*!
@@ -218,7 +218,7 @@ Look for these lines in [se-identity.h](https://github.com/lupyuen/LoRaMac-node-
 
 ![Device EUI and Join EUI](https://lupyuen.github.io/images/lorawan3-secure1.png)
 
-Next find this in the same file: [se-identity.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L98-L115)
+Next find this in the same file [__se-identity.h__](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L98-L115)
 
 ```c
 #define SOFT_SE_KEY_LIST \
@@ -268,6 +268,37 @@ The App Key will be exposed if somebody dumps the firmware on our NuttX Device, 
 # LoRaWAN Frequency
 
 TODO
+
+1.  Find the __LoRaWAN Frequency__ for our region...
+
+    [__"Frequency Plans by Country"__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html)
+
+1.  Edit our __LoRaWAN Test App__...
+
+    ```text
+    apps/examples/lorawan_test/lorawan_test_main.c
+    ```
+
+1.  Find this in [__lorawan_test_main.c__](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L34-L40)
+
+    ```c
+    #ifndef ACTIVE_REGION
+    #warning "No active region defined, LORAMAC_REGION_AS923 will be used as default."
+    #define ACTIVE_REGION LORAMAC_REGION_AS923
+    #endif
+    ```
+
+1.  Change __AS923__ (both occurrences) to our LoRaWAN Frequency...
+
+    __US915__, __CN779__, __EU433__, __AU915__, __AS923__, __CN470__, __KR920__, __IN865__ or __RU864__
+
+1.  Do the same for [__LmHandler.c__](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/common/LmHandler/LmHandler.c#L41-L47)
+
+    ```text
+    nuttx/libs/liblorawan/src/apps/LoRaMac/common/LmHandler/LmHandler.c
+    ```
+
+    (We ought to define this parameter in Kconfig instead)
 
 # Run The Firmware
 
