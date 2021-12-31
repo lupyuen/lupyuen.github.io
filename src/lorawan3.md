@@ -214,7 +214,7 @@ Look for these lines in [se-identity.h](https://github.com/lupyuen/LoRaMac-node-
 
 -   __LORAWAN_JOIN_EUI:__ Change this to our __LoRaWAN Join EUI__.
 
-    For ChirpStack: Join EUI is not needed, thus we set it to `0000000000000000`
+    For ChirpStack: Join EUI is not needed, we leave it as zeroes
 
 ![Device EUI and Join EUI](https://lupyuen.github.io/images/lorawan3-secure1.png)
 
@@ -255,13 +255,68 @@ _What's "soft-se"? Why are our LoRaWAN Settings there?_
 
 For LoRaWAN Devices that are designed to be __super secure__, they don't expose LoRaWAN App Key in the Source Code...
 
-Instead, they store the App Key in the __Secure Element__ hardware.
+Instead they store the App Key in the [__Secure Element__](https://encyclopedia.kaspersky.com/glossary/secure-element/) hardware.
+
+Our LoRaWAN Library supports two kinds of Secure Elements: [Microchip ATECC608A](https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/atecc608a-tnglora-se) and [Semtech LR1110](https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/lr1110-se)
+
+_But our NuttX Device doesn't have a Secure Element right?_
+
+That's why we define the App Key in the [__"Software Secure Element (soft-se)"__](https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/soft-se) that simulates a Hardware Secure Element... Minus the actual hardware security.
+
+The App Key will be exposed if somebody dumps the firmware on our NuttX Device, but it's probably OK during development.
+
+# Nonce
 
 TODO
 
-#LoRaWAN gets its Device EUI, Join EUI and App Key from the Secure Element ... But since #NuttX doesn't have a Secure Element, we hardcode them in the "Soft" Secure Element
+Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway ... Which (silently) rejects the Join Request due to Duplicate Nonce ... Let's fix our Random Number Generator
 
-![](https://lupyuen.github.io/images/lorawan3-run1.png)
+TODO34
+
+![](https://lupyuen.github.io/images/lorawan3-chirpstack2a.png)
+
+[(Log)](https://gist.github.com/lupyuen/b38434c3d27500444382bb4a066691e5)
+
+#LoRaWAN gets the Nonce from the Secure Element's Random Number Generator ... Let's simulate the Secure Element on Apache #NuttX OS
+
+TODO51
+
+![](https://lupyuen.github.io/images/lorawan3-nonce2a.png)
+
+[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996)
+
+Here's how we generate #LoRaWAN Nonces on #NuttX OS ... With Strong Random Numbers thanks to Entropy Pool
+
+TODO53
+
+![](https://lupyuen.github.io/images/lorawan3-nonce6.png)
+
+[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L136-L153)
+
+
+Our #NuttX App now sends Random #LoRaWAN Nonces to the LoRaWAN Gateway ... And are happily accepted by the gateway! 🎉
+
+TODO36
+
+![](https://lupyuen.github.io/images/lorawan3-nonce7a.png)
+
+[(Log)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
+
+# Random Number Generator
+
+TODO
+
+For #NuttX Random Number Generator, select the Entropy Pool ... To generate Strong Random Numbers for our #LoRaWAN Nonce
+
+TODO35
+
+![](https://lupyuen.github.io/images/lorawan3-nonce4a.png)
+
+We enable the Entropy Pool in #NuttX OS ... To generate Strong Random Numbers for our #LoRaWAN Nonce
+
+TODO52
+
+![](https://lupyuen.github.io/images/lorawan3-nonce3a.png)
 
 # Build
 
@@ -398,59 +453,6 @@ TODO54
 TODO58
 
 ![](https://lupyuen.github.io/images/lorawan3-run5a.png)
-
-# Nonce
-
-TODO
-
-Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway ... Which (silently) rejects the Join Request due to Duplicate Nonce ... Let's fix our Random Number Generator
-
-TODO34
-
-![](https://lupyuen.github.io/images/lorawan3-chirpstack2a.png)
-
-[(Log)](https://gist.github.com/lupyuen/b38434c3d27500444382bb4a066691e5)
-
-#LoRaWAN gets the Nonce from the Secure Element's Random Number Generator ... Let's simulate the Secure Element on Apache #NuttX OS
-
-TODO51
-
-![](https://lupyuen.github.io/images/lorawan3-nonce2a.png)
-
-[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996)
-
-Here's how we generate #LoRaWAN Nonces on #NuttX OS ... With Strong Random Numbers thanks to Entropy Pool
-
-TODO53
-
-![](https://lupyuen.github.io/images/lorawan3-nonce6.png)
-
-[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L136-L153)
-
-
-Our #NuttX App now sends Random #LoRaWAN Nonces to the LoRaWAN Gateway ... And are happily accepted by the gateway! 🎉
-
-TODO36
-
-![](https://lupyuen.github.io/images/lorawan3-nonce7a.png)
-
-[(Log)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
-
-# Random Number Generator
-
-TODO
-
-For #NuttX Random Number Generator, select the Entropy Pool ... To generate Strong Random Numbers for our #LoRaWAN Nonce
-
-TODO35
-
-![](https://lupyuen.github.io/images/lorawan3-nonce4a.png)
-
-We enable the Entropy Pool in #NuttX OS ... To generate Strong Random Numbers for our #LoRaWAN Nonce
-
-TODO52
-
-![](https://lupyuen.github.io/images/lorawan3-nonce3a.png)
 
 # Logging
 
