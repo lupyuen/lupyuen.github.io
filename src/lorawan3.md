@@ -166,7 +166,7 @@ Or if we prefer to __add the LoRaWAN Library__ to our NuttX Project, follow thes
 
 1.  [__"Install LoRaWAN Test App"__](https://github.com/lupyuen/lorawan_test)
 
-Let's configure the LoRaWAN code.
+Let's configure our LoRaWAN code.
 
 ![Device EUI from ChirpStack](https://lupyuen.github.io/images/wisgate-app2.png)
 
@@ -265,7 +265,15 @@ That's why we define the App Key in the [__"Software Secure Element (soft-se)"__
 
 The App Key will be exposed if somebody dumps the firmware on our NuttX Device, but it's probably OK during development.
 
-# Nonce
+# LoRaWAN Frequency
+
+TODO
+
+# Run The Firmware
+
+TODO
+
+# LoRaWAN Nonce
 
 TODO
 
