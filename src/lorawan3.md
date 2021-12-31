@@ -125,7 +125,7 @@ Which works like this...
 
     __Join EUI:__ Identifies the LoRaWAN Network that we're joining
 
-    __Nonce:__ Non-repeating number, to prevent replay attacks
+    __Nonce:__ Non-repeating number, to prevent [Replay Attacks](https://en.wikipedia.org/wiki/Replay_attack)
 
     (EUI means Extended Unique Identifier)
 
