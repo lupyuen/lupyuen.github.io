@@ -103,8 +103,6 @@ Our LoRa SX1262 Library assumes that the following __NuttX Devices__ are configu
 
 -   __/dev/spitest0__: SPI Test Driver (see above)
 
-![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
-
 # LoRaWAN Objective
 
 _What shall we accomplish with LoRaWAN today?_
@@ -117,7 +115,7 @@ We'll do the basic LoRaWAN use case on NuttX...
 
 Which works like this...
 
-TODO
+![LoRaWAN Use Case](https://lupyuen.github.io/images/lorawan3-flow.jpg)
 
 1.  NuttX sends a __Join Network Request__ to the LoRaWAN Gateway.
 
@@ -138,6 +136,10 @@ TODO
 (The App Key is stored inside NuttX, it's never exposed over the airwaves)
 
 Let's set the Device EUI, Join EUI and App Key.
+
+# Download Source Code
+
+TODO
 
 # Device EUI, Join EUI and App Key
 
@@ -190,6 +192,8 @@ TODO39
 -   [__NuttX OS__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan)
 
 -   [__NuttX Apps__](https://github.com/lupyuen/incubator-nuttx-apps/tree/lorawan)
+
+![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
 
 # Join Network
 
