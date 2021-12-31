@@ -83,11 +83,12 @@
 <li><a href="#logging">14 Logging</a><ul></ul></li>
 <li><a href="#message-size">15 Message Size</a><ul></ul></li>
 <li><a href="#send-data">16 Send Data</a><ul></ul></li>
-<li><a href="#spi-with-dma">17 SPI with DMA</a><ul></ul></li>
-<li><a href="#whats-next">18 What’s Next</a><ul></ul></li>
-<li><a href="#notes">19 Notes</a><ul></ul></li>
-<li><a href="#appendix-gpio-issue">20 Appendix: GPIO Issue</a><ul></ul></li>
-<li><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
+<li><a href="#troubleshoot-lorawan">17 Troubleshoot LoRaWAN</a><ul></ul></li>
+<li><a href="#spi-with-dma">18 SPI with DMA</a><ul></ul></li>
+<li><a href="#whats-next">19 What’s Next</a><ul></ul></li>
+<li><a href="#notes">20 Notes</a><ul></ul></li>
+<li><a href="#appendix-gpio-issue">21 Appendix: GPIO Issue</a><ul></ul></li>
+<li><a href="#appendix-callout-issue">22 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <p>Last article we got <strong>LoRa</strong> (the long-range, low-bandwidth wireless network) running on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a>…</p>
@@ -271,6 +272,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p>For ChirpStack: Join EUI is not needed, thus we set it to <code>0000000000000000</code></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/lorawan3-secure1.png" alt="Device EUI and Join EUI" /></p>
 <p>Next find this in the same file: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L98-L115">se-identity.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define SOFT_SE_KEY_LIST \
   { \
@@ -300,22 +302,13 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p>(Same as <strong>APP_KEY</strong>)</p>
 </li>
 </ul>
-<p><em>Why do we set our EUIs and App Key in “soft-se”?</em></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-secure2a.png" alt="App Key" /></p>
+<p><em>What’s “soft-se”? Why are our LoRaWAN Settings there?</em></p>
+<p>For LoRaWAN Devices that are designed to be <strong>super secure</strong>, they don’t expose LoRaWAN App Key in the Source Code…</p>
+<p>Instead, they store the App Key in the <strong>Secure Element</strong> hardware.</p>
 <p>TODO</p>
-<p>LoRa Frequency and Sync Word are OK … Let’s fix the Device EUI and Join EUI for #LoRaWAN on #NuttX OS</p>
-<p>TODO55</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-run2a.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0">(Run Log)</a></p>
-<p>TODO59</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-run1.png" alt="" /></p>
 <p>#LoRaWAN gets its Device EUI, Join EUI and App Key from the Secure Element … But since #NuttX doesn’t have a Secure Element, we hardcode them in the “Soft” Secure Element</p>
-<p>TODO61</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-secure1.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79">(Source)</a></p>
-<p>For #NuttX OS we hardcode the #LoRaWAN App Key … Into the “Soft” Secure Element</p>
-<p>TODO60</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-secure2a.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L100-L115">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-run1.png" alt="" /></p>
 <h1 id="build" class="section-header"><a href="#build">5 Build</a></h1>
 <p>TODO</p>
 <p>#LoRaWAN on #NuttX OS: Let’s stub out the functions for Non-Volatile Memory and Real Time Clock … And watch what happens 🌋</p>
@@ -462,9 +455,14 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <ul>
 <li><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>LoRaMac-node-nuttx</strong></a></li>
 </ul>
-<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">17 SPI with DMA</a></h1>
+<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">17 Troubleshoot LoRaWAN</a></h1>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">18 What’s Next</a></h1>
+<p>Check the LoRa Frequency, Sync Word, Device EUI and Join EUI</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-run2a.png" alt="" /></p>
+<p><a href="https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0">(Run Log)</a></p>
+<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">18 SPI with DMA</a></h1>
+<p>TODO</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">19 What’s Next</a></h1>
 <p>TODO</p>
 <p>CBOR, TTN, Temperature Sensor</p>
 <p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
@@ -493,7 +491,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan3.md"><code>lupyuen.github.io/src/lorawan3.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">19 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">20 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1473593455699841027">this Twitter Thread</a></p>
@@ -537,13 +535,13 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p>It might! But first let’s get LoRaWAN (and ST7789) running on PineDio Stack.</p>
 </li>
 </ol>
-<h1 id="appendix-gpio-issue" class="section-header"><a href="#appendix-gpio-issue">20 Appendix: GPIO Issue</a></h1>
+<h1 id="appendix-gpio-issue" class="section-header"><a href="#appendix-gpio-issue">21 Appendix: GPIO Issue</a></h1>
 <p>TODO</p>
 <p>Switching a #NuttX GPIO Interrupt Pin to Trigger On Rising Edge … Crashes with an Assertion Failure … I’ll submit a NuttX Issue, meanwhile I have disabled the assertion</p>
 <p>TODO50</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-int.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547">(Source)</a></p>
-<h1 id="appendix-callout-issue" class="section-header"><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a></h1>
+<h1 id="appendix-callout-issue" class="section-header"><a href="#appendix-callout-issue">22 Appendix: Callout Issue</a></h1>
 <p>TODO</p>
 <p>NimBLE Porting Layer doesn’t work for multiple Callout Timers on #NuttX OS, unless we loop the thread … Will submit a Pull Request to Apache NimBLE 👍</p>
 <p>TODO42</p>
