@@ -216,6 +216,8 @@ Look for these lines in [se-identity.h](https://github.com/lupyuen/LoRaMac-node-
 
     For ChirpStack: Join EUI is not needed, thus we set it to `0000000000000000`
 
+![Device EUI and Join EUI](https://lupyuen.github.io/images/lorawan3-secure1.png)
+
 Next find this in the same file: [se-identity.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L98-L115)
 
 ```c
@@ -247,39 +249,19 @@ Next find this in the same file: [se-identity.h](https://github.com/lupyuen/LoRa
 
     (Same as __APP_KEY__)
 
-_Why do we set our EUIs and App Key in "soft-se"?_
+![App Key](https://lupyuen.github.io/images/lorawan3-secure2a.png)
+
+_What's "soft-se"? Why are our LoRaWAN Settings there?_
+
+For LoRaWAN Devices that are designed to be __super secure__, they don't expose LoRaWAN App Key in the Source Code...
+
+Instead, they store the App Key in the __Secure Element__ hardware.
 
 TODO
 
-LoRa Frequency and Sync Word are OK ... Let's fix the Device EUI and Join EUI for #LoRaWAN on #NuttX OS
-
-TODO55
-
-![](https://lupyuen.github.io/images/lorawan3-run2a.png)
-
-[(Run Log)](https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0)
-
-
-TODO59
-
-![](https://lupyuen.github.io/images/lorawan3-run1.png)
-
-
 #LoRaWAN gets its Device EUI, Join EUI and App Key from the Secure Element ... But since #NuttX doesn't have a Secure Element, we hardcode them in the "Soft" Secure Element
 
-TODO61
-
-![](https://lupyuen.github.io/images/lorawan3-secure1.png)
-
-[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79)
-
-For #NuttX OS we hardcode the #LoRaWAN App Key ... Into the "Soft" Secure Element
-
-TODO60
-
-![](https://lupyuen.github.io/images/lorawan3-secure2a.png)
-
-[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L100-L115)
+![](https://lupyuen.github.io/images/lorawan3-run1.png)
 
 # Build
 
@@ -549,6 +531,16 @@ TODO68
 #LoRaWAN tested OK on Apache #NuttX OS ... From #PineDio Stack BL604 @ThePine64 to RAKwireless WisGate ... And back! 🎉
 
 -   [__LoRaMac-node-nuttx__](https://github.com/lupyuen/LoRaMac-node-nuttx)
+
+# Troubleshoot LoRaWAN
+
+TODO
+
+Check the LoRa Frequency, Sync Word, Device EUI and Join EUI
+
+![](https://lupyuen.github.io/images/lorawan3-run2a.png)
+
+[(Run Log)](https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0)
 
 # SPI with DMA
 
