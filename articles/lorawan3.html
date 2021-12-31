@@ -69,24 +69,25 @@
 <li><a href="#lorawan-support">1.1 LoRaWAN Support</a><ul></ul></li>
 <li><a href="#dependencies">1.2 Dependencies</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-objective">2 LoRaWAN Objective</a><ul></ul></li>
-<li><a href="#device-eui-join-eui-and-app-key">3 Device EUI, Join EUI and App Key</a><ul></ul></li>
-<li><a href="#build">4 Build</a><ul></ul></li>
-<li><a href="#join-network">5 Join Network</a><ul></ul></li>
-<li><a href="#nimble-porting-layer">6 NimBLE Porting Layer</a><ul></ul></li>
-<li><a href="#gpio-interrupts">7 GPIO Interrupts</a><ul></ul></li>
-<li><a href="#build-nimble">8 Build NimBLE</a><ul></ul></li>
-<li><a href="#sx1262-busy">9 SX1262 Busy</a><ul></ul></li>
-<li><a href="#event-loop">10 Event Loop</a><ul></ul></li>
-<li><a href="#nonce">11 Nonce</a><ul></ul></li>
-<li><a href="#random-number-generator">12 Random Number Generator</a><ul></ul></li>
-<li><a href="#logging">13 Logging</a><ul></ul></li>
-<li><a href="#message-size">14 Message Size</a><ul></ul></li>
-<li><a href="#send-data">15 Send Data</a><ul></ul></li>
-<li><a href="#spi-with-dma">16 SPI with DMA</a><ul></ul></li>
-<li><a href="#whats-next">17 What’s Next</a><ul></ul></li>
-<li><a href="#notes">18 Notes</a><ul></ul></li>
-<li><a href="#appendix-gpio-issue">19 Appendix: GPIO Issue</a><ul></ul></li>
-<li><a href="#appendix-callout-issue">20 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
+<li><a href="#download-source-code">3 Download Source Code</a><ul></ul></li>
+<li><a href="#device-eui-join-eui-and-app-key">4 Device EUI, Join EUI and App Key</a><ul></ul></li>
+<li><a href="#build">5 Build</a><ul></ul></li>
+<li><a href="#join-network">6 Join Network</a><ul></ul></li>
+<li><a href="#nimble-porting-layer">7 NimBLE Porting Layer</a><ul></ul></li>
+<li><a href="#gpio-interrupts">8 GPIO Interrupts</a><ul></ul></li>
+<li><a href="#build-nimble">9 Build NimBLE</a><ul></ul></li>
+<li><a href="#sx1262-busy">10 SX1262 Busy</a><ul></ul></li>
+<li><a href="#event-loop">11 Event Loop</a><ul></ul></li>
+<li><a href="#nonce">12 Nonce</a><ul></ul></li>
+<li><a href="#random-number-generator">13 Random Number Generator</a><ul></ul></li>
+<li><a href="#logging">14 Logging</a><ul></ul></li>
+<li><a href="#message-size">15 Message Size</a><ul></ul></li>
+<li><a href="#send-data">16 Send Data</a><ul></ul></li>
+<li><a href="#spi-with-dma">17 SPI with DMA</a><ul></ul></li>
+<li><a href="#whats-next">18 What’s Next</a><ul></ul></li>
+<li><a href="#notes">19 Notes</a><ul></ul></li>
+<li><a href="#appendix-gpio-issue">20 Appendix: GPIO Issue</a><ul></ul></li>
+<li><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <p>Last article we got <strong>LoRa</strong> (the long-range, low-bandwidth wireless network) running on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a>…</p>
@@ -170,7 +171,6 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p><strong>/dev/spitest0</strong>: SPI Test Driver (see above)</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="lorawan-objective" class="section-header"><a href="#lorawan-objective">2 LoRaWAN Objective</a></h1>
 <p><em>What shall we accomplish with LoRaWAN today?</em></p>
 <p>We’ll do the basic LoRaWAN use case on NuttX…</p>
@@ -183,7 +183,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 </li>
 </ul>
 <p>Which works like this…</p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-flow.jpg" alt="LoRaWAN Use Case" /></p>
 <ol>
 <li>
 <p>NuttX sends a <strong>Join Network Request</strong> to the LoRaWAN Gateway.</p>
@@ -204,7 +204,9 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 </ol>
 <p>(The App Key is stored inside NuttX, it’s never exposed over the airwaves)</p>
 <p>Let’s set the Device EUI, Join EUI and App Key.</p>
-<h1 id="device-eui-join-eui-and-app-key" class="section-header"><a href="#device-eui-join-eui-and-app-key">3 Device EUI, Join EUI and App Key</a></h1>
+<h1 id="download-source-code" class="section-header"><a href="#download-source-code">3 Download Source Code</a></h1>
+<p>TODO</p>
+<h1 id="device-eui-join-eui-and-app-key" class="section-header"><a href="#device-eui-join-eui-and-app-key">4 Device EUI, Join EUI and App Key</a></h1>
 <p>TODO</p>
 <p>LoRa Frequency and Sync Word are OK … Let’s fix the Device EUI and Join EUI for #LoRaWAN on #NuttX OS</p>
 <p>TODO55</p>
@@ -220,7 +222,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>TODO60</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-secure2a.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L100-L115">(Source)</a></p>
-<h1 id="build" class="section-header"><a href="#build">4 Build</a></h1>
+<h1 id="build" class="section-header"><a href="#build">5 Build</a></h1>
 <p>TODO</p>
 <p>#LoRaWAN on #NuttX OS: Let’s stub out the functions for Non-Volatile Memory and Real Time Clock … And watch what happens 🌋</p>
 <p>TODO39</p>
@@ -235,7 +237,8 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/lorawan"><strong>NuttX Apps</strong></a></p>
 </li>
 </ul>
-<h1 id="join-network" class="section-header"><a href="#join-network">5 Join Network</a></h1>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
+<h1 id="join-network" class="section-header"><a href="#join-network">6 Join Network</a></h1>
 <p>TODO</p>
 <p>Let’s connect Apache #NuttX OS to a #LoRaWAN Gateway … RAKwireless WisGate D4H with ChirpStack</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
@@ -248,7 +251,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>TODO56</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-run3.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33">(Run Log)</a></p>
-<h1 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">6 NimBLE Porting Layer</a></h1>
+<h1 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">7 NimBLE Porting Layer</a></h1>
 <p>TODO</p>
 <p>Our #NuttX App was waiting for the #LoRaWAN Join Request to be transmitted before receiving the Join Response … But because we’re polling SX1262, we missed the Join Response … Let’s fix this with the multithreading functions from NimBLE Porting Layer</p>
 <ul>
@@ -258,7 +261,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p><img src="https://lupyuen.github.io/images/lorawan3-run4a.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/d3d9db37a40d7560fc211408db04a81b">(Log)</a></p>
 <p>NimBLE Porting Layer is a portable library of Multithreading Functions … We’ve used it for #LoRa on Linux and FreeRTOS … Now we call it from Apache #NuttX OS</p>
-<h1 id="gpio-interrupts" class="section-header"><a href="#gpio-interrupts">7 GPIO Interrupts</a></h1>
+<h1 id="gpio-interrupts" class="section-header"><a href="#gpio-interrupts">8 GPIO Interrupts</a></h1>
 <p>TODO</p>
 <p>SX1262 will trigger a GPIO Interrupt on #NuttX OS when it receives a #LoRa Packet … We wait for the GPIO Interrupt to be Signalled in a Background Thread</p>
 <p>TODO46</p>
@@ -274,7 +277,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L863-L892">(Source)</a></p>
 <p>#LoRaWAN runs neater on Apache #NuttX OS … After implementing Timers and Multithreading with NimBLE Porting Layer … No more sleep()!</p>
 <p><a href="https://gist.github.com/lupyuen/cad58115be4cabe8a8a49c0e498f1c95">(Log)</a></p>
-<h1 id="build-nimble" class="section-header"><a href="#build-nimble">8 Build NimBLE</a></h1>
+<h1 id="build-nimble" class="section-header"><a href="#build-nimble">9 Build NimBLE</a></h1>
 <p>TODO</p>
 <p>To build NumBLE Porting Layer on #NuttX OS we need to enable: 1️⃣ POSIX Timers &amp; Message Queues 2️⃣ Clock Monotonic 3️⃣ Work Queues 4️⃣ SIGEV_THHREAD</p>
 <ul>
@@ -284,20 +287,20 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p><img src="https://lupyuen.github.io/images/lorawan3-config1.png" alt="" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-config4.png" alt="" /></p>
-<h1 id="sx1262-busy" class="section-header"><a href="#sx1262-busy">9 SX1262 Busy</a></h1>
+<h1 id="sx1262-busy" class="section-header"><a href="#sx1262-busy">10 SX1262 Busy</a></h1>
 <p>TODO</p>
 <p>Here’s how we check the SX1262 Busy Pin on #NuttX OS … By reading the GPIO Input</p>
 <p>TODO49</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-gpio1.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L184-L199">(Source)</a></p>
-<h1 id="event-loop" class="section-header"><a href="#event-loop">10 Event Loop</a></h1>
+<h1 id="event-loop" class="section-header"><a href="#event-loop">11 Event Loop</a></h1>
 <p>TODO</p>
 <p>Here’s our #LoRaWAN Event Loop for #NuttX OS … Implemented with NimBLE Porting Library … No more polling!</p>
 <p>TODO54</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="" /></p>
 <p>TODO58</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-run5a.png" alt="" /></p>
-<h1 id="nonce" class="section-header"><a href="#nonce">11 Nonce</a></h1>
+<h1 id="nonce" class="section-header"><a href="#nonce">12 Nonce</a></h1>
 <p>TODO</p>
 <p>Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway … Which (silently) rejects the Join Request due to Duplicate Nonce … Let’s fix our Random Number Generator</p>
 <p>TODO34</p>
@@ -315,7 +318,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>TODO36</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-nonce7a.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Log)</a></p>
-<h1 id="random-number-generator" class="section-header"><a href="#random-number-generator">12 Random Number Generator</a></h1>
+<h1 id="random-number-generator" class="section-header"><a href="#random-number-generator">13 Random Number Generator</a></h1>
 <p>TODO</p>
 <p>For #NuttX Random Number Generator, select the Entropy Pool … To generate Strong Random Numbers for our #LoRaWAN Nonce</p>
 <p>TODO35</p>
@@ -323,7 +326,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>We enable the Entropy Pool in #NuttX OS … To generate Strong Random Numbers for our #LoRaWAN Nonce</p>
 <p>TODO52</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-nonce3a.png" alt="" /></p>
-<h1 id="logging" class="section-header"><a href="#logging">13 Logging</a></h1>
+<h1 id="logging" class="section-header"><a href="#logging">14 Logging</a></h1>
 <p>TODO</p>
 <p>Our #NuttX App was too busy to receive the #LoRaWAN Join Response … Let’s disable the logging</p>
 <p>TODO62</p>
@@ -337,7 +340,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>TODO44</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack5.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89">(Log)</a></p>
-<h1 id="message-size" class="section-header"><a href="#message-size">14 Message Size</a></h1>
+<h1 id="message-size" class="section-header"><a href="#message-size">15 Message Size</a></h1>
 <p>TODO</p>
 <p>Our #NuttX App sent an empty #LoRaWAN Message because our message is too long for LoRaWAN Data Rate 2 (max 11 bytes) … Let’s increase the Data Rate to 3</p>
 <p>TODO65</p>
@@ -355,7 +358,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>TODO45</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(Log)</a></p>
-<h1 id="send-data" class="section-header"><a href="#send-data">15 Send Data</a></h1>
+<h1 id="send-data" class="section-header"><a href="#send-data">16 Send Data</a></h1>
 <p>TODO</p>
 <p>Here’s how we send a #LoRaWAN Data Packet on #NuttX OS … And validate the Packet Size before sending</p>
 <p>TODO68</p>
@@ -365,9 +368,9 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <ul>
 <li><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>LoRaMac-node-nuttx</strong></a></li>
 </ul>
-<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">16 SPI with DMA</a></h1>
+<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">17 SPI with DMA</a></h1>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">17 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">18 What’s Next</a></h1>
 <p>TODO</p>
 <p>CBOR, TTN, Temperature Sensor</p>
 <p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
@@ -396,7 +399,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan3.md"><code>lupyuen.github.io/src/lorawan3.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">18 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">19 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1473593455699841027">this Twitter Thread</a></p>
@@ -440,13 +443,13 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>It might! But first let’s get LoRaWAN (and ST7789) running on PineDio Stack.</p>
 </li>
 </ol>
-<h1 id="appendix-gpio-issue" class="section-header"><a href="#appendix-gpio-issue">19 Appendix: GPIO Issue</a></h1>
+<h1 id="appendix-gpio-issue" class="section-header"><a href="#appendix-gpio-issue">20 Appendix: GPIO Issue</a></h1>
 <p>TODO</p>
 <p>Switching a #NuttX GPIO Interrupt Pin to Trigger On Rising Edge … Crashes with an Assertion Failure … I’ll submit a NuttX Issue, meanwhile I have disabled the assertion</p>
 <p>TODO50</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-int.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547">(Source)</a></p>
-<h1 id="appendix-callout-issue" class="section-header"><a href="#appendix-callout-issue">20 Appendix: Callout Issue</a></h1>
+<h1 id="appendix-callout-issue" class="section-header"><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a></h1>
 <p>TODO</p>
 <p>NimBLE Porting Layer doesn’t work for multiple Callout Timers on #NuttX OS, unless we loop the thread … Will submit a Pull Request to Apache NimBLE 👍</p>
 <p>TODO42</p>
