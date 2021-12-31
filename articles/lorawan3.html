@@ -70,7 +70,8 @@
 <li><a href="#dependencies">1.2 Dependencies</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-objective">2 LoRaWAN Objective</a><ul></ul></li>
 <li><a href="#download-source-code">3 Download Source Code</a><ul></ul></li>
-<li><a href="#device-eui-join-eui-and-app-key">4 Device EUI, Join EUI and App Key</a><ul></ul></li>
+<li><a href="#device-eui-join-eui-and-app-key">4 Device EUI, Join EUI and App Key</a><ul>
+<li><a href="#secure-element">4.1 Secure Element</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-frequency">5 LoRaWAN Frequency</a><ul></ul></li>
 <li><a href="#run-the-firmware">6 Run The Firmware</a><ul></ul></li>
 <li><a href="#lorawan-nonce">7 LoRaWAN Nonce</a><ul></ul></li>
@@ -305,6 +306,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-secure2a.png" alt="App Key" /></p>
+<h2 id="secure-element" class="section-header"><a href="#secure-element">4.1 Secure Element</a></h2>
 <p><em>What’s “soft-se”? Why are our LoRaWAN Settings there?</em></p>
 <p>For LoRaWAN Devices that are designed to be <strong>super secure</strong>, they don’t expose LoRaWAN App Key in the Source Code…</p>
 <p>Instead they store the App Key in the <a href="https://encyclopedia.kaspersky.com/glossary/secure-element/"><strong>Secure Element</strong></a> hardware.</p>
@@ -333,7 +335,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p><strong>US915</strong>, <strong>CN779</strong>, <strong>EU433</strong>, <strong>AU915</strong>, <strong>AS923</strong>, <strong>CN470</strong>, <strong>KR920</strong>, <strong>IN865</strong> or <strong>RU864</strong></p>
 </li>
 <li>
-<p>Do the same for <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/common/LmHandler/LmHandler.c#L41-L47"><strong>LmHandler.c</strong></a></p>
+<p>Do the same for the LoRaMAC Handler: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/common/LmHandler/LmHandler.c#L41-L47"><strong>LmHandler.c</strong></a></p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/apps/LoRaMac/common/LmHandler/LmHandler.c</code></pre></div>
 <p>(We ought to define this parameter in Kconfig instead)</p>
 </li>
