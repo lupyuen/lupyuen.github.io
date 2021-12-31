@@ -232,8 +232,75 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 </li>
 </ol>
 <p>Let’s configure the LoRaWAN code.</p>
+<p><img src="https://lupyuen.github.io/images/wisgate-app2.png" alt="Device EUI from ChirpStack" /></p>
 <h1 id="device-eui-join-eui-and-app-key" class="section-header"><a href="#device-eui-join-eui-and-app-key">4 Device EUI, Join EUI and App Key</a></h1>
 <p><em>Where do we get the Device EUI, Join EUI and App Key?</em></p>
+<p>We get the LoRaWAN Settings from our <strong>LoRaWAN Gateway</strong>, like ChirpStack (pic above)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/wisgate#lorawan-application"><strong>“LoRaWAN Application (ChirpStack)”</strong></a></li>
+</ul>
+<p><em>How do we set the Device EUI, Join EUI and App Key in our code?</em></p>
+<p>Edit the file…</p>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/peripherals/soft-se/se-identity.h</code></pre></div>
+<p>Look for these lines in <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79">se-identity.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/*!
+ * When set to 1 DevEui is LORAWAN_DEVICE_EUI
+ * When set to 0 DevEui is automatically set with a value provided by MCU platform
+ */
+#define STATIC_DEVICE_EUI  1
+
+/*!
+ * end-device IEEE EUI (big endian)
+ */
+#define LORAWAN_DEVICE_EUI { 0x4b, 0xc1, 0x5e, 0xe7, 0x37, 0x7b, 0xb1, 0x5b }
+
+/*!
+ * App/Join server IEEE EUI (big endian)
+ */
+#define LORAWAN_JOIN_EUI { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }</code></pre></div>
+<ul>
+<li>
+<p><strong>STATIC_DEVICE_EUI:</strong> Must be <code>1</code></p>
+</li>
+<li>
+<p><strong>LORAWAN_DEVICE_EUI:</strong> Change this to our <strong>LoRaWAN Device EUI</strong>.</p>
+<p>For ChirpStack: Get it from <code>Applications → app → Device EUI</code></p>
+</li>
+<li>
+<p><strong>LORAWAN_JOIN_EUI:</strong> Change this to our <strong>LoRaWAN Join EUI</strong>.</p>
+<p>For ChirpStack: Join EUI is not needed, thus we set it to <code>0000000000000000</code></p>
+</li>
+</ul>
+<p>Next find this in the same file: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L98-L115">se-identity.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define SOFT_SE_KEY_LIST \
+  { \
+    { \
+      /*! \
+       * Application root key \
+       * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_GEN_APP_KEY \
+       */ \
+      .KeyID    = APP_KEY, \
+      .KeyValue = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d }, \
+    }, \
+    { \
+      /*! \
+       * Network root key \
+       * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_APP_KEY \
+       */ \
+      .KeyID    = NWK_KEY, \
+      .KeyValue = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d }, \
+    }, \</code></pre></div>
+<ul>
+<li>
+<p><strong>APP_KEY:</strong> Change this to our <strong>LoRaWAN App Key</strong></p>
+<p>For ChirpStack: Get it from <code>Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key</code></p>
+</li>
+<li>
+<p><strong>NWK_KEY:</strong> Change this to our <strong>LoRaWAN App Key</strong></p>
+<p>(Same as <strong>APP_KEY</strong>)</p>
+</li>
+</ul>
+<p><em>Why do we set our EUIs and App Key in “soft-se”?</em></p>
 <p>TODO</p>
 <p>LoRa Frequency and Sync Word are OK … Let’s fix the Device EUI and Join EUI for #LoRaWAN on #NuttX OS</p>
 <p>TODO55</p>
