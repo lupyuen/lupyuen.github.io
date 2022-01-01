@@ -310,9 +310,15 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
 
     [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
-1.  Assume that we have downloaded the NuttX Source Code with LoRaWAN Library...
+1.  Assume that we have downloaded the __NuttX Source Code__ and configured the __LoRaWAN Settings__...
 
     [__"Download Source Code"__](https://lupyuen.github.io/articles/lorawan3#download-source-code)
+
+    [__"Device EUI, Join EUI and App Key"__](https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key)
+
+    [__"LoRaWAN Frequency"__](https://lupyuen.github.io/articles/lorawan3#lorawan-frequency)
+
+1.  TODO: Pins
 
 1.  Configure the build...
 
@@ -791,9 +797,13 @@ Follow these steps to build NuttX for BL602 or ESP32...
 
     [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
-1.  Assume that we have downloaded and configured our NuttX code...
+1.  Assume that we have downloaded the __NuttX Source Code__ and configured the __LoRaWAN Settings__...
 
     [__"Download Source Code"__](https://lupyuen.github.io/articles/lorawan3#download-source-code)
+
+    [__"Device EUI, Join EUI and App Key"__](https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key)
+
+    [__"LoRaWAN Frequency"__](https://lupyuen.github.io/articles/lorawan3#lorawan-frequency)
 
     [__"Build the Firmware"__](https://lupyuen.github.io/articles/lorawan3#build-the-firmware)
 
