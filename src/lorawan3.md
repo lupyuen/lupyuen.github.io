@@ -352,11 +352,11 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
 
     [__"Enable GPIO Driver"__](https://lupyuen.github.io/articles/nuttx#enable-gpio-driver)
 
-1.  Enable the __SPI Peripheral__, __SPI Character Driver__ and __SPI Test Driver__ "/dev/spitest0"...
+1.  Enable the __SPI Peripheral__, __SPI Character Driver__ and __SPI Test Driver__...
 
     [__"Enable SPI"__](https://lupyuen.github.io/articles/spi2#enable-spi)
 
-1.  Enable __GPIO and SPI Logging__ for easier troubleshooting, but uncheck __"Enable Info Debug Output"__, __"GPIO Info Output"__ and __"SPI Info Output"__
+1.  Enable __GPIO and SPI Logging__ for easier troubleshooting, but uncheck __"Enable Info Debug Output"__, __"GPIO Info Output"__ and __"SPI Info Output"__...
 
     [__"Enable Logging"__](https://lupyuen.github.io/articles/spi2#enable-logging)
 
@@ -390,7 +390,7 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
 
 1.  Save the configuration and exit menuconfig
 
-    [(Here's the .config for BL604)](https://gist.github.com/lupyuen/d0487cda965f72ed99631d168ea4f5c8)
+    [(See the .config for BL602 and BL604)](https://gist.github.com/lupyuen/d0487cda965f72ed99631d168ea4f5c8)
 
 1.  __For ESP32:__ Edit [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) to register our SPI Test Driver [(See this)](https://lupyuen.github.io/articles/spi2#register-device-driver)
 
