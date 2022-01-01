@@ -385,11 +385,11 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://lupyuen.github.io/articles/nuttx#enable-gpio-driver"><strong>“Enable GPIO Driver”</strong></a></p>
 </li>
 <li>
-<p>Enable the <strong>SPI Peripheral</strong>, <strong>SPI Character Driver</strong> and <strong>SPI Test Driver</strong> “/dev/spitest0”…</p>
+<p>Enable the <strong>SPI Peripheral</strong>, <strong>SPI Character Driver</strong> and <strong>SPI Test Driver</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
 </li>
 <li>
-<p>Enable <strong>GPIO and SPI Logging</strong> for easier troubleshooting, but uncheck <strong>“Enable Info Debug Output”</strong>, <strong>“GPIO Info Output”</strong> and <strong>“SPI Info Output”</strong></p>
+<p>Enable <strong>GPIO and SPI Logging</strong> for easier troubleshooting, but uncheck <strong>“Enable Info Debug Output”</strong>, <strong>“GPIO Info Output”</strong> and <strong>“SPI Info Output”</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-logging"><strong>“Enable Logging”</strong></a></p>
 </li>
 <li>
@@ -418,7 +418,7 @@ make menuconfig </code></pre></div></li>
 </li>
 <li>
 <p>Save the configuration and exit menuconfig</p>
-<p><a href="https://gist.github.com/lupyuen/d0487cda965f72ed99631d168ea4f5c8">(Here’s the .config for BL604)</a></p>
+<p><a href="https://gist.github.com/lupyuen/d0487cda965f72ed99631d168ea4f5c8">(See the .config for BL602 and BL604)</a></p>
 </li>
 <li>
 <p><strong>For ESP32:</strong> Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a> to register our SPI Test Driver <a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
