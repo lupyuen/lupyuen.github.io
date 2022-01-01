@@ -398,33 +398,95 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
 
     [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/lorawan3#appendix-build-flash-and-run-nuttx)
 
+![Our NuttX Device successfully joins the LoRaWAN Network](https://lupyuen.github.io/images/lorawan3-tx3.png)
+
+[(Source)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
+
 # Run The Firmware
 
-TODO
+We're ready to run the NuttX Firmware and test our __LoRaWAN Library__!
 
-Finally we run the NuttX Firmware and test our __LoRaWAN Library__...
-
-1.  In the NuttX Shell, enter...
+1.  In the NuttX Shell, list the __NuttX Devices__...
 
     ```bash
     ls /dev
     ```
 
-    Our SPI Test Driver should appear as __"/dev/spitest0"__
+1.  We should see...
+
+    ```text
+    /dev:
+      gpio0
+      gpio1
+      gpio2
+      spi0
+      spitest0
+      urandom
+      ...
+    ```
+
+    Our SPI Test Driver appears as __"/dev/spitest0"__
+
+    The SX1262 Pins for Busy, Chip Select and DIO1 should appear as __"/dev/gpio0"__ (GPIO Input), __"gpio1"__ (GPIO Output) and __"gpio2"__ (GPIO Interrupt) respectively.
+
+    The Random Number Generator (with Entropy Pool) appears as __"/dev/urandom"__
     
-1.  In the NuttX Shell, enter...
+1.  In the NuttX Shell, run our __LoRaWAN Test App__...
 
     ```bash
     lorawan_test
     ```
 
-1.  We should see...
+    Our app sends a __Join Network Request__ to the LoRaWAN Gateway...
 
     ```text
-    TODO
+    ### =========== MLME-Request ============ ##
+    ###               MLME_JOIN               ##
+    ### ===================================== ##
+    STATUS : OK
     ```
 
-    [(TODO: See the Output Log)]()
+1.  A few seconds later we should see the __Join Network Response__ from the LoRaWAN Gateway...
+
+    ```text
+    ### =========== MLME-Confirm ============ ##
+    STATUS    : OK
+    ### ===========   JOINED     ============ ##
+    OTAA
+    DevAddr   : 01DA9790
+    DATA RATE : DR_2
+    ```
+
+    [(See the Output Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
+
+    Congratulations our NuttX Device has successfully joined the LoRaWAN Network!
+
+1.  If we see this instead...
+
+    ```text
+    ### =========== MLME-Confirm ============ ##
+    STATUS : Rx 1 timeout
+    ```
+
+    [(See the Output Log)](https://gist.github.com/lupyuen/007788b9ea3974b127f6260bf57f5d8b)
+
+    Our Join Network Request has failed.
+    
+    Check the next section for troubleshooting tips.
+
+1.  Our LoRaWAN Test App continues to __transmit data packets__. But we'll cover this later...
+
+    ```text
+    PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+    PrepareTxFrame: status=0, maxSize=11, currentSize=11
+    ### =========== MCPS-Request ============ ##
+    ###           MCPS_UNCONFIRMED            ##
+    ### ===================================== ##
+    STATUS      : OK
+    PrepareTxFrame: Transmit OK
+    ```
+
+    [(See the Output Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
 
 # Join LoRaWAN Network
 
@@ -606,10 +668,6 @@ TODO62
 After disabling logging, our #NuttX App successfully joins the #LoRaWAN Network! 🎉 Now we transmit some Data Packets over LoRaWAN
 
 TODO63
-
-![](https://lupyuen.github.io/images/lorawan3-tx3.png)
-
-[(Log)](https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89)
 
 Our #LoRaWAN Gateway receives Data Packets from #NuttX OS! 🎉 The Message Payload is empty ... Let's figure out why 🤔
 
