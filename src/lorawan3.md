@@ -575,14 +575,6 @@ TODO43
 
 [(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
 
-#NuttX OS doesn't handle the Join Response from #LoRaWAN Gateway ... Let's fix this
-
-TODO56
-
-![](https://lupyuen.github.io/images/lorawan3-run3.png)
-
-[(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
-
 # Send Data To LoRaWAN
 
 TODO
@@ -629,6 +621,10 @@ TODO54
 TODO58
 
 ![](https://lupyuen.github.io/images/lorawan3-run5a.png)
+
+TODO
+
+![Join LoRaWAN Network](https://lupyuen.github.io/images/lorawan3-flow2.jpg)
 
 # LoRaWAN Nonce
 
@@ -738,6 +734,14 @@ Check the LoRa Frequency, Sync Word, Device EUI and Join EUI
 ![](https://lupyuen.github.io/images/lorawan3-run2a.png)
 
 [(Run Log)](https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0)
+
+#NuttX OS doesn't handle the Join Response from #LoRaWAN Gateway ... Let's fix this
+
+TODO56
+
+![](https://lupyuen.github.io/images/lorawan3-run3.png)
+
+[(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
 
 ## Logging
 
