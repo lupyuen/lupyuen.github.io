@@ -537,10 +537,6 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 <p>TODO43</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33">(Run Log)</a></p>
-<p>#NuttX OS doesn’t handle the Join Response from #LoRaWAN Gateway … Let’s fix this</p>
-<p>TODO56</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-run3.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33">(Run Log)</a></p>
 <h1 id="send-data-to-lorawan" class="section-header"><a href="#send-data-to-lorawan">9 Send Data To LoRaWAN</a></h1>
 <p>TODO</p>
 <p>Here’s how we send a #LoRaWAN Data Packet on #NuttX OS … And validate the Packet Size before sending</p>
@@ -567,6 +563,8 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="" /></p>
 <p>TODO58</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-run5a.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-flow2.jpg" alt="Join LoRaWAN Network" /></p>
 <h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
 <p>TODO</p>
 <p>Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway … Which (silently) rejects the Join Request due to Duplicate Nonce … Let’s fix our Random Number Generator</p>
@@ -623,6 +621,10 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 <p>Check the LoRa Frequency, Sync Word, Device EUI and Join EUI</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-run2a.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0">(Run Log)</a></p>
+<p>#NuttX OS doesn’t handle the Join Response from #LoRaWAN Gateway … Let’s fix this</p>
+<p>TODO56</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-run3.png" alt="" /></p>
+<p><a href="https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33">(Run Log)</a></p>
 <h2 id="logging" class="section-header"><a href="#logging">15.1 Logging</a></h2>
 <p>TODO</p>
 <p>Our #NuttX App was too busy to receive the #LoRaWAN Join Response … Let’s disable the logging</p>
