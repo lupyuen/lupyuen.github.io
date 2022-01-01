@@ -75,7 +75,8 @@
 <li><a href="#lorawan-frequency">5 LoRaWAN Frequency</a><ul></ul></li>
 <li><a href="#build-the-firmware">6 Build The Firmware</a><ul></ul></li>
 <li><a href="#run-the-firmware">7 Run The Firmware</a><ul></ul></li>
-<li><a href="#join-lorawan-network">8 Join LoRaWAN Network</a><ul></ul></li>
+<li><a href="#join-lorawan-network">8 Join LoRaWAN Network</a><ul>
+<li><a href="#check-the-lorawan-gateway">8.1 Check The LoRaWAN Gateway</a><ul></ul></li></ul></li>
 <li><a href="#send-data-to-lorawan">9 Send Data To LoRaWAN</a><ul></ul></li>
 <li><a href="#lorawan-event-loop">10 LoRaWAN Event Loop</a><ul></ul></li>
 <li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul></ul></li>
@@ -478,7 +479,7 @@ STATUS : Rx 1 timeout</code></pre></div>
 <p>Check the next section for troubleshooting tips.</p>
 </li>
 <li>
-<p>Our LoRaWAN Test App continues to <strong>transmit data packets</strong>. But we’ll cover this later…</p>
+<p>Our LoRaWAN Test App continues to <strong>transmit Data Packets</strong>. But we’ll cover this later…</p>
 <div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
 PrepareTxFrame: status=0, maxSize=11, currentSize=11
 ## =========== MCPS-Request ============ ##
@@ -487,23 +488,27 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11
 STATUS      : OK
 PrepareTxFrame: Transmit OK</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
+<p>Let’s find out how our LoRaWAN Test App joins the LoRaWAN Network.</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/lorawan3-flow2.jpg" alt="Join LoRaWAN Network" /></p>
 <h1 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">8 Join LoRaWAN Network</a></h1>
 <p><em>How do we join the LoRaWAN Network in our NuttX App?</em></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303">lorawan_test_main.c</a></p>
+<p>Let’s dive into the code for our <strong>LoRaWAN Test App</strong>: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303">lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
 
   //  Compute the interval between transmissions based on Duty Cycle
   TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );</code></pre></div>
-<p>TODO</p>
+<p>Our app begins by computing the <strong>Time Interval Between Transmissions</strong> of our Data Packets.</p>
+<p>(More about this later)</p>
+<p>Next it calls <strong>LmHandlerInit</strong> to initialise the LoRaWAN Library…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Init LoRaWAN
   if ( LmHandlerInit( &amp;LmHandlerCallbacks, &amp;LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS ) {
     printf( &quot;LoRaMac wasn&#39;t properly initialized\n&quot; );
     while ( 1 ) {} //  Fatal error, endless loop.
   }</code></pre></div>
-<p>TODO</p>
+<p>(All functions named <strong>“Lm…”</strong> come from our LoRaWAN Library)</p>
+<p>We set load the <strong>LoRa Alliance Compliance Protocol Packages</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set system maximum tolerated rx error in milliseconds
   LmHandlerSetSystemMaxRxError( 20 );
 
@@ -512,20 +517,22 @@ PrepareTxFrame: Transmit OK</code></pre></div>
   LmHandlerPackageRegister( PACKAGE_ID_CLOCK_SYNC, NULL );
   LmHandlerPackageRegister( PACKAGE_ID_REMOTE_MCAST_SETUP, NULL );
   LmHandlerPackageRegister( PACKAGE_ID_FRAGMENTATION, &amp;FragmentationParams );</code></pre></div>
-<p>TODO</p>
+<p>Below is the code that sends the <strong>Join Network Request</strong> to the LoRaWAN Gateway: <strong>LmHandlerJoin</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Join the LoRaWAN Network
   LmHandlerJoin( );</code></pre></div>
-<p>TODO</p>
+<p>We start the <strong>Transmit Timer</strong> that will schedule the transmission of Data Packets (right after we have joined the LoRaWAN Network)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set the Transmit Timer
   StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );</code></pre></div>
-<p>TODO</p>
+<p>At this point we haven’t actually joined the LoRaWAN Network yet.</p>
+<p>This happens in the <strong>LoRaWAN Event Loop</strong> that will handle the <strong>Join Network Response</strong> received from the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Handle LoRaWAN Events
   handle_event_queue( NULL );  //  Never returns
   return 0;
 }</code></pre></div>
-<p>Let’s connect Apache #NuttX OS to a #LoRaWAN Gateway … RAKwireless WisGate D4H with ChirpStack</p>
+<p>We’ll talk about the LoRaWAN Event Loop later. Let’s check the logs on our LoRaWAN Gateway.</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
-<p><a href="https://lupyuen.github.io/articles/wisgate">(Article)</a></p>
+<h2 id="check-the-lorawan-gateway" class="section-header"><a href="#check-the-lorawan-gateway">8.1 Check The LoRaWAN Gateway</a></h2>
+<p>TODO</p>
 <p>#LoRaWAN Gateway receives the Join Request from #NuttX OS … And accepts the Join Request! 🎉</p>
 <p>TODO43</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack.png" alt="" /></p>
@@ -544,6 +551,15 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>LoRaMac-node-nuttx</strong></a></li>
 </ul>
+<p><em>How often do we send data to the LoRaWAN Network?</em></p>
+<p>TODO</p>
+<p>Let’s dive into the code for our <strong>LoRaWAN Test App</strong>: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303">lorawan_test_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
+
+  //  Compute the interval between transmissions based on Duty Cycle
+  TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51">(<strong>randr</strong> is defined here)</a></p>
 <h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">10 LoRaWAN Event Loop</a></h1>
 <p>TODO</p>
 <p>Here’s our #LoRaWAN Event Loop for #NuttX OS … Implemented with NimBLE Porting Library … No more polling!</p>
