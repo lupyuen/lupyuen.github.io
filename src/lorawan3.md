@@ -490,7 +490,58 @@ We're ready to run the NuttX Firmware and test our __LoRaWAN Library__!
 
 # Join LoRaWAN Network
 
+_How do we join the LoRaWAN Network in our NuttX App?_
+
 TODO
+
+From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303)
+
+```c
+int main(int argc, FAR char *argv[]) {
+    //  TODO: BoardInitMcu( );
+    //  TODO: BoardInitPeriph( );
+
+    //  Compute the interval between transmissions based on Duty Cycle
+    TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
+
+    const Version_t appVersion    = { .Value = FIRMWARE_VERSION };
+    const Version_t gitHubVersion = { .Value = GITHUB_VERSION };
+    DisplayAppInfo( "lorawan_test", 
+                    &appVersion,
+                    &gitHubVersion );
+
+    //  Init LoRaWAN
+    if ( LmHandlerInit( &LmHandlerCallbacks, &LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS )
+    {
+        printf( "LoRaMac wasn't properly initialized\n" );
+        //  Fatal error, endless loop.
+        while ( 1 ) {}
+    }
+
+    // Set system maximum tolerated rx error in milliseconds
+    LmHandlerSetSystemMaxRxError( 20 );
+
+    // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
+    LmHandlerPackageRegister( PACKAGE_ID_COMPLIANCE, &LmhpComplianceParams );
+    LmHandlerPackageRegister( PACKAGE_ID_CLOCK_SYNC, NULL );
+    LmHandlerPackageRegister( PACKAGE_ID_REMOTE_MCAST_SETUP, NULL );
+    LmHandlerPackageRegister( PACKAGE_ID_FRAGMENTATION, &FragmentationParams );
+
+    IsClockSynched     = false;
+    IsFileTransferDone = false;
+
+    //  Join the LoRaWAN Network
+    LmHandlerJoin( );
+
+    //  Set the Transmit Timer
+    StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );
+
+    //  Handle LoRaWAN Events
+    handle_event_queue(NULL);  //  Never returns
+
+    return 0;
+}
+```
 
 Let's connect Apache #NuttX OS to a #LoRaWAN Gateway ... RAKwireless WisGate D4H with ChirpStack
 
