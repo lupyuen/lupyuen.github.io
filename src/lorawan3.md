@@ -474,7 +474,7 @@ We're ready to run the NuttX Firmware and test our __LoRaWAN Library__!
     
     Check the next section for troubleshooting tips.
 
-1.  Our LoRaWAN Test App continues to __transmit data packets__. But we'll cover this later...
+1.  Our LoRaWAN Test App continues to __transmit Data Packets__. But we'll cover this later...
 
     ```text
     PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
@@ -488,13 +488,15 @@ We're ready to run the NuttX Firmware and test our __LoRaWAN Library__!
 
     [(See the Output Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
 
+    Let's find out how our LoRaWAN Test App joins the LoRaWAN Network.
+
+![Join LoRaWAN Network](https://lupyuen.github.io/images/lorawan3-flow2.jpg)
+
 # Join LoRaWAN Network
 
 _How do we join the LoRaWAN Network in our NuttX App?_
 
-TODO
-
-From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303)
+Let's dive into the code for our __LoRaWAN Test App__: [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303)
 
 ```c
 int main(int argc, FAR char *argv[]) {
@@ -503,7 +505,11 @@ int main(int argc, FAR char *argv[]) {
   TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
 ```
 
-TODO
+Our app begins by computing the __Time Interval Between Transmissions__ of our Data Packets.
+
+(More about this later)
+
+Next it calls __LmHandlerInit__ to initialise the LoRaWAN Library...
 
 ```c
   //  Init LoRaWAN
@@ -513,7 +519,9 @@ TODO
   }
 ```
 
-TODO
+(All functions named __"Lm..."__ come from our LoRaWAN Library)
+
+We set load the __LoRa Alliance Compliance Protocol Packages__...
 
 ```c
   //  Set system maximum tolerated rx error in milliseconds
@@ -526,21 +534,23 @@ TODO
   LmHandlerPackageRegister( PACKAGE_ID_FRAGMENTATION, &FragmentationParams );
 ```
 
-TODO
+Below is the code that sends the __Join Network Request__ to the LoRaWAN Gateway: __LmHandlerJoin__...
 
 ```c
   //  Join the LoRaWAN Network
   LmHandlerJoin( );
 ```
 
-TODO
+We start the __Transmit Timer__ that will schedule the transmission of Data Packets (right after we have joined the LoRaWAN Network)...
 
 ```c
   //  Set the Transmit Timer
   StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );
 ```
 
-TODO
+At this point we haven't actually joined the LoRaWAN Network yet.
+
+This happens in the __LoRaWAN Event Loop__ that will handle the __Join Network Response__ received from the LoRaWAN Gateway...
 
 ```c
   //  Handle LoRaWAN Events
@@ -549,11 +559,13 @@ TODO
 }
 ```
 
-Let's connect Apache #NuttX OS to a #LoRaWAN Gateway ... RAKwireless WisGate D4H with ChirpStack
+We'll talk about the LoRaWAN Event Loop later. Let's check the logs on our LoRaWAN Gateway.
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
-[(Article)](https://lupyuen.github.io/articles/wisgate)
+## Check The LoRaWAN Gateway
+
+TODO
 
 #LoRaWAN Gateway receives the Join Request from #NuttX OS ... And accepts the Join Request! 🎉
 
@@ -586,6 +598,23 @@ TODO68
 #LoRaWAN tested OK on Apache #NuttX OS ... From #PineDio Stack BL604 @ThePine64 to RAKwireless WisGate ... And back! 🎉
 
 -   [__LoRaMac-node-nuttx__](https://github.com/lupyuen/LoRaMac-node-nuttx)
+
+_How often do we send data to the LoRaWAN Network?_
+
+TODO
+
+Let's dive into the code for our __LoRaWAN Test App__: [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303)
+
+```c
+int main(int argc, FAR char *argv[]) {
+
+  //  Compute the interval between transmissions based on Duty Cycle
+  TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
+```
+
+TODO
+
+[(__randr__ is defined here)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51)
 
 # LoRaWAN Event Loop
 
