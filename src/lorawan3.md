@@ -440,11 +440,17 @@ We're ready to run the NuttX Firmware and test our __LoRaWAN Library__!
     Our app sends a __Join Network Request__ to the LoRaWAN Gateway...
 
     ```text
+    RadioSetPublicNetwork: public syncword=3444
+    DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
+    JoinEui     : 00-00-00-00-00-00-00-00
+    Pin         : 00-00-00-00
     ### =========== MLME-Request ============ ##
     ###               MLME_JOIN               ##
     ### ===================================== ##
     STATUS : OK
     ```
+
+    (Which contains the Device EUI and Join EUI that we have configured earlier)
 
 1.  A few seconds later we should see the __Join Network Response__ from the LoRaWAN Gateway...
 
@@ -519,7 +525,7 @@ Next it calls __LmHandlerInit__ to initialise the LoRaWAN Library...
   }
 ```
 
-(All functions named __"Lm..."__ come from our LoRaWAN Library)
+(Functions named __"Lm..."__ come from our LoRaWAN Library)
 
 We set load the __LoRa Alliance Compliance Protocol Packages__...
 
@@ -559,25 +565,84 @@ This happens in the __LoRaWAN Event Loop__ that will handle the __Join Network R
 }
 ```
 
-We'll talk about the LoRaWAN Event Loop later. Let's check the logs on our LoRaWAN Gateway.
+(We'll talk about the LoRaWAN Event Loop later)
+
+Let's check the logs on our LoRaWAN Gateway. (RAKwireless WisGate, the black box below)
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
-## Check The LoRaWAN Gateway
+## Check LoRaWAN Gateway
+
+To inspect the Join Network Request on our __LoRaWAN Gateway__ (ChirpStack), click...
+
+__Applications__ → __app__ → __device_otaa_class_a__ → __LoRaWAN Frames__
+
+Restart our NuttX Device and the LoRaWAN Test App...
+
+-   [__"Run The Firmware"__](https://lupyuen.github.io/articles/lorawan3#run-the-firmware)
+
+The __Join Network Request__ appears in ChirpStack...
+
+![Join Network Request](https://lupyuen.github.io/images/lorawan3-chirpstack.png)
+
+(Yep that's the Device EUI and Join EUI that we have configured earlier)
+
+Followed by the __Join Accept Response__...
 
 TODO
 
-#LoRaWAN Gateway receives the Join Request from #NuttX OS ... And accepts the Join Request! 🎉
+The Join Network Request / Response also appears in ChirpStack at...
 
-TODO43
+__Applications__ → __app__ → __device_otaa_class_a__ → __Device Data__
 
-![](https://lupyuen.github.io/images/lorawan3-chirpstack.png)
+Like so...
 
-[(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
+TODO
+
+_What if we don't see the Join Network Request or the Join Accept Response?_
+
+Check the __"Troubleshoot LoRaWAN"__ section below for troubleshooting tips.
 
 # Send Data To LoRaWAN
 
 TODO
+
+From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L305-L336)
+
+```c
+/*!
+ * Prepares the payload of the frame and transmits it.
+ */
+static void PrepareTxFrame( void )
+{
+    //  If we haven't joined the LoRaWAN Network, try again later
+    if (LmHandlerIsBusy()) { puts("PrepareTxFrame: Busy"); return; }
+
+    //  Send a message to LoRaWAN
+    const char msg[] = "Hi NuttX";
+    printf("PrepareTxFrame: Transmit to LoRaWAN: %s (%d bytes)\n", msg, sizeof(msg));
+
+    //  Compose the transmit request
+    memcpy(AppDataBuffer, msg, sizeof(msg));
+    LmHandlerAppData_t appData =
+    {
+        .Buffer = AppDataBuffer,
+        .BufferSize = sizeof(msg),
+        .Port = 1,
+    };
+
+    //  Validate the message size and check if it can be transmitted
+    LoRaMacTxInfo_t txInfo;
+    LoRaMacStatus_t status = LoRaMacQueryTxPossible(appData.BufferSize, &txInfo);
+    printf("PrepareTxFrame: status=%d, maxSize=%d, currentSize=%d\n", status, txInfo.MaxPossibleApplicationDataSize, txInfo.CurrentPossiblePayloadSize);
+    assert(status == LORAMAC_STATUS_OK);
+
+    //  Transmit the message
+    LmHandlerErrorStatus_t sendStatus = LmHandlerSend( &appData, LmHandlerParams.IsTxConfirmed );
+    assert(sendStatus == LORAMAC_HANDLER_SUCCESS);
+    puts("PrepareTxFrame: Transmit OK");
+}
+```
 
 Here's how we send a #LoRaWAN Data Packet on #NuttX OS ... And validate the Packet Size before sending
 
@@ -595,13 +660,14 @@ _How often do we send data to the LoRaWAN Network?_
 
 TODO
 
-Let's dive into the code for our __LoRaWAN Test App__: [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303)
+From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303)
 
 ```c
 int main(int argc, FAR char *argv[]) {
 
   //  Compute the interval between transmissions based on Duty Cycle
-  TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
+  TxPeriodicity = APP_TX_DUTYCYCLE + 
+    randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
 ```
 
 TODO
@@ -728,6 +794,8 @@ TODO49
 # Troubleshoot LoRaWAN
 
 TODO
+
+-   [__"Troubleshoot LoRaWAN"__](https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan)
 
 Check the LoRa Frequency, Sync Word, Device EUI and Join EUI
 
