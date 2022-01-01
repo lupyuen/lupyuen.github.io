@@ -127,7 +127,7 @@ Which works like this...
 
     __Nonce:__ Non-repeating number, to prevent [Replay Attacks](https://en.wikipedia.org/wiki/Replay_attack)
 
-    _(EUI means Extended Unique Identifier)_
+    _(EUI sounds like Durian on Century Egg... But it actually means Extended Unique Identifier)_
 
 1.  LoRaWAN Gateway returns a __Join Network Response__
 
