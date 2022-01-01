@@ -428,22 +428,65 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://lupyuen.github.io/articles/lorawan3#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/lorawan3-tx3.png" alt="Our NuttX Device successfully joins the LoRaWAN Network" /></p>
+<p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(Source)</a></p>
 <h1 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">7 Run The Firmware</a></h1>
-<p>TODO</p>
-<p>Finally we run the NuttX Firmware and test our <strong>LoRaWAN Library</strong>…</p>
+<p>We’re ready to run the NuttX Firmware and test our <strong>LoRaWAN Library</strong>!</p>
 <ol>
 <li>
-<p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
-<p>Our SPI Test Driver should appear as <strong>“/dev/spitest0”</strong></p>
-</li>
-<li>
-<p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div></li>
+<p>In the NuttX Shell, list the <strong>NuttX Devices</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div></li>
 <li>
 <p>We should see…</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO</code></pre></div>
-<p><a href="">(TODO: See the Output Log)</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/dev:
+  gpio0
+  gpio1
+  gpio2
+  spi0
+  spitest0
+  urandom
+  ...</code></pre></div>
+<p>Our SPI Test Driver appears as <strong>“/dev/spitest0”</strong></p>
+<p>The SX1262 Pins for Busy, Chip Select and DIO1 should appear as <strong>“/dev/gpio0”</strong> (GPIO Input), <strong>“gpio1”</strong> (GPIO Output) and <strong>“gpio2”</strong> (GPIO Interrupt) respectively.</p>
+<p>The Random Number Generator (with Entropy Pool) appears as <strong>“/dev/urandom”</strong></p>
+</li>
+<li>
+<p>In the NuttX Shell, run our <strong>LoRaWAN Test App</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
+<p>Our app sends a <strong>Join Network Request</strong> to the LoRaWAN Gateway…</p>
+<div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Request ============ ##
+##               MLME_JOIN               ##
+## ===================================== ##
+STATUS : OK</code></pre></div></li>
+<li>
+<p>A few seconds later we should see the <strong>Join Network Response</strong> from the LoRaWAN Gateway…</p>
+<div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Confirm ============ ##
+STATUS    : OK
+## ===========   JOINED     ============ ##
+OTAA
+DevAddr   : 01DA9790
+DATA RATE : DR_2</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
+<p>Congratulations our NuttX Device has successfully joined the LoRaWAN Network!</p>
+</li>
+<li>
+<p>If we see this instead…</p>
+<div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Confirm ============ ##
+STATUS : Rx 1 timeout</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/007788b9ea3974b127f6260bf57f5d8b">(See the Output Log)</a></p>
+<p>Our Join Network Request has failed.</p>
+<p>Check the next section for troubleshooting tips.</p>
+</li>
+<li>
+<p>Our LoRaWAN Test App continues to <strong>transmit data packets</strong>. But we’ll cover this later…</p>
+<div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+PrepareTxFrame: status=0, maxSize=11, currentSize=11
+## =========== MCPS-Request ============ ##
+##           MCPS_UNCONFIRMED            ##
+## ===================================== ##
+STATUS      : OK
+PrepareTxFrame: Transmit OK</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
 </li>
 </ol>
 <h1 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">8 Join LoRaWAN Network</a></h1>
@@ -540,8 +583,6 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Log)</a></p>
 <p>After disabling logging, our #NuttX App successfully joins the #LoRaWAN Network! 🎉 Now we transmit some Data Packets over LoRaWAN</p>
 <p>TODO63</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-tx3.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89">(Log)</a></p>
 <p>Our #LoRaWAN Gateway receives Data Packets from #NuttX OS! 🎉 The Message Payload is empty … Let’s figure out why 🤔</p>
 <p>TODO44</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack5.png" alt="" /></p>
