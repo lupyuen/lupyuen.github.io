@@ -348,9 +348,15 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
 
     [(See this)](https://lupyuen.github.io/images/lorawan3-config4.png)
 
-1.  TODO: POSIX Functions
+1.  Enable __POSIX Timers and Message Queues__ (for NimBLE Porting Layer)...
 
-1.  TODO: Random Number Generator
+    [__"POSIX Timers and Message Queues"__](https://lupyuen.github.io/articles/lorawan3#appendix-posix-timers-and-message-queues)
+
+1.  Enable __Random Number Generator with Entropy Pool__ (for LoRaWAN Nonces)...
+
+    [__"Random Number Generator with Entropy Pool"__](https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool)
+
+    (We'll talk about this in a while)
 
 1.  Click __"Library Routines"__ and enable the following libraries...
 
