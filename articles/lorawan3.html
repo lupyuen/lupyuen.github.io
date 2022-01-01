@@ -490,7 +490,53 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 </li>
 </ol>
 <h1 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">8 Join LoRaWAN Network</a></h1>
+<p><em>How do we join the LoRaWAN Network in our NuttX App?</em></p>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303">lorawan_test_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
+    //  TODO: BoardInitMcu( );
+    //  TODO: BoardInitPeriph( );
+
+    //  Compute the interval between transmissions based on Duty Cycle
+    TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
+
+    const Version_t appVersion    = { .Value = FIRMWARE_VERSION };
+    const Version_t gitHubVersion = { .Value = GITHUB_VERSION };
+    DisplayAppInfo( &quot;lorawan_test&quot;, 
+                    &amp;appVersion,
+                    &amp;gitHubVersion );
+
+    //  Init LoRaWAN
+    if ( LmHandlerInit( &amp;LmHandlerCallbacks, &amp;LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS )
+    {
+        printf( &quot;LoRaMac wasn&#39;t properly initialized\n&quot; );
+        //  Fatal error, endless loop.
+        while ( 1 ) {}
+    }
+
+    // Set system maximum tolerated rx error in milliseconds
+    LmHandlerSetSystemMaxRxError( 20 );
+
+    // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
+    LmHandlerPackageRegister( PACKAGE_ID_COMPLIANCE, &amp;LmhpComplianceParams );
+    LmHandlerPackageRegister( PACKAGE_ID_CLOCK_SYNC, NULL );
+    LmHandlerPackageRegister( PACKAGE_ID_REMOTE_MCAST_SETUP, NULL );
+    LmHandlerPackageRegister( PACKAGE_ID_FRAGMENTATION, &amp;FragmentationParams );
+
+    IsClockSynched     = false;
+    IsFileTransferDone = false;
+
+    //  Join the LoRaWAN Network
+    LmHandlerJoin( );
+
+    //  Set the Transmit Timer
+    StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );
+
+    //  Handle LoRaWAN Events
+    handle_event_queue(NULL);  //  Never returns
+
+    return 0;
+}</code></pre></div>
 <p>Let’s connect Apache #NuttX OS to a #LoRaWAN Gateway … RAKwireless WisGate D4H with ChirpStack</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><a href="https://lupyuen.github.io/articles/wisgate">(Article)</a></p>
