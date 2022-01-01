@@ -589,7 +589,7 @@ The __Join Network Request__ appears in ChirpStack...
 
 Followed by the __Join Accept Response__...
 
-TODO
+![Join Accept Response](https://lupyuen.github.io/images/lorawan3-chirpstack7.png)
 
 The Join Network Request / Response also appears in ChirpStack at...
 
@@ -597,7 +597,7 @@ __Applications__ → __app__ → __device_otaa_class_a__ → __Device Data__
 
 Like so...
 
-TODO
+![Join Accept Response](https://lupyuen.github.io/images/lorawan3-chirpstack10.png)
 
 _What if we don't see the Join Network Request or the Join Accept Response?_
 
@@ -655,6 +655,14 @@ TODO68
 #LoRaWAN tested OK on Apache #NuttX OS ... From #PineDio Stack BL604 @ThePine64 to RAKwireless WisGate ... And back! 🎉
 
 -   [__LoRaMac-node-nuttx__](https://github.com/lupyuen/LoRaMac-node-nuttx)
+
+TODO1
+
+![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack8.png)
+
+TODO2
+
+![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack11.png)
 
 _How often do we send data to the LoRaWAN Network?_
 
