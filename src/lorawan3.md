@@ -498,48 +498,54 @@ From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lor
 
 ```c
 int main(int argc, FAR char *argv[]) {
-    //  TODO: BoardInitMcu( );
-    //  TODO: BoardInitPeriph( );
 
-    //  Compute the interval between transmissions based on Duty Cycle
-    TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
+  //  Compute the interval between transmissions based on Duty Cycle
+  TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
+```
 
-    const Version_t appVersion    = { .Value = FIRMWARE_VERSION };
-    const Version_t gitHubVersion = { .Value = GITHUB_VERSION };
-    DisplayAppInfo( "lorawan_test", 
-                    &appVersion,
-                    &gitHubVersion );
+TODO
 
-    //  Init LoRaWAN
-    if ( LmHandlerInit( &LmHandlerCallbacks, &LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS )
-    {
-        printf( "LoRaMac wasn't properly initialized\n" );
-        //  Fatal error, endless loop.
-        while ( 1 ) {}
-    }
+```c
+  //  Init LoRaWAN
+  if ( LmHandlerInit( &LmHandlerCallbacks, &LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS ) {
+    printf( "LoRaMac wasn't properly initialized\n" );
+    while ( 1 ) {} //  Fatal error, endless loop.
+  }
+```
 
-    // Set system maximum tolerated rx error in milliseconds
-    LmHandlerSetSystemMaxRxError( 20 );
+TODO
 
-    // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
-    LmHandlerPackageRegister( PACKAGE_ID_COMPLIANCE, &LmhpComplianceParams );
-    LmHandlerPackageRegister( PACKAGE_ID_CLOCK_SYNC, NULL );
-    LmHandlerPackageRegister( PACKAGE_ID_REMOTE_MCAST_SETUP, NULL );
-    LmHandlerPackageRegister( PACKAGE_ID_FRAGMENTATION, &FragmentationParams );
+```c
+  //  Set system maximum tolerated rx error in milliseconds
+  LmHandlerSetSystemMaxRxError( 20 );
 
-    IsClockSynched     = false;
-    IsFileTransferDone = false;
+  //  LoRa-Alliance Compliance protocol package should always be initialized and activated.
+  LmHandlerPackageRegister( PACKAGE_ID_COMPLIANCE, &LmhpComplianceParams );
+  LmHandlerPackageRegister( PACKAGE_ID_CLOCK_SYNC, NULL );
+  LmHandlerPackageRegister( PACKAGE_ID_REMOTE_MCAST_SETUP, NULL );
+  LmHandlerPackageRegister( PACKAGE_ID_FRAGMENTATION, &FragmentationParams );
+```
 
-    //  Join the LoRaWAN Network
-    LmHandlerJoin( );
+TODO
 
-    //  Set the Transmit Timer
-    StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );
+```c
+  //  Join the LoRaWAN Network
+  LmHandlerJoin( );
+```
 
-    //  Handle LoRaWAN Events
-    handle_event_queue(NULL);  //  Never returns
+TODO
 
-    return 0;
+```c
+  //  Set the Transmit Timer
+  StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );
+```
+
+TODO
+
+```c
+  //  Handle LoRaWAN Events
+  handle_event_queue( NULL );  //  Never returns
+  return 0;
 }
 ```
 
