@@ -278,7 +278,7 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 #define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
 #define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)</code></pre></div>
 <p>GPIO Output <strong>BOARD_GPIO_OUT1</strong> becomes our <strong>SPI Chip Select</strong>. <a href="https://lupyuen.github.io/articles/spi2#control-chip-select-with-gpio">(See this)</a></p>
-<p>Right now we won’t use <strong>BOARD_GPIO_IN1</strong> (Busy Pin), <strong>BOARD_GPIO_INT1</strong> (DIO1) and <strong>NRESET</strong>.</p>
+<p><strong>BOARD_GPIO_IN1</strong> (Busy Pin) and <strong>BOARD_GPIO_INT1</strong> (DIO1) will be used for LoRaWAN in the next article.</p>
 <p><strong>For BL602:</strong> Connect SX1262 to <a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">these pins</a>. Copy the BL602 Pin Definitions from <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L36-L92">board.h</a> to…</p>
 <div class="example-wrap"><pre class="language-text"><code>boards/risc-v/bl602/bl602evb/include/board.h</code></pre></div>
 <p><strong>For ESP32:</strong> Connect SX1262 to <a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">these pins</a></p>

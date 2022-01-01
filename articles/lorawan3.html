@@ -358,7 +358,14 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-frequency"><strong>“LoRaWAN Frequency”</strong></a></p>
 </li>
 <li>
-<p>TODO: Pins</p>
+<p>Edit the <strong>Pin Definitions</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code># For BL602 and BL604:
+nuttx/boards/risc-v/bl602/bl602evb/include/board.h
+
+# For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
+nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c</code></pre></div>
+<p>Check that the <strong>Semtech SX1262 Pins</strong> are configured correctly in <a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95"><strong>board.h</strong></a> or <a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67"><strong>esp32_gpio.c</strong></a>…</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#connect-sx1262-transceiver"><strong>“Connect SX1262 Transceiver”</strong></a></p>
 </li>
 <li>
 <p>Configure the build…</p>
