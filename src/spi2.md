@@ -886,19 +886,21 @@ printf("\nSX1262 Register 8 is 0x%02x\n", rx_data[4]);
 We connect SX1262 to BL602 / ESP32 as follows...
 
 SX1262 | BL602 Pin | ESP32 Pin | Colour
-:-------: | :---------: | :--------: | :-----:
+:-------: | :---------: | :--------: | :-----
 __MOSI__ | GPIO 1  | GPIO 13 | Yellow
 __MISO__ | GPIO 0  | GPIO 12 | Light Green
 __SCK__  | GPIO 3  | GPIO 14 | Blue
 __CS__   | GPIO 11 | GPIO 15 / 16 | Dark Green
+__BUSY__ | GPIO 14 | GPIO 18 / 17 |
+__DIO1__ | GPIO 17 | GPIO 22 |
 __VCC__  | 3V3     | 3V3 | Red
 __GND__  | GND     | GND | Black
-
-(We don't need to connect the Busy and DIO1 Pins, we're testing simple commands)
 
 Here's SX1262 connected to PineCone BL602...
 
 ![SX1262 connected to PineCone BL602](https://lupyuen.github.io/images/spi2-title.jpg)
+
+(Busy and DIO1 Pins are not connected, we'll need them for LoRa in the next artice)
 
 _Why did we connect Chip Select to GPIO 11 / 15 / 16?_
 
@@ -920,20 +922,33 @@ ESP32-DevKitC defines __GPIO 15__ as the default GPIO Output Pin: [esp32_gpio.c]
 
 ```c
 /* Output pins. GPIO15 is used as an example, any other outputs could be used. */
-
 #define GPIO_OUT1    15
+
+/* Input pins. GPIO18 is used as an example, any other inputs could be
+ * used.
+ */
+#define GPIO_IN1     18
+
+/* Interrupt pins.  GPIO22 is used as an example, any other inputs could be
+ * used.
+ */
+#define GPIO_IRQPIN1  22
 ```
 
-ESP32-WROVER-KIT uses __GPIO 16__: [esp32_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-wrover-kit/src/esp32_gpio.c#L43-L67)
+ESP32-WROVER-KIT uses __GPIO 16__ for GPIO Output: [esp32_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-wrover-kit/src/esp32_gpio.c#L43-L67)
 
 ```c
 #define GPIO_OUT1    16
+#define GPIO_IN1     17
+#define GPIO_IRQPIN1 22
 ```
 
-TTGO-LoRa-ESP32 uses __GPIO 15__: [esp32_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/ttgo_lora_esp32/src/esp32_gpio.c#L43-L67)
+TTGO-LoRa-ESP32 uses __GPIO 15__ for GPIO Output: [esp32_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/ttgo_lora_esp32/src/esp32_gpio.c#L43-L67)
 
 ```c
 #define GPIO_OUT1    15
+#define GPIO_IN1     18
+#define GPIO_IRQPIN1 22
 ```
 
 ## Test SX1262

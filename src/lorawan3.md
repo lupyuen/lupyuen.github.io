@@ -318,7 +318,19 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
 
     [__"LoRaWAN Frequency"__](https://lupyuen.github.io/articles/lorawan3#lorawan-frequency)
 
-1.  TODO: Pins
+1.  Edit the __Pin Definitions__...
+
+    ```text
+    ## For BL602 and BL604:
+    nuttx/boards/risc-v/bl602/bl602evb/include/board.h
+
+    ## For ESP32: Change "esp32-devkitc" to our ESP32 board 
+    nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c
+    ```
+
+    Check that the __Semtech SX1262 Pins__ are configured correctly in [__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95) or [__esp32_gpio.c__](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67)...
+
+    [__"Connect SX1262 Transceiver"__](https://lupyuen.github.io/articles/sx1262#connect-sx1262-transceiver)
 
 1.  Configure the build...
 
