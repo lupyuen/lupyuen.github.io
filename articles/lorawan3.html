@@ -377,8 +377,13 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
 </li>
 <li>
-<p>Enable <strong>GPIO and SPI Logging</strong> for easier troubleshooting, but uncheck <strong>“Enable Informational Debug Output”</strong>, <strong>“GPIO Informational Output”</strong> and <strong>“SPI Informational Output”</strong></p>
+<p>Enable <strong>GPIO and SPI Logging</strong> for easier troubleshooting, but uncheck <strong>“Enable Info Debug Output”</strong>, <strong>“GPIO Info Output”</strong> and <strong>“SPI Info Output”</strong></p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-logging"><strong>“Enable Logging”</strong></a></p>
+</li>
+<li>
+<p>Enable <strong>Stack Backtrace</strong> for easier troubleshooting…</p>
+<p>Check the box for <strong>“RTOS Features”</strong> → <strong>“Stack Backtrace”</strong></p>
+<p><a href="https://lupyuen.github.io/images/lorawan3-config4.png">(See this)</a></p>
 </li>
 <li>
 <p>TODO: POSIX Functions</p>
@@ -620,23 +625,67 @@ make menuconfig </code></pre></div></li>
 </li>
 </ol>
 <h1 id="appendix-posix-timers-and-message-queues" class="section-header"><a href="#appendix-posix-timers-and-message-queues">19 Appendix: POSIX Timers and Message Queues</a></h1>
-<p>TODO</p>
-<p>To build NumBLE Porting Layer on #NuttX OS we need to enable: 1️⃣ POSIX Timers &amp; Message Queues 2️⃣ Clock Monotonic 3️⃣ Work Queues 4️⃣ SIGEV_THHREAD</p>
-<ul>
-<li><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>nimble-porting-nuttx</strong></a></li>
-</ul>
-<p>TODO33</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-config1.png" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-config4.png" alt="" /></p>
+<p>NimBLE Porting Layer needs <strong>POSIX Timers and Message Queues</strong> (plus more) to work. Follow the steps below to enable the features in <strong>menuconfig</strong>…</p>
+<ol>
+<li>
+<p>Select <strong>“RTOS Features”</strong> → <strong>“Disable NuttX Interfaces”</strong></p>
+<p>Uncheck <strong>“Disable POSIX Timers”</strong></p>
+<p>Uncheck <strong>“Disable POSIX Message Queue Support”</strong></p>
+</li>
+<li>
+<p>Select <strong>“RTOS Features”</strong> → <strong>“Clocks and Timers”</strong></p>
+<p>Check <strong>“Support CLOCK_MONOTONIC”</strong></p>
+</li>
+<li>
+<p>Select <strong>“RTOS Features”</strong> → <strong>“Work Queue Support”</strong></p>
+<p>Check <strong>“High Priority (Kernel) Worker Thread”</strong></p>
+</li>
+<li>
+<p>Select <strong>“RTOS Features”</strong> → <strong>“Signal Configuration”</strong></p>
+<p>Check <strong>“Support SIGEV_THHREAD”</strong></p>
+</li>
+<li>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/lorawan3-config1.png" alt="Enable POSIX Timers and Message Queues in menuconfig" /></p>
 <h1 id="appendix-random-number-generator-with-entropy-pool" class="section-header"><a href="#appendix-random-number-generator-with-entropy-pool">20 Appendix: Random Number Generator with Entropy Pool</a></h1>
-<p>TODO</p>
-<p>For #NuttX Random Number Generator, select the Entropy Pool … To generate Strong Random Numbers for our #LoRaWAN Nonce</p>
-<p>TODO35</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-nonce4a.png" alt="" /></p>
-<p>We enable the Entropy Pool in #NuttX OS … To generate Strong Random Numbers for our #LoRaWAN Nonce</p>
-<p>TODO52</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-nonce3a.png" alt="" /></p>
+<p>Our LoRaWAN Library generates Nonces by calling a <strong>Random Number Generator with Entropy Pool</strong>. </p>
+<p>Follow these steps to enable the <strong>Entropy Pool</strong> in <strong>menuconfig</strong>…</p>
+<ol>
+<li>
+<p>Select <strong>“Crypto API”</strong></p>
+</li>
+<li>
+<p>Check <strong>“Crypto API Support”</strong></p>
+</li>
+<li>
+<p>Check <strong>“Entropy Pool and Strong Random Number Generator”</strong></p>
+</li>
+<li>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/lorawan3-nonce3a.png" alt="Enable Entropy Pool in menuconfig" /></p>
+<p>Then we enable the <strong>Random Number Generator</strong>…</p>
+<ol>
+<li>
+<p>Select <strong>“Device Drivers”</strong></p>
+</li>
+<li>
+<p>Check <strong>“Enable /dev/urandom”</strong></p>
+</li>
+<li>
+<p>Select <strong>“/dev/urandom algorithm”</strong></p>
+</li>
+<li>
+<p>Check <strong>“Entropy Pool”</strong></p>
+</li>
+<li>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/lorawan3-nonce4a.png" alt="Select Entropy Pool in menuconfig" /></p>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">21 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602 and ESP32.</p>
