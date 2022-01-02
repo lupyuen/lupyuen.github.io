@@ -82,8 +82,8 @@
 <li><a href="#message-interval">9.2 Message Interval</a><ul></ul></li></ul></li>
 <li><a href="#rerun-the-firmware">10 Rerun The Firmware</a><ul>
 <li><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a><ul></ul></li></ul></li>
-<li><a href="#lorawan-event-loop">11 LoRaWAN Event Loop</a><ul></ul></li>
-<li><a href="#lorawan-nonce">12 LoRaWAN Nonce</a><ul></ul></li>
+<li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul></ul></li>
+<li><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a><ul></ul></li>
 <li><a href="#nimble-porting-layer">13 NimBLE Porting Layer</a><ul></ul></li>
 <li><a href="#gpio-interrupts">14 GPIO Interrupts</a><ul></ul></li>
 <li><a href="#sx1262-busy">15 SX1262 Busy</a><ul></ul></li>
@@ -743,16 +743,11 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>Device Data</strong></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="Decoded Payload" /></p>
 <p>Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet to LoRaWAN!</p>
-<h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">11 LoRaWAN Event Loop</a></h1>
-<p>TODO</p>
-<p>Here’s our #LoRaWAN Event Loop for #NuttX OS … Implemented with NimBLE Porting Library … No more polling!</p>
-<p>TODO54</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="" /></p>
-<p>TODO58</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-run5a.png" alt="" /></p>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-flow2.jpg" alt="Join LoRaWAN Network" /></p>
-<h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">12 LoRaWAN Nonce</a></h1>
+<h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
+<p><em>Why did we configure NuttX to provide a Strong Random Number Generator with Entropy Pool?</em></p>
+<p>TODO</p>
+<p><em>What happens if we don’t select the Entropy Pool?</em></p>
 <p>TODO</p>
 <p>Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway … Which (silently) rejects the Join Request due to Duplicate Nonce … Let’s fix our Random Number Generator</p>
 <p>TODO34</p>
@@ -771,6 +766,13 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p><img src="https://lupyuen.github.io/images/lorawan3-nonce7a.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
+<h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a></h1>
+<p>TODO</p>
+<p>Here’s our #LoRaWAN Event Loop for #NuttX OS … Implemented with NimBLE Porting Library … No more polling!</p>
+<p>TODO54</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="" /></p>
+<p>TODO58</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-run5a.png" alt="" /></p>
 <h1 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">13 NimBLE Porting Layer</a></h1>
 <p>TODO</p>
 <p>Our #NuttX App was waiting for the #LoRaWAN Join Request to be transmitted before receiving the Join Response … But because we’re polling SX1262, we missed the Join Response … Let’s fix this with the multithreading functions from NimBLE Porting Layer</p>
