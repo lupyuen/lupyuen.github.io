@@ -987,7 +987,7 @@ _What's inside our Event Loop?_
 
 Our __Event Loop__ forever reads LoRa and LoRaWAN Events from an __Event Queue__ and handles them.
 
-The Event Queue is created in our LoRaWAN Test App as explained here...
+The Event Queue is created in our LoRa SX1262 Library as explained here...
 
 -   [__"Event Queue"__](https://lupyuen.github.io/articles/sx1262#event-queue)
 
@@ -1040,7 +1040,7 @@ The rest of the Event Loop handles __LoRaWAN Events__...
     LmHandlerProcess( );
 ```
 
-The code above handles __Join Network Events__ in the LoRaMAC Layer of our LoRaWAN Library.
+__LmHandlerProcess__ handles __Join Network Events__ in the LoRaMAC Layer of our LoRaWAN Library.
 
 If we have joined the LoRaWAN Network, we __transmit data__ to the network...
 
