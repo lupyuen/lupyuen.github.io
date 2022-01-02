@@ -890,7 +890,8 @@ Now suppose the LoRaWAN Library __crashes our device__ due to a bug. Watch what 
 | | OK I accept __Nonce 1__
 | (Device crashes and restarts)
 | Here is __Nonce 1__ |
-| | (Rejects __Nonce 1__ because it's repeated)
+| | (Silently rejects __Nonce 1__ because it's repeated)
+| (Timeout waiting for response)
 | Here is __Nonce 2__ |
 | | OK I accept __Nonce 2__
 | (Device crashes and restarts) |
