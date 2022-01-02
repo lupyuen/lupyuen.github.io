@@ -610,44 +610,137 @@ static void PrepareTxFrame( void ) {
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx6.png" alt="Sending a LoRaWAN Data Packet" /></p>
 <h2 id="message-size" class="section-header"><a href="#message-size">9.1 Message Size</a></h2>
 <p><em>What’s the Maximum Message Size</em></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L58-L70">lorawan_test_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/*!
- * LoRaWAN Adaptive Data Rate
- *
- * \remark Please note that when ADR is enabled the end-device should be static
- */
-#define LORAWAN_ADR_STATE                           LORAMAC_HANDLER_ADR_OFF
+<p>The <strong>Maximum Message (Payload) Size</strong> depends on…</p>
+<ul>
+<li>
+<p><strong>LoRaWAN Data Rate</strong> (like Data Rate 2 or 3)</p>
+</li>
+<li>
+<p><strong>LoRaWAN Region</strong> (AS923 for Asia, AU915 for Australia / Brazil / New Zealand, EU868 for Europe, US915 for US, …)</p>
+<p><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html">(See this)</a></p>
+</li>
+</ul>
+<p>Our LoRaWAN Test App uses <strong>Data Rate 3</strong>: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L58-L70">lorawan_test_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  LoRaWAN Adaptive Data Rate
+//  Please note that when ADR is enabled the end-device should be static
+#define LORAWAN_ADR_STATE LORAMAC_HANDLER_ADR_OFF
 
-/*!
- * Default datarate
- *
- * \remark Please note that LORAWAN_DEFAULT_DATARATE is used only when ADR is disabled 
- */
-#define LORAWAN_DEFAULT_DATARATE                    DR_3</code></pre></div><h2 id="message-interval" class="section-header"><a href="#message-interval">9.2 Message Interval</a></h2>
-<p><em>How often do we send data to the LoRaWAN Network?</em></p>
+//  Default Data Rate
+//  Please note that LORAWAN_DEFAULT_DATARATE is used only when ADR is disabled 
+#define LORAWAN_DEFAULT_DATARATE DR_3</code></pre></div>
+<p>But there’s a catch: The <strong>First Message Transmitted</strong> (after joining LoRaWAN) will have <strong>Data Rate 2</strong> (instead of Data Rate 3)!</p>
+<p>(We’ll see this in the upcoming demo)</p>
+<p>For Data Rates 2 and 3, the <strong>Maximum Message (Payload) Sizes</strong> are…</p>
+<div><table><thead><tr><th align="center">Region</th><th align="center">Data Rate</th><th align="center">Max Payload Size</th></tr></thead><tbody>
+<tr><td align="center"><strong>AS923</strong></td><td align="center">DR 2 <br> DR 3</td><td align="center">11 bytes <br> 53 bytes</td></tr>
+<tr><td align="center"><strong>AU915</strong></td><td align="center">DR 2 <br> DR 3</td><td align="center">11 bytes <br> 53 bytes</td></tr>
+<tr><td align="center"><strong>EU868</strong></td><td align="center">DR 2 <br> DR 3</td><td align="center">51 bytes <br> 115 bytes</td></tr>
+<tr><td align="center"><strong>US915</strong></td><td align="center">DR 2 <br> DR 3</td><td align="center">125 bytes <br> 222 bytes</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/">(Based on LoRaWAN Regional Parameters)</a></p>
+<p>Our LoRaWAN Test App sends a Message Payload of <strong>9 bytes</strong>, so it should work fine for Data Rates 2 and 3 across all LoRaWAN Regions.</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-tx5a.png" alt="Setting LoRaWAN Data Rate to 3" /></p>
+<h2 id="message-interval" class="section-header"><a href="#message-interval">9.2 Message Interval</a></h2>
+<p><em>How often can we send data to the LoRaWAN Network?</em></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L47-L56">lorawan_test_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/*!
- * Defines the application data transmission duty cycle. 40s, value in [ms].
- */
-#define APP_TX_DUTYCYCLE                            40000
+<div class="example-wrap"><pre class="language-c"><code>//  Defines the application data transmission duty cycle. 
+//  40s, value in [ms].
+#define APP_TX_DUTYCYCLE 40000
 
-/*!
- * Defines a random delay for application data transmission duty cycle. 5s,
- * value in [ms].
- */
-#define APP_TX_DUTYCYCLE_RND                        5000</code></pre></div>
+//  Defines a random delay for application data transmission duty cycle. 
+//  5s, value in [ms].
+#define APP_TX_DUTYCYCLE_RND 5000</code></pre></div>
 <p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303">lorawan_test_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
-
-  //  Compute the interval between transmissions based on Duty Cycle
-  TxPeriodicity = APP_TX_DUTYCYCLE + 
-    randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );</code></pre></div>
-<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Compute the interval between transmissions based on Duty Cycle
+TxPeriodicity = APP_TX_DUTYCYCLE + 
+  randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );</code></pre></div>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51">(<strong>randr</strong> is defined here)</a></p>
+<p>TODO</p>
 <h1 id="rerun-the-firmware" class="section-header"><a href="#rerun-the-firmware">10 Rerun The Firmware</a></h1>
 <p>TODO</p>
+<ol>
+<li>
+<p>In the NuttX Shell, run our <strong>LoRaWAN Test App</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
+<p>Our app sends a <strong>Join Network Request</strong> to the LoRaWAN Gateway…</p>
+<div class="example-wrap"><pre class="language-text"><code>RadioSetPublicNetwork: public syncword=3444
+DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
+JoinEui     : 00-00-00-00-00-00-00-00
+Pin         : 00-00-00-00
+## =========== MLME-Request ============ ##
+##               MLME_JOIN               ##
+## ===================================== ##
+STATUS : OK</code></pre></div>
+<p>(Which contains the Device EUI and Join EUI that we have configured earlier)</p>
+</li>
+<li>
+<p>A few seconds later we should see the <strong>Join Network Response</strong> from the LoRaWAN Gateway…</p>
+<div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Confirm ============ ##
+STATUS    : OK
+## ===========   JOINED     ============ ##
+OTAA
+DevAddr   : 01DA9790
+DATA RATE : DR_2</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
+<p>Congratulations our NuttX Device has successfully joined the LoRaWAN Network!</p>
+</li>
+<li>
+<p>If we see this instead…</p>
+<div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Confirm ============ ##
+STATUS : Rx 1 timeout</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/007788b9ea3974b127f6260bf57f5d8b">(See the Output Log)</a></p>
+<p>Our Join Network Request has failed.</p>
+<p>Check the next section for troubleshooting tips.</p>
+</li>
+<li>
+<p>Our LoRaWAN Test App continues to <strong>transmit Data Packets</strong>. But we’ll cover this later…</p>
+<div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+PrepareTxFrame: status=0, maxSize=11, currentSize=11
+## =========== MCPS-Request ============ ##
+##           MCPS_UNCONFIRMED            ##
+## ===================================== ##
+STATUS      : OK
+PrepareTxFrame: Transmit OK
+...
+
+## =========== MCPS-Confirm ============ ##
+STATUS      : OK
+## =====   UPLINK FRAME        1   ===== ##
+CLASS       : A
+TX PORT     : 1
+TX DATA     : UNCONFIRMED
+48 69 20 4E 75 74 74 58 00
+DATA RATE   : DR_3
+U/L FREQ    : 923400000
+TX POWER    : 0
+CHANNEL MASK: 0003
+...
+
+PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+PrepareTxFrame: status=0, maxSize=53, currentSize=53
+## =========== MCPS-Request ============ ##
+##           MCPS_UNCONFIRMED            ##
+## ===================================== ##
+STATUS      : OK
+PrepareTxFrame: Transmit OK
+...
+
+## =========== MCPS-Confirm ============ ##
+STATUS      : OK
+## =====   UPLINK FRAME        1   ===== ##
+CLASS       : A
+TX PORT     : 1
+TX DATA     : UNCONFIRMED
+48 69 20 4E 75 74 74 58 00
+DATA RATE   : DR_3
+U/L FREQ    : 923400000
+TX POWER    : 0
+CHANNEL MASK: 0003</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
+</li>
+</ol>
 <h2 id="check-lorawan-gateway-1" class="section-header"><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack8.png" alt="Send Data" /></p>
@@ -743,10 +836,6 @@ static void PrepareTxFrame( void ) {
 <p>TODO65</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Log)</a></p>
-<p>Here’s how we increase the #LoRaWAN Data Rate to 3 in our #NuttX App</p>
-<p>TODO67</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-tx5a.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L57-L70">(Source)</a></p>
 <p>#LoRaWAN Data Rate has been increased to 3 … Max Message Size is now 53 bytes for our #NuttX App</p>
 <p>TODO37</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx7a.png" alt="" /></p>
