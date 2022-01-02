@@ -954,7 +954,13 @@ To enable Random Nonces, we define __USE_RANDOM_DEV_NONCE__ as 1 in [LoRaMacCryp
 #endif  //  __NuttX__
 ```
 
-_What happens if we don't select the Entropy Pool?_
+_What happens if we don't select Entropy Pool for our Random Number Generator?_
+
+Our Random Number Generator becomes "Weak"... It __repeats the same Random Numbers__ upon restarting.
+
+Thus __always select Entropy Pool__ for our Random Number Generator...
+
+-   [__"Random Number Generator with Entropy Pool"__](https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool)
 
 TODO
 
