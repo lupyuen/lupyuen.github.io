@@ -728,6 +728,10 @@ _How often can we send data to the LoRaWAN Network?_
 
 TODO
 
+https://avbentem.github.io/airtime-calculator/ttn/us915
+
+![LoRaWAN Airtime Calculator](https://lupyuen.github.io/images/lorawan3-airtime.jpg)
+
 From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L47-L56)
 
 ```c
