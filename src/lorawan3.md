@@ -872,7 +872,66 @@ Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet 
 
 _Why did we configure NuttX to provide a Strong Random Number Generator with Entropy Pool?_
 
+The Strong Random Number Generator fixes a __Nonce Quirk__ in our LoRaWAN Library that we observed during development.
+
 TODO
+
+From [nuttx.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152)
+
+```c
+/// Get random devnonce from the Random Number Generator
+SecureElementStatus_t SecureElementRandomNumber( uint32_t* randomNum ) {
+    //  Open the Random Number Generator /dev/urandom
+    int fd = open("/dev/urandom", O_RDONLY);
+    assert(fd > 0);
+
+    //  Read the random number
+    read(fd, randomNum, sizeof(uint32_t));
+    close(fd);
+
+    printf("SecureElementRandomNumber: 0x%08lx\n", *randomNum);
+    return SECURE_ELEMENT_SUCCESS;
+}
+```
+
+TODO
+
+From [LoRaMacCrypto.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996)
+
+```c
+LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest_t* macMsg )
+{
+    if( macMsg == 0 )
+    {
+        return LORAMAC_CRYPTO_ERROR_NPE;
+    }
+    KeyIdentifier_t micComputationKeyID = NWK_KEY;
+
+    // Add device nonce
+#if ( USE_RANDOM_DEV_NONCE == 1 )
+    uint32_t devNonce = 0;
+    SecureElementRandomNumber( &devNonce );
+    CryptoNvm->DevNonce = devNonce;
+#else
+    CryptoNvm->DevNonce++;
+#endif
+    macMsg->DevNonce = CryptoNvm->DevNonce;
+```
+
+TODO
+
+From [LoRaMacCrypto.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.h#L58-L65)
+
+```c
+/*!
+ * Indicates if a random devnonce must be used or not
+ */
+#ifdef __NuttX__  //  For NuttX: Get random devnonce from the Random Number Generator
+#define USE_RANDOM_DEV_NONCE                        1
+#else
+#define USE_RANDOM_DEV_NONCE                        0
+#endif  //  __NuttX__
+```
 
 _What happens if we don't select the Entropy Pool?_
 
