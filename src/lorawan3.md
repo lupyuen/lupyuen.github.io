@@ -610,37 +610,51 @@ TODO
 From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L305-L336)
 
 ```c
-/*!
- * Prepares the payload of the frame and transmits it.
- */
-static void PrepareTxFrame( void )
-{
-    //  If we haven't joined the LoRaWAN Network, try again later
-    if (LmHandlerIsBusy()) { puts("PrepareTxFrame: Busy"); return; }
+//  Prepare the payload of a Data Packet transmit it
+static void PrepareTxFrame( void ) {
+  //  If we haven't joined the LoRaWAN Network, try again later
+  if (LmHandlerIsBusy()) { puts("PrepareTxFrame: Busy"); return; }
+```
 
-    //  Send a message to LoRaWAN
-    const char msg[] = "Hi NuttX";
-    printf("PrepareTxFrame: Transmit to LoRaWAN: %s (%d bytes)\n", msg, sizeof(msg));
+TODO
 
-    //  Compose the transmit request
-    memcpy(AppDataBuffer, msg, sizeof(msg));
-    LmHandlerAppData_t appData =
-    {
-        .Buffer = AppDataBuffer,
-        .BufferSize = sizeof(msg),
-        .Port = 1,
-    };
+```c
+  //  Send a message to LoRaWAN
+  const char msg[] = "Hi NuttX";
+  printf("PrepareTxFrame: Transmit to LoRaWAN: %s (%d bytes)\n", msg, sizeof(msg));
+```
 
-    //  Validate the message size and check if it can be transmitted
-    LoRaMacTxInfo_t txInfo;
-    LoRaMacStatus_t status = LoRaMacQueryTxPossible(appData.BufferSize, &txInfo);
-    printf("PrepareTxFrame: status=%d, maxSize=%d, currentSize=%d\n", status, txInfo.MaxPossibleApplicationDataSize, txInfo.CurrentPossiblePayloadSize);
-    assert(status == LORAMAC_STATUS_OK);
+TODO
 
-    //  Transmit the message
-    LmHandlerErrorStatus_t sendStatus = LmHandlerSend( &appData, LmHandlerParams.IsTxConfirmed );
-    assert(sendStatus == LORAMAC_HANDLER_SUCCESS);
-    puts("PrepareTxFrame: Transmit OK");
+```c
+  //  Compose the transmit request
+  assert(sizeof(msg) <= sizeof(AppDataBuffer))
+  memcpy(AppDataBuffer, msg, sizeof(msg));
+  LmHandlerAppData_t appData =
+  {
+    .Buffer = AppDataBuffer,
+    .BufferSize = sizeof(msg),
+    .Port = 1,
+  };
+```
+
+TODO
+
+```c
+  //  Validate the message size and check if it can be transmitted
+  LoRaMacTxInfo_t txInfo;
+  LoRaMacStatus_t status = LoRaMacQueryTxPossible(appData.BufferSize, &txInfo);
+  printf("PrepareTxFrame: status=%d, maxSize=%d, currentSize=%d\n", status, txInfo.MaxPossibleApplicationDataSize, txInfo.CurrentPossiblePayloadSize);
+  assert(status == LORAMAC_STATUS_OK);
+```
+
+TODO
+
+```c
+  //  Transmit the message
+  LmHandlerErrorStatus_t sendStatus = LmHandlerSend( &appData, LmHandlerParams.IsTxConfirmed );
+  assert(sendStatus == LORAMAC_HANDLER_SUCCESS);
+  puts("PrepareTxFrame: Transmit OK");
 }
 ```
 
@@ -656,13 +670,11 @@ TODO68
 
 -   [__LoRaMac-node-nuttx__](https://github.com/lupyuen/LoRaMac-node-nuttx)
 
-TODO1
+## Message Size
 
-![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack8.png)
+TODO
 
-TODO2
-
-![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack11.png)
+## Message Interval
 
 _How often do we send data to the LoRaWAN Network?_
 
@@ -681,6 +693,16 @@ int main(int argc, FAR char *argv[]) {
 TODO
 
 [(__randr__ is defined here)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51)
+
+# Rerun The Firmware
+
+TODO
+
+![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack8.png)
+
+TODO2
+
+![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack11.png)
 
 # LoRaWAN Event Loop
 
