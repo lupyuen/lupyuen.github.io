@@ -643,10 +643,16 @@ static void PrepareTxFrame( void ) {
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx5a.png" alt="Setting LoRaWAN Data Rate to 3" /></p>
 <h2 id="message-interval" class="section-header"><a href="#message-interval">9.2 Message Interval</a></h2>
 <p><em>How often can we send data to the LoRaWAN Network?</em></p>
-<p>TODO</p>
-<p>https://avbentem.github.io/airtime-calculator/ttn/us915</p>
+<p>We must comply with Local Wireless Regulations for <a href="https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/"><strong>Duty Cycle</strong></a>. Blasting messages non-stop is no-no!</p>
+<p>To figure out how often we can send data, check out the…</p>
+<ul>
+<li><a href="https://avbentem.github.io/airtime-calculator/ttn/us915"><strong>“LoRaWAN Airtime Calculator”</strong></a></li>
+</ul>
+<p>For <strong>AS923 (Asia) at Data Rate 3</strong>, the LoRaWAN Airtime Calculator says that we can send a message every <strong>20.6 seconds</strong> (assuming Message Payload is <strong>9 bytes</strong>)…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-airtime.jpg" alt="LoRaWAN Airtime Calculator" /></p>
-<p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L47-L56">lorawan_test_main.c</a></p>
+<p><a href="https://avbentem.github.io/airtime-calculator/ttn/as923/9">(Source)</a></p>
+<p>Let’s round up the Message Interval to <strong>40 seconds</strong> for demo.</p>
+<p>We configure this Message Interval as <strong>APP_TX_DUTYCYCLE</strong> in <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L47-L56">lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Defines the application data transmission duty cycle. 
 //  40s, value in [ms].
 #define APP_TX_DUTYCYCLE 40000
@@ -654,12 +660,13 @@ static void PrepareTxFrame( void ) {
 //  Defines a random delay for application data transmission duty cycle. 
 //  5s, value in [ms].
 #define APP_TX_DUTYCYCLE_RND 5000</code></pre></div>
-<p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303">lorawan_test_main.c</a></p>
+<p><strong>APP_TX_DUTYCYCLE</strong> is used to compute the Timeout Interval of our <strong>Transmit Timer</strong>: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303">lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Compute the interval between transmissions based on Duty Cycle
 TxPeriodicity = APP_TX_DUTYCYCLE + 
   randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );</code></pre></div>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51">(<strong>randr</strong> is defined here)</a></p>
-<p>TODO</p>
+<p>Thus our LoRaWAN Test App transmits a message every <strong>40 seconds</strong>. </p>
+<p>(±5 seconds of random delay)</p>
 <h1 id="rerun-the-firmware" class="section-header"><a href="#rerun-the-firmware">10 Rerun The Firmware</a></h1>
 <p>TODO</p>
 <ol>
