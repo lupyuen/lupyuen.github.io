@@ -734,15 +734,15 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p>Let’s check the logs in our LoRaWAN Gateway.</p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/lorawan3-tx7a.png" alt="Data Rate changes from 2 to 3" /></p>
 <h2 id="check-lorawan-gateway-1" class="section-header"><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a></h2>
 <p>To inspect the Data Packet (“Unconfirmed Data Up”) on our <strong>LoRaWAN Gateway</strong> (ChirpStack), click…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>LoRaWAN Frames</strong></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack8.png" alt="Send Data" /></p>
 <p>To see the <strong>Decoded Payload</strong> of our Data Packet, click…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>Device Data</strong></p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack11.png" alt="Send Data" /></p>
-<p>TODO</p>
-<p>Like so (“Up” → “Decoded Data String”)…</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="Decoded Payload" /></p>
+<p>Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet to LoRaWAN!</p>
 <h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">11 LoRaWAN Event Loop</a></h1>
 <p>TODO</p>
 <p>Here’s our #LoRaWAN Event Loop for #NuttX OS … Implemented with NimBLE Porting Library … No more polling!</p>
@@ -833,14 +833,6 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p>TODO65</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Log)</a></p>
-<p>#LoRaWAN Data Rate has been increased to 3 … Max Message Size is now 53 bytes for our #NuttX App</p>
-<p>TODO37</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-tx7a.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(Log)</a></p>
-<p>#LoRaWAN Gateway now receives the correct Data Packet from our #NuttX App! 🎉</p>
-<p>TODO45</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(Log)</a></p>
 <h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">17 SPI with DMA</a></h1>
 <p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">18 What’s Next</a></h1>
