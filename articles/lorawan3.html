@@ -668,24 +668,13 @@ TxPeriodicity = APP_TX_DUTYCYCLE +
 <p>Thus our LoRaWAN Test App transmits a message every <strong>40 seconds</strong>. </p>
 <p>(±5 seconds of random delay)</p>
 <h1 id="rerun-the-firmware" class="section-header"><a href="#rerun-the-firmware">10 Rerun The Firmware</a></h1>
-<p>TODO</p>
+<p>Watch what happens when our LoRaWAN Test App <strong>transmit a Data Packet</strong>…</p>
 <ol>
 <li>
 <p>In the NuttX Shell, run our <strong>LoRaWAN Test App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
-<p>Our app sends a <strong>Join Network Request</strong> to the LoRaWAN Gateway…</p>
-<div class="example-wrap"><pre class="language-text"><code>RadioSetPublicNetwork: public syncword=3444
-DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
-JoinEui     : 00-00-00-00-00-00-00-00
-Pin         : 00-00-00-00
-## =========== MLME-Request ============ ##
-##               MLME_JOIN               ##
-## ===================================== ##
-STATUS : OK</code></pre></div>
-<p>(Which contains the Device EUI and Join EUI that we have configured earlier)</p>
-</li>
+<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div></li>
 <li>
-<p>A few seconds later we should see the <strong>Join Network Response</strong> from the LoRaWAN Gateway…</p>
+<p>As seen earlier, our app transmits a <strong>Join Network Request</strong> and receives a <strong>Join Accept Response</strong> from the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Confirm ============ ##
 STATUS    : OK
 ## ===========   JOINED     ============ ##
@@ -693,28 +682,21 @@ OTAA
 DevAddr   : 01DA9790
 DATA RATE : DR_2</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
-<p>Congratulations our NuttX Device has successfully joined the LoRaWAN Network!</p>
 </li>
 <li>
-<p>If we see this instead…</p>
-<div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Confirm ============ ##
-STATUS : Rx 1 timeout</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/007788b9ea3974b127f6260bf57f5d8b">(See the Output Log)</a></p>
-<p>Our Join Network Request has failed.</p>
-<p>Check the next section for troubleshooting tips.</p>
-</li>
-<li>
-<p>Our LoRaWAN Test App continues to <strong>transmit Data Packets</strong>. But we’ll cover this later…</p>
+<p>Upon joining the LoRaWAN Network, our app <strong>transmits a Data Packet</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
 PrepareTxFrame: status=0, maxSize=11, currentSize=11
 ## =========== MCPS-Request ============ ##
 ##           MCPS_UNCONFIRMED            ##
 ## ===================================== ##
 STATUS      : OK
-PrepareTxFrame: Transmit OK
-...
-
-## =========== MCPS-Confirm ============ ##
+PrepareTxFrame: Transmit OK</code></pre></div>
+<p>Note that the <strong>First Data Packet</strong> is transmitted at <strong>Data Rate 2</strong>, with Maximum Message Size <strong>11 bytes</strong>.</p>
+</li>
+<li>
+<p>After transmitting the First Data Packet, our LoRaWAN Library automagically upgrades the <strong>Data Rate to 3</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>## =========== MCPS-Confirm ============ ##
 STATUS      : OK
 ## =====   UPLINK FRAME        1   ===== ##
 CLASS       : A
@@ -724,10 +706,10 @@ TX DATA     : UNCONFIRMED
 DATA RATE   : DR_3
 U/L FREQ    : 923400000
 TX POWER    : 0
-CHANNEL MASK: 0003
-...
-
-PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+CHANNEL MASK: 0003</code></pre></div></li>
+<li>
+<p>While transmitting the Second (and subsequent) Data Packets, the Maximum Message Size is extended to <strong>53 bytes</strong> (because of the increased Data Rate)…</p>
+<div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
 PrepareTxFrame: status=0, maxSize=53, currentSize=53
 ## =========== MCPS-Request ============ ##
 ##           MCPS_UNCONFIRMED            ##
@@ -747,7 +729,7 @@ DATA RATE   : DR_3
 U/L FREQ    : 923400000
 TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
+<p>Let’s check the logs in our LoRaWAN Gateway.</p>
 </li>
 </ol>
 <h2 id="check-lorawan-gateway-1" class="section-header"><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a></h2>
