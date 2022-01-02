@@ -726,13 +726,21 @@ Our LoRaWAN Test App sends a Message Payload of __9 bytes__, so it should work f
 
 _How often can we send data to the LoRaWAN Network?_
 
-TODO
+We must comply with Local Wireless Regulations for [__Duty Cycle__](https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/). Blasting messages non-stop is no-no!
 
-https://avbentem.github.io/airtime-calculator/ttn/us915
+To figure out how often we can send data, check out the...
+
+-   [__"LoRaWAN Airtime Calculator"__](https://avbentem.github.io/airtime-calculator/ttn/us915)
+
+For __AS923 (Asia) at Data Rate 3__, the LoRaWAN Airtime Calculator says that we can send a message every __20.6 seconds__ (assuming Message Payload is __9 bytes__)...
 
 ![LoRaWAN Airtime Calculator](https://lupyuen.github.io/images/lorawan3-airtime.jpg)
 
-From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L47-L56)
+[(Source)](https://avbentem.github.io/airtime-calculator/ttn/as923/9)
+
+Let's round up the Message Interval to __40 seconds__ for demo.
+
+We configure this Message Interval as __APP_TX_DUTYCYCLE__ in [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L47-L56)
 
 ```c
 //  Defines the application data transmission duty cycle. 
@@ -744,7 +752,7 @@ From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lor
 #define APP_TX_DUTYCYCLE_RND 5000
 ```
 
-From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303)
+__APP_TX_DUTYCYCLE__ is used to compute the Timeout Interval of our __Transmit Timer__: [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303)
 
 ```c
 //  Compute the interval between transmissions based on Duty Cycle
@@ -754,7 +762,9 @@ TxPeriodicity = APP_TX_DUTYCYCLE +
 
 [(__randr__ is defined here)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51)
 
-TODO
+Thus our LoRaWAN Test App transmits a message every __40 seconds__. 
+
+(±5 seconds of random delay)
 
 # Rerun The Firmware
 
