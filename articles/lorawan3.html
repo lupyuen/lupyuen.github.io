@@ -761,20 +761,21 @@ CHANNEL MASK: 0003</code></pre></div></li>
 </ul>
 <p>Now suppose the LoRaWAN Library <strong>crashes our device</strong> due to a bug. Watch what happens…</p>
 <div><table><thead><tr><th><em>Our Device</em></th><th><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
-<tr><td>1️⃣ Here is Nonce 1</td><td></td></tr>
-<tr><td></td><td>2️⃣ OK I accept Nonce 1</td></tr>
-<tr><td>3️⃣ (Device crashes and restarts)</td><td></td></tr>
-<tr><td>4️⃣ Here is Nonce 1</td><td></td></tr>
-<tr><td></td><td>5️⃣ (Rejects Nonce 1 because it’s repeated)</td></tr>
-<tr><td>6️⃣ Here is Nonce 2</td><td></td></tr>
-<tr><td></td><td>7️⃣ OK I accept Nonce 2</td></tr>
-<tr><td>8️⃣ (Device crashes and restarts)</td><td></td></tr>
+<tr><td>Here is <strong>Nonce 1</strong></td><td></td></tr>
+<tr><td></td><td>OK I accept <strong>Nonce 1</strong></td></tr>
+<tr><td>(Device crashes and restarts)</td><td></td></tr>
+<tr><td>Here is <strong>Nonce 1</strong></td><td></td></tr>
+<tr><td></td><td>(Rejects <strong>Nonce 1</strong> because it’s repeated)</td></tr>
+<tr><td>Here is <strong>Nonce 2</strong></td><td></td></tr>
+<tr><td></td><td>OK I accept <strong>Nonce 2</strong></td></tr>
+<tr><td>(Device crashes and restarts)</td><td></td></tr>
 </tbody></table>
 </div>
 <p>If our device keeps crashing, the LoRaWAN Gateway will eventually <strong>reject a whole bunch of Nonces</strong>: 1, 2, 3, 4, …</p>
 <p>(Which makes development super slow and frustrating)</p>
 <p>Thus we generate LoRaWAN Nonces with a <strong>Strong Random Number Generator</strong> instead.</p>
 <p>(Random Numbers that won’t repeat upon restarting)</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack2a.png" alt="Repeated Nonces are rejected by LoRaWAN Gateway" /></p>
 <h2 id="strong-random-number-generator" class="section-header"><a href="#strong-random-number-generator">11.1 Strong Random Number Generator</a></h2>
 <p>Our LoRaWAN Library supports <strong>Random Nonces</strong>… Assuming that we have a <strong>Secure Element</strong>.</p>
 <p>Since we don’t have a Secure Element, let’s <strong>generate the Random Nonce in software</strong>: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152">nuttx.c</a></p>
@@ -824,8 +825,6 @@ SecureElementStatus_t SecureElementRandomNumber( uint32_t* randomNum ) {
 <p>Non Volatile Memory</p>
 <p>Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway … Which (silently) rejects the Join Request due to Duplicate Nonce … Let’s fix our Random Number Generator</p>
 <p>TODO34</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack2a.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/b38434c3d27500444382bb4a066691e5">(Log)</a></p>
 <p>#LoRaWAN gets the Nonce from the Secure Element’s Random Number Generator … Let’s simulate the Secure Element on Apache #NuttX OS</p>
 <p>TODO51</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-nonce2a.png" alt="" /></p>
