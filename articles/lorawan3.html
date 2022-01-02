@@ -868,12 +868,14 @@ static void handle_event_queue(void *arg) {
 <p>The rest of the Event Loop handles <strong>LoRaWAN Events</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: Process the LoRaMAC events
     LmHandlerProcess( );</code></pre></div>
-<p>TODO</p>
+<p>The code above handles <strong>Join Network Events</strong> in the LoRaMAC Layer of our LoRaWAN Library.</p>
+<p>If we have joined the LoRaWAN Network, we <strong>transmit data</strong> to the network…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: If we have joined the network, do the uplink
     if (!LmHandlerIsBusy( )) {
       UplinkProcess( );
     }</code></pre></div>
-<p>TODO</p>
+<p>(<a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L361-L373"><strong>UplinkProcess</strong></a> calls <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L305-L337"><strong>PrepareTxFrame</strong></a>, which we have seen earlier)</p>
+<p>The last part of the Event Loop will handle Low Power Mode in future…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: Handle Low Power Mode
     CRITICAL_SECTION_BEGIN( );
     if( IsMacProcessPending == 1 ) {
