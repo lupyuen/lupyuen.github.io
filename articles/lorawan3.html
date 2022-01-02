@@ -776,8 +776,8 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p>Thus we generate LoRaWAN Nonces with a <strong>Strong Random Number Generator</strong> instead.</p>
 <p>(Random Numbers that won’t repeat upon restarting)</p>
 <h2 id="random-number-generator" class="section-header"><a href="#random-number-generator">11.1 Random Number Generator</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152">nuttx.c</a></p>
+<p>Our LoRaWAN Library supports <strong>Random Nonces</strong>… Assuming that we have a <strong>Secure Element</strong>.</p>
+<p>Since we don’t have a Secure Element, let’s <strong>generate the Random Nonce in software</strong>: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152">nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Get random devnonce from the Random Number Generator
 SecureElementStatus_t SecureElementRandomNumber( uint32_t* randomNum ) {
   //  Open the Random Number Generator /dev/urandom
