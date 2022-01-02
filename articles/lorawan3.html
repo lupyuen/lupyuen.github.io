@@ -746,7 +746,51 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p><img src="https://lupyuen.github.io/images/lorawan3-flow2.jpg" alt="Join LoRaWAN Network" /></p>
 <h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
 <p><em>Why did we configure NuttX to provide a Strong Random Number Generator with Entropy Pool?</em></p>
+<p>The Strong Random Number Generator fixes a <strong>Nonce Quirk</strong> in our LoRaWAN Library that we observed during development.</p>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152">nuttx.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Get random devnonce from the Random Number Generator
+SecureElementStatus_t SecureElementRandomNumber( uint32_t* randomNum ) {
+    //  Open the Random Number Generator /dev/urandom
+    int fd = open(&quot;/dev/urandom&quot;, O_RDONLY);
+    assert(fd &gt; 0);
+
+    //  Read the random number
+    read(fd, randomNum, sizeof(uint32_t));
+    close(fd);
+
+    printf(&quot;SecureElementRandomNumber: 0x%08lx\n&quot;, *randomNum);
+    return SECURE_ELEMENT_SUCCESS;
+}</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996">LoRaMacCrypto.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest_t* macMsg )
+{
+    if( macMsg == 0 )
+    {
+        return LORAMAC_CRYPTO_ERROR_NPE;
+    }
+    KeyIdentifier_t micComputationKeyID = NWK_KEY;
+
+    // Add device nonce
+#if ( USE_RANDOM_DEV_NONCE == 1 )
+    uint32_t devNonce = 0;
+    SecureElementRandomNumber( &amp;devNonce );
+    CryptoNvm-&gt;DevNonce = devNonce;
+#else
+    CryptoNvm-&gt;DevNonce++;
+#endif
+    macMsg-&gt;DevNonce = CryptoNvm-&gt;DevNonce;</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.h#L58-L65">LoRaMacCrypto.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/*!
+ * Indicates if a random devnonce must be used or not
+ */
+#ifdef __NuttX__  //  For NuttX: Get random devnonce from the Random Number Generator
+#define USE_RANDOM_DEV_NONCE                        1
+#else
+#define USE_RANDOM_DEV_NONCE                        0
+#endif  //  __NuttX__</code></pre></div>
 <p><em>What happens if we don’t select the Entropy Pool?</em></p>
 <p>TODO</p>
 <p>Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway … Which (silently) rejects the Join Request due to Duplicate Nonce … Let’s fix our Random Number Generator</p>
