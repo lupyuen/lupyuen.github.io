@@ -85,23 +85,20 @@
 <li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul>
 <li><a href="#strong-random-number-generator">11.1 Strong Random Number Generator</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a><ul></ul></li>
-<li><a href="#nimble-porting-layer">13 NimBLE Porting Layer</a><ul></ul></li>
-<li><a href="#gpio-interrupts">14 GPIO Interrupts</a><ul></ul></li>
-<li><a href="#sx1262-busy">15 SX1262 Busy</a><ul></ul></li>
-<li><a href="#troubleshoot-lorawan">16 Troubleshoot LoRaWAN</a><ul>
-<li><a href="#logging">16.1 Logging</a><ul></ul></li>
-<li><a href="#message-size-1">16.2 Message Size</a><ul></ul></li></ul></li>
-<li><a href="#spi-with-dma">17 SPI with DMA</a><ul></ul></li>
-<li><a href="#whats-next">18 What’s Next</a><ul></ul></li>
-<li><a href="#notes">19 Notes</a><ul></ul></li>
-<li><a href="#appendix-posix-timers-and-message-queues">20 Appendix: POSIX Timers and Message Queues</a><ul></ul></li>
-<li><a href="#appendix-random-number-generator-with-entropy-pool">21 Appendix: Random Number Generator with Entropy Pool</a><ul></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">22 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#build-nuttx">22.1 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">22.2 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">22.3 Run NuttX</a><ul></ul></li></ul></li>
-<li><a href="#appendix-gpio-issue">23 Appendix: GPIO Issue</a><ul></ul></li>
-<li><a href="#appendix-callout-issue">24 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
+<li><a href="#troubleshoot-lorawan">13 Troubleshoot LoRaWAN</a><ul>
+<li><a href="#logging">13.1 Logging</a><ul></ul></li>
+<li><a href="#message-size-1">13.2 Message Size</a><ul></ul></li></ul></li>
+<li><a href="#spi-with-dma">14 SPI with DMA</a><ul></ul></li>
+<li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
+<li><a href="#notes">16 Notes</a><ul></ul></li>
+<li><a href="#appendix-posix-timers-and-message-queues">17 Appendix: POSIX Timers and Message Queues</a><ul></ul></li>
+<li><a href="#appendix-random-number-generator-with-entropy-pool">18 Appendix: Random Number Generator with Entropy Pool</a><ul></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">19 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#build-nuttx">19.1 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">19.2 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">19.3 Run NuttX</a><ul></ul></li></ul></li>
+<li><a href="#appendix-gpio-issue">20 Appendix: GPIO Issue</a><ul></ul></li>
+<li><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <p>Last article we got <strong>LoRa</strong> (the long-range, low-bandwidth wireless network) running on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a>…</p>
@@ -822,47 +819,77 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-nonce7a.png" alt="Our LoRaWAN Library now generates random nonces" /></p>
 <h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a></h1>
-<p>TODO</p>
-<p>Here’s our #LoRaWAN Event Loop for #NuttX OS … Implemented with NimBLE Porting Library … No more polling!</p>
-<p>TODO54</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="" /></p>
-<p>TODO58</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-run5a.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
-<h1 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">13 NimBLE Porting Layer</a></h1>
-<p>TODO</p>
-<p>Our #NuttX App was waiting for the #LoRaWAN Join Request to be transmitted before receiving the Join Response … But because we’re polling SX1262, we missed the Join Response … Let’s fix this with the multithreading functions from NimBLE Porting Layer</p>
+<p>Let’s look inside our LoRaWAN Test App and learn how the <strong>Event Loop</strong> handles LoRa and LoRaWAN Events by calling NimBLE Porting Layer.</p>
+<p><em>What is NimBLE Porting Layer?</em></p>
+<p><strong>NimBLE Porting Layer</strong> is a multithreading library that works on several operating systems…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>nimble-porting-nuttx</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer"><strong>“Multithreading with NimBLE Porting Layer”</strong></a></li>
 </ul>
-<p>TODO57</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-run4a.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/d3d9db37a40d7560fc211408db04a81b">(Log)</a></p>
-<p>NimBLE Porting Layer is a portable library of Multithreading Functions … We’ve used it for #LoRa on Linux and FreeRTOS … Now we call it from Apache #NuttX OS</p>
-<h1 id="gpio-interrupts" class="section-header"><a href="#gpio-interrupts">14 GPIO Interrupts</a></h1>
+<p>It provides <strong>Timers and Event Queues</strong> that are used by the LoRa and LoRaWAN Libraries.</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-run5a.png" alt="Timers and Event Queues" /></p>
+<p><em>What’s inside our Event Loop?</em></p>
+<p>Our <strong>Event Loop</strong> forever reads LoRa and LoRaWAN Events from an <strong>Event Queue</strong> and handles them.</p>
+<p>The Event Queue is created in our LoRaWAN Test App as explained here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262#event-queue"><strong>“Event Queue”</strong></a></li>
+</ul>
+<p>The Main Function of our LoRaWAN Test App calls this function to run the <strong>Event Loop</strong>: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L611-L655">lorawan_test_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Event Loop that dequeues Events from the Event Queue and processes the Events
+static void handle_event_queue(void *arg) {
+
+  //  Loop forever handling Events from the Event Queue
+  for (;;) {
+
+    //  Get the next Event from the Event Queue
+    struct ble_npl_event *ev = ble_npl_eventq_get(
+      &amp;event_queue,         //  Event Queue
+      BLE_NPL_TIME_FOREVER  //  No Timeout (Wait forever for event)
+    );</code></pre></div>
+<p>This code runs in the <strong>Foreground Thread</strong> of our NuttX App.</p>
+<p>Here we loop forever, <strong>waiting for Events</strong> from the Event Queue.</p>
+<p>When we receive an Event, we <strong>remove the Event</strong> from the Event Queue…</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  If no Event due to timeout, wait for next Event.
+    //  Should never happen since we wait forever for an Event.
+    if (ev == NULL) { printf(&quot;.&quot;); continue; }
+
+    //  Remove the Event from the Event Queue
+    ble_npl_eventq_remove(&amp;event_queue, ev);</code></pre></div>
+<p>We call the <strong>Event Handler Function</strong> that was registered with the Event…</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  Trigger the Event Handler Function
+    ble_npl_event_run(ev);</code></pre></div>
+<ul>
+<li>
+<p>For SX1262 Interrupts: We call <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a> to handle the packet transmitted / received notification</p>
+</li>
+<li>
+<p>For Timer Events: We call the <strong>Timeout Function</strong> defined in the Timer</p>
+</li>
+</ul>
+<p>The rest of the Event Loop handles <strong>LoRaWAN Events</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: Process the LoRaMAC events
+    LmHandlerProcess( );</code></pre></div>
 <p>TODO</p>
-<p>SX1262 will trigger a GPIO Interrupt on #NuttX OS when it receives a #LoRa Packet … We wait for the GPIO Interrupt to be Signalled in a Background Thread</p>
-<p>TODO46</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-gpio2.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L742-L778">(Source)</a></p>
-<p>We handle GPIO Interrupts (SX1262 DIO1) in a #NuttX Background Thread … Awaiting the Signal for GPIO Interrupt</p>
-<p>TODO47</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-gpio3.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L835-L861">(Source)</a></p>
-<p>Our #NuttX Background Thread handles the GPIO Interrupts (SX1262 DIO1) … By adding to the #LoRaWAN Event Queue</p>
-<p>TODO48</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-gpio4a.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L863-L892">(Source)</a></p>
-<p>#LoRaWAN runs neater on Apache #NuttX OS … After implementing Timers and Multithreading with NimBLE Porting Layer … No more sleep()!</p>
-<p><a href="https://gist.github.com/lupyuen/cad58115be4cabe8a8a49c0e498f1c95">(Log)</a></p>
-<h1 id="sx1262-busy" class="section-header"><a href="#sx1262-busy">15 SX1262 Busy</a></h1>
+<div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: If we have joined the network, do the uplink
+    if (!LmHandlerIsBusy( )) {
+      UplinkProcess( );
+    }</code></pre></div>
 <p>TODO</p>
-<p>Here’s how we check the SX1262 Busy Pin on #NuttX OS … By reading the GPIO Input</p>
-<p>TODO49</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-gpio1.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L184-L199">(Source)</a></p>
-<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">16 Troubleshoot LoRaWAN</a></h1>
+<div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: Handle Low Power Mode
+    CRITICAL_SECTION_BEGIN( );
+    if( IsMacProcessPending == 1 ) {
+      //  Clear flag and prevent MCU to go into low power modes.
+      IsMacProcessPending = 0;
+    } else {
+      //  The MCU wakes up through events
+      //  TODO: BoardLowPowerHandler( );
+    }
+    CRITICAL_SECTION_END( );
+  }
+}</code></pre></div>
+<p>And we loop back perpetually, waiting for the next Event.</p>
+<p>That’s how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="Handling LoRaWAN Events with NimBLE Porting Layer" /></p>
+<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">13 Troubleshoot LoRaWAN</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan"><strong>“Troubleshoot LoRaWAN”</strong></a></li>
@@ -874,7 +901,7 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 <p>TODO56</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-run3.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33">(Run Log)</a></p>
-<h2 id="logging" class="section-header"><a href="#logging">16.1 Logging</a></h2>
+<h2 id="logging" class="section-header"><a href="#logging">13.1 Logging</a></h2>
 <p>TODO</p>
 <p>Our #NuttX App was too busy to receive the #LoRaWAN Join Response … Let’s disable the logging</p>
 <p>TODO62</p>
@@ -886,15 +913,16 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 <p>TODO44</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack5.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89">(Log)</a></p>
-<h2 id="message-size-1" class="section-header"><a href="#message-size-1">16.2 Message Size</a></h2>
+<h2 id="message-size-1" class="section-header"><a href="#message-size-1">13.2 Message Size</a></h2>
 <p>TODO</p>
 <p>Our #NuttX App sent an empty #LoRaWAN Message because our message is too long for LoRaWAN Data Rate 2 (max 11 bytes) … Let’s increase the Data Rate to 3</p>
 <p>TODO65</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Log)</a></p>
-<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">17 SPI with DMA</a></h1>
+<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">14 SPI with DMA</a></h1>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">18 What’s Next</a></h1>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">15 What’s Next</a></h1>
 <p>TODO</p>
 <p>CBOR, TTN, Temperature Sensor</p>
 <p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
@@ -904,7 +932,7 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 <li><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>lupyuen/LoRaMac-node-nuttx</strong></a></li>
 </ul>
 <p><em>We’re porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</em></p>
-<p>Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech’s version.  <a href="https://lupyuen.github.io/articles/sx1262#notes">(But we shall minimise the changes)</a></p>
+<p>Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech’s version.  <a href="https://lupyuen.github.io/articles/lorawan3#notes">(But we shall minimise the changes)</a></p>
 <p>Stay Tuned!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -923,7 +951,7 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan3.md"><code>lupyuen.github.io/src/lorawan3.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">19 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">16 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1473593455699841027">this Twitter Thread</a></p>
@@ -970,7 +998,7 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 <p>It might! But first let’s get LoRaWAN (and ST7789) running on PineDio Stack.</p>
 </li>
 </ol>
-<h1 id="appendix-posix-timers-and-message-queues" class="section-header"><a href="#appendix-posix-timers-and-message-queues">20 Appendix: POSIX Timers and Message Queues</a></h1>
+<h1 id="appendix-posix-timers-and-message-queues" class="section-header"><a href="#appendix-posix-timers-and-message-queues">17 Appendix: POSIX Timers and Message Queues</a></h1>
 <p>NimBLE Porting Layer needs <strong>POSIX Timers and Message Queues</strong> (plus more) to work. Follow the steps below to enable the features in <strong>menuconfig</strong>…</p>
 <ol>
 <li>
@@ -995,7 +1023,7 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan3-config1.png" alt="Enable POSIX Timers and Message Queues in menuconfig" /></p>
-<h1 id="appendix-random-number-generator-with-entropy-pool" class="section-header"><a href="#appendix-random-number-generator-with-entropy-pool">21 Appendix: Random Number Generator with Entropy Pool</a></h1>
+<h1 id="appendix-random-number-generator-with-entropy-pool" class="section-header"><a href="#appendix-random-number-generator-with-entropy-pool">18 Appendix: Random Number Generator with Entropy Pool</a></h1>
 <p>Our LoRaWAN Library generates Nonces by calling a <strong>Random Number Generator with Entropy Pool</strong>. </p>
 <p>Follow these steps to enable the <strong>Entropy Pool</strong> in <strong>menuconfig</strong>…</p>
 <ol>
@@ -1032,13 +1060,13 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan3-nonce4a.png" alt="Select Entropy Pool in menuconfig" /></p>
-<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">22 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">19 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">22.1 Build NuttX</a></h2>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">19.1 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602 or ESP32…</p>
 <ol>
 <li>
@@ -1085,7 +1113,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">22.2 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">19.2 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -1164,7 +1192,7 @@ cargo run flash nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">22.3 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">19.3 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
@@ -1218,13 +1246,13 @@ nsh&gt;</code></pre></div>
 <p><strong>macOS Tip:</strong> Here’s the script I use to build, flash and run NuttX on macOS, all in a single step: <a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">run.sh</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
 <p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
-<h1 id="appendix-gpio-issue" class="section-header"><a href="#appendix-gpio-issue">23 Appendix: GPIO Issue</a></h1>
+<h1 id="appendix-gpio-issue" class="section-header"><a href="#appendix-gpio-issue">20 Appendix: GPIO Issue</a></h1>
 <p>TODO</p>
 <p>Switching a #NuttX GPIO Interrupt Pin to Trigger On Rising Edge … Crashes with an Assertion Failure … I’ll submit a NuttX Issue, meanwhile I have disabled the assertion</p>
 <p>TODO50</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-int.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547">(Source)</a></p>
-<h1 id="appendix-callout-issue" class="section-header"><a href="#appendix-callout-issue">24 Appendix: Callout Issue</a></h1>
+<h1 id="appendix-callout-issue" class="section-header"><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a></h1>
 <p>TODO</p>
 <p>NimBLE Porting Layer doesn’t work for multiple Callout Timers on #NuttX OS, unless we loop the thread … Will submit a Pull Request to Apache NimBLE 👍</p>
 <p>TODO42</p>

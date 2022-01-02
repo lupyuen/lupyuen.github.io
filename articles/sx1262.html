@@ -1332,6 +1332,7 @@ static int init_gpio(void) {
 <p><em>Why do we verify the GPIO Pin Types? (Input / Output / Interrupt)</em></p>
 <p>The GPIO Pin Names look awfully similar: <strong>/dev/gpio0</strong>, <strong>gpio1</strong>, <strong>gpio2</strong>, …</p>
 <p>It’s easy to <strong>mix up the GPIO Pins.</strong> Hence we verify the GPIO Pin Types to be sure that we got the right pin.</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-gpio2.png" alt="Initialise GPIO" /></p>
 <h2 id="start-dio1-thread" class="section-header"><a href="#start-dio1-thread">8.2 Start DIO1 Thread</a></h2>
 <p>In the rest of <strong>init_gpio</strong> we create a <strong>Background Thread</strong> to handle GPIO Interrupts from DIO1: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L725-L780">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Init the GPIO Pins. Return 0 on success.
@@ -1355,6 +1356,7 @@ static int init_gpio(void) {
   );
   assert(ret == 0);</code></pre></div>
 <p>Let’s look inside <strong>process_dio1</strong>, the function that will be executed by the thread.</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-gpio3.png" alt="Handle DIO1 Interrupt" /></p>
 <h2 id="handle-dio1-interrupt" class="section-header"><a href="#handle-dio1-interrupt">8.3 Handle DIO1 Interrupt</a></h2>
 <p>We have created a <strong>Background Thread</strong> that will handle <strong>GPIO Interrupts from DIO1</strong>.  (Whenever a LoRa Packet is transmitted or received)</p>
 <p>The thread shall do this…</p>
@@ -1440,6 +1442,7 @@ to process the received packet.</p>
 <p>Finally this loops back perpetually, awaiting the next GPIO Interrupt (Signal) or timeout.</p>
 <p>That’s it for the Background Thread! We don’t do much here, we do all the work in the Event Loop.</p>
 <p>(Which is probably safer for Multithreading)</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-gpio4a.png" alt="Handle DIO1 Interrupt" /></p>
 <h2 id="read-dio1-state" class="section-header"><a href="#read-dio1-state">8.4 Read DIO1 State</a></h2>
 <p>Our SX1262 Library calls this function to read the <strong>DIO1 Pin State</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L349-L361">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>uint32_t SX126xGetDio1PinState( void ) {
@@ -1457,7 +1460,9 @@ to process the received packet.</p>
 
   //  Return the value: 1 or 0
   return invalue ? 1 : 0;
-}</code></pre></div><h2 id="check-busy-state" class="section-header"><a href="#check-busy-state">8.5 Check Busy State</a></h2>
+}</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/lorawan3-gpio1.png" alt="Check Busy State" /></p>
+<h2 id="check-busy-state" class="section-header"><a href="#check-busy-state">8.5 Check Busy State</a></h2>
 <p>The Busy Pin goes High when SX1262 is busy. We wait for SX1262 by reading the GPIO Input for the Busy Pin: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200">sx126x-nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void SX126xWaitOnBusy( void ) {
   assert(busy &gt; 0);
@@ -1547,7 +1552,9 @@ static void init_event_queue(void) {
 
   //  Init the Event Queue by calling NimBLE Porting Layer
   ble_npl_eventq_init(&amp;event_queue);
-}</code></pre></div><h2 id="event-loop" class="section-header"><a href="#event-loop">9.2 Event Loop</a></h2>
+}</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="Handling LoRaWAN Events with NimBLE Porting Layer" /></p>
+<h2 id="event-loop" class="section-header"><a href="#event-loop">9.2 Event Loop</a></h2>
 <p>Let’s look at the <strong>Event Loop</strong> that handles the Events in our Event Queue: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L611-L655">lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Event Loop that dequeues Events from the Event Queue and processes the Events
 static void handle_event_queue(void *arg) {
@@ -1570,17 +1577,20 @@ static void handle_event_queue(void *arg) {
     //  Remove the Event from the Event Queue
     ble_npl_eventq_remove(&amp;event_queue, ev);</code></pre></div>
 <p>We call the <strong>Event Handler Function</strong> that was registered with the Event…</p>
-<ul>
-<li>
-<p>For DIO1 Interrupt Events: <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a></p>
-</li>
-<li>
-<p>For Timer Events: The <strong>Timeout Function</strong> defined in the Timer</p>
-</li>
-</ul>
 <div class="example-wrap"><pre class="language-c"><code>    //  Trigger the Event Handler Function
     ble_npl_event_run(ev);</code></pre></div>
+<ul>
+<li>
+<p>For DIO1 Interrupts: We call <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a> to handle the packet transmitted / received notification</p>
+</li>
+<li>
+<p>For Timer Events: We call the <strong>Timeout Function</strong> defined in the Timer</p>
+</li>
+</ul>
 <p>The rest of the Event Loop handles LoRaWAN Events. We’ll cover this in the next article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></li>
+</ul>
 <div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: Processes the LoRaMac events
     LmHandlerProcess( );
 
@@ -1605,16 +1615,9 @@ static void handle_event_queue(void *arg) {
 <p>That’s how we handle Events in our Event Queue with NimBLE Porting Layer!</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
-<p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
-<p>(Which will be super interesting because of multithreading)</p>
-<p>We’ll port Semtech’s <strong>Reference LoRaWAN Stack</strong> to NuttX…</p>
+<p>In our next article we’ll move on to <strong>LoRaWAN!</strong> We’ll port Semtech’s <strong>Reference LoRaWAN Stack</strong> to NuttX…</p>
 <ul>
-<li>
-<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>lupyuen/LoRaMac-node-nuttx</strong></a></p>
-</li>
-<li>
-<p><a href="https://twitter.com/MisterTechBlog/status/1473593455699841027"><strong>Follow the updates on Twitter</strong></a></p>
-</li>
+<li><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></li>
 </ul>
 <p><em>We’re porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</em></p>
 <p>Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech’s version.  <a href="https://lupyuen.github.io/articles/sx1262#notes">(But we shall minimise the changes)</a></p>
