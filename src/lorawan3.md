@@ -681,7 +681,7 @@ This is the typical mode for __IoT Sensor Devices__, which don't handle acknowle
 
 ## Message Size
 
-_What's the Maximum Message Size_
+_What's the Maximum Message Size?_
 
 The __Maximum Message (Payload) Size__ depends on...
 
