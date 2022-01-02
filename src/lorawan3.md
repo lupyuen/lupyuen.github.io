@@ -903,9 +903,9 @@ Thus we generate LoRaWAN Nonces with a __Strong Random Number Generator__ instea
 
 ## Random Number Generator
 
-TODO
+Our LoRaWAN Library supports __Random Nonces__... Assuming that we have a __Secure Element__.
 
-From [nuttx.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152)
+Since we don't have a Secure Element, let's __generate the Random Nonce in software__: [nuttx.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152)
 
 ```c
 /// Get random devnonce from the Random Number Generator
