@@ -734,13 +734,14 @@ CHANNEL MASK: 0003</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx7a.png" alt="Data Rate changes from 2 to 3" /></p>
 <h2 id="check-lorawan-gateway-1" class="section-header"><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a></h2>
-<p>To inspect the Data Packet (“Unconfirmed Data Up”) on our <strong>LoRaWAN Gateway</strong> (ChirpStack), click…</p>
+<p>To inspect the Data Packet on our <strong>LoRaWAN Gateway</strong> (ChirpStack), click…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>LoRaWAN Frames</strong></p>
+<p>And look for <strong>“Unconfirmed Data Up”</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack8.png" alt="Send Data" /></p>
 <p>To see the <strong>Decoded Payload</strong> of our Data Packet, click…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>Device Data</strong></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="Decoded Payload" /></p>
-<p>Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet to LoRaWAN!</p>
+<p>If we see <strong>“Hi NuttX”</strong>… Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet to LoRaWAN!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-flow2.jpg" alt="Join LoRaWAN Network" /></p>
 <h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
 <p><em>Why did we configure NuttX to provide a Strong Random Number Generator with Entropy Pool?</em></p>
