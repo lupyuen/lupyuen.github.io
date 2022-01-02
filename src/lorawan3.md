@@ -852,9 +852,11 @@ Watch what happens when our LoRaWAN Test App __transmits a Data Packet__...
 
 ## Check LoRaWAN Gateway
 
-To inspect the Data Packet ("Unconfirmed Data Up") on our __LoRaWAN Gateway__ (ChirpStack), click...
+To inspect the Data Packet on our __LoRaWAN Gateway__ (ChirpStack), click...
 
 __Applications__ → __app__ → __device_otaa_class_a__ → __LoRaWAN Frames__
+
+And look for __"Unconfirmed Data Up"__...
 
 ![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack8.png)
 
@@ -864,7 +866,7 @@ __Applications__ → __app__ → __device_otaa_class_a__ → __Device Data__
 
 ![Decoded Payload](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
 
-Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet to LoRaWAN!
+If we see __"Hi NuttX"__... Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet to LoRaWAN!
 
 ![Join LoRaWAN Network](https://lupyuen.github.io/images/lorawan3-flow2.jpg)
 
