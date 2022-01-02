@@ -708,7 +708,7 @@ U/L FREQ    : 923400000
 TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div></li>
 <li>
-<p>While transmitting the Second (and subsequent) Data Packets, the Maximum Message Size is extended to <strong>53 bytes</strong> (because of the increased Data Rate)…</p>
+<p>While transmitting the Second (and subsequent) Data Packet, the Maximum Message Size is extended to <strong>53 bytes</strong> (because of the increased Data Rate)…</p>
 <div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
 PrepareTxFrame: status=0, maxSize=53, currentSize=53
 ## =========== MCPS-Request ============ ##
@@ -728,7 +728,9 @@ TX DATA     : UNCONFIRMED
 DATA RATE   : DR_3
 U/L FREQ    : 923400000
 TX POWER    : 0
-CHANNEL MASK: 0003</code></pre></div>
+CHANNEL MASK: 0003</code></pre></div></li>
+<li>
+<p>This repeats roughly every <strong>40 seconds</strong>.</p>
 <p>Let’s check the logs in our LoRaWAN Gateway.</p>
 </li>
 </ol>
@@ -736,11 +738,11 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>To inspect the Data Packet (“Unconfirmed Data Up”) on our <strong>LoRaWAN Gateway</strong> (ChirpStack), click…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>LoRaWAN Frames</strong></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack8.png" alt="Send Data" /></p>
-<p>The <strong>Decoded Payload</strong> of our Data Packet appears in ChirpStack at…</p>
+<p>To see the <strong>Decoded Payload</strong> of our Data Packet, click…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>Device Data</strong></p>
-<p>Like so (“Up” → “Decoded Data String”)…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack11.png" alt="Send Data" /></p>
 <p>TODO</p>
+<p>Like so (“Up” → “Decoded Data String”)…</p>
 <h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">11 LoRaWAN Event Loop</a></h1>
 <p>TODO</p>
 <p>Here’s our #LoRaWAN Event Loop for #NuttX OS … Implemented with NimBLE Porting Library … No more polling!</p>
