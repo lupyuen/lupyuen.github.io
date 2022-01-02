@@ -598,7 +598,7 @@ The Join Network Request / Response also appears in ChirpStack at...
 
 __Applications__ → __app__ → __device_otaa_class_a__ → __Device Data__
 
-Like so...
+Like so ("Join")...
 
 ![Join Accept Response](https://lupyuen.github.io/images/lorawan3-chirpstack10.png)
 
@@ -848,13 +848,21 @@ Watch what happens when our LoRaWAN Test App __transmit a Data Packet__...
 
 ## Check LoRaWAN Gateway
 
-TODO
+To inspect the Data Packet ("Unconfirmed Data Up") on our __LoRaWAN Gateway__ (ChirpStack), click...
+
+__Applications__ → __app__ → __device_otaa_class_a__ → __LoRaWAN Frames__
 
 ![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack8.png)
 
-TODO2
+The __Decoded Payload__ of our Data Packet appears in ChirpStack at...
+
+__Applications__ → __app__ → __device_otaa_class_a__ → __Device Data__
+
+Like so ("Up" → "Decoded Data String")...
 
 ![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack11.png)
+
+TODO
 
 # LoRaWAN Event Loop
 
