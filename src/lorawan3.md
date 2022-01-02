@@ -768,7 +768,7 @@ Thus our LoRaWAN Test App transmits a message every __40 seconds__.
 
 # Rerun The Firmware
 
-TODO
+Watch what happens when our LoRaWAN Test App __transmit a Data Packet__...
 
 1.  In the NuttX Shell, run our __LoRaWAN Test App__...
 
@@ -776,22 +776,7 @@ TODO
     lorawan_test
     ```
 
-    Our app sends a __Join Network Request__ to the LoRaWAN Gateway...
-
-    ```text
-    RadioSetPublicNetwork: public syncword=3444
-    DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
-    JoinEui     : 00-00-00-00-00-00-00-00
-    Pin         : 00-00-00-00
-    ### =========== MLME-Request ============ ##
-    ###               MLME_JOIN               ##
-    ### ===================================== ##
-    STATUS : OK
-    ```
-
-    (Which contains the Device EUI and Join EUI that we have configured earlier)
-
-1.  A few seconds later we should see the __Join Network Response__ from the LoRaWAN Gateway...
+1.  As seen earlier, our app transmits a __Join Network Request__ and receives a __Join Accept Response__ from the LoRaWAN Gateway...
 
     ```text
     ### =========== MLME-Confirm ============ ##
@@ -804,22 +789,7 @@ TODO
 
     [(See the Output Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
 
-    Congratulations our NuttX Device has successfully joined the LoRaWAN Network!
-
-1.  If we see this instead...
-
-    ```text
-    ### =========== MLME-Confirm ============ ##
-    STATUS : Rx 1 timeout
-    ```
-
-    [(See the Output Log)](https://gist.github.com/lupyuen/007788b9ea3974b127f6260bf57f5d8b)
-
-    Our Join Network Request has failed.
-    
-    Check the next section for troubleshooting tips.
-
-1.  Our LoRaWAN Test App continues to __transmit Data Packets__. But we'll cover this later...
+1.  Upon joining the LoRaWAN Network, our app __transmits a Data Packet__...
 
     ```text
     PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
@@ -829,8 +799,13 @@ TODO
     ### ===================================== ##
     STATUS      : OK
     PrepareTxFrame: Transmit OK
-    ...
+    ```
 
+    Note that the __First Data Packet__ is transmitted at __Data Rate 2__, with Maximum Message Size __11 bytes__.
+
+1.  After transmitting the First Data Packet, our LoRaWAN Library automagically upgrades the __Data Rate to 3__...
+
+    ```text
     ### =========== MCPS-Confirm ============ ##
     STATUS      : OK
     ### =====   UPLINK FRAME        1   ===== ##
@@ -842,8 +817,11 @@ TODO
     U/L FREQ    : 923400000
     TX POWER    : 0
     CHANNEL MASK: 0003
-    ...
+    ```
 
+1.  While transmitting the Second (and subsequent) Data Packets, the Maximum Message Size is extended to __53 bytes__ (because of the increased Data Rate)...
+
+    ```text
     PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
     PrepareTxFrame: status=0, maxSize=53, currentSize=53
     ### =========== MCPS-Request ============ ##
@@ -866,7 +844,7 @@ TODO
     CHANNEL MASK: 0003
     ```
 
-    [(See the Output Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
+    Let's check the logs in our LoRaWAN Gateway.
 
 ## Check LoRaWAN Gateway
 
