@@ -519,7 +519,10 @@ Next it calls __LmHandlerInit__ to initialise the LoRaWAN Library...
 
 ```c
   //  Init LoRaWAN
-  if ( LmHandlerInit( &LmHandlerCallbacks, &LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS ) {
+  if ( LmHandlerInit( 
+      &LmHandlerCallbacks,  //  Callback Functions
+      &LmHandlerParams      //  LoRaWAN Parameters
+      ) != LORAMAC_HANDLER_SUCCESS ) {
     printf( "LoRaMac wasn't properly initialized\n" );
     while ( 1 ) {} //  Fatal error, endless loop.
   }
@@ -605,18 +608,21 @@ Check the __"Troubleshoot LoRaWAN"__ section below for troubleshooting tips.
 
 # Send Data To LoRaWAN
 
-TODO
+Now that we've joined the LoRaWAN Network, we're ready to __send Data Packets__ to LoRaWAN!
 
-From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L305-L336)
+__PrepareTxFrame__ is called by our LoRaWAN Event Loop to send a Data Packet when the __Transmit Timer__ expires: [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L305-L336)
 
 ```c
 //  Prepare the payload of a Data Packet transmit it
 static void PrepareTxFrame( void ) {
+
   //  If we haven't joined the LoRaWAN Network, try again later
   if (LmHandlerIsBusy()) { puts("PrepareTxFrame: Busy"); return; }
 ```
 
-TODO
+If we haven't joined a LoRaWAN Network yet, this function will return. (And we'll try again later)
+
+Assuming all is hunky dory, we proceed to transmit a __9-byte message__ (including terminating null)...
 
 ```c
   //  Send a message to LoRaWAN
@@ -624,61 +630,99 @@ TODO
   printf("PrepareTxFrame: Transmit to LoRaWAN: %s (%d bytes)\n", msg, sizeof(msg));
 ```
 
-TODO
+We copy the message to the __Transmit Buffer__ (max 242 bytes) and create a __Transmit Request__...
 
 ```c
   //  Compose the transmit request
-  assert(sizeof(msg) <= sizeof(AppDataBuffer))
+  assert(sizeof(msg) <= sizeof(AppDataBuffer));
   memcpy(AppDataBuffer, msg, sizeof(msg));
-  LmHandlerAppData_t appData =
-  {
-    .Buffer = AppDataBuffer,
-    .BufferSize = sizeof(msg),
-    .Port = 1,
+  LmHandlerAppData_t appData = {  //  Transmit Request contains...
+    .Buffer = AppDataBuffer,      //  Transmit Buffer
+    .BufferSize = sizeof(msg),    //  Size of Transmit Buffer
+    .Port = 1,                    //  Port Number: 1 to 223
   };
 ```
 
-TODO
+Next we __validate the Message Size__...
 
 ```c
   //  Validate the message size and check if it can be transmitted
   LoRaMacTxInfo_t txInfo;
-  LoRaMacStatus_t status = LoRaMacQueryTxPossible(appData.BufferSize, &txInfo);
+  LoRaMacStatus_t status = LoRaMacQueryTxPossible(
+    appData.BufferSize,  //  Message size
+    &txInfo              //  Returns max message size
+  );
   printf("PrepareTxFrame: status=%d, maxSize=%d, currentSize=%d\n", status, txInfo.MaxPossibleApplicationDataSize, txInfo.CurrentPossiblePayloadSize);
   assert(status == LORAMAC_STATUS_OK);
 ```
 
-TODO
+(What's the Maximum Message Size? We'll discuss in a while)
+
+Finally we __transmit the message__...
 
 ```c
   //  Transmit the message
-  LmHandlerErrorStatus_t sendStatus = LmHandlerSend( &appData, LmHandlerParams.IsTxConfirmed );
+  LmHandlerErrorStatus_t sendStatus = LmHandlerSend( 
+      &appData,   //  Transmit Request
+      LmHandlerParams.IsTxConfirmed  //  0 for Unconfirmed
+  );
   assert(sendStatus == LORAMAC_HANDLER_SUCCESS);
   puts("PrepareTxFrame: Transmit OK");
 }
 ```
 
-Here's how we send a #LoRaWAN Data Packet on #NuttX OS ... And validate the Packet Size before sending
+_Why is our Data Packet marked Unconfirmed?_
 
-TODO68
+Our Data Packet is marked Unconfirmed because we __don't expect an acknowledgement__ from the LoRaWAN Gateway.
 
-![](https://lupyuen.github.io/images/lorawan3-tx6.png)
+This is the typical mode for __IoT Sensor Devices__, which don't handle acknowledgements to conserve battery power. 
 
-[(Source)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L311-L339)
-
-#LoRaWAN tested OK on Apache #NuttX OS ... From #PineDio Stack BL604 @ThePine64 to RAKwireless WisGate ... And back! 🎉
-
--   [__LoRaMac-node-nuttx__](https://github.com/lupyuen/LoRaMac-node-nuttx)
+![Sending a LoRaWAN Data Packet](https://lupyuen.github.io/images/lorawan3-tx6.png)
 
 ## Message Size
 
+_What's the Maximum Message Size_
+
 TODO
+
+From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L58-L70)
+
+```c
+/*!
+ * LoRaWAN Adaptive Data Rate
+ *
+ * \remark Please note that when ADR is enabled the end-device should be static
+ */
+#define LORAWAN_ADR_STATE                           LORAMAC_HANDLER_ADR_OFF
+
+/*!
+ * Default datarate
+ *
+ * \remark Please note that LORAWAN_DEFAULT_DATARATE is used only when ADR is disabled 
+ */
+#define LORAWAN_DEFAULT_DATARATE                    DR_3
+```
 
 ## Message Interval
 
 _How often do we send data to the LoRaWAN Network?_
 
 TODO
+
+From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L47-L56)
+
+```c
+/*!
+ * Defines the application data transmission duty cycle. 40s, value in [ms].
+ */
+#define APP_TX_DUTYCYCLE                            40000
+
+/*!
+ * Defines a random delay for application data transmission duty cycle. 5s,
+ * value in [ms].
+ */
+#define APP_TX_DUTYCYCLE_RND                        5000
+```
 
 From [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303)
 
@@ -695,6 +739,10 @@ TODO
 [(__randr__ is defined here)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51)
 
 # Rerun The Firmware
+
+TODO
+
+## Check LoRaWAN Gateway
 
 TODO
 
