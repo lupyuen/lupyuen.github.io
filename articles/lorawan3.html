@@ -559,7 +559,7 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack7.png" alt="Join Accept Response" /></p>
 <p>The Join Network Request / Response also appears in ChirpStack at…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>Device Data</strong></p>
-<p>Like so…</p>
+<p>Like so (“Join”)…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack10.png" alt="Join Accept Response" /></p>
 <p><em>What if we don’t see the Join Network Request or the Join Accept Response?</em></p>
 <p>Check the <strong>“Troubleshoot LoRaWAN”</strong> section below for troubleshooting tips.</p>
@@ -733,10 +733,14 @@ CHANNEL MASK: 0003</code></pre></div>
 </li>
 </ol>
 <h2 id="check-lorawan-gateway-1" class="section-header"><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a></h2>
-<p>TODO</p>
+<p>To inspect the Data Packet (“Unconfirmed Data Up”) on our <strong>LoRaWAN Gateway</strong> (ChirpStack), click…</p>
+<p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>LoRaWAN Frames</strong></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack8.png" alt="Send Data" /></p>
-<p>TODO2</p>
+<p>The <strong>Decoded Payload</strong> of our Data Packet appears in ChirpStack at…</p>
+<p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>Device Data</strong></p>
+<p>Like so (“Up” → “Decoded Data String”)…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack11.png" alt="Send Data" /></p>
+<p>TODO</p>
 <h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">11 LoRaWAN Event Loop</a></h1>
 <p>TODO</p>
 <p>Here’s our #LoRaWAN Event Loop for #NuttX OS … Implemented with NimBLE Porting Library … No more polling!</p>
