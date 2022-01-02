@@ -82,7 +82,8 @@
 <li><a href="#message-interval">9.2 Message Interval</a><ul></ul></li></ul></li>
 <li><a href="#rerun-the-firmware">10 Rerun The Firmware</a><ul>
 <li><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a><ul></ul></li></ul></li>
-<li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul></ul></li>
+<li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul>
+<li><a href="#random-number-generator">11.1 Random Number Generator</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a><ul></ul></li>
 <li><a href="#nimble-porting-layer">13 NimBLE Porting Layer</a><ul></ul></li>
 <li><a href="#gpio-interrupts">14 GPIO Interrupts</a><ul></ul></li>
@@ -746,53 +747,81 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p><img src="https://lupyuen.github.io/images/lorawan3-flow2.jpg" alt="Join LoRaWAN Network" /></p>
 <h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
 <p><em>Why did we configure NuttX to provide a Strong Random Number Generator with Entropy Pool?</em></p>
-<p>The Strong Random Number Generator fixes a <strong>Nonce Quirk</strong> in our LoRaWAN Library that we observed during development.</p>
+<p>The Strong Random Number Generator fixes a <strong>Nonce Quirk</strong> in our LoRaWAN Library that we observed during development…</p>
+<ul>
+<li>
+<p>Remember that our LoRaWAN Library <strong>sends a Nonce</strong> to the LoRaWAN Gateway every time it starts. (Pic above)</p>
+</li>
+<li>
+<p>What’s a Nonce? It’s a <strong>Non-Repeating Number</strong> that prevents <a href="https://en.wikipedia.org/wiki/Replay_attack"><strong>Replay Attacks</strong></a></p>
+</li>
+<li>
+<p>By default our LoRaWAN Library <strong>initialises the Nonce to 1</strong> and increments by 1 for every Join Network Request: 1, 2, 3, 4, …</p>
+</li>
+</ul>
+<p>Now suppose the LoRaWAN Library <strong>crashes our device</strong> due to a bug. Watch what happens…</p>
+<div><table><thead><tr><th><em>Our Device</em></th><th><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
+<tr><td>1️⃣ Here is Nonce 1</td><td></td></tr>
+<tr><td></td><td>2️⃣ OK I accept Nonce 1</td></tr>
+<tr><td>3️⃣ (Device crashes and restarts)</td><td></td></tr>
+<tr><td>4️⃣ Here is Nonce 1</td><td></td></tr>
+<tr><td></td><td>5️⃣ (Rejects Nonce 1 because it’s repeated)</td></tr>
+<tr><td>6️⃣ Here is Nonce 2</td><td></td></tr>
+<tr><td></td><td>7️⃣ OK I accept Nonce 2</td></tr>
+<tr><td>8️⃣ (Device crashes and restarts)</td><td></td></tr>
+</tbody></table>
+</div>
+<p>If our device keeps crashing, the LoRaWAN Gateway will eventually <strong>reject a whole bunch of Nonces</strong>: 1, 2, 3, 4, …</p>
+<p>(Which makes development super slow and frustrating)</p>
+<p>Thus we generate LoRaWAN Nonces with a <strong>Strong Random Number Generator</strong> instead.</p>
+<p>(Random Numbers that won’t repeat upon restarting)</p>
+<h2 id="random-number-generator" class="section-header"><a href="#random-number-generator">11.1 Random Number Generator</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152">nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Get random devnonce from the Random Number Generator
 SecureElementStatus_t SecureElementRandomNumber( uint32_t* randomNum ) {
-    //  Open the Random Number Generator /dev/urandom
-    int fd = open(&quot;/dev/urandom&quot;, O_RDONLY);
-    assert(fd &gt; 0);
+  //  Open the Random Number Generator /dev/urandom
+  int fd = open(&quot;/dev/urandom&quot;, O_RDONLY);
+  assert(fd &gt; 0);
 
-    //  Read the random number
-    read(fd, randomNum, sizeof(uint32_t));
-    close(fd);
+  //  Read the random number
+  read(fd, randomNum, sizeof(uint32_t));
+  close(fd);
 
-    printf(&quot;SecureElementRandomNumber: 0x%08lx\n&quot;, *randomNum);
-    return SECURE_ELEMENT_SUCCESS;
+  printf(&quot;SecureElementRandomNumber: 0x%08lx\n&quot;, *randomNum);
+  return SECURE_ELEMENT_SUCCESS;
 }</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996">LoRaMacCrypto.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest_t* macMsg )
-{
-    if( macMsg == 0 )
-    {
-        return LORAMAC_CRYPTO_ERROR_NPE;
-    }
-    KeyIdentifier_t micComputationKeyID = NWK_KEY;
+<div class="example-wrap"><pre class="language-c"><code>LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest_t* macMsg ) {
+  if( macMsg == 0 ) {
+    return LORAMAC_CRYPTO_ERROR_NPE;
+  }
+  KeyIdentifier_t micComputationKeyID = NWK_KEY;
 
-    // Add device nonce
 #if ( USE_RANDOM_DEV_NONCE == 1 )
-    uint32_t devNonce = 0;
-    SecureElementRandomNumber( &amp;devNonce );
-    CryptoNvm-&gt;DevNonce = devNonce;
+  //  Get Nonce from Random Number Generator
+  uint32_t devNonce = 0;
+  SecureElementRandomNumber( &amp;devNonce );
+  CryptoNvm-&gt;DevNonce = devNonce;
 #else
-    CryptoNvm-&gt;DevNonce++;
+  //  Init Nonce to 1
+  CryptoNvm-&gt;DevNonce++;
 #endif
-    macMsg-&gt;DevNonce = CryptoNvm-&gt;DevNonce;</code></pre></div>
+  macMsg-&gt;DevNonce = CryptoNvm-&gt;DevNonce;</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.h#L58-L65">LoRaMacCrypto.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/*!
  * Indicates if a random devnonce must be used or not
  */
 #ifdef __NuttX__  //  For NuttX: Get random devnonce from the Random Number Generator
-#define USE_RANDOM_DEV_NONCE                        1
+#define USE_RANDOM_DEV_NONCE 1
 #else
-#define USE_RANDOM_DEV_NONCE                        0
+#define USE_RANDOM_DEV_NONCE 0
 #endif  //  __NuttX__</code></pre></div>
 <p><em>What happens if we don’t select the Entropy Pool?</em></p>
 <p>TODO</p>
+<p>Non Volatile Memory</p>
 <p>Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway … Which (silently) rejects the Join Request due to Duplicate Nonce … Let’s fix our Random Number Generator</p>
 <p>TODO34</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack2a.png" alt="" /></p>
