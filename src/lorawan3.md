@@ -928,11 +928,8 @@ SecureElementStatus_t SecureElementRandomNumber( uint32_t* randomNum ) {
 The above code is called by our LoRaWAN Library when preparing a __Join Network Request__: [LoRaMacCrypto.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996)
 
 ```c
+//  Prepare a Join Network Request
 LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest_t* macMsg ) {
-  if( macMsg == 0 ) {
-    return LORAMAC_CRYPTO_ERROR_NPE;
-  }
-  KeyIdentifier_t micComputationKeyID = NWK_KEY;
 
 #if ( USE_RANDOM_DEV_NONCE == 1 )
   //  Get Nonce from Random Number Generator
@@ -943,7 +940,6 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
   //  Init Nonce to 1
   CryptoNvm->DevNonce++;
 #endif
-  macMsg->DevNonce = CryptoNvm->DevNonce;
 ```
 
 To enable Random Nonces, we define __USE_RANDOM_DEV_NONCE__ as 1 in [LoRaMacCrypto.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.h#L58-L65)
