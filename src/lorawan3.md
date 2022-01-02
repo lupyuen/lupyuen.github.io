@@ -882,8 +882,8 @@ The Strong Random Number Generator fixes a __Nonce Quirk__ in our LoRaWAN Librar
 
 Now suppose the LoRaWAN Library __crashes our device__ due to a bug. Watch what happens...
 
-| _Our Device_ | _LoRaWAN Gateway_ |
-| ------------ | --------------- |
+| _Our Device_ | _LoRaWAN Gateway_
+| :----------- | :---------------
 | Here is __Nonce 1__ |
 | | OK I accept __Nonce 1__
 | (Device crashes and restarts)
@@ -954,48 +954,17 @@ To enable Random Nonces, we define __USE_RANDOM_DEV_NONCE__ as 1 in [LoRaMacCryp
 #endif  //  __NuttX__
 ```
 
+And that's how we generate Random Nonces whenever we restart our device! (Pic below)
+
 _What happens if we don't select Entropy Pool for our Random Number Generator?_
 
 Our Random Number Generator becomes "Weak"... It __repeats the same Random Numbers__ upon restarting.
 
-Thus __always select Entropy Pool__ for our Random Number Generator...
+Thus we __always select Entropy Pool__ for our Random Number Generator...
 
 -   [__"Random Number Generator with Entropy Pool"__](https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool)
 
-TODO
-
-Non Volatile Memory
-
-Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway ... Which (silently) rejects the Join Request due to Duplicate Nonce ... Let's fix our Random Number Generator
-
-TODO34
-
-#LoRaWAN gets the Nonce from the Secure Element's Random Number Generator ... Let's simulate the Secure Element on Apache #NuttX OS
-
-TODO51
-
-![](https://lupyuen.github.io/images/lorawan3-nonce2a.png)
-
-[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996)
-
-Here's how we generate #LoRaWAN Nonces on #NuttX OS ... With Strong Random Numbers thanks to Entropy Pool
-
-TODO53
-
-![](https://lupyuen.github.io/images/lorawan3-nonce6.png)
-
-[(Source)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L136-L153)
-
-
-Our #NuttX App now sends Random #LoRaWAN Nonces to the LoRaWAN Gateway ... And are happily accepted by the gateway! 🎉
-
-TODO36
-
-![](https://lupyuen.github.io/images/lorawan3-nonce7a.png)
-
-[(Log)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
-
-![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
+![Our LoRaWAN Library now generates random nonces](https://lupyuen.github.io/images/lorawan3-nonce7a.png)
 
 # LoRaWAN Event Loop
 
@@ -1010,6 +979,10 @@ TODO54
 TODO58
 
 ![](https://lupyuen.github.io/images/lorawan3-run5a.png)
+
+TODO
+
+![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
 
 # NimBLE Porting Layer
 
@@ -1168,6 +1141,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1473593455699841027)
+
+1.  TODO: Non Volatile Memory
 
 1.  We're __porting plenty of code__ to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?
 
