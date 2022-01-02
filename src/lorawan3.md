@@ -1037,7 +1037,9 @@ The rest of the Event Loop handles __LoRaWAN Events__...
     LmHandlerProcess( );
 ```
 
-TODO
+The code above handles __Join Network Events__ in the LoRaMAC Layer of our LoRaWAN Library.
+
+If we have joined the LoRaWAN Network, we __transmit data__ to the network...
 
 ```c
     //  For LoRaWAN: If we have joined the network, do the uplink
@@ -1046,7 +1048,9 @@ TODO
     }
 ```
 
-TODO
+([__UplinkProcess__](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L361-L373) calls [__PrepareTxFrame__](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L305-L337), which we have seen earlier)
+
+The last part of the Event Loop will handle Low Power Mode in future...
 
 ```c
     //  For LoRaWAN: Handle Low Power Mode
