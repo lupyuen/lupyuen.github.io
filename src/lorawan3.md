@@ -925,9 +925,7 @@ SecureElementStatus_t SecureElementRandomNumber( uint32_t* randomNum ) {
 }
 ```
 
-TODO
-
-From [LoRaMacCrypto.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996)
+The above code is called by our LoRaWAN Library when preparing a __Join Network Request__: [LoRaMacCrypto.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996)
 
 ```c
 LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest_t* macMsg ) {
@@ -948,15 +946,12 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
   macMsg->DevNonce = CryptoNvm->DevNonce;
 ```
 
-TODO
-
-From [LoRaMacCrypto.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.h#L58-L65)
+To enable Random Nonces, we define __USE_RANDOM_DEV_NONCE__ as 1 in [LoRaMacCrypto.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.h#L58-L65)
 
 ```c
-/*!
- * Indicates if a random devnonce must be used or not
- */
-#ifdef __NuttX__  //  For NuttX: Get random devnonce from the Random Number Generator
+//  Indicates if a random devnonce must be used or not
+#ifdef __NuttX__
+//  For NuttX: Get random devnonce from the Random Number Generator
 #define USE_RANDOM_DEV_NONCE 1
 #else
 #define USE_RANDOM_DEV_NONCE 0
