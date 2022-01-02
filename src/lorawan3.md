@@ -848,6 +848,8 @@ Watch what happens when our LoRaWAN Test App __transmit a Data Packet__...
 
     Let's check the logs in our LoRaWAN Gateway.
 
+![Data Rate changes from 2 to 3](https://lupyuen.github.io/images/lorawan3-tx7a.png)
+
 ## Check LoRaWAN Gateway
 
 To inspect the Data Packet ("Unconfirmed Data Up") on our __LoRaWAN Gateway__ (ChirpStack), click...
@@ -860,11 +862,9 @@ To see the __Decoded Payload__ of our Data Packet, click...
 
 __Applications__ → __app__ → __device_otaa_class_a__ → __Device Data__
 
-![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack11.png)
+![Decoded Payload](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
 
-TODO
-
-Like so ("Up" → "Decoded Data String")...
+Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet to LoRaWAN!
 
 # LoRaWAN Event Loop
 
@@ -1038,22 +1038,6 @@ TODO65
 ![](https://lupyuen.github.io/images/lorawan3-tx4a.png)
 
 [(Log)](https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf)
-
-#LoRaWAN Data Rate has been increased to 3 ... Max Message Size is now 53 bytes for our #NuttX App
-
-TODO37
-
-![](https://lupyuen.github.io/images/lorawan3-tx7a.png)
-
-[(Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
-
-#LoRaWAN Gateway now receives the correct Data Packet from our #NuttX App! 🎉
-
-TODO45
-
-![](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
-
-[(Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
 
 # SPI with DMA
 
