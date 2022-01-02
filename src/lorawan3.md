@@ -866,25 +866,15 @@ __Applications__ → __app__ → __device_otaa_class_a__ → __Device Data__
 
 Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet to LoRaWAN!
 
-# LoRaWAN Event Loop
-
-TODO
-
-Here's our #LoRaWAN Event Loop for #NuttX OS ... Implemented with NimBLE Porting Library ... No more polling!
-
-TODO54
-
-![](https://lupyuen.github.io/images/lorawan3-npl1.png)
-
-TODO58
-
-![](https://lupyuen.github.io/images/lorawan3-run5a.png)
-
-TODO
-
 ![Join LoRaWAN Network](https://lupyuen.github.io/images/lorawan3-flow2.jpg)
 
 # LoRaWAN Nonce
+
+_Why did we configure NuttX to provide a Strong Random Number Generator with Entropy Pool?_
+
+TODO
+
+_What happens if we don't select the Entropy Pool?_
 
 TODO
 
@@ -922,6 +912,20 @@ TODO36
 [(Log)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
 
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
+
+# LoRaWAN Event Loop
+
+TODO
+
+Here's our #LoRaWAN Event Loop for #NuttX OS ... Implemented with NimBLE Porting Library ... No more polling!
+
+TODO54
+
+![](https://lupyuen.github.io/images/lorawan3-npl1.png)
+
+TODO58
+
+![](https://lupyuen.github.io/images/lorawan3-run5a.png)
 
 # NimBLE Porting Layer
 
