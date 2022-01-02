@@ -83,7 +83,7 @@
 <li><a href="#rerun-the-firmware">10 Rerun The Firmware</a><ul>
 <li><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-nonce">11 LoRaWAN Nonce</a><ul>
-<li><a href="#random-number-generator">11.1 Random Number Generator</a><ul></ul></li></ul></li>
+<li><a href="#strong-random-number-generator">11.1 Strong Random Number Generator</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a><ul></ul></li>
 <li><a href="#nimble-porting-layer">13 NimBLE Porting Layer</a><ul></ul></li>
 <li><a href="#gpio-interrupts">14 GPIO Interrupts</a><ul></ul></li>
@@ -775,7 +775,7 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p>(Which makes development super slow and frustrating)</p>
 <p>Thus we generate LoRaWAN Nonces with a <strong>Strong Random Number Generator</strong> instead.</p>
 <p>(Random Numbers that won’t repeat upon restarting)</p>
-<h2 id="random-number-generator" class="section-header"><a href="#random-number-generator">11.1 Random Number Generator</a></h2>
+<h2 id="strong-random-number-generator" class="section-header"><a href="#strong-random-number-generator">11.1 Strong Random Number Generator</a></h2>
 <p>Our LoRaWAN Library supports <strong>Random Nonces</strong>… Assuming that we have a <strong>Secure Element</strong>.</p>
 <p>Since we don’t have a Secure Element, let’s <strong>generate the Random Nonce in software</strong>: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152">nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Get random devnonce from the Random Number Generator
