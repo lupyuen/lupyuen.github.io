@@ -819,7 +819,7 @@ Watch what happens when our LoRaWAN Test App __transmit a Data Packet__...
     CHANNEL MASK: 0003
     ```
 
-1.  While transmitting the Second (and subsequent) Data Packets, the Maximum Message Size is extended to __53 bytes__ (because of the increased Data Rate)...
+1.  While transmitting the Second (and subsequent) Data Packet, the Maximum Message Size is extended to __53 bytes__ (because of the increased Data Rate)...
 
     ```text
     PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
@@ -844,6 +844,8 @@ Watch what happens when our LoRaWAN Test App __transmit a Data Packet__...
     CHANNEL MASK: 0003
     ```
 
+1.  This repeats roughly every __40 seconds__.
+
     Let's check the logs in our LoRaWAN Gateway.
 
 ## Check LoRaWAN Gateway
@@ -854,15 +856,15 @@ __Applications__ → __app__ → __device_otaa_class_a__ → __LoRaWAN Frames__
 
 ![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack8.png)
 
-The __Decoded Payload__ of our Data Packet appears in ChirpStack at...
+To see the __Decoded Payload__ of our Data Packet, click...
 
 __Applications__ → __app__ → __device_otaa_class_a__ → __Device Data__
-
-Like so ("Up" → "Decoded Data String")...
 
 ![Send Data](https://lupyuen.github.io/images/lorawan3-chirpstack11.png)
 
 TODO
+
+Like so ("Up" → "Decoded Data String")...
 
 # LoRaWAN Event Loop
 
