@@ -968,81 +968,106 @@ Thus we __always select Entropy Pool__ for our Random Number Generator...
 
 # LoRaWAN Event Loop
 
+Let's look inside our LoRaWAN Test App and learn how the __Event Loop__ handles LoRa and LoRaWAN Events by calling NimBLE Porting Layer.
+
+_What is NimBLE Porting Layer?_
+
+__NimBLE Porting Layer__ is a multithreading library that works on several operating systems...
+
+-   [__"Multithreading with NimBLE Porting Layer"__](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
+
+It provides __Timers and Event Queues__ that are used by the LoRa and LoRaWAN Libraries.
+
+![Timers and Event Queues](https://lupyuen.github.io/images/lorawan3-run5a.png)
+
+_What's inside our Event Loop?_
+
+Our __Event Loop__ forever reads LoRa and LoRaWAN Events from an __Event Queue__ and handles them.
+
+The Event Queue is created in our LoRaWAN Test App as explained here...
+
+-   [__"Event Queue"__](https://lupyuen.github.io/articles/sx1262#event-queue)
+
+The Main Function of our LoRaWAN Test App calls this function to run the __Event Loop__: [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L611-L655)
+
+```c
+/// Event Loop that dequeues Events from the Event Queue and processes the Events
+static void handle_event_queue(void *arg) {
+
+  //  Loop forever handling Events from the Event Queue
+  for (;;) {
+
+    //  Get the next Event from the Event Queue
+    struct ble_npl_event *ev = ble_npl_eventq_get(
+      &event_queue,         //  Event Queue
+      BLE_NPL_TIME_FOREVER  //  No Timeout (Wait forever for event)
+    );
+```
+
+This code runs in the __Foreground Thread__ of our NuttX App.
+
+Here we loop forever, __waiting for Events__ from the Event Queue.
+
+When we receive an Event, we __remove the Event__ from the Event Queue...
+
+```c
+    //  If no Event due to timeout, wait for next Event.
+    //  Should never happen since we wait forever for an Event.
+    if (ev == NULL) { printf("."); continue; }
+
+    //  Remove the Event from the Event Queue
+    ble_npl_eventq_remove(&event_queue, ev);
+```
+
+We call the __Event Handler Function__ that was registered with the Event...
+
+```c
+    //  Trigger the Event Handler Function
+    ble_npl_event_run(ev);
+```
+
+-   For SX1262 Interrupts: We call [__RadioOnDioIrq__](https://lupyuen.github.io/articles/sx1262#radioondioirq) to handle the packet transmitted / received notification
+
+-   For Timer Events: We call the __Timeout Function__ defined in the Timer
+
+The rest of the Event Loop handles __LoRaWAN Events__...
+
+```c
+    //  For LoRaWAN: Process the LoRaMAC events
+    LmHandlerProcess( );
+```
+
 TODO
 
-Here's our #LoRaWAN Event Loop for #NuttX OS ... Implemented with NimBLE Porting Library ... No more polling!
-
-TODO54
-
-![](https://lupyuen.github.io/images/lorawan3-npl1.png)
-
-TODO58
-
-![](https://lupyuen.github.io/images/lorawan3-run5a.png)
+```c
+    //  For LoRaWAN: If we have joined the network, do the uplink
+    if (!LmHandlerIsBusy( )) {
+      UplinkProcess( );
+    }
+```
 
 TODO
 
-![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
+```c
+    //  For LoRaWAN: Handle Low Power Mode
+    CRITICAL_SECTION_BEGIN( );
+    if( IsMacProcessPending == 1 ) {
+      //  Clear flag and prevent MCU to go into low power modes.
+      IsMacProcessPending = 0;
+    } else {
+      //  The MCU wakes up through events
+      //  TODO: BoardLowPowerHandler( );
+    }
+    CRITICAL_SECTION_END( );
+  }
+}
+```
 
-# NimBLE Porting Layer
+And we loop back perpetually, waiting for the next Event.
 
-TODO
+That's how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!
 
-Our #NuttX App was waiting for the #LoRaWAN Join Request to be transmitted before receiving the Join Response ... But because we're polling SX1262, we missed the Join Response ... Let's fix this with the multithreading functions from NimBLE Porting Layer
-
--   [__nimble-porting-nuttx__](https://github.com/lupyuen/nimble-porting-nuttx)
-
-TODO57
-
-![](https://lupyuen.github.io/images/lorawan3-run4a.png)
-
-[(Log)](https://gist.github.com/lupyuen/d3d9db37a40d7560fc211408db04a81b)
-
-NimBLE Porting Layer is a portable library of Multithreading Functions ... We've used it for #LoRa on Linux and FreeRTOS ... Now we call it from Apache #NuttX OS
-
-# GPIO Interrupts
-
-TODO
-
-SX1262 will trigger a GPIO Interrupt on #NuttX OS when it receives a #LoRa Packet ... We wait for the GPIO Interrupt to be Signalled in a Background Thread
-
-TODO46
-
-![](https://lupyuen.github.io/images/lorawan3-gpio2.png)
-
-[(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L742-L778)
-
-We handle GPIO Interrupts (SX1262 DIO1) in a #NuttX Background Thread ... Awaiting the Signal for GPIO Interrupt
-
-TODO47
-
-![](https://lupyuen.github.io/images/lorawan3-gpio3.png)
-
-[(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L835-L861)
-
-Our #NuttX Background Thread handles the GPIO Interrupts (SX1262 DIO1) ... By adding to the #LoRaWAN Event Queue
-
-TODO48
-
-![](https://lupyuen.github.io/images/lorawan3-gpio4a.png)
-
-[(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L863-L892)
-
-#LoRaWAN runs neater on Apache #NuttX OS ... After implementing Timers and Multithreading with NimBLE Porting Layer ... No more sleep()!
-
-[(Log)](https://gist.github.com/lupyuen/cad58115be4cabe8a8a49c0e498f1c95)
-
-# SX1262 Busy
-
-TODO
-
-Here's how we check the SX1262 Busy Pin on #NuttX OS ... By reading the GPIO Input
-
-TODO49
-
-![](https://lupyuen.github.io/images/lorawan3-gpio1.png)
-
-[(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L184-L199)
+![Handling LoRaWAN Events with NimBLE Porting Layer](https://lupyuen.github.io/images/lorawan3-npl1.png)
 
 # Troubleshoot LoRaWAN
 
@@ -1104,6 +1129,8 @@ TODO65
 
 TODO
 
+![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
+
 # What's Next
 
 TODO
@@ -1120,7 +1147,7 @@ We'll port Semtech's __Reference LoRaWAN Stack__ to NuttX...
 
 _We're porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?_
 
-Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech's version.  [(But we shall minimise the changes)](https://lupyuen.github.io/articles/sx1262#notes)
+Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech's version.  [(But we shall minimise the changes)](https://lupyuen.github.io/articles/lorawan3#notes)
 
 Stay Tuned!
 
