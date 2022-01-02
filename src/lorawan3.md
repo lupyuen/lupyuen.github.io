@@ -801,7 +801,7 @@ Watch what happens when our LoRaWAN Test App __transmits a Data Packet__...
     PrepareTxFrame: Transmit OK
     ```
 
-    Note that the __First Data Packet__ is transmitted at __Data Rate 2__, with Maximum Message Size __11 bytes__.
+    Note that the __First Data Packet__ is assumed to have __Data Rate 2__, which allows Maximum Message Size __11 bytes__ (for AS923).
 
 1.  After transmitting the First Data Packet, our LoRaWAN Library automagically upgrades the __Data Rate to 3__...
 
