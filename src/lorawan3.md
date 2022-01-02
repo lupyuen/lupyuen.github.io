@@ -884,14 +884,14 @@ Now suppose the LoRaWAN Library __crashes our device__ due to a bug. Watch what 
 
 | _Our Device_ | _LoRaWAN Gateway_ |
 | ------------ | --------------- |
-| 1️⃣ Here is Nonce 1 |
-| | 2️⃣ OK I accept Nonce 1
-| 3️⃣ (Device crashes and restarts)
-| 4️⃣ Here is Nonce 1 |
-| | 5️⃣ (Rejects Nonce 1 because it's repeated)
-| 6️⃣ Here is Nonce 2 |
-| | 7️⃣ OK I accept Nonce 2
-| 8️⃣ (Device crashes and restarts) |
+| Here is __Nonce 1__ |
+| | OK I accept __Nonce 1__
+| (Device crashes and restarts)
+| Here is __Nonce 1__ |
+| | (Rejects __Nonce 1__ because it's repeated)
+| Here is __Nonce 2__ |
+| | OK I accept __Nonce 2__
+| (Device crashes and restarts) |
 
 If our device keeps crashing, the LoRaWAN Gateway will eventually __reject a whole bunch of Nonces__: 1, 2, 3, 4, ...
 
@@ -900,6 +900,8 @@ If our device keeps crashing, the LoRaWAN Gateway will eventually __reject a who
 Thus we generate LoRaWAN Nonces with a __Strong Random Number Generator__ instead.
 
 (Random Numbers that won't repeat upon restarting)
+
+![Repeated Nonces are rejected by LoRaWAN Gateway](https://lupyuen.github.io/images/lorawan3-chirpstack2a.png)
 
 ## Strong Random Number Generator
 
@@ -970,10 +972,6 @@ Non Volatile Memory
 Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway ... Which (silently) rejects the Join Request due to Duplicate Nonce ... Let's fix our Random Number Generator
 
 TODO34
-
-![](https://lupyuen.github.io/images/lorawan3-chirpstack2a.png)
-
-[(Log)](https://gist.github.com/lupyuen/b38434c3d27500444382bb4a066691e5)
 
 #LoRaWAN gets the Nonce from the Secure Element's Random Number Generator ... Let's simulate the Secure Element on Apache #NuttX OS
 
