@@ -872,7 +872,36 @@ Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet 
 
 _Why did we configure NuttX to provide a Strong Random Number Generator with Entropy Pool?_
 
-The Strong Random Number Generator fixes a __Nonce Quirk__ in our LoRaWAN Library that we observed during development.
+The Strong Random Number Generator fixes a __Nonce Quirk__ in our LoRaWAN Library that we observed during development...
+
+-   Remember that our LoRaWAN Library __sends a Nonce__ to the LoRaWAN Gateway every time it starts. (Pic above)
+
+-   What's a Nonce? It's a __Non-Repeating Number__ that prevents [__Replay Attacks__](https://en.wikipedia.org/wiki/Replay_attack)
+
+-   By default our LoRaWAN Library __initialises the Nonce to 1__ and increments by 1 for every Join Network Request: 1, 2, 3, 4, ...
+
+Now suppose the LoRaWAN Library __crashes our device__ due to a bug. Watch what happens...
+
+| _Our Device_ | _LoRaWAN Gateway_ |
+| ------------ | --------------- |
+| 1️⃣ Here is Nonce 1 |
+| | 2️⃣ OK I accept Nonce 1
+| 3️⃣ (Device crashes and restarts)
+| 4️⃣ Here is Nonce 1 |
+| | 5️⃣ (Rejects Nonce 1 because it's repeated)
+| 6️⃣ Here is Nonce 2 |
+| | 7️⃣ OK I accept Nonce 2
+| 8️⃣ (Device crashes and restarts) |
+
+If our device keeps crashing, the LoRaWAN Gateway will eventually __reject a whole bunch of Nonces__: 1, 2, 3, 4, ...
+
+(Which makes development super slow and frustrating)
+
+Thus we generate LoRaWAN Nonces with a __Strong Random Number Generator__ instead.
+
+(Random Numbers that won't repeat upon restarting)
+
+## Random Number Generator
 
 TODO
 
@@ -881,16 +910,16 @@ From [nuttx.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nut
 ```c
 /// Get random devnonce from the Random Number Generator
 SecureElementStatus_t SecureElementRandomNumber( uint32_t* randomNum ) {
-    //  Open the Random Number Generator /dev/urandom
-    int fd = open("/dev/urandom", O_RDONLY);
-    assert(fd > 0);
+  //  Open the Random Number Generator /dev/urandom
+  int fd = open("/dev/urandom", O_RDONLY);
+  assert(fd > 0);
 
-    //  Read the random number
-    read(fd, randomNum, sizeof(uint32_t));
-    close(fd);
+  //  Read the random number
+  read(fd, randomNum, sizeof(uint32_t));
+  close(fd);
 
-    printf("SecureElementRandomNumber: 0x%08lx\n", *randomNum);
-    return SECURE_ELEMENT_SUCCESS;
+  printf("SecureElementRandomNumber: 0x%08lx\n", *randomNum);
+  return SECURE_ELEMENT_SUCCESS;
 }
 ```
 
@@ -899,23 +928,22 @@ TODO
 From [LoRaMacCrypto.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996)
 
 ```c
-LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest_t* macMsg )
-{
-    if( macMsg == 0 )
-    {
-        return LORAMAC_CRYPTO_ERROR_NPE;
-    }
-    KeyIdentifier_t micComputationKeyID = NWK_KEY;
+LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest_t* macMsg ) {
+  if( macMsg == 0 ) {
+    return LORAMAC_CRYPTO_ERROR_NPE;
+  }
+  KeyIdentifier_t micComputationKeyID = NWK_KEY;
 
-    // Add device nonce
 #if ( USE_RANDOM_DEV_NONCE == 1 )
-    uint32_t devNonce = 0;
-    SecureElementRandomNumber( &devNonce );
-    CryptoNvm->DevNonce = devNonce;
+  //  Get Nonce from Random Number Generator
+  uint32_t devNonce = 0;
+  SecureElementRandomNumber( &devNonce );
+  CryptoNvm->DevNonce = devNonce;
 #else
-    CryptoNvm->DevNonce++;
+  //  Init Nonce to 1
+  CryptoNvm->DevNonce++;
 #endif
-    macMsg->DevNonce = CryptoNvm->DevNonce;
+  macMsg->DevNonce = CryptoNvm->DevNonce;
 ```
 
 TODO
@@ -927,15 +955,17 @@ From [LoRaMacCrypto.h](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master
  * Indicates if a random devnonce must be used or not
  */
 #ifdef __NuttX__  //  For NuttX: Get random devnonce from the Random Number Generator
-#define USE_RANDOM_DEV_NONCE                        1
+#define USE_RANDOM_DEV_NONCE 1
 #else
-#define USE_RANDOM_DEV_NONCE                        0
+#define USE_RANDOM_DEV_NONCE 0
 #endif  //  __NuttX__
 ```
 
 _What happens if we don't select the Entropy Pool?_
 
 TODO
+
+Non Volatile Memory
 
 Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway ... Which (silently) rejects the Join Request due to Duplicate Nonce ... Let's fix our Random Number Generator
 
