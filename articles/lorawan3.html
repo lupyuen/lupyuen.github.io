@@ -760,15 +760,15 @@ CHANNEL MASK: 0003</code></pre></div></li>
 </li>
 </ul>
 <p>Now suppose the LoRaWAN Library <strong>crashes our device</strong> due to a bug. Watch what happens…</p>
-<div><table><thead><tr><th><em>Our Device</em></th><th><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
-<tr><td>Here is <strong>Nonce 1</strong></td><td></td></tr>
-<tr><td></td><td>OK I accept <strong>Nonce 1</strong></td></tr>
-<tr><td>(Device crashes and restarts)</td><td></td></tr>
-<tr><td>Here is <strong>Nonce 1</strong></td><td></td></tr>
-<tr><td></td><td>(Rejects <strong>Nonce 1</strong> because it’s repeated)</td></tr>
-<tr><td>Here is <strong>Nonce 2</strong></td><td></td></tr>
-<tr><td></td><td>OK I accept <strong>Nonce 2</strong></td></tr>
-<tr><td>(Device crashes and restarts)</td><td></td></tr>
+<div><table><thead><tr><th align="left"><em>Our Device</em></th><th align="left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
+<tr><td align="left">Here is <strong>Nonce 1</strong></td><td align="left"></td></tr>
+<tr><td align="left"></td><td align="left">OK I accept <strong>Nonce 1</strong></td></tr>
+<tr><td align="left">(Device crashes and restarts)</td><td align="left"></td></tr>
+<tr><td align="left">Here is <strong>Nonce 1</strong></td><td align="left"></td></tr>
+<tr><td align="left"></td><td align="left">(Rejects <strong>Nonce 1</strong> because it’s repeated)</td></tr>
+<tr><td align="left">Here is <strong>Nonce 2</strong></td><td align="left"></td></tr>
+<tr><td align="left"></td><td align="left">OK I accept <strong>Nonce 2</strong></td></tr>
+<tr><td align="left">(Device crashes and restarts)</td><td align="left"></td></tr>
 </tbody></table>
 </div>
 <p>If our device keeps crashing, the LoRaWAN Gateway will eventually <strong>reject a whole bunch of Nonces</strong>: 1, 2, 3, 4, …</p>
@@ -813,29 +813,14 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 #else
 #define USE_RANDOM_DEV_NONCE 0
 #endif  //  __NuttX__</code></pre></div>
+<p>And that’s how we generate Random Nonces whenever we restart our device! (Pic below)</p>
 <p><em>What happens if we don’t select Entropy Pool for our Random Number Generator?</em></p>
 <p>Our Random Number Generator becomes “Weak”… It <strong>repeats the same Random Numbers</strong> upon restarting.</p>
-<p>Thus <strong>always select Entropy Pool</strong> for our Random Number Generator…</p>
+<p>Thus we <strong>always select Entropy Pool</strong> for our Random Number Generator…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool"><strong>“Random Number Generator with Entropy Pool”</strong></a></li>
 </ul>
-<p>TODO</p>
-<p>Non Volatile Memory</p>
-<p>Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway … Which (silently) rejects the Join Request due to Duplicate Nonce … Let’s fix our Random Number Generator</p>
-<p>TODO34</p>
-<p>#LoRaWAN gets the Nonce from the Secure Element’s Random Number Generator … Let’s simulate the Secure Element on Apache #NuttX OS</p>
-<p>TODO51</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-nonce2a.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996">(Source)</a></p>
-<p>Here’s how we generate #LoRaWAN Nonces on #NuttX OS … With Strong Random Numbers thanks to Entropy Pool</p>
-<p>TODO53</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-nonce6.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L136-L153">(Source)</a></p>
-<p>Our #NuttX App now sends Random #LoRaWAN Nonces to the LoRaWAN Gateway … And are happily accepted by the gateway! 🎉</p>
-<p>TODO36</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-nonce7a.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Log)</a></p>
-<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-nonce7a.png" alt="Our LoRaWAN Library now generates random nonces" /></p>
 <h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a></h1>
 <p>TODO</p>
 <p>Here’s our #LoRaWAN Event Loop for #NuttX OS … Implemented with NimBLE Porting Library … No more polling!</p>
@@ -843,6 +828,8 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 <p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="" /></p>
 <p>TODO58</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-run5a.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="nimble-porting-layer" class="section-header"><a href="#nimble-porting-layer">13 NimBLE Porting Layer</a></h1>
 <p>TODO</p>
 <p>Our #NuttX App was waiting for the #LoRaWAN Join Request to be transmitted before receiving the Join Response … But because we’re polling SX1262, we missed the Join Response … Let’s fix this with the multithreading functions from NimBLE Porting Layer</p>
@@ -940,6 +927,9 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1473593455699841027">this Twitter Thread</a></p>
+</li>
+<li>
+<p>TODO: Non Volatile Memory</p>
 </li>
 <li>
 <p>We’re <strong>porting plenty of code</strong> to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</p>
