@@ -901,7 +901,7 @@ Thus we generate LoRaWAN Nonces with a __Strong Random Number Generator__ instea
 
 (Random Numbers that won't repeat upon restarting)
 
-## Random Number Generator
+## Strong Random Number Generator
 
 Our LoRaWAN Library supports __Random Nonces__... Assuming that we have a __Secure Element__.
 
