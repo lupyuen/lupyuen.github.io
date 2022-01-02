@@ -813,7 +813,12 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 #else
 #define USE_RANDOM_DEV_NONCE 0
 #endif  //  __NuttX__</code></pre></div>
-<p><em>What happens if we don’t select the Entropy Pool?</em></p>
+<p><em>What happens if we don’t select Entropy Pool for our Random Number Generator?</em></p>
+<p>Our Random Number Generator becomes “Weak”… It <strong>repeats the same Random Numbers</strong> upon restarting.</p>
+<p>Thus <strong>always select Entropy Pool</strong> for our Random Number Generator…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool"><strong>“Random Number Generator with Entropy Pool”</strong></a></li>
+</ul>
 <p>TODO</p>
 <p>Non Volatile Memory</p>
 <p>Our #NuttX App resends the same Nonce to the #LoRaWAN Gateway … Which (silently) rejects the Join Request due to Duplicate Nonce … Let’s fix our Random Number Generator</p>
