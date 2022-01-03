@@ -150,7 +150,7 @@
       "name": "LoRaWAN on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-01-03",
-      "website": "https://lupyuen.github.io/articles/lorawan",
+      "website": "https://lupyuen.github.io/articles/lorawan3",
       "summary": "Porting Semtech's LoRaWAN Stack to Apache NuttX OS... And testing it on PineDio Stack BL604 RISC-V Board"
     },
     {
