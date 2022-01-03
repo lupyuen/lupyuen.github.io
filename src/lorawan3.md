@@ -1140,7 +1140,7 @@ _What can we check?_
 
 1.  Disable all __Info Logging__ on NuttX
 
-    (See __"Logging"__ below)
+    (See __"LoRaWAN is Time Sensitive"__ below)
 
 1.  Verify the __Message Size__ for the Data Rate
 
@@ -1150,19 +1150,41 @@ _What can we check?_
 
     [__"Troubleshoot LoRaWAN"__](https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan)
 
-## Logging
+## LoRaWAN is Time Sensitive
 
-Warning: LoRaWAN is Timing Sensitive!
+Warning: LoRaWAN is Time Sensitive!
+
+Our LoRaWAN Library needs to handle Events in a timely manner... Or the protocol fails.
+
+This is the normal flow for the __Join Network Request__...
+
+| _Our Device_ | _LoRaWAN Gateway_
+| :----------- | :---------------
+| Join Network Request → |
+| Transmit OK Interrupt |
+| Switch to Receive Mode |
+| | ← Join Accept Response
+| Handle Join Response |
+
+Watch what happens if __our device gets too busy__...
+
+| _Our Device_ | _LoRaWAN Gateway_
+| :----------- | :---------------
+| Join Network Request → |
+| Transmit OK Interrupt |
+| __(Busy Busy)__ | ← Join Accept Response
+| __Switch to Receive Mode__ |
+| __Join Response not received!__ |
 
 TODO
 
 Our #NuttX App was too busy to receive the #LoRaWAN Join Response ... Let's disable the logging
 
-![](https://lupyuen.github.io/images/lorawan3-tx.png)
-
-[(Log)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
-
 After disabling logging, our #NuttX App successfully joins the #LoRaWAN Network! 🎉 Now we transmit some Data Packets over LoRaWAN
+
+![LoRaWAN is Time Sensitive](https://lupyuen.github.io/images/lorawan3-tx.png)
+
+[(Source)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
 
 ## Message Size
 
