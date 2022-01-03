@@ -107,8 +107,8 @@
 </ul>
 <p>Today we shall run <strong>LoRaWAN</strong> on NuttX OS!</p>
 <p><em>Why would we need LoRaWAN?</em></p>
-<p>LoRa will work perfectly fine for unsecured <strong>Point-to-Point Wireless Communication</strong>.</p>
-<p>But if we need to <strong>relay data packets</strong> securely to a Local Area Network or to the internet, we need <strong>LoRaWAN</strong>.</p>
+<p>LoRa will work perfectly fine for unsecured <strong>Point-to-Point Wireless Communication</strong> between simple devices.</p>
+<p>But if we’re building <strong>IoT Sensor Devices</strong> that will <strong>transmit data packets</strong> securely to a Local Area Network or to the internet, we need <strong>LoRaWAN</strong>.</p>
 <p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRaWAN)</a></p>
 <p>We shall test LoRaWAN on NuttX with Bouffalo Lab’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604 RISC-V SoCs</strong></a>.</p>
 <p>(It will probably run on <strong>ESP32</strong>, since we’re calling standard NuttX Interfaces)</p>
@@ -1043,8 +1043,19 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p>Stay tuned for updates!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">15 What’s Next</a></h1>
-<p>TODO</p>
-<p>CBOR, TTN, Temperature Sensor</p>
+<p>We hope to build a <strong>complete IoT Sensor Device</strong> with NuttX.</p>
+<p>Now that LoRaWAN is up, we’ll carry on in the next few articles…</p>
+<ul>
+<li>
+<p>Implement <strong>CBOR on NuttX</strong> for compressing Sensor Data</p>
+</li>
+<li>
+<p>Transmit the compressed Sensor Data to <strong>The Things Network</strong> over LoRaWAN</p>
+</li>
+<li>
+<p>We’ll read the onboard <strong>Temperature Sensor</strong> on BL602 to get real Sensor Data</p>
+</li>
+</ul>
 <p><em>We’re porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</em></p>
 <p>Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech’s version.  <a href="https://lupyuen.github.io/articles/lorawan3#notes">(But we shall minimise the changes)</a></p>
 <p>Stay Tuned!</p>
