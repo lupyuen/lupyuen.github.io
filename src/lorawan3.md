@@ -852,7 +852,7 @@ Watch what happens when our LoRaWAN Test App __transmits a Data Packet__...
 
     Let's check the logs in our LoRaWAN Gateway.
 
-![Data Rate changes from 2 to 3](https://lupyuen.github.io/images/lorawan3-tx7a.png)
+![Data Rate changes from 2 to 3](https://lupyuen.github.io/images/lorawan3-tx7a.jpg)
 
 ## Check LoRaWAN Gateway
 
@@ -908,7 +908,7 @@ Thus we generate LoRaWAN Nonces with a __Strong Random Number Generator__ instea
 
 (Random Numbers that won't repeat upon restarting)
 
-![Repeated Nonces are rejected by LoRaWAN Gateway](https://lupyuen.github.io/images/lorawan3-chirpstack2a.png)
+![Repeated Nonces are rejected by LoRaWAN Gateway](https://lupyuen.github.io/images/lorawan3-chirpstack2a.jpg)
 
 ## Strong Random Number Generator
 
@@ -971,7 +971,7 @@ Thus we __always select Entropy Pool__ for our Random Number Generator...
 
 -   [__"Random Number Generator with Entropy Pool"__](https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool)
 
-![Our LoRaWAN Library now generates random nonces](https://lupyuen.github.io/images/lorawan3-nonce7a.png)
+![Our LoRaWAN Library now generates random nonces](https://lupyuen.github.io/images/lorawan3-nonce7a.jpg)
 
 # LoRaWAN Event Loop
 
@@ -1367,7 +1367,7 @@ NimBLE Porting Layer needs __POSIX Timers and Message Queues__ (plus more) to wo
 
 1.  Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
-![Enable POSIX Timers and Message Queues in menuconfig](https://lupyuen.github.io/images/lorawan3-config1.png)
+![Enable POSIX Timers and Message Queues in menuconfig](https://lupyuen.github.io/images/lorawan3-config1.jpg)
 
 # Appendix: Random Number Generator with Entropy Pool
 
@@ -1397,7 +1397,7 @@ Then we enable the __Random Number Generator__...
 
 1.  Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
-![Select Entropy Pool in menuconfig](https://lupyuen.github.io/images/lorawan3-nonce4a.png)
+![Select Entropy Pool in menuconfig](https://lupyuen.github.io/images/lorawan3-nonce4a.jpg)
 
 # Appendix: Build, Flash and Run NuttX
 
