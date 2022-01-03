@@ -208,11 +208,11 @@ Look for these lines in [__se-identity.h__](https://github.com/lupyuen/LoRaMac-n
 
 -   __STATIC_DEVICE_EUI:__ Must be `1`
 
--   __LORAWAN_DEVICE_EUI:__ Change this to our __LoRaWAN Device EUI__.
+-   __LORAWAN_DEVICE_EUI:__ Change this to our __LoRaWAN Device EUI__ (MSB First)
 
     For ChirpStack: Copy from "Applications → app → Device EUI"
 
--   __LORAWAN_JOIN_EUI:__ Change this to our __LoRaWAN Join EUI__.
+-   __LORAWAN_JOIN_EUI:__ Change this to our __LoRaWAN Join EUI__ (MSB First)
 
     For ChirpStack: Join EUI is not needed, we leave it as zeroes
 
@@ -241,7 +241,7 @@ Next find this in the same file [__se-identity.h__](https://github.com/lupyuen/L
     }, \
 ```
 
--   __APP_KEY:__ Change this to our __LoRaWAN App Key__
+-   __APP_KEY:__ Change this to our __LoRaWAN App Key__ (MSB First)
 
     For ChirpStack: Copy from "Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key"
 
@@ -1070,7 +1070,7 @@ The last part of the Event Loop will handle Low Power Mode in future...
 }
 ```
 
-And we loop back perpetually, waiting for the next Event.
+And we loop back perpetually, waiting for Events and handling them.
 
 That's how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!
 
@@ -1078,23 +1078,77 @@ That's how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!
 
 # Troubleshoot LoRaWAN
 
-TODO
+_The Join Network Request / Join Accept Response / Data Packet doesn't appear in the LoRaWAN Gateway..._
 
--   [__"Troubleshoot LoRaWAN"__](https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan)
+_What can we check?_
 
-Check the LoRa Frequency, Sync Word, Device EUI and Join EUI
+1.  In the output of our LoRaWAN Test App, verify the __Sync Word__ (must be 3444), __Device EUI__ (MSB First), __Join EUI__ (MSB First) and __LoRa Frequency__...
 
-![](https://lupyuen.github.io/images/lorawan3-run2a.png)
+    ```
+    RadioSetPublicNetwork: public syncword=3444
+    DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
+    JoinEui     : 00-00-00-00-00-00-00-00
+    RadioSetChannel: freq=923400000
+    ```
 
-[(Run Log)](https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0)
+    [(See the Output Log)](https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d)
 
-#NuttX OS doesn't handle the Join Response from #LoRaWAN Gateway ... Let's fix this
+    ![LoRa Frequency, Sync Word, Device EUI and Join EUI](https://lupyuen.github.io/images/lorawan3-run2a.png)
 
-TODO56
+1.  Verify the __App Key__ (MSB First) in [__se-identity.h__](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79)
 
-![](https://lupyuen.github.io/images/lorawan3-run3.png)
+    [__"Device EUI, Join EUI and App Key"__](https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key)
 
-[(Run Log)](https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33)
+1.  On our LoRaWAN Gateway, scan the log for __Message Integrity Code__ errors...
+
+    ```bash
+    grep MIC /var/log/syslog
+
+    chirpstack-application-server[568]: 
+      level=error 
+      msg="invalid MIC" 
+      dev_eui=4bc15ee7377bb15b 
+      type=DATA_UP_MIC
+    ```
+
+    This is usually caused by incorrect Device EUI, Join EUI or App Key.
+
+1.  On our LoRaWAN Gateway, scan the log for __Nonce Errors__...
+
+    ```bash
+    grep nonce /var/log/syslog
+
+    chirpstack-application-server[5667]: 
+      level=error 
+      msg="validate dev-nonce error" 
+      dev_eui=4bc15ee7377bb15b 
+      type=OTAA
+
+    chirpstack-network-server[5749]: 
+      time="2021-12-26T06:12:48Z" 
+      level=error 
+      msg="uplink: processing uplink frame error" 
+      ctx_id=bb756ec1-9ee3-4903-a13d-656356d98fd5 
+      error="validate dev-nonce error: object already exists"
+    ```
+
+    This means that a __Duplicate Nonce__ has been detected.
+    
+    Check that we're using a Strong Random Number Generator with Entropy Pool...
+
+    [__"Random Number Generator with Entropy Pool"__](https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool)
+
+1.  Disable all __Info Logging__ on NuttX
+
+    (See __"Logging"__ below)
+
+1.  Verify the __Message Size__ for the Data Rate
+
+    (See __"Message Size"__ below)
+
+1.  More troubleshooting tips...
+
+    [__"Troubleshoot LoRaWAN"__](https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan)
 
 ## Logging
 
@@ -1102,31 +1156,23 @@ TODO
 
 Our #NuttX App was too busy to receive the #LoRaWAN Join Response ... Let's disable the logging
 
-TODO62
-
 ![](https://lupyuen.github.io/images/lorawan3-tx.png)
 
 [(Log)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
 
 After disabling logging, our #NuttX App successfully joins the #LoRaWAN Network! 🎉 Now we transmit some Data Packets over LoRaWAN
 
-TODO63
+## Message Size
+
+TODO
 
 Our #LoRaWAN Gateway receives Data Packets from #NuttX OS! 🎉 The Message Payload is empty ... Let's figure out why 🤔
-
-TODO44
 
 ![](https://lupyuen.github.io/images/lorawan3-chirpstack5.png)
 
 [(Log)](https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89)
 
-## Message Size
-
-TODO
-
 Our #NuttX App sent an empty #LoRaWAN Message because our message is too long for LoRaWAN Data Rate 2 (max 11 bytes) ... Let's increase the Data Rate to 3
-
-TODO65
 
 ![](https://lupyuen.github.io/images/lorawan3-tx4a.png)
 
