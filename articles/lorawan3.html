@@ -1015,7 +1015,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <ul>
 <li>
 <p>NuttX on BL602 / BL604 executes <strong>SPI Data Transfer with Polling</strong> (not DMA)</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L763-L803">(See this)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L734-L803">(See this)</a></p>
 </li>
 <li>
 <p>LoRaWAN is <strong>Time Sensitive</strong>, as explained earlier. SPI with Polling might cause <strong>incoming packets to be dropped</strong>.</p>
