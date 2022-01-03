@@ -86,7 +86,7 @@
 <li><a href="#strong-random-number-generator">11.1 Strong Random Number Generator</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a><ul></ul></li>
 <li><a href="#troubleshoot-lorawan">13 Troubleshoot LoRaWAN</a><ul>
-<li><a href="#logging">13.1 Logging</a><ul></ul></li>
+<li><a href="#lorawan-is-time-sensitive">13.1 LoRaWAN is Time Sensitive</a><ul></ul></li>
 <li><a href="#message-size-1">13.2 Message Size</a><ul></ul></li></ul></li>
 <li><a href="#spi-with-dma">14 SPI with DMA</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
@@ -944,7 +944,7 @@ chirpstack-network-server[5749]:
 </li>
 <li>
 <p>Disable all <strong>Info Logging</strong> on NuttX</p>
-<p>(See <strong>“Logging”</strong> below)</p>
+<p>(See <strong>“LoRaWAN is Time Sensitive”</strong> below)</p>
 </li>
 <li>
 <p>Verify the <strong>Message Size</strong> for the Data Rate</p>
@@ -955,13 +955,32 @@ chirpstack-network-server[5749]:
 <p><a href="https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan"><strong>“Troubleshoot LoRaWAN”</strong></a></p>
 </li>
 </ol>
-<h2 id="logging" class="section-header"><a href="#logging">13.1 Logging</a></h2>
-<p>Warning: LoRaWAN is Timing Sensitive!</p>
+<h2 id="lorawan-is-time-sensitive" class="section-header"><a href="#lorawan-is-time-sensitive">13.1 LoRaWAN is Time Sensitive</a></h2>
+<p>Warning: LoRaWAN is Time Sensitive!</p>
+<p>Our LoRaWAN Library needs to handle Events in a timely manner… Or the protocol fails.</p>
+<p>This is the normal flow for the <strong>Join Network Request</strong>…</p>
+<div><table><thead><tr><th align="left"><em>Our Device</em></th><th align="left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
+<tr><td align="left">Join Network Request →</td><td align="left"></td></tr>
+<tr><td align="left">Transmit OK Interrupt</td><td align="left"></td></tr>
+<tr><td align="left">Switch to Receive Mode</td><td align="left"></td></tr>
+<tr><td align="left"></td><td align="left">← Join Accept Response</td></tr>
+<tr><td align="left">Handle Join Response</td><td align="left"></td></tr>
+</tbody></table>
+</div>
+<p>Watch what happens if <strong>our device gets too busy</strong>…</p>
+<div><table><thead><tr><th align="left"><em>Our Device</em></th><th align="left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
+<tr><td align="left">Join Network Request →</td><td align="left"></td></tr>
+<tr><td align="left">Transmit OK Interrupt</td><td align="left"></td></tr>
+<tr><td align="left"><strong>(Busy Busy)</strong></td><td align="left">← Join Accept Response</td></tr>
+<tr><td align="left"><strong>Switch to Receive Mode</strong></td><td align="left"></td></tr>
+<tr><td align="left"><strong>Join Response not received!</strong></td><td align="left"></td></tr>
+</tbody></table>
+</div>
 <p>TODO</p>
 <p>Our #NuttX App was too busy to receive the #LoRaWAN Join Response … Let’s disable the logging</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-tx.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Log)</a></p>
 <p>After disabling logging, our #NuttX App successfully joins the #LoRaWAN Network! 🎉 Now we transmit some Data Packets over LoRaWAN</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-tx.png" alt="LoRaWAN is Time Sensitive" /></p>
+<p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Source)</a></p>
 <h2 id="message-size-1" class="section-header"><a href="#message-size-1">13.2 Message Size</a></h2>
 <p>TODO</p>
 <p>Our #LoRaWAN Gateway receives Data Packets from #NuttX OS! 🎉 The Message Payload is empty … Let’s figure out why 🤔</p>
