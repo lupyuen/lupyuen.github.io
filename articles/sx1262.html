@@ -1555,7 +1555,7 @@ static void init_event_queue(void) {
 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="Handling LoRaWAN Events with NimBLE Porting Layer" /></p>
 <h2 id="event-loop" class="section-header"><a href="#event-loop">9.2 Event Loop</a></h2>
-<p>Let’s look at the <strong>Event Loop</strong> that handles the Events in our Event Queue: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L611-L655">lorawan_test_main.c</a></p>
+<p>Let’s look at the <strong>Event Loop</strong> that handles the LoRa and LoRaWAN Events in our Event Queue: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L611-L655">lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Event Loop that dequeues Events from the Event Queue and processes the Events
 static void handle_event_queue(void *arg) {
 
@@ -1611,8 +1611,8 @@ static void handle_event_queue(void *arg) {
     CRITICAL_SECTION_END( );
   }
 }</code></pre></div>
-<p>And we loop back perpetually, waiting for the next Event.</p>
-<p>That’s how we handle Events in our Event Queue with NimBLE Porting Layer!</p>
+<p>And we loop back perpetually, waiting for Events and handling them.</p>
+<p>That’s how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>In our next article we’ll move on to <strong>LoRaWAN!</strong> We’ll port Semtech’s <strong>Reference LoRaWAN Stack</strong> to NuttX…</p>

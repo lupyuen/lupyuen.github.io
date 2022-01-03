@@ -274,11 +274,11 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p><strong>STATIC_DEVICE_EUI:</strong> Must be <code>1</code></p>
 </li>
 <li>
-<p><strong>LORAWAN_DEVICE_EUI:</strong> Change this to our <strong>LoRaWAN Device EUI</strong>.</p>
+<p><strong>LORAWAN_DEVICE_EUI:</strong> Change this to our <strong>LoRaWAN Device EUI</strong> (MSB First)</p>
 <p>For ChirpStack: Copy from “Applications → app → Device EUI”</p>
 </li>
 <li>
-<p><strong>LORAWAN_JOIN_EUI:</strong> Change this to our <strong>LoRaWAN Join EUI</strong>.</p>
+<p><strong>LORAWAN_JOIN_EUI:</strong> Change this to our <strong>LoRaWAN Join EUI</strong> (MSB First)</p>
 <p>For ChirpStack: Join EUI is not needed, we leave it as zeroes</p>
 </li>
 </ul>
@@ -304,7 +304,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
     }, \</code></pre></div>
 <ul>
 <li>
-<p><strong>APP_KEY:</strong> Change this to our <strong>LoRaWAN App Key</strong></p>
+<p><strong>APP_KEY:</strong> Change this to our <strong>LoRaWAN App Key</strong> (MSB First)</p>
 <p>For ChirpStack: Copy from “Applications → app → Devices → device_otaa_class_a → Keys (OTAA) → Application Key”</p>
 </li>
 <li>
@@ -890,37 +890,83 @@ static void handle_event_queue(void *arg) {
     CRITICAL_SECTION_END( );
   }
 }</code></pre></div>
-<p>And we loop back perpetually, waiting for the next Event.</p>
+<p>And we loop back perpetually, waiting for Events and handling them.</p>
 <p>That’s how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="Handling LoRaWAN Events with NimBLE Porting Layer" /></p>
 <h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">13 Troubleshoot LoRaWAN</a></h1>
-<p>TODO</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan"><strong>“Troubleshoot LoRaWAN”</strong></a></li>
-</ul>
-<p>Check the LoRa Frequency, Sync Word, Device EUI and Join EUI</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-run2a.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/b91c1f88645eedb813cfffa2bdf7d7a0">(Run Log)</a></p>
-<p>#NuttX OS doesn’t handle the Join Response from #LoRaWAN Gateway … Let’s fix this</p>
-<p>TODO56</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-run3.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/a8e834e7b4267345f01b6629fb7f5e33">(Run Log)</a></p>
+<p><em>The Join Network Request / Join Accept Response / Data Packet doesn’t appear in the LoRaWAN Gateway…</em></p>
+<p><em>What can we check?</em></p>
+<ol>
+<li>
+<p>In the output of our LoRaWAN Test App, verify the <strong>Sync Word</strong> (must be 3444), <strong>Device EUI</strong> (MSB First), <strong>Join EUI</strong> (MSB First) and <strong>LoRa Frequency</strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">RadioSetPublicNetwork</span>: <span class="ident">public</span> <span class="ident">syncword</span><span class="op">=</span><span class="number">3444</span>
+<span class="ident">DevEui</span>      : <span class="number">4B</span><span class="op">-</span><span class="ident">C1</span><span class="op">-</span><span class="number">5E-E7</span><span class="op">-</span><span class="number">37</span><span class="op">-</span><span class="number">7B</span><span class="op">-</span><span class="ident">B1</span><span class="op">-</span><span class="number">5B</span>
+<span class="ident">JoinEui</span>     : <span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span>
+<span class="ident">RadioSetChannel</span>: <span class="ident">freq</span><span class="op">=</span><span class="number">923400000</span></code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-run2a.png" alt="LoRa Frequency, Sync Word, Device EUI and Join EUI" /></p>
+</li>
+<li>
+<p>Verify the <strong>App Key</strong> (MSB First) in <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79"><strong>se-identity.h</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key"><strong>“Device EUI, Join EUI and App Key”</strong></a></p>
+</li>
+<li>
+<p>On our LoRaWAN Gateway, scan the log for <strong>Message Integrity Code</strong> errors…</p>
+<div class="example-wrap"><pre class="language-bash"><code>grep MIC /var/log/syslog
+
+chirpstack-application-server[568]: 
+  level=error 
+  msg=&quot;invalid MIC&quot; 
+  dev_eui=4bc15ee7377bb15b 
+  type=DATA_UP_MIC</code></pre></div>
+<p>This is usually caused by incorrect Device EUI, Join EUI or App Key.</p>
+</li>
+<li>
+<p>On our LoRaWAN Gateway, scan the log for <strong>Nonce Errors</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>grep nonce /var/log/syslog
+
+chirpstack-application-server[5667]: 
+  level=error 
+  msg=&quot;validate dev-nonce error&quot; 
+  dev_eui=4bc15ee7377bb15b 
+  type=OTAA
+
+chirpstack-network-server[5749]: 
+  time=&quot;2021-12-26T06:12:48Z&quot; 
+  level=error 
+  msg=&quot;uplink: processing uplink frame error&quot; 
+  ctx_id=bb756ec1-9ee3-4903-a13d-656356d98fd5 
+  error=&quot;validate dev-nonce error: object already exists&quot;</code></pre></div>
+<p>This means that a <strong>Duplicate Nonce</strong> has been detected.</p>
+<p>Check that we’re using a Strong Random Number Generator with Entropy Pool…</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool"><strong>“Random Number Generator with Entropy Pool”</strong></a></p>
+</li>
+<li>
+<p>Disable all <strong>Info Logging</strong> on NuttX</p>
+<p>(See <strong>“Logging”</strong> below)</p>
+</li>
+<li>
+<p>Verify the <strong>Message Size</strong> for the Data Rate</p>
+<p>(See <strong>“Message Size”</strong> below)</p>
+</li>
+<li>
+<p>More troubleshooting tips…</p>
+<p><a href="https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan"><strong>“Troubleshoot LoRaWAN”</strong></a></p>
+</li>
+</ol>
 <h2 id="logging" class="section-header"><a href="#logging">13.1 Logging</a></h2>
 <p>TODO</p>
 <p>Our #NuttX App was too busy to receive the #LoRaWAN Join Response … Let’s disable the logging</p>
-<p>TODO62</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Log)</a></p>
 <p>After disabling logging, our #NuttX App successfully joins the #LoRaWAN Network! 🎉 Now we transmit some Data Packets over LoRaWAN</p>
-<p>TODO63</p>
-<p>Our #LoRaWAN Gateway receives Data Packets from #NuttX OS! 🎉 The Message Payload is empty … Let’s figure out why 🤔</p>
-<p>TODO44</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack5.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89">(Log)</a></p>
 <h2 id="message-size-1" class="section-header"><a href="#message-size-1">13.2 Message Size</a></h2>
 <p>TODO</p>
+<p>Our #LoRaWAN Gateway receives Data Packets from #NuttX OS! 🎉 The Message Payload is empty … Let’s figure out why 🤔</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack5.png" alt="" /></p>
+<p><a href="https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89">(Log)</a></p>
 <p>Our #NuttX App sent an empty #LoRaWAN Message because our message is too long for LoRaWAN Data Rate 2 (max 11 bytes) … Let’s increase the Data Rate to 3</p>
-<p>TODO65</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="" /></p>
 <p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Log)</a></p>
 <h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">14 SPI with DMA</a></h1>
