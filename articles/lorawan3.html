@@ -132,6 +132,11 @@
 <p><em>Why did we fork Semtech’s LoRaWAN Stack? Why not build it specifically for NuttX?</em></p>
 <p>LoRaWAN works <strong>slightly differently across the world regions</strong>, to comply with Local Wireless Regulations: Radio Frequency, Maximum Airtime (Duty Cycle), <a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">Listen Before Talk</a>, …</p>
 <p>Thus we should port <strong>Semtech’s LoRaWAN Stack</strong> to NuttX with <strong>minimal changes</strong>, in case of future updates. (Like for new regions)</p>
+<p><em>How does our LoRaWAN Library talk to the LoRa SX1262 Library?</em></p>
+<p>Our LoRaWAN Library talks through Semtech’s <strong>Radio Interface</strong> that’s exposed by the LoRa SX1262 Library…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262#appendix-radio-functions"><strong>“Radio Functions (LoRaa SX1262)”</strong></a></li>
+</ul>
 <p><em>How did we create the LoRaWAN Library?</em></p>
 <p>We followed the steps below to create <strong>“nuttx/libs/liblorawan”</strong> by cloning a NuttX Library…</p>
 <ul>
