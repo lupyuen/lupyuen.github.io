@@ -1319,7 +1319,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     -   __Zephyr__ maintains a [__Complete Fork__](https://github.com/zephyrproject-rtos/loramac-node) of the entire LoRaWAN Repo by Semtech. Which gets embedded during the Zephyr build.
 
-    The Zephyr approach is probably the best way to __keep our LoRaWAN Stack in sync__ with Semtech's.
+    We're adopting the Zephyr approach to __keep our LoRaWAN Stack in sync__ with Semtech's.
 
 1.  We have already ported LoRaWAN to __BL602 IoT SDK__ [(see this)](https://lupyuen.github.io/articles/lorawan), why are we porting again to NuttX?
 
@@ -1606,30 +1606,5 @@ __macOS Tip:__ Here's the script I use to build, flash and run NuttX on macOS, a
 ![Script to build, flash and run NuttX on macOS](https://lupyuen.github.io/images/spi2-script.png)
 
 [(Source)](https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af)
-
-# Appendix: GPIO Issue
-
-TODO
-
-Switching a #NuttX GPIO Interrupt Pin to Trigger On Rising Edge ... Crashes with an Assertion Failure ... I'll submit a NuttX Issue, meanwhile I have disabled the assertion
-
-TODO50
-
-![](https://lupyuen.github.io/images/lorawan3-int.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547)
-
-# Appendix: Callout Issue
-
-TODO
-
-NimBLE Porting Layer doesn't work for multiple Callout Timers on #NuttX OS, unless we loop the thread ... Will submit a Pull Request to Apache NimBLE 👍
-
-TODO42
-
-![](https://lupyuen.github.io/images/lorawan3-callout.png)
-
-[(Source)](https://github.com/lupyuen/nimble-porting-nuttx/blob/master/porting/npl/nuttx/src/os_callout.c#L35-L70)
-
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title2.jpg)
