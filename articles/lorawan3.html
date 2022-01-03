@@ -734,7 +734,7 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p>Let’s check the logs in our LoRaWAN Gateway.</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/lorawan3-tx7a.png" alt="Data Rate changes from 2 to 3" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-tx7a.jpg" alt="Data Rate changes from 2 to 3" /></p>
 <h2 id="check-lorawan-gateway-1" class="section-header"><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a></h2>
 <p>To inspect the Data Packet on our <strong>LoRaWAN Gateway</strong> (ChirpStack), click…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>LoRaWAN Frames</strong></p>
@@ -776,7 +776,7 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p>(Which makes development super slow and frustrating)</p>
 <p>Thus we generate LoRaWAN Nonces with a <strong>Strong Random Number Generator</strong> instead.</p>
 <p>(Random Numbers that won’t repeat upon restarting)</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack2a.png" alt="Repeated Nonces are rejected by LoRaWAN Gateway" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack2a.jpg" alt="Repeated Nonces are rejected by LoRaWAN Gateway" /></p>
 <h2 id="strong-random-number-generator" class="section-header"><a href="#strong-random-number-generator">11.1 Strong Random Number Generator</a></h2>
 <p>Our LoRaWAN Library supports <strong>Random Nonces</strong>… Assuming that we have a <strong>Secure Element</strong>.</p>
 <p>Since we don’t have a Secure Element, let’s <strong>generate the Random Nonce in software</strong>: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152">nuttx.c</a></p>
@@ -821,7 +821,7 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool"><strong>“Random Number Generator with Entropy Pool”</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/lorawan3-nonce7a.png" alt="Our LoRaWAN Library now generates random nonces" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-nonce7a.jpg" alt="Our LoRaWAN Library now generates random nonces" /></p>
 <h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a></h1>
 <p>Let’s look inside our LoRaWAN Test App and learn how the <strong>Event Loop</strong> handles LoRa and LoRaWAN Events by calling NimBLE Porting Layer.</p>
 <p><em>What is NimBLE Porting Layer?</em></p>
@@ -1151,7 +1151,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/lorawan3-config1.png" alt="Enable POSIX Timers and Message Queues in menuconfig" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-config1.jpg" alt="Enable POSIX Timers and Message Queues in menuconfig" /></p>
 <h1 id="appendix-random-number-generator-with-entropy-pool" class="section-header"><a href="#appendix-random-number-generator-with-entropy-pool">18 Appendix: Random Number Generator with Entropy Pool</a></h1>
 <p>Our LoRaWAN Library generates Nonces by calling a <strong>Random Number Generator with Entropy Pool</strong>. </p>
 <p>Follow these steps to enable the <strong>Entropy Pool</strong> in <strong>menuconfig</strong>…</p>
@@ -1188,7 +1188,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/lorawan3-nonce4a.png" alt="Select Entropy Pool in menuconfig" /></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-nonce4a.jpg" alt="Select Entropy Pool in menuconfig" /></p>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">19 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602 and ESP32.</p>
