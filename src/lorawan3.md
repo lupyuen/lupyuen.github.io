@@ -1,6 +1,6 @@
 # LoRaWAN on Apache NuttX OS
 
-📝 _7 Jan 2022_
+📝 _3 Jan 2022_
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
@@ -1180,6 +1180,8 @@ Watch what happens if __our device gets too busy__...
 
 This might happen if our device is busy __writing debug logs__ to the console.
 
+(The LoRaWAN Gateway returns the Join Accept Response in under 1 second)
+
 Thus we should __disable Info Logging__ on NuttX...
 
 1.  In __menuconfig__, select __"Build Setup"__ → __"Debug Options"__ 
@@ -1265,14 +1267,6 @@ TODO
 
 CBOR, TTN, Temperature Sensor
 
-In our next article we'll move on to __LoRaWAN!__
-
-(Which will be super interesting because of multithreading)
-
-We'll port Semtech's __Reference LoRaWAN Stack__ to NuttX...
-
--   [__lupyuen/LoRaMac-node-nuttx__](https://github.com/lupyuen/LoRaMac-node-nuttx)
-
 _We're porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?_
 
 Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech's version.  [(But we shall minimise the changes)](https://lupyuen.github.io/articles/lorawan3#notes)
@@ -1296,8 +1290,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1473593455699841027)
-
-1.  TODO: Non Volatile Memory
 
 1.  We're __porting plenty of code__ to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?
 
@@ -1333,7 +1325,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  Will NuttX become the official OS for PineDio Stack BL604 when it goes on sale?
 
-    It might! But first let's get LoRaWAN (and ST7789) running on PineDio Stack.
+    It might! But first let's get LoRaWAN and ST7789 Display running together on PineDio Stack.
+
+1.  TODO: Non Volatile Memory
 
 # Appendix: POSIX Timers and Message Queues
 
