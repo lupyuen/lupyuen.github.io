@@ -1152,6 +1152,8 @@ _What can we check?_
 
 ## Logging
 
+Warning: LoRaWAN is Timing Sensitive!
+
 TODO
 
 Our #NuttX App was too busy to receive the #LoRaWAN Join Response ... Let's disable the logging
