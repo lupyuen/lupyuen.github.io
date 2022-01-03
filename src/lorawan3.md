@@ -1146,7 +1146,7 @@ _What can we check?_
 
 1.  Verify the __Message Size__ for the Data Rate
 
-    (See __"Message Size"__ below)
+    (See __"Empty LoRaWAN Message"__ below)
 
 1.  More troubleshooting tips...
 
@@ -1178,31 +1178,48 @@ Watch what happens if __our device gets too busy__...
 | __Switch to Receive Mode__ |
 | __Join Response missing!__ |
 
-TODO
+This might happen if our device is busy __writing debug logs__ to the console.
 
-Our #NuttX App was too busy to receive the #LoRaWAN Join Response ... Let's disable the logging
+Thus we should __disable Info Logging__ on NuttX...
 
-After disabling logging, our #NuttX App successfully joins the #LoRaWAN Network! 🎉 Now we transmit some Data Packets over LoRaWAN
+1.  In __menuconfig__, select __"Build Setup"__ → __"Debug Options"__ 
+
+1.  __Uncheck__ the following...
+
+    -   __Enable Info Debug Output__
+    -   __GPIO Info Output__
+    -   __SPI Info Output__
+
+(It's OK to enable Debug Assertions, Error Output and Warning Output)
 
 ![LoRaWAN is Time Sensitive](https://lupyuen.github.io/images/lorawan3-tx.png)
 
 [(Source)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
 
-## Message Size
+## Empty LoRaWAN Message
 
-TODO
+_What happens when we send a message that's too large?_
 
-Our #LoRaWAN Gateway receives Data Packets from #NuttX OS! 🎉 The Message Payload is empty ... Let's figure out why 🤔
+Our LoRaWAN Library will transmit an __Empty Message Payload!__
 
-![](https://lupyuen.github.io/images/lorawan3-chirpstack5.png)
+We'll see this in the LoRaWAN Gateway...
 
-[(Log)](https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89)
+![Empty Message Payload](https://lupyuen.github.io/images/lorawan3-chirpstack5.png)
 
-Our #NuttX App sent an empty #LoRaWAN Message because our message is too long for LoRaWAN Data Rate 2 (max 11 bytes) ... Let's increase the Data Rate to 3
+[(Output Log)](https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89)
 
-![](https://lupyuen.github.io/images/lorawan3-tx4a.png)
+In the output for our LoRaWAN Test App, look for __"maxSize"__ to verify the __Maximum Message Size__ for our Data Rate and LoRaWAN Region... 
 
-[(Log)](https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf)
+```text
+PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+PrepareTxFrame: status=0, maxSize=11, currentSize=11
+```
+
+[(More about Message Size)](https://lupyuen.github.io/articles/lorawan3#message-size)
+
+![Checking message size](https://lupyuen.github.io/images/lorawan3-tx4a.png)
+
+[(Source)](https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf)
 
 # SPI with DMA
 

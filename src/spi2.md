@@ -1388,7 +1388,13 @@ Next we enable SPI logging for easier troubleshooting...
     SPI Informational Output
     ```
 
-    (See pic below)
+    __For LoRaWAN:__ Uncheck the following...
+
+    ```text
+    Enable Informational Debug Output
+    GPIO Informational Output
+    SPI Informational Output
+    ```
 
 1.  Hit __"Save"__ then __"OK"__ to save the NuttX Configuration to __".config"__
 
