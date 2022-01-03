@@ -56,7 +56,7 @@ _How does our LoRaWAN Library talk to the LoRa SX1262 Library?_
 
 Our LoRaWAN Library talks through Semtech's __Radio Interface__ that's exposed by the LoRa SX1262 Library...
 
--   [__"Radio Functions (LoRaa SX1262)"__](https://lupyuen.github.io/articles/sx1262#appendix-radio-functions)
+-   [__"Radio Functions (LoRa SX1262)"__](https://lupyuen.github.io/articles/sx1262#appendix-radio-functions)
 
 _How did we create the LoRaWAN Library?_
 
