@@ -88,7 +88,7 @@
 <li><a href="#troubleshoot-lorawan">13 Troubleshoot LoRaWAN</a><ul>
 <li><a href="#lorawan-is-time-sensitive">13.1 LoRaWAN is Time Sensitive</a><ul></ul></li>
 <li><a href="#empty-lorawan-message">13.2 Empty LoRaWAN Message</a><ul></ul></li></ul></li>
-<li><a href="#spi-with-dma">14 SPI with DMA</a><ul></ul></li>
+<li><a href="#spi-with-dma">14 SPI With DMA</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
 <li><a href="#notes">16 Notes</a><ul></ul></li>
 <li><a href="#appendix-posix-timers-and-message-queues">17 Appendix: POSIX Timers and Message Queues</a><ul></ul></li>
@@ -992,6 +992,8 @@ chirpstack-network-server[5749]:
 </li>
 </ol>
 <p>(It’s OK to enable Debug Assertions, Error Output and Warning Output)</p>
+<p>Since LoRaWAN is Time Sensitive, we ought to optimise SPI Data Transfers with DMA.</p>
+<p>(See the section <strong>“SPI With DMA”</strong> below)</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx.png" alt="LoRaWAN is Time Sensitive" /></p>
 <p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Source)</a></p>
 <h2 id="empty-lorawan-message" class="section-header"><a href="#empty-lorawan-message">13.2 Empty LoRaWAN Message</a></h2>
@@ -1006,8 +1008,16 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan3#message-size">(More about Message Size)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="Checking message size" /></p>
 <p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Source)</a></p>
-<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">14 SPI with DMA</a></h1>
+<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">14 SPI With DMA</a></h1>
+<p>Today we have successfully tested the LoRaWAN Library on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604 RISC-V Board</strong></a> (pic below) and its onboard Semtech SX1262 Transceiver.</p>
+<p>The NuttX implementation of <strong>SPI on BL604</strong> might need some enhancements…</p>
 <p>TODO</p>
+<p>Polling</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L763-L803">(See this)</a></p>
+<p>ST7789</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list"><strong>“Create DMA Linked List (BL602 SPI)”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">15 What’s Next</a></h1>
 <p>TODO</p>
