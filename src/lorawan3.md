@@ -1192,6 +1192,10 @@ Thus we should __disable Info Logging__ on NuttX...
 
 (It's OK to enable Debug Assertions, Error Output and Warning Output)
 
+Since LoRaWAN is Time Sensitive, we ought to optimise SPI Data Transfers with DMA.
+
+(See the section __"SPI With DMA"__ below)
+
 ![LoRaWAN is Time Sensitive](https://lupyuen.github.io/images/lorawan3-tx.png)
 
 [(Source)](https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8)
@@ -1221,9 +1225,21 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11
 
 [(Source)](https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf)
 
-# SPI with DMA
+# SPI With DMA
+
+Today we have successfully tested the LoRaWAN Library on [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio) (pic below) and its onboard Semtech SX1262 Transceiver.
+
+The NuttX implementation of __SPI on BL604__ might need some enhancements...
 
 TODO
+
+Polling
+
+[(See this)](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L763-L803)
+
+ST7789
+
+-   [__"Create DMA Linked List (BL602 SPI)"__](https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list)
 
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
 
