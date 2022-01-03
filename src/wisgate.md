@@ -842,6 +842,8 @@ I hope you find this article useful. Now that I know some LoRaWAN, I'm heading b
 
 And then to __PineDio Stack BL604__...
 
+-   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
+
 -   [__"LoRaWAN on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/lorawan2)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
