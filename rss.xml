@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>LoRaWAN on Apache NuttX OS</title>
+            <link>https://lupyuen.github.io/articles/lorawan</link>
+            <description><![CDATA[Porting Semtech's LoRaWAN Stack to Apache NuttX OS... And testing it on PineDio Stack BL604 RISC-V Board]]></description>
+            <guid>https://lupyuen.github.io/articles/lorawan</guid>
+            <pubDate>Mon, 03 Jan 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>LoRa SX1262 on Apache NuttX OS</title>
             <link>https://lupyuen.github.io/articles/sx1262</link>
             <description><![CDATA[Porting the LoRa Driver for Semtech SX1262 from Linux to Apache NuttX OS... And testing it on PineDio Stack BL604 RISC-V Board]]></description>
