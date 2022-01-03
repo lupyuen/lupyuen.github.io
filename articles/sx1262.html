@@ -124,7 +124,9 @@
 <li><a href="#header-error">14.7.8 Header Error</a><ul></ul></li>
 <li><a href="#radioondioirq">14.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
 <li><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li>
-<li><a href="#appendix-previous-sx1262-library">15 Appendix: Previous SX1262 Library</a><ul></ul></li></ul></nav><p>📝 <em>22 Dec 2021</em></p>
+<li><a href="#appendix-gpio-pin-type-issue">15 Appendix: GPIO Pin Type Issue</a><ul></ul></li>
+<li><a href="#appendix-nimble-callout-issue">16 Appendix: NimBLE Callout Issue</a><ul></ul></li>
+<li><a href="#appendix-previous-sx1262-library">17 Appendix: Previous SX1262 Library</a><ul></ul></li></ul></nav><p>📝 <em>22 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)</em></p>
 <p><strong>LoRa</strong> is an awesome wireless technology for IoT that will transmit <strong>small packets over super long distances</strong>…</p>
@@ -1673,7 +1675,7 @@ static void handle_event_queue(void *arg) {
 <p><strong>Zephyr</strong> maintains a <a href="https://github.com/zephyrproject-rtos/loramac-node"><strong>Complete Fork</strong></a> of the entire LoRaWAN Repo by Semtech. Which gets embedded during the Zephyr build.</p>
 </li>
 </ul>
-<p>The Zephyr approach is probably the best way to <strong>keep our LoRaWAN Stack in sync</strong> with Semtech’s.</p>
+<p>We’re adopting the Zephyr approach to <strong>keep our LoRaWAN Stack in sync</strong> with Semtech’s.</p>
 </li>
 <li>
 <p>We have already ported LoRaWAN to <strong>BL602 IoT SDK</strong> <a href="https://lupyuen.github.io/articles/lorawan">(see this)</a>, why are we porting again to NuttX?</p>
@@ -2914,7 +2916,24 @@ void SX126xSetSleep( SleepParams_t sleepConfig ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L342-L347">(<strong>SX126xAntSwOff</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L222-L235">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L140-L161">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
-<h1 id="appendix-previous-sx1262-library" class="section-header"><a href="#appendix-previous-sx1262-library">15 Appendix: Previous SX1262 Library</a></h1>
+<h1 id="appendix-gpio-pin-type-issue" class="section-header"><a href="#appendix-gpio-pin-type-issue">15 Appendix: GPIO Pin Type Issue</a></h1>
+<p>When we switch a GPIO Interrupt Pin Type to Trigger On Rising Edge, it crashes with an Assertion Failure… </p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">nsh</span><span class="op">&gt;</span> <span class="ident">gpio</span> <span class="op">-</span><span class="ident">t</span> <span class="number">8</span> <span class="op">-</span><span class="ident">w</span> <span class="number">1</span> <span class="op">/</span><span class="ident">dev</span><span class="op">/</span><span class="ident">gpio2</span>
+
+<span class="ident">Driver</span>: <span class="op">/</span><span class="ident">dev</span><span class="op">/</span><span class="ident">gpio2</span>
+<span class="ident">up_assert</span>: <span class="ident">Assertion</span> <span class="ident">failed</span> <span class="ident">at</span> <span class="ident">file</span>:<span class="ident">ioexpander</span><span class="op">/</span><span class="ident">gpio</span>.<span class="ident">c</span> <span class="ident">line</span>: <span class="number">544</span> <span class="ident">task</span>: <span class="ident">gpio</span></code></pre></div>
+<p>I’ll submit a NuttX Issue, meanwhile I have disabled the assertion…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547">drivers/ioexpander/gpio.c</a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/lorawan3-int.png" alt="GPIO Pin Type Issue" /></p>
+<h1 id="appendix-nimble-callout-issue" class="section-header"><a href="#appendix-nimble-callout-issue">16 Appendix: NimBLE Callout Issue</a></h1>
+<p>NimBLE Porting Layer doesn’t work for multiple Callout Timers unless we loop the thread…</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-callout.png" alt="NimBLE Callout Issue" /></p>
+<p><a href="https://github.com/lupyuen/nimble-porting-nuttx/blob/master/porting/npl/nuttx/src/os_callout.c#L35-L70">(Source)</a></p>
+<p>I will submit a Pull Request to Apache NimBLE.</p>
+<h1 id="appendix-previous-sx1262-library" class="section-header"><a href="#appendix-previous-sx1262-library">17 Appendix: Previous SX1262 Library</a></h1>
 <p>This section describes the <strong>previous (obsolete) version</strong> of the SX1262 Library…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/lora-sx1262/tree/nuttx"><strong>lupyuen/lora-sx1262 (nuttx branch)</strong></a></li>

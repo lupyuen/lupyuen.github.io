@@ -96,9 +96,7 @@
 <li><a href="#appendix-build-flash-and-run-nuttx">19 Appendix: Build, Flash and Run NuttX</a><ul>
 <li><a href="#build-nuttx">19.1 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">19.2 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">19.3 Run NuttX</a><ul></ul></li></ul></li>
-<li><a href="#appendix-gpio-issue">20 Appendix: GPIO Issue</a><ul></ul></li>
-<li><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>3 Jan 2022</em></p>
+<li><a href="#run-nuttx">19.3 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <p>Last article we got <strong>LoRa</strong> (the long-range, low-bandwidth wireless network) running on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a>…</p>
@@ -1107,7 +1105,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p><strong>Zephyr</strong> maintains a <a href="https://github.com/zephyrproject-rtos/loramac-node"><strong>Complete Fork</strong></a> of the entire LoRaWAN Repo by Semtech. Which gets embedded during the Zephyr build.</p>
 </li>
 </ul>
-<p>The Zephyr approach is probably the best way to <strong>keep our LoRaWAN Stack in sync</strong> with Semtech’s.</p>
+<p>We’re adopting the Zephyr approach to <strong>keep our LoRaWAN Stack in sync</strong> with Semtech’s.</p>
 </li>
 <li>
 <p>We have already ported LoRaWAN to <strong>BL602 IoT SDK</strong> <a href="https://lupyuen.github.io/articles/lorawan">(see this)</a>, why are we porting again to NuttX?</p>
@@ -1371,18 +1369,6 @@ nsh&gt;</code></pre></div>
 <p><strong>macOS Tip:</strong> Here’s the script I use to build, flash and run NuttX on macOS, all in a single step: <a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">run.sh</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
 <p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
-<h1 id="appendix-gpio-issue" class="section-header"><a href="#appendix-gpio-issue">20 Appendix: GPIO Issue</a></h1>
-<p>TODO</p>
-<p>Switching a #NuttX GPIO Interrupt Pin to Trigger On Rising Edge … Crashes with an Assertion Failure … I’ll submit a NuttX Issue, meanwhile I have disabled the assertion</p>
-<p>TODO50</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-int.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547">(Source)</a></p>
-<h1 id="appendix-callout-issue" class="section-header"><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a></h1>
-<p>TODO</p>
-<p>NimBLE Porting Layer doesn’t work for multiple Callout Timers on #NuttX OS, unless we loop the thread … Will submit a Pull Request to Apache NimBLE 👍</p>
-<p>TODO42</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-callout.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/nimble-porting-nuttx/blob/master/porting/npl/nuttx/src/os_callout.c#L35-L70">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title2.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 
     
