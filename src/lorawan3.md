@@ -1335,9 +1335,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     (Which won't get revamped overnight!)
 
-1.  Will NuttX become the official OS for PineDio Stack BL604 when it goes on sale?
+1.  Will __NuttX become the official OS__ for PineDio Stack BL604 when it goes on sale?
 
     It might! But first let's get LoRaWAN and ST7789 Display running together on PineDio Stack.
+
+1.  LoRaWAN on NuttX is a great way to __test a new gadget__ like PineDio Stack BL604!
+
+    Today we have tested: SPI Bus, GPIO Input / Output / Interrupt, Multithreading, Timers and Message Queues!
 
 1.  Is there another solution for the __Nonce Quirk?__
 
