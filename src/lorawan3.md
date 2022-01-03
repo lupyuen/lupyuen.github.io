@@ -14,9 +14,9 @@ Today we shall run __LoRaWAN__ on NuttX OS!
 
 _Why would we need LoRaWAN?_
 
-LoRa will work perfectly fine for unsecured __Point-to-Point Wireless Communication__.
+LoRa will work perfectly fine for unsecured __Point-to-Point Wireless Communication__ between simple devices.
 
-But if we need to __relay data packets__ securely to a Local Area Network or to the internet, we need __LoRaWAN__.
+But if we're building __IoT Sensor Devices__ that will __transmit data packets__ securely to a Local Area Network or to the internet, we need __LoRaWAN__.
 
 [(More about LoRaWAN)](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
 
@@ -1263,9 +1263,15 @@ Stay tuned for updates!
 
 # What's Next
 
-TODO
+We hope to build a __complete IoT Sensor Device__ with NuttX.
 
-CBOR, TTN, Temperature Sensor
+Now that LoRaWAN is up, we'll carry on in the next few articles...
+
+-   Implement __CBOR on NuttX__ for compressing Sensor Data
+
+-   Transmit the compressed Sensor Data to __The Things Network__ over LoRaWAN
+
+-   We'll read the onboard __Temperature Sensor__ on BL602 to get real Sensor Data
 
 _We're porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?_
 
