@@ -1229,17 +1229,33 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11
 
 Today we have successfully tested the LoRaWAN Library on [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio) (pic below) and its onboard Semtech SX1262 Transceiver.
 
-The NuttX implementation of __SPI on BL604__ might need some enhancements...
+The NuttX implementation of __SPI on BL602 and BL604__ might need some enhancements...
 
-TODO
+-   NuttX on BL602 / BL604 executes __SPI Data Transfer with Polling__ (not DMA)
 
-Polling
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L763-L803)
 
-[(See this)](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L763-L803)
+-   LoRaWAN is __Time Sensitive__, as explained earlier. SPI with Polling might cause __incoming packets to be dropped__.
 
-ST7789
+    (SPI with DMA is probably better for LoRaWAN)
 
--   [__"Create DMA Linked List (BL602 SPI)"__](https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list)
+-   We're testing NuttX and LoRaWAN on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), which comes with an onboard __ST7789 SPI Display__.
+
+    __ST7789 works better with DMA__ when blasting pixels to the display.
+
+-   We might have __contention between ST7789 and SX1262__ if we do SPI with Polling
+
+    (How would we multitask LoRaWAN with Display Updates?)
+
+Hence we might need to __implement SPI with DMA__ real soon on BL602 and BL604.
+
+We could port the implementation of SPI DMA from __BL602 IoT SDK__ to NuttX...
+
+-   [__"Create DMA Linked List"__](https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list)
+
+-   [__"Execute SPI Transfer with DMA"__](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma)
+
+Stay tuned for updates!
 
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
 
