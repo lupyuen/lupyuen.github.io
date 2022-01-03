@@ -52,6 +52,12 @@ LoRaWAN works __slightly differently across the world regions__, to comply with 
 
 Thus we should port __Semtech's LoRaWAN Stack__ to NuttX with __minimal changes__, in case of future updates. (Like for new regions)
 
+_How does our LoRaWAN Library talk to the LoRa SX1262 Library?_
+
+Our LoRaWAN Library talks through Semtech's __Radio Interface__ that's exposed by the LoRa SX1262 Library...
+
+-   [__"Radio Functions (LoRaa SX1262)"__](https://lupyuen.github.io/articles/sx1262#appendix-radio-functions)
+
 _How did we create the LoRaWAN Library?_
 
 We followed the steps below to create __"nuttx/libs/liblorawan"__ by cloning a NuttX Library...
