@@ -1084,7 +1084,7 @@ _What can we check?_
 
 1.  In the output of our LoRaWAN Test App, verify the __Sync Word__ (must be 3444), __Device EUI__ (MSB First), __Join EUI__ (MSB First) and __LoRa Frequency__...
 
-    ```
+    ```text
     RadioSetPublicNetwork: public syncword=3444
     DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
     JoinEui     : 00-00-00-00-00-00-00-00
@@ -1112,6 +1112,8 @@ _What can we check?_
     ```
 
     This is usually caused by incorrect Device EUI, Join EUI or App Key.
+
+    [(More about Message Integrity Code)](https://lupyuen.github.io/articles/wisgate#message-integrity-code)
 
 1.  On our LoRaWAN Gateway, scan the log for __Nonce Errors__...
 
@@ -1152,9 +1154,9 @@ _What can we check?_
 
 ## LoRaWAN is Time Sensitive
 
-Warning: LoRaWAN is Time Sensitive!
+__Warning:__ LoRaWAN is Time Sensitive!
 
-Our LoRaWAN Library needs to handle Events in a timely manner... Or the protocol fails.
+Our LoRaWAN Library needs to __handle Events in a timely manner__... Or the protocol fails.
 
 This is the normal flow for the __Join Network Request__...
 
@@ -1174,7 +1176,7 @@ Watch what happens if __our device gets too busy__...
 | Transmit OK Interrupt |
 | __(Busy Busy)__ | ← Join Accept Response
 | __Switch to Receive Mode__ |
-| __Join Response not received!__ |
+| __Join Response missing!__ |
 
 TODO
 
