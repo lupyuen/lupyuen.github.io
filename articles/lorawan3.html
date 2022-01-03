@@ -106,10 +106,10 @@
 <p>Today we shall run <strong>LoRaWAN</strong> on NuttX OS!</p>
 <p><em>Why would we need LoRaWAN?</em></p>
 <p>LoRa will work perfectly fine for unsecured <strong>Point-to-Point Wireless Communication</strong> between simple devices.</p>
-<p>But if we’re building <strong>IoT Sensor Devices</strong> that will <strong>transmit data packets</strong> securely to a Local Area Network or to the internet, we need <strong>LoRaWAN</strong>.</p>
+<p>But if we’re building an <strong>IoT Sensor Device</strong> that will <strong>transmit data packets</strong> securely to a Local Area Network or to the internet, we need <strong>LoRaWAN</strong>.</p>
 <p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRaWAN)</a></p>
-<p>We shall test LoRaWAN on NuttX with Bouffalo Lab’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604 RISC-V SoCs</strong></a>.</p>
-<p>(It will probably run on <strong>ESP32</strong>, since we’re calling standard NuttX Interfaces)</p>
+<p>We shall test LoRaWAN on NuttX with <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604 RISC-V Board</strong></a> (pic above) with its onboard Semtech SX1262 Transceiver.</p>
+<p>(LoRaWAN on NuttX will probably run on <strong>ESP32</strong>, since we’re calling standard NuttX Interfaces)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="small-steps" class="section-header"><a href="#small-steps">1 Small Steps</a></h1>
 <p>In the last article we created a <strong>LoRa Library for NuttX</strong> (top right) that works with <strong>Semtech SX1262 Transceiver</strong>…</p>
@@ -238,6 +238,10 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/lorawan_test"><strong>“Install LoRaWAN Test App”</strong></a></p>
+</li>
+<li>
+<p>Disable the Assertion Check for <strong>GPIO Pin Type</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#appendix-gpio-pin-type-issue"><strong>“GPIO Pin Type Issue”</strong></a></p>
 </li>
 </ol>
 <p>Let’s configure our LoRaWAN code.</p>
@@ -1041,17 +1045,17 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p>Stay tuned for updates!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">15 What’s Next</a></h1>
-<p>We hope to build a <strong>complete IoT Sensor Device</strong> with NuttX.</p>
+<p>We’re ready to build a <strong>complete IoT Sensor Device</strong> with NuttX!</p>
 <p>Now that LoRaWAN is up, we’ll carry on in the next few articles…</p>
 <ul>
 <li>
-<p>Implement <strong>CBOR on NuttX</strong> for compressing Sensor Data</p>
+<p>Implement <a href="https://github.com/intel/tinycbor"><strong>CBOR on NuttX</strong></a> for compressing Sensor Data</p>
 </li>
 <li>
-<p>Transmit the compressed Sensor Data to <strong>The Things Network</strong> over LoRaWAN</p>
+<p>Transmit the compressed Sensor Data to <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a> over LoRaWAN</p>
 </li>
 <li>
-<p>We’ll read the onboard <strong>Temperature Sensor</strong> on BL602 to get real Sensor Data</p>
+<p>We’ll read BL602’s <a href="https://lupyuen.github.io/articles/tsen"><strong>Internal Temperature Sensor</strong></a> to get real Sensor Data</p>
 </li>
 </ul>
 <p><em>We’re porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</em></p>
@@ -1118,7 +1122,9 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p>It might! But first let’s get LoRaWAN and ST7789 Display running together on PineDio Stack.</p>
 </li>
 <li>
-<p>TODO: Non Volatile Memory</p>
+<p>Is there another solution for the <strong>Nonce Quirk?</strong></p>
+<p>We could store the Last Used Nonce into <strong>Non-Volatile Memory</strong> to be sure that we don’t reuse the Nonce.</p>
+<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L68-L97">(See this)</a></p>
 </li>
 </ol>
 <h1 id="appendix-posix-timers-and-message-queues" class="section-header"><a href="#appendix-posix-timers-and-message-queues">17 Appendix: POSIX Timers and Message Queues</a></h1>
