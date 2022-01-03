@@ -5,9 +5,9 @@
         <description>IoT Techie and Educator</description>
         <item>
             <title>LoRaWAN on Apache NuttX OS</title>
-            <link>https://lupyuen.github.io/articles/lorawan</link>
+            <link>https://lupyuen.github.io/articles/lorawan3</link>
             <description><![CDATA[Porting Semtech's LoRaWAN Stack to Apache NuttX OS... And testing it on PineDio Stack BL604 RISC-V Board]]></description>
-            <guid>https://lupyuen.github.io/articles/lorawan</guid>
+            <guid>https://lupyuen.github.io/articles/lorawan3</guid>
             <pubDate>Mon, 03 Jan 2022 00:00:00 +0000</pubDate>
         </item>
         <item>
