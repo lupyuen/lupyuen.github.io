@@ -1235,7 +1235,7 @@ The NuttX implementation of __SPI on BL602 and BL604__ might need some enhanceme
 
 -   NuttX on BL602 / BL604 executes __SPI Data Transfer with Polling__ (not DMA)
 
-    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L763-L803)
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L734-L803)
 
 -   LoRaWAN is __Time Sensitive__, as explained earlier. SPI with Polling might cause __incoming packets to be dropped__.
 
