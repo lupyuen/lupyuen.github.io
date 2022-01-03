@@ -87,7 +87,7 @@
 <li><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a><ul></ul></li>
 <li><a href="#troubleshoot-lorawan">13 Troubleshoot LoRaWAN</a><ul>
 <li><a href="#lorawan-is-time-sensitive">13.1 LoRaWAN is Time Sensitive</a><ul></ul></li>
-<li><a href="#message-size-1">13.2 Message Size</a><ul></ul></li></ul></li>
+<li><a href="#empty-lorawan-message">13.2 Empty LoRaWAN Message</a><ul></ul></li></ul></li>
 <li><a href="#spi-with-dma">14 SPI with DMA</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
 <li><a href="#notes">16 Notes</a><ul></ul></li>
@@ -948,7 +948,7 @@ chirpstack-network-server[5749]:
 </li>
 <li>
 <p>Verify the <strong>Message Size</strong> for the Data Rate</p>
-<p>(See <strong>“Message Size”</strong> below)</p>
+<p>(See <strong>“Empty LoRaWAN Message”</strong> below)</p>
 </li>
 <li>
 <p>More troubleshooting tips…</p>
@@ -976,19 +976,36 @@ chirpstack-network-server[5749]:
 <tr><td align="left"><strong>Join Response missing!</strong></td><td align="left"></td></tr>
 </tbody></table>
 </div>
-<p>TODO</p>
-<p>Our #NuttX App was too busy to receive the #LoRaWAN Join Response … Let’s disable the logging</p>
-<p>After disabling logging, our #NuttX App successfully joins the #LoRaWAN Network! 🎉 Now we transmit some Data Packets over LoRaWAN</p>
+<p>This might happen if our device is busy <strong>writing debug logs</strong> to the console.</p>
+<p>Thus we should <strong>disable Info Logging</strong> on NuttX…</p>
+<ol>
+<li>
+<p>In <strong>menuconfig</strong>, select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong> </p>
+</li>
+<li>
+<p><strong>Uncheck</strong> the following…</p>
+<ul>
+<li><strong>Enable Info Debug Output</strong></li>
+<li><strong>GPIO Info Output</strong></li>
+<li><strong>SPI Info Output</strong></li>
+</ul>
+</li>
+</ol>
+<p>(It’s OK to enable Debug Assertions, Error Output and Warning Output)</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx.png" alt="LoRaWAN is Time Sensitive" /></p>
 <p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Source)</a></p>
-<h2 id="message-size-1" class="section-header"><a href="#message-size-1">13.2 Message Size</a></h2>
-<p>TODO</p>
-<p>Our #LoRaWAN Gateway receives Data Packets from #NuttX OS! 🎉 The Message Payload is empty … Let’s figure out why 🤔</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack5.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89">(Log)</a></p>
-<p>Our #NuttX App sent an empty #LoRaWAN Message because our message is too long for LoRaWAN Data Rate 2 (max 11 bytes) … Let’s increase the Data Rate to 3</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="" /></p>
-<p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Log)</a></p>
+<h2 id="empty-lorawan-message" class="section-header"><a href="#empty-lorawan-message">13.2 Empty LoRaWAN Message</a></h2>
+<p><em>What happens when we send a message that’s too large?</em></p>
+<p>Our LoRaWAN Library will transmit an <strong>Empty Message Payload!</strong></p>
+<p>We’ll see this in the LoRaWAN Gateway…</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack5.png" alt="Empty Message Payload" /></p>
+<p><a href="https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89">(Output Log)</a></p>
+<p>In the output for our LoRaWAN Test App, look for <strong>“maxSize”</strong> to verify the <strong>Maximum Message Size</strong> for our Data Rate and LoRaWAN Region… </p>
+<div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#message-size">(More about Message Size)</a></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="Checking message size" /></p>
+<p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Source)</a></p>
 <h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">14 SPI with DMA</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
