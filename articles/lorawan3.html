@@ -899,11 +899,10 @@ static void handle_event_queue(void *arg) {
 <ol>
 <li>
 <p>In the output of our LoRaWAN Test App, verify the <strong>Sync Word</strong> (must be 3444), <strong>Device EUI</strong> (MSB First), <strong>Join EUI</strong> (MSB First) and <strong>LoRa Frequency</strong>…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">RadioSetPublicNetwork</span>: <span class="ident">public</span> <span class="ident">syncword</span><span class="op">=</span><span class="number">3444</span>
-<span class="ident">DevEui</span>      : <span class="number">4B</span><span class="op">-</span><span class="ident">C1</span><span class="op">-</span><span class="number">5E-E7</span><span class="op">-</span><span class="number">37</span><span class="op">-</span><span class="number">7B</span><span class="op">-</span><span class="ident">B1</span><span class="op">-</span><span class="number">5B</span>
-<span class="ident">JoinEui</span>     : <span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span><span class="op">-</span><span class="number">00</span>
-<span class="ident">RadioSetChannel</span>: <span class="ident">freq</span><span class="op">=</span><span class="number">923400000</span></code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>RadioSetPublicNetwork: public syncword=3444
+DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
+JoinEui     : 00-00-00-00-00-00-00-00
+RadioSetChannel: freq=923400000</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-run2a.png" alt="LoRa Frequency, Sync Word, Device EUI and Join EUI" /></p>
 </li>
@@ -921,6 +920,7 @@ chirpstack-application-server[568]:
   dev_eui=4bc15ee7377bb15b 
   type=DATA_UP_MIC</code></pre></div>
 <p>This is usually caused by incorrect Device EUI, Join EUI or App Key.</p>
+<p><a href="https://lupyuen.github.io/articles/wisgate#message-integrity-code">(More about Message Integrity Code)</a></p>
 </li>
 <li>
 <p>On our LoRaWAN Gateway, scan the log for <strong>Nonce Errors</strong>…</p>
@@ -956,8 +956,8 @@ chirpstack-network-server[5749]:
 </li>
 </ol>
 <h2 id="lorawan-is-time-sensitive" class="section-header"><a href="#lorawan-is-time-sensitive">13.1 LoRaWAN is Time Sensitive</a></h2>
-<p>Warning: LoRaWAN is Time Sensitive!</p>
-<p>Our LoRaWAN Library needs to handle Events in a timely manner… Or the protocol fails.</p>
+<p><strong>Warning:</strong> LoRaWAN is Time Sensitive!</p>
+<p>Our LoRaWAN Library needs to <strong>handle Events in a timely manner</strong>… Or the protocol fails.</p>
 <p>This is the normal flow for the <strong>Join Network Request</strong>…</p>
 <div><table><thead><tr><th align="left"><em>Our Device</em></th><th align="left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
 <tr><td align="left">Join Network Request →</td><td align="left"></td></tr>
@@ -973,7 +973,7 @@ chirpstack-network-server[5749]:
 <tr><td align="left">Transmit OK Interrupt</td><td align="left"></td></tr>
 <tr><td align="left"><strong>(Busy Busy)</strong></td><td align="left">← Join Accept Response</td></tr>
 <tr><td align="left"><strong>Switch to Receive Mode</strong></td><td align="left"></td></tr>
-<tr><td align="left"><strong>Join Response not received!</strong></td><td align="left"></td></tr>
+<tr><td align="left"><strong>Join Response missing!</strong></td><td align="left"></td></tr>
 </tbody></table>
 </div>
 <p>TODO</p>
