@@ -16,13 +16,13 @@ _Why would we need LoRaWAN?_
 
 LoRa will work perfectly fine for unsecured __Point-to-Point Wireless Communication__ between simple devices.
 
-But if we're building __IoT Sensor Devices__ that will __transmit data packets__ securely to a Local Area Network or to the internet, we need __LoRaWAN__.
+But if we're building an __IoT Sensor Device__ that will __transmit data packets__ securely to a Local Area Network or to the internet, we need __LoRaWAN__.
 
 [(More about LoRaWAN)](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
 
-We shall test LoRaWAN on NuttX with Bouffalo Lab's [__BL602 and BL604 RISC-V SoCs__](https://lupyuen.github.io/articles/pinecone).
+We shall test LoRaWAN on NuttX with [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio) (pic above) with its onboard Semtech SX1262 Transceiver.
 
-(It will probably run on __ESP32__, since we're calling standard NuttX Interfaces)
+(LoRaWAN on NuttX will probably run on __ESP32__, since we're calling standard NuttX Interfaces)
 
 ![Porting LoRaWAN to NuttX OS](https://lupyuen.github.io/images/sx1262-library5.jpg)
 
@@ -165,6 +165,10 @@ Or if we prefer to __add the LoRaWAN Library__ to our NuttX Project, follow thes
 1.  [__"Install LoRaWAN Library"__](https://github.com/lupyuen/LoRaMac-node-nuttx)
 
 1.  [__"Install LoRaWAN Test App"__](https://github.com/lupyuen/lorawan_test)
+
+1.  Disable the Assertion Check for __GPIO Pin Type__...
+
+    [__"GPIO Pin Type Issue"__](https://lupyuen.github.io/articles/sx1262#appendix-gpio-pin-type-issue)
 
 Let's configure our LoRaWAN code.
 
@@ -1263,15 +1267,15 @@ Stay tuned for updates!
 
 # What's Next
 
-We hope to build a __complete IoT Sensor Device__ with NuttX.
+We're ready to build a __complete IoT Sensor Device__ with NuttX!
 
 Now that LoRaWAN is up, we'll carry on in the next few articles...
 
--   Implement __CBOR on NuttX__ for compressing Sensor Data
+-   Implement [__CBOR on NuttX__](https://github.com/intel/tinycbor) for compressing Sensor Data
 
--   Transmit the compressed Sensor Data to __The Things Network__ over LoRaWAN
+-   Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN
 
--   We'll read the onboard __Temperature Sensor__ on BL602 to get real Sensor Data
+-   We'll read BL602's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/tsen) to get real Sensor Data
 
 _We're porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?_
 
@@ -1333,7 +1337,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     It might! But first let's get LoRaWAN and ST7789 Display running together on PineDio Stack.
 
-1.  TODO: Non Volatile Memory
+1.  Is there another solution for the __Nonce Quirk?__
+
+    We could store the Last Used Nonce into __Non-Volatile Memory__ to be sure that we don't reuse the Nonce.
+
+    [(See this)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L68-L97)
 
 # Appendix: POSIX Timers and Message Queues
 
