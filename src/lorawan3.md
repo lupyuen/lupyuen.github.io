@@ -67,7 +67,7 @@ git rm -r liblorawan
 git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan
 ```
 
-[(To add the LoRaWAN Library to your NuttX Project, see this)](https://github.com/lupyuen/LoRaMac-node-nuttx)
+[(To add the LoRaWAN Library to your NuttX Project, see this)](https://lupyuen.github.io/articles/lorawan3#download-source-code)
 
 ## Dependencies
 
