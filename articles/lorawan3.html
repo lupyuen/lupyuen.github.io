@@ -98,7 +98,7 @@
 <li><a href="#flash-nuttx">19.2 Flash NuttX</a><ul></ul></li>
 <li><a href="#run-nuttx">19.3 Run NuttX</a><ul></ul></li></ul></li>
 <li><a href="#appendix-gpio-issue">20 Appendix: GPIO Issue</a><ul></ul></li>
-<li><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2022</em></p>
+<li><a href="#appendix-callout-issue">21 Appendix: Callout Issue</a><ul></ul></li></ul></nav><p>📝 <em>3 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <p>Last article we got <strong>LoRa</strong> (the long-range, low-bandwidth wireless network) running on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a>…</p>
@@ -977,6 +977,7 @@ chirpstack-network-server[5749]:
 </tbody></table>
 </div>
 <p>This might happen if our device is busy <strong>writing debug logs</strong> to the console.</p>
+<p>(The LoRaWAN Gateway returns the Join Accept Response in under 1 second)</p>
 <p>Thus we should <strong>disable Info Logging</strong> on NuttX…</p>
 <ol>
 <li>
@@ -1044,12 +1045,6 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">15 What’s Next</a></h1>
 <p>TODO</p>
 <p>CBOR, TTN, Temperature Sensor</p>
-<p>In our next article we’ll move on to <strong>LoRaWAN!</strong></p>
-<p>(Which will be super interesting because of multithreading)</p>
-<p>We’ll port Semtech’s <strong>Reference LoRaWAN Stack</strong> to NuttX…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>lupyuen/LoRaMac-node-nuttx</strong></a></li>
-</ul>
 <p><em>We’re porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</em></p>
 <p>Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech’s version.  <a href="https://lupyuen.github.io/articles/lorawan3#notes">(But we shall minimise the changes)</a></p>
 <p>Stay Tuned!</p>
@@ -1074,9 +1069,6 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1473593455699841027">this Twitter Thread</a></p>
-</li>
-<li>
-<p>TODO: Non Volatile Memory</p>
 </li>
 <li>
 <p>We’re <strong>porting plenty of code</strong> to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?</p>
@@ -1114,7 +1106,10 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 </li>
 <li>
 <p>Will NuttX become the official OS for PineDio Stack BL604 when it goes on sale?</p>
-<p>It might! But first let’s get LoRaWAN (and ST7789) running on PineDio Stack.</p>
+<p>It might! But first let’s get LoRaWAN and ST7789 Display running together on PineDio Stack.</p>
+</li>
+<li>
+<p>TODO: Non Volatile Memory</p>
 </li>
 </ol>
 <h1 id="appendix-posix-timers-and-message-queues" class="section-header"><a href="#appendix-posix-timers-and-message-queues">17 Appendix: POSIX Timers and Message Queues</a></h1>
