@@ -402,7 +402,16 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
 
     [(See the .config for BL602 and BL604)](https://gist.github.com/lupyuen/d0487cda965f72ed99631d168ea4f5c8)
 
-1.  __For ESP32:__ Edit [__esp32_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) to register our SPI Test Driver [(See this)](https://lupyuen.github.io/articles/spi2#register-device-driver)
+1.  __For ESP32:__ Edit the function __esp32_bringup__ in this file...
+
+    ```text
+    ## Change "esp32-devkitc" to our ESP32 board 
+    nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
+    ```
+
+    And call __spi_test_driver_register__ to register our SPI Test Driver.
+    
+    [(See this)](https://lupyuen.github.io/articles/spi2#register-device-driver)
 
 1.  Build, flash and run the NuttX Firmware on BL602 or ESP32...
 
