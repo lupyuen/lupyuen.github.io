@@ -1288,7 +1288,7 @@ Now that LoRaWAN is up, we'll carry on in the next few articles...
 
 -   Implement [__CBOR on NuttX__](https://github.com/intel/tinycbor) for compressing Sensor Data
 
--   Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN
+-   Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN (pic below)
 
 -   We'll read BL602's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/tsen) to get real Sensor Data
 
@@ -1313,6 +1313,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/lorawan3.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan3.md)
+
+![NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN](https://lupyuen.github.io/images/lorawan3-ttn.png)
+
+_NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN_
 
 # Notes
 
