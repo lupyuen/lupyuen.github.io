@@ -431,7 +431,11 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://gist.github.com/lupyuen/d0487cda965f72ed99631d168ea4f5c8">(See the .config for BL602 and BL604)</a></p>
 </li>
 <li>
-<p><strong>For ESP32:</strong> Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a> to register our SPI Test Driver <a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
+<p><strong>For ESP32:</strong> Edit the function <strong>esp32_bringup</strong> in this file…</p>
+<div class="example-wrap"><pre class="language-text"><code># Change &quot;esp32-devkitc&quot; to our ESP32 board 
+nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
+<p>And call <strong>spi_test_driver_register</strong> to register our SPI Test Driver.</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
 </li>
 <li>
 <p>Build, flash and run the NuttX Firmware on BL602 or ESP32…</p>
