@@ -1315,7 +1315,7 @@ Now we update the Makefile so that NuttX will build our Device Driver...
     ## Preserve the Build Config
     cp .config ../config
 
-    ## Erase the Build Config and Kconfig files
+    ## Erase the Build Config
     make distclean
 
     ## For BL602: Configure the build for BL602
@@ -1565,7 +1565,7 @@ This section explains the steps to create a __NuttX App__ named __"spi_test"__.
     ## Preserve the Build Config
     cp .config ../config
 
-    ## Erase the Build Config and Kconfig files
+    ## Erase the Build Config
     make distclean
 
     ## For BL602: Configure the build for BL602
