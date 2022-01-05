@@ -701,6 +701,10 @@ If we're transmitting CBOR packets to a server (or cloud), we can decode them wi
 
 -   [__CBOR Implementations__](https://cbor.io/impls.html)
 
+We can decode CBOR Payloads in __The Things Network__ with a CBOR Payload Formatter...
+
+-   [__"CBOR Payload Formatter for The Things Network"__](https://lupyuen.github.io/articles/payload)
+
 For Grafana we used a __Go Library for CBOR__...
 
 -   [__"Decode CBOR in Go"__](https://lupyuen.github.io/articles/grafana#decode-cbor-in-go)

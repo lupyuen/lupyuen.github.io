@@ -510,8 +510,6 @@ Learn more about Accuracy and Precision of Sensor Data...
 
 # Decode CBOR
 
-TODO
-
 _For decoding CBOR packets, can we call the TinyCBOR Library?_
 
 Sure, we can call the __Decoder Functions__ in the TinyCBOR Library...
@@ -526,7 +524,9 @@ If we're transmitting CBOR packets to a server (or cloud), we can decode them wi
 
 -   [__CBOR Implementations__](https://cbor.io/impls.html)
 
-TODO: The Things Network CBOR Payload Decoder
+We can decode CBOR Payloads in __The Things Network__ with a CBOR Payload Formatter...
+
+-   [__"CBOR Payload Formatter for The Things Network"__](https://lupyuen.github.io/articles/payload)
 
 For Grafana we used a __Go Library for CBOR__...
 
