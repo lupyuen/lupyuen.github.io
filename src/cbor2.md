@@ -65,9 +65,9 @@ We call this a __CBOR Map__ that maps a __Key__ ("`t`") to a __Value__ (`1234`).
 
 > ![CBOR Map with 1 Key-Value Pair](https://lupyuen.github.io/images/cbor-map.png)
 
-Let's look at the code from our firmware that encodes the above into CBOR...
+Let's look at the code from our NuttX App that encodes the above into CBOR...
 
--   [__pinedio_cbor Firmware__](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_cbor)
+-   [__lupyuen/tinycbor_test__](https://github.com/lupyuen/tinycbor_test)
 
 ## Output Buffer and CBOR Encoder
 
