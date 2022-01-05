@@ -51,8 +51,6 @@ Yes, __every single byte matters__ for low-power wireless networks!
 
 # Encode Sensor Data with TinyCBOR
 
-TODO
-
 We begin by encoding one data field into CBOR...
 
 ```json
@@ -71,17 +69,17 @@ Let's look at the code from our NuttX App that encodes the above into CBOR...
 
 ## Output Buffer and CBOR Encoder
 
-First we create an __Output Buffer__ that will hold the encoded CBOR data: [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66)
+First we create an __Output Buffer__ that will hold the encoded CBOR data: [tinycbor_test_main.c](https://github.com/lupyuen/tinycbor_test/blob/main/tinycbor_test_main.c#L22-L82)
 
 ```c
 /// Test CBOR Encoding for { "t": 1234 }
-static void test_cbor(char *buf, int len, int argc, char **argv) {
+static void test_cbor(void) {
 
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];
 ```
 
-[(50 bytes is the max packet size for The Things Network AS923 DR2)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
+[(50 bytes is the max packet size for LoRaWAN AS923 Data Rate 2)](https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network)
 
 __Output Buffer Size__ is important: Calls to the __TinyCBOR library will fail__ if we run out of buffer space!
 
@@ -197,19 +195,22 @@ Let's watch what happens when we run the firmware...
 
 ## Magic Happens
 
+TODO
+
 Follow the steps in the Appendix to __build, flash and run__ the CBOR Firmware...
 
 -   [__TODO: "Build and Run CBOR Firmware"__](https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware)
 
-At the BL602 / BL604 Command Prompt, enter...
+In the NuttX Shell, enter...
 
 ```bash
-test_cbor
+tinycbor_test
 ```
 
-We'll see 6 bytes of __Encoded CBOR Output__...
+We'll see 6 bytes of __Encoded CBOR Output__ for "test_cbor"...
 
 ```text
+test_cbor: Encoding { "t": 1234 }
 CBOR Output: 6 bytes
   0xa1
   0x61
@@ -231,11 +232,11 @@ Into __6 bytes of CBOR__.
 
 We have scrimped and saved __4 bytes__!
 
+TODO
+
 ![Encoded CBOR Output](https://lupyuen.github.io/images/cbor-output2.png)
 
 # Add Another Field
-
-TODO
 
 Now we __add another field__ to our CBOR Encoding...
 
@@ -252,11 +253,11 @@ And watch how our program changes to accommodate the second field.
 
 ## Modify Map Encoder
 
-We begin the same way as before: [pinedio_cbor/demo.c](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139)
+We begin the same way as before: [tinycbor_test_main.c](https://github.com/lupyuen/tinycbor_test/blob/main/tinycbor_test_main.c#L84-L158)
 
 ```c
 /// Test CBOR Encoding for { "t": 1234, "l": 2345 }
-static void test_cbor2( ... ) {
+static void test_cbor2(void) {
 
   //  Max output size is 50 bytes (which fits in a LoRa packet)
   uint8_t output[50];
@@ -355,19 +356,22 @@ Everything else stays the same.
 
 ## Watch the Magic
 
+TODO
+
 Follow the steps in the Appendix to __build, flash and run__ the CBOR Firmware...
 
 -   [__TODO: "Build and Run CBOR Firmware"__](https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware)
 
-At the BL602 / BL604 Command Prompt, enter...
+In the NuttX Shell, enter...
 
 ```bash
-test_cbor2
+tinycbor_test
 ```
 
-This time we'll see 11 bytes of __Encoded CBOR Output__...
+We'll see 11 bytes of __Encoded CBOR Output__ for "test_cbor2"...
 
 ```text
+test_cbor2: Encoding { "t": 1234, "l": 2345 }
 CBOR Output: 11 bytes
   0xa2
   0x61
@@ -393,8 +397,6 @@ If we wish to call TinyCBOR from an existing NuttX project, check the Appendix..
 ![Encoding Sensor Data with CBOR](https://lupyuen.github.io/images/cbor2-title.jpg)
 
 # CBOR Data Types
-
-TODO
 
 _We've been encoding 64-bit Signed Integers. What other Data Types can we encode?_
 
@@ -453,8 +455,6 @@ To experiment with CBOR Encoding and Decoding, try the [__CBOR Playground__](htt
 ![CBOR Playground](https://lupyuen.github.io/images/grafana-cbor5.png)
 
 # Floating-Point Numbers
-
-TODO
 
 The CBOR spec says that there are [__3 ways to encode floats__](https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-)...
 
