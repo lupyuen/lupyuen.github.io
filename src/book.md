@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _30 Dec 2021_
+📝 _5 Jan 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(41 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(42 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -199,6 +199,8 @@ For __Apache NuttX OS__...
 -   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
 
 -   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
+
+-   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
 
 Connecting BL602 and BL604 to a __LoRa Gateway__...
 

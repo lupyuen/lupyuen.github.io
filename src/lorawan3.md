@@ -1286,7 +1286,9 @@ We're ready to build a __complete IoT Sensor Device__ with NuttX!
 
 Now that LoRaWAN is up, we'll carry on in the next few articles...
 
--   Implement [__CBOR on NuttX__](https://github.com/intel/tinycbor) for compressing Sensor Data
+-   Implement [__CBOR on NuttX__](https://github.com/intel/tinycbor) for compressing Sensor Data...
+
+    [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
 
 -   Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN (pic below)
 
