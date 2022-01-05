@@ -2,8 +2,6 @@
 
 📝 _12 Jan 2022_
 
-TODO
-
 Suppose we're creating an IoT Gadget with __Apache NuttX OS__ that transmits __Sensor Data__ from two sensors: __Temperature Sensor and Light Sensor__...
 
 ```json
@@ -222,7 +220,7 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
 
 1.  Assume that we have downloaded the __NuttX Source Code__...
 
-    [__"TODO: Download Source Code"__](https://lupyuen.github.io/articles/lorawan3#download-source-code)
+    [__"Download Source Code"__](https://lupyuen.github.io/articles/cbor2#download-source-code)
 
 1.  Configure the build...
 
@@ -413,12 +411,6 @@ Everything else stays the same.
 
 ## Watch the Magic
 
-TODO
-
-Follow the steps in the Appendix to __build, flash and run__ the CBOR Firmware...
-
--   [__TODO: "Build and Run CBOR Firmware"__](https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware)
-
 In the NuttX Shell, enter...
 
 ```bash
@@ -446,10 +438,6 @@ CBOR Output: 11 bytes
 We have just compressed __19 bytes of JSON__ into __11 bytes of CBOR__.
 
 __8 bytes__ saved!
-
-If we wish to call TinyCBOR from an existing NuttX project, check the Appendix...
-
--   [__"TODO: Add TinyCBOR to Your Project"__](https://lupyuen.github.io/articles/cbor#appendix-add-tinycbor-to-your-project)
 
 ![Encoding Sensor Data with CBOR](https://lupyuen.github.io/images/cbor2-title.jpg)
 
@@ -645,9 +633,9 @@ Follow these steps to build NuttX for BL602 or ESP32...
 
 1.  Assume that we have downloaded the __NuttX Source Code__ and configured the build...
 
-    [__"TODO: Download Source Code"__](https://lupyuen.github.io/articles/lorawan3#download-source-code)
+    [__"Download Source Code"__](https://lupyuen.github.io/articles/cbor2#download-source-code)
 
-    TODO: Configure the build
+    [__"Build the Firmware"__](https://lupyuen.github.io/articles/cbor2#build-the-firmware)
 
 1.  To build NuttX, enter this command...
 
