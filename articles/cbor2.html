@@ -94,7 +94,6 @@
 <li><a href="#flash-nuttx">8.2 Flash NuttX</a><ul></ul></li>
 <li><a href="#run-nuttx">8.3 Run NuttX</a><ul></ul></li></ul></li>
 <li><a href="#appendix-porting-tinycbor-to-nuttx">9 Appendix: Porting TinyCBOR to NuttX</a><ul></ul></li></ul></nav><p>📝 <em>12 Jan 2022</em></p>
-<p>TODO</p>
 <p>Suppose we’re creating an IoT Gadget with <strong>Apache NuttX OS</strong> that transmits <strong>Sensor Data</strong> from two sensors: <strong>Temperature Sensor and Light Sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
@@ -240,7 +239,7 @@ git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx-a
 </li>
 <li>
 <p>Assume that we have downloaded the <strong>NuttX Source Code</strong>…</p>
-<p><a href="https://lupyuen.github.io/articles/lorawan3#download-source-code"><strong>“TODO: Download Source Code”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/cbor2#download-source-code"><strong>“Download Source Code”</strong></a></p>
 </li>
 <li>
 <p>Configure the build…</p>
@@ -383,11 +382,6 @@ static void test_cbor2(void) {
 <p><img src="https://lupyuen.github.io/images/cbor-code2.png" alt="Add a second field" /></p>
 </blockquote>
 <h2 id="watch-the-magic" class="section-header"><a href="#watch-the-magic">2.4 Watch the Magic</a></h2>
-<p>TODO</p>
-<p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the CBOR Firmware…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware"><strong>TODO: “Build and Run CBOR Firmware”</strong></a></li>
-</ul>
 <p>In the NuttX Shell, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>tinycbor_test</code></pre></div>
 <p>We’ll see 11 bytes of <strong>Encoded CBOR Output</strong> for “test_cbor2”…</p>
@@ -406,10 +400,6 @@ CBOR Output: 11 bytes
   0x29</code></pre></div>
 <p>We have just compressed <strong>19 bytes of JSON</strong> into <strong>11 bytes of CBOR</strong>.</p>
 <p><strong>8 bytes</strong> saved!</p>
-<p>If we wish to call TinyCBOR from an existing NuttX project, check the Appendix…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/cbor#appendix-add-tinycbor-to-your-project"><strong>“TODO: Add TinyCBOR to Your Project”</strong></a></li>
-</ul>
 <p><img src="https://lupyuen.github.io/images/cbor2-title.jpg" alt="Encoding Sensor Data with CBOR" /></p>
 <h1 id="cbor-data-types" class="section-header"><a href="#cbor-data-types">3 CBOR Data Types</a></h1>
 <p><em>We’ve been encoding 64-bit Signed Integers. What other Data Types can we encode?</em></p>
@@ -593,8 +583,8 @@ CBOR Output: 11 bytes
 </li>
 <li>
 <p>Assume that we have downloaded the <strong>NuttX Source Code</strong> and configured the build…</p>
-<p><a href="https://lupyuen.github.io/articles/lorawan3#download-source-code"><strong>“TODO: Download Source Code”</strong></a></p>
-<p>TODO: Configure the build</p>
+<p><a href="https://lupyuen.github.io/articles/cbor2#download-source-code"><strong>“Download Source Code”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/cbor2#build-the-firmware"><strong>“Build the Firmware”</strong></a></p>
 </li>
 <li>
 <p>To build NuttX, enter this command…</p>
