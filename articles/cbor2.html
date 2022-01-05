@@ -71,7 +71,9 @@
 <li><a href="#encode-key-and-value">1.3 Encode Key and Value</a><ul></ul></li>
 <li><a href="#close-map-encoder">1.4 Close Map Encoder</a><ul></ul></li>
 <li><a href="#get-encoded-output">1.5 Get Encoded Output</a><ul></ul></li>
-<li><a href="#magic-happens">1.6 Magic Happens</a><ul></ul></li></ul></li>
+<li><a href="#download-source-code">1.6 Download Source Code</a><ul></ul></li>
+<li><a href="#build-the-firmware">1.7 Build The Firmware</a><ul></ul></li>
+<li><a href="#magic-happens">1.8 Magic Happens</a><ul></ul></li></ul></li>
 <li><a href="#add-another-field">2 Add Another Field</a><ul>
 <li><a href="#modify-map-encoder">2.1 Modify Map Encoder</a><ul></ul></li>
 <li><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a><ul></ul></li>
@@ -87,7 +89,11 @@
 <li><a href="#decode-cbor">5 Decode CBOR</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#notes">7 Notes</a><ul></ul></li>
-<li><a href="#appendix-porting-tinycbor-to-nuttx">8 Appendix: Porting TinyCBOR to NuttX</a><ul></ul></li></ul></nav><p>📝 <em>12 Jan 2022</em></p>
+<li><a href="#appendix-build-flash-and-run-nuttx">8 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#build-nuttx">8.1 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">8.2 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">8.3 Run NuttX</a><ul></ul></li></ul></li>
+<li><a href="#appendix-porting-tinycbor-to-nuttx">9 Appendix: Porting TinyCBOR to NuttX</a><ul></ul></li></ul></nav><p>📝 <em>12 Jan 2022</em></p>
 <p>TODO</p>
 <p>Suppose we’re creating an IoT Gadget with <strong>Apache NuttX OS</strong> that transmits <strong>Sensor Data</strong> from two sensors: <strong>Temperature Sensor and Light Sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
@@ -206,15 +212,67 @@ static void test_cbor(void) {
 }</code></pre></div>
 <p>And that’s how we call the TinyCBOR Library to work with CBOR data!</p>
 <p>Let’s watch what happens when we run the firmware…</p>
+<p>TODO</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-code.png" alt="Calling the TinyCBOR Library" /></p>
 </blockquote>
-<h2 id="magic-happens" class="section-header"><a href="#magic-happens">1.6 Magic Happens</a></h2>
-<p>TODO</p>
-<p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the CBOR Firmware…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware"><strong>TODO: “Build and Run CBOR Firmware”</strong></a></li>
-</ul>
+<h2 id="download-source-code" class="section-header"><a href="#download-source-code">1.6 Download Source Code</a></h2>
+<p>To test CBOR Encoding on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+<p>Or if we prefer to <strong>add the TinyCBOR</strong> to our NuttX Project, follow these instructions…</p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen2/tinycbor-nuttx"><strong>“Install TinyCBOR Library”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/tinycbor_test"><strong>“Install TinyCBOR Test App”</strong></a></p>
+</li>
+</ol>
+<h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">1.7 Build The Firmware</a></h2>
+<p>Let’s build the NuttX Firmware that contains our <strong>LoRaWAN Library</strong>…</p>
+<ol>
+<li>
+<p>Install the build prerequisites…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p>Assume that we have downloaded the <strong>NuttX Source Code</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#download-source-code"><strong>“TODO: Download Source Code”</strong></a></p>
+</li>
+<li>
+<p>Configure the build…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx
+
+# For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
+
+# Edit the Build Config
+make menuconfig </code></pre></div></li>
+<li>
+<p>In menuconfig, enable our <strong>TinyCBOR Library</strong>…</p>
+<p>Check the box for <strong>“Library Routines”</strong> → <strong>“TinyCBOR Library”</strong></p>
+</li>
+<li>
+<p>Enable our <strong>TinyCBOR Test App</strong>…</p>
+<p>Check the box for <strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“TinyCBOR Test App”</strong></p>
+</li>
+<li>
+<p>Save the configuration and exit menuconfig</p>
+<p><a href="https://gist.github.com/lupyuen/63393052eba1f347422ef24c589fb9f4">(See the .config for BL602 and BL604)</a></p>
+</li>
+<li>
+<p>Build, flash and run the NuttX Firmware on BL602 or ESP32…</p>
+<p><a href="https://lupyuen.github.io/articles/cbor2#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
+</li>
+</ol>
+<h2 id="magic-happens" class="section-header"><a href="#magic-happens">1.8 Magic Happens</a></h2>
 <p>In the NuttX Shell, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>tinycbor_test</code></pre></div>
 <p>We’ll see 6 bytes of <strong>Encoded CBOR Output</strong> for “test_cbor”…</p>
@@ -520,9 +578,195 @@ CBOR Output: 11 bytes
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1478613072973418498?s=20">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-porting-tinycbor-to-nuttx" class="section-header"><a href="#appendix-porting-tinycbor-to-nuttx">8 Appendix: Porting TinyCBOR to NuttX</a></h1>
-<p>TODO</p>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">8 Appendix: Build, Flash and Run NuttX</a></h1>
+<p><em>(For BL602 and ESP32)</em></p>
+<p>Below are the steps to build, flash and run NuttX on BL602 and ESP32.</p>
+<p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
+<p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">8.1 Build NuttX</a></h2>
+<p>Follow these steps to build NuttX for BL602 or ESP32…</p>
+<ol>
+<li>
+<p>Install the build prerequisites…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p>Assume that we have downloaded the <strong>NuttX Source Code</strong> and configured the build…</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#download-source-code"><strong>“TODO: Download Source Code”</strong></a></p>
+<p>TODO: Configure the build</p>
+</li>
+<li>
+<p>To build NuttX, enter this command…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
+<li>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>LD: nuttx
+CP: nuttx.hex
+CP: nuttx.bin</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log for BL602)</a></p>
+</li>
+<li>
+<p><strong>For BL602:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>blflash</strong> directory…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  For Linux and macOS:
+#  TODO: Change $HOME/blflash to the full path of blflash
+cp nuttx.bin $HOME/blflash
+
+#  For WSL:
+#  TODO: Change /mnt/c/blflash to the full path of blflash in Windows
+#  /mnt/c/blflash refers to c:\blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
+<p>(We’ll cover <strong>blflash</strong> in the next section)</p>
+<p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
+</li>
+<li>
+<p>In case of problems, refer to the <strong>NuttX Docs</strong>…</p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html"><strong>“BL602 NuttX”</strong></a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html"><strong>“ESP32 NuttX”</strong></a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html"><strong>“Installing NuttX”</strong></a></p>
+</li>
+</ol>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
+</blockquote>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">8.2 Flash NuttX</a></h2>
+<p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
+<p><strong>For BL602:</strong> Follow these steps to install <strong>blflash</strong>…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>“Install rustup”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>“Download and build blflash”</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <strong>nuttx.bin</strong> has been copied to the <strong>blflash</strong> folder.</p>
+<p>Set BL602 / BL604 to <strong>Flashing Mode</strong> and restart the board…</p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>High</strong> <a href="https://lupyuen.github.io/images/pinedio-high.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change ~/blflash to the full path of blflash
+cd ~/blflash
+
+# For Linux:
+sudo cargo run flash nuttx.bin \
+    --port /dev/ttyUSB0
+
+# For macOS:
+cargo run flash nuttx.bin \
+    --port /dev/tty.usbserial-1420 \
+    --initial-baud-rate 230400 \
+    --baud-rate 230400
+
+# For Windows: Change COM5 to the BL602 / BL604 Serial Port
+cargo run flash nuttx.bin --port COM5</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
+<p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
+<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">8.3 Run NuttX</a></h2>
+<p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
+<p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
+<p><strong>For BL602:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>Low</strong> <a href="https://lupyuen.github.io/images/pinedio-low.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
+<p><strong>For Linux:</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt;</code></pre></div>
+<p>Congratulations NuttX is now running on BL602 / BL604!</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
+<p><strong>macOS Tip:</strong> Here’s the script I use to build, flash and run NuttX on macOS, all in a single step: <a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">run.sh</a></p>
+<p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
+<p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
+<h1 id="appendix-porting-tinycbor-to-nuttx" class="section-header"><a href="#appendix-porting-tinycbor-to-nuttx">9 Appendix: Porting TinyCBOR to NuttX</a></h1>
 <p>Below are the fixes we made while porting the TinyCBOR library to NuttX…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/tinycbor-nuttx/commit/cc12fca92c69f36a2be9ea6df7677420dc7a84dd"><strong>“Fix open_memstream for NuttX”</strong></a></li>
+</ul>
 
     
 </body>
