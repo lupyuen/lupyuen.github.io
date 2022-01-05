@@ -204,7 +204,7 @@ git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx n
 git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx-apps apps
 ```
 
-Or if we prefer to __add the TinyCBOR__ to our NuttX Project, follow these instructions...
+Or if we prefer to __add TinyCBOR__ to our NuttX Project, follow these instructions...
 
 1.  [__"Install TinyCBOR Library"__](https://github.com/lupyuen2/tinycbor-nuttx)
 
