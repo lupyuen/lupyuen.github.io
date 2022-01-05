@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Encode Sensor Data with CBOR on Apache NuttX OS</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Encode Sensor Data with CBOR on Apache NuttX OS" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How we compress Sensor Data with CBOR on Apache NuttX OS... By calling TinyCBOR Library"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/cbor2-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Encode Sensor Data with CBOR on Apache NuttX OS</h1>
+    <nav id="TOC"><ul>
+<li><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a><ul>
+<li><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a><ul></ul></li>
+<li><a href="#create-map-encoder">1.2 Create Map Encoder</a><ul></ul></li>
+<li><a href="#encode-key-and-value">1.3 Encode Key and Value</a><ul></ul></li>
+<li><a href="#close-map-encoder">1.4 Close Map Encoder</a><ul></ul></li>
+<li><a href="#get-encoded-output">1.5 Get Encoded Output</a><ul></ul></li>
+<li><a href="#magic-happens">1.6 Magic Happens</a><ul></ul></li></ul></li>
+<li><a href="#add-another-field">2 Add Another Field</a><ul>
+<li><a href="#modify-map-encoder">2.1 Modify Map Encoder</a><ul></ul></li>
+<li><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a><ul></ul></li>
+<li><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a><ul></ul></li>
+<li><a href="#watch-the-magic">2.4 Watch the Magic</a><ul></ul></li></ul></li>
+<li><a href="#cbor-data-types">3 CBOR Data Types</a><ul>
+<li><a href="#numbers">3.1 Numbers</a><ul></ul></li>
+<li><a href="#strings">3.2 Strings</a><ul></ul></li>
+<li><a href="#other-types">3.3 Other Types</a><ul></ul></li></ul></li>
+<li><a href="#floating-point-numbers">4 Floating-Point Numbers</a><ul>
+<li><a href="#encode-floats-as-integers">4.1 Encode Floats as Integers</a><ul></ul></li>
+<li><a href="#accuracy-and-precision">4.2 Accuracy and Precision</a><ul></ul></li></ul></li>
+<li><a href="#decode-cbor">5 Decode CBOR</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#notes">7 Notes</a><ul></ul></li>
+<li><a href="#appendix-porting-tinycbor-to-nuttx">8 Appendix: Porting TinyCBOR to NuttX</a><ul></ul></li></ul></nav><p>📝 <em>12 Jan 2022</em></p>
+<p>TODO</p>
+<p>Suppose we’re creating an IoT Gadget with <strong>Apache NuttX OS</strong> that transmits <strong>Sensor Data</strong> from two sensors: <strong>Temperature Sensor and Light Sensor</strong>…</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234, 
+  &quot;l&quot;: 2345 
+}</code></pre></div>
+<p>(Located in a Greenhouse perhaps)</p>
+<p>And we’re transmitting over a <strong>low-power wireless network</strong> like LoRa, Zigbee or Bluetooth LE.</p>
+<p>We could transmit <strong>19 bytes of JSON</strong>. But there’s a more compact way to do it….</p>
+<p><a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a>, which works like a binary, compressed form of JSON.</p>
+<p>And we need only <strong>11 bytes of CBOR</strong>!</p>
+<p><img src="https://lupyuen.github.io/images/cbor2-title.jpg" alt="Encoding Sensor Data with CBOR" /></p>
+<p>Today we’ll learn to encode Sensor Data with the <strong>TinyCBOR Library</strong> that we have ported to Apache NuttX OS…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/tinycbor-nuttx"><strong>lupyuen2/tinycbor-nuttx</strong></a></li>
+</ul>
+<p>The library has been tested on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>, but it should work on <strong>any NuttX Platform</strong> (like ESP32)</p>
+<p><em>Must we scrimp and save every single byte?</em></p>
+<p>Yes, <strong>every single byte matters</strong> for low-power wireless networks!</p>
+<ol>
+<li>
+<p>Low-power wireless networks operate on Radio Frequency Bands that are <strong>shared with many other gadgets</strong>.</p>
+<p>They are prone to <strong>collisions and interference</strong>.</p>
+<p>The <strong>smaller the data packet</strong>, the higher the chance that it will be <strong>transmitted successfully</strong>!</p>
+</li>
+<li>
+<p>When we transmit LoRa packets to <strong>The Things Network</strong> (the free public global LoRa network), we’re limited by their <a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network"><strong>Fair Use Policy</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">(Roughly <strong>12 bytes</strong> per message, assuming 10 messages per hour)</a></p>
+<p>JSON is too big for this. But CBOR works well!</p>
+<p>(In the next article we’ll watch the TinyCBOR Library in action for encoding Sensor Data in The Things Network)</p>
+</li>
+</ol>
+<h1 id="encode-sensor-data-with-tinycbor" class="section-header"><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a></h1>
+<p>TODO</p>
+<p>We begin by encoding one data field into CBOR…</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234
+}</code></pre></div>
+<p>We call this a <strong>CBOR Map</strong> that maps a <strong>Key</strong> (“<code>t</code>”) to a <strong>Value</strong> (<code>1234</code>)…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/cbor-map.png" alt="CBOR Map with 1 Key-Value Pair" /></p>
+</blockquote>
+<p>Let’s look at the code from our firmware that encodes the above into CBOR…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_cbor"><strong>pinedio_cbor Firmware</strong></a></li>
+</ul>
+<h2 id="output-buffer-and-cbor-encoder" class="section-header"><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a></h2>
+<p>First we create an <strong>Output Buffer</strong> that will hold the encoded CBOR data: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66">pinedio_cbor/demo.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234 }
+static void test_cbor(char *buf, int len, int argc, char **argv) {
+
+  //  Max output size is 50 bytes (which fits in a LoRa packet)
+  uint8_t output[50];</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">(50 bytes is the max packet size for The Things Network AS923 DR2)</a></p>
+<p><strong>Output Buffer Size</strong> is important: Calls to the <strong>TinyCBOR library will fail</strong> if we run out of buffer space!</p>
+<p>Next we define the <strong>CBOR Encoder</strong> (from TinyCBOR) that will encode our data…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Our CBOR Encoder and Map Encoder
+  CborEncoder encoder, mapEncoder;</code></pre></div>
+<p>As well as the <strong>Map Encoder</strong> that will encode our CBOR Map.</p>
+<p>We <strong>initialise the CBOR Encoder</strong> like so…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Init our CBOR Encoder
+  cbor_encoder_init(
+    &amp;encoder,        //  CBOR Encoder
+    output,          //  Output Buffer
+    sizeof(output),  //  Output Buffer Size
+    0                //  Options (always 0)
+  );</code></pre></div><h2 id="create-map-encoder" class="section-header"><a href="#create-map-encoder">1.2 Create Map Encoder</a></h2>
+<p>Now we create the <strong>Map Encoder</strong> that will encode our CBOR Map…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Create a Map Encoder that maps keys to values
+  CborError res = cbor_encoder_create_map(
+    &amp;encoder,     //  CBOR Encoder
+    &amp;mapEncoder,  //  Map Encoder
+    1             //  Number of Key-Value Pairs
+  );    
+  assert(res == CborNoError);</code></pre></div>
+<p>The last parameter (<code>1</code>) is important: It must match the <strong>Number of Key-Value Pairs</strong> (like <code>&quot;t&quot;: 1234</code>) that we shall encode.</p>
+<h2 id="encode-key-and-value" class="section-header"><a href="#encode-key-and-value">1.3 Encode Key and Value</a></h2>
+<p>We encode the <strong>Key</strong> (“<code>t</code>”) into the CBOR Map…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key
+  res = cbor_encode_text_stringz(
+    &amp;mapEncoder,  //  Map Encoder
+    &quot;t&quot;           //  Key
+  );    
+  assert(res == CborNoError);</code></pre></div>
+<p>Followed by the <strong>Value</strong> (<code>1234</code>)…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Value
+  res = cbor_encode_int(
+    &amp;mapEncoder,  //  Map Encoder 
+    1234          //  Value
+  );
+  assert(res == CborNoError);</code></pre></div>
+<p><strong>cbor_encode_int</strong> encodes <strong>64-bit Signed Integers</strong>.</p>
+<p>(We’ll look at other data types in a while)</p>
+<h2 id="close-map-encoder" class="section-header"><a href="#close-map-encoder">1.4 Close Map Encoder</a></h2>
+<p>We’re done with our CBOR Map, so we <strong>close the Map Encoder</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Close the Map Encoder
+  res = cbor_encoder_close_container(
+    &amp;encoder,    //  CBOR Encoder
+    &amp;mapEncoder  //  Map Encoder
+  );
+  assert(res == CborNoError);</code></pre></div>
+<p>Our CBOR Encoding is complete!</p>
+<h2 id="get-encoded-output" class="section-header"><a href="#get-encoded-output">1.5 Get Encoded Output</a></h2>
+<p>To work with the Encoded CBOR Output, we need to know <strong>how many bytes</strong> have been encoded…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  How many bytes were encoded
+  size_t output_len = cbor_encoder_get_buffer_size(
+    &amp;encoder,  //  CBOR Encoder
+    output     //  Output Buffer
+  );
+  printf(&quot;CBOR Output: %d bytes\r\n&quot;, output_len);</code></pre></div>
+<p>For the demo we <strong>dump the encoded CBOR data</strong> to the console…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Dump the encoded CBOR output (6 bytes):
+  //  0xa1 0x61 0x74 0x19 0x04 0xd2
+  for (int i = 0; i &lt; output_len; i++) {
+    printf(&quot;  0x%02x\r\n&quot;, output[i]);
+  }
+}</code></pre></div>
+<p>And that’s how we call the TinyCBOR Library to work with CBOR data!</p>
+<p>Let’s watch what happens when we run the firmware…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/cbor-code.png" alt="Calling the TinyCBOR Library" /></p>
+</blockquote>
+<h2 id="magic-happens" class="section-header"><a href="#magic-happens">1.6 Magic Happens</a></h2>
+<p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the CBOR Firmware…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware"><strong>TODO: “Build and Run CBOR Firmware”</strong></a></li>
+</ul>
+<p>At the BL602 / BL604 Command Prompt, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>test_cbor</code></pre></div>
+<p>We’ll see 6 bytes of <strong>Encoded CBOR Output</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>CBOR Output: 6 bytes
+  0xa1
+  0x61
+  0x74
+  0x19
+  0x04
+  0xd2</code></pre></div>
+<p>We have just compressed <strong>10 bytes of JSON</strong>…</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234
+}</code></pre></div>
+<p>Into <strong>6 bytes of CBOR</strong>.</p>
+<p>We have scrimped and saved <strong>4 bytes</strong>!</p>
+<p><img src="https://lupyuen.github.io/images/cbor-output2.png" alt="Encoded CBOR Output" /></p>
+<h1 id="add-another-field" class="section-header"><a href="#add-another-field">2 Add Another Field</a></h1>
+<p>TODO</p>
+<p>Now we <strong>add another field</strong> to our CBOR Encoding…</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234, 
+  &quot;l&quot;: 2345 
+}</code></pre></div>
+<p>And watch how our program changes to accommodate the second field.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/cbor-map2.png" alt="CBOR Map with 2 Key-Value Pairs" /></p>
+</blockquote>
+<h2 id="modify-map-encoder" class="section-header"><a href="#modify-map-encoder">2.1 Modify Map Encoder</a></h2>
+<p>We begin the same way as before: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139">pinedio_cbor/demo.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
+static void test_cbor2( ... ) {
+
+  //  Max output size is 50 bytes (which fits in a LoRa packet)
+  uint8_t output[50];
+
+  //  Our CBOR Encoder and Map Encoder
+  CborEncoder encoder, mapEncoder;
+
+  //  Init our CBOR Encoder
+  cbor_encoder_init( ... );</code></pre></div>
+<p>Now we <strong>create the Map Encoder</strong> with a tiny modification…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Create a Map Encoder that maps keys to values
+  CborError res = cbor_encoder_create_map(
+    &amp;encoder,     //  CBOR Encoder
+    &amp;mapEncoder,  //  Map Encoder
+    2             //  Number of Key-Value Pairs
+  );    
+  assert(res == CborNoError);</code></pre></div>
+<p>We changed the <strong>Number of Key-Value Pairs</strong> to <code>2</code>.</p>
+<p>(Previously it was <code>1</code>)</p>
+<h2 id="encode-first-key-and-value" class="section-header"><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a></h2>
+<p>We encode the <strong>First Key and Value</strong> the same way as before…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key
+  res = cbor_encode_text_stringz(
+    &amp;mapEncoder,  //  Map Encoder
+    &quot;t&quot;           //  Key
+  );    
+  assert(res == CborNoError);
+
+  //  First Key-Value Pair: Map the Value
+  res = cbor_encode_int(
+    &amp;mapEncoder,  //  Map Encoder 
+    1234          //  Value
+  );
+  assert(res == CborNoError);</code></pre></div>
+<p>(Yep no changes above)</p>
+<h2 id="encode-second-key-and-value" class="section-header"><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a></h2>
+<p>This part is new: We encode the <strong>Second Key and Value</strong> (“<code>l</code>” and <code>2345</code>)…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Second Key-Value Pair: Map the Key
+  res = cbor_encode_text_stringz(
+    &amp;mapEncoder,  //  Map Encoder
+    &quot;l&quot;           //  Key
+  );    
+  assert(res == CborNoError);
+
+  //  Second Key-Value Pair: Map the Value
+  res = cbor_encode_int(
+    &amp;mapEncoder,  //  Map Encoder 
+    2345          //  Value
+  );
+  assert(res == CborNoError);</code></pre></div>
+<p>And the rest of the code is the same…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Close the Map Encoder
+  res = cbor_encoder_close_container( ... );
+
+  //  How many bytes were encoded
+  size_t output_len = cbor_encoder_get_buffer_size( ... );
+
+  //  Dump the encoded CBOR output (11 bytes):
+  //  0xa2 0x61 0x74 0x19 0x04 0xd2 0x61 0x6c 0x19 0x09 0x29
+  for (int i = 0; i &lt; output_len; i++) {
+    printf(&quot;  0x%02x\r\n&quot;, output[i]);
+  }
+}</code></pre></div>
+<p>Recap: To add a data field to our CBOR Encoding, we…</p>
+<ol>
+<li>
+<p>Modify the call to <strong>cbor_encoder_create_map</strong> and update the <strong>Number of Key-Value Pairs</strong> (<code>2</code>)</p>
+</li>
+<li>
+<p>Add the new <strong>Key and Value</strong>  (“<code>l</code>” and <code>2345</code>) to the CBOR Map</p>
+</li>
+</ol>
+<p>Everything else stays the same.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/cbor-code2.png" alt="Add a second field" /></p>
+</blockquote>
+<h2 id="watch-the-magic" class="section-header"><a href="#watch-the-magic">2.4 Watch the Magic</a></h2>
+<p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the CBOR Firmware…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware"><strong>TODO: “Build and Run CBOR Firmware”</strong></a></li>
+</ul>
+<p>At the BL602 / BL604 Command Prompt, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>test_cbor2</code></pre></div>
+<p>This time we’ll see 11 bytes of <strong>Encoded CBOR Output</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>CBOR Output: 11 bytes
+  0xa2
+  0x61
+  0x74
+  0x19
+  0x04
+  0xd2
+  0x61
+  0x6c
+  0x19
+  0x09
+  0x29</code></pre></div>
+<p>We have just compressed <strong>19 bytes of JSON</strong> into <strong>11 bytes of CBOR</strong>.</p>
+<p><strong>8 bytes</strong> saved!</p>
+<p>If we wish to call TinyCBOR from an existing NuttX project, check the Appendix…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor#appendix-add-tinycbor-to-your-project"><strong>“TODO: Add TinyCBOR to Your Project”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/cbor2-title.jpg" alt="Encoding Sensor Data with CBOR" /></p>
+<h1 id="cbor-data-types" class="section-header"><a href="#cbor-data-types">3 CBOR Data Types</a></h1>
+<p>TODO</p>
+<p><em>We’ve been encoding 64-bit Signed Integers. What other Data Types can we encode?</em></p>
+<p>Below are the <strong>CBOR Data Types</strong> and their respective <strong>Encoder Functions</strong> from the TinyCBOR Library…</p>
+<h2 id="numbers" class="section-header"><a href="#numbers">3.1 Numbers</a></h2>
+<ul>
+<li>
+<p><strong>Signed Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gabbf6e10fd963d673f5ad293dff4a67a9">cbor_encode_int</a></p>
+<p>(We called this earlier. Works for positive and negative integers)</p>
+</li>
+<li>
+<p><strong>Unsigned Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga2b898ce6f5821c5aba8b6f0020c4b5ba">cbor_encode_uint</a></p>
+<p>(Positive integers only)</p>
+</li>
+<li>
+<p><strong>Negative Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga0e84daa854e0480f4a3758bcb46b9b60">cbor_encode_negative_int</a></p>
+<p>(Negative integers only)</p>
+</li>
+<li>
+<p><strong>Floating-Point Number</strong> (16, 32 or 64 bits): </p>
+<p>(See the next chapter)</p>
+</li>
+</ul>
+<h2 id="strings" class="section-header"><a href="#strings">3.2 Strings</a></h2>
+<ul>
+<li>
+<p><strong>Null-Terminated String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga6df3eff486535322f66584dc5431f9e9">cbor_encode_text_stringz</a></p>
+<p>(We called this earlier to encode our Keys)</p>
+</li>
+<li>
+<p><strong>Text String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga4fa673c63e85b1fd6f8067aca4ccdde4">cbor_encode_text_string</a></p>
+<p>(For strings that are not null-terminated)</p>
+</li>
+<li>
+<p><strong>Byte String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga1260b72bb0f067fd3c68d49a6b5f58d0">cbor_encode_byte_string</a></p>
+<p>(For strings containing binary data)</p>
+</li>
+</ul>
+<h2 id="other-types" class="section-header"><a href="#other-types">3.3 Other Types</a></h2>
+<ul>
+<li>
+<p><strong>Boolean</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga857154b97cad978f4afb3e2f809051bd">cbor_encode_boolean</a></p>
+</li>
+<li>
+<p><strong>Null</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga30b769ff1da73ed8b4536f551347c5ed">cbor_encode_null</a></p>
+</li>
+<li>
+<p><strong>Undefined</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga9d9f0668e2cf69352a45095006efab4f">cbor_encode_undefined</a></p>
+</li>
+</ul>
+<p>For the complete list of CBOR Encoder Functions, refer to the TinyCBOR docs…</p>
+<ul>
+<li><a href="https://intel.github.io/tinycbor/current/a00046.html"><strong>TinyCBOR: Encoding To CBOR</strong></a></li>
+</ul>
+<p>CBOR Data Types are explained in the CBOR Specification…</p>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-cbor-data-models"><strong>CBOR Data Models</strong></a></li>
+</ul>
+<p>To experiment with CBOR Encoding and Decoding, try the <a href="http://cbor.me/"><strong>CBOR Playground</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/grafana-cbor5.png" alt="CBOR Playground" /></p>
+<h1 id="floating-point-numbers" class="section-header"><a href="#floating-point-numbers">4 Floating-Point Numbers</a></h1>
+<p>TODO</p>
+<p>The CBOR spec says that there are <a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-"><strong>3 ways to encode floats</strong></a>…</p>
+<ul>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format"><strong>Half-Precision Float</strong></a> (16 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gad8e5a125cfaceb9a32528e620e003bc6">cbor_encode_half_float</a></p>
+<p>(<strong>3.3</strong> significant decimal digits. <a href="https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format#IEEE_754_half-precision_binary_floating-point_format:_binary16">See this</a>)</p>
+</li>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format"><strong>Single-Precision Float</strong></a> (32 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gae981ee934ef22ce4c5b52f8069e1b15c">cbor_encode_float</a></p>
+<p>(<strong>6 to 9</strong> significant decimal digits. <a href="https://en.m.wikipedia.org/wiki/Single-precision_floating-point_format#IEEE_754_single-precision_binary_floating-point_format:_binary32">See this</a>)</p>
+</li>
+<li>
+<p><a href="https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format"><strong>Double-Precision Float</strong></a> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#ga211aa80dc5b793ee8dd74d24cb9e7ca6">cbor_encode_double</a></p>
+<p>(<strong>15 to 17</strong> significant decimal digits. <a href="https://en.m.wikipedia.org/wiki/Double-precision_floating-point_format#IEEE_754_double-precision_binary_floating-point_format:_binary64">See this</a>)</p>
+</li>
+</ul>
+<p><em>How do we select the proper float encoding?</em></p>
+<p>Suppose we’re encoding Temperature Data (like <code>12.34</code> ºC) that could range from <strong><code>0.00</code> ºC to <code>99.99</code> ºC</strong>.</p>
+<p>This means that we need <strong>4 significant decimal digits</strong>.</p>
+<p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision Float</strong> (32 bits).</p>
+<p>Thus we need <strong>5 bytes</strong> to encode the Temperature Data. (Including the CBOR Initial Byte)</p>
+<h2 id="encode-floats-as-integers" class="section-header"><a href="#encode-floats-as-integers">4.1 Encode Floats as Integers</a></h2>
+<p><em>Huh? If we encode an integer like <code>1234</code>, we need only <strong>3 bytes</strong>!</em></p>
+<p>That’s why in this article we <strong>scale up 100 times</strong> for the Temperature Data and <strong>encode as an integer</strong> instead.</p>
+<p>(So <code>1234</code> actually means <code>12.34</code> ºC)</p>
+<p><strong>2 bytes</strong> saved!</p>
+<p>(Our scaling of Sensor Data is similar to <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic#Fixed-point_representation">Fixed-Point Representation</a>)</p>
+<h2 id="accuracy-and-precision" class="section-header"><a href="#accuracy-and-precision">4.2 Accuracy and Precision</a></h2>
+<p><em>Is it meaningful to record temperatures that are accurate to 0.01 ºC?</em></p>
+<p><em>How much accuracy do we need for Sensor Data anyway?</em></p>
+<p>The accuracy for our Sensor Data depends on…</p>
+<ol>
+<li>
+<p>Our monitoring requirements, and</p>
+</li>
+<li>
+<p>Accuracy of our sensors</p>
+</li>
+</ol>
+<p>Learn more about Accuracy and Precision of Sensor Data…</p>
+<ul>
+<li><a href="https://kotahi.net/iots-lesser-known-power-good-enough-data-accuracy/">IoT’s Lesser Known Power: “Good Enough” Data Accuracy</a></li>
+</ul>
+<h1 id="decode-cbor" class="section-header"><a href="#decode-cbor">5 Decode CBOR</a></h1>
+<p>TODO</p>
+<p><em>For decoding CBOR packets, can we call the TinyCBOR Library?</em></p>
+<p>Sure, we can call the <strong>Decoder Functions</strong> in the TinyCBOR Library…</p>
+<ul>
+<li>
+<p><a href="https://intel.github.io/tinycbor/current/a00047.html"><strong>TinyCBOR: Parsing CBOR streams</strong></a></p>
+</li>
+<li>
+<p><a href="https://intel.github.io/tinycbor/current/a00048.html"><strong>TinyCBOR: Converting CBOR to text</strong></a></p>
+</li>
+<li>
+<p><a href="https://intel.github.io/tinycbor/current/a00049.html"><strong>TinyCBOR: Converting CBOR to JSON</strong></a></p>
+</li>
+</ul>
+<p>If we’re transmitting CBOR packets to a server (or cloud), we can decode them with a <strong>CBOR Library for Node.js, Go, Rust,</strong> …</p>
+<ul>
+<li><a href="https://cbor.io/impls.html"><strong>CBOR Implementations</strong></a></li>
+</ul>
+<p>TODO: The Things Network CBOR Payload Decoder</p>
+<p>For Grafana we used a <strong>Go Library for CBOR</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/grafana#decode-cbor-in-go"><strong>“Decode CBOR in Go”</strong></a></li>
+</ul>
+<p>There’s even a CBOR Library for <strong>Roblox and Lua Scripting</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/roblox-the-things-network#decode-base64-and-cbor-in-roblox"><strong>“Decode Base64 and CBOR in Roblox”</strong></a></li>
+</ul>
+<p>TinyCBOR is available on various <strong>Embedded Operating Systems</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/mynewt-core/tree/master/encoding/tinycbor"><strong>Apache Mynewt</strong></a></p>
+</li>
+<li>
+<p><a href="https://doc.riot-os.org/group__pkg__tinycbor.html"><strong>RIOT</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.zephyrproject.org/latest/reference/kconfig/CONFIG_TINYCBOR.html"><strong>Zephyr</strong></a></p>
+</li>
+</ul>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">6 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/cbor2.md"><code>lupyuen.github.io/src/cbor2.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">7 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1478613072973418498?s=20">this Twitter Thread</a></li>
+</ol>
+<h1 id="appendix-porting-tinycbor-to-nuttx" class="section-header"><a href="#appendix-porting-tinycbor-to-nuttx">8 Appendix: Porting TinyCBOR to NuttX</a></h1>
+<p>TODO</p>
+<p>Below are the fixes we made while porting the TinyCBOR library to NuttX…</p>
+
+    
+</body>
+</html>
