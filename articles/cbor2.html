@@ -141,7 +141,9 @@
 </ul>
 <h2 id="output-buffer-and-cbor-encoder" class="section-header"><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a></h2>
 <p>First we create an <strong>Output Buffer</strong> that will hold the encoded CBOR data: <a href="https://github.com/lupyuen/tinycbor_test/blob/main/tinycbor_test_main.c#L22-L82">tinycbor_test_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234 }
+<div class="example-wrap"><pre class="language-c"><code>#include &quot;../libs/libtinycbor/src/cbor.h&quot;  //  For TinyCBOR Library
+
+/// Test CBOR Encoding for { &quot;t&quot;: 1234 }
 static void test_cbor(void) {
 
   //  Max output size is 50 bytes (which fits in a LoRa packet)
