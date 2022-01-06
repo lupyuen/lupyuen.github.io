@@ -1195,6 +1195,8 @@ Over the next couple of articles we shall __migrate the LoRa + LoRaWAN code incr
 
 I'm still super curious about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. We might start soon with GPIO and SPI to see whether the concept is feasible.
 
+-   [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1478959963930169345)
+
 Stay Tuned!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.

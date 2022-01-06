@@ -816,6 +816,8 @@ Here are some topics I might explore in future articles, lemme know if I should 
 
 -   __Rust__: Porting the Embedded Rust HAL to NuttX sounds really interesting. We might start with GPIO and SPI to see whether the concept is feasible.
 
+    [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1478959963930169345)
+
 (BL602 IoT SDK / FreeRTOS is revamping right now to the [__new "hosal" HAL__](https://twitter.com/MisterTechBlog/status/1456259223323508748). Terrific time to explore NuttX now!)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
