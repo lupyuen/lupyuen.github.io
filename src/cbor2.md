@@ -193,8 +193,6 @@ And that's how we call the TinyCBOR Library to work with CBOR data!
 
 Let's watch what happens when we run the firmware...
 
-TODO
-
 > ![Calling the TinyCBOR Library](https://lupyuen.github.io/images/cbor-code.png)
 
 ## Download Source Code
@@ -291,9 +289,7 @@ Into __6 bytes of CBOR__.
 
 We have scrimped and saved __4 bytes__!
 
-TODO
-
-![Encoded CBOR Output](https://lupyuen.github.io/images/cbor-output2.png)
+![Encoded CBOR Output](https://lupyuen.github.io/images/cbor2-run3.png)
 
 # Add Another Field
 
