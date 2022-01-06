@@ -110,6 +110,7 @@
 <li><a href="https://github.com/lupyuen2/tinycbor-nuttx"><strong>lupyuen2/tinycbor-nuttx</strong></a></li>
 </ul>
 <p>The library has been tested on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>, but it should work on <strong>any NuttX Platform</strong> (like ESP32)</p>
+<p><a href="https://lupyuen.github.io/articles/cbor2#appendix-porting-tinycbor-to-nuttx">(<strong>tinycbor-nuttx</strong> is a fork of TinyCBOR with minimal changes)</a></p>
 <p><em>Must we scrimp and save every single byte?</em></p>
 <p>Yes, <strong>every single byte matters</strong> for low-power wireless networks!</p>
 <ol>
@@ -222,14 +223,14 @@ cd nuttx
 git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx nuttx
 git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add TinyCBOR</strong> to our NuttX Project, follow these instructions…</p>
-<ol>
+<ul>
 <li>
 <p><a href="https://github.com/lupyuen2/tinycbor-nuttx"><strong>“Install TinyCBOR Library”</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/tinycbor_test"><strong>“Install TinyCBOR Test App”</strong></a></p>
 </li>
-</ol>
+</ul>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">1.7 Build The Firmware</a></h2>
 <p>Let’s build the NuttX Firmware with TinyCBOR inside…</p>
 <ol>
