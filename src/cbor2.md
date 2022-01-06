@@ -29,6 +29,8 @@ Today we'll learn to encode Sensor Data with the __TinyCBOR Library__ that we ha
 
 The library has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any NuttX Platform__ (like ESP32)
 
+[(__tinycbor-nuttx__ is a fork of TinyCBOR with minimal changes)](https://lupyuen.github.io/articles/cbor2#appendix-porting-tinycbor-to-nuttx)
+
 _Must we scrimp and save every single byte?_
 
 Yes, __every single byte matters__ for low-power wireless networks!
@@ -206,9 +208,9 @@ git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx-a
 
 Or if we prefer to __add TinyCBOR__ to our NuttX Project, follow these instructions...
 
-1.  [__"Install TinyCBOR Library"__](https://github.com/lupyuen2/tinycbor-nuttx)
+-   [__"Install TinyCBOR Library"__](https://github.com/lupyuen2/tinycbor-nuttx)
 
-1.  [__"Install TinyCBOR Test App"__](https://github.com/lupyuen/tinycbor_test)
+-   [__"Install TinyCBOR Test App"__](https://github.com/lupyuen/tinycbor_test)
 
 ## Build The Firmware
 
