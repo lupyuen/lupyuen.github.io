@@ -72,6 +72,8 @@ Let's look at the code from our NuttX App that encodes the above into CBOR...
 First we create an __Output Buffer__ that will hold the encoded CBOR data: [tinycbor_test_main.c](https://github.com/lupyuen/tinycbor_test/blob/main/tinycbor_test_main.c#L22-L82)
 
 ```c
+#include "../libs/libtinycbor/src/cbor.h"  //  For TinyCBOR Library
+
 /// Test CBOR Encoding for { "t": 1234 }
 static void test_cbor(void) {
 
