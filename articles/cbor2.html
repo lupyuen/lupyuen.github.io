@@ -231,7 +231,7 @@ git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx-a
 </li>
 </ol>
 <h2 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">1.7 Build The Firmware</a></h2>
-<p>Let’s build the NuttX Firmware that contains our <strong>LoRaWAN Library</strong>…</p>
+<p>Let’s build the NuttX Firmware with TinyCBOR inside…</p>
 <ol>
 <li>
 <p>Install the build prerequisites…</p>
@@ -255,19 +255,19 @@ git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx-a
 # Edit the Build Config
 make menuconfig </code></pre></div></li>
 <li>
-<p>In menuconfig, enable our <strong>TinyCBOR Library</strong>…</p>
-<p>Check the box for <strong>“Library Routines”</strong> → <strong>“TinyCBOR Library”</strong></p>
+<p>In menuconfig, check the box for…</p>
+<p><strong>“Library Routines”</strong> → <strong>“TinyCBOR Library”</strong></p>
 </li>
 <li>
-<p>Enable our <strong>TinyCBOR Test App</strong>…</p>
-<p>Check the box for <strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“TinyCBOR Test App”</strong></p>
+<p>Check the box for…</p>
+<p><strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“TinyCBOR Test App”</strong></p>
 </li>
 <li>
 <p>Save the configuration and exit menuconfig</p>
 <p><a href="https://gist.github.com/lupyuen/63393052eba1f347422ef24c589fb9f4">(See the .config for BL602 and BL604)</a></p>
 </li>
 <li>
-<p>Build, flash and run the NuttX Firmware on BL602 or ESP32…</p>
+<p>Build, flash and run the NuttX Firmware…</p>
 <p><a href="https://lupyuen.github.io/articles/cbor2#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
 </li>
 </ol>
