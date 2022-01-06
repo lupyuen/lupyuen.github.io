@@ -212,7 +212,7 @@ Or if we prefer to __add TinyCBOR__ to our NuttX Project, follow these instructi
 
 ## Build The Firmware
 
-Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
+Let's build the NuttX Firmware with TinyCBOR inside...
 
 1.  Install the build prerequisites...
 
@@ -238,19 +238,19 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
     make menuconfig 
     ```
 
-1.  In menuconfig, enable our __TinyCBOR Library__...
+1.  In menuconfig, check the box for...
 
-    Check the box for __"Library Routines"__ → __"TinyCBOR Library"__
+    __"Library Routines"__ → __"TinyCBOR Library"__
 
-1.  Enable our __TinyCBOR Test App__...
+1.  Check the box for...
 
-    Check the box for __"Application Configuration"__ → __"Examples"__ → __"TinyCBOR Test App"__
+    __"Application Configuration"__ → __"Examples"__ → __"TinyCBOR Test App"__
 
 1.  Save the configuration and exit menuconfig
 
     [(See the .config for BL602 and BL604)](https://gist.github.com/lupyuen/63393052eba1f347422ef24c589fb9f4)
 
-1.  Build, flash and run the NuttX Firmware on BL602 or ESP32...
+1.  Build, flash and run the NuttX Firmware...
 
     [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/cbor2#appendix-build-flash-and-run-nuttx)
 
