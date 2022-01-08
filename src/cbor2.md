@@ -589,13 +589,27 @@ TinyCBOR is available on various __Embedded Operating Systems__...
 
 -   [__Zephyr__](https://docs.zephyrproject.org/latest/reference/kconfig/CONFIG_TINYCBOR.html)
 
+![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
+
 # What's Next
 
-TODO
+In the next few articles we'll build a __complete IoT Sensor Device__ with NuttX...
 
-I'm still super curious about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. We might start soon with GPIO and SPI to see whether the concept is feasible.
+-   We'll use the __LoRaWAN Stack__ from the previous article...
+
+    [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
+
+-   Read BL602's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/tsen) to get real Sensor Data
+
+-   Compress the Sensor Data with CBOR, as explained in this article
+
+-   Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN (pic below)
+
+We'll take a short detour to explore [__Rust on NuttX__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx)...
 
 -   [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1478959963930169345)
+
+Stay Tuned!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -610,6 +624,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/cbor2.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/cbor2.md)
+
+![NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN](https://lupyuen.github.io/images/lorawan3-ttn.png)
+
+_NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN_
 
 # Notes
 
