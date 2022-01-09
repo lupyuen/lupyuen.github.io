@@ -78,21 +78,21 @@
 <li><a href="#adc-on-bl602">11 ADC on BL602</a><ul></ul></li>
 <li><a href="#wifi-on-bl602">12 WiFi on BL602</a><ul></ul></li>
 <li><a href="#graphics-on-bl602">13 Graphics on BL602</a><ul></ul></li>
-<li><a href="#lora-on-bl602">14 LoRa on BL602</a><ul></ul></li>
-<li><a href="#openocd-on-bl602">15 OpenOCD on BL602</a><ul></ul></li>
-<li><a href="#gdb-and-vscode-on-bl602">16 GDB and VSCode on BL602</a><ul></ul></li>
-<li><a href="#rust-on-bl602">17 Rust on BL602</a><ul></ul></li>
-<li><a href="#basic-on-bl602">18 BASIC on BL602</a><ul></ul></li>
-<li><a href="#lisp-on-bl602">19 Lisp on BL602</a><ul></ul></li>
-<li><a href="#machine-learning-on-bl602">20 Machine Learning on BL602</a><ul></ul></li>
-<li><a href="#troubleshooting-bl602">21 Troubleshooting BL602</a><ul></ul></li>
-<li><a href="#multitasking-bl602">22 Multitasking BL602</a><ul></ul></li>
+<li><a href="#multitasking-bl602">14 Multitasking BL602</a><ul></ul></li>
+<li><a href="#lora-on-bl602">15 LoRa on BL602</a><ul></ul></li>
+<li><a href="#rust-on-bl602">16 Rust on BL602</a><ul></ul></li>
+<li><a href="#basic-on-bl602">17 BASIC on BL602</a><ul></ul></li>
+<li><a href="#lisp-on-bl602">18 Lisp on BL602</a><ul></ul></li>
+<li><a href="#machine-learning-on-bl602">19 Machine Learning on BL602</a><ul></ul></li>
+<li><a href="#openocd-on-bl602">20 OpenOCD on BL602</a><ul></ul></li>
+<li><a href="#gdb-and-vscode-on-bl602">21 GDB and VSCode on BL602</a><ul></ul></li>
+<li><a href="#troubleshooting-bl602">22 Troubleshooting BL602</a><ul></ul></li>
 <li><a href="#bootloader-for-bl602">23 Bootloader for BL602</a><ul></ul></li>
 <li><a href="#pinedio-stack-bl604">24 PineDio Stack BL604</a><ul></ul></li>
 <li><a href="#bl706-audio-video-board">25 BL706 Audio Video Board</a><ul></ul></li>
 <li><a href="#mynewt-on-bl602">26 Mynewt on BL602</a><ul></ul></li>
 <li><a href="#whats-next">27 What’s Next</a><ul></ul></li>
-<li><a href="#about-the-author">28 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>5 Jan 2022</em></p>
+<li><a href="#about-the-author">28 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>9 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/book-title.jpg" alt="PineCone BL602 RISC-V Board with Grove E-Ink Display" /></p>
 <p><em>PineCone BL602 RISC-V Board with Grove E-Ink Display</em></p>
 <p>Is there a book about the <strong>BL602 / BL604 SoC</strong> (RISC-V, WiFi and Bluetooth LE) that…</p>
@@ -108,7 +108,7 @@
 </li>
 </ol>
 <p><em>You’re reading the book right now!</em></p>
-<p>Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. <strong>(42 articles and still growing!)</strong></p>
+<p>Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. <strong>(43 articles and still growing!)</strong></p>
 <p>The programs in these articles have been tested on <strong>PineCone</strong>, but they should work on other <strong>BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602</strong>.</p>
 <p>Many thanks to <strong>Pine64</strong> for supporting my work on BL602 Open Source Education! Thanks also to <strong>Bouffalo Lab</strong> for the encouraging notes.</p>
 <p>If you find this book useful… <a href="https://github.com/sponsors/lupyuen"><strong>please sponsor me a coffee</strong></a>. Thank you! 🙏 😀</p>
@@ -133,6 +133,12 @@
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lorawan3">“LoRaWAN on Apache NuttX OS”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/cbor2">“Encode Sensor Data with CBOR on Apache NuttX OS”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/rust2">“Rust on Apache NuttX OS”</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-project.jpg" alt="Projects and Libraries on BL602" /></p>
@@ -287,8 +293,18 @@
 <p><a href="https://lupyuen.github.io/articles/uart">“PineCone BL602 Talks UART to Grove E-Ink Display”</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/book-multitask.jpg" alt="Multitasking BL602" /></p>
+<h1 id="multitasking-bl602" class="section-header"><a href="#multitasking-bl602">14 Multitasking BL602</a></h1>
+<p>Multitasking the easy way with <strong>NimBLE Porting Layer</strong>.</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">“Multitask with NimBLE Porting Layer”</a></li>
+</ul>
+<p>For <strong>Apache NuttX OS</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer">“Multithreading with NimBLE Porting Layer”</a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/book-lora.jpg" alt="LoRa on BL602" /></p>
-<h1 id="lora-on-bl602" class="section-header"><a href="#lora-on-bl602">14 LoRa on BL602</a></h1>
+<h1 id="lora-on-bl602" class="section-header"><a href="#lora-on-bl602">15 LoRa on BL602</a></h1>
 <p>Let’s turn BL602 and BL604 into a real IoT gadget that transmits <strong>long range, low power LoRa packets</strong>…</p>
 <ul>
 <li>
@@ -362,25 +378,8 @@
 <p><a href="https://lupyuen.github.io/articles/lora2">“PineCone BL602 RISC-V Board Receives LoRa Packets (SX1276)”</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/book-openocd.jpg" alt="OpenOCD on BL602" /></p>
-<h1 id="openocd-on-bl602" class="section-header"><a href="#openocd-on-bl602">15 OpenOCD on BL602</a></h1>
-<p>Before debugging BL602 / BL604, we install <strong>OpenOCD</strong> to connect a <strong>JTAG Debugger</strong>.</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/openocd">“Connect PineCone BL602 to OpenOCD”</a></li>
-</ul>
-<p><img src="https://lupyuen.github.io/images/book-debug.jpg" alt="GDB and VSCode on BL602" /></p>
-<h1 id="gdb-and-vscode-on-bl602" class="section-header"><a href="#gdb-and-vscode-on-bl602">16 GDB and VSCode on BL602</a></h1>
-<p>How we <strong>debug BL602 / BL604 firmware</strong> with GDB and VSCode.</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.github.io/articles/debug">“Debug Rust on PineCone BL602 with VSCode and GDB”</a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/mynewt#debug-firmware-with-vscode">“Debug Mynewt with VSCode”</a></p>
-</li>
-</ul>
 <p><img src="https://lupyuen.github.io/images/book-rust.jpg" alt="Rust on BL602" /></p>
-<h1 id="rust-on-bl602" class="section-header"><a href="#rust-on-bl602">17 Rust on BL602</a></h1>
+<h1 id="rust-on-bl602" class="section-header"><a href="#rust-on-bl602">16 Rust on BL602</a></h1>
 <p>How we code BL602 and BL604 firmware the <strong>safer, simpler way with Rust.</strong></p>
 <ul>
 <li>
@@ -401,18 +400,19 @@
 <li>
 <p><a href="https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways">“Rust in XIP Flash Memory by 9names”</a></p>
 </li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602">“Rust on Apache NuttX?”</a></p>
-</li>
+</ul>
+<p>For <strong>Apache NuttX OS</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rust2">“Rust on Apache NuttX OS”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-basic.jpg" alt="BASIC on BL602" /></p>
-<h1 id="basic-on-bl602" class="section-header"><a href="#basic-on-bl602">18 BASIC on BL602</a></h1>
+<h1 id="basic-on-bl602" class="section-header"><a href="#basic-on-bl602">17 BASIC on BL602</a></h1>
 <p>Running the NuttX <strong>BASIC Interpreter</strong> for BL602 and BL604.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx#basic-interpreter">“BASIC Interpreter on NuttX”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-lisp.jpg" alt="Lisp on BL602" /></p>
-<h1 id="lisp-on-bl602" class="section-header"><a href="#lisp-on-bl602">19 Lisp on BL602</a></h1>
+<h1 id="lisp-on-bl602" class="section-header"><a href="#lisp-on-bl602">18 Lisp on BL602</a></h1>
 <p>Porting the <strong>uLisp Interpreter</strong> to BL602 / BL604… And writing graphical programs with <strong>Blockly (Scratch)</strong>.</p>
 <ul>
 <li>
@@ -423,13 +423,30 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-ml.jpg" alt="Machine Learning on BL602" /></p>
-<h1 id="machine-learning-on-bl602" class="section-header"><a href="#machine-learning-on-bl602">20 Machine Learning on BL602</a></h1>
+<h1 id="machine-learning-on-bl602" class="section-header"><a href="#machine-learning-on-bl602">19 Machine Learning on BL602</a></h1>
 <p>How we run <strong>TensorFlow Lite</strong> on BL602 and BL604 to create a Glowing LED.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tflite">“Machine Learning on RISC-V BL602 with TensorFlow Lite”</a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/book-openocd.jpg" alt="OpenOCD on BL602" /></p>
+<h1 id="openocd-on-bl602" class="section-header"><a href="#openocd-on-bl602">20 OpenOCD on BL602</a></h1>
+<p>Before debugging BL602 / BL604, we install <strong>OpenOCD</strong> to connect a <strong>JTAG Debugger</strong>.</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/openocd">“Connect PineCone BL602 to OpenOCD”</a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/book-debug.jpg" alt="GDB and VSCode on BL602" /></p>
+<h1 id="gdb-and-vscode-on-bl602" class="section-header"><a href="#gdb-and-vscode-on-bl602">21 GDB and VSCode on BL602</a></h1>
+<p>How we <strong>debug BL602 / BL604 firmware</strong> with GDB and VSCode.</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/debug">“Debug Rust on PineCone BL602 with VSCode and GDB”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/mynewt#debug-firmware-with-vscode">“Debug Mynewt with VSCode”</a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/book-troubleshoot.jpg" alt="Troubleshooting BL602" /></p>
-<h1 id="troubleshooting-bl602" class="section-header"><a href="#troubleshooting-bl602">21 Troubleshooting BL602</a></h1>
+<h1 id="troubleshooting-bl602" class="section-header"><a href="#troubleshooting-bl602">22 Troubleshooting BL602</a></h1>
 <p>Tips for <strong>troubleshooting BL602 and BL604 firmware</strong>.</p>
 <ul>
 <li>
@@ -444,16 +461,6 @@
 <li>
 <p><a href="https://lupyuen.github.io/articles/lora2#bl602-stack-dump">“BL602 Stack Dump”</a></p>
 </li>
-</ul>
-<p><img src="https://lupyuen.github.io/images/book-multitask.jpg" alt="Multitasking BL602" /></p>
-<h1 id="multitasking-bl602" class="section-header"><a href="#multitasking-bl602">22 Multitasking BL602</a></h1>
-<p>Multitasking the easy way with <strong>NimBLE Porting Layer</strong>.</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">“Multitask with NimBLE Porting Layer”</a></li>
-</ul>
-<p>For <strong>Apache NuttX OS</strong>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer">“Multithreading with NimBLE Porting Layer”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-boot.jpg" alt="Bootloader for BL602" /></p>
 <h1 id="bootloader-for-bl602" class="section-header"><a href="#bootloader-for-bl602">23 Bootloader for BL602</a></h1>
@@ -492,8 +499,23 @@
 <li>
 <p><a href="https://lupyuen.github.io/articles/gateway">“PineDio LoRa Gateway: Testing The Prototype”</a></p>
 </li>
+</ul>
+<p>For <strong>Apache NuttX OS</strong>…</p>
+<ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nuttx">“Apache NuttX OS on RISC-V BL602 and BL604”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi2">“SPI on Apache NuttX OS”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262">“LoRa SX1262 on Apache NuttX OS”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan3">“LoRaWAN on Apache NuttX OS”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/rust2">“Rust on Apache NuttX OS”</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-bl706.jpg" alt="BL706 Audio Video Board" /></p>
