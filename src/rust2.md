@@ -154,14 +154,14 @@ From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples
 
 ```rust
 extern "C" {  //  Import POSIX Functions. TODO: Import with bindgen
-    pub fn open(path: *const u8, oflag: isize, ...) -> isize;
-    pub fn read(fd: isize, buf: *mut u8, count: usize) -> isize;
-    pub fn write(fd: isize, buf: *const u8, count: usize) -> isize;
-    pub fn close(fd: isize) -> isize;
-    pub fn ioctl(fd: isize, request: isize, ...) -> isize;  //  On NuttX: request is isize, not u64 like Linux
-    pub fn sleep(secs: usize) -> usize;
-    pub fn usleep(usec: usize) -> usize;
-    pub fn exit(status: usize) -> !;
+  pub fn open(path: *const u8, oflag: isize, ...) -> isize;
+  pub fn read(fd: isize, buf: *mut u8, count: usize) -> isize;
+  pub fn write(fd: isize, buf: *const u8, count: usize) -> isize;
+  pub fn close(fd: isize) -> isize;
+  pub fn ioctl(fd: isize, request: isize, ...) -> isize;  //  On NuttX: request is isize, not u64 like Linux
+  pub fn sleep(secs: usize) -> usize;
+  pub fn usleep(usec: usize) -> usize;
+  pub fn exit(status: usize) -> !;
 }
 ```
 
@@ -191,63 +191,75 @@ From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples
 /// Test the SPI Port by reading SX1262 Register 8
 fn test_spi() {
 
-    //  Open GPIO Output for SX1262 Chip Select
-    let cs = unsafe { 
-        open(b"/dev/gpio1\0".as_ptr(), O_RDWR) 
-    };
-    assert!(cs > 0);  
+  //  Open GPIO Output for SX1262 Chip Select
+  let cs = unsafe { 
+    open(b"/dev/gpio1\0".as_ptr(), O_RDWR) 
+  };
+  assert!(cs > 0);  
 
-    //  Open SPI Bus for SX1262
-    let spi = unsafe { 
-        open(b"/dev/spitest0\0".as_ptr(), O_RDWR) 
-    };
-    assert!(spi >= 0);
+  //  Open SPI Bus for SX1262
+  let spi = unsafe { 
+    open(b"/dev/spitest0\0".as_ptr(), O_RDWR) 
+  };
+  assert!(spi >= 0);
 
-    //  Set SX1262 Chip Select to Low
-    let ret = unsafe { 
-        ioctl(cs, GPIOC_WRITE, 0) 
-    };
-    assert!(ret >= 0);
+  //  Set SX1262 Chip Select to Low
+  let ret = unsafe { 
+    ioctl(cs, GPIOC_WRITE, 0) 
+  };
+  assert!(ret >= 0);
 
-    //  Transmit command to SX1262: Read Register 8
-    const READ_REG: &[u8] = &[ 0x1d, 0x00, 0x08, 0x00, 0x00 ];
-    let bytes_written = unsafe { 
-        write(spi, READ_REG.as_ptr(), READ_REG.len()) 
-    };
-    assert!(bytes_written == READ_REG.len() as isize);
+  //  Transmit command to SX1262: Read Register 8
+  const READ_REG: &[u8] = &[ 0x1d, 0x00, 0x08, 0x00, 0x00 ];
+  let bytes_written = unsafe { 
+    write(spi, READ_REG.as_ptr(), READ_REG.len()) 
+  };
+  assert!(bytes_written == READ_REG.len() as isize);
 
-    //  Read response from SX1262
-    let mut rx_data: [ u8; 16 ] = [ 0; 16 ];
-    let bytes_read = unsafe { 
-        read(spi, rx_data.as_mut_ptr(), rx_data.len()) 
-    };
-    assert!(bytes_read == READ_REG.len() as isize);
+  //  Read response from SX1262
+  let mut rx_data: [ u8; 16 ] = [ 0; 16 ];
+  let bytes_read = unsafe { 
+    read(spi, rx_data.as_mut_ptr(), rx_data.len()) 
+  };
+  assert!(bytes_read == READ_REG.len() as isize);
 
-    //  Set SX1262 Chip Select to High
-    let ret = unsafe { 
-        ioctl(cs, GPIOC_WRITE, 1) 
-    };
-    assert!(ret >= 0);
+  //  Set SX1262 Chip Select to High
+  let ret = unsafe { 
+    ioctl(cs, GPIOC_WRITE, 1) 
+  };
+  assert!(ret >= 0);
 
-    //  Show the received register value
-    puts("test_spi: received");
-    for i in 0..bytes_read {
-        let mut buf = String::new();
-        write!(buf, "  {:02x}", rx_data[i as usize])
-            .expect("buf overflow");
-        puts(&buf);    
-    }
+  //  Show the received register value
+  puts("test_spi: received");
+  for i in 0..bytes_read {
     let mut buf = String::new();
-    write!(buf, "test_spi: SX1262 Register 8 is 0x{:02x}", rx_data[4])
+    write!(buf, "  {:02x}", rx_data[i as usize])
         .expect("buf overflow");
     puts(&buf);    
+  }
+  let mut buf = String::new();
+  write!(buf, "test_spi: SX1262 Register 8 is 0x{:02x}", rx_data[4])
+    .expect("buf overflow");
+  puts(&buf);    
 
-    //  Close the GPIO and SPI ports
-    unsafe {
-        close(cs);
-        close(spi);    
-    }
+  //  Close the GPIO and SPI ports
+  unsafe {
+    close(cs);
+    close(spi);    
+  }
 }
+```
+
+TODO: Output
+
+```text
+test_spi: received
+  a2
+  a2
+  a2
+  a2
+  80
+test_spi: SX1262 Register 8 is 0x80
 ```
 
 [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
@@ -263,46 +275,58 @@ From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples
 mod nuttx_hal;
 
 //  Import Libraries
-use embedded_hal::{           //  Rust Embedded HAL
-    digital::v2::OutputPin,   //  GPIO Output
-    blocking::spi::Transfer,  //  SPI Transfer
+use embedded_hal::{         //  Rust Embedded HAL
+  digital::v2::OutputPin,   //  GPIO Output
+  blocking::spi::Transfer,  //  SPI Transfer
 };
 
 /// Test the NuttX Embedded HAL by reading SX1262 Register 8
 fn test_hal() {
 
-    //  Open GPIO Output for SX1262 Chip Select
-    let mut cs = nuttx_hal::OutputPin::new(b"/dev/gpio1\0".as_ptr());
+  //  Open GPIO Output for SX1262 Chip Select
+  let mut cs = nuttx_hal::OutputPin::new(b"/dev/gpio1\0".as_ptr());
 
-    //  Open SPI Bus for SX1262
-    let mut spi = nuttx_hal::Spi::new(b"/dev/spitest0\0".as_ptr());
+  //  Open SPI Bus for SX1262
+  let mut spi = nuttx_hal::Spi::new(b"/dev/spitest0\0".as_ptr());
 
-    //  Set SX1262 Chip Select to Low
-    cs.set_low()
-        .expect("cs failed");
+  //  Set SX1262 Chip Select to Low
+  cs.set_low()
+    .expect("cs failed");
 
-    //  Transfer command to SX1262: Read Register 8
-    let mut data: [ u8; 5 ] = [ 0x1d, 0x00, 0x08, 0x00, 0x00 ];
-    spi.transfer(&mut data)
-        .expect("spi failed");
+  //  Transfer command to SX1262: Read Register 8
+  let mut data: [ u8; 5 ] = [ 0x1d, 0x00, 0x08, 0x00, 0x00 ];
+  spi.transfer(&mut data)
+    .expect("spi failed");
 
-    //  Show the received register value
-    puts("test_hal: received");
-    for i in 0..data.len() {
-        let mut buf = String::new();
-        write!(buf, "  {:02x}", data[i as usize])
-            .expect("buf overflow");
-        puts(&buf);    
-    }
+  //  Show the received register value
+  puts("test_hal: received");
+  for i in 0..data.len() {
     let mut buf = String::new();
-    write!(buf, "test_hal: SX1262 Register 8 is 0x{:02x}", data[4])
-        .expect("buf overflow");
+    write!(buf, "  {:02x}", data[i as usize])
+      .expect("buf overflow");
     puts(&buf);    
+  }
+  let mut buf = String::new();
+  write!(buf, "test_hal: SX1262 Register 8 is 0x{:02x}", data[4])
+    .expect("buf overflow");
+  puts(&buf);    
     
-    //  Set SX1262 Chip Select to High
-    cs.set_high()
-        .expect("cs failed");
+  //  Set SX1262 Chip Select to High
+  cs.set_high()
+    .expect("cs failed");
 }
+```
+
+TODO: Output
+
+```text
+test_hal: received
+  a2
+  a2
+  a2
+  a2
+  80
+test_hal: SX1262 Register 8 is 0x80
 ```
 
 [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
@@ -366,6 +390,12 @@ pub fn test_sx1262() {
   write!(buf, "test_sx1262: SX1262 Register 8 is 0x{:02x}", result[0])
     .expect("buf overflow");
   puts(&buf);
+```
+
+TODO: Output
+
+```text
+test_sx1262: SX1262 Register 8 is 0x80
 ```
 
 [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
@@ -531,6 +561,45 @@ Let's build the NuttX Firmware that contains our __Rust App__...
 1.  Build, flash and run the NuttX Firmware on BL602 or ESP32...
 
     [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/rust2#appendix-build-flash-and-run-nuttx)
+
+
+# Run The Firmware
+
+We're ready to run the NuttX Firmware and test our __Rust App__!
+
+1.  In the NuttX Shell, list the __NuttX Devices__...
+
+    ```bash
+    ls /dev
+    ```
+
+1.  We should see...
+
+    ```text
+    /dev:
+      gpio0
+      gpio1
+      gpio2
+      spi0
+      spitest0
+      ...
+    ```
+
+    Our SPI Test Driver appears as __"/dev/spitest0"__
+
+    The SX1262 Pins for Busy, Chip Select and DIO1 should appear as __"/dev/gpio0"__ (GPIO Input), __"gpio1"__ (GPIO Output) and __"gpio2"__ (GPIO Interrupt) respectively.
+
+1.  In the NuttX Shell, run our __Rust App__...
+
+    ```bash
+    rust_test
+    ```
+
+1.  TODO
+
+# LoRaWAN Support
+
+TODO
 
 # What's Next
 
