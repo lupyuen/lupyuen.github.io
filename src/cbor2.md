@@ -2,7 +2,7 @@
 
 📝 _10 Jan 2022_
 
-Suppose we're creating an IoT Gadget with __Apache NuttX OS__ that transmits __Sensor Data__ from two sensors: __Temperature Sensor and Light Sensor__...
+Suppose we're creating an IoT Gadget with [__Apache NuttX OS__](https://lupyuen.github.io/articles/nuttx) that transmits __Sensor Data__ from two sensors: __Temperature Sensor and Light Sensor__...
 
 ```json
 { 
