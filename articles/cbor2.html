@@ -204,12 +204,12 @@ static void test_cbor(void) {
     &amp;encoder,  //  CBOR Encoder
     output     //  Output Buffer
   );
-  printf(&quot;CBOR Output: %d bytes\r\n&quot;, output_len);</code></pre></div>
+  printf(&quot;CBOR Output: %d bytes\n&quot;, output_len);</code></pre></div>
 <p>For the demo we <strong>dump the encoded CBOR data</strong> to the console…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Dump the encoded CBOR output (6 bytes):
   //  0xa1 0x61 0x74 0x19 0x04 0xd2
   for (int i = 0; i &lt; output_len; i++) {
-    printf(&quot;  0x%02x\r\n&quot;, output[i]);
+    printf(&quot;  0x%02x\n&quot;, output[i]);
   }
 }</code></pre></div>
 <p>And that’s how we call the TinyCBOR Library to work with CBOR data!</p>
@@ -366,7 +366,7 @@ static void test_cbor2(void) {
   //  Dump the encoded CBOR output (11 bytes):
   //  0xa2 0x61 0x74 0x19 0x04 0xd2 0x61 0x6c 0x19 0x09 0x29
   for (int i = 0; i &lt; output_len; i++) {
-    printf(&quot;  0x%02x\r\n&quot;, output[i]);
+    printf(&quot;  0x%02x\n&quot;, output[i]);
   }
 }</code></pre></div>
 <p>Recap: To add a data field to our CBOR Encoding, we…</p>
