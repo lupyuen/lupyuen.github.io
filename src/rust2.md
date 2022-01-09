@@ -93,7 +93,7 @@ TODO
   }
 ```
 
-# Putting Neatly
+# Putting Things Neatly
 
 TODO
 
