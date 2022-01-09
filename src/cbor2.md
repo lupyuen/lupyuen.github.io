@@ -1,6 +1,6 @@
 # Encode Sensor Data with CBOR on Apache NuttX OS
 
-📝 _12 Jan 2022_
+📝 _10 Jan 2022_
 
 Suppose we're creating an IoT Gadget with __Apache NuttX OS__ that transmits __Sensor Data__ from two sensors: __Temperature Sensor and Light Sensor__...
 
@@ -595,17 +595,17 @@ TinyCBOR is available on various __Embedded Operating Systems__...
 
 In the next few articles we'll build a __complete IoT Sensor Device__ with NuttX...
 
--   We'll use the __LoRaWAN Stack__ from the previous article...
+1.  We'll take the __LoRaWAN Stack__ from the previous article...
 
     [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
--   Read BL602's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/tsen) to get real Sensor Data
+1.  Read BL602's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/tsen) to get real Sensor Data
 
--   Compress the Sensor Data with CBOR, as explained in this article
+1.  Compress the Sensor Data with CBOR, as explained in this article
 
--   Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN (pic below)
+1.  Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN (pic below)
 
-We'll take a short detour to explore [__Rust on NuttX__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx)...
+But first we'll take a short detour to explore [__Rust on NuttX__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx)...
 
 -   [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1478959963930169345)
 

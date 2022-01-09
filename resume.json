@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Encode Sensor Data with CBOR on Apache NuttX OS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-01-10",
+      "website": "https://lupyuen.github.io/articles/cbor2",
+      "summary": "Compressing Sensor Data with CBOR on Apache NuttX OS... By calling TinyCBOR Library"
+    },
+    {
       "name": "LoRaWAN on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-01-03",
