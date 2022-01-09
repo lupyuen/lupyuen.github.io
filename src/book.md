@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _5 Jan 2022_
+📝 _9 Jan 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(42 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(43 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -45,6 +45,10 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 -   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
 
 -   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
+
+-   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
+
+-   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
@@ -182,6 +186,18 @@ Render text and graphics with the open-source __LVGL Library__.
 
 -   ["PineCone BL602 Talks UART to Grove E-Ink Display"](https://lupyuen.github.io/articles/uart)
 
+![Multitasking BL602](https://lupyuen.github.io/images/book-multitask.jpg)
+
+# Multitasking BL602
+
+Multitasking the easy way with __NimBLE Porting Layer__.
+
+-   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
+
+For __Apache NuttX OS__...
+
+-   ["Multithreading with NimBLE Porting Layer"](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
+
 ![LoRa on BL602](https://lupyuen.github.io/images/book-lora.jpg)
 
 # LoRa on BL602
@@ -236,24 +252,6 @@ Below are the older articles for __LoRa SX1276 Transceiver__...
 
 -   ["PineCone BL602 RISC-V Board Receives LoRa Packets (SX1276)"](https://lupyuen.github.io/articles/lora2)
 
-![OpenOCD on BL602](https://lupyuen.github.io/images/book-openocd.jpg)
-
-# OpenOCD on BL602
-
-Before debugging BL602 / BL604, we install __OpenOCD__ to connect a __JTAG Debugger__.
-
--   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
-
-![GDB and VSCode on BL602](https://lupyuen.github.io/images/book-debug.jpg)
-
-# GDB and VSCode on BL602
-
-How we __debug BL602 / BL604 firmware__ with GDB and VSCode.
-
--   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
-
--   ["Debug Mynewt with VSCode"](https://lupyuen.github.io/articles/mynewt#debug-firmware-with-vscode)
-
 ![Rust on BL602](https://lupyuen.github.io/images/book-rust.jpg)
 
 # Rust on BL602
@@ -272,7 +270,9 @@ How we code BL602 and BL604 firmware the __safer, simpler way with Rust.__
 
 -   ["Rust in XIP Flash Memory by 9names"](https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways)
 
--   ["Rust on Apache NuttX?"](https://lupyuen.github.io/articles/rust#apache-nuttx-on-bl602)
+For __Apache NuttX OS__...
+
+-   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
 
 ![BASIC on BL602](https://lupyuen.github.io/images/book-basic.jpg)
 
@@ -300,6 +300,24 @@ How we run __TensorFlow Lite__ on BL602 and BL604 to create a Glowing LED.
 
 -   ["Machine Learning on RISC-V BL602 with TensorFlow Lite"](https://lupyuen.github.io/articles/tflite)
 
+![OpenOCD on BL602](https://lupyuen.github.io/images/book-openocd.jpg)
+
+# OpenOCD on BL602
+
+Before debugging BL602 / BL604, we install __OpenOCD__ to connect a __JTAG Debugger__.
+
+-   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
+
+![GDB and VSCode on BL602](https://lupyuen.github.io/images/book-debug.jpg)
+
+# GDB and VSCode on BL602
+
+How we __debug BL602 / BL604 firmware__ with GDB and VSCode.
+
+-   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
+
+-   ["Debug Mynewt with VSCode"](https://lupyuen.github.io/articles/mynewt#debug-firmware-with-vscode)
+
 ![Troubleshooting BL602](https://lupyuen.github.io/images/book-troubleshoot.jpg)
 
 # Troubleshooting BL602
@@ -313,18 +331,6 @@ Tips for __troubleshooting BL602 and BL604 firmware__.
 -   ["BL602 Stack Trace"](https://lupyuen.github.io/articles/lora2#bl602-stack-trace)
 
 -   ["BL602 Stack Dump"](https://lupyuen.github.io/articles/lora2#bl602-stack-dump)
-
-![Multitasking BL602](https://lupyuen.github.io/images/book-multitask.jpg)
-
-# Multitasking BL602
-
-Multitasking the easy way with __NimBLE Porting Layer__.
-
--   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
-
-For __Apache NuttX OS__...
-
--   ["Multithreading with NimBLE Porting Layer"](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
 
 ![Bootloader for BL602](https://lupyuen.github.io/images/book-boot.jpg)
 
@@ -358,7 +364,17 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 
 -   ["PineDio LoRa Gateway: Testing The Prototype"](https://lupyuen.github.io/articles/gateway)
 
+For __Apache NuttX OS__...
+
 -   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
+
+-   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
+
+-   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
+
+-   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
+
+-   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
 
 ![BL706 Audio Video Board](https://lupyuen.github.io/images/book-bl706.jpg)
 
