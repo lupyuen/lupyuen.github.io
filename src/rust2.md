@@ -51,7 +51,7 @@ extern "C" fn rust_main() {  //  Declare `extern "C"` because it will be called 
 }
 ```
 
-Let's break this down...
+Let's break it down...
 
 ```rust
 //  Use the Rust Core Library instead of the 
@@ -618,8 +618,6 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [`lupyuen.github.io/src/rust2.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust2.md)
-
-_NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN_
 
 # Notes
 
