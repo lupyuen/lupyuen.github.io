@@ -26,6 +26,25 @@ But it should work on ESP32, Arm and other NuttX platforms. (With some tweaking)
 
 __Caution:__ Work in Progress! Some spots are rough and rocky, I'm hoping the NuttX and Rust Communities could help to fill in the potholes before release 🙏
 
+# Download Source Code
+
+To run Rust on NuttX, download the modified source code for __NuttX OS and NuttX Apps__...
+
+```bash
+mkdir nuttx
+cd nuttx
+git clone --recursive --branch rust https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch rust https://github.com/lupyuen/incubator-nuttx-apps apps
+```
+
+Or if we prefer to __add the Rust Library and App__ to our NuttX Project, follow these instructions...
+
+1.  TODO: Rust Library
+
+1.  TODO: Rust App
+
+1.  [__"Install SPI Test Driver"__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf)
+
 # What's Next
 
 TODO
