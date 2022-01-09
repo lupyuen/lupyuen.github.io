@@ -33,13 +33,14 @@ This is the __simplest Rust program__ that will run on NuttX and print _"Hello W
 ```rust
 #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
 
-#[no_mangle]                 //  Don't mangle the function name
+#[no_mangle]  //  Don't mangle the function name
 extern "C" fn rust_main() {  //  Declare `extern "C"` because it will be called by NuttX
 
   extern "C" {  //  Import C Function
     /// Print a message to the serial console (from C stdio library)
     fn puts(s: *const u8) -> isize;
   }
+
   unsafe {  //  Mark as unsafe because we are calling C
     //  Print a message to the serial console
     puts(
@@ -92,7 +93,7 @@ TODO
   }
 ```
 
-# Neater Puts
+# Putting Neatly
 
 TODO
 
@@ -143,7 +144,6 @@ From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples
   unsafe {
     close(cs);
   }
-}
 ```
 
 # Import NuttX Functions
