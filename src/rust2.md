@@ -18,9 +18,9 @@ Today we shall...
 
 1.  Run the __Semtech SX1262 LoRa Driver__ from Rust Embedded
 
-1.  And transmit a __LoRa Message__ with Rust on NuttX!
+1.  And transmit a __LoRa Message__ over the airwaves with Rust on NuttX!
 
-We tested Rust on NuttX with [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Board. (Pic above)
+We tested Rust on NuttX with [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Board (pic above) and its onboard Semtech SX1262 Transceiver.
 
 But it should work on ESP32, Arm and other NuttX platforms. (With some tweaking)
 
