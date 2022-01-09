@@ -66,7 +66,7 @@
     <h1 class="title">Rust on Apache NuttX OS</h1>
     <nav id="TOC"><ul>
 <li><a href="#rust-meets-nuttx">1 Rust Meets NuttX</a><ul></ul></li>
-<li><a href="#neater-puts">2 Neater Puts</a><ul></ul></li>
+<li><a href="#putting-neatly">2 Putting Neatly</a><ul></ul></li>
 <li><a href="#flipping-gpio">3 Flipping GPIO</a><ul></ul></li>
 <li><a href="#import-nuttx-functions">4 Import NuttX Functions</a><ul></ul></li>
 <li><a href="#spi-transfer">5 SPI Transfer</a><ul></ul></li>
@@ -107,13 +107,14 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#![<span class="ident">no_std</span>]</span>  <span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span>
 
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>                 <span class="comment">//  Don&#39;t mangle the function name</span>
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_main</span>() {  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX</span>
 
   <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
     <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
     <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">isize</span>;
   }
+
   <span class="kw">unsafe</span> {  <span class="comment">//  Mark as unsafe because we are calling C</span>
     <span class="comment">//  Print a message to the serial console</span>
     <span class="ident">puts</span>(
@@ -152,7 +153,7 @@
         .<span class="ident">as_ptr</span>()        <span class="comment">//  Convert to pointer</span>
     );
   }</code></pre></div>
-<h1 id="neater-puts" class="section-header"><a href="#neater-puts">2 Neater Puts</a></h1>
+<h1 id="putting-neatly" class="section-header"><a href="#putting-neatly">2 Putting Neatly</a></h1>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Mark as unsafe because we are calling C</span>
@@ -192,8 +193,7 @@
   <span class="comment">//  Close the GPIO Output</span>
   <span class="kw">unsafe</span> {
     <span class="ident">close</span>(<span class="ident">cs</span>);
-  }
-}</code></pre></div>
+  }</code></pre></div>
 <h1 id="import-nuttx-functions" class="section-header"><a href="#import-nuttx-functions">4 Import NuttX Functions</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L234-L263">lib.rs</a></p>
