@@ -4,11 +4,11 @@
 
 ![PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/rust2-title.jpg)
 
-[__Apache NuttX__](https://lupyuen.github.io/articles/nuttx) is an embedded operating system that's portable across many platforms (8-bit to 64-bit) and works like a tiny version of Linux (because it's POSIX Compliant).
+[__Apache NuttX__](https://lupyuen.github.io/articles/nuttx) is an embedded operating system that's portable across __many platforms__ (8-bit to 64-bit) and works like a __tiny version of Linux__ (because it's POSIX Compliant).
 
-_Can we use Rust to create (safer) Embedded Apps for NuttX?_
+_Can we create (safer) Embedded Apps with __Rust on NuttX__?_
 
-_Can we take a Device Driver from Rust Embedded... And run it on NuttX?_
+_Can we take a Device Driver from [__Rust Embedded__](https://github.com/rust-embedded/awesome-embedded-rust#driver-crates)... And run it on NuttX?_
 
 Today we shall...
 
