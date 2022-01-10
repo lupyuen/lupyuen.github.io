@@ -258,7 +258,8 @@ int main(int argc, FAR char *argv[]) {
   }</code></pre></div>
 <p>This code works OK for <strong>blinking an LED</strong> on a GPIO pin, but we’ll do something more ambitious… Transfer data over SPI!</p>
 <p><em>Won’t this code get really messy when we do lots of GPIO and SPI?</em></p>
-<p>Yep it might! In a while we’ll clean this up with <strong>Rust Embedded HAL</strong>.</p>
+<p>Yep it might! <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136">(Like this)</a></p>
+<p>In a while we’ll clean this up with <strong>Rust Embedded HAL</strong>.</p>
 <h1 id="import-nuttx-functions" class="section-header"><a href="#import-nuttx-functions">4 Import NuttX Functions</a></h1>
 <p><em>How did we import the NuttX Functions: open, ioctl, sleep, close, …?</em></p>
 <p>We <strong>imported the NuttX Functions</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L257">lib.rs</a></p>
@@ -289,8 +290,9 @@ int main(int argc, FAR char *argv[]) {
 <p>That would be super interesting… It means that we can pick <strong>any Rust Embedded Driver</strong> and run it on NuttX! (Theoretically)</p>
 <p>In a while we’ll test the <strong>Semtech SX1262 LoRa Driver</strong> from Rust Embedded, and see if it works on NuttX!</p>
 <p><em>How do we call Rust Embedded HAL from NuttX?</em></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25">lib.rs</a></p>
+<p>We have created a barebones <strong>Rust Embedded HAL for NuttX</strong>.</p>
+<p>(More details in the Appendix)</p>
+<p>To call it, we import the <strong>HAL Module and Library</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX HAL</span>
 <span class="kw">mod</span> <span class="ident">nuttx_hal</span>;
@@ -306,24 +308,28 @@ int main(int argc, FAR char *argv[]) {
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the NuttX Embedded HAL</span>
-<span class="kw">fn</span> <span class="ident">test_hal</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output</span>
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
+  <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);</code></pre></div>
+<p>TODO</p>
 
-  <span class="comment">//  Open GPIO Output</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
-    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Get a Delay Interface</span>
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">delay</span> <span class="op">=</span> <span class="ident">nuttx_hal::Delay</span>
+  <span class="ident">::new</span>();</code></pre></div>
+<p>TODO</p>
 
-  <span class="comment">//  Set GPIO Output to Low</span>
-  <span class="ident">cs</span>.<span class="ident">set_low</span>()
-    .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to Low</span>
+<span class="ident">cs</span>.<span class="ident">set_low</span>()
+  .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
+<p>TODO</p>
 
-  <span class="comment">//  Wait 1 second (1,000 milliseconds)</span>
-  <span class="ident">delay</span>.<span class="ident">delay_ms</span>(<span class="number">1000</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Wait 1 second (1,000 milliseconds)</span>
+<span class="ident">delay</span>.<span class="ident">delay_ms</span>(<span class="number">1000</span>);</code></pre></div>
+<p>TODO</p>
 
-  <span class="comment">//  Set SX1262 Chip Select to High</span>
-  <span class="ident">cs</span>.<span class="ident">set_high</span>()
-    .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);
-}</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to High</span>
+<span class="ident">cs</span>.<span class="ident">set_high</span>()
+  .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <h1 id="spi-transfer" class="section-header"><a href="#spi-transfer">6 SPI Transfer</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
