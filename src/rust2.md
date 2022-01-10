@@ -183,52 +183,70 @@ Thus it's indeed possible to call Rust from C... And C from Rust!
 
 # Flipping GPIO
 
-TODO
-
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
+Since we can call NuttX Functions from Rust, let's __flip a GPIO High and Low__ the POSIX way: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
 
 ```rust
   //  Open GPIO Output
   let cs = unsafe {
     open(b"/dev/gpio1\0".as_ptr(), O_RDWR) 
   };
-  assert!(cs > 0);  
+  assert!(cs > 0);
+```
 
+We open the GPIO Output at __"/dev/gpio1"__ with read / write access.
+
+Then we call __ioctl__ to set the __GPIO Output to Low__...
+
+```rust
   //  Set GPIO Output to Low
   let ret = unsafe { 
     ioctl(cs, GPIOC_WRITE, 0) 
   };
   assert!(ret >= 0);
+```
 
+We sleep for 1 second...
+
+```rust
   //  Sleep 1 second
   unsafe { 
     sleep(1); 
   }
+```
 
+We set the __GPIO Output to High__...
+
+```rust
   //  Set GPIO Output to High
   let ret = unsafe { 
     ioctl(cs, GPIOC_WRITE, 1) 
   };
   assert!(ret >= 0);
+```
 
+Finally we __close the GPIO Output__...
+
+```rust
   //  Close the GPIO Output
   unsafe {
     close(cs);
   }
 ```
 
-This code looks messy, but we'll clean this up with Rust Embedded HAL in a while.
+This code works OK for __blinking an LED__ on a GPIO pin, but we'll do something more ambitious... Transfer data over SPI!
 
-This works for blinking a LED on a GPIO pin, but we'll do something more ambitious... Transfer data over SPI!
+_Won't this code get really messy when we do lots of GPIO and SPI?_
+
+Yep it might! In a while we'll clean this up with __Rust Embedded HAL__.
 
 # Import NuttX Functions
 
-TODO
+_How did we import the NuttX Functions: open, ioctl, sleep, close, ...?_
 
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L277)
+We __imported the NuttX Functions__ like so: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L257)
 
 ```rust
-extern "C" {  //  Import POSIX Functions. TODO: Import with bindgen
+extern "C" {  //  Import NuttX Functions. TODO: Import with bindgen
   pub fn open(path: *const u8, oflag: i32, ...) -> i32;
   pub fn read(fd: i32, buf: *mut u8, count: u32) -> i32;
   pub fn write(fd: i32, buf: *const u8, count: u32) -> i32;
@@ -240,27 +258,23 @@ extern "C" {  //  Import POSIX Functions. TODO: Import with bindgen
 }
 ```
 
-TODO
+We (very carefully) __imported the NuttX Constants__ as well: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L259-L277)
 
 ```rust
-/// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h
+//  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h
 pub const GPIOC_WRITE: i32 = _GPIOBASE | 1;  //  _GPIOC(1)
 pub const GPIOC_READ:  i32 = _GPIOBASE | 2;  //  _GPIOC(2)
+pub const _GPIOBASE:   i32 = 0x2300;         //  GPIO driver commands
+pub const O_RDWR:      i32 = O_RDOK|O_WROK;  //  Open for both read & write access
 ```
 
-TODO
-
-```rust
-/// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/fcntl.h
-pub const _GPIOBASE: i32 = 0x2300; /* GPIO driver commands */
-pub const O_RDWR:    i32 = O_RDOK|O_WROK; /* Open for both read & write access */
-```
+[(Someday we should auto-generate the Rust Bindings for NuttX with the __bindgen__ tool)](https://rust-lang.github.io/rust-bindgen/)
 
 # Rust Embedded HAL
 
 TODO
 
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
+From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25)
 
 ```rust
 //  Import NuttX HAL
@@ -274,12 +288,19 @@ use embedded_hal::{       //  Rust Embedded HAL
     spi::Transfer,        //  SPI Transfer
   },
 };
+```
 
+TODO
+
+From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
+
+```rust
 /// Test the NuttX Embedded HAL
 fn test_hal() {
 
   //  Open GPIO Output
-  let mut cs = nuttx_hal::OutputPin::new("/dev/gpio1");
+  let mut cs = nuttx_hal::OutputPin
+    ::new("/dev/gpio1");
 
   //  Set GPIO Output to Low
   cs.set_low()
@@ -305,10 +326,12 @@ From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples
 fn test_hal() {
 
   //  Open GPIO Output for SX1262 Chip Select
-  let mut cs = nuttx_hal::OutputPin::new("/dev/gpio1");
+  let mut cs = nuttx_hal::OutputPin
+    ::new("/dev/gpio1");
 
   //  Open SPI Bus for SX1262
-  let mut spi = nuttx_hal::Spi::new("/dev/spitest0");
+  let mut spi = nuttx_hal::Spi
+    ::new("/dev/spitest0");
 
   //  Set SX1262 Chip Select to Low
   cs.set_low()
@@ -357,22 +380,28 @@ From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examp
 pub fn test_sx1262() {
 
   //  Open GPIO Input for SX1262 Busy Pin
-  let lora_busy = nuttx_hal::InputPin::new("/dev/gpio0");
+  let lora_busy = nuttx_hal::InputPin
+    ::new("/dev/gpio0");
 
   //  Open GPIO Output for SX1262 Chip Select
-  let lora_nss = nuttx_hal::OutputPin::new("/dev/gpio1");
+  let lora_nss = nuttx_hal::OutputPin
+    ::new("/dev/gpio1");
 
   //  Open GPIO Interrupt for SX1262 DIO1 Pin
-  let lora_dio1 = nuttx_hal::InterruptPin::new("/dev/gpio2");
+  let lora_dio1 = nuttx_hal::InterruptPin
+    ::new("/dev/gpio2");
 
   //  TODO: Open GPIO Output for SX1262 NRESET Pin
-  let lora_nreset = nuttx_hal::UnusedPin::new();
+  let lora_nreset = nuttx_hal::UnusedPin
+    ::new();
 
   //  TODO: Open GPIO Output for SX1262 Antenna Pin
-  let lora_ant = nuttx_hal::UnusedPin::new();
+  let lora_ant = nuttx_hal::UnusedPin
+    ::new();
 
   //  Open SPI Bus for SX1262
-  let mut spi1 = nuttx_hal::Spi::new("/dev/spitest0");
+  let mut spi1 = nuttx_hal::Spi
+    ::new("/dev/spitest0");
 
   //  Define the SX1262 Pins
   let lora_pins = (
