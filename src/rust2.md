@@ -328,7 +328,7 @@ let mut cs = nuttx_hal::OutputPin
 
 (Looks cleaner now!)
 
-We declared it as __"`mut`"__ (mutable) because we expect the internal state to change as we flip the GPIO.
+We declare it as __"`mut`"__ (mutable) because we expect the internal state to change as we flip the GPIO.
 
 Next we fetch the __Delay Interface__ that we'll use to sleep...
 
