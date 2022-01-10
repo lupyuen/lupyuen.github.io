@@ -192,11 +192,11 @@ Thus it's indeed possible to call Rust from C... And C from Rust!
 Since we can call NuttX Functions from Rust, let's __flip a GPIO High and Low__ the POSIX way: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
 
 ```rust
-  //  Open GPIO Output
-  let cs = unsafe {
-    open(b"/dev/gpio1\0".as_ptr(), O_RDWR) 
-  };
-  assert!(cs > 0);
+//  Open GPIO Output
+let cs = unsafe {
+  open(b"/dev/gpio1\0".as_ptr(), O_RDWR) 
+};
+assert!(cs > 0);
 ```
 
 We open the GPIO Output at __"/dev/gpio1"__ with read / write access.
@@ -204,48 +204,48 @@ We open the GPIO Output at __"/dev/gpio1"__ with read / write access.
 Then we call __ioctl__ to set the __GPIO Output to Low__...
 
 ```rust
-  //  Set GPIO Output to Low
-  let ret = unsafe { 
-    ioctl(cs, GPIOC_WRITE, 0) 
-  };
-  assert!(ret >= 0);
+//  Set GPIO Output to Low
+let ret = unsafe { 
+  ioctl(cs, GPIOC_WRITE, 0) 
+};
+assert!(ret >= 0);
 ```
 
 We sleep for 1 second...
 
 ```rust
-  //  Sleep 1 second
-  unsafe { 
-    sleep(1); 
-  }
+//  Sleep 1 second
+unsafe { 
+  sleep(1); 
+}
 ```
 
 We set the __GPIO Output to High__...
 
 ```rust
-  //  Set GPIO Output to High
-  let ret = unsafe { 
-    ioctl(cs, GPIOC_WRITE, 1) 
-  };
-  assert!(ret >= 0);
+//  Set GPIO Output to High
+let ret = unsafe { 
+  ioctl(cs, GPIOC_WRITE, 1) 
+};
+assert!(ret >= 0);
 ```
 
 Finally we __close the GPIO Output__...
 
 ```rust
-  //  Close the GPIO Output
-  unsafe {
-    close(cs);
-  }
+//  Close the GPIO Output
+unsafe {
+  close(cs);
+}
 ```
 
 This code works OK for __blinking an LED__ on a GPIO pin, but we'll do something more ambitious... Transfer data over SPI!
 
 _Won't this code get really messy when we do lots of GPIO and SPI?_
 
-Yep it might! [(Like this)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
+Yep it might get terribly messy! [(Like this)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
 
-In a while we'll clean this up with __Rust Embedded HAL__.
+In a while we'll mop this up with __Rust Embedded HAL__.
 
 # Import NuttX Functions
 
