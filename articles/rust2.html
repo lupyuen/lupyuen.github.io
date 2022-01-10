@@ -107,7 +107,7 @@
 <p><strong>Caution:</strong> Work in Progress! Some spots are rough and rocky, I’m hoping the NuttX and Rust Communities could help to fill in the potholes before release 🙏</p>
 <p><img src="https://lupyuen.github.io/images/rust2-run.png" alt="Rust running on NuttX" /></p>
 <h1 id="rust-meets-nuttx" class="section-header"><a href="#rust-meets-nuttx">1 Rust Meets NuttX</a></h1>
-<p>This is the <strong>simplest Rust program</strong> that will run on NuttX and print <em>“Hello World”</em>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L27-L59">lib.rs</a></p>
+<p>This is the <strong>simplest Rust program</strong> that will run on NuttX and print <em>“Hello World”</em>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L27-L59">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#![<span class="ident">no_std</span>]</span>  <span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span>
 
@@ -190,7 +190,7 @@ Hello World!</code></pre></div>
 <p>We’ll make it neater in the next chapter.</p>
 <p><em>Is there anything we missed?</em></p>
 <p>We need to define a <strong>Panic Handler</strong> that will be called when a Runtime Error or Assertion Failure occurs.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L218-L243">(Our Panic Handler is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L218-L243">(Our Panic Handler is defined here)</a></p>
 <h1 id="putting-things-neatly" class="section-header"><a href="#putting-things-neatly">2 Putting Things Neatly</a></h1>
 <p><em>Do we really need the cumbersome syntax for <strong>“puts”</strong> when we print things?</em></p>
 <p>We can do better! Let’s wrap this cumbersome code…</p>
@@ -208,11 +208,11 @@ Hello World!</code></pre></div>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Print a message to the serial console</span>
 <span class="macro">println!</span>(<span class="string">&quot;Hello World!&quot;</span>);</code></pre></div>
 <p>Much neater! We’ll see later that <strong>“println!”</strong> supports Formatted Output too.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs">(<strong>println!</strong> is defined here. Thanks Huang Qi! 👍)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L175-L216">(<strong>puts</strong> is wrapped here)</a></p>
+<p><a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/macros.rs">(<strong>println!</strong> is defined here. Thanks Huang Qi! 👍)</a></p>
+<p><a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L175-L216">(<strong>puts</strong> is wrapped here)</a></p>
 <p><em>Why is our Rust Function named <strong>rust_main</strong> instead of <strong>main</strong>?</em></p>
 <p>Our Rust code (<strong>rust_main</strong>) is compiled into a <strong>Static Library</strong> that will be linked into the NuttX Firmware.</p>
-<p>Our NuttX Firmware contains a NuttX App (<strong>rust_test</strong>) that calls <strong>rust_main</strong> from C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37">rust_test_main.c</a></p>
+<p>Our NuttX Firmware contains a NuttX App (<strong>rust_test</strong>) that calls <strong>rust_main</strong> from C: <a href="https://github.com/lupyuen/rust_test/blob/main/rust_test_main.c#L28-L37">rust_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Rust Function defined in rust/src/lib.rs
 void rust_main(void);
 
@@ -226,7 +226,7 @@ int main(int argc, FAR char *argv[]) {
 <p>(More about the Rust build script in the Appendix)</p>
 <p><img src="https://lupyuen.github.io/images/rust2-gpio.png" alt="Rust opening GPIO Ports on NuttX" /></p>
 <h1 id="flipping-gpio" class="section-header"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
-<p>Since we can call NuttX Functions from Rust, let’s <strong>flip a GPIO High and Low</strong> the POSIX way: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136">lib.rs</a></p>
+<p>Since we can call NuttX Functions from Rust, let’s <strong>flip a GPIO High and Low</strong> the POSIX way: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L61-L136">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output</span>
 <span class="kw">let</span> <span class="ident">cs</span> <span class="op">=</span> <span class="kw">unsafe</span> {
@@ -262,11 +262,11 @@ int main(int argc, FAR char *argv[]) {
 }</code></pre></div>
 <p>This code works OK for <strong>blinking an LED</strong> on a GPIO pin, but we’ll do something more ambitious… Transfer data over SPI!</p>
 <p><em>Won’t this code get really messy when we do lots of GPIO and SPI?</em></p>
-<p>Yep it might get terribly messy! <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136">(Like this)</a></p>
+<p>Yep it might get terribly messy! <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L61-L136">(Like this)</a></p>
 <p>In a while we’ll mop this up with <strong>Rust Embedded HAL</strong>.</p>
 <h1 id="import-nuttx-functions" class="section-header"><a href="#import-nuttx-functions">4 Import NuttX Functions</a></h1>
 <p><em>How did we import the NuttX Functions: open, ioctl, sleep, close, …?</em></p>
-<p>We <strong>imported the NuttX Functions</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L257">lib.rs</a></p>
+<p>We <strong>imported the NuttX Functions</strong> like so: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L248-L257">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import NuttX Functions. TODO: Import with bindgen</span>
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span>(<span class="ident">path</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">oflag</span>: <span class="ident">i32</span>, ...) -&gt; <span class="ident">i32</span>;
@@ -278,7 +278,7 @@ int main(int argc, FAR char *argv[]) {
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">usleep</span>(<span class="ident">usec</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span>;
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">u32</span>) -&gt; <span class="op">!</span>;  <span class="comment">//  Does not return</span>
 }</code></pre></div>
-<p>We (very carefully) <strong>imported the NuttX Constants</strong> as well: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L259-L277">lib.rs</a></p>
+<p>We (very carefully) <strong>imported the NuttX Constants</strong> as well: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L259-L277">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_WRITE</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">1</span>;  <span class="comment">//  _GPIOC(1)</span>
@@ -297,7 +297,7 @@ int main(int argc, FAR char *argv[]) {
 <p><em>How do we call Rust Embedded HAL from NuttX?</em></p>
 <p>We have created a barebones <strong>Rust Embedded HAL for NuttX</strong>.</p>
 <p>(More details in the Appendix)</p>
-<p>To call it, we import the <strong>NuttX HAL Module (nuttx_hal)</strong> and <strong>Rust Embedded Library</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25">lib.rs</a></p>
+<p>To call it, we import the <strong>NuttX HAL Module (nuttx_hal)</strong> and <strong>Rust Embedded Library</strong> like so: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L7-L25">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX HAL Module</span>
 <span class="kw">mod</span> <span class="ident">nuttx_hal</span>;
@@ -310,8 +310,8 @@ int main(int argc, FAR char *argv[]) {
     <span class="ident">spi::Transfer</span>,        <span class="comment">//  SPI Transfer</span>
   },
 };</code></pre></div>
-<p>(NuttX HAL Module lives in its own source file <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/nuttx_hal.rs">nuttx_hal.rs</a>)</p>
-<p>To open GPIO Output <strong>“/dev/gpio1”</strong> we do this: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
+<p>(NuttX HAL Module lives in its own source file <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs">nuttx_hal.rs</a>)</p>
+<p>To open GPIO Output <strong>“/dev/gpio1”</strong> we do this: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L138-L173">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output</span>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
@@ -343,7 +343,7 @@ int main(int argc, FAR char *argv[]) {
 <h1 id="spi-transfer" class="section-header"><a href="#spi-transfer">6 SPI Transfer</a></h1>
 <p>Let’s test SPI Data Transfer to the <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 LoRa Transceiver</strong></a>.</p>
 <p>For PineDio Stack BL604 with its onboard SX1262 (pic above), we control <strong>SPI Chip Select</strong> ourselves via GPIO Output <strong>“/dev/gpio1”</strong></p>
-<p>We begin by opening the <strong>GPIO Output</strong> for SPI Chip Select: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
+<p>We begin by opening the <strong>GPIO Output</strong> for SPI Chip Select: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L138-L173">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the NuttX Embedded HAL by reading SX1262 Register 8</span>
 <span class="kw">fn</span> <span class="ident">test_hal</span>() {
@@ -400,7 +400,7 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p>That we have tweaked slightly from <strong><a href="https://github.com/tweedegolf/sx126x-rs">tweedegolf/sx126x-rs</a></strong></p>
 <p>(More about this in the Appendix. Thanks Tweede golf! 👍)</p>
 <p>Let’s do the same test as last chapter: <strong>Read SX1262 Register 8</strong></p>
-<p>We begin by opening the <strong>GPIO Input, Output and Interrupt Pins</strong> for SX1262: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L22-L72">sx1262.rs</a></p>
+<p>We begin by opening the <strong>GPIO Input, Output and Interrupt Pins</strong> for SX1262: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L22-L72">sx1262.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the SX1262 Driver by reading a register.</span>
 <span class="doccomment">/// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs</span>
@@ -457,7 +457,7 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
   <span class="comment">//  Init the SX1262 Driver</span>
   <span class="ident">lora</span>.<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">conf</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;sx1262 init failed&quot;</span>);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L106-L144">(<strong>build_config</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L106-L144">(<strong>build_config</strong> is defined here)</a></p>
 <p>Lastly we <strong>read SX1262 Register 8</strong> and print the result…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init Result Buffer as 1 byte of 0x00</span>
@@ -479,13 +479,13 @@ test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust2-transmit2.png" alt="Transmit LoRa Message" /></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">8 Transmit LoRa Message</a></h1>
 <p>For our final test for today we shall <strong>transmit a LoRa Message</strong> with the Rust Driver for SX1262.</p>
-<p>Before we start, remember to configure the <strong>LoRa Frequency</strong> for our region: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L14-L17">sx1262.rs</a></p>
+<p>Before we start, remember to configure the <strong>LoRa Frequency</strong> for our region: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L14-L17">sx1262.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Change this to your LoRa Frequency</span>
 <span class="comment">//  const RF_FREQUENCY: u32 = 868_000_000;  //  868 MHz (EU)</span>
 <span class="comment">//  const RF_FREQUENCY: u32 = 915_000_000;  //  915 MHz (US)</span>
 <span class="kw">const</span> <span class="ident">RF_FREQUENCY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">923_000_000</span>;  <span class="comment">//  923 MHz (Asia)</span></code></pre></div>
-<p>We prepare for LoRa Transmission by <strong>updating some SX1262 Registers</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L73-L104">sx1262.rs</a></p>
+<p>We prepare for LoRa Transmission by <strong>updating some SX1262 Registers</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L73-L104">sx1262.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transmit a LoRa Message.</span>
 <span class="doccomment">/// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs</span>
@@ -712,7 +712,7 @@ TODO</code></pre></div>
 </ol>
 <h1 id="appendix-rust-embedded-hal-for-nuttx" class="section-header"><a href="#appendix-rust-embedded-hal-for-nuttx">15 Appendix: Rust Embedded HAL for NuttX</a></h1>
 <p>TODO</p>
-<p>Rust Embedded HAL for NuttX: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/nuttx_hal.rs">rust_test/rust/src/nuttx_hal.rs</a></p>
+<p>Rust Embedded HAL for NuttX: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs">rust_test/rust/src/nuttx_hal.rs</a></p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal3.png" alt="GPIO HAL" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal4.png" alt="SPI HAL" /></p>
@@ -720,7 +720,7 @@ TODO</code></pre></div>
 <p>TODO</p>
 <p>Modified SX1262 Driver for NuttX: <a href="https://github.com/lupyuen/sx126x-rs-nuttx">lupyuen/sx126x-rs-nuttx</a></p>
 <p>Based on <a href="https://github.com/tweedegolf/sx126x-rs">tweedegolf/sx126x-rs</a></p>
-<p>Arm vs RISC-V: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L146-L168">rust_test/rust/src/sx1262.rs</a></p>
+<p>Arm vs RISC-V: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L146-L168">rust_test/rust/src/sx1262.rs</a></p>
 <p><img src="https://lupyuen.github.io/images/rust2-driver.png" alt="Fixing SX1262 Driver for NuttX" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal5.png" alt="Incorrect register value" /></p>
@@ -730,10 +730,10 @@ TODO</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust2-driver2.png" alt="SPI Transfers after merging" /></p>
 <h1 id="appendix-rust-build-script-for-nuttx" class="section-header"><a href="#appendix-rust-build-script-for-nuttx">17 Appendix: Rust Build Script for NuttX</a></h1>
 <p>TODO</p>
-<p>Build Script: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/run.sh">rust_test/run.sh</a></p>
-<p>Rust Custom Target: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/riscv32imacf-unknown-none-elf.json">rust_test/riscv32imacf-unknown-none-elf.json</a></p>
-<p>Rust Dependencies: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/Cargo.toml">rust_test/rust/Cargo.toml</a></p>
-<p>Rust Source File: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs">rust_test/rust/src/lib.rs</a></p>
+<p>Build Script: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh">rust_test/run.sh</a></p>
+<p>Rust Custom Target: <a href="https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json">rust_test/riscv32imacf-unknown-none-elf.json</a></p>
+<p>Rust Dependencies: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml">rust_test/rust/Cargo.toml</a></p>
+<p>Rust Source File: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs">rust_test/rust/src/lib.rs</a></p>
 <p><a href="https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d">(See the Build Log)</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust2-build.png" alt="Copy Rust Static Library to Staging Library" /></p>
