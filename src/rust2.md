@@ -316,9 +316,7 @@ use embedded_hal::{       //  Rust Embedded HAL
 };
 ```
 
-TODO
-
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
+To open GPIO Output __"/dev/gpio1"__ we do this: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
 
 ```rust
 //  Open GPIO Output
@@ -326,7 +324,9 @@ let mut cs = nuttx_hal::OutputPin
   ::new("/dev/gpio1");
 ```
 
-TODO
+(Looks cleaner now!)
+
+Next we fetch the __Delay Interface__ that we'll use to sleep...
 
 ```rust
 //  Get a Delay Interface
@@ -334,7 +334,7 @@ let mut delay = nuttx_hal::Delay
   ::new();
 ```
 
-TODO
+Then we set the __GPIO Output to Low__...
 
 ```rust
 //  Set GPIO Output to Low
@@ -342,20 +342,24 @@ cs.set_low()
   .expect("cs failed");
 ```
 
-TODO
+("expect" works like an Assertion Check)
+
+We sleep for 1 second...
 
 ```rust
 //  Wait 1 second (1,000 milliseconds)
 delay.delay_ms(1000);
 ```
 
-TODO
+Finally we set the __GPIO Output to High__...
 
 ```rust
 //  Set GPIO Output to High
 cs.set_high()
   .expect("cs failed");
 ```
+
+Rust Embedded HAL makes GPIO programming more fun! Let's do SPI now.
 
 # SPI Transfer
 
@@ -370,27 +374,52 @@ fn test_hal() {
   //  Open GPIO Output for SX1262 Chip Select
   let mut cs = nuttx_hal::OutputPin
     ::new("/dev/gpio1");
+```
 
+TODO
+
+```rust
   //  Open SPI Bus for SX1262
   let mut spi = nuttx_hal::Spi
     ::new("/dev/spitest0");
+```
 
+TODO
+
+```rust
   //  Set SX1262 Chip Select to Low
   cs.set_low()
     .expect("cs failed");
+```
 
+TODO
+
+```rust
   //  Transfer command to SX1262: Read Register 8
   let mut data: [ u8; 5 ] = [ 0x1d, 0x00, 0x08, 0x00, 0x00 ];
   spi.transfer(&mut data)
     .expect("spi failed");
+```
 
+TODO
+
+```rust
   //  Show the received register value
   println!("test_hal: received");
   for i in 0..data.len() {
     println!("  {:02x}", data[i as usize]);
   }
+```
+
+TODO
+
+```rust
   println!("test_hal: SX1262 Register 8 is 0x{:02x}", data[4]);
-    
+```
+
+TODO
+
+```rust    
   //  Set SX1262 Chip Select to High
   cs.set_high()
     .expect("cs failed");
