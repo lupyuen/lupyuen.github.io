@@ -152,7 +152,7 @@ unsafe {
 
 ```rust
 //  Print a message to the serial console
-println!("Hello World");
+println!("Hello World!");
 ```
 
 Much neater! We'll see later that __"println!"__ supports Formatted Output too.
