@@ -140,8 +140,7 @@
 <p>(Why is it named <strong>rust_main</strong>? We’ll find out in a while)</p>
 <p>NuttX provides the <strong>puts</strong> function because it’s POSIX Compliant (like Linux), so we import it from C…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
-  <span class="comment">//  Import C Function</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Import C Function</span>
   <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
     <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">isize</span>;
@@ -182,11 +181,11 @@
 <p>We call <strong><code>.as_ptr()</code></strong> to convert the Byte String to a pointer</p>
 </li>
 </ul>
-<p>The Rust code above runs perfectly fine on the <strong>NuttX Shell</strong>…</p>
+<p>Though it looks messy, the Rust code above runs perfectly fine from the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
 
 Hello World!</code></pre></div>
-<p>But let’s make it neater in the next chapter.</p>
+<p>We’ll make it neater in the next chapter.</p>
 <p><em>Is there anything we missed?</em></p>
 <p>We need to define a <strong>Panic Handler</strong> that will be called when a Runtime Error or Assertion Failure occurs.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L202-L229">(Here is our Panic Handler)</a></p>
@@ -205,8 +204,19 @@ Hello World!</code></pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Print a message to the serial console</span>
 <span class="ident">puts</span>(<span class="string">&quot;Hello World&quot;</span>);</code></pre></div>
-<p><em>Why is it named <strong>rust_main</strong>?</em></p>
-<p>TODO</p>
+<p><em>Why is our Rust Function named <strong>rust_main</strong>?</em></p>
+<p>Our Rust code is complied into a <strong>Static Library</strong> that will be linked into the NuttX Firmware.</p>
+<p>In our NuttX Firmware, we have a NuttX App <strong>rust_test</strong> that calls <strong>rust_main</strong> from C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37">rust_test_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Rust Function defined in rust/src/lib.rs
+void rust_main(void);
+
+//  Our Main Function in C...
+int main(int argc, FAR char *argv[]) {
+    //  Calls the Rust Function
+    rust_main();
+    return 0;
+}</code></pre></div>
+<p>(More about the Rust build script in the Appendix)</p>
 <h1 id="flipping-gpio" class="section-header"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L54-L135">lib.rs</a></p>
@@ -354,10 +364,10 @@ test_spi: SX1262 Register 8 is 0x80</code></pre></div>
 <span class="kw">fn</span> <span class="ident">test_hal</span>() {
 
   <span class="comment">//  Open GPIO Output for SX1262 Chip Select</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin::new</span>(<span class="string">b&quot;/dev/gpio1\0&quot;</span>.<span class="ident">as_ptr</span>());
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);
 
   <span class="comment">//  Open SPI Bus for SX1262</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi::new</span>(<span class="string">b&quot;/dev/spitest0\0&quot;</span>.<span class="ident">as_ptr</span>());
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);
 
   <span class="comment">//  Set SX1262 Chip Select to Low</span>
   <span class="ident">cs</span>.<span class="ident">set_low</span>()
@@ -403,13 +413,13 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
 
   <span class="comment">//  Open GPIO Input for SX1262 Busy Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_busy</span> <span class="op">=</span> <span class="ident">nuttx_hal::InputPin::new</span>(<span class="string">b&quot;/dev/gpio0\0&quot;</span>.<span class="ident">as_ptr</span>());
+  <span class="kw">let</span> <span class="ident">lora_busy</span> <span class="op">=</span> <span class="ident">nuttx_hal::InputPin::new</span>(<span class="string">&quot;/dev/gpio0&quot;</span>);
 
   <span class="comment">//  Open GPIO Output for SX1262 Chip Select</span>
-  <span class="kw">let</span> <span class="ident">lora_nss</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin::new</span>(<span class="string">b&quot;/dev/gpio1\0&quot;</span>.<span class="ident">as_ptr</span>());
+  <span class="kw">let</span> <span class="ident">lora_nss</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);
 
   <span class="comment">//  Open GPIO Interrupt for SX1262 DIO1 Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_dio1</span> <span class="op">=</span> <span class="ident">nuttx_hal::InterruptPin::new</span>(<span class="string">b&quot;/dev/gpio2\0&quot;</span>.<span class="ident">as_ptr</span>());
+  <span class="kw">let</span> <span class="ident">lora_dio1</span> <span class="op">=</span> <span class="ident">nuttx_hal::InterruptPin::new</span>(<span class="string">&quot;/dev/gpio2&quot;</span>);
 
   <span class="comment">//  TODO: Open GPIO Output for SX1262 NRESET Pin</span>
   <span class="kw">let</span> <span class="ident">lora_nreset</span> <span class="op">=</span> <span class="ident">nuttx_hal::UnusedPin::new</span>();
@@ -418,7 +428,7 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
   <span class="kw">let</span> <span class="ident">lora_ant</span> <span class="op">=</span> <span class="ident">nuttx_hal::UnusedPin::new</span>();
 
   <span class="comment">//  Open SPI Bus for SX1262</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi1</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi::new</span>(<span class="string">b&quot;/dev/spitest0\0&quot;</span>.<span class="ident">as_ptr</span>());
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi1</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);
 
   <span class="comment">//  Define the SX1262 Pins</span>
   <span class="kw">let</span> <span class="ident">lora_pins</span> <span class="op">=</span> (
