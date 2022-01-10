@@ -70,9 +70,9 @@ Next we declare the __Rust Function__ that will be called by NuttX...
 extern "C" fn rust_main() {
 ```
 
-(Why is it named __rust_main__? We'll find out in a while)
+(Why is it named __"rust_main"__? We'll find out in a while)
 
-NuttX provides the __puts__ function because it's POSIX Compliant (like Linux), so we import it from C...
+NuttX provides the __"puts"__ function because it's POSIX Compliant (like Linux), so we import it from C...
 
 ```rust
   //  Import C Function
@@ -82,7 +82,7 @@ NuttX provides the __puts__ function because it's POSIX Compliant (like Linux), 
   }
 ```
 
-This declares that __puts__...
+This declares that __"puts"__...
 
 -   Accepts a "`*const u8`" pointer
 
@@ -92,7 +92,7 @@ This declares that __puts__...
 
     (Equivalent to "`int`" in C)
 
-We call __puts__ like so...
+We call __"puts"__ like so...
 
 ```rust
   //  Mark as unsafe because we are calling C
@@ -113,7 +113,7 @@ Passing a string from Rust to C looks rather cumbersome...
 
 -   Rust Strings are not null-terminated! We add the __Null Byte__ ourselves with "`\0`"
 
--   We call __`.as_ptr()`__ to convert the Byte String to a pointer
+-   We call __"`.as_ptr()`"__ to convert the Byte String to a pointer
 
 Though it looks messy, the Rust code above runs perfectly fine from the __NuttX Shell__...
 
@@ -129,11 +129,13 @@ _Is there anything we missed?_
 
 We need to define a __Panic Handler__ that will be called when a Runtime Error or Assertion Failure occurs.
 
-[(Here is our Panic Handler)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L202-L229)
+[(Our Panic Handler is defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L218-L243)
 
 # Putting Things Neatly
 
-TODO
+_Do we really need the cumbersome syntax for __"puts"__ when we print things?_
+
+We can do better! Let's wrap this cumbersome code...
 
 ```rust
 //  Mark as unsafe because we are calling C
@@ -146,12 +148,16 @@ unsafe {
 }
 ```
 
-TODO
+...with a __Rust Macro__. And we'll get this...
 
 ```rust
 //  Print a message to the serial console
-puts("Hello World");
+println!("Hello World");
 ```
+
+Much neater! And we'll see later that __"println!"__ supports Formatted Output too.
+
+[(__println!__ is defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs)
 
 _Why is our Rust Function named __rust_main__?_
 
