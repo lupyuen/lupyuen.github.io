@@ -317,7 +317,7 @@ int main(int argc, FAR char *argv[]) {
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
   <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);</code></pre></div>
 <p>(Looks cleaner now!)</p>
-<p>We declared it as <strong>“<code>mut</code>”</strong> (mutable) because we expect the internal state to change as we flip the GPIO.</p>
+<p>We declare it as <strong>“<code>mut</code>”</strong> (mutable) because we expect the internal state to change as we flip the GPIO.</p>
 <p>Next we fetch the <strong>Delay Interface</strong> that we’ll use to sleep…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Get a Delay Interface</span>
