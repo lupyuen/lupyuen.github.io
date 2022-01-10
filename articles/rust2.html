@@ -283,8 +283,12 @@ int main(int argc, FAR char *argv[]) {
 <p><a href="https://rust-lang.github.io/rust-bindgen/">(Someday we should auto-generate the Rust Bindings for NuttX with the <strong>bindgen</strong> tool)</a></p>
 <h1 id="rust-embedded-hal" class="section-header"><a href="#rust-embedded-hal">5 Rust Embedded HAL</a></h1>
 <p><em>What is Rust Embedded HAL?</em></p>
-<p><strong>Rust Embedded HAL</strong> (Hardware Abstraction Layer) defines a standard interface that’s used by Rust Embedded Device Drivers to access the hardware: GPIO, SPI, I2C, …</p>
+<p><strong>Rust Embedded HAL</strong> (Hardware Abstraction Layer) defines a standard interface that’s used by <strong>Rust Embedded Device Drivers</strong> to access the hardware: GPIO, SPI, I2C, …</p>
 <p><a href="https://github.com/rust-embedded/awesome-embedded-rust#driver-crates">(Check out the Rust Embedded Drivers here)</a></p>
+<p><em>What if we implement Rust Embedded HAL for NuttX: GPIO, SPI, I2C, …?</em></p>
+<p>That would be super interesting… It means that we can pick <strong>any Rust Embedded Driver</strong> and run it on NuttX! (Theoretically)</p>
+<p>In a while we’ll test the <strong>Semtech SX1262 LoRa Driver</strong> from Rust Embedded, and see if it works on NuttX!</p>
+<p><em>How do we call Rust Embedded HAL from NuttX?</em></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25">lib.rs</a></p>
 
