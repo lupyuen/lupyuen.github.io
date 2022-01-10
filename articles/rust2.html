@@ -227,42 +227,42 @@ int main(int argc, FAR char *argv[]) {
 <h1 id="flipping-gpio" class="section-header"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
 <p>Since we can call NuttX Functions from Rust, let’s <strong>flip a GPIO High and Low</strong> the POSIX way: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Open GPIO Output</span>
-  <span class="kw">let</span> <span class="ident">cs</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-    <span class="ident">open</span>(<span class="string">b&quot;/dev/gpio1\0&quot;</span>.<span class="ident">as_ptr</span>(), <span class="ident">O_RDWR</span>) 
-  };
-  <span class="macro">assert!</span>(<span class="ident">cs</span> <span class="op">&gt;</span> <span class="number">0</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output</span>
+<span class="kw">let</span> <span class="ident">cs</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+  <span class="ident">open</span>(<span class="string">b&quot;/dev/gpio1\0&quot;</span>.<span class="ident">as_ptr</span>(), <span class="ident">O_RDWR</span>) 
+};
+<span class="macro">assert!</span>(<span class="ident">cs</span> <span class="op">&gt;</span> <span class="number">0</span>);</code></pre></div>
 <p>We open the GPIO Output at <strong>“/dev/gpio1”</strong> with read / write access.</p>
 <p>Then we call <strong>ioctl</strong> to set the <strong>GPIO Output to Low</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set GPIO Output to Low</span>
-  <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-    <span class="ident">ioctl</span>(<span class="ident">cs</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">0</span>) 
-  };
-  <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to Low</span>
+<span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
+  <span class="ident">ioctl</span>(<span class="ident">cs</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">0</span>) 
+};
+<span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
 <p>We sleep for 1 second…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Sleep 1 second</span>
-  <span class="kw">unsafe</span> { 
-    <span class="ident">sleep</span>(<span class="number">1</span>); 
-  }</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Sleep 1 second</span>
+<span class="kw">unsafe</span> { 
+  <span class="ident">sleep</span>(<span class="number">1</span>); 
+}</code></pre></div>
 <p>We set the <strong>GPIO Output to High</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set GPIO Output to High</span>
-  <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-    <span class="ident">ioctl</span>(<span class="ident">cs</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">1</span>) 
-  };
-  <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to High</span>
+<span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
+  <span class="ident">ioctl</span>(<span class="ident">cs</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">1</span>) 
+};
+<span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
 <p>Finally we <strong>close the GPIO Output</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Close the GPIO Output</span>
-  <span class="kw">unsafe</span> {
-    <span class="ident">close</span>(<span class="ident">cs</span>);
-  }</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Close the GPIO Output</span>
+<span class="kw">unsafe</span> {
+  <span class="ident">close</span>(<span class="ident">cs</span>);
+}</code></pre></div>
 <p>This code works OK for <strong>blinking an LED</strong> on a GPIO pin, but we’ll do something more ambitious… Transfer data over SPI!</p>
 <p><em>Won’t this code get really messy when we do lots of GPIO and SPI?</em></p>
-<p>Yep it might! <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136">(Like this)</a></p>
-<p>In a while we’ll clean this up with <strong>Rust Embedded HAL</strong>.</p>
+<p>Yep it might get terribly messy! <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136">(Like this)</a></p>
+<p>In a while we’ll mop this up with <strong>Rust Embedded HAL</strong>.</p>
 <h1 id="import-nuttx-functions" class="section-header"><a href="#import-nuttx-functions">4 Import NuttX Functions</a></h1>
 <p><em>How did we import the NuttX Functions: open, ioctl, sleep, close, …?</em></p>
 <p>We <strong>imported the NuttX Functions</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L257">lib.rs</a></p>
