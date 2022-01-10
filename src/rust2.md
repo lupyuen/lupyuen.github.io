@@ -26,6 +26,8 @@ But it should work on ESP32, Arm and other NuttX platforms. (With some tweaking)
 
 __Caution:__ Work in Progress! Some spots are rough and rocky, I'm hoping the NuttX and Rust Communities could help to fill in the potholes before release 🙏
 
+![Rust running on NuttX](https://lupyuen.github.io/images/rust2-run.png)
+
 # Rust Meets NuttX
 
 This is the __simplest Rust program__ that will run on NuttX and print _"Hello World"_: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L27-L59)
@@ -181,6 +183,8 @@ Thus it's indeed possible to call Rust from C... And C from Rust!
 
 (More about the Rust build script in the Appendix)
 
+![Rust opening GPIO Ports on NuttX](https://lupyuen.github.io/images/rust2-gpio.png)
+
 # Flipping GPIO
 
 Since we can call NuttX Functions from Rust, let's __flip a GPIO High and Low__ the POSIX way: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
@@ -271,6 +275,8 @@ pub const O_RDWR:      i32 = O_RDOK|O_WROK;  //  Open for both read & write acce
 ```
 
 [(Someday we should auto-generate the Rust Bindings for NuttX with the __bindgen__ tool)](https://rust-lang.github.io/rust-bindgen/)
+
+![Rust Embedded HAL](https://lupyuen.github.io/images/rust2-hal.png)
 
 # Rust Embedded HAL
 
@@ -402,6 +408,8 @@ test_hal: SX1262 Register 8 is 0x80
 
 [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
 
+![Calling the Rust Driver for LoRa SX1262](https://lupyuen.github.io/images/rust2-hal2.png)
+
 # Rust Driver for LoRa SX1262
 
 TODO
@@ -473,6 +481,8 @@ test_sx1262: SX1262 Register 8 is 0x80
 ```
 
 [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
+
+![Transmit LoRa Message](https://lupyuen.github.io/images/rust2-transmit2.png)
 
 # Transmit LoRa Message
 
@@ -671,7 +681,13 @@ We're ready to run the NuttX Firmware and test our __Rust App__!
     rust_test
     ```
 
-1.  TODO
+TODO
+
+![](https://lupyuen.github.io/images/rust2-chirp2.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/rust2-receive.png)
 
 # LoRaWAN Support
 
@@ -707,9 +723,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
+![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
+
+TODO
+
+![SPI HAL](https://lupyuen.github.io/images/rust2-hal4.png)
+
+![Fixing SX1262 Driver for NuttX](https://lupyuen.github.io/images/rust2-driver.png)
+
 # Appendix: Fix SX1262 Driver for NuttX
 
 TODO
+
+![SPI Transfers in small chunks](https://lupyuen.github.io/images/rust2-hal6.png)
+
+TODO
+
+![SPI Transfers after merging](https://lupyuen.github.io/images/rust2-driver2.png)
 
 # Appendix: Build, Flash and Run NuttX
 
@@ -721,45 +751,9 @@ TODO2
 
 ![](https://lupyuen.github.io/images/rust2-build2.png)
 
-TODO4
-
-![](https://lupyuen.github.io/images/rust2-chirp2.png)
-
-TODO5
-
-![](https://lupyuen.github.io/images/rust2-driver.png)
-
-TODO6
-
-![](https://lupyuen.github.io/images/rust2-driver2.png)
-
-TODO7
-
-![](https://lupyuen.github.io/images/rust2-gpio.png)
-
-TODO8
-
-![](https://lupyuen.github.io/images/rust2-hal.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/rust2-hal2.png)
-
-TODO10
-
-![](https://lupyuen.github.io/images/rust2-hal3.png)
-
-TODO11
-
-![](https://lupyuen.github.io/images/rust2-hal4.png)
-
 TODO12
 
 ![](https://lupyuen.github.io/images/rust2-hal5.png)
-
-TODO13
-
-![](https://lupyuen.github.io/images/rust2-hal6.png)
 
 TODO14
 
@@ -769,14 +763,6 @@ TODO15
 
 ![](https://lupyuen.github.io/images/rust2-hello.png)
 
-TODO16
-
-![](https://lupyuen.github.io/images/rust2-receive.png)
-
-TODO17
-
-![](https://lupyuen.github.io/images/rust2-run.png)
-
 TODO18
 
 ![](https://lupyuen.github.io/images/rust2-spi.png)
@@ -785,6 +771,3 @@ TODO19
 
 ![](https://lupyuen.github.io/images/rust2-spi2.png)
 
-TODO21
-
-![](https://lupyuen.github.io/images/rust2-transmit2.png)
