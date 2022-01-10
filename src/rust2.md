@@ -237,7 +237,9 @@ This code works OK for __blinking an LED__ on a GPIO pin, but we'll do something
 
 _Won't this code get really messy when we do lots of GPIO and SPI?_
 
-Yep it might! In a while we'll clean this up with __Rust Embedded HAL__.
+Yep it might! [(Like this)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
+
+In a while we'll clean this up with __Rust Embedded HAL__.
 
 # Import NuttX Functions
 
@@ -286,9 +288,11 @@ In a while we'll test the __Semtech SX1262 LoRa Driver__ from Rust Embedded, and
 
 _How do we call Rust Embedded HAL from NuttX?_
 
-TODO
+We have created a barebones __Rust Embedded HAL for NuttX__.
 
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25)
+(More details in the Appendix)
+
+To call it, we import the __HAL Module and Library__ like so: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25)
 
 ```rust
 //  Import NuttX HAL
@@ -309,24 +313,40 @@ TODO
 From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
 
 ```rust
-/// Test the NuttX Embedded HAL
-fn test_hal() {
+//  Open GPIO Output
+let mut cs = nuttx_hal::OutputPin
+  ::new("/dev/gpio1");
+```
 
-  //  Open GPIO Output
-  let mut cs = nuttx_hal::OutputPin
-    ::new("/dev/gpio1");
+TODO
 
-  //  Set GPIO Output to Low
-  cs.set_low()
-    .expect("cs failed");
+```rust
+//  Get a Delay Interface
+let mut delay = nuttx_hal::Delay
+  ::new();
+```
 
-  //  Wait 1 second (1,000 milliseconds)
-  delay.delay_ms(1000);
+TODO
 
-  //  Set SX1262 Chip Select to High
-  cs.set_high()
-    .expect("cs failed");
-}
+```rust
+//  Set GPIO Output to Low
+cs.set_low()
+  .expect("cs failed");
+```
+
+TODO
+
+```rust
+//  Wait 1 second (1,000 milliseconds)
+delay.delay_ms(1000);
+```
+
+TODO
+
+```rust
+//  Set GPIO Output to High
+cs.set_high()
+  .expect("cs failed");
 ```
 
 # SPI Transfer
