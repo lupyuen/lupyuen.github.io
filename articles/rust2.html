@@ -208,6 +208,7 @@ Hello World!</code></pre></div>
 <span class="macro">println!</span>(<span class="string">&quot;Hello World!&quot;</span>);</code></pre></div>
 <p>Much neater! We’ll see later that <strong>“println!”</strong> supports Formatted Output too.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs">(<strong>println!</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L175-L216">(<strong>puts</strong> is wrapped here)</a></p>
 <p><em>Why is our Rust Function named <strong>rust_main</strong> instead of <strong>main</strong>?</em></p>
 <p>Our Rust code (<strong>rust_main</strong>) is compiled into a <strong>Static Library</strong> that will be linked into the NuttX Firmware.</p>
 <p>Our NuttX Firmware contains a NuttX App (<strong>rust_test</strong>) that calls <strong>rust_main</strong> from C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37">rust_test_main.c</a></p>
