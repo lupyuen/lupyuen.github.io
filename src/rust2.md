@@ -690,6 +690,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1478959963930169345)
 
+1.  TODO
+
+    [__no1wudi/nuttx.rs__](https://github.com/no1wudi/nuttx.rs)
+
 # Appendix: Rust Embedded HAL for NuttX
 
 TODO
