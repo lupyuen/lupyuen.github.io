@@ -157,7 +157,7 @@ _Why is our Rust Function named __rust_main__?_
 
 Our Rust code is complied into a __Static Library__ that will be linked into the NuttX Firmware.
 
-In our NuttX Firmware, we have a NuttX App __rust_test__ that calls __rust_main__ from C: [rust_test_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37)
+In our NuttX Firmware, we have a NuttX App (__rust_test__) that calls __rust_main__ from C: [rust_test_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37)
 
 ```c
 //  Rust Function defined in rust/src/lib.rs
@@ -165,9 +165,9 @@ void rust_main(void);
 
 //  Our Main Function in C...
 int main(int argc, FAR char *argv[]) {
-    //  Calls the Rust Function
-    rust_main();
-    return 0;
+  //  Calls the Rust Function
+  rust_main();
+  return 0;
 }
 ```
 
@@ -297,17 +297,11 @@ fn test_spi() {
   assert!(ret >= 0);
 
   //  Show the received register value
-  puts("test_spi: received");
+  println!("test_spi: received");
   for i in 0..bytes_read {
-    let mut buf = String::new();
-    write!(buf, "  {:02x}", rx_data[i as usize])
-        .expect("buf overflow");
-    puts(&buf);    
+    println!("  {:02x}", rx_data[i as usize])
   }
-  let mut buf = String::new();
-  write!(buf, "test_spi: SX1262 Register 8 is 0x{:02x}", rx_data[4])
-    .expect("buf overflow");
-  puts(&buf);    
+  println!("test_spi: SX1262 Register 8 is 0x{:02x}", rx_data[4]);
 
   //  Close the GPIO and SPI ports
   unsafe {
@@ -366,17 +360,11 @@ fn test_hal() {
     .expect("spi failed");
 
   //  Show the received register value
-  puts("test_hal: received");
+  println!("test_hal: received");
   for i in 0..data.len() {
-    let mut buf = String::new();
-    write!(buf, "  {:02x}", data[i as usize])
-      .expect("buf overflow");
-    puts(&buf);    
+    println!("  {:02x}", data[i as usize]);
   }
-  let mut buf = String::new();
-  write!(buf, "test_hal: SX1262 Register 8 is 0x{:02x}", data[4])
-    .expect("buf overflow");
-  puts(&buf);    
+  println!("test_hal: SX1262 Register 8 is 0x{:02x}", data[4]);
     
   //  Set SX1262 Chip Select to High
   cs.set_high()
@@ -440,23 +428,20 @@ pub fn test_sx1262() {
   let delay = &mut nuttx_hal::Delay::new();
 
   //  Init LoRa modem
-  puts("Init modem...");
+  println!("Init modem...");
   let conf = build_config();
   let mut lora = SX126x::new(lora_pins);
   lora.init(&mut spi1, delay, conf)
     .expect("sx1262 init failed");
 
   //  Read SX1262 Register 8
-  puts("Reading Register 8...");
+  println!("Reading Register 8...");
   let mut result: [ u8; 1 ] = [ 0; 1 ];
   lora.read_register(&mut spi1, delay, 8, &mut result)
     .expect("sx1262 read register failed");
 
   //  Show the register value
-  let mut buf = String::new();
-  write!(buf, "test_sx1262: SX1262 Register 8 is 0x{:02x}", result[0])
-    .expect("buf overflow");
-  puts(&buf);
+  println!("test_sx1262: SX1262 Register 8 is 0x{:02x}", result[0]);
 ```
 
 TODO: Output
@@ -478,7 +463,7 @@ pub fn test_sx1262() {
   ...
   //  Write SX1262 Registers to prepare for transmitting LoRa message.
   //  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668
-  puts("Writing Registers...");
+  println!("Writing Registers...");
 
   //  Write Register 0x889: 0x04 (TxModulation)
   lora.write_register(&mut spi1, delay, Register::TxModulaton, &[0x04])
@@ -497,11 +482,8 @@ pub fn test_sx1262() {
     .expect("write register failed");
 
   //  Send a LoRa message
-  puts("Sending LoRa message...");
-  buf.clear();
-  write!(buf, "Frequency: {}", RF_FREQUENCY)
-    .expect("buf overflow");
-  puts(&buf);
+  println!("Sending LoRa message...");
+  println!("Frequency: {}", RF_FREQUENCY);
   lora.write_bytes(
     &mut spi1,  //  SPI Interface
     delay,      //  Delay Interface
