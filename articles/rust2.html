@@ -404,9 +404,10 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 
   <span class="comment">//  Open GPIO Interrupt for SX1262 DIO1 Pin</span>
   <span class="kw">let</span> <span class="ident">lora_dio1</span> <span class="op">=</span> <span class="ident">nuttx_hal::InterruptPin</span>
-    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio2&quot;</span>);
+    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio2&quot;</span>);</code></pre></div>
+<p>TODO</p>
 
-  <span class="comment">//  TODO: Open GPIO Output for SX1262 NRESET Pin</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  TODO: Open GPIO Output for SX1262 NRESET Pin</span>
   <span class="kw">let</span> <span class="ident">lora_nreset</span> <span class="op">=</span> <span class="ident">nuttx_hal::UnusedPin</span>
     <span class="ident">::new</span>();
 
@@ -416,9 +417,10 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 
   <span class="comment">//  Open SPI Bus for SX1262</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi1</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi</span>
-    <span class="ident">::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);
+    <span class="ident">::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);</code></pre></div>
+<p>TODO</p>
 
-  <span class="comment">//  Define the SX1262 Pins</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Define the SX1262 Pins</span>
   <span class="kw">let</span> <span class="ident">lora_pins</span> <span class="op">=</span> (
     <span class="ident">lora_nss</span>,    <span class="comment">// /dev/gpio1</span>
     <span class="ident">lora_nreset</span>, <span class="comment">// TODO</span>
@@ -428,17 +430,17 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
   );
 
   <span class="comment">//  Init a busy-waiting delay</span>
-  <span class="kw">let</span> <span class="ident">delay</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">nuttx_hal::Delay::new</span>();
+  <span class="kw">let</span> <span class="ident">delay</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">nuttx_hal::Delay::new</span>();</code></pre></div>
+<p>TODO</p>
 
-  <span class="comment">//  Init LoRa modem</span>
-  <span class="macro">println!</span>(<span class="string">&quot;Init modem...&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init LoRa modem</span>
   <span class="kw">let</span> <span class="ident">conf</span> <span class="op">=</span> <span class="ident">build_config</span>();
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lora</span> <span class="op">=</span> <span class="ident">SX126x::new</span>(<span class="ident">lora_pins</span>);
   <span class="ident">lora</span>.<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">conf</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;sx1262 init failed&quot;</span>);
+    .<span class="ident">expect</span>(<span class="string">&quot;sx1262 init failed&quot;</span>);</code></pre></div>
+<p>TODO</p>
 
-  <span class="comment">//  Read SX1262 Register 8</span>
-  <span class="macro">println!</span>(<span class="string">&quot;Reading Register 8...&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Read SX1262 Register 8</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span>: [ <span class="ident">u8</span>; <span class="number">1</span> ] <span class="op">=</span> [ <span class="number">0</span>; <span class="number">1</span> ];
   <span class="ident">lora</span>.<span class="ident">read_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="number">8</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">result</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;sx1262 read register failed&quot;</span>);
@@ -451,18 +453,19 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust2-transmit2.png" alt="Transmit LoRa Message" /></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">8 Transmit LoRa Message</a></h1>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113">sx1262.rs</a></p>
+<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L14-L17">sx1262.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Change this to your LoRa Frequency</span>
 <span class="comment">//  const RF_FREQUENCY: u32 = 868_000_000;  //  868 MHz (EU)</span>
 <span class="comment">//  const RF_FREQUENCY: u32 = 915_000_000;  //  915 MHz (US)</span>
-<span class="kw">const</span> <span class="ident">RF_FREQUENCY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">923_000_000</span>;  <span class="comment">//  923 MHz (Asia)</span>
+<span class="kw">const</span> <span class="ident">RF_FREQUENCY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">923_000_000</span>;  <span class="comment">//  923 MHz (Asia)</span></code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113">sx1262.rs</a></p>
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
   ...
   <span class="comment">//  Write SX1262 Registers to prepare for transmitting LoRa message.</span>
   <span class="comment">//  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668</span>
-  <span class="macro">println!</span>(<span class="string">&quot;Writing Registers...&quot;</span>);
 
   <span class="comment">//  Write Register 0x889: 0x04 (TxModulation)</span>
   <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::TxModulaton</span>, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
@@ -478,11 +481,10 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 
   <span class="comment">//  Write Register 0x736: 0x0D (Inverted IQ)</span>
   <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::IqPolaritySetup</span>, <span class="kw-2">&amp;</span>[<span class="number">0x0D</span>])
-    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
+<p>TODO</p>
 
-  <span class="comment">//  Send a LoRa message</span>
-  <span class="macro">println!</span>(<span class="string">&quot;Sending LoRa message...&quot;</span>);
-  <span class="macro">println!</span>(<span class="string">&quot;Frequency: {}&quot;</span>, <span class="ident">RF_FREQUENCY</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Send a LoRa message</span>
   <span class="ident">lora</span>.<span class="ident">write_bytes</span>(
     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>,  <span class="comment">//  SPI Interface</span>
     <span class="ident">delay</span>,      <span class="comment">//  Delay Interface</span>
@@ -660,11 +662,15 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 </ol>
 <h1 id="appendix-rust-embedded-hal-for-nuttx" class="section-header"><a href="#appendix-rust-embedded-hal-for-nuttx">15 Appendix: Rust Embedded HAL for NuttX</a></h1>
 <p>TODO</p>
+<p>Rust Embedded HAL for NuttX: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/nuttx_hal.rs">rust_test/rust/src/nuttx_hal.rs</a></p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal3.png" alt="GPIO HAL" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal4.png" alt="SPI HAL" /></p>
-<p><img src="https://lupyuen.github.io/images/rust2-driver.png" alt="Fixing SX1262 Driver for NuttX" /></p>
 <h1 id="appendix-fix-sx1262-driver-for-nuttx" class="section-header"><a href="#appendix-fix-sx1262-driver-for-nuttx">16 Appendix: Fix SX1262 Driver for NuttX</a></h1>
+<p>TODO</p>
+<p>Modified SX1262 Driver for NuttX: <a href="https://github.com/lupyuen/sx126x-rs-nuttx">lupyuen/sx126x-rs-nuttx</a></p>
+<p>Based on <a href="https://github.com/tweedegolf/sx126x-rs">tweedegolf/sx126x-rs</a></p>
+<p><img src="https://lupyuen.github.io/images/rust2-driver.png" alt="Fixing SX1262 Driver for NuttX" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal5.png" alt="Incorrect register value" /></p>
 <p>TODO</p>
