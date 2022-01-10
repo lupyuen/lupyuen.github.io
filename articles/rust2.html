@@ -583,9 +583,14 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust2#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio10a.jpg" alt="PineDio Stack BL604 with Antenna" /></p>
 <h1 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">11 Run The Firmware</a></h1>
 <p>We’re ready to run the NuttX Firmware and test our <strong>Rust App</strong>!</p>
 <ol>
+<li>
+<p>Before testing, remember to connect the <strong>LoRa Antenna</strong>… </p>
+<p>(So we don’t fry the SX1262 Transceiver as we charge up the Power Amplifier)</p>
+</li>
 <li>
 <p>In the NuttX Shell, list the <strong>NuttX Devices</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div></li>
@@ -605,6 +610,8 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 <p>In the NuttX Shell, run our <strong>Rust App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>rust_test</code></pre></div></li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
+<p><em>PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust2-chirp2.png" alt="" /></p>
 <p>TODO</p>
