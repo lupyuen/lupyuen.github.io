@@ -104,6 +104,7 @@
 <p>We tested Rust on NuttX with <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> RISC-V Board (pic above) and its onboard Semtech SX1262 Transceiver.</p>
 <p>But it should work on ESP32, Arm and other NuttX platforms. (With some tweaking)</p>
 <p><strong>Caution:</strong> Work in Progress! Some spots are rough and rocky, I’m hoping the NuttX and Rust Communities could help to fill in the potholes before release 🙏</p>
+<p><img src="https://lupyuen.github.io/images/rust2-run.png" alt="Rust running on NuttX" /></p>
 <h1 id="rust-meets-nuttx" class="section-header"><a href="#rust-meets-nuttx">1 Rust Meets NuttX</a></h1>
 <p>This is the <strong>simplest Rust program</strong> that will run on NuttX and print <em>“Hello World”</em>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L27-L59">lib.rs</a></p>
 
@@ -221,6 +222,7 @@ int main(int argc, FAR char *argv[]) {
 }</code></pre></div>
 <p>Thus it’s indeed possible to call Rust from C… And C from Rust!</p>
 <p>(More about the Rust build script in the Appendix)</p>
+<p><img src="https://lupyuen.github.io/images/rust2-gpio.png" alt="Rust opening GPIO Ports on NuttX" /></p>
 <h1 id="flipping-gpio" class="section-header"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
 <p>Since we can call NuttX Functions from Rust, let’s <strong>flip a GPIO High and Low</strong> the POSIX way: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136">lib.rs</a></p>
 
@@ -282,6 +284,7 @@ int main(int argc, FAR char *argv[]) {
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_GPIOBASE</span>:   <span class="ident">i32</span> <span class="op">=</span> <span class="number">0x2300</span>;         <span class="comment">//  GPIO driver commands</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_RDWR</span>:      <span class="ident">i32</span> <span class="op">=</span> <span class="ident">O_RDOK</span><span class="op">|</span><span class="ident">O_WROK</span>;  <span class="comment">//  Open for both read &amp; write access</span></code></pre></div>
 <p><a href="https://rust-lang.github.io/rust-bindgen/">(Someday we should auto-generate the Rust Bindings for NuttX with the <strong>bindgen</strong> tool)</a></p>
+<p><img src="https://lupyuen.github.io/images/rust2-hal.png" alt="Rust Embedded HAL" /></p>
 <h1 id="rust-embedded-hal" class="section-header"><a href="#rust-embedded-hal">5 Rust Embedded HAL</a></h1>
 <p><em>What is Rust Embedded HAL?</em></p>
 <p><strong>Rust Embedded HAL</strong> (Hardware Abstraction Layer) defines a standard interface that’s used by <strong>Rust Embedded Device Drivers</strong> to access the hardware: GPIO, SPI, I2C, …</p>
@@ -373,6 +376,7 @@ int main(int argc, FAR char *argv[]) {
   80
 test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
+<p><img src="https://lupyuen.github.io/images/rust2-hal2.png" alt="Calling the Rust Driver for LoRa SX1262" /></p>
 <h1 id="rust-driver-for-lora-sx1262" class="section-header"><a href="#rust-driver-for-lora-sx1262">7 Rust Driver for LoRa SX1262</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113">sx1262.rs</a></p>
@@ -435,6 +439,7 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p>TODO: Output</p>
 <div class="example-wrap"><pre class="language-text"><code>test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
+<p><img src="https://lupyuen.github.io/images/rust2-transmit2.png" alt="Transmit LoRa Message" /></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">8 Transmit LoRa Message</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113">sx1262.rs</a></p>
@@ -598,10 +603,11 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 <li>
 <p>In the NuttX Shell, run our <strong>Rust App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>rust_test</code></pre></div></li>
-<li>
-<p>TODO</p>
-</li>
 </ol>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rust2-chirp2.png" alt="" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rust2-receive.png" alt="" /></p>
 <h1 id="lorawan-support" class="section-header"><a href="#lorawan-support">12 LoRaWAN Support</a></h1>
 <p>TODO</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
@@ -635,47 +641,30 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 </ol>
 <h1 id="appendix-rust-embedded-hal-for-nuttx" class="section-header"><a href="#appendix-rust-embedded-hal-for-nuttx">15 Appendix: Rust Embedded HAL for NuttX</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rust2-hal3.png" alt="GPIO HAL" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rust2-hal4.png" alt="SPI HAL" /></p>
+<p><img src="https://lupyuen.github.io/images/rust2-driver.png" alt="Fixing SX1262 Driver for NuttX" /></p>
 <h1 id="appendix-fix-sx1262-driver-for-nuttx" class="section-header"><a href="#appendix-fix-sx1262-driver-for-nuttx">16 Appendix: Fix SX1262 Driver for NuttX</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rust2-hal6.png" alt="SPI Transfers in small chunks" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/rust2-driver2.png" alt="SPI Transfers after merging" /></p>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a></h1>
 <p>TODO1</p>
 <p><img src="https://lupyuen.github.io/images/rust2-build.png" alt="" /></p>
 <p>TODO2</p>
 <p><img src="https://lupyuen.github.io/images/rust2-build2.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/rust2-chirp2.png" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/rust2-driver.png" alt="" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/rust2-driver2.png" alt="" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/rust2-gpio.png" alt="" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/rust2-hal.png" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/rust2-hal2.png" alt="" /></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/rust2-hal3.png" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/rust2-hal4.png" alt="" /></p>
 <p>TODO12</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal5.png" alt="" /></p>
-<p>TODO13</p>
-<p><img src="https://lupyuen.github.io/images/rust2-hal6.png" alt="" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal7.png" alt="" /></p>
 <p>TODO15</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hello.png" alt="" /></p>
-<p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/rust2-receive.png" alt="" /></p>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/rust2-run.png" alt="" /></p>
 <p>TODO18</p>
 <p><img src="https://lupyuen.github.io/images/rust2-spi.png" alt="" /></p>
 <p>TODO19</p>
 <p><img src="https://lupyuen.github.io/images/rust2-spi2.png" alt="" /></p>
-<p>TODO21</p>
-<p><img src="https://lupyuen.github.io/images/rust2-transmit2.png" alt="" /></p>
 
     
 </body>
