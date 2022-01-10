@@ -222,43 +222,48 @@ int main(int argc, FAR char *argv[]) {
 <p>Thus it’s indeed possible to call Rust from C… And C from Rust!</p>
 <p>(More about the Rust build script in the Appendix)</p>
 <h1 id="flipping-gpio" class="section-header"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136">lib.rs</a></p>
+<p>Since we can call NuttX Functions from Rust, let’s <strong>flip a GPIO High and Low</strong> the POSIX way: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Open GPIO Output</span>
   <span class="kw">let</span> <span class="ident">cs</span> <span class="op">=</span> <span class="kw">unsafe</span> {
     <span class="ident">open</span>(<span class="string">b&quot;/dev/gpio1\0&quot;</span>.<span class="ident">as_ptr</span>(), <span class="ident">O_RDWR</span>) 
   };
-  <span class="macro">assert!</span>(<span class="ident">cs</span> <span class="op">&gt;</span> <span class="number">0</span>);  
+  <span class="macro">assert!</span>(<span class="ident">cs</span> <span class="op">&gt;</span> <span class="number">0</span>);</code></pre></div>
+<p>We open the GPIO Output at <strong>“/dev/gpio1”</strong> with read / write access.</p>
+<p>Then we call <strong>ioctl</strong> to set the <strong>GPIO Output to Low</strong>…</p>
 
-  <span class="comment">//  Set GPIO Output to Low</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set GPIO Output to Low</span>
   <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
     <span class="ident">ioctl</span>(<span class="ident">cs</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">0</span>) 
   };
-  <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
+  <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
+<p>We sleep for 1 second…</p>
 
-  <span class="comment">//  Sleep 1 second</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Sleep 1 second</span>
   <span class="kw">unsafe</span> { 
     <span class="ident">sleep</span>(<span class="number">1</span>); 
-  }
+  }</code></pre></div>
+<p>We set the <strong>GPIO Output to High</strong>…</p>
 
-  <span class="comment">//  Set GPIO Output to High</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set GPIO Output to High</span>
   <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
     <span class="ident">ioctl</span>(<span class="ident">cs</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">1</span>) 
   };
-  <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
+  <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
+<p>Finally we <strong>close the GPIO Output</strong>…</p>
 
-  <span class="comment">//  Close the GPIO Output</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Close the GPIO Output</span>
   <span class="kw">unsafe</span> {
     <span class="ident">close</span>(<span class="ident">cs</span>);
   }</code></pre></div>
-<p>This code looks messy, but we’ll clean this up with Rust Embedded HAL in a while.</p>
-<p>This works for blinking a LED on a GPIO pin, but we’ll do something more ambitious… Transfer data over SPI!</p>
+<p>This code works OK for <strong>blinking an LED</strong> on a GPIO pin, but we’ll do something more ambitious… Transfer data over SPI!</p>
+<p><em>Won’t this code get really messy when we do lots of GPIO and SPI?</em></p>
+<p>Yep it might! In a while we’ll clean this up with <strong>Rust Embedded HAL</strong>.</p>
 <h1 id="import-nuttx-functions" class="section-header"><a href="#import-nuttx-functions">4 Import NuttX Functions</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L277">lib.rs</a></p>
+<p><em>How did we import the NuttX Functions: open, ioctl, sleep, close, …?</em></p>
+<p>We <strong>imported the NuttX Functions</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L257">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import POSIX Functions. TODO: Import with bindgen</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import NuttX Functions. TODO: Import with bindgen</span>
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span>(<span class="ident">path</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">oflag</span>: <span class="ident">i32</span>, ...) -&gt; <span class="ident">i32</span>;
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">buf</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span>;
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">buf</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span>;
@@ -268,19 +273,17 @@ int main(int argc, FAR char *argv[]) {
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">usleep</span>(<span class="ident">usec</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span>;
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">u32</span>) -&gt; <span class="op">!</span>;  <span class="comment">//  Does not return</span>
 }</code></pre></div>
-<p>TODO</p>
+<p>We (very carefully) <strong>imported the NuttX Constants</strong> as well: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L259-L277">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_WRITE</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">1</span>;  <span class="comment">//  _GPIOC(1)</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_READ</span>:  <span class="ident">i32</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">2</span>;  <span class="comment">//  _GPIOC(2)</span></code></pre></div>
-<p>TODO</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/fcntl.h</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_GPIOBASE</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">0x2300</span>; <span class="comment">/* GPIO driver commands */</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_RDWR</span>:    <span class="ident">i32</span> <span class="op">=</span> <span class="ident">O_RDOK</span><span class="op">|</span><span class="ident">O_WROK</span>; <span class="comment">/* Open for both read &amp; write access */</span></code></pre></div>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_READ</span>:  <span class="ident">i32</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">2</span>;  <span class="comment">//  _GPIOC(2)</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_GPIOBASE</span>:   <span class="ident">i32</span> <span class="op">=</span> <span class="number">0x2300</span>;         <span class="comment">//  GPIO driver commands</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_RDWR</span>:      <span class="ident">i32</span> <span class="op">=</span> <span class="ident">O_RDOK</span><span class="op">|</span><span class="ident">O_WROK</span>;  <span class="comment">//  Open for both read &amp; write access</span></code></pre></div>
+<p><a href="https://rust-lang.github.io/rust-bindgen/">(Someday we should auto-generate the Rust Bindings for NuttX with the <strong>bindgen</strong> tool)</a></p>
 <h1 id="rust-embedded-hal" class="section-header"><a href="#rust-embedded-hal">5 Rust Embedded HAL</a></h1>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
+<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX HAL</span>
 <span class="kw">mod</span> <span class="ident">nuttx_hal</span>;
@@ -292,13 +295,16 @@ int main(int argc, FAR char *argv[]) {
     <span class="ident">delay::DelayMs</span>,       <span class="comment">//  Delay Interface</span>
     <span class="ident">spi::Transfer</span>,        <span class="comment">//  SPI Transfer</span>
   },
-};
+};</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
 
-<span class="doccomment">/// Test the NuttX Embedded HAL</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the NuttX Embedded HAL</span>
 <span class="kw">fn</span> <span class="ident">test_hal</span>() {
 
   <span class="comment">//  Open GPIO Output</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
+    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);
 
   <span class="comment">//  Set GPIO Output to Low</span>
   <span class="ident">cs</span>.<span class="ident">set_low</span>()
@@ -319,10 +325,12 @@ int main(int argc, FAR char *argv[]) {
 <span class="kw">fn</span> <span class="ident">test_hal</span>() {
 
   <span class="comment">//  Open GPIO Output for SX1262 Chip Select</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
+    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);
 
   <span class="comment">//  Open SPI Bus for SX1262</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi</span>
+    <span class="ident">::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);
 
   <span class="comment">//  Set SX1262 Chip Select to Low</span>
   <span class="ident">cs</span>.<span class="ident">set_low</span>()
@@ -361,22 +369,28 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
 
   <span class="comment">//  Open GPIO Input for SX1262 Busy Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_busy</span> <span class="op">=</span> <span class="ident">nuttx_hal::InputPin::new</span>(<span class="string">&quot;/dev/gpio0&quot;</span>);
+  <span class="kw">let</span> <span class="ident">lora_busy</span> <span class="op">=</span> <span class="ident">nuttx_hal::InputPin</span>
+    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio0&quot;</span>);
 
   <span class="comment">//  Open GPIO Output for SX1262 Chip Select</span>
-  <span class="kw">let</span> <span class="ident">lora_nss</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);
+  <span class="kw">let</span> <span class="ident">lora_nss</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
+    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);
 
   <span class="comment">//  Open GPIO Interrupt for SX1262 DIO1 Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_dio1</span> <span class="op">=</span> <span class="ident">nuttx_hal::InterruptPin::new</span>(<span class="string">&quot;/dev/gpio2&quot;</span>);
+  <span class="kw">let</span> <span class="ident">lora_dio1</span> <span class="op">=</span> <span class="ident">nuttx_hal::InterruptPin</span>
+    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio2&quot;</span>);
 
   <span class="comment">//  TODO: Open GPIO Output for SX1262 NRESET Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_nreset</span> <span class="op">=</span> <span class="ident">nuttx_hal::UnusedPin::new</span>();
+  <span class="kw">let</span> <span class="ident">lora_nreset</span> <span class="op">=</span> <span class="ident">nuttx_hal::UnusedPin</span>
+    <span class="ident">::new</span>();
 
   <span class="comment">//  TODO: Open GPIO Output for SX1262 Antenna Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_ant</span> <span class="op">=</span> <span class="ident">nuttx_hal::UnusedPin::new</span>();
+  <span class="kw">let</span> <span class="ident">lora_ant</span> <span class="op">=</span> <span class="ident">nuttx_hal::UnusedPin</span>
+    <span class="ident">::new</span>();
 
   <span class="comment">//  Open SPI Bus for SX1262</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi1</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi1</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi</span>
+    <span class="ident">::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);
 
   <span class="comment">//  Define the SX1262 Pins</span>
   <span class="kw">let</span> <span class="ident">lora_pins</span> <span class="op">=</span> (
