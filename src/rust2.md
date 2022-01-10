@@ -199,7 +199,7 @@ let cs = unsafe {
 assert!(cs > 0);
 ```
 
-We open the GPIO Output at __"/dev/gpio1"__ with read / write access.
+We open the GPIO Output at __"/dev/gpio1"__ with read-write access.
 
 Then we call __ioctl__ to set the __GPIO Output to Low__...
 
