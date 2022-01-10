@@ -159,11 +159,11 @@ Much neater! And we'll see later that __"println!"__ supports Formatted Output t
 
 [(__println!__ is defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs)
 
-_Why is our Rust Function named __rust_main__?_
+_Why is our Rust Function named __rust_main__ instead of __main__?_
 
-Our Rust code is complied into a __Static Library__ that will be linked into the NuttX Firmware.
+Our Rust code (__rust_main__) is compiled into a __Static Library__ that will be linked into the NuttX Firmware.
 
-In our NuttX Firmware, we have a NuttX App (__rust_test__) that calls __rust_main__ from C: [rust_test_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37)
+Our NuttX Firmware contains a NuttX App (__rust_test__) that calls __rust_main__ from C: [rust_test_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37)
 
 ```c
 //  Rust Function defined in rust/src/lib.rs
@@ -176,6 +176,8 @@ int main(int argc, FAR char *argv[]) {
   return 0;
 }
 ```
+
+Thus it's indeed possible to call Rust from C... And C from Rust!
 
 (More about the Rust build script in the Appendix)
 
@@ -416,6 +418,11 @@ TODO
 From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113)
 
 ```rust
+/// TODO: Change this to your LoRa Frequency
+//  const RF_FREQUENCY: u32 = 868_000_000;  //  868 MHz (EU)
+//  const RF_FREQUENCY: u32 = 915_000_000;  //  915 MHz (US)
+const RF_FREQUENCY: u32 = 923_000_000;  //  923 MHz (Asia)
+
 pub fn test_sx1262() {
   ...
   //  Write SX1262 Registers to prepare for transmitting LoRa message.
