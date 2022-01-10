@@ -161,6 +161,8 @@ Much neater! We'll see later that __"println!"__ supports Formatted Output too.
 
 [(__println!__ is defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs)
 
+[(__puts__ is wrapped here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L175-L216)
+
 _Why is our Rust Function named __rust_main__ instead of __main__?_
 
 Our Rust code (__rust_main__) is compiled into a __Static Library__ that will be linked into the NuttX Firmware.
