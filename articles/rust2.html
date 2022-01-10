@@ -317,7 +317,7 @@ int main(int argc, FAR char *argv[]) {
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
   <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);</code></pre></div>
 <p>(Looks cleaner now!)</p>
-<p>We declare it as <strong>“<code>mut</code>”</strong> (mutable) because we expect the internal state to change as we flip the GPIO.</p>
+<p>We declare it as <strong>“<code>mut</code>”</strong> (mutable) because we expect its Internal State to change as we flip the GPIO.</p>
 <p>Next we fetch the <strong>Delay Interface</strong> that we’ll use to sleep…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Get a Delay Interface</span>
@@ -339,9 +339,11 @@ int main(int argc, FAR char *argv[]) {
 <span class="ident">cs</span>.<span class="ident">set_high</span>()
   .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <p>Rust Embedded HAL makes GPIO programming more fun! Let’s do SPI now.</p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="spi-transfer" class="section-header"><a href="#spi-transfer">6 SPI Transfer</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
+<p>Let’s test SPI Data Transfer to the <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 LoRa Transceiver</strong></a>.</p>
+<p>For PineDio Stack BL604 with its onboard SX1262 (pic above), we control <strong>SPI Chip Select</strong> ourselves via GPIO Output (“/dev/gpio1”).</p>
+<p>We begin by opening the <strong>GPIO Output</strong> for SPI Chip Select: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the NuttX Embedded HAL by reading SX1262 Register 8</span>
 <span class="kw">fn</span> <span class="ident">test_hal</span>() {
@@ -349,22 +351,24 @@ int main(int argc, FAR char *argv[]) {
   <span class="comment">//  Open GPIO Output for SX1262 Chip Select</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
     <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);</code></pre></div>
-<p>TODO</p>
+<p>Next we open the <strong>SPI Bus</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Open SPI Bus for SX1262</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi</span>
     <span class="ident">::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);</code></pre></div>
-<p>TODO</p>
+<p><strong>“/dev/spitest0”</strong> is the <strong>SPI Test Driver</strong> that we have installed to simplify SPI programming. <a href="https://lupyuen.github.io/articles/spi2">(See this)</a></p>
+<p>Before talking to SX1262, we set the <strong>Chip Select to Low</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set SX1262 Chip Select to Low</span>
   <span class="ident">cs</span>.<span class="ident">set_low</span>()
     .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
-<p>TODO</p>
+<p>We transfer <strong>5 bytes of data</strong> to SX1262 over SPI…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Transfer command to SX1262: Read Register 8</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span>: [ <span class="ident">u8</span>; <span class="number">5</span> ] <span class="op">=</span> [ <span class="number">0x1d</span>, <span class="number">0x00</span>, <span class="number">0x08</span>, <span class="number">0x00</span>, <span class="number">0x00</span> ];
   <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">data</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;spi failed&quot;</span>);</code></pre></div>
+<p>This is the <strong>SX1262 Command</strong> that will read SX1262 Register 8.</p>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Show the received register value</span>
