@@ -561,7 +561,7 @@ test_sx1262: SX1262 Register 8 is 0x80
 
 [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
 
-Which is the same result from the previous chapter. Yep the Rust Driver works!
+Which is the same result from the previous chapter. Yep the Rust Driver works OK with our NuttX Embedded HAL!
 
 Let's test the Rust Driver to the limit... And send a LoRa Message over the airwaves!
 
