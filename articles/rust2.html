@@ -318,7 +318,7 @@ int main(int argc, FAR char *argv[]) {
   <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);</code></pre></div>
 <p>(Looks cleaner now!)</p>
 <p>We declare it as <strong>“<code>mut</code>”</strong> (mutable) because we expect its Internal State to change as we flip the GPIO.</p>
-<p>Next we fetch the <strong>Delay Interface</strong> that we’ll use to sleep…</p>
+<p>Next we fetch the <strong>Delay Interface</strong> that we’ll call to sleep…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Get a Delay Interface</span>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">delay</span> <span class="op">=</span> <span class="ident">nuttx_hal::Delay</span>
@@ -362,14 +362,16 @@ int main(int argc, FAR char *argv[]) {
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set SX1262 Chip Select to Low</span>
   <span class="ident">cs</span>.<span class="ident">set_low</span>()
     .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
-<p>We transfer <strong>5 bytes of data</strong> to SX1262 over SPI…</p>
+<p>We transmit <strong>5 bytes of data</strong> to SX1262 over SPI…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Transfer command to SX1262: Read Register 8</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Define the SX1262 Command: Read Register 8</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span>: [ <span class="ident">u8</span>; <span class="number">5</span> ] <span class="op">=</span> [ <span class="number">0x1d</span>, <span class="number">0x00</span>, <span class="number">0x08</span>, <span class="number">0x00</span>, <span class="number">0x00</span> ];
+
+  <span class="comment">//  Transfer the command to SX1262 over SPI</span>
   <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">data</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;spi failed&quot;</span>);</code></pre></div>
-<p>The transmitted data is the <strong>SX1262 Command</strong> that will read <strong>SX1262 Register 8</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>1D 00 08 00 00</code></pre></div>
+<p>The data transmitted over SPI is the <strong>SX1262 Command</strong> that will read <strong>SX1262 Register 8</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>  1D 00 08 00 00</code></pre></div>
 <p>The value of SX1262 Register 8 is returned as the <strong>last byte</strong> of the SPI Response…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="macro">println!</span>(<span class="string">&quot;test_hal: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">data</span>[<span class="number">4</span>]);</code></pre></div>
