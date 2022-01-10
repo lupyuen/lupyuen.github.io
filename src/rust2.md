@@ -469,7 +469,11 @@ pub fn test_sx1262() {
   //  Open GPIO Interrupt for SX1262 DIO1 Pin
   let lora_dio1 = nuttx_hal::InterruptPin
     ::new("/dev/gpio2");
+```
 
+TODO
+
+```rust
   //  TODO: Open GPIO Output for SX1262 NRESET Pin
   let lora_nreset = nuttx_hal::UnusedPin
     ::new();
@@ -481,7 +485,11 @@ pub fn test_sx1262() {
   //  Open SPI Bus for SX1262
   let mut spi1 = nuttx_hal::Spi
     ::new("/dev/spitest0");
+```
 
+TODO
+
+```rust
   //  Define the SX1262 Pins
   let lora_pins = (
     lora_nss,    // /dev/gpio1
@@ -493,16 +501,22 @@ pub fn test_sx1262() {
 
   //  Init a busy-waiting delay
   let delay = &mut nuttx_hal::Delay::new();
+```
 
+TODO
+
+```rust
   //  Init LoRa modem
-  println!("Init modem...");
   let conf = build_config();
   let mut lora = SX126x::new(lora_pins);
   lora.init(&mut spi1, delay, conf)
     .expect("sx1262 init failed");
+```
 
+TODO
+
+```rust
   //  Read SX1262 Register 8
-  println!("Reading Register 8...");
   let mut result: [ u8; 1 ] = [ 0; 1 ];
   lora.read_register(&mut spi1, delay, 8, &mut result)
     .expect("sx1262 read register failed");
@@ -525,19 +539,24 @@ test_sx1262: SX1262 Register 8 is 0x80
 
 TODO
 
-From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113)
+From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L14-L17)
 
 ```rust
 /// TODO: Change this to your LoRa Frequency
 //  const RF_FREQUENCY: u32 = 868_000_000;  //  868 MHz (EU)
 //  const RF_FREQUENCY: u32 = 915_000_000;  //  915 MHz (US)
 const RF_FREQUENCY: u32 = 923_000_000;  //  923 MHz (Asia)
+```
 
+TODO
+
+From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113)
+
+```rust
 pub fn test_sx1262() {
   ...
   //  Write SX1262 Registers to prepare for transmitting LoRa message.
   //  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668
-  println!("Writing Registers...");
 
   //  Write Register 0x889: 0x04 (TxModulation)
   lora.write_register(&mut spi1, delay, Register::TxModulaton, &[0x04])
@@ -554,10 +573,12 @@ pub fn test_sx1262() {
   //  Write Register 0x736: 0x0D (Inverted IQ)
   lora.write_register(&mut spi1, delay, Register::IqPolaritySetup, &[0x0D])
     .expect("write register failed");
+```
 
+TODO
+
+```rust
   //  Send a LoRa message
-  println!("Sending LoRa message...");
-  println!("Frequency: {}", RF_FREQUENCY);
   lora.write_bytes(
     &mut spi1,  //  SPI Interface
     delay,      //  Delay Interface
@@ -771,15 +792,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
+Rust Embedded HAL for NuttX: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/nuttx_hal.rs)
+
 ![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
 
 TODO
 
 ![SPI HAL](https://lupyuen.github.io/images/rust2-hal4.png)
 
-![Fixing SX1262 Driver for NuttX](https://lupyuen.github.io/images/rust2-driver.png)
-
 # Appendix: Fix SX1262 Driver for NuttX
+
+TODO
+
+Modified SX1262 Driver for NuttX: [lupyuen/sx126x-rs-nuttx](https://github.com/lupyuen/sx126x-rs-nuttx)
+
+Based on [tweedegolf/sx126x-rs](https://github.com/tweedegolf/sx126x-rs)
+
+![Fixing SX1262 Driver for NuttX](https://lupyuen.github.io/images/rust2-driver.png)
 
 TODO
 
