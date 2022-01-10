@@ -297,9 +297,9 @@ int main(int argc, FAR char *argv[]) {
 <p><em>How do we call Rust Embedded HAL from NuttX?</em></p>
 <p>We have created a barebones <strong>Rust Embedded HAL for NuttX</strong>.</p>
 <p>(More details in the Appendix)</p>
-<p>To call it, we import the <strong>HAL Module and Library</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25">lib.rs</a></p>
+<p>To call it, we import the <strong>NuttX HAL Module (nuttx_hal)</strong> and <strong>Rust Embedded Library</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX HAL</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX HAL Module</span>
 <span class="kw">mod</span> <span class="ident">nuttx_hal</span>;
 
 <span class="comment">//  Import Libraries</span>
@@ -310,12 +310,14 @@ int main(int argc, FAR char *argv[]) {
     <span class="ident">spi::Transfer</span>,        <span class="comment">//  SPI Transfer</span>
   },
 };</code></pre></div>
+<p>(NuttX HAL Module lives in its own source file <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/nuttx_hal.rs">nuttx_hal.rs</a>)</p>
 <p>To open GPIO Output <strong>“/dev/gpio1”</strong> we do this: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output</span>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_hal::OutputPin</span>
   <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>);</code></pre></div>
 <p>(Looks cleaner now!)</p>
+<p>We declared it as <strong>“<code>mut</code>”</strong> (mutable) because we expect the internal state to change as we flip the GPIO.</p>
 <p>Next we fetch the <strong>Delay Interface</strong> that we’ll use to sleep…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Get a Delay Interface</span>
