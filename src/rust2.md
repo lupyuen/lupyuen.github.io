@@ -38,7 +38,7 @@ extern "C" fn rust_main() {  //  Declare `extern "C"` because it will be called 
 
   extern "C" {  //  Import C Function
     /// Print a message to the serial console (from C stdio library)
-    fn puts(s: *const u8) -> isize;
+    fn puts(s: *const u8) -> i32;
   }
 
   unsafe {  //  Mark as unsafe because we are calling C
@@ -78,7 +78,7 @@ NuttX provides the __"puts"__ function because it's POSIX Compliant (like Linux)
   //  Import C Function
   extern "C" {
     /// Print a message to the serial console (from C stdio library)
-    fn puts(s: *const u8) -> isize;
+    fn puts(s: *const u8) -> i32;
   }
 ```
 
@@ -88,9 +88,9 @@ This declares that __"puts"__...
 
     (Equivalent to "`const uint8_t *`" in C)
 
--   Returns an "`isize`" result
+-   Returns an "`i32`" result
 
-    (Equivalent to "`int`" in C)
+    (Equivalent to "`int32_t`" in C)
 
 We call __"puts"__ like so...
 
@@ -229,14 +229,14 @@ From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples
 
 ```rust
 extern "C" {  //  Import POSIX Functions. TODO: Import with bindgen
-  pub fn open(path: *const u8, oflag: isize, ...) -> isize;
-  pub fn read(fd: isize, buf: *mut u8, count: usize) -> isize;
-  pub fn write(fd: isize, buf: *const u8, count: usize) -> isize;
-  pub fn close(fd: isize) -> isize;
-  pub fn ioctl(fd: isize, request: isize, ...) -> isize;  //  On NuttX: request is isize, not u64 like Linux
-  pub fn sleep(secs: usize) -> usize;
-  pub fn usleep(usec: usize) -> usize;
-  pub fn exit(status: usize) -> !;
+  pub fn open(path: *const u8, oflag: i32, ...) -> i32;
+  pub fn read(fd: i32, buf: *mut u8, count: u32) -> i32;
+  pub fn write(fd: i32, buf: *const u8, count: u32) -> i32;
+  pub fn close(fd: i32) -> i32;
+  pub fn ioctl(fd: i32, request: i32, ...) -> i32;  //  On NuttX: request is i32, not u64 like Linux
+  pub fn sleep(secs: u32) -> u32;
+  pub fn usleep(usec: u32) -> u32;
+  pub fn exit(status: u32) -> !;  //  Does not return
 }
 ```
 
@@ -244,16 +244,16 @@ TODO
 
 ```rust
 /// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h
-pub const GPIOC_WRITE: isize = _GPIOBASE | 1;  //  _GPIOC(1)
-pub const GPIOC_READ:  isize = _GPIOBASE | 2;  //  _GPIOC(2)
+pub const GPIOC_WRITE: i32 = _GPIOBASE | 1;  //  _GPIOC(1)
+pub const GPIOC_READ:  i32 = _GPIOBASE | 2;  //  _GPIOC(2)
 ```
 
 TODO
 
 ```rust
 /// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/fcntl.h
-pub const _GPIOBASE: isize = 0x2300; /* GPIO driver commands */
-pub const O_RDWR:    isize = O_RDOK|O_WROK; /* Open for both read & write access */
+pub const _GPIOBASE: i32 = 0x2300; /* GPIO driver commands */
+pub const O_RDWR:    i32 = O_RDOK|O_WROK; /* Open for both read & write access */
 ```
 
 # Rust Embedded HAL
