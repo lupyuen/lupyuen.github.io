@@ -649,9 +649,9 @@ git clone --recursive --branch rust https://github.com/lupyuen/incubator-nuttx-a
 
 Or if we prefer to __add the Rust Library and App__ to our NuttX Project, follow these instructions...
 
-1.  TODO: Rust Library
+1.  [__"Install Rust Library"__](https://github.com/lupyuen/rust-nuttx)
 
-1.  TODO: Rust App
+1.  [__"Install Rust Test App"__](https://github.com/lupyuen/rust_test)
 
 1.  [__"Install SPI Test Driver"__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf)
 
