@@ -328,7 +328,7 @@ let mut cs = nuttx_hal::OutputPin
 
 (Looks cleaner now!)
 
-We declare it as __"`mut`"__ (mutable) because we expect the internal state to change as we flip the GPIO.
+We declare it as __"`mut`"__ (mutable) because we expect its Internal State to change as we flip the GPIO.
 
 Next we fetch the __Delay Interface__ that we'll use to sleep...
 
@@ -365,11 +365,15 @@ cs.set_high()
 
 Rust Embedded HAL makes GPIO programming more fun! Let's do SPI now.
 
+![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
+
 # SPI Transfer
 
-TODO
+Let's test SPI Data Transfer to the [__Semtech SX1262 LoRa Transceiver__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262).
 
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
+For PineDio Stack BL604 with its onboard SX1262 (pic above), we control __SPI Chip Select__ ourselves via GPIO Output ("/dev/gpio1").
+
+We begin by opening the __GPIO Output__ for SPI Chip Select: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
 
 ```rust
 /// Test the NuttX Embedded HAL by reading SX1262 Register 8
@@ -380,7 +384,7 @@ fn test_hal() {
     ::new("/dev/gpio1");
 ```
 
-TODO
+Next we open the __SPI Bus__...
 
 ```rust
   //  Open SPI Bus for SX1262
@@ -388,7 +392,9 @@ TODO
     ::new("/dev/spitest0");
 ```
 
-TODO
+__"/dev/spitest0"__ is the __SPI Test Driver__ that we have installed to simplify SPI programming. [(See this)](https://lupyuen.github.io/articles/spi2)
+
+Before talking to SX1262, we set the __Chip Select to Low__...
 
 ```rust
   //  Set SX1262 Chip Select to Low
@@ -396,7 +402,7 @@ TODO
     .expect("cs failed");
 ```
 
-TODO
+We transfer __5 bytes of data__ to SX1262 over SPI...
 
 ```rust
   //  Transfer command to SX1262: Read Register 8
@@ -404,6 +410,8 @@ TODO
   spi.transfer(&mut data)
     .expect("spi failed");
 ```
+
+This is the __SX1262 Command__ that will read SX1262 Register 8.
 
 TODO
 
