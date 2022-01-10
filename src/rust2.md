@@ -330,7 +330,7 @@ let mut cs = nuttx_hal::OutputPin
 
 We declare it as __"`mut`"__ (mutable) because we expect its Internal State to change as we flip the GPIO.
 
-Next we fetch the __Delay Interface__ that we'll use to sleep...
+Next we fetch the __Delay Interface__ that we'll call to sleep...
 
 ```rust
 //  Get a Delay Interface
@@ -402,19 +402,21 @@ Before talking to SX1262, we set __Chip Select to Low__...
     .expect("cs failed");
 ```
 
-We transfer __5 bytes of data__ to SX1262 over SPI...
+We transmit __5 bytes of data__ to SX1262 over SPI...
 
 ```rust
-  //  Transfer command to SX1262: Read Register 8
+  //  Define the SX1262 Command: Read Register 8
   let mut data: [ u8; 5 ] = [ 0x1d, 0x00, 0x08, 0x00, 0x00 ];
+
+  //  Transfer the command to SX1262 over SPI
   spi.transfer(&mut data)
     .expect("spi failed");
 ```
 
-The transmitted data is the __SX1262 Command__ that will read __SX1262 Register 8__...
+The data transmitted over SPI is the __SX1262 Command__ that will read __SX1262 Register 8__...
 
 ```text
-1D 00 08 00 00
+  1D 00 08 00 00
 ```
 
 The value of SX1262 Register 8 is returned as the __last byte__ of the SPI Response...
