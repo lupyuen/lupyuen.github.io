@@ -368,31 +368,23 @@ int main(int argc, FAR char *argv[]) {
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span>: [ <span class="ident">u8</span>; <span class="number">5</span> ] <span class="op">=</span> [ <span class="number">0x1d</span>, <span class="number">0x00</span>, <span class="number">0x08</span>, <span class="number">0x00</span>, <span class="number">0x00</span> ];
   <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">data</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;spi failed&quot;</span>);</code></pre></div>
-<p>This is the <strong>SX1262 Command</strong> that will read SX1262 Register 8.</p>
-<p>TODO</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Show the received register value</span>
-  <span class="macro">println!</span>(<span class="string">&quot;test_hal: received&quot;</span>);
-  <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">data</span>.<span class="ident">len</span>() {
-    <span class="macro">println!</span>(<span class="string">&quot;  {:02x}&quot;</span>, <span class="ident">data</span>[<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>]);
-  }</code></pre></div>
-<p>TODO</p>
+<p>The transmitted data is the <strong>SX1262 Command</strong> that will read <strong>SX1262 Register 8</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>1D 00 08 00 00</code></pre></div>
+<p>The value of SX1262 Register 8 is returned as the <strong>last byte</strong> of the SPI Response…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="macro">println!</span>(<span class="string">&quot;test_hal: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">data</span>[<span class="number">4</span>]);</code></pre></div>
-<p>TODO</p>
+<p>We set <strong>Chip Select to High</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set SX1262 Chip Select to High</span>
   <span class="ident">cs</span>.<span class="ident">set_high</span>()
     .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
-<p>TODO: Output</p>
-<div class="example-wrap"><pre class="language-text"><code>test_hal: received
-  a2
-  a2
-  a2
-  a2
-  80
+<p>And we’re done! Running this Rust code on NuttX shows…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
+...
 test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
+<p>That’s the correct value of SX1262 Register 8: <code>0x80</code>!</p>
+<p>(We’ll talk about building and flashing the NuttX Firmware in a while)</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal2.png" alt="Calling the Rust Driver for LoRa SX1262" /></p>
 <h1 id="rust-driver-for-lora-sx1262" class="section-header"><a href="#rust-driver-for-lora-sx1262">7 Rust Driver for LoRa SX1262</a></h1>
 <p>TODO</p>
