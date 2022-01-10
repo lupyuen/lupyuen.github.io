@@ -290,7 +290,7 @@ int main(int argc, FAR char *argv[]) {
 <h1 id="rust-embedded-hal" class="section-header"><a href="#rust-embedded-hal">5 Rust Embedded HAL</a></h1>
 <p><em>What is Rust Embedded HAL?</em></p>
 <p><strong>Rust Embedded HAL</strong> (Hardware Abstraction Layer) defines a standard interface that’s used by <strong>Rust Embedded Device Drivers</strong> to access the hardware: GPIO, SPI, I2C, …</p>
-<p><a href="https://github.com/rust-embedded/awesome-embedded-rust#driver-crates">(Check out the Rust Embedded Drivers here)</a></p>
+<p><a href="https://github.com/rust-embedded/awesome-embedded-rust#driver-crates">(Check out the Rust Embedded Drivers)</a></p>
 <p><em>What if we implement Rust Embedded HAL for NuttX: GPIO, SPI, I2C, …?</em></p>
 <p>That would be super interesting… It means that we can pick <strong>any Rust Embedded Driver</strong> and run it on NuttX! (Theoretically)</p>
 <p>In a while we’ll test the <strong>Semtech SX1262 LoRa Driver</strong> from Rust Embedded, and see if it works on NuttX!</p>
@@ -387,10 +387,19 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p>(We’ll talk about building and flashing the NuttX Firmware in a while)</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal2.png" alt="Calling the Rust Driver for LoRa SX1262" /></p>
 <h1 id="rust-driver-for-lora-sx1262" class="section-header"><a href="#rust-driver-for-lora-sx1262">7 Rust Driver for LoRa SX1262</a></h1>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113">sx1262.rs</a></p>
+<p><em>Can we pick ANY Device Driver from <a href="https://github.com/rust-embedded/awesome-embedded-rust#driver-crates"><strong>Rust Embedded</strong></a>…</em></p>
+<p><em>And run it on NuttX?</em></p>
+<p>Now that we have a (barebones) <strong>Rust Embedded HAL</strong> for NuttX, let’s find out!</p>
+<p>We’ll test this Rust Embedded Driver for Semtech SX1262…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/sx126x-rs-nuttx"><strong>lupyuen/sx126x-rs-nuttx</strong></a></li>
+</ul>
+<p>That we have tweaked slightly from <strong><a href="https://github.com/tweedegolf/sx126x-rs">tweedegolf/sx126x-rs</a></strong></p>
+<p>(More about this in the Appendix. Thanks Tweede golf! 👍)</p>
+<p>Let’s do the same test as last chapter: <strong>Read SX1262 Register 8</strong></p>
+<p>We begin by opening the <strong>GPIO Input, Output and Interrupt Pins</strong> for SX1262: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113">sx1262.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the SX1262 Driver by reading a register and sending a LoRa message.</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the SX1262 Driver by reading a register.</span>
 <span class="doccomment">/// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
 
@@ -405,7 +414,8 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
   <span class="comment">//  Open GPIO Interrupt for SX1262 DIO1 Pin</span>
   <span class="kw">let</span> <span class="ident">lora_dio1</span> <span class="op">=</span> <span class="ident">nuttx_hal::InterruptPin</span>
     <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio2&quot;</span>);</code></pre></div>
-<p>TODO</p>
+<p>(We won’t handle interrupts today)</p>
+<p>The <strong>NRESET and Antenna Pins</strong> are unused for now…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  TODO: Open GPIO Output for SX1262 NRESET Pin</span>
   <span class="kw">let</span> <span class="ident">lora_nreset</span> <span class="op">=</span> <span class="ident">nuttx_hal::UnusedPin</span>
@@ -418,7 +428,8 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
   <span class="comment">//  Open SPI Bus for SX1262</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi1</span> <span class="op">=</span> <span class="ident">nuttx_hal::Spi</span>
     <span class="ident">::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>);</code></pre></div>
-<p>TODO</p>
+<p>And we open the <strong>SPI Bus</strong> like before.</p>
+<p>We <strong>define the pins</strong> for our SX1262 Driver…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Define the SX1262 Pins</span>
   <span class="kw">let</span> <span class="ident">lora_pins</span> <span class="op">=</span> (
@@ -431,25 +442,36 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 
   <span class="comment">//  Init a busy-waiting delay</span>
   <span class="kw">let</span> <span class="ident">delay</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">nuttx_hal::Delay::new</span>();</code></pre></div>
-<p>TODO</p>
+<p>We <strong>initialise the SX1262 Driver</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init LoRa modem</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Build the SX1262 Configuration</span>
   <span class="kw">let</span> <span class="ident">conf</span> <span class="op">=</span> <span class="ident">build_config</span>();
+
+  <span class="comment">//  Construct the SX1262 Driver</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lora</span> <span class="op">=</span> <span class="ident">SX126x::new</span>(<span class="ident">lora_pins</span>);
+
+  <span class="comment">//  Init the SX1262 Driver</span>
   <span class="ident">lora</span>.<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">conf</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;sx1262 init failed&quot;</span>);</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L106-L144">(<strong>build_config</strong> is defined here)</a></p>
+<p>Lastly we <strong>read SX1262 Register 8</strong> and print the result…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Read SX1262 Register 8</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init Result Buffer as 1 byte of 0x00</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span>: [ <span class="ident">u8</span>; <span class="number">1</span> ] <span class="op">=</span> [ <span class="number">0</span>; <span class="number">1</span> ];
+
+  <span class="comment">//  Read SX1262 Register 8</span>
   <span class="ident">lora</span>.<span class="ident">read_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="number">8</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">result</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;sx1262 read register failed&quot;</span>);
 
   <span class="comment">//  Show the register value</span>
   <span class="macro">println!</span>(<span class="string">&quot;test_sx1262: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">result</span>[<span class="number">0</span>]);</code></pre></div>
-<p>TODO: Output</p>
-<div class="example-wrap"><pre class="language-text"><code>test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
+<p>When we run the Rust code we’ll see…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
+...
+test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
+<p>Which is the same result from the previous chapter. Yep the Rust Driver works!</p>
+<p>Let’s test the Rust Driver to the limit… And send a LoRa Message over the airwaves!</p>
 <p><img src="https://lupyuen.github.io/images/rust2-transmit2.png" alt="Transmit LoRa Message" /></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">8 Transmit LoRa Message</a></h1>
 <p>TODO</p>
@@ -462,10 +484,14 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113">sx1262.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transmit a LoRa Message.</span>
+<span class="doccomment">/// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
+  <span class="comment">//  Omitted: Init the SX1262 Driver</span>
   ...
   <span class="comment">//  Write SX1262 Registers to prepare for transmitting LoRa message.</span>
   <span class="comment">//  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668</span>
+  <span class="comment">//  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing</span>
 
   <span class="comment">//  Write Register 0x889: 0x04 (TxModulation)</span>
   <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::TxModulaton</span>, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
@@ -493,7 +519,6 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
     <span class="number">8</span>,          <span class="comment">//  Preamble Length</span>
     <span class="ident">packet::lora::LoRaCrcType::CrcOn</span>,  <span class="comment">//  Enable CRC</span>
   ).<span class="ident">expect</span>(<span class="string">&quot;send failed&quot;</span>);</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
 <h1 id="download-source-code" class="section-header"><a href="#download-source-code">9 Download Source Code</a></h1>
 <p>To run Rust on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
@@ -564,6 +589,9 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://lupyuen.github.io/images/lorawan3-config4.png">(See this)</a></p>
 </li>
 <li>
+<p>TODO: Enable Stack Checking</p>
+</li>
+<li>
 <p>Enable our <strong>Rust Library</strong>…</p>
 <p>Check the box for <strong>“Library Routines”</strong> → <strong>“Rust Library”</strong></p>
 </li>
@@ -619,6 +647,13 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 <li>
 <p>In the NuttX Shell, run our <strong>Rust App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>rust_test</code></pre></div></li>
+<li>
+<p>When we run the Rust code we’ll see…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
+...
+TODO</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
+</li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)</em></p>
@@ -670,6 +705,7 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 <p>TODO</p>
 <p>Modified SX1262 Driver for NuttX: <a href="https://github.com/lupyuen/sx126x-rs-nuttx">lupyuen/sx126x-rs-nuttx</a></p>
 <p>Based on <a href="https://github.com/tweedegolf/sx126x-rs">tweedegolf/sx126x-rs</a></p>
+<p>Arm vs RISC-V: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L146-L168">rust_test/rust/src/sx1262.rs</a></p>
 <p><img src="https://lupyuen.github.io/images/rust2-driver.png" alt="Fixing SX1262 Driver for NuttX" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal5.png" alt="Incorrect register value" /></p>
