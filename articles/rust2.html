@@ -207,9 +207,9 @@ Hello World!</code></pre></div>
 <span class="macro">println!</span>(<span class="string">&quot;Hello World&quot;</span>);</code></pre></div>
 <p>Much neater! And we’ll see later that <strong>“println!”</strong> supports Formatted Output too.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs">(<strong>println!</strong> is defined here)</a></p>
-<p><em>Why is our Rust Function named <strong>rust_main</strong>?</em></p>
-<p>Our Rust code is complied into a <strong>Static Library</strong> that will be linked into the NuttX Firmware.</p>
-<p>In our NuttX Firmware, we have a NuttX App (<strong>rust_test</strong>) that calls <strong>rust_main</strong> from C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37">rust_test_main.c</a></p>
+<p><em>Why is our Rust Function named <strong>rust_main</strong> instead of <strong>main</strong>?</em></p>
+<p>Our Rust code (<strong>rust_main</strong>) is compiled into a <strong>Static Library</strong> that will be linked into the NuttX Firmware.</p>
+<p>Our NuttX Firmware contains a NuttX App (<strong>rust_test</strong>) that calls <strong>rust_main</strong> from C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37">rust_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Rust Function defined in rust/src/lib.rs
 void rust_main(void);
 
@@ -219,6 +219,7 @@ int main(int argc, FAR char *argv[]) {
   rust_main();
   return 0;
 }</code></pre></div>
+<p>Thus it’s indeed possible to call Rust from C… And C from Rust!</p>
 <p>(More about the Rust build script in the Appendix)</p>
 <h1 id="flipping-gpio" class="section-header"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
 <p>TODO</p>
@@ -411,7 +412,12 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113">sx1262.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Change this to your LoRa Frequency</span>
+<span class="comment">//  const RF_FREQUENCY: u32 = 868_000_000;  //  868 MHz (EU)</span>
+<span class="comment">//  const RF_FREQUENCY: u32 = 915_000_000;  //  915 MHz (US)</span>
+<span class="kw">const</span> <span class="ident">RF_FREQUENCY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">923_000_000</span>;  <span class="comment">//  923 MHz (Asia)</span>
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
   ...
   <span class="comment">//  Write SX1262 Registers to prepare for transmitting LoRa message.</span>
   <span class="comment">//  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668</span>
