@@ -159,7 +159,7 @@ println!("Hello World!");
 
 Much neater! We'll see later that __"println!"__ supports Formatted Output too.
 
-[(__println!__ is defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs)
+[(__println!__ is defined here. Thanks Huang Qi! 👍)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs)
 
 [(__puts__ is wrapped here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L175-L216)
 
@@ -371,7 +371,7 @@ Rust Embedded HAL makes GPIO programming more fun! Let's do SPI now.
 
 Let's test SPI Data Transfer to the [__Semtech SX1262 LoRa Transceiver__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262).
 
-For PineDio Stack BL604 with its onboard SX1262 (pic above), we control __SPI Chip Select__ ourselves via GPIO Output ("/dev/gpio1").
+For PineDio Stack BL604 with its onboard SX1262 (pic above), we control __SPI Chip Select__ ourselves via GPIO Output __"/dev/gpio1"__
 
 We begin by opening the __GPIO Output__ for SPI Chip Select: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
 
@@ -392,9 +392,9 @@ Next we open the __SPI Bus__...
     ::new("/dev/spitest0");
 ```
 
-__"/dev/spitest0"__ is the __SPI Test Driver__ that we have installed to simplify SPI programming. [(See this)](https://lupyuen.github.io/articles/spi2)
+__"/dev/spitest0"__ is our __SPI Test Driver__ that simplifies SPI programming. [(See this)](https://lupyuen.github.io/articles/spi2)
 
-Before talking to SX1262, we set the __Chip Select to Low__...
+Before talking to SX1262, we set __Chip Select to Low__...
 
 ```rust
   //  Set SX1262 Chip Select to Low
@@ -441,9 +441,9 @@ test_hal: SX1262 Register 8 is 0x80
 
 [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
 
-That's the correct value of SX1262 Register 8: `0x80`!
+That's the correct value of SX1262 Register 8: __`0x80`__!
 
-(We'll talk about building and flashing the NuttX Firmware in a while)
+(Later we'll talk about building and flashing the NuttX Firmware)
 
 ![Calling the Rust Driver for LoRa SX1262](https://lupyuen.github.io/images/rust2-hal2.png)
 
