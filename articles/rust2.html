@@ -206,15 +206,15 @@ Hello World!</code></pre></div>
 <span class="ident">puts</span>(<span class="string">&quot;Hello World&quot;</span>);</code></pre></div>
 <p><em>Why is our Rust Function named <strong>rust_main</strong>?</em></p>
 <p>Our Rust code is complied into a <strong>Static Library</strong> that will be linked into the NuttX Firmware.</p>
-<p>In our NuttX Firmware, we have a NuttX App <strong>rust_test</strong> that calls <strong>rust_main</strong> from C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37">rust_test_main.c</a></p>
+<p>In our NuttX Firmware, we have a NuttX App (<strong>rust_test</strong>) that calls <strong>rust_main</strong> from C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37">rust_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Rust Function defined in rust/src/lib.rs
 void rust_main(void);
 
 //  Our Main Function in C...
 int main(int argc, FAR char *argv[]) {
-    //  Calls the Rust Function
-    rust_main();
-    return 0;
+  //  Calls the Rust Function
+  rust_main();
+  return 0;
 }</code></pre></div>
 <p>(More about the Rust build script in the Appendix)</p>
 <h1 id="flipping-gpio" class="section-header"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
@@ -320,17 +320,11 @@ int main(int argc, FAR char *argv[]) {
   <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
 
   <span class="comment">//  Show the received register value</span>
-  <span class="ident">puts</span>(<span class="string">&quot;test_spi: received&quot;</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;test_spi: received&quot;</span>);
   <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">bytes_read</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
-    <span class="macro">write!</span>(<span class="ident">buf</span>, <span class="string">&quot;  {:02x}&quot;</span>, <span class="ident">rx_data</span>[<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>])
-        .<span class="ident">expect</span>(<span class="string">&quot;buf overflow&quot;</span>);
-    <span class="ident">puts</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>);    
+    <span class="macro">println!</span>(<span class="string">&quot;  {:02x}&quot;</span>, <span class="ident">rx_data</span>[<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>])
   }
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
-  <span class="macro">write!</span>(<span class="ident">buf</span>, <span class="string">&quot;test_spi: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">rx_data</span>[<span class="number">4</span>])
-    .<span class="ident">expect</span>(<span class="string">&quot;buf overflow&quot;</span>);
-  <span class="ident">puts</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>);    
+  <span class="macro">println!</span>(<span class="string">&quot;test_spi: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">rx_data</span>[<span class="number">4</span>]);
 
   <span class="comment">//  Close the GPIO and SPI ports</span>
   <span class="kw">unsafe</span> {
@@ -379,17 +373,11 @@ test_spi: SX1262 Register 8 is 0x80</code></pre></div>
     .<span class="ident">expect</span>(<span class="string">&quot;spi failed&quot;</span>);
 
   <span class="comment">//  Show the received register value</span>
-  <span class="ident">puts</span>(<span class="string">&quot;test_hal: received&quot;</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;test_hal: received&quot;</span>);
   <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">data</span>.<span class="ident">len</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
-    <span class="macro">write!</span>(<span class="ident">buf</span>, <span class="string">&quot;  {:02x}&quot;</span>, <span class="ident">data</span>[<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>])
-      .<span class="ident">expect</span>(<span class="string">&quot;buf overflow&quot;</span>);
-    <span class="ident">puts</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>);    
+    <span class="macro">println!</span>(<span class="string">&quot;  {:02x}&quot;</span>, <span class="ident">data</span>[<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>]);
   }
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
-  <span class="macro">write!</span>(<span class="ident">buf</span>, <span class="string">&quot;test_hal: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">data</span>[<span class="number">4</span>])
-    .<span class="ident">expect</span>(<span class="string">&quot;buf overflow&quot;</span>);
-  <span class="ident">puts</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>);    
+  <span class="macro">println!</span>(<span class="string">&quot;test_hal: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">data</span>[<span class="number">4</span>]);
     
   <span class="comment">//  Set SX1262 Chip Select to High</span>
   <span class="ident">cs</span>.<span class="ident">set_high</span>()
@@ -443,23 +431,20 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
   <span class="kw">let</span> <span class="ident">delay</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">nuttx_hal::Delay::new</span>();
 
   <span class="comment">//  Init LoRa modem</span>
-  <span class="ident">puts</span>(<span class="string">&quot;Init modem...&quot;</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;Init modem...&quot;</span>);
   <span class="kw">let</span> <span class="ident">conf</span> <span class="op">=</span> <span class="ident">build_config</span>();
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lora</span> <span class="op">=</span> <span class="ident">SX126x::new</span>(<span class="ident">lora_pins</span>);
   <span class="ident">lora</span>.<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">conf</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;sx1262 init failed&quot;</span>);
 
   <span class="comment">//  Read SX1262 Register 8</span>
-  <span class="ident">puts</span>(<span class="string">&quot;Reading Register 8...&quot;</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;Reading Register 8...&quot;</span>);
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span>: [ <span class="ident">u8</span>; <span class="number">1</span> ] <span class="op">=</span> [ <span class="number">0</span>; <span class="number">1</span> ];
   <span class="ident">lora</span>.<span class="ident">read_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="number">8</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">result</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;sx1262 read register failed&quot;</span>);
 
   <span class="comment">//  Show the register value</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
-  <span class="macro">write!</span>(<span class="ident">buf</span>, <span class="string">&quot;test_sx1262: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">result</span>[<span class="number">0</span>])
-    .<span class="ident">expect</span>(<span class="string">&quot;buf overflow&quot;</span>);
-  <span class="ident">puts</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>);</code></pre></div>
+  <span class="macro">println!</span>(<span class="string">&quot;test_sx1262: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">result</span>[<span class="number">0</span>]);</code></pre></div>
 <p>TODO: Output</p>
 <div class="example-wrap"><pre class="language-text"><code>test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5">(See the Output Log)</a></p>
@@ -471,7 +456,7 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
   ...
   <span class="comment">//  Write SX1262 Registers to prepare for transmitting LoRa message.</span>
   <span class="comment">//  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668</span>
-  <span class="ident">puts</span>(<span class="string">&quot;Writing Registers...&quot;</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;Writing Registers...&quot;</span>);
 
   <span class="comment">//  Write Register 0x889: 0x04 (TxModulation)</span>
   <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::TxModulaton</span>, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
@@ -490,11 +475,8 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
     .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
 
   <span class="comment">//  Send a LoRa message</span>
-  <span class="ident">puts</span>(<span class="string">&quot;Sending LoRa message...&quot;</span>);
-  <span class="ident">buf</span>.<span class="ident">clear</span>();
-  <span class="macro">write!</span>(<span class="ident">buf</span>, <span class="string">&quot;Frequency: {}&quot;</span>, <span class="ident">RF_FREQUENCY</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;buf overflow&quot;</span>);
-  <span class="ident">puts</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;Sending LoRa message...&quot;</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;Frequency: {}&quot;</span>, <span class="ident">RF_FREQUENCY</span>);
   <span class="ident">lora</span>.<span class="ident">write_bytes</span>(
     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>,  <span class="comment">//  SPI Interface</span>
     <span class="ident">delay</span>,      <span class="comment">//  Delay Interface</span>
