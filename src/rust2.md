@@ -522,7 +522,8 @@ We __define the pins__ for our SX1262 Driver...
   );
 
   //  Init a busy-waiting delay
-  let delay = &mut nuttx_hal::Delay::new();
+  let delay = &mut nuttx_hal::Delay
+    ::new();
 ```
 
 We __initialise the SX1262 Driver__...
