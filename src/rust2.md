@@ -51,16 +51,17 @@ extern "C" fn rust_main() {  //  Declare `extern "C"` because it will be called 
 }
 ```
 
-Let's break it down...
+Let's break it down from the top...
 
 ```rust
-//  Use the Rust Core Library instead of the 
-//  Rust Standard Library, which is not 
-//  compatible with embedded systems
+//  Use the Rust Core Library instead of the Rust Standard Library,
+//  which is not compatible with embedded systems
 #![no_std]
 ```
 
-TODO
+We select the __Rust Core Library__ (for embedded platforms), which is a subset of the Rust Standard Library (for desktops and servers).
+
+Next we declare the __Rust Function__ that will be called by NuttX...
 
 ```rust
 //  Don't mangle the function name
@@ -69,7 +70,9 @@ TODO
 extern "C" fn rust_main() {
 ```
 
-TODO
+(Why is it named __rust_main__? We'll find out in a while)
+
+NuttX provides the __puts__ function because it's POSIX Compliant (like Linux), so we import it from C...
 
 ```rust
 
@@ -80,7 +83,17 @@ TODO
   }
 ```
 
-TODO
+This declares that __puts__...
+
+-   Accepts a "`*const u8`" pointer
+
+    (Equivalent to "`const uint8_t *`" in C)
+
+-   Returns an "`isize`" result
+
+    (Equivalent to "`int`" in C)
+
+We call __puts__ like so...
 
 ```rust
   //  Mark as unsafe because we are calling C
@@ -92,6 +105,26 @@ TODO
     );
   }
 ```
+
+Passing a string from Rust to C looks rather cumbersome...
+
+-   Calls to C Functions must be marked as __"`unsafe`"__
+
+-   We construct a __Byte String__ in Rust with the `b"..."` syntax
+
+-   Rust Strings are not null-terminated! We add the __Null Byte__ ourselves with "`\0`"
+
+-   We call __`.as_ptr()`__ to convert the Byte String to a pointer
+
+The Rust code above runs perfectly fine on the __NuttX Shell__...
+
+```text
+nsh> rust_test
+
+Hello World!
+```
+
+But let's make it neater.
 
 # Putting Things Neatly
 
@@ -115,6 +148,10 @@ TODO
 puts("Hello World");
 ```
 
+_Why is it named __rust_main__?_
+
+TODO
+
 # Flipping GPIO
 
 TODO
@@ -134,6 +171,11 @@ From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples
   };
   assert!(ret >= 0);
 
+  //  Sleep 1 second
+  unsafe { 
+    sleep(1); 
+  }
+
   //  Set GPIO Output to High
   let ret = unsafe { 
     ioctl(cs, GPIOC_WRITE, 1) 
@@ -145,6 +187,10 @@ From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples
     close(cs);
   }
 ```
+
+This code looks messy, but we'll clean this up with Rust Embedded HAL in a while.
+
+This works for blinking a LED on a GPIO pin, but we'll do something more ambitious... Transfer data over SPI!
 
 # Import NuttX Functions
 
@@ -526,9 +572,9 @@ Let's build the NuttX Firmware that contains our __Rust App__...
 
     [(See this)](https://lupyuen.github.io/images/lorawan3-config4.png)
 
-1.  Click __"Library Routines"__ and enable the following libraries...
+1.  Enable our __Rust Library__...
 
-    __"Rust Library"__
+    Check the box for __"Library Routines"__ → __"Rust Library"__
 
 1.  Enable our __Rust Test App__...
 
