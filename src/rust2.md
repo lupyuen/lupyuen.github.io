@@ -286,7 +286,7 @@ _What is Rust Embedded HAL?_
 
 __Rust Embedded HAL__ (Hardware Abstraction Layer) defines a standard interface that's used by __Rust Embedded Device Drivers__ to access the hardware: GPIO, SPI, I2C, ...
 
-[(Check out the Rust Embedded Drivers here)](https://github.com/rust-embedded/awesome-embedded-rust#driver-crates)
+[(Check out the Rust Embedded Drivers)](https://github.com/rust-embedded/awesome-embedded-rust#driver-crates)
 
 _What if we implement Rust Embedded HAL for NuttX: GPIO, SPI, I2C, ...?_
 
@@ -449,12 +449,26 @@ That's the correct value of SX1262 Register 8: `0x80`!
 
 # Rust Driver for LoRa SX1262
 
-TODO
+_Can we pick ANY Device Driver from [__Rust Embedded__](https://github.com/rust-embedded/awesome-embedded-rust#driver-crates)..._
 
-From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113)
+_And run it on NuttX?_
+
+Now that we have a (barebones) __Rust Embedded HAL__ for NuttX, let's find out!
+
+We'll test this Rust Embedded Driver for Semtech SX1262...
+
+-   [__lupyuen/sx126x-rs-nuttx__](https://github.com/lupyuen/sx126x-rs-nuttx)
+
+That we have tweaked slightly from __[tweedegolf/sx126x-rs](https://github.com/tweedegolf/sx126x-rs)__
+
+(More about this in the Appendix. Thanks Tweede golf! 👍)
+
+Let's do the same test as last chapter: __Read SX1262 Register 8__
+
+We begin by opening the __GPIO Input, Output and Interrupt Pins__ for SX1262: [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113)
 
 ```rust
-/// Test the SX1262 Driver by reading a register and sending a LoRa message.
+/// Test the SX1262 Driver by reading a register.
 /// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs
 pub fn test_sx1262() {
 
@@ -471,7 +485,9 @@ pub fn test_sx1262() {
     ::new("/dev/gpio2");
 ```
 
-TODO
+(We won't handle interrupts today)
+
+The __NRESET and Antenna Pins__ are unused for now...
 
 ```rust
   //  TODO: Open GPIO Output for SX1262 NRESET Pin
@@ -487,7 +503,9 @@ TODO
     ::new("/dev/spitest0");
 ```
 
-TODO
+And we open the __SPI Bus__ like before.
+
+We __define the pins__ for our SX1262 Driver...
 
 ```rust
   //  Define the SX1262 Pins
@@ -503,21 +521,29 @@ TODO
   let delay = &mut nuttx_hal::Delay::new();
 ```
 
-TODO
+We __initialise the SX1262 Driver__...
 
 ```rust
-  //  Init LoRa modem
+  //  Build the SX1262 Configuration
   let conf = build_config();
+
+  //  Construct the SX1262 Driver
   let mut lora = SX126x::new(lora_pins);
+
+  //  Init the SX1262 Driver
   lora.init(&mut spi1, delay, conf)
     .expect("sx1262 init failed");
 ```
 
-TODO
+[(__build_config__ is defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L106-L144)
+
+Lastly we __read SX1262 Register 8__ and print the result...
 
 ```rust
-  //  Read SX1262 Register 8
+  //  Init Result Buffer as 1 byte of 0x00
   let mut result: [ u8; 1 ] = [ 0; 1 ];
+
+  //  Read SX1262 Register 8
   lora.read_register(&mut spi1, delay, 8, &mut result)
     .expect("sx1262 read register failed");
 
@@ -525,13 +551,19 @@ TODO
   println!("test_sx1262: SX1262 Register 8 is 0x{:02x}", result[0]);
 ```
 
-TODO: Output
+When we run the Rust code we'll see...
 
 ```text
+nsh> rust_test
+...
 test_sx1262: SX1262 Register 8 is 0x80
 ```
 
 [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
+
+Which is the same result from the previous chapter. Yep the Rust Driver works!
+
+Let's test the Rust Driver to the limit... And send a LoRa Message over the airwaves!
 
 ![Transmit LoRa Message](https://lupyuen.github.io/images/rust2-transmit2.png)
 
@@ -553,10 +585,14 @@ TODO
 From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113)
 
 ```rust
+/// Transmit a LoRa Message.
+/// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs
 pub fn test_sx1262() {
+  //  Omitted: Init the SX1262 Driver
   ...
   //  Write SX1262 Registers to prepare for transmitting LoRa message.
   //  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668
+  //  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing
 
   //  Write Register 0x889: 0x04 (TxModulation)
   lora.write_register(&mut spi1, delay, Register::TxModulaton, &[0x04])
@@ -588,8 +624,6 @@ TODO
     packet::lora::LoRaCrcType::CrcOn,  //  Enable CRC
   ).expect("send failed");
 ```
-
-[(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
 
 # Download Source Code
 
@@ -670,6 +704,8 @@ Let's build the NuttX Firmware that contains our __Rust App__...
 
     [(See this)](https://lupyuen.github.io/images/lorawan3-config4.png)
 
+1.  TODO: Enable Stack Checking
+
 1.  Enable our __Rust Library__...
 
     Check the box for __"Library Routines"__ → __"Rust Library"__
@@ -744,6 +780,16 @@ We're ready to run the NuttX Firmware and test our __Rust App__!
     rust_test
     ```
 
+1.  When we run the Rust code we'll see...
+
+    ```text
+    nsh> rust_test
+    ...
+    TODO
+    ```
+
+    [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
+
 ![PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)... Sniffed wirelessly with Airspy R2 Software Defined Radio (right)](https://lupyuen.github.io/images/sx1262-title.jpg)
 
 _PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)... Sniffed wirelessly with Airspy R2 Software Defined Radio (right)_
@@ -807,6 +853,8 @@ TODO
 Modified SX1262 Driver for NuttX: [lupyuen/sx126x-rs-nuttx](https://github.com/lupyuen/sx126x-rs-nuttx)
 
 Based on [tweedegolf/sx126x-rs](https://github.com/tweedegolf/sx126x-rs)
+
+Arm vs RISC-V: [rust_test/rust/src/sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L146-L168)
 
 ![Fixing SX1262 Driver for NuttX](https://lupyuen.github.io/images/rust2-driver.png)
 
