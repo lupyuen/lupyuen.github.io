@@ -467,7 +467,7 @@ That we have tweaked slightly from __[tweedegolf/sx126x-rs](https://github.com/t
 
 Let's do the same test as last chapter: __Read SX1262 Register 8__
 
-We begin by opening the __GPIO Input, Output and Interrupt Pins__ for SX1262: [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113)
+We begin by opening the __GPIO Input, Output and Interrupt Pins__ for SX1262: [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L22-L72)
 
 ```rust
 /// Test the SX1262 Driver by reading a register.
@@ -545,7 +545,7 @@ Lastly we __read SX1262 Register 8__ and print the result...
   //  Init Result Buffer as 1 byte of 0x00
   let mut result: [ u8; 1 ] = [ 0; 1 ];
 
-  //  Read SX1262 Register 8
+  //  Read SX1262 Register 8 into Result Buffer
   lora.read_register(&mut spi1, delay, 8, &mut result)
     .expect("sx1262 read register failed");
 
@@ -584,7 +584,7 @@ const RF_FREQUENCY: u32 = 923_000_000;  //  923 MHz (Asia)
 
 TODO
 
-From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L25-L113)
+From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L73-L104)
 
 ```rust
 /// Transmit a LoRa Message.
