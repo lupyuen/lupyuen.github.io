@@ -114,7 +114,7 @@
 
   <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
     <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
-    <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">isize</span>;
+    <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
   }
 
   <span class="kw">unsafe</span> {  <span class="comment">//  Mark as unsafe because we are calling C</span>
@@ -143,7 +143,7 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Import C Function</span>
   <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
-    <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">isize</span>;
+    <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
   }</code></pre></div>
 <p>This declares that <strong>“puts”</strong>…</p>
 <ul>
@@ -152,8 +152,8 @@
 <p>(Equivalent to “<code>const uint8_t *</code>” in C)</p>
 </li>
 <li>
-<p>Returns an “<code>isize</code>” result</p>
-<p>(Equivalent to “<code>int</code>” in C)</p>
+<p>Returns an “<code>i32</code>” result</p>
+<p>(Equivalent to “<code>int32_t</code>” in C)</p>
 </li>
 </ul>
 <p>We call <strong>“puts”</strong> like so…</p>
@@ -259,25 +259,25 @@ int main(int argc, FAR char *argv[]) {
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L277">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import POSIX Functions. TODO: Import with bindgen</span>
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span>(<span class="ident">path</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">oflag</span>: <span class="ident">isize</span>, ...) -&gt; <span class="ident">isize</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="ident">fd</span>: <span class="ident">isize</span>, <span class="ident">buf</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">usize</span>) -&gt; <span class="ident">isize</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">fd</span>: <span class="ident">isize</span>, <span class="ident">buf</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">usize</span>) -&gt; <span class="ident">isize</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close</span>(<span class="ident">fd</span>: <span class="ident">isize</span>) -&gt; <span class="ident">isize</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>: <span class="ident">isize</span>, <span class="ident">request</span>: <span class="ident">isize</span>, ...) -&gt; <span class="ident">isize</span>;  <span class="comment">//  On NuttX: request is isize, not u64 like Linux</span>
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sleep</span>(<span class="ident">secs</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">usleep</span>(<span class="ident">usec</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span>;
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span>(<span class="ident">path</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">oflag</span>: <span class="ident">i32</span>, ...) -&gt; <span class="ident">i32</span>;
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">buf</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span>;
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">buf</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span>;
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close</span>(<span class="ident">fd</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">request</span>: <span class="ident">i32</span>, ...) -&gt; <span class="ident">i32</span>;  <span class="comment">//  On NuttX: request is i32, not u64 like Linux</span>
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sleep</span>(<span class="ident">secs</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span>;
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">usleep</span>(<span class="ident">usec</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span>;
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">u32</span>) -&gt; <span class="op">!</span>;  <span class="comment">//  Does not return</span>
 }</code></pre></div>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_WRITE</span>: <span class="ident">isize</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">1</span>;  <span class="comment">//  _GPIOC(1)</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_READ</span>:  <span class="ident">isize</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">2</span>;  <span class="comment">//  _GPIOC(2)</span></code></pre></div>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_WRITE</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">1</span>;  <span class="comment">//  _GPIOC(1)</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_READ</span>:  <span class="ident">i32</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">2</span>;  <span class="comment">//  _GPIOC(2)</span></code></pre></div>
 <p>TODO</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/fcntl.h</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_GPIOBASE</span>: <span class="ident">isize</span> <span class="op">=</span> <span class="number">0x2300</span>; <span class="comment">/* GPIO driver commands */</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_RDWR</span>:    <span class="ident">isize</span> <span class="op">=</span> <span class="ident">O_RDOK</span><span class="op">|</span><span class="ident">O_WROK</span>; <span class="comment">/* Open for both read &amp; write access */</span></code></pre></div>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_GPIOBASE</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">0x2300</span>; <span class="comment">/* GPIO driver commands */</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_RDWR</span>:    <span class="ident">i32</span> <span class="op">=</span> <span class="ident">O_RDOK</span><span class="op">|</span><span class="ident">O_WROK</span>; <span class="comment">/* Open for both read &amp; write access */</span></code></pre></div>
 <h1 id="rust-embedded-hal" class="section-header"><a href="#rust-embedded-hal">5 Rust Embedded HAL</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173">lib.rs</a></p>
