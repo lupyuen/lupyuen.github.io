@@ -137,15 +137,15 @@
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_main</span>() {</code></pre></div>
-<p>(Why is it named <strong>rust_main</strong>? We’ll find out in a while)</p>
-<p>NuttX provides the <strong>puts</strong> function because it’s POSIX Compliant (like Linux), so we import it from C…</p>
+<p>(Why is it named <strong>“rust_main”</strong>? We’ll find out in a while)</p>
+<p>NuttX provides the <strong>“puts”</strong> function because it’s POSIX Compliant (like Linux), so we import it from C…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Import C Function</span>
   <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
     <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">isize</span>;
   }</code></pre></div>
-<p>This declares that <strong>puts</strong>…</p>
+<p>This declares that <strong>“puts”</strong>…</p>
 <ul>
 <li>
 <p>Accepts a “<code>*const u8</code>” pointer</p>
@@ -156,7 +156,7 @@
 <p>(Equivalent to “<code>int</code>” in C)</p>
 </li>
 </ul>
-<p>We call <strong>puts</strong> like so…</p>
+<p>We call <strong>“puts”</strong> like so…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Mark as unsafe because we are calling C</span>
   <span class="kw">unsafe</span> {
@@ -178,7 +178,7 @@
 <p>Rust Strings are not null-terminated! We add the <strong>Null Byte</strong> ourselves with “<code>\0</code>”</p>
 </li>
 <li>
-<p>We call <strong><code>.as_ptr()</code></strong> to convert the Byte String to a pointer</p>
+<p>We call <strong>“<code>.as_ptr()</code>”</strong> to convert the Byte String to a pointer</p>
 </li>
 </ul>
 <p>Though it looks messy, the Rust code above runs perfectly fine from the <strong>NuttX Shell</strong>…</p>
@@ -188,9 +188,10 @@ Hello World!</code></pre></div>
 <p>We’ll make it neater in the next chapter.</p>
 <p><em>Is there anything we missed?</em></p>
 <p>We need to define a <strong>Panic Handler</strong> that will be called when a Runtime Error or Assertion Failure occurs.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L202-L229">(Here is our Panic Handler)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L218-L243">(Our Panic Handler is defined here)</a></p>
 <h1 id="putting-things-neatly" class="section-header"><a href="#putting-things-neatly">2 Putting Things Neatly</a></h1>
-<p>TODO</p>
+<p><em>Do we really need the cumbersome syntax for <strong>“puts”</strong> when we print things?</em></p>
+<p>We can do better! Let’s wrap this cumbersome code…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Mark as unsafe because we are calling C</span>
 <span class="kw">unsafe</span> {
@@ -200,10 +201,12 @@ Hello World!</code></pre></div>
       .<span class="ident">as_ptr</span>()        <span class="comment">//  Convert to pointer</span>
   );
 }</code></pre></div>
-<p>TODO</p>
+<p>…with a <strong>Rust Macro</strong>. And we’ll get this…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Print a message to the serial console</span>
-<span class="ident">puts</span>(<span class="string">&quot;Hello World&quot;</span>);</code></pre></div>
+<span class="macro">println!</span>(<span class="string">&quot;Hello World&quot;</span>);</code></pre></div>
+<p>Much neater! And we’ll see later that <strong>“println!”</strong> supports Formatted Output too.</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs">(<strong>println!</strong> is defined here)</a></p>
 <p><em>Why is our Rust Function named <strong>rust_main</strong>?</em></p>
 <p>Our Rust code is complied into a <strong>Static Library</strong> that will be linked into the NuttX Firmware.</p>
 <p>In our NuttX Firmware, we have a NuttX App (<strong>rust_test</strong>) that calls <strong>rust_main</strong> from C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37">rust_test_main.c</a></p>
