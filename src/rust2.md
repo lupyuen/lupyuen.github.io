@@ -124,7 +124,13 @@ nsh> rust_test
 Hello World!
 ```
 
-But let's make it neater.
+But let's make it neater in the next chapter.
+
+_Is there anything we missed?_
+
+We need to define a __Panic Handler__ that will be called when a Runtime Error or Assertion Failure occurs.
+
+[(Here is our Panic Handler)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L202-L229)
 
 # Putting Things Neatly
 
