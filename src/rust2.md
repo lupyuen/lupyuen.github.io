@@ -765,15 +765,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__no1wudi/nuttx.rs__](https://github.com/no1wudi/nuttx.rs)
 
-# Appendix: Rust Build Script for NuttX
-
-TODO1
-
-![](https://lupyuen.github.io/images/rust2-build.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/rust2-hal7.png)
+1.  TODO: Libc: Linux / Nix: nostd / ioctl i32 instead of u64
 
 # Appendix: Rust Embedded HAL for NuttX
 
@@ -800,6 +792,26 @@ TODO
 TODO
 
 ![SPI Transfers after merging](https://lupyuen.github.io/images/rust2-driver2.png)
+
+# Appendix: Rust Build Script for NuttX
+
+TODO
+
+Build Script: [rust_test/run.sh](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/run.sh)
+
+Rust Custom Target: [rust_test/riscv32imacf-unknown-none-elf.json](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/riscv32imacf-unknown-none-elf.json)
+
+Rust Dependencies: [rust_test/rust/Cargo.toml](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/Cargo.toml)
+
+Rust Source File: [rust_test/rust/src/lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs)
+
+TODO
+
+![Copy Rust Static Library to Staging Library](https://lupyuen.github.io/images/rust2-build.png)
+
+TODO
+
+![Rust builds OK](https://lupyuen.github.io/images/rust2-hal7.png)
 
 # Appendix: Build, Flash and Run NuttX
 
