@@ -272,6 +272,12 @@ pub const O_RDWR:      i32 = O_RDOK|O_WROK;  //  Open for both read & write acce
 
 # Rust Embedded HAL
 
+_What is Rust Embedded HAL?_
+
+__Rust Embedded HAL__ (Hardware Abstraction Layer) defines a standard interface that's used by Rust Embedded Device Drivers to access the hardware: GPIO, SPI, I2C, ...
+
+[(Check out the Rust Embedded Drivers here)](https://github.com/rust-embedded/awesome-embedded-rust#driver-crates)
+
 TODO
 
 From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25)
