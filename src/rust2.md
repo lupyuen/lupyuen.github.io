@@ -759,6 +759,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__no1wudi/nuttx.rs__](https://github.com/no1wudi/nuttx.rs)
 
+# Appendix: Rust Build Script for NuttX
+
+TODO1
+
+![](https://lupyuen.github.io/images/rust2-build.png)
+
+TODO14
+
+![](https://lupyuen.github.io/images/rust2-hal7.png)
+
 # Appendix: Rust Embedded HAL for NuttX
 
 TODO
@@ -775,6 +785,10 @@ TODO
 
 TODO
 
+![Incorrect register value](https://lupyuen.github.io/images/rust2-hal5.png)
+
+TODO
+
 ![SPI Transfers in small chunks](https://lupyuen.github.io/images/rust2-hal6.png)
 
 TODO
@@ -783,31 +797,6 @@ TODO
 
 # Appendix: Build, Flash and Run NuttX
 
-TODO1
+TODO
 
-![](https://lupyuen.github.io/images/rust2-build.png)
-
-TODO2
-
-![](https://lupyuen.github.io/images/rust2-build2.png)
-
-TODO12
-
-![](https://lupyuen.github.io/images/rust2-hal5.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/rust2-hal7.png)
-
-TODO15
-
-![](https://lupyuen.github.io/images/rust2-hello.png)
-
-TODO18
-
-![](https://lupyuen.github.io/images/rust2-spi.png)
-
-TODO19
-
-![](https://lupyuen.github.io/images/rust2-spi2.png)
-
+![Lots of fun with Rust, NuttX and LoRa on PineDio Stack BL604](https://lupyuen.github.io/images/rust2-pinedio.jpg)
