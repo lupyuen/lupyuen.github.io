@@ -650,10 +650,15 @@ Let's build the NuttX Firmware that contains our __Rust App__...
 
     [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/rust2#appendix-build-flash-and-run-nuttx)
 
+![PineDio Stack BL604 with Antenna](https://lupyuen.github.io/images/spi2-pinedio10a.jpg)
 
 # Run The Firmware
 
 We're ready to run the NuttX Firmware and test our __Rust App__!
+
+1.  Before testing, remember to connect the __LoRa Antenna__... 
+
+    (So we don't fry the SX1262 Transceiver as we charge up the Power Amplifier)
 
 1.  In the NuttX Shell, list the __NuttX Devices__...
 
@@ -682,6 +687,10 @@ We're ready to run the NuttX Firmware and test our __Rust App__!
     ```bash
     rust_test
     ```
+
+![PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)... Sniffed wirelessly with Airspy R2 Software Defined Radio (right)](https://lupyuen.github.io/images/sx1262-title.jpg)
+
+_PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)... Sniffed wirelessly with Airspy R2 Software Defined Radio (right)_
 
 TODO
 
