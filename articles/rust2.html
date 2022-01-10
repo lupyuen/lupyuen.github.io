@@ -125,19 +125,20 @@
     );
   }
 }</code></pre></div>
-<p>Let’s break it down…</p>
+<p>Let’s break it down from the top…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Use the Rust Core Library instead of the </span>
-<span class="comment">//  Rust Standard Library, which is not </span>
-<span class="comment">//  compatible with embedded systems</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library,</span>
+<span class="comment">//  which is not compatible with embedded systems</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span></code></pre></div>
-<p>TODO</p>
+<p>We select the <strong>Rust Core Library</strong> (for embedded platforms), which is a subset of the Rust Standard Library (for desktops and servers).</p>
+<p>Next we declare the <strong>Rust Function</strong> that will be called by NuttX…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_main</span>() {</code></pre></div>
-<p>TODO</p>
+<p>(Why is it named <strong>rust_main</strong>? We’ll find out in a while)</p>
+<p>NuttX provides the <strong>puts</strong> function because it’s POSIX Compliant (like Linux), so we import it from C…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>
   <span class="comment">//  Import C Function</span>
@@ -145,7 +146,18 @@
     <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
     <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">isize</span>;
   }</code></pre></div>
-<p>TODO</p>
+<p>This declares that <strong>puts</strong>…</p>
+<ul>
+<li>
+<p>Accepts a “<code>*const u8</code>” pointer</p>
+<p>(Equivalent to “<code>const uint8_t *</code>” in C)</p>
+</li>
+<li>
+<p>Returns an “<code>isize</code>” result</p>
+<p>(Equivalent to “<code>int</code>” in C)</p>
+</li>
+</ul>
+<p>We call <strong>puts</strong> like so…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Mark as unsafe because we are calling C</span>
   <span class="kw">unsafe</span> {
@@ -155,6 +167,26 @@
         .<span class="ident">as_ptr</span>()        <span class="comment">//  Convert to pointer</span>
     );
   }</code></pre></div>
+<p>Passing a string from Rust to C looks rather cumbersome…</p>
+<ul>
+<li>
+<p>Calls to C Functions must be marked as <strong>“<code>unsafe</code>”</strong></p>
+</li>
+<li>
+<p>We construct a <strong>Byte String</strong> in Rust with the <code>b&quot;...&quot;</code> syntax</p>
+</li>
+<li>
+<p>Rust Strings are not null-terminated! We add the <strong>Null Byte</strong> ourselves with “<code>\0</code>”</p>
+</li>
+<li>
+<p>We call <strong><code>.as_ptr()</code></strong> to convert the Byte String to a pointer</p>
+</li>
+</ul>
+<p>The Rust code above runs perfectly fine on the <strong>NuttX Shell</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
+
+Hello World!</code></pre></div>
+<p>But let’s make it neater.</p>
 <h1 id="putting-things-neatly" class="section-header"><a href="#putting-things-neatly">2 Putting Things Neatly</a></h1>
 <p>TODO</p>
 
@@ -170,6 +202,8 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Print a message to the serial console</span>
 <span class="ident">puts</span>(<span class="string">&quot;Hello World&quot;</span>);</code></pre></div>
+<p><em>Why is it named <strong>rust_main</strong>?</em></p>
+<p>TODO</p>
 <h1 id="flipping-gpio" class="section-header"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L54-L135">lib.rs</a></p>
@@ -186,6 +220,11 @@
   };
   <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
 
+  <span class="comment">//  Sleep 1 second</span>
+  <span class="kw">unsafe</span> { 
+    <span class="ident">sleep</span>(<span class="number">1</span>); 
+  }
+
   <span class="comment">//  Set GPIO Output to High</span>
   <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
     <span class="ident">ioctl</span>(<span class="ident">cs</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">1</span>) 
@@ -196,6 +235,8 @@
   <span class="kw">unsafe</span> {
     <span class="ident">close</span>(<span class="ident">cs</span>);
   }</code></pre></div>
+<p>This code looks messy, but we’ll clean this up with Rust Embedded HAL in a while.</p>
+<p>This works for blinking a LED on a GPIO pin, but we’ll do something more ambitious… Transfer data over SPI!</p>
 <h1 id="import-nuttx-functions" class="section-header"><a href="#import-nuttx-functions">4 Import NuttX Functions</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L234-L263">lib.rs</a></p>
@@ -520,8 +561,8 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://lupyuen.github.io/images/lorawan3-config4.png">(See this)</a></p>
 </li>
 <li>
-<p>Click <strong>“Library Routines”</strong> and enable the following libraries…</p>
-<p><strong>“Rust Library”</strong></p>
+<p>Enable our <strong>Rust Library</strong>…</p>
+<p>Check the box for <strong>“Library Routines”</strong> → <strong>“Rust Library”</strong></p>
 </li>
 <li>
 <p>Enable our <strong>Rust Test App</strong>…</p>
