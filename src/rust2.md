@@ -274,9 +274,17 @@ pub const O_RDWR:      i32 = O_RDOK|O_WROK;  //  Open for both read & write acce
 
 _What is Rust Embedded HAL?_
 
-__Rust Embedded HAL__ (Hardware Abstraction Layer) defines a standard interface that's used by Rust Embedded Device Drivers to access the hardware: GPIO, SPI, I2C, ...
+__Rust Embedded HAL__ (Hardware Abstraction Layer) defines a standard interface that's used by __Rust Embedded Device Drivers__ to access the hardware: GPIO, SPI, I2C, ...
 
 [(Check out the Rust Embedded Drivers here)](https://github.com/rust-embedded/awesome-embedded-rust#driver-crates)
+
+_What if we implement Rust Embedded HAL for NuttX: GPIO, SPI, I2C, ...?_
+
+That would be super interesting... It means that we can pick __any Rust Embedded Driver__ and run it on NuttX! (Theoretically)
+
+In a while we'll test the __Semtech SX1262 LoRa Driver__ from Rust Embedded, and see if it works on NuttX!
+
+_How do we call Rust Embedded HAL from NuttX?_
 
 TODO
 
