@@ -28,7 +28,7 @@ __Caution:__ Work in Progress! Some spots are rough and rocky, I'm hoping the Nu
 
 # Rust Meets NuttX
 
-This is the __simplest Rust program__ that will run on NuttX and print _"Hello World"_: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L1-L52)
+This is the __simplest Rust program__ that will run on NuttX and print _"Hello World"_: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L27-L59)
 
 ```rust
 #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
@@ -155,7 +155,7 @@ unsafe {
 println!("Hello World");
 ```
 
-Much neater! And we'll see later that __"println!"__ supports Formatted Output too.
+Much neater! We'll see later that __"println!"__ supports Formatted Output too.
 
 [(__println!__ is defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs)
 
