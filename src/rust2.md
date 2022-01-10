@@ -411,25 +411,19 @@ We transfer __5 bytes of data__ to SX1262 over SPI...
     .expect("spi failed");
 ```
 
-This is the __SX1262 Command__ that will read SX1262 Register 8.
+The transmitted data is the __SX1262 Command__ that will read __SX1262 Register 8__...
 
-TODO
-
-```rust
-  //  Show the received register value
-  println!("test_hal: received");
-  for i in 0..data.len() {
-    println!("  {:02x}", data[i as usize]);
-  }
+```text
+1D 00 08 00 00
 ```
 
-TODO
+The value of SX1262 Register 8 is returned as the __last byte__ of the SPI Response...
 
 ```rust
   println!("test_hal: SX1262 Register 8 is 0x{:02x}", data[4]);
 ```
 
-TODO
+We set __Chip Select to High__...
 
 ```rust    
   //  Set SX1262 Chip Select to High
@@ -437,19 +431,19 @@ TODO
     .expect("cs failed");
 ```
 
-TODO: Output
+And we're done! Running this Rust code on NuttX shows...
 
 ```text
-test_hal: received
-  a2
-  a2
-  a2
-  a2
-  80
+nsh> rust_test
+...
 test_hal: SX1262 Register 8 is 0x80
 ```
 
 [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
+
+That's the correct value of SX1262 Register 8: `0x80`!
+
+(We'll talk about building and flashing the NuttX Firmware in a while)
 
 ![Calling the Rust Driver for LoRa SX1262](https://lupyuen.github.io/images/rust2-hal2.png)
 
