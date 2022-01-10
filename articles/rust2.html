@@ -444,7 +444,8 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
   );
 
   <span class="comment">//  Init a busy-waiting delay</span>
-  <span class="kw">let</span> <span class="ident">delay</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">nuttx_hal::Delay::new</span>();</code></pre></div>
+  <span class="kw">let</span> <span class="ident">delay</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">nuttx_hal::Delay</span>
+    <span class="ident">::new</span>();</code></pre></div>
 <p>We <strong>initialise the SX1262 Driver</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Build the SX1262 Configuration</span>
