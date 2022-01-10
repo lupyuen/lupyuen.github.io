@@ -75,7 +75,6 @@ extern "C" fn rust_main() {
 NuttX provides the __puts__ function because it's POSIX Compliant (like Linux), so we import it from C...
 
 ```rust
-
   //  Import C Function
   extern "C" {
     /// Print a message to the serial console (from C stdio library)
@@ -116,7 +115,7 @@ Passing a string from Rust to C looks rather cumbersome...
 
 -   We call __`.as_ptr()`__ to convert the Byte String to a pointer
 
-The Rust code above runs perfectly fine on the __NuttX Shell__...
+Though it looks messy, the Rust code above runs perfectly fine from the __NuttX Shell__...
 
 ```text
 nsh> rust_test
@@ -124,7 +123,7 @@ nsh> rust_test
 Hello World!
 ```
 
-But let's make it neater in the next chapter.
+We'll make it neater in the next chapter.
 
 _Is there anything we missed?_
 
@@ -154,9 +153,25 @@ TODO
 puts("Hello World");
 ```
 
-_Why is it named __rust_main__?_
+_Why is our Rust Function named __rust_main__?_
 
-TODO
+Our Rust code is complied into a __Static Library__ that will be linked into the NuttX Firmware.
+
+In our NuttX Firmware, we have a NuttX App __rust_test__ that calls __rust_main__ from C: [rust_test_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37)
+
+```c
+//  Rust Function defined in rust/src/lib.rs
+void rust_main(void);
+
+//  Our Main Function in C...
+int main(int argc, FAR char *argv[]) {
+    //  Calls the Rust Function
+    rust_main();
+    return 0;
+}
+```
+
+(More about the Rust build script in the Appendix)
 
 # Flipping GPIO
 
@@ -336,10 +351,10 @@ use embedded_hal::{         //  Rust Embedded HAL
 fn test_hal() {
 
   //  Open GPIO Output for SX1262 Chip Select
-  let mut cs = nuttx_hal::OutputPin::new(b"/dev/gpio1\0".as_ptr());
+  let mut cs = nuttx_hal::OutputPin::new("/dev/gpio1");
 
   //  Open SPI Bus for SX1262
-  let mut spi = nuttx_hal::Spi::new(b"/dev/spitest0\0".as_ptr());
+  let mut spi = nuttx_hal::Spi::new("/dev/spitest0");
 
   //  Set SX1262 Chip Select to Low
   cs.set_low()
@@ -395,13 +410,13 @@ From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examp
 pub fn test_sx1262() {
 
   //  Open GPIO Input for SX1262 Busy Pin
-  let lora_busy = nuttx_hal::InputPin::new(b"/dev/gpio0\0".as_ptr());
+  let lora_busy = nuttx_hal::InputPin::new("/dev/gpio0");
 
   //  Open GPIO Output for SX1262 Chip Select
-  let lora_nss = nuttx_hal::OutputPin::new(b"/dev/gpio1\0".as_ptr());
+  let lora_nss = nuttx_hal::OutputPin::new("/dev/gpio1");
 
   //  Open GPIO Interrupt for SX1262 DIO1 Pin
-  let lora_dio1 = nuttx_hal::InterruptPin::new(b"/dev/gpio2\0".as_ptr());
+  let lora_dio1 = nuttx_hal::InterruptPin::new("/dev/gpio2");
 
   //  TODO: Open GPIO Output for SX1262 NRESET Pin
   let lora_nreset = nuttx_hal::UnusedPin::new();
@@ -410,7 +425,7 @@ pub fn test_sx1262() {
   let lora_ant = nuttx_hal::UnusedPin::new();
 
   //  Open SPI Bus for SX1262
-  let mut spi1 = nuttx_hal::Spi::new(b"/dev/spitest0\0".as_ptr());
+  let mut spi1 = nuttx_hal::Spi::new("/dev/spitest0");
 
   //  Define the SX1262 Pins
   let lora_pins = (
