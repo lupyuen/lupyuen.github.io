@@ -30,7 +30,7 @@ __Caution:__ Work in Progress! Some spots are rough and rocky, I'm hoping the Nu
 
 # Rust Meets NuttX
 
-This is the __simplest Rust program__ that will run on NuttX and print _"Hello World"_: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L27-L59)
+This is the __simplest Rust program__ that will run on NuttX and print _"Hello World"_: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L27-L59)
 
 ```rust
 #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
@@ -131,7 +131,7 @@ _Is there anything we missed?_
 
 We need to define a __Panic Handler__ that will be called when a Runtime Error or Assertion Failure occurs.
 
-[(Our Panic Handler is defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L218-L243)
+[(Our Panic Handler is defined here)](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L218-L243)
 
 # Putting Things Neatly
 
@@ -159,15 +159,15 @@ println!("Hello World!");
 
 Much neater! We'll see later that __"println!"__ supports Formatted Output too.
 
-[(__println!__ is defined here. Thanks Huang Qi! 👍)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/macros.rs)
+[(__println!__ is defined here. Thanks Huang Qi! 👍)](https://github.com/lupyuen/rust_test/blob/main/rust/src/macros.rs)
 
-[(__puts__ is wrapped here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L175-L216)
+[(__puts__ is wrapped here)](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L175-L216)
 
 _Why is our Rust Function named __rust_main__ instead of __main__?_
 
 Our Rust code (__rust_main__) is compiled into a __Static Library__ that will be linked into the NuttX Firmware.
 
-Our NuttX Firmware contains a NuttX App (__rust_test__) that calls __rust_main__ from C: [rust_test_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust_test_main.c#L28-L37)
+Our NuttX Firmware contains a NuttX App (__rust_test__) that calls __rust_main__ from C: [rust_test_main.c](https://github.com/lupyuen/rust_test/blob/main/rust_test_main.c#L28-L37)
 
 ```c
 //  Rust Function defined in rust/src/lib.rs
@@ -189,7 +189,7 @@ Thus it's indeed possible to call Rust from C... And C from Rust!
 
 # Flipping GPIO
 
-Since we can call NuttX Functions from Rust, let's __flip a GPIO High and Low__ the POSIX way: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
+Since we can call NuttX Functions from Rust, let's __flip a GPIO High and Low__ the POSIX way: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L61-L136)
 
 ```rust
 //  Open GPIO Output
@@ -243,7 +243,7 @@ This code works OK for __blinking an LED__ on a GPIO pin, but we'll do something
 
 _Won't this code get really messy when we do lots of GPIO and SPI?_
 
-Yep it might get terribly messy! [(Like this)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
+Yep it might get terribly messy! [(Like this)](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L61-L136)
 
 In a while we'll mop this up with __Rust Embedded HAL__.
 
@@ -251,7 +251,7 @@ In a while we'll mop this up with __Rust Embedded HAL__.
 
 _How did we import the NuttX Functions: open, ioctl, sleep, close, ...?_
 
-We __imported the NuttX Functions__ like so: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L257)
+We __imported the NuttX Functions__ like so: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L248-L257)
 
 ```rust
 extern "C" {  //  Import NuttX Functions. TODO: Import with bindgen
@@ -266,7 +266,7 @@ extern "C" {  //  Import NuttX Functions. TODO: Import with bindgen
 }
 ```
 
-We (very carefully) __imported the NuttX Constants__ as well: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L259-L277)
+We (very carefully) __imported the NuttX Constants__ as well: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L259-L277)
 
 ```rust
 //  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h
@@ -300,7 +300,7 @@ We have created a barebones __Rust Embedded HAL for NuttX__.
 
 (More details in the Appendix)
 
-To call it, we import the __NuttX HAL Module (nuttx_hal)__ and __Rust Embedded Library__ like so: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25)
+To call it, we import the __NuttX HAL Module (nuttx_hal)__ and __Rust Embedded Library__ like so: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L7-L25)
 
 ```rust
 //  Import NuttX HAL Module
@@ -316,9 +316,9 @@ use embedded_hal::{       //  Rust Embedded HAL
 };
 ```
 
-(NuttX HAL Module lives in its own source file [nuttx_hal.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/nuttx_hal.rs))
+(NuttX HAL Module lives in its own source file [nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs))
 
-To open GPIO Output __"/dev/gpio1"__ we do this: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
+To open GPIO Output __"/dev/gpio1"__ we do this: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L138-L173)
 
 ```rust
 //  Open GPIO Output
@@ -373,7 +373,7 @@ Let's test SPI Data Transfer to the [__Semtech SX1262 LoRa Transceiver__](https:
 
 For PineDio Stack BL604 with its onboard SX1262 (pic above), we control __SPI Chip Select__ ourselves via GPIO Output __"/dev/gpio1"__
 
-We begin by opening the __GPIO Output__ for SPI Chip Select: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
+We begin by opening the __GPIO Output__ for SPI Chip Select: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L138-L173)
 
 ```rust
 /// Test the NuttX Embedded HAL by reading SX1262 Register 8
@@ -469,7 +469,7 @@ That we have tweaked slightly from __[tweedegolf/sx126x-rs](https://github.com/t
 
 Let's do the same test as last chapter: __Read SX1262 Register 8__
 
-We begin by opening the __GPIO Input, Output and Interrupt Pins__ for SX1262: [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L22-L72)
+We begin by opening the __GPIO Input, Output and Interrupt Pins__ for SX1262: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L22-L72)
 
 ```rust
 /// Test the SX1262 Driver by reading a register.
@@ -540,7 +540,7 @@ We __initialise the SX1262 Driver__...
     .expect("sx1262 init failed");
 ```
 
-[(__build_config__ is defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L106-L144)
+[(__build_config__ is defined here)](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L106-L144)
 
 Lastly we __read SX1262 Register 8__ and print the result...
 
@@ -576,7 +576,7 @@ Let's test the Rust Driver to the limit... And send a LoRa Message over the airw
 
 For our final test for today we shall __transmit a LoRa Message__ with the Rust Driver for SX1262.
 
-Before we start, remember to configure the __LoRa Frequency__ for our region: [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L14-L17)
+Before we start, remember to configure the __LoRa Frequency__ for our region: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L14-L17)
 
 ```rust
 /// TODO: Change this to your LoRa Frequency
@@ -585,7 +585,7 @@ Before we start, remember to configure the __LoRa Frequency__ for our region: [s
 const RF_FREQUENCY: u32 = 923_000_000;  //  923 MHz (Asia)
 ```
 
-We prepare for LoRa Transmission by __updating some SX1262 Registers__: [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L73-L104)
+We prepare for LoRa Transmission by __updating some SX1262 Registers__: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L73-L104)
 
 ```rust
 /// Transmit a LoRa Message.
@@ -863,7 +863,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
-Rust Embedded HAL for NuttX: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/nuttx_hal.rs)
+Rust Embedded HAL for NuttX: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs)
 
 ![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
 
@@ -879,7 +879,7 @@ Modified SX1262 Driver for NuttX: [lupyuen/sx126x-rs-nuttx](https://github.com/l
 
 Based on [tweedegolf/sx126x-rs](https://github.com/tweedegolf/sx126x-rs)
 
-Arm vs RISC-V: [rust_test/rust/src/sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L146-L168)
+Arm vs RISC-V: [rust_test/rust/src/sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L146-L168)
 
 ![Fixing SX1262 Driver for NuttX](https://lupyuen.github.io/images/rust2-driver.png)
 
@@ -899,13 +899,13 @@ TODO
 
 TODO
 
-Build Script: [rust_test/run.sh](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/run.sh)
+Build Script: [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh)
 
-Rust Custom Target: [rust_test/riscv32imacf-unknown-none-elf.json](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/riscv32imacf-unknown-none-elf.json)
+Rust Custom Target: [rust_test/riscv32imacf-unknown-none-elf.json](https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json)
 
-Rust Dependencies: [rust_test/rust/Cargo.toml](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/Cargo.toml)
+Rust Dependencies: [rust_test/rust/Cargo.toml](https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml)
 
-Rust Source File: [rust_test/rust/src/lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs)
+Rust Source File: [rust_test/rust/src/lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs)
 
 [(See the Build Log)](https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d)
 
