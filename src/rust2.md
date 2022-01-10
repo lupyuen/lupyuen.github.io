@@ -419,6 +419,8 @@ The data transmitted over SPI is the __SX1262 Command__ that will read __SX1262 
   1D 00 08 00 00
 ```
 
+We pass the data as a __Mutable Reference__ "`&mut`" because we expect the contents to be changed during the SPI Transfer.
+
 The value of SX1262 Register 8 is returned as the __last byte__ of the SPI Response...
 
 ```rust
@@ -571,9 +573,9 @@ Let's test the Rust Driver to the limit... And send a LoRa Message over the airw
 
 # Transmit LoRa Message
 
-TODO
+For our final test for today we shall __transmit a LoRa Message__ with the Rust Driver for SX1262.
 
-From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L14-L17)
+Before we start, remember to configure the __LoRa Frequency__ for our region: [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L14-L17)
 
 ```rust
 /// TODO: Change this to your LoRa Frequency
@@ -582,9 +584,7 @@ From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examp
 const RF_FREQUENCY: u32 = 923_000_000;  //  923 MHz (Asia)
 ```
 
-TODO
-
-From [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L73-L104)
+We prepare for LoRa Transmission by __updating some SX1262 Registers__: [sx1262.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/sx1262.rs#L73-L104)
 
 ```rust
 /// Transmit a LoRa Message.
@@ -613,7 +613,7 @@ pub fn test_sx1262() {
     .expect("write register failed");
 ```
 
-TODO
+Then we __transmit a LoRa Message__ over the airwaves...
 
 ```rust
   //  Send a LoRa message
@@ -626,6 +626,14 @@ TODO
     packet::lora::LoRaCrcType::CrcOn,  //  Enable CRC
   ).expect("send failed");
 ```
+
+Containing the __Message Payload__...
+
+```text
+Hello from Rust on NuttX!
+```
+
+We're done! We'll see the results in a while. But first we run through the steps to build and flash our Rusty NuttX Firmware.
 
 # Download Source Code
 
@@ -750,7 +758,7 @@ Let's build the NuttX Firmware that contains our __Rust App__...
 
 We're ready to run the NuttX Firmware and test our __Rust App__!
 
-1.  Before testing, remember to connect the __LoRa Antenna__... 
+1.  Before testing, remember to connect the __LoRa Antenna__, as shown in the pic above.
 
     (So we don't fry the SX1262 Transceiver as we charge up the Power Amplifier)
 
@@ -898,6 +906,8 @@ Rust Dependencies: [rust_test/rust/Cargo.toml](https://github.com/lupyuen/incuba
 
 Rust Source File: [rust_test/rust/src/lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs)
 
+[(See the Build Log)](https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d)
+
 TODO
 
 ![Copy Rust Static Library to Staging Library](https://lupyuen.github.io/images/rust2-build.png)
@@ -911,3 +921,5 @@ TODO
 TODO
 
 ![Lots of fun with Rust, NuttX and LoRa on PineDio Stack BL604](https://lupyuen.github.io/images/rust2-pinedio.jpg)
+
+_Loads of fun with Rust, NuttX and LoRa on PineDio Stack BL604_
