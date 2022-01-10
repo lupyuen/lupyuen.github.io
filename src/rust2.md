@@ -812,6 +812,12 @@ Sadly we __haven't found a LoRaWAN Stack__ for Rust yet.
 
 (Probably because LoRaWAN is super complex... We need to sync up the Regional Parameters whenever LoRaWAN Regions are added or modified)
 
+But we have a __working LoRaWAN Stack for NuttX__ (in C)...
+
+-   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
+
+So perhaps our Rust code could __call out to the LoRaWAN Stack__ in C.
+
 TODO
 
 # What's Next
