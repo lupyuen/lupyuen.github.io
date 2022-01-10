@@ -804,6 +804,14 @@ TODO
 
 # LoRaWAN Support
 
+_What about LoRaWAN on Rust?_
+
+We need LoRaWAN if we plan to __route LoRa Packets securely__ to a Local Area Network (ChirpStack) or to the internet (The Things Network).
+
+Sadly we __haven't found a LoRaWAN Stack__ for Rust yet.
+
+(Probably because LoRaWAN is super complex... We need to sync up the Regional Parameters whenever LoRaWAN Regions are added or modified)
+
 TODO
 
 # What's Next
