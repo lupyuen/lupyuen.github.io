@@ -233,7 +233,7 @@ int main(int argc, FAR char *argv[]) {
   <span class="ident">open</span>(<span class="string">b&quot;/dev/gpio1\0&quot;</span>.<span class="ident">as_ptr</span>(), <span class="ident">O_RDWR</span>) 
 };
 <span class="macro">assert!</span>(<span class="ident">cs</span> <span class="op">&gt;</span> <span class="number">0</span>);</code></pre></div>
-<p>We open the GPIO Output at <strong>“/dev/gpio1”</strong> with read / write access.</p>
+<p>We open the GPIO Output at <strong>“/dev/gpio1”</strong> with read-write access.</p>
 <p>Then we call <strong>ioctl</strong> to set the <strong>GPIO Output to Low</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to Low</span>
