@@ -300,10 +300,10 @@ We have created a barebones __Rust Embedded HAL for NuttX__.
 
 (More details in the Appendix)
 
-To call it, we import the __HAL Module and Library__ like so: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25)
+To call it, we import the __NuttX HAL Module (nuttx_hal)__ and __Rust Embedded Library__ like so: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L7-L25)
 
 ```rust
-//  Import NuttX HAL
+//  Import NuttX HAL Module
 mod nuttx_hal;
 
 //  Import Libraries
@@ -316,6 +316,8 @@ use embedded_hal::{       //  Rust Embedded HAL
 };
 ```
 
+(NuttX HAL Module lives in its own source file [nuttx_hal.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/nuttx_hal.rs))
+
 To open GPIO Output __"/dev/gpio1"__ we do this: [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
 
 ```rust
@@ -325,6 +327,8 @@ let mut cs = nuttx_hal::OutputPin
 ```
 
 (Looks cleaner now!)
+
+We declared it as __"`mut`"__ (mutable) because we expect the internal state to change as we flip the GPIO.
 
 Next we fetch the __Delay Interface__ that we'll use to sleep...
 
