@@ -177,7 +177,7 @@ int main(int argc, FAR char *argv[]) {
 
 TODO
 
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L54-L135)
+From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L61-L136)
 
 ```rust
   //  Open GPIO Output
@@ -217,7 +217,7 @@ This works for blinking a LED on a GPIO pin, but we'll do something more ambitio
 
 TODO
 
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L234-L263)
+From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L248-L277)
 
 ```rust
 extern "C" {  //  Import POSIX Functions. TODO: Import with bindgen
@@ -248,99 +248,51 @@ pub const _GPIOBASE: isize = 0x2300; /* GPIO driver commands */
 pub const O_RDWR:    isize = O_RDOK|O_WROK; /* Open for both read & write access */
 ```
 
-# SPI Transfer
-
-TODO
-
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L54-L135)
-
-```rust
-/// Test the SPI Port by reading SX1262 Register 8
-fn test_spi() {
-
-  //  Open GPIO Output for SX1262 Chip Select
-  let cs = unsafe { 
-    open(b"/dev/gpio1\0".as_ptr(), O_RDWR) 
-  };
-  assert!(cs > 0);  
-
-  //  Open SPI Bus for SX1262
-  let spi = unsafe { 
-    open(b"/dev/spitest0\0".as_ptr(), O_RDWR) 
-  };
-  assert!(spi >= 0);
-
-  //  Set SX1262 Chip Select to Low
-  let ret = unsafe { 
-    ioctl(cs, GPIOC_WRITE, 0) 
-  };
-  assert!(ret >= 0);
-
-  //  Transmit command to SX1262: Read Register 8
-  const READ_REG: &[u8] = &[ 0x1d, 0x00, 0x08, 0x00, 0x00 ];
-  let bytes_written = unsafe { 
-    write(spi, READ_REG.as_ptr(), READ_REG.len()) 
-  };
-  assert!(bytes_written == READ_REG.len() as isize);
-
-  //  Read response from SX1262
-  let mut rx_data: [ u8; 16 ] = [ 0; 16 ];
-  let bytes_read = unsafe { 
-    read(spi, rx_data.as_mut_ptr(), rx_data.len()) 
-  };
-  assert!(bytes_read == READ_REG.len() as isize);
-
-  //  Set SX1262 Chip Select to High
-  let ret = unsafe { 
-    ioctl(cs, GPIOC_WRITE, 1) 
-  };
-  assert!(ret >= 0);
-
-  //  Show the received register value
-  println!("test_spi: received");
-  for i in 0..bytes_read {
-    println!("  {:02x}", rx_data[i as usize])
-  }
-  println!("test_spi: SX1262 Register 8 is 0x{:02x}", rx_data[4]);
-
-  //  Close the GPIO and SPI ports
-  unsafe {
-    close(cs);
-    close(spi);    
-  }
-}
-```
-
-TODO: Output
-
-```text
-test_spi: received
-  a2
-  a2
-  a2
-  a2
-  80
-test_spi: SX1262 Register 8 is 0x80
-```
-
-[(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
-
 # Rust Embedded HAL
 
 TODO
 
-From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L137-L172)
+From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
 
 ```rust
 //  Import NuttX HAL
 mod nuttx_hal;
 
 //  Import Libraries
-use embedded_hal::{         //  Rust Embedded HAL
-  digital::v2::OutputPin,   //  GPIO Output
-  blocking::spi::Transfer,  //  SPI Transfer
+use embedded_hal::{       //  Rust Embedded HAL
+  digital::v2::OutputPin, //  GPIO Output
+  blocking::{             //  Blocking I/O
+    delay::DelayMs,       //  Delay Interface
+    spi::Transfer,        //  SPI Transfer
+  },
 };
 
+/// Test the NuttX Embedded HAL
+fn test_hal() {
+
+  //  Open GPIO Output
+  let mut cs = nuttx_hal::OutputPin::new("/dev/gpio1");
+
+  //  Set GPIO Output to Low
+  cs.set_low()
+    .expect("cs failed");
+
+  //  Wait 1 second (1,000 milliseconds)
+  delay.delay_ms(1000);
+
+  //  Set SX1262 Chip Select to High
+  cs.set_high()
+    .expect("cs failed");
+}
+```
+
+# SPI Transfer
+
+TODO
+
+From [lib.rs](https://github.com/lupyuen/incubator-nuttx-apps/blob/rust/examples/rust_test/rust/src/lib.rs#L138-L173)
+
+```rust
 /// Test the NuttX Embedded HAL by reading SX1262 Register 8
 fn test_hal() {
 
@@ -369,7 +321,6 @@ fn test_hal() {
   //  Set SX1262 Chip Select to High
   cs.set_high()
     .expect("cs failed");
-}
 ```
 
 TODO: Output
