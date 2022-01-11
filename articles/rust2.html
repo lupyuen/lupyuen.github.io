@@ -90,11 +90,12 @@
 <li><a href="#adapt-for-risc-v">17.4 Adapt For RISC-V</a><ul></ul></li></ul></li>
 <li><a href="#appendix-rust-build-script-for-nuttx">18 Appendix: Rust Build Script for NuttX</a><ul>
 <li><a href="#rust-target">18.1 Rust Target</a><ul></ul></li>
-<li><a href="#stub-library">18.2 Stub Library</a><ul></ul></li>
-<li><a href="#build-stub-library">18.3 Build Stub Library</a><ul></ul></li>
-<li><a href="#build-rust-library">18.4 Build Rust Library</a><ul></ul></li>
-<li><a href="#replace-stub-libary-by-rust-library">18.5 Replace Stub Libary by Rust Library</a><ul></ul></li>
-<li><a href="#link-rust-library-into-firmware">18.6 Link Rust Library into Firmware</a><ul></ul></li></ul></li>
+<li><a href="#rust-build-options">18.2 Rust Build Options</a><ul></ul></li>
+<li><a href="#stub-library">18.3 Stub Library</a><ul></ul></li>
+<li><a href="#build-stub-library">18.4 Build Stub Library</a><ul></ul></li>
+<li><a href="#build-rust-library">18.5 Build Rust Library</a><ul></ul></li>
+<li><a href="#replace-stub-libary-by-rust-library">18.6 Replace Stub Libary by Rust Library</a><ul></ul></li>
+<li><a href="#link-rust-library-into-firmware">18.7 Link Rust Library into Firmware</a><ul></ul></li></ul></li>
 <li><a href="#appendix-build-flash-and-run-nuttx">19 Appendix: Build, Flash and Run NuttX</a><ul>
 <li><a href="#build-nuttx">19.1 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">19.2 Flash NuttX</a><ul></ul></li>
@@ -494,7 +495,7 @@ test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
 <p>Let’s test the Rust Driver to the limit… And send a LoRa Message over the airwaves!</p>
 <p><img src="https://lupyuen.github.io/images/rust2-transmit2.png" alt="Transmit LoRa Message" /></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">8 Transmit LoRa Message</a></h1>
-<p>For our final test for today we shall <strong>transmit a LoRa Message</strong> with the Rust Driver for SX1262.</p>
+<p>For our final test shall <strong>transmit a LoRa Message</strong> with the Rust Driver for SX1262.</p>
 <p>Before we start, remember to configure the <strong>LoRa Frequency</strong> for our region: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L14-L17">sx1262.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Change this to your LoRa Frequency</span>
@@ -913,17 +914,37 @@ Done!</code></pre></div>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__nop</span>() {}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust2-build.png" alt="Rust Build Script for NuttX" /></p>
 <h1 id="appendix-rust-build-script-for-nuttx" class="section-header"><a href="#appendix-rust-build-script-for-nuttx">18 Appendix: Rust Build Script for NuttX</a></h1>
-<p>TODO</p>
-<p>Rust Custom Target: <a href="https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json">rust_test/riscv32imacf-unknown-none-elf.json</a></p>
-<p>Rust Dependencies: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml">rust_test/rust/Cargo.toml</a></p>
-<p>Rust Source File: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs">rust_test/rust/src/lib.rs</a></p>
+<p>Let’s study the Build Script for Rust on NuttX…</p>
+<ul>
+<li><strong>Build Script</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh">apps/examples/rust_test/run.sh</a></li>
+</ul>
+<p>And how it compiles the following into the NuttX Firmware…</p>
+<ul>
+<li>
+<p><strong>Rust Project</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml">apps/examples/rust_test/rust/Cargo.toml</a></p>
+<p>(Rust Dependencies and Build Settings)</p>
+</li>
+<li>
+<p><strong>Rust Source File</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs">apps/examples/rust_test/rust/src/lib.rs</a></p>
+<p>(Defines the rust_main function)</p>
+</li>
+<li>
+<p><strong>Rust Custom Target</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json">apps/examples/rust_test/riscv32imacf-unknown-none-elf.json</a></p>
+<p>(Custom Rust Target for BL602 and BL604)</p>
+</li>
+<li>
+<p><strong>Stub Library</strong>: <a href="https://github.com/lupyuen/rust-nuttx">nuttx/libs/librust</a></p>
+<p>(Stub Library will be replaced by the compiled Rust Project)</p>
+</li>
+<li>
+<p><strong>Test App</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust_test_main.c">apps/examples/rust_test/rust_test_main.c</a></p>
+<p>(Main Function that calls rust_main)</p>
+</li>
+</ul>
 <p><a href="https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d">(See the Build Log)</a></p>
-<p>TODO</p>
-<p>Build Script: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh">rust_test/run.sh</a></p>
 <h2 id="rust-target" class="section-header"><a href="#rust-target">18.1 Rust Target</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L28-L39">rust_test/run.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Rust target: Custom target for llvm-abiname=ilp32f
+<p>Our Build Script begins by defining the <strong>Rust Target</strong> for the build: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L28-L39">rust_test/run.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Rust target: Custom target for BL602 and BL604
 #  https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
 #  https://docs.rust-embedded.org/embedonomicon/custom-target.html
 rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
@@ -932,15 +953,27 @@ rust_build_target_folder=riscv32imacf-unknown-none-elf
 #  Rust target: Standard target
 #  rust_build_target=riscv32imac-unknown-none-elf
 #  rust_build_target_folder=riscv32imac-unknown-none-elf</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L41-L48">rust_test/run.sh</a></p>
+<p><strong>For BL602 and BL604:</strong> We’re using the <strong>Custom Rust Target</strong> at…</p>
+<p><a href="https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json">apps/examples/rust_test/riscv32imacf-unknown-none-elf.json</a></p>
+<p>This Custom Rust Target supports <strong>floating point</strong> on 32-bit RISC-V. (The standard 32-bit RISC-V target doesn’t support floating point)</p>
+<p><a href="https://lupyuen.github.io/articles/rust#rust-targets">(More about Custom Rust Targets)</a></p>
+<p><strong>For ESP32-C3 (RISC-V)</strong>: Change <strong>rust_build_target</strong> and <strong>rust_build_target_folder</strong> to the Standard Rust Target <strong>riscv32imc-unknown-none-elf</strong></p>
+<p>Then run this command to install the Rust Target…</p>
+<div class="example-wrap"><pre class="language-bash"><code>rustup target add riscv32imc-unknown-none-elf</code></pre></div>
+<p><a href="https://github.com/jessebraham/esp-hal/tree/main/esp32c3-hal">(See this)</a></p>
+<p><strong>For ESP32 (Xtensa)</strong>: Change <strong>rust_build_target</strong> and <strong>rust_build_target_folder</strong> to the ESP32 Rust Target <strong>xtensa-esp32-none-elf</strong></p>
+<p>We need to install the Rust compiler fork with Xtensa support. <a href="https://github.com/jessebraham/esp-hal/tree/main/esp32-hal">(See this)</a></p>
+<h2 id="rust-build-options" class="section-header"><a href="#rust-build-options">18.2 Rust Build Options</a></h2>
+<p>Next we define the <strong>Rust Build Options</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L41-L48">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Rust build options: Build the Rust Core Library for our custom target
 rust_build_options=&quot;--target $rust_build_target -Z build-std=core&quot;</code></pre></div>
-<p>TODO</p>
+<p><strong>For BL602 and BL604:</strong> Since we’re using a Custom Rust Target, we need to build the Rust Core Library for our custom target. That’s why we need “-Z build-std=core” for the build options…</p>
 <div class="example-wrap"><pre class="language-text"><code>--target nuttx/apps/examples/rust_test/riscv32imacf-unknown-none-elf.json \
   -Z build-std=core</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>--target riscv32imac-unknown-none-elf</code></pre></div><h2 id="stub-library" class="section-header"><a href="#stub-library">18.2 Stub Library</a></h2>
+<p><a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602">(More about building Rust Core Library)</a></p>
+<p><strong>For ESP32 and ESP32-C3:</strong> Since we’re using a Standard Rust Target, remove “-Z build-std=core” from <strong>rust_build_options</strong>.</p>
+<p>The Rust Build Options will look like…</p>
+<div class="example-wrap"><pre class="language-text"><code>--target riscv32imc-unknown-none-elf</code></pre></div><h2 id="stub-library" class="section-header"><a href="#stub-library">18.3 Stub Library</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L50-L53">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Location of the Stub Library.  We will replace this stub by the Rust Library
@@ -954,7 +987,7 @@ rust_app_dest=$rust_app_dir/librust.a</code></pre></div>
 rust_build_dir=$PWD/rust/target/$rust_build_target_folder/$rust_build_profile
 rust_app_build=$rust_build_dir/libapp.a</code></pre></div>
 <p>TODO</p>
-<h2 id="build-stub-library" class="section-header"><a href="#build-stub-library">18.3 Build Stub Library</a></h2>
+<h2 id="build-stub-library" class="section-header"><a href="#build-stub-library">18.4 Build Stub Library</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L76-L83">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Build the firmware with the Stub Library, ignoring references to the Rust Library
@@ -962,7 +995,7 @@ pushd $NUTTX_PATH
 make || echo &quot;----- Ignore undefined references to Rust Library&quot;
 popd</code></pre></div>
 <p>TODO</p>
-<h2 id="build-rust-library" class="section-header"><a href="#build-rust-library">18.4 Build Rust Library</a></h2>
+<h2 id="build-rust-library" class="section-header"><a href="#build-rust-library">18.5 Build Rust Library</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L89-L94">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Build the Rust Library
@@ -974,13 +1007,13 @@ popd</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>cargo build \
   --target nuttx/apps/examples/rust_test/riscv32imacf-unknown-none-elf.json \
-  -Z build-std=core</code></pre></div><h2 id="replace-stub-libary-by-rust-library" class="section-header"><a href="#replace-stub-libary-by-rust-library">18.5 Replace Stub Libary by Rust Library</a></h2>
+  -Z build-std=core</code></pre></div><h2 id="replace-stub-libary-by-rust-library" class="section-header"><a href="#replace-stub-libary-by-rust-library">18.6 Replace Stub Libary by Rust Library</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L96-L99">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Replace the Stub Library by the compiled Rust Library
 #  Stub Library: ../../../nuttx/staging/librust.a
 #  Rust Library: rust/target/riscv32imacf-unknown-none-elf/debug/libapp.a
-cp $rust_app_build $rust_app_dest</code></pre></div><h2 id="link-rust-library-into-firmware" class="section-header"><a href="#link-rust-library-into-firmware">18.6 Link Rust Library into Firmware</a></h2>
+cp $rust_app_build $rust_app_dest</code></pre></div><h2 id="link-rust-library-into-firmware" class="section-header"><a href="#link-rust-library-into-firmware">18.7 Link Rust Library into Firmware</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L105-L108">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Link the Rust Library to the firmware
