@@ -607,7 +607,7 @@ In the next few articles we'll build a __complete IoT Sensor Device__ with NuttX
 
 But first we'll take a short detour to explore [__Rust on NuttX__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx)...
 
--   [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1478959963930169345)
+-   [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
 
 Stay Tuned!
 

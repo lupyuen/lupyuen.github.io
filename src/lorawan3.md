@@ -1300,7 +1300,7 @@ Yep we might have issues keeping our LoRaWAN Stack in sync with Semtech's versio
 
 I'm still super curious about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. We might start soon with GPIO and SPI to see whether the concept is feasible.
 
--   [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1478959963930169345)
+-   [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
 
 Stay Tuned!
 

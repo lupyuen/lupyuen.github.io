@@ -794,9 +794,11 @@ And the Rust Embedded HAL for NuttX might be __portable across all NuttX platfor
 
 (Rust Embedded HAL might also become a friendlier API for NuttX)
 
-Shall I should work on this? Lemme know!
+UPDATE: Check out the article here...
 
-[(UPDATE: According to Brennan Ashton, Sony has worked on Rust for NuttX. See this for the details)](https://twitter.com/btashton/status/1463379162312306691)
+-   [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
+
+[UPDATE: According to Brennan Ashton, Sony has worked on Rust for NuttX.](https://twitter.com/btashton/status/1463379162312306691)
 
 # What's Next
 
@@ -816,7 +818,7 @@ Here are some topics I might explore in future articles, lemme know if I should 
 
 -   __Rust__: Porting the Embedded Rust HAL to NuttX sounds really interesting. We might start with GPIO and SPI to see whether the concept is feasible.
 
-    [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1478959963930169345)
+    [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
 
 (BL602 IoT SDK / FreeRTOS is revamping right now to the [__new "hosal" HAL__](https://twitter.com/MisterTechBlog/status/1456259223323508748). Terrific time to explore NuttX now!)
 

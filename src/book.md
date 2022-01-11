@@ -216,6 +216,8 @@ For __Apache NuttX OS__...
 
 -   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
 
+-   ["Transmit LoRa Message (in Rust)"](https://lupyuen.github.io/articles/rust2#transmit-lora-message)
+
 -   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
 
 Connecting BL602 and BL604 to a __LoRa Gateway__...
