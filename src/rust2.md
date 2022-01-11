@@ -574,9 +574,9 @@ Let's test the Rust Driver to the limit... And send a LoRa Message over the airw
 
 # Transmit LoRa Message
 
-For our final test shall __transmit a LoRa Message__ with the Rust Driver for SX1262.
+For our final test we shall __transmit a LoRa Message__ with the Rust Driver for SX1262.
 
-Before we start, remember to configure the __LoRa Frequency__ for our region: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L14-L17)
+Configure the __LoRa Frequency__ for our region like so: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L14-L17)
 
 ```rust
 /// TODO: Change this to your LoRa Frequency
