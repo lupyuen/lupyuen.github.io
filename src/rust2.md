@@ -183,7 +183,7 @@ int main(int argc, FAR char *argv[]) {
 
 Thus it's indeed possible to call Rust from C... And C from Rust!
 
-(More about the Rust build script in the Appendix)
+[(More about the Rust build script in the Appendix)](https://lupyuen.github.io/articles/rust2#appendix-rust-build-script-for-nuttx)
 
 ![Rust opening GPIO Ports on NuttX](https://lupyuen.github.io/images/rust2-gpio.png)
 
@@ -298,7 +298,7 @@ _How do we call Rust Embedded HAL from NuttX?_
 
 We have created a barebones __Rust Embedded HAL for NuttX__.
 
-(More details in the Appendix)
+[(More details in the Appendix)](https://lupyuen.github.io/articles/rust2#appendix-rust-embedded-hal-for-nuttx)
 
 To call it, we import the __NuttX HAL Module (nuttx_hal)__ and __Rust Embedded Library__ like so: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L7-L25)
 
@@ -465,7 +465,7 @@ We'll test this Rust Embedded Driver for Semtech SX1262...
 
 That we tweaked slightly from __[tweedegolf/sx126x-rs](https://github.com/tweedegolf/sx126x-rs)__
 
-(More about this in the Appendix. Thanks Tweede golf! 👍)
+[(Details in the Appendix. Thanks Tweede golf! 👍)](https://lupyuen.github.io/articles/rust2#appendix-fix-sx1262-driver-for-nuttx)
 
 Let's do the same test as last chapter: __Read SX1262 Register 8__
 
