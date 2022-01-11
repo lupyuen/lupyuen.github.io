@@ -1113,7 +1113,9 @@ And how it compiles the following into the NuttX Firmware...
 
     (Main Function that calls rust_main)
 
-[(See the Build Log)](https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d)
+See also the Build Log for Rust on NuttX...
+
+-   [__Build Log__](https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d)
 
 ## Rust Target
 
@@ -1179,22 +1181,30 @@ The Rust Build Options will look like...
 --target riscv32imc-unknown-none-elf
 ```
 
-## Stub Library
+## Define Libraries
 
-TODO
+Next we define the __libraries that will be modified__ during the build...
 
-From [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L50-L53)
+-   __Stub Library:__ [nuttx/libs/librust](https://github.com/lupyuen/rust-nuttx)
+
+    This is an empty NuttX C Library that will be replaced by the Compiled Rust Library
+
+-   __Rust Library:__ [apps/examples/rust_test/rust](https://github.com/lupyuen/rust_test/blob/main/rust)
+
+    This is the Rust Library (compiled as a Static Library) that will overwrite the Compiled Stub Library
+
+That's how we __inject our Rust Code__ into the build: Overwriting the Compiled Stub Library by the Compiled Rust Library.
+
+The Stub Library is defined like so: [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L50-L53)
 
 ```bash
 ##  Location of the Stub Library.  We will replace this stub by the Rust Library
-##  rust_app_dest will be set to build_out/rust-app/librust-app.a
+##  rust_app_dest will be set to ../../../nuttx/staging/librust.a
 rust_app_dir=$NUTTX_PATH/staging
 rust_app_dest=$rust_app_dir/librust.a
 ```
 
-TODO
-
-From [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L55-L58)
+The Rust Library is defined below: [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L55-L58)
 
 ```bash
 ##  Location of the compiled Rust Library
@@ -1202,8 +1212,6 @@ From [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L5
 rust_build_dir=$PWD/rust/target/$rust_build_target_folder/$rust_build_profile
 rust_app_build=$rust_build_dir/libapp.a
 ```
-
-TODO
 
 ## Build Stub Library
 
@@ -1217,8 +1225,6 @@ pushd $NUTTX_PATH
 make || echo "----- Ignore undefined references to Rust Library"
 popd
 ```
-
-TODO
 
 ## Build Rust Library
 
