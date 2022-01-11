@@ -1116,35 +1116,35 @@ To fix this, we buffer all SPI Requests in the Chip Select Guard: [sx126x-rs-nut
 ```rust
 impl<'nss, 'spi, TNSS, TSPI, TSPIERR> Transfer<u8> for SlaveSelectGuard<'nss, 'spi, TNSS, TSPI>
 where
-    TNSS: OutputPin,
-    TSPI: Write<u8, Error = TSPIERR> + Transfer<u8, Error = TSPIERR>,
+  TNSS: OutputPin,
+  TSPI: Write<u8, Error = TSPIERR> + Transfer<u8, Error = TSPIERR>,
 {
-    type Error = SpiError<TSPIERR>;
-    fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
-        unsafe {
-            //  Prevent a second transfer
-            debug_assert!(!TRANSFERRED);
+  type Error = SpiError<TSPIERR>;
+  fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
+    unsafe {
+      //  Prevent a second transfer
+      debug_assert!(!TRANSFERRED);
 
-            //  Copy the transmit data to the buffer
-            BUF[BUFLEN..(BUFLEN + words.len())]
-                .clone_from_slice(words);
-            BUFLEN += words.len();
+      //  Copy the transmit data to the buffer
+      BUF[BUFLEN..(BUFLEN + words.len())]
+        .clone_from_slice(words);
+      BUFLEN += words.len();
 
-            //  Transfer the data over SPI
-            let res = self.spi.transfer(&mut BUF[0..BUFLEN])
-                .map_err(SpiError::Transfer);
+      //  Transfer the data over SPI
+      let res = self.spi.transfer(&mut BUF[0..BUFLEN])
+        .map_err(SpiError::Transfer);
 
-            //  Copy the result from SPI
-            words.clone_from_slice(&BUF[BUFLEN - words.len()..BUFLEN]);
+      //  Copy the result from SPI
+      words.clone_from_slice(&BUF[BUFLEN - words.len()..BUFLEN]);
 
-            //  Empty the buffer
-            BUFLEN = 0;
+      //  Empty the buffer
+      BUFLEN = 0;
 
-            //  Prevent a second write or transfer
-            TRANSFERRED = true;
-            res
-        }
+      //  Prevent a second write or transfer
+      TRANSFERRED = true;
+      res
     }
+  }
 }
 
 /// Buffer for SPI Transfer. Max packet size (256) + 2 bytes for Write Buffer Command.
@@ -1196,22 +1196,22 @@ We inserted a null byte for the Read Register command, because Read Requests sho
 ```rust
 /// Read data from a register
 pub fn read_register<'spi>(
-    &'spi mut self,
-    spi: &'spi mut TSPI,
-    delay: &mut impl DelayUs<u32>,
-    start_addr: u16,
-    result: &mut [u8],
+  &'spi mut self,
+  spi: &'spi mut TSPI,
+  delay: &mut impl DelayUs<u32>,
+  start_addr: u16,
+  result: &mut [u8],
 ) -> Result<(), SxError<TSPIERR, TPINERR>> {
-    debug_assert!(result.len() >= 1);
-    let start_addr = start_addr.to_be_bytes();
-    let mut spi = self.slave_select(spi, delay)?;
+  debug_assert!(result.len() >= 1);
+  let start_addr = start_addr.to_be_bytes();
+  let mut spi = self.slave_select(spi, delay)?;
 
-    spi.write(&[0x1D])
-        .and_then(|_| spi.write(&start_addr))
-        //  Inserted this null byte
-        .and_then(|_| spi.write(&[0x00]))
-        .and_then(|_| spi.transfer(result))?;
-    Ok(())
+  spi.write(&[0x1D])
+    .and_then(|_| spi.write(&start_addr))
+    //  Inserted this null byte
+    .and_then(|_| spi.write(&[0x00]))
+    .and_then(|_| spi.transfer(result))?;
+  Ok(())
 }
 ```
 
@@ -1220,25 +1220,25 @@ pub fn read_register<'spi>(
 The following registers need to be set for the LoRa Transmission to work correctly: [rust_test/rust/src/sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L73-L91)
 
 ```rust
-  //  Write SX1262 Registers to prepare for transmitting LoRa message.
-  //  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668
-  //  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing
+//  Write SX1262 Registers to prepare for transmitting LoRa message.
+//  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668
+//  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing
 
-  //  Write Register 0x889: 0x04 (TxModulation)
-  lora.write_register(&mut spi1, delay, Register::TxModulaton, &[0x04])
-    .expect("write register failed");
+//  Write Register 0x889: 0x04 (TxModulation)
+lora.write_register(&mut spi1, delay, Register::TxModulaton, &[0x04])
+  .expect("write register failed");
 
-  //  Write Register 0x8D8: 0xFE (TxClampConfig)
-  lora.write_register(&mut spi1, delay, Register::TxClampConfig, &[0xFE])
-    .expect("write register failed");
+//  Write Register 0x8D8: 0xFE (TxClampConfig)
+lora.write_register(&mut spi1, delay, Register::TxClampConfig, &[0xFE])
+  .expect("write register failed");
 
-  //  Write Register 0x8E7: 0x38 (Over Current Protection)
-  lora.write_register(&mut spi1, delay, Register::OcpConfiguration, &[0x38])
-    .expect("write register failed");
+//  Write Register 0x8E7: 0x38 (Over Current Protection)
+lora.write_register(&mut spi1, delay, Register::OcpConfiguration, &[0x38])
+  .expect("write register failed");
 
-  //  Write Register 0x736: 0x0D (Inverted IQ)
-  lora.write_register(&mut spi1, delay, Register::IqPolaritySetup, &[0x0D])
-    .expect("write register failed");
+//  Write Register 0x736: 0x0D (Inverted IQ)
+lora.write_register(&mut spi1, delay, Register::IqPolaritySetup, &[0x0D])
+  .expect("write register failed");
 ```
 
 We derived the registers from the log generated by the SX1262 driver in C...
