@@ -879,9 +879,173 @@ TODO
 
 Rust Embedded HAL for NuttX: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs)
 
-![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
+## GPIO HAL
 
 TODO
+
+From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L279-L283)
+
+```rust
+/// NuttX GPIO Output Struct
+pub struct OutputPin {
+    /// NuttX File Descriptor
+    fd: i32,
+}
+```
+
+TODO
+
+From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L191-L202)
+
+```rust
+/// New NuttX GPIO Output
+impl OutputPin {
+    /// Create a GPIO Output Pin from a Device Path (e.g. "/dev/gpio1")
+    pub fn new(path: &str) -> Self {
+        //  Open the NuttX Device Path (e.g. "/dev/gpio1") for read-write
+        let fd = open(path, O_RDWR);
+        assert!(fd > 0);
+
+        //  Return the pin
+        Self { fd }
+    }
+}
+```
+
+[(__open__ is defined here)](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L299-L322)
+
+TODO
+
+From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L59-L81)
+
+```rust
+/// Set NuttX Output Pin
+impl v2::OutputPin for OutputPin {
+    /// Error Type
+    type Error = ();
+
+    /// Set the GPIO Output to High
+    fn set_high(&mut self) -> Result<(), Self::Error> {
+        let ret = unsafe { 
+            ioctl(self.fd, GPIOC_WRITE, 1) 
+        };
+        assert!(ret >= 0);
+        Ok(())
+    }
+
+    /// Set the GPIO Output to low
+    fn set_low(&mut self) -> Result<(), Self::Error> {
+        let ret = unsafe { 
+            ioctl(self.fd, GPIOC_WRITE, 0) 
+        };
+        assert!(ret >= 0);
+        Ok(())
+    }
+}
+```
+
+TODO
+
+From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L251-L257)
+
+```rust
+/// Drop NuttX GPIO Output
+impl Drop for OutputPin {
+    /// Close the GPIO Output
+    fn drop(&mut self) {
+        unsafe { close(self.fd) };
+    }
+}
+```
+
+![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
+
+## SPI HAL
+
+TODO
+
+From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L165-L176)
+
+```rust
+/// NuttX SPI Struct
+pub struct Spi {
+    /// NuttX File Descriptor
+    fd: i32,
+}
+
+/// New NuttX SPI Bus
+impl Spi {
+    /// Create an SPI Bus from a Device Path (e.g. "/dev/spitest0")
+    pub fn new(path: &str) -> Self {
+        //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
+        let fd = open(path, O_RDWR);
+        assert!(fd > 0);
+
+        //  Return the pin
+        Self { fd }
+    }
+}
+
+/// Drop NuttX SPI Bus
+impl Drop for Spi {
+    /// Close the SPI Bus
+    fn drop(&mut self) {
+        unsafe { close(self.fd) };
+    }
+}
+```
+
+TODO
+
+From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L19-L41)
+
+```rust
+/// NuttX SPI Transfer
+impl Transfer<u8> for Spi {
+    /// Error Type
+    type Error = ();
+
+    /// Transfer SPI data
+    fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
+        //  Transmit data
+        let bytes_written = unsafe { 
+            write(self.fd, words.as_ptr(), words.len() as u32) 
+        };
+        assert!(bytes_written == words.len() as i32);
+
+        //  Read response
+        let bytes_read = unsafe { 
+            read(self.fd, words.as_mut_ptr(), words.len() as u32) 
+        };
+        assert!(bytes_read == words.len() as i32);
+
+        //  Return response
+        Ok(words)
+    }
+}
+```
+
+TODO
+
+From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L43-L57)
+
+```rust
+/// NuttX SPI Write
+impl Write<u8> for Spi{
+    /// Error Type
+    type Error = ();
+
+    /// Write SPI data
+    fn write(&mut self, words: &[u8]) -> Result<(), Self::Error> {
+        //  Transmit data
+        let bytes_written = unsafe { 
+            write(self.fd, words.as_ptr(), words.len() as u32) 
+        };
+        assert!(bytes_written == words.len() as i32);
+        Ok(())
+    }
+}
+```
 
 ![SPI HAL](https://lupyuen.github.io/images/rust2-hal4.png)
 
