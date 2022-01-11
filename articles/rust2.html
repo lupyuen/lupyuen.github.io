@@ -83,7 +83,11 @@
 <li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
 <li><a href="#notes">15 Notes</a><ul></ul></li>
 <li><a href="#appendix-rust-embedded-hal-for-nuttx">16 Appendix: Rust Embedded HAL for NuttX</a><ul></ul></li>
-<li><a href="#appendix-fix-sx1262-driver-for-nuttx">17 Appendix: Fix SX1262 Driver for NuttX</a><ul></ul></li>
+<li><a href="#appendix-fix-sx1262-driver-for-nuttx">17 Appendix: Fix SX1262 Driver for NuttX</a><ul>
+<li><a href="#merge-spi-requests">17.1 Merge SPI Requests</a><ul></ul></li>
+<li><a href="#read-register">17.2 Read Register</a><ul></ul></li>
+<li><a href="#set-registers">17.3 Set Registers</a><ul></ul></li>
+<li><a href="#adapt-for-risc-v">17.4 Adapt For RISC-V</a><ul></ul></li></ul></li>
 <li><a href="#appendix-rust-build-script-for-nuttx">18 Appendix: Rust Build Script for NuttX</a><ul></ul></li>
 <li><a href="#appendix-build-flash-and-run-nuttx">19 Appendix: Build, Flash and Run NuttX</a><ul>
 <li><a href="#build-nuttx">19.1 Build NuttX</a><ul></ul></li>
@@ -735,17 +739,152 @@ Done!</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal4.png" alt="SPI HAL" /></p>
 <h1 id="appendix-fix-sx1262-driver-for-nuttx" class="section-header"><a href="#appendix-fix-sx1262-driver-for-nuttx">17 Appendix: Fix SX1262 Driver for NuttX</a></h1>
-<p>TODO</p>
-<p>Modified SX1262 Driver for NuttX: <a href="https://github.com/lupyuen/sx126x-rs-nuttx">lupyuen/sx126x-rs-nuttx</a></p>
-<p>Based on <a href="https://github.com/tweedegolf/sx126x-rs">tweedegolf/sx126x-rs</a></p>
-<p>Arm vs RISC-V: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L146-L168">rust_test/rust/src/sx1262.rs</a></p>
+<p>In this article we used this Rust Embedded Driver for Semtech SX1262…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/sx126x-rs-nuttx"><strong>lupyuen/sx126x-rs-nuttx</strong></a></li>
+</ul>
+<p>That we have tweaked slightly from…</p>
+<ul>
+<li><a href="https://github.com/tweedegolf/sx126x-rs"><strong>tweedegolf/sx126x-rs</strong></a></li>
+</ul>
+<p>(Thanks Tweede golf! 👍)</p>
+<p>Let’s look at the modifications that we made.</p>
 <p><img src="https://lupyuen.github.io/images/rust2-driver.png" alt="Fixing SX1262 Driver for NuttX" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/rust2-hal5.png" alt="Incorrect register value" /></p>
-<p>TODO</p>
+<h2 id="merge-spi-requests" class="section-header"><a href="#merge-spi-requests">17.1 Merge SPI Requests</a></h2>
+<p>While testing <a href="https://github.com/tweedegolf/sx126x-rs"><strong>sx126x-rs</strong></a>, we discovered that the SPI Requests were split into 1-byte or 2-byte chunks…</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal6.png" alt="SPI Transfers in small chunks" /></p>
-<p>TODO</p>
+<p>This fails on NuttX because the SPI Request needs to be in one contiguous block as Chip Select flips from High to Low and High.</p>
+<p>To fix this, we buffered all SPI Requests in the Chip Select Guard: <a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/slave_select.rs#L86-L126">sx126x-rs-nuttx/src/sx/slave_select.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, <span class="ident">TNSS</span>, <span class="ident">TSPI</span>, <span class="ident">TSPIERR</span><span class="op">&gt;</span> <span class="ident">Transfer</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SlaveSelectGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, <span class="ident">TNSS</span>, <span class="ident">TSPI</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">TNSS</span>: <span class="ident">OutputPin</span>,
+    <span class="ident">TSPI</span>: <span class="ident">Write</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TSPIERR</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Transfer</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TSPIERR</span><span class="op">&gt;</span>,
+{
+    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">SpiError</span><span class="op">&lt;</span><span class="ident">TSPIERR</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">transfer</span><span class="op">&lt;</span><span class="lifetime">&#39;w</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">words</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;w</span> [<span class="ident">u8</span>], <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+        <span class="kw">unsafe</span> {
+            <span class="comment">//  Prevent a second transfer</span>
+            <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">TRANSFERRED</span>);
+
+            <span class="comment">//  Copy the transmit data to the buffer</span>
+            <span class="ident">BUF</span>[<span class="ident">BUFLEN</span>..(<span class="ident">BUFLEN</span> <span class="op">+</span> <span class="ident">words</span>.<span class="ident">len</span>())]
+                .<span class="ident">clone_from_slice</span>(<span class="ident">words</span>);
+            <span class="ident">BUFLEN</span> <span class="op">+</span><span class="op">=</span> <span class="ident">words</span>.<span class="ident">len</span>();
+
+            <span class="comment">//  Transfer the data over SPI</span>
+            <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BUF</span>[<span class="number">0</span>..<span class="ident">BUFLEN</span>])
+                .<span class="ident">map_err</span>(<span class="ident">SpiError::Transfer</span>);
+
+            <span class="comment">//  Copy the result from SPI</span>
+            <span class="ident">words</span>.<span class="ident">clone_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">BUF</span>[<span class="ident">BUFLEN</span> <span class="op">-</span> <span class="ident">words</span>.<span class="ident">len</span>()..<span class="ident">BUFLEN</span>]);
+
+            <span class="comment">//  Empty the buffer</span>
+            <span class="ident">BUFLEN</span> <span class="op">=</span> <span class="number">0</span>;
+
+            <span class="comment">//  Prevent a second write or transfer</span>
+            <span class="ident">TRANSFERRED</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            <span class="ident">res</span>
+        }
+    }
+}
+
+<span class="doccomment">/// Buffer for SPI Transfer. Max packet size (256) + 2 bytes for Write Buffer Command.</span>
+<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">BUF</span>: [ <span class="ident">u8</span>; <span class="number">258</span> ] <span class="op">=</span> [ <span class="number">0</span>; <span class="number">258</span> ];
+
+<span class="doccomment">/// Length of buffer for SPI Transfer</span>
+<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">BUFLEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
+
+<span class="doccomment">/// True if we have just executed an SPI Transfer</span>
+<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">TRANSFERRED</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;</code></pre></div>
+<p>Then we patched the driver code to ensure that all SPI Request chains consist of…</p>
+<ul>
+<li>
+<p>0 or more SPI Writes</p>
+</li>
+<li>
+<p>Followed by 1 optional SPI Transfer</p>
+</li>
+</ul>
+<p>Such that we flush the buffer of SPI Requests only after the final SPI Write or final SPI Transfer.</p>
+<p>So this chain of SPI Requests…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0x1D</span>])
+  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">start_addr</span>))
+  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0x00</span>]))
+  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="ident">result</span>))<span class="question-mark">?</span>;</code></pre></div>
+<p>After fixing becomes…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span>[<span class="number">0x1D</span>])  <span class="comment">//  Changed from `transfer` to `write`</span>
+  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">start_addr</span>))  <span class="comment">//  Changed from `transfer` to `write`</span>
+  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>]))      <span class="comment">//  Changed from `transfer` to `write`</span>
+  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="ident">result</span>))<span class="question-mark">?</span>;  <span class="comment">//  Final transfer is OK</span></code></pre></div>
+<p><a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/mod.rs#L241-L244">(Source)</a></p>
+<p>The driver works OK on NuttX after merging the SPI Requests…</p>
 <p><img src="https://lupyuen.github.io/images/rust2-driver2.png" alt="SPI Transfers after merging" /></p>
+<h2 id="read-register" class="section-header"><a href="#read-register">17.2 Read Register</a></h2>
+<p>TODO</p>
+<h2 id="set-registers" class="section-header"><a href="#set-registers">17.3 Set Registers</a></h2>
+<p>The following registers need to be set for the LoRa Transmission to work correctly: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L73-L91">rust_test/rust/src/sx1262.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Write SX1262 Registers to prepare for transmitting LoRa message.</span>
+  <span class="comment">//  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668</span>
+  <span class="comment">//  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing</span>
+
+  <span class="comment">//  Write Register 0x889: 0x04 (TxModulation)</span>
+  <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::TxModulaton</span>, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
+    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+
+  <span class="comment">//  Write Register 0x8D8: 0xFE (TxClampConfig)</span>
+  <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::TxClampConfig</span>, <span class="kw-2">&amp;</span>[<span class="number">0xFE</span>])
+    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+
+  <span class="comment">//  Write Register 0x8E7: 0x38 (Over Current Protection)</span>
+  <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::OcpConfiguration</span>, <span class="kw-2">&amp;</span>[<span class="number">0x38</span>])
+    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+
+  <span class="comment">//  Write Register 0x736: 0x0D (Inverted IQ)</span>
+  <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::IqPolaritySetup</span>, <span class="kw-2">&amp;</span>[<span class="number">0x0D</span>])
+    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
+<p>We derived the registers from the log generated by the SX1262 driver in C…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668"><strong>Log from SX1262 Driver in C</strong></a></li>
+</ul>
+<p>And by comparing the SPI Output of the C and Rust Drivers…</p>
+<ul>
+<li><a href="https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing"><strong>Compare SPI Output of C and Rust Drivers</strong></a></li>
+</ul>
+<p>The C Driver for SX1262 is described here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262"><strong>“LoRa SX1262 on Apache NuttX OS”</strong></a></li>
+</ul>
+<h2 id="adapt-for-risc-v" class="section-header"><a href="#adapt-for-risc-v">17.4 Adapt For RISC-V</a></h2>
+<p>The <a href="https://github.com/tweedegolf/sx126x-rs"><strong>sx126x-rs</strong></a> crate depends on the <a href="https://crates.io/crates/cortex-m"><strong>cortex-m</strong></a> crate, which works only on Arm, not RISC-V (BL602).</p>
+<p>We defined the following functions to fill in for the missing functions on RISC-V: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L146-L168">rust_test/rust/src/sx1262.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read Priority Mask Register. Missing function called by sx126x crate (Arm only, not RISC-V).</span>
+<span class="doccomment">/// See https://github.com/rust-embedded/cortex-m/blob/master/src/register/primask.rs#L29</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>))]</span>  <span class="comment">//  If architecture is not Arm...</span>
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__primask_r</span>() -&gt; <span class="ident">u32</span> { <span class="number">0</span> }
+
+<span class="doccomment">/// Disables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).</span>
+<span class="doccomment">/// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L29</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>))]</span>  <span class="comment">//  If architecture is not Arm...</span>
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__cpsid</span>() {}
+
+<span class="doccomment">/// Enables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).</span>
+<span class="doccomment">/// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L39</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>))]</span>  <span class="comment">//  If architecture is not Arm...</span>
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__cpsie</span>() {}
+
+<span class="doccomment">/// No operation. Missing function called by sx126x crate (Arm only, not RISC-V).</span>
+<span class="doccomment">/// See https://github.com/rust-embedded/cortex-m/blob/master/src/asm.rs#L35</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>))]</span>  <span class="comment">//  If architecture is not Arm...</span>
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__nop</span>() {}</code></pre></div>
 <h1 id="appendix-rust-build-script-for-nuttx" class="section-header"><a href="#appendix-rust-build-script-for-nuttx">18 Appendix: Rust Build Script for NuttX</a></h1>
 <p>TODO</p>
 <p>Build Script: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh">rust_test/run.sh</a></p>
