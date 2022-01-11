@@ -769,7 +769,7 @@ Done!</code></pre></div>
 </li>
 <li>
 <p>Since NuttX behaves like Linux, can we use the <a href="https://crates.io/crates/libc"><strong><code>libc</code></strong></a> crate to import the POSIX Functions?</p>
-<p>Possibly, if we extend “libc” to cover NuttX.</p>
+<p>Possibly, if we extend <code>libc</code> to cover NuttX.</p>
 <p>Note that the Function Signatures are slightly different: <code>libc</code> declares <strong>ioctl</strong> as…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">request</span>: <span class="ident">u64</span>, ...) -&gt; <span class="ident">i32</span></code></pre></div>
@@ -784,6 +784,7 @@ Done!</code></pre></div>
 <li>
 <p>What about the <a href="https://crates.io/crates/nix"><strong><code>nix</code></strong></a> crate?</p>
 <p><code>nix</code> doesn’t support <code>no_std</code> yet, so sorry nope.</p>
+<p><a href="https://github.com/nix-rust/nix/issues/281">(See this)</a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/rust2-hal3.png" alt="GPIO HAL" /></p>
