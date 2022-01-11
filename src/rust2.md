@@ -613,6 +613,7 @@ pub fn test_sx1262() {
   lora.write_register(&mut spi1, delay, Register::IqPolaritySetup, &[0x0D])
     .expect("write register failed");
 ```
+[(More about this)](https://lupyuen.github.io/articles/rust2#set-registers)
 
 Then we __transmit a LoRa Message__ over the airwaves...
 
