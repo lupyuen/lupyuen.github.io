@@ -871,17 +871,17 @@ _PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate 
 
 _What about LoRaWAN on Rust?_
 
-We need LoRaWAN if we plan to __route LoRa Packets securely__ to a Local Area Network (ChirpStack) or to the internet (The Things Network).
+We need LoRaWAN if we wish to __route LoRa Packets securely__ to a Local Area Network (ChirpStack) or to the internet (The Things Network).
 
-Sadly we __haven't found a LoRaWAN Stack__ for Rust yet.
+Sadly we __haven't found a Complete LoRaWAN Stack__ for Rust yet.
 
-(Probably because LoRaWAN is super complex... We need to sync up the Regional Parameters whenever LoRaWAN Regions are added or modified)
+(Probably because LoRaWAN is super complex... We need to sync up the Regional Parameters with the LoRaWAN Spec whenever LoRaWAN Regions are added or modified)
 
-But we have a __working LoRaWAN Stack for NuttX__ in C...
+But we have a __working LoRaWAN Stack for NuttX__ (in C) that's based on the official LoRaWAN Stack by Semtech...
 
 -   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
-So perhaps our Rust code could __call out to the LoRaWAN Stack__ in C.
+So perhaps our Rust code could __call out to the LoRaWAN Stack__ in C and interoperate.
 
 # What's Next
 
