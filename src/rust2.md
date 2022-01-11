@@ -931,7 +931,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Source)](https://github.com/apache/incubator-nuttx/blob/master/include/sys/ioctl.h#L114)
 
-    The type of the __request__ parameter is different: __u64 vs i32__.
+    The type of the __request__ parameter is different: __`u64` vs `i32`__.
 
     So beware!
 
