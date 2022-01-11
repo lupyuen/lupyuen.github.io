@@ -692,10 +692,45 @@ Done!</code></pre></div>
 </ol>
 <h2 id="spectrum-analyser" class="section-header"><a href="#spectrum-analyser">12.1 Spectrum Analyser</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/rust2-chirp2.png" alt="" /></p>
+<p>Use a <strong>Spectrum Analyser</strong> (like a <strong>Software Defined Radio</strong>) to sniff the airwaves and check whether our LoRa Message is transmitted…</p>
+<ol>
+<li>
+<p>At the right <strong>Radio Frequency</strong></p>
+<p>(923 MHz below)</p>
+</li>
+<li>
+<p>With <strong>sufficient power</strong></p>
+<p>(Red stripe below)</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/sx1262-sdr.jpg" alt="Spectrum Analysis of LoRa Message with SDR" /></p>
+<p>LoRa Messages have a characteristic criss-cross shape: <strong>LoRa Chirp</strong>. (Like above)</p>
+<p>More about LoRa Chirps and Software Defined Radio…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/rust2-chirp2.png" alt="LoRa Chirp recorded by Cubic SDR connected to Airspy R2 SDR" /></p>
 <h2 id="lora-receiver" class="section-header"><a href="#lora-receiver">12.2 LoRa Receiver</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/rust2-receive.png" alt="" /></p>
+<ol>
+<li>
+<p>Switch over to <strong>RAKwireless WisBlock</strong> and run our <strong>LoRa Receiver</strong>…</p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-receiver"><strong>wisblock-lora-receiver</strong></a></p>
+<p>Check that the <strong>LoRa Parameters</strong> are correct…</p>
+<p><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56"><strong>LoRa Parameters for WisBlock Receiver</strong></a></p>
+</li>
+<li>
+<p>In the NuttX Shell, enter this to transmit a LoRa Message…</p>
+<div class="example-wrap"><pre class="language-bash"><code>rust_test</code></pre></div></li>
+<li>
+<p>On WisBlock we should see the same <strong>LoRa Message</strong> received by WisBlock…</p>
+<div class="example-wrap"><pre class="language-text"><code>LoRaP2P Rx Test
+Starting Radio.Rx
+TODO</code></pre></div>
+<p>Our SX1262 Rust Driver has successfully transmitted a 64-byte LoRa Message to RAKwireless WisBlock!</p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/rust2-receive.png" alt="RAKwireless WisBlock receives LoRa Message from Rust on NuttX" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
