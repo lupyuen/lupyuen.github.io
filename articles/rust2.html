@@ -118,7 +118,7 @@
 <p>Run the <strong>Semtech SX1262 LoRa Driver</strong> from Rust Embedded</p>
 </li>
 <li>
-<p>And transmit a <strong>LoRa Message</strong> over the airwaves with Rust on NuttX!</p>
+<p>And transmit a <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRa Message</strong></a> over the airwaves with Rust on NuttX!</p>
 </li>
 </ol>
 <p>We tested Rust on NuttX with <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> RISC-V Board (pic above) and its onboard Semtech SX1262 Transceiver.</p>
@@ -497,7 +497,7 @@ test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
 <p>Let’s test the Rust Driver to the limit… And send a LoRa Message over the airwaves!</p>
 <p><img src="https://lupyuen.github.io/images/rust2-transmit2.png" alt="Transmit LoRa Message" /></p>
 <h1 id="transmit-lora-message" class="section-header"><a href="#transmit-lora-message">8 Transmit LoRa Message</a></h1>
-<p>For our final test we shall <strong>transmit a LoRa Message</strong> with the Rust Driver for SX1262.</p>
+<p>For our final test we shall transmit a <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRa Message</strong></a> with the Rust Driver for SX1262.</p>
 <p>We configure the <strong>LoRa Frequency</strong> for our region like so: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L14-L17">sx1262.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Change this to your LoRa Frequency</span>
@@ -543,7 +543,7 @@ test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
   ).<span class="ident">expect</span>(<span class="string">&quot;send failed&quot;</span>);</code></pre></div>
 <p>Containing the <strong>Message Payload</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Hello from Rust on NuttX!</code></pre></div>
-<p>We’re done! We’ll see the results in a while. But first we run through the steps to build and flash our Rusty NuttX Firmware.</p>
+<p>And we’re done! We’ll see the results in a while. But first we run through the steps to build and flash our Rusty NuttX Firmware.</p>
 <h1 id="download-source-code" class="section-header"><a href="#download-source-code">9 Download Source Code</a></h1>
 <p>To run Rust on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
