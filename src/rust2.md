@@ -463,7 +463,7 @@ We'll test this Rust Embedded Driver for Semtech SX1262...
 
 -   [__lupyuen/sx126x-rs-nuttx__](https://github.com/lupyuen/sx126x-rs-nuttx)
 
-That we have tweaked slightly from __[tweedegolf/sx126x-rs](https://github.com/tweedegolf/sx126x-rs)__
+That we tweaked slightly from __[tweedegolf/sx126x-rs](https://github.com/tweedegolf/sx126x-rs)__
 
 (More about this in the Appendix. Thanks Tweede golf! 👍)
 
@@ -891,7 +891,7 @@ In this article we used this Rust Embedded Driver for Semtech SX1262...
 
 -   [__lupyuen/sx126x-rs-nuttx__](https://github.com/lupyuen/sx126x-rs-nuttx)
 
-That we have tweaked slightly from...
+That we tweaked slightly from...
 
 -   [__tweedegolf/sx126x-rs__](https://github.com/tweedegolf/sx126x-rs)
 
@@ -909,7 +909,7 @@ While testing [__sx126x-rs__](https://github.com/tweedegolf/sx126x-rs), we disco
 
 This fails on NuttX because the SPI Request needs to be in one contiguous block as Chip Select flips from High to Low and High.
 
-To fix this, we buffered all SPI Requests in the Chip Select Guard: [sx126x-rs-nuttx/src/sx/slave_select.rs](https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/slave_select.rs#L86-L126)
+To fix this, we buffer all SPI Requests in the Chip Select Guard: [sx126x-rs-nuttx/src/sx/slave_select.rs](https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/slave_select.rs#L86-L126)
 
 ```rust
 impl<'nss, 'spi, TNSS, TSPI, TSPIERR> Transfer<u8> for SlaveSelectGuard<'nss, 'spi, TNSS, TSPI>
@@ -972,7 +972,7 @@ spi.transfer(&mut [0x1D])
   .and_then(|_| spi.transfer(result))?;
 ```
 
-After fixing becomes...
+After patching becomes...
 
 ```rust
 spi.write(&[0x1D])  //  Changed from `transfer` to `write`
@@ -989,7 +989,29 @@ The driver works OK on NuttX after merging the SPI Requests...
 
 ## Read Register
 
-TODO
+We inserted a null byte for the Read Register command, because Read Requests should have minimum 5 bytes (instead of 4): [sx126x-rs-nuttx/src/sx/mod.rs](https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/mod.rs#L229-L246)
+
+```rust
+/// Read data from a register
+pub fn read_register<'spi>(
+    &'spi mut self,
+    spi: &'spi mut TSPI,
+    delay: &mut impl DelayUs<u32>,
+    start_addr: u16,
+    result: &mut [u8],
+) -> Result<(), SxError<TSPIERR, TPINERR>> {
+    debug_assert!(result.len() >= 1);
+    let start_addr = start_addr.to_be_bytes();
+    let mut spi = self.slave_select(spi, delay)?;
+
+    spi.write(&[0x1D])
+        .and_then(|_| spi.write(&start_addr))
+        //  Inserted this null byte
+        .and_then(|_| spi.write(&[0x00]))
+        .and_then(|_| spi.transfer(result))?;
+    Ok(())
+}
+```
 
 ## Set Registers
 
