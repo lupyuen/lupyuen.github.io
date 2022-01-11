@@ -18,7 +18,7 @@ Today we shall...
 
 1.  Run the __Semtech SX1262 LoRa Driver__ from Rust Embedded
 
-1.  And transmit a __LoRa Message__ over the airwaves with Rust on NuttX!
+1.  And transmit a [__LoRa Message__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) over the airwaves with Rust on NuttX!
 
 We tested Rust on NuttX with [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Board (pic above) and its onboard Semtech SX1262 Transceiver.
 
@@ -574,7 +574,7 @@ Let's test the Rust Driver to the limit... And send a LoRa Message over the airw
 
 # Transmit LoRa Message
 
-For our final test we shall __transmit a LoRa Message__ with the Rust Driver for SX1262.
+For our final test we shall transmit a [__LoRa Message__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) with the Rust Driver for SX1262.
 
 We configure the __LoRa Frequency__ for our region like so: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L14-L17)
 
@@ -634,7 +634,7 @@ Containing the __Message Payload__...
 Hello from Rust on NuttX!
 ```
 
-We're done! We'll see the results in a while. But first we run through the steps to build and flash our Rusty NuttX Firmware.
+And we're done! We'll see the results in a while. But first we run through the steps to build and flash our Rusty NuttX Firmware.
 
 # Download Source Code
 
