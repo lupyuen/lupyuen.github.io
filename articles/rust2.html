@@ -530,6 +530,7 @@ test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
   <span class="comment">//  Write Register 0x736: 0x0D (Inverted IQ)</span>
   <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::IqPolaritySetup</span>, <span class="kw-2">&amp;</span>[<span class="number">0x0D</span>])
     .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/rust2#set-registers">(More about this)</a></p>
 <p>Then we <strong>transmit a LoRa Message</strong> over the airwaves…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Send a LoRa message</span>
