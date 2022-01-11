@@ -759,6 +759,14 @@ gcc -march=rv32imfc -mabi=ilp32f ...
 
 [(See this)](https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223-L224)
 
+UPDATE: NuttX BL602 was compiled with...
+
+```bash
+gcc -march=rv32imafc -mabi=ilp32f ...
+```
+
+(Note that it's "`imfc`" vs "`imafc`")
+
 This produces binaries that contain RISC-V __Floating-Point Instructions__.
 
 Which are not compatible with our Rust binaries, which use __Software Floating-Point__.
