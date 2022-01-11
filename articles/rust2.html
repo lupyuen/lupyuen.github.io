@@ -407,7 +407,7 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/sx126x-rs-nuttx"><strong>lupyuen/sx126x-rs-nuttx</strong></a></li>
 </ul>
-<p>That we have tweaked slightly from <strong><a href="https://github.com/tweedegolf/sx126x-rs">tweedegolf/sx126x-rs</a></strong></p>
+<p>That we tweaked slightly from <strong><a href="https://github.com/tweedegolf/sx126x-rs">tweedegolf/sx126x-rs</a></strong></p>
 <p>(More about this in the Appendix. Thanks Tweede golf! 👍)</p>
 <p>Let’s do the same test as last chapter: <strong>Read SX1262 Register 8</strong></p>
 <p>We begin by opening the <strong>GPIO Input, Output and Interrupt Pins</strong> for SX1262: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L22-L72">sx1262.rs</a></p>
@@ -743,7 +743,7 @@ Done!</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/sx126x-rs-nuttx"><strong>lupyuen/sx126x-rs-nuttx</strong></a></li>
 </ul>
-<p>That we have tweaked slightly from…</p>
+<p>That we tweaked slightly from…</p>
 <ul>
 <li><a href="https://github.com/tweedegolf/sx126x-rs"><strong>tweedegolf/sx126x-rs</strong></a></li>
 </ul>
@@ -754,7 +754,7 @@ Done!</code></pre></div>
 <p>While testing <a href="https://github.com/tweedegolf/sx126x-rs"><strong>sx126x-rs</strong></a>, we discovered that the SPI Requests were split into 1-byte or 2-byte chunks…</p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal6.png" alt="SPI Transfers in small chunks" /></p>
 <p>This fails on NuttX because the SPI Request needs to be in one contiguous block as Chip Select flips from High to Low and High.</p>
-<p>To fix this, we buffered all SPI Requests in the Chip Select Guard: <a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/slave_select.rs#L86-L126">sx126x-rs-nuttx/src/sx/slave_select.rs</a></p>
+<p>To fix this, we buffer all SPI Requests in the Chip Select Guard: <a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/slave_select.rs#L86-L126">sx126x-rs-nuttx/src/sx/slave_select.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, <span class="ident">TNSS</span>, <span class="ident">TSPI</span>, <span class="ident">TSPIERR</span><span class="op">&gt;</span> <span class="ident">Transfer</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SlaveSelectGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, <span class="ident">TNSS</span>, <span class="ident">TSPI</span><span class="op">&gt;</span>
 <span class="kw">where</span>
@@ -813,7 +813,7 @@ Done!</code></pre></div>
   .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">start_addr</span>))
   .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0x00</span>]))
   .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="ident">result</span>))<span class="question-mark">?</span>;</code></pre></div>
-<p>After fixing becomes…</p>
+<p>After patching becomes…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span>[<span class="number">0x1D</span>])  <span class="comment">//  Changed from `transfer` to `write`</span>
   .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">start_addr</span>))  <span class="comment">//  Changed from `transfer` to `write`</span>
@@ -823,7 +823,27 @@ Done!</code></pre></div>
 <p>The driver works OK on NuttX after merging the SPI Requests…</p>
 <p><img src="https://lupyuen.github.io/images/rust2-driver2.png" alt="SPI Transfers after merging" /></p>
 <h2 id="read-register" class="section-header"><a href="#read-register">17.2 Read Register</a></h2>
-<p>TODO</p>
+<p>We inserted a null byte for the Read Register command, because Read Requests should have minimum 5 bytes (instead of 4): <a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/mod.rs#L229-L246">sx126x-rs-nuttx/src/sx/mod.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read data from a register</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_register</span><span class="op">&lt;</span><span class="lifetime">&#39;spi</span><span class="op">&gt;</span>(
+    <span class="kw-2">&amp;</span><span class="lifetime">&#39;spi</span> <span class="kw-2">mut</span> <span class="self">self</span>,
+    <span class="ident">spi</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;spi</span> <span class="kw-2">mut</span> <span class="ident">TSPI</span>,
+    <span class="ident">delay</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">DelayUs</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">start_addr</span>: <span class="ident">u16</span>,
+    <span class="ident">result</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SxError</span><span class="op">&lt;</span><span class="ident">TSPIERR</span>, <span class="ident">TPINERR</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="macro">debug_assert!</span>(<span class="ident">result</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span>);
+    <span class="kw">let</span> <span class="ident">start_addr</span> <span class="op">=</span> <span class="ident">start_addr</span>.<span class="ident">to_be_bytes</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">slave_select</span>(<span class="ident">spi</span>, <span class="ident">delay</span>)<span class="question-mark">?</span>;
+
+    <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span>[<span class="number">0x1D</span>])
+        .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">start_addr</span>))
+        <span class="comment">//  Inserted this null byte</span>
+        .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>]))
+        .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="ident">result</span>))<span class="question-mark">?</span>;
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
 <h2 id="set-registers" class="section-header"><a href="#set-registers">17.3 Set Registers</a></h2>
 <p>The following registers need to be set for the LoRa Transmission to work correctly: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L73-L91">rust_test/rust/src/sx1262.rs</a></p>
 
