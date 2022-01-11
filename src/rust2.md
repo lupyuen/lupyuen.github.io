@@ -883,7 +883,9 @@ So perhaps our Rust code could __call out to the LoRaWAN Stack__ in C and intero
 
 # What's Next
 
-TODO
+In the next article we shall head back to C as we connect NuttX to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN.
+
+If you're keen to make __Rust on NuttX__ better, please lemme know! 🙏
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
