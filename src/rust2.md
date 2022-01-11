@@ -903,11 +903,39 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1478959963930169345)
 
-1.  TODO
+1.  This article was inspired by Huang Qi's Rust Wrapper for NuttX...
 
     [__no1wudi/nuttx.rs__](https://github.com/no1wudi/nuttx.rs)
 
-1.  TODO: Libc: Linux / Nix: nostd / ioctl i32 instead of u64
+    Which has many features that will be very useful for our implementation of Rust Embedded HAL.
+
+1.  Since NuttX behaves like Linux, can we use the [__"libc"__](https://crates.io/crates/libc) crate to import the POSIX Functions?
+
+    Possibly, if we extend "libc" to cover NuttX.
+
+    Note that the Function Signatures are slightly different: "libc" declares __ioctl__ as...
+
+    ```rust
+    fn ioctl(fd: i32, request: u64, ...) -> i32
+    ```
+
+    [(Source)](https://docs.rs/libc/latest/libc/fn.ioctl.html)
+
+    Whereas NuttX declares __ioctl__ as...
+
+    ```rust
+    fn ioctl(fd: i32, request: i32, ...) -> i32;
+    ```
+
+    [(Source)](https://github.com/apache/incubator-nuttx/blob/master/include/sys/ioctl.h#L114)
+
+    The type of the "request" parameter is different: u64 vs i32.
+
+    So beware!
+
+1.  What about the [__"nix"__](https://crates.io/crates/nix) crate?
+
+    "nix" doesn't support "no_std" yet, so sorry nope.
 
 ![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
 
@@ -917,11 +945,9 @@ This section explains how we implemented the barebones __Rust Embedded HAL for N
 
 ## GPIO HAL
 
-Let's look at the HAL for __GPIO Output__, since GPIO Input and GPIO Interrupt are implemented the same way.
+Let's look at the HAL for __GPIO Output__ (OutputPin), since GPIO Input (InputPin) and GPIO Interrupt (InterruptPin) are implemented the same way.
 
-TODO
-
-From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L279-L283)
+Our __OutputPin Struct__ contains a __NuttX File Descriptor__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L279-L283)
 
 ```rust
 /// NuttX GPIO Output Struct
@@ -931,9 +957,7 @@ pub struct OutputPin {
 }
 ```
 
-TODO
-
-From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L191-L202)
+We set the File Descriptor when we __create the OutputPin__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L191-L202)
 
 ```rust
 /// New NuttX GPIO Output
@@ -952,9 +976,7 @@ impl OutputPin {
 
 [(__open__ is defined here)](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L299-L322)
 
-TODO
-
-From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L59-L81)
+To set the OutputPin High or Low, we call __ioctl__ on the File Descriptor: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L59-L81)
 
 ```rust
 /// Set NuttX Output Pin
@@ -982,9 +1004,7 @@ impl v2::OutputPin for OutputPin {
 }
 ```
 
-TODO
-
-From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L251-L257)
+When we're done with OutputPin, we __close the File Descriptor__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L251-L257)
 
 ```rust
 /// Drop NuttX GPIO Output
@@ -1002,9 +1022,7 @@ impl Drop for OutputPin {
 
 Now we study the __SPI HAL__ for NuttX.
 
-TODO
-
-From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L165-L176)
+Our __Spi Struct__ also contains a __File Descriptor__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L165-L176)
 
 ```rust
 /// NuttX SPI Struct
@@ -1035,9 +1053,9 @@ impl Drop for Spi {
 }
 ```
 
-TODO
+We __open and close__ the File Descriptor the same way as OutputPin.
 
-From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L43-L57)
+To do SPI Write, we __write to the File Descriptor__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L43-L57)
 
 ```rust
 /// NuttX SPI Write
@@ -1057,9 +1075,7 @@ impl Write<u8> for Spi{
 }
 ```
 
-TODO
-
-From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L19-L41)
+SPI Transfer works the same way, except that we also __copy the SPI Response__ and return it to the caller: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L19-L41)
 
 ```rust
 /// NuttX SPI Transfer
