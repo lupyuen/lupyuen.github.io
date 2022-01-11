@@ -1137,21 +1137,21 @@ rust_build_target_folder=riscv32imacf-unknown-none-elf
 <p><a href="https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json">apps/examples/rust_test/riscv32imacf-unknown-none-elf.json</a></p>
 <p>This Custom Rust Target supports <strong>floating point</strong> on 32-bit RISC-V. (The standard 32-bit RISC-V target doesn’t support floating point)</p>
 <p><a href="https://lupyuen.github.io/articles/rust#rust-targets">(More about Custom Rust Targets)</a></p>
-<p><strong>For ESP32-C3 (RISC-V)</strong>: Change <strong>rust_build_target</strong> and <strong>rust_build_target_folder</strong> to the Standard Rust Target <strong>riscv32imc-unknown-none-elf</strong></p>
+<p><strong>For ESP32-C3 (RISC-V)</strong>: Set “rust_build_target” and “rust_build_target_folder” to the Standard Rust Target <strong>riscv32imc-unknown-none-elf</strong></p>
 <p>Then run this command to install the Rust Target…</p>
 <div class="example-wrap"><pre class="language-bash"><code>rustup target add riscv32imc-unknown-none-elf</code></pre></div>
 <p><a href="https://github.com/jessebraham/esp-hal/tree/main/esp32c3-hal">(See this)</a></p>
-<p><strong>For ESP32 (Xtensa)</strong>: Change <strong>rust_build_target</strong> and <strong>rust_build_target_folder</strong> to the ESP32 Rust Target <strong>xtensa-esp32-none-elf</strong></p>
+<p><strong>For ESP32 (Xtensa)</strong>: Set “rust_build_target” and “rust_build_target_folder” to the ESP32 Rust Target <strong>xtensa-esp32-none-elf</strong></p>
 <p>We need to install the Rust compiler fork with Xtensa support. <a href="https://github.com/jessebraham/esp-hal/tree/main/esp32-hal">(See this)</a></p>
 <h2 id="rust-build-options" class="section-header"><a href="#rust-build-options">18.2 Rust Build Options</a></h2>
 <p>Next we define the <strong>Rust Build Options</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L41-L48">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Rust build options: Build the Rust Core Library for our custom target
 rust_build_options=&quot;--target $rust_build_target -Z build-std=core&quot;</code></pre></div>
-<p><strong>For BL602 and BL604:</strong> Since we’re using a Custom Rust Target, we need to build the Rust Core Library for our custom target. That’s why we need “-Z build-std=core” for the build options…</p>
+<p><strong>For BL602 and BL604:</strong> Since we’re using a Custom Rust Target, we need to build the Rust Core Library for our target. That’s why we need “-Z build-std=core” for the Rust Build Options…</p>
 <div class="example-wrap"><pre class="language-text"><code>--target nuttx/apps/examples/rust_test/riscv32imacf-unknown-none-elf.json \
   -Z build-std=core</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602">(More about building Rust Core Library)</a></p>
-<p><strong>For ESP32 and ESP32-C3:</strong> Since we’re using a Standard Rust Target, remove “-Z build-std=core” from <strong>rust_build_options</strong>.</p>
+<p><strong>For ESP32 and ESP32-C3:</strong> Since we’re using a Standard Rust Target, remove “-Z build-std=core” from “rust_build_options”.</p>
 <p>The Rust Build Options will look like…</p>
 <div class="example-wrap"><pre class="language-text"><code>--target riscv32imc-unknown-none-elf</code></pre></div><h2 id="define-libraries" class="section-header"><a href="#define-libraries">18.3 Define Libraries</a></h2>
 <p>Next we define the <strong>libraries that will be modified</strong> during the build…</p>
@@ -1165,7 +1165,7 @@ rust_build_options=&quot;--target $rust_build_target -Z build-std=core&quot;</co
 <p>This is the Rust Library (compiled as a Static Library) that will overwrite the Compiled Stub Library</p>
 </li>
 </ul>
-<p>That’s how we <strong>inject our Rust Code</strong> into the build: Overwriting the Compiled Stub Library by the Compiled Rust Library.</p>
+<p>That’s how we <strong>inject our Rust Code</strong> into the NuttX Build: We overwrite the Compiled Stub Library by the Compiled Rust Library.</p>
 <p>The Stub Library is defined like so: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L50-L53">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Location of the Stub Library.  We will replace this stub by the Rust Library
 #  rust_app_dest will be set to ../../../nuttx/staging/librust.a
@@ -1189,7 +1189,7 @@ popd</code></pre></div>
 pushd rust
 rustup default nightly
 cargo clippy $rust_build_options
-cargo build $rust_build_options
+cargo build  $rust_build_options
 popd</code></pre></div>
 <p>Which expands to…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cargo build \
