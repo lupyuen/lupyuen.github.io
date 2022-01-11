@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Rust on Apache NuttX OS</title>
+            <link>https://lupyuen.github.io/articles/rust2</link>
+            <description><![CDATA[How we run Rust programs on Apache NuttX OS... And transmit a LoRa Message with Rust]]></description>
+            <guid>https://lupyuen.github.io/articles/rust2</guid>
+            <pubDate>Wed, 12 Jan 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Encode Sensor Data with CBOR on Apache NuttX OS</title>
             <link>https://lupyuen.github.io/articles/cbor2</link>
             <description><![CDATA[Compressing Sensor Data with CBOR on Apache NuttX OS... By calling TinyCBOR Library]]></description>
