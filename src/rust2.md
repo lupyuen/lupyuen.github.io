@@ -574,7 +574,7 @@ Let's test the Rust Driver to the limit... And send a LoRa Message over the airw
 
 # Transmit LoRa Message
 
-For our final test for today we shall __transmit a LoRa Message__ with the Rust Driver for SX1262.
+For our final test shall __transmit a LoRa Message__ with the Rust Driver for SX1262.
 
 Before we start, remember to configure the __LoRa Frequency__ for our region: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L14-L17)
 
@@ -1087,28 +1087,40 @@ extern "C" fn __nop() {}
 
 # Appendix: Rust Build Script for NuttX
 
-TODO
+Let's study the Build Script for Rust on NuttX...
 
-Rust Custom Target: [rust_test/riscv32imacf-unknown-none-elf.json](https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json)
+-   __Build Script__: [apps/examples/rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh)
 
-Rust Dependencies: [rust_test/rust/Cargo.toml](https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml)
+And how it compiles the following into the NuttX Firmware...
 
-Rust Source File: [rust_test/rust/src/lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs)
+-   __Rust Project__: [apps/examples/rust_test/rust/Cargo.toml](https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml)
+
+    (Rust Dependencies and Build Settings)
+
+-   __Rust Source File__: [apps/examples/rust_test/rust/src/lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs)
+
+    (Defines the rust_main function)
+
+-   __Rust Custom Target__: [apps/examples/rust_test/riscv32imacf-unknown-none-elf.json](https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json)
+
+    (Custom Rust Target for BL602 and BL604)
+
+-   __Stub Library__: [nuttx/libs/librust](https://github.com/lupyuen/rust-nuttx)
+
+    (Stub Library will be replaced by the compiled Rust Project)
+
+-   __Test App__: [apps/examples/rust_test/rust_test_main.c](https://github.com/lupyuen/rust_test/blob/main/rust_test_main.c)
+
+    (Main Function that calls rust_main)
 
 [(See the Build Log)](https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d)
 
-TODO
-
-Build Script: [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh)
-
 ## Rust Target
 
-TODO
-
-From [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L28-L39)
+Our Build Script begins by defining the __Rust Target__ for the build: [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L28-L39)
 
 ```bash
-##  Rust target: Custom target for llvm-abiname=ilp32f
+##  Rust target: Custom target for BL602 and BL604
 ##  https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target
 ##  https://docs.rust-embedded.org/embedonomicon/custom-target.html
 rust_build_target=$PWD/riscv32imacf-unknown-none-elf.json
@@ -1119,26 +1131,52 @@ rust_build_target_folder=riscv32imacf-unknown-none-elf
 ##  rust_build_target_folder=riscv32imac-unknown-none-elf
 ```
 
-TODO
+__For BL602 and BL604:__ We're using the __Custom Rust Target__ at...
 
-From [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L41-L48)
+[apps/examples/rust_test/riscv32imacf-unknown-none-elf.json](https://github.com/lupyuen/rust_test/blob/main/riscv32imacf-unknown-none-elf.json)
+
+This Custom Rust Target supports __floating point__ on 32-bit RISC-V. (The standard 32-bit RISC-V target doesn't support floating point)
+
+[(More about Custom Rust Targets)](https://lupyuen.github.io/articles/rust#rust-targets)
+
+__For ESP32-C3 (RISC-V)__: Change __rust_build_target__ and __rust_build_target_folder__ to the Standard Rust Target __riscv32imc-unknown-none-elf__
+
+Then run this command to install the Rust Target...
+
+```bash
+rustup target add riscv32imc-unknown-none-elf
+```
+
+[(See this)](https://github.com/jessebraham/esp-hal/tree/main/esp32c3-hal)
+
+__For ESP32 (Xtensa)__: Change __rust_build_target__ and __rust_build_target_folder__ to the ESP32 Rust Target __xtensa-esp32-none-elf__
+
+We need to install the Rust compiler fork with Xtensa support. [(See this)](https://github.com/jessebraham/esp-hal/tree/main/esp32-hal)
+
+## Rust Build Options
+
+Next we define the __Rust Build Options__: [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L41-L48)
 
 ```bash
 ##  Rust build options: Build the Rust Core Library for our custom target
 rust_build_options="--target $rust_build_target -Z build-std=core"
 ```
 
-TODO
+__For BL602 and BL604:__ Since we're using a Custom Rust Target, we need to build the Rust Core Library for our custom target. That's why we need "-Z build-std=core" for the build options...
 
 ```text
 --target nuttx/apps/examples/rust_test/riscv32imacf-unknown-none-elf.json \
   -Z build-std=core
 ```
 
-TODO
+[(More about building Rust Core Library)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
+
+__For ESP32 and ESP32-C3:__ Since we're using a Standard Rust Target, remove "-Z build-std=core" from __rust_build_options__.
+
+The Rust Build Options will look like...
 
 ```text
---target riscv32imac-unknown-none-elf
+--target riscv32imc-unknown-none-elf
 ```
 
 ## Stub Library
