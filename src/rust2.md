@@ -913,7 +913,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  Since NuttX behaves like Linux, can we use the [__`libc`__](https://crates.io/crates/libc) crate to import the POSIX Functions?
 
-    Possibly, if we extend "libc" to cover NuttX.
+    Possibly, if we extend `libc` to cover NuttX.
 
     Note that the Function Signatures are slightly different: `libc` declares __ioctl__ as...
 
@@ -938,6 +938,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  What about the [__`nix`__](https://crates.io/crates/nix) crate?
 
     `nix` doesn't support `no_std` yet, so sorry nope.
+
+    [(See this)](https://github.com/nix-rust/nix/issues/281)
 
 ![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
 
