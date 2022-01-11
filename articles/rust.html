@@ -679,6 +679,9 @@ bl_sys_time_now          : sys time now</code></pre></div></li>
 <p>BL602 IoT SDK was compiled with this GCC command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gcc -march=rv32imfc -mabi=ilp32f ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223-L224">(See this)</a></p>
+<p>UPDATE: NuttX BL602 was compiled with…</p>
+<div class="example-wrap"><pre class="language-bash"><code>gcc -march=rv32imafc -mabi=ilp32f ...</code></pre></div>
+<p>(Note that it’s “<code>imfc</code>” vs “<code>imafc</code>”)</p>
 <p>This produces binaries that contain RISC-V <strong>Floating-Point Instructions</strong>.</p>
 <p>Which are not compatible with our Rust binaries, which use <strong>Software Floating-Point</strong>.</p>
 <p>Hence we have a <strong>Software vs Hardware Floating-Point conflict</strong> between the compiled Rust code and the compiled BL602 IoT SDK.</p>
