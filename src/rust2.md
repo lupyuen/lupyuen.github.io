@@ -1285,6 +1285,10 @@ extern "C" fn __cpsie() {}
 extern "C" fn __nop() {}
 ```
 
+We haven't tested the driver for receiving LoRa Messages, we might need more fixes for NuttX on RISC-V.
+
+(But then again we might not need to receive LoRa Messages if we're building a simple IoT Sensor)
+
 ![Rust Build Script for NuttX](https://lupyuen.github.io/images/rust2-build.png)
 
 # Appendix: Rust Build Script for NuttX
