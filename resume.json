@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Rust on Apache NuttX OS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-01-12",
+      "website": "https://lupyuen.github.io/articles/rust2",
+      "summary": "How we run Rust programs on Apache NuttX OS... And transmit a LoRa Message with Rust"
+    },
+    {
       "name": "Encode Sensor Data with CBOR on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-01-10",

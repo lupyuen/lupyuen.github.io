@@ -1,6 +1,6 @@
 # Rust on Apache NuttX OS
 
-📝 _16 Jan 2022_
+📝 _12 Jan 2022_
 
 ![PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/rust2-title.jpg)
 
