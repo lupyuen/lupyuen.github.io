@@ -240,7 +240,7 @@ int main(int argc, FAR char *argv[]) {
   return 0;
 }</code></pre></div>
 <p>Thus it’s indeed possible to call Rust from C… And C from Rust!</p>
-<p>(More about the Rust build script in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/rust2#appendix-rust-build-script-for-nuttx">(More about the Rust build script in the Appendix)</a></p>
 <p><img src="https://lupyuen.github.io/images/rust2-gpio.png" alt="Rust opening GPIO Ports on NuttX" /></p>
 <h1 id="flipping-gpio" class="section-header"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
 <p>Since we can call NuttX Functions from Rust, let’s <strong>flip a GPIO High and Low</strong> the POSIX way: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L61-L136">lib.rs</a></p>
@@ -313,7 +313,7 @@ int main(int argc, FAR char *argv[]) {
 <p>In a while we’ll test the <strong>Semtech SX1262 LoRa Driver</strong> from Rust Embedded, and see if it works on NuttX!</p>
 <p><em>How do we call Rust Embedded HAL from NuttX?</em></p>
 <p>We have created a barebones <strong>Rust Embedded HAL for NuttX</strong>.</p>
-<p>(More details in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/rust2#appendix-rust-embedded-hal-for-nuttx">(More details in the Appendix)</a></p>
 <p>To call it, we import the <strong>NuttX HAL Module (nuttx_hal)</strong> and <strong>Rust Embedded Library</strong> like so: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L7-L25">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX HAL Module</span>
@@ -415,7 +415,7 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <li><a href="https://github.com/lupyuen/sx126x-rs-nuttx"><strong>lupyuen/sx126x-rs-nuttx</strong></a></li>
 </ul>
 <p>That we tweaked slightly from <strong><a href="https://github.com/tweedegolf/sx126x-rs">tweedegolf/sx126x-rs</a></strong></p>
-<p>(More about this in the Appendix. Thanks Tweede golf! 👍)</p>
+<p><a href="https://lupyuen.github.io/articles/rust2#appendix-fix-sx1262-driver-for-nuttx">(Details in the Appendix. Thanks Tweede golf! 👍)</a></p>
 <p>Let’s do the same test as last chapter: <strong>Read SX1262 Register 8</strong></p>
 <p>We begin by opening the <strong>GPIO Input, Output and Interrupt Pins</strong> for SX1262: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L22-L72">sx1262.rs</a></p>
 
