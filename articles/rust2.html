@@ -762,28 +762,42 @@ Done!</code></pre></div>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1478959963930169345">this Twitter Thread</a></p>
 </li>
 <li>
-<p>TODO</p>
+<p>This article was inspired by Huang Qi’s Rust Wrapper for NuttX…</p>
 <p><a href="https://github.com/no1wudi/nuttx.rs"><strong>no1wudi/nuttx.rs</strong></a></p>
+<p>Which has many features that will be very useful for our implementation of Rust Embedded HAL.</p>
 </li>
 <li>
-<p>TODO: Libc: Linux / Nix: nostd / ioctl i32 instead of u64</p>
+<p>Since NuttX behaves like Linux, can we use the <a href="https://crates.io/crates/libc"><strong>“libc”</strong></a> crate to import the POSIX Functions?</p>
+<p>Possibly, if we extend “libc” to cover NuttX.</p>
+<p>Note that the Function Signatures are slightly different: “libc” declares <strong>ioctl</strong> as…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">request</span>: <span class="ident">u64</span>, ...) -&gt; <span class="ident">i32</span></code></pre></div>
+<p><a href="https://docs.rs/libc/latest/libc/fn.ioctl.html">(Source)</a></p>
+<p>Whereas NuttX declares <strong>ioctl</strong> as…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">request</span>: <span class="ident">i32</span>, ...) -&gt; <span class="ident">i32</span>;</code></pre></div>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/sys/ioctl.h#L114">(Source)</a></p>
+<p>The type of the “request” parameter is different: u64 vs i32.</p>
+<p>So beware!</p>
+</li>
+<li>
+<p>What about the <a href="https://crates.io/crates/nix"><strong>“nix”</strong></a> crate?</p>
+<p>“nix” doesn’t support “no_std” yet, so sorry nope.</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/rust2-hal3.png" alt="GPIO HAL" /></p>
 <h1 id="appendix-rust-embedded-hal-for-nuttx" class="section-header"><a href="#appendix-rust-embedded-hal-for-nuttx">16 Appendix: Rust Embedded HAL for NuttX</a></h1>
 <p>This section explains how we implemented the barebones <strong>Rust Embedded HAL for NuttX</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs">rust_test/rust/src/nuttx_hal.rs</a></p>
 <h2 id="gpio-hal" class="section-header"><a href="#gpio-hal">16.1 GPIO HAL</a></h2>
-<p>Let’s look at the HAL for <strong>GPIO Output</strong>, since GPIO Input and GPIO Interrupt are implemented the same way.</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L279-L283">rust_test/rust/src/nuttx_hal.rs</a></p>
+<p>Let’s look at the HAL for <strong>GPIO Output</strong> (OutputPin), since GPIO Input (InputPin) and GPIO Interrupt (InterruptPin) are implemented the same way.</p>
+<p>Our <strong>OutputPin Struct</strong> contains a <strong>NuttX File Descriptor</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L279-L283">rust_test/rust/src/nuttx_hal.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX GPIO Output Struct</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OutputPin</span> {
   <span class="doccomment">/// NuttX File Descriptor</span>
   <span class="ident">fd</span>: <span class="ident">i32</span>,
 }</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L191-L202">rust_test/rust/src/nuttx_hal.rs</a></p>
+<p>We set the File Descriptor when we <strong>create the OutputPin</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L191-L202">rust_test/rust/src/nuttx_hal.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// New NuttX GPIO Output</span>
 <span class="kw">impl</span> <span class="ident">OutputPin</span> {
@@ -798,8 +812,7 @@ Done!</code></pre></div>
   }
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L299-L322">(<strong>open</strong> is defined here)</a></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L59-L81">rust_test/rust/src/nuttx_hal.rs</a></p>
+<p>To set the OutputPin High or Low, we call <strong>ioctl</strong> on the File Descriptor: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L59-L81">rust_test/rust/src/nuttx_hal.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Set NuttX Output Pin</span>
 <span class="kw">impl</span> <span class="ident">v2::OutputPin</span> <span class="kw">for</span> <span class="ident">OutputPin</span> {
@@ -824,8 +837,7 @@ Done!</code></pre></div>
     <span class="prelude-val">Ok</span>(())
   }
 }</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L251-L257">rust_test/rust/src/nuttx_hal.rs</a></p>
+<p>When we’re done with OutputPin, we <strong>close the File Descriptor</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L251-L257">rust_test/rust/src/nuttx_hal.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Drop NuttX GPIO Output</span>
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">OutputPin</span> {
@@ -837,8 +849,7 @@ Done!</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rust2-hal4.png" alt="SPI HAL" /></p>
 <h2 id="spi-hal" class="section-header"><a href="#spi-hal">16.2 SPI HAL</a></h2>
 <p>Now we study the <strong>SPI HAL</strong> for NuttX.</p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L165-L176">rust_test/rust/src/nuttx_hal.rs</a></p>
+<p>Our <strong>Spi Struct</strong> also contains a <strong>File Descriptor</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L165-L176">rust_test/rust/src/nuttx_hal.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX SPI Struct</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Spi</span> {
@@ -866,8 +877,8 @@ Done!</code></pre></div>
     <span class="kw">unsafe</span> { <span class="ident">close</span>(<span class="self">self</span>.<span class="ident">fd</span>) };
   }
 }</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L43-L57">rust_test/rust/src/nuttx_hal.rs</a></p>
+<p>We <strong>open and close</strong> the File Descriptor the same way as OutputPin.</p>
+<p>To do SPI Write, we <strong>write to the File Descriptor</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L43-L57">rust_test/rust/src/nuttx_hal.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX SPI Write</span>
 <span class="kw">impl</span> <span class="ident">Write</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Spi</span>{
@@ -884,8 +895,7 @@ Done!</code></pre></div>
     <span class="prelude-val">Ok</span>(())
   }
 }</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L19-L41">rust_test/rust/src/nuttx_hal.rs</a></p>
+<p>SPI Transfer works the same way, except that we also <strong>copy the SPI Response</strong> and return it to the caller: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L19-L41">rust_test/rust/src/nuttx_hal.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX SPI Transfer</span>
 <span class="kw">impl</span> <span class="ident">Transfer</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Spi</span> {
