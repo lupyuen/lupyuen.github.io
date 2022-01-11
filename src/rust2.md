@@ -1363,7 +1363,7 @@ This Custom Rust Target supports __floating point__ on 32-bit RISC-V. (The stand
 
 [(More about Custom Rust Targets)](https://lupyuen.github.io/articles/rust#rust-targets)
 
-__For ESP32-C3 (RISC-V)__: Change __rust_build_target__ and __rust_build_target_folder__ to the Standard Rust Target __riscv32imc-unknown-none-elf__
+__For ESP32-C3 (RISC-V)__: Set "rust_build_target" and "rust_build_target_folder" to the Standard Rust Target __riscv32imc-unknown-none-elf__
 
 Then run this command to install the Rust Target...
 
@@ -1373,7 +1373,7 @@ rustup target add riscv32imc-unknown-none-elf
 
 [(See this)](https://github.com/jessebraham/esp-hal/tree/main/esp32c3-hal)
 
-__For ESP32 (Xtensa)__: Change __rust_build_target__ and __rust_build_target_folder__ to the ESP32 Rust Target __xtensa-esp32-none-elf__
+__For ESP32 (Xtensa)__: Set "rust_build_target" and "rust_build_target_folder" to the ESP32 Rust Target __xtensa-esp32-none-elf__
 
 We need to install the Rust compiler fork with Xtensa support. [(See this)](https://github.com/jessebraham/esp-hal/tree/main/esp32-hal)
 
@@ -1386,7 +1386,7 @@ Next we define the __Rust Build Options__: [rust_test/run.sh](https://github.com
 rust_build_options="--target $rust_build_target -Z build-std=core"
 ```
 
-__For BL602 and BL604:__ Since we're using a Custom Rust Target, we need to build the Rust Core Library for our custom target. That's why we need "-Z build-std=core" for the build options...
+__For BL602 and BL604:__ Since we're using a Custom Rust Target, we need to build the Rust Core Library for our target. That's why we need "-Z build-std=core" for the Rust Build Options...
 
 ```text
 --target nuttx/apps/examples/rust_test/riscv32imacf-unknown-none-elf.json \
@@ -1395,7 +1395,7 @@ __For BL602 and BL604:__ Since we're using a Custom Rust Target, we need to buil
 
 [(More about building Rust Core Library)](https://lupyuen.github.io/articles/rust#custom-rust-target-for-bl602)
 
-__For ESP32 and ESP32-C3:__ Since we're using a Standard Rust Target, remove "-Z build-std=core" from __rust_build_options__.
+__For ESP32 and ESP32-C3:__ Since we're using a Standard Rust Target, remove "-Z build-std=core" from "rust_build_options".
 
 The Rust Build Options will look like...
 
@@ -1415,7 +1415,7 @@ Next we define the __libraries that will be modified__ during the build...
 
     This is the Rust Library (compiled as a Static Library) that will overwrite the Compiled Stub Library
 
-That's how we __inject our Rust Code__ into the build: Overwriting the Compiled Stub Library by the Compiled Rust Library.
+That's how we __inject our Rust Code__ into the NuttX Build: We overwrite the Compiled Stub Library by the Compiled Rust Library.
 
 The Stub Library is defined like so: [rust_test/run.sh](https://github.com/lupyuen/rust_test/blob/main/run.sh#L50-L53)
 
@@ -1459,7 +1459,7 @@ Now we build the Rust Library: [rust_test/run.sh](https://github.com/lupyuen/rus
 pushd rust
 rustup default nightly
 cargo clippy $rust_build_options
-cargo build $rust_build_options
+cargo build  $rust_build_options
 popd
 ```
 
