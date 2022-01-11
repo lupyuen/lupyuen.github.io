@@ -784,19 +784,24 @@ We're ready to run the NuttX Firmware and test our __Rust App__!
     rust_test
     ```
 
-1.  When we run the Rust code we'll see...
+1.  We should see...
 
     ```text
-    nsh> rust_test
+    Sending LoRa message...
+    Frequency: 923000000
     ...
-    TODO
+    Done!
     ```
 
     [(See the Output Log)](https://gist.github.com/lupyuen/412cc8bef51c40236767e10693c738b5)
 
+Let's check whether Rust on NuttX has successfully transmitted our LoRa Message.
+
 ![PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)... Sniffed wirelessly with Airspy R2 Software Defined Radio (right)](https://lupyuen.github.io/images/sx1262-title.jpg)
 
 _PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)... Sniffed wirelessly with Airspy R2 Software Defined Radio (right)_
+
+# Check LoRa Message
 
 TODO
 
@@ -932,9 +937,11 @@ Follow these steps to build NuttX for BL602 or ESP32...
 
 1.  Install Rust from [__rustup.rs__](https://rustup.rs)
 
-1.  Assume that we have downloaded the __NuttX Source Code__...
+1.  Assume that we have downloaded the __NuttX Source Code__ and configured the build...
 
     [__"Download Source Code"__](https://lupyuen.github.io/articles/rust2#download-source-code)
+
+    [__"Build the Firmware"__](https://lupyuen.github.io/articles/rust2#build-the-firmware)
 
 1.  Edit the file...
 
