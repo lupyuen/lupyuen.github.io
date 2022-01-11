@@ -825,11 +825,9 @@ This shows that our LoRa Message was transmitted...
 
 1.  With __sufficient power__
 
-    (Because of the Red stripe)
+    (Because of the red bar)
 
-LoRa Messages have a characteristic criss-cross shape known as the __LoRa Chirp__.
-
-More about LoRa Chirps and Software Defined Radio...
+LoRa Messages have a characteristic criss-cross shape known as __LoRa Chirp__.  More about this...
 
 -   [__"Visualise LoRa with Software Defined Radio"__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
 
@@ -911,13 +909,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  TODO: Libc: Linux / Nix: nostd / ioctl i32 instead of u64
 
+![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
+
 # Appendix: Rust Embedded HAL for NuttX
 
-TODO
-
-Rust Embedded HAL for NuttX: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs)
+This section explains how we implemented the barebones __Rust Embedded HAL for NuttX__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs)
 
 ## GPIO HAL
+
+Let's look at the HAL for __GPIO Output__, since GPIO Input and GPIO Interrupt are implemented the same way.
 
 TODO
 
@@ -926,8 +926,8 @@ From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob
 ```rust
 /// NuttX GPIO Output Struct
 pub struct OutputPin {
-    /// NuttX File Descriptor
-    fd: i32,
+  /// NuttX File Descriptor
+  fd: i32,
 }
 ```
 
@@ -938,15 +938,15 @@ From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob
 ```rust
 /// New NuttX GPIO Output
 impl OutputPin {
-    /// Create a GPIO Output Pin from a Device Path (e.g. "/dev/gpio1")
-    pub fn new(path: &str) -> Self {
-        //  Open the NuttX Device Path (e.g. "/dev/gpio1") for read-write
-        let fd = open(path, O_RDWR);
-        assert!(fd > 0);
+  /// Create a GPIO Output Pin from a Device Path (e.g. "/dev/gpio1")
+  pub fn new(path: &str) -> Self {
+    //  Open the NuttX Device Path (e.g. "/dev/gpio1") for read-write
+    let fd = open(path, O_RDWR);
+    assert!(fd > 0);
 
-        //  Return the pin
-        Self { fd }
-    }
+    //  Return the pin
+    Self { fd }
+  }
 }
 ```
 
@@ -959,26 +959,26 @@ From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob
 ```rust
 /// Set NuttX Output Pin
 impl v2::OutputPin for OutputPin {
-    /// Error Type
-    type Error = ();
+  /// Error Type
+  type Error = ();
 
-    /// Set the GPIO Output to High
-    fn set_high(&mut self) -> Result<(), Self::Error> {
-        let ret = unsafe { 
-            ioctl(self.fd, GPIOC_WRITE, 1) 
-        };
-        assert!(ret >= 0);
-        Ok(())
-    }
+  /// Set the GPIO Output to High
+  fn set_high(&mut self) -> Result<(), Self::Error> {
+    let ret = unsafe { 
+      ioctl(self.fd, GPIOC_WRITE, 1) 
+    };
+    assert!(ret >= 0);
+    Ok(())
+  }
 
-    /// Set the GPIO Output to low
-    fn set_low(&mut self) -> Result<(), Self::Error> {
-        let ret = unsafe { 
-            ioctl(self.fd, GPIOC_WRITE, 0) 
-        };
-        assert!(ret >= 0);
-        Ok(())
-    }
+  /// Set the GPIO Output to low
+  fn set_low(&mut self) -> Result<(), Self::Error> {
+    let ret = unsafe { 
+      ioctl(self.fd, GPIOC_WRITE, 0) 
+    };
+    assert!(ret >= 0);
+    Ok(())
+  }
 }
 ```
 
@@ -989,16 +989,18 @@ From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob
 ```rust
 /// Drop NuttX GPIO Output
 impl Drop for OutputPin {
-    /// Close the GPIO Output
-    fn drop(&mut self) {
-        unsafe { close(self.fd) };
-    }
+  /// Close the GPIO Output
+  fn drop(&mut self) {
+    unsafe { close(self.fd) };
+  }
 }
 ```
 
-![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
+![SPI HAL](https://lupyuen.github.io/images/rust2-hal4.png)
 
 ## SPI HAL
+
+Now we study the __SPI HAL__ for NuttX.
 
 TODO
 
@@ -1007,59 +1009,29 @@ From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob
 ```rust
 /// NuttX SPI Struct
 pub struct Spi {
-    /// NuttX File Descriptor
-    fd: i32,
+  /// NuttX File Descriptor
+  fd: i32,
 }
 
 /// New NuttX SPI Bus
 impl Spi {
-    /// Create an SPI Bus from a Device Path (e.g. "/dev/spitest0")
-    pub fn new(path: &str) -> Self {
-        //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
-        let fd = open(path, O_RDWR);
-        assert!(fd > 0);
+  /// Create an SPI Bus from a Device Path (e.g. "/dev/spitest0")
+  pub fn new(path: &str) -> Self {
+    //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
+    let fd = open(path, O_RDWR);
+    assert!(fd > 0);
 
-        //  Return the pin
-        Self { fd }
-    }
+    //  Return the pin
+    Self { fd }
+  }
 }
 
 /// Drop NuttX SPI Bus
 impl Drop for Spi {
-    /// Close the SPI Bus
-    fn drop(&mut self) {
-        unsafe { close(self.fd) };
-    }
-}
-```
-
-TODO
-
-From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L19-L41)
-
-```rust
-/// NuttX SPI Transfer
-impl Transfer<u8> for Spi {
-    /// Error Type
-    type Error = ();
-
-    /// Transfer SPI data
-    fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
-        //  Transmit data
-        let bytes_written = unsafe { 
-            write(self.fd, words.as_ptr(), words.len() as u32) 
-        };
-        assert!(bytes_written == words.len() as i32);
-
-        //  Read response
-        let bytes_read = unsafe { 
-            read(self.fd, words.as_mut_ptr(), words.len() as u32) 
-        };
-        assert!(bytes_read == words.len() as i32);
-
-        //  Return response
-        Ok(words)
-    }
+  /// Close the SPI Bus
+  fn drop(&mut self) {
+    unsafe { close(self.fd) };
+  }
 }
 ```
 
@@ -1070,22 +1042,52 @@ From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob
 ```rust
 /// NuttX SPI Write
 impl Write<u8> for Spi{
-    /// Error Type
-    type Error = ();
+  /// Error Type
+  type Error = ();
 
-    /// Write SPI data
-    fn write(&mut self, words: &[u8]) -> Result<(), Self::Error> {
-        //  Transmit data
-        let bytes_written = unsafe { 
-            write(self.fd, words.as_ptr(), words.len() as u32) 
-        };
-        assert!(bytes_written == words.len() as i32);
-        Ok(())
-    }
+  /// Write SPI data
+  fn write(&mut self, words: &[u8]) -> Result<(), Self::Error> {
+    //  Transmit data
+    let bytes_written = unsafe { 
+      write(self.fd, words.as_ptr(), words.len() as u32) 
+    };
+    assert!(bytes_written == words.len() as i32);
+    Ok(())
+  }
 }
 ```
 
-![SPI HAL](https://lupyuen.github.io/images/rust2-hal4.png)
+TODO
+
+From [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L19-L41)
+
+```rust
+/// NuttX SPI Transfer
+impl Transfer<u8> for Spi {
+  /// Error Type
+  type Error = ();
+
+  /// Transfer SPI data
+  fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
+    //  Transmit data
+    let bytes_written = unsafe { 
+      write(self.fd, words.as_ptr(), words.len() as u32) 
+    };
+    assert!(bytes_written == words.len() as i32);
+
+    //  Read response
+    let bytes_read = unsafe { 
+      read(self.fd, words.as_mut_ptr(), words.len() as u32) 
+    };
+    assert!(bytes_read == words.len() as i32);
+
+    //  Return response
+    Ok(words)
+  }
+}
+```
+
+![Fixing SX1262 Driver for NuttX](https://lupyuen.github.io/images/rust2-driver.png)
 
 # Appendix: Fix SX1262 Driver for NuttX
 
@@ -1101,15 +1103,13 @@ That we tweaked slightly from...
 
 Let's look at the modifications that we made.
 
-![Fixing SX1262 Driver for NuttX](https://lupyuen.github.io/images/rust2-driver.png)
+![SPI Transfers in small chunks](https://lupyuen.github.io/images/rust2-hal6.png)
 
 ## Merge SPI Requests
 
-While testing [__sx126x-rs__](https://github.com/tweedegolf/sx126x-rs), we discovered that the SPI Requests were split into 1-byte or 2-byte chunks...
+While testing [__sx126x-rs__](https://github.com/tweedegolf/sx126x-rs), we discovered that the SPI Requests were split into __1-byte or 2-byte chunks__. (Pic above)
 
-![SPI Transfers in small chunks](https://lupyuen.github.io/images/rust2-hal6.png)
-
-This fails on NuttX because the SPI Request needs to be in one contiguous block as Chip Select flips from High to Low and High.
+This fails on NuttX because the SPI Request needs to be in __one contiguous block__ as Chip Select flips from High to Low and High.
 
 To fix this, we buffer all SPI Requests in the Chip Select Guard: [sx126x-rs-nuttx/src/sx/slave_select.rs](https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/slave_select.rs#L86-L126)
 
