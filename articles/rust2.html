@@ -1077,6 +1077,8 @@ Done!</code></pre></div>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>))]</span>  <span class="comment">//  If architecture is not Arm...</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__nop</span>() {}</code></pre></div>
+<p>We haven’t tested the driver for receiving LoRa Messages, we might need more fixes for NuttX on RISC-V.</p>
+<p>(But then again we might not need to receive LoRa Messages if we’re building a simple IoT Sensor)</p>
 <p><img src="https://lupyuen.github.io/images/rust2-build.png" alt="Rust Build Script for NuttX" /></p>
 <h1 id="appendix-rust-build-script-for-nuttx" class="section-header"><a href="#appendix-rust-build-script-for-nuttx">18 Appendix: Rust Build Script for NuttX</a></h1>
 <p>Let’s study the Build Script for Rust on NuttX…</p>
