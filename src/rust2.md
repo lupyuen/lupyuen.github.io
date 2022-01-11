@@ -801,11 +801,11 @@ Let's check whether Rust on NuttX has successfully transmitted our LoRa Message.
 
 _PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)... Sniffed wirelessly with Airspy R2 Software Defined Radio (right)_
 
-# Check LoRa Message
+# Verify LoRa Message
 
 _Did Rust on NuttX transmit our LoRa Message successfully?_
 
-We'll check two ways...
+Let's verify the LoRa Transmission in two ways...
 
 1.  With a __Spectrum Analyser__
 
