@@ -827,7 +827,7 @@ This shows that our LoRa Message was transmitted...
 
     (Because of the Red stripe)
 
-LoRa Messages have a characteristic criss-cross shape: __LoRa Chirp__.
+LoRa Messages have a characteristic criss-cross shape known as the __LoRa Chirp__.
 
 More about LoRa Chirps and Software Defined Radio...
 
@@ -841,7 +841,7 @@ Next we use __RAKwireless WisBlock__ (pic above) as a LoRa Receiver. We run this
 
 -   [__wisblock-lora-receiver__](https://github.com/lupyuen/wisblock-lora-receiver)
 
-And we check that the __LoRa Parameters__ are correct...
+Check that the __LoRa Parameters__ are correct...
 
 -   [__LoRa Parameters for WisBlock Receiver__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56)
 
@@ -851,21 +851,17 @@ In the NuttX Shell, enter this to transmit a LoRa Message...
 rust_test
 ```
 
-On WisBlock we should see the __LoRa Message__ received by WisBlock...
-
-```text
-LoRaP2P Rx Test
-Starting Radio.Rx
-TODO
-```
-
-TODO
+On WisBlock we should see the received __LoRa Message__...
 
 ![RAKwireless WisBlock receives LoRa Message from Rust on NuttX](https://lupyuen.github.io/images/rust2-receive.png)
 
-Our SX1262 Rust Driver has successfully transmitted a LoRa Message to RAKwireless WisBlock!
+Which is ASCII for...
 
-TODO
+```text
+Hello from Rust on NuttX!
+```
+
+Our SX1262 Rust Driver has successfully transmitted a LoRa Message to RAKwireless WisBlock!
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
