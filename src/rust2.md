@@ -815,13 +815,55 @@ Let's verify the LoRa Transmission in two ways...
 
 TODO
 
-![](https://lupyuen.github.io/images/rust2-chirp2.png)
+Use a __Spectrum Analyser__ (like a __Software Defined Radio__) to sniff the airwaves and check whether our LoRa Message is transmitted...
+
+1.  At the right __Radio Frequency__
+
+    (923 MHz below)
+
+1.  With __sufficient power__
+
+    (Red stripe below)
+
+![Spectrum Analysis of LoRa Message with SDR](https://lupyuen.github.io/images/sx1262-sdr.jpg)
+
+LoRa Messages have a characteristic criss-cross shape: __LoRa Chirp__. (Like above)
+
+More about LoRa Chirps and Software Defined Radio...
+
+-   [__"Visualise LoRa with Software Defined Radio"__](https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio)
+
+![LoRa Chirp recorded by Cubic SDR connected to Airspy R2 SDR](https://lupyuen.github.io/images/rust2-chirp2.png)
 
 ## LoRa Receiver
 
 TODO
 
-![](https://lupyuen.github.io/images/rust2-receive.png)
+1.  Switch over to __RAKwireless WisBlock__ and run our __LoRa Receiver__...
+
+    [__wisblock-lora-receiver__](https://github.com/lupyuen/wisblock-lora-receiver)
+
+    Check that the __LoRa Parameters__ are correct...
+
+    [__LoRa Parameters for WisBlock Receiver__](https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56)
+
+1.  In the NuttX Shell, enter this to transmit a LoRa Message...
+
+    ```bash
+    rust_test
+    ```
+
+1.  On WisBlock we should see the same __LoRa Message__ received by WisBlock...
+
+    ```text
+    LoRaP2P Rx Test
+    Starting Radio.Rx
+    TODO
+    ```
+
+    Our SX1262 Rust Driver has successfully transmitted a 64-byte LoRa Message to RAKwireless WisBlock!
+
+![RAKwireless WisBlock receives LoRa Message from Rust on NuttX](https://lupyuen.github.io/images/rust2-receive.png)
 
 TODO
 
