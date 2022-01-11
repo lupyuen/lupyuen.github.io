@@ -887,27 +887,179 @@ TODO
 
 # Appendix: Fix SX1262 Driver for NuttX
 
-TODO
+In this article we used this Rust Embedded Driver for Semtech SX1262...
 
-Modified SX1262 Driver for NuttX: [lupyuen/sx126x-rs-nuttx](https://github.com/lupyuen/sx126x-rs-nuttx)
+-   [__lupyuen/sx126x-rs-nuttx__](https://github.com/lupyuen/sx126x-rs-nuttx)
 
-Based on [tweedegolf/sx126x-rs](https://github.com/tweedegolf/sx126x-rs)
+That we have tweaked slightly from...
 
-Arm vs RISC-V: [rust_test/rust/src/sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L146-L168)
+-   [__tweedegolf/sx126x-rs__](https://github.com/tweedegolf/sx126x-rs)
+
+(Thanks Tweede golf! 👍)
+
+Let's look at the modifications that we made.
 
 ![Fixing SX1262 Driver for NuttX](https://lupyuen.github.io/images/rust2-driver.png)
 
-TODO
+## Merge SPI Requests
 
-![Incorrect register value](https://lupyuen.github.io/images/rust2-hal5.png)
-
-TODO
+While testing [__sx126x-rs__](https://github.com/tweedegolf/sx126x-rs), we discovered that the SPI Requests were split into 1-byte or 2-byte chunks...
 
 ![SPI Transfers in small chunks](https://lupyuen.github.io/images/rust2-hal6.png)
 
-TODO
+This fails on NuttX because the SPI Request needs to be in one contiguous block as Chip Select flips from High to Low and High.
+
+To fix this, we buffered all SPI Requests in the Chip Select Guard: [sx126x-rs-nuttx/src/sx/slave_select.rs](https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/slave_select.rs#L86-L126)
+
+```rust
+impl<'nss, 'spi, TNSS, TSPI, TSPIERR> Transfer<u8> for SlaveSelectGuard<'nss, 'spi, TNSS, TSPI>
+where
+    TNSS: OutputPin,
+    TSPI: Write<u8, Error = TSPIERR> + Transfer<u8, Error = TSPIERR>,
+{
+    type Error = SpiError<TSPIERR>;
+    fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
+        unsafe {
+            //  Prevent a second transfer
+            debug_assert!(!TRANSFERRED);
+
+            //  Copy the transmit data to the buffer
+            BUF[BUFLEN..(BUFLEN + words.len())]
+                .clone_from_slice(words);
+            BUFLEN += words.len();
+
+            //  Transfer the data over SPI
+            let res = self.spi.transfer(&mut BUF[0..BUFLEN])
+                .map_err(SpiError::Transfer);
+
+            //  Copy the result from SPI
+            words.clone_from_slice(&BUF[BUFLEN - words.len()..BUFLEN]);
+
+            //  Empty the buffer
+            BUFLEN = 0;
+
+            //  Prevent a second write or transfer
+            TRANSFERRED = true;
+            res
+        }
+    }
+}
+
+/// Buffer for SPI Transfer. Max packet size (256) + 2 bytes for Write Buffer Command.
+static mut BUF: [ u8; 258 ] = [ 0; 258 ];
+
+/// Length of buffer for SPI Transfer
+static mut BUFLEN: usize = 0;
+
+/// True if we have just executed an SPI Transfer
+static mut TRANSFERRED: bool = false;
+```
+
+Then we patched the driver code to ensure that all SPI Request chains consist of...
+
+-   0 or more SPI Writes
+
+-   Followed by 1 optional SPI Transfer
+
+Such that we flush the buffer of SPI Requests only after the final SPI Write or final SPI Transfer.
+
+So this chain of SPI Requests...
+
+```rust
+spi.transfer(&mut [0x1D])
+  .and_then(|_| spi.transfer(&mut start_addr))
+  .and_then(|_| spi.transfer(&mut [0x00]))
+  .and_then(|_| spi.transfer(result))?;
+```
+
+After fixing becomes...
+
+```rust
+spi.write(&[0x1D])  //  Changed from `transfer` to `write`
+  .and_then(|_| spi.write(&start_addr))  //  Changed from `transfer` to `write`
+  .and_then(|_| spi.write(&[0x00]))      //  Changed from `transfer` to `write`
+  .and_then(|_| spi.transfer(result))?;  //  Final transfer is OK
+```
+
+[(Source)](https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/mod.rs#L241-L244)
+
+The driver works OK on NuttX after merging the SPI Requests...
 
 ![SPI Transfers after merging](https://lupyuen.github.io/images/rust2-driver2.png)
+
+## Read Register
+
+TODO
+
+## Set Registers
+
+The following registers need to be set for the LoRa Transmission to work correctly: [rust_test/rust/src/sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L73-L91)
+
+```rust
+  //  Write SX1262 Registers to prepare for transmitting LoRa message.
+  //  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668
+  //  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing
+
+  //  Write Register 0x889: 0x04 (TxModulation)
+  lora.write_register(&mut spi1, delay, Register::TxModulaton, &[0x04])
+    .expect("write register failed");
+
+  //  Write Register 0x8D8: 0xFE (TxClampConfig)
+  lora.write_register(&mut spi1, delay, Register::TxClampConfig, &[0xFE])
+    .expect("write register failed");
+
+  //  Write Register 0x8E7: 0x38 (Over Current Protection)
+  lora.write_register(&mut spi1, delay, Register::OcpConfiguration, &[0x38])
+    .expect("write register failed");
+
+  //  Write Register 0x736: 0x0D (Inverted IQ)
+  lora.write_register(&mut spi1, delay, Register::IqPolaritySetup, &[0x0D])
+    .expect("write register failed");
+```
+
+We derived the registers from the log generated by the SX1262 driver in C...
+
+-   [__Log from SX1262 Driver in C__](https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668)
+
+And by comparing the SPI Output of the C and Rust Drivers...
+
+-   [__Compare SPI Output of C and Rust Drivers__](https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing)
+
+The C Driver for SX1262 is described here...
+
+-   [__"LoRa SX1262 on Apache NuttX OS"__](https://lupyuen.github.io/articles/sx1262)
+
+## Adapt For RISC-V
+
+The [__sx126x-rs__](https://github.com/tweedegolf/sx126x-rs) crate depends on the [__cortex-m__](https://crates.io/crates/cortex-m) crate, which works only on Arm, not RISC-V (BL602).
+
+We defined the following functions to fill in for the missing functions on RISC-V: [rust_test/rust/src/sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L146-L168)
+
+```rust
+/// Read Priority Mask Register. Missing function called by sx126x crate (Arm only, not RISC-V).
+/// See https://github.com/rust-embedded/cortex-m/blob/master/src/register/primask.rs#L29
+#[cfg(not(target_arch = "arm"))]  //  If architecture is not Arm...
+#[no_mangle]
+extern "C" fn __primask_r() -> u32 { 0 }
+
+/// Disables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).
+/// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L29
+#[cfg(not(target_arch = "arm"))]  //  If architecture is not Arm...
+#[no_mangle]
+extern "C" fn __cpsid() {}
+
+/// Enables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).
+/// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L39
+#[cfg(not(target_arch = "arm"))]  //  If architecture is not Arm...
+#[no_mangle]
+extern "C" fn __cpsie() {}
+
+/// No operation. Missing function called by sx126x crate (Arm only, not RISC-V).
+/// See https://github.com/rust-embedded/cortex-m/blob/master/src/asm.rs#L35
+#[cfg(not(target_arch = "arm"))]  //  If architecture is not Arm...
+#[no_mangle]
+extern "C" fn __nop() {}
+```
 
 # Appendix: Rust Build Script for NuttX
 
