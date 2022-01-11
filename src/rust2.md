@@ -911,11 +911,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Which has many features that will be very useful for our implementation of Rust Embedded HAL.
 
-1.  Since NuttX behaves like Linux, can we use the [__"libc"__](https://crates.io/crates/libc) crate to import the POSIX Functions?
+1.  Since NuttX behaves like Linux, can we use the [__`libc`__](https://crates.io/crates/libc) crate to import the POSIX Functions?
 
     Possibly, if we extend "libc" to cover NuttX.
 
-    Note that the Function Signatures are slightly different: "libc" declares __ioctl__ as...
+    Note that the Function Signatures are slightly different: `libc` declares __ioctl__ as...
 
     ```rust
     fn ioctl(fd: i32, request: u64, ...) -> i32
@@ -926,18 +926,18 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     Whereas NuttX declares __ioctl__ as...
 
     ```rust
-    fn ioctl(fd: i32, request: i32, ...) -> i32;
+    fn ioctl(fd: i32, request: i32, ...) -> i32
     ```
 
     [(Source)](https://github.com/apache/incubator-nuttx/blob/master/include/sys/ioctl.h#L114)
 
-    The type of the "request" parameter is different: u64 vs i32.
+    The type of the __request__ parameter is different: __u64 vs i32__.
 
     So beware!
 
-1.  What about the [__"nix"__](https://crates.io/crates/nix) crate?
+1.  What about the [__`nix`__](https://crates.io/crates/nix) crate?
 
-    "nix" doesn't support "no_std" yet, so sorry nope.
+    `nix` doesn't support `no_std` yet, so sorry nope.
 
 ![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
 
