@@ -784,7 +784,7 @@ We're ready to run the NuttX Firmware and test our __Rust App__!
     rust_test
     ```
 
-1.  We should see...
+1.  We should see Rust on NuttX __transmitting our LoRa Message__...
 
     ```text
     Sending LoRa message...
@@ -803,13 +803,31 @@ _PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (
 
 # Check LoRa Message
 
+_Did Rust on NuttX transmit our LoRa Message successfully?_
+
+We'll check two ways...
+
+1.  With a __Spectrum Analyser__
+
+1.  With a __LoRa Receiver__
+
+## Spectrum Analyser
+
 TODO
 
 ![](https://lupyuen.github.io/images/rust2-chirp2.png)
 
+## LoRa Receiver
+
 TODO
 
 ![](https://lupyuen.github.io/images/rust2-receive.png)
+
+TODO
+
+![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
+
+_PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)_
 
 # LoRaWAN Support
 
@@ -821,13 +839,11 @@ Sadly we __haven't found a LoRaWAN Stack__ for Rust yet.
 
 (Probably because LoRaWAN is super complex... We need to sync up the Regional Parameters whenever LoRaWAN Regions are added or modified)
 
-But we have a __working LoRaWAN Stack for NuttX__ (in C)...
+But we have a __working LoRaWAN Stack for NuttX__ in C...
 
 -   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
 So perhaps our Rust code could __call out to the LoRaWAN Stack__ in C.
-
-TODO
 
 # What's Next
 
