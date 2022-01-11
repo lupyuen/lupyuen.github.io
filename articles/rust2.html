@@ -704,7 +704,7 @@ Done!</code></pre></div>
 <p>(Because of the Red stripe)</p>
 </li>
 </ol>
-<p>LoRa Messages have a characteristic criss-cross shape: <strong>LoRa Chirp</strong>.</p>
+<p>LoRa Messages have a characteristic criss-cross shape known as the <strong>LoRa Chirp</strong>.</p>
 <p>More about LoRa Chirps and Software Defined Radio…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></li>
@@ -715,20 +715,17 @@ Done!</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/wisblock-lora-receiver"><strong>wisblock-lora-receiver</strong></a></li>
 </ul>
-<p>And we check that the <strong>LoRa Parameters</strong> are correct…</p>
+<p>Check that the <strong>LoRa Parameters</strong> are correct…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/wisblock-lora-receiver/blob/main/src/main.cpp#L37-L56"><strong>LoRa Parameters for WisBlock Receiver</strong></a></li>
 </ul>
 <p>In the NuttX Shell, enter this to transmit a LoRa Message…</p>
 <div class="example-wrap"><pre class="language-bash"><code>rust_test</code></pre></div>
-<p>On WisBlock we should see the <strong>LoRa Message</strong> received by WisBlock…</p>
-<div class="example-wrap"><pre class="language-text"><code>LoRaP2P Rx Test
-Starting Radio.Rx
-TODO</code></pre></div>
-<p>TODO</p>
+<p>On WisBlock we should see the received <strong>LoRa Message</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/rust2-receive.png" alt="RAKwireless WisBlock receives LoRa Message from Rust on NuttX" /></p>
+<p>Which is ASCII for…</p>
+<div class="example-wrap"><pre class="language-text"><code>Hello from Rust on NuttX!</code></pre></div>
 <p>Our SX1262 Rust Driver has successfully transmitted a LoRa Message to RAKwireless WisBlock!</p>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <h1 id="lorawan-support" class="section-header"><a href="#lorawan-support">13 LoRaWAN Support</a></h1>
