@@ -1188,7 +1188,7 @@ rust_app_build=$rust_build_dir/libapp.a</code></pre></div><h2 id="build-stub-lib
 pushd $NUTTX_PATH
 make || echo &quot;----- Ignore undefined references to Rust Library&quot;
 popd</code></pre></div>
-<p>Which fails because <strong>rust_main</strong> is undefined. Our script ignores the error and continues.</p>
+<p>Which fails to link because <strong>rust_main</strong> is undefined. Our script ignores the error and continues.</p>
 <h2 id="build-rust-library" class="section-header"><a href="#build-rust-library">18.5 Build Rust Library</a></h2>
 <p>Now we build the Rust Library: <a href="https://github.com/lupyuen/rust_test/blob/main/run.sh#L89-L94">rust_test/run.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Build the Rust Library
