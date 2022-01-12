@@ -944,6 +944,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(See this)](https://github.com/nix-rust/nix/issues/281)
 
+1.  Instead of `no_std`, can we run the Standard Rust Library on NuttX?
+
+    Sony worked on porting Standard Rust Library to NuttX, but it appears to be incomplete.
+
+    [(See this)](https://speakerdeck.com/sgy/cortex-m4f-and-prototyping-a-simple-web-server)
+
 ![GPIO HAL](https://lupyuen.github.io/images/rust2-hal3.png)
 
 # Appendix: Rust Embedded HAL for NuttX
