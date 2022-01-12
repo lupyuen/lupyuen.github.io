@@ -2941,6 +2941,7 @@ void SX126xSetSleep( SleepParams_t sleepConfig ) {
 <p><img src="https://lupyuen.github.io/images/lorawan3-callout.png" alt="NimBLE Callout Issue" /></p>
 <p><a href="https://github.com/lupyuen/nimble-porting-nuttx/blob/master/porting/npl/nuttx/src/os_callout.c#L35-L70">(Source)</a></p>
 <p>I will submit a Pull Request to Apache NimBLE.</p>
+<p>UPDATE: Unfortunately the thread never terminates, so any NuttX App that calls NimBLE Callouts won’t terminate either. (Even when we call exit()). We need to terminate the thread in our code.</p>
 <h1 id="appendix-previous-sx1262-library" class="section-header"><a href="#appendix-previous-sx1262-library">17 Appendix: Previous SX1262 Library</a></h1>
 <p>This section describes the <strong>previous (obsolete) version</strong> of the SX1262 Library…</p>
 <ul>
