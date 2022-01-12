@@ -30,7 +30,7 @@ __Caution:__ Work in Progress! Some spots are rough and rocky, I'm hoping the Nu
 
 # Rust Meets NuttX
 
-This is the __simplest Rust program__ that will run on NuttX and print _"Hello World"_: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L27-L59)
+This is the __simplest Rust program__ that will run on NuttX and print _"Hello World!"_: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L27-L59)
 
 ```rust
 #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
@@ -47,7 +47,7 @@ extern "C" fn rust_main() {  //  Declare `extern "C"` because it will be called 
     //  Print a message to the serial console
     puts(
       b"Hello World!\0"  //  Byte String terminated with null
-        .as_ptr()      //  Convert to pointer
+        .as_ptr()        //  Convert to pointer
     );
   }
 }
