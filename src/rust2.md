@@ -1455,7 +1455,7 @@ make || echo "----- Ignore undefined references to Rust Library"
 popd
 ```
 
-Which fails because __rust_main__ is undefined. Our script ignores the error and continues.
+Which fails to link because __rust_main__ is undefined. Our script ignores the error and continues.
 
 ## Build Rust Library
 
