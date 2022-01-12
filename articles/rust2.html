@@ -126,7 +126,7 @@
 <p><strong>Caution:</strong> Work in Progress! Some spots are rough and rocky, I’m hoping the NuttX and Rust Communities could help to fill in the potholes before release 🙏</p>
 <p><img src="https://lupyuen.github.io/images/rust2-run.png" alt="Rust running on NuttX" /></p>
 <h1 id="rust-meets-nuttx" class="section-header"><a href="#rust-meets-nuttx">1 Rust Meets NuttX</a></h1>
-<p>This is the <strong>simplest Rust program</strong> that will run on NuttX and print <em>“Hello World”</em>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L27-L59">lib.rs</a></p>
+<p>This is the <strong>simplest Rust program</strong> that will run on NuttX and print <em>“Hello World!”</em>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L27-L59">lib.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#![<span class="ident">no_std</span>]</span>  <span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span>
 
@@ -142,7 +142,7 @@
     <span class="comment">//  Print a message to the serial console</span>
     <span class="ident">puts</span>(
       <span class="string">b&quot;Hello World!\0&quot;</span>  <span class="comment">//  Byte String terminated with null</span>
-        .<span class="ident">as_ptr</span>()      <span class="comment">//  Convert to pointer</span>
+        .<span class="ident">as_ptr</span>()        <span class="comment">//  Convert to pointer</span>
     );
   }
 }</code></pre></div>
