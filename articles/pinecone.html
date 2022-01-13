@@ -69,32 +69,21 @@
 <li><a href="#bl602-vs-esp32">1.1 BL602 vs ESP32</a><ul></ul></li>
 <li><a href="#risc-v-vs-arm">1.2 RISC-V vs Arm</a><ul></ul></li></ul></li>
 <li><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a><ul>
-<li><a href="#bl602-vs-other-risc-v-microcontrollers">2.1 BL602 vs Other RISC-V Microcontrollers</a><ul></ul></li>
-<li><a href="#hardware-abstraction-layer">2.2 Hardware Abstraction Layer</a><ul></ul></li>
-<li><a href="#embedded-operating-systems">2.3 Embedded Operating Systems</a><ul></ul></li></ul></li>
-<li><a href="#reverse-engineer-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineer the Bluetooth LE and WiFi Drivers</a><ul>
-<li><a href="#how-does-our-wifi-driver-talk-to-the-wifi-controller">3.1 How does our WiFi Driver talk to the WiFi Controller?</a><ul></ul></li>
-<li><a href="#analyse-the-linker-map">3.2 Analyse the Linker Map</a><ul></ul></li>
-<li><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a><ul></ul></li>
-<li><a href="#identify-the-wifi-functions">3.4 Identify the WiFi Functions</a><ul></ul></li>
-<li><a href="#is-there-a-blob-for-the-wifi-controller">3.5 Is there a Blob for the WiFi Controller?</a><ul></ul></li></ul></li>
-<li><a href="#hands-on-with-pinecone-bl602">4 Hands On with PineCone BL602</a><ul>
-<li><a href="#form-factor">4.1 Form Factor</a><ul></ul></li>
-<li><a href="#flashing-firmware">4.2 Flashing Firmware</a><ul>
-<li><a href="#other-flashing-tools">4.2.1 Other Flashing Tools</a><ul></ul></li></ul></li>
-<li><a href="#building-firmware">4.3 Building Firmware</a><ul></ul></li>
-<li><a href="#development-tools">4.4 Development Tools</a><ul></ul></li>
-<li><a href="#debugging-firmware">4.5 Debugging Firmware</a><ul></ul></li>
-<li><a href="#testing-the-firmware">4.6 Testing the Firmware</a><ul></ul></li>
-<li><a href="#learning-risc-v-and-bl602">4.7 Learning RISC-V and BL602</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
-<li><a href="#notes">6 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
-<p>📝 <em>29 Nov 2020</em></p>
-<p><a href="https://pine64.com/product/pinecone-bl602-evaluation-board/?v=0446c16e2e66">(<strong>UPDATE:</strong> PineCone is now available for purchase)</a></p>
-<p>Pine64 is graciously giving away the <strong>PineCone BL602 RISC-V Evaluation Board</strong> to folks participating in the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>.</p>
-<p>Let’s learn about the PineCone Board… And how it helps the <a href="https://en.wikipedia.org/wiki/RISC-V"><strong>RISC-V Open Source Ecosystem</strong></a>.</p>
+<li><a href="#bl602-vs-other-risc-v-microcontrollers">2.1 BL602 vs Other RISC-V Microcontrollers</a><ul></ul></li></ul></li>
+<li><a href="#hands-on-with-pinecone-bl602">3 Hands On with PineCone BL602</a><ul>
+<li><a href="#form-factor">3.1 Form Factor</a><ul></ul></li>
+<li><a href="#flashing-firmware">3.2 Flashing Firmware</a><ul>
+<li><a href="#other-flashing-tools">3.2.1 Other Flashing Tools</a><ul></ul></li></ul></li>
+<li><a href="#building-firmware">3.3 Building Firmware</a><ul></ul></li>
+<li><a href="#development-tools">3.4 Development Tools</a><ul></ul></li>
+<li><a href="#debugging-firmware">3.5 Debugging Firmware</a><ul></ul></li>
+<li><a href="#learning-risc-v-and-bl602">3.6 Learning RISC-V and BL602</a><ul></ul></li></ul></li>
+<li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
+<li><a href="#notes">5 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
+<p>📝 <em>13 Jan 2022</em></p>
+<p>Let’s learn about the <strong>BL602 SoC</strong> and Pine64’s <strong>PineCone BL602 Board</strong>… And how we can contribute to the <a href="https://en.wikipedia.org/wiki/RISC-V"><strong>RISC-V Open Source Ecosystem</strong></a>.</p>
 <h1 id="pinecone-bl602-why-does-it-matter" class="section-header"><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a></h1>
-<p>PineCone is based on the BL602 combo chipset made by <a href="https://www.bouffalolab.com/bl602">Nanjing-based Bouffalo Lab</a>…</p>
+<p>PineCone is based on the BL602 SoC made by <a href="https://www.bouffalolab.com/bl602">Nanjing-based Bouffalo Lab</a>…</p>
 <ol>
 <li>
 <p><strong>Low Cost</strong>: BL602 is a <a href="https://github.com/pine64/bl602-docs">General Purpose 32-bit Microcontroller</a>. (Think <a href="https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill">STM32 Blue Pill</a>, <a href="https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code">Nordic nRF52</a>)</p>
@@ -104,37 +93,34 @@
 </li>
 <li>
 <p><strong>Power Efficient</strong>: BL602 is perfect for wearables and other power-constrained devices. (Maybe even PineTime!)</p>
-<p>By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won’t run Linux, <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/pinetime">but neither does PineTime</a>.</p>
+<p>By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won’t run Linux, but it runs <a href="https://lupyuen.github.io/articles/nuttx">Apache NuttX OS</a>, which works like a tiny Linux.</p>
 </li>
 <li>
-<p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://xpack.github.io/riscv-none-embed-gcc/">32-bit RISC-V version of the GCC compiler</a> to recompile our programs.</p>
-<p><a href="https://github.com/alibaba/AliOS-Things">FreeRTOS + AliOS</a> has been ported to BL602. (<a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a>) But other Real Time Operating Systems (like <a href="https://www.zephyrproject.org/">Zephyr</a>, <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://mynewt.apache.org/">Mynewt</a>) have been slow to adopt RISC-V. (We’ll learn why in a while)</p>
-<p>Rust runs perfectly fine on RISC-V microcontrollers. (<a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v">Here’s the proof</a>)</p>
-<p><a href="https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst"><strong>UPDATE: Check out Zephyr for BL602</strong></a></p>
-<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/pull/18"><strong>UPDATE: Zephyr is being ported to BL602 MCU SDK</strong></a></p>
+<p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://xpack.github.io/riscv-none-embed-gcc/">32-bit RISC-V version of the GCC compiler</a> to compile our programs.</p>
+</li>
+<li>
+<p><strong>BL604 is the upsized sibling of BL602</strong>: BL604 has 32 GPIOs vs BL602’s 16 GPIOs. Everything else works the same.</p>
 </li>
 </ol>
-<p>It’s great that Pine64 is reaching out to the Open Source Community through the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/">PineCone Nutcracker initiative</a>… Because it takes A Humongous Village to get BL602 ready for real-world gadgets.</p>
 <h2 id="bl602-vs-esp32" class="section-header"><a href="#bl602-vs-esp32">1.1 BL602 vs ESP32</a></h2>
 <p><em>How does BL602 compare with ESP32?</em></p>
 <ul>
 <li>
-<p>BL602 is a <strong>General Purpose Microcontroller</strong> (RISC-V) that supports Bluetooth LE and WiFi</p>
+<p>BL602 is a <strong>General Purpose Microcontroller</strong> (based on RISC-V) that supports Bluetooth LE and WiFi</p>
 </li>
 <li>
-<p>ESP32 is more of a <strong>Bluetooth LE + WiFi Controller</strong> that supports Embedded Programs</p>
+<p>ESP32 is more of a <strong>Bluetooth LE + WiFi Controller</strong> (based on Xtensa) that supports Embedded Programs</p>
 </li>
 </ul>
 <p>To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller… Except that it runs on the <a href="https://riscv.org/technical/specifications/"><strong>RISC-V Instruction Set</strong></a> instead of Arm.</p>
-<p>Hope this addresses the confusion over BL602, as discussed <a href="https://news.ycombinator.com/item?id=24916086">here</a> and <a href="https://news.ycombinator.com/item?id=24877335">here</a></p>
-<p><em>(There’s a new <a href="https://www.espressif.com/en/news/ESP32_C3">ESP32 based on RISC-V</a>, but the hardware is not available yet so we’ll wait and see. <a href="https://twitter.com/MisterTechBlog/status/1332859286142128131?s=20">Compare BL602 with ESP32-C3</a>)</em></p>
+<p><em>(There’s a new <a href="https://www.espressif.com/en/news/ESP32_C3">ESP32 based on RISC-V</a>. <a href="https://twitter.com/MisterTechBlog/status/1332859286142128131?s=20">Compare BL602 with ESP32-C3</a>)</em></p>
 <h2 id="risc-v-vs-arm" class="section-header"><a href="#risc-v-vs-arm">1.2 RISC-V vs Arm</a></h2>
 <p><em>Why not stick with Arm? Why get adventurous with RISC-V?</em></p>
 <p>Nintendo Switch (the #1 gaming console) runs on Arm. iPhone and the new M1 Macs also run on Arm.  <strong>Most of our gadgets are powered by Arm today.</strong></p>
 <p>Before Arm gets too successful and locks us in… Shouldn’t we explore alternatives like RISC-V?</p>
 <h1 id="the-thing-about-risc-v-and-pinecone-bl602" class="section-header"><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a></h1>
-<p>32-bit RISC-V microcontrollers all run on the same core instruction set.</p>
-<p><em>So the same firmware should run on different brands of RISC-V microcontrollers… Right?</em></p>
+<p><em>32-bit RISC-V microcontrollers all run on the same core instruction set…</em></p>
+<p><em>So the same firmware should run on different RISC-V microcontrollers… Right?</em></p>
 <p>Nope! Because across different brands of RISC-V microcontrollers…</p>
 <ol>
 <li>
@@ -142,12 +128,11 @@
 </li>
 <li>
 <p><strong>Exceptions and Interrupts</strong> also work differently on various RISC-V microcontrollers.</p>
-<p>(FYI: Arm microcontrollers all handle Exceptions and Interrupts the same way)</p>
+<p>(Arm microcontrollers all handle Exceptions and Interrupts the same way)</p>
 </li>
 </ol>
-<p>It’s not so straightforward to port existing RISC-V firmware to BL602.</p>
+<p>Hence the operating systems supported on each RISC-V Microcontroller will vary.</p>
 <h2 id="bl602-vs-other-risc-v-microcontrollers" class="section-header"><a href="#bl602-vs-other-risc-v-microcontrollers">2.1 BL602 vs Other RISC-V Microcontrollers</a></h2>
-<p><em>How bad is the RISC-V firmware portability problem?</em></p>
 <p>Let’s compare BL602 with the two most popular models of 32-bit RISC-V microcontrollers…</p>
 <ol>
 <li>
@@ -155,6 +140,7 @@
 <ul>
 <li>Used in HiFive1 dev board</li>
 <li>Supported by major Real Time Operating Systems (including Mynewt, RIOT and Zephyr)</li>
+<li>Not Supported by NuttX</li>
 </ul>
 </li>
 <li>
@@ -162,135 +148,42 @@
 <ul>
 <li>Used in Pinecil soldering iron and <a href="https://www.seeedstudio.com/catalogsearch/result/?q=Gd32">various dev boards</a></li>
 <li>Supported by PlatformIO development tool</li>
-<li><strong>Not Supported by Mynewt, RIOT and Zephyr</strong></li>
+<li>Not Supported by Mynewt, NuttX and Zephyr</li>
 </ul>
 </li>
 <li>
 <p><a href="https://github.com/pine64/bl602-docs"><strong>BL602</strong></a> (Released 2020)</p>
 <ul>
-<li>No commercial products yet</li>
-<li>Supports Bluetooth LE and WiFi (unlike the earlier microcontrollers)</li>
-<li>Supported by <a href="https://github.com/alibaba/AliOS-Things">FreeRTOS + AliOS</a></li>
-<li><strong>Not Supported by PlatformIO, Mynewt, RIOT and Zephyr</strong></li>
+<li>Used in MagicHome BL602 WiFi LED Controller</li>
+<li>Supports Bluetooth LE and WiFi</li>
+<li>Supported by <a href="https://www.freertos.org/">FreeRTOS</a> and <a href="https://lupyuen.github.io/articles/nuttx">Apache NuttX OS</a></li>
+<li>Zephyr is being ported to BL602 <a href="https://github.com/bouffalolab/bl_mcu_sdk/pull/18">(See this)</a></li>
 </ul>
-<p><a href="https://lupyuen.github.io/articles/nuttx"><strong>UPDATE: Check out Apache NuttX operating system for BL602</strong></a></p>
-<p><a href="https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst"><strong>UPDATE: Check out Zephyr for BL602</strong></a></p>
-<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/pull/18"><strong>UPDATE: Zephyr is being ported to BL602 MCU SDK</strong></a></p>
 </li>
 </ol>
-<p>As we can see, firmware support is not so great for newer RISC-V microcontrollers.</p>
-<p>Firmware created for Pinecil will NOT run on PineCone… Even the simplest firmware for blinking the LED!</p>
-<h2 id="hardware-abstraction-layer" class="section-header"><a href="#hardware-abstraction-layer">2.2 Hardware Abstraction Layer</a></h2>
-<p><a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>UPDATE:</strong> Bouffalo Lab has released a new version of the BL602 IoT SDK</a></p>
-<p><em>How do we create portable firmware for RISC-V?</em></p>
-<p>We’ll have to isolate the differences with a layer of low-level firmware code known as the <strong>Hardware Abstraction Layer (HAL)</strong>.</p>
-<p>So when we port the firmware from, say, Pinecil to PineCone, we need to replace the HAL for GD32 VF103 by the HAL for BL602.</p>
-<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/hal_drv">Check out the BL602 HAL</a></p>
-<h2 id="embedded-operating-systems" class="section-header"><a href="#embedded-operating-systems">2.3 Embedded Operating Systems</a></h2>
-<p><em>Sounds like a lot of tedious repetitive work. Is there a sustainable way to create portable firmware for RISC-V?</em></p>
-<p>Yes, by <strong>adopting a modern Embedded Operating System</strong> like <a href="https://mynewt.apache.org/">Mynewt</a>, <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://www.zephyrproject.org/">Zephyr</a>.</p>
-<p>These operating systems expose a high-level API for various Peripherals (Timers, GPIO, I2C, SPI, …) that works across multiple microcontrollers (for both Arm and RISC-V).</p>
-<p>But first we need to port Mynewt, RIOT and Zephyr to BL602. </p>
-<p>The <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker</strong></a> initiative helps to accelerate the porting process. We’ll pool together the necessary skills and software from the Open Source Community, to make this work.</p>
-<p><a href="https://github.com/nandojve/zephyr/blob/bouffalo/boards/riscv/dt_bl10_devkit/doc/index.rst"><strong>UPDATE: Check out Zephyr for BL602</strong></a></p>
-<p><a href="https://github.com/bouffalolab/bl_mcu_sdk/pull/18"><strong>UPDATE: Zephyr is being ported to BL602 MCU SDK</strong></a></p>
-<p><em>Is there hope for Mynewt / RIOT / Zephyr on BL602?</em></p>
-<p>I shall be porting Mynewt + Rust to BL602, and documenting the porting process. </p>
-<p>Why? Because it’s an educational exercise that helps us better understand the BL602 internals.</p>
-<p>And it will be a helpful reference for porting other Embedded Operating Systems to BL602.</p>
-<p>Let’s talk about the harder PineCone Nutcracker Challenge: Reverse engineering the Bluetooth LE and WiFi drivers for BL602…</p>
-<p><img src="https://lupyuen.github.io/images/pinecone-compare.jpg" alt="BL602 Memory Map vs SiFive FE310: Totally different" /></p>
-<p><em>BL602 Memory Map (left) vs SiFive FE310 (right): Totally different</em></p>
-<h1 id="reverse-engineer-the-bluetooth-le-and-wifi-drivers" class="section-header"><a href="#reverse-engineer-the-bluetooth-le-and-wifi-drivers">3 Reverse Engineer the Bluetooth LE and WiFi Drivers</a></h1>
-<p><em>(This section gets deeply technical about Reverse Enginnering… You may skip to the next section if you’re not working on Bluetooth LE and WiFi)</em></p>
-<p>BL602 feels exciting. The mass market RISC-V microcontrollers never had onboard Bluetooth LE and WiFi… Until now!</p>
-<p>Unfortunately we don’t have complete documentation about the implementation of BLE and WiFi on BL602. (And I totally understand if there are commercial reasons for this omission)</p>
-<p>But we have the compiled RISC-V libraries that we may Reverse Engineer to understand the BLE and WiFi implementation.</p>
-<p>That’s the crux of the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/"><strong>PineCone Nutcracker Challenge</strong></a>… Decompile the Bluetooth LE and WiFi driver code, understand how the RISC-V code operates the wireless hardware.</p>
-<p>Then reimplement the wireless functions the open source way. Perhaps by adapting the wireless drivers from <a href="https://mynewt.apache.org/">Mynewt</a> (<a href="https://github.com/apache/mynewt-nimble">NimBLE</a>), <a href="https://www.riot-os.org/">RIOT</a> and <a href="https://www.zephyrproject.org/">Zephyr</a>.</p>
-<p>Let’s walk through one possible approach for Reverse Engineering the WiFi Driver. (I’m sure there are many other ways to do this, <a href="https://github.com/pine64/bl602-docs/tree/main/hardware_notes">like this</a>)</p>
-<p><strong>UPDATE:</strong> Check out this article on the <strong>Reverse Engineering of BL602 WiFi</strong>…</p>
+<p>BL602 is new but the OS support getting better every day!</p>
+<h1 id="hands-on-with-pinecone-bl602" class="section-header"><a href="#hands-on-with-pinecone-bl602">3 Hands On with PineCone BL602</a></h1>
+<p>Everything about BL602 (and BL604) is explained here…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/wifi"><strong>“Reverse Engineering WiFi on RISC-V BL602”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/book"><strong>“The RISC-V BL602 Book”</strong></a></li>
 </ul>
-<h2 id="how-does-our-wifi-driver-talk-to-the-wifi-controller" class="section-header"><a href="#how-does-our-wifi-driver-talk-to-the-wifi-controller">3.1 How does our WiFi Driver talk to the WiFi Controller?</a></h2>
-<p>From the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">BL602 Reference Manual</a> (Page 17), we see that our RISC-V CPU talks to the WiFi Controller via the <strong><code>WRAM</code> Wireless RAM</strong> at address <code>0x4203 0000</code> onwards.</p>
-<p><img src="https://lupyuen.github.io/images/pinecone-wram.png" alt="PineCone BL602 Wireless RAM" /></p>
-<p>Our WiFi Driver probably reads and writes WiFi packets to/from that 112 KB chunk of Shared Memory. The WiFi Control Registers may be inside too.</p>
-<p>Let’s find out which WiFi Driver functions use that chunk of RAM.</p>
-<h2 id="analyse-the-linker-map" class="section-header"><a href="#analyse-the-linker-map">3.2 Analyse the Linker Map</a></h2>
-<p>The WiFi Drivers that we wish to grok are located here…</p>
-<ul>
-<li><a href="https://github.com/pine64/bl602-re/tree/master/blobs">WiFi Drivers <code>github.com/pine64/bl602-re/blobs</code></a></li>
-</ul>
-<p>…Inside the files <a href="https://github.com/pine64/bl602-re/blob/master/blobs/libatcmd.a"><code>libatcmd.a</code></a> and <a href="https://github.com/pine64/bl602-re/blob/master/blobs/libbl602_wifi.a"><code>libbl602_wifi.a</code></a></p>
-<p>Here is a sample BL602 app that calls the WiFi Functions in <code>libatcmd.a</code> and <code>libbl602_wifi.a</code>…</p>
-<ul>
-<li><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_at">Sample WiFi App <code>bl602_demo_at</code></a></li>
-</ul>
-<p>The PineCone Community has helpfully generated the <strong>GCC Linker Map</strong> for the <code>bl602_demo_at</code> firmware (which includes <code>libatcmd.a</code> and <code>libbl602_wifi.a</code>)…</p>
-<ul>
-<li><a href="https://github.com/pine64/bl602-re/blob/master/blobs/bl602_demo_at.map">Linker Map <code>bl602_demo_at.map</code></a></li>
-</ul>
-<p>I have loaded the <code>bl602_demo_at.map</code> Linker Map into a Google Sheet for analysis…</p>
-<ol>
-<li>
-<p>Click here to open the Google Sheet: <a href="https://docs.google.com/spreadsheets/d/16yHquQ6E4bVj43piwQxssa1RaUr9yq9oL7hVf224Ijk/edit#gid=381366828&amp;fvid=1359565135">PineCone BL602 AT Demo Linker Map</a></p>
-</li>
-<li>
-<p>Click the <code>Symbols</code> Sheet</p>
-</li>
-<li>
-<p>Click <code>Data</code> ➜  <code>Filter Views</code> ➜  <code>None</code></p>
-</li>
-<li>
-<p>Click <code>Data</code> ➜  <code>Filter Views</code> ➜  <code>All Objects By Size</code></p>
-</li>
-<li>
-<p>It takes a while to sort the objects… Be patient</p>
-</li>
-</ol>
-<p><img src="https://lupyuen.github.io/images/pinecone-linkermap.png" alt="PineCone BL602 AT Demo Linker Map" /></p>
-<p>Here we see the list of functions, global variables and static variables defined in <code>bl602_demo_at.map</code>, sorted by size. </p>
-<p>Let’s look at the first page of functions and variables.</p>
-<p><em>(FYI: The Linker Maps loaded into Google Sheet for <a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_wifi"><code>bl602_demo_wifi</code></a> and <a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/sdk_app_ble_sync"><code>sdk_app_ble_sync</code></a> are here: <a href="https://docs.google.com/spreadsheets/d/1m8-fc9_ocOwMuw_oRur4j6xqVli6x-Tm-M5ZIKwNWRk/edit#gid=381366828&amp;fvid=1359565135">Google Sheet for <code>bl602_demo_wifi</code></a>, <a href="https://docs.google.com/spreadsheets/d/1HJev8fdmIMyIxeRFx2cpsq1C5rEYgGZf7Tank3hYK88/edit#gid=381366828&amp;fvid=1359565135">Google Sheet for <code>sdk_app_ble_sync</code></a>)</em></p>
-<h2 id="find-the-wifi-buffers" class="section-header"><a href="#find-the-wifi-buffers">3.3 Find the WiFi Buffers</a></h2>
-<p>Remember that Wireless RAM starts at address <code>0x4203 0000</code>?  I have highlighted in yellow the 19 largest variables in Wireless RAM…</p>
-<div class="example-wrap"><pre class="language-text"><code>__bss_start
-__wifi_bss_start
-rx_dma_hdrdesc
-_data_load
-ram_heap
-...</code></pre></div>
-<p>(The addresses of the variables are shown in the <code>Offset</code> column)</p>
-<p>These are likely the WiFi Buffers that our WiFi Driver uses to send and receive WiFi packets, also to control the WiFi operation.</p>
-<h2 id="identify-the-wifi-functions" class="section-header"><a href="#identify-the-wifi-functions">3.4 Identify the WiFi Functions</a></h2>
-<p><code>rx_dma_hdrdesc</code> looks interesting. It could be the DMA buffer for receiving WiFi packets.  Let’s find out which WiFi Function in the WiFi Driver uses <code>rx_dma_hdrdesc</code>…</p>
-<p>We’ll scan for <code>rx_dma_hdrdesc</code> (and other interesting variables) in the <strong>Decompiled RISC-V Assembly Code</strong> (<code>*.s</code>) that the PineCone Community has generated…</p>
+<p>To create firmware for BL602, we may use one of the following…</p>
 <ul>
 <li>
-<p><a href="https://github.com/pine64/bl602-re/tree/master/libatcmd"><code>libatcmd</code></a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a></p>
+<p>(POSIX Compliant OS, works like a tiny Linux)</p>
 </li>
 <li>
-<p><a href="https://github.com/pine64/bl602-re/tree/master/libbl602_wifi"><code>libbl602_wifi</code></a></p>
+<p><a href="https://github.com/bouffalolab/bl_iot_sdk"><strong>BL602 IoT Software Development Kit</strong></a></p>
+<p>(Based on FreeRTOS)</p>
+</li>
+<li>
+<p><a href="https://github.com/bouffalolab/bl_mcu_sdk"><strong>BL602 MCU Software Development Kit</strong></a></p>
+<p>(Also based on FreeRTOS)</p>
 </li>
 </ul>
-<p>Hopefully we’ll be able to understand the Assembly Code and figure out how the WiFi Buffers are used to send and receive WiFi packets.</p>
-<h2 id="is-there-a-blob-for-the-wifi-controller" class="section-header"><a href="#is-there-a-blob-for-the-wifi-controller">3.5 Is there a Blob for the WiFi Controller?</a></h2>
-<p>What’s really inside the WiFi Controller? </p>
-<p>Could there be some low-level chunk of executable code (non RISC-V) that runs <strong>inside</strong> the WiFi Controller to control the WiFi operations?</p>
-<p>By studying the WiFi Buffers and the associated WiFi Functions, we may uncover the Code Blob that runs inside the WiFi Controller.</p>
-<p><strong>UPDATE:</strong> Check out this article on the <strong>Reverse Engineering of BL602 WiFi</strong>…</p>
+<p>The BL602 docs are located in the <a href="https://github.com/bouffalolab/bl_docs"><strong>BL602 Docs Repo</strong></a>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/wifi"><strong>“Reverse Engineering WiFi on RISC-V BL602”</strong></a></li>
-</ul>
-<p><img src="https://lupyuen.github.io/images/pinecone-day.jpg" alt="PineCone BL602 Evaluation Board" /></p>
-<h1 id="hands-on-with-pinecone-bl602" class="section-header"><a href="#hands-on-with-pinecone-bl602">4 Hands On with PineCone BL602</a></h1>
-<p>The BL602 docs are located in the <a href="https://github.com/pine64/bl602-docs"><strong>BL602 Docs Repo</strong></a>…</p>
-<ul>
-<li>
-<p><a href="https://pine64.github.io/bl602-docs/"><strong>BL602 IoT Software Development Kit</strong></a></p>
-</li>
 <li>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_DS/en"><strong>BL602 Datasheet</strong></a></p>
 </li>
@@ -316,7 +209,7 @@ ram_heap
 <p><a href="https://sifive.cdn.prismic.io/sifive/dffb6a15-80b3-42cb-99e1-23ce6fd1d052_sifive_E24_rtl_full_20G1.03.00_manual.pdf"><strong>SiFive E24 Manual</strong></a></p>
 </li>
 </ul>
-<p>More docs and tools for PineCone BL602 may be found here…</p>
+<p>More docs and tools for BL602 may be found here…</p>
 <ul>
 <li>
 <p><a href="https://wiki.pine64.org/wiki/Nutcracker"><strong>Nutcracker Wiki</strong></a></p>
@@ -325,14 +218,17 @@ ram_heap
 <p><a href="https://github.com/mkroman/awesome-bouffalo"><strong>Awesome Bouffalo</strong></a></p>
 </li>
 </ul>
-<p><em>Which dev boards are supported by the BL602 IoT SDK?</em></p>
-<p>Firmware built with the BL602 IoT SDK will work fine on…</p>
+<p><em>Which dev boards are supported?</em></p>
+<p>Firmware built with NuttX, BL602 IoT SDK and BL602 MCU SDK will work fine on…</p>
 <ol>
 <li>
-<p><a href="https://wiki.pine64.org/wiki/Nutcracker#PineCone_BL602_EVB_information_and_schematics"><strong>Pine64 PineCone</strong></a></p>
+<p><a href="https://wiki.pine64.org/wiki/Nutcracker#PineCone_BL602_EVB_information_and_schematics"><strong>Pine64 PineCone BL602</strong></a></p>
 </li>
 <li>
-<p><a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics"><strong>Pine64 Pinenut</strong></a></p>
+<p><a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics"><strong>Pine64 Pinenut BL602</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pinedio"><strong>Pine64 PineDio Stack BL604</strong></a></p>
 </li>
 <li>
 <p><a href="https://www.cnx-software.com/2020/10/25/bl602-iot-sdk-and-5-dt-bl10-wifi-ble-risc-v-development-board/"><strong>DOIT DT-BL10</strong></a></p>
@@ -344,17 +240,20 @@ ram_heap
 <p><a href="https://kvrhdn.dev/blog/programming-the-bl602-evb-using-openocd-gdb-and-rust/"><strong>Sipeed BL602 EVB</strong></a></p>
 </li>
 </ol>
-<p>The programs published on this site (in the “PineCone” series of articles) will run on any of these boards.</p>
-<p>Just note that the boards have different jumpers, buttons and LEDs.</p>
-<h2 id="form-factor" class="section-header"><a href="#form-factor">4.1 Form Factor</a></h2>
+<p>Note that the boards have different jumpers, buttons and LEDs.</p>
+<h2 id="form-factor" class="section-header"><a href="#form-factor">3.1 Form Factor</a></h2>
 <p>The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like <a href="https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code">EBYTE E73-TBB</a> (which is based on nRF52832)</p>
 <p>The PineCone board comes with a <strong>USB-C Connector</strong>. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.</p>
 <p><em>(PineCone’s USB Vendor ID is <code>0x1A86</code>, Product ID is <code>0x7523</code>)</em></p>
 <p><a href="https://youtu.be/WJLp-i2YtdY">Watch on YouTube</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash.png" alt="Flashing PineCone with Dev Cube" /></p>
 <p><em>Flashing PineCone with Dev Cube</em></p>
-<h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">4.2 Flashing Firmware</a></h2>
-<p>We flash RISC-V firmware to the PineCone board through the <strong>USB Serial Connection</strong> using the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html"><strong>Dev Cube Tool</strong></a>…</p>
+<h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">3.2 Flashing Firmware</a></h2>
+<p>To flash Apache NuttX Firmware to BL602, see this…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></li>
+</ul>
+<p>For BL602 IoT SDK: We flash firmware to the BL602 board through the <strong>USB Serial Connection</strong> using the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html"><strong>Dev Cube Tool</strong></a>…</p>
 <ol>
 <li>
 <p>Set the <strong>PineCone Jumper</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
@@ -366,10 +265,10 @@ ram_heap
 <p>Or download this Hello World sample firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin"><code>sdk_app_helloworld.bin</code></a></p>
 </li>
 <li>
-<p>Download the <strong>PineCone SDK <code>bl_iot_sdk</code></strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/pine64/bl_iot_sdk</code></pre></div></li>
+<p>Download the <strong>BL602 IoT SDK</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/bouffalolab/bl_iot_sdk</code></pre></div></li>
 <li>
-<p>Launch Dev Cube for Windows, located in the PineCone SDK at <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code></p>
+<p>Launch Dev Cube for Windows, located at <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code></p>
 </li>
 <li>
 <p>Select Chip Type <code>BL602/604</code>, click <code>Finish</code></p>
@@ -448,7 +347,7 @@ Program Finished</code></pre></div>
 <p><a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
 </li>
 </ul>
-<h3 id="other-flashing-tools" class="section-header"><a href="#other-flashing-tools">4.2.1 Other Flashing Tools</a></h3>
+<h3 id="other-flashing-tools" class="section-header"><a href="#other-flashing-tools">3.2.1 Other Flashing Tools</a></h3>
 <p><em>Are there command-line tools for flashing firmware to PineCone on Linux, macOS and Windows?</em></p>
 <p>Check out the article…</p>
 <ul>
@@ -464,9 +363,12 @@ Program Finished</code></pre></div>
 <p>Sorry no. SWD is available only on Arm Microcontrollers. <a href="https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi">(SWD was created by Arm)</a></p>
 <p>The UART flashing protocol for PineCone is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a> doc.</p>
 <p><em>(The <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 Flash Programming</a> doc seems to suggest that BL602 may also be flashed from an SD Card via Secure Digital Input/Output)</em></p>
-<h2 id="building-firmware" class="section-header"><a href="#building-firmware">4.3 Building Firmware</a></h2>
-<p><a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>UPDATE:</strong> Bouffalo Lab has released a new version of the BL602 IoT SDK</a></p>
-<p>We may use Linux, Windows or macOS to build the BL602 firmware…</p>
+<h2 id="building-firmware" class="section-header"><a href="#building-firmware">3.3 Building Firmware</a></h2>
+<p>To build Apache NuttX Firmware for BL602, see this…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></li>
+</ul>
+<p>For BL602 IoT SDK: We may use Linux, Windows or macOS to build the BL602 firmware…</p>
 <ul>
 <li>
 <p>If we haven’t done so, download the PineCone <strong>BL602 IoT SDK <code>bl_iot_sdk</code></strong>…</p>
@@ -491,9 +393,9 @@ make</code></pre></div>
 </li>
 </ul>
 <p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don’t work under WSL… Beware!)</p>
-<p>The built firmware includes <a href="https://github.com/alibaba/AliOS-Things">FreeRTOS + AliOS</a> for <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/bl602_demo_at/bl602_demo_at/main.c#L629-L833">handing Bluetooth LE and WiFi operations in the background</a>. <a href="https://github.com/pine64/bl_iot_sdk/tree/master/components/bl602">More details</a></p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>UPDATE:</strong> Bouffalo Lab has released a new version of the BL602 IoT SDK</a></p>
 <p><em>Can we download the firmware without building it ourselves?</em></p>
-<p>The firmware is built automatically in the cloud by GitHub Actions…</p>
+<p>For BL602 IoT SDK the firmware is built automatically in the cloud by GitHub Actions…</p>
 <ul>
 <li>
 <p>Download the built firmware from GitHub Actions: 
@@ -508,10 +410,11 @@ make</code></pre></div>
 </li>
 </ul>
 <p>If we have trouble building the firmware on our own, just download the built firmware images from above.</p>
-<p>The downloaded firmware images <code>*.bin</code> may be flashed to PineCone with the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html">BLFlashEnv Tool</a> on Linux and Windows. (No need for MSYS2)</p>
-<h2 id="development-tools" class="section-header"><a href="#development-tools">4.4 Development Tools</a></h2>
-<p>The development tools supported for BL602 are…</p>
-<ol>
+<p>The downloaded firmware images <code>*.bin</code> may be flashed to BL602 with the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html">BLFlashEnv Tool</a> on Linux and Windows. (No need for MSYS2)</p>
+<h2 id="development-tools" class="section-header"><a href="#development-tools">3.4 Development Tools</a></h2>
+<p><a href="https://code.visualstudio.com/"><strong>VSCode</strong></a> works fine for creating BL602 firmware with Apache NuttX OS, BL602 IoT SDK and BL602 MCU SDK.</p>
+<p>For BL602 IoT SDK: The official development tools are…</p>
+<ul>
 <li>
 <p><a href="https://pine64.github.io/bl602-docs/Developer_Environment/freedom_studio/freedom_studio.html"><strong>SiFive Freedom Studio</strong></a></p>
 <p>(Because BL602 is based on <a href="https://www.sifive.com/cores/e21">SiFive’s E21 or E24 RISC-V Core</a>)</p>
@@ -519,34 +422,29 @@ make</code></pre></div>
 <li>
 <p><a href="https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html"><strong>Eclipse</strong></a></p>
 </li>
-</ol>
-<p><em>(For the BL602 port of Mynewt: I’ll be using VSCode as the development tool. Firmware build will be supported on plain old Windows CMD (without MSYS2 / WSL), macOS, Linux, GitHub Actions and GitLab CI. More about <a href="https://lupyuen.github.io/articles/porting-apache-mynewt-os-to-gigadevice-gd32-vf103-on-risc-v">porting Mynewt to RISC-V</a> and <a href="https://lupyuen.github.io/articles/hey-gd32-vf103-on-risc-v-i-surrender-for-now">how it got stuck</a>)</em></p>
-<h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">4.5 Debugging Firmware</a></h2>
-<p>There’s an entire article about debugging PineCone Firmware with OpenOCD and JTAG…</p>
-<p><a href="https://lupyuen.github.io/articles/openocd">“Connect PineCone BL602 to OpenOCD”</a></p>
-<h2 id="testing-the-firmware" class="section-header"><a href="#testing-the-firmware">4.6 Testing the Firmware</a></h2>
-<p>When we port to BL602 a sizeable piece of firmware (or an Embedded Operating System like Mynewt), testing the firmware can get challenging.</p>
-<p>For embedded gadgets like PineTime, the sensors and display are connected. Which makes it easier to test the Input/Output Ports (like I2C and SPI).</p>
-<p>PineCone is a bare board with no sensors and actuators, so we need to wire up additional components to test the firmware. (I’ll probably use <a href="http://dangerousprototypes.com/docs/Bus_Pirate">Bus Pirate</a> to test my BL602 port of Mynewt + Rust)</p>
-<p><em>(FYI: SiFive’s <a href="https://www.hifiveinventor.com/user-guide/overview">Doctor Who HiFive Inventor</a> is an educational RISC-V board with onboard sensors and LED display. Would be great if Pine64 could add sensors and a display to BL602 for easier testing!)</em></p>
-<h2 id="learning-risc-v-and-bl602" class="section-header"><a href="#learning-risc-v-and-bl602">4.7 Learning RISC-V and BL602</a></h2>
-<p><em>How shall we learn about writing RISC-V firmware for BL602?</em></p>
-<ul>
-<li>
-<p>Check out the “Hello World” sample firmware…</p>
-<p><a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld"><code>bl_iot_sdk/customer_app/sdk_app_helloworld</code></a></p>
-<p>Start by reading the C source file: <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c"><code>main.c</code></a></p>
-</li>
-<li>
-<p>Then browse the other firmware samples in the BL602 IoT SDK…</p>
-<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app"><code>bl_iot_sdk/customer_app</code></a></p>
-</li>
-<li>
-<p>Some of the firmware samples <a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">are documented here</a></p>
-</li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">5 What’s Next</a></h1>
-<p>Getting involved with the <a href="https://www.pine64.org/2020/10/28/nutcracker-challenge-blob-free-wifi-ble/">PineCone Nutcracker Challenge</a> is a great way to learn about RISC-V… Especially for Embedded Engineers exploring Arm alternatives.</p>
+<h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">3.5 Debugging Firmware</a></h2>
+<p>There’s an entire article about debugging BL602 Firmware with OpenOCD and JTAG…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/openocd"><strong>“Connect PineCone BL602 to OpenOCD”</strong></a></li>
+</ul>
+<h2 id="learning-risc-v-and-bl602" class="section-header"><a href="#learning-risc-v-and-bl602">3.6 Learning RISC-V and BL602</a></h2>
+<p><em>How shall we learn about writing RISC-V firmware for BL602?</em></p>
+<p>For Apache NuttX OS: Check out this article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx"><strong>“Apache NuttX OS on RISC-V BL602 and BL604”</strong></a></li>
+</ul>
+<p>For BL602 IoT SDK: Check out the “Hello World” sample firmware…</p>
+<ul>
+<li><a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld">bl_iot_sdk/customer_app/sdk_app_helloworld</a></li>
+</ul>
+<p>Start by reading the C source file: <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c"><code>main.c</code></a></p>
+<p>Then browse the other firmware samples in the BL602 IoT SDK…</p>
+<ul>
+<li><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app">bl_iot_sdk/customer_app</a></li>
+</ul>
+<p>Some of the firmware samples <a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">are documented here</a></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">4 What’s Next</a></h1>
 <p>We’re in the middle of a pandemic. Why not take the time to learn some RISC-V… And contribute to the RISC-V Open Source Ecosystem!</p>
 <ul>
 <li>
@@ -564,7 +462,7 @@ make</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinecone.md"><code>lupyuen.github.io/src/pinecone.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">6 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">5 Notes</a></h1>
 <ol>
 <li>
 <p>I’m not a Pine64 employee and I’m not paid by Pine64 to write these articles on BL602. </p>
@@ -572,73 +470,15 @@ make</code></pre></div>
 <p>(I’m not connected to Bouffalo Lab either)</p>
 </li>
 <li>
-<p>Besides Pine64 PineCone, there are other dev boards based on BL602…</p>
-<ul>
-<li>
-<p><a href="https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics"><strong>Pine64 Pinenut</strong></a></p>
-</li>
-<li>
-<p><a href="https://www.cnx-software.com/2020/10/25/bl602-iot-sdk-and-5-dt-bl10-wifi-ble-risc-v-development-board/"><strong>DOIT DT-BL10</strong></a></p>
-</li>
-<li>
-<p><a href="https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/gn7rw3i?utm_source=share&amp;utm_medium=web2x&amp;context=3"><strong>MagicHome BL602 WiFi LED Controller</strong></a></p>
-</li>
-<li>
-<p><a href="https://kvrhdn.dev/blog/programming-the-bl602-evb-using-openocd-gdb-and-rust/"><strong>Sipeed BL602 EVB</strong></a></p>
-</li>
-</ul>
-<p>They are based on the same BL602 IoT SDK, so the same firmware should work on the various boards.</p>
-<p>The programs published on this site (in the “PineCone” series of articles) will run on any of these boards.</p>
-<p>Just note that the boards have different jumpers, buttons and LEDs.</p>
-</li>
-<li>
-<p>BL602 Bluetooth LE and WiFi are working … But we need help to reverse engineer the blobs! 🙏</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.github.io/articles/wifi"><strong>“Reverse Engineering WiFi on RISC-V BL602”</strong></a></p>
-</li>
-<li>
-<p><a href="https://pine64.github.io/bl602-docs/Components/BLE/ble_stack/ble_stack.html"><strong>BLE Docs</strong></a></p>
-</li>
-<li>
-<p><a href="https://pine64.github.io/bl602-docs/Components/Network/wifi/wifi.html"><strong>WiFi Docs (Chinese)</strong></a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>Here are the Bluetooth LE and WiFi demo apps and source code…</p>
-<ul>
-<li>
-<p><a href="https://pine64.github.io/bl602-docs/Examples/demo_ble/ble.html"><strong>BLE Demo</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_event"><strong>BLE Source Code</strong></a></p>
-</li>
-<li>
-<p><a href="https://pine64.github.io/bl602-docs/Examples/demo_wifi/wifi.html"><strong>WiFi Demo</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app/bl602_demo_wifi"><strong>WiFi Source Code</strong></a></p>
-</li>
-</ul>
-<p>The WiFi Source Code is explained in this article…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/wifi"><strong>“Reverse Engineering WiFi on RISC-V BL602”</strong></a></li>
-</ul>
-</li>
-<li>
 <p>Can we flash firmware to PineCone via a Web Browser through the <a href="https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc"><strong>Web Serial API</strong></a>? That would be really interesting.</p>
 <p>The Web Serial API works OK for <strong>sending commands to the BL602 Command Line Interface</strong>. <a href="https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api">(See this)</a></p>
 </li>
 <li>
-<p>Took me a while to realise that BL602 IoT SDK is <a href="https://github.com/alibaba/AliOS-Things"><strong>built with AliOS</strong></a> (with FreeRTOS underneath)</p>
-<p><a href="https://twitter.com/MisterTechBlog/status/1355181209404334083?s=20">See this Twitter Thread</a></p>
-</li>
-<li>
-<p><strong>UPDATE:</strong> Bouffalo Lab has released a revamped version of the BL602 IoT SDK based on the new “hosal” HAL.</p>
+<p><strong>UPDATE:</strong> Bouffalo Lab has released a <strong>revamped version of the BL602 IoT SDK</strong> based on the new “hosal” HAL.</p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1456259223323508748">(See this Twitter Thread)</a></p>
-<p>We have <strong>no plans yet to merge with the new HAL</strong>, because it will impact all the articles and code that we have written for <a href="https://lupyuen.github.io/articles/book"><strong>“The RISC-V BL602 / BL604 Book”</strong></a>.</p>
-<p>How shall we proceed? Lemme know what you think! 🙏</p>
+<p>We have <strong>no plans to merge with the new HAL</strong>, because it will impact all the articles and code on BL602 IoT SDK that we have written for <a href="https://lupyuen.github.io/articles/book"><strong>“The RISC-V BL602 / BL604 Book”</strong></a>.</p>
+<p>All new articles will be based on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a>, which is not affected by the change.</p>
+<p>(NuttX uses its own community-supported HAL for BL602)</p>
 </li>
 </ol>
 
