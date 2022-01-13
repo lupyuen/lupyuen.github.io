@@ -64,7 +64,7 @@ Hence the operating systems supported on each RISC-V Microcontroller will vary.
 
 ## BL602 vs Other RISC-V Microcontrollers
 
-Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontrollers...
+Let's compare BL602 with two popular 32-bit RISC-V microcontrollers...
 
 1.  [__SiFive FE310__](https://www.sifive.com/chip-designer) (Released 2017)
     -   Used in HiFive1 dev board
@@ -76,13 +76,13 @@ Let's compare BL602 with the two most popular models of 32-bit RISC-V microcontr
     -   Supported by PlatformIO development tool
     -   Not Supported by Mynewt, NuttX and Zephyr
 
-1.  [__BL602__](https://github.com/pine64/bl602-docs) (Released 2020)
+1.  [__Bouffalo Lab BL602__](https://github.com/pine64/bl602-docs) (Released 2020)
     -   Used in MagicHome BL602 WiFi LED Controller
-    -   Supports Bluetooth LE and WiFi
-    -   Supported by [FreeRTOS](https://www.freertos.org/) and [Apache NuttX OS](https://lupyuen.github.io/articles/nuttx)
+    -   Supports WiFi, Bluetooth LE and Hardware Floating-Point
+    -   Supported by [Apache NuttX OS](https://lupyuen.github.io/articles/nuttx) and [FreeRTOS](https://www.freertos.org/)
     -   Zephyr is being ported to BL602 [(See this)](https://github.com/bouffalolab/bl_mcu_sdk/pull/18)
 
-BL602 is new but the OS support getting better every day!
+BL602 is new but the OS support gets better every day!
 
 # Hands On with PineCone BL602
 
@@ -94,15 +94,15 @@ To create firmware for BL602, we may use one of the following...
 
 -   [__Apache NuttX OS__](https://lupyuen.github.io/articles/nuttx)
 
-    (POSIX Compliant OS, works like a tiny Linux)
+    (Supports WiFi and is POSIX Compliant, works like a tiny Linux)
 
 -   [__BL602 IoT Software Development Kit__](https://github.com/bouffalolab/bl_iot_sdk)
 
-    (Based on FreeRTOS)
+    (Supports WiFi and is based on FreeRTOS)
 
 -   [__BL602 MCU Software Development Kit__](https://github.com/bouffalolab/bl_mcu_sdk)
 
-    (Also based on FreeRTOS)
+    (Doesn't support WiFi, also based on FreeRTOS)
 
 The BL602 docs are located in the [__BL602 Docs Repo__](https://github.com/bouffalolab/bl_docs)...
 
@@ -156,9 +156,9 @@ _(PineCone's USB Vendor ID is `0x1A86`, Product ID is `0x7523`)_
 
 [Watch on YouTube](https://youtu.be/WJLp-i2YtdY)
 
-![Flashing PineCone with Dev Cube](https://lupyuen.github.io/images/pinecone-flash.png)
+![Flashing BL602 with Dev Cube](https://lupyuen.github.io/images/pinecone-flash.png)
 
-_Flashing PineCone with Dev Cube_
+_Flashing BL602 with Dev Cube_
 
 ## Flashing Firmware
 
@@ -301,7 +301,7 @@ To build Apache NuttX Firmware for BL602, see this...
 
 For BL602 IoT SDK: We may use Linux, Windows or macOS to build the BL602 firmware...
 
--   If we haven't done so, download the PineCone __BL602 IoT SDK `bl_iot_sdk`__...
+-   Download the __BL602 IoT SDK__...
 
     ```bash
     git clone --recursive https://github.com/pine64/bl_iot_sdk
