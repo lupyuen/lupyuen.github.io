@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _9 Jan 2022_
+📝 _13 Jan 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -50,19 +50,15 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 -   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
 
+-   ["ADC and Internal Temperature Sensor Library"](https://github.com/lupyuen/bl602_adc_test)
+
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
 # Projects and Libraries on BL602
 
 How to create a simple __Blinky Project__ for BL602 / BL604 and build the project.
 
--   ["BL602 Blinky in C"](https://lupyuen.github.io/articles/rust#bl602-blinky-in-c)
-
--   ["How To Create BL602 Projects"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-projects)
-
--   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
-
-For __Apache NuttX OS__...
+For __Apache NuttX OS__
 
 -   ["How To Create NuttX Apps"](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-app)
 
@@ -70,7 +66,15 @@ For __Apache NuttX OS__...
 
 -   ["How To Create NuttX Libraries"](https://lupyuen.github.io/articles/sx1262#appendix-create-a-nuttx-library)
 
-For __Rust__...
+For __BL602 IoT SDK__
+
+-   ["BL602 Blinky in C"](https://lupyuen.github.io/articles/rust#bl602-blinky-in-c)
+
+-   ["How To Create BL602 Projects"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-projects)
+
+-   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
+
+For __Rust__
 
 -   ["How To Create Rust Projects"](https://lupyuen.github.io/articles/adc#create-a-bl602-rust-project)
 
@@ -92,23 +96,27 @@ How we __flash firmware__ to BL602 and BL604 with __command-line tools__ on Linu
 
 Learn to call the BL602 / BL604 __GPIO Hardware Abstraction Layer (HAL)__ (or NuttX) to blink an LED.
 
+For __Apache NuttX OS__
+
+-   ["GPIO on NuttX"](https://lupyuen.github.io/articles/nuttx#gpio-demo)
+
+-   ["GPIO Interrupts on NuttX"](https://lupyuen.github.io/articles/sx1262#gpio-interface)
+
+For __BL602 IoT SDK__
+
 -   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
 
 -   ["Porting LoRa Driver from Mynewt to BL602: GPIO"](https://lupyuen.github.io/articles/lora#gpio)
 
 -   ["BL602 GPIO Interrupts"](https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts)
 
-For __Apache NuttX OS__...
-
--   ["GPIO on NuttX"](https://lupyuen.github.io/articles/nuttx#gpio-demo)
-
--   ["GPIO Interrupts on NuttX"](https://lupyuen.github.io/articles/sx1262#gpio-interface)
-
 ![PWM on BL602](https://lupyuen.github.io/images/book-pwm.jpg)
 
 # PWM on BL602
 
 Duty Cycle, Frequency and everything else about the __BL602 / BL604 PWM HAL__.
+
+For __BL602 IoT SDK__
 
 -   ["From GPIO to Pulse Width Modulation (PWM)"](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm)
 
@@ -118,6 +126,8 @@ Duty Cycle, Frequency and everything else about the __BL602 / BL604 PWM HAL__.
 
 Read an I2C Sensor by calling the __BL602 / BL604 I2C HAL__.
 
+For __BL602 IoT SDK__
+
 -   ["PineCone BL602 talks to I2C Sensors"](https://lupyuen.github.io/articles/i2c)
 
 ![SPI on BL602](https://lupyuen.github.io/images/book-spi.jpg)
@@ -126,23 +136,27 @@ Read an I2C Sensor by calling the __BL602 / BL604 I2C HAL__.
 
 How we call the __BL602 / BL604 SPI HAL__ to access SPI Sensors, Displays and Network Transceivers.
 
+For __Apache NuttX OS__
+
+-   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
+
+-   ["SPI Interface on NuttX"](https://lupyuen.github.io/articles/sx1262#spi-interface)
+
+For __BL602 IoT SDK__
+
 -   ["PineCone BL602 talks SPI too!"](https://lupyuen.github.io/articles/spi)
 
 -   ["PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"](https://lupyuen.github.io/articles/display)
 
 -   ["Porting LoRa Driver from Mynewt to BL602: SPI"](https://lupyuen.github.io/articles/lora#spi)
 
-For __Apache NuttX OS__...
-
--   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
-
--   ["SPI Interface on NuttX"](https://lupyuen.github.io/articles/sx1262#spi-interface)
-
 ![DMA on BL602](https://lupyuen.github.io/images/book-dma.jpg)
 
 # DMA on BL602
 
 How we __accelerate data transfers with DMA__ on BL602 and BL604.
+
+For __BL602 IoT SDK__
 
 -   ["SPI with Direct Memory Access"](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
 
@@ -154,6 +168,8 @@ How we __accelerate data transfers with DMA__ on BL602 and BL604.
 
 UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the __BL602 / BL604 UART HAL.__
 
+For __BL602 IoT SDK__
+
 -   ["PineCone BL602 Talks UART to Grove E-Ink Display"](https://lupyuen.github.io/articles/uart)
 
 ![ADC on BL602](https://lupyuen.github.io/images/book-adc.jpg)
@@ -161,6 +177,12 @@ UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to 
 # ADC on BL602
 
 How we read __Analog Inputs with ADC__ on BL602 and BL604.
+
+For __Apache NuttX OS__
+
+-   ["ADC and Internal Temperature Sensor Library"](https://github.com/lupyuen/bl602_adc_test)
+
+For __BL602 IoT SDK__
 
 -   ["BL602 ADC in C"](https://lupyuen.github.io/articles/adc#bl602-adc-in-c)
 
@@ -174,6 +196,8 @@ How we read __Analog Inputs with ADC__ on BL602 and BL604.
 
 What happens inside the __WiFi Driver__ on BL602 and BL604.
 
+For __BL602 IoT SDK__
+
 -   [Reverse Engineering WiFi on RISC-V BL602](https://lupyuen.github.io/articles/wifi)
 
 ![Graphics on BL602](https://lupyuen.github.io/images/book-display.jpg)
@@ -181,6 +205,8 @@ What happens inside the __WiFi Driver__ on BL602 and BL604.
 # Graphics on BL602
 
 Render text and graphics with the open-source __LVGL Library__.
+
+For __BL602 IoT SDK__
 
 -   ["PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"](https://lupyuen.github.io/articles/display)
 
@@ -192,11 +218,13 @@ Render text and graphics with the open-source __LVGL Library__.
 
 Multitasking the easy way with __NimBLE Porting Layer__.
 
--   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
-
-For __Apache NuttX OS__...
+For __Apache NuttX OS__
 
 -   ["Multithreading with NimBLE Porting Layer"](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
+
+For __BL602 IoT SDK__
+
+-   ["Multitask with NimBLE Porting Layer"](https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer)
 
 ![LoRa on BL602](https://lupyuen.github.io/images/book-lora.jpg)
 
@@ -204,13 +232,7 @@ For __Apache NuttX OS__...
 
 Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, low power LoRa packets__...
 
--   ["PineCone BL602 Talks LoRaWAN"](https://lupyuen.github.io/articles/lorawan)
-
--   ["LoRaWAN on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/lorawan2)
-
--   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
-
-For __Apache NuttX OS__...
+For __Apache NuttX OS__
 
 -   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
 
@@ -220,13 +242,21 @@ For __Apache NuttX OS__...
 
 -   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
 
-Connecting BL602 and BL604 to a __LoRa Gateway__...
+For __BL602 IoT SDK__
+
+-   ["PineCone BL602 Talks LoRaWAN"](https://lupyuen.github.io/articles/lorawan)
+
+-   ["LoRaWAN on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/lorawan2)
+
+-   ["The Things Network on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/ttn)
+
+Connecting BL602 and BL604 to a __LoRa Gateway__
 
 -   ["PineDio LoRa Gateway: Testing The Prototype"](https://lupyuen.github.io/articles/gateway)
 
 -   ["Build a LoRaWAN Network with RAKwireless WisGate Developer Gateway"](https://lupyuen.github.io/articles/wisgate)
 
-Transmitting __Sensor Data__ on BL602 and BL604...
+Transmitting __Sensor Data__ on BL602 and BL604
 
 -   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
 
@@ -234,7 +264,7 @@ Transmitting __Sensor Data__ on BL602 and BL604...
 
 -   ["CBOR Payload Formatter for The Things Network"](https://lupyuen.github.io/articles/payload)
 
-Monitoring BL602 and BL604 with __Prometheus, Grafana and Roblox__...
+Monitoring BL602 and BL604 with __Prometheus, Grafana and Roblox__
 
 -   ["Monitor IoT Devices in The Things Network with Prometheus and Grafana"](https://lupyuen.github.io/articles/prometheus)
 
@@ -242,11 +272,11 @@ Monitoring BL602 and BL604 with __Prometheus, Grafana and Roblox__...
 
 -   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
 
-__PineDio USB__ uses the same LoRa SX1262 Driver as BL602 and BL604...
+__PineDio USB__ uses the same LoRa SX1262 Driver as BL602 and BL604
 
 -   ["Build a Linux Driver for PineDio LoRa SX1262 USB Adapter"](https://lupyuen.github.io/articles/usb)
 
-Below are the older articles for __LoRa SX1276 Transceiver__...
+Below are the older articles for __LoRa SX1276 Transceiver__
 
 -   ["Connect PineCone BL602 to LoRa Transceiver (SX1276)"](https://lupyuen.github.io/articles/lora)
 
@@ -260,6 +290,12 @@ Below are the older articles for __LoRa SX1276 Transceiver__...
 
 How we code BL602 and BL604 firmware the __safer, simpler way with Rust.__
 
+For __Apache NuttX OS__
+
+-   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
+
+For __BL602 IoT SDK__
+
 -   ["Rust on RISC-V BL602: Is It Sunny?"](https://lupyuen.github.io/articles/adc)
 
 -   ["Rust on RISC-V BL602: Simulated with WebAssembly"](https://lupyuen.github.io/articles/rustsim)
@@ -272,15 +308,13 @@ How we code BL602 and BL604 firmware the __safer, simpler way with Rust.__
 
 -   ["Rust in XIP Flash Memory by 9names"](https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways)
 
-For __Apache NuttX OS__...
-
--   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
-
 ![BASIC on BL602](https://lupyuen.github.io/images/book-basic.jpg)
 
 # BASIC on BL602
 
 Running the NuttX __BASIC Interpreter__ for BL602 and BL604.
+
+For __Apache NuttX OS__
 
 -   ["BASIC Interpreter on NuttX"](https://lupyuen.github.io/articles/nuttx#basic-interpreter)
 
@@ -289,6 +323,8 @@ Running the NuttX __BASIC Interpreter__ for BL602 and BL604.
 # Lisp on BL602
 
 Porting the __uLisp Interpreter__ to BL602 / BL604... And writing graphical programs with __Blockly (Scratch)__.
+
+For __BL602 IoT SDK__
 
 -   ["uLisp and Blockly on PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/lisp)
 
@@ -300,6 +336,8 @@ Porting the __uLisp Interpreter__ to BL602 / BL604... And writing graphical prog
 
 How we run __TensorFlow Lite__ on BL602 and BL604 to create a Glowing LED.
 
+For __BL602 IoT SDK__
+
 -   ["Machine Learning on RISC-V BL602 with TensorFlow Lite"](https://lupyuen.github.io/articles/tflite)
 
 ![OpenOCD on BL602](https://lupyuen.github.io/images/book-openocd.jpg)
@@ -308,6 +346,8 @@ How we run __TensorFlow Lite__ on BL602 and BL604 to create a Glowing LED.
 
 Before debugging BL602 / BL604, we install __OpenOCD__ to connect a __JTAG Debugger__.
 
+For __BL602 IoT SDK__
+
 -   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
 
 ![GDB and VSCode on BL602](https://lupyuen.github.io/images/book-debug.jpg)
@@ -315,6 +355,8 @@ Before debugging BL602 / BL604, we install __OpenOCD__ to connect a __JTAG Debug
 # GDB and VSCode on BL602
 
 How we __debug BL602 / BL604 firmware__ with GDB and VSCode.
+
+For __BL602 IoT SDK__
 
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
@@ -325,6 +367,8 @@ How we __debug BL602 / BL604 firmware__ with GDB and VSCode.
 # Troubleshooting BL602
 
 Tips for __troubleshooting BL602 and BL604 firmware__.
+
+For __BL602 IoT SDK__
 
 -   ["How to Troubleshoot RISC-V Exceptions"](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
 
@@ -348,6 +392,20 @@ All about the __BL602 / BL604 Bootloader__... And how it loads the Application F
 
 Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard LoRa SX1262 Transceiver. 
 
+For __Apache NuttX OS__
+
+-   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
+
+-   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
+
+-   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
+
+-   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
+
+-   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
+
+For __BL602 IoT SDK__
+
 -   ["PineDio Stack BL604 RISC-V Board: Testing The Prototype"](https://lupyuen.github.io/articles/pinedio)
 
 -   ["PineDio Stack BL604 Version 2 (15 Sep 2021)"](https://lupyuen.github.io/articles/spi2#test-with-pinedio-stack)
@@ -365,18 +423,6 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 -   ["Grafana Data Source for The Things Network"](https://lupyuen.github.io/articles/grafana)
 
 -   ["PineDio LoRa Gateway: Testing The Prototype"](https://lupyuen.github.io/articles/gateway)
-
-For __Apache NuttX OS__...
-
--   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
-
--   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
-
--   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
-
--   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
-
--   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
 
 ![BL706 Audio Video Board](https://lupyuen.github.io/images/book-bl706.jpg)
 
@@ -404,7 +450,7 @@ Check this book again for future updates...
 
 1.  __IoT Education with BL602 and BL604__
 
-1.  __LoRaWAN and Rust on NuttX__
+1.  __The Things Network on NuttX__
 
 ![About the Author](https://lupyuen.github.io/images/book-advocate.jpg)
 
