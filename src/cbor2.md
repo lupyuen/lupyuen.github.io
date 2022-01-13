@@ -599,11 +599,17 @@ In the next few articles we'll build a __complete IoT Sensor Device__ with NuttX
 
     [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
-1.  Read BL602's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/tsen) to get real Sensor Data
+1.  Read BL602's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/tsen) to get real Sensor Data...
 
-1.  Compress the Sensor Data with CBOR, as explained in this article
+    [__"ADC and Internal Temperature Sensor Library"__](https://github.com/lupyuen/bl602_adc_test)
 
-1.  Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN (pic below)
+1.  Compress the Sensor Data with CBOR
+
+    (As explained in this article)
+
+1.  Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN
+    
+    (Pic below)
 
 But first we'll take a short detour to explore [__Rust on NuttX__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx)...
 

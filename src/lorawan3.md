@@ -1290,9 +1290,13 @@ Now that LoRaWAN is up, we'll carry on in the next few articles...
 
     [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
 
--   Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN (pic below)
+-   Transmit the compressed Sensor Data to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN
 
--   We'll read BL602's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/tsen) to get real Sensor Data
+    (Pic below)
+
+-   We'll read BL602's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/tsen) to get real Sensor Data...
+
+    [__"ADC and Internal Temperature Sensor Library"__](https://github.com/lupyuen/bl602_adc_test)
 
 _We're porting plenty of code to NuttX: LoRa, LoRaWAN and NimBLE Porting Layer. Do we expect any problems?_
 
