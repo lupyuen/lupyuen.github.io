@@ -468,10 +468,10 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 <span class="doccomment">/// Based on `hal_adc_init` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L50-L102&gt;</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>             <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">init_adc</span>(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
-  <span class="ident">_result</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,        <span class="comment">//  Result to be returned to command-line interface (char *)</span>
+  <span class="ident">_result</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>,        <span class="comment">//  Result to be returned to command-line interface (char *)</span>
   <span class="ident">_len</span>:  <span class="ident">i32</span>,              <span class="comment">//  Size of result buffer (int)</span>
   <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
-  <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
+  <span class="ident">_argv</span>: <span class="kw-2">*const</span> <span class="kw-2">*const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
 ) {
   <span class="ident">puts</span>(<span class="string">&quot;[Rust] Init ADC&quot;</span>);</code></pre></div>
 <p>(We won’t be parsing the command-line arguments, so let’s ignore the parameters passed to <code>init_adc</code>)</p>
@@ -526,7 +526,7 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
   <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {     <span class="comment">//  Unsafe because we are casting a pointer</span>
     <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
       <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
-      <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
+      <span class="kw-2">*mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
     <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
   };</code></pre></div>
 <p>(More about <code>transmute</code> in the Appendix)</p>
@@ -553,10 +553,10 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 <span class="doccomment">/// Based on `hal_adc_get_data` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L142-L179&gt;</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>              <span class="comment">//  Don&#39;t mangle the function name</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">read_adc</span>(   <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
-  <span class="ident">_result</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,        <span class="comment">//  Result to be returned to command-line interface (char *)</span>
+  <span class="ident">_result</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>,        <span class="comment">//  Result to be returned to command-line interface (char *)</span>
   <span class="ident">_len</span>:  <span class="ident">i32</span>,              <span class="comment">//  Size of result buffer (int)</span>
   <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
-  <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
+  <span class="ident">_argv</span>: <span class="kw-2">*const</span> <span class="kw-2">*const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
 ) {</code></pre></div>
 <p>First we fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
 
@@ -573,7 +573,7 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
   <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {     <span class="comment">//  Unsafe because we are casting a pointer</span>
     <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
       <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
-      <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
+      <span class="kw-2">*mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
     <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
   };</code></pre></div>
 <p>(More about <code>transmute</code> in the Appendix)</p>
@@ -971,7 +971,7 @@ read_adc
 <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {
   <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
     <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
+    <span class="kw-2">*mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
   <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
 };</code></pre></div>
 <p>(More about this in the Appendix)</p>
@@ -1241,7 +1241,7 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;</code></pre></div>
 <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {     <span class="comment">//  Unsafe because we are casting a pointer</span>
   <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
     <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
-    <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
+    <span class="kw-2">*mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
   <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
 };</code></pre></div>
 <p><strong><code>transmute</code></strong> is the Rust Core Library Function that will cast our value (<code>ptr</code>) from one type to another…</p>
