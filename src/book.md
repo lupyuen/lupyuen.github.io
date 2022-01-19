@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(43 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(44 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -52,6 +52,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 -   ["ADC and Internal Temperature Sensor Library"](https://github.com/lupyuen/bl602_adc_test)
 
+-   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
+
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
 # Projects and Libraries on BL602
@@ -74,8 +76,6 @@ For __BL602 IoT SDK__
 
 -   ["How To Create BL602 Libraries"](https://lupyuen.github.io/articles/lora2#appendix-how-to-create-bl602-libraries)
 
-For __Rust__
-
 -   ["How To Create Rust Projects"](https://lupyuen.github.io/articles/adc#create-a-bl602-rust-project)
 
 -   ["How To Build Rust Projects"](https://lupyuen.github.io/articles/adc#build-the-bl602-rust-firmware)
@@ -87,6 +87,10 @@ For __Rust__
 How we __flash firmware__ to BL602 and BL604 with __command-line tools__ on Linux, macOS and Windows.
 
 -   ["Flashing Firmware to BL602"](https://lupyuen.github.io/articles/flash)
+
+-   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
+
+For __BL602 IoT SDK__
 
 -   ["Flashing Rust Firmware to BL602"](https://lupyuen.github.io/articles/adc#flash-the-bl602-rust-firmware)
 
@@ -340,6 +344,34 @@ For __BL602 IoT SDK__
 
 -   ["Machine Learning on RISC-V BL602 with TensorFlow Lite"](https://lupyuen.github.io/articles/tflite)
 
+![Troubleshooting BL602](https://lupyuen.github.io/images/book-troubleshoot.jpg)
+
+# Troubleshooting BL602
+
+Tips for __troubleshooting BL602 and BL604 firmware__.
+
+For __Apache NuttX OS__
+
+-   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
+
+For __BL602 IoT SDK__
+
+-   ["How to Troubleshoot RISC-V Exceptions"](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
+
+-   ["BL602 Assertion Failures"](https://lupyuen.github.io/articles/lora2#bl602-assertion-failures)
+
+-   ["BL602 Stack Trace"](https://lupyuen.github.io/articles/lora2#bl602-stack-trace)
+
+-   ["BL602 Stack Dump"](https://lupyuen.github.io/articles/lora2#bl602-stack-dump)
+
+![Bootloader for BL602](https://lupyuen.github.io/images/book-boot.jpg)
+
+# Bootloader for BL602
+
+All about the __BL602 / BL604 Bootloader__... And how it loads the Application Firmware into XIP Flash Memory.
+
+-   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
+
 ![OpenOCD on BL602](https://lupyuen.github.io/images/book-openocd.jpg)
 
 # OpenOCD on BL602
@@ -361,30 +393,6 @@ For __BL602 IoT SDK__
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
 -   ["Debug Mynewt with VSCode"](https://lupyuen.github.io/articles/mynewt#debug-firmware-with-vscode)
-
-![Troubleshooting BL602](https://lupyuen.github.io/images/book-troubleshoot.jpg)
-
-# Troubleshooting BL602
-
-Tips for __troubleshooting BL602 and BL604 firmware__.
-
-For __BL602 IoT SDK__
-
--   ["How to Troubleshoot RISC-V Exceptions"](https://lupyuen.github.io/articles/i2c#appendix-how-to-troubleshoot-risc-v-exceptions)
-
--   ["BL602 Assertion Failures"](https://lupyuen.github.io/articles/lora2#bl602-assertion-failures)
-
--   ["BL602 Stack Trace"](https://lupyuen.github.io/articles/lora2#bl602-stack-trace)
-
--   ["BL602 Stack Dump"](https://lupyuen.github.io/articles/lora2#bl602-stack-dump)
-
-![Bootloader for BL602](https://lupyuen.github.io/images/book-boot.jpg)
-
-# Bootloader for BL602
-
-All about the __BL602 / BL604 Bootloader__... And how it loads the Application Firmware into XIP Flash Memory.
-
--   ["BL602 Bootloader"](https://lupyuen.github.io/articles/boot)
 
 ![PineDio Stack BL604](https://lupyuen.github.io/images/book-pinedio.jpg)
 
