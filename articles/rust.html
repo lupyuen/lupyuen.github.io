@@ -177,10 +177,10 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// `rust_main` will be called by the BL602 command-line interface</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>              <span class="comment">//  Don&#39;t mangle the name `rust_main`</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_main</span>(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
-    <span class="ident">_buf</span>:  <span class="kw-2">*const</span> <span class="ident">u8</span>,        <span class="comment">//  Command line (char *)</span>
+    <span class="ident">_buf</span>:  <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>,        <span class="comment">//  Command line (char *)</span>
     <span class="ident">_len</span>:  <span class="ident">i32</span>,              <span class="comment">//  Length of command line (int)</span>
     <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
-    <span class="ident">_argv</span>: <span class="kw-2">*const</span> <span class="kw-2">*const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
+    <span class="ident">_argv</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
 ) {
     <span class="comment">//  Show a message on the serial console</span>
     <span class="ident">puts</span>(<span class="string">&quot;Hello from Rust!&quot;</span>);
@@ -300,7 +300,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
         <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
-        <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
+        <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
     }</code></pre></div>
 <p>When importing “<code>const char *</code>” from C, we rewrite it as “<code>*const u8</code>” (const pointer to unsigned byte).</p>
 <p>Next we make a <strong>copy of the input string</strong>…</p>
