@@ -6,9 +6,47 @@
 
 _PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test_
 
+Suppose we're __testing embedded firmware__ on the __BL602 RISC-V SoC__.  And the firmware changes __every day__ (due to Daily Updates from upstream).
+
+Instead of flipping a jumper, restarting the board, flashing over UART, restarting again, repeating every day...
+
+Is there a way to __Automatically Flash and Test__ the Daily Updates?
+
+Yes we can, by connecting BL602 to a __Linux Single-Board Computer (SBC)__! 
+
+Today we shall create a Linux Script that will...
+
+-   __Auto-Flash__ the Daily Build of [__Apache NuttX OS__](https://lupyuen.github.io/articles/nuttx) to BL602
+
+-   __Auto-Boot__ NuttX on BL602 after flashing
+
+-   __Auto-Test__ NuttX by sending a command that tests the GPIO Input / Output / Interrupts, SPI, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor
+
+    [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=JtnOyl5cYjo)
+
+    (Spoilers: It's LoRaWAN!)
+
+-   If NuttX crashes, __Auto-Decode__ the NuttX Stack Trace and show us the Source Code that caused the crash
+
+    [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=Kf3G1hGoLIs)
+
+_Why are we doing this?_
+
+-   Might be useful for __Release Testing__ of NuttX on real hardware
+
+-   By auto-testing the __LoRaWAN Stack__ on NuttX, we can be sure that GPIO Input / Output / Interrupts, SPI, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor are all working OK with the latest build of NuttX
+
+-   I write articles about NuttX OS. I need to pick the __Latest Stable Build__ of NuttX for testing the NuttX code in my articles. [(See this)](https://lupyuen.github.io/articles/book#nuttx-on-bl602)
+
+# BL602 Basics
+
 TODO
 
-[__Apache NuttX__](https://lupyuen.github.io/articles/nuttx) 
+Over the past 14 months I've been doing this over and over again. Until last week I wondered...
+
+Can we automate this with an SBC?
+
+And indeed we can! (Duh!)
 
 # What's Next
 
