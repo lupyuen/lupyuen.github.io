@@ -6,7 +6,7 @@
 
 _PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test_
 
-Suppose we're __testing embedded firmware__ on the __BL602 RISC-V SoC__.  And the firmware changes __every day__ (due to Daily Updates from upstream).
+Suppose we're __testing embedded firmware__ on the [__BL602 RISC-V SoC__](https://lupyuen.github.io/articles/pinecone).  And the firmware changes __every day__ (due to Daily Updates from upstream).
 
 Instead of flipping a jumper, restarting the board, flashing over UART, restarting again, repeating every day...
 
@@ -20,7 +20,7 @@ Today we shall create a Linux Script that will...
 
 -   __Auto-Boot__ NuttX on BL602 after flashing
 
--   __Auto-Test__ NuttX by sending a command that tests the GPIO Input / Output / Interrupts, SPI, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor
+-   __Auto-Test__ NuttX by sending a command that tests the GPIO Input / Output / Interrupts, SPI, ADC, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor
 
     [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=JtnOyl5cYjo)
 
@@ -32,11 +32,11 @@ Today we shall create a Linux Script that will...
 
 _Why are we doing this?_
 
--   Might be useful for __Release Testing__ of NuttX on real hardware
+-   Might be useful for __Release Testing__ of NuttX (and other operating systems) on real hardware
 
--   By auto-testing the __LoRaWAN Stack__ on NuttX, we can be sure that GPIO Input / Output / Interrupts, SPI, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor are all working OK with the latest build of NuttX
+-   By auto-testing the __LoRaWAN Stack__ on NuttX, we can be sure that GPIO Input / Output / Interrupts, SPI, ADC, ... are all working OK with the latest Daily Build of NuttX
 
--   I write articles about NuttX OS. I need to pick the __Latest Stable Build__ of NuttX for testing the NuttX code in my articles. [(See this)](https://lupyuen.github.io/articles/book#nuttx-on-bl602)
+-   I write articles about NuttX OS. I need to pick the __Latest Stable Build__ of NuttX for testing the NuttX code in my articles. [(Like these)](https://lupyuen.github.io/articles/book#nuttx-on-bl602)
 
 # BL602 Basics
 
