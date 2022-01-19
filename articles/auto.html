@@ -70,7 +70,7 @@
 <li><a href="#notes">3 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/auto-title.jpg" alt="PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test" /></p>
 <p><em>PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test</em></p>
-<p>Suppose we’re <strong>testing embedded firmware</strong> on the <strong>BL602 RISC-V SoC</strong>.  And the firmware changes <strong>every day</strong> (due to Daily Updates from upstream).</p>
+<p>Suppose we’re <strong>testing embedded firmware</strong> on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>.  And the firmware changes <strong>every day</strong> (due to Daily Updates from upstream).</p>
 <p>Instead of flipping a jumper, restarting the board, flashing over UART, restarting again, repeating every day…</p>
 <p>Is there a way to <strong>Automatically Flash and Test</strong> the Daily Updates?</p>
 <p>Yes we can, by connecting BL602 to a <strong>Linux Single-Board Computer (SBC)</strong>! </p>
@@ -83,7 +83,7 @@
 <p><strong>Auto-Boot</strong> NuttX on BL602 after flashing</p>
 </li>
 <li>
-<p><strong>Auto-Test</strong> NuttX by sending a command that tests the GPIO Input / Output / Interrupts, SPI, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor</p>
+<p><strong>Auto-Test</strong> NuttX by sending a command that tests the GPIO Input / Output / Interrupts, SPI, ADC, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor</p>
 <p><a href="https://www.youtube.com/watch?v=JtnOyl5cYjo"><strong>Watch the demo on YouTube</strong></a></p>
 <p>(Spoilers: It’s LoRaWAN!)</p>
 </li>
@@ -95,13 +95,13 @@
 <p><em>Why are we doing this?</em></p>
 <ul>
 <li>
-<p>Might be useful for <strong>Release Testing</strong> of NuttX on real hardware</p>
+<p>Might be useful for <strong>Release Testing</strong> of NuttX (and other operating systems) on real hardware</p>
 </li>
 <li>
-<p>By auto-testing the <strong>LoRaWAN Stack</strong> on NuttX, we can be sure that GPIO Input / Output / Interrupts, SPI, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor are all working OK with the latest build of NuttX</p>
+<p>By auto-testing the <strong>LoRaWAN Stack</strong> on NuttX, we can be sure that GPIO Input / Output / Interrupts, SPI, ADC, … are all working OK with the latest Daily Build of NuttX</p>
 </li>
 <li>
-<p>I write articles about NuttX OS. I need to pick the <strong>Latest Stable Build</strong> of NuttX for testing the NuttX code in my articles. <a href="https://lupyuen.github.io/articles/book#nuttx-on-bl602">(See this)</a></p>
+<p>I write articles about NuttX OS. I need to pick the <strong>Latest Stable Build</strong> of NuttX for testing the NuttX code in my articles. <a href="https://lupyuen.github.io/articles/book#nuttx-on-bl602">(Like these)</a></p>
 </li>
 </ul>
 <h1 id="bl602-basics" class="section-header"><a href="#bl602-basics">1 BL602 Basics</a></h1>
