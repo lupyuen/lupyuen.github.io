@@ -140,9 +140,11 @@ Our Bash Script begins by __enabling GPIO 2 and 3__: [remote-bl602/scripts/test.
 ##  Enable GPIO 2 and 3 (if not already enabled)
 if [ ! -d /sys/class/gpio/gpio2 ]; then
   echo 2 >/sys/class/gpio/export
+  sleep 1
 fi
 if [ ! -d /sys/class/gpio/gpio3 ]; then
   echo 3 >/sys/class/gpio/export
+  sleep 1
 fi
 ```
 
@@ -330,9 +332,9 @@ git clone --recursive https://github.com/lupyuen/remote-bl602
 
 ##  Run the script
 sudo remote-bl602/scripts/test.sh
-```
 
-(Alternatively we may set the GPIO and UART permissions, so we don't need superuser access)
+##  remote-bl602/scripts/test.sh: line 50: /sys/class/gpio/gpio2/direction: Permission denied
+```
 
 Auto Flash and Test on #BL602 the latest #NuttX Build ... Yep it works! 🎉
 
