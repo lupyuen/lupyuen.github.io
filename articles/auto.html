@@ -67,7 +67,16 @@
     <nav id="TOC"><ul>
 <li><a href="#bl602-basics">1 BL602 Basics</a><ul></ul></li>
 <li><a href="#connect-bl602-to-single-board-computer">2 Connect BL602 to Single-Board Computer</a><ul></ul></li>
-<li><a href="#control-gpio-with-linux">3 Control GPIO with Linux</a><ul></ul></li>
+<li><a href="#control-gpio-with-linux">3 Control GPIO with Linux</a><ul>
+<li><a href="#enable-gpio">3.1 Enable GPIO</a><ul></ul></li>
+<li><a href="#configure-gpio-output">3.2 Configure GPIO Output</a><ul></ul></li>
+<li><a href="#enter-flashing-mode">3.3 Enter Flashing Mode</a><ul></ul></li>
+<li><a href="#reset-bl602">3.4 Reset BL602</a><ul></ul></li>
+<li><a href="#flash-bl602">3.5 Flash BL602</a><ul></ul></li>
+<li><a href="#exit-flashing-mode">3.6 Exit Flashing Mode</a><ul></ul></li>
+<li><a href="#reset-bl602-again">3.7 Reset BL602 Again</a><ul></ul></li>
+<li><a href="#show-bl602-output">3.8 Show BL602 Output</a><ul></ul></li>
+<li><a href="#reset-bl602-yet-again">3.9 Reset BL602 Yet Again</a><ul></ul></li></ul></li>
 <li><a href="#flash-and-test-bl602">4 Flash and Test BL602</a><ul></ul></li>
 <li><a href="#github-actions">5 GitHub Actions</a><ul></ul></li>
 <li><a href="#lorawan-test">6 LoRaWAN Test</a><ul></ul></li>
@@ -168,10 +177,10 @@
 <h1 id="connect-bl602-to-single-board-computer" class="section-header"><a href="#connect-bl602-to-single-board-computer">2 Connect BL602 to Single-Board Computer</a></h1>
 <p>Connect BL602 to a <strong>Single-Board Computer (SBC)</strong> as shown in the pic above…</p>
 <div><table><thead><tr><th>SBC</th><th>BL602</th><th>Function</th></tr></thead><tbody>
-<tr><td>GPIO 2</td><td>GPIO 8</td><td>Flashing Mode (Long Green)</td></tr>
-<tr><td>GPIO 3</td><td>RST</td><td>Reset (Long Yellow)</td></tr>
-<tr><td>GND</td><td>GND</td><td>Ground</td></tr>
-<tr><td>USB</td><td>USB</td><td>USB UART</td></tr>
+<tr><td><strong>GPIO 2</strong></td><td>GPIO 8</td><td>Flashing Mode (Long Green)</td></tr>
+<tr><td><strong>GPIO 3</strong></td><td>RST</td><td>Reset (Long Yellow)</td></tr>
+<tr><td><strong>GND</strong></td><td>GND</td><td>Ground</td></tr>
+<tr><td><strong>USB</strong></td><td>USB</td><td>USB UART</td></tr>
 </tbody></table>
 </div>
 <p>(Ground is missing from the pic)</p>
@@ -184,15 +193,91 @@
 <p><img src="https://lupyuen.github.io/images/auto-connect.jpg" alt="GPIO 8 and Reset Pins" /></p>
 <p>No more flipping the jumper and smashing the button! Let’s control GPIO 8 and Reset Pins with our Linux SBC.</p>
 <h1 id="control-gpio-with-linux" class="section-header"><a href="#control-gpio-with-linux">3 Control GPIO with Linux</a></h1>
-<p>TODO8</p>
-<p>Will this work for Auto-Flashing and Testing #BL602 via a Linux SBC? Let’s find out 🤔</p>
-<p><img src="https://lupyuen.github.io/images/auto-script2.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh">(Source)</a></p>
-<p>TODO88</p>
-<p>Let’s Auto-Flash &amp; Test the Daily Upstream Build of Apache #NuttX OS … Auto-Built &amp; Published by GitHub Actions</p>
-<p><img src="https://lupyuen.github.io/images/auto-script.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21">(Source)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112">(Source)</a></p>
+<p>Recall that <strong>GPIO 2 and 3</strong> on our Linux SBC are connected to BL602 for the <strong>Flashing and Reset</strong> Functions…</p>
+<div><table><thead><tr><th>SBC</th><th>BL602</th><th>Function</th></tr></thead><tbody>
+<tr><td><strong>GPIO 2</strong></td><td>GPIO 8</td><td>Flashing Mode</td></tr>
+<tr><td><strong>GPIO 3</strong></td><td>RST</td><td>Reset</td></tr>
+</tbody></table>
+</div>
+<p>Let’s control GPIO 2 and 3 from a Bash Script.</p>
+<p><img src="https://lupyuen.github.io/images/auto-script2.png" alt="Control GPIO with Linux" /></p>
+<h2 id="enable-gpio" class="section-header"><a href="#enable-gpio">3.1 Enable GPIO</a></h2>
+<p>Our Bash Script begins by <strong>enabling GPIO 2 and 3</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh">remote-bl602/scripts/test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Enable GPIO 2 and 3
+if [ ! -d /sys/class/gpio/gpio2 ]; then
+    echo 2 &gt;/sys/class/gpio/export
+fi
+if [ ! -d /sys/class/gpio/gpio3 ]; then
+    echo 3 &gt;/sys/class/gpio/export
+fi</code></pre></div>
+<p><a href="https://www.ics.com/blog/gpio-programming-using-sysfs-interface">(<strong>/sys/class/gpio</strong> comes from the Linux sysfs Interface)</a></p>
+<p>After enabling GPIO 2 and 3, these <strong>GPIO Interfaces</strong> will appear in Linux…</p>
+<ul>
+<li>
+<p><strong>/sys/class/gpio/gpio2</strong></p>
+</li>
+<li>
+<p><strong>/sys/class/gpio/gpio3</strong></p>
+</li>
+</ul>
+<p>Let’s control them.</p>
+<h2 id="configure-gpio-output" class="section-header"><a href="#configure-gpio-output">3.2 Configure GPIO Output</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 2 and 3 as output
+echo out &gt;/sys/class/gpio/gpio2/direction
+echo out &gt;/sys/class/gpio/gpio3/direction</code></pre></div><h2 id="enter-flashing-mode" class="section-header"><a href="#enter-flashing-mode">3.3 Enter Flashing Mode</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 2 to High (BL602 Flashing Mode)
+echo 1 &gt;/sys/class/gpio/gpio2/value
+sleep 1</code></pre></div><h2 id="reset-bl602" class="section-header"><a href="#reset-bl602">3.4 Reset BL602</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 0 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1</code></pre></div><h2 id="flash-bl602" class="section-header"><a href="#flash-bl602">3.5 Flash BL602</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Flashing Mode
+#  Flash BL602 over USB UART with blflash
+blflash flash \
+  /tmp/nuttx.bin \
+  --port /dev/ttyUSB0
+sleep 1</code></pre></div><h2 id="exit-flashing-mode" class="section-header"><a href="#exit-flashing-mode">3.6 Exit Flashing Mode</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 2 to Low (BL602 Normal Mode)
+echo 0 &gt;/sys/class/gpio/gpio2/value
+sleep 1</code></pre></div><h2 id="reset-bl602-again" class="section-header"><a href="#reset-bl602-again">3.7 Reset BL602 Again</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 0 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1</code></pre></div><h2 id="show-bl602-output" class="section-header"><a href="#show-bl602-output">3.8 Show BL602 Output</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Normal Mode
+
+#  Set USB UART to 2 Mbps
+stty \
+  -F /dev/ttyUSB0 \
+  raw 2000000
+
+#  Show the BL602 output and capture to /tmp/test.log.
+#  Run this in the background so we can kill it later.
+cat /dev/ttyUSB0 \
+  | tee /tmp/test.log &amp;</code></pre></div><h2 id="reset-bl602-yet-again" class="section-header"><a href="#reset-bl602-yet-again">3.9 Reset BL602 Yet Again</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)&quot;
+#  Here is the BL602 Output...
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 0 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1</code></pre></div>
 <p>TODO1</p>
 <p>Our SBC (left) controls PineCone #BL602 (right) via GPIO … To enter and exit BL602 Flashing Mode 🎉</p>
 <p><a href="https://www.youtube.com/watch?v=d8x0Y-OraXo"><strong>Watch the demo on YouTube</strong></a></p>
@@ -203,6 +288,11 @@
 <p>Auto Flash and Test on #BL602 the latest #NuttX Build … Yep it works! 🎉</p>
 <p><a href="https://www.youtube.com/watch?v=_82og3-gEwA"><strong>Watch the demo on YouTube</strong></a></p>
 <p><a href="https://github.com/lupyuen/remote-bl602">(Source)</a></p>
+<p>TODO88</p>
+<p>Let’s Auto-Flash &amp; Test the Daily Upstream Build of Apache #NuttX OS … Auto-Built &amp; Published by GitHub Actions</p>
+<p><img src="https://lupyuen.github.io/images/auto-script.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112">(Source)</a></p>
 <p>TODO6</p>
 <p>Auto Flash and Test on #BL602 is really helpful for picking a Stable Daily Build of #NuttX for BL602 … So I can test it as I write my NuttX articles 👍</p>
 <p><img src="https://lupyuen.github.io/images/auto-run.png" alt="" /></p>
