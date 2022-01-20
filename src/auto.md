@@ -309,7 +309,23 @@ Here's a demo of our script flipping GPIO 2 and 3 and switching the flashing mod
 
 TODO
 
-Remember to install blflash as superuser: sudo cargo install blflash
+```bash
+##  Install Rust as superuser: https://rustup.rs/
+sudo bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+exit
+
+##  Install blflash as superuser
+sudo cargo install blflash
+
+##  Download the script
+git clone --recursive https://github.com/lupyuen/remote-bl602
+
+##  Run the script as superuser
+sudo remote-bl602/scripts/test.sh
+```
+
+(Someday we should fix the GPIO and UART permissions, so we don't need superuser access)
 
 Auto Flash and Test on #BL602 the latest #NuttX Build ... Yep it works! 🎉
 
@@ -334,57 +350,6 @@ Auto Flash and Test on #BL602 is really helpful for picking a Stable Daily Build
 ![](https://lupyuen.github.io/images/auto-run.png)
 
 [(Source)](https://github.com/lupyuen/remote-bl602)
-
-# GitHub Actions
-
-TODO15
-
-Here's how we configure our #NuttX Build in GitHub Actions ... To enable errors, warnings, info messages and assertions
-
-![](https://lupyuen.github.io/images/auto-workflow2.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L59-L63)
-
-
-# LoRaWAN Test
-
-TODO89
-
-Here's how we enable #LoRaWAN for our #NuttX Build in GitHub Actions ... Let's do Automated NuttX Testing with LoRaWAN! 👍
-
-![](https://lupyuen.github.io/images/auto-workflow3.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200)
-
-TODO9
-
-We update #BL602 Auto Flash & Test to send the "lorawan_test" command ... Which will start the LoRaWAN Test on #NuttX OS
-
-![](https://lupyuen.github.io/images/auto-script3.png)
-
-[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L108-L111)
-
-#BL602 Auto Flash & Test ... Now auto-tests the #LoRaWAN Stack on Apache #NuttX OS! 🎉
-
-[__Watch the demo on YouTube__](https://www.youtube.com/watch?v=JtnOyl5cYjo)
-
-[(Source)](https://github.com/lupyuen/remote-bl602/)
-
-TODO4
-
-#LoRaWAN is a great Auto-Test for Apache #NuttX OS ... It tests GPIO Input / Output / Interrupt, SPI, Timers, Message Queues, PThreads AND Strong Random Number Generator!
-
-![](https://lupyuen.github.io/images/auto-lorawan.png)
-
-[(Source)](https://github.com/lupyuen/remote-bl602/)
-
-TODO5
-
-If #BL602 Auto-Test successfully joins a #LoRaWAN Network ... Means that everything is super hunky dory on Apache #NuttX OS ... GPIO Input / Output / Interrupt, SPI, Timers, Message Queues, PThreads AND Strong Random Number Generator! 👍
-
-![](https://lupyuen.github.io/images/auto-lorawan2.png)
-
-[(Source)](https://github.com/lupyuen/remote-bl602/#output-log-for-release-build)
 
 # Crash Analysis
 
@@ -436,6 +401,38 @@ Now we can Flash & Test Apache #NuttX OS on #BL602 ... Remotely from a Phone! �
 
 [(Source)](https://github.com/lupyuen/remote-bl602/)
 
+# LoRaWAN Test
+
+TODO9
+
+We update #BL602 Auto Flash & Test to send the "lorawan_test" command ... Which will start the LoRaWAN Test on #NuttX OS
+
+![](https://lupyuen.github.io/images/auto-script3.png)
+
+[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L108-L111)
+
+#BL602 Auto Flash & Test ... Now auto-tests the #LoRaWAN Stack on Apache #NuttX OS! 🎉
+
+[__Watch the demo on YouTube__](https://www.youtube.com/watch?v=JtnOyl5cYjo)
+
+[(Source)](https://github.com/lupyuen/remote-bl602/)
+
+TODO4
+
+#LoRaWAN is a great Auto-Test for Apache #NuttX OS ... It tests GPIO Input / Output / Interrupt, SPI, Timers, Message Queues, PThreads AND Strong Random Number Generator!
+
+![](https://lupyuen.github.io/images/auto-lorawan.png)
+
+[(Source)](https://github.com/lupyuen/remote-bl602/)
+
+TODO5
+
+If #BL602 Auto-Test successfully joins a #LoRaWAN Network ... Means that everything is super hunky dory on Apache #NuttX OS ... GPIO Input / Output / Interrupt, SPI, Timers, Message Queues, PThreads AND Strong Random Number Generator! 👍
+
+![](https://lupyuen.github.io/images/auto-lorawan2.png)
+
+[(Source)](https://github.com/lupyuen/remote-bl602/#output-log-for-release-build)
+
 # Merge Updates From NuttX
 
 TODO16
@@ -444,7 +441,59 @@ Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! �
 
 ![](https://lupyuen.github.io/images/auto-merge.png)
 
-# LoRaWAN Nonce
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
+
+-   [Check out my articles](https://lupyuen.github.io)
+
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[`lupyuen.github.io/src/auto.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto.md)
+
+# Notes
+
+1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1482152780051935238)
+
+# Appendix: Build NuttX with GitHub Actions
+
+TODO15
+
+Here's how we configure our #NuttX Build in GitHub Actions ... To enable errors, warnings, info messages and assertions
+
+![](https://lupyuen.github.io/images/auto-workflow2.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L59-L63)
+
+TODO89
+
+Here's how we enable #LoRaWAN for our #NuttX Build in GitHub Actions ... Let's do Automated NuttX Testing with LoRaWAN! 👍
+
+![](https://lupyuen.github.io/images/auto-workflow3.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200)
+
+TODO2
+
+![](https://lupyuen.github.io/images/auto-crash.png)
+
+TODO3
+
+![](https://lupyuen.github.io/images/auto-crash2.png)
+
+TODO14
+
+![](https://lupyuen.github.io/images/auto-workflow.png)
+
+# Appendix: Fix LoRaWAN Nonce
 
 TODO
 
@@ -469,38 +518,3 @@ TODO
 ![](https://lupyuen.github.io/images/auto-nonce3.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
-
-# What's Next
-
-TODO
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
-
--   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
-
--   [Check out my articles](https://lupyuen.github.io)
-
--   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[`lupyuen.github.io/src/auto.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto.md)
-
-# Notes
-
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1482152780051935238)
-
-TODO2
-
-![](https://lupyuen.github.io/images/auto-crash.png)
-
-TODO3
-
-![](https://lupyuen.github.io/images/auto-crash2.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/auto-workflow.png)
-
