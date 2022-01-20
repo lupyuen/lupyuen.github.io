@@ -310,13 +310,20 @@ kill %1</code></pre></div>
 </ul>
 <h1 id="run-the-script" class="section-header"><a href="#run-the-script">4 Run The Script</a></h1>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Install Rust as superuser: https://rustup.rs/
+<div class="example-wrap"><pre class="language-bash"><code>#  Enter superuser mode
 sudo bash
+
+#  Install Rust as superuser: https://rustup.rs/
 curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh
-exit
+
+#  Add Rust to the PATH
+source $HOME/.cargo/env
 
 #  Install blflash as superuser
-sudo cargo install blflash
+cargo install blflash
+
+#  Exit superuser mode
+exit
 
 #  Download the script
 git clone --recursive https://github.com/lupyuen/remote-bl602
