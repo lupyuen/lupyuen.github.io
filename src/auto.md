@@ -310,13 +310,20 @@ Here's a demo of our script flipping GPIO 2 and 3 and switching the flashing mod
 TODO
 
 ```bash
-##  Install Rust as superuser: https://rustup.rs/
+##  Enter superuser mode
 sudo bash
+
+##  Install Rust as superuser: https://rustup.rs/
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-exit
+
+##  Add Rust to the PATH
+source $HOME/.cargo/env
 
 ##  Install blflash as superuser
-sudo cargo install blflash
+cargo install blflash
+
+##  Exit superuser mode
+exit
 
 ##  Download the script
 git clone --recursive https://github.com/lupyuen/remote-bl602
