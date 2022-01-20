@@ -204,9 +204,11 @@ Success</code></pre></div></li>
 <div class="example-wrap"><pre class="language-bash"><code>#  Enable GPIO 2 and 3 (if not already enabled)
 if [ ! -d /sys/class/gpio/gpio2 ]; then
   echo 2 &gt;/sys/class/gpio/export
+  sleep 1
 fi
 if [ ! -d /sys/class/gpio/gpio3 ]; then
   echo 3 &gt;/sys/class/gpio/export
+  sleep 1
 fi</code></pre></div>
 <p><a href="https://www.ics.com/blog/gpio-programming-using-sysfs-interface">(<strong>/sys/class/gpio</strong> comes from the Linux sysfs Interface)</a></p>
 <p>After enabling GPIO 2 and 3, these <strong>GPIO Interfaces</strong> will appear in Linux…</p>
@@ -329,8 +331,9 @@ cargo install blflash
 git clone --recursive https://github.com/lupyuen/remote-bl602
 
 #  Run the script
-sudo remote-bl602/scripts/test.sh</code></pre></div>
-<p>(Alternatively we may set the GPIO and UART permissions, so we don’t need superuser access)</p>
+sudo remote-bl602/scripts/test.sh
+
+#  remote-bl602/scripts/test.sh: line 50: /sys/class/gpio/gpio2/direction: Permission denied</code></pre></div>
 <p>Auto Flash and Test on #BL602 the latest #NuttX Build … Yep it works! 🎉</p>
 <p><a href="https://www.youtube.com/watch?v=_82og3-gEwA"><strong>Watch the demo on YouTube</strong></a></p>
 <p><a href="https://github.com/lupyuen/remote-bl602">(Source)</a></p>
