@@ -100,8 +100,8 @@ Connect BL602 to a __Single-Board Computer (SBC)__ as shown in the pic above...
 
 | SBC    | BL602    | Function
 | -------|----------|----------
-| GPIO 2 | GPIO 8   | Flashing Mode
-| GPIO 3 | RST      | Reset
+| GPIO 2 | GPIO 8   | Flashing Mode (Long Green)
+| GPIO 3 | RST      | Reset (Long Yellow)
 | GND    | GND      | Ground
 | USB    | USB      | USB UART
 
