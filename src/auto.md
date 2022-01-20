@@ -309,7 +309,9 @@ Here's a demo of our script flipping GPIO 2 and 3 and switching the flashing mod
 
 # Run The Script
 
-TODO
+We've seen the __Auto Flash and Test__ Script, let's run it on our Linux SBC!
+
+Enter this at the command prompt...
 
 ```bash
 ##  Add user to the GPIO and UART groups
@@ -331,34 +333,14 @@ cargo install blflash
 git clone --recursive https://github.com/lupyuen/remote-bl602
 
 ##  Run the script
-sudo remote-bl602/scripts/test.sh
-
-##  remote-bl602/scripts/test.sh: line 50: /sys/class/gpio/gpio2/direction: Permission denied
+remote-bl602/scripts/test.sh
 ```
 
-Auto Flash and Test on #BL602 the latest #NuttX Build ... Yep it works! 🎉
+TODO
 
 [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=_82og3-gEwA)
 
-[(Source)](https://github.com/lupyuen/remote-bl602)
-
-TODO88
-
-Let's Auto-Flash & Test the Daily Upstream Build of Apache #NuttX OS ... Auto-Built & Published by GitHub Actions
-
-![](https://lupyuen.github.io/images/auto-script.png)
-
-[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112)
-
-TODO6
-
-Auto Flash and Test on #BL602 is really helpful for picking a Stable Daily Build of #NuttX for BL602 ... So I can test it as I write my NuttX articles 👍
-
-![](https://lupyuen.github.io/images/auto-run.png)
-
-[(Source)](https://github.com/lupyuen/remote-bl602)
+![Auto Flash and Test Script](https://lupyuen.github.io/images/auto-run.png)
 
 # Crash Analysis
 
@@ -413,6 +395,17 @@ Now we can Flash & Test Apache #NuttX OS on #BL602 ... Remotely from a Phone! �
 # LoRaWAN Test
 
 TODO9
+
+```bash
+##  Download the Release Build (instead of the Upstream Build)
+export BUILD_PREFIX=release
+
+##  Download this date of the build
+export BUILD_DATE=2022-01-19
+
+##  Run the script
+remote-bl602/scripts/test.sh
+```
 
 We update #BL602 Auto Flash & Test to send the "lorawan_test" command ... Which will start the LoRaWAN Test on #NuttX OS
 
@@ -475,6 +468,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: Build NuttX with GitHub Actions
 
 TODO15
+
+Let's Auto-Flash & Test the Daily Upstream Build of Apache #NuttX OS ... Auto-Built & Published by GitHub Actions
+
+![](https://lupyuen.github.io/images/auto-script.png)
+
+[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112)
 
 Here's how we configure our #NuttX Build in GitHub Actions ... To enable errors, warnings, info messages and assertions
 
