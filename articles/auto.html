@@ -203,12 +203,12 @@
 <p><img src="https://lupyuen.github.io/images/auto-script2.png" alt="Control GPIO with Linux" /></p>
 <h2 id="enable-gpio" class="section-header"><a href="#enable-gpio">3.1 Enable GPIO</a></h2>
 <p>Our Bash Script begins by <strong>enabling GPIO 2 and 3</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh">remote-bl602/scripts/test.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Enable GPIO 2 and 3
+<div class="example-wrap"><pre class="language-bash"><code>#  Enable GPIO 2 and 3 (if not already enabled)
 if [ ! -d /sys/class/gpio/gpio2 ]; then
-    echo 2 &gt;/sys/class/gpio/export
+  echo 2 &gt;/sys/class/gpio/export
 fi
 if [ ! -d /sys/class/gpio/gpio3 ]; then
-    echo 3 &gt;/sys/class/gpio/export
+  echo 3 &gt;/sys/class/gpio/export
 fi</code></pre></div>
 <p><a href="https://www.ics.com/blog/gpio-programming-using-sysfs-interface">(<strong>/sys/class/gpio</strong> comes from the Linux sysfs Interface)</a></p>
 <p>After enabling GPIO 2 and 3, these <strong>GPIO Interfaces</strong> will appear in Linux…</p>
@@ -239,7 +239,7 @@ sleep 1
 echo 1 &gt;/sys/class/gpio/gpio3/value
 sleep 1</code></pre></div><h2 id="flash-bl602" class="section-header"><a href="#flash-bl602">3.5 Flash BL602</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Flashing Mode
+<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Flashing Mode.
 #  Flash BL602 over USB UART with blflash
 blflash flash \
   /tmp/nuttx.bin \
@@ -258,9 +258,8 @@ sleep 1
 echo 1 &gt;/sys/class/gpio/gpio3/value
 sleep 1</code></pre></div><h2 id="show-bl602-output" class="section-header"><a href="#show-bl602-output">3.8 Show BL602 Output</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Normal Mode
-
-#  Set USB UART to 2 Mbps
+<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Normal Mode.
+#  Set USB UART to 2 Mbps.
 stty \
   -F /dev/ttyUSB0 \
   raw 2000000
@@ -270,8 +269,7 @@ stty \
 cat /dev/ttyUSB0 \
   | tee /tmp/test.log &amp;</code></pre></div><h2 id="reset-bl602-yet-again" class="section-header"><a href="#reset-bl602-yet-again">3.9 Reset BL602 Yet Again</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)&quot;
-#  Here is the BL602 Output...
+<div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
 echo 1 &gt;/sys/class/gpio/gpio3/value
 sleep 1
 echo 0 &gt;/sys/class/gpio/gpio3/value
