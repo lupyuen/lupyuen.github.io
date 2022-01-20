@@ -100,10 +100,10 @@ Connect BL602 to a __Single-Board Computer (SBC)__ as shown in the pic above...
 
 | SBC    | BL602    | Function
 | -------|----------|----------
-| GPIO 2 | GPIO 8   | Flashing Mode (Long Green)
-| GPIO 3 | RST      | Reset (Long Yellow)
-| GND    | GND      | Ground
-| USB    | USB      | USB UART
+| __GPIO 2__ | GPIO 8   | Flashing Mode (Long Green)
+| __GPIO 3__ | RST      | Reset (Long Yellow)
+| __GND__    | GND      | Ground
+| __USB__    | USB      | USB UART
 
 (Ground is missing from the pic)
 
@@ -121,23 +121,144 @@ No more flipping the jumper and smashing the button! Let's control GPIO 8 and Re
 
 # Control GPIO with Linux
 
-TODO8
+Recall that __GPIO 2 and 3__ on our Linux SBC are connected to BL602 for the __Flashing and Reset__ Functions...
 
-Will this work for Auto-Flashing and Testing #BL602 via a Linux SBC? Let's find out 🤔
+| SBC    | BL602    | Function
+| -------|----------|----------
+| __GPIO 2__ | GPIO 8   | Flashing Mode
+| __GPIO 3__ | RST      | Reset
 
-![](https://lupyuen.github.io/images/auto-script2.png)
+Let's control GPIO 2 and 3 from a Bash Script.
 
-[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh)
+![Control GPIO with Linux](https://lupyuen.github.io/images/auto-script2.png)
 
-TODO88
+## Enable GPIO
 
-Let's Auto-Flash & Test the Daily Upstream Build of Apache #NuttX OS ... Auto-Built & Published by GitHub Actions
+Our Bash Script begins by __enabling GPIO 2 and 3__: [remote-bl602/scripts/test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh)
 
-![](https://lupyuen.github.io/images/auto-script.png)
+```bash
+##  Enable GPIO 2 and 3
+if [ ! -d /sys/class/gpio/gpio2 ]; then
+    echo 2 >/sys/class/gpio/export
+fi
+if [ ! -d /sys/class/gpio/gpio3 ]; then
+    echo 3 >/sys/class/gpio/export
+fi
+```
 
-[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21)
+[(__/sys/class/gpio__ comes from the Linux sysfs Interface)](https://www.ics.com/blog/gpio-programming-using-sysfs-interface)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112)
+After enabling GPIO 2 and 3, these __GPIO Interfaces__ will appear in Linux...
+
+-   __/sys/class/gpio/gpio2__
+
+-   __/sys/class/gpio/gpio3__
+
+Let's control them.
+
+## Configure GPIO Output
+
+TODO
+
+```bash
+##  Set GPIO 2 and 3 as output
+echo out >/sys/class/gpio/gpio2/direction
+echo out >/sys/class/gpio/gpio3/direction
+```
+
+## Enter Flashing Mode
+
+TODO
+
+```bash
+##  Set GPIO 2 to High (BL602 Flashing Mode)
+echo 1 >/sys/class/gpio/gpio2/value
+sleep 1
+```
+
+## Reset BL602
+
+TODO
+
+```bash
+##  Toggle GPIO 3 High-Low-High (Reset BL602)
+echo 1 >/sys/class/gpio/gpio3/value
+sleep 1
+echo 0 >/sys/class/gpio/gpio3/value
+sleep 1
+echo 1 >/sys/class/gpio/gpio3/value
+sleep 1
+```
+
+## Flash BL602
+
+TODO
+
+```bash
+##  BL602 is now in Flashing Mode
+##  Flash BL602 over USB UART with blflash
+blflash flash \
+  /tmp/nuttx.bin \
+  --port /dev/ttyUSB0
+sleep 1
+```
+
+## Exit Flashing Mode
+
+TODO
+
+```bash
+##  Set GPIO 2 to Low (BL602 Normal Mode)
+echo 0 >/sys/class/gpio/gpio2/value
+sleep 1
+```
+
+## Reset BL602 Again
+
+TODO
+
+```bash
+##  Toggle GPIO 3 High-Low-High (Reset BL602)
+echo 1 >/sys/class/gpio/gpio3/value
+sleep 1
+echo 0 >/sys/class/gpio/gpio3/value
+sleep 1
+echo 1 >/sys/class/gpio/gpio3/value
+sleep 1
+```
+
+## Show BL602 Output
+
+TODO
+
+```bash
+##  BL602 is now in Normal Mode
+
+##  Set USB UART to 2 Mbps
+stty \
+  -F /dev/ttyUSB0 \
+  raw 2000000
+
+##  Show the BL602 output and capture to /tmp/test.log.
+##  Run this in the background so we can kill it later.
+cat /dev/ttyUSB0 \
+  | tee /tmp/test.log &
+```
+
+## Reset BL602 Yet Again
+
+TODO
+
+```bash
+##  Toggle GPIO 3 High-Low-High (Reset BL602)"
+##  Here is the BL602 Output...
+echo 1 >/sys/class/gpio/gpio3/value
+sleep 1
+echo 0 >/sys/class/gpio/gpio3/value
+sleep 1
+echo 1 >/sys/class/gpio/gpio3/value
+sleep 1
+```
 
 TODO1
 
@@ -158,6 +279,16 @@ Auto Flash and Test on #BL602 the latest #NuttX Build ... Yep it works! 🎉
 [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=_82og3-gEwA)
 
 [(Source)](https://github.com/lupyuen/remote-bl602)
+
+TODO88
+
+Let's Auto-Flash & Test the Daily Upstream Build of Apache #NuttX OS ... Auto-Built & Published by GitHub Actions
+
+![](https://lupyuen.github.io/images/auto-script.png)
+
+[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112)
 
 TODO6
 
