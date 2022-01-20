@@ -340,6 +340,66 @@ TODO
 
 [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=_82og3-gEwA)
 
+From [upstream-2022-01-20](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20)
+
+```text
+$ ~/remote-bl602/scripts/test.sh
++ BUILD_PREFIX=upstream
++ BUILD_DATE=2022-01-20
+----- Download the latest upstream NuttX build for 2022-01-20
++ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-20/nuttx.zip -O /tmp/nuttx.zip
++ pushd /tmp
++ unzip -o nuttx.zip
+Archive:  nuttx.zip
+  inflating: nuttx
+  inflating: nuttx.S
+  inflating: nuttx.bin
+  inflating: nuttx.config
+  inflating: nuttx.hex
+  inflating: nuttx.manifest
+  inflating: nuttx.map
++ popd
+----- Enable GPIO 2 and 3
+----- Set GPIO 2 and 3 as output
+----- Set GPIO 2 to High (BL602 Flashing Mode)
+----- Toggle GPIO 3 High-Low-High (Reset BL602)
+----- Toggle GPIO 3 High-Low-High (Reset BL602 again)
+----- BL602 is now in Flashing Mode
+----- Flash BL602 over USB UART with blflash
++ blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
+[INFO  blflash::flasher] Start connection...
+[TRACE blflash::flasher] 5ms send count 55
+[TRACE blflash::flasher] handshake sent elapsed 235.944µs
+[INFO  blflash::flasher] Connection Succeed
+[INFO  blflash] Bootrom version: 1
+[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+[INFO  blflash::flasher] Sending eflash_loader...
+[INFO  blflash::flasher] Finished 2.56411161s 11.15KiB/s
+[TRACE blflash::flasher] 5ms send count 500
+[TRACE blflash::flasher] handshake sent elapsed 5.194981ms
+[INFO  blflash::flasher] Entered eflash_loader
+[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
+[INFO  blflash::flasher] Erase flash addr: 10000 size: 85264
+[INFO  blflash::flasher] Program flash... cd0e01ece3a397fc0662b3a22a95ce595285838489b3e05464c640dc200da713
+[INFO  blflash::flasher] Program done 1.012880703s 82.28KiB/s
+[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
+[INFO  blflash] Success
+----- Set GPIO 2 to Low (BL602 Normal Mode)
+----- Toggle GPIO 3 High-Low-High (Reset BL602)
+----- BL602 is now in Normal Mode
+----- Toggle GPIO 3 High-Low-High (Reset BL602)
+----- Here is the BL602 Output...
+NuttShell (NSH) NuttX-10.2.0
+nsh>
+----- Send command to BL602: lorawan_test
+lorawan_test
+nsh: lorawan_test: command not found
+nsh>
+===== Boot OK
+```
+
 ![Auto Flash and Test Script](https://lupyuen.github.io/images/auto-run.png)
 
 # Crash Analysis
