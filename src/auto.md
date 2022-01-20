@@ -439,6 +439,17 @@ If #BL602 Auto-Test successfully joins a #LoRaWAN Network ... Means that everyth
 
 TODO16
 
+```bash
+##  Download the Downstream Build (instead of the Upstream Build)
+export BUILD_PREFIX=downstream
+
+##  Download this date of the build
+export BUILD_DATE=2022-01-19
+
+##  Run the script
+remote-bl602/scripts/test.sh
+```
+
 Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! 🎉 Testing upstream updates is so much easier with #BL602 Auto Flash & Test 👍
 
 ![](https://lupyuen.github.io/images/auto-merge.png)
