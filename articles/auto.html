@@ -310,25 +310,25 @@ kill %1</code></pre></div>
 </ul>
 <h1 id="run-the-script" class="section-header"><a href="#run-the-script">4 Run The Script</a></h1>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Enter superuser mode
-sudo bash
+<div class="example-wrap"><pre class="language-bash"><code>#  Add user to the GPIO and UART groups
+sudo groupadd gpio
+sudo groupadd dialout
+sudo usermod -a -G gpio $USER
+sudo usermod -a -G dialout $USER
 
-#  Install Rust as superuser: https://rustup.rs/
+#  Install Rust: https://rustup.rs/
 curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 #  Add Rust to the PATH
 source $HOME/.cargo/env
 
-#  Install blflash as superuser
+#  Install blflash
 cargo install blflash
-
-#  Exit superuser mode
-exit
 
 #  Download the script
 git clone --recursive https://github.com/lupyuen/remote-bl602
 
-#  Run the script as superuser
+#  Run the script
 sudo remote-bl602/scripts/test.sh</code></pre></div>
 <p>(Alternatively we may set the GPIO and UART permissions, so we don’t need superuser access)</p>
 <p>Auto Flash and Test on #BL602 the latest #NuttX Build … Yep it works! 🎉</p>
