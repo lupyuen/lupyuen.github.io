@@ -111,9 +111,11 @@ For auto-testing LoRaWAN, we also connect BL602 to [__Semtech SX1262 LoRa Transc
 
 - [__"Connect SX1262"__](https://lupyuen.github.io/articles/spi2#connect-sx1262)
 
-TODO
+Clearer pic of the __GPIO 8__ (Flashing Mode) and __Reset Pins__ on PineCone BL602...
 
-Remember to install blflash as superuser: sudo cargo install blflash
+![GPIO 8 and Reset Pins](https://lupyuen.github.io/images/auto-connect.jpg)
+
+No more flipping the jumper and smashing the button! Let's control GPIO 8 and Reset Pins with our Linux SBC.
 
 # Control GPIO with Linux
 
@@ -137,13 +139,6 @@ Let's Auto-Flash & Test the Daily Upstream Build of Apache #NuttX OS ... Auto-Bu
 
 TODO1
 
-Connect SBC to PineCone #BL602 at the Reset and GPIO 8 Pins ... So that we control BL602's Flashing Mode via SBC
-
-[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh)
-
-![](https://lupyuen.github.io/images/auto-connect.jpg)
-
-
 Our SBC (left) controls PineCone #BL602 (right) via GPIO ... To enter and exit BL602 Flashing Mode 🎉
 
 [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=d8x0Y-OraXo)
@@ -151,6 +146,10 @@ Our SBC (left) controls PineCone #BL602 (right) via GPIO ... To enter and exit B
 [(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh)
 
 # Flash and Test BL602
+
+TODO
+
+Remember to install blflash as superuser: sudo cargo install blflash
 
 Auto Flash and Test on #BL602 the latest #NuttX Build ... Yep it works! 🎉
 
