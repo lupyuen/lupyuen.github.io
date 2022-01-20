@@ -74,10 +74,8 @@
 <li><a href="#reset-bl602">3.4 Reset BL602</a><ul></ul></li>
 <li><a href="#flash-bl602">3.5 Flash BL602</a><ul></ul></li>
 <li><a href="#exit-flashing-mode">3.6 Exit Flashing Mode</a><ul></ul></li>
-<li><a href="#reset-bl602-again">3.7 Reset BL602 Again</a><ul></ul></li>
-<li><a href="#show-bl602-output">3.8 Show BL602 Output</a><ul></ul></li>
-<li><a href="#reset-bl602-yet-again">3.9 Reset BL602 Yet Again</a><ul></ul></li></ul></li>
-<li><a href="#flash-and-test-bl602">4 Flash and Test BL602</a><ul></ul></li>
+<li><a href="#show-bl602-output">3.7 Show BL602 Output</a><ul></ul></li></ul></li>
+<li><a href="#run-the-script">4 Run The Script</a><ul></ul></li>
 <li><a href="#github-actions">5 GitHub Actions</a><ul></ul></li>
 <li><a href="#lorawan-test">6 LoRaWAN Test</a><ul></ul></li>
 <li><a href="#crash-analysis">7 Crash Analysis</a><ul></ul></li>
@@ -148,12 +146,12 @@
 <li>
 <p>Flash BL602 over USB UART with <a href="https://github.com/spacemeowx2/blflash"><strong>blflash</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ blflash flash nuttx.bin --port /dev/ttyUSB0
-[INFO  blflash::flasher] Start connection...
-[INFO  blflash::flasher] Connection Succeed
-[INFO  blflash::flasher] Sending eflash_loader...
-[INFO  blflash::flasher] Program flash...
+Start connection...
+Connection Succeed
+Sending eflash_loader...
+Program flash...
 ...
-[INFO  blflash] Success</code></pre></div></li>
+Success</code></pre></div></li>
 <li>
 <p>Flip the <strong>GPIO 8 Jumper</strong> to  <strong>Low</strong> (pic below)</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="PineCone BL602 in Normal Mode with GPIO 8 set to Low" /></p>
@@ -199,10 +197,10 @@
 <tr><td><strong>GPIO 3</strong></td><td>RST</td><td>Reset</td></tr>
 </tbody></table>
 </div>
-<p>Let’s control GPIO 2 and 3 from a Bash Script.</p>
+<p>Let’s control GPIO 2 and 3 with a Bash Script.</p>
 <p><img src="https://lupyuen.github.io/images/auto-script2.png" alt="Control GPIO with Linux" /></p>
 <h2 id="enable-gpio" class="section-header"><a href="#enable-gpio">3.1 Enable GPIO</a></h2>
-<p>Our Bash Script begins by <strong>enabling GPIO 2 and 3</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh">remote-bl602/scripts/test.sh</a></p>
+<p>Our Bash Script begins by <strong>enabling GPIO 2 and 3</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L42-L48">remote-bl602/scripts/test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Enable GPIO 2 and 3 (if not already enabled)
 if [ ! -d /sys/class/gpio/gpio2 ]; then
   echo 2 &gt;/sys/class/gpio/export
@@ -220,55 +218,21 @@ fi</code></pre></div>
 <p><strong>/sys/class/gpio/gpio3</strong></p>
 </li>
 </ul>
-<p>Let’s control them.</p>
+<p>Let’s configure them.</p>
 <h2 id="configure-gpio-output" class="section-header"><a href="#configure-gpio-output">3.2 Configure GPIO Output</a></h2>
-<p>TODO</p>
+<p>Our script configures GPIO 2 and 3 for <strong>GPIO Output</strong> (instead of GPIO Input): <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L50-L52">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 2 and 3 as output
 echo out &gt;/sys/class/gpio/gpio2/direction
-echo out &gt;/sys/class/gpio/gpio3/direction</code></pre></div><h2 id="enter-flashing-mode" class="section-header"><a href="#enter-flashing-mode">3.3 Enter Flashing Mode</a></h2>
-<p>TODO</p>
+echo out &gt;/sys/class/gpio/gpio3/direction</code></pre></div>
+<p>Now we’re ready to toggle GPIO 2 and 3 to flash and reset BL602!</p>
+<h2 id="enter-flashing-mode" class="section-header"><a href="#enter-flashing-mode">3.3 Enter Flashing Mode</a></h2>
+<p>To enter <strong>Flashing Mode</strong>, our script sets GPIO 2 to <strong>High</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L54-L55">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 2 to High (BL602 Flashing Mode)
 echo 1 &gt;/sys/class/gpio/gpio2/value
-sleep 1</code></pre></div><h2 id="reset-bl602" class="section-header"><a href="#reset-bl602">3.4 Reset BL602</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
-echo 1 &gt;/sys/class/gpio/gpio3/value
-sleep 1
-echo 0 &gt;/sys/class/gpio/gpio3/value
-sleep 1
-echo 1 &gt;/sys/class/gpio/gpio3/value
-sleep 1</code></pre></div><h2 id="flash-bl602" class="section-header"><a href="#flash-bl602">3.5 Flash BL602</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Flashing Mode.
-#  Flash BL602 over USB UART with blflash
-blflash flash \
-  /tmp/nuttx.bin \
-  --port /dev/ttyUSB0
-sleep 1</code></pre></div><h2 id="exit-flashing-mode" class="section-header"><a href="#exit-flashing-mode">3.6 Exit Flashing Mode</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 2 to Low (BL602 Normal Mode)
-echo 0 &gt;/sys/class/gpio/gpio2/value
-sleep 1</code></pre></div><h2 id="reset-bl602-again" class="section-header"><a href="#reset-bl602-again">3.7 Reset BL602 Again</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
-echo 1 &gt;/sys/class/gpio/gpio3/value
-sleep 1
-echo 0 &gt;/sys/class/gpio/gpio3/value
-sleep 1
-echo 1 &gt;/sys/class/gpio/gpio3/value
-sleep 1</code></pre></div><h2 id="show-bl602-output" class="section-header"><a href="#show-bl602-output">3.8 Show BL602 Output</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Normal Mode.
-#  Set USB UART to 2 Mbps.
-stty \
-  -F /dev/ttyUSB0 \
-  raw 2000000
-
-#  Show the BL602 output and capture to /tmp/test.log.
-#  Run this in the background so we can kill it later.
-cat /dev/ttyUSB0 \
-  | tee /tmp/test.log &amp;</code></pre></div><h2 id="reset-bl602-yet-again" class="section-header"><a href="#reset-bl602-yet-again">3.9 Reset BL602 Yet Again</a></h2>
-<p>TODO</p>
+sleep 1</code></pre></div>
+<p>But to make it happen we need to restart BL602, coming up next…</p>
+<h2 id="reset-bl602" class="section-header"><a href="#reset-bl602">3.4 Reset BL602</a></h2>
+<p>To <strong>restart BL602</strong> (and actually enter Flashing Mode), our script toggles GPIO 3 <strong>High-Low-High</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L57-L65">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
 echo 1 &gt;/sys/class/gpio/gpio3/value
 sleep 1
@@ -276,11 +240,75 @@ echo 0 &gt;/sys/class/gpio/gpio3/value
 sleep 1
 echo 1 &gt;/sys/class/gpio/gpio3/value
 sleep 1</code></pre></div>
-<p>TODO1</p>
-<p>Our SBC (left) controls PineCone #BL602 (right) via GPIO … To enter and exit BL602 Flashing Mode 🎉</p>
-<p><a href="https://www.youtube.com/watch?v=d8x0Y-OraXo"><strong>Watch the demo on YouTube</strong></a></p>
-<p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh">(Source)</a></p>
-<h1 id="flash-and-test-bl602" class="section-header"><a href="#flash-and-test-bl602">4 Flash and Test BL602</a></h1>
+<p>BL602 is now in <strong>Flashing Mode</strong>!</p>
+<h2 id="flash-bl602" class="section-header"><a href="#flash-bl602">3.5 Flash BL602</a></h2>
+<p>Our script runs <a href="https://github.com/spacemeowx2/blflash"><strong>blflash</strong></a> to flash BL602 over USB UART: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L67-L72">test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Flashing Mode.
+#  Flash BL602 over USB UART with blflash.
+blflash flash \
+  /tmp/nuttx.bin \
+  --port /dev/ttyUSB0
+sleep 1</code></pre></div>
+<p>(<strong>nuttx.bin</strong> is the Daily Upstream Build of NuttX OS, as explained in the Appendix)</p>
+<p>Our firmware has been flashed automagically!</p>
+<h2 id="exit-flashing-mode" class="section-header"><a href="#exit-flashing-mode">3.6 Exit Flashing Mode</a></h2>
+<p>Now we return to <strong>Normal Mode</strong> (Non-Flashing) by setting GPIO 2 to <strong>Low</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L74-L80">test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 2 to Low (BL602 Normal Mode)
+echo 0 &gt;/sys/class/gpio/gpio2/value
+sleep 1</code></pre></div>
+<p>We effect the change by <strong>restarting BL602</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 0 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1</code></pre></div>
+<p>BL602 starts booting our firmware, but we need some prep…</p>
+<h2 id="show-bl602-output" class="section-header"><a href="#show-bl602-output">3.7 Show BL602 Output</a></h2>
+<p>We’re ready to show the output from our BL602 Firmware (NuttX). Our script sets the USB UART’s Baud Rate to <strong>2 Mbps</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L82-L98">test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Normal Mode.
+#  Set USB UART to 2 Mbps.
+stty \
+  -F /dev/ttyUSB0 \
+  raw 2000000</code></pre></div>
+<p>(Otherwise the output will be garbled)</p>
+<p>Then our script <strong>streams the output</strong> from BL602 over USB UART…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>#  <span class="ident">Show</span> <span class="ident">the</span> <span class="ident">BL602</span> <span class="ident">output</span> <span class="ident">and</span> <span class="ident">capture</span> <span class="ident">to</span> <span class="op">/</span><span class="ident">tmp</span><span class="op">/</span><span class="ident">test</span>.<span class="ident">log</span>.
+#  <span class="ident">Run</span> <span class="ident">this</span> <span class="kw">in</span> <span class="ident">the</span> <span class="ident">background</span> <span class="ident">so</span> <span class="ident">we</span> <span class="ident">can</span> <span class="ident">kill</span> <span class="ident">it</span> <span class="ident">later</span>.
+<span class="ident">cat</span> <span class="op">/</span><span class="ident">dev</span><span class="op">/</span><span class="ident">ttyUSB0</span> \
+  <span class="op">|</span> <span class="ident">tee</span> <span class="op">/</span><span class="ident">tmp</span><span class="op">/</span><span class="ident">test</span>.<span class="ident">log</span> <span class="kw-2">&amp;</span></code></pre></div>
+<p>And captures the output to <strong>test.log</strong> for analysis. (Which we’ll explain shortly)</p>
+<p>This runs as a <strong>Background Task</strong> (<code>&amp;</code>) because we want the script to continue running (in the Foreground) as the BL602 output continues to stream (in the Background).</p>
+<p><em>But nothing appears in the output?</em></p>
+<p>Yep because BL602 has <strong>already booted</strong> our firmware. The Boot Messages have whooshed by before we captured them.</p>
+<p>To see the <strong>Boot Messages</strong>, our script restarts BL602 yet again…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 0 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+echo 1 &gt;/sys/class/gpio/gpio3/value
+sleep 1
+
+#  Wait a while for BL602 to finish booting
+sleep 1
+
+#  Omitted: Send test command and analyse the BL602 output
+...</code></pre></div>
+<p>(We’ll talk later about the output analysis)</p>
+<p>Remember that the BL602 output is still being streamed in a Background Task. Our script <strong>terminates the Background Task</strong> like so: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L196-L197">test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Kill the background task that captures the BL602 output
+kill %1</code></pre></div>
+<p>And we’re done!</p>
+<p><em>So this script totally replaces a human flipping the jumper and smashing the button on BL602?</em></p>
+<p>Yep our Linux Script totally controls the <strong>Flashing and Reset</strong> Functions on BL602… No more human intervention!</p>
+<p>Here’s a demo of our script flipping GPIO 2 and 3 and switching the flashing mode…</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=d8x0Y-OraXo"><strong>Watch the demo on YouTube</strong></a></li>
+</ul>
+<h1 id="run-the-script" class="section-header"><a href="#run-the-script">4 Run The Script</a></h1>
 <p>TODO</p>
 <p>Remember to install blflash as superuser: sudo cargo install blflash</p>
 <p>Auto Flash and Test on #BL602 the latest #NuttX Build … Yep it works! 🎉</p>
