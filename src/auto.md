@@ -115,27 +115,7 @@ TODO
 
 Remember to install blflash as superuser: sudo cargo install blflash
 
-# What's Next
-
-TODO
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
-
--   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
-
--   [Check out my articles](https://lupyuen.github.io)
-
--   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[`lupyuen.github.io/src/auto.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto.md)
-
-# Notes
-
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1482152780051935238)
+# Control GPIO with Linux
 
 TODO8
 
@@ -170,6 +150,7 @@ Our SBC (left) controls PineCone #BL602 (right) via GPIO ... To enter and exit B
 
 [(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh)
 
+# Flash and Test BL602
 
 Auto Flash and Test on #BL602 the latest #NuttX Build ... Yep it works! 🎉
 
@@ -185,6 +166,8 @@ Auto Flash and Test on #BL602 is really helpful for picking a Stable Daily Build
 
 [(Source)](https://github.com/lupyuen/remote-bl602)
 
+# GitHub Actions
+
 TODO15
 
 Here's how we configure our #NuttX Build in GitHub Actions ... To enable errors, warnings, info messages and assertions
@@ -193,6 +176,8 @@ Here's how we configure our #NuttX Build in GitHub Actions ... To enable errors,
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L59-L63)
 
+
+# LoRaWAN Test
 
 TODO89
 
@@ -232,13 +217,7 @@ If #BL602 Auto-Test successfully joins a #LoRaWAN Network ... Means that everyth
 
 [(Source)](https://github.com/lupyuen/remote-bl602/#output-log-for-release-build)
 
-TODO90
-
-PineCone #BL602 connected to SBC for Auto Flash & Test ... Plus Semtech SX1262 for #LoRaWAN Auto-Testing
-
-![](https://lupyuen.github.io/images/auto-title.jpg)
-
-[(Source)](https://github.com/lupyuen/remote-bl602/#run-the-script)
+# Crash Analysis
 
 TODO10
 
@@ -288,11 +267,39 @@ Now we can Flash & Test Apache #NuttX OS on #BL602 ... Remotely from a Phone! �
 
 [(Source)](https://github.com/lupyuen/remote-bl602/)
 
+# Merge Updates From NuttX
+
 TODO16
 
 Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! 🎉 Testing upstream updates is so much easier with #BL602 Auto Flash & Test 👍
 
 ![](https://lupyuen.github.io/images/auto-merge.png)
+
+# LoRaWAN Nonce
+
+TODO
+
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
+
+-   [Check out my articles](https://lupyuen.github.io)
+
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[`lupyuen.github.io/src/auto.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto.md)
+
+# Notes
+
+1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1482152780051935238)
 
 TODO2
 
