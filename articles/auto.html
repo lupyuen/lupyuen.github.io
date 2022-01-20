@@ -66,14 +66,15 @@
     <h1 class="title">Auto Flash and Test NuttX on RISC-V BL602</h1>
     <nav id="TOC"><ul>
 <li><a href="#bl602-basics">1 BL602 Basics</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li>
-<li><a href="#notes">3 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 Jan 2022</em></p>
+<li><a href="#connect-bl602-to-single-board-computer">2 Connect BL602 to Single-Board Computer</a><ul></ul></li>
+<li><a href="#whats-next">3 What’s Next</a><ul></ul></li>
+<li><a href="#notes">4 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/auto-title.jpg" alt="PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test" /></p>
 <p><em>PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test</em></p>
 <p>Suppose we’re <strong>testing embedded firmware</strong> on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>.  And the firmware changes <strong>every day</strong> (due to Daily Updates from upstream).</p>
 <p>Instead of flipping a jumper, restarting the board, flashing over UART, restarting again, repeating every day…</p>
 <p>Is there a way to <strong>Automatically Flash and Test</strong> the Daily Updates?</p>
-<p>Yes we can, by connecting BL602 to a <strong>Linux Single-Board Computer (SBC)</strong>! </p>
+<p>Yes we can, by connecting BL602 to a <strong>Linux Single-Board Computer</strong>! </p>
 <p>Today we shall create a Linux Script that will…</p>
 <ul>
 <li>
@@ -104,12 +105,76 @@
 <p>I write articles about NuttX OS. I need to pick the <strong>Latest Stable Build</strong> of NuttX for testing the NuttX code in my articles. <a href="https://lupyuen.github.io/articles/book#nuttx-on-bl602">(Like these)</a></p>
 </li>
 </ul>
+<p><em>Will this work for other microcontrollers?</em></p>
+<ul>
+<li>
+<p><strong>ESP32</strong> has 2 buttons for flashing (BOOT and EN), very similar to BL602. Our Auto Flash and Test Script might work for ESP32 with some tweaking.</p>
+</li>
+<li>
+<p><strong>Arm Microcontrollers</strong> may be auto flashed and debugged with an OpenOCD Script. <a href="https://github.com/lupyuen/remote-pinetime-bot">(Check out Remote PineTime)</a></p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/pinecone-jumperh.jpg" alt="PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident 🙏" /></p>
+<p><em>PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident 🙏</em></p>
 <h1 id="bl602-basics" class="section-header"><a href="#bl602-basics">1 BL602 Basics</a></h1>
+<p>This is how we work with BL602…</p>
+<ol>
+<li>
+<p><strong>Connect BL602</strong> to our computer’s USB port</p>
+</li>
+<li>
+<p>Flip the <strong>GPIO 8 Jumper</strong> to <strong>High</strong> (pic above)</p>
+</li>
+<li>
+<p>Press the <strong>Reset Button (RST)</strong>.</p>
+<p>BL602 is now in <strong>Flashing Mode</strong>.</p>
+</li>
+<li>
+<p>Flash BL602 over USB UART with <a href="https://github.com/spacemeowx2/blflash"><strong>blflash</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ blflash flash nuttx.bin --port /dev/ttyUSB0
+[INFO  blflash::flasher] Start connection...
+[INFO  blflash::flasher] Connection Succeed
+[INFO  blflash::flasher] Sending eflash_loader...
+[INFO  blflash::flasher] Program flash...
+...
+[INFO  blflash] Success</code></pre></div></li>
+<li>
+<p>Flip the <strong>GPIO 8 Jumper</strong> to  <strong>Low</strong> (pic below)</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="PineCone BL602 in Normal Mode with GPIO 8 set to Low" /></p>
+</li>
+<li>
+<p>Press the <strong>Reset Button (RST)</strong>.</p>
+<p>BL602 is now in <strong>Normal Mode</strong> (Non-Flashing).</p>
+</li>
+<li>
+<p>Launch a <strong>Serial Terminal</strong> to test the BL602 Firmware</p>
+</li>
+<li>
+<p>When we’re done, close the Serial Terminal and repeat the <strong>Flash-Test Cycle</strong></p>
+</li>
+</ol>
+<p>Over the past <strong>14 months</strong> I’ve been doing this over and over again. Until last week I wondered…</p>
+<p>Can we automate this with a <strong>Single-Board Computer</strong>?</p>
+<p>And indeed we can! (Duh!) Here’s how…</p>
+<p><img src="https://lupyuen.github.io/images/auto-title.jpg" alt="PineCone BL602 RISC-V Board (lower right) connected to Single-Board Computer (top) and Semtech SX1262 LoRa Transceiver (lower left)" /></p>
+<p><em>PineCone BL602 RISC-V Board (lower right) connected to Single-Board Computer (top) and Semtech SX1262 LoRa Transceiver (lower left)</em></p>
+<h1 id="connect-bl602-to-single-board-computer" class="section-header"><a href="#connect-bl602-to-single-board-computer">2 Connect BL602 to Single-Board Computer</a></h1>
+<p>Connect BL602 to a <strong>Single-Board Computer (SBC)</strong> as shown in the pic above…</p>
+<div><table><thead><tr><th>SBC</th><th>BL602</th><th>Function</th></tr></thead><tbody>
+<tr><td>GPIO 2</td><td>GPIO 8</td><td>Flashing Mode</td></tr>
+<tr><td>GPIO 3</td><td>RST</td><td>Reset</td></tr>
+<tr><td>GND</td><td>GND</td><td>Ground</td></tr>
+<tr><td>USB</td><td>USB</td><td>USB UART</td></tr>
+</tbody></table>
+</div>
+<p>(Ground is missing from the pic)</p>
+<p>For auto-testing LoRaWAN, we also connect BL602 to <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 LoRa Transceiver</strong></a> (pic above)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#connect-sx1262"><strong>“Connect SX1262”</strong></a></li>
+</ul>
 <p>TODO</p>
-<p>Over the past 14 months I’ve been doing this over and over again. Until last week I wondered…</p>
-<p>Can we automate this with an SBC?</p>
-<p>And indeed we can! (Duh!)</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">2 What’s Next</a></h1>
+<p>Remember to install blflash as superuser: sudo cargo install blflash</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">3 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -128,7 +193,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto.md"><code>lupyuen.github.io/src/auto.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">3 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">4 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1482152780051935238">this Twitter Thread</a></li>
 </ol>
