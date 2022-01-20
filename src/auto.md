@@ -467,6 +467,8 @@ export BUILD_DATE=2022-01-19
 remote-bl602/scripts/test.sh
 ```
 
+[release-2022-01-19](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+
 We update #BL602 Auto Flash & Test to send the "lorawan_test" command ... Which will start the LoRaWAN Test on #NuttX OS
 
 ![](https://lupyuen.github.io/images/auto-script3.png)
@@ -509,6 +511,8 @@ export BUILD_DATE=2022-01-19
 ##  Run the script
 remote-bl602/scripts/test.sh
 ```
+
+[downstream-2022-01-19](https://github.com/lupyuen/incubator-nuttx/releases/tag/downstream-2022-01-19)
 
 Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! 🎉 Testing upstream updates is so much easier with #BL602 Auto Flash & Test 👍
 
