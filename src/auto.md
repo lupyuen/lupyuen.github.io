@@ -279,6 +279,28 @@ Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! ðŸ
 
 TODO
 
+#BL602 Auto Flash & Test creates Duplicate #LoRaWAN Nonces ... Because the Boot Timing is always identical! Let's fix this by adding Internal Temperature Sensor Data to the Entropy Pool
+
+![](https://lupyuen.github.io/images/auto-nonce.png)
+
+[(Source)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
+
+TODO
+
+Here's how we read #BL602's Internal Temperature Sensor ... And add the data to the Entropy Pool in #NuttX OS ... To create truly random LoRaWAN Nonces
+
+![](https://lupyuen.github.io/images/auto-nonce2.png)
+
+[(Source)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797)
+
+TODO
+
+#NuttX now generates different #LoRaWAN Nonces for every #BL602 Flash & Test ... And the Join Network Request always succeeds! ðŸŽ‰
+
+![](https://lupyuen.github.io/images/auto-nonce3.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+
 # What's Next
 
 TODO
