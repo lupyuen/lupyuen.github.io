@@ -137,12 +137,12 @@ Let's control GPIO 2 and 3 from a Bash Script.
 Our Bash Script begins by __enabling GPIO 2 and 3__: [remote-bl602/scripts/test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh)
 
 ```bash
-##  Enable GPIO 2 and 3
+##  Enable GPIO 2 and 3 (if not already enabled)
 if [ ! -d /sys/class/gpio/gpio2 ]; then
-    echo 2 >/sys/class/gpio/export
+  echo 2 >/sys/class/gpio/export
 fi
 if [ ! -d /sys/class/gpio/gpio3 ]; then
-    echo 3 >/sys/class/gpio/export
+  echo 3 >/sys/class/gpio/export
 fi
 ```
 
@@ -195,7 +195,7 @@ sleep 1
 TODO
 
 ```bash
-##  BL602 is now in Flashing Mode
+##  BL602 is now in Flashing Mode.
 ##  Flash BL602 over USB UART with blflash
 blflash flash \
   /tmp/nuttx.bin \
@@ -232,9 +232,8 @@ sleep 1
 TODO
 
 ```bash
-##  BL602 is now in Normal Mode
-
-##  Set USB UART to 2 Mbps
+##  BL602 is now in Normal Mode.
+##  Set USB UART to 2 Mbps.
 stty \
   -F /dev/ttyUSB0 \
   raw 2000000
@@ -250,8 +249,7 @@ cat /dev/ttyUSB0 \
 TODO
 
 ```bash
-##  Toggle GPIO 3 High-Low-High (Reset BL602)"
-##  Here is the BL602 Output...
+##  Toggle GPIO 3 High-Low-High (Reset BL602)
 echo 1 >/sys/class/gpio/gpio3/value
 sleep 1
 echo 0 >/sys/class/gpio/gpio3/value
