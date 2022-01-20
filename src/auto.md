@@ -64,12 +64,12 @@ This is how we work with BL602...
 
     ```bash
     $ blflash flash nuttx.bin --port /dev/ttyUSB0
-    [INFO  blflash::flasher] Start connection...
-    [INFO  blflash::flasher] Connection Succeed
-    [INFO  blflash::flasher] Sending eflash_loader...
-    [INFO  blflash::flasher] Program flash...
+    Start connection...
+    Connection Succeed
+    Sending eflash_loader...
+    Program flash...
     ...
-    [INFO  blflash] Success
+    Success
     ```
 
 1.  Flip the __GPIO 8 Jumper__ to  __Low__ (pic below)
@@ -128,13 +128,13 @@ Recall that __GPIO 2 and 3__ on our Linux SBC are connected to BL602 for the __F
 | __GPIO 2__ | GPIO 8   | Flashing Mode
 | __GPIO 3__ | RST      | Reset
 
-Let's control GPIO 2 and 3 from a Bash Script.
+Let's control GPIO 2 and 3 with a Bash Script.
 
 ![Control GPIO with Linux](https://lupyuen.github.io/images/auto-script2.png)
 
 ## Enable GPIO
 
-Our Bash Script begins by __enabling GPIO 2 and 3__: [remote-bl602/scripts/test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh)
+Our Bash Script begins by __enabling GPIO 2 and 3__: [remote-bl602/scripts/test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L42-L48)
 
 ```bash
 ##  Enable GPIO 2 and 3 (if not already enabled)
@@ -154,11 +154,11 @@ After enabling GPIO 2 and 3, these __GPIO Interfaces__ will appear in Linux...
 
 -   __/sys/class/gpio/gpio3__
 
-Let's control them.
+Let's configure them.
 
 ## Configure GPIO Output
 
-TODO
+Our script configures GPIO 2 and 3 for __GPIO Output__ (instead of GPIO Input): [test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L50-L52)
 
 ```bash
 ##  Set GPIO 2 and 3 as output
@@ -166,9 +166,11 @@ echo out >/sys/class/gpio/gpio2/direction
 echo out >/sys/class/gpio/gpio3/direction
 ```
 
+Now we're ready to toggle GPIO 2 and 3 to flash and reset BL602!
+
 ## Enter Flashing Mode
 
-TODO
+To enter __Flashing Mode__, our script sets GPIO 2 to __High__: [test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L54-L55)
 
 ```bash
 ##  Set GPIO 2 to High (BL602 Flashing Mode)
@@ -176,9 +178,11 @@ echo 1 >/sys/class/gpio/gpio2/value
 sleep 1
 ```
 
+But to make it happen we need to restart BL602, coming up next...
+
 ## Reset BL602
 
-TODO
+To __restart BL602__ (and actually enter Flashing Mode), our script toggles GPIO 3 __High-Low-High__: [test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L57-L65)
 
 ```bash
 ##  Toggle GPIO 3 High-Low-High (Reset BL602)
@@ -190,22 +194,28 @@ echo 1 >/sys/class/gpio/gpio3/value
 sleep 1
 ```
 
+BL602 is now in __Flashing Mode__!
+
 ## Flash BL602
 
-TODO
+Our script runs [__blflash__](https://github.com/spacemeowx2/blflash) to flash BL602 over USB UART: [test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L67-L72)
 
 ```bash
 ##  BL602 is now in Flashing Mode.
-##  Flash BL602 over USB UART with blflash
+##  Flash BL602 over USB UART with blflash.
 blflash flash \
   /tmp/nuttx.bin \
   --port /dev/ttyUSB0
 sleep 1
 ```
 
+(__nuttx.bin__ is the Daily Upstream Build of NuttX OS, as explained in the Appendix)
+
+Our firmware has been flashed automagically!
+
 ## Exit Flashing Mode
 
-TODO
+Now we return to __Normal Mode__ (Non-Flashing) by setting GPIO 2 to __Low__: [test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L74-L80)
 
 ```bash
 ##  Set GPIO 2 to Low (BL602 Normal Mode)
@@ -213,9 +223,7 @@ echo 0 >/sys/class/gpio/gpio2/value
 sleep 1
 ```
 
-## Reset BL602 Again
-
-TODO
+We effect the change by __restarting BL602__...
 
 ```bash
 ##  Toggle GPIO 3 High-Low-High (Reset BL602)
@@ -227,9 +235,11 @@ echo 1 >/sys/class/gpio/gpio3/value
 sleep 1
 ```
 
+BL602 starts booting our firmware, but we need some prep...
+
 ## Show BL602 Output
 
-TODO
+We're ready to show the output from our BL602 Firmware (NuttX). Our script sets the USB UART's Baud Rate to __2 Mbps__: [test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L82-L98)
 
 ```bash
 ##  BL602 is now in Normal Mode.
@@ -237,16 +247,28 @@ TODO
 stty \
   -F /dev/ttyUSB0 \
   raw 2000000
+```
 
+(Otherwise the output will be garbled)
+
+Then our script __streams the output__ from BL602 over USB UART...
+
+```
 ##  Show the BL602 output and capture to /tmp/test.log.
 ##  Run this in the background so we can kill it later.
 cat /dev/ttyUSB0 \
   | tee /tmp/test.log &
 ```
 
-## Reset BL602 Yet Again
+And captures the output to __test.log__ for analysis. (Which we'll explain shortly)
 
-TODO
+This runs as a __Background Task__ (`&`) because we want the script to continue running (in the Foreground) as the BL602 output continues to stream (in the Background).
+
+_But nothing appears in the output?_
+
+Yep because BL602 has __already booted__ our firmware. The Boot Messages have whooshed by before we captured them.
+
+To see the __Boot Messages__, our script restarts BL602 yet again...
 
 ```bash
 ##  Toggle GPIO 3 High-Low-High (Reset BL602)
@@ -256,17 +278,34 @@ echo 0 >/sys/class/gpio/gpio3/value
 sleep 1
 echo 1 >/sys/class/gpio/gpio3/value
 sleep 1
+
+##  Wait a while for BL602 to finish booting
+sleep 1
+
+##  Omitted: Send test command and analyse the BL602 output
+...
 ```
 
-TODO1
+(We'll talk later about the output analysis)
 
-Our SBC (left) controls PineCone #BL602 (right) via GPIO ... To enter and exit BL602 Flashing Mode 🎉
+Remember that the BL602 output is still being streamed in a Background Task. Our script __terminates the Background Task__ like so: [test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L196-L197)
 
-[__Watch the demo on YouTube__](https://www.youtube.com/watch?v=d8x0Y-OraXo)
+```bash
+##  Kill the background task that captures the BL602 output
+kill %1
+```
 
-[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh)
+And we're done!
 
-# Flash and Test BL602
+_So this script totally replaces a human flipping the jumper and smashing the button on BL602?_
+
+Yep our Linux Script totally controls the __Flashing and Reset__ Functions on BL602... No more human intervention!
+
+Here's a demo of our script flipping GPIO 2 and 3 and switching the flashing mode...
+
+-   [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=d8x0Y-OraXo)
+
+# Run The Script
 
 TODO
 
