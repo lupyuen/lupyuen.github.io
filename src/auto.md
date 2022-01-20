@@ -332,7 +332,7 @@ git clone --recursive https://github.com/lupyuen/remote-bl602
 sudo remote-bl602/scripts/test.sh
 ```
 
-(Someday we should fix the GPIO and UART permissions, so we don't need superuser access)
+(Alternatively we may set the GPIO and UART permissions, so we don't need superuser access)
 
 Auto Flash and Test on #BL602 the latest #NuttX Build ... Yep it works! 🎉
 
