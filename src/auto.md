@@ -107,6 +107,8 @@ Connect BL602 to a __Single-Board Computer (SBC)__ as shown in the pic above...
 
 (Ground is missing from the pic)
 
+Check that BL602 is __firmly seated__ on the Breadboard! The USB Connector tends to __dislodge the BL602 Board__ from the Breadboard when the USB Cable wriggles too much.
+
 For auto-testing LoRaWAN, we also connect BL602 to [__Semtech SX1262 LoRa Transceiver__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262) (pic above)...
 
 - [__"Connect SX1262"__](https://lupyuen.github.io/articles/spi2#connect-sx1262)
