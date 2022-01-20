@@ -605,7 +605,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;</code></pre></div>
 <h2 id="remap-the-uart-port" class="section-header"><a href="#remap-the-uart-port">7.1 Remap the UART Port</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Enable clock</span>
 <span class="kw">let</span> <span class="ident">clocks</span> <span class="op">=</span> <span class="ident">Strict::new</span>()
-    .<span class="ident">freeze</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">parts</span>.<span class="ident">clk_cfg</span>);
+    .<span class="ident">freeze</span>(<span class="kw-2">&amp;mut</span> <span class="ident">parts</span>.<span class="ident">clk_cfg</span>);
 <span class="kw">let</span> <span class="ident">pin16</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin16</span>.<span class="ident">into_uart_sig0</span>();
 <span class="kw">let</span> <span class="ident">pin7</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">pin7</span>.<span class="ident">into_uart_sig7</span>();
 <span class="kw">let</span> <span class="ident">mux0</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">uart_mux0</span>.<span class="ident">into_uart0_tx</span>();

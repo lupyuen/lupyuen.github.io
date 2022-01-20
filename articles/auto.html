@@ -311,7 +311,8 @@ kill %1</code></pre></div>
 <li><a href="https://www.youtube.com/watch?v=d8x0Y-OraXo"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
 <h1 id="run-the-script" class="section-header"><a href="#run-the-script">4 Run The Script</a></h1>
-<p>TODO</p>
+<p>We’ve seen the <strong>Auto Flash and Test</strong> Script, let’s run it on our Linux SBC!</p>
+<p>Enter this at the command prompt…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Add user to the GPIO and UART groups
 sudo groupadd gpio
 sudo groupadd dialout
@@ -331,21 +332,10 @@ cargo install blflash
 git clone --recursive https://github.com/lupyuen/remote-bl602
 
 #  Run the script
-sudo remote-bl602/scripts/test.sh
-
-#  remote-bl602/scripts/test.sh: line 50: /sys/class/gpio/gpio2/direction: Permission denied</code></pre></div>
-<p>Auto Flash and Test on #BL602 the latest #NuttX Build … Yep it works! 🎉</p>
+remote-bl602/scripts/test.sh</code></pre></div>
+<p>TODO</p>
 <p><a href="https://www.youtube.com/watch?v=_82og3-gEwA"><strong>Watch the demo on YouTube</strong></a></p>
-<p><a href="https://github.com/lupyuen/remote-bl602">(Source)</a></p>
-<p>TODO88</p>
-<p>Let’s Auto-Flash &amp; Test the Daily Upstream Build of Apache #NuttX OS … Auto-Built &amp; Published by GitHub Actions</p>
-<p><img src="https://lupyuen.github.io/images/auto-script.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21">(Source)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112">(Source)</a></p>
-<p>TODO6</p>
-<p>Auto Flash and Test on #BL602 is really helpful for picking a Stable Daily Build of #NuttX for BL602 … So I can test it as I write my NuttX articles 👍</p>
-<p><img src="https://lupyuen.github.io/images/auto-run.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/remote-bl602">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/auto-run.png" alt="Auto Flash and Test Script" /></p>
 <h1 id="crash-analysis" class="section-header"><a href="#crash-analysis">5 Crash Analysis</a></h1>
 <p>TODO10</p>
 <p>What are these addresses in the #NuttX Stack Trace? Let’s do Auto Crash Analysis for #BL602 … And see the Source Code for the Stack Trace </p>
@@ -372,6 +362,14 @@ sudo remote-bl602/scripts/test.sh
 <p><a href="https://github.com/lupyuen/remote-bl602/">(Source)</a></p>
 <h1 id="lorawan-test" class="section-header"><a href="#lorawan-test">6 LoRaWAN Test</a></h1>
 <p>TODO9</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Download the Release Build (instead of the Upstream Build)
+export BUILD_PREFIX=release
+
+#  Download this date of the build
+export BUILD_DATE=2022-01-19
+
+#  Run the script
+remote-bl602/scripts/test.sh</code></pre></div>
 <p>We update #BL602 Auto Flash &amp; Test to send the “lorawan_test” command … Which will start the LoRaWAN Test on #NuttX OS</p>
 <p><img src="https://lupyuen.github.io/images/auto-script3.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L108-L111">(Source)</a></p>
@@ -415,6 +413,10 @@ sudo remote-bl602/scripts/test.sh
 </ol>
 <h1 id="appendix-build-nuttx-with-github-actions" class="section-header"><a href="#appendix-build-nuttx-with-github-actions">10 Appendix: Build NuttX with GitHub Actions</a></h1>
 <p>TODO15</p>
+<p>Let’s Auto-Flash &amp; Test the Daily Upstream Build of Apache #NuttX OS … Auto-Built &amp; Published by GitHub Actions</p>
+<p><img src="https://lupyuen.github.io/images/auto-script.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112">(Source)</a></p>
 <p>Here’s how we configure our #NuttX Build in GitHub Actions … To enable errors, warnings, info messages and assertions</p>
 <p><img src="https://lupyuen.github.io/images/auto-workflow2.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L59-L63">(Source)</a></p>
