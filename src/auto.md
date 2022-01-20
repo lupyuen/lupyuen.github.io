@@ -12,7 +12,7 @@ Instead of flipping a jumper, restarting the board, flashing over UART, restarti
 
 Is there a way to __Automatically Flash and Test__ the Daily Updates?
 
-Yes we can, by connecting BL602 to a __Linux Single-Board Computer (SBC)__! 
+Yes we can, by connecting BL602 to a __Linux Single-Board Computer__! 
 
 Today we shall create a Linux Script that will...
 
@@ -38,15 +38,82 @@ _Why are we doing this?_
 
 -   I write articles about NuttX OS. I need to pick the __Latest Stable Build__ of NuttX for testing the NuttX code in my articles. [(Like these)](https://lupyuen.github.io/articles/book#nuttx-on-bl602)
 
+_Will this work for other microcontrollers?_
+
+-   __ESP32__ has 2 buttons for flashing (BOOT and EN), very similar to BL602. Our Auto Flash and Test Script might work for ESP32 with some tweaking.
+
+-   __Arm Microcontrollers__ may be auto flashed and debugged with an OpenOCD Script. [(Check out Remote PineTime)](https://github.com/lupyuen/remote-pinetime-bot)
+
+![PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident 🙏](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
+
+_PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident 🙏_
+
 # BL602 Basics
+
+This is how we work with BL602...
+
+1.  __Connect BL602__ to our computer's USB port
+
+1.  Flip the __GPIO 8 Jumper__ to __High__ (pic above)
+
+1.  Press the __Reset Button (RST)__.
+
+    BL602 is now in __Flashing Mode__.
+
+1.  Flash BL602 over USB UART with [__blflash__](https://github.com/spacemeowx2/blflash)...
+
+    ```bash
+    $ blflash flash nuttx.bin --port /dev/ttyUSB0
+    [INFO  blflash::flasher] Start connection...
+    [INFO  blflash::flasher] Connection Succeed
+    [INFO  blflash::flasher] Sending eflash_loader...
+    [INFO  blflash::flasher] Program flash...
+    ...
+    [INFO  blflash] Success
+    ```
+
+1.  Flip the __GPIO 8 Jumper__ to  __Low__ (pic below)
+
+    ![PineCone BL602 in Normal Mode with GPIO 8 set to Low](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+
+1.  Press the __Reset Button (RST)__.
+
+    BL602 is now in __Normal Mode__ (Non-Flashing).
+
+1.  Launch a __Serial Terminal__ to test the BL602 Firmware
+
+1.  When we're done, close the Serial Terminal and repeat the __Flash-Test Cycle__
+
+Over the past __14 months__ I've been doing this over and over again. Until last week I wondered...
+
+Can we automate this with a __Single-Board Computer__?
+
+And indeed we can! (Duh!) Here's how...
+
+![PineCone BL602 RISC-V Board (lower right) connected to Single-Board Computer (top) and Semtech SX1262 LoRa Transceiver (lower left)](https://lupyuen.github.io/images/auto-title.jpg)
+
+_PineCone BL602 RISC-V Board (lower right) connected to Single-Board Computer (top) and Semtech SX1262 LoRa Transceiver (lower left)_
+
+# Connect BL602 to Single-Board Computer
+
+Connect BL602 to a __Single-Board Computer (SBC)__ as shown in the pic above...
+
+| SBC    | BL602    | Function
+| -------|----------|----------
+| GPIO 2 | GPIO 8   | Flashing Mode
+| GPIO 3 | RST      | Reset
+| GND    | GND      | Ground
+| USB    | USB      | USB UART
+
+(Ground is missing from the pic)
+
+For auto-testing LoRaWAN, we also connect BL602 to [__Semtech SX1262 LoRa Transceiver__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262) (pic above)...
+
+- [__"Connect SX1262"__](https://lupyuen.github.io/articles/spi2#connect-sx1262)
 
 TODO
 
-Over the past 14 months I've been doing this over and over again. Until last week I wondered...
-
-Can we automate this with an SBC?
-
-And indeed we can! (Duh!)
+Remember to install blflash as superuser: sudo cargo install blflash
 
 # What's Next
 
