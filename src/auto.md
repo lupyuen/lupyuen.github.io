@@ -660,7 +660,11 @@ These are the __Data Addresses__ decoded from the Stack Trace...
 
 # LoRaWAN Test
 
-TODO9
+_What's the best way to auto-test all the NuttX functions: GPIO, SPI, ADC, Interrupts, Timers, Threads, Message Queues, Random Number Generator, ...?_
+
+__LoRaWAN__ is the perfect way to give NuttX a __thorough workout__!
+
+TODO
 
 ```bash
 ##  Download the Release Build (instead of the Upstream Build)
