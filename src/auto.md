@@ -670,23 +670,23 @@ _What's the best way to auto-test all the NuttX functions: GPIO, SPI, ADC, Inter
 
 __LoRaWAN__ is the perfect way to give NuttX a __thorough workout__!
 
--   __GPIO Input__: LoRaWAN reads a GPIO Input to poll the Busy State of the LoRa Transceiver
+-   __GPIO Input__: LoRaWAN reads a GPIO Input to poll the [__Busy State__](https://lupyuen.github.io/articles/sx1262#check-busy-state) of the LoRa Transceiver
 
--   __GPIO Output__: Chip Select for the LoRa Transceiver
+-   __GPIO Output__: [__Chip Select__](https://lupyuen.github.io/articles/sx1262#initialise-spi) for the LoRa Transceiver
 
--   __GPIO Interrupt__: Triggered by LoRa Transceiver when a packet is received
+-   __GPIO Interrupt__: Triggered by LoRa Transceiver when a [__LoRa Packet is received__](https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt)
 
--   __SPI__: LoRa Transceiver talks on the SPI Bus
+-   __SPI__: LoRa Transceiver talks on the [__SPI Bus__](https://lupyuen.github.io/articles/sx1262#initialise-spi)
 
 -   __ADC__: Used by the Internal Temperature Sensor (See below)
 
--   __Timer__: Triggers the periodic sending of Data Packets
+-   __Timer__: Triggers the [__periodic sending__](https://lupyuen.github.io/articles/lorawan3#message-interval) of Data Packets
 
--   __Message Queue__: Handles Transmit / Receive / Timeout Events
+-   __Message Queue__: Handles [__Transmit / Receive / Timeout Events__](https://lupyuen.github.io/articles/sx1262#event-queue)
 
--   __PThread__: Handles events in the background
+-   __PThread__: LoRaWAN handles events with a [__Background Thread__](https://lupyuen.github.io/articles/sx1262#start-dio1-thread)
 
--   __Strong Random Number Generator__: Generates non-repeating LoRaWAN Nonces
+-   __Strong Random Number Generator__: Generates non-repeating [__LoRaWAN Nonces__](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
 
 -   __Internal Temperature Sensor__: Seeds the Entropy Pool for the Random Number Generator
 
