@@ -595,7 +595,7 @@ riscv64-unknown-elf-objdump \
 <p>(More about this in the Appendix)</p>
 </li>
 </ul>
-<p>TODO</p>
+<p>To run the <strong>LoRaWAN Auto-Test</strong> we switch to the <strong>Release Build</strong> (instead of the Upstream Build)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download the Release Build (instead of the Upstream Build)
 export BUILD_PREFIX=release
 
@@ -604,21 +604,38 @@ export BUILD_DATE=2022-01-19
 
 #  Run the script
 remote-bl602/scripts/test.sh</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19">release-2022-01-19</a></p>
-<p>We update #BL602 Auto Flash &amp; Test to send the “lorawan_test” command … Which will start the LoRaWAN Test on #NuttX OS</p>
-<p><img src="https://lupyuen.github.io/images/auto-script3.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L108-L111">(Source)</a></p>
-<p>#BL602 Auto Flash &amp; Test … Now auto-tests the #LoRaWAN Stack on Apache #NuttX OS! 🎉</p>
+<p>(Release Build includes the LoRaWAN Stack)</p>
+<p>After booting NuttX, our script sends the <strong>Test LoRaWAN</strong> command to the NuttX Shell: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L106-L116">test.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  If BL602 has not crashed, send the test command to BL602
+echo &quot;lorawan_test&quot; &gt;/dev/ttyUSB0
+
+#  Wait a while for the test command to run
+sleep 30
+
+#  Check whether BL602 has joined the LoRaWAN Network
+set +e  ##  Don&#39;t exit when any command fails
+match=$(grep &quot;JOINED&quot; /tmp/test.log)
+set -e  ##  Exit when any command fails</code></pre></div>
+<p>And it watches for this output message…</p>
+<div class="example-wrap"><pre class="language-text"><code>##### =========== MLME-Confirm ============ ######
+STATUS: OK
+##### ===========   JOINED     ============ ######</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19">(Source)</a></p>
+<p>Which means that BL602 has successfully joined the <strong>LoRaWAN Network</strong>.</p>
+<p>(And everything has tested OK on NuttX!)</p>
+<p><img src="https://lupyuen.github.io/images/auto-lorawan2.png" alt="BL602 successfully joins the LoRaWAN Network" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19">(Source)</a></p>
+<p>Here’s the demo of the <strong>LoRaWAN Auto-Test</strong>…</p>
+<ul>
+<li>
 <p><a href="https://www.youtube.com/watch?v=JtnOyl5cYjo"><strong>Watch the demo on YouTube</strong></a></p>
-<p><a href="https://github.com/lupyuen/remote-bl602/">(Source)</a></p>
-<p>TODO4</p>
-<p>#LoRaWAN is a great Auto-Test for Apache #NuttX OS … It tests GPIO Input / Output / Interrupt, SPI, Timers, Message Queues, PThreads AND Strong Random Number Generator!</p>
-<p><img src="https://lupyuen.github.io/images/auto-lorawan.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/remote-bl602/">(Source)</a></p>
-<p>TODO5</p>
-<p>If #BL602 Auto-Test successfully joins a #LoRaWAN Network … Means that everything is super hunky dory on Apache #NuttX OS … GPIO Input / Output / Interrupt, SPI, Timers, Message Queues, PThreads AND Strong Random Number Generator! 👍</p>
-<p><img src="https://lupyuen.github.io/images/auto-lorawan2.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/remote-bl602/#output-log-for-release-build">(Source)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19"><strong>See the Output Log</strong></a></p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/auto-lorawan.png" alt="LoRaWAN Auto-Test" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19">(Source)</a></p>
 <h1 id="merge-updates-from-nuttx" class="section-header"><a href="#merge-updates-from-nuttx">7 Merge Updates From NuttX</a></h1>
 <p>TODO16</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download the Downstream Build (instead of the Upstream Build)
