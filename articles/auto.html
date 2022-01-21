@@ -564,34 +564,34 @@ riscv64-unknown-elf-objdump \
 <p><strong>LoRaWAN</strong> is the perfect way to give NuttX a <strong>thorough workout</strong>!</p>
 <ul>
 <li>
-<p><strong>GPIO Input</strong>: TODO</p>
+<p><strong>GPIO Input</strong>: LoRaWAN reads a GPIO Input to poll the Busy State of the LoRa Transceiver</p>
 </li>
 <li>
-<p><strong>GPIO Output</strong>: TODO</p>
+<p><strong>GPIO Output</strong>: Chip Select for the LoRa Transceiver</p>
 </li>
 <li>
-<p><strong>GPIO Interrupt</strong>: TODO</p>
+<p><strong>GPIO Interrupt</strong>: Triggered by LoRa Transceiver when a packet is received</p>
 </li>
 <li>
-<p><strong>SPI</strong>: TODO</p>
+<p><strong>SPI</strong>: LoRa Transceiver talks on the SPI Bus</p>
 </li>
 <li>
-<p><strong>ADC</strong>: TODO</p>
+<p><strong>ADC</strong>: Used by the Internal Temperature Sensor (See below)</p>
 </li>
 <li>
-<p><strong>Timer</strong>: TODO</p>
+<p><strong>Timer</strong>: Triggers the periodic sending of Data Packets</p>
 </li>
 <li>
-<p><strong>Message Queue</strong>: TODO</p>
+<p><strong>Message Queue</strong>: Handles Transmit / Receive / Timeout Events</p>
 </li>
 <li>
-<p><strong>PThread</strong>: TODO</p>
+<p><strong>PThread</strong>: Handles events in the background</p>
 </li>
 <li>
-<p><strong>Strong Random Number Generator</strong>: TODO</p>
+<p><strong>Strong Random Number Generator</strong>: Generates non-repeating LoRaWAN Nonces</p>
 </li>
 <li>
-<p><strong>Internal Temperature Sensor</strong>: TODO</p>
+<p><strong>Internal Temperature Sensor</strong>: Seeds the Entropy Pool for the Random Number Generator</p>
 </li>
 </ul>
 <p>TODO</p>
