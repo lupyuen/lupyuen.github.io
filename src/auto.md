@@ -692,7 +692,7 @@ __LoRaWAN__ is the perfect way to give NuttX a __thorough workout__!
 
     (More about this in the Appendix)
 
-TODO
+To run the __LoRaWAN Auto-Test__ we switch to the __Release Build__ (instead of the Upstream Build)...
 
 ```bash
 ##  Download the Release Build (instead of the Upstream Build)
@@ -705,35 +705,50 @@ export BUILD_DATE=2022-01-19
 remote-bl602/scripts/test.sh
 ```
 
-[release-2022-01-19](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+(Release Build includes the LoRaWAN Stack)
 
-We update #BL602 Auto Flash & Test to send the "lorawan_test" command ... Which will start the LoRaWAN Test on #NuttX OS
+After booting NuttX, our script sends the __Test LoRaWAN__ command to the NuttX Shell: [test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L106-L116)
 
-![](https://lupyuen.github.io/images/auto-script3.png)
+```bash
+##  If BL602 has not crashed, send the test command to BL602
+echo "lorawan_test" >/dev/ttyUSB0
 
-[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L108-L111)
+##  Wait a while for the test command to run
+sleep 30
 
-#BL602 Auto Flash & Test ... Now auto-tests the #LoRaWAN Stack on Apache #NuttX OS! 🎉
+##  Check whether BL602 has joined the LoRaWAN Network
+set +e  ##  Don't exit when any command fails
+match=$(grep "JOINED" /tmp/test.log)
+set -e  ##  Exit when any command fails
+```
 
-[__Watch the demo on YouTube__](https://www.youtube.com/watch?v=JtnOyl5cYjo)
+And it watches for this output message...
 
-[(Source)](https://github.com/lupyuen/remote-bl602/)
+```text
+###### =========== MLME-Confirm ============ ######
+STATUS: OK
+###### ===========   JOINED     ============ ######
+```
 
-TODO4
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
 
-#LoRaWAN is a great Auto-Test for Apache #NuttX OS ... It tests GPIO Input / Output / Interrupt, SPI, Timers, Message Queues, PThreads AND Strong Random Number Generator!
+Which means that BL602 has successfully joined the __LoRaWAN Network__.
 
-![](https://lupyuen.github.io/images/auto-lorawan.png)
+(And everything has tested OK on NuttX!)
 
-[(Source)](https://github.com/lupyuen/remote-bl602/)
+![BL602 successfully joins the LoRaWAN Network](https://lupyuen.github.io/images/auto-lorawan2.png)
 
-TODO5
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
 
-If #BL602 Auto-Test successfully joins a #LoRaWAN Network ... Means that everything is super hunky dory on Apache #NuttX OS ... GPIO Input / Output / Interrupt, SPI, Timers, Message Queues, PThreads AND Strong Random Number Generator! 👍
+Here's the demo of the __LoRaWAN Auto-Test__...
 
-![](https://lupyuen.github.io/images/auto-lorawan2.png)
+-   [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=JtnOyl5cYjo)
 
-[(Source)](https://github.com/lupyuen/remote-bl602/#output-log-for-release-build)
+-   [__See the Output Log__](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+
+![LoRaWAN Auto-Test](https://lupyuen.github.io/images/auto-lorawan.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
 
 # Merge Updates From NuttX
 
