@@ -314,9 +314,7 @@ We've seen the __Auto Flash and Test__ Script, let's run it on our Linux SBC!
 Enter this at the Linux command prompt...
 
 ```bash
-##  Add user to the GPIO and UART groups
-sudo groupadd gpio
-sudo groupadd dialout
+##  Allow the user to access the GPIO and UART ports
 sudo usermod -a -G gpio $USER
 sudo usermod -a -G dialout $USER
 
@@ -451,7 +449,7 @@ Our script analyses the BL602 Output and determines that NuttX has booted succes
 
 We're done with the __simplest scenario__ for Auto Flash and Test! Now we have a quick and nifty way to discover if Today's Upstream Build of NuttX boots OK on BL602.
 
-(Yep I run this every day to check on the stability of the BL602 build)
+(Yep I run this every day to check the stability of the BL602 build. [See the logs](https://github.com/lupyuen/incubator-nuttx/releases))
 
 # Crash Analysis
 
