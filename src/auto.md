@@ -807,7 +807,221 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX with GitHub Actions
 
-TODO15
+TODO
+
+From [.github/workflows/bl602.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml)
+
+```yaml
+name: BL602 Upstream
+
+on:
+
+  ## Run every day at 0:30, 1:30, 2:30, 3:30 UTC
+  schedule:
+    - cron: '30 0,1,2,3 * * *'
+```
+
+TODO
+
+```yaml
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - name: Install Build Tools
+      run:  |
+        sudo apt -y install \
+        bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
+        gperf automake libtool pkg-config build-essential gperf genromfs \
+        libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
+        libexpat-dev gcc-multilib g++-multilib picocom u-boot-tools util-linux \
+        kconfig-frontends \
+        wget
+```
+
+TODO
+
+```yaml
+    - name: Install Toolchain
+      run:  |
+        wget https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
+        tar -xf riscv64-unknown-elf-gcc*.tar.gz
+```
+
+TODO
+
+```yaml
+    - name: Checkout Source Files
+      run:  |
+        mkdir nuttx
+        cd nuttx
+        git clone https://github.com/apache/incubator-nuttx nuttx
+        git clone https://github.com/apache/incubator-nuttx-apps apps
+```
+
+TODO
+
+```yaml          
+    - name: Build
+      run: |
+        ## Add toolchain to PATH
+        export PATH=$PATH:$PWD/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14/bin
+        cd nuttx/nuttx
+        
+        ## Configure the build
+        ./tools/configure.sh bl602evb:nsh
+```
+
+TODO
+
+```yaml        
+        ## Enable errors, warnings, info messages and assertions
+        kconfig-tweak --enable CONFIG_DEBUG_ERROR
+        kconfig-tweak --enable CONFIG_DEBUG_WARN
+        kconfig-tweak --enable CONFIG_DEBUG_INFO
+        kconfig-tweak --enable CONFIG_DEBUG_ASSERTIONS
+
+        ## Enable GPIO errors, warnings and info messages
+        kconfig-tweak --enable CONFIG_DEBUG_GPIO
+        kconfig-tweak --enable CONFIG_DEBUG_GPIO_ERROR
+        kconfig-tweak --enable CONFIG_DEBUG_GPIO_WARN
+        kconfig-tweak --enable CONFIG_DEBUG_GPIO_INFO
+
+        ## Enable SPI errors, warnings and info messages
+        kconfig-tweak --enable CONFIG_DEBUG_SPI
+        kconfig-tweak --enable CONFIG_DEBUG_SPI_ERROR
+        kconfig-tweak --enable CONFIG_DEBUG_SPI_WARN
+        kconfig-tweak --enable CONFIG_DEBUG_SPI_INFO
+```
+
+TODO
+
+```yaml
+        ## Enable Floating Point
+        kconfig-tweak --enable CONFIG_LIBC_FLOATINGPOINT
+
+        ## Enable Compiler Stack Canaries
+        kconfig-tweak --enable CONFIG_STACK_CANARIES
+
+        ## Enable NuttX Shell commands: help, ls
+        kconfig-tweak --disable CONFIG_NSH_DISABLE_HELP
+        kconfig-tweak --disable CONFIG_NSH_DISABLE_LS
+```
+
+TODO
+
+```yaml
+        ## Enable GPIO
+        kconfig-tweak --enable CONFIG_DEV_GPIO
+        kconfig-tweak --set-val CONFIG_DEV_GPIO_NSIGNALS 1
+
+        ## Enable GPIO Test App
+        kconfig-tweak --enable CONFIG_EXAMPLES_GPIO
+        kconfig-tweak --set-str CONFIG_EXAMPLES_GPIO_PROGNAME "gpio"
+        kconfig-tweak --set-val CONFIG_EXAMPLES_GPIO_PRIORITY 100
+        kconfig-tweak --set-val CONFIG_EXAMPLES_GPIO_STACKSIZE 2048
+```
+
+TODO
+
+```yaml
+        ## Enable SPI
+        kconfig-tweak --enable CONFIG_BL602_SPI0
+        kconfig-tweak --enable CONFIG_SPI
+        kconfig-tweak --enable CONFIG_SPI_EXCHANGE
+        kconfig-tweak --enable CONFIG_SPI_DRIVER
+```
+
+TODO
+
+```yaml
+        ## Preserve the build config
+        cp .config nuttx.config
+        
+        ## Run the build
+        make
+```
+
+TODO
+
+```yaml
+        ## Dump the disassembly to nuttx.S
+        riscv64-unknown-elf-objdump \
+          -t -S --demangle --line-numbers --wide \
+          nuttx \
+          >nuttx.S \
+          2>&1
+```
+
+TODO
+
+```yaml
+    - name: Upload Build Outputs
+      uses: actions/upload-artifact@v2
+      with:
+        name: nuttx.zip
+        path: nuttx/nuttx/nuttx*
+```
+
+TODO
+
+```yaml
+    - name: Zip Build Outputs
+      run: |
+        cd nuttx/nuttx
+        zip nuttx.zip nuttx*
+```
+
+TODO
+
+```yaml
+    - name: Get Current Date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+```
+
+TODO
+
+```yaml        
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: upstream-${{ steps.date.outputs.date }}
+        release_name: upstream-${{ steps.date.outputs.date }}
+        draft: true
+        prerelease: false
+```
+
+TODO
+
+```yaml
+    - name: Upload Release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: nuttx/nuttx/nuttx.zip
+        asset_name: nuttx.zip
+        asset_content_type: application/zip
+```
+
+TODO
+
+```yaml
+    - name: Publish Release
+      uses: eregon/publish-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
+```
 
 Let's Auto-Flash & Test the Daily Upstream Build of Apache #NuttX OS ... Auto-Built & Published by GitHub Actions
 
@@ -846,6 +1060,41 @@ TODO14
 # Appendix: Fix LoRaWAN Nonce
 
 TODO
+
+From [lorawan_test/lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797)
+
+```c
+//  If we are using Entropy Pool and the BL602 ADC is available,
+//  add the Internal Temperature Sensor data to the Entropy Pool.
+//  This prevents duplicate Join Nonce during BL602 Auto Flash and Test.
+static void init_entropy_pool(void) {
+  //  Repeat 4 times to get good entropy (16 bytes)
+  for (int i = 0; i < 4; i++) {
+    //  Read the Internal Temperature Sensor
+    float temp = 0.0;
+    get_tsen_adc(&temp, 1);
+
+    //  Add Sensor Data (4 bytes) to Entropy Pool
+    up_rngaddentropy(                  //  Add integers to Entropy Pool...
+      RND_SRC_SENSOR,                  //  Source is Sensor Data
+      (FAR const uint32_t *) &temp,    //  Integers to be added
+      sizeof(temp) / sizeof(uint32_t)  //  How many integers (1)
+    );
+  }
+
+  //  Force reseeding random number generator from entropy pool
+  up_rngreseed();
+}
+```
+
+From [lorawan_test/lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L266-L272)
+
+```c
+int main(int argc, FAR char *argv[]) {
+  //  If we are using Entropy Pool and the BL602 ADC is available,
+  //  add the Internal Temperature Sensor data to the Entropy Pool
+  init_entropy_pool();
+```
 
 #BL602 Auto Flash & Test creates Duplicate #LoRaWAN Nonces ... Because the Boot Timing is always identical! Let's fix this by adding Internal Temperature Sensor Data to the Entropy Pool
 
