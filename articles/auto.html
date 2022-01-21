@@ -477,6 +477,7 @@ riscv_dump_task:      0      0       436      8160     5.3%    Idle Task
 riscv_dump_task:      1    100       516      8144     6.3%    nsh_main</code></pre></div>
 <p>(The Interrupt Stack <strong>irq</strong> seems to be overflowing, it might have caused NuttX to crash)</p>
 <p>In a while we’ll select the interesting addresses from above and decode them.</p>
+<p><img src="https://lupyuen.github.io/images/auto-crash2.png" alt="Stack Overflow?" /></p>
 <h2 id="disassemble-the-firmware" class="section-header"><a href="#disassemble-the-firmware">5.2 Disassemble The Firmware</a></h2>
 <p>Before decoding the addresses, let’s prepare the <strong>RISC-V Disassembly</strong> of our BL602 Firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Dump the disassembly to nuttx.S
@@ -686,6 +687,7 @@ remote-bl602/scripts/test.sh</code></pre></div>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1482152780051935238">this Twitter Thread</a></li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/auto-workflow.png" alt="Building NuttX with GitHub Actions" /></p>
 <h1 id="appendix-build-nuttx-with-github-actions" class="section-header"><a href="#appendix-build-nuttx-with-github-actions">10 Appendix: Build NuttX with GitHub Actions</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml">.github/workflows/bl602.yml</a></p>
@@ -845,12 +847,6 @@ on:
 <p>Here’s how we enable #LoRaWAN for our #NuttX Build in GitHub Actions … Let’s do Automated NuttX Testing with LoRaWAN! 👍</p>
 <p><img src="https://lupyuen.github.io/images/auto-workflow3.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200">(Source)</a></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/auto-crash.png" alt="" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/auto-crash2.png" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/auto-workflow.png" alt="" /></p>
 <h1 id="appendix-fix-lorawan-nonce" class="section-header"><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a></h1>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797">lorawan_test/lorawan_test_main.c</a></p>
