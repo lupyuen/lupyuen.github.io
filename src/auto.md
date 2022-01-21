@@ -449,7 +449,9 @@ Our script analyses the BL602 Output and determines that NuttX has booted succes
 
 We're done with the __simplest scenario__ for Auto Flash and Test! Now we have a quick and nifty way to discover if Today's Upstream Build of NuttX boots OK on BL602.
 
-(Yep I run this every day to check the stability of the BL602 build. [See the logs](https://github.com/lupyuen/incubator-nuttx/releases))
+[(I run the script every day to check the stability of the BL602 build)](https://github.com/lupyuen/incubator-nuttx/releases)
+
+![Flash & Test NuttX on BL602... Remotely from a Phone!](https://lupyuen.github.io/images/auto-remote.png)
 
 # Crash Analysis
 
@@ -492,14 +494,6 @@ We also match up the Data Addresses in the #NuttX Stack Trace with the RISC-V Di
 Here's a demo of #BL602 Auto Flash & Test ... With #NuttX Crash Analysis
 
 [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=Kf3G1hGoLIs)
-
-[(Source)](https://github.com/lupyuen/remote-bl602/)
-
-TODO17
-
-Now we can Flash & Test Apache #NuttX OS on #BL602 ... Remotely from a Phone! 🎉
-
-![](https://lupyuen.github.io/images/auto-remote.png)
 
 [(Source)](https://github.com/lupyuen/remote-bl602/)
 
