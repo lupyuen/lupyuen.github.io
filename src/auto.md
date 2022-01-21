@@ -1053,6 +1053,20 @@ Here's how we enable #LoRaWAN for our #NuttX Build in GitHub Actions ... Let's d
 
 # Appendix: Fix LoRaWAN Nonce
 
+_What's a LoRaWAN Nonce?_
+
+TODO
+
+_Is there a problem with LoRaWAN Nonces?_
+
+TODO
+
+_But our LoRaWAN Nonces are totally random right?_
+
+TODO
+
+_How shall we fix our LoRaWAN Nonces?_
+
 TODO
 
 #BL602 Auto Flash & Test creates Duplicate #LoRaWAN Nonces ... Because the Boot Timing is always identical! Let's fix this by adding Internal Temperature Sensor Data to the Entropy Pool
