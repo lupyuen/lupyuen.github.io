@@ -777,7 +777,9 @@ remote-bl602/scripts/test.sh
 
 Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! 🎉 Testing upstream updates is so much easier with #BL602 Auto Flash & Test 👍
 
-![](https://lupyuen.github.io/images/auto-merge.png)
+![Merge updates from upstream](https://lupyuen.github.io/images/auto-merge.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/pull/21)
 
 # What's Next
 
