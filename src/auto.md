@@ -1049,9 +1049,15 @@ Here's how we enable #LoRaWAN for our #NuttX Build in GitHub Actions ... Let's d
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200)
 
+![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
+
 # Appendix: Fix LoRaWAN Nonce
 
 TODO
+
+#BL602 Auto Flash & Test creates Duplicate #LoRaWAN Nonces ... Because the Boot Timing is always identical! Let's fix this by adding Internal Temperature Sensor Data to the Entropy Pool
+
+[(Source)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
 
 From [lorawan_test/lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797)
 
@@ -1079,6 +1085,8 @@ static void init_entropy_pool(void) {
 }
 ```
 
+TODO
+
 From [lorawan_test/lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L266-L272)
 
 ```c
@@ -1088,11 +1096,20 @@ int main(int argc, FAR char *argv[]) {
   init_entropy_pool();
 ```
 
-#BL602 Auto Flash & Test creates Duplicate #LoRaWAN Nonces ... Because the Boot Timing is always identical! Let's fix this by adding Internal Temperature Sensor Data to the Entropy Pool
+TODO
 
-![](https://lupyuen.github.io/images/auto-nonce.png)
+From [release-2022-01-19](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
 
-[(Source)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
+```text
+NuttShell (NSH) NuttX-10.2.0-RC0
+nsh> lorawan_test
+
+init_entropy_pool
+temperature = 30.181866 Celsius
+temperature = 29.794918 Celsius
+temperature = 30.439829 Celsius
+temperature = 28.376112 Celsius
+```
 
 TODO
 
