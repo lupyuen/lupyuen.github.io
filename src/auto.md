@@ -752,7 +752,15 @@ Here's the demo of the __LoRaWAN Auto-Test__...
 
 # Merge Updates From NuttX
 
+_Back to our original question: Why are we doing all this?_
+
 TODO16
+
+-   release
+
+-   upstream
+
+-   downstream
 
 ```bash
 ##  Download the Downstream Build (instead of the Upstream Build)
