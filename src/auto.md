@@ -690,6 +690,8 @@ __LoRaWAN__ is the perfect way to give NuttX a __thorough workout__!
 
 -   __Internal Temperature Sensor__: Seeds the Entropy Pool for the Random Number Generator
 
+    (More about this in the Appendix)
+
 TODO
 
 ```bash
