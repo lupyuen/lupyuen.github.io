@@ -339,14 +339,14 @@ remote-bl602/scripts/test.sh</code></pre></div>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=_82og3-gEwA"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
-<p>Let’s study the script output: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20"><strong>upstream-2022-01-20</strong></a></p>
+<p>Let’s study the script output: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-21"><strong>upstream-2022-01-21</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/auto-run.png" alt="Auto Flash and Test Script" /></p>
 <h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">4.1 Download NuttX</a></h2>
-<p>Our script begins by <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L20-L40"><strong>downloading Today’s Upstream Build</strong></a> of NuttX: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20">upstream-2022-01-20</a></p>
+<p>Our script begins by <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L20-L40"><strong>downloading Today’s Upstream Build</strong></a> of NuttX: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-21">upstream-2022-01-21</a></p>
 <div class="example-wrap"><pre class="language-text"><code>+ BUILD_PREFIX=upstream
-+ BUILD_DATE=2022-01-20
------ Download the latest upstream NuttX build for 2022-01-20
-+ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-20/nuttx.zip -O /tmp/nuttx.zip</code></pre></div>
++ BUILD_DATE=2022-01-21
+----- Download the latest upstream NuttX build for 2022-01-21
++ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-21/nuttx.zip -O /tmp/nuttx.zip</code></pre></div>
 <p>(<strong>nuttx.zip</strong> is built daily by GitHub Actions, as explained in the Appendix)</p>
 <p>Our script unzips <strong>nuttx.zip</strong>, which includes the following files…</p>
 <div class="example-wrap"><pre class="language-text"><code>+ pushd /tmp
@@ -401,6 +401,14 @@ BL602 is now in Normal Mode
 Toggle GPIO 3 High-Low-High (Reset BL602)</code></pre></div>
 <p>BL602 boots the NuttX Firmware and starts the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Here is the BL602 Output...
+gpio_pin_register: Registering /dev/gpio0
+gpio_pin_register: Registering /dev/gpio1
+gpint_enable: Disable the interrupt
+gpio_pin_register: Registering /dev/gpio2
+bl602_spi_setfrequency: frequency=400000, actual=0
+bl602_spi_setbits: nbits=8
+bl602_spi_setmode: mode=0
+
 NuttShell (NSH) NuttX-10.2.0
 nsh&gt;</code></pre></div><h2 id="test-nuttx" class="section-header"><a href="#test-nuttx">4.4 Test NuttX</a></h2>
 <p>Our script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L106-L111"><strong>sends a Test Command</strong></a> to BL602 and the NuttX Shell…</p>
