@@ -847,8 +847,11 @@ on:
 <p>Here’s how we enable #LoRaWAN for our #NuttX Build in GitHub Actions … Let’s do Automated NuttX Testing with LoRaWAN! 👍</p>
 <p><img src="https://lupyuen.github.io/images/auto-workflow3.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/auto-nonce.png" alt="Duplicate LoRaWAN Nonce" /></p>
 <h1 id="appendix-fix-lorawan-nonce" class="section-header"><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a></h1>
 <p>TODO</p>
+<p>#BL602 Auto Flash &amp; Test creates Duplicate #LoRaWAN Nonces … Because the Boot Timing is always identical! Let’s fix this by adding Internal Temperature Sensor Data to the Entropy Pool</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce">(Source)</a></p>
 <p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797">lorawan_test/lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  If we are using Entropy Pool and the BL602 ADC is available,
 //  add the Internal Temperature Sensor data to the Entropy Pool.
@@ -871,14 +874,22 @@ static void init_entropy_pool(void) {
   //  Force reseeding random number generator from entropy pool
   up_rngreseed();
 }</code></pre></div>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L266-L272">lorawan_test/lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
   //  If we are using Entropy Pool and the BL602 ADC is available,
   //  add the Internal Temperature Sensor data to the Entropy Pool
   init_entropy_pool();</code></pre></div>
-<p>#BL602 Auto Flash &amp; Test creates Duplicate #LoRaWAN Nonces … Because the Boot Timing is always identical! Let’s fix this by adding Internal Temperature Sensor Data to the Entropy Pool</p>
-<p><img src="https://lupyuen.github.io/images/auto-nonce.png" alt="" /></p>
-<p><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce">(Source)</a></p>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19">release-2022-01-19</a></p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt; lorawan_test
+
+init_entropy_pool
+temperature = 30.181866 Celsius
+temperature = 29.794918 Celsius
+temperature = 30.439829 Celsius
+temperature = 28.376112 Celsius</code></pre></div>
 <p>TODO</p>
 <p>Here’s how we read #BL602’s Internal Temperature Sensor … And add the data to the Entropy Pool in #NuttX OS … To create truly random LoRaWAN Nonces</p>
 <p><img src="https://lupyuen.github.io/images/auto-nonce2.png" alt="" /></p>
