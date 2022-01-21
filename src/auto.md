@@ -545,6 +545,8 @@ riscv_dump_task:      1    100       516      8144     6.3%    nsh_main
 
 In a while we'll select the interesting addresses from above and decode them.
 
+![Stack Overflow?](https://lupyuen.github.io/images/auto-crash2.png)
+
 ## Disassemble The Firmware
 
 Before decoding the addresses, let's prepare the __RISC-V Disassembly__ of our BL602 Firmware...
@@ -805,6 +807,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1482152780051935238)
 
+![Building NuttX with GitHub Actions](https://lupyuen.github.io/images/auto-workflow.png)
+
 # Appendix: Build NuttX with GitHub Actions
 
 TODO
@@ -1044,18 +1048,6 @@ Here's how we enable #LoRaWAN for our #NuttX Build in GitHub Actions ... Let's d
 ![](https://lupyuen.github.io/images/auto-workflow3.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200)
-
-TODO2
-
-![](https://lupyuen.github.io/images/auto-crash.png)
-
-TODO3
-
-![](https://lupyuen.github.io/images/auto-crash2.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/auto-workflow.png)
 
 # Appendix: Fix LoRaWAN Nonce
 
