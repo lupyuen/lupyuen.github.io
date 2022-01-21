@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _13 Jan 2022_
+📝 _21 Jan 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -352,7 +352,9 @@ Tips for __troubleshooting BL602 and BL604 firmware__.
 
 For __Apache NuttX OS__
 
--   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
+-   ["Enable Logging"](https://lupyuen.github.io/articles/spi2#enable-logging)
+
+-   ["NuttX Crash Analysis"](https://lupyuen.github.io/articles/auto#nuttx-crash-analysis)
 
 For __BL602 IoT SDK__
 
