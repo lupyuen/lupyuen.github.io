@@ -754,13 +754,15 @@ Here's the demo of the __LoRaWAN Auto-Test__...
 
 _Back to our original question: Why are we doing all this?_
 
-TODO16
+My situation is kinda complicated, I need to worry about __3 branches__ of the NuttX Code...
 
--   release
+-   __Release Branch__: TODO
 
--   upstream
+-   __Upstream Branch__: TODO
 
--   downstream
+-   __Downstream Branch__: TODO
+
+TODO
 
 ```bash
 ##  Download the Downstream Build (instead of the Upstream Build)
