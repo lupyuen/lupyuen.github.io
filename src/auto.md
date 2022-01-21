@@ -338,19 +338,19 @@ Our script flashes and runs NuttX on BL602 like so...
 
 -   [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=_82og3-gEwA)
 
-Let's study the script output: [__upstream-2022-01-20__](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20)
+Let's study the script output: [__upstream-2022-01-21__](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-21)
 
 ![Auto Flash and Test Script](https://lupyuen.github.io/images/auto-run.png)
 
 ## Download NuttX
 
-Our script begins by [__downloading Today's Upstream Build__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L20-L40) of NuttX: [upstream-2022-01-20](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20)
+Our script begins by [__downloading Today's Upstream Build__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L20-L40) of NuttX: [upstream-2022-01-21](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-21)
 
 ```text
 + BUILD_PREFIX=upstream
-+ BUILD_DATE=2022-01-20
------ Download the latest upstream NuttX build for 2022-01-20
-+ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-20/nuttx.zip -O /tmp/nuttx.zip
++ BUILD_DATE=2022-01-21
+----- Download the latest upstream NuttX build for 2022-01-21
++ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-21/nuttx.zip -O /tmp/nuttx.zip
 ```
 
 (__nuttx.zip__ is built daily by GitHub Actions, as explained in the Appendix)
@@ -422,6 +422,14 @@ BL602 boots the NuttX Firmware and starts the __NuttX Shell__...
 
 ```text
 ----- Here is the BL602 Output...
+gpio_pin_register: Registering /dev/gpio0
+gpio_pin_register: Registering /dev/gpio1
+gpint_enable: Disable the interrupt
+gpio_pin_register: Registering /dev/gpio2
+bl602_spi_setfrequency: frequency=400000, actual=0
+bl602_spi_setbits: nbits=8
+bl602_spi_setmode: mode=0
+
 NuttShell (NSH) NuttX-10.2.0
 nsh>
 ```
