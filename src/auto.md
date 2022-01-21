@@ -461,9 +461,9 @@ We're done with the __simplest scenario__ for Auto Flash and Test! Now we have a
 
 ![Flash & Test NuttX on BL602... Remotely from a Phone!](https://lupyuen.github.io/images/auto-remote.png)
 
-# Crash Analysis
+# NuttX Crash Analysis
 
-_What happens when NuttX crashes on startup?_
+_What happens when NuttX crashes during testing?_
 
 TODO10
 
