@@ -344,7 +344,7 @@ Let's study the script output: [__upstream-2022-01-20__](https://github.com/lupy
 
 ## Download NuttX
 
-Our script begins by downloading __Today's Upstream Build__ of NuttX: [upstream-2022-01-20](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20)
+Our script begins by [__downloading Today's Upstream Build__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L20-L40) of NuttX: [upstream-2022-01-20](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20)
 
 ```text
 + BUILD_PREFIX=upstream
@@ -428,7 +428,7 @@ nsh>
 
 ## Test NuttX
 
-Our script sends a __Test Command__ to BL602 and the NuttX Shell...
+Our script [__sends a Test Command__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L106-L111) to BL602 and the NuttX Shell...
 
 ```text
 ----- Send command to BL602: lorawan_test
@@ -445,7 +445,7 @@ But that's OK, we'll see LoRaWAN in action when we test the Release Build of Nut
 ===== Boot OK
 ```
 
-Our script analyses the BL602 Output and determines that NuttX has booted successfully. 
+Our script [__analyses the output__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L113-L134) and determines that NuttX has booted successfully. 
 
 We're done with the __simplest scenario__ for Auto Flash and Test! Now we have a quick and nifty way to discover if Today's Upstream Build of NuttX boots OK on BL602.
 
