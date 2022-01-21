@@ -330,6 +330,12 @@ cargo install blflash
 ##  Download the script
 git clone --recursive https://github.com/lupyuen/remote-bl602
 
+##  Optional: Select the type of build (upstream / downstream / release)
+##  export BUILD_PREFIX=upstream
+
+##  Optional: Select the date of the build
+##  export BUILD_DATE=2022-01-19
+
 ##  Run the script
 remote-bl602/scripts/test.sh
 ```
@@ -663,6 +669,26 @@ These are the __Data Addresses__ decoded from the Stack Trace...
 _What's the best way to auto-test all the NuttX functions: GPIO, SPI, ADC, Interrupts, Timers, Threads, Message Queues, Random Number Generator, ...?_
 
 __LoRaWAN__ is the perfect way to give NuttX a __thorough workout__!
+
+-   __GPIO Input__: TODO
+
+-   __GPIO Output__: TODO
+
+-   __GPIO Interrupt__: TODO
+
+-   __SPI__: TODO
+
+-   __ADC__: TODO
+
+-   __Timer__: TODO
+
+-   __Message Queue__: TODO
+
+-   __PThread__: TODO
+
+-   __Strong Random Number Generator__: TODO
+
+-   __Internal Temperature Sensor__: TODO
 
 TODO
 
