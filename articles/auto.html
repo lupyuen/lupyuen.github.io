@@ -337,6 +337,12 @@ cargo install blflash
 #  Download the script
 git clone --recursive https://github.com/lupyuen/remote-bl602
 
+#  Optional: Select the type of build (upstream / downstream / release)
+#  export BUILD_PREFIX=upstream
+
+#  Optional: Select the date of the build
+#  export BUILD_DATE=2022-01-19
+
 #  Run the script
 remote-bl602/scripts/test.sh</code></pre></div>
 <p>Our script flashes and runs NuttX on BL602 like so…</p>
@@ -556,6 +562,38 @@ riscv64-unknown-elf-objdump \
 <h1 id="lorawan-test" class="section-header"><a href="#lorawan-test">6 LoRaWAN Test</a></h1>
 <p><em>What’s the best way to auto-test all the NuttX functions: GPIO, SPI, ADC, Interrupts, Timers, Threads, Message Queues, Random Number Generator, …?</em></p>
 <p><strong>LoRaWAN</strong> is the perfect way to give NuttX a <strong>thorough workout</strong>!</p>
+<ul>
+<li>
+<p><strong>GPIO Input</strong>: TODO</p>
+</li>
+<li>
+<p><strong>GPIO Output</strong>: TODO</p>
+</li>
+<li>
+<p><strong>GPIO Interrupt</strong>: TODO</p>
+</li>
+<li>
+<p><strong>SPI</strong>: TODO</p>
+</li>
+<li>
+<p><strong>ADC</strong>: TODO</p>
+</li>
+<li>
+<p><strong>Timer</strong>: TODO</p>
+</li>
+<li>
+<p><strong>Message Queue</strong>: TODO</p>
+</li>
+<li>
+<p><strong>PThread</strong>: TODO</p>
+</li>
+<li>
+<p><strong>Strong Random Number Generator</strong>: TODO</p>
+</li>
+<li>
+<p><strong>Internal Temperature Sensor</strong>: TODO</p>
+</li>
+</ul>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download the Release Build (instead of the Upstream Build)
 export BUILD_PREFIX=release
