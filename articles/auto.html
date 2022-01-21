@@ -342,7 +342,7 @@ remote-bl602/scripts/test.sh</code></pre></div>
 <p>Let’s study the script output: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20"><strong>upstream-2022-01-20</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/auto-run.png" alt="Auto Flash and Test Script" /></p>
 <h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">4.1 Download NuttX</a></h2>
-<p>Our script begins by downloading <strong>Today’s Upstream Build</strong> of NuttX: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20">upstream-2022-01-20</a></p>
+<p>Our script begins by <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L20-L40"><strong>downloading Today’s Upstream Build</strong></a> of NuttX: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-20">upstream-2022-01-20</a></p>
 <div class="example-wrap"><pre class="language-text"><code>+ BUILD_PREFIX=upstream
 + BUILD_DATE=2022-01-20
 ----- Download the latest upstream NuttX build for 2022-01-20
@@ -403,7 +403,7 @@ Toggle GPIO 3 High-Low-High (Reset BL602)</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>----- Here is the BL602 Output...
 NuttShell (NSH) NuttX-10.2.0
 nsh&gt;</code></pre></div><h2 id="test-nuttx" class="section-header"><a href="#test-nuttx">4.4 Test NuttX</a></h2>
-<p>Our script sends a <strong>Test Command</strong> to BL602 and the NuttX Shell…</p>
+<p>Our script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L106-L111"><strong>sends a Test Command</strong></a> to BL602 and the NuttX Shell…</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Send command to BL602: lorawan_test
 lorawan_test
 nsh: lorawan_test: command not found
@@ -411,7 +411,7 @@ nsh&gt;</code></pre></div>
 <p><strong>lorawan_test</strong> is missing because the Upstream Build doesn’t include the LoRaWAN Stack.</p>
 <p>But that’s OK, we’ll see LoRaWAN in action when we test the Release Build of NuttX.</p>
 <div class="example-wrap"><pre class="language-text"><code>===== Boot OK</code></pre></div>
-<p>Our script analyses the BL602 Output and determines that NuttX has booted successfully. </p>
+<p>Our script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L113-L134"><strong>analyses the output</strong></a> and determines that NuttX has booted successfully. </p>
 <p>We’re done with the <strong>simplest scenario</strong> for Auto Flash and Test! Now we have a quick and nifty way to discover if Today’s Upstream Build of NuttX boots OK on BL602.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases">(I run the script every day to check the stability of the BL602 build)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto-remote.png" alt="Flash &amp; Test NuttX on BL602… Remotely from a Phone!" /></p>
