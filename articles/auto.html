@@ -842,7 +842,7 @@ on:
 <div class="example-wrap"><pre class="language-yaml"><code>        # Run the build
         make</code></pre></div>
 <p>Which creates the Firmware Binary <strong>nutt.bin</strong> (for flashing) and the Firmware ELF <strong>nuttx</strong>.</p>
-<p>We dump the RISC-V Disassembly of the Firmware ELF to <strong>nuttx.S</strong>…</p>
+<p>We dump the <strong>RISC-V Disassembly</strong> of the Firmware ELF to <strong>nuttx.S</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        # Dump the disassembly to nuttx.S
         riscv64-unknown-elf-objdump \
           -t -S --demangle --line-numbers --wide \
