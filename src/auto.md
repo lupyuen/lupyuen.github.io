@@ -777,6 +777,14 @@ export BUILD_DATE=2022-01-19
 remote-bl602/scripts/test.sh
 ```
 
+_Can we solve this by merging the LoRaWAN Stack upstream?_
+
+The LoRaWAN Stack is not ready to be upstreamed because it uses different Coding Conventions. [(See this)](https://lupyuen.github.io/articles/lorawan3#notes)
+
+Even if we could, we would need an automated, remote way to test if the LoRaWAN Stack is still working when there are changes to other upstream code.
+
+(Our Auto Flash and Test Script would be helpful here)
+
 [downstream-2022-01-19](https://github.com/lupyuen/incubator-nuttx/releases/tag/downstream-2022-01-19)
 
 Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! 🎉 Testing upstream updates is so much easier with #BL602 Auto Flash & Test 👍
