@@ -859,15 +859,17 @@ on:
 <p><a href="https://lupyuen.github.io/articles/wisgate#nonce">(More about the Join Nonce)</a></p>
 <p><em>Is there a problem with LoRaWAN Nonces?</em></p>
 <p>Our LoRaWAN Gateway (ChirpStack) says that it has detected <strong>Duplicate Nonces</strong>. (Pic above)</p>
-<p>Because of the Duplicate Nonces, our device <strong>can’t join the LoRaWAN Network</strong>. (Until after repeated retries)</p>
+<p>Because of Duplicate Nonces, our device <strong>can’t join the LoRaWAN Network</strong>. (Until after repeated retries)</p>
 <p><em>But our LoRaWAN Nonces are totally random right?</em></p>
-<p>TODO</p>
+<p>We generate Nonces with NuttX’s <strong>Strong Random Number Generator</strong> with <strong>Entropy Pool</strong>.</p>
+<p>Which generates totally random numbers in the <strong>real world</strong>.</p>
+<p>But our Auto Flash and Test Script boots and runs NuttX <strong>so predictably</strong> that the <strong>same random numbers are re-generated</strong> at each boot.</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce">(More about Strong Random Number Generator)</a></p>
 <p><em>How shall we fix our LoRaWAN Nonces?</em></p>
-<p>TODO</p>
-<p>#BL602 Auto Flash &amp; Test creates Duplicate #LoRaWAN Nonces … Because the Boot Timing is always identical! Let’s fix this by adding Internal Temperature Sensor Data to the Entropy Pool</p>
-<p><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce">(Source)</a></p>
-<p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797">lorawan_test/lorawan_test_main.c</a></p>
+<p>To fix this, we take data from an unpredictable source: <strong>Internal Temperature Sensor</strong>…</p>
+<p>And feed the Sensor Data into NuttX’s <strong>Entropy Pool</strong>.</p>
+<p>So that the Strong Random Number Generator will generate totally random numbers once again.</p>
+<p>This is how we do it: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797">lorawan_test/lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  If we are using Entropy Pool and the BL602 ADC is available,
 //  add the Internal Temperature Sensor data to the Entropy Pool.
 //  This prevents duplicate Join Nonce during BL602 Auto Flash and Test.
