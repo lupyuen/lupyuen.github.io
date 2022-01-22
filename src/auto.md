@@ -821,6 +821,19 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
+Let's Auto-Flash & Test the Daily Upstream Build of Apache #NuttX OS ... Auto-Built & Published by GitHub Actions
+
+![](https://lupyuen.github.io/images/auto-script.png)
+
+[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112)
+
+
+## Build Schedule
+
+TODO
+
 From [.github/workflows/bl602.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml)
 
 ```yaml
@@ -828,10 +841,12 @@ name: BL602 Upstream
 
 on:
 
-  ## Run every day at 0:30, 1:30, 2:30, 3:30 UTC
+  ## Run every day at 0:30 UTC, because 0:00 UTC seems too busy for the scheduler
   schedule:
-    - cron: '30 0,1,2,3 * * *'
+    - cron: '30 0 * * *'
 ```
+
+## Install Build Tools
 
 TODO
 
@@ -854,6 +869,8 @@ jobs:
         wget
 ```
 
+## Install Toolchain
+
 TODO
 
 ```yaml
@@ -862,6 +879,8 @@ TODO
         wget https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
         tar -xf riscv64-unknown-elf-gcc*.tar.gz
 ```
+
+## Checkout Source Files
 
 TODO
 
@@ -873,6 +892,8 @@ TODO
         git clone https://github.com/apache/incubator-nuttx nuttx
         git clone https://github.com/apache/incubator-nuttx-apps apps
 ```
+
+## Configure Build
 
 TODO
 
@@ -952,7 +973,27 @@ TODO
 ```yaml
         ## Preserve the build config
         cp .config nuttx.config
-        
+```
+
+Here's how we configure our #NuttX Build in GitHub Actions ... To enable errors, warnings, info messages and assertions
+
+![](https://lupyuen.github.io/images/auto-workflow2.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L59-L63)
+
+TODO89
+
+Here's how we enable #LoRaWAN for our #NuttX Build in GitHub Actions ... Let's do Automated NuttX Testing with LoRaWAN! 👍
+
+![](https://lupyuen.github.io/images/auto-workflow3.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200)
+
+## Build NuttX
+
+TODO
+
+```yaml
         ## Run the build
         make
 ```
@@ -968,6 +1009,8 @@ TODO
           2>&1
 ```
 
+## Upload Build Outputs
+
 TODO
 
 ```yaml
@@ -977,6 +1020,8 @@ TODO
         name: nuttx.zip
         path: nuttx/nuttx/nuttx*
 ```
+
+## Publish Release
 
 TODO
 
@@ -1035,28 +1080,6 @@ TODO
         release_id: ${{ steps.create_release.outputs.id }}
 ```
 
-Let's Auto-Flash & Test the Daily Upstream Build of Apache #NuttX OS ... Auto-Built & Published by GitHub Actions
-
-![](https://lupyuen.github.io/images/auto-script.png)
-
-[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112)
-
-Here's how we configure our #NuttX Build in GitHub Actions ... To enable errors, warnings, info messages and assertions
-
-![](https://lupyuen.github.io/images/auto-workflow2.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L59-L63)
-
-TODO89
-
-Here's how we enable #LoRaWAN for our #NuttX Build in GitHub Actions ... Let's do Automated NuttX Testing with LoRaWAN! 👍
-
-![](https://lupyuen.github.io/images/auto-workflow3.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200)
-
 ![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
 
 # Appendix: Fix LoRaWAN Nonce
@@ -1089,7 +1112,7 @@ _How shall we fix our LoRaWAN Nonces?_
 
 To fix this, we take data from an unpredictable source: __Internal Temperature Sensor__...
 
-And feed the Sensor Data into NuttX's __Entropy Pool__.
+And feed the Temperature Sensor Data into NuttX's __Entropy Pool__.
 
 So that the Strong Random Number Generator will generate totally random numbers once again.
 
@@ -1119,20 +1142,15 @@ static void init_entropy_pool(void) {
 }
 ```
 
-TODO
+[(__get_tsen_adc__ is defined here)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L706-L770)
 
-From [lorawan_test/lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L266-L272)
+[(__get_tsen_adc__ calls BL602 ADC Library, which will be replaced by BL602 ADC Driver when it's available)](https://github.com/lupyuen/bl602_adc)
 
-```c
-int main(int argc, FAR char *argv[]) {
-  //  If we are using Entropy Pool and the BL602 ADC is available,
-  //  add the Internal Temperature Sensor data to the Entropy Pool
-  init_entropy_pool();
-```
+This code adds 4 bytes of Temperature Sensor Data 4 times, adding a total of __16 bytes to the Entropy Pool__.
 
-TODO
+(Which should be sufficiently unpredictable!)
 
-From [release-2022-01-19](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+The output shows that the __Internal Temperature__ is indeed random: [release-2022-01-19](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
 
 ```text
 NuttShell (NSH) NuttX-10.2.0-RC0
@@ -1145,18 +1163,8 @@ temperature = 30.439829 Celsius
 temperature = 28.376112 Celsius
 ```
 
-TODO
+Our LoRaWAN Stack now generates __different LoRaWAN Nonces__ for every Flash and Test. And the Join Network Request always succeeds! 🎉
 
-Here's how we read #BL602's Internal Temperature Sensor ... And add the data to the Entropy Pool in #NuttX OS ... To create truly random LoRaWAN Nonces
-
-![](https://lupyuen.github.io/images/auto-nonce2.png)
-
-[(Source)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797)
-
-TODO
-
-#NuttX now generates different #LoRaWAN Nonces for every #BL602 Flash & Test ... And the Join Network Request always succeeds! 🎉
-
-![](https://lupyuen.github.io/images/auto-nonce3.png)
+![Join Network Request always succeeds](https://lupyuen.github.io/images/auto-nonce3.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
