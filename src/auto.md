@@ -1116,6 +1116,14 @@ And __publish the Release__...
 
 The end! That's how we build Upstream NuttX every day and publish the Build Outputs.
 
+Check out the workflows for the Release and Downstream Builds...
+
+-   [__Release Build:__ .github/workflows/bl602-commit.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml)
+
+-   [__Downstream Build:__ .github/workflows/bl602-downstream.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml)
+
+The Release and Downstream Builds checkout the Source Files from a different repo __lupyuen/incubator-nuttx__ and enable the LoRaWAN Stack.
+
 ![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
 
 # Appendix: Fix LoRaWAN Nonce
