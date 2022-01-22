@@ -1073,23 +1073,27 @@ _Is there a problem with LoRaWAN Nonces?_
 
 Our LoRaWAN Gateway (ChirpStack) says that it has detected __Duplicate Nonces__. (Pic above)
 
-Because of the Duplicate Nonces, our device __can't join the LoRaWAN Network__. (Until after repeated retries)
+Because of Duplicate Nonces, our device __can't join the LoRaWAN Network__. (Until after repeated retries)
 
 _But our LoRaWAN Nonces are totally random right?_
 
-TODO
+We generate Nonces with NuttX's __Strong Random Number Generator__ with __Entropy Pool__.
+
+Which generates totally random numbers in the __real world__.
+
+But our Auto Flash and Test Script boots and runs NuttX __so predictably__ that the __same random numbers are re-generated__ at each boot.
 
 [(More about Strong Random Number Generator)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
 
 _How shall we fix our LoRaWAN Nonces?_
 
-TODO
+To fix this, we take data from an unpredictable source: __Internal Temperature Sensor__...
 
-#BL602 Auto Flash & Test creates Duplicate #LoRaWAN Nonces ... Because the Boot Timing is always identical! Let's fix this by adding Internal Temperature Sensor Data to the Entropy Pool
+And feed the Sensor Data into NuttX's __Entropy Pool__.
 
-[(Source)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
+So that the Strong Random Number Generator will generate totally random numbers once again.
 
-From [lorawan_test/lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797)
+This is how we do it: [lorawan_test/lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797)
 
 ```c
 //  If we are using Entropy Pool and the BL602 ADC is available,
