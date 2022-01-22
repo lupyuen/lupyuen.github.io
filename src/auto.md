@@ -1029,7 +1029,7 @@ We dump the __RISC-V Disassembly__ of the Firmware ELF to __nuttx.S__...
           2>&1
 ```
 
-This is the file used by our Flash and Test Script to do Crash Analysis.
+__nuttx.S__ will be used by our Flash and Test Script to do Crash Analysis.
 
 ## Upload Build Outputs
 
