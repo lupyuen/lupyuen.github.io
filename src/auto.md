@@ -819,9 +819,29 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX with GitHub Actions
 
-We auto-build the Upstream (Apache) version of NuttX every day with __GitHub Actions__.
+We auto-build the Upstream (Apache) version of NuttX every day with __GitHub Actions__, producing these files...
 
-Let's look at the workflow: [.github/workflows/bl602.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml)
+-   __nuttx__: Firmware in ELF Format
+
+-   __nuttx.bin__: Firmware Binary to be flashed
+
+-   __nuttx.S__: RISC-V Disassembly for the firmware
+
+-   __nuttx.map__: Linker Map for the firmware
+
+-   __nuttx.config__: Build Configuration (from .config)
+
+Which are consumed by our Flash and Test Script.
+
+In this section we study the workflow for the Upstream Build...
+
+-   [__Upstream Build:__ .github/workflows/bl602.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml)
+
+Similar workflows are used for the Release and Downstream Builds...
+
+-   [__Release Build:__ .github/workflows/bl602-commit.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml)
+
+-   [__Downstream Build:__ .github/workflows/bl602-downstream.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml)
 
 ## Build Schedule
 
@@ -839,7 +859,7 @@ Note that the scheduled run is __not guaranteed__, it may be cancelled if GitHub
 
 ## Install Build Tools
 
-Next we install the __Build Tools__ needed by NuttX...
+First we install the __Build Tools__ needed by NuttX...
 
 ```yaml
 jobs:
@@ -880,6 +900,8 @@ We checkout the __NuttX Source Files__ from the Apache repo...
         git clone https://github.com/apache/incubator-nuttx nuttx
         git clone https://github.com/apache/incubator-nuttx-apps apps
 ```
+
+[(For Release and Downstream Builds we checkout from the repo __lupyuen/incubator-nuttx__)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42)
 
 We're almost ready to build NuttX, but first we configure the NuttX Build.
 
@@ -970,16 +992,16 @@ We enable the __BL602 SPI Driver__...
 
 [(See this)](https://lupyuen.github.io/articles/spi2#enable-spi)
 
-Finally we copy the Build Config to __nuttx.config__ so that we may download and inspect it later...
+Finally we copy the Build Config to __nuttx.config__ so that we may download and inspect later...
 
 ```yaml
         ## Preserve the build config
         cp .config nuttx.config
 ```
 
-We're ready to build!
+We're ready to build NuttX!
 
-[(For the Release and Downstream Builds we also enable the LoRaWAN Stack)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
+[(For Release and Downstream Builds we also enable the LoRaWAN Stack)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
 
 ![For the Release and Downstream Builds we also enable the LoRaWAN Stack](https://lupyuen.github.io/images/auto-workflow3.png)
 
@@ -987,14 +1009,16 @@ We're ready to build!
 
 ## Build NuttX
 
-TODO
+This builds the __NuttX Firmware__...
 
 ```yaml
         ## Run the build
         make
 ```
 
-TODO
+Which creates the Firmware Binary __nutt.bin__ (for flashing) and the Firmware ELF __nuttx__.
+
+We dump the RISC-V Disassembly of the Firmware ELF to __nuttx.S__...
 
 ```yaml
         ## Dump the disassembly to nuttx.S
@@ -1007,7 +1031,7 @@ TODO
 
 ## Upload Build Outputs
 
-TODO
+We upload all __Build Outputs__ (including the Build Config __nuttx.config__) as Artifacts so that we may download later...
 
 ```yaml
     - name: Upload Build Outputs
@@ -1016,6 +1040,10 @@ TODO
         name: nuttx.zip
         path: nuttx/nuttx/nuttx*
 ```
+
+The NuttX Build Outputs are now available for downloading as Artifacts, but they are __protected by GitHub Login__.
+
+To allow our Flash and Test Script to download the files without GitHub Authentication, we publish the files as a __GitHub Release__...
 
 ## Publish Release
 
@@ -1075,6 +1103,8 @@ TODO
       with:
         release_id: ${{ steps.create_release.outputs.id }}
 ```
+
+TODO
 
 ![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
 
