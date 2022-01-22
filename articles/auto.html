@@ -858,14 +858,20 @@ on:
         name: nuttx.zip
         path: nuttx/nuttx/nuttx*</code></pre></div>
 <p>The NuttX Build Outputs are now available for downloading as Artifacts, but they are <strong>protected by GitHub Login</strong>.</p>
-<p>To allow our Flash and Test Script to download the files without GitHub Authentication, we publish the files as a <strong>GitHub Release</strong>…</p>
+<p>To allow our Flash and Test Script to access the files without GitHub Authentication, we publish the files as a <strong>GitHub Release</strong>…</p>
 <h2 id="publish-release" class="section-header"><a href="#publish-release">10.8 Publish Release</a></h2>
-<p>TODO</p>
+<p>The final task in our GitHub Actions workflow is to publish the NuttX Build Outputs as a <strong>GitHub Release</strong>.</p>
+<p>(Which will be downloaded by our Flash and Test Script)</p>
+<p>Let’s run through the steps to <strong>publish a GitHub Release</strong> that looks like this…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19"><strong>release-2022-01-19</strong></a></li>
+</ul>
+<p>First we zip the NuttX Build Outputs into <strong>nuttx.zip</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Zip Build Outputs
       run: |
         cd nuttx/nuttx
         zip nuttx.zip nuttx*</code></pre></div>
-<p>TODO</p>
+<p>Next we get the Current Date: <strong>2022-01-19</strong></p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Get Current Date
       id: date
       run: echo &quot;::set-output name=date::$(date +&#39;%Y-%m-%d&#39;)&quot;</code></pre></div>
