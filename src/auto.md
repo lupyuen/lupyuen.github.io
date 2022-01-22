@@ -1074,7 +1074,7 @@ Next we get the Current Date: __2022-01-19__
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 ```
 
-TODO
+We create a __Draft Release__ tagged as __upstream-2022-01-19__...
 
 ```yaml        
     - name: Create Draft Release
@@ -1089,7 +1089,7 @@ TODO
         prerelease: false
 ```
 
-TODO
+We upload __nuttx.zip__ to the Draft Release...
 
 ```yaml
     - name: Upload Release
@@ -1103,7 +1103,7 @@ TODO
         asset_content_type: application/zip
 ```
 
-TODO
+And __publish the Release__...
 
 ```yaml
     - name: Publish Release
@@ -1114,7 +1114,7 @@ TODO
         release_id: ${{ steps.create_release.outputs.id }}
 ```
 
-TODO
+The end! That's how we build Upstream NuttX every day and publish the Build Outputs.
 
 ![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
 
