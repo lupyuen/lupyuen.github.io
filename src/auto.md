@@ -1045,11 +1045,19 @@ We upload all __Build Outputs__ (including the Build Config __nuttx.config__) as
 
 The NuttX Build Outputs are now available for downloading as Artifacts, but they are __protected by GitHub Login__.
 
-To allow our Flash and Test Script to download the files without GitHub Authentication, we publish the files as a __GitHub Release__...
+To allow our Flash and Test Script to access the files without GitHub Authentication, we publish the files as a __GitHub Release__...
 
 ## Publish Release
 
-TODO
+The final task in our GitHub Actions workflow is to publish the NuttX Build Outputs as a __GitHub Release__.
+
+(Which will be downloaded by our Flash and Test Script)
+
+Let's run through the steps to __publish a GitHub Release__ that looks like this...
+
+-   [__release-2022-01-19__](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+
+First we zip the NuttX Build Outputs into __nuttx.zip__...
 
 ```yaml
     - name: Zip Build Outputs
@@ -1058,7 +1066,7 @@ TODO
         zip nuttx.zip nuttx*
 ```
 
-TODO
+Next we get the Current Date: __2022-01-19__
 
 ```yaml
     - name: Get Current Date
