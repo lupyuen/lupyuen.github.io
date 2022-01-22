@@ -875,7 +875,7 @@ on:
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Get Current Date
       id: date
       run: echo &quot;::set-output name=date::$(date +&#39;%Y-%m-%d&#39;)&quot;</code></pre></div>
-<p>TODO</p>
+<p>We create a <strong>Draft Release</strong> tagged as <strong>upstream-2022-01-19</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Create Draft Release
       id: create_release
       uses: actions/create-release@v1
@@ -886,7 +886,7 @@ on:
         release_name: upstream-${{ steps.date.outputs.date }}
         draft: true
         prerelease: false</code></pre></div>
-<p>TODO</p>
+<p>We upload <strong>nuttx.zip</strong> to the Draft Release…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Upload Release
       uses: actions/upload-release-asset@v1.0.1
       env:
@@ -896,14 +896,14 @@ on:
         asset_path: nuttx/nuttx/nuttx.zip
         asset_name: nuttx.zip
         asset_content_type: application/zip</code></pre></div>
-<p>TODO</p>
+<p>And <strong>publish the Release</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Publish Release
       uses: eregon/publish-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         release_id: ${{ steps.create_release.outputs.id }}</code></pre></div>
-<p>TODO</p>
+<p>The end! That’s how we build Upstream NuttX every day and publish the Build Outputs.</p>
 <p><img src="https://lupyuen.github.io/images/auto-nonce.png" alt="Duplicate LoRaWAN Nonce" /></p>
 <h1 id="appendix-fix-lorawan-nonce" class="section-header"><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a></h1>
 <p><em>What’s a LoRaWAN Nonce?</em></p>
