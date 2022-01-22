@@ -1063,15 +1063,23 @@ Here's how we enable #LoRaWAN for our #NuttX Build in GitHub Actions ... Let's d
 
 _What's a LoRaWAN Nonce?_
 
-TODO
+Our LoRaWAN Stack transmits a random number called a __Nonce__ when it joins a LoRaWAN Network.
+
+To prevent [__Replay Attacks__](https://en.wikipedia.org/wiki/Replay_attack), the Nonce __must be unique__ and should never be reused.
+
+[(More about the Join Nonce)](https://lupyuen.github.io/articles/wisgate#nonce)
 
 _Is there a problem with LoRaWAN Nonces?_
 
-TODO
+Our LoRaWAN Gateway (ChirpStack) says that it has detected __Duplicate Nonces__. (Pic above)
+
+Because of the Duplicate Nonces, our device __can't join the LoRaWAN Network__. (Until after repeated retries)
 
 _But our LoRaWAN Nonces are totally random right?_
 
 TODO
+
+[(More about Strong Random Number Generator)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
 
 _How shall we fix our LoRaWAN Nonces?_
 
