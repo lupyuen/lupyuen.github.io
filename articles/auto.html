@@ -854,11 +854,15 @@ on:
 <p><img src="https://lupyuen.github.io/images/auto-nonce.png" alt="Duplicate LoRaWAN Nonce" /></p>
 <h1 id="appendix-fix-lorawan-nonce" class="section-header"><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a></h1>
 <p><em>What’s a LoRaWAN Nonce?</em></p>
-<p>TODO</p>
+<p>Our LoRaWAN Stack transmits a random number called a <strong>Nonce</strong> when it joins a LoRaWAN Network.</p>
+<p>To prevent <a href="https://en.wikipedia.org/wiki/Replay_attack"><strong>Replay Attacks</strong></a>, the Nonce <strong>must be unique</strong> and should never be reused.</p>
+<p><a href="https://lupyuen.github.io/articles/wisgate#nonce">(More about the Join Nonce)</a></p>
 <p><em>Is there a problem with LoRaWAN Nonces?</em></p>
-<p>TODO</p>
+<p>Our LoRaWAN Gateway (ChirpStack) says that it has detected <strong>Duplicate Nonces</strong>. (Pic above)</p>
+<p>Because of the Duplicate Nonces, our device <strong>can’t join the LoRaWAN Network</strong>. (Until after repeated retries)</p>
 <p><em>But our LoRaWAN Nonces are totally random right?</em></p>
 <p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce">(More about Strong Random Number Generator)</a></p>
 <p><em>How shall we fix our LoRaWAN Nonces?</em></p>
 <p>TODO</p>
 <p>#BL602 Auto Flash &amp; Test creates Duplicate #LoRaWAN Nonces … Because the Boot Timing is always identical! Let’s fix this by adding Internal Temperature Sensor Data to the Entropy Pool</p>
