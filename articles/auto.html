@@ -904,6 +904,16 @@ on:
       with:
         release_id: ${{ steps.create_release.outputs.id }}</code></pre></div>
 <p>The end! That’s how we build Upstream NuttX every day and publish the Build Outputs.</p>
+<p>Check out the workflows for the Release and Downstream Builds…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml"><strong>Release Build:</strong> .github/workflows/bl602-commit.yml</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml"><strong>Downstream Build:</strong> .github/workflows/bl602-downstream.yml</a></p>
+</li>
+</ul>
+<p>The Release and Downstream Builds checkout the Source Files from a different repo <strong>lupyuen/incubator-nuttx</strong> and enable the LoRaWAN Stack.</p>
 <p><img src="https://lupyuen.github.io/images/auto-nonce.png" alt="Duplicate LoRaWAN Nonce" /></p>
 <h1 id="appendix-fix-lorawan-nonce" class="section-header"><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a></h1>
 <p><em>What’s a LoRaWAN Nonce?</em></p>
