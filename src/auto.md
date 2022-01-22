@@ -819,45 +819,33 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build NuttX with GitHub Actions
 
-TODO
+We auto-build the Upstream (Apache) version of NuttX every day with __GitHub Actions__.
 
-Let's Auto-Flash & Test the Daily Upstream Build of Apache #NuttX OS ... Auto-Built & Published by GitHub Actions
-
-![](https://lupyuen.github.io/images/auto-script.png)
-
-[(Source)](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112)
-
+Let's look at the workflow: [.github/workflows/bl602.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml)
 
 ## Build Schedule
 
-TODO
-
-From [.github/workflows/bl602.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml)
+The Upstream Build is scheduled __every day at 0:30 UTC__: [bl602.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml)
 
 ```yaml
 name: BL602 Upstream
-
 on:
-
   ## Run every day at 0:30 UTC, because 0:00 UTC seems too busy for the scheduler
   schedule:
     - cron: '30 0 * * *'
 ```
 
+Note that the scheduled run is __not guaranteed__, it may be cancelled if GitHub Actions is too busy. [(See this)](https://github.community/t/no-assurance-on-scheduled-jobs/133753/2)
+
 ## Install Build Tools
 
-TODO
+Next we install the __Build Tools__ needed by NuttX...
 
 ```yaml
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    
     - name: Install Build Tools
       run:  |
         sudo apt -y install \
@@ -871,7 +859,7 @@ jobs:
 
 ## Install Toolchain
 
-TODO
+We download the __RISC-V GCC Toolchain__ (riscv64-unknown-elf-gcc) hosted at SiFive...
 
 ```yaml
     - name: Install Toolchain
@@ -882,7 +870,7 @@ TODO
 
 ## Checkout Source Files
 
-TODO
+We checkout the __NuttX Source Files__ from the Apache repo...
 
 ```yaml
     - name: Checkout Source Files
@@ -893,9 +881,15 @@ TODO
         git clone https://github.com/apache/incubator-nuttx-apps apps
 ```
 
+We're almost ready to build NuttX, but first we configure the NuttX Build.
+
+![Enable errors, warnings, info messages and assertions](https://lupyuen.github.io/images/auto-workflow2.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L50-L114)
+
 ## Configure Build
 
-TODO
+For the NuttX Build we __configure BL602__ as the target...
 
 ```yaml          
     - name: Build
@@ -908,7 +902,9 @@ TODO
         ./tools/configure.sh bl602evb:nsh
 ```
 
-TODO
+This creates the Build Config File __.config__.
+
+Then we tweak the Build Config to show __Errors, Warnings, Info Messages and Assertions__...
 
 ```yaml        
         ## Enable errors, warnings, info messages and assertions
@@ -930,7 +926,9 @@ TODO
         kconfig-tweak --enable CONFIG_DEBUG_SPI_INFO
 ```
 
-TODO
+[(See this)](https://lupyuen.github.io/articles/spi2#enable-logging)
+
+We enable __Floating Point, Stack Canaries__ and 2 commands: __"help" and "ls"__...
 
 ```yaml
         ## Enable Floating Point
@@ -944,7 +942,7 @@ TODO
         kconfig-tweak --disable CONFIG_NSH_DISABLE_LS
 ```
 
-TODO
+We enable the __GPIO Driver and Test App__...
 
 ```yaml
         ## Enable GPIO
@@ -958,7 +956,9 @@ TODO
         kconfig-tweak --set-val CONFIG_EXAMPLES_GPIO_STACKSIZE 2048
 ```
 
-TODO
+[(See this)](https://lupyuen.github.io/articles/nuttx#enable-gpio-driver)
+
+We enable the __BL602 SPI Driver__...
 
 ```yaml
         ## Enable SPI
@@ -968,26 +968,22 @@ TODO
         kconfig-tweak --enable CONFIG_SPI_DRIVER
 ```
 
-TODO
+[(See this)](https://lupyuen.github.io/articles/spi2#enable-spi)
+
+Finally we copy the Build Config to __nuttx.config__ so that we may download and inspect it later...
 
 ```yaml
         ## Preserve the build config
         cp .config nuttx.config
 ```
 
-Here's how we configure our #NuttX Build in GitHub Actions ... To enable errors, warnings, info messages and assertions
+We're ready to build!
 
-![](https://lupyuen.github.io/images/auto-workflow2.png)
+[(For the Release and Downstream Builds we also enable the LoRaWAN Stack)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L59-L63)
+![For the Release and Downstream Builds we also enable the LoRaWAN Stack](https://lupyuen.github.io/images/auto-workflow3.png)
 
-TODO89
-
-Here's how we enable #LoRaWAN for our #NuttX Build in GitHub Actions ... Let's do Automated NuttX Testing with LoRaWAN! 👍
-
-![](https://lupyuen.github.io/images/auto-workflow3.png)
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
 
 ## Build NuttX
 
