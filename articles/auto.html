@@ -89,7 +89,15 @@
 <li><a href="#merge-updates-from-nuttx">7 Merge Updates From NuttX</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
 <li><a href="#notes">9 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-with-github-actions">10 Appendix: Build NuttX with GitHub Actions</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-with-github-actions">10 Appendix: Build NuttX with GitHub Actions</a><ul>
+<li><a href="#build-schedule">10.1 Build Schedule</a><ul></ul></li>
+<li><a href="#install-build-tools">10.2 Install Build Tools</a><ul></ul></li>
+<li><a href="#install-toolchain">10.3 Install Toolchain</a><ul></ul></li>
+<li><a href="#checkout-source-files">10.4 Checkout Source Files</a><ul></ul></li>
+<li><a href="#configure-build">10.5 Configure Build</a><ul></ul></li>
+<li><a href="#build-nuttx">10.6 Build NuttX</a><ul></ul></li>
+<li><a href="#upload-build-outputs">10.7 Upload Build Outputs</a><ul></ul></li>
+<li><a href="#publish-release">10.8 Publish Release</a><ul></ul></li></ul></li>
 <li><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a><ul></ul></li></ul></nav><p>📝 <em>26 Jan 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/auto-title.jpg" alt="PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test" /></p>
 <p><em>PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test</em></p>
@@ -694,14 +702,20 @@ remote-bl602/scripts/test.sh</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/auto-workflow.png" alt="Building NuttX with GitHub Actions" /></p>
 <h1 id="appendix-build-nuttx-with-github-actions" class="section-header"><a href="#appendix-build-nuttx-with-github-actions">10 Appendix: Build NuttX with GitHub Actions</a></h1>
 <p>TODO</p>
+<p>Let’s Auto-Flash &amp; Test the Daily Upstream Build of Apache #NuttX OS … Auto-Built &amp; Published by GitHub Actions</p>
+<p><img src="https://lupyuen.github.io/images/auto-script.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112">(Source)</a></p>
+<h2 id="build-schedule" class="section-header"><a href="#build-schedule">10.1 Build Schedule</a></h2>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml">.github/workflows/bl602.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>name: BL602 Upstream
 
 on:
 
-  # Run every day at 0:30, 1:30, 2:30, 3:30 UTC
+  # Run every day at 0:30 UTC, because 0:00 UTC seems too busy for the scheduler
   schedule:
-    - cron: &#39;30 0,1,2,3 * * *&#39;</code></pre></div>
+    - cron: &#39;30 0 * * *&#39;</code></pre></div><h2 id="install-build-tools" class="section-header"><a href="#install-build-tools">10.2 Install Build Tools</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-yaml"><code>jobs:
   build:
@@ -718,19 +732,19 @@ on:
         libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
         libexpat-dev gcc-multilib g++-multilib picocom u-boot-tools util-linux \
         kconfig-frontends \
-        wget</code></pre></div>
+        wget</code></pre></div><h2 id="install-toolchain" class="section-header"><a href="#install-toolchain">10.3 Install Toolchain</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Install Toolchain
       run:  |
         wget https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
-        tar -xf riscv64-unknown-elf-gcc*.tar.gz</code></pre></div>
+        tar -xf riscv64-unknown-elf-gcc*.tar.gz</code></pre></div><h2 id="checkout-source-files" class="section-header"><a href="#checkout-source-files">10.4 Checkout Source Files</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Checkout Source Files
       run:  |
         mkdir nuttx
         cd nuttx
         git clone https://github.com/apache/incubator-nuttx nuttx
-        git clone https://github.com/apache/incubator-nuttx-apps apps</code></pre></div>
+        git clone https://github.com/apache/incubator-nuttx-apps apps</code></pre></div><h2 id="configure-build" class="section-header"><a href="#configure-build">10.5 Configure Build</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Build
       run: |
@@ -786,9 +800,17 @@ on:
         kconfig-tweak --enable CONFIG_SPI_DRIVER</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        # Preserve the build config
-        cp .config nuttx.config
-        
-        # Run the build
+        cp .config nuttx.config</code></pre></div>
+<p>Here’s how we configure our #NuttX Build in GitHub Actions … To enable errors, warnings, info messages and assertions</p>
+<p><img src="https://lupyuen.github.io/images/auto-workflow2.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L59-L63">(Source)</a></p>
+<p>TODO89</p>
+<p>Here’s how we enable #LoRaWAN for our #NuttX Build in GitHub Actions … Let’s do Automated NuttX Testing with LoRaWAN! 👍</p>
+<p><img src="https://lupyuen.github.io/images/auto-workflow3.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200">(Source)</a></p>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">10.6 Build NuttX</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-yaml"><code>        # Run the build
         make</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        # Dump the disassembly to nuttx.S
@@ -796,13 +818,13 @@ on:
           -t -S --demangle --line-numbers --wide \
           nuttx \
           &gt;nuttx.S \
-          2&gt;&amp;1</code></pre></div>
+          2&gt;&amp;1</code></pre></div><h2 id="upload-build-outputs" class="section-header"><a href="#upload-build-outputs">10.7 Upload Build Outputs</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Upload Build Outputs
       uses: actions/upload-artifact@v2
       with:
         name: nuttx.zip
-        path: nuttx/nuttx/nuttx*</code></pre></div>
+        path: nuttx/nuttx/nuttx*</code></pre></div><h2 id="publish-release" class="section-header"><a href="#publish-release">10.8 Publish Release</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Zip Build Outputs
       run: |
@@ -840,17 +862,6 @@ on:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         release_id: ${{ steps.create_release.outputs.id }}</code></pre></div>
-<p>Let’s Auto-Flash &amp; Test the Daily Upstream Build of Apache #NuttX OS … Auto-Built &amp; Published by GitHub Actions</p>
-<p><img src="https://lupyuen.github.io/images/auto-script.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L17-L21">(Source)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L82-L112">(Source)</a></p>
-<p>Here’s how we configure our #NuttX Build in GitHub Actions … To enable errors, warnings, info messages and assertions</p>
-<p><img src="https://lupyuen.github.io/images/auto-workflow2.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L59-L63">(Source)</a></p>
-<p>TODO89</p>
-<p>Here’s how we enable #LoRaWAN for our #NuttX Build in GitHub Actions … Let’s do Automated NuttX Testing with LoRaWAN! 👍</p>
-<p><img src="https://lupyuen.github.io/images/auto-workflow3.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L91-L200">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto-nonce.png" alt="Duplicate LoRaWAN Nonce" /></p>
 <h1 id="appendix-fix-lorawan-nonce" class="section-header"><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a></h1>
 <p><em>What’s a LoRaWAN Nonce?</em></p>
@@ -867,7 +878,7 @@ on:
 <p><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce">(More about Strong Random Number Generator)</a></p>
 <p><em>How shall we fix our LoRaWAN Nonces?</em></p>
 <p>To fix this, we take data from an unpredictable source: <strong>Internal Temperature Sensor</strong>…</p>
-<p>And feed the Sensor Data into NuttX’s <strong>Entropy Pool</strong>.</p>
+<p>And feed the Temperature Sensor Data into NuttX’s <strong>Entropy Pool</strong>.</p>
 <p>So that the Strong Random Number Generator will generate totally random numbers once again.</p>
 <p>This is how we do it: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797">lorawan_test/lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  If we are using Entropy Pool and the BL602 ADC is available,
@@ -891,14 +902,11 @@ static void init_entropy_pool(void) {
   //  Force reseeding random number generator from entropy pool
   up_rngreseed();
 }</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L266-L272">lorawan_test/lorawan_test_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
-  //  If we are using Entropy Pool and the BL602 ADC is available,
-  //  add the Internal Temperature Sensor data to the Entropy Pool
-  init_entropy_pool();</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19">release-2022-01-19</a></p>
+<p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L706-L770">(<strong>get_tsen_adc</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/bl602_adc">(<strong>get_tsen_adc</strong> calls BL602 ADC Library, which will be replaced by BL602 ADC Driver when it’s available)</a></p>
+<p>This code adds 4 bytes of Temperature Sensor Data 4 times, adding a total of <strong>16 bytes to the Entropy Pool</strong>.</p>
+<p>(Which should be sufficiently unpredictable!)</p>
+<p>The output shows that the <strong>Internal Temperature</strong> is indeed random: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19">release-2022-01-19</a></p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt; lorawan_test
 
@@ -907,13 +915,8 @@ temperature = 30.181866 Celsius
 temperature = 29.794918 Celsius
 temperature = 30.439829 Celsius
 temperature = 28.376112 Celsius</code></pre></div>
-<p>TODO</p>
-<p>Here’s how we read #BL602’s Internal Temperature Sensor … And add the data to the Entropy Pool in #NuttX OS … To create truly random LoRaWAN Nonces</p>
-<p><img src="https://lupyuen.github.io/images/auto-nonce2.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L772-L797">(Source)</a></p>
-<p>TODO</p>
-<p>#NuttX now generates different #LoRaWAN Nonces for every #BL602 Flash &amp; Test … And the Join Network Request always succeeds! 🎉</p>
-<p><img src="https://lupyuen.github.io/images/auto-nonce3.png" alt="" /></p>
+<p>Our LoRaWAN Stack now generates <strong>different LoRaWAN Nonces</strong> for every Flash and Test. And the Join Network Request always succeeds! 🎉</p>
+<p><img src="https://lupyuen.github.io/images/auto-nonce3.png" alt="Join Network Request always succeeds" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19">(Source)</a></p>
 
     
