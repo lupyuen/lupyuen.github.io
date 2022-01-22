@@ -701,8 +701,38 @@ remote-bl602/scripts/test.sh</code></pre></div>
 </ol>
 <p><img src="https://lupyuen.github.io/images/auto-workflow.png" alt="Building NuttX with GitHub Actions" /></p>
 <h1 id="appendix-build-nuttx-with-github-actions" class="section-header"><a href="#appendix-build-nuttx-with-github-actions">10 Appendix: Build NuttX with GitHub Actions</a></h1>
-<p>We auto-build the Upstream (Apache) version of NuttX every day with <strong>GitHub Actions</strong>.</p>
-<p>Let’s look at the workflow: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml">.github/workflows/bl602.yml</a></p>
+<p>We auto-build the Upstream (Apache) version of NuttX every day with <strong>GitHub Actions</strong>, producing these files…</p>
+<ul>
+<li>
+<p><strong>nuttx</strong>: Firmware in ELF Format</p>
+</li>
+<li>
+<p><strong>nuttx.bin</strong>: Firmware Binary to be flashed</p>
+</li>
+<li>
+<p><strong>nuttx.S</strong>: RISC-V Disassembly for the firmware</p>
+</li>
+<li>
+<p><strong>nuttx.map</strong>: Linker Map for the firmware</p>
+</li>
+<li>
+<p><strong>nuttx.config</strong>: Build Configuration (from .config)</p>
+</li>
+</ul>
+<p>Which are consumed by our Flash and Test Script.</p>
+<p>In this section we study the workflow for the Upstream Build…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml"><strong>Upstream Build:</strong> .github/workflows/bl602.yml</a></li>
+</ul>
+<p>Similar workflows are used for the Release and Downstream Builds…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml"><strong>Release Build:</strong> .github/workflows/bl602-commit.yml</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml"><strong>Downstream Build:</strong> .github/workflows/bl602-downstream.yml</a></p>
+</li>
+</ul>
 <h2 id="build-schedule" class="section-header"><a href="#build-schedule">10.1 Build Schedule</a></h2>
 <p>The Upstream Build is scheduled <strong>every day at 0:30 UTC</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml">bl602.yml</a></p>
 <div class="example-wrap"><pre class="language-yaml"><code>name: BL602 Upstream
@@ -712,7 +742,7 @@ on:
     - cron: &#39;30 0 * * *&#39;</code></pre></div>
 <p>Note that the scheduled run is <strong>not guaranteed</strong>, it may be cancelled if GitHub Actions is too busy. <a href="https://github.community/t/no-assurance-on-scheduled-jobs/133753/2">(See this)</a></p>
 <h2 id="install-build-tools" class="section-header"><a href="#install-build-tools">10.2 Install Build Tools</a></h2>
-<p>Next we install the <strong>Build Tools</strong> needed by NuttX…</p>
+<p>First we install the <strong>Build Tools</strong> needed by NuttX…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>jobs:
   build:
     runs-on: ubuntu-latest
@@ -738,6 +768,7 @@ on:
         cd nuttx
         git clone https://github.com/apache/incubator-nuttx nuttx
         git clone https://github.com/apache/incubator-nuttx-apps apps</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42">(For Release and Downstream Builds we checkout from the repo <strong>lupyuen/incubator-nuttx</strong>)</a></p>
 <p>We’re almost ready to build NuttX, but first we configure the NuttX Build.</p>
 <p><img src="https://lupyuen.github.io/images/auto-workflow2.png" alt="Enable errors, warnings, info messages and assertions" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L50-L114">(Source)</a></p>
@@ -799,30 +830,34 @@ on:
         kconfig-tweak --enable CONFIG_SPI_EXCHANGE
         kconfig-tweak --enable CONFIG_SPI_DRIVER</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi">(See this)</a></p>
-<p>Finally we copy the Build Config to <strong>nuttx.config</strong> so that we may download and inspect it later…</p>
+<p>Finally we copy the Build Config to <strong>nuttx.config</strong> so that we may download and inspect later…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        # Preserve the build config
         cp .config nuttx.config</code></pre></div>
-<p>We’re ready to build!</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217">(For the Release and Downstream Builds we also enable the LoRaWAN Stack)</a></p>
+<p>We’re ready to build NuttX!</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217">(For Release and Downstream Builds we also enable the LoRaWAN Stack)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto-workflow3.png" alt="For the Release and Downstream Builds we also enable the LoRaWAN Stack" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217">(Source)</a></p>
 <h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">10.6 Build NuttX</a></h2>
-<p>TODO</p>
+<p>This builds the <strong>NuttX Firmware</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        # Run the build
         make</code></pre></div>
-<p>TODO</p>
+<p>Which creates the Firmware Binary <strong>nutt.bin</strong> (for flashing) and the Firmware ELF <strong>nuttx</strong>.</p>
+<p>We dump the RISC-V Disassembly of the Firmware ELF to <strong>nuttx.S</strong>…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>        # Dump the disassembly to nuttx.S
         riscv64-unknown-elf-objdump \
           -t -S --demangle --line-numbers --wide \
           nuttx \
           &gt;nuttx.S \
           2&gt;&amp;1</code></pre></div><h2 id="upload-build-outputs" class="section-header"><a href="#upload-build-outputs">10.7 Upload Build Outputs</a></h2>
-<p>TODO</p>
+<p>We upload all <strong>Build Outputs</strong> (including the Build Config <strong>nuttx.config</strong>) as Artifacts so that we may download later…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Upload Build Outputs
       uses: actions/upload-artifact@v2
       with:
         name: nuttx.zip
-        path: nuttx/nuttx/nuttx*</code></pre></div><h2 id="publish-release" class="section-header"><a href="#publish-release">10.8 Publish Release</a></h2>
+        path: nuttx/nuttx/nuttx*</code></pre></div>
+<p>The NuttX Build Outputs are now available for downloading as Artifacts, but they are <strong>protected by GitHub Login</strong>.</p>
+<p>To allow our Flash and Test Script to download the files without GitHub Authentication, we publish the files as a <strong>GitHub Release</strong>…</p>
+<h2 id="publish-release" class="section-header"><a href="#publish-release">10.8 Publish Release</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Zip Build Outputs
       run: |
@@ -860,6 +895,7 @@ on:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         release_id: ${{ steps.create_release.outputs.id }}</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/auto-nonce.png" alt="Duplicate LoRaWAN Nonce" /></p>
 <h1 id="appendix-fix-lorawan-nonce" class="section-header"><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a></h1>
 <p><em>What’s a LoRaWAN Nonce?</em></p>
