@@ -796,6 +796,10 @@ This is how we keep them __in sync__...
 
 7.  We feature the __updated Release Branch__ in our next NuttX Article.
 
+Looks complicated, but that's how we keep our NuttX Articles in sync with the latest updates from Upstream NuttX.
+
+(Which ensures that the code in our NuttX Articles won't go obsolete too soon)
+
 TODO
 
 ```bash
