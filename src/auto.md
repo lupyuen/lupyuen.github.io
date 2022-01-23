@@ -800,7 +800,9 @@ Looks complicated, but that's how we keep our NuttX Articles in sync with the la
 
 (Which ensures that the code in our NuttX Articles won't go obsolete too soon)
 
-TODO
+_How do we run Auto Flash and Test on the Downstream Build?_
+
+Like this...
 
 ```bash
 ##  Download the Downstream Build (instead of the Upstream Build)
@@ -813,15 +815,17 @@ export BUILD_DATE=2022-01-19
 remote-bl602/scripts/test.sh
 ```
 
+[(See the output)](https://github.com/lupyuen/incubator-nuttx/releases/tag/downstream-2022-01-19)
+
 _Can we solve this by merging the LoRaWAN Stack upstream?_
 
-The LoRaWAN Stack is not ready to be upstreamed because it uses different Coding Conventions. [(See this)](https://lupyuen.github.io/articles/lorawan3#notes)
+The LoRaWAN Stack is __not ready to be upstreamed__ because it uses different Coding Conventions. [(See this)](https://lupyuen.github.io/articles/lorawan3#notes)
 
-Even if we could, we would need an automated, remote way to test if the LoRaWAN Stack is still working when there are changes to other upstream code.
+Even if we could, we would need an __automated, remote way to test__ if the LoRaWAN Stack is still working when there are changes to Upstream NuttX.
 
-(Our Auto Flash and Test Script would be helpful here)
+(Our Auto Flash and Test Script would be super helpful here)
 
-[downstream-2022-01-19](https://github.com/lupyuen/incubator-nuttx/releases/tag/downstream-2022-01-19)
+TODO
 
 Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! 🎉 Testing upstream updates is so much easier with #BL602 Auto Flash & Test 👍
 
