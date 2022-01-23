@@ -346,7 +346,7 @@ Our script flashes and runs NuttX on BL602 like so...
 
 Let's study the script output: [__upstream-2022-01-21__](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-21)
 
-![Auto Flash and Test Script](https://lupyuen.github.io/images/auto-run.png)
+![Auto Flash and Test Script](https://lupyuen.github.io/images/auto-run.jpg)
 
 ## Download NuttX
 
@@ -465,7 +465,7 @@ We're done with the __simplest scenario__ for Auto Flash and Test! Now we have a
 
 [(I run the script every day to check the stability of the BL602 build)](https://github.com/lupyuen/incubator-nuttx/releases)
 
-![Flash & Test NuttX on BL602... Remotely from a Phone!](https://lupyuen.github.io/images/auto-remote.png)
+![Flash & Test NuttX on BL602... Remotely from a Phone!](https://lupyuen.github.io/images/auto-remote.jpg)
 
 # NuttX Crash Analysis
 
@@ -473,7 +473,7 @@ _What happens when NuttX crashes during testing?_
 
 NuttX shows a __Stack Trace__ like this...
 
-![NuttX Stack Trace](https://lupyuen.github.io/images/auto-stack.png)
+![NuttX Stack Trace](https://lupyuen.github.io/images/auto-stack.jpg)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
 
@@ -662,7 +662,7 @@ The __Source Code__ decoded from a Stack Trace looks like this...
 
 These are the __Data Addresses__ decoded from the Stack Trace...
 
-![Data Addresses in Stack Trace](https://lupyuen.github.io/images/auto-stack4.png)
+![Data Addresses in Stack Trace](https://lupyuen.github.io/images/auto-stack4.jpg)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
 
@@ -855,7 +855,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1482152780051935238)
 
-![Building NuttX with GitHub Actions](https://lupyuen.github.io/images/auto-workflow.png)
+![Building NuttX with GitHub Actions](https://lupyuen.github.io/images/auto-workflow.jpg)
 
 # Appendix: Build NuttX with GitHub Actions
 
@@ -1043,7 +1043,7 @@ We're ready to build NuttX!
 
 [(For Release and Downstream Builds we also enable the LoRaWAN Stack)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
 
-![For the Release and Downstream Builds we also enable the LoRaWAN Stack](https://lupyuen.github.io/images/auto-workflow3.png)
+![For the Release and Downstream Builds we also enable the LoRaWAN Stack](https://lupyuen.github.io/images/auto-workflow3.jpg)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
 
@@ -1263,6 +1263,6 @@ temperature = 28.376112 Celsius
 
 Our LoRaWAN Stack now generates __different LoRaWAN Nonces__ for every Flash and Test. And the Join Network Request always succeeds! 🎉
 
-![Join Network Request always succeeds](https://lupyuen.github.io/images/auto-nonce3.png)
+![Join Network Request always succeeds](https://lupyuen.github.io/images/auto-nonce3.jpg)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
