@@ -825,9 +825,7 @@ Even if we could, we would need an __automated, remote way to test__ if the LoRa
 
 (Our Auto Flash and Test Script would be super helpful here)
 
-TODO
-
-Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! 🎉 Testing upstream updates is so much easier with #BL602 Auto Flash & Test 👍
+But for now... No more worries about merging hundreds of upstream commits (and thousands of changed files) into our NuttX Repo! 👍
 
 ![Merge updates from upstream](https://lupyuen.github.io/images/auto-merge.png)
 
