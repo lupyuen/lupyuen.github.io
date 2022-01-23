@@ -1156,13 +1156,27 @@ And __publish the Release__...
 
 The end! That's how we build Upstream NuttX every day and publish the Build Outputs.
 
-Check out the workflows for the Release and Downstream Builds...
+Check out the workflows for the __Release and Downstream__ Builds...
 
 -   [__Release Build:__ .github/workflows/bl602-commit.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml)
 
 -   [__Downstream Build:__ .github/workflows/bl602-downstream.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml)
 
-The Release and Downstream Builds checkout the Source Files from a different repo __lupyuen/incubator-nuttx__ and enable the LoRaWAN Stack.
+_How are they different from the Upstream Build?_
+
+The __Release and Downstream__ Builds...
+
+-   Checkout the Source Files from a different repo: __lupyuen/incubator-nuttx__
+
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42)
+
+-   Enable the __LoRaWAN Stack__
+
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
+
+-   Update the __BL602 Pin Defintions__ to accommodate Semtech SX1262
+
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L44-L80)
 
 ![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
 
