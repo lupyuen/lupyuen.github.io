@@ -653,17 +653,21 @@ STATUS: OK
 <p>My situation is kinda complicated, I need to worry about <strong>3 branches</strong> of the NuttX Code…</p>
 <ul>
 <li>
-<p><strong>Upstream Branch</strong>: Upstream Updates from Apache’s NuttX Repo</p>
+<p><strong>Upstream Branch</strong>: Daily Upstream Updates from from the <a href="https://github.com/apache/incubator-nuttx"><strong>master branch</strong></a> of Apache’s NuttX Repo</p>
+<p>(Without the LoRaWAN Stack)</p>
 </li>
 <li>
-<p><strong>Release Branch</strong>: TODO</p>
+<p><strong>Release Branch</strong>: This is the <a href="https://github.com/lupyuen/incubator-nuttx"><strong>master branch</strong></a> of my repo that I reference in my NuttX Articles</p>
+<p>(Includes the LoRaWAN Stack)</p>
 </li>
 <li>
-<p><strong>Downstream Branch</strong>: TODO</p>
+<p><strong>Downstream Branch</strong>: This is the <a href="https://github.com/lupyuen/incubator-nuttx/tree/downstream"><strong>downstream branch</strong></a> of my repo that merges the updates from the above 2 branches</p>
+<p>(Includes the LoRaWAN Stack)</p>
 </li>
 </ul>
-<p>TODO</p>
+<p>This is how I keep them <strong>in sync</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download the Downstream Build (instead of the Upstream Build)
 export BUILD_PREFIX=downstream
 
