@@ -986,6 +986,12 @@ Thus we __always select Entropy Pool__ for our Random Number Generator...
 
 -   [__"Random Number Generator with Entropy Pool"__](https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool)
 
+__UPDATE:__ While running Auto Flash and Test with NuttX, we discovered that the Random Number Generator with Entropy Pool might __generate the same Random Numbers__. (Because the booting of NuttX becomes so predictable)
+
+To fix this, we add __Internal Temperature Sensor Data__ to the Entropy Pool, to generate truly random numbers...
+
+-   [__"Fix LoRaWAN Nonce"__](https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce)
+
 ![Our LoRaWAN Library now generates random nonces](https://lupyuen.github.io/images/lorawan3-nonce7a.jpg)
 
 # LoRaWAN Event Loop
