@@ -665,8 +665,34 @@ STATUS: OK
 <p>(Includes the LoRaWAN Stack)</p>
 </li>
 </ul>
-<p>This is how I keep them <strong>in sync</strong>…</p>
+<p>This is how we keep them <strong>in sync</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
+<ol>
+<li>
+<p>We <strong>build Upstream NuttX</strong> every day with GitHub Actions. <a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(See this)</a></p>
+<p>We run our <strong>Auto Flash and Test</strong> Script daily to check if the build boots OK on BL602.</p>
+<p>(Upstream NuttX doesn’t include the LoRaWAN Stack)</p>
+</li>
+<li>
+<p>If the Upstream Build is OK, we <strong>merge Upstream NuttX</strong> into our Downstream Branch.</p>
+</li>
+<li>
+<p>We also <strong>merge the Release Branch</strong> (from our previous NuttX Article) to the Downstream Branch.</p>
+<p>(Which includes the LoRaWAN Stack)</p>
+</li>
+<li>
+<p>After merging the branches, we run <strong>Auto Flash and Test</strong> to verify that LoRaWAN runs OK on BL602.</p>
+</li>
+<li>
+<p>If LoRaWAN runs OK, we <strong>merge the Downstream Branch</strong> to the Release Branch.</p>
+</li>
+<li>
+<p>We run <strong>Auto Flash and Test</strong> one last time on the Release Branch to be really sure that LoRaWAN is still OK.</p>
+</li>
+<li>
+<p>We feature the <strong>updated Release Branch</strong> in our next NuttX Article.</p>
+</li>
+</ol>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download the Downstream Build (instead of the Upstream Build)
 export BUILD_PREFIX=downstream
