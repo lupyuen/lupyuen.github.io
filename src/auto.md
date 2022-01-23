@@ -772,9 +772,29 @@ My situation is kinda complicated, I need to worry about __3 branches__ of the N
 
     (Includes the LoRaWAN Stack)
 
-This is how I keep them __in sync__...
+This is how we keep them __in sync__...
 
 ![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
+
+1.  We __build Upstream NuttX__ every day with GitHub Actions. [(See this)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
+
+    We run our __Auto Flash and Test__ Script daily to check if the build boots OK on BL602.
+
+    (Upstream NuttX doesn't include the LoRaWAN Stack)
+
+2.  If the Upstream Build is OK, we __merge Upstream NuttX__ into our Downstream Branch.
+
+3.  We also __merge the Release Branch__ (from our previous NuttX Article) to the Downstream Branch.
+
+    (Which includes the LoRaWAN Stack)
+
+4.  After merging the branches, we run __Auto Flash and Test__ to verify that LoRaWAN runs OK on BL602.
+
+5.  If LoRaWAN runs OK, we __merge the Downstream Branch__ to the Release Branch.
+
+6.  We run __Auto Flash and Test__ one last time on the Release Branch to be really sure that LoRaWAN is still OK.
+
+7.  We feature the __updated Release Branch__ in our next NuttX Article.
 
 TODO
 
