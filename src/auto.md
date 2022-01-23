@@ -1055,7 +1055,7 @@ The final task in our GitHub Actions workflow is to publish the NuttX Build Outp
 
 Let's run through the steps to __publish a GitHub Release__ that looks like this...
 
--   [__release-2022-01-19__](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+-   [__upstream-2022-01-19__](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-19)
 
 First we zip the NuttX Build Outputs into __nuttx.zip__...
 
