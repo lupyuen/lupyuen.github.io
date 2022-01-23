@@ -760,9 +760,9 @@ _Back to our original question: Why are we doing all this?_
 
 My situation is kinda complicated, I need to worry about __3 branches__ of the NuttX Code...
 
--   __Release Branch__: TODO
+-   __Upstream Branch__: Upstream Updates from Apache's NuttX Repo
 
--   __Upstream Branch__: TODO
+-   __Release Branch__: TODO
 
 -   __Downstream Branch__: TODO
 
