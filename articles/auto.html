@@ -267,7 +267,7 @@ blflash flash \
   /tmp/nuttx.bin \
   --port /dev/ttyUSB0
 sleep 1</code></pre></div>
-<p>(<strong>nuttx.bin</strong> is the Daily Upstream Build of NuttX OS, as explained in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(<strong>nuttx.bin</strong> is the Daily Upstream Build of NuttX OS, as explained in the Appendix)</a></p>
 <p>Our firmware has been flashed automagically!</p>
 <h2 id="exit-flashing-mode" class="section-header"><a href="#exit-flashing-mode">3.6 Exit Flashing Mode</a></h2>
 <p>Now we return to <strong>Normal Mode</strong> (Non-Flashing) by setting GPIO 2 to <strong>Low</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L74-L80">test.sh</a></p>
@@ -365,7 +365,7 @@ remote-bl602/scripts/test.sh</code></pre></div>
 + BUILD_DATE=2022-01-21
 ----- Download the latest upstream NuttX build for 2022-01-21
 + wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-21/nuttx.zip -O /tmp/nuttx.zip</code></pre></div>
-<p>(<strong>nuttx.zip</strong> is built daily by GitHub Actions, as explained in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(<strong>nuttx.zip</strong> is built daily by GitHub Actions, as explained in the Appendix)</a></p>
 <p>Our script unzips <strong>nuttx.zip</strong>, which includes the following files…</p>
 <div class="example-wrap"><pre class="language-text"><code>+ pushd /tmp
 + unzip -o nuttx.zip
@@ -570,7 +570,7 @@ riscv64-unknown-elf-objdump \
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
 <h1 id="lorawan-test" class="section-header"><a href="#lorawan-test">6 LoRaWAN Test</a></h1>
 <p><em>What’s the best way to auto-test all the NuttX functions: GPIO, SPI, ADC, Interrupts, Timers, Threads, Message Queues, Random Number Generator, …?</em></p>
-<p><strong>LoRaWAN</strong> is the perfect way to give NuttX a <strong>thorough workout</strong>!</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3"><strong>LoRaWAN</strong></a> is the perfect way to give NuttX a <strong>thorough workout</strong>!</p>
 <ul>
 <li>
 <p><strong>GPIO Input</strong>: LoRaWAN reads a GPIO Input to poll the <a href="https://lupyuen.github.io/articles/sx1262#check-busy-state"><strong>Busy State</strong></a> of the LoRa Transceiver</p>
@@ -600,9 +600,12 @@ riscv64-unknown-elf-objdump \
 <p><strong>Strong Random Number Generator</strong>: Generates non-repeating <a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce"><strong>LoRaWAN Nonces</strong></a></p>
 </li>
 <li>
-<p><strong>Internal Temperature Sensor</strong>: Seeds the Entropy Pool for the Random Number Generator</p>
-<p>(More about this in the Appendix)</p>
+<p><strong>Internal Temperature Sensor</strong>: Seeds the Entropy Pool for the Random Number Generator <a href="https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce">(Here’s why)</a></p>
 </li>
+</ul>
+<p>We shall run this <strong>LoRaWAN Stack</strong> to connect to the LoRaWAN Network (ChirpStack) and transmit a Data Packet…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></li>
 </ul>
 <p>To run the <strong>LoRaWAN Auto-Test</strong> we switch to the <strong>Release Build</strong> (instead of the Upstream Build)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download the Release Build (instead of the Upstream Build)
