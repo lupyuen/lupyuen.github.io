@@ -760,15 +760,23 @@ _Back to our original question: Why are we doing all this?_
 
 My situation is kinda complicated, I need to worry about __3 branches__ of the NuttX Code...
 
--   __Upstream Branch__: Upstream Updates from Apache's NuttX Repo
+-   __Upstream Branch__: Daily Upstream Updates from from the [__master branch__](https://github.com/apache/incubator-nuttx) of Apache's NuttX Repo
 
--   __Release Branch__: TODO
+    (Without the LoRaWAN Stack)
 
--   __Downstream Branch__: TODO
+-   __Release Branch__: This is the [__master branch__](https://github.com/lupyuen/incubator-nuttx) of my repo that I reference in my NuttX Articles
 
-TODO
+    (Includes the LoRaWAN Stack)
+
+-   __Downstream Branch__: This is the [__downstream branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream) of my repo that merges the updates from the above 2 branches
+
+    (Includes the LoRaWAN Stack)
+
+This is how I keep them __in sync__...
 
 ![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
+
+TODO
 
 ```bash
 ##  Download the Downstream Build (instead of the Upstream Build)
