@@ -669,6 +669,14 @@ dev_eui=4bc15ee7377bb15b
 type=OTAA
 ```
 
+Another way to check for __Nonce Errors__: Click...
+
+__Applications__ → __app__ → __device_otaa_class_a__  → __Device Data__
+
+Look for __"validate dev-nonce error"__...
+
+![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
+
 We'll talk about Message Integrity Code and Nonce in a while.
 
 ## Snoop with Software Defined Radio
@@ -803,6 +811,14 @@ level=error
 msg="uplink: processing uplink frame error" ctx_id=01ae296e-8ce1-449a-83cc-fb0771059d89 
 error="validate dev-nonce error: object already exists"
 ```
+
+Nonce errors will also appear in ChirpStack. Click...
+
+__Applications__ → __app__ → __device_otaa_class_a__  → __Device Data__
+
+Look for __"validate dev-nonce error"__...
+
+![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
 
 Here's the LoRaWAN Spec for the Nonce and Message Integrity Code...
 

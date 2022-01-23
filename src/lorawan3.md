@@ -1159,6 +1159,14 @@ _What can we check?_
 
     [__"Random Number Generator with Entropy Pool"__](https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool)
 
+1.  Another way to check for __Duplicate Nonce__: Click...
+
+    __Applications__ → __app__ → __device_otaa_class_a__  → __Device Data__
+
+    Look for __"validate dev-nonce error"__...
+
+    ![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
+
 1.  Disable all __Info Logging__ on NuttX
 
     (See __"LoRaWAN is Time Sensitive"__ below)
