@@ -768,6 +768,8 @@ My situation is kinda complicated, I need to worry about __3 branches__ of the N
 
 TODO
 
+![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
+
 ```bash
 ##  Download the Downstream Build (instead of the Upstream Build)
 export BUILD_PREFIX=downstream
