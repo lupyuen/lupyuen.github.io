@@ -835,6 +835,8 @@ Merged a huge bunch of #NuttX Upstream Updates ... LoRaWAN still works great! ðŸ
 
 # What's Next
 
+After flipping the jumper and smashing the button on BL602 for the past 14 months, I'm so glad we have an automated way to Flash and Test BL602!
+
 TODO
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
