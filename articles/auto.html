@@ -942,7 +942,7 @@ on:
       with:
         release_id: ${{ steps.create_release.outputs.id }}</code></pre></div>
 <p>The end! That’s how we build Upstream NuttX every day and publish the Build Outputs.</p>
-<p>Check out the workflows for the Release and Downstream Builds…</p>
+<p>Check out the workflows for the <strong>Release and Downstream</strong> Builds…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml"><strong>Release Build:</strong> .github/workflows/bl602-commit.yml</a></p>
@@ -951,7 +951,22 @@ on:
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml"><strong>Downstream Build:</strong> .github/workflows/bl602-downstream.yml</a></p>
 </li>
 </ul>
-<p>The Release and Downstream Builds checkout the Source Files from a different repo <strong>lupyuen/incubator-nuttx</strong> and enable the LoRaWAN Stack.</p>
+<p><em>How are they different from the Upstream Build?</em></p>
+<p>The <strong>Release and Downstream</strong> Builds…</p>
+<ul>
+<li>
+<p>Checkout the Source Files from a different repo: <strong>lupyuen/incubator-nuttx</strong></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42">(See this)</a></p>
+</li>
+<li>
+<p>Enable the <strong>LoRaWAN Stack</strong></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217">(See this)</a></p>
+</li>
+<li>
+<p>Update the <strong>BL602 Pin Defintions</strong> to accommodate Semtech SX1262</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L44-L80">(See this)</a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/auto-nonce.png" alt="Duplicate LoRaWAN Nonce" /></p>
 <h1 id="appendix-fix-lorawan-nonce" class="section-header"><a href="#appendix-fix-lorawan-nonce">11 Appendix: Fix LoRaWAN Nonce</a></h1>
 <p><em>What’s a LoRaWAN Nonce?</em></p>
