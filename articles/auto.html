@@ -358,7 +358,7 @@ remote-bl602/scripts/test.sh</code></pre></div>
 <li><a href="https://www.youtube.com/watch?v=_82og3-gEwA"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
 <p>Let’s study the script output: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-21"><strong>upstream-2022-01-21</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/auto-run.png" alt="Auto Flash and Test Script" /></p>
+<p><img src="https://lupyuen.github.io/images/auto-run.jpg" alt="Auto Flash and Test Script" /></p>
 <h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">4.1 Download NuttX</a></h2>
 <p>Our script begins by <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L20-L40"><strong>downloading Today’s Upstream Build</strong></a> of NuttX: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-21">upstream-2022-01-21</a></p>
 <div class="example-wrap"><pre class="language-text"><code>+ BUILD_PREFIX=upstream
@@ -440,11 +440,11 @@ nsh&gt;</code></pre></div>
 <p>Our script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L113-L134"><strong>analyses the output</strong></a> and determines that NuttX has booted successfully. </p>
 <p>We’re done with the <strong>simplest scenario</strong> for Auto Flash and Test! Now we have a quick and nifty way to discover if Today’s Upstream Build of NuttX boots OK on BL602.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases">(I run the script every day to check the stability of the BL602 build)</a></p>
-<p><img src="https://lupyuen.github.io/images/auto-remote.png" alt="Flash &amp; Test NuttX on BL602… Remotely from a Phone!" /></p>
+<p><img src="https://lupyuen.github.io/images/auto-remote.jpg" alt="Flash &amp; Test NuttX on BL602… Remotely from a Phone!" /></p>
 <h1 id="nuttx-crash-analysis" class="section-header"><a href="#nuttx-crash-analysis">5 NuttX Crash Analysis</a></h1>
 <p><em>What happens when NuttX crashes during testing?</em></p>
 <p>NuttX shows a <strong>Stack Trace</strong> like this…</p>
-<p><img src="https://lupyuen.github.io/images/auto-stack.png" alt="NuttX Stack Trace" /></p>
+<p><img src="https://lupyuen.github.io/images/auto-stack.jpg" alt="NuttX Stack Trace" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
 <p>Let’s walk through the steps to <strong>decode the Stack Trace</strong>, then we’ll learn how our script decodes the Stack Trace for us.</p>
 <h2 id="decode-stack-trace" class="section-header"><a href="#decode-stack-trace">5.1 Decode Stack Trace</a></h2>
@@ -566,7 +566,7 @@ riscv64-unknown-elf-objdump \
 <p><img src="https://lupyuen.github.io/images/auto-stack3.png" alt="Source Code decoded from Stack Trace" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
 <p>These are the <strong>Data Addresses</strong> decoded from the Stack Trace…</p>
-<p><img src="https://lupyuen.github.io/images/auto-stack4.png" alt="Data Addresses in Stack Trace" /></p>
+<p><img src="https://lupyuen.github.io/images/auto-stack4.jpg" alt="Data Addresses in Stack Trace" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
 <h1 id="lorawan-test" class="section-header"><a href="#lorawan-test">6 LoRaWAN Test</a></h1>
 <p><em>What’s the best way to auto-test all the NuttX functions: GPIO, SPI, ADC, Interrupts, Timers, Threads, Message Queues, Random Number Generator, …?</em></p>
@@ -737,7 +737,7 @@ remote-bl602/scripts/test.sh</code></pre></div>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1482152780051935238">this Twitter Thread</a></li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/auto-workflow.png" alt="Building NuttX with GitHub Actions" /></p>
+<p><img src="https://lupyuen.github.io/images/auto-workflow.jpg" alt="Building NuttX with GitHub Actions" /></p>
 <h1 id="appendix-build-nuttx-with-github-actions" class="section-header"><a href="#appendix-build-nuttx-with-github-actions">10 Appendix: Build NuttX with GitHub Actions</a></h1>
 <p>We auto-build the Upstream (Apache) version of NuttX every day with <strong>GitHub Actions</strong>, producing these files…</p>
 <ul>
@@ -873,7 +873,7 @@ on:
         cp .config nuttx.config</code></pre></div>
 <p>We’re ready to build NuttX!</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217">(For Release and Downstream Builds we also enable the LoRaWAN Stack)</a></p>
-<p><img src="https://lupyuen.github.io/images/auto-workflow3.png" alt="For the Release and Downstream Builds we also enable the LoRaWAN Stack" /></p>
+<p><img src="https://lupyuen.github.io/images/auto-workflow3.jpg" alt="For the Release and Downstream Builds we also enable the LoRaWAN Stack" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217">(Source)</a></p>
 <h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">10.6 Build NuttX</a></h2>
 <p>This builds the <strong>NuttX Firmware</strong>…</p>
@@ -1021,7 +1021,7 @@ temperature = 29.794918 Celsius
 temperature = 30.439829 Celsius
 temperature = 28.376112 Celsius</code></pre></div>
 <p>Our LoRaWAN Stack now generates <strong>different LoRaWAN Nonces</strong> for every Flash and Test. And the Join Network Request always succeeds! 🎉</p>
-<p><img src="https://lupyuen.github.io/images/auto-nonce3.png" alt="Join Network Request always succeeds" /></p>
+<p><img src="https://lupyuen.github.io/images/auto-nonce3.jpg" alt="Join Network Request always succeeds" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19">(Source)</a></p>
 
     
