@@ -830,6 +830,11 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool"><strong>“Random Number Generator with Entropy Pool”</strong></a></li>
 </ul>
+<p><strong>UPDATE:</strong> While running Auto Flash and Test with NuttX, we discovered that the Random Number Generator with Entropy Pool might <strong>generate the same Random Numbers</strong>. (Because the booting of NuttX becomes so predictable)</p>
+<p>To fix this, we add <strong>Internal Temperature Sensor Data</strong> to the Entropy Pool, to generate truly random numbers…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce"><strong>“Fix LoRaWAN Nonce”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-nonce7a.jpg" alt="Our LoRaWAN Library now generates random nonces" /></p>
 <h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a></h1>
 <p>Let’s look inside our LoRaWAN Test App and learn how the <strong>Event Loop</strong> handles LoRa and LoRaWAN Events by calling NimBLE Porting Layer.</p>
