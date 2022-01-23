@@ -211,7 +211,7 @@ blflash flash \
 sleep 1
 ```
 
-(__nuttx.bin__ is the Daily Upstream Build of NuttX OS, as explained in the Appendix)
+[(__nuttx.bin__ is the Daily Upstream Build of NuttX OS, as explained in the Appendix)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
 
 Our firmware has been flashed automagically!
 
@@ -359,7 +359,7 @@ Our script begins by [__downloading Today's Upstream Build__](https://github.com
 + wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-21/nuttx.zip -O /tmp/nuttx.zip
 ```
 
-(__nuttx.zip__ is built daily by GitHub Actions, as explained in the Appendix)
+[(__nuttx.zip__ is built daily by GitHub Actions, as explained in the Appendix)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
 
 Our script unzips __nuttx.zip__, which includes the following files...
 
@@ -670,7 +670,7 @@ These are the __Data Addresses__ decoded from the Stack Trace...
 
 _What's the best way to auto-test all the NuttX functions: GPIO, SPI, ADC, Interrupts, Timers, Threads, Message Queues, Random Number Generator, ...?_
 
-__LoRaWAN__ is the perfect way to give NuttX a __thorough workout__!
+[__LoRaWAN__](https://lupyuen.github.io/articles/lorawan3) is the perfect way to give NuttX a __thorough workout__!
 
 -   __GPIO Input__: LoRaWAN reads a GPIO Input to poll the [__Busy State__](https://lupyuen.github.io/articles/sx1262#check-busy-state) of the LoRa Transceiver
 
@@ -690,9 +690,11 @@ __LoRaWAN__ is the perfect way to give NuttX a __thorough workout__!
 
 -   __Strong Random Number Generator__: Generates non-repeating [__LoRaWAN Nonces__](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
 
--   __Internal Temperature Sensor__: Seeds the Entropy Pool for the Random Number Generator
+-   __Internal Temperature Sensor__: Seeds the Entropy Pool for the Random Number Generator [(Here's why)](https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce)
 
-    (More about this in the Appendix)
+We shall run this __LoRaWAN Stack__ to connect to the LoRaWAN Network (ChirpStack) and transmit a Data Packet...
+
+-   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
 To run the __LoRaWAN Auto-Test__ we switch to the __Release Build__ (instead of the Upstream Build)...
 
