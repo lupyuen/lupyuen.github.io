@@ -843,7 +843,7 @@ But for now... No more worries about merging hundreds of upstream commits (and t
 
 After 14 months of flipping the jumper and smashing the button on BL602, I'm so glad we have an automated way to Flash and Test BL602!
 
-TODO
+I hope the Flash and Test Script will make your NuttX Development more productive on BL602... Possibly on other microcontrollers too!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
