@@ -355,7 +355,9 @@ Our script begins by [__downloading Today's Upstream Build__](https://github.com
 + BUILD_PREFIX=upstream
 + BUILD_DATE=2022-01-21
 ----- Download the latest upstream NuttX build for 2022-01-21
-+ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-21/nuttx.zip -O /tmp/nuttx.zip
++ wget -q \
+  https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-21/nuttx.zip \
+  -O /tmp/nuttx.zip
 ```
 
 [(__nuttx.zip__ is built daily by GitHub Actions, as explained in the Appendix)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
@@ -1172,6 +1174,10 @@ Check out the workflows for the __Release and Downstream__ Builds...
 _How are they different from the Upstream Build?_
 
 The __Release and Downstream__ Builds...
+
+-   Are __triggered by commits__ to the Release (master) and Downstream Branches (instead of scheduled time)
+
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L5-L14)
 
 -   Checkout the Source Files from a different repo: __lupyuen/incubator-nuttx__
 
