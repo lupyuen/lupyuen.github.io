@@ -570,7 +570,7 @@ This generates the Disassembly File __nuttx.S__, which we'll use in the next ste
 
 ## Decode Addresses
 
-From the Stack Trace above, we look for __Code and Data Addresses__ in the and decode them...
+From the Stack Trace above, we look for __Code and Data Addresses__ and decode them...
 
 -   __BL602 Code Addresses__ have the form __`23xxxxxx`__
 
