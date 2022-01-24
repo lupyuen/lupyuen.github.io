@@ -1187,7 +1187,7 @@ The __Release and Downstream__ Builds...
 
     [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
 
--   Update the __BL602 Pin Defintions__ to accommodate the Semtech SX1262 LoRa Transceiver
+-   Update the __BL602 Pin Definitions__ to accommodate the Semtech SX1262 LoRa Transceiver
 
     [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L44-L80)
 
