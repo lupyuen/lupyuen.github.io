@@ -1065,7 +1065,7 @@ This builds the __NuttX Firmware__...
         make
 ```
 
-Which creates the Firmware Binary __nutt.bin__ (for flashing) and the Firmware ELF __nuttx__.
+Which creates the Firmware Binary __nuttx.bin__ (for flashing) and the Firmware ELF __nuttx__.
 
 We dump the __RISC-V Disassembly__ of the Firmware ELF to __nuttx.S__...
 
