@@ -833,7 +833,7 @@ But for now... No more worries about merging hundreds of upstream commits (and t
 
 # What's Next
 
-After flipping the jumper and smashing the button on BL602 for the past 14 months, I'm so glad we have an automated way to Flash and Test BL602!
+After 14 months of flipping the jumper and smashing the button on BL602, I'm so glad we have an automated way to Flash and Test BL602!
 
 TODO
 
