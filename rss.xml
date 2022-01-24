@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Auto Flash and Test NuttX on RISC-V BL602</title>
+            <link>https://lupyuen.github.io/articles/auto</link>
+            <description><![CDATA[How we automagically flash and test the daily build of Apache NuttX OS on BL602 RISC-V SoC]]></description>
+            <guid>https://lupyuen.github.io/articles/auto</guid>
+            <pubDate>Wed, 26 Jan 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Rust on Apache NuttX OS</title>
             <link>https://lupyuen.github.io/articles/rust2</link>
             <description><![CDATA[How we run Rust programs on Apache NuttX OS... And transmit a LoRa Message with Rust]]></description>
