@@ -46,7 +46,7 @@ _Will this work for other microcontrollers?_
 
 ![PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident 🙏](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
 
-_PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident 🙏_
+_PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident_ 🙏
 
 # BL602 Basics
 
@@ -78,7 +78,7 @@ This is how we work with BL602...
 
 1.  Press the __Reset Button (RST)__.
 
-    BL602 is now in __Normal Mode__ (Non-Flashing).
+    BL602 is now in __Normal Mode__. (Non-Flashing)
 
 1.  Launch a __Serial Terminal__ to test the BL602 Firmware
 
@@ -115,7 +115,7 @@ For auto-testing LoRaWAN, we also connect BL602 to [__Semtech SX1262 LoRa Transc
 
 Clearer pic of the __GPIO 8__ (Flashing Mode) and __Reset Pins__ on PineCone BL602...
 
-![GPIO 8 and Reset Pins](https://lupyuen.github.io/images/auto-connect.jpg)
+![GPIO 8 and Reset Pins](https://lupyuen.github.io/images/auto-connect2.jpg)
 
 No more flipping the jumper and smashing the button! Let's control GPIO 8 and Reset Pins with our Linux SBC.
 
@@ -128,13 +128,15 @@ Recall that __GPIO 2 and 3__ on our Linux SBC are connected to BL602 for the __F
 | __GPIO 2__ | GPIO 8   | Flashing Mode
 | __GPIO 3__ | RST      | Reset
 
-Let's control GPIO 2 and 3 with a Bash Script.
+Let's control GPIO 2 and 3 with a Bash Script...
+
+-   [__remote-bl602/scripts/test.sh__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh)
 
 ![Control GPIO with Linux](https://lupyuen.github.io/images/auto-script2.png)
 
 ## Enable GPIO
 
-Our Bash Script begins by __enabling GPIO 2 and 3__: [remote-bl602/scripts/test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L42-L48)
+Our Bash Script begins by __enabling GPIO 2 and 3__: [test.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L42-L48)
 
 ```bash
 ##  Enable GPIO 2 and 3 (if not already enabled)
