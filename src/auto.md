@@ -895,6 +895,8 @@ on:
     - cron: '30 0 * * *'
 ```
 
+(The build will actually start at around __1:45 UTC__, depending on the available server capacity at GitHub Actions)
+
 Note that the scheduled run is __not guaranteed__, it may be cancelled if GitHub Actions is too busy. [(See this)](https://github.community/t/no-assurance-on-scheduled-jobs/133753/2)
 
 ## Install Build Tools
