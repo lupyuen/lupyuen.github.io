@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Auto Flash and Test NuttX on RISC-V BL602",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-01-26",
+      "website": "https://lupyuen.github.io/articles/auto",
+      "summary": "How we automagically flash and test the daily build of Apache NuttX OS on BL602 RISC-V SoC"
+    },
+    {
       "name": "Rust on Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-01-12",
