@@ -364,7 +364,9 @@ remote-bl602/scripts/test.sh</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>+ BUILD_PREFIX=upstream
 + BUILD_DATE=2022-01-21
 ----- Download the latest upstream NuttX build for 2022-01-21
-+ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-21/nuttx.zip -O /tmp/nuttx.zip</code></pre></div>
++ wget -q \
+  https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-21/nuttx.zip \
+  -O /tmp/nuttx.zip</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(<strong>nuttx.zip</strong> is built daily by GitHub Actions, as explained in the Appendix)</a></p>
 <p>Our script unzips <strong>nuttx.zip</strong>, which includes the following files…</p>
 <div class="example-wrap"><pre class="language-text"><code>+ pushd /tmp
@@ -957,6 +959,10 @@ on:
 <p><em>How are they different from the Upstream Build?</em></p>
 <p>The <strong>Release and Downstream</strong> Builds…</p>
 <ul>
+<li>
+<p>Are <strong>triggered by commits</strong> to the Release (master) and Downstream Branches (instead of scheduled time)</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L5-L14">(See this)</a></p>
+</li>
 <li>
 <p>Checkout the Source Files from a different repo: <strong>lupyuen/incubator-nuttx</strong></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42">(See this)</a></p>
