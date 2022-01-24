@@ -141,11 +141,11 @@ Our Bash Script begins by __enabling GPIO 2 and 3__: [test.sh](https://github.co
 ```bash
 ##  Enable GPIO 2 and 3 (if not already enabled)
 if [ ! -d /sys/class/gpio/gpio2 ]; then
-  echo 2 >/sys/class/gpio/export
+  echo  2 >/sys/class/gpio/export
   sleep 1
 fi
 if [ ! -d /sys/class/gpio/gpio3 ]; then
-  echo 3 >/sys/class/gpio/export
+  echo  3 >/sys/class/gpio/export
   sleep 1
 fi
 ```
@@ -178,7 +178,7 @@ To enter __Flashing Mode__, our script sets GPIO 2 to __High__: [test.sh](https:
 
 ```bash
 ##  Set GPIO 2 to High (BL602 Flashing Mode)
-echo 1 >/sys/class/gpio/gpio2/value
+echo  1 >/sys/class/gpio/gpio2/value
 sleep 1
 ```
 
@@ -190,11 +190,11 @@ To __restart BL602__ (and actually enter Flashing Mode), our script toggles GPIO
 
 ```bash
 ##  Toggle GPIO 3 High-Low-High (Reset BL602)
-echo 1 >/sys/class/gpio/gpio3/value
+echo  1 >/sys/class/gpio/gpio3/value
 sleep 1
-echo 0 >/sys/class/gpio/gpio3/value
+echo  0 >/sys/class/gpio/gpio3/value
 sleep 1
-echo 1 >/sys/class/gpio/gpio3/value
+echo  1 >/sys/class/gpio/gpio3/value
 sleep 1
 ```
 
@@ -223,7 +223,7 @@ Now we return to __Normal Mode__ (Non-Flashing) by setting GPIO 2 to __Low__: [t
 
 ```bash
 ##  Set GPIO 2 to Low (BL602 Normal Mode)
-echo 0 >/sys/class/gpio/gpio2/value
+echo  0 >/sys/class/gpio/gpio2/value
 sleep 1
 ```
 
@@ -231,11 +231,11 @@ We effect the change by __restarting BL602__...
 
 ```bash
 ##  Toggle GPIO 3 High-Low-High (Reset BL602)
-echo 1 >/sys/class/gpio/gpio3/value
+echo  1 >/sys/class/gpio/gpio3/value
 sleep 1
-echo 0 >/sys/class/gpio/gpio3/value
+echo  0 >/sys/class/gpio/gpio3/value
 sleep 1
-echo 1 >/sys/class/gpio/gpio3/value
+echo  1 >/sys/class/gpio/gpio3/value
 sleep 1
 ```
 
@@ -276,12 +276,9 @@ To see the __Boot Messages__, our script restarts BL602 yet again...
 
 ```bash
 ##  Toggle GPIO 3 High-Low-High (Reset BL602)
-echo 1 >/sys/class/gpio/gpio3/value
-sleep 1
-echo 0 >/sys/class/gpio/gpio3/value
-sleep 1
-echo 1 >/sys/class/gpio/gpio3/value
-sleep 1
+echo  1 >/sys/class/gpio/gpio3/value ; sleep 1
+echo  0 >/sys/class/gpio/gpio3/value ; sleep 1
+echo  1 >/sys/class/gpio/gpio3/value ; sleep 1
 
 ##  Wait a while for BL602 to finish booting
 sleep 1
@@ -317,7 +314,7 @@ Enter this at the Linux command prompt...
 
 ```bash
 ##  Allow the user to access the GPIO and UART ports
-sudo usermod -a -G gpio $USER
+sudo usermod -a -G gpio    $USER
 sudo usermod -a -G dialout $USER
 
 ##  Install Rust: https://rustup.rs/
