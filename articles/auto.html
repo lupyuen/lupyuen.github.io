@@ -145,7 +145,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperh.jpg" alt="PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident 🙏" /></p>
-<p><em>PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident 🙏</em></p>
+<p><em>PineCone BL602 in Flashing Mode with GPIO 8 set to High. Sorry the jumper got mangled due to a soldering accident</em> 🙏</p>
 <h1 id="bl602-basics" class="section-header"><a href="#bl602-basics">1 BL602 Basics</a></h1>
 <p>This is how we work with BL602…</p>
 <ol>
@@ -174,7 +174,7 @@ Success</code></pre></div></li>
 </li>
 <li>
 <p>Press the <strong>Reset Button (RST)</strong>.</p>
-<p>BL602 is now in <strong>Normal Mode</strong> (Non-Flashing).</p>
+<p>BL602 is now in <strong>Normal Mode</strong>. (Non-Flashing)</p>
 </li>
 <li>
 <p>Launch a <strong>Serial Terminal</strong> to test the BL602 Firmware</p>
@@ -204,7 +204,7 @@ Success</code></pre></div></li>
 <li><a href="https://lupyuen.github.io/articles/spi2#connect-sx1262"><strong>“Connect SX1262”</strong></a></li>
 </ul>
 <p>Clearer pic of the <strong>GPIO 8</strong> (Flashing Mode) and <strong>Reset Pins</strong> on PineCone BL602…</p>
-<p><img src="https://lupyuen.github.io/images/auto-connect.jpg" alt="GPIO 8 and Reset Pins" /></p>
+<p><img src="https://lupyuen.github.io/images/auto-connect2.jpg" alt="GPIO 8 and Reset Pins" /></p>
 <p>No more flipping the jumper and smashing the button! Let’s control GPIO 8 and Reset Pins with our Linux SBC.</p>
 <h1 id="control-gpio-with-linux" class="section-header"><a href="#control-gpio-with-linux">3 Control GPIO with Linux</a></h1>
 <p>Recall that <strong>GPIO 2 and 3</strong> on our Linux SBC are connected to BL602 for the <strong>Flashing and Reset</strong> Functions…</p>
@@ -213,10 +213,13 @@ Success</code></pre></div></li>
 <tr><td><strong>GPIO 3</strong></td><td>RST</td><td>Reset</td></tr>
 </tbody></table>
 </div>
-<p>Let’s control GPIO 2 and 3 with a Bash Script.</p>
+<p>Let’s control GPIO 2 and 3 with a Bash Script…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh"><strong>remote-bl602/scripts/test.sh</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/auto-script2.png" alt="Control GPIO with Linux" /></p>
 <h2 id="enable-gpio" class="section-header"><a href="#enable-gpio">3.1 Enable GPIO</a></h2>
-<p>Our Bash Script begins by <strong>enabling GPIO 2 and 3</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L42-L48">remote-bl602/scripts/test.sh</a></p>
+<p>Our Bash Script begins by <strong>enabling GPIO 2 and 3</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L42-L48">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Enable GPIO 2 and 3 (if not already enabled)
 if [ ! -d /sys/class/gpio/gpio2 ]; then
   echo 2 &gt;/sys/class/gpio/export
