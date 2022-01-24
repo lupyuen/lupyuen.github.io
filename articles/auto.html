@@ -222,11 +222,11 @@ Success</code></pre></div></li>
 <p>Our Bash Script begins by <strong>enabling GPIO 2 and 3</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L42-L48">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Enable GPIO 2 and 3 (if not already enabled)
 if [ ! -d /sys/class/gpio/gpio2 ]; then
-  echo 2 &gt;/sys/class/gpio/export
+  echo  2 &gt;/sys/class/gpio/export
   sleep 1
 fi
 if [ ! -d /sys/class/gpio/gpio3 ]; then
-  echo 3 &gt;/sys/class/gpio/export
+  echo  3 &gt;/sys/class/gpio/export
   sleep 1
 fi</code></pre></div>
 <p><a href="https://www.ics.com/blog/gpio-programming-using-sysfs-interface">(<strong>/sys/class/gpio</strong> comes from the Linux sysfs Interface)</a></p>
@@ -249,17 +249,17 @@ echo out &gt;/sys/class/gpio/gpio3/direction</code></pre></div>
 <h2 id="enter-flashing-mode" class="section-header"><a href="#enter-flashing-mode">3.3 Enter Flashing Mode</a></h2>
 <p>To enter <strong>Flashing Mode</strong>, our script sets GPIO 2 to <strong>High</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L54-L55">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 2 to High (BL602 Flashing Mode)
-echo 1 &gt;/sys/class/gpio/gpio2/value
+echo  1 &gt;/sys/class/gpio/gpio2/value
 sleep 1</code></pre></div>
 <p>But to make it happen we need to restart BL602, coming up next…</p>
 <h2 id="reset-bl602" class="section-header"><a href="#reset-bl602">3.4 Reset BL602</a></h2>
 <p>To <strong>restart BL602</strong> (and actually enter Flashing Mode), our script toggles GPIO 3 <strong>High-Low-High</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L57-L65">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
-echo 1 &gt;/sys/class/gpio/gpio3/value
+echo  1 &gt;/sys/class/gpio/gpio3/value
 sleep 1
-echo 0 &gt;/sys/class/gpio/gpio3/value
+echo  0 &gt;/sys/class/gpio/gpio3/value
 sleep 1
-echo 1 &gt;/sys/class/gpio/gpio3/value
+echo  1 &gt;/sys/class/gpio/gpio3/value
 sleep 1</code></pre></div>
 <p>BL602 is now in <strong>Flashing Mode</strong>!</p>
 <h2 id="flash-bl602" class="section-header"><a href="#flash-bl602">3.5 Flash BL602</a></h2>
@@ -275,15 +275,15 @@ sleep 1</code></pre></div>
 <h2 id="exit-flashing-mode" class="section-header"><a href="#exit-flashing-mode">3.6 Exit Flashing Mode</a></h2>
 <p>Now we return to <strong>Normal Mode</strong> (Non-Flashing) by setting GPIO 2 to <strong>Low</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L74-L80">test.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 2 to Low (BL602 Normal Mode)
-echo 0 &gt;/sys/class/gpio/gpio2/value
+echo  0 &gt;/sys/class/gpio/gpio2/value
 sleep 1</code></pre></div>
 <p>We effect the change by <strong>restarting BL602</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
-echo 1 &gt;/sys/class/gpio/gpio3/value
+echo  1 &gt;/sys/class/gpio/gpio3/value
 sleep 1
-echo 0 &gt;/sys/class/gpio/gpio3/value
+echo  0 &gt;/sys/class/gpio/gpio3/value
 sleep 1
-echo 1 &gt;/sys/class/gpio/gpio3/value
+echo  1 &gt;/sys/class/gpio/gpio3/value
 sleep 1</code></pre></div>
 <p>BL602 starts booting our firmware, but we need some prep…</p>
 <h2 id="show-bl602-output" class="section-header"><a href="#show-bl602-output">3.7 Show BL602 Output</a></h2>
@@ -306,12 +306,9 @@ stty \
 <p>Yep because BL602 has <strong>already booted</strong> our firmware. The Boot Messages have whooshed by before we captured them.</p>
 <p>To see the <strong>Boot Messages</strong>, our script restarts BL602 yet again…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Toggle GPIO 3 High-Low-High (Reset BL602)
-echo 1 &gt;/sys/class/gpio/gpio3/value
-sleep 1
-echo 0 &gt;/sys/class/gpio/gpio3/value
-sleep 1
-echo 1 &gt;/sys/class/gpio/gpio3/value
-sleep 1
+echo  1 &gt;/sys/class/gpio/gpio3/value ; sleep 1
+echo  0 &gt;/sys/class/gpio/gpio3/value ; sleep 1
+echo  1 &gt;/sys/class/gpio/gpio3/value ; sleep 1
 
 #  Wait a while for BL602 to finish booting
 sleep 1
@@ -333,7 +330,7 @@ kill %1</code></pre></div>
 <p>We’ve seen the <strong>Auto Flash and Test</strong> Script, let’s run it on our Linux SBC!</p>
 <p>Enter this at the Linux command prompt…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Allow the user to access the GPIO and UART ports
-sudo usermod -a -G gpio $USER
+sudo usermod -a -G gpio    $USER
 sudo usermod -a -G dialout $USER
 
 #  Install Rust: https://rustup.rs/
