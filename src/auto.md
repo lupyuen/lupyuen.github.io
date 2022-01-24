@@ -736,9 +736,15 @@ STATUS: OK
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
 
-Which means that BL602 has successfully joined the __LoRaWAN Network__.
+Which means that BL602 has successfully joined the __LoRaWAN Network__...
 
-(And everything has tested OK on NuttX!)
+```text
+===== All OK! BL602 has successfully joined the LoRaWAN Network
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+
+And everything has tested OK on NuttX!
 
 ![BL602 successfully joins the LoRaWAN Network](https://lupyuen.github.io/images/auto-lorawan2.png)
 
