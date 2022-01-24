@@ -848,6 +848,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
 
+-   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/sbzwon/auto_flash_and_test_nuttx_on_riscv_bl602/)
+
 -   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
 
 -   [Check out my articles](https://lupyuen.github.io)
