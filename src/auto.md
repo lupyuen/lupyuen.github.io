@@ -655,6 +655,8 @@ Here's a demo of Auto Flash and Test with __Auto Crash Analysis__...
 
 -   [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=Kf3G1hGoLIs)
 
+-   [__See the Output Log__](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
+
 The __Source Code__ decoded from a Stack Trace looks like this...
 
 ![Source Code decoded from Stack Trace](https://lupyuen.github.io/images/auto-stack3.png)
