@@ -1069,6 +1069,8 @@ This builds the __NuttX Firmware__...
 
 Which creates the Firmware Binary __nuttx.bin__ (for flashing) and the Firmware ELF __nuttx__.
 
+(The build completes in under 3 minutes)
+
 We dump the __RISC-V Disassembly__ of the Firmware ELF to __nuttx.S__...
 
 ```yaml
