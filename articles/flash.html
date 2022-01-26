@@ -137,9 +137,16 @@
 </ol>
 <p>And we’ll better understand the (undocumented) internals of the <strong>BL602 RISC-V + WiFi + Bluetooth SoC</strong>!</p>
 <h1 id="flash-bl602-firmware-with-linux-macos-and-windows" class="section-header"><a href="#flash-bl602-firmware-with-linux-macos-and-windows">1 Flash BL602 Firmware with Linux, macOS and Windows</a></h1>
-<p>Follow these steps to flash a BL602 Firmware Binary File (like <code>sdk_app_helloworld.bin</code>) to PineCone from Linux x64, Linux Arm64, macOS and Windows.</p>
+<p>Follow these steps to flash a Firmware Binary File (like <code>nuttx.bin</code> or <code>sdk_app_helloworld.bin</code>) to BL602 from Linux x64, Linux Arm64, macOS and Windows.</p>
 <p>(On Windows: Use plain old Windows CMD Command Prompt to run the commands, not WSL)</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-26/nuttx.zip">Download demo firmware <code>nuttx.bin</code></a></p>
+</li>
+<li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin">Download demo firmware <code>sdk_app_helloworld.bin</code></a></p>
+</li>
+</ul>
 <h2 id="install-rustup" class="section-header"><a href="#install-rustup">1.1 Install rustup</a></h2>
 <ol>
 <li>
@@ -362,7 +369,11 @@ caused by: Invalid argument</code></pre></div>
 <p>Under <code>Baud Rate</code>, select <code>Custom</code> and enter <code>2000000</code> (2 Mbps)</p>
 </li>
 <li>
-<p>Press the <strong><code>RST</code> Button</strong> on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin"><code>sdk_app_helloworld.bin</code></a></p>
+<p>Press the <strong><code>RST</code> Button</strong> on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware…</p>
+<p>For <a href="https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-26/nuttx.zip"><code>nuttx.bin</code></a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0
+nsh&gt;   </code></pre></div>
+<p>For <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin"><code>sdk_app_helloworld.bin</code></a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>[helloworld]   start
 [helloworld]   helloworld
 [helloworld]   end</code></pre></div>
@@ -383,7 +394,11 @@ caused by: Invalid argument</code></pre></div>
 </li>
 </ol>
 <p>These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.</p>
-<p><strong>For MagicHome BL602 WiFi LED Controller:</strong> This gadget doesn’t have a Reset Button, so it will be hard to see the <code>helloworld</code> message. Use the <strong><code>sdk_app_gpio.bin</code> GPIO Demo Firmware</strong> instead…</p>
+<p><strong>For MagicHome BL602 WiFi LED Controller:</strong> This gadget doesn’t have a Reset Button, so it will be hard to see the <code>helloworld</code> message. Use the NuttX firmware <strong><code>nuttx.bin</code></strong> instead…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-26/nuttx.zip"><strong>Download demo firmware <code>nuttx.bin</code></strong></a></li>
+</ul>
+<p>Or <strong><code>sdk_app_gpio.bin</code> GPIO Demo Firmware</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/led#control-rgb-led-with-gpio"><strong>“Control RGB LED with GPIO”</strong></a></li>
 </ul>
