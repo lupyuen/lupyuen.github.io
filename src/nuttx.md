@@ -1042,7 +1042,7 @@ __For PineDio Stack BL604:__
 
 1.  Set the __GPIO 8 Jumper__ to __High__ [(Like this)](https://lupyuen.github.io/images/pinedio-high.jpg)
 
-1.  Press the Reset Button
+1.  Disconnect the USB cable and reconnect
 
 __For PineCone BL602:__
 
@@ -1106,7 +1106,7 @@ __For PineDio Stack BL604:__
 
 1.  Set the __GPIO 8 Jumper__ to __Low__ [(Like this)](https://lupyuen.github.io/images/pinedio-low.jpg)
 
-1.  Press the Reset Button
+1.  Disconnect the USB cable and reconnect
 
 __For PineCone BL602:__
 

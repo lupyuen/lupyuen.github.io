@@ -98,7 +98,13 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
 
 1.  To flash the firmware, we set BL602 to __Flashing Mode__ and restart the board...
 
-    __For PineCone:__
+    __For PineDio Stack BL604:__
+
+    1.  Set the __GPIO 8 Jumper__ to __High__ [(Like this)](https://lupyuen.github.io/images/pinedio-high.jpg)
+
+    1.  Disconnect the USB cable and reconnect
+
+    __For PineCone BL602:__
 
     1.  Connect PineCone to the USB port
     
@@ -245,7 +251,13 @@ _Firmware running on PineCone_
 
 1.  To run our firmware, we set BL602 to __Normal Mode__ (Non-Flashing) and restart the board...
 
-    __For PineCone:__
+    __For PineDio Stack BL604:__
+
+    1.  Set the __GPIO 8 Jumper__ to __Low__ [(Like this)](https://lupyuen.github.io/images/pinedio-low.jpg)
+
+    1.  Disconnect the USB cable and reconnect
+
+    __For PineCone BL602:__
 
     1.  Set the __PineCone Jumper (IO 8)__ to the __`L` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
     
