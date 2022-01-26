@@ -32,11 +32,13 @@ And we'll better understand the (undocumented) internals of the __BL602 RISC-V +
 
 # Flash BL602 Firmware with Linux, macOS and Windows
 
-Follow these steps to flash a BL602 Firmware Binary File (like `sdk_app_helloworld.bin`) to PineCone from Linux x64, Linux Arm64, macOS and Windows.
+Follow these steps to flash a Firmware Binary File (like `nuttx.bin` or `sdk_app_helloworld.bin`) to BL602 from Linux x64, Linux Arm64, macOS and Windows.
 
 (On Windows: Use plain old Windows CMD Command Prompt to run the commands, not WSL)
 
-[Download demo firmware `sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin)
+-   [Download demo firmware `nuttx.bin`](https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-26/nuttx.zip)
+
+-   [Download demo firmware `sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin)
 
 ##  Install rustup
 
@@ -301,7 +303,16 @@ _Firmware running on PineCone_
 
     Under `Baud Rate`, select `Custom` and enter `2000000` (2 Mbps)
 
-1.  Press the __`RST` Button__ on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware: [`sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin)
+1.  Press the __`RST` Button__ on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware...
+
+    For [`nuttx.bin`](https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-26/nuttx.zip):
+
+    ```text
+    NuttShell (NSH) NuttX-10.2.0
+    nsh>   
+    ```
+
+    For [`sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin):
 
     ```text
     [helloworld]   start
@@ -331,7 +342,11 @@ _Firmware running on PineCone_
 
 These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catalina and Windows 10.
 
-__For MagicHome BL602 WiFi LED Controller:__ This gadget doesn't have a Reset Button, so it will be hard to see the `helloworld` message. Use the __`sdk_app_gpio.bin` GPIO Demo Firmware__ instead...
+__For MagicHome BL602 WiFi LED Controller:__ This gadget doesn't have a Reset Button, so it will be hard to see the `helloworld` message. Use the NuttX firmware __`nuttx.bin`__ instead...
+
+-   [__Download demo firmware `nuttx.bin`__](https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-26/nuttx.zip)
+
+Or __`sdk_app_gpio.bin` GPIO Demo Firmware__...
 
 -   [__"Control RGB LED with GPIO"__](https://lupyuen.github.io/articles/led#control-rgb-led-with-gpio)
 
