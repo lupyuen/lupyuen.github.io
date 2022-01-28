@@ -204,7 +204,7 @@ To __run the BL604 Blinky Firmware__...
 
     [__Watch the Demo Video on YouTube__](https://youtu.be/vdRqhQ08uxU)
 
-(PineDio Stack doesn't have a Reset Button, that's why we unplug the board to switch the Flashing Mode)
+[(PineDio Stack doesn't have a Reset Button, but we can make one)](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack)
 
 Now that the Backlight GPIO is OK, let's test something more sophisticated: SPI!
 

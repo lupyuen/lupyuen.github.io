@@ -104,6 +104,8 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
 
     1.  Disconnect the USB cable and reconnect
 
+        Or use the Improvised Reset Button [(Here's how)](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack)
+
     __For PineCone BL602:__
 
     1.  Connect PineCone to the USB port
@@ -256,6 +258,8 @@ _Firmware running on PineCone_
     1.  Set the __GPIO 8 Jumper__ to __Low__ [(Like this)](https://lupyuen.github.io/images/pinedio-low.jpg)
 
     1.  Disconnect the USB cable and reconnect
+
+        Or use the Improvised Reset Button [(Here's how)](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack)
 
     __For PineCone BL602:__
 

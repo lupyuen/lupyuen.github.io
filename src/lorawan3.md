@@ -1541,6 +1541,8 @@ __For PineDio Stack BL604:__
 
 1.  Disconnect the USB cable and reconnect
 
+    Or use the Improvised Reset Button [(Here's how)](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack)
+
 __For PineCone BL602:__
 
 1.  Set the __PineCone Jumper (IO 8)__ to the __`H` Position__ [(Like this)](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
@@ -1612,6 +1614,8 @@ __For PineDio Stack BL604:__
 1.  Set the __GPIO 8 Jumper__ to __Low__ [(Like this)](https://lupyuen.github.io/images/pinedio-low.jpg)
 
 1.  Disconnect the USB cable and reconnect
+
+    Or use the Improvised Reset Button [(Here's how)](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack)
 
 __For PineCone BL602:__
 
