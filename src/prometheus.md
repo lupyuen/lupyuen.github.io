@@ -773,6 +773,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     This fixes the graph to plot one line per Device.
 
+1.  Why not use an SQL Database (like MySQL) instead of Prometheus?
+
+    Well an SQL Database might not scale up for high volumes of Sensor Data because...
+
+    -   SQL Inserts can be costly, due to the frequent indexing. If we run SQL Select queries too often, we might have contention in the SQL Index.
+
+    -   SQL doesn't work well with time-based queries like "What's the average daily temperature every day for the past year". It gets tedious to code such queries (nested SQL) and they don't perform well.
+
+    That's why we use a Time Series Database like Prometheus. And when we use a Time Series Database, we need a tool like Grafana that can visualise the Time Series Data.
+
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1450262680795713538)
 
 # Appendix: Configure The Things Network MQTT
