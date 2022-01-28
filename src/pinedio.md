@@ -851,3 +851,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  JF has [__successfully tested PineDio Stack's SPI Port__](https://twitter.com/codingfield/status/1431541455210913792) with an external eInk Display
 
 1.  We have created new firmware to [__Bit-Bang ST7789's 4-Wire (8-Bit) Interface: `pinedio_st7789_bitbang2`__](https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang2)
+
+![Improvised Reset Button](https://lupyuen.github.io/images/pinedio-reset.jpg)
+
+# Appendix: Improvised Reset Button for PineDio Stack
+
+Sometimes we need to __restart PineDio Stack__ to see the Boot Messages, without disconnecting the USB port. Here's how...
+
+1.  We assume that PineDio Stack is already powered on by our computer (via USB)
+
+1.  Connect a Jumper Cable between __Pin 5 (GND)__ and __Pin 6 (RESET)__ of the JTAG Port (Pic above)
+
+1.  Disconnect the Jumper Cable
+
+1.  PineDio Stack will restart. The __Boot Messages__ will appear in the Serial Terminal.
