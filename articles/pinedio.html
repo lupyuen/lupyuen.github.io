@@ -82,7 +82,8 @@
 <li><a href="#problem-with-st7789">10 Problem With ST7789?</a><ul></ul></li>
 <li><a href="#seeking-volunteers">11 Seeking Volunteers!</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>29 Aug 2021</em></p>
+<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-improvised-reset-button-for-pinedio-stack">14 Appendix: Improvised Reset Button for PineDio Stack</a><ul></ul></li></ul></nav><p>📝 <em>29 Aug 2021</em></p>
 <p><em>What’s it like to create <strong>Open Source Software</strong> (and firmware) for brand new <strong>Prototype Hardware</strong>?</em></p>
 <p><em>What interesting challenges will we encounter?</em></p>
 <p>Find out how we create new firmware to test (and improve) Pine64’s newest and hottest prototype: <strong>PineDio Stack BL604 RISC-V Board!</strong></p>
@@ -711,6 +712,23 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 </li>
 <li>
 <p>We have created new firmware to <a href="https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang2"><strong>Bit-Bang ST7789’s 4-Wire (8-Bit) Interface: <code>pinedio_st7789_bitbang2</code></strong></a></p>
+</li>
+</ol>
+<p><img src="https://lupyuen.github.io/images/pinedio-reset.jpg" alt="Improvised Reset Button" /></p>
+<h1 id="appendix-improvised-reset-button-for-pinedio-stack" class="section-header"><a href="#appendix-improvised-reset-button-for-pinedio-stack">14 Appendix: Improvised Reset Button for PineDio Stack</a></h1>
+<p>Sometimes we need to <strong>restart PineDio Stack</strong> to see the Boot Messages, without disconnecting the USB port. Here’s how…</p>
+<ol>
+<li>
+<p>We assume that PineDio Stack is already powered on by our computer (via USB)</p>
+</li>
+<li>
+<p>Connect a Jumper Cable between <strong>Pin 5 (GND)</strong> and <strong>Pin 6 (RESET)</strong> of the JTAG Port (Pic above)</p>
+</li>
+<li>
+<p>Disconnect the Jumper Cable</p>
+</li>
+<li>
+<p>PineDio Stack will restart. The <strong>Boot Messages</strong> will appear in the Serial Terminal.</p>
 </li>
 </ol>
 
