@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>BL602 EFlash Loader: Reverse Engineered with Ghidra</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="BL602 EFlash Loader: Reverse Engineered with Ghidra" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Inside the EFlash Loader that flashes all firmware to BL602"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/loader-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">BL602 EFlash Loader: Reverse Engineered with Ghidra</h1>
+    <nav id="TOC"><ul>
+<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
+<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>5 Feb 2022</em></p>
+<p><img src="https://lupyuen.github.io/images/loader-title.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
+<p><em>Pine64 PineDio Stack BL604 RISC-V Board</em></p>
+<p>Something interesting happens when we <strong>flash firmware to BL602 and BL604</strong> RISC-V boards (above: PineDio Stack BL604, below: PineCone BL602)…</p>
+<p>It starts a tiny program <strong>inside the board</strong> to make flashing possible: The <strong>EFlash Loader</strong>.</p>
+<p>Step by step we shall <strong>uncover what’s inside</strong> EFlash Loader, thanks to <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a> the popular tool for Software Reverse Engineering.</p>
+<p><em>Why are we doing this?</em></p>
+<ol>
+<li>
+<p>EFlash Loader is a critical part of the <strong>Flashing Process</strong></p>
+<p>(Good to understand how it works)</p>
+</li>
+<li>
+<p><strong>No Source Code</strong> is available for EFlash Loader</p>
+<p><a href="https://github.com/search?q=bflb_eflash_loader_cmd_write_flash&amp;type=code">(According to GitHub Code Search)</a></p>
+</li>
+<li>
+<p>EFlash Loader is a <strong>small</strong> (37 KB) and <strong>self-contained</strong> program</p>
+<p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(32-bit RISC-V, specifically RV32IMACF)</a></p>
+</li>
+<li>
+<p>EFlash Loader gets <strong>updated occasionally</strong>, so it’s good for us to understand what’s changed</p>
+</li>
+</ol>
+<p>This is my first time using Ghidra so this might be a fun and educational exercise!</p>
+<p>(But please bear with my ignorance 🙏)</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-jumperh.jpg" alt="Pine64 PineCone BL602 RISC-V Board" /></p>
+<p><em>Pine64 PineCone BL602 RISC-V Board</em></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/loader.md"><code>lupyuen.github.io/src/loader.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1486187004232867842">this Twitter Thread</a></li>
+</ol>
+
+    
+</body>
+</html>
