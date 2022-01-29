@@ -69,7 +69,7 @@
 <li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>5 Feb 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/loader-title.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio"><em>Pine64 PineDio Stack BL604 RISC-V Board</em></a></p>
-<p>Something interesting happens when we <strong>flash firmware to BL602 and BL604</strong> RISC-V boards (above: PineDio Stack BL604, below: PineCone BL602)…</p>
+<p>Something special happens when we <strong>flash firmware</strong> to <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604</strong></a> RISC-V boards…</p>
 <p>It starts a tiny program <strong>inside the board</strong> to make flashing possible: The <strong>EFlash Loader</strong>.</p>
 <p>Step by step we shall <strong>uncover what’s inside</strong> EFlash Loader, thanks to <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a> the popular tool for Software Reverse Engineering.</p>
 <p><em>Why are we doing this?</em></p>
@@ -83,7 +83,7 @@
 <p><a href="https://github.com/search?q=bflb_eflash_loader_cmd_write_flash&amp;type=code">(According to GitHub Code Search)</a></p>
 </li>
 <li>
-<p>EFlash Loader is a <strong>small</strong> (37 KB) and <strong>self-contained</strong> program</p>
+<p>EFlash Loader is <strong>small</strong> (37 KB) and <strong>self-contained</strong></p>
 <p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(32-bit RISC-V, specifically RV32IMACF)</a></p>
 </li>
 <li>
