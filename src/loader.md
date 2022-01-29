@@ -6,7 +6,7 @@
 
 [_Pine64 PineDio Stack BL604 RISC-V Board_](https://lupyuen.github.io/articles/pinedio)
 
-Something interesting happens when we __flash firmware to BL602 and BL604__ RISC-V boards (above: PineDio Stack BL604, below: PineCone BL602)...
+Something special happens when we __flash firmware__ to [__BL602 and BL604__](https://lupyuen.github.io/articles/pinecone) RISC-V boards...
 
 It starts a tiny program __inside the board__ to make flashing possible: The __EFlash Loader__.
 
@@ -22,7 +22,7 @@ _Why are we doing this?_
 
     [(According to GitHub Code Search)](https://github.com/search?q=bflb_eflash_loader_cmd_write_flash&type=code)
 
-1.  EFlash Loader is a __small__ (37 KB) and __self-contained__ program
+1.  EFlash Loader is __small__ (37 KB) and __self-contained__
 
     [(32-bit RISC-V, specifically RV32IMACF)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
