@@ -14,19 +14,19 @@ Step by step we shall __uncover what's inside__ EFlash Loader, thanks to [__Ghid
 
 _Why are we doing this?_
 
-1.  EFlash Loader is a critical part of the __Flashing Process__
+-   EFlash Loader is a critical part of the __Flashing Process__
 
     (Good to understand how it works)
 
-1.  __No Source Code__ is available for EFlash Loader
+-   __No Source Code__ is available for EFlash Loader
 
     [(According to GitHub Code Search)](https://github.com/search?q=bflb_eflash_loader_cmd_write_flash&type=code)
 
-1.  EFlash Loader is __small__ (37 KB) and __self-contained__
+-   EFlash Loader is __small__ (37 KB) and __self-contained__
 
     [(32-bit RISC-V, specifically RV32IMACF)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
-1.  EFlash Loader gets __updated occasionally__, so it's good for us to understand what's changed
+-   EFlash Loader gets __updated occasionally__, so it's good for us to see what's changed
 
 This is my first time using Ghidra so this might be a fun and educational exercise!
 
