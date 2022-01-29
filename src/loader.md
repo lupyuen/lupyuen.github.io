@@ -4,7 +4,7 @@
 
 ![Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/loader-title.jpg)
 
-_Pine64 PineDio Stack BL604 RISC-V Board_
+[_Pine64 PineDio Stack BL604 RISC-V Board_](https://lupyuen.github.io/articles/pinedio)
 
 Something interesting happens when we __flash firmware to BL602 and BL604__ RISC-V boards (above: PineDio Stack BL604, below: PineCone BL602)...
 
@@ -34,7 +34,7 @@ This is my first time using Ghidra so this might be a fun and educational exerci
 
 ![Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/pinecone-jumperh.jpg)
 
-_Pine64 PineCone BL602 RISC-V Board_
+[_Pine64 PineCone BL602 RISC-V Board_](https://lupyuen.github.io/articles/pinecone)
 
 # What's Next
 
