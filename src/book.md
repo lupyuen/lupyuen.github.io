@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _21 Jan 2022_
+📝 _29 Jan 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(44 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(45 articles and still growing!)__
 
 The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
 
@@ -89,6 +89,8 @@ How we __flash firmware__ to BL602 and BL604 with __command-line tools__ on Linu
 -   ["Flashing Firmware to BL602"](https://lupyuen.github.io/articles/flash)
 
 -   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
+
+-   ["BL602 EFlash Loader: Reverse Engineered with Ghidra"](https://lupyuen.github.io/articles/loader)
 
 For __BL602 IoT SDK__
 
