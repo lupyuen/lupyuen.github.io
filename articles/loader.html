@@ -189,16 +189,18 @@
 </div>
 <p><strong><code>*</code></strong> denotes <strong>bflb_eflash_loader_cmd</strong></p>
 <p>7 of the above Flashing Commands are documented in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 ISP Protocol</a>…</p>
-<ul>
-<li><code>10</code> - Get Boot Info</li>
-<li><code>3C</code> - Chip Erase</li>
-<li><code>30</code> - Flash Erase</li>
-<li><code>31</code> - Flash Program</li>
-<li><code>3A</code> - Flash Program Check</li>
-<li><code>32</code> - Flash Read</li>
-<li><code>3D</code> - SHA256 Read</li>
-</ul>
+<div><table><thead><tr><th align="center">ID</th><th>Documented Command</th></tr></thead><tbody>
+<tr><td align="center"><code>10</code></td><td>Get Boot Info</td></tr>
+<tr><td align="center"><code>3C</code></td><td>Chip Erase</td></tr>
+<tr><td align="center"><code>30</code></td><td>Flash Erase</td></tr>
+<tr><td align="center"><code>31</code></td><td>Flash Program</td></tr>
+<tr><td align="center"><code>3A</code></td><td>Flash Program Check</td></tr>
+<tr><td align="center"><code>32</code></td><td>Flash Read</td></tr>
+<tr><td align="center"><code>3D</code></td><td>SHA256 Read</td></tr>
+</tbody></table>
+</div>
 <p>The other 17 Flashing Commands are undocumented.</p>
+<p>(Which might be interesting for future exploration!)</p>
 <h1 id="flashing-states" class="section-header"><a href="#flashing-states">6 Flashing States</a></h1>
 <p>TODO</p>
 <p>You can’t tell which way the train went by looking at the tracks … So let’s study the #BL602 Firmware Flasher … And see what Flashing Commands it sends to the EFlash Loader</p>
