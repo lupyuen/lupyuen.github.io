@@ -41,8 +41,7 @@ This is my first time using Ghidra so this might be a fun and educational exerci
 TODO
 
 ```text
-$ blflash flash  \
-  /tmp/nuttx.bin \
+$ blflash flash nuttx.bin  \
   --port /dev/ttyUSB0
 
 Start connection...
