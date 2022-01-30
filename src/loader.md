@@ -192,15 +192,19 @@ __`*`__ denotes __bflb_eflash_loader_cmd__
 
 7 of the above Flashing Commands are documented in the [BL602 ISP Protocol](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)...
 
--   `10` - Get Boot Info
--   `3C` - Chip Erase
--   `30` - Flash Erase
--   `31` - Flash Program
--   `3A` - Flash Program Check
--   `32` - Flash Read
--   `3D` - SHA256 Read
+| ID | Documented Command
+| :--: | --- 
+| `10` | Get Boot Info
+| `3C` | Chip Erase
+| `30` | Flash Erase
+| `31` | Flash Program
+| `3A` | Flash Program Check
+| `32` | Flash Read
+| `3D` | SHA256 Read
 
 The other 17 Flashing Commands are undocumented.
+
+(Which might be interesting for future exploration!)
 
 # Flashing States
 
