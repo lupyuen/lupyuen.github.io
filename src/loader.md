@@ -40,6 +40,35 @@ This is my first time using Ghidra so this might be a fun and educational exerci
 
 TODO
 
+```text
+$ blflash flash \
+  /tmp/nuttx.bin \
+  --port /dev/ttyUSB0
+
+Start connection...
+5ms send count 55
+handshake sent elapsed 252µs
+Connection Succeed
+
+Sending eflash_loader...
+Finished 2s 11KiB/s
+
+5ms send count 500
+handshake sent elapsed 5ms
+Entered eflash_loader
+
+Erase flash addr: 10000 size: 346432
+Program flash... 
+Program done 4s 82KiB/s
+Success
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases)
+
+[__Watch the demo on YouTube__](https://youtu.be/JtnOyl5cYjo)
+
+(First 20 seconds)
+
 EFlash Loader is the program that runs on #BL602 to flash all firmware ... The ELF was uploaded recently (no source available) ... Let's look inside with Ghidra
 
 TODO14
