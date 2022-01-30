@@ -161,30 +161,30 @@
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader#flashing-commands">(Source)</a></p>
 <p>Here are the 24 Flashing Commands supported by the BL602 EFlash Loader, as decoded by Ghidra from <code>eflash_loader_cmds</code>…</p>
 <div><table><thead><tr><th align="center">ID</th><th align="center">ASCII</th><th>Flashing Command</th></tr></thead><tbody>
-<tr><td align="center">10</td><td align="center">LF</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2867-L2879">*_get_bootinfo</a></td></tr>
-<tr><td align="center">21</td><td align="center">!</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2939-L2950">*_reset</a></td></tr>
-<tr><td align="center">30</td><td align="center">0</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3133-L3194">*_erase_flash</a></td></tr>
-<tr><td align="center">31</td><td align="center">1</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300">*_write_flash</a></td></tr>
-<tr><td align="center">3F</td><td align="center">?</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3693-L3798">*_write_flash_with_decompress</a></td></tr>
-<tr><td align="center">32</td><td align="center">2</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3374-L3427">*_read_flash</a></td></tr>
-<tr><td align="center">34</td><td align="center">4</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3434-L3487">*_xip_read_flash</a></td></tr>
-<tr><td align="center">3A</td><td align="center">:</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3001-L3008">*_write_flash_check</a></td></tr>
-<tr><td align="center">3B</td><td align="center">;</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3635-L3689">*_set_flash_para</a></td></tr>
-<tr><td align="center">3C</td><td align="center">&lt;</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3113-L3129">*_flash_chip_erase</a></td></tr>
-<tr><td align="center">3D</td><td align="center">=</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3491-L3544">*_readSha_flash</a></td></tr>
-<tr><td align="center">3E</td><td align="center">&gt;</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3548-L3601">*_xip_readSha_flash</a></td></tr>
-<tr><td align="center">40</td><td align="center">@</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3065-L3109">*_write_efuse</a></td></tr>
-<tr><td align="center">41</td><td align="center">A</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3014-L3058">*_read_efuse</a></td></tr>
-<tr><td align="center">42</td><td align="center">B</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3605-L3629">*_read_mac_addr</a></td></tr>
-<tr><td align="center">50</td><td align="center">P</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2975-L2997">*_write_mem</a></td></tr>
-<tr><td align="center">51</td><td align="center">Q</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3213-L3254">*_read_mem</a></td></tr>
-<tr><td align="center">71</td><td align="center">q</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2897-L2909">*_read_log</a></td></tr>
-<tr><td align="center">60</td><td align="center">`</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2913-L2922">*_xip_read_flash_start</a></td></tr>
-<tr><td align="center">61</td><td align="center">a</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2926-L2935">*_xip_read_flash_finish</a></td></tr>
-<tr><td align="center">36</td><td align="center">6</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2883-L2893">*_read_jedec_id</a></td></tr>
-<tr><td align="center">37</td><td align="center">7</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3339-L3367">*_read_status_register</a></td></tr>
-<tr><td align="center">38</td><td align="center">8</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3306-L3335">*_write_status_register</a></td></tr>
-<tr><td align="center">33</td><td align="center">3</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3198-L3209">*_flash_boot</a></td></tr>
+<tr><td align="center"><code>10</code></td><td align="center"><code>LF</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2867-L2879">*_get_bootinfo</a></td></tr>
+<tr><td align="center"><code>21</code></td><td align="center"><code>!</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2939-L2950">*_reset</a></td></tr>
+<tr><td align="center"><code>30</code></td><td align="center"><code>0</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3133-L3194">*_erase_flash</a></td></tr>
+<tr><td align="center"><code>31</code></td><td align="center"><code>1</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300">*_write_flash</a></td></tr>
+<tr><td align="center"><code>3F</code></td><td align="center"><code>?</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3693-L3798">*_write_flash_with_decompress</a></td></tr>
+<tr><td align="center"><code>32</code></td><td align="center"><code>2</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3374-L3427">*_read_flash</a></td></tr>
+<tr><td align="center"><code>34</code></td><td align="center"><code>4</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3434-L3487">*_xip_read_flash</a></td></tr>
+<tr><td align="center"><code>3A</code></td><td align="center"><code>:</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3001-L3008">*_write_flash_check</a></td></tr>
+<tr><td align="center"><code>3B</code></td><td align="center"><code>;</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3635-L3689">*_set_flash_para</a></td></tr>
+<tr><td align="center"><code>3C</code></td><td align="center"><code>&lt;</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3113-L3129">*_flash_chip_erase</a></td></tr>
+<tr><td align="center"><code>3D</code></td><td align="center"><code>=</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3491-L3544">*_readSha_flash</a></td></tr>
+<tr><td align="center"><code>3E</code></td><td align="center"><code>&gt;</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3548-L3601">*_xip_readSha_flash</a></td></tr>
+<tr><td align="center"><code>40</code></td><td align="center"><code>@</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3065-L3109">*_write_efuse</a></td></tr>
+<tr><td align="center"><code>41</code></td><td align="center"><code>A</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3014-L3058">*_read_efuse</a></td></tr>
+<tr><td align="center"><code>42</code></td><td align="center"><code>B</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3605-L3629">*_read_mac_addr</a></td></tr>
+<tr><td align="center"><code>50</code></td><td align="center"><code>P</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2975-L2997">*_write_mem</a></td></tr>
+<tr><td align="center"><code>51</code></td><td align="center"><code>Q</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3213-L3254">*_read_mem</a></td></tr>
+<tr><td align="center"><code>71</code></td><td align="center"><code>q</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2897-L2909">*_read_log</a></td></tr>
+<tr><td align="center"><code>60</code></td><td align="center">`</td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2913-L2922">*_xip_read_flash_start</a></td></tr>
+<tr><td align="center"><code>61</code></td><td align="center"><code>a</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2926-L2935">*_xip_read_flash_finish</a></td></tr>
+<tr><td align="center"><code>36</code></td><td align="center"><code>6</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2883-L2893">*_read_jedec_id</a></td></tr>
+<tr><td align="center"><code>37</code></td><td align="center"><code>7</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3339-L3367">*_read_status_register</a></td></tr>
+<tr><td align="center"><code>38</code></td><td align="center"><code>8</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3306-L3335">*_write_status_register</a></td></tr>
+<tr><td align="center"><code>33</code></td><td align="center"><code>3</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3198-L3209">*_flash_boot</a></td></tr>
 </tbody></table>
 </div>
 <p><strong><code>*</code></strong> denotes <strong>bflb_eflash_loader_cmd</strong></p>
@@ -212,23 +212,23 @@
 <p>Here are the #BL602 Flashing States and Flashing Command IDs derived from the BL602 Firmware Flasher (BLOpenFlasher)</p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader#flashing-states">(Source)</a></p>
 <p>BL602 Firmware Flasher works like a State Machine. Each Flashing State triggers a Flashing Command. Here are the Flashing States and Flashing Command IDs derived from <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go"><code>BLOpenFlasher/utils/util_program.go</code></a>…</p>
-<div><table><thead><tr><th align="left">State</th><th align="left">ID</th><th align="left">On Success</th><th align="left">On Error</th></tr></thead><tbody>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L118-L133">ConfigReset</a></td><td align="left"></td><td align="left">*Reset</td><td align="left">ErrorLoaderBin</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L135-L193">*Reset</a></td><td align="left"></td><td align="left">*ShakeHand</td><td align="left">ErrorShakeHand</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L195-L206">*ShakeHand</a></td><td align="left">55</td><td align="left">*BootInfo</td><td align="left">*Reset</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L208-L215">*BootInfo</a></td><td align="left">10</td><td align="left">*BootHeader</td><td align="left">*Reset</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L217-L230">*BootHeader</a></td><td align="left">11</td><td align="left">*SegHeader</td><td align="left">ConfigReset</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L232-L245">*SegHeader</a></td><td align="left">17</td><td align="left">*SegData</td><td align="left">ConfigReset</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L247-L264">*SegData</a></td><td align="left">18</td><td align="left">*CheckImage</td><td align="left">ConfigReset</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L266-L274">*CheckImage</a></td><td align="left">19</td><td align="left">*RunImage</td><td align="left">ConfigReset</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L276-L284">*RunImage</a></td><td align="left">1A</td><td align="left">*Reshake</td><td align="left">ConfigReset</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L286-L300">*Reshake</a></td><td align="left">55</td><td align="left">*LoadFile</td><td align="left">ConfigReset</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L302-L344">*LoadFile</a></td><td align="left"></td><td align="left">*EraseFlash^</td><td align="left">ErrorOpenFile^</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L353-L378">*EraseFlash</a></td><td align="left">30</td><td align="left">*ProgramFlash</td><td align="left">ErrorEraseFlash</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L380-L408">*ProgramFlash</a></td><td align="left">31</td><td align="left">*ProgramOK^</td><td align="left">ErrorProgramFLash</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L410-L418">*ProgramOK</a></td><td align="left">3A</td><td align="left">*Sha256</td><td align="left">ErrorProgramOK</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L420-L449">*Sha256</a></td><td align="left">3D</td><td align="left">*LoadFile</td><td align="left">ErrorVerifySha256^</td></tr>
-<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L451-L468">*ProgramFinish</a></td><td align="left">55</td><td align="left">*ProgramFinish</td><td align="left">*ProgramFinish</td></tr>
+<div><table><thead><tr><th align="left">State</th><th align="left">ID</th><th align="left">On Success</th></tr></thead><tbody>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L118-L133">ConfigReset</a></td><td align="left"></td><td align="left">*Reset</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L135-L193">*Reset</a></td><td align="left"></td><td align="left">*ShakeHand</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L195-L206">*ShakeHand</a></td><td align="left"><code>55</code></td><td align="left">*BootInfo</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L208-L215">*BootInfo</a></td><td align="left"><code>10</code></td><td align="left">*BootHeader</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L217-L230">*BootHeader</a></td><td align="left"><code>11</code></td><td align="left">*SegHeader</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L232-L245">*SegHeader</a></td><td align="left"><code>17</code></td><td align="left">*SegData</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L247-L264">*SegData</a></td><td align="left"><code>18</code></td><td align="left">*CheckImage</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L266-L274">*CheckImage</a></td><td align="left"><code>19</code></td><td align="left">*RunImage</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L276-L284">*RunImage</a></td><td align="left"><code>1A</code></td><td align="left">*Reshake</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L286-L300">*Reshake</a></td><td align="left"><code>55</code></td><td align="left">*LoadFile</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L302-L344">*LoadFile</a></td><td align="left"></td><td align="left">*EraseFlash^</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L353-L378">*EraseFlash</a></td><td align="left"><code>30</code></td><td align="left">*ProgramFlash</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L380-L408">*ProgramFlash</a></td><td align="left"><code>31</code></td><td align="left">*ProgramOK^</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L410-L418">*ProgramOK</a></td><td align="left"><code>3A</code></td><td align="left">*Sha256</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L420-L449">*Sha256</a></td><td align="left"><code>3D</code></td><td align="left">*LoadFile</td></tr>
+<tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L451-L468">*ProgramFinish</a></td><td align="left"><code>55</code></td><td align="left">*ProgramFinish</td></tr>
 </tbody></table>
 </div>
 <p><strong><code>*</code></strong> denotes <strong>Cmd</strong> (like <strong>CmdReset</strong>)</p>
@@ -246,13 +246,14 @@
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader#matching-flashing-states-and-commands">(Source)</a></p>
 <p>By matching the Flashing States and the Flashing Commands above, we identify 5 commands that we can probe further…</p>
 <div><table><thead><tr><th align="center">ID</th><th align="center">ASCII</th><th>Flashing Command</th></tr></thead><tbody>
-<tr><td align="center">10</td><td align="center">LF</td><td>Get Boot Info<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2867-L2879">bflb_eflash_loader_cmd_get_bootinfo</a></td></tr>
-<tr><td align="center">30</td><td align="center">0</td><td>Flash Erase<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3133-L3194">bflb_eflash_loader_cmd_erase_flash</a></td></tr>
-<tr><td align="center">31</td><td align="center">1</td><td>Flash Program<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300">bflb_eflash_loader_cmd_write_flash</a></td></tr>
-<tr><td align="center">3A</td><td align="center">:</td><td>Flash Program Check<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3001-L3008">bflb_eflash_loader_cmd_write_flash_check</a></td></tr>
-<tr><td align="center">3D</td><td align="center">=</td><td>SHA256 Read<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3491-L3544">bflb_eflash_loader_cmd_readSha_flash</a></td></tr>
+<tr><td align="center">10</td><td align="center">LF</td><td>Get Boot Info<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2867-L2879">*_get_bootinfo</a></td></tr>
+<tr><td align="center">30</td><td align="center">0</td><td>Flash Erase<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3133-L3194">*_erase_flash</a></td></tr>
+<tr><td align="center">31</td><td align="center">1</td><td>Flash Program<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300">*_write_flash</a></td></tr>
+<tr><td align="center">3A</td><td align="center">:</td><td>Flash Program Check<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3001-L3008">*_write_flash_check</a></td></tr>
+<tr><td align="center">3D</td><td align="center">=</td><td>SHA256 Read<br><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3491-L3544">*_readSha_flash</a></td></tr>
 </tbody></table>
 </div>
+<p><strong><code>*</code></strong> denotes <strong>bflb_eflash_loader_cmd</strong></p>
 <p>(<code>3C</code> Chip Erase and <code>32</code> Flash Read aren’t used while flashing BL602, according to BLOpenFlasher)</p>
 <h1 id="flash-program" class="section-header"><a href="#flash-program">8 Flash Program</a></h1>
 <p>TODO</p>
