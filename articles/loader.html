@@ -104,6 +104,29 @@
 <p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64 PineCone BL602 RISC-V Board</em></a></p>
 <h1 id="about-eflash-loader" class="section-header"><a href="#about-eflash-loader">1 About EFlash Loader</a></h1>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>$ blflash flash \
+  /tmp/nuttx.bin \
+  --port /dev/ttyUSB0
+
+Start connection...
+5ms send count 55
+handshake sent elapsed 252µs
+Connection Succeed
+
+Sending eflash_loader...
+Finished 2s 11KiB/s
+
+5ms send count 500
+handshake sent elapsed 5ms
+Entered eflash_loader
+
+Erase flash addr: 10000 size: 346432
+Program flash... 
+Program done 4s 82KiB/s
+Success</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases">(Source)</a></p>
+<p><a href="https://youtu.be/JtnOyl5cYjo"><strong>Watch the demo on YouTube</strong></a></p>
+<p>(First 20 seconds)</p>
 <p>EFlash Loader is the program that runs on #BL602 to flash all firmware … The ELF was uploaded recently (no source available) … Let’s look inside with Ghidra</p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/loader-files.png" alt="" /></p>
