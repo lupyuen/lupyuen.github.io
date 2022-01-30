@@ -69,6 +69,8 @@ Success
 
 (First 20 seconds)
 
+8 KB chunks
+
 EFlash Loader is the program that runs on #BL602 to flash all firmware ... The ELF was uploaded recently (no source available) ... Let's look inside with Ghidra
 
 TODO14
