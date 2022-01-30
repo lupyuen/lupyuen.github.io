@@ -163,30 +163,32 @@ Here are the 24 Flashing Commands supported by the BL602 EFlash Loader, as decod
 
 | ID | ASCII | Flashing Command
 | :--: | :--: | --- 
-| 10 | LF | [bflb_eflash_loader_cmd_get_bootinfo](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2867-L2879)
-| 21 | ! | [bflb_eflash_loader_cmd_reset](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2939-L2950)
-| 30 | 0 | [bflb_eflash_loader_cmd_erase_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3133-L3194)
-| 31 | 1 | [bflb_eflash_loader_cmd_write_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300)
-| 3F | ? | [bflb_eflash_loader_cmd_write_flash_with_decompress](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3693-L3798)
-| 32 | 2 | [bflb_eflash_loader_cmd_read_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3374-L3427)
-| 34 | 4 | [bflb_eflash_loader_cmd_xip_read_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3434-L3487)
-| 3A | : | [bflb_eflash_loader_cmd_write_flash_check](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3001-L3008)
-| 3B | ; | [bflb_eflash_loader_cmd_set_flash_para](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3635-L3689)
-| 3C | < | [bflb_eflash_loader_cmd_flash_chip_erase](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3113-L3129)
-| 3D | = | [bflb_eflash_loader_cmd_readSha_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3491-L3544)
-| 3E | > | [bflb_eflash_loader_cmd_xip_readSha_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3548-L3601)
-| 40 | @ | [bflb_eflash_loader_cmd_write_efuse](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3065-L3109)
-| 41 | A | [bflb_eflash_loader_cmd_read_efuse](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3014-L3058)
-| 42 | B | [bflb_eflash_loader_cmd_read_mac_addr](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3605-L3629)
-| 50 | P | [bflb_eflash_loader_cmd_write_mem](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2975-L2997)
-| 51 | Q | [bflb_eflash_loader_cmd_read_mem](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3213-L3254)
-| 71 | q | [bflb_eflash_loader_cmd_read_log](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2897-L2909)
-| 60 | ` | [bflb_eflash_loader_cmd_xip_read_flash_start](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2913-L2922)
-| 61 | a | [bflb_eflash_loader_cmd_xip_read_flash_finish](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2926-L2935)
-| 36 | 6 | [bflb_eflash_loader_cmd_read_jedec_id](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2883-L2893)
-| 37 | 7 | [bflb_eflash_loader_cmd_read_status_register](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3339-L3367)
-| 38 | 8 | [bflb_eflash_loader_cmd_write_status_register](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3306-L3335)
-| 33 | 3 | [bflb_eflash_loader_cmd_flash_boot](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3198-L3209)
+| 10 | LF | [*_get_bootinfo](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2867-L2879)
+| 21 | ! | [*_reset](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2939-L2950)
+| 30 | 0 | [*_erase_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3133-L3194)
+| 31 | 1 | [*_write_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300)
+| 3F | ? | [*_write_flash_with_decompress](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3693-L3798)
+| 32 | 2 | [*_read_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3374-L3427)
+| 34 | 4 | [*_xip_read_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3434-L3487)
+| 3A | : | [*_write_flash_check](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3001-L3008)
+| 3B | ; | [*_set_flash_para](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3635-L3689)
+| 3C | < | [*_flash_chip_erase](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3113-L3129)
+| 3D | = | [*_readSha_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3491-L3544)
+| 3E | > | [*_xip_readSha_flash](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3548-L3601)
+| 40 | @ | [*_write_efuse](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3065-L3109)
+| 41 | A | [*_read_efuse](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3014-L3058)
+| 42 | B | [*_read_mac_addr](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3605-L3629)
+| 50 | P | [*_write_mem](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2975-L2997)
+| 51 | Q | [*_read_mem](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3213-L3254)
+| 71 | q | [*_read_log](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2897-L2909)
+| 60 | ` | [*_xip_read_flash_start](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2913-L2922)
+| 61 | a | [*_xip_read_flash_finish](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2926-L2935)
+| 36 | 6 | [*_read_jedec_id](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2883-L2893)
+| 37 | 7 | [*_read_status_register](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3339-L3367)
+| 38 | 8 | [*_write_status_register](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3306-L3335)
+| 33 | 3 | [*_flash_boot](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3198-L3209)
+
+__`*`__ denotes __bflb_eflash_loader_cmd__
 
 7 of the above Flashing Commands are documented in the [BL602 ISP Protocol](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)...
 
@@ -230,24 +232,26 @@ BL602 Firmware Flasher works like a State Machine. Each Flashing State triggers 
 
 | State | ID | On Success | On Error |
 | :--- | :--- | :--- | :--- |
-| [ConfigReset](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L118-L133) | | CmdReset | ErrorLoaderBin
-| [CmdReset](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L135-L193) | | CmdShakeHand | ErrorShakeHand
-| [CmdShakeHand](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L195-L206) | 55 | CmdBootInfo | CmdReset
-| [CmdBootInfo](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L208-L215) | 10 | CmdBootHeader | CmdReset
-| [CmdBootHeader](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L217-L230) | 11 | CmdSegHeader | ConfigReset
-| [CmdSegHeader](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L232-L245) | 17 | CmdSegData | ConfigReset
-| [CmdSegData](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L247-L264) | 18 | CmdCheckImage | ConfigReset
-| [CmdCheckImage](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L266-L274) | 19 | CmdRunImage | ConfigReset
-| [CmdRunImage](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L276-L284) | 1A | CmdReshake | ConfigReset
-| [CmdReshake](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L286-L300) | 55 | CmdLoadFile | ConfigReset
-| [CmdLoadFile](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L302-L344) |  | CmdEraseFlash^ | ErrorOpenFile^
-| [CmdEraseFlash](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L353-L378) | 30 | CmdProgramFlash | ErrorEraseFlash
-| [CmdProgramFlash](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L380-L408) | 31 | CmdProgramOK^ | ErrorProgramFLash
-| [CmdProgramOK](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L410-L418) | 3A | CmdSha256 | ErrorProgramOK
-| [CmdSha256](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L420-L449) | 3D | CmdLoadFile | ErrorVerifySha256^
-| [CmdProgramFinish](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L451-L468) | 55 | CmdProgramFinish | CmdProgramFinish
+| [ConfigReset](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L118-L133) | | *Reset | ErrorLoaderBin
+| [*Reset](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L135-L193) | | *ShakeHand | ErrorShakeHand
+| [*ShakeHand](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L195-L206) | 55 | *BootInfo | *Reset
+| [*BootInfo](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L208-L215) | 10 | *BootHeader | *Reset
+| [*BootHeader](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L217-L230) | 11 | *SegHeader | ConfigReset
+| [*SegHeader](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L232-L245) | 17 | *SegData | ConfigReset
+| [*SegData](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L247-L264) | 18 | *CheckImage | ConfigReset
+| [*CheckImage](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L266-L274) | 19 | *RunImage | ConfigReset
+| [*RunImage](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L276-L284) | 1A | *Reshake | ConfigReset
+| [*Reshake](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L286-L300) | 55 | *LoadFile | ConfigReset
+| [*LoadFile](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L302-L344) |  | *EraseFlash^ | ErrorOpenFile^
+| [*EraseFlash](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L353-L378) | 30 | *ProgramFlash | ErrorEraseFlash
+| [*ProgramFlash](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L380-L408) | 31 | *ProgramOK^ | ErrorProgramFLash
+| [*ProgramOK](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L410-L418) | 3A | *Sha256 | ErrorProgramOK
+| [*Sha256](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L420-L449) | 3D | *LoadFile | ErrorVerifySha256^
+| [*ProgramFinish](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L451-L468) | 55 | *ProgramFinish | *ProgramFinish
 
-^ denotes multiple states
+__`*`__ denotes __Cmd__ (like __CmdReset__)
+
+__`^`__ denotes multiple states
 
 The Flashing Process is documented in the [BL602 ISP Protocol](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en).
 
