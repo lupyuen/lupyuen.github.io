@@ -336,41 +336,32 @@ From [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/
 
 ```c
 int32_t bflb_eflash_loader_main(void) {    
+  //  Do Handshake
   do {
+    i = boot_if_handshake_poll(...);
+  } while (i == 0xfffe);
 
-    //  Do Handshake
-    do {
-      i = (...boot_if_handshake_poll)(...);
-    } while (i == 0xfffe);
+  //  If Handshake is OK...
+  if (i == 0) {
 
-    //  If Handshake is OK...
-    if (i == 0) {
-
-      //  Init Flashing Commands
-      bflb_eflash_loader_cmd_init();
+    //  Init Flashing Commands
+    bflb_eflash_loader_cmd_init();
 
 NextCommand:
+    do {
+      //  Receive Flashing Command over UART
       do {
-        //  Receive Flashing Command over UART
-        do {
-          (...boot_if_recv)(...)
-        } while (...);
-
-        //  Execute Flashing Command
-        i = bflb_eflash_loader_cmd_process(...);
-
-        //  Handle Error
-        if (i != 0) {
-          ...
-          break;
-        }
-
-        //  Process next command
-        goto NextCommand;
-
+        boot_if_recv(...);
       } while (...);
-    }
-  } while( true );
+
+      //  Execute Flashing Command
+      i = bflb_eflash_loader_cmd_process(...);
+
+      //  Process next command
+      goto NextCommand;
+
+    } while (...);
+  }
 }
 ```
 
