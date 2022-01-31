@@ -224,6 +224,8 @@ Which is probably OK for our Reverse Engineering, since our executable won't hav
 
 (If we import a ESP32-C3 RISC-V ELF, will Ghidra say it's RV32IMC? Lemme know!)
 
+![Ghidra Symbol Tree](https://lupyuen.github.io/images/loader-symboltree.png)
+
 # Decompiled Main Function
 
 TODO
@@ -232,9 +234,11 @@ TODO
 
 1.  In the __CodeBrowser Window__, look for the __Symbol Tree Pane__ at left centre
 
+    (Pic above)
+
 1.  Expand __"Functions"__
 
-1.  Double-click __"entry"__
+1.  Double-click on __"entry"__
 
 #BL602 EFlash Loader's Main Function is surprisingly readable ... Decompiled from ELF by Ghidra
 
