@@ -277,7 +277,7 @@ The Decompile Pane jumps to the __Main Function__: [eflash_loader.c](https://git
 ```c
 //  Main Function for EFlash Loader
 int main(void) {
-  //  Init BL602 clock
+  //  Init BL602 Clock
   HBN_Set_ROOT_CLK_Sel(...);
   ...
   //  Init EFlash Loader
@@ -294,7 +294,7 @@ int main(void) {
   bflb_eflash_loader_main();
 ```
 
-The Decompiled Main Function is surprisingly readable, kudos to Ghidra!
+The Decompiled Main Function is surprisingly readable (pic below). Kudos to the Ghidra Team!
 
 This code suggests that all the exciting action happens inside __bflb_eflash_loader_main__. Which we'll examine in a while.
 
@@ -374,35 +374,19 @@ TODO
 From [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844)
 
 ```c
-int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid,uint8_t *data,uint16_t len) {
-  undefined3 in_register_00002029;
-  int32_t iVar1;
-  int iVar2;
-  eflash_loader_cmd_cfg_t *peVar3;
+//  Execute a Flashing Command with the specified Command ID and parameters
+int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t len) {
   
-  peVar3 = eflash_loader_cmds;
-  iVar2 = 0;
-  if (CONCAT31(in_register_00002029,cmdid) != 0x10) {
-    do {
-      peVar3 = peVar3 + 1;
-      iVar2 = iVar2 + 1;
-      if (iVar2 == 0x18) {
-        gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
-        return 0;
-      }
-    } while ((uint)peVar3->cmd != CONCAT31(in_register_00002029,cmdid));
+  //  Omitted: Lookup the Command ID in list of Flashing Commands
+  ...
+
+  //  If Flashing Command is enabled...
+  if (eflash_loader_cmds[i].enabled == 1 && ...) {
+    
+    //  Execute the Flashing Command
+    ret = (*eflash_loader_cmds[i].cmd_process)();
+    return ret;
   }
-  if ((eflash_loader_cmds[iVar2].enabled == '\x01') &&
-     (eflash_loader_cmds[iVar2].cmd_process != (pfun_cmd_process *)0x0)) {
-                    // WARNING: Could not recover jumptable at 0x22011f8e. Too many branches
-                    // WARNING: Treating indirect jump as call
-    iVar1 = (*eflash_loader_cmds[iVar2].cmd_process)();
-    gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
-    return iVar1;
-  }
-  gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
-  return 0x101;
-}
 ```
 
 ![Execute Flashing Command](https://lupyuen.github.io/images/loader-code3.png)
