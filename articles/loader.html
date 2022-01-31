@@ -293,6 +293,21 @@ ghidraRun.bat</code></pre></div></li>
 <p>Double-click on <strong>“entry”</strong></p>
 </li>
 </ol>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2663-L2672">eflash_loader.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void entry(void) {
+  //  Init BL602 hardware
+  SystemInit();
+
+  //  Init BL602 memory
+  start_load();
+
+  //  Run the EFlash Loader
+  main();
+
+  //  Loop forever
+  do {} while( true );
+}</code></pre></div>
 <p>#BL602 EFlash Loader’s Main Function is surprisingly readable … Decompiled from ELF by Ghidra</p>
 <p>TODO5</p>
 <p><img src="https://lupyuen.github.io/images/loader-code.png" alt="" /></p>
