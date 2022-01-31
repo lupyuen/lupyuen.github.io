@@ -112,9 +112,9 @@ Bouffalo Lab (creator of BL602) has recently uploaded the [__ELF Executable__](h
 
 -   [__EFlash Loader ELF: eflash_loader.elf__](https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
 
-    (Dated 17 Jan 2022)
+    [(Dated 17 Jan 2022)](https://github.com/bouffalolab/bl_iot_sdk/blob/5fa118c59ef89adb319583ea277ea54e27d60fbb/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
 
-Let's decompile (to C) the EFlash Loader ELF with Ghidra!
+Let's decompile to C the EFlash Loader ELF with Ghidra!
 
 ![EFlash Loader decompiled with Ghidra](https://lupyuen.github.io/images/loader-ghidra.png)
 
@@ -122,23 +122,46 @@ Let's decompile (to C) the EFlash Loader ELF with Ghidra!
 
 # Decompile with Ghidra
 
+This is how we decompile the EFlash Loader ELF [__eflash_loader.elf__](https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf) with [__Ghidra__](https://ghidra-sre.org/)...
+
+-   [__Watch the video on YouTube__](https://youtu.be/3Ikn8Y775Lk)
+
+(Works for any ELF file actually)
+
+1.  Install [__Java Dev Kit (JDK) 11__](https://adoptium.net/releases.html?variant=openjdk11&jvmVariant=hotspot) (64-bit)
+
+1.  Download a [__Ghidra Release File__](https://github.com/NationalSecurityAgency/ghidra/releases)
+
+1.  Extract the Ghidra Release File
+
+1.  Launch Ghidra...
+
+    ```bash
+    ## For Linux and macOS
+    ./ghidraRun
+    
+    ## For Windows
+    ghidraRun.bat
+    ```
+
 TODO
-
-Here's how we decompile a #BL602 #RISCV ELF with #Ghidra
-
-[__Watch the video on YouTube__](https://youtu.be/3Ikn8Y775Lk)
-
 
 Decompiled #BL602 EFlash Loader is here ... 10,000 lines of C to skim for goodies 👍
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c)
-
 
 Export to C
 
 TODO13
 
 ![](https://lupyuen.github.io/images/loader-export.png)
+
+
+["Ghidra Installation Guide"](https://htmlpreview.github.io/?https://github.com/NationalSecurityAgency/ghidra/blob/stable/GhidraDocs/InstallationGuide.html)
+
+["An-Introduction-to-Ghidra"](https://git.mst.edu/slbnmc/ici-wiki/-/wikis/Tool-Guides/An-Introduction-to-Ghidra)
+
+[Ghidra Repo](https://github.com/NationalSecurityAgency/ghidra)
 
 More about #BL602 EFlash Loader
 
