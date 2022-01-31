@@ -243,12 +243,26 @@ ghidraRun.bat</code></pre></div></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/loader-export.png" alt="Export to C" /></p>
 <h2 id="export-to-c" class="section-header"><a href="#export-to-c">2.1 Export To C</a></h2>
-<p>TODO</p>
-<p>Decompiled #BL602 EFlash Loader is here … 10,000 lines of C to skim for goodies 👍</p>
-<p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c">(Source)</a></p>
+<p>Ghidra has decompiled our ELF File to C code. To <strong>export the C code</strong> to a file…</p>
+<ol>
+<li>
+<p>In <strong>CodeBrowser Window</strong>, click <strong>File</strong> → <strong>Export Program</strong></p>
+</li>
+<li>
+<p>For <strong>Format</strong>: Select <strong>C / C++</strong></p>
+</li>
+<li>
+<p>Click <strong>OK</strong></p>
+</li>
+</ol>
+<p>We’ll get a C Source File with roughly <strong>10,000 lines of code</strong> like this…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c"><strong>eflash_loader.c</strong></a></li>
+</ul>
+<p>Which is quite cumbersome to navigate, so we’ll use the <strong>Ghidra CodeBrowser</strong> to browse our C code in a while.</p>
 <h2 id="rv32gc-vs-rv32imacf" class="section-header"><a href="#rv32gc-vs-rv32imacf">2.2 RV32GC vs RV32IMACF</a></h2>
 <p><em>Ghidra says our executable is RV32GC. Shouldn’t it be RV32IMACF?</em></p>
-<p>BL602 Executables are compiled for the <strong>RV32IMACF</strong> Instruction Set and Extensions…</p>
+<p>BL602 Executables are compiled for the <strong>RV32IMACF</strong> RISC-V Instruction Set and Extensions…</p>
 <div><table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>RV32I</code></strong></td><td align="left">32-bit RISC-V with Base Integer Instructions</td></tr>
 <tr><td align="center"><strong><code>M</code></strong></td><td align="left">Integer Multiplication + Division</td></tr>
@@ -258,9 +272,9 @@ ghidraRun.bat</code></pre></div></li>
 </tbody></table>
 </div>
 <p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Source)</a></p>
+<p>Ghidra thinks our executable is <strong>RV32GC</strong>, which is all of the above plus <strong>Double-Precision Floating-Point</strong>.</p>
+<p>Which is probably OK for our Reverse Engineering, since our executable won’t have any Double-Precision Floating-Point instructions.</p>
 <p>(If we import a ESP32-C3 RISC-V ELF, will Ghidra say it’s RV32IMC? Lemme know!)</p>
-<p>More about #BL602 EFlash Loader</p>
-<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Source)</a></p>
 <h1 id="decompiled-main-function" class="section-header"><a href="#decompiled-main-function">3 Decompiled Main Function</a></h1>
 <p>TODO</p>
 <p>#BL602 EFlash Loader’s Main Function is surprisingly readable … Decompiled from ELF by Ghidra</p>
@@ -271,6 +285,8 @@ ghidraRun.bat</code></pre></div></li>
 <p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/loader-call.png" alt="" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader">(Source)</a></p>
+<p>More about #BL602 EFlash Loader</p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Source)</a></p>
 <h1 id="decompiled-main-loop" class="section-header"><a href="#decompiled-main-loop">4 Decompiled Main Loop</a></h1>
 <p>TODO</p>
 <p>Here’s the #BL602 EFlash Loader’s Main Loop that executes Flashing Commands</p>
