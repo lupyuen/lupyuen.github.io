@@ -228,6 +228,14 @@ Which is probably OK for our Reverse Engineering, since our executable won't hav
 
 TODO
 
+-   [__Watch the video on YouTube__](https://youtu.be/3Ikn8Y775Lk?t=61)
+
+1.  In the __CodeBrowser Window__, look for the __Symbol Tree Pane__ at left centre
+
+1.  Expand __"Functions"__
+
+1.  Double-click __"entry"__
+
 #BL602 EFlash Loader's Main Function is surprisingly readable ... Decompiled from ELF by Ghidra
 
 TODO5
