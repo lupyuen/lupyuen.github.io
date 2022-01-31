@@ -200,7 +200,9 @@ _Ghidra says our executable is RV32GC. Shouldn't it be RV32IMACF?_
 
 TODO
 
-(Makes me wonder: If we import a ESP32-C3 RISC-V ELF with Ghidra, will it say ??? Lemme know!)
+BL602 Executables are compiled for the RV32IMACF Instruction Set / Extensions...
+
+(If we import a ESP32-C3 RISC-V ELF, will Ghidra say it's RV32IMC? Lemme know!)
 
 More about #BL602 EFlash Loader
 
