@@ -38,6 +38,30 @@ This is my first time using Ghidra so this might be a fun and educational exerci
 
 # About EFlash Loader
 
+_How does EFlash Loader flash firmware to BL602?_
+
+Here's what happens when we run a __Firmware Flasher__ on our computer to flash BL602...
+
+![EFlash Loader Flow](https://lupyuen.github.io/images/loader-flow.jpg)
+
+1.  Firmware Flasher __sends the EFlash Loader__ executable to BL602
+
+    (Via USB UART, in 4 KB chunks)
+
+1.  BL602 receives and __starts the EFlash Loader__
+
+    (Assuming that BL602 is in Flashing Mode)
+
+1.  Firmware Flasher __sends the Flashing Image__ to EFlash Loader
+
+    (In 8 KB chunks)
+
+1.  EFlash Loader __writes the Flashing Image__ to BL602's Embedded Flash
+
+1.  Firmware Loader verifies that the Flashing Image was __written correctly__
+
+    (Via SHA256 hashing)
+
 TODO
 
 ```text
@@ -68,9 +92,11 @@ Success
 
 (First 20 seconds)
 
-8 KB chunks
+EFlash Loader: 4 KB chunks
 
-EFlash Loader is the program that runs on #BL602 to flash all firmware ... The ELF was uploaded recently (no source available) ... Let's look inside with Ghidra
+Flash Image: 8 KB chunks
+
+The ELF was uploaded recently (no source available) ... Let's look inside with Ghidra
 
 TODO14
 
