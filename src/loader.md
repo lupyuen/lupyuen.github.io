@@ -312,7 +312,9 @@ Yes we can! Follow these steps to render the __Call Graph__ for our Decompiled F
 
 1.  Select __"Compact Radial"__
 
-We'll see the Call Graph below. Which kinda suggests that something exciting happens inside __bflb_eflash_loader_main__. Let's go there now.
+We'll see the Call Graph below. Which kinda suggests that something exciting happens inside __bflb_eflash_loader_main__.
+
+Let's go there now!
 
 ![Call Graph](https://lupyuen.github.io/images/loader-call.png)
 
