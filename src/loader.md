@@ -148,22 +148,33 @@ This is how we decompile the EFlash Loader ELF [__eflash_loader.elf__](https://g
 
 TODO
 
-Decompiled #BL602 EFlash Loader is here ... 10,000 lines of C to skim for goodies 👍
+Ghidra Help has plenty of useful info. Good to browse through when we have the time!
 
-[(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c)
-
-Export to C
-
-TODO13
-
-![](https://lupyuen.github.io/images/loader-export.png)
-
+Ghidra detects that our binary is RV32GC
 
 ["Ghidra Installation Guide"](https://htmlpreview.github.io/?https://github.com/NationalSecurityAgency/ghidra/blob/stable/GhidraDocs/InstallationGuide.html)
 
 ["An-Introduction-to-Ghidra"](https://git.mst.edu/slbnmc/ici-wiki/-/wikis/Tool-Guides/An-Introduction-to-Ghidra)
 
 [Ghidra Repo](https://github.com/NationalSecurityAgency/ghidra)
+
+## Export To C
+
+TODO13
+
+Decompiled #BL602 EFlash Loader is here ... 10,000 lines of C to skim for goodies 👍
+
+[(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c)
+
+![](https://lupyuen.github.io/images/loader-export.png)
+
+## RV32GC vs RV32IMACF
+
+_Ghidra says our executable is RV32GC. Shouldn't it be RV32IMACF?_
+
+TODO
+
+(Makes me wonder: If we import a ESP32-C3 RISC-V ELF with Ghidra, will it say ??? Lemme know!)
 
 More about #BL602 EFlash Loader
 
