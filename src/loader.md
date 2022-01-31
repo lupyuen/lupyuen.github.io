@@ -208,7 +208,7 @@ We'll get a C Source File with roughly __10,000 lines of code__...
 
 -   [__eflash_loader.c__](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c)
 
-Which is quite cumbersome to navigate, so we'll use the __Ghidra CodeBrowser__ to browse our C code in a while.
+Which is rather cumbersome to navigate, so we'll use the __Ghidra CodeBrowser__ to browse our C code in a while.
 
 ## RV32GC vs RV32IMACF
 
