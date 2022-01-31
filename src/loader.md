@@ -198,9 +198,17 @@ Decompiled #BL602 EFlash Loader is here ... 10,000 lines of C to skim for goodie
 
 _Ghidra says our executable is RV32GC. Shouldn't it be RV32IMACF?_
 
-TODO
+BL602 Executables are compiled for the __RV32IMACF__ Instruction Set and Extensions...
 
-BL602 Executables are compiled for the RV32IMACF Instruction Set / Extensions...
+| Designation | Meaning |
+|:---:|:---|
+| __`RV32I`__ | 32-bit RISC-V with Base Integer Instructions
+| __`M`__ | Integer Multiplication + Division
+| __`A`__ | Atomic Instructions
+| __`C`__ | Compressed Instructions
+| __`F`__ | Single-Precision Floating-Point
+
+[(Source)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
 (If we import a ESP32-C3 RISC-V ELF, will Ghidra say it's RV32IMC? Lemme know!)
 

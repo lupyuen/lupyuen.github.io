@@ -533,8 +533,8 @@ This code will have to be inserted into Mynewt's Start Code, when our firmware i
 
 | Designation | Meaning |
 |:---:|:---|
-| __`rv32i`__ | 32-bit RISC-V with 32 registers
-| __`m`__ | Multiplication + Division
+| __`rv32i`__ | 32-bit RISC-V with Base Integer Instructions
+| __`m`__ | Integer Multiplication + Division
 | __`f`__ | __Single-Precision Hardware Floating Point__
 | __`c`__ | Compressed Instructions
 
@@ -546,8 +546,8 @@ However Mynewt today supports only __`rv32imac`__...
 
 | Designation | Meaning |
 |:---:|:---|
-| __`rv32i`__ | 32-bit RISC-V with 32 registers
-| __`m`__ | Multiplication + Division
+| __`rv32i`__ | 32-bit RISC-V with Base Integer Instructions
+| __`m`__ | Integer Multiplication + Division
 | __`a`__ | __Atomic Instructions__
 | __`c`__ | Compressed Instructions
 
