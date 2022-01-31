@@ -106,6 +106,8 @@ We have Source Code for everything __except EFlash Loader__... What's really hap
 
 _Can we uncover the inner workings of EFlash Loader?_
 
+Yes we can!
+
 Bouffalo Lab (creator of BL602) has recently uploaded the [__ELF Executable__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) for EFlash Loader (pic above). Which makes Reverse Engineering much easier.
 
 (Because of the debugging symbols inside)
