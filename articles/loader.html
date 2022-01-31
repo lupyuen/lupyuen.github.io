@@ -275,6 +275,7 @@ ghidraRun.bat</code></pre></div></li>
 <p>Ghidra thinks our executable is <strong>RV32GC</strong>, which is all of the above plus <strong>Double-Precision Floating-Point</strong>.</p>
 <p>Which is probably OK for our Reverse Engineering, since our executable won’t have any Double-Precision Floating-Point instructions.</p>
 <p>(If we import a ESP32-C3 RISC-V ELF, will Ghidra say it’s RV32IMC? Lemme know!)</p>
+<p><img src="https://lupyuen.github.io/images/loader-symboltree.png" alt="Ghidra Symbol Tree" /></p>
 <h1 id="decompiled-main-function" class="section-header"><a href="#decompiled-main-function">3 Decompiled Main Function</a></h1>
 <p>TODO</p>
 <ul>
@@ -283,12 +284,13 @@ ghidraRun.bat</code></pre></div></li>
 <ol>
 <li>
 <p>In the <strong>CodeBrowser Window</strong>, look for the <strong>Symbol Tree Pane</strong> at left centre</p>
+<p>(Pic above)</p>
 </li>
 <li>
 <p>Expand <strong>“Functions”</strong></p>
 </li>
 <li>
-<p>Double-click <strong>“entry”</strong></p>
+<p>Double-click on <strong>“entry”</strong></p>
 </li>
 </ol>
 <p>#BL602 EFlash Loader’s Main Function is surprisingly readable … Decompiled from ELF by Ghidra</p>
