@@ -322,6 +322,8 @@ Let's go there now!
 
 TODO
 
+Let's continue the trail from the Main Function. Double-click on ???
+
 Here's the #BL602 EFlash Loader's Main Loop that executes Flashing Commands
 
 From [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108)
