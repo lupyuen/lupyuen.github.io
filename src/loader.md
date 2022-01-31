@@ -116,7 +116,7 @@ Bouffalo Lab (creator of BL602) has recently uploaded the [__ELF Executable__](h
 
     [(Dated 17 Jan 2022)](https://github.com/bouffalolab/bl_iot_sdk/blob/5fa118c59ef89adb319583ea277ea54e27d60fbb/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
 
-Let's decompile to C the EFlash Loader ELF with Ghidra!
+Let's decompile the EFlash Loader ELF with Ghidra!
 
 ![EFlash Loader decompiled with Ghidra](https://lupyuen.github.io/images/loader-ghidra.png)
 
