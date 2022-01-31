@@ -202,6 +202,8 @@ Ghidra has decompiled our ELF File into C code. To __export the C code__ to a fi
 
 1.  Click __OK__
 
+    (Pic above)
+
 We'll get a C Source File with roughly __10,000 lines of code__...
 
 -   [__eflash_loader.c__](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c)
