@@ -264,10 +264,6 @@ void entry(void) {
 
   //  Run the EFlash Loader
   main();
-
-  //  Loop forever
-  do {} while( true );
-}
 ```
 
 Aha we found the Main function! Double-click on __"main"__.
