@@ -171,21 +171,45 @@ Success</code></pre></div>
 <ul>
 <li>
 <p><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf"><strong>EFlash Loader ELF: eflash_loader.elf</strong></a></p>
-<p>(Dated 17 Jan 2022)</p>
+<p><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/5fa118c59ef89adb319583ea277ea54e27d60fbb/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf">(Dated 17 Jan 2022)</a></p>
 </li>
 </ul>
-<p>Let’s decompile (to C) the EFlash Loader ELF with Ghidra!</p>
+<p>Let’s decompile to C the EFlash Loader ELF with Ghidra!</p>
 <p><img src="https://lupyuen.github.io/images/loader-ghidra.png" alt="EFlash Loader decompiled with Ghidra" /></p>
 <p><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf">(Source)</a></p>
 <h1 id="decompile-with-ghidra" class="section-header"><a href="#decompile-with-ghidra">2 Decompile with Ghidra</a></h1>
+<p>This is how we decompile the EFlash Loader ELF <a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf"><strong>eflash_loader.elf</strong></a> with <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>…</p>
+<ul>
+<li><a href="https://youtu.be/3Ikn8Y775Lk"><strong>Watch the video on YouTube</strong></a></li>
+</ul>
+<p>(Works for any ELF file actually)</p>
+<ol>
+<li>
+<p>Install <a href="https://adoptium.net/releases.html?variant=openjdk11&amp;jvmVariant=hotspot"><strong>Java Dev Kit (JDK) 11</strong></a> (64-bit)</p>
+</li>
+<li>
+<p>Download a <a href="https://github.com/NationalSecurityAgency/ghidra/releases"><strong>Ghidra Release File</strong></a></p>
+</li>
+<li>
+<p>Extract the Ghidra Release File</p>
+</li>
+<li>
+<p>Launch Ghidra…</p>
+<div class="example-wrap"><pre class="language-bash"><code># For Linux and macOS
+./ghidraRun
+
+# For Windows
+ghidraRun.bat</code></pre></div></li>
+</ol>
 <p>TODO</p>
-<p>Here’s how we decompile a #BL602 #RISCV ELF with #Ghidra</p>
-<p><a href="https://youtu.be/3Ikn8Y775Lk"><strong>Watch the video on YouTube</strong></a></p>
 <p>Decompiled #BL602 EFlash Loader is here … 10,000 lines of C to skim for goodies 👍</p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c">(Source)</a></p>
 <p>Export to C</p>
 <p>TODO13</p>
 <p><img src="https://lupyuen.github.io/images/loader-export.png" alt="" /></p>
+<p><a href="https://htmlpreview.github.io/?https://github.com/NationalSecurityAgency/ghidra/blob/stable/GhidraDocs/InstallationGuide.html">“Ghidra Installation Guide”</a></p>
+<p><a href="https://git.mst.edu/slbnmc/ici-wiki/-/wikis/Tool-Guides/An-Introduction-to-Ghidra">“An-Introduction-to-Ghidra”</a></p>
+<p><a href="https://github.com/NationalSecurityAgency/ghidra">Ghidra Repo</a></p>
 <p>More about #BL602 EFlash Loader</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Source)</a></p>
 <h1 id="decompiled-main-function" class="section-header"><a href="#decompiled-main-function">3 Decompiled Main Function</a></h1>
