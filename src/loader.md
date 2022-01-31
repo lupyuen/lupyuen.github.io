@@ -230,7 +230,7 @@ Ghidra thinks our executable is __RV32GC__, which is all of the above plus __Dou
 
 That's probably OK for our Reverse Engineering, since our executable won't have any Double-Precision Floating-Point instructions.
 
-(If we import a ESP32-C3 RISC-V ELF, will Ghidra say it's RV32IMC? Lemme know!)
+(If we import an ESP32-C3 RISC-V ELF, will Ghidra say it's RV32IMC? Lemme know!)
 
 ![Ghidra Symbol Tree](https://lupyuen.github.io/images/loader-symboltree.png)
 
