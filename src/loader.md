@@ -132,9 +132,9 @@ This is how we decompile the EFlash Loader ELF [__eflash_loader.elf__](https://g
 
 1.  Install [__Java Dev Kit (JDK) 11__](https://adoptium.net/releases.html?variant=openjdk11&jvmVariant=hotspot) (64-bit)
 
-1.  Download a [__Ghidra Release File__](https://github.com/NationalSecurityAgency/ghidra/releases)
+1.  Download a [__Ghidra Release File__](https://github.com/NationalSecurityAgency/ghidra/releases).
 
-1.  Extract the Ghidra Release File
+    Extract the Ghidra Release File.
 
 1.  Launch Ghidra...
 
@@ -146,27 +146,49 @@ This is how we decompile the EFlash Loader ELF [__eflash_loader.elf__](https://g
     ghidraRun.bat
     ```
 
-TODO
+1.  The __Ghidra Help__ Window appears. Plenty of useful info inside, good to browse through when we have the time!
 
-Ghidra Help has plenty of useful info. Good to browse through when we have the time!
+1.  In the __Ghidra Main Window__, click __File__ → __New Project__
 
-Ghidra detects that our binary is RV32GC
+    For __Project Type__: Select __Non-Shared Project__
 
-["Ghidra Installation Guide"](https://htmlpreview.github.io/?https://github.com/NationalSecurityAgency/ghidra/blob/stable/GhidraDocs/InstallationGuide.html)
+    For __Project Name__: Enter __"My Project"__
 
-["An-Introduction-to-Ghidra"](https://git.mst.edu/slbnmc/ici-wiki/-/wikis/Tool-Guides/An-Introduction-to-Ghidra)
+1.  Click __File__ → __Import File__
 
-[Ghidra Repo](https://github.com/NationalSecurityAgency/ghidra)
+    Select our ELF File: [__eflash_loader.elf__](https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
+
+1.  Ghidra detects that our RISC-V Executable is __RV32GC__.
+
+    Click __OK__ and __OK__ again.
+
+1.  Double-click our ELF File: __eflash_loader.elf__
+
+    The __CodeBrowser Window__ appears.
+
+    (With a dragon-like spectre)
+
+1.  When prompted to analyse, click __Yes__
+
+And we done with the decompilation! (Screenshot above)
+
+In case of problems, check these docs...
+
+-   [__"Ghidra Installation Guide"__](https://htmlpreview.github.io/?https://github.com/NationalSecurityAgency/ghidra/blob/stable/GhidraDocs/InstallationGuide.html)
+
+-   [__"An Introduction to Ghidra"__](https://git.mst.edu/slbnmc/ici-wiki/-/wikis/Tool-Guides/An-Introduction-to-Ghidra)
+
+-   [__Ghidra Repo__](https://github.com/NationalSecurityAgency/ghidra)
+
+![Export to C](https://lupyuen.github.io/images/loader-export.png)
 
 ## Export To C
 
-TODO13
+TODO
 
 Decompiled #BL602 EFlash Loader is here ... 10,000 lines of C to skim for goodies 👍
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c)
-
-![](https://lupyuen.github.io/images/loader-export.png)
 
 ## RV32GC vs RV32IMACF
 
