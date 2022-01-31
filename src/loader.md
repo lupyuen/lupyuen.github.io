@@ -168,9 +168,13 @@ This is how we decompile the EFlash Loader ELF [__eflash_loader.elf__](https://g
 
     (With a dragon-like spectre)
 
-1.  When prompted to analyse, click __Yes__
+1.  When prompted to analyze, click __Yes__ and __Analyze__.
 
-And we done with the decompilation! (Screenshot above)
+    Ignore the warnings.
+
+    (We'll browse the decompiled C code shortly)
+
+And we're done with the decompilation! (Screenshot above)
 
 In case of problems, check these docs...
 
