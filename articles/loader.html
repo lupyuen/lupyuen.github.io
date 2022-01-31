@@ -345,10 +345,9 @@ int main(void) {
 <h1 id="decompiled-main-loop" class="section-header"><a href="#decompiled-main-loop">4 Decompiled Main Loop</a></h1>
 <p>TODO</p>
 <p>Here’s the #BL602 EFlash Loader’s Main Loop that executes Flashing Commands</p>
-<p>What are the Flashing Commands executed by the #BL602 EFlash Loader? 🤔</p>
-<p>TODO7</p>
 <p>From <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108">eflash_loader.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int32_t bflb_eflash_loader_main(void) {    
+<div class="example-wrap"><pre class="language-c"><code>//  Main Loop for EFlash Loader
+int32_t bflb_eflash_loader_main(void) {    
   //  Do Handshake
   do {
     i = boot_if_handshake_poll(...);
@@ -395,6 +394,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
   }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/loader-code3.png" alt="Execute Flashing Command" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844">(Source)</a></p>
+<p>What are the Flashing Commands executed by the #BL602 EFlash Loader? 🤔</p>
 <h1 id="decipher-flashing-commands" class="section-header"><a href="#decipher-flashing-commands">5 Decipher Flashing Commands</a></h1>
 <p>TODO</p>
 <p>#Ghidra says that #BL602 EFlash Loader supports 24 Flashing Commands … Let’s decipher them 🤔</p>
