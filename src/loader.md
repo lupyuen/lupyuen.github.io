@@ -50,7 +50,7 @@ Here's what happens when we run a __Firmware Flasher__ on our computer to flash 
 
 1.  BL602 receives and __starts the EFlash Loader__
 
-    (Assuming that BL602 is in Flashing Mode)
+    (Assuming BL602 is in Flashing Mode)
 
 1.  Firmware Flasher __sends the Flashing Image__ to EFlash Loader
 
@@ -58,11 +58,15 @@ Here's what happens when we run a __Firmware Flasher__ on our computer to flash 
 
 1.  EFlash Loader __writes the Flashing Image__ to BL602's Embedded Flash
 
-1.  Firmware Loader verifies that the Flashing Image was __written correctly__
+1.  Firmware Flasher verifies with EFlash Loader that the Flashing Image was __written correctly__
 
-    (Via SHA256 hashing)
+    (With SHA256 hashing)
 
-TODO
+Flashing firmware to BL602 with [__blflash__](https://github.com/spacemeowx2/blflash) looks like this...
+
+-   [__Watch the demo on YouTube__](https://youtu.be/JtnOyl5cYjo)
+
+    (First 20 seconds)
 
 ```text
 $ blflash flash nuttx.bin  \
@@ -86,40 +90,39 @@ Program done 4s 82KiB/s
 Success
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-25)
 
-[__Watch the demo on YouTube__](https://youtu.be/JtnOyl5cYjo)
+We see that blflash sends the __EFlash Loader__ to BL602, followed by the __Flashing Image__.
 
-(First 20 seconds)
+(Which gets written to BL602's Embedded Flash by EFlash Loader)
 
-EFlash Loader: 4 KB chunks
+We have Source Code for everything __except EFlash Loader__... What's really happening inside EFlash Loader?
 
-Flash Image: 8 KB chunks
+> ![ELF Executable for EFlash Loader](https://lupyuen.github.io/images/loader-files.png)
 
-The ELF was uploaded recently (no source available) ... Let's look inside with Ghidra
+> [(Source)](https://github.com/bouffalolab/bl_iot_sdk/tree/master/flash_tool/chips/bl602/eflash_loader)
 
-TODO14
+## Thank You ELF
 
-![](https://lupyuen.github.io/images/loader-files.png)
+_Can we uncover the inner workings of EFlash Loader?_
 
-[(Source)](https://github.com/bouffalolab/bl_iot_sdk/tree/master/flash_tool/chips/bl602/eflash_loader)
+Bouffalo Lab (creator of BL602) has recently uploaded the __ELF Executable__ for EFlash Loader (pic above). Which makes Reverse Engineering much easier.
 
-More about #BL602 EFlash Loader
+(Because of the debugging symbols inside)
 
-[(Source)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+-   [__EFlash Loader ELF: eflash_loader.elf__](https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
+
+    (Dated 17 Jan 2022)
+
+Let's decompile (to C) the EFlash Loader ELF with Ghidra!
+
+![EFlash Loader decompiled with Ghidra](https://lupyuen.github.io/images/loader-ghidra.png)
+
+[(Source)](https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
 
 # Decompile with Ghidra
 
 TODO
-
-Decompiled the new #BL602 EFlash Loader with #Ghidra 🤔
-
-TODO17
-
-![](https://lupyuen.github.io/images/loader-ghidra.png)
-
-[(Source)](https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
-
 
 Here's how we decompile a #BL602 #RISCV ELF with #Ghidra
 
@@ -136,6 +139,10 @@ Export to C
 TODO13
 
 ![](https://lupyuen.github.io/images/loader-export.png)
+
+More about #BL602 EFlash Loader
+
+[(Source)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
 # Decompiled Main Function
 
