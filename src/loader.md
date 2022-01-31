@@ -294,7 +294,7 @@ int main(void) {
   bflb_eflash_loader_main();
 ```
 
-The Decompiled Main Function is is surprisingly readable, kudos to Ghidra!
+The Decompiled Main Function is surprisingly readable, kudos to Ghidra!
 
 This code suggests that all the exciting action happens inside __bflb_eflash_loader_main__. Which we'll examine in a while.
 
@@ -304,7 +304,7 @@ This code suggests that all the exciting action happens inside __bflb_eflash_loa
 
 ## Call Graph
 
-_This verbose code hurts my eyes. Can we browse the code graphically?_
+_All this verbose code hurts my eyes. Can we browse the code graphically?_
 
 TODO
 
