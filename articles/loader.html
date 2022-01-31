@@ -103,6 +103,30 @@
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperh.jpg" alt="Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64 PineCone BL602 RISC-V Board</em></a></p>
 <h1 id="about-eflash-loader" class="section-header"><a href="#about-eflash-loader">1 About EFlash Loader</a></h1>
+<p><em>How does EFlash Loader flash firmware to BL602?</em></p>
+<p>Here’s what happens when we run a <strong>Firmware Flasher</strong> on our computer to flash BL602…</p>
+<p><img src="https://lupyuen.github.io/images/loader-flow.jpg" alt="EFlash Loader Flow" /></p>
+<ol>
+<li>
+<p>Firmware Flasher <strong>sends the EFlash Loader</strong> executable to BL602</p>
+<p>(Via USB UART, in 4 KB chunks)</p>
+</li>
+<li>
+<p>BL602 receives and <strong>starts the EFlash Loader</strong></p>
+<p>(Assuming that BL602 is in Flashing Mode)</p>
+</li>
+<li>
+<p>Firmware Flasher <strong>sends the Flashing Image</strong> to EFlash Loader</p>
+<p>(In 8 KB chunks)</p>
+</li>
+<li>
+<p>EFlash Loader <strong>writes the Flashing Image</strong> to BL602’s Embedded Flash</p>
+</li>
+<li>
+<p>Firmware Loader verifies that the Flashing Image was <strong>written correctly</strong></p>
+<p>(Via SHA256 hashing)</p>
+</li>
+</ol>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>$ blflash flash nuttx.bin  \
   --port /dev/ttyUSB0
@@ -126,8 +150,9 @@ Success</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases">(Source)</a></p>
 <p><a href="https://youtu.be/JtnOyl5cYjo"><strong>Watch the demo on YouTube</strong></a></p>
 <p>(First 20 seconds)</p>
-<p>8 KB chunks</p>
-<p>EFlash Loader is the program that runs on #BL602 to flash all firmware … The ELF was uploaded recently (no source available) … Let’s look inside with Ghidra</p>
+<p>EFlash Loader: 4 KB chunks</p>
+<p>Flash Image: 8 KB chunks</p>
+<p>The ELF was uploaded recently (no source available) … Let’s look inside with Ghidra</p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/loader-files.png" alt="" /></p>
 <p><a href="https://github.com/bouffalolab/bl_iot_sdk/tree/master/flash_tool/chips/bl602/eflash_loader">(Source)</a></p>
