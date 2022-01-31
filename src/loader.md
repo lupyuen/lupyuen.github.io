@@ -240,6 +240,26 @@ TODO
 
 1.  Double-click on __"entry"__
 
+TODO
+
+From [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2663-L2672)
+
+```c
+void entry(void) {
+  //  Init BL602 hardware
+  SystemInit();
+
+  //  Init BL602 memory
+  start_load();
+
+  //  Run the EFlash Loader
+  main();
+
+  //  Loop forever
+  do {} while( true );
+}
+```
+
 #BL602 EFlash Loader's Main Function is surprisingly readable ... Decompiled from ELF by Ghidra
 
 TODO5
