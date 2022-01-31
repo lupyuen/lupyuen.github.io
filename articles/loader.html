@@ -248,8 +248,16 @@ ghidraRun.bat</code></pre></div></li>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c">(Source)</a></p>
 <h2 id="rv32gc-vs-rv32imacf" class="section-header"><a href="#rv32gc-vs-rv32imacf">2.2 RV32GC vs RV32IMACF</a></h2>
 <p><em>Ghidra says our executable is RV32GC. Shouldn’t it be RV32IMACF?</em></p>
-<p>TODO</p>
-<p>BL602 Executables are compiled for the RV32IMACF Instruction Set / Extensions…</p>
+<p>BL602 Executables are compiled for the <strong>RV32IMACF</strong> Instruction Set and Extensions…</p>
+<div><table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
+<tr><td align="center"><strong><code>RV32I</code></strong></td><td align="left">32-bit RISC-V with Base Integer Instructions</td></tr>
+<tr><td align="center"><strong><code>M</code></strong></td><td align="left">Integer Multiplication + Division</td></tr>
+<tr><td align="center"><strong><code>A</code></strong></td><td align="left">Atomic Instructions</td></tr>
+<tr><td align="center"><strong><code>C</code></strong></td><td align="left">Compressed Instructions</td></tr>
+<tr><td align="center"><strong><code>F</code></strong></td><td align="left">Single-Precision Floating-Point</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Source)</a></p>
 <p>(If we import a ESP32-C3 RISC-V ELF, will Ghidra say it’s RV32IMC? Lemme know!)</p>
 <p>More about #BL602 EFlash Loader</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Source)</a></p>
