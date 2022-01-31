@@ -317,7 +317,7 @@ void entry(void) {
 <p>The Decompile Pane jumps to the <strong>Main Function</strong>: <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2803-L2863">eflash_loader.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Main Function for EFlash Loader
 int main(void) {
-  //  Init BL602 clock
+  //  Init BL602 Clock
   HBN_Set_ROOT_CLK_Sel(...);
   ...
   //  Init EFlash Loader
@@ -332,7 +332,7 @@ int main(void) {
   ...
   //  Run the EFlash Loader
   bflb_eflash_loader_main();</code></pre></div>
-<p>The Decompiled Main Function is surprisingly readable, kudos to Ghidra!</p>
+<p>The Decompiled Main Function is surprisingly readable (pic below). Kudos to the Ghidra Team!</p>
 <p>This code suggests that all the exciting action happens inside <strong>bflb_eflash_loader_main</strong>. Which we’ll examine in a while.</p>
 <p><img src="https://lupyuen.github.io/images/loader-code.png" alt="Main Function" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2803-L2863">(Source)</a></p>
@@ -384,35 +384,19 @@ NextCommand:
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108">(Source)</a></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844">eflash_loader.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid,uint8_t *data,uint16_t len) {
-  undefined3 in_register_00002029;
-  int32_t iVar1;
-  int iVar2;
-  eflash_loader_cmd_cfg_t *peVar3;
+<div class="example-wrap"><pre class="language-c"><code>//  Execute a Flashing Command with the specified Command ID and parameters
+int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t len) {
   
-  peVar3 = eflash_loader_cmds;
-  iVar2 = 0;
-  if (CONCAT31(in_register_00002029,cmdid) != 0x10) {
-    do {
-      peVar3 = peVar3 + 1;
-      iVar2 = iVar2 + 1;
-      if (iVar2 == 0x18) {
-        gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
-        return 0;
-      }
-    } while ((uint)peVar3-&gt;cmd != CONCAT31(in_register_00002029,cmdid));
-  }
-  if ((eflash_loader_cmds[iVar2].enabled == &#39;\x01&#39;) &amp;&amp;
-     (eflash_loader_cmds[iVar2].cmd_process != (pfun_cmd_process *)0x0)) {
-                    // WARNING: Could not recover jumptable at 0x22011f8e. Too many branches
-                    // WARNING: Treating indirect jump as call
-    iVar1 = (*eflash_loader_cmds[iVar2].cmd_process)();
-    gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
-    return iVar1;
-  }
-  gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
-  return 0x101;
-}</code></pre></div>
+  //  Omitted: Lookup the Command ID in list of Flashing Commands
+  ...
+
+  //  If Flashing Command is enabled...
+  if (eflash_loader_cmds[i].enabled == 1 &amp;&amp; ...) {
+    
+    //  Execute the Flashing Command
+    ret = (*eflash_loader_cmds[i].cmd_process)();
+    return ret;
+  }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/loader-code3.png" alt="Execute Flashing Command" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844">(Source)</a></p>
 <h1 id="decipher-flashing-commands" class="section-header"><a href="#decipher-flashing-commands">5 Decipher Flashing Commands</a></h1>
