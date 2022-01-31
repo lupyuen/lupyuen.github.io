@@ -188,17 +188,25 @@ In case of problems, check these docs...
 
 ## Export To C
 
-TODO
+Ghidra has decompiled our ELF File to C code. To __export the C code__ to a file...
 
-Decompiled #BL602 EFlash Loader is here ... 10,000 lines of C to skim for goodies 👍
+1.  In __CodeBrowser Window__, click __File__ → __Export Program__
 
-[(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c)
+1.  For __Format__: Select __C / C++__
+
+1.  Click __OK__
+
+We'll get a C Source File with roughly __10,000 lines of code__ like this...
+
+-   [__eflash_loader.c__](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c)
+
+Which is quite cumbersome to navigate, so we'll use the __Ghidra CodeBrowser__ to browse our C code in a while.
 
 ## RV32GC vs RV32IMACF
 
 _Ghidra says our executable is RV32GC. Shouldn't it be RV32IMACF?_
 
-BL602 Executables are compiled for the __RV32IMACF__ Instruction Set and Extensions...
+BL602 Executables are compiled for the __RV32IMACF__ RISC-V Instruction Set and Extensions...
 
 | Designation | Meaning |
 |:---:|:---|
@@ -210,11 +218,11 @@ BL602 Executables are compiled for the __RV32IMACF__ Instruction Set and Extensi
 
 [(Source)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
+Ghidra thinks our executable is __RV32GC__, which is all of the above plus __Double-Precision Floating-Point__.
+
+Which is probably OK for our Reverse Engineering, since our executable won't have any Double-Precision Floating-Point instructions.
+
 (If we import a ESP32-C3 RISC-V ELF, will Ghidra say it's RV32IMC? Lemme know!)
-
-More about #BL602 EFlash Loader
-
-[(Source)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
 # Decompiled Main Function
 
@@ -236,6 +244,10 @@ TODO4
 ![](https://lupyuen.github.io/images/loader-call.png)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader)
+
+More about #BL602 EFlash Loader
+
+[(Source)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
 # Decompiled Main Loop
 
