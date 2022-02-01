@@ -72,7 +72,8 @@
 <li><a href="#rv32gc-vs-rv32imacf">2.2 RV32GC vs RV32IMACF</a><ul></ul></li></ul></li>
 <li><a href="#decompiled-main-function">3 Decompiled Main Function</a><ul>
 <li><a href="#call-graph">3.1 Call Graph</a><ul></ul></li></ul></li>
-<li><a href="#decompiled-main-loop">4 Decompiled Main Loop</a><ul></ul></li>
+<li><a href="#decompiled-main-loop">4 Decompiled Main Loop</a><ul>
+<li><a href="#execute-flashing-command">4.1 Execute Flashing Command</a><ul></ul></li></ul></li>
 <li><a href="#decipher-flashing-commands">5 Decipher Flashing Commands</a><ul></ul></li>
 <li><a href="#flashing-states">6 Flashing States</a><ul></ul></li>
 <li><a href="#match-flashing-states-and-commands">7 Match Flashing States and Commands</a><ul></ul></li>
@@ -382,14 +383,17 @@ NextCommand:
     } while (...);
   }
 }</code></pre></div>
+<p>The code above calls <strong>bflb_eflash_loader_cmd_process</strong> to execute the Flashing Command received over UART (from the Firmware Flasher).</p>
+<p>Let’s find out how it executes Flashing Commands.</p>
 <p><img src="https://lupyuen.github.io/images/loader-code2.png" alt="Main Loop" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108">(Source)</a></p>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844">eflash_loader.c</a></p>
+<h2 id="execute-flashing-command" class="section-header"><a href="#execute-flashing-command">4.1 Execute Flashing Command</a></h2>
+<p>Double-click on <strong>bflb_eflash_loader_cmd_process</strong>. This code appears: <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844">eflash_loader.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Execute a Flashing Command with the specified Command ID and parameters
 int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t len) {
   
-  //  Omitted: Lookup the Command ID in list of Flashing Commands
+  //  Omitted: Lookup the Command ID in 
+  //  list of Flashing Commands
   ...
 
   //  If Flashing Command is enabled...
@@ -399,6 +403,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
     ret = (*eflash_loader_cmds[i].cmd_process)();
     return ret;
   }</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/loader-code3.png" alt="Execute Flashing Command" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844">(Source)</a></p>
 <p>TODO</p>
