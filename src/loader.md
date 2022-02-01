@@ -622,13 +622,29 @@ We're all done with our Reverse Engineering of BL602 EFlash Loader! 🎉
 
 # How The Train Goes
 
-TODO
+Thanks to Ghidra we now know how EFlash Loader works!
 
-Thanks to Ghidra we now know how EFlash Loader works! 👍
+-   We discovered __24 Flashing Commands__ supported by EFlash Loader
+
+    (17 Flashing Commands are undocumented)
+
+-   __Firmware Flasher__ runs a State Machine that __sends Flashing Commands__ to EFlash Loader over UART
+
+-   When EFlash Loader receives the __"Flash Program"__ command from Firmware Flasher, it calls __BL602 ROM__ to write the received image to Embedded Flash
+
+-   Source Code for __BL602 ROM__ is available, so we already understand how it works
+
+TODO
 
 More about #BL602 EFlash Loader
 
 [(Source)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+
+_What happens after the Flashing Image has been written to Embedded Flash?_
+
+TODO
+
+-   [__"BL602 Bootloader"__](https://lupyuen.github.io/articles/boot)
 
 # What's Next
 
