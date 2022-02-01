@@ -74,7 +74,8 @@
 <li><a href="#call-graph">3.1 Call Graph</a><ul></ul></li></ul></li>
 <li><a href="#decompiled-main-loop">4 Decompiled Main Loop</a><ul>
 <li><a href="#execute-flashing-command">4.1 Execute Flashing Command</a><ul></ul></li></ul></li>
-<li><a href="#decipher-flashing-commands">5 Decipher Flashing Commands</a><ul></ul></li>
+<li><a href="#decipher-flashing-commands">5 Decipher Flashing Commands</a><ul>
+<li><a href="#list-of-flashing-commands">5.1 List of Flashing Commands</a><ul></ul></li></ul></li>
 <li><a href="#flashing-states">6 Flashing States</a><ul></ul></li>
 <li><a href="#match-flashing-states-and-commands">7 Match Flashing States and Commands</a><ul></ul></li>
 <li><a href="#flash-program">8 Flash Program</a><ul></ul></li>
@@ -392,8 +393,8 @@ NextCommand:
 <div class="example-wrap"><pre class="language-c"><code>//  Execute a Flashing Command with the specified Command ID and parameters
 int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t len) {
   
-  //  Omitted: Lookup the Command ID in 
-  //  list of Flashing Commands
+  //  Omitted: Lookup the Command ID 
+  //  in list of Flashing Commands
   ...
 
   //  If Flashing Command is enabled...
@@ -410,22 +411,29 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p>What are the Flashing Commands supported by EFlash Loader? We’ll find out next.</p>
 <p><img src="https://lupyuen.github.io/images/loader-flow2a.jpg" alt="Flashing Commands" /></p>
 <h1 id="decipher-flashing-commands" class="section-header"><a href="#decipher-flashing-commands">5 Decipher Flashing Commands</a></h1>
-<p>TODO</p>
-<p>#Ghidra says that #BL602 EFlash Loader supports 24 Flashing Commands … Let’s decipher them 🤔</p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/loader-commands2.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/bl602-eflash-loader">(Source)</a></p>
-<p>#Ghidra reveals the 24 Flashing Commands supported by #BL602 EFlash Loader  … Very nice! 👍</p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/loader-commands3.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/bl602-eflash-loader">(Source)</a></p>
-<p>Here are the 24 Flashing Commands supported by the #BL602 EFlash Loader … Thanks to Ghidra 🎉</p>
-<p><a href="https://github.com/lupyuen/bl602-eflash-loader#flashing-commands">(Source)</a></p>
-<p>So cute that the #BL602 Flashing Commands are all ASCII … Perfect for UART! 👍</p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/loader-commands.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/bl602-eflash-loader#flashing-commands">(Source)</a></p>
-<p>Here are the 24 Flashing Commands supported by the BL602 EFlash Loader, as decoded by Ghidra from <strong>eflash_loader_cmds</strong>…</p>
+<p>Recall that <strong>eflash_loader_cmds</strong> defines the list of Flashing Commands supported by EFlash Loader.</p>
+<p>Double-click on <strong>eflash_loader_cmds</strong>. This appears in the <strong>Listing Pane</strong> (the centre pane)…</p>
+<p><img src="https://lupyuen.github.io/images/loader-commands2.png" alt="24 Flashing Commands" /></p>
+<p>Hover our mouse over <strong>eflash_loader_cmds</strong>.</p>
+<p>Ghidra says that <strong>24 Flashing Commands</strong> are defined inside the array. Let’s decipher them…</p>
+<p><img src="https://lupyuen.github.io/images/loader-commands3.png" alt="Flashing Commands deciphered by Ghidra" /></p>
+<ol>
+<li>
+<p>Expand the array <strong>eflash_loader_cmds</strong> to see all 24 Flashing Commands</p>
+<p>(See pic above)</p>
+</li>
+<li>
+<p>For each Flashing Command, hover our mouse as shown above</p>
+<p>(Or double-click it)</p>
+</li>
+<li>
+<p>Ghidra reveals the function that handles the Flashing Command</p>
+<p>(Like <strong>bflb_eflash_loader_cmd_get_bootinfo</strong>)</p>
+</li>
+</ol>
+<p>Now we know all 24 Flashing Commands. Neat!</p>
+<h2 id="list-of-flashing-commands" class="section-header"><a href="#list-of-flashing-commands">5.1 List of Flashing Commands</a></h2>
+<p>Here are all <strong>24 Flashing Commands</strong> supported by EFlash Loader, as decoded by Ghidra from <strong>eflash_loader_cmds</strong>…</p>
 <div><table><thead><tr><th align="center">ID</th><th align="center">ASCII</th><th>Flashing Command</th></tr></thead><tbody>
 <tr><td align="center"><code>10</code></td><td align="center"><code>LF</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2867-L2879">*_<strong>get_bootinfo</strong></a></td></tr>
 <tr><td align="center"><code>21</code></td><td align="center"><code>!</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2939-L2950">*_<strong>reset</strong></a></td></tr>
@@ -453,8 +461,8 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <tr><td align="center"><code>33</code></td><td align="center"><code>3</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3198-L3209">*_<strong>flash_boot</strong></a></td></tr>
 </tbody></table>
 </div>
-<p><strong><code>*</code></strong> denotes <strong>bflb_eflash_loader_cmd</strong></p>
-<p>7 of the above Flashing Commands are documented in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 ISP Protocol</a>…</p>
+<p>(<strong><code>*</code></strong> denotes <strong>bflb_eflash_loader_cmd</strong>)</p>
+<p>7 of the above Flashing Commands are documented in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 ISP Protocol</strong></a>…</p>
 <div><table><thead><tr><th align="center">ID</th><th>Documented Command</th></tr></thead><tbody>
 <tr><td align="center"><code>10</code></td><td>Get Boot Info</td></tr>
 <tr><td align="center"><code>3C</code></td><td>Chip Erase</td></tr>
