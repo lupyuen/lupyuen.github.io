@@ -1,6 +1,6 @@
 # BL602 EFlash Loader: Reverse Engineered with Ghidra
 
-📝 _5 Feb 2022_
+📝 _2 Feb 2022_
 
 ![Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/loader-title.jpg)
 
