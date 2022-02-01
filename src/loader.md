@@ -388,6 +388,8 @@ TODO
 
 What are the Flashing Commands executed by the #BL602 EFlash Loader? 🤔
 
+![Flashing Commands](https://lupyuen.github.io/images/loader-flow2a.jpg)
+
 # Decipher Flashing Commands
 
 TODO
@@ -471,6 +473,8 @@ The other 17 Flashing Commands are undocumented.
 
 (Which might be interesting for future exploration!)
 
+![Flashing States](https://lupyuen.github.io/images/loader-flow2b.jpg)
+
 # Flashing States
 
 TODO
@@ -523,6 +527,8 @@ __`*`__ denotes __Cmd__ (like __CmdReset__)
 __`^`__ denotes multiple states
 
 The Flashing Process is documented in the [BL602 ISP Protocol](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en).
+
+![Match Flashing States and Commands](https://lupyuen.github.io/images/loader-flow2c.jpg)
 
 # Match Flashing States and Commands
 
