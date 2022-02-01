@@ -571,57 +571,24 @@ bflb_eflash_loader_cmd_write_flash
 
 Double-click on the function __bflb_eflash_loader_cmd_write_flash__.
 
-This is the Flashing Command that __writes the Firmware Image__ (received via UART) to Embedded Flash: [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300)
+This is the Decompiled Flashing Command that __writes the Flashing Image__ (received via UART) to Embedded Flash: [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300)
 
 ```c
+//  Flashing Command that writes Flashing Image to Embedded Flash
 int32_t bflb_eflash_loader_cmd_write_flash(uint16_t cmd,uint8_t *data,uint16_t len) {
-  int32_t iVar1;
-  uint32_t uVar2;
-  undefined2 in_register_00002032;
-  uint32_t startaddr;
-  
-  bflb_platform_printf("W\n");
-  if (CONCAT22(in_register_00002032,len) < 5) {
-    uVar2 = 4;
-    iVar1 = 4;
-  }
-  else {
-    uVar2 = *(uint32_t *)data;
-    bflb_platform_clear_time();
-    if (uVar2 == 0xffffffff) {
-      uVar2 = 5;
-      iVar1 = 5;
-    }
-    else {
-      if (eflash_loader_if->if_type == '\0') {
-        eflash_loader_cmd_ack_buf[0] = 0x4b4f;
-        (*eflash_loader_if->boot_if_send)(eflash_loader_cmd_ack_buf,2);
-      }
-      iVar1 = bflb_spi_flash_program(uVar2,data + 4,CONCAT22(in_register_00002032,len) - 4);
-      if (iVar1 == 0) {
-        uVar2 = 0;
-        if (eflash_loader_if->if_type == '\0') goto LAB_22011364;
-      }
-      else {
-        bflb_platform_printf("fail\n");
-        eflash_loader_error = 6;
-        uVar2 = 6;
-        iVar1 = 6;
-      }
-    }
-  }
-  bflb_eflash_loader_cmd_ack(uVar2);
-LAB_22011364:
-  gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
-  return iVar1;
-}
+
+  //  Write Flashing Image to Embedded Flash
+  bflb_spi_flash_program(...);
+
+  //  Return result to Firmware Flasher
+  bflb_eflash_loader_cmd_ack(...);
 ```
 
-TODO
+The code above calls __bflb_eflash_loader_cmd_ack__ to write the Flashing Image to the Embedded Flash.
 
-Here's the decompiled function in #BL602 EFlash Loader that writes the firmware to flash ... Let's probe deeper
+Let's look inside the function...
 
-![](https://lupyuen.github.io/images/loader-code4.png)
+![Flashing Command that writes Flashing Image to Embedded Flash](https://lupyuen.github.io/images/loader-code4.png)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300)
 
@@ -632,28 +599,26 @@ TODO
 From [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910)
 
 ```c
+//  Write Flashing Image to Embedded Flash
 int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
-  BL_Err_Type BVar1;
-  undefined3 extraout_var;
   
-  BVar1 = SFlash_Program(&flashCfg_Gd_Q80E_Q16E,SF_CTRL_NIO_MODE,addr,data,len);
-  gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
-  return (-(uint)(CONCAT31(extraout_var,BVar1) == 0) & 0xfffffffd) + 3;
-}
+  //  Call BL602 ROM to write to Embedded Flash
+  SFlash_Program(...);
 ```
 
 TODO8
+
+#BL602 EFlash Loader calls SFlash_Program to write to flash ... SFlash_Program is defined in the BL602 ROM ... Thanks to the decompiled code we now know how EFlash Loader works! 👍
 
 ![](https://lupyuen.github.io/images/loader-code5.png)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910)
 
 
-#BL602 EFlash Loader calls SFlash_Program to write to flash ... SFlash_Program is defined in the BL602 ROM ... Thanks to the decompiled code we now know how EFlash Loader works! 👍
 
-TODO9
+[SFlash_Program (BL602 ROM)](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romapi.c#L539-L542)
 
-[(Source)](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romapi.c#L539-L542)
+[SFlash_Program (BL602 IoT SDK)](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_sflash.c#L581-L662)
 
 More about #BL602 EFlash Loader
 
