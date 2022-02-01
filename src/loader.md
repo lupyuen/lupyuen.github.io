@@ -650,7 +650,7 @@ The image is decompressed and mapped to XIP Memory (Executable in Place) by the 
 
 # What's Next
 
-TODO
+I had fun reverse enginnering the BL602 EFlash Loader... My first time using Ghidra!  And I hope you found this article useful for real-world reverse engineering with Ghidra.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
