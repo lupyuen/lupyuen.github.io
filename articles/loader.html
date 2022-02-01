@@ -477,11 +477,11 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p>(Which might be interesting for future exploration!)</p>
 <p><img src="https://lupyuen.github.io/images/loader-flow2b.jpg" alt="Flashing States" /></p>
 <h1 id="flashing-states" class="section-header"><a href="#flashing-states">6 Flashing States</a></h1>
+<p>You can’t tell which way the train went by looking at the tracks… So let’s switch over to the (already documented) <strong>Firmware Flasher</strong> and learn how it calls the Flashing Commands.</p>
+<ul>
+<li><a href="https://github.com/bouffalolab/BLOpenFlasher"><strong>bouffalolab/BLOpenFlasher</strong></a></li>
+</ul>
 <p>TODO</p>
-<p>You can’t tell which way the train went by looking at the tracks … So let’s study the #BL602 Firmware Flasher … And see what Flashing Commands it sends to the EFlash Loader</p>
-<p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/loader-flasher2.png" alt="" /></p>
-<p><a href="https://github.com/bouffalolab/BLOpenFlasher">(Source)</a></p>
 <p>#BL602 Firmware Flasher works like a State Machine … Each Flashing State triggers a Flashing Command … Let’s trace the Flashing States</p>
 <p>TODO15</p>
 <p><img src="https://lupyuen.github.io/images/loader-flasher.png" alt="" /></p>
