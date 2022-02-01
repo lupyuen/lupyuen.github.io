@@ -634,11 +634,11 @@ Thanks to Ghidra we now know everything about EFlash Loader...
 
 -   Source Code for [__BL602 ROM__](https://lupyuen.github.io/articles/loader#write-to-flash) is available, so we already understand how it works
 
-For the past year we speculated on the inner workings of EFlash Loader...
+Over the past year we speculated on the inner workings of EFlash Loader...
 
 -   [__"Flashing Firmware to BL602"__](https://lupyuen.github.io/articles/flash)
 
-But now we really know what's inside!
+Finally we really know what's inside!
 
 _What happens after the Flashing Image has been written to Embedded Flash?_
 
@@ -652,7 +652,9 @@ And the new firmware starts running on BL602.
 
 # What's Next
 
-I had fun reverse enginnering the BL602 EFlash Loader... My first time using Ghidra!  And I hope you found this article useful for real-world reverse engineering with Ghidra.
+I had fun reverse enginnering the BL602 EFlash Loader... My first time using Ghidra!
+
+And I hope you found this article useful for real-world reverse engineering with Ghidra.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
