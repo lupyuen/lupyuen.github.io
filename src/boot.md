@@ -22,7 +22,9 @@ Not quite. We talked about flashing Application Firmware in the article...
 
 -   [__"Flashing Firmware to PineCone BL602"__](https://lupyuen.github.io/articles/flash)
 
-During flashing, we transfer a __Flashing Image__ from our computer to BL602 over USB.
+During flashing, we transfer a __Flashing Image__ from our computer to BL602 over USB, helped by the EFlash Loader...
+
+-   [__"BL602 EFlash Loader: Reverse Engineered with Ghidra"__](https://lupyuen.github.io/articles/loader)
 
 The Flashing Image contains...
 

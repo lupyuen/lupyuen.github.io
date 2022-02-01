@@ -914,13 +914,9 @@ The data is transmitted at __2 Mbps__. (Instead of 512 kbps earlier)
 
 EFlash Loader must acknowledge the data transfer within 5 seconds. Or the flashing shall be considered failed.
 
-(Where is the source code for the EFlash Loader: [`bflb_eflash_loader_cmds`](https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7460)? 🤔)
+EFlash Loader is explained here...
 
-__UPDATE:__ EFlash Loader has been decompiled here...
-
--   [__lupyuen/bl602-eflash-loader__](https://github.com/lupyuen/bl602-eflash-loader)
-
--   [__Reverse Engineering updates on Twitter__](https://twitter.com/MisterTechBlog/status/1486187004232867842)
+-   [__"BL602 EFlash Loader: Reverse Engineered with Ghidra"__](https://lupyuen.github.io/articles/loader)
 
 -   [__More about EFlash Loader in BL602 ISP Doc__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en)
 
