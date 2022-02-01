@@ -385,15 +385,15 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
   }
 ```
 
-TODO
+Interesting! We see that EFlash Loader has a list of Flashing Commands: __eflash_loader_cmds__.
+
+The code above looks up __eflash_loader_cmds__ for the Flashing Command (by Command ID).  And executes the command by calling __cmd_process__.
 
 ![Execute Flashing Command](https://lupyuen.github.io/images/loader-code3.png)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844)
 
-TODO
-
-What are the Flashing Commands executed by the #BL602 EFlash Loader? 🤔
+What are the Flashing Commands supported by EFlash Loader? We'll find out next.
 
 ![Flashing Commands](https://lupyuen.github.io/images/loader-flow2a.jpg)
 
