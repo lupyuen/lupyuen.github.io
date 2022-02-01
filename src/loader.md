@@ -594,9 +594,7 @@ Let's look inside the function...
 
 ## Write To Flash
 
-TODO
-
-From [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910)
+In the __Decompile Pane__ (right pane), double-click on __bflb_spi_flash_program__. This appears: [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910)
 
 ```c
 //  Write Flashing Image to Embedded Flash
@@ -606,19 +604,27 @@ int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
   SFlash_Program(...);
 ```
 
-TODO8
+This function calls __SFlash_Program__ to write to Embedded Flash.
 
-#BL602 EFlash Loader calls SFlash_Program to write to flash ... SFlash_Program is defined in the BL602 ROM ... Thanks to the decompiled code we now know how EFlash Loader works! 👍
+__SFlash_Program__ is defined in the __BL602 ROM__...
 
-![](https://lupyuen.github.io/images/loader-code5.png)
+-   [__SFlash_Program (BL602 ROM)__](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romapi.c#L539-L542)
+
+Source Code is available in the __BL602 IoT SDK__...
+
+-   [__SFlash_Program (BL602 IoT SDK)__](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_sflash.c#L581-L662)
+
+We're all done with our Reverse Engineering of BL602 EFlash Loader! 🎉
+
+![Write Flashing Image to Embedded Flash](https://lupyuen.github.io/images/loader-code5.png)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910)
 
+# How The Train Goes
 
+TODO
 
-[SFlash_Program (BL602 ROM)](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romapi.c#L539-L542)
-
-[SFlash_Program (BL602 IoT SDK)](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_sflash.c#L581-L662)
+Thanks to Ghidra we now know how EFlash Loader works! 👍
 
 More about #BL602 EFlash Loader
 
