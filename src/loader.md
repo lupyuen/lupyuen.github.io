@@ -98,7 +98,7 @@ We see that blflash sends the __EFlash Loader__ to BL602, followed by the __Flas
 
 We have Source Code for everything __except EFlash Loader__... What's really happening inside EFlash Loader?
 
-> ![ELF Executable for EFlash Loader](https://lupyuen.github.io/images/loader-files.png)
+> ![ELF Executable for EFlash Loader](https://lupyuen.github.io/images/loader-files.jpg)
 
 > [(Source)](https://github.com/bouffalolab/bl_iot_sdk/tree/master/flash_tool/chips/bl602/eflash_loader)
 
@@ -118,7 +118,7 @@ Bouffalo Lab (creator of BL602) has recently uploaded the [__ELF Executable__](h
 
 Let's decompile the EFlash Loader ELF with Ghidra!
 
-![EFlash Loader decompiled with Ghidra](https://lupyuen.github.io/images/loader-ghidra.png)
+![EFlash Loader decompiled with Ghidra](https://lupyuen.github.io/images/loader-ghidra.jpg)
 
 [(Source)](https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
 
@@ -557,7 +557,7 @@ And out of the 5 Flashing Commands, only 1 looks interesting...
 
 Let's study the Decompiled Code and find out how it writes to the Embedded Flash.
 
-![Match Flashing States and Commands](https://lupyuen.github.io/images/loader-match2.png)
+![Match Flashing States and Commands](https://lupyuen.github.io/images/loader-match2.jpg)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader)
 
@@ -616,7 +616,7 @@ Source Code is available in the __BL602 IoT SDK__...
 
 We're all done with our Reverse Engineering of BL602 EFlash Loader! 🎉
 
-![Write Flashing Image to Embedded Flash](https://lupyuen.github.io/images/loader-code5.png)
+![Write Flashing Image to Embedded Flash](https://lupyuen.github.io/images/loader-code5.jpg)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910)
 
@@ -624,25 +624,27 @@ We're all done with our Reverse Engineering of BL602 EFlash Loader! 🎉
 
 Thanks to Ghidra we now know how EFlash Loader works!
 
--   We discovered __24 Flashing Commands__ supported by EFlash Loader
+-   We discovered [__24 Flashing Commands__](https://lupyuen.github.io/articles/loader#decipher-flashing-commands) supported by EFlash Loader
 
     (17 Flashing Commands are undocumented)
 
--   __Firmware Flasher__ runs a State Machine that __sends Flashing Commands__ to EFlash Loader over UART
+-   [__Firmware Flasher__](https://lupyuen.github.io/articles/loader#flashing-states) runs a State Machine that __sends Flashing Commands__ to EFlash Loader over UART
 
--   When EFlash Loader receives the __"Flash Program"__ command from Firmware Flasher, it calls __BL602 ROM__ to write the received image to Embedded Flash
+-   When EFlash Loader receives the [__"Flash Program"__](https://lupyuen.github.io/articles/loader#flash-program) command from Firmware Flasher, it calls [__BL602 ROM__](https://lupyuen.github.io/articles/loader#write-to-flash) to write the received image to Embedded Flash
 
--   Source Code for __BL602 ROM__ is available, so we already understand how it works
+-   Source Code for [__BL602 ROM__](https://lupyuen.github.io/articles/loader#write-to-flash) is available, so we already understand how it works
 
-TODO
+For the past year we speculated on the inner workings of EFlash Loader...
 
-More about #BL602 EFlash Loader
+-   [__"Flashing Firmware to BL602"__](https://lupyuen.github.io/articles/flash)
 
-[(Source)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
+But now we really what's inside!
 
 _What happens after the Flashing Image has been written to Embedded Flash?_
 
-TODO
+The Flashing Image is compressed with XZ Compression.
+
+The image is decompressed and mapped to XIP Memory (Executable in Place) by the BL602 Bootloader...
 
 -   [__"BL602 Bootloader"__](https://lupyuen.github.io/articles/boot)
 
@@ -671,3 +673,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  Many thanks to [__BraveHeartFLOSSDev__](https://github.com/BraveHeartFLOSSDev) for the inspiration! We previously collaborated on this article...
 
     [__"Reverse Engineering WiFi on RISC-V BL602"__](https://lupyuen.github.io/articles/wifi)
+
+1.  There are 2 versions of the EFlash Loader ELF File...
+
+    [__eflash_loader.elf__ (17 Jan 2022)](https://github.com/bouffalolab/bl_iot_sdk/blob/5fa118c59ef89adb319583ea277ea54e27d60fbb/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
+
+    [__eflash_loader.elf__ (1 Nov 2021)](https://github.com/bouffalolab/bl_iot_sdk/blob/07ceb89192cd720e1645e6c37081c85960a33580/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
+
+    Might be interesting to compare the decompiled code and discover the changes!

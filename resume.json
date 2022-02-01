@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "BL602 EFlash Loader: Reverse Engineered with Ghidra",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-02-02",
+      "website": "https://lupyuen.github.io/articles/loader",
+      "summary": "What's inside the EFlash Loader that flashes all firmware to the BL602 RISC-V SoC"
+    },
+    {
       "name": "Auto Flash and Test NuttX on RISC-V BL602",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-01-26",
