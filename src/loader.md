@@ -478,28 +478,19 @@ The other 17 Flashing Commands are undocumented.
 
 # Flashing States
 
-You can't tell which way the train went by looking at the tracks... So let's switch over to the (already documented) __Firmware Flasher__ and learn how it calls the Flashing Commands.
+You can't tell which way the train went by looking at the tracks... So let's switch over to the (already documented) __Firmware Flasher__ and understand how it calls the Flashing Commands.
 
 -   [__bouffalolab/BLOpenFlasher__](https://github.com/bouffalolab/BLOpenFlasher)
 
-TODO
+The Firmware Flasher works like a __State Machine__. Each __Flashing State__ triggers a Flashing Command...
 
-#BL602 Firmware Flasher works like a State Machine ... Each Flashing State triggers a Flashing Command ... Let's trace the Flashing States
-
-TODO15
-
-![](https://lupyuen.github.io/images/loader-flasher.png)
+![Flashing States](https://lupyuen.github.io/images/loader-flasher.png)
 
 [(Source)](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L195-L245)
 
+Here are the __Flashing States__ and Flashing Command IDs derived from [__util_program.go__](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go)...
 
-Here are the #BL602 Flashing States and Flashing Command IDs derived from the BL602 Firmware Flasher (BLOpenFlasher)
-
-[(Source)](https://github.com/lupyuen/bl602-eflash-loader#flashing-states)
-
-BL602 Firmware Flasher works like a State Machine. Each Flashing State triggers a Flashing Command. Here are the Flashing States and Flashing Command IDs derived from [BLOpenFlasher/utils/util_program.go](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go)...
-
-| State | ID | On Success |
+| Flashing State | ID | On Success |
 | :--- | :--- | :--- |
 | [__ConfigReset__](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L118-L133) | | *Reset
 | [*__Reset__](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L135-L193) | | *ShakeHand
@@ -522,7 +513,9 @@ __`*`__ denotes __Cmd__ (like __CmdReset__)
 
 __`^`__ denotes multiple states
 
-The Flashing Process is documented in the [BL602 ISP Protocol](https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en).
+[(See the complete table)](https://github.com/lupyuen/bl602-eflash-loader#flashing-states)
+
+Now that we understand the Flashing States and the Flashing Commands, let's match them.
 
 ![Match Flashing States and Commands](https://lupyuen.github.io/images/loader-flow2c.jpg)
 
