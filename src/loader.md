@@ -320,13 +320,9 @@ Let's go there now!
 
 # Decompiled Main Loop
 
-TODO
+Let's continue the trail from the Main Function. Double-click on __bflb_eflash_loader_main__.
 
-Let's continue the trail from the Main Function. Double-click on ???
-
-Here's the #BL602 EFlash Loader's Main Loop that executes Flashing Commands
-
-From [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108)
+Inside the decompiled function we see a loop that __receives and executes Flashing Commands__: [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108)
 
 ```c
 //  Main Loop for EFlash Loader
@@ -387,6 +383,8 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 ![Execute Flashing Command](https://lupyuen.github.io/images/loader-code3.png)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844)
+
+TODO
 
 What are the Flashing Commands executed by the #BL602 EFlash Loader? 🤔
 
