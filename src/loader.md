@@ -584,7 +584,7 @@ int32_t bflb_eflash_loader_cmd_write_flash(uint16_t cmd,uint8_t *data,uint16_t l
   bflb_eflash_loader_cmd_ack(...);
 ```
 
-The code above calls __bflb_eflash_loader_cmd_ack__ to write the Flashing Image to the Embedded Flash.
+The code above calls __bflb_spi_flash_program__ to write the Flashing Image to the Embedded Flash.
 
 Let's look inside the function...
 
