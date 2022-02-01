@@ -477,19 +477,15 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p>(Which might be interesting for future exploration!)</p>
 <p><img src="https://lupyuen.github.io/images/loader-flow2b.jpg" alt="Flashing States" /></p>
 <h1 id="flashing-states" class="section-header"><a href="#flashing-states">6 Flashing States</a></h1>
-<p>You can’t tell which way the train went by looking at the tracks… So let’s switch over to the (already documented) <strong>Firmware Flasher</strong> and learn how it calls the Flashing Commands.</p>
+<p>You can’t tell which way the train went by looking at the tracks… So let’s switch over to the (already documented) <strong>Firmware Flasher</strong> and understand how it calls the Flashing Commands.</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/BLOpenFlasher"><strong>bouffalolab/BLOpenFlasher</strong></a></li>
 </ul>
-<p>TODO</p>
-<p>#BL602 Firmware Flasher works like a State Machine … Each Flashing State triggers a Flashing Command … Let’s trace the Flashing States</p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/loader-flasher.png" alt="" /></p>
+<p>The Firmware Flasher works like a <strong>State Machine</strong>. Each <strong>Flashing State</strong> triggers a Flashing Command…</p>
+<p><img src="https://lupyuen.github.io/images/loader-flasher.png" alt="Flashing States" /></p>
 <p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L195-L245">(Source)</a></p>
-<p>Here are the #BL602 Flashing States and Flashing Command IDs derived from the BL602 Firmware Flasher (BLOpenFlasher)</p>
-<p><a href="https://github.com/lupyuen/bl602-eflash-loader#flashing-states">(Source)</a></p>
-<p>BL602 Firmware Flasher works like a State Machine. Each Flashing State triggers a Flashing Command. Here are the Flashing States and Flashing Command IDs derived from <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go">BLOpenFlasher/utils/util_program.go</a>…</p>
-<div><table><thead><tr><th align="left">State</th><th align="left">ID</th><th align="left">On Success</th></tr></thead><tbody>
+<p>Here are the <strong>Flashing States</strong> and Flashing Command IDs derived from <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go"><strong>util_program.go</strong></a>…</p>
+<div><table><thead><tr><th align="left">Flashing State</th><th align="left">ID</th><th align="left">On Success</th></tr></thead><tbody>
 <tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L118-L133"><strong>ConfigReset</strong></a></td><td align="left"></td><td align="left">*Reset</td></tr>
 <tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L135-L193">*<strong>Reset</strong></a></td><td align="left"></td><td align="left">*ShakeHand</td></tr>
 <tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L195-L206">*<strong>ShakeHand</strong></a></td><td align="left"><code>55</code></td><td align="left">*BootInfo</td></tr>
@@ -510,7 +506,8 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 </div>
 <p><strong><code>*</code></strong> denotes <strong>Cmd</strong> (like <strong>CmdReset</strong>)</p>
 <p><strong><code>^</code></strong> denotes multiple states</p>
-<p>The Flashing Process is documented in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 ISP Protocol</a>.</p>
+<p><a href="https://github.com/lupyuen/bl602-eflash-loader#flashing-states">(See the complete table)</a></p>
+<p>Now that we understand the Flashing States and the Flashing Commands, let’s match them.</p>
 <p><img src="https://lupyuen.github.io/images/loader-flow2c.jpg" alt="Match Flashing States and Commands" /></p>
 <h1 id="match-flashing-states-and-commands" class="section-header"><a href="#match-flashing-states-and-commands">7 Match Flashing States and Commands</a></h1>
 <p>TODO</p>
