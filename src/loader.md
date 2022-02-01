@@ -356,19 +356,24 @@ NextCommand:
 }
 ```
 
+The code above calls __bflb_eflash_loader_cmd_process__ to execute the Flashing Command received over UART (from the Firmware Flasher).
+
+Let's find out how it executes Flashing Commands.
+
 ![Main Loop](https://lupyuen.github.io/images/loader-code2.png)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108)
 
-TODO
+## Execute Flashing Command
 
-From [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844)
+Double-click on __bflb_eflash_loader_cmd_process__. This code appears: [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844)
 
 ```c
 //  Execute a Flashing Command with the specified Command ID and parameters
 int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t len) {
   
-  //  Omitted: Lookup the Command ID in list of Flashing Commands
+  //  Omitted: Lookup the Command ID in 
+  //  list of Flashing Commands
   ...
 
   //  If Flashing Command is enabled...
@@ -379,6 +384,8 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
     return ret;
   }
 ```
+
+TODO
 
 ![Execute Flashing Command](https://lupyuen.github.io/images/loader-code3.png)
 
