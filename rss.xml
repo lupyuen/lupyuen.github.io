@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>BL602 EFlash Loader: Reverse Engineered with Ghidra</title>
+            <link>https://lupyuen.github.io/articles/loader</link>
+            <description><![CDATA[What's inside the EFlash Loader that flashes all firmware to the BL602 RISC-V SoC]]></description>
+            <guid>https://lupyuen.github.io/articles/loader</guid>
+            <pubDate>Wed, 02 Feb 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Auto Flash and Test NuttX on RISC-V BL602</title>
             <link>https://lupyuen.github.io/articles/auto</link>
             <description><![CDATA[How we automagically flash and test the daily build of Apache NuttX OS on BL602 RISC-V SoC]]></description>
