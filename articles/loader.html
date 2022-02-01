@@ -12,7 +12,7 @@
     content="BL602 EFlash Loader: Reverse Engineered with Ghidra" 
     data-rh="true">
 <meta property="og:description" 
-    content="Inside the EFlash Loader that flashes all firmware to BL602"
+    content="What's inside the EFlash Loader that flashes all firmware to the BL602 RISC-V SoC"
     data-rh="true">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/loader-title.jpg">
@@ -166,7 +166,7 @@ Success</code></pre></div>
 <p>(Which gets written to BL602’s Embedded Flash by EFlash Loader)</p>
 <p>We have Source Code for everything <strong>except EFlash Loader</strong>… What’s really happening inside EFlash Loader?</p>
 <blockquote>
-<p><img src="https://lupyuen.github.io/images/loader-files.png" alt="ELF Executable for EFlash Loader" /></p>
+<p><img src="https://lupyuen.github.io/images/loader-files.jpg" alt="ELF Executable for EFlash Loader" /></p>
 </blockquote>
 <blockquote>
 <p><a href="https://github.com/bouffalolab/bl_iot_sdk/tree/master/flash_tool/chips/bl602/eflash_loader">(Source)</a></p>
@@ -183,7 +183,7 @@ Success</code></pre></div>
 </li>
 </ul>
 <p>Let’s decompile the EFlash Loader ELF with Ghidra!</p>
-<p><img src="https://lupyuen.github.io/images/loader-ghidra.png" alt="EFlash Loader decompiled with Ghidra" /></p>
+<p><img src="https://lupyuen.github.io/images/loader-ghidra.jpg" alt="EFlash Loader decompiled with Ghidra" /></p>
 <p><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf">(Source)</a></p>
 <h1 id="decompile-with-ghidra" class="section-header"><a href="#decompile-with-ghidra">2 Decompile with Ghidra</a></h1>
 <p>This is how we decompile the EFlash Loader ELF <a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf"><strong>eflash_loader.elf</strong></a> with <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>…</p>
@@ -542,7 +542,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <li><strong>Flash Program: bflb_eflash_loader_cmd_write_flash</strong></li>
 </ul>
 <p>Let’s study the Decompiled Code and find out how it writes to the Embedded Flash.</p>
-<p><img src="https://lupyuen.github.io/images/loader-match2.png" alt="Match Flashing States and Commands" /></p>
+<p><img src="https://lupyuen.github.io/images/loader-match2.jpg" alt="Match Flashing States and Commands" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader">(Source)</a></p>
 <h1 id="flash-program" class="section-header"><a href="#flash-program">8 Flash Program</a></h1>
 <p>In the <strong>Symbol Tree Pane</strong> (left centre), enter this into the <strong>Filter Box</strong>…</p>
@@ -578,30 +578,33 @@ int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
 <li><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_sflash.c#L581-L662"><strong>SFlash_Program (BL602 IoT SDK)</strong></a></li>
 </ul>
 <p>We’re all done with our Reverse Engineering of BL602 EFlash Loader! 🎉</p>
-<p><img src="https://lupyuen.github.io/images/loader-code5.png" alt="Write Flashing Image to Embedded Flash" /></p>
+<p><img src="https://lupyuen.github.io/images/loader-code5.jpg" alt="Write Flashing Image to Embedded Flash" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910">(Source)</a></p>
 <h1 id="how-the-train-goes" class="section-header"><a href="#how-the-train-goes">9 How The Train Goes</a></h1>
 <p>Thanks to Ghidra we now know how EFlash Loader works!</p>
 <ul>
 <li>
-<p>We discovered <strong>24 Flashing Commands</strong> supported by EFlash Loader</p>
+<p>We discovered <a href="https://lupyuen.github.io/articles/loader#decipher-flashing-commands"><strong>24 Flashing Commands</strong></a> supported by EFlash Loader</p>
 <p>(17 Flashing Commands are undocumented)</p>
 </li>
 <li>
-<p><strong>Firmware Flasher</strong> runs a State Machine that <strong>sends Flashing Commands</strong> to EFlash Loader over UART</p>
+<p><a href="https://lupyuen.github.io/articles/loader#flashing-states"><strong>Firmware Flasher</strong></a> runs a State Machine that <strong>sends Flashing Commands</strong> to EFlash Loader over UART</p>
 </li>
 <li>
-<p>When EFlash Loader receives the <strong>“Flash Program”</strong> command from Firmware Flasher, it calls <strong>BL602 ROM</strong> to write the received image to Embedded Flash</p>
+<p>When EFlash Loader receives the <a href="https://lupyuen.github.io/articles/loader#flash-program"><strong>“Flash Program”</strong></a> command from Firmware Flasher, it calls <a href="https://lupyuen.github.io/articles/loader#write-to-flash"><strong>BL602 ROM</strong></a> to write the received image to Embedded Flash</p>
 </li>
 <li>
-<p>Source Code for <strong>BL602 ROM</strong> is available, so we already understand how it works</p>
+<p>Source Code for <a href="https://lupyuen.github.io/articles/loader#write-to-flash"><strong>BL602 ROM</strong></a> is available, so we already understand how it works</p>
 </li>
 </ul>
-<p>TODO</p>
-<p>More about #BL602 EFlash Loader</p>
-<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(Source)</a></p>
+<p>For the past year we speculated on the inner workings of EFlash Loader…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/flash"><strong>“Flashing Firmware to BL602”</strong></a></li>
+</ul>
+<p>But now we really what’s inside!</p>
 <p><em>What happens after the Flashing Image has been written to Embedded Flash?</em></p>
-<p>TODO</p>
+<p>The Flashing Image is compressed with XZ Compression.</p>
+<p>The image is decompressed and mapped to XIP Memory (Executable in Place) by the BL602 Bootloader…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/boot"><strong>“BL602 Bootloader”</strong></a></li>
 </ul>
@@ -632,6 +635,12 @@ int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
 <li>
 <p>Many thanks to <a href="https://github.com/BraveHeartFLOSSDev"><strong>BraveHeartFLOSSDev</strong></a> for the inspiration! We previously collaborated on this article…</p>
 <p><a href="https://lupyuen.github.io/articles/wifi"><strong>“Reverse Engineering WiFi on RISC-V BL602”</strong></a></p>
+</li>
+<li>
+<p>There are 2 versions of the EFlash Loader ELF File…</p>
+<p><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/5fa118c59ef89adb319583ea277ea54e27d60fbb/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf"><strong>eflash_loader.elf</strong> (17 Jan 2022)</a></p>
+<p><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/07ceb89192cd720e1645e6c37081c85960a33580/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf"><strong>eflash_loader.elf</strong> (1 Nov 2021)</a></p>
+<p>Might be interesting to compare the decompiled code and discover the changes!</p>
 </li>
 </ol>
 
