@@ -822,14 +822,10 @@ blk64k_erase_cmd = 0xd8
 <p>Then we transmit the Flash Image to EFlash Loader, which updates the BL602 Flash ROM.</p>
 <p>The data is transmitted at <strong>2 Mbps</strong>. (Instead of 512 kbps earlier)</p>
 <p>EFlash Loader must acknowledge the data transfer within 5 seconds. Or the flashing shall be considered failed.</p>
-<p>(Where is the source code for the EFlash Loader: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7460"><code>bflb_eflash_loader_cmds</code></a>? 🤔)</p>
-<p><strong>UPDATE:</strong> EFlash Loader has been decompiled here…</p>
+<p>EFlash Loader is explained here…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/bl602-eflash-loader"><strong>lupyuen/bl602-eflash-loader</strong></a></p>
-</li>
-<li>
-<p><a href="https://twitter.com/MisterTechBlog/status/1486187004232867842"><strong>Reverse Engineering updates on Twitter</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/loader"><strong>“BL602 EFlash Loader: Reverse Engineered with Ghidra”</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>More about EFlash Loader in BL602 ISP Doc</strong></a></p>
