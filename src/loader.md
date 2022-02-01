@@ -638,7 +638,7 @@ Over the past year we speculated on the inner workings of EFlash Loader...
 
 -   [__"Flashing Firmware to BL602"__](https://lupyuen.github.io/articles/flash)
 
-Finally we really know what's inside!
+Finally we know what's inside!
 
 _What happens after the Flashing Image has been written to Embedded Flash?_
 
