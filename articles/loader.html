@@ -403,6 +403,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844">(Source)</a></p>
 <p>TODO</p>
 <p>What are the Flashing Commands executed by the #BL602 EFlash Loader? 🤔</p>
+<p><img src="https://lupyuen.github.io/images/loader-flow2a.jpg" alt="Flashing Commands" /></p>
 <h1 id="decipher-flashing-commands" class="section-header"><a href="#decipher-flashing-commands">5 Decipher Flashing Commands</a></h1>
 <p>TODO</p>
 <p>#Ghidra says that #BL602 EFlash Loader supports 24 Flashing Commands … Let’s decipher them 🤔</p>
@@ -461,6 +462,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 </div>
 <p>The other 17 Flashing Commands are undocumented.</p>
 <p>(Which might be interesting for future exploration!)</p>
+<p><img src="https://lupyuen.github.io/images/loader-flow2b.jpg" alt="Flashing States" /></p>
 <h1 id="flashing-states" class="section-header"><a href="#flashing-states">6 Flashing States</a></h1>
 <p>TODO</p>
 <p>You can’t tell which way the train went by looking at the tracks … So let’s study the #BL602 Firmware Flasher … And see what Flashing Commands it sends to the EFlash Loader</p>
@@ -496,6 +498,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p><strong><code>*</code></strong> denotes <strong>Cmd</strong> (like <strong>CmdReset</strong>)</p>
 <p><strong><code>^</code></strong> denotes multiple states</p>
 <p>The Flashing Process is documented in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 ISP Protocol</a>.</p>
+<p><img src="https://lupyuen.github.io/images/loader-flow2c.jpg" alt="Match Flashing States and Commands" /></p>
 <h1 id="match-flashing-states-and-commands" class="section-header"><a href="#match-flashing-states-and-commands">7 Match Flashing States and Commands</a></h1>
 <p>TODO</p>
 <p>Now we can match the #BL602 Flashing States … With the Flashing Commands reversed from the EFlash Loader</p>
