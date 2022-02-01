@@ -930,6 +930,8 @@ _We started this article with blflash (in Rust) ... And pivoted to BLOpenFlasher
 
 Hence we'll use `blflash` for flashing BL602... But to understand the flashing internals we shall refer to the official reference implementation: BLOpenFlasher.
 
+__UPDATE:__ `blflash` might need to be updated due to changes in the BL602 Embedded Flash. [(See this)](https://github.com/spacemeowx2/blflash/issues/9)
+
 _How different is `blflash` from BLOpenFlasher?_
 
 1.  `blflash` transmits the EFlash Loader at __115.2 kbps__ (vs __512 kbps__ in BLOpenFlasher)

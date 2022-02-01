@@ -687,3 +687,5 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     [__eflash_loader.elf__ (1 Nov 2021)](https://github.com/bouffalolab/bl_iot_sdk/blob/07ceb89192cd720e1645e6c37081c85960a33580/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf)
 
     Might be interesting to compare the decompiled code and discover the changes!
+
+    [(Here's why)](https://gist.github.com/lupyuen/2cb2034a436dc75acc1aeb63ea3b9aa1)
