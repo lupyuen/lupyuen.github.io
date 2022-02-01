@@ -492,7 +492,7 @@ The Firmware Flasher works like a __State Machine__. Each __Flashing State__ tri
 
 [(Source)](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L195-L245)
 
-Here are the __Flashing States__ and Flashing Command IDs derived from [__util_program.go__](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go)...
+Below are the __Flashing States__ and Flashing Command IDs derived from [__util_program.go__](https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go)...
 
 | Flashing State | ID | On Success |
 | :--- | :--- | :--- |
@@ -519,7 +519,7 @@ __`^`__ denotes multiple states
 
 [(See the complete table)](https://github.com/lupyuen/bl602-eflash-loader#flashing-states)
 
-Now that we understand the Flashing States and the Flashing Commands, let's match them.
+Now that we have the Flashing States and the Flashing Commands, let's match them.
 
 ![Match Flashing States and Commands](https://lupyuen.github.io/images/loader-flow2c.jpg)
 
@@ -571,7 +571,7 @@ bflb_eflash_loader_cmd_write_flash
 
 Double-click on the function __bflb_eflash_loader_cmd_write_flash__.
 
-This is the Decompiled Flashing Command that __writes the Flashing Image__ (received via UART) to Embedded Flash: [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300)
+This is the decompiled Flashing Command that __writes the Flashing Image__ (received via UART) to Embedded Flash: [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300)
 
 ```c
 //  Flashing Command that writes Flashing Image to Embedded Flash
@@ -622,7 +622,7 @@ We're all done with our Reverse Engineering of BL602 EFlash Loader! 🎉
 
 # How The Train Goes
 
-Thanks to Ghidra we now know everything about EFlash Loader!
+Thanks to Ghidra we now know everything about EFlash Loader...
 
 -   We discovered [__24 Flashing Commands__](https://lupyuen.github.io/articles/loader#decipher-flashing-commands) supported by EFlash Loader
 
