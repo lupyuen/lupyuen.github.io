@@ -488,7 +488,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p>The Firmware Flasher works like a <strong>State Machine</strong>. Each <strong>Flashing State</strong> triggers a Flashing Command…</p>
 <p><img src="https://lupyuen.github.io/images/loader-flasher.png" alt="Flashing States" /></p>
 <p><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L195-L245">(Source)</a></p>
-<p>Here are the <strong>Flashing States</strong> and Flashing Command IDs derived from <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go"><strong>util_program.go</strong></a>…</p>
+<p>Below are the <strong>Flashing States</strong> and Flashing Command IDs derived from <a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go"><strong>util_program.go</strong></a>…</p>
 <div><table><thead><tr><th align="left">Flashing State</th><th align="left">ID</th><th align="left">On Success</th></tr></thead><tbody>
 <tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L118-L133"><strong>ConfigReset</strong></a></td><td align="left"></td><td align="left">*Reset</td></tr>
 <tr><td align="left"><a href="https://github.com/bouffalolab/BLOpenFlasher/blob/main/utils/util_program.go#L135-L193">*<strong>Reset</strong></a></td><td align="left"></td><td align="left">*ShakeHand</td></tr>
@@ -511,7 +511,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p><strong><code>*</code></strong> denotes <strong>Cmd</strong> (like <strong>CmdReset</strong>)</p>
 <p><strong><code>^</code></strong> denotes multiple states</p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader#flashing-states">(See the complete table)</a></p>
-<p>Now that we understand the Flashing States and the Flashing Commands, let’s match them.</p>
+<p>Now that we have the Flashing States and the Flashing Commands, let’s match them.</p>
 <p><img src="https://lupyuen.github.io/images/loader-flow2c.jpg" alt="Match Flashing States and Commands" /></p>
 <h1 id="match-flashing-states-and-commands" class="section-header"><a href="#match-flashing-states-and-commands">7 Match Flashing States and Commands</a></h1>
 <p>Right now we have two interesting lists…</p>
@@ -548,7 +548,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p>In the <strong>Symbol Tree Pane</strong> (left centre), enter this into the <strong>Filter Box</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>bflb_eflash_loader_cmd_write_flash</code></pre></div>
 <p>Double-click on the function <strong>bflb_eflash_loader_cmd_write_flash</strong>.</p>
-<p>This is the Decompiled Flashing Command that <strong>writes the Flashing Image</strong> (received via UART) to Embedded Flash: <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300">eflash_loader.c</a></p>
+<p>This is the decompiled Flashing Command that <strong>writes the Flashing Image</strong> (received via UART) to Embedded Flash: <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300">eflash_loader.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Flashing Command that writes Flashing Image to Embedded Flash
 int32_t bflb_eflash_loader_cmd_write_flash(uint16_t cmd,uint8_t *data,uint16_t len) {
 
@@ -581,7 +581,7 @@ int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
 <p><img src="https://lupyuen.github.io/images/loader-code5.jpg" alt="Write Flashing Image to Embedded Flash" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910">(Source)</a></p>
 <h1 id="how-the-train-goes" class="section-header"><a href="#how-the-train-goes">9 How The Train Goes</a></h1>
-<p>Thanks to Ghidra we now know everything about EFlash Loader!</p>
+<p>Thanks to Ghidra we now know everything about EFlash Loader…</p>
 <ul>
 <li>
 <p>We discovered <a href="https://lupyuen.github.io/articles/loader#decipher-flashing-commands"><strong>24 Flashing Commands</strong></a> supported by EFlash Loader</p>
