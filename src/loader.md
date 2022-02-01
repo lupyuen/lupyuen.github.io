@@ -478,16 +478,11 @@ The other 17 Flashing Commands are undocumented.
 
 # Flashing States
 
+You can't tell which way the train went by looking at the tracks... So let's switch over to the (already documented) __Firmware Flasher__ and learn how it calls the Flashing Commands.
+
+-   [__bouffalolab/BLOpenFlasher__](https://github.com/bouffalolab/BLOpenFlasher)
+
 TODO
-
-You can't tell which way the train went by looking at the tracks ... So let's study the #BL602 Firmware Flasher ... And see what Flashing Commands it sends to the EFlash Loader
-
-TODO16
-
-![](https://lupyuen.github.io/images/loader-flasher2.png)
-
-[(Source)](https://github.com/bouffalolab/BLOpenFlasher)
-
 
 #BL602 Firmware Flasher works like a State Machine ... Each Flashing State triggers a Flashing Command ... Let's trace the Flashing States
 
