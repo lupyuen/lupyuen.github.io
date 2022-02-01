@@ -557,7 +557,7 @@ int32_t bflb_eflash_loader_cmd_write_flash(uint16_t cmd,uint8_t *data,uint16_t l
 
   //  Return result to Firmware Flasher
   bflb_eflash_loader_cmd_ack(...);</code></pre></div>
-<p>The code above calls <strong>bflb_eflash_loader_cmd_ack</strong> to write the Flashing Image to the Embedded Flash.</p>
+<p>The code above calls <strong>bflb_spi_flash_program</strong> to write the Flashing Image to the Embedded Flash.</p>
 <p>Let’s look inside the function…</p>
 <p><img src="https://lupyuen.github.io/images/loader-code4.png" alt="Flashing Command that writes Flashing Image to Embedded Flash" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300">(Source)</a></p>
