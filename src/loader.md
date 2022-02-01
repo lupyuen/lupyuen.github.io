@@ -320,7 +320,9 @@ Let's go there now!
 
 # Decompiled Main Loop
 
-Let's continue the trail from the Main Function. Double-click on __bflb_eflash_loader_main__.
+Let's continue the trail from the Main Function.
+
+In the __Decompile Pane__ (right pane), double-click on __bflb_eflash_loader_main__.
 
 Inside the decompiled function we see a loop that __receives and executes Flashing Commands__: [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108)
 
@@ -401,7 +403,9 @@ What are the Flashing Commands supported by EFlash Loader? We'll find out next.
 
 Recall that __eflash_loader_cmds__ defines the list of Flashing Commands supported by EFlash Loader.
 
-Double-click on __eflash_loader_cmds__. This appears in the __Listing Pane__ (the centre pane)...
+In the __Decompile Pane__ (right pane), double-click on __eflash_loader_cmds__.
+
+This appears in the __Listing Pane__ (centre pane)...
 
 ![24 Flashing Commands](https://lupyuen.github.io/images/loader-commands2.png)
 
@@ -521,26 +525,17 @@ Now that we understand the Flashing States and the Flashing Commands, let's matc
 
 # Match Flashing States and Commands
 
-TODO
+Right now we have two interesting lists...
 
-Now we can match the #BL602 Flashing States ... With the Flashing Commands reversed from the EFlash Loader
+-   [__Flashing Commands__](https://github.com/lupyuen/bl602-eflash-loader#flashing-commands) supported by the EFlash Loader
 
-TODO20
+    (As uncovered by Ghidra)
 
-![](https://lupyuen.github.io/images/loader-match2.png)
+-   [__Flashing States__](https://github.com/lupyuen/bl602-eflash-loader#flashing-states) for the Firmware Flasher's State Machine
 
-[(Source)](https://github.com/lupyuen/bl602-eflash-loader)
+    (By reading the BLOpenFlasher source code)
 
-
-Here are 5 #BL602 Flashing Commands from EFlash Loader that we can probe further ... Let's dive into "Flash Program"
-
-TODO19
-
-![](https://lupyuen.github.io/images/loader-match.png)
-
-[(Source)](https://github.com/lupyuen/bl602-eflash-loader#matching-flashing-states-and-commands)
-
-By matching the Flashing States and the Flashing Commands above, we identify 5 commands that we can probe further...
+Let's match the two lists and find out which Flashing Commands are __actually called during flashing__...
 
 | ID | ASCII | Flashing Command
 | :--: | :--: | --- 
@@ -550,30 +545,113 @@ By matching the Flashing States and the Flashing Commands above, we identify 5 c
 | `3A` | `:` | Flash Program Check<br>[*___write_flash_check__](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3001-L3008)
 | `3D` | `=` | SHA256 Read<br>[*___readSha_flash__](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3491-L3544)
 
-__`*`__ denotes __bflb_eflash_loader_cmd__
+(__`*`__ denotes __bflb_eflash_loader_cmd__)
+
+Out of 24 commands, only __5 Flashing Commands__ are actually called during flashing!
 
 (`3C` Chip Erase and `32` Flash Read aren't used while flashing BL602, according to BLOpenFlasher)
 
+And out of the 5 Flashing Commands, only 1 looks interesting...
+
+-   __Flash Program: bflb_eflash_loader_cmd_write_flash__
+
+Let's study the Decompiled Code and find out how it writes to the Embedded Flash.
+
+![Match Flashing States and Commands](https://lupyuen.github.io/images/loader-match2.png)
+
+[(Source)](https://github.com/lupyuen/bl602-eflash-loader)
+
 # Flash Program
+
+In the __Symbol Tree Pane__ (left centre), enter this into the __Filter Box__...
+
+```text
+bflb_eflash_loader_cmd_write_flash
+```
+
+Double-click on the function __bflb_eflash_loader_cmd_write_flash__.
+
+This is the Flashing Command that __writes the Firmware Image__ (received via UART) to Embedded Flash: [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300)
+
+```c
+int32_t bflb_eflash_loader_cmd_write_flash(uint16_t cmd,uint8_t *data,uint16_t len) {
+  int32_t iVar1;
+  uint32_t uVar2;
+  undefined2 in_register_00002032;
+  uint32_t startaddr;
+  
+  bflb_platform_printf("W\n");
+  if (CONCAT22(in_register_00002032,len) < 5) {
+    uVar2 = 4;
+    iVar1 = 4;
+  }
+  else {
+    uVar2 = *(uint32_t *)data;
+    bflb_platform_clear_time();
+    if (uVar2 == 0xffffffff) {
+      uVar2 = 5;
+      iVar1 = 5;
+    }
+    else {
+      if (eflash_loader_if->if_type == '\0') {
+        eflash_loader_cmd_ack_buf[0] = 0x4b4f;
+        (*eflash_loader_if->boot_if_send)(eflash_loader_cmd_ack_buf,2);
+      }
+      iVar1 = bflb_spi_flash_program(uVar2,data + 4,CONCAT22(in_register_00002032,len) - 4);
+      if (iVar1 == 0) {
+        uVar2 = 0;
+        if (eflash_loader_if->if_type == '\0') goto LAB_22011364;
+      }
+      else {
+        bflb_platform_printf("fail\n");
+        eflash_loader_error = 6;
+        uVar2 = 6;
+        iVar1 = 6;
+      }
+    }
+  }
+  bflb_eflash_loader_cmd_ack(uVar2);
+LAB_22011364:
+  gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
+  return iVar1;
+}
+```
 
 TODO
 
 Here's the decompiled function in #BL602 EFlash Loader that writes the firmware to flash ... Let's probe deeper
 
-TODO8
-
 ![](https://lupyuen.github.io/images/loader-code4.png)
 
 [(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300)
+
+## Write To Flash
+
+TODO
+
+From [eflash_loader.c](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910)
+
+```c
+int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
+  BL_Err_Type BVar1;
+  undefined3 extraout_var;
+  
+  BVar1 = SFlash_Program(&flashCfg_Gd_Q80E_Q16E,SF_CTRL_NIO_MODE,addr,data,len);
+  gp = (uint32_t *)((int)eflash_loader_readbuf + 0x6d4);
+  return (-(uint)(CONCAT31(extraout_var,BVar1) == 0) & 0xfffffffd) + 3;
+}
+```
+
+TODO8
+
+![](https://lupyuen.github.io/images/loader-code5.png)
+
+[(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910)
 
 
 #BL602 EFlash Loader calls SFlash_Program to write to flash ... SFlash_Program is defined in the BL602 ROM ... Thanks to the decompiled code we now know how EFlash Loader works! 👍
 
 TODO9
-
-![](https://lupyuen.github.io/images/loader-code5.png)
-
-[(Source)](https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910)
 
 [(Source)](https://github.com/bouffalolab/bl_iot_sdk/blob/master/components/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_romapi.c#L539-L542)
 
@@ -602,3 +680,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1486187004232867842)
+
+1.  Many thanks to [__BraveHeartFLOSSDev__](https://github.com/BraveHeartFLOSSDev) for the inspiration! We previously collaborated on this article...
+
+    [__"Reverse Engineering WiFi on RISC-V BL602"__](https://lupyuen.github.io/articles/wifi)
