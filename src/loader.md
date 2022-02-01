@@ -622,7 +622,7 @@ We're all done with our Reverse Engineering of BL602 EFlash Loader! 🎉
 
 # How The Train Goes
 
-Thanks to Ghidra we now know how EFlash Loader works!
+Thanks to Ghidra we now know everything about EFlash Loader!
 
 -   We discovered [__24 Flashing Commands__](https://lupyuen.github.io/articles/loader#decipher-flashing-commands) supported by EFlash Loader
 
@@ -638,7 +638,7 @@ For the past year we speculated on the inner workings of EFlash Loader...
 
 -   [__"Flashing Firmware to BL602"__](https://lupyuen.github.io/articles/flash)
 
-But now we really what's inside!
+But now we really know what's inside!
 
 _What happens after the Flashing Image has been written to Embedded Flash?_
 
@@ -647,6 +647,8 @@ The Flashing Image is compressed with XZ Compression.
 The image is decompressed and mapped to XIP Memory (Executable in Place) by the BL602 Bootloader...
 
 -   [__"BL602 Bootloader"__](https://lupyuen.github.io/articles/boot)
+
+And the new firmware starts running on BL602.
 
 # What's Next
 
