@@ -688,7 +688,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Might be interesting to compare the decompiled code and discover the changes!
 
-    [(Here's why)](https://gist.github.com/lupyuen/2cb2034a436dc75acc1aeb63ea3b9aa1)
+    [(Here's why)](https://github.com/spacemeowx2/blflash/issues/9#issuecomment-1026808893)
 
 1.  Does Firmware Flasher send the EFlash Loader ELF to BL602?
 
