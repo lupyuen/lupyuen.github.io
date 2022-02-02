@@ -1211,7 +1211,7 @@ To prevent [__Replay Attacks__](https://en.wikipedia.org/wiki/Replay_attack), th
 
 _Is there a problem with LoRaWAN Nonces?_
 
-Our LoRaWAN Gateway (ChirpStack) says that it has detected __Duplicate Nonces__. (Pic above)
+Our LoRaWAN Gateway (ChirpStack) says that it has detected __Duplicate Nonces__. ("validate dev-nonce error" in the pic above)
 
 Because of Duplicate Nonces, our device __can't join the LoRaWAN Network__. (Until after repeated retries)
 
