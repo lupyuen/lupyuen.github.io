@@ -1124,7 +1124,7 @@ _What can we check?_
 
     [__"Device EUI, Join EUI and App Key"__](https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key)
 
-1.  On our LoRaWAN Gateway, scan the log for __Message Integrity Code__ errors...
+1.  On our LoRaWAN Gateway, scan the log for __Message Integrity Code__ errors ("invalid MIC")...
 
     ```bash
     grep MIC /var/log/syslog
@@ -1140,7 +1140,7 @@ _What can we check?_
 
     [(More about Message Integrity Code)](https://lupyuen.github.io/articles/wisgate#message-integrity-code)
 
-1.  On our LoRaWAN Gateway, scan the log for __Nonce Errors__...
+1.  On our LoRaWAN Gateway, scan the log for __Nonce Errors__ ("validate dev-nonce error")...
 
     ```bash
     grep nonce /var/log/syslog

@@ -642,7 +642,7 @@ SSH to WisGate and look at the __Linux System Log__ while our LoRaWAN Device is 
 tail -f /var/log/syslog
 ```
 
-Sometimes it's helpful to scan the log for __Message Integrity Code__ errors...
+Sometimes it's helpful to scan the log for __Message Integrity Code__ errors ("invalid MIC")...
 
 ```bash
 grep MIC /var/log/syslog
@@ -656,7 +656,7 @@ dev_eui=4bc15ee7377bb15b
 type=DATA_UP_MIC
 ```
 
-Also for __Nonce Errors__...
+Also for __Nonce Errors__ ("validate dev-nonce error")...
 
 ```bash
 grep nonce /var/log/syslog
@@ -757,7 +757,7 @@ _What happens when we transmit an invalid Message Integrity Code?_
 
 Our LoRaWAN Gateway (ChirpStack on WisGate) will __reject LoRaWAN Packets with invalid Message Integrity Codes__.
 
-To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for...
+To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for "invalid MIC"...
 
 ```bash
 grep MIC /var/log/syslog
@@ -793,7 +793,7 @@ Our LoRaWAN Gateway (ChirpStack on WisGate) will __reject Join Network Requests 
 
 (Yep the gateway will remember the Nonces from previous requests)
 
-To see Nonce errors, SSH to our LoRaWAN Gateway and search for...
+To see Nonce errors, SSH to our LoRaWAN Gateway and search for __"validate dev-nonce error"__...
 
 ```bash
 grep nonce /var/log/syslog
