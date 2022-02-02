@@ -927,7 +927,7 @@ RadioSetChannel: freq=923400000</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key"><strong>“Device EUI, Join EUI and App Key”</strong></a></p>
 </li>
 <li>
-<p>On our LoRaWAN Gateway, scan the log for <strong>Message Integrity Code</strong> errors…</p>
+<p>On our LoRaWAN Gateway, scan the log for <strong>Message Integrity Code</strong> errors (“invalid MIC”)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>grep MIC /var/log/syslog
 
 chirpstack-application-server[568]: 
@@ -939,7 +939,7 @@ chirpstack-application-server[568]:
 <p><a href="https://lupyuen.github.io/articles/wisgate#message-integrity-code">(More about Message Integrity Code)</a></p>
 </li>
 <li>
-<p>On our LoRaWAN Gateway, scan the log for <strong>Nonce Errors</strong>…</p>
+<p>On our LoRaWAN Gateway, scan the log for <strong>Nonce Errors</strong> (“validate dev-nonce error”)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>grep nonce /var/log/syslog
 
 chirpstack-application-server[5667]: 

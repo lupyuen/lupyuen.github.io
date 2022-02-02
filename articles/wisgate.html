@@ -496,7 +496,7 @@ OnRadioRxTimeout</code></pre></div>
 <h2 id="check-the-log" class="section-header"><a href="#check-the-log">7.2 Check the log</a></h2>
 <p>SSH to WisGate and look at the <strong>Linux System Log</strong> while our LoRaWAN Device is transmitting packets…</p>
 <div class="example-wrap"><pre class="language-bash"><code>tail -f /var/log/syslog</code></pre></div>
-<p>Sometimes it’s helpful to scan the log for <strong>Message Integrity Code</strong> errors…</p>
+<p>Sometimes it’s helpful to scan the log for <strong>Message Integrity Code</strong> errors (“invalid MIC”)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>grep MIC /var/log/syslog
 
 Apr 28 04:02:05 rak-gateway 
@@ -506,7 +506,7 @@ level=error
 msg=&quot;invalid MIC&quot; 
 dev_eui=4bc15ee7377bb15b 
 type=DATA_UP_MIC</code></pre></div>
-<p>Also for <strong>Nonce Errors</strong>…</p>
+<p>Also for <strong>Nonce Errors</strong> (“validate dev-nonce error”)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>grep nonce /var/log/syslog
 
 Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
@@ -589,7 +589,7 @@ type=OTAA</code></pre></div>
 </ol>
 <p><em>What happens when we transmit an invalid Message Integrity Code?</em></p>
 <p>Our LoRaWAN Gateway (ChirpStack on WisGate) will <strong>reject LoRaWAN Packets with invalid Message Integrity Codes</strong>.</p>
-<p>To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for…</p>
+<p>To see Message Integrity Code errors, SSH to our LoRaWAN Gateway and search for “invalid MIC”…</p>
 <div class="example-wrap"><pre class="language-bash"><code>grep MIC /var/log/syslog
 
 Apr 28 04:02:05 rak-gateway 
@@ -613,7 +613,7 @@ error=&quot;get device-session error: invalid MIC&quot;</code></pre></div><h2 id
 <p><em>What happens when we replay a Join Network Request?</em></p>
 <p>Our LoRaWAN Gateway (ChirpStack on WisGate) will <strong>reject Join Network Requests that have a reused Nonce</strong>.</p>
 <p>(Yep the gateway will remember the Nonces from previous requests)</p>
-<p>To see Nonce errors, SSH to our LoRaWAN Gateway and search for…</p>
+<p>To see Nonce errors, SSH to our LoRaWAN Gateway and search for <strong>“validate dev-nonce error”</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>grep nonce /var/log/syslog
 
 Apr 28 04:02:41 rak-gateway chirpstack-application-server[568]:
