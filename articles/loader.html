@@ -648,6 +648,13 @@ int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
 <p>Might be interesting to compare the decompiled code and discover the changes!</p>
 <p><a href="https://gist.github.com/lupyuen/2cb2034a436dc75acc1aeb63ea3b9aa1">(Here’s why)</a></p>
 </li>
+<li>
+<p>Does Firmware Flasher send the EFlash Loader ELF to BL602?</p>
+<p>Nope it sends the stripped binary for the EFlash Loader, which is easier to load and run on BL602: <a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader_40m.bin">eflash_loader_40m.bin</a></p>
+<p>Bouffalo Lab used to provide only the stripped binary for EFlash Loader, not the ELF…</p>
+<p><a href="https://github.com/bouffalolab/bl_iot_sdk/tree/master/flash_tool/chips/bl602/eflash_loader">bl_iot_sdk/flash_tool/chips/bl602/eflash_loader</a></p>
+<p>But since Nov 2021 they started uploading the ELF. Which is how we did the reverse engineering with Ghidra. Lucky us ;-)</p>
+</li>
 </ol>
 
     
