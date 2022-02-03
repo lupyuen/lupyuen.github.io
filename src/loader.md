@@ -696,6 +696,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Bouffalo Lab used to provide only the stripped binary for EFlash Loader, not the ELF...
 
-    [bl_iot_sdk/flash_tool/chips/bl602/eflash_loader](https://github.com/bouffalolab/bl_iot_sdk/tree/master/flash_tool/chips/bl602/eflash_loader)
+    [bl_iot_sdk/flash_tool/chips/ bl602/eflash_loader](https://github.com/bouffalolab/bl_iot_sdk/tree/master/flash_tool/chips/bl602/eflash_loader)
 
     But since Nov 2021 they started uploading the ELF. Which is how we did the reverse engineering with Ghidra. Lucky us ;-)
