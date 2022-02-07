@@ -7,11 +7,7 @@
             "label": "1️⃣ Generate Resume",
             "type": "shell",
             "windows": {
-                "command": "cmd",
-                "args": [
-                    "/c",
-                    " scripts\\gen-resume.cmd && echo ✅ ◾ ️Done! "
-                ]
+                "command": "scripts\\gen-resume.cmd"
             },
             "osx": {
                 "command": "bash",
@@ -37,11 +33,7 @@
             "label": "📖 Generate Doc",
             "type": "shell",
             "windows": {
-                "command": "cmd",
-                "args": [
-                    "/c",
-                    " echo TODO && git pull && echo ✅ ◾ ️Done! "
-                ]
+                "command": "git pull",
             },
             "osx": {
                 "command": "bash",
