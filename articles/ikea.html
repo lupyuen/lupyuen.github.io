@@ -140,15 +140,15 @@
 <p><a href="https://youtu.be/wyXb3aSPet4">(Watch it in action on YouTube)</a></p>
 <p><a href="https://www.ikea.com/us/en/manuals/vindriktning-air-quality-sensor__AA-2289325-1.pdf">(IKEA VINDRIKTNING Manual)</a></p>
 <p><em>Huh? This sensor outputs only 3 levels of Air Quality?</em></p>
-<p>Actually the sensor is capable of measuring PM 2.5 from <strong>0 to 1000 μg/m³</strong>… Just that we need to <strong>wire it ourselves</strong> to get the PM 2.5 value.</p>
+<p>Actually the sensor is capable of measuring PM 2.5 from <strong>0 to 1,000 μg/m³</strong>… Just that we need to <strong>wire it ourselves</strong> to get the PM 2.5 value.</p>
 <p>The brilliant folks at the <a href="https://community.home-assistant.io/t/ikea-vindriktning-air-quality-sensor/324599"><strong>Home Assistant Project</strong></a> discovered that inside the IKEA Sensor is a <a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf"><strong>PM1006 Infrared LED Particle Sensor</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/ikea-datasheet.png" alt="PM1006 Infrared LED Particle Sensor" /></p>
 <p><a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">(From PM1006 Datasheet)</a></p>
 <p>The PM1006 Sensor exposes a <strong>UART (Serial) Port</strong> that transmits the PM 2.5 value, encoded like so…</p>
 <p><img src="https://lupyuen.github.io/images/ikea-datasheet2.png" alt="PM1006 Sensor transmits PM 2.5 over UART" /></p>
 <p><a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">(From PM1006 Datasheet)</a></p>
-<p>To access the PM 2.5 data, let’s wire up the UART Port with a little soldering.</p>
-<p>(FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it sends the PM1006 command to read the PM 2.5 data)</p>
+<p>To get the PM 2.5 data, let’s wire up the UART Port with a little soldering.</p>
+<p>(FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it triggers the PM1006 command that measures PM 2.5)</p>
 <p><img src="https://lupyuen.github.io/images/ikea-solder.jpg" alt="Inside the IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <h1 id="solder-uart-port" class="section-header"><a href="#solder-uart-port">2 Solder UART Port</a></h1>
 <p>Follow these steps to <strong>solder the UART (Serial) Port</strong> on the IKEA VINDRIKTNING Sensor (so we can access the PM 2.5 data)…</p>
