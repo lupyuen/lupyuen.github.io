@@ -158,8 +158,8 @@ To transmit the PM 2.5 readings to The Things Network via LoRaWAN, we connect th
 
 | Function | GPIO | PineDio Stack | IKEA Sensor | Wire Colour
 | :---: | :---: | :---: | :---: | :---:
-| RX | GPIO 3 | 14 | REST | Blue
-| TX | GPIO 4 | 13 | Unused |
+| RX | 3 | 14 | REST | Blue
+| TX | 4 | 13 | Unused |
 | GND | GND | 20 | GND | Black
 
 Connect USB Ports of IKEA Sensor and PineDio Stack BL604 to the same computer. Remember: Only One Power Source!
