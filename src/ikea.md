@@ -92,22 +92,28 @@ Let's wire up the UART Port with a little soldering.
 
 TODO
 
-Unscrew the 4 screws on the back of the IKEA Sensor
+1.  Unscrew the 4 screws on the back of the IKEA Sensor
 
-We expose the UART Port on IKEA Sensor by soldering these pads...
+1.  Flip open the Back Cover to reveal the Circuit Board
 
-| UART Pin | IKEA Sensor | Wire Colour
-|:---|:--:|:---
-| TX | REST | Blue
-| GND | GND | Black
+    (Pic above)
 
-[See the soldering steps](https://twitter.com/MisterTechBlog/status/1489506811321282565?t=uW3yDgeLLXhf4x3wjmC2HA&s=19)
+1.  We expose the UART Port on IKEA Sensor by soldering these pads...
+
+    | UART Pin | IKEA Sensor | Wire Colour
+    |:---|:--:|:---
+    | TX | REST | Blue
+    | GND | GND | Black
+
+    (Pic below)
+
+    Check the Appendix for the soldering steps.
 
 [(More details)](https://style.oversubstance.net/2021/08/diy-use-an-ikea-vindriktning-air-quality-sensor-in-home-assistant-with-esphome/)
 
 TODO9
 
-![](https://lupyuen.github.io/images/ikea-solder3.jpg)
+![UART Port soldered to IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-solder3.jpg)
 
 # Connect to PineDio Stack BL604
 
