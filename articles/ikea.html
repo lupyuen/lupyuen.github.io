@@ -126,16 +126,24 @@
 <p><img src="https://lupyuen.github.io/images/loader-title.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio"><em>Pine64 PineDio Stack BL604 RISC-V Board</em></a></p>
 <h1 id="about-ikea-air-quality-sensor" class="section-header"><a href="#about-ikea-air-quality-sensor">1 About IKEA Air Quality Sensor</a></h1>
-<p>TODO</p>
-<p>I found the VINDRIKTNING sensor at my local IKEA Store (IKEA Tampines Singapore), in the Lighting Section, near the Air Purifiers.</p>
-<p>(Wow IKEA has Air Purifiers now)</p>
-<p><a href="https://youtu.be/wyXb3aSPet4">Watch the IKEA Sensor on YouTube</a></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/ikea-sensor3.jpg" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/ikea-sensor4.jpg" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/ikea-datasheet.png" alt="" /></p>
+<p>I found the VINDRIKTNING sensor at my local IKEA Store (IKEA Tampines Singapore) in the Lighting Section…</p>
+<p>(Near the Air Purifiers. Wow IKEA has Air Purifiers now)</p>
+<p><img src="https://lupyuen.github.io/images/ikea-sensor3.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor at IKEA Tampines Singapore" /></p>
+<p>Connect the sensor to a USB-C Power Cable (not included) and it lights up in <strong>Red, Amber or Green</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/ikea-sensor4.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor" /></p>
+<div><table><thead><tr><th>Colour</th><th align="center">PM 2.5 (μg/m³)</th><th>Air Quality</th></tr></thead><tbody>
+<tr><td>Green</td><td align="center">0 - 35</td><td>Good + Low</td></tr>
+<tr><td>Amber</td><td align="center">36 - 85</td><td>OK + Medium</td></tr>
+<tr><td>Red</td><td align="center">86 and above</td><td>Not good + High</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://youtu.be/wyXb3aSPet4">(Watch it in action on YouTube)</a></p>
+<p><a href="https://www.ikea.com/us/en/manuals/vindriktning-air-quality-sensor__AA-2289325-1.pdf">(IKEA VINDRIKTNING Manual)</a></p>
+<p><em>Huh? This sensor only outputs 3 values?</em></p>
+<p>Actually the sensor is capable of measuring PM 2.5 from <strong>0 to 1000 μg/m³</strong>… Just that we need to <strong>wire it ourselves</strong> to get the PM 2.5 value.</p>
+<p>The brilliant folks at ??? discovered that inside the IKEA Sensor is a <a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf"><strong>PM1006 Infrared LED Particle Sensor</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/ikea-datasheet.png" alt="PM1006 Infrared LED Particle Sensor" /></p>
+<p><a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">(From PM1006 Datasheet)</a></p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/ikea-datasheet2.png" alt="" /></p>
 <h1 id="solder-uart-port" class="section-header"><a href="#solder-uart-port">2 Solder UART Port</a></h1>
@@ -268,7 +276,7 @@ Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/ikea-code5.png" alt="" /></p>
 <h1 id="decode-sensor-data" class="section-header"><a href="#decode-sensor-data">7 Decode Sensor Data</a></h1>
 <p>TODO</p>
-<p>Based on the <a href="https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">PM1006 Datasheet</a>, we decode the Sensor Data (20 bytes) as follows…</p>
+<p>Based on the <a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">PM1006 Datasheet</a>, we decode the Sensor Data (20 bytes) as follows…</p>
 <div class="example-wrap"><pre class="language-text"><code>Header:   0x16 0x11 0x0B
 Unused:   0x00 0x00
 PM2.5:    0x00 0x36
