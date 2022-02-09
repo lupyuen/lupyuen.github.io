@@ -58,9 +58,9 @@ Connect the sensor to a USB-C Power Cable (not included) and it lights up in __R
 
 | Colour | PM 2.5 (μg/m³) | Air Quality
 | ------ | :------: | -----------
-| Green | 0 - 35 | Good + Low
-| Amber | 36 - 85 | OK + Medium
-| Red | 86 and above | Not good + High
+| Green | 0 - 35 | Good
+| Amber | 36 - 85 | OK
+| Red | 86 and above | Not good
 
 [(Watch it in action on YouTube)](https://youtu.be/wyXb3aSPet4)
 
@@ -459,6 +459,18 @@ TODO8: Cover with Sticky Tape
 ![](https://lupyuen.github.io/images/ikea-solder2.jpg)
 
 TODO11: Solder the REST Pad
+
+Drop a tiny blob of molten solder on the REST Pad
+
+Place the wire on top of the solder blob (now hardened)
+
+Gently tap our Soldering Iron on top of the wire
+
+The wire should sink into the molten blob
+
+Quickly adjust the wire to make sure it doesn't touch any components on the Circuit Board
+
+When cooled, the wire stays in the hardened blob
 
 ![](https://lupyuen.github.io/images/ikea-solder5.jpg)
 
