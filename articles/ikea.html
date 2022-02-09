@@ -144,13 +144,18 @@
 <p>The brilliant folks at ??? discovered that inside the IKEA Sensor is a <a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf"><strong>PM1006 Infrared LED Particle Sensor</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/ikea-datasheet.png" alt="PM1006 Infrared LED Particle Sensor" /></p>
 <p><a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">(From PM1006 Datasheet)</a></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/ikea-datasheet2.png" alt="" /></p>
+<p>The PM1006 Sensor exposes a <strong>UART (Serial) Port</strong> that transmits the PM 2.5 value, encoded like so…</p>
+<p><img src="https://lupyuen.github.io/images/ikea-datasheet2.png" alt="PM1006 Sensor transmits PM 2.5 over UART" /></p>
+<p><a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">(From PM1006 Datasheet)</a></p>
+<p>Let’s wire up the UART Port with a little soldering.</p>
+<p>(FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it sends the PM1006 command to read PM 2.5)</p>
+<p><img src="https://lupyuen.github.io/images/ikea-solder.jpg" alt="Inside the IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <h1 id="solder-uart-port" class="section-header"><a href="#solder-uart-port">2 Solder UART Port</a></h1>
 <p>TODO</p>
+<p>Unscrew the 4 screws on the back of the IKEA Sensor</p>
 <p>We expose the UART Port on IKEA Sensor by soldering these pads…</p>
 <div><table><thead><tr><th align="left">UART Pin</th><th align="center">IKEA Sensor</th><th align="left">Wire Colour</th></tr></thead><tbody>
-<tr><td align="left">UART Tx</td><td align="center">REST</td><td align="left">Blue</td></tr>
+<tr><td align="left">TX</td><td align="center">REST</td><td align="left">Blue</td></tr>
 <tr><td align="left">GND</td><td align="center">GND</td><td align="left">Black</td></tr>
 </tbody></table>
 </div>
