@@ -151,29 +151,40 @@
 <p>(FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it sends the PM1006 command to read the PM 2.5 data)</p>
 <p><img src="https://lupyuen.github.io/images/ikea-solder.jpg" alt="Inside the IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <h1 id="solder-uart-port" class="section-header"><a href="#solder-uart-port">2 Solder UART Port</a></h1>
-<p>TODO</p>
+<p>Follow these steps to <strong>solder the UART Port</strong> on the IKEA VINDRIKTNING Sensor (so we can access the PM 2.5 data)…</p>
 <ol>
 <li>
-<p>Unscrew the 4 screws on the back of the IKEA Sensor</p>
+<p>Unscrew the <strong>4 screws</strong> on the back of the IKEA Sensor</p>
 </li>
 <li>
-<p>Flip open the Back Cover to reveal the Circuit Board</p>
+<p>Flip open the <strong>Back Cover</strong> to reveal the Circuit Board</p>
 <p>(Pic above)</p>
 </li>
 <li>
-<p>We expose the UART Port on IKEA Sensor by soldering these pads…</p>
+<p><strong>Solder these Circular Pads</strong> on the Circuit Board…</p>
 <div><table><thead><tr><th align="left">UART Pin</th><th align="center">IKEA Sensor</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="left">TX</td><td align="center">REST</td><td align="left">Blue</td></tr>
 <tr><td align="left">GND</td><td align="center">GND</td><td align="left">Black</td></tr>
 </tbody></table>
 </div>
 <p>(Pic below)</p>
-<p>Check the Appendix for the soldering steps.</p>
+</li>
+<li>
+<p>Stay clear of the <strong>Surface Mounted Components!</strong></p>
+<p>(Near the GND Pad)</p>
+</li>
+<li>
+<p>Pardon my horrid soldering…</p>
+<p>If you’re curious how I did it, check the Appendix for the <strong>Soldering Steps</strong>.</p>
+<p>(Hint: Use Sticky Tape and very fine Solder Wire)</p>
+</li>
+<li>
+<p>Test our handiwork with a <strong>Multimeter</strong>.</p>
+<p>Note that the REST and GND Pins are exposed as tiny strips at the top of the pic below. Perfect for Multimeter Testing!</p>
 </li>
 </ol>
-<p><a href="https://style.oversubstance.net/2021/08/diy-use-an-ikea-vindriktning-air-quality-sensor-in-home-assistant-with-esphome/">(More details)</a></p>
-<p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/ikea-solder3.jpg" alt="UART Port soldered to IKEA VINDRIKTNING Air Quality Sensor" /></p>
+<p>TODO: Bus Pirate</p>
 <h1 id="connect-to-pinedio-stack-bl604" class="section-header"><a href="#connect-to-pinedio-stack-bl604">3 Connect to PineDio Stack BL604</a></h1>
 <p>TODO</p>
 <p>To transmit the PM 2.5 readings to The Things Network via LoRaWAN, we connect the IKEA Sensor to <a href="https://lupyuen.github.io/articles/pinedio">PineDio Stack BL604</a>…</p>
