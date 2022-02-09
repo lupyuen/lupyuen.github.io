@@ -2,13 +2,35 @@
 
 📝 _16 Feb 2022_
 
-![](https://lupyuen.github.io/images/ikea-title.jpg)
+![IKEA VINDRIKTNING Air Quality Sensor seated on Pine64 PineDio LoRa Gateway](https://lupyuen.github.io/images/ikea-title.jpg)
+
+_[IKEA VINDRIKTNING Air Quality Sensor](https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911) seated on [Pine64 PineDio LoRa Gateway](https://lupyuen.github.io/articles/gateway)_
+
+[__IKEA VINDRIKTNING__](https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911) is a $12 hackable Air Quality Sensor that measures [__PM 2.5 (Particulate Matter__)](https://www.epa.gov/pm-pollution/particulate-matter-pm-basics) reasonably accurately.
+
+Let's connect the IKEA Sensor to a RISC-V Microcontroller Board: [__Pine64 PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) running on [__Apache NuttX__](https://lupyuen.github.io/articles/nuttx) operating system.
+
+_Why are we doing this?_
+
+-   The sensor is __affordable and available__ in our local IKEA store
+
+-   Might be a fun intro to __Embedded Programming!__
+
+-   But some __soldering needed!__ We'll walk through the steps.
+
+-   __Apache NuttX__ is a tiny Linux-like operating system for microcontrollers. So our code will look familiar to Linux coders.
+
+-   Eventually we'll transmit the PM 2.5 data wirelessly over [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) to [__The Things Network__](https://makezine.com/2021/05/24/go-long-with-lora-radio/). (Thanks to the onboard LoRa Transceiver on PineDio Stack)
+
+-   Imagine connecting a community of Air Quality Sensors miles apart... That would be super interesting!
 
 TODO
 
 Source code
 
 -   [__lupyuen/ikea_air_quality_sensor__](https://github.com/lupyuen/ikea_air_quality_sensor)
+
+Arduino, ESPHome
 
 # What's Next
 
@@ -35,14 +57,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor
 
 TODO
-
-TODO1
-
-![](https://lupyuen.github.io/images/ikea-sensor.jpg)
-
-TODO2
-
-![](https://lupyuen.github.io/images/ikea-sensor2.jpg)
 
 TODO3
 
