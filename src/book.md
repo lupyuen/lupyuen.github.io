@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _29 Jan 2022_
+📝 _9 Feb 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,9 +16,9 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(45 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(46 articles and still growing!)__
 
-The programs in these articles have been tested on __PineCone__, but they should work on other __BL602 and BL604 Boards: PineDio Stack (BL604), Pinenut, DT-BL10, MagicHome BL602__.
+The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602__.
 
 Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education! Thanks also to __Bouffalo Lab__ for the encouraging notes.
 
@@ -53,6 +53,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 -   ["ADC and Internal Temperature Sensor Library"](https://github.com/lupyuen/bl602_adc_test)
 
 -   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
+
+-   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
@@ -116,26 +118,6 @@ For __BL602 IoT SDK__
 
 -   ["BL602 GPIO Interrupts"](https://lupyuen.github.io/articles/lora2#bl602-gpio-interrupts)
 
-![PWM on BL602](https://lupyuen.github.io/images/book-pwm.jpg)
-
-# PWM on BL602
-
-Duty Cycle, Frequency and everything else about the __BL602 / BL604 PWM HAL__.
-
-For __BL602 IoT SDK__
-
--   ["From GPIO to Pulse Width Modulation (PWM)"](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm)
-
-![I2C on BL602](https://lupyuen.github.io/images/book-i2c.jpg)
-
-# I2C on BL602
-
-Read an I2C Sensor by calling the __BL602 / BL604 I2C HAL__.
-
-For __BL602 IoT SDK__
-
--   ["PineCone BL602 talks to I2C Sensors"](https://lupyuen.github.io/articles/i2c)
-
 ![SPI on BL602](https://lupyuen.github.io/images/book-spi.jpg)
 
 # SPI on BL602
@@ -156,23 +138,15 @@ For __BL602 IoT SDK__
 
 -   ["Porting LoRa Driver from Mynewt to BL602: SPI"](https://lupyuen.github.io/articles/lora#spi)
 
-![DMA on BL602](https://lupyuen.github.io/images/book-dma.jpg)
-
-# DMA on BL602
-
-How we __accelerate data transfers with DMA__ on BL602 and BL604.
-
-For __BL602 IoT SDK__
-
--   ["SPI with Direct Memory Access"](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
-
--   [Read LED via ADC DMA](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c)
-
 ![UART on BL602](https://lupyuen.github.io/images/book-uart.jpg)
 
 # UART on BL602
 
-UART is used by E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the __BL602 / BL604 UART HAL.__
+UART is used by Air Quality Sensors, E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the __BL602 / BL604 UART HAL.__
+
+For __Apache NuttX OS__
+
+-   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
 
 For __BL602 IoT SDK__
 
@@ -195,6 +169,38 @@ For __BL602 IoT SDK__
 -   ["Internal Temperature Sensor on BL602"](https://lupyuen.github.io/articles/tsen)
 
 -   ["Encode Sensor Data with CBOR on BL602"](https://lupyuen.github.io/articles/cbor)
+
+![PWM on BL602](https://lupyuen.github.io/images/book-pwm.jpg)
+
+# PWM on BL602
+
+Duty Cycle, Frequency and everything else about the __BL602 / BL604 PWM HAL__.
+
+For __BL602 IoT SDK__
+
+-   ["From GPIO to Pulse Width Modulation (PWM)"](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm)
+
+![I2C on BL602](https://lupyuen.github.io/images/book-i2c.jpg)
+
+# I2C on BL602
+
+Read an I2C Sensor by calling the __BL602 / BL604 I2C HAL__.
+
+For __BL602 IoT SDK__
+
+-   ["PineCone BL602 talks to I2C Sensors"](https://lupyuen.github.io/articles/i2c)
+
+![DMA on BL602](https://lupyuen.github.io/images/book-dma.jpg)
+
+# DMA on BL602
+
+How we __accelerate data transfers with DMA__ on BL602 and BL604.
+
+For __BL602 IoT SDK__
+
+-   ["SPI with Direct Memory Access"](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
+
+-   [Read LED via ADC DMA](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c)
 
 ![WiFi on BL602](https://lupyuen.github.io/images/book-wifi.jpg)
 
@@ -415,6 +421,8 @@ For __Apache NuttX OS__
 -   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
 
 -   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
+
+-   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
 
 For __BL602 IoT SDK__
 
