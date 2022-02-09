@@ -66,6 +66,10 @@ TODO6
 
 ![](https://lupyuen.github.io/images/ikea-datasheet2.png)
 
+# Solder UART Port
+
+TODO
+
 # Install App
 
 TODO
