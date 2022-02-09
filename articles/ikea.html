@@ -65,9 +65,23 @@
 
     <h1 class="title">Connect IKEA Air Quality Sensor to Apache NuttX OS</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li>
-<li><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">3 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a><ul></ul></li></ul></nav><p>📝 <em>16 Feb 2022</em></p>
+<li><a href="#about-ikea-air-quality-sensor">1 About IKEA Air Quality Sensor</a><ul></ul></li>
+<li><a href="#install-app">2 Install App</a><ul></ul></li>
+<li><a href="#configure-apache-nuttx-os">3 Configure Apache NuttX OS</a><ul></ul></li>
+<li><a href="#solder-uart-port-on-ikea-sensor">4 Solder UART Port on IKEA Sensor</a><ul></ul></li>
+<li><a href="#connect-to-pinedio-stack-bl604">5 Connect to PineDio Stack BL604</a><ul></ul></li>
+<li><a href="#output-log">6 Output Log</a><ul></ul></li>
+<li><a href="#test-with-bus-pirate">7 Test with Bus Pirate</a><ul>
+<li><a href="#ascii-log">7.1 ASCII Log</a><ul></ul></li>
+<li><a href="#binary-log">7.2 Binary Log</a><ul></ul></li></ul></li>
+<li><a href="#decode-sensor-data">8 Decode Sensor Data</a><ul></ul></li>
+<li><a href="#test-with-apache-nuttx-os">9 Test with Apache NuttX OS</a><ul></ul></li>
+<li><a href="#connect-to-lorawan-and-the-things-network">10 Connect to LoRaWAN and The Things Network</a><ul></ul></li>
+<li><a href="#visualise-with-prometheus-and-grafana">11 Visualise with Prometheus and Grafana</a><ul></ul></li>
+<li><a href="#references">12 References</a><ul></ul></li>
+<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#notes">14 Notes</a><ul></ul></li>
+<li><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">15 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a><ul></ul></li></ul></nav><p>📝 <em>16 Feb 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/ikea-title.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor seated on Pine64 PineDio LoRa Gateway" /></p>
 <p><em><a href="https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911">IKEA VINDRIKTNING Air Quality Sensor</a> seated on <a href="https://lupyuen.github.io/articles/gateway">Pine64 PineDio LoRa Gateway</a></em></p>
 <p><a href="https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911"><strong>IKEA VINDRIKTNING</strong></a> is a $12 hackable Air Quality Sensor that measures <a href="https://www.epa.gov/pm-pollution/particulate-matter-pm-basics"><strong>PM 2.5 (Particulate Matter</strong>)</a> with reasonable accuracy.</p>
@@ -109,7 +123,394 @@
 <p><a href="https://style.oversubstance.net/2021/08/diy-use-an-ikea-vindriktning-air-quality-sensor-in-home-assistant-with-esphome/"><strong>ESPHome on ESP32</strong></a></p>
 </li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="about-ikea-air-quality-sensor" class="section-header"><a href="#about-ikea-air-quality-sensor">1 About IKEA Air Quality Sensor</a></h1>
+<p>TODO</p>
+<p>I found the VINDRIKTNING sensor at my local IKEA Store (IKEA Tampines Singapore), in the Lighting Section, near the Air Purifiers.</p>
+<p>(Wow IKEA has Air Purifiers now)</p>
+<p><a href="https://youtu.be/wyXb3aSPet4">Watch the IKEA Sensor on YouTube</a></p>
+<p>TODO3</p>
+<p><img src="https://lupyuen.github.io/images/ikea-sensor3.jpg" alt="" /></p>
+<p>TODO4</p>
+<p><img src="https://lupyuen.github.io/images/ikea-sensor4.jpg" alt="" /></p>
+<p>TODO5</p>
+<p><img src="https://lupyuen.github.io/images/ikea-datasheet.png" alt="" /></p>
+<p>TODO6</p>
+<p><img src="https://lupyuen.github.io/images/ikea-datasheet2.png" alt="" /></p>
+<h1 id="install-app" class="section-header"><a href="#install-app">2 Install App</a></h1>
+<p>TODO</p>
+<p>To add this repo to your NuttX project…</p>
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx-apps/examples&quot; folder
+pushd nuttx/apps/examples
+git submodule add https://github.com/lupyuen/ikea_air_quality_sensor
+popd</code></pre></div>
+<p>Then update the NuttX Build Config…</p>
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
+cd nuttx/nuttx
+
+# Preserve the Build Config
+cp .config ../config
+
+# Erase the Build Config and Kconfig files
+make distclean
+
+# For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
+
+# Restore the Build Config
+cp ../config .config
+
+# Edit the Build Config
+make menuconfig </code></pre></div>
+<p>In menuconfig, enable the IKEA Air Quality Sensor App under “Application Configuration” → “Examples”.</p>
+<h1 id="configure-apache-nuttx-os" class="section-header"><a href="#configure-apache-nuttx-os">3 Configure Apache NuttX OS</a></h1>
+<p>TODO</p>
+<p>We configure the UART Port on Apache NuttX OS for the IKEA Sensor…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
+<p>Enable UART1:</p>
+<ul>
+<li>Select “System Type → BL602 Peripheral Support”</li>
+<li>Check “UART1”</li>
+</ul>
+<p>Set to 9600 bps:</p>
+<ul>
+<li>Select “Device Drivers → Serial Driver Support → UART1 Configuration”</li>
+<li>Set “BAUD rate” to 9600</li>
+</ul>
+<p>Enable <code>cat</code>:</p>
+<ul>
+<li>Select “Application Configuration → NSH Library → Disable Individual commands”</li>
+<li>Uncheck “Disable cat”</li>
+</ul>
+<p>Build and flash NuttX OS to PineDio Stack BL604.</p>
+<p>IKEA Sensor is now connected to NuttX OS at <code>/dev/ttyS1</code></p>
+<h1 id="solder-uart-port-on-ikea-sensor" class="section-header"><a href="#solder-uart-port-on-ikea-sensor">4 Solder UART Port on IKEA Sensor</a></h1>
+<p>We expose the UART Port on IKEA Sensor by soldering these pads…</p>
+<div><table><thead><tr><th align="left">UART Pin</th><th align="center">IKEA Sensor</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<tr><td align="left">UART Tx</td><td align="center">REST</td><td align="left">Blue</td></tr>
+<tr><td align="left">GND</td><td align="center">GND</td><td align="left">Black</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://twitter.com/MisterTechBlog/status/1489506811321282565?t=uW3yDgeLLXhf4x3wjmC2HA&amp;s=19">See the soldering steps</a></p>
+<p><a href="https://style.oversubstance.net/2021/08/diy-use-an-ikea-vindriktning-air-quality-sensor-in-home-assistant-with-esphome/">(More details)</a></p>
+<h1 id="connect-to-pinedio-stack-bl604" class="section-header"><a href="#connect-to-pinedio-stack-bl604">5 Connect to PineDio Stack BL604</a></h1>
+<p>TODO</p>
+<p>To transmit the PM 2.5 readings to The Things Network via LoRaWAN, we connect the IKEA Sensor to <a href="https://lupyuen.github.io/articles/pinedio">PineDio Stack BL604</a>…</p>
+<div><table><thead><tr><th align="center">Function</th><th align="center">GPIO</th><th align="center">PineDio Stack</th><th align="center">IKEA Sensor</th><th align="center">Wire Colour</th></tr></thead><tbody>
+<tr><td align="center">RX</td><td align="center">GPIO 3</td><td align="center">14</td><td align="center">REST</td><td align="center">Blue</td></tr>
+<tr><td align="center">TX</td><td align="center">GPIO 4</td><td align="center">13</td><td align="center">Unused</td><td align="center"></td></tr>
+<tr><td align="center">GND</td><td align="center">GND</td><td align="center">20</td><td align="center">GND</td><td align="center">Black</td></tr>
+</tbody></table>
+</div>
+<p>Connect USB Ports of IKEA Sensor and PineDio Stack BL604 to the same computer. Remember: Only One Power Source!</p>
+<p>PineDio Stack BL604 has a onboard Semtech SX1262 LoRa Transceiver, so it talks to LoRaWAN and The Things Network.</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3">(More about LoRaWAN On PineDio Stack)</a></p>
+<h1 id="output-log" class="section-header"><a href="#output-log">6 Output Log</a></h1>
+<p>TODO</p>
+<p>Run the following command to test the IKEA Sensor on NuttX OS…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ikea_air_quality_sensor
+16  11  0b  00  00  00  17  00  00  02  ff  00  00  00  21  02  00  00  0b  88
+Got PM2.5 Concentration: 23 µg/m³
+16  11  0b  00  00  00  17  00  00  02  ff  00  00  00  21  02  00  00  0b  88
+Got PM2.5 Concentration: 23 µg/m³
+16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  03  00  00  00  22  02  00  00  0b  81
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  02  00  00  00  22  02  00  00  0b  82
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  02  00  00  00  22  02  00  00  0b  82
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  02  00  00  00  22  02  00  00  0b  82
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  03  00  00  00  22  02  00  00  0b  81
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  03  00  00  00  22  02  00  00  0b  81
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  18  00  00  03  02  00  00  00  22  02  00  00  0b  82
+Got PM2.5 Concentration: 24 µg/m³
+16  11  0b  00  00  00  17  00  00  03  01  00  00  00  21  02  00  00  0b  85
+Got PM2.5 Concentration: 23 µg/m³
+16  11  0b  00  00  00  17  00  00  03  00  00  00  00  21  02  00  00  0b  86
+Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
+<p><a href="https://youtu.be/dUHlG67pB3M">Watch the demo on YouTube</a></p>
+<h1 id="test-with-bus-pirate" class="section-header"><a href="#test-with-bus-pirate">7 Test with Bus Pirate</a></h1>
+<p>TODO</p>
+<p>Before testing with Apache NuttX OS, we sniffed the IKEA Sensor’s UART Port with Bus Pirate. Connect Bus Pirate to IKEA Sensor as follows…</p>
+<div><table><thead><tr><th align="left">Bus Pirate</th><th align="center">IKEA Sensor</th><th align="left">Wire Colour</th></tr></thead><tbody>
+<tr><td align="left">Data In (MISO)</td><td align="center">REST</td><td align="left">Blue</td></tr>
+<tr><td align="left">GND</td><td align="center">GND</td><td align="left">Black</td></tr>
+</tbody></table>
+</div>
+<p>Connect USB Ports of IKEA Sensor and Bus Pirate to the same computer. Remember: Only One Power Source!</p>
+<p>Enter these Bus Pirate commands to capture the UART output from IKEA Sensor (9600 bps, 8 bits, no parity, 1 stop bit)…</p>
+<div class="example-wrap"><pre class="language-text"><code>HiZ&gt;m
+1. HiZ
+2. 1-WIRE
+3. UART
+4. I2C
+5. SPI
+6. 2WIRE
+7. 3WIRE
+8. KEYB
+9. LCD
+10. PIC
+11. DIO
+x. exit(without change)
+
+(1)&gt;3
+Set serial port speed: (bps)
+ 1. 300
+ 2. 1200
+ 3. 2400
+ 4. 4800
+ 5. 9600
+ 6. 19200
+ 7. 38400
+ 8. 57600
+ 9. 115200
+10. Input Custom BAUD
+11. Auto-Baud Detection (Activity Required)
+
+(1)&gt;5
+Data bits and parity:
+ 1. 8, NONE *default 
+ 2. 8, EVEN 
+ 3. 8, ODD 
+ 4. 9, NONE
+(1)&gt;
+Stop bits:
+ 1. 1 *default
+ 2. 2
+(1)&gt;
+Receive polarity:
+ 1. Idle 1 *default
+ 2. Idle 0
+(1)&gt;
+Select output type:
+ 1. Open drain (H=Hi-Z, L=GND)
+ 2. Normal (H=3.3V, L=GND)
+
+(1)&gt;
+Clutch disengaged!!!
+To finish setup, start up the power supplies with command &#39;W&#39;
+
+Ready
+UART&gt;W
+POWER SUPPLIES ON
+Clutch engaged!!!</code></pre></div>
+<p><a href="https://youtu.be/QOJF6hAhFv4">Watch the demo on YouTube</a></p>
+<p>See below for the ASCII and Binary Logs.</p>
+<p><a href="http://dangerousprototypes.com/docs/UART">(More about Bus Pirate interfacing with UART)</a></p>
+<h2 id="ascii-log" class="section-header"><a href="#ascii-log">7.1 ASCII Log</a></h2>
+<p>TODO</p>
+<p>ASCII Log of UART Output from IKEA Sensor…</p>
+<p><a href="https://youtu.be/QOJF6hAhFv4">Watch the demo on YouTube</a></p>
+<div class="example-wrap"><pre class="language-text"><code>UART&gt;(2)
+Raw UART input
+Any key to exit
+
+&lt;@:
+   &lt;B:
+[6C:;8
+[9C:;8
+[12C9:7 
+[16C997!
+[20C987&quot;
+[24C876%
+[28C876%
+[32C876%
+[36C866&amp;
+[40C856&#39;
+[44C745*
+[48C745*
+[52C745*
+[56C745*
+[60C735+
+[64C614/
+[68C614/
+[72C614/
+[76C614/
+[79C
+[37;80H 624.
+[4C624.
+[8C624.
+[12C614/
+[16C614/
+[20C614/
+[24C6040
+[28C6040
+[32C5/33
+[36C5.34
+[40C4,28
+[44C4,28
+[48C5-35
+[52C5.34
+[56C5.34
+[60C5-35
+[64C4,28
+[68C2%0C
+[72C2%0C
+[76C2&amp;0B
+[79C
+[37;80H 2&#39;0A
+[4C3)1=
+[8C3*1&lt;
+[12C4+29</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/f40454dda8e3d7f279fb6ef721add465">(See the complete log)</a></p>
+<h2 id="binary-log" class="section-header"><a href="#binary-log">7.2 Binary Log</a></h2>
+<p>TODO</p>
+<p>Binary Log of UART Output from IKEA Sensor…</p>
+<div class="example-wrap"><pre class="language-text"><code>UART&gt;{
+UART LIVE DISPLAY, } TO STOP
+UART&gt;
+READ: -f 0x00
+UART&gt;
+READ: -f 0x00
+UART&gt;
+READ: -f 0x00
+UART&gt;
+READ: 0x16
+UART&gt;
+READ: 0x11
+UART&gt;
+READ: 0x0B
+UART&gt;
+READ: 0x00
+UART&gt;
+READ: 0x00
+UART&gt;
+READ: 0x00
+UART&gt;
+READ: 0x3D
+UART&gt;
+READ: 0x00
+UART&gt;
+READ: 0x00
+UART&gt;
+READ: 0x03
+UART&gt;
+READ: 0x45
+UART&gt;
+READ: 0x00
+UART&gt;
+READ: 0x00
+UART&gt;
+READ: 0x00
+UART&gt;
+READ: 0x3B
+UART&gt;
+READ: 0x01
+UART&gt;
+READ: 0x00
+UART&gt;
+READ: 0x00
+UART&gt;</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810">(See the complete log)</a></p>
+<p><a href="https://gist.github.com/lupyuen/ebe4c0628fc9ea2e124e6f00d8246b49">(Another binary log)</a></p>
+<h1 id="decode-sensor-data" class="section-header"><a href="#decode-sensor-data">8 Decode Sensor Data</a></h1>
+<p>TODO</p>
+<p>Based on the <a href="https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">PM1006 Datasheet</a>, we decode the Sensor Data (20 bytes) as follows…</p>
+<div class="example-wrap"><pre class="language-text"><code>Header:   0x16 0x11 0x0B
+Unused:   0x00 0x00
+PM2.5:    0x00 0x36
+Unused:   0x00 0x00 0x03 0x32 0x00 0x00
+Unused:   0x00 0x34 0x01 0x00 0x00 0x00
+Checksum: 0x2E</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810#file-ikea-binary-log-L7705-L7743">(Source)</a></p>
+<p>This gives the PM 2.5 value of 54 (<code>0x0036</code>).</p>
+<p>To validate the Checksum, all 20 bytes must add up to 0.</p>
+<p><a href="https://github.com/arendst/Tasmota/issues/13012">(More details)</a></p>
+<p><a href="https://community.home-assistant.io/t/ikea-vindriktning-air-quality-sensor/324599">(And this)</a></p>
+<p><a href="https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96">(ESPHome Source Code)</a></p>
+<p><a href="https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63">(Arduino Source Code)</a></p>
+<h1 id="test-with-apache-nuttx-os" class="section-header"><a href="#test-with-apache-nuttx-os">9 Test with Apache NuttX OS</a></h1>
+<p>TODO</p>
+<p>Here’s a quick way to test the IKEA Sensor with NuttX OS. Enter these NuttX commands to read the UART port and dump the data…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /dev
+/dev:
+ console
+ gpio0
+ gpio1
+ gpio2
+ null
+ spi0
+ spitest0
+ timer0
+ ttyS1
+ urandom
+ zero
+nsh&gt; cat /dev/ttyS1
+
+3(1&gt;
+    2&#39;0A
+        2%0C
+            1$/F
+                .,T
+                   .,T
+                      .
+                       .,V
+                          .,V
+                             -+Y
+                                -+Y</code></pre></div>
+<p><a href="https://youtu.be/iFf8_f7ExUI">Watch the demo on YouTube</a></p>
+<p>To see the binary data, modify the GPS Demo App: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/examples/gps/gps_main.c">gps_main.c</a>…</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Read until we complete a line */
+cnt = 0;
+do
+  {
+    read(fd, &amp;ch, 1);
+    //  Insert this line to dump the data in hex:
+    printf(&quot;%02x  &quot;, ch);</code></pre></div>
+<p>Build and run the modified GPS Demo App…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; gps
+00  00  
+16  11  0b  00  00  00  39  00  00  03  39  00  00  00  37  01  00  00  00  21  
+16  11  0b  00  00  00  2b  00  00  03  17  00  00  00  29  01  00  00  00  5f  
+16  11  0b  00  00  00  32  00  00  03  26  00  00  00  30  01  00  00  00  42 
+16  11  0b  00  00  00  31  00  00  03  24  00  00  00  2f  01  00  00  00  46  
+16  11  0b  00  00  00  31  00  00  03  24  00  00  00  2f  01  00  00  00  46  
+16  11  0b  00  00  00  31  00  00  03  23  00  00  00  2f  01  00  00  00  47  
+16  11  0b  00  00  00  31  00  00  03  22  00  00  00  2f  01  00  00  00  48  
+16  11  0b  00  00  00  30  00  00  03  21  00  00  00  2e  01  00  00  00  4b  
+16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
+16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
+16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
+16  11  0b  00  00  00  2f  00  00  03  1e  00  00  00  2d  01  00  00  00  50  
+16  11  0b  00  00  00  2f  00  00  03  1e  00  00  00  2d  01  00  00  00  50  
+16  11  0b  00  00  00  2f  00  00  03  1d  00  00  00  2d  01  00  00  00  51  
+16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54  
+16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54  
+16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54</code></pre></div>
+<p><a href="https://youtu.be/TyG-dJCx8OQ">Watch the demo on YouTube</a></p>
+<p>Yep we see the 20-byte frames of Sensor Data, and the PM 2.5 encoded inside!</p>
+<p>PM 2.5 = 46 (<code>0x002e</code>)</p>
+<h1 id="connect-to-lorawan-and-the-things-network" class="section-header"><a href="#connect-to-lorawan-and-the-things-network">10 Connect to LoRaWAN and The Things Network</a></h1>
+<p>TODO</p>
+<h1 id="visualise-with-prometheus-and-grafana" class="section-header"><a href="#visualise-with-prometheus-and-grafana">11 Visualise with Prometheus and Grafana</a></h1>
+<p>TODO</p>
+<h1 id="references" class="section-header"><a href="#references">12 References</a></h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://style.oversubstance.net/2021/08/diy-use-an-ikea-vindriktning-air-quality-sensor-in-home-assistant-with-esphome/">“Use an IKEA VINDRIKTNING air quality sensor in Home Assistant with ESPHome”</a></p>
+</li>
+<li>
+<p><a href="https://www.ikea.com/us/en/manuals/vindriktning-air-quality-sensor__AA-2289325-1.pdf">IKEA VINDRIKTNING Manual</a></p>
+</li>
+</ul>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -128,20 +529,11 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ikea.md"><code>lupyuen.github.io/src/ikea.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1490147828458405889">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor" class="section-header"><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">3 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a></h1>
-<p>TODO</p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/ikea-sensor3.jpg" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/ikea-sensor4.jpg" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/ikea-datasheet.png" alt="" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/ikea-datasheet2.png" alt="" /></p>
+<h1 id="appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor" class="section-header"><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">15 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a></h1>
 <p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/ikea-solder.jpg" alt="" /></p>
 <p>TODO8</p>
@@ -178,6 +570,7 @@
 <p><img src="https://lupyuen.github.io/images/ikea-code5.png" alt="" /></p>
 <p>TODO24</p>
 <p><img src="https://lupyuen.github.io/images/ikea-trek.png" alt="" /></p>
+<p><em>Trekking 13 km to IKEA on the horizon</em></p>
 
     
 </body>
