@@ -76,19 +76,29 @@ The brilliant folks at ??? discovered that inside the IKEA Sensor is a [__PM1006
 
 [(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
 
-TODO6
+The PM1006 Sensor exposes a __UART (Serial) Port__ that transmits the PM 2.5 value, encoded like so...
 
-![](https://lupyuen.github.io/images/ikea-datasheet2.png)
+![PM1006 Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet2.png)
+
+[(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
+
+Let's wire up the UART Port with a little soldering.
+
+(FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it sends the PM1006 command to read PM 2.5)
+
+![Inside the IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-solder.jpg)
 
 # Solder UART Port
 
 TODO
 
+Unscrew the 4 screws on the back of the IKEA Sensor
+
 We expose the UART Port on IKEA Sensor by soldering these pads...
 
 | UART Pin | IKEA Sensor | Wire Colour
 |:---|:--:|:---
-| UART Tx | REST | Blue
+| TX | REST | Blue
 | GND | GND | Black
 
 [See the soldering steps](https://twitter.com/MisterTechBlog/status/1489506811321282565?t=uW3yDgeLLXhf4x3wjmC2HA&s=19)
