@@ -90,7 +90,7 @@ To access the PM 2.5 data, let's wire up the UART Port with a little soldering.
 
 # Solder UART Port
 
-Follow these steps to __solder the UART Port__ on the IKEA VINDRIKTNING Sensor (so we can access the PM 2.5 data)...
+Follow these steps to __solder the UART (Serial) Port__ on the IKEA VINDRIKTNING Sensor (so we can access the PM 2.5 data)...
 
 1.  Unscrew the __4 screws__ on the back of the IKEA Sensor
 
@@ -100,9 +100,9 @@ Follow these steps to __solder the UART Port__ on the IKEA VINDRIKTNING Sensor (
 
 1.  __Solder these Circular Pads__ on the Circuit Board...
 
-    | UART Pin | IKEA Sensor | Wire Colour
-    |:---|:--:|:---
-    | TX | REST | Blue
+    | IKEA Sensor | UART Pin | Wire Colour
+    |:--:|:--:|:--:
+    | REST | TX | Blue
     | GND | GND | Black
 
     (Pic below)
@@ -444,9 +444,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
-Very fine Solder Wire
+Use very fine Solder Wire for tiny blobs of solder
 
-22 AWG Solid Core
+22 AWG Solid Core Wire
 
 TODO7
 
