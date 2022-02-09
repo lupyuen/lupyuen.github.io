@@ -125,6 +125,8 @@ Follow these steps to __solder the UART Port__ on the IKEA VINDRIKTNING Sensor (
 
 TODO: Bus Pirate
 
+![IKEA VINDRIKTNING Air Quality Sensor connected to Bus Pirate](https://lupyuen.github.io/images/ikea-buspirate.jpg)
+
 # Connect to PineDio Stack BL604
 
 TODO
@@ -446,19 +448,19 @@ TODO7
 
 ![](https://lupyuen.github.io/images/ikea-solder.jpg)
 
-TODO8
+TODO8: Cover with Sticky Tape
 
 ![](https://lupyuen.github.io/images/ikea-solder2.jpg)
 
-TODO11
+TODO11: Solder the REST Pad
 
 ![](https://lupyuen.github.io/images/ikea-solder5.jpg)
 
-TODO9
+TODO9: Cover the REST Pad. Solder the GND Pad.
 
 ![](https://lupyuen.github.io/images/ikea-solder3.jpg)
 
-TODO10
+TODO10: Result
 
 ![](https://lupyuen.github.io/images/ikea-solder4.jpg)
 
@@ -665,7 +667,7 @@ UART>
 
 TODO12
 
-![](https://lupyuen.github.io/images/ikea-buspirate.jpg)
+![IKEA VINDRIKTNING Air Quality Sensor connected to Bus Pirate](https://lupyuen.github.io/images/ikea-buspirate.jpg)
 
 TODO13
 
