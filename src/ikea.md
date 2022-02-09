@@ -10,6 +10,8 @@ _[IKEA VINDRIKTNING Air Quality Sensor](https://www.ikea.com/us/en/p/vindriktnin
 
 Let's connect the IKEA Sensor to a RISC-V Microcontroller Board: [__Pine64 PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) running on [__Apache NuttX__](https://lupyuen.github.io/articles/nuttx) operating system.
 
+(Our code will run on ESP32 too)
+
 _Why are we doing this?_
 
 -   The sensor is __affordable and available__ in our local IKEA store
