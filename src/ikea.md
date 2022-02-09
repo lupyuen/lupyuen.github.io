@@ -24,13 +24,11 @@ _Why are we doing this?_
 
 -   Imagine connecting a community of Air Quality Sensors miles apart (because of LoRa's long range). That would be super interesting!
 
-TODO
-
-Source code
+In a while we'll dive into the Source Code that connects the IKEA Sensor...
 
 -   [__lupyuen/ikea_air_quality_sensor__](https://github.com/lupyuen/ikea_air_quality_sensor)
 
-Arduino, ESPHome
+TODO: Arduino, ESPHome
 
 # What's Next
 
