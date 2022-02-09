@@ -32,7 +32,13 @@ In a while we'll dive into the code that talks to the IKEA Sensor...
 
 But first let's solder and wire up the IKEA Sensor!
 
-TODO: Arduino, ESPHome
+_Will it work with Arduino?_
+
+Check out these projects...
+
+-   [__esp8266-vindriktning-particle-sensor__](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor)
+
+-   [__ESPHome on ESP32__](https://style.oversubstance.net/2021/08/diy-use-an-ikea-vindriktning-air-quality-sensor-in-home-assistant-with-esphome/)
 
 # What's Next
 
