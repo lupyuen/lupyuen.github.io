@@ -68,7 +68,7 @@ Connect the sensor to a USB-C Power Cable (not included) and it lights up in __R
 
 _Huh? This sensor outputs only 3 levels of Air Quality?_
 
-Actually the sensor is capable of measuring PM 2.5 from __0 to 1000 μg/m³__... Just that we need to __wire it ourselves__ to get the PM 2.5 value.
+Actually the sensor is capable of measuring PM 2.5 from __0 to 1,000 μg/m³__... Just that we need to __wire it ourselves__ to get the PM 2.5 value.
 
 The brilliant folks at the [__Home Assistant Project__](https://community.home-assistant.io/t/ikea-vindriktning-air-quality-sensor/324599) discovered that inside the IKEA Sensor is a [__PM1006 Infrared LED Particle Sensor__](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)...
 
@@ -82,9 +82,9 @@ The PM1006 Sensor exposes a __UART (Serial) Port__ that transmits the PM 2.5 val
 
 [(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
 
-To access the PM 2.5 data, let's wire up the UART Port with a little soldering.
+To get the PM 2.5 data, let's wire up the UART Port with a little soldering.
 
-(FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it sends the PM1006 command to read the PM 2.5 data)
+(FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it triggers the PM1006 command that measures PM 2.5)
 
 ![Inside the IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-solder.jpg)
 
