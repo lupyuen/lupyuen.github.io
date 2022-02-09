@@ -14,7 +14,7 @@ Let's connect the IKEA Sensor to a RISC-V Microcontroller Board: [__Pine64 PineD
 
 _Why are we doing this?_
 
--   The sensor is __affordable and available__ in our local IKEA store
+-   The sensor is __affordable and available__ at our local IKEA store
 
 -   Might be a fun intro to __Embedded Programming__
 
@@ -444,6 +444,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor
 
+TODO
+
+Very fine Solder Wire
+
+22 AWG Solid Core
+
 TODO7
 
 ![](https://lupyuen.github.io/images/ikea-solder.jpg)
@@ -675,6 +681,6 @@ TODO13
 
 TODO
 
-![Trekking 13 km to IKEA on the horizon](https://lupyuen.github.io/images/ikea-trek.png)
+![Trekking 13 km to IKEA on the horizon in search of VINDRIKTNING](https://lupyuen.github.io/images/ikea-trek.png)
 
-_Trekking 13 km to IKEA on the horizon_
+_Trekking 13 km to IKEA on the horizon in search of VINDRIKTNING_
