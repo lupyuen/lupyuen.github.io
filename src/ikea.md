@@ -46,25 +46,35 @@ Check out these projects...
 
 # About IKEA Air Quality Sensor
 
-TODO
+I found the VINDRIKTNING sensor at my local IKEA Store (IKEA Tampines Singapore) in the Lighting Section...
 
-I found the VINDRIKTNING sensor at my local IKEA Store (IKEA Tampines Singapore), in the Lighting Section, near the Air Purifiers.
+(Near the Air Purifiers. Wow IKEA has Air Purifiers now)
 
-(Wow IKEA has Air Purifiers now)
+![IKEA VINDRIKTNING Air Quality Sensor at IKEA Tampines Singapore](https://lupyuen.github.io/images/ikea-sensor3.jpg)
 
-[Watch the IKEA Sensor on YouTube](https://youtu.be/wyXb3aSPet4)
+Connect the sensor to a USB-C Power Cable (not included) and it lights up in __Red, Amber or Green__...
 
-TODO3
+![IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-sensor4.jpg)
 
-![](https://lupyuen.github.io/images/ikea-sensor3.jpg)
+| Colour | PM 2.5 (μg/m³) | Air Quality
+| ------ | :------: | -----------
+| Green | 0 - 35 | Good + Low
+| Amber | 36 - 85 | OK + Medium
+| Red | 86 and above | Not good + High
 
-TODO4
+[(Watch it in action on YouTube)](https://youtu.be/wyXb3aSPet4)
 
-![](https://lupyuen.github.io/images/ikea-sensor4.jpg)
+[(IKEA VINDRIKTNING Manual)](https://www.ikea.com/us/en/manuals/vindriktning-air-quality-sensor__AA-2289325-1.pdf)
 
-TODO5
+_Huh? This sensor only outputs 3 values?_
 
-![](https://lupyuen.github.io/images/ikea-datasheet.png)
+Actually the sensor is capable of measuring PM 2.5 from __0 to 1000 μg/m³__... Just that we need to __wire it ourselves__ to get the PM 2.5 value.
+
+The brilliant folks at ??? discovered that inside the IKEA Sensor is a [__PM1006 Infrared LED Particle Sensor__](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)...
+
+![PM1006 Infrared LED Particle Sensor](https://lupyuen.github.io/images/ikea-datasheet.png)
+
+[(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
 
 TODO6
 
@@ -254,7 +264,7 @@ TODO23
 
 TODO
 
-Based on the [PM1006 Datasheet](https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf), we decode the Sensor Data (20 bytes) as follows...
+Based on the [PM1006 Datasheet](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf), we decode the Sensor Data (20 bytes) as follows...
 
 ```text
 Header:   0x16 0x11 0x0B
