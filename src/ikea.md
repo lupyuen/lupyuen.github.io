@@ -22,7 +22,7 @@ _Why are we doing this?_
 
 -   Eventually we'll transmit the PM 2.5 data wirelessly over [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) to [__The Things Network__](https://makezine.com/2021/05/24/go-long-with-lora-radio/). (Thanks to the onboard LoRa Transceiver on PineDio Stack)
 
--   Imagine connecting a community of Air Quality Sensors miles apart... That would be super interesting!
+-   Imagine connecting a community of Air Quality Sensors miles apart (because of LoRa's long range). That would be super interesting!
 
 TODO
 
