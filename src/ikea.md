@@ -90,15 +90,15 @@ To access the PM 2.5 data, let's wire up the UART Port with a little soldering.
 
 # Solder UART Port
 
-TODO
+Follow these steps to __solder the UART Port__ on the IKEA VINDRIKTNING Sensor (so we can access the PM 2.5 data)...
 
-1.  Unscrew the 4 screws on the back of the IKEA Sensor
+1.  Unscrew the __4 screws__ on the back of the IKEA Sensor
 
-1.  Flip open the Back Cover to reveal the Circuit Board
+1.  Flip open the __Back Cover__ to reveal the Circuit Board
 
     (Pic above)
 
-1.  We expose the UART Port on IKEA Sensor by soldering these pads...
+1.  __Solder these Circular Pads__ on the Circuit Board...
 
     | UART Pin | IKEA Sensor | Wire Colour
     |:---|:--:|:---
@@ -107,13 +107,23 @@ TODO
 
     (Pic below)
 
-    Check the Appendix for the soldering steps.
+1.  Stay clear of the __Surface Mounted Components!__
 
-[(More details)](https://style.oversubstance.net/2021/08/diy-use-an-ikea-vindriktning-air-quality-sensor-in-home-assistant-with-esphome/)
+    (Near the GND Pad)
 
-TODO9
+1.  Pardon my horrid soldering...
+
+    If you're curious how I did it, check the Appendix for the __Soldering Steps__.
+
+    (Hint: Use Sticky Tape and very fine Solder Wire)
+
+1.  Test our handiwork with a __Multimeter__.
+
+    Note that the REST and GND Pins are exposed as tiny strips at the top of the pic below. Perfect for Multimeter Testing!
 
 ![UART Port soldered to IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-solder3.jpg)
+
+TODO: Bus Pirate
 
 # Connect to PineDio Stack BL604
 
