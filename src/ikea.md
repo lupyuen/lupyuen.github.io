@@ -14,7 +14,7 @@ _Why are we doing this?_
 
 -   The sensor is __affordable and available__ in our local IKEA store
 
--   Might be a fun intro to __Embedded Programming!__
+-   Might be a fun intro to __Embedded Programming__
 
 -   But some __soldering needed!__ We'll walk through the steps.
 
@@ -28,7 +28,7 @@ In a while we'll dive into the code that talks to the IKEA Sensor...
 
 -   [__lupyuen/ikea_air_quality_sensor__](https://github.com/lupyuen/ikea_air_quality_sensor)
 
-But first let's do some soldering!
+But first let's solder and wire up the IKEA Sensor!
 
 TODO: Arduino, ESPHome
 
