@@ -66,7 +66,7 @@ Connect the sensor to a USB-C Power Cable (not included) and it lights up in __R
 
 [(IKEA VINDRIKTNING Manual)](https://www.ikea.com/us/en/manuals/vindriktning-air-quality-sensor__AA-2289325-1.pdf)
 
-_Huh? This sensor only outputs 3 values?_
+_Huh? This sensor outputs only 3 levels of Air Quality?_
 
 Actually the sensor is capable of measuring PM 2.5 from __0 to 1000 μg/m³__... Just that we need to __wire it ourselves__ to get the PM 2.5 value.
 
