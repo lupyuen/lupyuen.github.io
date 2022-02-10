@@ -306,9 +306,7 @@ Let's jump into __frame_is_valid__ and __process_frame__.
 
 ## Validate Sensor Data
 
-TODO
-
-From [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L79-L102)
+This is how we __validate the Sensor Data Frame__: [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L79-L102)
 
 ```c
 //  Header for Sensor Data Frame
@@ -324,7 +322,9 @@ static bool frame_is_valid(void) {
   }
 ```
 
-TODO
+We verify that the Sensor Data Frame contains the __Header: `16 11 0B`__
+
+Next we __sum up all the bytes__ in the Sensor Data Frame...
 
 ```c
   //  Compute sum of all bytes in the frame
@@ -334,7 +334,9 @@ TODO
   }
 ```
 
-TODO
+(Including the Checksum at the last byte)
+
+And we verify that the __sum is 0__...
 
 ```c
   //  All bytes must add to 0 (because of checksum at the last byte)
@@ -345,7 +347,7 @@ TODO
   }
 ```
 
-TODO
+Now that the Sensor Data Frame is __complete and valid__...
 
 ```c
   //  We have received a complete and valid response frame
@@ -353,27 +355,29 @@ TODO
 }
 ```
 
-TODO
+We proceed to process the PM 2.5 data inside the frame.
 
 ![Validate Sensor Data](https://lupyuen.github.io/images/ikea-code3.png)
 
 ## Process Sensor Data
 
-TODO
-
-From [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L104-L114)
+To process the Sensor Data Frame, we extract the __PM 2.5 value__ from the frame: [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L104-L114)
 
 ```c
 //  Process the PM 2.5 data in the Sensor Data Frame
 static void process_frame(void) {
+
   //  frame[3..4] is unused
   //  frame[5..6] is our PM2.5 reading
   //  In the datasheet, frame[3..6] is called DF1-DF4:
   //  http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf
-  const int pm_2_5_concentration = frame[5] * 256 + frame[6];
+
+  const int pm_2_5_concentration = 
+    frame[5] * 256 + 
+    frame[6];
 ```
 
-TODO
+Right now we're not really using the PM 2.5 data...
 
 ```c
   //  TODO: Transmit the sensor data
@@ -381,9 +385,11 @@ TODO
 }
 ```
 
-TODO
+But in the next article we'll transmit the data wirelessly over [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) to [__The Things Network__](https://makezine.com/2021/05/24/go-long-with-lora-radio/).
 
-The code in our NuttX App was inspired by the [Arduino](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63) and [ESPHome](https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96) modules for the IKEA Sensor.
+(Thanks to the onboard LoRa Transceiver on PineDio Stack)
+
+The code in our NuttX App was inspired by the [__Arduino__](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63) and [__ESPHome__](https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96) modules for the IKEA Sensor.
 
 ![Process Sensor Data](https://lupyuen.github.io/images/ikea-code4.png)
 
