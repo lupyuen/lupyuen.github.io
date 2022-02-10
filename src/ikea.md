@@ -175,7 +175,7 @@ It looks messy with 2 USB Cables hanging off our computer, but we'll live with i
 
 # NuttX App
 
-We're all set to read the PM 2.5 data from the IKEA Air Quality Sensor!
+We're all ready to read the PM 2.5 data from the IKEA Air Quality Sensor!
 
 Let's dive into the Source Code of our NuttX App that will __read and process the PM 2.5 data__...
 
@@ -189,60 +189,45 @@ But first: What's inside the PM 2.5 data?
 
 ## Sensor Data Frame
 
-TODO
+The IKEA Sensor transmits a stream of __Sensor Data__ that looks like this...
 
 ```text
-nsh> gps
-00  00  
-16  11  0b  00  00  00  39  00  00  03  39  00  00  00  37  01  00  00  00  21  
-16  11  0b  00  00  00  2b  00  00  03  17  00  00  00  29  01  00  00  00  5f  
-16  11  0b  00  00  00  32  00  00  03  26  00  00  00  30  01  00  00  00  42 
-16  11  0b  00  00  00  31  00  00  03  24  00  00  00  2f  01  00  00  00  46  
-16  11  0b  00  00  00  31  00  00  03  24  00  00  00  2f  01  00  00  00  46  
-16  11  0b  00  00  00  31  00  00  03  23  00  00  00  2f  01  00  00  00  47  
-16  11  0b  00  00  00  31  00  00  03  22  00  00  00  2f  01  00  00  00  48  
-16  11  0b  00  00  00  30  00  00  03  21  00  00  00  2e  01  00  00  00  4b  
-16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
-16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
-16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
-16  11  0b  00  00  00  2f  00  00  03  1e  00  00  00  2d  01  00  00  00  50  
-16  11  0b  00  00  00  2f  00  00  03  1e  00  00  00  2d  01  00  00  00  50  
-16  11  0b  00  00  00  2f  00  00  03  1d  00  00  00  2d  01  00  00  00  51  
-16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54  
-16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54  
-16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54
+16  11  0B  00  00  00  17  00  00  02  FF  00  00  00  21  02  00  00  0B  88
+16  11  0B  00  00  00  17  00  00  02  FF  00  00  00  21  02  00  00  0B  88
+16  11  0B  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0B  80
+16  11  0B  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0B  80
 ```
 
 [(Watch the demo on YouTube)](https://youtu.be/TyG-dJCx8OQ)
 
-Yep we see the 20-byte frames of Sensor Data, and the PM 2.5 encoded inside!
+See the pattern? The data comes in chunks of __20 bytes__. Let's call it a __Sensor Data Frame__.
 
-PM 2.5 = 46 (`0x002e`)
-
-Based on the [PM1006 Datasheet](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf), we decode the Sensor Data (20 bytes) as follows...
+Each Sensor Data Frame __starts with this header__...
 
 ```text
-Header:   0x16 0x11 0x0B
-Unused:   0x00 0x00
-PM2.5:    0x00 0x36
-Unused:   0x00 0x00 0x03 0x32 0x00 0x00
-Unused:   0x00 0x34 0x01 0x00 0x00 0x00
-Checksum: 0x2E
+16  11  0B
 ```
 
-[(Source)](https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810#file-ikea-binary-log-L7705-L7743)
+If we look back at the [__PM1006 Datasheet__](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf) (pic above), we realise that the 20-byte Sensor Data Frame ("Response") may be decoded like so...
 
-This gives the PM 2.5 value of 54 (`0x0036`).
+| Field | Value
+| :--- | :---
+| Header | `16 11 0B`
+| _(Unused)_ | `00 00`
+| __PM 2.5__ | __`00 17`__
+| _(Unused)_ | `00 00 02 FF 00 00`
+| _(Unused)_ | `00 21 02 00 00 0B`
+| Checksum | `88`
 
-To validate the Checksum, all 20 bytes must add up to 0.
+This gives the __PM 2.5 value of 23__ (`0x0017`).
 
-[(More details)](https://github.com/arendst/Tasmota/issues/13012)
+_What about the Checksum?_
 
-[(And this)](https://community.home-assistant.io/t/ikea-vindriktning-air-quality-sensor/324599)
+To validate the Checksum, all 20 bytes __must add up to 0__.
 
-[(ESPHome Source Code)](https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96)
+We skip the Sensor Data Frames that don't add up to 0.
 
-[(Arduino Source Code)](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63)
+TODO
 
 ## Main Loop
 
@@ -251,6 +236,9 @@ TODO
 From [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L46-L77)
 
 ```c
+//  Current data in the Sensor Data Frame (20 bytes)
+static uint8_t frame[20];
+
 //  Read and process the Sensor Data from IKEA Air Quality Sensor
 int main(int argc, FAR char *argv[]) {
 
@@ -265,7 +253,7 @@ int main(int argc, FAR char *argv[]) {
         read(fd, &ch, 1);
         printf("%02x  ", ch);
 
-        //  Append to response frame after shifting the bytes.
+        //  Append to Sensor Data Frame after shifting the bytes.
         //  We always append bytes to the frame (instead of replacing bytes)
         //  because UART is unreliable and bytes may be dropped.
         for (int i = 0; i < sizeof(frame) - 1; i++) {
@@ -296,7 +284,10 @@ TODO
 From [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L79-L102)
 
 ```c
-//  Return true if we have received a complete and valid response frame
+//  Header for Sensor Data Frame
+static const uint8_t PM1006_RESPONSE_HEADER[] = { 0x16, 0x11, 0x0B };
+
+//  Return true if we have received a complete and valid Sensor Data Frame
 static bool frame_is_valid(void) {
     //  Check the header at frame[0..2]
     if (memcmp(frame, PM1006_RESPONSE_HEADER, sizeof(PM1006_RESPONSE_HEADER)) != 0) {
@@ -333,7 +324,7 @@ TODO
 From [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L104-L114)
 
 ```c
-//  Process the sensor data in the response frame
+//  Process the PM 2.5 data in the Sensor Data Frame
 static void process_frame(void) {
     //  frame[3..4] is unused
     //  frame[5..6] is our PM2.5 reading
