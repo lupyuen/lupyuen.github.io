@@ -151,6 +151,20 @@ The __GPIO Pin Numbers__ for the UART Port (UART1) are defined in [board.h](http
    GPIO_FUNC_UART | GPIO_PIN4)
 ```
 
+__For ESP32:__ The GPIO Pin Numbers for the UART Port (UART1) are defined in [Kconfig](https://github.com/lupyuen/incubator-nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669)
+
+```text
+config ESP32_UART1_TXPIN
+  int "UART1 Tx Pin"
+  default 10
+  range 0 39
+
+config ESP32_UART1_RXPIN
+  int "UART1 Rx Pin"
+  default 9
+  range 0 39
+```
+
 Connect the __USB Ports__ of IKEA Sensor and PineDio Stack to our computer.
 
 (Remember: __Only One Power Source__ for both gadgets!)
