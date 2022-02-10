@@ -188,21 +188,29 @@
 </ol>
 <p><img src="https://lupyuen.github.io/images/ikea-solder3.jpg" alt="UART Port soldered to IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <h1 id="connect-to-pinedio-stack-bl604" class="section-header"><a href="#connect-to-pinedio-stack-bl604">3 Connect to PineDio Stack BL604</a></h1>
-<p>TODO</p>
-<p>To transmit the PM 2.5 readings to The Things Network via LoRaWAN, we connect the IKEA Sensor to <a href="https://lupyuen.github.io/articles/pinedio">PineDio Stack BL604</a>…</p>
+<p>Now that we have exposed the UART Port on IKEA Air Quality Sensor, let’s connect it to our Microcontroller Board: <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a></p>
 <div><table><thead><tr><th align="center">Function</th><th align="center">GPIO</th><th align="center">PineDio Stack</th><th align="center">IKEA Sensor</th><th align="center">Wire Colour</th></tr></thead><tbody>
-<tr><td align="center">RX</td><td align="center">3</td><td align="center">14</td><td align="center">REST</td><td align="center">Blue</td></tr>
-<tr><td align="center">TX</td><td align="center">4</td><td align="center">13</td><td align="center">Unused</td><td align="center"></td></tr>
-<tr><td align="center">GND</td><td align="center">GND</td><td align="center">20</td><td align="center">GND</td><td align="center">Black</td></tr>
+<tr><td align="center">RX</td><td align="center">3</td><td align="center">Pin 14</td><td align="center">REST</td><td align="center">Blue</td></tr>
+<tr><td align="center">TX</td><td align="center">4</td><td align="center">Pin 13</td><td align="center">Unused</td><td align="center"></td></tr>
+<tr><td align="center">GND</td><td align="center">GND</td><td align="center">Pin 20</td><td align="center">GND</td><td align="center">Black</td></tr>
 </tbody></table>
 </div>
-<p>Connect USB Ports of IKEA Sensor and PineDio Stack BL604 to the same computer. Remember: Only One Power Source!</p>
-<p>PineDio Stack BL604 has a onboard Semtech SX1262 LoRa Transceiver, so it talks to LoRaWAN and The Things Network.</p>
-<p><a href="https://lupyuen.github.io/articles/lorawan3">(More about LoRaWAN On PineDio Stack)</a></p>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/ikea-pinedio.jpg" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/ikea-pinedio2.jpg" alt="" /></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio#logic-analyser">(“PineDio Stack” column refers to the 20-pin GPIO Connector on PineDio Stack)</a></p>
+<p><img src="https://lupyuen.github.io/images/ikea-pinedio.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor connected to Pine64 PineDio Stack BL604 RISC-V Board" /></p>
+<p>The <strong>GPIO Pin Numbers</strong> for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/ikea/boards/risc-v/bl602/bl602evb/include/board.h#L63-L66">board.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define BOARD_UART_1_RX_PIN \
+  (GPIO_INPUT     | GPIO_PULLUP | \
+   GPIO_FUNC_UART | GPIO_PIN3)
+
+#define BOARD_UART_1_TX_PIN \
+  (GPIO_INPUT     | GPIO_PULLUP | \
+   GPIO_FUNC_UART | GPIO_PIN4)</code></pre></div>
+<p>Connect the <strong>USB Ports</strong> of IKEA Sensor and PineDio Stack to our computer.</p>
+<p>(Remember: <strong>Only One Power Source</strong> for both gadgets!)</p>
+<p>It looks messy with 2 USB Cables hanging off our computer, but we’ll live with it for now…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/ikea-pinedio2.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor and Pine64 PineDio Stack BL604 RISC-V Board connected to our computer" /></p>
+</blockquote>
 <h1 id="install-app" class="section-header"><a href="#install-app">4 Install App</a></h1>
 <p>TODO</p>
 <p>To add this repo to your NuttX project…</p>
