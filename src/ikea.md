@@ -86,6 +86,8 @@ To get the PM 2.5 data, let's wire up the UART Port with a little soldering.
 
 (FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it triggers the PM1006 command that measures PM 2.5)
 
+[(Caution: The UART Port runs at 4.5V)](https://lupyuen.github.io/articles/ikea#notes)
+
 ![Inside the IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-solder.jpg)
 
 # Solder UART Port
@@ -247,7 +249,7 @@ Thus we have a plan for __reading and processing__ the PM 2.5 data...
 
 ## Main Loop
 
-This is the __Main Loop__ that does the steps above: [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L46-L77)
+This is the __Main Loop__ that runs the steps above: [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L46-L77)
 
 ```c
 //  Current data in the Sensor Data Frame (20 bytes)
@@ -256,38 +258,49 @@ static uint8_t frame[20];
 //  Read and process the Sensor Data from IKEA Air Quality Sensor
 int main(int argc, FAR char *argv[]) {
 
-    //  Open the UART port
-    int fd = open("/dev/ttyS1", O_RDONLY);
-    if (fd < 0) { printf("Unable to open /dev/ttyS1\n"); return 1; }
-
-    //  Forever process bytes from the UART port
-    for (;;) {
-        //  Read a byte from the UART port
-        char ch;
-        read(fd, &ch, 1);
-        printf("%02x  ", ch);
-
-        //  Append to Sensor Data Frame after shifting the bytes.
-        //  We always append bytes to the frame (instead of replacing bytes)
-        //  because UART is unreliable and bytes may be dropped.
-        for (int i = 0; i < sizeof(frame) - 1; i++) {
-            frame[i] = frame[i + 1];
-        }
-        frame[sizeof(frame) - 1] = ch;
-
-        //  If frame is complete and valid...
-        if (frame_is_valid()) {
-            //  Process the frame
-            process_frame();
-        }   
-    }
-
-    //  Never returns
-    return 0;
-}
+  //  Open the UART port
+  int fd = open("/dev/ttyS1", O_RDONLY);
+  if (fd < 0) { printf("Unable to open /dev/ttyS1\n"); return 1; }
 ```
 
-TODO
+We begin by __opening the UART Port__ at __/dev/ttyS1__.
+
+Next we loop forever, __reading bytes from the UART Port__ and handling them...
+
+```c
+  //  Forever process bytes from the UART port
+  for (;;) {
+    //  Read a byte from the UART port
+    char ch;
+    read(fd, &ch, 1);
+    printf("%02x  ", ch);
+```
+
+After reading a byte, we shift it into the __Sensor Data Frame__ (20 bytes)...
+
+```c
+    //  Append to Sensor Data Frame after shifting the bytes.
+    //  We always append bytes to the frame (instead of replacing bytes)
+    //  because UART is unreliable and bytes may be dropped.
+    for (int i = 0; i < sizeof(frame) - 1; i++) {
+      frame[i] = frame[i + 1];
+    }
+    frame[sizeof(frame) - 1] = ch;
+```
+
+We check if the Sensor Data Frame contains a valid __Header and Checksum__...
+
+```c
+    //  If frame is complete and valid...
+    if (frame_is_valid()) {
+      //  Process the frame
+      process_frame();
+    }   
+```
+
+If the Sensor Data Frame is valid, we process the data in the frame.
+
+Let's jump into __frame_is_valid__ and __process_frame__.
 
 ![Main Loop](https://lupyuen.github.io/images/ikea-code2.png)
 
@@ -303,27 +316,40 @@ static const uint8_t PM1006_RESPONSE_HEADER[] = { 0x16, 0x11, 0x0B };
 
 //  Return true if we have received a complete and valid Sensor Data Frame
 static bool frame_is_valid(void) {
-    //  Check the header at frame[0..2]
-    if (memcmp(frame, PM1006_RESPONSE_HEADER, sizeof(PM1006_RESPONSE_HEADER)) != 0) {
-        //  Header not found
-        return false;
-    }
 
-    //  Compute sum of all bytes in the frame
-    uint8_t sum = 0;
-    for (int i = 0; i < sizeof(frame); i++) {
-        sum += frame[i];
-    }
+  //  Check the header at frame[0..2]
+  if (memcmp(frame, PM1006_RESPONSE_HEADER, sizeof(PM1006_RESPONSE_HEADER)) != 0) {
+    //  Header not found
+    return false;
+  }
+```
 
-    //  All bytes must add to 0 (because of checksum at the last byte)
-    if (sum != 0) {
-        //  Invalid checksum
-        printf("\nPM1006 checksum is wrong: %02x, expected zero\n", sum);
-        return false;
-    }
+TODO
 
-    //  We have received a complete and valid response frame
-    return true;
+```c
+  //  Compute sum of all bytes in the frame
+  uint8_t sum = 0;
+  for (int i = 0; i < sizeof(frame); i++) {
+    sum += frame[i];
+  }
+```
+
+TODO
+
+```c
+  //  All bytes must add to 0 (because of checksum at the last byte)
+  if (sum != 0) {
+    //  Invalid checksum
+    printf("\nPM1006 checksum is wrong: %02x, expected zero\n", sum);
+    return false;
+  }
+```
+
+TODO
+
+```c
+  //  We have received a complete and valid response frame
+  return true;
 }
 ```
 
@@ -340,18 +366,24 @@ From [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_qualit
 ```c
 //  Process the PM 2.5 data in the Sensor Data Frame
 static void process_frame(void) {
-    //  frame[3..4] is unused
-    //  frame[5..6] is our PM2.5 reading
-    //  In the datasheet, frame[3..6] is called DF1-DF4:
-    //  http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf
-    const int pm_2_5_concentration = frame[5] * 256 + frame[6];
-    printf("\nGot PM2.5 Concentration: %d µg/m³\n", pm_2_5_concentration);
+  //  frame[3..4] is unused
+  //  frame[5..6] is our PM2.5 reading
+  //  In the datasheet, frame[3..6] is called DF1-DF4:
+  //  http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf
+  const int pm_2_5_concentration = frame[5] * 256 + frame[6];
+```
 
-    //  TODO: Transmit the sensor data
+TODO
+
+```c
+  //  TODO: Transmit the sensor data
+  printf("\nGot PM2.5 Concentration: %d µg/m³\n", pm_2_5_concentration);
 }
 ```
 
 TODO
+
+The code in our NuttX App was inspired by the [Arduino](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63) and [ESPHome](https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96) modules for the IKEA Sensor.
 
 ![Process Sensor Data](https://lupyuen.github.io/images/ikea-code4.png)
 
@@ -600,6 +632,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1490147828458405889)
+
+1.  According to the PM1006 Datasheet, the UART Port runs at [__4.5V Logic Level__](https://lupyuen.github.io/articles/ikea#about-ikea-air-quality-sensor) (instead of 3.3V). Don't we need a [__Voltage Divider__](https://learn.sparkfun.com/tutorials/voltage-dividers/all) to protect our microcontroller, which is not 5V Tolerant?
+
+    Apparently some folks are using the UART Port just fine without a Voltage Divider. [(See this)](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/issues/44)
+
+    But to be really safe we ought to use a Voltage Divider.
 
 # Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor
 
