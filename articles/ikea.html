@@ -154,6 +154,7 @@
 <p><a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">(From PM1006 Datasheet)</a></p>
 <p>To get the PM 2.5 data, let’s wire up the UART Port with a little soldering.</p>
 <p>(FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it triggers the PM1006 command that measures PM 2.5)</p>
+<p><a href="https://lupyuen.github.io/articles/ikea#notes">(Caution: The UART Port runs at 4.5V)</a></p>
 <p><img src="https://lupyuen.github.io/images/ikea-solder.jpg" alt="Inside the IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <h1 id="solder-uart-port" class="section-header"><a href="#solder-uart-port">2 Solder UART Port</a></h1>
 <p>Follow these steps to <strong>solder the UART (Serial) Port</strong> on the IKEA VINDRIKTNING Sensor (so we can access the PM 2.5 data)…</p>
@@ -279,43 +280,40 @@ config ESP32_UART1_RXPIN
 </li>
 </ol>
 <h2 id="main-loop" class="section-header"><a href="#main-loop">4.2 Main Loop</a></h2>
-<p>This is the <strong>Main Loop</strong> that does the steps above: <a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L46-L77">ikea_air_quality_sensor_main.c</a></p>
+<p>This is the <strong>Main Loop</strong> that runs the steps above: <a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L46-L77">ikea_air_quality_sensor_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Current data in the Sensor Data Frame (20 bytes)
 static uint8_t frame[20];
 
 //  Read and process the Sensor Data from IKEA Air Quality Sensor
 int main(int argc, FAR char *argv[]) {
 
-    //  Open the UART port
-    int fd = open(&quot;/dev/ttyS1&quot;, O_RDONLY);
-    if (fd &lt; 0) { printf(&quot;Unable to open /dev/ttyS1\n&quot;); return 1; }
-
-    //  Forever process bytes from the UART port
-    for (;;) {
-        //  Read a byte from the UART port
-        char ch;
-        read(fd, &amp;ch, 1);
-        printf(&quot;%02x  &quot;, ch);
-
-        //  Append to Sensor Data Frame after shifting the bytes.
-        //  We always append bytes to the frame (instead of replacing bytes)
-        //  because UART is unreliable and bytes may be dropped.
-        for (int i = 0; i &lt; sizeof(frame) - 1; i++) {
-            frame[i] = frame[i + 1];
-        }
-        frame[sizeof(frame) - 1] = ch;
-
-        //  If frame is complete and valid...
-        if (frame_is_valid()) {
-            //  Process the frame
-            process_frame();
-        }   
+  //  Open the UART port
+  int fd = open(&quot;/dev/ttyS1&quot;, O_RDONLY);
+  if (fd &lt; 0) { printf(&quot;Unable to open /dev/ttyS1\n&quot;); return 1; }</code></pre></div>
+<p>We begin by <strong>opening the UART Port</strong> at <strong>/dev/ttyS1</strong>.</p>
+<p>Next we loop forever, <strong>reading bytes from the UART Port</strong> and handling them…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Forever process bytes from the UART port
+  for (;;) {
+    //  Read a byte from the UART port
+    char ch;
+    read(fd, &amp;ch, 1);
+    printf(&quot;%02x  &quot;, ch);</code></pre></div>
+<p>After reading a byte, we shift it into the <strong>Sensor Data Frame</strong> (20 bytes)…</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  Append to Sensor Data Frame after shifting the bytes.
+    //  We always append bytes to the frame (instead of replacing bytes)
+    //  because UART is unreliable and bytes may be dropped.
+    for (int i = 0; i &lt; sizeof(frame) - 1; i++) {
+      frame[i] = frame[i + 1];
     }
-
-    //  Never returns
-    return 0;
-}</code></pre></div>
-<p>TODO</p>
+    frame[sizeof(frame) - 1] = ch;</code></pre></div>
+<p>We check if the Sensor Data Frame contains a valid <strong>Header and Checksum</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  If frame is complete and valid...
+    if (frame_is_valid()) {
+      //  Process the frame
+      process_frame();
+    }   </code></pre></div>
+<p>If the Sensor Data Frame is valid, we process the data in the frame.</p>
+<p>Let’s jump into <strong>frame_is_valid</strong> and <strong>process_frame</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/ikea-code2.png" alt="Main Loop" /></p>
 <h2 id="validate-sensor-data" class="section-header"><a href="#validate-sensor-data">4.3 Validate Sensor Data</a></h2>
 <p>TODO</p>
@@ -325,27 +323,28 @@ static const uint8_t PM1006_RESPONSE_HEADER[] = { 0x16, 0x11, 0x0B };
 
 //  Return true if we have received a complete and valid Sensor Data Frame
 static bool frame_is_valid(void) {
-    //  Check the header at frame[0..2]
-    if (memcmp(frame, PM1006_RESPONSE_HEADER, sizeof(PM1006_RESPONSE_HEADER)) != 0) {
-        //  Header not found
-        return false;
-    }
 
-    //  Compute sum of all bytes in the frame
-    uint8_t sum = 0;
-    for (int i = 0; i &lt; sizeof(frame); i++) {
-        sum += frame[i];
-    }
-
-    //  All bytes must add to 0 (because of checksum at the last byte)
-    if (sum != 0) {
-        //  Invalid checksum
-        printf(&quot;\nPM1006 checksum is wrong: %02x, expected zero\n&quot;, sum);
-        return false;
-    }
-
-    //  We have received a complete and valid response frame
-    return true;
+  //  Check the header at frame[0..2]
+  if (memcmp(frame, PM1006_RESPONSE_HEADER, sizeof(PM1006_RESPONSE_HEADER)) != 0) {
+    //  Header not found
+    return false;
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Compute sum of all bytes in the frame
+  uint8_t sum = 0;
+  for (int i = 0; i &lt; sizeof(frame); i++) {
+    sum += frame[i];
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  All bytes must add to 0 (because of checksum at the last byte)
+  if (sum != 0) {
+    //  Invalid checksum
+    printf(&quot;\nPM1006 checksum is wrong: %02x, expected zero\n&quot;, sum);
+    return false;
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  We have received a complete and valid response frame
+  return true;
 }</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/ikea-code3.png" alt="Validate Sensor Data" /></p>
@@ -354,16 +353,17 @@ static bool frame_is_valid(void) {
 <p>From <a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L104-L114">ikea_air_quality_sensor_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Process the PM 2.5 data in the Sensor Data Frame
 static void process_frame(void) {
-    //  frame[3..4] is unused
-    //  frame[5..6] is our PM2.5 reading
-    //  In the datasheet, frame[3..6] is called DF1-DF4:
-    //  http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf
-    const int pm_2_5_concentration = frame[5] * 256 + frame[6];
-    printf(&quot;\nGot PM2.5 Concentration: %d µg/m³\n&quot;, pm_2_5_concentration);
-
-    //  TODO: Transmit the sensor data
+  //  frame[3..4] is unused
+  //  frame[5..6] is our PM2.5 reading
+  //  In the datasheet, frame[3..6] is called DF1-DF4:
+  //  http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf
+  const int pm_2_5_concentration = frame[5] * 256 + frame[6];</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  TODO: Transmit the sensor data
+  printf(&quot;\nGot PM2.5 Concentration: %d µg/m³\n&quot;, pm_2_5_concentration);
 }</code></pre></div>
 <p>TODO</p>
+<p>The code in our NuttX App was inspired by the <a href="https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63">Arduino</a> and <a href="https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96">ESPHome</a> modules for the IKEA Sensor.</p>
 <p><img src="https://lupyuen.github.io/images/ikea-code4.png" alt="Process Sensor Data" /></p>
 <h1 id="run-nuttx-app" class="section-header"><a href="#run-nuttx-app">5 Run NuttX App</a></h1>
 <p>TODO</p>
@@ -558,7 +558,14 @@ do
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ikea.md"><code>lupyuen.github.io/src/ikea.md</code></a></p>
 <h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1490147828458405889">this Twitter Thread</a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1490147828458405889">this Twitter Thread</a></p>
+</li>
+<li>
+<p>According to the PM1006 Datasheet, the UART Port runs at <a href="https://lupyuen.github.io/articles/ikea#about-ikea-air-quality-sensor"><strong>4.5V Logic Level</strong></a> (instead of 3.3V). Don’t we need a <a href="https://learn.sparkfun.com/tutorials/voltage-dividers/all"><strong>Voltage Divider</strong></a> to protect our microcontroller, which is not 5V Tolerant?</p>
+<p>Apparently some folks are using the UART Port just fine without a Voltage Divider. <a href="https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/issues/44">(See this)</a></p>
+<p>But to be really safe we ought to use a Voltage Divider.</p>
+</li>
 </ol>
 <h1 id="appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor" class="section-header"><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">15 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a></h1>
 <p>TODO</p>
