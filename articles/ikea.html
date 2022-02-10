@@ -233,7 +233,7 @@ config ESP32_UART1_RXPIN
 <li><a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c"><strong>ikea_air_quality_sensor_main.c</strong></a></li>
 </ul>
 <p>But first: What’s inside the PM 2.5 data?</p>
-<p><img src="https://lupyuen.github.io/images/ikea-datasheet2.png" alt="PM1006 Sensor transmits PM 2.5 over UART" /></p>
+<p><img src="https://lupyuen.github.io/images/ikea-datasheet3.png" alt="PM1006 Sensor transmits PM 2.5 over UART" /></p>
 <p><a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">(From PM1006 Datasheet)</a></p>
 <h2 id="sensor-data-frame" class="section-header"><a href="#sensor-data-frame">4.1 Sensor Data Frame</a></h2>
 <p>The IKEA Sensor transmits a stream of <strong>Sensor Data</strong> that looks like this…</p>
@@ -259,10 +259,27 @@ config ESP32_UART1_RXPIN
 <p><em>What about the Checksum?</em></p>
 <p>To validate the Checksum, all 20 bytes <strong>must add up to 0</strong>.</p>
 <p>We skip the Sensor Data Frames that don’t add up to 0.</p>
-<p>TODO</p>
+<p>Thus we have a plan for <strong>reading and processing</strong> the PM 2.5 data…</p>
+<ol>
+<li>
+<p><strong>Read the data</strong> into a 20-byte Sensor Data Frame</p>
+<p>(We shift the data into the 20-byte frame, byte by byte)</p>
+</li>
+<li>
+<p><strong>Check the Header</strong> in the Sensor Data Frame</p>
+<p>(Header should be <code>16 11 0B</code>)</p>
+</li>
+<li>
+<p><strong>Validate the Checksum</strong> in the Sensor Data Frame</p>
+<p>(All bytes must add up to 0)</p>
+</li>
+<li>
+<p><strong>Extract the PM 2.5 value</strong> from the Sensor Data Frame</p>
+<p>(And process the PM 2.5 value)</p>
+</li>
+</ol>
 <h2 id="main-loop" class="section-header"><a href="#main-loop">4.2 Main Loop</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L46-L77">ikea_air_quality_sensor_main.c</a></p>
+<p>This is the <strong>Main Loop</strong> that does the steps above: <a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L46-L77">ikea_air_quality_sensor_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Current data in the Sensor Data Frame (20 bytes)
 static uint8_t frame[20];
 
