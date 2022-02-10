@@ -183,7 +183,7 @@ Let's dive into the Source Code of our NuttX App that will __read and process th
 
 But first: What's inside the PM 2.5 data?
 
-![PM1006 Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet2.png)
+![PM1006 Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet3.png)
 
 [(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
 
@@ -227,13 +227,27 @@ To validate the Checksum, all 20 bytes __must add up to 0__.
 
 We skip the Sensor Data Frames that don't add up to 0.
 
-TODO
+Thus we have a plan for __reading and processing__ the PM 2.5 data...
+
+1.  __Read the data__ into a 20-byte Sensor Data Frame
+
+    (We shift the data into the 20-byte frame, byte by byte)
+
+1.  __Check the Header__ in the Sensor Data Frame
+
+    (Header should be `16 11 0B`)
+
+1.  __Validate the Checksum__ in the Sensor Data Frame
+
+    (All bytes must add up to 0)
+
+1.  __Extract the PM 2.5 value__ from the Sensor Data Frame
+
+    (And process the PM 2.5 value)
 
 ## Main Loop
 
-TODO
-
-From [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L46-L77)
+This is the __Main Loop__ that does the steps above: [ikea_air_quality_sensor_main.c](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L46-L77)
 
 ```c
 //  Current data in the Sensor Data Frame (20 bytes)
