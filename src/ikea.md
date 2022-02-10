@@ -127,29 +127,37 @@ Follow these steps to __solder the UART (Serial) Port__ on the IKEA VINDRIKTNING
 
 # Connect to PineDio Stack BL604
 
-TODO
-
-To transmit the PM 2.5 readings to The Things Network via LoRaWAN, we connect the IKEA Sensor to [PineDio Stack BL604](https://lupyuen.github.io/articles/pinedio)...
+Now that we have exposed the UART Port on IKEA Air Quality Sensor, let's connect it to our Microcontroller Board: [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio)
 
 | Function | GPIO | PineDio Stack | IKEA Sensor | Wire Colour
 | :---: | :---: | :---: | :---: | :---:
-| RX | 3 | 14 | REST | Blue
-| TX | 4 | 13 | Unused |
-| GND | GND | 20 | GND | Black
+| RX | 3 | Pin 14 | REST | Blue
+| TX | 4 | Pin 13 | Unused |
+| GND | GND | Pin 20 | GND | Black
 
-Connect USB Ports of IKEA Sensor and PineDio Stack BL604 to the same computer. Remember: Only One Power Source!
+[("PineDio Stack" column refers to the 20-pin GPIO Connector on PineDio Stack)](https://lupyuen.github.io/articles/pinedio#logic-analyser)
 
-PineDio Stack BL604 has a onboard Semtech SX1262 LoRa Transceiver, so it talks to LoRaWAN and The Things Network.
+![IKEA VINDRIKTNING Air Quality Sensor connected to Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/ikea-pinedio.jpg)
 
-[(More about LoRaWAN On PineDio Stack)](https://lupyuen.github.io/articles/lorawan3)
+The __GPIO Pin Numbers__ for the UART Port (UART1) are defined in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/ikea/boards/risc-v/bl602/bl602evb/include/board.h#L63-L66)
 
-TODO17
+```c
+#define BOARD_UART_1_RX_PIN \
+  (GPIO_INPUT     | GPIO_PULLUP | \
+   GPIO_FUNC_UART | GPIO_PIN3)
 
-![](https://lupyuen.github.io/images/ikea-pinedio.jpg)
+#define BOARD_UART_1_TX_PIN \
+  (GPIO_INPUT     | GPIO_PULLUP | \
+   GPIO_FUNC_UART | GPIO_PIN4)
+```
 
-TODO18
+Connect the __USB Ports__ of IKEA Sensor and PineDio Stack to our computer.
 
-![](https://lupyuen.github.io/images/ikea-pinedio2.jpg)
+(Remember: __Only One Power Source__ for both gadgets!)
+
+It looks messy with 2 USB Cables hanging off our computer, but we'll live with it for now...
+
+> ![IKEA VINDRIKTNING Air Quality Sensor and Pine64 PineDio Stack BL604 RISC-V Board connected to our computer](https://lupyuen.github.io/images/ikea-pinedio2.jpg)
 
 # Install App
 
