@@ -316,8 +316,7 @@ int main(int argc, FAR char *argv[]) {
 <p>Let’s jump into <strong>frame_is_valid</strong> and <strong>process_frame</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/ikea-code2.png" alt="Main Loop" /></p>
 <h2 id="validate-sensor-data" class="section-header"><a href="#validate-sensor-data">4.3 Validate Sensor Data</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L79-L102">ikea_air_quality_sensor_main.c</a></p>
+<p>This is how we <strong>validate the Sensor Data Frame</strong>: <a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L79-L102">ikea_air_quality_sensor_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Header for Sensor Data Frame
 static const uint8_t PM1006_RESPONSE_HEADER[] = { 0x16, 0x11, 0x0B };
 
@@ -329,41 +328,47 @@ static bool frame_is_valid(void) {
     //  Header not found
     return false;
   }</code></pre></div>
-<p>TODO</p>
+<p>We verify that the Sensor Data Frame contains the <strong>Header: <code>16 11 0B</code></strong></p>
+<p>Next we <strong>sum up all the bytes</strong> in the Sensor Data Frame…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Compute sum of all bytes in the frame
   uint8_t sum = 0;
   for (int i = 0; i &lt; sizeof(frame); i++) {
     sum += frame[i];
   }</code></pre></div>
-<p>TODO</p>
+<p>(Including the Checksum at the last byte)</p>
+<p>And we verify that the <strong>sum is 0</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  All bytes must add to 0 (because of checksum at the last byte)
   if (sum != 0) {
     //  Invalid checksum
     printf(&quot;\nPM1006 checksum is wrong: %02x, expected zero\n&quot;, sum);
     return false;
   }</code></pre></div>
-<p>TODO</p>
+<p>Now that the Sensor Data Frame is <strong>complete and valid</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  We have received a complete and valid response frame
   return true;
 }</code></pre></div>
-<p>TODO</p>
+<p>We proceed to process the PM 2.5 data inside the frame.</p>
 <p><img src="https://lupyuen.github.io/images/ikea-code3.png" alt="Validate Sensor Data" /></p>
 <h2 id="process-sensor-data" class="section-header"><a href="#process-sensor-data">4.4 Process Sensor Data</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L104-L114">ikea_air_quality_sensor_main.c</a></p>
+<p>To process the Sensor Data Frame, we extract the <strong>PM 2.5 value</strong> from the frame: <a href="https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c#L104-L114">ikea_air_quality_sensor_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Process the PM 2.5 data in the Sensor Data Frame
 static void process_frame(void) {
+
   //  frame[3..4] is unused
   //  frame[5..6] is our PM2.5 reading
   //  In the datasheet, frame[3..6] is called DF1-DF4:
   //  http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf
-  const int pm_2_5_concentration = frame[5] * 256 + frame[6];</code></pre></div>
-<p>TODO</p>
+
+  const int pm_2_5_concentration = 
+    frame[5] * 256 + 
+    frame[6];</code></pre></div>
+<p>Right now we’re not really using the PM 2.5 data…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  TODO: Transmit the sensor data
   printf(&quot;\nGot PM2.5 Concentration: %d µg/m³\n&quot;, pm_2_5_concentration);
 }</code></pre></div>
-<p>TODO</p>
-<p>The code in our NuttX App was inspired by the <a href="https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63">Arduino</a> and <a href="https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96">ESPHome</a> modules for the IKEA Sensor.</p>
+<p>But in the next article we’ll transmit the data wirelessly over <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a> to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>The Things Network</strong></a>.</p>
+<p>(Thanks to the onboard LoRa Transceiver on PineDio Stack)</p>
+<p>The code in our NuttX App was inspired by the <a href="https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63"><strong>Arduino</strong></a> and <a href="https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96"><strong>ESPHome</strong></a> modules for the IKEA Sensor.</p>
 <p><img src="https://lupyuen.github.io/images/ikea-code4.png" alt="Process Sensor Data" /></p>
 <h1 id="run-nuttx-app" class="section-header"><a href="#run-nuttx-app">5 Run NuttX App</a></h1>
 <p>TODO</p>
