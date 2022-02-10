@@ -181,6 +181,69 @@ Let's dive into the Source Code of our NuttX App that will __read and process th
 
 -   [__ikea_air_quality_sensor_main.c__](https://github.com/lupyuen/ikea_air_quality_sensor/blob/main/ikea_air_quality_sensor_main.c)
 
+But first: What's inside the PM 2.5 data?
+
+![PM1006 Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet2.png)
+
+[(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
+
+## Sensor Data Frame
+
+TODO
+
+```text
+nsh> gps
+00  00  
+16  11  0b  00  00  00  39  00  00  03  39  00  00  00  37  01  00  00  00  21  
+16  11  0b  00  00  00  2b  00  00  03  17  00  00  00  29  01  00  00  00  5f  
+16  11  0b  00  00  00  32  00  00  03  26  00  00  00  30  01  00  00  00  42 
+16  11  0b  00  00  00  31  00  00  03  24  00  00  00  2f  01  00  00  00  46  
+16  11  0b  00  00  00  31  00  00  03  24  00  00  00  2f  01  00  00  00  46  
+16  11  0b  00  00  00  31  00  00  03  23  00  00  00  2f  01  00  00  00  47  
+16  11  0b  00  00  00  31  00  00  03  22  00  00  00  2f  01  00  00  00  48  
+16  11  0b  00  00  00  30  00  00  03  21  00  00  00  2e  01  00  00  00  4b  
+16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
+16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
+16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
+16  11  0b  00  00  00  2f  00  00  03  1e  00  00  00  2d  01  00  00  00  50  
+16  11  0b  00  00  00  2f  00  00  03  1e  00  00  00  2d  01  00  00  00  50  
+16  11  0b  00  00  00  2f  00  00  03  1d  00  00  00  2d  01  00  00  00  51  
+16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54  
+16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54  
+16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54
+```
+
+[(Watch the demo on YouTube)](https://youtu.be/TyG-dJCx8OQ)
+
+Yep we see the 20-byte frames of Sensor Data, and the PM 2.5 encoded inside!
+
+PM 2.5 = 46 (`0x002e`)
+
+Based on the [PM1006 Datasheet](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf), we decode the Sensor Data (20 bytes) as follows...
+
+```text
+Header:   0x16 0x11 0x0B
+Unused:   0x00 0x00
+PM2.5:    0x00 0x36
+Unused:   0x00 0x00 0x03 0x32 0x00 0x00
+Unused:   0x00 0x34 0x01 0x00 0x00 0x00
+Checksum: 0x2E
+```
+
+[(Source)](https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810#file-ikea-binary-log-L7705-L7743)
+
+This gives the PM 2.5 value of 54 (`0x0036`).
+
+To validate the Checksum, all 20 bytes must add up to 0.
+
+[(More details)](https://github.com/arendst/Tasmota/issues/13012)
+
+[(And this)](https://community.home-assistant.io/t/ikea-vindriktning-air-quality-sensor/324599)
+
+[(ESPHome Source Code)](https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96)
+
+[(Arduino Source Code)](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63)
+
 ## Main Loop
 
 TODO
@@ -407,35 +470,6 @@ Got PM2.5 Concentration: 23 µg/m³
 ```
 
 [Watch the demo on YouTube](https://youtu.be/dUHlG67pB3M)
-
-# Decode Sensor Data
-
-TODO
-
-Based on the [PM1006 Datasheet](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf), we decode the Sensor Data (20 bytes) as follows...
-
-```text
-Header:   0x16 0x11 0x0B
-Unused:   0x00 0x00
-PM2.5:    0x00 0x36
-Unused:   0x00 0x00 0x03 0x32 0x00 0x00
-Unused:   0x00 0x34 0x01 0x00 0x00 0x00
-Checksum: 0x2E
-```
-
-[(Source)](https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810#file-ikea-binary-log-L7705-L7743)
-
-This gives the PM 2.5 value of 54 (`0x0036`).
-
-To validate the Checksum, all 20 bytes must add up to 0.
-
-[(More details)](https://github.com/arendst/Tasmota/issues/13012)
-
-[(And this)](https://community.home-assistant.io/t/ikea-vindriktning-air-quality-sensor/324599)
-
-[(ESPHome Source Code)](https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96)
-
-[(Arduino Source Code)](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63)
 
 # Test with Apache NuttX OS
 
