@@ -529,16 +529,16 @@ Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 </li>
 </ol>
 <h1 id="appendix-test-with-bus-pirate" class="section-header"><a href="#appendix-test-with-bus-pirate">9 Appendix: Test with Bus Pirate</a></h1>
-<p>TODO</p>
-<p>Before testing with Apache NuttX OS, we sniffed the IKEA Sensor’s UART Port with Bus Pirate. Connect Bus Pirate to IKEA Sensor as follows…</p>
+<p>Before testing with Apache NuttX OS, we sniffed the IKEA VINDRIKTNING Air Quality Sensor’s UART Port with <strong>Bus Pirate</strong>.</p>
+<p>Connect Bus Pirate to the IKEA Sensor as follows…</p>
 <div><table><thead><tr><th align="left">Bus Pirate</th><th align="center">IKEA Sensor</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="left">Data In (MISO)</td><td align="center">REST</td><td align="left">Blue</td></tr>
 <tr><td align="left">GND</td><td align="center">GND</td><td align="left">Black</td></tr>
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/ikea-buspirate.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor connected to Bus Pirate" /></p>
-<p>Connect USB Ports of IKEA Sensor and Bus Pirate to the same computer. Remember: Only One Power Source!</p>
-<p>Enter these Bus Pirate commands to capture the UART output from IKEA Sensor (9600 bps, 8 bits, no parity, 1 stop bit)…</p>
+<p>Connect the USB Ports of the IKEA Sensor and Bus Pirate to the same computer. Remember: Only One Power Source for both gadgets!</p>
+<p>Enter these Bus Pirate commands to capture the UART output from the IKEA Sensor (9600 bps, 8 bits, no parity, 1 stop bit)…</p>
 <div class="example-wrap"><pre class="language-text"><code>HiZ&gt; m
 1. HiZ
 2. 1-WIRE
@@ -597,12 +597,9 @@ Ready
 UART&gt; W
 POWER SUPPLIES ON
 Clutch engaged!!!</code></pre></div>
-<p><a href="https://youtu.be/QOJF6hAhFv4">Watch the demo on YouTube</a></p>
-<p>See below for the ASCII and Binary Logs.</p>
+<p><a href="https://youtu.be/QOJF6hAhFv4">(Watch the demo on YouTube)</a></p>
 <p><a href="http://dangerousprototypes.com/docs/UART">(More about Bus Pirate interfacing with UART)</a></p>
-<p>TODO</p>
-<p>ASCII Log of UART Output from IKEA Sensor…</p>
-<p><a href="https://youtu.be/QOJF6hAhFv4">Watch the demo on YouTube</a></p>
+<p>To see the ASCII Output from the IKEA Sensor, enter this Bus Pirate command…</p>
 <div class="example-wrap"><pre class="language-text"><code>UART&gt; (2)
 Raw UART input
 Any key to exit
@@ -613,12 +610,12 @@ Any key to exit
 [12C9:7 
 [16C997!
 [20C987&quot;</code></pre></div>
+<p><a href="https://youtu.be/QOJF6hAhFv4">(Watch the demo on YouTube)</a></p>
 <p><a href="https://gist.github.com/lupyuen/f40454dda8e3d7f279fb6ef721add465">(See the complete log)</a></p>
-<p>TODO</p>
-<p>Binary Log of UART Output from IKEA Sensor…</p>
+<p>To see the Binary Output from the IKEA Sensor, enter this…</p>
 <div class="example-wrap"><pre class="language-text"><code>UART&gt; {
 UART LIVE DISPLAY, } TO STOP</code></pre></div>
-<p>TODO</p>
+<p>We should see the 20-byte Sensor Data Frames with PM 2.5 encoded inside…</p>
 <p><img src="https://lupyuen.github.io/images/ikea-buspirate2.png" alt="Bus Pirate shows the output from IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <p><a href="https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810">(See the complete log)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ebe4c0628fc9ea2e124e6f00d8246b49">(Another binary log)</a></p>
