@@ -1021,11 +1021,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     (My PineDio Stack V2 flashes OK)
 
+    BLDevCube shows this error...
+
+    ```text
+    {"ErrorCode": "0036","ErrorMsg":"BFLB FLASH WRITE FAIL"}
+    ```
+
     The engineers at Bouffalo Lab told us...
 
     "We judge that a hardware error caused XZ work fail, maybe the ram of the chip is faulty."
 
-    "We have a second way to bypass XZ. There is a configuration file in the /chips/bl602/eflash_loader/eflash_loader_cfg.ini directory of the Bouffalo Lab DevCube tool."
+    "We have a second way to bypass XZ. There is a configuration file in the /chips/bl602/eflash_loader/ eflash_loader_cfg.ini directory of the Bouffalo Lab DevCube tool."
     
     "The configuration file has a config item for decompress_write, Set it from true to false and save configuration file. After the configuration file is modified, you can try program flash again."
 
