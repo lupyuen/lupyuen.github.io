@@ -115,7 +115,9 @@ Follow these steps to __solder the UART (Serial) Port__ on the IKEA VINDRIKTNING
 
 1.  Pardon my horrid soldering...
 
-    If you're curious how I did it, check the Appendix for the __Soldering Steps__.
+    If you're curious how I did it, check the Appendix for the __Soldering Steps__...
+
+    [__"Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor"__](https://lupyuen.github.io/articles/ikea#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor)
 
     (Hint: Use Sticky Tape and very fine Solder Wire)
 
