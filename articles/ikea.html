@@ -74,25 +74,23 @@
 <li><a href="#validate-sensor-data">4.3 Validate Sensor Data</a><ul></ul></li>
 <li><a href="#process-sensor-data">4.4 Process Sensor Data</a><ul></ul></li></ul></li>
 <li><a href="#run-nuttx-app">5 Run NuttX App</a><ul></ul></li>
-<li><a href="#install-app">6 Install App</a><ul></ul></li>
-<li><a href="#configure-apache-nuttx-os">7 Configure Apache NuttX OS</a><ul></ul></li>
-<li><a href="#output-log">8 Output Log</a><ul></ul></li>
-<li><a href="#test-with-apache-nuttx-os">9 Test with Apache NuttX OS</a><ul></ul></li>
-<li><a href="#connect-to-lorawan-and-the-things-network">10 Connect to LoRaWAN and The Things Network</a><ul></ul></li>
-<li><a href="#visualise-with-prometheus-and-grafana">11 Visualise with Prometheus and Grafana</a><ul></ul></li>
-<li><a href="#references">12 References</a><ul></ul></li>
-<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
-<li><a href="#notes">14 Notes</a><ul></ul></li>
-<li><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">15 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a><ul></ul></li>
-<li><a href="#appendix-test-with-bus-pirate">16 Appendix: Test with Bus Pirate</a><ul>
-<li><a href="#ascii-log">16.1 ASCII Log</a><ul></ul></li>
-<li><a href="#binary-log">16.2 Binary Log</a><ul></ul></li></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#download-nuttx">17.1 Download NuttX</a><ul></ul></li>
-<li><a href="#configure-nuttx">17.2 Configure NuttX</a><ul></ul></li>
-<li><a href="#build-nuttx">17.3 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">17.4 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">17.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Feb 2022</em></p>
+<li><a href="#output-log">6 Output Log</a><ul></ul></li>
+<li><a href="#test-with-apache-nuttx-os">7 Test with Apache NuttX OS</a><ul></ul></li>
+<li><a href="#connect-to-lorawan-and-the-things-network">8 Connect to LoRaWAN and The Things Network</a><ul></ul></li>
+<li><a href="#visualise-with-prometheus-and-grafana">9 Visualise with Prometheus and Grafana</a><ul></ul></li>
+<li><a href="#references">10 References</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li>
+<li><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">13 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a><ul></ul></li>
+<li><a href="#appendix-test-with-bus-pirate">14 Appendix: Test with Bus Pirate</a><ul>
+<li><a href="#ascii-log">14.1 ASCII Log</a><ul></ul></li>
+<li><a href="#binary-log">14.2 Binary Log</a><ul></ul></li></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">15 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#download-nuttx">15.1 Download NuttX</a><ul></ul></li>
+<li><a href="#configure-nuttx">15.2 Configure NuttX</a><ul></ul></li>
+<li><a href="#build-nuttx">15.3 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">15.4 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">15.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>16 Feb 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/ikea-title.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor seated on Pine64 PineDio LoRa Gateway" /></p>
 <p><em><a href="https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911">IKEA VINDRIKTNING Air Quality Sensor</a> seated on <a href="https://lupyuen.github.io/articles/gateway">Pine64 PineDio LoRa Gateway</a></em></p>
 <p><a href="https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911"><strong>IKEA VINDRIKTNING</strong></a> is a $12 hackable Air Quality Sensor that measures <a href="https://www.epa.gov/pm-pollution/particulate-matter-pm-basics"><strong>PM 2.5 (Particulate Matter</strong>)</a> with reasonable accuracy.</p>
@@ -382,60 +380,7 @@ static void process_frame(void) {
 <h1 id="run-nuttx-app" class="section-header"><a href="#run-nuttx-app">5 Run NuttX App</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/ikea-code5.png" alt="" /></p>
-<h1 id="install-app" class="section-header"><a href="#install-app">6 Install App</a></h1>
-<p>TODO</p>
-<p>To add this repo to your NuttX project…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx-apps/examples&quot; folder
-pushd nuttx/apps/examples
-git submodule add https://github.com/lupyuen/ikea_air_quality_sensor
-popd</code></pre></div>
-<p>Then update the NuttX Build Config…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
-cd nuttx/nuttx
-
-# Preserve the Build Config
-cp .config ../config
-
-# Erase the Build Config and Kconfig files
-make distclean
-
-# For BL602: Configure the build for BL602
-./tools/configure.sh bl602evb:nsh
-
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
-./tools/configure.sh esp32-devkitc:nsh
-
-# Restore the Build Config
-cp ../config .config
-
-# Edit the Build Config
-make menuconfig </code></pre></div>
-<p>In menuconfig, enable the IKEA Air Quality Sensor App under “Application Configuration” → “Examples”.</p>
-<h1 id="configure-apache-nuttx-os" class="section-header"><a href="#configure-apache-nuttx-os">7 Configure Apache NuttX OS</a></h1>
-<p>TODO</p>
-<p>We configure the UART Port on Apache NuttX OS for the IKEA Sensor…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
-<p>Enable UART1:</p>
-<ul>
-<li>Select “System Type → BL602 Peripheral Support”</li>
-<li>Check “UART1”</li>
-</ul>
-<p>Set to 9600 bps:</p>
-<ul>
-<li>Select “Device Drivers → Serial Driver Support → UART1 Configuration”</li>
-<li>Set “BAUD rate” to 9600</li>
-</ul>
-<p>Enable <code>cat</code>:</p>
-<ul>
-<li>Select “Application Configuration → NSH Library → Disable Individual commands”</li>
-<li>Uncheck “Disable cat”</li>
-</ul>
-<p>Build and flash NuttX OS to PineDio Stack BL604.</p>
-<p>IKEA Sensor is now connected to NuttX OS at <code>/dev/ttyS1</code></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/ikea-uart3.png" alt="" /></p>
-<h1 id="output-log" class="section-header"><a href="#output-log">8 Output Log</a></h1>
+<h1 id="output-log" class="section-header"><a href="#output-log">6 Output Log</a></h1>
 <p>TODO</p>
 <p>Run the following command to test the IKEA Sensor on NuttX OS…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; ikea_air_quality_sensor
@@ -472,7 +417,7 @@ Got PM2.5 Concentration: 23 µg/m³
 16  11  0b  00  00  00  17  00  00  03  00  00  00  00  21  02  00  00  0b  86
 Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 <p><a href="https://youtu.be/dUHlG67pB3M">Watch the demo on YouTube</a></p>
-<h1 id="test-with-apache-nuttx-os" class="section-header"><a href="#test-with-apache-nuttx-os">9 Test with Apache NuttX OS</a></h1>
+<h1 id="test-with-apache-nuttx-os" class="section-header"><a href="#test-with-apache-nuttx-os">7 Test with Apache NuttX OS</a></h1>
 <p>TODO</p>
 <p>Here’s a quick way to test the IKEA Sensor with NuttX OS. Enter these NuttX commands to read the UART port and dump the data…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /dev
@@ -537,11 +482,11 @@ do
 <p><img src="https://lupyuen.github.io/images/ikea-gps.png" alt="" /></p>
 <p>TODO16</p>
 <p><img src="https://lupyuen.github.io/images/ikea-gps2.png" alt="" /></p>
-<h1 id="connect-to-lorawan-and-the-things-network" class="section-header"><a href="#connect-to-lorawan-and-the-things-network">10 Connect to LoRaWAN and The Things Network</a></h1>
+<h1 id="connect-to-lorawan-and-the-things-network" class="section-header"><a href="#connect-to-lorawan-and-the-things-network">8 Connect to LoRaWAN and The Things Network</a></h1>
 <p>TODO</p>
-<h1 id="visualise-with-prometheus-and-grafana" class="section-header"><a href="#visualise-with-prometheus-and-grafana">11 Visualise with Prometheus and Grafana</a></h1>
+<h1 id="visualise-with-prometheus-and-grafana" class="section-header"><a href="#visualise-with-prometheus-and-grafana">9 Visualise with Prometheus and Grafana</a></h1>
 <p>TODO</p>
-<h1 id="references" class="section-header"><a href="#references">12 References</a></h1>
+<h1 id="references" class="section-header"><a href="#references">10 References</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -551,7 +496,7 @@ do
 <p><a href="https://www.ikea.com/us/en/manuals/vindriktning-air-quality-sensor__AA-2289325-1.pdf">IKEA VINDRIKTNING Manual</a></p>
 </li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -571,7 +516,7 @@ do
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ikea.md"><code>lupyuen.github.io/src/ikea.md</code></a></p>
 <p><img src="https://lupyuen.github.io/images/ikea-5v.jpg" alt="UART Port runs at 5V, not 3.3V" /></p>
-<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1490147828458405889">this Twitter Thread</a></p>
@@ -584,7 +529,7 @@ do
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ikea-wire.jpg" alt="Very Fine Solder Wire (0.38 mm diameter) and 22 AWG Solid Core Wire" /></p>
-<h1 id="appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor" class="section-header"><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">15 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a></h1>
+<h1 id="appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor" class="section-header"><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">13 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a></h1>
 <p>Here’s how I soldered the <strong>UART (Serial) Port</strong> on the IKEA VINDRIKTNING Air Quality Sensor.</p>
 <p>(Sorry I’m terribly inexperienced with soldering 🙏)</p>
 <p>I used <strong>very fine Solder Wire</strong> (0.38 mm diameter) because it creates very tiny, precise blobs of solder. And <strong>22 AWG Solid Core Wire</strong> (Blue and Black).</p>
@@ -650,7 +595,7 @@ do
 <p><img src="https://lupyuen.github.io/images/ikea-5v.jpg" alt="UART Port runs at 5V, not 3.3V" /></p>
 </li>
 </ol>
-<h1 id="appendix-test-with-bus-pirate" class="section-header"><a href="#appendix-test-with-bus-pirate">16 Appendix: Test with Bus Pirate</a></h1>
+<h1 id="appendix-test-with-bus-pirate" class="section-header"><a href="#appendix-test-with-bus-pirate">14 Appendix: Test with Bus Pirate</a></h1>
 <p>TODO</p>
 <p>Before testing with Apache NuttX OS, we sniffed the IKEA Sensor’s UART Port with Bus Pirate. Connect Bus Pirate to IKEA Sensor as follows…</p>
 <div><table><thead><tr><th align="left">Bus Pirate</th><th align="center">IKEA Sensor</th><th align="left">Wire Colour</th></tr></thead><tbody>
@@ -718,7 +663,7 @@ Clutch engaged!!!</code></pre></div>
 <p><a href="https://youtu.be/QOJF6hAhFv4">Watch the demo on YouTube</a></p>
 <p>See below for the ASCII and Binary Logs.</p>
 <p><a href="http://dangerousprototypes.com/docs/UART">(More about Bus Pirate interfacing with UART)</a></p>
-<h2 id="ascii-log" class="section-header"><a href="#ascii-log">16.1 ASCII Log</a></h2>
+<h2 id="ascii-log" class="section-header"><a href="#ascii-log">14.1 ASCII Log</a></h2>
 <p>TODO</p>
 <p>ASCII Log of UART Output from IKEA Sensor…</p>
 <p><a href="https://youtu.be/QOJF6hAhFv4">Watch the demo on YouTube</a></p>
@@ -774,7 +719,7 @@ Any key to exit
 [8C3*1&lt;
 [12C4+29</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f40454dda8e3d7f279fb6ef721add465">(See the complete log)</a></p>
-<h2 id="binary-log" class="section-header"><a href="#binary-log">16.2 Binary Log</a></h2>
+<h2 id="binary-log" class="section-header"><a href="#binary-log">14.2 Binary Log</a></h2>
 <p>TODO</p>
 <p>Binary Log of UART Output from IKEA Sensor…</p>
 <div class="example-wrap"><pre class="language-text"><code>UART&gt;{
@@ -829,23 +774,66 @@ UART&gt;</code></pre></div>
 <p>TODO13</p>
 <p><img src="https://lupyuen.github.io/images/ikea-buspirate2.png" alt="" /></p>
 <p>TODO</p>
-<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">15 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">17.1 Download NuttX</a></h2>
-<p>TODO</p>
+<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">15.1 Download NuttX</a></h2>
+<p>To use the IKEA Air Quality Sensor with NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone --recursive --branch ikea https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch ikea https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+<p>Or if we prefer to <strong>add the IKEA Air Quality Sensor App</strong> to our NuttX Project, follow these instructions…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/ikea_air_quality_sensor#install-app"><strong>“Install IKEA Air Quality Sensor App”</strong></a></li>
+</ul>
+<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">15.2 Configure NuttX</a></h2>
+<p>Now we configure our NuttX project…</p>
 <ol>
 <li>
 <p>Install the build prerequisites…</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
 </li>
+<li>
+<p>Configure the build…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx
+
+# For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
+
+# Edit the Build Config
+make menuconfig </code></pre></div></li>
+<li>
+<p>Enable UART1…</p>
+<p>Select <strong>“System Type”</strong> → <strong>“BL602 Peripheral Support”</strong></p>
+<p>Check the box for <strong>“UART1”</strong></p>
+<p><img src="https://lupyuen.github.io/images/ikea-uart3.png" alt="Enable UART1 and set to 9,600 bps" /></p>
+</li>
+<li>
+<p>Set UART1 to 9,600 bps…</p>
+<p>Select <strong>“Device Drivers”</strong> → <strong>“Serial Driver Support”</strong> → <strong>“UART1 Configuration”</strong></p>
+<p>Set <strong>“BAUD rate”</strong> to <strong>9600</strong></p>
+</li>
+<li>
+<p>Enable <strong>cat</strong> and <strong>ls</strong> commands…</p>
+<p>Select <strong>“Application Configuration”</strong> → <strong>“NSH Library”</strong> → <strong>“Disable Individual commands”</strong></p>
+<p>Uncheck <strong>“Disable cat”</strong></p>
+<p>Uncheck <strong>“Disable ls”</strong></p>
+<p>The IKEA Sensor will be connected to NuttX OS at <strong>/dev/ttyS1</strong></p>
+</li>
+<li>
+<p>Save the configuration and exit menuconfig</p>
+<p><a href="https://gist.github.com/lupyuen/f4d9cfc19fb433df43ba8c6f57c6543a">(See the .config for BL602 and BL604)</a></p>
+</li>
 </ol>
-<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">17.2 Configure NuttX</a></h2>
-<p>TODO</p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">17.3 Build NuttX</a></h2>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">15.3 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602 or ESP32…</p>
 <ol>
 <li>
@@ -881,7 +869,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">17.4 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">15.4 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -961,7 +949,7 @@ cargo run flash nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">17.5 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">15.5 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
