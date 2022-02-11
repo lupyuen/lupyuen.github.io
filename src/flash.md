@@ -1037,6 +1037,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     JF disabled the XZ Decompression and the flashing worked OK.
 
+    ![Disable XZ Decompression in BLDevCube](https://lupyuen.github.io/images/flash-disablexz.jpg)
+
 # Appendix: BL602 Flashing Screenshots
 
 ## Linux Arm64
