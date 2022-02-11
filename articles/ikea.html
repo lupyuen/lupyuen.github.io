@@ -154,7 +154,7 @@
 <p><a href="http://www.jdscompany.co.kr/download.asp?gubun=07&amp;filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf">(From PM1006 Datasheet)</a></p>
 <p>To get the PM 2.5 data, let’s wire up the UART Port with a little soldering.</p>
 <p>(FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it triggers the PM1006 command that measures PM 2.5)</p>
-<p><a href="https://lupyuen.github.io/articles/ikea#notes">(Caution: The UART Port runs at 4.5V)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ikea#notes">(<strong>Caution:</strong> The UART Port runs at 5V, not 3.3V)</a></p>
 <p><img src="https://lupyuen.github.io/images/ikea-solder.jpg" alt="Inside the IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <h1 id="solder-uart-port" class="section-header"><a href="#solder-uart-port">2 Solder UART Port</a></h1>
 <p>Follow these steps to <strong>solder the UART (Serial) Port</strong> on the IKEA VINDRIKTNING Sensor (so we can access the PM 2.5 data)…</p>
@@ -202,6 +202,7 @@
 </tbody></table>
 </div>
 <p><a href="https://lupyuen.github.io/articles/pinedio#logic-analyser">(“PineDio Stack” column refers to the 20-pin GPIO Connector on PineDio Stack)</a></p>
+<p><a href="https://lupyuen.github.io/articles/ikea#notes">(<strong>Caution:</strong> The UART Port runs at 5V, not 3.3V)</a></p>
 <p><img src="https://lupyuen.github.io/images/ikea-pinedio.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor connected to Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p>The <strong>GPIO Pin Numbers</strong> for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/ikea/boards/risc-v/bl602/bl602evb/include/board.h#L63-L66">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_UART_1_RX_PIN \
@@ -561,13 +562,15 @@ do
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ikea.md"><code>lupyuen.github.io/src/ikea.md</code></a></p>
+<p><img src="https://lupyuen.github.io/images/ikea-5v.jpg" alt="UART Port runs at 5V, not 3.3V" /></p>
 <h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1490147828458405889">this Twitter Thread</a></p>
 </li>
 <li>
-<p>According to the PM1006 Datasheet, the UART Port runs at <a href="https://lupyuen.github.io/articles/ikea#about-ikea-air-quality-sensor"><strong>4.5V Logic Level</strong></a> (instead of 3.3V). Don’t we need a <a href="https://learn.sparkfun.com/tutorials/voltage-dividers/all"><strong>Voltage Divider</strong></a> to protect our microcontroller, which is not 5V Tolerant?</p>
+<p>According to the PM1006 Datasheet, the UART Port runs at <a href="https://lupyuen.github.io/articles/ikea#about-ikea-air-quality-sensor"><strong>5V Logic Level</strong></a> (instead of 3.3V, see pic above).</p>
+<p>Don’t we need a <a href="https://learn.sparkfun.com/tutorials/voltage-dividers/all"><strong>Voltage Divider</strong></a> to protect our microcontroller, which is not 5V Tolerant?</p>
 <p>Apparently some folks are using the UART Port just fine without a Voltage Divider. <a href="https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/issues/44">(See this)</a></p>
 <p>But to be really safe we ought to use a Voltage Divider.</p>
 </li>
