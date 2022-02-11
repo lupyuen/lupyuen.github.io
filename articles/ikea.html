@@ -575,27 +575,73 @@ do
 <p>But to be really safe we ought to use a Voltage Divider.</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/ikea-wire.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/ikea-wire.jpg" alt="Very Fine Solder Wire (0.38 mm diameter) and 22 AWG Solid Core Wire" /></p>
 <h1 id="appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor" class="section-header"><a href="#appendix-solder-uart-port-on-ikea-vindriktning-air-quality-sensor">15 Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor</a></h1>
-<p>TODO</p>
-<p>Use very fine Solder Wire for tiny blobs of solder</p>
-<p>22 AWG Solid Core Wire</p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/ikea-solder.jpg" alt="" /></p>
-<p>TODO8: Cover with Sticky Tape</p>
-<p><img src="https://lupyuen.github.io/images/ikea-solder2.jpg" alt="" /></p>
-<p>TODO11: Solder the REST Pad</p>
-<p>Drop a tiny blob of molten solder on the REST Pad</p>
-<p>Place the wire on top of the solder blob (now hardened)</p>
-<p>Gently tap our Soldering Iron on top of the wire</p>
-<p>The wire should sink into the molten blob</p>
-<p>Quickly adjust the wire to make sure it doesn’t touch any components on the Circuit Board</p>
-<p>When cooled, the wire stays in the hardened blob</p>
-<p><img src="https://lupyuen.github.io/images/ikea-solder5.jpg" alt="" /></p>
-<p>TODO9: Cover the REST Pad. Solder the GND Pad.</p>
-<p><img src="https://lupyuen.github.io/images/ikea-solder3.jpg" alt="" /></p>
-<p>TODO10: Result</p>
-<p><img src="https://lupyuen.github.io/images/ikea-solder4.jpg" alt="" /></p>
+<p>Here’s how I soldered the <strong>UART (Serial) Port</strong> on the IKEA VINDRIKTNING Air Quality Sensor.</p>
+<p>(Sorry I’m terribly inexperienced with soldering 🙏)</p>
+<p>I used <strong>very fine Solder Wire</strong> (0.38 mm diameter) because it creates very tiny, precise blobs of solder. And <strong>22 AWG Solid Core Wire</strong> (Blue and Black).</p>
+<p>(See pic above)</p>
+<p>Here are the steps…</p>
+<ol>
+<li>
+<p>Unscrew the <strong>Back Cover</strong> to reveal the Circuit Board</p>
+<p><a href="https://lupyuen.github.io/articles/ikea#solder-uart-port">(Here’s how)</a></p>
+<p><img src="https://lupyuen.github.io/images/ikea-solder.jpg" alt="Inside the IKEA VINDRIKTNING Air Quality Sensor" /></p>
+</li>
+<li>
+<p>We’ll solder these <strong>Circular Pads</strong> on the Circuit Board…</p>
+<div><table><thead><tr><th align="center">IKEA Sensor</th><th align="center">UART Pin</th><th align="center">Wire Colour</th></tr></thead><tbody>
+<tr><td align="center">REST</td><td align="center">TX</td><td align="center">Blue</td></tr>
+<tr><td align="center">GND</td><td align="center">GND</td><td align="center">Black</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://lupyuen.github.io/images/ikea-solder3.jpg">(See the pic)</a></p>
+</li>
+<li>
+<p>We start with the <strong>REST Pad</strong>.</p>
+<p>Mask out with <strong>Sticky Tape</strong> all the parts around the REST Pad that should NOT be soldered.</p>
+<p><img src="https://lupyuen.github.io/images/ikea-solder2.jpg" alt="Mask out with Sticky Tape all the parts around the REST Pad" /></p>
+</li>
+<li>
+<p>With our Soldering Iron, drop a <strong>tiny blob of Molten Solder</strong> on the REST Pad.</p>
+<p>(Very fine Solder Wire really helps)</p>
+</li>
+<li>
+<p>Carefully place our <strong>Blue Solid Core Wire</strong> (or similar) on top of the Solder Blob. </p>
+<p>(Now hardened)</p>
+</li>
+<li>
+<p><strong>Gently tap</strong> our Soldering Iron on top of the wire.</p>
+<p>The wire should sink into the Molten Blob of Solder.</p>
+</li>
+<li>
+<p>Quickly <strong>adjust the wire</strong> to make sure it doesn’t touch any components on the Circuit Board.</p>
+<p>When cooled, the wire stays in the hardened Solder Blob.</p>
+</li>
+<li>
+<p>Now we solder the <strong>GND Pad</strong>.</p>
+<p>Mask out with <strong>Sticky Tape</strong> all the parts around the GND Pad that should NOT be soldered.</p>
+<p>(Especially the Surface Mounted Components near the GND Pad)</p>
+</li>
+<li>
+<p>Repeat the earlier steps to <strong>solder the GND Pad</strong> with our <strong>Black Solid Core Wire</strong>.</p>
+<p>Stay clear of the <strong>Surface Mounted Components!</strong></p>
+<p><img src="https://lupyuen.github.io/images/ikea-solder5.jpg" alt="Soldered GND Pad" /></p>
+</li>
+<li>
+<p>Remove the <strong>Sticky Tape</strong>. We’re done!</p>
+<p><img src="https://lupyuen.github.io/images/ikea-solder3.jpg" alt="UART Port soldered to IKEA VINDRIKTNING Air Quality Sensor" /></p>
+</li>
+<li>
+<p>Bend the <strong>Solid Core Wires</strong> and bind them with Sticky Tape so they don’t get dislodged easily.</p>
+<p><img src="https://lupyuen.github.io/images/ikea-solder4.jpg" alt="Bend the Solid Core Wire" /></p>
+</li>
+<li>
+<p>Test our handiwork with a <strong>Multimeter</strong>.</p>
+<p>(The UART Port runs at 5V, not 3.3V)</p>
+<p><img src="https://lupyuen.github.io/images/ikea-5v.jpg" alt="UART Port runs at 5V, not 3.3V" /></p>
+</li>
+</ol>
 <h1 id="appendix-test-with-bus-pirate" class="section-header"><a href="#appendix-test-with-bus-pirate">16 Appendix: Test with Bus Pirate</a></h1>
 <p>TODO</p>
 <p>Before testing with Apache NuttX OS, we sniffed the IKEA Sensor’s UART Port with Bus Pirate. Connect Bus Pirate to IKEA Sensor as follows…</p>
