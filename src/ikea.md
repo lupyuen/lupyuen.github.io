@@ -1,6 +1,6 @@
 # Connect IKEA Air Quality Sensor to Apache NuttX OS
 
-📝 _16 Feb 2022_
+📝 _12 Feb 2022_
 
 ![IKEA VINDRIKTNING Air Quality Sensor seated on Pine64 PineDio LoRa Gateway](https://lupyuen.github.io/images/ikea-title.jpg)
 

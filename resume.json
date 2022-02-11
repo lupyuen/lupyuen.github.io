@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Connect IKEA Air Quality Sensor to Apache NuttX OS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-02-12",
+      "website": "https://lupyuen.github.io/articles/ikea",
+      "summary": "How we expose the UART Port on IKEA VINDRIKTNING Air Quality Sensor... And read the PM 2.5 data with PineDio Stack BL604 RISC-V Board"
+    },
+    {
       "name": "BL602 EFlash Loader: Reverse Engineered with Ghidra",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-02-02",
