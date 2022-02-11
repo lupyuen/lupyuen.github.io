@@ -86,7 +86,7 @@ To get the PM 2.5 data, let's wire up the UART Port with a little soldering.
 
 (FYI: Inside the IKEA Sensor is another microcontroller that talks to PM1006. Periodically it triggers the PM1006 command that measures PM 2.5)
 
-[(Caution: The UART Port runs at 4.5V)](https://lupyuen.github.io/articles/ikea#notes)
+[(__Caution:__ The UART Port runs at 5V, not 3.3V)](https://lupyuen.github.io/articles/ikea#notes)
 
 ![Inside the IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-solder.jpg)
 
@@ -138,6 +138,8 @@ Now that we have exposed the UART Port on IKEA Air Quality Sensor, let's connect
 | GND | GND | Pin 20 | GND | Black
 
 [("PineDio Stack" column refers to the 20-pin GPIO Connector on PineDio Stack)](https://lupyuen.github.io/articles/pinedio#logic-analyser)
+
+[(__Caution:__ The UART Port runs at 5V, not 3.3V)](https://lupyuen.github.io/articles/ikea#notes)
 
 ![IKEA VINDRIKTNING Air Quality Sensor connected to Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/ikea-pinedio.jpg)
 
@@ -635,11 +637,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`lupyuen.github.io/src/ikea.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ikea.md)
 
+![UART Port runs at 5V, not 3.3V](https://lupyuen.github.io/images/ikea-5v.jpg)
+
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1490147828458405889)
 
-1.  According to the PM1006 Datasheet, the UART Port runs at [__4.5V Logic Level__](https://lupyuen.github.io/articles/ikea#about-ikea-air-quality-sensor) (instead of 3.3V). Don't we need a [__Voltage Divider__](https://learn.sparkfun.com/tutorials/voltage-dividers/all) to protect our microcontroller, which is not 5V Tolerant?
+1.  According to the PM1006 Datasheet, the UART Port runs at [__5V Logic Level__](https://lupyuen.github.io/articles/ikea#about-ikea-air-quality-sensor) (instead of 3.3V, see pic above).
+
+    Don't we need a [__Voltage Divider__](https://learn.sparkfun.com/tutorials/voltage-dividers/all) to protect our microcontroller, which is not 5V Tolerant?
 
     Apparently some folks are using the UART Port just fine without a Voltage Divider. [(See this)](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/issues/44)
 
