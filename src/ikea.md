@@ -314,7 +314,8 @@ This is how we __validate the Sensor Data Frame__: [ikea_air_quality_sensor_main
 
 ```c
 //  Header for Sensor Data Frame
-static const uint8_t PM1006_RESPONSE_HEADER[] = { 0x16, 0x11, 0x0B };
+static const uint8_t PM1006_RESPONSE_HEADER[] = 
+    { 0x16, 0x11, 0x0B };
 
 //  Return true if we have received a complete and valid Sensor Data Frame
 static bool frame_is_valid(void) {
