@@ -50,11 +50,11 @@ I found the VINDRIKTNING sensor at my local IKEA Store (IKEA Tampines Singapore)
 
 (Near the Air Purifiers. Wow IKEA has Air Purifiers now)
 
-![IKEA VINDRIKTNING Air Quality Sensor at IKEA Tampines Singapore](https://lupyuen.github.io/images/ikea-sensor3.jpg)
+![IKEA VINDRIKTNING Air Quality Sensor at IKEA Tampines Singapore in the Lighting Section near the Air Purifiers](https://lupyuen.github.io/images/ikea-sensor3.jpg)
 
 Connect the sensor to a USB-C Power Cable (not included) and it lights up in __Red, Amber or Green__...
 
-![IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-sensor4.jpg)
+![IKEA VINDRIKTNING Air Quality Sensor powered on](https://lupyuen.github.io/images/ikea-sensor4.jpg)
 
 | Colour | PM 2.5 (μg/m³) | Air Quality
 | ------ | :------: | -----------
@@ -78,7 +78,7 @@ The brilliant folks at the [__Home Assistant Project__](https://community.home-a
 
 The PM1006 Sensor exposes a __UART (Serial) Port__ that transmits the PM 2.5 value, encoded like so...
 
-![PM1006 Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet2.png)
+![PM1006 Sensor inside IKEA VINDRIKTNING Air Quality Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet2.png)
 
 [(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
 
@@ -189,7 +189,7 @@ Let's dive into the Source Code of our NuttX App that will __read and process th
 
 But first: What's inside the PM 2.5 data?
 
-![PM1006 Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet3.png)
+![PM1006 Sensor inside IKEA VINDRIKTNING Air Quality Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet3.png)
 
 [(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
 
@@ -227,7 +227,7 @@ If we look back at the [__PM1006 Datasheet__](http://www.jdscompany.co.kr/downlo
 
 This gives the __PM 2.5 value of 23__ (`0x0017`).
 
-![Sensor Data Frames](https://lupyuen.github.io/images/ikea-gps2.png)
+![20-byte Sensor Data Frames from IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-gps2.png)
 
 _What about the Checksum?_
 
@@ -472,27 +472,15 @@ We're ready to run our NuttX App to __read and process the PM 2.5__ Sensor Data!
 
 1.  TODO
 
-![](https://lupyuen.github.io/images/ikea-code5.png)
-
-# Connect to LoRaWAN and The Things Network
-
-TODO
-
-# Visualise with Prometheus and Grafana
-
-TODO
-
-# References
-
-TODO
-
--   ["Use an IKEA VINDRIKTNING air quality sensor in Home Assistant with ESPHome"](https://style.oversubstance.net/2021/08/diy-use-an-ikea-vindriktning-air-quality-sensor-in-home-assistant-with-esphome/)
-
--   [IKEA VINDRIKTNING Manual](https://www.ikea.com/us/en/manuals/vindriktning-air-quality-sensor__AA-2289325-1.pdf)
+![Our NuttX App reads PM 2.5 data from IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-code5.png)
 
 # What's Next
 
 TODO
+
+-   Connect to LoRaWAN and The Things Network
+
+-   Visualise with Prometheus and Grafana
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -508,7 +496,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [`lupyuen.github.io/src/ikea.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/ikea.md)
 
-![UART Port runs at 5V, not 3.3V](https://lupyuen.github.io/images/ikea-5v.jpg)
+![UART Port of IKEA VINDRIKTNING Air Quality Sensor runs at 5V, not 3.3V](https://lupyuen.github.io/images/ikea-5v.jpg)
 
 # Notes
 
@@ -555,7 +543,7 @@ Here are the steps...
 
     Mask out with __Sticky Tape__ all the parts around the REST Pad that should NOT be soldered.
 
-    ![Mask out with Sticky Tape all the parts around the REST Pad](https://lupyuen.github.io/images/ikea-solder2.jpg)
+    ![Mask out with Sticky Tape all the parts around the REST Pad on IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-solder2.jpg)
 
 1.  With our Soldering Iron, drop a __tiny blob of Molten Solder__ on the REST Pad.
 
@@ -591,13 +579,13 @@ Here are the steps...
 
 1.  Bend the __Solid Core Wires__ and bind them with Sticky Tape so they don't get dislodged easily.
 
-    ![Bend the Solid Core Wire](https://lupyuen.github.io/images/ikea-solder4.jpg)
+    ![Bend the Solid Core Wire soldered to IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-solder4.jpg)
 
 1.  Test our handiwork with a __Multimeter__.
 
     (The UART Port runs at 5V, not 3.3V)
 
-    ![UART Port runs at 5V, not 3.3V](https://lupyuen.github.io/images/ikea-5v.jpg)
+    ![UART Port of IKEA VINDRIKTNING Air Quality Sensor runs at 5V, not 3.3V](https://lupyuen.github.io/images/ikea-5v.jpg)
 
 # Appendix: Test with Bus Pirate
 
@@ -610,12 +598,14 @@ Before testing with Apache NuttX OS, we sniffed the IKEA Sensor's UART Port with
 | Data In (MISO) | REST | Blue
 | GND | GND | Black
 
+![IKEA VINDRIKTNING Air Quality Sensor connected to Bus Pirate](https://lupyuen.github.io/images/ikea-buspirate.jpg)
+
 Connect USB Ports of IKEA Sensor and Bus Pirate to the same computer. Remember: Only One Power Source!
 
 Enter these Bus Pirate commands to capture the UART output from IKEA Sensor (9600 bps, 8 bits, no parity, 1 stop bit)...
 
 ```text
-HiZ>m
+HiZ> m
 1. HiZ
 2. 1-WIRE
 3. UART
@@ -628,8 +618,8 @@ HiZ>m
 10. PIC
 11. DIO
 x. exit(without change)
+(1)> 3
 
-(1)>3
 Set serial port speed: (bps)
  1. 300
  2. 1200
@@ -642,32 +632,35 @@ Set serial port speed: (bps)
  9. 115200
 10. Input Custom BAUD
 11. Auto-Baud Detection (Activity Required)
+(1)> 5
 
-(1)>5
 Data bits and parity:
  1. 8, NONE *default 
  2. 8, EVEN 
  3. 8, ODD 
  4. 9, NONE
 (1)>
+
 Stop bits:
  1. 1 *default
  2. 2
 (1)>
+
 Receive polarity:
  1. Idle 1 *default
  2. Idle 0
 (1)>
+
 Select output type:
  1. Open drain (H=Hi-Z, L=GND)
  2. Normal (H=3.3V, L=GND)
-
 (1)>
+
 Clutch disengaged!!!
 To finish setup, start up the power supplies with command 'W'
-
 Ready
-UART>W
+
+UART> W
 POWER SUPPLIES ON
 Clutch engaged!!!
 ```
@@ -678,8 +671,6 @@ See below for the ASCII and Binary Logs.
 
 [(More about Bus Pirate interfacing with UART)](http://dangerousprototypes.com/docs/UART)
 
-## ASCII Log
-
 TODO
 
 ASCII Log of UART Output from IKEA Sensor...
@@ -687,10 +678,9 @@ ASCII Log of UART Output from IKEA Sensor...
 [Watch the demo on YouTube](https://youtu.be/QOJF6hAhFv4)
 
 ```text
-UART>(2)
+UART> (2)
 Raw UART input
 Any key to exit
-
 <@:
    <B:
 [6C:;8
@@ -698,117 +688,26 @@ Any key to exit
 [12C9:7 
 [16C997!
 [20C987"
-[24C876%
-[28C876%
-[32C876%
-[36C866&
-[40C856'
-[44C745*
-[48C745*
-[52C745*
-[56C745*
-[60C735+
-[64C614/
-[68C614/
-[72C614/
-[76C614/
-[79C
-[37;80H 624.
-[4C624.
-[8C624.
-[12C614/
-[16C614/
-[20C614/
-[24C6040
-[28C6040
-[32C5/33
-[36C5.34
-[40C4,28
-[44C4,28
-[48C5-35
-[52C5.34
-[56C5.34
-[60C5-35
-[64C4,28
-[68C2%0C
-[72C2%0C
-[76C2&0B
-[79C
-[37;80H 2'0A
-[4C3)1=
-[8C3*1<
-[12C4+29
 ```
 
 [(See the complete log)](https://gist.github.com/lupyuen/f40454dda8e3d7f279fb6ef721add465)
-
-## Binary Log
 
 TODO
 
 Binary Log of UART Output from IKEA Sensor...
 
 ```text
-UART>{
+UART> {
 UART LIVE DISPLAY, } TO STOP
-UART>
-READ: -f 0x00
-UART>
-READ: -f 0x00
-UART>
-READ: -f 0x00
-UART>
-READ: 0x16
-UART>
-READ: 0x11
-UART>
-READ: 0x0B
-UART>
-READ: 0x00
-UART>
-READ: 0x00
-UART>
-READ: 0x00
-UART>
-READ: 0x3D
-UART>
-READ: 0x00
-UART>
-READ: 0x00
-UART>
-READ: 0x03
-UART>
-READ: 0x45
-UART>
-READ: 0x00
-UART>
-READ: 0x00
-UART>
-READ: 0x00
-UART>
-READ: 0x3B
-UART>
-READ: 0x01
-UART>
-READ: 0x00
-UART>
-READ: 0x00
-UART>
 ```
+
+TODO
+
+![Bus Pirate shows the output from IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-buspirate2.png)
 
 [(See the complete log)](https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810)
 
 [(Another binary log)](https://gist.github.com/lupyuen/ebe4c0628fc9ea2e124e6f00d8246b49)
-
-TODO12
-
-![IKEA VINDRIKTNING Air Quality Sensor connected to Bus Pirate](https://lupyuen.github.io/images/ikea-buspirate.jpg)
-
-TODO13
-
-![](https://lupyuen.github.io/images/ikea-buspirate2.png)
-
-TODO
 
 # Appendix: Build, Flash and Run NuttX
 
@@ -863,9 +762,11 @@ Now we configure our NuttX project...
 
 1.  Enable UART1...
 
-    Select __"System Type"__ → __"BL602 Peripheral Support"__
+    __For BL602 / BL604:__ Check the box for __"System Type"__ → __"BL602 Peripheral Support"__ → __"UART1"__
 
-    Check the box for __"UART1"__
+    __For ESP32:__ Check the box for __"System Type"__ → __"ESP32 Peripheral Select"__ → __"UART 1"__
+
+    Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
     ![Enable UART1 and set to 9,600 bps](https://lupyuen.github.io/images/ikea-uart3.png)
 
@@ -875,6 +776,8 @@ Now we configure our NuttX project...
    
     Set __"BAUD rate"__ to __9600__
 
+    Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
+
 1.  Enable __cat__ and __ls__ commands...
 
     Select __"Application Configuration"__ → __"NSH Library"__ → __"Disable Individual commands"__
@@ -883,11 +786,11 @@ Now we configure our NuttX project...
 
     Uncheck __"Disable ls"__
 
-    The IKEA Sensor will be connected to NuttX OS at __/dev/ttyS1__
-
 1.  Save the configuration and exit menuconfig
 
     [(See the .config for BL602 and BL604)](https://gist.github.com/lupyuen/f4d9cfc19fb433df43ba8c6f57c6543a)
+
+The IKEA Sensor will be connected to NuttX at __/dev/ttyS1__
 
 ## Build NuttX
 
