@@ -812,9 +812,9 @@ TODO
 
 # Appendix: Build, Flash and Run NuttX
 
-_(For BL602 and ESP32)_
+_(For BL602, BL604 and ESP32)_
 
-Below are the steps to build, flash and run NuttX on BL602 and ESP32.
+Below are the steps to build, flash and run NuttX on BL602, BL604 and ESP32.
 
 The instructions below will work on __Linux (Ubuntu)__, __WSL (Ubuntu)__ and __macOS__.
 
@@ -850,7 +850,7 @@ Now we configure our NuttX project...
     ```bash
     cd nuttx
 
-    ## For BL602: Configure the build for BL602
+    ## For BL602 / BL604: Configure the build for BL602 / BL604
     ./tools/configure.sh bl602evb:nsh
 
     ## For ESP32: Configure the build for ESP32.
@@ -891,7 +891,7 @@ Now we configure our NuttX project...
 
 ## Build NuttX
 
-Follow these steps to build NuttX for BL602 or ESP32...
+Follow these steps to build NuttX for BL602, BL604 or ESP32...
 
 1.  To build NuttX, enter this command...
 
@@ -907,9 +907,9 @@ Follow these steps to build NuttX for BL602 or ESP32...
     CP: nuttx.bin
     ```
 
-    [(See the complete log for BL602)](https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746)
+    [(See the complete log for BL602 / BL604)](https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746)
 
-1.  __For BL602:__ Copy the __NuttX Firmware__ to the __blflash__ directory...
+1.  __For BL602 / BL604:__ Copy the __NuttX Firmware__ to the __blflash__ directory...
 
     ```bash
     ##  For Linux and macOS:
@@ -928,7 +928,7 @@ Follow these steps to build NuttX for BL602 or ESP32...
 
 1.  In case of problems, refer to the __NuttX Docs__...
 
-    [__"BL602 NuttX"__](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
+    [__"BL602 / BL604 NuttX"__](https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html)
 
     [__"ESP32 NuttX"__](https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html)
 
@@ -940,7 +940,7 @@ Follow these steps to build NuttX for BL602 or ESP32...
 
 __For ESP32:__ [__See instructions here__](https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing) [(Also check out this article)](https://popolon.org/gblog3/?p=1977&lang=en)
 
-__For BL602:__ Follow these steps to install __blflash__...
+__For BL602 / BL604:__ Follow these steps to install __blflash__...
 
 1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
 
@@ -1022,7 +1022,7 @@ picocom -b 115200 /dev/ttyUSB0
 
 [(More about this)](https://popolon.org/gblog3/?p=1977&lang=en)
 
-__For BL602:__ Set BL602 / BL604 to __Normal Mode__ (Non-Flashing) and restart the board...
+__For BL602 / BL604:__ Set BL602 / BL604 to __Normal Mode__ (Non-Flashing) and restart the board...
 
 __For PineDio Stack BL604:__
 
