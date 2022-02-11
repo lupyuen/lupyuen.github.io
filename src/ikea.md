@@ -404,77 +404,6 @@ TODO
 
 ![](https://lupyuen.github.io/images/ikea-code5.png)
 
-# Install App
-
-TODO
-
-To add this repo to your NuttX project...
-
-```bash
-## TODO: Change this to the path of our "incubator-nuttx-apps/examples" folder
-pushd nuttx/apps/examples
-git submodule add https://github.com/lupyuen/ikea_air_quality_sensor
-popd
-```
-
-Then update the NuttX Build Config...
-
-```bash
-## TODO: Change this to the path of our "incubator-nuttx" folder
-cd nuttx/nuttx
-
-## Preserve the Build Config
-cp .config ../config
-
-## Erase the Build Config and Kconfig files
-make distclean
-
-## For BL602: Configure the build for BL602
-./tools/configure.sh bl602evb:nsh
-
-## For ESP32: Configure the build for ESP32.
-## TODO: Change "esp32-devkitc" to our ESP32 board.
-./tools/configure.sh esp32-devkitc:nsh
-
-## Restore the Build Config
-cp ../config .config
-
-## Edit the Build Config
-make menuconfig 
-```
-
-In menuconfig, enable the IKEA Air Quality Sensor App under "Application Configuration" → "Examples".
-
-# Configure Apache NuttX OS
-
-TODO
-
-We configure the UART Port on Apache NuttX OS for the IKEA Sensor...
-
-```bash
-make menuconfig
-```
-
-Enable UART1:
-- Select "System Type → BL602 Peripheral Support"
-- Check "UART1"
-
-Set to 9600 bps:
-- Select "Device Drivers → Serial Driver Support → UART1 Configuration"
-- Set "BAUD rate" to 9600
-
-Enable `cat`:
-- Select "Application Configuration → NSH Library → Disable Individual commands"
-- Uncheck "Disable cat"
-
-Build and flash NuttX OS to PineDio Stack BL604.
-
-IKEA Sensor is now connected to NuttX OS at `/dev/ttyS1`
-
-TODO14
-
-![](https://lupyuen.github.io/images/ikea-uart3.png)
-
 # Output Log
 
 TODO
@@ -956,15 +885,70 @@ The instructions below will work on __Linux (Ubuntu)__, __WSL (Ubuntu)__ and __m
 
 ## Download NuttX
 
-TODO
+To use the IKEA Air Quality Sensor with NuttX, download the modified source code for __NuttX OS and NuttX Apps__...
+
+```bash
+mkdir nuttx
+cd nuttx
+git clone --recursive --branch ikea https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch ikea https://github.com/lupyuen/incubator-nuttx-apps apps
+```
+
+Or if we prefer to __add the IKEA Air Quality Sensor App__ to our NuttX Project, follow these instructions...
+
+-   [__"Install IKEA Air Quality Sensor App"__](https://github.com/lupyuen/ikea_air_quality_sensor#install-app)
+
+## Configure NuttX
+
+Now we configure our NuttX project...
 
 1.  Install the build prerequisites...
 
     [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
-## Configure NuttX
+1.  Configure the build...
 
-TODO
+    ```bash
+    cd nuttx
+
+    ## For BL602: Configure the build for BL602
+    ./tools/configure.sh bl602evb:nsh
+
+    ## For ESP32: Configure the build for ESP32.
+    ## TODO: Change "esp32-devkitc" to our ESP32 board.
+    ./tools/configure.sh esp32-devkitc:nsh
+
+    ## Edit the Build Config
+    make menuconfig 
+    ```
+
+1.  Enable UART1...
+
+    Select __"System Type"__ → __"BL602 Peripheral Support"__
+
+    Check the box for __"UART1"__
+
+    ![Enable UART1 and set to 9,600 bps](https://lupyuen.github.io/images/ikea-uart3.png)
+
+1.  Set UART1 to 9,600 bps...
+
+    Select __"Device Drivers"__ → __"Serial Driver Support"__ → __"UART1 Configuration"__
+   
+    Set __"BAUD rate"__ to __9600__
+
+1.  Enable __cat__ and __ls__ commands...
+
+    Select __"Application Configuration"__ → __"NSH Library"__ → __"Disable Individual commands"__
+    
+    Uncheck __"Disable cat"__
+
+    Uncheck __"Disable ls"__
+
+    The IKEA Sensor will be connected to NuttX OS at __/dev/ttyS1__
+
+1.  Save the configuration and exit menuconfig
+
+    [(See the .config for BL602 and BL604)](https://gist.github.com/lupyuen/f4d9cfc19fb433df43ba8c6f57c6543a)
 
 ## Build NuttX
 
