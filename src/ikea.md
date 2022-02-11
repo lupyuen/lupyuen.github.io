@@ -651,6 +651,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     But to be really safe we ought to use a Voltage Divider.
 
+![](https://lupyuen.github.io/images/ikea-wire.jpg)
+
 # Appendix: Solder UART Port on IKEA VINDRIKTNING Air Quality Sensor
 
 TODO
