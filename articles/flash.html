@@ -928,9 +928,11 @@ blk64k_erase_cmd = 0xd8
 <li>
 <p><a href="https://codeberg.org/JF002"><strong>JF</strong></a> reported an interesting problem with his prototype PineDio Stack BL604 V2 board: It fails to flash any firmware.</p>
 <p>(My PineDio Stack V2 flashes OK)</p>
+<p>BLDevCube shows this error…</p>
+<div class="example-wrap"><pre class="language-text"><code>{&quot;ErrorCode&quot;: &quot;0036&quot;,&quot;ErrorMsg&quot;:&quot;BFLB FLASH WRITE FAIL&quot;}</code></pre></div>
 <p>The engineers at Bouffalo Lab told us…</p>
 <p>“We judge that a hardware error caused XZ work fail, maybe the ram of the chip is faulty.”</p>
-<p>“We have a second way to bypass XZ. There is a configuration file in the /chips/bl602/eflash_loader/eflash_loader_cfg.ini directory of the Bouffalo Lab DevCube tool.”</p>
+<p>“We have a second way to bypass XZ. There is a configuration file in the /chips/bl602/eflash_loader/ eflash_loader_cfg.ini directory of the Bouffalo Lab DevCube tool.”</p>
 <p>“The configuration file has a config item for decompress_write, Set it from true to false and save configuration file. After the configuration file is modified, you can try program flash again.”</p>
 <p>JF disabled the XZ Decompression and the flashing worked OK.</p>
 </li>
