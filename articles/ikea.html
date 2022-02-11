@@ -378,34 +378,36 @@ static void process_frame(void) {
 <p>Follow these steps to <strong>build, flash and run NuttX</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/ikea#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
 <p>Remember to enable the <strong>UART1 Port /dev/ttyS1</strong> and set it to <strong>9,600 bps</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/ikea-uart3.png" alt="Enable UART1 and set to 9,600 bps" /></p>
+<p><img src="https://lupyuen.github.io/images/ikea-uart3.jpg" alt="Enable UART1 and set to 9,600 bps" /></p>
 <p><a href="https://lupyuen.github.io/articles/ikea#configure-nuttx">(Here’s how)</a></p>
 </li>
 <li>
-<p>TODO: At the NuttX Shell, enter this command…</p>
+<p>At the NuttX Shell, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
-<p>TODO: We should see…</p>
+<p>We should see our UART Port configured at <strong>/dev/ttyS1</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev:
 console
 null
 timer0
 ttyS1
-zero</code></pre></div></li>
+zero</code></pre></div>
+<p>Which is connected to our IKEA Sensor.</p>
+</li>
 <li>
-<p>TODO: Enter this command…</p>
+<p>Enter this command to <strong>dump the output</strong> from our IKEA Sensor…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cat /dev/ttyS1</code></pre></div>
-<p>TODO: We should see…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; 
-3(1&gt;
+<p>We should see some meaningless ASCII data…</p>
+<div class="example-wrap"><pre class="language-text"><code>3(1&gt;
 2&#39;0A
 2%0C
 1$/F</code></pre></div>
 <p><a href="https://youtu.be/iFf8_f7ExUI">(Watch the demo on YouTube)</a></p>
+<p>But that’s OK, it means that our IKEA Sensor is alive.</p>
 </li>
 <li>
-<p>TODO: Enter this command to test the IKEA Air Quality Sensor…</p>
+<p>Finally enter this command to <strong>run our NuttX App</strong> for the IKEA Sensor…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ikea_air_quality_sensor</code></pre></div>
-<p>TODO: We should see…</p>
+<p>We should see the 20-byte <strong>Sensor Data Frames</strong> and the decoded <strong>PM 2.5 values</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>16  11  0b  00  00  00  17  00  00  02  ff  00  00  00  21  02  00  00  0b  88
 Got PM2.5 Concentration: 23 µg/m³
 
@@ -415,9 +417,7 @@ Got PM2.5 Concentration: 24 µg/m³
 16  11  0b  00  00  00  17  00  00  03  01  00  00  00  21  02  00  00  0b  85
 Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 <p><a href="https://youtu.be/dUHlG67pB3M">(Watch the demo on YouTube)</a></p>
-</li>
-<li>
-<p>TODO</p>
+<p>Congratulations we have successfully read the PM 2.5 values from the IKEA VINDRIKTNING Air Quality Sensor! 🎉</p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ikea-code5.png" alt="Our NuttX App reads PM 2.5 data from IKEA VINDRIKTNING Air Quality Sensor" /></p>
@@ -618,7 +618,7 @@ Any key to exit
 <div class="example-wrap"><pre class="language-text"><code>UART&gt; {
 UART LIVE DISPLAY, } TO STOP</code></pre></div>
 <p>We should see the 20-byte Sensor Data Frames with PM 2.5 encoded inside…</p>
-<p><img src="https://lupyuen.github.io/images/ikea-buspirate2.png" alt="Bus Pirate shows the output from IKEA VINDRIKTNING Air Quality Sensor" /></p>
+<p><img src="https://lupyuen.github.io/images/ikea-buspirate2.jpg" alt="Bus Pirate shows the output from IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <p><a href="https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810">(See the complete log)</a></p>
 <p><a href="https://gist.github.com/lupyuen/ebe4c0628fc9ea2e124e6f00d8246b49">(Another binary log)</a></p>
 <h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">10 Appendix: Build, Flash and Run NuttX</a></h1>
@@ -662,7 +662,7 @@ make menuconfig </code></pre></div></li>
 <p><strong>For BL602 / BL604:</strong> Check the box for <strong>“System Type”</strong> → <strong>“BL602 Peripheral Support”</strong> → <strong>“UART1”</strong></p>
 <p><strong>For ESP32:</strong> Check the box for <strong>“System Type”</strong> → <strong>“ESP32 Peripheral Select”</strong> → <strong>“UART 1”</strong></p>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
-<p><img src="https://lupyuen.github.io/images/ikea-uart3.png" alt="Enable UART1 and set to 9,600 bps" /></p>
+<p><img src="https://lupyuen.github.io/images/ikea-uart3.jpg" alt="Enable UART1 and set to 9,600 bps" /></p>
 </li>
 <li>
 <p>Set UART1 to 9,600 bps…</p>
@@ -853,7 +853,7 @@ nsh&gt;</code></pre></div>
 <p><strong>macOS Tip:</strong> Here’s the script I use to build, flash and run NuttX on macOS, all in a single step: <a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">run.sh</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
 <p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/ikea-trek.png" alt="Trekking 13 km to IKEA on the horizon in search of VINDRIKTNING" /></p>
+<p><img src="https://lupyuen.github.io/images/ikea-trek.jpg" alt="Trekking 13 km to IKEA on the horizon in search of VINDRIKTNING" /></p>
 <p><em>Trekking 13 km to IKEA on the horizon in search of VINDRIKTNING</em></p>
 
     
