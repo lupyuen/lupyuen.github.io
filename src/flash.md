@@ -1013,7 +1013,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Hopefully somebody will create a smarter way to flash BL602 boards and reduce the build-flash-test cycle time. 
     
-    [(Maybe toggle GPIO 8 in our firmware? Check out this idea)](https://twitter.com/GPSBabel/status/1377151421938692097?s=20)
+    __UPDATE:__ Check out this article...
+
+    [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
+
+1.  [__JF__](https://codeberg.org/JF002) reported an interesting problem with his prototype PineDio Stack BL604 V2 board: It fails to flash any firmware.
+
+    (My PineDio Stack V2 flashes OK)
+
+    The engineers at Bouffalo Lab told us...
+
+    "We judge that a hardware error caused XZ work fail, maybe the ram of the chip is faulty."
+
+    "We have a second way to bypass XZ. There is a configuration file in the /chips/bl602/eflash_loader/eflash_loader_cfg.ini directory of the Bouffalo Lab DevCube tool."
+    
+    "The configuration file has a config item for decompress_write, Set it from true to false and save configuration file. After the configuration file is modified, you can try program flash again."
+
+    JF disabled the XZ Decompression and the flashing worked OK.
 
 # Appendix: BL602 Flashing Screenshots
 
