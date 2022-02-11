@@ -598,7 +598,7 @@ Here are the steps...
 
 # Appendix: Test with Bus Pirate
 
-Before testing with Apache NuttX OS, we sniffed the IKEA VINDRIKTNING Air Quality Sensor's UART Port with __Bus Pirate__.
+Before testing with Apache NuttX OS, we sniffed the UART Port on IKEA VINDRIKTNING Air Quality Sensor with [__Bus Pirate__](http://dangerousprototypes.com/docs/Bus_Pirate).
 
 Connect Bus Pirate to the IKEA Sensor as follows...
 
@@ -615,6 +615,7 @@ Enter these Bus Pirate commands to capture the UART output from the IKEA Sensor 
 
 ```text
 HiZ> m
+
 1. HiZ
 2. 1-WIRE
 3. UART
