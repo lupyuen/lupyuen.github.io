@@ -922,7 +922,17 @@ blk64k_erase_cmd = 0xd8
 <p>Do all BL602 boards use a jumper or switch for flashing the firmware?</p>
 <p>Yep because all BL602 boards run on the same Boot ROM… Which uses GPIO 8 to decide whether it should go into Flashing Mode.</p>
 <p>Hopefully somebody will create a smarter way to flash BL602 boards and reduce the build-flash-test cycle time. </p>
-<p><a href="https://twitter.com/GPSBabel/status/1377151421938692097?s=20">(Maybe toggle GPIO 8 in our firmware? Check out this idea)</a></p>
+<p><strong>UPDATE:</strong> Check out this article…</p>
+<p><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></p>
+</li>
+<li>
+<p><a href="https://codeberg.org/JF002"><strong>JF</strong></a> reported an interesting problem with his prototype PineDio Stack BL604 V2 board: It fails to flash any firmware.</p>
+<p>(My PineDio Stack V2 flashes OK)</p>
+<p>The engineers at Bouffalo Lab told us…</p>
+<p>“We judge that a hardware error caused XZ work fail, maybe the ram of the chip is faulty.”</p>
+<p>“We have a second way to bypass XZ. There is a configuration file in the /chips/bl602/eflash_loader/eflash_loader_cfg.ini directory of the Bouffalo Lab DevCube tool.”</p>
+<p>“The configuration file has a config item for decompress_write, Set it from true to false and save configuration file. After the configuration file is modified, you can try program flash again.”</p>
+<p>JF disabled the XZ Decompression and the flashing worked OK.</p>
 </li>
 </ol>
 <h1 id="appendix-bl602-flashing-screenshots" class="section-header"><a href="#appendix-bl602-flashing-screenshots">12 Appendix: BL602 Flashing Screenshots</a></h1><h2 id="linux-arm64" class="section-header"><a href="#linux-arm64">12.1 Linux Arm64</a></h2>
