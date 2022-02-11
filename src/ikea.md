@@ -227,6 +227,8 @@ If we look back at the [__PM1006 Datasheet__](http://www.jdscompany.co.kr/downlo
 
 This gives the __PM 2.5 value of 23__ (`0x0017`).
 
+![Sensor Data Frames](https://lupyuen.github.io/images/ikea-gps2.png)
+
 _What about the Checksum?_
 
 To validate the Checksum, all 20 bytes __must add up to 0__.
@@ -400,140 +402,71 @@ The code in our NuttX App was inspired by the [__Arduino__](https://github.com/H
 
 # Run NuttX App
 
-TODO
+We're ready to run our NuttX App to __read and process the PM 2.5__ Sensor Data!
+
+1.  Follow these steps to __build, flash and run NuttX__...
+
+    [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/ikea#appendix-build-flash-and-run-nuttx)
+
+1.  TODO: At the NuttX Shell, enter this command...
+
+    ```bash
+    ls /dev
+    ```
+
+    TODO: We should see...
+
+    ```text
+    /dev:
+    console
+    null
+    timer0
+    ttyS1
+    zero
+    ```
+
+1.  TODO: Enter this command...
+
+    ```bash
+    cat /dev/ttyS1
+    ```
+
+    TODO: We should see...
+
+    ```text
+    nsh> 
+    3(1>
+    2'0A
+    2%0C
+    1$/F
+    ```
+
+    [(Watch the demo on YouTube)](https://youtu.be/iFf8_f7ExUI)
+
+1.  TODO: Enter this command to test the IKEA Air Quality Sensor...
+
+    ```bash
+    ikea_air_quality_sensor
+    ```
+
+    TODO: We should see...
+
+    ```text
+    16  11  0b  00  00  00  17  00  00  02  ff  00  00  00  21  02  00  00  0b  88
+    Got PM2.5 Concentration: 23 µg/m³
+
+    16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
+    Got PM2.5 Concentration: 24 µg/m³
+
+    16  11  0b  00  00  00  17  00  00  03  01  00  00  00  21  02  00  00  0b  85
+    Got PM2.5 Concentration: 23 µg/m³
+    ```
+
+    [(Watch the demo on YouTube)](https://youtu.be/dUHlG67pB3M)
+
+1.  TODO
 
 ![](https://lupyuen.github.io/images/ikea-code5.png)
-
-# Output Log
-
-TODO
-
-Run the following command to test the IKEA Sensor on NuttX OS...
-
-```text
-nsh> ikea_air_quality_sensor
-16  11  0b  00  00  00  17  00  00  02  ff  00  00  00  21  02  00  00  0b  88
-Got PM2.5 Concentration: 23 µg/m³
-16  11  0b  00  00  00  17  00  00  02  ff  00  00  00  21  02  00  00  0b  88
-Got PM2.5 Concentration: 23 µg/m³
-16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  03  00  00  00  22  02  00  00  0b  81
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  02  00  00  00  22  02  00  00  0b  82
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  02  00  00  00  22  02  00  00  0b  82
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  02  00  00  00  22  02  00  00  0b  82
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0b  80
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  03  00  00  00  22  02  00  00  0b  81
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  03  00  00  00  22  02  00  00  0b  81
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  18  00  00  03  02  00  00  00  22  02  00  00  0b  82
-Got PM2.5 Concentration: 24 µg/m³
-16  11  0b  00  00  00  17  00  00  03  01  00  00  00  21  02  00  00  0b  85
-Got PM2.5 Concentration: 23 µg/m³
-16  11  0b  00  00  00  17  00  00  03  00  00  00  00  21  02  00  00  0b  86
-Got PM2.5 Concentration: 23 µg/m³
-```
-
-[Watch the demo on YouTube](https://youtu.be/dUHlG67pB3M)
-
-# Test with Apache NuttX OS
-
-TODO
-
-Here's a quick way to test the IKEA Sensor with NuttX OS. Enter these NuttX commands to read the UART port and dump the data...
-
-```text
-nsh> ls /dev
-/dev:
- console
- gpio0
- gpio1
- gpio2
- null
- spi0
- spitest0
- timer0
- ttyS1
- urandom
- zero
-nsh> cat /dev/ttyS1
-
-3(1>
-    2'0A
-        2%0C
-            1$/F
-                .,T
-                   .,T
-                      .
-                       .,V
-                          .,V
-                             -+Y
-                                -+Y
-```
-
-[Watch the demo on YouTube](https://youtu.be/iFf8_f7ExUI)
-
-To see the binary data, modify the GPS Demo App: [gps_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/examples/gps/gps_main.c)...
-
-```c
-/* Read until we complete a line */
-cnt = 0;
-do
-  {
-    read(fd, &ch, 1);
-    //  Insert this line to dump the data in hex:
-    printf("%02x  ", ch);
-```
-
-Build and run the modified GPS Demo App...
-
-```text
-nsh> gps
-00  00  
-16  11  0b  00  00  00  39  00  00  03  39  00  00  00  37  01  00  00  00  21  
-16  11  0b  00  00  00  2b  00  00  03  17  00  00  00  29  01  00  00  00  5f  
-16  11  0b  00  00  00  32  00  00  03  26  00  00  00  30  01  00  00  00  42 
-16  11  0b  00  00  00  31  00  00  03  24  00  00  00  2f  01  00  00  00  46  
-16  11  0b  00  00  00  31  00  00  03  24  00  00  00  2f  01  00  00  00  46  
-16  11  0b  00  00  00  31  00  00  03  23  00  00  00  2f  01  00  00  00  47  
-16  11  0b  00  00  00  31  00  00  03  22  00  00  00  2f  01  00  00  00  48  
-16  11  0b  00  00  00  30  00  00  03  21  00  00  00  2e  01  00  00  00  4b  
-16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
-16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
-16  11  0b  00  00  00  2f  00  00  03  1f  00  00  00  2d  01  00  00  00  4f  
-16  11  0b  00  00  00  2f  00  00  03  1e  00  00  00  2d  01  00  00  00  50  
-16  11  0b  00  00  00  2f  00  00  03  1e  00  00  00  2d  01  00  00  00  50  
-16  11  0b  00  00  00  2f  00  00  03  1d  00  00  00  2d  01  00  00  00  51  
-16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54  
-16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54  
-16  11  0b  00  00  00  2e  00  00  03  1c  00  00  00  2c  01  00  00  00  54
-```
-
-[Watch the demo on YouTube](https://youtu.be/TyG-dJCx8OQ)
-
-Yep we see the 20-byte frames of Sensor Data, and the PM 2.5 encoded inside!
-
-PM 2.5 = 46 (`0x002e`)
-
-TODO15
-
-![](https://lupyuen.github.io/images/ikea-gps.png)
-
-TODO16
-
-![](https://lupyuen.github.io/images/ikea-gps2.png)
 
 # Connect to LoRaWAN and The Things Network
 
