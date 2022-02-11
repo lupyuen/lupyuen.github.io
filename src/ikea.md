@@ -125,7 +125,7 @@ Follow these steps to __solder the UART (Serial) Port__ on the IKEA VINDRIKTNING
 
     Note that the REST and GND Pins are exposed as tiny strips at the top of the pic below. Perfect for Multimeter Testing!
 
-1.  Optional: I used __Bus Pirate__ to sniff the UART Port and inspect the data transmitted by the sensor. See the details in the Appendix.
+1.  Optional: I used __Bus Pirate__ to sniff the UART Port and inspect the data transmitted by the sensor. [(See the details in the Appendix)](https://lupyuen.github.io/articles/ikea#appendix-test-with-bus-pirate)
 
 ![UART Port soldered to IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-solder3.jpg)
 
