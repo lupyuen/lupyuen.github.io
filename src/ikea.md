@@ -474,6 +474,10 @@ We're ready to run our NuttX App to __read and process the PM 2.5__ Sensor Data!
 
 ![Our NuttX App reads PM 2.5 data from IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-code5.png)
 
+TODO
+
+![NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN](https://lupyuen.github.io/images/lorawan3-ttn.png)
+
 # What's Next
 
 TODO
