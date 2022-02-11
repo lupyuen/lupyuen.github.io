@@ -589,9 +589,9 @@ Here are the steps...
 
 # Appendix: Test with Bus Pirate
 
-TODO
+Before testing with Apache NuttX OS, we sniffed the IKEA VINDRIKTNING Air Quality Sensor's UART Port with __Bus Pirate__.
 
-Before testing with Apache NuttX OS, we sniffed the IKEA Sensor's UART Port with Bus Pirate. Connect Bus Pirate to IKEA Sensor as follows...
+Connect Bus Pirate to the IKEA Sensor as follows...
 
 | Bus Pirate | IKEA Sensor | Wire Colour
 |:---|:--:|:---
@@ -600,9 +600,9 @@ Before testing with Apache NuttX OS, we sniffed the IKEA Sensor's UART Port with
 
 ![IKEA VINDRIKTNING Air Quality Sensor connected to Bus Pirate](https://lupyuen.github.io/images/ikea-buspirate.jpg)
 
-Connect USB Ports of IKEA Sensor and Bus Pirate to the same computer. Remember: Only One Power Source!
+Connect the USB Ports of the IKEA Sensor and Bus Pirate to the same computer. Remember: Only One Power Source for both gadgets!
 
-Enter these Bus Pirate commands to capture the UART output from IKEA Sensor (9600 bps, 8 bits, no parity, 1 stop bit)...
+Enter these Bus Pirate commands to capture the UART output from the IKEA Sensor (9600 bps, 8 bits, no parity, 1 stop bit)...
 
 ```text
 HiZ> m
@@ -665,17 +665,11 @@ POWER SUPPLIES ON
 Clutch engaged!!!
 ```
 
-[Watch the demo on YouTube](https://youtu.be/QOJF6hAhFv4)
-
-See below for the ASCII and Binary Logs.
+[(Watch the demo on YouTube)](https://youtu.be/QOJF6hAhFv4)
 
 [(More about Bus Pirate interfacing with UART)](http://dangerousprototypes.com/docs/UART)
 
-TODO
-
-ASCII Log of UART Output from IKEA Sensor...
-
-[Watch the demo on YouTube](https://youtu.be/QOJF6hAhFv4)
+To see the ASCII Output from the IKEA Sensor, enter this Bus Pirate command...
 
 ```text
 UART> (2)
@@ -690,18 +684,18 @@ Any key to exit
 [20C987"
 ```
 
+[(Watch the demo on YouTube)](https://youtu.be/QOJF6hAhFv4)
+
 [(See the complete log)](https://gist.github.com/lupyuen/f40454dda8e3d7f279fb6ef721add465)
 
-TODO
-
-Binary Log of UART Output from IKEA Sensor...
+To see the Binary Output from the IKEA Sensor, enter this...
 
 ```text
 UART> {
 UART LIVE DISPLAY, } TO STOP
 ```
 
-TODO
+We should see the 20-byte Sensor Data Frames with PM 2.5 encoded inside...
 
 ![Bus Pirate shows the output from IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-buspirate2.png)
 
