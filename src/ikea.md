@@ -473,21 +473,21 @@ We're ready to run our NuttX App to __read and process the PM 2.5__ Sensor Data!
 
     [(Watch the demo on YouTube)](https://youtu.be/dUHlG67pB3M)
 
-    Congratulations we have successfully read the PM 2.5 values from the IKEA VINDRIKTNING Air Quality Sensor! 🎉
-
 ![Our NuttX App reads PM 2.5 data from IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-code5.png)
 
-TODO
+Congratulations we have successfully read the PM 2.5 values from the IKEA VINDRIKTNING Air Quality Sensor! 🎉
 
 ![NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN](https://lupyuen.github.io/images/lorawan3-ttn.png)
 
 # What's Next
 
-TODO
+In the next article we shall transmit the PM 2.5 data wirelessly over [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) to [__The Things Network__](https://makezine.com/2021/05/24/go-long-with-lora-radio/). (Thanks to the onboard LoRa Transceiver on PineDio Stack)
 
--   Connect to LoRaWAN and The Things Network
+Imagine connecting a community of Air Quality Sensors miles apart (because of LoRa's long range). That would be super interesting for __Environment Monitoring__!
 
--   Visualise with Prometheus and Grafana
+[(We'll visualise the PM 2.5 data with __Prometheus__ and __Grafana__)](https://lupyuen.github.io/articles/prometheus)
+
+Stay Tuned!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
