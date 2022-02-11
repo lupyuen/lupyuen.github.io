@@ -408,6 +408,12 @@ We're ready to run our NuttX App to __read and process the PM 2.5__ Sensor Data!
 
     [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/ikea#appendix-build-flash-and-run-nuttx)
 
+    Remember to enable the __UART1 Port /dev/ttyS1__ and set it to __9,600 bps__...
+
+    ![Enable UART1 and set to 9,600 bps](https://lupyuen.github.io/images/ikea-uart3.png)
+
+    [(Here's how)](https://lupyuen.github.io/articles/ikea#configure-nuttx)
+
 1.  TODO: At the NuttX Shell, enter this command...
 
     ```bash
