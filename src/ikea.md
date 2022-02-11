@@ -410,17 +410,17 @@ We're ready to run our NuttX App to __read and process the PM 2.5__ Sensor Data!
 
     Remember to enable the __UART1 Port /dev/ttyS1__ and set it to __9,600 bps__...
 
-    ![Enable UART1 and set to 9,600 bps](https://lupyuen.github.io/images/ikea-uart3.png)
+    ![Enable UART1 and set to 9,600 bps](https://lupyuen.github.io/images/ikea-uart3.jpg)
 
     [(Here's how)](https://lupyuen.github.io/articles/ikea#configure-nuttx)
 
-1.  TODO: At the NuttX Shell, enter this command...
+1.  At the NuttX Shell, enter this command...
 
     ```bash
     ls /dev
     ```
 
-    TODO: We should see...
+    We should see our UART Port configured at __/dev/ttyS1__...
 
     ```text
     /dev:
@@ -431,16 +431,17 @@ We're ready to run our NuttX App to __read and process the PM 2.5__ Sensor Data!
     zero
     ```
 
-1.  TODO: Enter this command...
+    Which is connected to our IKEA Sensor.
+
+1.  Enter this command to __dump the output__ from our IKEA Sensor...
 
     ```bash
     cat /dev/ttyS1
     ```
 
-    TODO: We should see...
+    We should see some meaningless ASCII data...
 
     ```text
-    nsh> 
     3(1>
     2'0A
     2%0C
@@ -449,13 +450,15 @@ We're ready to run our NuttX App to __read and process the PM 2.5__ Sensor Data!
 
     [(Watch the demo on YouTube)](https://youtu.be/iFf8_f7ExUI)
 
-1.  TODO: Enter this command to test the IKEA Air Quality Sensor...
+    But that's OK, it means that our IKEA Sensor is alive.
+
+1.  Finally enter this command to __run our NuttX App__ for the IKEA Sensor...
 
     ```bash
     ikea_air_quality_sensor
     ```
 
-    TODO: We should see...
+    We should see the 20-byte __Sensor Data Frames__ and the decoded __PM 2.5 values__...
 
     ```text
     16  11  0b  00  00  00  17  00  00  02  ff  00  00  00  21  02  00  00  0b  88
@@ -470,7 +473,7 @@ We're ready to run our NuttX App to __read and process the PM 2.5__ Sensor Data!
 
     [(Watch the demo on YouTube)](https://youtu.be/dUHlG67pB3M)
 
-1.  TODO
+    Congratulations we have successfully read the PM 2.5 values from the IKEA VINDRIKTNING Air Quality Sensor! 🎉
 
 ![Our NuttX App reads PM 2.5 data from IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-code5.png)
 
@@ -701,7 +704,7 @@ UART LIVE DISPLAY, } TO STOP
 
 We should see the 20-byte Sensor Data Frames with PM 2.5 encoded inside...
 
-![Bus Pirate shows the output from IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-buspirate2.png)
+![Bus Pirate shows the output from IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-buspirate2.jpg)
 
 [(See the complete log)](https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810)
 
@@ -766,7 +769,7 @@ Now we configure our NuttX project...
 
     Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
-    ![Enable UART1 and set to 9,600 bps](https://lupyuen.github.io/images/ikea-uart3.png)
+    ![Enable UART1 and set to 9,600 bps](https://lupyuen.github.io/images/ikea-uart3.jpg)
 
 1.  Set UART1 to 9,600 bps...
 
@@ -984,6 +987,6 @@ __macOS Tip:__ Here's the script I use to build, flash and run NuttX on macOS, a
 
 [(Source)](https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af)
 
-![Trekking 13 km to IKEA on the horizon in search of VINDRIKTNING](https://lupyuen.github.io/images/ikea-trek.png)
+![Trekking 13 km to IKEA on the horizon in search of VINDRIKTNING](https://lupyuen.github.io/images/ikea-trek.jpg)
 
 _Trekking 13 km to IKEA on the horizon in search of VINDRIKTNING_
