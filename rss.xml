@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Connect IKEA Air Quality Sensor to Apache NuttX OS</title>
+            <link>https://lupyuen.github.io/articles/ikea</link>
+            <description><![CDATA[How we expose the UART Port on IKEA VINDRIKTNING Air Quality Sensor... And read the PM 2.5 data with PineDio Stack BL604 RISC-V Board]]></description>
+            <guid>https://lupyuen.github.io/articles/ikea</guid>
+            <pubDate>Sat, 12 Feb 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>BL602 EFlash Loader: Reverse Engineered with Ghidra</title>
             <link>https://lupyuen.github.io/articles/loader</link>
             <description><![CDATA[What's inside the EFlash Loader that flashes all firmware to the BL602 RISC-V SoC]]></description>
