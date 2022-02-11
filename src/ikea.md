@@ -70,17 +70,17 @@ _Huh? This sensor outputs only 3 levels of Air Quality?_
 
 Actually the sensor is capable of measuring PM 2.5 from __0 to 1,000 μg/m³__... Just that we need to __wire it ourselves__ to get the PM 2.5 value.
 
-The brilliant folks at the [__Home Assistant Project__](https://community.home-assistant.io/t/ikea-vindriktning-air-quality-sensor/324599) discovered that inside the IKEA Sensor is a [__PM1006 Infrared LED Particle Sensor__](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)...
+The brilliant folks at the [__Home Assistant Project__](https://community.home-assistant.io/t/ikea-vindriktning-air-quality-sensor/324599) discovered that inside the IKEA Sensor is a [__PM1006 Infrared LED Particle Sensor__](https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)...
 
 ![PM1006 Infrared LED Particle Sensor](https://lupyuen.github.io/images/ikea-datasheet.png)
 
-[(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
+[(From PM1006 Datasheet)](https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
 
 The PM1006 Sensor exposes a __UART (Serial) Port__ that transmits the PM 2.5 value, encoded like so...
 
 ![PM1006 Sensor inside IKEA VINDRIKTNING Air Quality Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet2.png)
 
-[(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
+[(From PM1006 Datasheet)](https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
 
 To get the PM 2.5 data, let's wire up the UART Port with a little soldering.
 
@@ -191,7 +191,7 @@ But first: What's inside the PM 2.5 data?
 
 ![PM1006 Sensor inside IKEA VINDRIKTNING Air Quality Sensor transmits PM 2.5 over UART](https://lupyuen.github.io/images/ikea-datasheet3.png)
 
-[(From PM1006 Datasheet)](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
+[(From PM1006 Datasheet)](https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf)
 
 ## Sensor Data Frame
 
@@ -214,7 +214,7 @@ Each Sensor Data Frame __starts with this header__...
 16  11  0B
 ```
 
-If we look back at the [__PM1006 Datasheet__](http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf) (pic above), we realise that the 20-byte Sensor Data Frame ("Response") may be decoded like so...
+If we look back at the [__PM1006 Datasheet__](https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf) (pic above), we realise that the 20-byte Sensor Data Frame ("Response") may be decoded like so...
 
 | Field | Value
 | :--- | :---
@@ -377,7 +377,7 @@ static void process_frame(void) {
   //  frame[3..4] is unused
   //  frame[5..6] is our PM2.5 reading
   //  In the datasheet, frame[3..6] is called DF1-DF4:
-  //  http://www.jdscompany.co.kr/download.asp?gubun=07&filename=PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf
+  //  https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf
 
   const int pm_2_5_concentration = 
     frame[5] * 256 + 
