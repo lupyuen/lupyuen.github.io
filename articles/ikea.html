@@ -528,7 +528,7 @@ Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 </li>
 </ol>
 <h1 id="appendix-test-with-bus-pirate" class="section-header"><a href="#appendix-test-with-bus-pirate">9 Appendix: Test with Bus Pirate</a></h1>
-<p>Before testing with Apache NuttX OS, we sniffed the IKEA VINDRIKTNING Air Quality Sensor’s UART Port with <strong>Bus Pirate</strong>.</p>
+<p>Before testing with Apache NuttX OS, we sniffed the UART Port on IKEA VINDRIKTNING Air Quality Sensor with <a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a>.</p>
 <p>Connect Bus Pirate to the IKEA Sensor as follows…</p>
 <div><table><thead><tr><th align="left">Bus Pirate</th><th align="center">IKEA Sensor</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="left">Data In (MISO)</td><td align="center">REST</td><td align="left">Blue</td></tr>
@@ -539,6 +539,7 @@ Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 <p>Connect the USB Ports of the IKEA Sensor and Bus Pirate to the same computer. Remember: Only One Power Source for both gadgets!</p>
 <p>Enter these Bus Pirate commands to capture the UART output from the IKEA Sensor (9600 bps, 8 bits, no parity, 1 stop bit)…</p>
 <div class="example-wrap"><pre class="language-text"><code>HiZ&gt; m
+
 1. HiZ
 2. 1-WIRE
 3. UART
