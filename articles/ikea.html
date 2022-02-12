@@ -457,7 +457,8 @@ Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 <p>According to the PM1006 Datasheet, the UART Port runs at <a href="https://lupyuen.github.io/articles/ikea#about-ikea-air-quality-sensor"><strong>5V Logic Level</strong></a> (instead of 3.3V, see pic above).</p>
 <p>Don’t we need a <a href="https://learn.sparkfun.com/tutorials/voltage-dividers/all"><strong>Voltage Divider</strong></a> to protect our microcontroller, which is not 5V Tolerant?</p>
 <p>Apparently some folks are using the UART Port just fine without a Voltage Divider. <a href="https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/issues/44">(See this)</a></p>
-<p>But to be really safe we ought to use a Voltage Divider.</p>
+<p>But to be really safe we ought to use a Voltage Divider like so…</p>
+<p><img src="https://lupyuen.github.io/images/ikea-divider.jpg" alt="UART Port of IKEA VINDRIKTNING Air Quality Sensor runs at 5V, not 3.3V" /></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/ikea-wire.jpg" alt="Very Fine Solder Wire (0.38 mm diameter) and 22 AWG Solid Core Wire" /></p>
