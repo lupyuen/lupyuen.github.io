@@ -519,8 +519,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     But to be really safe we ought to use a Voltage Divider like so...
 
-    ![UART Port of IKEA VINDRIKTNING Air Quality Sensor runs at 5V, not 3.3V](https://lupyuen.github.io/images/ikea-divider.jpg)
+    ![Voltage Divider for UART Port of IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-divider.jpg)
 
+    (With 3 resistors of the same value)
+
+1.  Each Sensor Data Frame has 20 bytes. Why are so many bytes unused?
+
+    IKEA Air Quality Sensor uses the PM1006 Sensor, which is a cheaper version of PM1006K. 
+
+    On PM1006K we get more data fields: PM 1.0 and PM 10. These fields are not available on PM1006, hence we have unused bytes in the Sensor Data Frame.
+
+    [(PM1006K Datasheet)](https://en.gassensor.com.cn/Product_files/Specifications/LED%20Particle%20Sensor%20PM1006K%20Specification.pdf)
 
 ![Very Fine Solder Wire (0.38 mm diameter) and 22 AWG Solid Core Wire](https://lupyuen.github.io/images/ikea-wire.jpg)
 
