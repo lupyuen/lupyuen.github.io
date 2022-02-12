@@ -921,13 +921,14 @@ jobs:
     steps:
     - name: Install Build Tools
       run:  |
+        sudo apt -y update
         sudo apt -y install \
-        bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
-        gperf automake libtool pkg-config build-essential gperf genromfs \
-        libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
-        libexpat-dev gcc-multilib g++-multilib picocom u-boot-tools util-linux \
-        kconfig-frontends \
-        wget
+          bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
+          gperf automake libtool pkg-config build-essential gperf genromfs \
+          libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
+          libexpat-dev gcc-multilib g++-multilib u-boot-tools util-linux \
+          kconfig-frontends \
+          wget
 ```
 
 ## Install Toolchain
