@@ -800,13 +800,14 @@ on:
     steps:
     - name: Install Build Tools
       run:  |
+        sudo apt -y update
         sudo apt -y install \
-        bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
-        gperf automake libtool pkg-config build-essential gperf genromfs \
-        libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
-        libexpat-dev gcc-multilib g++-multilib picocom u-boot-tools util-linux \
-        kconfig-frontends \
-        wget</code></pre></div><h2 id="install-toolchain" class="section-header"><a href="#install-toolchain">10.3 Install Toolchain</a></h2>
+          bison flex gettext texinfo libncurses5-dev libncursesw5-dev \
+          gperf automake libtool pkg-config build-essential gperf genromfs \
+          libgmp-dev libmpc-dev libmpfr-dev libisl-dev binutils-dev libelf-dev \
+          libexpat-dev gcc-multilib g++-multilib u-boot-tools util-linux \
+          kconfig-frontends \
+          wget</code></pre></div><h2 id="install-toolchain" class="section-header"><a href="#install-toolchain">10.3 Install Toolchain</a></h2>
 <p>We download the <strong>RISC-V GCC Toolchain</strong> (riscv64-unknown-elf-gcc) hosted at SiFive…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>    - name: Install Toolchain
       run:  |
