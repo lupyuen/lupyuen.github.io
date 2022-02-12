@@ -517,7 +517,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Apparently some folks are using the UART Port just fine without a Voltage Divider. [(See this)](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/issues/44)
 
-    But to be really safe we ought to use a Voltage Divider.
+    But to be really safe we ought to use a Voltage Divider like so...
+
+    ![UART Port of IKEA VINDRIKTNING Air Quality Sensor runs at 5V, not 3.3V](https://lupyuen.github.io/images/ikea-divider.jpg)
+
 
 ![Very Fine Solder Wire (0.38 mm diameter) and 22 AWG Solid Core Wire](https://lupyuen.github.io/images/ikea-wire.jpg)
 
