@@ -523,6 +523,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     (With 3 resistors of the same value)
 
+    Connecting the Voltage Divider to PineDio Stack BL604 looks like this...
+
+    ![Voltage Divider for UART Port of IKEA VINDRIKTNING Air Quality Sensor connected to PineDio Stack BL604](https://lupyuen.github.io/images/ikea-divider2.jpg)
+
 1.  Each Sensor Data Frame has 20 bytes. Why are so many bytes unused?
 
     IKEA Air Quality Sensor uses the PM1006 Sensor, which is a cheaper version of PM1006K. 
