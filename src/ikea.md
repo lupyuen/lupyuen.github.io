@@ -133,17 +133,33 @@ Follow these steps to __solder the UART (Serial) Port__ on the IKEA VINDRIKTNING
 
 Now that we have exposed the UART Port on IKEA Air Quality Sensor, let's connect it to our Microcontroller Board: [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio)
 
-| Function | GPIO | PineDio Stack | IKEA Sensor | Wire Colour
-| :---: | :---: | :---: | :---: | :---:
-| RX | 3 | Pin 14 | REST | Blue
-| TX | 4 | Pin 13 | Unused |
-| GND | GND | Pin 20 | GND | Black
+| From | To | Wire Colour
+| :---- | :---- | :----
+| __IKEA REST__   | Resistor R1  | Blue
+| __IKEA GND__    | PineDio GND <br> Pin 20 | Black
+| __Resistor R1__ | Resistor R2 | _(Breadboard)_
+| __Resistor R2__ | Resistor R3 | _(Breadboard)_
+| __Resistor R1__ | PineDio RX <br> GPIO 3 / Pin 14 | Red
+| __Resistor R3__ | PineDio GND <br> Pin 20 | Green
+| _(Unused)_  | PineDio TX <br> GPIO 4 / Pin 13 |
 
-[("PineDio Stack" column refers to the 20-pin GPIO Connector on PineDio Stack)](https://lupyuen.github.io/articles/pinedio#logic-analyser)
+(R1, R2 and R3 are 3 Resistors with the same resistance, like 2.2 kΩ in the pic below)
 
-[(__Caution:__ The UART Port runs at 5V, not 3.3V)](https://lupyuen.github.io/articles/ikea#notes)
+[("PineDio Pin" refers to the 20-pin GPIO Connector on PineDio Stack)](https://lupyuen.github.io/articles/pinedio#logic-analyser)
 
-![IKEA VINDRIKTNING Air Quality Sensor connected to Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/ikea-pinedio.jpg)
+![IKEA VINDRIKTNING Air Quality Sensor connected to Pine64 PineDio Stack BL604 RISC-V Board with Voltage Divider](https://lupyuen.github.io/images/ikea-divider3.jpg)
+
+_Why the resistors?_
+
+That's because IKEA Sensor's __UART Port runs at 5V__, not 3.3V. [(See this)](https://lupyuen.github.io/articles/ikea#notes)
+
+And our Microcontroller Board is __not 5V Tolerant__.
+
+To convert the 5V UART Port to 3.3V, we connect 3 Resistors (of the same resistance) as a [__Voltage Divider__](https://learn.sparkfun.com/tutorials/voltage-dividers/all)...
+
+![IKEA VINDRIKTNING Air Quality Sensor connected to Pine64 PineDio Stack BL604 RISC-V Board with Voltage Divider](https://lupyuen.github.io/images/ikea-divider3a.jpg)
+
+_How did we get GPIO 3 and 4?_
 
 The __GPIO Pin Numbers__ for the UART Port (UART1) are defined in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/ikea/boards/risc-v/bl602/bl602evb/include/board.h#L63-L66)
 
@@ -175,9 +191,7 @@ Connect the __USB Ports__ of IKEA Sensor and PineDio Stack to our computer.
 
 (Remember: __Only One Power Source__ for both gadgets!)
 
-It looks messy with 2 USB Cables hanging off our computer, but we'll live with it for now...
-
-> ![IKEA VINDRIKTNING Air Quality Sensor and Pine64 PineDio Stack BL604 RISC-V Board connected to our computer](https://lupyuen.github.io/images/ikea-pinedio2.jpg)
+It looks messy with 2 USB Cables hanging off our computer, but we'll live with it for now.
 
 # NuttX App
 
@@ -522,10 +536,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     ![Voltage Divider for UART Port of IKEA VINDRIKTNING Air Quality Sensor](https://lupyuen.github.io/images/ikea-divider.jpg)
 
     (With 3 resistors of the same value)
-
-    Connecting the Voltage Divider to PineDio Stack BL604 looks like this...
-
-    ![Voltage Divider for UART Port of IKEA VINDRIKTNING Air Quality Sensor connected to PineDio Stack BL604](https://lupyuen.github.io/images/ikea-divider2.jpg)
 
 1.  Each Sensor Data Frame has 20 bytes. Why are so many bytes unused?
 
