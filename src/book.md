@@ -392,6 +392,8 @@ For __BL602 IoT SDK__
 
 -   ["Connect PineCone BL602 to OpenOCD"](https://lupyuen.github.io/articles/openocd)
 
+-   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
+
 ![GDB and VSCode on BL602](https://lupyuen.github.io/images/book-debug.jpg)
 
 # GDB and VSCode on BL602
