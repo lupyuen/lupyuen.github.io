@@ -527,7 +527,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  According to the PM1006 Datasheet, the UART Port runs at [__5V Logic Level__](https://lupyuen.github.io/articles/ikea#about-ikea-air-quality-sensor) (instead of 3.3V, see pic above).
 
-    Apparently some folks are using the UART Port just fine without a Voltage Divider. [(See this)](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/issues/44)
+    Apparently some folks are using the 5V UART Port just fine without converting to 3.3V. [(See this)](https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/issues/44)
 
     But to protect our microcontroller (which is not 5V Tolerant) we need a [__Voltage Divider__](https://learn.sparkfun.com/tutorials/voltage-dividers/all)...
 
