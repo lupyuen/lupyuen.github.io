@@ -86,17 +86,17 @@
 <p>PineCone is based on the BL602 SoC made by <a href="https://www.bouffalolab.com/bl602">Nanjing-based Bouffalo Lab</a>…</p>
 <ol>
 <li>
-<p><strong>Low Cost</strong>: BL602 is a <a href="https://github.com/pine64/bl602-docs">General Purpose 32-bit Microcontroller</a>. (Think <a href="https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill">STM32 Blue Pill</a>, <a href="https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code">Nordic nRF52</a>)</p>
+<p><strong>Low Cost</strong>: BL602 is a <a href="https://github.com/pine64/bl602-docs"><strong>General Purpose 32-bit Microcontroller</strong></a>. (Think <a href="https://lupyuen.github.io/articles/create-your-iot-gadget-with-apache-mynewt-and-stm32-blue-pill"><strong>STM32 Blue Pill</strong></a>, <a href="https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code"><strong>Nordic nRF52</strong></a>)</p>
 <p>But BL602 supports Bluetooth LE AND 2.4 GHz WiFi… At the <strong>low low price of an ESP8266</strong>.</p>
 <p><em>That’s a game changer!</em></p>
-<p><a href="https://twitter.com/MisterTechBlog/status/1341917385230483457">BL602 as a drop-in replacement for ESP8266</a></p>
+<p><a href="https://twitter.com/MisterTechBlog/status/1341917385230483457">(More about BL602 as a drop-in replacement for ESP8266)</a></p>
 </li>
 <li>
 <p><strong>Power Efficient</strong>: BL602 is perfect for wearables and other power-constrained devices. (Maybe even PineTime!)</p>
-<p>By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won’t run Linux, but it runs <a href="https://lupyuen.github.io/articles/nuttx">Apache NuttX OS</a>, which works like a tiny Linux.</p>
+<p>By performance, BL602 belongs to the same class of microcontrollers as Nordic nRF52832. BL602 won’t run Linux, but it runs <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a>, which works like a tiny Linux.</p>
 </li>
 <li>
-<p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://xpack.github.io/riscv-none-embed-gcc/">32-bit RISC-V version of the GCC compiler</a> to compile our programs.</p>
+<p><strong>CPU is based on RISC-V, not Arm</strong>: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the <a href="https://xpack.github.io/riscv-none-embed-gcc/"><strong>32-bit RISC-V version of the GCC compiler</strong></a> to compile our programs.</p>
 </li>
 <li>
 <p><strong>BL604 is the upsized sibling of BL602</strong>: BL604 has 32 GPIOs vs BL602’s 16 GPIOs. Everything else works the same.</p>
@@ -156,7 +156,7 @@
 <ul>
 <li>Used in MagicHome BL602 WiFi LED Controller</li>
 <li>Supports WiFi, Bluetooth LE and Hardware Floating-Point</li>
-<li>Supported by <a href="https://lupyuen.github.io/articles/nuttx">Apache NuttX OS</a> and <a href="https://www.freertos.org/">FreeRTOS</a></li>
+<li>Supported by <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a> and <a href="https://www.freertos.org/"><strong>FreeRTOS</strong></a></li>
 <li>Zephyr is being ported to BL602 <a href="https://github.com/bouffalolab/bl_mcu_sdk/pull/18">(See this)</a></li>
 </ul>
 </li>
@@ -245,7 +245,7 @@
 <p>The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like <a href="https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code">EBYTE E73-TBB</a> (which is based on nRF52832)</p>
 <p>The PineCone board comes with a <strong>USB-C Connector</strong>. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.</p>
 <p><em>(PineCone’s USB Vendor ID is <code>0x1A86</code>, Product ID is <code>0x7523</code>)</em></p>
-<p><a href="https://youtu.be/WJLp-i2YtdY">Watch on YouTube</a></p>
+<p><a href="https://youtu.be/WJLp-i2YtdY">(Watch the demo on YouTube)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash.png" alt="Flashing BL602 with Dev Cube" /></p>
 <p><em>Flashing BL602 with Dev Cube</em></p>
 <h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">3.2 Flashing Firmware</a></h2>
@@ -307,7 +307,7 @@
 <li>
 <p>✅ <strong>Firmware Bin</strong>: Click <code>Browse</code> and select from the PineCone Sample Firmware <code>sdk_app_helloworld.bin</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin</code></pre></div>
-<p>This is the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld">“Hello World”</a> sample firmware that we’ll be flashing.</p>
+<p>This is the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld"><strong>“Hello World”</strong></a> sample firmware that we’ll be flashing.</p>
 <p>The three files selected should NOT have any spaces in their pathnames.</p>
 <p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot above</a></p>
 </li>
@@ -351,13 +351,14 @@ Program Finished</code></pre></div>
 <p><em>Are there command-line tools for flashing firmware to PineCone on Linux, macOS and Windows?</em></p>
 <p>Check out the article…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/flash">“Flashing Firmware to PineCone BL602”</a></li>
+<li><a href="https://lupyuen.github.io/articles/flash"><strong>“Flashing Firmware to PineCone BL602”</strong></a></li>
 </ul>
 <p><em>Is JTAG supported for flashing firmware to the PineCone Board?</em></p>
 <p>JTAG works for loading firmware into PineCone’s Cache Memory (similar to RAM). But not to PineCone’s Internal Flash ROM (XIP Flash).</p>
 <p>So we must flash firmware to PineCone over UART.</p>
+<p>More about JTAG, OpenOCD and GDB in the BL602 official docs…</p>
 <ul>
-<li><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">More about BL602 and JTAG</a></li>
+<li><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en"><strong>“BL602 Introduction of OpenOCD and GDB”</strong></a></li>
 </ul>
 <p><em>Are SWD and ST-Link supported for flashing firmware to the PineCone board?</em></p>
 <p>Sorry no. SWD is available only on Arm Microcontrollers. <a href="https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi">(SWD was created by Arm)</a></p>
@@ -375,21 +376,21 @@ Program Finished</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/pine64/bl_iot_sdk
 cd bl_iot_sdk</code></pre></div></li>
 <li>
-<p>Follow the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst">build instructions for Linux, Windows and macOS</a> like so…</p>
+<p>Follow the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst"><strong>build instructions for Linux, Windows and macOS</strong></a> like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=~/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make</code></pre></div>
-<p><a href="https://lupyuen.github.io/images/pinecone-build.png">Here’s the output</a></p>
+<p><a href="https://lupyuen.github.io/images/pinecone-build.png">(Here’s the output)</a></p>
 </li>
 <li>
-<p>See also the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Linux Starter Guide</a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
+<p>See also the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Linux Starter Guide</strong></a> and the <a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html"><strong>Windows Starter Guide</strong></a></p>
 </li>
 <li>
-<p><a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">Sample Firmware for BL602</a></p>
+<p><a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html"><strong>Sample Firmware for BL602</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app">Sample Firmware Source Code</a></p>
+<p><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app"><strong>Sample Firmware Source Code</strong></a></p>
 </li>
 </ul>
 <p>On Windows, MSYS2 is required. Alternatively, we may use Windows Subsystem for Linux (WSL). (Some USB Devices don’t work under WSL… Beware!)</p>
@@ -406,7 +407,7 @@ make</code></pre></div>
 <p>The built firmware images in the downloaded ZIP have the extension <code>*.bin</code></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml">Modified GitHub Actions Workflow</a> that builds the firmware</p>
+<p>See the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml"><strong>Modified GitHub Actions Workflow</strong></a> that builds the firmware</p>
 </li>
 </ul>
 <p>If we have trouble building the firmware on our own, just download the built firmware images from above.</p>
@@ -436,12 +437,12 @@ make</code></pre></div>
 </ul>
 <p>For BL602 IoT SDK: Check out the “Hello World” sample firmware…</p>
 <ul>
-<li><a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld">bl_iot_sdk/customer_app/sdk_app_helloworld</a></li>
+<li><a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld"><strong>bl_iot_sdk/customer_app/sdk_app_helloworld</strong></a></li>
 </ul>
 <p>Start by reading the C source file: <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c"><code>main.c</code></a></p>
 <p>Then browse the other firmware samples in the BL602 IoT SDK…</p>
 <ul>
-<li><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app">bl_iot_sdk/customer_app</a></li>
+<li><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app"><strong>bl_iot_sdk/customer_app</strong></a></li>
 </ul>
 <p>Some of the firmware samples <a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">are documented here</a></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">4 What’s Next</a></h1>
