@@ -462,11 +462,11 @@ Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 </li>
 <li>
 <p>According to the PM1006 Datasheet, the UART Port runs at <a href="https://lupyuen.github.io/articles/ikea#about-ikea-air-quality-sensor"><strong>5V Logic Level</strong></a> (instead of 3.3V, see pic above).</p>
-<p>Don’t we need a <a href="https://learn.sparkfun.com/tutorials/voltage-dividers/all"><strong>Voltage Divider</strong></a> to protect our microcontroller, which is not 5V Tolerant?</p>
 <p>Apparently some folks are using the UART Port just fine without a Voltage Divider. <a href="https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/issues/44">(See this)</a></p>
-<p>But to be really safe we ought to use a Voltage Divider like so…</p>
+<p>But to protect our microcontroller (which is not 5V Tolerant) we need a <a href="https://learn.sparkfun.com/tutorials/voltage-dividers/all"><strong>Voltage Divider</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/ikea-divider.jpg" alt="Voltage Divider for UART Port of IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <p>(With 3 resistors of the same value)</p>
+<p>The pic shows it’s not exactly 3.3V, but as long as our Logic High is above 2V, we should be fine. <a href="https://learn.sparkfun.com/tutorials/logic-levels/33-v-cmos-logic-levels">(See this)</a></p>
 </li>
 <li>
 <p>Each Sensor Data Frame has 20 bytes. Why are so many bytes unused?</p>
