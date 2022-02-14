@@ -104,22 +104,25 @@
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/openocd-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger" /></p>
 <p><em>PineCone BL602 RISC-V Evaluation Board connected to Sipeed JTAG Debugger</em></p>
 <p>📝 <em>11 Dec 2020</em></p>
-<p>Today we’ll learn to connect the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> to OpenOCD for flashing and debugging PineCone firmware.</p>
-<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">Note: There’s a new doc on BL602, OpenOCD and GDB. Check it out here</a></p>
+<p>Today we’ll learn to connect the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> to OpenOCD for loading and debugging PineCone firmware.</p>
+<p><a href="https://lupyuen.github.io/articles/pinecone#other-flashing-tools">(JTAG and OpenOCD won’t work for flashing BL602)</a></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">(UPDATE: There’s a new doc on BL602, OpenOCD and GDB. Check it out here</a></p>
 <h1 id="what-is-openocd" class="section-header"><a href="#what-is-openocd">1 What is OpenOCD?</a></h1>
 <p><strong>OpenOCD</strong> is the open source software that runs on our computer and connects to microcontrollers (like PineCone) to…</p>
 <ol>
 <li>
-<p><strong>Flash our firmware</strong> to the microcontroller’s (PineCone’s) internal Flash Memory</p>
+<p><strong>Load our firmware</strong> to the microcontroller’s RAM</p>
+<p><a href="https://lupyuen.github.io/articles/pinecone#other-flashing-tools">(JTAG and OpenOCD won’t work for flashing BL602)</a></p>
 </li>
 <li>
 <p><strong>Debug our firmware</strong>: Set breakpoints, step through code, examine the variables</p>
 </li>
 </ol>
-<p>Most development tools (like VSCode) work with OpenOCD for flashing and debugging firmware.</p>
+<p>Most development tools (like VSCode) work with OpenOCD for loading and debugging firmware.</p>
 <p>Thus it’s important to get PineCone talking to OpenOCD, so that our development tools will work with PineCone.</p>
-<p>(<a href="https://github.com/lupyuen/bl602-rust-guide">Rust for PineCone</a> also uses OpenOCD for flashing and debugging)</p>
-<p>PineCone exposes a <strong>JTAG Port</strong> that works with OpenOCD for flashing and debugging firmware. </p>
+<p>(<a href="https://github.com/lupyuen/bl602-rust-guide">Rust for PineCone</a> also uses OpenOCD for loading and debugging)</p>
+<p>PineCone exposes a <strong>JTAG Port</strong> that works with OpenOCD for loading and debugging firmware. </p>
+<p><a href="https://lupyuen.github.io/articles/pinecone#other-flashing-tools">(JTAG and OpenOCD won’t work for flashing BL602)</a></p>
 <p>This is similar to the SWD Port that’s found in PineTime, STM32 Blue Pill and other Arm microcontrollers.</p>
 <p>We’ll learn about JTAG in the next section.</p>
 <h2 id="openocd-vs-uart-flashing" class="section-header"><a href="#openocd-vs-uart-flashing">1.1 OpenOCD vs UART Flashing</a></h2>
@@ -127,16 +130,16 @@
 <p>Yes we may flash our firmware to PineCone via a Serial USB connection to PineCone’s UART Port. <a href="https://lupyuen.github.io/articles/pinecone">More about this</a></p>
 <p>However it uses a flashing protocol that’s designed specifically for BL602 devices. The flashing protocol is not supported by popular tools like VSCode.</p>
 <p>BL602 doesn’t support debugging over UART. For serious firmware coding on BL602, OpenOCD is the best option.</p>
-<p>(I have a hunch that flashing firmware over UART will be faster than JTAG… We’ll find out soon)</p>
+<p><a href="https://lupyuen.github.io/articles/pinecone#other-flashing-tools">(JTAG and OpenOCD won’t work for flashing BL602)</a></p>
 <h2 id="openocd-alternatives" class="section-header"><a href="#openocd-alternatives">1.2 OpenOCD Alternatives</a></h2>
-<p><em>OpenOCD has been around for a while. Are there newer tools for flashing and debugging?</em></p>
+<p><em>OpenOCD has been around for a while. Are there newer tools for loading and debugging firmware?</em></p>
 <p>There’s a newer alternative to OpenOCD that’s built with Rust: <a href="https://probe.rs/">probe.rs</a></p>
 <p>It has beta support for JTAG. Hopefully we can use it with PineCone someday.</p>
 <p>But for today, we’ll learn to use OpenOCD and JTAG with PineCone.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-sipeed.jpg" alt="Sipeed JTAG Debugger" /></p>
 <p><em>Sipeed JTAG Debugger with the JTAG Pins: TMS, TCK, TDI, TDO, GND</em></p>
 <h1 id="what-is-jtag" class="section-header"><a href="#what-is-jtag">2 What is JTAG?</a></h1>
-<p>PineCone’s <strong>JTAG Port</strong> is a standard port for flashing and debugging firmware, available on most RISC-V microcontrollers (like SiFive FE310 and GigaDevice GD32 VF103).</p>
+<p>PineCone’s <strong>JTAG Port</strong> is a standard port for loading and debugging firmware, available on most RISC-V microcontrollers (like SiFive FE310 and GigaDevice GD32 VF103).</p>
 <p>JTAG uses these pins…</p>
 <ol>
 <li><strong>TMS (Test Mode Select)</strong>: Select the JTAG operation to be executed</li>
@@ -291,7 +294,7 @@ reset-init
 Info : Listening on port 6666 for tcl connections</code></pre></div>
 <p>Finally OpenOCD restarts the JTAG connection. And it listens for OpenOCD (TCL) commands.</p>
 <p>If we see CPU ID <code>0x20000c05</code> and the messages above… Congratulations OpenOCD is now connected to PineCone’s JTAG Port!</p>
-<p>OpenOCD is all ready to flash and debug PineCone firmware. (Which we’ll cover in the next article)</p>
+<p>OpenOCD is all ready to load and debug PineCone firmware. <a href="https://lupyuen.github.io/articles/debug">(Which we’ll cover in the next article)</a></p>
 <p>To stop OpenOCD and disconnect from PineCone, press <code>Ctrl-C</code>.</p>
 <h2 id="troubleshoot-openocd" class="section-header"><a href="#troubleshoot-openocd">5.5 Troubleshoot OpenOCD</a></h2>
 <p>If we see…</p>
@@ -342,7 +345,7 @@ reset init</code></pre></div>
 <p><code>reset init</code> triggers a reboot of PineCone. (Similar to pressing the <code>RST</code> button on PineCone)</p>
 <h2 id="wait-for-gdb-and-tcl-commands" class="section-header"><a href="#wait-for-gdb-and-tcl-commands">6.7 Wait for GDB and TCL Commands</a></h2>
 <p>After executing our script, OpenOCD waits to receive GDB Debugging commands and OpenOCD TCL commands.</p>
-<p>For some OpenOCD Scripts (like for flashing firmware), we don’t need OpenOCD to wait for further commands. In such scripts, we terminate OpenOCD with the <code>exit</code> command…</p>
+<p>For some OpenOCD Scripts (like for loading firmware), we don’t need OpenOCD to wait for further commands. In such scripts, we terminate OpenOCD with the <code>exit</code> command…</p>
 <div class="example-wrap"><pre class="language-text"><code>exit</code></pre></div>
 <p>See the complete OpenOCD Script: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a></p>
 <p><a href="https://twitter.com/gamelaster/status/1335997851151835140?s=20">Check out the awesome work on PineCone OpenOCD by @gamelaster</a></p>
@@ -602,7 +605,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 </li>
 <li>
 <p><strong>Only JTAG</strong>: We’ll use the default JTAG Port. No remapping needed. </p>
-<p>(And we get free disco lights during JTAG flashing and debugging)</p>
+<p>(And we get free disco lights during JTAG loading and debugging)</p>
 </li>
 <li>
 <p><strong>Both LED and JTAG</strong>: This gets tricky.</p>
@@ -611,7 +614,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <li>
 <p>This remapping can be done in the PineCone Firmware.</p>
 <p>But whenever PineCone reboots, the JTAG Port reverts to the default pins, until our firmware remaps the port.</p>
-<p>This may be a problem if we need to reboot PineCone during JTAG flashing or debugging.</p>
+<p>This may be a problem if we need to reboot PineCone during JTAG loading or debugging.</p>
 </li>
 <li>
 <p>Alternatively: We may remap the LED and JTAG pins in the PineCone Bootloader <code>blsp_boot2</code></p>
@@ -625,9 +628,11 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <p>This increases the cost of the BL602 board… But it simplifies the USB connection between our computer and the BL602 board.</p>
 <p>For PineCone we’re using 2 USB ports (PineCone USB + JTAG Debugger). With an integrated JTAG Debugger, we’ll need only 1 USB port.</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
-<p>Today we have connected OpenOCD to PineCone… Next we shall try flashing and debugging RISC-V firmware on PineCone! (With VSCode, GDB, …)</p>
-<p>I’ll also be testing on PineCone the <a href="https://github.com/lupyuen/pinecone-rust">Embedded Rust Firmware</a>, kindly contributed by the Sipeed BL602 Community. <a href="https://lupyuen.github.io/pinecone-rust/">PineCone Rust Docs</a></p>
-<p>Read about it here…</p>
+<p>Today we have connected OpenOCD to PineCone… Next we shall try loading and debugging RISC-V firmware on PineCone! (With VSCode, GDB, …)</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/debug"><strong>“Debug Rust on PineCone BL602 with VSCode and GDB”</strong></a></li>
+</ul>
+<p>In the above article we’ll also be testing the <strong>Embedded Rust Firmware</strong>, kindly contributed by the Sipeed BL602 Community.</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 Book”</a></p>
