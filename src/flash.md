@@ -73,6 +73,8 @@ We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing 
     Installed package `blflash v0.3.3` (executable `blflash`)
     ```
 
+1.  __For Linux:__ Grant access to the USB UART port. [(Here's how)](https://lupyuen.github.io/articles/flash#appendix-grant-access-to-usb-uart)
+
 ![Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro](https://lupyuen.github.io/images/flash-linux.png)
 
 _Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro_
@@ -233,7 +235,16 @@ _Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro_
       --baud-rate 115200
     ```
 
-[See the flashing screenshots](https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots)
+1.  If we see this error...
+
+    ```text
+    Error: IO error while using serial port:
+    Permission denied
+    ```
+
+    Check whether access has been granted for the USB UART port. [(Here's how)](https://lupyuen.github.io/articles/flash#appendix-grant-access-to-usb-uart)
+
+[(See the flashing screenshots)](https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots)
 
 ![Firmware running on PineCone](https://lupyuen.github.io/images/flash-screen.png)
 
@@ -1035,7 +1046,7 @@ _(__For Linux Only__)_
 
 The USB UART Port `/dev/ttyUSB0` is __not accessible by normal Linux Users__. (`sudo` is needed)
 
-Thus we may see this error when flashing or running BL602 firmware...
+Thus we may see this error when flashing (`blflash`) or running (`screen`) BL602 firmware...
 
 ```text
 $ blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0 
@@ -1046,25 +1057,25 @@ Permission denied
 
 To fix this, we need to __add our user to the Linux Group__ that has access to the USB UART Port.
 
-Enter this command to show the group...
+Enter this command to __show the group__...
 
 ```bash
 ls -g /dev/ttyUSB0
 ```
 
-For Debian and Ubuntu: The group is `dialout`...
+For Debian and Ubuntu: The group is __`dialout`__...
 
 ```text
 crw-rw---- 1 dialout 188, 0 Feb 16 19:50 /dev/ttyUSB0
 ```
 
-For Arch Linux and Manjaro: The group is `uucp`...
+For Arch Linux and Manjaro: The group is __`uucp`__...
 
 ```text
 crw-rw---- 1 uucp 188, 0 Feb 16 19:50 /dev/ttyUSB0
 ```
 
-Enter this command to add our user to the group...
+Enter this command to __add our user__ to the group...
 
 ```bash
 ##  For Debian and Ubuntu:
@@ -1074,7 +1085,17 @@ sudo usermod -a -G dialout $USER
 sudo usermod -a -G uucp $USER
 ```
 
-Logout and login for the changes to take effect.
+__Logout and login__ for the changes to take effect.
+
+Verify that our user is in the group...
+
+```bash
+groups
+```
+
+We should see `dialout` or `uucp`
+
+We may now flash (`blflash`) or run (`screen`) BL602 firmware. (Without `sudo`)
 
 # Appendix: BL602 Flashing Screenshots
 
