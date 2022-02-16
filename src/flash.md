@@ -625,7 +625,7 @@ Located at offset `0x0`, the __Boot2 Bootloader__ contains the firmware code tha
 
 The BL602 Boot2 Bootloader Source Code is located here...
 
--   [`bl_iot_sdk/customer_app/bl602_boot2`](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2)
+-   [bl_iot_sdk/customer_app/bl602_boot2](https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/bl602_boot2)
 
 The BL602 Boot2 Bootloader is explained in the article...
 
