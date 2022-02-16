@@ -115,9 +115,6 @@
 <li>
 <p>And we <a href="https://lupyuen.github.io/articles/debug"><strong>debugged Rust on PineCone</strong></a> with VSCode and GDB…</p>
 </li>
-<li>
-<p>Finally we ported <a href="https://lupyuen.github.io/articles/mynewt"><strong>Apache Mynewt operating system to PineCone</strong></a></p>
-</li>
 </ol>
 <p>Today we shall learn to…</p>
 <ol>
@@ -175,8 +172,8 @@ Finished release [optimized] target(s) in 4m 37s
 Installing ~/.cargo/bin/blflash
 Installed package `blflash v0.3.3` (executable `blflash`)</code></pre></div></li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/flash-linux.png" alt="Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro" /></p>
-<p><em>Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro</em></p>
+<p><img src="https://lupyuen.github.io/images/flash-linux.png" alt="Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro" /></p>
+<p><em>Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro</em></p>
 <h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">1.3 Flash the firmware</a></h2>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because <code>blflash</code> needs to access the COM port)</p>
 <ol>
@@ -243,11 +240,11 @@ Installed package `blflash v0.3.3` (executable `blflash`)</code></pre></div></li
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
   --baud-rate 230400</code></pre></div>
-<p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change <code>/dev/tty.usbserial-1420</code> to the USB Serial Device assigned to PineCone.)</p>
+<p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change <code>/dev/tty.usbserial-1420</code> to the USB Serial Device assigned to BL602)</p>
 <p>Note that we’re throttling the USB Serial Port from the default 1 Mbps to 230.4 kbps… macOS has trouble connecting to BL602 at high speeds.</p>
 <p><strong>For Windows:</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>blflash flash sdk_app_helloworld.bin --port COM5</code></pre></div>
-<p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change <code>COM5</code> to the serial port assigned to PineCone.)</p>
+<p>(Change <code>sdk_app_helloworld.bin</code> to the full path of the firmware binary to be flashed. Change <code>COM5</code> to the serial port assigned to BL602)</p>
 </li>
 <li>
 <p>We should see…</p>
@@ -255,7 +252,7 @@ Installed package `blflash v0.3.3` (executable `blflash`)</code></pre></div></li
 5ms send count 55
 handshake sent elapsed 1.059862ms
 Connection Succeed</code></pre></div>
-<p><code>blflash</code> has connected successfully to PineCone over the USB Serial port.</p>
+<p><code>blflash</code> has connected successfully to BL602 over the USB Serial port.</p>
 <div class="example-wrap"><pre class="language-text"><code>Bootrom version: 1
 Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
 Sending eflash_loader...
@@ -263,7 +260,7 @@ Finished 3.375522563s 8.47KB/s
 5ms send count 500
 handshake sent elapsed 6.51343ms
 Entered eflash_loader</code></pre></div>
-<p><code>blflash</code> starts by sending the <strong>EFlash Loader</strong> program to PineCone. Then EFlash Loader starts running on PineCone.</p>
+<p><code>blflash</code> starts by sending the <strong>EFlash Loader</strong> program to BL602. Then EFlash Loader starts running on BL602.</p>
 <p>EFlash Loader receives our <strong>Flash Image</strong> from <code>blflash</code> and flashes our firmware to ROM…</p>
 <div class="example-wrap"><pre class="language-text"><code>Erase flash addr: 0 size: 47504
 Program flash... c85e11a0083a27f72f6e1bab9b67cac98d5d31ed90b64b78e6e89e070d782c58
