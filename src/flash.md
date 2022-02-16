@@ -50,43 +50,32 @@ Follow these steps to flash a Firmware Binary File (like `nuttx.bin` or `sdk_app
 
     __For Windows:__ Install `rustup` under plain old Windows CMD, not WSL
 
+1.  __For Linux and macOS:__ Add Rust to the PATH...
+
+    ```bash
+    source $HOME/.cargo/env
+    ```
+
 ##  Download and build blflash
 
 We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing tool created in Rust by [`spacemeowx2`](https://github.com/spacemeowx2).
 
 (For WSL: Do this under plain old Windows CMD, not WSL, because `blflash` needs to access the COM port)
 
-1.  Download the `blflash` source code...
+1.  Install the `blflash` tool...
 
     ```bash
-    git clone --recursive https://github.com/spacemeowx2/blflash
-    cd blflash
-    ```
-
-1.  Build `blflash`...
-
-    __For Linux:__
-
-    ```bash
-    sudo rustup default nightly
-    sudo cargo build
-    ```
-
-    __For macOS and Windows:__
-
-    ```bash
-    rustup default nightly
-    cargo build
+    cargo install blflash
     ```
 
 1.  We should see...
 
     ```text
-    Compiling blflash v0.2.1 (blflash/blflash)
-    Finished dev [unoptimized + debuginfo] target(s) in 4m 28s
+    Compiling blflash v0.3.3
+    Finished release [optimized] target(s) in 4m 37s
+    Installing ~/.cargo/bin/blflash
+    Installed package `blflash v0.3.3` (executable `blflash`)
     ```
-
-(Why can't we just `cargo install blflash`? Because it installs version 0.1.0 of `blflash` which doesn't work)
 
 ![Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro](https://lupyuen.github.io/images/flash-linux.png)
 
@@ -137,7 +126,8 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     __For Linux:__
 
     ```bash
-    sudo cargo run flash sdk_app_helloworld.bin --port /dev/ttyUSB0 
+    sudo blflash flash sdk_app_helloworld.bin \
+      --port /dev/ttyUSB0 
     ```
 
     (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change the USB serial port `/dev/ttyUSB0` if necessary.)
@@ -145,7 +135,10 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     __For macOS:__
 
     ```bash
-    cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 230400 --baud-rate 230400
+    blflash flash sdk_app_helloworld.bin \
+      --port /dev/tty.usbserial-1410 \
+      --initial-baud-rate 230400 \
+      --baud-rate 230400
     ```
 
     (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone.)
@@ -155,7 +148,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     __For Windows:__
 
     ```bash
-    cargo run flash sdk_app_helloworld.bin --port COM5
+    blflash flash sdk_app_helloworld.bin --port COM5
     ```
 
     (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `COM5` to the serial port assigned to PineCone.)
@@ -163,8 +156,6 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
 1.  We should see...
 
     ```text
-    Finished dev [unoptimized + debuginfo] target(s) in 0.10s
-    Running `target/debug/blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0`
     Start connection...
     5ms send count 55
     handshake sent elapsed 1.059862ms
@@ -240,8 +231,11 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     It probably means that the baud rate is too high. Try a lower baud rate like 115.2 kbps...
 
     ```bash
-    cargo run flash sdk_app_helloworld.bin --port /dev/tty.usbserial-1420 --initial-baud-rate 115200 --baud-rate 115200
-    ```    
+    blflash flash sdk_app_helloworld.bin \
+      --port /dev/tty.usbserial-1410 \
+      --initial-baud-rate 115200 \
+      --baud-rate 115200
+    ```
 
 [See the flashing screenshots](https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots)
 
