@@ -44,8 +44,6 @@ Follow these steps to flash a Firmware Binary File (like `nuttx.bin` or `sdk_app
 
 1.  Select the default options.
 
-    __For Linux:__ Install `rustup` as a Superuser with the `sudo` command
-
     __For Windows:__ Install `rustup` under plain old Windows CMD, not WSL
 
 1.  __For Linux and macOS:__ Add Rust to the PATH...
@@ -124,7 +122,7 @@ _Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro_
     __For Linux:__
 
     ```bash
-    sudo blflash flash sdk_app_helloworld.bin \
+    blflash flash sdk_app_helloworld.bin \
       --port /dev/ttyUSB0 
     ```
 
@@ -276,7 +274,7 @@ _Firmware running on PineCone_
     __For Linux:__
 
     ```bash
-    sudo screen /dev/ttyUSB0 2000000
+    screen /dev/ttyUSB0 2000000
     ```
 
     (Change the USB serial port `/dev/ttyUSB0` if necessary)
@@ -1030,6 +1028,53 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     JF disabled the XZ Decompression and the flashing worked OK.
 
     ![Disable XZ Decompression in BLDevCube](https://lupyuen.github.io/images/flash-disablexz.jpg)
+
+# Appendix: Grant Access To USB UART
+
+_(__For Linux Only__)_
+
+The USB UART Port `/dev/ttyUSB0` is __not accessible by normal Linux Users__. (`sudo` is needed)
+
+Thus we may see this error when flashing or running BL602 firmware...
+
+```text
+$ blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0 
+
+Error: IO error while using serial port:
+Permission denied
+```
+
+To fix this, we need to __add our user to the Linux Group__ that has access to the USB UART Port.
+
+Enter this command to show the group...
+
+```bash
+ls -g /dev/ttyUSB0
+```
+
+For Debian and Ubuntu: The group is `dialout`...
+
+```text
+crw-rw---- 1 dialout 188, 0 Feb 16 19:50 /dev/ttyUSB0
+```
+
+For Arch Linux and Manjaro: The group is `uucp`...
+
+```text
+crw-rw---- 1 uucp 188, 0 Feb 16 19:50 /dev/ttyUSB0
+```
+
+Enter this command to add our user to the group...
+
+```bash
+##  For Debian and Ubuntu:
+sudo usermod -a -G dialout $USER
+
+##  For Arch Linux and Manjaro:
+sudo usermod -a -G uucp $USER
+```
+
+Logout and login for the changes to take effect.
 
 # Appendix: BL602 Flashing Screenshots
 
