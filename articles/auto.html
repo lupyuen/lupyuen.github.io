@@ -333,6 +333,8 @@ kill %1</code></pre></div>
 sudo usermod -a -G gpio    $USER
 sudo usermod -a -G dialout $USER
 
+#  Logout and login to refresh the permissions
+
 #  Install Rust: https://rustup.rs/
 curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
@@ -353,6 +355,7 @@ git clone --recursive https://github.com/lupyuen/remote-bl602
 
 #  Run the script
 remote-bl602/scripts/test.sh</code></pre></div>
+<p>(For Arch Linux and Manjaro: Change “dialout” to “uucp”)</p>
 <p>Our script flashes and runs NuttX on BL602 like so…</p>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=_82og3-gEwA"><strong>Watch the demo on YouTube</strong></a></li>
