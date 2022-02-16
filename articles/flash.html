@@ -171,6 +171,9 @@
 Finished release [optimized] target(s) in 4m 37s
 Installing ~/.cargo/bin/blflash
 Installed package `blflash v0.3.3` (executable `blflash`)</code></pre></div></li>
+<li>
+<p><strong>For Linux:</strong> Grant access to the USB UART port. <a href="https://lupyuen.github.io/articles/flash#appendix-grant-access-to-usb-uart">(Here’s how)</a></p>
+</li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/flash-linux.png" alt="Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro" /></p>
 <p><em>Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro</em></p>
@@ -302,8 +305,14 @@ caused by: Invalid argument</code></pre></div>
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 115200 \
   --baud-rate 115200</code></pre></div></li>
+<li>
+<p>If we see this error…</p>
+<div class="example-wrap"><pre class="language-text"><code>Error: IO error while using serial port:
+Permission denied</code></pre></div>
+<p>Check whether access has been granted for the USB UART port. <a href="https://lupyuen.github.io/articles/flash#appendix-grant-access-to-usb-uart">(Here’s how)</a></p>
+</li>
 </ol>
-<p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots">See the flashing screenshots</a></p>
+<p><a href="https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots">(See the flashing screenshots)</a></p>
 <p><img src="https://lupyuen.github.io/images/flash-screen.png" alt="Firmware running on PineCone" /></p>
 <p><em>Firmware running on PineCone</em></p>
 <h2 id="watch-the-firmware-run" class="section-header"><a href="#watch-the-firmware-run">1.4 Watch the firmware run</a></h2>
@@ -938,25 +947,29 @@ blk64k_erase_cmd = 0xd8
 <h1 id="appendix-grant-access-to-usb-uart" class="section-header"><a href="#appendix-grant-access-to-usb-uart">12 Appendix: Grant Access To USB UART</a></h1>
 <p><em>(<strong>For Linux Only</strong>)</em></p>
 <p>The USB UART Port <code>/dev/ttyUSB0</code> is <strong>not accessible by normal Linux Users</strong>. (<code>sudo</code> is needed)</p>
-<p>Thus we may see this error when flashing or running BL602 firmware…</p>
+<p>Thus we may see this error when flashing (<code>blflash</code>) or running (<code>screen</code>) BL602 firmware…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ blflash flash sdk_app_helloworld.bin --port /dev/ttyUSB0 
 
 Error: IO error while using serial port:
 Permission denied</code></pre></div>
 <p>To fix this, we need to <strong>add our user to the Linux Group</strong> that has access to the USB UART Port.</p>
-<p>Enter this command to show the group…</p>
+<p>Enter this command to <strong>show the group</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls -g /dev/ttyUSB0</code></pre></div>
-<p>For Debian and Ubuntu: The group is <code>dialout</code>…</p>
+<p>For Debian and Ubuntu: The group is <strong><code>dialout</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>crw-rw---- 1 dialout 188, 0 Feb 16 19:50 /dev/ttyUSB0</code></pre></div>
-<p>For Arch Linux and Manjaro: The group is <code>uucp</code>…</p>
+<p>For Arch Linux and Manjaro: The group is <strong><code>uucp</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>crw-rw---- 1 uucp 188, 0 Feb 16 19:50 /dev/ttyUSB0</code></pre></div>
-<p>Enter this command to add our user to the group…</p>
+<p>Enter this command to <strong>add our user</strong> to the group…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  For Debian and Ubuntu:
 sudo usermod -a -G dialout $USER
 
 #  For Arch Linux and Manjaro:
 sudo usermod -a -G uucp $USER</code></pre></div>
-<p>Logout and login for the changes to take effect.</p>
+<p><strong>Logout and login</strong> for the changes to take effect.</p>
+<p>Verify that our user is in the group…</p>
+<div class="example-wrap"><pre class="language-bash"><code>groups</code></pre></div>
+<p>We should see <code>dialout</code> or <code>uucp</code></p>
+<p>We may now flash (<code>blflash</code>) or run (<code>screen</code>) BL602 firmware. (Without <code>sudo</code>)</p>
 <h1 id="appendix-bl602-flashing-screenshots" class="section-header"><a href="#appendix-bl602-flashing-screenshots">13 Appendix: BL602 Flashing Screenshots</a></h1><h2 id="linux-arm64" class="section-header"><a href="#linux-arm64">13.1 Linux Arm64</a></h2>
 <p><img src="https://lupyuen.github.io/images/flash-linux.png" alt="Manjaro Linux Arm64 on Pinebook Pro" /></p>
 <p><em>Manjaro Linux Arm64 on Pinebook Pro</em></p>
