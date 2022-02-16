@@ -14,8 +14,6 @@ _PineCone BL602 RISC-V Evaluation Board_
 
 1.  And we [__debugged Rust on PineCone__](https://lupyuen.github.io/articles/debug) with VSCode and GDB...
 
-1.  Finally we ported [__Apache Mynewt operating system to PineCone__](https://lupyuen.github.io/articles/mynewt)
-
 Today we shall learn to...
 
 1.  __Flash BL602 Firmware__ to the PineCone Board with open-source tools on any computer: __Linux x64, Linux Arm64, macOS and Windows__
@@ -77,9 +75,9 @@ We'll use [__`blflash`__](https://github.com/spacemeowx2/blflash), the flashing 
     Installed package `blflash v0.3.3` (executable `blflash`)
     ```
 
-![Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro](https://lupyuen.github.io/images/flash-linux.png)
+![Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro](https://lupyuen.github.io/images/flash-linux.png)
 
-_Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
+_Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro_
 
 ##  Flash the firmware
 
@@ -141,7 +139,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
       --baud-rate 230400
     ```
 
-    (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to PineCone.)
+    (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to BL602)
 
     Note that we're throttling the USB Serial Port from the default 1 Mbps to 230.4 kbps... macOS has trouble connecting to BL602 at high speeds.
 
@@ -151,7 +149,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     blflash flash sdk_app_helloworld.bin --port COM5
     ```
 
-    (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `COM5` to the serial port assigned to PineCone.)
+    (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `COM5` to the serial port assigned to BL602)
 
 1.  We should see...
 
@@ -162,7 +160,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     Connection Succeed
     ```
 
-    `blflash` has connected successfully to PineCone over the USB Serial port.
+    `blflash` has connected successfully to BL602 over the USB Serial port.
 
     ```text
     Bootrom version: 1
@@ -174,7 +172,7 @@ _Flashing PineCone with Manjaro Linux Arm64 on Pinebook Pro_
     Entered eflash_loader
     ```
 
-    `blflash` starts by sending the __EFlash Loader__ program to PineCone. Then EFlash Loader starts running on PineCone.
+    `blflash` starts by sending the __EFlash Loader__ program to BL602. Then EFlash Loader starts running on BL602.
     
     EFlash Loader receives our __Flash Image__ from `blflash` and flashes our firmware to ROM...
 
