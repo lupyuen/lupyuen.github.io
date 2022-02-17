@@ -232,11 +232,8 @@ __Rebuild and copy__ the NuttX Firmware...
 ##  Rebuild NuttX
 make
 
-##  For Linux: Change $HOME/blflash to the full path of blflash
-cp nuttx.bin $HOME/blflash
-
-##  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
-##  /mnt/c/blflash refers to c:\blflash
+##  For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash
+mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash
 ```
 
@@ -403,11 +400,8 @@ __Rebuild and copy__ the NuttX Firmware...
 ##  Rebuild NuttX
 make
 
-##  For Linux: Change $HOME/blflash to the full path of blflash
-cp nuttx.bin $HOME/blflash
-
-##  For WSL: Change /mnt/c/blflash to the full path of blflash in Windows
-##  /mnt/c/blflash refers to c:\blflash
+##  For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash
+mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash
 ```
 
@@ -1001,20 +995,13 @@ Next we download and build NuttX...
 
     [(See the complete log)](https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746)
 
-1.  Copy the __NuttX Firmware__ to the __blflash__ directory...
+1.  __For WSL:__ Copy the __NuttX Firmware__ to the __c:\blflash__ directory in the Windows File System...
 
     ```bash
-    ##  For Linux and macOS:
-    ##  TODO: Change $HOME/blflash to the full path of blflash
-    cp nuttx.bin $HOME/blflash
-
-    ##  For WSL:
-    ##  TODO: Change /mnt/c/blflash to the full path of blflash in Windows
-    ##  /mnt/c/blflash refers to c:\blflash
+    ##  /mnt/c/blflash refers to c:\blflash in Windows
+    mkdir /mnt/c/blflash
     cp nuttx.bin /mnt/c/blflash
     ```
-
-    (We'll cover __blflash__ in the next section)
 
     For WSL we need to run __blflash__ under plain old Windows CMD (not WSL) because it needs to access the COM port.
 
@@ -1073,21 +1060,18 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash __nuttx.bin__ to BL602 / BL604 over UART...
 
 ```bash
-## TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
+## For Linux: Change "/dev/ttyUSB0" to the BL602 / BL604 Serial Port
+blflash flash nuttx.bin \
+  --port /dev/ttyUSB0 
 
-## For Linux:
-sudo cargo run flash nuttx.bin \
-    --port /dev/ttyUSB0
+## For macOS: Change "/dev/tty.usbserial-1410" to the BL602 / BL604 Serial Port
+blflash flash nuttx.bin \
+  --port /dev/tty.usbserial-1410 \
+  --initial-baud-rate 230400 \
+  --baud-rate 230400
 
-## For macOS:
-cargo run flash nuttx.bin \
-    --port /dev/tty.usbserial-1420 \
-    --initial-baud-rate 230400 \
-    --baud-rate 230400
-
-## For Windows: Change COM5 to the BL602 / BL604 Serial Port
-cargo run flash nuttx.bin --port COM5
+## For Windows: Change "COM5" to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5
 ```
 
 [(See the Output Log)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
@@ -1135,7 +1119,7 @@ After restarting, connect to BL602 / BL604's UART Port at 2 Mbps like so...
 __For Linux:__
 
 ```bash
-sudo screen /dev/ttyUSB0 2000000
+screen /dev/ttyUSB0 2000000
 ```
 
 __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))

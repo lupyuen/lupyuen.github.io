@@ -840,7 +840,7 @@ After restarting, connect to BL602's UART Port at 2 Mbps like so...
 __For Linux:__
 
 ```bash
-sudo screen /dev/ttyUSB0 2000000
+screen /dev/ttyUSB0 2000000
 ```
 
 __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
@@ -1185,7 +1185,7 @@ Follow these steps...
     __For Linux:__
 
     ```bash
-    sudo screen /dev/ttyUSB0 2000000
+    screen /dev/ttyUSB0 2000000
     ```
 
     __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))

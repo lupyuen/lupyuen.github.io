@@ -636,7 +636,7 @@ Finally we run the BL602 Rust Firmware...
     Connect to BL602's UART Port at 2 Mbps like so...
 
     ```bash
-    sudo screen /dev/ttyUSB0 2000000
+    screen /dev/ttyUSB0 2000000
     ```
 
 1.  __For Windows:__ 

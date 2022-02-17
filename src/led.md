@@ -59,7 +59,7 @@ Let's flash the __GPIO Demo__ from the BL602 IoT SDK and interact with the above
     __For Linux:__
 
     ```bash
-    sudo screen /dev/ttyUSB0 2000000
+    screen /dev/ttyUSB0 2000000
     ```
 
     __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
@@ -318,7 +318,7 @@ Now we'll switch PineCone to the __Modified PWM Demo__ from the BL602 IoT SDK.
     __For Linux:__
 
     ```bash
-    sudo screen /dev/ttyUSB0 2000000
+    screen /dev/ttyUSB0 2000000
     ```
 
     __For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
