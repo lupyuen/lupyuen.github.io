@@ -1146,8 +1146,9 @@ export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 make
 
-# TODO: Change ~/blflash to the full path of blflash
-cp build_out/sdk_app_lora.bin ~/blflash</code></pre></div>
+# For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash in Windows
+mkdir /mnt/c/blflash
+cp build_out/sdk_app_lora.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>lorarecv</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
 <h2 id="flash-the-firmware-1" class="section-header"><a href="#flash-the-firmware-1">7.1 Flash the firmware</a></h2>
@@ -1199,21 +1200,18 @@ cp build_out/sdk_app_lora.bin ~/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>sdk_app_lora.bin</code> to BL602 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
-
-# For Linux:
-sudo cargo run flash sdk_app_lora.bin \
+<div class="example-wrap"><pre class="language-bash"><code># For Linux:
+blflash flash build_out/sdk_app_lora.bin \
     --port /dev/ttyUSB0
 
 # For macOS:
-cargo run flash sdk_app_lora.bin \
+blflash flash build_out/sdk_app_lora.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
 # For Windows: Change COM5 to the BL602 Serial Port
-cargo run flash sdk_app_lora.bin --port COM5</code></pre></div>
+blflash flash c:\blflash\sdk_app_lora.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-the-firmware-1" class="section-header"><a href="#run-the-firmware-1">7.2 Run the firmware</a></h2>

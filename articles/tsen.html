@@ -520,8 +520,9 @@ export CONFIG_CHIP_NAME=BL602
 cd bl_iot_sdk/customer_app/pinedio_tsen
 make
 
-# TODO: Change ~/blflash to the full path of blflash
-cp build_out/pinedio_tsen.bin ~/blflash</code></pre></div>
+# For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash in Windows
+mkdir /mnt/c/blflash
+cp build_out/pinedio_tsen.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <h2 id="flash-internal-temperature-sensor-firmware" class="section-header"><a href="#flash-internal-temperature-sensor-firmware">8.2 Flash Internal Temperature Sensor Firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
@@ -582,21 +583,18 @@ cp build_out/pinedio_tsen.bin ~/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>pinedio_tsen.bin</code> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
-
-# For Linux:
-sudo cargo run flash pinedio_tsen.bin \
+<div class="example-wrap"><pre class="language-bash"><code># For Linux:
+blflash flash build_out/pinedio_tsen.bin \
     --port /dev/ttyUSB0
 
 # For macOS:
-cargo run flash pinedio_tsen.bin \
+blflash flash build_out/pinedio_tsen.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
 # For Windows: Change COM5 to the BL602 / BL604 Serial Port
-cargo run flash pinedio_tsen.bin --port COM5</code></pre></div>
+blflash flash c:\blflash\pinedio_tsen.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-internal-temperature-sensor-firmware" class="section-header"><a href="#run-internal-temperature-sensor-firmware">8.3 Run Internal Temperature Sensor Firmware</a></h2>
@@ -680,8 +678,9 @@ export CONFIG_CHIP_NAME=BL602
 cd bl_iot_sdk/customer_app/pinedio_lorawan
 make
 
-# TODO: Change ~/blflash to the full path of blflash
-cp build_out/pinedio_lorawan.bin ~/blflash</code></pre></div>
+# For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash in Windows
+mkdir /mnt/c/blflash
+cp build_out/pinedio_lorawan.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <h2 id="flash-lorawan-firmware" class="section-header"><a href="#flash-lorawan-firmware">9.2 Flash LoRaWAN Firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
@@ -742,21 +741,18 @@ cp build_out/pinedio_lorawan.bin ~/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <code>pinedio_lorawan.bin</code> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
-
-# For Linux:
-sudo cargo run flash pinedio_lorawan.bin \
+<div class="example-wrap"><pre class="language-bash"><code># For Linux:
+blflash flash build_out/pinedio_lorawan.bin \
     --port /dev/ttyUSB0
 
 # For macOS:
-cargo run flash pinedio_lorawan.bin \
+blflash flash build_out/pinedio_lorawan.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
 # For Windows: Change COM5 to the BL602 / BL604 Serial Port
-cargo run flash pinedio_lorawan.bin --port COM5</code></pre></div>
+blflash flash c:\blflash\pinedio_lorawan.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-lorawan-firmware" class="section-header"><a href="#run-lorawan-firmware">9.3 Run LoRaWAN Firmware</a></h2>

@@ -855,7 +855,7 @@ blk64k_erase_cmd = 0xd8
 <p><code>blflash</code> transmits the EFlash Loader at <strong>115.2 kbps</strong> (vs <strong>512 kbps</strong> in BLOpenFlasher)</p>
 <p><code>blflash</code> transmits the ROM data to be flashed at <strong>1 Mbps</strong> (vs <strong>2 Mbps</strong> in BLOpenFlasher)</p>
 <p>The transmission speeds may be specified through the command-line options <code>--initial-baud-rate</code> (for EFlash Loader) and <code>--baud-rate</code> (for ROM data)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>cargo run flash sdk_app_helloworld.bin \
+<div class="example-wrap"><pre class="language-bash"><code>blflash flash build_out/sdk_app_helloworld.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 115200 \
     --baud-rate 115200</code></pre></div>
