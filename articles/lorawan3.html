@@ -1256,16 +1256,10 @@ CP: nuttx.bin</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log for BL602)</a></p>
 </li>
 <li>
-<p><strong>For BL602:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>blflash</strong> directory…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  For Linux and macOS:
-#  TODO: Change $HOME/blflash to the full path of blflash
-cp nuttx.bin $HOME/blflash
-
-#  For WSL:
-#  TODO: Change /mnt/c/blflash to the full path of blflash in Windows
-#  /mnt/c/blflash refers to c:\blflash
+<p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
+mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
-<p>(We’ll cover <strong>blflash</strong> in the next section)</p>
 <p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
@@ -1338,21 +1332,18 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
+<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
+blflash flash nuttx.bin \
+  --port /dev/ttyUSB0 
 
-# For Linux:
-sudo cargo run flash nuttx.bin \
-    --port /dev/ttyUSB0
+# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
+blflash flash nuttx.bin \
+  --port /dev/tty.usbserial-1410 \
+  --initial-baud-rate 230400 \
+  --baud-rate 230400
 
-# For macOS:
-cargo run flash nuttx.bin \
-    --port /dev/tty.usbserial-1420 \
-    --initial-baud-rate 230400 \
-    --baud-rate 230400
-
-# For Windows: Change COM5 to the BL602 / BL604 Serial Port
-cargo run flash nuttx.bin --port COM5</code></pre></div>
+# For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
@@ -1400,7 +1391,7 @@ cargo run flash nuttx.bin --port COM5</code></pre></div>
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo screen /dev/ttyUSB0 2000000</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
