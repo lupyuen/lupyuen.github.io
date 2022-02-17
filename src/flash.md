@@ -942,7 +942,7 @@ _How different is `blflash` from BLOpenFlasher?_
     The transmission speeds may be specified through the command-line options `--initial-baud-rate` (for EFlash Loader) and `--baud-rate` (for ROM data)...
 
     ```bash
-    cargo run flash sdk_app_helloworld.bin \
+    blflash flash build_out/sdk_app_helloworld.bin \
         --port /dev/tty.usbserial-1420 \
         --initial-baud-rate 115200 \
         --baud-rate 115200

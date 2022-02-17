@@ -947,7 +947,7 @@ Here's how we flash the Rust Firmware file `sdk_app_rust_adc.bin` to BL602...
     ```text
     ----- Flash BL602 Firmware
 
-    + cargo run flash sdk_app_rust_adc.bin \
+    + blflash flash build_out/sdk_app_rust_adc.bin \
         --port /dev/tty.usbserial-1410 \
         --initial-baud-rate 230400 \
         --baud-rate 230400
@@ -988,11 +988,11 @@ Here's how we flash the Rust Firmware file `sdk_app_rust_adc.bin` to BL602...
     cd blflash
 
     ## For Linux:
-    sudo cargo run flash sdk_app_lora.bin \
+    blflash flash build_out/sdk_app_lora.bin \
         --port /dev/ttyUSB0
 
     ## For Windows: Change COM5 to the BL602 Serial Port
-    cargo run flash sdk_app_lora.bin --port COM5
+    blflash flash c:\blflash\sdk_app_lora.bin --port COM5
     ```
 
 [More details on flashing firmware](https://lupyuen.github.io/articles/flash#flash-the-firmware)

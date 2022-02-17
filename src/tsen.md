@@ -567,8 +567,9 @@ export CONFIG_CHIP_NAME=BL602
 cd bl_iot_sdk/customer_app/pinedio_tsen
 make
 
-## TODO: Change ~/blflash to the full path of blflash
-cp build_out/pinedio_tsen.bin ~/blflash
+## For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash in Windows
+mkdir /mnt/c/blflash
+cp build_out/pinedio_tsen.bin /mnt/c/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
@@ -620,21 +621,18 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `pinedio_tsen.bin` to BL602 / BL604 over UART...
 
 ```bash
-## TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
-
 ## For Linux:
-sudo cargo run flash pinedio_tsen.bin \
+blflash flash build_out/pinedio_tsen.bin \
     --port /dev/ttyUSB0
 
 ## For macOS:
-cargo run flash pinedio_tsen.bin \
+blflash flash build_out/pinedio_tsen.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
 ## For Windows: Change COM5 to the BL602 / BL604 Serial Port
-cargo run flash pinedio_tsen.bin --port COM5
+blflash flash c:\blflash\pinedio_tsen.bin --port COM5
 ```
 
 (For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)
@@ -742,8 +740,9 @@ export CONFIG_CHIP_NAME=BL602
 cd bl_iot_sdk/customer_app/pinedio_lorawan
 make
 
-## TODO: Change ~/blflash to the full path of blflash
-cp build_out/pinedio_lorawan.bin ~/blflash
+## For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash in Windows
+mkdir /mnt/c/blflash
+cp build_out/pinedio_lorawan.bin /mnt/c/blflash
 ```
 
 [More details on building bl_iot_sdk](https://lupyuen.github.io/articles/pinecone#building-firmware)
@@ -795,21 +794,18 @@ __For Pinenut and MagicHome BL602:__
 Enter these commands to flash `pinedio_lorawan.bin` to BL602 / BL604 over UART...
 
 ```bash
-## TODO: Change ~/blflash to the full path of blflash
-cd ~/blflash
-
 ## For Linux:
-sudo cargo run flash pinedio_lorawan.bin \
+blflash flash build_out/pinedio_lorawan.bin \
     --port /dev/ttyUSB0
 
 ## For macOS:
-cargo run flash pinedio_lorawan.bin \
+blflash flash build_out/pinedio_lorawan.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
 ## For Windows: Change COM5 to the BL602 / BL604 Serial Port
-cargo run flash pinedio_lorawan.bin --port COM5
+blflash flash c:\blflash\pinedio_lorawan.bin --port COM5
 ```
 
 (For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)
