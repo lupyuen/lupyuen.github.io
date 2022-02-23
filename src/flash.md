@@ -141,7 +141,7 @@ _Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro_
 
     (Change `sdk_app_helloworld.bin` to the full path of the firmware binary to be flashed. Change `/dev/tty.usbserial-1420` to the USB Serial Device assigned to BL602)
 
-    Note that we're throttling the USB Serial Port from the default 1 Mbps to 230.4 kbps... macOS has trouble connecting to BL602 at high speeds.
+    Note that we're throttling the USB Serial Port from the default 1 Mbps to 230.4 kbps. blflash won't work on macOS at 1 Mbps (because it's not a standard POSIX baud rate).
 
     __For Windows:__
 
@@ -304,7 +304,7 @@ _Firmware running on PineCone_
 
     ![CoolTerm Options](https://lupyuen.github.io/images/led-coolterm.png)
 
-    (Older macOS apps like `screen` won't work at 2 Mbps. See ["Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos))
+    (Some macOS apps like `screen` won't work at 2 Mbps because it's not a standard POSIX baud rate. See ["Fix BL602 Demo Firmware for macOS"](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos))
 
     __For Windows:__ Use `putty` to connect to PineCone's `COM` Port (like `COM5`) at speed `2000000` (2 Mbps)
     
@@ -376,26 +376,6 @@ Can we configure BL602 to run at a lower Baud Rate? It's not easy because the Ba
 -   [__Discuss MagicHome BL602 on Reddit__](https://www.reddit.com/r/RISCV/comments/knsju9/flashing_firmware_to_pinecone_bl602/gn7rw3i?utm_source=share&utm_medium=web2x&context=3)
 
 -   [__ESPHome Feature Request for MagicHome BL602__](https://github.com/esphome/feature-requests/issues/1049)
-
-## For macOS: CH340 USB Serial Driver
-
-We should use __CoolTerm__ on macOS, not `screen`. See [__"Fix BL602 Demo Firmware for macOS"__](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos)
-
-PineCone includes a CH340N USB-to-UART module to expose BL620's UART Port via PineCone's USB Port.
-
-We should use the CH340 Driver provided by Apple. To check, connect PineCone to the USB port and enter...
-
-```bash
-sudo dmesg
-```
-
-We should see...
-
-```text
-DK: AppleUSBCHCOM-0x1000d21bd::start(IOUSBHostInterface-0x1000d21b6) ok
-```
-
-`AppleUSBCHCOM` is the CH340 Driver provided by Apple for macOS Catalina. [More about this](https://community.platformio.org/t/troubleshooting-ch340g-issues-on-macos/9522)
 
 ![BL602 Flashing Process reverse engineered from BLOpenFlasher](https://lupyuen.github.io/images/pinecone-flash-steps.png)
 
@@ -769,8 +749,6 @@ uart@4000A000 {
 
 [Device Tree Source](https://github.com/bouffalolab/BLOpenFlasher/blob/main/bl602/device_tree/bl_factory_params_IoTKitA_40M.dts#L194-L214)
 
-(Baud Rate `2000000` is too high for macOS... We should lower it to `230400`. [See this](https://lupyuen.github.io/articles/led#appendix-fix-bl602-demo-firmware-for-macos))
-
 There is a second UART Port at `/dev/ttyS1`, on GPIO 3 and 4 at 115.2 kbps...
 
 ```text
@@ -942,13 +920,13 @@ _How different is `blflash` from BLOpenFlasher?_
     The transmission speeds may be specified through the command-line options `--initial-baud-rate` (for EFlash Loader) and `--baud-rate` (for ROM data)...
 
     ```bash
-    blflash flash build_out/sdk_app_helloworld.bin \
-        --port /dev/tty.usbserial-1420 \
-        --initial-baud-rate 115200 \
-        --baud-rate 115200
+    blflash flash sdk_app_helloworld.bin \
+      --port /dev/tty.usbserial-1410 \
+      --initial-baud-rate 230400 \
+      --baud-rate 230400
     ```
 
-    Note: The USB Serial Port on macOS won't connect to BL602 at 1 Mbps. Connect at a lower speed like 115.2 kbps.
+    Note: blflash won't work on macOS at 1 Mbps because it's not a standard POSIX baud rate. That's why we use a lower baud rate like 230.4 kbps.
 
 1.  `blflash` doesn't support compiling Device Trees into binary format.
 

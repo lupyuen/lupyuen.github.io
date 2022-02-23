@@ -548,9 +548,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _On macOS, why doesn't `screen` work for accessing the BL602 Demo Firmware?_
 
-BL602 Demo Firmware configures the UART Port for 2 Mbps.
+BL602 Demo Firmware configures the UART Port for 2 Mbps. (Which is not a standard POSIX baud rate)
 
-This causes problems for older serial apps (like `screen`) that don't call macOS IOKit. [See this](https://twitter.com/madushan1000/status/1345352779502669824)
+This causes problems for POSIX serial apps (like `screen`) that don't call macOS IOKit. [See this](https://twitter.com/madushan1000/status/1345352779502669824)
 
 To fix this, use a newer serial app like __CoolTerm__...
 
@@ -568,9 +568,9 @@ To fix this, use a newer serial app like __CoolTerm__...
 
 [(Many thanks to @Kongduino)](https://twitter.com/Kongduino/status/1358557946670551040)
 
-_What if we really really want to use older serial apps like `screen`?_
+_What if we really really want to use POSIX serial apps like `screen`?_
 
-This is NOT recommended... But to support older serial apps with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps.
+This is NOT recommended... But to support POSIX serial apps with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps. (Which is a POSIX baud rate)
 
 1.  In the BL602 Demo Firmware, edit the `main.c` source file, like...
 
