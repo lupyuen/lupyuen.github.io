@@ -534,8 +534,8 @@ threshold2 = ( period / 100 ) * duty;</code></pre></div>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/led.md"><code>lupyuen.github.io/src/led.md</code></a></p>
 <h1 id="appendix-fix-bl602-demo-firmware-for-macos" class="section-header"><a href="#appendix-fix-bl602-demo-firmware-for-macos">9 Appendix: Fix BL602 Demo Firmware for macOS</a></h1>
 <p><em>On macOS, why doesn’t <code>screen</code> work for accessing the BL602 Demo Firmware?</em></p>
-<p>BL602 Demo Firmware configures the UART Port for 2 Mbps.</p>
-<p>This causes problems for older serial apps (like <code>screen</code>) that don’t call macOS IOKit. <a href="https://twitter.com/madushan1000/status/1345352779502669824">See this</a></p>
+<p>BL602 Demo Firmware configures the UART Port for 2 Mbps. (Which is not a standard POSIX baud rate)</p>
+<p>This causes problems for POSIX serial apps (like <code>screen</code>) that don’t call macOS IOKit. <a href="https://twitter.com/madushan1000/status/1345352779502669824">See this</a></p>
 <p>To fix this, use a newer serial app like <strong>CoolTerm</strong>…</p>
 <ol>
 <li>
@@ -556,8 +556,8 @@ threshold2 = ( period / 100 ) * duty;</code></pre></div>
 </ol>
 <p><img src="https://lupyuen.github.io/images/led-coolterm.png" alt="CoolTerm Options" /></p>
 <p><a href="https://twitter.com/Kongduino/status/1358557946670551040">(Many thanks to @Kongduino)</a></p>
-<p><em>What if we really really want to use older serial apps like <code>screen</code>?</em></p>
-<p>This is NOT recommended… But to support older serial apps with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps.</p>
+<p><em>What if we really really want to use POSIX serial apps like <code>screen</code>?</em></p>
+<p>This is NOT recommended… But to support POSIX serial apps with macOS, we need to lower the UART baud rate from 2 Mbps to 230.4 kbps. (Which is a POSIX baud rate)</p>
 <ol>
 <li>
 <p>In the BL602 Demo Firmware, edit the <code>main.c</code> source file, like…</p>
