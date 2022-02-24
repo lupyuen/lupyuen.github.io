@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _9 Feb 2022_
+📝 _24 Feb 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(46 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(47 articles and still growing!)__
 
 The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602__.
 
@@ -55,6 +55,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 -   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
 
 -   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
+
+-   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
@@ -102,7 +104,7 @@ For __BL602 IoT SDK__
 
 # GPIO on BL602
 
-Learn to call the BL602 / BL604 __GPIO Hardware Abstraction Layer (HAL)__ (or NuttX) to blink an LED.
+Learn to call the BL602 / BL604 __GPIO Functions__ to blink an LED.
 
 For __Apache NuttX OS__
 
@@ -122,7 +124,7 @@ For __BL602 IoT SDK__
 
 # SPI on BL602
 
-How we call the __BL602 / BL604 SPI HAL__ to access SPI Sensors, Displays and Network Transceivers.
+How we call the BL602 / BL604 __SPI Functions__ to access SPI Sensors, Displays and Network Transceivers.
 
 For __Apache NuttX OS__
 
@@ -138,11 +140,25 @@ For __BL602 IoT SDK__
 
 -   ["Porting LoRa Driver from Mynewt to BL602: SPI"](https://lupyuen.github.io/articles/lora#spi)
 
+![I2C on BL602](https://lupyuen.github.io/images/book-i2c.jpg)
+
+# I2C on BL602
+
+Read an I2C Sensor by calling the BL602 / BL604 __I2C Functions__.
+
+For __Apache NuttX OS__
+
+-   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
+
+For __BL602 IoT SDK__
+
+-   ["PineCone BL602 talks to I2C Sensors"](https://lupyuen.github.io/articles/i2c)
+
 ![UART on BL602](https://lupyuen.github.io/images/book-uart.jpg)
 
 # UART on BL602
 
-UART is used by Air Quality Sensors, E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the __BL602 / BL604 UART HAL.__
+UART is used by Air Quality Sensors, E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the BL602 / BL604 __UART Functions__.
 
 For __Apache NuttX OS__
 
@@ -174,21 +190,11 @@ For __BL602 IoT SDK__
 
 # PWM on BL602
 
-Duty Cycle, Frequency and everything else about the __BL602 / BL604 PWM HAL__.
+Duty Cycle, Frequency and everything else about the __BL602 / BL604 PWM Functions__.
 
 For __BL602 IoT SDK__
 
 -   ["From GPIO to Pulse Width Modulation (PWM)"](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm)
-
-![I2C on BL602](https://lupyuen.github.io/images/book-i2c.jpg)
-
-# I2C on BL602
-
-Read an I2C Sensor by calling the __BL602 / BL604 I2C HAL__.
-
-For __BL602 IoT SDK__
-
--   ["PineCone BL602 talks to I2C Sensors"](https://lupyuen.github.io/articles/i2c)
 
 ![DMA on BL602](https://lupyuen.github.io/images/book-dma.jpg)
 
