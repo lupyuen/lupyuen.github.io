@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Apache NuttX OS talks I2C with Bosch BME280 Sensor on BL602 RISC-V SoC... Thanks to the BME280 Driver ported from Zephyr OS"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/bme280-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS</h1>
+    <nav id="TOC"><ul>
+<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
+<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 Mar 2022</em></p>
+<p><img src="https://lupyuen.github.io/images/bme280-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
+<p><em>“Will <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a> talk I2C with <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>… On the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>?”</em></p>
+<p>…A friend and I pondered (8,000 miles apart) while working on the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Temperature + Humidity + Air Pressure</strong></a> combo sensor.</p>
+<p>This sounds like a fun challenge because…</p>
+<ul>
+<li>
+<p>NuttX <strong>doesn’t have a driver</strong> for the BME280 Sensor</p>
+<p>(Though it supports BMP280)</p>
+</li>
+<li>
+<p>Can we port the BME280 Driver from <strong>Zephyr OS</strong> with a few tweaks?</p>
+<p>(Spoiler: Yes we can!)</p>
+</li>
+<li>
+<p>What’s inside a <strong>NuttX Sensor Driver</strong> anyway?</p>
+<p>(How to build our own driver)</p>
+</li>
+<li>
+<p>NuttX on BL602 is <strong>kinda new-ish</strong></p>
+<p>(Some features might not work the way we expect)</p>
+</li>
+<li>
+<p>BL602’s I2C Port has <strong>interesting quirks</strong>. Will it work?</p>
+<p>(Specifically: I2C Sub Address)</p>
+</li>
+</ul>
+<p>Read on to find out how we solved the challenge!</p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen">Sponsor me a coffee</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book">Read “The RISC-V BL602 / BL604 Book”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io">Check out my articles</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml">RSS Feed</a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bme280.md"><code>lupyuen.github.io/src/bme280.md</code></a></p>
+<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1494301654186823683">this Twitter Thread</a></li>
+</ol>
+
+    
+</body>
+</html>
