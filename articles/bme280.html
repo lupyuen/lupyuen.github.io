@@ -67,26 +67,28 @@
     <nav id="TOC"><ul>
 <li><a href="#test-with-bus-pirate">1 Test with Bus Pirate</a><ul></ul></li>
 <li><a href="#connect-bme280">2 Connect BME280</a><ul></ul></li>
-<li><a href="#configure-nuttx">3 Configure NuttX</a><ul></ul></li>
-<li><a href="#change-i2c-address-and-device-id">4 Change I2C Address and Device ID</a><ul></ul></li>
-<li><a href="#invalid-device-id">5 Invalid Device ID</a><ul></ul></li>
-<li><a href="#register-bmp280-driver">6 Register BMP280 Driver</a><ul></ul></li>
-<li><a href="#invalid-device-id-1">7 Invalid Device ID</a><ul></ul></li>
-<li><a href="#invalid-register-id">8 Invalid Register ID</a><ul></ul></li>
-<li><a href="#log-i2c-transfers">9 Log I2C Transfers</a><ul></ul></li>
-<li><a href="#set-i2c-sub-address">10 Set I2C Sub Address</a><ul></ul></li>
-<li><a href="#bmp280-driver-loads-ok">11 BMP280 Driver Loads OK</a><ul></ul></li>
-<li><a href="#run-sensor-test-app">12 Run Sensor Test App</a><ul></ul></li>
-<li><a href="#port-bme280-driver-from-zephyr-os">13 Port BME280 Driver from Zephyr OS</a><ul></ul></li>
-<li><a href="#wrap-zephyr-driver-as-nuttx-driver">14 Wrap Zephyr Driver as NuttX Driver</a><ul></ul></li>
-<li><a href="#read-sensor-data-from-zephyr-driver">15 Read Sensor Data from Zephyr Driver</a><ul></ul></li>
-<li><a href="#power-management">16 Power Management</a><ul></ul></li>
-<li><a href="#standby-duration">17 Standby Duration</a><ul></ul></li>
-<li><a href="#zephyr-driver-modified-for-nuttx">18 Zephyr Driver Modified For NuttX</a><ul></ul></li>
-<li><a href="#output-log">19 Output Log</a><ul></ul></li>
-<li><a href="#combined-barometer-and-humidity-sensor">20 Combined Barometer and Humidity Sensor</a><ul></ul></li>
-<li><a href="#whats-next">21 What’s Next</a><ul></ul></li>
-<li><a href="#notes">22 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 Mar 2022</em></p>
+<li><a href="#start-with-bmp280-driver">3 Start with BMP280 Driver</a><ul>
+<li><a href="#configure-nuttx">3.1 Configure NuttX</a><ul></ul></li>
+<li><a href="#change-i2c-address-and-device-id">3.2 Change I2C Address and Device ID</a><ul></ul></li>
+<li><a href="#register-bmp280-driver">3.3 Register BMP280 Driver</a><ul></ul></li>
+<li><a href="#invalid-device-id">3.4 Invalid Device ID</a><ul></ul></li>
+<li><a href="#invalid-register-id">3.5 Invalid Register ID</a><ul></ul></li>
+<li><a href="#log-i2c-transfers">3.6 Log I2C Transfers</a><ul></ul></li>
+<li><a href="#set-i2c-sub-address">3.7 Set I2C Sub Address</a><ul></ul></li>
+<li><a href="#bmp280-driver-loads-ok">3.8 BMP280 Driver Loads OK</a><ul></ul></li>
+<li><a href="#run-sensor-test-app">3.9 Run Sensor Test App</a><ul></ul></li></ul></li>
+<li><a href="#port-bme280-driver-from-zephyr-os">4 Port BME280 Driver from Zephyr OS</a><ul>
+<li><a href="#wrap-zephyr-driver-as-nuttx-driver">4.1 Wrap Zephyr Driver as NuttX Driver</a><ul></ul></li>
+<li><a href="#read-sensor-data-from-zephyr-driver">4.2 Read Sensor Data from Zephyr Driver</a><ul></ul></li>
+<li><a href="#power-management">4.3 Power Management</a><ul></ul></li>
+<li><a href="#standby-duration">4.4 Standby Duration</a><ul></ul></li>
+<li><a href="#zephyr-driver-modified-for-nuttx">4.5 Zephyr Driver Modified For NuttX</a><ul></ul></li>
+<li><a href="#output-log">4.6 Output Log</a><ul></ul></li></ul></li>
+<li><a href="#combined-barometer-and-humidity-sensor">5 Combined Barometer and Humidity Sensor</a><ul></ul></li>
+<li><a href="#run-bme280-driver">6 Run BME280 Driver</a><ul></ul></li>
+<li><a href="#pending-issues">7 Pending Issues</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/bme280-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>“Will <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a> talk I2C with <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>… On the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>?”</em></p>
 <p>…A friend and I pondered (8,000 miles apart) while working on the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Temperature + Humidity + Air Pressure</strong></a> combo sensor.</p>
@@ -154,7 +156,9 @@
 <p>Verify with a Multimeter that BME280 is powered up with 3.3V.</p>
 <p>We’re using the SparkFun BME280 Breakout Board, which has Pull-Up Resistors (so we don’t need to add our own)…</p>
 <p><a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all">SparkFun BME280 Breakout Board</a></p>
-<h1 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">3 Configure NuttX</a></h1>
+<h1 id="start-with-bmp280-driver" class="section-header"><a href="#start-with-bmp280-driver">3 Start with BMP280 Driver</a></h1>
+<p>TODO</p>
+<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">3.1 Configure NuttX</a></h2>
 <p>TODO</p>
 <p>NuttX has a driver for BMP280 (Air Pressure only), let’s test it with BME280.</p>
 <p>Configure NuttX to enable the I2C Character Driver, BMP280 Driver and Sensor Test App…</p>
@@ -186,7 +190,7 @@
 <p>Apache #NuttX OS doesn’t have a BME280 Driver … Let’s test the BMP280 Driver instead (Air Pressure only)</p>
 <p>TODO21</p>
 <p><img src="https://lupyuen.github.io/images/bme280-config3.png" alt="" /></p>
-<h1 id="change-i2c-address-and-device-id" class="section-header"><a href="#change-i2c-address-and-device-id">4 Change I2C Address and Device ID</a></h1>
+<h2 id="change-i2c-address-and-device-id" class="section-header"><a href="#change-i2c-address-and-device-id">3.2 Change I2C Address and Device ID</a></h2>
 <p>TODO</p>
 <p>For testing, we change the I2C Address and Device ID for BME280: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">bmp280.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>////  Previously: I2C Address of BMP280
@@ -199,32 +203,10 @@
 ////  #define DEVID               0x58
 
 #warning Testing: Device ID of BME280
-#define DEVID               0x60 //// BME280</code></pre></div><h1 id="invalid-device-id" class="section-header"><a href="#invalid-device-id">5 Invalid Device ID</a></h1>
-<p>TODO</p>
-<p>BMP280 Driver fails because the detected Device ID is 0 … Let’s find out why 🤔</p>
-<div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
-gpio_pin_register: Registering /dev/gpio1
-gpint_enable: Disable the interrupt
-gpio_pin_register: Registering /dev/gpio2
-bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
-bl602_spi_setfrequency: frequency=400000, actual=0
-bl602_spi_setbits: nbits=8
-bl602_spi_setmode: mode=0
-spi_test_driver_register: devpath=/dev/spitest0, spidev=0
-bl602_spi_select: devid: 0, CS: free
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: i2c transfer success
-bmp280_checkid: devid: 0x00
-bmp280_checkid: Wrong Device ID! 00
-bmp280_register: Failed to register driver: -19
-bl602_bringup: ERROR: Failed to register BMP280
-
-NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;</code></pre></div>
-<p>We patch the I2C Address and Device ID in the #NuttX BMP280 Driver … So it will work with BME280</p>
+#define DEVID               0x60 //// BME280</code></pre></div>
 <p>TODO1</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code1.png" alt="" /></p>
-<h1 id="register-bmp280-driver" class="section-header"><a href="#register-bmp280-driver">6 Register BMP280 Driver</a></h1>
+<h2 id="register-bmp280-driver" class="section-header"><a href="#register-bmp280-driver">3.3 Register BMP280 Driver</a></h2>
 <p>TODO</p>
 <p>Register BMP280 Driver at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SENSORS_BMP280
@@ -252,8 +234,9 @@ int bl602_bringup(void)
       _err(&quot;ERROR: Failed to register BMP280\n&quot;);
     }
 #endif /* CONFIG_SENSORS_BMP280 */</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code2a.png" alt="" /></p>
-<h1 id="invalid-device-id-1" class="section-header"><a href="#invalid-device-id-1">7 Invalid Device ID</a></h1>
+<h2 id="invalid-device-id" class="section-header"><a href="#invalid-device-id">3.4 Invalid Device ID</a></h2>
 <p>TODO</p>
 <p>BMP280 Driver fails because the detected Device ID is 0 … Let’s find out why 🤔</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
@@ -276,7 +259,7 @@ bl602_bringup: ERROR: Failed to register BMP280
 NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt;</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bme280-run1.png" alt="" /></p>
-<h1 id="invalid-register-id" class="section-header"><a href="#invalid-register-id">8 Invalid Register ID</a></h1>
+<h2 id="invalid-register-id" class="section-header"><a href="#invalid-register-id">3.5 Invalid Register ID</a></h2>
 <p>TODO</p>
 <p>Logic Analyser shows that BL602 sent the wrong Register ID to BME280.</p>
 <p>To read the Device ID, the Register ID should be <code>0xD0</code>, not <code>0x00</code>.  Let’s fix this 🤔</p>
@@ -290,7 +273,7 @@ Read [0xEF]
 <p>Here’s how we connected our Logic Analyser to PineCone #BL602 … For testing the #NuttX BMP280 Driver</p>
 <p>TODO50</p>
 <p><img src="https://lupyuen.github.io/images/bme280-logic2.jpg" alt="" /></p>
-<h1 id="log-i2c-transfers" class="section-header"><a href="#log-i2c-transfers">9 Log I2C Transfers</a></h1>
+<h2 id="log-i2c-transfers" class="section-header"><a href="#log-i2c-transfers">3.6 Log I2C Transfers</a></h2>
 <p>TODO</p>
 <p>BL602 NuttX I2C Driver doesn’t log the data transferred … Let’s log ourselves: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/arch/risc-v/src/bl602/bl602_i2c.c#L194-L197">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_i2c_send_data(struct bl602_i2c_priv_s *priv)
@@ -321,7 +304,7 @@ Read [0xEF]
       bl602_i2c_start_transfer(priv);</code></pre></div>
 <p>TODO3</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code3a.png" alt="" /></p>
-<h1 id="set-i2c-sub-address" class="section-header"><a href="#set-i2c-sub-address">10 Set I2C Sub Address</a></h1>
+<h2 id="set-i2c-sub-address" class="section-header"><a href="#set-i2c-sub-address">3.7 Set I2C Sub Address</a></h2>
 <p>TODO</p>
 <p>BL602 has a peculiar I2C Port … We need to send the I2C Sub Address (Register ID) separately from the I2C Data … This might cause the BMP280 Driver to fail</p>
 <p>TODO34</p>
@@ -393,7 +376,7 @@ Read [0xEF]
   msg[0].addr      = priv-&gt;addr;
   msg[0].flags     = 0;
   msg[0].buffer    = txbuffer;
-  msg[0].length    = 2;</code></pre></div><h1 id="bmp280-driver-loads-ok" class="section-header"><a href="#bmp280-driver-loads-ok">11 BMP280 Driver Loads OK</a></h1>
+  msg[0].length    = 2;</code></pre></div><h2 id="bmp280-driver-loads-ok" class="section-header"><a href="#bmp280-driver-loads-ok">3.8 BMP280 Driver Loads OK</a></h2>
 <p>TODO</p>
 <p>NuttX BMP280 Driver loads OK on BL602 … After setting the Register ID as I2C Sub Address! 🎉</p>
 <p>NuttX BMP280 Driver appears as “/dev/sensor/baro0”</p>
@@ -487,7 +470,7 @@ nsh&gt;</code></pre></div>
 <p>#NuttX BMP280 Driver appears as “/dev/sensor/baro0” … Let’s read the device</p>
 <p>TODO29</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run4a.png" alt="" /></p>
-<h1 id="run-sensor-test-app" class="section-header"><a href="#run-sensor-test-app">12 Run Sensor Test App</a></h1>
+<h2 id="run-sensor-test-app" class="section-header"><a href="#run-sensor-test-app">3.9 Run Sensor Test App</a></h2>
 <p>TODO</p>
 <p>Let’s run the NuttX Sensor Test App to read the sensor values from “/dev/sensor/baro0”…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c">testing/sensortest/sensortest.c</a></p>
@@ -725,7 +708,7 @@ bmp280_putreg8: regaddr=0xf5, regval=0xa0
 # Register F5 now has value A0
 bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 <p>Yep the NuttX BMP280 Driver works OK! Now let’s port the BME280 Driver from Zephyr OS to NuttX, so we can get the humidity.</p>
-<h1 id="port-bme280-driver-from-zephyr-os" class="section-header"><a href="#port-bme280-driver-from-zephyr-os">13 Port BME280 Driver from Zephyr OS</a></h1>
+<h1 id="port-bme280-driver-from-zephyr-os" class="section-header"><a href="#port-bme280-driver-from-zephyr-os">4 Port BME280 Driver from Zephyr OS</a></h1>
 <p>TODO</p>
 <p>NuttX BMP280 Driver works OK with our BME280 Sensor … But we’re missing one thing: Humidity … Can we port the BME280 Driver from Zephyr OS? 🤔</p>
 <p><a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/bme280.c">zephyr/drivers/sensor/bme280/bme280.c</a></p>
@@ -737,7 +720,7 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 <p>Zephyr BME280 Driver looks similar to #NuttX BMP280 Driver … So porting Zephyr BME280 Driver to NuttX might not be so hard 🤔</p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code6a.png" alt="" /></p>
-<h1 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">14 Wrap Zephyr Driver as NuttX Driver</a></h1>
+<h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">4.1 Wrap Zephyr Driver as NuttX Driver</a></h2>
 <p>TODO</p>
 <p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
 <p>TODO7</p>
@@ -824,7 +807,7 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 }</code></pre></div>
 <p>TODO8</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code8a.png" alt="" /></p>
-<h1 id="read-sensor-data-from-zephyr-driver" class="section-header"><a href="#read-sensor-data-from-zephyr-driver">15 Read Sensor Data from Zephyr Driver</a></h1>
+<h2 id="read-sensor-data-from-zephyr-driver" class="section-header"><a href="#read-sensor-data-from-zephyr-driver">4.2 Read Sensor Data from Zephyr Driver</a></h2>
 <p>TODO</p>
 <p>Our NuttX BME280 Driver reads the Sensor Data from Zephyr Driver in two steps: 1️⃣ Fetch the sensor sample 2️⃣ Get the channel data</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L374-L421">driver.c</a></p>
@@ -878,7 +861,7 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
   sninfo(&quot;temperature=%f °C, pressure=%f mbar, humidity=%f %%\n&quot;, baro_data.temperature, baro_data.pressure, humidity);</code></pre></div>
 <p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code9a.png" alt="" /></p>
-<h1 id="power-management" class="section-header"><a href="#power-management">16 Power Management</a></h1>
+<h2 id="power-management" class="section-header"><a href="#power-management">4.3 Power Management</a></h2>
 <p>TODO</p>
 <p>Power Management works a little differently in NuttX vs Zephyr … Here’s how our NuttX BME280 Driver calls the Zephyr Driver to do Power Management: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L315-L343">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int bme280_activate(FAR struct sensor_lowerhalf_s *lower,
@@ -912,7 +895,7 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 }</code></pre></div>
 <p>TODO10</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code10.png" alt="" /></p>
-<h1 id="standby-duration" class="section-header"><a href="#standby-duration">17 Standby Duration</a></h1>
+<h2 id="standby-duration" class="section-header"><a href="#standby-duration">4.4 Standby Duration</a></h2>
 <p>TODO</p>
 <p>BME280 Standby Duration is static in Zephyr but configured at runtime in NuttX … So we set it in our NuttX BME280 Driver: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L217-L255">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int bme280_set_standby(FAR struct device *priv, uint8_t value)
@@ -956,7 +939,7 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 }</code></pre></div>
 <p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code11.png" alt="" /></p>
-<h1 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">18 Zephyr Driver Modified For NuttX</a></h1>
+<h2 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">4.5 Zephyr Driver Modified For NuttX</a></h2>
 <p>TODO</p>
 <p>Here are the minor modifications we made to the Zephyr BME280 Driver while porting to NuttX…</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-80464162211b7180f107757b7aee91398cdc088e5775ffadf7e6e1f0bbb4ad65">bme280.c</a></p>
@@ -964,7 +947,7 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 <p>The above files are wrapped by <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">bundle.c</a> and <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.h">bundle.h</a> to become a NuttX Driver.</p>
 <p>TODO12</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code12.png" alt="" /></p>
-<h1 id="output-log" class="section-header"><a href="#output-log">19 Output Log</a></h1>
+<h2 id="output-log" class="section-header"><a href="#output-log">4.6 Output Log</a></h2>
 <p>TODO</p>
 <p>Zephyr BME280 Driver ported to Apache #NuttX OS … Works great on NuttX! 🎉</p>
 <div class="example-wrap"><pre class="language-text"><code>spi_test_driver_register: devpath=/dev/spitest0, spidev=0
@@ -1578,7 +1561,7 @@ bme280_activate: TODO enable=0
 nsh&gt;</code></pre></div>
 <p>TODO32</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run6a.png" alt="" /></p>
-<h1 id="combined-barometer-and-humidity-sensor" class="section-header"><a href="#combined-barometer-and-humidity-sensor">20 Combined Barometer and Humidity Sensor</a></h1>
+<h1 id="combined-barometer-and-humidity-sensor" class="section-header"><a href="#combined-barometer-and-humidity-sensor">5 Combined Barometer and Humidity Sensor</a></h1>
 <p>TODO</p>
 <p>NuttX doesn’t have a Sensor Type that supports BME280 Temperature + Humidity + Pressure … So our NuttX BME280 Driver combines 2 Sensor Types: 1️⃣ Barometer Sensor (Pressure + Temperature) 2️⃣ Humidity Sensor</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/device.h#L36-L49">device.h</a></p>
@@ -1644,6 +1627,8 @@ static const struct sensor_ops_s g_humi_ops =
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/bme280-combine3.png" alt="" /></p>
 <p>Our NuttX BME280 Driver appears as 2 sensors: 1️⃣ “/dev/sensor/baro0” (Barometer Sensor) 2️⃣ “/dev/sensor/humi0” (Humidity Sensor)</p>
+<h1 id="run-bme280-driver" class="section-header"><a href="#run-bme280-driver">6 Run BME280 Driver</a></h1>
+<p>TODO</p>
 <p>This is how we read each sensor:</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest -n 1 baro0
 SensorTest: Test /dev/sensor/baro0 with interval(1000000us), latency(0us)
@@ -1758,7 +1743,8 @@ bme280_activate_humi: enable=0
 bme280_activate_humi: priv=4201b770, sensor_humi=4201b78c
 bme280_reg_write: reg=0xf4, val=0x54
 bl602_i2c_transfer: i2c transfer error, event = 4
-nsh&gt;</code></pre></div>
+nsh&gt;</code></pre></div><h1 id="pending-issues" class="section-header"><a href="#pending-issues">7 Pending Issues</a></h1>
+<p>TODO</p>
 <p>Why does this fail? Perhaps because BME280 is in low power mode?</p>
 <div class="example-wrap"><pre class="language-text"><code># Resume BME280: This is OK
 bme280_reg_write: reg=0xf4, val=0x57
@@ -1771,7 +1757,7 @@ bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
 bmp280_putreg8: regaddr=0xf4, regval=0x2f
 ...
 # Suspend BMP280: This is OK
-bmp280_putreg8: regaddr=0xf4, regval=0x00</code></pre></div><h1 id="whats-next" class="section-header"><a href="#whats-next">21 What’s Next</a></h1>
+bmp280_putreg8: regaddr=0xf4, regval=0x00</code></pre></div><h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -1790,7 +1776,7 @@ bmp280_putreg8: regaddr=0xf4, regval=0x00</code></pre></div><h1 id="whats-next" 
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bme280.md"><code>lupyuen.github.io/src/bme280.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">22 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1494301654186823683">this Twitter Thread</a></li>
 </ol>
