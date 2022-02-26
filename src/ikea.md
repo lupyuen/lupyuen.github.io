@@ -173,7 +173,7 @@ The __GPIO Pin Numbers__ for the UART Port (UART1) are defined in [board.h](http
    GPIO_FUNC_UART | GPIO_PIN4)
 ```
 
-__For ESP32:__ The GPIO Pin Numbers for the UART Port (UART1) are defined in [Kconfig](https://github.com/lupyuen/incubator-nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669)
+__For ESP32:__ The GPIO Pin Numbers for the UART Port (UART1) are defined in [Kconfig](https://github.com/lupyuen/incubator-nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669) and menuconfig...
 
 ```text
 config ESP32_UART1_TXPIN
@@ -815,6 +815,23 @@ Now we configure our NuttX project...
     Uncheck __"Disable cat"__
 
     Uncheck __"Disable ls"__
+
+    Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
+
+1.  Enable __Logging and Assertion Checks__...
+
+    Select __"Build Setup"__ → __"Debug Options"__
+
+    Check the boxes for the following...
+
+    ```text
+    Enable Debug Features
+    Enable Error Output
+    Enable Warnings Output
+    Enable Debug Assertions
+    ```
+
+    Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
 1.  Save the configuration and exit menuconfig
 
