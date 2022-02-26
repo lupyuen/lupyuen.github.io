@@ -159,10 +159,16 @@
 <p>(UART0 is used by the Serial Console)</p>
 <p><em>Do we need Pull-Up Resistors?</em></p>
 <p>We’re using the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all"><strong>SparkFun BME280 Breakout Board</strong></a>, which has <strong>Pull-Up Resistors</strong>. (So we don’t need to add our own)</p>
+<p><em>What happens now?</em></p>
+<p>Coming up we have a lengthy exploration of BME280 on BL602.</p>
+<p>If we’re only interesting in running the NuttX BME280 Driver (on BL602, ESP32 and other platforms), just jump to this section for the instructions…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/bme280#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX (with BME280)”</strong></a></li>
+</ul>
 <h1 id="start-with-bmp280-driver" class="section-header"><a href="#start-with-bmp280-driver">2 Start with BMP280 Driver</a></h1>
-<p>TODO</p>
-<p>NuttX has a driver for BMP280 (Air Pressure only), let’s test it with BME280.</p>
-<p>Configure NuttX to enable the I2C Character Driver, BMP280 Driver and Sensor Test App…</p>
+<p>NuttX doesn’t have a BME280 Driver, but there’s a <strong>NuttX Driver for BMP280</strong>, the downsized (rightsized?) sibling of BME280.</p>
+<p>(BMP280 works like BME280 for sensing Air Pressure and Temperature, but without Humidity)</p>
+<p>Let’s test the BMP280 Driver on BL602 and fix any I2C quirks…</p>
 <ol>
 <li>
 <p>Follow these steps to <strong>download and configure</strong> NuttX…</p>
