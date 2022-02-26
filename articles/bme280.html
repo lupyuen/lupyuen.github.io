@@ -67,15 +67,14 @@
     <nav id="TOC"><ul>
 <li><a href="#test-and-connect-bme280">1 Test and Connect BME280</a><ul></ul></li>
 <li><a href="#start-with-bmp280-driver">2 Start with BMP280 Driver</a><ul>
-<li><a href="#configure-nuttx">2.1 Configure NuttX</a><ul></ul></li>
-<li><a href="#change-i2c-address-and-device-id">2.2 Change I2C Address and Device ID</a><ul></ul></li>
-<li><a href="#register-bmp280-driver">2.3 Register BMP280 Driver</a><ul></ul></li>
-<li><a href="#invalid-device-id">2.4 Invalid Device ID</a><ul></ul></li>
-<li><a href="#invalid-register-id">2.5 Invalid Register ID</a><ul></ul></li>
-<li><a href="#log-i2c-transfers">2.6 Log I2C Transfers</a><ul></ul></li>
-<li><a href="#set-i2c-sub-address">2.7 Set I2C Sub Address</a><ul></ul></li>
-<li><a href="#bmp280-driver-loads-ok">2.8 BMP280 Driver Loads OK</a><ul></ul></li>
-<li><a href="#run-sensor-test-app">2.9 Run Sensor Test App</a><ul></ul></li></ul></li>
+<li><a href="#change-i2c-address-and-device-id">2.1 Change I2C Address and Device ID</a><ul></ul></li>
+<li><a href="#register-bmp280-driver">2.2 Register BMP280 Driver</a><ul></ul></li>
+<li><a href="#invalid-device-id">2.3 Invalid Device ID</a><ul></ul></li>
+<li><a href="#invalid-register-id">2.4 Invalid Register ID</a><ul></ul></li>
+<li><a href="#log-i2c-transfers">2.5 Log I2C Transfers</a><ul></ul></li>
+<li><a href="#set-i2c-sub-address">2.6 Set I2C Sub Address</a><ul></ul></li>
+<li><a href="#bmp280-driver-loads-ok">2.7 BMP280 Driver Loads OK</a><ul></ul></li>
+<li><a href="#run-sensor-test-app">2.8 Run Sensor Test App</a><ul></ul></li></ul></li>
 <li><a href="#port-bme280-driver-from-zephyr-os">3 Port BME280 Driver from Zephyr OS</a><ul>
 <li><a href="#wrap-zephyr-driver-as-nuttx-driver">3.1 Wrap Zephyr Driver as NuttX Driver</a><ul></ul></li>
 <li><a href="#read-sensor-data-from-zephyr-driver">3.2 Read Sensor Data from Zephyr Driver</a><ul></ul></li>
@@ -90,7 +89,7 @@
 <li><a href="#notes">8 Notes</a><ul></ul></li>
 <li><a href="#appendix-build-flash-and-run-nuttx">9 Appendix: Build, Flash and Run NuttX</a><ul>
 <li><a href="#download-nuttx">9.1 Download NuttX</a><ul></ul></li>
-<li><a href="#configure-nuttx-1">9.2 Configure NuttX</a><ul></ul></li>
+<li><a href="#configure-nuttx">9.2 Configure NuttX</a><ul></ul></li>
 <li><a href="#build-nuttx">9.3 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">9.4 Flash NuttX</a><ul></ul></li>
 <li><a href="#run-nuttx">9.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Mar 2022</em></p>
@@ -162,24 +161,24 @@
 <p>We’re using the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all"><strong>SparkFun BME280 Breakout Board</strong></a>, which has <strong>Pull-Up Resistors</strong>. (So we don’t need to add our own)</p>
 <h1 id="start-with-bmp280-driver" class="section-header"><a href="#start-with-bmp280-driver">2 Start with BMP280 Driver</a></h1>
 <p>TODO</p>
-<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">2.1 Configure NuttX</a></h2>
-<p>TODO</p>
 <p>NuttX has a driver for BMP280 (Air Pressure only), let’s test it with BME280.</p>
 <p>Configure NuttX to enable the I2C Character Driver, BMP280 Driver and Sensor Test App…</p>
 <ol>
 <li>
-<p>TODO</p>
+<p>Follow these steps to <strong>download and configure</strong> NuttX…</p>
+<p><a href="https://lupyuen.github.io/articles/bme280#download-nuttx"><strong>“Download NuttX”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>“Configure NuttX”</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-config1.png" alt="Enable the I2C Port and I2C Character Driver" /></p>
 </li>
 <li>
-<p>Enable <strong>BME280 Driver</strong>…</p>
+<p>Enable the <strong>BMP280 Driver</strong> in menuconfig…</p>
 <p>Check the box for <strong>“Device Drivers”</strong> → <strong>“Sensor Device Support”</strong></p>
 <p>Select <strong>“Sensor Device Support”</strong></p>
 <p>Check the box for <strong>“Bosch BMP280 Barometic Pressure Sensor”</strong></p>
 <p><img src="https://lupyuen.github.io/images/bme280-config3.png" alt="BMP280 Driver" /></p>
 </li>
 </ol>
-<h2 id="change-i2c-address-and-device-id" class="section-header"><a href="#change-i2c-address-and-device-id">2.2 Change I2C Address and Device ID</a></h2>
+<h2 id="change-i2c-address-and-device-id" class="section-header"><a href="#change-i2c-address-and-device-id">2.1 Change I2C Address and Device ID</a></h2>
 <p>TODO</p>
 <p>For testing, we change the I2C Address and Device ID for BME280: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">bmp280.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>////  Previously: I2C Address of BMP280
@@ -195,7 +194,7 @@
 #define DEVID               0x60 //// BME280</code></pre></div>
 <p>TODO1</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code1.png" alt="" /></p>
-<h2 id="register-bmp280-driver" class="section-header"><a href="#register-bmp280-driver">2.3 Register BMP280 Driver</a></h2>
+<h2 id="register-bmp280-driver" class="section-header"><a href="#register-bmp280-driver">2.2 Register BMP280 Driver</a></h2>
 <p>TODO</p>
 <p>Register BMP280 Driver at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SENSORS_BMP280
@@ -225,7 +224,7 @@ int bl602_bringup(void)
 #endif /* CONFIG_SENSORS_BMP280 */</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code2a.png" alt="" /></p>
-<h2 id="invalid-device-id" class="section-header"><a href="#invalid-device-id">2.4 Invalid Device ID</a></h2>
+<h2 id="invalid-device-id" class="section-header"><a href="#invalid-device-id">2.3 Invalid Device ID</a></h2>
 <p>TODO</p>
 <p>BMP280 Driver fails because the detected Device ID is 0 … Let’s find out why 🤔</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
@@ -248,7 +247,7 @@ bl602_bringup: ERROR: Failed to register BMP280
 NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt;</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bme280-run1.png" alt="" /></p>
-<h2 id="invalid-register-id" class="section-header"><a href="#invalid-register-id">2.5 Invalid Register ID</a></h2>
+<h2 id="invalid-register-id" class="section-header"><a href="#invalid-register-id">2.4 Invalid Register ID</a></h2>
 <p>TODO</p>
 <p>Logic Analyser shows that BL602 sent the wrong Register ID to BME280.</p>
 <p>To read the Device ID, the Register ID should be <code>0xD0</code>, not <code>0x00</code>.  Let’s fix this 🤔</p>
@@ -262,7 +261,7 @@ Read [0xEF]
 <p>Here’s how we connected our Logic Analyser to PineCone #BL602 … For testing the #NuttX BMP280 Driver</p>
 <p>TODO50</p>
 <p><img src="https://lupyuen.github.io/images/bme280-logic2.jpg" alt="" /></p>
-<h2 id="log-i2c-transfers" class="section-header"><a href="#log-i2c-transfers">2.6 Log I2C Transfers</a></h2>
+<h2 id="log-i2c-transfers" class="section-header"><a href="#log-i2c-transfers">2.5 Log I2C Transfers</a></h2>
 <p>TODO</p>
 <p>BL602 NuttX I2C Driver doesn’t log the data transferred … Let’s log ourselves: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/arch/risc-v/src/bl602/bl602_i2c.c#L194-L197">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_i2c_send_data(struct bl602_i2c_priv_s *priv)
@@ -293,7 +292,7 @@ Read [0xEF]
       bl602_i2c_start_transfer(priv);</code></pre></div>
 <p>TODO3</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code3a.png" alt="" /></p>
-<h2 id="set-i2c-sub-address" class="section-header"><a href="#set-i2c-sub-address">2.7 Set I2C Sub Address</a></h2>
+<h2 id="set-i2c-sub-address" class="section-header"><a href="#set-i2c-sub-address">2.6 Set I2C Sub Address</a></h2>
 <p>TODO</p>
 <p>BL602 has a peculiar I2C Port … We need to send the I2C Sub Address (Register ID) separately from the I2C Data … This might cause the BMP280 Driver to fail</p>
 <p>TODO34</p>
@@ -365,7 +364,7 @@ Read [0xEF]
   msg[0].addr      = priv-&gt;addr;
   msg[0].flags     = 0;
   msg[0].buffer    = txbuffer;
-  msg[0].length    = 2;</code></pre></div><h2 id="bmp280-driver-loads-ok" class="section-header"><a href="#bmp280-driver-loads-ok">2.8 BMP280 Driver Loads OK</a></h2>
+  msg[0].length    = 2;</code></pre></div><h2 id="bmp280-driver-loads-ok" class="section-header"><a href="#bmp280-driver-loads-ok">2.7 BMP280 Driver Loads OK</a></h2>
 <p>TODO</p>
 <p>NuttX BMP280 Driver loads OK on BL602 … After setting the Register ID as I2C Sub Address! 🎉</p>
 <p>NuttX BMP280 Driver appears as “/dev/sensor/baro0”</p>
@@ -459,7 +458,7 @@ nsh&gt;</code></pre></div>
 <p>#NuttX BMP280 Driver appears as “/dev/sensor/baro0” … Let’s read the device</p>
 <p>TODO29</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run4a.png" alt="" /></p>
-<h2 id="run-sensor-test-app" class="section-header"><a href="#run-sensor-test-app">2.9 Run Sensor Test App</a></h2>
+<h2 id="run-sensor-test-app" class="section-header"><a href="#run-sensor-test-app">2.8 Run Sensor Test App</a></h2>
 <p>TODO</p>
 <p>Let’s run the NuttX Sensor Test App to read the sensor values from “/dev/sensor/baro0”…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c">testing/sensortest/sensortest.c</a></p>
@@ -1785,7 +1784,7 @@ git clone --recursive --branch bme280 https://github.com/lupyuen/incubator-nuttx
 <ul>
 <li><a href="https://github.com/lupyuen/bme280-nuttx#install-driver"><strong>“Install BME280 Driver”</strong></a></li>
 </ul>
-<h2 id="configure-nuttx-1" class="section-header"><a href="#configure-nuttx-1">9.2 Configure NuttX</a></h2>
+<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">9.2 Configure NuttX</a></h2>
 <p>Now we configure our NuttX project…</p>
 <ol>
 <li>
