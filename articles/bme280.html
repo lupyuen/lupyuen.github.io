@@ -124,7 +124,7 @@
 <p>Before we start our exploration, verify that our BME280 Sensor works OK.</p>
 <p>(Because we’ll see some unexpected behaviour in a while)</p>
 <p>We used <a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> (pic above) for testing our BME280 Sensor.</p>
-<p><a href="https://lupyuen.github.io/articles/i2c#appendix-test-bme280-with-bus-pirate">(Testing BME280 with Bus Pirate)</a></p>
+<p><a href="https://lupyuen.github.io/articles/i2c#appendix-test-bme280-with-bus-pirate">(Here’s how)</a></p>
 <p>Next we connect BME280 to Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a>…</p>
 <div><table><thead><tr><th align="center">BL602 Pin</th><th align="center">BME280 Pin</th><th align="left">Wire Colour</th></tr></thead><tbody>
 <tr><td align="center"><strong><code>GPIO 3</code></strong></td><td align="center"><code>SDA</code></td><td align="left">Green</td></tr>
@@ -151,7 +151,7 @@
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_UART | \
   GPIO_PIN4)
 #endif  /* TODO */</code></pre></div>
-<p>(UART0 is used by the Serial Console, we’ll leave it alone)</p>
+<p>(UART0 is used by the Serial Console, we’ll leave it as-is)</p>
 <p><em>Do we need Pull-Up Resistors?</em></p>
 <p>We’re using the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all"><strong>SparkFun BME280 Breakout Board</strong></a>, which has <strong>Pull-Up Resistors</strong>. (So we don’t need to add our own)</p>
 <h1 id="start-with-bmp280-driver" class="section-header"><a href="#start-with-bmp280-driver">2 Start with BMP280 Driver</a></h1>
