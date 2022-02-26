@@ -220,7 +220,7 @@
 #define BOARD_UART_1_TX_PIN \
   (GPIO_INPUT     | GPIO_PULLUP | \
    GPIO_FUNC_UART | GPIO_PIN4)</code></pre></div>
-<p><strong>For ESP32:</strong> The GPIO Pin Numbers for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669">Kconfig</a></p>
+<p><strong>For ESP32:</strong> The GPIO Pin Numbers for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669">Kconfig</a> and menuconfig…</p>
 <div class="example-wrap"><pre class="language-text"><code>config ESP32_UART1_TXPIN
   int &quot;UART1 Tx Pin&quot;
   default 10
@@ -688,6 +688,17 @@ make menuconfig </code></pre></div></li>
 <p>Select <strong>“Application Configuration”</strong> → <strong>“NSH Library”</strong> → <strong>“Disable Individual commands”</strong></p>
 <p>Uncheck <strong>“Disable cat”</strong></p>
 <p>Uncheck <strong>“Disable ls”</strong></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+</li>
+<li>
+<p>Enable <strong>Logging and Assertion Checks</strong>…</p>
+<p>Select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong></p>
+<p>Check the boxes for the following…</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable Debug Features
+Enable Error Output
+Enable Warnings Output
+Enable Debug Assertions</code></pre></div>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
 <p>Save the configuration and exit menuconfig</p>

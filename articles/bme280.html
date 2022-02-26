@@ -157,13 +157,24 @@
   GPIO_PIN4)
 #endif  /* TODO */</code></pre></div>
 <p>(UART0 is used by the Serial Console)</p>
+<p><em>What if we’re connecting to ESP32?</em></p>
+<p><strong>For ESP32:</strong> The GPIO Pin Numbers for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/arch/xtensa/src/esp32/Kconfig#L797-L805">Kconfig</a> and menuconfig…</p>
+<div class="example-wrap"><pre class="language-text"><code>config ESP32_I2C0_SCLPIN
+  int &quot;I2C0 SCL Pin&quot;
+  default 22
+  range 0 39
+
+config ESP32_I2C0_SDAPIN
+  int &quot;I2C0 SDA Pin&quot;
+  default 23
+  range 0 39</code></pre></div>
 <p><em>Do we need Pull-Up Resistors?</em></p>
 <p>We’re using the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all"><strong>SparkFun BME280 Breakout Board</strong></a>, which has <strong>Pull-Up Resistors</strong>. (So we don’t need to add our own)</p>
 <p><em>What happens now?</em></p>
 <p>Coming up we have a lengthy exploration of BME280 on BL602.</p>
-<p>If we’re only interesting in <strong>running the NuttX BME280 Driver</strong> (on BL602, ESP32 and other platforms), just jump to this section for the instructions…</p>
+<p>If we’re only interesting in <strong>running the NuttX BME280 Driver</strong> (on BL602, ESP32 and other platforms), jump to this section for the instructions…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/bme280#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX (with BME280)”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/bme280#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX with BME280”</strong></a></li>
 </ul>
 <p>But if we’re keen to go deep inside the BME280 driver… Read on!</p>
 <h1 id="start-with-bmp280-driver" class="section-header"><a href="#start-with-bmp280-driver">2 Start with BMP280 Driver</a></h1>
@@ -1624,6 +1635,41 @@ static const struct sensor_ops_s g_humi_ops =
 <p>Our NuttX BME280 Driver appears as 2 sensors: 1️⃣ “/dev/sensor/baro0” (Barometer Sensor) 2️⃣ “/dev/sensor/humi0” (Humidity Sensor)</p>
 <h1 id="run-bme280-driver" class="section-header"><a href="#run-bme280-driver">5 Run BME280 Driver</a></h1>
 <p>TODO</p>
+<p>Edit the function <code>bl602_bringup</code> or <code>esp32_bringup</code> in this file…</p>
+<div class="example-wrap"><pre class="language-text"><code># For BL602:
+nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
+
+# For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
+nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
+<p>And call <code>bme280_register</code> to register our BME280 Driver:</p>
+<p>https://github.com/lupyuen/incubator-nuttx/blob/bme280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640</p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SENSORS_BME280
+#include &lt;nuttx/sensors/bme280.h&gt;
+#endif /* CONFIG_SENSORS_BME280 */
+
+...
+
+int bl602_bringup(void) {
+  ...
+
+#ifdef CONFIG_SENSORS_BME280
+
+  /* Init I2C bus for BME280 */
+
+  struct i2c_master_s *bme280_i2c_bus = bl602_i2cbus_initialize(0);
+  if (!bme280_i2c_bus)
+    {
+      _err(&quot;ERROR: Failed to get I2C%d interface\n&quot;, 0);
+    }
+
+  /* Register the BME280 driver */
+
+  ret = bme280_register(0, bme280_i2c_bus);
+  if (ret &lt; 0)
+    {
+      _err(&quot;ERROR: Failed to register BME280\n&quot;);
+    }
+#endif /* CONFIG_SENSORS_BME280 */</code></pre></div>
 <p>This is how we read each sensor:</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest -n 1 baro0
 SensorTest: Test /dev/sensor/baro0 with interval(1000000us), latency(0us)
@@ -1835,7 +1881,7 @@ make menuconfig </code></pre></div></li>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
-<p>Enable <strong>Logging</strong>…</p>
+<p>Enable <strong>Logging and Assertion Checks</strong>…</p>
 <p>Select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong></p>
 <p>Check the boxes for the following…</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable Debug Features
