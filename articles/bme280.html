@@ -198,7 +198,7 @@ config ESP32_I2C0_SDAPIN
 </ol>
 <h2 id="change-i2c-address-and-device-id" class="section-header"><a href="#change-i2c-address-and-device-id">2.1 Change I2C Address and Device ID</a></h2>
 <p><em>Will NuttX’s BMP280 Driver really work with our BME280?</em></p>
-<p>Yep the BMP280 Driver should work for reading the <strong>Air Pressure</strong> and <strong>Temperature</strong> from our BME280 Sensor. (But not Humidity)</p>
+<p>Yep the BMP280 Driver ought to read the <strong>Air Pressure</strong> and <strong>Temperature</strong> from our BME280 Sensor. (But not Humidity)</p>
 <p>Just that we need to we change the <strong>I2C Address</strong> and <strong>Device ID</strong> in the BMP280 Driver: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">bmp280.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Previously: I2C Address of BMP280
 //  #define BMP280_ADDR     0x76
@@ -215,8 +215,7 @@ config ESP32_I2C0_SDAPIN
 <p><img src="https://lupyuen.github.io/images/bme280-code1.png" alt="Change I2C Address and Device ID" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">(Source)</a></p>
 <h2 id="register-bmp280-driver" class="section-header"><a href="#register-bmp280-driver">2.2 Register BMP280 Driver</a></h2>
-<p>TODO</p>
-<p>Register BMP280 Driver at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">bl602_bringup.c</a></p>
+<p>Next we <strong>load the BMP280 Driver</strong> at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SENSORS_BMP280
 #include &lt;nuttx/sensors/bmp280.h&gt;
 #endif  //  CONFIG_SENSORS_BMP280
@@ -237,31 +236,34 @@ int bl602_bringup(void) {
     _err(&quot;ERROR: Failed to register BMP280\n&quot;);
   }
 #endif  //  CONFIG_SENSORS_BMP280</code></pre></div>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code2a.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L691-L760">(<strong>bmp280_register</strong> is defined here)</a></p>
+<p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup</a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup.c</a> so that it calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L691-L760">bmp280_register</a></p>
+<p><img src="https://lupyuen.github.io/images/bme280-code2a.png" alt="Register BMP280 Driver" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">(Source)</a></p>
 <h2 id="invalid-device-id" class="section-header"><a href="#invalid-device-id">2.3 Invalid Device ID</a></h2>
-<p>TODO</p>
-<p>BMP280 Driver fails because the detected Device ID is 0 … Let’s find out why 🤔</p>
-<div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
-gpio_pin_register: Registering /dev/gpio1
-gpint_enable: Disable the interrupt
-gpio_pin_register: Registering /dev/gpio2
-bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
-bl602_spi_setfrequency: frequency=400000, actual=0
-bl602_spi_setbits: nbits=8
-bl602_spi_setmode: mode=0
-spi_test_driver_register: devpath=/dev/spitest0, spidev=0
-bl602_spi_select: devid: 0, CS: free
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: i2c transfer success
-bmp280_checkid: devid: 0x00
-bmp280_checkid: Wrong Device ID! 00
+<p>We’re ready to test the BMP280 Driver! <strong>Build, flash and run</strong> NuttX with these steps…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280#build-nuttx"><strong>“Build NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280#flash-nuttx"><strong>“Flash NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280#run-nuttx"><strong>“Run NuttX”</strong></a></p>
+</li>
+</ol>
+<p>Something unexpected happens when we boot NuttX on BL602…</p>
+<div class="example-wrap"><pre class="language-text"><code>bl602_i2c_transfer: i2c transfer success
+bmp280_checkid:  devid: 0x00
+bmp280_checkid:  Wrong Device ID! 00
 bmp280_register: Failed to register driver: -19
-bl602_bringup: ERROR: Failed to register BMP280
-
-NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/bme280-run1.png" alt="" /></p>
+bl602_bringup:   ERROR: Failed to register BMP280</code></pre></div>
+<p><a href="https://github.com/lupyuen/bme280-nuttx#invalid-device-id">(See the complete log)</a></p>
+<p>This says that the BMP280 Driver was expecting <strong>Device ID <code>0x60</code></strong>… But it got <strong><code>0x00</code></strong> instead!</p>
+<p>Let’s find out why 🤔</p>
+<p><img src="https://lupyuen.github.io/images/bme280-run1.png" alt="Invalid Device ID" /></p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx#invalid-device-id">(Source)</a></p>
 <h2 id="invalid-register-id" class="section-header"><a href="#invalid-register-id">2.4 Invalid Register ID</a></h2>
 <p>TODO</p>
 <p>Logic Analyser shows that BL602 sent the wrong Register ID to BME280.</p>
