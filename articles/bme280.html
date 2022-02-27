@@ -197,49 +197,46 @@ config ESP32_I2C0_SDAPIN
 </li>
 </ol>
 <h2 id="change-i2c-address-and-device-id" class="section-header"><a href="#change-i2c-address-and-device-id">2.1 Change I2C Address and Device ID</a></h2>
-<p>TODO</p>
-<p>For testing, we change the I2C Address and Device ID for BME280: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">bmp280.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>////  Previously: I2C Address of BMP280
-////  #define BMP280_ADDR         0x76
+<p><em>Will NuttX’s BMP280 Driver really work with our BME280?</em></p>
+<p>Yep the BMP280 Driver should work for reading the <strong>Air Pressure</strong> and <strong>Temperature</strong> from our BME280 Sensor. (But not Humidity)</p>
+<p>Just that we need to we change the <strong>I2C Address</strong> and <strong>Device ID</strong> in the BMP280 Driver: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">bmp280.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Previously: I2C Address of BMP280
+//  #define BMP280_ADDR     0x76
 
-#warning Testing: I2C Address of BME280
-#define BMP280_ADDR         0x77 //// BME280
+//  Testing: I2C Address of BME280
+#define BMP280_ADDR         0x77
 
-////  Previously: Device ID of BMP280
-////  #define DEVID               0x58
+//  Previously: Device ID of BMP280
+//  #define DEVID           0x58
 
-#warning Testing: Device ID of BME280
-#define DEVID               0x60 //// BME280</code></pre></div>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code1.png" alt="" /></p>
+//  Testing: Device ID of BME280
+#define DEVID               0x60</code></pre></div>
+<p><a href="https://github.com/zephyrproject-rtos/zephyr/issues/1709">(FYI: Zephyr uses the same driver for BMP280 and BME280)</a></p>
+<p><img src="https://lupyuen.github.io/images/bme280-code1.png" alt="Change I2C Address and Device ID" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">(Source)</a></p>
 <h2 id="register-bmp280-driver" class="section-header"><a href="#register-bmp280-driver">2.2 Register BMP280 Driver</a></h2>
 <p>TODO</p>
 <p>Register BMP280 Driver at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SENSORS_BMP280
 #include &lt;nuttx/sensors/bmp280.h&gt;
-#endif /* CONFIG_SENSORS_BMP280 */
+#endif  //  CONFIG_SENSORS_BMP280
 ...
-int bl602_bringup(void)
-{
+int bl602_bringup(void) {
 ...
 #ifdef CONFIG_SENSORS_BMP280
+  //  Init I2C bus for BMP280
+  struct i2c_master_s *bmp280_i2c_bus = 
+    bl602_i2cbus_initialize(0);
+  if (!bmp280_i2c_bus) {
+    _err(&quot;ERROR: Failed to get I2C%d interface\n&quot;, 0);
+  }
 
-  /* Init I2C bus for BMP280 */
-
-  struct i2c_master_s *bmp280_i2c_bus = bl602_i2cbus_initialize(0);
-  if (!bmp280_i2c_bus)
-    {
-      _err(&quot;ERROR: Failed to get I2C%d interface\n&quot;, 0);
-    }
-
-  /* Register the BMP280 driver */
-
+  //  Register the BMP280 driver
   ret = bmp280_register(0, bmp280_i2c_bus);
-  if (ret &lt; 0)
-    {
-      _err(&quot;ERROR: Failed to register BMP280\n&quot;);
-    }
-#endif /* CONFIG_SENSORS_BMP280 */</code></pre></div>
+  if (ret &lt; 0) {
+    _err(&quot;ERROR: Failed to register BMP280\n&quot;);
+  }
+#endif  //  CONFIG_SENSORS_BMP280</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code2a.png" alt="" /></p>
 <h2 id="invalid-device-id" class="section-header"><a href="#invalid-device-id">2.3 Invalid Device ID</a></h2>
