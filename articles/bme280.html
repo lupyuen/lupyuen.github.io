@@ -70,7 +70,7 @@
 <li><a href="#change-i2c-address-and-device-id">2.1 Change I2C Address and Device ID</a><ul></ul></li>
 <li><a href="#register-bmp280-driver">2.2 Register BMP280 Driver</a><ul></ul></li>
 <li><a href="#invalid-device-id">2.3 Invalid Device ID</a><ul></ul></li>
-<li><a href="#invalid-register-id">2.4 Invalid Register ID</a><ul></ul></li>
+<li><a href="#incorrect-register-id">2.4 Incorrect Register ID</a><ul></ul></li>
 <li><a href="#log-i2c-transfers">2.5 Log I2C Transfers</a><ul></ul></li>
 <li><a href="#set-i2c-sub-address">2.6 Set I2C Sub Address</a><ul></ul></li>
 <li><a href="#bmp280-driver-loads-ok">2.7 BMP280 Driver Loads OK</a><ul></ul></li>
@@ -264,20 +264,19 @@ bl602_bringup:   ERROR: Failed to register BMP280</code></pre></div>
 <p>Let’s find out why 🤔</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run1.png" alt="Invalid Device ID" /></p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#invalid-device-id">(Source)</a></p>
-<h2 id="invalid-register-id" class="section-header"><a href="#invalid-register-id">2.4 Invalid Register ID</a></h2>
-<p>TODO</p>
-<p>Logic Analyser shows that BL602 sent the wrong Register ID to BME280.</p>
-<p>To read the Device ID, the Register ID should be <code>0xD0</code>, not <code>0x00</code>.  Let’s fix this 🤔</p>
-<div class="example-wrap"><pre class="language-text"><code>Write [0xEE]
-0x00 + ACK (Register ID is 0x00)
-Read [0xEF]
-0x00 + NAK (No Acknowledgement, because Register ID is incorrect)</code></pre></div>
+<h2 id="incorrect-register-id" class="section-header"><a href="#incorrect-register-id">2.4 Incorrect Register ID</a></h2>
+<p>To track down why we’re not reading the right Device ID, let’s connect a <strong>Logic Analyser</strong> and inspect the bits on the I2C Bus…</p>
+<p><img src="https://lupyuen.github.io/images/bme280-logic2.jpg" alt="Logic Analyser connected between BL602 and BME280" /></p>
+<p>The I2C Data captured by our Logic Analyser looks surprising…</p>
+<p><img src="https://lupyuen.github.io/images/bme280-logic1.png" alt="I2C Data captured by Logic Analyser" /></p>
+<p>The pic above shows that BL602 sent the <strong>wrong Register ID</strong> to BME280…</p>
+<div class="example-wrap"><pre class="language-text"><code>Write  [0xEE]
+0x00 + ACK (Register ID is 0x00, which is incorrect!)
+Read   [0xEF]
+0x00 + NAK (No Acknowledgement, because Register ID is incorrect!)</code></pre></div>
+<p>To read the Device ID, the Register ID should be <strong><code>0xD0</code></strong>, not <strong><code>0x00</code></strong>!</p>
+<p>Let’s fix this 🤔</p>
 <p><a href="https://lupyuen.github.io/articles/i2c#appendix-test-bme280-with-bus-pirate">(Here’s why Register ID should be <code>0xD0</code>)</a></p>
-<p>TODO23</p>
-<p><img src="https://lupyuen.github.io/images/bme280-logic1.png" alt="" /></p>
-<p>Here’s how we connected our Logic Analyser to PineCone #BL602 … For testing the #NuttX BMP280 Driver</p>
-<p>TODO50</p>
-<p><img src="https://lupyuen.github.io/images/bme280-logic2.jpg" alt="" /></p>
 <h2 id="log-i2c-transfers" class="section-header"><a href="#log-i2c-transfers">2.5 Log I2C Transfers</a></h2>
 <p>TODO</p>
 <p>BL602 NuttX I2C Driver doesn’t log the data transferred … Let’s log ourselves: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/arch/risc-v/src/bl602/bl602_i2c.c#L194-L197">bl602_i2c.c</a></p>
