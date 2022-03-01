@@ -138,7 +138,7 @@
 <tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td><td align="left">Black</td></tr>
 </tbody></table>
 </div>
-<p><img src="https://lupyuen.github.io/images/bme280-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
+<p><img src="https://lupyuen.github.io/images/bme280-connect.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/include/board.h#L85-L88">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* I2C Configuration */
 #define BOARD_I2C_SCL \
@@ -1688,6 +1688,8 @@ SensorTest: Received message: humi0, number:1/1
 bl602_i2c_transfer: i2c transfer error, event = 4
 nsh&gt; 
 nsh&gt; </code></pre></div>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/bme280-run8a.jpg" alt="" /></p>
 <p>Detailed Log:</p>
 <div class="example-wrap"><pre class="language-text"><code>spi_test_driver_register: devpath=/dev/spitest0, spidev=0
 bme280_register: devno=0
