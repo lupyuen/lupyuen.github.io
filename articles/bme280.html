@@ -286,9 +286,8 @@ Read   [0xEF]
 <p><img src="https://lupyuen.github.io/images/bme280-subaddress.png" alt="I2C Sub Address" /></p>
 <p><a href="https://lupyuen.github.io/articles/i2c#set-i2c-device-address-and-register-address">(Source)</a></p>
 <p>TODO</p>
-<p>BL602 NuttX I2C Driver needs us to provide the I2C Sub Address (Register ID): <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/arch/risc-v/src/bl602/bl602_i2c.c#L719-L738">bl602_i2c.c</a></p>
+<p>When we browse the NuttX code for BL602’s I2C Driver, we realise that it supports <strong>I2C Sub Address</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/arch/risc-v/src/bl602/bl602_i2c.c#L719-L738">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>      /* if msgs[i].flag I2C_M_NOSTOP,means start i2c with subddr */
-
       if (msgs[i].flags &amp; I2C_M_NOSTOP)
         {
           priv-&gt;subflag = 1;
@@ -300,18 +299,11 @@ Read   [0xEF]
 
           priv-&gt;sublen = msgs[i].length;
           i++;
-        }
-      else
-        {
-          priv-&gt;subflag = 0;
-          priv-&gt;subaddr = 0;
-          priv-&gt;sublen  = 0;
         }</code></pre></div>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code4a.png" alt="" /></p>
-<p>Here’s how we patch the NuttX BMP280 Driver to send the Register ID as I2C Sub Address (instead of I2C Data): <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L202-L217">bmp280.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static uint8_t bmp280_getreg8(FAR struct bmp280_dev_s *priv, uint8_t regaddr)
-{
+<p>But it needs the flag <strong>I2C_M_NOSTOP</strong> to be set!</p>
+<p>Let’s patch the NuttX BMP280 Driver to send the <strong>Register ID as I2C Sub Address</strong> (instead of I2C Data) when we’re reading a BMP280 Register: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L202-L217">bmp280.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Read a single BME280 Register
+static uint8_t bmp280_getreg8(FAR struct bmp280_dev_s *priv, uint8_t regaddr) {
   ...
   //// Previously:
   //// msg[0].flags     = 0;
@@ -321,10 +313,9 @@ Read   [0xEF]
 
   msg[0].buffer    = &amp;regaddr;
   msg[0].length    = 1;</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L244-L257">bmp280.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static int bmp280_getregs(FAR struct bmp280_dev_s *priv, uint8_t regaddr,
-                          uint8_t *rxbuffer, uint8_t length)
-{
+<p>And we patch this too: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L244-L257">bmp280.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Read multiple BME280 Registers
+static int bmp280_getregs(FAR struct bmp280_dev_s *priv, uint8_t regaddr, uint8_t *rxbuffer, uint8_t length) {
   ...
   msg[0].frequency = priv-&gt;freq;
   msg[0].addr      = priv-&gt;addr;
@@ -337,22 +328,11 @@ Read   [0xEF]
 
   msg[0].buffer    = &amp;regaddr;
   msg[0].length    = 1;</code></pre></div>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code5a.png" alt="" /></p>
-<p>We don’t need to set the I2C Sub Address when writing registers…</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L286-L300">bmp280.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static int bmp280_putreg8(FAR struct bmp280_dev_s *priv, uint8_t regaddr,
-                          uint8_t regval)
-{
-  ...
-  txbuffer[0] = regaddr;
-  txbuffer[1] = regval;
-
-  msg[0].frequency = priv-&gt;freq;
-  msg[0].addr      = priv-&gt;addr;
-  msg[0].flags     = 0;
-  msg[0].buffer    = txbuffer;
-  msg[0].length    = 2;</code></pre></div><h2 id="bmp280-driver-loads-ok" class="section-header"><a href="#bmp280-driver-loads-ok">2.6 BMP280 Driver Loads OK</a></h2>
+<p><em>What about writing a BMP280 Register? Do we need to set the I2C Sub Address?</em></p>
+<p>We don’t need to set the I2C Sub Address when writing to BMP280 registers.</p>
+<p>In a while we’ll see the log which says that the BMP280 Driver works fine for writing to BMP280 registers.</p>
+<p><img src="https://lupyuen.github.io/images/bme280-code5a.png" alt="Send the Register ID as I2C Sub Address (instead of I2C Data) when we’re reading a BMP280 Register" /></p>
+<h2 id="bmp280-driver-loads-ok" class="section-header"><a href="#bmp280-driver-loads-ok">2.6 BMP280 Driver Loads OK</a></h2>
 <p>TODO</p>
 <p>NuttX BMP280 Driver loads OK on BL602 … After setting the Register ID as I2C Sub Address! 🎉</p>
 <p>NuttX BMP280 Driver appears as “/dev/sensor/baro0”</p>
