@@ -92,7 +92,7 @@
 <li><a href="#configure-nuttx">9.2 Configure NuttX</a><ul></ul></li>
 <li><a href="#build-nuttx">9.3 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">9.4 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">9.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Mar 2022</em></p>
+<li><a href="#run-nuttx">9.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>5 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/bme280-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>“Will <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a> talk I2C with <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>… On the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>?”</em></p>
 <p>…A friend and I pondered (8,000 miles apart) while working on the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Temperature + Humidity + Air Pressure</strong></a> combo sensor.</p>
@@ -1669,17 +1669,25 @@ int bl602_bringup(void) {
     }
 #endif /* CONFIG_SENSORS_BME280 */</code></pre></div>
 <p>This is how we read each sensor:</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest -n 1 baro0
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt; ls /dev/sensor
+/dev/sensor:
+ baro0
+ humi0
+nsh&gt; 
+nsh&gt; sensortest -n 1 baro0
 SensorTest: Test /dev/sensor/baro0 with interval(1000000us), latency(0us)
-baro0: timestamp:16730000 value1:1007.48 value2:28.93
+baro0: timestamp:43760000 value1:1011.29 value2:29.09
 SensorTest: Received message: baro0, number:1/1
 bl602_i2c_transfer: i2c transfer error, event = 4
-
+nsh&gt; 
 nsh&gt; sensortest -n 1 humi0
 SensorTest: Test /dev/sensor/humi0 with interval(1000000us), latency(0us)
-humi0: timestamp:23780000 value:87.72
+humi0: timestamp:60120000 value:90.58
 SensorTest: Received message: humi0, number:1/1
-bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
+bl602_i2c_transfer: i2c transfer error, event = 4
+nsh&gt; 
+nsh&gt; </code></pre></div>
 <p>Detailed Log:</p>
 <div class="example-wrap"><pre class="language-text"><code>spi_test_driver_register: devpath=/dev/spitest0, spidev=0
 bme280_register: devno=0
