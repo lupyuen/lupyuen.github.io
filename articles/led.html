@@ -103,10 +103,10 @@
 <p><em>PineCone RGB LED Schematic</em></p>
 <h1 id="control-rgb-led-with-gpio" class="section-header"><a href="#control-rgb-led-with-gpio">1 Control RGB LED with GPIO</a></h1>
 <p>According to the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a>, the onboard RGB LED is connected to these GPIO Pins…</p>
-<div><table><thead><tr><th align="left">LED</th><th align="left">GPIO Pin</th></tr></thead><tbody>
-<tr><td align="left">Blue</td><td align="left">GPIO 11</td></tr>
-<tr><td align="left">Red</td><td align="left">GPIO 17</td></tr>
-<tr><td align="left">Green</td><td align="left">GPIO 14</td></tr>
+<div><table><thead><tr><th style="text-align: left">LED</th><th style="text-align: left">GPIO Pin</th></tr></thead><tbody>
+<tr><td style="text-align: left">Blue</td><td style="text-align: left">GPIO 11</td></tr>
+<tr><td style="text-align: left">Red</td><td style="text-align: left">GPIO 17</td></tr>
+<tr><td style="text-align: left">Green</td><td style="text-align: left">GPIO 14</td></tr>
 </tbody></table>
 </div>
 <p>Let’s flash the <strong>GPIO Demo</strong> from the BL602 IoT SDK and interact with the above GPIO Pins…</p>
@@ -269,15 +269,15 @@ void bl_gpio_register(gpio_ctx_t *pstnode);</code></pre></div>
 <h1 id="from-gpio-to-pulse-width-modulation-pwm" class="section-header"><a href="#from-gpio-to-pulse-width-modulation-pwm">4 From GPIO to Pulse Width Modulation (PWM)</a></h1>
 <p><em>How many colours can we show on the RGB LED through GPIO?</em></p>
 <p>Each GPIO Pin is binary… Either On or Off. Let’s flip each LED and count the colours…</p>
-<div><table><thead><tr><th align="center">Red</th><th align="center">Green</th><th align="center">Blue</th><th align="left">Colour</th></tr></thead><tbody>
-<tr><td align="center">Off</td><td align="center">Off</td><td align="center">Off</td><td align="left"><strong>Black</strong></td></tr>
-<tr><td align="center">ON</td><td align="center">Off</td><td align="center">Off</td><td align="left"><strong>Red</strong></td></tr>
-<tr><td align="center">Off</td><td align="center">ON</td><td align="center">Off</td><td align="left"><strong>Green</strong></td></tr>
-<tr><td align="center">ON</td><td align="center">ON</td><td align="center">Off</td><td align="left"><strong>Yellow</strong></td></tr>
-<tr><td align="center">Off</td><td align="center">Off</td><td align="center">ON</td><td align="left"><strong>Blue</strong></td></tr>
-<tr><td align="center">ON</td><td align="center">Off</td><td align="center">ON</td><td align="left"><strong>Magenta</strong></td></tr>
-<tr><td align="center">Off</td><td align="center">ON</td><td align="center">ON</td><td align="left"><strong>Cyan</strong></td></tr>
-<tr><td align="center">ON</td><td align="center">ON</td><td align="center">ON</td><td align="left"><strong>White</strong></td></tr>
+<div><table><thead><tr><th style="text-align: center">Red</th><th style="text-align: center">Green</th><th style="text-align: center">Blue</th><th style="text-align: left">Colour</th></tr></thead><tbody>
+<tr><td style="text-align: center">Off</td><td style="text-align: center">Off</td><td style="text-align: center">Off</td><td style="text-align: left"><strong>Black</strong></td></tr>
+<tr><td style="text-align: center">ON</td><td style="text-align: center">Off</td><td style="text-align: center">Off</td><td style="text-align: left"><strong>Red</strong></td></tr>
+<tr><td style="text-align: center">Off</td><td style="text-align: center">ON</td><td style="text-align: center">Off</td><td style="text-align: left"><strong>Green</strong></td></tr>
+<tr><td style="text-align: center">ON</td><td style="text-align: center">ON</td><td style="text-align: center">Off</td><td style="text-align: left"><strong>Yellow</strong></td></tr>
+<tr><td style="text-align: center">Off</td><td style="text-align: center">Off</td><td style="text-align: center">ON</td><td style="text-align: left"><strong>Blue</strong></td></tr>
+<tr><td style="text-align: center">ON</td><td style="text-align: center">Off</td><td style="text-align: center">ON</td><td style="text-align: left"><strong>Magenta</strong></td></tr>
+<tr><td style="text-align: center">Off</td><td style="text-align: center">ON</td><td style="text-align: center">ON</td><td style="text-align: left"><strong>Cyan</strong></td></tr>
+<tr><td style="text-align: center">ON</td><td style="text-align: center">ON</td><td style="text-align: center">ON</td><td style="text-align: left"><strong>White</strong></td></tr>
 </tbody></table>
 </div>
 <p><em>Only 8 colours?! That’s not a Full Colour RGB LED!</em></p>

@@ -258,13 +258,13 @@ make</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi.jpg" alt="SPI Bus on PineDio Stack" /></p>
-<div><table><thead><tr><th align="center">GPIO Number</th><th align="left">SPI Pin</th></tr></thead><tbody>
-<tr><td align="center"><strong><code>17</code></strong></td><td align="left">Common SDO <em>(MOSI)</em></td></tr>
-<tr><td align="center"><strong><code>0</code></strong></td><td align="left">Common SDI <em>(MISO)</em></td></tr>
-<tr><td align="center"><strong><code>11</code></strong></td><td align="left">Common SCK</td></tr>
-<tr><td align="center"><strong><code>14</code></strong></td><td align="left">CS for SPI Flash</td></tr>
-<tr><td align="center"><strong><code>20</code></strong></td><td align="left">CS for ST7789</td></tr>
-<tr><td align="center"><strong><code>15</code></strong></td><td align="left">CS for SX1262</td></tr>
+<div><table><thead><tr><th style="text-align: center">GPIO Number</th><th style="text-align: left">SPI Pin</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>17</code></strong></td><td style="text-align: left">Common SDO <em>(MOSI)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>0</code></strong></td><td style="text-align: left">Common SDI <em>(MISO)</em></td></tr>
+<tr><td style="text-align: center"><strong><code>11</code></strong></td><td style="text-align: left">Common SCK</td></tr>
+<tr><td style="text-align: center"><strong><code>14</code></strong></td><td style="text-align: left">CS for SPI Flash</td></tr>
+<tr><td style="text-align: center"><strong><code>20</code></strong></td><td style="text-align: left">CS for ST7789</td></tr>
+<tr><td style="text-align: center"><strong><code>15</code></strong></td><td style="text-align: left">CS for SX1262</td></tr>
 </tbody></table>
 </div>
 <p>SPI Flash, ST7789 and SX1262 are connected to the <strong>same GPIO Pins</strong> for SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK.</p>
@@ -407,11 +407,11 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 <p>PineDio Stack’s <strong>GPIO Connector</strong> (at right) exposes the SPI Pins: SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-gpio2.jpg" alt="PineDio Stack GPIO Connector" /></p>
 <p>We <strong>connect our Logic Analyser</strong> to the GPIO Connector like so…</p>
-<div><table><thead><tr><th align="center">GPIO Number</th><th align="left">SPI Pin</th><th align="center">Connector Pin</th></tr></thead><tbody>
-<tr><td align="center"><strong><code>17</code></strong></td><td align="left">Common SDO <em>(MOSI)</em></td><td align="center"><code>7</code></td></tr>
-<tr><td align="center"><strong><code>0</code></strong></td><td align="left">Common SDI <em>(MISO)</em></td><td align="center"><code>17</code></td></tr>
-<tr><td align="center"><strong><code>11</code></strong></td><td align="left">Common SCK</td><td align="center"><code>4</code></td></tr>
-<tr><td align="center"><strong><code>5</code></strong></td><td align="left">Debug CS</td><td align="center"><code>2</code></td></tr>
+<div><table><thead><tr><th style="text-align: center">GPIO Number</th><th style="text-align: left">SPI Pin</th><th style="text-align: center">Connector Pin</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>17</code></strong></td><td style="text-align: left">Common SDO <em>(MOSI)</em></td><td style="text-align: center"><code>7</code></td></tr>
+<tr><td style="text-align: center"><strong><code>0</code></strong></td><td style="text-align: left">Common SDI <em>(MISO)</em></td><td style="text-align: center"><code>17</code></td></tr>
+<tr><td style="text-align: center"><strong><code>11</code></strong></td><td style="text-align: left">Common SCK</td><td style="text-align: center"><code>4</code></td></tr>
+<tr><td style="text-align: center"><strong><code>5</code></strong></td><td style="text-align: left">Debug CS</td><td style="text-align: center"><code>2</code></td></tr>
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="Logic Analyser connected to PineDio Stack" /></p>
@@ -600,8 +600,8 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p><img src="https://lupyuen.github.io/images/pinedio-im.png" alt="Configuring ST7789 Display for 3-Wire Interface" /></p>
 <p><a href="https://www.rhydolabz.com/documents/33/ST7789.pdf">(Source)</a></p>
 <p>So for <strong>3-Wire (9-Bit) Interface</strong>, we should hardwire the pins as…</p>
-<div><table><thead><tr><th align="center">IM3</th><th align="center">IM2</th><th align="center">IM1</th><th align="center">IM0</th></tr></thead><tbody>
-<tr><td align="center"><code>1</code></td><td align="center"><code>1</code></td><td align="center"><code>0</code></td><td align="center"><code>1</code></td></tr>
+<div><table><thead><tr><th style="text-align: center">IM3</th><th style="text-align: center">IM2</th><th style="text-align: center">IM1</th><th style="text-align: center">IM0</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>1</code></td><td style="text-align: center"><code>1</code></td><td style="text-align: center"><code>0</code></td><td style="text-align: center"><code>1</code></td></tr>
 </tbody></table>
 </div>
 <p><em>Maybe Pins IM0 to IM3 are not hard-wired as such?</em></p>
@@ -609,10 +609,10 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p>Also we’re <strong>probing the tiny ST7789 Connector</strong> (with a sharp Pogo Pin) to understand how the pins are connected.</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-probe.jpg" alt="Probing the tiny ST7789 Connector with a sharp Pogo Pin" /></p>
 <p>Here’s what we discovered from the <strong>Pogo Pin Probing</strong>…</p>
-<div><table><thead><tr><th align="center">ST7789 Pin</th><th align="center">BL604 GPIO</th></tr></thead><tbody>
-<tr><td align="center"><strong>SDA</strong></td><td align="center">GPIO 0</td></tr>
-<tr><td align="center"><strong>DC</strong></td><td align="center">GPIO 17</td></tr>
-<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 11</td></tr>
+<div><table><thead><tr><th style="text-align: center">ST7789 Pin</th><th style="text-align: center">BL604 GPIO</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>SDA</strong></td><td style="text-align: center">GPIO 0</td></tr>
+<tr><td style="text-align: center"><strong>DC</strong></td><td style="text-align: center">GPIO 17</td></tr>
+<tr><td style="text-align: center"><strong>SCK</strong></td><td style="text-align: center">GPIO 11</td></tr>
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/pinedio-probe2.jpg" alt="Probe Results" /></p>

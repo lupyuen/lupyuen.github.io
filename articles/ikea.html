@@ -133,10 +133,10 @@
 <p><img src="https://lupyuen.github.io/images/ikea-sensor3.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor at IKEA Tampines Singapore in the Lighting Section near the Air Purifiers" /></p>
 <p>Connect the sensor to a USB-C Power Cable (not included) and it lights up in <strong>Red, Amber or Green</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/ikea-sensor4.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor powered on" /></p>
-<div><table><thead><tr><th>Colour</th><th align="center">PM 2.5 (μg/m³)</th><th>Air Quality</th></tr></thead><tbody>
-<tr><td>Green</td><td align="center">0 - 35</td><td>Good</td></tr>
-<tr><td>Amber</td><td align="center">36 - 85</td><td>OK</td></tr>
-<tr><td>Red</td><td align="center">86 and above</td><td>Not good</td></tr>
+<div><table><thead><tr><th>Colour</th><th style="text-align: center">PM 2.5 (μg/m³)</th><th>Air Quality</th></tr></thead><tbody>
+<tr><td>Green</td><td style="text-align: center">0 - 35</td><td>Good</td></tr>
+<tr><td>Amber</td><td style="text-align: center">36 - 85</td><td>OK</td></tr>
+<tr><td>Red</td><td style="text-align: center">86 and above</td><td>Not good</td></tr>
 </tbody></table>
 </div>
 <p><a href="https://youtu.be/wyXb3aSPet4">(Watch it in action on YouTube)</a></p>
@@ -165,9 +165,9 @@
 </li>
 <li>
 <p><strong>Solder these Circular Pads</strong> on the Circuit Board…</p>
-<div><table><thead><tr><th align="center">IKEA Sensor</th><th align="center">UART Pin</th><th align="center">Wire Colour</th></tr></thead><tbody>
-<tr><td align="center">REST</td><td align="center">TX</td><td align="center">Blue</td></tr>
-<tr><td align="center">GND</td><td align="center">GND</td><td align="center">Black</td></tr>
+<div><table><thead><tr><th style="text-align: center">IKEA Sensor</th><th style="text-align: center">UART Pin</th><th style="text-align: center">Wire Colour</th></tr></thead><tbody>
+<tr><td style="text-align: center">REST</td><td style="text-align: center">TX</td><td style="text-align: center">Blue</td></tr>
+<tr><td style="text-align: center">GND</td><td style="text-align: center">GND</td><td style="text-align: center">Black</td></tr>
 </tbody></table>
 </div>
 <p>(Pic below)</p>
@@ -193,14 +193,14 @@
 <p><img src="https://lupyuen.github.io/images/ikea-solder3.jpg" alt="UART Port soldered to IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <h1 id="connect-to-pinedio-stack-bl604" class="section-header"><a href="#connect-to-pinedio-stack-bl604">3 Connect to PineDio Stack BL604</a></h1>
 <p>Now that we have exposed the UART Port on IKEA Air Quality Sensor, let’s connect it to our Microcontroller Board: <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a></p>
-<div><table><thead><tr><th align="left">From</th><th align="left">To</th><th align="left">Wire Colour</th></tr></thead><tbody>
-<tr><td align="left"><strong>IKEA REST</strong></td><td align="left">Resistor R1</td><td align="left">Blue</td></tr>
-<tr><td align="left"><strong>IKEA GND</strong></td><td align="left">PineDio GND <br> Pin 20</td><td align="left">Black</td></tr>
-<tr><td align="left"><strong>Resistor R1</strong></td><td align="left">Resistor R2</td><td align="left"><em>(Breadboard)</em></td></tr>
-<tr><td align="left"><strong>Resistor R2</strong></td><td align="left">Resistor R3</td><td align="left"><em>(Breadboard)</em></td></tr>
-<tr><td align="left"><strong>Resistor R1</strong></td><td align="left">PineDio RX <br> GPIO 3 / Pin 14</td><td align="left">Red</td></tr>
-<tr><td align="left"><strong>Resistor R3</strong></td><td align="left">PineDio GND <br> Pin 20</td><td align="left">Green</td></tr>
-<tr><td align="left"><em>(Unused)</em></td><td align="left">PineDio TX <br> GPIO 4 / Pin 13</td><td align="left"></td></tr>
+<div><table><thead><tr><th style="text-align: left">From</th><th style="text-align: left">To</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>IKEA REST</strong></td><td style="text-align: left">Resistor R1</td><td style="text-align: left">Blue</td></tr>
+<tr><td style="text-align: left"><strong>IKEA GND</strong></td><td style="text-align: left">PineDio GND <br> Pin 20</td><td style="text-align: left">Black</td></tr>
+<tr><td style="text-align: left"><strong>Resistor R1</strong></td><td style="text-align: left">Resistor R2</td><td style="text-align: left"><em>(Breadboard)</em></td></tr>
+<tr><td style="text-align: left"><strong>Resistor R2</strong></td><td style="text-align: left">Resistor R3</td><td style="text-align: left"><em>(Breadboard)</em></td></tr>
+<tr><td style="text-align: left"><strong>Resistor R1</strong></td><td style="text-align: left">PineDio RX <br> GPIO 3 / Pin 14</td><td style="text-align: left">Red</td></tr>
+<tr><td style="text-align: left"><strong>Resistor R3</strong></td><td style="text-align: left">PineDio GND <br> Pin 20</td><td style="text-align: left">Green</td></tr>
+<tr><td style="text-align: left"><em>(Unused)</em></td><td style="text-align: left">PineDio TX <br> GPIO 4 / Pin 13</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p>(R1, R2 and R3 are 3 Resistors with the same resistance, like 2.2 kΩ in the pic below)</p>
@@ -253,13 +253,13 @@ config ESP32_UART1_RXPIN
 <p>Each Sensor Data Frame <strong>starts with this header</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>16  11  0B</code></pre></div>
 <p>If we look back at the <a href="https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf"><strong>PM1006 Datasheet</strong></a> (pic above), we realise that the 20-byte Sensor Data Frame (“Response”) may be decoded like so…</p>
-<div><table><thead><tr><th align="left">Field</th><th align="left">Value</th></tr></thead><tbody>
-<tr><td align="left">Header</td><td align="left"><code>16 11 0B</code></td></tr>
-<tr><td align="left"><em>(Unused)</em></td><td align="left"><code>00 00</code></td></tr>
-<tr><td align="left"><strong>PM 2.5</strong></td><td align="left"><strong><code>00 17</code></strong></td></tr>
-<tr><td align="left"><em>(Unused)</em></td><td align="left"><code>00 00 02 FF 00 00</code></td></tr>
-<tr><td align="left"><em>(Unused)</em></td><td align="left"><code>00 21 02 00 00 0B</code></td></tr>
-<tr><td align="left">Checksum</td><td align="left"><code>88</code></td></tr>
+<div><table><thead><tr><th style="text-align: left">Field</th><th style="text-align: left">Value</th></tr></thead><tbody>
+<tr><td style="text-align: left">Header</td><td style="text-align: left"><code>16 11 0B</code></td></tr>
+<tr><td style="text-align: left"><em>(Unused)</em></td><td style="text-align: left"><code>00 00</code></td></tr>
+<tr><td style="text-align: left"><strong>PM 2.5</strong></td><td style="text-align: left"><strong><code>00 17</code></strong></td></tr>
+<tr><td style="text-align: left"><em>(Unused)</em></td><td style="text-align: left"><code>00 00 02 FF 00 00</code></td></tr>
+<tr><td style="text-align: left"><em>(Unused)</em></td><td style="text-align: left"><code>00 21 02 00 00 0B</code></td></tr>
+<tr><td style="text-align: left">Checksum</td><td style="text-align: left"><code>88</code></td></tr>
 </tbody></table>
 </div>
 <p>This gives the <strong>PM 2.5 value of 23</strong> (<code>0x0017</code>).</p>
@@ -490,9 +490,9 @@ Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 </li>
 <li>
 <p>We’ll solder these <strong>Circular Pads</strong> on the Circuit Board…</p>
-<div><table><thead><tr><th align="center">IKEA Sensor</th><th align="center">UART Pin</th><th align="center">Wire Colour</th></tr></thead><tbody>
-<tr><td align="center">REST</td><td align="center">TX</td><td align="center">Blue</td></tr>
-<tr><td align="center">GND</td><td align="center">GND</td><td align="center">Black</td></tr>
+<div><table><thead><tr><th style="text-align: center">IKEA Sensor</th><th style="text-align: center">UART Pin</th><th style="text-align: center">Wire Colour</th></tr></thead><tbody>
+<tr><td style="text-align: center">REST</td><td style="text-align: center">TX</td><td style="text-align: center">Blue</td></tr>
+<tr><td style="text-align: center">GND</td><td style="text-align: center">GND</td><td style="text-align: center">Black</td></tr>
 </tbody></table>
 </div>
 <p><a href="https://lupyuen.github.io/images/ikea-solder3.jpg">(See the pic)</a></p>
@@ -545,9 +545,9 @@ Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 <h1 id="appendix-test-with-bus-pirate" class="section-header"><a href="#appendix-test-with-bus-pirate">9 Appendix: Test with Bus Pirate</a></h1>
 <p>Before testing with Apache NuttX OS, we sniffed the UART Port on IKEA VINDRIKTNING Air Quality Sensor with <a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a>.</p>
 <p>Connect Bus Pirate to the IKEA Sensor as follows…</p>
-<div><table><thead><tr><th align="left">Bus Pirate</th><th align="center">IKEA Sensor</th><th align="left">Wire Colour</th></tr></thead><tbody>
-<tr><td align="left">Data In (MISO)</td><td align="center">REST</td><td align="left">Blue</td></tr>
-<tr><td align="left">GND</td><td align="center">GND</td><td align="left">Black</td></tr>
+<div><table><thead><tr><th style="text-align: left">Bus Pirate</th><th style="text-align: center">IKEA Sensor</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
+<tr><td style="text-align: left">Data In (MISO)</td><td style="text-align: center">REST</td><td style="text-align: left">Blue</td></tr>
+<tr><td style="text-align: left">GND</td><td style="text-align: center">GND</td><td style="text-align: left">Black</td></tr>
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/ikea-buspirate.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor connected to Bus Pirate" /></p>

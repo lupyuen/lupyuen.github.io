@@ -498,21 +498,21 @@ objsize
 <p>This code will have to be inserted into Mynewt’s Start Code, when our firmware is ready to be loaded into Flash Memory.</p>
 <h1 id="risc-v-rv32imfc-vs-rv32imac" class="section-header"><a href="#risc-v-rv32imfc-vs-rv32imac">11 RISC-V rv32imfc vs rv32imac</a></h1>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/make_scripts_riscv/project.mk#L223">According to the SDK</a>, BL602 uses a RISC-V Core (SiFive E21) that’s designated <strong><code>rv32imfc</code></strong> based on its capabilities…</p>
-<div><table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
-<tr><td align="center"><strong><code>rv32i</code></strong></td><td align="left">32-bit RISC-V with Base Integer Instructions</td></tr>
-<tr><td align="center"><strong><code>m</code></strong></td><td align="left">Integer Multiplication + Division</td></tr>
-<tr><td align="center"><strong><code>f</code></strong></td><td align="left"><strong>Single-Precision Hardware Floating Point</strong></td></tr>
-<tr><td align="center"><strong><code>c</code></strong></td><td align="left">Compressed Instructions</td></tr>
+<div><table><thead><tr><th style="text-align: center">Designation</th><th style="text-align: left">Meaning</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>rv32i</code></strong></td><td style="text-align: left">32-bit RISC-V with Base Integer Instructions</td></tr>
+<tr><td style="text-align: center"><strong><code>m</code></strong></td><td style="text-align: left">Integer Multiplication + Division</td></tr>
+<tr><td style="text-align: center"><strong><code>f</code></strong></td><td style="text-align: left"><strong>Single-Precision Hardware Floating Point</strong></td></tr>
+<tr><td style="text-align: center"><strong><code>c</code></strong></td><td style="text-align: left">Compressed Instructions</td></tr>
 </tbody></table>
 </div>
 <p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Here’s the whole list)</a></p>
 <p><strong>UPDATE:</strong> BL602 actually supports <strong><code>rv32acfimx</code></strong> <a href="https://lupyuen.github.io/articles/uart#enter-the-commands">(See this)</a></p>
 <p>However Mynewt today supports only <strong><code>rv32imac</code></strong>…</p>
-<div><table><thead><tr><th align="center">Designation</th><th align="left">Meaning</th></tr></thead><tbody>
-<tr><td align="center"><strong><code>rv32i</code></strong></td><td align="left">32-bit RISC-V with Base Integer Instructions</td></tr>
-<tr><td align="center"><strong><code>m</code></strong></td><td align="left">Integer Multiplication + Division</td></tr>
-<tr><td align="center"><strong><code>a</code></strong></td><td align="left"><strong>Atomic Instructions</strong></td></tr>
-<tr><td align="center"><strong><code>c</code></strong></td><td align="left">Compressed Instructions</td></tr>
+<div><table><thead><tr><th style="text-align: center">Designation</th><th style="text-align: left">Meaning</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>rv32i</code></strong></td><td style="text-align: left">32-bit RISC-V with Base Integer Instructions</td></tr>
+<tr><td style="text-align: center"><strong><code>m</code></strong></td><td style="text-align: left">Integer Multiplication + Division</td></tr>
+<tr><td style="text-align: center"><strong><code>a</code></strong></td><td style="text-align: left"><strong>Atomic Instructions</strong></td></tr>
+<tr><td style="text-align: center"><strong><code>c</code></strong></td><td style="text-align: left">Compressed Instructions</td></tr>
 </tbody></table>
 </div>
 <p><em>What’s the difference?</em></p>

@@ -191,14 +191,14 @@
 <p>BME280 supports two interfaces: SPI (6 pins) and I2C (4 pins). We shall connect to the <strong>SPI side of BME280</strong>.</p>
 <p><em>Don’t use any pins on the I2C side! (Because the <code>3V3</code> pin selects SPI or I2C)</em></p>
 <p>Connect BL602 to BME280 (the SPI side with 6 pins) according to the pic above…</p>
-<div><table><thead><tr><th align="left">BL602 Pin</th><th align="left">BME280 SPI</th><th align="left">Wire Colour</th></tr></thead><tbody>
-<tr><td align="left"><strong><code>GPIO 1</code></strong></td><td align="left"><code>SDO</code> <em>(MISO)</em></td><td align="left">Green</td></tr>
-<tr><td align="left"><strong><code>GPIO 2</code></strong></td><td align="left">Do Not <br> Connect</td><td align="left">Do Not <br> Connect</td></tr>
-<tr><td align="left"><strong><code>GPIO 3</code></strong></td><td align="left"><code>SCK</code></td><td align="left">Yellow</td></tr>
-<tr><td align="left"><strong><code>GPIO 4</code></strong></td><td align="left"><code>SDI</code> <em>(MOSI)</em></td><td align="left">Blue</td></tr>
-<tr><td align="left"><strong><code>GPIO 14</code></strong></td><td align="left"><code>CS</code></td><td align="left">Orange</td></tr>
-<tr><td align="left"><strong><code>3V3</code></strong></td><td align="left"><code>3.3V</code></td><td align="left">Red</td></tr>
-<tr><td align="left"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td><td align="left">Black</td></tr>
+<div><table><thead><tr><th style="text-align: left">BL602 Pin</th><th style="text-align: left">BME280 SPI</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong><code>GPIO 1</code></strong></td><td style="text-align: left"><code>SDO</code> <em>(MISO)</em></td><td style="text-align: left">Green</td></tr>
+<tr><td style="text-align: left"><strong><code>GPIO 2</code></strong></td><td style="text-align: left">Do Not <br> Connect</td><td style="text-align: left">Do Not <br> Connect</td></tr>
+<tr><td style="text-align: left"><strong><code>GPIO 3</code></strong></td><td style="text-align: left"><code>SCK</code></td><td style="text-align: left">Yellow</td></tr>
+<tr><td style="text-align: left"><strong><code>GPIO 4</code></strong></td><td style="text-align: left"><code>SDI</code> <em>(MOSI)</em></td><td style="text-align: left">Blue</td></tr>
+<tr><td style="text-align: left"><strong><code>GPIO 14</code></strong></td><td style="text-align: left"><code>CS</code></td><td style="text-align: left">Orange</td></tr>
+<tr><td style="text-align: left"><strong><code>3V3</code></strong></td><td style="text-align: left"><code>3.3V</code></td><td style="text-align: left">Red</td></tr>
+<tr><td style="text-align: left"><strong><code>GND</code></strong></td><td style="text-align: left"><code>GND</code></td><td style="text-align: left">Black</td></tr>
 </tbody></table>
 </div>
 <p>We’ll talk about GPIO 2 in a while.</p>
@@ -806,9 +806,9 @@ assert(rc == 0);</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi-analyse2a.png" alt="BL602 SPI Data Pins are flipped" /></p>
 <p><strong>The two BL602 SPI Data Pins are flipped!</strong> (According to the Logic Analyser)</p>
 <p>This seems to be a bug in the BL602 hardware or documentation. We fix this by <strong>flipping the two data pins</strong>…</p>
-<div><table><thead><tr><th align="center">BL602 Pin</th><th align="center">BME280 SPI</th><th align="left">Wire Colour</th></tr></thead><tbody>
-<tr><td align="center"><strong><code>GPIO 1</code></strong></td><td align="center"><code>SDO</code></td><td align="left">Green</td></tr>
-<tr><td align="center"><strong><code>GPIO 4</code></strong></td><td align="center"><code>SDI</code></td><td align="left">Blue</td></tr>
+<div><table><thead><tr><th style="text-align: center">BL602 Pin</th><th style="text-align: center">BME280 SPI</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>GPIO 1</code></strong></td><td style="text-align: center"><code>SDO</code></td><td style="text-align: left">Green</td></tr>
+<tr><td style="text-align: center"><strong><code>GPIO 4</code></strong></td><td style="text-align: center"><code>SDI</code></td><td style="text-align: left">Blue</td></tr>
 </tbody></table>
 </div>
 <p>This works perfectly fine, though it contradicts the BL602 Reference Manual.</p>
@@ -959,13 +959,13 @@ int rc = spi_init(
 <ol>
 <li>
 <p>Connect Bus Pirate to BME280 (or BMP280) according to the pic above…</p>
-<div><table><thead><tr><th align="center">Bus Pirate Pin</th><th align="center">BME280 SPI Pin</th></tr></thead><tbody>
-<tr><td align="center"><strong><code>MOSI</code></strong></td><td align="center"><code>SDI</code></td></tr>
-<tr><td align="center"><strong><code>MISO</code></strong></td><td align="center"><code>SDO</code></td></tr>
-<tr><td align="center"><strong><code>CLK</code></strong></td><td align="center"><code>SCK</code></td></tr>
-<tr><td align="center"><strong><code>CS</code></strong></td><td align="center"><code>CS</code></td></tr>
-<tr><td align="center"><strong><code>3.3V</code></strong></td><td align="center"><code>3.3V</code></td></tr>
-<tr><td align="center"><strong><code>GND</code></strong></td><td align="center"><code>GND</code></td></tr>
+<div><table><thead><tr><th style="text-align: center">Bus Pirate Pin</th><th style="text-align: center">BME280 SPI Pin</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>MOSI</code></strong></td><td style="text-align: center"><code>SDI</code></td></tr>
+<tr><td style="text-align: center"><strong><code>MISO</code></strong></td><td style="text-align: center"><code>SDO</code></td></tr>
+<tr><td style="text-align: center"><strong><code>CLK</code></strong></td><td style="text-align: center"><code>SCK</code></td></tr>
+<tr><td style="text-align: center"><strong><code>CS</code></strong></td><td style="text-align: center"><code>CS</code></td></tr>
+<tr><td style="text-align: center"><strong><code>3.3V</code></strong></td><td style="text-align: center"><code>3.3V</code></td></tr>
+<tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td></tr>
 </tbody></table>
 </div>
 <p>Connect to the <strong>SPI side of BME280</strong> (with 6 pins).</p>
@@ -1093,12 +1093,12 @@ READ: 0x60
 <p>We shall use the <a href="https://www.seeedstudio.com/LA2016-Logic-Analyzer-p-2218.html"><strong>LA2016 Logic Analyser</strong></a> to capture and decode the SPI Signals between BL602 and BME280. (Also between Bus Pirate and BME280)</p>
 <p>(LA2016 User Guide is in the link above, under “Learn and Documents”)</p>
 <p>Connect the Logic Analyser to BL602 according to the pic above…</p>
-<div><table><thead><tr><th align="center">Logic Analyser</th><th align="left">BL602 Pin</th></tr></thead><tbody>
-<tr><td align="center"><strong><code>CH0</code></strong></td><td align="left"><code>GPIO 4  (SDO / MOSI)</code></td></tr>
-<tr><td align="center"><strong><code>CH1</code></strong></td><td align="left"><code>GPIO 1  (SDI / MISO)</code></td></tr>
-<tr><td align="center"><strong><code>CH2</code></strong></td><td align="left"><code>GPIO 3  (SCK)</code></td></tr>
-<tr><td align="center"><strong><code>CH3</code></strong></td><td align="left"><code>GPIO 14 (CS)</code></td></tr>
-<tr><td align="center"><strong><code>GND</code></strong></td><td align="left"><code>GND</code></td></tr>
+<div><table><thead><tr><th style="text-align: center">Logic Analyser</th><th style="text-align: left">BL602 Pin</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>CH0</code></strong></td><td style="text-align: left"><code>GPIO 4  (SDO / MOSI)</code></td></tr>
+<tr><td style="text-align: center"><strong><code>CH1</code></strong></td><td style="text-align: left"><code>GPIO 1  (SDI / MISO)</code></td></tr>
+<tr><td style="text-align: center"><strong><code>CH2</code></strong></td><td style="text-align: left"><code>GPIO 3  (SCK)</code></td></tr>
+<tr><td style="text-align: center"><strong><code>CH3</code></strong></td><td style="text-align: left"><code>GPIO 14 (CS)</code></td></tr>
+<tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: left"><code>GND</code></td></tr>
 </tbody></table>
 </div>
 <p>But be very careful!</p>

@@ -640,11 +640,11 @@ static void PrepareTxFrame( void ) {
 <p>But there’s a catch: The <strong>First Message Transmitted</strong> (after joining LoRaWAN) will have <strong>Data Rate 2</strong> (instead of Data Rate 3)!</p>
 <p>(We’ll see this in the upcoming demo)</p>
 <p>For Data Rates 2 and 3, the <strong>Maximum Message (Payload) Sizes</strong> are…</p>
-<div><table><thead><tr><th align="center">Region</th><th align="center">Data Rate</th><th align="center">Max Payload Size</th></tr></thead><tbody>
-<tr><td align="center"><strong>AS923</strong></td><td align="center">DR 2 <br> DR 3</td><td align="center">11 bytes <br> 53 bytes</td></tr>
-<tr><td align="center"><strong>AU915</strong></td><td align="center">DR 2 <br> DR 3</td><td align="center">11 bytes <br> 53 bytes</td></tr>
-<tr><td align="center"><strong>EU868</strong></td><td align="center">DR 2 <br> DR 3</td><td align="center">51 bytes <br> 115 bytes</td></tr>
-<tr><td align="center"><strong>US915</strong></td><td align="center">DR 2 <br> DR 3</td><td align="center">125 bytes <br> 222 bytes</td></tr>
+<div><table><thead><tr><th style="text-align: center">Region</th><th style="text-align: center">Data Rate</th><th style="text-align: center">Max Payload Size</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>AS923</strong></td><td style="text-align: center">DR 2 <br> DR 3</td><td style="text-align: center">11 bytes <br> 53 bytes</td></tr>
+<tr><td style="text-align: center"><strong>AU915</strong></td><td style="text-align: center">DR 2 <br> DR 3</td><td style="text-align: center">11 bytes <br> 53 bytes</td></tr>
+<tr><td style="text-align: center"><strong>EU868</strong></td><td style="text-align: center">DR 2 <br> DR 3</td><td style="text-align: center">51 bytes <br> 115 bytes</td></tr>
+<tr><td style="text-align: center"><strong>US915</strong></td><td style="text-align: center">DR 2 <br> DR 3</td><td style="text-align: center">125 bytes <br> 222 bytes</td></tr>
 </tbody></table>
 </div>
 <p><a href="https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/">(Based on LoRaWAN Regional Parameters)</a></p>
@@ -769,16 +769,16 @@ CHANNEL MASK: 0003</code></pre></div></li>
 </li>
 </ul>
 <p>Now suppose the LoRaWAN Library <strong>crashes our device</strong> due to a bug. Watch what happens…</p>
-<div><table><thead><tr><th align="left"><em>Our Device</em></th><th align="left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
-<tr><td align="left">Here is <strong>Nonce 1</strong></td><td align="left"></td></tr>
-<tr><td align="left"></td><td align="left">OK I accept <strong>Nonce 1</strong></td></tr>
-<tr><td align="left">(Device crashes and restarts)</td><td align="left"></td></tr>
-<tr><td align="left">Here is <strong>Nonce 1</strong></td><td align="left"></td></tr>
-<tr><td align="left"></td><td align="left">(Silently rejects <strong>Nonce 1</strong> because it’s repeated)</td></tr>
-<tr><td align="left">(Timeout waiting for response)</td><td align="left"></td></tr>
-<tr><td align="left">Here is <strong>Nonce 2</strong></td><td align="left"></td></tr>
-<tr><td align="left"></td><td align="left">OK I accept <strong>Nonce 2</strong></td></tr>
-<tr><td align="left">(Device crashes and restarts)</td><td align="left"></td></tr>
+<div><table><thead><tr><th style="text-align: left"><em>Our Device</em></th><th style="text-align: left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
+<tr><td style="text-align: left">Here is <strong>Nonce 1</strong></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"></td><td style="text-align: left">OK I accept <strong>Nonce 1</strong></td></tr>
+<tr><td style="text-align: left">(Device crashes and restarts)</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">Here is <strong>Nonce 1</strong></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"></td><td style="text-align: left">(Silently rejects <strong>Nonce 1</strong> because it’s repeated)</td></tr>
+<tr><td style="text-align: left">(Timeout waiting for response)</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">Here is <strong>Nonce 2</strong></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"></td><td style="text-align: left">OK I accept <strong>Nonce 2</strong></td></tr>
+<tr><td style="text-align: left">(Device crashes and restarts)</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p>If our device keeps crashing, the LoRaWAN Gateway will eventually <strong>reject a whole bunch of Nonces</strong>: 1, 2, 3, 4, …</p>
@@ -981,21 +981,21 @@ chirpstack-network-server[5749]:
 <p><strong>Warning:</strong> LoRaWAN is Time Sensitive!</p>
 <p>Our LoRaWAN Library needs to <strong>handle Events in a timely manner</strong>… Or the protocol fails.</p>
 <p>This is the normal flow for the <strong>Join Network Request</strong>…</p>
-<div><table><thead><tr><th align="left"><em>Our Device</em></th><th align="left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
-<tr><td align="left">Join Network Request →</td><td align="left"></td></tr>
-<tr><td align="left">Transmit OK Interrupt</td><td align="left"></td></tr>
-<tr><td align="left">Switch to Receive Mode</td><td align="left"></td></tr>
-<tr><td align="left"></td><td align="left">← Join Accept Response</td></tr>
-<tr><td align="left">Handle Join Response</td><td align="left"></td></tr>
+<div><table><thead><tr><th style="text-align: left"><em>Our Device</em></th><th style="text-align: left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
+<tr><td style="text-align: left">Join Network Request →</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">Transmit OK Interrupt</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">Switch to Receive Mode</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"></td><td style="text-align: left">← Join Accept Response</td></tr>
+<tr><td style="text-align: left">Handle Join Response</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p>Watch what happens if <strong>our device gets too busy</strong>…</p>
-<div><table><thead><tr><th align="left"><em>Our Device</em></th><th align="left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
-<tr><td align="left">Join Network Request →</td><td align="left"></td></tr>
-<tr><td align="left">Transmit OK Interrupt</td><td align="left"></td></tr>
-<tr><td align="left"><strong>(Busy Busy)</strong></td><td align="left">← Join Accept Response</td></tr>
-<tr><td align="left"><strong>Switch to Receive Mode</strong></td><td align="left"></td></tr>
-<tr><td align="left"><strong>Join Response missing!</strong></td><td align="left"></td></tr>
+<div><table><thead><tr><th style="text-align: left"><em>Our Device</em></th><th style="text-align: left"><em>LoRaWAN Gateway</em></th></tr></thead><tbody>
+<tr><td style="text-align: left">Join Network Request →</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left">Transmit OK Interrupt</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><strong>(Busy Busy)</strong></td><td style="text-align: left">← Join Accept Response</td></tr>
+<tr><td style="text-align: left"><strong>Switch to Receive Mode</strong></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><strong>Join Response missing!</strong></td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p>This might happen if our device is busy <strong>writing debug logs</strong> to the console.</p>

@@ -611,12 +611,12 @@ make menuconfig </code></pre></div></li>
 <p><em>(For BL602 and ESP32)</em></p>
 <p><em>How do we check if our app is transmitting SPI data correctly?</em></p>
 <p>Let’s connect a <strong>Logic Analyser</strong> to BL602 / ESP32 and verify the SPI output…</p>
-<div><table><thead><tr><th align="center">Logic Analyser</th><th align="center">BL602 Pin</th><th align="center">ESP32 Pin</th></tr></thead><tbody>
-<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 1</td><td align="center">GPIO 13</td></tr>
-<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td><td align="center">GPIO 12</td></tr>
-<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 3</td><td align="center">GPIO 14</td></tr>
-<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 2</td><td align="center">GPIO 15</td></tr>
-<tr><td align="center"><strong>GND</strong></td><td align="center">GND</td><td align="center">GND</td></tr>
+<div><table><thead><tr><th style="text-align: center">Logic Analyser</th><th style="text-align: center">BL602 Pin</th><th style="text-align: center">ESP32 Pin</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>MOSI</strong></td><td style="text-align: center">GPIO 1</td><td style="text-align: center">GPIO 13</td></tr>
+<tr><td style="text-align: center"><strong>MISO</strong></td><td style="text-align: center">GPIO 0</td><td style="text-align: center">GPIO 12</td></tr>
+<tr><td style="text-align: center"><strong>SCK</strong></td><td style="text-align: center">GPIO 3</td><td style="text-align: center">GPIO 14</td></tr>
+<tr><td style="text-align: center"><strong>CS</strong></td><td style="text-align: center">GPIO 2</td><td style="text-align: center">GPIO 15</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center">GND</td><td style="text-align: center">GND</td></tr>
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/spi2-logic4.jpg" alt="Logic Analyser connected to PineCone BL602" /></p>
@@ -770,15 +770,15 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
 <p><img src="https://lupyuen.github.io/images/spi2-sx6.png" alt="Transmit command to SX1262: Read Register 0x08" /></p>
 <h2 id="connect-sx1262" class="section-header"><a href="#connect-sx1262">8.1 Connect SX1262</a></h2>
 <p>We connect SX1262 to BL602 / ESP32 as follows…</p>
-<div><table><thead><tr><th align="center">SX1262</th><th align="center">BL602 Pin</th><th align="center">ESP32 Pin</th><th align="left">Colour</th></tr></thead><tbody>
-<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 1</td><td align="center">GPIO 13</td><td align="left">Yellow</td></tr>
-<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td><td align="center">GPIO 12</td><td align="left">Light Green</td></tr>
-<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 3</td><td align="center">GPIO 14</td><td align="left">Blue</td></tr>
-<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 11</td><td align="center">GPIO 15 / 16</td><td align="left">Dark Green</td></tr>
-<tr><td align="center"><strong>BUSY</strong></td><td align="center">GPIO 14</td><td align="center">GPIO 18 / 17</td><td align="left"></td></tr>
-<tr><td align="center"><strong>DIO1</strong></td><td align="center">GPIO 17</td><td align="center">GPIO 22</td><td align="left"></td></tr>
-<tr><td align="center"><strong>VCC</strong></td><td align="center">3V3</td><td align="center">3V3</td><td align="left">Red</td></tr>
-<tr><td align="center"><strong>GND</strong></td><td align="center">GND</td><td align="center">GND</td><td align="left">Black</td></tr>
+<div><table><thead><tr><th style="text-align: center">SX1262</th><th style="text-align: center">BL602 Pin</th><th style="text-align: center">ESP32 Pin</th><th style="text-align: left">Colour</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>MOSI</strong></td><td style="text-align: center">GPIO 1</td><td style="text-align: center">GPIO 13</td><td style="text-align: left">Yellow</td></tr>
+<tr><td style="text-align: center"><strong>MISO</strong></td><td style="text-align: center">GPIO 0</td><td style="text-align: center">GPIO 12</td><td style="text-align: left">Light Green</td></tr>
+<tr><td style="text-align: center"><strong>SCK</strong></td><td style="text-align: center">GPIO 3</td><td style="text-align: center">GPIO 14</td><td style="text-align: left">Blue</td></tr>
+<tr><td style="text-align: center"><strong>CS</strong></td><td style="text-align: center">GPIO 11</td><td style="text-align: center">GPIO 15 / 16</td><td style="text-align: left">Dark Green</td></tr>
+<tr><td style="text-align: center"><strong>BUSY</strong></td><td style="text-align: center">GPIO 14</td><td style="text-align: center">GPIO 18 / 17</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong>DIO1</strong></td><td style="text-align: center">GPIO 17</td><td style="text-align: center">GPIO 22</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong>VCC</strong></td><td style="text-align: center">3V3</td><td style="text-align: center">3V3</td><td style="text-align: left">Red</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center">GND</td><td style="text-align: center">GND</td><td style="text-align: left">Black</td></tr>
 </tbody></table>
 </div>
 <p>Here’s SX1262 connected to PineCone BL602…</p>
@@ -884,14 +884,14 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="SX1262 Interface on PineDio Stack" /></p>
 </blockquote>
 <p>We update the following <strong>BL604 Pin Definitions</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
-<div><table><thead><tr><th align="center">SX1262</th><th align="center">BL604 Pin</th><th align="left">NuttX Pin</th></tr></thead><tbody>
-<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 13</td><td align="left">BOARD_SPI_MOSI</td></tr>
-<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td><td align="left">BOARD_SPI_MISO</td></tr>
-<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 11</td><td align="left">BOARD_SPI_CLK</td></tr>
-<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 15</td><td align="left">BOARD_GPIO_OUT1</td></tr>
-<tr><td align="center"><strong>BUSY</strong></td><td align="center">GPIO 10</td><td align="left">BOARD_GPIO_IN1</td></tr>
-<tr><td align="center"><strong>DIO1</strong></td><td align="center">GPIO 19</td><td align="left">BOARD_GPIO_INT1</td></tr>
-<tr><td align="center"><strong>NRESET</strong></td><td align="center">GPIO 18</td><td align="left">Not assigned yet</td></tr>
+<div><table><thead><tr><th style="text-align: center">SX1262</th><th style="text-align: center">BL604 Pin</th><th style="text-align: left">NuttX Pin</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>MOSI</strong></td><td style="text-align: center">GPIO 13</td><td style="text-align: left">BOARD_SPI_MOSI</td></tr>
+<tr><td style="text-align: center"><strong>MISO</strong></td><td style="text-align: center">GPIO 0</td><td style="text-align: left">BOARD_SPI_MISO</td></tr>
+<tr><td style="text-align: center"><strong>SCK</strong></td><td style="text-align: center">GPIO 11</td><td style="text-align: left">BOARD_SPI_CLK</td></tr>
+<tr><td style="text-align: center"><strong>CS</strong></td><td style="text-align: center">GPIO 15</td><td style="text-align: left">BOARD_GPIO_OUT1</td></tr>
+<tr><td style="text-align: center"><strong>BUSY</strong></td><td style="text-align: center">GPIO 10</td><td style="text-align: left">BOARD_GPIO_IN1</td></tr>
+<tr><td style="text-align: center"><strong>DIO1</strong></td><td style="text-align: center">GPIO 19</td><td style="text-align: left">BOARD_GPIO_INT1</td></tr>
+<tr><td style="text-align: center"><strong>NRESET</strong></td><td style="text-align: center">GPIO 18</td><td style="text-align: left">Not assigned yet</td></tr>
 </tbody></table>
 </div><div class="example-wrap"><pre class="language-c"><code>/* Busy Pin for PineDio SX1262 */
 
@@ -1706,12 +1706,12 @@ static ssize_t spi_test_driver_write(
   int bytes_written = write(fd, data, sizeof(data));
   assert(bytes_written == sizeof(data));</code></pre></div>
 <p>We connect a <strong>Logic Analyser</strong> to PineCone BL602 and verify the SPI output…</p>
-<div><table><thead><tr><th align="center">Logic Analyser</th><th align="center">BL602 Pin</th></tr></thead><tbody>
-<tr><td align="center"><strong>MOSI</strong></td><td align="center">GPIO 1</td></tr>
-<tr><td align="center"><strong>MISO</strong></td><td align="center">GPIO 0</td></tr>
-<tr><td align="center"><strong>SCK</strong></td><td align="center">GPIO 3</td></tr>
-<tr><td align="center"><strong>CS</strong></td><td align="center">GPIO 2</td></tr>
-<tr><td align="center"><strong>GND</strong></td><td align="center">GND</td></tr>
+<div><table><thead><tr><th style="text-align: center">Logic Analyser</th><th style="text-align: center">BL602 Pin</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>MOSI</strong></td><td style="text-align: center">GPIO 1</td></tr>
+<tr><td style="text-align: center"><strong>MISO</strong></td><td style="text-align: center">GPIO 0</td></tr>
+<tr><td style="text-align: center"><strong>SCK</strong></td><td style="text-align: center">GPIO 3</td></tr>
+<tr><td style="text-align: center"><strong>CS</strong></td><td style="text-align: center">GPIO 2</td></tr>
+<tr><td style="text-align: center"><strong>GND</strong></td><td style="text-align: center">GND</td></tr>
 </tbody></table>
 </div>
 <p><img src="https://lupyuen.github.io/images/spi2-logic4.jpg" alt="Logic Analyser connected to PineCone BL602" /></p>

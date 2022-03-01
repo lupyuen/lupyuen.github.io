@@ -442,12 +442,12 @@ nsh&gt;   </code></pre></div>
 <p><em>BL602 Flashing Process reverse engineered from BLOpenFlasher</em></p>
 <h1 id="what-else-gets-flashed-to-bl602" class="section-header"><a href="#what-else-gets-flashed-to-bl602">2 What Else Gets Flashed To BL602?</a></h1>
 <p>Whenever we flash the firmware of BL602, <code>blflash</code> transmits to BL602 a <strong>Flash Image</strong> that contains 5 sections of data…</p>
-<div><table><thead><tr><th align="left">Offset</th><th align="left">Contents</th></tr></thead><tbody>
-<tr><td align="left"><strong>Boot2 Bootloader</strong> <br> <code>0x0000 0000</code></td><td align="left">Code and data for <br>Boot2 Bootloader</td></tr>
-<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 E000</code></td><td align="left">Partition Table for <br>Flash Image</td></tr>
-<tr><td align="left"><strong>Partition Table</strong> <br> <code>0x0000 F000</code></td><td align="left">Partition Table for <br> Flash Image <br>(For second core?)</td></tr>
-<tr><td align="left"><strong>Firmware Image</strong> <br> <code>0x0001 0000</code></td><td align="left">Code and data for <br> Application Firmware</td></tr>
-<tr><td align="left"><strong>Device Tree</strong> <br> <code>0x001F 8000</code></td><td align="left">Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, …</td></tr>
+<div><table><thead><tr><th style="text-align: left">Offset</th><th style="text-align: left">Contents</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Boot2 Bootloader</strong> <br> <code>0x0000 0000</code></td><td style="text-align: left">Code and data for <br>Boot2 Bootloader</td></tr>
+<tr><td style="text-align: left"><strong>Partition Table</strong> <br> <code>0x0000 E000</code></td><td style="text-align: left">Partition Table for <br>Flash Image</td></tr>
+<tr><td style="text-align: left"><strong>Partition Table</strong> <br> <code>0x0000 F000</code></td><td style="text-align: left">Partition Table for <br> Flash Image <br>(For second core?)</td></tr>
+<tr><td style="text-align: left"><strong>Firmware Image</strong> <br> <code>0x0001 0000</code></td><td style="text-align: left">Code and data for <br> Application Firmware</td></tr>
+<tr><td style="text-align: left"><strong>Device Tree</strong> <br> <code>0x001F 8000</code></td><td style="text-align: left">Default settings for<br> peripherals and ports: <br>UART, GPIO, SPI, WiFi, …</td></tr>
 </tbody></table>
 </div>
 <p>The addresses above are Offsets into the Flash Image that is transmitted by <code>blflash</code> to BL602 for flashing.</p>
@@ -807,12 +807,12 @@ blk64k_erase_cmd = 0xd8
 <p>Then we start running the EFlash Loader on BL602 in RAM at address <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/tools/flash_tool/bl602/eflash_loader/eflash_loader.map#L7439"><code>0x2201 0000</code></a></p>
 <h2 id="flashing-stage-2" class="section-header"><a href="#flashing-stage-2">8.2 Flashing Stage 2</a></h2>
 <p>Next we compose the <strong>Flash Image</strong> that contains 5 sections of data…</p>
-<div><table><thead><tr><th align="left">Offset</th><th align="left">Contents</th></tr></thead><tbody>
-<tr><td align="left"><code>0x0000 0000</code></td><td align="left"><strong>Boot2 Bootloader</strong> <br>(transformed)</td></tr>
-<tr><td align="left"><code>0x0000 E000</code></td><td align="left"><strong>Partition Table</strong> <br>(binary format)</td></tr>
-<tr><td align="left"><code>0x0000 F000</code></td><td align="left"><strong>Partition Table</strong> <br>(binary format)</td></tr>
-<tr><td align="left"><code>0x0001 0000</code></td><td align="left"><strong>Firmware Image</strong> <br>(transformed)</td></tr>
-<tr><td align="left"><code>0x001F 8000</code></td><td align="left"><strong>Device Tree</strong> <br>(binary format)</td></tr>
+<div><table><thead><tr><th style="text-align: left">Offset</th><th style="text-align: left">Contents</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>0x0000 0000</code></td><td style="text-align: left"><strong>Boot2 Bootloader</strong> <br>(transformed)</td></tr>
+<tr><td style="text-align: left"><code>0x0000 E000</code></td><td style="text-align: left"><strong>Partition Table</strong> <br>(binary format)</td></tr>
+<tr><td style="text-align: left"><code>0x0000 F000</code></td><td style="text-align: left"><strong>Partition Table</strong> <br>(binary format)</td></tr>
+<tr><td style="text-align: left"><code>0x0001 0000</code></td><td style="text-align: left"><strong>Firmware Image</strong> <br>(transformed)</td></tr>
+<tr><td style="text-align: left"><code>0x001F 8000</code></td><td style="text-align: left"><strong>Device Tree</strong> <br>(binary format)</td></tr>
 </tbody></table>
 </div>
 <p>Then we transmit the Flash Image to EFlash Loader, which updates the BL602 Flash ROM.</p>
