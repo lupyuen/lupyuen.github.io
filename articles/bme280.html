@@ -278,11 +278,14 @@ Read   [0xEF]
 <p>Let’s fix this 🤔</p>
 <p><a href="https://lupyuen.github.io/articles/i2c#appendix-test-bme280-with-bus-pirate">(Here’s why Register ID should be <code>0xD0</code>)</a></p>
 <h2 id="set-i2c-sub-address" class="section-header"><a href="#set-i2c-sub-address">2.5 Set I2C Sub Address</a></h2>
-<p>TODO</p>
-<p>BL602 has a peculiar I2C Port … We need to send the I2C Sub Address (Register ID) separately from the I2C Data … This might cause the BMP280 Driver to fail</p>
+<p><em>Is there something special about BL602’s I2C Port?</em></p>
+<p>BL602 has a peculiar I2C Port…</p>
+<p>We need to send the <strong>I2C Sub Address</strong> (Register ID) separately from the I2C Data! </p>
+<p>This might have caused the BMP280 Driver to fail.</p>
 <p>TODO34</p>
-<p><img src="https://lupyuen.github.io/images/bme280-subaddress.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/bme280-subaddress.png" alt="I2C Sub Address" /></p>
 <p><a href="https://lupyuen.github.io/articles/i2c#set-i2c-device-address-and-register-address">(Source)</a></p>
+<p>TODO</p>
 <p>BL602 NuttX I2C Driver needs us to provide the I2C Sub Address (Register ID): <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/arch/risc-v/src/bl602/bl602_i2c.c#L719-L738">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>      /* if msgs[i].flag I2C_M_NOSTOP,means start i2c with subddr */
 
