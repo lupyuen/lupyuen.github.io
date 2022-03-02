@@ -368,7 +368,7 @@ bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
 <p>Yep this looks reasonable for Sunny Singapore by the Seaside!</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run5a.png" alt="Read sensor values from BMP280" /></p>
 <p><em>Are we sure that BL602 is writing correctly to I2C Registers?</em></p>
-<p>This shows that writing to I2C Registers works OK…</p>
+<p>This log shows that writing to I2C Registers works OK…</p>
 <div class="example-wrap"><pre class="language-text"><code># Register F5 has value 00
 bmp280_getreg8: regaddr=0xf5, regval=0x00
 ...
@@ -379,24 +379,22 @@ bmp280_putreg8: regaddr=0xf5, regval=0xa0
 bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#run-sensor-test-app">(See the complete log)</a></p>
 <p>Yep the NuttX BMP280 Driver works OK! Now let’s port the BME280 Driver from Zephyr OS to NuttX, so we can get the Humidity.</p>
+<p><img src="https://lupyuen.github.io/images/bme280-code6a.png" alt="NuttX BMP280 Driver vs Zephyr BME280 Driver" /></p>
+<p><em><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/bmp280.c">NuttX BMP280 Driver</a> vs <a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/bme280.c">Zephyr BME280 Driver</a></em></p>
 <h1 id="port-bme280-driver-from-zephyr-os" class="section-header"><a href="#port-bme280-driver-from-zephyr-os">3 Port BME280 Driver from Zephyr OS</a></h1>
-<p>TODO</p>
-<p>NuttX BMP280 Driver works OK with our BME280 Sensor … But we’re missing one thing: Humidity … Can we port the BME280 Driver from Zephyr OS? 🤔</p>
-<p><a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/bme280.c">zephyr/drivers/sensor/bme280/bme280.c</a></p>
-<p><em>Why don’t we create the BME280 Driver based on the datasheet?</em></p>
+<p>NuttX’s BMP280 Driver works OK with our BME280 Sensor. But we’re missing one thing: <strong>Humidity</strong>.</p>
+<p>Let’s port the BME280 Driver from <strong>Zephyr OS</strong> to NuttX…</p>
+<ul>
+<li><a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/bme280.c"><strong>Zephyr BME280 Driver</strong></a></li>
+</ul>
+<p><em>Why not code the BME280 Driver based on the datasheet?</em></p>
 <p>Well yes we could… But then the rest of this article would become an academic exercise 😉</p>
 <p><em>Why port from Zephyr OS?</em></p>
-<p>Zephyr has an <a href="https://github.com/zephyrproject-rtos/zephyr/tree/main/drivers"><strong>impressive collection</strong></a> of drivers. </p>
-<p>TODO</p>
-<p>Might work for other Zephyr drivers with minimal changes!</p>
-<p>Zephyr BME280 Driver looks similar to <a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/bmp280.c">NuttX BMP280 Driver</a> … So porting Zephyr BME280 Driver to NuttX might not be so hard 🤔</p>
-<p><code>bme280_sample_fetch</code> and <code>bme280_channel_get</code> are explained in the Zephyr Sensor API:</p>
-<p><a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html">Zephyr Sensor API</a></p>
-<p>TODO35</p>
-<p><img src="https://lupyuen.github.io/images/bme280-zephyr1.png" alt="" /></p>
-<p>Zephyr BME280 Driver looks similar to #NuttX BMP280 Driver … So porting Zephyr BME280 Driver to NuttX might not be so hard 🤔</p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code6a.png" alt="" /></p>
+<p>Zephyr has an <a href="https://github.com/zephyrproject-rtos/zephyr/tree/main/drivers"><strong>extensive collection</strong></a> of drivers. </p>
+<p>The NuttX porting steps that we establish today might work for other Zephyr drivers, with minimal changes!</p>
+<p><em>Porting a driver from Zephyr to NuttX sounds hard!</em></p>
+<p>Zephyr’s BME280 Driver looks <strong>highly similar</strong> to NuttX’s BMP280 Driver. (Pic above)</p>
+<p>Thus porting Zephyr BME280 Driver to NuttX might not be so hard!</p>
 <h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">3.1 Wrap Zephyr Driver as NuttX Driver</a></h2>
 <p>TODO</p>
 <p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
@@ -536,6 +534,8 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 
   memcpy(buffer, &amp;baro_data, sizeof(baro_data));
   sninfo(&quot;temperature=%f °C, pressure=%f mbar, humidity=%f %%\n&quot;, baro_data.temperature, baro_data.pressure, humidity);</code></pre></div>
+<p><code>bme280_sample_fetch</code> and <code>bme280_channel_get</code> are explained in the Zephyr Sensor API:</p>
+<p><a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html">Zephyr Sensor API</a></p>
 <p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code9a.png" alt="" /></p>
 <h2 id="power-management" class="section-header"><a href="#power-management">3.3 Power Management</a></h2>
