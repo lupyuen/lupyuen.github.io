@@ -284,7 +284,7 @@ Read   [0xEF]
 <p>(Which might have caused the BMP280 Driver to fail)</p>
 <p><img src="https://lupyuen.github.io/images/bme280-subaddress2.png" alt="I2C Sub Address" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en">(From BL602 Reference Manual)</a></p>
-<p>When we browse the NuttX code for BL602’s I2C Driver, we realise that it <strong>supports I2C Sub Address</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/arch/risc-v/src/bl602/bl602_i2c.c#L719-L738">bl602_i2c.c</a></p>
+<p>When we browse the NuttX code for BL602’s I2C Driver, we realise that it <strong>supports I2C Sub Addresses</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/arch/risc-v/src/bl602/bl602_i2c.c#L719-L738">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int bl602_i2c_transfer(struct i2c_master_s *dev, struct i2c_msg_s *msgs, int count) {
   ...
   //  if msgs[i].flag I2C_M_NOSTOP,means start i2c with subddr
@@ -297,37 +297,28 @@ Read   [0xEF]
     priv-&gt;sublen = msgs[i].length;
     i++;</code></pre></div>
 <p>But it needs the flag <strong>I2C_M_NOSTOP</strong> to be set!</p>
-<p>Let’s patch the NuttX BMP280 Driver to send the <strong>Register ID as I2C Sub Address</strong> (instead of I2C Data) when we’re reading a BMP280 Register: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L202-L217">bmp280.c</a></p>
+<p>Let’s patch the NuttX BMP280 Driver to send the <strong>Register ID as I2C Sub Address</strong> (instead of I2C Data) when we’re reading a BMP280 Register: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L209-L219">bmp280.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Read a single BME280 Register
 static uint8_t bmp280_getreg8(FAR struct bmp280_dev_s *priv, uint8_t regaddr) {
-  ...
-  //// Previously:
-  //// msg[0].flags     = 0;
-
-  #warning Testing: I2C_M_NOSTOP for I2C Sub Address
-  msg[0].flags     = I2C_M_NOSTOP;  ////  Testing I2C Sub Address
-
-  msg[0].buffer    = &amp;regaddr;
-  msg[0].length    = 1;</code></pre></div>
-<p>And we patch this too: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L244-L257">bmp280.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>//  Read multiple BME280 Registers
-static int bmp280_getregs(FAR struct bmp280_dev_s *priv, uint8_t regaddr, uint8_t *rxbuffer, uint8_t length) {
   ...
   msg[0].frequency = priv-&gt;freq;
   msg[0].addr      = priv-&gt;addr;
 
-  //// Previously:
-  //// msg[0].flags     = 0;
-
-  #warning Testing: I2C_M_NOSTOP for I2C Sub Address
-  msg[0].flags     = I2C_M_NOSTOP;  ////  Testing I2C Sub Address
+#ifdef CONFIG_BL602_I2C0
+  //  For BL602: Register ID must be passed as I2C Sub Address
+  msg[0].flags     = I2C_M_NOSTOP;
+#else
+  //  Otherwise pass Register ID as I2C Data
+  msg[0].flags     = 0;
+#endif  //  CONFIG_BL602_I2C0
 
   msg[0].buffer    = &amp;regaddr;
   msg[0].length    = 1;</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L253-L263">(We patch <strong>bmp280_getregs</strong> too)</a></p>
 <p><em>What about writing to BMP280 Registers? Do we need to set the I2C Sub Address?</em></p>
 <p>We don’t need to set the I2C Sub Address when writing to BMP280 registers.</p>
 <p>In a while we’ll see the log which says that the BMP280 Driver works fine for writing to BMP280 registers.</p>
-<p><a href="https://mcuxpresso.nxp.com/api_doc/dev/116/group__i2c.html">(FYI: Besides BL602, NXP Microcontrollers are probably the only ones that support I2C Sub Addresses)</a></p>
+<p><a href="https://mcuxpresso.nxp.com/api_doc/dev/116/group__i2c.html">(Besides BL602, NXP Microcontrollers are probably the only ones that support I2C Sub Addresses)</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-code5a.png" alt="Send the Register ID as I2C Sub Address (instead of I2C Data) when we’re reading a BMP280 Register" /></p>
 <h2 id="bmp280-driver-loads-ok" class="section-header"><a href="#bmp280-driver-loads-ok">2.6 BMP280 Driver Loads OK</a></h2>
 <p>TODO</p>
