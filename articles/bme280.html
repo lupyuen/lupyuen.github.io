@@ -386,8 +386,9 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 <p><em>Why don’t we create the BME280 Driver based on the datasheet?</em></p>
 <p>Well yes we could… But then the rest of this article would become an academic exercise 😉</p>
 <p><em>Why port from Zephyr OS?</em></p>
+<p>Zephyr has an <a href="https://github.com/zephyrproject-rtos/zephyr/tree/main/drivers"><strong>impressive collection</strong></a> of drivers. </p>
 <p>TODO</p>
-<p>Impressive collection of drivers. Might work for other Zephyr drivers with minimal changes!</p>
+<p>Might work for other Zephyr drivers with minimal changes!</p>
 <p>Zephyr BME280 Driver looks similar to <a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/bmp280.c">NuttX BMP280 Driver</a> … So porting Zephyr BME280 Driver to NuttX might not be so hard 🤔</p>
 <p><code>bme280_sample_fetch</code> and <code>bme280_channel_get</code> are explained in the Zephyr Sensor API:</p>
 <p><a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html">Zephyr Sensor API</a></p>
