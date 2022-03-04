@@ -474,56 +474,58 @@ static int bme280_fetch(
 <p>Next we call the Zephyr Driver to <strong>fetch a sample</strong> from BME280…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Fetch the sensor sample (from Zephyr BME280 Driver)
   int ret = bme280_sample_fetch(
-    priv,
-    SENSOR_CHAN_ALL
+    priv,            //  NuttX Device Struct
+    SENSOR_CHAN_ALL  //  Fetch Temperature, Humidity and Pressure
   );
   if (ret &lt; 0) { return ret; }</code></pre></div>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c#L194-L245">(<strong>bme280_sample_fetch</strong> is defined here)</a></p>
 <p>The fetched sample contains <strong>Temperature, Humidity and Pressure</strong>.</p>
 <p>To get the Pressure we call the Zephyr Driver…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the pressure (from Zephyr BME280 Driver)
   struct sensor_value val;
   ret = bme280_channel_get(
-    priv, 
-    SENSOR_CHAN_PRESS, 
-    &amp;val
+    priv,               //  NuttX Device Struct
+    SENSOR_CHAN_PRESS,  //  Get Pressure from fetched sample
+    &amp;val                //  Pressure in Fixed Point format
   );
   if (ret &lt; 0) { return ret; }</code></pre></div>
-<p>This returns a Zephyr <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_value"><strong>sensor_value</strong></a> struct that represents the Pressure as a <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Number</strong></a>.</p>
-<p>We convert the Pressure from <strong>Fixed Point to Float</strong>…</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Convert pressure to float, scale up by 10 to get millibars
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c#L247-L286">(<strong>bme280_channel_get</strong> is defined here)</a></p>
+<p>This returns a Zephyr <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_value"><strong>sensor_value</strong></a> struct that stores the Pressure (kilopascal) as a <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Number</strong></a>.</p>
+<p>We convert the Pressure from <strong>Fixed Point to Float</strong> (in millibars)…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Convert pressure to float, scale up by 10 to convert kilopascal to millibars
   float pressure = get_sensor_value(&amp;val) * 10;</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L93-L107">(<strong>get_sensor_value</strong> is defined here)</a></p>
-<p>We do the same to get the <strong>Temperature</strong> from the fetched sample…</p>
+<p>We do the same to get the <strong>Temperature</strong> (°C) from the fetched sample…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the temperature (from Zephyr BME280 Driver)
   ret = bme280_channel_get(
-    priv, 
-    SENSOR_CHAN_AMBIENT_TEMP, 
-    &amp;val
+    priv,                      //  NuttX Device Struct
+    SENSOR_CHAN_AMBIENT_TEMP,  //  Get Temperature from fetched sample
+    &amp;val                       //  Temperature in Fixed Point format
   );
   if (ret &lt; 0) { return ret; }
   float temperature = get_sensor_value(&amp;val);</code></pre></div>
-<p>And the <strong>Humidity</strong>…</p>
+<p>And the <strong>Humidity</strong> (relative %)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the humidity (from Zephyr BME280 Driver) */
   ret = bme280_channel_get(
-    priv, 
-    SENSOR_CHAN_HUMIDITY, 
-    &amp;val
+    priv,                  //  NuttX Device Struct
+    SENSOR_CHAN_HUMIDITY,  //  Get Humidity from fetched sample
+    &amp;val                   //  Humidity in Fixed Point format
   );
   if (ret &lt; 0) { return ret; }
   float humidity = get_sensor_value(&amp;val);</code></pre></div>
-<p>TODO</p>
+<p>Sensor Values in NuttX are <strong>timestamped</strong>. We get the timestamp like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the timestamp  
   struct timespec ts;
   clock_systime_timespec(&amp;ts);
   uint64_t timestamp = 1000000ull * ts.tv_sec + ts.tv_nsec / 1000;</code></pre></div>
-<p>TODO</p>
+<p>Finally we return the <strong>Pressure and Temperature</strong> data…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Return the pressure and temperature data
   if (baro_data != NULL) {
     baro_data-&gt;pressure    = pressure;
     baro_data-&gt;temperature = temperature;
     baro_data-&gt;timestamp   = timestamp;
   }</code></pre></div>
-<p>TODO</p>
+<p>And the <strong>Humidity</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Return the humidity data
   if (humi_data != NULL) {
     humi_data-&gt;humidity    = humidity;
@@ -531,7 +533,10 @@ static int bme280_fetch(
   }
   return 0;
 }</code></pre></div>
-<p>TODO</p>
+<p>That’s how we call the Zephyr Driver to fetch the BME280 Sensor Data!</p>
+<p><em>Why did we return the Sensor Data as two structs: baro_data and humi_data?</em></p>
+<p>That’s because our NuttX BME280 Driver is implemented as a <strong>Composite Sensor</strong>: Barometer Sensor + Humidity Sensor.</p>
+<p>More about this in the next chapter.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code8a.png" alt="Read Sensor Data from Zephyr Driver" /></p>
 <h2 id="power-management" class="section-header"><a href="#power-management">3.3 Power Management</a></h2>
 <p>TODO</p>
