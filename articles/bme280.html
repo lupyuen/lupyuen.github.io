@@ -505,7 +505,7 @@ static int bme280_fetch(
   if (ret &lt; 0) { return ret; }
   float temperature = get_sensor_value(&amp;val);</code></pre></div>
 <p>And the <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_channel.SENSOR_CHAN_HUMIDITY"><strong>Humidity</strong> (relative %)</a>…</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Get the humidity (from Zephyr BME280 Driver) */
+<div class="example-wrap"><pre class="language-c"><code>  //  Get the humidity (from Zephyr BME280 Driver)
   ret = bme280_channel_get(
     priv,                  //  NuttX Device Struct
     SENSOR_CHAN_HUMIDITY,  //  Get Humidity from fetched sample
@@ -540,43 +540,29 @@ static int bme280_fetch(
 <p><img src="https://lupyuen.github.io/images/bme280-code8a.png" alt="Read Sensor Data from Zephyr Driver" /></p>
 <h2 id="power-management" class="section-header"><a href="#power-management">3.3 Power Management</a></h2>
 <p>Mapping the <strong>Power Management</strong> functions (Low Power Mode) from Zephyr to NuttX is straightforward: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">driver.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: bme280_activate
- *
- * Description:
- *   Set Power Mode for the device. If enable is true, set Power Mode 
- *   to normal. Else set to sleep mode.
- *
- ****************************************************************************/
-
-static int bme280_activate(FAR struct device *priv,
-                           bool enable)
-{
-  DEBUGASSERT(priv != NULL);
+<div class="example-wrap"><pre class="language-c"><code>//  If enable is true, set Power Mode to normal. Else set to sleep mode.
+static int bme280_activate(
+    FAR struct device *priv,  //  NuttX Device Struct
+    bool enable               //  True for Normal Mode, False for Sleep Mode
+) {
   int ret = 0;
-
-  if (enable)
-    {
-      /* Set power mode to normal */
-
-      ret = bme280_pm_action(priv, PM_DEVICE_ACTION_RESUME);
-    }
-  else
-    {
-      /* Set to sleep mode */
-
-      ret = bme280_pm_action(priv, PM_DEVICE_ACTION_SUSPEND);
-    }
-
-  if (ret &gt;= 0)
-    {
-      priv-&gt;activated = enable;
-    }
-
+  if (enable) {
+    //  Set power mode to normal (from Zephyr BME280 Driver)
+    ret = bme280_pm_action(
+      priv,                     //  NuttX Device Struct
+      PM_DEVICE_ACTION_RESUME   //  Resume from Sleep Mode
+    );
+  } else {
+    //  Set to sleep mode (from Zephyr BME280 Driver)
+    ret = bme280_pm_action(
+      priv,                     //  NuttX Device Struct
+      PM_DEVICE_ACTION_SUSPEND  //  Suspend to Sleep Mode
+    );
+  }
+  //  Remember the power mode
+  if (ret &gt;= 0) { priv-&gt;activated = enable; }
   return ret;
-}</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/bme280-code10.png" alt="Power Management" /></p>
-<h2 id="standby-duration" class="section-header"><a href="#standby-duration">3.4 Standby Duration</a></h2>
+}</code></pre></div><h2 id="standby-duration" class="section-header"><a href="#standby-duration">3.4 Standby Duration</a></h2>
 <p>TODO</p>
 <p>BME280 Standby Duration is static in Zephyr but configured at runtime in NuttX … So we set it in our NuttX BME280 Driver: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L217-L255">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int bme280_set_standby(FAR struct device *priv, uint8_t value)
@@ -617,10 +603,7 @@ static int bme280_activate(FAR struct device *priv,
     }
 
   return OK;
-}</code></pre></div>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code11.png" alt="" /></p>
-<h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">3.5 Wrap Zephyr Driver as NuttX Driver</a></h2>
+}</code></pre></div><h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">3.5 Wrap Zephyr Driver as NuttX Driver</a></h2>
 <p>TODO</p>
 <p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
 <p>TODO7</p>
