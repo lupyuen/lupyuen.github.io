@@ -92,7 +92,7 @@
 <li><a href="#configure-nuttx">10.2 Configure NuttX</a><ul></ul></li>
 <li><a href="#build-nuttx">10.3 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">10.4 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">10.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>7 Mar 2022</em></p>
+<li><a href="#run-nuttx">10.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>8 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/bme280-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>“Will <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a> talk I2C with <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>… On the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>?”</em></p>
 <p>…A friend and I pondered (8,000 miles apart) while working on the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Temperature + Humidity + Air Pressure</strong></a> combo sensor.</p>
@@ -562,114 +562,54 @@ static int bme280_activate(
   if (ret &gt;= 0) { priv-&gt;activated = enable; }
   return ret;
 }</code></pre></div><h2 id="standby-interval" class="section-header"><a href="#standby-interval">3.4 Standby Interval</a></h2>
-<p>TODO</p>
-<p>BME280 Standby Interval is static in Zephyr but configured at runtime in NuttX … So we set it in our NuttX BME280 Driver: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L287-L341">driver.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: bme280_set_interval
- *
- * Description:
- *   Set Standby Interval for the device
- *
- ****************************************************************************/
-
-static int bme280_set_interval(FAR struct device *priv,
-                               FAR unsigned int *period_us)
-{
-  DEBUGASSERT(priv != NULL);
-  DEBUGASSERT(period_us != NULL);
+<p><em>What’s the Standby Interval?</em></p>
+<p>BME280 automatically senses the Temperature and Humidity and Pressure at periodic intervals. (Without any intervention from our microcontroller)</p>
+<p>The time interval between readings is the <strong>Standby Interval</strong>.</p>
+<p><em>Standby Intervals work differently in Zephyr vs NuttX?</em></p>
+<p>Zephyr defines the Standby Interval at <strong>Compile Time</strong>, it can’t be changed at runtime. <a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/Kconfig#L81-L103">(See this)</a></p>
+<p>But NuttX configures the Standby Interval <strong>at runtime</strong>. That’s why we coded this function to set the Standby Interval: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L287-L341">driver.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Set Standby Interval for the sensor
+static int bme280_set_interval(
+  FAR struct device *priv,     //  NuttX Device Struct
+  FAR unsigned int *period_us  //  Standby Interval in microseconds
+) {
+  //  Convert the Standby Interval to BME280 constant
   int ret = 0;
-
   uint8_t regval;
+  switch (*period_us) {
+    case 500: 
+      regval = BME280_STANDBY_05_MS; break;
+    ...
+    case 4000000:
+      regval = BME280_STANDBY_4000_MS; break;
+    default:
+      ret = -EINVAL; break;
+  }
 
-  switch (*period_us)
-    {
-      case 500:
-        regval = BME280_STANDBY_05_MS;
-        break;
-      case 62500:
-        regval = BME280_STANDBY_63_MS;
-        break;
-      case 125000:
-        regval = BME280_STANDBY_125_MS;
-        break;
-      case 250000:
-        regval = BME280_STANDBY_250_MS;
-        break;
-      case 500000:
-        regval = BME280_STANDBY_500_MS;
-        break;
-      case 1000000:
-        regval = BME280_STANDBY_1000_MS;
-        break;
-      case 2000000:
-        regval = BME280_STANDBY_2000_MS;
-        break;
-      case 4000000:
-        regval = BME280_STANDBY_4000_MS;
-        break;
-      default:
-        ret = -EINVAL;
-        break;
-    }
-
-  if (ret == 0)
-    {
-      ret = bme280_set_standby(priv, regval);
-    }
-
+  //  Set the Standby Interval
+  if (ret == 0) {
+    ret = bme280_set_standby(priv, regval);
+  }
   return ret;
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L237-L285">driver.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: bme280_set_standby
- *
- * Description:
- *   Set Standby Duration. Zephyr assumes that Standby Duration is static,
- *   so we set it in NuttX.
- *
- ****************************************************************************/
-
-static int bme280_set_standby(FAR struct device *priv, uint8_t value)
-{
-  DEBUGASSERT(priv != NULL);
-  sninfo(&quot;value=%d\n&quot;, value);
-  
-  uint8_t v_data_u8;
-  uint8_t v_sb_u8;
-  int ret;
-
-  /* Set the standby duration value */
-
-  ret = bme280_reg_read(priv, BME280_REG_CONFIG, &amp;v_data_u8, 1);
-  if (ret &lt; 0)
-    {
-      return ret;
-    }
-  v_data_u8 = (v_data_u8 &amp; ~(0x07 &lt;&lt; 5)) | (value &lt;&lt; 5);
+<p><strong>bme280_set_standby</strong> is defined below: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L237-L285">driver.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Set Standby Duration. Zephyr assumes that Standby Duration is static, so we set it in NuttX.
+static int bme280_set_standby(
+  FAR struct device *priv,  //  NuttX Device Struct
+  uint8_t value             //  BME280 constant for Standby Duration
+) {
+  //  Set the standby duration value by writing to BME280 Register
+  int ret = bme280_reg_read(priv, BME280_REG_CONFIG, &amp;v_data_u8, 1);
+  uint8_t v_data_u8 = (v_data_u8 &amp; ~(0x07 &lt;&lt; 5)) | (value &lt;&lt; 5);
   ret = bme280_reg_write(priv, BME280_REG_CONFIG, v_data_u8);
-  if (ret &lt; 0)
-    {
-      return ret;
-    }
-
-  /* Check the standby duration value */
-
+  ...
+  //  Check the standby duration value by reading from BME280 Register
   ret = bme280_reg_read(priv, BME280_REG_CONFIG, &amp;v_data_u8, 1);
-  if (ret &lt; 0)
-    {
-      return ret;
-    }
-  v_sb_u8 = (v_data_u8 &gt;&gt; 5) &amp; 0x07;
-
-  if (v_sb_u8 != value)
-    {
-      snerr(&quot;Failed to set value for standby time.&quot;);
-      return ERROR;
-    }
-
-  return OK;
-}</code></pre></div><h1 id="combined-barometer-and-humidity-sensor" class="section-header"><a href="#combined-barometer-and-humidity-sensor">4 Combined Barometer and Humidity Sensor</a></h1>
+  uint8_t v_sb_u8 = (v_data_u8 &gt;&gt; 5) &amp; 0x07;
+  //  Omitted: Return error if v_sb_u8 != value</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/drivers/sensors/bmp280.c#L330-L565">(<strong>bme280_set_interval</strong> and <strong>bme280_set_standby</strong> were cloned from the NuttX BMP280 Driver)</a></p>
+<p>We’ll cover <strong>bme280_register</strong> in the next chapter.</p>
+<h1 id="combined-barometer-and-humidity-sensor" class="section-header"><a href="#combined-barometer-and-humidity-sensor">4 Combined Barometer and Humidity Sensor</a></h1>
 <p>TODO</p>
 <p>NuttX doesn’t have a Sensor Type that supports BME280 Temperature + Humidity + Pressure … So our NuttX BME280 Driver combines 2 Sensor Types: 1️⃣ Barometer Sensor (Pressure + Temperature) 2️⃣ Humidity Sensor</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/device.h#L36-L49">device.h</a></p>
@@ -732,6 +672,7 @@ static const struct sensor_ops_s g_humi_ops =
       kmm_free(data);
       kmm_free(priv);
     }</code></pre></div>
+<p>TODO: bme280_register is called by bl602_bringup</p>
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/bme280-combine3.png" alt="" /></p>
 <p>Our NuttX BME280 Driver appears as 2 sensors: 1️⃣ “/dev/sensor/baro0” (Barometer Sensor) 2️⃣ “/dev/sensor/humi0” (Humidity Sensor)</p>
