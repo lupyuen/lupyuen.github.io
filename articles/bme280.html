@@ -539,8 +539,7 @@ static int bme280_fetch(
 <p>More about this in the next chapter.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code8a.png" alt="Read Sensor Data from Zephyr Driver" /></p>
 <h2 id="power-management" class="section-header"><a href="#power-management">3.3 Power Management</a></h2>
-<p>TODO</p>
-<p>Power Management works a little differently in NuttX vs Zephyr … Here’s how our NuttX BME280 Driver calls the Zephyr Driver to do Power Management: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">driver.c</a></p>
+<p>Mapping the <strong>Power Management</strong> functions from Zephyr to NuttX is straightforward: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: bme280_activate
  *
@@ -576,8 +575,7 @@ static int bme280_activate(FAR struct device *priv,
 
   return ret;
 }</code></pre></div>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code10.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/bme280-code10.png" alt="Power Management" /></p>
 <h2 id="standby-duration" class="section-header"><a href="#standby-duration">3.4 Standby Duration</a></h2>
 <p>TODO</p>
 <p>BME280 Standby Duration is static in Zephyr but configured at runtime in NuttX … So we set it in our NuttX BME280 Driver: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L217-L255">driver.c</a></p>
