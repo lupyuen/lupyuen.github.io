@@ -77,9 +77,9 @@
 <li><a href="#port-bme280-driver-from-zephyr-os">3 Port BME280 Driver from Zephyr OS</a><ul>
 <li><a href="#zephyr-to-nuttx">3.1 Zephyr to NuttX</a><ul></ul></li>
 <li><a href="#read-sensor-data-from-zephyr-driver">3.2 Read Sensor Data from Zephyr Driver</a><ul></ul></li>
-<li><a href="#wrap-zephyr-driver-as-nuttx-driver">3.3 Wrap Zephyr Driver as NuttX Driver</a><ul></ul></li>
-<li><a href="#power-management">3.4 Power Management</a><ul></ul></li>
-<li><a href="#standby-duration">3.5 Standby Duration</a><ul></ul></li>
+<li><a href="#power-management">3.3 Power Management</a><ul></ul></li>
+<li><a href="#standby-duration">3.4 Standby Duration</a><ul></ul></li>
+<li><a href="#wrap-zephyr-driver-as-nuttx-driver">3.5 Wrap Zephyr Driver as NuttX Driver</a><ul></ul></li>
 <li><a href="#zephyr-driver-modified-for-nuttx">3.6 Zephyr Driver Modified For NuttX</a><ul></ul></li>
 <li><a href="#output-log">3.7 Output Log</a><ul></ul></li></ul></li>
 <li><a href="#combined-barometer-and-humidity-sensor">4 Combined Barometer and Humidity Sensor</a><ul></ul></li>
@@ -432,11 +432,11 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 </ul>
 <p>Our job is to <strong>map the Zephyr BME280 Driver</strong> to the Sensor Driver Interface expected by NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/bme280-port4.jpg" alt="Zephyr BME280 Driver mapped to NuttX Driver" /></p>
-<div><table><thead><tr><th>Zephyr Driver</th><th>NuttX Driver</th></tr></thead><tbody>
-<tr><td>bme280_chip_init,<br>bme280_pm_action</td><td><strong>bme280_register</strong></td></tr>
-<tr><td>bme280_pm_action</td><td><strong>bme280_activate</strong></td></tr>
-<tr><td>bme280_sample_fetch,<br>bme280_channel_get</td><td><strong>bme280_fetch</strong></td></tr>
-<tr><td><em>(Static Interval)</em></td><td><strong>bme280_set_interval</strong></td></tr>
+<div><table><thead><tr><th>Zephyr Driver</th><th>NuttX Driver</th><th>Function</th></tr></thead><tbody>
+<tr><td>bme280_chip_init,<br>bme280_pm_action</td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773"><strong>bme280_register</strong></a></td><td>Register sensor at startup</td></tr>
+<tr><td>bme280_pm_action</td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431"><strong>bme280_activate</strong></a></td><td>Switch to Normal / Low Power Mode</td></tr>
+<tr><td>bme280_sample_fetch,<br>bme280_channel_get</td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L487-L572"><strong>bme280_fetch</strong></a></td><td>Fetch sensor values</td></tr>
+<tr><td><em>(Static Interval)</em></td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L287-L341"><strong>bme280_set_interval</strong></a></td><td>Set standby interval</td></tr>
 </tbody></table>
 </div>
 <p>We’ll cover the details in the next section.</p>
@@ -457,103 +457,62 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 </li>
 </ol>
 <p>This is how we do it: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L487-L572">driver.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: bme280_fetch
- *
- * Description:
- *   Fetch pressure, temperature and humidity from sensor
- *
- ****************************************************************************/
+<div class="example-wrap"><pre class="language-c"><code>//  Fetch pressure, temperature and humidity from sensor
+static int bme280_fetch(
+  FAR struct device *priv,  //  NuttX Device Struct
+  FAR struct sensor_event_baro *baro_data,  //  Returns pressure and timestamp
+  FAR struct sensor_event_humi *humi_data   //  Returns humidity
+) {
 
-static int bme280_fetch(FAR struct device *priv,
-                        FAR struct sensor_event_baro *baro_data,
-                        FAR struct sensor_event_humi *humi_data)
-{
-  DEBUGASSERT(priv != NULL);
-  DEBUGASSERT(baro_data != NULL || humi_data != NULL);
-  int ret;
-  struct timespec ts;
+  //  Zephyr BME280 Driver assumes that sensor is not in sleep mode
+  if (!priv-&gt;activated) {
+    snerr(&quot;Device must be active before fetch\n&quot;);
+    return -EIO;
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Fetch the sensor sample (from Zephyr BME280 Driver)
+  int ret = bme280_sample_fetch(priv, SENSOR_CHAN_ALL);
+  if (ret &lt; 0) { return ret; }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Get the pressure (from Zephyr BME280 Driver)
   struct sensor_value val;
-
-  /* Zephyr BME280 Driver assumes that sensor is not in sleep mode */
-
-  if (!priv-&gt;activated)
-    {
-      snerr(&quot;Device must be active before fetch\n&quot;);
-      return -EIO;
-    }
-
-  /* Fetch the sensor data (from Zephyr BME280 Driver) */
-
-  ret = bme280_sample_fetch(priv, SENSOR_CHAN_ALL);
-  if (ret &lt; 0)
-    {
-      return ret;
-    }
-
-  /* Get the pressure (from Zephyr BME280 Driver) */
-
-  ret = bme280_channel_get(priv, SENSOR_CHAN_PRESS, &amp;val);
-  if (ret &lt; 0)
-    {
-      return ret;
-    }
-  float pressure = get_sensor_value(&amp;val) * 10;
-
-  /* Get the temperature (from Zephyr BME280 Driver) */
-
+  ret = bme280_channel_get(priv, SENSOR_CHAN_PRESS, &amp;val);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  if (ret &lt; 0) { return ret; }
+  float pressure = get_sensor_value(&amp;val) * 10;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Get the temperature (from Zephyr BME280 Driver)
   ret = bme280_channel_get(priv, SENSOR_CHAN_AMBIENT_TEMP, &amp;val);
-  if (ret &lt; 0)
-    {
-      return ret;
-    }
-  float temperature = get_sensor_value(&amp;val);
-
-  /* Get the humidity (from Zephyr BME280 Driver) */
-
+  if (ret &lt; 0) { return ret; }
+  float temperature = get_sensor_value(&amp;val);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Get the humidity (from Zephyr BME280 Driver) */
   ret = bme280_channel_get(priv, SENSOR_CHAN_HUMIDITY, &amp;val);
-  if (ret &lt; 0)
-    {
-      return ret;
-    }
-  float humidity = get_sensor_value(&amp;val);
-
-  /* Get the timestamp */
-  
+  if (ret &lt; 0) { return ret; }
+  float humidity = get_sensor_value(&amp;val);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Get the timestamp  
+  struct timespec ts;
   clock_systime_timespec(&amp;ts);
-  uint64_t timestamp = 1000000ull * ts.tv_sec + ts.tv_nsec / 1000;
-
-  /* Return the pressure and temperature data */
-
-  if (baro_data != NULL)
-    {
-      baro_data-&gt;pressure    = pressure;
-      baro_data-&gt;temperature = temperature;
-      baro_data-&gt;timestamp   = timestamp;
-    }
-
-  /* Return the humidity data */
-
-  if (humi_data != NULL)
-    {
-      humi_data-&gt;humidity    = humidity;
-      humi_data-&gt;timestamp   = timestamp;
-    }
-
-  sninfo(&quot;temperature=%f °C, pressure=%f mbar, humidity=%f %%\n&quot;, temperature, pressure, humidity);
+  uint64_t timestamp = 1000000ull * ts.tv_sec + ts.tv_nsec / 1000;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Return the pressure and temperature data
+  if (baro_data != NULL) {
+    baro_data-&gt;pressure    = pressure;
+    baro_data-&gt;temperature = temperature;
+    baro_data-&gt;timestamp   = timestamp;
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Return the humidity data
+  if (humi_data != NULL) {
+    humi_data-&gt;humidity    = humidity;
+    humi_data-&gt;timestamp   = timestamp;
+  }
   return 0;
 }</code></pre></div>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code8a.png" alt="" /></p>
-<h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">3.3 Wrap Zephyr Driver as NuttX Driver</a></h2>
 <p>TODO</p>
-<p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code7a.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c">(Source)</a></p>
-<p>Now we wrap the Zephyr Driver as a NuttX Driver…</p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">(Source)</a></p>
-<h2 id="power-management" class="section-header"><a href="#power-management">3.4 Power Management</a></h2>
+<p><img src="https://lupyuen.github.io/images/bme280-code8a.png" alt="Read Sensor Data from Zephyr Driver" /></p>
+<h2 id="power-management" class="section-header"><a href="#power-management">3.3 Power Management</a></h2>
 <p>TODO</p>
 <p>Power Management works a little differently in NuttX vs Zephyr … Here’s how our NuttX BME280 Driver calls the Zephyr Driver to do Power Management: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L315-L343">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int bme280_activate(FAR struct sensor_lowerhalf_s *lower,
@@ -587,7 +546,7 @@ static int bme280_fetch(FAR struct device *priv,
 }</code></pre></div>
 <p>TODO10</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code10.png" alt="" /></p>
-<h2 id="standby-duration" class="section-header"><a href="#standby-duration">3.5 Standby Duration</a></h2>
+<h2 id="standby-duration" class="section-header"><a href="#standby-duration">3.4 Standby Duration</a></h2>
 <p>TODO</p>
 <p>BME280 Standby Duration is static in Zephyr but configured at runtime in NuttX … So we set it in our NuttX BME280 Driver: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L217-L255">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int bme280_set_standby(FAR struct device *priv, uint8_t value)
@@ -631,6 +590,14 @@ static int bme280_fetch(FAR struct device *priv,
 }</code></pre></div>
 <p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code11.png" alt="" /></p>
+<h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">3.5 Wrap Zephyr Driver as NuttX Driver</a></h2>
+<p>TODO</p>
+<p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
+<p>TODO7</p>
+<p><img src="https://lupyuen.github.io/images/bme280-code7a.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c">(Source)</a></p>
+<p>Now we wrap the Zephyr Driver as a NuttX Driver…</p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">(Source)</a></p>
 <h2 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">3.6 Zephyr Driver Modified For NuttX</a></h2>
 <p>TODO</p>
 <p>Here are the minor modifications we made to the Zephyr BME280 Driver while porting to NuttX…</p>
