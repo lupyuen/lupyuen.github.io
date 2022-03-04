@@ -469,29 +469,46 @@ static int bme280_fetch(
     snerr(&quot;Device must be active before fetch\n&quot;);
     return -EIO;
   }</code></pre></div>
+<p>We begin by verifying that the sensor is in <strong>Normal Power Mode</strong>.</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">(<strong>activated</strong> is set by <strong>bme280_activate</strong>)</a></p>
-<p>TODO</p>
+<p>Next we call the Zephyr Driver to <strong>fetch a sample</strong> from BME280…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Fetch the sensor sample (from Zephyr BME280 Driver)
-  int ret = bme280_sample_fetch(priv, SENSOR_CHAN_ALL);
+  int ret = bme280_sample_fetch(
+    priv,
+    SENSOR_CHAN_ALL
+  );
   if (ret &lt; 0) { return ret; }</code></pre></div>
-<p>TODO</p>
+<p>The fetched sample contains <strong>Temperature, Humidity and Pressure</strong>.</p>
+<p>To get the Pressure we call the Zephyr Driver…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the pressure (from Zephyr BME280 Driver)
   struct sensor_value val;
-  ret = bme280_channel_get(priv, SENSOR_CHAN_PRESS, &amp;val);
+  ret = bme280_channel_get(
+    priv, 
+    SENSOR_CHAN_PRESS, 
+    &amp;val
+  );
   if (ret &lt; 0) { return ret; }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_value"><strong>sensor_value</strong></a></p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Convert pressure to float
+<p>This returns a Zephyr <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_value"><strong>sensor_value</strong></a> struct that represents the Pressure as a <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Number</strong></a>.</p>
+<p>We convert the Pressure from <strong>Fixed Point to Float</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Convert pressure to float, scale up by 10 to get millibars
   float pressure = get_sensor_value(&amp;val) * 10;</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L93-L107">(<strong>get_sensor_value</strong> is defined here)</a></p>
-<p>TODO</p>
+<p>We do the same to get the <strong>Temperature</strong> from the fetched sample…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the temperature (from Zephyr BME280 Driver)
-  ret = bme280_channel_get(priv, SENSOR_CHAN_AMBIENT_TEMP, &amp;val);
+  ret = bme280_channel_get(
+    priv, 
+    SENSOR_CHAN_AMBIENT_TEMP, 
+    &amp;val
+  );
   if (ret &lt; 0) { return ret; }
   float temperature = get_sensor_value(&amp;val);</code></pre></div>
-<p>TODO</p>
+<p>And the <strong>Humidity</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the humidity (from Zephyr BME280 Driver) */
-  ret = bme280_channel_get(priv, SENSOR_CHAN_HUMIDITY, &amp;val);
+  ret = bme280_channel_get(
+    priv, 
+    SENSOR_CHAN_HUMIDITY, 
+    &amp;val
+  );
   if (ret &lt; 0) { return ret; }
   float humidity = get_sensor_value(&amp;val);</code></pre></div>
 <p>TODO</p>
