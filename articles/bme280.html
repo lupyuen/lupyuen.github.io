@@ -490,12 +490,12 @@ static int bme280_fetch(
   );
   if (ret &lt; 0) { return ret; }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c#L247-L286">(<strong>bme280_channel_get</strong> is defined here)</a></p>
-<p>This returns a Zephyr <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_value"><strong>sensor_value</strong></a> struct that stores the Pressure (kilopascal) as a <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Number</strong></a>.</p>
-<p>We convert the Pressure from <strong>Fixed Point to Float</strong> (in millibars)…</p>
+<p>This returns a Zephyr <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_value"><strong>sensor_value</strong></a> struct that stores the Pressure as a <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Number</strong></a>.</p>
+<p>We convert the <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_channel.SENSOR_CHAN_PRESS"><strong>Pressure</strong> (kilopascal)</a> from <strong>Fixed Point to Float</strong> (in millibars)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Convert pressure to float, scale up by 10 to convert kilopascal to millibars
   float pressure = get_sensor_value(&amp;val) * 10;</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L93-L107">(<strong>get_sensor_value</strong> is defined here)</a></p>
-<p>We do the same to get the <strong>Temperature</strong> (°C) from the fetched sample…</p>
+<p>We do the same to get the <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_channel.SENSOR_CHAN_AMBIENT_TEMP"><strong>Temperature</strong> (°C)</a> from the fetched sample…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the temperature (from Zephyr BME280 Driver)
   ret = bme280_channel_get(
     priv,                      //  NuttX Device Struct
@@ -504,7 +504,7 @@ static int bme280_fetch(
   );
   if (ret &lt; 0) { return ret; }
   float temperature = get_sensor_value(&amp;val);</code></pre></div>
-<p>And the <strong>Humidity</strong> (relative %)…</p>
+<p>And the <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_channel.SENSOR_CHAN_HUMIDITY"><strong>Humidity</strong> (relative %)</a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the humidity (from Zephyr BME280 Driver) */
   ret = bme280_channel_get(
     priv,                  //  NuttX Device Struct
@@ -539,7 +539,7 @@ static int bme280_fetch(
 <p>More about this in the next chapter.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code8a.png" alt="Read Sensor Data from Zephyr Driver" /></p>
 <h2 id="power-management" class="section-header"><a href="#power-management">3.3 Power Management</a></h2>
-<p>Mapping the <strong>Power Management</strong> functions from Zephyr to NuttX is straightforward: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">driver.c</a></p>
+<p>Mapping the <strong>Power Management</strong> functions (Low Power Mode) from Zephyr to NuttX is straightforward: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: bme280_activate
  *
