@@ -540,16 +540,22 @@ static int bme280_fetch(
 <p><img src="https://lupyuen.github.io/images/bme280-code8a.png" alt="Read Sensor Data from Zephyr Driver" /></p>
 <h2 id="power-management" class="section-header"><a href="#power-management">3.3 Power Management</a></h2>
 <p>TODO</p>
-<p>Power Management works a little differently in NuttX vs Zephyr … Here’s how our NuttX BME280 Driver calls the Zephyr Driver to do Power Management: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L315-L343">driver.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static int bme280_activate(FAR struct sensor_lowerhalf_s *lower,
+<p>Power Management works a little differently in NuttX vs Zephyr … Here’s how our NuttX BME280 Driver calls the Zephyr Driver to do Power Management: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">driver.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: bme280_activate
+ *
+ * Description:
+ *   Set Power Mode for the device. If enable is true, set Power Mode 
+ *   to normal. Else set to sleep mode.
+ *
+ ****************************************************************************/
+
+static int bme280_activate(FAR struct device *priv,
                            bool enable)
 {
-  sninfo(&quot;enable=%d\n&quot;, enable);
+  DEBUGASSERT(priv != NULL);
   int ret = 0;
 
-  FAR struct device *priv = container_of(lower,
-                                               FAR struct device,
-                                               sensor_lower);
   if (enable)
     {
       /* Set power mode to normal */
