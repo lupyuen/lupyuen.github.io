@@ -432,11 +432,11 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 </ul>
 <p>Our job is to <strong>map the Zephyr BME280 Driver</strong> to the Sensor Driver Interface expected by NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/bme280-port4.jpg" alt="Zephyr BME280 Driver mapped to NuttX Driver" /></p>
-<div><table><thead><tr><th>Zephyr Driver</th><th>NuttX Driver</th><th>Function</th></tr></thead><tbody>
-<tr><td>bme280_chip_init,<br>bme280_pm_action</td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773"><strong>bme280_register</strong></a></td><td>Register sensor at startup</td></tr>
-<tr><td>bme280_pm_action</td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431"><strong>bme280_activate</strong></a></td><td>Switch to Normal / Low Power Mode</td></tr>
-<tr><td>bme280_sample_fetch,<br>bme280_channel_get</td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L487-L572"><strong>bme280_fetch</strong></a></td><td>Fetch sensor values</td></tr>
-<tr><td><em>(Static Interval)</em></td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L287-L341"><strong>bme280_set_interval</strong></a></td><td>Set standby interval</td></tr>
+<div><table><thead><tr><th>Zephyr Driver</th><th>NuttX Driver</th></tr></thead><tbody>
+<tr><td>bme280_chip_init,<br>bme280_pm_action</td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773"><strong>bme280_register</strong></a></td></tr>
+<tr><td>bme280_pm_action</td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431"><strong>bme280_activate</strong></a></td></tr>
+<tr><td>bme280_sample_fetch,<br>bme280_channel_get</td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L487-L572"><strong>bme280_fetch</strong></a></td></tr>
+<tr><td><em>(Static Interval)</em></td><td><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L287-L341"><strong>bme280_set_interval</strong></a></td></tr>
 </tbody></table>
 </div>
 <p>We’ll cover the details in the next section.</p>
