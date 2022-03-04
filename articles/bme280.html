@@ -460,8 +460,8 @@ bmp280_getreg8: regaddr=0xf5, regval=0xa0</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>//  Fetch pressure, temperature and humidity from sensor
 static int bme280_fetch(
   FAR struct device *priv,  //  NuttX Device Struct
-  FAR struct sensor_event_baro *baro_data,  //  Returns pressure and timestamp
-  FAR struct sensor_event_humi *humi_data   //  Returns humidity
+  FAR struct sensor_event_baro *baro_data,  //  Returns pressure and temperature (if non-null)
+  FAR struct sensor_event_humi *humi_data   //  Returns humidity (if non-null)
 ) {
 
   //  Zephyr BME280 Driver assumes that sensor is not in sleep mode
@@ -469,6 +469,7 @@ static int bme280_fetch(
     snerr(&quot;Device must be active before fetch\n&quot;);
     return -EIO;
   }</code></pre></div>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">(<strong>activated</strong> is set by <strong>bme280_activate</strong>)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Fetch the sensor sample (from Zephyr BME280 Driver)
   int ret = bme280_sample_fetch(priv, SENSOR_CHAN_ALL);
@@ -476,10 +477,13 @@ static int bme280_fetch(
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the pressure (from Zephyr BME280 Driver)
   struct sensor_value val;
-  ret = bme280_channel_get(priv, SENSOR_CHAN_PRESS, &amp;val);</code></pre></div>
+  ret = bme280_channel_get(priv, SENSOR_CHAN_PRESS, &amp;val);
+  if (ret &lt; 0) { return ret; }</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>  if (ret &lt; 0) { return ret; }
+<p><a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_value"><strong>sensor_value</strong></a></p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Convert pressure to float
   float pressure = get_sensor_value(&amp;val) * 10;</code></pre></div>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L93-L107">(<strong>get_sensor_value</strong> is defined here)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the temperature (from Zephyr BME280 Driver)
   ret = bme280_channel_get(priv, SENSOR_CHAN_AMBIENT_TEMP, &amp;val);
