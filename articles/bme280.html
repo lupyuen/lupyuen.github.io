@@ -565,11 +565,12 @@ static int bme280_activate(
   return ret;
 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bme280-standby.png" alt="BME280 Standby Interval" /></p>
-<p><a href="https://cdn.sparkfun.com/assets/learn_tutorials/4/1/9/BST-BME280_DS001-10.pdf"><em>From BME280 Datasheet: t_standby denotes Standby Interval</em></a></p>
+<p><a href="https://cdn.sparkfun.com/assets/learn_tutorials/4/1/9/BST-BME280_DS001-10.pdf">(From BME280 Datasheet)</a></p>
 <h2 id="standby-interval" class="section-header"><a href="#standby-interval">3.4 Standby Interval</a></h2>
 <p><em>What’s the Standby Interval?</em></p>
-<p>BME280 automatically senses the Temperature and Humidity and Pressure at periodic intervals. (Without any intervention from our microcontroller)</p>
-<p>The time interval between readings is the <strong>Standby Interval</strong>.</p>
+<p>BME280 automatically measures the Temperature, Humidity and Pressure at periodic intervals. (Without any intervention from our microcontroller)</p>
+<p>The time interval between measurements is the <strong>Standby Interval</strong>. </p>
+<p>(<em>t_standby</em> in the pic above)</p>
 <p><em>Standby Intervals work differently in Zephyr vs NuttX?</em></p>
 <p>Zephyr defines the Standby Interval at <strong>Compile Time</strong>, it can’t be changed at runtime. <a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/Kconfig#L81-L103">(See this)</a></p>
 <p>But NuttX configures the Standby Interval <strong>at runtime</strong>. That’s why we coded this function to set the Standby Interval: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L287-L341">driver.c</a></p>
