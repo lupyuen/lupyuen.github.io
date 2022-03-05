@@ -563,7 +563,10 @@ static int bme280_activate(
   //  Remember the power mode
   if (ret &gt;= 0) { priv-&gt;activated = enable; }
   return ret;
-}</code></pre></div><h2 id="standby-interval" class="section-header"><a href="#standby-interval">3.4 Standby Interval</a></h2>
+}</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/bme280-standby.png" alt="BME280 Standby Interval" /></p>
+<p><a href="https://cdn.sparkfun.com/assets/learn_tutorials/4/1/9/BST-BME280_DS001-10.pdf"><em>From BME280 Datasheet: t_standby denotes Standby Interval</em></a></p>
+<h2 id="standby-interval" class="section-header"><a href="#standby-interval">3.4 Standby Interval</a></h2>
 <p><em>What’s the Standby Interval?</em></p>
 <p>BME280 automatically senses the Temperature and Humidity and Pressure at periodic intervals. (Without any intervention from our microcontroller)</p>
 <p>The time interval between readings is the <strong>Standby Interval</strong>.</p>
