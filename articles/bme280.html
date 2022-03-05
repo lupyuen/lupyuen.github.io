@@ -610,22 +610,35 @@ static int bme280_set_standby(
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/drivers/sensors/bmp280.c#L330-L565">(<strong>bme280_set_interval</strong> and <strong>bme280_set_standby</strong> were cloned from the NuttX BMP280 Driver)</a></p>
 <p>We’ll cover <strong>bme280_register</strong> in the next chapter.</p>
 <h1 id="combined-barometer-and-humidity-sensor" class="section-header"><a href="#combined-barometer-and-humidity-sensor">4 Combined Barometer and Humidity Sensor</a></h1>
-<p>TODO</p>
-<p>NuttX doesn’t have a Sensor Type that supports BME280 Temperature + Humidity + Pressure … So our NuttX BME280 Driver combines 2 Sensor Types: 1️⃣ Barometer Sensor (Pressure + Temperature) 2️⃣ Humidity Sensor</p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/device.h#L36-L49">device.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* NuttX Device for BME280 */
+<p><em>What kinds of Sensors are supported by NuttX?</em></p>
+<p>Temperature, Humidity, Pressure, GPS, ECG, PM 2.5 and many more. <a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h">(Here’s the list)</a></p>
+<p>NuttX’s BMP280 Driver implements a <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/include/nuttx/sensors/sensor.h#L326-L331"><strong>Barometer Sensor</strong></a> that provides Pressure and Temperature values.</p>
+<p><em>What about BME280? Is there a NuttX Sensor that supports Pressure + Temperature + Humidity?</em></p>
+<p>Sadly no. Thus our BME280 Driver shall implement a <strong>Composite Sensor</strong> that behaves like two NuttX Sensors combined…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/include/nuttx/sensors/sensor.h#L326-L331"><strong>Barometer Sensor</strong></a></p>
+<p>(For Pressure and Temperature)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/include/nuttx/sensors/sensor.h#L345-L349"><strong>Humidity Sensor</strong></a></p>
+<p>(For Humidity)</p>
+</li>
+</ul>
+<p>We mash together the two sensors like so: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/device.h#L36-L49">device.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  NuttX Device for BME280
+struct device {
+  //  Barometer Sensor (Pressure + Temperature)
+  FAR struct sensor_lowerhalf_s sensor_baro;  
+  //  Humidity Sensor
+  FAR struct sensor_lowerhalf_s sensor_humi;  
 
-struct device
-{
-  FAR struct sensor_lowerhalf_s sensor_baro;  /* Barometer and Temperature Sensor */
-  FAR struct sensor_lowerhalf_s sensor_humi;  /* Humidity Sensor */
-  FAR struct i2c_master_s *i2c; /* I2C interface */
-  uint8_t addr;                 /* BME280 I2C address */
-  int freq;                     /* BME280 Frequency &lt;= 3.4MHz */
-  bool activated;               /* True if device is not in sleep mode */
-
-  char *name;                   /* Name of the device */
-  struct bme280_data *data;     /* Compensation parameters (bme280.c) */
+  FAR struct i2c_master_s *i2c;  //  NuttX I2C interface
+  uint8_t addr;                  //  BME280 I2C address
+  int     freq;                  //  BME280 Frequency &lt;= 3.4MHz
+  bool    activated;             //  True if device is not in sleep mode
+  char    *name;                 //  Name of the device (BME280)
+  struct  bme280_data *data;     //  Compensation parameters (bme280.c)
 };</code></pre></div>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/bme280-combine1.png" alt="" /></p>
@@ -967,6 +980,13 @@ make menuconfig </code></pre></div></li>
 <li>
 <p>Enable <strong>I2C Character Driver</strong>…</p>
 <p>Check the box for <strong>“Device Drivers”</strong> → <strong>“I2C Driver Support”</strong> → <strong>“I2C Character Driver”</strong></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+</li>
+<li>
+<p>Enable <strong>BME280 Driver</strong>…</p>
+<p>Check the box for <strong>“Device Drivers”</strong> → <strong>“Sensor Device Support”</strong></p>
+<p>Select <strong>“Sensor Device Support”</strong></p>
+<p>Check the box for <strong>“Bosch BME280 Sensor”</strong></p>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
