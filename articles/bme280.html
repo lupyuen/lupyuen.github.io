@@ -81,20 +81,22 @@
 <li><a href="#standby-interval">3.4 Standby Interval</a><ul></ul></li></ul></li>
 <li><a href="#combined-barometer-and-humidity-sensor">4 Combined Barometer and Humidity Sensor</a><ul>
 <li><a href="#sensor-operations">4.1 Sensor Operations</a><ul></ul></li>
-<li><a href="#register-sensor">4.2 Register Sensor</a><ul></ul></li>
-<li><a href="#wrap-zephyr-driver-as-nuttx-driver">4.3 Wrap Zephyr Driver as NuttX Driver</a><ul></ul></li>
-<li><a href="#zephyr-driver-modified-for-nuttx">4.4 Zephyr Driver Modified For NuttX</a><ul></ul></li></ul></li>
+<li><a href="#register-sensors">4.2 Register Sensors</a><ul></ul></li>
+<li><a href="#load-driver">4.3 Load Driver</a><ul></ul></li>
+<li><a href="#wrap-zephyr-driver-as-nuttx-driver">4.4 Wrap Zephyr Driver as NuttX Driver</a><ul></ul></li>
+<li><a href="#zephyr-driver-modified-for-nuttx">4.5 Zephyr Driver Modified For NuttX</a><ul></ul></li></ul></li>
 <li><a href="#run-bme280-driver">5 Run BME280 Driver</a><ul></ul></li>
-<li><a href="#pending-issues">6 Pending Issues</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
-<li><a href="#notes">8 Notes</a><ul></ul></li>
-<li><a href="#appendix-log-i2c-transfers">9 Appendix: Log I2C Transfers</a><ul></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">10 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#download-nuttx">10.1 Download NuttX</a><ul></ul></li>
-<li><a href="#configure-nuttx">10.2 Configure NuttX</a><ul></ul></li>
-<li><a href="#build-nuttx">10.3 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">10.4 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">10.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>8 Mar 2022</em></p>
+<li><a href="#sensor-test-app">6 Sensor Test App</a><ul></ul></li>
+<li><a href="#pending-issues">7 Pending Issues</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#notes">9 Notes</a><ul></ul></li>
+<li><a href="#appendix-log-i2c-transfers">10 Appendix: Log I2C Transfers</a><ul></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">11 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#download-nuttx">11.1 Download NuttX</a><ul></ul></li>
+<li><a href="#configure-nuttx">11.2 Configure NuttX</a><ul></ul></li>
+<li><a href="#build-nuttx">11.3 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">11.4 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">11.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>8 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/bme280-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>“Will <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a> talk I2C with <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>… On the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>?”</em></p>
 <p>…A friend and I pondered (8,000 miles apart) while working on the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Temperature + Humidity + Air Pressure</strong></a> combo sensor.</p>
@@ -667,7 +669,7 @@ static const struct sensor_ops_s g_humi_ops = {
   .set_interval  = bme280_set_interval_humi,
 };</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bme280-combine2a.png" alt="Sensor Operations" /></p>
-<h2 id="register-sensor" class="section-header"><a href="#register-sensor">4.2 Register Sensor</a></h2>
+<h2 id="register-sensors" class="section-header"><a href="#register-sensors">4.2 Register Sensors</a></h2>
 <p>TODO</p>
 <p>At NuttX Startup we register both BME280 sensors: Barometer Sensor and Humidity Sensor: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -780,24 +782,7 @@ int bme280_register(int devno, FAR struct i2c_master_s *i2c)
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/bme280-combine3.png" alt="" /></p>
 <p>Our NuttX BME280 Driver appears as 2 sensors: 1️⃣ “/dev/sensor/baro0” (Barometer Sensor) 2️⃣ “/dev/sensor/humi0” (Humidity Sensor)</p>
-<h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">4.3 Wrap Zephyr Driver as NuttX Driver</a></h2>
-<p>TODO</p>
-<p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code7a.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c">(Source)</a></p>
-<p>Now we wrap the Zephyr Driver as a NuttX Driver…</p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">(Source)</a></p>
-<h2 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">4.4 Zephyr Driver Modified For NuttX</a></h2>
-<p>TODO</p>
-<p>Here are the minor modifications we made to the Zephyr BME280 Driver while porting to NuttX…</p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-80464162211b7180f107757b7aee91398cdc088e5775ffadf7e6e1f0bbb4ad65">bme280.c</a></p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-e13ff0ab44de7ead31a3dd6cbbbbf2a6fbfb2f04889300993b87ff5a31ffc233">bme280.h</a></p>
-<p>The above files are wrapped by <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">bundle.c</a> and <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.h">bundle.h</a> to become a NuttX Driver.</p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code12.png" alt="" /></p>
-<h1 id="run-bme280-driver" class="section-header"><a href="#run-bme280-driver">5 Run BME280 Driver</a></h1>
-<p>TODO</p>
+<h2 id="load-driver" class="section-header"><a href="#load-driver">4.3 Load Driver</a></h2>
 <p>Edit the function <code>bl602_bringup</code> or <code>esp32_bringup</code> in this file…</p>
 <div class="example-wrap"><pre class="language-text"><code># For BL602:
 nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
@@ -832,7 +817,24 @@ int bl602_bringup(void) {
     {
       _err(&quot;ERROR: Failed to register BME280\n&quot;);
     }
-#endif /* CONFIG_SENSORS_BME280 */</code></pre></div>
+#endif /* CONFIG_SENSORS_BME280 */</code></pre></div><h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">4.4 Wrap Zephyr Driver as NuttX Driver</a></h2>
+<p>TODO</p>
+<p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
+<p>TODO7</p>
+<p><img src="https://lupyuen.github.io/images/bme280-code7a.png" alt="" /></p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c">(Source)</a></p>
+<p>Now we wrap the Zephyr Driver as a NuttX Driver…</p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">(Source)</a></p>
+<h2 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">4.5 Zephyr Driver Modified For NuttX</a></h2>
+<p>TODO</p>
+<p>Here are the minor modifications we made to the Zephyr BME280 Driver while porting to NuttX…</p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-80464162211b7180f107757b7aee91398cdc088e5775ffadf7e6e1f0bbb4ad65">bme280.c</a></p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-e13ff0ab44de7ead31a3dd6cbbbbf2a6fbfb2f04889300993b87ff5a31ffc233">bme280.h</a></p>
+<p>The above files are wrapped by <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">bundle.c</a> and <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.h">bundle.h</a> to become a NuttX Driver.</p>
+<p>TODO12</p>
+<p><img src="https://lupyuen.github.io/images/bme280-code12.png" alt="" /></p>
+<h1 id="run-bme280-driver" class="section-header"><a href="#run-bme280-driver">5 Run BME280 Driver</a></h1>
+<p>TODO</p>
 <p>This is how we read each sensor:</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt; ls /dev/sensor
@@ -957,7 +959,9 @@ bme280_activate_humi: enable=0
 bme280_activate_humi: priv=4201b770, sensor_humi=4201b78c
 bme280_reg_write: reg=0xf4, val=0x54
 bl602_i2c_transfer: i2c transfer error, event = 4
-nsh&gt;</code></pre></div><h1 id="pending-issues" class="section-header"><a href="#pending-issues">6 Pending Issues</a></h1>
+nsh&gt;</code></pre></div><h1 id="sensor-test-app" class="section-header"><a href="#sensor-test-app">6 Sensor Test App</a></h1>
+<p>TODO</p>
+<h1 id="pending-issues" class="section-header"><a href="#pending-issues">7 Pending Issues</a></h1>
 <p>TODO</p>
 <p>Why does this fail? Perhaps because BME280 is in low power mode?</p>
 <div class="example-wrap"><pre class="language-text"><code># Resume BME280: This is OK
@@ -971,7 +975,7 @@ bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
 bmp280_putreg8: regaddr=0xf4, regval=0x2f
 ...
 # Suspend BMP280: This is OK
-bmp280_putreg8: regaddr=0xf4, regval=0x00</code></pre></div><h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
+bmp280_putreg8: regaddr=0xf4, regval=0x00</code></pre></div><h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -990,11 +994,11 @@ bmp280_putreg8: regaddr=0xf4, regval=0x00</code></pre></div><h1 id="whats-next" 
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bme280.md"><code>lupyuen.github.io/src/bme280.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1494301654186823683">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-log-i2c-transfers" class="section-header"><a href="#appendix-log-i2c-transfers">9 Appendix: Log I2C Transfers</a></h1>
+<h1 id="appendix-log-i2c-transfers" class="section-header"><a href="#appendix-log-i2c-transfers">10 Appendix: Log I2C Transfers</a></h1>
 <p>TODO</p>
 <p>BL602 NuttX I2C Driver doesn’t log the data transferred … Let’s log ourselves: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/arch/risc-v/src/bl602/bl602_i2c.c#L194-L197">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_i2c_send_data(struct bl602_i2c_priv_s *priv)
@@ -1025,13 +1029,13 @@ bmp280_putreg8: regaddr=0xf4, regval=0x00</code></pre></div><h1 id="whats-next" 
       bl602_i2c_start_transfer(priv);</code></pre></div>
 <p>TODO3</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code3a.png" alt="" /></p>
-<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">10 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">11 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602, BL604 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602, BL604 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">10.1 Download NuttX</a></h2>
+<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">11.1 Download NuttX</a></h2>
 <p>To use the NuttX BME280 Driver, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
@@ -1041,7 +1045,7 @@ git clone --recursive --branch bme280 https://github.com/lupyuen/incubator-nuttx
 <ul>
 <li><a href="https://github.com/lupyuen/bme280-nuttx#install-driver"><strong>“Install BME280 Driver”</strong></a></li>
 </ul>
-<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">10.2 Configure NuttX</a></h2>
+<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">11.2 Configure NuttX</a></h2>
 <p>Now we configure our NuttX project…</p>
 <ol>
 <li>
@@ -1117,7 +1121,7 @@ Sensor Informational Output </code></pre></div>
 </li>
 </ol>
 <p>The BME280 Driver will appear in NuttX at <strong>/dev/baro0</strong> and <strong>/dev/humi0</strong></p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">10.3 Build NuttX</a></h2>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">11.3 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
 <ol>
 <li>
@@ -1147,7 +1151,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">10.4 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">11.4 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602 / BL604:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -1224,7 +1228,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">10.5 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">11.5 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
