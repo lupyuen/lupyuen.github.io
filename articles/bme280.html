@@ -646,28 +646,26 @@ struct device {
   bool    activated;             //  True if device is not in sleep mode
   char    *name;                 //  Name of the device (BME280)
   struct  bme280_data *data;     //  Compensation parameters (bme280.c)
-};</code></pre></div><h2 id="sensor-operations" class="section-header"><a href="#sensor-operations">4.1 Sensor Operations</a></h2>
-<p>TODO14</p>
+};</code></pre></div>
+<p>Let’s dive into the implementation of the two NuttX Sensors.</p>
+<h2 id="sensor-operations" class="section-header"><a href="#sensor-operations">4.1 Sensor Operations</a></h2>
+<p>TODO</p>
 <p>Each NuttX Sensor defines its operations for 1️⃣ Activating the sensor 2️⃣ Fetching sensor data 3️⃣ Setting the standby interval</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L71-L87">driver.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* Operations for Barometer and Temperature Sensor */
-
-static const struct sensor_ops_s g_baro_ops =
-{
+<div class="example-wrap"><pre class="language-c"><code>//  Operations for Barometer Sensor
+static const struct sensor_ops_s g_baro_ops = {
   .activate      = bme280_activate_baro,
   .fetch         = bme280_fetch_baro,
   .set_interval  = bme280_set_interval_baro,
 };
 
-/* Operations for Humidity Sensor */
-
-static const struct sensor_ops_s g_humi_ops =
-{
+//  Operations for Humidity Sensor
+static const struct sensor_ops_s g_humi_ops = {
   .activate      = bme280_activate_humi,
   .fetch         = bme280_fetch_humi,
   .set_interval  = bme280_set_interval_humi,
 };</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/bme280-combine2a.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/bme280-combine2a.png" alt="Sensor Operations" /></p>
 <h2 id="register-sensor" class="section-header"><a href="#register-sensor">4.2 Register Sensor</a></h2>
 <p>TODO</p>
 <p>At NuttX Startup we register both BME280 sensors: Barometer Sensor and Humidity Sensor: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L755-L773">driver.c</a></p>
