@@ -782,7 +782,7 @@ int bl602_bringup(void) {
   ret = bme280_register(0, bme280_i2c_bus);
   if (ret &lt; 0) { _err(&quot;ERROR: Failed to register BME280\n&quot;); }
 #endif  //  CONFIG_SENSORS_BME280</code></pre></div>
-<p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup</a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup.c</a> so that it calls <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773">bme280_register</a></p>
+<p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup</a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup.c</a> so that it calls <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773">bme280_register</a></p>
 <h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">4.3 Wrap Zephyr Driver as NuttX Driver</a></h2>
 <p>TODO</p>
 <p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
