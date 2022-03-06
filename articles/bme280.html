@@ -82,9 +82,8 @@
 <li><a href="#combined-barometer-and-humidity-sensor">4 Combined Barometer and Humidity Sensor</a><ul>
 <li><a href="#sensor-operations">4.1 Sensor Operations</a><ul></ul></li>
 <li><a href="#register-sensors">4.2 Register Sensors</a><ul></ul></li>
-<li><a href="#load-driver">4.3 Load Driver</a><ul></ul></li>
-<li><a href="#wrap-zephyr-driver-as-nuttx-driver">4.4 Wrap Zephyr Driver as NuttX Driver</a><ul></ul></li>
-<li><a href="#zephyr-driver-modified-for-nuttx">4.5 Zephyr Driver Modified For NuttX</a><ul></ul></li></ul></li>
+<li><a href="#wrap-zephyr-driver-as-nuttx-driver">4.3 Wrap Zephyr Driver as NuttX Driver</a><ul></ul></li>
+<li><a href="#zephyr-driver-modified-for-nuttx">4.4 Zephyr Driver Modified For NuttX</a><ul></ul></li></ul></li>
 <li><a href="#run-bme280-driver">5 Run BME280 Driver</a><ul></ul></li>
 <li><a href="#sensor-test-app">6 Sensor Test App</a><ul></ul></li>
 <li><a href="#pending-issues">7 Pending Issues</a><ul></ul></li>
@@ -766,11 +765,27 @@ int bme280_register(
   ...
   //  Register the Humidity Sensor
   ret = sensor_register(&amp;priv-&gt;sensor_humi, devno);</code></pre></div>
+<p>The function above is called at startup by <strong>bl602_bringup</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">bl602_bringup.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SENSORS_BME280
+#include &lt;nuttx/sensors/bme280.h&gt;
+#endif /* CONFIG_SENSORS_BME280 */
+...
+int bl602_bringup(void) {
+  ...
+#ifdef CONFIG_SENSORS_BME280
+  //  Init I2C bus for BME280
+  struct i2c_master_s *bme280_i2c_bus = bl602_i2cbus_initialize(0);
+  if (!bme280_i2c_bus) { _err(&quot;ERROR: Failed to get I2C%d interface\n&quot;, 0); }
+
+  //  Register the BME280 driver
+  ret = bme280_register(0, bme280_i2c_bus);
+  if (ret &lt; 0) { _err(&quot;ERROR: Failed to register BME280\n&quot;); }
+#endif  //  CONFIG_SENSORS_BME280</code></pre></div>
+<p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup</a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup.c</a> so that it calls <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773">bme280_register</a></p>
 <p>TODO: bme280_register is called by bl602_bringup</p>
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/bme280-combine3.png" alt="" /></p>
 <p>Our NuttX BME280 Driver appears as 2 sensors: 1️⃣ “/dev/sensor/baro0” (Barometer Sensor) 2️⃣ “/dev/sensor/humi0” (Humidity Sensor)</p>
-<h2 id="load-driver" class="section-header"><a href="#load-driver">4.3 Load Driver</a></h2>
 <p>Edit the function <code>bl602_bringup</code> or <code>esp32_bringup</code> in this file…</p>
 <div class="example-wrap"><pre class="language-text"><code># For BL602:
 nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
@@ -778,34 +793,7 @@ nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
 # For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
 nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 <p>And call <code>bme280_register</code> to register our BME280 Driver:</p>
-<p>https://github.com/lupyuen/incubator-nuttx/blob/bme280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640</p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SENSORS_BME280
-#include &lt;nuttx/sensors/bme280.h&gt;
-#endif /* CONFIG_SENSORS_BME280 */
-
-...
-
-int bl602_bringup(void) {
-  ...
-
-#ifdef CONFIG_SENSORS_BME280
-
-  /* Init I2C bus for BME280 */
-
-  struct i2c_master_s *bme280_i2c_bus = bl602_i2cbus_initialize(0);
-  if (!bme280_i2c_bus)
-    {
-      _err(&quot;ERROR: Failed to get I2C%d interface\n&quot;, 0);
-    }
-
-  /* Register the BME280 driver */
-
-  ret = bme280_register(0, bme280_i2c_bus);
-  if (ret &lt; 0)
-    {
-      _err(&quot;ERROR: Failed to register BME280\n&quot;);
-    }
-#endif /* CONFIG_SENSORS_BME280 */</code></pre></div><h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">4.4 Wrap Zephyr Driver as NuttX Driver</a></h2>
+<h2 id="wrap-zephyr-driver-as-nuttx-driver" class="section-header"><a href="#wrap-zephyr-driver-as-nuttx-driver">4.3 Wrap Zephyr Driver as NuttX Driver</a></h2>
 <p>TODO</p>
 <p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
 <p>TODO7</p>
@@ -813,7 +801,7 @@ int bl602_bringup(void) {
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c">(Source)</a></p>
 <p>Now we wrap the Zephyr Driver as a NuttX Driver…</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">(Source)</a></p>
-<h2 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">4.5 Zephyr Driver Modified For NuttX</a></h2>
+<h2 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">4.4 Zephyr Driver Modified For NuttX</a></h2>
 <p>TODO</p>
 <p>Here are the minor modifications we made to the Zephyr BME280 Driver while porting to NuttX…</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-80464162211b7180f107757b7aee91398cdc088e5775ffadf7e6e1f0bbb4ad65">bme280.c</a></p>
