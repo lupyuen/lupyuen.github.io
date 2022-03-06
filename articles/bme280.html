@@ -734,114 +734,46 @@ static int bme280_fetch_humi(
 </li>
 </ul>
 <h2 id="register-sensors" class="section-header"><a href="#register-sensors">4.2 Register Sensors</a></h2>
-<p>TODO</p>
-<p>At NuttX Startup we register both BME280 sensors: Barometer Sensor and Humidity Sensor: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773">driver.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: bme280_register
- *
- * Description:
- *   Register the BME280 character device
- *
- * Input Parameters:
- *   devno   - Instance number for driver
- *   i2c     - An instance of the I2C interface to use to communicate with
- *             BME280
- *
- * Returned Value:
- *   Zero (OK) on success; a negated errno value on failure.
- *
- ****************************************************************************/
+<p>At NuttX Startup we <strong>register the Barometer and Humidity Sensors</strong>: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773">driver.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Register the BME280 device at startup
+int bme280_register(
+  int devno,  //  Instance number for driver
+  FAR struct i2c_master_s *i2c  //  I2C Interface
+) {
+  //  Initialize the NuttX Device Struct
+  FAR struct device *priv = (FAR struct device *)kmm_zalloc(sizeof(struct device));
+  ...
 
-int bme280_register(int devno, FAR struct i2c_master_s *i2c)
-{
-  DEBUGASSERT(i2c != NULL);
-  sninfo(&quot;devno=%d\n&quot;, devno);
-  FAR struct device *priv;
-  int ret;
-
-  /* Initialize the device structure */
-
-  priv = (FAR struct device *)kmm_zalloc(sizeof(struct device));
-  if (!priv)
-    {
-      snerr(&quot;Failed to allocate instance\n&quot;);
-      return -ENOMEM;
-    }
-  sninfo(&quot;priv=%p, sensor_baro=%p, sensor_humi=%p\n&quot;, priv, &amp;(priv-&gt;sensor_baro), &amp;(priv-&gt;sensor_humi)); ////
-
-  /* Allocate the Compensation Parameters */
-
+  //  Allocate the Compensation Parameters
   struct bme280_data *data = (FAR struct bme280_data *)kmm_zalloc(sizeof(struct bme280_data));
-  if (!data)
-    {
-      snerr(&quot;Failed to allocate data\n&quot;);
-      kmm_free(priv);
-      return -ENOMEM;
-    }
+  ...
 
-  priv-&gt;i2c  = i2c;
-  priv-&gt;addr = BME280_ADDR;
-  priv-&gt;freq = BME280_FREQ;
-  priv-&gt;name = &quot;BME280&quot;;
+  //  Omitted: Initialize the NuttX Device Struct
   priv-&gt;data = data;
-  priv-&gt;activated = true;
+  ...
 
-  /* Initialize the Barometer Sensor */
-
-  priv-&gt;sensor_baro.ops = &amp;g_baro_ops;
+  //  Initialize the Barometer Sensor
+  priv-&gt;sensor_baro.ops  = &amp;g_baro_ops;
   priv-&gt;sensor_baro.type = SENSOR_TYPE_BAROMETER;
 
-  /* Initialize the Humidity Sensor */
-
-  priv-&gt;sensor_humi.ops = &amp;g_humi_ops;
+  //  Initialize the Humidity Sensor
+  priv-&gt;sensor_humi.ops  = &amp;g_humi_ops;
   priv-&gt;sensor_humi.type = SENSOR_TYPE_RELATIVE_HUMIDITY;
 
-  /* Initialize the Sensor Hardware */
+  //  Initialize the Sensor Hardware (Zephyr BME280 Driver)
+  int ret = bme280_chip_init(priv);
+  ...
 
-  ret = bme280_chip_init(priv);
-  if (ret &lt; 0)
-    {
-      snerr(&quot;Failed to init: %d\n&quot;, ret);
-      kmm_free(data);
-      kmm_free(priv);
-      return ret;
-    }
-
-  /* Set power mode to sleep */
-
+  //  Set Power Mode to sleep
   ret = bme280_pm_action(priv, PM_DEVICE_ACTION_SUSPEND);
-  if (ret &lt; 0)
-    {
-      snerr(&quot;Failed to sleep: %d\n&quot;, ret);
-      kmm_free(data);
-      kmm_free(priv);
-      return ret;
-    }
-  priv-&gt;activated = false;
+  ...
 
-  /* Register the Barometer Sensor */
-
+  //  Register the Barometer Sensor
   ret = sensor_register(&amp;priv-&gt;sensor_baro, devno);
-  if (ret &lt; 0)
-    {
-      snerr(&quot;Failed to register barometer sensor: %d\n&quot;, ret);
-      kmm_free(data);
-      kmm_free(priv);
-    }
+  ...
 
-  /* Register the Humidity Sensor */
-
-  ret = sensor_register(&amp;priv-&gt;sensor_humi, devno);
-  if (ret &lt; 0)
-    {
-      snerr(&quot;Failed to register humidity sensor: %d\n&quot;, ret);
-      kmm_free(data);
-      kmm_free(priv);
-    }
-
-  sninfo(&quot;BME280 driver loaded successfully!\n&quot;);
-  return ret;
-}</code></pre></div>
+  //  Register the Humidity Sensor
+  ret = sensor_register(&amp;priv-&gt;sensor_humi, devno);</code></pre></div>
 <p>TODO: bme280_register is called by bl602_bringup</p>
 <p>TODO17</p>
 <p><img src="https://lupyuen.github.io/images/bme280-combine3.png" alt="" /></p>
