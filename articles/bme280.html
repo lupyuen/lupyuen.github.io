@@ -743,12 +743,10 @@ int bme280_register(
   //  Initialize the NuttX Device Struct
   FAR struct device *priv = (FAR struct device *)kmm_zalloc(sizeof(struct device));
   ...
-
   //  Allocate the Compensation Parameters
   struct bme280_data *data = (FAR struct bme280_data *)kmm_zalloc(sizeof(struct bme280_data));
   priv-&gt;data = data;
   ...
-
   //  Initialize the Barometer Sensor
   priv-&gt;sensor_baro.ops  = &amp;g_baro_ops;
   priv-&gt;sensor_baro.type = SENSOR_TYPE_BAROMETER;
@@ -760,15 +758,12 @@ int bme280_register(
   //  Initialize the Sensor Hardware (Zephyr BME280 Driver)
   int ret = bme280_chip_init(priv);
   ...
-
   //  Set Power Mode to sleep (Zephyr BME280 Driver)
   ret = bme280_pm_action(priv, PM_DEVICE_ACTION_SUSPEND);
   ...
-
   //  Register the Barometer Sensor
   ret = sensor_register(&amp;priv-&gt;sensor_baro, devno);
   ...
-
   //  Register the Humidity Sensor
   ret = sensor_register(&amp;priv-&gt;sensor_humi, devno);</code></pre></div>
 <p>TODO: bme280_register is called by bl602_bringup</p>
