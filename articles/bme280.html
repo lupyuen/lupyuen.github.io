@@ -882,7 +882,7 @@ struct sensor_value {
 
 //  Embed NuttX Driver Wrapper
 #include &quot;bme280/driver.c&quot;</code></pre></div>
-<p>Yes this looks objectionable…</p>
+<p>Yes this looks peculiar…</p>
 <h2 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">5.2 Zephyr Driver Modified For NuttX</a></h2>
 <p><em>Sacrilege! We’re #include-ing C source files?!</em></p>
 <p>Yeah this is probably the only way to port the Zephyr Driver to NuttX with the <strong>fewest changes</strong>.</p>
