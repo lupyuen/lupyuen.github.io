@@ -798,10 +798,14 @@ int bl602_bringup(void) {
 pushd nuttx/nuttx/drivers/sensors
 
 # Add the BME280 Driver as a submodule
-git submodule add https://github.com/lupyuen/bme280-nuttx bme280
+git submodule add \
+  https://github.com/lupyuen/bme280-nuttx \
+  bme280
 
 # Create the Symbolic Link to the bundled source file
-ln -s bme280/bundle.c bme280.c
+ln -s \
+  bme280/bundle.c \
+  bme280.c
 
 # Return to the top directory
 popd</code></pre></div>
@@ -810,7 +814,9 @@ popd</code></pre></div>
 pushd nuttx/nuttx/include/nuttx/sensors
 
 # Create the Symbolic Link to the bundled include file
-ln -s ../../../drivers/sensors/bme280/bundle.h bme280.h
+ln -s \
+  ../../../drivers/sensors/bme280/bundle.h \
+  bme280.h
 
 # Return to the top directory
 popd</code></pre></div>
@@ -900,7 +906,13 @@ struct sensor_value {
 <h1 id="run-bme280-driver" class="section-header"><a href="#run-bme280-driver">6 Run BME280 Driver</a></h1>
 <p>We’re finally ready to run our BME280 Driver!</p>
 <ol>
-<li>Follow these steps to <strong>build, flash and run</strong> NuttX (with our driver inside)…</li>
+<li>
+<p>Follow these steps to <strong>build, flash and run</strong> NuttX (with our driver inside)…</p>
+<p><a href="https://lupyuen.github.io/articles/bme280#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
+</li>
+<li>
+<p>At the NuttX Shell, enter this command…</p>
+</li>
 </ol>
 <p>TODO</p>
 <p>This is how we read each sensor:</p>
