@@ -827,6 +827,8 @@ popd</code></pre></div>
 </ul>
 <p>And hopefully we can apply the same steps to port other Zephyr Drivers to NuttX.</p>
 <p>Let’s look inside the bundle.</p>
+<p><img src="https://lupyuen.github.io/images/bme280-code7a.png" alt="Inside the bundle" /></p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c">(Source)</a></p>
 <h2 id="inside-the-bundle" class="section-header"><a href="#inside-the-bundle">5.1 Inside the Bundle</a></h2>
 <p><em>What’s inside the bundled source file <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c"><strong>bundle.c</strong></a>?</em></p>
 <p>We define the <strong>Constants and Macros</strong> needed by the Zephyr Driver: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c#L12-L29">bundle.c</a></p>
@@ -880,22 +882,20 @@ struct sensor_value {
 
 //  Embed NuttX Driver Wrapper
 #include &quot;bme280/driver.c&quot;</code></pre></div>
-<p><em>Looks highly unusual for NuttX?</em></p>
-<p>TODO</p>
-<p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code7a.png" alt="" /></p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c">(Source)</a></p>
-<p>Now we wrap the Zephyr Driver as a NuttX Driver…</p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">(Source)</a></p>
+<p>Yes this looks objectionable…</p>
 <h2 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">5.2 Zephyr Driver Modified For NuttX</a></h2>
-<p>TODO</p>
-<p>Here are the minor modifications we made to the Zephyr BME280 Driver while porting to NuttX…</p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-80464162211b7180f107757b7aee91398cdc088e5775ffadf7e6e1f0bbb4ad65">bme280.c</a></p>
-<p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-e13ff0ab44de7ead31a3dd6cbbbbf2a6fbfb2f04889300993b87ff5a31ffc233">bme280.h</a></p>
-<p>The above files are wrapped by <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c">bundle.c</a> and <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.h">bundle.h</a> to become a NuttX Driver.</p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/bme280-code12.png" alt="" /></p>
+<p><em>Sacrilege! We’re #include-ing C source files?!</em></p>
+<p>Yeah this is probably the only way to port the Zephyr Driver to NuttX with the <strong>fewest changes</strong>.</p>
+<p>Check out the <strong>minor modifications</strong> we made to the Zephyr BME280 Driver while porting to NuttX…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-80464162211b7180f107757b7aee91398cdc088e5775ffadf7e6e1f0bbb4ad65"><strong>Changes to bme280.c</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-e13ff0ab44de7ead31a3dd6cbbbbf2a6fbfb2f04889300993b87ff5a31ffc233"><strong>Changes to bme280.h</strong></a></p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/bme280-code12.png" alt="Changes to Zephyr BME280 Driver" /></p>
 <h1 id="run-bme280-driver" class="section-header"><a href="#run-bme280-driver">6 Run BME280 Driver</a></h1>
 <p>TODO</p>
 <p>This is how we read each sensor:</p>
