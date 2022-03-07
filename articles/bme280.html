@@ -815,6 +815,59 @@ ln -s ../../../drivers/sensors/bme280/bundle.h bme280.h
 popd</code></pre></div>
 <p>Which is Sym-Linked at <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/include/nuttx/sensors/bme280.h"><strong>include/nuttx/sensors/bme280.h</strong></a></p>
 <p>TODO</p>
+<p>We define the Constants and Macros needed by the Zephyr Driver: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c#L12-L29">bundle.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Zephyr BME280 Options from
+//  https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/Kconfig
+#define CONFIG_BME280_MODE_NORMAL        //  Normal Sampling Mode (continuous measurements)
+#define CONFIG_BME280_TEMP_OVER_2X       //  Temperature Oversamling 2x
+#define CONFIG_BME280_PRESS_OVER_16X     //  Pressure Oversampling 16x
+#define CONFIG_BME280_HUMIDITY_OVER_16X  //  Humidity Oversampling 16x
+#define CONFIG_BME280_STANDBY_1000MS     //  Standby Time 1000ms. Note: Will be overwritten in bme280_set_standby
+#define CONFIG_BME280_FILTER_4           //  Filter Coefficient 4
+#define CONFIG_PM_DEVICE                 //  Enable Power Management
+
+//  Other Zephyr Defines
+#define BME280_BUS_I2C  0  //  I2C Bus
+#define BME280_BUS_SPI  0  //  SPI Bus
+#define __ASSERT_NO_MSG DEBUGASSERT  //  Assertion check
+#define LOG_DBG         sninfo       //  Log info message
+#define K_MSEC(ms)      (ms * 1000)  //  Convert milliseconds to microseconds
+#define k_sleep(us)     usleep(us)   //  Sleep for microseconds
+#define sys_le16_to_cpu(x) (x)       //  Convert from little endian to host endian. TODO: Handle big endian</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c#L31-L55">bundle.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Zephyr Sensor Channel to be fetched from the sensor
+enum sensor_channel {
+    SENSOR_CHAN_ALL,           //  All Channels
+    SENSOR_CHAN_AMBIENT_TEMP,  //  Ambient Temperature
+    SENSOR_CHAN_PRESS,         //  Pressure
+    SENSOR_CHAN_HUMIDITY,      //  Humidity
+};
+
+//  Zephyr Power Management Action
+enum pm_device_action {
+    PM_DEVICE_ACTION_SUSPEND,  //  Suspend the sensor
+    PM_DEVICE_ACTION_RESUME,   //  Resume the sensor
+};
+
+//  Zephyr Power Management State
+enum pm_device_state {
+    PM_DEVICE_STATE_ACTIVE,     //  Sensor is active
+    PM_DEVICE_STATE_SUSPENDED,  //  Sensor is suspended
+};
+ 
+//  Zephyr Sensor Value
+struct sensor_value {
+    int32_t val1;  //  Integer part of the value
+    int32_t val2;  //  Fractional part of the value (in one-millionth parts)
+};</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c#L74-L78">bundle.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Embed Zephyr BME280 Driver
+#include &quot;bme280/bme280.c&quot;
+
+//  Embed NuttX Driver Wrapper
+#include &quot;bme280/driver.c&quot;</code></pre></div>
 <p>Zephyr BME280 Driver builds OK on #NuttX (with a few tweaks) 🎉 </p>
 <p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code7a.png" alt="" /></p>
