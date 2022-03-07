@@ -816,17 +816,16 @@ ln -s ../../../drivers/sensors/bme280/bundle.h bme280.h
 popd</code></pre></div>
 <p>Which is Sym-Linked at <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/include/nuttx/sensors/bme280.h"><strong>include/nuttx/sensors/bme280.h</strong></a></p>
 <p><em>This bundling looks complicated. Why not merge the Zephyr and NuttX Drivers into a single source file?</em></p>
-<ol>
+<p>We wanted to reuse the Zephyr Driver with <strong>minimal changes</strong> so that…</p>
+<ul>
 <li>
-<p>TODO: Minimise the changes</p>
+<p>We can <strong>track changes</strong> to the Zephyr source code</p>
 </li>
 <li>
-<p>TODO: Track the code changes</p>
+<p>By <strong>isolating the parts</strong> that were modified for NuttX</p>
 </li>
-<li>
-<p>TODO: Make the migration more obvious</p>
-</li>
-</ol>
+</ul>
+<p>And hopefully we can apply the same steps to port other Zephyr Drivers to NuttX.</p>
 <p>Let’s look inside the bundle.</p>
 <h2 id="inside-the-bundle" class="section-header"><a href="#inside-the-bundle">5.1 Inside the Bundle</a></h2>
 <p><em>What’s inside the bundled source file <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c"><strong>bundle.c</strong></a>?</em></p>
@@ -852,28 +851,28 @@ popd</code></pre></div>
 <p>Followed by the <strong>Zephyr Types</strong>: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c#L31-L55">bundle.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Zephyr Sensor Channel to be fetched from the sensor
 enum sensor_channel {
-    SENSOR_CHAN_ALL,           //  All Channels
-    SENSOR_CHAN_AMBIENT_TEMP,  //  Ambient Temperature
-    SENSOR_CHAN_PRESS,         //  Pressure
-    SENSOR_CHAN_HUMIDITY,      //  Humidity
+  SENSOR_CHAN_ALL,           //  All Channels
+  SENSOR_CHAN_AMBIENT_TEMP,  //  Ambient Temperature
+  SENSOR_CHAN_PRESS,         //  Pressure
+  SENSOR_CHAN_HUMIDITY,      //  Humidity
 };
 
 //  Zephyr Power Management Action
 enum pm_device_action {
-    PM_DEVICE_ACTION_SUSPEND,  //  Suspend the sensor
-    PM_DEVICE_ACTION_RESUME,   //  Resume the sensor
+  PM_DEVICE_ACTION_SUSPEND,  //  Suspend the sensor
+  PM_DEVICE_ACTION_RESUME,   //  Resume the sensor
 };
 
 //  Zephyr Power Management State
 enum pm_device_state {
-    PM_DEVICE_STATE_ACTIVE,     //  Sensor is active
-    PM_DEVICE_STATE_SUSPENDED,  //  Sensor is suspended
+  PM_DEVICE_STATE_ACTIVE,     //  Sensor is active
+  PM_DEVICE_STATE_SUSPENDED,  //  Sensor is suspended
 };
  
 //  Zephyr Sensor Value
 struct sensor_value {
-    int32_t val1;  //  Integer part of the value
-    int32_t val2;  //  Fractional part of the value (in one-millionth parts)
+  int32_t val1;  //  Integer part of the value
+  int32_t val2;  //  Fractional part of the value (in one-millionth parts)
 };</code></pre></div>
 <p>And finally we <strong>embed the source code</strong> of the Zephyr and NuttX Drivers: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c#L74-L78">bundle.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Embed Zephyr BME280 Driver
