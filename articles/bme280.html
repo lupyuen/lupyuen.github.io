@@ -96,7 +96,7 @@
 <li><a href="#configure-nuttx">12.2 Configure NuttX</a><ul></ul></li>
 <li><a href="#build-nuttx">12.3 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">12.4 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">12.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>8 Mar 2022</em></p>
+<li><a href="#run-nuttx">12.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/bme280-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>“Will <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a> talk I2C with <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>… On the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>?”</em></p>
 <p>…A friend and I pondered (8,000 miles apart) while working on the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Temperature + Humidity + Air Pressure</strong></a> combo sensor.</p>
@@ -945,8 +945,237 @@ bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
 <p>Yep our BME280 Driver runs successfully on NuttX!</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run8a.png" alt="Running our NuttX BME280 Driver" /></p>
 <h1 id="sensor-test-app" class="section-header"><a href="#sensor-test-app">7 Sensor Test App</a></h1>
+<p>Earlier we ran the <strong>Sensor Test App</strong> to read the Air Pressure, Temperature and Humidity Sensors…</p>
+<div class="example-wrap"><pre class="language-bash"><code>nsh&gt; sensortest -n 1 baro0
+baro0: timestamp:43760000 value1:1011.29 value2:29.09
+
+nsh&gt; sensortest -n 1 humi0
+humi0: timestamp:60120000 value:90.58</code></pre></div>
+<p>(Pic above)</p>
+<p>Let’s take a quick look inside the Sensor Test App, so that we understand how to code our own Sensor Apps.</p>
 <p>TODO</p>
-<h1 id="pending-issues" class="section-header"><a href="#pending-issues">8 Pending Issues</a></h1>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L233-L401">sensortest.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[])
+{
+  unsigned int interval = 1000000;
+  unsigned int received = 0;
+  unsigned int latency = 0;
+  unsigned int count = 0;
+  char devname[PATH_MAX];
+  struct pollfd fds;
+  FAR char *buffer;
+  FAR char *name;
+  int len = 0;
+  int fd;
+  int idx;
+  int ret;
+
+  if (argc &lt;= 1)
+    {
+      usage();
+      return -EINVAL;
+    }
+
+  if (signal(SIGINT, exit_handler) == SIG_ERR)
+    {
+      return -errno;
+    }
+
+  g_should_exit = false;
+  while ((ret = getopt(argc, argv, &quot;i:b:n:h&quot;)) != EOF)
+    {
+      switch (ret)
+        {
+          case &#39;i&#39;:
+            interval = strtoul(optarg, NULL, 0);
+            break;
+
+          case &#39;b&#39;:
+            latency = strtoul(optarg, NULL, 0);
+            break;
+
+          case &#39;n&#39;:
+            count = strtoul(optarg, NULL, 0);
+            break;
+
+          case &#39;h&#39;:
+          default:
+            usage();
+            goto name_err;
+        }
+    }
+
+  if (optind &lt; argc)
+    {
+      name = argv[optind];
+      for (idx = 0; idx &lt; ARRAYSIZE(g_sensor_info); idx++)
+        {
+          if (!strncmp(name, g_sensor_info[idx].name,
+              strlen(g_sensor_info[idx].name)))
+            {
+              len = g_sensor_info[idx].esize;
+              buffer = calloc(1, len);
+              break;
+            }
+        }
+
+      if (!len)
+        {
+          printf(&quot;The sensor node name:%s is invalid\n&quot;, name);
+          usage();
+          ret = -EINVAL;
+          goto name_err;
+        }
+
+      if (!buffer)
+        {
+          ret = -ENOMEM;
+          goto name_err;
+        }
+    }
+  else
+    {
+      usage();
+      ret = -EINVAL;
+      goto name_err;
+    }
+
+  snprintf(devname, PATH_MAX, DEVNAME_FMT, name);
+  fd = open(devname, O_RDONLY | O_NONBLOCK);
+  if (fd &lt; 0)
+    {
+      ret = -errno;
+      printf(&quot;Failed to open device:%s, ret:%s\n&quot;,
+             devname, strerror(errno));
+      goto open_err;
+    }
+
+  ret = ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
+  if (ret &lt; 0)
+    {
+      ret = -errno;
+      if (ret != -ENOTSUP)
+        {
+          printf(&quot;Failed to set interval for sensor:%s, ret:%s\n&quot;,
+                 devname, strerror(errno));
+          goto ctl_err;
+        }
+    }
+
+  ret = ioctl(fd, SNIOC_BATCH, &amp;latency);
+  if (ret &lt; 0)
+    {
+      ret = -errno;
+      if (ret != -ENOTSUP)
+        {
+          printf(&quot;Failed to batch for sensor:%s, ret:%s\n&quot;,
+                 devname, strerror(errno));
+          goto ctl_err;
+        }
+    }
+
+  ret = ioctl(fd, SNIOC_ACTIVATE, 1);
+  if (ret &lt; 0)
+    {
+      ret = -errno;
+      if (ret != -ENOTSUP)
+        {
+          printf(&quot;Failed to enable sensor:%s, ret:%s\n&quot;,
+                 devname, strerror(errno));
+          goto ctl_err;
+        }
+    }
+
+  printf(&quot;SensorTest: Test %s with interval(%uus), latency(%uus)\n&quot;,
+         devname, interval, latency);
+
+  fds.fd = fd;
+  fds.events = POLLIN;
+
+  while ((!count || received &lt; count) &amp;&amp; !g_should_exit)
+    {
+      if (poll(&amp;fds, 1, -1) &gt; 0)
+        {
+          if (read(fd, buffer, len) &gt;= len)
+            {
+              received++;
+              g_sensor_info[idx].print(buffer, name);
+            }
+        }
+    }
+
+  printf(&quot;SensorTest: Received message: %s, number:%d/%d\n&quot;,
+         name, received, count);
+
+  ret = ioctl(fd, SNIOC_ACTIVATE, 0);
+  if (ret &lt; 0)
+    {
+      ret = -errno;
+      printf(&quot;Failed to disable sensor:%s, ret:%s\n&quot;,
+             devname, strerror(errno));
+      goto ctl_err;
+    }
+
+ctl_err:
+  close(fd);
+open_err:
+  free(buffer);
+name_err:
+  optind = 0;
+  return ret;
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L77-L110">sensortest.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct sensor_info g_sensor_info[] =
+{
+  {print_vec3,  sizeof(struct sensor_event_accel), &quot;accel&quot;},
+  {print_vec3,  sizeof(struct sensor_event_mag),   &quot;mag&quot;},
+  {print_vec3,  sizeof(struct sensor_event_gyro),  &quot;gyro&quot;},
+  {print_valf2, sizeof(struct sensor_event_baro),  &quot;baro&quot;},
+  {print_valf,  sizeof(struct sensor_event_light), &quot;light&quot;},
+  {print_valf,  sizeof(struct sensor_event_prox),  &quot;prox&quot;},
+  {print_valf,  sizeof(struct sensor_event_humi),  &quot;humi&quot;},
+  {print_valf,  sizeof(struct sensor_event_temp),  &quot;temp&quot;},
+  {print_valf3, sizeof(struct sensor_event_rgb),   &quot;rgb&quot;},
+  {print_valb,  sizeof(struct sensor_event_hall),  &quot;hall&quot;},
+  {print_valf,  sizeof(struct sensor_event_ir),    &quot;ir&quot;},
+  {print_gps,   sizeof(struct sensor_event_gps),   &quot;gps&quot;},
+  {print_valf,  sizeof(struct sensor_event_uv),    &quot;uv&quot;},
+  {print_valf,  sizeof(struct sensor_event_noise), &quot;noise&quot;},
+  {print_valf,  sizeof(struct sensor_event_pm25),  &quot;pm25&quot;},
+  {print_valf,  sizeof(struct sensor_event_pm1p0), &quot;pm1p0&quot;},
+  {print_valf,  sizeof(struct sensor_event_pm10),  &quot;pm10&quot;},
+  {print_valf,  sizeof(struct sensor_event_co2),   &quot;co2&quot;},
+  {print_valf,  sizeof(struct sensor_event_hcho),  &quot;hcho&quot;},
+  {print_valf,  sizeof(struct sensor_event_tvoc),  &quot;tvoc&quot;},
+  {print_valf,  sizeof(struct sensor_event_ph),    &quot;ph&quot;},
+  {print_valf,  sizeof(struct sensor_event_dust),  &quot;dust&quot;},
+  {print_valf,  sizeof(struct sensor_event_hrate), &quot;hrate&quot;},
+  {print_valf,  sizeof(struct sensor_event_hbeat), &quot;hbeat&quot;},
+  {print_valf,  sizeof(struct sensor_event_ecg),   &quot;ecg&quot;},
+  {print_ppgd,  sizeof(struct sensor_event_ppgd),  &quot;ppgd&quot;},
+  {print_ppgq,  sizeof(struct sensor_event_ppgq),  &quot;ppgq&quot;},
+  {print_valf2, sizeof(struct sensor_event_impd),  &quot;impd&quot;},
+  {print_vali2, sizeof(struct sensor_event_ots),   &quot;ots&quot;},
+  {print_gps_satellite,  sizeof(struct sensor_event_gps_satellite),
+                                                   &quot;gps_satellite&quot;}
+};</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L146-L151">sensortest.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static void print_valf2(const char *buffer, const char *name)
+{
+  struct sensor_event_baro *event = (struct sensor_event_baro *)buffer;
+  printf(&quot;%s: timestamp:%&quot; PRIu64 &quot; value1:%.2f value2:%.2f\n&quot;,
+         name, event-&gt;timestamp, event-&gt;pressure, event-&gt;temperature);
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L139-L144">sensortest.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static void print_valf(const char *buffer, const char *name)
+{
+  struct sensor_event_prox *event = (struct sensor_event_prox *)buffer;
+  printf(&quot;%s: timestamp:%&quot; PRIu64 &quot; value:%.2f\n&quot;,
+         name, event-&gt;timestamp, event-&gt;proximity);
+}</code></pre></div><h1 id="pending-issues" class="section-header"><a href="#pending-issues">8 Pending Issues</a></h1>
 <p>TODO</p>
 <p>Why does this fail? Perhaps because BME280 is in low power mode?</p>
 <div class="example-wrap"><pre class="language-text"><code># Resume BME280: This is OK
