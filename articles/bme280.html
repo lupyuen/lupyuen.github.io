@@ -911,30 +911,36 @@ struct sensor_value {
 <p><a href="https://lupyuen.github.io/articles/bme280#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
 </li>
 <li>
-<p>At the NuttX Shell, enter this command…</p>
-</li>
-</ol>
-<p>TODO</p>
-<p>This is how we read each sensor:</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt; ls /dev/sensor
-/dev/sensor:
+<p>At the NuttX Shell, enter this command to list the <strong>NuttX Sensors</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev/sensor</code></pre></div></li>
+<li>
+<p>We should see our BME280 <strong>Barometer and Humidity Sensors</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>/dev/sensor:
  baro0
- humi0
-nsh&gt; 
-nsh&gt; sensortest -n 1 baro0
-SensorTest: Test /dev/sensor/baro0 with interval(1000000us), latency(0us)
+ humi0</code></pre></div></li>
+<li>
+<p>To read the BME280 <strong>Barometer Sensor</strong> once, enter this command…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sensortest -n 1 baro0</code></pre></div></li>
+<li>
+<p>We should see the <strong>Air Pressure</strong> and <strong>Temperature</strong> readings…</p>
+<div class="example-wrap"><pre class="language-text"><code>SensorTest: Test /dev/sensor/baro0 with interval(1000000us), latency(0us)
 baro0: timestamp:43760000 value1:1011.29 value2:29.09
 SensorTest: Received message: baro0, number:1/1
-bl602_i2c_transfer: i2c transfer error, event = 4
-nsh&gt; 
-nsh&gt; sensortest -n 1 humi0
-SensorTest: Test /dev/sensor/humi0 with interval(1000000us), latency(0us)
+bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
+<p>This says that the Air Pressure is <strong>1,011.29 millibars</strong> and the Temperature is <strong>29.09 °C</strong>.</p>
+</li>
+<li>
+<p>Now enter this command to read the BME280 <strong>Humidity Sensor</strong> once…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sensortest -n 1 humi0</code></pre></div></li>
+<li>
+<p>We should see the <strong>Relative Humidity</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>SensorTest: Test /dev/sensor/humi0 with interval(1000000us), latency(0us)
 humi0: timestamp:60120000 value:90.58
 SensorTest: Received message: humi0, number:1/1
-bl602_i2c_transfer: i2c transfer error, event = 4
-nsh&gt; 
-nsh&gt; </code></pre></div>
+bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
+<p><a href="https://github.com/lupyuen/bme280-nuttx#output-log">(See the complete log)</a></p>
+</li>
+</ol>
 <p>TODO</p>
 <p>Our NuttX BME280 Driver appears as 2 sensors: 1️⃣ “/dev/sensor/baro0” (Barometer Sensor) 2️⃣ “/dev/sensor/humi0” (Humidity Sensor)</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run8a.png" alt="" /></p>
