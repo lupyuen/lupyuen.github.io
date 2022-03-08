@@ -959,31 +959,31 @@ int main(int argc, FAR char *argv[]) {
   ...
   //  Allocate buffer for Sensor Data.
   //  len is Sensor Data size: sizeof(struct sensor_event_baro)
-  FAR char *buffer = calloc(1, len);
-
-  //  Open the Sensor Device.
+  FAR char *buffer = calloc(1, len);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Open the Sensor Device.
   //  devname looks like &quot;/dev/sensor/baro0&quot;
   int fd = open(devname, O_RDONLY | O_NONBLOCK);
-  if (fd &lt; 0) { /* Handle error */ ... }
-
-  //  Set Standby Interval
+  if (fd &lt; 0) { /* Handle error */ ... }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Set Standby Interval
   int ret = ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
   if (ret &lt; 0) { /* Handle error */ ... }
 
   //  Set Batch Latency
   ret = ioctl(fd, SNIOC_BATCH, &amp;latency);
-  if (ret &lt; 0) { /* Handle error */ ... }
-
-  //  Enable the Sensor
+  if (ret &lt; 0) { /* Handle error */ ... }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Enable the Sensor
   ret = ioctl(fd, SNIOC_ACTIVATE, 1);
-  if (ret &lt; 0) { /* Handle error */ ... }
-
-  //  Prepare to poll the Sensor
+  if (ret &lt; 0) { /* Handle error */ ... }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Prepare to poll the Sensor
   struct pollfd fds;
   fds.fd     = fd;
-  fds.events = POLLIN;
-
-  //  Repeat until all samples have been read
+  fds.events = POLLIN;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Repeat until all samples have been read
   while ((!count || received &lt; count) &amp;&amp; !g_should_exit) {
 
     //  If Sensor Data is available...
@@ -997,9 +997,9 @@ int main(int argc, FAR char *argv[]) {
         g_sensor_info[idx].print(buffer, name);
       }
     }
-  }
-
-  //  Disable Sensor
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Disable Sensor
   ret = ioctl(fd, SNIOC_ACTIVATE, 0);
   if (ret &lt; 0) { /* Handle error */ ... }
 
@@ -1025,13 +1025,14 @@ static void print_valf2(const char *buffer, const char *name) {
 }</code></pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L139-L144">sensortest.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>//  Print Humidity Sensor Data
+<div class="example-wrap"><pre class="language-c"><code>//  Print Humidity or Proximity Sensor Data
 static void print_valf(const char *buffer, const char *name) {
 
-  //  Cast buffer as Humidity Sensor Data
+  //  Cast buffer as Proximity Sensor Data,
+  //  which is same size as Humidity Sensor Data
   struct sensor_event_prox *event = (struct sensor_event_prox *)buffer;
 
-  //  Print Relative Humidity
+  //  Print Humidity or Proximity
   printf(
     &quot;%s: timestamp:%&quot; PRIu64 &quot; value:%.2f\n&quot;,
     name, 
