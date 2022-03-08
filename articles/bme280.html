@@ -946,13 +946,13 @@ bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
 <p>Yep our BME280 Driver runs successfully on NuttX!</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run8a.png" alt="Running our NuttX BME280 Driver" /></p>
 <h1 id="sensor-test-app" class="section-header"><a href="#sensor-test-app">7 Sensor Test App</a></h1>
-<p>Earlier we ran the <strong>Sensor Test App</strong> to read the Air Pressure, Temperature and Humidity Sensors…</p>
+<p>Earlier we ran the <strong>Sensor Test App</strong> to read the Air Pressure, Temperature and Humidity Sensors (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; sensortest -n 1 baro0
 baro0: timestamp:43760000 value1:1011.29 value2:29.09
 
 nsh&gt; sensortest -n 1 humi0
 humi0: timestamp:60120000 value:90.58</code></pre></div>
-<p>(Pic above)</p>
+<p>(That’s 1,011.29 millibars, 29.09 °C, 90.58 % Humidity)</p>
 <p>Let’s take a quick look inside the Sensor Test App, so that we can code our own Sensor Apps: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L233-L401">sensortest.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Sensor Test App
 int main(int argc, FAR char *argv[]) {
