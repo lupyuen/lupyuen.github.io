@@ -970,12 +970,13 @@ int main(int argc, FAR char *argv[]) {
   //  Allocate buffer for Sensor Data.
   //  len is Sensor Data size: sizeof(struct sensor_event_baro)
   FAR char *buffer = calloc(1, len);</code></pre></div>
-<p>TODO</p>
+<p>The app begins by allocating a buffer for the Sensor Data Struct: <strong>sensor_event_baro</strong> (Barometer) or <strong>sensor_event_humi</strong> (Humidity).</p>
+<p>Next we open the Sensor Device: <strong>/dev/sensor/baro0</strong> (Barometer) or <strong>/dev/sensor/humi0</strong> (Humidity)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Open the Sensor Device.
   //  devname looks like &quot;/dev/sensor/baro0&quot;
   int fd = open(devname, O_RDONLY | O_NONBLOCK);
   if (fd &lt; 0) { /* Handle error */ ... }</code></pre></div>
-<p>TODO</p>
+<p>We set the <a href="https://lupyuen.github.io/articles/bme280#standby-interval"><strong>Standby Interval</strong></a> and <strong>Batch Latency</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set Standby Interval
   int ret = ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
   if (ret &lt; 0) { /* Handle error */ ... }
@@ -983,16 +984,16 @@ int main(int argc, FAR char *argv[]) {
   //  Set Batch Latency
   ret = ioctl(fd, SNIOC_BATCH, &amp;latency);
   if (ret &lt; 0) { /* Handle error */ ... }</code></pre></div>
-<p>TODO</p>
+<p>We enable the sensor by switching to <a href="https://lupyuen.github.io/articles/bme280#power-management"><strong>Normal Power Mode</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Enable the Sensor
   ret = ioctl(fd, SNIOC_ACTIVATE, 1);
   if (ret &lt; 0) { /* Handle error */ ... }</code></pre></div>
-<p>TODO</p>
+<p>We prepare to <strong>poll our sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Prepare to poll the Sensor
   struct pollfd fds;
   fds.fd     = fd;
   fds.events = POLLIN;</code></pre></div>
-<p>TODO</p>
+<p>Then we <strong>read and print the Sensor Data</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Repeat until all samples have been read
   while ((!count || received &lt; count) &amp;&amp; !g_should_exit) {
 
@@ -1009,22 +1010,29 @@ int main(int argc, FAR char *argv[]) {
       }
     }
   }</code></pre></div>
-<p>(We’ll see <strong>g_sensor_info</strong> in a while)</p>
-<p>TODO</p>
+<p>(We’ll see <strong>g_sensor_info</strong> and <strong>print</strong> in a while)</p>
+<p>Finally we disable the sensor and switch to <a href="https://lupyuen.github.io/articles/bme280#power-management"><strong>Low Power Mode</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Disable Sensor
   ret = ioctl(fd, SNIOC_ACTIVATE, 0);
   if (ret &lt; 0) { /* Handle error */ ... }
 
   //  Close the Sensor Device and free the buffer
   close(fd);
-  free(buffer);</code></pre></div><h2 id="print-sensor-data" class="section-header"><a href="#print-sensor-data">7.1 Print Sensor Data</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L146-L151">sensortest.c</a></p>
+  free(buffer);</code></pre></div>
+<p>Let’s talk about the printing of Sensor Data.</p>
+<h2 id="print-sensor-data" class="section-header"><a href="#print-sensor-data">7.1 Print Sensor Data</a></h2>
+<p>Earlier we saw this code for <strong>printing Sensor Data</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Print the Sensor Data
+g_sensor_info[idx]
+  .print(buffer, name);</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L77-L110"><strong>g_sensor_info</strong></a> is a Lookup Table that defines the <strong>Print Function</strong> for every Sensor Type.</p>
+<p>Here’s the Print Function for our <strong>Barometer Sensor</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L146-L151">sensortest.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Print Barometer Sensor Data: Pressure and Temperature
 static void print_valf2(const char *buffer, const char *name) {
 
   //  Cast buffer as Barometer Sensor Data
-  struct sensor_event_baro *event = (struct sensor_event_baro *)buffer;
+  struct sensor_event_baro *event = 
+    (struct sensor_event_baro *) buffer;
 
   //  Print Pressure and Temperature
   printf(
@@ -1035,14 +1043,14 @@ static void print_valf2(const char *buffer, const char *name) {
     event-&gt;temperature
   );
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L139-L144">sensortest.c</a></p>
+<p>And here’s the Print Function for our <strong>Humidity Sensor</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L139-L144">sensortest.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Print Humidity or Proximity Sensor Data
 static void print_valf(const char *buffer, const char *name) {
 
   //  Cast buffer as Proximity Sensor Data,
-  //  which is same size as Humidity Sensor Data
-  struct sensor_event_prox *event = (struct sensor_event_prox *)buffer;
+  //  which has same size as Humidity Sensor Data
+  struct sensor_event_prox *event = 
+    (struct sensor_event_prox *) buffer;
 
   //  Print Humidity or Proximity
   printf(
@@ -1052,16 +1060,29 @@ static void print_valf(const char *buffer, const char *name) {
     event-&gt;proximity
   );
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L77-L110">sensortest.c</a></p>
+<p><em>But our Sensor Data is Humidity, not Proximity. Why cast to sensor_event_prox instead of sensor_event_humi?</em></p>
+<p>Yep we should cast to <strong>sensor_event_humi</strong> instead…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Cast buffer as Humidity Sensor Data
+struct sensor_event_humi *event = 
+  (struct sensor_event_humi *) buffer;</code></pre></div>
+<p>The Sensor Test App reuses the same function <strong>print_valf</strong> for printing both Humidity and Proximity Sensor Data. Which is OK because both structs have the same size.</p>
+<p><em>How is the Print Function defined for each Sensor Type?</em></p>
+<p>The Print Functions are defined in the Lookup Table <strong>g_sensor_info</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L77-L110">sensortest.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Lookup Table of all Sensor Types
 static const struct sensor_info g_sensor_info[] = {
   ...
   //  Print Barometer Sensor Data with print_valf2
-  { print_valf2, sizeof(struct sensor_event_baro), &quot;baro&quot;},
+  { print_valf2, 
+    sizeof(struct sensor_event_baro), 
+    &quot;baro&quot; },
 
   //  Print Humidity Sensor Data with print_valf
-  { print_valf,  sizeof(struct sensor_event_humi), &quot;humi&quot;},</code></pre></div><h1 id="pending-issues" class="section-header"><a href="#pending-issues">8 Pending Issues</a></h1>
+  { print_valf,  
+    sizeof(struct sensor_event_humi), 
+    &quot;humi&quot; },</code></pre></div>
+<p>For our own Sensor App we probably won’t need this Lookup Table, since we know which Sensor Type we’re using.</p>
+<p>(And we don’t need to cast our Sensor Data Structs too)</p>
+<h1 id="pending-issues" class="section-header"><a href="#pending-issues">8 Pending Issues</a></h1>
 <p>TODO</p>
 <p>Why does this fail? Perhaps because BME280 is in low power mode?</p>
 <div class="example-wrap"><pre class="language-text"><code># Resume BME280: This is OK
