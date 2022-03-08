@@ -950,7 +950,7 @@ bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
 <p>Yep our BME280 Driver runs successfully on NuttX!</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run8a.png" alt="Running our NuttX BME280 Driver" /></p>
 <h1 id="sensor-test-app" class="section-header"><a href="#sensor-test-app">7 Sensor Test App</a></h1>
-<p>Earlier we ran the <strong>Sensor Test App</strong> to read BME280’s Barometer and Humidity Sensors (pic above)…</p>
+<p>Just now we ran the <strong>Sensor Test App</strong> to read BME280’s Barometer and Humidity Sensors (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; sensortest -n 1 baro0
 baro0: 
   timestamp: 43760000 
@@ -984,7 +984,7 @@ int main(int argc, FAR char *argv[]) {
   ret = ioctl(fd, SNIOC_BATCH, &amp;latency);
   if (ret &lt; 0) { /* Handle error */ ... }</code></pre></div>
 <p>We enable the sensor by switching to <a href="https://lupyuen.github.io/articles/bme280#power-management"><strong>Normal Power Mode</strong></a>…</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Enable the Sensor
+<div class="example-wrap"><pre class="language-c"><code>  //  Enable Sensor and switch to Normal Power Mode
   ret = ioctl(fd, SNIOC_ACTIVATE, 1);
   if (ret &lt; 0) { /* Handle error */ ... }</code></pre></div>
 <p>We prepare to <strong>poll our sensor</strong>…</p>
@@ -992,7 +992,7 @@ int main(int argc, FAR char *argv[]) {
   struct pollfd fds;
   fds.fd     = fd;
   fds.events = POLLIN;</code></pre></div>
-<p>Then we <strong>read and print the Sensor Data</strong>…</p>
+<p>Then we <strong>poll, read and print the Sensor Data</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Repeat until all samples have been read
   while ((!count || received &lt; count) &amp;&amp; !g_should_exit) {
 
@@ -1011,7 +1011,7 @@ int main(int argc, FAR char *argv[]) {
   }</code></pre></div>
 <p>(We’ll see <strong>g_sensor_info</strong> and <strong>print</strong> in a while)</p>
 <p>Finally we disable the sensor and switch to <a href="https://lupyuen.github.io/articles/bme280#power-management"><strong>Low Power Mode</strong></a>…</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Disable Sensor
+<div class="example-wrap"><pre class="language-c"><code>  //  Disable Sensor and switch to Low Power Mode
   ret = ioctl(fd, SNIOC_ACTIVATE, 0);
   if (ret &lt; 0) { /* Handle error */ ... }
 
@@ -1024,7 +1024,9 @@ int main(int argc, FAR char *argv[]) {
 <div class="example-wrap"><pre class="language-c"><code>//  Print the Sensor Data
 g_sensor_info[idx]
   .print(buffer, name);</code></pre></div>
+<p><em>What’s g_sensor_info?</em></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L77-L110"><strong>g_sensor_info</strong></a> is a Lookup Table that defines the <strong>Print Function</strong> for every Sensor Type.</p>
+<p>(Remember that the Sensor Test App needs to handle all Sensor Types)</p>
 <p>Here’s the Print Function for our <strong>Barometer Sensor</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L146-L151">sensortest.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Print Barometer Sensor Data: Pressure and Temperature
 static void print_valf2(const char *buffer, const char *name) {
@@ -1059,12 +1061,12 @@ static void print_valf(const char *buffer, const char *name) {
     event-&gt;proximity
   );
 }</code></pre></div>
-<p><em>But our Sensor Data is Humidity, not Proximity. Why cast to sensor_event_prox instead of sensor_event_humi?</em></p>
+<p><em>But we’re printing Humidity, not Proximity… Why cast to sensor_event_prox?</em></p>
 <p>Yep we should cast to <strong>sensor_event_humi</strong> instead…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Cast buffer as Humidity Sensor Data
 struct sensor_event_humi *event = 
   (struct sensor_event_humi *) buffer;</code></pre></div>
-<p>The Sensor Test App reuses the same function <strong>print_valf</strong> for printing both Humidity and Proximity Sensor Data. Which is OK because both structs have the same size.</p>
+<p>The Sensor Test App reuses the same function <strong>print_valf</strong> for printing both Humidity and Proximity Sensor Data. Which is OK because both structs contain the same field types.</p>
 <p><em>How is the Print Function defined for each Sensor Type?</em></p>
 <p>The Print Functions are defined in the Lookup Table <strong>g_sensor_info</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L77-L110">sensortest.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Lookup Table of all Sensor Types
