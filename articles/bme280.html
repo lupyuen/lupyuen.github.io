@@ -107,7 +107,7 @@
 <p>(Though it supports BMP280)</p>
 </li>
 <li>
-<p>Can we port the BME280 Driver from <strong>Zephyr OS</strong> with a few tweaks?</p>
+<p>Can we port the BME280 Driver from <a href="https://docs.zephyrproject.org/latest/"><strong>Zephyr OS</strong></a> with a few tweaks?</p>
 <p>(Spoiler: Yes we can!)</p>
 </li>
 <li>
@@ -825,7 +825,7 @@ popd</code></pre></div>
 <p>We wanted to reuse the Zephyr Driver with <strong>minimal changes</strong> so that…</p>
 <ul>
 <li>
-<p>We can <strong>track changes</strong> to the Zephyr source code</p>
+<p>We can <strong>track changes</strong> to the Zephyr source code…</p>
 </li>
 <li>
 <p>By <strong>isolating the parts</strong> that were modified for NuttX</p>
@@ -903,6 +903,7 @@ struct sensor_value {
 </ul>
 <p>In future we might merge the source files to clean this up. Not that hard!</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code12.png" alt="Changes to Zephyr BME280 Driver" /></p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-80464162211b7180f107757b7aee91398cdc088e5775ffadf7e6e1f0bbb4ad65">(Source)</a></p>
 <h1 id="run-bme280-driver" class="section-header"><a href="#run-bme280-driver">6 Run BME280 Driver</a></h1>
 <p>We’re finally ready to run our BME280 Driver!</p>
 <ol>
@@ -1084,6 +1085,11 @@ static const struct sensor_info g_sensor_info[] = {
 <p>For our own Sensor App we probably won’t need this Lookup Table, since we know which Sensor Type we’re using.</p>
 <p>(And we don’t need to cast our Sensor Data Structs too)</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<p>Today we successfully ported the BME280 Driver from Zephyr OS to NuttX.</p>
+<p><a href="https://lupyuen.github.io/articles/bme280#set-i2c-sub-address">(And we fixed an I2C quirk on BL602)</a></p>
+<p>I hope you will be inspired to port other drivers from Zephyr to NuttX!</p>
+<p><em>Besides Zephyr OS, where else can we find drivers for NuttX?</em></p>
+<p><a href="https://lupyuen.github.io/articles/rust2"><strong>Embedded Rust</strong></a> is a terrific source of drivers for NuttX.</p>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
