@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-03-10",
+      "website": "https://lupyuen.github.io/articles/bme280",
+      "summary": "Apache NuttX OS talks I2C with Bosch BME280 Sensor on BL602 RISC-V SoC... Thanks to the BME280 Driver ported from Zephyr OS"
+    },
+    {
       "name": "Connect IKEA Air Quality Sensor to Apache NuttX OS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-02-12",
