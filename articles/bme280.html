@@ -1226,6 +1226,7 @@ make menuconfig </code></pre></div></li>
 <p>Select <strong>“Sensor Device Support”</strong></p>
 <p>Check the box for <strong>“Bosch BME280 Sensor”</strong></p>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+<p>The BME280 Driver will appear in NuttX at <strong>/dev/sensor/baro0</strong> and <strong>/dev/sensor/humi0</strong></p>
 </li>
 <li>
 <p>Enable <strong>Sensor Driver Test App</strong>…</p>
@@ -1263,7 +1264,6 @@ Sensor Informational Output </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9d84889f5e2415ecb0f28cea2c2a657f">(See the .config for BL602)</a></p>
 </li>
 </ol>
-<p>The BME280 Driver will appear in NuttX at <strong>/dev/baro0</strong> and <strong>/dev/humi0</strong></p>
 <h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">11.3 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
 <ol>
