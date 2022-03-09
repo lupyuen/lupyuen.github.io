@@ -1193,9 +1193,13 @@ Over the next couple of articles we shall __migrate the LoRa + LoRaWAN code incr
 
 -   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
-I'm still super curious about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. We might start soon with GPIO and SPI to see whether the concept is feasible.
+We'll also explore __I2C on NuttX__, which is super useful for IoT sensors...
 
--   [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1478959963930169345)
+-   [__"Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"__](https://lupyuen.github.io/articles/bme280)
+
+I'm excited about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. Here's how we integrated NuttX GPIO and SPI with Rust...
+
+-   [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
 
 Stay Tuned!
 

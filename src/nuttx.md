@@ -798,7 +798,7 @@ UPDATE: Check out the article here...
 
 I'm new to NuttX but I had lots of fun experimenting with it. I hope you'll enjoy NuttX too!
 
-Here are some topics I might explore in future articles, lemme know if I should do these...
+Here are some topics that I'll explore in future articles...
 
 -   __SPI Driver__: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604! Which we have done here...
 
@@ -810,7 +810,11 @@ Here are some topics I might explore in future articles, lemme know if I should 
 
     [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
--   __Rust__: Porting the Embedded Rust HAL to NuttX sounds really interesting. We might start with GPIO and SPI to see whether the concept is feasible.
+-   __I2C__: We'll explore I2C on NuttX because it's super useful for IoT sensors...
+
+    [__"Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"__](https://lupyuen.github.io/articles/bme280)
+
+-   __Rust__: I'm excited about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. Here's how we integrated NuttX GPIO and SPI with Rust...
 
     [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
 
