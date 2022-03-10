@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS</title>
+    <title>Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS to NuttX RTOS</title>
 
     
     <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
@@ -63,7 +63,7 @@
     <!-- End scripts/rustdoc-before.html -->
     
 
-    <h1 class="title">Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS</h1>
+    <h1 class="title">Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS to NuttX RTOS</h1>
     <nav id="TOC"><ul>
 <li><a href="#test-and-connect-bme280">1 Test and Connect BME280</a><ul></ul></li>
 <li><a href="#start-with-bmp280-driver">2 Start with BMP280 Driver</a><ul>
@@ -98,7 +98,7 @@
 <li><a href="#flash-nuttx">11.4 Flash NuttX</a><ul></ul></li>
 <li><a href="#run-nuttx">11.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>10 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/bme280-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
-<p><em>“Will <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX OS</strong></a> talk I2C with <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>… On the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>?”</em></p>
+<p><em>“Will <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a> talk I2C with <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>… On the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a>?”</em></p>
 <p>…A friend and I pondered (8,000 miles apart) while working on the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide"><strong>Temperature + Humidity + Air Pressure</strong></a> combo sensor.</p>
 <p>Sounds like a fun challenge…</p>
 <ul>
