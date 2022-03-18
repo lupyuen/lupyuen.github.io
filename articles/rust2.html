@@ -322,8 +322,9 @@ int main(int argc, FAR char *argv[]) {
 <p>To call it, we add <strong>embedded-hal</strong> and <strong>nuttx-embedded-hal</strong> as dependencies to our <a href="https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml#L8-L16">Cargo.toml</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
 embedded-hal       = &quot;0.2.7&quot;  # Rust Embedded HAL: https://crates.io/crates/embedded-hal
-nuttx-embedded-hal = &quot;1.0.4&quot;  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
+nuttx-embedded-hal = &quot;1.0.5&quot;  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
 sx126x             = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }  # SX126x LoRa Radio Driver fixed for NuttX</code></pre></div>
+<p><a href="https://crates.io/crates/nuttx-embedded-hal">(Always use the latest version of <strong>nuttx-embedded-hal</strong>)</a></p>
 <p>(We’ll see the <strong>sx126x</strong> driver in a while)</p>
 <p>We import the <strong>Rust Embedded Traits</strong> (GPIO, SPI and Delay) that we’ll call from our app: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L12-L18">lib.rs</a></p>
 
@@ -341,8 +342,7 @@ sx126x             = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&qu
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::OutputPin</span>
   <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>)
   .<span class="ident">expect</span>(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
-<p>(This halts with an error “open gpio failed” if “/dev/gpio1” doesn’t exist)</p>
-<p>Looks cleaner now!</p>
+<p>(This halts with an error if “/dev/gpio1” doesn’t exist)</p>
 <p>We declare it as <strong>“<code>mut</code>”</strong> (mutable) because we expect its Internal State to change as we flip the GPIO.</p>
 <p>Next we fetch the <strong>Delay Interface</strong> that we’ll call to sleep…</p>
 
@@ -353,7 +353,7 @@ sx126x             = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&qu
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to Low</span>
 <span class="ident">cs</span>.<span class="ident">set_low</span>()
   .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
-<p>(“expect” works like an Assertion Check)</p>
+<p>(“<code>expect</code>” works like an Assertion Check)</p>
 <p>We sleep for 1 second…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Wait 1 second (1,000 milliseconds)</span>
