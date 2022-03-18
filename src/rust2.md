@@ -30,7 +30,7 @@ __Caution:__ Work in Progress! Some spots are rough and rocky, I'm hoping the Nu
 
 # Rust Meets NuttX
 
-This is the __simplest Rust program__ that will run on NuttX and print _"Hello World!"_: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L27-L59)
+This is the __simplest Rust program__ that will run on NuttX and print _"Hello World!"_: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L22-L56)
 
 ```rust
 #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
@@ -159,7 +159,7 @@ println!("Hello World!");
 
 Much neater! We'll see later that __"println!"__ supports Formatted Output too.
 
-[(__println!__ is defined here. Thanks Huang Qi! 👍)](https://github.com/lupyuen/rust_test/blob/main/rust/src/macros.rs)
+[(__println!__ is defined here. Thanks Huang Qi! 👍)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/macros.rs)
 
 [(__puts__ is wrapped here)](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L175-L216)
 
@@ -189,7 +189,7 @@ Thus it's indeed possible to call Rust from C... And C from Rust!
 
 # Flipping GPIO
 
-Since we can call NuttX Functions from Rust, let's __flip a GPIO High and Low__ the POSIX way: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L61-L136)
+Since we can call NuttX Functions from Rust, let's __flip a GPIO High and Low__ the POSIX way: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L56-L133)
 
 ```rust
 //  Open GPIO Output
@@ -296,17 +296,28 @@ In a while we'll test the __Semtech SX1262 LoRa Driver__ from Rust Embedded, and
 
 _How do we call Rust Embedded HAL from NuttX?_
 
-We have created a barebones __Rust Embedded HAL for NuttX__.
+We have created a __NuttX Embedded HAL__ that implements the Rust Embedded HAL on NuttX...
+
+-   [__lupyuen/nuttx-embedded-hal__](https://github.com/lupyuen/nuttx-embedded-hal)
 
 [(More details in the Appendix)](https://lupyuen.github.io/articles/rust2#appendix-rust-embedded-hal-for-nuttx)
 
-To call it, we import the __NuttX HAL Module (nuttx_hal)__ and __Rust Embedded Library__ like so: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L7-L25)
+To call it, we add __embedded-hal__ and __nuttx-embedded-hal__ as dependencies to our [Cargo.toml](https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml#L8-L16)...
+
+```text
+# External Rust libraries used by this module.  See crates.io.
+[dependencies]
+embedded-hal       = "0.2.7"  # Rust Embedded HAL: https://crates.io/crates/embedded-hal
+nuttx-embedded-hal = "1.0.4"  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
+sx126x             = { git = "https://github.com/lupyuen/sx126x-rs-nuttx" }  # SX126x LoRa Radio Driver fixed for NuttX
+```
+
+(We'll see the __sx126x__ driver in a while)
+
+We import the __Rust Embedded Traits__ (GPIO, SPI and Delay) that we'll call from our app: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L12-L18)
 
 ```rust
-//  Import NuttX HAL Module
-mod nuttx_hal;
-
-//  Import Libraries
+//  Import Embedded Traits
 use embedded_hal::{       //  Rust Embedded HAL
   digital::v2::OutputPin, //  GPIO Output
   blocking::{             //  Blocking I/O
@@ -316,17 +327,18 @@ use embedded_hal::{       //  Rust Embedded HAL
 };
 ```
 
-(NuttX HAL Module lives in its own source file [nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs))
-
-To open GPIO Output __"/dev/gpio1"__ we do this: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L138-L173)
+To open GPIO Output __"/dev/gpio1"__ we do this: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L133-L174)
 
 ```rust
 //  Open GPIO Output
-let mut cs = nuttx_hal::OutputPin
-  ::new("/dev/gpio1");
+let mut cs = nuttx_embedded_hal::OutputPin
+  ::new("/dev/gpio1")
+  .expect("open gpio failed");
 ```
 
-(Looks cleaner now!)
+(This halts with an error "open gpio failed" if "/dev/gpio1" doesn't exist)
+
+Looks cleaner now!
 
 We declare it as __"`mut`"__ (mutable) because we expect its Internal State to change as we flip the GPIO.
 
@@ -334,8 +346,7 @@ Next we fetch the __Delay Interface__ that we'll call to sleep...
 
 ```rust
 //  Get a Delay Interface
-let mut delay = nuttx_hal::Delay
-  ::new();
+let mut delay = nuttx_embedded_hal::Delay;
 ```
 
 Then we set the __GPIO Output to Low__...
@@ -352,8 +363,10 @@ We sleep for 1 second...
 
 ```rust
 //  Wait 1 second (1,000 milliseconds)
-delay.delay_ms(1000);
+delay.delay_ms(1000_u32);
 ```
+
+("`u32`" says that this is an unsigned 32-bit integer)
 
 Finally we set the __GPIO Output to High__...
 
@@ -373,23 +386,25 @@ Let's test SPI Data Transfer to the [__Semtech SX1262 LoRa Transceiver__](https:
 
 For PineDio Stack BL604 with its onboard SX1262 (pic above), we control __SPI Chip Select__ ourselves via GPIO Output __"/dev/gpio1"__
 
-We begin by opening the __GPIO Output__ for SPI Chip Select: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L138-L173)
+We begin by opening the __GPIO Output__ for SPI Chip Select: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L133-L174)
 
 ```rust
 /// Test the NuttX Embedded HAL by reading SX1262 Register 8
 fn test_hal() {
 
   //  Open GPIO Output for SX1262 Chip Select
-  let mut cs = nuttx_hal::OutputPin
-    ::new("/dev/gpio1");
+  let mut cs = nuttx_embedded_hal::OutputPin
+    ::new("/dev/gpio1")
+    .expect("open gpio failed");
 ```
 
 Next we open the __SPI Bus__...
 
 ```rust
   //  Open SPI Bus for SX1262
-  let mut spi = nuttx_hal::Spi
-    ::new("/dev/spitest0");
+  let mut spi = nuttx_embedded_hal::Spi
+    ::new("/dev/spitest0")
+    .expect("open spi failed");
 ```
 
 __"/dev/spitest0"__ is our __SPI Test Driver__ that simplifies SPI programming. [(See this)](https://lupyuen.github.io/articles/spi2)
@@ -469,7 +484,7 @@ That we tweaked slightly from __[tweedegolf/sx126x-rs](https://github.com/tweede
 
 Let's do the same test as last chapter: __Read SX1262 Register 8__
 
-We begin by opening the __GPIO Input, Output and Interrupt Pins__ for SX1262: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L22-L72)
+We begin by opening the __GPIO Input, Output and Interrupt Pins__ for SX1262: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L21-L84)
 
 ```rust
 /// Test the SX1262 Driver by reading a register.
@@ -477,16 +492,19 @@ We begin by opening the __GPIO Input, Output and Interrupt Pins__ for SX1262: [s
 pub fn test_sx1262() {
 
   //  Open GPIO Input for SX1262 Busy Pin
-  let lora_busy = nuttx_hal::InputPin
-    ::new("/dev/gpio0");
+  let lora_busy = nuttx_embedded_hal::InputPin
+    ::new("/dev/gpio0")
+    .expect("open gpio failed");
 
   //  Open GPIO Output for SX1262 Chip Select
-  let lora_nss = nuttx_hal::OutputPin
-    ::new("/dev/gpio1");
+  let lora_nss = nuttx_embedded_hal::OutputPin
+    ::new("/dev/gpio1")
+    .expect("open gpio failed");
 
   //  Open GPIO Interrupt for SX1262 DIO1 Pin
-  let lora_dio1 = nuttx_hal::InterruptPin
-    ::new("/dev/gpio2");
+  let lora_dio1 = nuttx_embedded_hal::InterruptPin
+    ::new("/dev/gpio2")
+    .expect("open gpio failed");
 ```
 
 (We won't handle interrupts today)
@@ -495,16 +513,19 @@ The __NRESET and Antenna Pins__ are unused for now...
 
 ```rust
   //  TODO: Open GPIO Output for SX1262 NRESET Pin
-  let lora_nreset = nuttx_hal::UnusedPin
-    ::new();
+  let lora_nreset = nuttx_embedded_hal::UnusedPin
+    ::new()
+    .expect("open gpio failed");
 
   //  TODO: Open GPIO Output for SX1262 Antenna Pin
-  let lora_ant = nuttx_hal::UnusedPin
-    ::new();
+  let lora_ant = nuttx_embedded_hal::UnusedPin
+    ::new()
+    .expect("open gpio failed");
 
   //  Open SPI Bus for SX1262
-  let mut spi1 = nuttx_hal::Spi
-    ::new("/dev/spitest0");
+  let mut spi1 = nuttx_embedded_hal::Spi
+    ::new("/dev/spitest0")
+    .expect("open spi failed");
 ```
 
 And we open the __SPI Bus__ like before.
@@ -522,8 +543,7 @@ We __define the pins__ for our SX1262 Driver...
   );
 
   //  Init a busy-waiting delay
-  let delay = &mut nuttx_hal::Delay
-    ::new();
+  let delay = &mut nuttx_hal::Delay;
 ```
 
 We __initialise the SX1262 Driver__...
@@ -540,7 +560,7 @@ We __initialise the SX1262 Driver__...
     .expect("sx1262 init failed");
 ```
 
-[(__build_config__ is defined here)](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L106-L144)
+[(__build_config__ is defined here)](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L117-L157)
 
 Lastly we __read SX1262 Register 8__ and print the result...
 
@@ -585,7 +605,7 @@ We configure the __LoRa Frequency__ for our region like so: [sx1262.rs](https://
 const RF_FREQUENCY: u32 = 923_000_000;  //  923 MHz (Asia)
 ```
 
-We prepare for LoRa Transmission by __setting some SX1262 Registers__: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L73-L104)
+We prepare for LoRa Transmission by __setting some SX1262 Registers__: [sx1262.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L85-L115)
 
 ```rust
 /// Transmit a LoRa Message.
@@ -644,8 +664,8 @@ To run Rust on NuttX, download the modified source code for __NuttX OS and NuttX
 ```bash
 mkdir nuttx
 cd nuttx
-git clone --recursive --branch rust https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch rust https://github.com/lupyuen/incubator-nuttx-apps apps
+git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx-apps apps
 ```
 
 Or if we prefer to __add the Rust Library and App__ to our NuttX Project, follow these instructions...
@@ -954,13 +974,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Rust Embedded HAL for NuttX
 
-This section explains how we implemented the barebones __Rust Embedded HAL for NuttX__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs)
+This section explains how we implemented the __Rust Embedded HAL for NuttX__...
+
+-   [__lupyuen/nuttx-embedded-hal__](https://github.com/lupyuen/nuttx-embedded-hal)
+
+-   [__Documentation for nutt-embedded-hal__](https://docs.rs/nuttx-embedded-hal)
 
 ## GPIO HAL
 
 Let's look at the HAL for __GPIO Output__ (OutputPin), since GPIO Input (InputPin) and GPIO Interrupt (InterruptPin) are implemented the same way.
 
-Our __OutputPin Struct__ contains a __NuttX File Descriptor__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L279-L283)
+Our __OutputPin Struct__ contains a __NuttX File Descriptor__: [nuttx-embedded-hal/src/hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L479-L485)
 
 ```rust
 /// NuttX GPIO Output Struct
@@ -970,62 +994,63 @@ pub struct OutputPin {
 }
 ```
 
-We set the File Descriptor when we __create the OutputPin__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L191-L202)
+We set the File Descriptor when we __create the OutputPin__: [nuttx-embedded-hal/src/hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L381-L395)
 
 ```rust
-/// New NuttX GPIO Output
+/// NuttX Implementation of GPIO Output
 impl OutputPin {
   /// Create a GPIO Output Pin from a Device Path (e.g. "/dev/gpio1")
-  pub fn new(path: &str) -> Self {
+  #[allow(dead_code)]
+  pub fn new(path: &str) -> Result<Self, i32> {
     //  Open the NuttX Device Path (e.g. "/dev/gpio1") for read-write
     let fd = open(path, O_RDWR);
-    assert!(fd > 0);
+    if fd < 0 { return Err(fd) }
 
     //  Return the pin
-    Self { fd }
+    Ok(Self { fd })
   }
 }
 ```
 
-[(__open__ is defined here)](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L299-L322)
+[(__open__ is defined here)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L498-L522)
 
-To set the OutputPin High or Low, we call __ioctl__ on the File Descriptor: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L59-L81)
+To set the OutputPin High or Low, we call __ioctl__ on the File Descriptor: [nuttx-embedded-hal/src/hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L201-L225)
 
 ```rust
-/// Set NuttX Output Pin
+/// NuttX Implementation of GPIO Output
 impl v2::OutputPin for OutputPin {
-  /// Error Type
-  type Error = ();
+    /// Error Type
+    type Error = i32;
 
-  /// Set the GPIO Output to High
-  fn set_high(&mut self) -> Result<(), Self::Error> {
-    let ret = unsafe { 
-      ioctl(self.fd, GPIOC_WRITE, 1) 
-    };
-    assert!(ret >= 0);
-    Ok(())
-  }
+    /// Set the GPIO Output to High
+    fn set_high(&mut self) -> Result<(), Self::Error> {
+        let ret = unsafe { 
+            ioctl(self.fd, GPIOC_WRITE, 1) 
+        };
+        assert!(ret >= 0);
+        Ok(())
+    }
 
-  /// Set the GPIO Output to low
-  fn set_low(&mut self) -> Result<(), Self::Error> {
-    let ret = unsafe { 
-      ioctl(self.fd, GPIOC_WRITE, 0) 
-    };
-    assert!(ret >= 0);
-    Ok(())
-  }
+    /// Set the GPIO Output to low
+    fn set_low(&mut self) -> Result<(), Self::Error> {
+        let ret = unsafe { 
+            ioctl(self.fd, GPIOC_WRITE, 0) 
+        };
+        assert!(ret >= 0);
+        Ok(())
+    }
 }
 ```
 
-When we're done with OutputPin, we __close the File Descriptor__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L251-L257)
+When we're done with OutputPin, we __close the File Descriptor__: [nuttx-embedded-hal/src/hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L443-L451)
 
 ```rust
-/// Drop NuttX GPIO Output
+/// NuttX Implementation of GPIO Output
 impl Drop for OutputPin {
-  /// Close the GPIO Output
-  fn drop(&mut self) {
-    unsafe { close(self.fd) };
-  }
+    /// Close the GPIO Output
+    fn drop(&mut self) {
+        unsafe { close(self.fd) };
+    }
 }
 ```
 
@@ -1035,7 +1060,7 @@ impl Drop for OutputPin {
 
 Now we study the __SPI HAL__ for NuttX.
 
-Our __Spi Struct__ also contains a __File Descriptor__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L165-L176)
+Our __Spi Struct__ also contains a __File Descriptor__: [nuttx-embedded-hal/src/hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L353-L473)
 
 ```rust
 /// NuttX SPI Struct
@@ -1044,20 +1069,21 @@ pub struct Spi {
   fd: i32,
 }
 
-/// New NuttX SPI Bus
+/// NuttX Implementation of SPI Bus
 impl Spi {
-  /// Create an SPI Bus from a Device Path (e.g. "/dev/spitest0")
-  pub fn new(path: &str) -> Self {
-    //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
-    let fd = open(path, O_RDWR);
-    assert!(fd > 0);
+    /// Create an SPI Bus from a Device Path (e.g. "/dev/spitest0")
+    #[allow(dead_code)]
+    pub fn new(path: &str) -> Result<Self, i32> {
+        //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
+        let fd = open(path, O_RDWR);
+        if fd < 0 { return Err(fd) }
 
-    //  Return the pin
-    Self { fd }
-  }
+        //  Return the SPI Bus
+        Ok(Self { fd })
+    }
 }
 
-/// Drop NuttX SPI Bus
+/// NuttX Implementation of SPI Bus
 impl Drop for Spi {
   /// Close the SPI Bus
   fn drop(&mut self) {
@@ -1068,51 +1094,51 @@ impl Drop for Spi {
 
 We __open and close__ the File Descriptor the same way as OutputPin.
 
-To do SPI Write, we __write to the File Descriptor__: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L43-L57)
+To do SPI Write, we __write to the File Descriptor__: [nuttx-embedded-hal/src/hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L185-L201)
 
 ```rust
-/// NuttX SPI Write
-impl Write<u8> for Spi{
-  /// Error Type
-  type Error = ();
+/// NuttX Implementation of SPI Write
+impl spi::Write<u8> for Spi{
+    /// Error Type
+    type Error = i32;
 
-  /// Write SPI data
-  fn write(&mut self, words: &[u8]) -> Result<(), Self::Error> {
-    //  Transmit data
-    let bytes_written = unsafe { 
-      write(self.fd, words.as_ptr(), words.len() as u32) 
-    };
-    assert!(bytes_written == words.len() as i32);
-    Ok(())
-  }
+    /// Write SPI data
+    fn write(&mut self, words: &[u8]) -> Result<(), Self::Error> {
+        //  Transmit data
+        let bytes_written = unsafe { 
+            write(self.fd, words.as_ptr(), words.len() as u32) 
+        };
+        assert_eq!(bytes_written, words.len() as i32);
+        Ok(())
+    }
 }
 ```
 
-SPI Transfer works the same way, except that we also __copy the SPI Response__ and return it to the caller: [rust_test/rust/src/nuttx_hal.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/nuttx_hal.rs#L19-L41)
+SPI Transfer works the same way, except that we also __copy the SPI Response__ and return it to the caller: [nuttx-embedded-hal/src/hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L161-L185)
 
 ```rust
-/// NuttX SPI Transfer
-impl Transfer<u8> for Spi {
-  /// Error Type
-  type Error = ();
+/// NuttX Implementation of SPI Transfer
+impl spi::Transfer<u8> for Spi {
+    /// Error Type
+    type Error = i32;
 
-  /// Transfer SPI data
-  fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
-    //  Transmit data
-    let bytes_written = unsafe { 
-      write(self.fd, words.as_ptr(), words.len() as u32) 
-    };
-    assert!(bytes_written == words.len() as i32);
+    /// Transfer SPI data
+    fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
+        //  Transmit data
+        let bytes_written = unsafe { 
+            write(self.fd, words.as_ptr(), words.len() as u32) 
+        };
+        assert_eq!(bytes_written, words.len() as i32);
 
-    //  Read response
-    let bytes_read = unsafe { 
-      read(self.fd, words.as_mut_ptr(), words.len() as u32) 
-    };
-    assert!(bytes_read == words.len() as i32);
+        //  Read response
+        let bytes_read = unsafe { 
+            read(self.fd, words.as_mut_ptr(), words.len() as u32) 
+        };
+        assert_eq!(bytes_read, words.len() as i32);
 
-    //  Return response
-    Ok(words)
-  }
+        //  Return response
+        Ok(words)
+    }
 }
 ```
 
