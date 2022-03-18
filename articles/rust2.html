@@ -835,7 +835,6 @@ Done!</code></pre></div>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of GPIO Output</span>
 <span class="kw">impl</span> <span class="ident">OutputPin</span> {
   <span class="doccomment">/// Create a GPIO Output Pin from a Device Path (e.g. &quot;/dev/gpio1&quot;)</span>
-  <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">i32</span><span class="op">&gt;</span> {
     <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/gpio1&quot;) for read-write</span>
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open</span>(<span class="ident">path</span>, <span class="ident">O_RDWR</span>);
@@ -894,7 +893,6 @@ Done!</code></pre></div>
 <span class="doccomment">/// NuttX Implementation of SPI Bus</span>
 <span class="kw">impl</span> <span class="ident">Spi</span> {
     <span class="doccomment">/// Create an SPI Bus from a Device Path (e.g. &quot;/dev/spitest0&quot;)</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">i32</span><span class="op">&gt;</span> {
         <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/spitest0&quot;) for read-write</span>
         <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open</span>(<span class="ident">path</span>, <span class="ident">O_RDWR</span>);
