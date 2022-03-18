@@ -308,9 +308,11 @@ To call it, we add __embedded-hal__ and __nuttx-embedded-hal__ as dependencies t
 # External Rust libraries used by this module.  See crates.io.
 [dependencies]
 embedded-hal       = "0.2.7"  # Rust Embedded HAL: https://crates.io/crates/embedded-hal
-nuttx-embedded-hal = "1.0.4"  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
+nuttx-embedded-hal = "1.0.5"  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
 sx126x             = { git = "https://github.com/lupyuen/sx126x-rs-nuttx" }  # SX126x LoRa Radio Driver fixed for NuttX
 ```
+
+[(Always use the latest version of __nuttx-embedded-hal__)](https://crates.io/crates/nuttx-embedded-hal)
 
 (We'll see the __sx126x__ driver in a while)
 
@@ -336,9 +338,7 @@ let mut cs = nuttx_embedded_hal::OutputPin
   .expect("open gpio failed");
 ```
 
-(This halts with an error "open gpio failed" if "/dev/gpio1" doesn't exist)
-
-Looks cleaner now!
+(This halts with an error if "/dev/gpio1" doesn't exist)
 
 We declare it as __"`mut`"__ (mutable) because we expect its Internal State to change as we flip the GPIO.
 
@@ -357,7 +357,7 @@ cs.set_low()
   .expect("cs failed");
 ```
 
-("expect" works like an Assertion Check)
+("`expect`" works like an Assertion Check)
 
 We sleep for 1 second...
 
