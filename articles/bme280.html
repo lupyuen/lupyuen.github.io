@@ -325,10 +325,10 @@ static uint8_t bmp280_getreg8(FAR struct bmp280_dev_s *priv, uint8_t regaddr) {
 
   msg[0].buffer    = &amp;regaddr;
   msg[0].length    = 1;</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L253-L263">(We patch <strong>bmp280_getregs</strong> too)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L238-L327">(We patch <strong>bmp280_getregs</strong> and <strong>bmp280_putreg8</strong> too)</a></p>
 <p><em>What about writing to BMP280 Registers? Do we need to set the I2C Sub Address?</em></p>
-<p><a href="https://github.com/lupyuen/rust-i2c-nuttx#fix-i2c-write"><strong>UPDATE:</strong> Yes we need to send the Register ID + Register Value as I2C Sub Address, followed by an I2C Read. See the Appendix</a></p>
-<p><a href="https://mcuxpresso.nxp.com/api_doc/dev/116/group__i2c.html">(Besides BL602, NXP Microcontrollers are probably the only ones that support I2C Sub Addresses)</a></p>
+<p>Yes we need to send the <strong>Register ID and Register Value</strong> as I2C Sub Address, followed by an <strong>I2C Read</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver">(More about BL602 I2C Quirks)</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-code5a.png" alt="Send the Register ID as I2C Sub Address (instead of I2C Data) when we’re reading a BMP280 Register" /></p>
 <h2 id="bmp280-driver-loads-ok" class="section-header"><a href="#bmp280-driver-loads-ok">2.6 BMP280 Driver Loads OK</a></h2>
 <p>We’ve patched the BMP280 Driver to send the Register ID as I2C Sub Address. Let’s run it!</p>
@@ -377,8 +377,6 @@ bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
 <p>(Air Pressure at Sea Level is 1,013.25 millibars)</p>
 <p>Yep this looks reasonable for Sunny Singapore by the Seaside!</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run5a.png" alt="Read sensor values from BMP280" /></p>
-<p><em>Are we sure that BL602 is writing correctly to I2C Registers?</em></p>
-<p><a href="https://github.com/lupyuen/rust-i2c-nuttx#fix-i2c-write"><strong>UPDATE:</strong> Nope it’s not writing correctly. We need to send the Register ID + Register Value as I2C Sub Address, followed by an I2C Read. See the Appendix</a></p>
 <p>Now let’s port the BME280 Driver from Zephyr OS to NuttX, so we can get the Humidity.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code6a.jpg" alt="NuttX BMP280 Driver vs Zephyr BME280 Driver" /></p>
 <p><em><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/bmp280.c">NuttX BMP280 Driver</a> vs <a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/bme280.c">Zephyr BME280 Driver</a></em></p>
