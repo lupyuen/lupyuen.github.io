@@ -1000,7 +1000,6 @@ We set the File Descriptor when we __create the OutputPin__: [nuttx-embedded-hal
 /// NuttX Implementation of GPIO Output
 impl OutputPin {
   /// Create a GPIO Output Pin from a Device Path (e.g. "/dev/gpio1")
-  #[allow(dead_code)]
   pub fn new(path: &str) -> Result<Self, i32> {
     //  Open the NuttX Device Path (e.g. "/dev/gpio1") for read-write
     let fd = open(path, O_RDWR);
@@ -1072,7 +1071,6 @@ pub struct Spi {
 /// NuttX Implementation of SPI Bus
 impl Spi {
     /// Create an SPI Bus from a Device Path (e.g. "/dev/spitest0")
-    #[allow(dead_code)]
     pub fn new(path: &str) -> Result<Self, i32> {
         //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
         let fd = open(path, O_RDWR);
