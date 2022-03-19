@@ -101,7 +101,7 @@ use nuttx_embedded_hal::{  //  NuttX Embedded HAL
 };
 ```
 
-Let's run our Rust App.
+Before running our Rust App, let's connect the BME280 Sensor.
 
 ![Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/bme280-connect.jpg)
 
@@ -169,9 +169,11 @@ We're using the [__SparkFun BME280 Breakout Board__](https://learn.sparkfun.com/
 
 # Run BME280 App
 
+We're ready to run our Rust App on NuttX!
+
 1.  Follow these steps to __build, flash and run NuttX__...
 
--   [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/rusti2c#appendix-build-flash-and-run-nuttx)
+    [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/rusti2c#appendix-build-flash-and-run-nuttx)
 
 1.  At the NuttX Shell, enter this command to list the __NuttX Devices__...
 
@@ -205,7 +207,7 @@ We're using the [__SparkFun BME280 Breakout Board__](https://learn.sparkfun.com/
 
     [(See the complete log)](https://github.com/lupyuen/rust-i2c-nuttx#test-rust-driver-for-bme280)
 
-Yep the Rust Driver for BME280 runs successfully on NuttX!
+The Rust Driver for BME280 runs successfully on NuttX!
 
 # Rust Driver for BME280
 
