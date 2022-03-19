@@ -22,6 +22,251 @@ Let's dive into our __Rust I2C App for NuttX__...
 
 -   [__lupyuen/rust-i2c-nuttx__](https://github.com/lupyuen/rust-i2c-nuttx)
 
+![Read Sensor Data from BME280](https://lupyuen.github.io/images/rusti2c-code10a.png)
+
+# Read Sensor Data from BME280
+
+Here's how we read the __Temperature, Humidity and Air Pressure__ from the BME280 Sensor: [rust/src/bme280.rs](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs)
+
+```rust
+/// Read Temperature, Pressure and Humidity from BME280 Sensor over I2C
+pub fn read_bme280() {
+
+  //  Open I2C Port
+  let i2c = nuttx_embedded_hal::I2c::new(
+    "/dev/i2c0",  //  I2C Port
+    400000,       //  I2C Frequency: 400 kHz
+  ).expect("open failed");
+```
+
+TODO
+
+```rust    
+  //  Init the BME280 Driver
+  let mut bme280 = bme280::BME280::new(
+    i2c,   //  I2C Port
+    0x77,  //  I2C Address of BME280
+    nuttx_embedded_hal::Delay  //  Delay Interface
+  );
+```
+
+TODO
+
+```rust    
+  //  Init the BME280 Sensor
+  bme280.init()
+    .expect("init failed");
+```
+
+TODO
+
+```rust    
+  //  Measure Temperature, Pressure and Humidity
+  let measurements = bme280.measure()
+    .expect("measure failed");
+```
+
+TODO
+
+```rust    
+  //  Print the measurements
+  println!("Relative Humidity = {}%", measurements.humidity);
+  println!("Temperature = {} deg C",  measurements.temperature);
+  println!("Pressure = {} pascals",   measurements.pressure);
+}
+```
+
+TODO
+
+```rust
+//  Import Libraries
+use nuttx_embedded_hal::{  //  NuttX Embedded HAL
+  println,                 //  Print a formatted message
+};
+```
+
+TODO
+
+Rust Embedded Driver for BME280...
+
+-   [crates.io/bme280](https://crates.io/crates/bme280)
+
+We add the BME280 Driver to [__Cargo.toml__](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/Cargo.toml)...
+
+```text
+# External Rust libraries used by this module.  See crates.io.
+[dependencies]
+bme280             = "0.2.1"  # BME280 Driver: https://crates.io/crates/bme280
+embedded-hal       = "0.2.7"  # Embedded HAL: https://crates.io/crates/embedded-hal
+nuttx-embedded-hal = "1.0.7"  # Rust Embedded HAL for NuttX: https://crates.io/crates/nuttx-embedded-hal
+```
+
+![Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/bme280-connect.jpg)
+
+# Connect BME280
+
+TODO
+
+We connect BME280 to Pine64's [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone)...
+
+| BL602 Pin | BME280 Pin | Wire Colour
+|:---:|:---:|:---|
+| __`GPIO 3`__ | `SDA` | Green 
+| __`GPIO 4`__ | `SCL` | Blue
+| __`3V3`__ | `3.3V` | Red
+| __`GND`__ | `GND` | Black
+
+(Pic above)
+
+The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L85-L88)
+
+```c
+/* I2C Configuration */
+#define BOARD_I2C_SCL \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
+  GPIO_PIN4)
+#define BOARD_I2C_SDA \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
+  GPIO_PIN3)
+```
+
+We disabled the __UART1 Port__ because it uses the same pins as I2C: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L63-L68)
+
+```c
+#ifdef TODO  /* Remember to check for duplicate pins! */
+#define BOARD_UART_1_RX_PIN \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_UART | \
+  GPIO_PIN3)
+#define BOARD_UART_1_TX_PIN \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_UART | \
+  GPIO_PIN4)
+#endif  /* TODO */
+```
+
+(UART0 is used by the Serial Console)
+
+_What if we're connecting to ESP32?_
+
+__For ESP32:__ The GPIO Pin Numbers for the I2C Port (I2C0) are defined in [Kconfig](https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/arch/xtensa/src/esp32/Kconfig#L797-L805) and menuconfig...
+
+```text
+config ESP32_I2C0_SCLPIN
+  int "I2C0 SCL Pin"
+  default 22
+  range 0 39
+
+config ESP32_I2C0_SDAPIN
+  int "I2C0 SDA Pin"
+  default 23
+  range 0 39
+```
+
+_Do we need Pull-Up Resistors?_
+
+We're using the [__SparkFun BME280 Breakout Board__](https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all), which has __Pull-Up Resistors__. (So we don't need to add our own)
+
+# Test Rust Driver for BME280
+
+TODO
+
+Rust Driver for BME280 works OK on NuttX!
+
+```text
+nsh> rust_i2c
+Hello from Rust!
+read_bme280
+i2cdrvr_ioctl: cmd=2101 arg=4201c340
+bl602_i2c_transfer: subflag=1, subaddr=0xd0, sublen=1
+bl602_i2c_recvdata: count=1, temp=0x60
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c328
+bl602_i2c_transfer: subflag=1, subaddr=0xb6e0, sublen=2
+bl602_i2c_recvdata: count=1, temp=0x0
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c350
+bl602_i2c_transfer: subflag=1, subaddr=0x88, sublen=1
+bl602_i2c_recvdata: count=26, temp=0x65e66e97
+bl602_i2c_recvdata: count=22, temp=0x8f990032
+bl602_i2c_recvdata: count=18, temp=0xbd0d581
+bl602_i2c_recvdata: count=14, temp=0xffdb1e71
+bl602_i2c_recvdata: count=10, temp=0x26acfff9
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c350
+bl602_i2c_transfer: subflag=1, subaddr=0xe1, sublen=1
+bl602_i2c_recvdata: count=7, temp=0x14000165
+bl602_i2c_recvdata: count=3, temp=0x141e000b
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c340
+bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
+bl602_i2c_recvdata: count=1, temp=0x141e0000
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c338
+bl602_i2c_transfer: subflag=1, subaddr=0x1f2, sublen=2
+bl602_i2c_recvdata: count=1, temp=0x141e0001
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c340
+bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
+bl602_i2c_recvdata: count=1, temp=0x141e0000
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c338
+bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=2
+bl602_i2c_recvdata: count=1, temp=0x141e0000
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c340
+bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
+bl602_i2c_recvdata: count=1, temp=0x141e0000
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c338
+bl602_i2c_transfer: subflag=1, subaddr=0x54f4, sublen=2
+bl602_i2c_recvdata: count=1, temp=0x141e0054
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c340
+bl602_i2c_transfer: subflag=1, subaddr=0xf5, sublen=1
+bl602_i2c_recvdata: count=1, temp=0x141e0000
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c338
+bl602_i2c_transfer: subflag=1, subaddr=0x10f5, sublen=2
+bl602_i2c_recvdata: count=1, temp=0x141e0010
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c370
+bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
+bl602_i2c_recvdata: count=1, temp=0x141e0054
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c370
+bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
+bl602_i2c_recvdata: count=1, temp=0x141e0054
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c368
+bl602_i2c_transfer: subflag=1, subaddr=0x55f4, sublen=2
+bl602_i2c_recvdata: count=1, temp=0x141e0055
+bl602_i2c_transfer: i2c transfer success
+
+i2cdrvr_ioctl: cmd=2101 arg=4201c380
+bl602_i2c_transfer: subflag=1, subaddr=0xf7, sublen=1
+bl602_i2c_recvdata: count=8, temp=0x86f0b752
+bl602_i2c_recvdata: count=4, temp=0x7b8f806b
+bl602_i2c_transfer: i2c transfer success
+
+Relative Humidity = 87.667625%
+Temperature = 30.358515 deg C
+Pressure = 100967.46 pascals
+Done!
+```
+
 # Rust Embedded HAL for NuttX
 
 TODO
@@ -695,161 +940,6 @@ Setup Read to [0xEF] + ACK
 
 ![Send the Register ID and Register Value as I2C Data instead of I2C Sub Address](https://lupyuen.github.io/images/rusti2c-nosubaddr.png)
 
-# Rust Embedded Driver for BME280
-
-TODO
-
-Now that our Rust Embedded HAL is working on NuttX, let's test the Rust Embedded Driver for BME280...
-
-https://crates.io/crates/bme280
-
-We add the BME280 Driver to [Cargo.toml](rust/Cargo.toml)...
-
-```text
-# External Rust libraries used by this module.  See crates.io.
-[dependencies]
-bme280 = "0.2.1"  # BME280 Driver: https://crates.io/crates/bme280
-```
-
-Here's how we read the Temperature, Humidity and Pressure from the BME280 Driver...
-
-```rust
-/// Read Temperature, Pressure and Humidity from BME280 Sensor over I2C
-pub fn read_bme280() {
-    println!("read_bme280");
-
-    //  Open I2C Port
-    let i2c = nuttx_embedded_hal::I2c::new(
-        "/dev/i2c0",  //  I2C Port
-        400000,       //  I2C Frequency: 400 kHz
-    ).expect("open failed");
-    
-    //  Init the BME280 Driver
-    let mut bme280 = bme280::BME280::new(
-        i2c,   //  I2C Port
-        0x77,  //  I2C Address of BME280
-        nuttx_embedded_hal::Delay  //  Delay Interface
-    );
-
-    //  Init the BME280 Senor
-    bme280.init()
-        .expect("init failed");
-
-    //  Measure Temperature, Pressure and Humidity
-    let measurements = bme280.measure()
-        .expect("measure failed");
-
-    //  Print the measurements
-    println!("Relative Humidity = {}%", measurements.humidity);
-    println!("Temperature = {} deg C",  measurements.temperature);
-    println!("Pressure = {} pascals",   measurements.pressure);
-}
-```
-
-[(Source)](rust/src/bme280.rs)
-
-# Test Rust Driver for BME280
-
-TODO
-
-Rust Driver for BME280 works OK on NuttX!
-
-```text
-nsh> rust_i2c
-Hello from Rust!
-read_bme280
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xd0, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x60
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c328
-bl602_i2c_transfer: subflag=1, subaddr=0xb6e0, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x0
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c350
-bl602_i2c_transfer: subflag=1, subaddr=0x88, sublen=1
-bl602_i2c_recvdata: count=26, temp=0x65e66e97
-bl602_i2c_recvdata: count=22, temp=0x8f990032
-bl602_i2c_recvdata: count=18, temp=0xbd0d581
-bl602_i2c_recvdata: count=14, temp=0xffdb1e71
-bl602_i2c_recvdata: count=10, temp=0x26acfff9
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c350
-bl602_i2c_transfer: subflag=1, subaddr=0xe1, sublen=1
-bl602_i2c_recvdata: count=7, temp=0x14000165
-bl602_i2c_recvdata: count=3, temp=0x141e000b
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c338
-bl602_i2c_transfer: subflag=1, subaddr=0x1f2, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0001
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c338
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c338
-bl602_i2c_transfer: subflag=1, subaddr=0x54f4, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0054
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xf5, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c338
-bl602_i2c_transfer: subflag=1, subaddr=0x10f5, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0010
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c370
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0054
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c370
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0054
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c368
-bl602_i2c_transfer: subflag=1, subaddr=0x55f4, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0055
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c380
-bl602_i2c_transfer: subflag=1, subaddr=0xf7, sublen=1
-bl602_i2c_recvdata: count=8, temp=0x86f0b752
-bl602_i2c_recvdata: count=4, temp=0x7b8f806b
-bl602_i2c_transfer: i2c transfer success
-
-Relative Humidity = 87.667625%
-Temperature = 30.358515 deg C
-Pressure = 100967.46 pascals
-Done!
-```
-
 # What's Next
 
 TODO
@@ -907,10 +997,6 @@ TODO8
 TODO9
 
 ![](https://lupyuen.github.io/images/rusti2c-code9a.png)
-
-TODO10
-
-![](https://lupyuen.github.io/images/rusti2c-code10a.png)
 
 TODO11
 
