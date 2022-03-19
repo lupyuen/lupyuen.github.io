@@ -80,7 +80,14 @@
 <li><a href="#write-i2c-register">13 Write I2C Register</a><ul></ul></li>
 <li><a href="#fix-i2c-write">14 Fix I2C Write</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
-<li><a href="#notes">16 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 Mar 2022</em></p>
+<li><a href="#notes">16 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#download-nuttx">17.1 Download NuttX</a><ul></ul></li>
+<li><a href="#configure-nuttx">17.2 Configure NuttX</a><ul></ul></li>
+<li><a href="#configure-rust-target">17.3 Configure Rust Target</a><ul></ul></li>
+<li><a href="#build-nuttx">17.4 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">17.5 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">17.6 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>26 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em><a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/">Bosch BME280 Sensor</a> connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 <p><a href="https://en.wikipedia.org/wiki/I%C2%B2C"><strong>I2C</strong></a> is a great way to connect all kinds of <strong>Sensor Modules</strong> when we’re creating an <strong>IoT Gadget</strong>. Like sensors for temperature, humidity, light, motion, spectroscopy, GPS, … <a href="https://www.sparkfun.com/categories/tags/i2c"><strong>and many more!</strong></a></p>
@@ -852,6 +859,292 @@ Setup Read to [0xEF] + ACK
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1502823263121989634">this Twitter Thread</a></li>
 </ol>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a></h1>
+<p><em>(For BL602, BL604 and ESP32)</em></p>
+<p>Below are the steps to build, flash and run NuttX on BL602, BL604 and ESP32.</p>
+<p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
+<p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
+<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">17.1 Download NuttX</a></h2>
+<p>Download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+<p>Or if we prefer to <strong>add the Rust Library and App</strong> to our NuttX Project, follow these instructions…</p>
+<ol>
+<li>
+<p><a href="https://github.com/lupyuen/rust-nuttx"><strong>“Install Rust Library”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/rust-i2c-nuttx"><strong>“Install Rust I2C App”</strong></a></p>
+</li>
+</ol>
+<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">17.2 Configure NuttX</a></h2>
+<p>Now we configure our NuttX project…</p>
+<ol>
+<li>
+<p>Install the build prerequisites…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p>Install Rust from <a href="https://rustup.rs"><strong>rustup.rs</strong></a></p>
+</li>
+<li>
+<p>Configure the build…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx
+
+# For BL602 / BL604: Configure the build for BL602 / BL604
+./tools/configure.sh bl602evb:nsh
+
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
+
+# Edit the Build Config
+make menuconfig </code></pre></div></li>
+<li>
+<p>Enable our <strong>Rust Library</strong>…</p>
+<p>Check the box for <strong>“Library Routines”</strong> → <strong>“Rust Library”</strong></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+</li>
+<li>
+<p>Enable <strong>I2C0 Port</strong>…</p>
+<p><strong>For BL602 / BL604:</strong> Check the box for <strong>“System Type”</strong> → <strong>“BL602 Peripheral Support”</strong> → <strong>“I2C0”</strong></p>
+<p><strong>For ESP32:</strong> Check the box for <strong>“System Type”</strong> → <strong>“ESP32 Peripheral Select”</strong> → <strong>“I2C 0”</strong></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+<p><img src="https://lupyuen.github.io/images/bme280-config1.jpg" alt="Enable the I2C Port and I2C Character Driver" /></p>
+</li>
+<li>
+<p>Enable <strong>I2C Character Driver</strong>…</p>
+<p>Check the box for <strong>“Device Drivers”</strong> → <strong>“I2C Driver Support”</strong> → <strong>“I2C Character Driver”</strong></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+</li>
+<li>
+<p>Enable <strong>ls</strong> command…</p>
+<p>Select <strong>“Application Configuration”</strong> → <strong>“NSH Library”</strong> → <strong>“Disable Individual commands”</strong></p>
+<p>Uncheck <strong>“Disable ls”</strong></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+</li>
+<li>
+<p>Enable <strong>Logging and Assertion Checks</strong>…</p>
+<p>Select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong></p>
+<p>Check the boxes for the following…</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable Debug Features
+Enable Error Output
+Enable Warnings Output
+Enable Informational Debug Output
+Enable Debug Assertions
+I2C Debug Features
+I2C Error Output
+I2C Warnings Output
+I2C Informational Output  </code></pre></div>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+</li>
+<li>
+<p>Save the configuration and exit menuconfig</p>
+<p><a href="https://gist.github.com/lupyuen/85550f16517202b7978e592da976c4e7">(See the .config for BL602)</a></p>
+</li>
+</ol>
+<h2 id="configure-rust-target" class="section-header"><a href="#configure-rust-target">17.3 Configure Rust Target</a></h2>
+<p><strong>For BL602 / BL604</strong>: Skip to the next section</p>
+<p><strong>For ESP32-C3 (RISC-V)</strong>: </p>
+<ol>
+<li>
+<p>Run this command to install the Rust Target…</p>
+<div class="example-wrap"><pre class="language-bash"><code>rustup target add riscv32imc-unknown-none-elf</code></pre></div></li>
+<li>
+<p>Edit <strong>apps/examples/rust_i2c/run.sh</strong></p>
+</li>
+<li>
+<p>Set “rust_build_target” and “rust_build_target_folder” to…</p>
+<p><strong>riscv32imc-unknown-none-elf</strong></p>
+</li>
+<li>
+<p>Remove “-Z build-std=core” from “rust_build_options”</p>
+</li>
+</ol>
+<p><strong>For ESP32 (Xtensa)</strong>: </p>
+<ol>
+<li>
+<p>Install the Rust compiler fork with Xtensa support. <a href="https://github.com/jessebraham/esp-hal/tree/main/esp32-hal">(See this)</a></p>
+</li>
+<li>
+<p>Edit <strong>apps/examples/rust_i2c/run.sh</strong></p>
+</li>
+<li>
+<p>Set “rust_build_target” and “rust_build_target_folder” to…</p>
+<p><strong>xtensa-esp32-none-elf</strong></p>
+</li>
+<li>
+<p>Remove “-Z build-std=core” from “rust_build_options”</p>
+</li>
+</ol>
+<p><a href="https://lupyuen.github.io/articles/rust2#rust-target">(More about Rust Targets)</a></p>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">17.4 Build NuttX</a></h2>
+<p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
+<ol>
+<li>
+<p>To build NuttX with Rust, enter this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>pushd apps/examples/rust_i2c
+./run.sh
+popd</code></pre></div></li>
+<li>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>LD: nuttx
+CP: nuttx.hex
+CP: nuttx.bin</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d">(See the complete log for BL602 / BL604)</a></p>
+</li>
+<li>
+<p>Ignore the errors at the <strong>“Flash NuttX”</strong> and <strong>“Run NuttX”</strong> steps</p>
+</li>
+<li>
+<p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
+mkdir /mnt/c/blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
+<p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
+</li>
+<li>
+<p>In case of problems, refer to the <strong>NuttX Docs</strong>…</p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/bl602/index.html"><strong>“BL602 NuttX”</strong></a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html"><strong>“ESP32 NuttX”</strong></a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html"><strong>“Installing NuttX”</strong></a></p>
+</li>
+</ol>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
+</blockquote>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">17.5 Flash NuttX</a></h2>
+<p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
+<p><strong>For BL602 / BL604:</strong> Follow these steps to install <strong>blflash</strong>…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>“Install rustup”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>“Download and build blflash”</strong></a></p>
+</li>
+</ol>
+<p>We assume that our Firmware Binary File <strong>nuttx.bin</strong> has been copied to the <strong>blflash</strong> folder.</p>
+<p>Set BL602 / BL604 to <strong>Flashing Mode</strong> and restart the board…</p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>High</strong> <a href="https://lupyuen.github.io/images/pinedio-high.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Disconnect the USB cable and reconnect</p>
+<p>Or use the Improvised Reset Button <a href="https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack">(Here’s how)</a></p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>H</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperh.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>
+<p>Connect BL10 to the USB port</p>
+</li>
+<li>
+<p>Press and hold the <strong>D8 Button (GPIO 8)</strong></p>
+</li>
+<li>
+<p>Press and release the <strong>EN Button (Reset)</strong></p>
+</li>
+<li>
+<p>Release the D8 Button</p>
+</li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>3.3V</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
+<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
+blflash flash nuttx.bin \
+  --port /dev/ttyUSB0 
+
+# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
+blflash flash nuttx.bin \
+  --port /dev/tty.usbserial-1410 \
+  --initial-baud-rate 230400 \
+  --baud-rate 230400
+
+# For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
+<p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
+<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">17.6 Run NuttX</a></h2>
+<p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
+<p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
+<p><strong>For BL602 / BL604:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
+<p><strong>For PineDio Stack BL604:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>Low</strong> <a href="https://lupyuen.github.io/images/pinedio-low.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Disconnect the USB cable and reconnect</p>
+<p>Or use the Improvised Reset Button <a href="https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack">(Here’s how)</a></p>
+</li>
+</ol>
+<p><strong>For PineCone BL602:</strong></p>
+<ol>
+<li>
+<p>Set the <strong>PineCone Jumper (IO 8)</strong> to the <strong><code>L</code> Position</strong> <a href="https://lupyuen.github.io/images/pinecone-jumperl.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Press the Reset Button</p>
+</li>
+</ol>
+<p><strong>For BL10:</strong></p>
+<ol>
+<li>Press and release the <strong>EN Button (Reset)</strong></li>
+</ol>
+<p><strong>For Pinenut and MagicHome BL602:</strong></p>
+<ol>
+<li>
+<p>Disconnect the board from the USB Port</p>
+</li>
+<li>
+<p>Connect <strong>GPIO 8</strong> to <strong>GND</strong></p>
+</li>
+<li>
+<p>Reconnect the board to the USB port</p>
+</li>
+</ol>
+<p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
+<p><strong>For Linux:</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt;</code></pre></div>
+<p>Congratulations NuttX is now running on BL602 / BL604!</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <p>TODO1</p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code1.png" alt="" /></p>
 <p>TODO2</p>
