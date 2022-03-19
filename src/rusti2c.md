@@ -242,11 +242,13 @@ nuttx-embedded-hal = "1.0.7"
 embedded-hal = "0.2.7"  
 ```
 
-The Rust Driver for BME280 run OK on NuttX because we have implemented the __NuttX Embedded HAL__. Let's look inside the HAL.
+The Rust Driver for BME280 runs OK on NuttX because we have implemented the __NuttX Embedded HAL__. Let's look inside the HAL.
 
-[(BTW: Always use the latest version of __nuttx-embedded-hal__)](https://crates.io/crates/nuttx-embedded-hal)
+[(BTW: Always use the latest version of NuttX Embedded HAL)](https://crates.io/crates/nuttx-embedded-hal)
 
 # NuttX Embedded HAL
+
+_What's the NuttX Embedded HAL?_
 
 TODO
 
