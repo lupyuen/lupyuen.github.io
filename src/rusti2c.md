@@ -273,6 +273,12 @@ Done!
 
 TODO
 
+_We ran the Rust Driver for BME280 on NuttX... Without any code changes?_
+
+Yep amazing!
+
+TODO
+
 Earlier we saw this...
 
 ```rust    
