@@ -39,7 +39,13 @@ pub fn read_bme280() {
   ).expect("open failed");
 ```
 
-TODO
+We begin by opening the I2C Port "__dev/i2c0__", configured for 400 kHz.
+
+_What's __nuttx_embedded_hal__?_
+
+That's the __Hardware Abstraction Layer__ (HAL) for NuttX, coded in Rust. (More about this in a while)
+
+Next we __initialise the BME280 Driver__...
 
 ```rust    
   //  Init the BME280 Driver
@@ -50,7 +56,9 @@ TODO
   );
 ```
 
-TODO
+__BME280__ comes from the BME280 Driver Crate. (As we'll see soon)
+
+Before reading from the BME280 Sensor, we need to __initialise the sensor__...
 
 ```rust    
   //  Init the BME280 Sensor
@@ -58,7 +66,9 @@ TODO
     .expect("init failed");
 ```
 
-TODO
+This halts with an error if the initialisation fails.
+
+We're ready to read the __Temperature, Humidity and Air Pressure__ from the BME280 Sensor...
 
 ```rust    
   //  Measure Temperature, Pressure and Humidity
@@ -66,7 +76,7 @@ TODO
     .expect("measure failed");
 ```
 
-TODO
+Finally we __print the Sensor Data__...
 
 ```rust    
   //  Print the measurements
@@ -76,7 +86,11 @@ TODO
 }
 ```
 
-TODO
+That's all we need to read the Sensor Data from the BME280 Sensor!
+
+_Where is __println__ defined?_
+
+__println__ comes from our NuttX Embedded HAL. This is how we import it...
 
 ```rust
 //  Import Libraries
@@ -85,21 +99,7 @@ use nuttx_embedded_hal::{  //  NuttX Embedded HAL
 };
 ```
 
-TODO
-
-Rust Embedded Driver for BME280...
-
--   [crates.io/bme280](https://crates.io/crates/bme280)
-
-We add the BME280 Driver to [__Cargo.toml__](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/Cargo.toml)...
-
-```text
-# External Rust libraries used by this module.  See crates.io.
-[dependencies]
-bme280             = "0.2.1"  # BME280 Driver: https://crates.io/crates/bme280
-embedded-hal       = "0.2.7"  # Embedded HAL: https://crates.io/crates/embedded-hal
-nuttx-embedded-hal = "1.0.7"  # Rust Embedded HAL for NuttX: https://crates.io/crates/nuttx-embedded-hal
-```
+Let's run our Rust App.
 
 ![Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/bme280-connect.jpg)
 
@@ -165,7 +165,7 @@ _Do we need Pull-Up Resistors?_
 
 We're using the [__SparkFun BME280 Breakout Board__](https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all), which has __Pull-Up Resistors__. (So we don't need to add our own)
 
-# Test Rust Driver for BME280
+# Run BME280 App
 
 TODO
 
@@ -265,6 +265,35 @@ Relative Humidity = 87.667625%
 Temperature = 30.358515 deg C
 Pressure = 100967.46 pascals
 Done!
+```
+
+# Rust Driver for BME280
+
+TODO
+
+Earlier we saw this...
+
+```rust    
+  //  Init the BME280 Driver
+  let mut bme280 = bme280::BME280::new(
+    i2c,   //  I2C Port
+    0x77,  //  I2C Address of BME280
+    nuttx_embedded_hal::Delay  //  Delay Interface
+  );
+```
+
+Rust Embedded Driver for BME280...
+
+-   [crates.io/bme280](https://crates.io/crates/bme280)
+
+We add the BME280 Driver to [__Cargo.toml__](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/Cargo.toml)...
+
+```text
+# External Rust libraries used by this module.  See crates.io.
+[dependencies]
+bme280             = "0.2.1"  # BME280 Driver: https://crates.io/crates/bme280
+embedded-hal       = "0.2.7"  # Embedded HAL: https://crates.io/crates/embedded-hal
+nuttx-embedded-hal = "1.0.7"  # Rust Embedded HAL for NuttX: https://crates.io/crates/nuttx-embedded-hal
 ```
 
 # Rust Embedded HAL for NuttX
