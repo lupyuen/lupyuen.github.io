@@ -248,7 +248,7 @@ The Rust Driver for BME280 runs OK on NuttX because we have implemented the __Nu
 
 [(BTW: Always use the latest version of NuttX Embedded HAL)](https://crates.io/crates/nuttx-embedded-hal)
 
-![NuttX Embedded HAL](https://lupyuen.github.io/images/rusti2c-arch.jpg)
+![NuttX Embedded HAL](https://lupyuen.github.io/images/rusti2c-arch2.jpg)
 
 # NuttX Embedded HAL
 
@@ -256,19 +256,9 @@ _What's the NuttX Embedded HAL?_
 
 TODO
 
-The Rust Embedded HAL for NuttX has been published at crates.io...
+-   [__crates.io/nuttx-embedded-hal__](https://crates.io/crates/nuttx-embedded-hal)
 
-https://crates.io/crates/nuttx-embedded-hal
-
-To use it in your project, add this to your [Cargo.toml](rust/Cargo.toml):
-
-```text
-# External Rust libraries used by this module.  See crates.io.
-[dependencies]
-nuttx-embedded-hal = "1.0.6"  # Rust Embedded HAL for NuttX: https://crates.io/crates/nuttx-embedded-hal
-```
-
-[(Always use the latest version of __nuttx-embedded-hal__)](https://crates.io/crates/nuttx-embedded-hal)
+![NuttX Embedded HAL](https://lupyuen.github.io/images/rusti2c-arch.jpg)
 
 # From C to Rust
 
