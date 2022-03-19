@@ -80,12 +80,14 @@
 <li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
 <li><a href="#notes">14 Notes</a><ul></ul></li></ul></nav><p>📝 <em>26 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
+<p><em><a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/">Bosch BME280 Sensor</a> connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 <p><a href="https://en.wikipedia.org/wiki/I%C2%B2C"><strong>I2C</strong></a> is a great way to connect all kinds of <strong>Sensor Modules</strong> when we’re creating an <strong>IoT Gadget</strong>. Like sensors for temperature, humidity, light, motion, spectroscopy, GPS, … <a href="https://www.sparkfun.com/categories/tags/i2c"><strong>and many more!</strong></a></p>
 <p><em>But where will we get the Software Drivers for the I2C Sensors?</em></p>
-<p><a href="https://github.com/rust-embedded/awesome-embedded-rust#driver-crates"><strong>Embedded Rust</strong></a> has a large collection of drivers for I2C Sensors. And they will work on <strong>many platforms!</strong></p>
-<p>Today we shall experiment with the Rust Driver for <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a> (Temperature / Humdity / Air Pressure)… And learn how we made it work on the (Linux-like) <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a>.</p>
+<p><a href="https://github.com/rust-embedded/awesome-embedded-rust#driver-crates"><strong>Embedded Rust</strong></a> has a large collection of drivers for I2C Sensors. And they will work on <a href="https://github.com/rust-embedded/awesome-embedded-rust#hal-implementation-crates"><strong>many platforms!</strong></a></p>
+<p>Today we shall experiment with the Rust Driver for <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a> (Temperature / Humdity / Air Pressure).</p>
+<p>And learn how we made it work on the (Linux-like) <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>We’ll run this on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a> (pic above), though it should run OK on ESP32 and other NuttX platforms.</p>
-<p>Let’s dive into our <strong>Rust App for NuttX</strong>…</p>
+<p>Let’s dive into our <strong>Rust I2C App for NuttX</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/rust-i2c-nuttx"><strong>lupyuen/rust-i2c-nuttx</strong></a></li>
 </ul>
