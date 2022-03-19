@@ -210,6 +210,8 @@ We're ready to run our Rust App on NuttX!
 
 The Rust Driver for BME280 runs successfully on NuttX!
 
+![Rust Driver for BME280](https://lupyuen.github.io/images/rusti2c-bme280.png)
+
 # Rust Driver for BME280
 
 _We ran the Rust Driver for BME280 on NuttX... Without any code changes?_
@@ -245,6 +247,8 @@ embedded-hal = "0.2.7"
 The Rust Driver for BME280 runs OK on NuttX because we have implemented the __NuttX Embedded HAL__. Let's look inside the HAL.
 
 [(BTW: Always use the latest version of NuttX Embedded HAL)](https://crates.io/crates/nuttx-embedded-hal)
+
+![NuttX Embedded HAL](https://lupyuen.github.io/images/rusti2c-arch.jpg)
 
 # NuttX Embedded HAL
 
