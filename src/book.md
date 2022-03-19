@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _24 Feb 2022_
+📝 _19 Mar 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -57,6 +57,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 -   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
 
 -   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
+
+-   ["Rust talks I2C on Apache NuttX RTOS"](https://lupyuen.github.io/articles/rusti2c)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
@@ -149,6 +151,8 @@ Read an I2C Sensor by calling the BL602 / BL604 __I2C Functions__.
 For __Apache NuttX OS__
 
 -   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
+
+-   ["Rust talks I2C on Apache NuttX RTOS"](https://lupyuen.github.io/articles/rusti2c)
 
 For __BL602 IoT SDK__
 
@@ -311,6 +315,8 @@ How we code BL602 and BL604 firmware the __safer, simpler way with Rust.__
 For __Apache NuttX OS__
 
 -   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
+
+-   ["Rust talks I2C on Apache NuttX RTOS"](https://lupyuen.github.io/articles/rusti2c)
 
 For __BL602 IoT SDK__
 
