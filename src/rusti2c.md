@@ -107,9 +107,7 @@ Let's run our Rust App.
 
 # Connect BME280
 
-TODO
-
-We connect BME280 to Pine64's [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone)...
+We connect BME280 to Pine64's [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone) as follows...
 
 | BL602 Pin | BME280 Pin | Wire Colour
 |:---:|:---:|:---|
@@ -167,107 +165,47 @@ _Do we need Pull-Up Resistors?_
 
 We're using the [__SparkFun BME280 Breakout Board__](https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all), which has __Pull-Up Resistors__. (So we don't need to add our own)
 
+![Run BME280 App](https://lupyuen.github.io/images/rusti2c-run2a.png)
+
 # Run BME280 App
 
-TODO
+1.  Follow these steps to __build, flash and run NuttX__...
 
-Rust Driver for BME280 works OK on NuttX!
+-   [__"Build, Flash and Run NuttX"__](https://lupyuen.github.io/articles/rusti2c#appendix-build-flash-and-run-nuttx)
 
-```text
-nsh> rust_i2c
-Hello from Rust!
-read_bme280
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xd0, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x60
-bl602_i2c_transfer: i2c transfer success
+1.  At the NuttX Shell, enter this command to list the __NuttX Devices__...
 
-i2cdrvr_ioctl: cmd=2101 arg=4201c328
-bl602_i2c_transfer: subflag=1, subaddr=0xb6e0, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x0
-bl602_i2c_transfer: i2c transfer success
+    ```bash
+    ls /dev
+    ```
 
-i2cdrvr_ioctl: cmd=2101 arg=4201c350
-bl602_i2c_transfer: subflag=1, subaddr=0x88, sublen=1
-bl602_i2c_recvdata: count=26, temp=0x65e66e97
-bl602_i2c_recvdata: count=22, temp=0x8f990032
-bl602_i2c_recvdata: count=18, temp=0xbd0d581
-bl602_i2c_recvdata: count=14, temp=0xffdb1e71
-bl602_i2c_recvdata: count=10, temp=0x26acfff9
-bl602_i2c_transfer: i2c transfer success
+1.  We should see our __I2C Port__...
 
-i2cdrvr_ioctl: cmd=2101 arg=4201c350
-bl602_i2c_transfer: subflag=1, subaddr=0xe1, sublen=1
-bl602_i2c_recvdata: count=7, temp=0x14000165
-bl602_i2c_recvdata: count=3, temp=0x141e000b
-bl602_i2c_transfer: i2c transfer success
+    ```text
+    /dev:
+     i2c0
+     ...
+    ```
 
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
+1.  To __read the BME280 Sensor__, enter this command...
 
-i2cdrvr_ioctl: cmd=2101 arg=4201c338
-bl602_i2c_transfer: subflag=1, subaddr=0x1f2, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0001
-bl602_i2c_transfer: i2c transfer success
+    ```bash
+    rust_i2c
+    ```
 
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
+1.  We should see the __Relative Humidity, Temperature and Air Pressure__...
 
-i2cdrvr_ioctl: cmd=2101 arg=4201c338
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
+    ```text
+    read_bme280
+    Relative Humidity = 89.284164%
+    Temperature = 29.942907 deg C
+    Pressure = 100483.04 pascals
+    Done!
+    ```
 
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
+    [(See the complete log)](https://github.com/lupyuen/rust-i2c-nuttx#test-rust-driver-for-bme280)
 
-i2cdrvr_ioctl: cmd=2101 arg=4201c338
-bl602_i2c_transfer: subflag=1, subaddr=0x54f4, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0054
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c340
-bl602_i2c_transfer: subflag=1, subaddr=0xf5, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0000
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c338
-bl602_i2c_transfer: subflag=1, subaddr=0x10f5, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0010
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c370
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0054
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c370
-bl602_i2c_transfer: subflag=1, subaddr=0xf4, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x141e0054
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c368
-bl602_i2c_transfer: subflag=1, subaddr=0x55f4, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x141e0055
-bl602_i2c_transfer: i2c transfer success
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c380
-bl602_i2c_transfer: subflag=1, subaddr=0xf7, sublen=1
-bl602_i2c_recvdata: count=8, temp=0x86f0b752
-bl602_i2c_recvdata: count=4, temp=0x7b8f806b
-bl602_i2c_transfer: i2c transfer success
-
-Relative Humidity = 87.667625%
-Temperature = 30.358515 deg C
-Pressure = 100967.46 pascals
-Done!
-```
+Yep the Rust Driver for BME280 runs successfully on NuttX!
 
 # Rust Driver for BME280
 
@@ -1060,6 +998,12 @@ Now we configure our NuttX project...
 
     Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
 
+1.  Enable our __Rust I2C App__...
+
+    Check the box for __"Application Configuration"__ → __"Examples"__ → __"Rust I2C App"__
+
+    Hit __"Exit"__ until the Top Menu appears. ("NuttX/x64_64 Configuration")
+
 1.  Enable __I2C0 Port__...
 
     __For BL602 / BL604:__ Check the box for __"System Type"__ → __"BL602 Peripheral Support"__ → __"I2C0"__
@@ -1120,7 +1064,7 @@ __For ESP32-C3 (RISC-V)__:
     rustup target add riscv32imc-unknown-none-elf
     ```
 
-1.  Edit __apps/examples/rust_i2c/run.sh__
+1.  Edit [__apps/examples/rust_i2c/run.sh__](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/run.sh)
 
 1.  Set "rust_build_target" and "rust_build_target_folder" to...
 
@@ -1132,7 +1076,7 @@ __For ESP32 (Xtensa)__:
 
 1.  Install the Rust compiler fork with Xtensa support. [(See this)](https://github.com/jessebraham/esp-hal/tree/main/esp32-hal)
 
-1.  Edit __apps/examples/rust_i2c/run.sh__
+1.  Edit [__apps/examples/rust_i2c/run.sh__](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/run.sh)
 
 1.  Set "rust_build_target" and "rust_build_target_folder" to...
 
@@ -1383,10 +1327,6 @@ TODO16
 TODO17
 
 ![](https://lupyuen.github.io/images/rusti2c-run1.png)
-
-TODO18
-
-![](https://lupyuen.github.io/images/rusti2c-run2a.png)
 
 TODO19
 
