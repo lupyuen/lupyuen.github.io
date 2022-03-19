@@ -69,7 +69,7 @@
 <li><a href="#connect-bme280">2 Connect BME280</a><ul></ul></li>
 <li><a href="#run-bme280-app">3 Run BME280 App</a><ul></ul></li>
 <li><a href="#rust-driver-for-bme280">4 Rust Driver for BME280</a><ul></ul></li>
-<li><a href="#rust-embedded-hal-for-nuttx">5 Rust Embedded HAL for NuttX</a><ul></ul></li>
+<li><a href="#nuttx-embedded-hal">5 NuttX Embedded HAL</a><ul></ul></li>
 <li><a href="#from-c-to-rust">6 From C to Rust</a><ul></ul></li>
 <li><a href="#c-types-and-constants">7 C Types and Constants</a><ul></ul></li>
 <li><a href="#read-i2c-register-in-rust">8 Read I2C Register in Rust</a><ul></ul></li>
@@ -90,12 +90,11 @@
 <li><a href="#run-nuttx">17.6 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>26 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em><a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/">Bosch BME280 Sensor</a> connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
-<p><a href="https://en.wikipedia.org/wiki/I%C2%B2C"><strong>I2C</strong></a> is a great way to connect all kinds of <strong>Sensor Modules</strong> when we’re creating an <strong>IoT Gadget</strong>. Like sensors for temperature, humidity, light, motion, spectroscopy, GPS, … <a href="https://www.sparkfun.com/categories/tags/i2c"><strong>and many more!</strong></a></p>
+<p><a href="https://en.wikipedia.org/wiki/I%C2%B2C"><strong>I2C</strong></a> is a great way to connect all kinds of <strong>Sensor Modules</strong> when we’re creating an <strong>IoT Gadget</strong>. Like sensors for temperature, light, motion, spectroscopy, soil moisture, GPS, LIDAR, … <a href="https://www.sparkfun.com/categories/tags/i2c"><strong>and many more!</strong></a></p>
 <p><em>But where will we get the Software Drivers for the I2C Sensors?</em></p>
 <p><a href="https://github.com/rust-embedded/awesome-embedded-rust#driver-crates"><strong>Embedded Rust</strong></a> has a large collection of drivers for I2C Sensors. And they will work on <a href="https://github.com/rust-embedded/awesome-embedded-rust#hal-implementation-crates"><strong>many platforms!</strong></a></p>
-<p>Today we shall experiment with the Rust Driver for <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a> (Temperature / Humdity / Air Pressure).</p>
-<p>And learn how we made it work on the (Linux-like) <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a>.</p>
-<p>We’ll run this on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a> (pic above), though it should run OK on ESP32 and other NuttX platforms.</p>
+<p>Today we shall experiment with the Rust Driver for <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a> (Temperature / Humdity / Air Pressure). And learn how we made it work on the (Linux-like) <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a>.</p>
+<p>We’ll run this on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V SoC</strong></a> (pic above), though it should work fine on ESP32 and other NuttX platforms.</p>
 <p>Let’s dive into our <strong>Rust I2C App for NuttX</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/rust-i2c-nuttx"><strong>lupyuen/rust-i2c-nuttx</strong></a></li>
@@ -206,7 +205,7 @@ config ESP32_I2C0_SDAPIN
 <p>At the NuttX Shell, enter this command to list the <strong>NuttX Devices</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div></li>
 <li>
-<p>We should see our <strong>I2C Port</strong>…</p>
+<p>We should see our <strong>I2C Port</strong> that’s connected to BME280…</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev:
  i2c0
  ...</code></pre></div></li>
@@ -225,27 +224,31 @@ Done!</code></pre></div>
 </ol>
 <p>The Rust Driver for BME280 runs successfully on NuttX!</p>
 <h1 id="rust-driver-for-bme280" class="section-header"><a href="#rust-driver-for-bme280">4 Rust Driver for BME280</a></h1>
-<p>TODO</p>
 <p><em>We ran the Rust Driver for BME280 on NuttX… Without any code changes?</em></p>
-<p>Yep amazing!</p>
-<p>TODO</p>
-<p>Earlier we saw this…</p>
+<p>Yeah amazing right? Earlier we saw this: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs">rust/src/bme280.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the BME280 Driver</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bme280</span> <span class="op">=</span> <span class="ident">bme280::BME280::new</span>(
-    <span class="ident">i2c</span>,   <span class="comment">//  I2C Port</span>
-    <span class="number">0x77</span>,  <span class="comment">//  I2C Address of BME280</span>
-    <span class="ident">nuttx_embedded_hal::Delay</span>  <span class="comment">//  Delay Interface</span>
-  );</code></pre></div>
-<p>Rust Embedded Driver for BME280…</p>
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bme280</span> <span class="op">=</span> <span class="ident">bme280::BME280</span>
+    <span class="ident">::new</span>( ... );</code></pre></div>
+<p><strong>BME280</strong> comes from the Rust Embedded Driver for BME280…</p>
 <ul>
-<li><a href="https://crates.io/crates/bme280">crates.io/bme280</a></li>
+<li><a href="https://crates.io/crates/bme280"><strong>crates.io/bme280</strong></a></li>
 </ul>
-<p>We add the BME280 Driver to <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/Cargo.toml"><strong>Cargo.toml</strong></a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>[dependencies]
-bme280             = &quot;0.2.1&quot;  # BME280 Driver: https://crates.io/crates/bme280
-embedded-hal       = &quot;0.2.7&quot;  # Embedded HAL: https://crates.io/crates/embedded-hal
-nuttx-embedded-hal = &quot;1.0.7&quot;  # Rust Embedded HAL for NuttX: https://crates.io/crates/nuttx-embedded-hal</code></pre></div><h1 id="rust-embedded-hal-for-nuttx" class="section-header"><a href="#rust-embedded-hal-for-nuttx">5 Rust Embedded HAL for NuttX</a></h1>
+<p>That we have added to our <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/Cargo.toml"><strong>Cargo.toml</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code># External Rust libraries used by this module.  See crates.io.
+[dependencies]
+
+# BME280 Driver: https://crates.io/crates/bme280
+bme280 = &quot;0.2.1&quot;
+
+# NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
+nuttx-embedded-hal = &quot;1.0.7&quot;  
+
+# Rust Embedded HAL: https://crates.io/crates/embedded-hal
+embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
+<p>The Rust Driver for BME280 run OK on NuttX because we have implemented the <strong>NuttX Embedded HAL</strong>. Let’s look inside the HAL.</p>
+<p><a href="https://crates.io/crates/nuttx-embedded-hal">(BTW: Always use the latest version of <strong>nuttx-embedded-hal</strong>)</a></p>
+<h1 id="nuttx-embedded-hal" class="section-header"><a href="#nuttx-embedded-hal">5 NuttX Embedded HAL</a></h1>
 <p>TODO</p>
 <p>The Rust Embedded HAL for NuttX has been published at crates.io…</p>
 <p>https://crates.io/crates/nuttx-embedded-hal</p>

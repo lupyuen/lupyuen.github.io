@@ -319,11 +319,18 @@ int main(int argc, FAR char *argv[]) {
 <li><a href="https://github.com/lupyuen/nuttx-embedded-hal"><strong>lupyuen/nuttx-embedded-hal</strong></a></li>
 </ul>
 <p><a href="https://lupyuen.github.io/articles/rust2#appendix-rust-embedded-hal-for-nuttx">(More details in the Appendix)</a></p>
-<p>To call it, we add <strong>embedded-hal</strong> and <strong>nuttx-embedded-hal</strong> as dependencies to our <a href="https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml#L8-L16">Cargo.toml</a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>[dependencies]
-embedded-hal       = &quot;0.2.7&quot;  # Rust Embedded HAL: https://crates.io/crates/embedded-hal
-nuttx-embedded-hal = &quot;1.0.6&quot;  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
-sx126x             = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }  # SX126x LoRa Radio Driver fixed for NuttX</code></pre></div>
+<p>To call it, we add <strong>embedded-hal</strong> and <strong>nuttx-embedded-hal</strong> as dependencies to our <a href="https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml#L8-L16"><strong>Cargo.toml</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code># External Rust libraries used by this module.  See crates.io.
+[dependencies]
+
+# Rust Embedded HAL: https://crates.io/crates/embedded-hal
+embedded-hal = &quot;0.2.7&quot;  
+
+# NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
+nuttx-embedded-hal = &quot;1.0.6&quot;  
+
+# SX126x LoRa Radio Driver fixed for NuttX
+sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }  </code></pre></div>
 <p><a href="https://crates.io/crates/nuttx-embedded-hal">(Always use the latest version of <strong>nuttx-embedded-hal</strong>)</a></p>
 <p>(We’ll see the <strong>sx126x</strong> driver in a while)</p>
 <p>We import the <strong>Rust Embedded Traits</strong> (GPIO, SPI and Delay) that we’ll call from our app: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L12-L18">lib.rs</a></p>
