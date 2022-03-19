@@ -41,7 +41,7 @@ We begin by opening the I2C Port "__/dev/i2c0__", configured for 400 kHz.
 
 (This halts with an error if the I2C Port doesn't exist)
 
-_What's __nuttx_embedded_hal__?_
+_What's nuttx_embedded_hal?_
 
 That's the __Hardware Abstraction Layer__ (HAL) for NuttX, coded in Rust. (More about this in a while)
 
@@ -58,7 +58,7 @@ Next we __initialise the BME280 Driver__...
 
 __BME280__ comes from the BME280 Driver Crate. (As we'll see soon)
 
-Before reading from the BME280 Sensor, we need to __initialise the sensor__...
+Before reading the BME280 Sensor, we __initialise the sensor__...
 
 ```rust    
   //  Init the BME280 Sensor
@@ -66,7 +66,7 @@ Before reading from the BME280 Sensor, we need to __initialise the sensor__...
     .expect("init failed");
 ```
 
-This halts with an error if the initialisation fails.
+(This halts with an error if the initialisation fails)
 
 We're ready to read the __Temperature, Humidity and Air Pressure__ from the BME280 Sensor...
 
@@ -80,9 +80,12 @@ Finally we __print the Sensor Data__...
 
 ```rust    
   //  Print the measurements
-  println!("Relative Humidity = {}%", measurements.humidity);
-  println!("Temperature = {} deg C",  measurements.temperature);
-  println!("Pressure = {} pascals",   measurements.pressure);
+  println!("Relative Humidity = {}%", 
+    measurements.humidity);
+  println!("Temperature = {} deg C",  
+    measurements.temperature);
+  println!("Pressure = {} pascals",   
+    measurements.pressure);
 }
 ```
 
@@ -90,7 +93,7 @@ That's all we need to read the Sensor Data from the BME280 Sensor!
 
 _Where is __println__ defined?_
 
-__println__ comes from our NuttX Embedded HAL. This is how we import it...
+[__println__](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/macros.rs) comes from our NuttX Embedded HAL. We import it at the top...
 
 ```rust
 //  Import Libraries
