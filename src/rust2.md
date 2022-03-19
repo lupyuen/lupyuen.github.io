@@ -308,7 +308,7 @@ To call it, we add __embedded-hal__ and __nuttx-embedded-hal__ as dependencies t
 # External Rust libraries used by this module.  See crates.io.
 [dependencies]
 embedded-hal       = "0.2.7"  # Rust Embedded HAL: https://crates.io/crates/embedded-hal
-nuttx-embedded-hal = "1.0.5"  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
+nuttx-embedded-hal = "1.0.6"  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
 sx126x             = { git = "https://github.com/lupyuen/sx126x-rs-nuttx" }  # SX126x LoRa Radio Driver fixed for NuttX
 ```
 
