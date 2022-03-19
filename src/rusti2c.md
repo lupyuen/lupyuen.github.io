@@ -4,20 +4,23 @@
 
 ![Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/rusti2c-title.jpg)
 
+_[Bosch BME280 Sensor](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/) connected to [Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/articles/pinecone)_
+
 [__I2C__](https://en.wikipedia.org/wiki/I%C2%B2C) is a great way to connect all kinds of __Sensor Modules__ when we're creating an __IoT Gadget__. Like sensors for temperature, humidity, light, motion, spectroscopy, GPS, ... [__and many more!__](https://www.sparkfun.com/categories/tags/i2c)
 
 _But where will we get the Software Drivers for the I2C Sensors?_
 
-[__Embedded Rust__](https://github.com/rust-embedded/awesome-embedded-rust#driver-crates) has a large collection of drivers for I2C Sensors. And they will work on __many platforms!__
+[__Embedded Rust__](https://github.com/rust-embedded/awesome-embedded-rust#driver-crates) has a large collection of drivers for I2C Sensors. And they will work on [__many platforms!__](https://github.com/rust-embedded/awesome-embedded-rust#hal-implementation-crates)
 
-Today we shall experiment with the Rust Driver for [__Bosch BME280 Sensor__](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/) (Temperature / Humdity / Air Pressure)... And learn how we made it work on the (Linux-like) [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx).
+Today we shall experiment with the Rust Driver for [__Bosch BME280 Sensor__](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/) (Temperature / Humdity / Air Pressure).
+
+And learn how we made it work on the (Linux-like) [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx).
 
 We'll run this on the [__BL602 RISC-V SoC__](https://lupyuen.github.io/articles/pinecone) (pic above), though it should run OK on ESP32 and other NuttX platforms.
 
-Let's dive into our __Rust App for NuttX__...
+Let's dive into our __Rust I2C App for NuttX__...
 
 -   [__lupyuen/rust-i2c-nuttx__](https://github.com/lupyuen/rust-i2c-nuttx)
-
 
 # Rust Embedded HAL for NuttX
 
