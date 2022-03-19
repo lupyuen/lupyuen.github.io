@@ -105,7 +105,8 @@
     <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port</span>
     <span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz</span>
   ).<span class="ident">expect</span>(<span class="string">&quot;open failed&quot;</span>);</code></pre></div>
-<p>We begin by opening the I2C Port “<strong>dev/i2c0</strong>”, configured for 400 kHz.</p>
+<p>We begin by opening the I2C Port “<strong>/dev/i2c0</strong>”, configured for 400 kHz.</p>
+<p>(This halts with an error if the I2C Port doesn’t exist)</p>
 <p><em>What’s <strong>nuttx_embedded_hal</strong>?</em></p>
 <p>That’s the <strong>Hardware Abstraction Layer</strong> (HAL) for NuttX, coded in Rust. (More about this in a while)</p>
 <p>Next we <strong>initialise the BME280 Driver</strong>…</p>
