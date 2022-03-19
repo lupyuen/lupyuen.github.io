@@ -302,14 +302,20 @@ We have created a __NuttX Embedded HAL__ that implements the Rust Embedded HAL o
 
 [(More details in the Appendix)](https://lupyuen.github.io/articles/rust2#appendix-rust-embedded-hal-for-nuttx)
 
-To call it, we add __embedded-hal__ and __nuttx-embedded-hal__ as dependencies to our [Cargo.toml](https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml#L8-L16)...
+To call it, we add __embedded-hal__ and __nuttx-embedded-hal__ as dependencies to our [__Cargo.toml__](https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml#L8-L16)...
 
 ```text
-# External Rust libraries used by this module.  See crates.io.
+## External Rust libraries used by this module.  See crates.io.
 [dependencies]
-embedded-hal       = "0.2.7"  # Rust Embedded HAL: https://crates.io/crates/embedded-hal
-nuttx-embedded-hal = "1.0.6"  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
-sx126x             = { git = "https://github.com/lupyuen/sx126x-rs-nuttx" }  # SX126x LoRa Radio Driver fixed for NuttX
+
+## Rust Embedded HAL: https://crates.io/crates/embedded-hal
+embedded-hal = "0.2.7"  
+
+## NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
+nuttx-embedded-hal = "1.0.6"  
+
+## SX126x LoRa Radio Driver fixed for NuttX
+sx126x = { git = "https://github.com/lupyuen/sx126x-rs-nuttx" }  
 ```
 
 [(Always use the latest version of __nuttx-embedded-hal__)](https://crates.io/crates/nuttx-embedded-hal)
