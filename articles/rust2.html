@@ -322,7 +322,7 @@ int main(int argc, FAR char *argv[]) {
 <p>To call it, we add <strong>embedded-hal</strong> and <strong>nuttx-embedded-hal</strong> as dependencies to our <a href="https://github.com/lupyuen/rust_test/blob/main/rust/Cargo.toml#L8-L16">Cargo.toml</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
 embedded-hal       = &quot;0.2.7&quot;  # Rust Embedded HAL: https://crates.io/crates/embedded-hal
-nuttx-embedded-hal = &quot;1.0.5&quot;  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
+nuttx-embedded-hal = &quot;1.0.6&quot;  # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
 sx126x             = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }  # SX126x LoRa Radio Driver fixed for NuttX</code></pre></div>
 <p><a href="https://crates.io/crates/nuttx-embedded-hal">(Always use the latest version of <strong>nuttx-embedded-hal</strong>)</a></p>
 <p>(We’ll see the <strong>sx126x</strong> driver in a while)</p>
