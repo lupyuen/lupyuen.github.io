@@ -39,7 +39,9 @@ pub fn read_bme280() {
   ).expect("open failed");
 ```
 
-We begin by opening the I2C Port "__dev/i2c0__", configured for 400 kHz.
+We begin by opening the I2C Port "__/dev/i2c0__", configured for 400 kHz.
+
+(This halts with an error if the I2C Port doesn't exist)
 
 _What's __nuttx_embedded_hal__?_
 
