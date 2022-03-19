@@ -91,7 +91,7 @@ Finally we __print the Sensor Data__...
 
 That's all we need to read the Sensor Data from the BME280 Sensor!
 
-_Where is __println__ defined?_
+_Where is println defined?_
 
 [__println__](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/macros.rs) comes from our NuttX Embedded HAL. We import it at the top...
 
