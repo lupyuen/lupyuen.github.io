@@ -113,7 +113,7 @@
   ).<span class="ident">expect</span>(<span class="string">&quot;open failed&quot;</span>);</code></pre></div>
 <p>We begin by opening the I2C Port “<strong>/dev/i2c0</strong>”, configured for 400 kHz.</p>
 <p>(This halts with an error if the I2C Port doesn’t exist)</p>
-<p><em>What’s <strong>nuttx_embedded_hal</strong>?</em></p>
+<p><em>What’s nuttx_embedded_hal?</em></p>
 <p>That’s the <strong>Hardware Abstraction Layer</strong> (HAL) for NuttX, coded in Rust. (More about this in a while)</p>
 <p>Next we <strong>initialise the BME280 Driver</strong>…</p>
 
@@ -124,12 +124,12 @@
     <span class="ident">nuttx_embedded_hal::Delay</span>  <span class="comment">//  Delay Interface</span>
   );</code></pre></div>
 <p><strong>BME280</strong> comes from the BME280 Driver Crate. (As we’ll see soon)</p>
-<p>Before reading from the BME280 Sensor, we need to <strong>initialise the sensor</strong>…</p>
+<p>Before reading the BME280 Sensor, we <strong>initialise the sensor</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the BME280 Sensor</span>
   <span class="ident">bme280</span>.<span class="ident">init</span>()
     .<span class="ident">expect</span>(<span class="string">&quot;init failed&quot;</span>);</code></pre></div>
-<p>This halts with an error if the initialisation fails.</p>
+<p>(This halts with an error if the initialisation fails)</p>
 <p>We’re ready to read the <strong>Temperature, Humidity and Air Pressure</strong> from the BME280 Sensor…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Measure Temperature, Pressure and Humidity</span>
@@ -138,13 +138,16 @@
 <p>Finally we <strong>print the Sensor Data</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Print the measurements</span>
-  <span class="macro">println!</span>(<span class="string">&quot;Relative Humidity = {}%&quot;</span>, <span class="ident">measurements</span>.<span class="ident">humidity</span>);
-  <span class="macro">println!</span>(<span class="string">&quot;Temperature = {} deg C&quot;</span>,  <span class="ident">measurements</span>.<span class="ident">temperature</span>);
-  <span class="macro">println!</span>(<span class="string">&quot;Pressure = {} pascals&quot;</span>,   <span class="ident">measurements</span>.<span class="ident">pressure</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;Relative Humidity = {}%&quot;</span>, 
+    <span class="ident">measurements</span>.<span class="ident">humidity</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;Temperature = {} deg C&quot;</span>,  
+    <span class="ident">measurements</span>.<span class="ident">temperature</span>);
+  <span class="macro">println!</span>(<span class="string">&quot;Pressure = {} pascals&quot;</span>,   
+    <span class="ident">measurements</span>.<span class="ident">pressure</span>);
 }</code></pre></div>
 <p>That’s all we need to read the Sensor Data from the BME280 Sensor!</p>
 <p><em>Where is <strong>println</strong> defined?</em></p>
-<p><strong>println</strong> comes from our NuttX Embedded HAL. This is how we import it…</p>
+<p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/macros.rs"><strong>println</strong></a> comes from our NuttX Embedded HAL. We import it at the top…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import Libraries</span>
 <span class="kw">use</span> <span class="ident">nuttx_embedded_hal</span>::{  <span class="comment">//  NuttX Embedded HAL</span>
