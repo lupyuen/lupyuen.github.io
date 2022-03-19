@@ -151,7 +151,7 @@
 <span class="kw">use</span> <span class="ident">nuttx_embedded_hal</span>::{  <span class="comment">//  NuttX Embedded HAL</span>
   <span class="ident">println</span>,                 <span class="comment">//  Print a formatted message</span>
 };</code></pre></div>
-<p>Let’s run our Rust App.</p>
+<p>Before running our Rust App, let’s connect the BME280 Sensor.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-connect.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <h1 id="connect-bme280" class="section-header"><a href="#connect-bme280">2 Connect BME280</a></h1>
 <p>We connect BME280 to Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a> as follows…</p>
@@ -196,13 +196,12 @@ config ESP32_I2C0_SDAPIN
 <p>We’re using the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all"><strong>SparkFun BME280 Breakout Board</strong></a>, which has <strong>Pull-Up Resistors</strong>. (So we don’t need to add our own)</p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-run2a.png" alt="Run BME280 App" /></p>
 <h1 id="run-bme280-app" class="section-header"><a href="#run-bme280-app">3 Run BME280 App</a></h1>
+<p>We’re ready to run our Rust App on NuttX!</p>
 <ol>
-<li>Follow these steps to <strong>build, flash and run NuttX</strong>…</li>
-</ol>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/rusti2c#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></li>
-</ul>
-<ol>
+<li>
+<p>Follow these steps to <strong>build, flash and run NuttX</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/rusti2c#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
+</li>
 <li>
 <p>At the NuttX Shell, enter this command to list the <strong>NuttX Devices</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div></li>
@@ -224,7 +223,7 @@ Done!</code></pre></div>
 <p><a href="https://github.com/lupyuen/rust-i2c-nuttx#test-rust-driver-for-bme280">(See the complete log)</a></p>
 </li>
 </ol>
-<p>Yep the Rust Driver for BME280 runs successfully on NuttX!</p>
+<p>The Rust Driver for BME280 runs successfully on NuttX!</p>
 <h1 id="rust-driver-for-bme280" class="section-header"><a href="#rust-driver-for-bme280">4 Rust Driver for BME280</a></h1>
 <p>TODO</p>
 <p><em>We ran the Rust Driver for BME280 on NuttX… Without any code changes?</em></p>
