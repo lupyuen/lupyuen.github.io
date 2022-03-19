@@ -252,16 +252,14 @@ nuttx-embedded-hal = &quot;1.0.7&quot;
 embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 <p>The Rust Driver for BME280 runs OK on NuttX because we have implemented the <strong>NuttX Embedded HAL</strong>. Let’s look inside the HAL.</p>
 <p><a href="https://crates.io/crates/nuttx-embedded-hal">(BTW: Always use the latest version of NuttX Embedded HAL)</a></p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-arch.jpg" alt="NuttX Embedded HAL" /></p>
+<p><img src="https://lupyuen.github.io/images/rusti2c-arch2.jpg" alt="NuttX Embedded HAL" /></p>
 <h1 id="nuttx-embedded-hal" class="section-header"><a href="#nuttx-embedded-hal">5 NuttX Embedded HAL</a></h1>
 <p><em>What’s the NuttX Embedded HAL?</em></p>
 <p>TODO</p>
-<p>The Rust Embedded HAL for NuttX has been published at crates.io…</p>
-<p>https://crates.io/crates/nuttx-embedded-hal</p>
-<p>To use it in your project, add this to your <a href="rust/Cargo.toml">Cargo.toml</a>:</p>
-<div class="example-wrap"><pre class="language-text"><code>[dependencies]
-nuttx-embedded-hal = &quot;1.0.6&quot;  # Rust Embedded HAL for NuttX: https://crates.io/crates/nuttx-embedded-hal</code></pre></div>
-<p><a href="https://crates.io/crates/nuttx-embedded-hal">(Always use the latest version of <strong>nuttx-embedded-hal</strong>)</a></p>
+<ul>
+<li><a href="https://crates.io/crates/nuttx-embedded-hal"><strong>crates.io/nuttx-embedded-hal</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/rusti2c-arch.jpg" alt="NuttX Embedded HAL" /></p>
 <h1 id="from-c-to-rust" class="section-header"><a href="#from-c-to-rust">6 From C to Rust</a></h1>
 <p>TODO</p>
 <p>This is how we read an I2C Register in C…</p>
