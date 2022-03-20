@@ -320,18 +320,26 @@ We begin by calling __open()__ to open the I2C Port.
 
 This is flagged as "`unsafe`" because we're calling a C Function. [(See this)](https://lupyuen.github.io/articles/rust2#rust-meets-nuttx)
 
-TODO
+Next we prepare the buffers that will be __sent and received__ over I2C...
 
 ```rust
-  //  Read the I2C Register 0xD0
+  //  Send the Register ID 0xD0 (1 byte)
   let mut start = [0xD0 ; 1];
+
+  //  Receive the Register Value (1 byte)
   let mut buf   = [0 ; 1];
 ```
 
-TODO
+We'll read the I2C Register in 2 steps...
+
+1.  Send the __Register ID__ `0xD0`
+
+1.  Receive the __Register Value__
+
+We define the First Step: Send the __Register ID__...
 
 ```rust
-  //  Compose I2C Transfer
+  //  Compose I2C Transfers
   let msg = [
 
     //  First I2C Message: Send Register ID
@@ -353,7 +361,9 @@ TODO
     },
 ```
 
-TODO
+[(__I2C_M_NOSTOP__ is needed because of a BL602 quirk)](https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver)
+
+And here's the Second Step: Receive the __Register Value__...
 
 ```rust
     //  Second I2C Message: Receive Register Value
@@ -367,7 +377,7 @@ TODO
   ];
 ```
 
-TODO
+Finally we execute the two steps by calling __ioctl()__...
 
 ```rust
   //  Compose ioctl Argument
@@ -375,12 +385,8 @@ TODO
     msgv: msg.as_ptr(),         //  Array of I2C messages for the transfer
     msgc: msg.len() as size_t,  //  Number of messages in the array
   };
-```
 
-TODO
-
-```rust
-  //  Execute I2C Transfer
+  //  Execute I2C Transfers
   let ret = unsafe { 
     ioctl(
       self.fd,          //  I2C Port
@@ -391,7 +397,7 @@ TODO
   assert!(ret >= 0);
 ```
 
-TODO
+The __Register Value__ appears in our Receive Buffer...
 
 ```rust
   //  Register Value must be BME280 Device ID (0x60)
