@@ -281,7 +281,7 @@ let mut bme280 = bme280::BME280::new(
 
 ([__Delay__](https://docs.rs/nuttx-embedded-hal/latest/nuttx_embedded_hal/struct.Delay.html) also comes from NuttX Embedded HAL)
 
-_But BME280 Driver doesn't know anything about NuttX right?_
+_But BME280 Driver doesn't know anything about NuttX?_
 
 That's OK because the BME280 Driver and NuttX Embedded HAL both talk through the same interface: [__Rust Embedded HAL__](https://docs.rs/embedded-hal/latest/embedded_hal/). (Pic above)
 
@@ -301,7 +301,7 @@ And now NuttX! (As NuttX Embedded HAL)
 
 _How was NuttX Embedded HAL implemented in Rust?_
 
-NuttX Embedded HAL accesses the I2C Port by calling the __NuttX I2C Interface__: open(), close() and ioctl(). (Pic above)
+NuttX Embedded HAL accesses the I2C Port by calling the __NuttX I2C Interface__: open(), ioctl() and close(). (Pic above)
 
 To understand why, let's look at a NuttX Rust Program that __reads an I2C Register__ on BME280: [rust/src/test.rs](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L117-L193)
 
@@ -414,6 +414,8 @@ The above Rust code looks highly similar to the C version...
 
 Let's look at the NuttX Types and Constants that we have ported from C to Rust.
 
+![Read I2C Register](https://lupyuen.github.io/images/rusti2c-code2a.png)
+
 ## NuttX Types and Constants
 
 _What are i2c_msg_s and i2c_transfer_s in the code above?_
@@ -426,7 +428,7 @@ __i2c_msg_s__ is the __I2C Message Struct__ that defines each message that will 
 /// I2C Message Struct: I2C transaction segment beginning with a START. A number of these can
 /// be transferred together to form an arbitrary sequence of write/read
 /// transfer to an I2C device.
-/// Based on the C definition: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215
+/// Ported from C: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215
 #[repr(C)]
 pub struct i2c_msg_s {
     /// I2C Frequency
@@ -447,7 +449,7 @@ __i2c_transfer_s__ contains an __array of I2C Message Structs__ that will be sen
 ```rust
 /// I2C Transfer Struct: This structure is used to communicate with the I2C character driver in
 /// order to perform IOCTL transfers.
-/// Based on the C definition: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235
+/// Ported from C: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235
 #[repr(C)]
 pub struct i2c_transfer_s {
     /// Array of I2C messages for the transfer
@@ -463,146 +465,93 @@ __I2C_M_NOSTOP__, __I2C_M_READ__ and __I2CIOC_TRANSFER__ are __NuttX I2C Constan
 
 [(See this)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/lib.rs#L105-L124)
 
-## NuttX Embedded HAL
+![NuttX I2C Types](https://lupyuen.github.io/images/rusti2c-code3a.png)
 
-TODO
+## Into Embedded HAL
 
-Rust Embedded HAL defines a standard API for I2C Operations. Let's wrap the NuttX I2C ioctl() Commands and expose as Rust Embedded HAL interfaces...
+The code above goes into __NuttX Embedded HAL__ like so...
 
-```rust
-/// NuttX Implementation of I2C Read
-impl i2c::Read for I2c {
-    ...
-    /// TODO: Read I2C data
-    fn read(&mut self, addr: u8, buf: &mut [u8]) -> Result<(), Self::Error> { ... }
-}
+![Into Embedded HAL](https://lupyuen.github.io/images/rusti2c-code5a.png)
 
-/// NuttX Implementation of I2C Write
-impl i2c::Write for I2c {
-    ...
-    /// TODO: Write I2C data
-    fn write(&mut self, addr: u8, buf: &[u8]) -> Result<(), Self::Error> { ... }
-}
+[(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L97-L160)
 
-/// NuttX Implementation of I2C WriteRead
-impl i2c::WriteRead for I2c {
-    ...
-    /// TODO: Write and read I2C data
-    fn write_read(&mut self, addr: u8, wbuf: &[u8], rbuf: &mut [u8]) -> Result<(), Self::Error> { ... }
-}
-```
-
-[(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L20-L160)
-
-## Read I2C Register with NuttX Embedded HAL
-
-TODO
-
-Here's how we implement the Rust Embedded HAL to read an I2C Register...
+This conforms with the I2C Interface that's expected by __Rust Embedded HAL__...
 
 ```rust
 /// NuttX Implementation of I2C WriteRead
 impl i2c::WriteRead for I2c {
-    /// Error Type
-    type Error = i32;
-
+    ...
     /// Write `wbuf` to I2C Port and read `rbuf` from I2C Port.
     /// We assume this is a Read I2C Register operation, with Register ID at `wbuf[0]`.
     /// TODO: Handle other kinds of I2C operations
     fn write_read(&mut self, addr: u8, wbuf: &[u8], rbuf: &mut [u8]) -> Result<(), Self::Error> {
-        //  We assume this is a Read I2C Register operation, with Register ID at wbuf[0]
-        assert_eq!(wbuf.len(), 1);
-        let reg_id = wbuf[0];
+```
 
-        //  Read I2C Registers, starting at Register ID
-        let mut start = [reg_id ; 1];
+[(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L97-L160)
 
-        //  Compose I2C Transfer
-        let msg = [
-            //  First I2C Message: Send Register ID
-            i2c_msg_s {
-                frequency: self.frequency,  //  I2C Frequency
-                addr:      addr as u16,     //  I2C Address
-                buffer:    start.as_mut_ptr(),      //  Buffer to be sent
-                length:    start.len() as ssize_t,  //  Number of bytes to send
+_What about the call to open()?_
 
-                //  For BL602: Register ID must be passed as I2C Sub Address
-                #[cfg(target_arch = "riscv32")]  //  If architecture is RISC-V 32-bit...
-                flags:     crate::I2C_M_NOSTOP,  //  I2C Flags: Send I2C Sub Address
-                
-                //  Otherwise pass Register ID as I2C Data
-                #[cfg(not(target_arch = "riscv32"))]  //  If architecture is not RISC-V 32-bit...
-                flags:     0,  //  I2C Flags: None
+We moved it into the __new()__ function: [hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L340-L351)
 
-                //  TODO: Check for BL602 specifically (by target_abi?), not just RISC-V 32-bit
-            },
-            //  Second I2C Message: Receive Register Values
-            i2c_msg_s {
-                frequency: self.frequency,  //  I2C Frequency
-                addr:      addr as u16,     //  I2C Address
-                buffer:    rbuf.as_mut_ptr(),      //  Buffer to be received
-                length:    rbuf.len() as ssize_t,  //  Number of bytes to receive
-                flags:     I2C_M_READ,  //  I2C Flags: Read I2C Data
-            },
-        ];
+```rust
+/// NuttX Implementation of I2C Bus
+impl I2c {
+    /// Create an I2C Bus from a Device Path (e.g. "/dev/i2c0")
+    pub fn new(path: &str, frequency: u32) -> Result<Self, i32> {
+        //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
+        let fd = open(path, O_RDWR);
+        if fd < 0 { return Err(fd) }
 
-        //  Compose ioctl Argument
-        let xfer = i2c_transfer_s {
-            msgv: msg.as_ptr(),         //  Array of I2C messages for the transfer
-            msgc: msg.len() as size_t,  //  Number of messages in the array
-        };
-
-        //  Execute I2C Transfer
-        let ret = unsafe { 
-            ioctl(
-                self.fd,          //  I2C Port
-                I2CIOC_TRANSFER,  //  I2C Transfer
-                &xfer             //  I2C Messages for the transfer
-            )
-        };
-        assert!(ret >= 0);   
-        Ok(())
+        //  Return the I2C Bus
+        Ok(Self { fd, frequency })
     }
 }
 ```
 
-[(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L98-L160)
+## Call NuttX Embedded HAL
 
-To read an I2C Register, we call the Rust Embedded HAL like so...
+Now that the I2C code has been moved into the NuttX Embedded HAL, let's call it to __read an I2C Register__: [test.rs](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L29-L62)
 
 ```rust
 /// Test the I2C HAL by reading an I2C Register
 pub fn test_hal_read() {
 
-    //  Open I2C Port
-    let mut i2c = nuttx_embedded_hal::I2c::new(
-        "/dev/i2c0",  //  I2C Port
-        BME280_FREQ,  //  I2C Frequency
-    ).expect("open failed");
+  //  Open I2C Port
+  let mut i2c = nuttx_embedded_hal::I2c::new(
+    "/dev/i2c0",  //  I2C Port
+    400000,       //  I2C Frequency
+  ).expect("open failed");
+```
 
-    //  Buffer for received I2C data
-    let mut buf = [0 ; 1];
+TODO
 
-    //  Read one I2C Register, starting at Device ID
-    i2c.write_read(
-        BME280_ADDR as u8,  //  I2C Address
-        &[BME280_REG_ID],   //  Register ID (0x60)
-        &mut buf            //  Buffer to be received
-    ).expect("read register failed");
+```rust
+  //  Buffer for received I2C data (1 byte)
+  let mut buf = [0 ; 1];
+```
 
-    //  Show the received Register Value
-    println!(
-        "test_hal_read: Register 0x{:02x} is 0x{:02x}",
-        BME280_REG_ID,  //  Register ID (0xD0)
-        buf[0]          //  Register Value (0x60)
-    );
+TODO
 
-    //  Register Value must be BME280 Device ID (0x60)
-    assert_eq!(buf[0], BME280_CHIP_ID);
+```rust
+  //  Read one I2C Register, starting at Device ID
+  i2c.write_read(
+    0x77,     //  I2C Address
+    &[0xD0],  //  Register ID
+    &mut buf  //  Buffer to be received (Register Value)
+  ).expect("read register failed");
+```
+
+TODO
+
+```rust
+  //  Register Value must be BME280 Device ID (0x60)
+  assert_eq!(buf[0], 0x60);
 }
 ```
 
-[(Source)](rust/src/test.rs)
+TODO
+
+![Call NuttX Embedded HAL to read I2C register](https://lupyuen.github.io/images/rusti2c-code6a.png)
 
 # Write I2C Register
 
@@ -826,6 +775,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1502823263121989634)
+
+![Read I2C Register in C](https://lupyuen.github.io/images/rusti2c-code1.png)
 
 # Appendix: Read I2C Register in C
 
@@ -1294,29 +1245,9 @@ Congratulations NuttX is now running on BL602 / BL604!
 
 ![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
-TODO1
-
-![](https://lupyuen.github.io/images/rusti2c-code1.png)
-
-TODO2
-
-![](https://lupyuen.github.io/images/rusti2c-code2a.png)
-
-TODO3
-
-![](https://lupyuen.github.io/images/rusti2c-code3a.png)
-
 TODO4
 
 ![](https://lupyuen.github.io/images/rusti2c-code4a.png)
-
-TODO5
-
-![](https://lupyuen.github.io/images/rusti2c-code5a.png)
-
-TODO6
-
-![](https://lupyuen.github.io/images/rusti2c-code6a.png)
 
 TODO7
 
