@@ -303,14 +303,25 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
   <span class="macro">assert!</span>(<span class="ident">i2c</span> <span class="op">&gt;</span> <span class="number">0</span>);</code></pre></div>
 <p>We begin by calling <strong>open()</strong> to open the I2C Port.</p>
 <p>This is flagged as “<code>unsafe</code>” because we’re calling a C Function. <a href="https://lupyuen.github.io/articles/rust2#rust-meets-nuttx">(See this)</a></p>
-<p>TODO</p>
+<p>Next we prepare the buffers that will be <strong>sent and received</strong> over I2C…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Read the I2C Register 0xD0</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Send the Register ID 0xD0 (1 byte)</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">start</span> <span class="op">=</span> [<span class="number">0xD0</span> ; <span class="number">1</span>];
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span>   <span class="op">=</span> [<span class="number">0</span> ; <span class="number">1</span>];</code></pre></div>
-<p>TODO</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Compose I2C Transfer</span>
+  <span class="comment">//  Receive the Register Value (1 byte)</span>
+  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span>   <span class="op">=</span> [<span class="number">0</span> ; <span class="number">1</span>];</code></pre></div>
+<p>We’ll read the I2C Register in 2 steps…</p>
+<ol>
+<li>
+<p>Send the <strong>Register ID</strong> <code>0xD0</code></p>
+</li>
+<li>
+<p>Receive the <strong>Register Value</strong></p>
+</li>
+</ol>
+<p>We define the First Step: Send the <strong>Register ID</strong>…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Compose I2C Transfers</span>
   <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> [
 
     <span class="comment">//  First I2C Message: Send Register ID</span>
@@ -330,7 +341,8 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 
       <span class="comment">//  TODO: Check for BL602 specifically, not just RISC-V 32-bit</span>
     },</code></pre></div>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver">(<strong>I2C_M_NOSTOP</strong> is needed because of a BL602 quirk)</a></p>
+<p>And here’s the Second Step: Receive the <strong>Register Value</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Second I2C Message: Receive Register Value</span>
     <span class="ident">i2c_msg_s</span> {
@@ -341,16 +353,15 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
       <span class="ident">flags</span>:     <span class="ident">I2C_M_READ</span>,   <span class="comment">//  I2C Flags: Read from I2C Device</span>
     },
   ];</code></pre></div>
-<p>TODO</p>
+<p>Finally we execute the two steps by calling <strong>ioctl()</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Compose ioctl Argument</span>
   <span class="kw">let</span> <span class="ident">xfer</span> <span class="op">=</span> <span class="ident">i2c_transfer_s</span> {
     <span class="ident">msgv</span>: <span class="ident">msg</span>.<span class="ident">as_ptr</span>(),         <span class="comment">//  Array of I2C messages for the transfer</span>
     <span class="ident">msgc</span>: <span class="ident">msg</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">size_t</span>,  <span class="comment">//  Number of messages in the array</span>
-  };</code></pre></div>
-<p>TODO</p>
+  };
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Execute I2C Transfer</span>
+  <span class="comment">//  Execute I2C Transfers</span>
   <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
     <span class="ident">ioctl</span>(
       <span class="self">self</span>.<span class="ident">fd</span>,          <span class="comment">//  I2C Port</span>
@@ -359,7 +370,7 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
     )
   };
   <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
-<p>TODO</p>
+<p>The <strong>Register Value</strong> appears in our Receive Buffer…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Register Value must be BME280 Device ID (0x60)</span>
   <span class="macro">assert!</span>(<span class="ident">buf</span>[<span class="number">0</span>] <span class="op">==</span> <span class="number">0x60</span>);
