@@ -156,7 +156,7 @@
 <p>Before running our Rust App, let’s connect the BME280 Sensor.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-connect.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <h1 id="connect-bme280" class="section-header"><a href="#connect-bme280">2 Connect BME280</a></h1>
-<p>We connect BME280 to Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a> as follows…</p>
+<p>We connect BME280 to Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a> as follows (pic above)…</p>
 <div><table><thead><tr><th style="text-align: center">BL602 Pin</th><th style="text-align: center">BME280 Pin</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>GPIO 3</code></strong></td><td style="text-align: center"><code>SDA</code></td><td style="text-align: left">Green</td></tr>
 <tr><td style="text-align: center"><strong><code>GPIO 4</code></strong></td><td style="text-align: center"><code>SCL</code></td><td style="text-align: left">Blue</td></tr>
@@ -164,7 +164,6 @@
 <tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td><td style="text-align: left">Black</td></tr>
 </tbody></table>
 </div>
-<p>(Pic above)</p>
 <p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L85-L88">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* I2C Configuration */
 #define BOARD_I2C_SCL \
@@ -234,7 +233,7 @@ Done!</code></pre></div>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the BME280 Driver</span>
   <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bme280</span> <span class="op">=</span> <span class="ident">bme280::BME280</span>
     <span class="ident">::new</span>( ... );</code></pre></div>
-<p><strong>BME280</strong> comes from the Rust Embedded Driver for BME280…</p>
+<p><strong>BME280</strong> comes from the Rust Embedded Driver for BME280 (pic above)…</p>
 <ul>
 <li><a href="https://crates.io/crates/bme280"><strong>crates.io/bme280</strong></a></li>
 </ul>
@@ -250,15 +249,28 @@ nuttx-embedded-hal = &quot;1.0.7&quot;
 
 # Rust Embedded HAL: https://crates.io/crates/embedded-hal
 embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
-<p>The Rust Driver for BME280 runs OK on NuttX because we have implemented the <strong>NuttX Embedded HAL</strong>. Let’s look inside the HAL.</p>
+<p>The Rust Driver for BME280 works on NuttX because of the <strong>NuttX Embedded HAL</strong>. Let’s look inside.</p>
 <p><a href="https://crates.io/crates/nuttx-embedded-hal">(BTW: Always use the latest version of NuttX Embedded HAL)</a></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-arch2.jpg" alt="NuttX Embedded HAL" /></p>
 <h1 id="nuttx-embedded-hal" class="section-header"><a href="#nuttx-embedded-hal">5 NuttX Embedded HAL</a></h1>
 <p><em>What’s the NuttX Embedded HAL?</em></p>
-<p>TODO</p>
+<p><strong>NuttX Embedded HAL</strong> (Hardware Abstraction Layer) is the Rust Library that exposes a Standard Rust Interface for the <strong>Input / Output Ports on NuttX</strong>: GPIO, I2C, SPI, …</p>
 <ul>
-<li><a href="https://crates.io/crates/nuttx-embedded-hal"><strong>crates.io/nuttx-embedded-hal</strong></a></li>
+<li>
+<p><a href="https://crates.io/crates/nuttx-embedded-hal"><strong>crates.io/nuttx-embedded-hal</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.rs/nuttx-embedded-hal/"><strong>Documentation for nuttx-embedded-hal</strong></a></p>
+</li>
 </ul>
+<p><em>But BME280 Driver doesn’t know anything about NuttX right?</em></p>
+<p>That’s OK because the BME280 Driver and NuttX Embedded HAL both talk through the same interface: <a href="https://docs.rs/embedded-hal/latest/embedded_hal/"><strong>Rust Embedded HAL</strong></a>. (Pic above)</p>
+<p>Rust Embedded HAL is the standard interface used by <a href="https://github.com/rust-embedded/awesome-embedded-rust#driver-crates"><strong>Rust Embedded Drivers</strong></a> (like the BME280 Driver) to talk to the GPIO / I2C / SPI ports.</p>
+<p><a href="https://lupyuen.github.io/articles/rust2#rust-driver-for-lora-sx1262">(Rust Driver for LoRa SX1262 works on NuttX too)</a></p>
+<p><em>That’s why Rust Embedded Drivers can run on many platforms?</em></p>
+<p>Yep because the Rust Embedded HAL has been implemented on <a href="https://github.com/rust-embedded/awesome-embedded-rust#hal-implementation-crates"><strong>many platforms</strong></a>: Linux, FreeBSD, nRF52, STM32 Blue Pill, …</p>
+<p>And now NuttX! (As NuttX Embedded HAL)</p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-arch.jpg" alt="NuttX Embedded HAL" /></p>
 <h1 id="from-c-to-rust" class="section-header"><a href="#from-c-to-rust">6 From C to Rust</a></h1>
 <p>TODO</p>
