@@ -389,7 +389,7 @@ Finally we execute the two steps by calling __ioctl()__...
   //  Execute I2C Transfers
   let ret = unsafe { 
     ioctl(
-      self.fd,          //  I2C Port
+      i2c,              //  I2C Port
       I2CIOC_TRANSFER,  //  I2C Transfer
       &xfer             //  I2C Messages for the transfer
     )
@@ -408,19 +408,25 @@ The __Register Value__ appears in our Receive Buffer...
 }
 ```
 
-TODO
+The above Rust code looks highly similar to the C version...
 
-## NuttX Types
+-   [__"Read I2C Register in C"__](https://lupyuen.github.io/articles/rusti2c#appendix-read-i2c-register-in-c)
 
-TODO
+Let's look at the NuttX Types and Constants that we have ported from C to Rust.
 
-The NuttX Types are ported from C to Rust like so...
+## NuttX Types and Constants
+
+_What are i2c_msg_s and i2c_transfer_s in the code above?_
+
+They are __NuttX I2C Types__ that we have ported from C to Rust.
+
+__i2c_msg_s__ is the __I2C Message Struct__ that defines each message that will be sent or received over I2C: [nuttx-embedded-hal/src/lib.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/lib.rs#L125-L153)
 
 ```rust
 /// I2C Message Struct: I2C transaction segment beginning with a START. A number of these can
 /// be transferred together to form an arbitrary sequence of write/read
 /// transfer to an I2C device.
-/// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215
+/// Based on the C definition: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215
 #[repr(C)]
 pub struct i2c_msg_s {
     /// I2C Frequency
@@ -434,10 +440,14 @@ pub struct i2c_msg_s {
     /// Length of the buffer in bytes
     pub length: ssize_t,
 }
+```
 
+__i2c_transfer_s__ contains an __array of I2C Message Structs__ that will be sent / received when we call ioctl() to execute the I2C Transfer...
+
+```rust
 /// I2C Transfer Struct: This structure is used to communicate with the I2C character driver in
 /// order to perform IOCTL transfers.
-/// TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235
+/// Based on the C definition: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235
 #[repr(C)]
 pub struct i2c_transfer_s {
     /// Array of I2C messages for the transfer
@@ -447,44 +457,13 @@ pub struct i2c_transfer_s {
 }
 ```
 
-[(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/lib.rs#L125-L153)
+_What about I2C_M_NOSTOP, I2C_M_READ and I2CIOC_TRANSFER?_
 
-# Test I2C Port
+__I2C_M_NOSTOP__, __I2C_M_READ__ and __I2CIOC_TRANSFER__ are __NuttX I2C Constants__ that we have ported from C to Rust.
 
-TODO
+[(See this)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/lib.rs#L105-L124)
 
-To build the NuttX + Rust project...
-
-```bash
-cd nuttx/apps/examples/rust_i2c
-./run.sh
-```
-
-In NuttX Shell, enter this to run our Rust app...
-
-```bash
-rust_i2c
-```
-
-Our Rust app reads BME280 Register 0xD0 (Device ID), which should contain 0x60...
-
-```text
-NuttShell (NSH) NuttX-10.2.0-RC0
-nsh> rust_i2c
-Hello from Rust!
-test_i2c
-i2cdrvr_ioctl: cmd=2101 arg=4201c378
-bl602_i2c_transfer: subflag=1, subaddr=0xd0, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x60
-bl602_i2c_transfer: i2c transfer success
-test_i2c: Register 0xd0 is 0x60
-Done!
-nsh>
-```
-
-Yep our Rust app reads the BME280 I2C Register correctly!
-
-# Rust Embedded HAL
+## NuttX Embedded HAL
 
 TODO
 
@@ -515,7 +494,7 @@ impl i2c::WriteRead for I2c {
 
 [(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L20-L160)
 
-# Read I2C Register in NuttX Embedded HAL
+## Read I2C Register with NuttX Embedded HAL
 
 TODO
 
@@ -625,27 +604,6 @@ pub fn test_hal_read() {
 
 [(Source)](rust/src/test.rs)
 
-# Test I2C HAL
-
-TODO
-
-Rust Embedded HAL works OK for reading an I2C Register!
-
-```text
-NuttShell NSH NuttX-10.2.0-RC0
-nsh> rust_i2c
-Hello from Rust!
-...
-test_hal_read
-i2cdrvr_ioctl: cmd=2101 arg=4201c360
-bl602_i2c_transfer: subflag=1, subaddr=0xd0, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x60
-bl602_i2c_transfer: i2c transfer success
-test_hal_read: Register 0xd0 is 0x60
-Done!
-nsh>
-```
-
 # Write I2C Register
 
 TODO
@@ -694,7 +652,7 @@ bl602_i2c_transfer: i2c transfer success
 test_hal_write: Write 0xA0 to register
 ```
 
-# Fix I2C Write
+## Fix I2C Write
 
 TODO
 
