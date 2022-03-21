@@ -1,6 +1,6 @@
 # Rust talks I2C on Apache NuttX RTOS
 
-📝 _26 Mar 2022_
+📝 _22 Mar 2022_
 
 ![Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/rusti2c-title.jpg)
 
@@ -208,7 +208,7 @@ We're ready to run our Rust App on NuttX!
 
 The Rust Driver for BME280 runs successfully on NuttX!
 
-![Rust Driver for BME280](https://lupyuen.github.io/images/rusti2c-bme280.png)
+> ![Rust Driver for BME280](https://lupyuen.github.io/images/rusti2c-bme280.png)
 
 # Rust Driver for BME280
 
@@ -353,6 +353,8 @@ NuttX Embedded HAL accesses the I2C Port by calling the __NuttX I2C Interface__:
 Check out the details in the Appendix...
 
 -   [__"Read I2C Register in Embedded HAL"__](https://lupyuen.github.io/articles/rusti2c#appendix-read-i2c-register-in-embedded-hal)
+
+![Write I2C Register](https://lupyuen.github.io/images/rusti2c-code7a.png)
 
 # Write I2C Register
 
@@ -682,13 +684,15 @@ pub struct I2c {
 
 [(See the Output Log)](https://github.com/lupyuen/rust-i2c-nuttx#test-i2c-hal)
 
+![Write I2C Register in Embedded HAL](https://lupyuen.github.io/images/rusti2c-code8a.png)
+
 # Appendix: Write I2C Register in Embedded HAL
 
 BL602 has a peculiar I2C Port that uses __I2C Sub Addresses__...
 
-[__"Quirks in BL602 I2C Driver"__](https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver)
+-   [__"Quirks in BL602 I2C Driver"__](https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver)
 
-We tried all sequences of I2C Read / Write / Sub Address. Only this strange sequence works for writing to I2C Registers...
+We tried [__all sequences__](https://lupyuen.github.io/images/rusti2c-lottery1.png) of I2C Read / Write / Sub Address. Only this strange sequence works for writing to I2C Registers...
 
 1.  Write I2C __Register ID and Register Value__ together as I2C Sub Address
 
@@ -1242,47 +1246,6 @@ Congratulations NuttX is now running on BL602 / BL604!
 
 ![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
-TODO4
+![Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/rusti2c-title2.jpg)
 
-![](https://lupyuen.github.io/images/rusti2c-code4a.png)
-
-TODO7
-
-![](https://lupyuen.github.io/images/rusti2c-code7a.png)
-
-TODO8
-
-![](https://lupyuen.github.io/images/rusti2c-code8a.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/rusti2c-code9a.png)
-
-TODO11
-
-![](https://lupyuen.github.io/images/rusti2c-hal.png)
-
-TODO13
-
-![](https://lupyuen.github.io/images/rusti2c-logic1.png)
-
-TODO14
-
-![](https://lupyuen.github.io/images/rusti2c-logic2a.png)
-
-TODO15
-
-![](https://lupyuen.github.io/images/rusti2c-logic3a.png)
-
-TODO16
-
-![](https://lupyuen.github.io/images/rusti2c-lottery1.png)
-
-TODO17
-
-![](https://lupyuen.github.io/images/rusti2c-run1.png)
-
-TODO19
-
-![](https://lupyuen.github.io/images/rusti2c-title2.jpg)
-
+_[Bosch BME280 Sensor](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/) connected to [Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/articles/pinecone)_
