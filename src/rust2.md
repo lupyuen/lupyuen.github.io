@@ -1024,26 +1024,26 @@ To set the OutputPin High or Low, we call __ioctl__ on the File Descriptor: [nut
 ```rust
 /// NuttX Implementation of GPIO Output
 impl v2::OutputPin for OutputPin {
-    /// Error Type
-    type Error = i32;
+  /// Error Type
+  type Error = i32;
 
-    /// Set the GPIO Output to High
-    fn set_high(&mut self) -> Result<(), Self::Error> {
-        let ret = unsafe { 
-            ioctl(self.fd, GPIOC_WRITE, 1) 
-        };
-        assert!(ret >= 0);
-        Ok(())
-    }
+  /// Set the GPIO Output to High
+  fn set_high(&mut self) -> Result<(), Self::Error> {
+    let ret = unsafe { 
+      ioctl(self.fd, GPIOC_WRITE, 1) 
+    };
+    assert!(ret >= 0);
+    Ok(())
+  }
 
-    /// Set the GPIO Output to low
-    fn set_low(&mut self) -> Result<(), Self::Error> {
-        let ret = unsafe { 
-            ioctl(self.fd, GPIOC_WRITE, 0) 
-        };
-        assert!(ret >= 0);
-        Ok(())
-    }
+  /// Set the GPIO Output to low
+  fn set_low(&mut self) -> Result<(), Self::Error> {
+    let ret = unsafe { 
+      ioctl(self.fd, GPIOC_WRITE, 0) 
+    };
+    assert!(ret >= 0);
+    Ok(())
+  }
 }
 ```
 
@@ -1052,12 +1052,22 @@ When we're done with OutputPin, we __close the File Descriptor__: [nuttx-embedde
 ```rust
 /// NuttX Implementation of GPIO Output
 impl Drop for OutputPin {
-    /// Close the GPIO Output
-    fn drop(&mut self) {
-        unsafe { close(self.fd) };
-    }
+  /// Close the GPIO Output
+  fn drop(&mut self) {
+    unsafe { close(self.fd) };
+  }
 }
 ```
+
+Check out the GPIO demo and docs...
+
+-   [__GPIO Demo__](https://github.com/lupyuen/nuttx-embedded-hal#gpio-output)
+
+-   [__GPIO Output Docs__](https://docs.rs/nuttx-embedded-hal/latest/nuttx_embedded_hal/struct.OutputPin.html)
+
+-   [__GPIO Input Docs__](https://docs.rs/nuttx-embedded-hal/latest/nuttx_embedded_hal/struct.InputPin.html)
+
+-   [__GPIO Interrupt Docs__](https://docs.rs/nuttx-embedded-hal/latest/nuttx_embedded_hal/struct.InterruptPin.html)
 
 ![SPI HAL](https://lupyuen.github.io/images/rust2-hal4.png)
 
@@ -1076,15 +1086,15 @@ pub struct Spi {
 
 /// NuttX Implementation of SPI Bus
 impl Spi {
-    /// Create an SPI Bus from a Device Path (e.g. "/dev/spitest0")
-    pub fn new(path: &str) -> Result<Self, i32> {
-        //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
-        let fd = open(path, O_RDWR);
-        if fd < 0 { return Err(fd) }
+  /// Create an SPI Bus from a Device Path (e.g. "/dev/spitest0")
+  pub fn new(path: &str) -> Result<Self, i32> {
+    //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
+    let fd = open(path, O_RDWR);
+    if fd < 0 { return Err(fd) }
 
-        //  Return the SPI Bus
-        Ok(Self { fd })
-    }
+    //  Return the SPI Bus
+    Ok(Self { fd })
+  }
 }
 
 /// NuttX Implementation of SPI Bus
@@ -1103,18 +1113,18 @@ To do SPI Write, we __write to the File Descriptor__: [nuttx-embedded-hal/src/ha
 ```rust
 /// NuttX Implementation of SPI Write
 impl spi::Write<u8> for Spi{
-    /// Error Type
-    type Error = i32;
+  /// Error Type
+  type Error = i32;
 
-    /// Write SPI data
-    fn write(&mut self, words: &[u8]) -> Result<(), Self::Error> {
-        //  Transmit data
-        let bytes_written = unsafe { 
-            write(self.fd, words.as_ptr(), words.len() as u32) 
-        };
-        assert_eq!(bytes_written, words.len() as i32);
-        Ok(())
-    }
+  /// Write SPI data
+  fn write(&mut self, words: &[u8]) -> Result<(), Self::Error> {
+    //  Transmit data
+    let bytes_written = unsafe { 
+        write(self.fd, words.as_ptr(), words.len() as u32) 
+    };
+    assert_eq!(bytes_written, words.len() as i32);
+    Ok(())
+  }
 }
 ```
 
@@ -1123,28 +1133,54 @@ SPI Transfer works the same way, except that we also __copy the SPI Response__ a
 ```rust
 /// NuttX Implementation of SPI Transfer
 impl spi::Transfer<u8> for Spi {
-    /// Error Type
-    type Error = i32;
+  /// Error Type
+  type Error = i32;
 
-    /// Transfer SPI data
-    fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
-        //  Transmit data
-        let bytes_written = unsafe { 
-            write(self.fd, words.as_ptr(), words.len() as u32) 
-        };
-        assert_eq!(bytes_written, words.len() as i32);
+  /// Transfer SPI data
+  fn transfer<'w>(&mut self, words: &'w mut [u8]) -> Result<&'w [u8], Self::Error> {
+    //  Transmit data
+    let bytes_written = unsafe { 
+        write(self.fd, words.as_ptr(), words.len() as u32) 
+    };
+    assert_eq!(bytes_written, words.len() as i32);
 
-        //  Read response
-        let bytes_read = unsafe { 
-            read(self.fd, words.as_mut_ptr(), words.len() as u32) 
-        };
-        assert_eq!(bytes_read, words.len() as i32);
+    //  Read response
+    let bytes_read = unsafe { 
+        read(self.fd, words.as_mut_ptr(), words.len() as u32) 
+    };
+    assert_eq!(bytes_read, words.len() as i32);
 
-        //  Return response
-        Ok(words)
-    }
+    //  Return response
+    Ok(words)
+  }
 }
 ```
+
+Check out the SPI demo and docs...
+
+-   [__SPI Demo__](https://github.com/lupyuen/nuttx-embedded-hal#spi)
+
+-   [__SPI Docs__](https://docs.rs/nuttx-embedded-hal/latest/nuttx_embedded_hal/struct.Spi.html)
+
+## I2C HAL
+
+The implementation of I2C HAL for NuttX is described here...
+
+-   [__"NuttX Embedded HAL (I2C)"__](https://lupyuen.github.io/articles/rusti2c#nuttx-embedded-hal)
+
+Check out the I2C demo and docs...
+
+-   [__I2C Demo__](https://github.com/lupyuen/nuttx-embedded-hal#i2c)
+
+-   [__I2C Docs__](https://docs.rs/nuttx-embedded-hal/latest/nuttx_embedded_hal/struct.I2c.html)
+
+## Delay HAL
+
+We have also implemented the Delay HAL for NuttX...
+
+-   [__Delay Docs__](https://docs.rs/nuttx-embedded-hal/latest/nuttx_embedded_hal/struct.Delay.html)
+
+-   [__Delay Demo__](https://github.com/lupyuen/nuttx-embedded-hal#delay)
 
 ![Fixing SX1262 Driver for NuttX](https://lupyuen.github.io/images/rust2-driver.png)
 
