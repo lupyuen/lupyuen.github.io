@@ -76,17 +76,17 @@
 <li><a href="#notes">9 Notes</a><ul></ul></li>
 <li><a href="#appendix-read-i2c-register-in-embedded-hal">10 Appendix: Read I2C Register in Embedded HAL</a><ul>
 <li><a href="#nuttx-types-and-constants">10.1 NuttX Types and Constants</a><ul></ul></li>
-<li><a href="#into-embedded-hal">10.2 Into Embedded HAL</a><ul></ul></li>
-<li><a href="#appendix-write-i2c-register-in-embedded-hal">10.3 Appendix: Write I2C Register in Embedded HAL</a><ul></ul></li></ul></li>
-<li><a href="#appendix-read-i2c-register-in-c">11 Appendix: Read I2C Register in C</a><ul>
-<li><a href="#c-types-and-constants">11.1 C Types and Constants</a><ul></ul></li></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">12 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#download-nuttx">12.1 Download NuttX</a><ul></ul></li>
-<li><a href="#configure-nuttx">12.2 Configure NuttX</a><ul></ul></li>
-<li><a href="#configure-rust-target">12.3 Configure Rust Target</a><ul></ul></li>
-<li><a href="#build-nuttx">12.4 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">12.5 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">12.6 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>26 Mar 2022</em></p>
+<li><a href="#into-embedded-hal">10.2 Into Embedded HAL</a><ul></ul></li></ul></li>
+<li><a href="#appendix-write-i2c-register-in-embedded-hal">11 Appendix: Write I2C Register in Embedded HAL</a><ul></ul></li>
+<li><a href="#appendix-read-i2c-register-in-c">12 Appendix: Read I2C Register in C</a><ul>
+<li><a href="#c-types-and-constants">12.1 C Types and Constants</a><ul></ul></li></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#download-nuttx">13.1 Download NuttX</a><ul></ul></li>
+<li><a href="#configure-nuttx">13.2 Configure NuttX</a><ul></ul></li>
+<li><a href="#configure-rust-target">13.3 Configure Rust Target</a><ul></ul></li>
+<li><a href="#build-nuttx">13.4 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">13.5 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">13.6 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>26 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em><a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/">Bosch BME280 Sensor</a> connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 <p><a href="https://en.wikipedia.org/wiki/I%C2%B2C"><strong>I2C</strong></a> is a great way to connect all kinds of <strong>Sensor Modules</strong> when we’re creating an <strong>IoT Gadget</strong>. Like sensors for temperature, light, motion, spectroscopy, soil moisture, GPS, LIDAR, … <a href="https://www.sparkfun.com/categories/tags/i2c"><strong>and many more!</strong></a></p>
@@ -244,7 +244,7 @@ Done!</code></pre></div>
 bme280 = &quot;0.2.1&quot;
 
 # NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
-nuttx-embedded-hal = &quot;1.0.7&quot;  
+nuttx-embedded-hal = &quot;1.0.8&quot;  
 
 # Rust Embedded HAL: https://crates.io/crates/embedded-hal
 embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
@@ -576,7 +576,7 @@ test_hal_write: Write 0xA0 to register</code></pre></div>
   <span class="doccomment">/// I2C Frequency in Hz</span>
   <span class="ident">frequency</span>: <span class="ident">u32</span>,
 }</code></pre></div>
-<h2 id="appendix-write-i2c-register-in-embedded-hal" class="section-header"><a href="#appendix-write-i2c-register-in-embedded-hal">10.3 Appendix: Write I2C Register in Embedded HAL</a></h2>
+<h1 id="appendix-write-i2c-register-in-embedded-hal" class="section-header"><a href="#appendix-write-i2c-register-in-embedded-hal">11 Appendix: Write I2C Register in Embedded HAL</a></h1>
 <p>TODO</p>
 <p>BL602 has a peculiar I2C Port that uses I2C Sub Addresses … Let’s make it work with Rust Embedded HAL</p>
 <p><a href="https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver">“Quirks in BL602 I2C Driver”</a></p>
@@ -706,7 +706,7 @@ Setup Read to [0xEF] + ACK
 <p><img src="https://lupyuen.github.io/images/rusti2c-nosubaddr.png" alt="Send the Register ID and Register Value as I2C Data instead of I2C Sub Address" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code1.png" alt="Read I2C Register in C" /></p>
-<h1 id="appendix-read-i2c-register-in-c" class="section-header"><a href="#appendix-read-i2c-register-in-c">11 Appendix: Read I2C Register in C</a></h1>
+<h1 id="appendix-read-i2c-register-in-c" class="section-header"><a href="#appendix-read-i2c-register-in-c">12 Appendix: Read I2C Register in C</a></h1>
 <p>TODO</p>
 <p>This is how we read an I2C Register in C…</p>
 <div class="example-wrap"><pre class="language-c"><code>static int bme280_reg_read(const struct device *priv,
@@ -763,7 +763,7 @@ Setup Read to [0xEF] + ACK
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rusti2c/system/i2c/i2c_devif.c#L117-L129">(Source)</a></p>
 <p>Let’s port this to Rust.</p>
-<h2 id="c-types-and-constants" class="section-header"><a href="#c-types-and-constants">11.1 C Types and Constants</a></h2>
+<h2 id="c-types-and-constants" class="section-header"><a href="#c-types-and-constants">12.1 C Types and Constants</a></h2>
 <p>TODO</p>
 <p>Earlier we’ve seen <strong>i2c_msg_s</strong> and <strong>i2c_transfer_s</strong>. They are defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>struct i2c_msg_s
@@ -793,13 +793,13 @@ Setup Read to [0xEF] + ACK
 <div class="example-wrap"><pre class="language-c"><code>#define _I2CBASE        (0x2100) /* I2C driver commands */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L73">(Source)</a></p>
 <p>We’ll port these C Types and Constants to Rust as well.</p>
-<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">12 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602, BL604 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602, BL604 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">12.1 Download NuttX</a></h2>
+<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">13.1 Download NuttX</a></h2>
 <p>Download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
@@ -814,7 +814,7 @@ git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nutt
 <p><a href="https://github.com/lupyuen/rust-i2c-nuttx"><strong>“Install Rust I2C App”</strong></a></p>
 </li>
 </ol>
-<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">12.2 Configure NuttX</a></h2>
+<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">13.2 Configure NuttX</a></h2>
 <p>Now we configure our NuttX project…</p>
 <ol>
 <li>
@@ -885,7 +885,7 @@ I2C Informational Output  </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/85550f16517202b7978e592da976c4e7">(See the .config for BL602)</a></p>
 </li>
 </ol>
-<h2 id="configure-rust-target" class="section-header"><a href="#configure-rust-target">12.3 Configure Rust Target</a></h2>
+<h2 id="configure-rust-target" class="section-header"><a href="#configure-rust-target">13.3 Configure Rust Target</a></h2>
 <p><strong>For BL602 / BL604</strong>: Skip to the next section</p>
 <p><strong>For ESP32-C3 (RISC-V)</strong>: </p>
 <ol>
@@ -920,7 +920,7 @@ I2C Informational Output  </code></pre></div>
 </li>
 </ol>
 <p><a href="https://lupyuen.github.io/articles/rust2#rust-target">(More about Rust Targets)</a></p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">12.4 Build NuttX</a></h2>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">13.4 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
 <ol>
 <li>
@@ -955,7 +955,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">12.5 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">13.5 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602 / BL604:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -1032,7 +1032,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">12.6 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">13.6 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
