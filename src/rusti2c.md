@@ -236,7 +236,7 @@ That we have added to our [__Cargo.toml__](https://github.com/lupyuen/rust-i2c-n
 bme280 = "0.2.1"
 
 ## NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
-nuttx-embedded-hal = "1.0.8"  
+nuttx-embedded-hal = "1.0.9"  
 
 ## Rust Embedded HAL: https://crates.io/crates/embedded-hal
 embedded-hal = "0.2.7"  

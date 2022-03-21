@@ -312,7 +312,7 @@ To call it, we add __embedded-hal__ and __nuttx-embedded-hal__ as dependencies t
 embedded-hal = "0.2.7"  
 
 ## NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
-nuttx-embedded-hal = "1.0.6"  
+nuttx-embedded-hal = "1.0.9"  
 
 ## SX126x LoRa Radio Driver fixed for NuttX
 sx126x = { git = "https://github.com/lupyuen/sx126x-rs-nuttx" }  
