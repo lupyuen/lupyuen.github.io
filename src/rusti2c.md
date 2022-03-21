@@ -423,9 +423,9 @@ Yep they have been implemented in NuttX Embedded HAL...
 
 # What's Next
 
-TODO
+I had lots of fun running Rust on NuttX, I hope you'll enjoy it too!
 
-If you're keen to make __Rust on NuttX__ better, please lemme know! 🙏
+If you're keen to make __Rust on NuttX__ better, or if there's something I should port to Rust on NuttX, please lemme know! 🙏
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
