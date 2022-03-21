@@ -171,6 +171,7 @@
 #define BOARD_I2C_SDA \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
   GPIO_PIN3)</code></pre></div>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(Which pins can be used? See Table 3.1 “Pin Description”, Page 26)</a></p>
 <p>We disabled the <strong>UART1 Port</strong> because it uses the same pins as I2C: <a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L63-L68">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef TODO  /* Remember to check for duplicate pins! */
 #define BOARD_UART_1_RX_PIN \
@@ -891,15 +892,18 @@ I2C Informational Output  </code></pre></div>
 <p>Remove “-Z build-std=core” from “rust_build_options”</p>
 </li>
 </ol>
+<p><a href="https://lupyuen.github.io/articles/rust2#appendix-rust-build-script-for-nuttx">(<strong>run.sh</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/rust2#rust-target">(More about Rust Targets)</a></p>
 <h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">13.4 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
 <ol>
 <li>
-<p>To build NuttX with Rust, enter this…</p>
+<p>To build NuttX with Rust, run the Rust Build Script <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/run.sh"><strong>run.sh</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>pushd apps/examples/rust_i2c
 ./run.sh
-popd</code></pre></div></li>
+popd</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/rust2#appendix-rust-build-script-for-nuttx">(<strong>run.sh</strong> is explained here)</a></p>
+</li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx

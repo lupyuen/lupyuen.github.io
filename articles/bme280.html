@@ -158,6 +158,7 @@
 #define BOARD_I2C_SDA \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
   GPIO_PIN3)</code></pre></div>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(Which pins can be used? See Table 3.1 “Pin Description”, Page 26)</a></p>
 <p>We disabled the <strong>UART1 Port</strong> because it uses the same pins as I2C: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/include/board.h#L63-L68">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef TODO  /* Remember to check for duplicate pins! */
 #define BOARD_UART_1_RX_PIN \
