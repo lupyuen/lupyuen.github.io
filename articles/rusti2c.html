@@ -250,11 +250,11 @@ nuttx-embedded-hal = &quot;1.0.9&quot;
 
 # Rust Embedded HAL: https://crates.io/crates/embedded-hal
 embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
-<p>The Rust Driver for BME280 works on NuttX because of the <strong>NuttX Embedded HAL</strong>. Let’s look inside.</p>
+<p>The Rust Driver for BME280 works on NuttX because of <strong>NuttX Embedded HAL</strong>. Let’s look inside.</p>
 <p><a href="https://crates.io/crates/nuttx-embedded-hal">(BTW: Always use the latest version of NuttX Embedded HAL)</a></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-arch2.jpg" alt="NuttX Embedded HAL" /></p>
 <h1 id="nuttx-embedded-hal" class="section-header"><a href="#nuttx-embedded-hal">5 NuttX Embedded HAL</a></h1>
-<p><em>What’s the NuttX Embedded HAL?</em></p>
+<p><em>What’s NuttX Embedded HAL?</em></p>
 <p><strong>NuttX Embedded HAL</strong> (Hardware Abstraction Layer) is the Rust Library that exposes a Standard Rust Interface for the <strong>Input / Output Ports on NuttX</strong>: GPIO, I2C, SPI, …</p>
 <ul>
 <li>
@@ -300,7 +300,7 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
     <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port</span>
     <span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz</span>
   ).<span class="ident">expect</span>(<span class="string">&quot;open failed&quot;</span>);</code></pre></div>
-<p>This opens the I2C Port “<strong>/dev/i2c0</strong>” at 400 kHz. (We’ve seen earlier)</p>
+<p>This opens the I2C Port “<strong>/dev/i2c0</strong>” at 400 kHz. (We’ve seen this earlier)</p>
 <p>Next we prepare a one-byte <strong>Receive Buffer</strong> that will receive the Register Value…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Buffer for received Register Value (1 byte)</span>
@@ -345,7 +345,7 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
     <span class="number">0x77</span>,          <span class="comment">//  I2C Address</span>
     <span class="kw-2">&amp;</span>[<span class="number">0xF5</span>, <span class="number">0xA0</span>]  <span class="comment">//  Register ID and value</span>
   ).<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
-<p>The implementation of <strong>i2c.write</strong> is explained here…</p>
+<p>The implementation of <strong>i2c.write</strong> in NuttX Embedded HAL is explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rusti2c#appendix-write-i2c-register-in-embedded-hal"><strong>“Write I2C Register in Embedded HAL”</strong></a></li>
 </ul>
