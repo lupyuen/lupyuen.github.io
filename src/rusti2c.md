@@ -295,9 +295,152 @@ Yep because the Rust Embedded HAL has been implemented on [__many platforms__](h
 
 And now NuttX! (As NuttX Embedded HAL)
 
-![NuttX Embedded HAL](https://lupyuen.github.io/images/rusti2c-arch.jpg)
+![Call NuttX Embedded HAL to read I2C register](https://lupyuen.github.io/images/rusti2c-code6a.png)
 
 # Read I2C Register
+
+_Can we call NuttX Embedded HAL in our own Rust Programs?_
+
+Yes we can! This is how we call NuttX Embedded HAL to __read an I2C Register__ on BME280: [test.rs](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L29-L62)
+
+```rust
+/// Read an I2C Register
+pub fn test_hal_read() {
+
+  //  Open I2C Port
+  let mut i2c = nuttx_embedded_hal::I2c::new(
+    "/dev/i2c0",  //  I2C Port
+    400000,       //  I2C Frequency: 400 kHz
+  ).expect("open failed");
+```
+
+This opens the I2C Port "__/dev/i2c0__" at 400 kHz. (We've seen earlier)
+
+Next we prepare a one-byte __Receive Buffer__ that will receive the Register Value...
+
+```rust
+  //  Buffer for received Register Value (1 byte)
+  let mut buf = [0 ; 1];  //  Init to 0
+```
+
+Then we call NuttX Embedded HAL to __read Register `0xD0`__ from I2C Address `0x77`...
+
+```rust
+  //  Read I2C Register
+  i2c.write_read(
+    0x77,     //  I2C Address
+    &[0xD0],  //  Register ID
+    &mut buf  //  Buffer to be received (Register Value)
+  ).expect("read register failed");
+```
+
+Our Receive Buffer now contains the __Register Value__ `0x60`...
+
+```rust
+  //  Register Value must be BME280 Device ID (0x60)
+  assert_eq!(buf[0], 0x60);
+}
+```
+
+That's how we call NuttX Embedded HAL to read an I2C Register!
+
+![NuttX Embedded HAL](https://lupyuen.github.io/images/rusti2c-arch.jpg)
+
+_How was NuttX Embedded HAL implemented in Rust?_
+
+NuttX Embedded HAL accesses the I2C Port by calling the __NuttX I2C Interface__: open(), ioctl() and close(). (Pic above)
+
+Check out the details in the Appendix...
+
+TODO
+
+# Write I2C Register
+
+TODO
+
+This code calls the Rust Embedded HAL to write the value 0xA0 to the I2C Register 0xF5....
+
+```rust
+/// Test the I2C HAL by writing an I2C Register
+pub fn test_hal_write() {
+
+  //  Open I2C Port
+  let mut i2c = nuttx_embedded_hal::I2c::new(
+    "/dev/i2c0",  //  I2C Port
+    BME280_FREQ,  //  I2C Frequency
+  ).expect("open failed");
+
+  //  Write 0xA0 to register 0xF5
+  i2c.write(
+    BME280_ADDR as u8,          //  I2C Address
+    &[BME280_REG_CONFIG, 0xA0]  //  Register ID and value
+  ).expect("write register failed");
+```
+
+[(Source)](rust/src/test.rs)
+
+But the Logic Analyser shows that BL602 is writing to I2C the value 0x00 instead of 0xA0...
+
+```text
+Setup Write to [0xEE] + ACK
+0xF5 + ACK
+0x00 + ACK
+```
+
+![BL602 is writing to I2C the value 0x00 instead of 0xA0](https://lupyuen.github.io/images/rusti2c-logic1.png)
+
+Let's fix this. Here's the log for the I2C write...
+
+```text
+nsh> rust_i2c
+Hello from Rust!
+test_hal_write
+i2cdrvr_ioctl: cmd=2101 arg=4201c370
+bl602_i2c_transfer: subflag=1, subaddr=0xf5, sublen=1
+bl602_i2c_send_data: count=1, temp=0xa0
+bl602_i2c_transfer: i2c transfer success
+test_hal_write: Write 0xA0 to register
+```
+
+_How was NuttX Embedded HAL implemented in Rust?_
+
+TODO
+
+Check out the details in the Appendix...
+
+TODO
+
+[__GPIO__](https://github.com/lupyuen/nuttx-embedded-hal#gpio-output)
+
+[__SPI__](https://github.com/lupyuen/nuttx-embedded-hal#spi)
+
+[__Delay__](https://github.com/lupyuen/nuttx-embedded-hal#delay)
+
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+
+-   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
+
+-   [Check out my articles](https://lupyuen.github.io)
+
+-   [RSS Feed](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[`lupyuen.github.io/src/rusti2c.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rusti2c.md)
+
+# Notes
+
+1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1502823263121989634)
+
+![NuttX Embedded HAL](https://lupyuen.github.io/images/rusti2c-arch.jpg)
+
+# Appendix: Read I2C Register in Embedded HAL
 
 _How was NuttX Embedded HAL implemented in Rust?_
 
@@ -542,100 +685,7 @@ pub struct I2c {
 }
 ```
 
-## Call NuttX Embedded HAL
-
-Now that the I2C code has been moved into the NuttX Embedded HAL, let's call it to __read an I2C Register__: [test.rs](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L29-L62)
-
-```rust
-/// Test the I2C HAL by reading an I2C Register
-pub fn test_hal_read() {
-
-  //  Open I2C Port
-  let mut i2c = nuttx_embedded_hal::I2c::new(
-    "/dev/i2c0",  //  I2C Port
-    400000,       //  I2C Frequency
-  ).expect("open failed");
-```
-
-TODO
-
-```rust
-  //  Buffer for received I2C data (1 byte)
-  let mut buf = [0 ; 1];
-```
-
-TODO
-
-```rust
-  //  Read one I2C Register, starting at Device ID
-  i2c.write_read(
-    0x77,     //  I2C Address
-    &[0xD0],  //  Register ID
-    &mut buf  //  Buffer to be received (Register Value)
-  ).expect("read register failed");
-```
-
-TODO
-
-```rust
-  //  Register Value must be BME280 Device ID (0x60)
-  assert_eq!(buf[0], 0x60);
-}
-```
-
-TODO
-
-![Call NuttX Embedded HAL to read I2C register](https://lupyuen.github.io/images/rusti2c-code6a.png)
-
-# Write I2C Register
-
-TODO
-
-This code calls the Rust Embedded HAL to write the value 0xA0 to the I2C Register 0xF5....
-
-```rust
-/// Test the I2C HAL by writing an I2C Register
-pub fn test_hal_write() {
-
-    //  Open I2C Port
-    let mut i2c = nuttx_embedded_hal::I2c::new(
-        "/dev/i2c0",  //  I2C Port
-        BME280_FREQ,  //  I2C Frequency
-    ).expect("open failed");
-
-    //  Write 0xA0 to register 0xF5
-    i2c.write(
-        BME280_ADDR as u8,          //  I2C Address
-        &[BME280_REG_CONFIG, 0xA0]  //  Register ID and value
-    ).expect("write register failed");
-```
-
-[(Source)](rust/src/test.rs)
-
-But the Logic Analyser shows that BL602 is writing to I2C the value 0x00 instead of 0xA0...
-
-```text
-Setup Write to [0xEE] + ACK
-0xF5 + ACK
-0x00 + ACK
-```
-
-![BL602 is writing to I2C the value 0x00 instead of 0xA0](https://lupyuen.github.io/images/rusti2c-logic1.png)
-
-Let's fix this. Here's the log for the I2C write...
-
-```text
-nsh> rust_i2c
-Hello from Rust!
-test_hal_write
-i2cdrvr_ioctl: cmd=2101 arg=4201c370
-bl602_i2c_transfer: subflag=1, subaddr=0xf5, sublen=1
-bl602_i2c_send_data: count=1, temp=0xa0
-bl602_i2c_transfer: i2c transfer success
-test_hal_write: Write 0xA0 to register
-```
-
-## Fix I2C Write
+## Appendix: Write I2C Register in Embedded HAL
 
 TODO
 
@@ -788,27 +838,7 @@ Setup Read to [0xEF] + ACK
 
 ![Send the Register ID and Register Value as I2C Data instead of I2C Sub Address](https://lupyuen.github.io/images/rusti2c-nosubaddr.png)
 
-# What's Next
-
 TODO
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
-
--   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
-
--   [Check out my articles](https://lupyuen.github.io)
-
--   [RSS Feed](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[`lupyuen.github.io/src/rusti2c.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rusti2c.md)
-
-# Notes
-
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1502823263121989634)
 
 ![Read I2C Register in C](https://lupyuen.github.io/images/rusti2c-code1.png)
 
