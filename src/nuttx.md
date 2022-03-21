@@ -814,9 +814,11 @@ Here are some topics that I'll explore in future articles...
 
     [__"Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"__](https://lupyuen.github.io/articles/bme280)
 
--   __Rust__: I'm excited about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. Here's how we integrated NuttX GPIO and SPI with Rust...
+-   __Rust__: I'm excited about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. Here's how we integrated NuttX GPIO, SPI and I2C with Rust...
 
     [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
+
+    [__"Rust talks I2C on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rusti2c)
 
 (BL602 IoT SDK / FreeRTOS is revamping right now to the [__new "hosal" HAL__](https://twitter.com/MisterTechBlog/status/1456259223323508748). Terrific time to explore NuttX now!)
 
@@ -840,7 +842,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1460322823122014211)
 
-1.  Check out the __NuttX developer forum__...
+1.  How do we use __multiple Input / Output / Interrupt GPIOs__ on BL602?  See this...
+
+    [__"GPIO issues on BL602"__](https://github.com/apache/incubator-nuttx/issues/5810)
+
+1.  Having problems with NuttX? Check out the __NuttX Mail Archive__...
 
     [__NuttX Dev Mail Archive__](https://www.mail-archive.com/dev@nuttx.apache.org/)
 
