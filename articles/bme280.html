@@ -370,8 +370,7 @@ baro0: timestamp:30690000 value1:674.93 value2:22.18
 baro0: timestamp:30690000 value1:674.93 value2:22.18
 baro0: timestamp:30690000 value1:1006.21 value2:30.78
 baro0: timestamp:30690000 value1:1006.21 value2:30.78
-SensorTest: Received message: baro0, number:10/10
-bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
+SensorTest: Received message: baro0, number:10/10</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#run-sensor-test-app">(See the complete log)</a></p>
 <p>We see the Air Pressure and Temperature: <strong>1,006.21 millibars</strong> at <strong>30.78 °C</strong>.</p>
 <p>(Air Pressure at Sea Level is 1,013.25 millibars)</p>
@@ -924,8 +923,7 @@ baro0:
   timestamp: 43760000 
   value1:     1011.29 
   value2:       29.09
-SensorTest: Received message: baro0, number:1/1
-bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
+SensorTest: Received message: baro0, number:1/1</code></pre></div>
 <p>This says that the Air Pressure is <strong>1,011.29 millibars</strong> and the Temperature is <strong>29.09 °C</strong>.</p>
 </li>
 <li>
@@ -937,8 +935,7 @@ bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
 humi0: 
   timestamp: 60120000 
   value:     90.58
-SensorTest: Received message: humi0, number:1/1
-bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
+SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p>This says that the Relative Humidity is <strong>90.58 %</strong>.</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#combined-barometer-and-humidity-sensor">(See the complete log)</a></p>
 </li>
@@ -1118,25 +1115,8 @@ static const struct sensor_info g_sensor_info[] = {
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1494301654186823683">this Twitter Thread</a></p>
 </li>
 <li>
-<p>Why does this I2C error appear after reading the BME280 sensor?</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest -n 1 baro0
-...
-bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
-<p>Perhaps because BME280 is in Low Power Mode?</p>
-<div class="example-wrap"><pre class="language-text"><code># Resume BME280: This is OK
-bme280_reg_write: reg=0xf4, val=0x57
-...
-# Suspend BME280: This fails
-bme280_reg_write: reg=0xf4, val=0x54
-bl602_i2c_transfer: i2c transfer error, event = 4</code></pre></div>
-<p><a href="https://github.com/lupyuen/bme280-nuttx#combined-barometer-and-humidity-sensor">(See the complete log)</a></p>
-<p>NuttX’s BMP280 Driver writes a different value to Register F4 and doesn’t hit the error…</p>
-<div class="example-wrap"><pre class="language-text"><code># Resume BMP280: This is OK
-bmp280_putreg8: regaddr=0xf4, regval=0x2f
-...
-# Suspend BMP280: This is OK
-bmp280_putreg8: regaddr=0xf4, regval=0x00</code></pre></div>
-<p><a href="https://github.com/lupyuen/bme280-nuttx#run-sensor-test-app">(See the complete log)</a></p>
+<p>How to access the I2C Port in a <strong>NuttX App</strong> via ioctl? See this…</p>
+<p><a href="https://lupyuen.github.io/articles/rusti2c#appendix-read-i2c-register-in-c"><strong>“Read I2C Register in C (NuttX App)”</strong></a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/bme280-code3a.png" alt="Log I2C Transfers" /></p>
