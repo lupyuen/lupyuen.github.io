@@ -129,6 +129,8 @@ The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen
   GPIO_PIN3)
 ```
 
+[(Which pins can be used? See Table 3.1 "Pin Description", Page 26)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
 We disabled the __UART1 Port__ because it uses the same pins as I2C: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L63-L68)
 
 ```c
@@ -1062,19 +1064,23 @@ __For ESP32 (Xtensa)__:
 
 1.  Remove "-Z build-std=core" from "rust_build_options"
 
+[(__run.sh__ is explained here)](https://lupyuen.github.io/articles/rust2#appendix-rust-build-script-for-nuttx)
+
 [(More about Rust Targets)](https://lupyuen.github.io/articles/rust2#rust-target)
 
 ## Build NuttX
 
 Follow these steps to build NuttX for BL602, BL604 or ESP32...
 
-1.  To build NuttX with Rust, enter this...
+1.  To build NuttX with Rust, run the Rust Build Script [__run.sh__](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/run.sh)...
 
     ```bash
     pushd apps/examples/rust_i2c
     ./run.sh
     popd
     ```
+
+    [(__run.sh__ is explained here)](https://lupyuen.github.io/articles/rust2#appendix-rust-build-script-for-nuttx)
 
 1.  We should see...
 

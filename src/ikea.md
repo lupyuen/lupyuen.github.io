@@ -173,6 +173,8 @@ The __GPIO Pin Numbers__ for the UART Port (UART1) are defined in [board.h](http
    GPIO_FUNC_UART | GPIO_PIN4)
 ```
 
+[(Which pins can be used? See Table 3.1 "Pin Description", Page 26)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
 __For ESP32:__ The GPIO Pin Numbers for the UART Port (UART1) are defined in [Kconfig](https://github.com/lupyuen/incubator-nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669) and menuconfig...
 
 ```text

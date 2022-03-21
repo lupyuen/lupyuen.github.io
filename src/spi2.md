@@ -657,6 +657,8 @@ __For BL602:__ SPI Pins are defined in [board.h](https://github.com/lupyuen/incu
 #define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN3)
 ```
 
+[(Which pins can be used? See Table 3.1 "Pin Description", Page 26)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
 __For ESP32:__ SPI Pins are defined in [Kconfig](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/xtensa/src/esp32/Kconfig#L799-L817)
 
 ```text
@@ -1086,6 +1088,8 @@ __NRESET__ | GPIO 18 | Not assigned yet
 #define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
 #define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)
 ```
+
+[(Which pins can be used? See Table 3.1 "Pin Description", Page 26)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
 
 (Remember that GPIO Output __BOARD_GPIO_OUT1__ becomes our Chip Select)
 
