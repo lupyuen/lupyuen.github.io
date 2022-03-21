@@ -86,7 +86,7 @@
 <li><a href="#configure-rust-target">13.3 Configure Rust Target</a><ul></ul></li>
 <li><a href="#build-nuttx">13.4 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">13.5 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">13.6 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>26 Mar 2022</em></p>
+<li><a href="#run-nuttx">13.6 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Mar 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-title.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em><a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/">Bosch BME280 Sensor</a> connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 <p><a href="https://en.wikipedia.org/wiki/I%C2%B2C"><strong>I2C</strong></a> is a great way to connect all kinds of <strong>Sensor Modules</strong> when we’re creating an <strong>IoT Gadget</strong>. Like sensors for temperature, light, motion, spectroscopy, soil moisture, GPS, LIDAR, … <a href="https://www.sparkfun.com/categories/tags/i2c"><strong>and many more!</strong></a></p>
@@ -224,7 +224,9 @@ Done!</code></pre></div>
 </li>
 </ol>
 <p>The Rust Driver for BME280 runs successfully on NuttX!</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/rusti2c-bme280.png" alt="Rust Driver for BME280" /></p>
+</blockquote>
 <h1 id="rust-driver-for-bme280" class="section-header"><a href="#rust-driver-for-bme280">4 Rust Driver for BME280</a></h1>
 <p><em>We ran the Rust Driver for BME280 on NuttX… Without any code changes?</em></p>
 <p>Yeah amazing right? Earlier we saw this: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs">rust/src/bme280.rs</a></p>
@@ -324,6 +326,7 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rusti2c#appendix-read-i2c-register-in-embedded-hal"><strong>“Read I2C Register in Embedded HAL”</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/rusti2c-code7a.png" alt="Write I2C Register" /></p>
 <h1 id="write-i2c-register" class="section-header"><a href="#write-i2c-register">7 Write I2C Register</a></h1>
 <p><em>What about writing to I2C Registers?</em></p>
 <p>This code calls NuttX Embedded HAL to <strong>write an I2C Register</strong>: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L64-L116">test.rs</a></p>
@@ -587,10 +590,13 @@ Setup Read to [0xEF] + ACK
   <span class="ident">frequency</span>: <span class="ident">u32</span>,
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/rust-i2c-nuttx#test-i2c-hal">(See the Output Log)</a></p>
+<p><img src="https://lupyuen.github.io/images/rusti2c-code8a.png" alt="Write I2C Register in Embedded HAL" /></p>
 <h1 id="appendix-write-i2c-register-in-embedded-hal" class="section-header"><a href="#appendix-write-i2c-register-in-embedded-hal">11 Appendix: Write I2C Register in Embedded HAL</a></h1>
 <p>BL602 has a peculiar I2C Port that uses <strong>I2C Sub Addresses</strong>…</p>
-<p><a href="https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver"><strong>“Quirks in BL602 I2C Driver”</strong></a></p>
-<p>We tried all sequences of I2C Read / Write / Sub Address. Only this strange sequence works for writing to I2C Registers…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver"><strong>“Quirks in BL602 I2C Driver”</strong></a></li>
+</ul>
+<p>We tried <a href="https://lupyuen.github.io/images/rusti2c-lottery1.png"><strong>all sequences</strong></a> of I2C Read / Write / Sub Address. Only this strange sequence works for writing to I2C Registers…</p>
 <ol>
 <li>
 <p>Write I2C <strong>Register ID and Register Value</strong> together as I2C Sub Address</p>
@@ -1050,28 +1056,8 @@ nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-code4a.png" alt="" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-code7a.png" alt="" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-code8a.png" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-code9a.png" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-hal.png" alt="" /></p>
-<p>TODO13</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-logic1.png" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-logic2a.png" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-logic3a.png" alt="" /></p>
-<p>TODO16</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-lottery1.png" alt="" /></p>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-run1.png" alt="" /></p>
-<p>TODO19</p>
-<p><img src="https://lupyuen.github.io/images/rusti2c-title2.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/rusti2c-title2.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
+<p><em><a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/">Bosch BME280 Sensor</a> connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 
     
 </body>
