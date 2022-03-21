@@ -242,7 +242,7 @@ nuttx-embedded-hal = "1.0.9"
 embedded-hal = "0.2.7"  
 ```
 
-The Rust Driver for BME280 works on NuttX because of the __NuttX Embedded HAL__. Let's look inside.
+The Rust Driver for BME280 works on NuttX because of __NuttX Embedded HAL__. Let's look inside.
 
 [(BTW: Always use the latest version of NuttX Embedded HAL)](https://crates.io/crates/nuttx-embedded-hal)
 
@@ -250,7 +250,7 @@ The Rust Driver for BME280 works on NuttX because of the __NuttX Embedded HAL__.
 
 # NuttX Embedded HAL
 
-_What's the NuttX Embedded HAL?_
+_What's NuttX Embedded HAL?_
 
 __NuttX Embedded HAL__ (Hardware Abstraction Layer) is the Rust Library that exposes a Standard Rust Interface for the __Input / Output Ports on NuttX__: GPIO, I2C, SPI, ...
 
@@ -314,7 +314,7 @@ pub fn test_hal_read() {
   ).expect("open failed");
 ```
 
-This opens the I2C Port "__/dev/i2c0__" at 400 kHz. (We've seen earlier)
+This opens the I2C Port "__/dev/i2c0__" at 400 kHz. (We've seen this earlier)
 
 Next we prepare a one-byte __Receive Buffer__ that will receive the Register Value...
 
@@ -379,7 +379,7 @@ pub fn test_hal_write() {
   ).expect("write register failed");
 ```
 
-The implementation of __i2c.write__ is explained here...
+The implementation of __i2c.write__ in NuttX Embedded HAL is explained here...
 
 -   [__"Write I2C Register in Embedded HAL"__](https://lupyuen.github.io/articles/rusti2c#appendix-write-i2c-register-in-embedded-hal)
 
