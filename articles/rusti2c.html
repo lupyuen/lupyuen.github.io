@@ -318,10 +318,12 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 }</code></pre></div>
 <p>That’s how we call NuttX Embedded HAL to read an I2C Register!</p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-arch.jpg" alt="NuttX Embedded HAL" /></p>
-<p><em>How was NuttX Embedded HAL implemented in Rust?</em></p>
+<p><em>How did we implement I2C in the NuttX Embedded HAL?</em></p>
 <p>NuttX Embedded HAL accesses the I2C Port by calling the <strong>NuttX I2C Interface</strong>: open(), ioctl() and close(). (Pic above)</p>
 <p>Check out the details in the Appendix…</p>
-<p>TODO</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rusti2c#appendix-read-i2c-register-in-embedded-hal"><strong>“Read I2C Register in Embedded HAL”</strong></a></li>
+</ul>
 <h1 id="write-i2c-register" class="section-header"><a href="#write-i2c-register">7 Write I2C Register</a></h1>
 <p>TODO</p>
 <p>This code calls the Rust Embedded HAL to write the value 0xA0 to the I2C Register 0xF5….</p>
@@ -358,6 +360,10 @@ test_hal_write: Write 0xA0 to register</code></pre></div>
 <p><em>How was NuttX Embedded HAL implemented in Rust?</em></p>
 <p>TODO</p>
 <p>Check out the details in the Appendix…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/rusti2c#appendix-write-i2c-register-in-embedded-hal"><strong>“Write I2C Register in Embedded HAL
+“</strong></a></li>
+</ul>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal#gpio-output"><strong>GPIO</strong></a></p>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal#spi"><strong>SPI</strong></a></p>
