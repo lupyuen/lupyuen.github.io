@@ -480,31 +480,65 @@ This conforms with the I2C Interface that's expected by __Rust Embedded HAL__...
 ```rust
 /// NuttX Implementation of I2C WriteRead
 impl i2c::WriteRead for I2c {
-    ...
-    /// Write `wbuf` to I2C Port and read `rbuf` from I2C Port.
-    /// We assume this is a Read I2C Register operation, with Register ID at `wbuf[0]`.
-    /// TODO: Handle other kinds of I2C operations
-    fn write_read(&mut self, addr: u8, wbuf: &[u8], rbuf: &mut [u8]) -> Result<(), Self::Error> {
+  ...
+  /// Write `wbuf` to I2C Port and read `rbuf` from I2C Port.
+  /// We assume this is a Read I2C Register operation, with Register ID at `wbuf[0]`.
+  /// TODO: Handle other kinds of I2C operations
+  fn write_read(
+      &mut self,       //  I2C Bus
+      addr: u8,        //  I2C Address
+      wbuf: &[u8],     //  Buffer to be sent (Register ID)
+      rbuf: &mut [u8]  //  Buffer to be received
+  ) -> Result<(), Self::Error>  //  In case of error, return an error code
+  { ... }
 ```
 
 [(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L97-L160)
 
-_What about the call to open()?_
+_What about the calls to open() and close()?_
 
-We moved it into the __new()__ function: [hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L340-L351)
+We moved open() into the __new()__ constructor: [hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L340-L351)
 
 ```rust
 /// NuttX Implementation of I2C Bus
 impl I2c {
-    /// Create an I2C Bus from a Device Path (e.g. "/dev/i2c0")
-    pub fn new(path: &str, frequency: u32) -> Result<Self, i32> {
-        //  Open the NuttX Device Path (e.g. "/dev/spitest0") for read-write
-        let fd = open(path, O_RDWR);
-        if fd < 0 { return Err(fd) }
+  /// Create an I2C Bus from a Device Path (e.g. "/dev/i2c0")
+  pub fn new(path: &str, frequency: u32) -> Result<Self, i32> {
 
-        //  Return the I2C Bus
-        Ok(Self { fd, frequency })
-    }
+    //  Open the NuttX Device Path (e.g. "/dev/i2c0") for read-write
+    let fd = open(path, O_RDWR);
+    if fd < 0 { return Err(fd) }
+
+    //  Return the I2C Bus
+    Ok(Self { fd, frequency })
+  }
+}
+```
+
+[(__open__ is defined here)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L492-L516)
+
+And we moved close() into the __drop()__ destructor: [hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L414-L420)
+
+```rust
+/// NuttX Implementation of I2C Bus
+impl Drop for I2c {
+
+  /// Close the I2C Bus
+  fn drop(&mut self) {
+    unsafe { close(self.fd) };
+  }
+}
+```
+
+__I2c__ Struct contains a NuttX File Descriptor and the I2C Frequency: [hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L454-L461)
+
+```rust
+/// NuttX I2C Bus
+pub struct I2c {
+  /// NuttX File Descriptor
+  fd: i32,
+  /// I2C Frequency in Hz
+  frequency: u32,
 }
 ```
 
