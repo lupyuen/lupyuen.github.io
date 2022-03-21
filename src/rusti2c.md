@@ -399,13 +399,15 @@ But it's harmless. NuttX Embedded HAL does this to work around the I2C quirks on
 
 -   [__"Quirks in BL602 NuttX I2C Driver"__](https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver)
 
-TODO
+_What about GPIO and SPI on NuttX Embedded HAL?_
 
-[__GPIO__](https://github.com/lupyuen/nuttx-embedded-hal#gpio-output)
+Yep they have been implemented in NuttX Embedded HAL...
 
-[__SPI__](https://github.com/lupyuen/nuttx-embedded-hal#spi)
+-   [__NuttX GPIO__](https://github.com/lupyuen/nuttx-embedded-hal#gpio-output)
 
-[__Delay__](https://github.com/lupyuen/nuttx-embedded-hal#delay)
+-   [__NuttX SPI__](https://github.com/lupyuen/nuttx-embedded-hal#spi)
+
+-   [__NuttX Delay__](https://github.com/lupyuen/nuttx-embedded-hal#delay)
 
 # What's Next
 
@@ -542,6 +544,8 @@ The __Register Value__ appears in our Receive Buffer...
 }
 ```
 
+[(See the Output Log)](https://github.com/lupyuen/rust-i2c-nuttx#test-i2c-port)
+
 The above Rust code looks highly similar to the C version...
 
 -   [__"Read I2C Register in C"__](https://lupyuen.github.io/articles/rusti2c#appendix-read-i2c-register-in-c)
@@ -609,7 +613,7 @@ The code above goes into __NuttX Embedded HAL__ like so...
 
 [(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L97-L160)
 
-This conforms with the I2C Interface that's expected by __Rust Embedded HAL__...
+This conforms to the I2C Interface that's expected by __Rust Embedded HAL__...
 
 ```rust
 /// NuttX Implementation of I2C WriteRead
@@ -676,19 +680,21 @@ pub struct I2c {
 }
 ```
 
+[(See the Output Log)](https://github.com/lupyuen/rust-i2c-nuttx#test-i2c-hal)
+
 # Appendix: Write I2C Register in Embedded HAL
 
-TODO
+BL602 has a peculiar I2C Port that uses __I2C Sub Addresses__...
 
-BL602 has a peculiar I2C Port that uses I2C Sub Addresses ... Let's make it work with Rust Embedded HAL
-
-["Quirks in BL602 I2C Driver"](https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver)
+[__"Quirks in BL602 I2C Driver"__](https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver)
 
 We tried all sequences of I2C Read / Write / Sub Address. Only this strange sequence works for writing to I2C Registers...
 
-1.  Write I2C Register ID and I2C Data together as I2C Sub Address
+1.  Write I2C __Register ID and Register Value__ together as I2C Sub Address
 
-1.  Followed by Read I2C Data
+1.  Followed by __Read I2C Data__
+
+Here's the implementation in NuttX Embedded HAL: [hal.rs](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L33-L96)
 
 ```rust
 /// NuttX Implementation of I2C Write
@@ -757,9 +763,7 @@ impl i2c::Write for I2c {
 }
 ```
 
-[(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L33-L96)
-
-After fixing, the Logic Analyser shows that BL602 writes correctly to the I2C Register! (With a harmless I2C Read at the end)
+Our Logic Analyser shows that BL602 writes correctly to the I2C Register (with a harmless I2C Read at the end)...
 
 ```text
 Setup Write to [0xEE] + ACK
@@ -771,73 +775,13 @@ Setup Read to [0xEF] + ACK
 
 ![BL602 writes correctly to the I2C Register! With a harmless I2C Read at the end](https://lupyuen.github.io/images/rusti2c-logic3a.png)
 
-Here's the log...
-
-```text
-nsh> rust_i2c
-Hello from Rust!
-test_hal_write
-i2cdrvr_ioctl: cmd=2101 arg=4201c358
-bl602_i2c_transfer: subflag=1, subaddr=0xa0f5, sublen=2
-bl602_i2c_recvdata: count=1, temp=0xa0
-bl602_i2c_transfer: i2c transfer success
-test_hal_write: Write 0xA0 to register
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c370
-bl602_i2c_transfer: subflag=1, subaddr=0xf5, sublen=1
-bl602_i2c_recvdata: count=1, temp=0xa0
-bl602_i2c_transfer: i2c transfer success
-test_hal_write: Register value is 0xa0
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c358
-bl602_i2c_transfer: subflag=1, subaddr=0xf5, sublen=2
-bl602_i2c_recvdata: count=1, temp=0x0
-bl602_i2c_transfer: i2c transfer success
-test_hal_write: Write 0x00 to register
-
-i2cdrvr_ioctl: cmd=2101 arg=4201c370
-bl602_i2c_transfer: subflag=1, subaddr=0xf5, sublen=1
-bl602_i2c_recvdata: count=1, temp=0x0
-bl602_i2c_transfer: i2c transfer success
-test_hal_write: Register value is 0x00
-Done!
-nsh>
-```
-
-_What if we write to the I2C Register without reading?_
-
-The I2C Address is sent incorrectly (`0x02`) and the I2C Write gets truncated...
-
-```text
-Setup Write to [0x02] + NAK
-```
-
-![Write to I2C Register without reading](https://lupyuen.github.io/images/rusti2c-noread.png)
-
-_What if we send the Register ID and Register Value as I2C Data (flags = 0) instead of I2C Sub Address?_
-
-The Register ID and value are sent incorrectly as `0x00 0x00`...
-
-```text
-Setup Write to [0xEE] + ACK
-0x00 + ACK
-0x00 + ACK
-(...600 microseconds later...)
-Setup Read to [0xEF] + ACK
-0x00 + NAK
-```
-
-![Send the Register ID and Register Value as I2C Data instead of I2C Sub Address](https://lupyuen.github.io/images/rusti2c-nosubaddr.png)
-
-TODO
+[(See the Output Log)](https://github.com/lupyuen/rust-i2c-nuttx#fix-i2c-write)
 
 ![Read I2C Register in C](https://lupyuen.github.io/images/rusti2c-code1.png)
 
 # Appendix: Read I2C Register in C
 
-TODO
-
-This is how we read an I2C Register in C...
+This is how we read an I2C Register in C from a NuttX App...
 
 ```c
 static int bme280_reg_read(const struct device *priv,
@@ -906,11 +850,9 @@ int i2cdev_transfer(int fd, FAR struct i2c_msg_s *msgv, int msgc)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/rusti2c/system/i2c/i2c_devif.c#L117-L129)
 
-Let's port this to Rust.
+We ported the code above to NuttX Embedded HAL. [(See this)](https://lupyuen.github.io/articles/rusti2c#into-embedded-hal)
 
 ## C Types and Constants
-
-TODO
 
 Earlier we've seen __i2c_msg_s__ and __i2c_transfer_s__. They are defined as...
 
@@ -967,7 +909,7 @@ ___IOC__ and ___I2CBASE__ are defined as...
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L73)
 
-We'll port these C Types and Constants to Rust as well.
+We ported these C Types and Constants to NuttX Embedded HAL. [(See this)](https://lupyuen.github.io/articles/rusti2c#nuttx-types-and-constants)
 
 # Appendix: Build, Flash and Run NuttX
 

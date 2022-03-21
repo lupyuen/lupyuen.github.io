@@ -152,6 +152,8 @@ For __Apache NuttX OS__
 
 -   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
 
+-   ["Read I2C Register in C (NuttX App)"](https://lupyuen.github.io/articles/rusti2c#appendix-read-i2c-register-in-c)
+
 -   ["Rust talks I2C on Apache NuttX RTOS"](https://lupyuen.github.io/articles/rusti2c)
 
 For __BL602 IoT SDK__
