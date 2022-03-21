@@ -417,6 +417,8 @@ Yep they have been implemented in NuttX Embedded HAL...
 
 TODO
 
+If you're keen to make __Rust on NuttX__ better, please lemme know! 🙏
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)

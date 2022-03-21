@@ -912,7 +912,9 @@ So perhaps our Rust code could __call out to the LoRaWAN Stack__ in C and intero
 
 # What's Next
 
-In the next article we shall head back to C as we connect NuttX to [__The Things Network__](https://lupyuen.github.io/articles/ttn) over LoRaWAN.
+In the next article we'll talk about __Rust and I2C__ on NuttX...
+
+-   [__"Rust talks I2C on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rusti2c)
 
 If you're keen to make __Rust on NuttX__ better, please lemme know! 🙏
 
