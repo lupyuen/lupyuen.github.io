@@ -356,60 +356,48 @@ Check out the details in the Appendix...
 
 # Write I2C Register
 
-TODO
+_What about writing to I2C Registers?_
 
-This code calls the Rust Embedded HAL to write the value 0xA0 to the I2C Register 0xF5....
+This code calls NuttX Embedded HAL to __write an I2C Register__: [test.rs](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L64-L116)
 
 ```rust
-/// Test the I2C HAL by writing an I2C Register
+/// Write an I2C Register
 pub fn test_hal_write() {
 
   //  Open I2C Port
   let mut i2c = nuttx_embedded_hal::I2c::new(
     "/dev/i2c0",  //  I2C Port
-    BME280_FREQ,  //  I2C Frequency
+    400000,       //  I2C Frequency: 400 kHz
   ).expect("open failed");
 
-  //  Write 0xA0 to register 0xF5
+  //  Write 0xA0 to Register 0xF5
   i2c.write(
-    BME280_ADDR as u8,          //  I2C Address
-    &[BME280_REG_CONFIG, 0xA0]  //  Register ID and value
+    0x77,          //  I2C Address
+    &[0xF5, 0xA0]  //  Register ID and value
   ).expect("write register failed");
 ```
 
-[(Source)](rust/src/test.rs)
+The implementation of __i2c.write__ is explained here...
 
-But the Logic Analyser shows that BL602 is writing to I2C the value 0x00 instead of 0xA0...
+-   [__"Write I2C Register in Embedded HAL"__](https://lupyuen.github.io/articles/rusti2c#appendix-write-i2c-register-in-embedded-hal)
+
+When we connect a [__Logic Analyser__](https://lupyuen.github.io/images/bme280-logic2.jpg), we'll see something unusual...
 
 ```text
 Setup Write to [0xEE] + ACK
 0xF5 + ACK
-0x00 + ACK
+0xA0 + ACK
+Setup Read to [0xEF] + ACK
+0xA0 + NAK
 ```
 
-![BL602 is writing to I2C the value 0x00 instead of 0xA0](https://lupyuen.github.io/images/rusti2c-logic1.png)
+![Write 0xA0 to Register 0xF4](https://lupyuen.github.io/images/rusti2c-logic3a.png)
 
-Let's fix this. Here's the log for the I2C write...
+There's an __extra I2C Read__ at the end, right after writing the Register ID `0xF5` and Register Value `0xA0`.
 
-```text
-nsh> rust_i2c
-Hello from Rust!
-test_hal_write
-i2cdrvr_ioctl: cmd=2101 arg=4201c370
-bl602_i2c_transfer: subflag=1, subaddr=0xf5, sublen=1
-bl602_i2c_send_data: count=1, temp=0xa0
-bl602_i2c_transfer: i2c transfer success
-test_hal_write: Write 0xA0 to register
-```
+But it's harmless. NuttX Embedded HAL does this to work around the I2C quirks on BL602...
 
-_How was NuttX Embedded HAL implemented in Rust?_
-
-TODO
-
-Check out the details in the Appendix...
-
--   [__"Write I2C Register in Embedded HAL
-"__](https://lupyuen.github.io/articles/rusti2c#appendix-write-i2c-register-in-embedded-hal)
+-   [__"Quirks in BL602 NuttX I2C Driver"__](https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver)
 
 TODO
 
