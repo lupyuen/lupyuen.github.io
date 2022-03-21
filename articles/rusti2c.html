@@ -428,26 +428,53 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C WriteRead</span>
 <span class="kw">impl</span> <span class="ident">i2c::WriteRead</span> <span class="kw">for</span> <span class="ident">I2c</span> {
-    ...
-    <span class="doccomment">/// Write `wbuf` to I2C Port and read `rbuf` from I2C Port.</span>
-    <span class="doccomment">/// We assume this is a Read I2C Register operation, with Register ID at `wbuf[0]`.</span>
-    <span class="doccomment">/// TODO: Handle other kinds of I2C operations</span>
-    <span class="kw">fn</span> <span class="ident">write_read</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">u8</span>, <span class="ident">wbuf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">rbuf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {</code></pre></div>
+  ...
+  <span class="doccomment">/// Write `wbuf` to I2C Port and read `rbuf` from I2C Port.</span>
+  <span class="doccomment">/// We assume this is a Read I2C Register operation, with Register ID at `wbuf[0]`.</span>
+  <span class="doccomment">/// TODO: Handle other kinds of I2C operations</span>
+  <span class="kw">fn</span> <span class="ident">write_read</span>(
+      <span class="kw-2">&amp;mut</span> <span class="self">self</span>,       <span class="comment">//  I2C Bus</span>
+      <span class="ident">addr</span>: <span class="ident">u8</span>,        <span class="comment">//  I2C Address</span>
+      <span class="ident">wbuf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],     <span class="comment">//  Buffer to be sent (Register ID)</span>
+      <span class="ident">rbuf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]  <span class="comment">//  Buffer to be received</span>
+  ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>  <span class="comment">//  In case of error, return an error code</span>
+  { ... }</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L97-L160">(Source)</a></p>
-<p><em>What about the call to open()?</em></p>
-<p>We moved it into the <strong>new()</strong> function: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L340-L351">hal.rs</a></p>
+<p><em>What about the calls to open() and close()?</em></p>
+<p>We moved open() into the <strong>new()</strong> constructor: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L340-L351">hal.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C Bus</span>
 <span class="kw">impl</span> <span class="ident">I2c</span> {
-    <span class="doccomment">/// Create an I2C Bus from a Device Path (e.g. &quot;/dev/i2c0&quot;)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">frequency</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">i32</span><span class="op">&gt;</span> {
-        <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/spitest0&quot;) for read-write</span>
-        <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open</span>(<span class="ident">path</span>, <span class="ident">O_RDWR</span>);
-        <span class="kw">if</span> <span class="ident">fd</span> <span class="op">&lt;</span> <span class="number">0</span> { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">fd</span>) }
+  <span class="doccomment">/// Create an I2C Bus from a Device Path (e.g. &quot;/dev/i2c0&quot;)</span>
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">frequency</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">i32</span><span class="op">&gt;</span> {
 
-        <span class="comment">//  Return the I2C Bus</span>
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">fd</span>, <span class="ident">frequency</span> })
-    }
+    <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/i2c0&quot;) for read-write</span>
+    <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open</span>(<span class="ident">path</span>, <span class="ident">O_RDWR</span>);
+    <span class="kw">if</span> <span class="ident">fd</span> <span class="op">&lt;</span> <span class="number">0</span> { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">fd</span>) }
+
+    <span class="comment">//  Return the I2C Bus</span>
+    <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">fd</span>, <span class="ident">frequency</span> })
+  }
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L492-L516">(<strong>open</strong> is defined here)</a></p>
+<p>And we moved close() into the <strong>drop()</strong> destructor: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L414-L420">hal.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C Bus</span>
+<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">I2c</span> {
+
+  <span class="doccomment">/// Close the I2C Bus</span>
+  <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+    <span class="kw">unsafe</span> { <span class="ident">close</span>(<span class="self">self</span>.<span class="ident">fd</span>) };
+  }
+}</code></pre></div>
+<p><strong>I2c</strong> Struct contains a NuttX File Descriptor and the I2C Frequency: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L454-L461">hal.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX I2C Bus</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">I2c</span> {
+  <span class="doccomment">/// NuttX File Descriptor</span>
+  <span class="ident">fd</span>: <span class="ident">i32</span>,
+  <span class="doccomment">/// I2C Frequency in Hz</span>
+  <span class="ident">frequency</span>: <span class="ident">u32</span>,
 }</code></pre></div>
 <h2 id="call-nuttx-embedded-hal" class="section-header"><a href="#call-nuttx-embedded-hal">6.3 Call NuttX Embedded HAL</a></h2>
 <p>Now that the I2C code has been moved into the NuttX Embedded HAL, let’s call it to <strong>read an I2C Register</strong>: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L29-L62">test.rs</a></p>
