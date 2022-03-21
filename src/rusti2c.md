@@ -22,6 +22,8 @@ Let's dive into our __Rust I2C App for NuttX__...
 
 ![Read Sensor Data from BME280](https://lupyuen.github.io/images/rusti2c-code10a.png)
 
+[(Source)](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs)
+
 # Read Sensor Data from BME280
 
 Here's how we read the __Temperature, Humidity and Air Pressure__ from the BME280 Sensor: [rust/src/bme280.rs](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs)
@@ -166,7 +168,7 @@ _Do we need Pull-Up Resistors?_
 
 We're using the [__SparkFun BME280 Breakout Board__](https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all), which has __Pull-Up Resistors__. (So we don't need to add our own)
 
-![Run BME280 App](https://lupyuen.github.io/images/rusti2c-run2a.png)
+> ![Run BME280 App](https://lupyuen.github.io/images/rusti2c-run2a.png)
 
 # Run BME280 App
 
@@ -299,6 +301,8 @@ And now NuttX! (As NuttX Embedded HAL)
 
 ![Call NuttX Embedded HAL to read I2C register](https://lupyuen.github.io/images/rusti2c-code6a.png)
 
+[(Source)](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L29-L62)
+
 # Read I2C Register
 
 _Can we call NuttX Embedded HAL in our own Rust Programs?_
@@ -358,6 +362,8 @@ Check out the details in the Appendix...
 
 ![Write I2C Register](https://lupyuen.github.io/images/rusti2c-code7a.png)
 
+[(Source)](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L64-L116)
+
 # Write I2C Register
 
 _What about writing to I2C Registers?_
@@ -412,6 +418,8 @@ Yep they have been implemented in NuttX Embedded HAL...
 -   [__NuttX SPI__](https://github.com/lupyuen/nuttx-embedded-hal#spi)
 
 -   [__NuttX Delay__](https://github.com/lupyuen/nuttx-embedded-hal#delay)
+
+> ![Rust I2C on NuttX](https://lupyuen.github.io/images/rusti2c-run1.png)
 
 # What's Next
 
@@ -560,6 +568,8 @@ Let's look at the NuttX Types and Constants that we have ported from C to Rust.
 
 ![Read I2C Register](https://lupyuen.github.io/images/rusti2c-code2a.png)
 
+[(Source)](https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L117-L193)
+
 ## NuttX Types and Constants
 
 _What are i2c_msg_s and i2c_transfer_s in the code above?_
@@ -610,6 +620,8 @@ __I2C_M_NOSTOP__, __I2C_M_READ__ and __I2CIOC_TRANSFER__ are __NuttX I2C Constan
 [(See this)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/lib.rs#L105-L124)
 
 ![NuttX I2C Types](https://lupyuen.github.io/images/rusti2c-code3a.png)
+
+[(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/lib.rs#L125-L153)
 
 ## Into Embedded HAL
 
@@ -689,6 +701,8 @@ pub struct I2c {
 [(See the Output Log)](https://github.com/lupyuen/rust-i2c-nuttx#test-i2c-hal)
 
 ![Write I2C Register in Embedded HAL](https://lupyuen.github.io/images/rusti2c-code8a.png)
+
+[(Source)](https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L33-L96)
 
 # Appendix: Write I2C Register in Embedded HAL
 
@@ -786,6 +800,8 @@ Setup Read to [0xEF] + ACK
 [(See the Output Log)](https://github.com/lupyuen/rust-i2c-nuttx#fix-i2c-write)
 
 ![Read I2C Register in C](https://lupyuen.github.io/images/rusti2c-code1.png)
+
+[(Source)](https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L155-L183)
 
 # Appendix: Read I2C Register in C
 
