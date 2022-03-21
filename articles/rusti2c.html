@@ -99,6 +99,7 @@
 <li><a href="https://github.com/lupyuen/rust-i2c-nuttx"><strong>lupyuen/rust-i2c-nuttx</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code10a.png" alt="Read Sensor Data from BME280" /></p>
+<p><a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs">(Source)</a></p>
 <h1 id="read-sensor-data-from-bme280" class="section-header"><a href="#read-sensor-data-from-bme280">1 Read Sensor Data from BME280</a></h1>
 <p>Here’s how we read the <strong>Temperature, Humidity and Air Pressure</strong> from the BME280 Sensor: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs">rust/src/bme280.rs</a></p>
 
@@ -195,7 +196,9 @@ config ESP32_I2C0_SDAPIN
   range 0 39</code></pre></div>
 <p><em>Do we need Pull-Up Resistors?</em></p>
 <p>We’re using the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all"><strong>SparkFun BME280 Breakout Board</strong></a>, which has <strong>Pull-Up Resistors</strong>. (So we don’t need to add our own)</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/rusti2c-run2a.png" alt="Run BME280 App" /></p>
+</blockquote>
 <h1 id="run-bme280-app" class="section-header"><a href="#run-bme280-app">3 Run BME280 App</a></h1>
 <p>We’re ready to run our Rust App on NuttX!</p>
 <ol>
@@ -289,6 +292,7 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 <p>Yep because the Rust Embedded HAL has been implemented on <a href="https://github.com/rust-embedded/awesome-embedded-rust#hal-implementation-crates"><strong>many platforms</strong></a>: Linux, FreeBSD, nRF52, STM32 Blue Pill, …</p>
 <p>And now NuttX! (As NuttX Embedded HAL)</p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code6a.png" alt="Call NuttX Embedded HAL to read I2C register" /></p>
+<p><a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L29-L62">(Source)</a></p>
 <h1 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">6 Read I2C Register</a></h1>
 <p><em>Can we call NuttX Embedded HAL in our own Rust Programs?</em></p>
 <p>Yes we can! This is how we call NuttX Embedded HAL to <strong>read an I2C Register</strong> on BME280: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L29-L62">test.rs</a></p>
@@ -328,6 +332,7 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/rusti2c#appendix-read-i2c-register-in-embedded-hal"><strong>“Read I2C Register in Embedded HAL”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code7a.png" alt="Write I2C Register" /></p>
+<p><a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L64-L116">(Source)</a></p>
 <h1 id="write-i2c-register" class="section-header"><a href="#write-i2c-register">7 Write I2C Register</a></h1>
 <p><em>What about writing to I2C Registers?</em></p>
 <p>This code calls NuttX Embedded HAL to <strong>write an I2C Register</strong>: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L64-L116">test.rs</a></p>
@@ -375,6 +380,9 @@ Setup Read to [0xEF] + ACK
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal#delay"><strong>NuttX Delay</strong></a></p>
 </li>
 </ul>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/rusti2c-run1.png" alt="Rust I2C on NuttX" /></p>
+</blockquote>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>If you’re keen to make <strong>Rust on NuttX</strong> better, please lemme know! 🙏</p>
@@ -497,6 +505,7 @@ Setup Read to [0xEF] + ACK
 </ul>
 <p>Let’s look at the NuttX Types and Constants that we have ported from C to Rust.</p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code2a.png" alt="Read I2C Register" /></p>
+<p><a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L117-L193">(Source)</a></p>
 <h2 id="nuttx-types-and-constants" class="section-header"><a href="#nuttx-types-and-constants">10.1 NuttX Types and Constants</a></h2>
 <p><em>What are i2c_msg_s and i2c_transfer_s in the code above?</em></p>
 <p>They are <strong>NuttX I2C Types</strong> that we have ported from C to Rust.</p>
@@ -535,6 +544,7 @@ Setup Read to [0xEF] + ACK
 <p><strong>I2C_M_NOSTOP</strong>, <strong>I2C_M_READ</strong> and <strong>I2CIOC_TRANSFER</strong> are <strong>NuttX I2C Constants</strong> that we have ported from C to Rust.</p>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/lib.rs#L105-L124">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code3a.png" alt="NuttX I2C Types" /></p>
+<p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/lib.rs#L125-L153">(Source)</a></p>
 <h2 id="into-embedded-hal" class="section-header"><a href="#into-embedded-hal">10.2 Into Embedded HAL</a></h2>
 <p>The code above goes into <strong>NuttX Embedded HAL</strong> like so…</p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code5a.png" alt="Into Embedded HAL" /></p>
@@ -593,6 +603,7 @@ Setup Read to [0xEF] + ACK
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/rust-i2c-nuttx#test-i2c-hal">(See the Output Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code8a.png" alt="Write I2C Register in Embedded HAL" /></p>
+<p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L33-L96">(Source)</a></p>
 <h1 id="appendix-write-i2c-register-in-embedded-hal" class="section-header"><a href="#appendix-write-i2c-register-in-embedded-hal">11 Appendix: Write I2C Register in Embedded HAL</a></h1>
 <p>BL602 has a peculiar I2C Port that uses <strong>I2C Sub Addresses</strong>…</p>
 <ul>
@@ -682,6 +693,7 @@ Setup Read to [0xEF] + ACK
 <p><img src="https://lupyuen.github.io/images/rusti2c-logic3a.png" alt="BL602 writes correctly to the I2C Register! With a harmless I2C Read at the end" /></p>
 <p><a href="https://github.com/lupyuen/rust-i2c-nuttx#fix-i2c-write">(See the Output Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code1.png" alt="Read I2C Register in C" /></p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L155-L183">(Source)</a></p>
 <h1 id="appendix-read-i2c-register-in-c" class="section-header"><a href="#appendix-read-i2c-register-in-c">12 Appendix: Read I2C Register in C</a></h1>
 <p>This is how we read an I2C Register in C from a NuttX App…</p>
 <div class="example-wrap"><pre class="language-c"><code>static int bme280_reg_read(const struct device *priv,
