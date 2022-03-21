@@ -346,13 +346,13 @@ That's how we call NuttX Embedded HAL to read an I2C Register!
 
 ![NuttX Embedded HAL](https://lupyuen.github.io/images/rusti2c-arch.jpg)
 
-_How was NuttX Embedded HAL implemented in Rust?_
+_How did we implement I2C in the NuttX Embedded HAL?_
 
 NuttX Embedded HAL accesses the I2C Port by calling the __NuttX I2C Interface__: open(), ioctl() and close(). (Pic above)
 
 Check out the details in the Appendix...
 
-TODO
+-   [__"Read I2C Register in Embedded HAL"__](https://lupyuen.github.io/articles/rusti2c#appendix-read-i2c-register-in-embedded-hal)
 
 # Write I2C Register
 
@@ -407,6 +407,9 @@ _How was NuttX Embedded HAL implemented in Rust?_
 TODO
 
 Check out the details in the Appendix...
+
+-   [__"Write I2C Register in Embedded HAL
+"__](https://lupyuen.github.io/articles/rusti2c#appendix-write-i2c-register-in-embedded-hal)
 
 TODO
 
