@@ -788,9 +788,11 @@ And the Rust Embedded HAL for NuttX might be __portable across all NuttX platfor
 
 (Rust Embedded HAL might also become a friendlier API for NuttX)
 
-UPDATE: Check out the article here...
+Here's how we ported Rust Embedded HAL to NuttX...
 
 -   [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
+
+-   [__"Rust talks I2C on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rusti2c)
 
 [UPDATE: According to Brennan Ashton, Sony has worked on Rust for NuttX.](https://twitter.com/btashton/status/1463379162312306691)
 

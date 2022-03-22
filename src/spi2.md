@@ -1201,11 +1201,11 @@ We'll also explore __I2C on NuttX__, which is super useful for IoT sensors...
 
 -   [__"Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"__](https://lupyuen.github.io/articles/bme280)
 
-I'm excited about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. Here's how we integrated NuttX GPIO and SPI with Rust...
+I'm super excited about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. Here's how we integrated NuttX GPIO, SPI and I2C with Rust...
 
 -   [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
 
-Stay Tuned!
+-   [__"Rust talks I2C on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rusti2c)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 

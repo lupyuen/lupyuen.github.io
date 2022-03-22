@@ -615,6 +615,8 @@ But first we'll take a short detour to explore [__Rust on NuttX__](https://lupyu
 
 -   [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
 
+-   [__"Rust talks I2C on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rusti2c)
+
 Stay Tuned!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
