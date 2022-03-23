@@ -121,7 +121,7 @@
 </li>
 </ul>
 <p>Today we shall <strong>build, flash and run</strong> NuttX on the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602</strong></a> and <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> RISC-V Boards. (Pic above)</p>
-<p>(The steps in this article should work on <strong>any BL602 or BL604 Board</strong>: Pinenut, DT-BL10, MagicHome BL602, …)</p>
+<p>(The steps in this NuttX tutorial / primer should work on <strong>any BL602 or BL604 Board</strong>: Pinenut, DT-BL10, MagicHome BL602, …)</p>
 <p>We’ll briefly explore the <strong>internals of NuttX</strong> to understand how it works…</p>
 <ul>
 <li>
@@ -678,6 +678,15 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <p><strong>Rust</strong>: I’m excited about porting the <a href="https://lupyuen.github.io/articles/nuttx#rust-on-nuttx"><strong>Rust Embedded HAL</strong></a> to NuttX. Here’s how we integrated NuttX GPIO, SPI and I2C with Rust…</p>
 <p><a href="https://lupyuen.github.io/articles/rust2"><strong>“Rust on Apache NuttX OS”</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/rusti2c"><strong>“Rust talks I2C on Apache NuttX RTOS”</strong></a></p>
+</li>
+<li>
+<p><strong>IoT Sensors</strong>: NuttX is great for IoT devices! Here’s how we connect an Air Quality Sensor and encode Sensor Data efficiently with CBOR…</p>
+<p><a href="https://lupyuen.github.io/articles/ikea"><strong>“Connect IKEA Air Quality Sensor to Apache NuttX OS”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/cbor2"><strong>“Encode Sensor Data with CBOR on Apache NuttX OS”</strong></a></p>
+</li>
+<li>
+<p><strong>Automated Testing</strong>: This is how we do daily automated testing of NuttX on BL602…</p>
+<p><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></p>
 </li>
 </ul>
 <p>(BL602 IoT SDK / FreeRTOS is revamping right now to the <a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>new “hosal” HAL</strong></a>. Terrific time to explore NuttX now!)</p>
