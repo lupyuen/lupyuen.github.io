@@ -26,7 +26,7 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
 Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Boards. (Pic above)
 
-(The steps in this article should work on __any BL602 or BL604 Board__: Pinenut, DT-BL10, MagicHome BL602, ...)
+(The steps in this NuttX tutorial / primer should work on __any BL602 or BL604 Board__: Pinenut, DT-BL10, MagicHome BL602, ...)
 
 We'll briefly explore the __internals of NuttX__ to understand how it works...
 
@@ -821,6 +821,17 @@ Here are some topics that I'll explore in future articles...
     [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
 
     [__"Rust talks I2C on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rusti2c)
+
+-   __IoT Sensors__: NuttX is great for IoT devices! Here's how we connect an Air Quality Sensor and encode Sensor Data efficiently with CBOR...
+
+    [__"Connect IKEA Air Quality Sensor to Apache NuttX OS"__](https://lupyuen.github.io/articles/ikea)
+
+    [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
+
+-   __Automated Testing__: This is how we do daily automated testing of NuttX on BL602...
+
+    [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
+
 
 (BL602 IoT SDK / FreeRTOS is revamping right now to the [__new "hosal" HAL__](https://twitter.com/MisterTechBlog/status/1456259223323508748). Terrific time to explore NuttX now!)
 
