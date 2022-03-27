@@ -103,9 +103,10 @@
 </li>
 </ul>
 <p>The same steps should work on <strong>ESP32 and other NuttX Platforms</strong>. (Without the BL602 quirks)</p>
+<p><img src="https://lupyuen.github.io/images/st7789-connect.jpg" alt="Connect BL602 to ST7789" /></p>
 <h1 id="connect-bl602-to-st7789" class="section-header"><a href="#connect-bl602-to-st7789">1 Connect BL602 to ST7789</a></h1>
 <p>TODO</p>
-<p>Connect BL602 to ST7789 as follows…</p>
+<p>Connect BL602 to ST7789 as follows (pic above)…</p>
 <div><table><thead><tr><th style="text-align: left">BL602 Pin</th><th style="text-align: left">ST7789 SPI</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong><code>GPIO 0</code></strong></td><td style="text-align: left"><code>DC</code>  <em>(MISO)</em></td><td style="text-align: left">Blue</td></tr>
 <tr><td style="text-align: left"><strong><code>GPIO 2</code></strong></td><td style="text-align: left">Unused <em>(CS)</em></td><td style="text-align: left"></td></tr>
@@ -113,11 +114,10 @@
 <tr><td style="text-align: left"><strong><code>GPIO 3</code></strong></td><td style="text-align: left"><code>SCL</code> <em>(SCK)</em></td><td style="text-align: left">Green</td></tr>
 <tr><td style="text-align: left"><strong><code>GPIO 4</code></strong></td><td style="text-align: left"><code>RST</code></td><td style="text-align: left">Black</td></tr>
 <tr><td style="text-align: left"><strong><code>GPIO 5</code></strong></td><td style="text-align: left"><code>BLK</code></td><td style="text-align: left">Orange</td></tr>
-<tr><td style="text-align: left"><strong><code>3V3</code></strong></td><td style="text-align: left"><code>3.3V</code></td><td style="text-align: left">Grey</td></tr>
-<tr><td style="text-align: left"><strong><code>GND</code></strong></td><td style="text-align: left"><code>GND</code></td><td style="text-align: left">Black</td></tr>
+<tr><td style="text-align: left"><strong><code>3V3</code></strong></td><td style="text-align: left"><code>3.3V</code></td><td style="text-align: left">Red</td></tr>
+<tr><td style="text-align: left"><strong><code>GND</code></strong></td><td style="text-align: left"><code>GND</code></td><td style="text-align: left">Grey</td></tr>
 </tbody></table>
 </div>
-<p><img src="https://lupyuen.github.io/images/st7789-connect.jpg" alt="Connect BL602 to ST7789" /></p>
 <p>The BL602 pins for ST7789 are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/include/board.h#L92-L104">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* SPI Configuration: For PineCone BL602 */
 
