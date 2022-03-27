@@ -264,12 +264,14 @@
 <p>And MISO goes High when transmitting ST7789 Data…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic2a.png" alt="MISO goes High when transmitting ST7789 Data" /></p>
 <h1 id="spi-mode-3" class="section-header"><a href="#spi-mode-3">5 SPI Mode 3</a></h1>
+<p>TODO</p>
 <p>ST7789 only works with BL602 in SPI Mode 3 for some unknown reason: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L50-L57">st7789.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_BL602_SPI0
 #else
 #endif  /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/display#initialise-spi-port">(More about this)</a></p>
 <h1 id="load-st7789-driver" class="section-header"><a href="#load-st7789-driver">6 Load ST7789 Driver</a></h1>
+<p>TODO</p>
 <p>We load the LCD Driver at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L676-L696">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_LCD_DEV
 #endif
