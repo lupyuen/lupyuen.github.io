@@ -224,6 +224,14 @@ Then __"OK"__ to save the NuttX Configuration to __".config"__.
 
 Hit __"Exit"__ until __menuconfig__ quits.
 
+_Whoa NuttX menuconfig looks amazing! But isn't it a Linux thing?_
+
+NuttX happens to use the same menuconfig (Kconfig) tools as Linux.
+
+Menuconfig generates a C Header File that contains the __#define__ options. This header file is included for the NuttX Firmware Build.
+
+(Zephyr is another RTOS that uses menuconfig and Kconfig)
+
 ## Rebuild NuttX
 
 __Rebuild and copy__ the NuttX Firmware...
