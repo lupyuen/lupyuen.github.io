@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _19 Mar 2022_
+📝 _27 Mar 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(47 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(48 articles and still growing!)__
 
 The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602__.
 
@@ -59,6 +59,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 -   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
 
 -   ["Rust talks I2C on Apache NuttX RTOS"](https://lupyuen.github.io/articles/rusti2c)
+
+-   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
@@ -133,6 +135,8 @@ For __Apache NuttX OS__
 -   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
 
 -   ["SPI Interface on NuttX"](https://lupyuen.github.io/articles/sx1262#spi-interface)
+
+-   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
 
 For __BL602 IoT SDK__
 
@@ -229,6 +233,10 @@ For __BL602 IoT SDK__
 # Graphics on BL602
 
 Render text and graphics with the open-source __LVGL Library__.
+
+For __Apache NuttX OS__
+
+-   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
 
 For __BL602 IoT SDK__
 
