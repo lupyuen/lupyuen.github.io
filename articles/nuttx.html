@@ -252,6 +252,10 @@ int main(int argc, FAR char *argv[])
 <p>Then <strong>“OK”</strong> to save the NuttX Configuration to <strong>“.config”</strong>.</p>
 <p><a href="https://gist.github.com/lupyuen/dbcfd25c872ed303a060326b869b48b2">(See the NuttX Configuration)</a></p>
 <p>Hit <strong>“Exit”</strong> until <strong>menuconfig</strong> quits.</p>
+<p><em>Whoa NuttX menuconfig looks amazing! But isn’t it a Linux thing?</em></p>
+<p>NuttX happens to use the same menuconfig (Kconfig) tools as Linux.</p>
+<p>Menuconfig generates a C Header File that contains the <strong>#define</strong> options. This header file is included for the NuttX Firmware Build.</p>
+<p>(Zephyr is another RTOS that uses menuconfig and Kconfig)</p>
 <h2 id="rebuild-nuttx" class="section-header"><a href="#rebuild-nuttx">4.4 Rebuild NuttX</a></h2>
 <p><strong>Rebuild and copy</strong> the NuttX Firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Rebuild NuttX
