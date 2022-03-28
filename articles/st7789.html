@@ -256,12 +256,101 @@
 <p><a href="https://github.com/apache/incubator-nuttx/pull/5869">(Our fix for SPI Poll Send has been merged into NuttX)</a></p>
 <h1 id="spi-cmddata" class="section-header"><a href="#spi-cmddata">4 SPI Cmd/Data</a></h1>
 <p>TODO</p>
-<p>To control ST7789 Data / Command Pin, we implement SPI Cmd/Data for BL602:</p>
-<p>https://github.com/lupyuen/incubator-nuttx/pull/44</p>
-<p>After implementing SPI Cmd/Data, Logic Analyser shows that MISO goes Low when transmitting ST7789 Commands…</p>
+<p>To control the Data/Command Pin on ST7789 SPI Display, the SPI Driver flips the MISO Pin as though it was a GPIO. Here’s the existing implementation for ESP32-C3: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_board_spi.c#L58-L86">esp32c3_board_spi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#if defined(CONFIG_ESP32C3_SPI2) &amp;&amp; defined(CONFIG_SPI_CMDDATA)
+
+int esp32c3_spi2_cmddata(FAR struct spi_dev_s *dev, uint32_t devid, bool cmd)
+{
+#if defined(CONFIG_LCD_ST7735) || defined(CONFIG_LCD_ST7789) || \
+    defined(CONFIG_LCD_GC9A01)
+  if (devid == SPIDEV_DISPLAY(0))
+    {
+      /*  This is the Data/Command control pad which determines whether the
+       *  data bits are data or a command.
+       */
+
+      esp32c3_gpiowrite(CONFIG_ESP32C3_SPI2_MISOPIN, !cmd);
+
+      return OK;
+    }
+
+#endif
+  spiinfo(&quot;devid: %&quot; PRIu32 &quot; CMD: %s\n&quot;, devid, cmd ? &quot;command&quot; :
+          &quot;data&quot;);
+
+  return -ENODEV;
+}
+
+#endif</code></pre></div>
+<p>To implement this on BL602, we reconfigure MISO from SPI Pin to GPIO Pin on the fly: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L679-L748">bl602_spi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SPI_CMDDATA
+static int bl602_spi_cmddata(struct spi_dev_s *dev,
+                              uint32_t devid, bool cmd)
+{
+  spiinfo(&quot;devid: %&quot; PRIu32 &quot; CMD: %s\n&quot;, devid, cmd ? &quot;command&quot; :
+          &quot;data&quot;);
+
+#if defined(CONFIG_LCD_ST7735) || defined(CONFIG_LCD_ST7789) || \
+    defined(CONFIG_LCD_GC9A01)
+  if (devid == SPIDEV_DISPLAY(0))
+    {
+      gpio_pinset_t gpio;
+      int ret;
+
+      /* reconfigure MISO from SPI Pin to GPIO Pin */
+
+      gpio = (BOARD_SPI_MISO &amp; GPIO_PIN_MASK)
+            | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO;
+      ret = bl602_configgpio(gpio);
+      if (ret &lt; 0)
+        {
+          spierr(&quot;Failed to configure MISO as GPIO\n&quot;);
+          DEBUGPANIC();
+
+          return ret;
+        }
+
+      /* set MISO to high (data) or low (command) */
+
+      bl602_gpiowrite(gpio, !cmd);
+
+      return OK;
+    }
+#endif
+
+  spierr(&quot;SPI cmddata not supported\n&quot;);
+  DEBUGPANIC();
+
+  return -ENODEV;
+}
+#endif</code></pre></div>
+<p>Note that <code>BOARD_SPI_MISO &amp; GPIO_PIN_MASK</code> preserves the MISO GPIO Number when reconfiguring from SPI Pin to GPIO Pin.</p>
+<p>When the SPI Port is deselected (after the SPI operation), we revert MISO back from GPIO Pin to SPI Pin: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L415-L453">bl602_spi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid, bool selected) {
+  ...
+#ifdef CONFIG_SPI_CMDDATA
+  /* revert MISO from GPIO Pin to SPI Pin */
+
+  if (!selected)
+    {
+      bl602_configgpio(BOARD_SPI_MISO);
+    }
+#endif
+}</code></pre></div>
+<p>We must revert because the SPI Bus may be shared by other SPI Drivers. (Like the Semtech SX1262 Driver on PineDio Stack BL604)</p>
+<p>We tested this implementation of SPI Cmd/Data with NuttX ST7789 Driver and a Logic Analyser on PineCone BL602. Logic Analyser shows that MISO goes Low when transmitting ST7789 Commands…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic1.png" alt="MISO goes Low when transmitting ST7789 Commands" /></p>
 <p>And MISO goes High when transmitting ST7789 Data…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic2a.png" alt="MISO goes High when transmitting ST7789 Data" /></p>
+<p>We also tested LVGL with ST7789 on PineCone BL602:</p>
+<ul>
+<li><a href="https://github.com/lupyuen/st7789-nuttx#run-lvgl-demo">Testing with LVGL</a></li>
+</ul>
+<p>As for regular SPI Devices that don’t require SPI Cmd/Data, we tested <code>CONFIG_SPI_CMDDATA=y</code> with Semtech SX1262 SPI Transceiver on PineCone BL602:</p>
+<ul>
+<li>TODO: <a href="">Testing Cmd/Data</a></li>
+</ul>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/pull/44">(More details)</a></p>
 <h1 id="spi-mode-3" class="section-header"><a href="#spi-mode-3">5 SPI Mode 3</a></h1>
 <p>TODO</p>
 <p>ST7789 only works with BL602 in SPI Mode 3 for some unknown reason: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L50-L57">st7789.c</a></p>
