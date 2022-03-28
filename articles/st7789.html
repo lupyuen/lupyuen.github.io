@@ -478,6 +478,7 @@ nsh&gt; ls /dev
   #warning Render Pink Screen
   st7789_fill(priv, 0xaaaa);
   //  Previously: st7789_fill(priv, 0xffff);</code></pre></div>
+<p>Why is 0xAAAA pink? Because ST7789 encodes colours as RGB565 (16 bits)</p>
 <p>When NuttX boots, we should see a pink screen. The screen refresh looks laggy, hopefully we’ll fix this with SPI DMA.</p>
 <p><a href="https://youtu.be/iaDYjO1rCmY">(Watch the demo on YouTube)</a></p>
 <p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
