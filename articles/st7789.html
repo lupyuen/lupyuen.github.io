@@ -379,7 +379,7 @@ FAR struct lcd_dev_s *board_lcd_getdev(int devno)
 #endif  //  CONFIG_LCD_ST7789</code></pre></div><h1 id="boot-nuttx" class="section-header"><a href="#boot-nuttx">7 Boot NuttX</a></h1>
 <p>TODO</p>
 <p>After fixing SPI Send and SPI Cmd/Data, the ST7789 Driver should start properly without hanging…</p>
-<div class="example-wrap"><pre class="language-text"><code>▒gpio_pin_register: Registering /dev/gpio0
+<div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
 gpio_pin_register: Registering /dev/gpio1
 gpint_enable: Disable the interrupt
 gpio_pin_register: Registering /dev/gpio2
@@ -387,68 +387,72 @@ bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
 bl602_spi_setfrequency: frequency=400000, actual=0
 bl602_spi_setbits: nbits=8
 bl602_spi_setmode: mode=0
+spi_test_driver_register: devpath=/dev/spitest0, spidev=0
+bl602_spi_select: devid: 0, CS: free
 st7789_sleep: sleep: 0
 st7789_sendcmd: cmd: 0x11
 bl602_spi_select: devid: 262144, CS: select
 bl602_spi_setmode: mode=3
 bl602_spi_setbits: nbits=8
 bl602_spi_setfrequency: frequency=1000000, actual=0
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=1
+bl602_spi_cmddata: devid: 262144 CMD: command
 bl602_spi_poll_send: send=11 and recv=0
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=0
+bl602_spi_cmddata: devid: 262144 CMD: data
 bl602_spi_select: devid: 262144, CS: free
-bl602_spi_select: Revert MISO to SPIst7789_sendcmd: OK
+st7789_sendcmd: OK
 st7789_bpp: bpp: 16
 st7789_sendcmd: cmd: 0x3a
 bl602_spi_select: devid: 262144, CS: select
 bl602_spi_setmode: mode=3
 bl602_spi_setbits: nbits=8
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=1
+bl602_spi_cmddata: devid: 262144 CMD: command
 bl602_spi_poll_send: send=3a and recv=0
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=0
+bl602_spi_cmddata: devid: 262144 CMD: data
 bl602_spi_select: devid: 262144, CS: free
-bl602_spi_select: Revert MISO to SPIst7789_sendcmd: OK
+st7789_sendcmd: OK
 bl602_spi_select: devid: 262144, CS: select
 bl602_spi_setmode: mode=3
 bl602_spi_setbits: nbits=8
 bl602_spi_poll_send: send=5 and recv=ff
 bl602_spi_select: devid: 262144, CS: free
-bl602_spi_select: Revert MISO to SPIst7789_setorientation:
+st7789_setorientation:
 st7789_sendcmd: cmd: 0x36
 bl602_spi_select: devid: 262144, CS: select
 bl602_spi_setmode: mode=3
 bl602_spi_setbits: nbits=8
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=1
+bl602_spi_cmddata: devid: 262144 CMD: command
 bl602_spi_poll_send: send=36 and recv=0
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=0
+bl602_spi_cmddata: devid: 262144 CMD: data
 bl602_spi_select: devid: 262144, CS: free
-bl602_spi_select: Revert MISO to SPIst7789_sendcmd: OK
+st7789_sendcmd: OK
 bl602_spi_select: devid: 262144, CS: select
 bl602_spi_setmode: mode=3
 bl602_spi_setbits: nbits=8
 bl602_spi_poll_send: send=70 and recv=ff
 bl602_spi_select: devid: 262144, CS: free
-bl602_spi_select: Revert MISO to SPIst7789_display: on: 1
+st7789_display: on: 1
 st7789_sendcmd: cmd: 0x29
 bl602_spi_select: devid: 262144, CS: select
 bl602_spi_setmode: mode=3
 bl602_spi_setbits: nbits=8
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=1
+bl602_spi_cmddata: devid: 262144 CMD: command
 bl602_spi_poll_send: send=29 and recv=0
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=0
+bl602_spi_cmddata: devid: 262144 CMD: data
 bl602_spi_select: devid: 262144, CS: free
-bl602_spi_select: Revert MISO to SPIst7789_sendcmd: OK
+st7789_sendcmd: OK
 st7789_sendcmd: cmd: 0x21
 bl602_spi_select: devid: 262144, CS: select
 bl602_spi_setmode: mode=3
 bl602_spi_setbits: nbits=8
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=1
+bl602_spi_cmddata: devid: 262144 CMD: command
 bl602_spi_poll_send: send=21 and recv=0
-bl602_spi_cmddata: Change MISO to GPIO, devid=262144, cmd=0
+bl602_spi_cmddata: devid: 262144 CMD: data
 bl602_spi_select: devid: 262144, CS: free
-bl602_spi_select: Revert MISO to SPIst7789_sendcmd: OK
+st7789_sendcmd: OK
 board_lcd_getdev: SPI port 0 bound to LCD 0
 st7789_getplaneinfo: planeno: 0 bpp: 16
+
+(...Screen fill omitted...)
 
 NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt; ls /dev
