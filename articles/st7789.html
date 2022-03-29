@@ -106,8 +106,7 @@
 <p>The same steps should work on <strong>ESP32 and other NuttX Platforms</strong>. (Without the BL602 quirks)</p>
 <p><img src="https://lupyuen.github.io/images/st7789-connect.jpg" alt="Connect BL602 to ST7789" /></p>
 <h1 id="connect-bl602-to-st7789" class="section-header"><a href="#connect-bl602-to-st7789">1 Connect BL602 to ST7789</a></h1>
-<p>TODO</p>
-<p>Connect BL602 to ST7789 as follows (pic above)…</p>
+<p>We connect the ST7789 Display to BL602 as follows (pic above)…</p>
 <div><table><thead><tr><th style="text-align: left">BL602 Pin</th><th style="text-align: left">ST7789 SPI</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong><code>GPIO 0</code></strong></td><td style="text-align: left"><code>DC</code>  <em>(MISO)</em></td><td style="text-align: left">Blue</td></tr>
 <tr><td style="text-align: left"><strong><code>GPIO 2</code></strong></td><td style="text-align: left">Unused <em>(CS)</em></td><td style="text-align: left"></td></tr>
@@ -132,7 +131,9 @@
 
 #define BOARD_LCD_RST (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN4)
 #define BOARD_LCD_BL  (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN5)
-#endif  /* CONFIG_LCD_ST7789 */</code></pre></div><h1 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">2 Configure NuttX</a></h1>
+#endif  /* CONFIG_LCD_ST7789 */</code></pre></div>
+<p>TODO: ESP32</p>
+<h1 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">2 Configure NuttX</a></h1>
 <p>TODO</p>
 <p>Configure NuttX with menuconfig…</p>
 <p>Enable SPI Port:</p>
