@@ -73,17 +73,18 @@
 <li><a href="#load-st7789-driver">6 Load ST7789 Driver</a><ul></ul></li>
 <li><a href="#boot-nuttx">7 Boot NuttX</a><ul></ul></li>
 <li><a href="#render-pink-screen">8 Render Pink Screen</a><ul></ul></li>
-<li><a href="#run-lvgl-demo">9 Run LVGL Demo</a><ul></ul></li>
-<li><a href="#lvgl-version">10 LVGL Version</a><ul></ul></li>
-<li><a href="#sharing-spi-bus">11 Sharing SPI Bus</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#download-nuttx">14.1 Download NuttX</a><ul></ul></li>
-<li><a href="#configure-nuttx-1">14.2 Configure NuttX</a><ul></ul></li>
-<li><a href="#build-nuttx">14.3 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">14.4 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">14.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
+<li><a href="#lvgl-demo-app">9 LVGL Demo App</a><ul></ul></li>
+<li><a href="#run-lvgl-demo">10 Run LVGL Demo</a><ul></ul></li>
+<li><a href="#lvgl-version">11 LVGL Version</a><ul></ul></li>
+<li><a href="#sharing-spi-bus">12 Sharing SPI Bus</a><ul></ul></li>
+<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#notes">14 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">15 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#download-nuttx">15.1 Download NuttX</a><ul></ul></li>
+<li><a href="#configure-nuttx-1">15.2 Configure NuttX</a><ul></ul></li>
+<li><a href="#build-nuttx">15.3 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">15.4 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">15.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/st7789-title.jpg" alt="ST7789 SPI Display connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>ST7789 SPI Display connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 <p><strong>Sitronix ST7789</strong> is an SPI Display Controller that’s found in many gadgets. (Like <a href="https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot"><strong>PineTime Smartwatch</strong></a>)</p>
@@ -575,7 +576,61 @@ nsh&gt; ls /dev
 <p>When NuttX boots, we should see a pink screen. The screen refresh looks laggy, hopefully we’ll fix this with SPI DMA.</p>
 <p><a href="https://youtu.be/iaDYjO1rCmY">(Watch the demo on YouTube)</a></p>
 <p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
-<h1 id="run-lvgl-demo" class="section-header"><a href="#run-lvgl-demo">9 Run LVGL Demo</a></h1>
+<h1 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">9 LVGL Demo App</a></h1>
+<p>TODO</p>
+<p>Let’s run the LVGL Demo App bundled with NuttX.  The app initialises the display, renders some widgets and handles LVGL events: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[])
+{
+  lv_disp_drv_t disp_drv;
+  lv_disp_buf_t disp_buf;
+
+  ...
+
+  /* LVGL initialization */
+
+  lv_init();
+
+  /* Basic LVGL display driver initialization */
+
+  lv_disp_buf_init(&amp;disp_buf, buffer1, buffer2, DISPLAY_BUFFER_SIZE);
+  lv_disp_drv_init(&amp;disp_drv);
+  disp_drv.buffer = &amp;disp_buf;
+  disp_drv.monitor_cb = monitor_cb;
+
+  /* Display interface initialization */
+
+  if (fbdev_init(&amp;disp_drv) != EXIT_SUCCESS)
+    {
+      /* Failed to use framebuffer falling back to lcd driver */
+
+      if (lcddev_init(&amp;disp_drv) != EXIT_SUCCESS)
+        {
+          /* No possible drivers left, fail */
+
+          return EXIT_FAILURE;
+        }
+    }
+
+  lv_disp_drv_register(&amp;disp_drv);
+
+  ...
+
+  lv_demo_widgets();
+
+  ...
+
+  /* Handle LVGL tasks */
+
+  while (1)
+    {
+      lv_task_handler();
+      usleep(10000);
+    }
+
+  return EXIT_SUCCESS;
+}</code></pre></div>
+<p><strong>lv_demo_widgets</strong> comes from the LVGL Source Code.</p>
+<h1 id="run-lvgl-demo" class="section-header"><a href="#run-lvgl-demo">10 Run LVGL Demo</a></h1>
 <p>TODO</p>
 <p>We run the LVGL Demo App <code>lvgldemo</code> with ST7789…</p>
 <div class="example-wrap"><pre class="language-text"><code>▒gpio_pin_register: Registering /dev/gpio0
@@ -718,7 +773,7 @@ st7789_sendcmd: OK
 monitor_cb: 57600 px refreshed in 1100 ms</code></pre></div>
 <p>The LVGL Demo Screen appears on ST7789 yay! The demo source code is here: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
 <p><img src="https://lupyuen.github.io/images/st7789-lvgl.jpg" alt="LVGL Demo Screen appears on ST7789" /></p>
-<h1 id="lvgl-version" class="section-header"><a href="#lvgl-version">10 LVGL Version</a></h1>
+<h1 id="lvgl-version" class="section-header"><a href="#lvgl-version">11 LVGL Version</a></h1>
 <p>TODO</p>
 <p>We can specify the LVGL Version in menuconfig:</p>
 <ul>
@@ -785,12 +840,12 @@ unzip:  cannot find zipfile directory in one of v8.2.0.zip or
         v8.2.0.zip.zip, and cannot find v8.2.0.zip.ZIP, period.</code></pre></div>
 <p>Seems the NuttX Makefiles need to be fixed to support LVGL 8. </p>
 <p>Also the demo source code needs to be updated for LVGL 8, which is not compatible with LVGL 7: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
-<h1 id="sharing-spi-bus" class="section-header"><a href="#sharing-spi-bus">11 Sharing SPI Bus</a></h1>
+<h1 id="sharing-spi-bus" class="section-header"><a href="#sharing-spi-bus">12 Sharing SPI Bus</a></h1>
 <p>TODO</p>
 <p>PineDio Stack BL604 connects multiple SPI Devices to the same SPI Bus: ST7789 Display, SX1262 LoRa Transceiver, SPI Flash.</p>
 <p>How to share the same SPI Bus for multiple SPI Devices? How do we control the Chip Select Pins for each SPI Device?</p>
 <p>TODO</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -809,24 +864,24 @@ unzip:  cannot find zipfile directory in one of v8.2.0.zip or
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/st7789.md"><code>lupyuen.github.io/src/st7789.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1507854679241199616">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">15 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602, BL604 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602, BL604 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">14.1 Download NuttX</a></h2>
+<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">15.1 Download NuttX</a></h2>
 <p>Download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx nuttx
 git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
 <p>Or we may use an existing NuttX Project.</p>
-<h2 id="configure-nuttx-1" class="section-header"><a href="#configure-nuttx-1">14.2 Configure NuttX</a></h2>
+<h2 id="configure-nuttx-1" class="section-header"><a href="#configure-nuttx-1">15.2 Configure NuttX</a></h2>
 <p>Now we configure our NuttX project…</p>
 <ol>
 <li>
@@ -872,7 +927,7 @@ Enable Debug Assertions</code></pre></div>
 </li>
 </ol>
 <p>The ST7789 Display will be connected to NuttX at <strong>/dev/lcd0</strong></p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">14.3 Build NuttX</a></h2>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">15.3 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
 <ol>
 <li>
@@ -902,7 +957,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">14.4 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">15.4 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602 / BL604:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -979,7 +1034,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">14.5 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">15.5 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
