@@ -189,23 +189,23 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 <h1 id="st7789-data--command-pin" class="section-header"><a href="#st7789-data--command-pin">3 ST7789 Data / Command Pin</a></h1>
 <p><em>What’s the DC Pin on ST7789?</em></p>
 <p>That’s the <strong>Data / Command Pin</strong> that tells ST7789 whether we’re sending data or commands to the display.</p>
-<p>The Data / Command Pin goes <strong>Low</strong> when we’re sending ST7789 Commands…</p>
+<p>The Data / Command Pin <strong>goes Low</strong> when we’re sending <strong>ST7789 Commands</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic1.png" alt="MISO goes Low when transmitting ST7789 Commands" /></p>
-<p>And goes <strong>High</strong> when we’re sending ST7789 Data…</p>
+<p>And <strong>goes High</strong> when we’re sending <strong>ST7789 Data</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic2a.png" alt="MISO goes High when transmitting ST7789 Data" /></p>
-<p><em>So MISO goes to the Data / Command Pin?</em></p>
-<p>Yep NuttX uses the <strong>SPI MISO Pin</strong> to control the ST7789 Data / Command Pin, as seen in the SPI Driver for ESP32-C3…</p>
+<p><em>So MISO talks to the Data / Command Pin?</em></p>
+<p>Yep NuttX uses the <strong>SPI MISO Pin</strong> to control the ST7789 Data / Command Pin, as seen in the <strong>SPI Driver</strong> for ESP32-C3…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-dc3a.png" alt="SPI Driver for ESP32-C3 uses the SPI MISO Pin to control the ST7789 Data / Command Pin" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_board_spi.c#L58-L86">(Source)</a></p>
-<p>Yep it flips the MISO Pin <strong>as though it was a GPIO Pin!</strong></p>
-<p><em>We can do the same on BL602 right?</em></p>
+<p>It flips the MISO Pin <strong>as though it was a GPIO Pin!</strong></p>
+<p><em>Can we do the same on BL602?</em></p>
 <p>Yes but we need to <strong>reconfigure the SPI MISO Pin</strong> as a GPIO Pin, on the fly, before flipping it as a GPIO Pin…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-dc4a.png" alt="Reconfigure the SPI MISO Pin as a GPIO Pin" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L679-L748">(Source)</a></p>
-<p>After sending the ST7789 Command or Data, we <strong>revert the pin back from GPIO Pin</strong> to SPI MISO Pin…</p>
+<p>After sending ST7789 Command or Data, we <strong>revert the pin back from GPIO Pin</strong> to SPI MISO Pin…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-dc2a.png" alt="Revert the pin back from GPIO Pin to SPI MISO Pin" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L415-L453">(Source)</a></p>
-<p><em>Why do we need to revert the pin from GPIO to SPI?</em></p>
+<p><em>Why must we revert the pin from GPIO back to SPI?</em></p>
 <p>We must revert because the SPI Bus may be <strong>shared by other SPI Drivers</strong> that expect a functioning SPI MISO Pin.</p>
 <p>(Like the Semtech SX1262 Driver on PineDio Stack BL604)</p>
 <p>This nifty implementation of the Data / Command Pin has been <strong>merged into NuttX Mainline</strong>. <a href="https://github.com/apache/incubator-nuttx/pull/5898">(See this)</a></p>
