@@ -164,10 +164,13 @@ cd nuttx
 git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx nuttx
 git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
 <p>(We’ll cover the modifications in the following sections)</p>
-<p>Or if we have an existing NuttX Project, apply the following patches for ST7789 Display…</p>
+<p>Or if we have an <strong>existing NuttX Project,</strong> apply the following patches for ST7789 Display…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/incubator-nuttx/pull/5869"><strong>“Fix SPI Poll Send”</strong> (BL602)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx/pull/5907"><strong>“Remove Check for LCD Driver”</strong> (BL602)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/apache/incubator-nuttx/pull/5898"><strong>“Implement SPI Cmd/Data”</strong> (BL602)</a></p>
@@ -176,12 +179,13 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 <p>TODO: Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/include/board.h#L92-L104">boards/risc-v/bl602/bl602evb/include/board.h</a> and define the ST7789 pins…</p>
 </li>
 <li>
-<p>TODO: Load ST7789 Driver</p>
+<p>TODO: Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L676-L696">boards/risc-v/bl602/bl602evb/src/bl602_bringup.c</a> and load ST7789 Driver…</p>
 </li>
 <li>
-<p>TODO: SPI Mode 3</p>
+<p>TODO: Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L50-L57">drivers/lcd/st7789.c</a> and configure ST7789 for SPI Mode 3…</p>
 </li>
 </ul>
+<p>(We’ll cover the patches in the following sections)</p>
 <h1 id="st7789-data--command-pin" class="section-header"><a href="#st7789-data--command-pin">3 ST7789 Data / Command Pin</a></h1>
 <p><em>What’s the DC Pin on ST7789?</em></p>
 <p>That’s the <strong>Data / Command Pin</strong> that tells ST7789 whether we’re sending data or commands to the display.</p>
