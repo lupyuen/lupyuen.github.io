@@ -132,7 +132,29 @@
 #define BOARD_LCD_RST (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN4)
 #define BOARD_LCD_BL  (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN5)
 #endif  /* CONFIG_LCD_ST7789 */</code></pre></div>
-<p>TODO: ESP32</p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(Which pins can be used? See Table 3.1 “Pin Description”, Page 26)</a></p>
+<p><em>What if we’re connecting to ESP32-C3?</em></p>
+<p><strong>For ESP32-C3:</strong> The SPI Pins are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/esp32c3/Kconfig#L467-L485">Kconfig</a> and menuconfig…</p>
+<div class="example-wrap"><pre class="language-text"><code>config ESP32C3_SPI2_CSPIN
+	default 10
+
+config ESP32C3_SPI2_CLKPIN
+	default 6
+
+config ESP32C3_SPI2_MOSIPIN
+	default 7
+
+config ESP32C3_SPI2_MISOPIN
+	default 2</code></pre></div>
+<p>The Reset and Backlight Pins are also defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/Kconfig#L119-L129">Kconfig</a> and menuconfig…</p>
+<div class="example-wrap"><pre class="language-text"><code>config ESP32C3_LCD_RSTPIN
+	int &quot;LCD reset pin&quot;
+	default 9
+
+config ESP32C3_LCD_BLPIN
+	int &quot;LCD backlight pin&quot;
+	default 18</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_st7789.c#L45-L48">(ESP32-C3 pins are referenced here)</a></p>
 <h1 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">2 Configure NuttX</a></h1>
 <p>TODO</p>
 <p>Configure NuttX with menuconfig…</p>
