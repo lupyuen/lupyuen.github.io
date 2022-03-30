@@ -162,7 +162,7 @@ cd nuttx
 git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx nuttx
 git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
 <p>(We’ll cover the modifications in the following sections)</p>
-<p>Or if we have an existing NuttX Project, apply the following patches for ST7789 Display and LVGL Library…</p>
+<p>Or if we have an existing NuttX Project, apply the following patches for ST7789 Display…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/incubator-nuttx/pull/5869"><strong>“Fix SPI Poll Send”</strong> (BL602)</a></p>
@@ -171,7 +171,7 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 <p><a href="https://github.com/apache/incubator-nuttx/pull/5898"><strong>“Implement SPI Cmd/Data”</strong> (BL602)</a></p>
 </li>
 <li>
-<p>TODO: Define ST7789 Pins</p>
+<p>TODO: Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/include/board.h#L92-L104">boards/risc-v/bl602/bl602evb/include/board.h</a> and define the ST7789 pins…</p>
 </li>
 <li>
 <p>TODO: Load ST7789 Driver</p>
