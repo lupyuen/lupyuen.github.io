@@ -808,8 +808,8 @@ PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH&quot;</code></pre><
 <p>Download NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone --branch gpio https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --branch gpio https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+git clone --recursive --branch gpio https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch gpio https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
 <p><strong>NOTE:</strong> This is the older “gpio” branch of NuttX that uses <strong>“/dev/gpout1”</strong></p>
 <p>(Later versions of NuttX use <strong>“/dev/gpio1”</strong> instead)</p>
 </li>
