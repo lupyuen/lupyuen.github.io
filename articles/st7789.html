@@ -79,12 +79,14 @@
 <li><a href="#sharing-spi-bus">12 Sharing SPI Bus</a><ul></ul></li>
 <li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
 <li><a href="#notes">14 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">15 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#download-nuttx">15.1 Download NuttX</a><ul></ul></li>
-<li><a href="#configure-nuttx">15.2 Configure NuttX</a><ul></ul></li>
-<li><a href="#build-nuttx">15.3 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">15.4 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">15.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
+<li><a href="#appendix-spi-cmd--data-on-bl602">15 Appendix: SPI Cmd / Data on BL602</a><ul></ul></li>
+<li><a href="#appendix-fix-spi-send-on-bl602">16 Appendix: Fix SPI Send on BL602</a><ul></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#download-nuttx">17.1 Download NuttX</a><ul></ul></li>
+<li><a href="#configure-nuttx">17.2 Configure NuttX</a><ul></ul></li>
+<li><a href="#build-nuttx">17.3 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">17.4 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">17.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/st7789-title.jpg" alt="ST7789 SPI Display connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>ST7789 SPI Display connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 <p><strong>Sitronix ST7789</strong> is an SPI Display Controller that’s found in many gadgets. (Like <a href="https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot"><strong>PineTime Smartwatch</strong></a>)</p>
@@ -182,6 +184,13 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 </ul>
 <h1 id="st7789-data--command-pin" class="section-header"><a href="#st7789-data--command-pin">3 ST7789 Data / Command Pin</a></h1>
 <p><em>What’s the DC Pin on ST7789?</em></p>
+<p>That’s the <strong>Data / Command Pin</strong> that tells ST7789 whether we’re sending data or commands to the display.</p>
+<p>The Data / Command Pin goes <strong>Low</strong> when we’re sending ST7789 Commands…</p>
+<p><img src="https://lupyuen.github.io/images/st7789-logic1.png" alt="MISO goes Low when transmitting ST7789 Commands" /></p>
+<p>And goes <strong>High</strong> when we’re sending ST7789 Data…</p>
+<p><img src="https://lupyuen.github.io/images/st7789-logic2a.png" alt="MISO goes High when transmitting ST7789 Data" /></p>
+<p><em>So we’re using MISO as the Data / Command Pin?</em></p>
+<p>Yep NuttX uses the <strong>SPI MISO Pin</strong> to control the ST7789 Data / Command Pin.</p>
 <p>TODO</p>
 <p>To control the Data/Command Pin on ST7789 SPI Display, the SPI Driver flips the MISO Pin as though it was a GPIO. Here’s the existing implementation for ESP32-C3: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_board_spi.c#L58-L86">esp32c3_board_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#if defined(CONFIG_ESP32C3_SPI2) &amp;&amp; defined(CONFIG_SPI_CMDDATA)
@@ -862,13 +871,176 @@ unzip:  cannot find zipfile directory in one of v8.2.0.zip or
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1507854679241199616">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">15 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-spi-cmd--data-on-bl602" class="section-header"><a href="#appendix-spi-cmd--data-on-bl602">15 Appendix: SPI Cmd / Data on BL602</a></h1>
+<p>To control the Data / Command Pin on ST7789 SPI Display, the SPI Driver flips the MISO Pin as though it was a GPIO. Here’s the existing implementation for ESP32-C3: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_board_spi.c#L58-L86">esp32c3_board_spi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#if defined(CONFIG_ESP32C3_SPI2) &amp;&amp; defined(CONFIG_SPI_CMDDATA)
+
+int esp32c3_spi2_cmddata(FAR struct spi_dev_s *dev, uint32_t devid, bool cmd)
+{
+#if defined(CONFIG_LCD_ST7735) || defined(CONFIG_LCD_ST7789) || \
+    defined(CONFIG_LCD_GC9A01)
+  if (devid == SPIDEV_DISPLAY(0))
+    {
+      /*  This is the Data/Command control pad which determines whether the
+       *  data bits are data or a command.
+       */
+
+      esp32c3_gpiowrite(CONFIG_ESP32C3_SPI2_MISOPIN, !cmd);
+
+      return OK;
+    }
+
+#endif
+  spiinfo(&quot;devid: %&quot; PRIu32 &quot; CMD: %s\n&quot;, devid, cmd ? &quot;command&quot; :
+          &quot;data&quot;);
+
+  return -ENODEV;
+}
+
+#endif</code></pre></div>
+<p>To implement this on BL602, we reconfigure MISO from SPI Pin to GPIO Pin on the fly: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L679-L748">bl602_spi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SPI_CMDDATA
+static int bl602_spi_cmddata(struct spi_dev_s *dev,
+                              uint32_t devid, bool cmd)
+{
+  spiinfo(&quot;devid: %&quot; PRIu32 &quot; CMD: %s\n&quot;, devid, cmd ? &quot;command&quot; :
+          &quot;data&quot;);
+
+#if defined(CONFIG_LCD_ST7735) || defined(CONFIG_LCD_ST7789) || \
+    defined(CONFIG_LCD_GC9A01)
+  if (devid == SPIDEV_DISPLAY(0))
+    {
+      gpio_pinset_t gpio;
+      int ret;
+
+      /* reconfigure MISO from SPI Pin to GPIO Pin */
+
+      gpio = (BOARD_SPI_MISO &amp; GPIO_PIN_MASK)
+            | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO;
+      ret = bl602_configgpio(gpio);
+      if (ret &lt; 0)
+        {
+          spierr(&quot;Failed to configure MISO as GPIO\n&quot;);
+          DEBUGPANIC();
+
+          return ret;
+        }
+
+      /* set MISO to high (data) or low (command) */
+
+      bl602_gpiowrite(gpio, !cmd);
+
+      return OK;
+    }
+#endif
+
+  spierr(&quot;SPI cmddata not supported\n&quot;);
+  DEBUGPANIC();
+
+  return -ENODEV;
+}
+#endif</code></pre></div>
+<p>Note that <code>BOARD_SPI_MISO &amp; GPIO_PIN_MASK</code> preserves the MISO GPIO Number when reconfiguring from SPI Pin to GPIO Pin.</p>
+<p>When the SPI Port is deselected (after the SPI operation), we revert MISO back from GPIO Pin to SPI Pin: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L415-L453">bl602_spi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid, bool selected) {
+  ...
+#ifdef CONFIG_SPI_CMDDATA
+  /* revert MISO from GPIO Pin to SPI Pin */
+
+  if (!selected)
+    {
+      bl602_configgpio(BOARD_SPI_MISO);
+    }
+#endif
+}</code></pre></div>
+<p>We must revert because the SPI Bus may be shared by other SPI Drivers. (Like the Semtech SX1262 Driver on PineDio Stack BL604)</p>
+<p>We tested this implementation of SPI Cmd / Data with NuttX ST7789 Driver and a Logic Analyser on PineCone BL602. Logic Analyser shows that MISO goes Low when transmitting ST7789 Commands…</p>
+<p><img src="https://lupyuen.github.io/images/st7789-logic1.png" alt="MISO goes Low when transmitting ST7789 Commands" /></p>
+<p>And MISO goes High when transmitting ST7789 Data…</p>
+<p><img src="https://lupyuen.github.io/images/st7789-logic2a.png" alt="MISO goes High when transmitting ST7789 Data" /></p>
+<p>We also tested LVGL with ST7789 on PineCone BL602:</p>
+<ul>
+<li><a href="https://github.com/lupyuen/st7789-nuttx#run-lvgl-demo">Testing with LVGL</a></li>
+</ul>
+<p>As for regular SPI Devices that don’t require SPI Cmd / Data, we tested <code>CONFIG_SPI_CMDDATA=y</code> with Semtech SX1262 SPI Transceiver on PineCone BL602:</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-03-29">Testing Cmd / Data</a></li>
+</ul>
+<p><a href="https://github.com/apache/incubator-nuttx/pull/5898">(Our implementation of SPI Cmd / Data has been merged into NuttX)</a></p>
+<h1 id="appendix-fix-spi-send-on-bl602" class="section-header"><a href="#appendix-fix-spi-send-on-bl602">16 Appendix: Fix SPI Send on BL602</a></h1>
+<p>TODO</p>
+<p>On BL602, SPI Poll Send <code>bl602_spi_poll_send()</code> doesn’t send any data because it doesn’t enable SPI Master and it doesn’t clear the SPI FIFO.</p>
+<p>SPI Poll Send also hangs because it loops forever waiting for the SPI FIFO: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">bl602_spi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd)
+{
+  uint32_t val;
+  uint32_t tmp_val = 0;
+
+  /* write data to tx fifo */
+
+  putreg32(wd, BL602_SPI_FIFO_WDATA);
+  
+  /* This loop hangs because SPI Master is not enabled and SPI FIFO is not cleared */
+  
+  while (0 == tmp_val)
+    {
+      /* get data from rx fifo */
+
+      tmp_val = getreg32(BL602_SPI_FIFO_CFG_1);
+      tmp_val = (tmp_val &amp; SPI_FIFO_CFG_1_RX_CNT_MASK)
+                &gt;&gt; SPI_FIFO_CFG_1_RX_CNT_SHIFT;
+    }</code></pre></div>
+<p>This problem affects the NuttX ST7789 Driver because the ST7789 Driver calls SPI Poll Send via <code>SPI_SEND()</code> and <code>bl602_spi_send()</code>.</p>
+<p>We fix this problem by moving the code that enables SPI Master and clears the FIFO, from SPI Poll Exchange <code>bl602_spi_poll_exchange()</code> to SPI Poll Send. (Note that SPI Poll Exchange calls SPI Poll Send)</p>
+<p>Before fixing, SPI Poll Send looks like this: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">bl602_spi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd)
+{
+  uint32_t val;
+  uint32_t tmp_val = 0;
+
+  /* write data to tx fifo */
+
+  putreg32(wd, BL602_SPI_FIFO_WDATA);
+
+  while (0 == tmp_val)
+    {
+      /* get data from rx fifo */
+      ...</code></pre></div>
+<p>After fixing, SPI Poll Send enables SPI Master and clears SPI FIFO: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L806-L839">bl602_spi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd)
+{
+  uint32_t val;
+  uint32_t tmp_val = 0;
+
+  /* spi enable master */
+
+  modifyreg32(BL602_SPI_CFG, SPI_CFG_CR_S_EN, SPI_CFG_CR_M_EN);
+
+  /* spi fifo clear  */
+
+  modifyreg32(BL602_SPI_FIFO_CFG_0, SPI_FIFO_CFG_0_RX_CLR
+              | SPI_FIFO_CFG_0_TX_CLR, 0);
+
+  /* write data to tx fifo */
+
+  putreg32(wd, BL602_SPI_FIFO_WDATA);
+
+  while (0 == tmp_val)
+    {
+      /* get data from rx fifo */
+      ...</code></pre></div>
+<p>Logic Analyser shows that SPI Poll Send now transmits SPI Data correctly:</p>
+<p><img src="https://lupyuen.github.io/images/st7789-logic3.png" alt="SPI Poll Send transmits SPI Data correctly" /></p>
+<p>Note that the MOSI Pin shows the correct data. Before fixing, the data was missing.</p>
+<p>As for the modified SPI Poll Exchange, we tested it with Semtech SX1262 SPI Transceiver on PineCone BL602: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-03-28">release-2022-03-28</a></p>
+<p><a href="https://github.com/apache/incubator-nuttx/pull/5869">(Our fix for SPI Poll Send has been merged into NuttX)</a></p>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602, BL604 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602, BL604 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">15.1 Download NuttX</a></h2>
+<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">17.1 Download NuttX</a></h2>
 <p>TODO</p>
 <p>Download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
@@ -876,7 +1048,7 @@ cd nuttx
 git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx nuttx
 git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
 <p>Or we may use an existing NuttX Project.</p>
-<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">15.2 Configure NuttX</a></h2>
+<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">17.2 Configure NuttX</a></h2>
 <p>Now we configure our NuttX project…</p>
 <ol>
 <li>
@@ -978,7 +1150,7 @@ Enable Debug Assertions</code></pre></div>
 </li>
 </ol>
 <p>The ST7789 Display will be connected to NuttX at <strong>/dev/lcd0</strong></p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">15.3 Build NuttX</a></h2>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">17.3 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
 <ol>
 <li>
@@ -1008,7 +1180,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">15.4 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">17.4 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602 / BL604:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -1085,7 +1257,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">15.5 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">17.5 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
