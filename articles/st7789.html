@@ -176,7 +176,8 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 <p><a href="https://github.com/apache/incubator-nuttx/pull/5898"><strong>“Implement SPI Cmd/Data”</strong> (BL602)</a></p>
 </li>
 <li>
-<p>TODO: Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/include/board.h#L92-L104">boards/risc-v/bl602/bl602evb/include/board.h</a> and define the ST7789 pins…</p>
+<p>Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/include/board.h#L92-L104">boards/risc-v/bl602/bl602evb/include/board.h</a> and define the ST7789 pins…</p>
+<p><a href="https://lupyuen.github.io/articles/st7789#connect-st7789-display"><strong>“Connect ST7789 Display”</strong></a></p>
 </li>
 <li>
 <p>TODO: Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L676-L696">boards/risc-v/bl602/bl602evb/src/bl602_bringup.c</a> and load ST7789 Driver…</p>
@@ -218,11 +219,28 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 <p><a href="https://github.com/apache/incubator-nuttx/blob/54e630e14d7e32d6f81ae79d4e5df3d2fa787ef0/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">(Source)</a></p>
 <p><strong>Answer:</strong> If we call <strong>SPI Poll Send</strong> (bl602_spi_poll_send) directly without calling <strong>SPI Poll Exchange</strong> (bl602_spi_poll_exchange)…</p>
 <p>The SPI Port <strong>won’t get configured correctly</strong>! (“SPI Enable Master” and “SPI FIFO Clear” are skipped)</p>
-<p>And it hangs! (Looping forever waiting for SPI FIFO)</p>
+<p>And <strong>it hangs</strong>! (Looping forever waiting for SPI FIFO)</p>
+<p><img src="https://lupyuen.github.io/images/st7789-spi2a.png" alt="SPI Port won’t get configured correctly if we call SPI Poll Send" /></p>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/54e630e14d7e32d6f81ae79d4e5df3d2fa787ef0/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">(Source)</a></p>
 <p>We fix this problem by <strong>moving the code that configures the SPI Port</strong> from SPI Poll Exchange to SPI Poll Send…</p>
 <p>(Note that SPI Poll Exchange calls SPI Poll Send)</p>
-<p><img src="https://lupyuen.github.io/images/st7789-spi2a.png" alt="Moving the code that configures the SPI Port from SPI Poll Exchange to SPI Poll Send" /></p>
-<p>After fixing, we connect a <strong>Logic Analyser</strong> to verify that SPI Poll Send now transmits data to ST7789…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  SPI Poll Send: Send the byte or word to the SPI Port
+static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd) {
+
+  //  Enable SPI Master (moved from SPI Poll Exchange)
+  modifyreg32(BL602_SPI_CFG, SPI_CFG_CR_S_EN, SPI_CFG_CR_M_EN);
+
+  //  Clear SPI FIFO (moved from SPI Poll Exchange)
+  modifyreg32(BL602_SPI_FIFO_CFG_0, SPI_FIFO_CFG_0_RX_CLR | SPI_FIFO_CFG_0_TX_CLR, 0);
+
+  //  Rest of the function is the same...
+  //  Write data to Transmit FIFO
+  putreg32(wd, BL602_SPI_FIFO_WDATA);
+
+  //  Wait for Receive FIFO and receive data
+  while (0 == tmp_val) { ... }</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L806-L839">(Source)</a></p>
+<p>After fixing, we verify with a <strong>Logic Analyser</strong> that SPI Poll Send transmits data correctly to ST7789…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic3.png" alt="SPI Poll Send transmits SPI Data correctly" /></p>
 <p>SPI Poll Send has been <strong>fixed in NuttX Mainline</strong>. <a href="https://github.com/apache/incubator-nuttx/pull/5869">(See this)</a></p>
 <p><a href="https://lupyuen.github.io/articles/st7789#appendix-fix-spi-send-on-bl602">(For details of the fix, see the Appendix)</a></p>
