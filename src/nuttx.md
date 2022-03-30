@@ -972,8 +972,8 @@ Next we download and build NuttX...
     ```bash
     mkdir nuttx
     cd nuttx
-    git clone --branch gpio https://github.com/lupyuen/incubator-nuttx nuttx
-    git clone --branch gpio https://github.com/lupyuen/incubator-nuttx-apps apps
+    git clone --recursive --branch gpio https://github.com/lupyuen/incubator-nuttx nuttx
+    git clone --recursive --branch gpio https://github.com/lupyuen/incubator-nuttx-apps apps
     ```
 
     __NOTE:__ This is the older "gpio" branch of NuttX that uses __"/dev/gpout1"__
