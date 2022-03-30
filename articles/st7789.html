@@ -245,14 +245,24 @@ static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd) 
 <p>SPI Poll Send has been <strong>fixed in NuttX Mainline</strong>. <a href="https://github.com/apache/incubator-nuttx/pull/5869">(See this)</a></p>
 <p><a href="https://lupyuen.github.io/articles/st7789#appendix-fix-spi-send-on-bl602">(For details of the fix, see the Appendix)</a></p>
 <h1 id="spi-mode-3" class="section-header"><a href="#spi-mode-3">5 SPI Mode 3</a></h1>
-<p>TODO</p>
-<p>ST7789 only works with BL602 in SPI Mode 3 for some unknown reason: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L50-L57">st7789.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_BL602_SPI0
+<p>For some unknown reason, BL602 talks to ST7789 <strong>only in SPI Mode 3</strong>.</p>
+<p>We hardcode SPI Mode 3 in the <strong>ST7789 Driver</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L50-L57">st7789.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  If this is BL602...
+#ifdef CONFIG_BL602_SPI0
+  //  Use SPI Mode 3 as workaround for BL602
+  #warning Using SPI Mode 3 for ST7789 on BL602
+  #define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE3
+
+//  If not BL602...
 #else
-#endif  /* CONFIG_BL602_SPI0 */</code></pre></div>
+  //  Use SPI Mode 0 or from menuconfig
+  #ifndef CONFIG_LCD_ST7789_SPIMODE
+  #define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE0
+  #endif  //  CONFIG_LCD_ST7789_SPIMODE
+#endif    //  CONFIG_BL602_SPI0</code></pre></div>
+<p>We’ve seen this behaviour with ST7789 and BL602 IoT SDK, so it’s probably a <strong>quirk in the BL602 SPI Port</strong>, not in the ST7789 Driver.</p>
 <p><a href="https://lupyuen.github.io/articles/display#initialise-spi-port">(More about this)</a></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/st7789-code4.png" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/st7789-code4.png" alt="BL602 talks to ST7789 only in SPI Mode 3" /></p>
 <h1 id="load-st7789-driver" class="section-header"><a href="#load-st7789-driver">6 Load ST7789 Driver</a></h1>
 <p>TODO</p>
 <p>We load the LCD Driver at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L676-L696">bl602_bringup.c</a></p>
