@@ -180,10 +180,12 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 <p><a href="https://lupyuen.github.io/articles/st7789#connect-st7789-display"><strong>“Connect ST7789 Display”</strong></a></p>
 </li>
 <li>
-<p>TODO: Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L676-L696">boards/risc-v/bl602/bl602evb/src/bl602_bringup.c</a> and load ST7789 Driver…</p>
+<p>Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L676-L696">boards/risc-v/bl602/bl602evb/src/bl602_bringup.c</a> and load the LCD Driver and the ST7789 Driver…</p>
+<p><a href="https://lupyuen.github.io/articles/st7789#load-st7789-driver"><strong>“Load ST7789 Driver”</strong></a></p>
 </li>
 <li>
-<p>TODO: Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L50-L57">drivers/lcd/st7789.c</a> and configure ST7789 for SPI Mode 3…</p>
+<p>Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L50-L57">drivers/lcd/st7789.c</a> and configure ST7789 for SPI Mode 3…</p>
+<p><a href="https://lupyuen.github.io/articles/st7789#spi-mode-3"><strong>“SPI Mode 3”</strong></a></p>
 </li>
 </ul>
 <p>(We’ll cover the patches in the following sections)</p>
@@ -217,9 +219,11 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 <p>Can you spot the bug in <strong>bl602_spi_poll_send</strong>?</p>
 <p><img src="https://lupyuen.github.io/images/st7789-spi1.png" alt="BL602 hangs when sending anything over SPI to ST7789" /></p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/54e630e14d7e32d6f81ae79d4e5df3d2fa787ef0/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">(Source)</a></p>
-<p><strong>Answer:</strong> If we call <strong>SPI Poll Send</strong> (bl602_spi_poll_send) directly without calling <strong>SPI Poll Exchange</strong> (bl602_spi_poll_exchange)…</p>
-<p>The SPI Port <strong>won’t get configured correctly</strong>! (“SPI Enable Master” and “SPI FIFO Clear” are skipped)</p>
-<p>And <strong>it hangs</strong>! (Looping forever waiting for SPI FIFO)</p>
+<p><strong>Answer:</strong> If we call <strong>SPI Poll Send</strong> <em>(bl602_spi_poll_send)</em> directly instead of <strong>SPI Poll Exchange</strong> <em>(bl602_spi_poll_exchange)</em>…</p>
+<p>The SPI Port <strong>won’t get configured correctly</strong>!</p>
+<p>(“SPI Enable Master” and “SPI FIFO Clear” are skipped)</p>
+<p>And <strong>it hangs</strong>!</p>
+<p>(Looping forever waiting for SPI FIFO)</p>
 <p><img src="https://lupyuen.github.io/images/st7789-spi2a.png" alt="SPI Port won’t get configured correctly if we call SPI Poll Send" /></p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/54e630e14d7e32d6f81ae79d4e5df3d2fa787ef0/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">(Source)</a></p>
 <p>We fix this problem by <strong>moving the code that configures the SPI Port</strong> from SPI Poll Exchange to SPI Poll Send…</p>
