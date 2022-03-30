@@ -208,80 +208,24 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 <p><em>Why do we need to revert the pin from GPIO to SPI?</em></p>
 <p>We must revert because the SPI Bus may be <strong>shared by other SPI Drivers</strong> that expect a functioning SPI MISO Pin.</p>
 <p>(Like the Semtech SX1262 Driver on PineDio Stack BL604)</p>
-<p>This nifty implementation of the Data / Command Pin has been just <strong>merged into NuttX Mainline</strong>. <a href="https://github.com/apache/incubator-nuttx/pull/5898">(See this)</a></p>
+<p>This nifty implementation of the Data / Command Pin has been <strong>merged into NuttX Mainline</strong>. <a href="https://github.com/apache/incubator-nuttx/pull/5898">(See this)</a></p>
 <p>For details of the implementation, check out the Appendix.</p>
-<p><img src="https://lupyuen.github.io/images/st7789-spi2a.png" alt="Fix SPI Send" /></p>
 <h1 id="fix-spi-send" class="section-header"><a href="#fix-spi-send">4 Fix SPI Send</a></h1>
-<p>TODO</p>
-<p>On BL602, SPI Poll Send <code>bl602_spi_poll_send()</code> doesn’t send any data because it doesn’t enable SPI Master and it doesn’t clear the SPI FIFO.</p>
-<p>SPI Poll Send also hangs because it loops forever waiting for the SPI FIFO: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">bl602_spi.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd)
-{
-  uint32_t val;
-  uint32_t tmp_val = 0;
-
-  /* write data to tx fifo */
-
-  putreg32(wd, BL602_SPI_FIFO_WDATA);
-  
-  /* This loop hangs because SPI Master is not enabled and SPI FIFO is not cleared */
-  
-  while (0 == tmp_val)
-    {
-      /* get data from rx fifo */
-
-      tmp_val = getreg32(BL602_SPI_FIFO_CFG_1);
-      tmp_val = (tmp_val &amp; SPI_FIFO_CFG_1_RX_CNT_MASK)
-                &gt;&gt; SPI_FIFO_CFG_1_RX_CNT_SHIFT;
-    }</code></pre></div>
-<p>This problem affects the NuttX ST7789 Driver because the ST7789 Driver calls SPI Poll Send via <code>SPI_SEND()</code> and <code>bl602_spi_send()</code>.</p>
-<p>We fix this problem by moving the code that enables SPI Master and clears the FIFO, from SPI Poll Exchange <code>bl602_spi_poll_exchange()</code> to SPI Poll Send. (Note that SPI Poll Exchange calls SPI Poll Send)</p>
-<p>Before fixing, SPI Poll Send looks like this: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">bl602_spi.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd)
-{
-  uint32_t val;
-  uint32_t tmp_val = 0;
-
-  /* write data to tx fifo */
-
-  putreg32(wd, BL602_SPI_FIFO_WDATA);
-
-  while (0 == tmp_val)
-    {
-      /* get data from rx fifo */
-      ...</code></pre></div>
-<p>After fixing, SPI Poll Send enables SPI Master and clears SPI FIFO: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L806-L839">bl602_spi.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd)
-{
-  uint32_t val;
-  uint32_t tmp_val = 0;
-
-  /* spi enable master */
-
-  modifyreg32(BL602_SPI_CFG, SPI_CFG_CR_S_EN, SPI_CFG_CR_M_EN);
-
-  /* spi fifo clear  */
-
-  modifyreg32(BL602_SPI_FIFO_CFG_0, SPI_FIFO_CFG_0_RX_CLR
-              | SPI_FIFO_CFG_0_TX_CLR, 0);
-
-  /* write data to tx fifo */
-
-  putreg32(wd, BL602_SPI_FIFO_WDATA);
-
-  while (0 == tmp_val)
-    {
-      /* get data from rx fifo */
-      ...</code></pre></div>
-<p>Logic Analyser shows that SPI Poll Send now transmits SPI Data correctly:</p>
+<p>While testing the ST7789 Driver, we hit a strange problem…</p>
+<p>Our BL602 device would <strong>hang when sending anything</strong> over SPI to ST7789!</p>
+<p>Can you spot the bug in <strong>bl602_spi_poll_send</strong>?</p>
+<p><img src="https://lupyuen.github.io/images/st7789-spi1.png" alt="BL602 hangs when sending anything over SPI to ST7789" /></p>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/54e630e14d7e32d6f81ae79d4e5df3d2fa787ef0/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">(Source)</a></p>
+<p><strong>Answer:</strong> If we call <strong>SPI Poll Send</strong> (bl602_spi_poll_send) directly without calling <strong>SPI Poll Exchange</strong> (bl602_spi_poll_exchange)…</p>
+<p>The SPI Port <strong>won’t get configured correctly</strong>! (“SPI Enable Master” and “SPI FIFO Clear” are skipped)</p>
+<p>And it hangs! (Looping forever waiting for SPI FIFO)</p>
+<p>We fix this problem by <strong>moving the code that configures the SPI Port</strong> from SPI Poll Exchange to SPI Poll Send…</p>
+<p>(Note that SPI Poll Exchange calls SPI Poll Send)</p>
+<p><img src="https://lupyuen.github.io/images/st7789-spi2a.png" alt="Moving the code that configures the SPI Port from SPI Poll Exchange to SPI Poll Send" /></p>
+<p>After fixing, we connect a <strong>Logic Analyser</strong> to verify that SPI Poll Send now transmits data to ST7789…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic3.png" alt="SPI Poll Send transmits SPI Data correctly" /></p>
-<p>Note that the MOSI Pin shows the correct data. Before fixing, the data was missing.</p>
-<p>As for the modified SPI Poll Exchange, we tested it with Semtech SX1262 SPI Transceiver on PineCone BL602: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-03-28">release-2022-03-28</a></p>
-<p><a href="https://github.com/apache/incubator-nuttx/pull/5869">(Our fix for SPI Poll Send has been merged into NuttX)</a></p>
-<p>TODO38</p>
-<p><img src="https://lupyuen.github.io/images/st7789-spi1.png" alt="" /></p>
-<p>TODO40</p>
-<p><img src="https://lupyuen.github.io/images/st7789-spi2a.png" alt="" /></p>
+<p>SPI Poll Send has been <strong>fixed in NuttX Mainline</strong>. <a href="https://github.com/apache/incubator-nuttx/pull/5869">(See this)</a></p>
+<p>For details of the fix, check out the Appendix.</p>
 <h1 id="spi-mode-3" class="section-header"><a href="#spi-mode-3">5 SPI Mode 3</a></h1>
 <p>TODO</p>
 <p>ST7789 only works with BL602 in SPI Mode 3 for some unknown reason: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L50-L57">st7789.c</a></p>
