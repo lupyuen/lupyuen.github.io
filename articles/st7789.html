@@ -264,121 +264,111 @@ static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd) 
   #define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE0
   #endif  //  CONFIG_LCD_ST7789_SPIMODE
 #endif    //  CONFIG_BL602_SPI0</code></pre></div>
-<p>We’ve seen this behaviour with ST7789 and BL602 IoT SDK, so it’s probably a <strong>quirk in the BL602 SPI Port</strong>, not in the ST7789 Driver.</p>
+<p>We’ve seen this behaviour with ST7789 and BL602 IoT SDK, so it’s probably a <strong>quirk in BL602’s SPI Port</strong>, not in the ST7789 Driver.</p>
 <p><a href="https://lupyuen.github.io/articles/display#initialise-spi-port">(More about this)</a></p>
 <p><img src="https://lupyuen.github.io/images/st7789-code4.png" alt="BL602 talks to ST7789 only in SPI Mode 3" /></p>
 <h1 id="load-st7789-driver" class="section-header"><a href="#load-st7789-driver">6 Load ST7789 Driver</a></h1>
-<p>TODO</p>
-<p>We load the LCD Driver at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L676-L696">bl602_bringup.c</a></p>
+<p>We fixed the SPI issues on BL602… Now we can <strong>load the ST7789 Driver</strong> at startup!</p>
+<p>We do this in 2 steps…</p>
+<ol>
+<li>
+<p>We load the <strong>LCD Driver “/dev/lcd0”</strong></p>
+</li>
+<li>
+<p>Then we load the <strong>ST7789 Driver</strong></p>
+<p>(Which will be exposed to apps through the LCD Driver)</p>
+</li>
+</ol>
+<p>This is how we load the <strong>LCD Driver</strong> at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L676-L696">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_LCD_DEV
-#endif
+#include &lt;nuttx/board.h&gt;
+#include &lt;nuttx/lcd/lcd_dev.h&gt;
+#endif  //  CONFIG_LCD_DEV
 
 #ifdef CONFIG_LCD_ST7789
 #include &lt;nuttx/lcd/st7789.h&gt;
 #include &quot;../boards/risc-v/bl602/bl602evb/include/board.h&quot;
 #include &quot;riscv_internal.h&quot;
-#endif /* CONFIG_LCD_ST7789 */
+#endif  //  CONFIG_LCD_ST7789
 ...
+//  Called during NuttX startup to load drivers
 int bl602_bringup(void) {
   ...
 #ifdef CONFIG_LCD_DEV
-
-  /* Initialize the LCD driver */
-
+  //  Initialize the LCD driver
   ret = board_lcd_initialize();
-  if (ret &lt; 0)
-    {
-      _err(&quot;ERROR: board_lcd_initialize() failed: %d\n&quot;, ret);
-    }
+  if (ret &lt; 0) {
+    _err(&quot;ERROR: board_lcd_initialize() failed: %d\n&quot;, ret);
+  }
 
-  /* Register the LCD driver */
-
+  //  Register the LCD driver
   ret = lcddev_register(0);
-  if (ret &lt; 0)
-    {
-      _err(&quot;ERROR: lcddev_register() failed: %d\n&quot;, ret);
-    }
-#endif /* CONFIG_LCD_DEV */
-
+  if (ret &lt; 0) {
+    _err(&quot;ERROR: lcddev_register() failed: %d\n&quot;, ret);
+  }
+#endif  //  CONFIG_LCD_DEV
   return ret;
 }</code></pre></div>
-<p>And we load the ST7789 Driver at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L698-L769">bl602_bringup.c</a></p>
+<p>And this is how we load the <strong>ST7789 Driver</strong> at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L698-L769">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_LCD_ST7789
 
-/* SPI Port Number for LCD */
+//  SPI Port Number for LCD
 #define LCD_SPI_PORTNO 0
 
-/* SPI Bus for LCD */
+//  SPI Bus for LCD
 static struct spi_dev_s *st7789_spi_bus;
 
-/* LCD Device */
+//  LCD Device
 static struct lcd_dev_s *g_lcd = NULL;
 
-/****************************************************************************
- * Name:  board_lcd_initialize
- *
- * Description:
- *   Initialize the LCD video hardware.  The initial state of the LCD is
- *   fully initialized, display memory cleared, and the LCD ready to use, but
- *   with the power setting at 0 (full off).
- *
- ****************************************************************************/
-
-int board_lcd_initialize(void)
-{
+//  Called during NuttX startup to init the LCD Driver
+int board_lcd_initialize(void) {
+  //  Fetch the SPI Bus for the LCD Driver
   st7789_spi_bus = bl602_spibus_initialize(LCD_SPI_PORTNO);
-  if (!st7789_spi_bus)
-    {
-      lcderr(&quot;ERROR: Failed to initialize SPI port %d for LCD\n&quot;, LCD_SPI_PORTNO);
-      return -ENODEV;
-    }
+  if (!st7789_spi_bus) {
+    lcderr(&quot;ERROR: Failed to initialize SPI port %d for LCD\n&quot;, LCD_SPI_PORTNO);
+    return -ENODEV;
+  }
 
-  /* Pull LCD_RESET high */
+  //  Pull Reset Pin high to reset ST7789
+  bl602_configgpio(BOARD_LCD_RST);        //  Configure Reset as GPIO Pin
+  bl602_gpiowrite(BOARD_LCD_RST, false);  //  Set to Low
+  up_mdelay(1);                           //  Wait 1 millisecond
+  bl602_gpiowrite(BOARD_LCD_RST, true);   //  Set to High
+  up_mdelay(10);                          //  Wait 10 milliseconds
 
-  bl602_configgpio(BOARD_LCD_RST);
-  bl602_gpiowrite(BOARD_LCD_RST, false);
-  up_mdelay(1);
-  bl602_gpiowrite(BOARD_LCD_RST, true);
-  up_mdelay(10);
-
-  /* Set full brightness */
-
-  bl602_configgpio(BOARD_LCD_BL);
-  bl602_gpiowrite(BOARD_LCD_BL, true);
-
+  //  Set Backlight to full brightness
+  bl602_configgpio(BOARD_LCD_BL);       //  Configure Backlight as GPIO Pin
+  bl602_gpiowrite(BOARD_LCD_BL, true);  //  Set to High
   return OK;
 }
 
-/****************************************************************************
- * Name:  board_lcd_getdev
- *
- * Description:
- *   Return a a reference to the LCD object for the specified LCD.  This
- *   allows support for multiple LCD devices.
- *
- ****************************************************************************/
-
-FAR struct lcd_dev_s *board_lcd_getdev(int devno)
-{
+//  Called during NuttX startup to load the ST7789 Driver
+FAR struct lcd_dev_s *board_lcd_getdev(int devno) {
+  //  Init the ST7789 driver
   g_lcd = st7789_lcdinitialize(st7789_spi_bus);
-  if (!g_lcd)
-    {
-      lcderr(&quot;ERROR: Failed to bind SPI port %d to LCD %d\n&quot;, LCD_SPI_PORTNO,
-      devno);
-    }
-  else
-    {
-      lcdinfo(&quot;SPI port %d bound to LCD %d\n&quot;, LCD_SPI_PORTNO, devno);
-      return g_lcd;
-    }
 
+  //  Return the ST7789 driver
+  if (!g_lcd) {
+    lcderr(&quot;ERROR: Failed to bind SPI port %d to LCD %d\n&quot;, LCD_SPI_PORTNO,
+      devno);
+  } else {
+    lcdinfo(&quot;SPI port %d bound to LCD %d\n&quot;, LCD_SPI_PORTNO, devno);
+    return g_lcd;
+  }
   return NULL;
 }
 #endif  //  CONFIG_LCD_ST7789</code></pre></div>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/st7789-code1a.png" alt="" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/st7789-code2a.png" alt="" /></p>
+<p><em>What about ESP32-C3?</em></p>
+<p><strong>For ESP32-C3:</strong> This is how we load the LCD Driver and ST7789 Driver at startup…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_bringup.c#L196-L210"><strong>Load LCD Driver</strong> (ESP32-C3)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_st7789.c"><strong>Load ST7789 Driver</strong> (ESP32-C3)</a></p>
+</li>
+</ul>
 <h1 id="boot-nuttx" class="section-header"><a href="#boot-nuttx">7 Boot NuttX</a></h1>
 <p>TODO</p>
 <p>After fixing SPI Send and SPI Cmd/Data, the ST7789 Driver should start properly without hanging…</p>
