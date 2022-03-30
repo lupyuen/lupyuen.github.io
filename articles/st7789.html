@@ -71,8 +71,8 @@
 <li><a href="#fix-spi-send">4 Fix SPI Send</a><ul></ul></li>
 <li><a href="#spi-mode-3">5 SPI Mode 3</a><ul></ul></li>
 <li><a href="#load-st7789-driver">6 Load ST7789 Driver</a><ul></ul></li>
-<li><a href="#boot-nuttx">7 Boot NuttX</a><ul></ul></li>
-<li><a href="#render-pink-screen">8 Render Pink Screen</a><ul></ul></li>
+<li><a href="#render-pink-screen">7 Render Pink Screen</a><ul></ul></li>
+<li><a href="#boot-nuttx">8 Boot NuttX</a><ul></ul></li>
 <li><a href="#lvgl-demo-app">9 LVGL Demo App</a><ul></ul></li>
 <li><a href="#run-lvgl-demo">10 Run LVGL Demo</a><ul></ul></li>
 <li><a href="#lvgl-version">11 LVGL Version</a><ul></ul></li>
@@ -369,7 +369,28 @@ FAR struct lcd_dev_s *board_lcd_getdev(int devno) {
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_st7789.c"><strong>Load ST7789 Driver</strong> (ESP32-C3)</a></p>
 </li>
 </ul>
-<h1 id="boot-nuttx" class="section-header"><a href="#boot-nuttx">7 Boot NuttX</a></h1>
+<h1 id="render-pink-screen" class="section-header"><a href="#render-pink-screen">7 Render Pink Screen</a></h1>
+<p>TODO</p>
+<p>Let’s render a pink screen at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L752-L777">st7789.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
+  ...
+  st7789_sleep(priv, false);
+  st7789_bpp(priv, ST7789_BPP);
+  st7789_setorientation(priv);
+  st7789_display(priv, true);
+  
+  #warning Render Pink Screen
+  st7789_fill(priv, 0xaaaa);
+  //  Previously: st7789_fill(priv, 0xffff);</code></pre></div>
+<p>TODO36</p>
+<p><img src="https://lupyuen.github.io/images/st7789-rgb565.jpg" alt="" /></p>
+<p>Why is 0xAAAA pink? Because ST7789 encodes colours as RGB565 (16 bits)</p>
+<p>When NuttX boots, we should see a pink screen. The screen refresh looks laggy, hopefully we’ll fix this with SPI DMA.</p>
+<p><a href="https://youtu.be/iaDYjO1rCmY">(Watch the demo on YouTube)</a></p>
+<p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
+<p>TODO8</p>
+<p><img src="https://lupyuen.github.io/images/st7789-code3.png" alt="" /></p>
+<h1 id="boot-nuttx" class="section-header"><a href="#boot-nuttx">8 Boot NuttX</a></h1>
 <p>TODO</p>
 <p>After fixing SPI Send and SPI Cmd/Data, the ST7789 Driver should start properly without hanging…</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
@@ -462,27 +483,6 @@ nsh&gt; ls /dev
  urandom
  zero</code></pre></div>
 <p>Note that our ST7789 Display appears as “<strong>/dev/lcd0</strong>”. This will be used by the LVGL Library.</p>
-<h1 id="render-pink-screen" class="section-header"><a href="#render-pink-screen">8 Render Pink Screen</a></h1>
-<p>TODO</p>
-<p>Let’s render a pink screen at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L752-L777">st7789.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
-  ...
-  st7789_sleep(priv, false);
-  st7789_bpp(priv, ST7789_BPP);
-  st7789_setorientation(priv);
-  st7789_display(priv, true);
-  
-  #warning Render Pink Screen
-  st7789_fill(priv, 0xaaaa);
-  //  Previously: st7789_fill(priv, 0xffff);</code></pre></div>
-<p>TODO36</p>
-<p><img src="https://lupyuen.github.io/images/st7789-rgb565.jpg" alt="" /></p>
-<p>Why is 0xAAAA pink? Because ST7789 encodes colours as RGB565 (16 bits)</p>
-<p>When NuttX boots, we should see a pink screen. The screen refresh looks laggy, hopefully we’ll fix this with SPI DMA.</p>
-<p><a href="https://youtu.be/iaDYjO1rCmY">(Watch the demo on YouTube)</a></p>
-<p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/st7789-code3.png" alt="" /></p>
 <h1 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">9 LVGL Demo App</a></h1>
 <p>TODO</p>
 <p>Let’s run the LVGL Demo App bundled with NuttX.  The app initialises the display, renders some widgets and handles LVGL events: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
