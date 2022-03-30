@@ -190,7 +190,7 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 <p>And goes <strong>High</strong> when we’re sending ST7789 Data…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic2a.png" alt="MISO goes High when transmitting ST7789 Data" /></p>
 <p><em>So we’re using MISO as the Data / Command Pin?</em></p>
-<p>Yep NuttX uses the <strong>SPI MISO Pin</strong> to control the ST7789 Data / Command Pin.</p>
+<p>Yep NuttX uses the <strong>SPI MISO Pin</strong> to control the ST7789 Data / Command Pin, as seen in NuttX’s SPI Driver for ESP32-C3…</p>
 <p>TODO</p>
 <p>To control the Data/Command Pin on ST7789 SPI Display, the SPI Driver flips the MISO Pin as though it was a GPIO. Here’s the existing implementation for ESP32-C3: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_board_spi.c#L58-L86">esp32c3_board_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#if defined(CONFIG_ESP32C3_SPI2) &amp;&amp; defined(CONFIG_SPI_CMDDATA)
