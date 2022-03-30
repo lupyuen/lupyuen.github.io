@@ -65,7 +65,7 @@
 
     <h1 class="title">ST7789 Display with LVGL Graphics on Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#connect-bl602-to-st7789">1 Connect BL602 to ST7789</a><ul></ul></li>
+<li><a href="#connect-st7789-display">1 Connect ST7789 Display</a><ul></ul></li>
 <li><a href="#configure-nuttx">2 Configure NuttX</a><ul></ul></li>
 <li><a href="#fix-spi-send">3 Fix SPI Send</a><ul></ul></li>
 <li><a href="#spi-cmddata">4 SPI Cmd/Data</a><ul></ul></li>
@@ -105,7 +105,7 @@
 </ul>
 <p>The same steps should work on <strong>ESP32 and other NuttX Platforms</strong>. (Without the BL602 quirks)</p>
 <p><img src="https://lupyuen.github.io/images/st7789-connect.jpg" alt="Connect BL602 to ST7789" /></p>
-<h1 id="connect-bl602-to-st7789" class="section-header"><a href="#connect-bl602-to-st7789">1 Connect BL602 to ST7789</a></h1>
+<h1 id="connect-st7789-display" class="section-header"><a href="#connect-st7789-display">1 Connect ST7789 Display</a></h1>
 <p>We connect the ST7789 Display to BL602 as follows (pic above)…</p>
 <div><table><thead><tr><th style="text-align: left">BL602 Pin</th><th style="text-align: left">ST7789 SPI</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong><code>GPIO 0</code></strong></td><td style="text-align: left"><code>DC</code>  <em>(MISO)</em></td><td style="text-align: left">Blue</td></tr>
