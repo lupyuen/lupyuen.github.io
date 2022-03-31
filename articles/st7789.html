@@ -433,15 +433,40 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
   
   //  Fill the screen with pink
   st7789_fill(priv, 0xAAAA);
-  //  Previously: st7789_fill(priv, 0xffff);</code></pre></div>
+
+  //  Previously: Fill the screen with white
+  //  st7789_fill(priv, 0xFFFF);</code></pre></div>
 <p>Recalls that <strong>st7789_lcdinitialize</strong> is called by <a href="https://lupyuen.github.io/articles/st7789#st7789-driver"><strong>board_lcd_getdev</strong></a> during NuttX startup.</p>
 <p>This function initialises the ST7789 Display. We changed the last line so that it <strong>fills the screen with pink</strong>. (Colour value AAAA)</p>
 <p>Let’s talk about AAAA…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-rgb565.jpg" alt="AAAA in RGB565 is pink" /></p>
 <h2 id="rgb565-colour-encoding" class="section-header"><a href="#rgb565-colour-encoding">7.1 RGB565 Colour Encoding</a></h2>
 <p><em>Why is AAAA pink?</em></p>
-<p>TODO</p>
-<p>Because ST7789 encodes colours as RGB565 (16 bits)</p>
+<p>That’s because ST7789 encodes colours in <strong>16 bits as RGB565</strong>…</p>
+<ul>
+<li>
+<p>5 bits for <strong>Red</strong></p>
+</li>
+<li>
+<p>6 bits for <strong>Green</strong></p>
+</li>
+<li>
+<p>5 bits for <strong>Blue</strong></p>
+</li>
+</ul>
+<p>The pic above shows that AAAA broken down into <strong>RGB565</strong> is…</p>
+<ul>
+<li>
+<p><strong>66%</strong> Red</p>
+</li>
+<li>
+<p><strong>33%</strong> Green</p>
+</li>
+<li>
+<p><strong>32%</strong> Blue</p>
+</li>
+</ul>
+<p>Which is a reddish hue of white: <strong>pink!</strong></p>
 <h1 id="run-nuttx" class="section-header"><a href="#run-nuttx">8 Run NuttX</a></h1>
 <p>TODO</p>
 <p>After fixing SPI Send and SPI Cmd/Data, the ST7789 Driver should start properly without hanging…</p>
