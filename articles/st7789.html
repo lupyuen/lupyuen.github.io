@@ -520,18 +520,19 @@ int main(int argc, FAR char *argv[]) {
   lv_disp_buf_init(&amp;disp_buf, buffer1, buffer2, DISPLAY_BUFFER_SIZE);
   lv_disp_drv_init(&amp;disp_drv);
   disp_drv.buffer = &amp;disp_buf;
-  disp_drv.monitor_cb = monitor_cb;
-
-  //  Display interface initialization
+  disp_drv.monitor_cb = monitor_cb;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Display interface initialization
   if (fbdev_init(&amp;disp_drv) != EXIT_SUCCESS) {      
-      //  Failed to use framebuffer falling back to lcd driver
-      if (lcddev_init(&amp;disp_drv) != EXIT_SUCCESS) {
-          //  No possible drivers left, fail
-          return EXIT_FAILURE;
-      }
-  }
-
-  //  Register the display driver
+    //  Failed to use Frame Buffer, falling back to LCD Driver
+    if (lcddev_init(&amp;disp_drv) != EXIT_SUCCESS) {
+      //  No possible drivers left, fail
+      return EXIT_FAILURE;
+    }
+  }</code></pre></div>
+<p>TODO</p>
+<p>“<strong>/dev/fb0</strong>” is the Frame Buffer Driver.</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Register the display driver
   lv_disp_drv_register(&amp;disp_drv);
   ...
   //  Render the widgets
@@ -544,7 +545,6 @@ int main(int argc, FAR char *argv[]) {
   }</code></pre></div>
 <p><strong>lv_demo_widgets</strong> is defined in <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L63-L101">lv_demo_widgets.c</a></p>
 <p>TODO</p>
-<p>“<strong>/dev/fb0</strong>” is the framebuffer device.</p>
 <p><img src="https://lupyuen.github.io/images/st7789-code5a.png" alt="LVGL Demo App" /></p>
 <h1 id="run-lvgl-demo" class="section-header"><a href="#run-lvgl-demo">10 Run LVGL Demo</a></h1>
 <p>TODO</p>
@@ -555,149 +555,28 @@ int main(int argc, FAR char *argv[]) {
 </li>
 <li>
 <p>At the NuttX Shell, enter this command to run the <strong>LVGL Demo App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div></li>
+<li>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>fbdev_init: Failed to open /dev/fb0: 2
+st7789_getvideoinfo: fmt: 11 xres: 240 yres: 240 nplanes: 1
+lcddev_init: VideoInfo:
+  fmt: 11
+  xres: 240
+  yres: 240
+  nplanes: 1
+lcddev_init: PlaneInfo (plane 0):
+  bpp: 16</code></pre></div></li>
+<li>
+<p>TODO: Update 20 rows</p>
+<div class="example-wrap"><pre class="language-text"><code>st7789_putarea: row_start:  0 row_end: 19 col_start: 0 col_end: 239
+st7789_putarea: row_start: 20 row_end: 39 col_start: 0 col_end: 239
+...
+st7789_putarea: row_start: 220 row_end: 239 col_start: 0 col_end: 239
+monitor_cb: 57600 px refreshed in 1100 ms</code></pre></div>
 <p><a href="https://github.com/lupyuen/st7789-nuttx#run-lvgl-demo">(See the complete log)</a></p>
 </li>
 </ol>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>▒gpio_pin_register: Registering /dev/gpio0
-gpio_pin_register: Registering /dev/gpio1
-gpint_enable: Disable the interrupt
-gpio_pin_register: Registering /dev/gpio2
-bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
-spi_test_driver_register: devpath=/dev/spitest0, spidev=0
-st7789_sleep: sleep: 0
-st7789_sendcmd: cmd: 0x11
-st7789_sendcmd: OK
-st7789_bpp: bpp: 16
-st7789_sendcmd: cmd: 0x3a
-st7789_sendcmd: OK
-st7789_setorientation:
-st7789_sendcmd: cmd: 0x36
-st7789_sendcmd: OK
-st7789_display: on: 1
-st7789_sendcmd: cmd: 0x29
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x21
-st7789_sendcmd: OK
-st7789_fill: color: 0xaaaa
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-board_lcd_getdev: SPI port 0 bound to LCD 0
-st7789_getplaneinfo: planeno: 0 bpp: 16
-
-NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt; ?
-help usage:  help [-v] [&lt;cmd&gt;]
-
-  ?      cat    help   ls     uname
-
-Builtin Apps:
-  tinycbor_test            spi_test                 nsh
-  lorawan_test             timer                    sensortest
-  sx1262_test              bl602_adc_test           ikea_air_quality_sensor
-  bas                      spi_test2                gpio
-  sh                       getprime
-  lvgldemo                 hello
-nsh&gt; lvgldemo
-fbdev_init: Failed to open /dev/fb0: 2
-st7789_getvideoinfo: fmt: 11 xres: 240 yres: 240 nplanes: 1
-lcddev_init: VideoInfo:
-        fmt: 11
-        xres: 240
-        yres: 240
-        nplanes: 1
-lcddev_init: PlaneInfo (plane 0):
-        bpp: 16
-st7789_putarea: row_start: 0 row_end: 19 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 20 row_end: 39 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 40 row_end: 59 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 60 row_end: 79 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 80 row_end: 99 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 100 row_end: 119 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 120 row_end: 139 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 140 row_end: 159 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 160 row_end: 179 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 180 row_end: 199 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 200 row_end: 219 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 220 row_end: 239 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-monitor_cb: 57600 px refreshed in 1100 ms</code></pre></div>
 <p>The LVGL Demo Screen appears on ST7789 yay! The demo source code is here: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
 <p><img src="https://lupyuen.github.io/images/st7789-lvgl.jpg" alt="LVGL Demo Screen appears on ST7789" /></p>
 <h1 id="lvgl-widgets" class="section-header"><a href="#lvgl-widgets">11 LVGL Widgets</a></h1>
