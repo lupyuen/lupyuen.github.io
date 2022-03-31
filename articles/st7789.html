@@ -78,17 +78,18 @@
 <li><a href="#run-st7789-driver">8 Run ST7789 Driver</a><ul></ul></li>
 <li><a href="#lvgl-demo-app">9 LVGL Demo App</a><ul></ul></li>
 <li><a href="#run-lvgl-demo">10 Run LVGL Demo</a><ul></ul></li>
-<li><a href="#lvgl-version">11 LVGL Version</a><ul></ul></li>
-<li><a href="#sharing-spi-bus">12 Sharing SPI Bus</a><ul></ul></li>
-<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
-<li><a href="#notes">14 Notes</a><ul></ul></li>
-<li><a href="#appendix-spi-cmddata-on-bl602">15 Appendix: SPI Cmd/Data on BL602</a><ul></ul></li>
-<li><a href="#appendix-fix-spi-send-on-bl602">16 Appendix: Fix SPI Send on BL602</a><ul></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#configure-nuttx">17.1 Configure NuttX</a><ul></ul></li>
-<li><a href="#build-nuttx">17.2 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">17.3 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">17.4 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
+<li><a href="#lvgl-widgets">11 LVGL Widgets</a><ul></ul></li>
+<li><a href="#lvgl-version">12 LVGL Version</a><ul></ul></li>
+<li><a href="#sharing-spi-bus">13 Sharing SPI Bus</a><ul></ul></li>
+<li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
+<li><a href="#notes">15 Notes</a><ul></ul></li>
+<li><a href="#appendix-spi-cmddata-on-bl602">16 Appendix: SPI Cmd/Data on BL602</a><ul></ul></li>
+<li><a href="#appendix-fix-spi-send-on-bl602">17 Appendix: Fix SPI Send on BL602</a><ul></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">18 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#configure-nuttx">18.1 Configure NuttX</a><ul></ul></li>
+<li><a href="#build-nuttx">18.2 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">18.3 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">18.4 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/st7789-title.jpg" alt="ST7789 SPI Display connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>ST7789 SPI Display connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 <p><strong>Sitronix ST7789</strong> is an SPI Display Controller that’s found in many gadgets. (Like <a href="https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot"><strong>PineTime Smartwatch</strong></a>)</p>
@@ -492,10 +493,10 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 </li>
 </ol>
 <p>Yep the NuttX ST7789 Driver is working!</p>
-<p>The screen refresh might look laggy, hopefully we’ll fix this in 2 ways…</p>
+<p>The screen update looks laggy, hopefully we’ll fix this in 2 ways…</p>
 <ul>
 <li>
-<p>Increase the <strong>SPI Frequency</strong> from the 1 MHz to 20 MHz</p>
+<p>Increase the <strong>SPI Frequency</strong> from 1 MHz to 40 MHz, the maximum frequency supported by BL602</p>
 <p>(In menuconfig: Device Drivers → LCD Driver Support → Graphic LCD Driver Support → LCD Driver Selection → Sitronix ST7789 → SPI Frequency)</p>
 </li>
 <li>
@@ -507,176 +508,58 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 <h1 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">9 LVGL Demo App</a></h1>
 <p>TODO</p>
 <p>Let’s run the LVGL Demo App bundled with NuttX.  The app initialises the display, renders some widgets and handles LVGL events: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[])
-{
+<div class="example-wrap"><pre class="language-c"><code>//  LVGL Demo App
+int main(int argc, FAR char *argv[]) {
   lv_disp_drv_t disp_drv;
   lv_disp_buf_t disp_buf;
-
   ...
-
-  /* LVGL initialization */
-
+  //  LVGL initialization
   lv_init();
 
-  /* Basic LVGL display driver initialization */
-
+  //  Basic LVGL display driver initialization
   lv_disp_buf_init(&amp;disp_buf, buffer1, buffer2, DISPLAY_BUFFER_SIZE);
   lv_disp_drv_init(&amp;disp_drv);
   disp_drv.buffer = &amp;disp_buf;
   disp_drv.monitor_cb = monitor_cb;
 
-  /* Display interface initialization */
-
-  if (fbdev_init(&amp;disp_drv) != EXIT_SUCCESS)
-    {
-      /* Failed to use framebuffer falling back to lcd driver */
-
-      if (lcddev_init(&amp;disp_drv) != EXIT_SUCCESS)
-        {
-          /* No possible drivers left, fail */
-
+  //  Display interface initialization
+  if (fbdev_init(&amp;disp_drv) != EXIT_SUCCESS) {      
+      //  Failed to use framebuffer falling back to lcd driver
+      if (lcddev_init(&amp;disp_drv) != EXIT_SUCCESS) {
+          //  No possible drivers left, fail
           return EXIT_FAILURE;
-        }
-    }
+      }
+  }
 
+  //  Register the display driver
   lv_disp_drv_register(&amp;disp_drv);
-
   ...
-
+  //  Render the widgets
   lv_demo_widgets();
-
   ...
-
-  /* Handle LVGL tasks */
-
-  while (1)
-    {
-      lv_task_handler();
-      usleep(10000);
-    }
-
-  return EXIT_SUCCESS;
-}</code></pre></div>
+  //  Loop forever handling LVGL tasks
+  while (1) {
+    lv_task_handler();
+    usleep(10000);  //  Sleep 10 milliseconds
+  }</code></pre></div>
 <p><strong>lv_demo_widgets</strong> is defined in <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L63-L101">lv_demo_widgets.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>void lv_demo_widgets(void) {
-  tv = lv_tabview_create(lv_scr_act(), NULL);
-  ...
-  t1 = lv_tabview_add_tab(tv, &quot;Controls&quot;);
-  t2 = lv_tabview_add_tab(tv, &quot;Visuals&quot;);
-  t3 = lv_tabview_add_tab(tv, &quot;Selectors&quot;);
-
-  lv_style_init(&amp;style_box);
-  lv_style_set_value_align(&amp;style_box, LV_STATE_DEFAULT, LV_ALIGN_OUT_TOP_LEFT);
-  lv_style_set_value_ofs_y(&amp;style_box, LV_STATE_DEFAULT, - LV_DPX(10));
-  lv_style_set_margin_top(&amp;style_box, LV_STATE_DEFAULT, LV_DPX(30));
-
-  controls_create(t1);
-  visuals_create(t2);
-  selectors_create(t3);
-}</code></pre></div>
 <p>TODO</p>
-<p><a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203">lv_demo_widgets.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static void controls_create(lv_obj_t * parent)
-{
-    lv_page_set_scrl_layout(parent, LV_LAYOUT_PRETTY_TOP);
-
-    lv_disp_size_t disp_size = lv_disp_get_size_category(NULL);
-    lv_coord_t grid_w = lv_page_get_width_grid(parent, disp_size &lt;= LV_DISP_SIZE_SMALL ? 1 : 2, 1);
-
-#if LV_DEMO_WIDGETS_SLIDESHOW == 0
-    static const char * btns[] = {&quot;Cancel&quot;, &quot;Ok&quot;, &quot;&quot;};
-
-    lv_obj_t * m = lv_msgbox_create(lv_scr_act(), NULL);
-    lv_msgbox_add_btns(m, btns);
-    lv_obj_t * btnm = lv_msgbox_get_btnmatrix(m);
-    lv_btnmatrix_set_btn_ctrl(btnm, 1, LV_BTNMATRIX_CTRL_CHECK_STATE);
-#endif
-
-    lv_obj_t * h = lv_cont_create(parent, NULL);
-    lv_cont_set_layout(h, LV_LAYOUT_PRETTY_MID);
-    lv_obj_add_style(h, LV_CONT_PART_MAIN, &amp;style_box);
-    lv_obj_set_drag_parent(h, true);
-
-    lv_obj_set_style_local_value_str(h, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, &quot;Basics&quot;);
-
-    lv_cont_set_fit2(h, LV_FIT_NONE, LV_FIT_TIGHT);
-    lv_obj_set_width(h, grid_w);
-    lv_obj_t * btn = lv_btn_create(h, NULL);
-    lv_btn_set_fit2(btn, LV_FIT_NONE, LV_FIT_TIGHT);
-    lv_obj_set_width(btn, lv_obj_get_width_grid(h, disp_size &lt;= LV_DISP_SIZE_SMALL ? 1 : 2, 1));
-    lv_obj_t * label = lv_label_create(btn, NULL);
-    lv_label_set_text(label ,&quot;Button&quot;);
-
-    btn = lv_btn_create(h, btn);
-    lv_btn_toggle(btn);
-    label = lv_label_create(btn, NULL);
-    lv_label_set_text(label ,&quot;Button&quot;);
-
-    lv_switch_create(h, NULL);
-
-    lv_checkbox_create(h, NULL);
-
-    lv_coord_t fit_w = lv_obj_get_width_fit(h);
-
-    lv_obj_t * slider = lv_slider_create(h, NULL);
-    lv_slider_set_value(slider, 40, LV_ANIM_OFF);
-    lv_obj_set_event_cb(slider, slider_event_cb);
-    lv_obj_set_width_margin(slider, fit_w);
-
-    /*Use the knobs style value the display the current value in focused state*/
-    lv_obj_set_style_local_margin_top(slider, LV_SLIDER_PART_BG, LV_STATE_DEFAULT, LV_DPX(25));
-    lv_obj_set_style_local_value_font(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, lv_theme_get_font_small());
-    lv_obj_set_style_local_value_ofs_y(slider, LV_SLIDER_PART_KNOB, LV_STATE_FOCUSED, - LV_DPX(25));
-    lv_obj_set_style_local_value_opa(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-    lv_obj_set_style_local_value_opa(slider, LV_SLIDER_PART_KNOB, LV_STATE_FOCUSED, LV_OPA_COVER);
-    lv_obj_set_style_local_transition_time(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, 300);
-    lv_obj_set_style_local_transition_prop_5(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, LV_STYLE_VALUE_OFS_Y);
-    lv_obj_set_style_local_transition_prop_6(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, LV_STYLE_VALUE_OPA);
-
-    slider = lv_slider_create(h, slider);
-    lv_slider_set_type(slider, LV_SLIDER_TYPE_RANGE);
-    lv_slider_set_value(slider, 70, LV_ANIM_OFF);
-    lv_slider_set_left_value(slider, 30, LV_ANIM_OFF);
-    lv_obj_set_style_local_value_ofs_y(slider, LV_SLIDER_PART_INDIC, LV_STATE_DEFAULT, - LV_DPX(25));
-    lv_obj_set_style_local_value_font(slider, LV_SLIDER_PART_INDIC, LV_STATE_DEFAULT, lv_theme_get_font_small());
-    lv_obj_set_style_local_value_opa(slider, LV_SLIDER_PART_INDIC, LV_STATE_DEFAULT, LV_OPA_COVER);
-    lv_obj_set_event_cb(slider, slider_event_cb);
-    lv_event_send(slider, LV_EVENT_VALUE_CHANGED, NULL);      /*To refresh the text*/
-    if(lv_obj_get_width(slider) &gt; fit_w) lv_obj_set_width(slider, fit_w);
-
-    h = lv_cont_create(parent, h);
-    lv_cont_set_fit(h, LV_FIT_NONE);
-    lv_obj_set_style_local_value_str(h, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, &quot;Text input&quot;);
-
-    lv_obj_t * ta = lv_textarea_create(h, NULL);
-    lv_cont_set_fit2(ta, LV_FIT_PARENT, LV_FIT_NONE);
-    lv_textarea_set_text(ta, &quot;&quot;);
-    lv_textarea_set_placeholder_text(ta, &quot;E-mail address&quot;);
-    lv_textarea_set_one_line(ta, true);
-    lv_textarea_set_cursor_hidden(ta, true);
-    lv_obj_set_event_cb(ta, ta_event_cb);
-
-    ta = lv_textarea_create(h, ta);
-    lv_textarea_set_pwd_mode(ta, true);
-    lv_textarea_set_placeholder_text(ta, &quot;Password&quot;);
-
-    ta = lv_textarea_create(h, NULL);
-    lv_cont_set_fit2(ta, LV_FIT_PARENT, LV_FIT_NONE);
-    lv_textarea_set_text(ta, &quot;&quot;);
-    lv_textarea_set_placeholder_text(ta, &quot;Message&quot;);
-    lv_textarea_set_cursor_hidden(ta, true);
-    lv_obj_set_event_cb(ta, ta_event_cb);
-    lv_cont_set_fit4(ta, LV_FIT_PARENT, LV_FIT_PARENT, LV_FIT_NONE, LV_FIT_PARENT);
-
-#if LV_DEMO_WIDGETS_SLIDESHOW
-    tab_content_anim_create(parent);
-#endif
-}</code></pre></div>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/st7789-code5a.png" alt="" /></p>
+<p>“<strong>/dev/fb0</strong>” is the framebuffer device.</p>
+<p><img src="https://lupyuen.github.io/images/st7789-code5a.png" alt="LVGL Demo App" /></p>
 <h1 id="run-lvgl-demo" class="section-header"><a href="#run-lvgl-demo">10 Run LVGL Demo</a></h1>
 <p>TODO</p>
-<p>We run the LVGL Demo App <code>lvgldemo</code> with ST7789…</p>
+<ol>
+<li>
+<p>Follow these steps to <strong>build, flash and run</strong> NuttX (configured for LVGL Library and LVGL Demo)…</p>
+<p><a href="https://lupyuen.github.io/articles/st7789#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
+</li>
+<li>
+<p>At the NuttX Shell, enter this command to run the <strong>LVGL Demo App</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div>
+<p><a href="https://github.com/lupyuen/st7789-nuttx#run-lvgl-demo">(See the complete log)</a></p>
+</li>
+</ol>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>▒gpio_pin_register: Registering /dev/gpio0
 gpio_pin_register: Registering /dev/gpio1
 gpint_enable: Disable the interrupt
@@ -817,7 +700,40 @@ st7789_sendcmd: OK
 monitor_cb: 57600 px refreshed in 1100 ms</code></pre></div>
 <p>The LVGL Demo Screen appears on ST7789 yay! The demo source code is here: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
 <p><img src="https://lupyuen.github.io/images/st7789-lvgl.jpg" alt="LVGL Demo Screen appears on ST7789" /></p>
-<h1 id="lvgl-version" class="section-header"><a href="#lvgl-version">11 LVGL Version</a></h1>
+<h1 id="lvgl-widgets" class="section-header"><a href="#lvgl-widgets">11 LVGL Widgets</a></h1>
+<p>TODO</p>
+<p><strong>lv_demo_widgets</strong> is defined in <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L63-L101">lv_demo_widgets.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Create Demo Widgets
+void lv_demo_widgets(void) {
+  //  Create a Tab View Widget
+  tv = lv_tabview_create(lv_scr_act(), NULL);
+  ...
+  //  Create 3 tabs: Controls, Visuals, Selectors
+  t1 = lv_tabview_add_tab(tv, &quot;Controls&quot;);
+  t2 = lv_tabview_add_tab(tv, &quot;Visuals&quot;);
+  t3 = lv_tabview_add_tab(tv, &quot;Selectors&quot;);
+  ...
+  //  Create the widgets for the Controls, Visuals and Selectors Tabs
+  controls_create(t1);
+  visuals_create(t2);
+  selectors_create(t3);
+}</code></pre></div>
+<p><a href="https://docs.lvgl.io/7.11/widgets/tabview.html">Tab View Widget</a></p>
+<p>TODO</p>
+<p><a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203">lv_demo_widgets.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Create widgets for the Controls Tab
+static void controls_create(lv_obj_t * parent) {
+  ...
+  //  Create a Message Box Widget
+  lv_obj_t * m = lv_msgbox_create(lv_scr_act(), NULL);
+
+  //  Define the Message Box Buttons
+  static const char * btns[] = {&quot;Cancel&quot;, &quot;Ok&quot;, &quot;&quot;};
+
+  //  Add the buttons to the Message Box
+  lv_msgbox_add_btns(m, btns);</code></pre></div>
+<p><a href="https://docs.lvgl.io/7.11/widgets/msgbox.html">Message Box Widget</a></p>
+<h1 id="lvgl-version" class="section-header"><a href="#lvgl-version">12 LVGL Version</a></h1>
 <p>TODO</p>
 <p>We can specify the LVGL Version in menuconfig:</p>
 <ul>
@@ -884,13 +800,13 @@ unzip:  cannot find zipfile directory in one of v8.2.0.zip or
         v8.2.0.zip.zip, and cannot find v8.2.0.zip.ZIP, period.</code></pre></div>
 <p>Seems the NuttX Makefiles need to be fixed to support LVGL 8. </p>
 <p>Also the demo source code needs to be updated for LVGL 8, which is not compatible with LVGL 7: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
-<h1 id="sharing-spi-bus" class="section-header"><a href="#sharing-spi-bus">12 Sharing SPI Bus</a></h1>
+<h1 id="sharing-spi-bus" class="section-header"><a href="#sharing-spi-bus">13 Sharing SPI Bus</a></h1>
 <p>TODO</p>
 <p>PineDio Stack BL604 connects multiple SPI Devices to the same SPI Bus: ST7789 Display, SX1262 LoRa Transceiver, SPI Flash.</p>
 <p>How to share the same SPI Bus for multiple SPI Devices? How do we control the Chip Select Pins for each SPI Device?</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/st7789-connect2.jpg" alt="" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">14 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -909,11 +825,11 @@ unzip:  cannot find zipfile directory in one of v8.2.0.zip or
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/st7789.md"><code>lupyuen.github.io/src/st7789.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">15 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1507854679241199616">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-spi-cmddata-on-bl602" class="section-header"><a href="#appendix-spi-cmddata-on-bl602">15 Appendix: SPI Cmd/Data on BL602</a></h1>
+<h1 id="appendix-spi-cmddata-on-bl602" class="section-header"><a href="#appendix-spi-cmddata-on-bl602">16 Appendix: SPI Cmd/Data on BL602</a></h1>
 <p>This section explains how we implemented the <strong>ST7789 Data / Command Pin</strong> on BL602 NuttX…</p>
 <p>To control the Data / Command Pin on ST7789 SPI Display, the SPI Driver flips the MISO Pin as though it was a GPIO. Here’s the existing implementation for ESP32-C3: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_board_spi.c#L58-L86">esp32c3_board_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#if defined(CONFIG_ESP32C3_SPI2) &amp;&amp; defined(CONFIG_SPI_CMDDATA)
@@ -1018,7 +934,7 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 <p><img src="https://lupyuen.github.io/images/st7789-dc3a.png" alt="" /></p>
 <p>TODO27</p>
 <p><img src="https://lupyuen.github.io/images/st7789-dc4a.png" alt="" /></p>
-<h1 id="appendix-fix-spi-send-on-bl602" class="section-header"><a href="#appendix-fix-spi-send-on-bl602">16 Appendix: Fix SPI Send on BL602</a></h1>
+<h1 id="appendix-fix-spi-send-on-bl602" class="section-header"><a href="#appendix-fix-spi-send-on-bl602">17 Appendix: Fix SPI Send on BL602</a></h1>
 <p>This section explains how we <strong>fixed SPI Send</strong> on BL602 NuttX…</p>
 <p>On BL602, SPI Poll Send <code>bl602_spi_poll_send()</code> doesn’t send any data because it doesn’t enable SPI Master and it doesn’t clear the SPI FIFO.</p>
 <p>SPI Poll Send also hangs because it loops forever waiting for the SPI FIFO: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">bl602_spi.c</a></p>
@@ -1089,13 +1005,13 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 <p><img src="https://lupyuen.github.io/images/st7789-spi1.png" alt="" /></p>
 <p>TODO40</p>
 <p><img src="https://lupyuen.github.io/images/st7789-spi2a.png" alt="" /></p>
-<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">18 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602, BL604 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602, BL604 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">17.1 Configure NuttX</a></h2>
+<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">18.1 Configure NuttX</a></h2>
 <p>Now we configure our NuttX project…</p>
 <ol>
 <li>
@@ -1212,7 +1128,7 @@ LCD Driver Informational Output</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/a7fc921531c1d14e8d336fba0cdb1c83">(See the .config for BL602 and BL604)</a></p>
 </li>
 </ol>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">17.2 Build NuttX</a></h2>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">18.2 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
 <ol>
 <li>
@@ -1242,7 +1158,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">17.3 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">18.3 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602 / BL604:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -1319,7 +1235,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">17.4 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">18.4 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
