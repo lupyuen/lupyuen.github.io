@@ -674,7 +674,7 @@ make</code></pre></div>
          lv_color_t ct = LV_COLOR_TRANSP;</code></pre></div>
 <p>It seems the demo source code needs to be updated for 7.11.0: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
 <p><em>What happens if we switch to LVGL 8.2.0?</em></p>
-<p>NuttX Build fails when downloading the LVGL Source Code…</p>
+<p>NuttX Build fails when downloading the LVGL Demo Code…</p>
 <div class="example-wrap"><pre class="language-text"><code>make[3]: Entering directory &#39;/home/user/nuttx/apps/examples/lvgldemo&#39;
 Downloading: v8.2.0.zip
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -691,6 +691,7 @@ unzip:  cannot find zipfile directory in one of v8.2.0.zip or
         v8.2.0.zip.zip, and cannot find v8.2.0.zip.ZIP, period.</code></pre></div>
 <p>Seems the NuttX Makefiles need to be fixed to support LVGL 8. </p>
 <p>Also the demo source code needs to be updated for LVGL 8, which is not compatible with LVGL 7: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
+<p><img src="https://lupyuen.github.io/images/pinedio-spi.jpg" alt="Shared SPI Bus on PineDio Stack BL604" /></p>
 <h1 id="sharing-spi-bus" class="section-header"><a href="#sharing-spi-bus">13 Sharing SPI Bus</a></h1>
 <p>TODO</p>
 <p>PineDio Stack BL604 connects multiple SPI Devices to the same SPI Bus: ST7789 Display, SX1262 LoRa Transceiver, SPI Flash.</p>
