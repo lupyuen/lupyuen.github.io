@@ -75,7 +75,7 @@
 <li><a href="#st7789-driver">6.2 ST7789 Driver</a><ul></ul></li></ul></li>
 <li><a href="#render-pink-screen">7 Render Pink Screen</a><ul>
 <li><a href="#rgb565-colour-encoding">7.1 RGB565 Colour Encoding</a><ul></ul></li></ul></li>
-<li><a href="#run-nuttx">8 Run NuttX</a><ul></ul></li>
+<li><a href="#run-st7789-driver">8 Run ST7789 Driver</a><ul></ul></li>
 <li><a href="#lvgl-demo-app">9 LVGL Demo App</a><ul></ul></li>
 <li><a href="#run-lvgl-demo">10 Run LVGL Demo</a><ul></ul></li>
 <li><a href="#lvgl-version">11 LVGL Version</a><ul></ul></li>
@@ -85,11 +85,10 @@
 <li><a href="#appendix-spi-cmddata-on-bl602">15 Appendix: SPI Cmd/Data on BL602</a><ul></ul></li>
 <li><a href="#appendix-fix-spi-send-on-bl602">16 Appendix: Fix SPI Send on BL602</a><ul></ul></li>
 <li><a href="#appendix-build-flash-and-run-nuttx">17 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#download-nuttx">17.1 Download NuttX</a><ul></ul></li>
-<li><a href="#configure-nuttx">17.2 Configure NuttX</a><ul></ul></li>
-<li><a href="#build-nuttx">17.3 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">17.4 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx-1">17.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
+<li><a href="#configure-nuttx">17.1 Configure NuttX</a><ul></ul></li>
+<li><a href="#build-nuttx">17.2 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">17.3 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">17.4 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/st7789-title.jpg" alt="ST7789 SPI Display connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>ST7789 SPI Display connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 <p><strong>Sitronix ST7789</strong> is an SPI Display Controller that’s found in many gadgets. (Like <a href="https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot"><strong>PineTime Smartwatch</strong></a>)</p>
@@ -410,6 +409,8 @@ FAR struct lcd_dev_s *board_lcd_getdev(int devno) {
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_st7789.c"><strong>Load ST7789 Driver</strong> (ESP32-C3)</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/st7789-code3.png" alt="Render Pink Screen at startup" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L752-L777">(Source)</a></p>
 <h1 id="render-pink-screen" class="section-header"><a href="#render-pink-screen">7 Render Pink Screen</a></h1>
 <p>In a while we’ll boot NuttX to load the ST7789 Driver but…</p>
 <p><em>How will we know if the ST7789 Driver is really working?</em></p>
@@ -467,105 +468,42 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 </li>
 </ul>
 <p>Which is a reddish hue of white: <strong>pink!</strong></p>
-<h1 id="run-nuttx" class="section-header"><a href="#run-nuttx">8 Run NuttX</a></h1>
-<p>TODO</p>
-<p>After fixing SPI Send and SPI Cmd/Data, the ST7789 Driver should start properly without hanging…</p>
-<div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
-gpio_pin_register: Registering /dev/gpio1
-gpint_enable: Disable the interrupt
-gpio_pin_register: Registering /dev/gpio2
-bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
-bl602_spi_setfrequency: frequency=400000, actual=0
-bl602_spi_setbits: nbits=8
-bl602_spi_setmode: mode=0
-spi_test_driver_register: devpath=/dev/spitest0, spidev=0
-bl602_spi_select: devid: 0, CS: free
-st7789_sleep: sleep: 0
-st7789_sendcmd: cmd: 0x11
-bl602_spi_select: devid: 262144, CS: select
-bl602_spi_setmode: mode=3
-bl602_spi_setbits: nbits=8
-bl602_spi_setfrequency: frequency=1000000, actual=0
-bl602_spi_cmddata: devid: 262144 CMD: command
-bl602_spi_poll_send: send=11 and recv=0
-bl602_spi_cmddata: devid: 262144 CMD: data
-bl602_spi_select: devid: 262144, CS: free
-st7789_sendcmd: OK
-st7789_bpp: bpp: 16
-st7789_sendcmd: cmd: 0x3a
-bl602_spi_select: devid: 262144, CS: select
-bl602_spi_setmode: mode=3
-bl602_spi_setbits: nbits=8
-bl602_spi_cmddata: devid: 262144 CMD: command
-bl602_spi_poll_send: send=3a and recv=0
-bl602_spi_cmddata: devid: 262144 CMD: data
-bl602_spi_select: devid: 262144, CS: free
-st7789_sendcmd: OK
-bl602_spi_select: devid: 262144, CS: select
-bl602_spi_setmode: mode=3
-bl602_spi_setbits: nbits=8
-bl602_spi_poll_send: send=5 and recv=ff
-bl602_spi_select: devid: 262144, CS: free
-st7789_setorientation:
-st7789_sendcmd: cmd: 0x36
-bl602_spi_select: devid: 262144, CS: select
-bl602_spi_setmode: mode=3
-bl602_spi_setbits: nbits=8
-bl602_spi_cmddata: devid: 262144 CMD: command
-bl602_spi_poll_send: send=36 and recv=0
-bl602_spi_cmddata: devid: 262144 CMD: data
-bl602_spi_select: devid: 262144, CS: free
-st7789_sendcmd: OK
-bl602_spi_select: devid: 262144, CS: select
-bl602_spi_setmode: mode=3
-bl602_spi_setbits: nbits=8
-bl602_spi_poll_send: send=70 and recv=ff
-bl602_spi_select: devid: 262144, CS: free
-st7789_display: on: 1
-st7789_sendcmd: cmd: 0x29
-bl602_spi_select: devid: 262144, CS: select
-bl602_spi_setmode: mode=3
-bl602_spi_setbits: nbits=8
-bl602_spi_cmddata: devid: 262144 CMD: command
-bl602_spi_poll_send: send=29 and recv=0
-bl602_spi_cmddata: devid: 262144 CMD: data
-bl602_spi_select: devid: 262144, CS: free
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x21
-bl602_spi_select: devid: 262144, CS: select
-bl602_spi_setmode: mode=3
-bl602_spi_setbits: nbits=8
-bl602_spi_cmddata: devid: 262144 CMD: command
-bl602_spi_poll_send: send=21 and recv=0
-bl602_spi_cmddata: devid: 262144 CMD: data
-bl602_spi_select: devid: 262144, CS: free
-st7789_sendcmd: OK
-board_lcd_getdev: SPI port 0 bound to LCD 0
-st7789_getplaneinfo: planeno: 0 bpp: 16
-
-(...Screen fill omitted...)
-
-NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt; ls /dev
-/dev:
- console
- gpio0
- gpio1
- gpio2
+<h1 id="run-st7789-driver" class="section-header"><a href="#run-st7789-driver">8 Run ST7789 Driver</a></h1>
+<p>We’re ready to boot NuttX and test the ST7789 Driver!</p>
+<ol>
+<li>
+<p>Follow these steps to <strong>build, flash and run</strong> NuttX (configured for ST7789 Driver)…</p>
+<p><a href="https://lupyuen.github.io/articles/st7789#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></p>
+</li>
+<li>
+<p>At the NuttX Shell, enter this command to list the <strong>NuttX Devices</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div></li>
+<li>
+<p>We should see our <strong>LCD Device “/dev/lcd0”</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>/dev:
  lcd0
- null
- spi0
- spitest0
- timer0
- urandom
- zero</code></pre></div>
+ ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/st7789-nuttx#boot-nuttx">(See the complete log)</a></p>
-<p>Note that our ST7789 Display appears as “<strong>/dev/lcd0</strong>”. This will be used by the LVGL Library.</p>
-<p>When NuttX boots, we should see a pink screen. The screen refresh looks laggy, hopefully we’ll fix this with SPI DMA.</p>
+</li>
+<li>
+<p>And our ST7789 Display should show a <strong>Pink Screen</strong>.</p>
+<p>(Pic below)</p>
 <p><a href="https://youtu.be/iaDYjO1rCmY">(Watch the demo on YouTube)</a></p>
+</li>
+</ol>
+<p>Yep the NuttX ST7789 Driver is working!</p>
+<p>The screen refresh might look laggy, hopefully we’ll fix this in 2 ways…</p>
+<ul>
+<li>
+<p>Increase the <strong>SPI Frequency</strong> from the 1 MHz to 20 MHz</p>
+<p>(In menuconfig: Device Drivers → LCD Driver Support → Graphic LCD Driver Support → LCD Driver Selection → Sitronix ST7789 → SPI Frequency)</p>
+</li>
+<li>
+<p>Implement <strong>SPI Direct Memory Access</strong> (DMA) for faster transfers</p>
+<p><a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access">(More about this)</a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/st7789-code3.png" alt="" /></p>
 <h1 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">9 LVGL Demo App</a></h1>
 <p>TODO</p>
 <p>Let’s run the LVGL Demo App bundled with NuttX.  The app initialises the display, renders some widgets and handles LVGL events: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
@@ -1043,20 +981,16 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">17.1 Download NuttX</a></h2>
-<p>TODO</p>
-<p>Download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
-cd nuttx
-git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
-<p>Or we may use an existing NuttX Project.</p>
-<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">17.2 Configure NuttX</a></h2>
+<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">17.1 Configure NuttX</a></h2>
 <p>Now we configure our NuttX project…</p>
 <ol>
 <li>
 <p>Install the build prerequisites…</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p>Assume that we have downloaded the <strong>NuttX Source Code</strong> (or patched an existing NuttX Project)…</p>
+<p><a href="https://lupyuen.github.io/articles/st7789#download-source-code"><strong>“Download Source Code”</strong></a></p>
 </li>
 <li>
 <p>Configure the build…</p>
@@ -1072,63 +1006,60 @@ git clone --recursive --branch st7789 https://github.com/lupyuen/incubator-nuttx
 # Edit the Build Config
 make menuconfig </code></pre></div></li>
 <li>
-<p>TODO: Enable SPI Port:</p>
-<ul>
-<li>System Type → BL602 Peripheral Support → SPI0</li>
-</ul>
+<p>Enable <strong>SPI Port</strong>…</p>
+<p>In <strong>menuconfig</strong>, select <strong>“System Type”</strong></p>
+<p><strong>For BL602:</strong> Check the box for <strong>“BL602 Peripheral Support”</strong> → <strong>“SPI0”</strong></p>
+<p><strong>For ESP32:</strong> Check the box for <strong>“ESP32 Peripheral Select”</strong> → <strong>“SPI 2”</strong></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
-<p>TODO: Enable SPI CMD/DATA:</p>
-<ul>
-<li>Device Drivers → SPI Driver Support</li>
-<li>SPI Exchange</li>
-<li>SPI CMD/DATA</li>
-<li>SPI Character Driver</li>
-</ul>
+<p>Enable <strong>SPI Cmd/Data</strong>…</p>
+<p>Select <strong>“Device Drivers”</strong> → <strong>“SPI Driver”</strong></p>
+<p>Check the boxes for the following…</p>
+<div class="example-wrap"><pre class="language-text"><code>SPI Exchange
+SPI CMD/DATA
+SPI Character Driver</code></pre></div>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+<p><img src="https://lupyuen.github.io/images/st7789-config1.png" alt="Enable SPI Cmd/Data" /></p>
 </li>
 <li>
-<p>TODO: Enable ST7789 Driver:</p>
-<ul>
-<li>Device Drivers → LCD Driver Support → Graphic LCD Driver Support → LCD driver selection → Sitronix ST7789 TFT Controller </li>
-<li>X Resolution: Set to 240</li>
-<li>Y Resolution: Set to 240</li>
-<li>SPI Mode: See below</li>
-</ul>
+<p>Enable <strong>ST7789 Driver</strong>…</p>
+<p>Select <strong>“Device Drivers”</strong> → <strong>“LCD Driver Support”</strong> → <strong>“Graphic LCD Driver Support”</strong> → <strong>“LCD Driver Selection”</strong></p>
+<p>Check the box for <strong>“Sitronix ST7789 TFT Controller”</strong></p>
+<p>Assuming our ST7789 Display is 240x240 resolution…</p>
+<p>For <strong>“X Resolution”</strong>: Set to 240</p>
+<p>For <strong>“Y Resolution”</strong>: Set to 240</p>
+<p>For <strong>“SPI Mode”</strong>: Check your ST7789 Display</p>
+<p><a href="https://lupyuen.github.io/articles/st7789#spi-mode-3">(For BL602: We hardcode to SPI Mode 3)</a></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+<p><img src="https://lupyuen.github.io/images/st7789-config2a.png" alt="Enable ST7789 Driver" /></p>
 </li>
 <li>
-<p>TODO: Enable LCD Character Device:</p>
-<ul>
-<li>Device Drivers → LCD Driver Support → Graphic LCD Driver Support LCD → character device</li>
-</ul>
+<p>Enable <strong>LCD Character Device</strong>…</p>
+<p>Select <strong>“Device Drivers”</strong> → <strong>“LCD Driver Support”</strong> → <strong>“Graphic LCD Driver Support LCD”</strong> → <strong>“Character Device”</strong></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+<p>The ST7789 Display will be connected to NuttX at <strong>/dev/lcd0</strong></p>
+<p><img src="https://lupyuen.github.io/images/st7789-config3a.png" alt="Enable LCD Character Device" /></p>
 </li>
 <li>
-<p>TODO: Enable LVGL Library:</p>
-<ul>
-<li>Application Configuration → Graphics Support → Light and Versatile Graphic Library (LVGL)</li>
-<li>Graphics Settings → Horizontal Resolution: Set to 240</li>
-<li>Graphics Settings → Vertical Resolution: Set to 240</li>
-</ul>
+<p>Enable <strong>LVGL Library</strong>…</p>
+<p>Select <strong>“Application Configuration”</strong> → <strong>“Graphics Support”</strong></p>
+<p>Check the box for <strong>“Light and Versatile Graphic Library (LVGL)”</strong></p>
+<p><img src="https://lupyuen.github.io/images/st7789-config5.png" alt="Enable LVGL Library" /></p>
 </li>
 <li>
-<p>TODO: Enable LVGL Demo App:</p>
-<ul>
-<li>Application Configuration → Examples → LVGL Demo</li>
-</ul>
+<p>Select <strong>“Light and Versatile Graphic Library (LVGL)”</strong> → <strong>“Graphics Settings”</strong></p>
+<p>Assuming our ST7789 Display is 240x240 resolution…</p>
+<p>For <strong>“Horizontal Resolution”</strong>: Set to 240</p>
+<p>For <strong>“Vertical Resolution”</strong>: Set to 240</p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+<p><img src="https://lupyuen.github.io/images/st7789-config6.png" alt="Set LVGL Resolution" /></p>
 </li>
 <li>
-<p>TODO: Enable Logging:</p>
-<ul>
-<li>Build Setup → Debug Options </li>
-<li>Select:</li>
-<li>Graphics Debug Features</li>
-<li>Graphics Error Output</li>
-<li>Graphics Warnings Output</li>
-<li>Graphics Informational Output</li>
-<li>Low-level LCD Debug Features</li>
-<li>LCD Driver Error Output</li>
-<li>LCD Driver Warnings Output</li>
-<li>LCD Driver Informational Output</li>
-</ul>
+<p>Enable <strong>LVGL Demo App</strong>…</p>
+<p>Select <strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“LVGL Demo”</strong></p>
+<p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
+<p><img src="https://lupyuen.github.io/images/st7789-config7a.png" alt="Enable LVGL Demo App" /></p>
 </li>
 <li>
 <p>Enable <strong>ls</strong> command…</p>
@@ -1137,14 +1068,29 @@ make menuconfig </code></pre></div></li>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
-<p>TODO</p>
 <p>Enable <strong>Logging and Assertion Checks</strong>…</p>
 <p>Select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong></p>
 <p>Check the boxes for the following…</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable Debug Features
 Enable Error Output
 Enable Warnings Output
-Enable Debug Assertions</code></pre></div>
+Enable Informational Debug Output
+Enable Debug Assertions
+GPIO Debug Features
+GPIO Error Output
+GPIO Warnings Output
+GPIO Informational Output
+SPI Debug Features
+SPI Error Output
+SPI Warnings Output
+Graphics Debug Features
+Graphics Error Output
+Graphics Warnings Output
+Graphics Informational Output  
+Low-level LCD Debug Features
+LCD Driver Error Output
+LCD Driver Warnings Output
+LCD Driver Informational Output</code></pre></div>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
@@ -1152,8 +1098,7 @@ Enable Debug Assertions</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/a7fc921531c1d14e8d336fba0cdb1c83">(See the .config for BL602 and BL604)</a></p>
 </li>
 </ol>
-<p>The ST7789 Display will be connected to NuttX at <strong>/dev/lcd0</strong></p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">17.3 Build NuttX</a></h2>
+<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">17.2 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
 <ol>
 <li>
@@ -1183,7 +1128,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">17.4 Flash NuttX</a></h2>
+<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">17.3 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602 / BL604:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -1260,7 +1205,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx-1" class="section-header"><a href="#run-nuttx-1">17.5 Run NuttX</a></h2>
+<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">17.4 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
@@ -1315,18 +1260,6 @@ nsh&gt;</code></pre></div>
 <p><strong>macOS Tip:</strong> Here’s the script I use to build, flash and run NuttX on macOS, all in a single step: <a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">run.sh</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
 <p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
-<p>TODO13</p>
-<p><img src="https://lupyuen.github.io/images/st7789-config1.png" alt="" /></p>
-<p>TODO14</p>
-<p><img src="https://lupyuen.github.io/images/st7789-config2a.png" alt="" /></p>
-<p>TODO15</p>
-<p><img src="https://lupyuen.github.io/images/st7789-config3a.png" alt="" /></p>
-<p>TODO17</p>
-<p><img src="https://lupyuen.github.io/images/st7789-config5.png" alt="" /></p>
-<p>TODO18</p>
-<p><img src="https://lupyuen.github.io/images/st7789-config6.png" alt="" /></p>
-<p>TODO20</p>
-<p><img src="https://lupyuen.github.io/images/st7789-config8a.png" alt="" /></p>
 <p>TODO35</p>
 <p><img src="https://lupyuen.github.io/images/st7789-probe.jpg" alt="" /></p>
 <p>TODO41</p>
