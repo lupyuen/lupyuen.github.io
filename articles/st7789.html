@@ -492,7 +492,7 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 <p><a href="https://youtu.be/iaDYjO1rCmY">(Watch the demo on YouTube)</a></p>
 </li>
 </ol>
-<p>Yep the NuttX ST7789 Driver is working!</p>
+<p>Yep the ST7789 Driver works on NuttX!</p>
 <p>The screen update looks laggy, hopefully we’ll fix this in 2 ways…</p>
 <ul>
 <li>
@@ -506,8 +506,9 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
 <h1 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">9 LVGL Demo App</a></h1>
-<p>TODO</p>
-<p>Let’s run the LVGL Demo App bundled with NuttX.  The app initialises the display, renders some widgets and handles LVGL events: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
+<p>The ST7789 Driver works great on NuttX… Let’s render some graphics!</p>
+<p>We’ll use the <a href="%5B__LVGL__%5D(https://docs.lvgl.io/master/index.html)"><strong>LVGL Graphics Library</strong></a> and  <strong>LVGL Demo App</strong> bundled with NuttX.</p>
+<p>Let’s look inside the <strong>LVGL Demo App</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  LVGL Demo App
 int main(int argc, FAR char *argv[]) {
   lv_disp_drv_t disp_drv;
