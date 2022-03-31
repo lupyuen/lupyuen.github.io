@@ -435,7 +435,7 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
   st7789_fill(priv, 0xAAAA);
   //  Previously: st7789_fill(priv, 0xffff);</code></pre></div>
 <p>Recalls that <strong>st7789_lcdinitialize</strong> is called by <a href="https://lupyuen.github.io/articles/st7789#st7789-driver"><strong>board_lcd_getdev</strong></a> during NuttX startup.</p>
-<p>This function initialises the ST7789 Display. We changed the last line so that it <strong>fills the screen with pink</strong>.</p>
+<p>This function initialises the ST7789 Display. We changed the last line so that it <strong>fills the screen with pink</strong>. (Colour value AAAA)</p>
 <p>Let’s talk about AAAA…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-rgb565.jpg" alt="AAAA in RGB565 is pink" /></p>
 <h2 id="rgb565-colour-encoding" class="section-header"><a href="#rgb565-colour-encoding">7.1 RGB565 Colour Encoding</a></h2>
@@ -534,6 +534,7 @@ nsh&gt; ls /dev
  timer0
  urandom
  zero</code></pre></div>
+<p><a href="https://github.com/lupyuen/st7789-nuttx#boot-nuttx">(See the complete log)</a></p>
 <p>Note that our ST7789 Display appears as “<strong>/dev/lcd0</strong>”. This will be used by the LVGL Library.</p>
 <p>When NuttX boots, we should see a pink screen. The screen refresh looks laggy, hopefully we’ll fix this with SPI DMA.</p>
 <p><a href="https://youtu.be/iaDYjO1rCmY">(Watch the demo on YouTube)</a></p>
