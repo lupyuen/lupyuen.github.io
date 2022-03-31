@@ -557,7 +557,7 @@ int main(int argc, FAR char *argv[]) {
 <p>Let’s run this!</p>
 <p><img src="https://lupyuen.github.io/images/st7789-code5a.png" alt="LVGL Demo App" /></p>
 <h1 id="run-lvgl-demo" class="section-header"><a href="#run-lvgl-demo">10 Run LVGL Demo</a></h1>
-<p>TODO</p>
+<p>For our final demo today, we’ll run the <strong>LVGL Demo App</strong> that’s bundled with NuttX…</p>
 <ol>
 <li>
 <p>Follow these steps to <strong>build, flash and run</strong> NuttX (configured for LVGL Library and LVGL Demo)…</p>
@@ -567,7 +567,7 @@ int main(int argc, FAR char *argv[]) {
 <p>At the NuttX Shell, enter this command to run the <strong>LVGL Demo App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div></li>
 <li>
-<p>TODO</p>
+<p>We see that the app <strong>initialises the ST7789 Display</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>fbdev_init: Failed to open /dev/fb0: 2
 st7789_getvideoinfo: fmt: 11 xres: 240 yres: 240 nplanes: 1
 lcddev_init: VideoInfo:
@@ -576,9 +576,11 @@ lcddev_init: VideoInfo:
   yres: 240
   nplanes: 1
 lcddev_init: PlaneInfo (plane 0):
-  bpp: 16</code></pre></div></li>
+  bpp: 16</code></pre></div>
+<p>The app says it can’t open the Frame Buffer Driver “/dev/fb0”. But that’s OK because it uses the LCD Driver “/dev/lcd0”.</p>
+</li>
 <li>
-<p>TODO: Update 20 rows</p>
+<p>Then the app <strong>paints the ST7789 Display</strong> in batches of 20 Pixel Rows (240 horizontal pixels each)…</p>
 <div class="example-wrap"><pre class="language-text"><code>st7789_putarea: row_start:  0 row_end: 19 col_start: 0 col_end: 239
 st7789_putarea: row_start: 20 row_end: 39 col_start: 0 col_end: 239
 ...
@@ -587,7 +589,7 @@ monitor_cb: 57600 px refreshed in 1100 ms</code></pre></div>
 <p><a href="https://github.com/lupyuen/st7789-nuttx#run-lvgl-demo">(See the complete log)</a></p>
 </li>
 </ol>
-<p>The LVGL Demo Screen appears on ST7789 yay! The demo source code is here: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
+<p>The LVGL Demo Screen appears on ST7789 yay! </p>
 <p><img src="https://lupyuen.github.io/images/st7789-lvgl.jpg" alt="LVGL Demo Screen appears on ST7789" /></p>
 <h1 id="lvgl-widgets" class="section-header"><a href="#lvgl-widgets">11 LVGL Widgets</a></h1>
 <p>TODO</p>
