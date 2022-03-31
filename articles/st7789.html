@@ -507,7 +507,7 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 <p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
 <h1 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">9 LVGL Demo App</a></h1>
 <p>The ST7789 Driver works great on NuttX… Let’s render some graphics!</p>
-<p>We’ll use the <a href="%5B__LVGL__%5D(https://docs.lvgl.io/master/index.html)"><strong>LVGL Graphics Library</strong></a> and  <strong>LVGL Demo App</strong> bundled with NuttX.</p>
+<p>We’ll use the <a href="https://docs.lvgl.io/master/index.html"><strong>LVGL Graphics Library</strong></a> and <strong>LVGL Demo App</strong> bundled with NuttX.</p>
 <p>Let’s look inside the <strong>LVGL Demo App</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  LVGL Demo App
 int main(int argc, FAR char *argv[]) {
@@ -520,9 +520,18 @@ int main(int argc, FAR char *argv[]) {
   //  Basic LVGL display driver initialization
   lv_disp_buf_init(&amp;disp_buf, buffer1, buffer2, DISPLAY_BUFFER_SIZE);
   lv_disp_drv_init(&amp;disp_drv);
-  disp_drv.buffer = &amp;disp_buf;
+  disp_drv.buffer     = &amp;disp_buf;
   disp_drv.monitor_cb = monitor_cb;</code></pre></div>
-<p>TODO</p>
+<p>The app begins by <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#add-lvgl-into-your-project"><strong>initialising the LVGL Library</strong></a>.</p>
+<p>NuttX supports 2 ways to access the display…</p>
+<ul>
+<li>
+<p>Frame Buffer Driver: “<strong>/dev/fb0</strong>”</p>
+</li>
+<li>
+<p>LCD Driver: “<strong>/dev/lcd0</strong>”</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-c"><code>  //  Display interface initialization
   if (fbdev_init(&amp;disp_drv) != EXIT_SUCCESS) {      
     //  Failed to use Frame Buffer, falling back to LCD Driver
@@ -530,22 +539,22 @@ int main(int argc, FAR char *argv[]) {
       //  No possible drivers left, fail
       return EXIT_FAILURE;
     }
-  }</code></pre></div>
-<p>TODO</p>
-<p>“<strong>/dev/fb0</strong>” is the Frame Buffer Driver.</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Register the display driver
-  lv_disp_drv_register(&amp;disp_drv);
-  ...
-  //  Render the widgets
-  lv_demo_widgets();
-  ...
-  //  Loop forever handling LVGL tasks
+  }
+
+  //  Register the display driver
+  lv_disp_drv_register(&amp;disp_drv);</code></pre></div>
+<p>For ST7789 we’ll use the <strong>LCD Driver</strong>.</p>
+<p>Then we render some <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#widgets"><strong>LVGL Widgets</strong></a> (UI controls)…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Render the widgets
+  lv_demo_widgets();</code></pre></div>
+<p>(We’ll see <strong>lv_demo_widgets</strong> later)</p>
+<p>And we loop forever handling <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#events"><strong>LVGL Events</strong></a> (like for display updates)…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Loop forever handling LVGL tasks
   while (1) {
-    lv_task_handler();
-    usleep(10000);  //  Sleep 10 milliseconds
+    lv_task_handler();  //  Handle LVGL tasks
+    usleep(10000);      //  Sleep 10 milliseconds
   }</code></pre></div>
-<p><strong>lv_demo_widgets</strong> is defined in <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L63-L101">lv_demo_widgets.c</a></p>
-<p>TODO</p>
+<p>Let’s run this!</p>
 <p><img src="https://lupyuen.github.io/images/st7789-code5a.png" alt="LVGL Demo App" /></p>
 <h1 id="run-lvgl-demo" class="section-header"><a href="#run-lvgl-demo">10 Run LVGL Demo</a></h1>
 <p>TODO</p>
