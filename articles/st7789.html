@@ -557,7 +557,121 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 
   return EXIT_SUCCESS;
 }</code></pre></div>
-<p><strong>lv_demo_widgets</strong> comes from the LVGL Source Code.</p>
+<p><strong>lv_demo_widgets</strong> is defined in <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L63-L101">lv_demo_widgets.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void lv_demo_widgets(void) {
+  tv = lv_tabview_create(lv_scr_act(), NULL);
+  ...
+  t1 = lv_tabview_add_tab(tv, &quot;Controls&quot;);
+  t2 = lv_tabview_add_tab(tv, &quot;Visuals&quot;);
+  t3 = lv_tabview_add_tab(tv, &quot;Selectors&quot;);
+
+  lv_style_init(&amp;style_box);
+  lv_style_set_value_align(&amp;style_box, LV_STATE_DEFAULT, LV_ALIGN_OUT_TOP_LEFT);
+  lv_style_set_value_ofs_y(&amp;style_box, LV_STATE_DEFAULT, - LV_DPX(10));
+  lv_style_set_margin_top(&amp;style_box, LV_STATE_DEFAULT, LV_DPX(30));
+
+  controls_create(t1);
+  visuals_create(t2);
+  selectors_create(t3);
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203">lv_demo_widgets.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static void controls_create(lv_obj_t * parent)
+{
+    lv_page_set_scrl_layout(parent, LV_LAYOUT_PRETTY_TOP);
+
+    lv_disp_size_t disp_size = lv_disp_get_size_category(NULL);
+    lv_coord_t grid_w = lv_page_get_width_grid(parent, disp_size &lt;= LV_DISP_SIZE_SMALL ? 1 : 2, 1);
+
+#if LV_DEMO_WIDGETS_SLIDESHOW == 0
+    static const char * btns[] = {&quot;Cancel&quot;, &quot;Ok&quot;, &quot;&quot;};
+
+    lv_obj_t * m = lv_msgbox_create(lv_scr_act(), NULL);
+    lv_msgbox_add_btns(m, btns);
+    lv_obj_t * btnm = lv_msgbox_get_btnmatrix(m);
+    lv_btnmatrix_set_btn_ctrl(btnm, 1, LV_BTNMATRIX_CTRL_CHECK_STATE);
+#endif
+
+    lv_obj_t * h = lv_cont_create(parent, NULL);
+    lv_cont_set_layout(h, LV_LAYOUT_PRETTY_MID);
+    lv_obj_add_style(h, LV_CONT_PART_MAIN, &amp;style_box);
+    lv_obj_set_drag_parent(h, true);
+
+    lv_obj_set_style_local_value_str(h, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, &quot;Basics&quot;);
+
+    lv_cont_set_fit2(h, LV_FIT_NONE, LV_FIT_TIGHT);
+    lv_obj_set_width(h, grid_w);
+    lv_obj_t * btn = lv_btn_create(h, NULL);
+    lv_btn_set_fit2(btn, LV_FIT_NONE, LV_FIT_TIGHT);
+    lv_obj_set_width(btn, lv_obj_get_width_grid(h, disp_size &lt;= LV_DISP_SIZE_SMALL ? 1 : 2, 1));
+    lv_obj_t * label = lv_label_create(btn, NULL);
+    lv_label_set_text(label ,&quot;Button&quot;);
+
+    btn = lv_btn_create(h, btn);
+    lv_btn_toggle(btn);
+    label = lv_label_create(btn, NULL);
+    lv_label_set_text(label ,&quot;Button&quot;);
+
+    lv_switch_create(h, NULL);
+
+    lv_checkbox_create(h, NULL);
+
+    lv_coord_t fit_w = lv_obj_get_width_fit(h);
+
+    lv_obj_t * slider = lv_slider_create(h, NULL);
+    lv_slider_set_value(slider, 40, LV_ANIM_OFF);
+    lv_obj_set_event_cb(slider, slider_event_cb);
+    lv_obj_set_width_margin(slider, fit_w);
+
+    /*Use the knobs style value the display the current value in focused state*/
+    lv_obj_set_style_local_margin_top(slider, LV_SLIDER_PART_BG, LV_STATE_DEFAULT, LV_DPX(25));
+    lv_obj_set_style_local_value_font(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, lv_theme_get_font_small());
+    lv_obj_set_style_local_value_ofs_y(slider, LV_SLIDER_PART_KNOB, LV_STATE_FOCUSED, - LV_DPX(25));
+    lv_obj_set_style_local_value_opa(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, LV_OPA_TRANSP);
+    lv_obj_set_style_local_value_opa(slider, LV_SLIDER_PART_KNOB, LV_STATE_FOCUSED, LV_OPA_COVER);
+    lv_obj_set_style_local_transition_time(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, 300);
+    lv_obj_set_style_local_transition_prop_5(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, LV_STYLE_VALUE_OFS_Y);
+    lv_obj_set_style_local_transition_prop_6(slider, LV_SLIDER_PART_KNOB, LV_STATE_DEFAULT, LV_STYLE_VALUE_OPA);
+
+    slider = lv_slider_create(h, slider);
+    lv_slider_set_type(slider, LV_SLIDER_TYPE_RANGE);
+    lv_slider_set_value(slider, 70, LV_ANIM_OFF);
+    lv_slider_set_left_value(slider, 30, LV_ANIM_OFF);
+    lv_obj_set_style_local_value_ofs_y(slider, LV_SLIDER_PART_INDIC, LV_STATE_DEFAULT, - LV_DPX(25));
+    lv_obj_set_style_local_value_font(slider, LV_SLIDER_PART_INDIC, LV_STATE_DEFAULT, lv_theme_get_font_small());
+    lv_obj_set_style_local_value_opa(slider, LV_SLIDER_PART_INDIC, LV_STATE_DEFAULT, LV_OPA_COVER);
+    lv_obj_set_event_cb(slider, slider_event_cb);
+    lv_event_send(slider, LV_EVENT_VALUE_CHANGED, NULL);      /*To refresh the text*/
+    if(lv_obj_get_width(slider) &gt; fit_w) lv_obj_set_width(slider, fit_w);
+
+    h = lv_cont_create(parent, h);
+    lv_cont_set_fit(h, LV_FIT_NONE);
+    lv_obj_set_style_local_value_str(h, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, &quot;Text input&quot;);
+
+    lv_obj_t * ta = lv_textarea_create(h, NULL);
+    lv_cont_set_fit2(ta, LV_FIT_PARENT, LV_FIT_NONE);
+    lv_textarea_set_text(ta, &quot;&quot;);
+    lv_textarea_set_placeholder_text(ta, &quot;E-mail address&quot;);
+    lv_textarea_set_one_line(ta, true);
+    lv_textarea_set_cursor_hidden(ta, true);
+    lv_obj_set_event_cb(ta, ta_event_cb);
+
+    ta = lv_textarea_create(h, ta);
+    lv_textarea_set_pwd_mode(ta, true);
+    lv_textarea_set_placeholder_text(ta, &quot;Password&quot;);
+
+    ta = lv_textarea_create(h, NULL);
+    lv_cont_set_fit2(ta, LV_FIT_PARENT, LV_FIT_NONE);
+    lv_textarea_set_text(ta, &quot;&quot;);
+    lv_textarea_set_placeholder_text(ta, &quot;Message&quot;);
+    lv_textarea_set_cursor_hidden(ta, true);
+    lv_obj_set_event_cb(ta, ta_event_cb);
+    lv_cont_set_fit4(ta, LV_FIT_PARENT, LV_FIT_PARENT, LV_FIT_NONE, LV_FIT_PARENT);
+
+#if LV_DEMO_WIDGETS_SLIDESHOW
+    tab_content_anim_create(parent);
+#endif
+}</code></pre></div>
 <p>TODO11</p>
 <p><img src="https://lupyuen.github.io/images/st7789-code5a.png" alt="" /></p>
 <h1 id="run-lvgl-demo" class="section-header"><a href="#run-lvgl-demo">10 Run LVGL Demo</a></h1>
