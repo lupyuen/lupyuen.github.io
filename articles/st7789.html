@@ -419,20 +419,29 @@ FAR struct lcd_dev_s *board_lcd_getdev(int devno) {
 //  to init the ST7789 driver
 FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
   ...
+  //  Disable sleep mode
   st7789_sleep(priv, false);
+
+  //  Set to 16-bit colour
   st7789_bpp(priv, ST7789_BPP);
+
+  //  Set display orientation
   st7789_setorientation(priv);
+
+  //  Enable display
   st7789_display(priv, true);
   
-  #warning Render Pink Screen
-  st7789_fill(priv, 0xaaaa);
+  //  Fill the screen with pink
+  st7789_fill(priv, 0xAAAA);
   //  Previously: st7789_fill(priv, 0xffff);</code></pre></div>
-<p>Remember that <strong>st7789_lcdinitialize</strong> is called by <a href="https://lupyuen.github.io/articles/st7789#st7789-driver"><strong>board_lcd_getdev</strong></a> during NuttX startup.</p>
-<p>TODO</p>
+<p>Recalls that <strong>st7789_lcdinitialize</strong> is called by <a href="https://lupyuen.github.io/articles/st7789#st7789-driver"><strong>board_lcd_getdev</strong></a> during NuttX startup.</p>
+<p>This function initialises the ST7789 Display. We changed the last line so that it <strong>fills the screen with pink</strong>.</p>
+<p>Let’s talk about AAAA…</p>
+<p><img src="https://lupyuen.github.io/images/st7789-rgb565.jpg" alt="AAAA in RGB565 is pink" /></p>
 <h2 id="rgb565-colour-encoding" class="section-header"><a href="#rgb565-colour-encoding">7.1 RGB565 Colour Encoding</a></h2>
+<p><em>Why is AAAA pink?</em></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/st7789-rgb565.jpg" alt="" /></p>
-<p>Why is 0xAAAA pink? Because ST7789 encodes colours as RGB565 (16 bits)</p>
+<p>Because ST7789 encodes colours as RGB565 (16 bits)</p>
 <h1 id="run-nuttx" class="section-header"><a href="#run-nuttx">8 Run NuttX</a></h1>
 <p>TODO</p>
 <p>After fixing SPI Send and SPI Cmd/Data, the ST7789 Driver should start properly without hanging…</p>
