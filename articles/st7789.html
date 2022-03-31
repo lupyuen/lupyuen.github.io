@@ -73,8 +73,9 @@
 <li><a href="#load-st7789-driver">6 Load ST7789 Driver</a><ul>
 <li><a href="#lcd-driver">6.1 LCD Driver</a><ul></ul></li>
 <li><a href="#st7789-driver">6.2 ST7789 Driver</a><ul></ul></li></ul></li>
-<li><a href="#render-pink-screen">7 Render Pink Screen</a><ul></ul></li>
-<li><a href="#boot-nuttx">8 Boot NuttX</a><ul></ul></li>
+<li><a href="#render-pink-screen">7 Render Pink Screen</a><ul>
+<li><a href="#rgb565-colour-encoding">7.1 RGB565 Colour Encoding</a><ul></ul></li></ul></li>
+<li><a href="#run-nuttx">8 Run NuttX</a><ul></ul></li>
 <li><a href="#lvgl-demo-app">9 LVGL Demo App</a><ul></ul></li>
 <li><a href="#run-lvgl-demo">10 Run LVGL Demo</a><ul></ul></li>
 <li><a href="#lvgl-version">11 LVGL Version</a><ul></ul></li>
@@ -88,7 +89,7 @@
 <li><a href="#configure-nuttx">17.2 Configure NuttX</a><ul></ul></li>
 <li><a href="#build-nuttx">17.3 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">17.4 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">17.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
+<li><a href="#run-nuttx-1">17.5 Run NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>3 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/st7789-title.jpg" alt="ST7789 SPI Display connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><em>ST7789 SPI Display connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 <p><strong>Sitronix ST7789</strong> is an SPI Display Controller that’s found in many gadgets. (Like <a href="https://lupyuen.github.io/articles/sneak-peek-of-pinetime-smart-watch-and-why-its-perfect-for-teaching-iot"><strong>PineTime Smartwatch</strong></a>)</p>
@@ -395,6 +396,7 @@ FAR struct lcd_dev_s *board_lcd_getdev(int devno) {
   return NULL;
 }
 #endif  //  CONFIG_LCD_ST7789</code></pre></div>
+<p>(We’ll see <strong>st7789_lcdinitialize</strong> later)</p>
 <p>We <strong>initialise the ST7789 Driver</strong> and return it to <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/lcd_dev.c#L305-L353"><strong>lcddev_register</strong></a>…</p>
 <p>Which will <strong>wrap the ST7789 Driver</strong> inside our LCD Driver “<strong>/dev/lcd0</strong>”.</p>
 <p>That’s how we load the LCD Driver and ST7789 Driver on NuttX!</p>
@@ -412,9 +414,10 @@ FAR struct lcd_dev_s *board_lcd_getdev(int devno) {
 <p>In a while we’ll boot NuttX to load the ST7789 Driver but…</p>
 <p><em>How will we know if the ST7789 Driver is really working?</em></p>
 <p>Here’s an idea… Let’s <strong>render a Pink Screen</strong> at startup! </p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L752-L777">st7789.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
+<p>This is how we do it: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/drivers/lcd/st7789.c#L752-L777">st7789.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Called by board_lcd_getdev during NuttX startup
+//  to init the ST7789 driver
+FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
   ...
   st7789_sleep(priv, false);
   st7789_bpp(priv, ST7789_BPP);
@@ -424,15 +427,13 @@ FAR struct lcd_dev_s *board_lcd_getdev(int devno) {
   #warning Render Pink Screen
   st7789_fill(priv, 0xaaaa);
   //  Previously: st7789_fill(priv, 0xffff);</code></pre></div>
-<p>TODO36</p>
+<p>Remember that <strong>st7789_lcdinitialize</strong> is called by <a href="https://lupyuen.github.io/articles/st7789#st7789-driver"><strong>board_lcd_getdev</strong></a> during NuttX startup.</p>
+<p>TODO</p>
+<h2 id="rgb565-colour-encoding" class="section-header"><a href="#rgb565-colour-encoding">7.1 RGB565 Colour Encoding</a></h2>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/st7789-rgb565.jpg" alt="" /></p>
 <p>Why is 0xAAAA pink? Because ST7789 encodes colours as RGB565 (16 bits)</p>
-<p>When NuttX boots, we should see a pink screen. The screen refresh looks laggy, hopefully we’ll fix this with SPI DMA.</p>
-<p><a href="https://youtu.be/iaDYjO1rCmY">(Watch the demo on YouTube)</a></p>
-<p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/st7789-code3.png" alt="" /></p>
-<h1 id="boot-nuttx" class="section-header"><a href="#boot-nuttx">8 Boot NuttX</a></h1>
+<h1 id="run-nuttx" class="section-header"><a href="#run-nuttx">8 Run NuttX</a></h1>
 <p>TODO</p>
 <p>After fixing SPI Send and SPI Cmd/Data, the ST7789 Driver should start properly without hanging…</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
@@ -525,6 +526,11 @@ nsh&gt; ls /dev
  urandom
  zero</code></pre></div>
 <p>Note that our ST7789 Display appears as “<strong>/dev/lcd0</strong>”. This will be used by the LVGL Library.</p>
+<p>When NuttX boots, we should see a pink screen. The screen refresh looks laggy, hopefully we’ll fix this with SPI DMA.</p>
+<p><a href="https://youtu.be/iaDYjO1rCmY">(Watch the demo on YouTube)</a></p>
+<p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
+<p>TODO8</p>
+<p><img src="https://lupyuen.github.io/images/st7789-code3.png" alt="" /></p>
 <h1 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">9 LVGL Demo App</a></h1>
 <p>TODO</p>
 <p>Let’s run the LVGL Demo App bundled with NuttX.  The app initialises the display, renders some widgets and handles LVGL events: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
@@ -1219,7 +1225,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">17.5 Run NuttX</a></h2>
+<h2 id="run-nuttx-1" class="section-header"><a href="#run-nuttx-1">17.5 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
