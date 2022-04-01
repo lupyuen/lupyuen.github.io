@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>ST7789 Display with LVGL Graphics on Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/st7789</link>
+            <description><![CDATA[RISC-V BL602 SoC with ST7789 SPI Display and LVGL Graphics Library... Let's make it work on Apache NuttX RTOS!]]></description>
+            <guid>https://lupyuen.github.io/articles/st7789</guid>
+            <pubDate>Sat, 02 Apr 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Rust talks I2C on Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/rusti2c</link>
             <description><![CDATA[Reading the Bosch BME280 I2C Sensor with Rust Embedded HAL... On BL602 RISC-V SoC and Apache NuttX RTOS]]></description>
