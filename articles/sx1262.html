@@ -258,9 +258,7 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 <tr><td style="text-align: center"><strong>DIO1</strong></td><td style="text-align: center">GPIO 19</td><td style="text-align: left">BOARD_GPIO_INT1</td></tr>
 <tr><td style="text-align: center"><strong>NRESET</strong></td><td style="text-align: center">GPIO 18</td><td style="text-align: left">Not assigned yet</td></tr>
 </tbody></table>
-</div>
-<p><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pinedio.h"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* Busy Pin for PineDio SX1262 */
+</div><div class="example-wrap"><pre class="language-c"><code>/* Busy Pin for PineDio SX1262 */
 
 #define BOARD_GPIO_IN1    (GPIO_INPUT | GPIO_FLOAT | \
                             GPIO_FUNC_SWGPIO | GPIO_PIN10)
