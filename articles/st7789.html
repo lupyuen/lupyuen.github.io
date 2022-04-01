@@ -247,7 +247,7 @@ static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd) 
   //  Wait for Receive FIFO and receive data
   while (0 == tmp_val) { ... }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L806-L839">(Source)</a></p>
-<p>After fixing, we verify with a <strong>Logic Analyser</strong> that SPI Poll Send transmits data correctly to ST7789…</p>
+<p>After fixing, we verify with a <a href="https://lupyuen.github.io/images/st7789-probe.jpg"><strong>Logic Analyser</strong></a> that SPI Poll Send transmits data correctly to ST7789…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic3.png" alt="SPI Poll Send transmits SPI Data correctly" /></p>
 <p>SPI Poll Send has been <strong>fixed in NuttX Mainline</strong>. <a href="https://github.com/apache/incubator-nuttx/pull/5869">(See this)</a></p>
 <p><a href="https://lupyuen.github.io/articles/st7789#appendix-fix-spi-send-on-bl602">(For details of the fix, see the Appendix)</a></p>
@@ -805,7 +805,7 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 #endif
 }</code></pre></div>
 <p>We must revert because the SPI Bus may be shared by other SPI Drivers. (Like the Semtech SX1262 Driver on PineDio Stack BL604)</p>
-<p>We tested this implementation of SPI Cmd/Data with NuttX ST7789 Driver and a Logic Analyser on PineCone BL602. Logic Analyser shows that MISO goes Low when transmitting ST7789 Commands…</p>
+<p>We tested this implementation of SPI Cmd/Data with NuttX ST7789 Driver and a <a href="https://lupyuen.github.io/images/st7789-probe.jpg"><strong>Logic Analyser</strong></a> on PineCone BL602. Logic Analyser shows that MISO goes Low when transmitting ST7789 Commands…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic1.png" alt="MISO goes Low when transmitting ST7789 Commands" /></p>
 <p>And MISO goes High when transmitting ST7789 Data…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic2a.png" alt="MISO goes High when transmitting ST7789 Data" /></p>
@@ -888,7 +888,7 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
     {
       /* get data from rx fifo */
       ...</code></pre></div>
-<p>Logic Analyser shows that SPI Poll Send now transmits SPI Data correctly:</p>
+<p><a href="https://lupyuen.github.io/images/st7789-probe.jpg"><strong>Logic Analyser</strong></a> shows that SPI Poll Send now transmits SPI Data correctly:</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic3.png" alt="SPI Poll Send transmits SPI Data correctly" /></p>
 <p>Note that the MOSI Pin shows the correct data. Before fixing, the data was missing.</p>
 <p>As for the modified SPI Poll Exchange, we tested it with Semtech SX1262 SPI Transceiver on PineCone BL602: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-03-28">release-2022-03-28</a></p>
@@ -1182,10 +1182,8 @@ nsh&gt;</code></pre></div>
 <p><strong>macOS Tip:</strong> Here’s the script I use to build, flash and run NuttX on macOS, all in a single step: <a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">run.sh</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
 <p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
-<p>TODO35</p>
-<p><img src="https://lupyuen.github.io/images/st7789-probe.jpg" alt="" /></p>
-<p>TODO41</p>
-<p><img src="https://lupyuen.github.io/images/st7789-title2.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/st7789-title2.jpg" alt="ST7789 SPI Display connected to Pine64 PineCone BL602 RISC-V Board" /></p>
+<p><em>ST7789 SPI Display connected to <a href="https://lupyuen.github.io/articles/pinecone">Pine64 PineCone BL602 RISC-V Board</a></em></p>
 
     
 </body>
