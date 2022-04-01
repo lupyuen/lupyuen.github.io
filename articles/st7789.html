@@ -592,8 +592,9 @@ monitor_cb: 57600 px refreshed in 1100 ms</code></pre></div>
 <p>The LVGL Demo Screen appears on ST7789 yay! </p>
 <p><img src="https://lupyuen.github.io/images/st7789-lvgl.jpg" alt="LVGL Demo Screen appears on ST7789" /></p>
 <h1 id="lvgl-widgets" class="section-header"><a href="#lvgl-widgets">11 LVGL Widgets</a></h1>
-<p>TODO</p>
-<p><strong>lv_demo_widgets</strong> is defined in <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L63-L101">lv_demo_widgets.c</a></p>
+<p><em>How do we render UI controls with the LVGL Library?</em></p>
+<p>We render UI controls by creating <strong>LVGL Widgets</strong>.</p>
+<p>Here’s how the LVGL Demo App renders the screen above: <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L63-L101">lv_demo_widgets.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Create Demo Widgets
 void lv_demo_widgets(void) {
   //  Create a Tab View Widget
@@ -609,9 +610,9 @@ void lv_demo_widgets(void) {
   visuals_create(t2);
   selectors_create(t3);
 }</code></pre></div>
-<p><a href="https://docs.lvgl.io/7.11/widgets/tabview.html">Tab View Widget</a></p>
-<p>TODO</p>
-<p><a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203">lv_demo_widgets.c</a></p>
+<p>The Demo Screen looks overcrowded for a tiny display, but we can make out 3 tabs: <strong>“Controls”, “Visuals” and “Selectors”</strong>.</p>
+<p>The app renders the 3 tabs by creating a <a href="https://docs.lvgl.io/7.11/widgets/tabview.html"><strong>Tab View Widget</strong></a>.</p>
+<p><strong>controls_create</strong> populates the Controls Tab with a <a href="https://docs.lvgl.io/7.11/widgets/msgbox.html"><strong>Message Box Widget</strong></a> (and other widgets) like so: <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203">lv_demo_widgets.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Create widgets for the Controls Tab
 static void controls_create(lv_obj_t * parent) {
   ...
@@ -623,16 +624,17 @@ static void controls_create(lv_obj_t * parent) {
 
   //  Add the buttons to the Message Box
   lv_msgbox_add_btns(m, btns);</code></pre></div>
-<p><a href="https://docs.lvgl.io/7.11/widgets/msgbox.html">Message Box Widget</a></p>
-<p><em>What about the “Message” in the Message Box?</em></p>
-<p>That’s rendered in <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L192-L198">lv_demo_widgets.c</a></p>
+<p>Check out the <strong>LVGL Docs</strong> to get started on writing our own LVGL App…</p>
+<ul>
+<li><a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html"><strong>“LVGL Quick Overview”</strong></a></li>
+</ul>
 <h1 id="lvgl-version" class="section-header"><a href="#lvgl-version">12 LVGL Version</a></h1>
-<p>TODO</p>
-<p>We can specify the LVGL Version in menuconfig:</p>
+<p><em>LVGL gets updated frequently (every few months). Can we set the LVGL Version in NuttX?</em></p>
+<p>Yes we can specify the <strong>LVGL Version</strong> in menuconfig…</p>
 <ul>
 <li>Application Configuration → Graphics Support → Light and Versatile Graphic Library (LVGL) → LVGL Version</li>
 </ul>
-<p>After setting the LVGL Version, be sure to delete all downloaded versions of LVGL before building NuttX:</p>
+<p>After setting the LVGL Version, be sure to <strong>delete all downloaded versions</strong> of LVGL before building NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
 cd nuttx/nuttx
 
@@ -661,28 +663,16 @@ rm ../apps/graphics/lvgl/v8*.zip
 
 # Build NuttX
 make</code></pre></div>
-<p>Note that NuttX builds with LVGL version 7.3.0. The current version of LVGL is 8.2.0.</p>
-<p>LVGL 8 is NOT backward compatible with LVGL 7. See the breaking changes…</p>
+<p>NuttX is currently bundled with <strong>LVGL Version 7.3.0</strong>.</p>
+<p>But the latest version of LVGL is <strong>8.2.0</strong>.</p>
+<p>And LVGL 8 is <strong>not backward compatible</strong> with LVGL 7. These are the breaking changes…</p>
 <ul>
-<li><a href="https://github.com/lvgl/lvgl/blob/master/docs/CHANGELOG.md#v800-01062021">LVGL 8.0.0 Release Notes</a></li>
+<li><a href="https://github.com/lvgl/lvgl/blob/master/docs/CHANGELOG.md#v800-01062021"><strong>LVGL 8.0.0 Release Notes</strong></a></li>
 </ul>
-<p>Should we migrate to LVGL 8? Or upgrade to LVGL 7.11.0?</p>
-<p><em>What happens if we switch to LVGL 7.11.0?</em></p>
-<p>NuttX Build fails when we switch to LVGL 7.11.0…</p>
-<div class="example-wrap"><pre class="language-text"><code>/home/user/nuttx/apps/graphics/lvgl/lv_conf.h:86:50: error: incompatible types when initializing type &#39;short unsigned int&#39; using type &#39;lv_color_t&#39; {aka &#39;union &lt;anonymous&gt;&#39;}
- #define LV_COLOR_TRANSP    ((lv_color_t){.full = (CONFIG_LV_COLOR_TRANSP)})
-                                                  ^
-/home/user/nuttx/apps/graphics/lvgl/lvgl/src/lv_core/../lv_draw/lv_img_buf.h:351:25: note: in expansion of macro &#39;LV_COLOR_TRANSP&#39;
-         lv_color_t ct = LV_COLOR_TRANSP;</code></pre></div>
-<p>It seems the demo source code needs to be updated for 7.11.0: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
 <p><em>What happens if we switch to LVGL 8.2.0?</em></p>
-<p>NuttX Build fails when downloading the LVGL Demo Code…</p>
+<p>NuttX Build fails when downloading the Demo Code for <strong>LVGL 8.2.0</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>make[3]: Entering directory &#39;/home/user/nuttx/apps/examples/lvgldemo&#39;
 Downloading: v8.2.0.zip
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   118  100   118    0     0    361      0 --:--:-- --:--:-- --:--:--   360
-100    14  100    14    0     0     12      0  0:00:01  0:00:01 --:--:--     0
 Unpacking: v8.2.0.zip -&gt; lv_demos
 Archive:  v8.2.0.zip
   End-of-central-directory signature not found.  Either this file is not
@@ -691,8 +681,15 @@ Archive:  v8.2.0.zip
   the last disk(s) of this archive.
 unzip:  cannot find zipfile directory in one of v8.2.0.zip or
         v8.2.0.zip.zip, and cannot find v8.2.0.zip.ZIP, period.</code></pre></div>
-<p>Seems the NuttX Makefiles need to be fixed to support LVGL 8. </p>
-<p>Also the demo source code needs to be updated for LVGL 8, which is not compatible with LVGL 7: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/st7789/examples/lvgldemo/lvgldemo.c">lvgldemo.c</a></p>
+<p>It seems the NuttX Build needs to be fixed to support LVGL 8. </p>
+<p><em>LVGL 7.11.0 is the last version of LVGL 7. What happens if we switch to LVGL 7.11.0?</em></p>
+<p>NuttX Build fails when we switch to <strong>LVGL 7.11.0</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/apps/graphics/lvgl/lv_conf.h:86:50: error: incompatible types when initializing type &#39;short unsigned int&#39; using type &#39;lv_color_t&#39; {aka &#39;union &lt;anonymous&gt;&#39;}
+ #define LV_COLOR_TRANSP    ((lv_color_t){.full = (CONFIG_LV_COLOR_TRANSP)})
+                                                  ^
+nuttx/apps/graphics/lvgl/lvgl/src/lv_core/../lv_draw/lv_img_buf.h:351:25: note: in expansion of macro &#39;LV_COLOR_TRANSP&#39;
+         lv_color_t ct = LV_COLOR_TRANSP;</code></pre></div>
+<p>We might need to identify the latest version of LVGL 7 that works with NuttX.</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi.jpg" alt="Shared SPI Bus on PineDio Stack BL604" /></p>
 <h1 id="sharing-spi-bus" class="section-header"><a href="#sharing-spi-bus">13 Sharing SPI Bus</a></h1>
 <p>TODO</p>
