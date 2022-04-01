@@ -1197,6 +1197,10 @@ Over the next couple of articles we shall __migrate the LoRa + LoRaWAN code incr
 
 -   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
+NuttX works great with the __ST7789 SPI Display__ and LVGL Graphics Libary, right out of the box...
+
+-   [__"ST7789 Display with LVGL Graphics on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/st7789)
+
 We'll also explore __I2C on NuttX__, which is super useful for IoT sensors...
 
 -   [__"Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"__](https://lupyuen.github.io/articles/bme280)
