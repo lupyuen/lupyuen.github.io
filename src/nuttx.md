@@ -824,6 +824,10 @@ Here are some topics that I'll explore in future articles...
 
     [__"Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"__](https://lupyuen.github.io/articles/bme280)
 
+-   __Graphics__: NuttX works great with the ST7789 SPI Display and LVGL Graphics Libary, right out of the box...
+
+    [__"ST7789 Display with LVGL Graphics on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/st7789)
+
 -   __Rust__: I'm excited about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. Here's how we integrated NuttX GPIO, SPI and I2C with Rust...
 
     [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
