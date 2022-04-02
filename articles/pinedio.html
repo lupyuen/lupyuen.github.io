@@ -84,7 +84,7 @@
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
 <li><a href="#notes">13 Notes</a><ul></ul></li>
 <li><a href="#appendix-improvised-reset-button-for-pinedio-stack">14 Appendix: Improvised Reset Button for PineDio Stack</a><ul></ul></li></ul></nav><p>📝 <em>29 Aug 2021</em></p>
-<p><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pinedio.h"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
 <p><em>What’s it like to create <strong>Open Source Software</strong> (and firmware) for brand new <strong>Prototype Hardware</strong>?</em></p>
 <p><em>What interesting challenges will we encounter?</em></p>
 <p>Find out how we create new firmware to test (and improve) Pine64’s newest and hottest prototype: <strong>PineDio Stack BL604 RISC-V Board!</strong></p>
@@ -268,7 +268,7 @@ make</code></pre></div>
 <tr><td style="text-align: center"><strong><code>15</code></strong></td><td style="text-align: left">CS for SX1262</td></tr>
 </tbody></table>
 </div>
-<p><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pinedio.h"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
 <p>SPI Flash, ST7789 and SX1262 are connected to the <strong>same GPIO Pins</strong> for SDO <em>(formerly MOSI)</em>, SDI <em>(formerly MISO)</em> and SCK.</p>
 <p><a href="https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names">(More about SDO and SDI)</a></p>
 <p><em>But won’t BL604 get confused by the SPI crosstalk?</em></p>
@@ -416,7 +416,7 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 <tr><td style="text-align: center"><strong><code>5</code></strong></td><td style="text-align: left">Debug CS</td><td style="text-align: center"><code>2</code></td></tr>
 </tbody></table>
 </div>
-<p><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pinedio.h"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/pinedio-logic2.jpg" alt="Logic Analyser connected to PineDio Stack" /></p>
 <p><em>What about the ST7789 Chip Select Pin: GPIO 20?</em></p>
 <p>Unfortunately <strong>GPIO 20 is not exposed</strong> on the GPIO Connector.</p>
@@ -478,7 +478,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p><strong>GPIO 17:</strong> SPI SDO <em>(MOSI)</em></p>
 </li>
 </ul>
-<p><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pinedio.h"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
 <p><em>Wait are we missing a pin?</em></p>
 <p>Yep we usually connect the <strong>ST7789 Data / Command (DC) Pin</strong>. (Like on PineTime) </p>
 <p>We flip this pin to Low to indicate that we’re sending Command Bytes, and flip it to High for Data Bytes.</p>
@@ -619,7 +619,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <tr><td style="text-align: center"><strong>SCK</strong></td><td style="text-align: center">GPIO 11</td></tr>
 </tbody></table>
 </div>
-<p><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pinedio.h"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx"><strong>UPDATE: There’s a new version of PineDio Stack BL604, the GPIO Numbers have changed</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/pinedio-probe2.jpg" alt="Probe Results" /></p>
 <p>Not quite what we expected. We tried both <strong>SPI and Bit-Banging</strong> with the discovered settings…</p>
 <ul>
