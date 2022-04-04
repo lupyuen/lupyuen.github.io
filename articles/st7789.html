@@ -498,6 +498,7 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 <li>
 <p>Increase the <strong>SPI Frequency</strong> from 1 MHz to 40 MHz, the maximum frequency supported by BL602</p>
 <p>(In menuconfig: Device Drivers → LCD Driver Support → Graphic LCD Driver Support → LCD Driver Selection → Sitronix ST7789 → SPI Frequency)</p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx#spi-frequency">(UPDATE: We have successfully tested ST7789 at 4 MHz)</a></p>
 </li>
 <li>
 <p>Implement <strong>SPI Direct Memory Access</strong> (DMA) for faster transfers</p>
