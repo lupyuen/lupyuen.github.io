@@ -70,21 +70,46 @@ Let's go hands-on with NuttX!
 
 # Build NuttX
 
+NuttX builds fine on __Linux__ (x64), __macOS__ and __Windows Subsystem for Linux__ (WSL).
+
+Here are the steps to build NuttX for PineDio Stack...
+
+1.  Install the __build prerequisites__...
+
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+1.  Enter these commands to __download, configure and build__ NuttX...
+
+    ```bash
+    ##  Download NuttX for PineDio Stack
+    mkdir nuttx
+    cd nuttx
+    git clone --recursive --branch pinedio https://github.com/lupyuen/incubator-nuttx nuttx
+    git clone --recursive --branch pinedio https://github.com/lupyuen/incubator-nuttx-apps apps
+
+    ##  Configure NuttX for PineDio Stack
+    cd nuttx
+    ./tools/configure.sh bl602evb:pinedio
+
+    ##  Build NuttX for PineDio Stack
+    make
+    ```
+
+1.  We should see...
+
+    ```text
+    LD: nuttx
+    CP: nuttx.hex
+    CP: nuttx.bin
+    ```
+
+    That means we have successfully built NuttX for PineDio Stack!
+
+    [(See the Build Log)](https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7)
+
+_What's "bl602evb:pinedio"?_
+
 TODO
-
-To download, configure and build NuttX for PineDio Stack BL604...
-
-```bash
-mkdir nuttx
-cd nuttx
-git clone --recursive --branch pinedio https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch pinedio https://github.com/lupyuen/incubator-nuttx-apps apps
-cd nuttx
-./tools/configure.sh bl602evb:pinedio
-make
-```
-
-[(See the Build Log)](https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7)
 
 NuttX Build Config for PineDio Stack BL604...
 
