@@ -65,8 +65,32 @@
 
     <h1 class="title">PineDio Stack BL604 runs Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>12 Apr 2022</em></p>
+<li><a href="#build-nuttx">1 Build NuttX</a><ul></ul></li>
+<li><a href="#shared-spi-bus">2 Shared SPI Bus</a><ul>
+<li><a href="#spi-device-id">2.1 SPI Device ID</a><ul></ul></li>
+<li><a href="#swap-miso--mosi">2.2 Swap MISO / MOSI</a><ul></ul></li>
+<li><a href="#spi-device-table">2.3 SPI Device Table</a><ul></ul></li>
+<li><a href="#pin-definitions">2.4 Pin Definitions</a><ul></ul></li>
+<li><a href="#select--deselect-spi-device">2.5 Select / Deselect SPI Device</a><ul></ul></li>
+<li><a href="#spi-command--data">2.6 SPI Command / Data</a><ul></ul></li>
+<li><a href="#deselect-all-spi-devices">2.7 Deselect All SPI Devices</a><ul></ul></li>
+<li><a href="#test-shared-spi-bus">2.8 Test Shared SPI Bus</a><ul></ul></li></ul></li>
+<li><a href="#st7789-display">3 ST7789 Display</a><ul>
+<li><a href="#spi-mode">3.1 SPI Mode</a><ul></ul></li>
+<li><a href="#spi-frequency">3.2 SPI Frequency</a><ul></ul></li>
+<li><a href="#lvgl-test-app">3.3 LVGL Test App</a><ul></ul></li>
+<li><a href="#lvgl-demo-app">3.4 LVGL Demo App</a><ul></ul></li></ul></li>
+<li><a href="#sx1262-lora-transceiver">4 SX1262 LoRa Transceiver</a><ul>
+<li><a href="#test-lora">4.1 Test LoRa</a><ul></ul></li>
+<li><a href="#test-lorawan">4.2 Test LoRaWAN</a><ul></ul></li></ul></li>
+<li><a href="#touch-panel">5 Touch Panel</a><ul></ul></li>
+<li><a href="#push-button">6 Push Button</a><ul></ul></li>
+<li><a href="#accelerometer">7 Accelerometer</a><ul></ul></li>
+<li><a href="#power-management">8 Power Management</a><ul></ul></li>
+<li><a href="#spi-flash">9 SPI Flash</a><ul></ul></li>
+<li><a href="#gps">10 GPS</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>12 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 <p><strong>PineDio Stack BL604</strong> is Pine64’s newest microcontroller board, based on <a href="https://lupyuen.github.io/articles/pinecone"><strong>Bouffalo Lab’s BL604</strong></a> RISC-V + WiFi + Bluetooth LE SoC.</p>
@@ -108,7 +132,1108 @@
 <p>And get started on creating <strong>our own IoT Apps</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Pine64 PineDio Stack BL604 RISC-V Board</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">1 What’s Next</a></h1>
+<p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="Apache NuttX RTOS, ST7789 Driver and LVGL Graphics Library all run OK on Pine64’s PineDio Stack BL604!" /></p>
+<h1 id="build-nuttx" class="section-header"><a href="#build-nuttx">1 Build NuttX</a></h1>
+<p>TODO</p>
+<p>Source code for Apache NuttX RTOS on PineDio Stack is here…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio">lupyuen/incubator-nuttx (pinedio branch)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio">lupyuen/incubator-nuttx-apps (pinedio branch)</a></p>
+</li>
+</ul>
+<p>NuttX Build Config for PineDio Stack BL604…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">.config</a></li>
+</ul>
+<p>To download, configure and build NuttX for PineDio Stack BL604…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone --recursive --branch pinedio https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive --branch pinedio https://github.com/lupyuen/incubator-nuttx-apps apps
+cd nuttx
+./tools/configure.sh bl602evb:pinedio
+make</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7">(See the Build Log)</a></p>
+<h1 id="shared-spi-bus" class="section-header"><a href="#shared-spi-bus">2 Shared SPI Bus</a></h1>
+<p>TODO</p>
+<p>Acording to the PineDio Stack Schematic…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf"><strong>PineDio Stack Schematic</strong> (2021-09-15)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf"><strong>PineDio Stack Baseboard Schematic</strong> (2021-09-27)</a></p>
+</li>
+</ul>
+<p>The SPI Bus is shared by…</p>
+<ul>
+<li>
+<p>ST7789 Display Controller</p>
+</li>
+<li>
+<p>Semtech SX1262 LoRa Transceiver</p>
+</li>
+<li>
+<p>SPI Flash</p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/pinedio-spi2.jpg" alt="Shared SPI Bus on PineDio Stack BL604" /></p>
+<p>Here are the BL604 GPIO Numbers for the shared SPI Bus…</p>
+<div><table><thead><tr><th style="text-align: left">Function</th><th style="text-align: center">GPIO</th></tr></thead><tbody>
+<tr><td style="text-align: left">SPI MOSI</td><td style="text-align: center">13</td></tr>
+<tr><td style="text-align: left">SPI MISO</td><td style="text-align: center">0</td></tr>
+<tr><td style="text-align: left">SPI SCK</td><td style="text-align: center">11</td></tr>
+<tr><td style="text-align: left">SPI CS <em>(Unused)</em></td><td style="text-align: center">8</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L105">(Source)</a></p>
+<p>To prevent crosstalk, we select each SPI Device by flipping its Chip Select Pin from High to Low…</p>
+<div><table><thead><tr><th style="text-align: left">SPI Device</th><th style="text-align: center">Device ID</th><th style="text-align: center">Swap MISO/MOSI</th><th style="text-align: center">Chip Select</th></tr></thead><tbody>
+<tr><td style="text-align: left">ST7789 Display</td><td style="text-align: center">0x40000</td><td style="text-align: center">No</td><td style="text-align: center">20</td></tr>
+<tr><td style="text-align: left">SX1262 Transceiver</td><td style="text-align: center">1</td><td style="text-align: center">Yes</td><td style="text-align: center">15</td></tr>
+<tr><td style="text-align: left">SPI Flash</td><td style="text-align: center">2</td><td style="text-align: center">Yes</td><td style="text-align: center">14</td></tr>
+<tr><td style="text-align: left"><em>(Default Device)</em></td><td style="text-align: center">-1</td><td style="text-align: center">Yes</td><td style="text-align: center">8 <em>(Unused)</em></td></tr>
+</tbody></table>
+</div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L106-L127">(Source)</a></p>
+<h2 id="spi-device-id" class="section-header"><a href="#spi-device-id">2.1 SPI Device ID</a></h2>
+<p>TODO</p>
+<p>NuttX auto-assigns 0x40000 as the SPI Device ID for ST7789 Display. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/spi/spi.h#L459">(See this)</a></p>
+<p>We assigned the other SPI Device IDs ourselves.</p>
+<p>Device ID -1 is meant as a fallthrough to catch all SPI Devices that don’t match the Device IDs. This also works for simple SPI setups where the Device ID is not needed.</p>
+<h2 id="swap-miso--mosi" class="section-header"><a href="#swap-miso--mosi">2.2 Swap MISO / MOSI</a></h2>
+<p>TODO</p>
+<p>According to <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a> (Table 3.1 “Pin Description”, Page 26)…</p>
+<ul>
+<li>
+<p>GPIO 13 is MOSI</p>
+</li>
+<li>
+<p>GPIO 0 is MISO</p>
+</li>
+</ul>
+<p>But due to a BL602 SPI quirk we need to Swap MISO and MOSI to get this behaviour. That’s why the “Swap MISO / MOSI” column is marked “Yes” for SX1262 Transceiver and SPI Flash.</p>
+<p>ST7789 Display Controller is wired differently…</p>
+<ul>
+<li>
+<p>ST7789 receives SPI Data on GPIO 0</p>
+</li>
+<li>
+<p>ST7789 Data / Command Pin is connected on GPIO 13</p>
+<p>(High for ST7789 Data, Low for ST7789 Commands)</p>
+</li>
+</ul>
+<p>The direction of SPI Data is flipped for ST7789. That’s why the “Swap MISO / MOSI” column is marked “No” for ST7789 Display Controller.</p>
+<h2 id="spi-device-table" class="section-header"><a href="#spi-device-table">2.3 SPI Device Table</a></h2>
+<p>TODO</p>
+<p>We represent the above SPI Device Table in NuttX as a flat int array…</p>
+<div><table><thead><tr><th style="text-align: left">SPI Device</th><th style="text-align: center">Device ID</th><th style="text-align: center">Swap MISO/MOSI</th><th style="text-align: center">Chip Select</th></tr></thead><tbody>
+<tr><td style="text-align: left"><em>ST7789 Display</em></td><td style="text-align: center">0x40000</td><td style="text-align: center">0</td><td style="text-align: center">20</td></tr>
+<tr><td style="text-align: left"><em>SX1262 Transceiver</em></td><td style="text-align: center">1</td><td style="text-align: center">1</td><td style="text-align: center">15</td></tr>
+<tr><td style="text-align: left"><em>SPI Flash</em></td><td style="text-align: center">2</td><td style="text-align: center">1</td><td style="text-align: center">14</td></tr>
+<tr><td style="text-align: left"><em>(Default Device)</em></td><td style="text-align: center">-1</td><td style="text-align: center">1</td><td style="text-align: center">8</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L112-L133">(Source)</a></p>
+<p>Here’s the source code…</p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_BL602_SPI0
+/* SPI Device Table: SPI Device ID, Swap MISO/MOSI, Chip Select */
+
+static const int32_t bl602_spi_device_table[] =
+{
+#ifdef BOARD_LCD_DEVID  /* ST7789 Display */
+  BOARD_LCD_DEVID, BOARD_LCD_SWAP, BOARD_LCD_CS,
+#endif  /* BOARD_LCD_DEVID */
+
+#ifdef BOARD_SX1262_DEVID  /* LoRa SX1262 */
+  BOARD_SX1262_DEVID, BOARD_SX1262_SWAP, BOARD_SX1262_CS,
+#endif  /* BOARD_SX1262_DEVID */
+
+#ifdef BOARD_FLASH_DEVID  /* SPI Flash */
+  BOARD_FLASH_DEVID, BOARD_FLASH_SWAP, BOARD_FLASH_CS,
+#endif  /* BOARD_FLASH_DEVID */
+
+  /* Must end with Default SPI Device */
+
+  -1, 1, BOARD_SPI_CS,  /* Swap MISO/MOSI */
+};
+#endif  /* CONFIG_BL602_SPI0 */</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L112-L133">(Source)</a></p>
+<p>The columns of the SPI Device Table…</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Columns in the SPI Device Table */
+
+#define DEVID_COL 0  /* SPI Device ID */
+#define SWAP_COL  1  /* 1 if MISO/MOSI should be swapped, else 0 */
+#define CS_COL    2  /* SPI Chip Select Pin */
+#define NUM_COLS  3  /* Number of columns in SPI Device Table */</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L36-L41">(Source)</a></p>
+<p>Here are the functions for accessing the SPI Device Table…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L210-L239">bl602_spi_get_device</a>: Lookup a device in the SPI Device Table</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L178-L208">bl602_spi_deselect_devices</a>: Deselect all devices in the SPI Device Table</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L140-L176">bl602_spi_validate_devices</a>: Validate the devices in the SPI Device Table</p>
+</li>
+</ul>
+<h2 id="pin-definitions" class="section-header"><a href="#pin-definitions">2.4 Pin Definitions</a></h2>
+<p>TODO</p>
+<p>The SPI Device Table above refers to the following Pin Definitions…</p>
+<div class="example-wrap"><pre class="language-c"><code>/* SPI for PineDio Stack: Chip Select (unused), MOSI, MISO, SCK */
+
+#define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)  /* Unused */
+#define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN13)
+#define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)
+
+#ifdef CONFIG_LCD_ST7789
+/* ST7789 for PineDio Stack: Chip Select, Reset and Backlight */
+
+#define BOARD_LCD_DEVID SPIDEV_DISPLAY(0)  /* SPI Device ID: 0x40000 */
+#define BOARD_LCD_SWAP  0    /* Don&#39;t swap MISO/MOSI */
+#define BOARD_LCD_BL_INVERT  /* Backlight is active when Low */
+#define BOARD_LCD_CS  (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN20)
+#define BOARD_LCD_RST (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN3)
+#define BOARD_LCD_BL  (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN21)
+#endif  /* CONFIG_LCD_ST7789 */
+
+/* SX1262 for PineDio Stack: Chip Select */
+
+#define BOARD_SX1262_DEVID 1  /* SPI Device ID */
+#define BOARD_SX1262_SWAP  1  /* Swap MISO/MOSI */
+#define BOARD_SX1262_CS (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN15)
+
+/* SPI Flash for PineDio Stack: Chip Select */
+
+#define BOARD_FLASH_DEVID 2  /* SPI Device ID */
+#define BOARD_FLASH_SWAP  1  /* Swap MISO/MOSI */
+#define BOARD_FLASH_CS (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN14)</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L128">(Source)</a></p>
+<h2 id="select--deselect-spi-device" class="section-header"><a href="#select--deselect-spi-device">2.5 Select / Deselect SPI Device</a></h2>
+<p>TODO</p>
+<p>BL602 NuttX SPI Driver looks up the SPI Device Table to 1️⃣ Swap MISO and MOSI Pins 2️⃣ Flip the Chip Select Pins. This is how we select and deselect each SPI Device…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Enable/disable the SPI chip select
+static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid,
+                             bool selected)
+{
+  const int32_t *spidev;
+
+  spiinfo(&quot;devid: %lu, CS: %s\n&quot;, devid, selected ? &quot;select&quot; : &quot;free&quot;);
+
+  /* get device from SPI Device Table */
+
+  spidev = bl602_spi_get_device(devid);
+  DEBUGASSERT(spidev != NULL);
+
+  /* swap MISO and MOSI if needed */
+
+  if (selected)
+    {
+      bl602_swap_spi_0_mosi_with_miso(spidev[SWAP_COL]);
+    }
+
+  /* set Chip Select */
+
+  bl602_gpiowrite(spidev[CS_COL], !selected);
+
+#ifdef CONFIG_SPI_CMDDATA
+  /* revert MISO and MOSI from GPIO Pins to SPI Pins */
+
+  if (!selected)
+    {
+      bl602_configgpio(BOARD_SPI_MISO);
+      bl602_configgpio(BOARD_SPI_MOSI);
+    }
+#endif
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471">(Source)</a></p>
+<p><code>bl602_spi_select</code> is called after locking the SPI Bus.</p>
+<h2 id="spi-command--data" class="section-header"><a href="#spi-command--data">2.6 SPI Command / Data</a></h2>
+<p>TODO</p>
+<p>NuttX RTOS uses MISO as the ST7789 Data / Command Pin … But ST7789 is wired “backwards” on PineDio Stack BL604! We use MOSI as the ST7789 Data / Command Pin instead.</p>
+<p>Here how we flip the ST7789 Data / Command pin depending on MISO / MOSI Swap…</p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SPI_CMDDATA
+static int bl602_spi_cmddata(struct spi_dev_s *dev,
+                              uint32_t devid, bool cmd)
+{
+  spiinfo(&quot;devid: %&quot; PRIu32 &quot; CMD: %s\n&quot;, devid, cmd ? &quot;command&quot; :
+          &quot;data&quot;);
+
+  if (devid == SPIDEV_DISPLAY(0))
+    {
+      const int32_t *spidev;
+      gpio_pinset_t dc;
+      gpio_pinset_t gpio;
+      int ret;
+
+      /* get device from SPI Device Table */
+
+      spidev = bl602_spi_get_device(devid);
+      DEBUGASSERT(spidev != NULL);
+
+      /* if MISO/MOSI are swapped, DC is MISO, else MOSI */
+
+      dc = spidev[SWAP_COL] ? BOARD_SPI_MISO : BOARD_SPI_MOSI;
+
+      /* reconfigure DC from SPI Pin to GPIO Pin */
+
+      gpio = (dc &amp; GPIO_PIN_MASK)
+             | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO;
+      ret = bl602_configgpio(gpio);
+      if (ret &lt; 0)
+        {
+          spierr(&quot;Failed to configure MISO as GPIO\n&quot;);
+          DEBUGPANIC();
+
+          return ret;
+        }
+
+      /* set DC to high (data) or low (command) */
+
+      bl602_gpiowrite(gpio, !cmd);
+
+      return OK;
+    }
+
+  spierr(&quot;SPI cmddata not supported\n&quot;);
+  DEBUGPANIC();
+
+  return -ENODEV;
+}
+#endif</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L726-L774">(Source)</a></p>
+<h2 id="deselect-all-spi-devices" class="section-header"><a href="#deselect-all-spi-devices">2.7 Deselect All SPI Devices</a></h2>
+<p>TODO</p>
+<p>At NuttX Startup, we deselect all SPI Devices … By flipping their Chip Select Pins high…</p>
+<div class="example-wrap"><pre class="language-c"><code>static void bl602_spi_init(struct spi_dev_s *dev)
+{
+  struct bl602_spi_priv_s *priv = (struct bl602_spi_priv_s *)dev;
+  const struct bl602_spi_config_s *config = priv-&gt;config;
+
+  /* Initialize the SPI semaphore that enforces mutually exclusive access */
+
+  nxsem_init(&amp;priv-&gt;exclsem, 0, 1);
+
+  bl602_configgpio(BOARD_SPI_CS);
+  bl602_configgpio(BOARD_SPI_MOSI);
+  bl602_configgpio(BOARD_SPI_MISO);
+  bl602_configgpio(BOARD_SPI_CLK);
+
+  /* set master mode */
+
+  bl602_set_spi_0_act_mode_sel(1);
+
+  /* swap MOSI with MISO to be consistent with BL602 Reference Manual */
+
+  bl602_swap_spi_0_mosi_with_miso(1);
+
+  /* spi cfg  reg:
+   * cr_spi_deg_en 1
+   * cr_spi_m_cont_en 0
+   * cr_spi_byte_inv 0
+   * cr_spi_bit_inv 0
+   */
+
+  modifyreg32(BL602_SPI_CFG, SPI_CFG_CR_M_CONT_EN
+              | SPI_CFG_CR_BYTE_INV | SPI_CFG_CR_BIT_INV,
+              SPI_CFG_CR_DEG_EN);
+
+  /* disable rx ignore */
+
+  modifyreg32(BL602_SPI_CFG, SPI_CFG_CR_RXD_IGNR_EN, 0);
+
+  bl602_spi_setfrequency(dev, config-&gt;clk_freq);
+  bl602_spi_setbits(dev, 8);
+  bl602_spi_setmode(dev, config-&gt;mode);
+
+  /* spi fifo clear */
+
+  modifyreg32(BL602_SPI_FIFO_CFG_0, SPI_FIFO_CFG_0_RX_CLR
+              | SPI_FIFO_CFG_0_TX_CLR, 0);
+
+  /* deselect all spi devices */
+
+  bl602_spi_deselect_devices();
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L1191-L1240">(Source)</a></p>
+<h2 id="test-shared-spi-bus" class="section-header"><a href="#test-shared-spi-bus">2.8 Test Shared SPI Bus</a></h2>
+<p>TODO</p>
+<p>Will ST7789 Display play nice with LoRa SX1262 on PineDio Stack BL604? Yep SX1262 works OK on the Shared SPI Bus!</p>
+<p>PineDio Stack boots and renders a Pink Screen…</p>
+<div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
+gpio_pin_register: Registering /dev/gpio1
+gpint_enable: Disable the interrupt
+gpio_pin_register: Registering /dev/gpio2
+bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
+spi_test_driver_register: devpath=/dev/spitest0, spidev=0
+st7789_sleep: sleep: 0
+st7789_sendcmd: cmd: 0x11
+st7789_sendcmd: OK
+st7789_bpp: bpp: 16
+st7789_sendcmd: cmd: 0x3a
+st7789_sendcmd: OK
+st7789_setorientation:
+st7789_sendcmd: cmd: 0x36
+st7789_sendcmd: OK
+st7789_display: on: 1
+st7789_sendcmd: cmd: 0x29
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x21
+st7789_sendcmd: OK
+st7789_fill: color: 0xaaaa
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+board_lcd_getdev: SPI port 0 bound to LCD 0
+st7789_getplaneinfo: planeno: 0 bpp: 16</code></pre></div>
+<p>We run the <code>spi_test2</code> app to test SX1262…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt;
+nsh&gt; ?
+help usage:  help [-v] [&lt;cmd&gt;]
+
+  ?      cat    help   ls     uname
+
+Builtin Apps:
+  tinycbor_test            spi_test                 nsh
+  lorawan_test             timer                    sensortest
+  sx1262_test              bl602_adc_test           ikea_air_quality_sensor
+  bas                      spi_test2                gpio
+  sh                       getprime
+  lvgldemo                 hello
+nsh&gt; spi_test2
+spi_test_driver_open:
+gpout_write: Writing 0
+spi_test_driver_write: buflen=2
+spi_test_driver_configspi:
+spi_test_driver_read: buflen=256
+gpout_write: Writing 1
+Get Status: received
+  a2 22
+SX1262 Status is 2
+gpout_write: Writing 0
+spi_test_driver_write: buflen=5
+spi_test_driver_configspi:
+spi_test_driver_read: buflen=256
+gpout_write: Writing 1
+Read Register 8: received
+  a2 a2 a2 a2 80
+SX1262 Register 8 is 0x80</code></pre></div>
+<p>SX1262 returns Register Value 0x80, which is correct!</p>
+<p>Then we run the LVGL Demo App…</p>
+<div class="example-wrap"><pre class="language-text"><code>spi_test_driver_close:
+nsh&gt; lvgldemo
+fbdev_init: Failed to open /dev/fb0: 2
+st7789_getvideoinfo: fmt: 11 xres: 240 yres: 240 nplanes: 1
+lcddev_init: VideoInfo:
+        fmt: 11
+        xres: 240
+        yres: 240
+        nplanes: 1
+lcddev_init: PlaneInfo (plane 0):
+        bpp: 16
+st7789_putarea: row_start: 0 row_end: 19 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 20 row_end: 39 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 40 row_end:59 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 60 row_end: 79 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 80 row_end: 99 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 100 row_end: 119 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 120 row_end: 139 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 140 row_end: 159 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 160 row_end: 179 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 180 row_end: 199 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 200 row_end: 219 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+st7789_putarea: row_start: 220 row_end: 239 col_start: 0 col_end: 239
+st7789_sendcmd: cmd: 0x2b
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2a
+st7789_sendcmd: OK
+st7789_sendcmd: cmd: 0x2c
+st7789_sendcmd: OK
+monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
+<p>Which renders the LVGL Demo Screen on ST7789 correctly!</p>
+<h1 id="st7789-display" class="section-header"><a href="#st7789-display">3 ST7789 Display</a></h1>
+<p>TODO</p>
+<h2 id="spi-mode" class="section-header"><a href="#spi-mode">3.1 SPI Mode</a></h2>
+<p>TODO</p>
+<p>BL602 / BL604 talks to ST7789 Display at SPI Mode 1 or 3 … Depends whether MISO / MOSI are swapped</p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_BL602_SPI0
+#include &quot;../boards/risc-v/bl602/bl602evb/include/board.h&quot;
+#endif  /* CONFIG_BL602_SPI0 */
+
+#ifdef CONFIG_LCD_ST7789
+
+/****************************************************************************
+ * Pre-processor Definitions
+ ****************************************************************************/
+
+/* Verify that all configuration requirements have been met */
+
+#ifdef CONFIG_BL602_SPI0
+#else
+#endif   /* CONFIG_BL602_SPI0 */</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66">(Source)</a></p>
+<h2 id="spi-frequency" class="section-header"><a href="#spi-frequency">3.2 SPI Frequency</a></h2>
+<p>TODO</p>
+<p>ST7789 Display runs OK at SPI Frequency 4 MHz. Maybe we can go higher?</p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_LCD_ST7789_FREQUENCY=4000000</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L542">(Source)</a></p>
+<h2 id="lvgl-test-app" class="section-header"><a href="#lvgl-test-app">3.3 LVGL Test App</a></h2>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="LVGL Test App" /></p>
+<p>LVGL Test App is here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lvgltest-nuttx">lupyuen/lvgltest-nuttx</a></li>
+</ul>
+<p>To run the app, enter this at the NuttX Shell…</p>
+<div class="example-wrap"><pre class="language-bash"><code>lvgltest</code></pre></div>
+<p>Here’s the code that renders the screen…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Create the LVGL Widgets that will be rendered on the display
+static void create_widgets(void)
+{
+  //  Get the Active Screen
+  lv_obj_t *screen = lv_scr_act();
+
+  //  Create a Label Widget
+  lv_obj_t *label = lv_label_create(screen, NULL);
+
+  //  Wrap long lines in the label text
+  lv_label_set_long_mode(label, LV_LABEL_LONG_BREAK);
+
+  //  Interpret color codes in the label text
+  lv_label_set_recolor(label, true);
+
+  //  Center align the label text
+  lv_label_set_align(label, LV_LABEL_ALIGN_CENTER);
+
+  //  Set the label text and colors
+  lv_label_set_text(
+    label, 
+    &quot;#ff0000 HELLO# &quot;    //  Red Text
+    &quot;#00ff00 PINEDIO# &quot;  //  Green Text
+    &quot;#0000ff STACK!# &quot;   //  Blue Text
+  );
+
+  //  Set the label width
+  lv_obj_set_width(label, 200);
+
+  //  Align the label to the center of the screen, shift 30 pixels up
+  lv_obj_align(label, NULL, LV_ALIGN_CENTER, 0, -30);
+
+#ifdef CONFIG_USE_LV_CANVAS  //  LVGL Canvas Demo
+  //  Create the Canvas
+  lv_obj_t *canvas = lv_canvas_create(screen, NULL);
+
+  //  Set the Canvas Buffer (Warning: Might take a lot of RAM!)
+  static lv_color_t cbuf[LV_CANVAS_BUF_SIZE_TRUE_COLOR(CANVAS_WIDTH, CANVAS_HEIGHT)];
+  lv_canvas_set_buffer(canvas, cbuf, CANVAS_WIDTH, CANVAS_HEIGHT, LV_IMG_CF_TRUE_COLOR);
+
+  //  Align the canvas to the center of the screen, shift 50 pixels down
+  lv_obj_align(canvas, NULL, LV_ALIGN_CENTER, 0, 50);
+
+  //  Fill the canvas with white
+  lv_canvas_fill_bg(canvas, LV_COLOR_WHITE, LV_OPA_TRANSP);
+
+  //  Create a Rounded Rectangle
+  lv_draw_rect_dsc_t rect_dsc;
+  lv_draw_rect_dsc_init(&amp;rect_dsc);
+  rect_dsc.radius = 10;            //  Corner Radius
+  rect_dsc.bg_opa = LV_OPA_COVER;  //  Opacity: Opaque
+  rect_dsc.bg_grad_dir   = LV_GRAD_DIR_HOR;  //  Gradient Direction: Horizontal
+  rect_dsc.bg_color      = LV_COLOR_BLUE;    //  From Blue
+  rect_dsc.bg_grad_color = LV_COLOR_GREEN;   //  To Green
+  rect_dsc.border_width  = 2;  //  Border Width
+  rect_dsc.border_opa    = LV_OPA_90;        //  Border Opacity: 90%
+  rect_dsc.border_color  = LV_COLOR_SILVER;  //  Border Color
+  rect_dsc.shadow_width  = 5;  //  Shadow Width
+  rect_dsc.shadow_ofs_x  = 5;  //  Shadow Offset X
+  rect_dsc.shadow_ofs_y  = 5;  //  Shadow Offset Y
+
+  //  Draw the Rounded Rectangle to the canvas
+  lv_canvas_draw_rect(canvas, 0, 0, 95, 95, &amp;rect_dsc);
+#endif  //  CONFIG_USE_LV_CANVAS
+
+#ifdef CONFIG_EXAMPLES_LVGLTEST_MESSAGEBOX  //  LVGL Message Box Demo
+  //  Create a Message Box Widget
+  lv_obj_t *msgbox = lv_msgbox_create(screen, NULL);
+
+  //  Set the Message Box Text
+  lv_msgbox_set_text(msgbox, &quot;Hello PineDio Stack!&quot;);
+
+  //  Define the Message Box Buttons
+  static const char *btns[] = {&quot;Cancel&quot;, &quot;OK&quot;, &quot;&quot;};
+
+  //  Add the buttons to the Message Box
+  lv_msgbox_add_btns(msgbox, btns);
+#endif  //  CONFIG_EXAMPLES_LVGLTEST_MESSAGEBOX
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L104-L159">(Source)</a></p>
+<p>To render our own text and graphics, edit this source file and change the code above…</p>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/lvgltest/lvgltest.c</code></pre></div><h2 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">3.4 LVGL Demo App</a></h2>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-dark2.jpg" alt="LVGL Demo App" /></p>
+<p>To run the app, enter this at the NuttX Shell…</p>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div>
+<p>To change the message in LVGL Demo App, edit <code>apps/examples/lvgldemo/lv_demos/src/lv_demo_widgets/lv_demo_widgets.c</code>…</p>
+<div class="example-wrap"><pre class="language-c"><code>static void controls_create(lv_obj_t * parent)
+{
+    lv_page_set_scrl_layout(parent, LV_LAYOUT_PRETTY_TOP);
+
+    lv_disp_size_t disp_size = lv_disp_get_size_category(NULL);
+    lv_coord_t grid_w = lv_page_get_width_grid(parent, disp_size &lt;= LV_DISP_SIZE_SMALL ? 1 : 2, 1);
+
+#if LV_DEMO_WIDGETS_SLIDESHOW == 0
+    static const char * btns[] = {&quot;PineDio&quot;, &quot;Stack&quot;, &quot;&quot;};
+
+    lv_obj_t * m = lv_msgbox_create(lv_scr_act(), NULL);
+    lv_msgbox_add_btns(m, btns);
+    lv_obj_t * btnm = lv_msgbox_get_btnmatrix(m);
+    lv_btnmatrix_set_btn_ctrl(btnm, 1, LV_BTNMATRIX_CTRL_CHECK_STATE);
+#endif</code></pre></div><h1 id="sx1262-lora-transceiver" class="section-header"><a href="#sx1262-lora-transceiver">4 SX1262 LoRa Transceiver</a></h1>
+<p>TODO</p>
+<h2 id="test-lora" class="section-header"><a href="#test-lora">4.1 Test LoRa</a></h2>
+<p>TODO</p>
+<p>To test LoRa on PineDio Stack, edit <a href="https://github.com/lupyuen/sx1262_test/blob/main/sx1262_test_main.c"><code>sx1262_test_main.c</code></a> at…</p>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/sx1262_test/sx1262_test_main.c</code></pre></div>
+<p>And update the LoRa Parameters…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262#lora-parameters">“LoRa Parameters”</a></li>
+</ul>
+<h2 id="test-lorawan" class="section-header"><a href="#test-lorawan">4.2 Test LoRaWAN</a></h2>
+<p>TODO</p>
+<p>LoRaWAN works OK on Shared SPI Bus yay! PineDio Stack connects to LoRaWAN Gateway (ChirpStack) and sends data packets.</p>
+<p>(Internal Temperature Sensor on ADC works OK too)</p>
+<p>Remember to disable all Info Logging because it affects the LoRaWAN Timers.</p>
+<p>Here’s how we set the LoRaWAN Parameters…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key">“Device EUI, Join EUI and App Key”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-frequency">“LoRaWAN Frequency”</a></p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt; lorawan_test
+init_entropy_pool
+offset = 2228
+temperature = 31.600670 Celsius
+offset = 2228
+temperature = 31.084742 Celsius
+offset = 2228
+temperature = 32.890495 Celsius
+offset = 2228
+temperature = 33.535404 Celsius
+
+##### ===================================== ######
+
+Application name   : lorawan_test
+Application version: 1.2.0
+GitHub base version: 5.0.0
+
+##### ===================================== ######
+
+init_event_queue
+TimerInit:     0x4201c750
+callout_handler: lock
+TimerInit:     0x4201c76c
+TimerInit:     0x4201c788
+TimerInit:     0x4201c804
+TimerInit:     0x4201c8b8
+TimerInit:     0x4201c8d4
+TimerInit:     0x4201c8f0
+TimerInit:     0x4201c90c
+TODO: RtcGetCalendarTime
+TODO: SX126xReset
+init_gpio
+DIO1 pintype before=5
+init_gpio: change DIO1 to Trigger GPIO Interrupt on Rising Edge
+gpio_ioctl: Requested pintype 8, but actual pintype 5
+DIO1 pintype after=5
+Starting process_dio1
+process_dio1 started
+process_dio1: event=0x4201b878
+init_spi
+SX126xSetTxParams: power=22, rampTime=7
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1
+TimerInit:     0x4201b850
+TimerInit:     0x4201b7bc
+RadioSetModem
+RadioSetModem
+RadioSetPublicNetwork: public syncword=3444
+RadioSleep
+DIO1 add event
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+RadioSetModem
+RadioSetPublicNetwork: public syncword=3444
+DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
+JoinEui     : 00-00-00-00-00-00-00-00
+Pin         : 00-00-00-00
+
+TimerInit:     0x4201c3a8
+TimerInit:     0x4201c3c4
+TimerInit:     0x4201c288
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+TODO: RtcBkupRead
+RadioSetChannel: freq=923200000
+RadioSetTxConfig: modem=1, power=13, fdev=0, bandwidth=0, datarate=10, coderate=      1, preambleLen=8, fixLen=0, crcOn=1, freqHopOn=0, hopPeriod=0, iqInverted=0, tim      eout=4000
+RadioSetTxConfig: SpreadingFactor=10, Bandwidth=4, CodingRate=1, LowDatarateOpti      mize=0, PreambleLength=8, HeaderType=0, PayloadLength=255, CrcMode=1, InvertIQ=0
+RadioStandby
+RadioSetModem
+SX126xSetTxParams: power=13, rampTime=7
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1
+SecureElementRandomNumber: 0xa8c2a6e7
+RadioSend: size=23
+00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b e7 a6 80 b1 e0 e4
+RadioSend: PreambleLength=8, HeaderType=0, PayloadLength=23, CrcMode=1, InvertIQ      =0
+TimerStop:     0x4201b850
+TimerStart2:   0x4201b850, 4000 ms
+callout_reset: evq=0x42013250, ev=0x4201b850
+
+##### =========== MLME-Request ============ ######
+#####               MLME_JOIN               ######
+##### ===================================== ######
+STATUS      : OK
+StartTxProcess
+TimerInit:     0x42015b7c
+TimerSetValue: 0x42015b7c, 42249 ms
+OnTxTimerEvent: timeout in 42249 ms, event=0
+TimerStop:     0x42015b7c
+TimerSetValue: 0x42015b7c, 42249 ms
+TimerStart:    0x42015b7c
+TimerStop:     0x42015b7c
+TimerStart2:   0x42015b7c, 42249 ms
+callout_reset: evq=0x42013250, ev=0x42015b7c
+handle_event_queue
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_TX_DONE
+TimerStop:     0x4201b850
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+DIO1 add event
+TimerSetValue: 0x4201c76c, 4988 ms
+TimerStart:    0x4201c76c
+TimerStop:     0x4201c76c
+TimerStart2:   0x4201c76c, 4988 ms
+callout_reset: evq=0x42013250, ev=0x4201c76c
+TimerSetValue: 0x4201c788, 5988 ms
+TimerStart:    0x4201c788
+TimerStop:     0x4201c788
+TimerStart2:   0x4201c788, 5988 ms
+callout_reset: evq=0x42013250, ev=0x4201c788
+TODO: RtcGetCalendarTime
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+RadioOnDioIrq
+RadioIrqProcess
+callout_handler: unlock
+callout_handler: evq=0x42013250, ev=0x4201c76c
+callout_handler: lock
+handle_event_queue: ev=0x4201c76c
+TimerStop:     0x4201c76c
+RadioStandby
+RadioSetChannel: freq=923200000
+RadioSetRxConfig
+RadioStandby
+RadioSetModem
+RadioSetRxConfig done
+RadioRx
+TimerStop:     0x4201b7bc
+TimerStart2:   0x4201b7bc, 3000 ms
+callout_reset: evq=0x42013250, ev=0x4201b7bc
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_PREAMBLE_DETECTED
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_HEADER_VALID
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_RX_DONE
+TimerStop:     0x4201b7bc
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+DIO1 add event
+TimerStop:     0x4201c788
+OnTxData
+
+##### =========== MLME-Confirm ============ ######
+STATUS      : OK
+OnJoinRequest
+##### ===========   JOINED     ============ ######
+
+OTAA
+
+DevAddr     :  01097710
+
+
+DATA RATE   : DR_2
+
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+UplinkProcess
+PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+PrepareTxFrame: status=0, maxSize=11, currentSize=11
+LmHandlerSend: Data frame
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+RadioSetChannel: freq=923200000
+RadioSetTxConfig: modem=1, power=13, fdev=0, bandwidth=0, datarate=9, coderate=1      , preambleLen=8, fixLen=0, crcOn=1, freqHopOn=0, hopPeriod=0, iqInverted=0, time      out=4000
+RadioSetTxConfig: SpreadingFactor=9, Bandwidth=4, CodingRate=1, LowDatarateOptim      ize=0, PreambleLength=8, HeaderType=0, PayloadLength=128, CrcMode=1, InvertIQ=0
+RadioStandby
+RadioSetModem
+SX126xSetTxParams: power=13, rampTime=7
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1
+RadioSend: size=22
+40 10 77 09 01 00 01 00 01 a5 12 b3 cc a2 27 27 57 dc c3 a7 eb ae
+RadioSend: PreambleLength=8, HeaderType=0, PayloadLength=22, CrcMode=1, InvertIQ      =0
+TimerStop:     0x4201b850
+TimerStart2:   0x4201b850, 4000 ms
+callout_reset: evq=0x42013250, ev=0x4201b850
+
+##### =========== MCPS-Request ============ ######
+#####           MCPS_UNCONFIRMED            ######
+##### ===================================== ######
+STATUS      : OK
+PrepareTxFrame: Transmit OK
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_TX_DONE
+TimerStop:     0x4201b850
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+DIO1 add event
+TimerSetValue: 0x4201c76c, 980 ms
+TimerStart:    0x4201c76c
+TimerStop:     0x4201c76c
+TimerStart2:   0x4201c76c, 980 ms
+callout_reset: evq=0x42013250, ev=0x4201c76c
+TimerSetValue: 0x4201c788, 1988 ms
+TimerStart:    0x4201c788
+TimerStop:     0x4201c788
+TimerStart2:   0x4201c788, 1988 ms
+callout_reset: evq=0x42013250, ev=0x4201c788
+TODO: RtcGetCalendarTime
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+RadioOnDioIrq
+RadioIrqProcess
+callout_handler: unlock
+callout_handler: evq=0x42013250, ev=0x4201c76c
+callout_handler: lock
+handle_event_queue: ev=0x4201c76c
+TimerStop:     0x4201c76c
+RadioStandby
+RadioSetChannel: freq=923200000
+RadioSetRxConfig
+RadioStandby
+RadioSetModem
+RadioSetRxConfig done
+RadioRx
+TimerStop:     0x4201b7bc
+TimerStart2:   0x4201b7bc, 3000 ms
+callout_reset: evq=0x42013250, ev=0x4201b7bc
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_RX_TX_TIMEOUT
+TimerStop:     0x4201b7bc
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+DIO1 add event
+TimerStop:     0x4201c788
+TimerStop:     0x4201c750
+OnTxData
+
+##### =========== MCPS-Confirm ============ ######
+STATUS      : OK
+
+##### =====   UPLINK FRAME        1   ===== ######
+
+CLASS       : A
+
+TX PORT     : 1
+TX DATA     : UNCONFIRMED
+48 69 20 4E 75 74 74 58 00
+
+DATA RATE   : DR_3
+U/L FREQ    : 923200000
+TX POWER    : 0
+CHANNEL MASK: 0003
+
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+UplinkProcess
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+RadioOnDioIrq
+RadioIrqProcess
+UplinkProcess
+callout_handler: unlock
+callout_handler: evq=0x42013250, ev=0x42015b7c
+callout_handler: lock
+handle_event_queue: ev=0x42015b7c
+OnTxTimerEvent: timeout in 42249 ms, event=0x42015b7c
+TimerStop:     0x42015b7c
+TimerSetValue: 0x42015b7c, 42249 ms
+TimerStart:    0x42015b7c
+TimerStop:     0x42015b7c
+TimerStart2:   0x42015b7c, 42249 ms
+callout_reset: evq=0x42013250, ev=0x42015b7c
+RadioOnDioIrq
+RadioIrqProcess
+UplinkProcess
+PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+PrepareTxFrame: status=0, maxSize=53, currentSize=53
+LmHandlerSend: Data frame
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+RadioSetChannel: freq=923200000
+RadioSetTxConfig: modem=1, power=13, fdev=0, bandwidth=0, datarate=9, coderate=1, preambleLen=8, fixLen=0, crcOn=1, freqHopOn=0, hopPeriod=0, iqInverted=0, timeout=4000
+RadioSetTxConfig: SpreadingFactor=9, Bandwidth=4, CodingRate=1, LowDatarateOptimize=0, PreambleLength=8, HeaderType=0, PayloadLength=128, CrcMode=1, InvertIQ=0
+RadioStandby
+RadioSetModem
+SX126xSetTxParams: power=13, rampTime=7
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1
+RadioSend: size=22
+40 10 77 09 01 00 02 00 01 ad b9 67 e6 1c 34 05 2d f3 d3 b5 c7 16
+RadioSend: PreambleLength=8, HeaderType=0, PayloadLength=22, CrcMode=1, InvertIQ=0
+TimerStop:     0x4201b850
+TimerStart2:   0x4201b850, 4000 ms
+callout_reset: evq=0x42013250, ev=0x4201b850
+
+##### =========== MCPS-Request ============ ######
+#####           MCPS_UNCONFIRMED            ######
+##### ===================================== ######
+STATUS      : OK
+PrepareTxFrame: Transmit OK
+DIO1 add event
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_TX_DONE
+TimerStop:     0x4201b850
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+DIO1 add event
+TimerSetValue: 0x4201c76c, 980 ms
+TimerStart:    0x4201c76c
+TimerStop:     0x4201c76c
+TimerStart2:   0x4201c76c, 980 ms
+callout_reset: evq=0x42013250, ev=0x4201c76c
+TimerSetValue: 0x4201c788, 1988 ms
+TimerStart:    0x4201c788
+TimerStop:     0x4201c788
+TimerStart2:   0x4201c788, 1988 ms
+callout_reset: evq=0x42013250, ev=0x4201c788
+TODO: RtcGetCalendarTime
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+RadioOnDioIrq
+RadioIrqProcess
+callout_handler: unlock
+callout_handler: evq=0x42013250, ev=0x4201c76c
+callout_handler: lock
+handle_event_queue: ev=0x4201c76c
+TimerStop:     0x4201c76c
+RadioStandby
+RadioSetChannel: freq=923200000
+RadioSetRxConfig
+RadioStandby
+RadioSetModem
+RadioSetRxConfig done
+RadioRx
+TimerStop:     0x4201b7bc
+TimerStart2:   0x4201b7bc, 3000 ms
+callout_reset: evq=0x42013250, ev=0x4201b7bc
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_RX_TX_TIMEOUT
+TimerStop:     0x4201b7bc
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+DIO1 add event
+TimerStop:     0x4201c788
+TimerStop:     0x4201c750
+OnTxData
+
+##### =========== MCPS-Confirm ============ ######
+STATUS      : OK
+
+##### =====   UPLINK FRAME        2   ===== ######
+
+CLASS       : A
+
+TX PORT     : 1
+TX DATA     : UNCONFIRMED
+48 69 20 4E 75 74 74 58 00
+
+DATA RATE   : DR_3
+U/L FREQ    : 923200000
+TX POWER    : 0
+CHANNEL MASK: 0003
+
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+UplinkProcess
+handle_event_queue: ev=0x4201b878
+RadioOnDioIrq
+RadioIrqProcess
+RadioOnDioIrq
+RadioIrqProcess
+UplinkProcess</code></pre></div><h1 id="touch-panel" class="section-header"><a href="#touch-panel">5 Touch Panel</a></h1>
+<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
+<h1 id="push-button" class="section-header"><a href="#push-button">6 Push Button</a></h1>
+<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pushbutton.c">pinedio-stack-selftest/pushbutton.c</a></p>
+<h1 id="accelerometer" class="section-header"><a href="#accelerometer">7 Accelerometer</a></h1>
+<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c">pinedio-stack-selftest/accelerometer.c</a></p>
+<h1 id="power-management" class="section-header"><a href="#power-management">8 Power Management</a></h1>
+<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c">pinedio-stack-selftest/battery.c</a></p>
+<h1 id="spi-flash" class="section-header"><a href="#spi-flash">9 SPI Flash</a></h1>
+<p>TODO</p>
+<h1 id="gps" class="section-header"><a href="#gps">10 GPS</a></h1>
+<p>TODO: NuttX has a GPS Demo App…</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c">apps/examples/gps/gps_main.c</a></p>
+<p>And a GPS Parser…</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils">apps/gpsutils</a></p>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -127,7 +1252,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinedio2.md"><code>lupyuen.github.io/src/pinedio2.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1510406086326513668">this Twitter Thread</a></li>
 </ol>
