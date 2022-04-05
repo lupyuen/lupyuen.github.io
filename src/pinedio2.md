@@ -115,7 +115,7 @@ Here are the steps to build NuttX for PineDio Stack...
     cp nuttx.bin /mnt/c/blflash
     ```
 
-    We'll flash PineDio Stack with plain old Windows CMD (not WSL) because we need the COM port.
+    We'll flash PineDio Stack with Windows Command Prompt (CMD) because we need the COM port.
 
 _What's "bl602evb:pinedio"?_
 
@@ -160,9 +160,11 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 
 [(See the Output Log)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
 
-For WSL: Do this under plain old Windows CMD (not WSL) because __blflash__ needs to access the COM port.
+__For WSL:__ Do this in the Windows Command Prompt CMD (not WSL) because __blflash__ needs to access the COM port.
 
-[(Flashing WiFi apps to BL602 / BL604? See this)](https://github.com/apache/incubator-nuttx/issues/4336)
+[(Flashing WiFi apps? See this)](https://github.com/apache/incubator-nuttx/issues/4336)
+
+![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
 # Boot PineDio Stack
 
@@ -200,8 +202,6 @@ nsh>
 Congratulations NuttX is now running on PineDio Stack!
 
 [(More details on connecting to BL602 / BL604)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
-
-![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
 # Shared SPI Bus
 
