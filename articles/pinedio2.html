@@ -186,7 +186,7 @@ CP: nuttx.bin</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
-<p>We’ll flash PineDio Stack with plain old Windows CMD (not WSL) because we need the COM port.</p>
+<p>We’ll flash PineDio Stack with Windows Command Prompt (CMD) because we need the COM port.</p>
 </li>
 </ol>
 <p><em>What’s “bl602evb:pinedio”?</em></p>
@@ -227,8 +227,9 @@ blflash flash nuttx.bin \
 # For Windows: Change &quot;COM5&quot; to the PineDio Serial Port
 blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
-<p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? See this)</a></p>
+<p><strong>For WSL:</strong> Do this in the Windows Command Prompt CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
+<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps? See this)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="boot-pinedio-stack" class="section-header"><a href="#boot-pinedio-stack">4 Boot PineDio Stack</a></h1>
 <p>TODO</p>
 <p>Set PineDio Stack to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
@@ -252,7 +253,6 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on PineDio Stack!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
-<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="shared-spi-bus" class="section-header"><a href="#shared-spi-bus">5 Shared SPI Bus</a></h1>
 <p>TODO</p>
 <p>Acording to the PineDio Stack Schematic…</p>
