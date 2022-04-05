@@ -207,6 +207,14 @@ Congratulations NuttX is now running on PineDio Stack!
 
 [(More details on connecting to BL602 / BL604)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
+# Run NuttX
+
+TODO
+
+# Graphics on NuttX
+
+TODO
+
 # Shared SPI Bus
 
 TODO
