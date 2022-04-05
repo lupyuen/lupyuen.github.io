@@ -38,7 +38,7 @@ PineDio Stack is packed __chock-full of features__...
 
 Which makes it an awesome gadget for __IoT Education__!
 
-(It looks like a __"Chonky PineTime"__, because it uses the same display and touch panel as PineTime!)
+(It looks like a __"Chonky PineTime"__, because it uses the same display and touch panel as PineTime)
 
 Today we shall run the open-source, community-supported [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx) (Real-Time Operating System) on PineDio Stack...
 
@@ -56,7 +56,7 @@ NuttX feels like a __lighter version of Linux__ because it uses familiar functio
 
 (NuttX is [__POSIX Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance))
 
-We've done many fun experiments with NuttX on BL602 and BL604: [__ST7789 Display__](https://lupyuen.github.io/articles/st7789), [__BME280 Sensor__](https://lupyuen.github.io/articles/bme280), [__IKEA Air Quality Sensor__](https://lupyuen.github.io/articles/ikea), [__LoRa__](https://lupyuen.github.io/articles/sx1262), [__LoRaWAN__](https://lupyuen.github.io/articles/lorawan3), [__Rust__](https://lupyuen.github.io/articles/rusti2c), [__BASIC__](https://lupyuen.github.io/articles/nuttx#basic-interpreter), ... And now PineDio Stack!
+We've done many fun experiments with NuttX on BL602 and BL604: [__ST7789 Display__](https://lupyuen.github.io/articles/st7789), [__BME280 Sensor__](https://lupyuen.github.io/articles/bme280), [__IKEA Air Quality Sensor__](https://lupyuen.github.io/articles/ikea), [__LoRa__](https://lupyuen.github.io/articles/sx1262), [__LoRaWAN__](https://lupyuen.github.io/articles/lorawan3), [__Rust__](https://lupyuen.github.io/articles/rusti2c), [__BASIC__](https://lupyuen.github.io/articles/nuttx#basic-interpreter), ... And now PineDio Stack.
 
 The source code for __NuttX on PineDio Stack__ is here...
 
@@ -64,9 +64,9 @@ The source code for __NuttX on PineDio Stack__ is here...
 
 -   [__lupyuen/incubator-nuttx-apps__ (pinedio branch)](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio)
 
-    [(Yep I'm a NuttX Contributor!)](https://github.com/apache/incubator-nuttx/pulls?q=is%3Apr+author%3Alupyuen+is%3Aclosed)
+    [(Yep I'm a NuttX Contributor)](https://github.com/apache/incubator-nuttx/pulls?q=is%3Apr+author%3Alupyuen+is%3Aclosed)
 
-Let's go hands-on with NuttX!
+Let's go hands-on with NuttX.
 
 # Build NuttX
 
@@ -103,17 +103,105 @@ Here are the steps to build NuttX for PineDio Stack...
     CP: nuttx.bin
     ```
 
-    That means we have successfully built NuttX for PineDio Stack!
+    We have successfully built the NuttX Firmware for PineDio Stack!
 
     [(See the Build Log)](https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7)
 
+1.  __For WSL:__ Copy the NuttX Firmware to the __c:\blflash__ directory in the Windows File System...
+
+    ```bash
+    ##  /mnt/c/blflash refers to c:\blflash in Windows
+    mkdir /mnt/c/blflash
+    cp nuttx.bin /mnt/c/blflash
+    ```
+
+    We'll flash PineDio Stack with plain old Windows CMD (not WSL) because we need the COM port.
+
 _What's "bl602evb:pinedio"?_
+
+That's the __NuttX Build Configuration__ for PineDio Stack. It selects the Build Options, NuttX Drivers and NuttX Apps that will run on PineDio Stack.
+
+[(See the configuration file)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+
+# Flash PineDio Stack
 
 TODO
 
-NuttX Build Config for PineDio Stack BL604...
+Follow these steps to install __blflash__...
 
--   [.config](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
+
+1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+
+Set PineDio Stack to __Flashing Mode__ and restart the board...
+
+1.  Set the __GPIO 8 Jumper__ to __High__ [(Like this)](https://lupyuen.github.io/images/pinedio-high.jpg)
+
+1.  Disconnect the USB cable and reconnect
+
+    Or use the Improvised Reset Button [(Here's how)](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack)
+
+Enter these commands to flash __nuttx.bin__ to PineDio Stack...
+
+```bash
+## For Linux: Change "/dev/ttyUSB0" to the PineDio Stack Serial Port
+blflash flash nuttx.bin \
+  --port /dev/ttyUSB0 
+
+## For macOS: Change "/dev/tty.usbserial-1410" to the PineDio Stack Serial Port
+blflash flash nuttx.bin \
+  --port /dev/tty.usbserial-1410 \
+  --initial-baud-rate 230400 \
+  --baud-rate 230400
+
+## For Windows: Change "COM5" to the PineDio Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5
+```
+
+[(See the Output Log)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
+
+For WSL: Do this under plain old Windows CMD (not WSL) because __blflash__ needs to access the COM port.
+
+[(Flashing WiFi apps to BL602 / BL604? See this)](https://github.com/apache/incubator-nuttx/issues/4336)
+
+# Boot PineDio Stack
+
+TODO
+
+Set PineDio Stack to __Normal Mode__ (Non-Flashing) and restart the board...
+
+1.  Set the __GPIO 8 Jumper__ to __Low__ [(Like this)](https://lupyuen.github.io/images/pinedio-low.jpg)
+
+1.  Disconnect the USB cable and reconnect
+
+    Or use the Improvised Reset Button [(Here's how)](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack)
+
+After restarting, connect to PineDio Stack's UART Port at 2 Mbps like so...
+
+__For Linux:__ Use __screen__
+
+```bash
+screen /dev/ttyUSB0 2000000
+```
+
+__For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__For Windows:__ Use putty ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+__Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+
+Press Enter to reveal the __NuttX Shell__...
+
+```text
+NuttShell (NSH) NuttX-10.2.0-RC0
+nsh>
+```
+
+Congratulations NuttX is now running on PineDio Stack!
+
+[(More details on connecting to BL602 / BL604)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
+
+![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
 # Shared SPI Bus
 
