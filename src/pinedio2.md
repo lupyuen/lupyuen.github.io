@@ -36,7 +36,7 @@ PineDio Stack is packed __chock-full of features__...
 
     (Thanks to BL604)
 
-Which makes it an incredible gadget for __IoT Education__!
+Which makes it an awesome gadget for __IoT Education__!
 
 (It looks like a __"Chonky PineTime"__, because it uses the same display and touch panel as PineTime!)
 
@@ -50,7 +50,9 @@ _Pine64 PineDio Stack BL604 RISC-V Board_
 
 # What is NuttX?
 
-TODO
+TODO: LoRa, BME280, IKEA Air Quality Sensor, Rust, BASIC
+
+Linux-like, Linux-lite
 
 Source code for Apache NuttX RTOS on PineDio Stack is here...
 
