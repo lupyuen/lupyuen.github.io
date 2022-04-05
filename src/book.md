@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _27 Mar 2022_
+📝 _5 Apr 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(48 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(49 articles and still growing!)__
 
 The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602__.
 
@@ -61,6 +61,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 -   ["Rust talks I2C on Apache NuttX RTOS"](https://lupyuen.github.io/articles/rusti2c)
 
 -   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
+
+-   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
@@ -137,6 +139,8 @@ For __Apache NuttX OS__
 -   ["SPI Interface on NuttX"](https://lupyuen.github.io/articles/sx1262#spi-interface)
 
 -   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
+
+-   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
 
 For __BL602 IoT SDK__
 
@@ -238,6 +242,8 @@ For __Apache NuttX OS__
 
 -   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
 
+-   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
+
 For __BL602 IoT SDK__
 
 -   ["PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"](https://lupyuen.github.io/articles/display)
@@ -273,6 +279,8 @@ For __Apache NuttX OS__
 -   ["Transmit LoRa Message (in Rust)"](https://lupyuen.github.io/articles/rust2#transmit-lora-message)
 
 -   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
+
+-   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
 
 For __BL602 IoT SDK__
 
@@ -436,6 +444,8 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 
 For __Apache NuttX OS__
 
+-   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
+
 -   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
 
 -   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
@@ -495,6 +505,8 @@ Check this book again for future updates...
 1.  __IoT Education with BL602 and BL604__
 
 1.  __The Things Network on NuttX__
+
+1.  __LoRaWAN ChirpStack with Prometheus and Grafana__
 
 ![About the Author](https://lupyuen.github.io/images/book-advocate.jpg)
 
