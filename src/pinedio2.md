@@ -48,8 +48,6 @@ And get started on creating __our own IoT Apps__!
 
 _Pine64 PineDio Stack BL604 RISC-V Board_
 
-![Apache NuttX RTOS, ST7789 Driver and LVGL Graphics Library all run OK on Pine64's PineDio Stack BL604!](https://lupyuen.github.io/images/pinedio2-title.jpg)
-
 # Build NuttX
 
 TODO
