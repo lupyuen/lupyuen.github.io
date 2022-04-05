@@ -68,6 +68,8 @@ The source code for __NuttX on PineDio Stack__ is here...
 
 Let's go hands-on with NuttX.
 
+![Building NuttX](https://lupyuen.github.io/images/nuttx-build2.png)
+
 # Build NuttX
 
 NuttX builds fine on __Linux__ (x64), __macOS__ and __Windows Subsystem for Linux__ (WSL).
@@ -122,6 +124,8 @@ _What's "bl602evb:pinedio"?_
 That's the __NuttX Build Configuration__ for PineDio Stack. It selects the Build Options, NuttX Drivers and NuttX Apps that will run on PineDio Stack.
 
 [(See the configuration file)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+
+![Flashing NuttX](https://lupyuen.github.io/images/nuttx-flash2.png)
 
 # Flash PineDio Stack
 
