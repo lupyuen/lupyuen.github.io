@@ -28,7 +28,7 @@ PineDio Stack is packed __chock-full of features__...
 
 -   SGM40561 __Power Management Unit__
 
--   __Heart Rate Sensor, Compass, Vibrator__
+-   __Heart Rate Sensor, Accelerometer, Compass, Vibrator__
 
 -   __SPI Flash, JTAG Debugging Port, Push Button__
 
