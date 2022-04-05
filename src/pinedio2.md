@@ -209,11 +209,11 @@ Congratulations NuttX is now running on PineDio Stack!
 
 # Run NuttX
 
-TODO
+TODO: Pink Screen, ls /dev
 
 # NuttX Apps
 
-TODO
+TODO: help, lvgltest, lvgldemo
 
 # Shared SPI Bus
 
