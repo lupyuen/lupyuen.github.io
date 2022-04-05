@@ -52,7 +52,9 @@ _Pine64 PineDio Stack BL604 RISC-V Board_
 
 TODO: LoRa, BME280, IKEA Air Quality Sensor, Rust, BASIC
 
-Linux-like, Linux-lite
+NuttX feels like a __lighter version of Linux__ because it uses familiar functions to access the microcontroller hardware:  _open(), read(), write(), ioctl(), ..._
+
+(NuttX is __POSIX Compliant__)
 
 Source code for Apache NuttX RTOS on PineDio Stack is here...
 
