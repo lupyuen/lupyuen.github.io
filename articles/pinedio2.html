@@ -150,16 +150,38 @@
 </ul>
 <p>Let’s go hands-on with NuttX!</p>
 <h1 id="build-nuttx" class="section-header"><a href="#build-nuttx">2 Build NuttX</a></h1>
-<p>TODO</p>
-<p>To download, configure and build NuttX for PineDio Stack BL604…</p>
-<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+<p>NuttX builds fine on <strong>Linux</strong> (x64), <strong>macOS</strong> and <strong>Windows Subsystem for Linux</strong> (WSL).</p>
+<p>Here are the steps to build NuttX for PineDio Stack…</p>
+<ol>
+<li>
+<p>Install the <strong>build prerequisites</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p>Enter these commands to <strong>download, configure and build</strong> NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Download NuttX for PineDio Stack
+mkdir nuttx
 cd nuttx
 git clone --recursive --branch pinedio https://github.com/lupyuen/incubator-nuttx nuttx
 git clone --recursive --branch pinedio https://github.com/lupyuen/incubator-nuttx-apps apps
+
+#  Configure NuttX for PineDio Stack
 cd nuttx
 ./tools/configure.sh bl602evb:pinedio
-make</code></pre></div>
+
+#  Build NuttX for PineDio Stack
+make</code></pre></div></li>
+<li>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>LD: nuttx
+CP: nuttx.hex
+CP: nuttx.bin</code></pre></div>
+<p>That means we have successfully built NuttX for PineDio Stack!</p>
 <p><a href="https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7">(See the Build Log)</a></p>
+</li>
+</ol>
+<p><em>What’s “bl602evb:pinedio”?</em></p>
+<p>TODO</p>
 <p>NuttX Build Config for PineDio Stack BL604…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">.config</a></li>
