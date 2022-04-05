@@ -205,6 +205,8 @@ nsh>
 
 Congratulations NuttX is now running on PineDio Stack!
 
+![PineDio Stack boots with Pink Screen](https://lupyuen.github.io/images/pinedio2-boot4.jpg)
+
 # Run NuttX
 
 TODO
