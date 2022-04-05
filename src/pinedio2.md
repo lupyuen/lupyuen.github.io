@@ -48,7 +48,7 @@ And get started on creating __our own IoT Apps__!
 
 _Pine64 PineDio Stack BL604 RISC-V Board_
 
-# Build NuttX
+# What is NuttX?
 
 TODO
 
@@ -61,6 +61,10 @@ Source code for Apache NuttX RTOS on PineDio Stack is here...
 NuttX Build Config for PineDio Stack BL604...
 
 -   [.config](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+
+# Build NuttX
+
+TODO
 
 To download, configure and build NuttX for PineDio Stack BL604...
 
