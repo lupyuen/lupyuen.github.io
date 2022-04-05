@@ -67,31 +67,33 @@
     <nav id="TOC"><ul>
 <li><a href="#what-is-nuttx">1 What is NuttX?</a><ul></ul></li>
 <li><a href="#build-nuttx">2 Build NuttX</a><ul></ul></li>
-<li><a href="#shared-spi-bus">3 Shared SPI Bus</a><ul>
-<li><a href="#spi-device-id">3.1 SPI Device ID</a><ul></ul></li>
-<li><a href="#swap-miso--mosi">3.2 Swap MISO / MOSI</a><ul></ul></li>
-<li><a href="#spi-device-table">3.3 SPI Device Table</a><ul></ul></li>
-<li><a href="#pin-definitions">3.4 Pin Definitions</a><ul></ul></li>
-<li><a href="#select--deselect-spi-device">3.5 Select / Deselect SPI Device</a><ul></ul></li>
-<li><a href="#spi-command--data">3.6 SPI Command / Data</a><ul></ul></li>
-<li><a href="#deselect-all-spi-devices">3.7 Deselect All SPI Devices</a><ul></ul></li>
-<li><a href="#test-shared-spi-bus">3.8 Test Shared SPI Bus</a><ul></ul></li></ul></li>
-<li><a href="#st7789-display">4 ST7789 Display</a><ul>
-<li><a href="#spi-mode">4.1 SPI Mode</a><ul></ul></li>
-<li><a href="#spi-frequency">4.2 SPI Frequency</a><ul></ul></li>
-<li><a href="#lvgl-test-app">4.3 LVGL Test App</a><ul></ul></li>
-<li><a href="#lvgl-demo-app">4.4 LVGL Demo App</a><ul></ul></li></ul></li>
-<li><a href="#sx1262-lora-transceiver">5 SX1262 LoRa Transceiver</a><ul>
-<li><a href="#test-lora">5.1 Test LoRa</a><ul></ul></li>
-<li><a href="#test-lorawan">5.2 Test LoRaWAN</a><ul></ul></li></ul></li>
-<li><a href="#touch-panel">6 Touch Panel</a><ul></ul></li>
-<li><a href="#push-button">7 Push Button</a><ul></ul></li>
-<li><a href="#accelerometer">8 Accelerometer</a><ul></ul></li>
-<li><a href="#power-management">9 Power Management</a><ul></ul></li>
-<li><a href="#spi-flash">10 SPI Flash</a><ul></ul></li>
-<li><a href="#gps">11 GPS</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>12 Apr 2022</em></p>
+<li><a href="#flash-pinedio-stack">3 Flash PineDio Stack</a><ul></ul></li>
+<li><a href="#boot-pinedio-stack">4 Boot PineDio Stack</a><ul></ul></li>
+<li><a href="#shared-spi-bus">5 Shared SPI Bus</a><ul>
+<li><a href="#spi-device-id">5.1 SPI Device ID</a><ul></ul></li>
+<li><a href="#swap-miso--mosi">5.2 Swap MISO / MOSI</a><ul></ul></li>
+<li><a href="#spi-device-table">5.3 SPI Device Table</a><ul></ul></li>
+<li><a href="#pin-definitions">5.4 Pin Definitions</a><ul></ul></li>
+<li><a href="#select--deselect-spi-device">5.5 Select / Deselect SPI Device</a><ul></ul></li>
+<li><a href="#spi-command--data">5.6 SPI Command / Data</a><ul></ul></li>
+<li><a href="#deselect-all-spi-devices">5.7 Deselect All SPI Devices</a><ul></ul></li>
+<li><a href="#test-shared-spi-bus">5.8 Test Shared SPI Bus</a><ul></ul></li></ul></li>
+<li><a href="#st7789-display">6 ST7789 Display</a><ul>
+<li><a href="#spi-mode">6.1 SPI Mode</a><ul></ul></li>
+<li><a href="#spi-frequency">6.2 SPI Frequency</a><ul></ul></li>
+<li><a href="#lvgl-test-app">6.3 LVGL Test App</a><ul></ul></li>
+<li><a href="#lvgl-demo-app">6.4 LVGL Demo App</a><ul></ul></li></ul></li>
+<li><a href="#sx1262-lora-transceiver">7 SX1262 LoRa Transceiver</a><ul>
+<li><a href="#test-lora">7.1 Test LoRa</a><ul></ul></li>
+<li><a href="#test-lorawan">7.2 Test LoRaWAN</a><ul></ul></li></ul></li>
+<li><a href="#touch-panel">8 Touch Panel</a><ul></ul></li>
+<li><a href="#push-button">9 Push Button</a><ul></ul></li>
+<li><a href="#accelerometer">10 Accelerometer</a><ul></ul></li>
+<li><a href="#power-management">11 Power Management</a><ul></ul></li>
+<li><a href="#spi-flash">12 SPI Flash</a><ul></ul></li>
+<li><a href="#gps">13 GPS</a><ul></ul></li>
+<li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
+<li><a href="#notes">15 Notes</a><ul></ul></li></ul></nav><p>📝 <em>12 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 <p><strong>PineDio Stack BL604</strong> is Pine64’s newest microcontroller board, based on <a href="https://lupyuen.github.io/articles/pinecone"><strong>Bouffalo Lab’s BL604</strong></a> RISC-V + WiFi + Bluetooth LE SoC.</p>
@@ -128,7 +130,7 @@
 </li>
 </ul>
 <p>Which makes it an awesome gadget for <strong>IoT Education</strong>!</p>
-<p>(It looks like a <strong>“Chonky PineTime”</strong>, because it uses the same display and touch panel as PineTime!)</p>
+<p>(It looks like a <strong>“Chonky PineTime”</strong>, because it uses the same display and touch panel as PineTime)</p>
 <p>Today we shall run the open-source, community-supported <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) on PineDio Stack…</p>
 <p>And get started on creating <strong>our own IoT Apps</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
@@ -137,7 +139,7 @@
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX</strong></a> is a popular Real-Time Operating System (RTOS) for microcontrollers (8-bit to 64-bit). It runs on all kinds of hardware: <strong>Arm, ESP32, RISC-V,</strong> … Even <a href="https://docs.px4.io/master/en/"><strong>flying drones</strong></a>!</p>
 <p>NuttX feels like a <strong>lighter version of Linux</strong> because it uses familiar functions to access the microcontroller hardware:  <em>open(), read(), write(), ioctl(), …</em></p>
 <p>(NuttX is <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX Compliant</strong></a>)</p>
-<p>We’ve done many fun experiments with NuttX on BL602 and BL604: <a href="https://lupyuen.github.io/articles/st7789"><strong>ST7789 Display</strong></a>, <a href="https://lupyuen.github.io/articles/bme280"><strong>BME280 Sensor</strong></a>, <a href="https://lupyuen.github.io/articles/ikea"><strong>IKEA Air Quality Sensor</strong></a>, <a href="https://lupyuen.github.io/articles/sx1262"><strong>LoRa</strong></a>, <a href="https://lupyuen.github.io/articles/lorawan3"><strong>LoRaWAN</strong></a>, <a href="https://lupyuen.github.io/articles/rusti2c"><strong>Rust</strong></a>, <a href="https://lupyuen.github.io/articles/nuttx#basic-interpreter"><strong>BASIC</strong></a>, … And now PineDio Stack!</p>
+<p>We’ve done many fun experiments with NuttX on BL602 and BL604: <a href="https://lupyuen.github.io/articles/st7789"><strong>ST7789 Display</strong></a>, <a href="https://lupyuen.github.io/articles/bme280"><strong>BME280 Sensor</strong></a>, <a href="https://lupyuen.github.io/articles/ikea"><strong>IKEA Air Quality Sensor</strong></a>, <a href="https://lupyuen.github.io/articles/sx1262"><strong>LoRa</strong></a>, <a href="https://lupyuen.github.io/articles/lorawan3"><strong>LoRaWAN</strong></a>, <a href="https://lupyuen.github.io/articles/rusti2c"><strong>Rust</strong></a>, <a href="https://lupyuen.github.io/articles/nuttx#basic-interpreter"><strong>BASIC</strong></a>, … And now PineDio Stack.</p>
 <p>The source code for <strong>NuttX on PineDio Stack</strong> is here…</p>
 <ul>
 <li>
@@ -145,10 +147,10 @@
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio"><strong>lupyuen/incubator-nuttx-apps</strong> (pinedio branch)</a></p>
-<p><a href="https://github.com/apache/incubator-nuttx/pulls?q=is%3Apr+author%3Alupyuen+is%3Aclosed">(Yep I’m a NuttX Contributor!)</a></p>
+<p><a href="https://github.com/apache/incubator-nuttx/pulls?q=is%3Apr+author%3Alupyuen+is%3Aclosed">(Yep I’m a NuttX Contributor)</a></p>
 </li>
 </ul>
-<p>Let’s go hands-on with NuttX!</p>
+<p>Let’s go hands-on with NuttX.</p>
 <h1 id="build-nuttx" class="section-header"><a href="#build-nuttx">2 Build NuttX</a></h1>
 <p>NuttX builds fine on <strong>Linux</strong> (x64), <strong>macOS</strong> and <strong>Windows Subsystem for Linux</strong> (WSL).</p>
 <p>Here are the steps to build NuttX for PineDio Stack…</p>
@@ -176,17 +178,82 @@ make</code></pre></div></li>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
 CP: nuttx.bin</code></pre></div>
-<p>That means we have successfully built NuttX for PineDio Stack!</p>
+<p>We have successfully built the NuttX Firmware for PineDio Stack!</p>
 <p><a href="https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7">(See the Build Log)</a></p>
+</li>
+<li>
+<p><strong>For WSL:</strong> Copy the NuttX Firmware to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
+mkdir /mnt/c/blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
+<p>We’ll flash PineDio Stack with plain old Windows CMD (not WSL) because we need the COM port.</p>
 </li>
 </ol>
 <p><em>What’s “bl602evb:pinedio”?</em></p>
+<p>That’s the <strong>NuttX Build Configuration</strong> for PineDio Stack. It selects the Build Options, NuttX Drivers and NuttX Apps that will run on PineDio Stack.</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the configuration file)</a></p>
+<h1 id="flash-pinedio-stack" class="section-header"><a href="#flash-pinedio-stack">3 Flash PineDio Stack</a></h1>
 <p>TODO</p>
-<p>NuttX Build Config for PineDio Stack BL604…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">.config</a></li>
-</ul>
-<h1 id="shared-spi-bus" class="section-header"><a href="#shared-spi-bus">3 Shared SPI Bus</a></h1>
+<p>Follow these steps to install <strong>blflash</strong>…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#install-rustup"><strong>“Install rustup”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/flash#download-and-build-blflash"><strong>“Download and build blflash”</strong></a></p>
+</li>
+</ol>
+<p>Set PineDio Stack to <strong>Flashing Mode</strong> and restart the board…</p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>High</strong> <a href="https://lupyuen.github.io/images/pinedio-high.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Disconnect the USB cable and reconnect</p>
+<p>Or use the Improvised Reset Button <a href="https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack">(Here’s how)</a></p>
+</li>
+</ol>
+<p>Enter these commands to flash <strong>nuttx.bin</strong> to PineDio Stack…</p>
+<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the PineDio Stack Serial Port
+blflash flash nuttx.bin \
+  --port /dev/ttyUSB0 
+
+# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the PineDio Stack Serial Port
+blflash flash nuttx.bin \
+  --port /dev/tty.usbserial-1410 \
+  --initial-baud-rate 230400 \
+  --baud-rate 230400
+
+# For Windows: Change &quot;COM5&quot; to the PineDio Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
+<p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
+<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? See this)</a></p>
+<h1 id="boot-pinedio-stack" class="section-header"><a href="#boot-pinedio-stack">4 Boot PineDio Stack</a></h1>
+<p>TODO</p>
+<p>Set PineDio Stack to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
+<ol>
+<li>
+<p>Set the <strong>GPIO 8 Jumper</strong> to <strong>Low</strong> <a href="https://lupyuen.github.io/images/pinedio-low.jpg">(Like this)</a></p>
+</li>
+<li>
+<p>Disconnect the USB cable and reconnect</p>
+<p>Or use the Improvised Reset Button <a href="https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack">(Here’s how)</a></p>
+</li>
+</ol>
+<p>After restarting, connect to PineDio Stack’s UART Port at 2 Mbps like so…</p>
+<p><strong>For Linux:</strong> Use <strong>screen</strong></p>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
+<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For Windows:</strong> Use putty (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt;</code></pre></div>
+<p>Congratulations NuttX is now running on PineDio Stack!</p>
+<p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
+<h1 id="shared-spi-bus" class="section-header"><a href="#shared-spi-bus">5 Shared SPI Bus</a></h1>
 <p>TODO</p>
 <p>Acording to the PineDio Stack Schematic…</p>
 <ul>
@@ -228,12 +295,12 @@ CP: nuttx.bin</code></pre></div>
 </tbody></table>
 </div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L106-L127">(Source)</a></p>
-<h2 id="spi-device-id" class="section-header"><a href="#spi-device-id">3.1 SPI Device ID</a></h2>
+<h2 id="spi-device-id" class="section-header"><a href="#spi-device-id">5.1 SPI Device ID</a></h2>
 <p>TODO</p>
 <p>NuttX auto-assigns 0x40000 as the SPI Device ID for ST7789 Display. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/spi/spi.h#L459">(See this)</a></p>
 <p>We assigned the other SPI Device IDs ourselves.</p>
 <p>Device ID -1 is meant as a fallthrough to catch all SPI Devices that don’t match the Device IDs. This also works for simple SPI setups where the Device ID is not needed.</p>
-<h2 id="swap-miso--mosi" class="section-header"><a href="#swap-miso--mosi">3.2 Swap MISO / MOSI</a></h2>
+<h2 id="swap-miso--mosi" class="section-header"><a href="#swap-miso--mosi">5.2 Swap MISO / MOSI</a></h2>
 <p>TODO</p>
 <p>According to <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a> (Table 3.1 “Pin Description”, Page 26)…</p>
 <ul>
@@ -256,7 +323,7 @@ CP: nuttx.bin</code></pre></div>
 </li>
 </ul>
 <p>The direction of SPI Data is flipped for ST7789. That’s why the “Swap MISO / MOSI” column is marked “No” for ST7789 Display Controller.</p>
-<h2 id="spi-device-table" class="section-header"><a href="#spi-device-table">3.3 SPI Device Table</a></h2>
+<h2 id="spi-device-table" class="section-header"><a href="#spi-device-table">5.3 SPI Device Table</a></h2>
 <p>TODO</p>
 <p>We represent the above SPI Device Table in NuttX as a flat int array…</p>
 <div><table><thead><tr><th style="text-align: left">SPI Device</th><th style="text-align: center">Device ID</th><th style="text-align: center">Swap MISO/MOSI</th><th style="text-align: center">Chip Select</th></tr></thead><tbody>
@@ -311,7 +378,7 @@ static const int32_t bl602_spi_device_table[] =
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L140-L176">bl602_spi_validate_devices</a>: Validate the devices in the SPI Device Table</p>
 </li>
 </ul>
-<h2 id="pin-definitions" class="section-header"><a href="#pin-definitions">3.4 Pin Definitions</a></h2>
+<h2 id="pin-definitions" class="section-header"><a href="#pin-definitions">5.4 Pin Definitions</a></h2>
 <p>TODO</p>
 <p>The SPI Device Table above refers to the following Pin Definitions…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* SPI for PineDio Stack: Chip Select (unused), MOSI, MISO, SCK */
@@ -344,7 +411,7 @@ static const int32_t bl602_spi_device_table[] =
 #define BOARD_FLASH_SWAP  1  /* Swap MISO/MOSI */
 #define BOARD_FLASH_CS (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN14)</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L128">(Source)</a></p>
-<h2 id="select--deselect-spi-device" class="section-header"><a href="#select--deselect-spi-device">3.5 Select / Deselect SPI Device</a></h2>
+<h2 id="select--deselect-spi-device" class="section-header"><a href="#select--deselect-spi-device">5.5 Select / Deselect SPI Device</a></h2>
 <p>TODO</p>
 <p>BL602 NuttX SPI Driver looks up the SPI Device Table to 1️⃣ Swap MISO and MOSI Pins 2️⃣ Flip the Chip Select Pins. This is how we select and deselect each SPI Device…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Enable/disable the SPI chip select
@@ -383,7 +450,7 @@ static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid,
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471">(Source)</a></p>
 <p><code>bl602_spi_select</code> is called after locking the SPI Bus.</p>
-<h2 id="spi-command--data" class="section-header"><a href="#spi-command--data">3.6 SPI Command / Data</a></h2>
+<h2 id="spi-command--data" class="section-header"><a href="#spi-command--data">5.6 SPI Command / Data</a></h2>
 <p>TODO</p>
 <p>NuttX RTOS uses MISO as the ST7789 Data / Command Pin … But ST7789 is wired “backwards” on PineDio Stack BL604! We use MOSI as the ST7789 Data / Command Pin instead.</p>
 <p>Here how we flip the ST7789 Data / Command pin depending on MISO / MOSI Swap…</p>
@@ -437,7 +504,7 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 }
 #endif</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L726-L774">(Source)</a></p>
-<h2 id="deselect-all-spi-devices" class="section-header"><a href="#deselect-all-spi-devices">3.7 Deselect All SPI Devices</a></h2>
+<h2 id="deselect-all-spi-devices" class="section-header"><a href="#deselect-all-spi-devices">5.7 Deselect All SPI Devices</a></h2>
 <p>TODO</p>
 <p>At NuttX Startup, we deselect all SPI Devices … By flipping their Chip Select Pins high…</p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_spi_init(struct spi_dev_s *dev)
@@ -491,7 +558,7 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
   bl602_spi_deselect_devices();
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L1191-L1240">(Source)</a></p>
-<h2 id="test-shared-spi-bus" class="section-header"><a href="#test-shared-spi-bus">3.8 Test Shared SPI Bus</a></h2>
+<h2 id="test-shared-spi-bus" class="section-header"><a href="#test-shared-spi-bus">5.8 Test Shared SPI Bus</a></h2>
 <p>TODO</p>
 <p>Will ST7789 Display play nice with LoRa SX1262 on PineDio Stack BL604? Yep SX1262 works OK on the Shared SPI Bus!</p>
 <p>PineDio Stack boots and renders a Pink Screen…</p>
@@ -656,9 +723,9 @@ st7789_sendcmd: cmd: 0x2c
 st7789_sendcmd: OK
 monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 <p>Which renders the LVGL Demo Screen on ST7789 correctly!</p>
-<h1 id="st7789-display" class="section-header"><a href="#st7789-display">4 ST7789 Display</a></h1>
+<h1 id="st7789-display" class="section-header"><a href="#st7789-display">6 ST7789 Display</a></h1>
 <p>TODO</p>
-<h2 id="spi-mode" class="section-header"><a href="#spi-mode">4.1 SPI Mode</a></h2>
+<h2 id="spi-mode" class="section-header"><a href="#spi-mode">6.1 SPI Mode</a></h2>
 <p>TODO</p>
 <p>BL602 / BL604 talks to ST7789 Display at SPI Mode 1 or 3 … Depends whether MISO / MOSI are swapped</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_BL602_SPI0
@@ -677,12 +744,12 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 #else
 #endif   /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66">(Source)</a></p>
-<h2 id="spi-frequency" class="section-header"><a href="#spi-frequency">4.2 SPI Frequency</a></h2>
+<h2 id="spi-frequency" class="section-header"><a href="#spi-frequency">6.2 SPI Frequency</a></h2>
 <p>TODO</p>
 <p>ST7789 Display runs OK at SPI Frequency 4 MHz. Maybe we can go higher?</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_LCD_ST7789_FREQUENCY=4000000</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L542">(Source)</a></p>
-<h2 id="lvgl-test-app" class="section-header"><a href="#lvgl-test-app">4.3 LVGL Test App</a></h2>
+<h2 id="lvgl-test-app" class="section-header"><a href="#lvgl-test-app">6.3 LVGL Test App</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="LVGL Test App" /></p>
 <p>LVGL Test App is here…</p>
@@ -773,7 +840,7 @@ static void create_widgets(void)
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L104-L159">(Source)</a></p>
 <p>To render our own text and graphics, edit this source file and change the code above…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/lvgltest/lvgltest.c</code></pre></div><h2 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">4.4 LVGL Demo App</a></h2>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/lvgltest/lvgltest.c</code></pre></div><h2 id="lvgl-demo-app" class="section-header"><a href="#lvgl-demo-app">6.4 LVGL Demo App</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-dark2.jpg" alt="LVGL Demo App" /></p>
 <p>To run the app, enter this at the NuttX Shell…</p>
@@ -793,9 +860,9 @@ static void create_widgets(void)
     lv_msgbox_add_btns(m, btns);
     lv_obj_t * btnm = lv_msgbox_get_btnmatrix(m);
     lv_btnmatrix_set_btn_ctrl(btnm, 1, LV_BTNMATRIX_CTRL_CHECK_STATE);
-#endif</code></pre></div><h1 id="sx1262-lora-transceiver" class="section-header"><a href="#sx1262-lora-transceiver">5 SX1262 LoRa Transceiver</a></h1>
+#endif</code></pre></div><h1 id="sx1262-lora-transceiver" class="section-header"><a href="#sx1262-lora-transceiver">7 SX1262 LoRa Transceiver</a></h1>
 <p>TODO</p>
-<h2 id="test-lora" class="section-header"><a href="#test-lora">5.1 Test LoRa</a></h2>
+<h2 id="test-lora" class="section-header"><a href="#test-lora">7.1 Test LoRa</a></h2>
 <p>TODO</p>
 <p>To test LoRa on PineDio Stack, edit <a href="https://github.com/lupyuen/sx1262_test/blob/main/sx1262_test_main.c"><code>sx1262_test_main.c</code></a> at…</p>
 <div class="example-wrap"><pre class="language-text"><code>apps/examples/sx1262_test/sx1262_test_main.c</code></pre></div>
@@ -803,7 +870,7 @@ static void create_widgets(void)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sx1262#lora-parameters">“LoRa Parameters”</a></li>
 </ul>
-<h2 id="test-lorawan" class="section-header"><a href="#test-lorawan">5.2 Test LoRaWAN</a></h2>
+<h2 id="test-lorawan" class="section-header"><a href="#test-lorawan">7.2 Test LoRaWAN</a></h2>
 <p>TODO</p>
 <p>LoRaWAN works OK on Shared SPI Bus yay! PineDio Stack connects to LoRaWAN Gateway (ChirpStack) and sends data packets.</p>
 <p>(Internal Temperature Sensor on ADC works OK too)</p>
@@ -1247,22 +1314,22 @@ RadioOnDioIrq
 RadioIrqProcess
 RadioOnDioIrq
 RadioIrqProcess
-UplinkProcess</code></pre></div><h1 id="touch-panel" class="section-header"><a href="#touch-panel">6 Touch Panel</a></h1>
+UplinkProcess</code></pre></div><h1 id="touch-panel" class="section-header"><a href="#touch-panel">8 Touch Panel</a></h1>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
-<h1 id="push-button" class="section-header"><a href="#push-button">7 Push Button</a></h1>
+<h1 id="push-button" class="section-header"><a href="#push-button">9 Push Button</a></h1>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pushbutton.c">pinedio-stack-selftest/pushbutton.c</a></p>
-<h1 id="accelerometer" class="section-header"><a href="#accelerometer">8 Accelerometer</a></h1>
+<h1 id="accelerometer" class="section-header"><a href="#accelerometer">10 Accelerometer</a></h1>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c">pinedio-stack-selftest/accelerometer.c</a></p>
-<h1 id="power-management" class="section-header"><a href="#power-management">9 Power Management</a></h1>
+<h1 id="power-management" class="section-header"><a href="#power-management">11 Power Management</a></h1>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c">pinedio-stack-selftest/battery.c</a></p>
-<h1 id="spi-flash" class="section-header"><a href="#spi-flash">10 SPI Flash</a></h1>
+<h1 id="spi-flash" class="section-header"><a href="#spi-flash">12 SPI Flash</a></h1>
 <p>TODO</p>
-<h1 id="gps" class="section-header"><a href="#gps">11 GPS</a></h1>
+<h1 id="gps" class="section-header"><a href="#gps">13 GPS</a></h1>
 <p>TODO: NuttX has a GPS Demo App…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c">apps/examples/gps/gps_main.c</a></p>
 <p>And a GPS Parser…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils">apps/gpsutils</a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next" class="section-header"><a href="#whats-next">14 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -1281,7 +1348,7 @@ UplinkProcess</code></pre></div><h1 id="touch-panel" class="section-header"><a h
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinedio2.md"><code>lupyuen.github.io/src/pinedio2.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes" class="section-header"><a href="#notes">15 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1510406086326513668">this Twitter Thread</a></li>
 </ol>
