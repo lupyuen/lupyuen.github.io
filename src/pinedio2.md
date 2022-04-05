@@ -50,23 +50,23 @@ _Pine64 PineDio Stack BL604 RISC-V Board_
 
 # What is NuttX?
 
-TODO: LoRa, BME280, IKEA Air Quality Sensor, Rust, BASIC
+[__Apache NuttX__](https://nuttx.apache.org/docs/latest/) is a popular Real-Time Operating System (RTOS) for microcontrollers (8-bit to 64-bit). It runs on all kinds of hardware: __Arm, ESP32, RISC-V,__ ... Even [__flying drones__](https://docs.px4.io/master/en/)!
 
 NuttX feels like a __lighter version of Linux__ because it uses familiar functions to access the microcontroller hardware:  _open(), read(), write(), ioctl(), ..._
 
-(NuttX is __POSIX Compliant__)
+(NuttX is [__POSIX Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance))
 
-Source code for Apache NuttX RTOS on PineDio Stack is here...
+We've done many fun experiments with NuttX on BL602 and BL604: [__ST7789 Display__](https://lupyuen.github.io/articles/st7789), [__BME280 Sensor__](https://lupyuen.github.io/articles/bme280), [__IKEA Air Quality Sensor__](https://lupyuen.github.io/articles/ikea), [__LoRa__](https://lupyuen.github.io/articles/sx1262), [__LoRaWAN__](https://lupyuen.github.io/articles/lorawan3), [__Rust__](https://lupyuen.github.io/articles/rusti2c), [__BASIC__](https://lupyuen.github.io/articles/nuttx#basic-interpreter), ... And now PineDio Stack!
 
--   [lupyuen/incubator-nuttx (pinedio branch)](https://github.com/lupyuen/incubator-nuttx/tree/pinedio)
+The source code for __NuttX on PineDio Stack__ is here...
 
--   [lupyuen/incubator-nuttx-apps (pinedio branch)](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio)
+-   [__lupyuen/incubator-nuttx__ (pinedio branch)](https://github.com/lupyuen/incubator-nuttx/tree/pinedio)
 
-NuttX Build Config for PineDio Stack BL604...
+-   [__lupyuen/incubator-nuttx-apps__ (pinedio branch)](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio)
 
--   [.config](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+    [(Yep I'm a NuttX Contributor!)](https://github.com/apache/incubator-nuttx/pulls?q=is%3Apr+author%3Alupyuen+is%3Aclosed)
 
-[(I'm a happy contributor to NuttX)](https://github.com/apache/incubator-nuttx/pulls?q=is%3Apr+author%3Alupyuen+is%3Aclosed)
+Let's go hands-on with NuttX!
 
 # Build NuttX
 
@@ -85,6 +85,10 @@ make
 ```
 
 [(See the Build Log)](https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7)
+
+NuttX Build Config for PineDio Stack BL604...
+
+-   [.config](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
 
 # Shared SPI Bus
 
