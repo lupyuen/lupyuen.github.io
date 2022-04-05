@@ -22,7 +22,7 @@ PineDio Stack is packed __chock-full of features__...
 
 -   Semtech SX1262 __LoRa Transceiver__
 
-    (Works with LoRaWAN)
+    (Works with LoRaWAN wireless networks)
 
 -   AT6558 __GPS / GNSS Receiver__
 
