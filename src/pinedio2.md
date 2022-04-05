@@ -62,6 +62,8 @@ NuttX Build Config for PineDio Stack BL604...
 
 -   [.config](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
 
+[(I'm a happy contributor to NuttX)](https://github.com/apache/incubator-nuttx/pulls?q=is%3Apr+author%3Alupyuen+is%3Aclosed)
+
 # Build NuttX
 
 TODO
