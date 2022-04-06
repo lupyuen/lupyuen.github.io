@@ -155,19 +155,19 @@ Let's get ready to flash the NuttX Firmware to PineDio Stack!
 
 _What's on the Main Board?_
 
-TODO
+-   [__GPIO 8 Jumper__](https://lupyuen.github.io/images/pinedio2-jumper.jpg): Sets PineDio Stack to Flashing Mode or Normal Mode
 
--   [__GPIO 8 Jumper__](https://lupyuen.github.io/images/pinedio2-jumper.jpg)
+-   [__Improvised Reset Button__](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack): We connect a Jumper Cable to restart PineDio Stack during flashing and testing
 
--   Improvised Reset Button
+-   TODO: __LoRa Antenna__
 
--   LoRa Antenna
+-   TODO: __WiFi / Bluetooth LE Antenna__
 
--   WiFi Antenna
+-   TODO: __JTAG Port__
 
--   JTAG Port
+-   TODO: __I/O Connector__ for Base Board
 
--   I/O Connector for Base Board
+We're ready to flash PineDio Stack!
 
 ![Flashing NuttX](https://lupyuen.github.io/images/nuttx-flash2.png)
 
