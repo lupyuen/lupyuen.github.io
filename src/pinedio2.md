@@ -234,7 +234,7 @@ So go ahead and create your own PineDio Stack firmware, it's all OK!
 
 # Boot PineDio Stack
 
-TODO
+Like Linux, NuttX provides a __Command-Line Interface__ for controlling our gadget. This is how we access the __NuttX Shell__...
 
 Set PineDio Stack to __Normal Mode__ (Non-Flashing) and restart the board...
 
@@ -244,7 +244,7 @@ Set PineDio Stack to __Normal Mode__ (Non-Flashing) and restart the board...
 
     Or use the Improvised Reset Button [(Here's how)](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack)
 
-After restarting, connect to PineDio Stack's UART Port at 2 Mbps like so...
+After restarting, connect a __Serial Terminal__ to PineDio Stack at __2 Mbps__...
 
 __For Linux:__ Use __screen__
 
@@ -252,11 +252,11 @@ __For Linux:__ Use __screen__
 screen /dev/ttyUSB0 2000000
 ```
 
-__For macOS:__ Use CoolTerm ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+__For macOS:__ Use CoolTerm [(See this)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
-__For Windows:__ Use putty ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+__For Windows:__ Use putty [(See this)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
-__Alternatively:__ Use the Web Serial Terminal ([See this](https://lupyuen.github.io/articles/flash#watch-the-firmware-run))
+__Alternatively:__ Use the Web Serial Terminal [(See this)](https://lupyuen.github.io/articles/flash#watch-the-firmware-run)
 
 Press Enter to reveal the __NuttX Shell__...
 
@@ -271,7 +271,17 @@ Congratulations NuttX is now running on PineDio Stack!
 
 # Run NuttX
 
-TODO: Pink Screen, ls /dev
+NuttX boots with a [__Pink Screen__](https://lupyuen.github.io/articles/st7789#render-pink-screen). (Pic above)
+
+In the NuttX Shell, enter this command...
+
+```bash
+ls /dev
+```
+
+We should see a list of __Device Drivers__ that were loaded by NuttX...
+
+TODO
 
 # NuttX Apps
 
