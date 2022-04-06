@@ -203,8 +203,8 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <li>
 <p>Connect PineDio Stack to our computer’s <strong>USB Port</strong>.</p>
 <p>The <strong>Self Test</strong> screen appears. (Pic above)</p>
-<p><strong>Tap each button</strong> to make sure that PineDio Stack is OK.</p>
-<p><a href="https://lupyuen.github.io/images/pinedio2-test.jpg">(Here’s what we should see)</a></p>
+<p><strong>Tap each button</strong> to verify that PineDio Stack is OK.</p>
+<p><a href="https://lupyuen.github.io/images/pinedio2-test.jpg">(We should see this)</a></p>
 </li>
 <li>
 <p>Disconnect PineDio Stack from the USB Port.</p>
@@ -246,6 +246,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </ul>
 <p>We’re ready to flash PineDio Stack!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
+<p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(Source)</a></p>
 <h1 id="flash-pinedio-stack" class="section-header"><a href="#flash-pinedio-stack">4 Flash PineDio Stack</a></h1>
 <p>Let’s flash the NuttX Firmware to PineDio Stack.  Follow these steps to install <strong>blflash</strong>…</p>
 <ul>
@@ -344,7 +345,7 @@ nsh&gt;</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>lvgltest</code></pre></div>
 <p>This appears on the screen…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="LVGL Test App on PineDio Stack" /></p>
-<p>Here’s the code that renders the screen, by calling the <strong>LVGL Graphics Library</strong>…</p>
+<p>Below is the code that renders the screen, by calling the <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#learn-the-basics"><strong>LVGL Graphics Library</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Create the LVGL Widgets that will be rendered on the display
 static void create_widgets(void) {
   //  Get the Active Screen
