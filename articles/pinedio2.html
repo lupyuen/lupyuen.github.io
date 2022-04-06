@@ -221,7 +221,27 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinedio2-inside5.jpg" alt="Inside PineDio Stack" /></p>
 <p><em>What’s on the Main Board?</em></p>
-<p>TODO: <a href="https://lupyuen.github.io/images/pinedio2-jumper.jpg"><strong>GPIO 8 Jumper</strong></a></p>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/images/pinedio2-jumper.jpg"><strong>GPIO 8 Jumper</strong></a></p>
+</li>
+<li>
+<p>Improvised Reset Button</p>
+</li>
+<li>
+<p>LoRa Antenna</p>
+</li>
+<li>
+<p>WiFi Antenna</p>
+</li>
+<li>
+<p>JTAG Port</p>
+</li>
+<li>
+<p>I/O Connector for Base Board</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h1 id="flash-pinedio-stack" class="section-header"><a href="#flash-pinedio-stack">4 Flash PineDio Stack</a></h1>
 <p>TODO</p>
@@ -260,6 +280,9 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p><strong>For WSL:</strong> Do this in the Windows Command Prompt CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps? See this)</a></p>
+<p><em>Will PineDio Stack get bricked if we flash bad firmware?</em></p>
+<p>After using BL602 and BL604 for 1.5 years, I’ve never bricked a single BL602 or BL604 board.</p>
+<p>So go ahead and create your own PineDio Stack firmware, it’s all OK!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="boot-pinedio-stack" class="section-header"><a href="#boot-pinedio-stack">5 Boot PineDio Stack</a></h1>
 <p>TODO</p>
