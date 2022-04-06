@@ -175,13 +175,11 @@ We're ready to flash PineDio Stack!
 
 # Flash PineDio Stack
 
-TODO
+Let's flash the NuttX Firmware to PineDio Stack.  Follow these steps to install __blflash__...
 
-Follow these steps to install __blflash__...
+-   [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
 
-1.  [__"Install rustup"__](https://lupyuen.github.io/articles/flash#install-rustup)
-
-1.  [__"Download and build blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
+-   [__"Download blflash"__](https://lupyuen.github.io/articles/flash#download-and-build-blflash)
 
 Set PineDio Stack to __Flashing Mode__ and restart the board...
 
@@ -221,6 +219,8 @@ Success
 ```
 
 [(See the Flash Log)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
+
+The NuttX Firmware has been flashed to PineDio Stack!
 
 _Will PineDio Stack get bricked if we flash bad firmware?_
 
