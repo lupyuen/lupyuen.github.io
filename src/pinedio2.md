@@ -133,7 +133,7 @@ Let's get ready to flash the NuttX Firmware to PineDio Stack!
 
 -   Connect PineDio Stack to our computer's __USB Port__.
 
-    The __Self Test__ screen will appear. (Pic above)
+    The __Self Test__ screen appears. (Pic above)
 
     __Tap each button__ to make sure that PineDio Stack is OK.
 
@@ -220,7 +220,7 @@ Success
 
 [(See the Flash Log)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
 
-The NuttX Firmware has been flashed to PineDio Stack!
+NuttX has been flashed to PineDio Stack!
 
 _Will PineDio Stack get bricked if we flash bad firmware?_
 
@@ -1519,3 +1519,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1510406086326513668)
+
+1.  Besides NuttX, there are two other ways to code firmware for PineDio Stack...
+
+    [__BL IoT SDL__](https://github.com/bouffalolab/bl_iot_sdk): Supports WiFi and is based on FreeRTOS
+
+    [__BL MCU SDK__](https://github.com/bouffalolab/bl_mcu_sdk): Doesn't support WiFi, also based on FreeRTOS)
+
+1.  The PineDio Stack Self-Test Firmware was created by JF with BL MCU SDK...
+
+    [__JF002/pinedio-stack-selftest__](https://codeberg.org/JF002/pinedio-stack-selftest)
