@@ -155,7 +155,7 @@ Let's get ready to flash the NuttX Firmware to PineDio Stack!
 
 _What's on the Main Board?_
 
--   [__GPIO 8 Jumper__](https://lupyuen.github.io/images/pinedio2-jumper.jpg): Sets PineDio Stack to Flashing Mode or Normal Mode
+-   [__GPIO 8 Jumper__](https://lupyuen.github.io/images/pinedio2-jumper.jpg): Set PineDio Stack to Flashing Mode or Normal Mode
 
 -   [__Improvised Reset Button__](https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack): We connect a Jumper Cable to restart PineDio Stack during flashing and testing
 
