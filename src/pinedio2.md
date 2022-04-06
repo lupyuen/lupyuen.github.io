@@ -139,7 +139,7 @@ Remove baseboard
 
 ![Inside PineDio Stack](https://lupyuen.github.io/images/pinedio2-inside5.jpg)
 
-TODO
+TODO: [__GPIO 8 Jumper__](https://lupyuen.github.io/images/pinedio2-jumper.jpg)
 
 ![Flashing NuttX](https://lupyuen.github.io/images/nuttx-flash2.png)
 
