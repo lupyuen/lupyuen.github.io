@@ -283,6 +283,8 @@ We'll see a list of __Device Drivers__ that were loaded by NuttX...
 
 TODO
 
+[(Source)](https://gist.github.com/lupyuen/80f3bc431c9e5aa93d429809c9554629)
+
 # NuttX Apps
 
 TODO: help, lvgltest, lvgldemo
@@ -297,7 +299,15 @@ help
 
 We'll see a list of __NuttX Apps__ that have been installed...
 
-TODO
+```text
+Builtin Apps:
+  bas                      lorawan_test             spi_test                 
+  bl602_adc_test           lvgldemo                 spi_test2                
+  getprime                 lvgltest                 sx1262_test              
+  gpio                     nsh                      timer                    
+  hello                    sensortest               tinycbor_test            
+  ikea_air_quality_sensor  sh   
+```
 
 Enter this command to run the __LVGL Test App__...
 
