@@ -320,28 +320,27 @@ nsh&gt;</code></pre></div>
 <p>NuttX boots with a <a href="https://lupyuen.github.io/articles/st7789#render-pink-screen"><strong>Pink Screen</strong></a>. (Pic above)</p>
 <p>In the NuttX Shell, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
-<p>We’ll see a list of <strong>Device Drivers</strong> that were loaded by NuttX…</p>
-<p>TODO</p>
+<p>We see a list of <strong>Device Drivers</strong> that were loaded by NuttX…</p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-run4a.png" alt="PineDio Stack boots with Pink Screen" /></p>
 <p><a href="https://gist.github.com/lupyuen/80f3bc431c9e5aa93d429809c9554629">(Source)</a></p>
+<p>Now that NuttX is up, let’s run some NuttX Apps!</p>
 <h1 id="nuttx-apps" class="section-header"><a href="#nuttx-apps">7 NuttX Apps</a></h1>
-<p>TODO: help, lvgltest, lvgldemo</p>
 <p>In the NuttX Shell, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div>
 <p>(“<strong><code>?</code></strong>” works too)</p>
-<p>We’ll see a list of <strong>NuttX Apps</strong> that have been installed…</p>
+<p>We see a list of <strong>NuttX Apps</strong> that have been installed…</p>
 <div class="example-wrap"><pre class="language-text"><code>Builtin Apps:
-  bas                      lorawan_test             spi_test                 
-  bl602_adc_test           lvgldemo                 spi_test2                
-  getprime                 lvgltest                 sx1262_test              
-  gpio                     nsh                      timer                    
-  hello                    sensortest               tinycbor_test            
-  ikea_air_quality_sensor  sh   </code></pre></div>
-<p>Enter this command to run the <strong>LVGL Test App</strong>…</p>
+  bas             lorawan_test  spi_test                 
+  bl602_adc_test  lvgldemo      spi_test2                
+  getprime        lvgltest      sx1262_test              
+  gpio            nsh           timer                    
+  hello           sensortest    tinycbor_test            
+  ikea_air_quality_sensor</code></pre></div>
+<p>Enter this to run the <strong>LVGL Test App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>lvgltest</code></pre></div>
 <p>This appears on the screen…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="LVGL Test App on PineDio Stack" /></p>
-<p>TODO</p>
-<p>Here’s the code that renders the screen…</p>
+<p>Here’s the code that renders the screen, by calling the <strong>LVGL Graphics Library</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Create the LVGL Widgets that will be rendered on the display
 static void create_widgets(void) {
   //  Get the Active Screen
