@@ -125,6 +125,8 @@ That's the __NuttX Build Configuration__ for PineDio Stack. It selects the Build
 
 [(See the configuration file)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
 
+![PineDio Stack Self-Test](https://lupyuen.github.io/images/pinedio2-test1.jpg)
+
 # Prepare PineDio Stack
 
 TODO: Self test
