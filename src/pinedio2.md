@@ -155,7 +155,19 @@ Let's get ready to flash the NuttX Firmware to PineDio Stack!
 
 _What's on the Main Board?_
 
-TODO: [__GPIO 8 Jumper__](https://lupyuen.github.io/images/pinedio2-jumper.jpg)
+TODO
+
+-   [__GPIO 8 Jumper__](https://lupyuen.github.io/images/pinedio2-jumper.jpg)
+
+-   Improvised Reset Button
+
+-   LoRa Antenna
+
+-   WiFi Antenna
+
+-   JTAG Port
+
+-   I/O Connector for Base Board
 
 ![Flashing NuttX](https://lupyuen.github.io/images/nuttx-flash2.png)
 
@@ -199,6 +211,12 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 __For WSL:__ Do this in the Windows Command Prompt CMD (not WSL) because __blflash__ needs to access the COM port.
 
 [(Flashing WiFi apps? See this)](https://github.com/apache/incubator-nuttx/issues/4336)
+
+_Will PineDio Stack get bricked if we flash bad firmware?_
+
+After using BL602 and BL604 for 1.5 years, I've never bricked a single BL602 or BL604 board.
+
+So go ahead and create your own PineDio Stack firmware, it's all OK!
 
 ![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
