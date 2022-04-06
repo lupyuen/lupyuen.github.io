@@ -279,13 +279,84 @@ In the NuttX Shell, enter this command...
 ls /dev
 ```
 
-We should see a list of __Device Drivers__ that were loaded by NuttX...
+We'll see a list of __Device Drivers__ that were loaded by NuttX...
 
 TODO
 
 # NuttX Apps
 
 TODO: help, lvgltest, lvgldemo
+
+In the NuttX Shell, enter this command...
+
+```bash
+help
+```
+
+("__`?`__" works too)
+
+We'll see a list of __NuttX Apps__ that have been installed...
+
+TODO
+
+Enter this command to run the __LVGL Test App__...
+
+```bash
+lvgltest
+```
+
+This appears on the screen...
+
+![LVGL Test App on PineDio Stack](https://lupyuen.github.io/images/pinedio2-title.jpg)
+
+TODO
+
+Here's the code that renders the screen...
+
+```c
+//  Create the LVGL Widgets that will be rendered on the display
+static void create_widgets(void) {
+  //  Get the Active Screen
+  lv_obj_t *screen = lv_scr_act();
+
+  //  Create a Label Widget
+  lv_obj_t *label = lv_label_create(screen, NULL);
+
+  //  Wrap long lines in the label text
+  lv_label_set_long_mode(label, LV_LABEL_LONG_BREAK);
+
+  //  Interpret color codes in the label text
+  lv_label_set_recolor(label, true);
+
+  //  Center align the label text
+  lv_label_set_align(label, LV_LABEL_ALIGN_CENTER);
+
+  //  Set the label text and colors
+  lv_label_set_text(
+    label, 
+    "#ff0000 HELLO# "    //  Red Text
+    "#00ff00 PINEDIO# "  //  Green Text
+    "#0000ff STACK!# "   //  Blue Text
+  );
+
+  //  Set the label width
+  lv_obj_set_width(label, 200);
+
+  //  Align the label to the center of the screen, shift 30 pixels up
+  lv_obj_align(label, NULL, LV_ALIGN_CENTER, 0, -30);
+
+  //  Omitted: Render a rounded rectangle with LVGL Canvas
+```
+
+[(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L104-L159)
+
+To render our own text and graphics, edit this source file and change the code above...
+
+```text
+apps/examples/lvgltest/lvgltest.c
+```
+
+Then rebuild and reflash NuttX to PineDio Stack.
 
 # Shared SPI Bus
 
