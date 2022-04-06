@@ -279,13 +279,13 @@ In the NuttX Shell, enter this command...
 ls /dev
 ```
 
-We see a list of __Device Drivers__ that were loaded by NuttX...
-
-![PineDio Stack boots with Pink Screen](https://lupyuen.github.io/images/pinedio2-run4a.png)
-
-[(Source)](https://gist.github.com/lupyuen/80f3bc431c9e5aa93d429809c9554629)
+We see a list of __Device Drivers__ that were loaded by NuttX. (Pic below)
 
 Now that NuttX is up, let's run some NuttX Apps!
+
+> ![Device Drivers loaded by NuttX](https://lupyuen.github.io/images/pinedio2-run4a.png)
+
+> [(Source)](https://gist.github.com/lupyuen/80f3bc431c9e5aa93d429809c9554629)
 
 # NuttX Apps
 
