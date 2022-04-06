@@ -40,7 +40,7 @@ Which makes it an awesome gadget for __IoT Education__!
 
 (It looks like a __"Chonky PineTime"__, because it uses the same display and touch panel as PineTime)
 
-Today we shall run the open-source, community-supported [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx) (Real-Time Operating System) on PineDio Stack...
+Today we shall build, flash and run the open-source, community-supported [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx) (Real-Time Operating System) on PineDio Stack...
 
 And get started on creating __our own IoT Apps__!
 
@@ -124,6 +124,18 @@ _What's "bl602evb:pinedio"?_
 That's the __NuttX Build Configuration__ for PineDio Stack. It selects the Build Options, NuttX Drivers and NuttX Apps that will run on PineDio Stack.
 
 [(See the configuration file)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+
+# Prepare PineDio Stack
+
+TODO: Self test
+
+Open back cover
+
+Remove baseboard
+
+![Inside PineDio Stack](https://lupyuen.github.io/images/pinedio2-inside5.jpg)
+
+TODO
 
 ![Flashing NuttX](https://lupyuen.github.io/images/nuttx-flash2.png)
 
