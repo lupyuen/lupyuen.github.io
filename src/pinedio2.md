@@ -366,7 +366,7 @@ To render our own text and graphics, edit this source file and change the code a
 apps/examples/lvgltest/lvgltest.c
 ```
 
-Then rebuild and reflash NuttX to PineDio Stack.
+Then rebuild (`make`) and reflash (`blflash`) NuttX to PineDio Stack.
 
 # Shared SPI Bus
 
