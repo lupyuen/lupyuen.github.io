@@ -135,9 +135,9 @@ Let's get ready to flash the NuttX Firmware to PineDio Stack!
 
     The __Self Test__ screen appears. (Pic above)
 
-    __Tap each button__ to make sure that PineDio Stack is OK.
+    __Tap each button__ to verify that PineDio Stack is OK.
 
-    [(Here's what we should see)](https://lupyuen.github.io/images/pinedio2-test.jpg)
+    [(We should see this)](https://lupyuen.github.io/images/pinedio2-test.jpg)
 
 -   Disconnect PineDio Stack from the USB Port.
 
@@ -172,6 +172,8 @@ _What's on the Main Board?_
 We're ready to flash PineDio Stack!
 
 ![Flashing NuttX](https://lupyuen.github.io/images/nuttx-flash2.png)
+
+[(Source)](https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f)
 
 # Flash PineDio Stack
 
@@ -319,7 +321,7 @@ This appears on the screen...
 
 ![LVGL Test App on PineDio Stack](https://lupyuen.github.io/images/pinedio2-title.jpg)
 
-Here's the code that renders the screen, by calling the __LVGL Graphics Library__...
+Below is the code that renders the screen, by calling the [__LVGL Graphics Library__](https://docs.lvgl.io/7.11/get-started/quick-overview.html#learn-the-basics)...
 
 ```c
 //  Create the LVGL Widgets that will be rendered on the display
