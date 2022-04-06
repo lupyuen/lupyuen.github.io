@@ -131,6 +131,8 @@ TODO: Self test
 
 Open back cover
 
+![PineDio Stack Baseboard](https://lupyuen.github.io/images/pinedio2-inside7.jpg)
+
 Remove baseboard
 
 ![Inside PineDio Stack](https://lupyuen.github.io/images/pinedio2-inside5.jpg)
