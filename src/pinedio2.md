@@ -38,7 +38,7 @@ PineDio Stack is packed __chock-full of features__...
 
 Which makes it an awesome gadget for __IoT Education__!
 
-(It looks like a __"Chonky PineTime"__, because it uses the same display and touch panel as PineTime)
+(It looks like a __"Chonky PineTime"__... It has the same display and touch panel as PineTime)
 
 Today we shall build, flash and run the open-source, community-supported [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx) (Real-Time Operating System) on PineDio Stack...
 
