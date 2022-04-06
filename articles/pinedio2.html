@@ -294,7 +294,7 @@ Success</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps? See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="boot-pinedio-stack" class="section-header"><a href="#boot-pinedio-stack">5 Boot PineDio Stack</a></h1>
-<p>TODO</p>
+<p>Like Linux, NuttX provides a <strong>Command-Line Interface</strong> for controlling our gadget. This is how we access the <strong>NuttX Shell</strong>…</p>
 <p>Set PineDio Stack to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <ol>
 <li>
@@ -305,19 +305,23 @@ Success</code></pre></div>
 <p>Or use the Improvised Reset Button <a href="https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack">(Here’s how)</a></p>
 </li>
 </ol>
-<p>After restarting, connect to PineDio Stack’s UART Port at 2 Mbps like so…</p>
+<p>After restarting, connect a <strong>Serial Terminal</strong> to PineDio Stack at <strong>2 Mbps</strong>…</p>
 <p><strong>For Linux:</strong> Use <strong>screen</strong></p>
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
-<p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
-<p><strong>For Windows:</strong> Use putty (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
-<p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
+<p><strong>For macOS:</strong> Use CoolTerm <a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(See this)</a></p>
+<p><strong>For Windows:</strong> Use putty <a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(See this)</a></p>
+<p><strong>Alternatively:</strong> Use the Web Serial Terminal <a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(See this)</a></p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on PineDio Stack!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-boot4.jpg" alt="PineDio Stack boots with Pink Screen" /></p>
 <h1 id="run-nuttx" class="section-header"><a href="#run-nuttx">6 Run NuttX</a></h1>
-<p>TODO: Pink Screen, ls /dev</p>
+<p>NuttX boots with a <a href="https://lupyuen.github.io/articles/st7789#render-pink-screen"><strong>Pink Screen</strong></a>. (Pic above)</p>
+<p>In the NuttX Shell, enter this command…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<p>We should see a list of <strong>Device Drivers</strong> that were loaded by NuttX…</p>
+<p>TODO</p>
 <h1 id="nuttx-apps" class="section-header"><a href="#nuttx-apps">7 NuttX Apps</a></h1>
 <p>TODO: help, lvgltest, lvgldemo</p>
 <h1 id="shared-spi-bus" class="section-header"><a href="#shared-spi-bus">8 Shared SPI Bus</a></h1>
