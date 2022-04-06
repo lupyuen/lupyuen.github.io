@@ -279,15 +279,15 @@ In the NuttX Shell, enter this command...
 ls /dev
 ```
 
-We'll see a list of __Device Drivers__ that were loaded by NuttX...
+We see a list of __Device Drivers__ that were loaded by NuttX...
 
-TODO
+![PineDio Stack boots with Pink Screen](https://lupyuen.github.io/images/pinedio2-run4a.png)
 
 [(Source)](https://gist.github.com/lupyuen/80f3bc431c9e5aa93d429809c9554629)
 
-# NuttX Apps
+Now that NuttX is up, let's run some NuttX Apps!
 
-TODO: help, lvgltest, lvgldemo
+# NuttX Apps
 
 In the NuttX Shell, enter this command...
 
@@ -297,19 +297,19 @@ help
 
 ("__`?`__" works too)
 
-We'll see a list of __NuttX Apps__ that have been installed...
+We see a list of __NuttX Apps__ that have been installed...
 
 ```text
 Builtin Apps:
-  bas                      lorawan_test             spi_test                 
-  bl602_adc_test           lvgldemo                 spi_test2                
-  getprime                 lvgltest                 sx1262_test              
-  gpio                     nsh                      timer                    
-  hello                    sensortest               tinycbor_test            
-  ikea_air_quality_sensor  sh   
+  bas             lorawan_test  spi_test                 
+  bl602_adc_test  lvgldemo      spi_test2                
+  getprime        lvgltest      sx1262_test              
+  gpio            nsh           timer                    
+  hello           sensortest    tinycbor_test            
+  ikea_air_quality_sensor
 ```
 
-Enter this command to run the __LVGL Test App__...
+Enter this to run the __LVGL Test App__...
 
 ```bash
 lvgltest
@@ -319,9 +319,7 @@ This appears on the screen...
 
 ![LVGL Test App on PineDio Stack](https://lupyuen.github.io/images/pinedio2-title.jpg)
 
-TODO
-
-Here's the code that renders the screen...
+Here's the code that renders the screen, by calling the __LVGL Graphics Library__...
 
 ```c
 //  Create the LVGL Widgets that will be rendered on the display
