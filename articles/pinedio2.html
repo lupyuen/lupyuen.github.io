@@ -223,22 +223,25 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p><em>What’s on the Main Board?</em></p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/images/pinedio2-jumper.jpg"><strong>GPIO 8 Jumper</strong></a>: Set PineDio Stack to Flashing Mode or Normal Mode</p>
+<p><a href="https://lupyuen.github.io/images/pinedio2-jumper.jpg"><strong>GPIO 8 Jumper</strong></a> (top right): Set PineDio Stack to Flashing Mode or Normal Mode</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack"><strong>Improvised Reset Button</strong></a>: We connect a Jumper Cable to restart PineDio Stack during flashing and testing</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack"><strong>Improvised Reset Button</strong></a> (lower left): We connect a Jumper Cable (to the I2C Port) to restart PineDio Stack during flashing and testing</p>
 </li>
 <li>
-<p>TODO: <strong>LoRa Antenna</strong></p>
+<p><strong>LoRa Antenna</strong> (bottom): Connect an antenna here if we’re testing LoRa </p>
 </li>
 <li>
-<p>TODO: <strong>WiFi / Bluetooth LE Antenna</strong></p>
+<p><strong>WiFi / Bluetooth LE Antenna</strong> (right): Connect an antenna here if we’re testing WiFi or Bluetooth LE</p>
 </li>
 <li>
-<p>TODO: <strong>JTAG Port</strong></p>
+<p><strong>JTAG Port</strong> (top left): For debugging (but not flashing)</p>
 </li>
 <li>
-<p>TODO: <strong>I/O Connector</strong> for Base Board</p>
+<p><strong>GPIO Port</strong> (lower right): Connects the Base Board</p>
+</li>
+<li>
+<p><strong>Push Button</strong> (just below the jumper): Works like a watch button</p>
 </li>
 </ul>
 <p>We’re ready to flash PineDio Stack!</p>
@@ -265,6 +268,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to PineDio Stack…</p>
+<p>(<strong>For WSL:</strong> Do this in the Windows Command Prompt CMD instead of WSL. blflash needs to access the COM port)</p>
 <div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the PineDio Stack Serial Port
 blflash flash nuttx.bin \
   --port /dev/ttyUSB0 
@@ -277,12 +281,17 @@ blflash flash nuttx.bin \
 
 # For Windows: Change &quot;COM5&quot; to the PineDio Serial Port
 blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
-<p><strong>For WSL:</strong> Do this in the Windows Command Prompt CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps? See this)</a></p>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>Sending eflash_loader...
+Erase flash addr: 10000 size: 565200
+Program flash...
+Program done 27.434715128s 20.12KiB/s
+Success</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Flash Log)</a></p>
 <p><em>Will PineDio Stack get bricked if we flash bad firmware?</em></p>
 <p>After using BL602 and BL604 for 1.5 years, I’ve never bricked a single BL602 or BL604 board.</p>
 <p>So go ahead and create your own PineDio Stack firmware, it’s all OK!</p>
+<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps? See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
 <h1 id="boot-pinedio-stack" class="section-header"><a href="#boot-pinedio-stack">5 Boot PineDio Stack</a></h1>
 <p>TODO</p>
