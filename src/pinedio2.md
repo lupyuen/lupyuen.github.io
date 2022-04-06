@@ -129,7 +129,7 @@ That's the __NuttX Build Configuration__ for PineDio Stack. It selects the Build
 
 # Prepare PineDio Stack
 
-TODO: Self test
+TODO: [__Self Test__](https://lupyuen.github.io/images/pinedio2-test.jpg)
 
 Open back cover
 
