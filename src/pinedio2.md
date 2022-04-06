@@ -129,15 +129,31 @@ That's the __NuttX Build Configuration__ for PineDio Stack. It selects the Build
 
 # Prepare PineDio Stack
 
-TODO: [__Self Test__](https://lupyuen.github.io/images/pinedio2-test.jpg)
+Let's get ready to flash the NuttX Firmware to PineDio Stack!
 
-Open back cover
+-   Connect PineDio Stack to our computer's __USB Port__.
+
+    The __Self Test__ screen will appear. (Pic above)
+
+    __Tap each button__ to make sure that PineDio Stack is OK.
+
+    [(Here's what we should see)](https://lupyuen.github.io/images/pinedio2-test.jpg)
+
+-   Disconnect PineDio Stack from the USB Port.
+
+    Carefully open the __Back Cover__ of PineDio Stack.
+
+    We'll see the __PineDio Stack Baseboard__...
 
 ![PineDio Stack Baseboard](https://lupyuen.github.io/images/pinedio2-inside7.jpg)
 
-Remove baseboard
+-   Carefully __remove the PineDio Stack Baseboard__.
+
+    We'll see the __Main Board__...
 
 ![Inside PineDio Stack](https://lupyuen.github.io/images/pinedio2-inside5.jpg)
+
+_What's on the Main Board?_
 
 TODO: [__GPIO 8 Jumper__](https://lupyuen.github.io/images/pinedio2-jumper.jpg)
 
