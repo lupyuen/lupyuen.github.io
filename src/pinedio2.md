@@ -382,6 +382,32 @@ _Can we touch the screen?_
 
 Not yet, we're porting the [__Touch Panel I2C Driver__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c) to NuttX. Stay Tuned!
 
+# More Apps
+
+TODO
+
+-   bas
+
+-   bl602_adc_test
+
+-   gpio
+
+-   hello
+
+-   ikea_air_quality_sensor
+
+-   lorawan_test
+
+-   lvgldemo
+
+-   sensortest
+
+-   spi_test2
+
+-   sx1262_test
+
+-   tinycbor_test
+
 # Shared SPI Bus
 
 TODO
