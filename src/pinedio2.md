@@ -139,9 +139,13 @@ Let's get ready to flash the NuttX Firmware to PineDio Stack!
 
     [(We should see this)](https://lupyuen.github.io/images/pinedio2-test.jpg)
 
+![PineDio Stack Back Cover](https://lupyuen.github.io/images/pinedio2-back.jpg)
+
 -   Disconnect PineDio Stack from the USB Port.
 
-    Carefully open the __Back Cover__ of PineDio Stack.
+    Carefully open the __Back Cover__ of PineDio Stack. (Pic above)
+
+    (Don't remove the display!)
 
     We'll see the __PineDio Stack Baseboard__...
 
