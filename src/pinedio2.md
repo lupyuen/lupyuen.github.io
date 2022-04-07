@@ -376,9 +376,11 @@ apps/examples/lvgltest/lvgltest.c
 
 Then rebuild ("`make`") and reflash ("`blflash`") NuttX to PineDio Stack.
 
+[(More about LVGL)](https://docs.lvgl.io/7.11/get-started/quick-overview.html#learn-the-basics)
+
 _Can we touch the screen?_
 
-Not yet, we're porting the Touch Panel I2C Driver to NuttX. Stay Tuned!
+Not yet, we're porting the [__Touch Panel I2C Driver__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c) to NuttX. Stay Tuned!
 
 # Shared SPI Bus
 
