@@ -408,6 +408,10 @@ _What other NuttX Apps can we try?_
 
 [(Here's a demo of the apps)](https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27)
 
+![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
+
+_PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)_
+
 # LoRa Apps
 
 These apps require a LoRa Antenna to be connected to PineDio Stack...
@@ -424,7 +428,7 @@ These apps require a LoRa Antenna to be connected to PineDio Stack...
 
 TODO
 
-Acording to the PineDio Stack Schematic...
+Acording to the PineDio Stack Schematics...
 
 -   [__PineDio Stack Schematic__ (2021-09-15)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
 
