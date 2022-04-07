@@ -623,6 +623,8 @@ One of the best things about NuttX: It comes with many freebies... Like the __BA
 
 Let's do some BASIC on BL602 NuttX...
 
+## Enable BASIC
+
 1.  Configure our NuttX Build...
 
     ```bash
@@ -650,6 +652,8 @@ Let's do some BASIC on BL602 NuttX...
     [(See the modified file)](https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_fs.c)
 
 1.  Rebuild, reflash and rerun NuttX
+
+## Run BASIC
 
 1.  In the NuttX Shell, enter...
 
@@ -708,6 +712,20 @@ In the olden days we would "peek" and "poke" to [__light up pixels__](http://myo
     Setting the GPIO Output Register to `0x00` will set __GPIO 11 to Low__.
 
     Which __switches on__ the Blue LED.
+
+1.  __For PineDio Stack BL604__: Enter this to switch off the backlight...
+
+    ```text
+    print peek(&h40000188)
+    poke &h40000188, &h200000
+    ```
+
+    And this to switch on the backlight...
+
+    ```text
+    print peek(&h40000188)
+    poke &h40000188, &h00
+    ```
 
 Yep it's indeed possible to blink the LED in BASIC!
 
