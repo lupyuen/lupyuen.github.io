@@ -386,27 +386,28 @@ Not yet, we're porting the [__Touch Panel I2C Driver__](https://codeberg.org/JF0
 
 TODO
 
+-   hello
+
+-   lvgldemo
+
 -   bas
+
 
 -   bl602_adc_test
 
 -   gpio
 
--   hello
-
 -   ikea_air_quality_sensor
 
--   lorawan_test
-
--   lvgldemo
-
--   sensortest
 
 -   spi_test2
 
 -   sx1262_test
 
+-   lorawan_test
+
 -   tinycbor_test
+
 
 # Shared SPI Bus
 
