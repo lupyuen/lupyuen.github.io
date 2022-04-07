@@ -309,11 +309,11 @@ We see a list of __NuttX Apps__ that have been installed...
 
 ```text
 Builtin Apps:
-  bas             lorawan_test  spi_test
-  bl602_adc_test  lvgldemo      spi_test2
-  getprime        lvgltest      sx1262_test
-  gpio            nsh           timer
-  hello           sensortest    tinycbor_test
+  bas             lorawan_test  spi_test2
+  bl602_adc_test  lvgltest      sx1262_test
+  getprime        nsh           timer
+  gpio            sensortest    tinycbor_test
+  hello           spi_test
   ikea_air_quality_sensor
 ```
 
@@ -384,30 +384,33 @@ Not yet, we're porting the [__Touch Panel I2C Driver__](https://codeberg.org/JF0
 
 # More Apps
 
-TODO
+_What other NuttX Apps can we try?_
 
--   hello
+-   __hello__: Prints _"Hello World"_
 
--   lvgldemo
+    [(Source code)](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/hello/hello_main.c)
 
--   bas
+-   __bl602_adc_test__: Shows the Internal Temperature of BL604
 
+    [(See this)](https://github.com/lupyuen/bl602_adc_test)
 
--   bl602_adc_test
+-   __bas__: BASIC Interpreter (Ctrl-D to quit)
 
--   gpio
+    [(See this)](https://lupyuen.github.io/articles/nuttx#basic-interpreter)
 
--   ikea_air_quality_sensor
+[(Here's a demo of the apps)](https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27)
 
+# LoRa Apps
 
--   spi_test2
+These apps require a LoRa Antenna to be connected to PineDio Stack...
 
--   sx1262_test
+-   __spi_test2__: TODO
 
--   lorawan_test
+-   __sx1262_test__: TODO
 
--   tinycbor_test
+-   __lorawan_test__: TODO
 
+-   __tinycbor_test__: TODO
 
 # Shared SPI Bus
 
