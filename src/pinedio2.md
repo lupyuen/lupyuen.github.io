@@ -56,7 +56,7 @@ NuttX feels like a __lighter version of Linux__ because it uses familiar functio
 
 (NuttX is [__POSIX Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance))
 
-We've done many fun experiments with NuttX on BL602 and BL604: [__ST7789 Display__](https://lupyuen.github.io/articles/st7789), [__BME280 Sensor__](https://lupyuen.github.io/articles/bme280), [__IKEA Air Quality Sensor__](https://lupyuen.github.io/articles/ikea), [__LoRa__](https://lupyuen.github.io/articles/sx1262), [__LoRaWAN__](https://lupyuen.github.io/articles/lorawan3), [__Rust__](https://lupyuen.github.io/articles/rusti2c), [__BASIC__](https://lupyuen.github.io/articles/nuttx#basic-interpreter), ... And now PineDio Stack.
+We've done many fun experiments with NuttX on BL602 and BL604: [__ST7789 Display__](https://lupyuen.github.io/articles/st7789), [__BME280 Sensor__](https://lupyuen.github.io/articles/bme280), [__IKEA Air Quality Sensor__](https://lupyuen.github.io/articles/ikea), [__Internal Temperature Sensor__](https://github.com/lupyuen/bl602_adc_test), [__LoRa__](https://lupyuen.github.io/articles/sx1262), [__LoRaWAN__](https://lupyuen.github.io/articles/lorawan3), [__Rust__](https://lupyuen.github.io/articles/rusti2c), [__BASIC__](https://lupyuen.github.io/articles/nuttx#basic-interpreter), [__CBOR__](https://lupyuen.github.io/articles/cbor2), ... And now PineDio Stack.
 
 The source code for __NuttX on PineDio Stack__ is here...
 
@@ -169,6 +169,12 @@ _What's on the Main Board?_
 
 -   __Push Button__ (just below the jumper): Works like a watch button
 
+Check out the __PineDio Stack Schematics__...
+
+-   [__PineDio Stack Schematic__ (2021-09-15)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
+
+-   [__PineDio Stack Baseboard Schematic__ (2021-09-27)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf)
+
 We're ready to flash PineDio Stack!
 
 ![Flashing NuttX](https://lupyuen.github.io/images/nuttx-flash2.png)
@@ -193,7 +199,7 @@ Set PineDio Stack to __Flashing Mode__ and restart the board...
 
 Enter these commands to flash __nuttx.bin__ to PineDio Stack...
 
-(__For WSL:__ Do this in the Windows Command Prompt CMD instead of WSL. blflash needs to access the COM port)
+(__For WSL:__ Do this in Windows Command Prompt CMD instead of WSL. blflash needs to access the COM port)
 
 ```bash
 ## For Linux: Change "/dev/ttyUSB0" to the PineDio Stack Serial Port
@@ -317,11 +323,13 @@ Enter this to run the __LVGL Test App__...
 lvgltest
 ```
 
-This appears on the screen: "Hello PineDio Stack!" with a funky blue/green box...
+This appears on the screen: _"Hello PineDio Stack!"_ with a funky blue/green box...
 
 ![LVGL Test App on PineDio Stack](https://lupyuen.github.io/images/pinedio2-title.jpg)
 
-Below is the code that renders the screen, by calling the [__LVGL Graphics Library__](https://docs.lvgl.io/7.11/get-started/quick-overview.html#learn-the-basics)...
+_Can we render our own text and graphics?_
+
+Sure can! Below is the code that renders the screen, by calling the [__LVGL Graphics Library__](https://docs.lvgl.io/7.11/get-started/quick-overview.html#learn-the-basics)...
 
 ```c
 //  Create the LVGL Widgets that will be rendered on the display
@@ -366,7 +374,7 @@ To render our own text and graphics, edit this source file and change the code a
 apps/examples/lvgltest/lvgltest.c
 ```
 
-Then rebuild (`make`) and reflash (`blflash`) NuttX to PineDio Stack.
+Then rebuild ("`make`") and reflash ("`blflash`") NuttX to PineDio Stack.
 
 # Shared SPI Bus
 
