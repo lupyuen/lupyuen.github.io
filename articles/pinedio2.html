@@ -142,7 +142,7 @@
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX</strong></a> is a popular Real-Time Operating System (RTOS) for microcontrollers (8-bit to 64-bit). It runs on all kinds of hardware: <strong>Arm, ESP32, RISC-V,</strong> … Even <a href="https://docs.px4.io/master/en/"><strong>flying drones</strong></a>!</p>
 <p>NuttX feels like a <strong>lighter version of Linux</strong> because it uses familiar functions to access the microcontroller hardware:  <em>open(), read(), write(), ioctl(), …</em></p>
 <p>(NuttX is <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX Compliant</strong></a>)</p>
-<p>We’ve done many fun experiments with NuttX on BL602 and BL604: <a href="https://lupyuen.github.io/articles/st7789"><strong>ST7789 Display</strong></a>, <a href="https://lupyuen.github.io/articles/bme280"><strong>BME280 Sensor</strong></a>, <a href="https://lupyuen.github.io/articles/ikea"><strong>IKEA Air Quality Sensor</strong></a>, <a href="https://lupyuen.github.io/articles/sx1262"><strong>LoRa</strong></a>, <a href="https://lupyuen.github.io/articles/lorawan3"><strong>LoRaWAN</strong></a>, <a href="https://lupyuen.github.io/articles/rusti2c"><strong>Rust</strong></a>, <a href="https://lupyuen.github.io/articles/nuttx#basic-interpreter"><strong>BASIC</strong></a>, … And now PineDio Stack.</p>
+<p>We’ve done many fun experiments with NuttX on BL602 and BL604: <a href="https://lupyuen.github.io/articles/st7789"><strong>ST7789 Display</strong></a>, <a href="https://lupyuen.github.io/articles/bme280"><strong>BME280 Sensor</strong></a>, <a href="https://lupyuen.github.io/articles/ikea"><strong>IKEA Air Quality Sensor</strong></a>, <a href="https://github.com/lupyuen/bl602_adc_test"><strong>Internal Temperature Sensor</strong></a>, <a href="https://lupyuen.github.io/articles/sx1262"><strong>LoRa</strong></a>, <a href="https://lupyuen.github.io/articles/lorawan3"><strong>LoRaWAN</strong></a>, <a href="https://lupyuen.github.io/articles/rusti2c"><strong>Rust</strong></a>, <a href="https://lupyuen.github.io/articles/nuttx#basic-interpreter"><strong>BASIC</strong></a>, <a href="https://lupyuen.github.io/articles/cbor2"><strong>CBOR</strong></a>, … And now PineDio Stack.</p>
 <p>The source code for <strong>NuttX on PineDio Stack</strong> is here…</p>
 <ul>
 <li>
@@ -244,6 +244,15 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p><strong>Push Button</strong> (just below the jumper): Works like a watch button</p>
 </li>
 </ul>
+<p>Check out the <strong>PineDio Stack Schematics</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf"><strong>PineDio Stack Schematic</strong> (2021-09-15)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf"><strong>PineDio Stack Baseboard Schematic</strong> (2021-09-27)</a></p>
+</li>
+</ul>
 <p>We’re ready to flash PineDio Stack!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(Source)</a></p>
@@ -268,7 +277,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to PineDio Stack…</p>
-<p>(<strong>For WSL:</strong> Do this in the Windows Command Prompt CMD instead of WSL. blflash needs to access the COM port)</p>
+<p>(<strong>For WSL:</strong> Do this in Windows Command Prompt CMD instead of WSL. blflash needs to access the COM port)</p>
 <div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the PineDio Stack Serial Port
 blflash flash nuttx.bin \
   --port /dev/ttyUSB0 
@@ -343,9 +352,10 @@ nsh&gt;</code></pre></div>
   ikea_air_quality_sensor</code></pre></div>
 <p>Enter this to run the <strong>LVGL Test App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>lvgltest</code></pre></div>
-<p>This appears on the screen: “Hello PineDio Stack!” with a funky blue/green box…</p>
+<p>This appears on the screen: <em>“Hello PineDio Stack!”</em> with a funky blue/green box…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="LVGL Test App on PineDio Stack" /></p>
-<p>Below is the code that renders the screen, by calling the <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#learn-the-basics"><strong>LVGL Graphics Library</strong></a>…</p>
+<p><em>Can we render our own text and graphics?</em></p>
+<p>Sure can! Below is the code that renders the screen, by calling the <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#learn-the-basics"><strong>LVGL Graphics Library</strong></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Create the LVGL Widgets that will be rendered on the display
 static void create_widgets(void) {
   //  Get the Active Screen
@@ -381,7 +391,7 @@ static void create_widgets(void) {
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L110-L198">(Source)</a></p>
 <p>To render our own text and graphics, edit this source file and change the code above…</p>
 <div class="example-wrap"><pre class="language-text"><code>apps/examples/lvgltest/lvgltest.c</code></pre></div>
-<p>Then rebuild (<code>make</code>) and reflash (<code>blflash</code>) NuttX to PineDio Stack.</p>
+<p>Then rebuild (“<code>make</code>”) and reflash (“<code>blflash</code>”) NuttX to PineDio Stack.</p>
 <h1 id="shared-spi-bus" class="section-header"><a href="#shared-spi-bus">8 Shared SPI Bus</a></h1>
 <p>TODO</p>
 <p>Acording to the PineDio Stack Schematic…</p>
