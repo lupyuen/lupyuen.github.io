@@ -84,7 +84,9 @@
 <li><a href="#board-driver">8.2 Board Driver</a><ul></ul></li>
 <li><a href="#bl602-driver">8.3 BL602 Driver</a><ul></ul></li></ul></li>
 <li><a href="#basic-interpreter">9 BASIC Interpreter</a><ul>
-<li><a href="#blink-the-led">9.1 Blink the LED</a><ul></ul></li></ul></li>
+<li><a href="#enable-basic">9.1 Enable BASIC</a><ul></ul></li>
+<li><a href="#run-basic">9.2 Run BASIC</a><ul></ul></li>
+<li><a href="#blink-the-led">9.3 Blink the LED</a><ul></ul></li></ul></li>
 <li><a href="#why-nuttx">10 Why NuttX?</a><ul></ul></li>
 <li><a href="#rust-on-nuttx">11 Rust on NuttX</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
@@ -525,6 +527,7 @@ void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 <h1 id="basic-interpreter" class="section-header"><a href="#basic-interpreter">9 BASIC Interpreter</a></h1>
 <p>One of the best things about NuttX: It comes with many freebies… Like the <strong>BASIC Interpreter!</strong></p>
 <p>Let’s do some BASIC on BL602 NuttX…</p>
+<h2 id="enable-basic" class="section-header"><a href="#enable-basic">9.1 Enable BASIC</a></h2>
 <ol>
 <li>
 <p>Configure our NuttX Build…</p>
@@ -552,6 +555,9 @@ void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 <li>
 <p>Rebuild, reflash and rerun NuttX</p>
 </li>
+</ol>
+<h2 id="run-basic" class="section-header"><a href="#run-basic">9.2 Run BASIC</a></h2>
+<ol>
 <li>
 <p>In the NuttX Shell, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>bas</code></pre></div></li>
@@ -570,7 +576,7 @@ run</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/nuttx-basic1.png" alt="BASIC Interpreter" /></p>
 <p>(Childhood Memories 🥲)</p>
-<h2 id="blink-the-led" class="section-header"><a href="#blink-the-led">9.1 Blink the LED</a></h2>
+<h2 id="blink-the-led" class="section-header"><a href="#blink-the-led">9.3 Blink the LED</a></h2>
 <p>In the olden days we would “peek” and “poke” to <a href="http://myoldmac.net/FAQ/Apple-II_Peek_Poke_Call.html"><strong>light up pixels</strong></a> on our Apple ][… Let’s do the same for our <strong>BL602 LED!</strong></p>
 <ol>
 <li>
@@ -589,6 +595,13 @@ poke &amp;h40000188, &amp;h00</code></pre></div>
 <p>Setting the GPIO Output Register to <code>0x00</code> will set <strong>GPIO 11 to Low</strong>.</p>
 <p>Which <strong>switches on</strong> the Blue LED.</p>
 </li>
+<li>
+<p><strong>For PineDio Stack BL604</strong>: Enter this to switch off the backlight…</p>
+<div class="example-wrap"><pre class="language-text"><code>print peek(&amp;h40000188)
+poke &amp;h40000188, &amp;h200000</code></pre></div>
+<p>And this to switch on the backlight…</p>
+<div class="example-wrap"><pre class="language-text"><code>print peek(&amp;h40000188)
+poke &amp;h40000188, &amp;h00</code></pre></div></li>
 </ol>
 <p>Yep it’s indeed possible to blink the LED in BASIC!</p>
 <p>(OK this code isn’t so legit… We ought to preserve the existing bits in the register, not overwrite them)</p>
