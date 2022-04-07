@@ -382,6 +382,10 @@ _Can we touch the screen?_
 
 Not yet, we're porting the [__Touch Panel I2C Driver__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c) to NuttX. Stay Tuned!
 
+![bl602_adc_test: Shows the Internal Temperature of BL604](https://lupyuen.github.io/images/pinedio2-run5.png)
+
+[(Source)](https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27)
+
 # More Apps
 
 _What other NuttX Apps can we try?_
@@ -396,7 +400,7 @@ _What other NuttX Apps can we try?_
 
 -   __bas__: BASIC Interpreter (Ctrl-D to quit)
 
-    [(See this)](https://lupyuen.github.io/articles/nuttx#basic-interpreter)
+    [(See this)](https://lupyuen.github.io/articles/nuttx#run-basic)
 
 [(Here's a demo of the apps)](https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27)
 
