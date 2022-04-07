@@ -309,11 +309,11 @@ We see a list of __NuttX Apps__ that have been installed...
 
 ```text
 Builtin Apps:
-  bas             lorawan_test  spi_test                 
-  bl602_adc_test  lvgldemo      spi_test2                
-  getprime        lvgltest      sx1262_test              
-  gpio            nsh           timer                    
-  hello           sensortest    tinycbor_test            
+  bas             lorawan_test  spi_test
+  bl602_adc_test  lvgldemo      spi_test2
+  getprime        lvgltest      sx1262_test
+  gpio            nsh           timer
+  hello           sensortest    tinycbor_test
   ikea_air_quality_sensor
 ```
 
