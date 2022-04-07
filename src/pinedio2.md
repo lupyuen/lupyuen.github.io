@@ -66,7 +66,7 @@ The source code for __NuttX on PineDio Stack__ is here...
 
     [(Yep I'm a NuttX Contributor)](https://github.com/apache/incubator-nuttx/pulls?q=is%3Apr+author%3Alupyuen+is%3Aclosed)
 
-Let's go hands-on with NuttX.
+Let's go hands-on with NuttX!
 
 ![Building NuttX](https://lupyuen.github.io/images/nuttx-build2.png)
 
