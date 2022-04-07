@@ -384,7 +384,7 @@ Then rebuild ("`make`") and reflash ("`blflash`") NuttX to PineDio Stack.
 
 _Can we touch the screen?_
 
-Not yet, we're porting the [__Touch Panel I2C Driver__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c) to NuttX. Stay Tuned!
+Real soon, we're porting the [__Touch Panel I2C Driver__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c) to NuttX. Stay Tuned!
 
 ![bl602_adc_test: Shows the Internal Temperature of BL604](https://lupyuen.github.io/images/pinedio2-run5.png)
 
