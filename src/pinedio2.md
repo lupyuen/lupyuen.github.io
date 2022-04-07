@@ -165,7 +165,7 @@ _What's on the Main Board?_
 
 -   __JTAG Port__ (top left): For debugging (but not flashing)
 
--   __GPIO Port__ (lower right): Connects the Base Board
+-   __GPIO Port__ (lower right): Connects the baseboard
 
 -   __Push Button__ (just below the jumper): Works like a watch button
 
