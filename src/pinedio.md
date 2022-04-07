@@ -2,7 +2,7 @@
 
 📝 _29 Aug 2021_
 
-[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://github.com/lupyuen/pinedio-stack-nuttx)
+[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://lupyuen.github.io/articles/pinedio2)
 
 _What's it like to create __Open Source Software__ (and firmware) for brand new __Prototype Hardware__?_
 
@@ -235,7 +235,7 @@ Because SPI is the Data Bus that __connects the key components__ of PineDio Stac
 | __`20`__ | CS for ST7789
 | __`15`__ | CS for SX1262
 
-[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://github.com/lupyuen/pinedio-stack-nuttx)
+[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://lupyuen.github.io/articles/pinedio2)
 
 SPI Flash, ST7789 and SX1262 are connected to the __same GPIO Pins__ for SDO _(formerly MOSI)_, SDI _(formerly MISO)_ and SCK.
 
@@ -458,7 +458,7 @@ We __connect our Logic Analyser__ to the GPIO Connector like so...
 | __`11`__ | Common SCK | `4`
 | __`5`__ | Debug CS | `2`
 
-[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://github.com/lupyuen/pinedio-stack-nuttx)
+[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://lupyuen.github.io/articles/pinedio2)
 
 ![Logic Analyser connected to PineDio Stack](https://lupyuen.github.io/images/pinedio-logic2.jpg)
 
@@ -552,7 +552,7 @@ The ST7789 SPI Display is connected on these pins...
 
 -   __GPIO 17:__ SPI SDO _(MOSI)_
 
-[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://github.com/lupyuen/pinedio-stack-nuttx)
+[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://lupyuen.github.io/articles/pinedio2)
 
 _Wait are we missing a pin?_
 
@@ -766,7 +766,7 @@ Here's what we discovered from the __Pogo Pin Probing__...
 | __DC__     | GPIO 17    |
 | __SCK__    | GPIO 11    |
 
-[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://github.com/lupyuen/pinedio-stack-nuttx)
+[__UPDATE: There's a new version of PineDio Stack BL604, the GPIO Numbers have changed__](https://lupyuen.github.io/articles/pinedio2)
 
 ![Probe Results](https://lupyuen.github.io/images/pinedio-probe2.jpg)
 
