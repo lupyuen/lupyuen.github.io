@@ -466,6 +466,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Save and exit menuconfig, then rebuild NuttX (`make`)
 
+1.  BL604 has 32 GPIOs, can we use all of them in NuttX? See this...
+
+    [__"GPIO issues on BL602"__](https://github.com/apache/incubator-nuttx/issues/5810)
+
 # Appendix: Shared SPI Bus
 
 This section explains how we modified NuttX to handle the __Shared SPI Bus__ on PineDio Stack BL604.
@@ -497,7 +501,7 @@ Here are the BL604 GPIO Numbers for the shared SPI Bus...
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L105)
 
-To prevent crosstalk, we select each SPI Device by flipping its Chip Select Pin from High to Low...
+To prevent crosstalk, we select each SPI Device by flipping its __Chip Select Pin__ from High to Low...
 
 | SPI Device | Device ID | Swap MISO/MOSI | Chip Select | 
 | :--------- | :-------: | :------------: | :---------: |
@@ -507,6 +511,8 @@ To prevent crosstalk, we select each SPI Device by flipping its Chip Select Pin 
 | _(Default Device)_ | -1      | Yes | 8 _(Unused)_
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L106-L127)
+
+Let's look at our implementation in NuttX.
 
 ## SPI Device ID
 
