@@ -452,13 +452,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__BL MCU SDK__](https://github.com/bouffalolab/bl_mcu_sdk): Doesn't support WiFi, also based on FreeRTOS)
 
-1.  The PineDio Stack Self-Test Firmware was created by JF with BL MCU SDK...
+1.  The PineDio Stack __Self-Test Firmware__ was created by JF with BL MCU SDK...
 
     [__JF002/pinedio-stack-selftest__](https://codeberg.org/JF002/pinedio-stack-selftest)
 
+1.  __LVGL Canvas__ consumes a lot of RAM! Disable it if we don't really need it, we'll save 7 KB of RAM...
+
+    Configure NuttX: `make menuconfig`
+
+    Select "Application Configuration → Graphics Support → Light and Versatile Graphic Library (LVGL) → Object Type Usage Settings"
+
+    Uncheck "Canvas Usage"
+
+    Save and exit menuconfig, then rebuild NuttX (`make`)
+
 # Appendix: Shared SPI Bus
 
-TODO
+This section explains how we modified NuttX to handle the __Shared SPI Bus__ on PineDio Stack BL604.
 
 Acording to the PineDio Stack Schematics...
 
@@ -988,6 +998,30 @@ monitor_cb: 57600 px refreshed in 1110 ms
 Which renders the LVGL Demo Screen on ST7789 correctly!
 
 ![LVGL Demo App](https://lupyuen.github.io/images/pinedio2-dark2.jpg)
+
+## SX1262 Chip Select
+
+There's a potential Race Condition if we use the SX1262 Driver concurrently with the ST7789 Driver...
+
+-   During LoRa Transmission, SX1262 Driver calls `ioctl()` to flip SX1262 Chip Select to Low
+
+    [(See this)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L806-L832)
+
+-   SX1262 Driver calls SPI Test Driver `/dev/spitest0`, which locks (`SPI_LOCK`) and selects (`SPI_SELECT`) the SPI Bus (with SPI Device ID 0)
+
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/rf/spi_test_driver.c#L161-L208)
+
+-   Note that the calls to `ioctl()` and `SPI_LOCK / SPI_SELECT` are NOT Atomic
+
+-   If the ST7789 Driver is active between the calls to `ioctl()` and `SPI_LOCK / SPI_SELECT`, both SX1262 Chip Select and ST7789 Chip Select will be flipped to Low
+
+-   This might transmit garbage to SX1262
+
+To solve this problem, we will register a new SPI Test Driver `/dev/spitest1` with SPI Device ID 1.
+
+The LoRa Driver will then access `/dev/spitest1`, which will `SPI_LOCK` and `SPI_SELECT` the SPI Bus (with SPI Device ID 1).
+
+Since the SPI Device ID is 1, `SPI_SELECT` will flip the SX1262 Chip Select to Low.
 
 # Appendix: ST7789 Display
 
@@ -1520,6 +1554,8 @@ TODO
 ## Touch Panel
 
 TODO: See [pinedio-stack-selftest/drivers/cst816s.c](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
+
+Use [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) as guide, since it looks quite similar to CST816S.
 
 ## Push Button
 
