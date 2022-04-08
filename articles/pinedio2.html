@@ -525,38 +525,47 @@ static void create_widgets(void) {
 </tbody></table>
 </div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L106-L127">(Source)</a></p>
-<p>Let’s look at our implementation in NuttX.</p>
+<p><em>How is Chip Select implemented in NuttX?</em></p>
+<p>To select or deselect an SPI Device, NuttX calls <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453"><strong>bl602_spi_select</strong></a>, provided by the BL602 / BL604 SPI Driver.</p>
+<p>However the SPI Driver doesn’t support multiple Chip Select Pins. <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453">(See this)</a></p>
+<p>Here’s how we modded the SPI Driver for PineDio Stack…</p>
 <h2 id="spi-device-id" class="section-header"><a href="#spi-device-id">12.1 SPI Device ID</a></h2>
-<p>TODO</p>
-<p>NuttX auto-assigns 0x40000 as the SPI Device ID for ST7789 Display. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/spi/spi.h#L459">(See this)</a></p>
+<p><em>What’s the SPI Device ID in the table above?</em></p>
+<p>We identify each SPI Device with a unique <strong>SPI Device ID</strong>. </p>
+<p>NuttX passes the Device ID when it calls <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453"><strong>bl602_spi_select</strong></a>. We’ll use this to flip the right Chip Select Pin for the SPI Device.</p>
+<p><em>How did we get the SPI Device IDs?</em></p>
+<p>NuttX auto-assigns <code>0x40000</code> as the SPI Device ID for the ST7789 Display. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/spi/spi.h#L459">(See this)</a></p>
 <p>We assigned the other SPI Device IDs ourselves.</p>
-<p>Device ID -1 is meant as a fallthrough to catch all SPI Devices that don’t match the Device IDs. This also works for simple SPI setups where the Device ID is not needed.</p>
+<p>Device ID <code>-1</code> is meant as a fallthrough to catch all SPI Devices that don’t match the Device IDs. This also works for simple SPI setups where the Device ID is not needed.</p>
 <h2 id="swap-miso--mosi" class="section-header"><a href="#swap-miso--mosi">12.2 Swap MISO / MOSI</a></h2>
-<p>TODO</p>
-<p>According to <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a> (Table 3.1 “Pin Description”, Page 26)…</p>
+<p><em>What’s the Swap MISO / MOSI column in the table above?</em></p>
+<p>According to the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>BL602 / BL604 Reference Manual</strong></a> (Table 3.1 “Pin Description”, Page 26)…</p>
 <ul>
 <li>
-<p>GPIO 13 is MOSI</p>
+<p><strong>GPIO 13</strong> is designated as <strong>MOSI</strong></p>
 </li>
 <li>
-<p>GPIO 0 is MISO</p>
+<p><strong>GPIO 0</strong> is designed as <strong>MISO</strong></p>
 </li>
 </ul>
-<p>But due to a BL602 SPI quirk we need to Swap MISO and MOSI to get this behaviour. That’s why the “Swap MISO / MOSI” column is marked “Yes” for SX1262 Transceiver and SPI Flash.</p>
-<p>ST7789 Display Controller is wired differently…</p>
+<p>But due to a BL602 / BL604 SPI quirk we need to <strong>swap MISO and MOSI</strong> to get this behaviour.</p>
+<p>That’s why the “Swap MISO / MOSI” column is marked “Yes” for <strong>SX1262 Transceiver and SPI Flash</strong>.</p>
+<p><em>But ST7789 doesn’t swap MISO and MOSI?</em></p>
+<p>The <strong>ST7789 Display Controller</strong> is wired differently on PineDio Stack…</p>
 <ul>
 <li>
-<p>ST7789 receives SPI Data on GPIO 0</p>
+<p>ST7789 receives SPI Data on <strong>GPIO 0</strong></p>
 </li>
 <li>
-<p>ST7789 Data / Command Pin is connected on GPIO 13</p>
+<p>ST7789 Data / Command Pin is connected on <strong>GPIO 13</strong></p>
 <p>(High for ST7789 Data, Low for ST7789 Commands)</p>
 </li>
 </ul>
-<p>The direction of SPI Data is flipped for ST7789. That’s why the “Swap MISO / MOSI” column is marked “No” for ST7789 Display Controller.</p>
+<p>The direction of <strong>SPI Data is flipped for ST7789</strong>.</p>
+<p>That’s why the “Swap MISO / MOSI” column is marked “No” for the ST7789 Display Controller.</p>
 <h2 id="spi-device-table" class="section-header"><a href="#spi-device-table">12.3 SPI Device Table</a></h2>
-<p>TODO</p>
-<p>We represent the above SPI Device Table in NuttX as a flat int array…</p>
+<p><em>How do we store the SPI Device Table in NuttX?</em></p>
+<p>We represent the above SPI Device Table in NuttX as a <strong>flat <code>int</code> array</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">SPI Device</th><th style="text-align: center">Device ID</th><th style="text-align: center">Swap MISO/MOSI</th><th style="text-align: center">Chip Select</th></tr></thead><tbody>
 <tr><td style="text-align: left"><em>ST7789 Display</em></td><td style="text-align: center">0x40000</td><td style="text-align: center">0</td><td style="text-align: center">20</td></tr>
 <tr><td style="text-align: left"><em>SX1262 Transceiver</em></td><td style="text-align: center">1</td><td style="text-align: center">1</td><td style="text-align: center">15</td></tr>
@@ -565,7 +574,7 @@ static void create_widgets(void) {
 </tbody></table>
 </div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L112-L133">(Source)</a></p>
-<p>Here’s the source code…</p>
+<p>Here’s the source code for the <strong>SPI Device Table</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_BL602_SPI0
 /* SPI Device Table: SPI Device ID, Swap MISO/MOSI, Chip Select */
 
@@ -589,7 +598,8 @@ static const int32_t bl602_spi_device_table[] =
 };
 #endif  /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L112-L133">(Source)</a></p>
-<p>The columns of the SPI Device Table…</p>
+<p>The <code>BOARD_*</code> constants will be explained in the next section.</p>
+<p>The columns of the SPI Device Table are defined like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Columns in the SPI Device Table */
 
 #define DEVID_COL 0  /* SPI Device ID */
@@ -597,21 +607,25 @@ static const int32_t bl602_spi_device_table[] =
 #define CS_COL    2  /* SPI Chip Select Pin */
 #define NUM_COLS  3  /* Number of columns in SPI Device Table */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L36-L41">(Source)</a></p>
-<p>Here are the functions for accessing the SPI Device Table…</p>
+<p>We created these functions for <strong>accessing the SPI Device Table</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L210-L239">bl602_spi_get_device</a>: Lookup a device in the SPI Device Table</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L210-L239"><strong>bl602_spi_get_device</strong></a>: Lookup a device in the SPI Device Table</p>
+<p>(Called when selecting and deselecting devices)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L178-L208">bl602_spi_deselect_devices</a>: Deselect all devices in the SPI Device Table</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L178-L208"><strong>bl602_spi_deselect_devices</strong></a>: Deselect all devices in the SPI Device Table</p>
+<p>(Called during startup)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L140-L176">bl602_spi_validate_devices</a>: Validate the devices in the SPI Device Table</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L140-L176"><strong>bl602_spi_validate_devices</strong></a>: Validate the devices in the SPI Device Table</p>
+<p>(In case of coding errors)</p>
 </li>
 </ul>
+<p>Let’s look at the <code>BOARD_*</code> definitions.</p>
 <h2 id="pin-definitions" class="section-header"><a href="#pin-definitions">12.4 Pin Definitions</a></h2>
-<p>TODO</p>
-<p>The SPI Device Table above refers to the following Pin Definitions…</p>
+<p><em>Where are the SPI Pins defined?</em></p>
+<p>The SPI Device Table above refers to the following <strong>Pin Definitions</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* SPI for PineDio Stack: Chip Select (unused), MOSI, MISO, SCK */
 
 #define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)  /* Unused */
@@ -642,6 +656,7 @@ static const int32_t bl602_spi_device_table[] =
 #define BOARD_FLASH_SWAP  1  /* Swap MISO/MOSI */
 #define BOARD_FLASH_CS (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN14)</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L128">(Source)</a></p>
+<p>Now that we have defined the SPI Device Table in NuttX, let’s use it.</p>
 <h2 id="select--deselect-spi-device" class="section-header"><a href="#select--deselect-spi-device">12.5 Select / Deselect SPI Device</a></h2>
 <p>TODO</p>
 <p>BL602 NuttX SPI Driver looks up the SPI Device Table to 1️⃣ Swap MISO and MOSI Pins 2️⃣ Flip the Chip Select Pins. This is how we select and deselect each SPI Device…</p>
