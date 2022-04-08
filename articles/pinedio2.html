@@ -526,7 +526,15 @@ static void create_widgets(void) {
 </div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L106-L127">(Source)</a></p>
 <p><em>How is Chip Select implemented in NuttX?</em></p>
-<p>To select or deselect an SPI Device, NuttX calls <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453"><strong>bl602_spi_select</strong></a>, provided by the BL602 / BL604 SPI Driver.</p>
+<p>To select (or deselect) an SPI Device, NuttX calls these functions provided by the BL602 / BL604 SPI Driver…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L384-L414"><strong>bl602_spi_lock</strong></a>: Lock (or unlock) the SPI Bus with a Semaphore</p>
+</li>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453"><strong>bl602_spi_select</strong></a>: Flip the Chip Select Pin to Low (or High)</p>
+</li>
+</ul>
 <p>However the SPI Driver doesn’t support multiple Chip Select Pins. <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453">(See this)</a></p>
 <p>Here’s how we modded the SPI Driver for PineDio Stack…</p>
 <h2 id="spi-device-id" class="section-header"><a href="#spi-device-id">12.1 SPI Device ID</a></h2>
@@ -548,7 +556,7 @@ static void create_widgets(void) {
 <p><strong>GPIO 0</strong> is designed as <strong>MISO</strong></p>
 </li>
 </ul>
-<p>But due to a BL602 / BL604 SPI quirk we need to <strong>swap MISO and MOSI</strong> to get this behaviour.</p>
+<p>But due to a BL602 / BL604 SPI quirk we need to <strong>swap MISO and MOSI</strong> to get this behaviour. <a href="https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped">(See this)</a></p>
 <p>That’s why the “Swap MISO / MOSI” column is marked “Yes” for <strong>SX1262 Transceiver and SPI Flash</strong>.</p>
 <p><em>But ST7789 doesn’t swap MISO and MOSI?</em></p>
 <p>The <strong>ST7789 Display Controller</strong> is wired differently on PineDio Stack…</p>
@@ -563,6 +571,9 @@ static void create_widgets(void) {
 </ul>
 <p>The direction of <strong>SPI Data is flipped for ST7789</strong>.</p>
 <p>That’s why the “Swap MISO / MOSI” column is marked “No” for the ST7789 Display Controller.</p>
+<p><em>So we will swap and unswap MISO / MOSI on the fly?</em></p>
+<p>Yep since we’ll run the ST7789, SX1262 and SPI Flash drivers concurrently, we’ll need to <strong>swap and unswap MISO / MOSI before every SPI operation</strong>.</p>
+<p>We’ll do this in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471"><strong>bl602_spi_select</strong></a>.</p>
 <h2 id="spi-device-table" class="section-header"><a href="#spi-device-table">12.3 SPI Device Table</a></h2>
 <p><em>How do we store the SPI Device Table in NuttX?</em></p>
 <p>We represent the above SPI Device Table in NuttX as a <strong>flat <code>int</code> array</strong>…</p>
