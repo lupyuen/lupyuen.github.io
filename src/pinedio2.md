@@ -862,6 +862,8 @@ Yes it does! We tested it with __ST7789 Display__ and __SX1262 Transceiver__...
 
 1.  We boot PineDio Stack, which calls the ST7789 Driver to render a Pink Screen...
 
+    _(Our SPI Driver unswaps MISO / MOSI, flips ST7789 Chip Select)_
+
     ```text
     board_lcd_getdev: SPI port 0 bound to LCD 0
     st7789_getplaneinfo: planeno: 0 bpp: 16
@@ -870,6 +872,8 @@ Yes it does! We tested it with __ST7789 Display__ and __SX1262 Transceiver__...
     [(See the complete log)](https://github.com/lupyuen/pinedio-stack-nuttx#test-shared-spi-bus)
 
 1.  Then we run the `spi_test2` app to read a SX1262 Register over SPI...
+
+    _(Our SPI Driver swaps MISO / MOSI, flips SX1262 Chip Select)_
 
     ```text
     nsh> spi_test2
@@ -884,6 +888,8 @@ Yes it does! We tested it with __ST7789 Display__ and __SX1262 Transceiver__...
     SX1262 returns Register Value `0x80`, which is correct!
 
 1.  Finally we run the [__LVGL Demo App__](https://lupyuen.github.io/articles/st7789#lvgl-demo-app) to access the ST7789 Display...
+
+    _(Our SPI Driver unswaps MISO / MOSI, flips ST7789 Chip Select)_
 
     ```text
     nsh> lvgldemo
@@ -927,11 +933,7 @@ The LoRa Driver will then access `/dev/spitest1`, which will `SPI_LOCK` and `SPI
 
 Since the SPI Device ID is 1, `SPI_SELECT` will flip the SX1262 Chip Select to Low.
 
-# Appendix: ST7789 Display
-
-TODO
-
-## SPI Mode
+## ST7789 SPI Mode
 
 TODO
 
@@ -967,7 +969,7 @@ BL602 / BL604 talks to ST7789 Display at SPI Mode 1 or 3 ... Depends whether MIS
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66)
 
-## SPI Frequency
+## ST7789 SPI Frequency
 
 TODO
 
