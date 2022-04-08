@@ -1898,6 +1898,7 @@ SX1262 Register 8 is 0x80</code></pre></div>
 </li>
 </ul>
 <p>This is why we always use SPI Mode 1 instead of Mode 0 on BL602.</p>
+<p><strong>UPDATE:</strong> BL602 talks to SPI Devices in SPI Mode 1 or Mode 3, depending on whether the MISO / MOSI Pins are swapped. <a href="https://lupyuen.github.io/articles/pinedio2#st7789-spi-mode">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx7.png" alt="Using SPI Mode 1 instead of Mode 0 on BL602" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57">(Source)</a></p>
 

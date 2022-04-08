@@ -868,8 +868,17 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 <p>The LoRa Driver will then access <code>/dev/spitest1</code>, which will <code>SPI_LOCK</code> and <code>SPI_SELECT</code> the SPI Bus (with SPI Device ID 1).</p>
 <p>Since the SPI Device ID is 1, <code>SPI_SELECT</code> will flip the SX1262 Chip Select to Low.</p>
 <h2 id="st7789-spi-mode" class="section-header"><a href="#st7789-spi-mode">13.10 ST7789 SPI Mode</a></h2>
-<p>TODO</p>
-<p>BL602 / BL604 talks to ST7789 Display at SPI Mode 1 or 3 … Depends whether MISO / MOSI are swapped</p>
+<p>BL602 / BL604 has another SPI Quirk that affects ST7789 on PineDio Stack…</p>
+<p>BL602 / BL604 talks to ST7789 Display at <strong>SPI Mode 1 or Mode 3</strong>, depending on whether <strong>MISO / MOSI are swapped</strong>…</p>
+<ul>
+<li>
+<p>If MISO / MOSI are NOT Swapped: <strong>SPI Mode 1</strong></p>
+</li>
+<li>
+<p>If MISO / MOSI are Swapped: <strong>SPI Mode 3</strong></p>
+</li>
+</ul>
+<p>Since MISO / MOSI are not swapped for ST7789 on PineDio Stack, we use <strong>SPI Mode 1</strong>. Here’s the implementation…</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_BL602_SPI0
 #include &quot;../boards/risc-v/bl602/bl602evb/include/board.h&quot;
 #endif  /* CONFIG_BL602_SPI0 */
@@ -886,11 +895,13 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 #else
 #endif   /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66">(Source)</a></p>
+<p>Note that we have configured PineDio Stack to talk to SX1262 at <strong>SPI Mode 1</strong> via the SPI Test Driver <code>/dev/spitest0</code>. <a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(See this)</a></p>
 <h2 id="st7789-spi-frequency" class="section-header"><a href="#st7789-spi-frequency">13.11 ST7789 SPI Frequency</a></h2>
-<p>TODO</p>
-<p>ST7789 Display runs OK at SPI Frequency 4 MHz. Maybe we can go higher?</p>
+<p>On PineDio Stack, we have configured the <strong>SPI Frequency</strong> of the ST7789 Display to <strong>4 MHz</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_LCD_ST7789_FREQUENCY=4000000</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L542">(Source)</a></p>
+<p>Maybe we can go higher and reduce contention for the SPI Bus?</p>
+<p>Also in future we should implement SPI with <strong>Direct Memory Access</strong> (DMA) to avoid busy-polling the SPI Bus. <a href="https://lupyuen.github.io/articles/st7789#shared-spi-bus">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <h1 id="appendix-sx1262-lora-transceiver" class="section-header"><a href="#appendix-sx1262-lora-transceiver">14 Appendix: SX1262 LoRa Transceiver</a></h1>

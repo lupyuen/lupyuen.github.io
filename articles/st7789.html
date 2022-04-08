@@ -268,7 +268,7 @@ static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd) 
   #endif  //  CONFIG_LCD_ST7789_SPIMODE
 #endif    //  CONFIG_BL602_SPI0</code></pre></div>
 <p>We’ve seen this behaviour with ST7789 and BL602 IoT SDK, so it’s probably a <strong>quirk in BL602’s SPI Port</strong>, not in the ST7789 Driver.</p>
-<p><a href="https://lupyuen.github.io/articles/display#initialise-spi-port">(More about this)</a></p>
+<p><strong>UPDATE:</strong> BL602 talks to ST7789 in SPI Mode 1 or Mode 3, depending on whether the MISO / MOSI Pins are swapped. <a href="https://lupyuen.github.io/articles/pinedio2#st7789-spi-mode">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/st7789-code4.png" alt="BL602 talks to ST7789 only in SPI Mode 3" /></p>
 <h1 id="load-st7789-driver" class="section-header"><a href="#load-st7789-driver">6 Load ST7789 Driver</a></h1>
 <p>We fixed the SPI issues on BL602… Now we can <strong>load the ST7789 Driver</strong> at startup!</p>
@@ -498,7 +498,7 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 <li>
 <p>Increase the <strong>SPI Frequency</strong> from 1 MHz to 40 MHz, the maximum frequency supported by BL602</p>
 <p>(In menuconfig: Device Drivers → LCD Driver Support → Graphic LCD Driver Support → LCD Driver Selection → Sitronix ST7789 → SPI Frequency)</p>
-<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx#spi-frequency">(UPDATE: We have successfully tested ST7789 at 4 MHz)</a></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#st7789-spi-frequency">(UPDATE: We have successfully tested ST7789 at 4 MHz)</a></p>
 </li>
 <li>
 <p>Implement <strong>SPI Direct Memory Access</strong> (DMA) for faster transfers</p>
@@ -706,10 +706,7 @@ static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid, bool selecte
   //  Hardware Chip Select</code></pre></div>
 <p>We might change this to flip the Chip Select Pin ourselves.</p>
 <p>(<strong>devid</strong> will identify the SPI Device)</p>
-<p>We have started the implementation for PineDio Stack BL604…</p>
-<ul>
-<li><a href="https://twitter.com/MisterTechBlog/status/1510406086326513668"><strong>Follow the updates on Twitter</strong></a></li>
-</ul>
+<p><strong>UPDATE:</strong> We have implemented the Shared SPI Bus for PineDio Stack. <a href="https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus">(See this)</a></p>
 <p><em>Can’t we flip the Chip Select Pin inside the ST7789 Driver? (Instead of SPI Driver)</em></p>
 <p>Nope we can’t flip the Chip Select Pin inside the ST7789 Driver. That’s because the ST7789 Driver / SPI Flash Driver / SX1262 Driver will call this to <strong>lock the SPI Bus</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L398-L413">bl602_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Lock the BL602 SPI Bus
@@ -729,9 +726,9 @@ static int bl602_spi_lock(struct spi_dev_s *dev, bool lock) {
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="Pine64 PineDio Stack BL604" /></p>
 <p><em>Pine64 PineDio Stack BL604</em></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">14 What’s Next</a></h1>
-<p>In the next article we’ll run NuttX with ST7789 Driver and LVGL Library on a real IoT gadget: <a href="https://lupyuen.github.io/articles/pinedio"><strong>Pine64’s PineDio Stack BL604</strong></a>!</p>
+<p>In the next article we’ll run NuttX with ST7789 Driver and LVGL Library on a real IoT gadget: <strong>Pine64’s PineDio Stack BL604</strong>!</p>
 <ul>
-<li><a href="https://twitter.com/MisterTechBlog/status/1510406086326513668"><strong>Follow the updates on Twitter</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/pinedio2"><strong>“PineDio Stack BL604 runs Apache NuttX RTOS”</strong></a></li>
 </ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
