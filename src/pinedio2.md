@@ -913,25 +913,25 @@ Yes it does! We tested it with __ST7789 Display__ and __SX1262 Transceiver__...
 
 There's a potential Race Condition if we use the SX1262 Driver concurrently with the ST7789 Driver...
 
--   During LoRa Transmission, SX1262 Driver calls `ioctl()` to flip SX1262 Chip Select to Low
+-   During LoRa Transmission, SX1262 Driver calls __ioctl()__ to flip SX1262 Chip Select to Low
 
     [(See this)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L806-L832)
 
--   SX1262 Driver calls SPI Test Driver `/dev/spitest0`, which locks (`SPI_LOCK`) and selects (`SPI_SELECT`) the SPI Bus (with SPI Device ID 0)
+-   SX1262 Driver calls SPI Test Driver __/dev/spitest0__, which locks (__SPI_LOCK__) and selects (__SPI_SELECT__) the SPI Bus (with SPI Device ID 0)
 
     [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/rf/spi_test_driver.c#L161-L208)
 
--   Note that the calls to `ioctl()` and `SPI_LOCK / SPI_SELECT` are NOT Atomic
+-   Note that the calls to __ioctl()__ and __SPI_LOCK__ / __SPI_SELECT__ are NOT Atomic
 
--   If the ST7789 Driver is active between the calls to `ioctl()` and `SPI_LOCK / SPI_SELECT`, both SX1262 Chip Select and ST7789 Chip Select will be flipped to Low
+-   If the ST7789 Driver is active between the calls to __ioctl()__ and __SPI_LOCK__ / __SPI_SELECT__, both SX1262 Chip Select and ST7789 Chip Select will be flipped to Low
 
 -   This might transmit garbage to SX1262
 
-To solve this problem, we will register a new SPI Test Driver `/dev/spitest1` with SPI Device ID 1.
+To solve this problem, we will register a new SPI Test Driver __/dev/spitest1__ with SPI Device ID 1.
 
-The LoRa Driver will then access `/dev/spitest1`, which will `SPI_LOCK` and `SPI_SELECT` the SPI Bus (with SPI Device ID 1).
+The LoRa Driver will be modified to access __/dev/spitest1__, which will call __SPI_LOCK__ and __SPI_SELECT__ with SPI Device ID 1.
 
-Since the SPI Device ID is 1, `SPI_SELECT` will flip the SX1262 Chip Select to Low.
+Since the SPI Device ID is 1, __SPI_SELECT__ will flip the SX1262 Chip Select to Low.
 
 ## ST7789 SPI Mode
 
@@ -939,9 +939,13 @@ BL602 / BL604 has another SPI Quirk that affects ST7789 on PineDio Stack...
 
 BL602 / BL604 talks to ST7789 Display at __SPI Mode 1 or Mode 3__, depending on whether __MISO / MOSI are swapped__...
 
--   If MISO / MOSI are NOT Swapped: __SPI Mode 1__
+-   If MISO / MOSI are __NOT Swapped__: 
 
--   If MISO / MOSI are Swapped: __SPI Mode 3__
+    Use __SPI Mode 1__
+
+-   If MISO / MOSI are __Swapped__: 
+
+    Use __SPI Mode 3__
 
 Since MISO / MOSI are not swapped for ST7789 on PineDio Stack, we use __SPI Mode 1__. Here's the implementation...
 
@@ -952,30 +956,34 @@ Since MISO / MOSI are not swapped for ST7789 on PineDio Stack, we use __SPI Mode
 
 #ifdef CONFIG_LCD_ST7789
 
-/****************************************************************************
- * Pre-processor Definitions
- ****************************************************************************/
-
-/* Verify that all configuration requirements have been met */
-
+//  If this is BL602...
 #ifdef CONFIG_BL602_SPI0
-#  if defined(BOARD_LCD_SWAP) && BOARD_LCD_SWAP == 0  /* If MISO/MOSI not swapped... */
-#    warning Using SPI Mode 1 for ST7789 on BL602 (MISO/MOSI not swapped)
-#    define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE1  /* SPI Mode 1: Workaround for BL602 */
-#  else
-#    warning Using SPI Mode 3 for ST7789 on BL602 (MISO/MOSI swapped)
-#    define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE3  /* SPI Mode 3: Workaround for BL602 */
-#  endif /* BOARD_LCD_SWAP */
+
+//  If MISO/MOSI are not swapped...
+#if defined(BOARD_LCD_SWAP) && BOARD_LCD_SWAP == 0
+//  Use SPI Mode 1 as workaround for BL602
+#warning Using SPI Mode 1 for ST7789 on BL602 (MISO/MOSI not swapped)
+#define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE1
+
+//  If MISO/MOSI are swapped...
 #else
-#  ifndef CONFIG_LCD_ST7789_SPIMODE
-#    define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE0
-#  endif /* CONFIG_LCD_ST7789_SPIMODE */
+//  Use SPI Mode 3 as workaround for BL602
+#warning Using SPI Mode 3 for ST7789 on BL602 (MISO/MOSI swapped)
+#define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE3
+#endif /* BOARD_LCD_SWAP */
+
+//  If this is not BL602...
+#else
+//  Use the SPI Mode specified in menuconfig
+#ifndef CONFIG_LCD_ST7789_SPIMODE
+#define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE0
+#endif   /* CONFIG_LCD_ST7789_SPIMODE */
 #endif   /* CONFIG_BL602_SPI0 */
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66)
 
-Note that we have configured PineDio Stack to talk to SX1262 at __SPI Mode 1__ via the SPI Test Driver `/dev/spitest0`. [(See this)](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
+Note that we have configured PineDio Stack to talk to SX1262 at __SPI Mode 1__ via the SPI Test Driver __/dev/spitest0__. [(See this)](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
 
 ## ST7789 SPI Frequency
 
