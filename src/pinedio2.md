@@ -514,7 +514,11 @@ To prevent crosstalk, we select each SPI Device by flipping its __Chip Select Pi
 
 _How is Chip Select implemented in NuttX?_
 
-To select or deselect an SPI Device, NuttX calls [__bl602_spi_select__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453), provided by the BL602 / BL604 SPI Driver.
+To select (or deselect) an SPI Device, NuttX calls these functions provided by the BL602 / BL604 SPI Driver...
+
+-   [__bl602_spi_lock__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L384-L414): Lock (or unlock) the SPI Bus with a Semaphore
+
+-   [__bl602_spi_select__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453): Flip the Chip Select Pin to Low (or High)
 
 However the SPI Driver doesn't support multiple Chip Select Pins. [(See this)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453)
 
@@ -546,7 +550,7 @@ According to the [__BL602 / BL604 Reference Manual__](https://github.com/bouffal
 
 -   __GPIO 0__ is designed as __MISO__
 
-But due to a BL602 / BL604 SPI quirk we need to __swap MISO and MOSI__ to get this behaviour.
+But due to a BL602 / BL604 SPI quirk we need to __swap MISO and MOSI__ to get this behaviour. [(See this)](https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped)
 
 That's why the "Swap MISO / MOSI" column is marked "Yes" for __SX1262 Transceiver and SPI Flash__.
 
@@ -563,6 +567,12 @@ The __ST7789 Display Controller__ is wired differently on PineDio Stack...
 The direction of __SPI Data is flipped for ST7789__.
 
 That's why the "Swap MISO / MOSI" column is marked "No" for the ST7789 Display Controller.
+
+_So we will swap and unswap MISO / MOSI on the fly?_
+
+Yep since we'll run the ST7789, SX1262 and SPI Flash drivers concurrently, we'll need to __swap and unswap MISO / MOSI before every SPI operation__.
+
+We'll do this in [__bl602_spi_select__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471).
 
 ## SPI Device Table
 
