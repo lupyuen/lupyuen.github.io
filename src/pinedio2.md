@@ -327,7 +327,7 @@ Enter this to run the __LVGL Test App__...
 lvgltest
 ```
 
-This appears on the screen: _"Hello PineDio Stack!"_ with a funky blue/green box...
+This appears on the screen: _"Hello PineDio Stack!"_ with a funky blue-green box...
 
 ![LVGL Test App on PineDio Stack](https://lupyuen.github.io/images/pinedio2-title.jpg)
 
@@ -424,6 +424,16 @@ TODO: These apps require a LoRa Antenna to be connected to PineDio Stack...
 
 -   __tinycbor_test__: TODO
 
+![Shared SPI Bus on PineDio Stack BL604](https://lupyuen.github.io/images/pinedio-spi2.jpg)
+
+# Upcoming Features
+
+_So NuttX is all hunky dory on PineDio Stack?_
+
+TODO: Shared SPI Bus
+
+If you're keen to help, please lemme know! 🙏
+
 # What's Next
 
 TODO
@@ -514,7 +524,7 @@ To prevent crosstalk, we select each SPI Device by flipping its __Chip Select Pi
 
 _How is Chip Select implemented in NuttX?_
 
-To select (or deselect) an SPI Device, NuttX calls these functions provided by the BL602 / BL604 SPI Driver...
+To select (or deselect) an SPI Device, NuttX calls these functions provided by the __BL602 / BL604 SPI Driver__...
 
 -   [__bl602_spi_lock__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L384-L414): Lock (or unlock) the SPI Bus with a Semaphore
 
@@ -693,9 +703,19 @@ Now that we have defined the SPI Device Table in NuttX, let's use it.
 
 ## Select / Deselect SPI Device
 
-TODO
+Remember that NuttX calls [__bl602_spi_select__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471) to select (or deselect) an SPI Device.
 
-BL602 NuttX SPI Driver looks up the SPI Device Table to 1️⃣ Swap MISO and MOSI Pins 2️⃣ Flip the Chip Select Pins. This is how we select and deselect each SPI Device...
+For PineDio Stack, these are the changes we made to [__bl602_spi_select__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471)...
+
+-   NuttX already passes the __SPI Device ID__ when it calls [__bl602_spi_select__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471)
+
+-   TODO: Look up SPI Device Table
+
+-   TODO: Swap MISO and MOSI Pins
+
+-   TODO: Flip the Chip Select Pins
+
+Here's the implementation...
 
 ```c
 //  Enable/disable the SPI chip select
@@ -736,7 +756,7 @@ static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid,
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471)
 
-`bl602_spi_select` is called after locking the SPI Bus.
+TODO: `bl602_spi_select` is called after locking the SPI Bus.
 
 ## SPI Command / Data
 
