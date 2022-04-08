@@ -630,7 +630,7 @@ static const int32_t bl602_spi_device_table[] =
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L112-L133)
 
-The `BOARD_*` constants will be explained in the next section.
+We'll see the `BOARD_*` constants in the next section.
 
 The columns of the SPI Device Table are defined like so...
 
@@ -711,11 +711,11 @@ For PineDio Stack, these are the changes we made to [__bl602_spi_select__](https
 
 -   NuttX already passes the __SPI Device ID__ when it calls [__bl602_spi_select__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471)
 
--   TODO: Look up SPI Device Table
+-   Based on the SPI Device ID, we look up the __SPI Device Table__
 
--   TODO: Swap MISO and MOSI Pins
+-   We __swap MISO and MOSI__ as specified by the SPI Device Table
 
--   TODO: Flip the Chip Select Pins
+-   We __flip the Chip Select Pin__ specified in the SPI Device Table
 
 Here's the implementation...
 
@@ -758,18 +758,21 @@ static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid,
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471)
 
-TODO: `bl602_spi_select` is called after locking the SPI Bus.
+Let's talk about `CONFIG_SPI_CMDDATA`...
 
 ## SPI Command / Data
 
-TODO
+NuttX RTOS uses MISO as the __ST7789 Data / Command Pin__. [(See this)](https://lupyuen.github.io/articles/st7789#appendix-spi-cmddata-on-bl602)
 
-NuttX RTOS uses MISO as the ST7789 Data / Command Pin ... But ST7789 is wired "backwards" on PineDio Stack BL604! We use MOSI as the ST7789 Data / Command Pin instead.
+(We flip the pin High for ST7789 Data, Low for ST7789 Commands)
 
-Here how we flip the ST7789 Data / Command pin depending on MISO / MOSI Swap...
+But ST7789 is wired "backwards" on PineDio Stack BL604! We use __MOSI as the ST7789 Data / Command Pin__ instead.
+
+Here's how we flip the ST7789 Data / Command pin depending on the "Swap MISO / MOSI" indicator in the SPI Device Table...
 
 ```c
 #ifdef CONFIG_SPI_CMDDATA
+//  Called by NuttX to flip the ST7789 Data / Command Pin
 static int bl602_spi_cmddata(struct spi_dev_s *dev,
                               uint32_t devid, bool cmd)
 {
@@ -822,6 +825,10 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L726-L774)
 
+Note that we reconfigure MISO / MOSI from SPI Pins to GPIO Pins.
+
+We revert MISO / MOSI back to SPI Pins when the SPI Device is deselected in [__bl602_spi_select__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L462-L470).
+
 ## Deselect All SPI Devices
 
 TODO
@@ -831,45 +838,8 @@ At NuttX Startup, we deselect all SPI Devices ... By flipping their Chip Select 
 ```c
 static void bl602_spi_init(struct spi_dev_s *dev)
 {
-  struct bl602_spi_priv_s *priv = (struct bl602_spi_priv_s *)dev;
-  const struct bl602_spi_config_s *config = priv->config;
-
-  /* Initialize the SPI semaphore that enforces mutually exclusive access */
-
-  nxsem_init(&priv->exclsem, 0, 1);
-
-  bl602_configgpio(BOARD_SPI_CS);
-  bl602_configgpio(BOARD_SPI_MOSI);
-  bl602_configgpio(BOARD_SPI_MISO);
-  bl602_configgpio(BOARD_SPI_CLK);
-
-  /* set master mode */
-
-  bl602_set_spi_0_act_mode_sel(1);
-
-  /* swap MOSI with MISO to be consistent with BL602 Reference Manual */
-
-  bl602_swap_spi_0_mosi_with_miso(1);
-
-  /* spi cfg  reg:
-   * cr_spi_deg_en 1
-   * cr_spi_m_cont_en 0
-   * cr_spi_byte_inv 0
-   * cr_spi_bit_inv 0
-   */
-
-  modifyreg32(BL602_SPI_CFG, SPI_CFG_CR_M_CONT_EN
-              | SPI_CFG_CR_BYTE_INV | SPI_CFG_CR_BIT_INV,
-              SPI_CFG_CR_DEG_EN);
-
-  /* disable rx ignore */
-
-  modifyreg32(BL602_SPI_CFG, SPI_CFG_CR_RXD_IGNR_EN, 0);
-
-  bl602_spi_setfrequency(dev, config->clk_freq);
-  bl602_spi_setbits(dev, 8);
-  bl602_spi_setmode(dev, config->mode);
-
+  /* Omitted: Init SPI port */
+  ...
   /* spi fifo clear */
 
   modifyreg32(BL602_SPI_FIFO_CFG_0, SPI_FIFO_CFG_0_RX_CLR
