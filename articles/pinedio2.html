@@ -86,20 +86,19 @@
 <li><a href="#spi-command--data">13.6 SPI Command / Data</a><ul></ul></li>
 <li><a href="#deselect-all-spi-devices">13.7 Deselect All SPI Devices</a><ul></ul></li>
 <li><a href="#test-shared-spi-bus">13.8 Test Shared SPI Bus</a><ul></ul></li>
-<li><a href="#sx1262-chip-select">13.9 SX1262 Chip Select</a><ul></ul></li></ul></li>
-<li><a href="#appendix-st7789-display">14 Appendix: ST7789 Display</a><ul>
-<li><a href="#spi-mode">14.1 SPI Mode</a><ul></ul></li>
-<li><a href="#spi-frequency">14.2 SPI Frequency</a><ul></ul></li></ul></li>
-<li><a href="#appendix-sx1262-lora-transceiver">15 Appendix: SX1262 LoRa Transceiver</a><ul>
-<li><a href="#test-lora">15.1 Test LoRa</a><ul></ul></li>
-<li><a href="#test-lorawan">15.2 Test LoRaWAN</a><ul></ul></li></ul></li>
-<li><a href="#appendix-upcoming-features">16 Appendix: Upcoming Features</a><ul>
-<li><a href="#touch-panel">16.1 Touch Panel</a><ul></ul></li>
-<li><a href="#push-button">16.2 Push Button</a><ul></ul></li>
-<li><a href="#accelerometer">16.3 Accelerometer</a><ul></ul></li>
-<li><a href="#power-management">16.4 Power Management</a><ul></ul></li>
-<li><a href="#spi-flash">16.5 SPI Flash</a><ul></ul></li>
-<li><a href="#gps">16.6 GPS</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Apr 2022</em></p>
+<li><a href="#sx1262-chip-select">13.9 SX1262 Chip Select</a><ul></ul></li>
+<li><a href="#st7789-spi-mode">13.10 ST7789 SPI Mode</a><ul></ul></li>
+<li><a href="#st7789-spi-frequency">13.11 ST7789 SPI Frequency</a><ul></ul></li></ul></li>
+<li><a href="#appendix-sx1262-lora-transceiver">14 Appendix: SX1262 LoRa Transceiver</a><ul>
+<li><a href="#test-lora">14.1 Test LoRa</a><ul></ul></li>
+<li><a href="#test-lorawan">14.2 Test LoRaWAN</a><ul></ul></li></ul></li>
+<li><a href="#appendix-upcoming-features">15 Appendix: Upcoming Features</a><ul>
+<li><a href="#touch-panel">15.1 Touch Panel</a><ul></ul></li>
+<li><a href="#push-button">15.2 Push Button</a><ul></ul></li>
+<li><a href="#accelerometer">15.3 Accelerometer</a><ul></ul></li>
+<li><a href="#power-management">15.4 Power Management</a><ul></ul></li>
+<li><a href="#spi-flash">15.5 SPI Flash</a><ul></ul></li>
+<li><a href="#gps">15.6 GPS</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 <p><strong>PineDio Stack BL604</strong> is Pine64’s newest microcontroller board, based on <a href="https://lupyuen.github.io/articles/pinecone"><strong>Bouffalo Lab’s BL604</strong></a> RISC-V + WiFi + Bluetooth LE SoC.</p>
@@ -811,12 +810,14 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 <ol>
 <li>
 <p>We boot PineDio Stack, which calls the ST7789 Driver to render a Pink Screen…</p>
+<p><em>(Our SPI Driver unswaps MISO / MOSI, flips ST7789 Chip Select)</em></p>
 <div class="example-wrap"><pre class="language-text"><code>board_lcd_getdev: SPI port 0 bound to LCD 0
 st7789_getplaneinfo: planeno: 0 bpp: 16</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx#test-shared-spi-bus">(See the complete log)</a></p>
 </li>
 <li>
 <p>Then we run the <code>spi_test2</code> app to read a SX1262 Register over SPI…</p>
+<p><em>(Our SPI Driver swaps MISO / MOSI, flips SX1262 Chip Select)</em></p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; spi_test2
 ...
 Read Register 8: received
@@ -827,6 +828,7 @@ SX1262 Register 8 is 0x80</code></pre></div>
 </li>
 <li>
 <p>Finally we run the <a href="https://lupyuen.github.io/articles/st7789#lvgl-demo-app"><strong>LVGL Demo App</strong></a> to access the ST7789 Display…</p>
+<p><em>(Our SPI Driver unswaps MISO / MOSI, flips ST7789 Chip Select)</em></p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgldemo
 st7789_getvideoinfo: fmt: 11 xres: 240 yres: 240 nplanes: 1
 lcddev_init: VideoInfo:
@@ -865,9 +867,7 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 <p>To solve this problem, we will register a new SPI Test Driver <code>/dev/spitest1</code> with SPI Device ID 1.</p>
 <p>The LoRa Driver will then access <code>/dev/spitest1</code>, which will <code>SPI_LOCK</code> and <code>SPI_SELECT</code> the SPI Bus (with SPI Device ID 1).</p>
 <p>Since the SPI Device ID is 1, <code>SPI_SELECT</code> will flip the SX1262 Chip Select to Low.</p>
-<h1 id="appendix-st7789-display" class="section-header"><a href="#appendix-st7789-display">14 Appendix: ST7789 Display</a></h1>
-<p>TODO</p>
-<h2 id="spi-mode" class="section-header"><a href="#spi-mode">14.1 SPI Mode</a></h2>
+<h2 id="st7789-spi-mode" class="section-header"><a href="#st7789-spi-mode">13.10 ST7789 SPI Mode</a></h2>
 <p>TODO</p>
 <p>BL602 / BL604 talks to ST7789 Display at SPI Mode 1 or 3 … Depends whether MISO / MOSI are swapped</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_BL602_SPI0
@@ -886,16 +886,16 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 #else
 #endif   /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66">(Source)</a></p>
-<h2 id="spi-frequency" class="section-header"><a href="#spi-frequency">14.2 SPI Frequency</a></h2>
+<h2 id="st7789-spi-frequency" class="section-header"><a href="#st7789-spi-frequency">13.11 ST7789 SPI Frequency</a></h2>
 <p>TODO</p>
 <p>ST7789 Display runs OK at SPI Frequency 4 MHz. Maybe we can go higher?</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_LCD_ST7789_FREQUENCY=4000000</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L542">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
-<h1 id="appendix-sx1262-lora-transceiver" class="section-header"><a href="#appendix-sx1262-lora-transceiver">15 Appendix: SX1262 LoRa Transceiver</a></h1>
+<h1 id="appendix-sx1262-lora-transceiver" class="section-header"><a href="#appendix-sx1262-lora-transceiver">14 Appendix: SX1262 LoRa Transceiver</a></h1>
 <p>TODO</p>
-<h2 id="test-lora" class="section-header"><a href="#test-lora">15.1 Test LoRa</a></h2>
+<h2 id="test-lora" class="section-header"><a href="#test-lora">14.1 Test LoRa</a></h2>
 <p>TODO</p>
 <p>To test LoRa on PineDio Stack, edit <a href="https://github.com/lupyuen/sx1262_test/blob/main/sx1262_test_main.c"><code>sx1262_test_main.c</code></a> at…</p>
 <div class="example-wrap"><pre class="language-text"><code>apps/examples/sx1262_test/sx1262_test_main.c</code></pre></div>
@@ -903,7 +903,7 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sx1262#lora-parameters">“LoRa Parameters”</a></li>
 </ul>
-<h2 id="test-lorawan" class="section-header"><a href="#test-lorawan">15.2 Test LoRaWAN</a></h2>
+<h2 id="test-lorawan" class="section-header"><a href="#test-lorawan">14.2 Test LoRaWAN</a></h2>
 <p>TODO</p>
 <p>LoRaWAN works OK on Shared SPI Bus yay! PineDio Stack connects to LoRaWAN Gateway (ChirpStack) and sends data packets.</p>
 <p>(Internal Temperature Sensor on ADC works OK too)</p>
@@ -1349,20 +1349,20 @@ RadioOnDioIrq
 RadioIrqProcess
 UplinkProcess</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx#test-lorawan">(See the complete log)</a></p>
-<h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">16 Appendix: Upcoming Features</a></h1>
+<h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">15 Appendix: Upcoming Features</a></h1>
 <p>TODO</p>
-<h2 id="touch-panel" class="section-header"><a href="#touch-panel">16.1 Touch Panel</a></h2>
+<h2 id="touch-panel" class="section-header"><a href="#touch-panel">15.1 Touch Panel</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
 <p>Use <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> as guide, since it looks quite similar to CST816S.</p>
-<h2 id="push-button" class="section-header"><a href="#push-button">16.2 Push Button</a></h2>
+<h2 id="push-button" class="section-header"><a href="#push-button">15.2 Push Button</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pushbutton.c">pinedio-stack-selftest/pushbutton.c</a></p>
-<h2 id="accelerometer" class="section-header"><a href="#accelerometer">16.3 Accelerometer</a></h2>
+<h2 id="accelerometer" class="section-header"><a href="#accelerometer">15.3 Accelerometer</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c">pinedio-stack-selftest/accelerometer.c</a></p>
-<h2 id="power-management" class="section-header"><a href="#power-management">16.4 Power Management</a></h2>
+<h2 id="power-management" class="section-header"><a href="#power-management">15.4 Power Management</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c">pinedio-stack-selftest/battery.c</a></p>
-<h2 id="spi-flash" class="section-header"><a href="#spi-flash">16.5 SPI Flash</a></h2>
+<h2 id="spi-flash" class="section-header"><a href="#spi-flash">15.5 SPI Flash</a></h2>
 <p>TODO</p>
-<h2 id="gps" class="section-header"><a href="#gps">16.6 GPS</a></h2>
+<h2 id="gps" class="section-header"><a href="#gps">15.6 GPS</a></h2>
 <p>TODO: NuttX has a GPS Demo App…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c">apps/examples/gps/gps_main.c</a></p>
 <p>And a GPS Parser…</p>
