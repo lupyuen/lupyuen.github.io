@@ -831,11 +831,10 @@ We revert MISO / MOSI back to SPI Pins when the SPI Device is deselected in [__b
 
 ## Deselect All SPI Devices
 
-TODO
-
-At NuttX Startup, we deselect all SPI Devices ... By flipping their Chip Select Pins high...
+At NuttX Startup, we __deselect all SPI Devices__ by flipping their Chip Select Pins high (after validating the SPI Device Table)...
 
 ```c
+//  Called by NuttX to initialise the SPI Driver
 static void bl602_spi_init(struct spi_dev_s *dev)
 {
   /* Omitted: Init SPI port */
@@ -853,187 +852,54 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L1191-L1240)
 
+[(__bl602_spi_deselect_devices__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L178-L208)
+
 ## Test Shared SPI Bus
 
-TODO
+_But will this Shared SPI Bus work? Swapping MISO / MOSI on the fly while flipping multiple Chip Select Pins?_
 
-Will ST7789 Display play nice with LoRa SX1262 on PineDio Stack BL604? Yep SX1262 works OK on the Shared SPI Bus!
+Yes it does! We tested it with __ST7789 Display__ and __SX1262 Transceiver__...
 
-PineDio Stack boots and renders a Pink Screen...
+1.  We boot PineDio Stack, which calls the ST7789 Driver to render a Pink Screen...
 
-```text
-gpio_pin_register: Registering /dev/gpio0
-gpio_pin_register: Registering /dev/gpio1
-gpint_enable: Disable the interrupt
-gpio_pin_register: Registering /dev/gpio2
-bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
-spi_test_driver_register: devpath=/dev/spitest0, spidev=0
-st7789_sleep: sleep: 0
-st7789_sendcmd: cmd: 0x11
-st7789_sendcmd: OK
-st7789_bpp: bpp: 16
-st7789_sendcmd: cmd: 0x3a
-st7789_sendcmd: OK
-st7789_setorientation:
-st7789_sendcmd: cmd: 0x36
-st7789_sendcmd: OK
-st7789_display: on: 1
-st7789_sendcmd: cmd: 0x29
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x21
-st7789_sendcmd: OK
-st7789_fill: color: 0xaaaa
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-board_lcd_getdev: SPI port 0 bound to LCD 0
-st7789_getplaneinfo: planeno: 0 bpp: 16
-```
+    ```text
+    board_lcd_getdev: SPI port 0 bound to LCD 0
+    st7789_getplaneinfo: planeno: 0 bpp: 16
+    ```
 
-We run the `spi_test2` app to test SX1262...
+    [(See the complete log)](https://github.com/lupyuen/pinedio-stack-nuttx#test-shared-spi-bus)
 
-```text
-NuttShell (NSH) NuttX-10.2.0-RC0
-nsh>
-nsh> ?
-help usage:  help [-v] [<cmd>]
+1.  Then we run the `spi_test2` app to read a SX1262 Register over SPI...
 
-  ?      cat    help   ls     uname
+    ```text
+    nsh> spi_test2
+    ...
+    Read Register 8: received
+    a2 a2 a2 a2 80
+    SX1262 Register 8 is 0x80
+    ```
 
-Builtin Apps:
-  tinycbor_test            spi_test                 nsh
-  lorawan_test             timer                    sensortest
-  sx1262_test              bl602_adc_test           ikea_air_quality_sensor
-  bas                      spi_test2                gpio
-  sh                       getprime
-  lvgldemo                 hello
-nsh> spi_test2
-spi_test_driver_open:
-gpout_write: Writing 0
-spi_test_driver_write: buflen=2
-spi_test_driver_configspi:
-spi_test_driver_read: buflen=256
-gpout_write: Writing 1
-Get Status: received
-  a2 22
-SX1262 Status is 2
-gpout_write: Writing 0
-spi_test_driver_write: buflen=5
-spi_test_driver_configspi:
-spi_test_driver_read: buflen=256
-gpout_write: Writing 1
-Read Register 8: received
-  a2 a2 a2 a2 80
-SX1262 Register 8 is 0x80
-```
+    [(See the complete log)](https://github.com/lupyuen/pinedio-stack-nuttx#test-shared-spi-bus)
 
-SX1262 returns Register Value 0x80, which is correct!
+    SX1262 returns Register Value `0x80`, which is correct!
 
-Then we run the LVGL Demo App...
+1.  Finally we run the [__LVGL Demo App__](https://lupyuen.github.io/articles/st7789#lvgl-demo-app) to access the ST7789 Display...
 
-```text
-spi_test_driver_close:
-nsh> lvgldemo
-fbdev_init: Failed to open /dev/fb0: 2
-st7789_getvideoinfo: fmt: 11 xres: 240 yres: 240 nplanes: 1
-lcddev_init: VideoInfo:
-        fmt: 11
-        xres: 240
-        yres: 240
-        nplanes: 1
-lcddev_init: PlaneInfo (plane 0):
-        bpp: 16
-st7789_putarea: row_start: 0 row_end: 19 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 20 row_end: 39 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 40 row_end:59 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 60 row_end: 79 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 80 row_end: 99 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 100 row_end: 119 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 120 row_end: 139 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 140 row_end: 159 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 160 row_end: 179 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 180 row_end: 199 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 200 row_end: 219 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-st7789_putarea: row_start: 220 row_end: 239 col_start: 0 col_end: 239
-st7789_sendcmd: cmd: 0x2b
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2a
-st7789_sendcmd: OK
-st7789_sendcmd: cmd: 0x2c
-st7789_sendcmd: OK
-monitor_cb: 57600 px refreshed in 1110 ms
-```
+    ```text
+    nsh> lvgldemo
+    st7789_getvideoinfo: fmt: 11 xres: 240 yres: 240 nplanes: 1
+    lcddev_init: VideoInfo:
+      fmt: 11
+      xres: 240
+      yres: 240
+      nplanes: 1
+    ...
+    monitor_cb: 57600 px refreshed in 1110 ms
+    ```
 
-Which renders the LVGL Demo Screen on ST7789 correctly!
+    [(See the complete log)](https://github.com/lupyuen/pinedio-stack-nuttx#test-shared-spi-bus)
+
+    Which renders the LVGL Demo Screen correctly!
 
 ![LVGL Demo App](https://lupyuen.github.io/images/pinedio2-dark2.jpg)
 
@@ -1584,6 +1450,8 @@ RadioOnDioIrq
 RadioIrqProcess
 UplinkProcess
 ```
+
+[(See the complete log)](https://github.com/lupyuen/pinedio-stack-nuttx#test-lorawan)
 
 # Appendix: Upcoming Features
 
