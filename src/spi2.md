@@ -2291,6 +2291,8 @@ This SPI Mode Quirk has been observed on __BL602 IoT SDK__ when tested with...
 
 This is why we always use SPI Mode 1 instead of Mode 0 on BL602.
 
+__UPDATE:__ BL602 talks to SPI Devices in SPI Mode 1 or Mode 3, depending on whether the MISO / MOSI Pins are swapped. [(See this)](https://lupyuen.github.io/articles/pinedio2#st7789-spi-mode)
+
 ![Using SPI Mode 1 instead of Mode 0 on BL602](https://lupyuen.github.io/images/spi2-sx7.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57)

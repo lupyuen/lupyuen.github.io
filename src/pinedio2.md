@@ -935,9 +935,15 @@ Since the SPI Device ID is 1, `SPI_SELECT` will flip the SX1262 Chip Select to L
 
 ## ST7789 SPI Mode
 
-TODO
+BL602 / BL604 has another SPI Quirk that affects ST7789 on PineDio Stack...
 
-BL602 / BL604 talks to ST7789 Display at SPI Mode 1 or 3 ... Depends whether MISO / MOSI are swapped
+BL602 / BL604 talks to ST7789 Display at __SPI Mode 1 or Mode 3__, depending on whether __MISO / MOSI are swapped__...
+
+-   If MISO / MOSI are NOT Swapped: __SPI Mode 1__
+
+-   If MISO / MOSI are Swapped: __SPI Mode 3__
+
+Since MISO / MOSI are not swapped for ST7789 on PineDio Stack, we use __SPI Mode 1__. Here's the implementation...
 
 ```c
 #ifdef CONFIG_BL602_SPI0
@@ -969,17 +975,21 @@ BL602 / BL604 talks to ST7789 Display at SPI Mode 1 or 3 ... Depends whether MIS
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66)
 
+Note that we have configured PineDio Stack to talk to SX1262 at __SPI Mode 1__ via the SPI Test Driver `/dev/spitest0`. [(See this)](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
+
 ## ST7789 SPI Frequency
 
-TODO
-
-ST7789 Display runs OK at SPI Frequency 4 MHz. Maybe we can go higher?
+On PineDio Stack, we have configured the __SPI Frequency__ of the ST7789 Display to __4 MHz__...
 
 ```text
 CONFIG_LCD_ST7789_FREQUENCY=4000000
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L542)
+
+Maybe we can go higher and reduce contention for the SPI Bus?
+
+Also in future we should implement SPI with __Direct Memory Access__ (DMA) to avoid busy-polling the SPI Bus. [(See this)](https://lupyuen.github.io/articles/st7789#shared-spi-bus)
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
