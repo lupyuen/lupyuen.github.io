@@ -478,6 +478,10 @@ static void create_widgets(void) {
 <p>Uncheck “Canvas Usage”</p>
 <p>Save and exit menuconfig, then rebuild NuttX (<code>make</code>)</p>
 </li>
+<li>
+<p>BL604 has 32 GPIOs, can we use all of them in NuttX? See this…</p>
+<p><a href="https://github.com/apache/incubator-nuttx/issues/5810"><strong>“GPIO issues on BL602”</strong></a></p>
+</li>
 </ol>
 <h1 id="appendix-shared-spi-bus" class="section-header"><a href="#appendix-shared-spi-bus">12 Appendix: Shared SPI Bus</a></h1>
 <p>This section explains how we modified NuttX to handle the <strong>Shared SPI Bus</strong> on PineDio Stack BL604.</p>
@@ -512,7 +516,7 @@ static void create_widgets(void) {
 </tbody></table>
 </div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L105">(Source)</a></p>
-<p>To prevent crosstalk, we select each SPI Device by flipping its Chip Select Pin from High to Low…</p>
+<p>To prevent crosstalk, we select each SPI Device by flipping its <strong>Chip Select Pin</strong> from High to Low…</p>
 <div><table><thead><tr><th style="text-align: left">SPI Device</th><th style="text-align: center">Device ID</th><th style="text-align: center">Swap MISO/MOSI</th><th style="text-align: center">Chip Select</th></tr></thead><tbody>
 <tr><td style="text-align: left">ST7789 Display</td><td style="text-align: center">0x40000</td><td style="text-align: center">No</td><td style="text-align: center">20</td></tr>
 <tr><td style="text-align: left">SX1262 Transceiver</td><td style="text-align: center">1</td><td style="text-align: center">Yes</td><td style="text-align: center">15</td></tr>
@@ -521,6 +525,7 @@ static void create_widgets(void) {
 </tbody></table>
 </div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L106-L127">(Source)</a></p>
+<p>Let’s look at our implementation in NuttX.</p>
 <h2 id="spi-device-id" class="section-header"><a href="#spi-device-id">12.1 SPI Device ID</a></h2>
 <p>TODO</p>
 <p>NuttX auto-assigns 0x40000 as the SPI Device ID for ST7789 Display. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/spi/spi.h#L459">(See this)</a></p>
