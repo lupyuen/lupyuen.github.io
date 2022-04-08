@@ -432,6 +432,8 @@ _So NuttX is all hunky dory on PineDio Stack?_
 
 TODO: Shared SPI Bus
 
+Automated Testing
+
 If you're keen to help, please lemme know! 🙏
 
 # What's Next
