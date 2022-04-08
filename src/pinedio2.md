@@ -408,21 +408,15 @@ _What other NuttX Apps can we try?_
 
 [(Here's a demo of the apps)](https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27)
 
+_What about LoRa Apps?_
+
+We have NuttX Apps for testing __LoRa and LoRaWAN__ wireless networking.
+
+Check the Appendix for details.
+
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
 _PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)_
-
-# What About LoRa?
-
-TODO: These apps require a LoRa Antenna to be connected to PineDio Stack...
-
--   __spi_test2__: TODO
-
--   __sx1262_test__: TODO
-
--   __lorawan_test__: TODO
-
--   __tinycbor_test__: TODO
 
 ![Shared SPI Bus on PineDio Stack BL604](https://lupyuen.github.io/images/pinedio-spi2.jpg)
 
