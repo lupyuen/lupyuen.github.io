@@ -512,45 +512,63 @@ To prevent crosstalk, we select each SPI Device by flipping its __Chip Select Pi
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L106-L127)
 
-Let's look at our implementation in NuttX.
+_How is Chip Select implemented in NuttX?_
+
+To select or deselect an SPI Device, NuttX calls [__bl602_spi_select__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453), provided by the BL602 / BL604 SPI Driver.
+
+However the SPI Driver doesn't support multiple Chip Select Pins. [(See this)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453)
+
+Here's how we modded the SPI Driver for PineDio Stack...
 
 ## SPI Device ID
 
-TODO
+_What's the SPI Device ID in the table above?_
 
-NuttX auto-assigns 0x40000 as the SPI Device ID for ST7789 Display. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/spi/spi.h#L459)
+We identify each SPI Device with a unique __SPI Device ID__. 
+
+NuttX passes the Device ID when it calls [__bl602_spi_select__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453). We'll use this to flip the right Chip Select Pin for the SPI Device.
+
+_How did we get the SPI Device IDs?_
+
+NuttX auto-assigns `0x40000` as the SPI Device ID for the ST7789 Display. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/spi/spi.h#L459)
 
 We assigned the other SPI Device IDs ourselves.
 
-Device ID -1 is meant as a fallthrough to catch all SPI Devices that don't match the Device IDs. This also works for simple SPI setups where the Device ID is not needed.
+Device ID `-1` is meant as a fallthrough to catch all SPI Devices that don't match the Device IDs. This also works for simple SPI setups where the Device ID is not needed.
 
 ## Swap MISO / MOSI
 
-TODO
+_What's the Swap MISO / MOSI column in the table above?_
 
-According to [BL602 Reference Manual](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf) (Table 3.1 "Pin Description", Page 26)...
+According to the [__BL602 / BL604 Reference Manual__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf) (Table 3.1 "Pin Description", Page 26)...
 
--   GPIO 13 is MOSI
+-   __GPIO 13__ is designated as __MOSI__
 
--   GPIO 0 is MISO
+-   __GPIO 0__ is designed as __MISO__
 
-But due to a BL602 SPI quirk we need to Swap MISO and MOSI to get this behaviour. That's why the "Swap MISO / MOSI" column is marked "Yes" for SX1262 Transceiver and SPI Flash.
+But due to a BL602 / BL604 SPI quirk we need to __swap MISO and MOSI__ to get this behaviour.
 
-ST7789 Display Controller is wired differently...
+That's why the "Swap MISO / MOSI" column is marked "Yes" for __SX1262 Transceiver and SPI Flash__.
 
--   ST7789 receives SPI Data on GPIO 0
+_But ST7789 doesn't swap MISO and MOSI?_
 
--   ST7789 Data / Command Pin is connected on GPIO 13
+The __ST7789 Display Controller__ is wired differently on PineDio Stack...
+
+-   ST7789 receives SPI Data on __GPIO 0__
+
+-   ST7789 Data / Command Pin is connected on __GPIO 13__
 
     (High for ST7789 Data, Low for ST7789 Commands)
 
-The direction of SPI Data is flipped for ST7789. That's why the "Swap MISO / MOSI" column is marked "No" for ST7789 Display Controller.
+The direction of __SPI Data is flipped for ST7789__.
+
+That's why the "Swap MISO / MOSI" column is marked "No" for the ST7789 Display Controller.
 
 ## SPI Device Table
 
-TODO
+_How do we store the SPI Device Table in NuttX?_
 
-We represent the above SPI Device Table in NuttX as a flat int array...
+We represent the above SPI Device Table in NuttX as a __flat `int` array__...
 
 | SPI Device | Device ID | Swap MISO/MOSI | Chip Select | 
 | :--------- | :-------: | :------------: | :---------: |
@@ -561,7 +579,7 @@ We represent the above SPI Device Table in NuttX as a flat int array...
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L112-L133)
 
-Here's the source code...
+Here's the source code for the __SPI Device Table__...
 
 ```c
 #ifdef CONFIG_BL602_SPI0
@@ -590,7 +608,9 @@ static const int32_t bl602_spi_device_table[] =
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L112-L133)
 
-The columns of the SPI Device Table...
+The `BOARD_*` constants will be explained in the next section.
+
+The columns of the SPI Device Table are defined like so...
 
 ```c
 /* Columns in the SPI Device Table */
@@ -603,19 +623,27 @@ The columns of the SPI Device Table...
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L36-L41)
 
-Here are the functions for accessing the SPI Device Table...
+We created these functions for __accessing the SPI Device Table__...
 
--   [bl602_spi_get_device](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L210-L239): Lookup a device in the SPI Device Table
+-   [__bl602_spi_get_device__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L210-L239): Lookup a device in the SPI Device Table
 
--   [bl602_spi_deselect_devices](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L178-L208): Deselect all devices in the SPI Device Table
+    (Called when selecting and deselecting devices)
 
--   [bl602_spi_validate_devices](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L140-L176): Validate the devices in the SPI Device Table
+-   [__bl602_spi_deselect_devices__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L178-L208): Deselect all devices in the SPI Device Table
+
+    (Called during startup)
+
+-   [__bl602_spi_validate_devices__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L140-L176): Validate the devices in the SPI Device Table
+
+    (In case of coding errors)
+
+Let's look at the `BOARD_*` definitions.
 
 ## Pin Definitions
 
-TODO
+_Where are the SPI Pins defined?_
 
-The SPI Device Table above refers to the following Pin Definitions...
+The SPI Device Table above refers to the following __Pin Definitions__...
 
 ```c
 /* SPI for PineDio Stack: Chip Select (unused), MOSI, MISO, SCK */
@@ -650,6 +678,8 @@ The SPI Device Table above refers to the following Pin Definitions...
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L128)
+
+Now that we have defined the SPI Device Table in NuttX, let's use it.
 
 ## Select / Deselect SPI Device
 
