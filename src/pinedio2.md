@@ -954,30 +954,33 @@ Since MISO / MOSI are not swapped for ST7789 on PineDio Stack, we use __SPI Mode
 #include "../boards/risc-v/bl602/bl602evb/include/board.h"
 #endif  /* CONFIG_BL602_SPI0 */
 
+//  If ST7789 is enabled...
 #ifdef CONFIG_LCD_ST7789
 
 //  If this is BL602...
 #ifdef CONFIG_BL602_SPI0
 
-//  If MISO/MOSI are not swapped...
-#if defined(BOARD_LCD_SWAP) && BOARD_LCD_SWAP == 0
-//  Use SPI Mode 1 as workaround for BL602
-#warning Using SPI Mode 1 for ST7789 on BL602 (MISO/MOSI not swapped)
-#define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE1
+  //  If MISO/MOSI are not swapped...
+  #if defined(BOARD_LCD_SWAP) && BOARD_LCD_SWAP == 0
+    //  Use SPI Mode 1 as workaround for BL602
+    #warning Using SPI Mode 1 for ST7789 on BL602 (MISO/MOSI not swapped)
+    #define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE1
 
-//  If MISO/MOSI are swapped...
-#else
-//  Use SPI Mode 3 as workaround for BL602
-#warning Using SPI Mode 3 for ST7789 on BL602 (MISO/MOSI swapped)
-#define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE3
-#endif /* BOARD_LCD_SWAP */
+  //  If MISO/MOSI are swapped...
+  #else
+    //  Use SPI Mode 3 as workaround for BL602
+    #warning Using SPI Mode 3 for ST7789 on BL602 (MISO/MOSI swapped)
+    #define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE3
+  #endif /* BOARD_LCD_SWAP */
 
 //  If this is not BL602...
 #else
-//  Use the SPI Mode specified in menuconfig
-#ifndef CONFIG_LCD_ST7789_SPIMODE
-#define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE0
-#endif   /* CONFIG_LCD_ST7789_SPIMODE */
+
+  //  Use the SPI Mode specified in menuconfig
+  #ifndef CONFIG_LCD_ST7789_SPIMODE
+  #define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE0
+  #endif   /* CONFIG_LCD_ST7789_SPIMODE */
+
 #endif   /* CONFIG_BL602_SPI0 */
 ```
 
