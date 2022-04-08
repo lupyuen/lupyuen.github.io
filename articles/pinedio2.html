@@ -84,7 +84,8 @@
 <li><a href="#select--deselect-spi-device">12.5 Select / Deselect SPI Device</a><ul></ul></li>
 <li><a href="#spi-command--data">12.6 SPI Command / Data</a><ul></ul></li>
 <li><a href="#deselect-all-spi-devices">12.7 Deselect All SPI Devices</a><ul></ul></li>
-<li><a href="#test-shared-spi-bus">12.8 Test Shared SPI Bus</a><ul></ul></li></ul></li>
+<li><a href="#test-shared-spi-bus">12.8 Test Shared SPI Bus</a><ul></ul></li>
+<li><a href="#sx1262-chip-select">12.9 SX1262 Chip Select</a><ul></ul></li></ul></li>
 <li><a href="#appendix-st7789-display">13 Appendix: ST7789 Display</a><ul>
 <li><a href="#spi-mode">13.1 SPI Mode</a><ul></ul></li>
 <li><a href="#spi-frequency">13.2 SPI Frequency</a><ul></ul></li></ul></li>
@@ -467,12 +468,19 @@ static void create_widgets(void) {
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk"><strong>BL MCU SDK</strong></a>: Doesn’t support WiFi, also based on FreeRTOS)</p>
 </li>
 <li>
-<p>The PineDio Stack Self-Test Firmware was created by JF with BL MCU SDK…</p>
+<p>The PineDio Stack <strong>Self-Test Firmware</strong> was created by JF with BL MCU SDK…</p>
 <p><a href="https://codeberg.org/JF002/pinedio-stack-selftest"><strong>JF002/pinedio-stack-selftest</strong></a></p>
+</li>
+<li>
+<p><strong>LVGL Canvas</strong> consumes a lot of RAM! Disable it if we don’t really need it, we’ll save 7 KB of RAM…</p>
+<p>Configure NuttX: <code>make menuconfig</code></p>
+<p>Select “Application Configuration → Graphics Support → Light and Versatile Graphic Library (LVGL) → Object Type Usage Settings”</p>
+<p>Uncheck “Canvas Usage”</p>
+<p>Save and exit menuconfig, then rebuild NuttX (<code>make</code>)</p>
 </li>
 </ol>
 <h1 id="appendix-shared-spi-bus" class="section-header"><a href="#appendix-shared-spi-bus">12 Appendix: Shared SPI Bus</a></h1>
-<p>TODO</p>
+<p>This section explains how we modified NuttX to handle the <strong>Shared SPI Bus</strong> on PineDio Stack BL604.</p>
 <p>Acording to the PineDio Stack Schematics…</p>
 <ul>
 <li>
@@ -942,6 +950,30 @@ st7789_sendcmd: OK
 monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 <p>Which renders the LVGL Demo Screen on ST7789 correctly!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-dark2.jpg" alt="LVGL Demo App" /></p>
+<h2 id="sx1262-chip-select" class="section-header"><a href="#sx1262-chip-select">12.9 SX1262 Chip Select</a></h2>
+<p>There’s a potential Race Condition if we use the SX1262 Driver concurrently with the ST7789 Driver…</p>
+<ul>
+<li>
+<p>During LoRa Transmission, SX1262 Driver calls <code>ioctl()</code> to flip SX1262 Chip Select to Low</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L806-L832">(See this)</a></p>
+</li>
+<li>
+<p>SX1262 Driver calls SPI Test Driver <code>/dev/spitest0</code>, which locks (<code>SPI_LOCK</code>) and selects (<code>SPI_SELECT</code>) the SPI Bus (with SPI Device ID 0)</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/rf/spi_test_driver.c#L161-L208">(See this)</a></p>
+</li>
+<li>
+<p>Note that the calls to <code>ioctl()</code> and <code>SPI_LOCK / SPI_SELECT</code> are NOT Atomic</p>
+</li>
+<li>
+<p>If the ST7789 Driver is active between the calls to <code>ioctl()</code> and <code>SPI_LOCK / SPI_SELECT</code>, both SX1262 Chip Select and ST7789 Chip Select will be flipped to Low</p>
+</li>
+<li>
+<p>This might transmit garbage to SX1262</p>
+</li>
+</ul>
+<p>To solve this problem, we will register a new SPI Test Driver <code>/dev/spitest1</code> with SPI Device ID 1.</p>
+<p>The LoRa Driver will then access <code>/dev/spitest1</code>, which will <code>SPI_LOCK</code> and <code>SPI_SELECT</code> the SPI Bus (with SPI Device ID 1).</p>
+<p>Since the SPI Device ID is 1, <code>SPI_SELECT</code> will flip the SX1262 Chip Select to Low.</p>
 <h1 id="appendix-st7789-display" class="section-header"><a href="#appendix-st7789-display">13 Appendix: ST7789 Display</a></h1>
 <p>TODO</p>
 <h2 id="spi-mode" class="section-header"><a href="#spi-mode">13.1 SPI Mode</a></h2>
@@ -1428,6 +1460,7 @@ UplinkProcess</code></pre></div><h1 id="appendix-upcoming-features" class="secti
 <p>TODO</p>
 <h2 id="touch-panel" class="section-header"><a href="#touch-panel">15.1 Touch Panel</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
+<p>Use <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> as guide, since it looks quite similar to CST816S.</p>
 <h2 id="push-button" class="section-header"><a href="#push-button">15.2 Push Button</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pushbutton.c">pinedio-stack-selftest/pushbutton.c</a></p>
 <h2 id="accelerometer" class="section-header"><a href="#accelerometer">15.3 Accelerometer</a></h2>
