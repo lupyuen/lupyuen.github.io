@@ -408,13 +408,19 @@ _What other NuttX Apps can we try?_
 
 [(Here's a demo of the apps)](https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27)
 
-_What about LoRa?_
+_What about LoRa on PineDio Stack?_
 
 We have NuttX Apps for testing __LoRa and LoRaWAN__ wireless networking.
 
-Check the Appendix for details...
+See the Appendix for details...
 
 -   [__"SX1262 LoRa Transceiver"__](https://lupyuen.github.io/articles/pinedio2#appendix-sx1262-lora-transceiver)
+
+_And if we wish to create our own NuttX Apps?_
+
+Check out the NuttX articles here...
+
+-   [__"NuttX on BL602 / BL604"__](https://lupyuen.github.io/articles/book#nuttx-on-bl602)
 
 ![Shared SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi2.jpg)
 
