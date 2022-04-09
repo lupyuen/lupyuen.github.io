@@ -817,7 +817,7 @@ To watch CBOR in action, enter this in the NuttX Shell...
 tinycbor_test
 ```
 
-We'll see the encoded CBOR data...
+We'll see the __encoded CBOR data__...
 
 ```text
 test_cbor2: Encoding { "t": 1234, "l": 2345 }
@@ -837,9 +837,13 @@ CBOR Output: 11 bytes
 
 [(See the complete log)](https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27)
 
-To encode CBOR data in our own apps, check out this article...
+To __encode CBOR data__ in our own apps, check out this article...
 
 -   [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
+
+CBOR Decoding can be done automatically in __The Things Network__...
+
+-   [__"CBOR Payload Formatter for The Things Network"__](https://lupyuen.github.io/articles/payload)
 
 # Appendix: Shared SPI Bus
 
