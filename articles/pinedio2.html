@@ -1353,7 +1353,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L178-L208">(<strong>bl602_spi_deselect_devices</strong> is defined here)</a></p>
 <h2 id="test-shared-spi-bus" class="section-header"><a href="#test-shared-spi-bus">14.8 Test Shared SPI Bus</a></h2>
 <p><em>But will this Shared SPI Bus work? Swapping MISO / MOSI on the fly while flipping multiple Chip Select Pins?</em></p>
-<p>Yes it does! We tested it with <strong>ST7789 Display</strong> and <strong>SX1262 Transceiver</strong>…</p>
+<p>Yes the Shared SPI Bus works beautifully on PineDio Stack! This is how we tested with <strong>ST7789 Display</strong> and <strong>SX1262 Transceiver</strong>…</p>
 <ol>
 <li>
 <p>We boot PineDio Stack, which calls the ST7789 Driver to render a Pink Screen…</p>
