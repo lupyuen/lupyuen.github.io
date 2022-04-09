@@ -414,19 +414,27 @@ We have NuttX Apps for testing __LoRa and LoRaWAN__ wireless networking.
 
 Check the Appendix for details.
 
-![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
-
-_PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)_
-
 ![Shared SPI Bus on PineDio Stack BL604](https://lupyuen.github.io/images/pinedio-spi2.jpg)
 
 # Upcoming Features
 
-_So NuttX is all hunky dory on PineDio Stack?_
+_So PineDio Stack runs all hunky dory on NuttX?_
 
-TODO: Shared SPI Bus
+Not completely. PineDio Stack's __Shared SPI Bus__ works great on NuttX after we modded the SPI Driver...
 
-Automated Testing
+-   [__"Shared SPI Bus"__](https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus)
+
+PineDio Stack's __ST7789 Display__ runs well with NuttX's ST7789 Driver and LVGL Library right out of the box, with a few tweaks...
+
+-   [__"ST7789 SPI Mode"__](https://lupyuen.github.io/articles/pinedio2#st7789-spi-mode)
+
+And the __SX1262 LoRa Transceiver__ works fine with Semtech's LoRa and LoRaWAN Drivers...
+
+-   [__"SX1262 LoRa Transceiver"__](https://lupyuen.github.io/articles/pinedio2#appendix-sx1262-lora-transceiver)
+
+But there's __more porting work__ to be done!
+
+TODO: Automated Testing, upcoming features, GPIO
 
 If you're keen to help, please lemme know! 🙏
 
