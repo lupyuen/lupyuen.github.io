@@ -77,12 +77,13 @@
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-upcoming-features">12 Appendix: Upcoming Features</a><ul>
-<li><a href="#touch-panel">12.1 Touch Panel</a><ul></ul></li>
+<li><a href="#gpio">12.1 GPIO</a><ul></ul></li>
 <li><a href="#push-button">12.2 Push Button</a><ul></ul></li>
-<li><a href="#accelerometer">12.3 Accelerometer</a><ul></ul></li>
-<li><a href="#power-management">12.4 Power Management</a><ul></ul></li>
-<li><a href="#spi-flash">12.5 SPI Flash</a><ul></ul></li>
-<li><a href="#gps">12.6 GPS</a><ul></ul></li></ul></li>
+<li><a href="#touch-panel">12.3 Touch Panel</a><ul></ul></li>
+<li><a href="#accelerometer">12.4 Accelerometer</a><ul></ul></li>
+<li><a href="#power-management">12.5 Power Management</a><ul></ul></li>
+<li><a href="#spi-flash">12.6 SPI Flash</a><ul></ul></li>
+<li><a href="#gps">12.7 GPS</a><ul></ul></li></ul></li>
 <li><a href="#appendix-sx1262-lora-transceiver">13 Appendix: SX1262 LoRa Transceiver</a><ul>
 <li><a href="#test-lora">13.1 Test LoRa</a><ul></ul></li>
 <li><a href="#test-lorawan">13.2 Test LoRaWAN</a><ul></ul></li>
@@ -490,25 +491,24 @@ static void create_widgets(void) {
 <p>Uncheck “Canvas Usage”</p>
 <p>Save and exit menuconfig, then rebuild NuttX (<code>make</code>)</p>
 </li>
-<li>
-<p>BL604 has 32 GPIOs, can we use all of them in NuttX? See this…</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/5810"><strong>“GPIO issues on BL602”</strong></a></p>
-</li>
 </ol>
 <h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">12 Appendix: Upcoming Features</a></h1>
 <p>TODO</p>
-<h2 id="touch-panel" class="section-header"><a href="#touch-panel">12.1 Touch Panel</a></h2>
-<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
-<p>Use <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> as guide, since it looks quite similar to CST816S.</p>
+<h2 id="gpio" class="section-header"><a href="#gpio">12.1 GPIO</a></h2>
+<p>TODO: BL604 has 32 GPIOs, can we use all of them in NuttX? See this…</p>
+<p><a href="https://github.com/apache/incubator-nuttx/issues/5810"><strong>“GPIO issues on BL602”</strong></a></p>
 <h2 id="push-button" class="section-header"><a href="#push-button">12.2 Push Button</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pushbutton.c">pinedio-stack-selftest/pushbutton.c</a></p>
-<h2 id="accelerometer" class="section-header"><a href="#accelerometer">12.3 Accelerometer</a></h2>
+<h2 id="touch-panel" class="section-header"><a href="#touch-panel">12.3 Touch Panel</a></h2>
+<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
+<p>Use <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> as guide, since it looks quite similar to CST816S.</p>
+<h2 id="accelerometer" class="section-header"><a href="#accelerometer">12.4 Accelerometer</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c">pinedio-stack-selftest/accelerometer.c</a></p>
-<h2 id="power-management" class="section-header"><a href="#power-management">12.4 Power Management</a></h2>
+<h2 id="power-management" class="section-header"><a href="#power-management">12.5 Power Management</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c">pinedio-stack-selftest/battery.c</a></p>
-<h2 id="spi-flash" class="section-header"><a href="#spi-flash">12.5 SPI Flash</a></h2>
+<h2 id="spi-flash" class="section-header"><a href="#spi-flash">12.6 SPI Flash</a></h2>
 <p>TODO</p>
-<h2 id="gps" class="section-header"><a href="#gps">12.6 GPS</a></h2>
+<h2 id="gps" class="section-header"><a href="#gps">12.7 GPS</a></h2>
 <p>TODO: NuttX has a GPS Demo App…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c">apps/examples/gps/gps_main.c</a></p>
 <p>And a GPS Parser…</p>
