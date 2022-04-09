@@ -577,8 +577,8 @@ static void create_widgets(void) {
 #define RECEIVE_MESSAGE</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L94-L143">(Source)</a></p>
 <p>Rebuild (“<code>make</code>”) and reflash (“<code>blflash</code>”) NuttX to PineDio Stack.</p>
-<p>Enter this in the NuttX Shell…</p>
-<div class="example-wrap"><pre class="language-text"><code>sx1262_test</code></pre></div>
+<p>In the NuttX Shell, enter this to run the <strong>LoRa Test App</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sx1262_test</code></pre></div>
 <p>If we’re sending a LoRa Message on PineDio Stack, we’ll see the message received by the <strong>LoRa Receiver Device</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sx1262#run-the-firmware-1"><strong>“Run the Firmware”</strong></a></li>
@@ -630,29 +630,30 @@ static void create_widgets(void) {
   #define ACTIVE_REGION LORAMAC_REGION_AS923
 #endif</code></pre></div>
 <p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L39-L45">(Source)</a></p>
-<p>As explained here…</p>
+<p>Which is explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-frequency"><strong>“LoRaWAN Frequency”</strong></a></li>
 </ul>
 <p>Remember to <strong>disable all Info Logging</strong> because it affects the LoRaWAN Timers.</p>
 <p>Rebuild (“<code>make</code>”) and reflash (“<code>blflash</code>”) NuttX to PineDio Stack.</p>
-<p>Enter this in the NuttX Shell…</p>
-<div class="example-wrap"><pre class="language-text"><code>lorawan_test</code></pre></div>
+<p>In the NuttX Shell, enter this to run the <strong>LoRaWAN Test App</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
 <p>We should see this…</p>
 <div class="example-wrap"><pre class="language-text"><code>init_entropy_pool
 temperature = 31.600670 Celsius</code></pre></div>
-<p>TODO</p>
+<p>The app begins by reading BL602’s <strong>Internal Temperature Sensor</strong> to seed the Entropy Pool for the Random Number Generator.</p>
+<p>Next it sends a <strong>Join Network Request</strong> to the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>##### =========== MLME-Request ============ ######
 #####               MLME_JOIN               ######
 ##### ===================================== ######
 STATUS      : OK</code></pre></div>
-<p>TODO</p>
+<p>Then the app receives the <strong>Join Accept Response</strong> from the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>##### =========== MLME-Confirm ============ ######
 STATUS      : OK
 ##### ===========   JOINED     ============ ######
 DevAddr     :  01097710
 DATA RATE   : DR_2</code></pre></div>
-<p>TODO</p>
+<p>Finally the app sends a <strong>Data Packet</strong> <em>(“Hi NuttX”)</em> to the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>##### =========== MCPS-Confirm ============ ######
 STATUS      : OK
 ##### =====   UPLINK FRAME        1   ===== ######
@@ -665,18 +666,67 @@ U/L FREQ    : 923200000
 TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx#test-lorawan">(See the complete log)</a></p>
-<p>TODO: <strong>“Hi NuttX”</strong></p>
+<p>We should see <strong>“Hi NuttX”</strong> at the LoRaWAN Gateway (like ChirpStack)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3#check-lorawan-gateway-1"><strong>“Check LoRaWAN Gateway”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="Decoded Payload" /></p>
+<p>For troubleshooting tips, see this…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3#troubleshoot-lorawan"><strong>“Troubleshoot LoRaWAN”</strong></a></li>
 </ul>
 <p><em>Will PineDio Stack connect to The Things Network?</em></p>
-<p>TODO: The Things Network</p>
+<p>Yes just set the LoRaWAN Parameters like so…</p>
+<ul>
+<li>
+<p><strong>LORAWAN_DEVICE_EUI</strong>: Set this to the <strong>DevEUI</strong> from The Things Network</p>
+</li>
+<li>
+<p><strong>LORAWAN_JOIN_EUI</strong>: Set this to <code>{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }</code></p>
+</li>
+<li>
+<p><strong>APP_KEY, NWK_KEY</strong>: Set both to the <strong>AppKey</strong> from The Things Network</p>
+</li>
+</ul>
+<p>To get the <strong>DevEUI</strong> and <strong>AppKey</strong> from The Things Network…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network"><strong>“Add Device to The Things Network”</strong></a></li>
+</ul>
+<p>(I don’t think <strong>NWK_KEY</strong> is used)</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-ttn.png" alt="NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN" /></p>
+<p><em>NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN</em></p>
 <h2 id="test-cbor-encoder" class="section-header"><a href="#test-cbor-encoder">13.3 Test CBOR Encoder</a></h2>
-<p>TODO</p>
+<p>Suppose we’re creating an app that transmits <strong>Sensor Data</strong> over LoRa (or LoRaWAN) from two sensors: <strong>Temperature Sensor and Light Sensor</strong>…</p>
+<div class="example-wrap"><pre class="language-json"><code>{ 
+  &quot;t&quot;: 1234, 
+  &quot;l&quot;: 2345 
+}</code></pre></div>
+<p>(Located in a Greenhouse perhaps)</p>
+<p>We could transmit <strong>19 bytes of JSON</strong>. But there’s a more compact way to do it….</p>
+<p><a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a>, which works like a binary, compressed form of JSON.</p>
+<p>And we need only <strong>11 bytes of CBOR</strong>!</p>
+<p><img src="https://lupyuen.github.io/images/cbor2-title.jpg" alt="Encoding Sensor Data with CBOR" /></p>
+<p>To watch CBOR in action, enter this in the NuttX Shell…</p>
+<div class="example-wrap"><pre class="language-bash"><code>tinycbor_test</code></pre></div>
+<p>We’ll see the encoded CBOR data…</p>
+<div class="example-wrap"><pre class="language-text"><code>test_cbor2: Encoding { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
+CBOR Output: 11 bytes
+  0xa2
+  0x61
+  0x74
+  0x19
+  0x04
+  0xd2
+  0x61
+  0x6c
+  0x19
+  0x09
+  0x29</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27">(See the complete log)</a></p>
+<p>To encode CBOR data in our own apps, check out this article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor2"><strong>“Encode Sensor Data with CBOR on Apache NuttX OS”</strong></a></li>
+</ul>
 <h1 id="appendix-shared-spi-bus" class="section-header"><a href="#appendix-shared-spi-bus">14 Appendix: Shared SPI Bus</a></h1>
 <p>This section explains how we modified NuttX to handle the <strong>Shared SPI Bus</strong> on PineDio Stack BL604.</p>
 <p>Acording to the PineDio Stack Schematics…</p>
