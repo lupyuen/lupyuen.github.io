@@ -622,9 +622,9 @@ int main(int argc, FAR char *argv[]) {
 
 Rebuild ("`make`") and reflash ("`blflash`") NuttX to PineDio Stack.
 
-Enter this in the NuttX Shell...
+In the NuttX Shell, enter this to run the __LoRa Test App__...
 
-```text
+```bash
 sx1262_test
 ```
 
@@ -700,7 +700,7 @@ And set the __LoRaWAN Frequency__...
 
 [(Source)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L39-L45)
 
-As explained here...
+Which is explained here...
 
 -   [__"LoRaWAN Frequency"__](https://lupyuen.github.io/articles/lorawan3#lorawan-frequency)
 
@@ -708,9 +708,9 @@ Remember to __disable all Info Logging__ because it affects the LoRaWAN Timers.
 
 Rebuild ("`make`") and reflash ("`blflash`") NuttX to PineDio Stack.
 
-Enter this in the NuttX Shell...
+In the NuttX Shell, enter this to run the __LoRaWAN Test App__...
 
-```text
+```bash
 lorawan_test
 ```
 
@@ -721,7 +721,9 @@ init_entropy_pool
 temperature = 31.600670 Celsius
 ```
 
-TODO
+The app begins by reading BL602's __Internal Temperature Sensor__ to seed the Entropy Pool for the Random Number Generator.
+
+Next it sends a __Join Network Request__ to the LoRaWAN Gateway...
 
 ```text
 ###### =========== MLME-Request ============ ######
@@ -730,7 +732,7 @@ TODO
 STATUS      : OK
 ```
 
-TODO
+Then the app receives the __Join Accept Response__ from the LoRaWAN Gateway...
 
 ```text
 ###### =========== MLME-Confirm ============ ######
@@ -740,7 +742,7 @@ DevAddr     :  01097710
 DATA RATE   : DR_2
 ```
 
-TODO
+Finally the app sends a __Data Packet__ _("Hi NuttX")_ to the LoRaWAN Gateway...
 
 ```text
 ###### =========== MCPS-Confirm ============ ######
@@ -758,21 +760,86 @@ CHANNEL MASK: 0003
 
 [(See the complete log)](https://github.com/lupyuen/pinedio-stack-nuttx#test-lorawan)
 
-TODO: __"Hi NuttX"__
+We should see __"Hi NuttX"__ at the LoRaWAN Gateway (like ChirpStack)...
 
 -   [__"Check LoRaWAN Gateway"__](https://lupyuen.github.io/articles/lorawan3#check-lorawan-gateway-1)
 
 ![Decoded Payload](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
 
+For troubleshooting tips, see this...
+
 -   [__"Troubleshoot LoRaWAN"__](https://lupyuen.github.io/articles/lorawan3#troubleshoot-lorawan)
 
 _Will PineDio Stack connect to The Things Network?_
 
-TODO: The Things Network
+Yes just set the LoRaWAN Parameters like so...
+
+-   __LORAWAN_DEVICE_EUI__: Set this to the __DevEUI__ from The Things Network
+
+-   __LORAWAN_JOIN_EUI__: Set this to `{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }`
+
+-   __APP_KEY, NWK_KEY__: Set both to the __AppKey__ from The Things Network
+
+To get the __DevEUI__ and __AppKey__ from The Things Network...
+
+-   [__"Add Device to The Things Network"__](https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network)
+
+(I don't think __NWK_KEY__ is used)
+
+![NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN](https://lupyuen.github.io/images/lorawan3-ttn.png)
+
+_NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN_
 
 ## Test CBOR Encoder
 
-TODO
+Suppose we're creating an app that transmits __Sensor Data__ over LoRa (or LoRaWAN) from two sensors: __Temperature Sensor and Light Sensor__...
+
+```json
+{ 
+  "t": 1234, 
+  "l": 2345 
+}
+```
+
+(Located in a Greenhouse perhaps)
+
+We could transmit __19 bytes of JSON__. But there's a more compact way to do it....
+
+[__Concise Binary Object Representation (CBOR)__](https://en.wikipedia.org/wiki/CBOR), which works like a binary, compressed form of JSON.
+
+And we need only __11 bytes of CBOR__!
+
+![Encoding Sensor Data with CBOR](https://lupyuen.github.io/images/cbor2-title.jpg)
+
+To watch CBOR in action, enter this in the NuttX Shell...
+
+```bash
+tinycbor_test
+```
+
+We'll see the encoded CBOR data...
+
+```text
+test_cbor2: Encoding { "t": 1234, "l": 2345 }
+CBOR Output: 11 bytes
+  0xa2
+  0x61
+  0x74
+  0x19
+  0x04
+  0xd2
+  0x61
+  0x6c
+  0x19
+  0x09
+  0x29
+```
+
+[(See the complete log)](https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27)
+
+To encode CBOR data in our own apps, check out this article...
+
+-   [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
 
 # Appendix: Shared SPI Bus
 
