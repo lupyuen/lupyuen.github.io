@@ -600,13 +600,17 @@ And update the __LoRa Parameters__...
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
 ```
 
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L72)
+
 The parameters are explained here...
 
--   ["LoRa Parameters"](https://lupyuen.github.io/articles/sx1262#lora-parameters)
+-   [__"LoRa Parameters"__](https://lupyuen.github.io/articles/sx1262#lora-parameters)
 
 Then uncomment __SEND_MESSAGE__ or __RECEIVE_MESSAGE__ to send or receive a LoRa Message...
 
 ```c
+int main(int argc, FAR char *argv[]) {
+...
 //  Uncomment to send a LoRa message
 #define SEND_MESSAGE
 ...
@@ -614,7 +618,21 @@ Then uncomment __SEND_MESSAGE__ or __RECEIVE_MESSAGE__ to send or receive a LoRa
 #define RECEIVE_MESSAGE
 ```
 
-TODO
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L94-L143)
+
+Rebuild ("`make`") and reflash ("`blflash`") NuttX to PineDio Stack.
+
+If we're sending a LoRa Message on PineDio Stack, we'll see the message received by the __LoRa Receiver Device__...
+
+-   [__"Run the Firmware"__](https://lupyuen.github.io/articles/sx1262#run-the-firmware-1)
+
+![Our SX1262 Library transmits a LoRa Message to RAKwireless WisBlock](https://lupyuen.github.io/images/sx1262-send2.jpg)
+
+To troubleshoot LoRa, we could use a __Spectrum Analyser (Software-Defined Radio)__...
+
+-   [__"Spectrum Analysis with SDR"__](https://lupyuen.github.io/articles/sx1262#spectrum-analysis-with-sdr)
+
+![Spectrum Analysis of LoRa Message with SDR](https://lupyuen.github.io/images/sx1262-sdr.jpg)
 
 ## Test LoRaWAN
 
@@ -631,6 +649,8 @@ Here's how we set the LoRaWAN Parameters...
 -   ["Device EUI, Join EUI and App Key"](https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key)
 
 -   ["LoRaWAN Frequency"](https://lupyuen.github.io/articles/lorawan3#lorawan-frequency)
+
+Rebuild ("`make`") and reflash ("`blflash`") NuttX to PineDio Stack.
 
 ```text
 NuttShell (NSH) NuttX-10.2.0-RC0
@@ -1499,30 +1519,6 @@ Yes it does! We tested it with __ST7789 Display__ and __SX1262 Transceiver__...
 
 ![LVGL Demo App](https://lupyuen.github.io/images/pinedio2-dark2.jpg)
 
-## SX1262 Chip Select
-
-There's a potential Race Condition if we use the SX1262 Driver concurrently with the ST7789 Driver...
-
--   During LoRa Transmission, SX1262 Driver calls __ioctl()__ to flip SX1262 Chip Select to Low
-
-    [(See this)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L806-L832)
-
--   SX1262 Driver calls SPI Test Driver __/dev/spitest0__, which locks (__SPI_LOCK__) and selects (__SPI_SELECT__) the SPI Bus (with SPI Device ID 0)
-
-    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/rf/spi_test_driver.c#L161-L208)
-
--   Note that the calls to __ioctl()__ and __SPI_LOCK__ / __SPI_SELECT__ are NOT Atomic
-
--   If the ST7789 Driver is active between the calls to __ioctl()__ and __SPI_LOCK__ / __SPI_SELECT__, both SX1262 Chip Select and ST7789 Chip Select will be flipped to Low
-
--   This might transmit garbage to SX1262
-
-To solve this problem, we will register a new SPI Test Driver __/dev/spitest1__ with SPI Device ID 1.
-
-The LoRa Driver will be modified to access __/dev/spitest1__, which will call __SPI_LOCK__ and __SPI_SELECT__ with SPI Device ID 1.
-
-Since the SPI Device ID is 1, __SPI_SELECT__ will flip the SX1262 Chip Select to Low.
-
 ## ST7789 SPI Mode
 
 BL602 / BL604 has another SPI Quirk that affects ST7789 on PineDio Stack...
@@ -1576,7 +1572,7 @@ Since MISO / MOSI are not swapped for ST7789 on PineDio Stack, we use __SPI Mode
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66)
 
-Note that we have configured PineDio Stack to talk to SX1262 at __SPI Mode 1__ via the SPI Test Driver __/dev/spitest0__. [(See this)](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
+Note that we have configured PineDio Stack to talk to SX1262 at __SPI Mode 1__ via the SPI Test Driver "__/dev/spitest0__". [(See this)](https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk)
 
 ## ST7789 SPI Frequency
 
@@ -1591,3 +1587,27 @@ CONFIG_LCD_ST7789_FREQUENCY=4000000
 Maybe we can go higher and reduce contention for the SPI Bus?
 
 Also in future we should implement SPI with __Direct Memory Access__ (DMA) to avoid busy-polling the SPI Bus. [(See this)](https://lupyuen.github.io/articles/st7789#shared-spi-bus)
+
+## SX1262 Chip Select
+
+There's a potential Race Condition if we use the SX1262 Driver concurrently with the ST7789 Driver...
+
+-   During LoRa Transmission, SX1262 Driver calls __ioctl()__ to flip SX1262 Chip Select to Low
+
+    [(See this)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L806-L832)
+
+-   SX1262 Driver calls SPI Test Driver "__/dev/spitest0__", which locks (__SPI_LOCK__) and selects (__SPI_SELECT__) the SPI Bus (with SPI Device ID 0)
+
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/rf/spi_test_driver.c#L161-L208)
+
+-   Note that the calls to __ioctl()__ and __SPI_LOCK__ / __SPI_SELECT__ are NOT Atomic
+
+-   If the ST7789 Driver is active between the calls to __ioctl()__ and __SPI_LOCK__ / __SPI_SELECT__, both SX1262 Chip Select and ST7789 Chip Select will be flipped to Low
+
+-   This might transmit garbage to SX1262
+
+To solve this problem, we will register a new SPI Test Driver "__/dev/spitest1__" with SPI Device ID 1. (With some tweaks to the driver code)
+
+The LoRa Driver will be modified to access "__/dev/spitest1__", which will call __SPI_LOCK__ and __SPI_SELECT__ with SPI Device ID 1.
+
+Since the SPI Device ID is 1, __SPI_SELECT__ will flip the SX1262 Chip Select to Low.
