@@ -422,13 +422,23 @@ static void create_widgets(void) {
 <p><em>What about LoRa Apps?</em></p>
 <p>We have NuttX Apps for testing <strong>LoRa and LoRaWAN</strong> wireless networking.</p>
 <p>Check the Appendix for details.</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
-<p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi2.jpg" alt="Shared SPI Bus on PineDio Stack BL604" /></p>
 <h1 id="upcoming-features" class="section-header"><a href="#upcoming-features">9 Upcoming Features</a></h1>
-<p><em>So NuttX is all hunky dory on PineDio Stack?</em></p>
-<p>TODO: Shared SPI Bus</p>
-<p>Automated Testing</p>
+<p><em>So PineDio Stack runs all hunky dory on NuttX?</em></p>
+<p>Not completely. PineDio Stack’s <strong>Shared SPI Bus</strong> works great on NuttX after we modded the SPI Driver…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus"><strong>“Shared SPI Bus”</strong></a></li>
+</ul>
+<p>PineDio Stack’s <strong>ST7789 Display</strong> runs well with NuttX’s ST7789 Driver and LVGL Library right out of the box, with a few tweaks…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinedio2#st7789-spi-mode"><strong>“ST7789 SPI Mode”</strong></a></li>
+</ul>
+<p>And the <strong>SX1262 LoRa Transceiver</strong> works fine with Semtech’s LoRa and LoRaWAN Drivers…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinedio2#appendix-sx1262-lora-transceiver"><strong>“SX1262 LoRa Transceiver”</strong></a></li>
+</ul>
+<p>But there’s <strong>more porting work</strong> to be done!</p>
+<p>TODO: Automated Testing, upcoming features, GPIO</p>
 <p>If you’re keen to help, please lemme know! 🙏</p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
