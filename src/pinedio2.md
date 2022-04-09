@@ -414,7 +414,9 @@ We have NuttX Apps for testing __LoRa and LoRaWAN__ wireless networking.
 
 Check the Appendix for details.
 
-![Shared SPI Bus on PineDio Stack BL604](https://lupyuen.github.io/images/pinedio-spi2.jpg)
+![Shared SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi2.jpg)
+
+_Shared SPI Bus on PineDio Stack_
 
 # Upcoming Features
 
