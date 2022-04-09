@@ -408,11 +408,13 @@ _What other NuttX Apps can we try?_
 
 [(Here's a demo of the apps)](https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27)
 
-_What about LoRa Apps?_
+_What about LoRa?_
 
 We have NuttX Apps for testing __LoRa and LoRaWAN__ wireless networking.
 
-Check the Appendix for details.
+Check the Appendix for details...
+
+-   [__"SX1262 LoRa Transceiver"__](https://lupyuen.github.io/articles/pinedio2#appendix-sx1262-lora-transceiver)
 
 ![Shared SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi2.jpg)
 
@@ -426,11 +428,11 @@ Not completely. PineDio Stack's __Shared SPI Bus__ works great on NuttX after we
 
 -   [__"Shared SPI Bus"__](https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus)
 
-PineDio Stack's __ST7789 Display__ runs well with NuttX's ST7789 Driver and LVGL Library right out of the box, with a few tweaks...
+The __ST7789 Display__ runs well with NuttX's ST7789 Driver and LVGL Library right out of the box, with one tweak...
 
 -   [__"ST7789 SPI Mode"__](https://lupyuen.github.io/articles/pinedio2#st7789-spi-mode)
 
-And the __SX1262 LoRa Transceiver__ works fine with Semtech's LoRa and LoRaWAN Drivers...
+And the __SX1262 LoRa Transceiver__ works fine with Semtech's Reference Drivers for LoRa and LoRaWAN...
 
 -   [__"SX1262 LoRa Transceiver"__](https://lupyuen.github.io/articles/pinedio2#appendix-sx1262-lora-transceiver)
 
