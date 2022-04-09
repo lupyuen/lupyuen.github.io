@@ -642,7 +642,7 @@ static const int32_t bl602_spi_device_table[] =
 <p>Let’s look at the <code>BOARD_*</code> definitions.</p>
 <h2 id="pin-definitions" class="section-header"><a href="#pin-definitions">12.4 Pin Definitions</a></h2>
 <p><em>Where are the SPI Pins defined?</em></p>
-<p>The SPI Device Table above refers to the following <strong>Pin Definitions</strong>…</p>
+<p>The SPI Device Table above refers to the following <strong>Pin Definitions</strong> at <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L128">boards/risc-v/bl602/bl602evb/include/board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* SPI for PineDio Stack: Chip Select (unused), MOSI, MISO, SCK */
 
 #define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)  /* Unused */
@@ -672,7 +672,7 @@ static const int32_t bl602_spi_device_table[] =
 #define BOARD_FLASH_DEVID 2  /* SPI Device ID */
 #define BOARD_FLASH_SWAP  1  /* Swap MISO/MOSI */
 #define BOARD_FLASH_CS (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN14)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L128">(Source)</a></p>
+<p>(GPIO, UART and I2C Pins are also defined in the file)</p>
 <p>Now that we have defined the SPI Device Table in NuttX, let’s use it.</p>
 <h2 id="select--deselect-spi-device" class="section-header"><a href="#select--deselect-spi-device">12.5 Select / Deselect SPI Device</a></h2>
 <p>Remember that NuttX calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471"><strong>bl602_spi_select</strong></a> to select (or deselect) an SPI Device.</p>
@@ -924,7 +924,28 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <h1 id="appendix-sx1262-lora-transceiver" class="section-header"><a href="#appendix-sx1262-lora-transceiver">13 Appendix: SX1262 LoRa Transceiver</a></h1>
-<p>TODO</p>
+<p>PineDio Stack BL604 includes a <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 LoRa Transceiver</strong></a> for wireless networking.</p>
+<p>This section explains how we may test <strong>LoRa and LoRaWAN Wireless Networking</strong> on PineDio Stack.</p>
+<p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION</strong>: Always connect the LoRa Antenna before testing LoRa or LoRaWAN… Or the LoRa Transceiver may get damaged! (Pic above)</a></p>
+<p><em>Why LoRa?</em></p>
+<p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRa</strong></a> is a <strong>Low-Power, Long-Range, Low-Bandwidth</strong> wireless network.</p>
+<p>LoRa is perfect for <strong>IoT Sensor Devices</strong> that run on Battery Power. (Or Solar Power)</p>
+<p><em>Will LoRa support all kinds of messages?</em></p>
+<p>Not quite. LoRa only supports <strong>Short Messages</strong> of up to <a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan"><strong>242 Bytes</strong></a>.</p>
+<p>And because LoRa is a Low Power (best effort) network, <strong>messages may get dropped.</strong> Which is probably OK for sensor devices that send data periodically.</p>
+<p>(But not for texting your friends)</p>
+<p><em>Is LoRa secure?</em></p>
+<p>LoRa messages are delivered securely when we join a <strong>LoRaWAN Network</strong>.</p>
+<p>Today we shall test both <strong>LoRa and LoRaWAN</strong> on PineDio Stack…</p>
+<ul>
+<li>
+<p>Transmit and receive raw <strong>LoRa Messages</strong></p>
+</li>
+<li>
+<p>Join a LoRaWAN Network and transmit a <strong>LoRaWAN Message</strong> to a LoRaWAN Gateway (like ChirpStack or The Things Network)</p>
+</li>
+</ul>
+<p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRa and LoRaWAN)</a></p>
 <h2 id="test-lora" class="section-header"><a href="#test-lora">13.1 Test LoRa</a></h2>
 <p>TODO</p>
 <p>To test LoRa on PineDio Stack, edit <a href="https://github.com/lupyuen/sx1262_test/blob/main/sx1262_test_main.c"><code>sx1262_test_main.c</code></a> at…</p>
