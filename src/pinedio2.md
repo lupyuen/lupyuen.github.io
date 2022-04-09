@@ -727,23 +727,23 @@ init_entropy_pool
 temperature = 31.600670 Celsius
 ```
 
-The app begins by reading BL602's __Internal Temperature Sensor__ to seed the Entropy Pool for the Random Number Generator.
+The app begins by reading BL604's __Internal Temperature Sensor__ to seed the Entropy Pool for the Random Number Generator. [(Here's why)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
 
-Next it sends a __Join Network Request__ to the LoRaWAN Gateway...
+Next it sends a __Join Network Request__ to the LoRaWAN Gateway (like ChirpStack)...
 
 ```text
-###### =========== MLME-Request ============ ######
-######               MLME_JOIN               ######
-###### ===================================== ######
+=========== MLME-Request ============
+              MLME_JOIN              
+=====================================
 STATUS      : OK
 ```
 
 Then the app receives the __Join Accept Response__ from the LoRaWAN Gateway...
 
 ```text
-###### =========== MLME-Confirm ============ ######
+=========== MLME-Confirm ============
 STATUS      : OK
-###### ===========   JOINED     ============ ######
+===========   JOINED     ============
 DevAddr     :  01097710
 DATA RATE   : DR_2
 ```
@@ -751,9 +751,9 @@ DATA RATE   : DR_2
 Finally the app sends a __Data Packet__ _("Hi NuttX")_ to the LoRaWAN Gateway...
 
 ```text
-###### =========== MCPS-Confirm ============ ######
+=========== MCPS-Confirm ============
 STATUS      : OK
-###### =====   UPLINK FRAME        1   ===== ######
+=====   UPLINK FRAME        1   =====
 CLASS       : A
 TX PORT     : 1
 TX DATA     : UNCONFIRMED
