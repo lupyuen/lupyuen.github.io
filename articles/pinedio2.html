@@ -96,9 +96,9 @@
 <li><a href="#spi-command--data">14.6 SPI Command / Data</a><ul></ul></li>
 <li><a href="#deselect-all-spi-devices">14.7 Deselect All SPI Devices</a><ul></ul></li>
 <li><a href="#test-shared-spi-bus">14.8 Test Shared SPI Bus</a><ul></ul></li>
-<li><a href="#sx1262-chip-select">14.9 SX1262 Chip Select</a><ul></ul></li>
-<li><a href="#st7789-spi-mode">14.10 ST7789 SPI Mode</a><ul></ul></li>
-<li><a href="#st7789-spi-frequency">14.11 ST7789 SPI Frequency</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Apr 2022</em></p>
+<li><a href="#st7789-spi-mode">14.9 ST7789 SPI Mode</a><ul></ul></li>
+<li><a href="#st7789-spi-frequency">14.10 ST7789 SPI Frequency</a><ul></ul></li>
+<li><a href="#sx1262-chip-select">14.11 SX1262 Chip Select</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 <p><strong>PineDio Stack BL604</strong> is Pine64’s newest microcontroller board, based on <a href="https://lupyuen.github.io/articles/pinecone"><strong>Bouffalo Lab’s BL604</strong></a> RISC-V + WiFi + Bluetooth LE SoC.</p>
@@ -562,17 +562,31 @@ static void create_widgets(void) {
 #define LORAPING_TX_TIMEOUT_MS              3000    /* ms */
 #define LORAPING_RX_TIMEOUT_MS              10000    /* ms */
 #define LORAPING_BUFFER_SIZE                64      /* LoRa message size */</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L72">(Source)</a></p>
 <p>The parameters are explained here…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/sx1262#lora-parameters">“LoRa Parameters”</a></li>
+<li><a href="https://lupyuen.github.io/articles/sx1262#lora-parameters"><strong>“LoRa Parameters”</strong></a></li>
 </ul>
 <p>Then uncomment <strong>SEND_MESSAGE</strong> or <strong>RECEIVE_MESSAGE</strong> to send or receive a LoRa Message…</p>
-<div class="example-wrap"><pre class="language-c"><code>//  Uncomment to send a LoRa message
+<div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
+...
+//  Uncomment to send a LoRa message
 #define SEND_MESSAGE
 ...
 //  Uncomment to receive a LoRa message
 #define RECEIVE_MESSAGE</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L94-L143">(Source)</a></p>
+<p>Rebuild (“<code>make</code>”) and reflash (“<code>blflash</code>”) NuttX to PineDio Stack.</p>
+<p>If we’re sending a LoRa Message on PineDio Stack, we’ll see the message received by the <strong>LoRa Receiver Device</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262#run-the-firmware-1"><strong>“Run the Firmware”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/sx1262-send2.jpg" alt="Our SX1262 Library transmits a LoRa Message to RAKwireless WisBlock" /></p>
+<p>To troubleshoot LoRa, we could use a <strong>Spectrum Analyser (Software-Defined Radio)</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262#spectrum-analysis-with-sdr"><strong>“Spectrum Analysis with SDR”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/sx1262-sdr.jpg" alt="Spectrum Analysis of LoRa Message with SDR" /></p>
 <h2 id="test-lorawan" class="section-header"><a href="#test-lorawan">13.2 Test LoRaWAN</a></h2>
 <p>TODO</p>
 <p>LoRaWAN works OK on Shared SPI Bus yay! PineDio Stack connects to LoRaWAN Gateway (ChirpStack) and sends data packets.</p>
@@ -587,6 +601,7 @@ static void create_widgets(void) {
 <p><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-frequency">“LoRaWAN Frequency”</a></p>
 </li>
 </ul>
+<p>Rebuild (“<code>make</code>”) and reflash (“<code>blflash</code>”) NuttX to PineDio Stack.</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
 nsh&gt; lorawan_test
 init_entropy_pool
@@ -1375,31 +1390,7 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/pinedio2-dark2.jpg" alt="LVGL Demo App" /></p>
-<h2 id="sx1262-chip-select" class="section-header"><a href="#sx1262-chip-select">14.9 SX1262 Chip Select</a></h2>
-<p>There’s a potential Race Condition if we use the SX1262 Driver concurrently with the ST7789 Driver…</p>
-<ul>
-<li>
-<p>During LoRa Transmission, SX1262 Driver calls <strong>ioctl()</strong> to flip SX1262 Chip Select to Low</p>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L806-L832">(See this)</a></p>
-</li>
-<li>
-<p>SX1262 Driver calls SPI Test Driver <strong>/dev/spitest0</strong>, which locks (<strong>SPI_LOCK</strong>) and selects (<strong>SPI_SELECT</strong>) the SPI Bus (with SPI Device ID 0)</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/rf/spi_test_driver.c#L161-L208">(See this)</a></p>
-</li>
-<li>
-<p>Note that the calls to <strong>ioctl()</strong> and <strong>SPI_LOCK</strong> / <strong>SPI_SELECT</strong> are NOT Atomic</p>
-</li>
-<li>
-<p>If the ST7789 Driver is active between the calls to <strong>ioctl()</strong> and <strong>SPI_LOCK</strong> / <strong>SPI_SELECT</strong>, both SX1262 Chip Select and ST7789 Chip Select will be flipped to Low</p>
-</li>
-<li>
-<p>This might transmit garbage to SX1262</p>
-</li>
-</ul>
-<p>To solve this problem, we will register a new SPI Test Driver <strong>/dev/spitest1</strong> with SPI Device ID 1.</p>
-<p>The LoRa Driver will be modified to access <strong>/dev/spitest1</strong>, which will call <strong>SPI_LOCK</strong> and <strong>SPI_SELECT</strong> with SPI Device ID 1.</p>
-<p>Since the SPI Device ID is 1, <strong>SPI_SELECT</strong> will flip the SX1262 Chip Select to Low.</p>
-<h2 id="st7789-spi-mode" class="section-header"><a href="#st7789-spi-mode">14.10 ST7789 SPI Mode</a></h2>
+<h2 id="st7789-spi-mode" class="section-header"><a href="#st7789-spi-mode">14.9 ST7789 SPI Mode</a></h2>
 <p>BL602 / BL604 has another SPI Quirk that affects ST7789 on PineDio Stack…</p>
 <p>BL602 / BL604 talks to ST7789 Display at <strong>SPI Mode 1 or Mode 3</strong>, depending on whether <strong>MISO / MOSI are swapped</strong>…</p>
 <ul>
@@ -1446,13 +1437,37 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 
 #endif   /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66">(Source)</a></p>
-<p>Note that we have configured PineDio Stack to talk to SX1262 at <strong>SPI Mode 1</strong> via the SPI Test Driver <strong>/dev/spitest0</strong>. <a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(See this)</a></p>
-<h2 id="st7789-spi-frequency" class="section-header"><a href="#st7789-spi-frequency">14.11 ST7789 SPI Frequency</a></h2>
+<p>Note that we have configured PineDio Stack to talk to SX1262 at <strong>SPI Mode 1</strong> via the SPI Test Driver “<strong>/dev/spitest0</strong>”. <a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(See this)</a></p>
+<h2 id="st7789-spi-frequency" class="section-header"><a href="#st7789-spi-frequency">14.10 ST7789 SPI Frequency</a></h2>
 <p>On PineDio Stack, we have configured the <strong>SPI Frequency</strong> of the ST7789 Display to <strong>4 MHz</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_LCD_ST7789_FREQUENCY=4000000</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L542">(Source)</a></p>
 <p>Maybe we can go higher and reduce contention for the SPI Bus?</p>
 <p>Also in future we should implement SPI with <strong>Direct Memory Access</strong> (DMA) to avoid busy-polling the SPI Bus. <a href="https://lupyuen.github.io/articles/st7789#shared-spi-bus">(See this)</a></p>
+<h2 id="sx1262-chip-select" class="section-header"><a href="#sx1262-chip-select">14.11 SX1262 Chip Select</a></h2>
+<p>There’s a potential Race Condition if we use the SX1262 Driver concurrently with the ST7789 Driver…</p>
+<ul>
+<li>
+<p>During LoRa Transmission, SX1262 Driver calls <strong>ioctl()</strong> to flip SX1262 Chip Select to Low</p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L806-L832">(See this)</a></p>
+</li>
+<li>
+<p>SX1262 Driver calls SPI Test Driver “<strong>/dev/spitest0</strong>”, which locks (<strong>SPI_LOCK</strong>) and selects (<strong>SPI_SELECT</strong>) the SPI Bus (with SPI Device ID 0)</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/rf/spi_test_driver.c#L161-L208">(See this)</a></p>
+</li>
+<li>
+<p>Note that the calls to <strong>ioctl()</strong> and <strong>SPI_LOCK</strong> / <strong>SPI_SELECT</strong> are NOT Atomic</p>
+</li>
+<li>
+<p>If the ST7789 Driver is active between the calls to <strong>ioctl()</strong> and <strong>SPI_LOCK</strong> / <strong>SPI_SELECT</strong>, both SX1262 Chip Select and ST7789 Chip Select will be flipped to Low</p>
+</li>
+<li>
+<p>This might transmit garbage to SX1262</p>
+</li>
+</ul>
+<p>To solve this problem, we will register a new SPI Test Driver “<strong>/dev/spitest1</strong>” with SPI Device ID 1. (With some tweaks to the driver code)</p>
+<p>The LoRa Driver will be modified to access “<strong>/dev/spitest1</strong>”, which will call <strong>SPI_LOCK</strong> and <strong>SPI_SELECT</strong> with SPI Device ID 1.</p>
+<p>Since the SPI Device ID is 1, <strong>SPI_SELECT</strong> will flip the SX1262 Chip Select to Low.</p>
 
     
 </body>
