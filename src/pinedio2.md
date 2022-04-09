@@ -671,7 +671,7 @@ Let's look at the `BOARD_*` definitions.
 
 _Where are the SPI Pins defined?_
 
-The SPI Device Table above refers to the following __Pin Definitions__...
+The SPI Device Table above refers to the following __Pin Definitions__ at [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L128)
 
 ```c
 /* SPI for PineDio Stack: Chip Select (unused), MOSI, MISO, SCK */
@@ -705,7 +705,7 @@ The SPI Device Table above refers to the following __Pin Definitions__...
 #define BOARD_FLASH_CS (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN14)
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L128)
+(GPIO, UART and I2C Pins are also defined in the file)
 
 Now that we have defined the SPI Device Table in NuttX, let's use it.
 
@@ -1014,7 +1014,37 @@ _PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate 
 
 # Appendix: SX1262 LoRa Transceiver
 
-TODO
+PineDio Stack BL604 includes a [__Semtech SX1262 LoRa Transceiver__](https://www.semtech.com/products/wireless-rf/lora-core/sx1262) for wireless networking.
+
+This section explains how we may test __LoRa and LoRaWAN Wireless Networking__ on PineDio Stack.
+
+[__CAUTION__: Always connect the LoRa Antenna before testing LoRa or LoRaWAN... Or the LoRa Transceiver may get damaged! (Pic above)](https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected)
+
+_Why LoRa?_
+
+[__LoRa__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) is a __Low-Power, Long-Range, Low-Bandwidth__ wireless network.
+
+LoRa is perfect for __IoT Sensor Devices__ that run on Battery Power. (Or Solar Power)
+
+_Will LoRa support all kinds of messages?_
+
+Not quite. LoRa only supports __Short Messages__ of up to [__242 Bytes__](https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan).
+
+And because LoRa is a Low Power (best effort) network, __messages may get dropped.__ Which is probably OK for sensor devices that send data periodically.
+
+(But not for texting your friends)
+
+_Is LoRa secure?_
+
+LoRa messages are delivered securely when we join a __LoRaWAN Network__.
+
+Today we shall test both __LoRa and LoRaWAN__ on PineDio Stack...
+
+-   Transmit and receive raw __LoRa Messages__
+
+-   Join a LoRaWAN Network and transmit a __LoRaWAN Message__ to a LoRaWAN Gateway (like ChirpStack or The Things Network)
+
+[(More about LoRa and LoRaWAN)](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
 
 ## Test LoRa
 
