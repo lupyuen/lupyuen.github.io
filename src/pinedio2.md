@@ -496,7 +496,11 @@ TODO
 
 ## GPIO Expander
 
-TODO: BL604 has 32 GPIOs, can we use all of them in NuttX? See this...
+_BL604 has 32 GPIOs, can we use all of them in NuttX?_
+
+Some of the GPIOs will be used for SPI, I2C and UART. But we still have a lot of remaining GPIOs to manage!
+
+TODO: See this...
 
 [__"GPIO issues on BL602"__](https://github.com/apache/incubator-nuttx/issues/5810)
 
