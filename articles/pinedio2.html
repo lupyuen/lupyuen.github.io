@@ -517,7 +517,7 @@ static void create_widgets(void) {
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf"><strong>PineDio Stack Baseboard Schematic</strong> (2021-09-27)</a></p>
 </li>
 </ul>
-<p>Here are the GPIOs used by PineDio Stack…</p>
+<p>These are the <strong>BL604 GPIOs</strong> used by PineDio Stack…</p>
 <div><table><thead><tr><th style="text-align: center">GPIO</th><th style="text-align: left">Port</th><th style="text-align: left">Function</th><th style="text-align: left">Other Functions</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0</code></strong></td><td style="text-align: left">SPI</td><td style="text-align: left">MISO</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>1</code></strong></td><td style="text-align: left">Int I2C</td><td style="text-align: left">SDA</td><td style="text-align: left"></td></tr>
@@ -544,31 +544,35 @@ static void create_widgets(void) {
 <tr><td style="text-align: center"><strong><code>22</code></strong></td><td style="text-align: left">Heart Rate</td><td style="text-align: left">Interrupt</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
-<p><strong>Internal I2C Bus “/dev/i2c0”</strong> is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass</p>
 <p><strong>SPI Bus “/dev/spitest0”</strong> is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash</p>
+<p><strong>Internal I2C Bus “/dev/i2c0”</strong> is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass</p>
 <p><strong>UART Port “/dev/console”</strong> is shared by Serial Console and GPS</p>
 <p><strong>GPIO Input “/dev/gpio0”</strong> is configured as GPIO 10 (SX1262 Busy)</p>
 <p><strong>GPIO Output “/dev/gpio1”</strong> is configured as GPIO 15 (SX1262 Chip Select)</p>
 <p><strong>GPIO Interrupt “/dev/gpio2”</strong> is configured as GPIO 19 (SX1262 Interrupt)</p>
+<p>Here are the <strong>Pin Definitions</strong> in NuttX…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
+</ul>
 <h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">13 Appendix: Upcoming Features</a></h1>
 <p>This section discusses the <strong>upcoming features</strong> that we’ll implement with NuttX on PineDio Stack BL604.</p>
 <p>If you’re keen to help, please lemme know! 🙏</p>
 <h2 id="gpio-expander" class="section-header"><a href="#gpio-expander">13.1 GPIO Expander</a></h2>
-<p><em>BL604 has 32 GPIOs. Can we use all of them in NuttX Apps?</em></p>
-<p>Some of the GPIOs will be used for SPI, I2C and UART. But we still have <strong>a lot of remaining GPIOs</strong> to manage!</p>
+<p><em>BL604 has 23 GPIOs. Can we use all of them in NuttX Apps?</em></p>
+<p>Some of the GPIOs will be used for <a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment"><strong>SPI, I2C and UART</strong></a>. But we still have <strong>a lot of remaining GPIOs</strong> to manage!</p>
 <p>NuttX allows apps to access to a total of <strong>3 GPIOs</strong> on BL604…</p>
 <ul>
 <li>
 <p><strong>/dev/gpio0</strong>: GPIO Input</p>
-<p>(Configured as GPIO 10)</p>
+<p>(Configured as <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L49-L53"><strong>GPIO 10</strong></a>)</p>
 </li>
 <li>
 <p><strong>/dev/gpio1</strong>: GPIO Output</p>
-<p>(Configured as GPIO 15)</p>
+<p>(Configured as <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L54-L58"><strong>GPIO 15</strong></a>)</p>
 </li>
 <li>
 <p><strong>/dev/gpio2</strong>: GPIO Interrupt</p>
-<p>(Configured as GPIO 19)</p>
+<p>(Configured as <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L59-L63"><strong>GPIO 19</strong></a>)</p>
 </li>
 </ul>
 <p>(All 3 GPIOs are already used by the SX1262 Driver. <a href="https://lupyuen.github.io/articles/sx1262#gpio-interface">See this</a>)</p>
@@ -591,7 +595,7 @@ static void create_widgets(void) {
 </li>
 </ul>
 <p>We shall implement a <strong>GPIO Expander for BL604</strong> that will handle multiple GPIOs by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a>.</p>
-<p>The GPIO Expander will expose GPIOs 0 to 31 as “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio31</strong>”.</p>
+<p>The GPIO Expander will expose GPIOs 0 to 22 as “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio22</strong>”.</p>
 <p><em>Won’t this break the existing GPIOs that are in use?</em></p>
 <p>We’ll skip “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio2</strong>” because they are already used by the SX1262 Driver. <a href="https://lupyuen.github.io/articles/sx1262#gpio-interface">(See this)</a></p>
 <p>(On PineDio Stack: GPIO 0 is MISO, GPIO 1 is SDA, GPIO 2 is SCL. So we shouldn’t touch GPIOs 0, 1 and 2 anyway. <a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">See this</a>)</p>
