@@ -534,17 +534,17 @@ These are the __BL604 GPIOs__ used by PineDio Stack...
 | __`21`__ | ST7789 | Backlight
 | __`22`__ | Heart Rate | Interrupt
 
-__SPI Bus "/dev/spitest0"__ is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash
+-   __SPI Bus "/dev/spitest0"__ is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash
 
-__Internal I2C Bus "/dev/i2c0"__ is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass
+-   __Internal I2C Bus "/dev/i2c0"__ is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass
 
-__UART Port "/dev/console"__ is shared by Serial Console and GPS
+-   __UART Port "/dev/console"__ is shared by Serial Console and GPS
 
-__GPIO Input "/dev/gpio0"__ is configured as GPIO 10 (SX1262 Busy)
+-   __GPIO Input "/dev/gpio0"__ is configured as GPIO 10 (SX1262 Busy)
 
-__GPIO Output "/dev/gpio1"__ is configured as GPIO 15 (SX1262 Chip Select)
+-   __GPIO Output "/dev/gpio1"__ is configured as GPIO 15 (SX1262 Chip Select)
 
-__GPIO Interrupt "/dev/gpio2"__ is configured as GPIO 19 (SX1262 Interrupt)
+-   __GPIO Interrupt "/dev/gpio2"__ is configured as GPIO 19 (SX1262 Interrupt)
 
 Here are the __Pin Definitions__ in NuttX...
 
@@ -552,7 +552,63 @@ Here are the __Pin Definitions__ in NuttX...
 
 # Appendix: Bundled Features
 
-TODO
+Earlier we ran this command to __configure the NuttX Build__ for PineDio Stack BL604...
+
+```bash
+./tools/configure.sh bl602evb:pinedio
+```
+
+The above command bundles the following __NuttX Drivers, Libraries and Apps__ into NuttX for PineDio Stack...
+
+-   [__BL602 ADC Library__](https://github.com/lupyuen/bl602_adc)
+
+    [(Used by LoRaWAN Test App)](https://github.com/lupyuen/lorawan_test)
+
+-   [__I2C Driver "/dev/i2c0"__](https://lupyuen.github.io/articles/bme280)
+
+    [(Used by I2C Sensors)](https://lupyuen.github.io/articles/bme280)
+
+-   [__LCD Driver "/dev/lcd0"__](https://lupyuen.github.io/articles/st7789#lcd-driver)
+
+    [(Used by LVGL Test App)](https://github.com/lupyuen/lvgltest-nuttx)
+
+-   [__LoRa SX1262 Library__](https://github.com/lupyuen/lora-sx1262/tree/lorawan)
+
+    [(Used by LoRaWAN Library)](https://github.com/lupyuen/LoRaMac-node-nuttx)
+
+-   [__LoRaWAN Library__](https://github.com/lupyuen/LoRaMac-node-nuttx)
+
+    [(Used by LoRaWAN Test App)](https://github.com/lupyuen/lorawan_test)
+
+-   [__NimBLE Porting Layer__](https://github.com/lupyuen/nimble-porting-nuttx)
+
+    [(Used by LoRa SX1262 Library)](https://github.com/lupyuen/lora-sx1262/tree/nuttx)
+
+-   [__Rust Stub Library__](https://github.com/lupyuen/rust-nuttx)
+
+    [(Used by Rust Apps)](https://lupyuen.github.io/articles/rusti2c)
+
+-   [__Sensor Test App__](https://lupyuen.github.io/articles/bme280#run-sensor-test-app)
+
+    [(For testing I2C Sensors)](https://lupyuen.github.io/articles/bme280)
+
+-   [__SPI Driver "/dev/spi0"__](https://lupyuen.github.io/articles/spi2#file-descriptor)
+
+    [(Used by SPI Test Driver)](https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/rf)
+
+    [(And ST7789 Display Driver)](https://lupyuen.github.io/articles/st7789#load-st7789-driver)
+
+-   [__SPI Test Driver "/dev/spitest0"__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/rf)
+
+    [(Used by LoRa SX1262 Library)](https://github.com/lupyuen/lora-sx1262/tree/lorawan)
+
+-   [__ST7789 Display Driver__](https://lupyuen.github.io/articles/st7789#load-st7789-driver)
+
+    [(Used by the LCD Driver)](https://lupyuen.github.io/articles/st7789#lcd-driver)
+
+-   [__TinyCBOR Library__](https://github.com/lupyuen2/tinycbor-nuttx)
+
+    [(Used by TinyCBOR Test App)](https://github.com/lupyuen/tinycbor_test)
 
 # Appendix: Upcoming Features
 
@@ -701,11 +757,17 @@ Check out JF's driver for __SGM40561 Power Management Unit__...
 
 -   [__pinedio-stack-selftest/battery.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c)
 
-The __Power Management Drivers__ for NuttX may be found here...
+(This is the same Power Management Unit used in PineTime)
+
+To port this to NuttX, we'll call the __BL604 ADC Library__...
+
+-   [__"ADC and Internal Temperature Sensor Library"__](https://github.com/lupyuen/bl602_adc_test)
+
+(Because BL604 ADC is not supported yet on NuttX)
+
+Refer to the __Power Management Drivers__ for NuttX...
 
 -   [__nuttx/drivers/power__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/power)
-
-(This is the same Power Management Unit used in PineTime)
 
 ## GPS
 
@@ -741,7 +803,7 @@ _ST7789 Display receives plenty of data on the SPI Bus (for screen updates). Wil
 
 Most definitely. That's why we need to implement [__SPI Direct Memory Access (DMA)__](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access) so that PineDio Stack can do other tasks while painting the ST7789 Display.
 
-[(Right now the SPI Driver polls the SPI Port when transferring SPI data)](https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L805-L855)
+[(Right now the SPI Driver polls the SPI Port when transferring SPI data)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L805-L855)
 
 More about SPI DMA on BL602 / BL604...
 
