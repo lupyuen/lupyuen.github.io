@@ -509,7 +509,7 @@ Acording to the PineDio Stack Schematics...
 Here are the GPIOs used by PineDio Stack...
 
 | GPIO | Port | Function | Other Functions
-|:----:|:----:|:--------:|:--------
+|:----:|:-----|:---------|:--------
 | __`0`__ | SPI  | MISO
 | __`1`__ | Int I2C | SDA
 | __`2`__ | Int I2C | SCL
@@ -620,15 +620,23 @@ That's why we need to handle GPIOs the messy (but productive) way for now.
 
 ## Push Button
 
-TODO: See [pinedio-stack-selftest/pushbutton.c](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pushbutton.c)
+To support the __Push Button__ on PineDio Stack, we shall implement these __Board Button Functions__ for PineDio Stack...
 
-## SPI DMA
+-   [__board_buttons__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c#L91-L102)
 
-TODO
+-   [__board_button_irq__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c#L156-L182)
 
-## SPI Flash
+-   [__board_button_initialize__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c#L208-L221)
 
-TODO
+[(Here's the implementation for ESP32)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/xtensa/esp32/esp32-devkitc/src/esp32_buttons.c)
+
+They will be called by the __Button Lower Half Driver__ in NuttX...
+
+-   [__Button Lower Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c)
+
+Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as "__/dev/btn0__"...
+
+-   [__Button Upper Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_upper.c)
 
 ## Touch Panel
 
@@ -636,7 +644,7 @@ TODO: See [pinedio-stack-selftest/drivers/cst816s.c](https://codeberg.org/JF002/
 
 Use [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) as guide, since it looks quite similar to CST816S.
 
-[Touchscreen Drivers](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
+[(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
 
 ## Accelerometer
 
@@ -655,6 +663,14 @@ TODO: NuttX has a GPS Demo App...
 And a GPS Parser...
 
 [apps/gpsutils](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils)
+
+## SPI DMA
+
+TODO
+
+## SPI Flash
+
+TODO
 
 ## Automated Testing
 
