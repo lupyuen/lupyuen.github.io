@@ -545,16 +545,83 @@ static void create_widgets(void) {
 <tr><td style="text-align: center"><strong><code>22</code></strong></td><td style="text-align: left">Heart Rate</td><td style="text-align: left">Interrupt</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
+<ul>
+<li>
 <p><strong>SPI Bus “/dev/spitest0”</strong> is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash</p>
+</li>
+<li>
 <p><strong>Internal I2C Bus “/dev/i2c0”</strong> is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass</p>
+</li>
+<li>
 <p><strong>UART Port “/dev/console”</strong> is shared by Serial Console and GPS</p>
+</li>
+<li>
 <p><strong>GPIO Input “/dev/gpio0”</strong> is configured as GPIO 10 (SX1262 Busy)</p>
+</li>
+<li>
 <p><strong>GPIO Output “/dev/gpio1”</strong> is configured as GPIO 15 (SX1262 Chip Select)</p>
+</li>
+<li>
 <p><strong>GPIO Interrupt “/dev/gpio2”</strong> is configured as GPIO 19 (SX1262 Interrupt)</p>
+</li>
+</ul>
 <p>Here are the <strong>Pin Definitions</strong> in NuttX…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127">boards/risc-v/bl602/bl602evb/include/board.h</a></p>
 <h1 id="appendix-bundled-features" class="section-header"><a href="#appendix-bundled-features">13 Appendix: Bundled Features</a></h1>
-<p>TODO</p>
+<p>Earlier we ran this command to <strong>configure the NuttX Build</strong> for PineDio Stack BL604…</p>
+<div class="example-wrap"><pre class="language-bash"><code>./tools/configure.sh bl602evb:pinedio</code></pre></div>
+<p>The above command bundles the following <strong>NuttX Drivers, Libraries and Apps</strong> into NuttX for PineDio Stack…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/bl602_adc"><strong>BL602 ADC Library</strong></a></p>
+<p><a href="https://github.com/lupyuen/lorawan_test">(Used by LoRaWAN Test App)</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280"><strong>I2C Driver “/dev/i2c0”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/bme280">(Used by I2C Sensors)</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/st7789#lcd-driver"><strong>LCD Driver “/dev/lcd0”</strong></a></p>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx">(Used by LVGL Test App)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>LoRa SX1262 Library</strong></a></p>
+<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx">(Used by LoRaWAN Library)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>LoRaWAN Library</strong></a></p>
+<p><a href="https://github.com/lupyuen/lorawan_test">(Used by LoRaWAN Test App)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>NimBLE Porting Layer</strong></a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/tree/nuttx">(Used by LoRa SX1262 Library)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/rust-nuttx"><strong>Rust Stub Library</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/rusti2c">(Used by Rust Apps)</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280#run-sensor-test-app"><strong>Sensor Test App</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/bme280">(For testing I2C Sensors)</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi2#file-descriptor"><strong>SPI Driver “/dev/spi0”</strong></a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/rf">(Used by SPI Test Driver)</a></p>
+<p><a href="https://lupyuen.github.io/articles/st7789#load-st7789-driver">(And ST7789 Display Driver)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/rf"><strong>SPI Test Driver “/dev/spitest0”</strong></a></p>
+<p><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan">(Used by LoRa SX1262 Library)</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/st7789#load-st7789-driver"><strong>ST7789 Display Driver</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/st7789#lcd-driver">(Used by the LCD Driver)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/tinycbor-nuttx"><strong>TinyCBOR Library</strong></a></p>
+<p><a href="https://github.com/lupyuen/tinycbor_test">(Used by TinyCBOR Test App)</a></p>
+</li>
+</ul>
 <h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">14 Appendix: Upcoming Features</a></h1>
 <p>This section discusses the <strong>upcoming features</strong> that we’ll implement with NuttX on PineDio Stack BL604.</p>
 <p>If you’re keen to help, please lemme know! 🙏</p>
@@ -676,11 +743,16 @@ static void create_widgets(void) {
 <ul>
 <li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c"><strong>pinedio-stack-selftest/battery.c</strong></a></li>
 </ul>
-<p>The <strong>Power Management Drivers</strong> for NuttX may be found here…</p>
+<p>(This is the same Power Management Unit used in PineTime)</p>
+<p>To port this to NuttX, we’ll call the <strong>BL604 ADC Library</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602_adc_test"><strong>“ADC and Internal Temperature Sensor Library”</strong></a></li>
+</ul>
+<p>(Because BL604 ADC is not supported yet on NuttX)</p>
+<p>Refer to the <strong>Power Management Drivers</strong> for NuttX…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/power"><strong>nuttx/drivers/power</strong></a></li>
 </ul>
-<p>(This is the same Power Management Unit used in PineTime)</p>
 <h2 id="gps" class="section-header"><a href="#gps">14.6 GPS</a></h2>
 <p>NuttX has a <strong>GPS Demo App</strong>…</p>
 <ul>
@@ -714,7 +786,7 @@ static void create_widgets(void) {
 <h2 id="spi-direct-memory-access" class="section-header"><a href="#spi-direct-memory-access">14.8 SPI Direct Memory Access</a></h2>
 <p><em>ST7789 Display receives plenty of data on the SPI Bus (for screen updates). Will there be contention with other SPI Devices? (Like SX1262 Transceiver)</em></p>
 <p>Most definitely. That’s why we need to implement <a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access"><strong>SPI Direct Memory Access (DMA)</strong></a> so that PineDio Stack can do other tasks while painting the ST7789 Display.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L805-L855">(Right now the SPI Driver polls the SPI Port when transferring SPI data)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L805-L855">(Right now the SPI Driver polls the SPI Port when transferring SPI data)</a></p>
 <p>More about SPI DMA on BL602 / BL604…</p>
 <ul>
 <li>
