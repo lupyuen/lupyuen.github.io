@@ -534,9 +534,11 @@ Here are the GPIOs used by PineDio Stack...
 | __`21`__ | ST7789 | Backlight
 | __`22`__ | Heart Rate | Interrupt
 
-__Internal I2C Bus "/dev/i2c0"__ is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass.
+__Internal I2C Bus "/dev/i2c0"__ is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass
 
-__SPI Bus "/dev/spitest0"__ is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash.
+__SPI Bus "/dev/spitest0"__ is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash
+
+__UART Port "/dev/uart0"__ is shared by Serial Console and GPS
 
 # Appendix: Upcoming Features
 
