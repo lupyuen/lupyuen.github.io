@@ -418,7 +418,15 @@ See the Appendix for details...
 
 _And if we wish to create our own NuttX Apps?_
 
-Check out the NuttX articles here...
+Refer to these docs for the steps to create our own __NuttX Apps, Libraries and Drivers__...
+
+-   [__"How To Create NuttX Apps"__](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-app)
+
+-   [__"How To Create NuttX Libraries"__](https://lupyuen.github.io/articles/sx1262#appendix-create-a-nuttx-library)
+
+-   [__"How To Create NuttX Device Drivers"__](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-device-driver)
+
+Also check out the __NuttX Articles__ on all kinds of topics...
 
 -   [__"NuttX on BL602 / BL604"__](https://lupyuen.github.io/articles/book#nuttx-on-bl602)
 
@@ -492,33 +500,57 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Upcoming Features
 
-TODO
+This section discusses the __upcoming features__ that we'll implement with NuttX on PineDio Stack BL604.
+
+If you're keen to help, please lemme know! 🙏
 
 ## GPIO Expander
 
-_BL604 has 32 GPIOs. Can we use all of them in NuttX?_
+_BL604 has 32 GPIOs. Can we use all of them in NuttX Apps?_
 
-Some of the GPIOs will be used for SPI, I2C and UART. But we still have a lot of remaining GPIOs to manage!
+Some of the GPIOs will be used for SPI, I2C and UART. But we still have __a lot of remaining GPIOs__ to manage!
 
-Right now NuttX allows a total of __3 GPIOs__ on BL604...
+NuttX allows apps to access to a total of __3 GPIOs__ on BL604...
 
-/dev/gpio0
+-   __/dev/gpio0__: GPIO Input
 
-/dev/gpio1
+-   __/dev/gpio1__: GPIO Output
 
-/dev/gpio2
+-   __/dev/gpio2__: GPIO Interrupt
 
-To support more GPIOs...
+[(All 3 GPIOs are already used by the SX1262 Driver)](https://lupyuen.github.io/articles/sx1262#gpio-interface)
 
-TODO: See this...
+Adding the remaining GPIOs to the [__BL604 GPIO Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137) at compile-time will be cumbersome. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137)
 
-[__"GPIO issues on BL602"__](https://github.com/apache/incubator-nuttx/issues/5810)
+We need a flexible way to manage many GPIOs at runtime.
 
-[Skeleton I/O Expander](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/skeleton.c)
+_What if we aggregate the GPIOs as a single NuttX Device?_
 
-Driver vs Library
+NuttX supports __GPIO Expanders__ that will aggregate multiple GPIOs into a single device...
 
-bl602_configgpio, bl602_gpiowrite
+-   [__Sample I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/ioe_dummy.c#L205-L206)
+
+-   [__Skeleton I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/skeleton.c)
+
+-   [__Lower Half of I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c)
+
+We shall implement a __GPIO Expander for BL604__ that will handle multiple GPIOs by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140), [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216).
+
+There's a discussion about __GPIOs on BL604__...
+
+-   [__"GPIO issues on BL602"__](https://github.com/apache/incubator-nuttx/issues/5810)
+
+_NuttX Apps vs NuttX Drivers... Do they handle GPIOs differently?_
+
+-   __NuttX Drivers__ run in Kernel Mode and can access the GPIO Hardware directly by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140), [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216).
+
+    (So no problems handling many GPIOs)
+
+-   __NuttX Apps__ run in User Mode and can only access GPIOs through "__/dev/gpioN__"
+
+    (Which becomes a problem when we have many GPIOs)
+
+[(More about NuttX GPIO)](https://lupyuen.github.io/articles/nuttx#gpio-demo)
 
 ## Push Button
 
@@ -538,6 +570,8 @@ TODO: See [pinedio-stack-selftest/drivers/cst816s.c](https://codeberg.org/JF002/
 
 Use [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) as guide, since it looks quite similar to CST816S.
 
+[Touchscreen Drivers](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
+
 ## Accelerometer
 
 TODO: See [pinedio-stack-selftest/accelerometer.c](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c)
@@ -555,6 +589,10 @@ TODO: NuttX has a GPS Demo App...
 And a GPS Parser...
 
 [apps/gpsutils](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils)
+
+## Automated Testing
+
+TODO
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
@@ -1153,6 +1191,10 @@ static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid,
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471)
 
+[(__bl602_gpiowrite__ is defined in the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216)
+
+[(__bl602_configgpio__ also comes from the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140)
+
 Let's talk about `CONFIG_SPI_CMDDATA`...
 
 ## SPI Command / Data
@@ -1219,6 +1261,10 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L726-L774)
+
+[(__bl602_configgpio__ is defined in the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140)
+
+[(__bl602_gpiowrite__ also comes from the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216)
 
 Note that we reconfigure MISO / MOSI from SPI Pins to GPIO Pins.
 
