@@ -655,7 +655,7 @@ static void create_widgets(void) {
 <p>(PineDio Stack uses the same Touch Panel as PineTime)</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html">(More about NuttX Touchscreen Drivers)</a></p>
 <h2 id="accelerometer" class="section-header"><a href="#accelerometer">13.4 Accelerometer</a></h2>
-<p>To create the <strong>Accelerometer Sensor Driver “/dev/accel0”</strong> for PineDio Stack, we could port JF’s simple driver…</p>
+<p>To create the I2C <strong>Accelerometer Sensor Driver “/dev/accel0”</strong> for PineDio Stack, we could port JF’s simple driver…</p>
 <ul>
 <li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c"><strong>pinedio-stack-selftest/accelerometer.c</strong></a></li>
 </ul>
@@ -687,7 +687,7 @@ static void create_widgets(void) {
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils"><strong>apps/gpsutils</strong></a></li>
 </ul>
-<p>These might be helpful for creating the <strong>GPS Driver</strong> for PineDio Stack.</p>
+<p>These might be helpful for creating the <strong>GPS Driver</strong> (UART) for PineDio Stack.</p>
 <h2 id="spi-flash" class="section-header"><a href="#spi-flash">13.7 SPI Flash</a></h2>
 <p>The PineDio Stack Schematics refer to 2 kinds of <strong>SPI Flash</strong>… (Why?)</p>
 <ul>
