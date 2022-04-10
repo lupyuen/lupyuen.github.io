@@ -1,6 +1,6 @@
 # PineDio Stack BL604 runs Apache NuttX RTOS
 
-📝 _12 Apr 2022_
+📝 _17 Apr 2022_
 
 ![Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/pinedio2-title.jpg)
 
@@ -514,7 +514,7 @@ Here are the GPIOs used by PineDio Stack...
 | __`1`__ | Internal I2C | SDA
 | __`2`__ | Internal I2C | SCL
 | __`3`__ | External I2C | SDA | ST7789 Reset, Compass Interrupt
-| __`4`__ | External I2C | SCA | GPS Reset
+| __`4`__ | External I2C | SCL | GPS Reset
 | __`5`__ | External I2C |  | Accelerometer Interrupt, GPS On/Off
 | __`6`__ | Power Mgmt | VBAT
 | __`7`__ | UART | RX | GPS RX
