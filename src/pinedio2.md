@@ -636,7 +636,7 @@ That's why we need to handle GPIOs the messy (but productive) way for now.
 
 ## Push Button
 
-To support the __Push Button__ on PineDio Stack, we shall implement these __Board Button Functions__ for PineDio Stack...
+To support the __Push Button__ (GPIO 12) on PineDio Stack, we shall implement these __Board Button Functions__ for PineDio Stack...
 
 -   [__board_buttons__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c#L91-L102)
 
@@ -655,6 +655,8 @@ Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as 
 -   [__Button Upper Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_upper.c)
 
 [(Here's how we access "__/dev/buttons__" in NuttX Apps)](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/chrono/chrono_main.c)
+
+Note that the Push Button shares GPIO 12 with the Vibrator.
 
 ## Touch Panel
 
@@ -713,6 +715,22 @@ And a __GPS Parser Library__...
 
 These might be helpful for creating the __GPS Driver__ for PineDio Stack.
 
+## SPI Flash
+
+The PineDio Stack Schematics refer to 2 kinds of __SPI Flash__... (Why?)
+
+-   __MX25R1635FZUIL0__ (Main Board)
+
+-   __W25Q128FV / W25Q256FV__ (Baseboard)
+
+Both kinds of SPI Flash seem to be supported by NuttX...
+
+-   [__NuttX MX25RXX Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/mtd/mx25rxx.c)
+
+-   [__NuttX W25 Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/mtd/w25.c)
+
+We need to test the drivers.
+
 ## SPI Direct Memory Access
 
 _ST7789 Display receives plenty of data on the SPI Bus (for screen updates). Will there be contention with other SPI Devices? (Like SX1262 Transceiver)_
@@ -728,10 +746,6 @@ More about SPI DMA on BL602 / BL604...
 -   [__"Create DMA Linked List"__](https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list)
 
 -   [__"Execute DMA Linked List"__](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma)
-
-## SPI Flash
-
-TODO
 
 ## Automated Testing
 
