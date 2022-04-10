@@ -498,6 +498,46 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Save and exit menuconfig, then rebuild NuttX (`make`)
 
+# Appendix: GPIO Assignment
+
+Acording to the PineDio Stack Schematics...
+
+-   [__PineDio Stack Schematic__ (2021-09-15)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
+
+-   [__PineDio Stack Baseboard Schematic__ (2021-09-27)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf)
+
+Here are the GPIOs used by PineDio Stack...
+
+| GPIO | Port | Function | Other Functions
+|:----:|:----:|:--------:|:--------
+| __`0`__ | SPI  | MISO
+| __`1`__ | Internal I2C | SDA
+| __`2`__ | Internal I2C | SCL
+| __`3`__ | External I2C | SDA | ST7789 Reset, Compass Interrupt
+| __`4`__ | External I2C | SCA | GPS Reset
+| __`5`__ | External I2C |  | Accelerometer Interrupt, GPS On/Off
+| __`6`__ | Power Mgmt | VBAT
+| __`7`__ | UART | RX | GPS RX
+| __`8`__ | Flash Mode |
+| __`9`__ | Touch Panel | Interrupt
+| __`10`__ | SX1262 | Busy
+| __`11`__ | SPI | SCK | JTAG TDO
+| __`12`__ | Vibrator |  | JTAG TMS, Push Button
+| __`13`__ | SPI | MOSI | JTAG TDI 
+| __`14`__ | SPI Flash | CS | JTAG TCK
+| __`15`__ | SX1262 | CS
+| __`16`__ | UART | TX | GPS TX
+| __`17`__ | Power Mgmt | CHG | Red LED
+| __`18`__ | SX1262 | Reset | Touch Panel Reset
+| __`19`__ | SX1262 | Interrupt
+| __`20`__ | ST7789 | CS
+| __`21`__ | ST7789 | Backlight
+| __`22`__ | Heart Rate | Interrupt
+
+__Internal I2C Bus__ is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass.
+
+__SPI Bus__ is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash.
+
 # Appendix: Upcoming Features
 
 This section discusses the __upcoming features__ that we'll implement with NuttX on PineDio Stack BL604.
