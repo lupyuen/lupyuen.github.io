@@ -538,7 +538,13 @@ __Internal I2C Bus "/dev/i2c0"__ is shared by Accelerometer, Touch Panel, Heart 
 
 __SPI Bus "/dev/spitest0"__ is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash
 
-__UART Port "/dev/uart0"__ is shared by Serial Console and GPS
+__UART Port "/dev/console"__ is shared by Serial Console and GPS
+
+__GPIO Input "/dev/gpio0"__ is configured as GPIO 10 (SX1262 Busy)
+
+__GPIO Output "/dev/gpio1"__ is configured as GPIO 15 (SX1262 Chip Select)
+
+__GPIO Interrupt "/dev/gpio2"__ is configured as GPIO 19 (SX1262 Interrupt)
 
 # Appendix: Upcoming Features
 
@@ -556,9 +562,15 @@ NuttX allows apps to access to a total of __3 GPIOs__ on BL604...
 
 -   __/dev/gpio0__: GPIO Input
 
+    (Configured as GPIO 10)
+
 -   __/dev/gpio1__: GPIO Output
 
+    (Configured as GPIO 15)
+
 -   __/dev/gpio2__: GPIO Interrupt
+
+    (Configured as GPIO 19)
 
 (All 3 GPIOs are already used by the SX1262 Driver. [See this](https://lupyuen.github.io/articles/sx1262#gpio-interface))
 
