@@ -546,7 +546,10 @@ static void create_widgets(void) {
 </div>
 <p><strong>Internal I2C Bus “/dev/i2c0”</strong> is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass</p>
 <p><strong>SPI Bus “/dev/spitest0”</strong> is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash</p>
-<p><strong>UART Port “/dev/uart0”</strong> is shared by Serial Console and GPS</p>
+<p><strong>UART Port “/dev/console”</strong> is shared by Serial Console and GPS</p>
+<p><strong>GPIO Input “/dev/gpio0”</strong> is configured as GPIO 10 (SX1262 Busy)</p>
+<p><strong>GPIO Output “/dev/gpio1”</strong> is configured as GPIO 15 (SX1262 Chip Select)</p>
+<p><strong>GPIO Interrupt “/dev/gpio2”</strong> is configured as GPIO 19 (SX1262 Interrupt)</p>
 <h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">13 Appendix: Upcoming Features</a></h1>
 <p>This section discusses the <strong>upcoming features</strong> that we’ll implement with NuttX on PineDio Stack BL604.</p>
 <p>If you’re keen to help, please lemme know! 🙏</p>
@@ -557,12 +560,15 @@ static void create_widgets(void) {
 <ul>
 <li>
 <p><strong>/dev/gpio0</strong>: GPIO Input</p>
+<p>(Configured as GPIO 10)</p>
 </li>
 <li>
 <p><strong>/dev/gpio1</strong>: GPIO Output</p>
+<p>(Configured as GPIO 15)</p>
 </li>
 <li>
 <p><strong>/dev/gpio2</strong>: GPIO Interrupt</p>
+<p>(Configured as GPIO 19)</p>
 </li>
 </ul>
 <p>(All 3 GPIOs are already used by the SX1262 Driver. <a href="https://lupyuen.github.io/articles/sx1262#gpio-interface">See this</a>)</p>
