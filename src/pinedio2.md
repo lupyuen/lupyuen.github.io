@@ -550,6 +550,10 @@ Here are the __Pin Definitions__ in NuttX...
 
 [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127)
 
+# Appendix: Bundled Features
+
+TODO
+
 # Appendix: Upcoming Features
 
 This section discusses the __upcoming features__ that we'll implement with NuttX on PineDio Stack BL604.
