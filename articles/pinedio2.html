@@ -84,7 +84,7 @@
 <li><a href="#accelerometer">13.4 Accelerometer</a><ul></ul></li>
 <li><a href="#power-management">13.5 Power Management</a><ul></ul></li>
 <li><a href="#gps">13.6 GPS</a><ul></ul></li>
-<li><a href="#spi-dma">13.7 SPI DMA</a><ul></ul></li>
+<li><a href="#spi-direct-memory-access">13.7 SPI Direct Memory Access</a><ul></ul></li>
 <li><a href="#spi-flash">13.8 SPI Flash</a><ul></ul></li>
 <li><a href="#automated-testing">13.9 Automated Testing</a><ul></ul></li></ul></li>
 <li><a href="#appendix-sx1262-lora-transceiver">14 Appendix: SX1262 LoRa Transceiver</a><ul>
@@ -644,25 +644,65 @@ static void create_widgets(void) {
 </ul>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/chrono/chrono_main.c">(Here’s how we access “<strong>/dev/buttons</strong>” in NuttX Apps)</a></p>
 <h2 id="touch-panel" class="section-header"><a href="#touch-panel">13.3 Touch Panel</a></h2>
-<p>JF has created a <strong>CST816S Touch Panel Driver</strong> for PineDio Stack… (Thanks JF!)</p>
+<p>JF has created a <strong>CST816S I2C Touch Panel Driver</strong> for PineDio Stack… (Thanks JF!)</p>
 <ul>
 <li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c"><strong>pinedio-stack-selftest/drivers/cst816s.c</strong></a></li>
 </ul>
 <p>We shall port this driver to NuttX and expose it to apps as a NuttX Touchscreen Device “<strong>/dev/input0</strong>”.</p>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c">(Here’s how we access “<strong>/dev/input0</strong>” in our LVGL Test App)</a></p>
 <p>The <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.</p>
+<p>(PineDio Stack uses the same Touch Panel as PineTime)</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html">(More about NuttX Touchscreen Drivers)</a></p>
 <h2 id="accelerometer" class="section-header"><a href="#accelerometer">13.4 Accelerometer</a></h2>
-<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c">pinedio-stack-selftest/accelerometer.c</a></p>
+<p>To create the <strong>Accelerometer Sensor Driver “/dev/accel0”</strong> for PineDio Stack, we could port JF’s simple driver…</p>
+<ul>
+<li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c"><strong>pinedio-stack-selftest/accelerometer.c</strong></a></li>
+</ul>
+<p>Or the <strong>Reference Driver for MC3416</strong>…</p>
+<ul>
+<li><a href="https://mcubemems.com/product/mc3416-3-axis-accelerometer/"><strong>MC3416 Driver Source Code</strong></a></li>
+</ul>
+<p>The <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/sensors/wtgahrs2.c"><strong>NuttX Driver for WTGAHRS2 Accelerometer</strong></a> might be a good guide for porting the driver.</p>
+<p>We have an article that explains the innards of <strong>NuttX Sensor Drivers</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/bme280"><strong>“Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS”</strong></a></li>
+</ul>
 <h2 id="power-management" class="section-header"><a href="#power-management">13.5 Power Management</a></h2>
-<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c">pinedio-stack-selftest/battery.c</a></p>
+<p>Check out JF’s driver for <strong>SGM40561 Power Management Unit</strong>…</p>
+<ul>
+<li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c"><strong>pinedio-stack-selftest/battery.c</strong></a></li>
+</ul>
+<p>The <strong>Power Management Drivers</strong> for NuttX may be found here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/power"><strong>nuttx/drivers/power</strong></a></li>
+</ul>
+<p>(This is the same Power Management Unit used in PineTime)</p>
 <h2 id="gps" class="section-header"><a href="#gps">13.6 GPS</a></h2>
-<p>TODO: NuttX has a GPS Demo App…</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c">apps/examples/gps/gps_main.c</a></p>
-<p>And a GPS Parser…</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils">apps/gpsutils</a></p>
-<h2 id="spi-dma" class="section-header"><a href="#spi-dma">13.7 SPI DMA</a></h2>
-<p>TODO</p>
+<p>NuttX has a <strong>GPS Demo App</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c"><strong>apps/examples/gps</strong></a></li>
+</ul>
+<p>And a <strong>GPS Parser Library</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils"><strong>apps/gpsutils</strong></a></li>
+</ul>
+<p>These might be helpful for creating the <strong>GPS Driver</strong> for PineDio Stack.</p>
+<h2 id="spi-direct-memory-access" class="section-header"><a href="#spi-direct-memory-access">13.7 SPI Direct Memory Access</a></h2>
+<p><em>ST7789 Display receives plenty of data on the SPI Bus (for screen updates). Will there be contention with other SPI Devices? (Like SX1262 Transceiver)</em></p>
+<p>Most definitely. That’s why we need to implement <a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access"><strong>SPI Direct Memory Access (DMA)</strong></a> so that PineDio Stack can do other tasks while painting the ST7789 Display.</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L805-L855">(Right now the SPI Driver polls the SPI Port when transferring SPI data)</a></p>
+<p>More about SPI DMA on BL602 / BL604…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access"><strong>“SPI with Direct Memory Access”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list"><strong>“Create DMA Linked List”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma"><strong>“Execute DMA Linked List”</strong></a></p>
+</li>
+</ul>
 <h2 id="spi-flash" class="section-header"><a href="#spi-flash">13.8 SPI Flash</a></h2>
 <p>TODO</p>
 <h2 id="automated-testing" class="section-header"><a href="#automated-testing">13.9 Automated Testing</a></h2>
