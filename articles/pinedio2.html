@@ -522,16 +522,16 @@ static void create_widgets(void) {
 <tr><td style="text-align: center"><strong><code>0</code></strong></td><td style="text-align: center">SPI</td><td style="text-align: center">MISO</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>1</code></strong></td><td style="text-align: center">Int I2C</td><td style="text-align: center">SDA</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>2</code></strong></td><td style="text-align: center">Int I2C</td><td style="text-align: center">SCL</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>3</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center">SDA</td><td style="text-align: left">ST7789 Reset, Compass Interrupt</td></tr>
+<tr><td style="text-align: center"><strong><code>3</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center">SDA</td><td style="text-align: left">ST7789 Reset, <br>Compass Interrupt</td></tr>
 <tr><td style="text-align: center"><strong><code>4</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center">SCL</td><td style="text-align: left">GPS Reset</td></tr>
-<tr><td style="text-align: center"><strong><code>5</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center"></td><td style="text-align: left">Accelerometer Interrupt, GPS On/Off</td></tr>
+<tr><td style="text-align: center"><strong><code>5</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center"></td><td style="text-align: left">Accelerometer Interrupt, <br>GPS On/Off</td></tr>
 <tr><td style="text-align: center"><strong><code>6</code></strong></td><td style="text-align: center">Power Mgmt</td><td style="text-align: center">VBAT</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>7</code></strong></td><td style="text-align: center">UART</td><td style="text-align: center">RX</td><td style="text-align: left">GPS RX</td></tr>
 <tr><td style="text-align: center"><strong><code>8</code></strong></td><td style="text-align: center">Flashing Mode</td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>9</code></strong></td><td style="text-align: center">Touch Panel</td><td style="text-align: center">Interrupt</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>10</code></strong></td><td style="text-align: center">SX1262</td><td style="text-align: center">Busy</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>11</code></strong></td><td style="text-align: center">SPI</td><td style="text-align: center">SCK</td><td style="text-align: left">JTAG TDO</td></tr>
-<tr><td style="text-align: center"><strong><code>12</code></strong></td><td style="text-align: center">Vibrator</td><td style="text-align: center"></td><td style="text-align: left">JTAG TMS, Push Button</td></tr>
+<tr><td style="text-align: center"><strong><code>12</code></strong></td><td style="text-align: center">Vibrator</td><td style="text-align: center"></td><td style="text-align: left">JTAG TMS, <br>Push Button</td></tr>
 <tr><td style="text-align: center"><strong><code>13</code></strong></td><td style="text-align: center">SPI</td><td style="text-align: center">MOSI</td><td style="text-align: left">JTAG TDI</td></tr>
 <tr><td style="text-align: center"><strong><code>14</code></strong></td><td style="text-align: center">SPI Flash</td><td style="text-align: center">CS</td><td style="text-align: left">JTAG TCK</td></tr>
 <tr><td style="text-align: center"><strong><code>15</code></strong></td><td style="text-align: center">SX1262</td><td style="text-align: center">CS</td><td style="text-align: left"></td></tr>
@@ -889,6 +889,7 @@ CBOR Output: 11 bytes
 </tbody></table>
 </div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L105">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment">(See the GPIO Assignment)</a></p>
 <p>To prevent crosstalk, we select each SPI Device by flipping its <strong>Chip Select Pin</strong> from High to Low…</p>
 <div><table><thead><tr><th style="text-align: left">SPI Device</th><th style="text-align: center">Device ID</th><th style="text-align: center">Swap MISO/MOSI</th><th style="text-align: center">Chip Select</th></tr></thead><tbody>
 <tr><td style="text-align: left">ST7789 Display</td><td style="text-align: center">0x40000</td><td style="text-align: center">No</td><td style="text-align: center">20</td></tr>
@@ -1040,6 +1041,7 @@ static const int32_t bl602_spi_device_table[] =
 #define BOARD_FLASH_SWAP  1  /* Swap MISO/MOSI */
 #define BOARD_FLASH_CS (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN14)</code></pre></div>
 <p>(GPIO, UART and I2C Pins are also defined in the file)</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment">(See the GPIO Assignment)</a></p>
 <p>Now that we have defined the SPI Device Table in NuttX, let’s use it.</p>
 <h2 id="select--deselect-spi-device" class="section-header"><a href="#select--deselect-spi-device">15.5 Select / Deselect SPI Device</a></h2>
 <p>Remember that NuttX calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471"><strong>bl602_spi_select</strong></a> to select (or deselect) an SPI Device.</p>
