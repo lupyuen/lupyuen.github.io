@@ -640,10 +640,11 @@ static void create_widgets(void) {
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c"><strong>Button Lower Half Driver</strong></a></li>
 </ul>
-<p>Which is wrapped inside the <strong>Button Upper Half Driver</strong> and exposed to apps as “<strong>/dev/btn0</strong>”…</p>
+<p>Which is wrapped inside the <strong>Button Upper Half Driver</strong> and exposed to apps as “<strong>/dev/buttons</strong>”…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_upper.c"><strong>Button Upper Half Driver</strong></a></li>
 </ul>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/chrono/chrono_main.c">(Here’s how we access “<strong>/dev/buttons</strong>” in NuttX Apps)</a></p>
 <h2 id="touch-panel" class="section-header"><a href="#touch-panel">13.3 Touch Panel</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
 <p>Use <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> as guide, since it looks quite similar to CST816S.</p>
