@@ -84,8 +84,8 @@
 <li><a href="#accelerometer">13.4 Accelerometer</a><ul></ul></li>
 <li><a href="#power-management">13.5 Power Management</a><ul></ul></li>
 <li><a href="#gps">13.6 GPS</a><ul></ul></li>
-<li><a href="#spi-direct-memory-access">13.7 SPI Direct Memory Access</a><ul></ul></li>
-<li><a href="#spi-flash">13.8 SPI Flash</a><ul></ul></li>
+<li><a href="#spi-flash">13.7 SPI Flash</a><ul></ul></li>
+<li><a href="#spi-direct-memory-access">13.8 SPI Direct Memory Access</a><ul></ul></li>
 <li><a href="#automated-testing">13.9 Automated Testing</a><ul></ul></li></ul></li>
 <li><a href="#appendix-sx1262-lora-transceiver">14 Appendix: SX1262 LoRa Transceiver</a><ul>
 <li><a href="#test-lora">14.1 Test LoRa</a><ul></ul></li>
@@ -621,7 +621,7 @@ static void create_widgets(void) {
 <p>That’s why we need to handle GPIOs the messy (but productive) way for now.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#gpio-demo">(More about NuttX GPIO)</a></p>
 <h2 id="push-button" class="section-header"><a href="#push-button">13.2 Push Button</a></h2>
-<p>To support the <strong>Push Button</strong> on PineDio Stack, we shall implement these <strong>Board Button Functions</strong> for PineDio Stack…</p>
+<p>To support the <strong>Push Button</strong> (GPIO 12) on PineDio Stack, we shall implement these <strong>Board Button Functions</strong> for PineDio Stack…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c#L91-L102"><strong>board_buttons</strong></a></p>
@@ -643,6 +643,7 @@ static void create_widgets(void) {
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_upper.c"><strong>Button Upper Half Driver</strong></a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/chrono/chrono_main.c">(Here’s how we access “<strong>/dev/buttons</strong>” in NuttX Apps)</a></p>
+<p>Note that the Push Button shares GPIO 12 with the Vibrator.</p>
 <h2 id="touch-panel" class="section-header"><a href="#touch-panel">13.3 Touch Panel</a></h2>
 <p>JF has created a <strong>CST816S I2C Touch Panel Driver</strong> for PineDio Stack… (Thanks JF!)</p>
 <ul>
@@ -687,7 +688,27 @@ static void create_widgets(void) {
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils"><strong>apps/gpsutils</strong></a></li>
 </ul>
 <p>These might be helpful for creating the <strong>GPS Driver</strong> for PineDio Stack.</p>
-<h2 id="spi-direct-memory-access" class="section-header"><a href="#spi-direct-memory-access">13.7 SPI Direct Memory Access</a></h2>
+<h2 id="spi-flash" class="section-header"><a href="#spi-flash">13.7 SPI Flash</a></h2>
+<p>The PineDio Stack Schematics refer to 2 kinds of <strong>SPI Flash</strong>… (Why?)</p>
+<ul>
+<li>
+<p><strong>MX25R1635FZUIL0</strong> (Main Board)</p>
+</li>
+<li>
+<p><strong>W25Q128FV / W25Q256FV</strong> (Baseboard)</p>
+</li>
+</ul>
+<p>Both kinds of SPI Flash seem to be supported by NuttX…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/mtd/mx25rxx.c"><strong>NuttX MX25RXX Driver</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/mtd/w25.c"><strong>NuttX W25 Driver</strong></a></p>
+</li>
+</ul>
+<p>We need to test the drivers.</p>
+<h2 id="spi-direct-memory-access" class="section-header"><a href="#spi-direct-memory-access">13.8 SPI Direct Memory Access</a></h2>
 <p><em>ST7789 Display receives plenty of data on the SPI Bus (for screen updates). Will there be contention with other SPI Devices? (Like SX1262 Transceiver)</em></p>
 <p>Most definitely. That’s why we need to implement <a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access"><strong>SPI Direct Memory Access (DMA)</strong></a> so that PineDio Stack can do other tasks while painting the ST7789 Display.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L805-L855">(Right now the SPI Driver polls the SPI Port when transferring SPI data)</a></p>
@@ -703,8 +724,6 @@ static void create_widgets(void) {
 <p><a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma"><strong>“Execute DMA Linked List”</strong></a></p>
 </li>
 </ul>
-<h2 id="spi-flash" class="section-header"><a href="#spi-flash">13.8 SPI Flash</a></h2>
-<p>TODO</p>
 <h2 id="automated-testing" class="section-header"><a href="#automated-testing">13.9 Automated Testing</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
