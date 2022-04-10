@@ -202,7 +202,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </ol>
 <p><em>What’s “bl602evb:pinedio”?</em></p>
 <p>That’s the <strong>NuttX Build Configuration</strong> for PineDio Stack. It selects the Build Options, NuttX Drivers and NuttX Apps that will run on PineDio Stack.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the configuration file)</a></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(See the bundled features)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-test1.jpg" alt="PineDio Stack Self-Test" /></p>
 <h1 id="prepare-pinedio-stack" class="section-header"><a href="#prepare-pinedio-stack">3 Prepare PineDio Stack</a></h1>
 <p>Let’s get ready to flash the NuttX Firmware to PineDio Stack!</p>
@@ -348,6 +348,9 @@ nsh&gt;</code></pre></div>
 </blockquote>
 <blockquote>
 <p><a href="https://gist.github.com/lupyuen/80f3bc431c9e5aa93d429809c9554629">(Source)</a></p>
+</blockquote>
+<blockquote>
+<p>(“i2c0” is missing from the pic)</p>
 </blockquote>
 <h1 id="nuttx-apps" class="section-header"><a href="#nuttx-apps">7 NuttX Apps</a></h1>
 <p>In the NuttX Shell, enter this command…</p>
@@ -622,6 +625,7 @@ static void create_widgets(void) {
 <p><a href="https://github.com/lupyuen/tinycbor_test">(Used by TinyCBOR Test App)</a></p>
 </li>
 </ul>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the configuration file)</a></p>
 <h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">14 Appendix: Upcoming Features</a></h1>
 <p>This section discusses the <strong>upcoming features</strong> that we’ll implement with NuttX on PineDio Stack BL604.</p>
 <p>If you’re keen to help, please lemme know! 🙏</p>
