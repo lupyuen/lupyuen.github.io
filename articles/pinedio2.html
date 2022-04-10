@@ -596,7 +596,7 @@ static void create_widgets(void) {
 <p>The GPIO Expander will expose GPIOs 0 to 22 as “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio22</strong>”.</p>
 <p><em>Won’t this break the existing GPIOs that are in use?</em></p>
 <p>We’ll skip “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio2</strong>” because they are already used by the SX1262 Driver. <a href="https://lupyuen.github.io/articles/sx1262#gpio-interface">(See this)</a></p>
-<p>(On PineDio Stack: GPIO 0 is MISO, GPIO 1 is SDA, GPIO 2 is SCL. So we shouldn’t touch GPIOs 0, 1 and 2 anyway. <a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">See this</a>)</p>
+<p>(On PineDio Stack: GPIO 0 is MISO, GPIO 1 is SDA, GPIO 2 is SCL. So we shouldn’t touch GPIOs 0, 1 and 2 anyway. <a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment">See this</a>)</p>
 <p><em>Wow this sounds messy?</em></p>
 <p>But it might be the most productive way (for now) to handle so many GPIOs while multiple devs are <strong>building apps and drivers</strong> for PineDio Stack.</p>
 <p>Perhaps the GPIO Expander can <strong>enforce checks at runtime</strong> to be sure that NuttX Apps don’t tamper with the GPIOs used by SPI, I2C and UART.</p>
