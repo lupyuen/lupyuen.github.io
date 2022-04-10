@@ -548,7 +548,7 @@ __GPIO Interrupt "/dev/gpio2"__ is configured as GPIO 19 (SX1262 Interrupt)
 
 Here are the __Pin Definitions__ in NuttX...
 
--   [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127)
+[boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127)
 
 # Appendix: Upcoming Features
 
@@ -658,13 +658,15 @@ Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as 
 
 ## Touch Panel
 
-TODO: See [pinedio-stack-selftest/drivers/cst816s.c](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
+JF has created a __CST816S Touch Panel Driver__ for PineDio Stack... (Thanks JF!)
 
-NuttX Touchscreen Device "__/dev/input0__"
+-   [__pinedio-stack-selftest/drivers/cst816s.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
 
-Use [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) as guide, since it looks quite similar to CST816S.
+We shall port this driver to NuttX and expose it to apps as a NuttX Touchscreen Device "__/dev/input0__".
 
-[(Here's how we access "__/dev/input0__" in NuttX Apps)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c)
+[(Here's how we access "__/dev/input0__" in our LVGL Test App)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c)
+
+The [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.
 
 [(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
 
