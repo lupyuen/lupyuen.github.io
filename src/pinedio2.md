@@ -658,7 +658,7 @@ Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as 
 
 ## Touch Panel
 
-JF has created a __CST816S Touch Panel Driver__ for PineDio Stack... (Thanks JF!)
+JF has created a __CST816S I2C Touch Panel Driver__ for PineDio Stack... (Thanks JF!)
 
 -   [__pinedio-stack-selftest/drivers/cst816s.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
 
@@ -668,29 +668,66 @@ We shall port this driver to NuttX and expose it to apps as a NuttX Touchscreen 
 
 The [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.
 
+(PineDio Stack uses the same Touch Panel as PineTime)
+
 [(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
 
 ## Accelerometer
 
-TODO: See [pinedio-stack-selftest/accelerometer.c](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c)
+To create the __Accelerometer Sensor Driver "/dev/accel0"__ for PineDio Stack, we could port JF's simple driver...
+
+-   [__pinedio-stack-selftest/accelerometer.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c)
+
+Or the __Reference Driver for MC3416__...
+
+-   [__MC3416 Driver Source Code__](https://mcubemems.com/product/mc3416-3-axis-accelerometer/)
+
+The [__NuttX Driver for WTGAHRS2 Accelerometer__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/sensors/wtgahrs2.c
+) might be a good guide for porting the driver.
+
+We have an article that explains the innards of __NuttX Sensor Drivers__...
+
+-   [__"Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"__](https://lupyuen.github.io/articles/bme280)
 
 ## Power Management
 
-TODO: See [pinedio-stack-selftest/battery.c](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c)
+Check out JF's driver for __SGM40561 Power Management Unit__...
+
+-   [__pinedio-stack-selftest/battery.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c)
+
+The __Power Management Drivers__ for NuttX may be found here...
+
+-   [__nuttx/drivers/power__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/power)
+
+(This is the same Power Management Unit used in PineTime)
 
 ## GPS
 
-TODO: NuttX has a GPS Demo App...
+NuttX has a __GPS Demo App__...
 
-[apps/examples/gps/gps_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c)
+-   [__apps/examples/gps__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c)
 
-And a GPS Parser...
+And a __GPS Parser Library__...
 
-[apps/gpsutils](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils)
+-   [__apps/gpsutils__](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils)
 
-## SPI DMA
+These might be helpful for creating the __GPS Driver__ for PineDio Stack.
 
-TODO
+## SPI Direct Memory Access
+
+_ST7789 Display receives plenty of data on the SPI Bus (for screen updates). Will there be contention with other SPI Devices? (Like SX1262 Transceiver)_
+
+Most definitely. That's why we need to implement [__SPI Direct Memory Access (DMA)__](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access) so that PineDio Stack can do other tasks while painting the ST7789 Display.
+
+[(Right now the SPI Driver polls the SPI Port when transferring SPI data)](https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L805-L855)
+
+More about SPI DMA on BL602 / BL604...
+
+-   [__"SPI with Direct Memory Access"__](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
+
+-   [__"Create DMA Linked List"__](https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list)
+
+-   [__"Execute DMA Linked List"__](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma)
 
 ## SPI Flash
 
