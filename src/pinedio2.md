@@ -738,6 +738,10 @@ Today we shall test both __LoRa and LoRaWAN__ on PineDio Stack...
 
 ## Test LoRa
 
+The __LoRa Driver for Semtech SX1262__ is explained in this article...
+
+-   [__"LoRa SX1262 on Apache NuttX OS"__](https://lupyuen.github.io/articles/sx1262)
+
 To test LoRa on PineDio Stack, edit [__sx1262_test_main.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L72) at...
 
 ```text
@@ -815,6 +819,10 @@ To troubleshoot LoRa, we could use a __Spectrum Analyser (Software-Defined Radio
 ![Spectrum Analysis of LoRa Message with SDR](https://lupyuen.github.io/images/sx1262-sdr.jpg)
 
 ## Test LoRaWAN
+
+The __LoRaWAN Driver__ is explained in this article...
+
+-   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
 To test LoRaWAN on PineDio Stack, we edit [__se-identity.h__](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L115) at...
 
