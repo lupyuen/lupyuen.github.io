@@ -1226,16 +1226,21 @@ spi rx:
 <p>Our SX1262 Library needs a <strong>GPIO Interface</strong> to control these <strong>SX1262 Pins</strong>…</p>
 <ul>
 <li>
-<p><strong>DIO1</strong> at /dev/gpio2: GPIO Interrupt used by SX1262 to signal that a LoRa Packet has been transmitted or received</p>
-<p>(DIO1 shifts from Low to High when that happens)</p>
-</li>
-<li>
 <p><strong>BUSY</strong> at /dev/gpio0: GPIO Input that tells us whether SX1262 is busy</p>
 <p>(BUSY is High when SX1262 is busy)</p>
 </li>
 <li>
+<p><strong>Chip Select</strong> at /dev/gpio1: Select or deselect SX1262 on the SPI Bus</p>
+<p>(Chip Select is Low when SX1262 is selected)</p>
+</li>
+<li>
+<p><strong>DIO1</strong> at /dev/gpio2: GPIO Interrupt used by SX1262 to signal that a LoRa Packet has been transmitted or received</p>
+<p>(DIO1 shifts from Low to High when that happens)</p>
+</li>
+<li>
 <p><strong>NRESET</strong>: GPIO Output that is toggled to reset the SX1262 module</p>
 <p>(NRESET is not implemented yet. To reset SX1262, we power cycle the board. <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L163-L183">See this</a>)</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#gpio-expander">(We might implement NRESET with a GPIO Expander)</a></p>
 </li>
 </ul>
 <p>Let’s look at the implementation of the GPIO Interface for the <strong>new SX1262 Library that will support LoRaWAN</strong>.</p>

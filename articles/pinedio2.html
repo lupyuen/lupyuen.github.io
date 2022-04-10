@@ -84,7 +84,8 @@
 <li><a href="#touch-panel">12.5 Touch Panel</a><ul></ul></li>
 <li><a href="#accelerometer">12.6 Accelerometer</a><ul></ul></li>
 <li><a href="#power-management">12.7 Power Management</a><ul></ul></li>
-<li><a href="#gps">12.8 GPS</a><ul></ul></li></ul></li>
+<li><a href="#gps">12.8 GPS</a><ul></ul></li>
+<li><a href="#automated-testing">12.9 Automated Testing</a><ul></ul></li></ul></li>
 <li><a href="#appendix-sx1262-lora-transceiver">13 Appendix: SX1262 LoRa Transceiver</a><ul>
 <li><a href="#test-lora">13.1 Test LoRa</a><ul></ul></li>
 <li><a href="#test-lorawan">13.2 Test LoRaWAN</a><ul></ul></li>
@@ -429,7 +430,19 @@ static void create_widgets(void) {
 <li><a href="https://lupyuen.github.io/articles/pinedio2#appendix-sx1262-lora-transceiver"><strong>“SX1262 LoRa Transceiver”</strong></a></li>
 </ul>
 <p><em>And if we wish to create our own NuttX Apps?</em></p>
-<p>Check out the NuttX articles here…</p>
+<p>Refer to these docs for the steps to create our own <strong>NuttX Apps, Libraries and Drivers</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-app"><strong>“How To Create NuttX Apps”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262#appendix-create-a-nuttx-library"><strong>“How To Create NuttX Libraries”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-device-driver"><strong>“How To Create NuttX Device Drivers”</strong></a></p>
+</li>
+</ul>
+<p>Also check out the <strong>NuttX Articles</strong> on all kinds of topics…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/book#nuttx-on-bl602"><strong>“NuttX on BL602 / BL604”</strong></a></li>
 </ul>
@@ -494,20 +507,56 @@ static void create_widgets(void) {
 </li>
 </ol>
 <h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">12 Appendix: Upcoming Features</a></h1>
-<p>TODO</p>
+<p>This section discusses the <strong>upcoming features</strong> that we’ll implement with NuttX on PineDio Stack BL604.</p>
+<p>If you’re keen to help, please lemme know! 🙏</p>
 <h2 id="gpio-expander" class="section-header"><a href="#gpio-expander">12.1 GPIO Expander</a></h2>
-<p><em>BL604 has 32 GPIOs. Can we use all of them in NuttX?</em></p>
-<p>Some of the GPIOs will be used for SPI, I2C and UART. But we still have a lot of remaining GPIOs to manage!</p>
-<p>Right now NuttX allows a total of <strong>3 GPIOs</strong> on BL604…</p>
-<p>/dev/gpio0</p>
-<p>/dev/gpio1</p>
-<p>/dev/gpio2</p>
-<p>To support more GPIOs…</p>
-<p>TODO: See this…</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/5810"><strong>“GPIO issues on BL602”</strong></a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/skeleton.c">Skeleton I/O Expander</a></p>
-<p>Driver vs Library</p>
-<p>bl602_configgpio, bl602_gpiowrite</p>
+<p><em>BL604 has 32 GPIOs. Can we use all of them in NuttX Apps?</em></p>
+<p>Some of the GPIOs will be used for SPI, I2C and UART. But we still have <strong>a lot of remaining GPIOs</strong> to manage!</p>
+<p>NuttX allows apps to access to a total of <strong>3 GPIOs</strong> on BL604…</p>
+<ul>
+<li>
+<p><strong>/dev/gpio0</strong>: GPIO Input</p>
+</li>
+<li>
+<p><strong>/dev/gpio1</strong>: GPIO Output</p>
+</li>
+<li>
+<p><strong>/dev/gpio2</strong>: GPIO Interrupt</p>
+</li>
+</ul>
+<p><a href="https://lupyuen.github.io/articles/sx1262#gpio-interface">(All 3 GPIOs are already used by the SX1262 Driver)</a></p>
+<p>Adding the remaining GPIOs to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137"><strong>BL604 GPIO Driver</strong></a> at compile-time will be cumbersome. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137">(See this)</a></p>
+<p>We need a flexible way to manage many GPIOs at runtime.</p>
+<p><em>What if we aggregate the GPIOs as a single NuttX Device?</em></p>
+<p>NuttX supports <strong>GPIO Expanders</strong> that will aggregate multiple GPIOs into a single device…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/ioe_dummy.c#L205-L206"><strong>Sample I/O Expander</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/skeleton.c"><strong>Skeleton I/O Expander</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>Lower Half of I/O Expander</strong></a></p>
+</li>
+</ul>
+<p>We shall implement a <strong>GPIO Expander for BL604</strong> that will handle multiple GPIOs by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a>.</p>
+<p>There’s a discussion about <strong>GPIOs on BL604</strong>…</p>
+<ul>
+<li><a href="https://github.com/apache/incubator-nuttx/issues/5810"><strong>“GPIO issues on BL602”</strong></a></li>
+</ul>
+<p><em>NuttX Apps vs NuttX Drivers… Do they handle GPIOs differently?</em></p>
+<ul>
+<li>
+<p><strong>NuttX Drivers</strong> run in Kernel Mode and can access the GPIO Hardware directly by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a>.</p>
+<p>(So no problems handling many GPIOs)</p>
+</li>
+<li>
+<p><strong>NuttX Apps</strong> run in User Mode and can only access GPIOs through “<strong>/dev/gpioN</strong>”</p>
+<p>(Which becomes a problem when we have many GPIOs)</p>
+</li>
+</ul>
+<p><a href="https://lupyuen.github.io/articles/nuttx#gpio-demo">(More about NuttX GPIO)</a></p>
 <h2 id="push-button" class="section-header"><a href="#push-button">12.2 Push Button</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pushbutton.c">pinedio-stack-selftest/pushbutton.c</a></p>
 <h2 id="spi-dma" class="section-header"><a href="#spi-dma">12.3 SPI DMA</a></h2>
@@ -517,6 +566,7 @@ static void create_widgets(void) {
 <h2 id="touch-panel" class="section-header"><a href="#touch-panel">12.5 Touch Panel</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
 <p>Use <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> as guide, since it looks quite similar to CST816S.</p>
+<p><a href="https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html">Touchscreen Drivers</a></p>
 <h2 id="accelerometer" class="section-header"><a href="#accelerometer">12.6 Accelerometer</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c">pinedio-stack-selftest/accelerometer.c</a></p>
 <h2 id="power-management" class="section-header"><a href="#power-management">12.7 Power Management</a></h2>
@@ -526,6 +576,8 @@ static void create_widgets(void) {
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c">apps/examples/gps/gps_main.c</a></p>
 <p>And a GPS Parser…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils">apps/gpsutils</a></p>
+<h2 id="automated-testing" class="section-header"><a href="#automated-testing">12.9 Automated Testing</a></h2>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <h1 id="appendix-sx1262-lora-transceiver" class="section-header"><a href="#appendix-sx1262-lora-transceiver">13 Appendix: SX1262 LoRa Transceiver</a></h1>
@@ -987,6 +1039,8 @@ static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid,
 #endif
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216">(<strong>bl602_gpiowrite</strong> is defined in the BL602 GPIO Driver)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140">(<strong>bl602_configgpio</strong> also comes from the BL602 GPIO Driver)</a></p>
 <p>Let’s talk about <code>CONFIG_SPI_CMDDATA</code>…</p>
 <h2 id="spi-command--data" class="section-header"><a href="#spi-command--data">14.6 SPI Command / Data</a></h2>
 <p>NuttX RTOS uses MISO as the <strong>ST7789 Data / Command Pin</strong>. <a href="https://lupyuen.github.io/articles/st7789#appendix-spi-cmddata-on-bl602">(See this)</a></p>
@@ -1044,6 +1098,8 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 }
 #endif</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L726-L774">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140">(<strong>bl602_configgpio</strong> is defined in the BL602 GPIO Driver)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216">(<strong>bl602_gpiowrite</strong> also comes from the BL602 GPIO Driver)</a></p>
 <p>Note that we reconfigure MISO / MOSI from SPI Pins to GPIO Pins.</p>
 <p>We revert MISO / MOSI back to SPI Pins when the SPI Device is deselected in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L462-L470"><strong>bl602_spi_select</strong></a>.</p>
 <h2 id="deselect-all-spi-devices" class="section-header"><a href="#deselect-all-spi-devices">14.7 Deselect All SPI Devices</a></h2>
