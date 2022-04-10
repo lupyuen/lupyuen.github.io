@@ -551,9 +551,7 @@ static void create_widgets(void) {
 <p><strong>GPIO Output “/dev/gpio1”</strong> is configured as GPIO 15 (SX1262 Chip Select)</p>
 <p><strong>GPIO Interrupt “/dev/gpio2”</strong> is configured as GPIO 19 (SX1262 Interrupt)</p>
 <p>Here are the <strong>Pin Definitions</strong> in NuttX…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
-</ul>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127">boards/risc-v/bl602/bl602evb/include/board.h</a></p>
 <h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">13 Appendix: Upcoming Features</a></h1>
 <p>This section discusses the <strong>upcoming features</strong> that we’ll implement with NuttX on PineDio Stack BL604.</p>
 <p>If you’re keen to help, please lemme know! 🙏</p>
@@ -646,10 +644,13 @@ static void create_widgets(void) {
 </ul>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/chrono/chrono_main.c">(Here’s how we access “<strong>/dev/buttons</strong>” in NuttX Apps)</a></p>
 <h2 id="touch-panel" class="section-header"><a href="#touch-panel">13.3 Touch Panel</a></h2>
-<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
-<p>NuttX Touchscreen Device “<strong>/dev/input0</strong>”</p>
-<p>Use <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> as guide, since it looks quite similar to CST816S.</p>
-<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c">(Here’s how we access “<strong>/dev/input0</strong>” in NuttX Apps)</a></p>
+<p>JF has created a <strong>CST816S Touch Panel Driver</strong> for PineDio Stack… (Thanks JF!)</p>
+<ul>
+<li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c"><strong>pinedio-stack-selftest/drivers/cst816s.c</strong></a></li>
+</ul>
+<p>We shall port this driver to NuttX and expose it to apps as a NuttX Touchscreen Device “<strong>/dev/input0</strong>”.</p>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c">(Here’s how we access “<strong>/dev/input0</strong>” in our LVGL Test App)</a></p>
+<p>The <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html">(More about NuttX Touchscreen Drivers)</a></p>
 <h2 id="accelerometer" class="section-header"><a href="#accelerometer">13.4 Accelerometer</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c">pinedio-stack-selftest/accelerometer.c</a></p>
