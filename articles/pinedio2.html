@@ -527,8 +527,8 @@ static void create_widgets(void) {
 <p><a href="https://lupyuen.github.io/articles/sx1262#gpio-interface">(All 3 GPIOs are already used by the SX1262 Driver)</a></p>
 <p>Adding the remaining GPIOs to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137"><strong>BL604 GPIO Driver</strong></a> at compile-time will be cumbersome. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137">(See this)</a></p>
 <p>We need a flexible way to manage many GPIOs at runtime.</p>
-<p><em>What if we aggregate the GPIOs as a single NuttX Device?</em></p>
-<p>NuttX supports <strong>GPIO Expanders</strong> that will aggregate multiple GPIOs into a single device…</p>
+<p><em>Is there a way to aggregate the GPIOs without defining them at compile-time?</em></p>
+<p>NuttX supports <strong>GPIO Expanders</strong> that will aggregate multiple GPIOs…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/ioe_dummy.c#L205-L206"><strong>Sample I/O Expander</strong></a></p>
@@ -541,6 +541,9 @@ static void create_widgets(void) {
 </li>
 </ul>
 <p>We shall implement a <strong>GPIO Expander for BL604</strong> that will handle multiple GPIOs by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a>.</p>
+<p>The GPIO Expander will expose GPIOs 0 to 31 as “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio31</strong>”.</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#gpio-interface">(But we’ll skip “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio2</strong>” because they are already used by the SX1262 Driver)</a></p>
+<p>This sounds messy, but it might be the best way (for now) to handle so many GPIOs while we’re building apps and drivers for PineDio Stack.</p>
 <p>There’s a discussion about <strong>GPIOs on BL604</strong>…</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/issues/5810"><strong>“GPIO issues on BL602”</strong></a></li>
