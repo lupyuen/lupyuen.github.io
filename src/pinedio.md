@@ -16,7 +16,7 @@ The kind (and super cool) folks at Pine64 told me that I would be receiving a fu
 
 1.  Based on [__BL604 RISC-V + WiFi + Bluetooth LE SoC__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_DS/en), which is the upsized sibling of [__Bouffalo Lab's BL602 SoC__](https://lupyuen.github.io/articles/pinecone).
 
-    (BL604 has 32 GPIOs vs BL602's 16 GPIOs. So it's like comparing millipedes and centipedes, I guess)
+    (BL604 has 23 GPIOs vs BL602's 16 GPIOs. So it's like comparing millipedes and centipedes, I guess)
 
 1.  And BL604 is supposed to be __100% compatible with BL602__
 

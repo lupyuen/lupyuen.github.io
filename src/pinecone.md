@@ -24,7 +24,7 @@ PineCone is based on the BL602 SoC made by [Nanjing-based Bouffalo Lab](https://
 
 1. __CPU is based on RISC-V, not Arm__: Yep this scares most people, because BL602 will NOT run code compiled for Arm processors. Instead we need to use the [__32-bit RISC-V version of the GCC compiler__](https://xpack.github.io/riscv-none-embed-gcc/) to compile our programs.
 
-1.  __BL604 is the upsized sibling of BL602__: BL604 has 32 GPIOs vs BL602's 16 GPIOs. Everything else works the same.
+1.  __BL604 is the upsized sibling of BL602__: BL604 has 23 GPIOs vs BL602's 16 GPIOs. Everything else works the same.
 
 ## BL602 vs ESP32
 

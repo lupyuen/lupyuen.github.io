@@ -506,7 +506,7 @@ Acording to the PineDio Stack Schematics...
 
 -   [__PineDio Stack Baseboard Schematic__ (2021-09-27)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf)
 
-Here are the GPIOs used by PineDio Stack...
+These are the __BL604 GPIOs__ used by PineDio Stack...
 
 | GPIO | Port | Function | Other Functions
 |:----:|:-----|:---------|:--------
@@ -534,9 +534,9 @@ Here are the GPIOs used by PineDio Stack...
 | __`21`__ | ST7789 | Backlight
 | __`22`__ | Heart Rate | Interrupt
 
-__Internal I2C Bus "/dev/i2c0"__ is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass
-
 __SPI Bus "/dev/spitest0"__ is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash
+
+__Internal I2C Bus "/dev/i2c0"__ is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass
 
 __UART Port "/dev/console"__ is shared by Serial Console and GPS
 
@@ -546,6 +546,10 @@ __GPIO Output "/dev/gpio1"__ is configured as GPIO 15 (SX1262 Chip Select)
 
 __GPIO Interrupt "/dev/gpio2"__ is configured as GPIO 19 (SX1262 Interrupt)
 
+Here are the __Pin Definitions__ in NuttX...
+
+-   [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127)
+
 # Appendix: Upcoming Features
 
 This section discusses the __upcoming features__ that we'll implement with NuttX on PineDio Stack BL604.
@@ -554,23 +558,23 @@ If you're keen to help, please lemme know! 🙏
 
 ## GPIO Expander
 
-_BL604 has 32 GPIOs. Can we use all of them in NuttX Apps?_
+_BL604 has 23 GPIOs. Can we use all of them in NuttX Apps?_
 
-Some of the GPIOs will be used for SPI, I2C and UART. But we still have __a lot of remaining GPIOs__ to manage!
+Some of the GPIOs will be used for [__SPI, I2C and UART__](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment). But we still have __a lot of remaining GPIOs__ to manage!
 
 NuttX allows apps to access to a total of __3 GPIOs__ on BL604...
 
 -   __/dev/gpio0__: GPIO Input
 
-    (Configured as GPIO 10)
+    (Configured as [__GPIO 10__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L49-L53))
 
 -   __/dev/gpio1__: GPIO Output
 
-    (Configured as GPIO 15)
+    (Configured as [__GPIO 15__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L54-L58))
 
 -   __/dev/gpio2__: GPIO Interrupt
 
-    (Configured as GPIO 19)
+    (Configured as [__GPIO 19__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L59-L63))
 
 (All 3 GPIOs are already used by the SX1262 Driver. [See this](https://lupyuen.github.io/articles/sx1262#gpio-interface))
 
@@ -592,7 +596,7 @@ NuttX supports __GPIO Expanders__ that will aggregate multiple GPIOs...
 
 We shall implement a __GPIO Expander for BL604__ that will handle multiple GPIOs by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140), [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216).
 
-The GPIO Expander will expose GPIOs 0 to 31 as "__/dev/gpio0__" to "__/dev/gpio31__".
+The GPIO Expander will expose GPIOs 0 to 22 as "__/dev/gpio0__" to "__/dev/gpio22__".
 
 _Won't this break the existing GPIOs that are in use?_
 
