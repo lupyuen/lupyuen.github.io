@@ -586,7 +586,7 @@ _Is there a way to aggregate the GPIOs without defining them at compile-time?_
 
 NuttX supports __GPIO Expanders__ that will aggregate multiple GPIOs...
 
--   [__Sample I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/ioe_dummy.c#L205-L206)
+-   [__Sample I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/ioe_dummy.c)
 
 -   [__Skeleton I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/skeleton.c)
 
