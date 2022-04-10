@@ -520,14 +520,14 @@ static void create_widgets(void) {
 <p>Here are the GPIOs used by PineDio Stack…</p>
 <div><table><thead><tr><th style="text-align: center">GPIO</th><th style="text-align: center">Port</th><th style="text-align: center">Function</th><th style="text-align: left">Other Functions</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>0</code></strong></td><td style="text-align: center">SPI</td><td style="text-align: center">MISO</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>1</code></strong></td><td style="text-align: center">Internal I2C</td><td style="text-align: center">SDA</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>2</code></strong></td><td style="text-align: center">Internal I2C</td><td style="text-align: center">SCL</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>3</code></strong></td><td style="text-align: center">External I2C</td><td style="text-align: center">SDA</td><td style="text-align: left">ST7789 Reset, Compass Interrupt</td></tr>
-<tr><td style="text-align: center"><strong><code>4</code></strong></td><td style="text-align: center">External I2C</td><td style="text-align: center">SCL</td><td style="text-align: left">GPS Reset</td></tr>
-<tr><td style="text-align: center"><strong><code>5</code></strong></td><td style="text-align: center">External I2C</td><td style="text-align: center"></td><td style="text-align: left">Accelerometer Interrupt, GPS On/Off</td></tr>
+<tr><td style="text-align: center"><strong><code>1</code></strong></td><td style="text-align: center">Int I2C</td><td style="text-align: center">SDA</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>2</code></strong></td><td style="text-align: center">Int I2C</td><td style="text-align: center">SCL</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>3</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center">SDA</td><td style="text-align: left">ST7789 Reset, Compass Interrupt</td></tr>
+<tr><td style="text-align: center"><strong><code>4</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center">SCL</td><td style="text-align: left">GPS Reset</td></tr>
+<tr><td style="text-align: center"><strong><code>5</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center"></td><td style="text-align: left">Accelerometer Interrupt, GPS On/Off</td></tr>
 <tr><td style="text-align: center"><strong><code>6</code></strong></td><td style="text-align: center">Power Mgmt</td><td style="text-align: center">VBAT</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>7</code></strong></td><td style="text-align: center">UART</td><td style="text-align: center">RX</td><td style="text-align: left">GPS RX</td></tr>
-<tr><td style="text-align: center"><strong><code>8</code></strong></td><td style="text-align: center">Flash Mode</td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>8</code></strong></td><td style="text-align: center">Flashing Mode</td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>9</code></strong></td><td style="text-align: center">Touch Panel</td><td style="text-align: center">Interrupt</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>10</code></strong></td><td style="text-align: center">SX1262</td><td style="text-align: center">Busy</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><strong><code>11</code></strong></td><td style="text-align: center">SPI</td><td style="text-align: center">SCK</td><td style="text-align: left">JTAG TDO</td></tr>
@@ -544,8 +544,8 @@ static void create_widgets(void) {
 <tr><td style="text-align: center"><strong><code>22</code></strong></td><td style="text-align: center">Heart Rate</td><td style="text-align: center">Interrupt</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
-<p><strong>Internal I2C Bus</strong> is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass.</p>
-<p><strong>SPI Bus</strong> is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash.</p>
+<p><strong>Internal I2C Bus “/dev/i2c0”</strong> is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass.</p>
+<p><strong>SPI Bus “/dev/spitest0”</strong> is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash.</p>
 <h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">13 Appendix: Upcoming Features</a></h1>
 <p>This section discusses the <strong>upcoming features</strong> that we’ll implement with NuttX on PineDio Stack BL604.</p>
 <p>If you’re keen to help, please lemme know! 🙏</p>
