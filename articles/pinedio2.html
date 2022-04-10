@@ -80,12 +80,12 @@
 <li><a href="#appendix-upcoming-features">13 Appendix: Upcoming Features</a><ul>
 <li><a href="#gpio-expander">13.1 GPIO Expander</a><ul></ul></li>
 <li><a href="#push-button">13.2 Push Button</a><ul></ul></li>
-<li><a href="#spi-dma">13.3 SPI DMA</a><ul></ul></li>
-<li><a href="#spi-flash">13.4 SPI Flash</a><ul></ul></li>
-<li><a href="#touch-panel">13.5 Touch Panel</a><ul></ul></li>
-<li><a href="#accelerometer">13.6 Accelerometer</a><ul></ul></li>
-<li><a href="#power-management">13.7 Power Management</a><ul></ul></li>
-<li><a href="#gps">13.8 GPS</a><ul></ul></li>
+<li><a href="#touch-panel">13.3 Touch Panel</a><ul></ul></li>
+<li><a href="#accelerometer">13.4 Accelerometer</a><ul></ul></li>
+<li><a href="#power-management">13.5 Power Management</a><ul></ul></li>
+<li><a href="#gps">13.6 GPS</a><ul></ul></li>
+<li><a href="#spi-dma">13.7 SPI DMA</a><ul></ul></li>
+<li><a href="#spi-flash">13.8 SPI Flash</a><ul></ul></li>
 <li><a href="#automated-testing">13.9 Automated Testing</a><ul></ul></li></ul></li>
 <li><a href="#appendix-sx1262-lora-transceiver">14 Appendix: SX1262 LoRa Transceiver</a><ul>
 <li><a href="#test-lora">14.1 Test LoRa</a><ul></ul></li>
@@ -518,30 +518,30 @@ static void create_widgets(void) {
 </li>
 </ul>
 <p>Here are the GPIOs used by PineDio Stack…</p>
-<div><table><thead><tr><th style="text-align: center">GPIO</th><th style="text-align: center">Port</th><th style="text-align: center">Function</th><th style="text-align: left">Other Functions</th></tr></thead><tbody>
-<tr><td style="text-align: center"><strong><code>0</code></strong></td><td style="text-align: center">SPI</td><td style="text-align: center">MISO</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>1</code></strong></td><td style="text-align: center">Int I2C</td><td style="text-align: center">SDA</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>2</code></strong></td><td style="text-align: center">Int I2C</td><td style="text-align: center">SCL</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>3</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center">SDA</td><td style="text-align: left">ST7789 Reset, <br>Compass Interrupt</td></tr>
-<tr><td style="text-align: center"><strong><code>4</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center">SCL</td><td style="text-align: left">GPS Reset</td></tr>
-<tr><td style="text-align: center"><strong><code>5</code></strong></td><td style="text-align: center">Ext I2C</td><td style="text-align: center"></td><td style="text-align: left">Accelerometer Interrupt, <br>GPS On/Off</td></tr>
-<tr><td style="text-align: center"><strong><code>6</code></strong></td><td style="text-align: center">Power Mgmt</td><td style="text-align: center">VBAT</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>7</code></strong></td><td style="text-align: center">UART</td><td style="text-align: center">RX</td><td style="text-align: left">GPS RX</td></tr>
-<tr><td style="text-align: center"><strong><code>8</code></strong></td><td style="text-align: center">Flashing Mode</td><td style="text-align: center"></td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>9</code></strong></td><td style="text-align: center">Touch Panel</td><td style="text-align: center">Interrupt</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>10</code></strong></td><td style="text-align: center">SX1262</td><td style="text-align: center">Busy</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>11</code></strong></td><td style="text-align: center">SPI</td><td style="text-align: center">SCK</td><td style="text-align: left">JTAG TDO</td></tr>
-<tr><td style="text-align: center"><strong><code>12</code></strong></td><td style="text-align: center">Vibrator</td><td style="text-align: center"></td><td style="text-align: left">JTAG TMS, <br>Push Button</td></tr>
-<tr><td style="text-align: center"><strong><code>13</code></strong></td><td style="text-align: center">SPI</td><td style="text-align: center">MOSI</td><td style="text-align: left">JTAG TDI</td></tr>
-<tr><td style="text-align: center"><strong><code>14</code></strong></td><td style="text-align: center">SPI Flash</td><td style="text-align: center">CS</td><td style="text-align: left">JTAG TCK</td></tr>
-<tr><td style="text-align: center"><strong><code>15</code></strong></td><td style="text-align: center">SX1262</td><td style="text-align: center">CS</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>16</code></strong></td><td style="text-align: center">UART</td><td style="text-align: center">TX</td><td style="text-align: left">GPS TX</td></tr>
-<tr><td style="text-align: center"><strong><code>17</code></strong></td><td style="text-align: center">Power Mgmt</td><td style="text-align: center">CHG</td><td style="text-align: left">Red LED</td></tr>
-<tr><td style="text-align: center"><strong><code>18</code></strong></td><td style="text-align: center">SX1262</td><td style="text-align: center">Reset</td><td style="text-align: left">Touch Panel Reset</td></tr>
-<tr><td style="text-align: center"><strong><code>19</code></strong></td><td style="text-align: center">SX1262</td><td style="text-align: center">Interrupt</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>20</code></strong></td><td style="text-align: center">ST7789</td><td style="text-align: center">CS</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>21</code></strong></td><td style="text-align: center">ST7789</td><td style="text-align: center">Backlight</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: center"><strong><code>22</code></strong></td><td style="text-align: center">Heart Rate</td><td style="text-align: center">Interrupt</td><td style="text-align: left"></td></tr>
+<div><table><thead><tr><th style="text-align: center">GPIO</th><th style="text-align: left">Port</th><th style="text-align: left">Function</th><th style="text-align: left">Other Functions</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>0</code></strong></td><td style="text-align: left">SPI</td><td style="text-align: left">MISO</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>1</code></strong></td><td style="text-align: left">Int I2C</td><td style="text-align: left">SDA</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>2</code></strong></td><td style="text-align: left">Int I2C</td><td style="text-align: left">SCL</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>3</code></strong></td><td style="text-align: left">Ext I2C</td><td style="text-align: left">SDA</td><td style="text-align: left">ST7789 Reset, <br>Compass Interrupt</td></tr>
+<tr><td style="text-align: center"><strong><code>4</code></strong></td><td style="text-align: left">Ext I2C</td><td style="text-align: left">SCL</td><td style="text-align: left">GPS Reset</td></tr>
+<tr><td style="text-align: center"><strong><code>5</code></strong></td><td style="text-align: left">Ext I2C</td><td style="text-align: left"></td><td style="text-align: left">Accelerometer Interrupt, <br>GPS On/Off</td></tr>
+<tr><td style="text-align: center"><strong><code>6</code></strong></td><td style="text-align: left">Power Mgmt</td><td style="text-align: left">VBAT</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>7</code></strong></td><td style="text-align: left">UART</td><td style="text-align: left">RX</td><td style="text-align: left">GPS RX</td></tr>
+<tr><td style="text-align: center"><strong><code>8</code></strong></td><td style="text-align: left">Flashing Mode</td><td style="text-align: left"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>9</code></strong></td><td style="text-align: left">Touch Panel</td><td style="text-align: left">Interrupt</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>10</code></strong></td><td style="text-align: left">SX1262</td><td style="text-align: left">Busy</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>11</code></strong></td><td style="text-align: left">SPI</td><td style="text-align: left">SCK</td><td style="text-align: left">JTAG TDO</td></tr>
+<tr><td style="text-align: center"><strong><code>12</code></strong></td><td style="text-align: left">Vibrator</td><td style="text-align: left"></td><td style="text-align: left">JTAG TMS, <br>Push Button</td></tr>
+<tr><td style="text-align: center"><strong><code>13</code></strong></td><td style="text-align: left">SPI</td><td style="text-align: left">MOSI</td><td style="text-align: left">JTAG TDI</td></tr>
+<tr><td style="text-align: center"><strong><code>14</code></strong></td><td style="text-align: left">SPI Flash</td><td style="text-align: left">CS</td><td style="text-align: left">JTAG TCK</td></tr>
+<tr><td style="text-align: center"><strong><code>15</code></strong></td><td style="text-align: left">SX1262</td><td style="text-align: left">CS</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>16</code></strong></td><td style="text-align: left">UART</td><td style="text-align: left">TX</td><td style="text-align: left">GPS TX</td></tr>
+<tr><td style="text-align: center"><strong><code>17</code></strong></td><td style="text-align: left">Power Mgmt</td><td style="text-align: left">CHG</td><td style="text-align: left">Red LED</td></tr>
+<tr><td style="text-align: center"><strong><code>18</code></strong></td><td style="text-align: left">SX1262</td><td style="text-align: left">Reset</td><td style="text-align: left">Touch Panel Reset</td></tr>
+<tr><td style="text-align: center"><strong><code>19</code></strong></td><td style="text-align: left">SX1262</td><td style="text-align: left">Interrupt</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>20</code></strong></td><td style="text-align: left">ST7789</td><td style="text-align: left">CS</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>21</code></strong></td><td style="text-align: left">ST7789</td><td style="text-align: left">Backlight</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><strong><code>22</code></strong></td><td style="text-align: left">Heart Rate</td><td style="text-align: left">Interrupt</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p><strong>Internal I2C Bus “/dev/i2c0”</strong> is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass</p>
@@ -613,24 +613,44 @@ static void create_widgets(void) {
 <p>That’s why we need to handle GPIOs the messy (but productive) way for now.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#gpio-demo">(More about NuttX GPIO)</a></p>
 <h2 id="push-button" class="section-header"><a href="#push-button">13.2 Push Button</a></h2>
-<p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/pushbutton.c">pinedio-stack-selftest/pushbutton.c</a></p>
-<h2 id="spi-dma" class="section-header"><a href="#spi-dma">13.3 SPI DMA</a></h2>
-<p>TODO</p>
-<h2 id="spi-flash" class="section-header"><a href="#spi-flash">13.4 SPI Flash</a></h2>
-<p>TODO</p>
-<h2 id="touch-panel" class="section-header"><a href="#touch-panel">13.5 Touch Panel</a></h2>
+<p>To support the <strong>Push Button</strong> on PineDio Stack, we shall implement these <strong>Board Button Functions</strong> for PineDio Stack…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c#L91-L102"><strong>board_buttons</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c#L156-L182"><strong>board_button_irq</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c#L208-L221"><strong>board_button_initialize</strong></a></p>
+</li>
+</ul>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/xtensa/esp32/esp32-devkitc/src/esp32_buttons.c">(Here’s the implementation for ESP32)</a></p>
+<p>They will be called by the <strong>Button Lower Half Driver</strong> in NuttX…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c"><strong>Button Lower Half Driver</strong></a></li>
+</ul>
+<p>Which is wrapped inside the <strong>Button Upper Half Driver</strong> and exposed to apps as “<strong>/dev/btn0</strong>”…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_upper.c"><strong>Button Upper Half Driver</strong></a></li>
+</ul>
+<h2 id="touch-panel" class="section-header"><a href="#touch-panel">13.3 Touch Panel</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></p>
 <p>Use <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> as guide, since it looks quite similar to CST816S.</p>
-<p><a href="https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html">Touchscreen Drivers</a></p>
-<h2 id="accelerometer" class="section-header"><a href="#accelerometer">13.6 Accelerometer</a></h2>
+<p><a href="https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html">(More about NuttX Touchscreen Drivers)</a></p>
+<h2 id="accelerometer" class="section-header"><a href="#accelerometer">13.4 Accelerometer</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c">pinedio-stack-selftest/accelerometer.c</a></p>
-<h2 id="power-management" class="section-header"><a href="#power-management">13.7 Power Management</a></h2>
+<h2 id="power-management" class="section-header"><a href="#power-management">13.5 Power Management</a></h2>
 <p>TODO: See <a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c">pinedio-stack-selftest/battery.c</a></p>
-<h2 id="gps" class="section-header"><a href="#gps">13.8 GPS</a></h2>
+<h2 id="gps" class="section-header"><a href="#gps">13.6 GPS</a></h2>
 <p>TODO: NuttX has a GPS Demo App…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c">apps/examples/gps/gps_main.c</a></p>
 <p>And a GPS Parser…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils">apps/gpsutils</a></p>
+<h2 id="spi-dma" class="section-header"><a href="#spi-dma">13.7 SPI DMA</a></h2>
+<p>TODO</p>
+<h2 id="spi-flash" class="section-header"><a href="#spi-flash">13.8 SPI Flash</a></h2>
+<p>TODO</p>
 <h2 id="automated-testing" class="section-header"><a href="#automated-testing">13.9 Automated Testing</a></h2>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
