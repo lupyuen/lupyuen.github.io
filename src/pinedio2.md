@@ -524,9 +524,9 @@ Adding the remaining GPIOs to the [__BL604 GPIO Driver__](https://github.com/lup
 
 We need a flexible way to manage many GPIOs at runtime.
 
-_What if we aggregate the GPIOs as a single NuttX Device?_
+_Is there a way to aggregate the GPIOs without defining them at compile-time?_
 
-NuttX supports __GPIO Expanders__ that will aggregate multiple GPIOs into a single device...
+NuttX supports __GPIO Expanders__ that will aggregate multiple GPIOs...
 
 -   [__Sample I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/ioe_dummy.c#L205-L206)
 
@@ -535,6 +535,12 @@ NuttX supports __GPIO Expanders__ that will aggregate multiple GPIOs into a sing
 -   [__Lower Half of I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c)
 
 We shall implement a __GPIO Expander for BL604__ that will handle multiple GPIOs by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140), [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216).
+
+The GPIO Expander will expose GPIOs 0 to 31 as "__/dev/gpio0__" to "__/dev/gpio31__".
+
+[(But we'll skip "__/dev/gpio0__" to "__/dev/gpio2__" because they are already used by the SX1262 Driver)](https://lupyuen.github.io/articles/sx1262#gpio-interface)
+
+This sounds messy, but it might be the best way (for now) to handle so many GPIOs while we're building apps and drivers for PineDio Stack.
 
 There's a discussion about __GPIOs on BL604__...
 
