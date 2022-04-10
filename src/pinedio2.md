@@ -518,11 +518,11 @@ NuttX allows apps to access to a total of __3 GPIOs__ on BL604...
 
 -   __/dev/gpio2__: GPIO Interrupt
 
-[(All 3 GPIOs are already used by the SX1262 Driver)](https://lupyuen.github.io/articles/sx1262#gpio-interface)
+(All 3 GPIOs are already used by the SX1262 Driver. [See this](https://lupyuen.github.io/articles/sx1262#gpio-interface))
 
 Adding the remaining GPIOs to the [__BL604 GPIO Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137) at compile-time will be cumbersome. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137)
 
-We need a flexible way to manage many GPIOs at runtime.
+We need a flexible way to manage many GPIOs at runtime, as we build new apps and drivers for PineDio Stack.
 
 _Is there a way to aggregate the GPIOs without defining them at compile-time?_
 
@@ -534,13 +534,23 @@ NuttX supports __GPIO Expanders__ that will aggregate multiple GPIOs...
 
 -   [__Lower Half of I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c)
 
+-   [__Usage of I/O Expander__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/sim/sim/sim/src/sim_ioexpander.c)
+
 We shall implement a __GPIO Expander for BL604__ that will handle multiple GPIOs by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140), [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216).
 
 The GPIO Expander will expose GPIOs 0 to 31 as "__/dev/gpio0__" to "__/dev/gpio31__".
 
-[(But we'll skip "__/dev/gpio0__" to "__/dev/gpio2__" because they are already used by the SX1262 Driver)](https://lupyuen.github.io/articles/sx1262#gpio-interface)
+_Won't this break the existing GPIOs that are in use?_
 
-This sounds messy, but it might be the best way (for now) to handle so many GPIOs while we're building apps and drivers for PineDio Stack.
+We'll skip "__/dev/gpio0__" to "__/dev/gpio2__" because they are already used by the SX1262 Driver. [(See this)](https://lupyuen.github.io/articles/sx1262#gpio-interface)
+
+(On PineDio Stack: GPIO 0 is MISO, GPIO 1 is SDA, GPIO 2 is SCL. So we shouldn't touch GPIOs 0, 1 and 2 anyway. [See this](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf))
+
+_Wow this sounds messy?_
+
+But it might be the most productive way (for now) to handle so many GPIOs while multiple devs are __building apps and drivers__ for PineDio Stack.
+
+Perhaps the GPIO Expander can __enforce checks at runtime__ to be sure that NuttX Apps don't tamper with the GPIOs used by SPI, I2C and UART.
 
 There's a discussion about __GPIOs on BL604__...
 
@@ -555,6 +565,14 @@ _NuttX Apps vs NuttX Drivers... Do they handle GPIOs differently?_
 -   __NuttX Apps__ run in User Mode and can only access GPIOs through "__/dev/gpioN__"
 
     (Which becomes a problem when we have many GPIOs)
+
+__NuttX Apps are easier to code__ than NuttX Drivers.
+
+[(That's our experience with LoRa)](https://lupyuen.github.io/articles/sx1262#small-steps)
+
+Thus we expect most PineDio Stack devs to __create NuttX Apps first__ before moving the code into NuttX Drivers.
+
+That's why we need to handle GPIOs the messy (but productive) way for now.
 
 [(More about NuttX GPIO)](https://lupyuen.github.io/articles/nuttx#gpio-demo)
 
