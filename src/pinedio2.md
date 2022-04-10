@@ -513,16 +513,16 @@ Here are the GPIOs used by PineDio Stack...
 | __`0`__ | SPI  | MISO
 | __`1`__ | Int I2C | SDA
 | __`2`__ | Int I2C | SCL
-| __`3`__ | Ext I2C | SDA | ST7789 Reset, Compass Interrupt
+| __`3`__ | Ext I2C | SDA | ST7789 Reset, <br>Compass Interrupt
 | __`4`__ | Ext I2C | SCL | GPS Reset
-| __`5`__ | Ext I2C |  | Accelerometer Interrupt, GPS On/Off
+| __`5`__ | Ext I2C |  | Accelerometer Interrupt, <br>GPS On/Off
 | __`6`__ | Power Mgmt | VBAT
 | __`7`__ | UART | RX | GPS RX
 | __`8`__ | Flashing Mode |
 | __`9`__ | Touch Panel | Interrupt
 | __`10`__ | SX1262 | Busy
 | __`11`__ | SPI | SCK | JTAG TDO
-| __`12`__ | Vibrator |  | JTAG TMS, Push Button
+| __`12`__ | Vibrator |  | JTAG TMS, <br>Push Button
 | __`13`__ | SPI | MOSI | JTAG TDI 
 | __`14`__ | SPI Flash | CS | JTAG TCK
 | __`15`__ | SX1262 | CS
@@ -1012,6 +1012,8 @@ Here are the BL604 GPIO Numbers for the shared SPI Bus...
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L105)
 
+[(See the GPIO Assignment)](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment)
+
 To prevent crosstalk, we select each SPI Device by flipping its __Chip Select Pin__ from High to Low...
 
 | SPI Device | Device ID | Swap MISO/MOSI | Chip Select | 
@@ -1199,6 +1201,8 @@ The SPI Device Table above refers to the following __Pin Definitions__ at [board
 ```
 
 (GPIO, UART and I2C Pins are also defined in the file)
+
+[(See the GPIO Assignment)](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment)
 
 Now that we have defined the SPI Device Table in NuttX, let's use it.
 
