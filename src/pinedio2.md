@@ -650,9 +650,11 @@ They will be called by the __Button Lower Half Driver__ in NuttX...
 
 -   [__Button Lower Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c)
 
-Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as "__/dev/btn0__"...
+Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as "__/dev/buttons__"...
 
 -   [__Button Upper Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_upper.c)
+
+[(Here's how we access "__/dev/buttons__" in NuttX Apps)](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/chrono/chrono_main.c)
 
 ## Touch Panel
 
