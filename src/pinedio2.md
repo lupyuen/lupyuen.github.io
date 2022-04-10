@@ -676,7 +676,7 @@ The [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-
 
 ## Accelerometer
 
-To create the __Accelerometer Sensor Driver "/dev/accel0"__ for PineDio Stack, we could port JF's simple driver...
+To create the I2C __Accelerometer Sensor Driver "/dev/accel0"__ for PineDio Stack, we could port JF's simple driver...
 
 -   [__pinedio-stack-selftest/accelerometer.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c)
 
@@ -713,7 +713,7 @@ And a __GPS Parser Library__...
 
 -   [__apps/gpsutils__](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils)
 
-These might be helpful for creating the __GPS Driver__ for PineDio Stack.
+These might be helpful for creating the __GPS Driver__ (UART) for PineDio Stack.
 
 ## SPI Flash
 
