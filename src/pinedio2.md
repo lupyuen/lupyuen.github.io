@@ -660,7 +660,11 @@ Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as 
 
 TODO: See [pinedio-stack-selftest/drivers/cst816s.c](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
 
+NuttX Touchscreen Device "__/dev/input0__"
+
 Use [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) as guide, since it looks quite similar to CST816S.
+
+[(Here's how we access "__/dev/input0__" in NuttX Apps)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c)
 
 [(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
 
