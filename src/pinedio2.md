@@ -123,7 +123,7 @@ _What's "bl602evb:pinedio"?_
 
 That's the __NuttX Build Configuration__ for PineDio Stack. It selects the Build Options, NuttX Drivers and NuttX Apps that will run on PineDio Stack.
 
-[(See the configuration file)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+[(See the bundled features)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
 
 ![PineDio Stack Self-Test](https://lupyuen.github.io/images/pinedio2-test1.jpg)
 
@@ -298,6 +298,8 @@ Now that NuttX is up, let's run some NuttX Apps!
 > ![Device Drivers loaded by NuttX](https://lupyuen.github.io/images/pinedio2-run4a.png)
 
 > [(Source)](https://gist.github.com/lupyuen/80f3bc431c9e5aa93d429809c9554629)
+
+> ("i2c0" is missing from the pic)
 
 # NuttX Apps
 
@@ -609,6 +611,8 @@ The above command bundles the following __NuttX Drivers, Libraries and Apps__ in
 -   [__TinyCBOR Library__](https://github.com/lupyuen2/tinycbor-nuttx)
 
     [(Used by TinyCBOR Test App)](https://github.com/lupyuen/tinycbor_test)
+
+[(See the configuration file)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
 
 # Appendix: Upcoming Features
 
