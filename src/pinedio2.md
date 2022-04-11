@@ -862,6 +862,8 @@ Today we run a __Daily Automated Test__ on the NuttX Mainline Branch for PineCon
 
 -   [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
 
+    [(See the Automated Test Logs)](https://github.com/lupyuen/incubator-nuttx/releases)
+
 Now we need to __connect an SBC to PineDio Stack__ and auto-run these tests...
 
 -   __spi_test2__: Verify that the SPI Driver can talk to SX1262
