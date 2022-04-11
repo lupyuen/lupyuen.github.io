@@ -475,6 +475,8 @@ But there's [__plenty more porting work__](https://lupyuen.github.io/articles/pi
 
 If you're keen to help, please lemme know! 🙏
 
+![Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/pinedio2-title4.jpg)
+
 # What's Next
 
 I hope this article has provided everything you need to get started on creating __your own IoT App__.
@@ -1768,3 +1770,5 @@ To solve this problem, we will register a new SPI Test Driver "__/dev/spitest1__
 The LoRa Driver will be modified to access "__/dev/spitest1__", which will call __SPI_LOCK__ and __SPI_SELECT__ with SPI Device ID 1.
 
 Since the SPI Device ID is 1, __SPI_SELECT__ will flip the SX1262 Chip Select to Low.
+
+![Inside PineDio Stack](https://lupyuen.github.io/images/pinedio2-inside9.jpg)
