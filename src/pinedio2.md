@@ -703,7 +703,7 @@ But it might be the most productive way (for now) to handle so many GPIOs while 
 
 Perhaps the GPIO Expander can __enforce checks at runtime__ to be sure that NuttX Apps don't tamper with the GPIOs used by SPI, I2C and UART.
 
-(And eventually the SX1262 Library will simply access "/dev/gpio10", "/dev/gpio15" and "/dev/gpio19")
+(And eventually the SX1262 Library will simply access _"/dev/gpio10"_, _"/dev/gpio15"_ and _"/dev/gpio19"_)
 
 We have a discussion about __GPIOs on BL604__...
 
@@ -910,7 +910,7 @@ Today we shall test both __LoRa and LoRaWAN__ on PineDio Stack...
 
 ## Test LoRa
 
-The __LoRa Driver for Semtech SX1262__ is explained in this article...
+The __LoRa Library for Semtech SX1262__ is explained in this article...
 
 -   [__"LoRa SX1262 on Apache NuttX OS"__](https://lupyuen.github.io/articles/sx1262)
 
@@ -992,7 +992,7 @@ To troubleshoot LoRa, we could use a __Spectrum Analyser (Software-Defined Radio
 
 ## Test LoRaWAN
 
-The __LoRaWAN Driver__ is explained in this article...
+The __LoRaWAN Library__ is explained in this article...
 
 -   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
