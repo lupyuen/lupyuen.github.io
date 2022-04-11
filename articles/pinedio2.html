@@ -499,6 +499,7 @@ static void create_widgets(void) {
 </li>
 </ul>
 <p>If you’re keen to help, please lemme know! 🙏</p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-title4.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
 <p>I hope this article has provided everything you need to get started on creating <strong>your own IoT App</strong>.</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
@@ -1574,6 +1575,7 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 <p>To solve this problem, we will register a new SPI Test Driver “<strong>/dev/spitest1</strong>” with SPI Device ID 1. (With some tweaks to the driver code)</p>
 <p>The LoRa Driver will be modified to access “<strong>/dev/spitest1</strong>”, which will call <strong>SPI_LOCK</strong> and <strong>SPI_SELECT</strong> with SPI Device ID 1.</p>
 <p>Since the SPI Device ID is 1, <strong>SPI_SELECT</strong> will flip the SX1262 Chip Select to Low.</p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-inside9.jpg" alt="Inside PineDio Stack" /></p>
 
     
 </body>
