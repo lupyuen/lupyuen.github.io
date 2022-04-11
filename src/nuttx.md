@@ -1002,6 +1002,8 @@ Next we download and build NuttX...
     
     (Later versions of NuttX use __"/dev/gpio1"__ instead)
 
+    [(__For PineDio Stack BL604:__ The features described in this article are already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
+
 1.  Configure NuttX...
 
     ```bash

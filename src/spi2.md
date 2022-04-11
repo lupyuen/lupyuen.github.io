@@ -427,6 +427,8 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
     git clone --branch spi_test https://github.com/lupyuen/incubator-nuttx-apps apps
     ```
 
+    [(__For PineDio Stack BL604:__ The SPI Test Driver is already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
+
 1.  Configure the build...
 
     ```bash

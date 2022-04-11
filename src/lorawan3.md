@@ -162,6 +162,8 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 
 Or if we prefer to __add the LoRaWAN Library__ to our NuttX Project, follow these instructions...
 
+[(__For PineDio Stack BL604:__ The features below are already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
+
 1.  [__"Install SPI Test Driver"__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf)
 
 1.  [__"Install NimBLE Porting Layer"__](https://github.com/lupyuen/nimble-porting-nuttx)

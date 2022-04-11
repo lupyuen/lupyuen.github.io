@@ -966,6 +966,8 @@ Or if we prefer to __add the Rust Library and App__ to our NuttX Project, follow
 
 1.  [__"Install Rust I2C App"__](https://github.com/lupyuen/rust-i2c-nuttx)
 
+[(__For PineDio Stack BL604:__ The Rust Library and App are already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
+
 ## Configure NuttX
 
 Now we configure our NuttX project...

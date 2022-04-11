@@ -212,6 +212,8 @@ Or if we prefer to __add TinyCBOR__ to our NuttX Project, follow these instructi
 
 -   [__"Install TinyCBOR Test App"__](https://github.com/lupyuen/tinycbor_test)
 
+[(__For PineDio Stack BL604:__ The TinyCBOR Library and Test App are already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
+
 ## Build The Firmware
 
 Let's build the NuttX Firmware with TinyCBOR inside...

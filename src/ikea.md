@@ -768,6 +768,8 @@ Or if we prefer to __add the IKEA Air Quality Sensor App__ to our NuttX Project,
 
 -   [__"Install IKEA Air Quality Sensor App"__](https://github.com/lupyuen/ikea_air_quality_sensor#install-app)
 
+[(__For PineDio Stack BL604:__ The app is already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
+
 ## Configure NuttX
 
 Now we configure our NuttX project...

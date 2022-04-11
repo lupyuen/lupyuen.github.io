@@ -682,6 +682,8 @@ Or if we prefer to __add the Rust Library and App__ to our NuttX Project, follow
 
 1.  [__"Install SPI Test Driver"__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf)
 
+[(__For PineDio Stack BL604:__ The Rust Library and App are already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
+
 # Build The Firmware
 
 Let's build the NuttX Firmware that contains our __Rust App__...

@@ -493,13 +493,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  __LVGL Canvas__ consumes a lot of RAM! Disable it if we don't really need it, we'll save 7 KB of RAM...
 
-    Configure NuttX: `make menuconfig`
+    Configure NuttX with "`make menuconfig`"
 
     Select "Application Configuration → Graphics Support → Light and Versatile Graphic Library (LVGL) → Object Type Usage Settings"
 
     Uncheck "Canvas Usage"
 
     Save and exit menuconfig, then rebuild NuttX (`make`)
+
+1.  What's it like to test the __First (Buggy) Prototype__ of PineDio Stack? Find out here...
+
+    [__"PineDio Stack BL604 RISC-V Board: Testing The Prototype"__](https://lupyuen.github.io/articles/pinedio)
 
 # Appendix: GPIO Assignment
 
@@ -537,7 +541,7 @@ These are the __BL604 GPIOs__ used by PineDio Stack...
 | __`21`__ | ST7789 | Backlight
 | __`22`__ | Heart Rate | Interrupt
 
--   __SPI Bus "/dev/spitest0"__ is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash
+-   __SPI Bus "/dev/spi0"__ is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash
 
 -   __Internal I2C Bus "/dev/i2c0"__ is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass
 
@@ -582,6 +586,10 @@ The above command bundles the following __NuttX Drivers, Libraries and Apps__ in
 -   [__LoRaWAN Library__](https://github.com/lupyuen/LoRaMac-node-nuttx)
 
     [(Used by LoRaWAN Test App)](https://github.com/lupyuen/lorawan_test)
+
+-   [__LVGL Library__](https://lupyuen.github.io/articles/st7789#lvgl-demo-app)
+
+    [(Used by LVGL Test App)](https://github.com/lupyuen/lvgltest-nuttx)
 
 -   [__NimBLE Porting Layer__](https://github.com/lupyuen/nimble-porting-nuttx)
 
