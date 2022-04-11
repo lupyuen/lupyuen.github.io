@@ -667,7 +667,7 @@ NuttX allows apps to access to a total of __3 GPIOs__ on BL604...
 
     (Configured as [__GPIO 19__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L59-L63))
 
-(All 3 GPIOs are already used by the SX1262 Driver. [See this](https://lupyuen.github.io/articles/sx1262#gpio-interface))
+(All 3 GPIOs are already used by the SX1262 Library. [See this](https://lupyuen.github.io/articles/sx1262#gpio-interface))
 
 Adding the remaining GPIOs to the [__BL604 GPIO Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137) at compile-time will be cumbersome. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137)
 
@@ -701,7 +701,9 @@ But it might be the most productive way (for now) to handle so many GPIOs while 
 
 Perhaps the GPIO Expander can __enforce checks at runtime__ to be sure that NuttX Apps don't tamper with the GPIOs used by SPI, I2C and UART.
 
-There's a discussion about __GPIOs on BL604__...
+(And eventually the SX1262 Library will simply access "/dev/gpio10", "/dev/gpio15" and "/dev/gpio19")
+
+We have a discussion about __GPIOs on BL604__...
 
 -   [__"GPIO issues on BL602"__](https://github.com/apache/incubator-nuttx/issues/5810)
 
@@ -782,6 +784,8 @@ We have an article that explains the innards of __NuttX Sensor Drivers__...
 
 -   [__"Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"__](https://lupyuen.github.io/articles/bme280)
 
+NuttX's [__I2C Tool__](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/system/i2c) might be helpful for troubleshooting I2C Drivers.
+
 ## Power Management
 
 Check out JF's driver for __SGM40561 Power Management Unit__...
@@ -828,6 +832,8 @@ Both kinds of SPI Flash seem to be supported by NuttX...
 
 We need to test the drivers.
 
+NuttX's [__SPI Tool__](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/system/spi) might be helpful for troubleshooting SPI Drivers.
+
 ## SPI Direct Memory Access
 
 _ST7789 Display receives plenty of data on the SPI Bus (for screen updates). Will there be contention with other SPI Devices? (Like SX1262 Transceiver)_
@@ -846,7 +852,21 @@ More about SPI DMA on BL602 / BL604...
 
 ## Automated Testing
 
-TODO
+When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some __Automated Testing__ (to be sure that nothing's broken).
+
+Today we run a __Daily Automated Test__ on the NuttX Mainline Branch for PineCone BL602...
+
+-   [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
+
+Now we need to __connect an SBC to PineDio Stack__ and auto-run these tests...
+
+-   __spi_test2__: Verify that the SPI Driver can talk to SX1262
+
+-   __lorawan_test__: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets
+
+-   __lvgltest__: Verify that ST7789 can render an LVGL Screen
+
+-   And some I2C tests
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
