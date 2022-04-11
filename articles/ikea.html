@@ -663,8 +663,11 @@ git clone --recursive --branch ikea https://github.com/lupyuen/incubator-nuttx-a
 <p>Configure the build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
 
-# For BL602 / BL604: Configure the build for BL602 / BL604
+# For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
+
+# For PineDio Stack BL604: Configure the build for BL604
+./tools/configure.sh bl602evb:pinedio
 
 # For ESP32: Configure the build for ESP32.
 # TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.

@@ -834,7 +834,12 @@ git clone --recursive --branch gpio https://github.com/lupyuen/incubator-nuttx-a
 <li>
 <p>Configure NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
-./tools/configure.sh bl602evb:nsh</code></pre></div></li>
+
+# For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+# For PineDio Stack BL604: Configure the build for BL604
+./tools/configure.sh bl602evb:pinedio</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>configuration written to .config</code></pre></div>
@@ -844,7 +849,12 @@ git clone --recursive --branch gpio https://github.com/lupyuen/incubator-nuttx-a
 <p>Check whether the <strong>kconfig-frontends</strong> package has been installed correctly. (See above)</p>
 <p>Then delete the Build Configuration so that <strong>configure.sh</strong> can proceed…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make distclean
-./tools/configure.sh bl602evb:nsh</code></pre></div></li>
+
+# For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+# For PineDio Stack BL604: Configure the build for BL604
+./tools/configure.sh bl602evb:pinedio</code></pre></div></li>
 <li>
 <p>Build NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
