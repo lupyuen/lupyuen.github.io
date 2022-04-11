@@ -685,7 +685,7 @@ static void create_widgets(void) {
 <p>(Configured as <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L59-L63"><strong>GPIO 19</strong></a>)</p>
 </li>
 </ul>
-<p>(All 3 GPIOs are already used by the SX1262 Driver. <a href="https://lupyuen.github.io/articles/sx1262#gpio-interface">See this</a>)</p>
+<p>(All 3 GPIOs are already used by the SX1262 Library. <a href="https://lupyuen.github.io/articles/sx1262#gpio-interface">See this</a>)</p>
 <p>Adding the remaining GPIOs to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137"><strong>BL604 GPIO Driver</strong></a> at compile-time will be cumbersome. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137">(See this)</a></p>
 <p>We need a flexible way to manage many GPIOs at runtime, as we build new apps and drivers for PineDio Stack.</p>
 <p><em>Is there a way to aggregate the GPIOs without defining them at compile-time?</em></p>
@@ -712,7 +712,8 @@ static void create_widgets(void) {
 <p><em>Wow this sounds messy?</em></p>
 <p>But it might be the most productive way (for now) to handle so many GPIOs while multiple devs are <strong>building apps and drivers</strong> for PineDio Stack.</p>
 <p>Perhaps the GPIO Expander can <strong>enforce checks at runtime</strong> to be sure that NuttX Apps don’t tamper with the GPIOs used by SPI, I2C and UART.</p>
-<p>There’s a discussion about <strong>GPIOs on BL604</strong>…</p>
+<p>(And eventually the SX1262 Library will simply access “/dev/gpio10”, “/dev/gpio15” and “/dev/gpio19”)</p>
+<p>We have a discussion about <strong>GPIOs on BL604</strong>…</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/issues/5810"><strong>“GPIO issues on BL602”</strong></a></li>
 </ul>
@@ -780,6 +781,7 @@ static void create_widgets(void) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/bme280"><strong>“Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS”</strong></a></li>
 </ul>
+<p>NuttX’s <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/system/i2c"><strong>I2C Tool</strong></a> might be helpful for troubleshooting I2C Drivers.</p>
 <h2 id="power-management" class="section-header"><a href="#power-management">14.5 Power Management</a></h2>
 <p>Check out JF’s driver for <strong>SGM40561 Power Management Unit</strong>…</p>
 <ul>
@@ -825,6 +827,7 @@ static void create_widgets(void) {
 </li>
 </ul>
 <p>We need to test the drivers.</p>
+<p>NuttX’s <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/system/spi"><strong>SPI Tool</strong></a> might be helpful for troubleshooting SPI Drivers.</p>
 <h2 id="spi-direct-memory-access" class="section-header"><a href="#spi-direct-memory-access">14.8 SPI Direct Memory Access</a></h2>
 <p><em>ST7789 Display receives plenty of data on the SPI Bus (for screen updates). Will there be contention with other SPI Devices? (Like SX1262 Transceiver)</em></p>
 <p>Most definitely. That’s why we need to implement <a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access"><strong>SPI Direct Memory Access (DMA)</strong></a> so that PineDio Stack can do other tasks while painting the ST7789 Display.</p>
@@ -842,7 +845,26 @@ static void create_widgets(void) {
 </li>
 </ul>
 <h2 id="automated-testing" class="section-header"><a href="#automated-testing">14.9 Automated Testing</a></h2>
-<p>TODO</p>
+<p>When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some <strong>Automated Testing</strong> (to be sure that nothing’s broken).</p>
+<p>Today we run a <strong>Daily Automated Test</strong> on the NuttX Mainline Branch for PineCone BL602…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></li>
+</ul>
+<p>Now we need to <strong>connect an SBC to PineDio Stack</strong> and auto-run these tests…</p>
+<ul>
+<li>
+<p><strong>spi_test2</strong>: Verify that the SPI Driver can talk to SX1262</p>
+</li>
+<li>
+<p><strong>lorawan_test</strong>: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets</p>
+</li>
+<li>
+<p><strong>lvgltest</strong>: Verify that ST7789 can render an LVGL Screen</p>
+</li>
+<li>
+<p>And some I2C tests</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <h1 id="appendix-sx1262-lora-transceiver" class="section-header"><a href="#appendix-sx1262-lora-transceiver">15 Appendix: SX1262 LoRa Transceiver</a></h1>
