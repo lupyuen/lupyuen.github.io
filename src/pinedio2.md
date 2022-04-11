@@ -872,6 +872,36 @@ Now we need to __connect an SBC to PineDio Stack__ and auto-run these tests...
 
 -   And some I2C tests
 
+_So we'll run Automated Tests on PineCone BL602 AND PineDio Stack BL604?_
+
+Yep we shall test and maintain two __Stable Branches__ of NuttX for public consumption...
+
+-   [__`master` branch__](https://github.com/lupyuen/incubator-nuttx) for PineCone BL602
+
+-   [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio) for PineDio Stack BL604
+
+(Same for NuttX Apps)
+
+_Are the branches any different?_
+
+PineCone BL602 won't use the [__Shared SPI Bus__](https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus) that we have created for PineDio Stack BL604.
+
+_What about updates from NuttX Mainline Branch?_
+
+-   Updates from NuttX Mainline will first be merged and tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
+
+-   Then merged and tested in the [__`master` branch__](https://github.com/lupyuen/incubator-nuttx)
+
+    (For PineCone BL602)
+
+-   Which gets merged and tested in the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio)
+
+    (For PineDio Stack BL604)
+
+This is an extension of our original grand plan...
+
+-   [__"Merge Updates From NuttX"__](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
+
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
 _PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)_
