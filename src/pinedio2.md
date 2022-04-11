@@ -653,6 +653,10 @@ This section discusses the __upcoming features__ that we'll implement with NuttX
 
 If you're keen to help, please lemme know! 🙏
 
+> ![PineDio Stack BL604](https://lupyuen.github.io/images/pinedio2-bl604.png)
+
+> [(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
+
 ## GPIO Expander
 
 _BL604 has 23 GPIOs. Can we use all of them in NuttX Apps?_
@@ -757,6 +761,10 @@ Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as 
 
 Note that the Push Button shares GPIO 12 with the Vibrator.
 
+> ![PineDio Stack Touch Panel](https://lupyuen.github.io/images/pinedio2-touch.png)
+
+> [(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
+
 ## Touch Panel
 
 JF has created a __CST816S I2C Touch Panel Driver__ for PineDio Stack... (Thanks JF!)
@@ -772,6 +780,10 @@ The [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-
 (PineDio Stack uses the same Touch Panel as PineTime)
 
 [(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
+
+![PineDio Stack Accelerometer](https://lupyuen.github.io/images/pinedio2-accel.png)
+
+[(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
 
 ## Accelerometer
 
@@ -792,6 +804,10 @@ We have an article that explains the innards of __NuttX Sensor Drivers__...
 
 NuttX's [__I2C Tool__](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/system/i2c) might be helpful for troubleshooting I2C Drivers.
 
+![PineDio Stack Power Management Unit](https://lupyuen.github.io/images/pinedio2-power.png)
+
+[(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
+
 ## Power Management
 
 Check out JF's driver for __SGM40561 Power Management Unit__...
@@ -810,6 +826,10 @@ Refer to the __Power Management Drivers__ for NuttX...
 
 -   [__nuttx/drivers/power__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/power)
 
+![PineDio Stack GPS](https://lupyuen.github.io/images/pinedio2-gps.png)
+
+[(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf)
+
 ## GPS
 
 NuttX has a __GPS Demo App__...
@@ -821,6 +841,10 @@ And a __GPS Parser Library__...
 -   [__apps/gpsutils__](https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils)
 
 These might be helpful for creating the __GPS Driver__ (UART) for PineDio Stack.
+
+![PineDio Stack SPI Flash](https://lupyuen.github.io/images/pinedio2-flash.png)
+
+[(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
 
 ## SPI Flash
 
