@@ -553,7 +553,7 @@ These are the __BL604 GPIOs__ used by PineDio Stack...
 
 -   __GPIO Interrupt "/dev/gpio2"__ is configured as GPIO 19 (SX1262 Interrupt)
 
-Here are the __Pin Definitions__ in NuttX...
+The __NuttX Pin Definitions__ for PineDio Stack are at...
 
 [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127)
 
@@ -587,7 +587,7 @@ The above command bundles the following __NuttX Drivers, Libraries and Apps__ in
 
     [(Used by LoRaWAN Test App)](https://github.com/lupyuen/lorawan_test)
 
--   [__LVGL Library__](https://lupyuen.github.io/articles/st7789#lvgl-demo-app)
+-   [__LVGL Graphics Library__](https://lupyuen.github.io/articles/st7789#lvgl-demo-app)
 
     [(Used by LVGL Test App)](https://github.com/lupyuen/lvgltest-nuttx)
 
@@ -621,7 +621,9 @@ The above command bundles the following __NuttX Drivers, Libraries and Apps__ in
 
     [(Used by TinyCBOR Test App)](https://github.com/lupyuen/tinycbor_test)
 
-[(See the configuration file)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+The __NuttX Configuration File__ for PineDio Stack is at...
+
+[boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
 
 # Appendix: Upcoming Features
 
