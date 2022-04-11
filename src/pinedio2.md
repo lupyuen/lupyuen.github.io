@@ -886,6 +886,8 @@ _Are the branches any different?_
 
 PineCone BL602 won't use the [__Shared SPI Bus__](https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus) that we have created for PineDio Stack BL604.
 
+![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
+
 _What about updates from NuttX Mainline Branch?_
 
 -   Updates from NuttX Mainline will first be merged and tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
