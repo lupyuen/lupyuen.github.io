@@ -1,6 +1,6 @@
 # PineDio Stack BL604 runs Apache NuttX RTOS
 
-📝 _17 Apr 2022_
+📝 _12 Apr 2022_
 
 ![Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/pinedio2-title.jpg)
 
@@ -477,7 +477,9 @@ If you're keen to help, please lemme know! 🙏
 
 # What's Next
 
-TODO
+I hope this article has provided everything you need to get started on creating __your own IoT App__.
+
+Lemme know what you're building with PineDio Stack!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
