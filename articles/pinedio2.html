@@ -506,10 +506,14 @@ static void create_widgets(void) {
 </li>
 <li>
 <p><strong>LVGL Canvas</strong> consumes a lot of RAM! Disable it if we don’t really need it, we’ll save 7 KB of RAM…</p>
-<p>Configure NuttX: <code>make menuconfig</code></p>
+<p>Configure NuttX with “<code>make menuconfig</code>”</p>
 <p>Select “Application Configuration → Graphics Support → Light and Versatile Graphic Library (LVGL) → Object Type Usage Settings”</p>
 <p>Uncheck “Canvas Usage”</p>
 <p>Save and exit menuconfig, then rebuild NuttX (<code>make</code>)</p>
+</li>
+<li>
+<p>What’s it like to test the <strong>First (Buggy) Prototype</strong> of PineDio Stack? Find out here…</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio"><strong>“PineDio Stack BL604 RISC-V Board: Testing The Prototype”</strong></a></p>
 </li>
 </ol>
 <h1 id="appendix-gpio-assignment" class="section-header"><a href="#appendix-gpio-assignment">12 Appendix: GPIO Assignment</a></h1>
@@ -551,7 +555,7 @@ static void create_widgets(void) {
 </div>
 <ul>
 <li>
-<p><strong>SPI Bus “/dev/spitest0”</strong> is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash</p>
+<p><strong>SPI Bus “/dev/spi0”</strong> is shared by ST7789 Display, SX1262 LoRa Transceiver and SPI Flash</p>
 </li>
 <li>
 <p><strong>Internal I2C Bus “/dev/i2c0”</strong> is shared by Accelerometer, Touch Panel, Heart Rate Sensor and Compass</p>
@@ -595,6 +599,10 @@ static void create_widgets(void) {
 <li>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>LoRaWAN Library</strong></a></p>
 <p><a href="https://github.com/lupyuen/lorawan_test">(Used by LoRaWAN Test App)</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/st7789#lvgl-demo-app"><strong>LVGL Library</strong></a></p>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx">(Used by LVGL Test App)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>NimBLE Porting Layer</strong></a></p>

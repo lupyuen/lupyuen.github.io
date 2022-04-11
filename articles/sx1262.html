@@ -393,6 +393,7 @@ cd nuttx
 git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx nuttx
 git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
 <p>Note that we’re using the older <strong>“sx1262”</strong> branches of the NuttX OS and NuttX Apps repos, which <a href="https://lupyuen.github.io/articles/sx1262#appendix-previous-sx1262-library"><strong>don’t use GPIO Interface and NimBLE Porting Layer</strong></a>. (And don’t support LoRaWAN)</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(<strong>For PineDio Stack BL604:</strong> The SX1262 Library and Test App are already preinstalled)</a></p>
 </li>
 <li>
 <p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L100-L101"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
