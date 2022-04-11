@@ -362,7 +362,8 @@ nsh&gt;</code></pre></div>
   bl602_adc_test  lvgltest      sx1262_test
   getprime        nsh           timer
   gpio            sensortest    tinycbor_test
-  hello           spi_test
+  hello           spi
+  i2c             spi_test
   ikea_air_quality_sensor</code></pre></div>
 <p>Enter this to run the <strong>LVGL Test App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>lvgltest</code></pre></div>
@@ -958,7 +959,7 @@ STATUS      : OK
 ===========   JOINED     ============
 DevAddr     :  01097710
 DATA RATE   : DR_2</code></pre></div>
-<p>Finally the app sends a <strong>Data Packet</strong> <em>(“Hi NuttX”)</em> to the LoRaWAN Gateway…</p>
+<p>After joining the network, the app sends a <strong>Data Packet</strong> <em>(“Hi NuttX”)</em> to the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>=========== MCPS-Confirm ============
 STATUS      : OK
 =====   UPLINK FRAME        1   =====
