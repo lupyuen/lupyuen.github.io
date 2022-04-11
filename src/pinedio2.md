@@ -387,7 +387,7 @@ Then rebuild ("`make`") and reflash ("`blflash`") NuttX to PineDio Stack.
 
 _Can we touch the screen?_
 
-Real soon, we're porting the [__Touch Panel I2C Driver__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c) to NuttX. Stay Tuned!
+Real soon, we're porting the [__Touch Panel I2C Driver__](https://lupyuen.github.io/articles/pinedio2#touch-panel) to NuttX. Stay Tuned!
 
 ![bl602_adc_test: Shows the Internal Temperature of BL604](https://lupyuen.github.io/images/pinedio2-run5.png)
 
@@ -419,9 +419,9 @@ See the Appendix for details...
 
 -   [__"SX1262 LoRa Transceiver"__](https://lupyuen.github.io/articles/pinedio2#appendix-sx1262-lora-transceiver)
 
-_And if we wish to create our own NuttX Apps?_
+_If we wish to create our own NuttX Apps?_
 
-Refer to these docs for the steps to create our own __NuttX Apps, Libraries and Drivers__...
+Refer to the docs for the steps to create our own __NuttX Apps, Libraries and Drivers__...
 
 -   [__"How To Create NuttX Apps"__](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-app)
 
@@ -453,9 +453,25 @@ And the __SX1262 LoRa Transceiver__ works fine with Semtech's Reference Drivers 
 
 -   [__"SX1262 LoRa Transceiver"__](https://lupyuen.github.io/articles/pinedio2#appendix-sx1262-lora-transceiver)
 
-But there's __more porting work__ to be done!
+But there's [__plenty more porting work__](https://lupyuen.github.io/articles/pinedio2#appendix-upcoming-features) to be done!
 
-TODO: Automated Testing, upcoming features, GPIO, DMA
+-   [__GPIO Expander__](https://lupyuen.github.io/articles/pinedio2#gpio-expander)
+
+-   [__Push Button__](https://lupyuen.github.io/articles/pinedio2#push-button)
+
+-   [__Touch Panel__](https://lupyuen.github.io/articles/pinedio2#touch-panel)
+
+-   [__Accelerometer__](https://lupyuen.github.io/articles/pinedio2#accelerometer)
+
+-   [__Power Management__](https://lupyuen.github.io/articles/pinedio2#power-management)
+
+-   [__GPS__](https://lupyuen.github.io/articles/pinedio2#gps)
+
+-   [__SPI Flash__](https://lupyuen.github.io/articles/pinedio2#spi-flash)
+
+-   [__SPI Direct Memory Access__](https://lupyuen.github.io/articles/pinedio2#spi-direct-memory-access)
+
+-   [__Automated Testing__](https://lupyuen.github.io/articles/pinedio2#automated-testing)
 
 If you're keen to help, please lemme know! 🙏
 
