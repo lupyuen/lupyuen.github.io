@@ -319,7 +319,8 @@ Builtin Apps:
   bl602_adc_test  lvgltest      sx1262_test
   getprime        nsh           timer
   gpio            sensortest    tinycbor_test
-  hello           spi_test
+  hello           spi
+  i2c             spi_test
   ikea_air_quality_sensor
 ```
 
@@ -1047,7 +1048,7 @@ DevAddr     :  01097710
 DATA RATE   : DR_2
 ```
 
-Finally the app sends a __Data Packet__ _("Hi NuttX")_ to the LoRaWAN Gateway...
+After joining the network, the app sends a __Data Packet__ _("Hi NuttX")_ to the LoRaWAN Gateway...
 
 ```text
 =========== MCPS-Confirm ============
