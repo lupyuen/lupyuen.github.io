@@ -672,6 +672,12 @@ static void create_widgets(void) {
 <h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">14 Appendix: Upcoming Features</a></h1>
 <p>This section discusses the <strong>upcoming features</strong> that we’ll implement with NuttX on PineDio Stack BL604.</p>
 <p>If you’re keen to help, please lemme know! 🙏</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/pinedio2-bl604.png" alt="PineDio Stack BL604" /></p>
+</blockquote>
+<blockquote>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
+</blockquote>
 <h2 id="gpio-expander" class="section-header"><a href="#gpio-expander">14.1 GPIO Expander</a></h2>
 <p><em>BL604 has 23 GPIOs. Can we use all of them in NuttX Apps?</em></p>
 <p>Some of the GPIOs will be used for <a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment"><strong>SPI, I2C and UART</strong></a>. But we still have <strong>a lot of remaining GPIOs</strong> to manage!</p>
@@ -762,6 +768,12 @@ static void create_widgets(void) {
 </ul>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/chrono/chrono_main.c">(Here’s how we access “<strong>/dev/buttons</strong>” in NuttX Apps)</a></p>
 <p>Note that the Push Button shares GPIO 12 with the Vibrator.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/pinedio2-touch.png" alt="PineDio Stack Touch Panel" /></p>
+</blockquote>
+<blockquote>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
+</blockquote>
 <h2 id="touch-panel" class="section-header"><a href="#touch-panel">14.3 Touch Panel</a></h2>
 <p>JF has created a <strong>CST816S I2C Touch Panel Driver</strong> for PineDio Stack… (Thanks JF!)</p>
 <ul>
@@ -772,6 +784,8 @@ static void create_widgets(void) {
 <p>The <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.</p>
 <p>(PineDio Stack uses the same Touch Panel as PineTime)</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html">(More about NuttX Touchscreen Drivers)</a></p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-accel.png" alt="PineDio Stack Accelerometer" /></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
 <h2 id="accelerometer" class="section-header"><a href="#accelerometer">14.4 Accelerometer</a></h2>
 <p>To create the I2C <strong>Accelerometer Sensor Driver “/dev/accel0”</strong> for PineDio Stack, we could port JF’s simple driver…</p>
 <ul>
@@ -787,6 +801,8 @@ static void create_widgets(void) {
 <li><a href="https://lupyuen.github.io/articles/bme280"><strong>“Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS”</strong></a></li>
 </ul>
 <p>NuttX’s <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/system/i2c"><strong>I2C Tool</strong></a> might be helpful for troubleshooting I2C Drivers.</p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-power.png" alt="PineDio Stack Power Management Unit" /></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
 <h2 id="power-management" class="section-header"><a href="#power-management">14.5 Power Management</a></h2>
 <p>Check out JF’s driver for <strong>SGM40561 Power Management Unit</strong>…</p>
 <ul>
@@ -802,6 +818,8 @@ static void create_widgets(void) {
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/power"><strong>nuttx/drivers/power</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/pinedio2-gps.png" alt="PineDio Stack GPS" /></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf">(Schematic)</a></p>
 <h2 id="gps" class="section-header"><a href="#gps">14.6 GPS</a></h2>
 <p>NuttX has a <strong>GPS Demo App</strong>…</p>
 <ul>
@@ -812,6 +830,8 @@ static void create_widgets(void) {
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/gpsutils"><strong>apps/gpsutils</strong></a></li>
 </ul>
 <p>These might be helpful for creating the <strong>GPS Driver</strong> (UART) for PineDio Stack.</p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-flash.png" alt="PineDio Stack SPI Flash" /></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
 <h2 id="spi-flash" class="section-header"><a href="#spi-flash">14.7 SPI Flash</a></h2>
 <p>The PineDio Stack Schematics refer to 2 kinds of <strong>SPI Flash</strong>… (Why?)</p>
 <ul>
