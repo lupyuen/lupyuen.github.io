@@ -890,11 +890,13 @@ PineCone BL602 won't use the [__Shared SPI Bus__](https://lupyuen.github.io/arti
 
 ![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
 
-_What about updates from NuttX Mainline Branch?_
+_What about upstream updates from NuttX Mainline Branch?_
 
--   Updates from NuttX Mainline will first be merged and tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
+-   Upstream updates from NuttX Mainline will first be merged and tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
 
--   Then merged and tested in the [__`master` branch__](https://github.com/lupyuen/incubator-nuttx)
+    (Every 2 weeks, depends on my writing mood)
+
+-   Then merged and tested in the [__`master` (release) branch__](https://github.com/lupyuen/incubator-nuttx)
 
     (For PineCone BL602)
 
