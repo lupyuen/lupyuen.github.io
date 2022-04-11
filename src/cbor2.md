@@ -234,6 +234,9 @@ Let's build the NuttX Firmware with TinyCBOR inside...
     ## For BL602: Configure the build for BL602
     ./tools/configure.sh bl602evb:nsh
 
+    ## For PineDio Stack BL604: Configure the build for BL604
+    ./tools/configure.sh bl602evb:pinedio
+
     ## For ESP32: Configure the build for ESP32.
     ## TODO: Change "esp32-devkitc" to our ESP32 board.
     ./tools/configure.sh esp32-devkitc:nsh

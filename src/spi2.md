@@ -437,6 +437,9 @@ Let's run NuttX on BL602 / ESP32 and check that our __SPI Test Driver loads corr
     ## For BL602: Configure the build for BL602
     ./tools/configure.sh bl602evb:nsh
 
+    ## For PineDio Stack BL604: Configure the build for BL604
+    ./tools/configure.sh bl602evb:pinedio
+
     ## For ESP32: Configure the build for ESP32.
     ## TODO: Change "esp32-devkitc" to our ESP32 board.
     ./tools/configure.sh esp32-devkitc:nsh
@@ -1337,6 +1340,9 @@ Now we update the Makefile so that NuttX will build our Device Driver...
     ## For BL602: Configure the build for BL602
     ./tools/configure.sh bl602evb:nsh
 
+    ## For PineDio Stack BL604: Configure the build for BL604
+    ./tools/configure.sh bl602evb:pinedio
+
     ## For ESP32: Configure the build for ESP32.
     ## TODO: Change "esp32-devkitc" to our ESP32 board.
     ./tools/configure.sh esp32-devkitc:nsh
@@ -1587,6 +1593,9 @@ This section explains the steps to create a __NuttX App__ named __"spi_test"__.
     ## For BL602: Configure the build for BL602
     ./tools/configure.sh bl602evb:nsh
 
+    ## For PineDio Stack BL604: Configure the build for BL604
+    ./tools/configure.sh bl602evb:pinedio
+    
     ## For ESP32: Configure the build for ESP32.
     ## TODO: Change "esp32-devkitc" to our ESP32 board.
     ./tools/configure.sh esp32-devkitc:nsh

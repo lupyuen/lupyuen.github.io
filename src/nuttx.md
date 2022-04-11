@@ -1008,7 +1008,12 @@ Next we download and build NuttX...
 
     ```bash
     cd nuttx
+
+    ## For BL602: Configure the build for BL602
     ./tools/configure.sh bl602evb:nsh
+
+    ## For PineDio Stack BL604: Configure the build for BL604
+    ./tools/configure.sh bl602evb:pinedio
     ```
 
 1.  We should see...
@@ -1031,7 +1036,12 @@ Next we download and build NuttX...
 
     ```bash
     make distclean
+
+    ## For BL602: Configure the build for BL602
     ./tools/configure.sh bl602evb:nsh
+
+    ## For PineDio Stack BL604: Configure the build for BL604
+    ./tools/configure.sh bl602evb:pinedio
     ```
 
 1.  Build NuttX...
