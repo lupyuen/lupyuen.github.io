@@ -145,7 +145,7 @@
 <p>And get started on creating <strong>our own IoT Apps</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Pine64 PineDio Stack BL604 RISC-V Board</em></p>
-<h1 id="what-is-nuttx" class="section-header"><a href="#what-is-nuttx">1 What is NuttX?</a></h1>
+<h1 id="what-is-nuttx"><a href="#what-is-nuttx">1 What is NuttX?</a></h1>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX</strong></a> is a popular Real-Time Operating System (RTOS) for microcontrollers (8-bit to 64-bit). It runs on all kinds of hardware: <strong>Arm, ESP32, RISC-V,</strong> … Even <a href="https://docs.px4.io/master/en/"><strong>flying drones</strong></a>!</p>
 <p>NuttX feels like a <strong>lighter version of Linux</strong> because it uses familiar functions to access the microcontroller hardware:  <em>open(), read(), write(), ioctl(), …</em></p>
 <p>(NuttX is <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX Compliant</strong></a>)</p>
@@ -162,7 +162,7 @@
 </ul>
 <p>Let’s go hands-on with NuttX!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
-<h1 id="build-nuttx" class="section-header"><a href="#build-nuttx">2 Build NuttX</a></h1>
+<h1 id="build-nuttx"><a href="#build-nuttx">2 Build NuttX</a></h1>
 <p>NuttX builds fine on <strong>Linux</strong> (x64), <strong>macOS</strong> and <strong>Windows Subsystem for Linux</strong> (WSL).</p>
 <p>Here are the steps to build NuttX for PineDio Stack…</p>
 <ol>
@@ -204,7 +204,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>That’s the <strong>NuttX Build Configuration</strong> for PineDio Stack. It selects the Build Options, NuttX Drivers and NuttX Apps that will run on PineDio Stack.</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(See the bundled features)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-test1.jpg" alt="PineDio Stack Self-Test" /></p>
-<h1 id="prepare-pinedio-stack" class="section-header"><a href="#prepare-pinedio-stack">3 Prepare PineDio Stack</a></h1>
+<h1 id="prepare-pinedio-stack"><a href="#prepare-pinedio-stack">3 Prepare PineDio Stack</a></h1>
 <p>Let’s get ready to flash the NuttX Firmware to PineDio Stack!</p>
 <ul>
 <li>
@@ -267,7 +267,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’re ready to flash PineDio Stack!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(Source)</a></p>
-<h1 id="flash-pinedio-stack" class="section-header"><a href="#flash-pinedio-stack">4 Flash PineDio Stack</a></h1>
+<h1 id="flash-pinedio-stack"><a href="#flash-pinedio-stack">4 Flash PineDio Stack</a></h1>
 <p>Let’s flash the NuttX Firmware to PineDio Stack.  Follow these steps to install <strong>blflash</strong>…</p>
 <ul>
 <li>
@@ -314,7 +314,7 @@ Success</code></pre></div>
 <p>So go ahead and create your own PineDio Stack firmware, it’s all OK!</p>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps? See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
-<h1 id="boot-pinedio-stack" class="section-header"><a href="#boot-pinedio-stack">5 Boot PineDio Stack</a></h1>
+<h1 id="boot-pinedio-stack"><a href="#boot-pinedio-stack">5 Boot PineDio Stack</a></h1>
 <p>Like Linux, NuttX provides a <strong>Command-Line Interface</strong> for controlling our gadget. This is how we access the <strong>NuttX Shell</strong>…</p>
 <p>Set PineDio Stack to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <ol>
@@ -337,7 +337,7 @@ Success</code></pre></div>
 nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on PineDio Stack!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-boot4.jpg" alt="PineDio Stack boots with Pink Screen" /></p>
-<h1 id="run-nuttx" class="section-header"><a href="#run-nuttx">6 Run NuttX</a></h1>
+<h1 id="run-nuttx"><a href="#run-nuttx">6 Run NuttX</a></h1>
 <p>NuttX boots with a <a href="https://lupyuen.github.io/articles/st7789#render-pink-screen"><strong>Pink Screen</strong></a>. (Pic above)</p>
 <p>In the NuttX Shell, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
@@ -352,7 +352,7 @@ nsh&gt;</code></pre></div>
 <blockquote>
 <p>(“i2c0” is missing from the pic)</p>
 </blockquote>
-<h1 id="nuttx-apps" class="section-header"><a href="#nuttx-apps">7 NuttX Apps</a></h1>
+<h1 id="nuttx-apps"><a href="#nuttx-apps">7 NuttX Apps</a></h1>
 <p>In the NuttX Shell, enter this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div>
 <p>(“<strong><code>?</code></strong>” works too)</p>
@@ -412,7 +412,7 @@ static void create_widgets(void) {
 <p>Real soon, we’re porting the <a href="https://lupyuen.github.io/articles/pinedio2#touch-panel"><strong>Touch Panel I2C Driver</strong></a> to NuttX. Stay Tuned!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-run5.png" alt="bl602_adc_test: Shows the Internal Temperature of BL604" /></p>
 <p><a href="https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27">(Source)</a></p>
-<h1 id="more-apps" class="section-header"><a href="#more-apps">8 More Apps</a></h1>
+<h1 id="more-apps"><a href="#more-apps">8 More Apps</a></h1>
 <p><em>What other NuttX Apps can we try?</em></p>
 <ul>
 <li>
@@ -463,7 +463,7 @@ static void create_widgets(void) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi2.jpg" alt="Shared SPI Bus on PineDio Stack" /></p>
 <p><em>Shared SPI Bus on PineDio Stack</em></p>
-<h1 id="upcoming-features" class="section-header"><a href="#upcoming-features">9 Upcoming Features</a></h1>
+<h1 id="upcoming-features"><a href="#upcoming-features">9 Upcoming Features</a></h1>
 <p><em>So PineDio Stack runs all hunky dory on NuttX?</em></p>
 <p>Not completely. PineDio Stack’s <strong>Shared SPI Bus</strong> works great on NuttX after we modded the SPI Driver…</p>
 <ul>
@@ -509,7 +509,7 @@ static void create_widgets(void) {
 </ul>
 <p>If you’re keen to help, please lemme know! 🙏</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title4.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>I hope this article has provided everything you need to get started on creating <strong>your own IoT App</strong>.</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -532,7 +532,7 @@ static void create_widgets(void) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinedio2.md"><code>lupyuen.github.io/src/pinedio2.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1510406086326513668">this Twitter Thread</a></p>
@@ -558,7 +558,7 @@ static void create_widgets(void) {
 <p><a href="https://lupyuen.github.io/articles/pinedio"><strong>“PineDio Stack BL604 RISC-V Board: Testing The Prototype”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-gpio-assignment" class="section-header"><a href="#appendix-gpio-assignment">12 Appendix: GPIO Assignment</a></h1>
+<h1 id="appendix-gpio-assignment"><a href="#appendix-gpio-assignment">12 Appendix: GPIO Assignment</a></h1>
 <p>Acording to the PineDio Stack Schematics…</p>
 <ul>
 <li>
@@ -617,7 +617,7 @@ static void create_widgets(void) {
 </ul>
 <p>The <strong>NuttX Pin Definitions</strong> for PineDio Stack are at…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127">boards/risc-v/bl602/bl602evb/include/board.h</a></p>
-<h1 id="appendix-bundled-features" class="section-header"><a href="#appendix-bundled-features">13 Appendix: Bundled Features</a></h1>
+<h1 id="appendix-bundled-features"><a href="#appendix-bundled-features">13 Appendix: Bundled Features</a></h1>
 <p>Earlier we ran this command to <strong>configure the NuttX Build</strong> for PineDio Stack BL604…</p>
 <div class="example-wrap"><pre class="language-bash"><code>./tools/configure.sh bl602evb:pinedio</code></pre></div>
 <p>The above command bundles the following <strong>NuttX Drivers, Libraries and Apps</strong> into NuttX for PineDio Stack…</p>
@@ -678,7 +678,7 @@ static void create_widgets(void) {
 </ul>
 <p>The <strong>NuttX Configuration File</strong> for PineDio Stack is at…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig</a></p>
-<h1 id="appendix-upcoming-features" class="section-header"><a href="#appendix-upcoming-features">14 Appendix: Upcoming Features</a></h1>
+<h1 id="appendix-upcoming-features"><a href="#appendix-upcoming-features">14 Appendix: Upcoming Features</a></h1>
 <p>This section discusses the <strong>upcoming features</strong> that we’ll implement with NuttX on PineDio Stack BL604.</p>
 <p>If you’re keen to help, please lemme know! 🙏</p>
 <blockquote>
@@ -687,7 +687,7 @@ static void create_widgets(void) {
 <blockquote>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
 </blockquote>
-<h2 id="gpio-expander" class="section-header"><a href="#gpio-expander">14.1 GPIO Expander</a></h2>
+<h2 id="gpio-expander"><a href="#gpio-expander">14.1 GPIO Expander</a></h2>
 <p><em>BL604 has 23 GPIOs. Can we use all of them in NuttX Apps?</em></p>
 <p>Some of the GPIOs will be used for <a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment"><strong>SPI, I2C and UART</strong></a>. But we still have <strong>a lot of remaining GPIOs</strong> to manage!</p>
 <p>NuttX allows apps to access to a total of <strong>3 GPIOs</strong> on BL604…</p>
@@ -757,7 +757,7 @@ static void create_widgets(void) {
 <p>Thus we expect most PineDio Stack devs to <strong>create NuttX Apps first</strong> before moving the code into NuttX Drivers.</p>
 <p>That’s why we need to handle GPIOs the messy (but productive) way for now.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#gpio-demo">(More about NuttX GPIO)</a></p>
-<h2 id="push-button" class="section-header"><a href="#push-button">14.2 Push Button</a></h2>
+<h2 id="push-button"><a href="#push-button">14.2 Push Button</a></h2>
 <p>To support the <strong>Push Button</strong> (GPIO 12) on PineDio Stack, we shall implement these <strong>Board Button Functions</strong> for PineDio Stack…</p>
 <ul>
 <li>
@@ -787,7 +787,7 @@ static void create_widgets(void) {
 <blockquote>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
 </blockquote>
-<h2 id="touch-panel" class="section-header"><a href="#touch-panel">14.3 Touch Panel</a></h2>
+<h2 id="touch-panel"><a href="#touch-panel">14.3 Touch Panel</a></h2>
 <p>JF has created a <strong>CST816S I2C Touch Panel Driver</strong> for PineDio Stack… (Thanks JF!)</p>
 <ul>
 <li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c"><strong>pinedio-stack-selftest/drivers/cst816s.c</strong></a></li>
@@ -795,11 +795,15 @@ static void create_widgets(void) {
 <p>We shall port this driver to NuttX and expose it to apps as a NuttX Touchscreen Device “<strong>/dev/input0</strong>”.</p>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c">(Here’s how we access “<strong>/dev/input0</strong>” in our LVGL Test App)</a></p>
 <p>The <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.</p>
+<p>We have started the development of the <strong>Touch Panel Driver</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/cst816s-nuttx"><strong>lupyuen/cst816s-nuttx</strong></a></li>
+</ul>
 <p>(PineDio Stack uses the same Touch Panel as PineTime)</p>
 <p><a href="https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html">(More about NuttX Touchscreen Drivers)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-accel.png" alt="PineDio Stack Accelerometer" /></p>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
-<h2 id="accelerometer" class="section-header"><a href="#accelerometer">14.4 Accelerometer</a></h2>
+<h2 id="accelerometer"><a href="#accelerometer">14.4 Accelerometer</a></h2>
 <p>To create the I2C <strong>Accelerometer Sensor Driver “/dev/accel0”</strong> for PineDio Stack, we could port JF’s simple driver…</p>
 <ul>
 <li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/accelerometer.c"><strong>pinedio-stack-selftest/accelerometer.c</strong></a></li>
@@ -816,7 +820,7 @@ static void create_widgets(void) {
 <p>NuttX’s <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/system/i2c"><strong>I2C Tool</strong></a> might be helpful for troubleshooting I2C Drivers.</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-power.png" alt="PineDio Stack Power Management Unit" /></p>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
-<h2 id="power-management" class="section-header"><a href="#power-management">14.5 Power Management</a></h2>
+<h2 id="power-management"><a href="#power-management">14.5 Power Management</a></h2>
 <p>Check out JF’s driver for <strong>SGM40561 Power Management Unit</strong>…</p>
 <ul>
 <li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/battery.c"><strong>pinedio-stack-selftest/battery.c</strong></a></li>
@@ -833,7 +837,7 @@ static void create_widgets(void) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinedio2-gps.png" alt="PineDio Stack GPS" /></p>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf">(Schematic)</a></p>
-<h2 id="gps" class="section-header"><a href="#gps">14.6 GPS</a></h2>
+<h2 id="gps"><a href="#gps">14.6 GPS</a></h2>
 <p>NuttX has a <strong>GPS Demo App</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/gps/gps_main.c"><strong>apps/examples/gps</strong></a></li>
@@ -845,7 +849,7 @@ static void create_widgets(void) {
 <p>These might be helpful for creating the <strong>GPS Driver</strong> (UART) for PineDio Stack.</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-flash.png" alt="PineDio Stack SPI Flash" /></p>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
-<h2 id="spi-flash" class="section-header"><a href="#spi-flash">14.7 SPI Flash</a></h2>
+<h2 id="spi-flash"><a href="#spi-flash">14.7 SPI Flash</a></h2>
 <p>The PineDio Stack Schematics refer to 2 kinds of <strong>SPI Flash</strong>… (Why?)</p>
 <ul>
 <li>
@@ -866,7 +870,7 @@ static void create_widgets(void) {
 </ul>
 <p>We need to test the drivers.</p>
 <p>NuttX’s <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/pinedio/system/spi"><strong>SPI Tool</strong></a> might be helpful for troubleshooting SPI Drivers.</p>
-<h2 id="spi-direct-memory-access" class="section-header"><a href="#spi-direct-memory-access">14.8 SPI Direct Memory Access</a></h2>
+<h2 id="spi-direct-memory-access"><a href="#spi-direct-memory-access">14.8 SPI Direct Memory Access</a></h2>
 <p><em>ST7789 Display receives plenty of data on the SPI Bus (for screen updates). Will there be contention with other SPI Devices? (Like SX1262 Transceiver)</em></p>
 <p>Most definitely. That’s why we need to implement <a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access"><strong>SPI Direct Memory Access (DMA)</strong></a> so that PineDio Stack can do other tasks while painting the ST7789 Display.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L805-L855">(Right now the SPI Driver polls the SPI Port when transferring SPI data)</a></p>
@@ -884,7 +888,7 @@ static void create_widgets(void) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/auto-title.jpg" alt="PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test" /></p>
 <p><em>PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test</em></p>
-<h2 id="automated-testing" class="section-header"><a href="#automated-testing">14.9 Automated Testing</a></h2>
+<h2 id="automated-testing"><a href="#automated-testing">14.9 Automated Testing</a></h2>
 <p>When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some <strong>Automated Testing</strong> (to be sure that nothing’s broken).</p>
 <p>Today we run a <strong>Daily Automated Test</strong> on the NuttX Mainline Branch for PineCone BL602…</p>
 <ul>
@@ -943,7 +947,7 @@ static void create_widgets(void) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
-<h1 id="appendix-sx1262-lora-transceiver" class="section-header"><a href="#appendix-sx1262-lora-transceiver">15 Appendix: SX1262 LoRa Transceiver</a></h1>
+<h1 id="appendix-sx1262-lora-transceiver"><a href="#appendix-sx1262-lora-transceiver">15 Appendix: SX1262 LoRa Transceiver</a></h1>
 <p>PineDio Stack BL604 includes a <a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262 LoRa Transceiver</strong></a> for wireless networking.</p>
 <p>This section explains how we may test <strong>LoRa and LoRaWAN Wireless Networking</strong> on PineDio Stack.</p>
 <p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION</strong>: Always connect the LoRa Antenna before testing LoRa or LoRaWAN… Or the LoRa Transceiver may get damaged! (Pic above)</a></p>
@@ -966,7 +970,7 @@ static void create_widgets(void) {
 </li>
 </ul>
 <p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRa and LoRaWAN)</a></p>
-<h2 id="test-lora" class="section-header"><a href="#test-lora">15.1 Test LoRa</a></h2>
+<h2 id="test-lora"><a href="#test-lora">15.1 Test LoRa</a></h2>
 <p>The <strong>LoRa Library for Semtech SX1262</strong> is explained in this article…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sx1262"><strong>“LoRa SX1262 on Apache NuttX OS”</strong></a></li>
@@ -1026,7 +1030,7 @@ static void create_widgets(void) {
 <li><a href="https://lupyuen.github.io/articles/sx1262#spectrum-analysis-with-sdr"><strong>“Spectrum Analysis with SDR”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/sx1262-sdr.jpg" alt="Spectrum Analysis of LoRa Message with SDR" /></p>
-<h2 id="test-lorawan" class="section-header"><a href="#test-lorawan">15.2 Test LoRaWAN</a></h2>
+<h2 id="test-lorawan"><a href="#test-lorawan">15.2 Test LoRaWAN</a></h2>
 <p>The <strong>LoRaWAN Library</strong> is explained in this article…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></li>
@@ -1136,7 +1140,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>(I don’t think <strong>NWK_KEY</strong> is used)</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-ttn.png" alt="NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN" /></p>
 <p><em>NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN</em></p>
-<h2 id="test-cbor-encoder" class="section-header"><a href="#test-cbor-encoder">15.3 Test CBOR Encoder</a></h2>
+<h2 id="test-cbor-encoder"><a href="#test-cbor-encoder">15.3 Test CBOR Encoder</a></h2>
 <p>Suppose we’re creating an app that transmits <strong>Sensor Data</strong> over LoRa (or LoRaWAN) from two sensors: <strong>Temperature Sensor and Light Sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
@@ -1172,7 +1176,7 @@ CBOR Output: 11 bytes
 <ul>
 <li><a href="https://lupyuen.github.io/articles/payload"><strong>“CBOR Payload Formatter for The Things Network”</strong></a></li>
 </ul>
-<h1 id="appendix-shared-spi-bus" class="section-header"><a href="#appendix-shared-spi-bus">16 Appendix: Shared SPI Bus</a></h1>
+<h1 id="appendix-shared-spi-bus"><a href="#appendix-shared-spi-bus">16 Appendix: Shared SPI Bus</a></h1>
 <p>This section explains how we modified NuttX to handle the <strong>Shared SPI Bus</strong> on PineDio Stack BL604.</p>
 <p>Acording to the PineDio Stack Schematics…</p>
 <ul>
@@ -1227,7 +1231,7 @@ CBOR Output: 11 bytes
 </ul>
 <p>However the SPI Driver doesn’t support multiple Chip Select Pins. <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453">(See this)</a></p>
 <p>Here’s how we modded the SPI Driver for PineDio Stack…</p>
-<h2 id="spi-device-id" class="section-header"><a href="#spi-device-id">16.1 SPI Device ID</a></h2>
+<h2 id="spi-device-id"><a href="#spi-device-id">16.1 SPI Device ID</a></h2>
 <p><em>What’s the SPI Device ID in the table above?</em></p>
 <p>We identify each SPI Device with a unique <strong>SPI Device ID</strong>. </p>
 <p>NuttX passes the Device ID when it calls <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L415-L453"><strong>bl602_spi_select</strong></a>. We’ll use this to flip the right Chip Select Pin for the SPI Device.</p>
@@ -1235,7 +1239,7 @@ CBOR Output: 11 bytes
 <p>NuttX auto-assigns <code>0x40000</code> as the SPI Device ID for the ST7789 Display. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/spi/spi.h#L459">(See this)</a></p>
 <p>We assigned the other SPI Device IDs ourselves.</p>
 <p>Device ID <code>-1</code> is meant as a fallthrough to catch all SPI Devices that don’t match the Device IDs. This also works for simple SPI setups where the Device ID is not needed.</p>
-<h2 id="swap-miso--mosi" class="section-header"><a href="#swap-miso--mosi">16.2 Swap MISO / MOSI</a></h2>
+<h2 id="swap-miso--mosi"><a href="#swap-miso--mosi">16.2 Swap MISO / MOSI</a></h2>
 <p><em>What’s the Swap MISO / MOSI column in the table above?</em></p>
 <p>According to the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>BL602 / BL604 Reference Manual</strong></a> (Table 3.1 “Pin Description”, Page 26)…</p>
 <ul>
@@ -1264,7 +1268,7 @@ CBOR Output: 11 bytes
 <p><em>So we will swap and unswap MISO / MOSI on the fly?</em></p>
 <p>Yep since we’ll run the ST7789, SX1262 and SPI Flash drivers concurrently, we’ll need to <strong>swap and unswap MISO / MOSI before every SPI operation</strong>.</p>
 <p>We’ll do this in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471"><strong>bl602_spi_select</strong></a>.</p>
-<h2 id="spi-device-table" class="section-header"><a href="#spi-device-table">16.3 SPI Device Table</a></h2>
+<h2 id="spi-device-table"><a href="#spi-device-table">16.3 SPI Device Table</a></h2>
 <p><em>How do we store the SPI Device Table in NuttX?</em></p>
 <p>We represent the above SPI Device Table in NuttX as a <strong>flat <code>int</code> array</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">SPI Device</th><th style="text-align: center">Device ID</th><th style="text-align: center">Swap MISO/MOSI</th><th style="text-align: center">Chip Select</th></tr></thead><tbody>
@@ -1324,7 +1328,7 @@ static const int32_t bl602_spi_device_table[] =
 </li>
 </ul>
 <p>Let’s look at the <code>BOARD_*</code> definitions.</p>
-<h2 id="pin-definitions" class="section-header"><a href="#pin-definitions">16.4 Pin Definitions</a></h2>
+<h2 id="pin-definitions"><a href="#pin-definitions">16.4 Pin Definitions</a></h2>
 <p><em>Where are the SPI Pins defined?</em></p>
 <p>The SPI Device Table above refers to the following <strong>Pin Definitions</strong> at <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L99-L128">boards/risc-v/bl602/bl602evb/include/board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* SPI for PineDio Stack: Chip Select (unused), MOSI, MISO, SCK */
@@ -1359,7 +1363,7 @@ static const int32_t bl602_spi_device_table[] =
 <p>(GPIO, UART and I2C Pins are also defined in the file)</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment">(See the GPIO Assignment)</a></p>
 <p>Now that we have defined the SPI Device Table in NuttX, let’s use it.</p>
-<h2 id="select--deselect-spi-device" class="section-header"><a href="#select--deselect-spi-device">16.5 Select / Deselect SPI Device</a></h2>
+<h2 id="select--deselect-spi-device"><a href="#select--deselect-spi-device">16.5 Select / Deselect SPI Device</a></h2>
 <p>Remember that NuttX calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471"><strong>bl602_spi_select</strong></a> to select (or deselect) an SPI Device.</p>
 <p>For PineDio Stack, these are the changes we made to <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471"><strong>bl602_spi_select</strong></a>…</p>
 <ul>
@@ -1415,7 +1419,7 @@ static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid,
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216">(<strong>bl602_gpiowrite</strong> is defined in the BL602 GPIO Driver)</a></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140">(<strong>bl602_configgpio</strong> also comes from the BL602 GPIO Driver)</a></p>
 <p>Let’s talk about <code>CONFIG_SPI_CMDDATA</code>…</p>
-<h2 id="spi-command--data" class="section-header"><a href="#spi-command--data">16.6 SPI Command / Data</a></h2>
+<h2 id="spi-command--data"><a href="#spi-command--data">16.6 SPI Command / Data</a></h2>
 <p>NuttX RTOS uses MISO as the <strong>ST7789 Data / Command Pin</strong>. <a href="https://lupyuen.github.io/articles/st7789#appendix-spi-cmddata-on-bl602">(See this)</a></p>
 <p>(We flip the pin High for ST7789 Data, Low for ST7789 Commands)</p>
 <p>But ST7789 is wired “backwards” on PineDio Stack BL604! We use <strong>MOSI as the ST7789 Data / Command Pin</strong> instead.</p>
@@ -1475,7 +1479,7 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216">(<strong>bl602_gpiowrite</strong> also comes from the BL602 GPIO Driver)</a></p>
 <p>Note that we reconfigure MISO / MOSI from SPI Pins to GPIO Pins.</p>
 <p>We revert MISO / MOSI back to SPI Pins when the SPI Device is deselected in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L462-L470"><strong>bl602_spi_select</strong></a>.</p>
-<h2 id="deselect-all-spi-devices" class="section-header"><a href="#deselect-all-spi-devices">16.7 Deselect All SPI Devices</a></h2>
+<h2 id="deselect-all-spi-devices"><a href="#deselect-all-spi-devices">16.7 Deselect All SPI Devices</a></h2>
 <p>At NuttX Startup, we <strong>deselect all SPI Devices</strong> by flipping their Chip Select Pins high (after validating the SPI Device Table)…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Called by NuttX to initialise the SPI Driver
 static void bl602_spi_init(struct spi_dev_s *dev)
@@ -1493,7 +1497,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L1191-L1240">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L178-L208">(<strong>bl602_spi_deselect_devices</strong> is defined here)</a></p>
-<h2 id="test-shared-spi-bus" class="section-header"><a href="#test-shared-spi-bus">16.8 Test Shared SPI Bus</a></h2>
+<h2 id="test-shared-spi-bus"><a href="#test-shared-spi-bus">16.8 Test Shared SPI Bus</a></h2>
 <p><em>But will this Shared SPI Bus work? Swapping MISO / MOSI on the fly while flipping multiple Chip Select Pins?</em></p>
 <p>Yes the Shared SPI Bus works beautifully on PineDio Stack! This is how we tested with <strong>ST7789 Display</strong> and <strong>SX1262 Transceiver</strong>…</p>
 <ol>
@@ -1532,7 +1536,7 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/pinedio2-dark2.jpg" alt="LVGL Demo App" /></p>
-<h2 id="st7789-spi-mode" class="section-header"><a href="#st7789-spi-mode">16.9 ST7789 SPI Mode</a></h2>
+<h2 id="st7789-spi-mode"><a href="#st7789-spi-mode">16.9 ST7789 SPI Mode</a></h2>
 <p>BL602 / BL604 has another SPI Quirk that affects ST7789 on PineDio Stack…</p>
 <p>BL602 / BL604 talks to ST7789 Display at <strong>SPI Mode 1 or Mode 3</strong>, depending on whether <strong>MISO / MOSI are swapped</strong>…</p>
 <ul>
@@ -1580,13 +1584,13 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 #endif   /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66">(Source)</a></p>
 <p>Note that we have configured PineDio Stack to talk to SX1262 at <strong>SPI Mode 1</strong> via the SPI Test Driver “<strong>/dev/spitest0</strong>”. <a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(See this)</a></p>
-<h2 id="st7789-spi-frequency" class="section-header"><a href="#st7789-spi-frequency">16.10 ST7789 SPI Frequency</a></h2>
+<h2 id="st7789-spi-frequency"><a href="#st7789-spi-frequency">16.10 ST7789 SPI Frequency</a></h2>
 <p>On PineDio Stack, we have configured the <strong>SPI Frequency</strong> of the ST7789 Display to <strong>4 MHz</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_LCD_ST7789_FREQUENCY=4000000</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L542">(Source)</a></p>
 <p>Maybe we can go higher and reduce contention for the SPI Bus?</p>
 <p>Also in future we should implement SPI with <strong>Direct Memory Access</strong> (DMA) to avoid busy-polling the SPI Bus. <a href="https://lupyuen.github.io/articles/st7789#shared-spi-bus">(See this)</a></p>
-<h2 id="sx1262-chip-select" class="section-header"><a href="#sx1262-chip-select">16.11 SX1262 Chip Select</a></h2>
+<h2 id="sx1262-chip-select"><a href="#sx1262-chip-select">16.11 SX1262 Chip Select</a></h2>
 <p>There’s a potential Race Condition if we use the SX1262 Driver concurrently with the ST7789 Driver…</p>
 <ul>
 <li>

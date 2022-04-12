@@ -136,7 +136,7 @@
 </ul>
 <p>(This BME280 Driver should work OK on other NuttX platforms, like ESP32)</p>
 <p><img src="https://lupyuen.github.io/images/i2c-buspirate.jpg" alt="Bus Pirate connected to BME280" /></p>
-<h1 id="test-and-connect-bme280" class="section-header"><a href="#test-and-connect-bme280">1 Test and Connect BME280</a></h1>
+<h1 id="test-and-connect-bme280"><a href="#test-and-connect-bme280">1 Test and Connect BME280</a></h1>
 <p>Before we begin our exploration, verify that our BME280 Sensor works OK.</p>
 <p>(Because we’ll see some unexpected behaviour in a while)</p>
 <p>We used <a href="http://dangerousprototypes.com/docs/Bus_Pirate"><strong>Bus Pirate</strong></a> (pic above) for testing our BME280 Sensor.</p>
@@ -189,7 +189,7 @@ config ESP32_I2C0_SDAPIN
 <li><a href="https://lupyuen.github.io/articles/bme280#run-bme280-driver"><strong>“Run BME280 Driver”</strong></a></li>
 </ul>
 <p>But if we’re keen to go deep inside the BME280 driver… Read on!</p>
-<h1 id="start-with-bmp280-driver" class="section-header"><a href="#start-with-bmp280-driver">2 Start with BMP280 Driver</a></h1>
+<h1 id="start-with-bmp280-driver"><a href="#start-with-bmp280-driver">2 Start with BMP280 Driver</a></h1>
 <p>NuttX doesn’t have a BME280 Driver, but there’s a <strong>NuttX Driver for BMP280</strong>, the downsized (rightsized?) sibling of BME280.</p>
 <p>(BMP280 works like BME280 for sensing Air Pressure and Temperature, but <strong>without Humidity</strong>)</p>
 <p>Let’s test the <strong>BMP280 Driver on BL602</strong> and fix any I2C quirks.</p>
@@ -208,7 +208,7 @@ config ESP32_I2C0_SDAPIN
 <p><img src="https://lupyuen.github.io/images/bme280-config3.png" alt="BMP280 Driver" /></p>
 </li>
 </ol>
-<h2 id="change-i2c-address-and-device-id" class="section-header"><a href="#change-i2c-address-and-device-id">2.1 Change I2C Address and Device ID</a></h2>
+<h2 id="change-i2c-address-and-device-id"><a href="#change-i2c-address-and-device-id">2.1 Change I2C Address and Device ID</a></h2>
 <p><em>Will NuttX’s BMP280 Driver really work with our BME280?</em></p>
 <p>Yep the BMP280 Driver ought to read the <strong>Air Pressure</strong> and <strong>Temperature</strong> from our BME280 Sensor. (But not Humidity)</p>
 <p>Just that we need to we change the <strong>I2C Address</strong> and <strong>Device ID</strong> in the BMP280 Driver: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">bmp280.c</a></p>
@@ -226,7 +226,7 @@ config ESP32_I2C0_SDAPIN
 <p><a href="https://github.com/zephyrproject-rtos/zephyr/issues/1709">(FYI: Zephyr uses the same driver for BMP280 and BME280)</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-code1.png" alt="Change I2C Address and Device ID" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">(Source)</a></p>
-<h2 id="register-bmp280-driver" class="section-header"><a href="#register-bmp280-driver">2.2 Register BMP280 Driver</a></h2>
+<h2 id="register-bmp280-driver"><a href="#register-bmp280-driver">2.2 Register BMP280 Driver</a></h2>
 <p>Next we <strong>load the BMP280 Driver</strong> at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SENSORS_BMP280
 #include &lt;nuttx/sensors/bmp280.h&gt;
@@ -252,7 +252,7 @@ int bl602_bringup(void) {
 <p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup</a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup.c</a> so that it calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/drivers/sensors/bmp280.c#L691-L760">bmp280_register</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-code2a.png" alt="Register BMP280 Driver" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">(Source)</a></p>
-<h2 id="invalid-device-id" class="section-header"><a href="#invalid-device-id">2.3 Invalid Device ID</a></h2>
+<h2 id="invalid-device-id"><a href="#invalid-device-id">2.3 Invalid Device ID</a></h2>
 <p>We’re ready to test the BMP280 Driver! <strong>Build, flash and run</strong> NuttX with these steps…</p>
 <ol>
 <li>
@@ -276,7 +276,7 @@ bl602_bringup:   ERROR: Failed to register BMP280</code></pre></div>
 <p>Let’s find out why 🤔</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run1.png" alt="Invalid Device ID" /></p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#invalid-device-id">(Source)</a></p>
-<h2 id="incorrect-register-id" class="section-header"><a href="#incorrect-register-id">2.4 Incorrect Register ID</a></h2>
+<h2 id="incorrect-register-id"><a href="#incorrect-register-id">2.4 Incorrect Register ID</a></h2>
 <p>To track down why we’re not reading the right Device ID, let’s connect a <strong>Logic Analyser</strong> and inspect the bits on the I2C Bus…</p>
 <p><img src="https://lupyuen.github.io/images/bme280-logic2.jpg" alt="Logic Analyser connected between BL602 and BME280" /></p>
 <p>The I2C Data captured by our Logic Analyser looks surprising…</p>
@@ -289,7 +289,7 @@ Read   [0xEF]
 <p>To read the Device ID, the Register ID should be <strong><code>0xD0</code></strong>, not <strong><code>0x00</code></strong>!</p>
 <p>Let’s fix this 🤔</p>
 <p><a href="https://lupyuen.github.io/articles/i2c#appendix-test-bme280-with-bus-pirate">(Here’s why Register ID should be <code>0xD0</code>)</a></p>
-<h2 id="set-i2c-sub-address" class="section-header"><a href="#set-i2c-sub-address">2.5 Set I2C Sub Address</a></h2>
+<h2 id="set-i2c-sub-address"><a href="#set-i2c-sub-address">2.5 Set I2C Sub Address</a></h2>
 <p><em>Is there something special about BL602’s I2C Port?</em></p>
 <p>BL602 has a peculiar I2C Port…</p>
 <p>We need to send the <strong>I2C Sub Address</strong> (Register ID) separately from the I2C Data! </p>
@@ -331,7 +331,7 @@ static uint8_t bmp280_getreg8(FAR struct bmp280_dev_s *priv, uint8_t regaddr) {
 <p>Yes we need to send the <strong>Register ID and Register Value</strong> as I2C Sub Address, followed by an <strong>I2C Read</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver">(More about BL602 I2C Quirks)</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-code5a.png" alt="Send the Register ID as I2C Sub Address (instead of I2C Data) when we’re reading a BMP280 Register" /></p>
-<h2 id="bmp280-driver-loads-ok" class="section-header"><a href="#bmp280-driver-loads-ok">2.6 BMP280 Driver Loads OK</a></h2>
+<h2 id="bmp280-driver-loads-ok"><a href="#bmp280-driver-loads-ok">2.6 BMP280 Driver Loads OK</a></h2>
 <p>We’ve patched the BMP280 Driver to send the Register ID as I2C Sub Address. Let’s run it!</p>
 <div class="example-wrap"><pre class="language-text"><code>sensor_custom_register: Registering /dev/sensor/baro0
 bmp280_register: BMP280 driver loaded successfully!
@@ -346,7 +346,7 @@ NuttShell (NSH) NuttX-10.2.0-RC0</code></pre></div>
 <p>Let’s read the <strong>baro0</strong> device.</p>
 <p><a href="https://lupyuen.github.io/articles/bme280#appendix-log-i2c-transfers">(How we enable logging for BL602 I2C Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-run2a.jpg" alt="Our patched BMP280 Driver loads successfully" /></p>
-<h2 id="run-sensor-test-app" class="section-header"><a href="#run-sensor-test-app">2.7 Run Sensor Test App</a></h2>
+<h2 id="run-sensor-test-app"><a href="#run-sensor-test-app">2.7 Run Sensor Test App</a></h2>
 <p>NuttX provides a <strong>Sensor Test App</strong> that will read our BMP280 Device at <strong>/dev/sensor/baro0</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c"><strong>testing/sensortest/sensortest.c</strong></a></li>
@@ -380,7 +380,7 @@ SensorTest: Received message: baro0, number:10/10</code></pre></div>
 <p>Now let’s port the BME280 Driver from Zephyr OS to NuttX, so we can get the Humidity.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code6a.jpg" alt="NuttX BMP280 Driver vs Zephyr BME280 Driver" /></p>
 <p><em><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/bmp280.c">NuttX BMP280 Driver</a> vs <a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/sensor/bme280/bme280.c">Zephyr BME280 Driver</a></em></p>
-<h1 id="port-bme280-driver-from-zephyr-os" class="section-header"><a href="#port-bme280-driver-from-zephyr-os">3 Port BME280 Driver from Zephyr OS</a></h1>
+<h1 id="port-bme280-driver-from-zephyr-os"><a href="#port-bme280-driver-from-zephyr-os">3 Port BME280 Driver from Zephyr OS</a></h1>
 <p>NuttX’s BMP280 Driver works OK with our BME280 Sensor. But we’re missing one thing: <strong>Humidity</strong>.</p>
 <p>Let’s port the BME280 Driver from <strong>Zephyr OS</strong> to NuttX…</p>
 <ul>
@@ -394,7 +394,7 @@ SensorTest: Received message: baro0, number:10/10</code></pre></div>
 <p><em>Porting a driver from Zephyr to NuttX sounds hard!</em></p>
 <p>Zephyr’s BME280 Driver looks <strong>highly similar</strong> to NuttX’s BMP280 Driver. (Pic above)</p>
 <p>Thus porting Zephyr’s BME280 Driver to NuttX might not be so hard!</p>
-<h2 id="zephyr-to-nuttx" class="section-header"><a href="#zephyr-to-nuttx">3.1 Zephyr to NuttX</a></h2>
+<h2 id="zephyr-to-nuttx"><a href="#zephyr-to-nuttx">3.1 Zephyr to NuttX</a></h2>
 <p><strong>Zephyr’s BME280 Driver</strong> exposes these functions: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c">bme280-nuttx/bme280.c</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-port2.jpg" alt="Zephyr BME280 Driver" /></p>
 <ul>
@@ -442,7 +442,7 @@ SensorTest: Received message: baro0, number:10/10</code></pre></div>
 <p>Zephyr assumes that the <strong>Standby Interval is Static</strong>. (Defined at compile time)</p>
 <p>Whereas NuttX expects the Standby Interval to be <strong>set at runtime</strong>.</p>
 <p>To handle this, we code the <strong>bme280_set_interval</strong> function ourselves in NuttX.</p>
-<h2 id="read-sensor-data-from-zephyr-driver" class="section-header"><a href="#read-sensor-data-from-zephyr-driver">3.2 Read Sensor Data from Zephyr Driver</a></h2>
+<h2 id="read-sensor-data-from-zephyr-driver"><a href="#read-sensor-data-from-zephyr-driver">3.2 Read Sensor Data from Zephyr Driver</a></h2>
 <p>Our NuttX BME280 Driver reads the <strong>Sensor Data</strong> from the Zephyr Driver in two steps…</p>
 <ol>
 <li>
@@ -536,7 +536,7 @@ static int bme280_fetch(
 <p>That’s because our NuttX BME280 Driver is implemented as a <strong>Composite Sensor</strong>: Barometer Sensor + Humidity Sensor.</p>
 <p>More about this in the next chapter.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code8a.png" alt="Read Sensor Data from Zephyr Driver" /></p>
-<h2 id="power-management" class="section-header"><a href="#power-management">3.3 Power Management</a></h2>
+<h2 id="power-management"><a href="#power-management">3.3 Power Management</a></h2>
 <p>Mapping the <strong>Power Management</strong> functions (Low Power Mode) from Zephyr to NuttX is straightforward: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  If enable is true, set Power Mode to normal. Else set to sleep mode.
 static int bme280_activate(
@@ -563,7 +563,7 @@ static int bme280_activate(
 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bme280-standby.png" alt="BME280 Standby Interval" /></p>
 <p><a href="https://cdn.sparkfun.com/assets/learn_tutorials/4/1/9/BST-BME280_DS001-10.pdf">(From BME280 Datasheet)</a></p>
-<h2 id="standby-interval" class="section-header"><a href="#standby-interval">3.4 Standby Interval</a></h2>
+<h2 id="standby-interval"><a href="#standby-interval">3.4 Standby Interval</a></h2>
 <p><em>What’s the Standby Interval?</em></p>
 <p>BME280 automatically measures the Temperature, Humidity and Pressure at periodic intervals. (Without any intervention from our microcontroller)</p>
 <p>The time interval between measurements is the <strong>Standby Interval</strong>. </p>
@@ -614,7 +614,7 @@ static int bme280_set_standby(
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/drivers/sensors/bmp280.c#L330-L565">(<strong>bme280_set_interval</strong> and <strong>bme280_set_standby</strong> were cloned from the NuttX BMP280 Driver)</a></p>
 <p>We’ll cover <strong>bme280_register</strong> in the next chapter.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-combine1.png" alt="Combined Barometer and Humidity Sensor" /></p>
-<h1 id="combined-barometer-and-humidity-sensor" class="section-header"><a href="#combined-barometer-and-humidity-sensor">4 Combined Barometer and Humidity Sensor</a></h1>
+<h1 id="combined-barometer-and-humidity-sensor"><a href="#combined-barometer-and-humidity-sensor">4 Combined Barometer and Humidity Sensor</a></h1>
 <p><em>What kinds of Sensors are supported by NuttX?</em></p>
 <p>Temperature, Humidity, Pressure, GPS, ECG, PM 2.5 and many more. <a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h">(Here’s the list)</a></p>
 <p>NuttX’s BMP280 Driver implements a <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/include/nuttx/sensors/sensor.h#L326-L331"><strong>Barometer Sensor</strong></a> that provides Pressure and Temperature values.</p>
@@ -646,7 +646,7 @@ struct device {
   struct  bme280_data *data;     //  Compensation parameters (bme280.c)
 };</code></pre></div>
 <p>Let’s dive into the implementation of the two NuttX Sensors.</p>
-<h2 id="sensor-operations" class="section-header"><a href="#sensor-operations">4.1 Sensor Operations</a></h2>
+<h2 id="sensor-operations"><a href="#sensor-operations">4.1 Sensor Operations</a></h2>
 <p>Earlier we talked about the functions exposed by our NuttX Sensor Driver…</p>
 <p><img src="https://lupyuen.github.io/images/bme280-port4.jpg" alt="Zephyr BME280 Driver mapped to NuttX Driver" /></p>
 <p>Now we expose the functions twice (double exposure?) as the <strong>Sensor Operations</strong> for our Barometer and Humidity Sensors: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L71-L87">driver.c</a></p>
@@ -729,7 +729,7 @@ static int bme280_fetch_humi(
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/bme280-combine3a.png" alt="Register Sensors" /></p>
-<h2 id="register-sensors" class="section-header"><a href="#register-sensors">4.2 Register Sensors</a></h2>
+<h2 id="register-sensors"><a href="#register-sensors">4.2 Register Sensors</a></h2>
 <p>At NuttX Startup we <strong>register the Barometer and Humidity Sensors</strong>: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Register the BME280 device at startup
 int bme280_register(
@@ -781,7 +781,7 @@ int bl602_bringup(void) {
 <p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup</a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup.c</a> so that it calls <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773">bme280_register</a></p>
 <p>One last thing before running the BME280 Driver: We need to bundle together the NuttX and Zephyr Drivers.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-port4.jpg" alt="Zephyr BME280 Driver mapped to NuttX Driver" /></p>
-<h1 id="bundle-nuttx-and-zephyr-drivers" class="section-header"><a href="#bundle-nuttx-and-zephyr-drivers">5 Bundle NuttX and Zephyr Drivers</a></h1>
+<h1 id="bundle-nuttx-and-zephyr-drivers"><a href="#bundle-nuttx-and-zephyr-drivers">5 Bundle NuttX and Zephyr Drivers</a></h1>
 <p><em>Our BME280 Driver consists of two source files: bme280.c and driver.c. Will this work with NuttX?</em></p>
 <p>Nope this won’t compile with NuttX, because it assumes that every Sensor Driver <strong>lives in its own file</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/drivers/sensors/bmp280.c">(Like bmp280.c)</a></p>
 <p>To work around this, we bundle together the Zephyr Driver (bme280.c) and NuttX Driver (driver.c) into a <strong>single source file</strong>…</p>
@@ -830,7 +830,7 @@ popd</code></pre></div>
 <p>Let’s look inside the bundle.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code7a.png" alt="Inside the bundle" /></p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c">(Source)</a></p>
-<h2 id="inside-the-bundle" class="section-header"><a href="#inside-the-bundle">5.1 Inside the Bundle</a></h2>
+<h2 id="inside-the-bundle"><a href="#inside-the-bundle">5.1 Inside the Bundle</a></h2>
 <p><em>What’s inside the bundled source file <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c"><strong>bundle.c</strong></a>?</em></p>
 <p>We define the <strong>Constants and Macros</strong> needed by the Zephyr Driver: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c#L12-L29">bundle.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Zephyr BME280 Options from
@@ -884,7 +884,7 @@ struct sensor_value {
 //  Embed NuttX Driver Wrapper
 #include &quot;bme280/driver.c&quot;</code></pre></div>
 <p>Yes this looks peculiar…</p>
-<h2 id="zephyr-driver-modified-for-nuttx" class="section-header"><a href="#zephyr-driver-modified-for-nuttx">5.2 Zephyr Driver Modified For NuttX</a></h2>
+<h2 id="zephyr-driver-modified-for-nuttx"><a href="#zephyr-driver-modified-for-nuttx">5.2 Zephyr Driver Modified For NuttX</a></h2>
 <p><em>Sacrilege! We’re #include-ing C source files?!</em></p>
 <p>Yeah this is probably the only way to port the Zephyr Driver to NuttX with the <strong>fewest changes</strong>.</p>
 <p>Check out the <strong>minor modifications</strong> we made to the Zephyr BME280 Driver while porting to NuttX…</p>
@@ -899,7 +899,7 @@ struct sensor_value {
 <p>In future we might merge the source files to clean this up. Not that hard!</p>
 <p><img src="https://lupyuen.github.io/images/bme280-code12.png" alt="Changes to Zephyr BME280 Driver" /></p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/pull/1/files#diff-80464162211b7180f107757b7aee91398cdc088e5775ffadf7e6e1f0bbb4ad65">(Source)</a></p>
-<h1 id="run-bme280-driver" class="section-header"><a href="#run-bme280-driver">6 Run BME280 Driver</a></h1>
+<h1 id="run-bme280-driver"><a href="#run-bme280-driver">6 Run BME280 Driver</a></h1>
 <p>We’re finally ready to run our BME280 Driver!</p>
 <ol>
 <li>
@@ -943,7 +943,7 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 </ol>
 <p>Yep our BME280 Driver runs successfully on NuttX!</p>
 <p><img src="https://lupyuen.github.io/images/bme280-run8a.png" alt="Running our NuttX BME280 Driver" /></p>
-<h1 id="sensor-test-app" class="section-header"><a href="#sensor-test-app">7 Sensor Test App</a></h1>
+<h1 id="sensor-test-app"><a href="#sensor-test-app">7 Sensor Test App</a></h1>
 <p>Just now we ran the <strong>Sensor Test App</strong> to read BME280’s Barometer and Humidity Sensors (pic above)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; sensortest -n 1 baro0
 baro0: 
@@ -1013,7 +1013,7 @@ int main(int argc, FAR char *argv[]) {
   close(fd);
   free(buffer);</code></pre></div>
 <p>Let’s talk about the printing of Sensor Data.</p>
-<h2 id="print-sensor-data" class="section-header"><a href="#print-sensor-data">7.1 Print Sensor Data</a></h2>
+<h2 id="print-sensor-data"><a href="#print-sensor-data">7.1 Print Sensor Data</a></h2>
 <p>Earlier we saw this code for <strong>printing Sensor Data</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Print the Sensor Data
 g_sensor_info[idx]
@@ -1078,7 +1078,7 @@ static const struct sensor_info g_sensor_info[] = {
 <p>For our own Sensor App we probably won’t need this Lookup Table, since we know which Sensor Type we’re using.</p>
 <p>(And we don’t need to cast our Sensor Data Structs too)</p>
 <p><img src="https://lupyuen.github.io/images/bme280-pot.jpg" alt="Connect BME280 to #RISCV PineCone #BL602 @PINE64 … Preferably not on a cooking pot 😂" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>Today we described the steps for porting the BME280 Driver from Zephyr OS to NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/bme280#set-i2c-sub-address">(And we fixed an I2C quirk on BL602)</a></p>
 <p>I hope you’ll be inspired to port <a href="https://github.com/zephyrproject-rtos/zephyr/tree/main/drivers"><strong>other Zephyr drivers</strong></a> to NuttX!</p>
@@ -1110,7 +1110,7 @@ static const struct sensor_info g_sensor_info[] = {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bme280.md"><code>lupyuen.github.io/src/bme280.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1494301654186823683">this Twitter Thread</a></p>
@@ -1121,7 +1121,7 @@ static const struct sensor_info g_sensor_info[] = {
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/bme280-code3a.png" alt="Log I2C Transfers" /></p>
-<h1 id="appendix-quirks-in-bl602-nuttx-i2c-driver" class="section-header"><a href="#appendix-quirks-in-bl602-nuttx-i2c-driver">10 Appendix: Quirks in BL602 NuttX I2C Driver</a></h1>
+<h1 id="appendix-quirks-in-bl602-nuttx-i2c-driver"><a href="#appendix-quirks-in-bl602-nuttx-i2c-driver">10 Appendix: Quirks in BL602 NuttX I2C Driver</a></h1>
 <p>The BL602 NuttX I2C Driver works in mysterious ways (because of the I2C Sub Address). In this section we’ll explain how to make the driver work correctly, and attempt to decipher the original intentions of the driver’s creator.</p>
 <p>BL602 has a peculiar I2C Port that requires us to send the Register ID as <strong>I2C Sub Address</strong> (I2C_SUB_ADDR), separately from the I2C Data…</p>
 <p><img src="https://lupyuen.github.io/images/bme280-subaddress2.png" alt="I2C Sub Address" /></p>
@@ -1129,7 +1129,7 @@ static const struct sensor_info g_sensor_info[] = {
 <p><em>Will BL602 I2C work if we disable I2C Sub Address?</em></p>
 <p>Nope. If we disable I2C Sub Address, the Register ID sent will be <code>0x00</code>. <a href="https://lupyuen.github.io/articles/bme280#incorrect-register-id">(See this)</a></p>
 <p>Thus we must set the Register ID as I2C Sub Address when reading and writing I2C Registers. Here’s how we do this by passing the <strong>I2C_M_NOSTOP</strong> flag…</p>
-<h2 id="read-i2c-register" class="section-header"><a href="#read-i2c-register">10.1 Read I2C Register</a></h2>
+<h2 id="read-i2c-register"><a href="#read-i2c-register">10.1 Read I2C Register</a></h2>
 <p>When <strong>reading an I2C Register</strong>, we set the flag <strong>I2C_M_NOSTOP</strong> like so: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L147-L198">bme280-nuttx/driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Read from 8-bit BME280 registers
 static int bme280_reg_read(const struct device *priv,
@@ -1160,7 +1160,7 @@ static int bme280_reg_read(const struct device *priv,
   //  Execute I2C transfers
   ret = I2C_TRANSFER(priv-&gt;i2c, msg, 2);</code></pre></div>
 <p>This transmits the Register ID as I2C Sub Address, then receives the Register Value.</p>
-<h2 id="write-i2c-register" class="section-header"><a href="#write-i2c-register">10.2 Write I2C Register</a></h2>
+<h2 id="write-i2c-register"><a href="#write-i2c-register">10.2 Write I2C Register</a></h2>
 <p>When <strong>writing an I2C Register</strong>, we need two steps…</p>
 <ol>
 <li>
@@ -1205,7 +1205,7 @@ static int bme280_reg_write(const struct device *priv, uint8_t reg,
   msg[1].length    = sizeof(rxbuffer);
 
   //  Execute I2C transfers
-  ret = I2C_TRANSFER(priv-&gt;i2c, msg, 2);</code></pre></div><h2 id="must-read-after-write" class="section-header"><a href="#must-read-after-write">10.3 Must Read After Write</a></h2>
+  ret = I2C_TRANSFER(priv-&gt;i2c, msg, 2);</code></pre></div><h2 id="must-read-after-write"><a href="#must-read-after-write">10.3 Must Read After Write</a></h2>
 <p><em>Why must we do I2C Read after sending the Register ID and value?</em></p>
 <p>We’re not sure why this happens with the BL602 I2C Driver. But it works correctly when we checked with a Logic Analyser.</p>
 <p>Here’s what happens when we run the code above to write <code>0xA0</code> to Register ID <code>0xF5</code> at I2C Address <code>0x77</code>…</p>
@@ -1230,7 +1230,7 @@ Setup Read to [0xEF] + ACK
 0x00 + NAK</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rusti2c-nosubaddr.png" alt="Send the Register ID and Register Value as I2C Data instead of I2C Sub Address" /></p>
 <p>Let’s try to make sense of this mysterious behaviour…</p>
-<h2 id="i2c-sub-address" class="section-header"><a href="#i2c-sub-address">10.4 I2C Sub Address</a></h2>
+<h2 id="i2c-sub-address"><a href="#i2c-sub-address">10.4 I2C Sub Address</a></h2>
 <p><em>How is I2C Sub Address supposed to work on BL602 anyway?</em></p>
 <p>Let’s compare with the I2C Driver from Bouffalo Lab’s official <strong>BL602 IoT SDK</strong>…</p>
 <ul>
@@ -1274,7 +1274,7 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
 <p>Note that this code executes <strong>only one I2C Transfer</strong>.</p>
 <p>(BL602 NuttX requires <strong>two I2C Transfers</strong>: One for Register ID, another for Register Value)</p>
 <p>From BL602 IoT SDK we see that each I2C Transfer is allowed to specify an <strong>I2C Sub Address on top of each I2C Read / Write Transfer</strong>.</p>
-<h2 id="bl602-i2c-driver" class="section-header"><a href="#bl602-i2c-driver">10.5 BL602 I2C Driver</a></h2>
+<h2 id="bl602-i2c-driver"><a href="#bl602-i2c-driver">10.5 BL602 I2C Driver</a></h2>
 <p>But on NuttX it seems that this overlay of I2C Sub Address on I2C Read / Write Transfers is <strong>not supported</strong>.</p>
 <p>The creator of the BL602 NuttX I2C Driver has decided to split the I2C Sub Address and I2C Read / Write as <strong>two separate I2C Transfers</strong>.</p>
 <p>We see this in the BL602 NuttX I2C Driver: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/arch/risc-v/src/bl602/bl602_i2c.c#L710-L742">bl602_i2c.c</a></p>
@@ -1331,7 +1331,7 @@ static int bl602_i2c_transfer(struct i2c_master_s *dev, struct i2c_msg_s *msgs, 
 <p>In summary: The creator of the BL602 NuttX I2C Driver might have <strong>force-fitted I2C Sub Address</strong> into the NuttX I2C Interface, causing problems for I2C Write.</p>
 <p>The solution? We might need to <strong>extend the NuttX I2C Interface</strong> to support I2C Sub Addresses. (Instead of I2C_M_NOSTOP)</p>
 <p><a href="https://mcuxpresso.nxp.com/api_doc/dev/116/group__i2c.html">(Besides BL602, NXP Microcontrollers are probably the only ones that support I2C Sub Addresses)</a></p>
-<h2 id="configure-i2c-transfer" class="section-header"><a href="#configure-i2c-transfer">10.6 Configure I2C Transfer</a></h2>
+<h2 id="configure-i2c-transfer"><a href="#configure-i2c-transfer">10.6 Configure I2C Transfer</a></h2>
 <p><em>How is the I2C Sub Address configured on NuttX?</em></p>
 <p>Below is the code from the BL602 I2C Driver that configures the I2C Sub Address for each I2C Transfer: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/arch/risc-v/src/bl602/bl602_i2c.c#L275-L319">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Configure the parameters for an I2C Transfer
@@ -1380,7 +1380,7 @@ static void bl602_i2c_config_para(struct bl602_i2c_priv_s *priv) {
       //  Set the I2C Sub Address
       putreg32(priv-&gt;subaddr, BL602_I2C_SUB_ADDR);
     }
-}</code></pre></div><h1 id="appendix-log-i2c-transfers" class="section-header"><a href="#appendix-log-i2c-transfers">11 Appendix: Log I2C Transfers</a></h1>
+}</code></pre></div><h1 id="appendix-log-i2c-transfers"><a href="#appendix-log-i2c-transfers">11 Appendix: Log I2C Transfers</a></h1>
 <p>Here’s how we modded the BL602 I2C Driver on NuttX to <strong>log the I2C transfers</strong>…</p>
 <p>For sending I2C data: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/arch/risc-v/src/bl602/bl602_i2c.c#L194-L197">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_i2c_send_data(struct bl602_i2c_priv_s *priv)
@@ -1410,13 +1410,13 @@ static void bl602_i2c_config_para(struct bl602_i2c_priv_s *priv) {
       ...
       priv-&gt;msgid = i;
       //  Insert this before bl602_i2c_start_transfer
-      i2cinfo(&quot;subflag=%d, subaddr=0x%x, sublen=%d\n&quot;, priv-&gt;subflag, priv-&gt;subaddr, priv-&gt;sublen);</code></pre></div><h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">12 Appendix: Build, Flash and Run NuttX</a></h1>
+      i2cinfo(&quot;subflag=%d, subaddr=0x%x, sublen=%d\n&quot;, priv-&gt;subflag, priv-&gt;subaddr, priv-&gt;sublen);</code></pre></div><h1 id="appendix-build-flash-and-run-nuttx"><a href="#appendix-build-flash-and-run-nuttx">12 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602, BL604 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602, BL604 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="download-nuttx" class="section-header"><a href="#download-nuttx">12.1 Download NuttX</a></h2>
+<h2 id="download-nuttx"><a href="#download-nuttx">12.1 Download NuttX</a></h2>
 <p>To use the NuttX BME280 Driver, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
@@ -1427,7 +1427,7 @@ git clone --recursive --branch bme280 https://github.com/lupyuen/incubator-nuttx
 <li><a href="https://github.com/lupyuen/bme280-nuttx#install-driver"><strong>“Install BME280 Driver”</strong></a></li>
 </ul>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(<strong>For PineDio Stack BL604:</strong> The BME280 Driver is already preinstalled)</a></p>
-<h2 id="configure-nuttx" class="section-header"><a href="#configure-nuttx">12.2 Configure NuttX</a></h2>
+<h2 id="configure-nuttx"><a href="#configure-nuttx">12.2 Configure NuttX</a></h2>
 <p>Now we configure our NuttX project…</p>
 <ol>
 <li>
@@ -1506,7 +1506,7 @@ Sensor Informational Output </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9d84889f5e2415ecb0f28cea2c2a657f">(See the .config for BL602)</a></p>
 </li>
 </ol>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">12.3 Build NuttX</a></h2>
+<h2 id="build-nuttx"><a href="#build-nuttx">12.3 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602, BL604 or ESP32…</p>
 <ol>
 <li>
@@ -1536,7 +1536,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">12.4 Flash NuttX</a></h2>
+<h2 id="flash-nuttx"><a href="#flash-nuttx">12.4 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602 / BL604:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -1613,7 +1613,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">12.5 Run NuttX</a></h2>
+<h2 id="run-nuttx"><a href="#run-nuttx">12.5 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>

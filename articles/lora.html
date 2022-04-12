@@ -109,7 +109,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/lora-title.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <p><em>PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver</em></p>
-<h1 id="connect-bl602-to-lora-transceiver" class="section-header"><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a></h1>
+<h1 id="connect-bl602-to-lora-transceiver"><a href="#connect-bl602-to-lora-transceiver">1 Connect BL602 to LoRa Transceiver</a></h1>
 <p>Connect BL602 to SX1276 or RF96 as follows…</p>
 <p><img src="https://lupyuen.github.io/images/lora-connect2.jpg" alt="PineCone BL602 RISC-V Board connected to Hope RF96 LoRa Transceiver" /></p>
 <div><table><thead><tr><th style="text-align: left">BL602 Pin</th><th style="text-align: left">SX1276 / RF96 Pin</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
@@ -148,7 +148,7 @@
 <p>This is ideal for <strong>simple sensors</strong> (like our garden sensors) that are powered by batteries and can tolerate a few lost packets. (Because we’ll send the sensor data periodically anyway)</p>
 <p><em>So this means we won’t use all the pins on SX1276 (or RF96)?</em></p>
 <p>Yep we may leave pins <strong><code>D0</code></strong> to <strong><code>D5</code></strong> disconnected. (Otherwise we’ll run out of pins on BL602!)</p>
-<h2 id="getting-the-lora-transceiver-and-antenna" class="section-header"><a href="#getting-the-lora-transceiver-and-antenna">1.1 Getting the LoRa Transceiver and Antenna</a></h2>
+<h2 id="getting-the-lora-transceiver-and-antenna"><a href="#getting-the-lora-transceiver-and-antenna">1.1 Getting the LoRa Transceiver and Antenna</a></h2>
 <p>The LoRa Transceiver should support the <strong>right LoRa Frequency</strong> for your region: 434, 780, 868, 915 or 923 MHz…</p>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
@@ -160,7 +160,7 @@
 <p>Choose the LoRa Frequency that’s most popular in your region for <strong>The Things Network</strong>. (That’s the free, public LoRaWAN network)</p>
 <p>Because one day we will probably connect our LoRa Transceiver to The Things Network for collecting sensor data.</p>
 <p><a href="https://www.thethingsnetwork.org/map">Here are the base stations worldwide for The Things Network</a></p>
-<h1 id="initialise-lora-transceiver" class="section-header"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
+<h1 id="initialise-lora-transceiver"><a href="#initialise-lora-transceiver">2 Initialise LoRa Transceiver</a></h1>
 <p>Let’s look at the code inside our LoRa Firmware for BL602: <code>sdk_app_lora</code></p>
 <p><strong>Super Important:</strong> We should set the LoRa Frequency in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56"><code>demo.c</code></a> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz 
@@ -229,7 +229,7 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 }</code></pre></div>
 <p>Since we’re not receiving LoRa Packets, this code won’t be used.</p>
 <p>(The code in this article is based on the <a href="https://github.com/apache/mynewt-core/blob/master/apps/loraping/src/main.c">LoRa Ping</a> program from Mynewt OS. More about this in the Appendix.)</p>
-<h1 id="transmit-lora-packet" class="section-header"><a href="#transmit-lora-packet">3 Transmit LoRa Packet</a></h1>
+<h1 id="transmit-lora-packet"><a href="#transmit-lora-packet">3 Transmit LoRa Packet</a></h1>
 <p>Now that we have initialised our LoRa Transceiver, let’s send a LoRa Packet!</p>
 <p>We’ll send a <code>PING</code> message like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L175-L199"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to send a LoRa message. Assume that 
@@ -276,7 +276,7 @@ static void send_once(int is_ping) {
 <p>That’s the simplicity of the LoRa “Fire And Forget” Mode… It <strong>broadcasts our message</strong> over the airwaves!</p>
 <p>We shouldn’t broadcast sensitive messages in the clear. But we’ll allow it for our simple garden sensors. (LoRaWAN supports encrypted messages, as we’ll learn in a while)</p>
 <p>(The <code>Radio</code> functions belong to the LoRa SX1276 Driver that was ported from Mynewt OS to BL602. More about this in the Appendix)</p>
-<h1 id="build-and-run-the-lora-firmware" class="section-header"><a href="#build-and-run-the-lora-firmware">4 Build and Run the LoRa Firmware</a></h1>
+<h1 id="build-and-run-the-lora-firmware"><a href="#build-and-run-the-lora-firmware">4 Build and Run the LoRa Firmware</a></h1>
 <p>Let’s run the LoRa Demo Firmware for BL602.</p>
 <p>Find out which <strong>LoRa Frequency</strong> we should use for your region…</p>
 <ul>
@@ -322,7 +322,7 @@ mkdir /mnt/c/blflash
 cp build_out/sdk_app_lora.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <p>(Remember to use the <strong><code>lora</code></strong> branch, not the default <strong><code>master</code></strong> branch)</p>
-<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">4.1 Flash the firmware</a></h2>
+<h2 id="flash-the-firmware"><a href="#flash-the-firmware">4.1 Flash the firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
 <li>
@@ -385,7 +385,7 @@ blflash flash build_out/sdk_app_lora.bin \
 blflash flash c:\blflash\sdk_app_lora.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
-<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">4.2 Run the firmware</a></h2>
+<h2 id="run-the-firmware"><a href="#run-the-firmware">4.2 Run the firmware</a></h2>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineCone:</strong></p>
 <ol>
@@ -419,7 +419,7 @@ blflash flash c:\blflash\sdk_app_lora.bin --port COM5</code></pre></div>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
-<h2 id="enter-lora-commands" class="section-header"><a href="#enter-lora-commands">4.3 Enter LoRa commands</a></h2>
+<h2 id="enter-lora-commands"><a href="#enter-lora-commands">4.3 Enter LoRa commands</a></h2>
 <p>Let’s enter some commands to transmit a LoRa Packet!</p>
 <ol>
 <li>
@@ -481,7 +481,7 @@ recv all event group.
 <p><a href="https://lupyuen.github.io/articles/wisblock#appendix-lora-ping-firmware-for-bl602"><strong>LoRa Ping Firmware for BL602</strong></a></p>
 </li>
 </ol>
-<h1 id="troubleshoot-lora" class="section-header"><a href="#troubleshoot-lora">5 Troubleshoot LoRa</a></h1>
+<h1 id="troubleshoot-lora"><a href="#troubleshoot-lora">5 Troubleshoot LoRa</a></h1>
 <p><em>How will we know whether BL602 is connected correctly to the LoRa Transceiver?</em></p>
 <p>Enter this command to read the first 16 registers from our LoRa Transceiver over SPI…</p>
 <div class="example-wrap"><pre class="language-text"><code>read_registers</code></pre></div>
@@ -516,7 +516,7 @@ Register 0x08 = 0x00</code></pre></div>
 <p><em>RF Explorer (at right) featured in WandaVision season 1 episode 4</em></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L106-L120">See the source code for <code>read_registers</code></a></p>
 <p><a href="https://gist.github.com/lupyuen/31ac29aa776601ba6a610a93f3190c72">See the output from <code>read_registers</code></a></p>
-<h1 id="visualise-lora-with-software-defined-radio" class="section-header"><a href="#visualise-lora-with-software-defined-radio">6 Visualise LoRa with Software Defined Radio</a></h1>
+<h1 id="visualise-lora-with-software-defined-radio"><a href="#visualise-lora-with-software-defined-radio">6 Visualise LoRa with Software Defined Radio</a></h1>
 <p><img src="https://lupyuen.github.io/images/lora-sdr5.png" alt="Our LoRa packet" /></p>
 <p><em>What’s this? A glowing helix? Magic seahorse?</em></p>
 <p>That’s how our <strong>64-byte LoRa Packet</strong> appears when captured with a <strong>Software Defined Radio</strong>!</p>
@@ -535,7 +535,7 @@ Register 0x08 = 0x00</code></pre></div>
 <p>(LoRa doesn’t guarantee 100% reliable delivery, of course)</p>
 <p><img src="https://lupyuen.github.io/images/lora-airspy2.jpg" alt="Airspy R2 SDR" /></p>
 <p><em>Airspy R2 SDR</em> </p>
-<h2 id="capture-lora-packets-with-airspy-sdr" class="section-header"><a href="#capture-lora-packets-with-airspy-sdr">6.1 Capture LoRa packets with Airspy SDR</a></h2>
+<h2 id="capture-lora-packets-with-airspy-sdr"><a href="#capture-lora-packets-with-airspy-sdr">6.1 Capture LoRa packets with Airspy SDR</a></h2>
 <p>Let’s capture and visualise our LoRa Packet with <a href="https://www.itead.cc/airspy.html"><strong>Airspy R2 SDR</strong></a> (Software Defined Radio)…</p>
 <ol>
 <li>
@@ -569,7 +569,7 @@ send_message</code></pre></div></li>
 <p><img src="https://lupyuen.github.io/images/lora-airspy3.jpg" alt="Improvised Faraday Cage" /></p>
 <p><em>Improvised Faraday Cage</em></p>
 <p><a href="https://www.itead.cc/airspy.html">(I bought my Airspy R2 here)</a></p>
-<h1 id="lora-vs-lorawan" class="section-header"><a href="#lora-vs-lorawan">7 LoRa vs LoRaWAN</a></h1>
+<h1 id="lora-vs-lorawan"><a href="#lora-vs-lorawan">7 LoRa vs LoRaWAN</a></h1>
 <p><em>What’s the difference between LoRa, LoRaWAN and The Things Network?</em></p>
 <ol>
 <li>
@@ -627,7 +627,7 @@ send_message</code></pre></div></li>
 <p><a href="https://store.rakwireless.com/products/wisblock-connected-box">(Many thanks to RAKwireless for providing the WisBlock Connected Box!)</a></p>
 <p><img src="https://lupyuen.github.io/images/lora-wisblock.jpg" alt="RAKwireless WisBlock Connected Box" /></p>
 <p><em>RAKwireless WisBlock Connected Box</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>We have come a loooong way since I first <a href="https://github.com/lupyuen/LoRaArduino"><strong>experimented with LoRa in 2016</strong></a>…</p>
 <ul>
 <li>
@@ -669,7 +669,7 @@ send_message</code></pre></div></li>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lora.md"><code>lupyuen.github.io/src/lora.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1363672058920542210?s=20">this Twitter Thread</a></p>
@@ -693,7 +693,7 @@ send_message</code></pre></div></li>
 <p><a href="https://www.youtube.com/watch?v=saVzV8A4uSo&amp;t=593s">Watch the Pine64 Podcast on YouTube</a></p>
 </li>
 </ol>
-<h1 id="appendix-lora-configuration" class="section-header"><a href="#appendix-lora-configuration">10 Appendix: LoRa Configuration</a></h1>
+<h1 id="appendix-lora-configuration"><a href="#appendix-lora-configuration">10 Appendix: LoRa Configuration</a></h1>
 <p>We configure the <strong>LoRa Frequency</strong> here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/demo.c#L41-L56"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz for Singapore. Change this for your region.
 #define USE_BAND_923
@@ -748,7 +748,7 @@ send_message</code></pre></div></li>
 #define SX1276_DIO5         0  //  TODO: DIO5 Pin
 #define SX1276_SPI_BAUDRATE  (200 * 1000)  //  SPI Frequency (200 kHz)
 #define SX1276_LF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency below 525 MHz
-#define SX1276_HF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency 525 MHz and above</code></pre></div><h1 id="appendix-porting-lora-driver-from-mynewt-to-bl602" class="section-header"><a href="#appendix-porting-lora-driver-from-mynewt-to-bl602">11 Appendix: Porting LoRa Driver from Mynewt to BL602</a></h1>
+#define SX1276_HF_USE_PA_BOOST  1  //  Enable Power Amplifier Boost for LoRa Frequency 525 MHz and above</code></pre></div><h1 id="appendix-porting-lora-driver-from-mynewt-to-bl602"><a href="#appendix-porting-lora-driver-from-mynewt-to-bl602">11 Appendix: Porting LoRa Driver from Mynewt to BL602</a></h1>
 <p>In this article, we called some <code>Radio</code> Functions that belong to the LoRa SX1276 Driver.</p>
 <p>Here’s where the <code>Radio</code> Functions are defined…</p>
 <ul>
@@ -773,7 +773,7 @@ send_message</code></pre></div></li>
 <li><a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276"><strong>Mynewt Driver for LoRa SX1276</strong></a></li>
 </ul>
 <p>Here’s how we ported the SX1276 driver code from Mynewt to BL602.</p>
-<h2 id="gpio" class="section-header"><a href="#gpio">11.1 GPIO</a></h2>
+<h2 id="gpio"><a href="#gpio">11.1 GPIO</a></h2>
 <p>In Mynewt we call <code>hal_gpio_init_out</code> to configure a GPIO Output Pin and set the output to High: <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L73-L74"><code>sx1276-board.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Configure Chip Select pin as a GPIO Output Pin and set to High
 int rc = hal_gpio_init_out(
@@ -798,7 +798,7 @@ assert(rc == 0);
 
 //  Set Chip Select pin to High, to deactivate SX1276
 rc = bl_gpio_output_set(RADIO_NSS, 1);
-assert(rc == 0);</code></pre></div><h2 id="spi" class="section-header"><a href="#spi">11.2 SPI</a></h2>
+assert(rc == 0);</code></pre></div><h2 id="spi"><a href="#spi">11.2 SPI</a></h2>
 <p>In Mynewt we configure the SPI Port like so: <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L76-L87"><code>sx1276-board.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Disable the SPI port
 hal_spi_disable(RADIO_SPI_IDX);
@@ -837,7 +837,7 @@ assert(rc == 0);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/spi#spi-phase-looks-sus">More about this</a></p>
 <p>In Mynewt, we call <code>hal_spi_tx_val</code> to read and write a byte over SPI.</p>
 <p>On BL602, we implement <code>hal_spi_tx_val</code> like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/lora/customer_app/sdk_app_lora/sdk_app_lora/sx1276.c#L245-L286"><code>sx1276.c</code></a></p>
-<h2 id="interrupts" class="section-header"><a href="#interrupts">11.3 Interrupts</a></h2>
+<h2 id="interrupts"><a href="#interrupts">11.3 Interrupts</a></h2>
 <p>In Mynewt we configure pins D0 to D5 to trigger an interrupt when the input changes: <a href="https://github.com/apache/mynewt-core/blob/master/hw/drivers/lora/sx1276/src/sx1276-board.c#L96-L99"><code>sx1276-board.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Configure GPIO Input Pin for Interrupt
 int rc = hal_gpio_irq_init(
@@ -859,7 +859,7 @@ hal_gpio_irq_enable(SX1276_DIO0);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer"><strong>“Multitask with NimBLE Porting Layer”</strong></a></p>
 </li>
 </ul>
-<h2 id="timers" class="section-header"><a href="#timers">11.4 Timers</a></h2>
+<h2 id="timers"><a href="#timers">11.4 Timers</a></h2>
 <p>For receiving LoRa Packets with Timeout, we use Timers from the NimBLE Porting Library…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lora2#timer"><strong>“Multitask with NimBLE Porting Layer: Timer”</strong></a></li>

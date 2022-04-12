@@ -124,7 +124,7 @@
 <p>(Ground Plane is also missing, which we’ll fix before FCC Certification)</p>
 <p>We shall explore PineDio Stack ourselves… And <strong>document all our findings</strong> for the sake of the Open Source Community!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-title.jpg" alt="PineDio Stack BL604 Board" /></p>
-<h1 id="connect-the-display" class="section-header"><a href="#connect-the-display">1 Connect The Display</a></h1>
+<h1 id="connect-the-display"><a href="#connect-the-display">1 Connect The Display</a></h1>
 <p><em>What’s on the underside of PineDio Stack?</em></p>
 <p>Unscrewing the board (from the glue sticks?) reveals the <strong>LCD Display Connector</strong> on the underside of the board…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-back.jpg" alt="PineDio Stack Underside" /></p>
@@ -138,7 +138,7 @@
 <ul>
 <li><a href="https://wiki.pine64.org/wiki/Pinedio#PineDio_Stack"><strong>PineDio Stack Schematic (Prototype)</strong></a></li>
 </ul>
-<h1 id="bl604-blinky" class="section-header"><a href="#bl604-blinky">2 BL604 Blinky</a></h1>
+<h1 id="bl604-blinky"><a href="#bl604-blinky">2 BL604 Blinky</a></h1>
 <p><em>What’s the first thing that we run on a brand new prototype board?</em></p>
 <p><strong>Blinky Firmware</strong> of course! (Yep the firmware that blinks the LED)</p>
 <div class="example-wrap"><pre class="language-c"><code>/// PineDio Stack LCD Backlight is connected on GPIO 21
@@ -194,7 +194,7 @@ export BL60X_SDK_PATH=$PWD/../..
 make</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_blinky/run.sh">(Source)</a></p>
 <p>Let’s flash the firmware to the board!</p>
-<h1 id="flash-firmware-to-bl604" class="section-header"><a href="#flash-firmware-to-bl604">3 Flash Firmware To BL604</a></h1>
+<h1 id="flash-firmware-to-bl604"><a href="#flash-firmware-to-bl604">3 Flash Firmware To BL604</a></h1>
 <p>We <strong>flash the BL604 Blinky Firmware</strong> the exact same way as BL602…</p>
 <ol>
 <li>
@@ -244,7 +244,7 @@ make</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinedio#appendix-improvised-reset-button-for-pinedio-stack">(PineDio Stack doesn’t have a Reset Button, but we can make one)</a></p>
 <p>Now that the Backlight GPIO is OK, let’s test something more sophisticated: SPI!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-zoom.jpg" alt="PineDio Stack BL604 with LoRa SX1262 Transceiver" /></p>
-<h1 id="bl604-spi" class="section-header"><a href="#bl604-spi">4 BL604 SPI</a></h1>
+<h1 id="bl604-spi"><a href="#bl604-spi">4 BL604 SPI</a></h1>
 <p><em>Why test SPI on PineDio Stack?</em></p>
 <p>Because SPI is the Data Bus that <strong>connects the key components</strong> of PineDio Stack…</p>
 <ol>
@@ -307,7 +307,7 @@ make</code></pre></div>
 #define DISPLAY_BLK_PIN  21</code></pre></div>
 <p>(GPIO 8 selects the Flashing Mode when BL604 is booting, so GPIO 8 is normally unused)</p>
 <p>We use <strong>GPIO 5</strong> to mirror the GPIO High / Low State of GPIO 20 (ST7789 Chip Select). More about this in a while.</p>
-<h2 id="initialise-spi-port" class="section-header"><a href="#initialise-spi-port">4.1 Initialise SPI Port</a></h2>
+<h2 id="initialise-spi-port"><a href="#initialise-spi-port">4.1 Initialise SPI Port</a></h2>
 <p>Let’s initialise the SPI Port before sending data: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117"><code>pinedio_st7789/demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to init the display
 static void test_display_init(char *buf, int len, int argc, char **argv) {
@@ -356,7 +356,7 @@ static void test_display_init(char *buf, int len, int argc, char **argv) {
   //  Because the SPI Pin Function will override the GPIO Pin Function!</code></pre></div>
 <p>We’re ready to transfer data over SPI!</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi_init-init-spi-port">(More about <code>spi_init</code>)</a></p>
-<h2 id="transfer-spi-data" class="section-header"><a href="#transfer-spi-data">4.2 Transfer SPI Data</a></h2>
+<h2 id="transfer-spi-data"><a href="#transfer-spi-data">4.2 Transfer SPI Data</a></h2>
 <p>Here’s how we transfer data (transmit + receive) over SPI: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L465-L520"><code>pinedio_st7789/display.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Write packed data to the SPI port. `data` is the array of bytes to be written. `len` is the number of bytes.
 static int transmit_packed(const uint8_t *data, uint16_t len) {
@@ -402,7 +402,7 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 <p>Yep everything we do to <code>DISPLAY_CS_PIN</code> (GPIO 20), we do the same to <code>DISPLAY_DEBUG_CS_PIN</code> (GPIO 5).</p>
 <p>We’ll learn why in the next chapter.</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-logic.jpg" alt="PineDio Stack with Logic Analyser" /></p>
-<h1 id="logic-analyser" class="section-header"><a href="#logic-analyser">5 Logic Analyser</a></h1>
+<h1 id="logic-analyser"><a href="#logic-analyser">5 Logic Analyser</a></h1>
 <p><em>When testing Prototype Hardware… Always have a Logic Analyser ready! (Pic above)</em></p>
 <p>Why? Because we’ll hit a baffling signalling problem when we test SPI on PineDio Stack.</p>
 <p><em>How do we capture the data transferred over the SPI Port?</em></p>
@@ -425,7 +425,7 @@ static int transmit_packed(const uint8_t *data, uint16_t len) {
 <p>Thus we simply connect our Logic Analyser to <strong>GPIO 5 as the Chip Select Pin!</strong> (Pic above)</p>
 <p>Let’s look at the data collected by our Logic Analyser…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-shadow.png" alt="GPIO 20 is mirrored to GPIO 5" /></p>
-<h1 id="spi-pins-are-swapped" class="section-header"><a href="#spi-pins-are-swapped">6 SPI Pins Are Swapped</a></h1>
+<h1 id="spi-pins-are-swapped"><a href="#spi-pins-are-swapped">6 SPI Pins Are Swapped</a></h1>
 <p><em>What appears in the Logic Analyser when BL604 transmits data over SPI?</em></p>
 <p>Watch what happened the very first time that we transmitted SPI data from BL604 to ST7789 Display…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-mosi.png" alt="SDO (MOSI) is flat" /></p>
@@ -457,7 +457,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p>All PineDio Stack Developers should ensure that <strong>GLB_Swap_SPI_0_MOSI_With_MISO is always called</strong> before initialising the SPI Port.</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/demo.c#L53-L117">(Here’s an example)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinedio-display2.jpg" alt="PineDio Stack ST7789 Display" /></p>
-<h1 id="st7789-display" class="section-header"><a href="#st7789-display">7 ST7789 Display</a></h1>
+<h1 id="st7789-display"><a href="#st7789-display">7 ST7789 Display</a></h1>
 <p>Now that PineDio Stack SPI is OK, let’s <strong>draw something on the ST7789 Display</strong>!</p>
 <p>According to the PineDio Stack Schematic…</p>
 <ul>
@@ -497,7 +497,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p><em>Why can’t we stick with the familiar 4-Wire Interface for ST7789?</em></p>
 <p>I guess the PineDio Stack hardware designers wanted to <strong>free up a precious GPIO Pin</strong> for use by other components.</p>
 <p>(And maybe the designers also thought that the 3-Wire Interface is more efficient than the 4-Wire one!)</p>
-<h1 id="9-bit-spi-for-st7789" class="section-header"><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a></h1>
+<h1 id="9-bit-spi-for-st7789"><a href="#9-bit-spi-for-st7789">8 9-Bit SPI for ST7789</a></h1>
 <p><em>How on earth do we send 9-bit data over 8-bit SPI to ST7789 Display?</em></p>
 <p>OK hear me out… We could pack the 9-bit data into <strong>chunks of 9 bytes.</strong> Then send the chunks over 8-bit SPI.</p>
 <p>(Why 9 bytes? Because 9 bytes = 9 bits x 8)</p>
@@ -509,7 +509,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p>Now we do this for the <strong>3-Wire (9-bit) ST7789 Interface</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-3wire.jpg" alt="3-Wire ST7789 Interface" /></p>
 <p>Thus we’re sending <strong>8-bit data over SPI</strong>… But it magically appears as <strong>9-bit data to ST7789!</strong></p>
-<h2 id="packing-9-bit-data" class="section-header"><a href="#packing-9-bit-data">8.1 Packing 9-Bit Data</a></h2>
+<h2 id="packing-9-bit-data"><a href="#packing-9-bit-data">8.1 Packing 9-Bit Data</a></h2>
 <p><em>How exactly do we pack 9-bit data into chunks of 9 bytes?</em></p>
 <p>Here’s the <strong>9-Bit Packing Logic</strong> (please pardon my peculiar pseudocode)…</p>
 <p>To pack 9-bit data into bytes, we do this for every 8 bytes of unpacked data (Most Significant Bit first)…</p>
@@ -559,7 +559,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p>The implementation looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pack2.png" alt="Packing 9-bit data" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/3wire/customer_app/pinedio_st7789/pinedio_st7789/display.c#L290-L395">(Source)</a></p>
-<h2 id="test-the-9-bit-packing" class="section-header"><a href="#test-the-9-bit-packing">8.2 Test the 9-Bit Packing</a></h2>
+<h2 id="test-the-9-bit-packing"><a href="#test-the-9-bit-packing">8.2 Test the 9-Bit Packing</a></h2>
 <p>Since the 9-Bit Packing is implemented in C, let’s <strong>test it on Linux!</strong></p>
 <p><img src="https://lupyuen.github.io/images/pinedio-linux.png" alt="Test the 9-Bit Packing on Linux" /></p>
 <p>We <strong>verify the packed data</strong> with this spreadsheet…</p>
@@ -567,7 +567,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <li><a href="https://docs.google.com/spreadsheets/d/1Qy0MjU79s__wzTAFwpTYUUIzLWcrFnKCrvvo_rHamiE/edit?usp=sharing&amp;authuser=0"><strong>Google Sheets Spreadsheet</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinedio-spreadsheet.png" alt="Verify the packed data with a spreadsheet" /></p>
-<h2 id="does-it-work" class="section-header"><a href="#does-it-work">8.3 Does it work?</a></h2>
+<h2 id="does-it-work"><a href="#does-it-work">8.3 Does it work?</a></h2>
 <p>Sadly nope.</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-pack3.jpg" alt="Sending packed data to ST7789 on PineDio Stack" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789">(Source Code is here)</a></p>
@@ -576,7 +576,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p>Yet <strong>nothing appears on the ST7789 Display</strong>.</p>
 <p>We also verified the SPI Data with our Logic Analyser and its <strong>9-bit SPI Decoder</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-3wire2.png" alt="Logic Analyser with 9-bit SPI Decoder" /></p>
-<h1 id="arduino-gfx-ported-to-bl604" class="section-header"><a href="#arduino-gfx-ported-to-bl604">9 Arduino GFX Ported To BL604</a></h1>
+<h1 id="arduino-gfx-ported-to-bl604"><a href="#arduino-gfx-ported-to-bl604">9 Arduino GFX Ported To BL604</a></h1>
 <p><em>Are we being too smarty-pants with 9-bit SPI? Like <a href="https://en.wiktionary.org/wiki/%E7%95%AB%E8%9B%87%E6%B7%BB%E8%B6%B3">adding feet to a drawing of a snake</a>?</em></p>
 <p>Let’s talk to ST7789 the simpler way… With <a href="https://en.wikipedia.org/wiki/Bit_banging"><strong>Bit-Banging</strong></a>! (Instead of SPI)</p>
 <p><a href="https://github.com/moononournation"><strong>moononournation</strong></a> has built an awesome <strong>Arduino GFX Library that supports 9-Bit-Banging</strong> to ST7789 Display…</p>
@@ -598,7 +598,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p><img src="https://lupyuen.github.io/images/pinedio-gfx5.jpg" alt="Testing Arduino GFX on Linux" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/3wire/customer_app/pinedio_st7789_bitbang/test">(Source)</a></p>
 <p>Now we’re super stuck with our ST7789 testing!</p>
-<h1 id="problem-with-st7789" class="section-header"><a href="#problem-with-st7789">10 Problem With ST7789?</a></h1>
+<h1 id="problem-with-st7789"><a href="#problem-with-st7789">10 Problem With ST7789?</a></h1>
 <p><em>Wait a minute… Is there a switch that configures ST7789 Display for 3-Wire or 4-Wire Interface?</em></p>
 <p><strong>Pins IM0 to IM3</strong> on ST7789 will select the <strong>3-Wire or 4-Wire Interface</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-im.png" alt="Configuring ST7789 Display for 3-Wire Interface" /></p>
@@ -659,7 +659,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <p>The naming of the pins in the datasheet are really confusing : the controller is advertised (and works) as a SPI device, but the pins are labelled as I²C pins. However, I do confirm that I’m driving the controller using the SPI bus, not the I²C!</p>
 </blockquote>
 <p><a href="https://twitter.com/codingfield/status/1436609097344995334">See JF’s experiment with PineDio Stack and an external ST7789 display</a></p>
-<h1 id="seeking-volunteers" class="section-header"><a href="#seeking-volunteers">11 Seeking Volunteers!</a></h1>
+<h1 id="seeking-volunteers"><a href="#seeking-volunteers">11 Seeking Volunteers!</a></h1>
 <p>I’m really excited that PineDio Stack BL604 will be available soon!</p>
 <p>But in the meantime, JF and I have <strong>plenty to test on PineDio Stack</strong>…</p>
 <ol>
@@ -683,7 +683,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 <li><a href="https://lupyuen.github.io/articles/lorawan2"><strong>“LoRaWAN on PineDio Stack BL604 RISC-V Board”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinedio-box.jpg" alt="PineDio Stack BL604 In A Box" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>Many Thanks to <a href="https://github.com/moononournation"><strong>@moononournation</strong></a> and <a href="https://twitter.com/AndreasDyhrberg"><strong>@AndreasDyhrberg</strong></a> for the valuable tips on testing PineDio Stack BL604!</p>
 <p>This has been a super exciting <strong>first week of testing</strong> the Prototype Hardware for PineDio Stack BL604…</p>
 <p>I hope you will join JF and me as we continue our testing of PineDio Stack.</p>
@@ -707,7 +707,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinedio.md"><code>lupyuen.github.io/src/pinedio.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1429273222780887041">this Twitter Thread</a></p>
@@ -720,7 +720,7 @@ int rc = GLB_Swap_SPI_0_MOSI_With_MISO(ENABLE);  assert(rc == 0);</code></pre></
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/pinedio-reset.jpg" alt="Improvised Reset Button" /></p>
-<h1 id="appendix-improvised-reset-button-for-pinedio-stack" class="section-header"><a href="#appendix-improvised-reset-button-for-pinedio-stack">14 Appendix: Improvised Reset Button for PineDio Stack</a></h1>
+<h1 id="appendix-improvised-reset-button-for-pinedio-stack"><a href="#appendix-improvised-reset-button-for-pinedio-stack">14 Appendix: Improvised Reset Button for PineDio Stack</a></h1>
 <p>Sometimes we need to <strong>restart PineDio Stack</strong> to see the Boot Messages, without disconnecting the USB port. Here’s how…</p>
 <ol>
 <li>

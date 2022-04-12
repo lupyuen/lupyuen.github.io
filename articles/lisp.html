@@ -106,7 +106,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/lisp-cover.jpg" alt="uLisp and Blockly on PineCone BL602 RISC-V Board" /></p>
 <p><em>uLisp and Blockly on PineCone BL602 RISC-V Board</em></p>
-<h1 id="start-with-ulisp" class="section-header"><a href="#start-with-ulisp">1 Start with uLisp</a></h1>
+<h1 id="start-with-ulisp"><a href="#start-with-ulisp">1 Start with uLisp</a></h1>
 <p><em>What is uLisp?</em></p>
 <p>From the <a href="http://www.ulisp.com">uLisp Website</a>…</p>
 <blockquote>
@@ -163,7 +163,7 @@
 <p>Lisp is <strong>Not Dead Yet</strong>! (Apologies to Monty Python)</p>
 <p>We still see bits of Lisp today in <strong>WebAssembly</strong>… Like the <strong>Stack Machine and S-Expressions</strong>. <a href="https://developer.mozilla.org/en-US/docs/WebAssembly/Understanding_the_text_format">(See this)</a></p>
 <p>In fact the uLisp Interpreter looks a little like <strong>Wasm3</strong>, the WebAssembly Interpreter for Microcontrollers. <a href="https://github.com/wasm3/wasm3">(See this)</a></p>
-<h1 id="build-the-bl602-ulisp-firmware" class="section-header"><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a></h1>
+<h1 id="build-the-bl602-ulisp-firmware"><a href="#build-the-bl602-ulisp-firmware">2 Build the BL602 uLisp Firmware</a></h1>
 <p>Download and build the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_ulisp">uLisp Firmware for BL602</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
 git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
@@ -180,7 +180,7 @@ make
 mkdir /mnt/c/blflash
 cp build_out/sdk_app_ulisp.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">2.1 Flash the firmware</a></h2>
+<h2 id="flash-the-firmware"><a href="#flash-the-firmware">2.1 Flash the firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
 <li>
@@ -243,7 +243,7 @@ blflash flash build_out/sdk_app_ulisp.bin \
 blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
-<h1 id="run-the-bl602-ulisp-firmware" class="section-header"><a href="#run-the-bl602-ulisp-firmware">3 Run the BL602 uLisp Firmware</a></h1>
+<h1 id="run-the-bl602-ulisp-firmware"><a href="#run-the-bl602-ulisp-firmware">3 Run the BL602 uLisp Firmware</a></h1>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineCone:</strong></p>
 <ol>
@@ -277,7 +277,7 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
-<h2 id="enter-ulisp-commands" class="section-header"><a href="#enter-ulisp-commands">3.1 Enter uLisp commands</a></h2>
+<h2 id="enter-ulisp-commands"><a href="#enter-ulisp-commands">3.1 Enter uLisp commands</a></h2>
 <p>Let’s enter some uLisp commands and test the <strong>BL602 uLisp Interpreter</strong>!</p>
 <p><strong>Please Note:</strong> For each uLisp command line we <strong>insert a space “ “ after the first bracket “<code>(</code>”</strong>.</p>
 <p>That’s because we programmed the BL602 Command Line to recognise “<code>(</code>” as a <strong>Command Keyword</strong> that will call the uLisp Interpreter.</p>
@@ -302,7 +302,7 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lisp-interpreter.png" alt="uLisp Interpreter" /></p>
 <p><a href="http://www.ulisp.com/show?1AC5">(Based on the List Commands from uLisp)</a></p>
-<h2 id="flip-the-led" class="section-header"><a href="#flip-the-led">3.2 Flip the LED</a></h2>
+<h2 id="flip-the-led"><a href="#flip-the-led">3.2 Flip the LED</a></h2>
 <p>Now let’s <strong>flip the BL602 LED on and off</strong>!</p>
 <p>On PineCone BL602 the Blue LED is connected to <strong>GPIO Pin 11</strong>.</p>
 <p>(If you’re using a different BL602 board, please change the GPIO Pin Number accordingly)</p>
@@ -328,7 +328,7 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lisp-led.png" alt="Flip the LED with uLisp" /></p>
 <p><a href="http://www.ulisp.com/show?1AEK">(Based on the GPIO Commands from uLisp)</a></p>
-<h2 id="blinky-function" class="section-header"><a href="#blinky-function">3.3 Blinky Function</a></h2>
+<h2 id="blinky-function"><a href="#blinky-function">3.3 Blinky Function</a></h2>
 <p>Now the show gets exciting: With uLisp we can define <strong>functions and loops</strong> at the command line… Just like <code>bash</code>!</p>
 <div class="example-wrap"><pre class="language-text"><code>( defun blinky ()             \
   ( pinmode 11 :output )      \
@@ -359,7 +359,7 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 <p>(Restart the board to stop it, sorry)</p>
 <p><a href="https://youtu.be/TN4OaZNGjOA"><strong>Watch the demo on YouTube</strong></a></p>
 <p><a href="http://www.ulisp.com/show?1AEK">(Based on the Blinky function from uLisp)</a></p>
-<h1 id="now-add-blockly" class="section-header"><a href="#now-add-blockly">4 Now add Blockly</a></h1>
+<h1 id="now-add-blockly"><a href="#now-add-blockly">4 Now add Blockly</a></h1>
 <p>According to the <a href="https://developers.google.com/blockly/guides/overview">Blockly Overview</a>…</p>
 <blockquote>
 <p>Blockly is a library that adds a <strong>visual code editor</strong> to web and mobile apps. </p>
@@ -381,7 +381,7 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 <p>See the <strong>Run Button [ ▶ ]</strong> at top right?</p>
 <p>Pressing it will <strong>automatically transfer the uLisp Code from Blockly to BL602</strong>… Thanks to the <a href="https://web.dev/serial/"><strong>Web Serial API</strong></a>!</p>
 <p>Let’s try it now.</p>
-<h1 id="run-the-blockly-web-editor" class="section-header"><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a></h1>
+<h1 id="run-the-blockly-web-editor"><a href="#run-the-blockly-web-editor">5 Run the Blockly Web Editor</a></h1>
 <p>We shall do two things with Blockly and uLisp on BL602…</p>
 <ol>
 <li>
@@ -392,7 +392,7 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 </li>
 </ol>
 <p>Just by dragging-and-dropping in a Web Browser!</p>
-<h2 id="flip-the-led-1" class="section-header"><a href="#flip-the-led-1">5.1 Flip the LED</a></h2>
+<h2 id="flip-the-led-1"><a href="#flip-the-led-1">5.1 Flip the LED</a></h2>
 <ol>
 <li>
 <p><strong>Close the BL602 serial connection</strong> in <code>screen</code> / CoolTerm / <code>putty</code> / Web Serial Terminal (close the web browser)</p>
@@ -435,7 +435,7 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 <p><a href="https://youtu.be/RRhzW4j8BtI"><strong>Watch the demo on YouTube</strong></a></p>
 </li>
 </ol>
-<h2 id="blinky" class="section-header"><a href="#blinky">5.2 Blinky</a></h2>
+<h2 id="blinky"><a href="#blinky">5.2 Blinky</a></h2>
 <p>Now we do the <strong>Blinky Program</strong> the drag-and-drop way with Blockly…</p>
 <ol>
 <li>
@@ -476,7 +476,7 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 <p><a href="https://youtu.be/LNkmUIv7ZZc"><strong>Watch the demo on YouTube</strong></a></p>
 </li>
 </ol>
-<h1 id="web-browser-controls-bl602-with-web-serial-api" class="section-header"><a href="#web-browser-controls-bl602-with-web-serial-api">6 Web Browser controls BL602 with Web Serial API</a></h1>
+<h1 id="web-browser-controls-bl602-with-web-serial-api"><a href="#web-browser-controls-bl602-with-web-serial-api">6 Web Browser controls BL602 with Web Serial API</a></h1>
 <p><em>What is this magic that teleports the uLisp code from Web Browser to BL602?</em></p>
 <p>The Blockly Web Editor calls the <a href="https://web.dev/serial/"><strong>Web Serial API</strong></a> (in JavaScript) to transfer the generated uLisp code to BL602 (via the USB Serial Port).</p>
 <p>Web Serial API is supported on the newer web browsers. To check whether our web browser supports the Web Serial API, click this link…</p>
@@ -508,7 +508,7 @@ blflash flash c:\blflash\sdk_app_ulisp.bin --port COM5</code></pre></div>
 <p>The proper way to send a <code>reboot</code> command to BL602 looks like this…</p>
 <p><img src="https://lupyuen.github.io/images/lisp-reboot2.png" alt="Fixed reboot with Web Serial API" /></p>
 <p>Let’s look at the fixed code in Blockly (our bespoke version) that <strong>sends uLisp Commands to BL602</strong>.</p>
-<h2 id="sending-a-command-to-bl602" class="section-header"><a href="#sending-a-command-to-bl602">6.1 Sending a command to BL602</a></h2>
+<h2 id="sending-a-command-to-bl602"><a href="#sending-a-command-to-bl602">6.1 Sending a command to BL602</a></h2>
 <p>For convenience, we wrap the Web Serial API in a high-level JavaScript Async Function: <strong><code>runWebSerialCommand</code></strong></p>
 <p>Here’s how we call <code>runWebSerialCommand</code> to send the <strong><code>reboot</code> Command</strong> to BL602 and wait for the response <strong>“<code>Init CLI</code>”</strong>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>//  Send the reboot command
@@ -537,7 +537,7 @@ await runWebSerialCommand(
 <p><strong>We don’t wait for the response</strong> from BL602, because some uLisp commands don’t return a response (<code>loop</code>) or they return a delayed response (<code>delay</code>).</p>
 <p>That’s why we send the Empty Command before the next command, to <strong>check whether the previous command has completed.</strong></p>
 <p>(In future we should make this more robust by adding a timeout)</p>
-<h2 id="calling-the-web-serial-api" class="section-header"><a href="#calling-the-web-serial-api">6.2 Calling the Web Serial API</a></h2>
+<h2 id="calling-the-web-serial-api"><a href="#calling-the-web-serial-api">6.2 Calling the Web Serial API</a></h2>
 <p>Let’s look inside the <strong><code>runWebSerialCommand</code></strong> function and learn how it sends commands from Web Browser to BL602 via the Web Serial API.</p>
 <p><strong><code>runWebSerialCommand</code></strong> accepts 2 parameters…</p>
 <ul>
@@ -649,7 +649,7 @@ async function runWebSerialCommand(command, expectedResponse) {
 }</code></pre></div>
 <p>And that’s how Blockly sends a uLisp command to BL602 with the Web Serial API!</p>
 <p><img src="https://lupyuen.github.io/images/lisp-blinky2.png" alt="uLisp Blinky" /></p>
-<h1 id="porting-ulisp-to-bl602" class="section-header"><a href="#porting-ulisp-to-bl602">7 Porting uLisp to BL602</a></h1>
+<h1 id="porting-ulisp-to-bl602"><a href="#porting-ulisp-to-bl602">7 Porting uLisp to BL602</a></h1>
 <p>Today we’ve seen uLisp on BL602, ported from the <a href="https://github.com/technoblogy/ulisp-esp/blob/master/ulisp-esp.ino">ESP32 Arduino version of uLisp</a>.</p>
 <p><em>Porting uLisp from ESP32 Arduino to BL602 sounds difficult?</em></p>
 <p>Not at all!</p>
@@ -818,7 +818,7 @@ int gserial() {
 }</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lisp-build.png" alt="Porting uLisp to BL602" /></p>
-<h2 id="missing-ulisp-features" class="section-header"><a href="#missing-ulisp-features">7.1 Missing uLisp Features</a></h2>
+<h2 id="missing-ulisp-features"><a href="#missing-ulisp-features">7.1 Missing uLisp Features</a></h2>
 <p><em>What else needs to be ported to BL602?</em></p>
 <p>If the <strong>Community could help</strong> to port the <strong>missing uLisp Features</strong>… That would be super awesome! 🙏 👍</p>
 <ol>
@@ -953,7 +953,7 @@ int gserial() {
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lisp-build2.png" alt="uLisp builds OK on BL602" /></p>
-<h1 id="customise-blockly-for-ulisp" class="section-header"><a href="#customise-blockly-for-ulisp">8 Customise Blockly for uLisp</a></h1>
+<h1 id="customise-blockly-for-ulisp"><a href="#customise-blockly-for-ulisp">8 Customise Blockly for uLisp</a></h1>
 <p><em>How did we customise Blockly for uLisp and BL602?</em></p>
 <ol>
 <li>
@@ -1022,7 +1022,7 @@ int gserial() {
 <li><a href="https://makecode.microbit.org/"><strong>MakeCode</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lisp-generate.png" alt="uLisp Code Generator" /></p>
-<h1 id="code-generator-for-ulisp" class="section-header"><a href="#code-generator-for-ulisp">9 Code Generator for uLisp</a></h1>
+<h1 id="code-generator-for-ulisp"><a href="#code-generator-for-ulisp">9 Code Generator for uLisp</a></h1>
 <p><em>How did we generate uLisp code in Blockly?</em></p>
 <p>We created <strong>Code Generators</strong> for uLisp. Our Code Generators are JavaScript Functions that emit uLisp code for each type of Block…</p>
 <ul>
@@ -1098,7 +1098,7 @@ Blockly.Lisp[&#39;digital_write_pin&#39;] = function(block) {
 };</code></pre></div>
 <p>This JavaScript function emits uLisp code that <strong>sets the GPIO Pin mode and output</strong> like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>( pinmode 11 :output )
-( digitalwrite 11 :high )</code></pre></div><h2 id="missing-code-generators" class="section-header"><a href="#missing-code-generators">9.1 Missing Code Generators</a></h2>
+( digitalwrite 11 :high )</code></pre></div><h2 id="missing-code-generators"><a href="#missing-code-generators">9.1 Missing Code Generators</a></h2>
 <p><em>What about the missing uLisp Code Generators?</em></p>
 <p>If the <strong>Community could help</strong> to fill in the <strong>missing uLisp Code Generators</strong>… That would be incredibly awesome! 🙏 👍 😀</p>
 <ol>
@@ -1258,7 +1258,7 @@ Blockly.Lisp[&#39;digital_write_pin&#39;] = function(block) {
 <p><strong>uLisp is not Statically Typed</strong> like Rust, so generating uLisp code in Blockly looks a lot simpler.</p>
 <p>(Blockly for Visual Embedded Rust is wrapped inside a <a href="https://marketplace.visualstudio.com/items?itemName=LeeLupYuen.visual-embedded-rust">VSCode Extension</a> that allows <strong>local, offline development</strong>. We could do the same for Blockly and uLisp)</p>
 <p><img src="https://lupyuen.github.io/images/lisp-rust.png" alt="Visual Embedded Rust" /></p>
-<h1 id="simulate-bl602-with-ulisp-webassembly" class="section-header"><a href="#simulate-bl602-with-ulisp-webassembly">10 Simulate BL602 with uLisp WebAssembly</a></h1>
+<h1 id="simulate-bl602-with-ulisp-webassembly"><a href="#simulate-bl602-with-ulisp-webassembly">10 Simulate BL602 with uLisp WebAssembly</a></h1>
 <p>What if we…</p>
 <ol>
 <li>
@@ -1298,7 +1298,7 @@ Blockly.Lisp[&#39;digital_write_pin&#39;] = function(block) {
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lisp-wasm.png" alt="uLisp in WebAssembly" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>Porting uLisp and Blockly to BL602 has been a fun experience.</p>
 <p>But more work needs to be done, I hope the Community can help.</p>
 <p>Could this be the better way to learn Embedded Programming on modern microcontrollers?</p>
@@ -1323,7 +1323,7 @@ Blockly.Lisp[&#39;digital_write_pin&#39;] = function(block) {
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lisp.md"><code>lupyuen.github.io/src/lisp.md</code></a></p>
 <p><img src="https://lupyuen.github.io/images/lisp-wasm2.png" alt="uLisp in WebAssembly" /></p>
-<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1389783215347429382">this Twitter Thread</a></li>
 </ol>

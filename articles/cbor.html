@@ -133,7 +133,7 @@
 <p>In a while we’ll watch the TinyCBOR Library in action for encoding Sensor Data in The Things Network.</p>
 </li>
 </ol>
-<h1 id="encode-sensor-data-with-tinycbor" class="section-header"><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a></h1>
+<h1 id="encode-sensor-data-with-tinycbor"><a href="#encode-sensor-data-with-tinycbor">1 Encode Sensor Data with TinyCBOR</a></h1>
 <p>We begin by encoding one data field into CBOR…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234
@@ -146,7 +146,7 @@
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_cbor"><strong>pinedio_cbor Firmware</strong></a></li>
 </ul>
-<h2 id="output-buffer-and-cbor-encoder" class="section-header"><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a></h2>
+<h2 id="output-buffer-and-cbor-encoder"><a href="#output-buffer-and-cbor-encoder">1.1 Output Buffer and CBOR Encoder</a></h2>
 <p>First we create an <strong>Output Buffer</strong> that will hold the encoded CBOR data: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L9-L66">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234 }
 static void test_cbor(char *buf, int len, int argc, char **argv) {
@@ -166,7 +166,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
     output,          //  Output Buffer
     sizeof(output),  //  Output Buffer Size
     0                //  Options (always 0)
-  );</code></pre></div><h2 id="create-map-encoder" class="section-header"><a href="#create-map-encoder">1.2 Create Map Encoder</a></h2>
+  );</code></pre></div><h2 id="create-map-encoder"><a href="#create-map-encoder">1.2 Create Map Encoder</a></h2>
 <p>Now we create the <strong>Map Encoder</strong> that will encode our CBOR Map…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Create a Map Encoder that maps keys to values
   CborError res = cbor_encoder_create_map(
@@ -176,7 +176,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   );    
   assert(res == CborNoError);</code></pre></div>
 <p>The last parameter (<code>1</code>) is important: It must match the <strong>Number of Key-Value Pairs</strong> (like <code>&quot;t&quot;: 1234</code>) that we shall encode.</p>
-<h2 id="encode-key-and-value" class="section-header"><a href="#encode-key-and-value">1.3 Encode Key and Value</a></h2>
+<h2 id="encode-key-and-value"><a href="#encode-key-and-value">1.3 Encode Key and Value</a></h2>
 <p>We encode the <strong>Key</strong> (“<code>t</code>”) into the CBOR Map…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
@@ -193,7 +193,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   assert(res == CborNoError);</code></pre></div>
 <p><strong>cbor_encode_int</strong> encodes <strong>64-bit Signed Integers</strong>.</p>
 <p>(We’ll look at other data types in a while)</p>
-<h2 id="close-map-encoder" class="section-header"><a href="#close-map-encoder">1.4 Close Map Encoder</a></h2>
+<h2 id="close-map-encoder"><a href="#close-map-encoder">1.4 Close Map Encoder</a></h2>
 <p>We’re done with our CBOR Map, so we <strong>close the Map Encoder</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Close the Map Encoder
   res = cbor_encoder_close_container(
@@ -202,7 +202,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
   );
   assert(res == CborNoError);</code></pre></div>
 <p>Our CBOR Encoding is complete!</p>
-<h2 id="get-encoded-output" class="section-header"><a href="#get-encoded-output">1.5 Get Encoded Output</a></h2>
+<h2 id="get-encoded-output"><a href="#get-encoded-output">1.5 Get Encoded Output</a></h2>
 <p>To work with the Encoded CBOR Output, we need to know <strong>how many bytes</strong> have been encoded…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  How many bytes were encoded
   size_t output_len = cbor_encoder_get_buffer_size(
@@ -222,7 +222,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-code.png" alt="Calling the TinyCBOR Library" /></p>
 </blockquote>
-<h2 id="magic-happens" class="section-header"><a href="#magic-happens">1.6 Magic Happens</a></h2>
+<h2 id="magic-happens"><a href="#magic-happens">1.6 Magic Happens</a></h2>
 <p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the CBOR Firmware…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware"><strong>“Build and Run CBOR Firmware”</strong></a></li>
@@ -244,7 +244,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
 <p>Into <strong>6 bytes of CBOR</strong>.</p>
 <p>We have scrimped and saved <strong>4 bytes</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/cbor-output2.png" alt="Encoded CBOR Output" /></p>
-<h1 id="add-another-field" class="section-header"><a href="#add-another-field">2 Add Another Field</a></h1>
+<h1 id="add-another-field"><a href="#add-another-field">2 Add Another Field</a></h1>
 <p>Now we <strong>add another field</strong> to our CBOR Encoding…</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
@@ -254,7 +254,7 @@ static void test_cbor(char *buf, int len, int argc, char **argv) {
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-map2.png" alt="CBOR Map with 2 Key-Value Pairs" /></p>
 </blockquote>
-<h2 id="modify-map-encoder" class="section-header"><a href="#modify-map-encoder">2.1 Modify Map Encoder</a></h2>
+<h2 id="modify-map-encoder"><a href="#modify-map-encoder">2.1 Modify Map Encoder</a></h2>
 <p>We begin the same way as before: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c#L68-L139">pinedio_cbor/demo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Test CBOR Encoding for { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
 static void test_cbor2( ... ) {
@@ -277,7 +277,7 @@ static void test_cbor2( ... ) {
   assert(res == CborNoError);</code></pre></div>
 <p>We changed the <strong>Number of Key-Value Pairs</strong> to <code>2</code>.</p>
 <p>(Previously it was <code>1</code>)</p>
-<h2 id="encode-first-key-and-value" class="section-header"><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a></h2>
+<h2 id="encode-first-key-and-value"><a href="#encode-first-key-and-value">2.2 Encode First Key and Value</a></h2>
 <p>We encode the <strong>First Key and Value</strong> the same way as before…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  First Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
@@ -293,7 +293,7 @@ static void test_cbor2( ... ) {
   );
   assert(res == CborNoError);</code></pre></div>
 <p>(Yep no changes above)</p>
-<h2 id="encode-second-key-and-value" class="section-header"><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a></h2>
+<h2 id="encode-second-key-and-value"><a href="#encode-second-key-and-value">2.3 Encode Second Key and Value</a></h2>
 <p>This part is new: We encode the <strong>Second Key and Value</strong> (“<code>l</code>” and <code>2345</code>)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Second Key-Value Pair: Map the Key
   res = cbor_encode_text_stringz(
@@ -334,7 +334,7 @@ static void test_cbor2( ... ) {
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/cbor-code2.png" alt="Add a second field" /></p>
 </blockquote>
-<h2 id="watch-the-magic" class="section-header"><a href="#watch-the-magic">2.4 Watch the Magic</a></h2>
+<h2 id="watch-the-magic"><a href="#watch-the-magic">2.4 Watch the Magic</a></h2>
 <p>Follow the steps in the Appendix to <strong>build, flash and run</strong> the CBOR Firmware…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-cbor-firmware"><strong>“Build and Run CBOR Firmware”</strong></a></li>
@@ -361,10 +361,10 @@ static void test_cbor2( ... ) {
 <li><a href="https://lupyuen.github.io/articles/cbor#appendix-add-tinycbor-to-your-project"><strong>“Add TinyCBOR to Your Project”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/cbor-title.jpg" alt="Encoding Sensor Data with CBOR on BL602" /></p>
-<h1 id="cbor-data-types" class="section-header"><a href="#cbor-data-types">3 CBOR Data Types</a></h1>
+<h1 id="cbor-data-types"><a href="#cbor-data-types">3 CBOR Data Types</a></h1>
 <p><em>We’ve been encoding 64-bit Signed Integers. What other Data Types can we encode?</em></p>
 <p>Below are the <strong>CBOR Data Types</strong> and their respective <strong>Encoder Functions</strong> from the TinyCBOR Library…</p>
-<h2 id="numbers" class="section-header"><a href="#numbers">3.1 Numbers</a></h2>
+<h2 id="numbers"><a href="#numbers">3.1 Numbers</a></h2>
 <ul>
 <li>
 <p><strong>Signed Integer</strong> (64 bits): <a href="https://intel.github.io/tinycbor/current/a00046.html#gabbf6e10fd963d673f5ad293dff4a67a9">cbor_encode_int</a></p>
@@ -383,7 +383,7 @@ static void test_cbor2( ... ) {
 <p>(See the next chapter)</p>
 </li>
 </ul>
-<h2 id="strings" class="section-header"><a href="#strings">3.2 Strings</a></h2>
+<h2 id="strings"><a href="#strings">3.2 Strings</a></h2>
 <ul>
 <li>
 <p><strong>Null-Terminated String</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga6df3eff486535322f66584dc5431f9e9">cbor_encode_text_stringz</a></p>
@@ -398,7 +398,7 @@ static void test_cbor2( ... ) {
 <p>(For strings containing binary data)</p>
 </li>
 </ul>
-<h2 id="other-types" class="section-header"><a href="#other-types">3.3 Other Types</a></h2>
+<h2 id="other-types"><a href="#other-types">3.3 Other Types</a></h2>
 <ul>
 <li>
 <p><strong>Boolean</strong>: <a href="https://intel.github.io/tinycbor/current/a00046.html#ga857154b97cad978f4afb3e2f809051bd">cbor_encode_boolean</a></p>
@@ -420,7 +420,7 @@ static void test_cbor2( ... ) {
 </ul>
 <p>To experiment with CBOR Encoding and Decoding, try the <a href="http://cbor.me/"><strong>CBOR Playground</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/grafana-cbor5.png" alt="CBOR Playground" /></p>
-<h1 id="floating-point-numbers" class="section-header"><a href="#floating-point-numbers">4 Floating-Point Numbers</a></h1>
+<h1 id="floating-point-numbers"><a href="#floating-point-numbers">4 Floating-Point Numbers</a></h1>
 <p>The CBOR spec says that there are <a href="https://www.rfc-editor.org/rfc/rfc8949.html#name-floating-point-numbers-and-"><strong>3 ways to encode floats</strong></a>…</p>
 <ul>
 <li>
@@ -441,13 +441,13 @@ static void test_cbor2( ... ) {
 <p>This means that we need <strong>4 significant decimal digits</strong>.</p>
 <p>Which is too many for a Half-Precision Float (16 bits), but OK for a <strong>Single-Precision Float</strong> (32 bits).</p>
 <p>Thus we need <strong>5 bytes</strong> to encode the Temperature Data. (Including the CBOR Initial Byte)</p>
-<h2 id="encode-floats-as-integers" class="section-header"><a href="#encode-floats-as-integers">4.1 Encode Floats as Integers</a></h2>
+<h2 id="encode-floats-as-integers"><a href="#encode-floats-as-integers">4.1 Encode Floats as Integers</a></h2>
 <p><em>Huh? If we encode an integer like <code>1234</code>, we need only <strong>3 bytes</strong>!</em></p>
 <p>That’s why in this article we <strong>scale up 100 times</strong> for the Temperature Data and <strong>encode as an integer</strong> instead.</p>
 <p>(So <code>1234</code> actually means <code>12.34</code> ºC)</p>
 <p><strong>2 bytes</strong> saved!</p>
 <p>(Our scaling of Sensor Data is similar to <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic#Fixed-point_representation">Fixed-Point Representation</a>)</p>
-<h2 id="accuracy-and-precision" class="section-header"><a href="#accuracy-and-precision">4.2 Accuracy and Precision</a></h2>
+<h2 id="accuracy-and-precision"><a href="#accuracy-and-precision">4.2 Accuracy and Precision</a></h2>
 <p><em>Is it meaningful to record temperatures that are accurate to 0.01 ºC?</em></p>
 <p><em>How much accuracy do we need for Sensor Data anyway?</em></p>
 <p>The accuracy for our Sensor Data depends on…</p>
@@ -465,7 +465,7 @@ static void test_cbor2( ... ) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)</em></p>
-<h1 id="lorawan-with-cbor" class="section-header"><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a></h1>
+<h1 id="lorawan-with-cbor"><a href="#lorawan-with-cbor">5 LoRaWAN With CBOR</a></h1>
 <p>Let’s watch CBOR in action on a real wireless network… As <a href="https://lupyuen.github.io/articles/lorawan2"><strong>PineDio Stack BL604</strong></a> talks to <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network over LoRaWAN</strong></a>!</p>
 <p>In a while we shall run this LoRaWAN Command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1234 2345</code></pre></div>
@@ -498,7 +498,7 @@ void las_cmd_app_tx_cbor( ... ) {
 <p>In the code above we get the values of <strong>“<code>t</code>”</strong> (Temperature Sensor) and <strong>“<code>l</code>”</strong> (Light Sensor) from the command line arguments.</p>
 <p>(Our sensors are simulated for now)</p>
 <p>Watch how we encode “<code>t</code>” and “<code>l</code>” and transmit them…</p>
-<h2 id="encode-sensor-data" class="section-header"><a href="#encode-sensor-data">5.1 Encode Sensor Data</a></h2>
+<h2 id="encode-sensor-data"><a href="#encode-sensor-data">5.1 Encode Sensor Data</a></h2>
 <p>This part looks super familiar: We initialise our <strong>CBOR Encoder and Map Encoder</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
   //  Max output size is 50 bytes (which fits in a LoRa packet)
@@ -545,7 +545,7 @@ void las_cmd_app_tx_cbor( ... ) {
   res = cbor_encoder_close_container( ... );
 
   //  How many bytes were encoded
-  size_t output_len = cbor_encoder_get_buffer_size( ... );</code></pre></div><h2 id="send-lorawan-packet" class="section-header"><a href="#send-lorawan-packet">5.2 Send LoRaWAN Packet</a></h2>
+  size_t output_len = cbor_encoder_get_buffer_size( ... );</code></pre></div><h2 id="send-lorawan-packet"><a href="#send-lorawan-packet">5.2 Send LoRaWAN Packet</a></h2>
 <p>We’re ready to transmit our encoded Sensor Data!</p>
 <p>First we <strong>allocate a Packet Buffer</strong> for our LoRaWAN Packet…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Validate the output size
@@ -565,7 +565,7 @@ void las_cmd_app_tx_cbor( ... ) {
   //  Omitted: Check the return code</code></pre></div>
 <p>That’s how we encode Sensor Data and transmit over LoRaWAN!</p>
 <p><img src="https://lupyuen.github.io/images/cbor-code3.png" alt="Encoding Sensor Data and transmitting over LoRaWAN" /></p>
-<h2 id="cbor-in-action" class="section-header"><a href="#cbor-in-action">5.3 CBOR In Action</a></h2>
+<h2 id="cbor-in-action"><a href="#cbor-in-action">5.3 CBOR In Action</a></h2>
 <p>Follow the instructions in the Appendix to <strong>build, flash and run</strong> the LoRaWAN Firmware…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/cbor#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></li>
@@ -597,7 +597,7 @@ void las_cmd_app_tx_cbor( ... ) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/roblox#digital-twin-demo"><strong>“IoT Digital Twin with Roblox and The Things Network”</strong></a></li>
 </ul>
-<h1 id="decode-cbor" class="section-header"><a href="#decode-cbor">6 Decode CBOR</a></h1>
+<h1 id="decode-cbor"><a href="#decode-cbor">6 Decode CBOR</a></h1>
 <p><em>For decoding CBOR packets, can we call the TinyCBOR Library?</em></p>
 <p>Sure, we can call the <strong>Decoder Functions</strong> in the TinyCBOR Library…</p>
 <ul>
@@ -639,7 +639,7 @@ void las_cmd_app_tx_cbor( ... ) {
 <p><a href="https://docs.zephyrproject.org/latest/reference/kconfig/CONFIG_TINYCBOR.html"><strong>Zephyr</strong></a></p>
 </li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>For the next article we shall take a quick detour and explore PineDio Stack transmitting Sensor Data to <a href="https://github.com/lupyuen/roblox-the-things-network"><strong>Roblox via The Things Network</strong></a>.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/roblox"><strong>“IoT Digital Twin with Roblox and The Things Network”</strong></a></li>
@@ -668,17 +668,17 @@ void las_cmd_app_tx_cbor( ... ) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/cbor.md"><code>lupyuen.github.io/src/cbor.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<h1 id="notes"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1441626008931602433">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-build-and-run-cbor-firmware" class="section-header"><a href="#appendix-build-and-run-cbor-firmware">9 Appendix: Build and Run CBOR Firmware</a></h1>
+<h1 id="appendix-build-and-run-cbor-firmware"><a href="#appendix-build-and-run-cbor-firmware">9 Appendix: Build and Run CBOR Firmware</a></h1>
 <p>Here are the steps to build, flash and run the <strong>CBOR Firmware for BL602 and BL604</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_cbor"><strong>bl_iot_sdk/customer_app/pinedio_cbor</strong></a></li>
 </ul>
 <p>(If we wish to add the TinyCBOR Library to an existing BL602 / BL604 project, check the next chapter)</p>
-<h2 id="build-cbor-firmware" class="section-header"><a href="#build-cbor-firmware">9.1 Build CBOR Firmware</a></h2>
+<h2 id="build-cbor-firmware"><a href="#build-cbor-firmware">9.1 Build CBOR Firmware</a></h2>
 <p>Download the firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
 git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
@@ -694,7 +694,7 @@ make
 mkdir /mnt/c/blflash
 cp build_out/pinedio_cbor.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<h2 id="flash-cbor-firmware" class="section-header"><a href="#flash-cbor-firmware">9.2 Flash CBOR Firmware</a></h2>
+<h2 id="flash-cbor-firmware"><a href="#flash-cbor-firmware">9.2 Flash CBOR Firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
 <li>
@@ -767,7 +767,7 @@ blflash flash build_out/pinedio_cbor.bin \
 blflash flash c:\blflash\pinedio_cbor.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
-<h2 id="run-cbor-firmware" class="section-header"><a href="#run-cbor-firmware">9.3 Run CBOR Firmware</a></h2>
+<h2 id="run-cbor-firmware"><a href="#run-cbor-firmware">9.3 Run CBOR Firmware</a></h2>
 <p>Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
 <ol>
@@ -811,7 +811,7 @@ blflash flash c:\blflash\pinedio_cbor.bin --port COM5</code></pre></div>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602 / BL604</a></p>
-<h1 id="appendix-add-tinycbor-to-your-project" class="section-header"><a href="#appendix-add-tinycbor-to-your-project">10 Appendix: Add TinyCBOR to Your Project</a></h1>
+<h1 id="appendix-add-tinycbor-to-your-project"><a href="#appendix-add-tinycbor-to-your-project">10 Appendix: Add TinyCBOR to Your Project</a></h1>
 <p>Here are the steps for <strong>adding the TinyCBOR Library</strong> to an existing BL602 or BL604 project…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/tinycbor-bl602"><strong>lupyuen/tinycbor-bl602</strong></a></li>
@@ -836,12 +836,12 @@ include $(BL60X_SDK_PATH)/make_scripts_riscv/project.mk</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>#include &quot;cbor.h&quot;  //  For Tiny CBOR Library</code></pre></div>
 <p>And start coding with TinyCBOR!</p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_cbor/pinedio_cbor/demo.c">(See a sample source file)</a></p>
-<h1 id="appendix-build-and-run-lorawan-firmware" class="section-header"><a href="#appendix-build-and-run-lorawan-firmware">11 Appendix: Build and Run LoRaWAN Firmware</a></h1>
+<h1 id="appendix-build-and-run-lorawan-firmware"><a href="#appendix-build-and-run-lorawan-firmware">11 Appendix: Build and Run LoRaWAN Firmware</a></h1>
 <p>Here are the steps to build, flash and run the <strong>LoRaWAN Firmware for PineDio Stack BL604</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong>bl_iot_sdk/customer_app/pinedio_lorawan</strong></a></li>
 </ul>
-<h2 id="build-lorawan-firmware" class="section-header"><a href="#build-lorawan-firmware">11.1 Build LoRaWAN Firmware</a></h2>
+<h2 id="build-lorawan-firmware"><a href="#build-lorawan-firmware">11.1 Build LoRaWAN Firmware</a></h2>
 <p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong>LoRaWAN firmware and driver source code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
 git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
@@ -877,7 +877,7 @@ make
 mkdir /mnt/c/blflash
 cp build_out/pinedio_lorawan.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<h2 id="flash-lorawan-firmware" class="section-header"><a href="#flash-lorawan-firmware">11.2 Flash LoRaWAN Firmware</a></h2>
+<h2 id="flash-lorawan-firmware"><a href="#flash-lorawan-firmware">11.2 Flash LoRaWAN Firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
 <li>
@@ -950,7 +950,7 @@ blflash flash build_out/pinedio_lorawan.bin \
 blflash flash c:\blflash\pinedio_lorawan.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
-<h2 id="run-lorawan-firmware" class="section-header"><a href="#run-lorawan-firmware">11.3 Run LoRaWAN Firmware</a></h2>
+<h2 id="run-lorawan-firmware"><a href="#run-lorawan-firmware">11.3 Run LoRaWAN Firmware</a></h2>
 <p>Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
 <ol>
@@ -994,7 +994,7 @@ blflash flash c:\blflash\pinedio_lorawan.bin --port COM5</code></pre></div>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602 / BL604</a></p>
-<h2 id="enter-lorawan-commands" class="section-header"><a href="#enter-lorawan-commands">11.4 Enter LoRaWAN Commands</a></h2>
+<h2 id="enter-lorawan-commands"><a href="#enter-lorawan-commands">11.4 Enter LoRaWAN Commands</a></h2>
 <p>Let’s enter the LoRaWAN Commands to join The Things Network and transmit a Data Packet!</p>
 <ol>
 <li>
@@ -1073,7 +1073,7 @@ blflash flash c:\blflash\pinedio_lorawan.bin --port COM5</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/roblox#digital-twin-demo"><strong>“IoT Digital Twin with Roblox and The Things Network”</strong></a></li>
 </ul>
-<h1 id="appendix-porting-tinycbor-to-bl602" class="section-header"><a href="#appendix-porting-tinycbor-to-bl602">12 Appendix: Porting TinyCBOR to BL602</a></h1>
+<h1 id="appendix-porting-tinycbor-to-bl602"><a href="#appendix-porting-tinycbor-to-bl602">12 Appendix: Porting TinyCBOR to BL602</a></h1>
 <p>Below are the fixes we made while porting the TinyCBOR library to BL602 / BL604…</p>
 <ul>
 <li>

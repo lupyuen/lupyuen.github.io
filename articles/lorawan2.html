@@ -122,7 +122,7 @@
 </blockquote>
 <p><img src="https://lupyuen.github.io/images/lorawan2-board.jpg" alt="LoRa SX1262 Transceiver on PineDio Stack BL604" /></p>
 <p><a href="https://electronics.stackexchange.com/questions/335912/can-i-break-a-radio-tranceiving-device-by-operating-it-with-no-antenna-connected"><strong>CAUTION</strong>: Always connect the Antenna before Powering On… Or the LoRa Transceiver may get damaged! See this</a></p>
-<h1 id="lora-sx1262-transceiver" class="section-header"><a href="#lora-sx1262-transceiver">1 LoRa SX1262 Transceiver</a></h1>
+<h1 id="lora-sx1262-transceiver"><a href="#lora-sx1262-transceiver">1 LoRa SX1262 Transceiver</a></h1>
 <p>According to the PineDio Stack Schematic…</p>
 <ul>
 <li><a href="https://wiki.pine64.org/wiki/Pinedio#PineDio_Stack"><strong>PineDio Stack Schematic (Prototype)</strong></a></li>
@@ -162,7 +162,7 @@
 #define FLASH_CS_PIN     14
 
 /// GPIO for ST7789 SPI Chip Select Pin. We must set this to High to deselect ST7789 Display.
-#define DISPLAY_CS_PIN   20</code></pre></div><h1 id="lorawan-firmware" class="section-header"><a href="#lorawan-firmware">2 LoRaWAN Firmware</a></h1>
+#define DISPLAY_CS_PIN   20</code></pre></div><h1 id="lorawan-firmware"><a href="#lorawan-firmware">2 LoRaWAN Firmware</a></h1>
 <p>To test LoRaWAN on PineDio Stack we shall run this <strong>LoRaWAN Firmware</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong><code>pinedio_lorawan</code> Firmware</strong></a></li>
@@ -181,7 +181,7 @@
 <li><a href="https://lupyuen.github.io/articles/lorawan"><strong>“PineCone BL602 Talks LoRaWAN”</strong></a></li>
 </ul>
 <p>Here are the changes we made for PineDio Stack.</p>
-<h2 id="deselect-spi-peripherals" class="section-header"><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a></h2>
+<h2 id="deselect-spi-peripherals"><a href="#deselect-spi-peripherals">2.1 Deselect SPI Peripherals</a></h2>
 <p>While testing LoRaWAN (and LoRa SX1262), we need to <strong>deselect all other SPI Peripherals</strong> (SPI Flash and ST7789 Display).</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/demo.c#L107-L130">pinedio_lorawan/demo.c</a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Set Chip Select pins to High, to deselect SX1262, SPI Flash and ST7789
@@ -209,7 +209,7 @@ int deselect_spi(void) {
 <p>This function is called by the <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173"><strong><code>init_lorawan</code> Command</strong></a>, which we’ll run in a while…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-deselect.png" alt="Deselect SPI Peripherals" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L167-L173">(Source)</a></p>
-<h2 id="swap-spi-pins" class="section-header"><a href="#swap-spi-pins">2.2 Swap SPI Pins</a></h2>
+<h2 id="swap-spi-pins"><a href="#swap-spi-pins">2.2 Swap SPI Pins</a></h2>
 <p>Due to a quirk in the SPI implementation on BL602 and BL604, we need to <strong>swap the SPI Pins</strong> for SDI <em>(formerly MISO)</em> and SDO <em>(formerly MOSI)</em>.</p>
 <p>We do this by calling <strong>GLB_Swap_SPI_0_MOSI_With_MISO</strong> in <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L168-L202">lora-sx1262/sx126x-board.c</a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Initialise GPIO Pins and SPI Port. Called by SX126xIoIrqInit.
@@ -252,7 +252,7 @@ void SX126xIoInit( void ) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan2-swap.png" alt="Swap SPI Pins and tweak the SPI Polarity-Phase" /></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-board.c#L168-L202">(Source)</a></p>
-<h1 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">3 Run The Firmware</a></h1>
+<h1 id="run-the-firmware"><a href="#run-the-firmware">3 Run The Firmware</a></h1>
 <p>We <strong>build, flash and run the LoRaWAN Firmware</strong> for PineDio Stack with these steps…</p>
 <ol>
 <li>
@@ -282,7 +282,7 @@ void SX126xIoInit( void ) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan2-commands.png" alt="LoRaWAN Commands" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#lorawan-commands">(Source)</a></p>
-<h2 id="lorawan-commands" class="section-header"><a href="#lorawan-commands">3.1 LoRaWAN Commands</a></h2>
+<h2 id="lorawan-commands"><a href="#lorawan-commands">3.1 LoRaWAN Commands</a></h2>
 <p>At the BL604 Command Prompt, enter these <strong>LoRaWAN Commands</strong>…</p>
 <ol>
 <li>
@@ -334,7 +334,7 @@ void SX126xIoInit( void ) {
 <p>Let’s check our ChirpStack LoRaWAN Gateway!</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#lorawan-driver">(More about the LoRaWAN Commands)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-joinsend.png" alt="LoRaWAN Firmware" /></p>
-<h1 id="lorawan-gateway" class="section-header"><a href="#lorawan-gateway">4 LoRaWAN Gateway</a></h1>
+<h1 id="lorawan-gateway"><a href="#lorawan-gateway">4 LoRaWAN Gateway</a></h1>
 <p>To see the <strong>Join Network Request</strong> and the <strong>Data Packet</strong> received by our ChirpStack LoRaWAN Gateway, we do this… </p>
 <ol>
 <li>
@@ -363,7 +363,7 @@ void SX126xIoInit( void ) {
 <p>LoRaWAN tested OK on PineDio Stack!</p>
 <p>Let’s take a peek inside our LoRa SX1262 Transceiver…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-logic.jpg" alt="PineDio Stack with Logic Analyser" /></p>
-<h1 id="logic-analyser" class="section-header"><a href="#logic-analyser">5 Logic Analyser</a></h1>
+<h1 id="logic-analyser"><a href="#logic-analyser">5 Logic Analyser</a></h1>
 <p><em>How did we find out that the SPI Pins need to be swapped?</em></p>
 <p><em>And the tweaking for SPI Polarity-Phase?</em></p>
 <p>A <strong>Logic Analyser</strong> is super helpful for troubleshooting SPI and other interfacing problems on prototype hardware. (Pic above)</p>
@@ -384,7 +384,7 @@ void SX126xIoInit( void ) {
 <p>Then we simply connect our Logic Analyser to <strong>GPIO 5 as the Chip Select Pin.</strong> (Pic above)</p>
 <p>Our Logic Analyser shows that BL604 is indeed talking correctly to SX1262 over SPI…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-logic.png" alt="LoRa SX1262 with Logic Analyser" /></p>
-<h1 id="spectrum-analyser" class="section-header"><a href="#spectrum-analyser">6 Spectrum Analyser</a></h1>
+<h1 id="spectrum-analyser"><a href="#spectrum-analyser">6 Spectrum Analyser</a></h1>
 <p>We’ve used a Logic Analyser to sniff the data inside our LoRa Transceiver. Now we use a <strong>Spectrum Analyser</strong> to sniff the data in the airwaves!</p>
 <p>Our Spectrum Analyser is the <strong>Airspy R2 Software Defined Radio</strong>, which will sniff a range of radio frequences…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-airspy.jpg" alt="Airspy R2 SDR with PineDio Stack" /></p>
@@ -398,7 +398,7 @@ void SX126xIoInit( void ) {
 <li><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></li>
 </ul>
 <p>(The “fireflies” look odd though. Are we transmitting with too much power?)</p>
-<h1 id="security" class="section-header"><a href="#security">7 Security</a></h1>
+<h1 id="security"><a href="#security">7 Security</a></h1>
 <p><em>Since LoRa packets can be sniffed over the airwaves…</em></p>
 <p><em>How do we transmit data securely over LoRa?</em></p>
 <p>That’s why we join a <strong>LoRaWAN Network</strong> when we transmit data.</p>
@@ -430,7 +430,7 @@ void SX126xIoInit( void ) {
 <p>We should never allow the Security Keys to be exposed.</p>
 <p><em>Doesn’t BL604 securely store Security Keys in its <a href="https://lupyuen.github.io/articles/flash#efuse-configuration">Internal EFuse Storage</a>?</em></p>
 <p>Yes. Though there have been past incidents (on other microcontrollers) where Security Keys in EFuse Storage have been compromised. <a href="https://limitedresults.com/2019/11/pwn-the-esp32-forever-flash-encryption-and-sec-boot-keys-extraction/">(See this)</a></p>
-<h2 id="cryptographic-co-processor" class="section-header"><a href="#cryptographic-co-processor">7.1 Cryptographic Co-Processor</a></h2>
+<h2 id="cryptographic-co-processor"><a href="#cryptographic-co-processor">7.1 Cryptographic Co-Processor</a></h2>
 <p><em>Is there a better way to store and access Security Keys?</em></p>
 <p>We could use a <strong>Cryptographic Co-Processor</strong> like this…</p>
 <ul>
@@ -456,7 +456,7 @@ void SX126xIoInit( void ) {
 <p>We need to be <strong>extra careful</strong> when working with Cryptographic Co-Processors…</p>
 <p>Once the Security Keys have been injected, <strong>they can never be reset</strong>!</p>
 <p>(Same for EFuse Storage)</p>
-<h2 id="lorawan-alternatives" class="section-header"><a href="#lorawan-alternatives">7.2 LoRaWAN Alternatives</a></h2>
+<h2 id="lorawan-alternatives"><a href="#lorawan-alternatives">7.2 LoRaWAN Alternatives</a></h2>
 <p><em>Can we send LoRa messages securely… Without LoRaWAN?</em></p>
 <p>Traditional Peer-to-Peer Messaging Protocols (like XMPP and Matrix) won’t run on PineDio Stack with LoRa.</p>
 <p>(Because of LoRa’s tiny lossy packets. And JSON over HTTPS is too heavy for BL604)</p>
@@ -491,7 +491,7 @@ void SX126xIoInit( void ) {
 <p>Or for connecting our <strong>PineTime watches</strong> to the internet?</p>
 <p>Perhaps <strong>super-accurate geolocation</strong> with LoRa + WiFi + Bluetooth LE?</p>
 <p>Got any ideas? Lemme know!</p>
-<h1 id="seeking-volunteers" class="section-header"><a href="#seeking-volunteers">8 Seeking Volunteers!</a></h1>
+<h1 id="seeking-volunteers"><a href="#seeking-volunteers">8 Seeking Volunteers!</a></h1>
 <p>I’m really excited that PineDio Stack BL604 will be available soon!</p>
 <p>But in the meantime, JF and I have <strong>plenty to test on PineDio Stack</strong>…</p>
 <ol>
@@ -512,7 +512,7 @@ void SX126xIoInit( void ) {
 <p><a href="https://twitter.com/MisterTechBlog"><strong>Please let us know</strong></a> if you’re keen to help! 🙏</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-ttn3.png" alt="Our new LoRaWAN Gateway for The Things Network" /></p>
 <p><a href="https://www.thethingsnetwork.org/community/singapore/">(Source)</a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>In the next article, PineDio Stack shall transmit data to the cloud via the public global LoRaWAN Network… <strong>The Things Network</strong>!</p>
 <ul>
 <li>
@@ -554,7 +554,7 @@ void SX126xIoInit( void ) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan2.md"><code>lupyuen.github.io/src/lorawan2.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes"><a href="#notes">10 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1436128755987058691">this Twitter Thread</a></p>

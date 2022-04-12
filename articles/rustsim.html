@@ -102,7 +102,7 @@
 </ul>
 <p><a href="https://lupyuen.github.io/articles/pinecone">(More about BL602 RISC-V SoC)</a></p>
 <p><img src="https://lupyuen.github.io/images/adc-simulator2.png" alt="BL602 Simulator in WebAssembly" /></p>
-<h1 id="rust-firmware-for-bl602" class="section-header"><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a></h1>
+<h1 id="rust-firmware-for-bl602"><a href="#rust-firmware-for-bl602">1 Rust Firmware for BL602</a></h1>
 <p>We start with this <strong>BL602 Rust Firmware <code>sdk_app_rust_gpio</code></strong> that blinks the LED: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/sdk_app_rust_gpio/rust/src/lib.rs"><code>sdk_app_rust_gpio/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// This function will be called by the BL602 command-line interface</span>
@@ -173,7 +173,7 @@
 <p><em>Can we run this BL602 Rust Firmware in a Web Browser? Without any BL602 hardware?</em></p>
 <p>Let’s find out!</p>
 <p>First we compile this BL602 Rust Firmware to WebAssembly…</p>
-<h1 id="build-bl602-firmware-for-webassembly" class="section-header"><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a></h1>
+<h1 id="build-bl602-firmware-for-webassembly"><a href="#build-bl602-firmware-for-webassembly">2 Build BL602 Firmware for WebAssembly</a></h1>
 <p>We’ve created a <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile"><strong>Makefile</strong></a> that builds the above BL602 Rust Firmware into WebAssembly.</p>
 <p>Here’s how we use it…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
@@ -203,7 +203,7 @@ make
 </ol>
 <p>Let’s go into the details…</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-build.png" alt="Compile Rust Firmware into WebAssembly" /></p>
-<h2 id="compile-rust-firmware-into-webassembly" class="section-header"><a href="#compile-rust-firmware-into-webassembly">2.1 Compile Rust Firmware into WebAssembly</a></h2>
+<h2 id="compile-rust-firmware-into-webassembly"><a href="#compile-rust-firmware-into-webassembly">2.1 Compile Rust Firmware into WebAssembly</a></h2>
 <p>To compile our <strong>Rust Firmware into WebAssembly</strong>, our <a href="https://github.com/lupyuen/bl602-simulator/blob/main/Makefile#L57-L58">Makefile</a> calls this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Compile the Rust Firmware and Rust Simulator Library into WebAssembly
 cargo build --target wasm32-unknown-emscripten</code></pre></div>
@@ -258,7 +258,7 @@ name       = &quot;app&quot;          # Output will be named `libapp.a`
 crate-type = [&quot;staticlib&quot;]  # And will be a Static Library</code></pre></div>
 <p><strong>Rust Libraries won’t link</strong> with Emscripten’s WebAssembly Runtime. </p>
 <p>That’s why we switched to <strong>Static Libraries</strong>.</p>
-<h2 id="link-rust-firmware-with-emscripten" class="section-header"><a href="#link-rust-firmware-with-emscripten">2.2 Link Rust Firmware with Emscripten</a></h2>
+<h2 id="link-rust-firmware-with-emscripten"><a href="#link-rust-firmware-with-emscripten">2.2 Link Rust Firmware with Emscripten</a></h2>
 <p>We’re nearly ready to run our Rust Firmware in WebAssembly! We need a <strong>WebAssembly Runtime</strong> that will…</p>
 <ol>
 <li>
@@ -299,7 +299,7 @@ emcc -o wasm/wasm.html \
 <ul>
 <li><code>cwrap</code>, <code>allocate</code>, <code>intArrayFromString</code>, <code>UTF8ToString</code></li>
 </ul>
-<h2 id="copy-the-webassembly-outputs" class="section-header"><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a></h2>
+<h2 id="copy-the-webassembly-outputs"><a href="#copy-the-webassembly-outputs">2.3 Copy the WebAssembly outputs</a></h2>
 <p><em>What are the outputs emitted by Emscripten?</em></p>
 <p>Emscripten produces these files after linking our Rust Firmware…</p>
 <ul>
@@ -326,7 +326,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/wasm"><strong>“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</strong></a></li>
 </ul>
-<h1 id="json-stream-of-simulation-events" class="section-header"><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a></h1>
+<h1 id="json-stream-of-simulation-events"><a href="#json-stream-of-simulation-events">3 JSON Stream of Simulation Events</a></h1>
 <p>Our story so far…</p>
 <ol>
 <li>
@@ -385,7 +385,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 ]</code></pre></div>
 <p>That will simulate a <strong>blinking BL602 LED</strong>.</p>
 <p>Let’s generate the Simulation Events now.</p>
-<h1 id="generate-simulation-events" class="section-header"><a href="#generate-simulation-events">4 Generate Simulation Events</a></h1>
+<h1 id="generate-simulation-events"><a href="#generate-simulation-events">4 Generate Simulation Events</a></h1>
 <p><em>How shall we generate this <strong>JSON Simulation Event</strong>…</em></p>
 <div class="example-wrap"><pre class="language-json"><code>{ &quot;gpio_output_set&quot;: { 
   &quot;pin&quot;:  11, 
@@ -438,7 +438,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <p>The result is a <strong>JSON Array</strong> of Simulation Events…</p>
 <div class="example-wrap"><pre class="language-text"><code>[{&quot;gpio_output_set&quot;:{&quot;pin&quot;:11,&quot;value&quot;:0}}]</code></pre></div>
 <p>Exactly what we need!</p>
-<h2 id="time-delay-event" class="section-header"><a href="#time-delay-event">4.1 Time Delay Event</a></h2>
+<h2 id="time-delay-event"><a href="#time-delay-event">4.1 Time Delay Event</a></h2>
 <p><em>What about the Time Delay Event?</em></p>
 <div class="example-wrap"><pre class="language-json"><code>{ &quot;time_delay&quot;: { &quot;ticks&quot;: 1000 } }</code></pre></div>
 <p>We add <strong>Time Delay</strong> to our Enum Type like so: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L3-L21"><code>bl602-simulator/lib.rs</code></a></p>
@@ -465,7 +465,7 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <p><a href="https://serde.rs/"><strong>Serde Crate</strong></a> does the rest!</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events.png" alt="Generating Simulation Events in Rust" /></p>
 <p><a href="https://gist.github.com/lupyuen/cec1a423062556263a7ba02971862001">(Source)</a></p>
-<h2 id="intercept-calls-to-bl602-iot-sdk" class="section-header"><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a></h2>
+<h2 id="intercept-calls-to-bl602-iot-sdk"><a href="#intercept-calls-to-bl602-iot-sdk">4.2 Intercept Calls to BL602 IoT SDK</a></h2>
 <p>We’ve just figured out how to <strong>compose the JSON Stream</strong> of Simulation Events.</p>
 <p>Now let’s do this <strong>inside the calls</strong> to BL602 IoT SDK…</p>
 
@@ -542,13 +542,13 @@ cp wasm/wasm.wasm docs</code></pre></div>
 <p>And that’s how we <strong>intercept calls to BL602 IoT SDK</strong>… To emit a JSON Stream of Simulation Events!</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events3.png" alt="Generating Simulation Events in Rust" /></p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L94-L151">(Source)</a></p>
-<h2 id="what-about-c" class="section-header"><a href="#what-about-c">4.3 What about C?</a></h2>
+<h2 id="what-about-c"><a href="#what-about-c">4.3 What about C?</a></h2>
 <p><em>Could we have done this in C instead of Rust?</em></p>
 <p>Yep but it’s gonna get messy when we <strong>compose JSON in C</strong>.</p>
 <p>Here’s the original <strong>implementation in C</strong> before converting to Rust…</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-events2.png" alt="Generating Simulation Events in C" /></p>
 <p><a href="https://github.com/lupyuen/ulisp-bl602/blob/wasm/wasm/wasm.c">(Source)</a></p>
-<h1 id="html-and-javascript-interface" class="section-header"><a href="#html-and-javascript-interface">5 HTML and JavaScript Interface</a></h1>
+<h1 id="html-and-javascript-interface"><a href="#html-and-javascript-interface">5 HTML and JavaScript Interface</a></h1>
 <p>We’ve done the Top Half of this pic: Emitting a <strong>JSON Stream of BL602 Simulation Events</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/rust-simulator.jpg" alt="JSON Stream of BL602 Simulation Events" /></p>
 <p>Now we do the Bottom Half: <strong>Web Browser Interface in HTML and JavaScript</strong>!</p>
@@ -593,7 +593,7 @@ ctx.fillStyle = &#39;#B0B0FF&#39;;  //  Blue
 //  ctx.fillStyle = &#39;#CCCCCC&#39;;  //  Grey
 
 //  Draw the LED colour
-ctx.fillRect(315, 116, 35, 74);</code></pre></div><h2 id="run-rust-firmware" class="section-header"><a href="#run-rust-firmware">5.1 Run Rust Firmware</a></h2>
+ctx.fillRect(315, 116, 35, 74);</code></pre></div><h2 id="run-rust-firmware"><a href="#run-rust-firmware">5.1 Run Rust Firmware</a></h2>
 <p>Watch what happens when we click the <strong>“Run” Button</strong> in our BL602 Simulator: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/docs/simulator.js#L30-L81"><code>simulator.js</code></a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>/// Run the command in the input box
 function runScript() {
@@ -623,7 +623,7 @@ function runScript() {
   //  Parse the JSON Stream of Simulation Events
   simulation_events = JSON.parse(json);</code></pre></div>
 <p>Inside <strong><code>simulation_events</code></strong> we have a JSON Stream of Simulation Events, ready for processing!</p>
-<h2 id="handle-simulation-events" class="section-header"><a href="#handle-simulation-events">5.2 Handle Simulation Events</a></h2>
+<h2 id="handle-simulation-events"><a href="#handle-simulation-events">5.2 Handle Simulation Events</a></h2>
 <p>Our JavaScript code has <strong>received the JSON Stream</strong> of Simulation Events from the Rust Firmware…</p>
 <div class="example-wrap"><pre class="language-json"><code>[ 
   { &quot;gpio_output_set&quot;: { &quot;pin&quot;: 11, &quot;value&quot;: 1 } }, 
@@ -700,7 +700,7 @@ function gpio_output_set(pin, value) {
 <p><em>What about <code>time_delay</code>, the event handler for Time Delays?</em></p>
 <p><code>time_delay</code> is explained here: <a href="https://lupyuen.github.io/articles/wasm#simulate-delays">“Simulate Delays”</a></p>
 <p>(Hint: It simulates Time Delays by calling the JavaScript Timer that we’ve seen earlier)</p>
-<h1 id="run-bl602-firmware-in-simulator" class="section-header"><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a></h1>
+<h1 id="run-bl602-firmware-in-simulator"><a href="#run-bl602-firmware-in-simulator">6 Run BL602 Firmware in Simulator</a></h1>
 <p>Try the <strong>BL602 Rust Firmware Simulator</strong> for yourself!</p>
 <ul>
 <li><a href="https://lupyuen.github.io/bl602-simulator/"><strong>BL602 Simulator in WebAssembly</strong></a></li>
@@ -724,7 +724,7 @@ function gpio_output_set(pin, value) {
 <p>Click <strong><code>Run</code></strong></p>
 </li>
 </ol>
-<h1 id="easier-embedded-development" class="section-header"><a href="#easier-embedded-development">7 Easier Embedded Development?</a></h1>
+<h1 id="easier-embedded-development"><a href="#easier-embedded-development">7 Easier Embedded Development?</a></h1>
 <p><em>Is this easier than building and testing firmware on Real BL602 Hardware?</em></p>
 <p>BL602 Simulator could potentially shorten the <strong>Code - Build - Flash - Test Cycle</strong> for Embedded Development…</p>
 <ol>
@@ -786,7 +786,7 @@ function gpio_output_set(pin, value) {
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">c_int</span> { ...</code></pre></div>
 <p>Yep this means they can be <strong>called from C Firmware</strong>!</p>
 <p>And the BL602 Shim Functions will <strong>emit simulation events</strong>… Our C Firmware will work exactly like Rust Firmware!</p>
-<h1 id="validate-calls-to-bl602-iot-sdk" class="section-header"><a href="#validate-calls-to-bl602-iot-sdk">8 Validate Calls to BL602 IoT SDK</a></h1>
+<h1 id="validate-calls-to-bl602-iot-sdk"><a href="#validate-calls-to-bl602-iot-sdk">8 Validate Calls to BL602 IoT SDK</a></h1>
 <p><em>What if the Embedded HAL (like BL602 IoT SDK) could tell us how to fix our code?</em></p>
 <p>(Wouldn’t that be great, especially for learners?)</p>
 <p>Yep we can help Embedded Learners when we catch <strong>BL602 SDK Calling Errors</strong> and <strong>explain the errors</strong> in a friendly way.</p>
@@ -829,7 +829,7 @@ function gpio_output_set(pin, value) {
   );</code></pre></div>
 <p>That’s how we make BL602 Simulator a little more helpful for Embedded Learners… By validating the calls to BL602 IoT SDK!</p>
 <p><img src="https://lupyuen.github.io/images/rustsim-validate3.png" alt="Validate Calls to BL602 IoT SDK" /></p>
-<h1 id="pinedio-stack-bl604" class="section-header"><a href="#pinedio-stack-bl604">9 PineDio Stack BL604</a></h1>
+<h1 id="pinedio-stack-bl604"><a href="#pinedio-stack-bl604">9 PineDio Stack BL604</a></h1>
 <p><em>Simulating a plain BL602 board (like PineCone BL602) is pointless, innit?</em></p>
 <p>Yep simulating a <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a> ain’t particularly exciting because it only has…</p>
 <ol>
@@ -866,7 +866,7 @@ function gpio_output_set(pin, value) {
 <p>It makes a lot more sense to <strong>simulate the PineDio Stack</strong>, because it’s a super interesting gadget for Embedded Learners.</p>
 <p>Stay tuned for an updated simulator with support for <strong>LVGL, LoRa and LoRaWAN!</strong></p>
 <p><img src="https://lupyuen.github.io/images/rustsim-pinedio.png" alt="PineDio Stack Schematic" /></p>
-<h1 id="scripting-for-bl602-simulator" class="section-header"><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a></h1>
+<h1 id="scripting-for-bl602-simulator"><a href="#scripting-for-bl602-simulator">10 Scripting for BL602 Simulator</a></h1>
 <p>To make BL602 Simulator even more useful for Embedded Learners, we’re adding the <a href="https://rhai.rs/book/"><strong>Rhai Scripting Engine</strong></a> to the simulator…</p>
 <p><img src="https://lupyuen.github.io/images/rhai-rust.jpg" alt="Rhai Script vs Rust Firmware" /></p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/tree/main/bl602-script">(Source)</a></p>
@@ -894,7 +894,7 @@ function gpio_output_set(pin, value) {
 </ul>
 <p><img src="https://lupyuen.github.io/images/rhai-module.png" alt="Rhai Scripting for BL602 Simulator" /></p>
 <p><a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-script/src/lib.rs">(Source)</a></p>
-<h2 id="drag-and-drop-scripting" class="section-header"><a href="#drag-and-drop-scripting">10.1 Drag and Drop Scripting</a></h2>
+<h2 id="drag-and-drop-scripting"><a href="#drag-and-drop-scripting">10.1 Drag and Drop Scripting</a></h2>
 <p><em>I sense another upcoming enhancement?</em></p>
 <p>Yes! Since we’re adding a <strong>Scripting Engine</strong> to the simulator…</p>
 <p>Why not make it super easy to create scripts: The <strong>Drag-and-Drop Way</strong>!</p>
@@ -907,7 +907,7 @@ function gpio_output_set(pin, value) {
 <p><em>Can we do this through a Desktop App? (Instead of Web Browser)</em></p>
 <p>Possibly, if we wrap the Web Browser Interface into a <strong>Desktop App with Tauri</strong>.</p>
 <p><a href="https://tauri.studio/en/">(More about Tauri)</a></p>
-<h2 id="run-scripts-on-bl602" class="section-header"><a href="#run-scripts-on-bl602">10.2 Run Scripts on BL602</a></h2>
+<h2 id="run-scripts-on-bl602"><a href="#run-scripts-on-bl602">10.2 Run Scripts on BL602</a></h2>
 <p><em>Rhai Scripts run OK on our simulator with WebAssembly. But will the scripts run on Real BL602 Hardware?</em></p>
 <p>Sadly no. Rhai Scripting Engine is <strong>too heavy for BL602</strong>. <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_rust_script">(See this)</a></p>
 <p>But we could auto-convert / <strong>transcode Rhai Script to uLisp</strong>, which runs fine on BL602.</p>
@@ -954,7 +954,7 @@ function gpio_output_set(pin, value) {
 <blockquote>
 <p><a href="https://github.com/lupyuen2/blockly-bl602">(Source)</a></p>
 </blockquote>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>We have a lot of work coming up!</p>
 <ol>
 <li>
@@ -992,7 +992,7 @@ function gpio_output_set(pin, value) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rustsim.md"><code>lupyuen.github.io/src/rustsim.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1423169766080933891">this Twitter Thread</a></p>
@@ -1001,7 +1001,7 @@ function gpio_output_set(pin, value) {
 <p><strong>Mbed OS</strong> has a simulator based on C++ and Emscripten. <a href="https://os.mbed.com/blog/entry/introducing-mbed-simulator/">(See this)</a></p>
 </li>
 </ol>
-<h1 id="appendix-rhai-scripts-on-bl602" class="section-header"><a href="#appendix-rhai-scripts-on-bl602">13 Appendix: Rhai Scripts on BL602</a></h1>
+<h1 id="appendix-rhai-scripts-on-bl602"><a href="#appendix-rhai-scripts-on-bl602">13 Appendix: Rhai Scripts on BL602</a></h1>
 <p><em>We can run Rhai Scripts in our Web Browser thanks to WebAssembly…</em></p>
 <p><em>How will we run Rhai Scripts on Real BL602 Hardware?</em></p>
 <p>Sadly Rhai Scripting Engine is <strong>too heavy for BL602</strong>. <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/sdk_app_rust_script">(See this)</a></p>
@@ -1082,7 +1082,7 @@ object *fn_bl_gpio_output_set(object *args, object *env) {
 <p><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-macros/src/safe_wrap.rs">(Via the <code>safe_wrap</code> Procedural Macro)</a></p>
 </li>
 </ol>
-<h1 id="appendix-rust-simulation-events" class="section-header"><a href="#appendix-rust-simulation-events">14 Appendix: Rust Simulation Events</a></h1>
+<h1 id="appendix-rust-simulation-events"><a href="#appendix-rust-simulation-events">14 Appendix: Rust Simulation Events</a></h1>
 <p><em>How is the JSON Stream of Simulation Events accessed via the Rust Simulator Library?</em></p>
 <p>Remember that we maintain a <strong>Vector of Simulation Events</strong> in Rust: <a href="https://github.com/lupyuen/bl602-simulator/blob/main/bl602-simulator/src/lib.rs#L23-L31"><code>bl602-simulator/lib.rs</code></a></p>
 

@@ -118,7 +118,7 @@
 <p>But it should work for <strong>any LoRaWAN Device</strong> connected to The Things Network… Assuming that we have configured a suitable <strong>Payload Formatter</strong> in The Things Network. </p>
 <p>(Read on to learn how)</p>
 <p><img src="https://lupyuen.github.io/images/payload-title.jpg" alt="CBOR Payload Formatter for The Things Network" /></p>
-<h1 id="payload-formatter" class="section-header"><a href="#payload-formatter">1 Payload Formatter</a></h1>
+<h1 id="payload-formatter"><a href="#payload-formatter">1 Payload Formatter</a></h1>
 <p><em>What’s a Payload Formatter in The Things Network?</em></p>
 <p>A <strong>Payload Formatter</strong> is JavaScript Code that we configure in The Things Network to <strong>decode the Sensor Data</strong> in the LoRaWAN Message Payload.</p>
 <p>For PineDio Stack our Sensor Data is encoded with CBOR (Concise Binary Object Representation), so we use this <strong>CBOR Payload Formatter</strong>…</p>
@@ -130,7 +130,7 @@
 <p><a href="https://lupyuen.github.io/articles/payload#whats-a-payload-formatter">(More about Payload Formatters)</a></p>
 <p><em>What if we can’t find a suitable Payload Formatter?</em></p>
 <p>We can make one together! <a href="https://www.reddit.com/r/TheThingsNetwork/comments/qafzu4/cbor_payload_formatter_for_the_things_network/?utm_source=share&amp;utm_medium=web2x&amp;context=3">Post a comment here</a></p>
-<h2 id="checkpoint-alpha" class="section-header"><a href="#checkpoint-alpha">1.1 Checkpoint Alpha</a></h2>
+<h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">1.1 Checkpoint Alpha</a></h2>
 <p>Let’s verify that our <strong>Payload Formatter works OK</strong> for decoding our Sensor Data…</p>
 <ol>
 <li>
@@ -215,7 +215,7 @@ mosquitto_sub \
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/prometheus-flow2.jpg" alt="MQTT Gateway for Prometheus" /></p>
-<h1 id="mqtt-gateway-for-prometheus" class="section-header"><a href="#mqtt-gateway-for-prometheus">2 MQTT Gateway for Prometheus</a></h1>
+<h1 id="mqtt-gateway-for-prometheus"><a href="#mqtt-gateway-for-prometheus">2 MQTT Gateway for Prometheus</a></h1>
 <p>Now we connect our MQTT Gateway to The Things Network…</p>
 <ul>
 <li><a href="https://github.com/hikhvar/mqtt2prometheus"><strong>MQTT2Prometheus MQTT Gateway</strong></a></li>
@@ -261,7 +261,7 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre
 <p><img src="https://lupyuen.github.io/images/prometheus-config4.png" alt="MQTT Configuration File" /></p>
 </li>
 </ol>
-<h2 id="prometheus-metrics" class="section-header"><a href="#prometheus-metrics">2.1 Prometheus Metrics</a></h2>
+<h2 id="prometheus-metrics"><a href="#prometheus-metrics">2.1 Prometheus Metrics</a></h2>
 <p><em>What’s a Prometheus Metric?</em></p>
 <p>A Metric is an item of <strong>Monitoring Data</strong> that’s collected and reported by Prometheus.</p>
 <p>(Think of Metrics like CPU Usage and RAM Utilisation… Prometheus was originally created for monitoring servers)</p>
@@ -329,7 +329,7 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre
   const_labels:
     sensor_type: l</code></pre></div></li>
 </ol>
-<h2 id="start-mqtt-gateway" class="section-header"><a href="#start-mqtt-gateway">2.2 Start MQTT Gateway</a></h2>
+<h2 id="start-mqtt-gateway"><a href="#start-mqtt-gateway">2.2 Start MQTT Gateway</a></h2>
 <p>We’re ready to <strong>start our MQTT Gateway</strong>!</p>
 <p>Follow these steps to download and run <strong>MQTT2Prometheus</strong>…</p>
 <ol>
@@ -384,7 +384,7 @@ Got message
 <p>MQTT Gateway is now listening for <strong>HTTP Requests at port 9641</strong>!</p>
 </li>
 </ol>
-<h2 id="checkpoint-bravo" class="section-header"><a href="#checkpoint-bravo">2.3 Checkpoint Bravo</a></h2>
+<h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">2.3 Checkpoint Bravo</a></h2>
 <p>Let’s check the <strong>Sensor Data ingested</strong> by our MQTT Gateway…</p>
 <ol>
 <li>
@@ -424,7 +424,7 @@ topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
 <p><img src="https://lupyuen.github.io/images/prometheus-flow3.jpg" alt="Prometheus Time Series Database" /></p>
 </li>
 </ol>
-<h1 id="prometheus-time-series-database" class="section-header"><a href="#prometheus-time-series-database">3 Prometheus Time Series Database</a></h1>
+<h1 id="prometheus-time-series-database"><a href="#prometheus-time-series-database">3 Prometheus Time Series Database</a></h1>
 <p><em>How do we push the Sensor Data / Metrics from MQTT Gateway to Prometheus?</em></p>
 <p>Prometheus collects Metrics by <strong>scraping them over HTTP</strong>…</p>
 <p>(Much like the <strong>curl</strong> command from Checkpoint Bravo)</p>
@@ -491,7 +491,7 @@ main.go:794
 <p>Prometheus is now listening for <strong>HTTP Requests at port 9090</strong>!</p>
 </li>
 </ol>
-<h2 id="checkpoint-charlie" class="section-header"><a href="#checkpoint-charlie">3.1 Checkpoint Charlie</a></h2>
+<h2 id="checkpoint-charlie"><a href="#checkpoint-charlie">3.1 Checkpoint Charlie</a></h2>
 <p>Let’s check the <strong>Metrics scraped by Prometheus</strong> from MQTT Gateway…</p>
 <ol>
 <li>
@@ -515,7 +515,7 @@ main.go:794
 </ol>
 <p>We’re ready for our final step… Connecting Prometheus to Grafana!</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-flow4.jpg" alt="Grafana Dashboard for Prometheus" /></p>
-<h1 id="grafana-dashboard" class="section-header"><a href="#grafana-dashboard">4 Grafana Dashboard</a></h1>
+<h1 id="grafana-dashboard"><a href="#grafana-dashboard">4 Grafana Dashboard</a></h1>
 <p>Finally we <strong>install and configure Grafana</strong> to pull the Metrics from Prometheus (over HTTP) for rendering in a Grafana Dashboard…</p>
 <ol>
 <li>
@@ -547,7 +547,7 @@ main.go:794
 <p>Click <strong>“Save &amp; Test”</strong></p>
 </li>
 </ol>
-<h2 id="checkpoint-delta" class="section-header"><a href="#checkpoint-delta">4.1 Checkpoint Delta</a></h2>
+<h2 id="checkpoint-delta"><a href="#checkpoint-delta">4.1 Checkpoint Delta</a></h2>
 <p>For our final checkpoint let’s render our Sensor Data in a <strong>Grafana Dashboard</strong>!</p>
 <ol>
 <li>
@@ -575,7 +575,7 @@ main.go:794
 <p>(Remember: Our Temperature Values are scaled up 100 times)</p>
 </li>
 </ol>
-<h1 id="transform-and-filter-sensor-data" class="section-header"><a href="#transform-and-filter-sensor-data">5 Transform and Filter Sensor Data</a></h1>
+<h1 id="transform-and-filter-sensor-data"><a href="#transform-and-filter-sensor-data">5 Transform and Filter Sensor Data</a></h1>
 <p><em>Can we tweak the display of Sensor Data in Grafana?</em></p>
 <p>Grafana lets us <strong>transform and filter</strong> the Sensor Data for our Dashboard.</p>
 <p>First we show the <strong>Raw Sensor Data</strong> as a table…</p>
@@ -626,7 +626,7 @@ main.go:794
 <p>When we’re done, click the <strong>“Apply”</strong> button (top right)</p>
 </li>
 </ol>
-<h2 id="auto-dashboard-refresh" class="section-header"><a href="#auto-dashboard-refresh">5.1 Auto Dashboard Refresh</a></h2>
+<h2 id="auto-dashboard-refresh"><a href="#auto-dashboard-refresh">5.1 Auto Dashboard Refresh</a></h2>
 <p><em>Our Grafana Dashboard doesn’t refresh automatically for real-time Sensor Data?</em></p>
 <p>No worries! This neat trick will <strong>auto-refresh our Grafana Dashboard</strong> to render real-time Sensor Data…</p>
 <ol>
@@ -648,7 +648,7 @@ main.go:794
 <p>Now our Grafana Dashboard auto-refreshes every 5 seconds!</p>
 </li>
 </ol>
-<h1 id="mqtt-with-tls-encryption" class="section-header"><a href="#mqtt-with-tls-encryption">6 MQTT with TLS Encryption</a></h1>
+<h1 id="mqtt-with-tls-encryption"><a href="#mqtt-with-tls-encryption">6 MQTT with TLS Encryption</a></h1>
 <p>There’s a <strong>Security Risk</strong> in our configuration of MQTT Gateway…</p>
 <p>Our <strong>MQTT Password is transmitted as clear text</strong> from our computer to The Things Network!</p>
 <p>To secure our MQTT Password with <strong>TLS Encryption</strong>, follow the instructions here…</p>
@@ -656,12 +656,12 @@ main.go:794
 <li><a href="https://github.com/lupyuen/prometheus-the-things-network#mqtt-with-tls"><strong>“MQTT with TLS Encryption”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/prometheus-tls.jpg" alt="MQTT with TLS Encryption" /></p>
-<h2 id="checkpoint-echo" class="section-header"><a href="#checkpoint-echo">6.1 Checkpoint Echo</a></h2>
+<h2 id="checkpoint-echo"><a href="#checkpoint-echo">6.1 Checkpoint Echo</a></h2>
 <p><em>What if we have problems enabling TLS Encryption for MQTT?</em></p>
 <p>Run <a href="https://www.wireshark.org/"><strong>Wireshark</strong></a> on our computer and trace the <strong>TLS Certificates</strong> that are presented by The Things Network and by our computer.</p>
 <p>The certificates should appear like this…</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-wireshark2.png" alt="Tracing MQTT with TLS Encryption" /></p>
-<h1 id="sensor-data-alerts" class="section-header"><a href="#sensor-data-alerts">7 Sensor Data Alerts</a></h1>
+<h1 id="sensor-data-alerts"><a href="#sensor-data-alerts">7 Sensor Data Alerts</a></h1>
 <p><em>Can we create Alerts for monitoring our Sensor Data?</em></p>
 <p><em>Like when the Temperature gets too hot?</em></p>
 <p>Yes that’s possible with <strong>Prometheus Alert Manager</strong>!</p>
@@ -681,7 +681,7 @@ main.go:794
 <p>Drop me a note if you’re keen to learn about Prometheus Alerts!</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-arch.png" alt="Prometheus Architecture" /></p>
 <p><a href="https://prometheus.io/docs/introduction/overview/">(Prometheus Architecture)</a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>I had fun integrating The Things Network with Prometheus and Grafana… It’s something I always wanted to do. I hope you enjoyed it too!</p>
 <p>In the next article I’ll head back to <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> and run more IoT Experiments with LoRaWAN and The Things Network.</p>
 <p>(Thankfully we now have a proper platform for Sensor Data visualisation and analysis: Prometheus + Grafana!)</p>
@@ -705,7 +705,7 @@ main.go:794
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/prometheus.md"><code>lupyuen.github.io/src/prometheus.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>
 <p>If we’re rendering <strong>Multiple Sensor Types</strong> in a Grafana Panel (like Temperature and Light Level)…</p>
@@ -736,7 +736,7 @@ main.go:794
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1450262680795713538">this Twitter Thread</a></p>
 </li>
 </ol>
-<h1 id="appendix-configure-the-things-network-mqtt" class="section-header"><a href="#appendix-configure-the-things-network-mqtt">10 Appendix: Configure The Things Network MQTT</a></h1>
+<h1 id="appendix-configure-the-things-network-mqtt"><a href="#appendix-configure-the-things-network-mqtt">10 Appendix: Configure The Things Network MQTT</a></h1>
 <p>Follow these steps to <strong>enable the MQTT Server</strong> in The Things Network…</p>
 <ol>
 <li>
@@ -762,7 +762,7 @@ main.go:794
 <p>(This is the only time we can see the password. Don’t forget to copy it!)</p>
 </li>
 </ol>
-<h1 id="appendix-install-grafana" class="section-header"><a href="#appendix-install-grafana">11 Appendix: Install Grafana</a></h1>
+<h1 id="appendix-install-grafana"><a href="#appendix-install-grafana">11 Appendix: Install Grafana</a></h1>
 <p>Follow these steps to <strong>install Grafana</strong> on Linux, macOS and Windows…</p>
 <ol>
 <li>

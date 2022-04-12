@@ -107,7 +107,7 @@
 <p>Today we’ll learn to connect the <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Evaluation Board</strong></a> to OpenOCD for loading and debugging PineCone firmware.</p>
 <p><a href="https://lupyuen.github.io/articles/pinecone#other-flashing-tools">(JTAG and OpenOCD won’t work for flashing BL602)</a></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_Openocd&amp;GDB/en">(UPDATE: There’s a new doc on BL602, OpenOCD and GDB. Check it out here</a></p>
-<h1 id="what-is-openocd" class="section-header"><a href="#what-is-openocd">1 What is OpenOCD?</a></h1>
+<h1 id="what-is-openocd"><a href="#what-is-openocd">1 What is OpenOCD?</a></h1>
 <p><strong>OpenOCD</strong> is the open source software that runs on our computer and connects to microcontrollers (like PineCone) to…</p>
 <ol>
 <li>
@@ -125,20 +125,20 @@
 <p><a href="https://lupyuen.github.io/articles/pinecone#other-flashing-tools">(JTAG and OpenOCD won’t work for flashing BL602)</a></p>
 <p>This is similar to the SWD Port that’s found in PineTime, STM32 Blue Pill and other Arm microcontrollers.</p>
 <p>We’ll learn about JTAG in the next section.</p>
-<h2 id="openocd-vs-uart-flashing" class="section-header"><a href="#openocd-vs-uart-flashing">1.1 OpenOCD vs UART Flashing</a></h2>
+<h2 id="openocd-vs-uart-flashing"><a href="#openocd-vs-uart-flashing">1.1 OpenOCD vs UART Flashing</a></h2>
 <p><em>Doesn’t PineCone support UART flashing? Why use OpenOCD and JTAG?</em></p>
 <p>Yes we may flash our firmware to PineCone via a Serial USB connection to PineCone’s UART Port. <a href="https://lupyuen.github.io/articles/pinecone">More about this</a></p>
 <p>However it uses a flashing protocol that’s designed specifically for BL602 devices. The flashing protocol is not supported by popular tools like VSCode.</p>
 <p>BL602 doesn’t support debugging over UART. For serious firmware coding on BL602, OpenOCD is the best option.</p>
 <p><a href="https://lupyuen.github.io/articles/pinecone#other-flashing-tools">(JTAG and OpenOCD won’t work for flashing BL602)</a></p>
-<h2 id="openocd-alternatives" class="section-header"><a href="#openocd-alternatives">1.2 OpenOCD Alternatives</a></h2>
+<h2 id="openocd-alternatives"><a href="#openocd-alternatives">1.2 OpenOCD Alternatives</a></h2>
 <p><em>OpenOCD has been around for a while. Are there newer tools for loading and debugging firmware?</em></p>
 <p>There’s a newer alternative to OpenOCD that’s built with Rust: <a href="https://probe.rs/">probe.rs</a></p>
 <p>It has beta support for JTAG. Hopefully we can use it with PineCone someday.</p>
 <p>But for today, we’ll learn to use OpenOCD and JTAG with PineCone.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-sipeed.jpg" alt="Sipeed JTAG Debugger" /></p>
 <p><em>Sipeed JTAG Debugger with the JTAG Pins: TMS, TCK, TDI, TDO, GND</em></p>
-<h1 id="what-is-jtag" class="section-header"><a href="#what-is-jtag">2 What is JTAG?</a></h1>
+<h1 id="what-is-jtag"><a href="#what-is-jtag">2 What is JTAG?</a></h1>
 <p>PineCone’s <strong>JTAG Port</strong> is a standard port for loading and debugging firmware, available on most RISC-V microcontrollers (like SiFive FE310 and GigaDevice GD32 VF103).</p>
 <p>JTAG uses these pins…</p>
 <ol>
@@ -153,14 +153,14 @@
 <p><em>Why are the JTAG Pins named “Test”?</em></p>
 <p>Because JTAG was originally created for testing Printed Circuit Boards. JTAG stands for Joint Test Action Group, the maintainers of the JTAG standard.</p>
 <p><a href="https://www.allaboutcircuits.com/technical-articles/introduction-to-jtag-test-access-port-tap/">More about JTAG</a></p>
-<h2 id="jtag-vs-swd" class="section-header"><a href="#jtag-vs-swd">2.1 JTAG vs SWD</a></h2>
+<h2 id="jtag-vs-swd"><a href="#jtag-vs-swd">2.1 JTAG vs SWD</a></h2>
 <p><em>Is SWD supported for flashing and debugging firmware on PineCone?</em></p>
 <p>Sorry no. SWD is available only on Arm Microcontrollers. <a href="https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi">(SWD was created by Arm)</a></p>
 <p>SWD is derived from JTAG… It takes the 4 pins from JTAG and smashes them into 2 pins SWDCLK (Clock) and SWDIO (Birectional Data). <a href="https://en.wikipedia.org/wiki/JTAG#Similar_interface_standards">More details</a></p>
 <p>Let’s go deep into the JTAG Port on PineCone…</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag.png" alt="Default JTAG Port on PineCone" /></p>
 <p><em>Default JTAG Port on PineCone</em></p>
-<h1 id="wheres-the-jtag-port" class="section-header"><a href="#wheres-the-jtag-port">3 Where’s the JTAG Port?</a></h1>
+<h1 id="wheres-the-jtag-port"><a href="#wheres-the-jtag-port">3 Where’s the JTAG Port?</a></h1>
 <p>BL602 is an interesting microcontroller… Each pin may be remapped to various functions: GPIO, SPI, I2C, UART, PWM, ADC, SDIO, even JTAG!</p>
 <p>To find the default JTAG Pins, we refer to…</p>
 <ul>
@@ -186,7 +186,7 @@
 <p>Before connecting PineCone to our JTAG Debugger, we need to <a href="https://lupyuen.github.io/images/pinecone-solder.jpg">solder the headers</a> to the PineCone board and expose the above JTAG Pins.</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-headers.jpg" alt="Default JTAG Port connected to JTAG Debugger" /></p>
 <p><em>Default JTAG Port connected to JTAG Debugger. Jumper is set to H, for Bootloader Mode. LED is lit with multiple colours when JTAG is active.</em></p>
-<h1 id="connect-jtag-debugger-to-pinecone" class="section-header"><a href="#connect-jtag-debugger-to-pinecone">4 Connect JTAG Debugger to PineCone</a></h1>
+<h1 id="connect-jtag-debugger-to-pinecone"><a href="#connect-jtag-debugger-to-pinecone">4 Connect JTAG Debugger to PineCone</a></h1>
 <p>The instructions here will work with <a href="https://www.seeedstudio.com/Sipeed-USB-JTAG-TTL-RISC-V-Debugger-p-2910.html">Sipeed JTAG Debugger</a> and other JTAG Debuggers based on FTDI FT2232.</p>
 <ul>
 <li>
@@ -232,9 +232,9 @@
 <p>We’re ready to download and run OpenOCD…</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jtag-ftdi.jpg" alt="Sipeed JTAG Debugger is powered by FTDI FT2232D" /></p>
 <p><em>Sipeed JTAG Debugger is powered by FTDI FT2232D</em></p>
-<h1 id="download-and-run-openocd" class="section-header"><a href="#download-and-run-openocd">5 Download and run OpenOCD</a></h1>
+<h1 id="download-and-run-openocd"><a href="#download-and-run-openocd">5 Download and run OpenOCD</a></h1>
 <p>Here are the steps to download and run OpenOCD with PineCone on Linux, macOS and Windows…</p>
-<h2 id="download-openocd" class="section-header"><a href="#download-openocd">5.1 Download OpenOCD</a></h2>
+<h2 id="download-openocd"><a href="#download-openocd">5.1 Download OpenOCD</a></h2>
 <p>Download OpenOCD from the <a href="https://github.com/xpack-dev-tools/openocd-xpack/releases/tag/v0.10.0-15/">xPack OpenOCD site</a>… (Other variants of OpenOCD may not work with PineCone)</p>
 <ul>
 <li>
@@ -254,12 +254,12 @@
 </li>
 </ul>
 <p>Extract the downloaded file. On Windows: <a href="https://www.7-zip.org/">Use 7-Zip</a></p>
-<h2 id="download-openocd-script" class="section-header"><a href="#download-openocd-script">5.2 Download OpenOCD Script</a></h2>
+<h2 id="download-openocd-script"><a href="#download-openocd-script">5.2 Download OpenOCD Script</a></h2>
 <p>Open a command prompt and enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/lupyuen/pinecone-rust</code></pre></div>
 <p>If we will be coding Rust Firmware for PineCone, enter these commands too…</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/sipeed/bl602-pac
-git clone --recursive https://github.com/sipeed/bl602-hal</code></pre></div><h2 id="run-openocd" class="section-header"><a href="#run-openocd">5.3 Run OpenOCD</a></h2>
+git clone --recursive https://github.com/sipeed/bl602-hal</code></pre></div><h2 id="run-openocd"><a href="#run-openocd">5.3 Run OpenOCD</a></h2>
 <p>At the command prompt, enter…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd pinecone-rust
 OPENOCD_DIRECTORY/bin/openocd</code></pre></div>
@@ -267,7 +267,7 @@ OPENOCD_DIRECTORY/bin/openocd</code></pre></div>
 <div class="example-wrap"><pre class="language-cmd"><code>cd pinecone-rust
 OPENOCD_DIRECTORY\bin\openocd</code></pre></div>
 <p>Change <code>OPENOCD_DIRECTORY</code> to the directory that contains the extracted xPack OpenOCD files.</p>
-<h2 id="openocd-output" class="section-header"><a href="#openocd-output">5.4 OpenOCD Output</a></h2>
+<h2 id="openocd-output"><a href="#openocd-output">5.4 OpenOCD Output</a></h2>
 <p>We should see this output in OpenOCD…</p>
 <div class="example-wrap"><pre class="language-text"><code>xPack OpenOCD, x86_64 Open On-Chip Debugger 0.10.0+dev-00378-ge5be992df (2020-06-26-12:31)
 Licensed under GNU GPL v2
@@ -296,7 +296,7 @@ Info : Listening on port 6666 for tcl connections</code></pre></div>
 <p>If we see CPU ID <code>0x20000c05</code> and the messages above… Congratulations OpenOCD is now connected to PineCone’s JTAG Port!</p>
 <p>OpenOCD is all ready to load and debug PineCone firmware. <a href="https://lupyuen.github.io/articles/debug">(Which we’ll cover in the next article)</a></p>
 <p>To stop OpenOCD and disconnect from PineCone, press <code>Ctrl-C</code>.</p>
-<h2 id="troubleshoot-openocd" class="section-header"><a href="#troubleshoot-openocd">5.5 Troubleshoot OpenOCD</a></h2>
+<h2 id="troubleshoot-openocd"><a href="#troubleshoot-openocd">5.5 Troubleshoot OpenOCD</a></h2>
 <p>If we see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Error: unable to open ftdi device with vid 0403, pid 6010, description &#39;*&#39;, serial &#39;*&#39; at bus location &#39;*&#39;</code></pre></div>
 <p>It means that OpenOCD couldn’t detect the JTAG Debugger. Check that the FT2232 drivers are installed correctly.</p>
@@ -308,26 +308,26 @@ Info : Hart 0 unexpectedly reset!
 Error: failed read at 0x11, status=1</code></pre></div>
 <p>Check that the <code>GND</code> Pin is connected from the JTAG Debugger to PineCone.</p>
 <p><a href="https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-openocd/">More tips on connecting OpenOCD to FT2232</a></p>
-<h1 id="openocd-script" class="section-header"><a href="#openocd-script">6 OpenOCD Script</a></h1>
+<h1 id="openocd-script"><a href="#openocd-script">6 OpenOCD Script</a></h1>
 <p>The OpenOCD connection to PineCone is controlled by the OpenOCD Script <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a>.</p>
 <p>Our OpenOCD Script is based on the one kindly contributed by the <a href="https://github.com/sipeed/bl602-rust-guide">Sipeed BL602 Community</a>.</p>
 <p>Let’s study the important bits of our OpenOCD Script: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/openocd.cfg"><code>pinecone-rust/openocd.cfg</code></a></p>
-<h2 id="debug-logging" class="section-header"><a href="#debug-logging">6.1 Debug Logging</a></h2><div class="example-wrap"><pre class="language-text"><code># Uncomment to enable debug messages
+<h2 id="debug-logging"><a href="#debug-logging">6.1 Debug Logging</a></h2><div class="example-wrap"><pre class="language-text"><code># Uncomment to enable debug messages
 # debug_level 4</code></pre></div>
 <p>To show debug messages in OpenOCD, uncomment the <code>debug_level</code> line. (Remove the leading “<code>#</code>”)</p>
 <p>This is useful for troubleshooting the OpenOCD connection to PineCone. OpenOCD will show every single JTAG packet transmitted between our computer and PineCone.</p>
-<h2 id="openocd-driver" class="section-header"><a href="#openocd-driver">6.2 OpenOCD Driver</a></h2><div class="example-wrap"><pre class="language-text"><code>adapter driver ftdi
+<h2 id="openocd-driver"><a href="#openocd-driver">6.2 OpenOCD Driver</a></h2><div class="example-wrap"><pre class="language-text"><code>adapter driver ftdi
 
 ftdi_vid_pid 0x0403 0x6010</code></pre></div>
 <p>Here we tell OpenOCD to use the FT2232 debugger that’s connected to USB.</p>
 <p><code>0x0403</code> is the USB Vendor ID for FT2232. <code>0x6010</code> is the USB Product ID.</p>
-<h2 id="ftdi-channel" class="section-header"><a href="#ftdi-channel">6.3 FTDI Channel</a></h2><div class="example-wrap"><pre class="language-text"><code># Sipeed JTAG Debugger uses FTDI Channel 0, not 1
+<h2 id="ftdi-channel"><a href="#ftdi-channel">6.3 FTDI Channel</a></h2><div class="example-wrap"><pre class="language-text"><code># Sipeed JTAG Debugger uses FTDI Channel 0, not 1
 ftdi_channel 0
 # Previously: ftdi_channel 1</code></pre></div>
 <p>According to the <a href="https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT2232D.pdf">FT2232 Specs</a>, the FT2232 module supports two Serial Channels: 0 and 1.</p>
 <p>For Sipeed JTAG Debugger: The FTDI Channel must be 0. <a href="https://tang.sipeed.com/en/hardware-overview/rv-debugger/?utm_source=platformio&amp;utm_medium=docs">See the schematics</a></p>
 <p>For other JTAG Debuggers: Set the FTDI Channel to 0 if PineCone is connected to the first Serial Channel, and to 1 for the second Serial Channel.</p>
-<h2 id="jtag-speed" class="section-header"><a href="#jtag-speed">6.4 JTAG Speed</a></h2><div class="example-wrap"><pre class="language-text"><code>transport select jtag
+<h2 id="jtag-speed"><a href="#jtag-speed">6.4 JTAG Speed</a></h2><div class="example-wrap"><pre class="language-text"><code>transport select jtag
 
 # TODO: Increase the adapter speed (now 100 kHz)
 adapter speed 100
@@ -335,15 +335,15 @@ adapter speed 100
 <p>Here we select JTAG as the communication protocol for talking to PineCone.</p>
 <p>Our OpenOCD Script talks to PineCone at 100 kbps, which is a safe (but slow) data rate that works with most JTAG Debuggers.</p>
 <p>We should increase the Adapter Speed to speed up the data transfer. (After lots of testing, of course)</p>
-<h2 id="cpu-id" class="section-header"><a href="#cpu-id">6.5 CPU ID</a></h2><div class="example-wrap"><pre class="language-text"><code>set _CHIPNAME riscv
+<h2 id="cpu-id"><a href="#cpu-id">6.5 CPU ID</a></h2><div class="example-wrap"><pre class="language-text"><code>set _CHIPNAME riscv
 jtag newtap $_CHIPNAME cpu -irlen 5 -expected-id 0x20000c05</code></pre></div>
 <p>This is the part that verifies BL602’s CPU ID: <code>0x20000c05</code></p>
 <p>This should never be changed. (Unless we’re connecting to a different microcontroller)</p>
-<h2 id="restart-pinecone" class="section-header"><a href="#restart-pinecone">6.6 Restart PineCone</a></h2><div class="example-wrap"><pre class="language-text"><code>init
+<h2 id="restart-pinecone"><a href="#restart-pinecone">6.6 Restart PineCone</a></h2><div class="example-wrap"><pre class="language-text"><code>init
 reset init</code></pre></div>
 <p>The <code>init</code> command initiates the JTAG connection to PineCone, and verifies the CPU ID of our BL602 Microcontroller.</p>
 <p><code>reset init</code> triggers a reboot of PineCone. (Similar to pressing the <code>RST</code> button on PineCone)</p>
-<h2 id="wait-for-gdb-and-tcl-commands" class="section-header"><a href="#wait-for-gdb-and-tcl-commands">6.7 Wait for GDB and TCL Commands</a></h2>
+<h2 id="wait-for-gdb-and-tcl-commands"><a href="#wait-for-gdb-and-tcl-commands">6.7 Wait for GDB and TCL Commands</a></h2>
 <p>After executing our script, OpenOCD waits to receive GDB Debugging commands and OpenOCD TCL commands.</p>
 <p>For some OpenOCD Scripts (like for loading firmware), we don’t need OpenOCD to wait for further commands. In such scripts, we terminate OpenOCD with the <code>exit</code> command…</p>
 <div class="example-wrap"><pre class="language-text"><code>exit</code></pre></div>
@@ -352,7 +352,7 @@ reset init</code></pre></div>
 <p><a href="http://openocd.org/doc/html/index.html">More about OpenOCD</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-led.png" alt="PineCone LED uses GPIO 11, 14, 17" /></p>
 <p><em>PineCone LED uses GPIO 11, 14, 17</em></p>
-<h1 id="if-you-love-the-led-set-it-free" class="section-header"><a href="#if-you-love-the-led-set-it-free">7 If you love the LED… Set it free!</a></h1>
+<h1 id="if-you-love-the-led-set-it-free"><a href="#if-you-love-the-led-set-it-free">7 If you love the LED… Set it free!</a></h1>
 <p><em>Why does the PineCone LED light up in colour when the JTAG Port is active?</em></p>
 <p>To solve this mystery, we dig deep into the <a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">PineCone Schematics</a> and check the BL602 Pins connected to our LED… (See pic above)</p>
 <div><table><thead><tr><th style="text-align: left">LED Pin</th><th style="text-align: left">BL602 Pin</th></tr></thead><tbody>
@@ -365,7 +365,7 @@ reset init</code></pre></div>
 <p>This is a problem… If we control the PineCone LED in our firmware, it will interfere with the JTAG Port.</p>
 <p><em>Can we use PineCone’s LED in our firmware… While debugging our firmware with JTAG?</em></p>
 <p>According to the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual</a> (Section 3.2.8 “GPIO Function”, Page 27), we may remap the JTAG Port to other GPIO Pins (and avoid the conflict).</p>
-<h2 id="free-the-led-from-jtag-port" class="section-header"><a href="#free-the-led-from-jtag-port">7.1 Free the LED from JTAG Port</a></h2>
+<h2 id="free-the-led-from-jtag-port"><a href="#free-the-led-from-jtag-port">7.1 Free the LED from JTAG Port</a></h2>
 <p>Here’s our plan to free the LED from the JTAG Port…</p>
 <ol>
 <li>
@@ -406,7 +406,7 @@ reset init</code></pre></div>
 <p>Let’s study the firmware code that remaps the JTAG Port… And frees our LED!</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-gpio.png" alt="BL602 Configuration Register for Pins IO 0 and IO 1" /></p>
 <p><em>BL602 Configuration Register for Pins IO 0 and IO 1</em></p>
-<h1 id="remap-the-jtag-port" class="section-header"><a href="#remap-the-jtag-port">8 Remap the JTAG Port</a></h1>
+<h1 id="remap-the-jtag-port"><a href="#remap-the-jtag-port">8 Remap the JTAG Port</a></h1>
 <p>Remember that we need to remap JTAG and PWM functions of the following pins…</p>
 <div><table><thead><tr><th style="text-align: left">LED / JTAG Pin</th><th style="text-align: left">BL602 Pin</th><th style="text-align: left">Remap Pin Function</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong><code>JTAG TDI</code></strong></td><td style="text-align: left"><code>IO 1</code></td><td style="text-align: left">SDIO → JTAG</td></tr>
@@ -473,7 +473,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 </div></li>
 </ol>
 <p>The remapping code for all 6 pins may be found here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241"><code>sdk_app_helloworld/main.c</code></a></p>
-<h2 id="before-and-after" class="section-header"><a href="#before-and-after">8.1 Before and After</a></h2>
+<h2 id="before-and-after"><a href="#before-and-after">8.1 Before and After</a></h2>
 <p>Here are the values of the Pin Function and Pin Control registers before and after remapping…</p>
 <div><table><thead><tr><th style="text-align: left">Register</th><th style="text-align: left">Before</th><th style="text-align: left">After</th><th style="text-align: left">Pin</th></tr></thead><tbody>
 <tr><td style="text-align: left"><code>GPIO_CFGCTL0</code></td><td style="text-align: left"><strong><code>bb</code></strong> <strong><code>17</code></strong> <code>bb</code> <code>17</code></td><td style="text-align: left"><strong><code>ee</code></strong> <strong><code>03</code></strong> <code>bb</code> <code>17</code></td><td style="text-align: left">1</td></tr>
@@ -489,10 +489,10 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <p>Let’s test the remapped JTAG Port on our PineCone!</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-headers2.jpg" alt="Remapped PineCone Connection to JTAG Debugger" /></p>
 <p><em>Remapped JTAG Port connected to JTAG Debugger. The LED lights up in bright white to signify that the JTAG Port has been remapped. Jumper is set to L, for Normal Mode.</em></p>
-<h1 id="test-the-remapped-jtag-port" class="section-header"><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a></h1>
+<h1 id="test-the-remapped-jtag-port"><a href="#test-the-remapped-jtag-port">9 Test the Remapped JTAG Port</a></h1>
 <p><em>How shall we test the JTAG Port remap?</em></p>
 <p>We test by flashing a modified <code>helloworld</code> firmware that contains the remap code from the previous section…</p>
-<h2 id="connect-the-remapped-jtag-port" class="section-header"><a href="#connect-the-remapped-jtag-port">9.1 Connect the Remapped JTAG Port</a></h2>
+<h2 id="connect-the-remapped-jtag-port"><a href="#connect-the-remapped-jtag-port">9.1 Connect the Remapped JTAG Port</a></h2>
 <ol>
 <li>
 <p>Disconnect PineCone and JTAG Debugger from our computer</p>
@@ -516,7 +516,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <p>Connect both PineCone and JTAG Debugger to our computer’s USB ports</p>
 </li>
 </ol>
-<h2 id="download-the-remap-firmware" class="section-header"><a href="#download-the-remap-firmware">9.2 Download the Remap Firmware</a></h2>
+<h2 id="download-the-remap-firmware"><a href="#download-the-remap-firmware">9.2 Download the Remap Firmware</a></h2>
 <p>The firmware code from the previous section has been built and uploaded as a GitHub Release. Here’s how we download the firmware the remaps the JTAG Port…</p>
 <ol>
 <li>
@@ -537,7 +537,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/jtag/customer_app/sdk_app_helloworld/sdk_app_helloworld/main.c#L83-L241">Browse the source code</a></p>
 </li>
 </ol>
-<h2 id="flash-the-remap-firmware" class="section-header"><a href="#flash-the-remap-firmware">9.3 Flash the Remap Firmware</a></h2>
+<h2 id="flash-the-remap-firmware"><a href="#flash-the-remap-firmware">9.3 Flash the Remap Firmware</a></h2>
 <ol>
 <li>
 <p>Check that the PineCone Jumper has been set to <code>H</code> (Bootloader Mode), ready for flashing</p>
@@ -551,7 +551,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <p>Make sure there are no spaces in the firmware pathname. </p>
 </li>
 </ol>
-<h2 id="start-the-remap-firmware" class="section-header"><a href="#start-the-remap-firmware">9.4 Start the Remap Firmware</a></h2>
+<h2 id="start-the-remap-firmware"><a href="#start-the-remap-firmware">9.4 Start the Remap Firmware</a></h2>
 <ol>
 <li>
 <p>After flashing the remap firmware, set the PineCone Jumper to <code>L</code> (Normal Mode) and power on PineCone. (Or press the Reset Button)</p>
@@ -560,7 +560,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <p>PineCone’s LED should light up bright white to signify that the JTAG Port has been remapped</p>
 </li>
 </ol>
-<h2 id="run-openocd-1" class="section-header"><a href="#run-openocd-1">9.5 Run OpenOCD</a></h2>
+<h2 id="run-openocd-1"><a href="#run-openocd-1">9.5 Run OpenOCD</a></h2>
 <ol>
 <li>
 <p>Run OpenOCD using the same steps that we have covered in this article</p>
@@ -574,7 +574,7 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 <p>Set the Jumper to <code>L</code> (Normal Mode) and reboot PineTime to restore the Remapped JTAG Port. The LED turns bright white.</p>
 </li>
 </ol>
-<h2 id="remove-the-remap-firmware" class="section-header"><a href="#remove-the-remap-firmware">9.6 Remove the Remap Firmware</a></h2>
+<h2 id="remove-the-remap-firmware"><a href="#remove-the-remap-firmware">9.6 Remove the Remap Firmware</a></h2>
 <ol>
 <li>
 <p>To remove the remap firmware, follow the instructions in this article to flash the original <code>sdk_app_helloworld.bin</code> firmware from GitHub Actions. (Not the modified one we have just downloaded)</p>
@@ -588,15 +588,15 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/pinecone-led2.jpg" alt="PineCone with Remapped JTAG Port" /></p>
 <p><em>PineCone with Remapped JTAG Port. The LED lights up in bright white to signify that the JTAG Port has been remapped.</em></p>
-<h1 id="how-to-fix-the-jtag-port" class="section-header"><a href="#how-to-fix-the-jtag-port">10 How to fix the JTAG Port</a></h1>
+<h1 id="how-to-fix-the-jtag-port"><a href="#how-to-fix-the-jtag-port">10 How to fix the JTAG Port</a></h1>
 <p><em>What are the options for resolving the conflict between the JTAG Pins and the LED Pins on PineCone?</em></p>
 <p>We have a couple of options…</p>
-<h2 id="redesign-the-pinecone-hardware" class="section-header"><a href="#redesign-the-pinecone-hardware">10.1 Redesign the PineCone Hardware</a></h2>
+<h2 id="redesign-the-pinecone-hardware"><a href="#redesign-the-pinecone-hardware">10.1 Redesign the PineCone Hardware</a></h2>
 <p><em>Connect the LED to other pins. Keep the default JTAG Port.</em></p>
 <p>We’ll no longer have the multicolour lights during JTAG programming… But this option allows us to control the LED while doing debugging over JTAG, without having to remap the JTAG Port.</p>
 <p>This makes PineCone coding easier. And we’ll never have to worry about connecting our JTAG Debugger to the wrong PineCone Pins.</p>
 <p>This is my preferred option, though it will cost more to redesign and manufacture the board.</p>
-<h2 id="keep-pinecone-as-is" class="section-header"><a href="#keep-pinecone-as-is">10.2 Keep PineCone as is</a></h2>
+<h2 id="keep-pinecone-as-is"><a href="#keep-pinecone-as-is">10.2 Keep PineCone as is</a></h2>
 <p><em>LED is connected on the default JTAG Pins.</em></p>
 <p>But will we need to use the LED and JTAG Debugging at the same time?</p>
 <ol>
@@ -623,11 +623,11 @@ const uint32_t GPIO_CTRL = 3;  //  Pin Control</code></pre></div></li>
 </ul>
 </li>
 </ol>
-<h2 id="integrate-jtag-debugger-with-pinecone" class="section-header"><a href="#integrate-jtag-debugger-with-pinecone">10.3 Integrate JTAG Debugger with PineCone</a></h2>
+<h2 id="integrate-jtag-debugger-with-pinecone"><a href="#integrate-jtag-debugger-with-pinecone">10.3 Integrate JTAG Debugger with PineCone</a></h2>
 <p>We hear that Sipeed’s upcoming BL602 Board will have an onboard JTAG Debugger. (Probably FT2232)</p>
 <p>This increases the cost of the BL602 board… But it simplifies the USB connection between our computer and the BL602 board.</p>
 <p>For PineCone we’re using 2 USB ports (PineCone USB + JTAG Debugger). With an integrated JTAG Debugger, we’ll need only 1 USB port.</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>Today we have connected OpenOCD to PineCone… Next we shall try loading and debugging RISC-V firmware on PineCone! (With VSCode, GDB, …)</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/debug"><strong>“Debug Rust on PineCone BL602 with VSCode and GDB”</strong></a></li>

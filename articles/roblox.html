@@ -136,7 +136,7 @@
 </ul>
 <p>(Apologies if my Roblox looks rough… This is my first time using Roblox 🙏)</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title.jpg" alt="Cold / Hot / Normal IoT Objects rendered in Roblox" /></p>
-<h1 id="roblox-mirrors-real-life" class="section-header"><a href="#roblox-mirrors-real-life">1 Roblox Mirrors Real Life</a></h1>
+<h1 id="roblox-mirrors-real-life"><a href="#roblox-mirrors-real-life">1 Roblox Mirrors Real Life</a></h1>
 <p>The pic shows what we shall accomplish with Roblox… </p>
 <p>A Virtual Object that <strong>visualises the Live Temperature</strong> of our Real Object (PineDio Stack)</p>
 <ul>
@@ -170,7 +170,7 @@
 <p><a href="https://education.roblox.com/en-us/resources/intro-to-coding-coding-1-create-a-script">(More about Roblox Lua Scripting)</a></p>
 <p><a href="https://lupyuen.github.io/articles/ttn">(More about The Things Network)</a></p>
 <p><img src="https://lupyuen.github.io/images/roblox-http.jpg" alt="Roblox talking to The Things Network" /></p>
-<h1 id="roblox-fetches-sensor-data" class="section-header"><a href="#roblox-fetches-sensor-data">2 Roblox Fetches Sensor Data</a></h1>
+<h1 id="roblox-fetches-sensor-data"><a href="#roblox-fetches-sensor-data">2 Roblox Fetches Sensor Data</a></h1>
 <p>Roblox provides a <strong>HttpService API</strong> that we may call in our Lua Scripts to <strong>fetch External HTTP URLs</strong> (via GET and POST)…</p>
 <ul>
 <li><a href="https://developer.roblox.com/en-us/api-reference/class/HttpService"><strong>Roblox HttpService API</strong></a></li>
@@ -195,7 +195,7 @@ end</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Temperature: 1236</code></pre></div>
 <p>(This means <code>12.36</code> ºC, our values have been scaled up by 100 times)</p>
 <p>Let’s study the code inside our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L22-L77"><strong>getSensorData</strong></a> function.</p>
-<h2 id="define-constants" class="section-header"><a href="#define-constants">2.1 Define Constants</a></h2>
+<h2 id="define-constants"><a href="#define-constants">2.1 Define Constants</a></h2>
 <p>We begin by <strong>defining the constants</strong> for accessing The Things Network: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L77">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Enable type checking
 --!strict
@@ -222,7 +222,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p>This is super helpful for catching incorrect parameters passed to function calls.</p>
 <p>Click <strong>View → Script Analysis</strong> to see the warnings.</p>
 <p><a href="https://lupyuen.github.io/articles/roblox#notes">(Ignore the two warnings for “Argument count mismatch”)</a></p>
-<h2 id="import-modules" class="section-header"><a href="#import-modules">2.2 Import Modules</a></h2>
+<h2 id="import-modules"><a href="#import-modules">2.2 Import Modules</a></h2>
 <p>Next we get the <strong>HttpService</strong> from Roblox…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Get the HttpService for making HTTP Requests
 local HttpService = game:GetService(&quot;HttpService&quot;)</code></pre></div>
@@ -235,7 +235,7 @@ local base64 = require(ServerStorage.Base64)
 local cbor   = require(ServerStorage.Cbor)</code></pre></div>
 <p>We’ll talk about Base64 and CBOR in a while.</p>
 <p><a href="https://education.roblox.com/en-us/resources/intro-to-module-scripts">(More about Roblox ModuleScripts)</a></p>
-<h2 id="send-http-request" class="section-header"><a href="#send-http-request">2.3 Send HTTP Request</a></h2>
+<h2 id="send-http-request"><a href="#send-http-request">2.3 Send HTTP Request</a></h2>
 <p>Our function begins by <strong>declaring the variables</strong>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Fetch Sensor Data from The Things Network (LoRa) as a Lua Table
 local function getSensorData()
@@ -286,7 +286,7 @@ local function getSensorData()
 <p>And we’ll check for errors then.</p>
 <p><a href="https://developer.roblox.com/en-us/api-reference/lua-docs/Lua-Globals">(pcall is documented here)</a></p>
 <p><img src="https://lupyuen.github.io/images/roblox-script2.png" alt="JSON HTTP Response decoded as Lua Table" /></p>
-<h2 id="decode-http-response" class="section-header"><a href="#decode-http-response">2.4 Decode HTTP Response</a></h2>
+<h2 id="decode-http-response"><a href="#decode-http-response">2.4 Decode HTTP Response</a></h2>
 <p>Now we <strong>decode the HTTP Response</strong> (JSON format) from The Things Network.</p>
 <p>First we <strong>parse the JSON</strong> returned by The Things Network…</p>
 <div class="example-wrap"><pre class="language-lua"><code>    -- Decode the JSON response into a Lua Table
@@ -316,7 +316,7 @@ local function getSensorData()
 }</code></pre></div>
 <p>Above are the values recorded by our <strong>Light Sensor</strong> and <strong>Temperature Sensor</strong>, scaled up by 100 times.</p>
 <p>Note that our <strong>“pcall” block</strong> ends here. So we check the errors next.</p>
-<h2 id="check-errors" class="section-header"><a href="#check-errors">2.5 Check Errors</a></h2>
+<h2 id="check-errors"><a href="#check-errors">2.5 Check Errors</a></h2>
 <p>We’re at the spot after the “pcall” block.</p>
 <p>We <strong>check for errors</strong> that could have occurred inside the “pcall” block…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Show the error
@@ -332,7 +332,7 @@ local function getSensorData()
     print(&quot;CBOR decoding failed&quot;)
   end</code></pre></div>
 <p>This code checks for HTTP Request Errors and Decoding Errors.</p>
-<h2 id="return-sensor-data" class="section-header"><a href="#return-sensor-data">2.6 Return Sensor Data</a></h2>
+<h2 id="return-sensor-data"><a href="#return-sensor-data">2.6 Return Sensor Data</a></h2>
 <p>Finally we <strong>return the Sensor Data</strong> (as a Lua Table) to the caller…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- sensorData will be nil if our request failed or JSON failed to parse
   -- or Message Payload missing or Base64 / CBOR decoding failed
@@ -341,7 +341,7 @@ end</code></pre></div>
 <p>Our Sensor Data is returned as <strong>nil</strong> in case of error.</p>
 <p>And that’s how our Roblox Script fetches Sensor Data from The Things Network!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script3.png" alt="Roblox Fetches Sensor Data" /></p>
-<h1 id="roblox-mirroring-in-action" class="section-header"><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a></h1>
+<h1 id="roblox-mirroring-in-action"><a href="#roblox-mirroring-in-action">3 Roblox Mirroring In Action</a></h1>
 <p>Before heading deeper into our Roblox Scripts, let’s watch our <strong>Virtual Gadget in action</strong>!</p>
 <ol>
 <li>
@@ -357,7 +357,7 @@ end</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/roblox-studio.png" alt="Create Part in Roblox Studio" /></p>
-<h2 id="create-part-and-script" class="section-header"><a href="#create-part-and-script">3.1 Create Part and Script</a></h2>
+<h2 id="create-part-and-script"><a href="#create-part-and-script">3.1 Create Part and Script</a></h2>
 <ol>
 <li>
 <p>At <strong>Explorer → Workspace</strong> (at right)…</p>
@@ -377,7 +377,7 @@ end</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/roblox-studio2.png" alt="Create Script in Roblox Studio" /></p>
-<h2 id="edit-settings" class="section-header"><a href="#edit-settings">3.2 Edit Settings</a></h2>
+<h2 id="edit-settings"><a href="#edit-settings">3.2 Edit Settings</a></h2>
 <ol>
 <li>
 <p>If we have an IoT Gadget connected to The Things Network: </p>
@@ -400,7 +400,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/roblox-studio3.png" alt="Create Base64 ModuleScript in Roblox Studio" /></p>
-<h2 id="create-modulescripts" class="section-header"><a href="#create-modulescripts">3.3 Create ModuleScripts</a></h2>
+<h2 id="create-modulescripts"><a href="#create-modulescripts">3.3 Create ModuleScripts</a></h2>
 <ol>
 <li>
 <p>At <strong>Explorer → ServerStorage</strong> (at right)…</p>
@@ -422,13 +422,13 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/roblox-studio4.png" alt="Create Cbor ModuleScript in Roblox Studio" /></p>
-<h2 id="watch-it-run" class="section-header"><a href="#watch-it-run">3.4 Watch It Run</a></h2>
+<h2 id="watch-it-run"><a href="#watch-it-run">3.4 Watch It Run</a></h2>
 <p>At the top bar, click <strong>Home → Play</strong></p>
 <p>(Or press <strong>F5</strong>)</p>
 <p>Roblox renders our Virtual Gadget in its <strong>Hot / Cold State</strong>!</p>
 <p><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Normal / Hot IoT Objects rendered in Roblox" /></p>
-<h1 id="decode-base64-and-cbor-in-roblox" class="section-header"><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a></h1>
+<h1 id="decode-base64-and-cbor-in-roblox"><a href="#decode-base64-and-cbor-in-roblox">4 Decode Base64 and CBOR in Roblox</a></h1>
 <p><em>Why do we need CBOR Decoding?</em></p>
 <p>Normally IoT Gadgets will transmit <strong>Sensor Data in JSON</strong> like so….</p>
 <div class="example-wrap"><pre class="language-json"><code>{ 
@@ -455,7 +455,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <div class="example-wrap"><pre class="language-text"><code>omF0GQTUYWwZCSs=</code></pre></div>
 <p>This explains why we need two stages of decoding: <strong>Base64 followed by CBOR</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-studio3.png" alt="Create Base64 ModuleScript in Roblox Studio" /></p>
-<h2 id="base64-and-cbor-modulescripts" class="section-header"><a href="#base64-and-cbor-modulescripts">4.1 Base64 and CBOR ModuleScripts</a></h2>
+<h2 id="base64-and-cbor-modulescripts"><a href="#base64-and-cbor-modulescripts">4.1 Base64 and CBOR ModuleScripts</a></h2>
 <p><em>How do we decode Base64 and CBOR in Roblox?</em></p>
 <p>We call these two <strong>ModuleScripts in ServerStorage</strong>…</p>
 <ul>
@@ -508,7 +508,7 @@ sensorData:
 <div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract</code></pre></div>
 <p>And the ModuleScripts worked perfectly!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script5.png" alt="Porting Lua Libraries into Roblox" /></p>
-<h1 id="render-temperature-with-roblox-particle-emitter" class="section-header"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
+<h1 id="render-temperature-with-roblox-particle-emitter"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
 <p><em>How did we render the Temperature of our Roblox Gadget?</em></p>
 <p><em>(The green fireflies thingy?)</em></p>
 <p>We rendered the Temperature with a <a href="https://developer.roblox.com/en-us/articles/Particle-Emitters"><strong>Roblox Particle Emitter</strong></a>.</p>
@@ -587,7 +587,7 @@ end</code></pre></div>
 <p>And our Roblox Gadget starts emitting green particles to represent Normal Temperature!</p>
 <p>(Centre one in the pic below)</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Normal / Hot IoT Objects rendered in Roblox" /></p>
-<h2 id="magic-numbers" class="section-header"><a href="#magic-numbers">5.1 Magic Numbers</a></h2>
+<h2 id="magic-numbers"><a href="#magic-numbers">5.1 Magic Numbers</a></h2>
 <p><em>All the Magic Numbers above… Where did they come from?</em></p>
 <p>I created <strong>three Particle Emitters</strong> for the Cold, Normal and Hot Temperatures…</p>
 <p><img src="https://lupyuen.github.io/images/roblox-studio5.png" alt="Particle Emitters for Cold / Normal / Hot Temperatures" /></p>
@@ -619,7 +619,7 @@ dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
 <p>Our Roblox Script will <strong>tweak the Particle Emitter at runtime</strong> to render the Live Temperature.</p>
 <p>Read on to learn how we do this with <a href="https://en.wikipedia.org/wiki/Linear_interpolation"><strong>Linear Interpolation</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Normal / Hot IoT Objects rendered in Roblox" /></p>
-<h2 id="interpolate-the-particle-emitter" class="section-header"><a href="#interpolate-the-particle-emitter">5.2 Interpolate the Particle Emitter</a></h2>
+<h2 id="interpolate-the-particle-emitter"><a href="#interpolate-the-particle-emitter">5.2 Interpolate the Particle Emitter</a></h2>
 <p>Previously we have <strong>dumped the settings</strong> for our Hot / Normal / Cold Particle Emitters…</p>
 <div class="example-wrap"><pre class="language-yaml"><code>COLD Particle Emitter (t=0)
   Drag:  5
@@ -677,7 +677,7 @@ Color: (time, red, green, blue)
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(See the complete interpolation)</a></p>
 <p>Let’s plug the derived values into our Roblox Script.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-interpolate.png" alt="Interpolating the Particle Emitter" /></p>
-<h2 id="update-the-particle-emitter" class="section-header"><a href="#update-the-particle-emitter">5.3 Update the Particle Emitter</a></h2>
+<h2 id="update-the-particle-emitter"><a href="#update-the-particle-emitter">5.3 Update the Particle Emitter</a></h2>
 <p>We take the values derived above and plug them into our <strong>updateParticleEmitter</strong> function from <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L166-L241">DigitalTwin.lua</a>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Update the Particle Emitter based on the Temperature t.
 -- t ranges from T_MIN (0) to T_MAX (10,000).
@@ -728,7 +728,7 @@ updateParticleEmitter(emitter, 1234)</code></pre></div>
 <li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/roblox-emitter.png" alt="Updating the Particle Emitter" /></p>
-<h2 id="linear-interpolation" class="section-header"><a href="#linear-interpolation">5.4 Linear Interpolation</a></h2>
+<h2 id="linear-interpolation"><a href="#linear-interpolation">5.4 Linear Interpolation</a></h2>
 <p><em>How does the <strong>lin</strong> function compute Linear Interpolation?</em></p>
 <p>Earlier we saw this…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Interpolate Drag:
@@ -779,7 +779,7 @@ local function lin(x: number, yMin: number, yMid: number, yMax: number) : number
 end</code></pre></div>
 <p><a href="https://developer.roblox.com/en-us/api-reference/class/TweenService">UPDATE: There’s another way to do Linear Interpolation in Roblox: <strong>TweenService</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
-<h1 id="digital-twin-demo" class="section-header"><a href="#digital-twin-demo">6 Digital Twin Demo</a></h1>
+<h1 id="digital-twin-demo"><a href="#digital-twin-demo">6 Digital Twin Demo</a></h1>
 <p>As promised, here’s the Real-Life Demo of our <strong>Roblox Digital Twin</strong> featuring <strong>PineDio Stack</strong>! (Pic above)</p>
 <ul>
 <li><a href="https://youtu.be/QKjtue_tPGM"><strong>Watch the Demo Video on YouTube</strong></a></li>
@@ -828,7 +828,7 @@ end</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1111 0</code></pre></div>
 <p>Our Roblox Gadget <strong>turns into ice</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-demo5.jpg" alt="Digital Twin at 11.11 ⁰C" /></p>
-<h2 id="demo-code" class="section-header"><a href="#demo-code">6.1 Demo Code</a></h2>
+<h2 id="demo-code"><a href="#demo-code">6.1 Demo Code</a></h2>
 <p>Below is the <strong>source code for the demo</strong> that we’ve seen. It calls all the functions that we’ve covered in this article: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L284-L323">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Main Function. Fetch and render the Sensor Data from The Things Network every 5 seconds.
 -- If fetch failed, show Demo Mode.
@@ -876,7 +876,7 @@ main()</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(<strong>demoMode</strong> is explained here)</a></p>
 <p>That’s all for our demo today. Would be so fun if someday Roblox could overlay Real-World Objects through <strong>Augmented Reality</strong>… And show us Sensor Data in real time!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="Digital Twin with Augmented Reality" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>I’m new to Roblox, but I had fun connecting things in the real world to Roblox. I hope you enjoyed it too!</p>
 <p>In the next article we shall head back to PineDio Stack coding, as we read and transmit PineDio Stack’s <strong>Internal Temperature Sensor</strong> to The Things Network.</p>
 <ul>
@@ -902,7 +902,7 @@ main()</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/roblox.md"><code>lupyuen.github.io/src/roblox.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<h1 id="notes"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1443824711050301444">this Twitter Thread</a></p>
@@ -938,7 +938,7 @@ W000: (56,28) Argument count mismatch. Function expects 2 arguments, but only 1 
 <p><a href="https://lupyuen.github.io/articles/payload"><strong>“CBOR Payload Formatter for The Things Network”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-install-roblox-studio" class="section-header"><a href="#appendix-install-roblox-studio">9 Appendix: Install Roblox Studio</a></h1>
+<h1 id="appendix-install-roblox-studio"><a href="#appendix-install-roblox-studio">9 Appendix: Install Roblox Studio</a></h1>
 <p>Here are the steps to download and install <strong>Roblox Studio for macOS and Windows</strong>…</p>
 <ol>
 <li>
@@ -977,7 +977,7 @@ W000: (56,28) Argument count mismatch. Function expects 2 arguments, but only 1 
 <p>This lets us <strong>“level up”</strong> quicker to receive posting privileges. <a href="https://devforum.roblox.com/t/how-to-level-up-on-the-roblox-developer-forum/320109">(See this)</a></p>
 <p>(We need roughly 3 hours of “Read Time” to get posting privilege)</p>
 <p><img src="https://lupyuen.github.io/images/roblox-forum.png" alt="Roblox Developer Forum" /></p>
-<h1 id="appendix-particle-emitter-settings" class="section-header"><a href="#appendix-particle-emitter-settings">10 Appendix: Particle Emitter Settings</a></h1>
+<h1 id="appendix-particle-emitter-settings"><a href="#appendix-particle-emitter-settings">10 Appendix: Particle Emitter Settings</a></h1>
 <p>During development, we created three <strong>Particle Emitters</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Normal / Hot Particle Emitters" /></p>
 <ol>
@@ -1134,7 +1134,7 @@ emitter.Texture = &quot;rbxasset:textures/particles/sparkles_main.dds&quot;</cod
 <p>But <strong>rbxassetid</strong> works OK…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Texture for the particles: &quot;star sparkle particle&quot; by @Vupatu
 -- https://www.roblox.com/library/6490035152/star-sparkle-particle
-emitter.Texture = &quot;rbxassetid://6490035152&quot;</code></pre></div><h1 id="appendix-the-things-network-settings" class="section-header"><a href="#appendix-the-things-network-settings">11 Appendix: The Things Network Settings</a></h1>
+emitter.Texture = &quot;rbxassetid://6490035152&quot;</code></pre></div><h1 id="appendix-the-things-network-settings"><a href="#appendix-the-things-network-settings">11 Appendix: The Things Network Settings</a></h1>
 <p>Earlier we saw these settings for The Things Network in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L12">DigitalTwin.lua</a>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your Application ID for The Things Network
 -- (Must have permission to Read Application Traffic)
@@ -1169,7 +1169,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 -- (Must have permission to Read Application Traffic)
 local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;</code></pre></div></li>
 </ol>
-<h2 id="storage-integration" class="section-header"><a href="#storage-integration">11.1 Storage Integration</a></h2>
+<h2 id="storage-integration"><a href="#storage-integration">11.1 Storage Integration</a></h2>
 <p>For Roblox to fetch Sensor Data from The Things Network, we shall enable <strong>Storage Integration</strong>…</p>
 <ul>
 <li><a href="https://www.thethingsindustries.com/docs/integrations/storage/"><strong>The Things Network: Storage Integration</strong></a></li>
@@ -1198,7 +1198,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p>Note that we’re fetching the <strong>Latest Uplink Message</strong> from The Things Network…</p>
 <div class="example-wrap"><pre class="language-text"><code>?limit=1&amp;order=-received_at</code></pre></div>
 <p>More about this in the next chapter.</p>
-<h2 id="api-key" class="section-header"><a href="#api-key">11.2 API Key</a></h2>
+<h2 id="api-key"><a href="#api-key">11.2 API Key</a></h2>
 <p>Roblox needs an <strong>API Key</strong> to access the stored Uplink Messages from The Things Network.</p>
 <p>To create an API Key, click…</p>
 <p><strong>(Your Application) → API Keys → Add API Key</strong></p>
@@ -1208,7 +1208,7 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p>Click <strong>“Create API Key”</strong></p>
 <p>Copy the API Key and paste here…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your API Key for The Things Network
-local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h2 id="security" class="section-header"><a href="#security">11.3 Security</a></h2>
+local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h2 id="security"><a href="#security">11.3 Security</a></h2>
 <p>If we publish our game for the public to join, players may see these (potentially sensitive) details in <strong>Roblox’s Server-Side Network Log</strong>…</p>
 <ul>
 <li>Application ID</li>
@@ -1219,7 +1219,7 @@ local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h2 id="security"
 <p>(API Key is not visible fortunately)</p>
 <p>So be careful when publishing our game for public access.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-log.jpg" alt="Roblox’s Server-Side Network Log" /></p>
-<h1 id="appendix-fetch-sensor-data-from-the-things-network" class="section-header"><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a></h1>
+<h1 id="appendix-fetch-sensor-data-from-the-things-network"><a href="#appendix-fetch-sensor-data-from-the-things-network">12 Appendix: Fetch Sensor Data from The Things Network</a></h1>
 <p>The Things Network exposes a HTTP GET API to <strong>fetch the Uplink Messages</strong> transmitted by our IoT Device…</p>
 <ul>
 <li><a href="https://www.thethingsindustries.com/docs/integrations/storage/retrieve/"><strong>“Retrieve Uplink Messages”</strong></a></li>

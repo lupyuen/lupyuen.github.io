@@ -111,7 +111,7 @@
 <p>We shall test LoRaWAN on NuttX with <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604 RISC-V Board</strong></a> (pic above) and its onboard Semtech SX1262 Transceiver.</p>
 <p>(LoRaWAN on NuttX will probably run on <strong>ESP32</strong>, since we’re calling standard NuttX Interfaces)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
-<h1 id="small-steps" class="section-header"><a href="#small-steps">1 Small Steps</a></h1>
+<h1 id="small-steps"><a href="#small-steps">1 Small Steps</a></h1>
 <p>In the last article we created a <strong>LoRa Library for NuttX</strong> (top right) that works with <strong>Semtech SX1262 Transceiver</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>lupyuen/lora-sx1262 (lorawan branch)</strong></a></li>
@@ -128,7 +128,7 @@
 <ul>
 <li><a href="https://github.com/lupyuen/lorawan_test"><strong>lupyuen/lorawan_test</strong></a></li>
 </ul>
-<h2 id="lorawan-support" class="section-header"><a href="#lorawan-support">1.1 LoRaWAN Support</a></h2>
+<h2 id="lorawan-support"><a href="#lorawan-support">1.1 LoRaWAN Support</a></h2>
 <p><em>Why did we fork Semtech’s LoRaWAN Stack? Why not build it specifically for NuttX?</em></p>
 <p>LoRaWAN works <strong>slightly differently across the world regions</strong>, to comply with Local Wireless Regulations: Radio Frequency, Maximum Airtime (Duty Cycle), <a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">Listen Before Talk</a>, …</p>
 <p>Thus we should port <strong>Semtech’s LoRaWAN Stack</strong> to NuttX with <strong>minimal changes</strong>, in case of future updates. (Like for new regions)</p>
@@ -148,7 +148,7 @@ rm -r liblorawan
 git rm -r liblorawan
 git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan3#download-source-code">(To add the LoRaWAN Library to your NuttX Project, see this)</a></p>
-<h2 id="dependencies" class="section-header"><a href="#dependencies">1.2 Dependencies</a></h2>
+<h2 id="dependencies"><a href="#dependencies">1.2 Dependencies</a></h2>
 <p>Our LoRaWAN Library should work on <strong>any NuttX platform</strong> (like ESP32), assuming that the following dependencies are installed…</p>
 <ul>
 <li>
@@ -185,7 +185,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p><strong>/dev/spitest0</strong>: SPI Test Driver (see above)</p>
 </li>
 </ul>
-<h1 id="lorawan-objective" class="section-header"><a href="#lorawan-objective">2 LoRaWAN Objective</a></h1>
+<h1 id="lorawan-objective"><a href="#lorawan-objective">2 LoRaWAN Objective</a></h1>
 <p><em>What shall we accomplish with LoRaWAN today?</em></p>
 <p>We’ll do the basic LoRaWAN use case on NuttX…</p>
 <ul>
@@ -221,7 +221,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 </li>
 </ol>
 <p>In a while we’ll set the Device EUI, Join EUI and App Key in our code.</p>
-<h1 id="download-source-code" class="section-header"><a href="#download-source-code">3 Download Source Code</a></h1>
+<h1 id="download-source-code"><a href="#download-source-code">3 Download Source Code</a></h1>
 <p>To run LoRaWAN on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
@@ -252,7 +252,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 </ol>
 <p>Let’s configure our LoRaWAN code.</p>
 <p><img src="https://lupyuen.github.io/images/wisgate-app2.png" alt="Device EUI from ChirpStack" /></p>
-<h1 id="device-eui-join-eui-and-app-key" class="section-header"><a href="#device-eui-join-eui-and-app-key">4 Device EUI, Join EUI and App Key</a></h1>
+<h1 id="device-eui-join-eui-and-app-key"><a href="#device-eui-join-eui-and-app-key">4 Device EUI, Join EUI and App Key</a></h1>
 <p><em>Where do we get the Device EUI, Join EUI and App Key?</em></p>
 <p>We get the LoRaWAN Settings from our <strong>LoRaWAN Gateway</strong>, like ChirpStack (pic above)…</p>
 <ul>
@@ -321,7 +321,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-secure2a.png" alt="App Key" /></p>
-<h2 id="secure-element" class="section-header"><a href="#secure-element">4.1 Secure Element</a></h2>
+<h2 id="secure-element"><a href="#secure-element">4.1 Secure Element</a></h2>
 <p><em>What’s “soft-se”? Why are our LoRaWAN Settings there?</em></p>
 <p>For LoRaWAN Devices that are designed to be <strong>super secure</strong>, they <strong>don’t expose the LoRaWAN App Key</strong> in the firmware code…</p>
 <p>Instead they store the App Key in the <a href="https://encyclopedia.kaspersky.com/glossary/secure-element/"><strong>Secure Element</strong></a> hardware.</p>
@@ -329,7 +329,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p><em>But our NuttX Device doesn’t have a Secure Element right?</em></p>
 <p>That’s why we define the App Key in the <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/tree/master/src/peripherals/soft-se"><strong>“Software Secure Element (soft-se)”</strong></a> that simulates a Hardware Secure Element… Minus the actual hardware security.</p>
 <p>Our App Key will be exposed if somebody dumps the firmware for our NuttX Device. But it’s probably OK during development.</p>
-<h1 id="lorawan-frequency" class="section-header"><a href="#lorawan-frequency">5 LoRaWAN Frequency</a></h1>
+<h1 id="lorawan-frequency"><a href="#lorawan-frequency">5 LoRaWAN Frequency</a></h1>
 <p>Let’s set the LoRaWAN Frequency…</p>
 <ol>
 <li>
@@ -355,7 +355,7 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nutt
 <p>(We ought to define this parameter in Kconfig instead)</p>
 </li>
 </ol>
-<h1 id="build-the-firmware" class="section-header"><a href="#build-the-firmware">6 Build The Firmware</a></h1>
+<h1 id="build-the-firmware"><a href="#build-the-firmware">6 Build The Firmware</a></h1>
 <p>Let’s build the NuttX Firmware that contains our <strong>LoRaWAN Library</strong>…</p>
 <ol>
 <li>
@@ -449,7 +449,7 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx3.png" alt="Our NuttX Device successfully joins the LoRaWAN Network" /></p>
 <p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(Source)</a></p>
-<h1 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">7 Run The Firmware</a></h1>
+<h1 id="run-the-firmware"><a href="#run-the-firmware">7 Run The Firmware</a></h1>
 <p>We’re ready to run the NuttX Firmware and test our <strong>LoRaWAN Library</strong>!</p>
 <ol>
 <li>
@@ -516,7 +516,7 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan3-flow2.jpg" alt="Join LoRaWAN Network" /></p>
-<h1 id="join-lorawan-network" class="section-header"><a href="#join-lorawan-network">8 Join LoRaWAN Network</a></h1>
+<h1 id="join-lorawan-network"><a href="#join-lorawan-network">8 Join LoRaWAN Network</a></h1>
 <p><em>How do we join the LoRaWAN Network in our NuttX App?</em></p>
 <p>Let’s dive into the code for our <strong>LoRaWAN Test App</strong>: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303">lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
@@ -559,7 +559,7 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 <p>(We’ll talk about the LoRaWAN Event Loop later)</p>
 <p>Let’s check the logs on our LoRaWAN Gateway. (RAKwireless WisGate, the black box below)</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
-<h2 id="check-lorawan-gateway" class="section-header"><a href="#check-lorawan-gateway">8.1 Check LoRaWAN Gateway</a></h2>
+<h2 id="check-lorawan-gateway"><a href="#check-lorawan-gateway">8.1 Check LoRaWAN Gateway</a></h2>
 <p>To inspect the Join Network Request on our <strong>LoRaWAN Gateway</strong> (ChirpStack), click…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>LoRaWAN Frames</strong></p>
 <p>Restart our NuttX Device and the LoRaWAN Test App…</p>
@@ -577,7 +577,7 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack10.png" alt="Join Accept Response" /></p>
 <p><em>What if we don’t see the Join Network Request or the Join Accept Response?</em></p>
 <p>Check the <strong>“Troubleshoot LoRaWAN”</strong> section below for troubleshooting tips.</p>
-<h1 id="send-data-to-lorawan" class="section-header"><a href="#send-data-to-lorawan">9 Send Data To LoRaWAN</a></h1>
+<h1 id="send-data-to-lorawan"><a href="#send-data-to-lorawan">9 Send Data To LoRaWAN</a></h1>
 <p>Now that we’ve joined the LoRaWAN Network, we’re ready to <strong>send Data Packets</strong> to LoRaWAN!</p>
 <p><strong>PrepareTxFrame</strong> is called by our LoRaWAN Event Loop to send a Data Packet when the <strong>Transmit Timer</strong> expires: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L305-L336">lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Prepare the payload of a Data Packet transmit it
@@ -622,7 +622,7 @@ static void PrepareTxFrame( void ) {
 <p>Our Data Packet is marked Unconfirmed because we <strong>don’t expect an acknowledgement</strong> from the LoRaWAN Gateway.</p>
 <p>This is the typical mode for <strong>IoT Sensor Devices</strong>, which don’t handle acknowledgements to conserve battery power. </p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx6.png" alt="Sending a LoRaWAN Data Packet" /></p>
-<h2 id="message-size" class="section-header"><a href="#message-size">9.1 Message Size</a></h2>
+<h2 id="message-size"><a href="#message-size">9.1 Message Size</a></h2>
 <p><em>What’s the Maximum Message Size?</em></p>
 <p>The <strong>Maximum Message (Payload) Size</strong> depends on…</p>
 <ul>
@@ -655,7 +655,7 @@ static void PrepareTxFrame( void ) {
 <p><a href="https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/">(Based on LoRaWAN Regional Parameters)</a></p>
 <p>Our LoRaWAN Test App sends a Message Payload of <strong>9 bytes</strong>, so it should work fine for Data Rates 2 and 3 across all LoRaWAN Regions.</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx5a.png" alt="Setting LoRaWAN Data Rate to 3" /></p>
-<h2 id="message-interval" class="section-header"><a href="#message-interval">9.2 Message Interval</a></h2>
+<h2 id="message-interval"><a href="#message-interval">9.2 Message Interval</a></h2>
 <p><em>How often can we send data to the LoRaWAN Network?</em></p>
 <p>We must comply with Local Wireless Regulations for <a href="https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/"><strong>Duty Cycle</strong></a>. Blasting messages non-stop is no-no!</p>
 <p>To figure out how often we can send data, check out the…</p>
@@ -681,7 +681,7 @@ TxPeriodicity = APP_TX_DUTYCYCLE +
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51">(<strong>randr</strong> is defined here)</a></p>
 <p>Thus our LoRaWAN Test App transmits a message every <strong>40 seconds</strong>. </p>
 <p>(±5 seconds of random delay)</p>
-<h1 id="rerun-the-firmware" class="section-header"><a href="#rerun-the-firmware">10 Rerun The Firmware</a></h1>
+<h1 id="rerun-the-firmware"><a href="#rerun-the-firmware">10 Rerun The Firmware</a></h1>
 <p>Watch what happens when our LoRaWAN Test App <strong>transmits a Data Packet</strong>…</p>
 <ol>
 <li>
@@ -749,7 +749,7 @@ CHANNEL MASK: 0003</code></pre></div></li>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx7a.jpg" alt="Data Rate changes from 2 to 3" /></p>
-<h2 id="check-lorawan-gateway-1" class="section-header"><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a></h2>
+<h2 id="check-lorawan-gateway-1"><a href="#check-lorawan-gateway-1">10.1 Check LoRaWAN Gateway</a></h2>
 <p>To inspect the Data Packet on our <strong>LoRaWAN Gateway</strong> (ChirpStack), click…</p>
 <p><strong>Applications</strong> → <strong>app</strong> → <strong>device_otaa_class_a</strong> → <strong>LoRaWAN Frames</strong></p>
 <p>And look for <strong>“Unconfirmed Data Up”</strong>…</p>
@@ -759,7 +759,7 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="Decoded Payload" /></p>
 <p>If we see <strong>“Hi NuttX”</strong>… Congratulations our LoRaWAN Test App has successfully transmitted a Data Packet to LoRaWAN!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-flow2.jpg" alt="Join LoRaWAN Network" /></p>
-<h1 id="lorawan-nonce" class="section-header"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
+<h1 id="lorawan-nonce"><a href="#lorawan-nonce">11 LoRaWAN Nonce</a></h1>
 <p><em>Why did we configure NuttX to provide a Strong Random Number Generator with Entropy Pool?</em></p>
 <p>The Strong Random Number Generator fixes a <strong>Nonce Quirk</strong> in our LoRaWAN Library that we observed during development…</p>
 <ul>
@@ -791,7 +791,7 @@ CHANNEL MASK: 0003</code></pre></div></li>
 <p>Thus we generate LoRaWAN Nonces with a <strong>Strong Random Number Generator</strong> instead.</p>
 <p>(Random Numbers that won’t repeat upon restarting)</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack2a.jpg" alt="Repeated Nonces are rejected by LoRaWAN Gateway" /></p>
-<h2 id="strong-random-number-generator" class="section-header"><a href="#strong-random-number-generator">11.1 Strong Random Number Generator</a></h2>
+<h2 id="strong-random-number-generator"><a href="#strong-random-number-generator">11.1 Strong Random Number Generator</a></h2>
 <p>Our LoRaWAN Library supports <strong>Random Nonces</strong>… Assuming that we have a <strong>Secure Element</strong>.</p>
 <p>Since we don’t have a Secure Element, let’s <strong>generate the Random Nonce in software</strong>: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L140-L152">nuttx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Get random devnonce from the Random Number Generator
@@ -841,7 +841,7 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 <li><a href="https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce"><strong>“Fix LoRaWAN Nonce”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-nonce7a.jpg" alt="Our LoRaWAN Library now generates random nonces" /></p>
-<h1 id="lorawan-event-loop" class="section-header"><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a></h1>
+<h1 id="lorawan-event-loop"><a href="#lorawan-event-loop">12 LoRaWAN Event Loop</a></h1>
 <p>Let’s look inside our LoRaWAN Test App and learn how the <strong>Event Loop</strong> handles LoRa and LoRaWAN Events by calling NimBLE Porting Layer.</p>
 <p><em>What is NimBLE Porting Layer?</em></p>
 <p><strong>NimBLE Porting Layer</strong> is a multithreading library that works on several operating systems…</p>
@@ -914,7 +914,7 @@ static void handle_event_queue(void *arg) {
 <p>And we loop back perpetually, waiting for Events and handling them.</p>
 <p>That’s how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="Handling LoRaWAN Events with NimBLE Porting Layer" /></p>
-<h1 id="troubleshoot-lorawan" class="section-header"><a href="#troubleshoot-lorawan">13 Troubleshoot LoRaWAN</a></h1>
+<h1 id="troubleshoot-lorawan"><a href="#troubleshoot-lorawan">13 Troubleshoot LoRaWAN</a></h1>
 <p><em>The Join Network Request / Join Accept Response / Data Packet doesn’t appear in the LoRaWAN Gateway…</em></p>
 <p><em>What can we check?</em></p>
 <ol>
@@ -982,7 +982,7 @@ chirpstack-network-server[5749]:
 <p><a href="https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan"><strong>“Troubleshoot LoRaWAN”</strong></a></p>
 </li>
 </ol>
-<h2 id="lorawan-is-time-sensitive" class="section-header"><a href="#lorawan-is-time-sensitive">13.1 LoRaWAN is Time Sensitive</a></h2>
+<h2 id="lorawan-is-time-sensitive"><a href="#lorawan-is-time-sensitive">13.1 LoRaWAN is Time Sensitive</a></h2>
 <p><strong>Warning:</strong> LoRaWAN is Time Sensitive!</p>
 <p>Our LoRaWAN Library needs to <strong>handle Events in a timely manner</strong>… Or the protocol fails.</p>
 <p>This is the normal flow for the <strong>Join Network Request</strong>…</p>
@@ -1024,7 +1024,7 @@ chirpstack-network-server[5749]:
 <p>(See the section <strong>“SPI With DMA”</strong> below)</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx.png" alt="LoRaWAN is Time Sensitive" /></p>
 <p><a href="https://gist.github.com/lupyuen/8f012856b9eb6b9a762160afd83df7f8">(Source)</a></p>
-<h2 id="empty-lorawan-message" class="section-header"><a href="#empty-lorawan-message">13.2 Empty LoRaWAN Message</a></h2>
+<h2 id="empty-lorawan-message"><a href="#empty-lorawan-message">13.2 Empty LoRaWAN Message</a></h2>
 <p><em>What happens when we send a message that’s too large?</em></p>
 <p>Our LoRaWAN Library will transmit an <strong>Empty Message Payload!</strong></p>
 <p>We’ll see this in the LoRaWAN Gateway…</p>
@@ -1036,7 +1036,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan3#message-size">(More about Message Size)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="Checking message size" /></p>
 <p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Source)</a></p>
-<h1 id="spi-with-dma" class="section-header"><a href="#spi-with-dma">14 SPI With DMA</a></h1>
+<h1 id="spi-with-dma"><a href="#spi-with-dma">14 SPI With DMA</a></h1>
 <p>Today we have successfully tested the LoRaWAN Library on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604 RISC-V Board</strong></a> (pic below) and its onboard Semtech SX1262 Transceiver.</p>
 <p>The NuttX implementation of <strong>SPI on BL602 and BL604</strong> might need some enhancements…</p>
 <ul>
@@ -1069,7 +1069,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 </ul>
 <p>Stay tuned for updates!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">15 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
 <p>We’re ready to build a <strong>complete IoT Sensor Device</strong> with NuttX!</p>
 <p>Now that LoRaWAN is up, we’ll carry on in the next few articles…</p>
 <ul>
@@ -1119,7 +1119,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lorawan3.md"><code>lupyuen.github.io/src/lorawan3.md</code></a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-ttn.png" alt="NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN" /></p>
 <p><em>NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN</em></p>
-<h1 id="notes" class="section-header"><a href="#notes">16 Notes</a></h1>
+<h1 id="notes"><a href="#notes">16 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1473593455699841027">this Twitter Thread</a></p>
@@ -1172,7 +1172,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/nuttx.c#L68-L97">(See this)</a></p>
 </li>
 </ol>
-<h1 id="appendix-posix-timers-and-message-queues" class="section-header"><a href="#appendix-posix-timers-and-message-queues">17 Appendix: POSIX Timers and Message Queues</a></h1>
+<h1 id="appendix-posix-timers-and-message-queues"><a href="#appendix-posix-timers-and-message-queues">17 Appendix: POSIX Timers and Message Queues</a></h1>
 <p>NimBLE Porting Layer needs <strong>POSIX Timers and Message Queues</strong> (plus more) to work. Follow the steps below to enable the features in <strong>menuconfig</strong>…</p>
 <ol>
 <li>
@@ -1197,7 +1197,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan3-config1.jpg" alt="Enable POSIX Timers and Message Queues in menuconfig" /></p>
-<h1 id="appendix-random-number-generator-with-entropy-pool" class="section-header"><a href="#appendix-random-number-generator-with-entropy-pool">18 Appendix: Random Number Generator with Entropy Pool</a></h1>
+<h1 id="appendix-random-number-generator-with-entropy-pool"><a href="#appendix-random-number-generator-with-entropy-pool">18 Appendix: Random Number Generator with Entropy Pool</a></h1>
 <p>Our LoRaWAN Library generates Nonces by calling a <strong>Random Number Generator with Entropy Pool</strong>. </p>
 <p>Follow these steps to enable the <strong>Entropy Pool</strong> in <strong>menuconfig</strong>…</p>
 <ol>
@@ -1234,13 +1234,13 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lorawan3-nonce4a.jpg" alt="Select Entropy Pool in menuconfig" /></p>
-<h1 id="appendix-build-flash-and-run-nuttx" class="section-header"><a href="#appendix-build-flash-and-run-nuttx">19 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx"><a href="#appendix-build-flash-and-run-nuttx">19 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="build-nuttx" class="section-header"><a href="#build-nuttx">19.1 Build NuttX</a></h2>
+<h2 id="build-nuttx"><a href="#build-nuttx">19.1 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602 or ESP32…</p>
 <ol>
 <li>
@@ -1281,7 +1281,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx" class="section-header"><a href="#flash-nuttx">19.2 Flash NuttX</a></h2>
+<h2 id="flash-nuttx"><a href="#flash-nuttx">19.2 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -1358,7 +1358,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx" class="section-header"><a href="#run-nuttx">19.3 Run NuttX</a></h2>
+<h2 id="run-nuttx"><a href="#run-nuttx">19.3 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>

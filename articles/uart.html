@@ -99,7 +99,7 @@
 <p>This article shall be Your Best Friend if you ever need to connect BL602 to a UART Peripheral.</p>
 <p><img src="https://lupyuen.github.io/images/uart-title.jpg" alt="PineCone BL602 RISC-V Board rendering an image on Grove Triple Colour E-Ink Display with UART Interface" /></p>
 <p><em>PineCone BL602 RISC-V Board rendering an image on Grove Triple Colour E-Ink Display with UART Interface</em></p>
-<h1 id="bl602-uart-hardware-abstraction-layer-high-level-vs-low-level" class="section-header"><a href="#bl602-uart-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 UART Hardware Abstraction Layer: High Level vs Low Level</a></h1>
+<h1 id="bl602-uart-hardware-abstraction-layer-high-level-vs-low-level"><a href="#bl602-uart-hardware-abstraction-layer-high-level-vs-low-level">1 BL602 UART Hardware Abstraction Layer: High Level vs Low Level</a></h1>
 <p>The BL602 IoT SDK contains a <strong>UART Hardware Abstraction Layer (HAL)</strong> that we may call in our C programs to access the two UART Ports.</p>
 <p>BL602’s UART HAL is packaged as two levels…</p>
 <ol>
@@ -129,7 +129,7 @@
 <p>The firmware will work on all BL602 boards, including PineCone and Pinenut.</p>
 <p><img src="https://lupyuen.github.io/images/uart-connect2.jpg" alt="PineCone BL602 connected to Grove E-Ink Display" /></p>
 <p><em>PineCone BL602 connected to Grove E-Ink Display</em></p>
-<h1 id="connect-bl602-to-grove-e-ink-display" class="section-header"><a href="#connect-bl602-to-grove-e-ink-display">2 Connect BL602 to Grove E-Ink Display</a></h1>
+<h1 id="connect-bl602-to-grove-e-ink-display"><a href="#connect-bl602-to-grove-e-ink-display">2 Connect BL602 to Grove E-Ink Display</a></h1>
 <p>Connect BL602 to Grove E-Ink Display according to the pic above…</p>
 <div><table><thead><tr><th style="text-align: left">BL602 Pin</th><th style="text-align: left">E-Ink Display</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
 <tr><td style="text-align: left"><strong><code>GPIO 3</code></strong></td><td style="text-align: left"><code>TX</code></td><td style="text-align: left">Yellow</td></tr>
@@ -144,7 +144,7 @@
 <p>Remember that E-Ink Displays only need power when we’re updating the display.</p>
 <p>Which makes them very useful for Low Power IoT Gadgets.</p>
 <p>(But we’re not supposed to update the screen too often)</p>
-<h1 id="initialise-uart-port" class="section-header"><a href="#initialise-uart-port">3 Initialise UART Port</a></h1>
+<h1 id="initialise-uart-port"><a href="#initialise-uart-port">3 Initialise UART Port</a></h1>
 <p>Let’s dive into the code for our Demo Firmware!</p>
 <p>We initialise the UART Port like so: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L150"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Use UART Port 1 (UART Port 0 is reserved for console)
@@ -190,7 +190,7 @@ static void display_image(char *buf, int len, int argc, char **argv) {
 </li>
 </ul>
 <p>We’ll come back to <code>display_image</code> in a while. First let’s learn to transmit and receive some UART data.</p>
-<h1 id="transfer-uart-data" class="section-header"><a href="#transfer-uart-data">4 Transfer UART Data</a></h1>
+<h1 id="transfer-uart-data"><a href="#transfer-uart-data">4 Transfer UART Data</a></h1>
 <p>Before we send a bitmap to the E-Ink Display for rendering, we do a <strong>Start Transfer Handshake</strong> to make sure that everybody’s all ready…</p>
 <ol>
 <li>
@@ -204,7 +204,7 @@ static void display_image(char *buf, int len, int argc, char **argv) {
 </li>
 </ol>
 <p>Let’s implement this with the BL602 Low Level UART HAL.</p>
-<h2 id="receive-data" class="section-header"><a href="#receive-data">4.1 Receive Data</a></h2>
+<h2 id="receive-data"><a href="#receive-data">4.1 Receive Data</a></h2>
 <p>Here’s how we <strong>receive one byte of data</strong> from the UART Port…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Use UART Port 1 (UART Port 0 is reserved for console)
 #define UART_PORT 1
@@ -227,13 +227,13 @@ void send_begin() {
     }</code></pre></div>
 <p>Here we define the function <strong><code>send_begin</code></strong> that performs the Start Transfer Handshake.</p>
 <p>This code loops until the character <code>'c'</code> has been received from the UART Port. Which is the First Step of our handshake.</p>
-<h2 id="transmit-data" class="section-header"><a href="#transmit-data">4.2 Transmit Data</a></h2>
+<h2 id="transmit-data"><a href="#transmit-data">4.2 Transmit Data</a></h2>
 <p>Second Step of the handshake: <strong>Send the character <code>'a'</code>…</strong></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Send &#39;a&#39;
     int rc = bl_uart_data_send(UART_PORT, &#39;a&#39;);
     assert(rc == 0);</code></pre></div>
 <p>Here we call <strong><code>bl_uart_data_send</code></strong> (also from the BL602 Low Level UART HAL) to transmit the character <code>'a'</code> to the UART Port.</p>
-<h2 id="receive-again" class="section-header"><a href="#receive-again">4.3 Receive Again</a></h2>
+<h2 id="receive-again"><a href="#receive-again">4.3 Receive Again</a></h2>
 <p>Finally the Third Step: <strong>Wait until <code>'b'</code> has been received</strong> from the UART Port…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Wait until &#39;b&#39; is received
     for (;;) {
@@ -250,7 +250,7 @@ void send_begin() {
 <p>Note that we’re polling the UART Port, which is OK because we’re mostly transmitting data, and receiving little data. </p>
 <p>If we’re receiving lots of data through polling, we might lose some data. For such cases, we should use UART Interrupts or DMA.</p>
 <p>(The E-Ink Display code in this article was ported from Arduino to BL602. <a href="https://github.com/Seeed-Studio/Grove_Triple_Color_E-lnk_2.13/blob/master/examples/Eink_factory_code_213/Eink_factory_code_213.ino">See this</a>)</p>
-<h1 id="display-image" class="section-header"><a href="#display-image">5 Display Image</a></h1>
+<h1 id="display-image"><a href="#display-image">5 Display Image</a></h1>
 <p>Let’s head back to <code>display_image</code>, the function in our Demo Firmware that controls the E-Ink Display to render an image: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L132-L163"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to display image
 static void display_image(char *buf, int len, int argc, char **argv) {
@@ -275,7 +275,7 @@ static void display_image(char *buf, int len, int argc, char **argv) {
 }</code></pre></div>
 <p>At the end of the function, we call <strong><code>write_image_picture</code></strong> to send the image data.</p>
 <p>Let’s look inside <code>write_image_picture</code></p>
-<h2 id="send-image-data" class="section-header"><a href="#send-image-data">5.1 Send Image Data</a></h2>
+<h2 id="send-image-data"><a href="#send-image-data">5.1 Send Image Data</a></h2>
 <p>To display a image on our E-Ink Display, we shall transmit two bitmaps: Black Bitmap and Red Bitmap.</p>
 <p>(More about the Black and Red Bitmaps in a while)</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/eink/customer_app/sdk_app_uart_eink/sdk_app_uart_eink/demo.c#L106-L130"><code>demo.c</code></a></p>
@@ -316,7 +316,7 @@ static void send_data(const uint8_t* data, uint32_t data_len) {
 <p><code>send_data</code> calls <code>bl_uart_data_send</code> (from BL602 Low Level UART HAL) to transmit the data to the UART Port, one byte at a time. </p>
 <p>(We’ve seen this earlier during the handshake)</p>
 <p>That’s all for the UART code that talks to the E-Ink Display!</p>
-<h1 id="build-and-run-the-firmware" class="section-header"><a href="#build-and-run-the-firmware">6 Build and Run the Firmware</a></h1>
+<h1 id="build-and-run-the-firmware"><a href="#build-and-run-the-firmware">6 Build and Run the Firmware</a></h1>
 <p>Let’s run the E-Ink Display UART Demo Firmware for BL602.</p>
 <p>Download the Firmware Binary File <strong><code>sdk_app_uart_eink.bin</code></strong> from…</p>
 <ul>
@@ -336,7 +336,7 @@ make
 mkdir /mnt/c/blflash
 cp build_out/sdk_app_uart_eink.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
-<h2 id="flash-the-firmware" class="section-header"><a href="#flash-the-firmware">6.1 Flash the firmware</a></h2>
+<h2 id="flash-the-firmware"><a href="#flash-the-firmware">6.1 Flash the firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
 <ol>
 <li>
@@ -399,7 +399,7 @@ blflash flash build_out/sdk_app_uart_eink.bin \
 blflash flash c:\blflash\sdk_app_uart_eink.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
-<h2 id="run-the-firmware" class="section-header"><a href="#run-the-firmware">6.2 Run the firmware</a></h2>
+<h2 id="run-the-firmware"><a href="#run-the-firmware">6.2 Run the firmware</a></h2>
 <p>Set BL602 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineCone:</strong></p>
 <ol>
@@ -433,7 +433,7 @@ blflash flash c:\blflash\sdk_app_uart_eink.bin --port COM5</code></pre></div>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">More details on connecting to BL602</a></p>
-<h2 id="enter-the-commands" class="section-header"><a href="#enter-the-commands">6.3 Enter the commands</a></h2>
+<h2 id="enter-the-commands"><a href="#enter-the-commands">6.3 Enter the commands</a></h2>
 <ol>
 <li>
 <p>Press the Reset Button.</p>
@@ -520,7 +520,7 @@ Sending red pixels...</code></pre></div>
 </ol>
 <p><img src="https://lupyuen.github.io/images/uart-connect4.jpg" alt="Grove E-Ink Display close up" /></p>
 <p><em>Grove E-Ink Display close up</em></p>
-<h1 id="black-and-red-bitmaps" class="section-header"><a href="#black-and-red-bitmaps">7 Black and Red Bitmaps</a></h1>
+<h1 id="black-and-red-bitmaps"><a href="#black-and-red-bitmaps">7 Black and Red Bitmaps</a></h1>
 <p><em>That’s not a plain black and white image right? I see some red fringes…</em></p>
 <p>The E-Ink Display is actually showing a black, white AND red image!</p>
 <p>We can’t show Fifty Shades of Grey on our display… But we can use <strong>Red as a Single Shade of Grey!</strong></p>
@@ -584,7 +584,7 @@ cargo run -- --min 86 --max 215 uart-cartoon2.png &gt;image_red.inc</code></pre>
 <p><a href="https://wiki.seeedstudio.com/Grove-Triple_Color_E-Ink_Display_2_13/#diy"><strong>More about the Grove E-Ink Image Format</strong></a></p>
 </li>
 </ul>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>Exciting things coming up…</p>
 <ol>
 <li>
@@ -618,7 +618,7 @@ cargo run -- --min 86 --max 215 uart-cartoon2.png &gt;image_red.inc</code></pre>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/uart.md"><code>lupyuen.github.io/src/uart.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1361848589496979458?s=20">this Twitter Thread</a></p>

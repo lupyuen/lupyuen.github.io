@@ -82,7 +82,7 @@
 <li><a href="#notes">5 Notes</a><ul></ul></li></ul></nav><p><img src="https://lupyuen.github.io/images/pinecone-title.jpg" alt="PineCone BL602 RISC-V Evaluation Board" /></p>
 <p>📝 <em>13 Jan 2022</em></p>
 <p>Let’s learn about the <strong>BL602 SoC</strong> and Pine64’s <strong>PineCone BL602 Board</strong>… And how we can contribute to the <a href="https://en.wikipedia.org/wiki/RISC-V"><strong>RISC-V Open Source Ecosystem</strong></a>.</p>
-<h1 id="pinecone-bl602-why-does-it-matter" class="section-header"><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a></h1>
+<h1 id="pinecone-bl602-why-does-it-matter"><a href="#pinecone-bl602-why-does-it-matter">1 PineCone BL602: Why does it matter?</a></h1>
 <p>PineCone is based on the BL602 SoC made by <a href="https://www.bouffalolab.com/bl602">Nanjing-based Bouffalo Lab</a>…</p>
 <ol>
 <li>
@@ -102,7 +102,7 @@
 <p><strong>BL604 is the upsized sibling of BL602</strong>: BL604 has 23 GPIOs vs BL602’s 16 GPIOs. Everything else works the same.</p>
 </li>
 </ol>
-<h2 id="bl602-vs-esp32" class="section-header"><a href="#bl602-vs-esp32">1.1 BL602 vs ESP32</a></h2>
+<h2 id="bl602-vs-esp32"><a href="#bl602-vs-esp32">1.1 BL602 vs ESP32</a></h2>
 <p><em>How does BL602 compare with ESP32?</em></p>
 <ul>
 <li>
@@ -114,11 +114,11 @@
 </ul>
 <p>To folks who are familiar with Arm microcontrollers (STM32 Blue Pill, Nordic nRF52), BL602 looks like another microcontroller… Except that it runs on the <a href="https://riscv.org/technical/specifications/"><strong>RISC-V Instruction Set</strong></a> instead of Arm.</p>
 <p><em>(There’s a new <a href="https://www.espressif.com/en/news/ESP32_C3">ESP32 based on RISC-V</a>. <a href="https://twitter.com/MisterTechBlog/status/1332859286142128131?s=20">Compare BL602 with ESP32-C3</a>)</em></p>
-<h2 id="risc-v-vs-arm" class="section-header"><a href="#risc-v-vs-arm">1.2 RISC-V vs Arm</a></h2>
+<h2 id="risc-v-vs-arm"><a href="#risc-v-vs-arm">1.2 RISC-V vs Arm</a></h2>
 <p><em>Why not stick with Arm? Why get adventurous with RISC-V?</em></p>
 <p>Nintendo Switch (the #1 gaming console) runs on Arm. iPhone and the new M1 Macs also run on Arm.  <strong>Most of our gadgets are powered by Arm today.</strong></p>
 <p>Before Arm gets too successful and locks us in… Shouldn’t we explore alternatives like RISC-V?</p>
-<h1 id="the-thing-about-risc-v-and-pinecone-bl602" class="section-header"><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a></h1>
+<h1 id="the-thing-about-risc-v-and-pinecone-bl602"><a href="#the-thing-about-risc-v-and-pinecone-bl602">2 The Thing About RISC-V and PineCone BL602</a></h1>
 <p><em>32-bit RISC-V microcontrollers all run on the same core instruction set…</em></p>
 <p><em>So the same firmware should run on different RISC-V microcontrollers… Right?</em></p>
 <p>Nope! Because across different brands of RISC-V microcontrollers…</p>
@@ -132,7 +132,7 @@
 </li>
 </ol>
 <p>Hence the operating systems supported on each RISC-V Microcontroller will vary.</p>
-<h2 id="bl602-vs-other-risc-v-microcontrollers" class="section-header"><a href="#bl602-vs-other-risc-v-microcontrollers">2.1 BL602 vs Other RISC-V Microcontrollers</a></h2>
+<h2 id="bl602-vs-other-risc-v-microcontrollers"><a href="#bl602-vs-other-risc-v-microcontrollers">2.1 BL602 vs Other RISC-V Microcontrollers</a></h2>
 <p>Let’s compare BL602 with two popular 32-bit RISC-V microcontrollers…</p>
 <ol>
 <li>
@@ -162,7 +162,7 @@
 </li>
 </ol>
 <p>BL602 is new but the OS support gets better every day!</p>
-<h1 id="hands-on-with-pinecone-bl602" class="section-header"><a href="#hands-on-with-pinecone-bl602">3 Hands On with PineCone BL602</a></h1>
+<h1 id="hands-on-with-pinecone-bl602"><a href="#hands-on-with-pinecone-bl602">3 Hands On with PineCone BL602</a></h1>
 <p>Everything about BL602 (and BL604) is explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/book"><strong>“The RISC-V BL602 Book”</strong></a></li>
@@ -241,14 +241,14 @@
 </li>
 </ol>
 <p>Note that the boards have different jumpers, buttons and LEDs.</p>
-<h2 id="form-factor" class="section-header"><a href="#form-factor">3.1 Form Factor</a></h2>
+<h2 id="form-factor"><a href="#form-factor">3.1 Form Factor</a></h2>
 <p>The PineCone BL602 Evaluation Board has a similar form factor to other wireless dev boards, like <a href="https://lupyuen.github.io/articles/coding-nrf52-with-rust-and-apache-mynewt-on-visual-studio-code">EBYTE E73-TBB</a> (which is based on nRF52832)</p>
 <p>The PineCone board comes with a <strong>USB-C Connector</strong>. When connected to our computer via USB, the BL602 board is recognised as a Serial Device, ready to be flashed.</p>
 <p><em>(PineCone’s USB Vendor ID is <code>0x1A86</code>, Product ID is <code>0x7523</code>)</em></p>
 <p><a href="https://youtu.be/WJLp-i2YtdY">(Watch the demo on YouTube)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-flash.png" alt="Flashing BL602 with Dev Cube" /></p>
 <p><em>Flashing BL602 with Dev Cube</em></p>
-<h2 id="flashing-firmware" class="section-header"><a href="#flashing-firmware">3.2 Flashing Firmware</a></h2>
+<h2 id="flashing-firmware"><a href="#flashing-firmware">3.2 Flashing Firmware</a></h2>
 <p>To flash Apache NuttX Firmware to BL602, see this…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></li>
@@ -347,7 +347,7 @@ Program Finished</code></pre></div>
 <p><a href="https://pine64.github.io/bl602-docs/Quickstart_Guide/Linux/Quickstart_Linux_ubuntu.html">Windows Starter Guide</a></p>
 </li>
 </ul>
-<h3 id="other-flashing-tools" class="section-header"><a href="#other-flashing-tools">3.2.1 Other Flashing Tools</a></h3>
+<h3 id="other-flashing-tools"><a href="#other-flashing-tools">3.2.1 Other Flashing Tools</a></h3>
 <p><em>Are there command-line tools for flashing firmware to PineCone on Linux, macOS and Windows?</em></p>
 <p>Check out the article…</p>
 <ul>
@@ -364,7 +364,7 @@ Program Finished</code></pre></div>
 <p>Sorry no. SWD is available only on Arm Microcontrollers. <a href="https://lupyuen.github.io/articles/openocd-on-raspberry-pi-better-with-swd-on-spi">(SWD was created by Arm)</a></p>
 <p>The UART flashing protocol for PineCone is described in the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en"><strong>BL602 Flash Programming</strong></a> doc.</p>
 <p><em>(The <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_ISP/en">BL602 Flash Programming</a> doc seems to suggest that BL602 may also be flashed from an SD Card via Secure Digital Input/Output)</em></p>
-<h2 id="building-firmware" class="section-header"><a href="#building-firmware">3.3 Building Firmware</a></h2>
+<h2 id="building-firmware"><a href="#building-firmware">3.3 Building Firmware</a></h2>
 <p>To build Apache NuttX Firmware for BL602, see this…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx#appendix-build-flash-and-run-nuttx"><strong>“Build, Flash and Run NuttX”</strong></a></li>
@@ -412,7 +412,7 @@ make</code></pre></div>
 </ul>
 <p>If we have trouble building the firmware on our own, just download the built firmware images from above.</p>
 <p>The downloaded firmware images <code>*.bin</code> may be flashed to BL602 with the <a href="https://pine64.github.io/bl602-docs/Developer_Environment/BLFlashEnv/BLFlashEnv.html">BLFlashEnv Tool</a> on Linux and Windows. (No need for MSYS2)</p>
-<h2 id="development-tools" class="section-header"><a href="#development-tools">3.4 Development Tools</a></h2>
+<h2 id="development-tools"><a href="#development-tools">3.4 Development Tools</a></h2>
 <p><a href="https://code.visualstudio.com/"><strong>VSCode</strong></a> works fine for creating BL602 firmware with Apache NuttX OS, BL602 IoT SDK and BL602 MCU SDK.</p>
 <p>For BL602 IoT SDK: The official development tools are…</p>
 <ul>
@@ -424,12 +424,12 @@ make</code></pre></div>
 <p><a href="https://pine64.github.io/bl602-docs/Developer_Environment/eclipse/eclipse.html"><strong>Eclipse</strong></a></p>
 </li>
 </ul>
-<h2 id="debugging-firmware" class="section-header"><a href="#debugging-firmware">3.5 Debugging Firmware</a></h2>
+<h2 id="debugging-firmware"><a href="#debugging-firmware">3.5 Debugging Firmware</a></h2>
 <p>There’s an entire article about debugging BL602 Firmware with OpenOCD and JTAG…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/openocd"><strong>“Connect PineCone BL602 to OpenOCD”</strong></a></li>
 </ul>
-<h2 id="learning-risc-v-and-bl602" class="section-header"><a href="#learning-risc-v-and-bl602">3.6 Learning RISC-V and BL602</a></h2>
+<h2 id="learning-risc-v-and-bl602"><a href="#learning-risc-v-and-bl602">3.6 Learning RISC-V and BL602</a></h2>
 <p><em>How shall we learn about writing RISC-V firmware for BL602?</em></p>
 <p>For Apache NuttX OS: Check out this article…</p>
 <ul>
@@ -445,7 +445,7 @@ make</code></pre></div>
 <li><a href="https://github.com/pine64/bl_iot_sdk/tree/master/customer_app"><strong>bl_iot_sdk/customer_app</strong></a></li>
 </ul>
 <p>Some of the firmware samples <a href="https://pine64.github.io/bl602-docs/Examples/helloworld/helloworld.html">are documented here</a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">4 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
 <p>We’re in the middle of a pandemic. Why not take the time to learn some RISC-V… And contribute to the RISC-V Open Source Ecosystem!</p>
 <ul>
 <li>
@@ -463,7 +463,7 @@ make</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinecone.md"><code>lupyuen.github.io/src/pinecone.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">5 Notes</a></h1>
+<h1 id="notes"><a href="#notes">5 Notes</a></h1>
 <ol>
 <li>
 <p>I’m not a Pine64 employee and I’m not paid by Pine64 to write these articles on BL602. </p>

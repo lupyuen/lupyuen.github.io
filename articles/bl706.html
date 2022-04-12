@@ -87,7 +87,7 @@
 <p><img src="https://lupyuen.github.io/images/bl706-title.jpg" alt="Dev Kit for Bouffalo Lab BL706 Audio Video Board" /></p>
 <p><em>Dev Kit for Bouffalo Lab BL706 Audio Video Board</em></p>
 <p><em>Top to bottom: ILI9341 SPI Display, BL706 AVB, Camera, JTAG Adapter</em></p>
-<h1 id="bl706-audio-video-board" class="section-header"><a href="#bl706-audio-video-board">1 BL706 Audio Video Board</a></h1>
+<h1 id="bl706-audio-video-board"><a href="#bl706-audio-video-board">1 BL706 Audio Video Board</a></h1>
 <p><em>What is BL706?</em></p>
 <p>BL706 is the new <strong>RISC-V + 2.4 GHz RF SoC by Bouffalo Lab</strong>…</p>
 <ul>
@@ -205,7 +205,7 @@
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/usb">Check out the USB Demo Firmware</a></p>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples/tensorflow">See also the TensorFlow Lite Firmware</a></p>
 <p><a href="https://github.com/bouffalolab/bl_mcu_sdk/tree/master/examples">More Demo Firmware</a></p>
-<h1 id="install-sdk-and-toolchain" class="section-header"><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a></h1>
+<h1 id="install-sdk-and-toolchain"><a href="#install-sdk-and-toolchain">2 Install SDK and Toolchain</a></h1>
 <p><a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/bouffalolab/bl_iot_sdk/master/docs/BL702/html/index.html"><strong>UPDATE</strong>: BL706 is now supported by <strong>Bouffalo Lab IoT SDK</strong> (the same one for BL602)</a></p>
 <p>To build firmware for BL706, we need the <strong>Bouffalo Lab MCU SDK</strong>…</p>
 <ul>
@@ -244,7 +244,7 @@
 </li>
 </ol>
 <p>The instructions will also work on <strong>Ubuntu x64</strong>.  (But not Ubuntu Arm64)</p>
-<h2 id="windows-cdk-and-eclipse" class="section-header"><a href="#windows-cdk-and-eclipse">2.1 Windows CDK and Eclipse</a></h2>
+<h2 id="windows-cdk-and-eclipse"><a href="#windows-cdk-and-eclipse">2.1 Windows CDK and Eclipse</a></h2>
 <p>If we prefer plain old Windows CMD (instead of WSL), follow these instructions to install <strong>Windows CDK</strong> or <strong>Windows Eclipse</strong> (apologies again)…</p>
 <ul>
 <li>
@@ -260,7 +260,7 @@
 <p><em>What about macOS?</em></p>
 <p>Sadly BL MCU SDK doesn’t support macOS.</p>
 <p><img src="https://lupyuen.github.io/images/bl706-lvgl.png" alt="BL706 LVGL Demo" /></p>
-<h1 id="build-firmware" class="section-header"><a href="#build-firmware">3 Build Firmware</a></h1>
+<h1 id="build-firmware"><a href="#build-firmware">3 Build Firmware</a></h1>
 <p>Let’s <strong>build some firmware</strong> for BL706!</p>
 <p>The pic above shows the <strong>LVGL Graphics Demo Firmware</strong> that we shall build. The source code is at…</p>
 <ul>
@@ -284,7 +284,7 @@ cmake -DCHIP=bl702 -DCPU_ID=m0 -DBOARD=bl706_avb -DSUPPORT_FLOAT=n -DSUPPORT_SHE
 Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/226cb7dc629b47daa8435339fcb17a1c">(See the complete log)</a></p>
 <p>The build is done! This is the <strong>BL706 Firmware File</strong> that we shall flash to BL706 AVB…</p>
-<div class="example-wrap"><pre class="language-text"><code>C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</code></pre></div><h1 id="flash-firmware" class="section-header"><a href="#flash-firmware">4 Flash Firmware</a></h1>
+<div class="example-wrap"><pre class="language-text"><code>C:\bl_mcu_sdk\out\examples\lvgl\lvgl_main.bin</code></pre></div><h1 id="flash-firmware"><a href="#flash-firmware">4 Flash Firmware</a></h1>
 <p>We’re ready to <strong>flash our LVGL Demo Firmware</strong> to BL706 AVB!  We shall…</p>
 <ol>
 <li>
@@ -294,7 +294,7 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin</code></pre></div>
 <p>Run <strong>Bouffalo Lab Dev Cube</strong> to flash our firmware to BL706 AVB</p>
 </li>
 </ol>
-<h2 id="enter-flashing-mode" class="section-header"><a href="#enter-flashing-mode">4.1 Enter Flashing Mode</a></h2>
+<h2 id="enter-flashing-mode"><a href="#enter-flashing-mode">4.1 Enter Flashing Mode</a></h2>
 <p>Connect BL706 AVB to our computer’s USB port.</p>
 <p>To enter <strong>Flashing Mode</strong> on BL706 AVB, we do the <strong>“Two Finger Salute”</strong>…</p>
 <ol>
@@ -314,7 +314,7 @@ Generate /mnt/c/bl_mcu_sdk/out/examples/lvgl/lvgl_main.bin</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bl706-boot2.jpg" alt="BOOT and RST Buttons" /></p>
 <p>BL706 AVB needs to be in Flashing Mode so that it will appear on Windows as a <strong>USB Serial Device</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/bl706-usb.png" alt="BL706 USB" /></p>
-<h2 id="run-bl-dev-cube" class="section-header"><a href="#run-bl-dev-cube">4.2 Run BL Dev Cube</a></h2>
+<h2 id="run-bl-dev-cube"><a href="#run-bl-dev-cube">4.2 Run BL Dev Cube</a></h2>
 <p>To flash our firmware on Windows, we download the Windows version of <strong>Bouffalo Lab Dev Cube</strong> software…</p>
 <ul>
 <li>
@@ -379,7 +379,7 @@ Program Finished
 <p><a href="https://htmlpreview.github.io/?https://github.com/bouffalolab/bl_mcu_sdk/blob/master/docs/development_guide/build/html/get_started/bl_dev_cube.html">(Alternative Link)</a></p>
 </li>
 </ul>
-<h2 id="jtag-and-j-link" class="section-header"><a href="#jtag-and-j-link">4.3 JTAG and J-Link</a></h2>
+<h2 id="jtag-and-j-link"><a href="#jtag-and-j-link">4.3 JTAG and J-Link</a></h2>
 <p><em>Is there another way to flash our firmware to BL706?</em></p>
 <p>We may flash BL706 with <strong>BL Dev Cube, OpenOCD and a JTAG or J-Link Adapter</strong>.</p>
 <p>The <strong><code>FUNC1</code> Jumper</strong> should be connected, to <strong>enable the JTAG Port</strong>.</p>
@@ -397,13 +397,13 @@ Program Finished
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/bl706-openocd.png" alt="BL706 OpenOCD" /></p>
 </blockquote>
-<h2 id="flashing-without-bl-dev-cube" class="section-header"><a href="#flashing-without-bl-dev-cube">4.4 Flashing without BL Dev Cube</a></h2>
+<h2 id="flashing-without-bl-dev-cube"><a href="#flashing-without-bl-dev-cube">4.4 Flashing without BL Dev Cube</a></h2>
 <p><em>Is it possible to flash BL706 with OpenOCD and JTAG… Without BLDevCube?</em></p>
 <p>Check out the findings here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/v1.0.3"><strong>Flashing BL706 with OpenOCD without BLDevCube</strong></a></li>
 </ul>
-<h1 id="run-lvgl-firmware" class="section-header"><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a></h1>
+<h1 id="run-lvgl-firmware"><a href="#run-lvgl-firmware">5 Run LVGL Firmware</a></h1>
 <p>Watch what happens when we <strong>run our LVGL Firmware</strong> on BL706 AVB!</p>
 <p>Connect the <strong><code>FUNC1</code> and <code>FUNC2</code> Jumpers</strong>. (Because we’re using the SPI Port)</p>
 <p><img src="https://lupyuen.github.io/images/bl706-jumpers.jpg" alt="BL706 Jumpers" /></p>
@@ -424,7 +424,7 @@ Program Finished
 <p>Here are the results…</p>
 <p><img src="https://lupyuen.github.io/images/bl706-lvgl2a.jpg" alt="BL706 LVGL Demo Firmware" /></p>
 <p>We have successfully <strong>built, flashed and executed the LVGL Demo Firmware</strong> on BL706 AVB!</p>
-<h1 id="bl706-vs-bl602" class="section-header"><a href="#bl706-vs-bl602">6 BL706 vs BL602</a></h1>
+<h1 id="bl706-vs-bl602"><a href="#bl706-vs-bl602">6 BL706 vs BL602</a></h1>
 <p><em>How does BL706 differ from BL602?</em></p>
 <p>From the datasheets we can see…</p>
 <ol>
@@ -444,7 +444,7 @@ Program Finished
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/bl706-vs-bl602a.jpg" alt="BL706 vs BL602 Datasheet" /></p>
-<h2 id="mcu-sdk-vs-iot-sdk" class="section-header"><a href="#mcu-sdk-vs-iot-sdk">6.1 MCU SDK vs IoT SDK</a></h2>
+<h2 id="mcu-sdk-vs-iot-sdk"><a href="#mcu-sdk-vs-iot-sdk">6.1 MCU SDK vs IoT SDK</a></h2>
 <p><a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/bouffalolab/bl_iot_sdk/master/docs/BL702/html/index.html"><strong>UPDATE</strong>: BL706 is now supported by <strong>Bouffalo Lab IoT SDK</strong> (the same one for BL602)</a></p>
 <p>The <strong>BL IoT SDK</strong> for BL602 was released months before the <strong>BL MCU SDK</strong> for BL706.</p>
 <p>Bouffalo Lab explains how the <strong>MCU SDK differs from IoT SDK</strong>…</p>
@@ -498,7 +498,7 @@ Program Finished
 <p><img src="https://lupyuen.github.io/images/bl706-macos.png" alt="BL706 doesn’t support macOS" /></p>
 </li>
 </ol>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>I had lots of fun using the <strong>BL706 Audio Video Board</strong>.</p>
 <p>It feels simpler than BL602… But yet it has so many <strong>cool new features</strong>: Camera, Audio, USB, Zigbee Networking, LVGL Graphics, TensorFlow Machine Learning, …</p>
 <p>I look forward to seeing your <strong>Multimedia Creations on BL706!</strong></p>
@@ -521,7 +521,7 @@ Program Finished
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/bl706.md"><code>lupyuen.github.io/src/bl706.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">8 Notes</a></h1>
+<h1 id="notes"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1407845438787489794">this Twitter Thread</a></p>

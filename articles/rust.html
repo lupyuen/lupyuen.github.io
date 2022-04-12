@@ -97,7 +97,7 @@
 <p>But if you have the tiniest interest in coding <strong>Rust firmware for BL602</strong>… Please read on!</p>
 <p><img src="https://lupyuen.github.io/images/rust-title.jpg" alt="PineCone BL602 RISC-V Board" /></p>
 <p><em>PineCone BL602 RISC-V Board</em></p>
-<h1 id="bl602-blinky-in-c" class="section-header"><a href="#bl602-blinky-in-c">1 BL602 Blinky in C</a></h1>
+<h1 id="bl602-blinky-in-c"><a href="#bl602-blinky-in-c">1 BL602 Blinky in C</a></h1>
 <p>Before we do Rust, let’s look at the C code that blinks the LED on BL602 (by toggling the GPIO output): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_blinky/sdk_app_blinky/demo.c"><code>sdk_app_blinky/demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;bl_gpio.h&gt;     //  For BL602 GPIO Hardware Abstraction Layer
 #include &quot;nimble_npl.h&quot;  //  For NimBLE Porting Layer (mulitasking functions)
@@ -158,7 +158,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>Now let’s code-switch to Rust.</p>
 <p><a href="https://lupyuen.github.io/articles/led#how-it-works-bl602-gpio">More about BL602 GPIO HAL</a></p>
 <p><a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">More about NimBLE Porting Layer</a></p>
-<h1 id="bl602-blinky-in-rust" class="section-header"><a href="#bl602-blinky-in-rust">2 BL602 Blinky in Rust</a></h1>
+<h1 id="bl602-blinky-in-rust"><a href="#bl602-blinky-in-rust">2 BL602 Blinky in Rust</a></h1>
 <p>Here’s our BL602 Blinky Firmware, coded in Rust: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8"><code>rust/src/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">//!  Main Rust Application for BL602 Firmware</span>
@@ -240,7 +240,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>We’re not done with Rust yet! Let’s find out how we import the BL602 IoT SDK (and NimBLE Porting Library) into Rust.</p>
 <p>Here’s our code switching from C to Rust so far…</p>
 <p><img src="https://lupyuen.github.io/images/rust-codeswitch.png" alt="Code Switching from C to Rust" /></p>
-<h1 id="import-bl602-iot-sdk-into-rust" class="section-header"><a href="#import-bl602-iot-sdk-into-rust">3 Import BL602 IoT SDK into Rust</a></h1>
+<h1 id="import-bl602-iot-sdk-into-rust"><a href="#import-bl602-iot-sdk-into-rust">3 Import BL602 IoT SDK into Rust</a></h1>
 <p><a href="https://lupyuen.github.io/articles/adc"><strong>UPDATE:</strong> Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article</a></p>
 <p>As we import the functions from BL602 IoT SDK into Rust, let’s create <strong>Wrapper Functions</strong> that will expose a cleaner, neater interface to our Rust callers.</p>
 <p>We start with <strong><code>bl_gpio_output_set</code></strong>, the function from BL602 GPIO HAL (Hardware Abstraction Layer) that sets the GPIO Pin output: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141"><code>lib.rs</code></a></p>
@@ -286,7 +286,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>“<code>match</code>” works like “<code>switch...case</code>” in C. (“<code>_</code>” matches anything, similar to “<code>default</code>” in C)</p>
 <p>Here we return <code>Ok</code> for success, or <code>Err</code> with an error code inside.</p>
 <p>When our Rust caller receives <code>Err</code>, the <code>expect</code> error checking will fail with a panic.</p>
-<h2 id="pass-strings-from-rust-to-c" class="section-header"><a href="#pass-strings-from-rust-to-c">3.1 Pass Strings from Rust to C</a></h2>
+<h2 id="pass-strings-from-rust-to-c"><a href="#pass-strings-from-rust-to-c">3.1 Pass Strings from Rust to C</a></h2>
 <p>Strings are terminated by null in C, but not in Rust.</p>
 <p>(Rust strings have an internal field that remembers the string length)</p>
 <p>To pass strings from C to Rust, our wrapper needs to <strong>copy the string and pad it with null</strong>.  Here’s how: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90"><code>lib.rs</code></a></p>
@@ -343,7 +343,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 heapless = &quot;0.6.1&quot;</code></pre></div>
 <p><em>We’re copying the string just to pad it with null. Not so efficient no?</em></p>
 <p>In future we might switch to <code>cstr</code> and eliminate the copying of strings. <a href="https://crates.io/crates/cstr">(See this)</a></p>
-<h2 id="autogenerate-wrapper-functions" class="section-header"><a href="#autogenerate-wrapper-functions">3.2 Autogenerate Wrapper Functions</a></h2>
+<h2 id="autogenerate-wrapper-functions"><a href="#autogenerate-wrapper-functions">3.2 Autogenerate Wrapper Functions</a></h2>
 <p><a href="https://lupyuen.github.io/articles/adc"><strong>UPDATE:</strong> Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article</a></p>
 <p><em>Sure looks like a lot of repetitive work to create the Wrapper Functions… When we import the entire BL602 IoT SDK?</em></p>
 <p>Someday we shall <strong>automatically generate the Wrapper Functions</strong> for the entire BL602 IoT SDK.</p>
@@ -354,7 +354,7 @@ heapless = &quot;0.6.1&quot;</code></pre></div>
 </ul>
 <p>In short: We shall run a script that will scan the <code>*.h</code> header files from the BL602 IoT SDK and create the wrapper functions we’ve seen earlier. Yes it’s possible!</p>
 <p><a href="https://github.com/lupyuen/bl602-rust-wrapper">(Here’s a sneak peek of <code>bl602-rust-wrapper</code>)</a></p>
-<h1 id="rust-on-bl602-iot-sdk" class="section-header"><a href="#rust-on-bl602-iot-sdk">4 Rust on BL602 IoT SDK</a></h1>
+<h1 id="rust-on-bl602-iot-sdk"><a href="#rust-on-bl602-iot-sdk">4 Rust on BL602 IoT SDK</a></h1>
 <p>Our Rust Firmware accesses the BL602 serial port, GPIO pin and system timer by calling the <strong>BL602 IoT SDK</strong>. (Imported from C into Rust)</p>
 <p><img src="https://lupyuen.github.io/images/rust-arch.png" alt="Rust on BL602 IoT SDK" /></p>
 <p>Strictly speaking this isn’t <a href="https://docs.rust-embedded.org/book/"><strong>Embedded Rust</strong></a>, because we’re not running Rust directly on Bare Metal (BL602 Hardware). </p>
@@ -369,7 +369,7 @@ name       = &quot;app&quot;
 crate-type = [&quot;staticlib&quot;]</code></pre></div>
 <p>This produces a BL602 Rust Firmware file that we may <strong>flash to BL602 the conventional way</strong>: Over the BL602 Serial / UART Port.</p>
 <p>(We’ll talk later about Embedded Rust on Bare Metal BL602)</p>
-<h1 id="build-the-bl602-rust-firmware" class="section-header"><a href="#build-the-bl602-rust-firmware">5 Build the BL602 Rust Firmware</a></h1>
+<h1 id="build-the-bl602-rust-firmware"><a href="#build-the-bl602-rust-firmware">5 Build the BL602 Rust Firmware</a></h1>
 <p><a href="https://lupyuen.github.io/articles/adc"><strong>UPDATE:</strong> Rust on BL602 is now simpler with Rust Wrapper for BL602 IoT SDK. Check out the new article</a></p>
 <p>Here are the steps to build the BL602 Rust Firmware <code>sdk_app_rust.bin</code>…</p>
 <ol>
@@ -466,7 +466,7 @@ Building Finish. To flash build output.</code></pre></div>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L135-L523"><strong>Build Log for BL602 Rust Firmware</strong></a></li>
 </ul>
 <p>(See the Appendix for more about <code>run.sh</code>)</p>
-<h1 id="flash-the-bl602-rust-firmware" class="section-header"><a href="#flash-the-bl602-rust-firmware">6 Flash the BL602 Rust Firmware</a></h1>
+<h1 id="flash-the-bl602-rust-firmware"><a href="#flash-the-bl602-rust-firmware">6 Flash the BL602 Rust Firmware</a></h1>
 <p>Here’s how we flash the Rust Firmware file <code>sdk_app_rust.bin</code> to BL602…</p>
 <ol>
 <li>
@@ -559,7 +559,7 @@ blflash flash c:\blflash\sdk_app_lora.bin --port COM5</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 </li>
 </ol>
-<h1 id="run-the-bl602-rust-firmware" class="section-header"><a href="#run-the-bl602-rust-firmware">7 Run the BL602 Rust Firmware</a></h1>
+<h1 id="run-the-bl602-rust-firmware"><a href="#run-the-bl602-rust-firmware">7 Run the BL602 Rust Firmware</a></h1>
 <p>Finally we run the BL602 Rust Firmware…</p>
 <ol>
 <li>
@@ -649,7 +649,7 @@ bl_sys_time_now          : sys time now</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/rust-coolterm.png" alt="Our BL602 Rust Firmware running with CoolTerm" /></p>
 <p><em>Our BL602 Rust Firmware running with CoolTerm</em></p>
-<h1 id="rust-targets" class="section-header"><a href="#rust-targets">8 Rust Targets</a></h1>
+<h1 id="rust-targets"><a href="#rust-targets">8 Rust Targets</a></h1>
 <p><em>Why did we compile our Rust Firmware with this unusual JSON target?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>cargo build \
     --target ../riscv32imacf-unknown-none-elf.json \
@@ -671,7 +671,7 @@ bl_sys_time_now          : sys time now</code></pre></div></li>
 <div class="example-wrap"><pre class="language-text"><code>Can&#39;t link soft-float modules with single-float modules</code></pre></div>
 <p><a href="https://twitter.com/MisterTechBlog/status/1383075111431938051">(See this)</a></p>
 <p><em>Why?</em></p>
-<h2 id="bl602-supports-hardware-floating-point" class="section-header"><a href="#bl602-supports-hardware-floating-point">8.1 BL602 supports Hardware Floating-Point</a></h2>
+<h2 id="bl602-supports-hardware-floating-point"><a href="#bl602-supports-hardware-floating-point">8.1 BL602 supports Hardware Floating-Point</a></h2>
 <p>That’s because the full designation of BL602 is actually <strong><code>riscv32-imacfx</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/rust-target.png" alt="BL602 Target is riscv32-imacfx" /></p>
 <p>Which means that BL602 supports <strong>Hardware Floating-Point</strong> (Single Precision)…</p>
@@ -685,7 +685,7 @@ bl_sys_time_now          : sys time now</code></pre></div></li>
 <p>This produces binaries that contain RISC-V <strong>Floating-Point Instructions</strong>.</p>
 <p>Which are not compatible with our Rust binaries, which use <strong>Software Floating-Point</strong>.</p>
 <p>Hence we have a <strong>Software vs Hardware Floating-Point conflict</strong> between the compiled Rust code and the compiled BL602 IoT SDK.</p>
-<h2 id="selecting-another-rust-target" class="section-header"><a href="#selecting-another-rust-target">8.2 Selecting another Rust Target</a></h2>
+<h2 id="selecting-another-rust-target"><a href="#selecting-another-rust-target">8.2 Selecting another Rust Target</a></h2>
 <p><em>Is there another Rust Target that we can use for BL602?</em></p>
 <p>Let’s hunt for a Rust Target for <strong>32-bit RISC-V that supports Hardware Floating Point</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>rustc --print target-list</code></pre></div>
@@ -713,7 +713,7 @@ riscv32imc-unknown-none-elf</code></pre></div>
 <p>(They’re missing the <strong>“<code>f</code>”</strong> designator for Hardware Floating-Point)</p>
 <p>Fortunately Rust lets us create <strong>Custom Rust Targets</strong>. Let’s create one for BL602!</p>
 <p><a href="https://docs.rust-embedded.org/embedonomicon/compiler-support.html#built-in-target">More about Built-In Rust Targets</a></p>
-<h1 id="custom-rust-target-for-bl602" class="section-header"><a href="#custom-rust-target-for-bl602">9 Custom Rust Target for BL602</a></h1>
+<h1 id="custom-rust-target-for-bl602"><a href="#custom-rust-target-for-bl602">9 Custom Rust Target for BL602</a></h1>
 <p>We’re creating a <strong>Custom Rust Target</strong> for BL602 because…</p>
 <ul>
 <li>
@@ -786,7 +786,7 @@ riscv32imc-unknown-none-elf</code></pre></div>
 <p><em>How did we figure out the changes for “<code>features</code>” and “<code>llvm-abiname</code>”?</em></p>
 <p>By exporting and comparing the Rust Targets for <code>riscv32imac</code> (32-bit Software Floating-Point) and <code>riscv64gc-unknown-none-elf</code> (64-bit Hardware Floating-Point).</p>
 <p><a href="https://docs.rust-embedded.org/embedonomicon/custom-target.html">More about Custom Rust Targets</a></p>
-<h1 id="rust-on-bl602-two-more-ways" class="section-header"><a href="#rust-on-bl602-two-more-ways">10 Rust On BL602: Two More Ways</a></h1>
+<h1 id="rust-on-bl602-two-more-ways"><a href="#rust-on-bl602-two-more-ways">10 Rust On BL602: Two More Ways</a></h1>
 <p>Since Oct 2020 the Sipeed BL602 Community has started porting <strong>Embedded Rust to Bare Metal BL602</strong> (without BL602 IoT SDK)…</p>
 <ul>
 <li><a href="https://github.com/sipeed/bl602-rust-guide"><strong><code>sipeed/bl602-rust-guide</code></strong></a></li>
@@ -808,7 +808,7 @@ riscv32imc-unknown-none-elf</code></pre></div>
 <ul>
 <li><a href="https://github.com/9names/bl602-rom-wrapper"><strong><code>9names/bl602-rom-wrapper</code></strong></a></li>
 </ul>
-<h1 id="apache-nuttx-on-bl602" class="section-header"><a href="#apache-nuttx-on-bl602">11 Apache NuttX on BL602</a></h1>
+<h1 id="apache-nuttx-on-bl602"><a href="#apache-nuttx-on-bl602">11 Apache NuttX on BL602</a></h1>
 <p><strong>Apache NuttX</strong> OS has been ported recently to BL602 (Jan 2021)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx"><strong>“Apache NuttX OS on RISC-V BL602 and BL604”</strong></a></li>
@@ -819,7 +819,7 @@ riscv32imc-unknown-none-elf</code></pre></div>
 <li><a href="https://www.reddit.com/r/rust/comments/mbgujl/rust_integration_on_nuttx/"><strong>Rust on NuttX</strong></a></li>
 </ul>
 <p>If you’re keen to contribute, please sign up above!</p>
-<h2 id="rust-on-apache-mynewt" class="section-header"><a href="#rust-on-apache-mynewt">11.1 Rust on Apache Mynewt</a></h2>
+<h2 id="rust-on-apache-mynewt"><a href="#rust-on-apache-mynewt">11.1 Rust on Apache Mynewt</a></h2>
 <p><em>What about Rust on Apache Mynewt for BL602?</em></p>
 <p>We talked about Rust on Mynewt back in Jan 2021…</p>
 <ul>
@@ -828,16 +828,16 @@ riscv32imc-unknown-none-elf</code></pre></div>
 <p>We planned to port Mynewt to BL602 by <strong>reusing a subset of the BL602 IoT SDK</strong>. (Specifically, the BL602 HALs.) We have integrated the BL602 GPIO HAL with Mynewt. <a href="https://lupyuen.github.io/articles/gpio">(See this)</a></p>
 <p>Sadly there’s little interest in supporting Mynewt on BL602. (And we might have problems running Mynewt in XIP Flash)</p>
 <p>That’s why today we’re running Rust on BL602 IoT SDK (with FreeRTOS inside).</p>
-<h2 id="graphical-flow-programming" class="section-header"><a href="#graphical-flow-programming">11.2 Graphical Flow Programming</a></h2>
+<h2 id="graphical-flow-programming"><a href="#graphical-flow-programming">11.2 Graphical Flow Programming</a></h2>
 <p>When we have a stable implementation of Rust on BL602, perhaps we can do <strong>Graphical Flow Programming</strong> on BL602…</p>
 <p><a href="https://twitter.com/MisterTechBlog/status/1380926479094059011?s=20">Check out this Twitter Thread</a></p>
 <p><img src="https://lupyuen.github.io/images/rust-flow.png" alt="Graphical Flow Programming with Rete.js" /></p>
-<h2 id="but-why-c" class="section-header"><a href="#but-why-c">11.3 But Why C?</a></h2>
+<h2 id="but-why-c"><a href="#but-why-c">11.3 But Why C?</a></h2>
 <p><em>But seriously… Why are we still coding BL602 Firmware in C? Why not code everything in Rust?</em></p>
 <p>Because <strong>some BL602 features work better in C</strong> than in Rust. </p>
 <p>Like <strong>SPI with DMA</strong>, which is useful for SPI displays that require high-bandwidth data transfer.</p>
 <p><a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access">More about BL602 SPI with DMA</a></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>In our next BL602 article we shall head back to <strong>LoRaWAN, the low-power, long range IoT network</strong>. <a href="https://lupyuen.github.io/articles/lora2#whats-next">(See this)</a></p>
 <p>Check out the new article on <strong>Rust Wrapper for BL602 IoT SDK</strong>…</p>
 <ul>
@@ -865,7 +865,7 @@ riscv32imc-unknown-none-elf</code></pre></div>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/rust.md"><code>lupyuen.github.io/src/rust.md</code></a></p>
 <p><img src="https://lupyuen.github.io/images/rust-wrapper.png" alt="Auto-generating Rust Wrappers for BL602 IoT SDK with bl602-rust-wrapper" /></p>
 <p><em>Auto-generating Rust Wrappers for BL602 IoT SDK with <code>bl602-rust-wrapper</code></em></p>
-<h1 id="notes" class="section-header"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1383219945308184578">this Twitter Thread</a></p>
@@ -875,7 +875,7 @@ riscv32imc-unknown-none-elf</code></pre></div>
 <p>Our Rust firmware runs exactly the same way as C firmware, compiled into efficient RISC-V machine code. <a href="https://www.reddit.com/r/PINE64official/comments/mv858f/run_rust_riscv_firmware_with_bl602_iot_sdk/gvem3zy?utm_source=share&amp;utm_medium=web2x&amp;context=3">(More about this)</a></p>
 </li>
 </ol>
-<h1 id="appendix-build-script-for-bl602-rust-firmware" class="section-header"><a href="#appendix-build-script-for-bl602-rust-firmware">14 Appendix: Build Script for BL602 Rust Firmware</a></h1>
+<h1 id="appendix-build-script-for-bl602-rust-firmware"><a href="#appendix-build-script-for-bl602-rust-firmware">14 Appendix: Build Script for BL602 Rust Firmware</a></h1>
 <p>Let’s look inside the script that builds, flashes and runs our Rust Firmware for BL602: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L10-L23"><code>run.sh</code></a></p>
 <ol>
 <li>
@@ -982,7 +982,7 @@ open -a CoolTerm</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh#L135-L523"><strong>Build Log for BL602 Rust Firmware</strong></a></li>
 </ul>
-<h1 id="appendix-stub-library-for-bl602-rust" class="section-header"><a href="#appendix-stub-library-for-bl602-rust">15 Appendix: Stub Library for BL602 Rust</a></h1>
+<h1 id="appendix-stub-library-for-bl602-rust"><a href="#appendix-stub-library-for-bl602-rust">15 Appendix: Stub Library for BL602 Rust</a></h1>
 <p>The build script <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/run.sh"><code>run.sh</code></a> links the compiled Rust code into the BL602 firmware by overwriting the compiled <code>rust_app</code> Stub Library…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/rust-app"><code>rust-app</code>: BL602 Stub Library for Rust Application</a></li>
@@ -1009,7 +1009,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     }
 };</code></pre></div>
 <p>If we omit <code>rust_main</code> from our Stub Library, our GitHub Actions build will fail. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/.github/workflows/build.yml">(See this)</a></p>
-<h1 id="appendix-expose-inline-functions-to-rust" class="section-header"><a href="#appendix-expose-inline-functions-to-rust">16 Appendix: Expose Inline Functions to Rust</a></h1>
+<h1 id="appendix-expose-inline-functions-to-rust"><a href="#appendix-expose-inline-functions-to-rust">16 Appendix: Expose Inline Functions to Rust</a></h1>
 <p>Many functions from the <a href="https://lupyuen.github.io/articles/lora2#multitask-with-nimble-porting-layer">NimBLE Porting Layer</a> are declared as “<code>static inline</code>”…</p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/3rdparty/nimble-porting-layer/include/nimble_npl_os.h#L270-L274"><code>nimble_npl_os.h</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  static inline function

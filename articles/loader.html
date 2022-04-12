@@ -110,7 +110,7 @@
 <p>(But please bear with my ignorance 🙏)</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperh.jpg" alt="Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64 PineCone BL602 RISC-V Board</em></a></p>
-<h1 id="about-eflash-loader" class="section-header"><a href="#about-eflash-loader">1 About EFlash Loader</a></h1>
+<h1 id="about-eflash-loader"><a href="#about-eflash-loader">1 About EFlash Loader</a></h1>
 <p><em>How does EFlash Loader flash firmware to BL602?</em></p>
 <p>Here’s what happens when we run a <strong>Firmware Flasher</strong> on our computer to flash BL602…</p>
 <p><img src="https://lupyuen.github.io/images/loader-flow.jpg" alt="EFlash Loader Flow" /></p>
@@ -171,7 +171,7 @@ Success</code></pre></div>
 <blockquote>
 <p><a href="https://github.com/bouffalolab/bl_iot_sdk/tree/master/flash_tool/chips/bl602/eflash_loader">(Source)</a></p>
 </blockquote>
-<h2 id="thank-you-elf" class="section-header"><a href="#thank-you-elf">1.1 Thank You ELF</a></h2>
+<h2 id="thank-you-elf"><a href="#thank-you-elf">1.1 Thank You ELF</a></h2>
 <p><em>Can we uncover the inner workings of EFlash Loader?</em></p>
 <p>Yes we can!</p>
 <p>Bouffalo Lab (creator of BL602) has recently uploaded the <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>ELF Executable</strong></a> for EFlash Loader (pic above). Which makes Reverse Engineering much easier.</p>
@@ -185,7 +185,7 @@ Success</code></pre></div>
 <p>Let’s decompile the EFlash Loader ELF with Ghidra!</p>
 <p><img src="https://lupyuen.github.io/images/loader-ghidra.jpg" alt="EFlash Loader decompiled with Ghidra" /></p>
 <p><a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf">(Source)</a></p>
-<h1 id="decompile-with-ghidra" class="section-header"><a href="#decompile-with-ghidra">2 Decompile with Ghidra</a></h1>
+<h1 id="decompile-with-ghidra"><a href="#decompile-with-ghidra">2 Decompile with Ghidra</a></h1>
 <p>This is how we decompile the EFlash Loader ELF <a href="https://github.com/bouffalolab/bl_iot_sdk/blob/master/flash_tool/chips/bl602/eflash_loader/eflash_loader.elf"><strong>eflash_loader.elf</strong></a> with <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>…</p>
 <ul>
 <li><a href="https://youtu.be/3Ikn8Y775Lk"><strong>Watch the video on YouTube</strong></a></li>
@@ -250,7 +250,7 @@ ghidraRun.bat</code></pre></div></li>
 </ul>
 <p>Also check the Ghidra Help Window that we have minimised.</p>
 <p><img src="https://lupyuen.github.io/images/loader-export.png" alt="Export to C" /></p>
-<h2 id="export-to-c" class="section-header"><a href="#export-to-c">2.1 Export To C</a></h2>
+<h2 id="export-to-c"><a href="#export-to-c">2.1 Export To C</a></h2>
 <p>Ghidra has decompiled our ELF File into C code. To <strong>export the C code</strong> to a file…</p>
 <ol>
 <li>
@@ -269,7 +269,7 @@ ghidraRun.bat</code></pre></div></li>
 <li><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c"><strong>eflash_loader.c</strong></a></li>
 </ul>
 <p>Which is rather cumbersome to navigate, so we’ll use the <strong>Ghidra CodeBrowser</strong> to browse our C code in a while.</p>
-<h2 id="rv32gc-vs-rv32imacf" class="section-header"><a href="#rv32gc-vs-rv32imacf">2.2 RV32GC vs RV32IMACF</a></h2>
+<h2 id="rv32gc-vs-rv32imacf"><a href="#rv32gc-vs-rv32imacf">2.2 RV32GC vs RV32IMACF</a></h2>
 <p><em>Ghidra says our executable is RV32GC. Shouldn’t it be RV32IMACF?</em></p>
 <p>BL602 Executables are compiled for the <strong>RV32IMACF</strong> RISC-V Instruction Set and Extensions…</p>
 <div><table><thead><tr><th style="text-align: center">Designation</th><th style="text-align: left">Meaning</th></tr></thead><tbody>
@@ -285,7 +285,7 @@ ghidraRun.bat</code></pre></div></li>
 <p>That’s probably OK for our Reverse Engineering, since our executable won’t have any Double-Precision Floating-Point instructions.</p>
 <p>(If we import an ESP32-C3 RISC-V ELF, will Ghidra say it’s RV32IMC? Lemme know!)</p>
 <p><img src="https://lupyuen.github.io/images/loader-symboltree.png" alt="Ghidra Symbol Tree" /></p>
-<h1 id="decompiled-main-function" class="section-header"><a href="#decompiled-main-function">3 Decompiled Main Function</a></h1>
+<h1 id="decompiled-main-function"><a href="#decompiled-main-function">3 Decompiled Main Function</a></h1>
 <p>Let’s locate the <strong>Main Function</strong> in our decompiled code…</p>
 <ol>
 <li>
@@ -336,7 +336,7 @@ int main(void) {
 <p>This code suggests that all the exciting action happens inside <strong>bflb_eflash_loader_main</strong>. Which we’ll examine in a while.</p>
 <p><img src="https://lupyuen.github.io/images/loader-code.png" alt="Main Function" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2803-L2863">(Source)</a></p>
-<h2 id="call-graph" class="section-header"><a href="#call-graph">3.1 Call Graph</a></h2>
+<h2 id="call-graph"><a href="#call-graph">3.1 Call Graph</a></h2>
 <p><em>All this verbose code hurts my eyes. Can we browse the code graphically?</em></p>
 <p>Yes we can! Follow these steps to render the <strong>Call Graph</strong> for our Decompiled Function…</p>
 <ol>
@@ -354,7 +354,7 @@ int main(void) {
 <p>We’ll see the Call Graph below. Which kinda suggests that something exciting happens inside <strong>bflb_eflash_loader_main</strong>.</p>
 <p>Let’s go there now!</p>
 <p><img src="https://lupyuen.github.io/images/loader-call.png" alt="Call Graph" /></p>
-<h1 id="decompiled-main-loop" class="section-header"><a href="#decompiled-main-loop">4 Decompiled Main Loop</a></h1>
+<h1 id="decompiled-main-loop"><a href="#decompiled-main-loop">4 Decompiled Main Loop</a></h1>
 <p>Let’s continue the trail from the Main Function.</p>
 <p>In the <strong>Decompile Pane</strong> (right pane), double-click on <strong>bflb_eflash_loader_main</strong>.</p>
 <p>Inside the decompiled function we see a loop that <strong>receives and executes Flashing Commands</strong>: <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108">eflash_loader.c</a></p>
@@ -391,7 +391,7 @@ NextCommand:
 <p>Let’s find out how it executes Flashing Commands.</p>
 <p><img src="https://lupyuen.github.io/images/loader-code2.png" alt="Main Loop" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4031-L4108">(Source)</a></p>
-<h2 id="execute-flashing-command" class="section-header"><a href="#execute-flashing-command">4.1 Execute Flashing Command</a></h2>
+<h2 id="execute-flashing-command"><a href="#execute-flashing-command">4.1 Execute Flashing Command</a></h2>
 <p>Double-click on <strong>bflb_eflash_loader_cmd_process</strong>. This code appears: <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844">eflash_loader.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Execute a Flashing Command with the specified Command ID and parameters
 int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t len) {
@@ -413,7 +413,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3814-L3844">(Source)</a></p>
 <p>What are the Flashing Commands supported by EFlash Loader? We’ll find out next.</p>
 <p><img src="https://lupyuen.github.io/images/loader-flow2a.jpg" alt="Flashing Commands" /></p>
-<h1 id="decipher-flashing-commands" class="section-header"><a href="#decipher-flashing-commands">5 Decipher Flashing Commands</a></h1>
+<h1 id="decipher-flashing-commands"><a href="#decipher-flashing-commands">5 Decipher Flashing Commands</a></h1>
 <p>Recall that <strong>eflash_loader_cmds</strong> defines the list of Flashing Commands supported by EFlash Loader.</p>
 <p>In the <strong>Decompile Pane</strong> (right pane), double-click on <strong>eflash_loader_cmds</strong>.</p>
 <p>This appears in the <strong>Listing Pane</strong> (centre pane)…</p>
@@ -436,7 +436,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 </li>
 </ol>
 <p>Now we know all 24 Flashing Commands. Neat!</p>
-<h2 id="list-of-flashing-commands" class="section-header"><a href="#list-of-flashing-commands">5.1 List of Flashing Commands</a></h2>
+<h2 id="list-of-flashing-commands"><a href="#list-of-flashing-commands">5.1 List of Flashing Commands</a></h2>
 <p>Here are all <strong>24 Flashing Commands</strong> supported by EFlash Loader, as decoded by Ghidra from <strong>eflash_loader_cmds</strong>…</p>
 <div><table><thead><tr><th style="text-align: center">ID</th><th style="text-align: center">ASCII</th><th>Flashing Command</th></tr></thead><tbody>
 <tr><td style="text-align: center"><code>10</code></td><td style="text-align: center"><code>LF</code></td><td><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2867-L2879">*_<strong>get_bootinfo</strong></a></td></tr>
@@ -480,7 +480,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p>The other 17 Flashing Commands are undocumented.</p>
 <p>(Which might be interesting for future exploration!)</p>
 <p><img src="https://lupyuen.github.io/images/loader-flow2b.jpg" alt="Flashing States" /></p>
-<h1 id="flashing-states" class="section-header"><a href="#flashing-states">6 Flashing States</a></h1>
+<h1 id="flashing-states"><a href="#flashing-states">6 Flashing States</a></h1>
 <p>You can’t tell which way the train went by looking at the tracks… So let’s switch over to the (already documented) <strong>Firmware Flasher</strong> and understand how it calls the Flashing Commands.</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/BLOpenFlasher"><strong>bouffalolab/BLOpenFlasher</strong></a></li>
@@ -513,7 +513,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader#flashing-states">(See the complete table)</a></p>
 <p>Now that we have the Flashing States and the Flashing Commands, let’s match them.</p>
 <p><img src="https://lupyuen.github.io/images/loader-flow2c.jpg" alt="Match Flashing States and Commands" /></p>
-<h1 id="match-flashing-states-and-commands" class="section-header"><a href="#match-flashing-states-and-commands">7 Match Flashing States and Commands</a></h1>
+<h1 id="match-flashing-states-and-commands"><a href="#match-flashing-states-and-commands">7 Match Flashing States and Commands</a></h1>
 <p>Right now we have two interesting lists…</p>
 <ul>
 <li>
@@ -544,7 +544,7 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p>Let’s study the Decompiled Code and find out how it writes to the Embedded Flash.</p>
 <p><img src="https://lupyuen.github.io/images/loader-match2.jpg" alt="Match Flashing States and Commands" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader">(Source)</a></p>
-<h1 id="flash-program" class="section-header"><a href="#flash-program">8 Flash Program</a></h1>
+<h1 id="flash-program"><a href="#flash-program">8 Flash Program</a></h1>
 <p>In the <strong>Symbol Tree Pane</strong> (left centre), enter this into the <strong>Filter Box</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>bflb_eflash_loader_cmd_write_flash</code></pre></div>
 <p>Double-click on the function <strong>bflb_eflash_loader_cmd_write_flash</strong>.</p>
@@ -561,7 +561,7 @@ int32_t bflb_eflash_loader_cmd_write_flash(uint16_t cmd,uint8_t *data,uint16_t l
 <p>Let’s look inside the function…</p>
 <p><img src="https://lupyuen.github.io/images/loader-code4.png" alt="Flashing Command that writes Flashing Image to Embedded Flash" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300">(Source)</a></p>
-<h2 id="write-to-flash" class="section-header"><a href="#write-to-flash">8.1 Write To Flash</a></h2>
+<h2 id="write-to-flash"><a href="#write-to-flash">8.1 Write To Flash</a></h2>
 <p>In the <strong>Decompile Pane</strong> (right pane), double-click on <strong>bflb_spi_flash_program</strong>. This appears: <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910">eflash_loader.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Write Flashing Image to Embedded Flash
 int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
@@ -580,7 +580,7 @@ int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
 <p>We’re all done with our Reverse Engineering of BL602 EFlash Loader! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/loader-code5.jpg" alt="Write Flashing Image to Embedded Flash" /></p>
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L4901-L4910">(Source)</a></p>
-<h1 id="how-the-train-goes" class="section-header"><a href="#how-the-train-goes">9 How The Train Goes</a></h1>
+<h1 id="how-the-train-goes"><a href="#how-the-train-goes">9 How The Train Goes</a></h1>
 <p>Thanks to Ghidra we now know everything about EFlash Loader…</p>
 <ul>
 <li>
@@ -609,7 +609,7 @@ int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
 <li><a href="https://lupyuen.github.io/articles/boot"><strong>“BL602 Bootloader”</strong></a></li>
 </ul>
 <p>And the new firmware starts running on BL602.</p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>I had fun reverse enginnering the BL602 EFlash Loader… My first time using Ghidra!</p>
 <p>And I hope you found this article useful for real-world reverse engineering with Ghidra.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -632,7 +632,7 @@ int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/loader.md"><code>lupyuen.github.io/src/loader.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1486187004232867842">this Twitter Thread</a></p>

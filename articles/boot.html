@@ -82,7 +82,7 @@
 <p><em>How is our firmware loaded into BL602’s flash memory?</em></p>
 <p><em>How does BL602 prevent tampering of firmware?</em></p>
 <p>All this and much, much more shall be explained as we learn about the <strong>Boot2 Bootloader</strong> for the <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 RISC-V + WiFi SoC</strong></a>.</p>
-<h1 id="bl602-boot2-bootloader" class="section-header"><a href="#bl602-boot2-bootloader">1 BL602 Boot2 Bootloader</a></h1>
+<h1 id="bl602-boot2-bootloader"><a href="#bl602-boot2-bootloader">1 BL602 Boot2 Bootloader</a></h1>
 <p>Let’s ponder what happens when we flash to BL602 the firmware that we have built…</p>
 <p>(We’ll call it the <strong>Application Firmware</strong>)</p>
 <p><em>Sounds easy! We transfer the Application Firmware from our computer to BL602 (over USB)…</em></p>
@@ -154,7 +154,7 @@
 <p>We’ll learn more about BL602 firmware security in a while.</p>
 <p><img src="https://lupyuen.github.io/images/boot-loader.png" alt="BL602 Boot2 Bootloader runs at address 0x2300 0000" /></p>
 <p><em>BL602 Boot2 Bootloader runs at address <code>0x2300 0000</code></em></p>
-<h1 id="inside-the-bootloader" class="section-header"><a href="#inside-the-bootloader">2 Inside the Bootloader</a></h1>
+<h1 id="inside-the-bootloader"><a href="#inside-the-bootloader">2 Inside the Bootloader</a></h1>
 <p>To understand the BL602 Bootloader, let’s look at the code inside…</p>
 <p><img src="https://lupyuen.github.io/images/boot-main.png" alt="Bootloader Main Function" /></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L389-L571"><code>bl602_boot2/blsp_boot2.c</code></a></p>
@@ -380,7 +380,7 @@ int main(void) {
 </ol>
 <p>That’s how the Bootloader installs our Application Firmware and starts the firmware!</p>
 <p><img src="https://lupyuen.github.io/images/boot-main2.png" alt="Bootloader Main Function" /></p>
-<h1 id="install-application-firmware" class="section-header"><a href="#install-application-firmware">3 Install Application Firmware</a></h1>
+<h1 id="install-application-firmware"><a href="#install-application-firmware">3 Install Application Firmware</a></h1>
 <p>As we’ve seen, the Bootloader calls <strong><code>BLSP_Boot2_Deal_One_FW</code></strong> to…</p>
 <ol>
 <li>
@@ -435,7 +435,7 @@ static int BLSP_Boot2_Deal_One_FW(
 }</code></pre></div>
 <p>In the next chapter we study <strong><code>BLSP_Boot2_Do_FW_Copy</code></strong>.</p>
 <p><img src="https://lupyuen.github.io/images/boot-install.png" alt="Bootloader installing Application Firmware" /></p>
-<h1 id="write-firmware-to-xip-flash" class="section-header"><a href="#write-firmware-to-xip-flash">4 Write Firmware to XIP Flash</a></h1>
+<h1 id="write-firmware-to-xip-flash"><a href="#write-firmware-to-xip-flash">4 Write Firmware to XIP Flash</a></h1>
 <p>Previously on “Days Of Our Lives”… The Bootloader decompresses the Application Firmware and calls <strong><code>BLSP_Boot2_Do_FW_Copy</code></strong> to write the firmware to XIP Flash Memory.</p>
 <p>Watch what happens next: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_boot2.c#L226-L269"><code>blsp_boot2.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Buffer for writing to XIP Flash Memory
@@ -496,7 +496,7 @@ static int BLSP_Boot2_Do_FW_Copy(
   return BFLB_BOOT2_SUCCESS;
 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/boot-write.png" alt="Bootloader writing firmware to XIP flash" /></p>
-<h1 id="bl602-partition-table" class="section-header"><a href="#bl602-partition-table">5 BL602 Partition Table</a></h1>
+<h1 id="bl602-partition-table"><a href="#bl602-partition-table">5 BL602 Partition Table</a></h1>
 <p><em>The Bootloader appears to be driven by the Partition Table (from the Flashing Image). What’s inside the Partition Table?</em></p>
 <p>Each entry of the <strong>Partition Table</strong> describes a <strong>section of the Flashing Image</strong>.</p>
 <p>Here’s the <strong>Partition Table Entry</strong> that describes our <strong>Application Firmware</strong>…</p>
@@ -534,7 +534,7 @@ len      = 0</code></pre></div>
 <p>(Maybe we’ll figure out why there are two firmware sections <code>0x10000</code> and <code>0xD8000</code>)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#partition-table">More about BL602 Partition Table</a></p>
 <p><img src="https://lupyuen.github.io/images/boot-partition.png" alt="Matching the BL602 Partition Table" /></p>
-<h1 id="bl602-rom-driver-api" class="section-header"><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a></h1>
+<h1 id="bl602-rom-driver-api"><a href="#bl602-rom-driver-api">6 BL602 ROM Driver API</a></h1>
 <p>Earlier we’ve seen these functions called by the Bootloader to <strong>access XIP Flash Memory</strong>…</p>
 <ul>
 <li>
@@ -577,7 +577,7 @@ len      = 0</code></pre></div>
 <p>In the next chapter we shall explore the <strong>Table of ROM Driver API Functions</strong> located in ROM API at <strong><code>0x2101 0800</code></strong></p>
 <p>From <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_romdriver.h"><code>bl602_romdriver.h</code></a> …</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver5.png" alt="ROM Driver API in Boot ROM" /></p>
-<h1 id="locating-the-rom-driver-api" class="section-header"><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a></h1>
+<h1 id="locating-the-rom-driver-api"><a href="#locating-the-rom-driver-api">7 Locating the ROM Driver API</a></h1>
 <p><em>How did we find out that the ROM Driver API is located in Boot ROM?</em></p>
 <p>Let’s look at the <strong>RISC-V Disassembly for the Bootloader</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.S"><code>bl602_boot2.S</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>__ALWAYS_INLINE BL_Err_Type ATTR_TCM_SECTION 
@@ -636,7 +636,7 @@ XIP_SFlash_Read_Via_Cache_Need_Lock(
 </ul>
 <p>The <strong>Bootloader Linker Map <a href="https://github.com/lupyuen/bl_iot_sdk/releases/download/v8.0.2/bl602_boot2.map"><code>bl602_boot2.map</code></a></strong> reveals the <strong>Table of ROM Driver Stub Functions</strong> at ITCM address <code>0x2201 0000</code>…</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver.png" alt="ROM Driver Functions" /></p>
-<h1 id="start-the-firmware" class="section-header"><a href="#start-the-firmware">8 Start the Firmware</a></h1>
+<h1 id="start-the-firmware"><a href="#start-the-firmware">8 Start the Firmware</a></h1>
 <p>Earlier we’ve seen the Bootloader calling <strong><code>BLSP_MediaBoot_Main</code></strong> to start our Application Firmware.</p>
 <p>Let’s look inside the function: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_boot2/bl602_boot2/blsp_media_boot.c#L337-L434"><code>blsp_media_boot.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code> //  Media boot main process
@@ -723,7 +723,7 @@ void ATTR_TCM_SECTION BLSP_Boot2_Jump_Entry(void) {
 <p>As expected, the function ends by <strong>jumping to the Entry Point</strong> of our Application Firmware: <code>pentry</code></p>
 <p>But before that, it calls <strong><code>BLSP_Boot2_Set_Cache</code></strong> to fix up the XIP Flash Memory.</p>
 <p>Let’s find out why.</p>
-<h1 id="remap-xip-flash" class="section-header"><a href="#remap-xip-flash">9 Remap XIP Flash</a></h1>
+<h1 id="remap-xip-flash"><a href="#remap-xip-flash">9 Remap XIP Flash</a></h1>
 <p>Remember that the <strong>Bootloader and Application Firmware</strong> are both programmed to run at the <strong>same XIP Flash Memory address <code>0x2300 0000</code></strong>.</p>
 <p><em>Does the Bootloader overwrite itself with the Application Firmware?</em></p>
 <p>Not quite! Here’s the answer, many thanks to <a href="https://twitter.com/__9names/status/1401152245693960193"><strong>9names on Twitter</strong></a>…</p>
@@ -786,7 +786,7 @@ SPI_Flash_Cfg_Type *flashCfg,
 <p>After remapping the XIP Cache, <strong><code>0x2300 0000</code> will point to our Application Firmware.</strong> (Instead of the Bootloader)</p>
 <p>And that’s how we <strong>switch over from Bootloader to Application Firmware</strong> in XIP Flash Memory!</p>
 <p>(Note that <strong>SF_Ctrl_Set_Flash_Image_Offset</strong> and <strong>SFlash_Cache_Read_Enable</strong> are defined in the Boot ROM and we can’t see the source code. So it’s possible that our interpretation is incorrect)</p>
-<h1 id="efuse-security" class="section-header"><a href="#efuse-security">10 EFuse Security</a></h1>
+<h1 id="efuse-security"><a href="#efuse-security">10 EFuse Security</a></h1>
 <p><em>What’s an EFuse in BL602?</em></p>
 <p>An <strong>EFuse</strong> stores one bit of data (<code>0</code> or <code>1</code>) in a special way… Once an EFuse is set to <code>1</code>, it can never be reset to <code>0</code>.</p>
 <p>BL602 has 1,024 EFuses (1,024 bits).</p>
@@ -867,7 +867,7 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Encrypt(
 
   //  Enable AES decryption
   SF_Ctrl_AES_Enable_BE();
-  SF_Ctrl_AES_Enable();</code></pre></div><h1 id="bl602-firmware-boot-code" class="section-header"><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a></h1>
+  SF_Ctrl_AES_Enable();</code></pre></div><h1 id="bl602-firmware-boot-code"><a href="#bl602-firmware-boot-code">11 BL602 Firmware Boot Code</a></h1>
 <p>Today we looked at the Boot Code in the <strong>BL602 Bootloader</strong> and <strong>BL602 Boot ROM</strong>…</p>
 <p><em>We’ve seen all the BL602 Boot Code right?</em></p>
 <p>Wait… There’s more!</p>
@@ -898,7 +898,7 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Encrypt(
 <p>Remember <strong>Table of ROM Driver Stub Functions</strong> loaded by the Bootloader into ITCM (Instruction Cache Memory)?</p>
 <p>Our Application Firmware has a similar Table of ROM Driver Stub Functions. But it’s loaded into <strong>DTCM (Data Cache Memory)</strong> instead…</p>
 <p><img src="https://lupyuen.github.io/images/boot-driver2.png" alt="Table of ROM Driver Stub Functions in DTCM for Application Firmware" /></p>
-<h1 id="other-bootloaders" class="section-header"><a href="#other-bootloaders">12 Other Bootloaders</a></h1>
+<h1 id="other-bootloaders"><a href="#other-bootloaders">12 Other Bootloaders</a></h1>
 <p><em>How does BL602 Bootloader compare with other Bootloaders?</em></p>
 <ol>
 <li>
@@ -929,7 +929,7 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Encrypt(
 </ul>
 </li>
 </ol>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">13 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
 <p>Thanks for bearing with me as I attempted to unravel the secrets inside the BL602 Bootloader.</p>
 <p>(This is my 20th article on BL602 yay! 🎉)</p>
 <p>For my 21st article I shall explore Machine Learning with <strong>TensorFlow Lite on BL602</strong>…</p>
@@ -954,7 +954,7 @@ int32_t ATTR_TCM_SECTION BLSP_Boot2_Set_Encrypt(
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/boot.md"><code>lupyuen.github.io/src/boot.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">14 Notes</a></h1>
+<h1 id="notes"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1398855867030593538">this Twitter Thread</a></p>

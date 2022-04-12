@@ -117,7 +117,7 @@
 <p>(Yep It’s Always Sunny in Singapore … So this Sunlight Sensor won’t be so useful in Singapore 😂)</p>
 <p><img src="https://lupyuen.github.io/images/adc-title.jpg" alt="Testing the improvised Light Sensor on PineCone BL602 RISC-V Board. BTW that’s the moon" /></p>
 <p><em>Testing the improvised Light Sensor on PineCone BL602 RISC-V Board. BTW that’s the moon</em></p>
-<h1 id="bl602-adc-in-c" class="section-header"><a href="#bl602-adc-in-c">1 BL602 ADC in C</a></h1>
+<h1 id="bl602-adc-in-c"><a href="#bl602-adc-in-c">1 BL602 ADC in C</a></h1>
 <p>On PineCone BL602, there’s a <strong>Blue LED</strong> connected on <strong>GPIO Pin Number 11</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/led-rgb.png" alt="PineCone RGB LED Schematic" /></p>
 <p><a href="https://github.com/pine64/bl602-docs/blob/main/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf">(From PineCone BL602 Schematic)</a></p>
@@ -133,7 +133,7 @@
 <p><strong>Compute the average value</strong> of the ADC Samples that have been read</p>
 </li>
 </ol>
-<h2 id="definitions" class="section-header"><a href="#definitions">1.1 Definitions</a></h2>
+<h2 id="definitions"><a href="#definitions">1.1 Definitions</a></h2>
 <p>We start by defining the <strong>GPIO Pin Number</strong> that will be read via ADC: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L13-L31"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// GPIO Pin Number that will be configured as ADC Input.
 /// PineCone Blue LED is connected on BL602 GPIO 11.
@@ -158,7 +158,7 @@
 #define ADC_GAIN1 ADC_PGA_GAIN_1
 #define ADC_GAIN2 ADC_PGA_GAIN_1</code></pre></div>
 <p>More about ADC Gain in a while.</p>
-<h2 id="initialise-the-adc-channel" class="section-header"><a href="#initialise-the-adc-channel">1.2 Initialise the ADC Channel</a></h2>
+<h2 id="initialise-the-adc-channel"><a href="#initialise-the-adc-channel">1.2 Initialise the ADC Channel</a></h2>
 <p>Here’s how we <strong>initialise the ADC Channel</strong> for reading our LED GPIO: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L36-L77"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to init the ADC Channel and start reading the ADC Samples.
 /// Based on `hal_adc_init` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L50-L102&gt;
@@ -222,7 +222,7 @@ void init_adc(char *buf, int len, int argc, char **argv) {
   bl_adc_start();
 }</code></pre></div>
 <p>BL602 ADC Controller will <strong>read the ADC Samples continuously</strong> (from the GPIO Pin) into RAM (until we stop the ADC Channel).</p>
-<h2 id="read-the-adc-channel" class="section-header"><a href="#read-the-adc-channel">1.3 Read the ADC Channel</a></h2>
+<h2 id="read-the-adc-channel"><a href="#read-the-adc-channel">1.3 Read the ADC Channel</a></h2>
 <p><em>After starting the ADC Channel, how do we fetch the ADC Samples that have been read?</em></p>
 <p>Let’s find out in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L79-L116"><code>demo.c</code></a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to compute the average value of the ADC Samples that have just been read.
@@ -269,7 +269,7 @@ void read_adc(char *buf, int len, int argc, char **argv) {
 <p>Thus we scale each ADC Sample to the range <strong>0 to 3199</strong>.</p>
 <p>And that’s how we code BL602 ADC Firmware in C!</p>
 <p><img src="https://lupyuen.github.io/images/adc-demo.png" alt="Running the BL602 ADC Firmware in C" /></p>
-<h2 id="run-the-c-firmware" class="section-header"><a href="#run-the-c-firmware">1.4 Run the C Firmware</a></h2>
+<h2 id="run-the-c-firmware"><a href="#run-the-c-firmware">1.4 Run the C Firmware</a></h2>
 <p>Watch what happens when we <strong>flash and run</strong> the C Firmware for BL602 ADC: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/"><code>sdk_app_adc2</code></a></p>
 <ol>
 <li>
@@ -320,7 +320,7 @@ read_adc
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/adc-gain2.png" alt="Setting the ADC Gain" /></p>
-<h2 id="set-the-adc-gain" class="section-header"><a href="#set-the-adc-gain">1.5 Set the ADC Gain</a></h2>
+<h2 id="set-the-adc-gain"><a href="#set-the-adc-gain">1.5 Set the ADC Gain</a></h2>
 <p>Let’s chat about <strong>ADC Gain</strong>, which we used when reading the LED as a Light Sensor. </p>
 <p>(ADC Gain probably won’t be needed for reading most types of ADC Inputs)</p>
 <p><em>Why do we need ADC Gain when reading an LED?</em></p>
@@ -358,7 +358,7 @@ static int set_adc_gain(uint32_t gain1, uint32_t gain2) {
   //  Update the ADC Configuration Hardware Register
   BL_WR_REG(AON_BASE, AON_GPADC_REG_CONFIG2, reg);
   return 0;
-}</code></pre></div><h1 id="create-a-bl602-rust-project" class="section-header"><a href="#create-a-bl602-rust-project">2 Create a BL602 Rust Project</a></h1>
+}</code></pre></div><h1 id="create-a-bl602-rust-project"><a href="#create-a-bl602-rust-project">2 Create a BL602 Rust Project</a></h1>
 <p>Before diving into the Rust Firmware, let’s walk through the steps for <strong>creating a BL602 Rust Project</strong> (like <code>sdk_app_rust_adc</code>)…</p>
 <ol>
 <li>
@@ -397,7 +397,7 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 <p>Remember to edit <strong><code>README.md</code></strong> and fill in the project details</p>
 </li>
 </ol>
-<h1 id="bl602-adc-in-rust" class="section-header"><a href="#bl602-adc-in-rust">3 BL602 ADC in Rust</a></h1>
+<h1 id="bl602-adc-in-rust"><a href="#bl602-adc-in-rust">3 BL602 ADC in Rust</a></h1>
 <p>Now we study the <strong>Rust Firmware for BL602 ADC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc"><code>sdk_app_rust_adc</code></a></p>
 <p>We have <strong>converted the C Firmware to Rust</strong> line by line, so the Rust code will look highly similar to C.</p>
 <p>Recall that our firmware implements two commands…</p>
@@ -410,7 +410,7 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 </li>
 </ol>
 <p>Here is the Rust implementation…</p>
-<h2 id="definitions-1" class="section-header"><a href="#definitions-1">3.1 Definitions</a></h2>
+<h2 id="definitions-1"><a href="#definitions-1">3.1 Definitions</a></h2>
 <p>We start by declaring to the Rust Compiler that we’re calling the <strong>Rust Core Library</strong> (instead of Rust Standard Library): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L1-L37"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#![<span class="ident">no_std</span>]</span>  <span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span></code></pre></div>
@@ -461,7 +461,7 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const</span> <span class="ident">ADC_PGA_GAIN_1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span>;  <span class="comment">//  From &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;</span></code></pre></div>
 <p><img src="https://lupyuen.github.io/images/adc-rust.png" alt="Rust Firmware for BL602 ADC" /></p>
-<h2 id="initialise-the-adc-channel-1" class="section-header"><a href="#initialise-the-adc-channel-1">3.2 Initialise the ADC Channel</a></h2>
+<h2 id="initialise-the-adc-channel-1"><a href="#initialise-the-adc-channel-1">3.2 Initialise the ADC Channel</a></h2>
 <p>Here’s our Rust Function <strong><code>init_adc</code></strong> that will be called by the BL602 Command-Line Interface: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L39-L100"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Command to init the ADC Channel and start reading the ADC Samples.</span>
@@ -545,7 +545,7 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 }</code></pre></div>
 <p>BL602 ADC Controller will <strong>read the ADC Samples continuously</strong> (from the GPIO Pin) into RAM (until we stop the ADC Channel).</p>
 <p><img src="https://lupyuen.github.io/images/adc-rust2.png" alt="Rust Firmware to read BL602 ADC" /></p>
-<h2 id="read-the-adc-channel-1" class="section-header"><a href="#read-the-adc-channel-1">3.3 Read the ADC Channel</a></h2>
+<h2 id="read-the-adc-channel-1"><a href="#read-the-adc-channel-1">3.3 Read the ADC Channel</a></h2>
 <p><em>Our ADC Channel has been started, how do we average the ADC Samples that have been read?</em></p>
 <p>Let’s check out the Rust Function <strong><code>read_adc</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165"><code>lib.rs</code></a> …</p>
 
@@ -639,7 +639,7 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 <p>The <strong>formatted output</strong> will appear like so…</p>
 <p><img src="https://lupyuen.github.io/images/adc-format.jpg" alt="Output from Rust Firmware" /></p>
 <p>And we’re done… That’s how we code BL602 ADC Firmware in Rust!</p>
-<h1 id="build-the-bl602-rust-firmware" class="section-header"><a href="#build-the-bl602-rust-firmware">4 Build the BL602 Rust Firmware</a></h1>
+<h1 id="build-the-bl602-rust-firmware"><a href="#build-the-bl602-rust-firmware">4 Build the BL602 Rust Firmware</a></h1>
 <p>We may download the Rust Firmware Binary File <strong><code>sdk_app_rust_adc.bin</code></strong> from…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl_iot_sdk/releases/tag/v11.0.0.0"><strong><code>sdk_app_rust_adc</code> Binary Release</strong></a></li>
@@ -735,7 +735,7 @@ Building Finish. To flash build output.</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust#appendix-build-script-for-bl602-rust-firmware">More about the build script</a></p>
 <p><a href="https://lupyuen.github.io/articles/rust#rust-targets">More about the custom Rust target</a></p>
 <p><img src="https://lupyuen.github.io/images/adc-build.jpg" alt="Building the BL602 Rust Firmware" /></p>
-<h1 id="flash-the-bl602-rust-firmware" class="section-header"><a href="#flash-the-bl602-rust-firmware">5 Flash the BL602 Rust Firmware</a></h1>
+<h1 id="flash-the-bl602-rust-firmware"><a href="#flash-the-bl602-rust-firmware">5 Flash the BL602 Rust Firmware</a></h1>
 <p>Here’s how we flash the Rust Firmware file <code>sdk_app_rust_adc.bin</code> to BL602…</p>
 <ol>
 <li>
@@ -828,7 +828,7 @@ blflash flash c:\blflash\sdk_app_lora.bin --port COM5</code></pre></div></li>
 </ol>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <p><img src="https://lupyuen.github.io/images/adc-demo2.png" alt="Running the BL602 Rust Firmware" /></p>
-<h1 id="run-the-bl602-rust-firmware" class="section-header"><a href="#run-the-bl602-rust-firmware">6 Run the BL602 Rust Firmware</a></h1>
+<h1 id="run-the-bl602-rust-firmware"><a href="#run-the-bl602-rust-firmware">6 Run the BL602 Rust Firmware</a></h1>
 <p>Finally we run the BL602 Rust Firmware…</p>
 <ol>
 <li>
@@ -916,7 +916,7 @@ read_adc
 <p>Our improvised BL602 Light Sensor works in Rust yay!</p>
 </li>
 </ol>
-<h1 id="from-c-to-rust" class="section-header"><a href="#from-c-to-rust">7 From C To Rust</a></h1>
+<h1 id="from-c-to-rust"><a href="#from-c-to-rust">7 From C To Rust</a></h1>
 <p><em>I’m new to Rust. Is there an easier way to jump from C to Rust?</em></p>
 <p>Today we’ve seen that it’s feasible to <strong>translate C Firmware into Rust</strong> line by line…</p>
 <p><img src="https://lupyuen.github.io/images/adc-compare.png" alt="Compare C and Rust" /></p>
@@ -953,7 +953,7 @@ read_adc
 </li>
 </ol>
 <p>Let’s talk about “<code>unsafe</code>” code in Rust… </p>
-<h2 id="safer-rust" class="section-header"><a href="#safer-rust">7.1 Safer Rust</a></h2>
+<h2 id="safer-rust"><a href="#safer-rust">7.1 Safer Rust</a></h2>
 <p>Rust reminds us to be Extra Careful when we work with <strong>C Functions and C Pointers</strong>.</p>
 <p>That’s why we need to flag the following code as <strong><code>unsafe</code></strong>…</p>
 <ol>
@@ -999,7 +999,7 @@ read_adc
 </li>
 </ol>
 <p>Accessing <strong>Static Variables</strong> is also “<code>unsafe</code>”. Let’s talk about this…</p>
-<h2 id="static-variables-in-rust" class="section-header"><a href="#static-variables-in-rust">7.2 Static Variables in Rust</a></h2>
+<h2 id="static-variables-in-rust"><a href="#static-variables-in-rust">7.2 Static Variables in Rust</a></h2>
 <p>Earlier we saw this Rust code for <strong>averaging the ADC Samples</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  `adc_data` will store 100 ADC Samples (`ADC_SAMPLES` is 100)</span>
@@ -1040,7 +1040,7 @@ read_adc
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/adc-crate.png" alt="Rust Wrapper for BL602 IoT SDK" /></p>
-<h1 id="rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
+<h1 id="rust-wrapper-for-bl602-iot-sdk"><a href="#rust-wrapper-for-bl602-iot-sdk">8 Rust Wrapper for BL602 IoT SDK</a></h1>
 <p><em>The BL602 Rust Wrapper Functions look mighty similar to the C Functions from the BL602 IoT SDK. How is this possible?</em></p>
 <p>Because the Rust Functions were <strong>automatically generated from BL602 IoT SDK!</strong></p>
 <p>We ran a script to generate the <strong>Rust Wrapper for BL602 IoT SDK</strong>.</p>
@@ -1074,7 +1074,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>Here’s a sample project that calls the Rust Wrapper for GPIO…</p>
 <p><img src="https://lupyuen.github.io/images/adc-gpio.png" alt="Rust Wrapper for GPIO" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_gpio/rust/src/lib.rs">(Source)</a></p>
-<h1 id="why-sunlight" class="section-header"><a href="#why-sunlight">9 Why Sunlight?</a></h1>
+<h1 id="why-sunlight"><a href="#why-sunlight">9 Why Sunlight?</a></h1>
 <p><em>Why does our BL602 LED detect only sunlight? And not other kinds of light?</em></p>
 <p>We’re guessing because…</p>
 <ol>
@@ -1115,7 +1115,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>(This article was inspired by the <strong>BBC micro:bit</strong>, which uses LED as a Light Sensor. <a href="https://learn.adafruit.com/micro-bit-lesson-4-sensing-light-and-temperature/built-in-light-sensor">See this</a>)</p>
 <p><img src="https://lupyuen.github.io/images/adc-pinebook.jpg" alt="Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro" /></p>
 <p><em>Testing the improvised Light Sensor on PineCone BL602 with Pinebook Pro</em></p>
-<h1 id="whats-next" class="section-header"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>Today we’ve seen that it’s viable to create <strong>Rust Firmware</strong> for BL602… Just call the <strong>Rust Wrapper for BL602 IoT SDK</strong>!</p>
 <p>Soon we shall test the Rust Firmware on <a href="https://www.pine64.org/2021/07/15/july-update/"><strong>PineDio Stack BL604 with LoRa SX1262</strong></a>… As we explore whether it’s feasible to teach <strong>Rust as a Safer Way</strong> to create firmware for BL602 and BL604.</p>
 <p>Also we might <strong>Simulate BL602 Rust Firmware</strong> in a Web Browser with <strong>WebAssembly</strong>!</p>
@@ -1151,7 +1151,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/adc.md"><code>lupyuen.github.io/src/adc.md</code></a></p>
-<h1 id="notes" class="section-header"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1416608940876435462">this Twitter Thread on Rust Wrapper for BL602 IoT SDK</a></p>
@@ -1195,7 +1195,7 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p>(Perhaps someday we might wrap the BL602 Rust Wrapper into a Rust Embedded HAL for BL602 / BL604)</p>
 </li>
 </ol>
-<h1 id="appendix-call-c-functions-from-rust" class="section-header"><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a></h1>
+<h1 id="appendix-call-c-functions-from-rust"><a href="#appendix-call-c-functions-from-rust">12 Appendix: Call C Functions from Rust</a></h1>
 <p><em>How do we call our own C Functions from Rust?</em></p>
 <p>Earlier we saw this Rust code that <strong>sets the ADC Gain</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66"><code>lib.rs</code></a></p>
 
@@ -1223,7 +1223,7 @@ const static struct cli_command cmds_user[] STATIC_CLI_CMD_ATTRIBUTE = {
     {&quot;read_adc&quot;,        &quot;Read ADC Channel&quot;,          read_adc},
 };</code></pre></div>
 <p>This defines the commands <code>init_adc</code> and <code>read_adc</code>, which are mapped to the respective Rust Functions.</p>
-<h1 id="appendix-cast-c-pointers-in-rust" class="section-header"><a href="#appendix-cast-c-pointers-in-rust">13 Appendix: Cast C Pointers in Rust</a></h1>
+<h1 id="appendix-cast-c-pointers-in-rust"><a href="#appendix-cast-c-pointers-in-rust">13 Appendix: Cast C Pointers in Rust</a></h1>
 <p><em>How do we cast C Pointers in Rust?</em></p>
 <p>In the C version of our ADC Firmware, we implicitly cast a “<code>void *</code>” pointer to “<code>adc_ctx *</code>” pointer like this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L88-L90"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  In C: Get the pointer (void *) for DMA Context
@@ -1262,7 +1262,7 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;</code></pre></div>
 </ul>
 <p><a href="https://doc.rust-lang.org/core/mem/fn.transmute.html">(More about <code>transmute</code>)</a></p>
 <p><img src="https://lupyuen.github.io/images/adc-cast.png" alt="Casting a C Pointer in Rust" /></p>
-<h1 id="appendix-copy-memory-with-c-pointers" class="section-header"><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a></h1>
+<h1 id="appendix-copy-memory-with-c-pointers"><a href="#appendix-copy-memory-with-c-pointers">14 Appendix: Copy Memory with C Pointers</a></h1>
 <p><em>How do we copy memory with C Pointers?</em></p>
 <p>Earlier we saw this code in our C Firmware: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c#L101-L106"><code>demo.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Array that will store ADC Samples
@@ -1301,7 +1301,7 @@ memcpy(
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/adc-copy.png" alt="Copy ADC data in Rust" /></p>
-<h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk" class="section-header"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">15 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
+<h1 id="appendix-generating-the-rust-wrapper-for-bl602-iot-sdk"><a href="#appendix-generating-the-rust-wrapper-for-bl602-iot-sdk">15 Appendix: Generating the Rust Wrapper for BL602 IoT SDK</a></h1>
 <p><em>How was the BL602 Rust Wrapper generated for publishing on <a href="https://crates.io/crates/bl602-sdk"><code>crates.io</code></a>?</em></p>
 <p>Two tools were used to generate the <strong>Rust Wrapper for BL602 IoT SDK</strong>…</p>
 <ol>
@@ -1330,7 +1330,7 @@ scripts/gen-bindings.sh
 #  Build the docs and the test project
 scripts/build.sh</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/adc-bindgen.png" alt="BL602 Rust Wrapper generated by bindgen and safe_wrap" /></p>
-<h2 id="how-it-works" class="section-header"><a href="#how-it-works">15.1 How it works</a></h2>
+<h2 id="how-it-works"><a href="#how-it-works">15.1 How it works</a></h2>
 <p>This script…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/scripts/gen-bindings.sh"><code>scripts/gen-bindings.sh</code></a></li>
@@ -1422,7 +1422,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);</code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/rust"><strong>“Run Rust RISC-V Firmware with BL602 IoT SDK”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/adc-doc2.png" alt="BL602 Rust Wrapper Documentation" /></p>
-<h2 id="inject-the-docs" class="section-header"><a href="#inject-the-docs">15.2 Inject the docs</a></h2>
+<h2 id="inject-the-docs"><a href="#inject-the-docs">15.2 Inject the docs</a></h2>
 <p><em>How did we create the docs for BL602 Rust Wrapper? (Pic above)</em></p>
 <ul>
 <li><a href="https://docs.rs/bl602-sdk"><strong>Documentation for BL602 Rust Wrapper</strong></a></li>
@@ -1458,7 +1458,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);</code></pre></div>
 <li><a href="https://docs.rs/bl602-sdk"><strong>Documentation for BL602 Rust Wrapper</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/adc-prefix.png" alt="Renaming the Rust Functions" /></p>
-<h2 id="rename-the-functions" class="section-header"><a href="#rename-the-functions">15.3 Rename the functions</a></h2>
+<h2 id="rename-the-functions"><a href="#rename-the-functions">15.3 Rename the functions</a></h2>
 <p>The <code>safe_wrap</code> macro also <strong>shortens the names</strong> of the Rust Wrapper Functions.</p>
 <p>Here’s the original function from the BL602 IoT SDK…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl_gpio_enable_output</code></pre></div>
