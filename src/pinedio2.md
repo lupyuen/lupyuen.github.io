@@ -719,7 +719,11 @@ Perhaps the GPIO Expander can __enforce checks at runtime__ to be sure that Nutt
 
 (And eventually the SX1262 Library will simply access _"/dev/gpio10"_, _"/dev/gpio15"_ and _"/dev/gpio19"_)
 
-We have a discussion about __GPIOs on BL604__...
+We have started building the __BL602 / BL604 GPIO Expander__...
+
+-   [__lupyuen/bl602_expander__](https://github.com/lupyuen/bl602_expander)
+
+There's a discussion about __GPIOs on BL604__...
 
 -   [__"GPIO issues on BL602"__](https://github.com/apache/incubator-nuttx/issues/5810)
 
