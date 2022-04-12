@@ -787,6 +787,10 @@ We shall port this driver to NuttX and expose it to apps as a NuttX Touchscreen 
 
 The [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.
 
+We have started the development of the __Touch Panel Driver__...
+
+-   [__lupyuen/cst816s-nuttx__](https://github.com/lupyuen/cst816s-nuttx)
+
 (PineDio Stack uses the same Touch Panel as PineTime)
 
 [(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
