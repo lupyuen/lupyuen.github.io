@@ -733,7 +733,11 @@ static void create_widgets(void) {
 <p>But it might be the most productive way (for now) to handle so many GPIOs while multiple devs are <strong>building apps and drivers</strong> for PineDio Stack.</p>
 <p>Perhaps the GPIO Expander can <strong>enforce checks at runtime</strong> to be sure that NuttX Apps don’t tamper with the GPIOs used by SPI, I2C and UART.</p>
 <p>(And eventually the SX1262 Library will simply access <em>“/dev/gpio10”</em>, <em>“/dev/gpio15”</em> and <em>“/dev/gpio19”</em>)</p>
-<p>We have a discussion about <strong>GPIOs on BL604</strong>…</p>
+<p>We have started building the <strong>BL602 / BL604 GPIO Expander</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602_expander"><strong>lupyuen/bl602_expander</strong></a></li>
+</ul>
+<p>There’s a discussion about <strong>GPIOs on BL604</strong>…</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/issues/5810"><strong>“GPIO issues on BL602”</strong></a></li>
 </ul>
