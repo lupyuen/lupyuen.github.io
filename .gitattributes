@@ -9,6 +9,7 @@
 *.gif binary
 *.jpg binary
 *.jpeg binary
+*.kvdat binary
 *.pdf binary
 *.png binary
 *.psd binary
