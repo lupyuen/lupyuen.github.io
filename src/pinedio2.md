@@ -429,6 +429,12 @@ Refer to the docs for the steps to create our own __NuttX Apps, Libraries and Dr
 
 -   [__"How To Create NuttX Device Drivers"__](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-device-driver)
 
+Here are some __Troubleshooting Tips__...
+
+-   [__"Enable Logging"__](https://lupyuen.github.io/articles/spi2#enable-logging)
+
+-   [__"NuttX Crash Analysis"__](https://lupyuen.github.io/articles/auto#nuttx-crash-analysis)
+
 Also check out the __NuttX Articles__ on all kinds of topics...
 
 -   [__"NuttX on BL602 / BL604"__](https://lupyuen.github.io/articles/book#nuttx-on-bl602)

@@ -244,6 +244,8 @@ _Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro_
 
     Check whether access has been granted for the USB UART port. [(Here's how)](https://lupyuen.github.io/articles/flash#appendix-grant-access-to-usb-uart)
 
+[(Flashing WiFi Firmware for NuttX? See this)](https://github.com/apache/incubator-nuttx/issues/4336)
+
 [(See the flashing screenshots)](https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots)
 
 ![Firmware running on PineCone](https://lupyuen.github.io/images/flash-screen.png)
