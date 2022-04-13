@@ -783,7 +783,7 @@ JF has created a __CST816S I2C Touch Panel Driver__ for PineDio Stack... (Thanks
 
 We shall port this driver to NuttX and expose it to apps as a NuttX Touchscreen Device "__/dev/input0__".
 
-[(Here's how we access "__/dev/input0__" in our LVGL Test App)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c)
+[(Here's how we access "__/dev/input0__" in our LVGL Test App)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L100-L132)
 
 The [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.
 
