@@ -886,6 +886,10 @@ Most definitely. That's why we need to implement [__SPI Direct Memory Access (DM
 
 [(Right now the SPI Driver polls the SPI Port when transferring SPI data)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L805-L855)
 
+We'll port to NuttX this implementation of SPI DMA from __BL MCU SDK__...
+
+-   [__bl602_dma.c__](https://github.com/bouffalolab/bl_mcu_sdk/blob/master/drivers/bl602_driver/std_drv/src/bl602_dma.c)
+
 More about SPI DMA on BL602 / BL604...
 
 -   [__"SPI with Direct Memory Access"__](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
