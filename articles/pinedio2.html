@@ -793,7 +793,7 @@ static void create_widgets(void) {
 <li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c"><strong>pinedio-stack-selftest/drivers/cst816s.c</strong></a></li>
 </ul>
 <p>We shall port this driver to NuttX and expose it to apps as a NuttX Touchscreen Device “<strong>/dev/input0</strong>”.</p>
-<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c">(Here’s how we access “<strong>/dev/input0</strong>” in our LVGL Test App)</a></p>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L100-L132">(Here’s how we access “<strong>/dev/input0</strong>” in our LVGL Test App)</a></p>
 <p>The <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>NuttX Driver for Cypress MBR3108</strong></a> looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.</p>
 <p>We have started the development of the <strong>Touch Panel Driver</strong>…</p>
 <ul>
