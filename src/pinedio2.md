@@ -529,6 +529,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Save and exit menuconfig, then rebuild NuttX (`make`)
 
+1.  The [__Baseboard Schematic__](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/PINEDIO_STACK_BASEBOARD_V1_0-SCH-2021-09-27.pdf)
+ includes a __Secure Chip ATECC608A__. We talk about it here...
+
+    [__"Cryptographic Co-Processor"__](https://lupyuen.github.io/articles/lorawan2#cryptographic-co-processor)
+
 1.  What's it like to test the __First (Buggy) Prototype__ of PineDio Stack? Find out here...
 
     [__"PineDio Stack BL604 RISC-V Board: Testing The Prototype"__](https://lupyuen.github.io/articles/pinedio)
