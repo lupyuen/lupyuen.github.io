@@ -1794,7 +1794,13 @@ CONFIG_LCD_ST7789_FREQUENCY=4000000
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L542)
 
+We configure the SPI Frequency in menuconfig...
+
+-   Device Drivers → LCD Driver Support → Graphic LCD Driver Support → LCD Driver Selection → Sitronix ST7789 → SPI Frequency
+
 Maybe we can go higher and reduce contention for the SPI Bus?
+
+(BL604 supports up to 40 MHz for SPI Frequency)
 
 Also in future we should implement SPI with __Direct Memory Access__ (DMA) to avoid busy-polling the SPI Bus. [(See this)](https://lupyuen.github.io/articles/st7789#shared-spi-bus)
 
