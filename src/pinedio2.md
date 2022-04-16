@@ -330,7 +330,9 @@ Enter this to run the __LVGL Test App__...
 lvgltest
 ```
 
-This appears on the screen: _"Hello PineDio Stack!"_ with a funky blue-green box...
+Follow the prompts to tap the screen and calibrate the Touch Panel.
+
+After calibrating, this appears on the screen: _"Hello PineDio Stack!"_ with a funky blue-green box...
 
 ![LVGL Test App on PineDio Stack](https://lupyuen.github.io/images/pinedio2-title.jpg)
 
@@ -385,9 +387,11 @@ Then rebuild ("`make`") and reflash ("`blflash`") NuttX to PineDio Stack.
 
 [(More about LVGL)](https://docs.lvgl.io/7.11/get-started/quick-overview.html#learn-the-basics)
 
-_Can we touch the screen?_
+_So touchscreen apps are supported on PineDio Stack?_
 
-Real soon, we're porting the [__Touch Panel I2C Driver__](https://lupyuen.github.io/articles/pinedio2#touch-panel) to NuttX. Stay Tuned!
+Yep! See this for the details...
+
+-   [__"PineDio Stack Touch Panel"__](https://lupyuen.github.io/articles/pinedio2#touch-panel)
 
 ![bl602_adc_test: Shows the Internal Temperature of BL604](https://lupyuen.github.io/images/pinedio2-run5.png)
 
@@ -464,8 +468,6 @@ But there's [__plenty more porting work__](https://lupyuen.github.io/articles/pi
 -   [__GPIO Expander__](https://lupyuen.github.io/articles/pinedio2#gpio-expander)
 
 -   [__Push Button__](https://lupyuen.github.io/articles/pinedio2#push-button)
-
--   [__Touch Panel__](https://lupyuen.github.io/articles/pinedio2#touch-panel)
 
 -   [__Accelerometer__](https://lupyuen.github.io/articles/pinedio2#accelerometer)
 
@@ -786,13 +788,11 @@ JF has created a __CST816S I2C Touch Panel Driver__ for PineDio Stack... (Thanks
 
 -   [__pinedio-stack-selftest/drivers/cst816s.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
 
-We shall port this driver to NuttX and expose it to apps as a NuttX Touchscreen Device "__/dev/input0__".
+We have ported this driver to NuttX and exposed it to apps as a NuttX Touchscreen Device "__/dev/input0__".
 
 [(Here's how we access "__/dev/input0__" in our LVGL Test App)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L100-L132)
 
-The [__NuttX Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c) looks structurally similar to CST816S, so we shall use it as a guide for porting the driver.
-
-We have started the development of the __Touch Panel Driver__...
+More about the NuttX Touch Panel Driver for PineDio Stack...
 
 -   [__lupyuen/cst816s-nuttx__](https://github.com/lupyuen/cst816s-nuttx)
 
