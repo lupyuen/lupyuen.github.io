@@ -778,6 +778,8 @@ Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as 
 
 Note that the Push Button shares GPIO 12 with the Vibrator.
 
+[__UPDATE:__ Robert Lipe is working on the Push Button support](https://github.com/lupyuen/incubator-nuttx/pull/60)
+
 > ![PineDio Stack Touch Panel](https://lupyuen.github.io/images/pinedio2-touch.png)
 
 > [(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
