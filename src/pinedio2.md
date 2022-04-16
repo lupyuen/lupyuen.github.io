@@ -1788,23 +1788,21 @@ Note that we have configured PineDio Stack to talk to SX1262 at __SPI Mode 1__ v
 
 ## ST7789 SPI Frequency
 
-On PineDio Stack, we have configured the __SPI Frequency__ of the ST7789 Display to __4 MHz__...
+We have configured the __SPI Frequency__ of the ST7789 Display to __40 MHz__, the maximum supported by BL604...
 
 ```text
 CONFIG_LCD_ST7789_FREQUENCY=4000000
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L542)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L580)
 
-We configure the SPI Frequency in menuconfig...
+We configured the SPI Frequency in menuconfig at...
 
 -   Device Drivers → LCD Driver Support → Graphic LCD Driver Support → LCD Driver Selection → Sitronix ST7789 → SPI Frequency
 
-Maybe we can go higher and reduce contention for the SPI Bus?
+In future we should implement SPI with __Direct Memory Access__ (DMA) to avoid busy-polling the SPI Bus. [(See this)](https://lupyuen.github.io/articles/pinedio2#spi-direct-memory-access)
 
-(BL604 supports up to 40 MHz for SPI Frequency)
-
-Also in future we should implement SPI with __Direct Memory Access__ (DMA) to avoid busy-polling the SPI Bus. [(See this)](https://lupyuen.github.io/articles/st7789#shared-spi-bus)
+Hopefully this will improve the responsiveness of the touchscreen.
 
 ## SX1262 Chip Select
 
