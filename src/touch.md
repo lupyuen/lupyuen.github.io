@@ -70,6 +70,16 @@ TODO
 
 > ![PineDio Stack Touch Panel](https://lupyuen.github.io/images/touch-inside.jpg)
 
+TODO
+
+PineDio Stack's Touch Panel is a peculiar I2C Device ... It won't respond to I2C Scan unless we tap the screen and wake it up!
+
+-   ["Building a Rust Driver for PineTime’s Touch Controller"](https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller)
+
+TODO11
+
+![](https://lupyuen.github.io/images/touch-sleep.png)
+
 # Install Driver
 
 TODO
@@ -197,18 +207,6 @@ TODO
 NuttX Driver for Cypress MBR3108 Touch Controller looks structurally similar to PineDio Stack's CST816S ... So we copy-n-paste into our CST816S Driver
 
 -   [NuttX Driver for Cypress MBR3108](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c)
-
-# I2C Scan
-
-TODO
-
-PineDio Stack's Touch Panel is a peculiar I2C Device ... It won't respond to I2C Scan unless we tap the screen and wake it up!
-
--   ["Building a Rust Driver for PineTime’s Touch Controller"](https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller)
-
-TODO11
-
-![](https://lupyuen.github.io/images/touch-sleep.png)
 
 # GPIO Interrupt
 
