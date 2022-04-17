@@ -790,13 +790,15 @@ JF has created a __CST816S I2C Touch Panel Driver__ for PineDio Stack... (Thanks
 
 -   [__pinedio-stack-selftest/drivers/cst816s.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
 
-We have ported this driver to NuttX and exposed it to apps as a NuttX Touchscreen Device "__/dev/input0__".
+We have ported this driver to NuttX and exposed it to apps as a NuttX Touchscreen Device "__/dev/input0__"...
+
+-   [__lupyuen/cst816s-nuttx__](https://github.com/lupyuen/cst816s-nuttx)
 
 [(Here's how we access "__/dev/input0__" in our LVGL Test App)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L100-L132)
 
 More about the NuttX Touch Panel Driver for PineDio Stack...
 
--   [__lupyuen/cst816s-nuttx__](https://github.com/lupyuen/cst816s-nuttx)
+-   [__"NuttX Touch Panel Driver for PineDio Stack BL604"__](https://lupyuen.github.io/articles/touch)
 
 (PineDio Stack uses the same Touch Panel as PineTime)
 

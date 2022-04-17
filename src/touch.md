@@ -40,7 +40,7 @@ Which makes it an awesome gadget for __IoT Education__!
 
 -   [__Watch the demo on YouTube__](https://www.youtube.com/shorts/2Nzjrlp5lcE)
 
-Today we'll talk about the __Hynitron CST816S Touch Controller Driver__ for Apache NuttX RTOS...
+Today we'll talk about the __Hynitron CST816S Touch Panel Driver__ for Apache NuttX RTOS...
 
 -   [__lupyuen/cst816s-nuttx__](https://github.com/lupyuen/cst816s-nuttx)
 
@@ -55,6 +55,20 @@ Hynitron's Reference Driver...
 And JF's CST816S Driver for PineDio Stack... (Thanks JF!)
 
 -   [__pinedio-stack-selftest/drivers/cst816s.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
+
+> ![PineDio Stack Touch Panel](https://lupyuen.github.io/images/pinedio2-touch.png)
+
+> [(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
+
+# CST816S Touch Panel
+
+TODO
+
+(PineDio Stack uses the same Touch Panel as PineTime)
+
+[(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
+
+![PineDio Stack Touch Panel](https://lupyuen.github.io/images/touch-inside.jpg)
 
 # Install Driver
 
@@ -379,6 +393,8 @@ bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0
 bl602_expander_interrupt: Interrupt! callback=0x2305e9e8, arg=0
 bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0
 ```
+
+[(See the Complete Log)](https://github.com/lupyuen/cst816s-nuttx#test-gpio-interrupt)
 
 TODO8
 
@@ -844,6 +860,8 @@ offset x:23, y:24
 range x:194, y:198
 invert x/y:1, x:0, y:1
 ```
+
+[(See the Complete Log)](https://github.com/lupyuen/cst816s-nuttx#test-touch-data)
 
 Let's break down the log...
 
