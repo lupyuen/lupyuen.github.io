@@ -156,10 +156,11 @@
 <p>TODO</p>
 <p>PineDio Stack’s Touch Panel is a peculiar I2C Device … It won’t respond to I2C Scan unless we tap the screen and wake it up!</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller">“Building a Rust Driver for PineTime’s Touch Controller”</a></li>
+<li><a href="https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller"><strong>“Building a Rust Driver for PineTime’s Touch Controller”</strong></a></li>
 </ul>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/touch-sleep.png" alt="" /></p>
+<p>TODO: Pins</p>
+<p><img src="https://lupyuen.github.io/images/touch-sleep.png" alt="CST816S Operating Modes" /></p>
+<p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/CST816S_DS_V1.3.pdf">(From CST816S Datasheet)</a></p>
 <h1 id="install-driver"><a href="#install-driver">2 Install Driver</a></h1>
 <p>TODO</p>
 <p>To add this repo to your NuttX project…</p>
@@ -228,7 +229,7 @@ make menuconfig </code></pre></div>
 <p>Note that “Enable Informational Debug Output” must be unchecked for the LoRaWAN Test App <code>lorawan_test</code> to work (because the LoRaWAN Timers are time-sensitive)</p>
 </li>
 </ul>
-<p>Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773"><code>bl602_i2c_transfer</code></a> and apply this workaround patch…</p>
+<p>Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773"><code>bl602_i2c_transfer</code></a> and apply this workaround patch…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">“I2C Logging”</a></li>
 </ul>
@@ -239,7 +240,7 @@ nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
 # For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
 nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 <p>And call <code>cst816s_register</code> to load our driver:</p>
-<p>https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843</p>
+<p>https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_INPUT_CST816S
 /* I2C Address of CST816S Touch Controller */
 
@@ -302,7 +303,7 @@ int bl602_bringup(void)
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661">(Source)</a></p>
 <p><code>bl602_irq_attach</code> is defined below…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
-//  Based on https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
+//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
 static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR void *arg)
 {
   int ret = 0;
@@ -466,7 +467,7 @@ struct touch_sample_s
   int npoints;                   /* The number of touch points in point[] */
   struct touch_point_s point[1]; /* Actual dimension is npoints */
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/include/nuttx/input/touchscreen.h#L113-L148">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148">(Source)</a></p>
 <p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/touch-code3a.png" alt="" /></p>
 <h1 id="read-touch-data"><a href="#read-touch-data">7 Read Touch Data</a></h1>
@@ -604,7 +605,7 @@ struct touch_sample_s
 <ul>
 <li><a href="https://www.youtube.com/shorts/2Nzjrlp5lcE">Watch the demo on YouTube</a></li>
 </ul>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L580">(UPDATE: We have bumped up the SPI Frequency to max 40 MHz, still feels laggy)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L580">(UPDATE: We have bumped up the SPI Frequency to max 40 MHz, still feels laggy)</a></p>
 <p>Here’s the detailed log…</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
 gpio_pin_register: Registering /dev/gpio1
@@ -1146,7 +1147,7 @@ cst816s_i2c_read:
 cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
 cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
 <p>This happens before and after we have reduced the number of I2C Transfers (by checking GPIO Interrupts via <code>int_pending</code>).</p>
-<p>The workaround is to call <code>i2cwarn()</code> in the <a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c">BL602 I2C Driver</a> to force this specific log to be printed…</p>
+<p>The workaround is to call <code>i2cwarn()</code> in the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c">BL602 I2C Driver</a> to force this specific log to be printed…</p>
 <div class="example-wrap"><pre class="language-c"><code>static int bl602_i2c_transfer(struct i2c_master_s *dev,
                               struct i2c_msg_s *   msgs,
                               int                      count) {
@@ -1160,7 +1161,7 @@ cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=168
           i2cwarn(&quot;i2c transfer success\n&quot;);
 #endif /* CONFIG_INPUT_CST816S */
         }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c#L753-L761">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L753-L761">(Source)</a></p>
 <p>After patching the workaround, we get the Touch Down Event (with valid Touch Data)…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
 tp_init: Opening /dev/input0
@@ -1180,7 +1181,7 @@ cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       200
 cst816s_get_touch_data:   y:       26</code></pre></div>
 <p>LoRaWAN Test App <code>lorawan_test</code> also tested OK with the patch.</p>
-<p><strong>TODO:</strong> Investigate the internals of the <a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c">BL602 I2C Driver</a>. Look for I2C Timing Issues or Race Conditions.</p>
+<p><strong>TODO:</strong> Investigate the internals of the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c">BL602 I2C Driver</a>. Look for I2C Timing Issues or Race Conditions.</p>
 <p><strong>TODO:</strong> Probe the I2C Bus with a Logic Analyser. Watch for I2C Hardware issues.</p>
 <p><strong>TODO:</strong> Why must we disable logging? Eventually we must disable <code>CONFIG_DEBUG_INFO</code> (Informational Debug Output) because the LoRaWAN Test App <code>lorawan_test</code> fails when <code>CONFIG_DEBUG_INFO</code> is enabled (due to LoRaWAN Timers)</p>
 <p><strong>TODO:</strong> LoRaWAN Test App, LoRaWAN Library, SX1262 Library, NimBLE Porting Layer, SPI Test Driver should have their own flags for logging</p>
