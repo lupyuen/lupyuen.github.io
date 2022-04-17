@@ -120,6 +120,8 @@ For __Apache NuttX OS__
 
 -   ["GPIO Interrupts on NuttX"](https://lupyuen.github.io/articles/sx1262#gpio-interface)
 
+-   ["NuttX Touch Panel Driver for PineDio Stack BL604"](https://lupyuen.github.io/articles/touch)
+
 For __BL602 IoT SDK__
 
 -   ["Control PineCone BL602 RGB LED with GPIO and PWM"](https://lupyuen.github.io/articles/led)
