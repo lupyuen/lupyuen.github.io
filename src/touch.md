@@ -68,7 +68,7 @@ TODO
 
 [(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
 
-![PineDio Stack Touch Panel](https://lupyuen.github.io/images/touch-inside.jpg)
+> ![PineDio Stack Touch Panel](https://lupyuen.github.io/images/touch-inside.jpg)
 
 # Install Driver
 
