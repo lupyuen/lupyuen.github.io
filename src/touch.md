@@ -74,11 +74,13 @@ TODO
 
 PineDio Stack's Touch Panel is a peculiar I2C Device ... It won't respond to I2C Scan unless we tap the screen and wake it up!
 
--   ["Building a Rust Driver for PineTime’s Touch Controller"](https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller)
+-   [__"Building a Rust Driver for PineTime’s Touch Controller"__](https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller)
 
-TODO11
+TODO: Pins
 
-![](https://lupyuen.github.io/images/touch-sleep.png)
+![CST816S Operating Modes](https://lupyuen.github.io/images/touch-sleep.png)
+
+[(From CST816S Datasheet)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/CST816S_DS_V1.3.pdf)
 
 # Install Driver
 
@@ -150,7 +152,7 @@ Enable I2C Warnings because of the [I2C Workaround for CST816S](https://github.c
 
 -   Note that "Enable Informational Debug Output" must be unchecked for the LoRaWAN Test App `lorawan_test` to work (because the LoRaWAN Timers are time-sensitive)
 
-Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773) and apply this workaround patch...
+Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773) and apply this workaround patch...
 
 -   ["I2C Logging"](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)
 
@@ -166,7 +168,7 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
 
 And call `cst816s_register` to load our driver:
 
-https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843
+https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843
 
 ```c
 #ifdef CONFIG_INPUT_CST816S
@@ -245,7 +247,7 @@ int cst816s_register(FAR const char *devpath,
 
 ```c
 //  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
-//  Based on https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
+//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
 static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR void *arg)
 {
   int ret = 0;
@@ -443,7 +445,7 @@ struct touch_sample_s
 };
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/touch/include/nuttx/input/touchscreen.h#L113-L148)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148)
 
 TODO4
 
@@ -595,7 +597,7 @@ PineDio Stack Touch Screen feels laggy on Apache #NuttX RTOS right now ... 2 thi
 
 -   [Watch the demo on YouTube](https://www.youtube.com/shorts/2Nzjrlp5lcE)
 
-[(UPDATE: We have bumped up the SPI Frequency to max 40 MHz, still feels laggy)](https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L580)
+[(UPDATE: We have bumped up the SPI Frequency to max 40 MHz, still feels laggy)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L580)
 
 Here's the detailed log...
 
@@ -1264,7 +1266,7 @@ cst816s_get_touch_data: Can't return touch data: id=9, touch=2, x=639, y=1688
 
 This happens before and after we have reduced the number of I2C Transfers (by checking GPIO Interrupts via `int_pending`).
 
-The workaround is to call `i2cwarn()` in the [BL602 I2C Driver](https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c) to force this specific log to be printed...
+The workaround is to call `i2cwarn()` in the [BL602 I2C Driver](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c) to force this specific log to be printed...
 
 ```c
 static int bl602_i2c_transfer(struct i2c_master_s *dev,
@@ -1282,7 +1284,7 @@ static int bl602_i2c_transfer(struct i2c_master_s *dev,
         }
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c#L753-L761)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L753-L761)
 
 After patching the workaround, we get the Touch Down Event (with valid Touch Data)...
 
@@ -1308,7 +1310,7 @@ cst816s_get_touch_data:   y:       26
 
 LoRaWAN Test App `lorawan_test` also tested OK with the patch.
 
-__TODO:__ Investigate the internals of the [BL602 I2C Driver](https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c). Look for I2C Timing Issues or Race Conditions.
+__TODO:__ Investigate the internals of the [BL602 I2C Driver](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c). Look for I2C Timing Issues or Race Conditions.
 
 __TODO:__ Probe the I2C Bus with a Logic Analyser. Watch for I2C Hardware issues.
 
