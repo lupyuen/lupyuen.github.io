@@ -65,8 +65,26 @@
 
     <h1 class="title">NuttX Touch Panel Driver for PineDio Stack BL604</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>24 Apr 2022</em></p>
+<li><a href="#install-driver">1 Install Driver</a><ul></ul></li>
+<li><a href="#cypress-mbr3108">2 Cypress MBR3108</a><ul></ul></li>
+<li><a href="#i2c-scan">3 I2C Scan</a><ul></ul></li>
+<li><a href="#gpio-interrupt">4 GPIO Interrupt</a><ul></ul></li>
+<li><a href="#test-gpio-interrupt">5 Test GPIO Interrupt</a><ul></ul></li>
+<li><a href="#touch-data">6 Touch Data</a><ul></ul></li>
+<li><a href="#read-touch-data">7 Read Touch Data</a><ul></ul></li>
+<li><a href="#test-touch-data">8 Test Touch Data</a><ul>
+<li><a href="#enable-gpio-interrupt">8.1 Enable GPIO Interrupt</a><ul></ul></li>
+<li><a href="#start-lvgl-app">8.2 Start LVGL App</a><ul></ul></li>
+<li><a href="#read-touch-data-1">8.3 Read Touch Data</a><ul></ul></li>
+<li><a href="#trigger-gpio-interrupt">8.4 Trigger GPIO Interrupt</a><ul></ul></li>
+<li><a href="#touch-down-event">8.5 Touch Down Event</a><ul></ul></li>
+<li><a href="#touch-down-event-again">8.6 Touch Down Event Again</a><ul></ul></li>
+<li><a href="#touch-up-event">8.7 Touch Up Event</a><ul></ul></li>
+<li><a href="#screen-calibration-result">8.8 Screen Calibration Result</a><ul></ul></li></ul></li>
+<li><a href="#screen-is-sideways">9 Screen Is Sideways</a><ul></ul></li>
+<li><a href="#i2c-logging">10 I2C Logging</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>24 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> is Pine64’s newest microcontroller board, based on <a href="https://lupyuen.github.io/articles/pinecone"><strong>Bouffalo Lab’s BL604</strong></a> RISC-V + WiFi + Bluetooth LE SoC.</p>
@@ -103,6 +121,9 @@
 </li>
 </ul>
 <p>Which makes it an awesome gadget for <strong>IoT Education</strong>!</p>
+<ul>
+<li><a href="https://www.youtube.com/shorts/2Nzjrlp5lcE"><strong>Watch the demo on YouTube</strong></a></li>
+</ul>
 <p>Today we’ll talk about the <strong>Hynitron CST816S Touch Controller Driver</strong> for Apache NuttX RTOS…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/cst816s-nuttx"><strong>lupyuen/cst816s-nuttx</strong></a></li>
@@ -119,7 +140,1040 @@
 <ul>
 <li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c"><strong>pinedio-stack-selftest/drivers/cst816s.c</strong></a></li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="install-driver"><a href="#install-driver">1 Install Driver</a></h1>
+<p>TODO</p>
+<p>To add this repo to your NuttX project…</p>
+<div class="example-wrap"><pre class="language-bash"><code>pushd nuttx/nuttx/drivers/input
+git submodule add https://github.com/lupyuen/cst816s-nuttx cst816s
+ln -s cst816s/cst816s.c .
+popd
+
+pushd nuttx/nuttx/include/nuttx/input
+ln -s ../../../drivers/input/cst816s/cst816s.h .
+popd</code></pre></div>
+<p>Next update the Makefile and Kconfig…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/commit/5dbf67df8f36cdba2eb0034dac0ff8ed0f8e73e1">See the modified Makefile and Kconfig</a></li>
+</ul>
+<p>Then update the NuttX Build Config…</p>
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
+cd nuttx/nuttx
+
+# Preserve the Build Config
+cp .config ../config
+
+# Erase the Build Config and Kconfig files
+make distclean
+
+# For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+# For PineDio Stack BL604: Configure the build for BL604
+./tools/configure.sh bl602evb:pinedio
+
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
+
+# Restore the Build Config
+cp ../config .config
+
+# Edit the Build Config
+make menuconfig </code></pre></div>
+<p>In menuconfig, enable the Hynitron CST816S Driver under “Device Drivers → Input Device Support”.</p>
+<p>Enable I2C Warnings because of the <a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">I2C Workaround for CST816S</a>…</p>
+<ul>
+<li>
+<p>Click “Build Setup” → “Debug Options”</p>
+</li>
+<li>
+<p>Check the boxes for the following…</p>
+<ul>
+<li>Enable Warnings Output</li>
+<li>I2C Warnings Output</li>
+</ul>
+</li>
+<li>
+<p>(Optional) To enable logging for the CST816S Driver, check the boxes for…</p>
+<ul>
+<li>Enable Error Output</li>
+<li>Enable Informational Debug Output</li>
+<li>Enable Debug Assertions</li>
+<li>Input Device Error Output</li>
+<li>Input Device Warnings Output</li>
+<li>Input Device Informational Output</li>
+</ul>
+</li>
+<li>
+<p>Note that “Enable Informational Debug Output” must be unchecked for the LoRaWAN Test App <code>lorawan_test</code> to work (because the LoRaWAN Timers are time-sensitive)</p>
+</li>
+</ul>
+<p>Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773"><code>bl602_i2c_transfer</code></a> and apply this workaround patch…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">“I2C Logging”</a></li>
+</ul>
+<p>Edit the function <code>bl602_bringup</code> or <code>esp32_bringup</code> in this file…</p>
+<div class="example-wrap"><pre class="language-text"><code># For BL602:
+nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
+
+# For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
+nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
+<p>And call <code>cst816s_register</code> to load our driver:</p>
+<p>https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843</p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_INPUT_CST816S
+/* I2C Address of CST816S Touch Controller */
+
+#define CST816S_DEVICE_ADDRESS 0x15
+#include &lt;nuttx/input/cst816s.h&gt;
+#endif /* CONFIG_INPUT_CST816S */
+...
+#ifdef CONFIG_INPUT_CST816S
+int bl602_bringup(void)
+{
+  ...
+  /* Init I2C bus for CST816S */
+
+  struct i2c_master_s *cst816s_i2c_bus = bl602_i2cbus_initialize(0);
+  if (!cst816s_i2c_bus)
+    {
+      _err(&quot;ERROR: Failed to get I2C%d interface\n&quot;, 0);
+    }
+
+  /* Register the CST816S driver */
+
+  ret = cst816s_register(&quot;/dev/input0&quot;, cst816s_i2c_bus, CST816S_DEVICE_ADDRESS);
+  if (ret &lt; 0)
+    {
+      _err(&quot;ERROR: Failed to register CST816S\n&quot;);
+    }
+#endif /* CONFIG_INPUT_CST816S */</code></pre></div>
+<p>Here’s how we created the CST816S Driver for NuttX on PineDio Stack BL604…</p>
+<h1 id="cypress-mbr3108"><a href="#cypress-mbr3108">2 Cypress MBR3108</a></h1>
+<p>TODO</p>
+<p>NuttX Driver for Cypress MBR3108 Touch Controller looks structurally similar to PineDio Stack’s CST816S … So we copy-n-paste into our CST816S Driver</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c">NuttX Driver for Cypress MBR3108</a></li>
+</ul>
+<h1 id="i2c-scan"><a href="#i2c-scan">3 I2C Scan</a></h1>
+<p>TODO</p>
+<p>PineDio Stack’s Touch Panel is a peculiar I2C Device … It won’t respond to I2C Scan unless we tap the screen and wake it up!</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller">“Building a Rust Driver for PineTime’s Touch Controller”</a></li>
+</ul>
+<p>TODO11</p>
+<p><img src="https://lupyuen.github.io/images/touch-sleep.png" alt="" /></p>
+<h1 id="gpio-interrupt"><a href="#gpio-interrupt">4 GPIO Interrupt</a></h1>
+<p>TODO</p>
+<p>PineDio Stack’s Touch Panel triggers a GPIO Interrupt when we tap the screen … Here’s how we handle the GPIO Interrupt</p>
+<div class="example-wrap"><pre class="language-c"><code>int cst816s_register(FAR const char *devpath,
+                     FAR struct i2c_master_s *i2c_dev,
+                     uint8_t i2c_devaddr)
+{
+  ...
+  /* Prepare interrupt line and handler. */
+
+  ret = bl602_irq_attach(BOARD_TOUCH_INT, cst816s_isr_handler, priv);
+  if (ret &lt; 0)
+    {
+      kmm_free(priv);
+      ierr(&quot;Attach interrupt failed\n&quot;);
+      return ret;
+    }
+
+  ret = bl602_irq_enable(false);
+  if (ret &lt; 0)
+    {
+      kmm_free(priv);
+      ierr(&quot;Disable interrupt failed\n&quot;);
+      return ret;
+    }</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661">(Source)</a></p>
+<p><code>bl602_irq_attach</code> is defined below…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
+//  Based on https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
+static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR void *arg)
+{
+  int ret = 0;
+  uint8_t gpio_pin = (pinset &amp; GPIO_PIN_MASK) &gt;&gt; GPIO_PIN_SHIFT;
+  FAR struct bl602_gpint_dev_s *dev = NULL;  //  TODO
+
+  DEBUGASSERT(callback != NULL);
+
+  /* Configure the pin that will be used as interrupt input */
+
+  #warning Check GLB_GPIO_INT_TRIG_NEG_PULSE  ////  TODO
+  bl602_expander_set_intmod(gpio_pin, 1, GLB_GPIO_INT_TRIG_NEG_PULSE);
+  ret = bl602_configgpio(pinset);
+  if (ret &lt; 0)
+    {
+      gpioerr(&quot;Failed to configure GPIO pin %d\n&quot;, gpio_pin);
+      return ret;
+    }
+
+  /* Make sure the interrupt is disabled */
+
+  bl602_expander_pinset = pinset;
+  bl602_expander_callback = callback;
+  bl602_expander_arg = arg;
+  bl602_expander_intmask(gpio_pin, 1);
+
+  irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, dev);
+  bl602_expander_intmask(gpio_pin, 0);
+
+  gpioinfo(&quot;Attach %p\n&quot;, callback);
+
+  return 0;
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727">(Source)</a></p>
+<p>Note that we’re calling <code>bl602_expander</code> to handle interrupts. There doesn’t seem to be a way to do this with the current BL602 GPIO Driver (<code>bl602evb/bl602_gpio.c</code>).</p>
+<p>We are building <code>bl602_expander</code> here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/bl602_expander">lupyuen/bl602_expander</a></li>
+</ul>
+<p>To test interrupts we uncomment <code>#define TEST_CST816S_INTERRUPT</code>…</p>
+<div class="example-wrap"><pre class="language-c"><code>int cst816s_register(FAR const char *devpath,
+                     FAR struct i2c_master_s *i2c_dev,
+                     uint8_t i2c_devaddr)
+{
+...
+//  Uncomment this to test interrupts (tap the screen)
+#define TEST_CST816S_INTERRUPT
+#ifdef TEST_CST816S_INTERRUPT
+#warning Testing CST816S interrupt
+  bl602_irq_enable(true);
+#endif /* TEST_CST816S_INTERRUPT */</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661">(Source)</a></p>
+<p>There’s bug with BL602 GPIO Interrupts that we have fixed for our driver…</p>
+<p>https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538</p>
+<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/touch-code1a.png" alt="" /></p>
+<p>TODO3</p>
+<p><img src="https://lupyuen.github.io/images/touch-code2a.png" alt="" /></p>
+<h1 id="test-gpio-interrupt"><a href="#test-gpio-interrupt">5 Test GPIO Interrupt</a></h1>
+<p>TODO</p>
+<p>Tapping the screen on PineDio Stack … Correctly triggers a GPIO Interrupt 🎉</p>
+<div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
+gpio_pin_register: Registering /dev/gpio1
+gpint_enable: Disable the interrupt
+gpio_pin_register: Registering /dev/gpio2
+bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
+spi_test_driver_register: devpath=/dev/spitest0, spidev=0
+cst816s_register:
+bl602_expander_set_intmod: ****gpio_pin=9, int_ctlmod=1, int_trgmod=0
+bl602_irq_attach: Attach 0x2305e9de
+bl602_irq_enable: Disable interrupt
+cst816s_register: Driver registered
+bl602_irq_enable: Enable interrupt
+
+NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt; bl602_expander_interrupt: Interrupt! callback=0x2305e9de, arg=0x42020a60
+bl602_expander_interrupt: Call callback=0x2305e9de, arg=0x42020a60
+cst816s_poll_notify:
+bl602_expander_interrupt: Interrupt! callback=0x2305e9de, arg=0x42020a60
+bl602_expander_interrupt: Call callback=0x2305e9de, arg=0x42020a60
+cst816s_poll_notify:
+bl602_expander_interrupt: Interrupt! callback=0x2305e9de, arg=0x42020a60
+bl602_expander_interrupt: Call callback=0x2305e9de, arg=0x42020a60
+cst816s_poll_notify:
+bl602_expander_interrupt: Interrupt! callback=0x2305e9de, arg=0x42020a60
+bl602_expander_interrupt: Call callback=0x2305e9de, arg=0x42020a60
+cst816s_poll_notify:</code></pre></div>
+<p>LVGL Test App <code>lvgltest</code> fails to open <code>/dev/input0</code>, but that’s OK because we haven’t implemented the I2C part.</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /dev
+/dev:
+ console
+ gpio0
+ gpio1
+ gpio2
+ i2c0
+ input0
+ lcd0
+ null
+ spi0
+ spitest0
+ timer0
+ urandom
+ zero
+
+nsh&gt; lvgltest
+tp_init: Opening /dev/input0
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+cst816s_probe_device: family_id: 0x34, device_id: 0x00aa, device_rev: 35
+cst816s_probe_device: Probe failed, dev-id mismatch!
+cst816s_probe_device:   Expected: family_id: 0x9a, device_id: 0x0a03, device_rev: 1
+tp_init: open /dev/input0 failed: 6
+Terminating!
+bl602_expander_interrupt: Interrupt! callback=0x2305e9e8, arg=0
+bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0
+bl602_expander_interrupt: Interrupt! callback=0x2305e9e8, arg=0
+bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0
+bl602_expander_interrupt: Interrupt! callback=0x2305e9e8, arg=0
+bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0</code></pre></div>
+<p>TODO8</p>
+<p><img src="https://lupyuen.github.io/images/touch-run1a.png" alt="" /></p>
+<h1 id="touch-data"><a href="#touch-data">6 Touch Data</a></h1>
+<p>TODO</p>
+<p>Apache NuttX RTOS has a standard data format for Touch Panels … Let’s implement this for PineDio Stack</p>
+<div class="example-wrap"><pre class="language-c"><code>/* This structure contains information about a single touch point.
+ * Positional units are device specific.
+ */
+
+struct touch_point_s
+{
+  uint8_t  id;        /* Unique identifies contact; Same in all reports for the contact */
+  uint8_t  flags;     /* See TOUCH_* definitions above */
+  int16_t  x;         /* X coordinate of the touch point (uncalibrated) */
+  int16_t  y;         /* Y coordinate of the touch point (uncalibrated) */
+  int16_t  h;         /* Height of touch point (uncalibrated) */
+  int16_t  w;         /* Width of touch point (uncalibrated) */
+  uint16_t gesture;   /* Gesture of touchscreen contact */
+  uint16_t pressure;  /* Touch pressure */
+  uint64_t timestamp; /* Touch event time stamp, in microseconds */
+};
+
+/* The typical touchscreen driver is a read-only, input character device
+ * driver.the driver write() method is not supported and any attempt to
+ * open the driver in any mode other than read-only will fail.
+ *
+ * Data read from the touchscreen device consists only of touch events and
+ * touch sample data.  This is reflected by struct touch_sample_s.  This
+ * structure is returned by either the driver read method.
+ *
+ * On some devices, multiple touchpoints may be supported. So this top level
+ * data structure is a struct touch_sample_s that &quot;contains&quot; a set of touch
+ * points.  Each touch point is managed individually using an ID that
+ * identifies a touch from first contact until the end of the contact.
+ */
+
+struct touch_sample_s
+{
+  int npoints;                   /* The number of touch points in point[] */
+  struct touch_point_s point[1]; /* Actual dimension is npoints */
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/include/nuttx/input/touchscreen.h#L113-L148">(Source)</a></p>
+<p>TODO4</p>
+<p><img src="https://lupyuen.github.io/images/touch-code3a.png" alt="" /></p>
+<h1 id="read-touch-data"><a href="#read-touch-data">7 Read Touch Data</a></h1>
+<p>TODO</p>
+<p>Here’s how we read the Touched Coordinates in our driver…</p>
+<div class="example-wrap"><pre class="language-c"><code>static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf)
+{
+  iinfo(&quot;\n&quot;); ////
+  struct touch_sample_s data;
+  uint8_t readbuf[7];
+  int ret;
+
+  /* Read the raw touch data. */
+
+  ret = cst816s_i2c_read(dev, CST816S_REG_TOUCHDATA, readbuf, sizeof(readbuf));
+  if (ret &lt; 0)
+    {
+      iinfo(&quot;Read touch data failed\n&quot;);
+      return ret;
+    }
+
+  /* Interpret the raw touch data. */
+
+  uint8_t id = readbuf[5] &gt;&gt; 4;
+  uint8_t touchpoints = readbuf[2] &amp; 0x0f;
+  uint8_t xhigh = readbuf[3] &amp; 0x0f;
+  uint8_t xlow  = readbuf[4];
+  uint8_t yhigh = readbuf[5] &amp; 0x0f;
+  uint8_t ylow  = readbuf[6];
+  uint8_t event = readbuf[3] &gt;&gt; 6;  /* 0 = Touch Down, 1 = Touch Up, 2 = Contact */
+  uint16_t x  = (xhigh  &lt;&lt; 8) | xlow;
+  uint16_t y  = (yhigh  &lt;&lt; 8) | ylow;
+
+  /* If touch coordinates are invalid, return the last valid coordinates. */
+
+  bool valid = true;
+  if (x &gt;= 240 || y &gt;= 240)
+    {
+      iwarn(&quot;Invalid touch data: id=%d, touch=%d, x=%d, y=%d\n&quot;, id, touchpoints, x, y);
+      if (last_event == 0xff)  /* Quit if we have no last valid coordinates. */
+        {
+          ierr(&quot;Can&#39;t return touch data: id=%d, touch=%d, x=%d, y=%d\n&quot;, id, touchpoints, x, y);
+          return -EINVAL;
+        }
+      valid = false;
+      id = last_id;
+      x  = last_x;
+      y  = last_y;
+    }
+
+  /* Remember the last valid touch data. */
+
+  last_event = event;
+  last_id    = id;
+  last_x     = x;
+  last_y     = y;
+
+  /* Set the touch data fields. */
+
+  memset(&amp;data, 0, sizeof(data));
+  data.npoints     = 1;
+  data.point[0].id = id;
+  data.point[0].x  = x;
+  data.point[0].y  = y;
+
+  /* Set the touch flags. */
+
+  if (event == 0)  /* Touch Down */
+    {
+      iinfo(&quot;DOWN: id=%d, touch=%d, x=%d, y=%d\n&quot;, id, touchpoints, x, y);
+      if (valid)  /* Touch coordinates were valid. */
+        {
+          data.point[0].flags  = TOUCH_DOWN | TOUCH_ID_VALID | TOUCH_POS_VALID;
+        }
+      else  /* Touch coordinates were invalid. */
+        {
+          data.point[0].flags  = TOUCH_DOWN | TOUCH_ID_VALID;
+        }
+    }
+  else if (event == 1)  /* Touch Up */
+    {
+      iinfo(&quot;UP: id=%d, touch=%d, x=%d, y=%d\n&quot;, id, touchpoints, x, y);
+      if (valid)  /* Touch coordinates were valid. */
+        {
+          data.point[0].flags  = TOUCH_UP | TOUCH_ID_VALID | TOUCH_POS_VALID;
+        }
+      else  /* Touch coordinates were invalid. */
+        {
+          data.point[0].flags  = TOUCH_UP | TOUCH_ID_VALID;
+        }
+    }
+  else  /* Reject Contact */
+    {
+      iinfo(&quot;CONTACT: id=%d, touch=%d, x=%d, y=%d\n&quot;, id, touchpoints, x, y);
+      return -EINVAL;
+    }
+
+  /* Return the touch data. */
+
+  memcpy(buf, &amp;data, sizeof(data));
+
+  iinfo(&quot;  id:      %d\n&quot;,   data.point[0].id);
+  iinfo(&quot;  flags:   %02x\n&quot;, data.point[0].flags);
+  iinfo(&quot;  x:       %d\n&quot;,   data.point[0].x);
+  iinfo(&quot;  y:       %d\n&quot;,   data.point[0].y);
+
+  return sizeof(data);
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">(Source)</a></p>
+<p>Note that our NuttX Driver for PineDio Stack’s Touch Panel returns 4 possible states: Touch Down vs Touch Up, Valid vs Invalid.</p>
+<p>We got this code thanks to JF’s CST816S driver for the Self-Test Firmware…</p>
+<ul>
+<li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></li>
+</ul>
+<p>And from our previous work on PineTime, which also uses CST816S…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller">“Building a Rust Driver for PineTime’s Touch Controller”</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs">CST816S Driver in Rust</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466">Hynitron Reference Driver</a></p>
+</li>
+</ul>
+<p>TODO5</p>
+<p><img src="https://lupyuen.github.io/images/touch-code4a.png" alt="" /></p>
+<p>TODO6</p>
+<p><img src="https://lupyuen.github.io/images/touch-code5a.png" alt="" /></p>
+<h1 id="test-touch-data"><a href="#test-touch-data">8 Test Touch Data</a></h1>
+<p>TODO</p>
+<p>NuttX Driver for PineDio Stack Touch Panel responds correctly to touch! 🎉</p>
+<p>PineDio Stack Touch Screen feels laggy on Apache #NuttX RTOS right now … 2 things we can fix: 1️⃣ Increase SPI Frequency 2️⃣ Switch to SPI DMA eventually</p>
+<ul>
+<li><a href="https://www.youtube.com/shorts/2Nzjrlp5lcE">Watch the demo on YouTube</a></li>
+</ul>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L580">(UPDATE: We have bumped up the SPI Frequency to max 40 MHz, still feels laggy)</a></p>
+<p>Here’s the detailed log…</p>
+<div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
+gpio_pin_register: Registering /dev/gpio1
+gpint_enable: Disable the interrupt
+gpio_pin_register: Registering /dev/gpio2
+bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
+spi_test_driver_register: devpath=/dev/spitest0, spidev=0
+cst816s_register: path=/dev/input0, addr=21
+bl602_expander_set_intmod: gpio_pin=9, int_ctlmod=1, int_trgmod=0
+bl602_irq_attach: Attach 0x2305e596
+bl602_irq_enable: Disable interrupt
+cst816s_register: Driver registered
+bl602_irq_enable: Enable interrupt
+
+NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt; lvgltest
+tp_init: Opening /dev/input0
+cst816s_open:
+
+bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
+cst816s_poll_notify:
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x1700de
+ransfer success
+cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x1700de
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, ouch=0, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x1700de
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
+cst816s_get_touch_data: UP: id=0, touch=2, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23
+bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
+cst816s_poll_notify:
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0xd900db
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=219, y=217
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       219
+cst816s_get_touch_data:   y:       217
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0xd900db
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=219, y=217
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:  19
+cst816s_get_touch_data:   x:       219
+cst816s_get_touch_data:   y:       217
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: Invalid touch data: id=4, touch=2, x=636, y=3330
+cst816s_get_touch_data: UP: id=0, touch=2, x=219, y=217
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       219
+cst816s_get_touch_data:   y:       217
+bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
+cst816s_poll_notify:
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0xdb0022
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=34, y=219
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       34
+cst816s_get_touch_data:   y:       219
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0xdb0022
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=34, y=219
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       34
+cst816s_get_touch_data:   y:       219
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: Invalid touch data: id=4, touch=2, x=636, y=3330
+cst816s_get_touch_data: UP: id=0, touch=2, x=34, y=219
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       34
+cst816s_get_touch_data:   y:       219
+bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
+cst816s_poll_notify:
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x180018
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=24, y=24
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       24
+cst816s_get_touch_data:   y:       24
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x180018
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=24, y=24
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       24
+cst816s_get_touch_data:   y:       24
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: Invalid touch data: id=4, touch=2, x=636, y=3330
+cst816s_get_touch_data: UP: id=0, touch=2, x=24, y=24
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       24
+cst816s_get_touch_data:   y:       24
+bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
+cst816s_poll_notify:
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x8d0076
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=118, y=141
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       118
+cst816s_get_touch_data:   y:       141
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x8d0076
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=118, y=141
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       118
+cst816s_get_touch_data:   y:       141
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: Invalid touch data: id=4, touch=2, x=636, y=3330
+cst816s_get_touch_data: UP: id=0, touch=2, x=118, y=141
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       118
+cst816s_get_touch_data:   y:       141
+
+tp_cal result
+offset x:23, y:24
+range x:194, y:198
+invert x/y:1, x:0, y:1</code></pre></div>
+<p>Let’s break down the log…</p>
+<h2 id="enable-gpio-interrupt"><a href="#enable-gpio-interrupt">8.1 Enable GPIO Interrupt</a></h2>
+<p>TODO</p>
+<p>At NuttX Startup, we register the CST816S Driver as <code>/dev/input0</code> and enable the GPIO interrupt…</p>
+<div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
+gpio_pin_register: Registering /dev/gpio1
+gpint_enable: Disable the interrupt
+gpio_pin_register: Registering /dev/gpio2
+bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
+spi_test_driver_register: devpath=/dev/spitest0, spidev=0
+cst816s_register: path=/dev/input0, addr=21
+bl602_expander_set_intmod: gpio_pin=9, int_ctlmod=1, int_trgmod=0
+bl602_irq_attach: Attach 0x2305e596
+bl602_irq_enable: Disable interrupt
+cst816s_register: Driver registered
+bl602_irq_enable: Enable interrupt
+
+NuttShell (NSH) NuttX-10.2.0-RC0
+nsh&gt;</code></pre></div><h2 id="start-lvgl-app"><a href="#start-lvgl-app">8.2 Start LVGL App</a></h2>
+<p>TODO</p>
+<p>We run the LVGL Test App <code>lvgltest</code>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
+tp_init: Opening /dev/input0
+cst816s_open:</code></pre></div>
+<p>Which calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L384-L420"><code>cst816s_open()</code></a> to open our CST816S Driver.</p>
+<p>The app begins the Touchscreen Calibration process.</p>
+<h2 id="read-touch-data-1"><a href="#read-touch-data-1">8.3 Read Touch Data</a></h2>
+<p>TODO</p>
+<p>The LVGL Test App calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly on the CST816S Driver to get Touch Data…</p>
+<div class="example-wrap"><pre class="language-c"><code>bool tp_read(struct _lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
+{
+  ...
+  /* Read one sample */
+
+  nbytes = read(fd, &amp;sample, sizeof(struct touch_sample_s));</code></pre></div>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L115-L132">(Source)</a></p>
+<p>Since the screen hasn’t been touched and we have no Touch Data yet, our driver returns an error <code>-EINVAL</code>…</p>
+<div class="example-wrap"><pre class="language-c"><code>static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer,
+                            size_t buflen)
+{
+  ...
+  int ret = -EINVAL;
+
+  /* Read the touch data, only if screen has been touched or if we&#39;re waiting for touch up */
+  if ((priv-&gt;int_pending || last_event == 0) &amp;&amp; buflen &gt;= outlen)
+    {
+      ret = cst816s_get_touch_data(priv, buffer);
+    }</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L336-L370">(Source)</a></p>
+<p><code>int_pending</code> becomes true when a GPIO Interrupt gets triggered later.</p>
+<p><code>last_event</code> becomes 0 when we get a Touch Down event later.</p>
+<p><em>Why do we check <code>int_pending</code>?</em></p>
+<p>To reduce contention on the I2C Bus, we only read the Touch Data over I2C when the screen has been touched. We’ll see this in a while.</p>
+<p>(But the LVGL Test App really shouldn’t call <code>read()</code> repeatedly. It ought to call <code>poll()</code> and block until Touch Data is available)</p>
+<p><em>Why do we we check <code>last_event</code>?</em></p>
+<p>The Touch Controller triggers a GPIO Interrupt only upon Touch Down, not on Touch Up.</p>
+<p>So after Touch Down, we allow  <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> to call <code>cst816s_get_touch_data()</code> to fetch the Touch Data repeatedly, until we see the Touch Up Event. We’ll see this in a while.</p>
+<p>TODO7</p>
+<p><img src="https://lupyuen.github.io/images/touch-code6a.png" alt="" /></p>
+<h2 id="trigger-gpio-interrupt"><a href="#trigger-gpio-interrupt">8.4 Trigger GPIO Interrupt</a></h2>
+<p>TODO</p>
+<p>We touch the screen and trigger a GPIO Interrupt…</p>
+<div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
+cst816s_poll_notify:</code></pre></div>
+<p>The Interrupt Handler in our driver sets <code>int_pending</code> to true…</p>
+<div class="example-wrap"><pre class="language-c"><code>static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg)
+{
+  FAR struct cst816s_dev_s *priv = (FAR struct cst816s_dev_s *)arg;
+  irqstate_t flags;
+
+  DEBUGASSERT(priv != NULL);
+
+  flags = enter_critical_section();
+  priv-&gt;int_pending = true;
+  leave_critical_section(flags);
+
+  cst816s_poll_notify(priv);
+  return 0;
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L598-L611">(Source)</a></p>
+<p>And calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L472-L498"><code>cst816s_poll_notify()</code></a> to unblock all <code>poll()</code> callers and notify them that Touch Data is available.</p>
+<p>(But LVGL Test App doesn’t <code>poll()</code> our driver, so this doesn’t effect anything)</p>
+<h2 id="touch-down-event"><a href="#touch-down-event">8.5 Touch Down Event</a></h2>
+<p>TODO</p>
+<p>Remember that the LVGL Test App keeps calling <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly to get Touch Data.</p>
+<p>Now that <code>int_pending</code> is true, our driver proceeds to call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> and fetch the Touch Data over I2C…</p>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x1700de
+ransfer success
+cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23</code></pre></div>
+<p>The Touch Data that was read from CST816S over I2C…</p>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23</code></pre></div>
+<p>Gets returned directly to the LVGL Test App as a Touch Down Event…</p>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> sets <code>last_event</code> to 0 because it’s a Touch Down Event.</p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L372-L382"><code>cst816s_read()</code></a> sets <code>int_pending</code> to false.</p>
+<p>TODO9</p>
+<p><img src="https://lupyuen.github.io/images/touch-run2a.png" alt="" /></p>
+<h2 id="touch-down-event-again"><a href="#touch-down-event-again">8.6 Touch Down Event Again</a></h2>
+<p>TODO</p>
+<p>LVGL Test App is still calling <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly to get Touch Data.</p>
+<p>Now that <code>last_event</code> is 0 (Touch Down), our driver proceeds to call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> and fetch the Touch Data over I2C…</p>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x1700de
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, ouch=0, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x1700de
+ransfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23</code></pre></div>
+<p>This happens twice because we haven’t received a Touch Up Event.</p>
+<h2 id="touch-up-event"><a href="#touch-up-event">8.7 Touch Up Event</a></h2>
+<p>TODO</p>
+<p>When our finger is no longer touching the screen, <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> receives a Touch Up Event…</p>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
+cst816s_get_touch_data: UP: id=0, touch=2, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23</code></pre></div>
+<p>For Touch Up Events the Touch Coordinates are invalid…</p>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
+<p>The driver patches the Touch Coordinates with the data from the last Touch Down Event…</p>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: UP: id=0, touch=2, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23</code></pre></div>
+<p>And returns the valid coordinates to the LVGL Test App. The patching is done here…</p>
+<div class="example-wrap"><pre class="language-c"><code>static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) {
+...
+  /* If touch coordinates are invalid, return the last valid coordinates. */
+
+  bool valid = true;
+  if (x &gt;= 240 || y &gt;= 240)
+    {
+      iwarn(&quot;Invalid touch data: id=%d, touch=%d, x=%d, y=%d\n&quot;, id, touchpoints, x, y);
+      if (last_event == 0xff)  /* Quit if we have no last valid coordinates. */
+        {
+          ierr(&quot;Can&#39;t return touch data: id=%d, touch=%d, x=%d, y=%d\n&quot;, id, touchpoints, x, y);
+          return -EINVAL;
+        }
+      valid = false;
+      id = last_id;
+      x  = last_x;
+      y  = last_y;
+    }
+
+  /* Remember the last valid touch data. */
+
+  last_event = event;
+  last_id    = id;
+  last_x     = x;
+  last_y     = y;
+
+  /* Set the touch data fields. */
+
+  memset(&amp;data, 0, sizeof(data));
+  data.npoints     = 1;
+  data.point[0].id = id;
+  data.point[0].x  = x;
+  data.point[0].y  = y;</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L258-L282">(Source)</a></p>
+<p><code>last_event</code> is now set to 1 (Touch Up). </p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> will no longer call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> to fetch the Touch Data, until the screen is touched again.</p>
+<p>TODO10</p>
+<p><img src="https://lupyuen.github.io/images/touch-run4a.png" alt="" /></p>
+<h2 id="screen-calibration-result"><a href="#screen-calibration-result">8.8 Screen Calibration Result</a></h2>
+<p>TODO</p>
+<p>When we have touched the 4 screen corners, the LVGL Test App displays the Screen Calibration result…</p>
+<div class="example-wrap"><pre class="language-text"><code>tp_cal result
+offset x:23, y:24
+range x:194, y:198
+invert x/y:1, x:0, y:1</code></pre></div>
+<p>Which will be used to tweak the Touch Coordinates in the apps.</p>
+<h1 id="screen-is-sideways"><a href="#screen-is-sideways">9 Screen Is Sideways</a></h1>
+<p>TODO</p>
+<p>According to the Touch Data from the LVGL Test App, our screen is rotated sideways…</p>
+<ul>
+<li>
+<p>Top Left: x=181, y=12</p>
+</li>
+<li>
+<p>Top Right: x=230, y=212</p>
+</li>
+<li>
+<p>Bottom Left: x=9, y=10</p>
+</li>
+<li>
+<p>Bottom Right: x=19, y=202</p>
+</li>
+</ul>
+<p>So be careful when mapping the touch coordinates.</p>
+<p>We can rotate the display in the ST7789 Driver. But first we need to agree which way is “up”…</p>
+<p>TODO1</p>
+<p><img src="https://lupyuen.github.io/images/touch-button.jpg" alt="" /></p>
+<h1 id="i2c-logging"><a href="#i2c-logging">10 I2C Logging</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> won’t return any valid Touch Data unless we enable I2C Logging. Could be an I2C Timing Issue or Race Condition.</p>
+<p>With I2C Logging Enabled: We get the Touch Down Event (with valid Touch Data)…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
+tp_init: Opening /dev/input0
+cst816s_open:
+
+bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
+cst816s_poll_notify:
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
+bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x1700de
+Transfer success
+cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       222
+cst816s_get_touch_data:   y:       23</code></pre></div>
+<p>With I2C Logging Disabled: We only get the Touch Up Event (with invalid Touch Data)…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
+tp_init: Opening /dev/input0
+cst816s_open:
+
+bl602_expander_interrupt: Interrupt! callback=0x2305e55e, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e55e, arg=0x42020a70
+cst816s_poll_notify:
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
+cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=1688
+
+bl602_expander_interrupt: Interrupt! callback=0x2305e55e, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e55e, arg=0x42020a70
+cst816s_poll_notify:
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
+cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
+<p>This happens before and after we have reduced the number of I2C Transfers (by checking GPIO Interrupts via <code>int_pending</code>).</p>
+<p>The workaround is to call <code>i2cwarn()</code> in the <a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c">BL602 I2C Driver</a> to force this specific log to be printed…</p>
+<div class="example-wrap"><pre class="language-c"><code>static int bl602_i2c_transfer(struct i2c_master_s *dev,
+                              struct i2c_msg_s *   msgs,
+                              int                      count) {
+      ...
+      if (priv-&gt;i2cstate == EV_I2C_END_INT)
+        {
+          i2cinfo(&quot;i2c transfer success\n&quot;);
+#ifdef CONFIG_INPUT_CST816S
+          /* Workaround for CST816S. See https://github.com/lupyuen/cst816s-nuttx#i2c-logging */
+
+          i2cwarn(&quot;i2c transfer success\n&quot;);
+#endif /* CONFIG_INPUT_CST816S */
+        }</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c#L753-L761">(Source)</a></p>
+<p>After patching the workaround, we get the Touch Down Event (with valid Touch Data)…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
+tp_init: Opening /dev/input0
+cst816s_open:
+
+bl602_expander_interrupt: Interrupt! callback=0x2305e55e, arg=0x42020a70
+bl602_expander_interrupt: Call callback=0x2305e55e, arg=0x42020a70
+cst816s_poll_notify:
+
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=200, y=26
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       200
+cst816s_get_touch_data:   y:       26</code></pre></div>
+<p>LoRaWAN Test App <code>lorawan_test</code> also tested OK with the patch.</p>
+<p><strong>TODO:</strong> Investigate the internals of the <a href="https://github.com/lupyuen/incubator-nuttx/blob/touch/arch/risc-v/src/bl602/bl602_i2c.c">BL602 I2C Driver</a>. Look for I2C Timing Issues or Race Conditions.</p>
+<p><strong>TODO:</strong> Probe the I2C Bus with a Logic Analyser. Watch for I2C Hardware issues.</p>
+<p><strong>TODO:</strong> Why must we disable logging? Eventually we must disable <code>CONFIG_DEBUG_INFO</code> (Informational Debug Output) because the LoRaWAN Test App <code>lorawan_test</code> fails when <code>CONFIG_DEBUG_INFO</code> is enabled (due to LoRaWAN Timers)</p>
+<p><strong>TODO:</strong> LoRaWAN Test App, LoRaWAN Library, SX1262 Library, NimBLE Porting Layer, SPI Test Driver should have their own flags for logging</p>
+<p><strong>TODO:</strong> Move CST816S Interrupt Handler to <a href="https://github.com/lupyuen/bl602_expander">BL602 GPIO Expander</a></p>
+<p><strong>TODO:</strong> Implement SPI DMA on NuttX so that the touchscreen feels less laggy</p>
+<p><strong>TODO:</strong> <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#button-with-label">Add a button</a> and a message box to the <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L110-L198">LVGL Test App <code>lvgltest</code></a> to demo the touchscreen</p>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article has provided everything you need to get started on creating <strong>your own IoT App</strong>.</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
@@ -140,32 +1194,10 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/touch.md"><code>lupyuen.github.io/src/touch.md</code></a></p>
-<h1 id="notes"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1514049092388745219">this Twitter Thread</a></li>
 </ol>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/touch-button.jpg" alt="" /></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/touch-code1a.png" alt="" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/touch-code2a.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/touch-code3a.png" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/touch-code4a.png" alt="" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/touch-code5a.png" alt="" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/touch-code6a.png" alt="" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/touch-run1a.png" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/touch-run2a.png" alt="" /></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/touch-run4a.png" alt="" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/touch-sleep.png" alt="" /></p>
 <p><img src="https://lupyuen.github.io/images/touch-title2.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 
