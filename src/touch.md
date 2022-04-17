@@ -6,7 +6,7 @@
 
 _Pine64 PineDio Stack BL604 RISC-V Board_
 
-__PineDio Stack BL604__ is Pine64's newest microcontroller board, based on [__Bouffalo Lab's BL604__](https://lupyuen.github.io/articles/pinecone) RISC-V + WiFi + Bluetooth LE SoC.
+[__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) is Pine64's newest microcontroller board, based on [__Bouffalo Lab's BL604__](https://lupyuen.github.io/articles/pinecone) RISC-V + WiFi + Bluetooth LE SoC.
 
 (Available any day now!)
 
@@ -79,3 +79,51 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1514049092388745219)
+
+TODO1
+
+![](https://lupyuen.github.io/images/touch-button.jpg)
+
+TODO2
+
+![](https://lupyuen.github.io/images/touch-code1a.png)
+
+TODO3
+
+![](https://lupyuen.github.io/images/touch-code2a.png)
+
+TODO4
+
+![](https://lupyuen.github.io/images/touch-code3a.png)
+
+TODO5
+
+![](https://lupyuen.github.io/images/touch-code4a.png)
+
+TODO6
+
+![](https://lupyuen.github.io/images/touch-code5a.png)
+
+TODO7
+
+![](https://lupyuen.github.io/images/touch-code6a.png)
+
+TODO8
+
+![](https://lupyuen.github.io/images/touch-run1a.png)
+
+TODO9
+
+![](https://lupyuen.github.io/images/touch-run2a.png)
+
+TODO10
+
+![](https://lupyuen.github.io/images/touch-run4a.png)
+
+TODO11
+
+![](https://lupyuen.github.io/images/touch-sleep.png)
+
+TODO12
+
+![](https://lupyuen.github.io/images/touch-title2.jpg)
