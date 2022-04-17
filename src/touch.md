@@ -2,9 +2,9 @@
 
 📝 _24 Apr 2022_
 
-![Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title.jpg)
+![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title.jpg)
 
-_Pine64 PineDio Stack BL604 RISC-V Board_
+_Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board_
 
 [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) is Pine64's newest microcontroller board, based on [__Bouffalo Lab's BL604__](https://lupyuen.github.io/articles/pinecone) RISC-V + WiFi + Bluetooth LE SoC.
 
@@ -124,6 +124,6 @@ TODO11
 
 ![](https://lupyuen.github.io/images/touch-sleep.png)
 
-TODO12
+![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title2.jpg)
 
-![](https://lupyuen.github.io/images/touch-title2.jpg)
+_Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board_
