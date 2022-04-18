@@ -264,46 +264,98 @@ The code above comes from the [__LVGL Test App__](https://github.com/lupyuen/lvg
 
 # Load The Driver
 
-TODO
-
-Edit the function `bl602_bringup` in this file...
-
-```text
-## For BL602:
-nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
-```
-
-And call `cst816s_register` to load our driver: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843)
+Before we cover the internals of our CST816S Driver, let's __load the driver__ at NuttX Startup: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L829-L846)
 
 ```c
 #ifdef CONFIG_INPUT_CST816S
-/* I2C Address of CST816S Touch Controller */
-
+//  I2C Address of CST816S Touch Controller
 #define CST816S_DEVICE_ADDRESS 0x15
 #include <nuttx/input/cst816s.h>
 #endif /* CONFIG_INPUT_CST816S */
 ...
 #ifdef CONFIG_INPUT_CST816S
-int bl602_bringup(void)
-{
+int bl602_bringup(void) {
   ...
-  /* Init I2C bus for CST816S */
-
+  //  Init I2C bus for CST816S
   struct i2c_master_s *cst816s_i2c_bus = bl602_i2cbus_initialize(0);
-  if (!cst816s_i2c_bus)
-    {
-      _err("ERROR: Failed to get I2C%d interface\n", 0);
-    }
+  if (!cst816s_i2c_bus) {
+    _err("ERROR: Failed to get I2C%d interface\n", 0);
+  }
 
-  /* Register the CST816S driver */
-
+  //  Register the CST816S driver
   ret = cst816s_register("/dev/input0", cst816s_i2c_bus, CST816S_DEVICE_ADDRESS);
-  if (ret < 0)
-    {
-      _err("ERROR: Failed to register CST816S\n");
-    }
+  if (ret < 0) {
+    _err("ERROR: Failed to register CST816S\n");
+  }
 #endif /* CONFIG_INPUT_CST816S */
 ```
+
+This initialises our CST816S Driver and registers it at "__/dev/input0__".
+
+__cst816s_register__ comes from our CST816S Driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L631-L691)
+
+```c
+//  Register the CST816S driver
+int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, uint8_t i2c_devaddr) {
+  struct cst816s_dev_s *priv;
+  int ret = 0;
+
+  /* Allocate device private structure. */
+
+  priv = kmm_zalloc(sizeof(struct cst816s_dev_s));
+  if (!priv)
+    {
+      ierr("Memory allocation failed\n");
+      return -ENOMEM;
+    }
+
+  /* Setup device structure. */
+
+  priv->addr = i2c_devaddr;
+  priv->i2c = i2c_dev;
+
+  nxsem_init(&priv->devsem, 0, 1);
+
+  ret = register_driver(devpath, &g_cst816s_fileops, 0666, priv);
+  if (ret < 0)
+    {
+      kmm_free(priv);
+      ierr("Driver registration failed\n");
+      return ret;
+    }
+
+  /* Prepare interrupt line and handler. */
+
+  ret = bl602_irq_attach(BOARD_TOUCH_INT, cst816s_isr_handler, priv);
+  if (ret < 0)
+    {
+      kmm_free(priv);
+      ierr("Attach interrupt failed\n");
+      return ret;
+    }
+
+  ret = bl602_irq_enable(false);
+  if (ret < 0)
+    {
+      kmm_free(priv);
+      ierr("Disable interrupt failed\n");
+      return ret;
+    }
+
+  iinfo("Driver registered\n");
+
+//  Uncomment this to test interrupts (tap the screen)
+#define TEST_CST816S_INTERRUPT
+#ifdef TEST_CST816S_INTERRUPT
+#warning Testing CST816S interrupt
+  bl602_irq_enable(true);
+#endif /* TEST_CST816S_INTERRUPT */
+
+  return 0;
+}
+```
+
+TODO
 
 # GPIO Interrupt
 
