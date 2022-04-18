@@ -1294,6 +1294,10 @@ CBOR Decoding can be done automatically in __The Things Network__...
 
 -   [__"CBOR Payload Formatter for The Things Network"__](https://lupyuen.github.io/articles/payload)
 
+We can visualise the Sensor Data with open-source __Grafana and Prometheus__...
+
+-   ["Monitor IoT Devices in The Things Network with Prometheus and Grafana"](https://lupyuen.github.io/articles/prometheus)
+
 # Appendix: Shared SPI Bus
 
 This section explains how we modified NuttX to handle the __Shared SPI Bus__ on PineDio Stack BL604.
