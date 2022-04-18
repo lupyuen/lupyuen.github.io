@@ -203,11 +203,15 @@
 <p>When we touch the screen, CST816S triggers a <strong>GPIO Interrupt</strong> and activates the I2C Interface (for a short while).</p>
 <p>Note that CST816S <strong>doesn’t trigger an interrupt</strong> when the screen is <strong>no longer touched</strong>.</p>
 <p>We’ll handle this in our CST816S Driver.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/touch-device.png" alt="NuttX Touchscreen Device" /></p>
+</blockquote>
 <h1 id="nuttx-touchscreen-drivers"><a href="#nuttx-touchscreen-drivers">2 NuttX Touchscreen Drivers</a></h1>
 <p><em>How do Touchscreen Drivers work on NuttX?</em></p>
 <ul>
 <li>
 <p>At NuttX Startup, Touchscreen Drivers register themselves as “<strong>/dev/input0</strong>”</p>
+<p>(Pic above)</p>
 </li>
 <li>
 <p>NuttX Apps will open “<strong>/dev/input0</strong>” and call <strong><code>read()</code></strong> to fetch <strong>Touch Data Samples</strong> from the driver</p>
@@ -296,6 +300,9 @@ struct touch_point_s
 </li>
 </ul>
 <p>And sets the remaining fields to 0.</p>
+<p><em>What about Touch Gestures? Like swiping and scrolling?</em></p>
+<p><strong>Touch Gestures</strong> are supported in the CST816S Driver for PineTime InfiniTime. <a href="https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94">(See this)</a></p>
+<p>Someday we might support Touch Gestures in our NuttX Driver.</p>
 <h2 id="read-touch-data"><a href="#read-touch-data">2.2 Read Touch Data</a></h2>
 <p>NuttX Apps will open “<strong>/dev/input0</strong>” and call <strong><code>read()</code></strong> repeatedly to fetch <strong>Touch Data Samples</strong> from the driver…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Open &quot;/dev/input0&quot;
