@@ -70,23 +70,24 @@
 <li><a href="#nuttx-touscreen-drivers">2 NuttX Touscreen Drivers</a><ul>
 <li><a href="#touch-data">2.1 Touch Data</a><ul></ul></li>
 <li><a href="#read-touch-data">2.2 Read Touch Data</a><ul></ul></li></ul></li>
-<li><a href="#gpio-interrupt">3 GPIO Interrupt</a><ul></ul></li>
-<li><a href="#test-gpio-interrupt">4 Test GPIO Interrupt</a><ul></ul></li>
-<li><a href="#read-touch-data-1">5 Read Touch Data</a><ul></ul></li>
-<li><a href="#test-touch-data">6 Test Touch Data</a><ul>
-<li><a href="#enable-gpio-interrupt">6.1 Enable GPIO Interrupt</a><ul></ul></li>
-<li><a href="#start-lvgl-app">6.2 Start LVGL App</a><ul></ul></li>
-<li><a href="#read-touch-data-2">6.3 Read Touch Data</a><ul></ul></li>
-<li><a href="#trigger-gpio-interrupt">6.4 Trigger GPIO Interrupt</a><ul></ul></li>
-<li><a href="#touch-down-event">6.5 Touch Down Event</a><ul></ul></li>
-<li><a href="#touch-down-event-again">6.6 Touch Down Event Again</a><ul></ul></li>
-<li><a href="#touch-up-event">6.7 Touch Up Event</a><ul></ul></li>
-<li><a href="#screen-calibration-result">6.8 Screen Calibration Result</a><ul></ul></li></ul></li>
-<li><a href="#screen-is-sideways">7 Screen Is Sideways</a><ul></ul></li>
-<li><a href="#i2c-logging">8 I2C Logging</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-install-driver">11 Appendix: Install Driver</a><ul></ul></li></ul></nav><p>📝 <em>24 Apr 2022</em></p>
+<li><a href="#load-the-driver">3 Load The Driver</a><ul></ul></li>
+<li><a href="#gpio-interrupt">4 GPIO Interrupt</a><ul></ul></li>
+<li><a href="#test-gpio-interrupt">5 Test GPIO Interrupt</a><ul></ul></li>
+<li><a href="#read-touch-data-1">6 Read Touch Data</a><ul></ul></li>
+<li><a href="#test-touch-data">7 Test Touch Data</a><ul>
+<li><a href="#enable-gpio-interrupt">7.1 Enable GPIO Interrupt</a><ul></ul></li>
+<li><a href="#start-lvgl-app">7.2 Start LVGL App</a><ul></ul></li>
+<li><a href="#read-touch-data-2">7.3 Read Touch Data</a><ul></ul></li>
+<li><a href="#trigger-gpio-interrupt">7.4 Trigger GPIO Interrupt</a><ul></ul></li>
+<li><a href="#touch-down-event">7.5 Touch Down Event</a><ul></ul></li>
+<li><a href="#touch-down-event-again">7.6 Touch Down Event Again</a><ul></ul></li>
+<li><a href="#touch-up-event">7.7 Touch Up Event</a><ul></ul></li>
+<li><a href="#screen-calibration-result">7.8 Screen Calibration Result</a><ul></ul></li></ul></li>
+<li><a href="#screen-is-sideways">8 Screen Is Sideways</a><ul></ul></li>
+<li><a href="#i2c-logging">9 I2C Logging</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
+<li><a href="#appendix-install-driver">12 Appendix: Install Driver</a><ul></ul></li></ul></nav><p>📝 <em>24 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> is Pine64’s newest microcontroller board, based on <a href="https://lupyuen.github.io/articles/pinecone"><strong>Bouffalo Lab’s BL604</strong></a> RISC-V + WiFi + Bluetooth LE SoC.</p>
@@ -258,7 +259,7 @@ struct touch_sample_s
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L130-L148">(Source)</a></p>
 <p>For our driver, we’ll return only <strong>one Touch Point</strong>.</p>
-<p>Here’s the definition of a <strong>Touch Point</strong>…</p>
+<p>Here’s the NuttX Definition of a <strong>Touch Point</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* This structure contains information about a single touch point.
  * Positional units are device specific.
  */
@@ -294,7 +295,39 @@ struct touch_point_s
 <p>TODO</p>
 <h2 id="read-touch-data"><a href="#read-touch-data">2.2 Read Touch Data</a></h2>
 <p>TODO</p>
-<h1 id="gpio-interrupt"><a href="#gpio-interrupt">3 GPIO Interrupt</a></h1>
+<h1 id="load-the-driver"><a href="#load-the-driver">3 Load The Driver</a></h1>
+<p>TODO</p>
+<p>Edit the function <code>bl602_bringup</code> in this file…</p>
+<div class="example-wrap"><pre class="language-text"><code># For BL602:
+nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c</code></pre></div>
+<p>And call <code>cst816s_register</code> to load our driver: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843">bl602_bringup.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_INPUT_CST816S
+/* I2C Address of CST816S Touch Controller */
+
+#define CST816S_DEVICE_ADDRESS 0x15
+#include &lt;nuttx/input/cst816s.h&gt;
+#endif /* CONFIG_INPUT_CST816S */
+...
+#ifdef CONFIG_INPUT_CST816S
+int bl602_bringup(void)
+{
+  ...
+  /* Init I2C bus for CST816S */
+
+  struct i2c_master_s *cst816s_i2c_bus = bl602_i2cbus_initialize(0);
+  if (!cst816s_i2c_bus)
+    {
+      _err(&quot;ERROR: Failed to get I2C%d interface\n&quot;, 0);
+    }
+
+  /* Register the CST816S driver */
+
+  ret = cst816s_register(&quot;/dev/input0&quot;, cst816s_i2c_bus, CST816S_DEVICE_ADDRESS);
+  if (ret &lt; 0)
+    {
+      _err(&quot;ERROR: Failed to register CST816S\n&quot;);
+    }
+#endif /* CONFIG_INPUT_CST816S */</code></pre></div><h1 id="gpio-interrupt"><a href="#gpio-interrupt">4 GPIO Interrupt</a></h1>
 <p>TODO</p>
 <p>PineDio Stack’s Touch Panel triggers a GPIO Interrupt when we tap the screen … Here’s how we handle the GPIO Interrupt</p>
 <div class="example-wrap"><pre class="language-c"><code>int cst816s_register(FAR const char *devpath,
@@ -381,7 +414,7 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 <p><img src="https://lupyuen.github.io/images/touch-code1a.png" alt="" /></p>
 <p>TODO3</p>
 <p><img src="https://lupyuen.github.io/images/touch-code2a.png" alt="" /></p>
-<h1 id="test-gpio-interrupt"><a href="#test-gpio-interrupt">4 Test GPIO Interrupt</a></h1>
+<h1 id="test-gpio-interrupt"><a href="#test-gpio-interrupt">5 Test GPIO Interrupt</a></h1>
 <p>TODO</p>
 <p>Tapping the screen on PineDio Stack … Correctly triggers a GPIO Interrupt 🎉</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
@@ -447,7 +480,7 @@ bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#test-gpio-interrupt">(See the Complete Log)</a></p>
 <p>TODO8</p>
 <p><img src="https://lupyuen.github.io/images/touch-run1a.png" alt="" /></p>
-<h1 id="read-touch-data-1"><a href="#read-touch-data-1">5 Read Touch Data</a></h1>
+<h1 id="read-touch-data-1"><a href="#read-touch-data-1">6 Read Touch Data</a></h1>
 <p>TODO</p>
 <p>Here’s how we read the Touched Coordinates in our driver…</p>
 <div class="example-wrap"><pre class="language-c"><code>static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf)
@@ -575,7 +608,7 @@ bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/touch-code4a.png" alt="" /></p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/touch-code5a.png" alt="" /></p>
-<h1 id="test-touch-data"><a href="#test-touch-data">6 Test Touch Data</a></h1>
+<h1 id="test-touch-data"><a href="#test-touch-data">7 Test Touch Data</a></h1>
 <p>TODO</p>
 <p>NuttX Driver for PineDio Stack Touch Panel responds correctly to touch! 🎉</p>
 <p>PineDio Stack Touch Screen feels laggy on Apache #NuttX RTOS right now … 2 things we can fix: 1️⃣ Increase SPI Frequency 2️⃣ Switch to SPI DMA eventually</p>
@@ -843,7 +876,7 @@ range x:194, y:198
 invert x/y:1, x:0, y:1</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#test-touch-data">(See the Complete Log)</a></p>
 <p>Let’s break down the log…</p>
-<h2 id="enable-gpio-interrupt"><a href="#enable-gpio-interrupt">6.1 Enable GPIO Interrupt</a></h2>
+<h2 id="enable-gpio-interrupt"><a href="#enable-gpio-interrupt">7.1 Enable GPIO Interrupt</a></h2>
 <p>TODO</p>
 <p>At NuttX Startup, we register the CST816S Driver as <code>/dev/input0</code> and enable the GPIO interrupt…</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
@@ -860,7 +893,7 @@ cst816s_register: Driver registered
 bl602_irq_enable: Enable interrupt
 
 NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;</code></pre></div><h2 id="start-lvgl-app"><a href="#start-lvgl-app">6.2 Start LVGL App</a></h2>
+nsh&gt;</code></pre></div><h2 id="start-lvgl-app"><a href="#start-lvgl-app">7.2 Start LVGL App</a></h2>
 <p>TODO</p>
 <p>We run the LVGL Test App <code>lvgltest</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
@@ -868,7 +901,7 @@ tp_init: Opening /dev/input0
 cst816s_open:</code></pre></div>
 <p>Which calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L384-L420"><code>cst816s_open()</code></a> to open our CST816S Driver.</p>
 <p>The app begins the Touchscreen Calibration process.</p>
-<h2 id="read-touch-data-2"><a href="#read-touch-data-2">6.3 Read Touch Data</a></h2>
+<h2 id="read-touch-data-2"><a href="#read-touch-data-2">7.3 Read Touch Data</a></h2>
 <p>TODO</p>
 <p>The LVGL Test App calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly on the CST816S Driver to get Touch Data…</p>
 <div class="example-wrap"><pre class="language-c"><code>bool tp_read(struct _lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
@@ -901,7 +934,7 @@ cst816s_open:</code></pre></div>
 <p>So after Touch Down, we allow  <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> to call <code>cst816s_get_touch_data()</code> to fetch the Touch Data repeatedly, until we see the Touch Up Event. We’ll see this in a while.</p>
 <p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/touch-code6a.png" alt="" /></p>
-<h2 id="trigger-gpio-interrupt"><a href="#trigger-gpio-interrupt">6.4 Trigger GPIO Interrupt</a></h2>
+<h2 id="trigger-gpio-interrupt"><a href="#trigger-gpio-interrupt">7.4 Trigger GPIO Interrupt</a></h2>
 <p>TODO</p>
 <p>We touch the screen and trigger a GPIO Interrupt…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
@@ -925,7 +958,7 @@ cst816s_poll_notify:</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L598-L611">(Source)</a></p>
 <p>And calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L472-L498"><code>cst816s_poll_notify()</code></a> to unblock all <code>poll()</code> callers and notify them that Touch Data is available.</p>
 <p>(But LVGL Test App doesn’t <code>poll()</code> our driver, so this doesn’t effect anything)</p>
-<h2 id="touch-down-event"><a href="#touch-down-event">6.5 Touch Down Event</a></h2>
+<h2 id="touch-down-event"><a href="#touch-down-event">7.5 Touch Down Event</a></h2>
 <p>TODO</p>
 <p>Remember that the LVGL Test App keeps calling <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly to get Touch Data.</p>
 <p>Now that <code>int_pending</code> is true, our driver proceeds to call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> and fetch the Touch Data over I2C…</p>
@@ -953,7 +986,7 @@ cst816s_get_touch_data:   y:       23</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L372-L382"><code>cst816s_read()</code></a> sets <code>int_pending</code> to false.</p>
 <p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/touch-run2a.png" alt="" /></p>
-<h2 id="touch-down-event-again"><a href="#touch-down-event-again">6.6 Touch Down Event Again</a></h2>
+<h2 id="touch-down-event-again"><a href="#touch-down-event-again">7.6 Touch Down Event Again</a></h2>
 <p>TODO</p>
 <p>LVGL Test App is still calling <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly to get Touch Data.</p>
 <p>Now that <code>last_event</code> is 0 (Touch Down), our driver proceeds to call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> and fetch the Touch Data over I2C…</p>
@@ -985,7 +1018,7 @@ cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       222
 cst816s_get_touch_data:   y:       23</code></pre></div>
 <p>This happens twice because we haven’t received a Touch Up Event.</p>
-<h2 id="touch-up-event"><a href="#touch-up-event">6.7 Touch Up Event</a></h2>
+<h2 id="touch-up-event"><a href="#touch-up-event">7.7 Touch Up Event</a></h2>
 <p>TODO</p>
 <p>When our finger is no longer touching the screen, <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> receives a Touch Up Event…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:
@@ -1047,7 +1080,7 @@ cst816s_get_touch_data:   y:       23</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> will no longer call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> to fetch the Touch Data, until the screen is touched again.</p>
 <p>TODO10</p>
 <p><img src="https://lupyuen.github.io/images/touch-run4a.png" alt="" /></p>
-<h2 id="screen-calibration-result"><a href="#screen-calibration-result">6.8 Screen Calibration Result</a></h2>
+<h2 id="screen-calibration-result"><a href="#screen-calibration-result">7.8 Screen Calibration Result</a></h2>
 <p>TODO</p>
 <p>When we have touched the 4 screen corners, the LVGL Test App displays the Screen Calibration result…</p>
 <div class="example-wrap"><pre class="language-text"><code>tp_cal result
@@ -1055,7 +1088,7 @@ offset x:23, y:24
 range x:194, y:198
 invert x/y:1, x:0, y:1</code></pre></div>
 <p>Which will be used to tweak the Touch Coordinates in the apps.</p>
-<h1 id="screen-is-sideways"><a href="#screen-is-sideways">7 Screen Is Sideways</a></h1>
+<h1 id="screen-is-sideways"><a href="#screen-is-sideways">8 Screen Is Sideways</a></h1>
 <p>TODO</p>
 <p>According to the Touch Data from the LVGL Test App, our screen is rotated sideways…</p>
 <ul>
@@ -1076,7 +1109,7 @@ invert x/y:1, x:0, y:1</code></pre></div>
 <p>We can rotate the display in the ST7789 Driver. But first we need to agree which way is “up”…</p>
 <p>TODO1</p>
 <p><img src="https://lupyuen.github.io/images/touch-button.jpg" alt="" /></p>
-<h1 id="i2c-logging"><a href="#i2c-logging">8 I2C Logging</a></h1>
+<h1 id="i2c-logging"><a href="#i2c-logging">9 I2C Logging</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> won’t return any valid Touch Data unless we enable I2C Logging. Could be an I2C Timing Issue or Race Condition.</p>
 <p>With I2C Logging Enabled: We get the Touch Down Event (with valid Touch Data)…</p>
@@ -1165,7 +1198,7 @@ cst816s_get_touch_data:   y:       26</code></pre></div>
 <p><strong>TODO:</strong> Move CST816S Interrupt Handler to <a href="https://github.com/lupyuen/bl602_expander">BL602 GPIO Expander</a></p>
 <p><strong>TODO:</strong> Implement SPI DMA on NuttX so that the touchscreen feels less laggy</p>
 <p><strong>TODO:</strong> <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#button-with-label">Add a button</a> and a message box to the <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L110-L198">LVGL Test App <code>lvgltest</code></a> to demo the touchscreen</p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article has provided everything you need to get started on creating <strong>your own IoT App</strong>.</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
@@ -1186,11 +1219,11 @@ cst816s_get_touch_data:   y:       26</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/touch.md"><code>lupyuen.github.io/src/touch.md</code></a></p>
-<h1 id="notes"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1514049092388745219">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-install-driver"><a href="#appendix-install-driver">11 Appendix: Install Driver</a></h1>
+<h1 id="appendix-install-driver"><a href="#appendix-install-driver">12 Appendix: Install Driver</a></h1>
 <p>TODO</p>
 <p>To add this repo to your NuttX project…</p>
 <div class="example-wrap"><pre class="language-bash"><code>pushd nuttx/nuttx/drivers/input
@@ -1262,40 +1295,6 @@ make menuconfig </code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">“I2C Logging”</a></li>
 </ul>
-<p>Edit the function <code>bl602_bringup</code> or <code>esp32_bringup</code> in this file…</p>
-<div class="example-wrap"><pre class="language-text"><code># For BL602:
-nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
-
-# For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
-nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
-<p>And call <code>cst816s_register</code> to load our driver: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843">bl602_bringup.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_INPUT_CST816S
-/* I2C Address of CST816S Touch Controller */
-
-#define CST816S_DEVICE_ADDRESS 0x15
-#include &lt;nuttx/input/cst816s.h&gt;
-#endif /* CONFIG_INPUT_CST816S */
-...
-#ifdef CONFIG_INPUT_CST816S
-int bl602_bringup(void)
-{
-  ...
-  /* Init I2C bus for CST816S */
-
-  struct i2c_master_s *cst816s_i2c_bus = bl602_i2cbus_initialize(0);
-  if (!cst816s_i2c_bus)
-    {
-      _err(&quot;ERROR: Failed to get I2C%d interface\n&quot;, 0);
-    }
-
-  /* Register the CST816S driver */
-
-  ret = cst816s_register(&quot;/dev/input0&quot;, cst816s_i2c_bus, CST816S_DEVICE_ADDRESS);
-  if (ret &lt; 0)
-    {
-      _err(&quot;ERROR: Failed to register CST816S\n&quot;);
-    }
-#endif /* CONFIG_INPUT_CST816S */</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/touch-title2.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 
