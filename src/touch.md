@@ -373,6 +373,28 @@ TODO
 
 TODO
 
+_What's g_cst816s_fileops?_
+
+__g_cst816s_fileops__ defines the __File Operations__ _(open, close, read, poll)_ that will be supported by our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L109-L123)
+
+```c
+//  File Operations exposed to NuttX Apps
+static const struct file_operations g_cst816s_fileops = {
+  cst816s_open,   //  open
+  cst816s_close,  //  close
+  cst816s_read,   //  read
+  NULL,           //  write
+  NULL,           //  seek
+  NULL,           //  ioctl
+  cst816s_poll    //  poll
+#ifndef CONFIG_DISABLE_PSEUDOFS_OPERATIONS
+  , NULL          //  unlink
+#endif
+};
+```
+
+We'll see these functions in a while.
+
 # GPIO Interrupt
 
 TODO
@@ -454,8 +476,6 @@ TODO2
 TODO3
 
 ![](https://lupyuen.github.io/images/touch-code2a.png)
-
-# Test GPIO Interrupt
 
 TODO
 
