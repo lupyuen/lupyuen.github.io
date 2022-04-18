@@ -44,43 +44,95 @@ Today we'll talk about the __Hynitron CST816S Touch Panel Driver__ for Apache Nu
 
 -   [__lupyuen/cst816s-nuttx__](https://github.com/lupyuen/cst816s-nuttx)
 
-Which was created based on the Hynitron CST816S Datasheet...
-
--   [__Hynitron CST816S Datasheet__](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/CST816S_DS_V1.3.pdf)
-
-Hynitron's Reference Driver...
-
--   [__Hynitron Reference Driver__](https://github.com/lupyuen/hynitron_i2c_cst0xxse)
-
-And JF's CST816S Driver for PineDio Stack... (Thanks JF!)
+Which was inspired by JF's CST816S Driver for PineDio Stack... (Thanks JF!)
 
 -   [__pinedio-stack-selftest/drivers/cst816s.c__](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
 
-> ![PineDio Stack Touch Panel](https://lupyuen.github.io/images/pinedio2-touch.png)
+Let's go inside the driver...
 
-> [(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
+> ![Touch Panel is connected in the middle, between the connectors for the Heart Rate Sensor (bottom left) and ST7789 Display (top left)](https://lupyuen.github.io/images/touch-inside.jpg)
+
+> _Touch Panel is connected in the middle, between the connectors for the Heart Rate Sensor (bottom left) and ST7789 Display (top left)_
 
 # CST816S Touch Panel
 
-TODO
+_What is CST816S? Where is it used?_
 
-(PineDio Stack uses the same Touch Panel as PineTime)
+Inside PineDio Stack is __CST816S__, an __I2C Capacitive Touch Panel__ by Hynitron...
 
-[(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
+-   [__Hynitron CST816S Datasheet__](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/CST816S_DS_V1.3.pdf)
 
-> ![PineDio Stack Touch Panel](https://lupyuen.github.io/images/touch-inside.jpg)
+We don't have the detailed docs for CST816S, but we have a __Reference Driver__ for the Touch Panel...
 
-TODO
+-   [__Hynitron Reference Driver__](https://github.com/lupyuen/hynitron_i2c_cst0xxse)
 
-PineDio Stack's Touch Panel is a peculiar I2C Device ... It won't respond to I2C Scan unless we tap the screen and wake it up!
+This is the same Touch Panel used in Pine64's __PineTime Smartwatch__...
 
 -   [__"Building a Rust Driver for PineTime’s Touch Controller"__](https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller)
 
-TODO: Pins
+Which explains why we have so many drivers available for CST816S: [__Arduino__](https://www.arduino.cc/reference/en/libraries/cst816s/),  [__FreeRTOS__](https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp), [__RIOT OS__](https://doc.riot-os.org/group__drivers__cst816s.html), [__Rust__](https://github.com/tstellanova/cst816s), [__Zephyr OS__](https://najnesnaj.github.io/pinetime-zephyr/drivers/cst816s.html), ...
 
-![CST816S Operating Modes](https://lupyuen.github.io/images/touch-sleep.png)
+> ![CST816S Operating Modes](https://lupyuen.github.io/images/touch-sleep.png)
 
-[(From CST816S Datasheet)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/CST816S_DS_V1.3.pdf)
+> [(From CST816S Datasheet)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/CST816S_DS_V1.3.pdf)
+
+_So it works like any other I2C Device?_
+
+CST816S is a peculiar I2C Device... It won't respond to I2C Commands unless we __tap the screen and wake it up__!
+
+That's because it tries to conserve power: It powers off the I2C Interface when it's not in use. (Pic above)
+
+So be careful when scanning for CST816S at its __I2C Address `0x15`__. It might seem elusive until we tap the screen.
+
+The I2C Address of CST816S is defined in [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L102-L107)
+
+```c
+#ifdef CONFIG_INPUT_CST816S
+/* I2C Address of CST816S Touch Controller */
+#define CST816S_DEVICE_ADDRESS 0x15
+#include <nuttx/input/cst816s.h>
+#endif /* CONFIG_INPUT_CST816S */
+```
+
+> ![PineDio Stack Touch Panel](https://lupyuen.github.io/images/pinedio2-touch.png)
+
+> [(From PineDio Stack Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
+
+_How is CST816S wired to PineDio Stack?_
+
+According to the schematic above, CST816S is wired to PineDio Stack like so...
+
+| BL604 Pin | CST816S Pin
+|:---:|:----
+| __`GPIO 1`__ | `SDA`
+| __`GPIO 2`__ | `SCL`
+| __`GPIO 9`__ | `Interrupt`
+| __`GPIO 18`__ | `Reset`
+
+(We won't use the __Reset__ pin in our driver)
+
+The __CST816S Pins__ are defined in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L92-L131)
+
+```c
+/* I2C Configuration */
+#define BOARD_I2C_SCL (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | GPIO_PIN2)
+#define BOARD_I2C_SDA (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | GPIO_PIN1)
+...
+#ifdef CONFIG_INPUT_CST816S
+/* CST816S Touch Controller for PineDio Stack: GPIO Interrupt */
+#define BOARD_TOUCH_INT (GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO | GPIO_PIN9)
+#endif  /* CONFIG_INPUT_CST816S */
+```
+
+_What's the Interrupt Pin?_
+
+When we touch the screen, CST816S triggers a __GPIO Interrupt__ and activates the I2C Interface (for a short while).
+
+Note that CST816S __doesn't trigger an interrupt__ when the screen is __no longer touched__.
+
+We'll handle this in the CST816S Driver.
+
+[(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
 
 # Install Driver
 
@@ -166,9 +218,7 @@ nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
 nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
 ```
 
-And call `cst816s_register` to load our driver:
-
-https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843
+And call `cst816s_register` to load our driver: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843)
 
 ```c
 #ifdef CONFIG_INPUT_CST816S
