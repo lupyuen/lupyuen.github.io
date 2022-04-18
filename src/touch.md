@@ -310,7 +310,7 @@ __cst816s_register__ comes from our CST816S Driver, let's dive in...
 
 # Initialise Driver
 
-At NuttX Startup, we call __cst816s_register__ to initialise our CST816S Driver. The function is defined below: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L631-L691)
+At NuttX Startup, we call __cst816s_register__ to initialise our CST816S Driver. The function is defined below: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L638-L706)
 
 ```c
 //  Initialise the CST816S Driver
