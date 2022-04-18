@@ -70,7 +70,8 @@
 <li><a href="#nuttx-touchscreen-drivers">2 NuttX Touchscreen Drivers</a><ul>
 <li><a href="#touch-data">2.1 Touch Data</a><ul></ul></li>
 <li><a href="#read-touch-data">2.2 Read Touch Data</a><ul></ul></li></ul></li>
-<li><a href="#load-the-driver">3 Load The Driver</a><ul></ul></li>
+<li><a href="#load-the-driver">3 Load The Driver</a><ul>
+<li><a href="#initialise-driver">3.1 Initialise Driver</a><ul></ul></li></ul></li>
 <li><a href="#gpio-interrupt">4 GPIO Interrupt</a><ul></ul></li>
 <li><a href="#test-gpio-interrupt">5 Test GPIO Interrupt</a><ul></ul></li>
 <li><a href="#read-touch-data-1">6 Read Touch Data</a><ul></ul></li>
@@ -309,12 +310,12 @@ int nbytes = read(fd, &amp;sample, sizeof(struct touch_sample_s));</code></pre><
 <p>The code above comes from the <a href="https://github.com/lupyuen/lvgltest-nuttx"><strong>LVGL Test App</strong></a>, which we’ll run later to test our driver.</p>
 <p>(Calling <strong><code>read()</code></strong> repeatedly might be bad for performance, instead we should call <strong><code>poll()</code></strong> to block until touch data is available)</p>
 <h1 id="load-the-driver"><a href="#load-the-driver">3 Load The Driver</a></h1>
-<p>Before we cover the internals of our CST816S Driver, let’s <strong>load the driver</strong> at NuttX Startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L829-L846">bl602_bringup.c</a></p>
+<p>Before we cover the internals of our driver, let’s <strong>load the CST816S Driver</strong> at NuttX Startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L829-L846">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_INPUT_CST816S
 //  I2C Address of CST816S Touch Controller
 #define CST816S_DEVICE_ADDRESS 0x15
 #include &lt;nuttx/input/cst816s.h&gt;
-#endif /* CONFIG_INPUT_CST816S */
+#endif  //  CONFIG_INPUT_CST816S
 ...
 #ifdef CONFIG_INPUT_CST816S
 int bl602_bringup(void) {
@@ -330,94 +331,64 @@ int bl602_bringup(void) {
   if (ret &lt; 0) {
     _err(&quot;ERROR: Failed to register CST816S\n&quot;);
   }
-#endif /* CONFIG_INPUT_CST816S */</code></pre></div>
+#endif  //  CONFIG_INPUT_CST816S</code></pre></div>
 <p>This initialises our CST816S Driver and registers it at “<strong>/dev/input0</strong>”.</p>
-<p><strong>cst816s_register</strong> comes from our CST816S Driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L631-L691">cst816s.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>//  Register the CST816S driver
+<p><strong>cst816s_register</strong> comes from our CST816S Driver, let’s dive in…</p>
+<h2 id="initialise-driver"><a href="#initialise-driver">3.1 Initialise Driver</a></h2>
+<p>At NuttX Startup, we call <strong>cst816s_register</strong> to initialise our CST816S Driver. The function is defined below: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L631-L691">cst816s.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Initialise the CST816S Driver
 int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, uint8_t i2c_devaddr) {
-  struct cst816s_dev_s *priv;
-  int ret = 0;
 
-  /* Allocate device private structure. */
+  //  Allocate the Device Struct
+  struct cst816s_dev_s *priv = kmm_zalloc(sizeof(struct cst816s_dev_s));
+  if (!priv) {
+    ierr(&quot;Memory allocation failed\n&quot;);
+    return -ENOMEM;
+  }
 
-  priv = kmm_zalloc(sizeof(struct cst816s_dev_s));
-  if (!priv)
-    {
-      ierr(&quot;Memory allocation failed\n&quot;);
-      return -ENOMEM;
-    }
-
-  /* Setup device structure. */
-
+  //  Init the Device Struct
   priv-&gt;addr = i2c_devaddr;
-  priv-&gt;i2c = i2c_dev;
-
-  nxsem_init(&amp;priv-&gt;devsem, 0, 1);
-
-  ret = register_driver(devpath, &amp;g_cst816s_fileops, 0666, priv);
-  if (ret &lt; 0)
-    {
-      kmm_free(priv);
-      ierr(&quot;Driver registration failed\n&quot;);
-      return ret;
-    }
-
-  /* Prepare interrupt line and handler. */
-
+  priv-&gt;i2c  = i2c_dev;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Init the Poll Semaphore
+  nxsem_init(&amp;priv-&gt;devsem, 0, 1);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Register the driver at &quot;/dev/input0&quot;
+  int ret = register_driver(devpath, &amp;g_cst816s_fileops, 0666, priv);
+  if (ret &lt; 0) {
+    kmm_free(priv);
+    ierr(&quot;Driver registration failed\n&quot;);
+    return ret;
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Attach our GPIO Interrupt Handler
   ret = bl602_irq_attach(BOARD_TOUCH_INT, cst816s_isr_handler, priv);
-  if (ret &lt; 0)
-    {
-      kmm_free(priv);
-      ierr(&quot;Attach interrupt failed\n&quot;);
-      return ret;
-    }
-
+  if (ret &lt; 0) {
+    kmm_free(priv);
+    ierr(&quot;Attach interrupt failed\n&quot;);
+    return ret;
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Disable the GPIO Interrupt
   ret = bl602_irq_enable(false);
-  if (ret &lt; 0)
-    {
-      kmm_free(priv);
-      ierr(&quot;Disable interrupt failed\n&quot;);
-      return ret;
-    }
-
-  iinfo(&quot;Driver registered\n&quot;);
-
-//  Uncomment this to test interrupts (tap the screen)
+  if (ret &lt; 0) {
+    kmm_free(priv);
+    ierr(&quot;Disable interrupt failed\n&quot;);
+    return ret;
+  }
+  iinfo(&quot;Driver registered\n&quot;);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>//  For Testing: Enable the GPIO Interrupt at startup
 #define TEST_CST816S_INTERRUPT
 #ifdef TEST_CST816S_INTERRUPT
-#warning Testing CST816S interrupt
   bl602_irq_enable(true);
-#endif /* TEST_CST816S_INTERRUPT */
+#endif  //  TEST_CST816S_INTERRUPT
 
   return 0;
 }</code></pre></div>
 <p>TODO</p>
 <h1 id="gpio-interrupt"><a href="#gpio-interrupt">4 GPIO Interrupt</a></h1>
 <p>TODO</p>
-<p>PineDio Stack’s Touch Panel triggers a GPIO Interrupt when we tap the screen … Here’s how we handle the GPIO Interrupt</p>
-<div class="example-wrap"><pre class="language-c"><code>int cst816s_register(FAR const char *devpath,
-                     FAR struct i2c_master_s *i2c_dev,
-                     uint8_t i2c_devaddr)
-{
-  ...
-  /* Prepare interrupt line and handler. */
-
-  ret = bl602_irq_attach(BOARD_TOUCH_INT, cst816s_isr_handler, priv);
-  if (ret &lt; 0)
-    {
-      kmm_free(priv);
-      ierr(&quot;Attach interrupt failed\n&quot;);
-      return ret;
-    }
-
-  ret = bl602_irq_enable(false);
-  if (ret &lt; 0)
-    {
-      kmm_free(priv);
-      ierr(&quot;Disable interrupt failed\n&quot;);
-      return ret;
-    }</code></pre></div>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661">(Source)</a></p>
 <p><code>bl602_irq_attach</code> is defined below…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
 //  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
@@ -431,7 +402,7 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 
   /* Configure the pin that will be used as interrupt input */
 
-  #warning Check GLB_GPIO_INT_TRIG_NEG_PULSE  ////  TODO
+  #warning Check GLB_GPIO_INT_TRIG_NEG_PULSE  //  TODO
   bl602_expander_set_intmod(gpio_pin, 1, GLB_GPIO_INT_TRIG_NEG_PULSE);
   ret = bl602_configgpio(pinset);
   if (ret &lt; 0)
