@@ -345,7 +345,7 @@ int bl602_bringup(void) {
 <p>This initialises our CST816S Driver and registers it at “<strong>/dev/input0</strong>”.</p>
 <p><strong>cst816s_register</strong> comes from our CST816S Driver, let’s dive in…</p>
 <h1 id="initialise-driver"><a href="#initialise-driver">4 Initialise Driver</a></h1>
-<p>At NuttX Startup, we call <strong>cst816s_register</strong> to initialise our CST816S Driver. The function is defined below: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L631-L691">cst816s.c</a></p>
+<p>At NuttX Startup, we call <strong>cst816s_register</strong> to initialise our CST816S Driver. The function is defined below: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L638-L706">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Initialise the CST816S Driver
 int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, uint8_t i2c_devaddr) {
 
