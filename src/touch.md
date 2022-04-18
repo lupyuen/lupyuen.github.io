@@ -138,40 +138,43 @@ We'll handle this in our CST816S Driver.
 
 _How do Touchscreen Drivers work on NuttX?_
 
-TODO
+-   At NuttX Startup, Touchscreen Drivers register themselves as "__/dev/input0__"
 
-NuttX Driver for Cypress MBR3108 Touch Controller looks structurally similar to PineDio Stack's CST816S ... So we copy-n-paste into our CST816S Driver
+-   NuttX Apps will open "__/dev/input0__" and call __`read()`__ to fetch __Touch Data Samples__ from the driver
+
+    (More about this in the next section)
+
+-   NuttX Apps may call __`poll()`__ to wait for available data
+
+    (Which blocks on a NuttX Semaphore until the data is available)
+
+Touchscreen Drivers are documented here...
+
+-   [__NuttX Touchscreen Drivers__](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
+
+We learnt more by inspecting these Touchscreen Drivers...
 
 -   [__NuttX I2C Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/cypress_mbr3108.c)
 
 -   [__NuttX SPI Driver for Maxim MAX11802__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/max11802.c)
 
-[(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
+The MBR3108 Driver looks structurally similar to our CST816S Driver (since both are I2C). So we copied the code as we built our CST816S Driver.
+
+[(We copied the MAX11802 Driver for reading Touch Data Samples)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/max11802.c#L824-L952)
+
+Let's talk about the data format...
+
+![NuttX Touch Data](https://lupyuen.github.io/images/touch-code3a.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148)
 
 ## Touch Data
 
-TODO
+_How are Touch Data Samples represented in NuttX?_
 
-Apache NuttX RTOS has a standard data format for Touch Panels ... Let's implement this for PineDio Stack
+NuttX defines a standard data format for __Touch Data Samples__ that are returned by Touch Panel Drivers...
 
 ```c
-/* This structure contains information about a single touch point.
- * Positional units are device specific.
- */
-
-struct touch_point_s
-{
-  uint8_t  id;        /* Unique identifies contact; Same in all reports for the contact */
-  uint8_t  flags;     /* See TOUCH_* definitions above */
-  int16_t  x;         /* X coordinate of the touch point (uncalibrated) */
-  int16_t  y;         /* Y coordinate of the touch point (uncalibrated) */
-  int16_t  h;         /* Height of touch point (uncalibrated) */
-  int16_t  w;         /* Width of touch point (uncalibrated) */
-  uint16_t gesture;   /* Gesture of touchscreen contact */
-  uint16_t pressure;  /* Touch pressure */
-  uint64_t timestamp; /* Touch event time stamp, in microseconds */
-};
-
 /* The typical touchscreen driver is a read-only, input character device
  * driver.the driver write() method is not supported and any attempt to
  * open the driver in any mode other than read-only will fail.
@@ -185,7 +188,6 @@ struct touch_point_s
  * points.  Each touch point is managed individually using an ID that
  * identifies a touch from first contact until the end of the contact.
  */
-
 struct touch_sample_s
 {
   int npoints;                   /* The number of touch points in point[] */
@@ -193,11 +195,45 @@ struct touch_sample_s
 };
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L130-L148)
 
-TODO4
+For our driver, we'll return only __one Touch Point__.
 
-![](https://lupyuen.github.io/images/touch-code3a.png)
+Here's the definition of a __Touch Point__...
+
+```c
+/* This structure contains information about a single touch point.
+ * Positional units are device specific.
+ */
+struct touch_point_s
+{
+  uint8_t  id;        /* Unique identifies contact; Same in all reports for the contact */
+  uint8_t  flags;     /* See TOUCH_* definitions above */
+  int16_t  x;         /* X coordinate of the touch point (uncalibrated) */
+  int16_t  y;         /* Y coordinate of the touch point (uncalibrated) */
+  int16_t  h;         /* Height of touch point (uncalibrated) */
+  int16_t  w;         /* Width of touch point (uncalibrated) */
+  uint16_t gesture;   /* Gesture of touchscreen contact */
+  uint16_t pressure;  /* Touch pressure */
+  uint64_t timestamp; /* Touch event time stamp, in microseconds */
+};
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L109-L128)
+
+Our driver returns only the first 4 fields...
+
+-   __id__: TODO
+
+-   __flags__: TODO
+
+-   __x__: TODO
+
+-   __y__: TODO
+
+And sets the remaining fields to 0.
+
+TODO
 
 ## Read Touch Data
 
