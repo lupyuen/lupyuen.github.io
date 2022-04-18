@@ -415,7 +415,7 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
 
   return 0;
 }</code></pre></div>
-<p>And that’s how we register our CST816S Driver at startup!</p>
+<p>And that’s how we initialise our CST816S Driver at startup!</p>
 <p><em>What’s g_cst816s_fileops?</em></p>
 <p><strong>g_cst816s_fileops</strong> defines the <strong>File Operations</strong> <em>(open, close, read, poll)</em> that will be supported by our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L109-L123">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  File Operations exposed to NuttX Apps
@@ -432,6 +432,7 @@ static const struct file_operations g_cst816s_fileops = {
 #endif
 };</code></pre></div>
 <p>We’ll see these functions in a while.</p>
+<p><img src="https://lupyuen.github.io/images/touch-code2a.png" alt="Initialise the CST816S Driver at startup" /></p>
 <h1 id="gpio-interrupt"><a href="#gpio-interrupt">5 GPIO Interrupt</a></h1>
 <p>TODO</p>
 <p><code>bl602_irq_attach</code> is defined below…</p>
@@ -491,10 +492,6 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661">(Source)</a></p>
 <p>There’s bug with BL602 GPIO Interrupts that we have fixed for our driver…</p>
 <p>https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538</p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/touch-code1a.png" alt="" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/touch-code2a.png" alt="" /></p>
 <p>TODO</p>
 <p>Tapping the screen on PineDio Stack … Correctly triggers a GPIO Interrupt 🎉</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
