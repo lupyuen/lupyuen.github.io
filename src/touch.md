@@ -293,7 +293,11 @@ int bl602_bringup(void) {
   }
 
   //  Register the CST816S driver
-  ret = cst816s_register("/dev/input0", cst816s_i2c_bus, CST816S_DEVICE_ADDRESS);
+  ret = cst816s_register(
+    "/dev/input0",          //  Device Path
+    cst816s_i2c_bus,        //  I2C Bus
+    CST816S_DEVICE_ADDRESS  //  I2C Address
+  );
   if (ret < 0) {
     _err("ERROR: Failed to register CST816S\n");
   }
@@ -304,7 +308,7 @@ This initialises our CST816S Driver and registers it at "__/dev/input0__".
 
 __cst816s_register__ comes from our CST816S Driver, let's dive in...
 
-## Initialise Driver
+# Initialise Driver
 
 At NuttX Startup, we call __cst816s_register__ to initialise our CST816S Driver. The function is defined below: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L631-L691)
 
@@ -313,35 +317,50 @@ At NuttX Startup, we call __cst816s_register__ to initialise our CST816S Driver.
 int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, uint8_t i2c_devaddr) {
 
   //  Allocate the Device Struct
-  struct cst816s_dev_s *priv = kmm_zalloc(sizeof(struct cst816s_dev_s));
+  struct cst816s_dev_s *priv = kmm_zalloc(
+      sizeof(struct cst816s_dev_s)
+  );
   if (!priv) {
     ierr("Memory allocation failed\n");
     return -ENOMEM;
   }
-
-  //  Init the Device Struct
-  priv->addr = i2c_devaddr;
-  priv->i2c  = i2c_dev;
 ```
 
-TODO
+[(__cst816s_dev_s__ is defined here)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L73-L90)
+
+We begin by allocating the __Device Struct__ that will remember the state of our driver.
+
+We populate the Device Struct and initialise the __Poll Semaphore__...
 
 ```c
+  //  Init the Device Struct
+  priv->addr = i2c_devaddr;  //  I2C Address
+  priv->i2c  = i2c_dev;      //  I2C Bus
+
   //  Init the Poll Semaphore
   nxsem_init(&priv->devsem, 0, 1);
 ```
 
-TODO
+(Which will be used for blocking callers to `poll()`)
+
+Next we __register the driver__ with NuttX...
 
 ```c
   //  Register the driver at "/dev/input0"
-  int ret = register_driver(devpath, &g_cst816s_fileops, 0666, priv);
+  int ret = register_driver(
+    devpath,             //  Device Path
+    &g_cst816s_fileops,  //  File Operations
+    0666,                //  Permissions
+    priv                 //  Device Struct
+  );
   if (ret < 0) {
     kmm_free(priv);
     ierr("Driver registration failed\n");
     return ret;
   }
 ```
+
+(We'll see __g_cst816s_fileops__ later)
 
 TODO
 
