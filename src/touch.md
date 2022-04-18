@@ -134,11 +134,15 @@ Note that CST816S __doesn't trigger an interrupt__ when the screen is __no longe
 
 We'll handle this in our CST816S Driver.
 
+> ![NuttX Touchscreen Device](https://lupyuen.github.io/images/touch-device.png)
+
 # NuttX Touchscreen Drivers
 
 _How do Touchscreen Drivers work on NuttX?_
 
 -   At NuttX Startup, Touchscreen Drivers register themselves as "__/dev/input0__"
+
+    (Pic above)
 
 -   NuttX Apps will open "__/dev/input0__" and call __`read()`__ to fetch __Touch Data Samples__ from the driver
 
@@ -240,6 +244,12 @@ Our driver returns the first 4 fields...
 -   __y__: Y Coordinate of the Touch Point (0 to 239)
 
 And sets the remaining fields to 0.
+
+_What about Touch Gestures? Like swiping and scrolling?_
+
+__Touch Gestures__ are supported in the CST816S Driver for PineTime InfiniTime. [(See this)](https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94)
+
+Someday we might support Touch Gestures in our NuttX Driver.
 
 ## Read Touch Data
 
