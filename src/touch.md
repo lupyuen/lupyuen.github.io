@@ -134,7 +134,7 @@ Note that CST816S __doesn't trigger an interrupt__ when the screen is __no longe
 
 We'll handle this in our CST816S Driver.
 
-# NuttX Touscreen Drivers
+# NuttX Touchscreen Drivers
 
 _How do Touchscreen Drivers work on NuttX?_
 
@@ -172,7 +172,7 @@ Let's talk about the data format...
 
 _How are Touch Data Samples represented in NuttX?_
 
-NuttX defines a standard data format for __Touch Data Samples__ that are returned by Touch Panel Drivers...
+NuttX defines a standard data format for __Touch Data Samples__ that are returned by Touchscreen Drivers...
 
 ```c
 /* The typical touchscreen driver is a read-only, input character device
@@ -221,23 +221,46 @@ struct touch_point_s
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L109-L128)
 
-Our driver returns only the first 4 fields...
+Our driver returns the first 4 fields...
 
--   __id__: TODO
+-   __id__: Always 0, since we detect one Touch Point
 
--   __flags__: TODO
+-   __flags__: We return a combination of these flags...
 
--   __x__: TODO
+    [__TOUCH_ID_VALID__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L94): Touch Point ID is always valid
 
--   __y__: TODO
+    [__TOUCH_DOWN__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L91) or [__TOUCH_UP__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L93): Touch Down or Up
+
+    [__TOUCH_POS_VALID__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L95): If Touch Coordinates are valid
+
+    (Touch Coordinates are valid for Touch Down, not Touch Up)
+
+-   __x__: X Coordinate of the Touch Point (0 to 239)
+
+-   __y__: Y Coordinate of the Touch Point (0 to 239)
 
 And sets the remaining fields to 0.
 
-TODO
-
 ## Read Touch Data
 
-TODO
+NuttX Apps will open "__/dev/input0__" and call __`read()`__ repeatedly to fetch __Touch Data Samples__ from the driver...
+
+```c
+//  Open "/dev/input0"
+int fd = open("/dev/input0", O_RDONLY | O_NONBLOCK);
+
+//  Read one sample
+struct touch_sample_s sample;
+int nbytes = read(fd, &sample, sizeof(struct touch_sample_s));
+```
+
+[(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L62-L132)
+
+This populates a __touch_sample_s__ struct, which we've seen earlier.
+
+The code above comes from the [__LVGL Test App__](https://github.com/lupyuen/lvgltest-nuttx), which we'll run later to test our driver.
+
+(Calling __`read()`__ repeatedly might be bad for performance, instead we should call __`poll()`__ to block until touch data is available)
 
 # Load The Driver
 
