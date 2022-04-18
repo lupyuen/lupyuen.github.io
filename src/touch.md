@@ -98,6 +98,8 @@ The I2C Address of CST816S is defined in [bl602_bringup.c](https://github.com/lu
 
 > [(From PineDio Stack Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
 
+## CST816S Pins
+
 _How is CST816S wired to PineDio Stack?_
 
 According to the schematic above, CST816S is wired to PineDio Stack like so...
@@ -130,135 +132,76 @@ When we touch the screen, CST816S triggers a __GPIO Interrupt__ and activates th
 
 Note that CST816S __doesn't trigger an interrupt__ when the screen is __no longer touched__.
 
-We'll handle this in the CST816S Driver.
+We'll handle this in our CST816S Driver.
 
-[(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
+# NuttX Touscreen Drivers
 
-# Install Driver
-
-TODO
-
-To add this repo to your NuttX project...
-
-```bash
-pushd nuttx/nuttx/drivers/input
-git submodule add https://github.com/lupyuen/cst816s-nuttx cst816s
-ln -s cst816s/cst816s.c .
-popd
-
-pushd nuttx/nuttx/include/nuttx/input
-ln -s ../../../drivers/input/cst816s/cst816s.h .
-popd
-```
-
-Next update the Makefile and Kconfig...
-
--   [See the modified Makefile and Kconfig](https://github.com/lupyuen/incubator-nuttx/commit/5dbf67df8f36cdba2eb0034dac0ff8ed0f8e73e1)
-
-Then update the NuttX Build Config...
-
-```bash
-## TODO: Change this to the path of our "incubator-nuttx" folder
-cd nuttx/nuttx
-
-## Preserve the Build Config
-cp .config ../config
-
-## Erase the Build Config and Kconfig files
-make distclean
-
-## For BL602: Configure the build for BL602
-./tools/configure.sh bl602evb:nsh
-
-## For PineDio Stack BL604: Configure the build for BL604
-./tools/configure.sh bl602evb:pinedio
-
-## For ESP32: Configure the build for ESP32.
-## TODO: Change "esp32-devkitc" to our ESP32 board.
-./tools/configure.sh esp32-devkitc:nsh
-
-## Restore the Build Config
-cp ../config .config
-
-## Edit the Build Config
-make menuconfig 
-```
-
-In menuconfig, enable the Hynitron CST816S Driver under "Device Drivers → Input Device Support".
-
-Enable I2C Warnings because of the [I2C Workaround for CST816S](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)...
-
--   Click "Build Setup" → "Debug Options"
-
--   Check the boxes for the following...
-    -   Enable Warnings Output
-    -   I2C Warnings Output
-
--   (Optional) To enable logging for the CST816S Driver, check the boxes for...
-    -   Enable Error Output
-    -   Enable Informational Debug Output
-    -   Enable Debug Assertions
-    -   Input Device Error Output
-    -   Input Device Warnings Output
-    -   Input Device Informational Output
-
--   Note that "Enable Informational Debug Output" must be unchecked for the LoRaWAN Test App `lorawan_test` to work (because the LoRaWAN Timers are time-sensitive)
-
-Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773) and apply this workaround patch...
-
--   ["I2C Logging"](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)
-
-Edit the function `bl602_bringup` or `esp32_bringup` in this file...
-
-```text
-## For BL602:
-nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
-
-## For ESP32: Change "esp32-devkitc" to our ESP32 board 
-nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
-```
-
-And call `cst816s_register` to load our driver: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843)
-
-```c
-#ifdef CONFIG_INPUT_CST816S
-/* I2C Address of CST816S Touch Controller */
-
-#define CST816S_DEVICE_ADDRESS 0x15
-#include <nuttx/input/cst816s.h>
-#endif /* CONFIG_INPUT_CST816S */
-...
-#ifdef CONFIG_INPUT_CST816S
-int bl602_bringup(void)
-{
-  ...
-  /* Init I2C bus for CST816S */
-
-  struct i2c_master_s *cst816s_i2c_bus = bl602_i2cbus_initialize(0);
-  if (!cst816s_i2c_bus)
-    {
-      _err("ERROR: Failed to get I2C%d interface\n", 0);
-    }
-
-  /* Register the CST816S driver */
-
-  ret = cst816s_register("/dev/input0", cst816s_i2c_bus, CST816S_DEVICE_ADDRESS);
-  if (ret < 0)
-    {
-      _err("ERROR: Failed to register CST816S\n");
-    }
-#endif /* CONFIG_INPUT_CST816S */
-```
-
-Here's how we created the CST816S Driver for NuttX on PineDio Stack BL604...
-
-# Cypress MBR3108
+_How do Touchscreen Drivers work on NuttX?_
 
 TODO
 
 NuttX Driver for Cypress MBR3108 Touch Controller looks structurally similar to PineDio Stack's CST816S ... So we copy-n-paste into our CST816S Driver
 
--   [NuttX Driver for Cypress MBR3108](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/input/cypress_mbr3108.c)
+-   [__NuttX I2C Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/cypress_mbr3108.c)
+
+-   [__NuttX SPI Driver for Maxim MAX11802__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/max11802.c)
+
+[(More about NuttX Touchscreen Drivers)](https://nuttx.apache.org/docs/latest/components/drivers/character/touchscreen.html)
+
+## Touch Data
+
+TODO
+
+Apache NuttX RTOS has a standard data format for Touch Panels ... Let's implement this for PineDio Stack
+
+```c
+/* This structure contains information about a single touch point.
+ * Positional units are device specific.
+ */
+
+struct touch_point_s
+{
+  uint8_t  id;        /* Unique identifies contact; Same in all reports for the contact */
+  uint8_t  flags;     /* See TOUCH_* definitions above */
+  int16_t  x;         /* X coordinate of the touch point (uncalibrated) */
+  int16_t  y;         /* Y coordinate of the touch point (uncalibrated) */
+  int16_t  h;         /* Height of touch point (uncalibrated) */
+  int16_t  w;         /* Width of touch point (uncalibrated) */
+  uint16_t gesture;   /* Gesture of touchscreen contact */
+  uint16_t pressure;  /* Touch pressure */
+  uint64_t timestamp; /* Touch event time stamp, in microseconds */
+};
+
+/* The typical touchscreen driver is a read-only, input character device
+ * driver.the driver write() method is not supported and any attempt to
+ * open the driver in any mode other than read-only will fail.
+ *
+ * Data read from the touchscreen device consists only of touch events and
+ * touch sample data.  This is reflected by struct touch_sample_s.  This
+ * structure is returned by either the driver read method.
+ *
+ * On some devices, multiple touchpoints may be supported. So this top level
+ * data structure is a struct touch_sample_s that "contains" a set of touch
+ * points.  Each touch point is managed individually using an ID that
+ * identifies a touch from first contact until the end of the contact.
+ */
+
+struct touch_sample_s
+{
+  int npoints;                   /* The number of touch points in point[] */
+  struct touch_point_s point[1]; /* Actual dimension is npoints */
+};
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148)
+
+TODO4
+
+![](https://lupyuen.github.io/images/touch-code3a.png)
+
+## Read Touch Data
+
+TODO
 
 # GPIO Interrupt
 
@@ -449,57 +392,6 @@ bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0
 TODO8
 
 ![](https://lupyuen.github.io/images/touch-run1a.png)
-
-# Touch Data
-
-TODO
-
-Apache NuttX RTOS has a standard data format for Touch Panels ... Let's implement this for PineDio Stack
-
-```c
-/* This structure contains information about a single touch point.
- * Positional units are device specific.
- */
-
-struct touch_point_s
-{
-  uint8_t  id;        /* Unique identifies contact; Same in all reports for the contact */
-  uint8_t  flags;     /* See TOUCH_* definitions above */
-  int16_t  x;         /* X coordinate of the touch point (uncalibrated) */
-  int16_t  y;         /* Y coordinate of the touch point (uncalibrated) */
-  int16_t  h;         /* Height of touch point (uncalibrated) */
-  int16_t  w;         /* Width of touch point (uncalibrated) */
-  uint16_t gesture;   /* Gesture of touchscreen contact */
-  uint16_t pressure;  /* Touch pressure */
-  uint64_t timestamp; /* Touch event time stamp, in microseconds */
-};
-
-/* The typical touchscreen driver is a read-only, input character device
- * driver.the driver write() method is not supported and any attempt to
- * open the driver in any mode other than read-only will fail.
- *
- * Data read from the touchscreen device consists only of touch events and
- * touch sample data.  This is reflected by struct touch_sample_s.  This
- * structure is returned by either the driver read method.
- *
- * On some devices, multiple touchpoints may be supported. So this top level
- * data structure is a struct touch_sample_s that "contains" a set of touch
- * points.  Each touch point is managed individually using an ID that
- * identifies a touch from first contact until the end of the contact.
- */
-
-struct touch_sample_s
-{
-  int npoints;                   /* The number of touch points in point[] */
-  struct touch_point_s point[1]; /* Actual dimension is npoints */
-};
-```
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148)
-
-TODO4
-
-![](https://lupyuen.github.io/images/touch-code3a.png)
 
 # Read Touch Data
 
@@ -1399,6 +1291,122 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1514049092388745219)
+
+# Appendix: Install Driver
+
+TODO
+
+To add this repo to your NuttX project...
+
+```bash
+pushd nuttx/nuttx/drivers/input
+git submodule add https://github.com/lupyuen/cst816s-nuttx cst816s
+ln -s cst816s/cst816s.c .
+popd
+
+pushd nuttx/nuttx/include/nuttx/input
+ln -s ../../../drivers/input/cst816s/cst816s.h .
+popd
+```
+
+Next update the Makefile and Kconfig...
+
+-   [See the modified Makefile and Kconfig](https://github.com/lupyuen/incubator-nuttx/commit/5dbf67df8f36cdba2eb0034dac0ff8ed0f8e73e1)
+
+Then update the NuttX Build Config...
+
+```bash
+## TODO: Change this to the path of our "incubator-nuttx" folder
+cd nuttx/nuttx
+
+## Preserve the Build Config
+cp .config ../config
+
+## Erase the Build Config and Kconfig files
+make distclean
+
+## For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+## For PineDio Stack BL604: Configure the build for BL604
+./tools/configure.sh bl602evb:pinedio
+
+## For ESP32: Configure the build for ESP32.
+## TODO: Change "esp32-devkitc" to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
+
+## Restore the Build Config
+cp ../config .config
+
+## Edit the Build Config
+make menuconfig 
+```
+
+In menuconfig, enable the Hynitron CST816S Driver under "Device Drivers → Input Device Support".
+
+Enable I2C Warnings because of the [I2C Workaround for CST816S](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)...
+
+-   Click "Build Setup" → "Debug Options"
+
+-   Check the boxes for the following...
+    -   Enable Warnings Output
+    -   I2C Warnings Output
+
+-   (Optional) To enable logging for the CST816S Driver, check the boxes for...
+    -   Enable Error Output
+    -   Enable Informational Debug Output
+    -   Enable Debug Assertions
+    -   Input Device Error Output
+    -   Input Device Warnings Output
+    -   Input Device Informational Output
+
+-   Note that "Enable Informational Debug Output" must be unchecked for the LoRaWAN Test App `lorawan_test` to work (because the LoRaWAN Timers are time-sensitive)
+
+Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773) and apply this workaround patch...
+
+-   ["I2C Logging"](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)
+
+Edit the function `bl602_bringup` or `esp32_bringup` in this file...
+
+```text
+## For BL602:
+nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
+
+## For ESP32: Change "esp32-devkitc" to our ESP32 board 
+nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
+```
+
+And call `cst816s_register` to load our driver: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843)
+
+```c
+#ifdef CONFIG_INPUT_CST816S
+/* I2C Address of CST816S Touch Controller */
+
+#define CST816S_DEVICE_ADDRESS 0x15
+#include <nuttx/input/cst816s.h>
+#endif /* CONFIG_INPUT_CST816S */
+...
+#ifdef CONFIG_INPUT_CST816S
+int bl602_bringup(void)
+{
+  ...
+  /* Init I2C bus for CST816S */
+
+  struct i2c_master_s *cst816s_i2c_bus = bl602_i2cbus_initialize(0);
+  if (!cst816s_i2c_bus)
+    {
+      _err("ERROR: Failed to get I2C%d interface\n", 0);
+    }
+
+  /* Register the CST816S driver */
+
+  ret = cst816s_register("/dev/input0", cst816s_i2c_bus, CST816S_DEVICE_ADDRESS);
+  if (ret < 0)
+    {
+      _err("ERROR: Failed to register CST816S\n");
+    }
+#endif /* CONFIG_INPUT_CST816S */
+```
 
 ![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title2.jpg)
 
