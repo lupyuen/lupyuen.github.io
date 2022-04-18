@@ -367,7 +367,7 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
   //  Init the Poll Semaphore
   nxsem_init(&amp;priv-&gt;devsem, 0, 1);</code></pre></div>
 <p>(Which will be used for blocking callers to <code>poll()</code>)</p>
-<p>Next we <strong>register the driver</strong> with NuttX…</p>
+<p>Next we <strong>register the driver</strong> with NuttX at “<strong>/dev/input0</strong>”…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Register the driver at &quot;/dev/input0&quot;
   int ret = register_driver(
     devpath,             //  Device Path
@@ -381,15 +381,22 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
     return ret;
   }</code></pre></div>
 <p>(We’ll see <strong>g_cst816s_fileops</strong> later)</p>
-<p>TODO</p>
+<p>Remember that CST816S will trigger <strong>GPIO Interrupts</strong> when we touch the screen.</p>
+<p>We attach our <strong>Interrupt Handler</strong> that will handle the GPIO Interrupts…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Attach our GPIO Interrupt Handler
-  ret = bl602_irq_attach(BOARD_TOUCH_INT, cst816s_isr_handler, priv);
+  ret = bl602_irq_attach(
+    BOARD_TOUCH_INT,      //  GPIO 9
+    cst816s_isr_handler,  //  Interrupt Handler
+    priv                  //  Device Struct
+  );
   if (ret &lt; 0) {
     kmm_free(priv);
     ierr(&quot;Attach interrupt failed\n&quot;);
     return ret;
   }</code></pre></div>
-<p>TODO</p>
+<p>(We’ll see <strong>bl602_irq_attach</strong> in the next section)</p>
+<p><a href="https://lupyuen.github.io/articles/touch#cst816s-pins">(We’ve seen <strong>BOARD_TOUCH_INT</strong> earlier)</a></p>
+<p>At startup we normally <strong>disable the GPIO Interrupt</strong> and enable it later at <strong><code>open()</code></strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Disable the GPIO Interrupt
   ret = bl602_irq_enable(false);
   if (ret &lt; 0) {
@@ -398,7 +405,8 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
     return ret;
   }
   iinfo(&quot;Driver registered\n&quot;);</code></pre></div>
-<p>TODO</p>
+<p>(We’ll see <strong>bl602_irq_enable</strong> in the next section)</p>
+<p>For our testing, we <strong>enable the GPIO Interrupt</strong> at startup…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  For Testing: Enable the GPIO Interrupt at startup
 #define TEST_CST816S_INTERRUPT
 #ifdef TEST_CST816S_INTERRUPT
@@ -407,7 +415,7 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
 
   return 0;
 }</code></pre></div>
-<p>TODO</p>
+<p>And that’s how we register our CST816S Driver at startup!</p>
 <p><em>What’s g_cst816s_fileops?</em></p>
 <p><strong>g_cst816s_fileops</strong> defines the <strong>File Operations</strong> <em>(open, close, read, poll)</em> that will be supported by our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L109-L123">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  File Operations exposed to NuttX Apps
