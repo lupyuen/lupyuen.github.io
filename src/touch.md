@@ -416,7 +416,7 @@ And that's how we initialise our CST816S Driver at startup!
 
 _What's g_cst816s_fileops?_
 
-__g_cst816s_fileops__ defines the __File Operations__ _(open, close, read, poll)_ that will be supported by our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L109-L123)
+__g_cst816s_fileops__ defines the __NuttX File Operations__ _(open, close, read, poll)_ that will be supported by our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L109-L123)
 
 ```c
 //  File Operations exposed to NuttX Apps
@@ -1540,6 +1540,16 @@ make menuconfig
 
 In menuconfig, enable the Hynitron CST816S Driver under "Device Drivers → Input Device Support".
 
+Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773) and apply this workaround patch...
+
+-   ["I2C Logging"](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)
+
+We need to enable warnings for the I2C driver, as explained in the next section.
+
+## Appendix: Enable Logging
+
+TODO
+
 Enable I2C Warnings because of the [I2C Workaround for CST816S](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)...
 
 -   Click "Build Setup" → "Debug Options"
@@ -1557,10 +1567,6 @@ Enable I2C Warnings because of the [I2C Workaround for CST816S](https://github.c
     -   Input Device Informational Output
 
 -   Note that "Enable Informational Debug Output" must be unchecked for the LoRaWAN Test App `lorawan_test` to work (because the LoRaWAN Timers are time-sensitive)
-
-Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773) and apply this workaround patch...
-
--   ["I2C Logging"](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)
 
 ![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title2.jpg)
 
