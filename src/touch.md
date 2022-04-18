@@ -199,7 +199,7 @@ struct touch_sample_s
 
 For our driver, we'll return only __one Touch Point__.
 
-Here's the definition of a __Touch Point__...
+Here's the NuttX Definition of a __Touch Point__...
 
 ```c
 /* This structure contains information about a single touch point.
@@ -238,6 +238,49 @@ TODO
 ## Read Touch Data
 
 TODO
+
+# Load The Driver
+
+TODO
+
+Edit the function `bl602_bringup` in this file...
+
+```text
+## For BL602:
+nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
+```
+
+And call `cst816s_register` to load our driver: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843)
+
+```c
+#ifdef CONFIG_INPUT_CST816S
+/* I2C Address of CST816S Touch Controller */
+
+#define CST816S_DEVICE_ADDRESS 0x15
+#include <nuttx/input/cst816s.h>
+#endif /* CONFIG_INPUT_CST816S */
+...
+#ifdef CONFIG_INPUT_CST816S
+int bl602_bringup(void)
+{
+  ...
+  /* Init I2C bus for CST816S */
+
+  struct i2c_master_s *cst816s_i2c_bus = bl602_i2cbus_initialize(0);
+  if (!cst816s_i2c_bus)
+    {
+      _err("ERROR: Failed to get I2C%d interface\n", 0);
+    }
+
+  /* Register the CST816S driver */
+
+  ret = cst816s_register("/dev/input0", cst816s_i2c_bus, CST816S_DEVICE_ADDRESS);
+  if (ret < 0)
+    {
+      _err("ERROR: Failed to register CST816S\n");
+    }
+#endif /* CONFIG_INPUT_CST816S */
+```
 
 # GPIO Interrupt
 
@@ -1401,48 +1444,6 @@ Enable I2C Warnings because of the [I2C Workaround for CST816S](https://github.c
 Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773) and apply this workaround patch...
 
 -   ["I2C Logging"](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)
-
-Edit the function `bl602_bringup` or `esp32_bringup` in this file...
-
-```text
-## For BL602:
-nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
-
-## For ESP32: Change "esp32-devkitc" to our ESP32 board 
-nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
-```
-
-And call `cst816s_register` to load our driver: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L826-L843)
-
-```c
-#ifdef CONFIG_INPUT_CST816S
-/* I2C Address of CST816S Touch Controller */
-
-#define CST816S_DEVICE_ADDRESS 0x15
-#include <nuttx/input/cst816s.h>
-#endif /* CONFIG_INPUT_CST816S */
-...
-#ifdef CONFIG_INPUT_CST816S
-int bl602_bringup(void)
-{
-  ...
-  /* Init I2C bus for CST816S */
-
-  struct i2c_master_s *cst816s_i2c_bus = bl602_i2cbus_initialize(0);
-  if (!cst816s_i2c_bus)
-    {
-      _err("ERROR: Failed to get I2C%d interface\n", 0);
-    }
-
-  /* Register the CST816S driver */
-
-  ret = cst816s_register("/dev/input0", cst816s_i2c_bus, CST816S_DEVICE_ADDRESS);
-  if (ret < 0)
-    {
-      _err("ERROR: Failed to register CST816S\n");
-    }
-#endif /* CONFIG_INPUT_CST816S */
-```
 
 ![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title2.jpg)
 
