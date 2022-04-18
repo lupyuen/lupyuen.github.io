@@ -412,7 +412,7 @@ For our testing, we __enable the GPIO Interrupt__ at startup...
 }
 ```
 
-And that's how we register our CST816S Driver at startup!
+And that's how we initialise our CST816S Driver at startup!
 
 _What's g_cst816s_fileops?_
 
@@ -435,6 +435,8 @@ static const struct file_operations g_cst816s_fileops = {
 ```
 
 We'll see these functions in a while.
+
+![Initialise the CST816S Driver at startup](https://lupyuen.github.io/images/touch-code2a.png)
 
 # GPIO Interrupt
 
@@ -509,14 +511,6 @@ int cst816s_register(FAR const char *devpath,
 There's bug with BL602 GPIO Interrupts that we have fixed for our driver...
 
 https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538
-
-TODO2
-
-![](https://lupyuen.github.io/images/touch-code1a.png)
-
-TODO3
-
-![](https://lupyuen.github.io/images/touch-code2a.png)
 
 TODO
 
