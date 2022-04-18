@@ -343,7 +343,7 @@ We populate the Device Struct and initialise the __Poll Semaphore__...
 
 (Which will be used for blocking callers to `poll()`)
 
-Next we __register the driver__ with NuttX...
+Next we __register the driver__ with NuttX at "__/dev/input0__"...
 
 ```c
   //  Register the driver at "/dev/input0"
@@ -362,11 +362,17 @@ Next we __register the driver__ with NuttX...
 
 (We'll see __g_cst816s_fileops__ later)
 
-TODO
+Remember that CST816S will trigger __GPIO Interrupts__ when we touch the screen.
+
+We attach our __Interrupt Handler__ that will handle the GPIO Interrupts...
 
 ```c
   //  Attach our GPIO Interrupt Handler
-  ret = bl602_irq_attach(BOARD_TOUCH_INT, cst816s_isr_handler, priv);
+  ret = bl602_irq_attach(
+    BOARD_TOUCH_INT,      //  GPIO 9
+    cst816s_isr_handler,  //  Interrupt Handler
+    priv                  //  Device Struct
+  );
   if (ret < 0) {
     kmm_free(priv);
     ierr("Attach interrupt failed\n");
@@ -374,7 +380,11 @@ TODO
   }
 ```
 
-TODO
+(We'll see __bl602_irq_attach__ in the next section)
+
+[(We've seen __BOARD_TOUCH_INT__ earlier)](https://lupyuen.github.io/articles/touch#cst816s-pins)
+
+At startup we normally __disable the GPIO Interrupt__ and enable it later at __`open()`__...
 
 ```c
   //  Disable the GPIO Interrupt
@@ -387,7 +397,9 @@ TODO
   iinfo("Driver registered\n");
 ```
 
-TODO
+(We'll see __bl602_irq_enable__ in the next section)
+
+For our testing, we __enable the GPIO Interrupt__ at startup...
 
 ```c
 //  For Testing: Enable the GPIO Interrupt at startup
@@ -400,7 +412,7 @@ TODO
 }
 ```
 
-TODO
+And that's how we register our CST816S Driver at startup!
 
 _What's g_cst816s_fileops?_
 
