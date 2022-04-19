@@ -341,7 +341,7 @@ We populate the Device Struct and initialise the __Poll Semaphore__...
   nxsem_init(&priv->devsem, 0, 1);
 ```
 
-(Which will be used for blocking callers to `poll()`)
+(Which will be used for blocking callers to __`poll()`__)
 
 Next we __register the driver__ with NuttX at "__/dev/input0__"...
 
@@ -434,7 +434,7 @@ static const struct file_operations g_cst816s_fileops = {
 };
 ```
 
-We'll see these functions in a while.
+We'll see the File Operations in a while.
 
 ![Initialise the CST816S Driver at startup](https://lupyuen.github.io/images/touch-code2a.png)
 
@@ -444,11 +444,25 @@ CST816S will trigger __GPIO Interrupts__ when we touch the screen.
 
 Earlier we called these functions at startup to handle GPIO Interrupts...
 
--   [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772): Attach our GPIO Interrupt Handler
+-   [__bl602_irq_attach__](https://lupyuen.github.io/articles/touch#appendix-gpio-interrupt): Attach our GPIO Interrupt Handler
 
--   [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804): Enable GPIO Interrupt
+-   [__bl602_irq_enable__](https://lupyuen.github.io/articles/touch#appendix-gpio-interrupt): Enable GPIO Interrupt
 
-Let's find out what happens inside __cst816s_isr_handler__, our GPIO Interrupt Handler: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L611-L632)
+[(More about the functions in the Appendix)](https://lupyuen.github.io/articles/touch#appendix-gpio-interrupt)
+
+_What happens when a GPIO Interrupt is triggered on touch?_
+
+Our __GPIO Interrupt Handler__ does the following...
+
+-   Set the __Pending Flag__ to true
+
+    (We'll see why in a while)
+
+-   Notify all callers to __`poll()`__ that the Touch Data is ready
+
+    (So they will be unblocked and can proceed to read the data)
+
+Below is __cst816s_isr_handler__, our GPIO Interrupt Handler: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L611-L632)
 
 ```c
 //  Handle GPIO Interrupt triggered by touch
@@ -471,15 +485,15 @@ static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg) {
 }
 ```
 
-TODO: __int_pending__
+[(__cst816s_poll_notify__ is defined here)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L493-L519)
 
-TODO: __Pending Flag__
-
-[__cst816s_poll_notify__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L493-L519)
-
-TODO
+We use a __Critical Section__ to protect the Pending Flag from being modified by multiple threads.
 
 ## Test GPIO Interrupt
+
+_Our GPIO Interrupt Handler... Does it really work?_
+
+Let's test it!
 
 TODO
 
@@ -1515,31 +1529,55 @@ Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nu
 
 We need to enable warnings for the I2C driver, as explained in the next section.
 
-## Appendix: Enable Logging
+# Appendix: Enable Logging
 
 TODO
 
 Enable I2C Warnings because of the [I2C Workaround for CST816S](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)...
 
--   Click "Build Setup" → "Debug Options"
+1.  Enter menuconfig...
 
--   Check the boxes for the following...
-    -   Enable Warnings Output
-    -   I2C Warnings Output
+    ```bash
+    make menuconfig
+    ```
 
--   (Optional) To enable logging for the CST816S Driver, check the boxes for...
-    -   Enable Error Output
-    -   Enable Informational Debug Output
-    -   Enable Debug Assertions
-    -   Input Device Error Output
-    -   Input Device Warnings Output
-    -   Input Device Informational Output
+1.  Click __"Build Setup"__ → __"Debug Options"__
 
--   Note that "Enable Informational Debug Output" must be unchecked for the LoRaWAN Test App `lorawan_test` to work (because the LoRaWAN Timers are time-sensitive)
+1.  Check the boxes for the following...
+
+    ```text
+    Enable Warnings Output
+    I2C Warnings Output
+    ```
+
+1.  (Optional) To enable logging for the CST816S Driver, check the boxes for...
+
+    ```text
+    Enable Error Output
+    Enable Informational Debug Output
+    Enable Debug Assertions
+    Input Device Error Output
+    Input Device Warnings Output
+    Input Device Informational Output
+    ```
+
+1.  Note that "Enable Informational Debug Output" must be unchecked for the LoRaWAN Test App __lorawan_test__ to work.
+
+    (Because the LoRaWAN Timers are time-critical)
+
+1.  Save the configuration and exit menuconfig
 
 # Appendix: GPIO Interrupt
 
 TODO
+
+CST816S will trigger __GPIO Interrupts__ when we touch the screen.
+
+Earlier we called these functions at startup to handle GPIO Interrupts...
+
+-   [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772): Attach our GPIO Interrupt Handler
+
+-   [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804): Enable GPIO Interrupt
 
 `bl602_irq_attach` is defined below...
 
