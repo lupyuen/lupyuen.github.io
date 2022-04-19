@@ -569,6 +569,18 @@ Here's the Touch Data that we can read from __I2C Registers `0x02` to `0x06`__ o
 
 __Touch Gestures__ (like swiping and scrolling) might also be supported, according to the CST816S Driver for PineTime InfiniTime. [(See this)](https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94)
 
+_Any gotchas for the Touch Data?_
+
+If the Touch Event is __`0` (Touch Down)__, all Touch Data is hunky dory.
+
+But if the Touch Event is __`1` (Touch Up)__, all the other fields are __invalid__!
+
+Our driver fixes this by remembering and returning the __last valid Touch Data__.
+
+_What about Touch Event `2` (Contact)?_
+
+We haven't seen this during our testing. Thus our driver ignores the event.
+
 Let's check out our driver code...
 
 ## Get I2C Touch Data
@@ -576,16 +588,17 @@ Let's check out our driver code...
 This is how we read the __Touch Data over I2C__ in our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
 
 ```c
+//  Read I2C Register 0x00 onwards
 #define CST816S_REG_TOUCHDATA 0x00
 
 //  Read Touch Data over I2C
 static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) {
 
-  //  Read the Raw Touch Data
+  //  Read the Raw Touch Data over I2C
   uint8_t readbuf[7];
   int ret = cst816s_i2c_read(
     dev,                    //  Device Struct
-    CST816S_REG_TOUCHDATA,  //  Start at Register 0x00
+    CST816S_REG_TOUCHDATA,  //  Read I2C Register 0x00 onwards
     readbuf,                //  Buffer for Touch Data
     sizeof(readbuf)         //  Read 7 bytes
   );
