@@ -493,7 +493,25 @@ We use a __Critical Section__ to protect the Pending Flag from being modified by
 
 _Our GPIO Interrupt Handler... Does it really work?_
 
-Let's test it!
+Let's test it! Build, flash and run NuttX on PineDio Stack (with logging enabled)...
+
+-   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
+
+-   [__"Enable Logging"__](https://lupyuen.github.io/articles/touch#appendix-enable-logging)
+
+-   [__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
+
+-   [__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
+
+In the NuttX Shell, enter this command to __list all devices__...
+
+```bash
+ls /dev
+```
+
+We should see our CST816S Driver loaded at "__/dev/input0__"...
+
+> ![NuttX Touchscreen Device](https://lupyuen.github.io/images/touch-device.png)
 
 TODO
 
@@ -1527,45 +1545,7 @@ Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nu
 
 -   ["I2C Logging"](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)
 
-We need to enable warnings for the I2C driver, as explained in the next section.
-
-# Appendix: Enable Logging
-
-TODO
-
-Enable I2C Warnings because of the [I2C Workaround for CST816S](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)...
-
-1.  Enter menuconfig...
-
-    ```bash
-    make menuconfig
-    ```
-
-1.  Click __"Build Setup"__ → __"Debug Options"__
-
-1.  Check the boxes for the following...
-
-    ```text
-    Enable Warnings Output
-    I2C Warnings Output
-    ```
-
-1.  (Optional) To enable logging for the CST816S Driver, check the boxes for...
-
-    ```text
-    Enable Error Output
-    Enable Informational Debug Output
-    Enable Debug Assertions
-    Input Device Error Output
-    Input Device Warnings Output
-    Input Device Informational Output
-    ```
-
-1.  Note that "Enable Informational Debug Output" must be unchecked for the LoRaWAN Test App __lorawan_test__ to work.
-
-    (Because the LoRaWAN Timers are time-critical)
-
-1.  Save the configuration and exit menuconfig
+We need to enable warnings for the I2C driver. Follow the instructions in the next section...
 
 # Appendix: GPIO Interrupt
 

@@ -1206,6 +1206,108 @@ Congratulations NuttX is now running on BL602 / BL604!
 
 ![Running NuttX](https://lupyuen.github.io/images/nuttx-boot2.png)
 
+# Appendix: NuttX Logging
+
+Here are the steps to enable __NuttX Logging__ for easier troubleshooting...
+
+1.  Enter menuconfig...
+
+    ```bash
+    make menuconfig
+    ```
+
+1.  Select __"Build Setup"__ → __"Debug Options"__
+
+1.  (Mandatory) Check the boxes for the following...
+
+    ```text
+    Enable Debug Features
+    Enable Error Output
+    Enable Warnings Output
+    Enable Debug Assertions
+
+    Graphics Debug Features
+    Graphics Error Output
+    Graphics Warnings Output
+
+    Low-level LCD Debug Features
+    LCD Driver Error Output
+    LCD Driver Warnings Output
+
+    Input Device Debug Features
+    Input Device Error Output
+    Input Device Warnings Output
+
+    GPIO Debug Features
+    GPIO Error Output
+    GPIO Warnings Output
+
+    I2C Debug Features
+    I2C Warnings Output
+    I2C Error Output
+
+    Sensor Debug Features
+    Sensor Warnings Output
+    Sensor Error Output
+
+    SPI Debug Features
+    SPI Error Output
+    SPI Warnings Output
+    ```
+
+    [("I2C Warnings" are mandatory because of an I2C issue)](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)
+
+1.  (Optional) To enable logging for the __CST816S Touch Panel Driver__, check the boxes for...
+
+    ```text
+    Enable Informational Debug Output
+    Input Device Informational Output
+    ```
+
+1.  (Optional) To enable logging for __ST7789 Display and LVGL Library__, check the boxes for...
+
+    ```text
+    Enable Informational Debug Output
+    Graphics Informational Output
+    LCD Driver Informational Output
+    ```
+
+1.  (Optional) To enable logging for __I2C and Sensors__, check the boxes for...
+
+    ```text
+    Enable Informational Debug Output
+    I2C Informational Output
+    Sensor Informational Output
+    ```
+
+1.  (Optional) To enable logging for __GPIO and SPI__, check the boxes for...
+
+    ```text
+    Enable Informational Debug Output
+    GPIO Informational Output
+    SPI Informational Output
+    ```
+
+1.  Note that "Enable Informational Debug Output" must be unchecked for the LoRaWAN Test App __lorawan_test__ to work.
+
+    (Because LoRaWAN Timers are time-critical)
+
+1.  Save the configuration to __`.config`__ and exit menuconfig
+
+1.  Rebuild NuttX...
+
+    ```bash
+    make
+    ```
+
+1.  __For WSL:__ Copy the NuttX Firmware to the __c:\blflash__ directory in the Windows File System...
+
+    ```bash
+    ##  /mnt/c/blflash refers to c:\blflash in Windows
+    mkdir /mnt/c/blflash
+    cp nuttx.bin /mnt/c/blflash
+    ```
+
 # Appendix: Fix GPIO Output
 
 This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.
