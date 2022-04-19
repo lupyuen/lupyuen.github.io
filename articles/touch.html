@@ -482,13 +482,13 @@ static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg) {
 <p>We use a <strong>Critical Section</strong> to protect the Pending Flag from being modified by multiple threads.</p>
 <h2 id="test-gpio-interrupt"><a href="#test-gpio-interrupt">5.1 Test GPIO Interrupt</a></h2>
 <p><em>Our GPIO Interrupt Handler… Does it really work?</em></p>
-<p>Let’s test it! Build, flash and run NuttX on PineDio Stack (with logging enabled)…</p>
+<p>Let’s test it! Build, flash and run NuttX on PineDio Stack (with CST816S logging enabled)…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#build-nuttx"><strong>“Build NuttX”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/touch#appendix-enable-logging"><strong>“Enable Logging”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#appendix-nuttx-logging"><strong>“NuttX Logging”</strong></a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack"><strong>“Flash PineDio Stack”</strong></a></p>
