@@ -546,19 +546,26 @@ cst816s_poll_notify:</code></pre></div>
 </ul>
 <p><a href="https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466">(Derived from Hynitron’s Reference Driver)</a></p>
 <p><strong>Touch Gestures</strong> (like swiping and scrolling) might also be supported, according to the CST816S Driver for PineTime InfiniTime. <a href="https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94">(See this)</a></p>
+<p><em>Any gotchas for the Touch Data?</em></p>
+<p>If the Touch Event is <strong><code>0</code> (Touch Down)</strong>, all Touch Data is hunky dory.</p>
+<p>But if the Touch Event is <strong><code>1</code> (Touch Up)</strong>, all the other fields are <strong>invalid</strong>!</p>
+<p>Our driver fixes this by remembering and returning the <strong>last valid Touch Data</strong>.</p>
+<p><em>What about Touch Event <code>2</code> (Contact)?</em></p>
+<p>We haven’t seen this during our testing. Thus our driver ignores the event.</p>
 <p>Let’s check out our driver code…</p>
 <h2 id="get-i2c-touch-data"><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a></h2>
 <p>This is how we read the <strong>Touch Data over I2C</strong> in our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">cst816s.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define CST816S_REG_TOUCHDATA 0x00
+<div class="example-wrap"><pre class="language-c"><code>//  Read I2C Register 0x00 onwards
+#define CST816S_REG_TOUCHDATA 0x00
 
 //  Read Touch Data over I2C
 static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) {
 
-  //  Read the Raw Touch Data
+  //  Read the Raw Touch Data over I2C
   uint8_t readbuf[7];
   int ret = cst816s_i2c_read(
     dev,                    //  Device Struct
-    CST816S_REG_TOUCHDATA,  //  Start at Register 0x00
+    CST816S_REG_TOUCHDATA,  //  Read I2C Register 0x00 onwards
     readbuf,                //  Buffer for Touch Data
     sizeof(readbuf)         //  Read 7 bytes
   );
