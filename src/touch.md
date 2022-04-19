@@ -527,11 +527,11 @@ Yep our CST816S Driver correctly handles the GPIO Interrupt!
 
 ![GPIO Interrupt](https://lupyuen.github.io/images/touch-run1a.png)
 
-# Read Touch Data
+# Fetch Touch Data
 
-We've handled the GPIO Interrupt, now comes the exciting part of our CST816S Driver... Reading the __Touch Data over I2C__!
+We've handled the GPIO Interrupt, now comes the exciting part of our CST816S Driver... Fetching the __Touch Data over I2C__!
 
-_Why do we need GPIO Interrupts anyway? Can't we read the data directly over I2C?_
+_Why use GPIO Interrupts anyway? Can't we read the data directly over I2C?_
 
 Ah but the Touch Panel __won't respond to I2C Commands__ until the screen is tapped! (Which triggers the GPIO Interrupt)
 
@@ -567,11 +567,13 @@ Here's the Touch Data that we can read from __I2C Registers `0x02` to `0x06`__ o
 
 [(Derived from Hynitron's Reference Driver)](https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466)
 
-Let's check out the driver code...
+__Touch Gestures__ might also be supported, according to the CST816S Driver for PineTime InfiniTime. [(See this)](https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94)
+
+Let's check out our driver code...
 
 ## Get I2C Touch Data
 
-This how we read the __Touch Data over I2C__ in our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
+This is how we read the __Touch Data over I2C__ in our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
 
 ```c
 #define CST816S_REG_TOUCHDATA 0x00
@@ -592,6 +594,8 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
     return ret;
   }
 ```
+
+[(__cst816s_i2c_read__ is defined here)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220)
 
 TODO
 
@@ -713,7 +717,105 @@ And from our previous work on PineTime, which also uses CST816S...
 
 _Who calls cst816s_get_touch_data?_
 
-TODO5
+TODO
+
+## I2C Gotchas
+
+_Is there anything peculiar about I2C on BL602 and BL604?_
+
+TODO: Register ID as Sub Address
+
+TODO: Warning
+
+[cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220)
+
+```c
+/****************************************************************************
+ * Name: cst816s_i2c_read
+ *
+ * Description:
+ *   Read from I2C device.
+ *
+ ****************************************************************************/
+
+static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,
+                            uint8_t *buf, size_t buflen)
+{
+  iinfo("\n"); ////
+  struct i2c_msg_s msgv[2] =
+  {
+    {
+      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+      .addr      = dev->addr,
+#ifdef CONFIG_BL602_I2C0
+      .flags     = I2C_M_NOSTART,  /* BL602 must send Register ID as Sub Address */
+#else
+      .flags     = 0,  /* Otherwise send Register ID normally */
+#endif /* CONFIG_BL602_I2C0 */
+      .buffer    = &reg,
+      .length    = 1
+    },
+    {
+      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+      .addr      = dev->addr,
+      .flags     = I2C_M_READ,
+      .buffer    = buf,
+      .length    = buflen
+    }
+  };
+
+  int ret = -EIO;
+  int retries;
+
+  /* CST816S will respond with NACK to address when in low-power mode. Host
+   * needs to retry address selection multiple times to get CST816S to
+   * wake-up.
+   */
+
+  for (retries = 0; retries < CST816S_I2C_RETRIES; retries++)
+    {
+      ret = I2C_TRANSFER(dev->i2c, msgv, 2);
+      if (ret == -ENXIO)
+        {
+          /* -ENXIO is returned when getting NACK from response.
+           * Keep trying.
+           */
+
+          iwarn("I2C NACK\n"); ////
+          continue;
+        }
+      else if (ret >= 0)
+        {
+          /* Success! */
+
+          return 0;
+        }
+      else
+        {
+          /* Some other error. Try to reset I2C bus and keep trying. */
+
+          iwarn("I2C error\n"); ////
+#ifdef CONFIG_I2C_RESET
+          if (retries == CST816S_I2C_RETRIES - 1)
+            {
+              break;
+            }
+
+          ret = I2C_RESET(dev->i2c);
+          if (ret < 0)
+            {
+              iinfo("I2C_RESET failed: %d\n", ret);
+              return ret;
+            }
+#endif
+        }
+    }
+
+  /* Failed to read sensor. */
+
+  return ret;
+}
+```
 
 ![](https://lupyuen.github.io/images/touch-code4a.png)
 
