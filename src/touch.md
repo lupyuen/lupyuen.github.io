@@ -583,6 +583,8 @@ We haven't seen this during our testing. Thus our driver ignores the event.
 
 Let's check out our driver code...
 
+![Getting I2C Touch Data](https://lupyuen.github.io/images/touch-code4a.png)
+
 ## Get I2C Touch Data
 
 This is how we read the __Touch Data over I2C__ in our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
@@ -610,7 +612,9 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
 
 [(__cst816s_i2c_read__ is defined here)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220)
 
-TODO
+The function begins by reading __I2C Registers `0x00` to `0x06`__.
+
+Then it __decodes the Touch Data__ (as described in the last section)...
 
 ```c
   //  Interpret the Raw Touch Data
@@ -625,19 +629,17 @@ TODO
   uint16_t y  = (yhigh << 8) | ylow;
 ```
 
-TODO
+For __Touch Up Events__: The Touch Coordinates are invalid, so we substitute the data from the __last Touch Down Event__...
 
 ```c
   //  If touch coordinates are invalid,
   //  return the last valid coordinates
   bool valid = true;
   if (x >= 240 || y >= 240) {
-    iwarn("Invalid touch data: id=%d, touch=%d, x=%d, y=%d\n", id, touchpoints, x, y);
     //  Quit if we have no last valid coordinates
-    if (last_event == 0xff) {
-      ierr("Can't return touch data: id=%d, touch=%d, x=%d, y=%d\n", id, touchpoints, x, y);
-      return -EINVAL;
-    }
+    if (last_event == 0xff) { return -EINVAL; }
+
+    //  Otherwise substitute the last valid coordinates
     valid = false;
     id = last_id;
     x  = last_x;
@@ -645,7 +647,7 @@ TODO
   }
 ```
 
-TODO
+We remember the __Touch Event__ and the Touch Data...
 
 ```c
   //  Remember the last valid touch data
@@ -655,21 +657,21 @@ TODO
   last_y     = y;
 ```
 
-TODO
+NuttX expects the Touch Data to be returned as a __touch_sample_s__ struct. [(See this)](https://lupyuen.github.io/articles/touch#touch-data)
+
+We __assign the Touch Data__ to the struct...
 
 ```c
   //  Set the Touch Data fields
   struct touch_sample_s data;
   memset(&data, 0, sizeof(data));
-  data.npoints     = 1;
-  data.point[0].id = id;
-  data.point[0].x  = x;
-  data.point[0].y  = y;
+  data.npoints     = 1;   //  Number of Touch Points
+  data.point[0].id = id;  //  Touch ID
+  data.point[0].x  = x;   //  X Coordinate
+  data.point[0].y  = y;   //  Y Coordinate
 ```
 
-TODO
-
-Note that our NuttX Driver for PineDio Stack's Touch Panel returns 4 possible states: Touch Down vs Touch Up, Valid vs Invalid.
+Now we tell NuttX whether it's a __Touch Down Event__ (with valid or invalid coordinates)...
 
 ```c
   //  Set the Touch Flags for...
@@ -684,7 +686,7 @@ Note that our NuttX Driver for PineDio Stack's Touch Panel returns 4 possible st
     }
 ```
 
-TODO
+Or a __Touch Up Event__ (with valid or invalid coordinates)...
 
 ```c
   //  Touch Up Event
@@ -698,7 +700,7 @@ TODO
     }
 ```
 
-TODO
+We ignore all __Contact Events__ (because we've never seen one)...
 
 ```c
   //  Reject Contact Event
@@ -707,7 +709,7 @@ TODO
   }
 ```
 
-TODO
+Finally we __return the struct__ to the caller...
 
 ```c
   //  Return the touch data
@@ -716,7 +718,9 @@ TODO
 }
 ```
 
-TODO
+That's how we read and decode the Touch Data from CST816S over I2C!
+
+![Returning I2C Touch Data](https://lupyuen.github.io/images/touch-code5a.png)
 
 ## Is I2C Active?
 
@@ -724,11 +728,66 @@ _Who calls cst816s_get_touch_data?_
 
 TODO
 
-![](https://lupyuen.github.io/images/touch-code4a.png)
+[cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L334-L388)
 
-TODO6
+```c
+/****************************************************************************
+ * Name: cst816s_read
+ *
+ * Description:
+ *   Read Touch Data from the device.
+ *
+ ****************************************************************************/
 
-![](https://lupyuen.github.io/images/touch-code5a.png)
+static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer,
+                            size_t buflen)
+{
+  FAR struct inode *inode;
+  FAR struct cst816s_dev_s *priv;
+  size_t outlen;
+  irqstate_t flags;
+  int ret;
+
+  DEBUGASSERT(buffer);
+  DEBUGASSERT(buflen > 0);
+  DEBUGASSERT(filep);
+  inode = filep->f_inode;
+
+  DEBUGASSERT(inode && inode->i_private);
+  priv = inode->i_private;
+
+  /* Wait for semaphore to prevent concurrent reads */
+
+  ret = nxsem_wait(&priv->devsem);
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  ret = -EINVAL;
+
+  /* Read the touch data, only if screen has been touched or if we're waiting for touch up */
+
+  outlen = sizeof(struct touch_sample_s);
+  if ((priv->int_pending || last_event == 0) && buflen >= outlen)
+    {
+      ret = cst816s_get_touch_data(priv, buffer);
+    }
+
+  /* Clear pending flag with critical section */
+
+  flags = enter_critical_section();
+  priv->int_pending = false;
+  leave_critical_section(flags);
+
+  /* Release semaphore and allow next read */
+
+  nxsem_post(&priv->devsem);
+  return ret < 0 ? ret : outlen;
+}
+```
+
+TODO
 
 # Test Touch Data
 
