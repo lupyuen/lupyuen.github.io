@@ -578,107 +578,87 @@ Here's how we read the Touched Coordinates in our driver...
 ```c
 #define CST816S_REG_TOUCHDATA 0x00
 
-static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf)
-{
-  iinfo("\n"); ////
-  struct touch_sample_s data;
+static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) {
+  //  Read the raw touch data
   uint8_t readbuf[7];
-  int ret;
+  int ret = cst816s_i2c_read(
+    dev, 
+    CST816S_REG_TOUCHDATA, 
+    readbuf, 
+    sizeof(readbuf)
+  );
+  if (ret < 0) {
+    iinfo("Read touch data failed\n");
+    return ret;
+  }
 
-  /* Read the raw touch data. */
-
-  ret = cst816s_i2c_read(dev, CST816S_REG_TOUCHDATA, readbuf, sizeof(readbuf));
-  if (ret < 0)
-    {
-      iinfo("Read touch data failed\n");
-      return ret;
-    }
-
-  /* Interpret the raw touch data. */
-
+  //  Interpret the raw touch data
   uint8_t id = readbuf[5] >> 4;
   uint8_t touchpoints = readbuf[2] & 0x0f;
   uint8_t xhigh = readbuf[3] & 0x0f;
   uint8_t xlow  = readbuf[4];
   uint8_t yhigh = readbuf[5] & 0x0f;
   uint8_t ylow  = readbuf[6];
-  uint8_t event = readbuf[3] >> 6;  /* 0 = Touch Down, 1 = Touch Up, 2 = Contact */
-  uint16_t x  = (xhigh  << 8) | xlow;
-  uint16_t y  = (yhigh  << 8) | ylow;
+  uint8_t event = readbuf[3] >> 6;  //  0 = Touch Down, 1 = Touch Up, 2 = Contact */
+  uint16_t x  = (xhigh << 8) | xlow;
+  uint16_t y  = (yhigh << 8) | ylow;
 
-  /* If touch coordinates are invalid, return the last valid coordinates. */
-
+  //  If touch coordinates are invalid,
+  //  return the last valid coordinates
   bool valid = true;
-  if (x >= 240 || y >= 240)
-    {
-      iwarn("Invalid touch data: id=%d, touch=%d, x=%d, y=%d\n", id, touchpoints, x, y);
-      if (last_event == 0xff)  /* Quit if we have no last valid coordinates. */
-        {
-          ierr("Can't return touch data: id=%d, touch=%d, x=%d, y=%d\n", id, touchpoints, x, y);
-          return -EINVAL;
-        }
-      valid = false;
-      id = last_id;
-      x  = last_x;
-      y  = last_y;
+  if (x >= 240 || y >= 240) {
+    iwarn("Invalid touch data: id=%d, touch=%d, x=%d, y=%d\n", id, touchpoints, x, y);
+    //  Quit if we have no last valid coordinates
+    if (last_event == 0xff) {
+      ierr("Can't return touch data: id=%d, touch=%d, x=%d, y=%d\n", id, touchpoints, x, y);
+      return -EINVAL;
     }
+    valid = false;
+    id = last_id;
+    x  = last_x;
+    y  = last_y;
+  }
 
-  /* Remember the last valid touch data. */
-
+  //  Remember the last valid touch data
   last_event = event;
   last_id    = id;
   last_x     = x;
   last_y     = y;
 
-  /* Set the touch data fields. */
-
+  //  Set the touch data fields
+  struct touch_sample_s data;
   memset(&data, 0, sizeof(data));
   data.npoints     = 1;
   data.point[0].id = id;
   data.point[0].x  = x;
   data.point[0].y  = y;
 
-  /* Set the touch flags. */
-
-  if (event == 0)  /* Touch Down */
-    {
-      iinfo("DOWN: id=%d, touch=%d, x=%d, y=%d\n", id, touchpoints, x, y);
-      if (valid)  /* Touch coordinates were valid. */
-        {
-          data.point[0].flags  = TOUCH_DOWN | TOUCH_ID_VALID | TOUCH_POS_VALID;
-        }
-      else  /* Touch coordinates were invalid. */
-        {
-          data.point[0].flags  = TOUCH_DOWN | TOUCH_ID_VALID;
-        }
+  //  Set the touch flags for...
+  //  Touch Down Event
+  if (event == 0) {
+    if (valid) {
+      //  Touch coordinates were valid
+      data.point[0].flags  = TOUCH_DOWN | TOUCH_ID_VALID | TOUCH_POS_VALID;
+    } else {
+      //  Touch coordinates were invalid
+      data.point[0].flags  = TOUCH_DOWN | TOUCH_ID_VALID;
     }
-  else if (event == 1)  /* Touch Up */
-    {
-      iinfo("UP: id=%d, touch=%d, x=%d, y=%d\n", id, touchpoints, x, y);
-      if (valid)  /* Touch coordinates were valid. */
-        {
-          data.point[0].flags  = TOUCH_UP | TOUCH_ID_VALID | TOUCH_POS_VALID;
-        }
-      else  /* Touch coordinates were invalid. */
-        {
-          data.point[0].flags  = TOUCH_UP | TOUCH_ID_VALID;
-        }
+  //  Touch Up Event
+  } else if (event == 1) {
+    if (valid) {
+      //  Touch coordinates were valid
+      data.point[0].flags  = TOUCH_UP | TOUCH_ID_VALID | TOUCH_POS_VALID;
+    } else {
+      //  Touch coordinates were invalid
+      data.point[0].flags  = TOUCH_UP | TOUCH_ID_VALID;
     }
-  else  /* Reject Contact */
-    {
-      iinfo("CONTACT: id=%d, touch=%d, x=%d, y=%d\n", id, touchpoints, x, y);
-      return -EINVAL;
-    }
+  //  Reject Contact Event
+  } else {
+    return -EINVAL;
+  }
 
-  /* Return the touch data. */
-
+  //  Return the touch data
   memcpy(buf, &data, sizeof(data));
-
-  iinfo("  id:      %d\n",   data.point[0].id);
-  iinfo("  flags:   %02x\n", data.point[0].flags);
-  iinfo("  x:       %d\n",   data.point[0].x);
-  iinfo("  y:       %d\n",   data.point[0].y);
-
   return sizeof(data);
 }
 ```
