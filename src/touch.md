@@ -656,6 +656,8 @@ TODO
 
 TODO
 
+Note that our NuttX Driver for PineDio Stack's Touch Panel returns 4 possible states: Touch Down vs Touch Up, Valid vs Invalid.
+
 ```c
   //  Set the Touch Flags for...
   //  Touch Down Event
@@ -701,7 +703,7 @@ TODO
 }
 ```
 
-Note that our NuttX Driver for PineDio Stack's Touch Panel returns 4 possible states: Touch Down vs Touch Up, Valid vs Invalid.
+TODO
 
 We got this code thanks to JF's CST816S driver for the Self-Test Firmware...
 
@@ -718,104 +720,6 @@ And from our previous work on PineTime, which also uses CST816S...
 _Who calls cst816s_get_touch_data?_
 
 TODO
-
-## I2C Gotchas
-
-_Is there anything peculiar about I2C on BL602 and BL604?_
-
-TODO: Register ID as Sub Address
-
-TODO: Warning
-
-[cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220)
-
-```c
-/****************************************************************************
- * Name: cst816s_i2c_read
- *
- * Description:
- *   Read from I2C device.
- *
- ****************************************************************************/
-
-static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,
-                            uint8_t *buf, size_t buflen)
-{
-  iinfo("\n"); ////
-  struct i2c_msg_s msgv[2] =
-  {
-    {
-      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
-      .addr      = dev->addr,
-#ifdef CONFIG_BL602_I2C0
-      .flags     = I2C_M_NOSTART,  /* BL602 must send Register ID as Sub Address */
-#else
-      .flags     = 0,  /* Otherwise send Register ID normally */
-#endif /* CONFIG_BL602_I2C0 */
-      .buffer    = &reg,
-      .length    = 1
-    },
-    {
-      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
-      .addr      = dev->addr,
-      .flags     = I2C_M_READ,
-      .buffer    = buf,
-      .length    = buflen
-    }
-  };
-
-  int ret = -EIO;
-  int retries;
-
-  /* CST816S will respond with NACK to address when in low-power mode. Host
-   * needs to retry address selection multiple times to get CST816S to
-   * wake-up.
-   */
-
-  for (retries = 0; retries < CST816S_I2C_RETRIES; retries++)
-    {
-      ret = I2C_TRANSFER(dev->i2c, msgv, 2);
-      if (ret == -ENXIO)
-        {
-          /* -ENXIO is returned when getting NACK from response.
-           * Keep trying.
-           */
-
-          iwarn("I2C NACK\n"); ////
-          continue;
-        }
-      else if (ret >= 0)
-        {
-          /* Success! */
-
-          return 0;
-        }
-      else
-        {
-          /* Some other error. Try to reset I2C bus and keep trying. */
-
-          iwarn("I2C error\n"); ////
-#ifdef CONFIG_I2C_RESET
-          if (retries == CST816S_I2C_RETRIES - 1)
-            {
-              break;
-            }
-
-          ret = I2C_RESET(dev->i2c);
-          if (ret < 0)
-            {
-              iinfo("I2C_RESET failed: %d\n", ret);
-              return ret;
-            }
-#endif
-        }
-    }
-
-  /* Failed to read sensor. */
-
-  return ret;
-}
-```
 
 ![](https://lupyuen.github.io/images/touch-code4a.png)
 
@@ -1442,7 +1346,105 @@ TODO1
 
 ![](https://lupyuen.github.io/images/touch-button.jpg)
 
-# I2C Logging
+# I2C Quirks
+
+_Is there anything peculiar about I2C on BL602 and BL604?_
+
+TODO: Register ID as Sub Address
+
+TODO: Warning
+
+[cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220)
+
+```c
+/****************************************************************************
+ * Name: cst816s_i2c_read
+ *
+ * Description:
+ *   Read from I2C device.
+ *
+ ****************************************************************************/
+
+static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,
+                            uint8_t *buf, size_t buflen)
+{
+  iinfo("\n"); ////
+  struct i2c_msg_s msgv[2] =
+  {
+    {
+      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+      .addr      = dev->addr,
+#ifdef CONFIG_BL602_I2C0
+      .flags     = I2C_M_NOSTART,  /* BL602 must send Register ID as Sub Address */
+#else
+      .flags     = 0,  /* Otherwise send Register ID normally */
+#endif /* CONFIG_BL602_I2C0 */
+      .buffer    = &reg,
+      .length    = 1
+    },
+    {
+      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+      .addr      = dev->addr,
+      .flags     = I2C_M_READ,
+      .buffer    = buf,
+      .length    = buflen
+    }
+  };
+
+  int ret = -EIO;
+  int retries;
+
+  /* CST816S will respond with NACK to address when in low-power mode. Host
+   * needs to retry address selection multiple times to get CST816S to
+   * wake-up.
+   */
+
+  for (retries = 0; retries < CST816S_I2C_RETRIES; retries++)
+    {
+      ret = I2C_TRANSFER(dev->i2c, msgv, 2);
+      if (ret == -ENXIO)
+        {
+          /* -ENXIO is returned when getting NACK from response.
+           * Keep trying.
+           */
+
+          iwarn("I2C NACK\n"); ////
+          continue;
+        }
+      else if (ret >= 0)
+        {
+          /* Success! */
+
+          return 0;
+        }
+      else
+        {
+          /* Some other error. Try to reset I2C bus and keep trying. */
+
+          iwarn("I2C error\n"); ////
+#ifdef CONFIG_I2C_RESET
+          if (retries == CST816S_I2C_RETRIES - 1)
+            {
+              break;
+            }
+
+          ret = I2C_RESET(dev->i2c);
+          if (ret < 0)
+            {
+              iinfo("I2C_RESET failed: %d\n", ret);
+              return ret;
+            }
+#endif
+        }
+    }
+
+  /* Failed to read sensor. */
+
+  return ret;
+}
+```
+
+## I2C Logging
 
 TODO
 
