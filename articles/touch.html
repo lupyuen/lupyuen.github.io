@@ -75,7 +75,8 @@
 <li><a href="#gpio-interrupt">5 GPIO Interrupt</a><ul>
 <li><a href="#test-gpio-interrupt">5.1 Test GPIO Interrupt</a><ul></ul></li></ul></li>
 <li><a href="#fetch-touch-data">6 Fetch Touch Data</a><ul>
-<li><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a><ul></ul></li></ul></li>
+<li><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a><ul></ul></li>
+<li><a href="#is-i2c-active">6.2 Is I2C Active?</a><ul></ul></li></ul></li>
 <li><a href="#test-touch-data">7 Test Touch Data</a><ul>
 <li><a href="#enable-gpio-interrupt">7.1 Enable GPIO Interrupt</a><ul></ul></li>
 <li><a href="#start-lvgl-app">7.2 Start LVGL App</a><ul></ul></li>
@@ -514,9 +515,9 @@ cst816s_poll_notify:</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/touch-run1a.png" alt="GPIO Interrupt" /></p>
 <h1 id="fetch-touch-data"><a href="#fetch-touch-data">6 Fetch Touch Data</a></h1>
 <p>We’ve handled the GPIO Interrupt, now comes the exciting part of our CST816S Driver… Fetching the <strong>Touch Data over I2C</strong>!</p>
-<p><em>Why use GPIO Interrupts anyway? Can’t we read the data directly over I2C?</em></p>
+<p><em>Why bother with GPIO Interrupts anyway? Can’t we read the data directly over I2C?</em></p>
 <p>Ah but the Touch Panel <strong>won’t respond to I2C Commands</strong> until the screen is tapped! (Which triggers the GPIO Interrupt)</p>
-<p>That’s why we need to <strong>monitor for GPIO Interrupts</strong> (via the Pending Flag) and decide whether the Touch Panel’s I2C Interface is active.</p>
+<p>That’s why we need to <strong>monitor for GPIO Interrupts</strong> (via the Pending Flag) and determine whether the Touch Panel’s I2C Interface is active.</p>
 <p><em>What can we read from CST816S over I2C?</em></p>
 <p>Here’s the Touch Data that we can read from <strong>I2C Registers <code>0x02</code> to <code>0x06</code></strong> on CST816S…</p>
 <ul>
@@ -544,7 +545,7 @@ cst816s_poll_notify:</code></pre></div>
 </li>
 </ul>
 <p><a href="https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466">(Derived from Hynitron’s Reference Driver)</a></p>
-<p><strong>Touch Gestures</strong> might also be supported, according to the CST816S Driver for PineTime InfiniTime. <a href="https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94">(See this)</a></p>
+<p><strong>Touch Gestures</strong> (like swiping and scrolling) might also be supported, according to the CST816S Driver for PineTime InfiniTime. <a href="https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94">(See this)</a></p>
 <p>Let’s check out our driver code…</p>
 <h2 id="get-i2c-touch-data"><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a></h2>
 <p>This is how we read the <strong>Touch Data over I2C</strong> in our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">cst816s.c</a></p>
@@ -640,22 +641,7 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
   return sizeof(data);
 }</code></pre></div>
 <p>TODO</p>
-<p>We got this code thanks to JF’s CST816S driver for the Self-Test Firmware…</p>
-<ul>
-<li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></li>
-</ul>
-<p>And from our previous work on PineTime, which also uses CST816S…</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller">“Building a Rust Driver for PineTime’s Touch Controller”</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs">CST816S Driver in Rust</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466">Hynitron Reference Driver</a></p>
-</li>
-</ul>
+<h2 id="is-i2c-active"><a href="#is-i2c-active">6.2 Is I2C Active?</a></h2>
 <p><em>Who calls cst816s_get_touch_data?</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/touch-code4a.png" alt="" /></p>
