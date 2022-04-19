@@ -74,12 +74,13 @@
 <li><a href="#initialise-driver">4 Initialise Driver</a><ul></ul></li>
 <li><a href="#gpio-interrupt">5 GPIO Interrupt</a><ul>
 <li><a href="#test-gpio-interrupt">5.1 Test GPIO Interrupt</a><ul></ul></li></ul></li>
-<li><a href="#read-touch-data-1">6 Read Touch Data</a><ul>
-<li><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a><ul></ul></li></ul></li>
+<li><a href="#fetch-touch-data">6 Fetch Touch Data</a><ul>
+<li><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a><ul></ul></li>
+<li><a href="#i2c-gotchas">6.2 I2C Gotchas</a><ul></ul></li></ul></li>
 <li><a href="#test-touch-data">7 Test Touch Data</a><ul>
 <li><a href="#enable-gpio-interrupt">7.1 Enable GPIO Interrupt</a><ul></ul></li>
 <li><a href="#start-lvgl-app">7.2 Start LVGL App</a><ul></ul></li>
-<li><a href="#read-touch-data-2">7.3 Read Touch Data</a><ul></ul></li>
+<li><a href="#read-touch-data-1">7.3 Read Touch Data</a><ul></ul></li>
 <li><a href="#trigger-gpio-interrupt">7.4 Trigger GPIO Interrupt</a><ul></ul></li>
 <li><a href="#touch-down-event">7.5 Touch Down Event</a><ul></ul></li>
 <li><a href="#touch-down-event-again">7.6 Touch Down Event Again</a><ul></ul></li>
@@ -511,9 +512,9 @@ cst816s_poll_notify:</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#test-gpio-interrupt">(See the Complete Log)</a></p>
 <p>Yep our CST816S Driver correctly handles the GPIO Interrupt!</p>
 <p><img src="https://lupyuen.github.io/images/touch-run1a.png" alt="GPIO Interrupt" /></p>
-<h1 id="read-touch-data-1"><a href="#read-touch-data-1">6 Read Touch Data</a></h1>
-<p>We’ve handled the GPIO Interrupt, now comes the exciting part of our CST816S Driver… Reading the <strong>Touch Data over I2C</strong>!</p>
-<p><em>Why do we need GPIO Interrupts anyway? Can’t we read the data directly over I2C?</em></p>
+<h1 id="fetch-touch-data"><a href="#fetch-touch-data">6 Fetch Touch Data</a></h1>
+<p>We’ve handled the GPIO Interrupt, now comes the exciting part of our CST816S Driver… Fetching the <strong>Touch Data over I2C</strong>!</p>
+<p><em>Why use GPIO Interrupts anyway? Can’t we read the data directly over I2C?</em></p>
 <p>Ah but the Touch Panel <strong>won’t respond to I2C Commands</strong> until the screen is tapped! (Which triggers the GPIO Interrupt)</p>
 <p>That’s why we need to <strong>monitor for GPIO Interrupts</strong> (via the Pending Flag) and decide whether the Touch Panel’s I2C Interface is active.</p>
 <p><em>What can we read from CST816S over I2C?</em></p>
@@ -543,9 +544,10 @@ cst816s_poll_notify:</code></pre></div>
 </li>
 </ul>
 <p><a href="https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466">(Derived from Hynitron’s Reference Driver)</a></p>
-<p>Let’s check out the driver code…</p>
+<p><strong>Touch Gestures</strong> might also be supported, according to the CST816S Driver for PineTime InfiniTime. <a href="https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94">(See this)</a></p>
+<p>Let’s check out our driver code…</p>
 <h2 id="get-i2c-touch-data"><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a></h2>
-<p>This how we read the <strong>Touch Data over I2C</strong> in our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">cst816s.c</a></p>
+<p>This is how we read the <strong>Touch Data over I2C</strong> in our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define CST816S_REG_TOUCHDATA 0x00
 
 //  Read Touch Data over I2C
@@ -563,6 +565,7 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
     iinfo(&quot;Read touch data failed\n&quot;);
     return ret;
   }</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220">(<strong>cst816s_i2c_read</strong> is defined here)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Interpret the Raw Touch Data
   uint8_t id = readbuf[5] &gt;&gt; 4;
@@ -653,7 +656,97 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
 </li>
 </ul>
 <p><em>Who calls cst816s_get_touch_data?</em></p>
-<p>TODO5</p>
+<p>TODO</p>
+<h2 id="i2c-gotchas"><a href="#i2c-gotchas">6.2 I2C Gotchas</a></h2>
+<p><em>Is there anything peculiar about I2C on BL602 and BL604?</em></p>
+<p>TODO: Register ID as Sub Address</p>
+<p>TODO: Warning</p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220">cst816s.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: cst816s_i2c_read
+ *
+ * Description:
+ *   Read from I2C device.
+ *
+ ****************************************************************************/
+
+static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,
+                            uint8_t *buf, size_t buflen)
+{
+  iinfo(&quot;\n&quot;); ////
+  struct i2c_msg_s msgv[2] =
+  {
+    {
+      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+      .addr      = dev-&gt;addr,
+#ifdef CONFIG_BL602_I2C0
+      .flags     = I2C_M_NOSTART,  /* BL602 must send Register ID as Sub Address */
+#else
+      .flags     = 0,  /* Otherwise send Register ID normally */
+#endif /* CONFIG_BL602_I2C0 */
+      .buffer    = &amp;reg,
+      .length    = 1
+    },
+    {
+      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+      .addr      = dev-&gt;addr,
+      .flags     = I2C_M_READ,
+      .buffer    = buf,
+      .length    = buflen
+    }
+  };
+
+  int ret = -EIO;
+  int retries;
+
+  /* CST816S will respond with NACK to address when in low-power mode. Host
+   * needs to retry address selection multiple times to get CST816S to
+   * wake-up.
+   */
+
+  for (retries = 0; retries &lt; CST816S_I2C_RETRIES; retries++)
+    {
+      ret = I2C_TRANSFER(dev-&gt;i2c, msgv, 2);
+      if (ret == -ENXIO)
+        {
+          /* -ENXIO is returned when getting NACK from response.
+           * Keep trying.
+           */
+
+          iwarn(&quot;I2C NACK\n&quot;); ////
+          continue;
+        }
+      else if (ret &gt;= 0)
+        {
+          /* Success! */
+
+          return 0;
+        }
+      else
+        {
+          /* Some other error. Try to reset I2C bus and keep trying. */
+
+          iwarn(&quot;I2C error\n&quot;); ////
+#ifdef CONFIG_I2C_RESET
+          if (retries == CST816S_I2C_RETRIES - 1)
+            {
+              break;
+            }
+
+          ret = I2C_RESET(dev-&gt;i2c);
+          if (ret &lt; 0)
+            {
+              iinfo(&quot;I2C_RESET failed: %d\n&quot;, ret);
+              return ret;
+            }
+#endif
+        }
+    }
+
+  /* Failed to read sensor. */
+
+  return ret;
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/touch-code4a.png" alt="" /></p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/touch-code5a.png" alt="" /></p>
@@ -950,7 +1043,7 @@ tp_init: Opening /dev/input0
 cst816s_open:</code></pre></div>
 <p>Which calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L384-L420"><code>cst816s_open()</code></a> to open our CST816S Driver.</p>
 <p>The app begins the Touchscreen Calibration process.</p>
-<h2 id="read-touch-data-2"><a href="#read-touch-data-2">7.3 Read Touch Data</a></h2>
+<h2 id="read-touch-data-1"><a href="#read-touch-data-1">7.3 Read Touch Data</a></h2>
 <p>TODO</p>
 <p>The LVGL Test App calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly on the CST816S Driver to get Touch Data…</p>
 <div class="example-wrap"><pre class="language-c"><code>bool tp_read(struct _lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
