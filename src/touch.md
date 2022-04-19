@@ -318,7 +318,7 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
 
   //  Allocate the Device Struct
   struct cst816s_dev_s *priv = kmm_zalloc(
-      sizeof(struct cst816s_dev_s)
+    sizeof(struct cst816s_dev_s)
   );
   if (!priv) {
     ierr("Memory allocation failed\n");
@@ -326,9 +326,9 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
   }
 ```
 
-[(__cst816s_dev_s__ is defined here)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L73-L90)
-
 We begin by allocating the __Device Struct__ that will remember the state of our driver.
+
+[(Device Struct __cst816s_dev_s__ is defined here)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L73-L90)
 
 We populate the Device Struct and initialise the __Poll Semaphore__...
 
@@ -452,17 +452,20 @@ Let's find out what happens inside __cst816s_isr_handler__, our GPIO Interrupt H
 
 ```c
 //  Handle GPIO Interrupt triggered by touch
-static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg)
-{
+static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg) {
+  //  Get the Device Struct from the handler argument
   FAR struct cst816s_dev_s *priv = (FAR struct cst816s_dev_s *)arg;
-  irqstate_t flags;
 
-  DEBUGASSERT(priv != NULL);
+  //  Enter a Critical Section
+  irqstate_t flags = enter_critical_section();
 
-  flags = enter_critical_section();
+  //  Set the Pending Flag to true
   priv->int_pending = true;
+
+  //  Leave the Critical Section
   leave_critical_section(flags);
 
+  //  Notify all poll() callers that data is ready
   cst816s_poll_notify(priv);
   return 0;
 }
