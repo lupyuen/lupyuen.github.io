@@ -531,11 +531,11 @@ Yep our CST816S Driver correctly handles the GPIO Interrupt!
 
 We've handled the GPIO Interrupt, now comes the exciting part of our CST816S Driver... Fetching the __Touch Data over I2C__!
 
-_Why use GPIO Interrupts anyway? Can't we read the data directly over I2C?_
+_Why bother with GPIO Interrupts anyway? Can't we read the data directly over I2C?_
 
 Ah but the Touch Panel __won't respond to I2C Commands__ until the screen is tapped! (Which triggers the GPIO Interrupt)
 
-That's why we need to __monitor for GPIO Interrupts__ (via the Pending Flag) and decide whether the Touch Panel's I2C Interface is active.
+That's why we need to __monitor for GPIO Interrupts__ (via the Pending Flag) and determine whether the Touch Panel's I2C Interface is active.
 
 _What can we read from CST816S over I2C?_
 
@@ -567,7 +567,7 @@ Here's the Touch Data that we can read from __I2C Registers `0x02` to `0x06`__ o
 
 [(Derived from Hynitron's Reference Driver)](https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466)
 
-__Touch Gestures__ might also be supported, according to the CST816S Driver for PineTime InfiniTime. [(See this)](https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94)
+__Touch Gestures__ (like swiping and scrolling) might also be supported, according to the CST816S Driver for PineTime InfiniTime. [(See this)](https://github.com/InfiniTimeOrg/InfiniTime/blob/develop/src/drivers/Cst816s.cpp#L80-L94)
 
 Let's check out our driver code...
 
@@ -705,17 +705,7 @@ TODO
 
 TODO
 
-We got this code thanks to JF's CST816S driver for the Self-Test Firmware...
-
--   [pinedio-stack-selftest/drivers/cst816s.c](https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c)
-
-And from our previous work on PineTime, which also uses CST816S...
-
--   ["Building a Rust Driver for PineTime’s Touch Controller"](https://lupyuen.github.io/articles/building-a-rust-driver-for-pinetimes-touch-controller)
-
--   [CST816S Driver in Rust](https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs)
-
--   [Hynitron Reference Driver](https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466)
+## Is I2C Active?
 
 _Who calls cst816s_get_touch_data?_
 
