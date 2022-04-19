@@ -585,6 +585,8 @@ Let's check out our driver code...
 
 ![Getting I2C Touch Data](https://lupyuen.github.io/images/touch-code4a.png)
 
+[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
+
 ## Get I2C Touch Data
 
 This is how we read the __Touch Data over I2C__ in our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
@@ -722,6 +724,8 @@ That's how we read and decode the Touch Data from CST816S over I2C!
 
 ![Returning I2C Touch Data](https://lupyuen.github.io/images/touch-code5a.png)
 
+[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
+
 ## Is I2C Active?
 
 _Who calls cst816s_get_touch_data to fetch the Touch Data over I2C?_
@@ -753,7 +757,7 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
   nxsem_post(&priv->devsem);
 ```
 
-(Which means that this code will be called when a NuttX App reads _"/dev/input0"_)
+(Which means that this code will run when a NuttX App reads _"/dev/input0"_)
 
 Note that we __fetch the Touch Data__ over I2C only if...
 
@@ -767,15 +771,21 @@ Note that we __fetch the Touch Data__ over I2C only if...
 
 _Why check the Pending Flag?_
 
-Recall that the Pending Flag is set when the __screen is touched__. (Which triggers the GPIO Interrupt)
+Recall that the Pending Flag is set when the __screen is touched__. (Which triggers a GPIO Interrupt)
 
 The Pending Flag tells us when the Touch Panel's I2C Interface is active. And there's __valid Touch Data__ to be fetched.
 
-Thus this check __prevents unnecessary I2C Reads__, until the Touch Data is ready to be read.
+Thus this check __prevents unnecessary I2C Reads__, until the Touch Data is available for reading.
 
 _Why check if the last event was Touch Down?_
 
-TODO
+When we're no longer touching the screen, the Touch Panel __doesn't trigger a GPIO Interrupt__.
+
+Thus to catch the __Touch Up Event__, we must allow the Touch Data to be fetched over I2C.  And we stop fetching thereafter. (Until the screen is touched again)
+
+This causes a few redundant I2C Reads, but it shouldn't affect performance.
+
+(Unless we touch the screen for a very long time!)
 
 # Test Touch Data
 
