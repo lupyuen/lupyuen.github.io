@@ -89,8 +89,7 @@
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-install-driver">12 Appendix: Install Driver</a><ul></ul></li>
-<li><a href="#appendix-enable-logging">13 Appendix: Enable Logging</a><ul></ul></li>
-<li><a href="#appendix-gpio-interrupt">14 Appendix: GPIO Interrupt</a><ul></ul></li></ul></nav><p>📝 <em>24 Apr 2022</em></p>
+<li><a href="#appendix-gpio-interrupt">13 Appendix: GPIO Interrupt</a><ul></ul></li></ul></nav><p>📝 <em>24 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> is Pine64’s newest microcontroller board, based on <a href="https://lupyuen.github.io/articles/pinecone"><strong>Bouffalo Lab’s BL604</strong></a> RISC-V + WiFi + Bluetooth LE SoC.</p>
@@ -483,7 +482,27 @@ static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg) {
 <p>We use a <strong>Critical Section</strong> to protect the Pending Flag from being modified by multiple threads.</p>
 <h2 id="test-gpio-interrupt"><a href="#test-gpio-interrupt">5.1 Test GPIO Interrupt</a></h2>
 <p><em>Our GPIO Interrupt Handler… Does it really work?</em></p>
-<p>Let’s test it!</p>
+<p>Let’s test it! Build, flash and run NuttX on PineDio Stack (with logging enabled)…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#build-nuttx"><strong>“Build NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/touch#appendix-enable-logging"><strong>“Enable Logging”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack"><strong>“Flash PineDio Stack”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack"><strong>“Boot PineDio Stack”</strong></a></p>
+</li>
+</ul>
+<p>In the NuttX Shell, enter this command to <strong>list all devices</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<p>We should see our CST816S Driver loaded at “<strong>/dev/input0</strong>”…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/touch-device.png" alt="NuttX Touchscreen Device" /></p>
+</blockquote>
 <p>TODO</p>
 <p>Tapping the screen on PineDio Stack … Correctly triggers a GPIO Interrupt 🎉</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
@@ -1337,38 +1356,8 @@ make menuconfig </code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">“I2C Logging”</a></li>
 </ul>
-<p>We need to enable warnings for the I2C driver, as explained in the next section.</p>
-<h1 id="appendix-enable-logging"><a href="#appendix-enable-logging">13 Appendix: Enable Logging</a></h1>
-<p>TODO</p>
-<p>Enable I2C Warnings because of the <a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">I2C Workaround for CST816S</a>…</p>
-<ol>
-<li>
-<p>Enter menuconfig…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div></li>
-<li>
-<p>Click <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong></p>
-</li>
-<li>
-<p>Check the boxes for the following…</p>
-<div class="example-wrap"><pre class="language-text"><code>Enable Warnings Output
-I2C Warnings Output</code></pre></div></li>
-<li>
-<p>(Optional) To enable logging for the CST816S Driver, check the boxes for…</p>
-<div class="example-wrap"><pre class="language-text"><code>Enable Error Output
-Enable Informational Debug Output
-Enable Debug Assertions
-Input Device Error Output
-Input Device Warnings Output
-Input Device Informational Output</code></pre></div></li>
-<li>
-<p>Note that “Enable Informational Debug Output” must be unchecked for the LoRaWAN Test App <strong>lorawan_test</strong> to work.</p>
-<p>(Because the LoRaWAN Timers are time-critical)</p>
-</li>
-<li>
-<p>Save the configuration and exit menuconfig</p>
-</li>
-</ol>
-<h1 id="appendix-gpio-interrupt"><a href="#appendix-gpio-interrupt">14 Appendix: GPIO Interrupt</a></h1>
+<p>We need to enable warnings for the I2C driver. Follow the instructions in the next section…</p>
+<h1 id="appendix-gpio-interrupt"><a href="#appendix-gpio-interrupt">13 Appendix: GPIO Interrupt</a></h1>
 <p>TODO</p>
 <p>CST816S will trigger <strong>GPIO Interrupts</strong> when we touch the screen.</p>
 <p>Earlier we called these functions at startup to handle GPIO Interrupts…</p>

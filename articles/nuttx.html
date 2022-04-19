@@ -96,11 +96,12 @@
 <li><a href="#build-nuttx">14.2 Build NuttX</a><ul></ul></li>
 <li><a href="#flash-nuttx">14.3 Flash NuttX</a><ul></ul></li>
 <li><a href="#run-nuttx">14.4 Run NuttX</a><ul></ul></li></ul></li>
-<li><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a><ul>
-<li><a href="#observe-the-glitch">15.1 Observe the glitch</a><ul></ul></li>
-<li><a href="#trace-the-glitch">15.2 Trace the glitch</a><ul></ul></li>
-<li><a href="#fix-the-glitch">15.3 Fix the glitch</a><ul></ul></li>
-<li><a href="#test-the-fix">15.4 Test the fix</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>24 Nov 2021</em></p>
+<li><a href="#appendix-nuttx-logging">15 Appendix: NuttX Logging</a><ul></ul></li>
+<li><a href="#appendix-fix-gpio-output">16 Appendix: Fix GPIO Output</a><ul>
+<li><a href="#observe-the-glitch">16.1 Observe the glitch</a><ul></ul></li>
+<li><a href="#trace-the-glitch">16.2 Trace the glitch</a><ul></ul></li>
+<li><a href="#fix-the-glitch">16.3 Fix the glitch</a><ul></ul></li>
+<li><a href="#test-the-fix">16.4 Test the fix</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>24 Nov 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-title.jpg" alt="Tasty Nutty Treat on PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Tasty Nutty Treat on PineDio Stack BL604 RISC-V Board</em></p>
 <p>Among all Embedded Operating Systems, <strong>Apache NuttX is truly unique</strong> because…</p>
@@ -1006,7 +1007,87 @@ nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
-<h1 id="appendix-fix-gpio-output"><a href="#appendix-fix-gpio-output">15 Appendix: Fix GPIO Output</a></h1>
+<h1 id="appendix-nuttx-logging"><a href="#appendix-nuttx-logging">15 Appendix: NuttX Logging</a></h1>
+<p>Here are the steps to enable <strong>NuttX Logging</strong> for easier troubleshooting…</p>
+<ol>
+<li>
+<p>Enter menuconfig…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div></li>
+<li>
+<p>Select <strong>“Build Setup”</strong> → <strong>“Debug Options”</strong></p>
+</li>
+<li>
+<p>(Mandatory) Check the boxes for the following…</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable Debug Features
+Enable Error Output
+Enable Warnings Output
+Enable Debug Assertions
+
+Graphics Debug Features
+Graphics Error Output
+Graphics Warnings Output
+
+Low-level LCD Debug Features
+LCD Driver Error Output
+LCD Driver Warnings Output
+
+Input Device Debug Features
+Input Device Error Output
+Input Device Warnings Output
+
+GPIO Debug Features
+GPIO Error Output
+GPIO Warnings Output
+
+I2C Debug Features
+I2C Warnings Output
+I2C Error Output
+
+Sensor Debug Features
+Sensor Warnings Output
+Sensor Error Output
+
+SPI Debug Features
+SPI Error Output
+SPI Warnings Output</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">(“I2C Warnings” are mandatory because of an I2C issue)</a></p>
+</li>
+<li>
+<p>(Optional) To enable logging for the <strong>CST816S Touch Panel Driver</strong>, check the boxes for…</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable Informational Debug Output
+Input Device Informational Output</code></pre></div></li>
+<li>
+<p>(Optional) To enable logging for <strong>ST7789 Display and LVGL Library</strong>, check the boxes for…</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable Informational Debug Output
+Graphics Informational Output
+LCD Driver Informational Output</code></pre></div></li>
+<li>
+<p>(Optional) To enable logging for <strong>I2C and Sensors</strong>, check the boxes for…</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable Informational Debug Output
+I2C Informational Output
+Sensor Informational Output</code></pre></div></li>
+<li>
+<p>(Optional) To enable logging for <strong>GPIO and SPI</strong>, check the boxes for…</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable Informational Debug Output
+GPIO Informational Output
+SPI Informational Output</code></pre></div></li>
+<li>
+<p>Note that “Enable Informational Debug Output” must be unchecked for the LoRaWAN Test App <strong>lorawan_test</strong> to work.</p>
+<p>(Because LoRaWAN Timers are time-critical)</p>
+</li>
+<li>
+<p>Save the configuration to <strong><code>.config</code></strong> and exit menuconfig</p>
+</li>
+<li>
+<p>Rebuild NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
+<li>
+<p><strong>For WSL:</strong> Copy the NuttX Firmware to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
+mkdir /mnt/c/blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div></li>
+</ol>
+<h1 id="appendix-fix-gpio-output"><a href="#appendix-fix-gpio-output">16 Appendix: Fix GPIO Output</a></h1>
 <p>This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/pull/4876"><strong>riscv/bl602: Enable GPIO output</strong></a></li>
@@ -1030,7 +1111,7 @@ nsh&gt;</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-ledon.jpg" alt="LED On" /></p>
 </blockquote>
-<h2 id="observe-the-glitch"><a href="#observe-the-glitch">15.1 Observe the glitch</a></h2>
+<h2 id="observe-the-glitch"><a href="#observe-the-glitch">16.1 Observe the glitch</a></h2>
 <p>We observe the GPIO Output Glitch on <strong>Pine64 PineCone BL602 Board.</strong> (Pic above)</p>
 <p>PineCone BL602 has a Blue LED connected on <strong>GPIO 11</strong>…</p>
 <ul>
@@ -1069,7 +1150,7 @@ Driver: /dev/gpout1
 <p>NuttX changes GPIO 11 from <strong>Low to High</strong> and back to Low.</p>
 <p>But the BL602 <strong>LED doesn’t blink</strong>. Let’s track down the glitch.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio4a.png" alt="Flipping GPIO 11 doesn’t blink the LED" /></p>
-<h2 id="trace-the-glitch"><a href="#trace-the-glitch">15.2 Trace the glitch</a></h2>
+<h2 id="trace-the-glitch"><a href="#trace-the-glitch">16.2 Trace the glitch</a></h2>
 <p>To track down the glitch, we add debug logging to the BL602 GPIO Driver functions <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133"><strong>bl602_configgpio</strong></a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209"><strong>bl602_gpiowrite</strong></a>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052"><strong>Debug GPIO Output</strong></a></li>
@@ -1098,7 +1179,7 @@ enable GPIO Output</strong> on GPIO 11.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio7a.png" alt="GPIO Output Enable Register is at 0x40000190" /></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1990-L2010">(Source)</a></p>
 <p>Let’s update the GPIO Output Enable Register in NuttX.</p>
-<h2 id="fix-the-glitch"><a href="#fix-the-glitch">15.3 Fix the glitch</a></h2>
+<h2 id="fix-the-glitch"><a href="#fix-the-glitch">16.3 Fix the glitch</a></h2>
 <p>We patch the <strong>bl602_configgpio</strong> function to update the GPIO Output Enable Register: <a href="https://github.com/lupyuen/incubator-nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137">bl602_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Existing function
 int bl602_configgpio(gpio_pinset_t cfgset)
@@ -1128,7 +1209,7 @@ int bl602_configgpio(gpio_pinset_t cfgset)
 </ul>
 <p>Let’s test the patch.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-gpio8a.png" alt="Update the GPIO Output Enable Register" /></p>
-<h2 id="test-the-fix"><a href="#test-the-fix">15.4 Test the fix</a></h2>
+<h2 id="test-the-fix"><a href="#test-the-fix">16.4 Test the fix</a></h2>
 <p>We rebuild and run the patched code.</p>
 <p>At startup, the Blue LED is <strong>On</strong> (because the default GPIO Output is Low)…</p>
 <blockquote>
