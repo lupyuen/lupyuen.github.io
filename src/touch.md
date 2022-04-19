@@ -726,7 +726,7 @@ That's how we read and decode the Touch Data from CST816S over I2C!
 
 [(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
 
-## Is I2C Active?
+## Is Data Ready?
 
 _Who calls cst816s_get_touch_data to fetch the Touch Data over I2C?_
 
