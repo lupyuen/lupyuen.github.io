@@ -493,7 +493,7 @@ We use a __Critical Section__ to protect the Pending Flag from being modified by
 
 _Our GPIO Interrupt Handler... Does it really work?_
 
-Let's test it! Build, flash and run NuttX on PineDio Stack (with CST816S logging enabled)...
+Let's test it! Follow these steps to __build, flash and run NuttX__ on PineDio Stack (with CST816S logging enabled)...
 
 -   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
 
@@ -730,7 +730,7 @@ That's how we read and decode the Touch Data from CST816S over I2C!
 
 _Who calls cst816s_get_touch_data to fetch the Touch Data over I2C?_
 
-__cst816s_get_touch_data__ is called by __`read()`__ File Operation of our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L334-L388)
+__cst816s_get_touch_data__ is called by the __`read()`__ File Operation of our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L334-L388)
 
 ```c
 //  Implements the read() File Operation for the driver
@@ -787,323 +787,45 @@ This causes a few redundant I2C Reads, but it shouldn't affect performance.
 
 (Unless we touch the screen for a very long time!)
 
-# Test Touch Data
+# Run The Driver
+
+For our final demo today, let's run our CST816S Driver and test the Touch Panel!
+
+Follow these steps to __build, flash and run NuttX__ on PineDio Stack (with CST816S logging enabled)...
+
+-   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
+
+-   [__"NuttX Logging"__](https://lupyuen.github.io/articles/nuttx#appendix-nuttx-logging)
+
+-   [__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
+
+-   [__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
+
+In the NuttX Shell, enter this command to run the [__LVGL Test App__](https://github.com/lupyuen/lvgltest-nuttx)...
+
+```bash
+lvgltest
+```
+
+We should see the __Touch Calibration__ screen...
+
+![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title.jpg)
+
+When prompted, __tap the 4 corners__ of the screen...
+
+-   [__Watch the demo on YouTube__](https://www.youtube.com/shorts/2Nzjrlp5lcE)
+
+-   [__See the Debug Log__](https://github.com/lupyuen/cst816s-nuttx#test-touch-data)
+
+Yep our CST816S Driver responds correctly to touch! 🎉
+
+_The touchscreen looks laggy?_
 
 TODO
-
-NuttX Driver for PineDio Stack Touch Panel responds correctly to touch! 🎉
 
 PineDio Stack Touch Screen feels laggy on Apache #NuttX RTOS right now ... 2 things we can fix: 1️⃣ Increase SPI Frequency 2️⃣ Switch to SPI DMA eventually
 
--   [Watch the demo on YouTube](https://www.youtube.com/shorts/2Nzjrlp5lcE)
-
-[(UPDATE: We have bumped up the SPI Frequency to max 40 MHz, still feels laggy)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L580)
-
-Here's the detailed log...
-
-```text
-gpio_pin_register: Registering /dev/gpio0
-gpio_pin_register: Registering /dev/gpio1
-gpint_enable: Disable the interrupt
-gpio_pin_register: Registering /dev/gpio2
-bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
-spi_test_driver_register: devpath=/dev/spitest0, spidev=0
-cst816s_register: path=/dev/input0, addr=21
-bl602_expander_set_intmod: gpio_pin=9, int_ctlmod=1, int_trgmod=0
-bl602_irq_attach: Attach 0x2305e596
-bl602_irq_enable: Disable interrupt
-cst816s_register: Driver registered
-bl602_irq_enable: Enable interrupt
-
-NuttShell (NSH) NuttX-10.2.0-RC0
-nsh> lvgltest
-tp_init: Opening /dev/input0
-cst816s_open:
-
-bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
-cst816s_poll_notify:
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x1700de
-ransfer success
-cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x1700de
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, ouch=0, x=222, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x1700de
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=222, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
-cst816s_get_touch_data: UP: id=0, touch=2, x=222, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   0c
-cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23
-bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
-cst816s_poll_notify:
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0xd900db
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=219, y=217
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       219
-cst816s_get_touch_data:   y:       217
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0xd900db
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=219, y=217
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:  19
-cst816s_get_touch_data:   x:       219
-cst816s_get_touch_data:   y:       217
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-cst816s_get_touch_data: Invalid touch data: id=4, touch=2, x=636, y=3330
-cst816s_get_touch_data: UP: id=0, touch=2, x=219, y=217
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   0c
-cst816s_get_touch_data:   x:       219
-cst816s_get_touch_data:   y:       217
-bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
-cst816s_poll_notify:
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0xdb0022
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=34, y=219
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       34
-cst816s_get_touch_data:   y:       219
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0xdb0022
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=34, y=219
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       34
-cst816s_get_touch_data:   y:       219
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-cst816s_get_touch_data: Invalid touch data: id=4, touch=2, x=636, y=3330
-cst816s_get_touch_data: UP: id=0, touch=2, x=34, y=219
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   0c
-cst816s_get_touch_data:   x:       34
-cst816s_get_touch_data:   y:       219
-bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
-cst816s_poll_notify:
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x180018
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=24, y=24
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       24
-cst816s_get_touch_data:   y:       24
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x180018
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=24, y=24
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       24
-cst816s_get_touch_data:   y:       24
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-cst816s_get_touch_data: Invalid touch data: id=4, touch=2, x=636, y=3330
-cst816s_get_touch_data: UP: id=0, touch=2, x=24, y=24
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   0c
-cst816s_get_touch_data:   x:       24
-cst816s_get_touch_data:   y:       24
-bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
-cst816s_poll_notify:
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x8d0076
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=118, y=141
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       118
-cst816s_get_touch_data:   y:       141
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x8d0076
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=118, y=141
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       118
-cst816s_get_touch_data:   y:       141
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-cst816s_get_touch_data: Invalid touch data: id=4, touch=2, x=636, y=3330
-cst816s_get_touch_data: UP: id=0, touch=2, x=118, y=141
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   0c
-cst816s_get_touch_data:   x:       118
-cst816s_get_touch_data:   y:       141
-
-tp_cal result
-offset x:23, y:24
-range x:194, y:198
-invert x/y:1, x:0, y:1
-```
-
-[(See the Complete Log)](https://github.com/lupyuen/cst816s-nuttx#test-touch-data)
-
-Let's break down the log...
-
-## Enable GPIO Interrupt
-
-TODO
-
-At NuttX Startup, we register the CST816S Driver as `/dev/input0` and enable the GPIO interrupt...
-
-```text
-gpio_pin_register: Registering /dev/gpio0
-gpio_pin_register: Registering /dev/gpio1
-gpint_enable: Disable the interrupt
-gpio_pin_register: Registering /dev/gpio2
-bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
-spi_test_driver_register: devpath=/dev/spitest0, spidev=0
-cst816s_register: path=/dev/input0, addr=21
-bl602_expander_set_intmod: gpio_pin=9, int_ctlmod=1, int_trgmod=0
-bl602_irq_attach: Attach 0x2305e596
-bl602_irq_enable: Disable interrupt
-cst816s_register: Driver registered
-bl602_irq_enable: Enable interrupt
-
-NuttShell (NSH) NuttX-10.2.0-RC0
-nsh>
-```
-
-## Start LVGL App
-
-TODO
-
-We run the LVGL Test App `lvgltest`...
-
-```text
-nsh> lvgltest
-tp_init: Opening /dev/input0
-cst816s_open:
-```
-
-Which calls [`cst816s_open()`](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L384-L420) to open our CST816S Driver.
-
-The app begins the Touchscreen Calibration process.
+Let's study the log...
 
 ## Read Touch Data
 
