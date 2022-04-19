@@ -440,6 +440,40 @@ We'll see these functions in a while.
 
 # GPIO Interrupt
 
+CST816S will trigger __GPIO Interrupts__ when we touch the screen.
+
+Earlier we called these functions at startup to handle GPIO Interrupts...
+
+-   [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772): Attach our GPIO Interrupt Handler
+
+-   [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804): Enable GPIO Interrupt
+
+Let's find out what happens inside __cst816s_isr_handler__, our GPIO Interrupt Handler: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L611-L632)
+
+```c
+//  Handle GPIO Interrupt triggered by touch
+static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg)
+{
+  FAR struct cst816s_dev_s *priv = (FAR struct cst816s_dev_s *)arg;
+  irqstate_t flags;
+
+  DEBUGASSERT(priv != NULL);
+
+  flags = enter_critical_section();
+  priv->int_pending = true;
+  leave_critical_section(flags);
+
+  cst816s_poll_notify(priv);
+  return 0;
+}
+```
+
+TODO: __int_pending__
+
+TODO: __Pending Flag__
+
+[__cst816s_poll_notify__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L493-L519)
+
 TODO
 
 `bl602_irq_attach` is defined below...
@@ -511,6 +545,8 @@ int cst816s_register(FAR const char *devpath,
 There's bug with BL602 GPIO Interrupts that we have fixed for our driver...
 
 https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538
+
+## Test GPIO Interrupt
 
 TODO
 
