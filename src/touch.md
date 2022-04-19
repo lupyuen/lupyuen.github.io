@@ -493,11 +493,11 @@ We use a __Critical Section__ to protect the Pending Flag from being modified by
 
 _Our GPIO Interrupt Handler... Does it really work?_
 
-Let's test it! Build, flash and run NuttX on PineDio Stack (with logging enabled)...
+Let's test it! Build, flash and run NuttX on PineDio Stack (with CST816S logging enabled)...
 
 -   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
 
--   [__"Enable Logging"__](https://lupyuen.github.io/articles/touch#appendix-enable-logging)
+-   [__"NuttX Logging"__](https://lupyuen.github.io/articles/nuttx#appendix-nuttx-logging)
 
 -   [__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
 

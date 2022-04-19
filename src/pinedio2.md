@@ -435,7 +435,7 @@ Refer to the docs for the steps to create our own __NuttX Apps, Libraries and Dr
 
 Here are some __Troubleshooting Tips__...
 
--   [__"Enable Logging"__](https://lupyuen.github.io/articles/spi2#enable-logging)
+-   [__"NuttX Logging"__](https://lupyuen.github.io/articles/nuttx#appendix-nuttx-logging)
 
 -   [__"NuttX Crash Analysis"__](https://lupyuen.github.io/articles/auto#nuttx-crash-analysis)
 

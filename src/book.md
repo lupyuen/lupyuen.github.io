@@ -398,7 +398,7 @@ Tips for __troubleshooting BL602 and BL604 firmware__.
 
 For __Apache NuttX OS__
 
--   ["Enable Logging"](https://lupyuen.github.io/articles/spi2#enable-logging)
+-   ["NuttX Logging"](https://lupyuen.github.io/articles/nuttx#appendix-nuttx-logging)
 
 -   ["NuttX Crash Analysis"](https://lupyuen.github.io/articles/auto#nuttx-crash-analysis)
 
