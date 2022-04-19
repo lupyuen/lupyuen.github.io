@@ -529,6 +529,8 @@ Yep our CST816S Driver correctly handles the GPIO Interrupt!
 
 # Read Touch Data
 
+Now we come to the fun part of our CST816S Driver... Reading the __Touch Data over I2C__!
+
 TODO
 
 Here's how we read the Touched Coordinates in our driver...
