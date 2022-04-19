@@ -72,7 +72,8 @@
 <li><a href="#read-touch-data">2.2 Read Touch Data</a><ul></ul></li></ul></li>
 <li><a href="#load-the-driver">3 Load The Driver</a><ul></ul></li>
 <li><a href="#initialise-driver">4 Initialise Driver</a><ul></ul></li>
-<li><a href="#gpio-interrupt">5 GPIO Interrupt</a><ul></ul></li>
+<li><a href="#gpio-interrupt">5 GPIO Interrupt</a><ul>
+<li><a href="#test-gpio-interrupt">5.1 Test GPIO Interrupt</a><ul></ul></li></ul></li>
 <li><a href="#read-touch-data-1">6 Read Touch Data</a><ul></ul></li>
 <li><a href="#test-touch-data">7 Test Touch Data</a><ul>
 <li><a href="#enable-gpio-interrupt">7.1 Enable GPIO Interrupt</a><ul></ul></li>
@@ -435,6 +436,35 @@ static const struct file_operations g_cst816s_fileops = {
 <p>We’ll see these functions in a while.</p>
 <p><img src="https://lupyuen.github.io/images/touch-code2a.png" alt="Initialise the CST816S Driver at startup" /></p>
 <h1 id="gpio-interrupt"><a href="#gpio-interrupt">5 GPIO Interrupt</a></h1>
+<p>CST816S will trigger <strong>GPIO Interrupts</strong> when we touch the screen.</p>
+<p>Earlier we called these functions at startup to handle GPIO Interrupts…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772"><strong>bl602_irq_attach</strong></a>: Attach our GPIO Interrupt Handler</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804"><strong>bl602_irq_enable</strong></a>: Enable GPIO Interrupt</p>
+</li>
+</ul>
+<p>Let’s find out what happens inside <strong>cst816s_isr_handler</strong>, our GPIO Interrupt Handler: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L611-L632">cst816s.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Handle GPIO Interrupt triggered by touch
+static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg)
+{
+  FAR struct cst816s_dev_s *priv = (FAR struct cst816s_dev_s *)arg;
+  irqstate_t flags;
+
+  DEBUGASSERT(priv != NULL);
+
+  flags = enter_critical_section();
+  priv-&gt;int_pending = true;
+  leave_critical_section(flags);
+
+  cst816s_poll_notify(priv);
+  return 0;
+}</code></pre></div>
+<p>TODO: <strong>int_pending</strong></p>
+<p>TODO: <strong>Pending Flag</strong></p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L493-L519"><strong>cst816s_poll_notify</strong></a></p>
 <p>TODO</p>
 <p><code>bl602_irq_attach</code> is defined below…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
@@ -493,6 +523,7 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661">(Source)</a></p>
 <p>There’s bug with BL602 GPIO Interrupts that we have fixed for our driver…</p>
 <p>https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538</p>
+<h2 id="test-gpio-interrupt"><a href="#test-gpio-interrupt">5.1 Test GPIO Interrupt</a></h2>
 <p>TODO</p>
 <p>Tapping the screen on PineDio Stack … Correctly triggers a GPIO Interrupt 🎉</p>
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio0
