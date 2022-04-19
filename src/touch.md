@@ -821,9 +821,21 @@ Yep our CST816S Driver responds correctly to touch! 🎉
 
 _The touchscreen looks laggy?_
 
-TODO
+The ST7789 Display feels laggy because of __inefficient SPI Data Transfer__. The SPI Driver polls the SPI Port when transferring data. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L805-L855)
 
-PineDio Stack Touch Screen feels laggy on Apache #NuttX RTOS right now ... 2 things we can fix: 1️⃣ Increase SPI Frequency 2️⃣ Switch to SPI DMA eventually
+That's why we need to implement [__SPI Direct Memory Access (DMA)__](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access) so that PineDio Stack can do other tasks (like handling the Touch Panel) while painting the ST7789 Display.
+
+We'll port to NuttX this implementation of SPI DMA from __BL MCU SDK__...
+
+-   [__bl602_dma.c__](https://github.com/bouffalolab/bl_mcu_sdk/blob/master/drivers/bl602_driver/std_drv/src/bl602_dma.c)
+
+More about SPI DMA on BL602 / BL604...
+
+-   [__"SPI with Direct Memory Access"__](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
+
+-   [__"Create DMA Linked List"__](https://lupyuen.github.io/articles/spi#lli_list_init-create-dma-linked-list)
+
+-   [__"Execute DMA Linked List"__](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma)
 
 Let's study the log...
 
