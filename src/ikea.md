@@ -8,7 +8,7 @@ _[IKEA VINDRIKTNING Air Quality Sensor](https://www.ikea.com/us/en/p/vindriktnin
 
 [__IKEA VINDRIKTNING__](https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911) is a $12 hackable Air Quality Sensor that measures [__PM 2.5 (Particulate Matter__)](https://www.epa.gov/pm-pollution/particulate-matter-pm-basics) with reasonable accuracy.
 
-Let's connect the IKEA Sensor to a RISC-V Microcontroller Board: [__Pine64 PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) (pic below) running on [__Apache NuttX__](https://lupyuen.github.io/articles/nuttx) operating system.
+Let's connect the IKEA Sensor to a RISC-V Microcontroller Board: [__Pine64 PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) (pic below) running on [__Apache NuttX__](https://lupyuen.github.io/articles/nuttx) operating system.
 
 (Our code will run on ESP32 too)
 
@@ -42,7 +42,7 @@ Check out these projects...
 
 ![Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/loader-title.jpg)
 
-[_Pine64 PineDio Stack BL604 RISC-V Board_](https://lupyuen.github.io/articles/pinedio)
+[_Pine64 PineDio Stack BL604 RISC-V Board_](https://lupyuen.github.io/articles/pinedio2)
 
 # About IKEA Air Quality Sensor
 
@@ -131,7 +131,7 @@ Follow these steps to __solder the UART (Serial) Port__ on the IKEA VINDRIKTNING
 
 # Connect to PineDio Stack BL604
 
-Now that we have exposed the UART Port on IKEA Air Quality Sensor, let's connect it to our Microcontroller Board: [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio)
+Now that we have exposed the UART Port on IKEA Air Quality Sensor, let's connect it to our Microcontroller Board: [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2)
 
 | From | To | Wire Colour
 | :---- | :---- | :----

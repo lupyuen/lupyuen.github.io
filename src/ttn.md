@@ -52,7 +52,7 @@ _What is PineDio Stack?_
 
 __PineDio Stack__ is a 32-bit RISC-V Microcontroller board...
 
--   [__"PineDio Stack BL604 RISC-V Board: Testing The Prototype"__](https://lupyuen.github.io/articles/pinedio)
+-   [__"PineDio Stack BL604 runs Apache NuttX RTOS"__](https://lupyuen.github.io/articles/pinedio2)
 
 Which has an onboard LoRa SX1262 Transceiver...
 

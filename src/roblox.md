@@ -32,7 +32,7 @@ _What's a Digital Twin?_
 
 A [__Digital Twin__](https://en.m.wikipedia.org/wiki/Digital_twin) is a Virtual Object that __mirrors a Real-World Object__ through __Sensors and Actuators__. (Like the pic above)
 
-For today's experiment we shall take this IoT Gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio)...
+For today's experiment we shall take this IoT Gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2)...
 
 ![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
 
@@ -1006,7 +1006,7 @@ We follow the instructions below to run the __LoRaWAN Firmware__ on PineDio Stac
 
 Our demo setup...
 
--   __At Left__: Serial Terminal connected to our [__PineDio Stack board__](https://lupyuen.github.io/articles/pinedio)
+-   __At Left__: Serial Terminal connected to our [__PineDio Stack board__](https://lupyuen.github.io/articles/pinedio2)
 
     (We control PineDio Stack by entering commands into the Serial Terminal)
 

@@ -23,11 +23,11 @@ And we need only __11 bytes of CBOR__!
 
 ![Encoding Sensor Data with CBOR on BL602](https://lupyuen.github.io/images/cbor-title.jpg)
 
-Today we'll learn to encode Sensor Data with the __TinyCBOR Library__ that we have ported to the [__BL602__](https://lupyuen.github.io/articles/pinecone) and [__BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V SoCs...
+Today we'll learn to encode Sensor Data with the __TinyCBOR Library__ that we have ported to the [__BL602__](https://lupyuen.github.io/articles/pinecone) and [__BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V SoCs...
 
 -   [__lupyuen/tinycbor-bl602__](https://github.com/lupyuen/tinycbor-bl602)
 
-The library has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
+The library has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
 
 _Must we scrimp and save every single byte?_
 

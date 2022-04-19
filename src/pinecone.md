@@ -136,7 +136,7 @@ Firmware built with NuttX, BL602 IoT SDK and BL602 MCU SDK will work fine on...
 
 1.  [__Pine64 Pinenut BL602__](https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics)
 
-1.  [__Pine64 PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio)
+1.  [__Pine64 PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2)
 
 1.  [__DOIT DT-BL10__](https://www.cnx-software.com/2020/10/25/bl602-iot-sdk-and-5-dt-bl10-wifi-ble-risc-v-development-board/)
 

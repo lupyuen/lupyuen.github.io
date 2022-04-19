@@ -24,7 +24,7 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
 -   If you're wondering: NuttX is named after its creator [__Gregory Nutt__](https://en.m.wikipedia.org/wiki/NuttX). And X because it's POSIX Compliant.
 
-Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Boards. (Pic above)
+Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V Boards. (Pic above)
 
 (The steps in this NuttX tutorial / primer should work on __any BL602 or BL604 Board__: Pinenut, DT-BL10, MagicHome BL602, ...)
 

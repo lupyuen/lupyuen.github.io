@@ -4,7 +4,7 @@
 
 ![Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/loader-title.jpg)
 
-[_Pine64 PineDio Stack BL604 RISC-V Board_](https://lupyuen.github.io/articles/pinedio)
+[_Pine64 PineDio Stack BL604 RISC-V Board_](https://lupyuen.github.io/articles/pinedio2)
 
 Something special happens when we __flash firmware__ to [__BL602 and BL604__](https://lupyuen.github.io/articles/pinecone) RISC-V boards...
 

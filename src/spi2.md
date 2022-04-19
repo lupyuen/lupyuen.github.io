@@ -730,7 +730,7 @@ But each SPI Device has its own __Chip Select Pin__.
 
 For such boards we'll have to control each Chip Select Pin with GPIO.
 
-[(PineDio Stack BL604 shares its SPI Bus with SX1262 Transceiver, ST7789 Display and SPI Flash)](https://lupyuen.github.io/articles/pinedio)
+[(PineDio Stack BL604 shares its SPI Bus with SX1262 Transceiver, ST7789 Display and SPI Flash)](https://lupyuen.github.io/articles/pinedio2)
 
 ## GPIO Output as Chip Select
 
@@ -1038,7 +1038,7 @@ Let's run SPI Test App #2 on a new gagdet with onboard SX1262: PineDio Stack BL6
 
 _(For BL604 only)_
 
-Pine64 has just sent me a prototype of [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) (version 2, pic above) with onboard SX1262 LoRa Transceiver, ST7789 Display, SPI Flash, GPS, Compass, Touch Panel, Heart Rate Sensor, Vibrator, ...
+Pine64 has just sent me a prototype of [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) (version 2, pic above) with onboard SX1262 LoRa Transceiver, ST7789 Display, SPI Flash, GPS, Compass, Touch Panel, Heart Rate Sensor, Vibrator, ...
 
 (Yep multiple devices on the same SPI Bus)
 

@@ -27,7 +27,7 @@ Today we'll learn to encode Sensor Data with the __TinyCBOR Library__ that we ha
 
 -   [__lupyuen2/tinycbor-nuttx__](https://github.com/lupyuen2/tinycbor-nuttx)
 
-The library has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), but it should work on __any NuttX Platform__ (like ESP32)
+The library has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2), but it should work on __any NuttX Platform__ (like ESP32)
 
 [(__tinycbor-nuttx__ is a fork of TinyCBOR with minimal changes)](https://lupyuen.github.io/articles/cbor2#appendix-porting-tinycbor-to-nuttx)
 

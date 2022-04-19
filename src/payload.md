@@ -2,7 +2,7 @@
 
 📝 _18 Oct 2021_
 
-Suppose we have an __IoT Sensor Device__ (like [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio)) connected to __The Things Network__ (via LoRaWAN)...
+Suppose we have an __IoT Sensor Device__ (like [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2)) connected to __The Things Network__ (via LoRaWAN)...
 
 -   [__"The Things Network on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/ttn)
 
@@ -232,7 +232,7 @@ Let's test our CBOR Payload Formatter!
 
 To __test our CBOR Payload Formatter__, we need a LoRaWAN Device that will transmit CBOR Payloads to The Things Network.
 
-Today we shall use [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) (pic above)
+Today we shall use [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) (pic above)
 
 1.  Follow the instructions below to __build, flash and run__ the LoRaWAN Firmware for PineDio Stack...
 

@@ -20,7 +20,7 @@ Today we shall...
 
 1.  And transmit a [__LoRa Message__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) over the airwaves with Rust on NuttX!
 
-We tested Rust on NuttX with [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) RISC-V Board (pic above) and its onboard Semtech SX1262 Transceiver.
+We tested Rust on NuttX with [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V Board (pic above) and its onboard Semtech SX1262 Transceiver.
 
 But it should work on ESP32, Arm and other NuttX platforms. (With some tweaking)
 

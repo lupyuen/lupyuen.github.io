@@ -20,7 +20,7 @@ But if we're building an __IoT Sensor Device__ that will __transmit data packets
 
 [(More about LoRaWAN)](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
 
-We shall test LoRaWAN on NuttX with [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio) (pic above) and its onboard Semtech SX1262 Transceiver.
+We shall test LoRaWAN on NuttX with [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2) (pic above) and its onboard Semtech SX1262 Transceiver.
 
 (LoRaWAN on NuttX will probably run on __ESP32__, since we're calling standard NuttX Interfaces)
 
@@ -1269,7 +1269,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11
 
 # SPI With DMA
 
-Today we have successfully tested the LoRaWAN Library on [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio) (pic below) and its onboard Semtech SX1262 Transceiver.
+Today we have successfully tested the LoRaWAN Library on [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2) (pic below) and its onboard Semtech SX1262 Transceiver.
 
 The NuttX implementation of __SPI on BL602 and BL604__ might need some enhancements...
 
@@ -1281,7 +1281,7 @@ The NuttX implementation of __SPI on BL602 and BL604__ might need some enhanceme
 
     (SPI with DMA is probably better for LoRaWAN)
 
--   We're testing NuttX and LoRaWAN on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio), which comes with an onboard __ST7789 SPI Display__.
+-   We're testing NuttX and LoRaWAN on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2), which comes with an onboard __ST7789 SPI Display__.
 
     __ST7789 works better with DMA__ when blasting pixels to the display.
 

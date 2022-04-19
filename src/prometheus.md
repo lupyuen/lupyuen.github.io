@@ -735,7 +735,7 @@ Drop me a note if you're keen to learn about Prometheus Alerts!
 
 I had fun integrating The Things Network with Prometheus and Grafana... It's something I always wanted to do. I hope you enjoyed it too!
 
-In the next article I'll head back to [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio) and run more IoT Experiments with LoRaWAN and The Things Network.
+In the next article I'll head back to [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) and run more IoT Experiments with LoRaWAN and The Things Network.
 
 (Thankfully we now have a proper platform for Sensor Data visualisation and analysis: Prometheus + Grafana!)
 
