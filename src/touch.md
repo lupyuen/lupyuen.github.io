@@ -529,13 +529,55 @@ Yep our CST816S Driver correctly handles the GPIO Interrupt!
 
 # Read Touch Data
 
-Now we come to the fun part of our CST816S Driver... Reading the __Touch Data over I2C__!
+We've handled the GPIO Interrupt, now comes the exciting part of our CST816S Driver... Reading the __Touch Data over I2C__!
+
+_Why do we need GPIO Interrupts anyway? Can't we read the data directly over I2C?_
+
+Ah but the Touch Panel __won't respond to I2C Commands__ until the screen is tapped! (Which triggers the GPIO Interrupt)
+
+That's why we need to __monitor for GPIO Interrupts__ (via the Pending Flag) and decide whether the Touch Panel's I2C Interface is active.
+
+_What can we read from CST816S over I2C?_
+
+Here's the Touch Data that we can read from __I2C Registers `0x02` to `0x06`__ on CST816S...
+
+-   __Touch Points:__ Number of Touch Points (always 1)
+
+    (Bits 0-3 of Register `0x02`)
+
+-   __Touch Event:__ `0` = Touch Down, `1` = Touch Up, `2` = Contact
+
+    (Bits 6-7 of Register `0x03`)
+
+-   __X Coordinate:__ 0 to 239
+
+    (High Byte: Bits 0-3 of Register `0x03`)
+
+    (Low Byte: Bits 0-7 of Register `0x04`)
+
+-   __Y Coordinate:__ 0 to 239
+
+    (High Byte: Bits 0-3 of Register `0x05`)
+
+    (Low Byte: Bits 0-7 of Register `0x06`)
+
+-   __Touch ID:__ Identifies the Touch Point (always 0)
+
+    (Bits 4-7 of Register `0x05`)
+
+[(Derived from Hynitron's Reference Driver)](https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466)
+
+Let's check out the code...
+
+## Get I2C Touch Data
 
 TODO
 
 Here's how we read the Touched Coordinates in our driver...
 
 ```c
+#define CST816S_REG_TOUCHDATA 0x00
+
 static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf)
 {
   iinfo("\n"); ////
