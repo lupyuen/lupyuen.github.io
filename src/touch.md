@@ -513,82 +513,19 @@ We should see our CST816S Driver loaded at "__/dev/input0__"...
 
 > ![NuttX Touchscreen Device](https://lupyuen.github.io/images/touch-device.png)
 
-TODO
-
-Tapping the screen on PineDio Stack ... Correctly triggers a GPIO Interrupt 🎉
+Tap the screen on PineDio Stack. We should see the __GPIO Interrupt__ handled by our driver...
 
 ```text
-gpio_pin_register: Registering /dev/gpio0
-gpio_pin_register: Registering /dev/gpio1
-gpint_enable: Disable the interrupt
-gpio_pin_register: Registering /dev/gpio2
-bl602_gpio_set_intmod: ****gpio_pin=115, int_ctlmod=1, int_trgmod=0
-spi_test_driver_register: devpath=/dev/spitest0, spidev=0
-cst816s_register:
-bl602_expander_set_intmod: ****gpio_pin=9, int_ctlmod=1, int_trgmod=0
-bl602_irq_attach: Attach 0x2305e9de
-bl602_irq_enable: Disable interrupt
-cst816s_register: Driver registered
-bl602_irq_enable: Enable interrupt
-
-NuttShell (NSH) NuttX-10.2.0-RC0
-nsh> bl602_expander_interrupt: Interrupt! callback=0x2305e9de, arg=0x42020a60
-bl602_expander_interrupt: Call callback=0x2305e9de, arg=0x42020a60
-cst816s_poll_notify:
 bl602_expander_interrupt: Interrupt! callback=0x2305e9de, arg=0x42020a60
 bl602_expander_interrupt: Call callback=0x2305e9de, arg=0x42020a60
 cst816s_poll_notify:
-bl602_expander_interrupt: Interrupt! callback=0x2305e9de, arg=0x42020a60
-bl602_expander_interrupt: Call callback=0x2305e9de, arg=0x42020a60
-cst816s_poll_notify:
-bl602_expander_interrupt: Interrupt! callback=0x2305e9de, arg=0x42020a60
-bl602_expander_interrupt: Call callback=0x2305e9de, arg=0x42020a60
-cst816s_poll_notify:
-```
-
-LVGL Test App `lvgltest` fails to open `/dev/input0`, but that's OK because we haven't implemented the I2C part.
-
-```text
-nsh> ls /dev
-/dev:
- console
- gpio0
- gpio1
- gpio2
- i2c0
- input0
- lcd0
- null
- spi0
- spitest0
- timer0
- urandom
- zero
-
-nsh> lvgltest
-tp_init: Opening /dev/input0
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-cst816s_probe_device: family_id: 0x34, device_id: 0x00aa, device_rev: 35
-cst816s_probe_device: Probe failed, dev-id mismatch!
-cst816s_probe_device:   Expected: family_id: 0x9a, device_id: 0x0a03, device_rev: 1
-tp_init: open /dev/input0 failed: 6
-Terminating!
-bl602_expander_interrupt: Interrupt! callback=0x2305e9e8, arg=0
-bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0
-bl602_expander_interrupt: Interrupt! callback=0x2305e9e8, arg=0
-bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0
-bl602_expander_interrupt: Interrupt! callback=0x2305e9e8, arg=0
-bl602_expander_interrupt: Call callback=0x2305e9e8, arg=0
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen/cst816s-nuttx#test-gpio-interrupt)
 
-TODO8
+Yep our CST816S Driver correctly handles the GPIO Interrupt!
 
-![](https://lupyuen.github.io/images/touch-run1a.png)
+![GPIO Interrupt](https://lupyuen.github.io/images/touch-run1a.png)
 
 # Read Touch Data
 
