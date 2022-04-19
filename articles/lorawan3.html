@@ -108,7 +108,7 @@
 <p>LoRa will work perfectly fine for unsecured <strong>Point-to-Point Wireless Communication</strong> between simple devices.</p>
 <p>But if we’re building an <strong>IoT Sensor Device</strong> that will <strong>transmit data packets</strong> securely to a Local Area Network or to the internet, we need <strong>LoRaWAN</strong>.</p>
 <p><a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(More about LoRaWAN)</a></p>
-<p>We shall test LoRaWAN on NuttX with <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604 RISC-V Board</strong></a> (pic above) and its onboard Semtech SX1262 Transceiver.</p>
+<p>We shall test LoRaWAN on NuttX with <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604 RISC-V Board</strong></a> (pic above) and its onboard Semtech SX1262 Transceiver.</p>
 <p>(LoRaWAN on NuttX will probably run on <strong>ESP32</strong>, since we’re calling standard NuttX Interfaces)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-library5.jpg" alt="Porting LoRaWAN to NuttX OS" /></p>
 <h1 id="small-steps"><a href="#small-steps">1 Small Steps</a></h1>
@@ -1037,7 +1037,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="Checking message size" /></p>
 <p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Source)</a></p>
 <h1 id="spi-with-dma"><a href="#spi-with-dma">14 SPI With DMA</a></h1>
-<p>Today we have successfully tested the LoRaWAN Library on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604 RISC-V Board</strong></a> (pic below) and its onboard Semtech SX1262 Transceiver.</p>
+<p>Today we have successfully tested the LoRaWAN Library on <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604 RISC-V Board</strong></a> (pic below) and its onboard Semtech SX1262 Transceiver.</p>
 <p>The NuttX implementation of <strong>SPI on BL602 and BL604</strong> might need some enhancements…</p>
 <ul>
 <li>
@@ -1049,7 +1049,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p>(SPI with DMA is probably better for LoRaWAN)</p>
 </li>
 <li>
-<p>We’re testing NuttX and LoRaWAN on <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a>, which comes with an onboard <strong>ST7789 SPI Display</strong>.</p>
+<p>We’re testing NuttX and LoRaWAN on <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a>, which comes with an onboard <strong>ST7789 SPI Display</strong>.</p>
 <p><strong>ST7789 works better with DMA</strong> when blasting pixels to the display.</p>
 </li>
 <li>

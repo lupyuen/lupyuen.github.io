@@ -673,7 +673,7 @@ config ESP32_SPI2_MISOPIN
 <p>On many BL602 / ESP32 boards, the SPI Bus (MISO, MOSI and SCK) is <strong>shared by multiple SPI Devices</strong>.</p>
 <p>But each SPI Device has its own <strong>Chip Select Pin</strong>.</p>
 <p>For such boards we’ll have to control each Chip Select Pin with GPIO.</p>
-<p><a href="https://lupyuen.github.io/articles/pinedio">(PineDio Stack BL604 shares its SPI Bus with SX1262 Transceiver, ST7789 Display and SPI Flash)</a></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2">(PineDio Stack BL604 shares its SPI Bus with SX1262 Transceiver, ST7789 Display and SPI Flash)</a></p>
 <h2 id="gpio-output-as-chip-select"><a href="#gpio-output-as-chip-select">7.1 GPIO Output as Chip Select</a></h2>
 <p>Let’s look at the code in <strong>SPI Test App #2</strong> that controls Chip Select with GPIO: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">spi_test2_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Open GPIO Output for SPI Chip Select */
@@ -877,7 +877,7 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="PineDio Stack BL604" /></p>
 <h1 id="test-with-pinedio-stack"><a href="#test-with-pinedio-stack">9 Test with PineDio Stack</a></h1>
 <p><em>(For BL604 only)</em></p>
-<p>Pine64 has just sent me a prototype of <a href="https://lupyuen.github.io/articles/pinedio"><strong>PineDio Stack BL604</strong></a> (version 2, pic above) with onboard SX1262 LoRa Transceiver, ST7789 Display, SPI Flash, GPS, Compass, Touch Panel, Heart Rate Sensor, Vibrator, …</p>
+<p>Pine64 has just sent me a prototype of <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> (version 2, pic above) with onboard SX1262 LoRa Transceiver, ST7789 Display, SPI Flash, GPS, Compass, Touch Panel, Heart Rate Sensor, Vibrator, …</p>
 <p>(Yep multiple devices on the same SPI Bus)</p>
 <p>Let’s test NuttX with PineDio Stack BL604 and its <strong>onboard SX1262</strong>! Here are the innards…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
