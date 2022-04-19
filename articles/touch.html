@@ -76,7 +76,7 @@
 <li><a href="#test-gpio-interrupt">5.1 Test GPIO Interrupt</a><ul></ul></li></ul></li>
 <li><a href="#fetch-touch-data">6 Fetch Touch Data</a><ul>
 <li><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a><ul></ul></li>
-<li><a href="#is-i2c-active">6.2 Is I2C Active?</a><ul></ul></li></ul></li>
+<li><a href="#is-data-ready">6.2 Is Data Ready?</a><ul></ul></li></ul></li>
 <li><a href="#test-touch-data">7 Test Touch Data</a><ul>
 <li><a href="#enable-gpio-interrupt">7.1 Enable GPIO Interrupt</a><ul></ul></li>
 <li><a href="#start-lvgl-app">7.2 Start LVGL App</a><ul></ul></li>
@@ -652,7 +652,7 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
 <p>That’s how we read and decode the Touch Data from CST816S over I2C!</p>
 <p><img src="https://lupyuen.github.io/images/touch-code5a.png" alt="Returning I2C Touch Data" /></p>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">(Source)</a></p>
-<h2 id="is-i2c-active"><a href="#is-i2c-active">6.2 Is I2C Active?</a></h2>
+<h2 id="is-data-ready"><a href="#is-data-ready">6.2 Is Data Ready?</a></h2>
 <p><em>Who calls cst816s_get_touch_data to fetch the Touch Data over I2C?</em></p>
 <p><strong>cst816s_get_touch_data</strong> is called by <strong><code>read()</code></strong> File Operation of our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L334-L388">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Implements the read() File Operation for the driver
