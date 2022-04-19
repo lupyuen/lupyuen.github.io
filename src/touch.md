@@ -454,7 +454,7 @@ Let's find out what happens inside __cst816s_isr_handler__, our GPIO Interrupt H
 //  Handle GPIO Interrupt triggered by touch
 static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg) {
   //  Get the Device Struct from the handler argument
-  FAR struct cst816s_dev_s *priv = (FAR struct cst816s_dev_s *)arg;
+  FAR struct cst816s_dev_s *priv = (FAR struct cst816s_dev_s *) arg;
 
   //  Enter a Critical Section
   irqstate_t flags = enter_critical_section();
@@ -478,76 +478,6 @@ TODO: __Pending Flag__
 [__cst816s_poll_notify__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L493-L519)
 
 TODO
-
-`bl602_irq_attach` is defined below...
-
-```c
-//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
-//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
-static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR void *arg)
-{
-  int ret = 0;
-  uint8_t gpio_pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
-  FAR struct bl602_gpint_dev_s *dev = NULL;  //  TODO
-
-  DEBUGASSERT(callback != NULL);
-
-  /* Configure the pin that will be used as interrupt input */
-
-  #warning Check GLB_GPIO_INT_TRIG_NEG_PULSE  //  TODO
-  bl602_expander_set_intmod(gpio_pin, 1, GLB_GPIO_INT_TRIG_NEG_PULSE);
-  ret = bl602_configgpio(pinset);
-  if (ret < 0)
-    {
-      gpioerr("Failed to configure GPIO pin %d\n", gpio_pin);
-      return ret;
-    }
-
-  /* Make sure the interrupt is disabled */
-
-  bl602_expander_pinset = pinset;
-  bl602_expander_callback = callback;
-  bl602_expander_arg = arg;
-  bl602_expander_intmask(gpio_pin, 1);
-
-  irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, dev);
-  bl602_expander_intmask(gpio_pin, 0);
-
-  gpioinfo("Attach %p\n", callback);
-
-  return 0;
-}
-```
-
-[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727)
-
-Note that we're calling `bl602_expander` to handle interrupts. There doesn't seem to be a way to do this with the current BL602 GPIO Driver (`bl602evb/bl602_gpio.c`).
-
-We are building `bl602_expander` here...
-
--   [lupyuen/bl602_expander](https://github.com/lupyuen/bl602_expander)
-
-To test interrupts we uncomment `#define TEST_CST816S_INTERRUPT`...
-
-```c
-int cst816s_register(FAR const char *devpath,
-                     FAR struct i2c_master_s *i2c_dev,
-                     uint8_t i2c_devaddr)
-{
-...
-//  Uncomment this to test interrupts (tap the screen)
-#define TEST_CST816S_INTERRUPT
-#ifdef TEST_CST816S_INTERRUPT
-#warning Testing CST816S interrupt
-  bl602_irq_enable(true);
-#endif /* TEST_CST816S_INTERRUPT */
-```
-
-[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661)
-
-There's bug with BL602 GPIO Interrupts that we have fixed for our driver...
-
-https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538
 
 ## Test GPIO Interrupt
 
@@ -1606,6 +1536,121 @@ Enable I2C Warnings because of the [I2C Workaround for CST816S](https://github.c
     -   Input Device Informational Output
 
 -   Note that "Enable Informational Debug Output" must be unchecked for the LoRaWAN Test App `lorawan_test` to work (because the LoRaWAN Timers are time-sensitive)
+
+# Appendix: GPIO Interrupt
+
+TODO
+
+`bl602_irq_attach` is defined below...
+
+```c
+//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
+//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
+static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR void *arg)
+{
+  int ret = 0;
+  uint8_t gpio_pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
+  FAR struct bl602_gpint_dev_s *dev = NULL;  //  TODO
+
+  DEBUGASSERT(callback != NULL);
+
+  /* Configure the pin that will be used as interrupt input */
+
+  #warning Check GLB_GPIO_INT_TRIG_NEG_PULSE  //  TODO
+  bl602_expander_set_intmod(gpio_pin, 1, GLB_GPIO_INT_TRIG_NEG_PULSE);
+  ret = bl602_configgpio(pinset);
+  if (ret < 0)
+    {
+      gpioerr("Failed to configure GPIO pin %d\n", gpio_pin);
+      return ret;
+    }
+
+  /* Make sure the interrupt is disabled */
+
+  bl602_expander_pinset = pinset;
+  bl602_expander_callback = callback;
+  bl602_expander_arg = arg;
+  bl602_expander_intmask(gpio_pin, 1);
+
+  irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, dev);
+  bl602_expander_intmask(gpio_pin, 0);
+
+  gpioinfo("Attach %p\n", callback);
+
+  return 0;
+}
+```
+
+[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727)
+
+Note that we're calling `bl602_expander` to handle interrupts. There doesn't seem to be a way to do this with the current BL602 GPIO Driver (`bl602evb/bl602_gpio.c`).
+
+We are building `bl602_expander` here...
+
+-   [lupyuen/bl602_expander](https://github.com/lupyuen/bl602_expander)
+
+TODO: bl602_irq_enable
+
+```c
+/****************************************************************************
+ * Name: bl602_irq_enable
+ *
+ * Description:
+ *   Enable or disable GPIO Interrupt for Touch Controller.
+ *   Based on https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
+ *
+ ****************************************************************************/
+
+static int bl602_irq_enable(bool enable)
+{
+  if (enable)
+    {
+      if (bl602_expander_callback != NULL)
+        {
+          gpioinfo("Enable interrupt\n");
+          up_enable_irq(BL602_IRQ_GPIO_INT0);
+        }
+      else
+        {
+          gpiowarn("No callback attached\n");
+        }
+    }
+  else
+    {
+      gpioinfo("Disable interrupt\n");
+      up_disable_irq(BL602_IRQ_GPIO_INT0);
+    }
+
+  return 0;
+}
+```
+
+[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804)
+
+To test interrupts we uncomment `#define TEST_CST816S_INTERRUPT`...
+
+```c
+int cst816s_register(FAR const char *devpath,
+                     FAR struct i2c_master_s *i2c_dev,
+                     uint8_t i2c_devaddr)
+{
+...
+//  Uncomment this to test interrupts (tap the screen)
+#define TEST_CST816S_INTERRUPT
+#ifdef TEST_CST816S_INTERRUPT
+#warning Testing CST816S interrupt
+  bl602_irq_enable(true);
+#endif /* TEST_CST816S_INTERRUPT */
+```
+
+[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661)
+
+There's bug with BL602 GPIO Interrupts that we have fixed for our driver...
+
+https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538
+
+
+
 
 ![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title2.jpg)
 
