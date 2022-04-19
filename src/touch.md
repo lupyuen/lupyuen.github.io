@@ -567,32 +567,36 @@ Here's the Touch Data that we can read from __I2C Registers `0x02` to `0x06`__ o
 
 [(Derived from Hynitron's Reference Driver)](https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466)
 
-Let's check out the code...
+Let's check out the driver code...
 
 ## Get I2C Touch Data
 
-TODO
-
-Here's how we read the Touched Coordinates in our driver...
+This how we read the __Touch Data over I2C__ in our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
 
 ```c
 #define CST816S_REG_TOUCHDATA 0x00
 
+//  Read Touch Data over I2C
 static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) {
-  //  Read the raw touch data
+
+  //  Read the Raw Touch Data
   uint8_t readbuf[7];
   int ret = cst816s_i2c_read(
-    dev, 
-    CST816S_REG_TOUCHDATA, 
-    readbuf, 
-    sizeof(readbuf)
+    dev,                    //  Device Struct
+    CST816S_REG_TOUCHDATA,  //  Start at Register 0x00
+    readbuf,                //  Buffer for Touch Data
+    sizeof(readbuf)         //  Read 7 bytes
   );
   if (ret < 0) {
     iinfo("Read touch data failed\n");
     return ret;
   }
+```
 
-  //  Interpret the raw touch data
+TODO
+
+```c
+  //  Interpret the Raw Touch Data
   uint8_t id = readbuf[5] >> 4;
   uint8_t touchpoints = readbuf[2] & 0x0f;
   uint8_t xhigh = readbuf[3] & 0x0f;
@@ -602,7 +606,11 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
   uint8_t event = readbuf[3] >> 6;  //  0 = Touch Down, 1 = Touch Up, 2 = Contact */
   uint16_t x  = (xhigh << 8) | xlow;
   uint16_t y  = (yhigh << 8) | ylow;
+```
 
+TODO
+
+```c
   //  If touch coordinates are invalid,
   //  return the last valid coordinates
   bool valid = true;
@@ -618,22 +626,34 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
     x  = last_x;
     y  = last_y;
   }
+```
 
+TODO
+
+```c
   //  Remember the last valid touch data
   last_event = event;
   last_id    = id;
   last_x     = x;
   last_y     = y;
+```
 
-  //  Set the touch data fields
+TODO
+
+```c
+  //  Set the Touch Data fields
   struct touch_sample_s data;
   memset(&data, 0, sizeof(data));
   data.npoints     = 1;
   data.point[0].id = id;
   data.point[0].x  = x;
   data.point[0].y  = y;
+```
 
-  //  Set the touch flags for...
+TODO
+
+```c
+  //  Set the Touch Flags for...
   //  Touch Down Event
   if (event == 0) {
     if (valid) {
@@ -643,6 +663,11 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
       //  Touch coordinates were invalid
       data.point[0].flags  = TOUCH_DOWN | TOUCH_ID_VALID;
     }
+```
+
+TODO
+
+```c
   //  Touch Up Event
   } else if (event == 1) {
     if (valid) {
@@ -652,18 +677,25 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
       //  Touch coordinates were invalid
       data.point[0].flags  = TOUCH_UP | TOUCH_ID_VALID;
     }
+```
+
+TODO
+
+```c
   //  Reject Contact Event
   } else {
     return -EINVAL;
   }
+```
 
+TODO
+
+```c
   //  Return the touch data
   memcpy(buf, &data, sizeof(data));
   return sizeof(data);
 }
 ```
-
-[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
 
 Note that our NuttX Driver for PineDio Stack's Touch Panel returns 4 possible states: Touch Down vs Touch Up, Valid vs Invalid.
 
@@ -678,6 +710,8 @@ And from our previous work on PineTime, which also uses CST816S...
 -   [CST816S Driver in Rust](https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/pinetime/rust/app/src/touch_sensor.rs)
 
 -   [Hynitron Reference Driver](https://github.com/lupyuen/hynitron_i2c_cst0xxse/blob/master/cst0xx_core.c#L407-L466)
+
+_Who calls cst816s_get_touch_data?_
 
 TODO5
 
