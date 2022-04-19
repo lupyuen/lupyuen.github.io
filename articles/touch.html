@@ -555,6 +555,7 @@ cst816s_poll_notify:</code></pre></div>
 <p>We haven’t seen this during our testing. Thus our driver ignores the event.</p>
 <p>Let’s check out our driver code…</p>
 <p><img src="https://lupyuen.github.io/images/touch-code4a.png" alt="Getting I2C Touch Data" /></p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">(Source)</a></p>
 <h2 id="get-i2c-touch-data"><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a></h2>
 <p>This is how we read the <strong>Touch Data over I2C</strong> in our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Read I2C Register 0x00 onwards
@@ -650,6 +651,7 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
 }</code></pre></div>
 <p>That’s how we read and decode the Touch Data from CST816S over I2C!</p>
 <p><img src="https://lupyuen.github.io/images/touch-code5a.png" alt="Returning I2C Touch Data" /></p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">(Source)</a></p>
 <h2 id="is-i2c-active"><a href="#is-i2c-active">6.2 Is I2C Active?</a></h2>
 <p><em>Who calls cst816s_get_touch_data to fetch the Touch Data over I2C?</em></p>
 <p><strong>cst816s_get_touch_data</strong> is called by <strong><code>read()</code></strong> File Operation of our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L334-L388">cst816s.c</a></p>
@@ -675,7 +677,7 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
 
   //  Release semaphore and allow next read
   nxsem_post(&amp;priv-&gt;devsem);</code></pre></div>
-<p>(Which means that this code will be called when a NuttX App reads <em>“/dev/input0”</em>)</p>
+<p>(Which means that this code will run when a NuttX App reads <em>“/dev/input0”</em>)</p>
 <p>Note that we <strong>fetch the Touch Data</strong> over I2C only if…</p>
 <ul>
 <li>
@@ -688,11 +690,14 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
 </li>
 </ul>
 <p><em>Why check the Pending Flag?</em></p>
-<p>Recall that the Pending Flag is set when the <strong>screen is touched</strong>. (Which triggers the GPIO Interrupt)</p>
+<p>Recall that the Pending Flag is set when the <strong>screen is touched</strong>. (Which triggers a GPIO Interrupt)</p>
 <p>The Pending Flag tells us when the Touch Panel’s I2C Interface is active. And there’s <strong>valid Touch Data</strong> to be fetched.</p>
-<p>Thus this check <strong>prevents unnecessary I2C Reads</strong>, until the Touch Data is ready to be read.</p>
+<p>Thus this check <strong>prevents unnecessary I2C Reads</strong>, until the Touch Data is available for reading.</p>
 <p><em>Why check if the last event was Touch Down?</em></p>
-<p>TODO</p>
+<p>When we’re no longer touching the screen, the Touch Panel <strong>doesn’t trigger a GPIO Interrupt</strong>.</p>
+<p>Thus to catch the <strong>Touch Up Event</strong>, we must allow the Touch Data to be fetched over I2C.  And we stop fetching thereafter. (Until the screen is touched again)</p>
+<p>This causes a few redundant I2C Reads, but it shouldn’t affect performance.</p>
+<p>(Unless we touch the screen for a very long time!)</p>
 <h1 id="test-touch-data"><a href="#test-touch-data">7 Test Touch Data</a></h1>
 <p>TODO</p>
 <p>NuttX Driver for PineDio Stack Touch Panel responds correctly to touch! 🎉</p>
