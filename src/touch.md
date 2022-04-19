@@ -724,68 +724,56 @@ That's how we read and decode the Touch Data from CST816S over I2C!
 
 ## Is I2C Active?
 
-_Who calls cst816s_get_touch_data?_
+_Who calls cst816s_get_touch_data to fetch the Touch Data over I2C?_
 
-TODO
-
-[cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L334-L388)
+__cst816s_get_touch_data__ is called by __`read()`__ File Operation of our driver: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L334-L388)
 
 ```c
-/****************************************************************************
- * Name: cst816s_read
- *
- * Description:
- *   Read Touch Data from the device.
- *
- ****************************************************************************/
+//  Implements the read() File Operation for the driver
+static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buflen) {
+  ...
+  //  Wait for semaphore to prevent concurrent reads
+  int ret = nxsem_wait(&priv->devsem);
 
-static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer,
-                            size_t buflen)
-{
-  FAR struct inode *inode;
-  FAR struct cst816s_dev_s *priv;
-  size_t outlen;
-  irqstate_t flags;
-  int ret;
-
-  DEBUGASSERT(buffer);
-  DEBUGASSERT(buflen > 0);
-  DEBUGASSERT(filep);
-  inode = filep->f_inode;
-
-  DEBUGASSERT(inode && inode->i_private);
-  priv = inode->i_private;
-
-  /* Wait for semaphore to prevent concurrent reads */
-
-  ret = nxsem_wait(&priv->devsem);
-  if (ret < 0)
-    {
-      return ret;
-    }
-
+  //  Read the touch data, only if 
+  //  screen has been touched or if 
+  //  we're waiting for touch up
   ret = -EINVAL;
+  if ((priv->int_pending || last_event == 0) 
+    && buflen >= outlen) {
+    ret = cst816s_get_touch_data(priv, buffer);
+  }
 
-  /* Read the touch data, only if screen has been touched or if we're waiting for touch up */
-
-  outlen = sizeof(struct touch_sample_s);
-  if ((priv->int_pending || last_event == 0) && buflen >= outlen)
-    {
-      ret = cst816s_get_touch_data(priv, buffer);
-    }
-
-  /* Clear pending flag with critical section */
-
+  //  Clear the Pending Flag with critical section
   flags = enter_critical_section();
   priv->int_pending = false;
   leave_critical_section(flags);
 
-  /* Release semaphore and allow next read */
-
+  //  Release semaphore and allow next read
   nxsem_post(&priv->devsem);
-  return ret < 0 ? ret : outlen;
-}
 ```
+
+(Which means that this code will be called when a NuttX App reads _"/dev/input0"_)
+
+Note that we __fetch the Touch Data__ over I2C only if...
+
+-   Screen has __just been touched__
+
+    (Indicated by the Pending Flag __int_pending__)
+
+-   Or if the __last event was Touch Down__
+
+    (And we're waiting for Touch Up)
+
+_Why check the Pending Flag?_
+
+Recall that the Pending Flag is set when the __screen is touched__. (Which triggers the GPIO Interrupt)
+
+The Pending Flag tells us when the Touch Panel's I2C Interface is active. And there's __valid Touch Data__ to be fetched.
+
+Thus this check __prevents unnecessary I2C Reads__, until the Touch Data is ready to be read.
+
+_Why check if the last event was Touch Down?_
 
 TODO
 
@@ -1415,6 +1403,10 @@ _Is there anything peculiar about I2C on BL602 and BL604?_
 TODO: Register ID as Sub Address
 
 TODO: Warning
+
+## I2C Sub Address
+
+TODO
 
 [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220)
 
