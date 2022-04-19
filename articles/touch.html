@@ -353,14 +353,14 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
 
   //  Allocate the Device Struct
   struct cst816s_dev_s *priv = kmm_zalloc(
-      sizeof(struct cst816s_dev_s)
+    sizeof(struct cst816s_dev_s)
   );
   if (!priv) {
     ierr(&quot;Memory allocation failed\n&quot;);
     return -ENOMEM;
   }</code></pre></div>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L73-L90">(<strong>cst816s_dev_s</strong> is defined here)</a></p>
 <p>We begin by allocating the <strong>Device Struct</strong> that will remember the state of our driver.</p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L73-L90">(Device Struct <strong>cst816s_dev_s</strong> is defined here)</a></p>
 <p>We populate the Device Struct and initialise the <strong>Poll Semaphore</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Init the Device Struct
   priv-&gt;addr = i2c_devaddr;  //  I2C Address
@@ -448,17 +448,20 @@ static const struct file_operations g_cst816s_fileops = {
 </ul>
 <p>Let’s find out what happens inside <strong>cst816s_isr_handler</strong>, our GPIO Interrupt Handler: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L611-L632">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Handle GPIO Interrupt triggered by touch
-static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg)
-{
+static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg) {
+  //  Get the Device Struct from the handler argument
   FAR struct cst816s_dev_s *priv = (FAR struct cst816s_dev_s *)arg;
-  irqstate_t flags;
 
-  DEBUGASSERT(priv != NULL);
+  //  Enter a Critical Section
+  irqstate_t flags = enter_critical_section();
 
-  flags = enter_critical_section();
+  //  Set the Pending Flag to true
   priv-&gt;int_pending = true;
+
+  //  Leave the Critical Section
   leave_critical_section(flags);
 
+  //  Notify all poll() callers that data is ready
   cst816s_poll_notify(priv);
   return 0;
 }</code></pre></div>
