@@ -75,8 +75,7 @@
 <li><a href="#gpio-interrupt">5 GPIO Interrupt</a><ul>
 <li><a href="#test-gpio-interrupt">5.1 Test GPIO Interrupt</a><ul></ul></li></ul></li>
 <li><a href="#fetch-touch-data">6 Fetch Touch Data</a><ul>
-<li><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a><ul></ul></li>
-<li><a href="#i2c-gotchas">6.2 I2C Gotchas</a><ul></ul></li></ul></li>
+<li><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a><ul></ul></li></ul></li>
 <li><a href="#test-touch-data">7 Test Touch Data</a><ul>
 <li><a href="#enable-gpio-interrupt">7.1 Enable GPIO Interrupt</a><ul></ul></li>
 <li><a href="#start-lvgl-app">7.2 Start LVGL App</a><ul></ul></li>
@@ -87,7 +86,8 @@
 <li><a href="#touch-up-event">7.7 Touch Up Event</a><ul></ul></li>
 <li><a href="#screen-calibration-result">7.8 Screen Calibration Result</a><ul></ul></li></ul></li>
 <li><a href="#screen-is-sideways">8 Screen Is Sideways</a><ul></ul></li>
-<li><a href="#i2c-logging">9 I2C Logging</a><ul></ul></li>
+<li><a href="#i2c-quirks">9 I2C Quirks</a><ul>
+<li><a href="#i2c-logging">9.1 I2C Logging</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#appendix-install-driver">12 Appendix: Install Driver</a><ul></ul></li>
@@ -608,6 +608,7 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
   data.point[0].x  = x;
   data.point[0].y  = y;</code></pre></div>
 <p>TODO</p>
+<p>Note that our NuttX Driver for PineDio Stack’s Touch Panel returns 4 possible states: Touch Down vs Touch Up, Valid vs Invalid.</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set the Touch Flags for...
   //  Touch Down Event
   if (event == 0) {
@@ -638,7 +639,7 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
   memcpy(buf, &amp;data, sizeof(data));
   return sizeof(data);
 }</code></pre></div>
-<p>Note that our NuttX Driver for PineDio Stack’s Touch Panel returns 4 possible states: Touch Down vs Touch Up, Valid vs Invalid.</p>
+<p>TODO</p>
 <p>We got this code thanks to JF’s CST816S driver for the Self-Test Firmware…</p>
 <ul>
 <li><a href="https://codeberg.org/JF002/pinedio-stack-selftest/src/branch/master/drivers/cst816s.c">pinedio-stack-selftest/drivers/cst816s.c</a></li>
@@ -657,96 +658,6 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
 </ul>
 <p><em>Who calls cst816s_get_touch_data?</em></p>
 <p>TODO</p>
-<h2 id="i2c-gotchas"><a href="#i2c-gotchas">6.2 I2C Gotchas</a></h2>
-<p><em>Is there anything peculiar about I2C on BL602 and BL604?</em></p>
-<p>TODO: Register ID as Sub Address</p>
-<p>TODO: Warning</p>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220">cst816s.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: cst816s_i2c_read
- *
- * Description:
- *   Read from I2C device.
- *
- ****************************************************************************/
-
-static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,
-                            uint8_t *buf, size_t buflen)
-{
-  iinfo(&quot;\n&quot;); ////
-  struct i2c_msg_s msgv[2] =
-  {
-    {
-      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
-      .addr      = dev-&gt;addr,
-#ifdef CONFIG_BL602_I2C0
-      .flags     = I2C_M_NOSTART,  /* BL602 must send Register ID as Sub Address */
-#else
-      .flags     = 0,  /* Otherwise send Register ID normally */
-#endif /* CONFIG_BL602_I2C0 */
-      .buffer    = &amp;reg,
-      .length    = 1
-    },
-    {
-      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
-      .addr      = dev-&gt;addr,
-      .flags     = I2C_M_READ,
-      .buffer    = buf,
-      .length    = buflen
-    }
-  };
-
-  int ret = -EIO;
-  int retries;
-
-  /* CST816S will respond with NACK to address when in low-power mode. Host
-   * needs to retry address selection multiple times to get CST816S to
-   * wake-up.
-   */
-
-  for (retries = 0; retries &lt; CST816S_I2C_RETRIES; retries++)
-    {
-      ret = I2C_TRANSFER(dev-&gt;i2c, msgv, 2);
-      if (ret == -ENXIO)
-        {
-          /* -ENXIO is returned when getting NACK from response.
-           * Keep trying.
-           */
-
-          iwarn(&quot;I2C NACK\n&quot;); ////
-          continue;
-        }
-      else if (ret &gt;= 0)
-        {
-          /* Success! */
-
-          return 0;
-        }
-      else
-        {
-          /* Some other error. Try to reset I2C bus and keep trying. */
-
-          iwarn(&quot;I2C error\n&quot;); ////
-#ifdef CONFIG_I2C_RESET
-          if (retries == CST816S_I2C_RETRIES - 1)
-            {
-              break;
-            }
-
-          ret = I2C_RESET(dev-&gt;i2c);
-          if (ret &lt; 0)
-            {
-              iinfo(&quot;I2C_RESET failed: %d\n&quot;, ret);
-              return ret;
-            }
-#endif
-        }
-    }
-
-  /* Failed to read sensor. */
-
-  return ret;
-}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/touch-code4a.png" alt="" /></p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/touch-code5a.png" alt="" /></p>
@@ -1251,7 +1162,96 @@ invert x/y:1, x:0, y:1</code></pre></div>
 <p>We can rotate the display in the ST7789 Driver. But first we need to agree which way is “up”…</p>
 <p>TODO1</p>
 <p><img src="https://lupyuen.github.io/images/touch-button.jpg" alt="" /></p>
-<h1 id="i2c-logging"><a href="#i2c-logging">9 I2C Logging</a></h1>
+<h1 id="i2c-quirks"><a href="#i2c-quirks">9 I2C Quirks</a></h1>
+<p><em>Is there anything peculiar about I2C on BL602 and BL604?</em></p>
+<p>TODO: Register ID as Sub Address</p>
+<p>TODO: Warning</p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220">cst816s.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: cst816s_i2c_read
+ *
+ * Description:
+ *   Read from I2C device.
+ *
+ ****************************************************************************/
+
+static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,
+                            uint8_t *buf, size_t buflen)
+{
+  iinfo(&quot;\n&quot;); ////
+  struct i2c_msg_s msgv[2] =
+  {
+    {
+      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+      .addr      = dev-&gt;addr,
+#ifdef CONFIG_BL602_I2C0
+      .flags     = I2C_M_NOSTART,  /* BL602 must send Register ID as Sub Address */
+#else
+      .flags     = 0,  /* Otherwise send Register ID normally */
+#endif /* CONFIG_BL602_I2C0 */
+      .buffer    = &amp;reg,
+      .length    = 1
+    },
+    {
+      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+      .addr      = dev-&gt;addr,
+      .flags     = I2C_M_READ,
+      .buffer    = buf,
+      .length    = buflen
+    }
+  };
+
+  int ret = -EIO;
+  int retries;
+
+  /* CST816S will respond with NACK to address when in low-power mode. Host
+   * needs to retry address selection multiple times to get CST816S to
+   * wake-up.
+   */
+
+  for (retries = 0; retries &lt; CST816S_I2C_RETRIES; retries++)
+    {
+      ret = I2C_TRANSFER(dev-&gt;i2c, msgv, 2);
+      if (ret == -ENXIO)
+        {
+          /* -ENXIO is returned when getting NACK from response.
+           * Keep trying.
+           */
+
+          iwarn(&quot;I2C NACK\n&quot;); ////
+          continue;
+        }
+      else if (ret &gt;= 0)
+        {
+          /* Success! */
+
+          return 0;
+        }
+      else
+        {
+          /* Some other error. Try to reset I2C bus and keep trying. */
+
+          iwarn(&quot;I2C error\n&quot;); ////
+#ifdef CONFIG_I2C_RESET
+          if (retries == CST816S_I2C_RETRIES - 1)
+            {
+              break;
+            }
+
+          ret = I2C_RESET(dev-&gt;i2c);
+          if (ret &lt; 0)
+            {
+              iinfo(&quot;I2C_RESET failed: %d\n&quot;, ret);
+              return ret;
+            }
+#endif
+        }
+    }
+
+  /* Failed to read sensor. */
+
+  return ret;
+}</code></pre></div><h2 id="i2c-logging"><a href="#i2c-logging">9.1 I2C Logging</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> won’t return any valid Touch Data unless we enable I2C Logging. Could be an I2C Timing Issue or Race Condition.</p>
 <p>With I2C Logging Enabled: We get the Touch Down Event (with valid Touch Data)…</p>
