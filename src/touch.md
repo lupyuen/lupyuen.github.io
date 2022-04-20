@@ -144,7 +144,7 @@ The MBR3108 Driver looks structurally similar to our CST816S Driver (since both 
 
 Let's talk about the data format...
 
-![NuttX Touch Data](https://lupyuen.github.io/images/touch-code3a.png)
+![NuttX Touch Data](https://lupyuen.github.io/images/touch-code3a.jpg)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148)
 
@@ -559,7 +559,7 @@ We haven't seen this during our testing. Thus our driver ignores the event.
 
 Let's check out our driver code...
 
-![Getting I2C Touch Data](https://lupyuen.github.io/images/touch-code4a.png)
+![Getting I2C Touch Data](https://lupyuen.github.io/images/touch-code4a.jpg)
 
 [(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
 
@@ -698,7 +698,7 @@ Finally we __return the struct__ to the caller...
 
 That's how we read and decode the Touch Data from CST816S over I2C!
 
-![Returning I2C Touch Data](https://lupyuen.github.io/images/touch-code5a.png)
+![Returning I2C Touch Data](https://lupyuen.github.io/images/touch-code5a.jpg)
 
 [(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302)
 
@@ -829,7 +829,7 @@ Thus we have successfully eliminated most of the unnecessary I2C Reads!
 
 Now watch what happens when we touch the screen...
 
-![LVGL Test App calls read() repeatedly](https://lupyuen.github.io/images/touch-code6a.png)
+![LVGL Test App calls read() repeatedly](https://lupyuen.github.io/images/touch-code6a.jpg)
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L100-L199)
 
@@ -887,7 +887,7 @@ cst816s_get_touch_data:   y:       23
 
 Our driver clears the __Pending Flag__ and remembers that we're expecting a __Touch Up Event__. [(See this)](https://lupyuen.github.io/articles/touch#get-i2c-touch-data)
 
-![Our driver returns a Touch Down Event](https://lupyuen.github.io/images/touch-run2a.png)
+![Our driver returns a Touch Down Event](https://lupyuen.github.io/images/touch-run2a.jpg)
 
 ## Touch Down Event Again
 
