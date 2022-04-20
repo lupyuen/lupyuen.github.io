@@ -837,7 +837,7 @@ More about SPI DMA on BL602 / BL604...
 
 -   [__"Execute DMA Linked List"__](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma)
 
-Let's study the log...
+Let's inspect the log...
 
 ## Read Touch Data
 
@@ -847,9 +847,9 @@ Recall that the LVGL Test App __calls `read()` repeatedly__ on our CST816S Drive
 
 But __`read()`__ won't fetch any Touch Data over I2C __unless the screen is touched__. [(See this)](https://lupyuen.github.io/articles/touch#is-data-ready)
 
-So we have successfully eliminated most of the unnecessary I2C Reads!
+Thus we have successfully eliminated most of the unnecessary I2C Reads!
 
-Let's watch what happens when we touch the screen.
+Now watch what happens when we touch the screen...
 
 ![LVGL Test App calls read() repeatedly](https://lupyuen.github.io/images/touch-code6a.png)
 
@@ -875,11 +875,9 @@ Then it calls [__cst816s_poll_notify__](https://github.com/lupyuen/cst816s-nuttx
 
 ## Touch Down Event
 
-TODO
+The LVGL Test App is still calling __`read()`__ repeatedly to get Touch Data from our driver.
 
-Remember that the LVGL Test App keeps calling [`cst816s_read()`](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382) repeatedly to get Touch Data.
-
-Now that `int_pending` is true, our driver proceeds to call [`cst816s_get_touch_data()`](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326) and fetch the Touch Data over I2C...
+Now that the __Pending Flag__ is true, our driver proceeds to call [__cst816s_get_touch_data__](https://lupyuen.github.io/articles/touch#is-data-ready) and fetch the Touch Data over I2C...
 
 ```text
 cst816s_get_touch_data:
@@ -887,23 +885,20 @@ cst816s_i2c_read:
 bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
 bl602_i2c_transfer: i2c transfer success
 bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_recvdata: count=7, temp=0x500
 bl602_i2c_recvdata: count=3, temp=0x1700de
-ransfer success
-cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23
 ```
 
-The Touch Data that was read from CST816S over I2C...
+[(See the Complete Log)](https://github.com/lupyuen/cst816s-nuttx#touch-down-event)
+
+Our driver has __fetched the Touch Data__ over I2C...
 
 ```text
 cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23
 ```
 
-Gets returned directly to the LVGL Test App as a Touch Down Event...
+Which gets returned directly to the app as a __Touch Down Event__...
 
 ```text
 cst816s_get_touch_data:   id:      0
@@ -912,13 +907,9 @@ cst816s_get_touch_data:   x:       222
 cst816s_get_touch_data:   y:       23
 ```
 
-[`cst816s_get_touch_data()`](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326) sets `last_event` to 0 because it's a Touch Down Event.
+Our driver clears the __Pending Flag__ and remembers that we're expecting a __Touch Up Event__. [(See this)](https://lupyuen.github.io/articles/touch#get-i2c-touch-data)
 
-[`cst816s_read()`](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L372-L382) sets `int_pending` to false.
-
-TODO9
-
-![](https://lupyuen.github.io/images/touch-run2a.png)
+![Our driver returns a Touch Down Event](https://lupyuen.github.io/images/touch-run2a.png)
 
 ## Touch Down Event Again
 
