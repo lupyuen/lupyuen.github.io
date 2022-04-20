@@ -10,37 +10,13 @@ _Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board_
 
 (Available any day now!)
 
-PineDio Stack is packed __chock-full of features__...
+PineDio Stack is super interesting for an IoT Gadget...
 
--   ST7789 __Colour LCD Display__
-
-    (240 x 240 pixels)
-
--   CST816S __Touch Panel__
-
-    (Connected on I2C)
-
--   Semtech SX1262 __LoRa Transceiver__
-
-    (Works with LoRaWAN wireless networks)
-
--   AT6558 __GPS / GNSS Receiver__
-
--   SGM40561 __Power Management Unit__
-
--   __Heart Rate Sensor, Accelerometer, Compass, Vibrator__
-
--   __SPI Flash, JTAG Debugging Port, Push Button__
-
--   __2.4 GHz WiFi, Bluetooth LE__
-
-    (Thanks to BL604)
-
-Which makes it an awesome gadget for __IoT Education__!
+It comes with a __Colour LCD Touchscreen!__ (240 x 240 pixels)
 
 -   [__Watch the demo on YouTube__](https://www.youtube.com/shorts/2Nzjrlp5lcE)
 
-Today we'll talk about the __Hynitron CST816S Touch Panel Driver__ for Apache NuttX RTOS...
+Today we'll talk about PineDio Stack's __Hynitron CST816S I2C Touch Panel__ and the driver we created for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx)...
 
 -   [__lupyuen/cst816s-nuttx__](https://github.com/lupyuen/cst816s-nuttx)
 
