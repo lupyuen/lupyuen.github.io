@@ -974,7 +974,6 @@ cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=168
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1514049092388745219">this Twitter Thread</a></li>
 </ol>
 <h1 id="appendix-gpio-interrupt"><a href="#appendix-gpio-interrupt">12 Appendix: GPIO Interrupt</a></h1>
-<p>TODO</p>
 <p>CST816S will trigger <strong>GPIO Interrupts</strong> when we touch the screen.</p>
 <p>Earlier we called these functions at startup to handle GPIO Interrupts…</p>
 <ul>
@@ -987,8 +986,8 @@ cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=168
 </ul>
 <p>Let’s look inside the functions.</p>
 <h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">12.1 Attach Interrupt Handler</a></h2>
-<p>TODO</p>
-<p><code>bl602_irq_attach</code> is defined below…</p>
+<p>We call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772"><strong>bl602_irq_attach</strong></a> to attach our GPIO Interrupt Handler.</p>
+<p><strong>bl602_irq_attach</strong> is defined below…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
 //  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
 static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR void *arg)
@@ -1025,6 +1024,7 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
   return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727">(Source)</a></p>
+<p>TODO</p>
 <p>Note that we’re calling <code>bl602_expander</code> to handle interrupts. There doesn’t seem to be a way to do this with the current BL602 GPIO Driver (<code>bl602evb/bl602_gpio.c</code>).</p>
 <p>We are building <code>bl602_expander</code> here…</p>
 <ul>
@@ -1032,16 +1032,10 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 </ul>
 <p><strong>TODO:</strong> Move CST816S Interrupt Handler to <a href="https://github.com/lupyuen/bl602_expander">BL602 GPIO Expander</a></p>
 <h2 id="enable-gpio-interrupt"><a href="#enable-gpio-interrupt">12.2 Enable GPIO Interrupt</a></h2>
-<p>TODO: bl602_irq_enable</p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: bl602_irq_enable
- *
- * Description:
- *   Enable or disable GPIO Interrupt for Touch Controller.
- *   Based on https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
- *
- ****************************************************************************/
-
+<p>We call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804"><strong>bl602_irq_enable</strong></a> to enable (or disable) GPIO Interrupts.</p>
+<p>Here’s the function…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Enable or disable GPIO Interrupt for Touch Controller.
+//  Based on https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
 static int bl602_irq_enable(bool enable)
 {
   if (enable)
@@ -1065,6 +1059,7 @@ static int bl602_irq_enable(bool enable)
   return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804">(Source)</a></p>
+<p>TODO</p>
 <p>There’s bug with BL602 GPIO Interrupts that we have fixed for our driver…</p>
 <p>https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538</p>
 <p><strong>TODO:</strong> Move CST816S Interrupt Handler to <a href="https://github.com/lupyuen/bl602_expander">BL602 GPIO Expander</a></p>
