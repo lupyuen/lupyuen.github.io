@@ -90,8 +90,9 @@
 <li><a href="#i2c-logging">9.2 I2C Logging</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
-<li><a href="#appendix-install-driver">12 Appendix: Install Driver</a><ul></ul></li>
-<li><a href="#appendix-gpio-interrupt">13 Appendix: GPIO Interrupt</a><ul></ul></li></ul></nav><p>📝 <em>24 Apr 2022</em></p>
+<li><a href="#appendix-gpio-interrupt">12 Appendix: GPIO Interrupt</a><ul>
+<li><a href="#attach-interrupt-handler">12.1 Attach Interrupt Handler</a><ul></ul></li>
+<li><a href="#enable-gpio-interrupt">12.2 Enable GPIO Interrupt</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>24 Apr 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> is Pine64’s newest microcontroller board, based on <a href="https://lupyuen.github.io/articles/pinecone"><strong>Bouffalo Lab’s BL604</strong></a> RISC-V + WiFi + Bluetooth LE SoC.</p>
@@ -949,7 +950,6 @@ cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=168
 <p>Hence we should enable NuttX Info Logging only when needed for troubleshooting.</p>
 <p>(<strong>TODO:</strong> <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a>, <a href="https://github.com/lupyuen/LoRaMac-node-nuttx">LoRaWAN Library</a>, <a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan">SX1262 Library</a>, <a href="https://github.com/lupyuen/nimble-porting-nuttx">NimBLE Porting Layer</a> and <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/rf">SPI Test Driver</a> should have their own flags for logging)</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
-<p>TODO</p>
 <p>I hope this article has provided everything you need to get started on creating <strong>your own Touchscreen Apps</strong> on PineDio Stack.</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -973,53 +973,7 @@ cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=168
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1514049092388745219">this Twitter Thread</a></li>
 </ol>
-<h1 id="appendix-install-driver"><a href="#appendix-install-driver">12 Appendix: Install Driver</a></h1>
-<p>TODO</p>
-<p>To add this repo to your NuttX project…</p>
-<div class="example-wrap"><pre class="language-bash"><code>pushd nuttx/nuttx/drivers/input
-git submodule add https://github.com/lupyuen/cst816s-nuttx cst816s
-ln -s cst816s/cst816s.c .
-popd
-
-pushd nuttx/nuttx/include/nuttx/input
-ln -s ../../../drivers/input/cst816s/cst816s.h .
-popd</code></pre></div>
-<p>Next update the Makefile and Kconfig…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/commit/5dbf67df8f36cdba2eb0034dac0ff8ed0f8e73e1">See the modified Makefile and Kconfig</a></li>
-</ul>
-<p>Then update the NuttX Build Config…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
-cd nuttx/nuttx
-
-# Preserve the Build Config
-cp .config ../config
-
-# Erase the Build Config and Kconfig files
-make distclean
-
-# For BL602: Configure the build for BL602
-./tools/configure.sh bl602evb:nsh
-
-# For PineDio Stack BL604: Configure the build for BL604
-./tools/configure.sh bl602evb:pinedio
-
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
-./tools/configure.sh esp32-devkitc:nsh
-
-# Restore the Build Config
-cp ../config .config
-
-# Edit the Build Config
-make menuconfig </code></pre></div>
-<p>In menuconfig, enable the Hynitron CST816S Driver under “Device Drivers → Input Device Support”.</p>
-<p>Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773"><code>bl602_i2c_transfer</code></a> and apply this workaround patch…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">“I2C Logging”</a></li>
-</ul>
-<p>We need to enable warnings for the I2C driver. Follow the instructions in the next section…</p>
-<h1 id="appendix-gpio-interrupt"><a href="#appendix-gpio-interrupt">13 Appendix: GPIO Interrupt</a></h1>
+<h1 id="appendix-gpio-interrupt"><a href="#appendix-gpio-interrupt">12 Appendix: GPIO Interrupt</a></h1>
 <p>TODO</p>
 <p>CST816S will trigger <strong>GPIO Interrupts</strong> when we touch the screen.</p>
 <p>Earlier we called these functions at startup to handle GPIO Interrupts…</p>
@@ -1031,6 +985,9 @@ make menuconfig </code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804"><strong>bl602_irq_enable</strong></a>: Enable GPIO Interrupt</p>
 </li>
 </ul>
+<p>Let’s look inside the functions.</p>
+<h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">12.1 Attach Interrupt Handler</a></h2>
+<p>TODO</p>
 <p><code>bl602_irq_attach</code> is defined below…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
 //  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
@@ -1073,6 +1030,8 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 <ul>
 <li><a href="https://github.com/lupyuen/bl602_expander">lupyuen/bl602_expander</a></li>
 </ul>
+<p><strong>TODO:</strong> Move CST816S Interrupt Handler to <a href="https://github.com/lupyuen/bl602_expander">BL602 GPIO Expander</a></p>
+<h2 id="enable-gpio-interrupt"><a href="#enable-gpio-interrupt">12.2 Enable GPIO Interrupt</a></h2>
 <p>TODO: bl602_irq_enable</p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: bl602_irq_enable
@@ -1106,19 +1065,6 @@ static int bl602_irq_enable(bool enable)
   return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804">(Source)</a></p>
-<p>To test interrupts we uncomment <code>#define TEST_CST816S_INTERRUPT</code>…</p>
-<div class="example-wrap"><pre class="language-c"><code>int cst816s_register(FAR const char *devpath,
-                     FAR struct i2c_master_s *i2c_dev,
-                     uint8_t i2c_devaddr)
-{
-...
-//  Uncomment this to test interrupts (tap the screen)
-#define TEST_CST816S_INTERRUPT
-#ifdef TEST_CST816S_INTERRUPT
-#warning Testing CST816S interrupt
-  bl602_irq_enable(true);
-#endif /* TEST_CST816S_INTERRUPT */</code></pre></div>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661">(Source)</a></p>
 <p>There’s bug with BL602 GPIO Interrupts that we have fixed for our driver…</p>
 <p>https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538</p>
 <p><strong>TODO:</strong> Move CST816S Interrupt Handler to <a href="https://github.com/lupyuen/bl602_expander">BL602 GPIO Expander</a></p>
