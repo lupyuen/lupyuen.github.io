@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX Touch Panel Driver for PineDio Stack BL604</title>
+            <link>https://lupyuen.github.io/articles/touch</link>
+            <description><![CDATA[How we created the Apache NuttX RTOS Driver for Hynitron CST816S I2C Touch Panel... For PineDio Stack BL604 RISC-V Board]]></description>
+            <guid>https://lupyuen.github.io/articles/touch</guid>
+            <pubDate>Thu, 21 Apr 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>PineDio Stack BL604 runs Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/pinedio2</link>
             <description><![CDATA[Running Apache NuttX RTOS on PineDio Stack BL604 RISC-V board... With ST7789 Display, LVGL Graphics and LoRaWAN]]></description>
