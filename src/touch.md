@@ -1168,8 +1168,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: GPIO Interrupt
 
-TODO
-
 CST816S will trigger __GPIO Interrupts__ when we touch the screen.
 
 Earlier we called these functions at startup to handle GPIO Interrupts...
@@ -1182,9 +1180,9 @@ Let's look inside the functions.
 
 ## Attach Interrupt Handler
 
-TODO
+We call [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772) to attach our GPIO Interrupt Handler.
 
-`bl602_irq_attach` is defined below...
+__bl602_irq_attach__ is defined below...
 
 ```c
 //  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
@@ -1226,6 +1224,8 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 
 [(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727)
 
+TODO
+
 Note that we're calling `bl602_expander` to handle interrupts. There doesn't seem to be a way to do this with the current BL602 GPIO Driver (`bl602evb/bl602_gpio.c`).
 
 We are building `bl602_expander` here...
@@ -1236,18 +1236,13 @@ __TODO:__ Move CST816S Interrupt Handler to [BL602 GPIO Expander](https://github
 
 ## Enable GPIO Interrupt
 
-TODO: bl602_irq_enable
+We call [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804) to enable (or disable) GPIO Interrupts.
+
+Here's the function...
 
 ```c
-/****************************************************************************
- * Name: bl602_irq_enable
- *
- * Description:
- *   Enable or disable GPIO Interrupt for Touch Controller.
- *   Based on https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
- *
- ****************************************************************************/
-
+//  Enable or disable GPIO Interrupt for Touch Controller.
+//  Based on https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
 static int bl602_irq_enable(bool enable)
 {
   if (enable)
@@ -1273,6 +1268,8 @@ static int bl602_irq_enable(bool enable)
 ```
 
 [(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804)
+
+TODO
 
 There's bug with BL602 GPIO Interrupts that we have fixed for our driver...
 
