@@ -747,6 +747,7 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
 </li>
 </ul>
 <p>Let’s inspect the log…</p>
+<p>(<strong>TODO:</strong> We should <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#button-with-label">add a button</a> and <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L185-L197">a message box</a> to the <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L110-L198">LVGL Test App</a> to demo the touchscreen)</p>
 <h2 id="read-touch-data-1"><a href="#read-touch-data-1">7.1 Read Touch Data</a></h2>
 <p><em>Nothing appears in the log until we touch the screen. Why so?</em></p>
 <p>Recall that the LVGL Test App <strong>calls <code>read()</code> repeatedly</strong> on our CST816S Driver to get Touch Data. <a href="https://lupyuen.github.io/articles/touch#read-touch-data">(See this)</a></p>
@@ -805,9 +806,9 @@ cst816s_get_touch_data:   x:       222
 cst816s_get_touch_data:   y:       23</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#touch-down-event-again">(See the Complete Log)</a></p>
 <p>Our driver <strong>returns the same data twice</strong> to the app. (Until it sees the Touch Up Event)</p>
-<p>(TODO: Perhaps we should ignore duplicate Touch Down Events? Might reduce the screen lag)</p>
+<p>(<strong>TODO:</strong> Perhaps we should ignore duplicate Touch Down Events? Might reduce the screen lag)</p>
 <h2 id="touch-up-event"><a href="#touch-up-event">7.5 Touch Up Event</a></h2>
-<p>When we’re no longer longer touching the screen, <a href="https://lupyuen.github.io/articles/touch#is-data-ready"><strong>cst816s_get_touch_data</strong></a> receives a <strong>Touch Up Event</strong> over I2C…</p>
+<p>When we’re no longer longer touching the screen, <a href="https://lupyuen.github.io/articles/touch#get-i2c-touch-data"><strong>cst816s_get_touch_data</strong></a> receives a <strong>Touch Up Event</strong> over I2C…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:
 cst816s_i2c_read:
 cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
@@ -864,187 +865,92 @@ invert x/y:1, x:0, y:1</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/touch-button.jpg" alt="Which way is up?" /></p>
 <h1 id="i2c-quirks"><a href="#i2c-quirks">9 I2C Quirks</a></h1>
 <p><em>Is there anything peculiar about I2C on BL602 and BL604?</em></p>
-<p>TODO: Register ID as Sub Address</p>
-<p>TODO: Warning</p>
+<p>We need to handle two <strong>I2C Quirks</strong> on NuttX for BL602 / BL604…</p>
+<ul>
+<li>
+<p><strong>I2C Register ID</strong> must be sent as <strong>I2C Sub Address</strong></p>
+</li>
+<li>
+<p><strong>I2C Warnings</strong> must be turned on</p>
+</li>
+</ul>
+<p>Let’s go into the details…</p>
 <h2 id="i2c-sub-address"><a href="#i2c-sub-address">9.1 I2C Sub Address</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220">cst816s.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: cst816s_i2c_read
- *
- * Description:
- *   Read from I2C device.
- *
- ****************************************************************************/
+<p>When we read an I2C Register, we must send the I2C Register ID as an <strong>I2C Sub Address</strong>: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220">cst816s.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>//  Read from I2C device
+static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,uint8_t *buf, size_t buflen) {
 
-static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,
-                            uint8_t *buf, size_t buflen)
-{
-  iinfo(&quot;\n&quot;); ////
-  struct i2c_msg_s msgv[2] =
-  {
-    {
-      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
-      .addr      = dev-&gt;addr,
+  //  Compose I2C Request to read I2C Registers
+  struct i2c_msg_s msgv[2] = {{
+
+    //  First I2C Message: Send the Register ID
+    .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+    .addr      = dev-&gt;addr,
 #ifdef CONFIG_BL602_I2C0
-      .flags     = I2C_M_NOSTART,  /* BL602 must send Register ID as Sub Address */
+    //  For BL602: We must send Register ID as I2C Sub Address
+    .flags     = I2C_M_NOSTART,
 #else
-      .flags     = 0,  /* Otherwise send Register ID normally */
-#endif /* CONFIG_BL602_I2C0 */
-      .buffer    = &amp;reg,
-      .length    = 1
-    },
-    {
-      .frequency = CONFIG_CST816S_I2C_FREQUENCY,
-      .addr      = dev-&gt;addr,
-      .flags     = I2C_M_READ,
-      .buffer    = buf,
-      .length    = buflen
-    }
-  };
+    //  Otherwise we send the Register ID normally
+    .flags     = 0,
+#endif  //  CONFIG_BL602_I2C0
+    .buffer    = &amp;reg,
+    .length    = 1
+  }, {
 
-  int ret = -EIO;
-  int retries;
+    //  Second I2C Message: Receive the Register Data
+    .frequency = CONFIG_CST816S_I2C_FREQUENCY,
+    .addr      = dev-&gt;addr,
+    .flags     = I2C_M_READ,
+    .buffer    = buf,
+    .length    = buflen
+  }};</code></pre></div>
+<p>We do this by specifying the <strong>I2C_M_NOSTART</strong> flag (shown above).</p>
+<p>This article explains why…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/bme280#set-i2c-sub-address"><strong>“Set I2C Sub Address”</strong></a></li>
+</ul>
+<h2 id="i2c-logging"><a href="#i2c-logging">9.2 I2C Logging</a></h2>
+<p>During development we discovered that <a href="https://lupyuen.github.io/articles/touch#get-i2c-touch-data"><strong>cst816s_get_touch_data</strong></a> won’t return any valid Touch Data unless we <strong>enable this I2C Warning</strong> in the BL602 I2C Driver: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L753-L761">bl602_i2c.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static int bl602_i2c_transfer(struct i2c_master_s *dev, struct i2c_msg_s *msgs, int count) {
+  ...
+  if (priv-&gt;i2cstate == EV_I2C_END_INT) {
 
-  /* CST816S will respond with NACK to address when in low-power mode. Host
-   * needs to retry address selection multiple times to get CST816S to
-   * wake-up.
-   */
-
-  for (retries = 0; retries &lt; CST816S_I2C_RETRIES; retries++)
-    {
-      ret = I2C_TRANSFER(dev-&gt;i2c, msgv, 2);
-      if (ret == -ENXIO)
-        {
-          /* -ENXIO is returned when getting NACK from response.
-           * Keep trying.
-           */
-
-          iwarn(&quot;I2C NACK\n&quot;); ////
-          continue;
-        }
-      else if (ret &gt;= 0)
-        {
-          /* Success! */
-
-          return 0;
-        }
-      else
-        {
-          /* Some other error. Try to reset I2C bus and keep trying. */
-
-          iwarn(&quot;I2C error\n&quot;); ////
-#ifdef CONFIG_I2C_RESET
-          if (retries == CST816S_I2C_RETRIES - 1)
-            {
-              break;
-            }
-
-          ret = I2C_RESET(dev-&gt;i2c);
-          if (ret &lt; 0)
-            {
-              iinfo(&quot;I2C_RESET failed: %d\n&quot;, ret);
-              return ret;
-            }
-#endif
-        }
-    }
-
-  /* Failed to read sensor. */
-
-  return ret;
-}</code></pre></div><h2 id="i2c-logging"><a href="#i2c-logging">9.2 I2C Logging</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> won’t return any valid Touch Data unless we enable I2C Logging. Could be an I2C Timing Issue or Race Condition.</p>
-<p>With I2C Logging Enabled: We get the Touch Down Event (with valid Touch Data)…</p>
+#ifdef CONFIG_INPUT_CST816S
+    //  Workaround for CST816S. See https://github.com/lupyuen/cst816s-nuttx#i2c-logging
+    i2cwarn(&quot;i2c transfer success\n&quot;);
+#endif  //  CONFIG_INPUT_CST816S</code></pre></div>
+<p>That’s why we must always <strong>enable I2C Warnings</strong> in our NuttX Build…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx#appendix-nuttx-logging"><strong>“NuttX Logging”</strong></a></li>
+</ul>
+<p>(I2C Warnings are already enabled for PineDio Stack)</p>
+<p><em>What happens if we don’t enable I2C Warnings?</em></p>
+<p>If we disable I2C Warnings, we’ll <strong>never receive the Touch Down Event</strong> over I2C…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
 tp_init: Opening /dev/input0
 cst816s_open:
 
-bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
-cst816s_poll_notify:
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x1700de
-Transfer success
-cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23</code></pre></div>
-<p>With I2C Logging Disabled: We only get the Touch Up Event (with invalid Touch Data)…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
-tp_init: Opening /dev/input0
-cst816s_open:
-
-bl602_expander_interrupt: Interrupt! callback=0x2305e55e, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e55e, arg=0x42020a70
-cst816s_poll_notify:
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
-cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=1688
-
-bl602_expander_interrupt: Interrupt! callback=0x2305e55e, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e55e, arg=0x42020a70
+bl602_expander_interrupt: Interrupt!
+bl602_expander_interrupt: Call callback
 cst816s_poll_notify:
 
 cst816s_get_touch_data:
 cst816s_i2c_read:
 cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
 cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
-<p>This happens before and after we have reduced the number of I2C Transfers (by checking GPIO Interrupts via <code>int_pending</code>).</p>
-<p>The workaround is to call <code>i2cwarn()</code> in the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c">BL602 I2C Driver</a> to force this specific log to be printed…</p>
-<div class="example-wrap"><pre class="language-c"><code>static int bl602_i2c_transfer(struct i2c_master_s *dev,
-                              struct i2c_msg_s *   msgs,
-                              int                      count) {
-      ...
-      if (priv-&gt;i2cstate == EV_I2C_END_INT)
-        {
-          i2cinfo(&quot;i2c transfer success\n&quot;);
-#ifdef CONFIG_INPUT_CST816S
-          /* Workaround for CST816S. See https://github.com/lupyuen/cst816s-nuttx#i2c-logging */
-
-          i2cwarn(&quot;i2c transfer success\n&quot;);
-#endif /* CONFIG_INPUT_CST816S */
-        }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L753-L761">(Source)</a></p>
-<p>After patching the workaround, we get the Touch Down Event (with valid Touch Data)…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
-tp_init: Opening /dev/input0
-cst816s_open:
-
-bl602_expander_interrupt: Interrupt! callback=0x2305e55e, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e55e, arg=0x42020a70
-cst816s_poll_notify:
-
-cst816s_get_touch_data:
-cst816s_i2c_read:
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: i2c transfer success
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=200, y=26
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       200
-cst816s_get_touch_data:   y:       26</code></pre></div>
-<p>LoRaWAN Test App <code>lorawan_test</code> also tested OK with the patch.</p>
-<p><strong>TODO:</strong> Investigate the internals of the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c">BL602 I2C Driver</a>. Look for I2C Timing Issues or Race Conditions.</p>
-<p><strong>TODO:</strong> Probe the I2C Bus with a Logic Analyser. Watch for I2C Hardware issues.</p>
-<p><strong>TODO:</strong> Why must we disable logging? Eventually we must disable <code>CONFIG_DEBUG_INFO</code> (Informational Debug Output) because the LoRaWAN Test App <code>lorawan_test</code> fails when <code>CONFIG_DEBUG_INFO</code> is enabled (due to LoRaWAN Timers)</p>
-<p><strong>TODO:</strong> LoRaWAN Test App, LoRaWAN Library, SX1262 Library, NimBLE Porting Layer, SPI Test Driver should have their own flags for logging</p>
-<p><strong>TODO:</strong> Move CST816S Interrupt Handler to <a href="https://github.com/lupyuen/bl602_expander">BL602 GPIO Expander</a></p>
-<p><strong>TODO:</strong> Implement SPI DMA on NuttX so that the touchscreen feels less laggy</p>
-<p><strong>TODO:</strong> <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#button-with-label">Add a button</a> and a message box to the <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L110-L198">LVGL Test App <code>lvgltest</code></a> to demo the touchscreen</p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">(See the Complete Log)</a></p>
+<p>We’ll only get the <strong>Touch Up Event</strong> (with invalid Touch Coordinates).</p>
+<p><em>Why would I2C Logging affect the fetching of Touch Data over I2C?</em></p>
+<p>We’re not sure. This could be due to an <strong>I2C Timing Issue</strong> or a <strong>Race Condition</strong>.</p>
+<p>(We might probe the I2C Bus with a Logic Analyser and learn more)</p>
+<p><em>Is it OK to enable logging for everything in NuttX?</em></p>
+<p>Not really. If we enable “Informational Debug Output” (<strong>CONFIG_DEBUG_INFO</strong>) in NuttX, we’ll get so much Debug Output that the <a href="https://github.com/lupyuen/lorawan_test"><strong>LoRaWAN Test App</strong></a> will fail.</p>
+<p>(Because LoRaWAN Timers are time-critical)</p>
+<p>Hence we should enable NuttX Info Logging only when needed for troubleshooting.</p>
+<p>(<strong>TODO:</strong> <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a>, <a href="https://github.com/lupyuen/LoRaMac-node-nuttx">LoRaWAN Library</a>, <a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan">SX1262 Library</a>, <a href="https://github.com/lupyuen/nimble-porting-nuttx">NimBLE Porting Layer</a> and <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/rf">SPI Test Driver</a> should have their own flags for logging)</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
-<p>I hope this article has provided everything you need to get started on creating <strong>your own IoT App</strong>.</p>
+<p>I hope this article has provided everything you need to get started on creating <strong>your own Touchscreen Apps</strong> on PineDio Stack.</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -1215,6 +1121,7 @@ static int bl602_irq_enable(bool enable)
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661">(Source)</a></p>
 <p>There’s bug with BL602 GPIO Interrupts that we have fixed for our driver…</p>
 <p>https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538</p>
+<p><strong>TODO:</strong> Move CST816S Interrupt Handler to <a href="https://github.com/lupyuen/bl602_expander">BL602 GPIO Expander</a></p>
 <p><img src="https://lupyuen.github.io/images/touch-title2.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 
