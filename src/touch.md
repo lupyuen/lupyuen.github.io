@@ -1144,8 +1144,6 @@ Hence we should enable NuttX Info Logging only when needed for troubleshooting.
 
 # What's Next
 
-TODO
-
 I hope this article has provided everything you need to get started on creating __your own Touchscreen Apps__ on PineDio Stack.
 
 Lemme know what you're building with PineDio Stack!
@@ -1168,64 +1166,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1514049092388745219)
 
-# Appendix: Install Driver
-
-TODO
-
-To add this repo to your NuttX project...
-
-```bash
-pushd nuttx/nuttx/drivers/input
-git submodule add https://github.com/lupyuen/cst816s-nuttx cst816s
-ln -s cst816s/cst816s.c .
-popd
-
-pushd nuttx/nuttx/include/nuttx/input
-ln -s ../../../drivers/input/cst816s/cst816s.h .
-popd
-```
-
-Next update the Makefile and Kconfig...
-
--   [See the modified Makefile and Kconfig](https://github.com/lupyuen/incubator-nuttx/commit/5dbf67df8f36cdba2eb0034dac0ff8ed0f8e73e1)
-
-Then update the NuttX Build Config...
-
-```bash
-## TODO: Change this to the path of our "incubator-nuttx" folder
-cd nuttx/nuttx
-
-## Preserve the Build Config
-cp .config ../config
-
-## Erase the Build Config and Kconfig files
-make distclean
-
-## For BL602: Configure the build for BL602
-./tools/configure.sh bl602evb:nsh
-
-## For PineDio Stack BL604: Configure the build for BL604
-./tools/configure.sh bl602evb:pinedio
-
-## For ESP32: Configure the build for ESP32.
-## TODO: Change "esp32-devkitc" to our ESP32 board.
-./tools/configure.sh esp32-devkitc:nsh
-
-## Restore the Build Config
-cp ../config .config
-
-## Edit the Build Config
-make menuconfig 
-```
-
-In menuconfig, enable the Hynitron CST816S Driver under "Device Drivers → Input Device Support".
-
-Edit the function [`bl602_i2c_transfer`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L671-L773) and apply this workaround patch...
-
--   ["I2C Logging"](https://github.com/lupyuen/cst816s-nuttx#i2c-logging)
-
-We need to enable warnings for the I2C driver. Follow the instructions in the next section...
-
 # Appendix: GPIO Interrupt
 
 TODO
@@ -1237,6 +1177,12 @@ Earlier we called these functions at startup to handle GPIO Interrupts...
 -   [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772): Attach our GPIO Interrupt Handler
 
 -   [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804): Enable GPIO Interrupt
+
+Let's look inside the functions.
+
+## Attach Interrupt Handler
+
+TODO
 
 `bl602_irq_attach` is defined below...
 
@@ -1286,6 +1232,10 @@ We are building `bl602_expander` here...
 
 -   [lupyuen/bl602_expander](https://github.com/lupyuen/bl602_expander)
 
+__TODO:__ Move CST816S Interrupt Handler to [BL602 GPIO Expander](https://github.com/lupyuen/bl602_expander)
+
+## Enable GPIO Interrupt
+
 TODO: bl602_irq_enable
 
 ```c
@@ -1323,24 +1273,6 @@ static int bl602_irq_enable(bool enable)
 ```
 
 [(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804)
-
-To test interrupts we uncomment `#define TEST_CST816S_INTERRUPT`...
-
-```c
-int cst816s_register(FAR const char *devpath,
-                     FAR struct i2c_master_s *i2c_dev,
-                     uint8_t i2c_devaddr)
-{
-...
-//  Uncomment this to test interrupts (tap the screen)
-#define TEST_CST816S_INTERRUPT
-#ifdef TEST_CST816S_INTERRUPT
-#warning Testing CST816S interrupt
-  bl602_irq_enable(true);
-#endif /* TEST_CST816S_INTERRUPT */
-```
-
-[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L593-L661)
 
 There's bug with BL602 GPIO Interrupts that we have fixed for our driver...
 
