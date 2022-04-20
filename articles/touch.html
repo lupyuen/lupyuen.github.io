@@ -168,7 +168,7 @@
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/CST816S_DS_V1.3.pdf">(From CST816S Datasheet)</a></p>
 </blockquote>
 <p><em>So it works like any other I2C Device?</em></p>
-<p>CST816S is a peculiar I2C Device… It won’t respond to I2C Commands unless we <strong>tap the screen and wake it up</strong>!</p>
+<p>CST816S is a peculiar I2C Device… It won’t respond to I2C Commands until we <strong>tap the screen and wake it up</strong>!</p>
 <p>That’s because it tries to conserve power: It powers off the I2C Interface when it’s not in use. (Pic above)</p>
 <p>So be careful when scanning for CST816S at its <strong>I2C Address <code>0x15</code></strong>. It might seem elusive until we tap the screen.</p>
 <p>The I2C Address of CST816S is defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L102-L107">bl602_bringup.c</a></p>
@@ -750,7 +750,7 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
 <h2 id="read-touch-data-1"><a href="#read-touch-data-1">7.1 Read Touch Data</a></h2>
 <p><em>Nothing appears in the log until we touch the screen. Why so?</em></p>
 <p>Recall that the LVGL Test App <strong>calls <code>read()</code> repeatedly</strong> on our CST816S Driver to get Touch Data. <a href="https://lupyuen.github.io/articles/touch#read-touch-data">(See this)</a></p>
-<p>But <strong><code>read()</code></strong> won’t fetch any Touch Data over I2C <strong>unless the screen is touched</strong>. <a href="https://lupyuen.github.io/articles/touch#is-data-ready">(See this)</a></p>
+<p>But <strong><code>read()</code></strong> won’t fetch any Touch Data over I2C <strong>until the screen is touched</strong>. <a href="https://lupyuen.github.io/articles/touch#is-data-ready">(See this)</a></p>
 <p>Thus we have successfully eliminated most of the unnecessary I2C Reads!</p>
 <p>Now watch what happens when we touch the screen…</p>
 <p><img src="https://lupyuen.github.io/images/touch-code6a.png" alt="LVGL Test App calls read() repeatedly" /></p>
@@ -812,6 +812,7 @@ cst816s_get_touch_data:   y:       23</code></pre></div>
 cst816s_i2c_read:
 cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#touch-up-event">(See the Complete Log)</a></p>
+<p><em>This doesn’t look right: x=639, y=1688. Our screen is only 240 x 240 pixels!</em></p>
 <p>We said earlier that Touch Up Events have <strong>invalid Touch Coordinates</strong>. <a href="https://lupyuen.github.io/articles/touch#fetch-touch-data">(Right here)</a></p>
 <p>Hence we substitute the Touch Coordinates with the data from the <strong>last Touch Down Event</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: UP: id=0, touch=2, x=222, y=23
@@ -848,9 +849,18 @@ invert x/y:1, x:0, y:1</code></pre></div>
 <p><strong>Try this:</strong> Tilt your head to the left and stare at the pic. You’ll see the Expected Touch Coordinates!</p>
 <p>That’s right… Our screen is <strong>rotated sideways</strong>!</p>
 <p>So be careful when mapping the Touch Coordinates to the rendered screen.</p>
-<p><em>Is there a fix for this?</em></p>
-<p>TODO</p>
-<p>We can rotate the display in the ST7789 Driver. But first we need to agree which way is “up”…</p>
+<p><em>Can we fix this?</em></p>
+<p>We can rotate the display in the <strong>ST7789 Display Driver</strong>. </p>
+<p>(Portrait Mode vs Landscape Mode)</p>
+<p>But first we need to agree <strong>which way is “up”</strong>…</p>
+<ul>
+<li>
+<p>Should we rotate the “chin” to the bottom?</p>
+</li>
+<li>
+<p>If PineDio Stack works like a “Chonky Watch”, the button should be at the side. Right?</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/touch-button.jpg" alt="Which way is up?" /></p>
 <h1 id="i2c-quirks"><a href="#i2c-quirks">9 I2C Quirks</a></h1>
 <p><em>Is there anything peculiar about I2C on BL602 and BL604?</em></p>
