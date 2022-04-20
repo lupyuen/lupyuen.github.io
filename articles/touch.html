@@ -213,7 +213,7 @@
 <p>The MBR3108 Driver looks structurally similar to our CST816S Driver (since both are I2C). So we copied the code as we built our CST816S Driver.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/max11802.c#L824-L952">(We copied the MAX11802 Driver for reading Touch Data Samples)</a></p>
 <p>Let’s talk about the data format…</p>
-<p><img src="https://lupyuen.github.io/images/touch-code3a.png" alt="NuttX Touch Data" /></p>
+<p><img src="https://lupyuen.github.io/images/touch-code3a.jpg" alt="NuttX Touch Data" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148">(Source)</a></p>
 <h2 id="touch-data"><a href="#touch-data">2.1 Touch Data</a></h2>
 <p><em>How are Touch Data Samples represented in NuttX?</em></p>
@@ -523,7 +523,7 @@ cst816s_poll_notify:</code></pre></div>
 <p><em>What about Touch Event <code>2</code> (Contact)?</em></p>
 <p>We haven’t seen this during our testing. Thus our driver ignores the event.</p>
 <p>Let’s check out our driver code…</p>
-<p><img src="https://lupyuen.github.io/images/touch-code4a.png" alt="Getting I2C Touch Data" /></p>
+<p><img src="https://lupyuen.github.io/images/touch-code4a.jpg" alt="Getting I2C Touch Data" /></p>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">(Source)</a></p>
 <h2 id="get-i2c-touch-data"><a href="#get-i2c-touch-data">6.1 Get I2C Touch Data</a></h2>
 <p>This is how we read the <strong>Touch Data over I2C</strong> in our driver: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">cst816s.c</a></p>
@@ -619,7 +619,7 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
   return sizeof(data);
 }</code></pre></div>
 <p>That’s how we read and decode the Touch Data from CST816S over I2C!</p>
-<p><img src="https://lupyuen.github.io/images/touch-code5a.png" alt="Returning I2C Touch Data" /></p>
+<p><img src="https://lupyuen.github.io/images/touch-code5a.jpg" alt="Returning I2C Touch Data" /></p>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">(Source)</a></p>
 <h2 id="is-data-ready"><a href="#is-data-ready">6.2 Is Data Ready?</a></h2>
 <p><em>Who calls cst816s_get_touch_data to fetch the Touch Data over I2C?</em></p>
@@ -725,7 +725,7 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
 <p>But <strong><code>read()</code></strong> won’t fetch any Touch Data over I2C <strong>until the screen is touched</strong>. <a href="https://lupyuen.github.io/articles/touch#is-data-ready">(See this)</a></p>
 <p>Thus we have successfully eliminated most of the unnecessary I2C Reads!</p>
 <p>Now watch what happens when we touch the screen…</p>
-<p><img src="https://lupyuen.github.io/images/touch-code6a.png" alt="LVGL Test App calls read() repeatedly" /></p>
+<p><img src="https://lupyuen.github.io/images/touch-code6a.jpg" alt="LVGL Test App calls read() repeatedly" /></p>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L100-L199">(Source)</a></p>
 <h2 id="trigger-gpio-interrupt"><a href="#trigger-gpio-interrupt">7.2 Trigger GPIO Interrupt</a></h2>
 <p>During the calibration process, we touch the screen. This triggers a <strong>GPIO Interrupt</strong>…</p>
@@ -756,7 +756,7 @@ cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       222
 cst816s_get_touch_data:   y:       23</code></pre></div>
 <p>Our driver clears the <strong>Pending Flag</strong> and remembers that we’re expecting a <strong>Touch Up Event</strong>. <a href="https://lupyuen.github.io/articles/touch#get-i2c-touch-data">(See this)</a></p>
-<p><img src="https://lupyuen.github.io/images/touch-run2a.png" alt="Our driver returns a Touch Down Event" /></p>
+<p><img src="https://lupyuen.github.io/images/touch-run2a.jpg" alt="Our driver returns a Touch Down Event" /></p>
 <h2 id="touch-down-event-again"><a href="#touch-down-event-again">7.4 Touch Down Event Again</a></h2>
 <p>We’re not done with Touch Down Events yet!</p>
 <p>Because our driver remembers that we’re expecting a Touch Up Event, all calls to <strong><code>read()</code></strong> will continue to <strong>fetch the Touch Data</strong> over I2C. <a href="https://lupyuen.github.io/articles/touch#is-data-ready">(Here’s why)</a></p>
