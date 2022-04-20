@@ -1132,21 +1132,23 @@ Stay Tuned!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
--   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/RISCV/comments/u7rnyt/nuttx_touch_panel_driver_for_pinedio_stack_bl604/)
 
--   [Check out my articles](https://lupyuen.github.io)
+-   [__Read "The RISC-V BL602 / BL604 Book"__](https://lupyuen.github.io/articles/book)
 
--   [RSS Feed](https://lupyuen.github.io/rss.xml)
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[`lupyuen.github.io/src/touch.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/touch.md)
+[__`lupyuen.github.io/src/touch.md`__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/touch.md)
 
 # Notes
 
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1514049092388745219)
+1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1514049092388745219)
 
 # Appendix: GPIO Interrupt
 
