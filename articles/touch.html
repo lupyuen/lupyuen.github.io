@@ -506,8 +506,8 @@ static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg) {
 <p><img src="https://lupyuen.github.io/images/touch-device.png" alt="NuttX Touchscreen Device" /></p>
 </blockquote>
 <p>Tap the screen on PineDio Stack. We should see the <strong>GPIO Interrupt</strong> handled by our driver…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt! callback=0x2305e9de, arg=0x42020a60
-bl602_expander_interrupt: Call callback=0x2305e9de, arg=0x42020a60
+<div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt!
+bl602_expander_interrupt: Call callback
 cst816s_poll_notify:</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#test-gpio-interrupt">(See the Complete Log)</a></p>
 <p>Yep our CST816S Driver correctly handles the GPIO Interrupt!</p>
@@ -748,62 +748,22 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
 </ul>
 <p>Let’s study the log…</p>
 <h2 id="read-touch-data-1"><a href="#read-touch-data-1">7.1 Read Touch Data</a></h2>
-<p>TODO</p>
-<p>The LVGL Test App calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly on the CST816S Driver to get Touch Data…</p>
-<div class="example-wrap"><pre class="language-c"><code>bool tp_read(struct _lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
-{
-  ...
-  /* Read one sample */
-
-  nbytes = read(fd, &amp;sample, sizeof(struct touch_sample_s));</code></pre></div>
-<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L115-L132">(Source)</a></p>
-<p>Since the screen hasn’t been touched and we have no Touch Data yet, our driver returns an error <code>-EINVAL</code>…</p>
-<div class="example-wrap"><pre class="language-c"><code>static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer,
-                            size_t buflen)
-{
-  ...
-  int ret = -EINVAL;
-
-  /* Read the touch data, only if screen has been touched or if we&#39;re waiting for touch up */
-  if ((priv-&gt;int_pending || last_event == 0) &amp;&amp; buflen &gt;= outlen)
-    {
-      ret = cst816s_get_touch_data(priv, buffer);
-    }</code></pre></div>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L336-L370">(Source)</a></p>
-<p><code>int_pending</code> becomes true when a GPIO Interrupt gets triggered later.</p>
-<p><code>last_event</code> becomes 0 when we get a Touch Down event later.</p>
-<p><em>Why do we check <code>int_pending</code>?</em></p>
-<p>To reduce contention on the I2C Bus, we only read the Touch Data over I2C when the screen has been touched. We’ll see this in a while.</p>
-<p>(But the LVGL Test App really shouldn’t call <code>read()</code> repeatedly. It ought to call <code>poll()</code> and block until Touch Data is available)</p>
-<p><em>Why do we we check <code>last_event</code>?</em></p>
-<p>The Touch Controller triggers a GPIO Interrupt only upon Touch Down, not on Touch Up.</p>
-<p>So after Touch Down, we allow  <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> to call <code>cst816s_get_touch_data()</code> to fetch the Touch Data repeatedly, until we see the Touch Up Event. We’ll see this in a while.</p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/touch-code6a.png" alt="" /></p>
+<p><em>Nothing appears in the log until we touch the screen. Why so?</em></p>
+<p>Recall that the LVGL Test App <strong>calls <code>read()</code> repeatedly</strong> on our CST816S Driver to get Touch Data. <a href="https://lupyuen.github.io/articles/touch#read-touch-data">(See this)</a></p>
+<p>But <strong><code>read()</code></strong> won’t fetch any Touch Data over I2C <strong>unless the screen is touched</strong>. <a href="https://lupyuen.github.io/articles/touch#is-data-ready">(See this)</a></p>
+<p>So we have successfully eliminated most of the unnecessary I2C Reads!</p>
+<p>Let’s watch what happens when we touch the screen.</p>
+<p><img src="https://lupyuen.github.io/images/touch-code6a.png" alt="LVGL Test App calls read() repeatedly" /></p>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L100-L199">(Source)</a></p>
 <h2 id="trigger-gpio-interrupt"><a href="#trigger-gpio-interrupt">7.2 Trigger GPIO Interrupt</a></h2>
-<p>TODO</p>
-<p>We touch the screen and trigger a GPIO Interrupt…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt! callback=0x2305e596, arg=0x42020a70
-bl602_expander_interrupt: Call callback=0x2305e596, arg=0x42020a70
+<p>During the calibration process, we touch the screen. This triggers a <strong>GPIO Interrupt</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt!
+bl602_expander_interrupt: Call callback
 cst816s_poll_notify:</code></pre></div>
-<p>The Interrupt Handler in our driver sets <code>int_pending</code> to true…</p>
-<div class="example-wrap"><pre class="language-c"><code>static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg)
-{
-  FAR struct cst816s_dev_s *priv = (FAR struct cst816s_dev_s *)arg;
-  irqstate_t flags;
-
-  DEBUGASSERT(priv != NULL);
-
-  flags = enter_critical_section();
-  priv-&gt;int_pending = true;
-  leave_critical_section(flags);
-
-  cst816s_poll_notify(priv);
-  return 0;
-}</code></pre></div>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L598-L611">(Source)</a></p>
-<p>And calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L472-L498"><code>cst816s_poll_notify()</code></a> to unblock all <code>poll()</code> callers and notify them that Touch Data is available.</p>
-<p>(But LVGL Test App doesn’t <code>poll()</code> our driver, so this doesn’t effect anything)</p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx#trigger-gpio-interrupt">(See the Complete Log)</a></p>
+<p>The <strong>Interrupt Handler</strong> in our driver sets the <strong>Pending Flag</strong> to true. <a href="https://lupyuen.github.io/articles/touch#gpio-interrupt">(See this)</a></p>
+<p>Then it calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L493-L519"><strong>cst816s_poll_notify</strong></a> to notify all callers to <strong><code>poll()</code></strong> that Touch Data is now available.</p>
+<p>(The LVGL Test App doesn’t <strong><code>poll()</code></strong> our driver, so this has no effect)</p>
 <h2 id="touch-down-event"><a href="#touch-down-event">7.3 Touch Down Event</a></h2>
 <p>TODO</p>
 <p>Remember that the LVGL Test App keeps calling <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly to get Touch Data.</p>
