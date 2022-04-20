@@ -1,6 +1,6 @@
 # NuttX Touch Panel Driver for PineDio Stack BL604
 
-📝 _24 Apr 2022_
+📝 _21 Apr 2022_
 
 ![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title.jpg)
 
@@ -1182,7 +1182,7 @@ Let's look inside the functions.
 
 We call [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772) to attach our GPIO Interrupt Handler.
 
-__bl602_irq_attach__ is defined below...
+__bl602_irq_attach__ is defined below: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727)
 
 ```c
 //  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
@@ -1222,27 +1222,35 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 }
 ```
 
-[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727)
+[(__bl602_configgpio__ is defined in the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140)
 
-TODO
+[(__irq_attach__ comes from the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136)
 
-Note that we're calling `bl602_expander` to handle interrupts. There doesn't seem to be a way to do this with the current BL602 GPIO Driver (`bl602evb/bl602_gpio.c`).
+This code calls two functions from the __BL602 GPIO Expander__...
 
-We are building `bl602_expander` here...
+-   [__bl602_expander_set_intmod__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937): Set GPIO Interrupt Mode
 
--   [lupyuen/bl602_expander](https://github.com/lupyuen/bl602_expander)
+    [(We fixed this bug)](https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538)
 
-__TODO:__ Move CST816S Interrupt Handler to [BL602 GPIO Expander](https://github.com/lupyuen/bl602_expander)
+-   [__bl602_expander_intmask__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888): Set GPIO Interrupt Mask
+
+_What's the BL602 GPIO Expander?_
+
+The board-specific __BL602 EVB GPIO Driver__ doesn't expose public functions for configuring GPIO Interrupts. [(See bl602evb/bl602_gpio.c)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c)
+
+That's why we're creating a __BL602 GPIO Expander__ that will replace the BL602 EVB GPIO Driver. It's still under development...
+
+-   [__lupyuen/bl602_expander__](https://github.com/lupyuen/bl602_expander)
+
+But eventually [__bl602_expander_set_intmod__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937) and [__bl602_expander_intmask__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888) will be moved there and exposed as public functions.
 
 ## Enable GPIO Interrupt
 
-We call [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804) to enable (or disable) GPIO Interrupts.
-
-Here's the function...
+We call [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804) to enable (or disable) GPIO Interrupts.  Here's the function: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804)
 
 ```c
 //  Enable or disable GPIO Interrupt for Touch Controller.
-//  Based on https://github.com/lupyuen/incubator-nuttx/blob/touch/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
+//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
 static int bl602_irq_enable(bool enable)
 {
   if (enable)
@@ -1267,15 +1275,7 @@ static int bl602_irq_enable(bool enable)
 }
 ```
 
-[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804)
-
-TODO
-
-There's bug with BL602 GPIO Interrupts that we have fixed for our driver...
-
-https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538
-
-__TODO:__ Move CST816S Interrupt Handler to [BL602 GPIO Expander](https://github.com/lupyuen/bl602_expander)
+[(__up_enable_irq__ and __up_disable_irq__ are defined in the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_irq.c#L110-L170)
 
 
 
