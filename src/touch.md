@@ -1051,7 +1051,7 @@ When we read an I2C Register, we must send the I2C Register ID as an __I2C Sub A
 static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,uint8_t *buf, size_t buflen) {
 
   //  Compose I2C Request to read I2C Registers
-  struct i2c_msg_s msgv[2] = {{
+  struct i2c_msg_s msgv[2] = { {
 
     //  First I2C Message: Send the Register ID
     .frequency = CONFIG_CST816S_I2C_FREQUENCY,
@@ -1073,7 +1073,7 @@ static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,uint8_t *
     .flags     = I2C_M_READ,
     .buffer    = buf,
     .length    = buflen
-  }};
+  } };
 ```
 
 We do this by specifying the __I2C_M_NOSTART__ flag (shown above).
