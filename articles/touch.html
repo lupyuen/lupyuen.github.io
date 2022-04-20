@@ -1011,7 +1011,7 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 <ul>
 <li><a href="https://github.com/lupyuen/bl602_expander"><strong>lupyuen/bl602_expander</strong></a></li>
 </ul>
-<p>But eventually <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937"><strong>bl602_expander_set_intmod</strong></a> and <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888"><strong>bl602_expander_intmask</strong></a> will be moved there and exposed as public functions.</p>
+<p>But eventually <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772"><strong>bl602_irq_attach</strong></a>, <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937"><strong>bl602_expander_set_intmod</strong></a> and <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888"><strong>bl602_expander_intmask</strong></a> shall be moved there and exposed as public functions.</p>
 <h2 id="enable-gpio-interrupt"><a href="#enable-gpio-interrupt">12.2 Enable GPIO Interrupt</a></h2>
 <p>We call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804"><strong>bl602_irq_enable</strong></a> to enable (or disable) GPIO Interrupts.  Here’s the function: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Enable or disable GPIO Interrupt for Touch Controller.
@@ -1039,6 +1039,7 @@ static int bl602_irq_enable(bool enable)
   return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_irq.c#L110-L170">(<strong>up_enable_irq</strong> and <strong>up_disable_irq</strong> are defined in the BL602 IRQ Driver)</a></p>
+<p><strong>bl602_irq_enable</strong> shall also be moved to the <a href="https://github.com/lupyuen/bl602_expander"><strong>BL602 GPIO Expander</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/touch-title2.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><em>Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board</em></p>
 
