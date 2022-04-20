@@ -1012,11 +1012,17 @@ static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR
 </ul>
 <p><em>What’s the BL602 GPIO Expander?</em></p>
 <p>The board-specific <strong>BL602 EVB GPIO Driver</strong> doesn’t expose public functions for configuring GPIO Interrupts. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c">(See bl602evb/bl602_gpio.c)</a></p>
-<p>That’s why we’re creating a <strong>BL602 GPIO Expander</strong> that will replace the BL602 EVB GPIO Driver. It’s still under development…</p>
+<p>That’s why we’re creating a <strong>BL602 GPIO Expander</strong> that will replace the BL602 EVB GPIO Driver. It’s now under development…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bl602_expander"><strong>lupyuen/bl602_expander</strong></a></li>
 </ul>
 <p>But eventually <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772"><strong>bl602_irq_attach</strong></a>, <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937"><strong>bl602_expander_set_intmod</strong></a> and <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888"><strong>bl602_expander_intmask</strong></a> shall be moved there and exposed as public functions.</p>
+<p><em>Which features on PineDio Stack will call the Interrupt Functions on the BL602 GPIO Expander?</em></p>
+<p>Plenty! The GPIO Expander shall manage <strong>GPIO Interrupts</strong> for the Touch Panel, SX1262 Transceiver, Push Button, Compass, Accelerometer, Heart Rate Sensor, …</p>
+<p>That’s everything marked as “Interrupt” in this table…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment"><strong>“PineDio Stack GPIO Assignment”</strong></a></li>
+</ul>
 <h2 id="enable-gpio-interrupt"><a href="#enable-gpio-interrupt">12.2 Enable GPIO Interrupt</a></h2>
 <p>We call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804"><strong>bl602_irq_enable</strong></a> to enable (or disable) GPIO Interrupts.  Here’s the function: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Enable or disable GPIO Interrupt for Touch Controller.
