@@ -78,7 +78,7 @@ Which explains why we have so many drivers available for CST816S: [__Arduino__](
 
 _So it works like any other I2C Device?_
 
-CST816S is a peculiar I2C Device... It won't respond to I2C Commands unless we __tap the screen and wake it up__!
+CST816S is a peculiar I2C Device... It won't respond to I2C Commands until we __tap the screen and wake it up__!
 
 That's because it tries to conserve power: It powers off the I2C Interface when it's not in use. (Pic above)
 
@@ -845,7 +845,7 @@ _Nothing appears in the log until we touch the screen. Why so?_
 
 Recall that the LVGL Test App __calls `read()` repeatedly__ on our CST816S Driver to get Touch Data. [(See this)](https://lupyuen.github.io/articles/touch#read-touch-data)
 
-But __`read()`__ won't fetch any Touch Data over I2C __unless the screen is touched__. [(See this)](https://lupyuen.github.io/articles/touch#is-data-ready)
+But __`read()`__ won't fetch any Touch Data over I2C __until the screen is touched__. [(See this)](https://lupyuen.github.io/articles/touch#is-data-ready)
 
 Thus we have successfully eliminated most of the unnecessary I2C Reads!
 
@@ -953,6 +953,8 @@ cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
 
 [(See the Complete Log)](https://github.com/lupyuen/cst816s-nuttx#touch-up-event)
 
+_This doesn't look right: x=639, y=1688. Our screen is only 240 x 240 pixels!_
+
 We said earlier that Touch Up Events have __invalid Touch Coordinates__. [(Right here)](https://lupyuen.github.io/articles/touch#fetch-touch-data)
 
 Hence we substitute the Touch Coordinates with the data from the __last Touch Down Event__...
@@ -1012,11 +1014,17 @@ That's right... Our screen is __rotated sideways__!
 
 So be careful when mapping the Touch Coordinates to the rendered screen.
 
-_Is there a fix for this?_
+_Can we fix this?_
 
-TODO
+We can rotate the display in the __ST7789 Display Driver__. 
 
-We can rotate the display in the ST7789 Driver. But first we need to agree which way is "up"...
+(Portrait Mode vs Landscape Mode)
+
+But first we need to agree __which way is "up"__...
+
+-   Should we rotate the "chin" to the bottom?
+
+-   If PineDio Stack works like a "Chonky Watch", the button should be at the side. Right?
 
 ![Which way is up?](https://lupyuen.github.io/images/touch-button.jpg)
 
