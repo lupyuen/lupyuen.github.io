@@ -1124,6 +1124,12 @@ I hope this article has provided everything you need to get started on creating 
 
 Lemme know what you're building with PineDio Stack!
 
+In the next article we shall tackle the (happy) problem of __too many GPIOs__ on PineDio Stack...
+
+-   [__"BL604 GPIO Expander"__](https://lupyuen.github.io/articles/pinedio2#gpio-expander)
+
+Stay Tuned!
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
