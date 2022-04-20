@@ -1218,7 +1218,7 @@ That's why we're creating a __BL602 GPIO Expander__ that will replace the BL602 
 
 -   [__lupyuen/bl602_expander__](https://github.com/lupyuen/bl602_expander)
 
-But eventually [__bl602_expander_set_intmod__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937) and [__bl602_expander_intmask__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888) will be moved there and exposed as public functions.
+But eventually [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772), [__bl602_expander_set_intmod__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937) and [__bl602_expander_intmask__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888) shall be moved there and exposed as public functions.
 
 ## Enable GPIO Interrupt
 
@@ -1253,6 +1253,7 @@ static int bl602_irq_enable(bool enable)
 
 [(__up_enable_irq__ and __up_disable_irq__ are defined in the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_irq.c#L110-L170)
 
+__bl602_irq_enable__ shall also be moved to the [__BL602 GPIO Expander__](https://github.com/lupyuen/bl602_expander).
 
 
 
