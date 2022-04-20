@@ -786,18 +786,11 @@ cst816s_get_touch_data:   y:       23</code></pre></div>
 <p>Our driver clears the <strong>Pending Flag</strong> and remembers that we’re expecting a <strong>Touch Up Event</strong>. <a href="https://lupyuen.github.io/articles/touch#get-i2c-touch-data">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/touch-run2a.png" alt="Our driver returns a Touch Down Event" /></p>
 <h2 id="touch-down-event-again"><a href="#touch-down-event-again">7.4 Touch Down Event Again</a></h2>
-<p>TODO</p>
-<p>LVGL Test App is still calling <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly to get Touch Data.</p>
-<p>Now that <code>last_event</code> is 0 (Touch Down), our driver proceeds to call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> and fetch the Touch Data over I2C…</p>
+<p>We’re not done with Touch Down Events yet!</p>
+<p>Because our driver remembers that we’re expecting a Touch Up Event, all calls to <strong><code>read()</code></strong> will continue to <strong>fetch the Touch Data</strong> over I2C. <a href="https://lupyuen.github.io/articles/touch#is-data-ready">(Here’s why)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:
 cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x1700de
-ransfer success
-cst816s_get_touch_data: DOWN: id=0, ouch=0, x=222, y=23
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=222, y=23
 cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       222
@@ -805,109 +798,60 @@ cst816s_get_touch_data:   y:       23
 
 cst816s_get_touch_data:
 cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x1700de
-ransfer success
 cst816s_get_touch_data: DOWN: id=0, touch=0, x=222, y=23
 cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       222
 cst816s_get_touch_data:   y:       23</code></pre></div>
-<p>This happens twice because we haven’t received a Touch Up Event.</p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx#touch-down-event-again">(See the Complete Log)</a></p>
+<p>Our driver <strong>returns the same data twice</strong> to the app. (Until it sees the Touch Up Event)</p>
+<p>(TODO: Perhaps we should ignore duplicate Touch Down Events? Might reduce the screen lag)</p>
 <h2 id="touch-up-event"><a href="#touch-up-event">7.5 Touch Up Event</a></h2>
-<p>TODO</p>
-<p>When our finger is no longer touching the screen, <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> receives a Touch Up Event…</p>
+<p>When we’re no longer longer touching the screen, <a href="https://lupyuen.github.io/articles/touch#is-data-ready"><strong>cst816s_get_touch_data</strong></a> receives a <strong>Touch Up Event</strong> over I2C…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:
 cst816s_i2c_read:
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c transfer success
-cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
-cst816s_get_touch_data: UP: id=0, touch=2, x=222, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   0c
-cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23</code></pre></div>
-<p>For Touch Up Events the Touch Coordinates are invalid…</p>
-<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
-<p>The driver patches the Touch Coordinates with the data from the last Touch Down Event…</p>
+cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx#touch-up-event">(See the Complete Log)</a></p>
+<p>We said earlier that Touch Up Events have <strong>invalid Touch Coordinates</strong>. <a href="https://lupyuen.github.io/articles/touch#fetch-touch-data">(Right here)</a></p>
+<p>Hence we substitute the Touch Coordinates with the data from the <strong>last Touch Down Event</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: UP: id=0, touch=2, x=222, y=23
 cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   0c
 cst816s_get_touch_data:   x:       222
 cst816s_get_touch_data:   y:       23</code></pre></div>
-<p>And returns the valid coordinates to the LVGL Test App. The patching is done here…</p>
-<div class="example-wrap"><pre class="language-c"><code>static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) {
-...
-  /* If touch coordinates are invalid, return the last valid coordinates. */
-
-  bool valid = true;
-  if (x &gt;= 240 || y &gt;= 240)
-    {
-      iwarn(&quot;Invalid touch data: id=%d, touch=%d, x=%d, y=%d\n&quot;, id, touchpoints, x, y);
-      if (last_event == 0xff)  /* Quit if we have no last valid coordinates. */
-        {
-          ierr(&quot;Can&#39;t return touch data: id=%d, touch=%d, x=%d, y=%d\n&quot;, id, touchpoints, x, y);
-          return -EINVAL;
-        }
-      valid = false;
-      id = last_id;
-      x  = last_x;
-      y  = last_y;
-    }
-
-  /* Remember the last valid touch data. */
-
-  last_event = event;
-  last_id    = id;
-  last_x     = x;
-  last_y     = y;
-
-  /* Set the touch data fields. */
-
-  memset(&amp;data, 0, sizeof(data));
-  data.npoints     = 1;
-  data.point[0].id = id;
-  data.point[0].x  = x;
-  data.point[0].y  = y;</code></pre></div>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L258-L282">(Source)</a></p>
-<p><code>last_event</code> is now set to 1 (Touch Up). </p>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> will no longer call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> to fetch the Touch Data, until the screen is touched again.</p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/touch-run4a.png" alt="" /></p>
+<p>And we return the valid coordinates to the app.</p>
+<p>The <strong>Pending Flag</strong> is now clear, and we’re no longer expecting a <strong>Touch Up Event</strong>.</p>
+<p>All calls to <strong><code>read()</code></strong> will no longer fetch the Touch Data over I2C. (Until we touch the screen again)</p>
+<p><img src="https://lupyuen.github.io/images/touch-run4a.png" alt="Patching the Touch Coordinates" /></p>
 <h2 id="screen-calibration-result"><a href="#screen-calibration-result">7.6 Screen Calibration Result</a></h2>
-<p>TODO</p>
-<p>When we have touched the 4 screen corners, the LVGL Test App displays the Screen Calibration result…</p>
+<p>After we have touched the 4 corners of the screen, the LVGL Test App displays the result of the <strong>Screen Calibration</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>tp_cal result
 offset x:23, y:24
 range x:194, y:198
 invert x/y:1, x:0, y:1</code></pre></div>
-<p>Which will be used to tweak the Touch Coordinates in the apps.</p>
+<p>Which will be used to tweak the Touch Coordinates later in the app.</p>
+<p>And we’re done with the app!</p>
+<p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <h1 id="screen-is-sideways"><a href="#screen-is-sideways">8 Screen Is Sideways</a></h1>
+<p>If we look closely at the screen above, the <strong>Touch Coordinates seem odd</strong>…</p>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: right"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Top Left</strong> <br> <em>x=181, y=12</em></td><td style="text-align: right"><strong>Top Right</strong> <br> <em>x=230, y=212</em></td></tr>
+<tr><td style="text-align: left"><strong>Bottom Left</strong> <br> <em>x=9, y=10</em></td><td style="text-align: right"><strong>Bottom Right</strong> <br> <em>x=19, y=202</em></td></tr>
+</tbody></table>
+</div>
+<p>But we expect the Touch Coordinates to run <strong>left to right, top to bottom</strong>…</p>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: right"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>Top Left</strong> <br> <em>x=0, y=0</em></td><td style="text-align: right"><strong>Top Right</strong> <br> <em>x=239, y=0</em></td></tr>
+<tr><td style="text-align: left"><strong>Bottom Left</strong> <br> <em>x=0, y=239</em></td><td style="text-align: right"><strong>Bottom Right</strong> <br> <em>x=239, y=239</em></td></tr>
+</tbody></table>
+</div>
+<p><strong>Try this:</strong> Tilt your head to the left and stare at the pic. You’ll see the Expected Touch Coordinates!</p>
+<p>That’s right… Our screen is <strong>rotated sideways</strong>!</p>
+<p>So be careful when mapping the Touch Coordinates to the rendered screen.</p>
+<p><em>Is there a fix for this?</em></p>
 <p>TODO</p>
-<p>According to the Touch Data from the LVGL Test App, our screen is rotated sideways…</p>
-<ul>
-<li>
-<p>Top Left: x=181, y=12</p>
-</li>
-<li>
-<p>Top Right: x=230, y=212</p>
-</li>
-<li>
-<p>Bottom Left: x=9, y=10</p>
-</li>
-<li>
-<p>Bottom Right: x=19, y=202</p>
-</li>
-</ul>
-<p>So be careful when mapping the touch coordinates.</p>
 <p>We can rotate the display in the ST7789 Driver. But first we need to agree which way is “up”…</p>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/touch-button.jpg" alt="" /></p>
+<p><img src="https://lupyuen.github.io/images/touch-button.jpg" alt="Which way is up?" /></p>
 <h1 id="i2c-quirks"><a href="#i2c-quirks">9 I2C Quirks</a></h1>
 <p><em>Is there anything peculiar about I2C on BL602 and BL604?</em></p>
 <p>TODO: Register ID as Sub Address</p>
