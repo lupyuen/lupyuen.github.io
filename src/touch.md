@@ -1220,11 +1220,19 @@ _What's the BL602 GPIO Expander?_
 
 The board-specific __BL602 EVB GPIO Driver__ doesn't expose public functions for configuring GPIO Interrupts. [(See bl602evb/bl602_gpio.c)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c)
 
-That's why we're creating a __BL602 GPIO Expander__ that will replace the BL602 EVB GPIO Driver. It's still under development...
+That's why we're creating a __BL602 GPIO Expander__ that will replace the BL602 EVB GPIO Driver. It's now under development...
 
 -   [__lupyuen/bl602_expander__](https://github.com/lupyuen/bl602_expander)
 
 But eventually [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772), [__bl602_expander_set_intmod__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937) and [__bl602_expander_intmask__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888) shall be moved there and exposed as public functions.
+
+_Which features on PineDio Stack will call the Interrupt Functions on the BL602 GPIO Expander?_
+
+Plenty! The GPIO Expander shall manage __GPIO Interrupts__ for the Touch Panel, SX1262 Transceiver, Push Button, Compass, Accelerometer, Heart Rate Sensor, ...
+
+That's everything marked as "Interrupt" in this table...
+
+-   [__"PineDio Stack GPIO Assignment"__](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment)
 
 ## Enable GPIO Interrupt
 

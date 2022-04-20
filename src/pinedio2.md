@@ -730,6 +730,10 @@ We have started building the __BL602 / BL604 GPIO Expander__...
 
 -   [__lupyuen/bl602_expander__](https://github.com/lupyuen/bl602_expander)
 
+The GPIO Expander shall also manage __GPIO Interrupts__ for the Touch Panel, SX1262 Transceiver, Push Button, Compass, Accelerometer, Heart Rate Sensor, ...
+
+-   [__"GPIO Interrupt"__](https://lupyuen.github.io/articles/touch#appendix-gpio-interrupt)
+
 There's a discussion about __GPIOs on BL604__...
 
 -   [__"GPIO issues on BL602"__](https://github.com/apache/incubator-nuttx/issues/5810)
