@@ -746,13 +746,13 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
 <p><a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma"><strong>“Execute DMA Linked List”</strong></a></p>
 </li>
 </ul>
-<p>Let’s study the log…</p>
+<p>Let’s inspect the log…</p>
 <h2 id="read-touch-data-1"><a href="#read-touch-data-1">7.1 Read Touch Data</a></h2>
 <p><em>Nothing appears in the log until we touch the screen. Why so?</em></p>
 <p>Recall that the LVGL Test App <strong>calls <code>read()</code> repeatedly</strong> on our CST816S Driver to get Touch Data. <a href="https://lupyuen.github.io/articles/touch#read-touch-data">(See this)</a></p>
 <p>But <strong><code>read()</code></strong> won’t fetch any Touch Data over I2C <strong>unless the screen is touched</strong>. <a href="https://lupyuen.github.io/articles/touch#is-data-ready">(See this)</a></p>
-<p>So we have successfully eliminated most of the unnecessary I2C Reads!</p>
-<p>Let’s watch what happens when we touch the screen.</p>
+<p>Thus we have successfully eliminated most of the unnecessary I2C Reads!</p>
+<p>Now watch what happens when we touch the screen…</p>
 <p><img src="https://lupyuen.github.io/images/touch-code6a.png" alt="LVGL Test App calls read() repeatedly" /></p>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L100-L199">(Source)</a></p>
 <h2 id="trigger-gpio-interrupt"><a href="#trigger-gpio-interrupt">7.2 Trigger GPIO Interrupt</a></h2>
@@ -765,33 +765,26 @@ cst816s_poll_notify:</code></pre></div>
 <p>Then it calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L493-L519"><strong>cst816s_poll_notify</strong></a> to notify all callers to <strong><code>poll()</code></strong> that Touch Data is now available.</p>
 <p>(The LVGL Test App doesn’t <strong><code>poll()</code></strong> our driver, so this has no effect)</p>
 <h2 id="touch-down-event"><a href="#touch-down-event">7.3 Touch Down Event</a></h2>
-<p>TODO</p>
-<p>Remember that the LVGL Test App keeps calling <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly to get Touch Data.</p>
-<p>Now that <code>int_pending</code> is true, our driver proceeds to call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> and fetch the Touch Data over I2C…</p>
+<p>The LVGL Test App is still calling <strong><code>read()</code></strong> repeatedly to get Touch Data from our driver.</p>
+<p>Now that the <strong>Pending Flag</strong> is true, our driver proceeds to call <a href="https://lupyuen.github.io/articles/touch#is-data-ready"><strong>cst816s_get_touch_data</strong></a> and fetch the Touch Data over I2C…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:
 cst816s_i2c_read:
 bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
 bl602_i2c_transfer: i2c transfer success
 bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
-bl602_i2c_transfer: i2c tbl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x1700de
-ransfer success
-cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23</code></pre></div>
-<p>The Touch Data that was read from CST816S over I2C…</p>
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_recvdata: count=7, temp=0x500
+bl602_i2c_recvdata: count=3, temp=0x1700de</code></pre></div>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx#touch-down-event">(See the Complete Log)</a></p>
+<p>Our driver has <strong>fetched the Touch Data</strong> over I2C…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23</code></pre></div>
-<p>Gets returned directly to the LVGL Test App as a Touch Down Event…</p>
+<p>Which gets returned directly to the app as a <strong>Touch Down Event</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       222
 cst816s_get_touch_data:   y:       23</code></pre></div>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L222-L326"><code>cst816s_get_touch_data()</code></a> sets <code>last_event</code> to 0 because it’s a Touch Down Event.</p>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L372-L382"><code>cst816s_read()</code></a> sets <code>int_pending</code> to false.</p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/touch-run2a.png" alt="" /></p>
+<p>Our driver clears the <strong>Pending Flag</strong> and remembers that we’re expecting a <strong>Touch Up Event</strong>. <a href="https://lupyuen.github.io/articles/touch#get-i2c-touch-data">(See this)</a></p>
+<p><img src="https://lupyuen.github.io/images/touch-run2a.png" alt="Our driver returns a Touch Down Event" /></p>
 <h2 id="touch-down-event-again"><a href="#touch-down-event-again">7.4 Touch Down Event Again</a></h2>
 <p>TODO</p>
 <p>LVGL Test App is still calling <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L328-L382"><code>cst816s_read()</code></a> repeatedly to get Touch Data.</p>
