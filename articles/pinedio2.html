@@ -768,6 +768,10 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 <p>That’s why we need to handle GPIOs the messy (but productive) way for now.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#gpio-demo">(More about NuttX GPIO)</a></p>
 <h2 id="push-button"><a href="#push-button">14.2 Push Button</a></h2>
+<p>Robert Lipe has an excellent article on PineDio Stack’s Push Button…</p>
+<ul>
+<li><a href="https://www.robertlipe.com/buttons-on-bl602-nuttx/"><strong>“Buttons on BL602 NuttX”</strong></a></li>
+</ul>
 <p>To support the <strong>Push Button</strong> (GPIO 12) on PineDio Stack, we shall implement these <strong>Board Button Functions</strong> for PineDio Stack…</p>
 <ul>
 <li>
@@ -791,7 +795,7 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 </ul>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/chrono/chrono_main.c">(Here’s how we access “<strong>/dev/buttons</strong>” in NuttX Apps)</a></p>
 <p>Note that the Push Button shares GPIO 12 with the Vibrator.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/pull/60"><strong>UPDATE:</strong> Robert Lipe is working on the Push Button support</a></p>
+<p>(Which is missing from the current PineDio Stack)</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/pinedio2-touch.png" alt="PineDio Stack Touch Panel" /></p>
 </blockquote>
