@@ -760,6 +760,10 @@ That's why we need to handle GPIOs the messy (but productive) way for now.
 
 ## Push Button
 
+Robert Lipe has an excellent article on PineDio Stack's Push Button...
+
+-   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
+
 To support the __Push Button__ (GPIO 12) on PineDio Stack, we shall implement these __Board Button Functions__ for PineDio Stack...
 
 -   [__board_buttons__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/button_lower.c#L91-L102)
@@ -782,7 +786,7 @@ Which is wrapped inside the __Button Upper Half Driver__ and exposed to apps as 
 
 Note that the Push Button shares GPIO 12 with the Vibrator.
 
-[__UPDATE:__ Robert Lipe is working on the Push Button support](https://github.com/lupyuen/incubator-nuttx/pull/60)
+(Which is missing from the current PineDio Stack)
 
 > ![PineDio Stack Touch Panel](https://lupyuen.github.io/images/pinedio2-touch.png)
 
