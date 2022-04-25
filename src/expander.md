@@ -4,6 +4,10 @@
 
 ![NuttX GPIO Expander for PineDio Stack BL604](https://lupyuen.github.io/images/expander-title.jpg)
 
+__PineDio Stack BL604__ (Pine64's newest RISC-V board) has an interesting problem on __Apache NuttX RTOS__... Too many GPIOs!
+
+Let's fix this with a __GPIO Expander__.
+
 TODO
 
 # What's Next
