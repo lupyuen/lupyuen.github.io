@@ -828,7 +828,11 @@ I'm new to NuttX but I had lots of fun experimenting with it. I hope you'll enjo
 
 Here are some topics that I'll explore in future articles...
 
--   __SPI Driver__: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604! Which we have done here...
+-   __PineDio Stack BL604__: PineDio Stack is Pine64's newest RISC-V board that comes with a Touchscreen and a LoRa SX1262 Transceiver...
+
+    [__"PineDio Stack BL604 runs Apache NuttX RTOS"__](https://lupyuen.github.io/articles/pinedio2)
+
+-   __SPI Driver__: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604!
 
     [__"SPI on Apache NuttX OS"__](https://lupyuen.github.io/articles/spi2)
 
@@ -861,7 +865,6 @@ Here are some topics that I'll explore in future articles...
 -   __Automated Testing__: This is how we do daily automated testing of NuttX on BL602...
 
     [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
-
 
 (BL602 IoT SDK / FreeRTOS is revamping right now to the [__new "hosal" HAL__](https://twitter.com/MisterTechBlog/status/1456259223323508748). Terrific time to explore NuttX now!)
 
