@@ -4,7 +4,9 @@
 
 ![NuttX GPIO Expander for PineDio Stack BL604](https://lupyuen.github.io/images/expander-title.jpg)
 
-[__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) (Pine64's newest RISC-V board) has an interesting problem on [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx)... Too many GPIOs!
+[__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) (Pine64's newest RISC-V board) has an interesting problem on [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx)...
+
+___Too Many GPIOs!___
 
 Let's fix this with a __GPIO Expander__.
 
@@ -13,6 +15,8 @@ _Why too many GPIOs?_
 All __23 GPIOs__ on PineDio Stack BL604 are wired up...
 
 -   [__"PineDio Stack GPIO Assignment"__](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment)
+
+And we need easy access to all GPIOs as our devs create __NuttX Drivers and Apps__ for PineDio Stack.
 
 _NuttX can't handle 23 GPIOs?_
 
@@ -42,17 +46,33 @@ Extend this to __23 GPIOs__ and we have a mapping disaster!
 
 Let's simplify this setup and map GPIO Pins 0 to 22 as "__/dev/gpio0__" to "__/dev/gpio22__". We'll do this with a __GPIO Expander__.
 
+(See pic above)
+
 _What's a GPIO Expander?_
 
-TODO
+NuttX lets us create __I/O Expander Drivers__ that will manage many GPIOs...
 
-TODO: GPIO Interrupt problems
+-   [__NuttX I/O Expander Driver Interface__](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h)
+
+Well BL604 looks like a __Big Bag of GPIOs__. Why not create a __GPIO Expander__ that will manage all 23 GPIOs?
+
+-   [__BL602 / BL604 GPIO Expander__](https://github.com/lupyuen/bl602_expander)
+
+_So we're just renumbering GPIOs?_
+
+Above and beyond that, our BL604 GPIO Expander serves two other functions...
+
+-   Attach and detach __GPIO Interrupt Handlers__
+
+-   __Validate GPIO Pin Numbers__ at startup
+
+Let's dive in!
 
 # What's Next
 
 TODO
 
-I hope this article has provided everything you need to get started on creating __your own Touchscreen Apps__ on PineDio Stack.
+I hope this article has provided everything you need to get started on creating __your own NuttX Drivers and Apps__ on PineDio Stack.
 
 Lemme know what you're building with PineDio Stack!
 
