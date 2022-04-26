@@ -71,10 +71,35 @@
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> (Pine64’s newest RISC-V board) has an interesting problem on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a>… Too many GPIOs!</p>
 <p>Let’s fix this with a <strong>GPIO Expander</strong>.</p>
 <p><em>Why too many GPIOs?</em></p>
-<p>TODO</p>
+<p>All <strong>23 GPIOs</strong> on PineDio Stack BL604 are wired up…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment"><strong>“PineDio Stack GPIO Assignment”</strong></a></li>
+</ul>
 <p><em>NuttX can’t handle 23 GPIOs?</em></p>
-<p>Well it gets messy.</p>
-<p>TODO</p>
+<p>Well it gets messy. Without GPIO Expander, BL604 on NuttX supports one <strong>GPIO Input</strong>, one <strong>GPIO Output</strong> and one <strong>GPIO Interrupt</strong>.</p>
+<p>And they are <strong>named sequentially</strong> (Input first, then Output, then Interrupt)…</p>
+<ul>
+<li>
+<p><strong>/dev/gpio0</strong>: GPIO Input</p>
+</li>
+<li>
+<p><strong>/dev/gpio1</strong>: GPIO Output</p>
+</li>
+<li>
+<p><strong>/dev/gpio2</strong>: GPIO Interrupt</p>
+</li>
+</ul>
+<p>(See pic above)</p>
+<p><em>This looks OK?</em></p>
+<p>Until we realise that they map to <strong>totally different GPIO Pins</strong> on PineDio Stack!</p>
+<div><table><thead><tr><th>GPIO Device</th><th style="text-align: center">BL604 GPIO Pin</th><th>Function</th></tr></thead><tbody>
+<tr><td><strong>/dev/gpio0</strong></td><td style="text-align: center">GPIO Pin <strong><code>10</code></strong></td><td>SX1262 Busy</td></tr>
+<tr><td><strong>/dev/gpio1</strong></td><td style="text-align: center">GPIO Pin <strong><code>15</code></strong></td><td>SX1262 Chip Select</td></tr>
+<tr><td><strong>/dev/gpio2</strong></td><td style="text-align: center">GPIO Pin <strong><code>19</code></strong></td><td>SX1262 Interrupt</td></tr>
+</tbody></table>
+</div>
+<p>Extend this to <strong>23 GPIOs</strong> and we have a mapping disaster!</p>
+<p>Let’s simplify this setup and map GPIO Pins 0 to 22 as “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio22</strong>”. We’ll do this with a <strong>GPIO Expander</strong>.</p>
 <p><em>What’s a GPIO Expander?</em></p>
 <p>TODO</p>
 <p>TODO: GPIO Interrupt problems</p>
