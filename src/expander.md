@@ -10,13 +10,37 @@ Let's fix this with a __GPIO Expander__.
 
 _Why too many GPIOs?_
 
-TODO
+All __23 GPIOs__ on PineDio Stack BL604 are wired up...
+
+-   [__"PineDio Stack GPIO Assignment"__](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment)
 
 _NuttX can't handle 23 GPIOs?_
 
-Well it gets messy.
+Well it gets messy. Without GPIO Expander, BL604 on NuttX supports one __GPIO Input__, one __GPIO Output__ and one __GPIO Interrupt__.
 
-TODO
+And they are __named sequentially__ (Input first, then Output, then Interrupt)...
+
+-   __/dev/gpio0__: GPIO Input
+
+-   __/dev/gpio1__: GPIO Output
+
+-   __/dev/gpio2__: GPIO Interrupt
+
+(See pic above)
+
+_This looks OK?_
+
+Until we realise that they map to __totally different GPIO Pins__ on PineDio Stack!
+
+| GPIO Device | BL604 GPIO Pin | Function
+|-------------|:----------:|-------
+| __/dev/gpio0__ | GPIO Pin __`10`__ | SX1262 Busy
+| __/dev/gpio1__ | GPIO Pin __`15`__ | SX1262 Chip Select
+| __/dev/gpio2__ | GPIO Pin __`19`__ | SX1262 Interrupt
+
+Extend this to __23 GPIOs__ and we have a mapping disaster!
+
+Let's simplify this setup and map GPIO Pins 0 to 22 as "__/dev/gpio0__" to "__/dev/gpio22__". We'll do this with a __GPIO Expander__.
 
 _What's a GPIO Expander?_
 
