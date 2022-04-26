@@ -1272,6 +1272,18 @@ Here are the steps to enable __NuttX Logging__ for easier troubleshooting...
     LCD Driver Informational Output
     ```
 
+1.  (Optional) To enable Logging for __SX1262 LoRa Transceiver__, check the box for...
+
+    ```text
+    Enable Informational Debug Output
+    ```
+
+    And enable debugging for the SX1262 Library...
+
+    ```text
+    Library Routines → Semtech SX1262 Library → Logging → Debugging
+    ```
+
 1.  (Optional) To enable logging for __I2C and Sensors__, check the boxes for...
 
     ```text
