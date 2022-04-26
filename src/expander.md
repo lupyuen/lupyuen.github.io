@@ -58,6 +58,8 @@ Well BL604 looks like a __Big Bag of GPIOs__. Why not create a __GPIO Expander__
 
 -   [__BL602 / BL604 GPIO Expander__](https://github.com/lupyuen/bl602_expander)
 
+(Other microcontrollers might also need a GPIO Expander... Like [__CH32V307__](https://github.com/openwch/ch32v307), which has 80 GPIOs!)
+
 _So we're just renumbering GPIOs?_
 
 Above and beyond that, our BL604 GPIO Expander serves two other functions...
