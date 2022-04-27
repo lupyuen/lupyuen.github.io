@@ -86,17 +86,37 @@ _What's this BL602 EVB?_
 
 In NuttX, __BL602 EVB__ ("Evaluation Board") provides the __Board-Specific Functions__ for PineDio Stack and other BL602 / BL604 boards...
 
--   [__NuttX BL602 EVB__](https://github.com/lupyuen/incubator-nuttx/tree/expander/boards/risc-v/bl602/bl602evb/src)
+-   [__NuttX BL602 EVB__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio/boards/risc-v/bl602/bl602evb/src)
 
 _What's inside BL602 EVB?_
 
 The important parts of BL602 EVB are...
 
--   Pin Definitions: TODO
+-   __Pin Definitions:__ [__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h)
 
--   Bringup: TODO
+    Defines the pins for the GPIO, UART, I2C, SPI and PWM ports.
 
--   GPIO: TODO
+-   __Bring-Up:__ [__bl602_bringup.c__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c)
+
+    Starts the NuttX Drivers and the GPIO / UART / I2C / SPI / PWM ports.
+
+-   __EVB GPIO Driver:__ [__bl602_gpio.c__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c)
+
+    Implements the GPIO Input, Output and Interrupt ports.
+    
+    Calls the [__BL602 GPIO Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c).
+
+Let's study the limitations of the BL602 EVB, to understand why we created the BL602 GPIO Expander.
+
+## Pin Definitions
+
+TODO
+
+## Bring-Up
+
+TODO
+
+## EVB GPIO Driver
 
 TODO: somewhat limited, works great for 3 GPIOs, doesn't scale well beyond that
 
@@ -104,15 +124,15 @@ TODO: Should we have created an "EVB" for PineDio Stack? Probably, but we'll sav
 
 The NuttX GPIO Driver for BL602 EVB supports one GPIO Input, one GPIO Output and one GPIO Interrupt ... And names them sequentially: "/dev/gpio0", "/dev/gpio1", "/dev/gpio2"
 
--   [BL602 EVB GPIO Driver](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L537-L607)
+-   [BL602 EVB GPIO Driver](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L537-L607)
 
 Which can be super confusing because "/dev/gpio0" doesn't actually map to BL602 GPIO Pin 0.
 
-[("/dev/gpio0" maps to BL602 GPIO Pin 10)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/include/board.h#L49-L52)
+[("/dev/gpio0" maps to BL602 GPIO Pin 10)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L49-L52)
 
-[("/dev/gpio1" maps to BL602 GPIO Pin 15)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/include/board.h#L54-L58)
+[("/dev/gpio1" maps to BL602 GPIO Pin 15)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L54-L58)
 
-[("/dev/gpio2" maps to BL602 GPIO Pin 19)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/include/board.h#L59-L63)
+[("/dev/gpio2" maps to BL602 GPIO Pin 19)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L59-L63)
 
 What happens when we try to support 23 GPIOs on PineDio Stack BL604? Yep the GPIO Names will look really messy on NuttX.
 
@@ -216,7 +236,7 @@ static int gpint_attach(struct gpio_dev_s *dev, pin_interrupt_t callback)
 }
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c)
 
 Note that all GPIO Interrupts are multiplexed into a single IRQ: `BL602_IRQ_GPIO_INT0`
 
@@ -349,7 +369,7 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
   }
 ```
 
-[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/expander/cst816s.c#L661-L678)
+[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/pinedio/cst816s.c#L661-L678)
 
 The functions for configuring and handling GPIO Interrupts have been moved from the CST816S Driver to BL602 GPIO Expander.
 
@@ -404,7 +424,7 @@ CONFIG_LIBSX1262_BUSY_DEVPATH="/dev/gpio10"
 CONFIG_LIBSX1262_DIO1_DEVPATH="/dev/gpio19"
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L1141-L1144)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L1141-L1144)
 
 For backward compatibility with BL602 (which doesn't use GPIO Expander), we default `DIO1_DEVPATH` to "/dev/gpio2" if `DIO1_DEVPATH` isn't configured...
 
@@ -426,7 +446,7 @@ Tracking all 23 GPIOs used by PineDio Stack BL604 can get challenging... We migh
 
 Here are the GPIOs currently defined for PineDio Stack...
 
--   [`board.h`](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145)
+-   [`board.h`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145)
 
 At startup, GPIO Expander verifies that the GPIO, SPI, I2C and UART Pins don't reuse the same GPIO.
 
@@ -493,7 +513,7 @@ static const gpio_pinset_t bl602_other_pins[] =
 #endif  /* CONFIG_IOEXPANDER_BL602_EXPANDER */
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222)
 
 At startup, GPIO Expander verifies that the GPIOs are not reused...
 
@@ -2218,7 +2238,7 @@ TODO
 
 GPIO Expander calls [`bl602_configgpio`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140), [`bl602_gpioread`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [`bl602_gpiowrite`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216) to configure / read / write GPIOs
 
-Warning: [BL602 EVB GPIO Driver](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c) will be disabled when we enable GPIO Expander.
+Warning: [BL602 EVB GPIO Driver](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c) will be disabled when we enable GPIO Expander.
 
 (Because GPIO Expander needs GPIO Lower Half which conflicts with BL602 EVB GPIO Driver)
 
@@ -2326,7 +2346,7 @@ nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
 
 And call `bl602_expander_initialize` to initialise our driver, just after `bl602_gpio_initialize`:
 
-https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L742-L768
+https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L742-L768
 
 ```c
 #ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
@@ -2416,7 +2436,7 @@ static const gpio_pinset_t bl602_other_pins[] =
 #endif  /* CONFIG_IOEXPANDER_BL602_EXPANDER */
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222)
 
 We must load the GPIO Expander before other drivers (e.g. CST816S Touch Panel), because GPIO Expander provides GPIO functions for the drivers.
 
@@ -2428,7 +2448,7 @@ We need to disable BL602 GPIO Driver when we enable GPIO Expander, because GPIO 
   ret = bl602_gpio_initialize();
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653)
 
 ## Push Button Interrupt
 
