@@ -159,7 +159,23 @@
 </blockquote>
 <h1 id="bl602-evb-limitations"><a href="#bl602-evb-limitations">1 BL602 EVB Limitations</a></h1>
 <p><em>What’s this BL602 EVB?</em></p>
-<p>TODO: board.h, bringup, gpio</p>
+<p>In NuttX, <strong>BL602 EVB</strong> (“Evaluation Board”) provides the <strong>Board-Specific Functions</strong> for PineCone BL602, PineDio Stack BL604 and other boards based on BL602 and BL604…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/tree/expander/boards/risc-v/bl602/bl602evb/src"><strong>NuttX BL602 EVB</strong></a></li>
+</ul>
+<p><em>What’s inside BL602 EVB?</em></p>
+<p>The important parts of BL602 EVB are…</p>
+<ul>
+<li>
+<p>Pin Definitions: TODO</p>
+</li>
+<li>
+<p>Bringup: TODO</p>
+</li>
+<li>
+<p>GPIO: TODO</p>
+</li>
+</ul>
 <p>TODO: somewhat limited, works great for 3 GPIOs, doesn’t scale well beyond that</p>
 <p>TODO: Should we have created an “EVB” for PineDio Stack? Probably, but we’ll save that for later because it might lead to fragmentation of BL602 support in NuttX</p>
 <p>The NuttX GPIO Driver for BL602 EVB supports one GPIO Input, one GPIO Output and one GPIO Interrupt … And names them sequentially: “/dev/gpio0”, “/dev/gpio1”, “/dev/gpio2”</p>
