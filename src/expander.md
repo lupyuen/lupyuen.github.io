@@ -110,7 +110,7 @@ Let's study the limitations of the BL602 EVB, to understand why we created the B
 
 ## Pin Definitions
 
-TODO
+TODO: Reused pins, EVB will silently allow it
 
 ## Bring-Up
 
