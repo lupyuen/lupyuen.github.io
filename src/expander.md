@@ -54,7 +54,7 @@ NuttX lets us create __I/O Expander Drivers__ that will manage many GPIOs...
 
 -   [__NuttX I/O Expander Driver Interface__](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h)
 
-Well BL604 looks like a __Big Bag of GPIOs__. Why not create a __GPIO Expander__ that will manage all 23 GPIOs?
+Well BL604 looks like a __Big Bag o' GPIOs__. Why not create a __GPIO Expander__ that will manage all 23 GPIOs?
 
 -   [__BL602 / BL604 GPIO Expander__](https://github.com/lupyuen/bl602_expander)
 

@@ -726,9 +726,9 @@ Perhaps the GPIO Expander can __enforce checks at runtime__ to be sure that Nutt
 
 (And eventually the SX1262 Library will simply access _"/dev/gpio10"_, _"/dev/gpio15"_ and _"/dev/gpio19"_)
 
-We have started building the __BL602 / BL604 GPIO Expander__...
+More details on the GPIO Expander...
 
--   [__lupyuen/bl602_expander__](https://github.com/lupyuen/bl602_expander)
+-   [__BL602 / BL604 GPIO Expander__](https://github.com/lupyuen/bl602_expander)
 
 The GPIO Expander shall also manage __GPIO Interrupts__ for the Touch Panel, SX1262 Transceiver, Push Button, Compass, Accelerometer, Heart Rate Sensor, ...
 
@@ -931,13 +931,28 @@ Today we run a __Daily Automated Test__ on the NuttX Mainline Branch for PineCon
 
 Now we need to __connect an SBC to PineDio Stack__ and auto-run these tests...
 
--   __spi_test2__: Verify that the SPI Driver can talk to SX1262
+-   __SPI Test App (spi_test2)__: Verify that the SPI Driver can talk to SX1262
 
--   __lorawan_test__: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets
+-   __LoRaWAN Test App (lorawan_test)__: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets
 
--   __lvgltest__: Verify that ST7789 can render an LVGL Screen
+-   __LVGL Test App (lvgltest)__: Verify that ST7789 can render an LVGL Screen (over SPI) and read the CST816S Touch Panel (over I2C)
 
--   And some I2C tests
+-   __GPIO Command (gpio)__: Verify that the BL604 GPIO Expander correctly triggers an interrupt when the Push Button is pressed...
+
+    ```text
+    nsh> gpio -t 8 -w 1 /dev/gpio12
+    Driver: /dev/gpio12
+      Interrupt pin: Value=1
+      Verify:        Value=1
+    ```
+
+    [(Source)](https://github.com/lupyuen/bl602_expander#test-push-button)
+
+Right now we run these tests manually on PineDio Stack when we update the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio).
+
+We record the __Manual Test Logs__ in the Pull Requests...
+
+-   [__Pull Requests and Manual Test Logs for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/pulls?q=is%3Aclosed+base%3Apinedio)
 
 _So we'll run Automated Tests on PineCone BL602 AND PineDio Stack BL604?_
 
@@ -951,23 +966,47 @@ Yep we shall test and maintain two __Stable Branches__ of NuttX for public consu
 
 _Are the branches any different?_
 
-PineCone BL602 won't use the [__Shared SPI Bus__](https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus) that we have created for PineDio Stack BL604.
+The code should be identical, though...
+
+-   PineCone BL602 won't use the [__Shared SPI Bus__](https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus) that we have created for PineDio Stack BL604
+
+-   PineCone BL602 won't use the [__GPIO Expander__](https://github.com/lupyuen/bl602_expander) either
+
+We control the options through the __NuttX Build Configuration__...
+
+```bash
+## Configure build for PineDio Stack BL604
+./tools/configure.sh bl602evb:pinedio
+
+## Configure build for PineCone BL602
+./tools/configure.sh bl602evb:pinecone
+```
+
+[(See the PineDio Stack config)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+
+[(See the PineCone config)](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig)
 
 ![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
 
 _What about upstream updates from NuttX Mainline Branch?_
 
--   Upstream updates from NuttX Mainline will first be merged and tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
+-   Upstream updates from NuttX Mainline will first be merged and auto-tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
 
     (Every 2 weeks, depends on my writing mood)
 
--   Then merged and tested in the [__`master` (release) branch__](https://github.com/lupyuen/incubator-nuttx)
+-   Then merged and auto-tested in the [__`master` (release) branch__](https://github.com/lupyuen/incubator-nuttx)
 
     (For PineCone BL602)
 
--   Which gets merged and tested in the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio)
+-   Which gets merged and manually tested in the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio)
 
     (For PineDio Stack BL604)
+
+-   Updates in the `pinedio` branch are merged back to the `master` and the `downstream` branches and auto-tested on PineCone BL602
+
+-   Thus ultimately the `pinedio`, `master` and `downstream` branches will all have the __exact same code__, tested OK on PineCone BL602 and PineDio Stack BL604
+
+    (And lagging behind NuttX Mainline by 2 weeks)
 
 This is an extension of our original grand plan...
 
