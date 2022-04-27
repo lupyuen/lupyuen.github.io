@@ -72,7 +72,7 @@ Let's dive in!
 
 ![GPIO Expander for BL602 / BL604 on Apache NuttX RTOS](https://lupyuen.github.io/images/expander-title.jpg)
 
-# GPIO Expander
+# Status
 
 TODO
 
@@ -86,11 +86,9 @@ GPIO Expander verifies that the GPIO, SPI, I2C and UART Pins don't reuse the sam
 
 Robert Lipe has an excellent article that explains the current limitations of the BL602 EVB GPIO Driver (and why we need the GPIO Expander)...
 
--   ["Buttons on BL602 NuttX"](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
+-   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
 
-# Status
-
-TODO
+Here's the current status...
 
 -   Tested OK with GPIO Interrupts from Touch Panel and LVGL Test App `lvgltest`
 
