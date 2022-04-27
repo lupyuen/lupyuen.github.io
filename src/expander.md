@@ -82,7 +82,9 @@ Let's dive in!
 
 # BL602 EVB Limitations
 
-TODO
+_What's this BL602 EVB?_
+
+TODO: board.h, bringup, gpio
 
 The NuttX GPIO Driver for BL602 EVB supports one GPIO Input, one GPIO Output and one GPIO Interrupt ... And names them sequentially: "/dev/gpio0", "/dev/gpio1", "/dev/gpio2"
 
@@ -213,6 +215,10 @@ Let's fix this with our GPIO Expander for Apache NuttX RTOS.
 TODO3
 
 ![](https://lupyuen.github.io/images/expander-code2a.png)
+
+TODO
+
+![](https://lupyuen.github.io/images/expander-button.png)
 
 ## Push Button Interrupt
 
@@ -943,6 +949,10 @@ static int bl602_expander_readpin(FAR struct ioexpander_dev_s *dev,
 
 [(`bl602_gpioread` comes from the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230)
 
+TODO
+
+![](https://lupyuen.github.io/images/expander-code8a.png)
+
 # Write GPIO
 
 TODO
@@ -984,6 +994,10 @@ static int bl602_expander_writepin(FAR struct ioexpander_dev_s *dev,
 [(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L550-L594)
 
 [(`bl602_gpiowrite` comes from the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216)
+
+TODO
+
+![](https://lupyuen.github.io/images/expander-code9a.png)
 
 # Attach GPIO Interrupt
 
@@ -1073,6 +1087,10 @@ static FAR void *bl602_expander_attach(FAR struct ioexpander_dev_s *dev,
 
 [(`bl602_expander_intmask` is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197)
 
+TODO
+
+![](https://lupyuen.github.io/images/expander-code10a.png)
+
 # Detach GPIO Interrupt
 
 TODO
@@ -1114,6 +1132,10 @@ static int bl602_expander_detach(FAR struct ioexpander_dev_s *dev, FAR void *han
 [(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L908-L950)
 
 [(`bl602_expander_intmask` is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197)
+
+TODO
+
+![](https://lupyuen.github.io/images/expander-code11a.png)
 
 # Handle GPIO Interrupt
 
@@ -1189,6 +1211,10 @@ static int bl602_expander_interrupt(int irq, void *context, void *arg)
 [(`bl602_expander_intclear` is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L275-L300)
 
 [(`bl602_expander_get_intstatus` is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L247-L274)
+
+TODO
+
+![](https://lupyuen.github.io/images/expander-code12a.png)
 
 # Test Touch Panel
 
