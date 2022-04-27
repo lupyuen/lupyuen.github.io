@@ -84,7 +84,7 @@ Let's dive in!
 
 _What's this BL602 EVB?_
 
-In NuttX, __BL602 EVB__ ("Evaluation Board") provides the __Board-Specific Functions__ for PineCone BL602, PineDio Stack BL604 and other boards based on BL602 and BL604...
+In NuttX, __BL602 EVB__ ("Evaluation Board") provides the __Board-Specific Functions__ for PineDio Stack and other BL602 / BL604 boards...
 
 -   [__NuttX BL602 EVB__](https://github.com/lupyuen/incubator-nuttx/tree/expander/boards/risc-v/bl602/bl602evb/src)
 
