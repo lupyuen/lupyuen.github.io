@@ -1025,6 +1025,12 @@ This is an extension of our original grand plan...
 
 -   [__"Merge Updates From NuttX"__](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
 
+_But how will we auto-test the Touch Panel on PineDio Stack?_
+
+With a __Robot Finger__?
+
+I'm open to ideas, please lemme know! 🙏
+
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
 _PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)_
