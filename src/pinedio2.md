@@ -582,11 +582,11 @@ These are the __BL604 GPIOs__ used by PineDio Stack...
 
 -   __UART Port "/dev/console"__ is shared by Serial Console and GPS
 
--   __GPIO Input "/dev/gpio0"__ is configured as GPIO 10 (SX1262 Busy)
+    (This will be a problem, in spite of their different baud rates)
 
--   __GPIO Output "/dev/gpio1"__ is configured as GPIO 15 (SX1262 Chip Select)
+-   __GPIO Ports "/dev/gpio0" to "/dev/gpio22"__ are mapped to GPIO Pins 0 to 22
 
--   __GPIO Interrupt "/dev/gpio2"__ is configured as GPIO 19 (SX1262 Interrupt)
+    (Except the pins reserved for the UART, I2C and SPI Ports)
 
 The __NuttX Pin Definitions__ for PineDio Stack are at...
 
@@ -671,6 +671,8 @@ If you're keen to help, please lemme know! 🙏
 > [(Schematic)](https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf)
 
 ## GPIO Expander
+
+[__UPDATE__: We have implemented the GPIO Expander, so we're no longer stuck with 3 GPIOs](https://github.com/lupyuen/bl602_expander)
 
 _BL604 has 23 GPIOs. Can we use all of them in NuttX Apps?_
 
