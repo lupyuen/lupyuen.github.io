@@ -76,271 +76,6 @@ Let's dive in!
 
 > [(Source)](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment)
 
-# Status
-
-TODO
-
-GPIO Expander calls [`bl602_configgpio`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140), [`bl602_gpioread`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [`bl602_gpiowrite`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216) to configure / read / write GPIOs
-
-Warning: [BL602 EVB GPIO Driver](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c) will be disabled when we enable GPIO Expander.
-
-(Because GPIO Expander needs GPIO Lower Half which conflicts with BL602 EVB GPIO Driver)
-
-GPIO Expander verifies that the GPIO, SPI, I2C and UART Pins don't reuse the same GPIO.
-
-Robert Lipe has an excellent article that explains the current limitations of the BL602 EVB GPIO Driver (and why we need the GPIO Expander)...
-
--   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
-
-Here's the current status...
-
--   Tested OK with GPIO Interrupts from Touch Panel and LVGL Test App `lvgltest`
-
-    (With `IOEP_ATTACH` in `cst816s_register`)
-
--   Tested OK with Push Button
-
-    (With `IOEP_ATTACH` in `bl602_bringup`)
-
--   Tested OK with Push Button GPIO Command: `gpio -t 8 -w 1 /dev/gpio12`
-
-    (Comment out `IOEP_ATTACH` in `bl602_bringup`)
-
--   Tested OK with LoRaWAN Test App `lorawan_test`
-
-    (With "GPIO Informational Output" logging disabled)
-
--   SX1262 Library is now configured by Kconfig / menuconfig to access `/dev/gpio10`, `/dev/gpio15`, `/dev/gpio19` (instead of `dev/gpio0`, `/dev/gpio1`, `/dev/gpio2`). 
-
-    In menuconfig: Library Routines → Semtech SX1262 Library
-
-    - SPI Test device path  
-    - Chip Select device path 
-    - Busy device path
-    - DIO1 device path           
-
--   Logging for SX1262 Library is now disabled by default and can be configured by Kconfig / menuconfig.
-
-    In menuconfig: Library Routines → Semtech SX1262 Library → Logging → Debugging
-
--   Logging for SPI Test Driver has been moved from "Enable Informational Debug Output" to "SPI Informational Output"
-
-__TODO__: GPIO Expander will check that the SPI / I2C / UART Pin Functions are correctly defined (e.g. MISO vs MOSI)
-
-# Install Driver
-
-TODO
-
-To add this repo to your NuttX project...
-
-```bash
-pushd nuttx/nuttx/drivers/ioexpander
-git submodule add https://github.com/lupyuen/bl602_expander
-ln -s bl602_expander/bl602_expander.c .
-popd
-
-pushd nuttx/nuttx/include/nuttx/ioexpander
-ln -s ../../../drivers/ioexpander/bl602_expander/bl602_expander.h .
-popd
-```
-Next update the Makefile and Kconfig...
-
--   [See the modified Makefile and Kconfig](https://github.com/lupyuen/incubator-nuttx/commit/f72f7d546aa9b458b5cca66d090ac46ea178ca63)
-
-Then update the NuttX Build Config...
-
-```bash
-## TODO: Change this to the path of our "incubator-nuttx" folder
-cd nuttx/nuttx
-
-## Preserve the Build Config
-cp .config ../config
-
-## Erase the Build Config and Kconfig files
-make distclean
-
-## For PineDio Stack BL604: Configure the build for BL604
-./tools/configure.sh bl602evb:pinedio
-
-## For BL602: Configure the build for BL602
-./tools/configure.sh bl602evb:nsh
-
-## For ESP32: Configure the build for ESP32.
-## TODO: Change "esp32-devkitc" to our ESP32 board.
-./tools/configure.sh esp32-devkitc:nsh
-
-## Restore the Build Config
-cp ../config .config
-
-## Edit the Build Config
-make menuconfig 
-```
-
-In menuconfig, enable the BL602 GPIO Expander under "Device Drivers → IO Expander/GPIO Support → Enable IO Expander Support".
-
-Set "Number of pins" to 23.
-
-Enable "GPIO Lower Half".
-
-Edit the function `bl602_bringup` in this file...
-
-```text
-nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
-```
-
-And call `bl602_expander_initialize` to initialise our driver, just after `bl602_gpio_initialize`:
-
-https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L742-L768
-
-```c
-#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
-#include <nuttx/ioexpander/gpio.h>
-#include <nuttx/ioexpander/bl602_expander.h>
-FAR struct ioexpander_dev_s *bl602_expander = NULL;
-#endif /* CONFIG_IOEXPANDER_BL602_EXPANDER */
-...
-int bl602_bringup(void) {
-  ...
-  /* Existing Code */
-
-#if defined(CONFIG_DEV_GPIO) && !defined(CONFIG_GPIO_LOWER_HALF)
-  ret = bl602_gpio_initialize();
-  if (ret < 0)
-    {
-      syslog(LOG_ERR, "Failed to initialize GPIO Driver: %d\n", ret);
-      return ret;
-    }
-#endif
-
-  /* New Code */
-
-#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
-  /* Must load BL602 GPIO Expander before other drivers */
-
-  bl602_expander = bl602_expander_initialize(
-    bl602_gpio_inputs,
-    sizeof(bl602_gpio_inputs) / sizeof(bl602_gpio_inputs[0]),
-    bl602_gpio_outputs,
-    sizeof(bl602_gpio_outputs) / sizeof(bl602_gpio_outputs[0]),
-    bl602_gpio_interrupts,
-    sizeof(bl602_gpio_interrupts) / sizeof(bl602_gpio_interrupts[0]),
-    bl602_other_pins,
-    sizeof(bl602_other_pins) / sizeof(bl602_other_pins[0]));
-  if (bl602_expander == NULL)
-    {
-      syslog(LOG_ERR, "Failed to initialize GPIO Expander\n");
-      return -ENOMEM;
-    }
-#endif /* CONFIG_IOEXPANDER_BL602_EXPANDER */
-```
-
-To validate the GPIOs at startup, all GPIOs shall be listed in `bl602_gpio_inputs`, `bl602_gpio_outputs`, `bl602_gpio_interrupts` and `bl602_other_pins`...
-
-```c
-#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
-/* GPIO Input Pins for BL602 GPIO Expander */
-
-static const gpio_pinset_t bl602_gpio_inputs[] =
-{
-#ifdef BOARD_SX1262_BUSY
-  BOARD_SX1262_BUSY,
-#endif  /* BOARD_SX1262_BUSY */
-...
-};
-
-/* GPIO Output Pins for BL602 GPIO Expander */
-
-static const gpio_pinset_t bl602_gpio_outputs[] =
-{
-#ifdef BOARD_LCD_CS
-  BOARD_LCD_CS,
-#endif  /* BOARD_LCD_CS */
-...
-};
-
-/* GPIO Interrupt Pins for BL602 GPIO Expander */
-
-static const gpio_pinset_t bl602_gpio_interrupts[] =
-{
-#ifdef BOARD_TOUCH_INT
-  BOARD_TOUCH_INT,
-#endif  /* BOARD_TOUCH_INT */
-...
-};
-
-/* Other Pins for BL602 GPIO Expander (For Validation Only) */
-
-static const gpio_pinset_t bl602_other_pins[] =
-{
-#ifdef BOARD_UART_0_RX_PIN
-  BOARD_UART_0_RX_PIN,
-#endif  /* BOARD_UART_0_RX_PIN */
-...
-};
-#endif  /* CONFIG_IOEXPANDER_BL602_EXPANDER */
-```
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222)
-
-We must load the GPIO Expander before other drivers (e.g. CST816S Touch Panel), because GPIO Expander provides GPIO functions for the drivers.
-
-We need to disable BL602 GPIO Driver when we enable GPIO Expander, because GPIO Expander needs GPIO Lower Half which can't coexist with BL602 GPIO Driver:
-
-```c
-/* Add CONFIG_GPIO_LOWER_HALF */
-#if defined(CONFIG_DEV_GPIO) && !defined(CONFIG_GPIO_LOWER_HALF)
-  ret = bl602_gpio_initialize();
-```
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653)
-
-## Push Button Interrupt
-
-TODO
-
-To handle the GPIO Interrupt that's triggered when we press the Push Button...
-
-```c
-#include <nuttx/ioexpander/gpio.h>
-#include <nuttx/ioexpander/bl602_expander.h>
-...
-/* Get the Push Button Pinset and GPIO */
-
-gpio_pinset_t pinset = BOARD_BUTTON_INT;
-uint8_t gpio_pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
-
-/* Configure GPIO interrupt to be triggered on falling edge */
-
-DEBUGASSERT(bl602_expander != NULL);
-IOEXP_SETOPTION(bl602_expander, gpio_pin, IOEXPANDER_OPTION_INTCFG,
-                (FAR void *)IOEXPANDER_VAL_FALLING);
-
-/* Attach GPIO interrupt handler */
-
-void *handle = IOEP_ATTACH(bl602_expander,
-                           (ioe_pinset_t)1 << gpio_pin,
-                           button_isr_handler,
-                           NULL);  //  TODO: Set the callback argument
-DEBUGASSERT(handle != NULL);
-```
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704)
-
-The Button Interrupt Handler `button_isr_handler` is defined as...
-
-```c
-static int button_isr_handler(FAR struct ioexpander_dev_s *dev,
-                              ioe_pinset_t pinset, FAR void *arg)
-{
-  gpioinfo("Button Pressed\n");
-  return 0;
-}
-```
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044)
-
-Let's talk about how we created the BL602 GPIO Expander...
-
 # BL602 EVB Limitations
 
 TODO
@@ -2430,6 +2165,269 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1518352162966802432)
+
+# Appendix: Status
+
+TODO
+
+GPIO Expander calls [`bl602_configgpio`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140), [`bl602_gpioread`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [`bl602_gpiowrite`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216) to configure / read / write GPIOs
+
+Warning: [BL602 EVB GPIO Driver](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c) will be disabled when we enable GPIO Expander.
+
+(Because GPIO Expander needs GPIO Lower Half which conflicts with BL602 EVB GPIO Driver)
+
+GPIO Expander verifies that the GPIO, SPI, I2C and UART Pins don't reuse the same GPIO.
+
+Robert Lipe has an excellent article that explains the current limitations of the BL602 EVB GPIO Driver (and why we need the GPIO Expander)...
+
+-   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
+
+Here's the current status...
+
+-   Tested OK with GPIO Interrupts from Touch Panel and LVGL Test App `lvgltest`
+
+    (With `IOEP_ATTACH` in `cst816s_register`)
+
+-   Tested OK with Push Button
+
+    (With `IOEP_ATTACH` in `bl602_bringup`)
+
+-   Tested OK with Push Button GPIO Command: `gpio -t 8 -w 1 /dev/gpio12`
+
+    (Comment out `IOEP_ATTACH` in `bl602_bringup`)
+
+-   Tested OK with LoRaWAN Test App `lorawan_test`
+
+    (With "GPIO Informational Output" logging disabled)
+
+-   SX1262 Library is now configured by Kconfig / menuconfig to access `/dev/gpio10`, `/dev/gpio15`, `/dev/gpio19` (instead of `dev/gpio0`, `/dev/gpio1`, `/dev/gpio2`). 
+
+    In menuconfig: Library Routines → Semtech SX1262 Library
+
+    - SPI Test device path  
+    - Chip Select device path 
+    - Busy device path
+    - DIO1 device path           
+
+-   Logging for SX1262 Library is now disabled by default and can be configured by Kconfig / menuconfig.
+
+    In menuconfig: Library Routines → Semtech SX1262 Library → Logging → Debugging
+
+-   Logging for SPI Test Driver has been moved from "Enable Informational Debug Output" to "SPI Informational Output"
+
+__TODO__: GPIO Expander will check that the SPI / I2C / UART Pin Functions are correctly defined (e.g. MISO vs MOSI)
+
+# Apppendix: Install Driver
+
+TODO
+
+To add this repo to your NuttX project...
+
+```bash
+pushd nuttx/nuttx/drivers/ioexpander
+git submodule add https://github.com/lupyuen/bl602_expander
+ln -s bl602_expander/bl602_expander.c .
+popd
+
+pushd nuttx/nuttx/include/nuttx/ioexpander
+ln -s ../../../drivers/ioexpander/bl602_expander/bl602_expander.h .
+popd
+```
+Next update the Makefile and Kconfig...
+
+-   [See the modified Makefile and Kconfig](https://github.com/lupyuen/incubator-nuttx/commit/f72f7d546aa9b458b5cca66d090ac46ea178ca63)
+
+Then update the NuttX Build Config...
+
+```bash
+## TODO: Change this to the path of our "incubator-nuttx" folder
+cd nuttx/nuttx
+
+## Preserve the Build Config
+cp .config ../config
+
+## Erase the Build Config and Kconfig files
+make distclean
+
+## For PineDio Stack BL604: Configure the build for BL604
+./tools/configure.sh bl602evb:pinedio
+
+## For BL602: Configure the build for BL602
+./tools/configure.sh bl602evb:nsh
+
+## For ESP32: Configure the build for ESP32.
+## TODO: Change "esp32-devkitc" to our ESP32 board.
+./tools/configure.sh esp32-devkitc:nsh
+
+## Restore the Build Config
+cp ../config .config
+
+## Edit the Build Config
+make menuconfig 
+```
+
+In menuconfig, enable the BL602 GPIO Expander under "Device Drivers → IO Expander/GPIO Support → Enable IO Expander Support".
+
+Set "Number of pins" to 23.
+
+Enable "GPIO Lower Half".
+
+Edit the function `bl602_bringup` in this file...
+
+```text
+nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c
+```
+
+And call `bl602_expander_initialize` to initialise our driver, just after `bl602_gpio_initialize`:
+
+https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L742-L768
+
+```c
+#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
+#include <nuttx/ioexpander/gpio.h>
+#include <nuttx/ioexpander/bl602_expander.h>
+FAR struct ioexpander_dev_s *bl602_expander = NULL;
+#endif /* CONFIG_IOEXPANDER_BL602_EXPANDER */
+...
+int bl602_bringup(void) {
+  ...
+  /* Existing Code */
+
+#if defined(CONFIG_DEV_GPIO) && !defined(CONFIG_GPIO_LOWER_HALF)
+  ret = bl602_gpio_initialize();
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "Failed to initialize GPIO Driver: %d\n", ret);
+      return ret;
+    }
+#endif
+
+  /* New Code */
+
+#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
+  /* Must load BL602 GPIO Expander before other drivers */
+
+  bl602_expander = bl602_expander_initialize(
+    bl602_gpio_inputs,
+    sizeof(bl602_gpio_inputs) / sizeof(bl602_gpio_inputs[0]),
+    bl602_gpio_outputs,
+    sizeof(bl602_gpio_outputs) / sizeof(bl602_gpio_outputs[0]),
+    bl602_gpio_interrupts,
+    sizeof(bl602_gpio_interrupts) / sizeof(bl602_gpio_interrupts[0]),
+    bl602_other_pins,
+    sizeof(bl602_other_pins) / sizeof(bl602_other_pins[0]));
+  if (bl602_expander == NULL)
+    {
+      syslog(LOG_ERR, "Failed to initialize GPIO Expander\n");
+      return -ENOMEM;
+    }
+#endif /* CONFIG_IOEXPANDER_BL602_EXPANDER */
+```
+
+To validate the GPIOs at startup, all GPIOs shall be listed in `bl602_gpio_inputs`, `bl602_gpio_outputs`, `bl602_gpio_interrupts` and `bl602_other_pins`...
+
+```c
+#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
+/* GPIO Input Pins for BL602 GPIO Expander */
+
+static const gpio_pinset_t bl602_gpio_inputs[] =
+{
+#ifdef BOARD_SX1262_BUSY
+  BOARD_SX1262_BUSY,
+#endif  /* BOARD_SX1262_BUSY */
+...
+};
+
+/* GPIO Output Pins for BL602 GPIO Expander */
+
+static const gpio_pinset_t bl602_gpio_outputs[] =
+{
+#ifdef BOARD_LCD_CS
+  BOARD_LCD_CS,
+#endif  /* BOARD_LCD_CS */
+...
+};
+
+/* GPIO Interrupt Pins for BL602 GPIO Expander */
+
+static const gpio_pinset_t bl602_gpio_interrupts[] =
+{
+#ifdef BOARD_TOUCH_INT
+  BOARD_TOUCH_INT,
+#endif  /* BOARD_TOUCH_INT */
+...
+};
+
+/* Other Pins for BL602 GPIO Expander (For Validation Only) */
+
+static const gpio_pinset_t bl602_other_pins[] =
+{
+#ifdef BOARD_UART_0_RX_PIN
+  BOARD_UART_0_RX_PIN,
+#endif  /* BOARD_UART_0_RX_PIN */
+...
+};
+#endif  /* CONFIG_IOEXPANDER_BL602_EXPANDER */
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222)
+
+We must load the GPIO Expander before other drivers (e.g. CST816S Touch Panel), because GPIO Expander provides GPIO functions for the drivers.
+
+We need to disable BL602 GPIO Driver when we enable GPIO Expander, because GPIO Expander needs GPIO Lower Half which can't coexist with BL602 GPIO Driver:
+
+```c
+/* Add CONFIG_GPIO_LOWER_HALF */
+#if defined(CONFIG_DEV_GPIO) && !defined(CONFIG_GPIO_LOWER_HALF)
+  ret = bl602_gpio_initialize();
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653)
+
+## Push Button Interrupt
+
+TODO
+
+To handle the GPIO Interrupt that's triggered when we press the Push Button...
+
+```c
+#include <nuttx/ioexpander/gpio.h>
+#include <nuttx/ioexpander/bl602_expander.h>
+...
+/* Get the Push Button Pinset and GPIO */
+
+gpio_pinset_t pinset = BOARD_BUTTON_INT;
+uint8_t gpio_pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
+
+/* Configure GPIO interrupt to be triggered on falling edge */
+
+DEBUGASSERT(bl602_expander != NULL);
+IOEXP_SETOPTION(bl602_expander, gpio_pin, IOEXPANDER_OPTION_INTCFG,
+                (FAR void *)IOEXPANDER_VAL_FALLING);
+
+/* Attach GPIO interrupt handler */
+
+void *handle = IOEP_ATTACH(bl602_expander,
+                           (ioe_pinset_t)1 << gpio_pin,
+                           button_isr_handler,
+                           NULL);  //  TODO: Set the callback argument
+DEBUGASSERT(handle != NULL);
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704)
+
+The Button Interrupt Handler `button_isr_handler` is defined as...
+
+```c
+static int button_isr_handler(FAR struct ioexpander_dev_s *dev,
+                              ioe_pinset_t pinset, FAR void *arg)
+{
+  gpioinfo("Button Pressed\n");
+  return 0;
+}
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044)
 
 TODO10
 
