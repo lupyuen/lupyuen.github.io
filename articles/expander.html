@@ -161,6 +161,7 @@
 <p><em>What’s this BL602 EVB?</em></p>
 <p>TODO: board.h, bringup, gpio</p>
 <p>TODO: somewhat limited, works great for 3 GPIOs, doesn’t scale well beyond that</p>
+<p>TODO: Should we have created an “EVB” for PineDio Stack? Probably, but we’ll save that for later because it might lead to fragmentation of BL602 support in NuttX</p>
 <p>The NuttX GPIO Driver for BL602 EVB supports one GPIO Input, one GPIO Output and one GPIO Interrupt … And names them sequentially: “/dev/gpio0”, “/dev/gpio1”, “/dev/gpio2”</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L537-L607">BL602 EVB GPIO Driver</a></li>
