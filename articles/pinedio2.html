@@ -972,7 +972,14 @@ Driver: /dev/gpio12
 ./tools/configure.sh bl602evb:pinecone</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig">(See the PineCone config)</a></p>
+<p>This check for PineDio Stack should probably be improved: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151">board.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Identify as PineDio Stack if both ST7789 and CST816S are present */
+#if defined(CONFIG_LCD_ST7789) &amp;&amp; defined(CONFIG_INPUT_CST816S)
+#define PINEDIO_STACK_BL604
+#endif /* CONFIG_LCD_ST7789 &amp;&amp; CONFIG_INPUT_CST816S */</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c">(<strong>PINEDIO_STACK_BL604</strong> enables the SPI Device Table in the SPI Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
+<p><a href="https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx">(Source)</a></p>
 <p><em>What about upstream updates from NuttX Mainline Branch?</em></p>
 <ul>
 <li>
