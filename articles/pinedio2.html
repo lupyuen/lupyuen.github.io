@@ -610,15 +610,11 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 </li>
 <li>
 <p><strong>UART Port “/dev/console”</strong> is shared by Serial Console and GPS</p>
+<p>(This will be a problem, in spite of their different baud rates)</p>
 </li>
 <li>
-<p><strong>GPIO Input “/dev/gpio0”</strong> is configured as GPIO 10 (SX1262 Busy)</p>
-</li>
-<li>
-<p><strong>GPIO Output “/dev/gpio1”</strong> is configured as GPIO 15 (SX1262 Chip Select)</p>
-</li>
-<li>
-<p><strong>GPIO Interrupt “/dev/gpio2”</strong> is configured as GPIO 19 (SX1262 Interrupt)</p>
+<p><strong>GPIO Ports “/dev/gpio0” to “/dev/gpio22”</strong> are mapped to GPIO Pins 0 to 22</p>
+<p>(Except the pins reserved for the UART, I2C and SPI Ports)</p>
 </li>
 </ul>
 <p>The <strong>NuttX Pin Definitions</strong> for PineDio Stack are at…</p>
@@ -694,6 +690,7 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx/blob/main/pinedio_stack_v1_0-2021_09_15-a.pdf">(Schematic)</a></p>
 </blockquote>
 <h2 id="gpio-expander"><a href="#gpio-expander">14.1 GPIO Expander</a></h2>
+<p><a href="https://github.com/lupyuen/bl602_expander"><strong>UPDATE</strong>: We have implemented the GPIO Expander, so we’re no longer stuck with 3 GPIOs</a></p>
 <p><em>BL604 has 23 GPIOs. Can we use all of them in NuttX Apps?</em></p>
 <p>Some of the GPIOs will be used for <a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment"><strong>SPI, I2C and UART</strong></a>. But we still have <strong>a lot of remaining GPIOs</strong> to manage!</p>
 <p>NuttX allows apps to access to a total of <strong>3 GPIOs</strong> on BL604…</p>
