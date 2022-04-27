@@ -164,7 +164,7 @@
 <p><em>What’s this BL602 EVB?</em></p>
 <p>In NuttX, <strong>BL602 EVB</strong> (“Evaluation Board”) provides the <strong>Board-Specific Functions</strong> for PineDio Stack and other BL602 / BL604 boards…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/boards/risc-v/bl602/bl602evb/src"><strong>NuttX BL602 EVB</strong></a></li>
+<li><strong>NuttX BL602 EVB:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/boards/risc-v/bl602/bl602evb/src"><strong>boards/risc-v/bl602/bl602evb</strong></a></li>
 </ul>
 <p><em>What’s inside BL602 EVB?</em></p>
 <p>The important parts of BL602 EVB are…</p>
@@ -183,7 +183,14 @@
 <p>Calls the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c"><strong>BL602 GPIO Driver</strong></a>.</p>
 </li>
 </ul>
-<p>Let’s study the limitations of the BL602 EVB, to understand why we created the BL602 GPIO Expander.</p>
+<p>In a while we shall study the <strong>limitations of BL602 EVB</strong>, to understand why we created the BL602 GPIO Expander.</p>
+<p><em>Wait… Where’s the rest of the BL602 stuff?</em></p>
+<p>The <strong>Architecture-Specific Functions</strong> for BL602 and BL604 are located at…</p>
+<ul>
+<li><strong>NuttX BL602:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/arch/risc-v/src/bl602"><strong>arch/risc-v/src/bl602</strong></a></li>
+</ul>
+<p>This includes the low-level drivers for GPIO, UART, I2C, SPI, PWM, …</p>
+<p>We’re hunky dory with these drivers, though we have made tiny mods like for <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a>.</p>
 <h2 id="pin-definitions"><a href="#pin-definitions">1.1 Pin Definitions</a></h2>
 <p>TODO: Reused pins, EVB will silently allow it</p>
 <h2 id="bring-up"><a href="#bring-up">1.2 Bring-Up</a></h2>
