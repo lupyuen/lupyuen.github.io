@@ -99,6 +99,7 @@
 <li><a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment"><strong>“PineDio Stack GPIO Assignment”</strong></a></li>
 </ul>
 <p>And we need easy access to all GPIOs as our devs create <strong>NuttX Drivers and Apps</strong> for PineDio Stack.</p>
+<p>(See pic below)</p>
 <p><em>NuttX can’t handle 23 GPIOs?</em></p>
 <p>Well it gets messy. Without GPIO Expander, BL604 on NuttX supports one <strong>GPIO Input</strong>, one <strong>GPIO Output</strong> and one <strong>GPIO Interrupt</strong>.</p>
 <p>And they are <strong>named sequentially</strong> (Input first, then Output, then Interrupt)…</p>
@@ -146,7 +147,12 @@
 </li>
 </ul>
 <p>Let’s dive in!</p>
-<p><img src="https://lupyuen.github.io/images/expander-title.jpg" alt="GPIO Expander for BL602 / BL604 on Apache NuttX RTOS" /></p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/expander-pinedio1a.png" alt="All 23 GPIOs on PineDio Stack BL604 are wired up" /></p>
+</blockquote>
+<blockquote>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment">(Source)</a></p>
+</blockquote>
 <h1 id="status"><a href="#status">1 Status</a></h1>
 <p>TODO</p>
 <p>GPIO Expander calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><code>bl602_configgpio</code></a>, <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><code>bl602_gpioread</code></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><code>bl602_gpiowrite</code></a> to configure / read / write GPIOs</p>
@@ -392,6 +398,10 @@ DEBUGASSERT(handle != NULL);</code></pre></div>
 </ul>
 <p>Other microcontrollers might also need a GPIO Expander. Like CH32V307, which has 80 GPIOs (!)</p>
 <p><a href="https://github.com/openwch/ch32v307">(See this)</a></p>
+<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/expander-code1a.png" alt="" /></p>
+<p>TODO5</p>
+<p><img src="https://lupyuen.github.io/images/expander-code4a.png" alt="" /></p>
 <h2 id="gpio-expander-operations"><a href="#gpio-expander-operations">4.1 GPIO Expander Operations</a></h2>
 <p>TODO</p>
 <p>Our NuttX GPIO Expander implements the operations to: 1️⃣ Config / Read / Write GPIOs 2️⃣ Attach / Detach GPIO Interrupt Handlers 3️⃣ Handle GPIO Interrupts…</p>
@@ -416,6 +426,8 @@ static const struct ioexpander_ops_s g_bl602_expander_ops =
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L141-L159">(Source)</a></p>
 <p>We’ll cover these operations below.</p>
+<p>TODO6</p>
+<p><img src="https://lupyuen.github.io/images/expander-code5a.png" alt="" /></p>
 <h1 id="gpio-interrupts"><a href="#gpio-interrupts">5 GPIO Interrupts</a></h1>
 <p>TODO</p>
 <p>GPIO Interrupt Handling gets tricky for PineDio Stack BL604: All GPIO Interrupts are multiplexed into a single IRQ. Our GPIO Expander can help. </p>
@@ -449,6 +461,8 @@ static const struct ioexpander_ops_s g_bl602_expander_ops =
 <li><a href="https://www.robertlipe.com/buttons-on-bl602-nuttx/">“Buttons on BL602 NuttX”</a></li>
 </ul>
 <p>Let’s fix this with our GPIO Expander for Apache NuttX RTOS.</p>
+<p>TODO3</p>
+<p><img src="https://lupyuen.github.io/images/expander-code2a.png" alt="" /></p>
 <h2 id="push-button-interrupt-1"><a href="#push-button-interrupt-1">5.1 Push Button Interrupt</a></h2>
 <p>TODO</p>
 <p>Now With BL602 GPIO Expander, here’s how we handle the GPIO Interrupt that’s triggered when we press the Push Button on PineDio Stack…</p>
@@ -677,6 +691,8 @@ static const gpio_pinset_t bl602_other_pins[] =
 
   //  Omitted: Validate the GPIO Outputs, GPIO Interrupts and Other Pins</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L958-L1123">(Source)</a></p>
+<p>TODO4</p>
+<p><img src="https://lupyuen.github.io/images/expander-code3a.png" alt="" /></p>
 <h1 id="validate-pin-functions"><a href="#validate-pin-functions">7 Validate Pin Functions</a></h1>
 <p>TODO</p>
 <p>In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers…</p>
@@ -761,6 +777,9 @@ static const gpio_pinset_t bl602_other_pins[] =
 <p>If each pin can only be used once, could we flip the arrignment matrix and instead have it always have an entry for each pin, which is either a selected value or hi-z by default; then use kconfig rules to prevent collisions ?</p>
 </blockquote>
 <p>Which raises the question: Shouldn’t we do the same for NuttX on ESP32? What about other NuttX platforms? 🤔</p>
+<p>TODO: Pins with multiple functions</p>
+<p>TODO1</p>
+<p><img src="https://lupyuen.github.io/images/bl602-pins1a.png" alt="" /></p>
 <h1 id="configure-gpio"><a href="#configure-gpio">8 Configure GPIO</a></h1>
 <p>TODO</p>
 <p>At startup our BL602 GPIO Expander configures the GPIO Input / Output / Interrupt Pins by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><code>bl602_configgpio</code></a> and <code>gpio_lower_half</code> (which registers “/dev/gpioN”)…</p>
@@ -926,6 +945,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197">(<code>bl602_expander_intmask</code> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L301-L325">(<code>bl602_expander_irq_enable</code> is defined here)</a></p>
+<p>TODO7</p>
+<p><img src="https://lupyuen.github.io/images/expander-code6a.png" alt="" /></p>
 <h1 id="set-gpio-options"><a href="#set-gpio-options">9 Set GPIO Options</a></h1>
 <p>TODO</p>
 <p>Our GPIO Expander will configure the GPIO Interrupts: Rising Edge Trigger vs Falling Edge Trigger…</p>
@@ -1006,6 +1027,8 @@ static int bl602_expander_option(FAR struct ioexpander_dev_s *dev, uint8_t pin,
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L456-L548">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L198-L246">(<code>bl602_expander_set_intmod</code> is defined here)</a></p>
+<p>TODO8</p>
+<p><img src="https://lupyuen.github.io/images/expander-code7a.png" alt="" /></p>
 <h1 id="read-gpio"><a href="#read-gpio">10 Read GPIO</a></h1>
 <p>TODO</p>
 <p>Our GPIO Expander calls the BL602 GPIO Driver to read GPIO Inputs…</p>
@@ -2209,24 +2232,6 @@ UplinkProcess</code></pre></div>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1518352162966802432"><strong>this Twitter Thread</strong></a></li>
 </ol>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/bl602-pins1a.png" alt="" /></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/expander-code1a.png" alt="" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/expander-code2a.png" alt="" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/expander-code3a.png" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/expander-code4a.png" alt="" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/expander-code5a.png" alt="" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/expander-code6a.png" alt="" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/expander-code7a.png" alt="" /></p>
-<p>TODO9</p>
-<p><img src="https://lupyuen.github.io/images/expander-pinedio1a.png" alt="" /></p>
 <p>TODO10</p>
 <p><img src="https://lupyuen.github.io/images/expander-title1a.png" alt="" /></p>
 <p>TODO12</p>
