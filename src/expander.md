@@ -64,11 +64,15 @@ Well BL604 looks like a __Big Bag o' GPIOs__. Why not create a __GPIO Expander__
 
 _So we're just renumbering GPIOs?_
 
-Above and beyond that, our BL604 GPIO Expander serves two other functions...
+Above and beyond that, our BL604 GPIO Expander serves other functions...
 
 -   Attach and detach __GPIO Interrupt Handlers__
 
 -   __Validate GPIO Pin Numbers__ at startup
+
+-   But skip the GPIOs reserved for __UART, I2C and SPI__
+
+    (That's why we have GPIO gaps in the pic above)
 
 Let's dive in!
 
