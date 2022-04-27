@@ -2392,3 +2392,47 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1518352162966802432)
+
+TODO1
+
+![](https://lupyuen.github.io/images/bl602-pins1a.png)
+
+TODO2
+
+![](https://lupyuen.github.io/images/expander-code1a.png)
+
+TODO3
+
+![](https://lupyuen.github.io/images/expander-code2a.png)
+
+TODO4
+
+![](https://lupyuen.github.io/images/expander-code3a.png)
+
+TODO5
+
+![](https://lupyuen.github.io/images/expander-code4a.png)
+
+TODO6
+
+![](https://lupyuen.github.io/images/expander-code5a.png)
+
+TODO7
+
+![](https://lupyuen.github.io/images/expander-code6a.png)
+
+TODO8
+
+![](https://lupyuen.github.io/images/expander-code7a.png)
+
+TODO9
+
+![](https://lupyuen.github.io/images/expander-pinedio1a.png)
+
+TODO10
+
+![](https://lupyuen.github.io/images/expander-title1a.png)
+
+TODO12
+
+![](https://lupyuen.github.io/images/expander-title2a.jpg)
