@@ -137,13 +137,17 @@
 </ul>
 <p>(Other microcontrollers might also need a GPIO Expander… Like <a href="https://github.com/openwch/ch32v307"><strong>CH32V307</strong></a>, which has 80 GPIOs!)</p>
 <p><em>So we’re just renumbering GPIOs?</em></p>
-<p>Above and beyond that, our BL604 GPIO Expander serves two other functions…</p>
+<p>Above and beyond that, our BL604 GPIO Expander serves other functions…</p>
 <ul>
 <li>
 <p>Attach and detach <strong>GPIO Interrupt Handlers</strong></p>
 </li>
 <li>
 <p><strong>Validate GPIO Pin Numbers</strong> at startup</p>
+</li>
+<li>
+<p>But skip the GPIOs reserved for <strong>UART, I2C and SPI</strong></p>
+<p>(That’s why we have GPIO gaps in the pic above)</p>
 </li>
 </ul>
 <p>Let’s dive in!</p>
