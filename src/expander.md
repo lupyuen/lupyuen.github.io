@@ -122,6 +122,23 @@ We're hunky dory with these drivers, though we have made tiny mods like for [__S
 
 TODO: Reused pins, EVB will silently allow it
 
+[__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59)
+
+```c
+#define BOARD_NGPIOIN     1  //  Number of GPIO Input pins
+#define BOARD_NGPIOOUT    1  //  Number of GPIO Output pins
+#define BOARD_NGPIOINT    1  //  Number of GPIO Interrupt pins
+
+//  GPIO Input: GPIO 10
+#define BOARD_GPIO_IN1    (GPIO_PIN10 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
+
+//  GPIO Output: GPIO 15
+#define BOARD_GPIO_OUT1   (GPIO_PIN15 | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO)
+
+//  GPIO Interrupt: GPIO 19
+#define BOARD_GPIO_INT1   (GPIO_PIN19 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
+```
+
 ## Bring-Up
 
 TODO
