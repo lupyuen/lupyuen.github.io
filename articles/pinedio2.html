@@ -739,9 +739,9 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 <p>But it might be the most productive way (for now) to handle so many GPIOs while multiple devs are <strong>building apps and drivers</strong> for PineDio Stack.</p>
 <p>Perhaps the GPIO Expander can <strong>enforce checks at runtime</strong> to be sure that NuttX Apps don’t tamper with the GPIOs used by SPI, I2C and UART.</p>
 <p>(And eventually the SX1262 Library will simply access <em>“/dev/gpio10”</em>, <em>“/dev/gpio15”</em> and <em>“/dev/gpio19”</em>)</p>
-<p>We have started building the <strong>BL602 / BL604 GPIO Expander</strong>…</p>
+<p>More details on the GPIO Expander…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/bl602_expander"><strong>lupyuen/bl602_expander</strong></a></li>
+<li><a href="https://github.com/lupyuen/bl602_expander"><strong>BL602 / BL604 GPIO Expander</strong></a></li>
 </ul>
 <p>The GPIO Expander shall also manage <strong>GPIO Interrupts</strong> for the Touch Panel, SX1262 Transceiver, Push Button, Compass, Accelerometer, Heart Rate Sensor, …</p>
 <ul>
@@ -921,17 +921,27 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 <p>Now we need to <strong>connect an SBC to PineDio Stack</strong> and auto-run these tests…</p>
 <ul>
 <li>
-<p><strong>spi_test2</strong>: Verify that the SPI Driver can talk to SX1262</p>
+<p><strong>SPI Test App (spi_test2)</strong>: Verify that the SPI Driver can talk to SX1262</p>
 </li>
 <li>
-<p><strong>lorawan_test</strong>: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets</p>
+<p><strong>LoRaWAN Test App (lorawan_test)</strong>: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets</p>
 </li>
 <li>
-<p><strong>lvgltest</strong>: Verify that ST7789 can render an LVGL Screen</p>
+<p><strong>LVGL Test App (lvgltest)</strong>: Verify that ST7789 can render an LVGL Screen (over SPI) and read the CST816S Touch Panel (over I2C)</p>
 </li>
 <li>
-<p>And some I2C tests</p>
+<p><strong>GPIO Command (gpio)</strong>: Verify that the BL604 GPIO Expander correctly triggers an interrupt when the Push Button is pressed…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; gpio -t 8 -w 1 /dev/gpio12
+Driver: /dev/gpio12
+  Interrupt pin: Value=1
+  Verify:        Value=1</code></pre></div>
+<p><a href="https://github.com/lupyuen/bl602_expander#test-push-button">(Source)</a></p>
 </li>
+</ul>
+<p>Right now we run these tests manually on PineDio Stack when we update the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a>.</p>
+<p>We record the <strong>Manual Test Logs</strong> in the Pull Requests…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/pulls?q=is%3Aclosed+base%3Apinedio"><strong>Pull Requests and Manual Test Logs for PineDio Stack</strong></a></li>
 </ul>
 <p><em>So we’ll run Automated Tests on PineCone BL602 AND PineDio Stack BL604?</em></p>
 <p>Yep we shall test and maintain two <strong>Stable Branches</strong> of NuttX for public consumption…</p>
@@ -945,21 +955,44 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 </ul>
 <p>(Same for NuttX Apps)</p>
 <p><em>Are the branches any different?</em></p>
-<p>PineCone BL602 won’t use the <a href="https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus"><strong>Shared SPI Bus</strong></a> that we have created for PineDio Stack BL604.</p>
+<p>The code should be identical, though…</p>
+<ul>
+<li>
+<p>PineCone BL602 won’t use the <a href="https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus"><strong>Shared SPI Bus</strong></a> that we have created for PineDio Stack BL604</p>
+</li>
+<li>
+<p>PineCone BL602 won’t use the <a href="https://github.com/lupyuen/bl602_expander"><strong>GPIO Expander</strong></a> either</p>
+</li>
+</ul>
+<p>We control the options through the <strong>NuttX Build Configuration</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Configure build for PineDio Stack BL604
+./tools/configure.sh bl602evb:pinedio
+
+# Configure build for PineCone BL602
+./tools/configure.sh bl602evb:pinecone</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig">(See the PineCone config)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
 <p><em>What about upstream updates from NuttX Mainline Branch?</em></p>
 <ul>
 <li>
-<p>Upstream updates from NuttX Mainline will first be merged and tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/downstream"><strong><code>downstream</code> branch</strong></a></p>
+<p>Upstream updates from NuttX Mainline will first be merged and auto-tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/downstream"><strong><code>downstream</code> branch</strong></a></p>
 <p>(Every 2 weeks, depends on my writing mood)</p>
 </li>
 <li>
-<p>Then merged and tested in the <a href="https://github.com/lupyuen/incubator-nuttx"><strong><code>master</code> (release) branch</strong></a></p>
+<p>Then merged and auto-tested in the <a href="https://github.com/lupyuen/incubator-nuttx"><strong><code>master</code> (release) branch</strong></a></p>
 <p>(For PineCone BL602)</p>
 </li>
 <li>
-<p>Which gets merged and tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a></p>
+<p>Which gets merged and manually tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a></p>
 <p>(For PineDio Stack BL604)</p>
+</li>
+<li>
+<p>Updates in the <code>pinedio</code> branch are merged back to the <code>master</code> and the <code>downstream</code> branches and auto-tested on PineCone BL602</p>
+</li>
+<li>
+<p>Thus ultimately the <code>pinedio</code>, <code>master</code> and <code>downstream</code> branches will all have the <strong>exact same code</strong>, tested OK on PineCone BL602 and PineDio Stack BL604</p>
+<p>(And lagging behind NuttX Mainline by 2 weeks)</p>
 </li>
 </ul>
 <p>This is an extension of our original grand plan…</p>
