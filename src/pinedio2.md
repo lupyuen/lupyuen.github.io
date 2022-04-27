@@ -986,7 +986,20 @@ We control the options through the __NuttX Build Configuration__...
 
 [(See the PineCone config)](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig)
 
+This check for PineDio Stack should probably be improved: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151)
+
+```c
+/* Identify as PineDio Stack if both ST7789 and CST816S are present */
+#if defined(CONFIG_LCD_ST7789) && defined(CONFIG_INPUT_CST816S)
+#define PINEDIO_STACK_BL604
+#endif /* CONFIG_LCD_ST7789 && CONFIG_INPUT_CST816S */
+```
+
+[(__PINEDIO_STACK_BL604__ enables the SPI Device Table in the SPI Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c)
+
 ![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
+
+[(Source)](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
 
 _What about upstream updates from NuttX Mainline Branch?_
 
