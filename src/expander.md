@@ -86,6 +86,8 @@ _What's this BL602 EVB?_
 
 TODO: board.h, bringup, gpio
 
+TODO: somewhat limited, works great for 3 GPIOs, doesn't scale well beyond that
+
 The NuttX GPIO Driver for BL602 EVB supports one GPIO Input, one GPIO Output and one GPIO Interrupt ... And names them sequentially: "/dev/gpio0", "/dev/gpio1", "/dev/gpio2"
 
 -   [BL602 EVB GPIO Driver](https://github.com/lupyuen/incubator-nuttx/blob/expander/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L537-L607)
