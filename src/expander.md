@@ -18,6 +18,8 @@ All __23 GPIOs__ on PineDio Stack BL604 are wired up...
 
 And we need easy access to all GPIOs as our devs create __NuttX Drivers and Apps__ for PineDio Stack.
 
+(See pic below)
+
 _NuttX can't handle 23 GPIOs?_
 
 Well it gets messy. Without GPIO Expander, BL604 on NuttX supports one __GPIO Input__, one __GPIO Output__ and one __GPIO Interrupt__.
@@ -70,7 +72,9 @@ Above and beyond that, our BL604 GPIO Expander serves two other functions...
 
 Let's dive in!
 
-![GPIO Expander for BL602 / BL604 on Apache NuttX RTOS](https://lupyuen.github.io/images/expander-title.jpg)
+> ![All 23 GPIOs on PineDio Stack BL604 are wired up](https://lupyuen.github.io/images/expander-pinedio1a.png)
+
+> [(Source)](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment)
 
 # Status
 
@@ -379,6 +383,14 @@ Other microcontrollers might also need a GPIO Expander. Like CH32V307, which has
 
 [(See this)](https://github.com/openwch/ch32v307)
 
+TODO2
+
+![](https://lupyuen.github.io/images/expander-code1a.png)
+
+TODO5
+
+![](https://lupyuen.github.io/images/expander-code4a.png)
+
 ## GPIO Expander Operations
 
 TODO
@@ -410,6 +422,10 @@ static const struct ioexpander_ops_s g_bl602_expander_ops =
 [(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L141-L159)
 
 We'll cover these operations below.
+
+TODO6
+
+![](https://lupyuen.github.io/images/expander-code5a.png)
 
 # GPIO Interrupts
 
@@ -454,6 +470,10 @@ As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler i
 -   ["Buttons on BL602 NuttX"](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
 
 Let's fix this with our GPIO Expander for Apache NuttX RTOS.
+
+TODO3
+
+![](https://lupyuen.github.io/images/expander-code2a.png)
 
 ## Push Button Interrupt
 
@@ -747,6 +767,10 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 
 [(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L958-L1123)
 
+TODO4
+
+![](https://lupyuen.github.io/images/expander-code3a.png)
+
 # Validate Pin Functions
 
 TODO
@@ -861,6 +885,12 @@ Then we would need GPIO Expander to validate the Pin Functions at runtime.
 > If each pin can only be used once, could we flip the arrignment matrix and instead have it always have an entry for each pin, which is either a selected value or hi-z by default; then use kconfig rules to prevent collisions ?
 
 Which raises the question: Shouldn't we do the same for NuttX on ESP32? What about other NuttX platforms? 🤔
+
+TODO: Pins with multiple functions
+
+TODO1
+
+![](https://lupyuen.github.io/images/bl602-pins1a.png)
 
 # Configure GPIO
 
@@ -1036,6 +1066,10 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 
 [(`bl602_expander_irq_enable` is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L301-L325)
 
+TODO7
+
+![](https://lupyuen.github.io/images/expander-code6a.png)
+
 # Set GPIO Options
 
 TODO
@@ -1123,6 +1157,10 @@ static int bl602_expander_option(FAR struct ioexpander_dev_s *dev, uint8_t pin,
 [(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L456-L548)
 
 [(`bl602_expander_set_intmod` is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L198-L246)
+
+TODO8
+
+![](https://lupyuen.github.io/images/expander-code7a.png)
 
 # Read GPIO
 
@@ -2392,42 +2430,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1518352162966802432)
-
-TODO1
-
-![](https://lupyuen.github.io/images/bl602-pins1a.png)
-
-TODO2
-
-![](https://lupyuen.github.io/images/expander-code1a.png)
-
-TODO3
-
-![](https://lupyuen.github.io/images/expander-code2a.png)
-
-TODO4
-
-![](https://lupyuen.github.io/images/expander-code3a.png)
-
-TODO5
-
-![](https://lupyuen.github.io/images/expander-code4a.png)
-
-TODO6
-
-![](https://lupyuen.github.io/images/expander-code5a.png)
-
-TODO7
-
-![](https://lupyuen.github.io/images/expander-code6a.png)
-
-TODO8
-
-![](https://lupyuen.github.io/images/expander-code7a.png)
-
-TODO9
-
-![](https://lupyuen.github.io/images/expander-pinedio1a.png)
 
 TODO10
 
