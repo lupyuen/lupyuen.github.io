@@ -322,7 +322,7 @@ BL602 EVB __demultiplexes the GPIO IRQ__ and calls the GPIO Interrupt Handlers.
 
 _So we call BL602 EVB to attach our own GPIO Interrupt Handler?_
 
-Sadly we can't. BL602 EVB doesn't expose a Public Function that we may call to attach our own Interrupt Handler.
+Sadly we can't. BL602 EVB __doesn't expose a Public Function__ that we may call to attach our own Interrupt Handler.
 
 (__gpint_attach__ is a Private Function, as shown above)
 
@@ -340,7 +340,7 @@ Exactly! Our __GPIO Expander__ shall take over these duties from BL602 EVB...
 
 _How do we attach a GPIO Interrupt Handler?_
 
-Since our GPIO Expander implements the I/O Expander Driver Interface, we can call __IOEP_ATTACH__ to attach an Interrupt Handler.
+Because GPIO Expander implements the I/O Expander Interface, we may call __IOEP_ATTACH__ to attach an Interrupt Handler.
 
 Let's attach an Interrupt Handler that will be called when we press the __Push Button__ (GPIO 12) on PineDio Stack: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704)
 
