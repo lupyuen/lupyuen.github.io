@@ -137,6 +137,8 @@ In BL602 EVB, this is how we __define the pins__ for GPIO / UART / I2C / SPI / P
 #define BOARD_GPIO_INT1 (GPIO_PIN19 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
 ```
 
+[(Pins for UART / I2C / SPI / PWM are defined in the same file)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145)
+
 A couple of issues...
 
 -   BL602 EVB strangely limits us to __one GPIO Input, one GPIO Output and one GPIO Interrupt__
@@ -155,11 +157,11 @@ A couple of issues...
 
     [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L550-L604)
 
-    Which becomes super confusing when we map all 23 GPIOs on PineDio Stack.
+-   Which becomes super confusing when we __map all 23 GPIOs__ on PineDio Stack.
 
-    (Especially when our devs are now creating NuttX Drivers and Apps for PineDio Stack)
+    (Especially when our new devs are now creating NuttX Drivers and Apps for PineDio Stack)
 
--   What happens if we __reuse the GPIOs__ by mistake? BL602 EVB will silent allow this... Which isn't right!
+-   What happens if we __reuse the GPIOs__ by mistake? BL602 EVB will silent allow this... Which ain't right!
 
     ```c
     //  GPIO Input: GPIO 10
@@ -169,9 +171,11 @@ A couple of issues...
     #define BOARD_GPIO_OUT1 (GPIO_PIN10 | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO)
     ```
 
-Thus we see that __BL602 EVB is somewhat limited__... It works great for 3 GPIOs, but doesn't scale well beyond that.
+Thus we see that __BL602 EVB is somewhat limited__...
 
-## Overcome The Limitations
+BL602 EVB works great for 3 GPIOs, but __doesn't scale well__ beyond that.
+
+# Overcome The Limitations
 
 TODO: Let's simplify NuttX and name the GPIOs as "/dev/gpio0" to "/dev/gpio22".
 
