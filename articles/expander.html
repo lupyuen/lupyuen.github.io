@@ -182,14 +182,14 @@
 <p>Calls the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c"><strong>BL602 GPIO Driver</strong></a>.</p>
 </li>
 </ul>
-<p>In a while we shall study the <strong>limitations of BL602 EVB</strong>, to understand why we created the BL602 GPIO Expander.</p>
+<p>In a while we’ll study the <strong>limitations of BL602 EVB</strong>, to understand why we created the BL602 GPIO Expander.</p>
 <p><em>Wait… Where’s the rest of the BL602 stuff?</em></p>
 <p>The <strong>Architecture-Specific Functions</strong> for BL602 and BL604 are located at…</p>
 <ul>
 <li><strong>NuttX BL602:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/arch/risc-v/src/bl602"><strong>arch/risc-v/src/bl602</strong></a></li>
 </ul>
 <p>This includes the low-level drivers for GPIO, UART, I2C, SPI, PWM, …</p>
-<p>We’re hunky dory with these drivers, though we have made tiny mods like for <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a>.</p>
+<p>We’re hunky dory with these drivers, though we’ve made tiny mods like for <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/expander-title1a.png" alt="BL602 EVB always maps sequentially the GPIO Pins" /></p>
 <h2 id="pin-definitions"><a href="#pin-definitions">1.1 Pin Definitions</a></h2>
 <p>In BL602 EVB, this is how we <strong>define the pins</strong> for GPIO / UART / I2C / SPI / PWM: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59"><strong>board.h</strong></a></p>
@@ -205,7 +205,7 @@
 
 //  GPIO Interrupt: GPIO 19
 #define BOARD_GPIO_INT1 (GPIO_PIN19 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">(Pins for UART / I2C / SPI / PWM are defined in the same file)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">(See the UART / I2C / SPI / PWM Pins)</a></p>
 <p>A couple of issues…</p>
 <ul>
 <li>
@@ -227,7 +227,7 @@
 <p>(Especially when our new devs are now creating NuttX Drivers and Apps for PineDio Stack)</p>
 </li>
 <li>
-<p>What happens if we <strong>reuse the GPIOs</strong> by mistake? BL602 EVB will silent allow this… Which ain’t right!</p>
+<p>What happens if we <strong>reuse the GPIOs</strong> by mistake? BL602 EVB will silently allow this. Which ain’t right!</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO Input: GPIO 10
 #define BOARD_GPIO_IN1  (GPIO_PIN10 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
 
@@ -236,7 +236,7 @@
 </ul>
 <p>Thus we see that <strong>BL602 EVB is somewhat limited</strong>…</p>
 <p>BL602 EVB works great for 3 GPIOs, but <strong>doesn’t scale well</strong> beyond that.</p>
-<p>Let’s fix this…</p>
+<p>Let’s make this better.</p>
 <p><img src="https://lupyuen.github.io/images/expander-title2a.jpg" alt="Overcome The Limitations" /></p>
 <h1 id="overcome-the-limitations"><a href="#overcome-the-limitations">2 Overcome The Limitations</a></h1>
 <p>We plan to make BL602 EVB <strong>work great with PineDio Stack</strong>…</p>
