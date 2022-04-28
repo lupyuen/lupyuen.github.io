@@ -286,45 +286,19 @@ We'll look inside the operations in a while.
 
 # GPIO Interrupts
 
-TODO
+_Anything peculiar about GPIO Interrupts on BL602 and BL604?_
 
-GPIO Interrupt Handling gets tricky for PineDio Stack BL604: All GPIO Interrupts are multiplexed into a single IRQ. Our GPIO Expander can help. 
+__GPIO Interrupt Handling__ gets tricky for BL602 and BL604...
 
-Here's the existing code for BL602 EVB that attaches a GPIO Interrupt Handler...
+All GPIO Interrupts are multiplexed into __One Single IRQ!__
 
-```c
-static int gpint_attach(struct gpio_dev_s *dev, pin_interrupt_t callback)
-{
-  struct bl602_gpint_dev_s *bl602xgpint =
-    (struct bl602_gpint_dev_s *)dev;
+[(__BL602_IRQ_GPIO_INT0__ is the IRQ)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505)
 
-  uint8_t gpio_pin =
-    (g_gpiointinputs[bl602xgpint->bl602gpio.id] & GPIO_PIN_MASK) >>
-    GPIO_PIN_SHIFT;
-  gpioinfo("Attaching the callback\n");
+Which means that our GPIO Expander will need to __demultiplex the IRQ__ when handling interrupts.
 
-  /* Make sure the interrupt is disabled */
+TODO: As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)...
 
-  bl602xgpint->callback = callback;
-  bl602_gpio_intmask(gpio_pin, 1);
-
-  irq_attach(BL602_IRQ_GPIO_INT0, bl602_gpio_interrupt, dev);
-  bl602_gpio_intmask(gpio_pin, 0);
-
-  gpioinfo("Attach %p\n", callback);
-  return OK;
-}
-```
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c)
-
-Note that all GPIO Interrupts are multiplexed into a single IRQ: `BL602_IRQ_GPIO_INT0`
-
-When handling GPIO Interrupts, our GPIO Expander needs to demultiplex the `BL602_IRQ_GPIO_INT0` IRQ into multiple GPIO Interrupts.
-
-As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)...
-
--   ["Buttons on BL602 NuttX"](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
+-   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
 
 Let's fix this with our GPIO Expander for Apache NuttX RTOS.
 
