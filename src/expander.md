@@ -106,7 +106,7 @@ The important parts of BL602 EVB are...
     
     Calls the [__BL602 GPIO Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c).
 
-In a while we shall study the __limitations of BL602 EVB__, to understand why we created the BL602 GPIO Expander.
+In a while we'll study the __limitations of BL602 EVB__, to understand why we created the BL602 GPIO Expander.
 
 _Wait... Where's the rest of the BL602 stuff?_
 
@@ -116,7 +116,7 @@ The __Architecture-Specific Functions__ for BL602 and BL604 are located at...
 
 This includes the low-level drivers for GPIO, UART, I2C, SPI, PWM, ...
 
-We're hunky dory with these drivers, though we have made tiny mods like for [__SPI Device Table__](https://lupyuen.github.io/articles/pinedio2#spi-device-table).
+We're hunky dory with these drivers, though we've made tiny mods like for [__SPI Device Table__](https://lupyuen.github.io/articles/pinedio2#spi-device-table).
 
 ![BL602 EVB always maps sequentially the GPIO Pins](https://lupyuen.github.io/images/expander-title1a.png)
 
@@ -139,7 +139,7 @@ In BL602 EVB, this is how we __define the pins__ for GPIO / UART / I2C / SPI / P
 #define BOARD_GPIO_INT1 (GPIO_PIN19 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
 ```
 
-[(Pins for UART / I2C / SPI / PWM are defined in the same file)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145)
+[(See the UART / I2C / SPI / PWM Pins)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145)
 
 A couple of issues...
 
@@ -163,7 +163,7 @@ A couple of issues...
 
     (Especially when our new devs are now creating NuttX Drivers and Apps for PineDio Stack)
 
--   What happens if we __reuse the GPIOs__ by mistake? BL602 EVB will silent allow this... Which ain't right!
+-   What happens if we __reuse the GPIOs__ by mistake? BL602 EVB will silently allow this. Which ain't right!
 
     ```c
     //  GPIO Input: GPIO 10
@@ -177,7 +177,7 @@ Thus we see that __BL602 EVB is somewhat limited__...
 
 BL602 EVB works great for 3 GPIOs, but __doesn't scale well__ beyond that.
 
-Let's fix this...
+Let's make this better.
 
 ![Overcome The Limitations](https://lupyuen.github.io/images/expander-title2a.jpg)
 
