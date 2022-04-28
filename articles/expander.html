@@ -72,8 +72,9 @@
 <li><a href="#gpio-operations">3.1 GPIO Operations</a><ul></ul></li></ul></li>
 <li><a href="#gpio-interrupts">4 GPIO Interrupts</a><ul>
 <li><a href="#attach-interrupt-handler">4.1 Attach Interrupt Handler</a><ul></ul></li>
-<li><a href="#touch-panel-interrupt">4.2 Touch Panel Interrupt</a><ul></ul></li>
-<li><a href="#lora-sx1262-interrupt">4.3 LoRa SX1262 Interrupt</a><ul></ul></li></ul></li>
+<li><a href="#gpio-command">4.2 GPIO Command</a><ul></ul></li>
+<li><a href="#touch-panel-interrupt">4.3 Touch Panel Interrupt</a><ul></ul></li>
+<li><a href="#lora-sx1262-interrupt">4.4 LoRa SX1262 Interrupt</a><ul></ul></li></ul></li>
 <li><a href="#check-reused-gpios">5 Check Reused GPIOs</a><ul></ul></li>
 <li><a href="#validate-pin-functions">6 Validate Pin Functions</a><ul></ul></li>
 <li><a href="#configure-gpio">7 Configure GPIO</a><ul></ul></li>
@@ -364,25 +365,26 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 <h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">4.1 Attach Interrupt Handler</a></h2>
 <p><em>How do we attach a GPIO Interrupt Handler?</em></p>
 <p>Since our GPIO Expander implements the I/O Expander Driver Interface, we can call <strong>IOEP_ATTACH</strong> to attach an Interrupt Handler.</p>
-<p>TODO</p>
-<p>Now With BL602 GPIO Expander, here’s how we handle the GPIO Interrupt that’s triggered when we press the Push Button on PineDio Stack…</p>
+<p>Let’s attach an Interrupt Handler that will be called when we press the <strong>Push Button</strong> (GPIO 12) on PineDio Stack: <a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/ioexpander/gpio.h&gt;
 #include &lt;nuttx/ioexpander/bl602_expander.h&gt;
 ...
-//  Get the Push Button Pinset and GPIO
+//  Get the Push Button Pinset and GPIO Pin Number
 gpio_pinset_t pinset = BOARD_BUTTON_INT;
-uint8_t gpio_pin = (pinset &amp; GPIO_PIN_MASK) &gt;&gt; GPIO_PIN_SHIFT;
-
-//  Configure GPIO interrupt to be triggered on falling edge
+uint8_t gpio_pin = (pinset &amp; GPIO_PIN_MASK) &gt;&gt; GPIO_PIN_SHIFT;</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L143-L145">(<strong>BOARD_BUTTON_INT</strong> is defined in board.h)</a></p>
+<p>First we get the <strong>GPIO Pin Number</strong> for the Push Button.</p>
+<p>Then we configure our GPIO Expander to trigger the GPIO Interrupt on the <strong>Falling Edge</strong> (High to Low)…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Configure GPIO interrupt to be triggered on falling edge
 DEBUGASSERT(bl602_expander != NULL);
 IOEXP_SETOPTION(
   bl602_expander,  //  BL602 GPIO Expander
   gpio_pin,        //  GPIO Pin
   IOEXPANDER_OPTION_INTCFG,            //  Configure interrupt trigger
   (FAR void *) IOEXPANDER_VAL_FALLING  //  Trigger on falling edge
-);
-
-//  Attach GPIO interrupt handler
+);</code></pre></div>
+<p>Finally we call GPIO Expander to <strong>attach our Interrupt Handler</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Attach our GPIO interrupt handler
 void *handle = IOEP_ATTACH(
   bl602_expander,                //  BL602 GPIO Expander
   (ioe_pinset_t) 1 &lt;&lt; gpio_pin,  //  GPIO Pin converted to Pinset
@@ -390,42 +392,24 @@ void *handle = IOEP_ATTACH(
   NULL                           //  TODO: Set the callback argument
 );
 DEBUGASSERT(handle != NULL);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704">(Source)</a></p>
-<p>Much easier now! The Button Interrupt Handler <code>button_isr_handler</code> is defined as…</p>
-<div class="example-wrap"><pre class="language-c"><code>static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pinset, FAR void *arg) {
+<p>The <strong>Interrupt Handler</strong> is defined as…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Our GPIO Interrupt Handler
+static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pinset, FAR void *arg) {
   gpioinfo(&quot;Button Pressed\n&quot;);
   return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044">(Source)</a></p>
-<p>Note that the Button Interrupt Handler runs in the context of the Interrupt Handler. Be careful!</p>
-<p>Another way to test the Push Button Interrupt is to use the GPIO Command…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; gpio -t 8 -w 1 /dev/gpio12
-Driver: /dev/gpio12
-gplh_enable: pin12: Disabling callback=0 handle=0
-gplh_enable: WARNING: pin12: Already detached
-bl602_expander_option: pin=12, option=2, value=0x6
-bl602_expander_option: Rising edge: pin=12
-bl602_expander_set_intmod: gpio_pin=12, int_ctlmod=1, int_trgmod=1
-gplh_read: pin12: value=0x42021aef
-bl602_expander_readpin: pin=12, value=1
-  Interrupt pin: Value=1
-gplh_attach: pin12: callback=0x23060808
-gplh_enable: pin12: Enabling callback=0x23060808 handle=0
-gplh_enable: pin12: Attaching 0x23060808
-bl602_expander_attach: pinset=1000, callback=0x2305f4e2, arg=0x42020d40
-bl602_expander_attach: Attach callback for gpio=12, callback=0x2305f4e2, arg=0x42020d40
-bl602_expander_interrupt: Interrupt! context=0x42012db8, priv=0x4201d0f0
-bl602_expander_interrupt: Call gpio=12, callback=0x2305f4e2, arg=0x42020d40
-gplh_handler: pin12: pinset: c callback=0x23060808
-gplh_enable: pin12: Disabling callback=0x23060808 handle=0x4201d1a0
-gplh_enable: pin12: Detaching handle=0x4201d1a0
-bl602_expander_detach: Detach callback for gpio=12, callback=0x2305f4e2, arg=0x42020d40
-gplh_attach: pin12: callback=0
-gplh_read: pin12: value=0x42021aef
-bl602_expander_readpin: pin=12, value=1
-  Verify:        Value=1</code></pre></div>
-<p>But this works only if we don’t call <code>IOEP_ATTACH</code> to attach the Interrupt Handler.</p>
-<h2 id="touch-panel-interrupt"><a href="#touch-panel-interrupt">4.2 Touch Panel Interrupt</a></h2>
+<p>Note that the Interrupt Handler runs in the <strong>BL602 Interrupt Context</strong>.</p>
+<p>Be careful!</p>
+<h2 id="gpio-command"><a href="#gpio-command">4.2 GPIO Command</a></h2>
+<p>Another way to test the Push Button Interrupt is to use the <strong>GPIO Command</strong>. </p>
+<p>(This only works if we don’t call <strong>IOEP_ATTACH</strong> to attach the Interrupt Handler)</p>
+<p>Enter this in the NuttX Shell…</p>
+<div class="example-wrap"><pre class="language-bash"><code>gpio -t 8 -w 1 /dev/gpio12</code></pre></div>
+<p>And quickly press the <strong>Push Button</strong> on PineDio Stack.</p>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>Interrupt pin: Value=1
+Verify:        Value=1</code></pre></div><h2 id="touch-panel-interrupt"><a href="#touch-panel-interrupt">4.3 Touch Panel Interrupt</a></h2>
 <p>TODO</p>
 <p>The CST816S Driver for PineDio Stack’s Touch Panel now calls BL602 GPIO Expander to attach the GPIO Interrupt Handler…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Register the CST816S device (e.g. /dev/input0)
@@ -452,10 +436,10 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
     ierr(&quot;Attach interrupt failed\n&quot;);
     return -EIO;
   }</code></pre></div>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/pinedio/cst816s.c#L661-L678">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L661-L678">(Source)</a></p>
 <p>The functions for configuring and handling GPIO Interrupts have been moved from the CST816S Driver to BL602 GPIO Expander.</p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L325">(See this)</a></p>
-<h2 id="lora-sx1262-interrupt"><a href="#lora-sx1262-interrupt">4.3 LoRa SX1262 Interrupt</a></h2>
+<h2 id="lora-sx1262-interrupt"><a href="#lora-sx1262-interrupt">4.4 LoRa SX1262 Interrupt</a></h2>
 <p>TODO</p>
 <p>The Semtech SX1262 LoRa Transceiver on PineDio Stack triggers a GPIO Interrupt (on pin DIO1) when a LoRa packet is transmitted or received.</p>
 <p>Here’s the existing code that configures the GPIO Interrupt and attaches the Interrupt Handler…</p>
