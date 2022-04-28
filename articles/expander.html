@@ -349,7 +349,7 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 <p><img src="https://lupyuen.github.io/images/expander-code2a.png" alt="Attaching a GPIO Interrupt with BL602 EVB" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505">(Source)</a></p>
 <p><em>So we call BL602 EVB to attach our own GPIO Interrupt Handler?</em></p>
-<p>Sadly we can’t. BL602 EVB doesn’t expose a Public Function that we may call to attach our own Interrupt Handler.</p>
+<p>Sadly we can’t. BL602 EVB <strong>doesn’t expose a Public Function</strong> that we may call to attach our own Interrupt Handler.</p>
 <p>(<strong>gpint_attach</strong> is a Private Function, as shown above)</p>
 <p><em>Which means we need to implement this in our GPIO Expander?</em></p>
 <p>Exactly! Our <strong>GPIO Expander</strong> shall take over these duties from BL602 EVB…</p>
@@ -366,7 +366,7 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 </ul>
 <h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">4.2 Attach Interrupt Handler</a></h2>
 <p><em>How do we attach a GPIO Interrupt Handler?</em></p>
-<p>Since our GPIO Expander implements the I/O Expander Driver Interface, we can call <strong>IOEP_ATTACH</strong> to attach an Interrupt Handler.</p>
+<p>Because GPIO Expander implements the I/O Expander Interface, we may call <strong>IOEP_ATTACH</strong> to attach an Interrupt Handler.</p>
 <p>Let’s attach an Interrupt Handler that will be called when we press the <strong>Push Button</strong> (GPIO 12) on PineDio Stack: <a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/ioexpander/gpio.h&gt;
 #include &lt;nuttx/ioexpander/bl602_expander.h&gt;
