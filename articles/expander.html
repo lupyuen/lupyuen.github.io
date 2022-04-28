@@ -281,34 +281,44 @@
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c"><strong>Skeleton Driver for I/O Expander</strong></a></li>
 </ul>
-<p>Let’s flesh out the Skeleton Driver for PineDio Stack’s GPIO Expander.</p>
+<p>Let’s flesh out the Skeleton Driver for our GPIO Expander.</p>
 <p><img src="https://lupyuen.github.io/images/expander-code4a.png" alt="Skeleton Driver for I/O Expander" /></p>
 <h2 id="gpio-operations"><a href="#gpio-operations">3.1 GPIO Operations</a></h2>
-<p>TODO</p>
-<p>Our NuttX GPIO Expander implements the operations to: 1️⃣ Config / Read / Write GPIOs 2️⃣ Attach / Detach GPIO Interrupt Handlers 3️⃣ Handle GPIO Interrupts…</p>
-<div class="example-wrap"><pre class="language-c"><code>/* I/O Expander Operations */
-
-static const struct ioexpander_ops_s g_bl602_expander_ops =
-{
-  bl602_expander_direction,
-  bl602_expander_option,
-  bl602_expander_writepin,
-  bl602_expander_readpin,
-  bl602_expander_readbuf
-#ifdef CONFIG_IOEXPANDER_MULTIPIN
-  , bl602_expander_multiwritepin
-  , bl602_expander_multireadpin
-  , bl602_expander_multireadbuf
-#endif
-#ifdef CONFIG_IOEXPANDER_INT_ENABLE
-  , bl602_expander_attach
-  , bl602_expander_detach
-#endif
+<p>Our GPIO Expander supports these <strong>GPIO Operations</strong>…</p>
+<ul>
+<li>
+<p>Set <strong>GPIO Direction</strong> (Input or Output)</p>
+</li>
+<li>
+<p>Set <strong>GPIO Interrupt Options</strong></p>
+</li>
+<li>
+<p>Read a <strong>GPIO Input</strong></p>
+</li>
+<li>
+<p>Write to a <strong>GPIO Output</strong></p>
+</li>
+<li>
+<p>Attach a <strong>GPIO Interrupt Handler</strong></p>
+</li>
+<li>
+<p>Detach a <strong>GPIO Interrupt Handler</strong></p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-c"><code>//  GPIO Expander Operations
+static const struct ioexpander_ops_s g_bl602_expander_ops = {
+  bl602_expander_direction,  //  Set GPIO Direction
+  bl602_expander_option,     //  Set GPIO Interrupt Options
+  bl602_expander_writepin,   //  Write to GPIO Output
+  bl602_expander_readpin,    //  Read from GPIO Input
+  bl602_expander_readbuf,    //  (Read Buffer Not Implemented)
+  ...
+  bl602_expander_attach,     //  Attach GPIO Interrupt Handler
+  bl602_expander_detach      //  Detach GPIO Interrupt Handler
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L141-L159">(Source)</a></p>
-<p>We’ll cover these operations below.</p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/expander-code5a.png" alt="" /></p>
+<p>We’ll look inside these operations in a while.</p>
+<p><img src="https://lupyuen.github.io/images/expander-code5a.png" alt="GPIO Operations" /></p>
 <h1 id="gpio-interrupts"><a href="#gpio-interrupts">4 GPIO Interrupts</a></h1>
 <p>TODO</p>
 <p>GPIO Interrupt Handling gets tricky for PineDio Stack BL604: All GPIO Interrupts are multiplexed into a single IRQ. Our GPIO Expander can help. </p>
