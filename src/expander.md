@@ -411,13 +411,26 @@ Enter this in the NuttX Shell...
 gpio -t 8 -w 1 /dev/gpio12
 ```
 
-And quickly press the __Push Button__ on PineDio Stack.
+Which says...
 
-We should see...
+-   Configure the GPIO for __Rising Edge Interrupt__
+
+-   And wait 5 seconds for __Signal 1__
+
+Quickly press the __Push Button__ on PineDio Stack. We should see...
 
 ```text
 Interrupt pin: Value=1
 Verify:        Value=1
+```
+
+[(See the Complete Log)](https://github.com/lupyuen/bl602_expander#test-push-button)
+
+If we don't press the button __within 5 seconds__, the GPIO Command reports an Interrupt Timeout...
+
+```text
+Interrupt pin: Value=1
+[Five second timeout with no signal]
 ```
 
 ## Touch Panel Interrupt
