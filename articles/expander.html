@@ -190,6 +190,7 @@
 </ul>
 <p>This includes the low-level drivers for GPIO, UART, I2C, SPI, PWM, …</p>
 <p>We’re hunky dory with these drivers, though we have made tiny mods like for <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/expander-title1a.png" alt="BL602 EVB always maps sequentially the GPIO Pins" /></p>
 <h2 id="pin-definitions"><a href="#pin-definitions">1.1 Pin Definitions</a></h2>
 <p>In BL602 EVB, this is how we <strong>define the pins</strong> for GPIO / UART / I2C / SPI / PWM: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59"><strong>board.h</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_NGPIOIN  1  //  Number of GPIO Input pins
@@ -215,7 +216,7 @@
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137">(See this)</a></p>
 </li>
 <li>
-<p>BL602 EVB always <strong>maps sequentially</strong> the GPIO Pins like so: GPIO Input, then GPIO Output, then GPIO Interrupt…</p>
+<p>BL602 EVB always <strong>maps sequentially</strong> the GPIO Pins like so: GPIO Input, then GPIO Output, then GPIO Interrupt (pic above)…</p>
 <p><strong>/dev/gpio0</strong>: GPIO Input <em>(GPIO 10)</em></p>
 <p><strong>/dev/gpio1</strong>: GPIO Output <em>(GPIO 15)</em></p>
 <p><strong>/dev/gpio2</strong>: GPIO Interrupt <em>(GPIO 19)</em></p>
@@ -235,16 +236,22 @@
 </ul>
 <p>Thus we see that <strong>BL602 EVB is somewhat limited</strong>…</p>
 <p>BL602 EVB works great for 3 GPIOs, but <strong>doesn’t scale well</strong> beyond that.</p>
+<p>Let’s fix this…</p>
+<p><img src="https://lupyuen.github.io/images/expander-title2a.jpg" alt="Overcome The Limitations" /></p>
 <h1 id="overcome-the-limitations"><a href="#overcome-the-limitations">2 Overcome The Limitations</a></h1>
 <p>Here’s our plan to make BL602 EVB <strong>work great with 23 GPIOs</strong> on PineDio Stack…</p>
 <ul>
 <li>
 <p><strong>Support 23 GPIOs</strong>, with any mix of GPIO Inputs / Outputs / Interrupts</p>
-<p>TODO</p>
+<p>(Perfect for PineDio Stack’s SPI Display, I2C Touch Panel, SX1262 Transceiver, Accelerometer, Push Button, …)</p>
 </li>
 <li>
 <p>Renumber the GPIOs as “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio22</strong>”</p>
-<p>(So that “<strong>/dev/gpioN</strong>” will simply map to GPIO Pin N)</p>
+<p>(So that “<strong>/dev/gpioN</strong>” will simply map to <strong>GPIO Pin N</strong>)</p>
+</li>
+<li>
+<p>Allow <strong>gaps in the GPIO Numbering</strong> (pic above)</p>
+<p>(We skip the GPIOs reserved for UART, I2C, SPI and PWM)</p>
 </li>
 <li>
 <p><strong>Keep the Pin Definitions</strong></p>
@@ -2330,10 +2337,6 @@ DEBUGASSERT(handle != NULL);</code></pre></div>
   return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044">(Source)</a></p>
-<p>TODO10</p>
-<p><img src="https://lupyuen.github.io/images/expander-title1a.png" alt="" /></p>
-<p>TODO12</p>
-<p><img src="https://lupyuen.github.io/images/expander-title2a.jpg" alt="" /></p>
 
     
 </body>
