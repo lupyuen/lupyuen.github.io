@@ -235,45 +235,45 @@ NuttX helpfully provides a __Skeleton Driver__ for I/O Expander (pic below)...
 
 -   [__Skeleton Driver for I/O Expander__](https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c)    
 
-Let's flesh out the Skeleton Driver for PineDio Stack's GPIO Expander.
+Let's flesh out the Skeleton Driver for our GPIO Expander.
 
 ![Skeleton Driver for I/O Expander](https://lupyuen.github.io/images/expander-code4a.png)
 
 ## GPIO Operations
 
-TODO
+Our GPIO Expander supports these __GPIO Operations__...
 
-Our NuttX GPIO Expander implements the operations to: 1️⃣ Config / Read / Write GPIOs 2️⃣ Attach / Detach GPIO Interrupt Handlers 3️⃣ Handle GPIO Interrupts...
+-   Set __GPIO Direction__ (Input or Output)
+
+-   Set __GPIO Interrupt Options__
+
+-   Read a __GPIO Input__
+
+-   Write to a __GPIO Output__
+
+-   Attach a __GPIO Interrupt Handler__
+
+-   Detach a __GPIO Interrupt Handler__
 
 ```c
-/* I/O Expander Operations */
-
-static const struct ioexpander_ops_s g_bl602_expander_ops =
-{
-  bl602_expander_direction,
-  bl602_expander_option,
-  bl602_expander_writepin,
-  bl602_expander_readpin,
-  bl602_expander_readbuf
-#ifdef CONFIG_IOEXPANDER_MULTIPIN
-  , bl602_expander_multiwritepin
-  , bl602_expander_multireadpin
-  , bl602_expander_multireadbuf
-#endif
-#ifdef CONFIG_IOEXPANDER_INT_ENABLE
-  , bl602_expander_attach
-  , bl602_expander_detach
-#endif
+//  GPIO Expander Operations
+static const struct ioexpander_ops_s g_bl602_expander_ops = {
+  bl602_expander_direction,  //  Set GPIO Direction
+  bl602_expander_option,     //  Set GPIO Interrupt Options
+  bl602_expander_writepin,   //  Write to GPIO Output
+  bl602_expander_readpin,    //  Read from GPIO Input
+  bl602_expander_readbuf,    //  (Read Buffer Not Implemented)
+  ...
+  bl602_expander_attach,     //  Attach GPIO Interrupt Handler
+  bl602_expander_detach      //  Detach GPIO Interrupt Handler
 };
 ```
 
 [(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L141-L159)
 
-We'll cover these operations below.
+We'll look inside these operations in a while.
 
-TODO6
-
-![](https://lupyuen.github.io/images/expander-code5a.png)
+![GPIO Operations](https://lupyuen.github.io/images/expander-code5a.png)
 
 # GPIO Interrupts
 
