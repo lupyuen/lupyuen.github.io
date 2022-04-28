@@ -273,17 +273,13 @@
 <p><em>So our GPIO Expander works like a NuttX I/O Expander?</em></p>
 <p>Yep, NuttX lets us create <strong>I/O Expander Drivers</strong> that will manage many Input, Output and Interrupt GPIOs…</p>
 <ul>
-<li>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h"><strong>NuttX I/O Expander Driver Interface</strong></a></p>
-<p>(Pic above)</p>
-</li>
+<li><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h"><strong>NuttX I/O Expander Driver Interface</strong></a></li>
 </ul>
-<p>NuttX helpfully provides a <strong>Skeleton Driver</strong> for I/O Expander…</p>
+<p>I/O Expanders will support reading and writing to GPIOs, also attaching and detaching Interrupt Handlers. (Pic above)</p>
+<p><em>Great! How will we get started on GPIO Expander?</em></p>
+<p>NuttX helpfully provides a <strong>Skeleton Driver</strong> for I/O Expander (pic below)…</p>
 <ul>
-<li>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c"><strong>Skeleton Driver for I/O Expander</strong></a></p>
-<p>(Pic below)</p>
-</li>
+<li><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c"><strong>Skeleton Driver for I/O Expander</strong></a></li>
 </ul>
 <p>Let’s flesh out the Skeleton Driver for PineDio Stack’s GPIO Expander.</p>
 <p><img src="https://lupyuen.github.io/images/expander-code4a.png" alt="Skeleton Driver for I/O Expander" /></p>
