@@ -408,10 +408,22 @@ static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pin
 <p>(This only works if we don’t call <strong>IOEP_ATTACH</strong> to attach the Interrupt Handler)</p>
 <p>Enter this in the NuttX Shell…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gpio -t 8 -w 1 /dev/gpio12</code></pre></div>
-<p>And quickly press the <strong>Push Button</strong> on PineDio Stack.</p>
-<p>We should see…</p>
+<p>Which says…</p>
+<ul>
+<li>
+<p>Configure the GPIO for <strong>Rising Edge Interrupt</strong></p>
+</li>
+<li>
+<p>And wait 5 seconds for <strong>Signal 1</strong></p>
+</li>
+</ul>
+<p>Quickly press the <strong>Push Button</strong> on PineDio Stack. We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Interrupt pin: Value=1
-Verify:        Value=1</code></pre></div><h2 id="touch-panel-interrupt"><a href="#touch-panel-interrupt">4.4 Touch Panel Interrupt</a></h2>
+Verify:        Value=1</code></pre></div>
+<p><a href="https://github.com/lupyuen/bl602_expander#test-push-button">(See the Complete Log)</a></p>
+<p>If we don’t press the button <strong>within 5 seconds</strong>, the GPIO Command reports an Interrupt Timeout…</p>
+<div class="example-wrap"><pre class="language-text"><code>Interrupt pin: Value=1
+[Five second timeout with no signal]</code></pre></div><h2 id="touch-panel-interrupt"><a href="#touch-panel-interrupt">4.4 Touch Panel Interrupt</a></h2>
 <p>TODO</p>
 <p>The CST816S Driver for PineDio Stack’s Touch Panel now calls BL602 GPIO Expander to attach the GPIO Interrupt Handler…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Register the CST816S device (e.g. /dev/input0)
