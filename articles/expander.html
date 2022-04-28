@@ -69,7 +69,7 @@
 <li><a href="#pin-definitions">1.1 Pin Definitions</a><ul></ul></li></ul></li>
 <li><a href="#overcome-the-limitations">2 Overcome The Limitations</a><ul></ul></li>
 <li><a href="#gpio-expander">3 GPIO Expander</a><ul>
-<li><a href="#gpio-expander-operations">3.1 GPIO Expander Operations</a><ul></ul></li></ul></li>
+<li><a href="#gpio-operations">3.1 GPIO Operations</a><ul></ul></li></ul></li>
 <li><a href="#gpio-interrupts">4 GPIO Interrupts</a><ul>
 <li><a href="#push-button-interrupt">4.1 Push Button Interrupt</a><ul></ul></li>
 <li><a href="#touch-panel-interrupt">4.2 Touch Panel Interrupt</a><ul></ul></li>
@@ -268,23 +268,26 @@
 <p>(And do away with BL602 EVB altogether)</p>
 <p>But we’ll save that for later because it might lead to <strong>fragmentation of BL602 / BL604 Support</strong> in NuttX.</p>
 <p>(Let’s do the <strong>bare minimum</strong> that will make NuttX decently usable on PineDio Stack!)</p>
+<p><img src="https://lupyuen.github.io/images/expander-code1a.png" alt="NuttX I/O Expander Driver Interface" /></p>
 <h1 id="gpio-expander"><a href="#gpio-expander">3 GPIO Expander</a></h1>
-<p>TODO</p>
-<p>NuttX lets us create I/O Expander Drivers that will handle many GPIOs (Input / Output / Interrupt). Perfect for PineDio Stack BL604!</p>
+<p><em>So our GPIO Expander works like a NuttX I/O Expander?</em></p>
+<p>Yep, NuttX lets us create <strong>I/O Expander Drivers</strong> that will manage many Input, Output and Interrupt GPIOs…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h">NuttX I/O Expander Driver Interface</a></li>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h"><strong>NuttX I/O Expander Driver Interface</strong></a></p>
+<p>(Pic above)</p>
+</li>
 </ul>
-<p>Apache NuttX RTOS helpfully provides a Skeleton Driver for I/O Expander. Let’s flesh it out for PineDio Stack BL604’s GPIO Expander…</p>
+<p>NuttX helpfully provides a <strong>Skeleton Driver</strong> for I/O Expander…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c">Skeleton Driver for I/O Expander</a></li>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c"><strong>Skeleton Driver for I/O Expander</strong></a></p>
+<p>(Pic below)</p>
+</li>
 </ul>
-<p>Other microcontrollers might also need a GPIO Expander. Like CH32V307, which has 80 GPIOs (!)</p>
-<p><a href="https://github.com/openwch/ch32v307">(See this)</a></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/expander-code1a.png" alt="" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/expander-code4a.png" alt="" /></p>
-<h2 id="gpio-expander-operations"><a href="#gpio-expander-operations">3.1 GPIO Expander Operations</a></h2>
+<p>Let’s flesh out the Skeleton Driver for PineDio Stack’s GPIO Expander.</p>
+<p><img src="https://lupyuen.github.io/images/expander-code4a.png" alt="Skeleton Driver for I/O Expander" /></p>
+<h2 id="gpio-operations"><a href="#gpio-operations">3.1 GPIO Operations</a></h2>
 <p>TODO</p>
 <p>Our NuttX GPIO Expander implements the operations to: 1️⃣ Config / Read / Write GPIOs 2️⃣ Attach / Detach GPIO Interrupt Handlers 3️⃣ Handle GPIO Interrupts…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* I/O Expander Operations */
