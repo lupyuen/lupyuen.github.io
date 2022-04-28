@@ -183,7 +183,7 @@ Let's fix this...
 
 # Overcome The Limitations
 
-Here's our plan to make BL602 EVB __work great with 23 GPIOs__ on PineDio Stack...
+We plan to make BL602 EVB __work great with PineDio Stack__...
 
 -   __Support 23 GPIOs__ with any mix of GPIO Inputs / Outputs / Interrupts
 
@@ -191,23 +191,31 @@ Here's our plan to make BL602 EVB __work great with 23 GPIOs__ on PineDio Stack.
 
 -   Renumber the GPIOs as "__/dev/gpio0__" to "__/dev/gpio22__"
 
-    (So that "__/dev/gpioN__" will simply map to __GPIO Pin N__)
+    ("__/dev/gpioN__" will simply map to __GPIO Pin N__)
 
 -   Allow __gaps in the GPIO Numbering__ (pic above)
 
     (We skip the GPIOs reserved for UART, I2C, SPI and PWM)
 
--   __Keep the Pin Definitions__
+-   Keep the __Pin Definitions__
 
-    TODO
+    (Original BL602 EVB will still build OK for plain old BL602)
 
 -   __Validate the GPIOs__ at startup
 
-    TODO
+    (No more reusing GPIOs by mistake!)
 
-TODO: Easier for devs to create new NuttX Drivers!
+We make this happen by extending BL602 EVB with an (optional) __GPIO Expander__.
 
-TODO: Should we have created an "EVB" for PineDio Stack? Probably, but we'll save that for later because it might lead to fragmentation of BL602 support in NuttX
+_Why not make an EVB for PineDio Stack?_
+
+Yes we could create a new __EVB for PineDio Stack__.
+
+(And do away with BL602 EVB altogether)
+
+But we'll save that for later because it might lead to __fragmentation of BL602 / BL604 Support__ in NuttX.
+
+(Let's do the __bare minimum__ that will make NuttX decently usable on PineDio Stack!)
 
 # GPIO Expander
 
