@@ -340,18 +340,24 @@ _How do we attach a GPIO Interrupt Handler?_
 
 Since our GPIO Expander implements the I/O Expander Driver Interface, we can call __IOEP_ATTACH__ to attach an Interrupt Handler.
 
-TODO
-
-Now With BL602 GPIO Expander, here's how we handle the GPIO Interrupt that's triggered when we press the Push Button on PineDio Stack...
+Let's attach an Interrupt Handler that will be called when we press the __Push Button__ (GPIO 12) on PineDio Stack: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704)
 
 ```c
 #include <nuttx/ioexpander/gpio.h>
 #include <nuttx/ioexpander/bl602_expander.h>
 ...
-//  Get the Push Button Pinset and GPIO
+//  Get the Push Button Pinset and GPIO Pin Number
 gpio_pinset_t pinset = BOARD_BUTTON_INT;
 uint8_t gpio_pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
+```
 
+[(__BOARD_BUTTON_INT__ is defined in board.h)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L143-L145)
+
+First we get the __GPIO Pin Number__ for the Push Button.
+
+Then we configure our GPIO Expander to trigger the GPIO Interrupt on the __Falling Edge__ (High to Low)...
+
+```c
 //  Configure GPIO interrupt to be triggered on falling edge
 DEBUGASSERT(bl602_expander != NULL);
 IOEXP_SETOPTION(
@@ -360,8 +366,12 @@ IOEXP_SETOPTION(
   IOEXPANDER_OPTION_INTCFG,            //  Configure interrupt trigger
   (FAR void *) IOEXPANDER_VAL_FALLING  //  Trigger on falling edge
 );
+```
 
-//  Attach GPIO interrupt handler
+Finally we call GPIO Expander to __attach our Interrupt Handler__...
+
+```c
+//  Attach our GPIO interrupt handler
 void *handle = IOEP_ATTACH(
   bl602_expander,                //  BL602 GPIO Expander
   (ioe_pinset_t) 1 << gpio_pin,  //  GPIO Pin converted to Pinset
@@ -371,11 +381,10 @@ void *handle = IOEP_ATTACH(
 DEBUGASSERT(handle != NULL);
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704)
-
-Much easier now! The Button Interrupt Handler `button_isr_handler` is defined as...
+The __Interrupt Handler__ is defined as...
 
 ```c
+//  Our GPIO Interrupt Handler
 static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pinset, FAR void *arg) {
   gpioinfo("Button Pressed\n");
   return 0;
@@ -384,39 +393,30 @@ static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pin
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044)
 
-Note that the Button Interrupt Handler runs in the context of the Interrupt Handler. Be careful!
+Note that the Interrupt Handler runs in the __BL602 Interrupt Context__.
 
-Another way to test the Push Button Interrupt is to use the GPIO Command...
+Be careful!
 
-```text
-nsh> gpio -t 8 -w 1 /dev/gpio12
-Driver: /dev/gpio12
-gplh_enable: pin12: Disabling callback=0 handle=0
-gplh_enable: WARNING: pin12: Already detached
-bl602_expander_option: pin=12, option=2, value=0x6
-bl602_expander_option: Rising edge: pin=12
-bl602_expander_set_intmod: gpio_pin=12, int_ctlmod=1, int_trgmod=1
-gplh_read: pin12: value=0x42021aef
-bl602_expander_readpin: pin=12, value=1
-  Interrupt pin: Value=1
-gplh_attach: pin12: callback=0x23060808
-gplh_enable: pin12: Enabling callback=0x23060808 handle=0
-gplh_enable: pin12: Attaching 0x23060808
-bl602_expander_attach: pinset=1000, callback=0x2305f4e2, arg=0x42020d40
-bl602_expander_attach: Attach callback for gpio=12, callback=0x2305f4e2, arg=0x42020d40
-bl602_expander_interrupt: Interrupt! context=0x42012db8, priv=0x4201d0f0
-bl602_expander_interrupt: Call gpio=12, callback=0x2305f4e2, arg=0x42020d40
-gplh_handler: pin12: pinset: c callback=0x23060808
-gplh_enable: pin12: Disabling callback=0x23060808 handle=0x4201d1a0
-gplh_enable: pin12: Detaching handle=0x4201d1a0
-bl602_expander_detach: Detach callback for gpio=12, callback=0x2305f4e2, arg=0x42020d40
-gplh_attach: pin12: callback=0
-gplh_read: pin12: value=0x42021aef
-bl602_expander_readpin: pin=12, value=1
-  Verify:        Value=1
+## GPIO Command
+
+Another way to test the Push Button Interrupt is to use the __GPIO Command__. 
+
+(This only works if we don't call __IOEP_ATTACH__ to attach the Interrupt Handler)
+
+Enter this in the NuttX Shell...
+
+```bash
+gpio -t 8 -w 1 /dev/gpio12
 ```
 
-But this works only if we don't call `IOEP_ATTACH` to attach the Interrupt Handler.
+And quickly press the __Push Button__ on PineDio Stack.
+
+We should see...
+
+```text
+Interrupt pin: Value=1
+Verify:        Value=1
+```
 
 ## Touch Panel Interrupt
 
@@ -451,7 +451,7 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
   }
 ```
 
-[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/pinedio/cst816s.c#L661-L678)
+[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L661-L678)
 
 The functions for configuring and handling GPIO Interrupts have been moved from the CST816S Driver to BL602 GPIO Expander.
 
