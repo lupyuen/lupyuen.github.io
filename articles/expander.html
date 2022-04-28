@@ -323,36 +323,14 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 <p>We’ll look inside the operations in a while.</p>
 <p><img src="https://lupyuen.github.io/images/expander-code5a.png" alt="GPIO Operations" /></p>
 <h1 id="gpio-interrupts"><a href="#gpio-interrupts">4 GPIO Interrupts</a></h1>
-<p>TODO</p>
-<p>GPIO Interrupt Handling gets tricky for PineDio Stack BL604: All GPIO Interrupts are multiplexed into a single IRQ. Our GPIO Expander can help. </p>
-<p>Here’s the existing code for BL602 EVB that attaches a GPIO Interrupt Handler…</p>
-<div class="example-wrap"><pre class="language-c"><code>static int gpint_attach(struct gpio_dev_s *dev, pin_interrupt_t callback)
-{
-  struct bl602_gpint_dev_s *bl602xgpint =
-    (struct bl602_gpint_dev_s *)dev;
-
-  uint8_t gpio_pin =
-    (g_gpiointinputs[bl602xgpint-&gt;bl602gpio.id] &amp; GPIO_PIN_MASK) &gt;&gt;
-    GPIO_PIN_SHIFT;
-  gpioinfo(&quot;Attaching the callback\n&quot;);
-
-  /* Make sure the interrupt is disabled */
-
-  bl602xgpint-&gt;callback = callback;
-  bl602_gpio_intmask(gpio_pin, 1);
-
-  irq_attach(BL602_IRQ_GPIO_INT0, bl602_gpio_interrupt, dev);
-  bl602_gpio_intmask(gpio_pin, 0);
-
-  gpioinfo(&quot;Attach %p\n&quot;, callback);
-  return OK;
-}</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c">(Source)</a></p>
-<p>Note that all GPIO Interrupts are multiplexed into a single IRQ: <code>BL602_IRQ_GPIO_INT0</code></p>
-<p>When handling GPIO Interrupts, our GPIO Expander needs to demultiplex the <code>BL602_IRQ_GPIO_INT0</code> IRQ into multiple GPIO Interrupts.</p>
-<p>As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)…</p>
+<p><em>Anything peculiar about GPIO Interrupts on BL602 and BL604?</em></p>
+<p><strong>GPIO Interrupt Handling</strong> gets tricky for BL602 and BL604…</p>
+<p>All GPIO Interrupts are multiplexed into <strong>One Single IRQ!</strong></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505">(<strong>BL602_IRQ_GPIO_INT0</strong> is the IRQ)</a></p>
+<p>Which means that our GPIO Expander will need to <strong>demultiplex the IRQ</strong> when handling interrupts.</p>
+<p>TODO: As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)…</p>
 <ul>
-<li><a href="https://www.robertlipe.com/buttons-on-bl602-nuttx/">“Buttons on BL602 NuttX”</a></li>
+<li><a href="https://www.robertlipe.com/buttons-on-bl602-nuttx/"><strong>“Buttons on BL602 NuttX”</strong></a></li>
 </ul>
 <p>Let’s fix this with our GPIO Expander for Apache NuttX RTOS.</p>
 <p>TODO3</p>
