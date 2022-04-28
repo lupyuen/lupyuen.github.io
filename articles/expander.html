@@ -71,7 +71,7 @@
 <li><a href="#gpio-expander">3 GPIO Expander</a><ul>
 <li><a href="#gpio-operations">3.1 GPIO Operations</a><ul></ul></li></ul></li>
 <li><a href="#gpio-interrupts">4 GPIO Interrupts</a><ul>
-<li><a href="#push-button-interrupt">4.1 Push Button Interrupt</a><ul></ul></li>
+<li><a href="#attach-interrupt-handler">4.1 Attach Interrupt Handler</a><ul></ul></li>
 <li><a href="#touch-panel-interrupt">4.2 Touch Panel Interrupt</a><ul></ul></li>
 <li><a href="#lora-sx1262-interrupt">4.3 LoRa SX1262 Interrupt</a><ul></ul></li></ul></li>
 <li><a href="#check-reused-gpios">5 Check Reused GPIOs</a><ul></ul></li>
@@ -90,7 +90,7 @@
 <li><a href="#notes">18 Notes</a><ul></ul></li>
 <li><a href="#appendix-status">19 Appendix: Status</a><ul></ul></li>
 <li><a href="#apppendix-install-driver">20 Apppendix: Install Driver</a><ul>
-<li><a href="#push-button-interrupt-1">20.1 Push Button Interrupt</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>2 May 2022</em></p>
+<li><a href="#push-button-interrupt">20.1 Push Button Interrupt</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>2 May 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/expander-title.jpg" alt="NuttX GPIO Expander for PineDio Stack BL604" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> (Pine64’s newest RISC-V board) has an interesting problem on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a>…</p>
 <p><em><strong>Too Many GPIOs!</strong></em></p>
@@ -192,7 +192,7 @@
 <p>We’re hunky dory with these drivers, though we’ve made tiny mods like for <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/expander-title1a.png" alt="BL602 EVB always maps sequentially the GPIO Pins" /></p>
 <h2 id="pin-definitions"><a href="#pin-definitions">1.1 Pin Definitions</a></h2>
-<p>In BL602 EVB, this is how we <strong>define the pins</strong> for GPIO / UART / I2C / SPI / PWM: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59"><strong>board.h</strong></a></p>
+<p>In BL602 EVB, this is how we <strong>define the pins</strong> for GPIO / UART / I2C / SPI / PWM: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_NGPIOIN  1  //  Number of GPIO Input pins
 #define BOARD_NGPIOOUT 1  //  Number of GPIO Output pins
 #define BOARD_NGPIOINT 1  //  Number of GPIO Interrupt pins
@@ -237,6 +237,9 @@
 <p>Thus we see that <strong>BL602 EVB is somewhat limited</strong>…</p>
 <p>BL602 EVB works great for 3 GPIOs, but <strong>doesn’t scale well</strong> beyond that.</p>
 <p>Let’s make this better.</p>
+<p><em>Shouldn’t the pins be defined in Kconfig / menuconfig?</em></p>
+<p>Perhaps. NuttX on ESP32 defines the pins in <strong>Kconfig and menuconfig.</strong> <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984">(See this)</a></p>
+<p>But for now, let’s keep the Pin Definitions in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59"><strong>board.h</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/expander-title2a.jpg" alt="Overcome The Limitations" /></p>
 <h1 id="overcome-the-limitations"><a href="#overcome-the-limitations">2 Overcome The Limitations</a></h1>
 <p>We plan to make BL602 EVB <strong>work great with PineDio Stack</strong>…</p>
@@ -323,21 +326,44 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 <p>We’ll look inside the operations in a while.</p>
 <p><img src="https://lupyuen.github.io/images/expander-code5a.png" alt="GPIO Operations" /></p>
 <h1 id="gpio-interrupts"><a href="#gpio-interrupts">4 GPIO Interrupts</a></h1>
-<p><em>Anything peculiar about GPIO Interrupts on BL602 and BL604?</em></p>
-<p><strong>GPIO Interrupt Handling</strong> gets tricky for BL602 and BL604…</p>
-<p>All GPIO Interrupts are multiplexed into <strong>One Single IRQ!</strong></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505">(<strong>BL602_IRQ_GPIO_INT0</strong> is the IRQ)</a></p>
-<p>Which means that our GPIO Expander will need to <strong>demultiplex the IRQ</strong> when handling interrupts.</p>
-<p>TODO: As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)…</p>
+<p><em>BL602 EVB works OK with GPIO Interrupts?</em></p>
+<p>As noted (eloquently) by Robert Lipe, it’s <strong>difficult to attach a GPIO Interrupt Handler</strong> with BL602 EVB…</p>
 <ul>
 <li><a href="https://www.robertlipe.com/buttons-on-bl602-nuttx/"><strong>“Buttons on BL602 NuttX”</strong></a></li>
 </ul>
-<p>Let’s fix this with our GPIO Expander for Apache NuttX RTOS.</p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/expander-code2a.png" alt="" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/expander-button.png" alt="" /></p>
-<h2 id="push-button-interrupt"><a href="#push-button-interrupt">4.1 Push Button Interrupt</a></h2>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/expander-button.png" alt="As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)" /></p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.robertlipe.com/buttons-on-bl602-nuttx/">(Source)</a></p>
+</blockquote>
+<p>Let’s find out why…</p>
+<p><em>Anything peculiar about GPIO Interrupts on BL602 and BL604?</em></p>
+<p><strong>GPIO Interrupt Handling</strong> gets tricky for BL602 and BL604…</p>
+<p>All GPIO Interrupts are multiplexed into <strong>One Single GPIO IRQ!</strong></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505">(<strong>BL602_IRQ_GPIO_INT0</strong> is the common GPIO IRQ)</a></p>
+<p>BL602 EVB <strong>demultiplexes the GPIO IRQ</strong> and calls the GPIO Interrupt Handlers.</p>
+<p><img src="https://lupyuen.github.io/images/expander-code2a.png" alt="Attaching a GPIO Interrupt with BL602 EVB" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505">(Source)</a></p>
+<p><em>So we call BL602 EVB to attach our own GPIO Interrupt Handler?</em></p>
+<p>Sadly we can’t. BL602 EVB doesn’t expose a Public Function that we may call to attach our own Interrupt Handler.</p>
+<p>(<strong>gpint_attach</strong> is a Private Function, as shown above)</p>
+<p><em>Which means we need to implement this in our GPIO Expander?</em></p>
+<p>Exactly! Our <strong>GPIO Expander</strong> shall take over these duties from BL602 EVB…</p>
+<ul>
+<li>
+<p>Handle the <strong>GPIO IRQ Interrupt</strong></p>
+</li>
+<li>
+<p><strong>Demultiplex</strong> the IRQ</p>
+</li>
+<li>
+<p>Call the right <strong>GPIO Interrupt Handler</strong></p>
+</li>
+</ul>
+<h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">4.1 Attach Interrupt Handler</a></h2>
+<p><em>How do we attach a GPIO Interrupt Handler?</em></p>
+<p>Since our GPIO Expander implements the I/O Expander Driver Interface, we can call <strong>IOEP_ATTACH</strong> to attach an Interrupt Handler.</p>
 <p>TODO</p>
 <p>Now With BL602 GPIO Expander, here’s how we handle the GPIO Interrupt that’s triggered when we press the Push Button on PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/ioexpander/gpio.h&gt;
@@ -363,15 +389,10 @@ void *handle = IOEP_ATTACH(
   button_isr_handler,            //  GPIO Interrupt Handler
   NULL                           //  TODO: Set the callback argument
 );
-DEBUGASSERT(handle != NULL);
-```c
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704)
-
-Much easier now! The Button Interrupt Handler `button_isr_handler` is defined as...
-
-```c
-static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pinset, FAR void *arg) {
+DEBUGASSERT(handle != NULL);</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704">(Source)</a></p>
+<p>Much easier now! The Button Interrupt Handler <code>button_isr_handler</code> is defined as…</p>
+<div class="example-wrap"><pre class="language-c"><code>static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pinset, FAR void *arg) {
   gpioinfo(&quot;Button Pressed\n&quot;);
   return 0;
 }</code></pre></div>
@@ -2298,7 +2319,7 @@ static const gpio_pinset_t bl602_other_pins[] =
 #if defined(CONFIG_DEV_GPIO) &amp;&amp; !defined(CONFIG_GPIO_LOWER_HALF)
   ret = bl602_gpio_initialize();</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653">(Source)</a></p>
-<h2 id="push-button-interrupt-1"><a href="#push-button-interrupt-1">20.1 Push Button Interrupt</a></h2>
+<h2 id="push-button-interrupt"><a href="#push-button-interrupt">20.1 Push Button Interrupt</a></h2>
 <p>TODO</p>
 <p>To handle the GPIO Interrupt that’s triggered when we press the Push Button…</p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/ioexpander/gpio.h&gt;
