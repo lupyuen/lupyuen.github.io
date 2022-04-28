@@ -304,6 +304,8 @@ As noted (eloquently) by Robert Lipe, it's __difficult to attach a GPIO Interrup
 
 Let's find out why...
 
+## BL602 EVB Interrupts
+
 _Anything peculiar about GPIO Interrupts on BL602 and BL604?_
 
 __GPIO Interrupt Handling__ gets tricky for BL602 and BL604...
