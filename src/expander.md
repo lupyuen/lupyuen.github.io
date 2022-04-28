@@ -118,6 +118,8 @@ This includes the low-level drivers for GPIO, UART, I2C, SPI, PWM, ...
 
 We're hunky dory with these drivers, though we have made tiny mods like for [__SPI Device Table__](https://lupyuen.github.io/articles/pinedio2#spi-device-table).
 
+![BL602 EVB always maps sequentially the GPIO Pins](https://lupyuen.github.io/images/expander-title1a.png)
+
 ## Pin Definitions
 
 In BL602 EVB, this is how we __define the pins__ for GPIO / UART / I2C / SPI / PWM: [__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59)
@@ -147,7 +149,7 @@ A couple of issues...
 
     [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137)
 
--   BL602 EVB always __maps sequentially__ the GPIO Pins like so: GPIO Input, then GPIO Output, then GPIO Interrupt...
+-   BL602 EVB always __maps sequentially__ the GPIO Pins like so: GPIO Input, then GPIO Output, then GPIO Interrupt (pic above)...
 
     __/dev/gpio0__: GPIO Input _(GPIO 10)_
 
@@ -175,17 +177,25 @@ Thus we see that __BL602 EVB is somewhat limited__...
 
 BL602 EVB works great for 3 GPIOs, but __doesn't scale well__ beyond that.
 
+Let's fix this...
+
+![Overcome The Limitations](https://lupyuen.github.io/images/expander-title2a.jpg)
+
 # Overcome The Limitations
 
 Here's our plan to make BL602 EVB __work great with 23 GPIOs__ on PineDio Stack...
 
 -   __Support 23 GPIOs__, with any mix of GPIO Inputs / Outputs / Interrupts
 
-    TODO
+    (Perfect for PineDio Stack's SPI Display, I2C Touch Panel, SX1262 Transceiver, Accelerometer, Push Button, ...)
 
 -   Renumber the GPIOs as "__/dev/gpio0__" to "__/dev/gpio22__"
 
-    (So that "__/dev/gpioN__" will simply map to GPIO Pin N)
+    (So that "__/dev/gpioN__" will simply map to __GPIO Pin N__)
+
+-   Allow __gaps in the GPIO Numbering__ (pic above)
+
+    (We skip the GPIOs reserved for UART, I2C, SPI and PWM)
 
 -   __Keep the Pin Definitions__
 
@@ -2549,11 +2559,3 @@ static int button_isr_handler(FAR struct ioexpander_dev_s *dev,
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044)
-
-TODO10
-
-![](https://lupyuen.github.io/images/expander-title1a.png)
-
-TODO12
-
-![](https://lupyuen.github.io/images/expander-title2a.jpg)
