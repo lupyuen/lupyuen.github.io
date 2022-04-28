@@ -236,9 +236,27 @@
 <p>Thus we see that <strong>BL602 EVB is somewhat limited</strong>…</p>
 <p>BL602 EVB works great for 3 GPIOs, but <strong>doesn’t scale well</strong> beyond that.</p>
 <h1 id="overcome-the-limitations"><a href="#overcome-the-limitations">2 Overcome The Limitations</a></h1>
-<p>TODO: Let’s simplify NuttX and name the GPIOs as “/dev/gpio0” to “/dev/gpio22”.</p>
-<p>(So that “/dev/gpioN” will map to BL602 GPIO Pin N)</p>
-<p>Easier for devs to create new NuttX Drivers!</p>
+<p>Here’s our plan to make BL602 EVB <strong>work great with 23 GPIOs</strong> on PineDio Stack…</p>
+<ul>
+<li>
+<p><strong>Support 23 GPIOs</strong>, with any mix of GPIO Inputs / Outputs / Interrupts</p>
+<p>TODO</p>
+</li>
+<li>
+<p>Renumber the GPIOs as “<strong>/dev/gpio0</strong>” to “<strong>/dev/gpio22</strong>”</p>
+<p>(So that “<strong>/dev/gpioN</strong>” will simply map to GPIO Pin N)</p>
+</li>
+<li>
+<p><strong>Keep the Pin Definitions</strong></p>
+<p>TODO</p>
+</li>
+<li>
+<p><strong>Validate the GPIOs</strong> at startup</p>
+<p>TODO</p>
+</li>
+</ul>
+<p>TODO: Easier for devs to create new NuttX Drivers!</p>
+<p>TODO: Should we have created an “EVB” for PineDio Stack? Probably, but we’ll save that for later because it might lead to fragmentation of BL602 support in NuttX</p>
 <h1 id="gpio-expander"><a href="#gpio-expander">3 GPIO Expander</a></h1>
 <p>TODO</p>
 <p>NuttX lets us create I/O Expander Drivers that will handle many GPIOs (Input / Output / Interrupt). Perfect for PineDio Stack BL604!</p>
