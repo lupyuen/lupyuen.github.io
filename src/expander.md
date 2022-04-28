@@ -122,7 +122,7 @@ We're hunky dory with these drivers, though we've made tiny mods like for [__SPI
 
 ## Pin Definitions
 
-In BL602 EVB, this is how we __define the pins__ for GPIO / UART / I2C / SPI / PWM: [__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59)
+In BL602 EVB, this is how we __define the pins__ for GPIO / UART / I2C / SPI / PWM: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59)
 
 ```c
 #define BOARD_NGPIOIN  1  //  Number of GPIO Input pins
@@ -178,6 +178,12 @@ Thus we see that __BL602 EVB is somewhat limited__...
 BL602 EVB works great for 3 GPIOs, but __doesn't scale well__ beyond that.
 
 Let's make this better.
+
+_Shouldn't the pins be defined in Kconfig / menuconfig?_
+
+Perhaps. NuttX on ESP32 defines the pins in __Kconfig and menuconfig.__ [(See this)](https://github.com/apache/incubator-nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984)
+
+But for now, let's keep the Pin Definitions in [__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59).
 
 ![Overcome The Limitations](https://lupyuen.github.io/images/expander-title2a.jpg)
 
@@ -286,31 +292,53 @@ We'll look inside the operations in a while.
 
 # GPIO Interrupts
 
+_BL602 EVB works OK with GPIO Interrupts?_
+
+As noted (eloquently) by Robert Lipe, it's __difficult to attach a GPIO Interrupt Handler__ with BL602 EVB...
+
+-   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
+
+> ![As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)](https://lupyuen.github.io/images/expander-button.png)
+
+> [(Source)](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
+
+Let's find out why...
+
 _Anything peculiar about GPIO Interrupts on BL602 and BL604?_
 
 __GPIO Interrupt Handling__ gets tricky for BL602 and BL604...
 
-All GPIO Interrupts are multiplexed into __One Single IRQ!__
+All GPIO Interrupts are multiplexed into __One Single GPIO IRQ!__
 
-[(__BL602_IRQ_GPIO_INT0__ is the IRQ)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505)
+[(__BL602_IRQ_GPIO_INT0__ is the common GPIO IRQ)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505)
 
-Which means that our GPIO Expander will need to __demultiplex the IRQ__ when handling interrupts.
+BL602 EVB __demultiplexes the GPIO IRQ__ and calls the GPIO Interrupt Handlers.
 
-TODO: As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)...
+![Attaching a GPIO Interrupt with BL602 EVB](https://lupyuen.github.io/images/expander-code2a.png)
 
--   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505)
 
-Let's fix this with our GPIO Expander for Apache NuttX RTOS.
+_So we call BL602 EVB to attach our own GPIO Interrupt Handler?_
 
-TODO3
+Sadly we can't. BL602 EVB doesn't expose a Public Function that we may call to attach our own Interrupt Handler.
 
-![](https://lupyuen.github.io/images/expander-code2a.png)
+(__gpint_attach__ is a Private Function, as shown above)
 
-TODO
+_Which means we need to implement this in our GPIO Expander?_
 
-![](https://lupyuen.github.io/images/expander-button.png)
+Exactly! Our __GPIO Expander__ shall take over these duties from BL602 EVB...
 
-## Push Button Interrupt
+-   Handle the __GPIO IRQ Interrupt__
+
+-   __Demultiplex__ the IRQ
+
+-   Call the right __GPIO Interrupt Handler__
+
+## Attach Interrupt Handler
+
+_How do we attach a GPIO Interrupt Handler?_
+
+Since our GPIO Expander implements the I/O Expander Driver Interface, we can call __IOEP_ATTACH__ to attach an Interrupt Handler.
 
 TODO
 
@@ -341,7 +369,7 @@ void *handle = IOEP_ATTACH(
   NULL                           //  TODO: Set the callback argument
 );
 DEBUGASSERT(handle != NULL);
-```c
+```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704)
 
