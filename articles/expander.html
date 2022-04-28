@@ -276,6 +276,10 @@
 <li><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h"><strong>NuttX I/O Expander Driver Interface</strong></a></li>
 </ul>
 <p>I/O Expanders will support reading and writing to GPIOs, also attaching and detaching Interrupt Handlers. (Pic above)</p>
+<p><em>Isn’t an I/O Expander Driver supposed to be Platform-Independent?</em></p>
+<p>Yeah, we’re borrowing (misappropriating?) this NuttX Abstraction
+because it meets our needs for PineDio Stack.</p>
+<p>Other RISC-V microcontrollers might also need a GPIO Expander… Like <a href="https://github.com/openwch/ch32v307"><strong>CH32V307</strong></a>, which has 80 GPIOs!</p>
 <p><em>Great! How will we get started on GPIO Expander?</em></p>
 <p>NuttX helpfully provides a <strong>Skeleton Driver</strong> for I/O Expander (pic below)…</p>
 <ul>
@@ -287,10 +291,12 @@
 <p>Our GPIO Expander supports these <strong>GPIO Operations</strong>…</p>
 <ul>
 <li>
-<p>Set <strong>GPIO Direction</strong> (Input or Output)</p>
+<p>Set <strong>GPIO Direction</strong></p>
+<p>(Input or Output)</p>
 </li>
 <li>
 <p>Set <strong>GPIO Interrupt Options</strong></p>
+<p>(Trigger by Rising or Falling Edge)</p>
 </li>
 <li>
 <p>Read a <strong>GPIO Input</strong></p>
@@ -299,12 +305,10 @@
 <p>Write to a <strong>GPIO Output</strong></p>
 </li>
 <li>
-<p>Attach a <strong>GPIO Interrupt Handler</strong></p>
-</li>
-<li>
-<p>Detach a <strong>GPIO Interrupt Handler</strong></p>
+<p>Attach / Detach a <strong>GPIO Interrupt Handler</strong></p>
 </li>
 </ul>
+<p>We define the GPIO Operations like so: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L141-L159">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO Expander Operations
 static const struct ioexpander_ops_s g_bl602_expander_ops = {
   bl602_expander_direction,  //  Set GPIO Direction
@@ -316,8 +320,7 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
   bl602_expander_attach,     //  Attach GPIO Interrupt Handler
   bl602_expander_detach      //  Detach GPIO Interrupt Handler
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L141-L159">(Source)</a></p>
-<p>We’ll look inside these operations in a while.</p>
+<p>We’ll look inside the operations in a while.</p>
 <p><img src="https://lupyuen.github.io/images/expander-code5a.png" alt="GPIO Operations" /></p>
 <h1 id="gpio-interrupts"><a href="#gpio-interrupts">4 GPIO Interrupts</a></h1>
 <p>TODO</p>
