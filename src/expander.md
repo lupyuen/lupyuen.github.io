@@ -227,13 +227,13 @@ Yep, NuttX lets us create __I/O Expander Drivers__ that will manage many Input, 
 
 -   [__NuttX I/O Expander Driver Interface__](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h)
 
-    (Pic above)
+I/O Expanders will support reading and writing to GPIOs, also attaching and detaching Interrupt Handlers. (Pic above)
 
-NuttX helpfully provides a __Skeleton Driver__ for I/O Expander...
+_Great! How will we get started on GPIO Expander?_
 
--   [__Skeleton Driver for I/O Expander__](https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c)
+NuttX helpfully provides a __Skeleton Driver__ for I/O Expander (pic below)...
 
-    (Pic below)
+-   [__Skeleton Driver for I/O Expander__](https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c)    
 
 Let's flesh out the Skeleton Driver for PineDio Stack's GPIO Expander.
 
