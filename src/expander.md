@@ -217,31 +217,29 @@ But we'll save that for later because it might lead to __fragmentation of BL602 
 
 (Let's do the __bare minimum__ that will make NuttX decently usable on PineDio Stack!)
 
+![NuttX I/O Expander Driver Interface](https://lupyuen.github.io/images/expander-code1a.png)
+
 # GPIO Expander
 
-TODO
+_So our GPIO Expander works like a NuttX I/O Expander?_
 
-NuttX lets us create I/O Expander Drivers that will handle many GPIOs (Input / Output / Interrupt). Perfect for PineDio Stack BL604!
+Yep, NuttX lets us create __I/O Expander Drivers__ that will manage many Input, Output and Interrupt GPIOs...
 
--   [NuttX I/O Expander Driver Interface](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h)
+-   [__NuttX I/O Expander Driver Interface__](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h)
 
-Apache NuttX RTOS helpfully provides a Skeleton Driver for I/O Expander. Let's flesh it out for PineDio Stack BL604's GPIO Expander...
+    (Pic above)
 
--   [Skeleton Driver for I/O Expander](https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c)
+NuttX helpfully provides a __Skeleton Driver__ for I/O Expander...
 
-Other microcontrollers might also need a GPIO Expander. Like CH32V307, which has 80 GPIOs (!)
+-   [__Skeleton Driver for I/O Expander__](https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c)
 
-[(See this)](https://github.com/openwch/ch32v307)
+    (Pic below)
 
-TODO2
+Let's flesh out the Skeleton Driver for PineDio Stack's GPIO Expander.
 
-![](https://lupyuen.github.io/images/expander-code1a.png)
+![Skeleton Driver for I/O Expander](https://lupyuen.github.io/images/expander-code4a.png)
 
-TODO5
-
-![](https://lupyuen.github.io/images/expander-code4a.png)
-
-## GPIO Expander Operations
+## GPIO Operations
 
 TODO
 
