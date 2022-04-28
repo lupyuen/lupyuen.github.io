@@ -229,6 +229,13 @@ Yep, NuttX lets us create __I/O Expander Drivers__ that will manage many Input, 
 
 I/O Expanders will support reading and writing to GPIOs, also attaching and detaching Interrupt Handlers. (Pic above)
 
+_Isn't an I/O Expander Driver supposed to be Platform-Independent?_
+
+Yeah, we're borrowing (misappropriating?) this NuttX Abstraction
+because it meets our needs for PineDio Stack.
+
+Other RISC-V microcontrollers might also need a GPIO Expander... Like [__CH32V307__](https://github.com/openwch/ch32v307), which has 80 GPIOs!
+
 _Great! How will we get started on GPIO Expander?_
 
 NuttX helpfully provides a __Skeleton Driver__ for I/O Expander (pic below)...
@@ -243,17 +250,21 @@ Let's flesh out the Skeleton Driver for our GPIO Expander.
 
 Our GPIO Expander supports these __GPIO Operations__...
 
--   Set __GPIO Direction__ (Input or Output)
+-   Set __GPIO Direction__
+
+    (Input or Output)
 
 -   Set __GPIO Interrupt Options__
+
+    (Trigger by Rising or Falling Edge)
 
 -   Read a __GPIO Input__
 
 -   Write to a __GPIO Output__
 
--   Attach a __GPIO Interrupt Handler__
+-   Attach / Detach a __GPIO Interrupt Handler__
 
--   Detach a __GPIO Interrupt Handler__
+We define the GPIO Operations like so: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L141-L159)
 
 ```c
 //  GPIO Expander Operations
@@ -269,9 +280,7 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L141-L159)
-
-We'll look inside these operations in a while.
+We'll look inside the operations in a while.
 
 ![GPIO Operations](https://lupyuen.github.io/images/expander-code5a.png)
 
