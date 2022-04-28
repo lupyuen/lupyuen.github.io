@@ -177,11 +177,27 @@ BL602 EVB works great for 3 GPIOs, but __doesn't scale well__ beyond that.
 
 # Overcome The Limitations
 
-TODO: Let's simplify NuttX and name the GPIOs as "/dev/gpio0" to "/dev/gpio22".
+Here's our plan to make BL602 EVB __work great with 23 GPIOs__ on PineDio Stack...
 
-(So that "/dev/gpioN" will map to BL602 GPIO Pin N)
+-   __Support 23 GPIOs__, with any mix of GPIO Inputs / Outputs / Interrupts
 
-Easier for devs to create new NuttX Drivers!
+    TODO
+
+-   Renumber the GPIOs as "__/dev/gpio0__" to "__/dev/gpio22__"
+
+    (So that "__/dev/gpioN__" will simply map to GPIO Pin N)
+
+-   __Keep the Pin Definitions__
+
+    TODO
+
+-   __Validate the GPIOs__ at startup
+
+    TODO
+
+TODO: Easier for devs to create new NuttX Drivers!
+
+TODO: Should we have created an "EVB" for PineDio Stack? Probably, but we'll save that for later because it might lead to fragmentation of BL602 support in NuttX
 
 # GPIO Expander
 
