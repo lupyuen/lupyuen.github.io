@@ -120,52 +120,60 @@ We're hunky dory with these drivers, though we have made tiny mods like for [__S
 
 ## Pin Definitions
 
-TODO: Reused pins, EVB will silently allow it
-
-[__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59)
+In BL602 EVB, this is how we __define the pins__ for GPIO / UART / I2C / SPI / PWM: [__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59)
 
 ```c
-#define BOARD_NGPIOIN     1  //  Number of GPIO Input pins
-#define BOARD_NGPIOOUT    1  //  Number of GPIO Output pins
-#define BOARD_NGPIOINT    1  //  Number of GPIO Interrupt pins
+#define BOARD_NGPIOIN  1  //  Number of GPIO Input pins
+#define BOARD_NGPIOOUT 1  //  Number of GPIO Output pins
+#define BOARD_NGPIOINT 1  //  Number of GPIO Interrupt pins
 
 //  GPIO Input: GPIO 10
-#define BOARD_GPIO_IN1    (GPIO_PIN10 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
+#define BOARD_GPIO_IN1  (GPIO_PIN10 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
 
 //  GPIO Output: GPIO 15
-#define BOARD_GPIO_OUT1   (GPIO_PIN15 | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO)
+#define BOARD_GPIO_OUT1 (GPIO_PIN15 | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO)
 
 //  GPIO Interrupt: GPIO 19
-#define BOARD_GPIO_INT1   (GPIO_PIN19 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
+#define BOARD_GPIO_INT1 (GPIO_PIN19 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
 ```
 
-## Bring-Up
+A couple of issues...
 
-TODO
+-   BL602 EVB strangely limits us to __one GPIO Input, one GPIO Output and one GPIO Interrupt__
 
-## EVB GPIO Driver
+-   We could extend this GPIO Limit, but we'll have to __modify the EVB GPIO Driver__, which sounds odd
 
-TODO: somewhat limited, works great for 3 GPIOs, doesn't scale well beyond that
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137)
 
-TODO: Should we have created an "EVB" for PineDio Stack? Probably, but we'll save that for later because it might lead to fragmentation of BL602 support in NuttX
+-   BL602 EVB always __maps sequentially__ the GPIO Pins like so: GPIO Input, then GPIO Output, then GPIO Interrupt...
 
-The NuttX GPIO Driver for BL602 EVB supports one GPIO Input, one GPIO Output and one GPIO Interrupt ... And names them sequentially: "/dev/gpio0", "/dev/gpio1", "/dev/gpio2"
+    __/dev/gpio0__: GPIO Input _(GPIO 10)_
 
--   [BL602 EVB GPIO Driver](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L537-L607)
+    __/dev/gpio1__: GPIO Output _(GPIO 15)_
 
-Which can be super confusing because "/dev/gpio0" doesn't actually map to BL602 GPIO Pin 0.
+    __/dev/gpio2__: GPIO Interrupt _(GPIO 19)_
 
-[("/dev/gpio0" maps to BL602 GPIO Pin 10)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L49-L52)
+    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L550-L604)
 
-[("/dev/gpio1" maps to BL602 GPIO Pin 15)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L54-L58)
+    Which becomes super confusing when we map all 23 GPIOs on PineDio Stack.
 
-[("/dev/gpio2" maps to BL602 GPIO Pin 19)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L59-L63)
+    (Especially when our devs are now creating NuttX Drivers and Apps for PineDio Stack)
 
-What happens when we try to support 23 GPIOs on PineDio Stack BL604? Yep the GPIO Names will look really messy on NuttX.
+-   What happens if we __reuse the GPIOs__ by mistake? BL602 EVB will silent allow this... Which isn't right!
 
-All 23 GPIOs on PineDio Stack BL604 are wired up. Let's simplify NuttX and name the GPIOs as "/dev/gpio0" to "/dev/gpio22".
+    ```c
+    //  GPIO Input: GPIO 10
+    #define BOARD_GPIO_IN1  (GPIO_PIN10 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
 
--   [PineDio Stack GPIO Assignment](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment)
+    //  GPIO Output: Also GPIO 10 (Oops!)
+    #define BOARD_GPIO_OUT1 (GPIO_PIN10 | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO)
+    ```
+
+Thus we see that __BL602 EVB is somewhat limited__... It works great for 3 GPIOs, but doesn't scale well beyond that.
+
+## Overcome The Limitations
+
+TODO: Let's simplify NuttX and name the GPIOs as "/dev/gpio0" to "/dev/gpio22".
 
 (So that "/dev/gpioN" will map to BL602 GPIO Pin N)
 
