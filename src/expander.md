@@ -185,7 +185,7 @@ Let's fix this...
 
 Here's our plan to make BL602 EVB __work great with 23 GPIOs__ on PineDio Stack...
 
--   __Support 23 GPIOs__, with any mix of GPIO Inputs / Outputs / Interrupts
+-   __Support 23 GPIOs__ with any mix of GPIO Inputs / Outputs / Interrupts
 
     (Perfect for PineDio Stack's SPI Display, I2C Touch Panel, SX1262 Transceiver, Accelerometer, Push Button, ...)
 
