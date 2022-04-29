@@ -98,36 +98,36 @@
 <li><a href="#event-loop">9.2 Event Loop</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#notes">11 Notes</a><ul></ul></li>
-<li><a href="#appendix-create-a-nuttx-library">12 Appendix: Create a NuttX Library</a><ul>
-<li><a href="#update-makefiles-and-kconfig">12.1 Update Makefiles and Kconfig</a><ul></ul></li>
-<li><a href="#enable-library">12.2 Enable Library</a><ul></ul></li>
-<li><a href="#verify-library">12.3 Verify Library</a><ul></ul></li></ul></li>
-<li><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a><ul>
-<li><a href="#build-nuttx">13.1 Build NuttX</a><ul></ul></li>
-<li><a href="#flash-nuttx">13.2 Flash NuttX</a><ul></ul></li>
-<li><a href="#run-nuttx">13.3 Run NuttX</a><ul></ul></li></ul></li>
-<li><a href="#appendix-radio-functions">14 Appendix: Radio Functions</a><ul>
-<li><a href="#radioinit-initialise-lora-module">14.1 RadioInit: Initialise LoRa Module</a><ul></ul></li>
-<li><a href="#radiosetchannel-set-lora-frequency">14.2 RadioSetChannel: Set LoRa Frequency</a><ul></ul></li>
-<li><a href="#radiosettxconfig-set-transmit-configuration">14.3 RadioSetTxConfig: Set Transmit Configuration</a><ul></ul></li>
-<li><a href="#radiosetrxconfig-set-receive-configuration">14.4 RadioSetRxConfig: Set Receive Configuration</a><ul></ul></li>
-<li><a href="#radiosend-transmit-message">14.5 RadioSend: Transmit Message</a><ul></ul></li>
-<li><a href="#radiorx-receive-message">14.6 RadioRx: Receive Message</a><ul></ul></li>
-<li><a href="#radioirqprocess-process-transmit-and-receive-interrupts">14.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a><ul>
-<li><a href="#transmit-done">14.7.1 Transmit Done</a><ul></ul></li>
-<li><a href="#receive-done">14.7.2 Receive Done</a><ul></ul></li>
-<li><a href="#cad-done">14.7.3 CAD Done</a><ul></ul></li>
-<li><a href="#transmit--receive-timeout">14.7.4 Transmit / Receive Timeout</a><ul></ul></li>
-<li><a href="#preamble-detected">14.7.5 Preamble Detected</a><ul></ul></li>
-<li><a href="#sync-word-valid">14.7.6 Sync Word Valid</a><ul></ul></li>
-<li><a href="#header-valid">14.7.7 Header Valid</a><ul></ul></li>
-<li><a href="#header-error">14.7.8 Header Error</a><ul></ul></li>
-<li><a href="#radioondioirq">14.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
-<li><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li>
-<li><a href="#appendix-gpio-pin-type-issue">15 Appendix: GPIO Pin Type Issue</a><ul></ul></li>
-<li><a href="#appendix-nimble-callout-issue">16 Appendix: NimBLE Callout Issue</a><ul></ul></li>
-<li><a href="#appendix-previous-sx1262-library">17 Appendix: Previous SX1262 Library</a><ul></ul></li>
-<li><a href="#appendix-spi-and-gpio-device-paths">18 Appendix: SPI and GPIO Device Paths</a><ul></ul></li></ul></nav><p>📝 <em>22 Dec 2021</em></p>
+<li><a href="#appendix-spi-and-gpio-device-paths">12 Appendix: SPI and GPIO Device Paths</a><ul></ul></li>
+<li><a href="#appendix-create-a-nuttx-library">13 Appendix: Create a NuttX Library</a><ul>
+<li><a href="#update-makefiles-and-kconfig">13.1 Update Makefiles and Kconfig</a><ul></ul></li>
+<li><a href="#enable-library">13.2 Enable Library</a><ul></ul></li>
+<li><a href="#verify-library">13.3 Verify Library</a><ul></ul></li></ul></li>
+<li><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a><ul>
+<li><a href="#build-nuttx">14.1 Build NuttX</a><ul></ul></li>
+<li><a href="#flash-nuttx">14.2 Flash NuttX</a><ul></ul></li>
+<li><a href="#run-nuttx">14.3 Run NuttX</a><ul></ul></li></ul></li>
+<li><a href="#appendix-radio-functions">15 Appendix: Radio Functions</a><ul>
+<li><a href="#radioinit-initialise-lora-module">15.1 RadioInit: Initialise LoRa Module</a><ul></ul></li>
+<li><a href="#radiosetchannel-set-lora-frequency">15.2 RadioSetChannel: Set LoRa Frequency</a><ul></ul></li>
+<li><a href="#radiosettxconfig-set-transmit-configuration">15.3 RadioSetTxConfig: Set Transmit Configuration</a><ul></ul></li>
+<li><a href="#radiosetrxconfig-set-receive-configuration">15.4 RadioSetRxConfig: Set Receive Configuration</a><ul></ul></li>
+<li><a href="#radiosend-transmit-message">15.5 RadioSend: Transmit Message</a><ul></ul></li>
+<li><a href="#radiorx-receive-message">15.6 RadioRx: Receive Message</a><ul></ul></li>
+<li><a href="#radioirqprocess-process-transmit-and-receive-interrupts">15.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a><ul>
+<li><a href="#transmit-done">15.7.1 Transmit Done</a><ul></ul></li>
+<li><a href="#receive-done">15.7.2 Receive Done</a><ul></ul></li>
+<li><a href="#cad-done">15.7.3 CAD Done</a><ul></ul></li>
+<li><a href="#transmit--receive-timeout">15.7.4 Transmit / Receive Timeout</a><ul></ul></li>
+<li><a href="#preamble-detected">15.7.5 Preamble Detected</a><ul></ul></li>
+<li><a href="#sync-word-valid">15.7.6 Sync Word Valid</a><ul></ul></li>
+<li><a href="#header-valid">15.7.7 Header Valid</a><ul></ul></li>
+<li><a href="#header-error">15.7.8 Header Error</a><ul></ul></li>
+<li><a href="#radioondioirq">15.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
+<li><a href="#radiosleep-switch-to-sleep-mode">15.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li>
+<li><a href="#appendix-gpio-pin-type-issue">16 Appendix: GPIO Pin Type Issue</a><ul></ul></li>
+<li><a href="#appendix-nimble-callout-issue">17 Appendix: NimBLE Callout Issue</a><ul></ul></li>
+<li><a href="#appendix-previous-sx1262-library">18 Appendix: Previous SX1262 Library</a><ul></ul></li></ul></nav><p>📝 <em>22 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)</em></p>
 <p><strong>LoRa</strong> is an awesome wireless technology for IoT that will transmit <strong>small packets over super long distances</strong>…</p>
@@ -958,12 +958,14 @@ static int cs = 0;
 
 /// Init the SPI Bus and Chip Select Pin. Return 0 on success.
 static int init_spi(void) {
-  //  Open the SPI Bus (SPI Test Driver)
-  spi = open(&quot;/dev/spitest0&quot;, O_RDWR);
+  //  Open the SPI Bus (SPI Test Driver).
+  //  Defaults to &quot;/dev/spitest0&quot;
+  spi = open(SPI_DEVPATH, O_RDWR);
   assert(spi &gt; 0);
 
-  //  Open GPIO Output for SPI Chip Select
-  cs = open(&quot;/dev/gpio1&quot;, O_RDWR);
+  //  Open GPIO Output for SPI Chip Select.
+  //  Defaults to &quot;/dev/gpio1&quot;
+  cs = open(CS_DEVPATH, O_RDWR);
   assert(cs &gt; 0);
 
   //  Get SPI Chip Select Pin Type
@@ -977,6 +979,7 @@ static int init_spi(void) {
   //  TODO: Set SPI Chip Select to High for all SPI Devices
   return 0;
 }</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/sx1262#appendix-spi-and-gpio-device-paths">(<strong>SPI_DEVPATH</strong> and <strong>CS_DEVPATH</strong> are explained in the Appendix)</a></p>
 <p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L75-L94"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227"><strong>init_driver</strong></a></p>
 <p>(We’ve seen <strong>init_driver</strong> earlier in our Test App)</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module">(<strong>RadioInit</strong> is explained here)</a></p>
@@ -1248,6 +1251,7 @@ spi rx:
 <p><a href="https://lupyuen.github.io/articles/pinedio2#gpio-expander">(We might implement NRESET with a GPIO Expander)</a></p>
 </li>
 </ul>
+<p><a href="https://lupyuen.github.io/articles/sx1262#appendix-spi-and-gpio-device-paths">(<strong>PineDio Stack BL604</strong> uses different GPIO Names, see the Appendix)</a></p>
 <p>Let’s look at the implementation of the GPIO Interface for the <strong>new SX1262 Library that will support LoRaWAN</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#appendix-previous-sx1262-library">(See this for the old SX1262 Library)</a></p>
 <h2 id="initialise-gpio"><a href="#initialise-gpio">8.1 Initialise GPIO</a></h2>
@@ -1280,9 +1284,11 @@ static int dio1 = 0;
 
 /// Init the GPIO Pins. Return 0 on success.
 static int init_gpio(void) {
-  //  Open GPIO Input for SX1262 Busy Pin
-  busy = open(&quot;/dev/gpio0&quot;, O_RDWR);
+  //  Open GPIO Input for SX1262 Busy Pin.
+  //  Defaults to &quot;/dev/gpio0&quot;
+  busy = open(BUSY_DEVPATH, O_RDWR);
   assert(busy &gt; 0);</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/sx1262#appendix-spi-and-gpio-device-paths">(<strong>BUSY_DEVPATH</strong> is explained in the Appendix)</a></p>
 <p>We begin by opening the GPIO Input for the <strong>Busy Pin</strong> “/dev/gpio0”.</p>
 <p>We fetch the <strong>GPIO Pin Type</strong> and verify that it’s GPIO Input…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get SX1262 Busy Pin Type
@@ -1298,8 +1304,10 @@ static int init_gpio(void) {
   assert(pintype == GPIO_INPUT_PIN);  //  No pullup / pulldown</code></pre></div>
 <p>Next we open the GPIO Interrupt for the <strong>DIO1 Pin</strong> “/dev/gpio2”.</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Open GPIO Interrupt for SX1262 DIO1 Pin
-  dio1 = open(&quot;/dev/gpio2&quot;, O_RDWR);
+  //  Defaults to &quot;/dev/gpio2&quot;
+  dio1 = open(DIO1_DEVPATH, O_RDWR);
   assert(dio1 &gt; 0);</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/sx1262#appendix-spi-and-gpio-device-paths">(<strong>DIO1_DEVPATH</strong> is explained in the Appendix)</a></p>
 <p>We fetch the <strong>GPIO Pin Type</strong> and verify that it’s GPIO Interrupt…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get SX1262 DIO1 Pin Type
   ret = ioctl(      //  Execute a GPIO Command...
@@ -1323,7 +1331,7 @@ static int init_gpio(void) {
     (unsigned long) GPIO_INTERRUPT_RISING_PIN  //  Requested Pin Type
   );
   assert(ret &gt;= 0);</code></pre></div>
-<p>(This crashes NuttX with an assertion failure, so we have disabled the assertion. More about this in the Appendix)</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#appendix-gpio-pin-type-issue">(This crashes NuttX with an Assertion Failure, so we have <strong>disabled the assertion</strong>)</a></p>
 <p>We fetch the <strong>GPIO Pin Type</strong> and verify that it’s GPIO Interrupt Triggered on Rising Edge…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get SX1262 DIO1 Pin Type again
   ret = ioctl(      //  Execute a GPIO Command...
@@ -1711,7 +1719,49 @@ static void handle_event_queue(void *arg) {
 <p>It might! But first let’s get LoRaWAN (and ST7789) running on PineDio Stack.</p>
 </li>
 </ol>
-<h1 id="appendix-create-a-nuttx-library"><a href="#appendix-create-a-nuttx-library">12 Appendix: Create a NuttX Library</a></h1>
+<h1 id="appendix-spi-and-gpio-device-paths"><a href="#appendix-spi-and-gpio-device-paths">12 Appendix: SPI and GPIO Device Paths</a></h1>
+<p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> uses the <strong>GPIO Expander</strong>, which assigns meaningful names to GPIO Pins…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/expander"><strong>“NuttX GPIO Expander for PineDio Stack BL604”</strong></a></li>
+</ul>
+<p>For PineDio Stack we changed the definition of <strong><code>DIO1_DEVPATH</code></strong> to “<strong>/dev/gpio19</strong>” in Kconfig / menuconfig…</p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_LIBSX1262_SPI_DEVPATH=&quot;/dev/spitest0&quot;
+CONFIG_LIBSX1262_CS_DEVPATH=&quot;/dev/gpio15&quot;
+CONFIG_LIBSX1262_BUSY_DEVPATH=&quot;/dev/gpio10&quot;
+CONFIG_LIBSX1262_DIO1_DEVPATH=&quot;/dev/gpio19&quot;</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L1141-L1144">(Source)</a></p>
+<p>(Note also the changes to <strong>SPI_DEVPATH</strong>, <strong>CS_DEVPATH</strong> and <strong>BUSY_DEVPATH</strong>)</p>
+<p>For backward compatibility with BL602 (which doesn’t use GPIO Expander), we default <strong><code>DIO1_DEVPATH</code></strong> to “<strong>/dev/gpio2</strong>” if <strong><code>DIO1_DEVPATH</code></strong> isn’t configured…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Define the SPI Test Driver for SX1262. (Not the regular SPI Driver)
+
+#ifdef CONFIG_LIBSX1262_SPI_DEVPATH
+#define SPI_DEVPATH CONFIG_LIBSX1262_SPI_DEVPATH
+#else
+#define SPI_DEVPATH &quot;/dev/spitest0&quot;
+#endif  //  CONFIG_LIBSX1262_SPI_DEVPATH
+
+//  Define the GPIOs for SX1262 Chip Select (Output), Busy (Input) and DIO1 (Interrupt)
+
+#ifdef CONFIG_LIBSX1262_CS_DEVPATH
+#define CS_DEVPATH CONFIG_LIBSX1262_CS_DEVPATH
+#else
+#define CS_DEVPATH &quot;/dev/gpio1&quot;
+#endif  //  CONFIG_LIBSX1262_CS_DEVPATH
+
+#ifdef CONFIG_LIBSX1262_BUSY_DEVPATH
+#define BUSY_DEVPATH CONFIG_LIBSX1262_BUSY_DEVPATH
+#else
+#define BUSY_DEVPATH &quot;/dev/gpio0&quot;
+#endif  //  CONFIG_LIBSX1262_BUSY_DEVPATH
+
+#ifdef CONFIG_LIBSX1262_DIO1_DEVPATH
+#define DIO1_DEVPATH CONFIG_LIBSX1262_DIO1_DEVPATH
+#else
+#define DIO1_DEVPATH &quot;/dev/gpio2&quot;
+#endif  //  CONFIG_LIBSX1262_DIO1_DEVPATH</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L18-L44">(Source)</a></p>
+<p>(Note also the defaults for <strong>SPI_DEVPATH</strong>, <strong>CS_DEVPATH</strong> and <strong>BUSY_DEVPATH</strong>)</p>
+<h1 id="appendix-create-a-nuttx-library"><a href="#appendix-create-a-nuttx-library">13 Appendix: Create a NuttX Library</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>This section explains the steps to create a <strong>NuttX Library</strong> named <strong>“libsx1262”</strong>.</p>
 <p>(Change “libsx1262” to the desired name of our library)</p>
@@ -1780,7 +1830,7 @@ void test_libsx1262(void)
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/sx1262.h">(See sx1262.h)</a></p>
 </li>
 </ol>
-<h2 id="update-makefiles-and-kconfig"><a href="#update-makefiles-and-kconfig">12.1 Update Makefiles and Kconfig</a></h2>
+<h2 id="update-makefiles-and-kconfig"><a href="#update-makefiles-and-kconfig">13.1 Update Makefiles and Kconfig</a></h2>
 <p>Next we update the Makefiles and Kconfig so that NuttX will build our library…</p>
 <ol>
 <li>
@@ -1855,7 +1905,7 @@ cp ../config .config
 # Edit the Build Config
 make menuconfig </code></pre></div></li>
 </ol>
-<h2 id="enable-library"><a href="#enable-library">12.2 Enable Library</a></h2>
+<h2 id="enable-library"><a href="#enable-library">13.2 Enable Library</a></h2>
 <p>We enable our library as follows…</p>
 <ol>
 <li>
@@ -1870,7 +1920,7 @@ make menuconfig </code></pre></div></li>
 <p>Hit <strong>“Exit”</strong> until <strong>menuconfig</strong> quits</p>
 </li>
 </ol>
-<h2 id="verify-library"><a href="#verify-library">12.3 Verify Library</a></h2>
+<h2 id="verify-library"><a href="#verify-library">13.3 Verify Library</a></h2>
 <p>To verify our library…</p>
 <ol>
 <li>
@@ -1906,13 +1956,13 @@ int main(int argc, FAR char *argv[])
 <p><img src="https://lupyuen.github.io/images/sx1262-library4.jpg" alt="Our library runs OK" /></p>
 </li>
 </ol>
-<h1 id="appendix-build-flash-and-run-nuttx"><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a></h1>
+<h1 id="appendix-build-flash-and-run-nuttx"><a href="#appendix-build-flash-and-run-nuttx">14 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html">(Instructions for other platforms)</a></p>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(See this for Arch Linux)</a></p>
-<h2 id="build-nuttx"><a href="#build-nuttx">13.1 Build NuttX</a></h2>
+<h2 id="build-nuttx"><a href="#build-nuttx">14.1 Build NuttX</a></h2>
 <p>Follow these steps to build NuttX for BL602 or ESP32…</p>
 <ol>
 <li>
@@ -1950,7 +2000,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/nuttx-build2.png" alt="Building NuttX" /></p>
 </blockquote>
-<h2 id="flash-nuttx"><a href="#flash-nuttx">13.2 Flash NuttX</a></h2>
+<h2 id="flash-nuttx"><a href="#flash-nuttx">14.2 Flash NuttX</a></h2>
 <p><strong>For ESP32:</strong> <a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html#flashing"><strong>See instructions here</strong></a> <a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(Also check out this article)</a></p>
 <p><strong>For BL602:</strong> Follow these steps to install <strong>blflash</strong>…</p>
 <ol>
@@ -2027,7 +2077,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
-<h2 id="run-nuttx"><a href="#run-nuttx">13.3 Run NuttX</a></h2>
+<h2 id="run-nuttx"><a href="#run-nuttx">14.3 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
 <div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
@@ -2082,7 +2132,7 @@ nsh&gt;</code></pre></div>
 <p><strong>macOS Tip:</strong> Here’s the script I use to build, flash and run NuttX on macOS, all in a single step: <a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">run.sh</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-script.png" alt="Script to build, flash and run NuttX on macOS" /></p>
 <p><a href="https://gist.github.com/lupyuen/cc21385ecc66b5c02d15affd776a64af">(Source)</a></p>
-<h1 id="appendix-radio-functions"><a href="#appendix-radio-functions">14 Appendix: Radio Functions</a></h1>
+<h1 id="appendix-radio-functions"><a href="#appendix-radio-functions">15 Appendix: Radio Functions</a></h1>
 <p>In this section we explain the Platform-Independent <strong>Radio Functions</strong> for Semtech SX1262 Transceiver: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c">radio.c</a></p>
 <ul>
 <li>
@@ -2135,7 +2185,7 @@ nsh&gt;</code></pre></div>
 </ul>
 <p>The Callback Functions are defined in our LoRa Test App.</p>
 <p>(Also in the LoRaWAN Library, as explained in the next article)</p>
-<h2 id="radioinit-initialise-lora-module"><a href="#radioinit-initialise-lora-module">14.1 RadioInit: Initialise LoRa Module</a></h2>
+<h2 id="radioinit-initialise-lora-module"><a href="#radioinit-initialise-lora-module">15.1 RadioInit: Initialise LoRa Module</a></h2>
 <p><strong>RadioInit</strong> initialises the LoRa SX1262 Module: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L522-L559">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioInit( RadioEvents_t *events ) {
   //  We copy the Event Callbacks from &quot;events&quot;, because
@@ -2227,7 +2277,7 @@ nsh&gt;</code></pre></div>
   IrqFired = false;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L384-L405">(<strong>TimerInit</strong> is defined here)</a></p>
-<h2 id="radiosetchannel-set-lora-frequency"><a href="#radiosetchannel-set-lora-frequency">14.2 RadioSetChannel: Set LoRa Frequency</a></h2>
+<h2 id="radiosetchannel-set-lora-frequency"><a href="#radiosetchannel-set-lora-frequency">15.2 RadioSetChannel: Set LoRa Frequency</a></h2>
 <p><strong>RadioSetChannel</strong> sets the LoRa Frequency: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L599-L604">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetChannel( uint32_t freq ) {
   SX126xSetRfFrequency( freq );
@@ -2250,7 +2300,7 @@ nsh&gt;</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L408-L438">(<strong>SX126xCalibrateImage</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L812-L826">(<strong>SX126xConvertFreqInHzToPllStep</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L222-L235">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
-<h2 id="radiosettxconfig-set-transmit-configuration"><a href="#radiosettxconfig-set-transmit-configuration">14.3 RadioSetTxConfig: Set Transmit Configuration</a></h2>
+<h2 id="radiosettxconfig-set-transmit-configuration"><a href="#radiosettxconfig-set-transmit-configuration">15.3 RadioSetTxConfig: Set Transmit Configuration</a></h2>
 <p><strong>RadioSetTxConfig</strong> sets the LoRa Transmit Configuration: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L787-L908">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
   uint32_t bandwidth, uint32_t datarate,
@@ -2360,7 +2410,7 @@ nsh&gt;</code></pre></div>
 }</code></pre></div>
 <p>For easier testing we have set the Ramp Up Time to <strong>3400 microseconds</strong> (longest duration).</p>
 <p>After testing we should revert to the <strong>Default Ramp Up Time</strong> (40 microseconds).</p>
-<h2 id="radiosetrxconfig-set-receive-configuration"><a href="#radiosetrxconfig-set-receive-configuration">14.4 RadioSetRxConfig: Set Receive Configuration</a></h2>
+<h2 id="radiosetrxconfig-set-receive-configuration"><a href="#radiosetrxconfig-set-receive-configuration">15.4 RadioSetRxConfig: Set Receive Configuration</a></h2>
 <p><strong>RadioSetRxConfig</strong> sets the LoRa Receive Configuration: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L660-L786">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
   uint32_t datarate, uint8_t coderate,
@@ -2481,7 +2531,7 @@ nsh&gt;</code></pre></div>
       RxTimeout = 0xFFFF;
       break;
   }
-}</code></pre></div><h2 id="radiosend-transmit-message"><a href="#radiosend-transmit-message">14.5 RadioSend: Transmit Message</a></h2>
+}</code></pre></div><h2 id="radiosend-transmit-message"><a href="#radiosend-transmit-message">15.5 RadioSend: Transmit Message</a></h2>
 <p><strong>RadioSend</strong> transmits a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1068-L1098">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioSend( uint8_t *buffer, uint8_t size ) {
 
@@ -2551,7 +2601,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200">(<strong>SX126xWaitOnBusy</strong> is defined here)</a></p>
 <p>When the LoRa Message is transmitted (successfully or unsuccessfully), the LoRa Module triggers a <strong>DIO1 Interrupt</strong>.</p>
 <p>Our driver calls <strong>RadioIrqProcess</strong> to process the interrupt. <a href="https://lupyuen.github.io/articles/sx1262#radioirqprocess-process-transmit-and-receive-interrupts">(See this)</a></p>
-<h2 id="radiorx-receive-message"><a href="#radiorx-receive-message">14.6 RadioRx: Receive Message</a></h2>
+<h2 id="radiorx-receive-message"><a href="#radiorx-receive-message">15.6 RadioRx: Receive Message</a></h2>
 <p><strong>RadioRx</strong> preps SX1262 to receive a single LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1116-L1138">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void RadioRx( uint32_t timeout ) {
 
@@ -2602,7 +2652,7 @@ void SX126xWriteBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L222-L235">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
 <p>When a LoRa Message is received (successfully or unsuccessfully), the LoRa Module triggers a <strong>DIO1 Interrupt</strong>.</p>
 <p>Our driver calls <strong>RadioIrqProcess</strong> to process the interrupt, which is explained next…</p>
-<h2 id="radioirqprocess-process-transmit-and-receive-interrupts"><a href="#radioirqprocess-process-transmit-and-receive-interrupts">14.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a></h2>
+<h2 id="radioirqprocess-process-transmit-and-receive-interrupts"><a href="#radioirqprocess-process-transmit-and-receive-interrupts">15.7 RadioIrqProcess: Process Transmit and Receive Interrupts</a></h2>
 <p><strong>RadioIrqProcess</strong> processes the interrupts that are triggered when a LoRa Message is transmitted and received: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1313-L1460">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Process Transmit and Receive Interrupts.
 /// For BL602: Must be run in the Application
@@ -2663,7 +2713,7 @@ void RadioIrqProcess( void ) {
 <p>Header Error</p>
 </li>
 </ul>
-<h3 id="transmit-done"><a href="#transmit-done">14.7.1 Transmit Done</a></h3>
+<h3 id="transmit-done"><a href="#transmit-done">15.7.1 Transmit Done</a></h3>
 <p>When the LoRa Module has transmitted a LoRa Message successfully, we stop the Transmit Timer and call the <strong>Callback Function for Transmit Done</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1339-L1349">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was transmitted successfully...
     if( ( irqRegs &amp; IRQ_TX_DONE ) == IRQ_TX_DONE ) {
@@ -2682,7 +2732,7 @@ void RadioIrqProcess( void ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L407-L419">(<strong>TimerStop</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L140-L161">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
 <p><strong>TxDone</strong> points to the <strong>on_tx_done</strong> Callback Function that we’ve seen earlier.</p>
-<h3 id="receive-done"><a href="#receive-done">14.7.2 Receive Done</a></h3>
+<h3 id="receive-done"><a href="#receive-done">15.7.2 Receive Done</a></h3>
 <p>When the LoRa Module receives a LoRa Message, we stop the Receive Timer: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1351-L1389">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message was received...
     if( ( irqRegs &amp; IRQ_RX_DONE ) == IRQ_RX_DONE ) {
@@ -2778,7 +2828,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x.c#L133-L142">(<strong>SX126xCheckDeviceReady</strong> is defined here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#receive-message">(<strong>sx126x_read_buffer</strong> is explained here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L185-L200">(<strong>SX126xWaitOnBusy</strong> is defined here)</a></p>
-<h3 id="cad-done"><a href="#cad-done">14.7.3 CAD Done</a></h3>
+<h3 id="cad-done"><a href="#cad-done">15.7.3 CAD Done</a></h3>
 <p><strong>Channel Activity Detection</strong> lets us <strong>detect whether there’s any ongoing transmission</strong> in a LoRa Radio Channel, in a power-efficient way.</p>
 <p>We won’t be doing Channel Activity Detection in our driver: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1391-L1400">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If Channel Activity Detection is complete...
@@ -2794,7 +2844,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
             == IRQ_CAD_ACTIVITY_DETECTED 
         ) );
       }
-    }</code></pre></div><h3 id="transmit--receive-timeout"><a href="#transmit--receive-timeout">14.7.4 Transmit / Receive Timeout</a></h3>
+    }</code></pre></div><h3 id="transmit--receive-timeout"><a href="#transmit--receive-timeout">15.7.4 Transmit / Receive Timeout</a></h3>
 <p>When the LoRa Module <strong>fails to transmit</strong> a LoRa Message due to Timeout, we stop the Transmit Timer and call the <strong>Callback Function for Transmit Timeout</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1402-L1425">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a LoRa Message failed to Transmit or Receive due to Timeout...
     if( ( irqRegs &amp; IRQ_RX_TX_TIMEOUT ) == IRQ_RX_TX_TIMEOUT ) {
@@ -2832,7 +2882,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
       }
     }</code></pre></div>
 <p><strong>RxTimeout</strong> points to the <strong>on_rx_timeout</strong> Callback Function that we’ve seen earlier.</p>
-<h3 id="preamble-detected"><a href="#preamble-detected">14.7.5 Preamble Detected</a></h3>
+<h3 id="preamble-detected"><a href="#preamble-detected">15.7.5 Preamble Detected</a></h3>
 <p>Preamble is the Radio Signal that <strong>precedes the LoRa Message</strong>. When the LoRa Module detects the Preamble Signal, it knows that it’s about to receive a LoRa Message.</p>
 <p>We don’t need to handle the Preamble Signal, the LoRa Module does it for us: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1427-L1431">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If LoRa Preamble was detected...
@@ -2842,7 +2892,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 <p>Our <a href="https://gist.github.com/lupyuen/0d78b13871fca41ac6d812407890b29b"><strong>Receive Message Log</strong></a> shows that the Preamble Signal (<strong>IRQ_PREAMBLE_DETECTED</strong>) is always detected before receiving a LoRa Message.</p>
 <p>(<strong>IRQ_PREAMBLE_DETECTED</strong> appears just before the LoRa Header: <strong>IRQ_HEADER_VALID</strong>)</p>
 <p><a href="https://www.link-labs.com/blog/what-is-lora">(More about LoRa Preamble)</a></p>
-<h3 id="sync-word-valid"><a href="#sync-word-valid">14.7.6 Sync Word Valid</a></h3>
+<h3 id="sync-word-valid"><a href="#sync-word-valid">15.7.6 Sync Word Valid</a></h3>
 <p><strong>Sync Words</strong> are 16-bit values that differentiate the types of LoRa Networks.</p>
 <p>The LoRa Module detects the Sync Words when it receive a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1433-L1437">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a valid Sync Word was detected...
@@ -2856,7 +2906,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
 //  Syncword for Public LoRa networks (LoRaWAN)
 #define LORA_MAC_PUBLIC_SYNCWORD                    0x3444</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-sync-word">(More about Sync Words)</a></p>
-<h3 id="header-valid"><a href="#header-valid">14.7.7 Header Valid</a></h3>
+<h3 id="header-valid"><a href="#header-valid">15.7.7 Header Valid</a></h3>
 <p>The LoRa Module checks for a <strong>valid LoRa Header</strong> when receiving a LoRa Message: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1439-L1443">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a valid Header was received...
     if( ( irqRegs &amp; IRQ_HEADER_VALID ) == IRQ_HEADER_VALID ) {
@@ -2864,7 +2914,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
     }</code></pre></div>
 <p>Our <a href="https://github.com/lupyuen/lora-sx1262#receive-message"><strong>Receive Message Log</strong></a> shows that the LoRa Header (<strong>IRQ_HEADER_VALID</strong>) is always detected before receiving a LoRa Message.</p>
 <p>(<strong>IRQ_HEADER_VALID</strong> appears right after the Preamble Signal: <strong>IRQ_PREAMBLE_DETECTED</strong>)</p>
-<h3 id="header-error"><a href="#header-error">14.7.8 Header Error</a></h3>
+<h3 id="header-error"><a href="#header-error">15.7.8 Header Error</a></h3>
 <p>When the LoRa Module detects a <strong>LoRa Header with CRC Error</strong>, we stop the Receive Timer and call the Callback Function for Receive Timeout: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1445-L1458">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If a Header with CRC Error was received...
     if( ( irqRegs &amp; IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR ) {
@@ -2885,7 +2935,7 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size ) {
   }
 }</code></pre></div>
 <p><strong>RxTimeout</strong> points to the <strong>on_rx_timeout</strong> Callback Function that we’ve seen earlier.</p>
-<h3 id="radioondioirq"><a href="#radioondioirq">14.7.9 RadioOnDioIrq</a></h3>
+<h3 id="radioondioirq"><a href="#radioondioirq">15.7.9 RadioOnDioIrq</a></h3>
 <p><strong>RadioIrqProcess</strong> (as defined above) is called by <strong>RadioOnDioIrq</strong> to handle LoRa Transmit and Receive Events: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1300-L1312">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function for Transmit and Receive Interrupts.
 /// For BL602: This function runs in the context of the 
@@ -2899,7 +2949,7 @@ void RadioOnDioIrq( struct ble_npl_event *ev ) {
   //  Application Task Context, not Interrupt Context.
   //  The Reference Implementation processes the interrupt in the main loop.
   RadioIrqProcess();
-}</code></pre></div><h2 id="radiosleep-switch-to-sleep-mode"><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a></h2>
+}</code></pre></div><h2 id="radiosleep-switch-to-sleep-mode"><a href="#radiosleep-switch-to-sleep-mode">15.8 RadioSleep: Switch to Sleep Mode</a></h2>
 <p><strong>RadioSleep</strong> switches SX1262 to low-power sleep mode: <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/radio.c#L1099-L1109">radio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Switch to Sleep Mode
 void RadioSleep( void ) {
@@ -2935,25 +2985,26 @@ void SX126xSetSleep( SleepParams_t sleepConfig ) {
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L342-L347">(<strong>SX126xAntSwOff</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L222-L235">(<strong>SX126xWriteCommand</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L140-L161">(<strong>SX126xSetOperatingMode</strong> is defined here)</a></p>
-<h1 id="appendix-gpio-pin-type-issue"><a href="#appendix-gpio-pin-type-issue">15 Appendix: GPIO Pin Type Issue</a></h1>
+<h1 id="appendix-gpio-pin-type-issue"><a href="#appendix-gpio-pin-type-issue">16 Appendix: GPIO Pin Type Issue</a></h1>
 <p>When we switch a GPIO Interrupt Pin Type to Trigger On Rising Edge, it crashes with an Assertion Failure… </p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">nsh</span><span class="op">&gt;</span> <span class="ident">gpio</span> <span class="op">-</span><span class="ident">t</span> <span class="number">8</span> <span class="op">-</span><span class="ident">w</span> <span class="number">1</span> <span class="op">/</span><span class="ident">dev</span><span class="op">/</span><span class="ident">gpio2</span>
 
 <span class="ident">Driver</span>: <span class="op">/</span><span class="ident">dev</span><span class="op">/</span><span class="ident">gpio2</span>
 <span class="ident">up_assert</span>: <span class="ident">Assertion</span> <span class="ident">failed</span> <span class="ident">at</span> <span class="ident">file</span>:<span class="ident">ioexpander</span><span class="op">/</span><span class="ident">gpio</span>.<span class="ident">c</span> <span class="ident">line</span>: <span class="number">544</span> <span class="ident">task</span>: <span class="ident">gpio</span></code></pre></div>
+<p>(For PineDio Stack BL604: Use “/dev/gpio19”)</p>
 <p>I’ll submit a NuttX Issue, meanwhile I have disabled the assertion…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547">drivers/ioexpander/gpio.c (line 544)</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-int.png" alt="GPIO Pin Type Issue" /></p>
-<h1 id="appendix-nimble-callout-issue"><a href="#appendix-nimble-callout-issue">16 Appendix: NimBLE Callout Issue</a></h1>
+<h1 id="appendix-nimble-callout-issue"><a href="#appendix-nimble-callout-issue">17 Appendix: NimBLE Callout Issue</a></h1>
 <p>NimBLE Porting Layer doesn’t work for multiple Callout Timers unless we loop the thread…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-callout.png" alt="NimBLE Callout Issue" /></p>
 <p><a href="https://github.com/lupyuen/nimble-porting-nuttx/blob/master/porting/npl/nuttx/src/os_callout.c#L35-L70">(Source)</a></p>
 <p>I will submit a Pull Request to Apache NimBLE.</p>
 <p>UPDATE: Unfortunately the thread never terminates, so any NuttX App that calls NimBLE Callouts won’t terminate either. (Even when we call exit()). We need to terminate the thread in our code.</p>
-<h1 id="appendix-previous-sx1262-library"><a href="#appendix-previous-sx1262-library">17 Appendix: Previous SX1262 Library</a></h1>
+<h1 id="appendix-previous-sx1262-library"><a href="#appendix-previous-sx1262-library">18 Appendix: Previous SX1262 Library</a></h1>
 <p>This section describes the <strong>previous (obsolete) version</strong> of the SX1262 Library…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/lora-sx1262/tree/nuttx"><strong>lupyuen/lora-sx1262 (nuttx branch)</strong></a></li>
@@ -3075,44 +3126,6 @@ static void create_task(void) {
 <p><em>When will we begin the implementation?</em></p>
 <p>Very soon! We shall implement the Background Thread and Event Queue as we <strong>port the LoRaWAN Stack to NuttX</strong>.</p>
 <p>(Because LoRaWAN needs multithreading to work)</p>
-<h1 id="appendix-spi-and-gpio-device-paths"><a href="#appendix-spi-and-gpio-device-paths">18 Appendix: SPI and GPIO Device Paths</a></h1>
-<p>For <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a>, we changed the definition of <strong><code>DIO1_DEVPATH</code></strong> to “<strong>/dev/gpio19</strong>”…</p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_LIBSX1262_SPI_DEVPATH=&quot;/dev/spitest0&quot;
-CONFIG_LIBSX1262_CS_DEVPATH=&quot;/dev/gpio15&quot;
-CONFIG_LIBSX1262_BUSY_DEVPATH=&quot;/dev/gpio10&quot;
-CONFIG_LIBSX1262_DIO1_DEVPATH=&quot;/dev/gpio19&quot;</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L1141-L1144">(Source)</a></p>
-<p>(Note also the changes to <strong>SPI_DEVPATH</strong>, <strong>CS_DEVPATH</strong> and <strong>BUSY_DEVPATH</strong>)</p>
-<p>For backward compatibility with BL602 (which doesn’t use GPIO Expander), we default <strong><code>DIO1_DEVPATH</code></strong> to “<strong>/dev/gpio2</strong>” if <strong><code>DIO1_DEVPATH</code></strong> isn’t configured…</p>
-<div class="example-wrap"><pre class="language-c"><code>//  Define the SPI Test Driver for SX1262. (Not the regular SPI Driver)
-
-#ifdef CONFIG_LIBSX1262_SPI_DEVPATH
-#define SPI_DEVPATH CONFIG_LIBSX1262_SPI_DEVPATH
-#else
-#define SPI_DEVPATH &quot;/dev/spitest0&quot;
-#endif  //  CONFIG_LIBSX1262_SPI_DEVPATH
-
-//  Define the GPIOs for SX1262 Chip Select (Output), Busy (Input) and DIO1 (Interrupt)
-
-#ifdef CONFIG_LIBSX1262_CS_DEVPATH
-#define CS_DEVPATH CONFIG_LIBSX1262_CS_DEVPATH
-#else
-#define CS_DEVPATH &quot;/dev/gpio1&quot;
-#endif  //  CONFIG_LIBSX1262_CS_DEVPATH
-
-#ifdef CONFIG_LIBSX1262_BUSY_DEVPATH
-#define BUSY_DEVPATH CONFIG_LIBSX1262_BUSY_DEVPATH
-#else
-#define BUSY_DEVPATH &quot;/dev/gpio0&quot;
-#endif  //  CONFIG_LIBSX1262_BUSY_DEVPATH
-
-#ifdef CONFIG_LIBSX1262_DIO1_DEVPATH
-#define DIO1_DEVPATH CONFIG_LIBSX1262_DIO1_DEVPATH
-#else
-#define DIO1_DEVPATH &quot;/dev/gpio2&quot;
-#endif  //  CONFIG_LIBSX1262_DIO1_DEVPATH</code></pre></div>
-<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L18-L44">(Source)</a></p>
-<p>(Note also the defaults for <strong>SPI_DEVPATH</strong>, <strong>CS_DEVPATH</strong> and <strong>BUSY_DEVPATH</strong>)</p>
 
     
 </body>

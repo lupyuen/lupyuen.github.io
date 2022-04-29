@@ -437,8 +437,7 @@ Verify:        Value=1</code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt"><strong>“Handle DIO1 Interrupt”</strong></a></li>
 </ul>
 <p>This code calls <strong><code>ioctl()</code></strong> in the User Space (instead of Kernel Space), so it works OK with GPIO Expander without modification.</p>
-<p>(Because <strong><code>ioctl()</code></strong> calls the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a>, which is integrated with our GPIO Expander)</p>
-<p>TODO</p>
+<p>(That’s because <strong><code>ioctl()</code></strong> calls the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a>, which is integrated with our GPIO Expander)</p>
 <h1 id="check-reused-gpios"><a href="#check-reused-gpios">5 Check Reused GPIOs</a></h1>
 <p>TODO</p>
 <p>Tracking all 23 GPIOs used by PineDio Stack BL604 can get challenging… We might reuse GPIOs by mistake! Our BL602 GPIO Expander shall validate the GPIOs at startup.</p>
