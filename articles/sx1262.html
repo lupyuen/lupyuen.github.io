@@ -126,7 +126,8 @@
 <li><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li>
 <li><a href="#appendix-gpio-pin-type-issue">15 Appendix: GPIO Pin Type Issue</a><ul></ul></li>
 <li><a href="#appendix-nimble-callout-issue">16 Appendix: NimBLE Callout Issue</a><ul></ul></li>
-<li><a href="#appendix-previous-sx1262-library">17 Appendix: Previous SX1262 Library</a><ul></ul></li></ul></nav><p>📝 <em>22 Dec 2021</em></p>
+<li><a href="#appendix-previous-sx1262-library">17 Appendix: Previous SX1262 Library</a><ul></ul></li>
+<li><a href="#appendix-spi-and-gpio-device-paths">18 Appendix: SPI and GPIO Device Paths</a><ul></ul></li></ul></nav><p>📝 <em>22 Dec 2021</em></p>
 <p><img src="https://lupyuen.github.io/images/sx1262-title.jpg" alt="PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)" /></p>
 <p><em>PineDio Stack BL604 RISC-V Board with onboard Semtech SX1262 LoRa Transceiver (left)… Sniffed wirelessly with Airspy R2 Software Defined Radio (right)</em></p>
 <p><strong>LoRa</strong> is an awesome wireless technology for IoT that will transmit <strong>small packets over super long distances</strong>…</p>
@@ -3074,6 +3075,44 @@ static void create_task(void) {
 <p><em>When will we begin the implementation?</em></p>
 <p>Very soon! We shall implement the Background Thread and Event Queue as we <strong>port the LoRaWAN Stack to NuttX</strong>.</p>
 <p>(Because LoRaWAN needs multithreading to work)</p>
+<h1 id="appendix-spi-and-gpio-device-paths"><a href="#appendix-spi-and-gpio-device-paths">18 Appendix: SPI and GPIO Device Paths</a></h1>
+<p>For <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a>, we changed the definition of <strong><code>DIO1_DEVPATH</code></strong> to “<strong>/dev/gpio19</strong>”…</p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_LIBSX1262_SPI_DEVPATH=&quot;/dev/spitest0&quot;
+CONFIG_LIBSX1262_CS_DEVPATH=&quot;/dev/gpio15&quot;
+CONFIG_LIBSX1262_BUSY_DEVPATH=&quot;/dev/gpio10&quot;
+CONFIG_LIBSX1262_DIO1_DEVPATH=&quot;/dev/gpio19&quot;</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L1141-L1144">(Source)</a></p>
+<p>(Note also the changes to <strong>SPI_DEVPATH</strong>, <strong>CS_DEVPATH</strong> and <strong>BUSY_DEVPATH</strong>)</p>
+<p>For backward compatibility with BL602 (which doesn’t use GPIO Expander), we default <strong><code>DIO1_DEVPATH</code></strong> to “<strong>/dev/gpio2</strong>” if <strong><code>DIO1_DEVPATH</code></strong> isn’t configured…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Define the SPI Test Driver for SX1262. (Not the regular SPI Driver)
+
+#ifdef CONFIG_LIBSX1262_SPI_DEVPATH
+#define SPI_DEVPATH CONFIG_LIBSX1262_SPI_DEVPATH
+#else
+#define SPI_DEVPATH &quot;/dev/spitest0&quot;
+#endif  //  CONFIG_LIBSX1262_SPI_DEVPATH
+
+//  Define the GPIOs for SX1262 Chip Select (Output), Busy (Input) and DIO1 (Interrupt)
+
+#ifdef CONFIG_LIBSX1262_CS_DEVPATH
+#define CS_DEVPATH CONFIG_LIBSX1262_CS_DEVPATH
+#else
+#define CS_DEVPATH &quot;/dev/gpio1&quot;
+#endif  //  CONFIG_LIBSX1262_CS_DEVPATH
+
+#ifdef CONFIG_LIBSX1262_BUSY_DEVPATH
+#define BUSY_DEVPATH CONFIG_LIBSX1262_BUSY_DEVPATH
+#else
+#define BUSY_DEVPATH &quot;/dev/gpio0&quot;
+#endif  //  CONFIG_LIBSX1262_BUSY_DEVPATH
+
+#ifdef CONFIG_LIBSX1262_DIO1_DEVPATH
+#define DIO1_DEVPATH CONFIG_LIBSX1262_DIO1_DEVPATH
+#else
+#define DIO1_DEVPATH &quot;/dev/gpio2&quot;
+#endif  //  CONFIG_LIBSX1262_DIO1_DEVPATH</code></pre></div>
+<p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L18-L44">(Source)</a></p>
+<p>(Note also the defaults for <strong>SPI_DEVPATH</strong>, <strong>CS_DEVPATH</strong> and <strong>BUSY_DEVPATH</strong>)</p>
 
     
 </body>
