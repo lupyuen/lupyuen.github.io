@@ -1031,6 +1031,10 @@ _But how will we auto-test the Touch Panel on PineDio Stack?_
 
 With a __Robot Finger__?
 
+Or let our SBC __actuate a Motor__ that's wrapped in an __Anti-Static Bag__?
+
+-   [__Watch the video on YouTube__](https://www.youtube.com/shorts/hGSwetNr87o)
+
 I'm open to ideas, please lemme know! 🙏
 
 ![PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
