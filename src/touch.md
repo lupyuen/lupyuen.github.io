@@ -343,50 +343,30 @@ Remember that CST816S will trigger __GPIO Interrupts__ when we touch the screen.
 We attach our __Interrupt Handler__ that will handle the GPIO Interrupts...
 
 ```c
-  //  Attach our GPIO Interrupt Handler
-  ret = bl602_irq_attach(
-    BOARD_TOUCH_INT,      //  GPIO 9
-    cst816s_isr_handler,  //  Interrupt Handler
-    priv                  //  Device Struct
+  //  Configure GPIO interrupt to be triggered on falling edge
+  DEBUGASSERT(bl602_expander != NULL);
+  IOEXP_SETOPTION(
+    bl602_expander,  //  BL602 GPIO Expander
+    gpio_pin,        //  GPIO Pin
+    IOEXPANDER_OPTION_INTCFG,            //  Configure interrupt trigger
+    (FAR void *) IOEXPANDER_VAL_FALLING  //  Trigger on falling edge
   );
-  if (ret < 0) {
+
+  //  Attach GPIO interrupt handler
+  handle = IOEP_ATTACH(
+    bl602_expander,                //  BL602 GPIO Expander
+    (ioe_pinset_t) 1 << gpio_pin,  //  GPIO Pin converted to Pinset
+    cst816s_isr_handler,  //  GPIO Interrupt Handler
+    priv                  //  Callback argument
+  );
+  if (handle == NULL) {
     kmm_free(priv);
     ierr("Attach interrupt failed\n");
-    return ret;
+    return -EIO;
   }
 ```
 
-(We'll see __bl602_irq_attach__ in the next section)
-
-[(We've seen __BOARD_TOUCH_INT__ earlier)](https://lupyuen.github.io/articles/touch#cst816s-pins)
-
-At startup we normally __disable the GPIO Interrupt__ and enable it later at __`open()`__...
-
-```c
-  //  Disable the GPIO Interrupt
-  ret = bl602_irq_enable(false);
-  if (ret < 0) {
-    kmm_free(priv);
-    ierr("Disable interrupt failed\n");
-    return ret;
-  }
-  iinfo("Driver registered\n");
-```
-
-(We'll see __bl602_irq_enable__ in the next section)
-
-For our testing, we __enable the GPIO Interrupt__ at startup...
-
-```c
-//  For Testing: Enable the GPIO Interrupt at startup
-#define TEST_CST816S_INTERRUPT
-#ifdef TEST_CST816S_INTERRUPT
-  bl602_irq_enable(true);
-#endif  //  TEST_CST816S_INTERRUPT
-
-  return 0;
-}
-```
+[(__IOEXP_SETOPTION__ and __IOEP_ATTACH__ are from the GPIO Expander)](https://lupyuen.github.io/articles/expander#attach-interrupt-handler)
 
 And that's how we initialise our CST816S Driver at startup!
 
@@ -416,16 +396,6 @@ We'll see the File Operations in a while.
 
 # GPIO Interrupt
 
-CST816S will trigger __GPIO Interrupts__ when we touch the screen.
-
-Earlier we called these functions at startup to handle GPIO Interrupts...
-
--   [__bl602_irq_attach__](https://lupyuen.github.io/articles/touch#appendix-gpio-interrupt): Attach our GPIO Interrupt Handler
-
--   [__bl602_irq_enable__](https://lupyuen.github.io/articles/touch#appendix-gpio-interrupt): Enable GPIO Interrupt
-
-[(More about the functions in the Appendix)](https://lupyuen.github.io/articles/touch#appendix-gpio-interrupt)
-
 _What happens when a GPIO Interrupt is triggered on touch?_
 
 Our __GPIO Interrupt Handler__ does the following...
@@ -438,11 +408,11 @@ Our __GPIO Interrupt Handler__ does the following...
 
     (So they will be unblocked and can proceed to read the data)
 
-Below is __cst816s_isr_handler__, our GPIO Interrupt Handler: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L611-L632)
+Below is __cst816s_isr_handler__, our GPIO Interrupt Handler: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L591-L613)
 
 ```c
 //  Handle GPIO Interrupt triggered by touch
-static int cst816s_isr_handler(int _irq, FAR void *_context, FAR void *arg) {
+static int cst816s_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pinset, FAR void *arg) {
   //  Get the Device Struct from the handler argument
   FAR struct cst816s_dev_s *priv = (FAR struct cst816s_dev_s *) arg;
 
@@ -1149,129 +1119,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1514049092388745219)
-
-# Appendix: GPIO Interrupt
-
-CST816S will trigger __GPIO Interrupts__ when we touch the screen.
-
-Earlier we called these functions at startup to handle GPIO Interrupts...
-
--   [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772): Attach our GPIO Interrupt Handler
-
--   [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804): Enable GPIO Interrupt
-
-Let's look inside the functions.
-
-## Attach Interrupt Handler
-
-We call [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772) to attach our GPIO Interrupt Handler.
-
-__bl602_irq_attach__ is defined below: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727)
-
-```c
-//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
-//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
-static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR void *arg)
-{
-  int ret = 0;
-  uint8_t gpio_pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
-  FAR struct bl602_gpint_dev_s *dev = NULL;  //  TODO
-
-  DEBUGASSERT(callback != NULL);
-
-  /* Configure the pin that will be used as interrupt input */
-
-  #warning Check GLB_GPIO_INT_TRIG_NEG_PULSE  //  TODO
-  bl602_expander_set_intmod(gpio_pin, 1, GLB_GPIO_INT_TRIG_NEG_PULSE);
-  ret = bl602_configgpio(pinset);
-  if (ret < 0)
-    {
-      gpioerr("Failed to configure GPIO pin %d\n", gpio_pin);
-      return ret;
-    }
-
-  /* Make sure the interrupt is disabled */
-
-  bl602_expander_pinset = pinset;
-  bl602_expander_callback = callback;
-  bl602_expander_arg = arg;
-  bl602_expander_intmask(gpio_pin, 1);
-
-  irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, dev);
-  bl602_expander_intmask(gpio_pin, 0);
-
-  gpioinfo("Attach %p\n", callback);
-
-  return 0;
-}
-```
-
-[(__bl602_configgpio__ is defined in the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140)
-
-[(__irq_attach__ comes from the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136)
-
-This code calls two functions from the __BL602 GPIO Expander__...
-
--   [__bl602_expander_set_intmod__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937): Set GPIO Interrupt Mode
-
-    [(We fixed this bug)](https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538)
-
--   [__bl602_expander_intmask__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888): Set GPIO Interrupt Mask
-
-_What's the BL602 GPIO Expander?_
-
-The board-specific __BL602 EVB GPIO Driver__ doesn't expose public functions for configuring GPIO Interrupts. [(See bl602evb/bl602_gpio.c)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c)
-
-That's why we're creating a __BL602 GPIO Expander__ that will replace the BL602 EVB GPIO Driver. It's now under development...
-
--   [__lupyuen/bl602_expander__](https://github.com/lupyuen/bl602_expander)
-
-But eventually [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772), [__bl602_expander_set_intmod__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937) and [__bl602_expander_intmask__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888) shall be moved there and exposed as public functions.
-
-_Which features on PineDio Stack will call the Interrupt Functions on the BL602 GPIO Expander?_
-
-Plenty! The GPIO Expander shall manage __GPIO Interrupts__ for the Touch Panel, SX1262 Transceiver, Push Button, Compass, Accelerometer, Heart Rate Sensor, ...
-
-That's everything marked as "Interrupt" in this table...
-
--   [__"PineDio Stack GPIO Assignment"__](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment)
-
-## Enable GPIO Interrupt
-
-We call [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804) to enable (or disable) GPIO Interrupts.  Here's the function: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804)
-
-```c
-//  Enable or disable GPIO Interrupt for Touch Controller.
-//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
-static int bl602_irq_enable(bool enable)
-{
-  if (enable)
-    {
-      if (bl602_expander_callback != NULL)
-        {
-          gpioinfo("Enable interrupt\n");
-          up_enable_irq(BL602_IRQ_GPIO_INT0);
-        }
-      else
-        {
-          gpiowarn("No callback attached\n");
-        }
-    }
-  else
-    {
-      gpioinfo("Disable interrupt\n");
-      up_disable_irq(BL602_IRQ_GPIO_INT0);
-    }
-
-  return 0;
-}
-```
-
-[(__up_enable_irq__ and __up_disable_irq__ are defined in the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_irq.c#L110-L170)
-
-__bl602_irq_enable__ shall also be moved to the [__BL602 GPIO Expander__](https://github.com/lupyuen/bl602_expander).
-
-
 
 ![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title2.jpg)
 

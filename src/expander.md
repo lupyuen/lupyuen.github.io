@@ -290,7 +290,7 @@ We'll look inside the operations in a while.
 
 ![GPIO Operations](https://lupyuen.github.io/images/expander-code5a.png)
 
-# GPIO Interrupts
+# GPIO Interrupt
 
 _BL602 EVB works OK with GPIO Interrupts?_
 
@@ -322,9 +322,11 @@ BL602 EVB __demultiplexes the GPIO IRQ__ and calls the GPIO Interrupt Handlers.
 
 _So we call BL602 EVB to attach our own GPIO Interrupt Handler?_
 
-Sadly we can't. BL602 EVB __doesn't expose a Public Function__ that we may call to attach our own Interrupt Handler.
+Sadly we can't. BL602 EVB __doesn't expose a Public Function__ that we may call to attach our Interrupt Handler.
 
 (__gpint_attach__ is a Private Function, as shown above)
+
+We could call [__`ioctl()`__](https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt), but that would be extremely awkward.
 
 _Which means we need to implement this in our GPIO Expander?_
 
@@ -433,107 +435,23 @@ Interrupt pin: Value=1
 [Five second timeout with no signal]
 ```
 
-## Touch Panel Interrupt
+## Other Callers
+
+_Who else is calling GPIO Expander to handle interrupts?_
+
+The __CST816S Driver__ for PineDio Stack's Touch Panel calls GPIO Expander to attach an Interrupt Handler (that's called when the screen is touched)...
+
+-   [__"Initialise CST816S Driver"__](https://lupyuen.github.io/articles/touch#initialise-driver)
+
+The __Semtech SX1262 LoRa Transceiver__ on PineDio Stack triggers a GPIO Interrupt (on pin DIO1) when a LoRa packet is transmitted or received...
+
+-   [__"Handle DIO1 Interrupt"__](https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt)
+
+This code calls __`ioctl()`__ in the User Space (instead of Kernel Space), so it works OK with GPIO Expander without modification.
+
+(Because __`ioctl()`__ calls the [__GPIO Lower Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c), which is integrated with our GPIO Expander)
 
 TODO
-
-The CST816S Driver for PineDio Stack's Touch Panel now calls BL602 GPIO Expander to attach the GPIO Interrupt Handler...
-
-```c
-//  Register the CST816S device (e.g. /dev/input0)
-int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, uint8_t i2c_devaddr) {
-  ...
-  //  Configure GPIO interrupt to be triggered on falling edge
-  DEBUGASSERT(bl602_expander != NULL);
-  IOEXP_SETOPTION(
-    bl602_expander,  //  BL602 GPIO Expander
-    gpio_pin,        //  GPIO Pin
-    IOEXPANDER_OPTION_INTCFG,            //  Configure interrupt trigger
-    (FAR void *) IOEXPANDER_VAL_FALLING  //  Trigger on falling edge
-  );
-
-  //  Attach GPIO interrupt handler
-  handle = IOEP_ATTACH(
-    bl602_expander,                //  BL602 GPIO Expander
-    (ioe_pinset_t) 1 << gpio_pin,  //  GPIO Pin converted to Pinset
-    cst816s_isr_handler,  //  GPIO Interrupt Handler
-    priv                  //  Callback argument
-  );
-  if (handle == NULL) {
-    kmm_free(priv);
-    ierr("Attach interrupt failed\n");
-    return -EIO;
-  }
-```
-
-[(Source)](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L661-L678)
-
-The functions for configuring and handling GPIO Interrupts have been moved from the CST816S Driver to BL602 GPIO Expander.
-
-[(See this)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L325)
-
-## LoRa SX1262 Interrupt
-
-TODO
-
-The Semtech SX1262 LoRa Transceiver on PineDio Stack triggers a GPIO Interrupt (on pin DIO1) when a LoRa packet is transmitted or received.
-
-Here's the existing code that configures the GPIO Interrupt and attaches the Interrupt Handler...
-
-```c
-/// Init the GPIO Pins. Return 0 on success.
-static int init_gpio(void) {
-  ...
-  //  Open GPIO Interrupt for SX1262 DIO1 Pin
-  dio1 = open(DIO1_DEVPATH, O_RDWR);
-  assert(dio1 > 0);
-
-  //  Get SX1262 DIO1 Pin Type
-  ret = ioctl(dio1, GPIOC_PINTYPE, (unsigned long)((uintptr_t)&pintype));
-  assert(ret >= 0);
-
-  //  Verify that SX1262 DIO1 Pin is GPIO Interrupt (not GPIO Input or GPIO Output)
-  assert(pintype == GPIO_INTERRUPT_PIN);
-
-  //  Change DIO1 Pin to Trigger GPIO Interrupt on Rising Edge
-  //  TODO: Crashes at ioexpander/gpio.c (line 544) because change failed apparently
-  ret = ioctl(dio1, GPIOC_SETPINTYPE, (unsigned long) GPIO_INTERRUPT_RISING_PIN);
-  assert(ret >= 0);
-  ...
-  //  Start the Background Thread to process DIO1 interrupts
-  static pthread_t thread;
-  ret = pthread_create(&thread, &attr, process_dio1, 0);
-  assert(ret == 0);
-```
-
-[(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L759-L815)
-
-This code calls `ioctl()` in the User Space (instead of Kernel Space), so it works OK with BL602 GPIO Expander without modification.
-
-(Because `ioctl()` calls the GPIO Lower Half Driver, which is integrated with our BL602 GPIO Expander)
-
-For PineDio Stack, we changed the definition of `DIO1_DEVPATH` to "/dev/gpio19"...
-
-```text
-CONFIG_LIBSX1262_SPI_DEVPATH="/dev/spitest0"
-CONFIG_LIBSX1262_CS_DEVPATH="/dev/gpio15"
-CONFIG_LIBSX1262_BUSY_DEVPATH="/dev/gpio10"
-CONFIG_LIBSX1262_DIO1_DEVPATH="/dev/gpio19"
-```
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L1141-L1144)
-
-For backward compatibility with BL602 (which doesn't use GPIO Expander), we default `DIO1_DEVPATH` to "/dev/gpio2" if `DIO1_DEVPATH` isn't configured...
-
-```c
-#ifdef CONFIG_LIBSX1262_DIO1_DEVPATH
-#define DIO1_DEVPATH CONFIG_LIBSX1262_DIO1_DEVPATH
-#else
-#define DIO1_DEVPATH "/dev/gpio2"
-#endif  //  CONFIG_LIBSX1262_DIO1_DEVPATH
-```
-
-[(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L40-L44)
 
 # Check Reused GPIOs
 
@@ -2380,7 +2298,7 @@ Here's the current status...
 
 __TODO__: GPIO Expander will check that the SPI / I2C / UART Pin Functions are correctly defined (e.g. MISO vs MOSI)
 
-# Apppendix: Install Driver
+# Appendix: Install Driver
 
 TODO
 
@@ -2591,3 +2509,108 @@ static int button_isr_handler(FAR struct ioexpander_dev_s *dev,
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044)
+
+# Appendix: GPIO Interrupt
+
+TODO
+
+Earlier we called these functions at startup to handle GPIO Interrupts...
+
+-   [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772): Attach our GPIO Interrupt Handler
+
+-   [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804): Enable GPIO Interrupt
+
+Let's look inside the functions.
+
+## Attach Interrupt Handler
+
+TODO
+
+We call [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772) to attach our GPIO Interrupt Handler.
+
+__bl602_irq_attach__ is defined below: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727)
+
+```c
+//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
+//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
+static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR void *arg)
+{
+  int ret = 0;
+  uint8_t gpio_pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
+  FAR struct bl602_gpint_dev_s *dev = NULL;  //  TODO
+
+  DEBUGASSERT(callback != NULL);
+
+  /* Configure the pin that will be used as interrupt input */
+
+  #warning Check GLB_GPIO_INT_TRIG_NEG_PULSE  //  TODO
+  bl602_expander_set_intmod(gpio_pin, 1, GLB_GPIO_INT_TRIG_NEG_PULSE);
+  ret = bl602_configgpio(pinset);
+  if (ret < 0)
+    {
+      gpioerr("Failed to configure GPIO pin %d\n", gpio_pin);
+      return ret;
+    }
+
+  /* Make sure the interrupt is disabled */
+
+  bl602_expander_pinset = pinset;
+  bl602_expander_callback = callback;
+  bl602_expander_arg = arg;
+  bl602_expander_intmask(gpio_pin, 1);
+
+  irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, dev);
+  bl602_expander_intmask(gpio_pin, 0);
+
+  gpioinfo("Attach %p\n", callback);
+
+  return 0;
+}
+```
+
+[(__bl602_configgpio__ is defined in the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140)
+
+[(__irq_attach__ comes from the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136)
+
+This code calls two functions from the __BL602 GPIO Expander__...
+
+-   [__bl602_expander_set_intmod__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937): Set GPIO Interrupt Mode
+
+    [(We fixed this bug)](https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538)
+
+-   [__bl602_expander_intmask__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888): Set GPIO Interrupt Mask
+
+## Enable GPIO Interrupt
+
+TODO
+
+We call [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804) to enable (or disable) GPIO Interrupts.  Here's the function: [cst816s.c](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804)
+
+```c
+//  Enable or disable GPIO Interrupt for Touch Controller.
+//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
+static int bl602_irq_enable(bool enable)
+{
+  if (enable)
+    {
+      if (bl602_expander_callback != NULL)
+        {
+          gpioinfo("Enable interrupt\n");
+          up_enable_irq(BL602_IRQ_GPIO_INT0);
+        }
+      else
+        {
+          gpiowarn("No callback attached\n");
+        }
+    }
+  else
+    {
+      gpioinfo("Disable interrupt\n");
+      up_disable_irq(BL602_IRQ_GPIO_INT0);
+    }
+
+  return 0;
+}
+```
+
+[(__up_enable_irq__ and __up_disable_irq__ are defined in the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_irq.c#L110-L170)
