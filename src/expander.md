@@ -667,13 +667,33 @@ Refer to this table...
 
 -   [__"BL602 Reference Manual"__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf), Table 3.1 "Pin Description" (Page 26)
 
+In NuttX, we define the pins at...
+
+-   [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145)
+
 According to the pic above, __SPI MISO__ must be either GPIO 0, 4, 8, 12, 16 or 20.
 
 [(__Beware:__ MISO and MOSI are swapped)](https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped)
 
+So this is OK...
+
+```c
+//  GPIO 0 for MISO is OK
+#define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104)
+
+But not this...
+
+```c
+//  GPIO 3 for MISO is NOT OK (Oops!)
+#define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+```
+
 BL602 / BL604 gives us incredible flexibility in selecting the pins... But we might __pick the wrong pin__ by mistake.
 
-(Works like an extreme form of STM32's Alternate Pin Functions)
+(Looks like an extreme form of STM32's Alternate Pin Functions)
 
 _Is there a way to prevent such mistakes?_
 
