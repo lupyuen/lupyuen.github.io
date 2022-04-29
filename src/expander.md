@@ -659,15 +659,29 @@ There's something else we might validate at startup: Pin Functions...
 
 ## Pin Functions
 
-TODO: Extreme form of STM32's Alternate Pin Functions
+_We're selecting a GPIO Pin for a UART / I2C / SPI / PWM Port..._
 
-In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers...
+_Which pin can we use?_
 
--   [BL602 Reference Manual (Table 3.1 "Pin Description", Page 26)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+Refer to this table...
 
-For example: SPI MISO must be either GPIO 0, 4, 8, 12, 16 or 20.
+-   [__"BL602 Reference Manual"__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf), Table 3.1 "Pin Description" (Page 26)
 
-Any other GPIO Pin for SPI MISO will be disallowed by our BL602 GPIO Expander. (And fail at startup)
+According to the pic above, __SPI MISO__ must be either GPIO 0, 4, 8, 12, 16 or 20.
+
+[(__Beware:__ MISO and MOSI are swapped)](https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped)
+
+BL602 / BL604 gives us incredible flexibility in selecting the pins... But we might __pick the wrong pin__ by mistake.
+
+(Works like an extreme form of STM32's Alternate Pin Functions)
+
+_Is there a way to prevent such mistakes?_
+
+We have some ideas for __validating the Pin Functions__ at compile-time or at startup...
+
+-   [__"Validate Pin Function"__](https://lupyuen.github.io/articles/expander#appendix-validate-pin-function)
+
+But for now, be very careful when selecting pins!
 
 # Configure GPIO
 
