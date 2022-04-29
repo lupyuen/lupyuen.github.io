@@ -286,15 +286,29 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 };
 ```
 
-We'll look inside the operations in a while.
+The __implementation of the GPIO Operations__ is explained in the Appendix...
+
+-   [__"Configure GPIO"__](https://lupyuen.github.io/articles/expander#appendix-configure-gpio)
+
+-   [__"Set GPIO Options"__](https://lupyuen.github.io/articles/expander#appendix-set-gpio-options)
+
+-   [__"Read GPIO"__](https://lupyuen.github.io/articles/expander#appendix-read-gpio)
+
+-   [__"Write GPIO"__](https://lupyuen.github.io/articles/expander#appendix-write-gpio)
+
+-   [__"Attach GPIO Interrupt"__](https://lupyuen.github.io/articles/expander#appendix-attach-gpio-interrupt)
+
+-   [__"Detach GPIO Interrupt"__](https://lupyuen.github.io/articles/expander#appendix-detach-gpio-interrupt)
+
+-   [__"Handle GPIO Interrupt"__](https://lupyuen.github.io/articles/expander#appendix-handle-gpio-interrupt)
 
 _Existing NuttX Drivers call [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216) to read and write BL602 GPIOs. Will they still work?_
 
-Yep [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216) will work fine with GPIO Expander.
+Yep the __BL602 GPIO Functions__ like [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216) will work fine with GPIO Expander.
 
-The current __GPIO Functions__ like `open()` and `ioctl()` will also work with GPIO Expander.
+The __NuttX GPIO Functions__ like `open()` and `ioctl()` will also work with GPIO Expander.
 
-(That's because the they call the [__GPIO Lower Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c), which is integrated with our GPIO Expander)
+(That's because they call the [__GPIO Lower Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c), which is integrated with our GPIO Expander)
 
 Let's look at GPIO Interrupts, which are more complicated...
 
