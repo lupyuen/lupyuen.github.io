@@ -599,13 +599,22 @@ bl602_expander = bl602_expander_initialize(
 <p>There’s something else we might validate at startup: Pin Functions…</p>
 <p><img src="https://lupyuen.github.io/images/bl602-pins1a.png" alt="Pin Functions" /></p>
 <h2 id="pin-functions"><a href="#pin-functions">6.1 Pin Functions</a></h2>
-<p>TODO: Extreme form of STM32’s Alternate Pin Functions</p>
-<p>In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers…</p>
+<p><em>We’re selecting a GPIO Pin for a UART / I2C / SPI / PWM Port…</em></p>
+<p><em>Which pin can we use?</em></p>
+<p>Refer to this table…</p>
 <ul>
-<li><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual (Table 3.1 “Pin Description”, Page 26)</a></li>
+<li><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>“BL602 Reference Manual”</strong></a>, Table 3.1 “Pin Description” (Page 26)</li>
 </ul>
-<p>For example: SPI MISO must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
-<p>Any other GPIO Pin for SPI MISO will be disallowed by our BL602 GPIO Expander. (And fail at startup)</p>
+<p>According to the pic above, <strong>SPI MISO</strong> must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
+<p><a href="https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped">(<strong>Beware:</strong> MISO and MOSI are swapped)</a></p>
+<p>BL602 / BL604 gives us incredible flexibility in selecting the pins… But we might <strong>pick the wrong pin</strong> by mistake.</p>
+<p>(Works like an extreme form of STM32’s Alternate Pin Functions)</p>
+<p><em>Is there a way to prevent such mistakes?</em></p>
+<p>We have some ideas for <strong>validating the Pin Functions</strong> at compile-time or at startup…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/expander#appendix-validate-pin-function"><strong>“Validate Pin Function”</strong></a></li>
+</ul>
+<p>But for now, be very careful when selecting pins!</p>
 <h1 id="configure-gpio"><a href="#configure-gpio">7 Configure GPIO</a></h1>
 <p>TODO</p>
 <p>At startup our BL602 GPIO Expander configures the GPIO Input / Output / Interrupt Pins by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><code>bl602_configgpio</code></a> and <code>gpio_lower_half</code> (which registers “/dev/gpioN”)…</p>
