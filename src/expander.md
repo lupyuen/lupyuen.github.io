@@ -449,9 +449,7 @@ The __Semtech SX1262 LoRa Transceiver__ on PineDio Stack triggers a GPIO Interru
 
 This code calls __`ioctl()`__ in the User Space (instead of Kernel Space), so it works OK with GPIO Expander without modification.
 
-(Because __`ioctl()`__ calls the [__GPIO Lower Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c), which is integrated with our GPIO Expander)
-
-TODO
+(That's because __`ioctl()`__ calls the [__GPIO Lower Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c), which is integrated with our GPIO Expander)
 
 # Check Reused GPIOs
 
