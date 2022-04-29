@@ -605,10 +605,21 @@ bl602_expander = bl602_expander_initialize(
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>“BL602 Reference Manual”</strong></a>, Table 3.1 “Pin Description” (Page 26)</li>
 </ul>
+<p>In NuttX, we define the pins at…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
+</ul>
 <p>According to the pic above, <strong>SPI MISO</strong> must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped">(<strong>Beware:</strong> MISO and MOSI are swapped)</a></p>
+<p>So this is OK…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  GPIO 0 for MISO is OK
+#define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
+<p>But not this…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  GPIO 3 for MISO is NOT OK (Oops!)
+#define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
 <p>BL602 / BL604 gives us incredible flexibility in selecting the pins… But we might <strong>pick the wrong pin</strong> by mistake.</p>
-<p>(Works like an extreme form of STM32’s Alternate Pin Functions)</p>
+<p>(Looks like an extreme form of STM32’s Alternate Pin Functions)</p>
 <p><em>Is there a way to prevent such mistakes?</em></p>
 <p>We have some ideas for <strong>validating the Pin Functions</strong> at compile-time or at startup…</p>
 <ul>
