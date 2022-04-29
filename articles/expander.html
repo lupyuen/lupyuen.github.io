@@ -327,11 +327,34 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
   bl602_expander_attach,     //  Attach GPIO Interrupt Handler
   bl602_expander_detach      //  Detach GPIO Interrupt Handler
 };</code></pre></div>
-<p>We’ll look inside the operations in a while.</p>
+<p>The <strong>implementation of the GPIO Operations</strong> is explained in the Appendix…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/expander#appendix-configure-gpio"><strong>“Configure GPIO”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/expander#appendix-set-gpio-options"><strong>“Set GPIO Options”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/expander#appendix-read-gpio"><strong>“Read GPIO”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/expander#appendix-write-gpio"><strong>“Write GPIO”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/expander#appendix-attach-gpio-interrupt"><strong>“Attach GPIO Interrupt”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/expander#appendix-detach-gpio-interrupt"><strong>“Detach GPIO Interrupt”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/expander#appendix-handle-gpio-interrupt"><strong>“Handle GPIO Interrupt”</strong></a></p>
+</li>
+</ul>
 <p><em>Existing NuttX Drivers call <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a> to read and write BL602 GPIOs. Will they still work?</em></p>
-<p>Yep <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a> will work fine with GPIO Expander.</p>
-<p>The current <strong>GPIO Functions</strong> like <code>open()</code> and <code>ioctl()</code> will also work with GPIO Expander.</p>
-<p>(That’s because the they call the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a>, which is integrated with our GPIO Expander)</p>
+<p>Yep the <strong>BL602 GPIO Functions</strong> like <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a> will work fine with GPIO Expander.</p>
+<p>The <strong>NuttX GPIO Functions</strong> like <code>open()</code> and <code>ioctl()</code> will also work with GPIO Expander.</p>
+<p>(That’s because they call the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a>, which is integrated with our GPIO Expander)</p>
 <p>Let’s look at GPIO Interrupts, which are more complicated…</p>
 <p><img src="https://lupyuen.github.io/images/expander-code5a.png" alt="GPIO Operations" /></p>
 <h1 id="gpio-interrupt"><a href="#gpio-interrupt">4 GPIO Interrupt</a></h1>
