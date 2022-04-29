@@ -288,6 +288,16 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 
 We'll look inside the operations in a while.
 
+_Existing NuttX Drivers call [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216) to read and write BL602 GPIOs. Will they still work?_
+
+Yep [__bl602_gpioread__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [__bl602_gpiowrite__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216) will work fine with GPIO Expander.
+
+The current __GPIO Functions__ like `open()` and `ioctl()` will also work with GPIO Expander.
+
+(That's because the they call the [__GPIO Lower Half Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c), which is integrated with our GPIO Expander)
+
+Let's look at GPIO Interrupts, which are more complicated...
+
 ![GPIO Operations](https://lupyuen.github.io/images/expander-code5a.png)
 
 # GPIO Interrupt
@@ -304,7 +314,7 @@ As noted (eloquently) by Robert Lipe, it's __difficult to attach a GPIO Interrup
 
 Let's find out why...
 
-## BL602 EVB Interrupts
+## BL602 EVB Interrupt
 
 _Anything peculiar about GPIO Interrupts on BL602 and BL604?_
 
@@ -326,7 +336,7 @@ Sadly we can't. BL602 EVB __doesn't expose a Public Function__ that we may call 
 
 (__gpint_attach__ is a Private Function, as shown above)
 
-We could call [__`ioctl()`__](https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt), but that would be extremely awkward.
+We could call [__`ioctl()`__](https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt), but that would be extremely awkward in the Kernel Space.
 
 _Which means we need to implement this in our GPIO Expander?_
 
@@ -337,6 +347,8 @@ Exactly! Our __GPIO Expander__ shall take over these duties from BL602 EVB...
 -   __Demultiplex__ the IRQ
 
 -   Call the right __GPIO Interrupt Handler__
+
+More about the implementation in a moment. Let's talk about calling the GPIO Expander...
 
 ## Attach Interrupt Handler
 
