@@ -75,8 +75,9 @@
 <li><a href="#attach-interrupt-handler">4.2 Attach Interrupt Handler</a><ul></ul></li>
 <li><a href="#gpio-command">4.3 GPIO Command</a><ul></ul></li>
 <li><a href="#other-callers">4.4 Other Callers</a><ul></ul></li></ul></li>
-<li><a href="#check-reused-gpios">5 Check Reused GPIOs</a><ul></ul></li>
-<li><a href="#validate-pin-functions">6 Validate Pin Functions</a><ul></ul></li>
+<li><a href="#load-gpio-expander">5 Load GPIO Expander</a><ul></ul></li>
+<li><a href="#validate-gpio">6 Validate GPIO</a><ul>
+<li><a href="#pin-functions">6.1 Pin Functions</a><ul></ul></li></ul></li>
 <li><a href="#configure-gpio">7 Configure GPIO</a><ul></ul></li>
 <li><a href="#set-gpio-options">8 Set GPIO Options</a><ul></ul></li>
 <li><a href="#read-gpio">9 Read GPIO</a><ul></ul></li>
@@ -89,9 +90,8 @@
 <li><a href="#test-lorawan">16 Test LoRaWAN</a><ul></ul></li>
 <li><a href="#whats-next">17 What’s Next</a><ul></ul></li>
 <li><a href="#notes">18 Notes</a><ul></ul></li>
-<li><a href="#appendix-status">19 Appendix: Status</a><ul></ul></li>
-<li><a href="#appendix-install-driver">20 Appendix: Install Driver</a><ul>
-<li><a href="#push-button-interrupt">20.1 Push Button Interrupt</a><ul></ul></li></ul></li>
+<li><a href="#appendix-validate-pin-function">19 Appendix: Validate Pin Function</a><ul></ul></li>
+<li><a href="#appendix-status">20 Appendix: Status</a><ul></ul></li>
 <li><a href="#appendix-gpio-interrupt">21 Appendix: GPIO Interrupt</a><ul>
 <li><a href="#attach-interrupt-handler-1">21.1 Attach Interrupt Handler</a><ul></ul></li>
 <li><a href="#enable-gpio-interrupt">21.2 Enable GPIO Interrupt</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>2 May 2022</em></p>
@@ -444,35 +444,90 @@ Verify:        Value=1</code></pre></div>
 </ul>
 <p>This code calls <strong><code>ioctl()</code></strong> in the User Space (instead of Kernel Space), so it works OK with GPIO Expander without modification.</p>
 <p>(That’s because <strong><code>ioctl()</code></strong> calls the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a>, which is integrated with our GPIO Expander)</p>
-<h1 id="check-reused-gpios"><a href="#check-reused-gpios">5 Check Reused GPIOs</a></h1>
-<p>TODO</p>
-<p>Tracking all 23 GPIOs used by PineDio Stack BL604 can get challenging… We might reuse GPIOs by mistake! Our BL602 GPIO Expander shall validate the GPIOs at startup.</p>
-<p>Here are the GPIOs currently defined for PineDio Stack…</p>
+<h1 id="load-gpio-expander"><a href="#load-gpio-expander">5 Load GPIO Expander</a></h1>
+<p>Here’s how we <strong>load our GPIO Expander</strong> at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L742-L768">bl602_bringup.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
+#include &lt;nuttx/ioexpander/gpio.h&gt;
+#include &lt;nuttx/ioexpander/bl602_expander.h&gt;
+
+//  Global Instance of GPIO Expander
+FAR struct ioexpander_dev_s *bl602_expander = NULL;
+#endif  //  CONFIG_IOEXPANDER_BL602_EXPANDER
+...
+int bl602_bringup(void) {
+  ...
+//  Existing Code
+#if defined(CONFIG_DEV_GPIO) &amp;&amp; !defined(CONFIG_GPIO_LOWER_HALF)
+  ret = bl602_gpio_initialize();
+  if (ret &lt; 0) {
+    syslog(LOG_ERR, &quot;Failed to initialize GPIO Driver: %d\n&quot;, ret);
+    return ret;
+  }
+#endif
+
+//  New Code
+#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
+  //  Must load BL602 GPIO Expander before other drivers
+  bl602_expander = bl602_expander_initialize(
+    bl602_gpio_inputs,     sizeof(bl602_gpio_inputs) / sizeof(bl602_gpio_inputs[0]),
+    bl602_gpio_outputs,    sizeof(bl602_gpio_outputs) / sizeof(bl602_gpio_outputs[0]),
+    bl602_gpio_interrupts, sizeof(bl602_gpio_interrupts) / sizeof(bl602_gpio_interrupts[0]),
+    bl602_other_pins,      sizeof(bl602_other_pins) / sizeof(bl602_other_pins[0]));
+  if (bl602_expander == NULL) {
+    syslog(LOG_ERR, &quot;Failed to initialize GPIO Expander\n&quot;);
+    return -ENOMEM;
+  }
+#endif  //  CONFIG_IOEXPANDER_BL602_EXPANDER</code></pre></div>
+<p>(We’ll talk about <strong>bl602_gpio_*</strong> in the next chapter)</p>
+<p>We must load the GPIO Expander <strong>before other drivers</strong> (like CST816S Touch Panel), because GPIO Expander provides GPIO functions for the drivers.</p>
+<p>We need to <strong>disable the BL602 EVB GPIO Driver</strong>, because GPIO Expander needs the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a> (which can’t coexist with BL602 EVB GPIO)…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Added CONFIG_GPIO_LOWER_HALF below
+#if defined(CONFIG_DEV_GPIO) &amp;&amp; !defined(CONFIG_GPIO_LOWER_HALF)
+  ret = bl602_gpio_initialize();</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653">(Source)</a></p>
+<p>Check the following in menuconfig…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145"><code>board.h</code></a></li>
+<li>
+<p>Enable “<strong>BL602 GPIO Expander</strong>” under “Device Drivers → IO Expander/GPIO Support → Enable IO Expander Support”</p>
+</li>
+<li>
+<p>Set “<strong>Number Of Pins</strong>” to 23</p>
+</li>
+<li>
+<p>Enable “<strong>GPIO Lower Half</strong>”</p>
+</li>
 </ul>
-<p>At startup, GPIO Expander verifies that the GPIO, SPI, I2C and UART Pins don’t reuse the same GPIO.</p>
-<p>If GPIOs are reused in <code>board.h</code>…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)
+<p><a href="https://github.com/lupyuen/bl602_expander#install-driver">(Full instrunctions are here)</a></p>
+<p><img src="https://lupyuen.github.io/images/expander-code3a.png" alt="Tracking all 23 GPIOs used by PineDio Stack can get challenging" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">(Source)</a></p>
+<h1 id="validate-gpio"><a href="#validate-gpio">6 Validate GPIO</a></h1>
+<p><em>Managing 23 GPIOs sounds mighty challenging?</em></p>
+<p>Indeed! Tracking all 23 GPIOs used by PineDio Stack can get challenging… We might <strong>reuse the GPIOs</strong> by mistake!</p>
+<p>Thankfully our GPIO Expander can help: It <strong>validates the GPIOs</strong> at startup.</p>
+<p>Here are the <strong>GPIOs currently defined</strong> for PineDio Stack (more to come)…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
+</ul>
+<p>At startup, GPIO Expander verifies that the GPIO, UART, I2C, SPI and PWM Ports <strong>don’t reuse the same GPIO</strong>.</p>
+<p>If a GPIO is reused like so…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  SPI CLK: GPIO 11
+#define BOARD_SPI_CLK    (GPIO_PIN11 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
 ...
-#define BOARD_BUTTON_INT (GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO | GPIO_PIN11)</code></pre></div>
-<p>Then GPIO Expander will halt with an error at startup…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_expander_option: pin=11, option=2, value=0xe
-bl602_expander_option: Unsupported interrupt both edge: pin=11
-gplh_enable: pin11: Disabling callback=0 handle=0
-gplh_enable: WARNING: pin11: Already detached
-gpio_pin_register: Registering /dev/gpio11
-...
-bl602_expander_initialize: ERROR: GPIO pin 11 is already in use
-up_assert: Assertion failed at file:mm_heap/mm_free.c line: 102 task: nsh_main</code></pre></div>
-<p>We implement this by listing all GPIOs in <code>bl602_gpio_inputs</code>, <code>bl602_gpio_outputs</code>, <code>bl602_gpio_interrupts</code> and <code>bl602_other_pins</code>…</p>
+//  Push Button Interrupt: Also GPIO 11 (Oops!) 
+#define BOARD_BUTTON_INT (GPIO_PIN11 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)</code></pre></div>
+<p>Then GPIO Expander will <strong>halt with an error</strong> at startup…</p>
+<div class="example-wrap"><pre class="language-text"><code>bl602_expander_initialize: ERROR:
+GPIO pin 11 is already in use</code></pre></div>
+<p><em>Awesome! How do we enable this GPIO Validation?</em></p>
+<p>To enable GPIO Validation, we <strong>add all GPIOs</strong> to the arrays <strong>bl602_gpio_inputs</strong>, <strong>bl602_gpio_outputs</strong>, <strong>bl602_gpio_interrupts</strong> and <strong>bl602_other_pins</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
 //  GPIO Input Pins for BL602 GPIO Expander
 static const gpio_pinset_t bl602_gpio_inputs[] =
 {
 #ifdef BOARD_SX1262_BUSY
   BOARD_SX1262_BUSY,
-#endif  /* BOARD_SX1262_BUSY */
+#endif  //  BOARD_SX1262_BUSY
+//  Omitted: Other GPIO Input Pins
 ...
 };
 
@@ -481,7 +536,8 @@ static const gpio_pinset_t bl602_gpio_outputs[] =
 {
 #ifdef BOARD_LCD_CS
   BOARD_LCD_CS,
-#endif  /* BOARD_LCD_CS */
+#endif  //  BOARD_LCD_CS
+//  Omitted: Other GPIO Output Pins
 ...
 };
 
@@ -490,7 +546,8 @@ static const gpio_pinset_t bl602_gpio_interrupts[] =
 {
 #ifdef BOARD_TOUCH_INT
   BOARD_TOUCH_INT,
-#endif  /* BOARD_TOUCH_INT */
+#endif  //  BOARD_TOUCH_INT
+//  Omitted: Other GPIO Interrupt Pins
 ...
 };
 
@@ -499,12 +556,19 @@ static const gpio_pinset_t bl602_other_pins[] =
 {
 #ifdef BOARD_UART_0_RX_PIN
   BOARD_UART_0_RX_PIN,
-#endif  /* BOARD_UART_0_RX_PIN */
+#endif  //  BOARD_UART_0_RX_PIN
+//  Omitted: Other UART, I2C, SPI and PWM Pins
 ...
 };
-#endif  /* CONFIG_IOEXPANDER_BL602_EXPANDER */</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222">(Source)</a></p>
-<p>At startup, GPIO Expander verifies that the GPIOs are not reused…</p>
+#endif  //  CONFIG_IOEXPANDER_BL602_EXPANDER</code></pre></div>
+<p>At startup, we <strong>pass the pins to GPIO Expander</strong> during initialisation…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Initialise GPIO Expander at startup
+bl602_expander = bl602_expander_initialize(
+  bl602_gpio_inputs,     sizeof(bl602_gpio_inputs) / sizeof(bl602_gpio_inputs[0]),
+  bl602_gpio_outputs,    sizeof(bl602_gpio_outputs) / sizeof(bl602_gpio_outputs[0]),
+  bl602_gpio_interrupts, sizeof(bl602_gpio_interrupts) / sizeof(bl602_gpio_interrupts[0]),
+  bl602_other_pins,      sizeof(bl602_other_pins) / sizeof(bl602_other_pins[0]));</code></pre></div>
+<p>GPIO Expander verifies that the <strong>GPIOs are not reused</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>FAR struct ioexpander_dev_s *bl602_expander_initialize(
   const gpio_pinset_t *gpio_inputs,     uint8_t gpio_input_count,
   const gpio_pinset_t *gpio_outputs,    uint8_t gpio_output_count,
@@ -532,95 +596,16 @@ static const gpio_pinset_t bl602_other_pins[] =
 
   //  Omitted: Validate the GPIO Outputs, GPIO Interrupts and Other Pins</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L958-L1123">(Source)</a></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/expander-code3a.png" alt="" /></p>
-<h1 id="validate-pin-functions"><a href="#validate-pin-functions">6 Validate Pin Functions</a></h1>
-<p>TODO</p>
+<p>There’s something else we might validate at startup: Pin Functions…</p>
+<p><img src="https://lupyuen.github.io/images/bl602-pins1a.png" alt="Pin Functions" /></p>
+<h2 id="pin-functions"><a href="#pin-functions">6.1 Pin Functions</a></h2>
+<p>TODO: Extreme form of STM32’s Alternate Pin Functions</p>
 <p>In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers…</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual (Table 3.1 “Pin Description”, Page 26)</a></li>
 </ul>
 <p>For example: SPI MISO must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
 <p>Any other GPIO Pin for SPI MISO will be disallowed by our BL602 GPIO Expander. (And fail at startup)</p>
-<p><em>But the BL602 Pinset only tells us the Function Group (like SPI), not the specific Pin Function (like MISO)?</em></p>
-<p>Yeah we might have to make the Pin Functions position-dependent. So SPI Pins will always be listed in this sequence: CS, MOSI, MISO, then CLK.</p>
-<p>Here’s how it might look…</p>
-<div class="example-wrap"><pre class="language-c"><code>/* Other Pins for BL602 GPIO Expander (For Validation Only) */
-
-static const gpio_pinset_t bl602_other_pins[] =
-{
-#ifdef BOARD_UART_0_RX_PIN
-  RX_TX
-  (
-    BOARD_UART_0_RX_PIN,
-    BOARD_UART_0_TX_PIN
-  ),
-#endif  /* BOARD_UART_0_RX_PIN */
-
-#ifdef BOARD_UART_1_RX_PIN
-  RX_TX
-  (
-    BOARD_UART_1_RX_PIN,
-    BOARD_UART_1_TX_PIN
-  ),
-#endif  /* BOARD_UART_1_RX_PIN */
-
-#ifdef BOARD_PWM_CH0_PIN
-  CH(
-    BOARD_PWM_CH0_PIN
-  ),
-#endif  /* BOARD_PWM_CH0_PIN */
-...
-#ifdef BOARD_I2C_SCL
-  SCL_SDA
-  (
-    BOARD_I2C_SCL, 
-    BOARD_I2C_SDA 
-  ),
-#endif  /* BOARD_I2C_SCL */
-
-#ifdef BOARD_SPI_CS
-  CS_MOSI_MISO_CLK
-  (
-    BOARD_SPI_CS, 
-    BOARD_SPI_MOSI, 
-    BOARD_SPI_MISO, 
-    BOARD_SPI_CLK
-  ),
-#endif  /* BOARD_SPI_CS */
-};</code></pre></div>
-<p>(Which looks neater with the clustering by Function Group)</p>
-<p>The macros are simple passthroughs…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define CH(ch)            ch
-#define RX_TX(rx, tx)     rx,  tx
-#define SCL_SDA(scl, sda) scl, sda
-#define CS_MOSI_MISO_CLK(cs, mosi, miso, clk) cs, mosi, miso, clk</code></pre></div>
-<p>At startup, GPIO Expander iterates through the pins and discovers that <code>BOARD_SPI_MISO</code> is the third pin (MISO) of the SPI Function Group. So it verifies that it’s either GPIO 0, 4, 8, 12, 16 or 20.</p>
-<p>Are devs OK with this? Lemme know what you think!</p>
-<p><em>Can we validate the Pin Functions at compile-time?</em></p>
-<p>Possibly. We can enumerate all valid combinations of Pin Functions and Pin Numbers…</p>
-<div class="example-wrap"><pre class="language-c"><code>//  MISO can be either GPIO 0, 4, 8, 12, 16 or 20
-#define SPI_MISO_PIN0  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
-#define SPI_MISO_PIN4  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN4)
-#define SPI_MISO_PIN8  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)
-#define SPI_MISO_PIN12 (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN12)
-#define SPI_MISO_PIN16 (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN16)
-#define SPI_MISO_PIN20 (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN20)</code></pre></div>
-<p>And we select the desired combination for each pin…</p>
-<div class="example-wrap"><pre class="language-c"><code>//  Select GPIO0 as MISO
-#define BOARD_SPI_MISO SPI_MISO_PIN0</code></pre></div>
-<p>To check whether the Pin Numbers are unique, we would still need GPIO Expander to do this at runtime.</p>
-<p><em>But shouldn’t the pins be defined in Kconfig / menuconfig?</em></p>
-<p>Perhaps. NuttX on ESP32 uses Kconfig / menuconfig to define the pins. <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984">(See this)</a></p>
-<p>Then we would need GPIO Expander to validate the Pin Functions at runtime.</p>
-<p><a href="https://mastodon.social/@Ralim/108201458447291513"><strong>@Ralim</strong></a> has an interesting suggestion…</p>
-<blockquote>
-<p>If each pin can only be used once, could we flip the arrignment matrix and instead have it always have an entry for each pin, which is either a selected value or hi-z by default; then use kconfig rules to prevent collisions ?</p>
-</blockquote>
-<p>Which raises the question: Shouldn’t we do the same for NuttX on ESP32? What about other NuttX platforms? 🤔</p>
-<p>TODO: Pins with multiple functions</p>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/bl602-pins1a.png" alt="" /></p>
 <h1 id="configure-gpio"><a href="#configure-gpio">7 Configure GPIO</a></h1>
 <p>TODO</p>
 <p>At startup our BL602 GPIO Expander configures the GPIO Input / Output / Interrupt Pins by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><code>bl602_configgpio</code></a> and <code>gpio_lower_half</code> (which registers “/dev/gpioN”)…</p>
@@ -2083,7 +2068,94 @@ UplinkProcess</code></pre></div>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1518352162966802432"><strong>this Twitter Thread</strong></a></li>
 </ol>
-<h1 id="appendix-status"><a href="#appendix-status">19 Appendix: Status</a></h1>
+<h1 id="appendix-validate-pin-function"><a href="#appendix-validate-pin-function">19 Appendix: Validate Pin Function</a></h1>
+<p>TODO</p>
+<p>In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers…</p>
+<ul>
+<li><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual (Table 3.1 “Pin Description”, Page 26)</a></li>
+</ul>
+<p>For example: SPI MISO must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
+<p>Any other GPIO Pin for SPI MISO will be disallowed by our BL602 GPIO Expander. (And fail at startup)</p>
+<p><em>But the BL602 Pinset only tells us the Function Group (like SPI), not the specific Pin Function (like MISO)?</em></p>
+<p>Yeah we might have to make the Pin Functions position-dependent. So SPI Pins will always be listed in this sequence: CS, MOSI, MISO, then CLK.</p>
+<p>Here’s how it might look…</p>
+<div class="example-wrap"><pre class="language-c"><code>/* Other Pins for BL602 GPIO Expander (For Validation Only) */
+
+static const gpio_pinset_t bl602_other_pins[] =
+{
+#ifdef BOARD_UART_0_RX_PIN
+  RX_TX
+  (
+    BOARD_UART_0_RX_PIN,
+    BOARD_UART_0_TX_PIN
+  ),
+#endif  /* BOARD_UART_0_RX_PIN */
+
+#ifdef BOARD_UART_1_RX_PIN
+  RX_TX
+  (
+    BOARD_UART_1_RX_PIN,
+    BOARD_UART_1_TX_PIN
+  ),
+#endif  /* BOARD_UART_1_RX_PIN */
+
+#ifdef BOARD_PWM_CH0_PIN
+  CH(
+    BOARD_PWM_CH0_PIN
+  ),
+#endif  /* BOARD_PWM_CH0_PIN */
+...
+#ifdef BOARD_I2C_SCL
+  SCL_SDA
+  (
+    BOARD_I2C_SCL, 
+    BOARD_I2C_SDA 
+  ),
+#endif  /* BOARD_I2C_SCL */
+
+#ifdef BOARD_SPI_CS
+  CS_MOSI_MISO_CLK
+  (
+    BOARD_SPI_CS, 
+    BOARD_SPI_MOSI, 
+    BOARD_SPI_MISO, 
+    BOARD_SPI_CLK
+  ),
+#endif  /* BOARD_SPI_CS */
+};</code></pre></div>
+<p>(Which looks neater with the clustering by Function Group)</p>
+<p>The macros are simple passthroughs…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define CH(ch)            ch
+#define RX_TX(rx, tx)     rx,  tx
+#define SCL_SDA(scl, sda) scl, sda
+#define CS_MOSI_MISO_CLK(cs, mosi, miso, clk) cs, mosi, miso, clk</code></pre></div>
+<p>At startup, GPIO Expander iterates through the pins and discovers that <code>BOARD_SPI_MISO</code> is the third pin (MISO) of the SPI Function Group. So it verifies that it’s either GPIO 0, 4, 8, 12, 16 or 20.</p>
+<p>Are devs OK with this? Lemme know what you think!</p>
+<p><em>Can we validate the Pin Functions at compile-time?</em></p>
+<p>Possibly. We can enumerate all valid combinations of Pin Functions and Pin Numbers…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  MISO can be either GPIO 0, 4, 8, 12, 16 or 20
+#define SPI_MISO_PIN0  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
+#define SPI_MISO_PIN4  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN4)
+#define SPI_MISO_PIN8  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)
+#define SPI_MISO_PIN12 (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN12)
+#define SPI_MISO_PIN16 (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN16)
+#define SPI_MISO_PIN20 (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN20)</code></pre></div>
+<p>And we select the desired combination for each pin…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Select GPIO0 as MISO
+#define BOARD_SPI_MISO SPI_MISO_PIN0</code></pre></div>
+<p>To check whether the Pin Numbers are unique, we would still need GPIO Expander to do this at runtime.</p>
+<p><em>But shouldn’t the pins be defined in Kconfig / menuconfig?</em></p>
+<p>Perhaps. NuttX on ESP32 uses Kconfig / menuconfig to define the pins. <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984">(See this)</a></p>
+<p>Then we would need GPIO Expander to validate the Pin Functions at runtime.</p>
+<p><a href="https://mastodon.social/@Ralim/108201458447291513"><strong>@Ralim</strong></a> has an interesting suggestion…</p>
+<blockquote>
+<p>If each pin can only be used once, could we flip the arrignment matrix and instead have it always have an entry for each pin, which is either a selected value or hi-z by default; then use kconfig rules to prevent collisions ?</p>
+</blockquote>
+<p>Which begs the question: Shouldn’t we do the same for NuttX on ESP32? What about other NuttX platforms? 🤔</p>
+<p>TODO: Pins with multiple functions</p>
+<p>TODO1</p>
+<p><img src="https://lupyuen.github.io/images/bl602-pins1a.png" alt="" /></p>
+<h1 id="appendix-status"><a href="#appendix-status">20 Appendix: Status</a></h1>
 <p>TODO</p>
 <p>GPIO Expander calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><code>bl602_configgpio</code></a>, <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><code>bl602_gpioread</code></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><code>bl602_gpiowrite</code></a> to configure / read / write GPIOs</p>
 <p>Warning: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c">BL602 EVB GPIO Driver</a> will be disabled when we enable GPIO Expander.</p>
@@ -2130,174 +2202,6 @@ UplinkProcess</code></pre></div>
 </li>
 </ul>
 <p><strong>TODO</strong>: GPIO Expander will check that the SPI / I2C / UART Pin Functions are correctly defined (e.g. MISO vs MOSI)</p>
-<h1 id="appendix-install-driver"><a href="#appendix-install-driver">20 Appendix: Install Driver</a></h1>
-<p>TODO</p>
-<p>To add this repo to your NuttX project…</p>
-<div class="example-wrap"><pre class="language-bash"><code>pushd nuttx/nuttx/drivers/ioexpander
-git submodule add https://github.com/lupyuen/bl602_expander
-ln -s bl602_expander/bl602_expander.c .
-popd
-
-pushd nuttx/nuttx/include/nuttx/ioexpander
-ln -s ../../../drivers/ioexpander/bl602_expander/bl602_expander.h .
-popd</code></pre></div>
-<p>Next update the Makefile and Kconfig…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/commit/f72f7d546aa9b458b5cca66d090ac46ea178ca63">See the modified Makefile and Kconfig</a></li>
-</ul>
-<p>Then update the NuttX Build Config…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
-cd nuttx/nuttx
-
-# Preserve the Build Config
-cp .config ../config
-
-# Erase the Build Config and Kconfig files
-make distclean
-
-# For PineDio Stack BL604: Configure the build for BL604
-./tools/configure.sh bl602evb:pinedio
-
-# For BL602: Configure the build for BL602
-./tools/configure.sh bl602evb:nsh
-
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
-./tools/configure.sh esp32-devkitc:nsh
-
-# Restore the Build Config
-cp ../config .config
-
-# Edit the Build Config
-make menuconfig </code></pre></div>
-<p>In menuconfig, enable the BL602 GPIO Expander under “Device Drivers → IO Expander/GPIO Support → Enable IO Expander Support”.</p>
-<p>Set “Number of pins” to 23.</p>
-<p>Enable “GPIO Lower Half”.</p>
-<p>Edit the function <code>bl602_bringup</code> in this file…</p>
-<div class="example-wrap"><pre class="language-text"><code>nuttx/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c</code></pre></div>
-<p>And call <code>bl602_expander_initialize</code> to initialise our driver, just after <code>bl602_gpio_initialize</code>:</p>
-<p>https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L742-L768</p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
-#include &lt;nuttx/ioexpander/gpio.h&gt;
-#include &lt;nuttx/ioexpander/bl602_expander.h&gt;
-FAR struct ioexpander_dev_s *bl602_expander = NULL;
-#endif /* CONFIG_IOEXPANDER_BL602_EXPANDER */
-...
-int bl602_bringup(void) {
-  ...
-  /* Existing Code */
-
-#if defined(CONFIG_DEV_GPIO) &amp;&amp; !defined(CONFIG_GPIO_LOWER_HALF)
-  ret = bl602_gpio_initialize();
-  if (ret &lt; 0)
-    {
-      syslog(LOG_ERR, &quot;Failed to initialize GPIO Driver: %d\n&quot;, ret);
-      return ret;
-    }
-#endif
-
-  /* New Code */
-
-#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
-  /* Must load BL602 GPIO Expander before other drivers */
-
-  bl602_expander = bl602_expander_initialize(
-    bl602_gpio_inputs,
-    sizeof(bl602_gpio_inputs) / sizeof(bl602_gpio_inputs[0]),
-    bl602_gpio_outputs,
-    sizeof(bl602_gpio_outputs) / sizeof(bl602_gpio_outputs[0]),
-    bl602_gpio_interrupts,
-    sizeof(bl602_gpio_interrupts) / sizeof(bl602_gpio_interrupts[0]),
-    bl602_other_pins,
-    sizeof(bl602_other_pins) / sizeof(bl602_other_pins[0]));
-  if (bl602_expander == NULL)
-    {
-      syslog(LOG_ERR, &quot;Failed to initialize GPIO Expander\n&quot;);
-      return -ENOMEM;
-    }
-#endif /* CONFIG_IOEXPANDER_BL602_EXPANDER */</code></pre></div>
-<p>To validate the GPIOs at startup, all GPIOs shall be listed in <code>bl602_gpio_inputs</code>, <code>bl602_gpio_outputs</code>, <code>bl602_gpio_interrupts</code> and <code>bl602_other_pins</code>…</p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
-/* GPIO Input Pins for BL602 GPIO Expander */
-
-static const gpio_pinset_t bl602_gpio_inputs[] =
-{
-#ifdef BOARD_SX1262_BUSY
-  BOARD_SX1262_BUSY,
-#endif  /* BOARD_SX1262_BUSY */
-...
-};
-
-/* GPIO Output Pins for BL602 GPIO Expander */
-
-static const gpio_pinset_t bl602_gpio_outputs[] =
-{
-#ifdef BOARD_LCD_CS
-  BOARD_LCD_CS,
-#endif  /* BOARD_LCD_CS */
-...
-};
-
-/* GPIO Interrupt Pins for BL602 GPIO Expander */
-
-static const gpio_pinset_t bl602_gpio_interrupts[] =
-{
-#ifdef BOARD_TOUCH_INT
-  BOARD_TOUCH_INT,
-#endif  /* BOARD_TOUCH_INT */
-...
-};
-
-/* Other Pins for BL602 GPIO Expander (For Validation Only) */
-
-static const gpio_pinset_t bl602_other_pins[] =
-{
-#ifdef BOARD_UART_0_RX_PIN
-  BOARD_UART_0_RX_PIN,
-#endif  /* BOARD_UART_0_RX_PIN */
-...
-};
-#endif  /* CONFIG_IOEXPANDER_BL602_EXPANDER */</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222">(Source)</a></p>
-<p>We must load the GPIO Expander before other drivers (e.g. CST816S Touch Panel), because GPIO Expander provides GPIO functions for the drivers.</p>
-<p>We need to disable BL602 GPIO Driver when we enable GPIO Expander, because GPIO Expander needs GPIO Lower Half which can’t coexist with BL602 GPIO Driver:</p>
-<div class="example-wrap"><pre class="language-c"><code>/* Add CONFIG_GPIO_LOWER_HALF */
-#if defined(CONFIG_DEV_GPIO) &amp;&amp; !defined(CONFIG_GPIO_LOWER_HALF)
-  ret = bl602_gpio_initialize();</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653">(Source)</a></p>
-<h2 id="push-button-interrupt"><a href="#push-button-interrupt">20.1 Push Button Interrupt</a></h2>
-<p>TODO</p>
-<p>To handle the GPIO Interrupt that’s triggered when we press the Push Button…</p>
-<div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/ioexpander/gpio.h&gt;
-#include &lt;nuttx/ioexpander/bl602_expander.h&gt;
-...
-/* Get the Push Button Pinset and GPIO */
-
-gpio_pinset_t pinset = BOARD_BUTTON_INT;
-uint8_t gpio_pin = (pinset &amp; GPIO_PIN_MASK) &gt;&gt; GPIO_PIN_SHIFT;
-
-/* Configure GPIO interrupt to be triggered on falling edge */
-
-DEBUGASSERT(bl602_expander != NULL);
-IOEXP_SETOPTION(bl602_expander, gpio_pin, IOEXPANDER_OPTION_INTCFG,
-                (FAR void *)IOEXPANDER_VAL_FALLING);
-
-/* Attach GPIO interrupt handler */
-
-void *handle = IOEP_ATTACH(bl602_expander,
-                           (ioe_pinset_t)1 &lt;&lt; gpio_pin,
-                           button_isr_handler,
-                           NULL);  //  TODO: Set the callback argument
-DEBUGASSERT(handle != NULL);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704">(Source)</a></p>
-<p>The Button Interrupt Handler <code>button_isr_handler</code> is defined as…</p>
-<div class="example-wrap"><pre class="language-c"><code>static int button_isr_handler(FAR struct ioexpander_dev_s *dev,
-                              ioe_pinset_t pinset, FAR void *arg)
-{
-  gpioinfo(&quot;Button Pressed\n&quot;);
-  return 0;
-}</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044">(Source)</a></p>
 <h1 id="appendix-gpio-interrupt"><a href="#appendix-gpio-interrupt">21 Appendix: GPIO Interrupt</a></h1>
 <p>TODO</p>
 <p>Earlier we called these functions at startup to handle GPIO Interrupts…</p>
