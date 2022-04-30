@@ -328,6 +328,8 @@ As noted (eloquently) by Robert Lipe, it's __difficult to attach a GPIO Interrup
 
 Let's find out why...
 
+(Perhaps our stars were misaligned 😂)
+
 ## BL602 EVB Interrupt
 
 _Anything peculiar about GPIO Interrupts on BL602 and BL604?_
@@ -825,66 +827,44 @@ Yep GPIO Expander works great with PineDio Stack's Touch Panel!
 
 ## Test Push Button
 
-TODO
+Earlier we spoke about running the __GPIO Command__ to test the __Push Button Interrupt__ (GPIO 12)...
 
-BL602 GPIO Expander tested OK with Push Button and GPIO Command...
+-   [__"GPIO Command"__](https://lupyuen.github.io/articles/expander#gpio-command)
 
-(Comment out `IOEP_ATTACH` in `bl602_bringup`)
+(Assuming that we don't call __IOEP_ATTACH__ in NuttX)
+
+The GPIO Command starts by calling GPIO Expander to configure GPIO 12 for __Rising Edge Trigger__. (Low to High)
 
 ```text
-nsh> uname -a
-NuttX 10.3.0-RC0 ffb275b71c Apr 24 2022 10:47:29 risc-v bl602evb
-
-nsh> ls /dev
-/dev:
- console
- gpio10
- gpio12
- gpio14
- gpio15
- gpio19
- gpio20
- gpio21
- gpio3
- gpio9
- i2c0
- input0
- lcd0
- null
- spi0
- spitest0
- timer0
- urandom
- zero
-
 nsh> gpio -t 8 -w 1 /dev/gpio12
-Driver: /dev/gpio12
-gplh_enable: pin12: Disabling callback=0 handle=0
-gplh_enable: WARNING: pin12: Already detached
-bl602_expander_option: pin=12, option=2, value=0x6
 bl602_expander_option: Rising edge: pin=12
-bl602_expander_set_intmod: gpio_pin=12, int_ctlmod=1, int_trgmod=1
-gplh_read: pin12: value=0x42021aef
 bl602_expander_readpin: pin=12, value=1
-  Interrupt pin: Value=1
-gplh_attach: pin12: callback=0x23060808
-gplh_enable: pin12: Enabling callback=0x23060808 handle=0
-gplh_enable: pin12: Attaching 0x23060808
-bl602_expander_attach: pinset=1000, callback=0x2305f4e2, arg=0x42020d40
-bl602_expander_attach: Attach callback for gpio=12, callback=0x2305f4e2, arg=0x42020d40
-bl602_expander_interrupt: Interrupt! context=0x42012db8, priv=0x4201d0f0
-bl602_expander_interrupt: Call gpio=12, callback=0x2305f4e2, arg=0x42020d40
-gplh_handler: pin12: pinset: c callback=0x23060808
-gplh_enable: pin12: Disabling callback=0x23060808 handle=0x4201d1a0
-gplh_enable: pin12: Detaching handle=0x4201d1a0
-bl602_expander_detach: Detach callback for gpio=12, callback=0x2305f4e2, arg=0x42020d40
-gplh_attach: pin12: callback=0
-gplh_read: pin12: value=0x42021aef
-bl602_expander_readpin: pin=12, value=1
-  Verify:        Value=1
+Interrupt pin: Value=1
+bl602_expander_attach: Attach callback for gpio=12
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen/bl602_expander#test-push-button)
+
+Then it calls GPIO Expander to __read GPIO 12__. And attach an __Interrupt Handler__ for GPIO 12.
+
+When we press the Push Button, GPIO Expander __handles the interrupt__...
+
+```text
+bl602_expander_interrupt: Interrupt!
+bl602_expander_interrupt: Call gpio=12
+```
+
+And __calls the Interrupt Handler__ for GPIO 12.
+
+Finally the GPIO Command calls GPIO Expander to __detach the Interrupt Handler__...
+
+```text
+bl602_expander_detach: Detach callback for gpio=12
+bl602_expander_readpin: pin=12, value=1
+Verify: Value=1
+```
+
+And read the GPIO Input one last time.
 
 ## Test LoRaWAN
 
