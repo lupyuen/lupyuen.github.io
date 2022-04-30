@@ -715,9 +715,37 @@ We have some ideas for __validating the Pin Functions__ at compile-time or at st
 
 -   [__"Validate Pin Function"__](https://lupyuen.github.io/articles/expander#appendix-validate-pin-function)
 
-But for now, be very careful when selecting pins!
+But for now, be __very careful when selecting pins__!
 
-# Test Touch Panel
+# Test GPIO Expander
+
+_How shall we test our GPIO Expander on PineDio Stack?_
+
+We'll test with 3 features that are shipped with PineDio Stack...
+
+-   __CST816S Touch Panel__
+
+    (Which triggers a GPIO Interrupt when touched)
+
+-   __Push Button__
+
+    (Which also triggers a GPIO Interrupt when pushed)
+
+-   __LoRaWAN with Semtech SX1262 Transceiver__
+
+    (Which uses GPIO Input, Output and Interrupt)
+
+Follow these steps to __build, flash and run__ NuttX on PineDio Stack...
+
+-   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
+
+-   [__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
+
+-   [__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
+
+We're ready to test GPIO Expander!
+
+## Test Touch Panel
 
 TODO
 
@@ -1057,7 +1085,7 @@ invert x/y:1, x:0, y:1
 
 [(See the Complete Log)](https://github.com/lupyuen/bl602_expander#test-touch-panel)
 
-# Test Push Button
+## Test Push Button
 
 TODO
 
@@ -1120,7 +1148,7 @@ bl602_expander_readpin: pin=12, value=1
 
 [(See the Complete Log)](https://github.com/lupyuen/bl602_expander#test-push-button)
 
-# Test LoRaWAN
+## Test LoRaWAN
 
 TODO
 
