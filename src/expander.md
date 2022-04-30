@@ -743,6 +743,31 @@ Follow these steps to __build, flash and run__ NuttX on PineDio Stack...
 
 -   [__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
 
+In the NuttX Shell, enter this command to __list the NuttX Devices__...
+
+```bash
+ls /dev
+```
+
+We should see __more than 3 GPIOs__...
+
+```text
+/dev:
+ gpio10
+ gpio12
+ gpio14
+ gpio15
+ gpio19
+ gpio20
+ gpio21
+ gpio3
+ gpio9
+```
+
+[(See the Complete Log)](https://github.com/lupyuen/bl602_expander#test-touch-panel)
+
+Which means that our __GPIO Expander is active__.
+
 We're ready to test GPIO Expander!
 
 ![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title.jpg)
@@ -753,17 +778,15 @@ We're ready to test GPIO Expander!
 
 In the NuttX Shell, enter this command to start the [__LVGL Test App__](https://github.com/lupyuen/lvgltest-nuttx)...
 
-```text
+```bash
 lvgltest
 ```
 
-[(More about the LVGL Test App)](https://lupyuen.github.io/articles/pinedio2#run-nuttx)
+When prompted to calibrate the screen, __tap the 4 corners__ of the screen.
+
+We should see 
 
 TODO
-
-BL602 GPIO Expander tested OK with Touch Panel and LVGL Test App...
-
-(With "GPIO Informational Output" logging enabled: `kconfig-tweak --enable CONFIG_DEBUG_GPIO_INFO`)
 
 ```text
 bl602_expander_irq_enable: Disable interrupt
@@ -804,34 +827,11 @@ bl602_expander_set_intmod: gpio_pin=9, int_ctlmod=1, int_trgmod=0
 bl602_expander_attach: pinset=200, callback=0x2305e47e, arg=0x42020f80
 bl602_expander_attach: Attach callback for gpio=9, callback=0x2305e47e, arg=0x42020f80
 cst816s_register: Driver registered
+```
 
-NuttShell (NSH) NuttX-10.3.0-RC0
+TODO
 
-nsh> uname -a
-NuttX 10.3.0-RC0 ffb275b71c Apr 24 2022 10:47:29 risc-v bl602evb
-
-nsh> ls /dev
-/dev:
- console
- gpio10
- gpio12
- gpio14
- gpio15
- gpio19
- gpio20
- gpio21
- gpio3
- gpio9
- i2c0
- input0
- lcd0
- null
- spi0
- spitest0
- timer0
- urandom
- zero
-
+```text
 nsh> lvgltest
 tp_init: Opening /dev/input0
 cst816s_open:
@@ -1096,6 +1096,8 @@ invert x/y:1, x:0, y:1
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen/bl602_expander#test-touch-panel)
+
+[(More about the LVGL Test App)](https://lupyuen.github.io/articles/pinedio2#run-nuttx)
 
 ## Test Push Button
 
