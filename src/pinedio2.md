@@ -107,7 +107,9 @@ Here are the steps to build NuttX for PineDio Stack...
 
     We have successfully built the NuttX Firmware for PineDio Stack!
 
-    [(See the Build Log)](https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7)
+    [(See the WSL Build Log)](https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7)
+
+    [(See the macOS Build Log)](https://gist.github.com/lupyuen/5a043443b58447e7a2ec6e8832ee1310)
 
 1.  __For WSL:__ Copy the NuttX Firmware to the __c:\blflash__ directory in the Windows File System...
 
