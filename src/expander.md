@@ -1,6 +1,6 @@
 # NuttX GPIO Expander for PineDio Stack BL604
 
-📝 _2 May 2022_
+📝 _5 May 2022_
 
 ![NuttX GPIO Expander for PineDio Stack BL604](https://lupyuen.github.io/images/expander-title.jpg)
 
