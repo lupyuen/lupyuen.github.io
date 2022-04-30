@@ -673,6 +673,8 @@ There's something else we might validate at startup: Pin Functions...
 
 ![Pin Functions](https://lupyuen.github.io/images/bl602-pins1a.png)
 
+[(From BL602 Reference Manual)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
 ## Pin Functions
 
 _We're selecting a GPIO Pin for a UART / I2C / SPI / PWM Port..._
