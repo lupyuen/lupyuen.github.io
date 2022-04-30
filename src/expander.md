@@ -745,7 +745,19 @@ Follow these steps to __build, flash and run__ NuttX on PineDio Stack...
 
 We're ready to test GPIO Expander!
 
+![Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board](https://lupyuen.github.io/images/touch-title.jpg)
+
+[(Source)](https://lupyuen.github.io/articles/touch)
+
 ## Test Touch Panel
+
+In the NuttX Shell, enter this command to start the [__LVGL Test App__](https://github.com/lupyuen/lvgltest-nuttx)...
+
+```text
+lvgltest
+```
+
+[(More about the LVGL Test App)](https://lupyuen.github.io/articles/pinedio2#run-nuttx)
 
 TODO
 
