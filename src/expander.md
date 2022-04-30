@@ -823,7 +823,7 @@ GPIO Expander handles the interrupt and __calls the Touch Panel Driver__. (Which
 
 Yep GPIO Expander works great with PineDio Stack's Touch Panel!
 
-[(More about the LVGL Test App)](https://lupyuen.github.io/articles/pinedio2#run-nuttx)
+[(More about the LVGL Test App)](https://lupyuen.github.io/articles/pinedio2#nuttx-apps)
 
 [(More about the CST816S Touch Panel)](https://lupyuen.github.io/articles/touch)
 
