@@ -679,16 +679,30 @@ bl602_expander = bl602_expander_initialize(
 <p><a href="https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack"><strong>“Boot PineDio Stack”</strong></a></p>
 </li>
 </ul>
+<p>In the NuttX Shell, enter this command to <strong>list the NuttX Devices</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<p>We should see <strong>more than 3 GPIOs</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>/dev:
+ gpio10
+ gpio12
+ gpio14
+ gpio15
+ gpio19
+ gpio20
+ gpio21
+ gpio3
+ gpio9</code></pre></div>
+<p><a href="https://github.com/lupyuen/bl602_expander#test-touch-panel">(See the Complete Log)</a></p>
+<p>Which means that our <strong>GPIO Expander is active</strong>.</p>
 <p>We’re ready to test GPIO Expander!</p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/touch">(Source)</a></p>
 <h2 id="test-touch-panel"><a href="#test-touch-panel">7.1 Test Touch Panel</a></h2>
 <p>In the NuttX Shell, enter this command to start the <a href="https://github.com/lupyuen/lvgltest-nuttx"><strong>LVGL Test App</strong></a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>lvgltest</code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/pinedio2#run-nuttx">(More about the LVGL Test App)</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>lvgltest</code></pre></div>
+<p>When prompted to calibrate the screen, <strong>tap the 4 corners</strong> of the screen.</p>
+<p>We should see </p>
 <p>TODO</p>
-<p>BL602 GPIO Expander tested OK with Touch Panel and LVGL Test App…</p>
-<p>(With “GPIO Informational Output” logging enabled: <code>kconfig-tweak --enable CONFIG_DEBUG_GPIO_INFO</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_expander_irq_enable: Disable interrupt
 bl602_expander_irq_enable: Enable interrupt
 bl602_expander_direction: Unsupported direction: pin=10, direction=IN
@@ -726,36 +740,9 @@ bl602_expander_option: Falling edge: pin=9
 bl602_expander_set_intmod: gpio_pin=9, int_ctlmod=1, int_trgmod=0
 bl602_expander_attach: pinset=200, callback=0x2305e47e, arg=0x42020f80
 bl602_expander_attach: Attach callback for gpio=9, callback=0x2305e47e, arg=0x42020f80
-cst816s_register: Driver registered
-
-NuttShell (NSH) NuttX-10.3.0-RC0
-
-nsh&gt; uname -a
-NuttX 10.3.0-RC0 ffb275b71c Apr 24 2022 10:47:29 risc-v bl602evb
-
-nsh&gt; ls /dev
-/dev:
- console
- gpio10
- gpio12
- gpio14
- gpio15
- gpio19
- gpio20
- gpio21
- gpio3
- gpio9
- i2c0
- input0
- lcd0
- null
- spi0
- spitest0
- timer0
- urandom
- zero
-
-nsh&gt; lvgltest
+cst816s_register: Driver registered</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
 tp_init: Opening /dev/input0
 cst816s_open:
 bl602_expander_interrupt: Interrupt! context=0x42012db8, priv=0x4201df0
@@ -1017,6 +1004,7 @@ offset x:18, y:7
 range x:181, y:183
 invert x/y:1, x:0, y:1</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander#test-touch-panel">(See the Complete Log)</a></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#run-nuttx">(More about the LVGL Test App)</a></p>
 <h2 id="test-push-button"><a href="#test-push-button">7.2 Test Push Button</a></h2>
 <p>TODO</p>
 <p>BL602 GPIO Expander tested OK with Push Button and GPIO Command…</p>
