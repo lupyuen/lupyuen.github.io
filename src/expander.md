@@ -673,6 +673,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 
 There's something else we might validate at startup: Pin Functions...
 
+[(More about GPIO Expander initialisation)](https://lupyuen.github.io/articles/expander#appendix-initialise-gpio-expander)
+
 ![Pin Functions](https://lupyuen.github.io/images/bl602-pins1a.png)
 
 [(From BL602 Reference Manual)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
