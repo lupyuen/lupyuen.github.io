@@ -288,13 +288,15 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 
 The __implementation of the GPIO Operations__ is explained in the Appendix...
 
--   [__"Configure GPIO"__](https://lupyuen.github.io/articles/expander#appendix-configure-gpio)
+-   [__"Initialise GPIO Expander"__](https://lupyuen.github.io/articles/expander#appendix-initialise-gpio-expander)
 
--   [__"Set GPIO Options"__](https://lupyuen.github.io/articles/expander#appendix-set-gpio-options)
+-   [__"Set GPIO Direction"__](https://lupyuen.github.io/articles/expander#appendix-set-gpio-direction)
 
--   [__"Read GPIO"__](https://lupyuen.github.io/articles/expander#appendix-read-gpio)
+-   [__"Set GPIO Option"__](https://lupyuen.github.io/articles/expander#appendix-set-gpio-option)
 
 -   [__"Write GPIO"__](https://lupyuen.github.io/articles/expander#appendix-write-gpio)
+
+-   [__"Read GPIO"__](https://lupyuen.github.io/articles/expander#appendix-read-gpio)
 
 -   [__"Attach GPIO Interrupt"__](https://lupyuen.github.io/articles/expander#appendix-attach-gpio-interrupt)
 
@@ -1145,7 +1147,7 @@ At startup, GPIO Expander iterates through the pins and discovers that __BOARD_S
 
 Which is your preferred way to validate the Pin Functions? Lemme know! 🙏
 
-# Appendix: Configure GPIO
+# Appendix: Initialise GPIO Expander
 
 TODO
 
@@ -1318,7 +1320,11 @@ TODO7
 
 ![](https://lupyuen.github.io/images/expander-code6a.png)
 
-# Appendix: Set GPIO Options
+# Appendix: Set GPIO Direction
+
+TODO
+
+# Appendix: Set GPIO Option
 
 TODO
 
@@ -1410,52 +1416,6 @@ TODO8
 
 ![](https://lupyuen.github.io/images/expander-code7a.png)
 
-# Appendix: Read GPIO
-
-TODO
-
-Our GPIO Expander calls the BL602 GPIO Driver to read GPIO Inputs...
-
-```c
-//  Read the GPIO Input Pin
-static int bl602_expander_readpin(FAR struct ioexpander_dev_s *dev, 
-                                  uint8_t pin,
-                                  FAR bool *value)
-{
-  FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
-  int ret;
-
-  DEBUGASSERT(priv != NULL && pin < CONFIG_IOEXPANDER_NPINS &&
-              value != NULL);
-
-  /* Get exclusive access to the I/O Expander */
-
-  ret = bl602_expander_lock(priv);
-  if (ret < 0)
-    {
-      return ret;
-    }
-
-  /* Read the pin value. Warning: Pin Number passed as BL602 Pinset */
-
-  *value = bl602_gpioread(pin << GPIO_PIN_SHIFT);
-
-  /* Unlock the I/O Expander */
-
-  bl602_expander_unlock(priv);
-  gpioinfo("pin=%u, value=%u\n", pin, *value);
-  return ret;
-}
-```
-
-[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L596-L642)
-
-[(`bl602_gpioread` comes from the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230)
-
-TODO
-
-![](https://lupyuen.github.io/images/expander-code8a.png)
-
 # Appendix: Write GPIO
 
 TODO
@@ -1501,6 +1461,52 @@ static int bl602_expander_writepin(FAR struct ioexpander_dev_s *dev,
 TODO
 
 ![](https://lupyuen.github.io/images/expander-code9a.png)
+
+# Appendix: Read GPIO
+
+TODO
+
+Our GPIO Expander calls the BL602 GPIO Driver to read GPIO Inputs...
+
+```c
+//  Read the GPIO Input Pin
+static int bl602_expander_readpin(FAR struct ioexpander_dev_s *dev, 
+                                  uint8_t pin,
+                                  FAR bool *value)
+{
+  FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
+  int ret;
+
+  DEBUGASSERT(priv != NULL && pin < CONFIG_IOEXPANDER_NPINS &&
+              value != NULL);
+
+  /* Get exclusive access to the I/O Expander */
+
+  ret = bl602_expander_lock(priv);
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  /* Read the pin value. Warning: Pin Number passed as BL602 Pinset */
+
+  *value = bl602_gpioread(pin << GPIO_PIN_SHIFT);
+
+  /* Unlock the I/O Expander */
+
+  bl602_expander_unlock(priv);
+  gpioinfo("pin=%u, value=%u\n", pin, *value);
+  return ret;
+}
+```
+
+[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L596-L642)
+
+[(`bl602_gpioread` comes from the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230)
+
+TODO
+
+![](https://lupyuen.github.io/images/expander-code8a.png)
 
 # Appendix: Attach GPIO Interrupt
 
