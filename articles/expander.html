@@ -945,9 +945,22 @@ static const gpio_pinset_t bl602_other_pins[] =
 <p>At startup, GPIO Expander iterates through the pins and discovers that <strong>BOARD_SPI_MISO</strong> is the third pin (MISO) of the SPI Function Group. So it verifies that it’s either GPIO 0, 4, 8, 12, 16 or 20.</p>
 <p>Which is your preferred way to validate the Pin Functions? Lemme know! 🙏</p>
 <h1 id="appendix-initialise-gpio-expander"><a href="#appendix-initialise-gpio-expander">11 Appendix: Initialise GPIO Expander</a></h1>
-<p>TODO</p>
-<p>At startup our GPIO Expander configures the <strong>GPIO Input / Output / Interrupt Pins</strong> by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a> (which registers “/dev/gpioN”)…</p>
-<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121">(Source)</a></p>
+<p>At startup, our GPIO Expander does the following initialisation…</p>
+<ul>
+<li>
+<p>Attach the GPIO Expander <strong>Interrupt Handler</strong> to the GPIO IRQ</p>
+</li>
+<li>
+<p>Configure the <strong>GPIO Input / Output / Interrupt Pins</strong> by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a></p>
+</li>
+<li>
+<p>Register the GPIOs as “<strong>/dev/gpioN</strong>” by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a></p>
+</li>
+<li>
+<p>Validate the GPIOs</p>
+</li>
+</ul>
+<p>Here’s the code: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Initialise the BL602 GPIO Expander
 FAR struct ioexpander_dev_s *bl602_expander_initialize(
   const gpio_pinset_t *gpio_inputs,     uint8_t gpio_input_count,
@@ -1007,7 +1020,6 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       if (gpio_is_used[gpio_pin])
         {
           gpioerr(&quot;ERROR: GPIO pin %d is already in use\n&quot;, gpio_pin);
-          kmm_free(priv);
           return NULL;
         }
       gpio_is_used[gpio_pin] = true;
@@ -1028,7 +1040,6 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       if (gpio_is_used[gpio_pin])
         {
           gpioerr(&quot;ERROR: GPIO pin %d is already in use\n&quot;, gpio_pin);
-          kmm_free(priv);
           return NULL;
         }
       gpio_is_used[gpio_pin] = true;
@@ -1049,7 +1060,6 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       if (gpio_is_used[gpio_pin])
         {
           gpioerr(&quot;ERROR: GPIO pin %d is already in use\n&quot;, gpio_pin);
-          kmm_free(priv);
           return NULL;
         }
       gpio_is_used[gpio_pin] = true;
@@ -1070,7 +1080,6 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       if (gpio_is_used[gpio_pin])
         {
           gpioerr(&quot;ERROR: GPIO pin %d is already in use\n&quot;, gpio_pin);
-          kmm_free(priv);
           return NULL;
         }
       gpio_is_used[gpio_pin] = true;
@@ -1087,7 +1096,52 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 <p><img src="https://lupyuen.github.io/images/expander-code6a.png" alt="" /></p>
 <h1 id="appendix-set-gpio-direction"><a href="#appendix-set-gpio-direction">12 Appendix: Set GPIO Direction</a></h1>
 <p>TODO</p>
-<h1 id="appendix-set-gpio-option"><a href="#appendix-set-gpio-option">13 Appendix: Set GPIO Option</a></h1>
+<p>From <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L410-L454">bl602_expander.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: bl602_expander_direction
+ *
+ * Description:
+ *   Set the direction of an ioexpander pin. Required.
+ *
+ * Input Parameters:
+ *   dev - Device-specific state data
+ *   pin - The index of the pin to alter in this call
+ *   dir - One of the IOEXPANDER_DIRECTION_ macros
+ *
+ * Returned Value:
+ *   0 on success, else a negative error code
+ *
+ ****************************************************************************/
+
+static int bl602_expander_direction(FAR struct ioexpander_dev_s *dev, uint8_t pin,
+                          int direction)
+{
+  FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
+  int ret;
+
+  if (direction != IOEXPANDER_DIRECTION_IN &amp;&amp;
+      direction != IOEXPANDER_DIRECTION_OUT)
+    {
+      return -EINVAL;
+    }
+
+  gpioinfo(&quot;WARNING: Unimplemented direction: pin=%u, direction=%s\n&quot;,
+           pin, (direction == IOEXPANDER_DIRECTION_IN) ? &quot;IN&quot; : &quot;OUT&quot;);
+  DEBUGASSERT(priv != NULL &amp;&amp; pin &lt; CONFIG_IOEXPANDER_NPINS);
+
+  /* Get exclusive access to the I/O Expander */
+
+  ret = bl602_expander_lock(priv);
+  if (ret &lt; 0)
+    {
+      return ret;
+    }
+
+  /* Unlock the I/O Expander */
+
+  bl602_expander_unlock(priv);
+  return ret;
+}</code></pre></div><h1 id="appendix-set-gpio-option"><a href="#appendix-set-gpio-option">13 Appendix: Set GPIO Option</a></h1>
 <p>TODO</p>
 <p>Our GPIO Expander will configure the GPIO Interrupts: Rising Edge Trigger vs Falling Edge Trigger…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Set GPIO Options
