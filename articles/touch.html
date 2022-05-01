@@ -498,6 +498,7 @@ cst816s_poll_notify:</code></pre></div>
 <p>Our driver fixes this by remembering and returning the <strong>last valid Touch Data</strong>.</p>
 <p><em>What about Touch Event <code>2</code> (Contact)?</em></p>
 <p>We haven’t seen this during our testing. Thus our driver ignores the event.</p>
+<p><strong>UPDATE:</strong> Our driver now handles the <strong>Contact Event</strong>. <a href="https://github.com/lupyuen/cst816s-nuttx/commit/568e5524ef9b84d696bdefb5a2fe9030321338a9">(See this)</a></p>
 <p>Let’s check out our driver code…</p>
 <p><img src="https://lupyuen.github.io/images/touch-code4a.jpg" alt="Getting I2C Touch Data" /></p>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">(Source)</a></p>
