@@ -1145,57 +1145,6 @@ At startup, GPIO Expander iterates through the pins and discovers that __BOARD_S
 
 Which is your preferred way to validate the Pin Functions? Lemme know! 🙏
 
-# Appendix: Status
-
-TODO
-
-GPIO Expander calls [`bl602_configgpio`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140), [`bl602_gpioread`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230) and [`bl602_gpiowrite`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216) to configure / read / write GPIOs
-
-Warning: [BL602 EVB GPIO Driver](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c) will be disabled when we enable GPIO Expander.
-
-(Because GPIO Expander needs GPIO Lower Half which conflicts with BL602 EVB GPIO Driver)
-
-GPIO Expander verifies that the GPIO, SPI, I2C and UART Pins don't reuse the same GPIO.
-
-Robert Lipe has an excellent article that explains the current limitations of the BL602 EVB GPIO Driver (and why we need the GPIO Expander)...
-
--   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
-
-Here's the current status...
-
--   Tested OK with GPIO Interrupts from Touch Panel and LVGL Test App `lvgltest`
-
-    (With `IOEP_ATTACH` in `cst816s_register`)
-
--   Tested OK with Push Button
-
-    (With `IOEP_ATTACH` in `bl602_bringup`)
-
--   Tested OK with Push Button GPIO Command: `gpio -t 8 -w 1 /dev/gpio12`
-
-    (Comment out `IOEP_ATTACH` in `bl602_bringup`)
-
--   Tested OK with LoRaWAN Test App `lorawan_test`
-
-    (With "GPIO Informational Output" logging disabled)
-
--   SX1262 Library is now configured by Kconfig / menuconfig to access `/dev/gpio10`, `/dev/gpio15`, `/dev/gpio19` (instead of `dev/gpio0`, `/dev/gpio1`, `/dev/gpio2`). 
-
-    In menuconfig: Library Routines → Semtech SX1262 Library
-
-    - SPI Test device path  
-    - Chip Select device path 
-    - Busy device path
-    - DIO1 device path           
-
--   Logging for SX1262 Library is now disabled by default and can be configured by Kconfig / menuconfig.
-
-    In menuconfig: Library Routines → Semtech SX1262 Library → Logging → Debugging
-
--   Logging for SPI Test Driver has been moved from "Enable Informational Debug Output" to "SPI Informational Output"
-
-__TODO__: GPIO Expander will check that the SPI / I2C / UART Pin Functions are correctly defined (e.g. MISO vs MOSI)
-
 # Appendix: Configure GPIO
 
 TODO
