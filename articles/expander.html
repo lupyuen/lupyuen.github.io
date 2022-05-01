@@ -627,24 +627,27 @@ bl602_expander = bl602_expander_initialize(
 <h2 id="pin-functions"><a href="#pin-functions">6.1 Pin Functions</a></h2>
 <p><em>We’re selecting a GPIO Pin for a UART / I2C / SPI / PWM Port…</em></p>
 <p><em>Which pin can we use?</em></p>
-<p>Refer to this table…</p>
+<p>The <strong>Pin Functions</strong> for each GPIO Pin are documented here…</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>“BL602 Reference Manual”</strong></a>, Table 3.1 “Pin Description” (Page 26)</li>
 </ul>
-<p>In NuttX, we define the pins at…</p>
+<p>In NuttX, we set the <strong>Pin Definitions</strong> at…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
 </ul>
+<p><em>Let’s say we’re selecting a pin for SPI MISO?</em></p>
 <p>According to the pic above, <strong>SPI MISO</strong> must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped">(<strong>Beware:</strong> MISO and MOSI are swapped)</a></p>
-<p>So this is OK…</p>
+<p>So this <strong>MISO Pin Defintion</strong> is OK…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 0 for MISO is OK
 #define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
-<p>But not this…</p>
+<p>But this MISO Pin Definition is no-no…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 3 for MISO is NOT OK (Oops!)
 #define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
-<p>BL602 / BL604 gives us incredible flexibility in selecting the pins… But we might <strong>pick the wrong pin</strong> by mistake.</p>
+<p><em>8 possible pins for MISO? Wow that’s a lot of choices!</em></p>
+<p>BL602 / BL604 gives us incredible flexibility in selecting the pins…</p>
+<p>But we might <strong>pick the wrong pin</strong> by mistake!</p>
 <p>(Looks like an extreme form of STM32’s Alternate Pin Functions)</p>
 <p><em>Is there a way to prevent such mistakes?</em></p>
 <p>We have some ideas for <strong>validating the Pin Functions</strong> at compile-time or at startup…</p>
@@ -831,7 +834,14 @@ CHANNEL MASK: 0003</code></pre></div>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1518352162966802432"><strong>this Twitter Thread</strong></a></li>
 </ol>
 <h1 id="appendix-validate-pin-function"><a href="#appendix-validate-pin-function">10 Appendix: Validate Pin Function</a></h1>
-<p>TODO</p>
+<p>BL602 / BL604 gives us incredible flexibility in selecting the GPIO Pins for the UART, I2C, SPI and PWM Ports…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/expander#pin-functions"><strong>“Pin Functions”</strong></a></li>
+</ul>
+<p>(8 possible pins for SPI MISO!)</p>
+<p>But we might <strong>pick the wrong pin</strong> by mistake!</p>
+<p><em>Is there a way to prevent such mistakes?</em></p>
+<p>We have some ideas for <strong>validating the Pin Functions</strong> at compile-time or at startup…</p>
 <p>In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers…</p>
 <ul>
 <li><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual (Table 3.1 “Pin Description”, Page 26)</a></li>

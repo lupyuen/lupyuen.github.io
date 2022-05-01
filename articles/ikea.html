@@ -220,7 +220,7 @@
 #define BOARD_UART_1_TX_PIN \
   (GPIO_INPUT     | GPIO_PULLUP | \
    GPIO_FUNC_UART | GPIO_PIN4)</code></pre></div>
-<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(Which pins can be used? See Table 3.1 “Pin Description”, Page 26)</a></p>
+<p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p><strong>For ESP32:</strong> The GPIO Pin Numbers for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669">Kconfig</a> and menuconfig…</p>
 <div class="example-wrap"><pre class="language-text"><code>config ESP32_UART1_TXPIN
   int &quot;UART1 Tx Pin&quot;

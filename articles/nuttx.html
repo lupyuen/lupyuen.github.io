@@ -353,7 +353,10 @@ Builtin Apps:
 <p><em>How do we define the Pin Numbers for GPIO, UART, PWM, I2C, SPI, …?</em></p>
 <p>We define the Pin Numbers in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h"><strong>board.h</strong></a> (Pic above)</p>
 <p><strong>Note: Some pins on BL602 and BL604 may only be assigned to specific functions.</strong></p>
-<p>Refer to the <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 / BL604 Reference Manual</strong></a>, Section 3.2.8 (GPIO Function) for the Pin Description Table.</p>
+<p>More about pin selection…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/expander#pin-functions"><strong>“Pin Functions”</strong></a></li>
+</ul>
 <p><em>How shall we define the GPIO Output Pin for our LED?</em></p>
 <p>On PineCone BL602 the Blue LED is connected on <strong>GPIO 11</strong>.</p>
 <p>We change the Pin Definition for <strong>BOARD_GPIO_OUT1</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/gpio/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53">board.h</a></p>

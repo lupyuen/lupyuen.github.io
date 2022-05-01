@@ -280,7 +280,7 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 #define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN13)
 #define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
 #define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)</code></pre></div>
-<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(Which pins can be used? See Table 3.1 “Pin Description”, Page 26)</a></p>
+<p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p>GPIO Output <strong>BOARD_GPIO_OUT1</strong> becomes our <strong>SPI Chip Select</strong>. <a href="https://lupyuen.github.io/articles/spi2#control-chip-select-with-gpio">(See this)</a></p>
 <p><strong>BOARD_GPIO_IN1</strong> (Busy Pin) and <strong>BOARD_GPIO_INT1</strong> (DIO1) will be used for LoRaWAN in the next article.</p>
 <p><strong>For BL602:</strong> Connect SX1262 to <a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">these pins</a>. Copy the BL602 Pin Definitions from <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L36-L92">board.h</a> to…</p>
