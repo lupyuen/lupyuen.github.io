@@ -1155,11 +1155,11 @@ At startup, our GPIO Expander does the following initialisation...
 
 -   Attach the GPIO Expander __Interrupt Handler__ to the GPIO IRQ
 
--   Configure the __GPIO Input / Output / Interrupt Pins__ by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140)
+-   Configure the __GPIO Input, Output and Interrupt Pins__ by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140)
 
 -   Register the GPIOs as "__/dev/gpioN__" by calling [__gpio_lower_half__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443)
 
--   Validate the GPIOs
+-   Validate the GPIOs and __prevent reuse of GPIOs__
 
 Here's the code: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121)
 
@@ -1171,18 +1171,12 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   const gpio_pinset_t *gpio_interrupts, uint8_t gpio_interrupt_count,
   const gpio_pinset_t *other_pins,      uint8_t other_pin_count)
 {
-  int i;
-  int ret;
-  uint8_t pin;
-  bool gpio_is_used[CONFIG_IOEXPANDER_NPINS];
-  FAR struct bl602_expander_dev_s *priv;
-
   DEBUGASSERT(gpio_input_count + gpio_output_count + gpio_interrupt_count +
     other_pin_count <= CONFIG_IOEXPANDER_NPINS);
 
   /* Use the one-and-only I/O Expander driver instance */
 
-  priv = &g_bl602_expander_dev;
+  FAR struct bl602_expander_dev_s *priv = &g_bl602_expander_dev;
 
   /* Initialize the device state structure */
 
@@ -1190,17 +1184,19 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   nxsem_init(&priv->exclsem, 0, 1);
 ```
 
-TODO
+The function begins by populating the __Device State__ for GPIO Expander.
+
+Next it disables Individual GPIO Interrupts, and attaches the __GPIO Expander Interrupt Handler__ to the GPIO IRQ...
 
 ```c
   /* Disable GPIO interrupts */
 
-  ret = bl602_expander_irq_enable(false);
+  int ret = bl602_expander_irq_enable(false);
   if (ret < 0) { return NULL; }
 
   /* Disable interrupts for all GPIO Pins */
 
-  for (pin = 0; pin < CONFIG_IOEXPANDER_NPINS; pin++)
+  for (uint8_t pin = 0; pin < CONFIG_IOEXPANDER_NPINS; pin++)
     {
       bl602_expander_intmask(pin, 1);
     }
@@ -1213,16 +1209,32 @@ TODO
   if (ret < 0) { return NULL; }
 ```
 
-TODO
+[(__bl602_expander_intmask__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197)
+
+[(__bl602_expander_irq_enable__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L301-L325)
+
+[(__irq_attach__ comes from the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136)
+
+(Individual GPIO Interrupts are enabled later when we attach an Interrupt Handler to the specific GPIO)
+
+To prevent reuse of GPIOs, we prepare the array that will __mark the used GPIOs__...
 
 ```c
   /* Mark the GPIOs in use */
 
+  bool gpio_is_used[CONFIG_IOEXPANDER_NPINS];
   memset(gpio_is_used, 0, sizeof(gpio_is_used));
+```
 
+Now we handle the __GPIO Inputs__.
+
+Given the BL602 Pinset (from the Pin Definition), we call 
+[__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140) to __configure each GPIO Input__...
+
+```c
   /* Configure and register the GPIO Inputs */
 
-  for (i = 0; i < gpio_input_count; i++)
+  for (int i = 0; i < gpio_input_count; i++)
     {
       gpio_pinset_t pinset = gpio_inputs[i];
       uint8_t gpio_pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
@@ -1241,7 +1253,11 @@ TODO
     }
 ```
 
-TODO
+And we call [__gpio_lower_half__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443) to register the GPIO Input as "__/dev/gpioN__".
+
+We quit if the GPIO is __already in use__.
+
+We do the same for __GPIO Outputs__...
 
 ```c
   /* Configure and register the GPIO Outputs */
@@ -1265,7 +1281,7 @@ TODO
     }
 ```
 
-TODO
+And for __GPIO Interrupts__...
 
 ```c
   /* Configure and register the GPIO Interrupts */
@@ -1289,7 +1305,7 @@ TODO
     }
 ```
 
-TODO
+For __other GPIOs__ (UART, I2C, SPI, PWM) we check for reused GPIOs...
 
 ```c
   /* Validate the other pins (I2C, SPI, etc) */
@@ -1314,15 +1330,11 @@ TODO
 }
 ```
 
-TODO
+But we don't call [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140) because that's done by the __UART / I2C / SPI / PWM Driver.__
 
-[(`bl602_expander_intmask` is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197)
+And we don't call [__gpio_lower_half__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443) because the reserved GPIOs shouldn't appear as "__/dev/gpioN__".
 
-[(`bl602_expander_irq_enable` is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L301-L325)
-
-TODO7
-
-![](https://lupyuen.github.io/images/expander-code6a.png)
+![Initialise GPIO Expander](https://lupyuen.github.io/images/expander-code6a.png)
 
 # Appendix: Set GPIO Direction
 
