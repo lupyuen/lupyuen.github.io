@@ -942,17 +942,14 @@ static const gpio_pinset_t bl602_other_pins[] =
 <p>Which is your preferred way to validate the Pin Functions? Lemme know! 🙏</p>
 <h1 id="appendix-configure-gpio"><a href="#appendix-configure-gpio">11 Appendix: Configure GPIO</a></h1>
 <p>TODO</p>
-<p>At startup our BL602 GPIO Expander configures the GPIO Input / Output / Interrupt Pins by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><code>bl602_configgpio</code></a> and <code>gpio_lower_half</code> (which registers “/dev/gpioN”)…</p>
+<p>At startup our GPIO Expander configures the <strong>GPIO Input / Output / Interrupt Pins</strong> by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a> (which registers “/dev/gpioN”)…</p>
+<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121">(Source)</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Initialise the BL602 GPIO Expander
 FAR struct ioexpander_dev_s *bl602_expander_initialize(
-  const gpio_pinset_t *gpio_inputs,
-  uint8_t gpio_input_count,
-  const gpio_pinset_t *gpio_outputs,
-  uint8_t gpio_output_count,
-  const gpio_pinset_t *gpio_interrupts,
-  uint8_t gpio_interrupt_count,
-  const gpio_pinset_t *other_pins,
-  uint8_t other_pin_count)
+  const gpio_pinset_t *gpio_inputs,     uint8_t gpio_input_count,
+  const gpio_pinset_t *gpio_outputs,    uint8_t gpio_output_count,
+  const gpio_pinset_t *gpio_interrupts, uint8_t gpio_interrupt_count,
+  const gpio_pinset_t *other_pins,      uint8_t other_pin_count)
 {
   int i;
   int ret;
@@ -963,36 +960,19 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   DEBUGASSERT(gpio_input_count + gpio_output_count + gpio_interrupt_count +
     other_pin_count &lt;= CONFIG_IOEXPANDER_NPINS);
 
-#ifdef CONFIG_BL602_EXPANDER_MULTIPLE
-  /* Allocate the device state structure */
-
-  priv = (FAR struct bl602_expander_dev_s *)kmm_zalloc(sizeof(struct bl602_expander_dev_s));
-  if (!priv)
-    {
-      gpioerr(&quot;ERROR: Failed to allocate driver instance\n&quot;);
-      return NULL;
-    }
-#else
   /* Use the one-and-only I/O Expander driver instance */
 
-  priv = &amp;g_skel;
-#endif
+  priv = &amp;g_bl602_expander_dev;
 
   /* Initialize the device state structure */
 
   priv-&gt;dev.ops = &amp;g_bl602_expander_ops;
-  nxsem_init(&amp;priv-&gt;exclsem, 0, 1);
-
-#ifdef CONFIG_IOEXPANDER_INT_ENABLE
-  /* Disable GPIO interrupts */
+  nxsem_init(&amp;priv-&gt;exclsem, 0, 1);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Disable GPIO interrupts */
 
   ret = bl602_expander_irq_enable(false);
-  if (ret &lt; 0)
-    {
-      gpioerr(&quot;ERROR: Failed to disable GPIO interrupts\n&quot;);
-      kmm_free(priv);
-      return NULL;
-    }
+  if (ret &lt; 0) { return NULL; }
 
   /* Disable interrupts for all GPIO Pins */
 
@@ -1006,15 +986,9 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, priv);
 
   ret = bl602_expander_irq_enable(true);
-  if (ret &lt; 0)
-    {
-      gpioerr(&quot;ERROR: Failed to enable GPIO interrupts\n&quot;);
-      kmm_free(priv);
-      return NULL;
-    }
-#endif
-
-  /* Mark the GPIOs in use */
+  if (ret &lt; 0) { return NULL; }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Mark the GPIOs in use */
 
   memset(gpio_is_used, 0, sizeof(gpio_is_used));
 
@@ -1037,9 +1011,9 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       ret = bl602_configgpio(pinset);
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&amp;priv-&gt;dev, gpio_pin, GPIO_INPUT_PIN, gpio_pin);
-    }
-
-  /* Configure and register the GPIO Outputs */
+    }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Configure and register the GPIO Outputs */
 
   for (i = 0; i &lt; gpio_output_count; i++)
     {
@@ -1058,9 +1032,9 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       ret = bl602_configgpio(pinset);
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&amp;priv-&gt;dev, gpio_pin, GPIO_OUTPUT_PIN, gpio_pin);
-    }
-
-  /* Configure and register the GPIO Interrupts */
+    }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Configure and register the GPIO Interrupts */
 
   for (i = 0; i &lt; gpio_interrupt_count; i++)
     {
@@ -1079,9 +1053,9 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       ret = bl602_configgpio(pinset);
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&amp;priv-&gt;dev, gpio_pin, GPIO_INTERRUPT_PIN, gpio_pin);
-    }
-
-  /* Validate the other pins (I2C, SPI, etc) */
+    }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Validate the other pins (I2C, SPI, etc) */
 
   for (i = 0; i &lt; other_pin_count; i++)
     {
@@ -1102,7 +1076,7 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 
   return &amp;priv-&gt;dev;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121">(Source)</a></p>
+<p>TODO</p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197">(<code>bl602_expander_intmask</code> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L301-L325">(<code>bl602_expander_irq_enable</code> is defined here)</a></p>
 <p>TODO7</p>
