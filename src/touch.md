@@ -527,6 +527,8 @@ _What about Touch Event `2` (Contact)?_
 
 We haven't seen this during our testing. Thus our driver ignores the event.
 
+__UPDATE:__ Our driver now handles the __Contact Event__. [(See this)](https://github.com/lupyuen/cst816s-nuttx/commit/568e5524ef9b84d696bdefb5a2fe9030321338a9)
+
 Let's check out our driver code...
 
 ![Getting I2C Touch Data](https://lupyuen.github.io/images/touch-code4a.jpg)
