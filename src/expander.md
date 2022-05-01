@@ -695,7 +695,7 @@ According to the pic above, __SPI MISO__ must be either GPIO 0, 4, 8, 12, 16 or 
 
 [(__Beware:__ MISO and MOSI are swapped)](https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped)
 
-So this __MISO Pin Defintion__ is OK...
+So this __MISO Pin Definition__ is OK...
 
 ```c
 //  GPIO 0 for MISO is OK
@@ -989,6 +989,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Validate Pin Function
 
+In NuttX, we set the __Pin Definitions__ at...
+
+-   [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145)
+
 BL602 / BL604 gives us incredible flexibility in __selecting the GPIO Pins__ for the UART, I2C, SPI and PWM Ports...
 
 -   [__"Pin Functions"__](https://lupyuen.github.io/articles/expander#pin-functions)
@@ -997,7 +1001,7 @@ BL602 / BL604 gives us incredible flexibility in __selecting the GPIO Pins__ for
 
 But we might __pick the wrong pin__ by mistake!
 
-For example, this __MISO Pin Defintion__ is OK...
+For example, this __MISO Pin Definition__ is OK...
 
 ```c
 //  GPIO 0 for MISO is OK
@@ -1065,27 +1069,21 @@ Then we would need GPIO Expander to validate the Pin Functions at runtime.
 
 Which begs the question: Shouldn't we do the same for NuttX on ESP32? What about other NuttX platforms? 🤔
 
-TODO: Pins with multiple functions
-
 ## Validate at Startup
 
 _What about validating the pins at startup?_
 
-TODO
+During initialisation, GPIO Expander could validate that the UART / I2C / SPI / PWM Pin Functions are correctly assigned to the GPIO Pin Numbers.
 
-In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers...
+So it would verify that SPI MISO (from the Pin Definitions) must be either GPIO 0, 4, 8, 12, 16 or 20.
 
--   [BL602 Reference Manual (Table 3.1 "Pin Description", Page 26)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+Any other GPIO Pin for SPI MISO will be disallowed by our GPIO Expander. (And fail at startup)
 
-For example: SPI MISO must be either GPIO 0, 4, 8, 12, 16 or 20.
-
-Any other GPIO Pin for SPI MISO will be disallowed by our BL602 GPIO Expander. (And fail at startup)
-
-_But the BL602 Pinset only tells us the Function Group (like SPI), not the specific Pin Function (like MISO)?_
+_But the Pin Definitions only tell us the Function Group (like SPI), not the specific Pin Function (like MISO)?_
 
 Yeah we might have to make the Pin Functions position-dependent. So SPI Pins will always be listed in this sequence: CS, MOSI, MISO, then CLK.
 
-Here's how it might look...
+Here's how __bl602_other_pins__ might look in [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L172-L222)
 
 ```c
 /* Other Pins for BL602 GPIO Expander (For Validation Only) */
@@ -1134,8 +1132,6 @@ static const gpio_pinset_t bl602_other_pins[] =
 };
 ```
 
-(Which looks neater with the clustering by Function Group)
-
 The macros are simple passthroughs...
 
 ```c
@@ -1145,13 +1141,9 @@ The macros are simple passthroughs...
 #define CS_MOSI_MISO_CLK(cs, mosi, miso, clk) cs, mosi, miso, clk
 ```
 
-At startup, GPIO Expander iterates through the pins and discovers that `BOARD_SPI_MISO` is the third pin (MISO) of the SPI Function Group. So it verifies that it's either GPIO 0, 4, 8, 12, 16 or 20.
+At startup, GPIO Expander iterates through the pins and discovers that __BOARD_SPI_MISO__ is the third pin (MISO) of the SPI Function Group. So it verifies that it's either GPIO 0, 4, 8, 12, 16 or 20.
 
-Are devs OK with this? Lemme know what you think!
-
-TODO1
-
-![](https://lupyuen.github.io/images/bl602-pins1a.png)
+Which is your preferred way to validate the Pin Functions? Lemme know! 🙏
 
 # Appendix: Status
 
