@@ -1036,9 +1036,20 @@ Possibly. We can enumerate __all valid combinations__ of Pin Functions and Pin N
 And we select the desired combination for each pin...
 
 ```c
-//  Select GPIO0 as MISO
+//  Select GPIO 0 as MISO
 #define BOARD_SPI_MISO SPI_MISO_PIN0
 ```
+
+_What happens if we pick the wrong pin?_
+
+This is disallowed...
+
+```c
+//  Select GPIO 3 as MISO... Not possible!
+#define BOARD_SPI_MISO SPI_MISO_PIN3
+```
+
+Because __SPI_MISO_PIN3__ doesn't exist!
 
 But to check whether the __Pin Numbers are unique__, we would still need GPIO Expander to do this at runtime.
 
