@@ -374,7 +374,9 @@ We define the Pin Numbers in [__board.h__](https://github.com/apache/incubator-n
 
 __Note: Some pins on BL602 and BL604 may only be assigned to specific functions.__
 
-Refer to the [__BL602 / BL604 Reference Manual__](https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en), Section 3.2.8 (GPIO Function) for the Pin Description Table.
+More about pin selection...
+
+-   [__"Pin Functions"__](https://lupyuen.github.io/articles/expander#pin-functions)
 
 _How shall we define the GPIO Output Pin for our LED?_
 

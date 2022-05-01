@@ -681,19 +681,21 @@ _We're selecting a GPIO Pin for a UART / I2C / SPI / PWM Port..._
 
 _Which pin can we use?_
 
-Refer to this table...
+The __Pin Functions__ for each GPIO Pin are documented here...
 
 -   [__"BL602 Reference Manual"__](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf), Table 3.1 "Pin Description" (Page 26)
 
-In NuttX, we define the pins at...
+In NuttX, we set the __Pin Definitions__ at...
 
 -   [boards/risc-v/bl602/bl602evb/include/board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145)
+
+_Let's say we're selecting a pin for SPI MISO?_
 
 According to the pic above, __SPI MISO__ must be either GPIO 0, 4, 8, 12, 16 or 20.
 
 [(__Beware:__ MISO and MOSI are swapped)](https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped)
 
-So this is OK...
+So this __MISO Pin Defintion__ is OK...
 
 ```c
 //  GPIO 0 for MISO is OK
@@ -702,14 +704,18 @@ So this is OK...
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104)
 
-But not this...
+But this MISO Pin Definition is no-no...
 
 ```c
 //  GPIO 3 for MISO is NOT OK (Oops!)
 #define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
 ```
 
-BL602 / BL604 gives us incredible flexibility in selecting the pins... But we might __pick the wrong pin__ by mistake.
+_8 possible pins for MISO? Wow that's a lot of choices!_
+
+BL602 / BL604 gives us incredible flexibility in selecting the pins...
+
+But we might __pick the wrong pin__ by mistake!
 
 (Looks like an extreme form of STM32's Alternate Pin Functions)
 
@@ -983,7 +989,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Validate Pin Function
 
-TODO
+BL602 / BL604 gives us incredible flexibility in selecting the GPIO Pins for the UART, I2C, SPI and PWM Ports...
+
+-   [__"Pin Functions"__](https://lupyuen.github.io/articles/expander#pin-functions)
+
+(8 possible pins for SPI MISO!)
+
+But we might __pick the wrong pin__ by mistake!
+
+_Is there a way to prevent such mistakes?_
+
+We have some ideas for __validating the Pin Functions__ at compile-time or at startup...
 
 In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers...
 
