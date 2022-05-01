@@ -989,7 +989,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Validate Pin Function
 
-BL602 / BL604 gives us incredible flexibility in selecting the GPIO Pins for the UART, I2C, SPI and PWM Ports...
+BL602 / BL604 gives us incredible flexibility in __selecting the GPIO Pins__ for the UART, I2C, SPI and PWM Ports...
 
 -   [__"Pin Functions"__](https://lupyuen.github.io/articles/expander#pin-functions)
 
@@ -997,9 +997,70 @@ BL602 / BL604 gives us incredible flexibility in selecting the GPIO Pins for the
 
 But we might __pick the wrong pin__ by mistake!
 
+For example, this __MISO Pin Defintion__ is OK...
+
+```c
+//  GPIO 0 for MISO is OK
+#define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104)
+
+But this MISO Pin Definition is no-no...
+
+```c
+//  GPIO 3 for MISO is NOT OK (Oops!)
+#define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+```
+
 _Is there a way to prevent such mistakes?_
 
 We have some ideas for __validating the Pin Functions__ at compile-time or at startup...
+
+## Validate at Compile-Time
+
+_Can we validate the Pin Functions at compile-time?_
+
+Possibly. We can enumerate __all valid combinations__ of Pin Functions and Pin Numbers...
+
+```c
+//  SPI MISO can be either GPIO 0, 4, 8, 12, 16 or 20
+#define SPI_MISO_PIN0  (GPIO_PIN0  | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+#define SPI_MISO_PIN4  (GPIO_PIN4  | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+#define SPI_MISO_PIN8  (GPIO_PIN8  | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+#define SPI_MISO_PIN12 (GPIO_PIN12 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+#define SPI_MISO_PIN16 (GPIO_PIN16 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+#define SPI_MISO_PIN20 (GPIO_PIN20 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+```
+
+And we select the desired combination for each pin...
+
+```c
+//  Select GPIO0 as MISO
+#define BOARD_SPI_MISO SPI_MISO_PIN0
+```
+
+But to check whether the __Pin Numbers are unique__, we would still need GPIO Expander to do this at runtime.
+
+_Shouldn't the pins be defined in Kconfig / menuconfig?_
+
+Perhaps. NuttX on ESP32 uses __Kconfig / menuconfig__ to define the pins. [(See this)](https://github.com/apache/incubator-nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984)
+
+Then we would need GPIO Expander to validate the Pin Functions at runtime.
+
+[__@Ralim__](https://mastodon.social/@Ralim/108201458447291513) has an interesting suggestion...
+
+> If each pin can only be used once, could we flip the arrignment matrix and instead have it always have an entry for each pin, which is either a selected value or hi-z by default; then use kconfig rules to prevent collisions ?
+
+Which begs the question: Shouldn't we do the same for NuttX on ESP32? What about other NuttX platforms? 🤔
+
+TODO: Pins with multiple functions
+
+## Validate at Startup
+
+_What about validating the pins at startup?_
+
+TODO
 
 In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers...
 
@@ -1076,43 +1137,6 @@ The macros are simple passthroughs...
 At startup, GPIO Expander iterates through the pins and discovers that `BOARD_SPI_MISO` is the third pin (MISO) of the SPI Function Group. So it verifies that it's either GPIO 0, 4, 8, 12, 16 or 20.
 
 Are devs OK with this? Lemme know what you think!
-
-_Can we validate the Pin Functions at compile-time?_
-
-Possibly. We can enumerate all valid combinations of Pin Functions and Pin Numbers...
-
-```c
-//  MISO can be either GPIO 0, 4, 8, 12, 16 or 20
-#define SPI_MISO_PIN0  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
-#define SPI_MISO_PIN4  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN4)
-#define SPI_MISO_PIN8  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)
-#define SPI_MISO_PIN12 (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN12)
-#define SPI_MISO_PIN16 (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN16)
-#define SPI_MISO_PIN20 (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN20)
-```
-
-And we select the desired combination for each pin...
-
-```c
-//  Select GPIO0 as MISO
-#define BOARD_SPI_MISO SPI_MISO_PIN0
-```
-
-To check whether the Pin Numbers are unique, we would still need GPIO Expander to do this at runtime.
-
-_But shouldn't the pins be defined in Kconfig / menuconfig?_
-
-Perhaps. NuttX on ESP32 uses Kconfig / menuconfig to define the pins. [(See this)](https://github.com/apache/incubator-nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984)
-
-Then we would need GPIO Expander to validate the Pin Functions at runtime.
-
-[__@Ralim__](https://mastodon.social/@Ralim/108201458447291513) has an interesting suggestion...
-
-> If each pin can only be used once, could we flip the arrignment matrix and instead have it always have an entry for each pin, which is either a selected value or hi-z by default; then use kconfig rules to prevent collisions ?
-
-Which begs the question: Shouldn't we do the same for NuttX on ESP32? What about other NuttX platforms? 🤔
-
-TODO: Pins with multiple functions
 
 TODO1
 
