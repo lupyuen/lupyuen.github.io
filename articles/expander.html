@@ -640,7 +640,7 @@ bl602_expander = bl602_expander_initialize(
 <p><em>Let’s say we’re selecting a pin for SPI MISO?</em></p>
 <p>According to the pic above, <strong>SPI MISO</strong> must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped">(<strong>Beware:</strong> MISO and MOSI are swapped)</a></p>
-<p>So this <strong>MISO Pin Defintion</strong> is OK…</p>
+<p>So this <strong>MISO Pin Definition</strong> is OK…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 0 for MISO is OK
 #define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
@@ -836,13 +836,17 @@ CHANNEL MASK: 0003</code></pre></div>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1518352162966802432"><strong>this Twitter Thread</strong></a></li>
 </ol>
 <h1 id="appendix-validate-pin-function"><a href="#appendix-validate-pin-function">10 Appendix: Validate Pin Function</a></h1>
+<p>In NuttX, we set the <strong>Pin Definitions</strong> at…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
+</ul>
 <p>BL602 / BL604 gives us incredible flexibility in <strong>selecting the GPIO Pins</strong> for the UART, I2C, SPI and PWM Ports…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/expander#pin-functions"><strong>“Pin Functions”</strong></a></li>
 </ul>
 <p>(8 possible pins for SPI MISO!)</p>
 <p>But we might <strong>pick the wrong pin</strong> by mistake!</p>
-<p>For example, this <strong>MISO Pin Defintion</strong> is OK…</p>
+<p>For example, this <strong>MISO Pin Definition</strong> is OK…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 0 for MISO is OK
 #define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
@@ -878,19 +882,14 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>If each pin can only be used once, could we flip the arrignment matrix and instead have it always have an entry for each pin, which is either a selected value or hi-z by default; then use kconfig rules to prevent collisions ?</p>
 </blockquote>
 <p>Which begs the question: Shouldn’t we do the same for NuttX on ESP32? What about other NuttX platforms? 🤔</p>
-<p>TODO: Pins with multiple functions</p>
 <h2 id="validate-at-startup"><a href="#validate-at-startup">10.2 Validate at Startup</a></h2>
 <p><em>What about validating the pins at startup?</em></p>
-<p>TODO</p>
-<p>In future, our BL602 GPIO Expander will validate that the SPI / I2C / UART Pin Functions are correctly assigned to the GPIO Pin Numbers…</p>
-<ul>
-<li><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">BL602 Reference Manual (Table 3.1 “Pin Description”, Page 26)</a></li>
-</ul>
-<p>For example: SPI MISO must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
-<p>Any other GPIO Pin for SPI MISO will be disallowed by our BL602 GPIO Expander. (And fail at startup)</p>
-<p><em>But the BL602 Pinset only tells us the Function Group (like SPI), not the specific Pin Function (like MISO)?</em></p>
+<p>During initialisation, GPIO Expander could validate that the UART / I2C / SPI / PWM Pin Functions are correctly assigned to the GPIO Pin Numbers.</p>
+<p>So it would verify that SPI MISO (from the Pin Definitions) must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
+<p>Any other GPIO Pin for SPI MISO will be disallowed by our GPIO Expander. (And fail at startup)</p>
+<p><em>But the Pin Definitions only tell us the Function Group (like SPI), not the specific Pin Function (like MISO)?</em></p>
 <p>Yeah we might have to make the Pin Functions position-dependent. So SPI Pins will always be listed in this sequence: CS, MOSI, MISO, then CLK.</p>
-<p>Here’s how it might look…</p>
+<p>Here’s how <strong>bl602_other_pins</strong> might look in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L172-L222">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Other Pins for BL602 GPIO Expander (For Validation Only) */
 
 static const gpio_pinset_t bl602_other_pins[] =
@@ -935,16 +934,13 @@ static const gpio_pinset_t bl602_other_pins[] =
   ),
 #endif  /* BOARD_SPI_CS */
 };</code></pre></div>
-<p>(Which looks neater with the clustering by Function Group)</p>
 <p>The macros are simple passthroughs…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define CH(ch)            ch
 #define RX_TX(rx, tx)     rx,  tx
 #define SCL_SDA(scl, sda) scl, sda
 #define CS_MOSI_MISO_CLK(cs, mosi, miso, clk) cs, mosi, miso, clk</code></pre></div>
-<p>At startup, GPIO Expander iterates through the pins and discovers that <code>BOARD_SPI_MISO</code> is the third pin (MISO) of the SPI Function Group. So it verifies that it’s either GPIO 0, 4, 8, 12, 16 or 20.</p>
-<p>Are devs OK with this? Lemme know what you think!</p>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/bl602-pins1a.png" alt="" /></p>
+<p>At startup, GPIO Expander iterates through the pins and discovers that <strong>BOARD_SPI_MISO</strong> is the third pin (MISO) of the SPI Function Group. So it verifies that it’s either GPIO 0, 4, 8, 12, 16 or 20.</p>
+<p>Which is your preferred way to validate the Pin Functions? Lemme know! 🙏</p>
 <h1 id="appendix-status"><a href="#appendix-status">11 Appendix: Status</a></h1>
 <p>TODO</p>
 <p>GPIO Expander calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><code>bl602_configgpio</code></a>, <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><code>bl602_gpioread</code></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><code>bl602_gpiowrite</code></a> to configure / read / write GPIOs</p>
