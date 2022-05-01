@@ -301,7 +301,7 @@ Now that NuttX is up, let's run some NuttX Apps!
 
 > [(Source)](https://gist.github.com/lupyuen/80f3bc431c9e5aa93d429809c9554629)
 
-> ("i2c0" is missing from the pic)
+> [(__UPDATE:__ We have renumbered the GPIOs)](https://lupyuen.github.io/articles/expander)
 
 # NuttX Apps
 
