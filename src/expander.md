@@ -1149,19 +1149,17 @@ Which is your preferred way to validate the Pin Functions? Lemme know! 🙏
 
 TODO
 
-At startup our BL602 GPIO Expander configures the GPIO Input / Output / Interrupt Pins by calling [`bl602_configgpio`](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140) and `gpio_lower_half` (which registers "/dev/gpioN")...
+At startup our GPIO Expander configures the __GPIO Input / Output / Interrupt Pins__ by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140) and [__gpio_lower_half__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443) (which registers "/dev/gpioN")...
+
+[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121)
 
 ```c
 //  Initialise the BL602 GPIO Expander
 FAR struct ioexpander_dev_s *bl602_expander_initialize(
-  const gpio_pinset_t *gpio_inputs,
-  uint8_t gpio_input_count,
-  const gpio_pinset_t *gpio_outputs,
-  uint8_t gpio_output_count,
-  const gpio_pinset_t *gpio_interrupts,
-  uint8_t gpio_interrupt_count,
-  const gpio_pinset_t *other_pins,
-  uint8_t other_pin_count)
+  const gpio_pinset_t *gpio_inputs,     uint8_t gpio_input_count,
+  const gpio_pinset_t *gpio_outputs,    uint8_t gpio_output_count,
+  const gpio_pinset_t *gpio_interrupts, uint8_t gpio_interrupt_count,
+  const gpio_pinset_t *other_pins,      uint8_t other_pin_count)
 {
   int i;
   int ret;
@@ -1172,36 +1170,23 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   DEBUGASSERT(gpio_input_count + gpio_output_count + gpio_interrupt_count +
     other_pin_count <= CONFIG_IOEXPANDER_NPINS);
 
-#ifdef CONFIG_BL602_EXPANDER_MULTIPLE
-  /* Allocate the device state structure */
-
-  priv = (FAR struct bl602_expander_dev_s *)kmm_zalloc(sizeof(struct bl602_expander_dev_s));
-  if (!priv)
-    {
-      gpioerr("ERROR: Failed to allocate driver instance\n");
-      return NULL;
-    }
-#else
   /* Use the one-and-only I/O Expander driver instance */
 
-  priv = &g_skel;
-#endif
+  priv = &g_bl602_expander_dev;
 
   /* Initialize the device state structure */
 
   priv->dev.ops = &g_bl602_expander_ops;
   nxsem_init(&priv->exclsem, 0, 1);
+```
 
-#ifdef CONFIG_IOEXPANDER_INT_ENABLE
+TODO
+
+```c
   /* Disable GPIO interrupts */
 
   ret = bl602_expander_irq_enable(false);
-  if (ret < 0)
-    {
-      gpioerr("ERROR: Failed to disable GPIO interrupts\n");
-      kmm_free(priv);
-      return NULL;
-    }
+  if (ret < 0) { return NULL; }
 
   /* Disable interrupts for all GPIO Pins */
 
@@ -1215,14 +1200,12 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, priv);
 
   ret = bl602_expander_irq_enable(true);
-  if (ret < 0)
-    {
-      gpioerr("ERROR: Failed to enable GPIO interrupts\n");
-      kmm_free(priv);
-      return NULL;
-    }
-#endif
+  if (ret < 0) { return NULL; }
+```
 
+TODO
+
+```c
   /* Mark the GPIOs in use */
 
   memset(gpio_is_used, 0, sizeof(gpio_is_used));
@@ -1247,7 +1230,11 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&priv->dev, gpio_pin, GPIO_INPUT_PIN, gpio_pin);
     }
+```
 
+TODO
+
+```c
   /* Configure and register the GPIO Outputs */
 
   for (i = 0; i < gpio_output_count; i++)
@@ -1268,7 +1255,11 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&priv->dev, gpio_pin, GPIO_OUTPUT_PIN, gpio_pin);
     }
+```
 
+TODO
+
+```c
   /* Configure and register the GPIO Interrupts */
 
   for (i = 0; i < gpio_interrupt_count; i++)
@@ -1289,7 +1280,11 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&priv->dev, gpio_pin, GPIO_INTERRUPT_PIN, gpio_pin);
     }
+```
 
+TODO
+
+```c
   /* Validate the other pins (I2C, SPI, etc) */
 
   for (i = 0; i < other_pin_count; i++)
@@ -1313,7 +1308,7 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 }
 ```
 
-[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121)
+TODO
 
 [(`bl602_expander_intmask` is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197)
 
