@@ -1149,11 +1149,17 @@ Which is your preferred way to validate the Pin Functions? Lemme know! 🙏
 
 # Appendix: Initialise GPIO Expander
 
-TODO
+At startup, our GPIO Expander does the following initialisation...
 
-At startup our GPIO Expander configures the __GPIO Input / Output / Interrupt Pins__ by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140) and [__gpio_lower_half__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443) (which registers "/dev/gpioN")...
+-   Attach the GPIO Expander __Interrupt Handler__ to the GPIO IRQ
 
-[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121)
+-   Configure the __GPIO Input / Output / Interrupt Pins__ by calling [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140)
+
+-   Register the GPIOs as "__/dev/gpioN__" by calling [__gpio_lower_half__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443)
+
+-   Validate the GPIOs
+
+Here's the code: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121)
 
 ```c
 //  Initialise the BL602 GPIO Expander
@@ -1223,7 +1229,6 @@ TODO
       if (gpio_is_used[gpio_pin])
         {
           gpioerr("ERROR: GPIO pin %d is already in use\n", gpio_pin);
-          kmm_free(priv);
           return NULL;
         }
       gpio_is_used[gpio_pin] = true;
@@ -1248,7 +1253,6 @@ TODO
       if (gpio_is_used[gpio_pin])
         {
           gpioerr("ERROR: GPIO pin %d is already in use\n", gpio_pin);
-          kmm_free(priv);
           return NULL;
         }
       gpio_is_used[gpio_pin] = true;
@@ -1273,7 +1277,6 @@ TODO
       if (gpio_is_used[gpio_pin])
         {
           gpioerr("ERROR: GPIO pin %d is already in use\n", gpio_pin);
-          kmm_free(priv);
           return NULL;
         }
       gpio_is_used[gpio_pin] = true;
@@ -1298,7 +1301,6 @@ TODO
       if (gpio_is_used[gpio_pin])
         {
           gpioerr("ERROR: GPIO pin %d is already in use\n", gpio_pin);
-          kmm_free(priv);
           return NULL;
         }
       gpio_is_used[gpio_pin] = true;
@@ -1323,6 +1325,56 @@ TODO7
 # Appendix: Set GPIO Direction
 
 TODO
+
+From [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L410-L454)
+
+```c
+/****************************************************************************
+ * Name: bl602_expander_direction
+ *
+ * Description:
+ *   Set the direction of an ioexpander pin. Required.
+ *
+ * Input Parameters:
+ *   dev - Device-specific state data
+ *   pin - The index of the pin to alter in this call
+ *   dir - One of the IOEXPANDER_DIRECTION_ macros
+ *
+ * Returned Value:
+ *   0 on success, else a negative error code
+ *
+ ****************************************************************************/
+
+static int bl602_expander_direction(FAR struct ioexpander_dev_s *dev, uint8_t pin,
+                          int direction)
+{
+  FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
+  int ret;
+
+  if (direction != IOEXPANDER_DIRECTION_IN &&
+      direction != IOEXPANDER_DIRECTION_OUT)
+    {
+      return -EINVAL;
+    }
+
+  gpioinfo("WARNING: Unimplemented direction: pin=%u, direction=%s\n",
+           pin, (direction == IOEXPANDER_DIRECTION_IN) ? "IN" : "OUT");
+  DEBUGASSERT(priv != NULL && pin < CONFIG_IOEXPANDER_NPINS);
+
+  /* Get exclusive access to the I/O Expander */
+
+  ret = bl602_expander_lock(priv);
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  /* Unlock the I/O Expander */
+
+  bl602_expander_unlock(priv);
+  return ret;
+}
+```
 
 # Appendix: Set GPIO Option
 
