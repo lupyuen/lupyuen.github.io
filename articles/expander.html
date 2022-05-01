@@ -862,8 +862,13 @@ CHANNEL MASK: 0003</code></pre></div>
 #define SPI_MISO_PIN16 (GPIO_PIN16 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
 #define SPI_MISO_PIN20 (GPIO_PIN20 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
 <p>And we select the desired combination for each pin…</p>
-<div class="example-wrap"><pre class="language-c"><code>//  Select GPIO0 as MISO
+<div class="example-wrap"><pre class="language-c"><code>//  Select GPIO 0 as MISO
 #define BOARD_SPI_MISO SPI_MISO_PIN0</code></pre></div>
+<p><em>What happens if we pick the wrong pin?</em></p>
+<p>This is disallowed…</p>
+<div class="example-wrap"><pre class="language-c"><code>//  Select GPIO 3 as MISO... Not possible!
+#define BOARD_SPI_MISO SPI_MISO_PIN3</code></pre></div>
+<p>Because <strong>SPI_MISO_PIN3</strong> doesn’t exist!</p>
 <p>But to check whether the <strong>Pin Numbers are unique</strong>, we would still need GPIO Expander to do this at runtime.</p>
 <p><em>Shouldn’t the pins be defined in Kconfig / menuconfig?</em></p>
 <p>Perhaps. NuttX on ESP32 uses <strong>Kconfig / menuconfig</strong> to define the pins. <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984">(See this)</a></p>
