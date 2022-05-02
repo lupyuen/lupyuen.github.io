@@ -995,6 +995,7 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   priv-&gt;dev.ops = &amp;g_bl602_expander_ops;
   nxsem_init(&amp;priv-&gt;exclsem, 0, 1);</code></pre></div>
 <p>The function begins by populating the <strong>Device State</strong> for GPIO Expander.</p>
+<p>(Including the <strong>Semaphore</strong> that will lock the GPIO Expander)</p>
 <p>Next it disables Specific GPIO Interrupts, and attaches the <strong>GPIO Expander Interrupt Handler</strong> to the GPIO IRQ…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Disable GPIO interrupts */
   int ret = bl602_expander_irq_enable(false);
