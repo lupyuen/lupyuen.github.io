@@ -852,6 +852,8 @@ CHANNEL MASK: 0003</code></pre></div>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1518352162966802432"><strong>this Twitter Thread</strong></a></li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/bl602-pins1a.png" alt="Pin Functions" /></p>
+<p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(From BL602 Reference Manual)</a></p>
 <h1 id="appendix-validate-pin-function"><a href="#appendix-validate-pin-function">10 Appendix: Validate Pin Function</a></h1>
 <p>In NuttX, we set the <strong>Pin Definitions</strong> at…</p>
 <ul>
@@ -861,7 +863,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/expander#pin-functions"><strong>“Pin Functions”</strong></a></li>
 </ul>
-<p>(8 possible pins for SPI MISO!)</p>
+<p>(8 possible pins for SPI MISO! Pic above)</p>
 <p>But we might <strong>pick the wrong pin</strong> by mistake!</p>
 <p>For example, this <strong>MISO Pin Definition</strong> is OK…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 0 for MISO is OK
