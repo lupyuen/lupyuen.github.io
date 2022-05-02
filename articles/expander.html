@@ -94,9 +94,7 @@
 <li><a href="#appendix-read-gpio">15 Appendix: Read GPIO</a><ul></ul></li>
 <li><a href="#appendix-attach-gpio-interrupt">16 Appendix: Attach GPIO Interrupt</a><ul></ul></li>
 <li><a href="#appendix-detach-gpio-interrupt">17 Appendix: Detach GPIO Interrupt</a><ul></ul></li>
-<li><a href="#appendix-handle-gpio-interrupt">18 Appendix: Handle GPIO Interrupt</a><ul></ul></li>
-<li><a href="#attach-bl602-interrupt">19 Attach BL602 Interrupt</a><ul></ul></li>
-<li><a href="#enable-bl602-interrupt">20 Enable BL602 Interrupt</a><ul></ul></li></ul></nav><p>📝 <em>5 May 2022</em></p>
+<li><a href="#appendix-handle-gpio-interrupt">18 Appendix: Handle GPIO Interrupt</a><ul></ul></li></ul></nav><p>📝 <em>5 May 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/expander-title.jpg" alt="NuttX GPIO Expander for PineDio Stack BL604" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> (Pine64’s newest RISC-V board) has an interesting problem on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a>…</p>
 <p><em><strong>Too Many GPIOs!</strong></em></p>
@@ -616,7 +614,7 @@ bl602_expander = bl602_expander_initialize(
   //  BL602 Pinsets for Other Pins (UART, I2C, SPI, PWM) and number of pins
   const gpio_pinset_t *other_pins,      uint8_t other_pin_count) {
   ...
-  //  Mark the GPIOs in use
+  //  Mark the GPIOs in use. CONFIG_IOEXPANDER_NPINS is 23
   bool gpio_is_used[CONFIG_IOEXPANDER_NPINS];
   memset(gpio_is_used, 0, sizeof(gpio_is_used));
 
@@ -1002,7 +1000,7 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   int ret = bl602_expander_irq_enable(false);
   if (ret &lt; 0) { return NULL; }
 
-  /* Disable interrupts for all GPIO Pins */
+  /* Disable interrupts for all GPIO Pins. CONFIG_IOEXPANDER_NPINS is 23 */
   for (uint8_t pin = 0; pin &lt; CONFIG_IOEXPANDER_NPINS; pin++)
     {
       bl602_expander_intmask(pin, 1);
@@ -1019,7 +1017,7 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136">(<strong>irq_attach</strong> comes from the BL602 IRQ Driver)</a></p>
 <p>(Specific GPIO Interrupts are enabled later when we attach an Interrupt Handler to the specific GPIO)</p>
 <p>To prevent reuse of GPIOs, we prepare the array that will <strong>mark the used GPIOs</strong>…</p>
-<div class="example-wrap"><pre class="language-c"><code>  /* Mark the GPIOs in use */
+<div class="example-wrap"><pre class="language-c"><code>  /* Mark the GPIOs in use. CONFIG_IOEXPANDER_NPINS is 23 */
   bool gpio_is_used[CONFIG_IOEXPANDER_NPINS];
   memset(gpio_is_used, 0, sizeof(gpio_is_used));</code></pre></div>
 <p>Now we handle the <strong>GPIO Inputs</strong>.</p>
@@ -1206,6 +1204,10 @@ static int bl602_expander_option(
   return ret;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L198-L246">(<strong>bl602_expander_set_intmod</strong> is defined here)</a></p>
+<p>Note that we copied <strong>bl602_expander_set_intmod</strong> from BL602 EVB GPIO Driver and fixed this bug…</p>
+<ul>
+<li><a href="https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538"><strong>“Incorrect call to bl602_gpio_set_intmod”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/expander-code7a.png" alt="Set GPIO Option" /></p>
 <h1 id="appendix-write-gpio"><a href="#appendix-write-gpio">14 Appendix: Write GPIO</a></h1>
 <p>To <strong>write to a GPIO Output</strong>, our GPIO Expander calls the <strong>BL602 GPIO Driver</strong>: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L550-L594">bl602_expander.c</a></p>
@@ -1280,7 +1282,7 @@ static FAR void *bl602_expander_attach(
 <p>The function accepts a <strong>“Special Pinset”</strong>, in which <strong>Bit <code>N</code> is 1</strong> to specify <strong>GPIO Pin <code>N</code></strong>.</p>
 <p>(Not to be confused with BL602 Pinset, which numbers pins sequentially)</p>
 <p>We iterate through the bits of the Special Pinset to find the <strong>GPIO Pin Number</strong> that’s marked…</p>
-<div class="example-wrap"><pre class="language-c"><code>  /* Handle each GPIO Pin in the pinset */
+<div class="example-wrap"><pre class="language-c"><code>  /* Handle each GPIO Pin in the pinset. CONFIG_IOEXPANDER_NPINS is 23 */
   for (uint8_t gpio_pin = 0; gpio_pin &lt; CONFIG_IOEXPANDER_NPINS; gpio_pin++)
     {
       /* If GPIO Pin is set in the pinset... */
@@ -1342,7 +1344,7 @@ static int bl602_expander_detach(
   DEBUGASSERT((uintptr_t)cb &gt;= (uintptr_t)&amp;priv-&gt;cb[0] &amp;&amp;
               (uintptr_t)cb &lt;=
               (uintptr_t)&amp;priv-&gt;cb[CONFIG_IOEXPANDER_NPINS - 1]);</code></pre></div>
-<p>The function accepts a <strong>Callback Handle</strong> that was returned when attaching an Interrupt Handler. <a href="https://lupyuen.github.io/articles/expander#appendix-attach-gpio-interrupt">(See this)</a></p>
+<p>The function accepts a <strong>Callback Handle</strong> that’s returned when we attach an Interrupt Handler. <a href="https://lupyuen.github.io/articles/expander#appendix-attach-gpio-interrupt">(See this)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Disable the GPIO Interrupt */
   DEBUGASSERT(cb-&gt;pinset &lt; CONFIG_IOEXPANDER_NPINS);
@@ -1358,7 +1360,7 @@ static int bl602_expander_detach(
 <p><img src="https://lupyuen.github.io/images/expander-code11a.png" alt="Detach GPIO Interrupt" /></p>
 <h1 id="appendix-handle-gpio-interrupt"><a href="#appendix-handle-gpio-interrupt">18 Appendix: Handle GPIO Interrupt</a></h1>
 <p>TODO</p>
-<p>Here’s how our BL602 GPIO Expander handles a GPIO Interrupt…</p>
+<p>Here’s how our BL602 GPIO Expander handles a GPIO Interrupt: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L327-L393">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Handle GPIO Interrupt. Based on
 //  https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L256-L304
 static int bl602_expander_interrupt(
@@ -1369,45 +1371,39 @@ static int bl602_expander_interrupt(
   FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)arg;
   uint32_t time_out = 0;
   uint8_t gpio_pin;
-
-  gpioinfo(&quot;Interrupt! context=%p, priv=%p\n&quot;, context, priv);
   DEBUGASSERT(priv != NULL);
 
-  /* TODO: Check only the GPIO Pins that have registered for interrupts */
-
+  /* TODO: Check only the GPIO Pins that have registered for interrupts. CONFIG_IOEXPANDER_NPINS is 23 */
   for (gpio_pin = 0; gpio_pin &lt; CONFIG_IOEXPANDER_NPINS; gpio_pin++)
     {
       /* Found the GPIO for the interrupt */
-
       if (1 == bl602_expander_get_intstatus(gpio_pin))
-        {
-          FAR struct bl602_expander_callback_s *cb = &amp;priv-&gt;cb[gpio_pin];
+        {</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>          FAR struct bl602_expander_callback_s *cb = &amp;priv-&gt;cb[gpio_pin];
           ioe_callback_t cbfunc = cb-&gt;cbfunc;
           FAR void* cbarg = cb-&gt;cbarg;
 
           /* Attempt to clear the Interrupt Status */
-
-          bl602_expander_intclear(gpio_pin, 1);
-
-          /* Check Interrupt Status with timeout */
-
+          bl602_expander_intclear(gpio_pin, 1);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>          /* Check Interrupt Status with timeout */
           time_out = 32;
           do
             {
               time_out--;
             }
-          while ((1 == bl602_expander_get_intstatus(gpio_pin)) &amp;&amp; time_out);
-          if (!time_out)
+          while ((1 == bl602_expander_get_intstatus(gpio_pin)) &amp;&amp; time_out);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>          if (!time_out)
             {
               gpiowarn(&quot;WARNING: Clear GPIO interrupt status fail.\n&quot;);
-            }
-
-          /* If time_out==0, Interrupt Status not cleared */
-
-          bl602_expander_intclear(gpio_pin, 0);
-
-          /* NOTE: Callback will run in the context of Interrupt Handler */
-
+            }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>          /* If time_out==0, Interrupt Status not cleared */
+          bl602_expander_intclear(gpio_pin, 0);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>          /* NOTE: Callback will run in the context of Interrupt Handler */
           if (cbfunc == NULL)
             {
               gpioinfo(&quot;Missing callback for GPIO %d\n&quot;, gpio_pin);
@@ -1419,96 +1415,11 @@ static int bl602_expander_interrupt(
             }
         }
     }
-
   return OK;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L327-L393">(Source)</a></p>
-<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L275-L300">(<code>bl602_expander_intclear</code> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L247-L274">(<code>bl602_expander_get_intstatus</code> is defined here)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/expander-code12a.png" alt="" /></p>
-<h1 id="attach-bl602-interrupt"><a href="#attach-bl602-interrupt">19 Attach BL602 Interrupt</a></h1>
-<p>TODO</p>
-<p>We call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772"><strong>bl602_irq_attach</strong></a> to attach our GPIO Interrupt Handler.</p>
-<p><strong>bl602_irq_attach</strong> is defined below: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727">cst816s.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
-//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
-static int bl602_irq_attach(
-  gpio_pinset_t pinset,       //  BL602 Pinset
-  FAR isr_handler *callback,  //  Callback Function
-  FAR void *arg)              //  Callback Argument
-{
-  int ret = 0;
-  uint8_t gpio_pin = (pinset &amp; GPIO_PIN_MASK) &gt;&gt; GPIO_PIN_SHIFT;
-  FAR struct bl602_gpint_dev_s *dev = NULL;  //  TODO
-
-  DEBUGASSERT(callback != NULL);
-
-  /* Configure the pin that will be used as interrupt input */
-
-  #warning Check GLB_GPIO_INT_TRIG_NEG_PULSE  //  TODO
-  bl602_expander_set_intmod(gpio_pin, 1, GLB_GPIO_INT_TRIG_NEG_PULSE);
-  ret = bl602_configgpio(pinset);
-  if (ret &lt; 0)
-    {
-      gpioerr(&quot;Failed to configure GPIO pin %d\n&quot;, gpio_pin);
-      return ret;
-    }
-
-  /* Make sure the interrupt is disabled */
-
-  bl602_expander_pinset = pinset;
-  bl602_expander_callback = callback;
-  bl602_expander_arg = arg;
-  bl602_expander_intmask(gpio_pin, 1);
-
-  irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, dev);
-  bl602_expander_intmask(gpio_pin, 0);
-
-  gpioinfo(&quot;Attach %p\n&quot;, callback);
-
-  return 0;
-}</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140">(<strong>bl602_configgpio</strong> is defined in the BL602 GPIO Driver)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136">(<strong>irq_attach</strong> comes from the BL602 IRQ Driver)</a></p>
-<p>This code calls two functions from the <strong>BL602 GPIO Expander</strong>…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L890-L937"><strong>bl602_expander_set_intmod</strong></a>: Set GPIO Interrupt Mode</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538">(We fixed this bug)</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888"><strong>bl602_expander_intmask</strong></a>: Set GPIO Interrupt Mask</p>
-</li>
-</ul>
-<h1 id="enable-bl602-interrupt"><a href="#enable-bl602-interrupt">20 Enable BL602 Interrupt</a></h1>
-<p>TODO</p>
-<p>We call <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804"><strong>bl602_irq_enable</strong></a> to enable (or disable) GPIO Interrupts.  Here’s the function: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804">cst816s.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>//  Enable or disable GPIO Interrupt for Touch Controller.
-//  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L507-L535
-static int bl602_irq_enable(bool enable)
-{
-  if (enable)
-    {
-      if (bl602_expander_callback != NULL)
-        {
-          gpioinfo(&quot;Enable interrupt\n&quot;);
-          up_enable_irq(BL602_IRQ_GPIO_INT0);
-        }
-      else
-        {
-          gpiowarn(&quot;No callback attached\n&quot;);
-        }
-    }
-  else
-    {
-      gpioinfo(&quot;Disable interrupt\n&quot;);
-      up_disable_irq(BL602_IRQ_GPIO_INT0);
-    }
-
-  return 0;
-}</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_irq.c#L110-L170">(<strong>up_enable_irq</strong> and <strong>up_disable_irq</strong> are defined in the BL602 IRQ Driver)</a></p>
+<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L275-L300">(<strong>bl602_expander_intclear</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L247-L274">(<strong>bl602_expander_get_intstatus</strong> is defined here)</a></p>
+<p><img src="https://lupyuen.github.io/images/expander-code12a.png" alt="Handle GPIO Interrupt" /></p>
 
     
 </body>
