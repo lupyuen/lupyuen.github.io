@@ -66,7 +66,7 @@ _So we're just renumbering GPIOs?_
 
 Above and beyond that, our BL604 GPIO Expander serves other functions...
 
--   Attach and detach __GPIO Interrupt Handlers__
+-   Attach and detach __GPIO Interrupt Handler Callbacks__
 
 -   __Validate GPIO Pin Numbers__ at startup
 
@@ -233,7 +233,7 @@ Yep, NuttX lets us create __I/O Expander Drivers__ that will manage many Input, 
 
 -   [__NuttX I/O Expander Driver Interface__](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h)
 
-I/O Expanders will support reading and writing to GPIOs, also attaching and detaching Interrupt Handlers. (Pic above)
+I/O Expanders will support reading and writing to GPIOs, also attaching and detaching Interrupt Handler Callbacks. (Pic above)
 
 _Isn't an I/O Expander Driver supposed to be Platform-Independent?_
 
@@ -268,7 +268,7 @@ Our GPIO Expander supports these __GPIO Operations__...
 
 -   Write to a __GPIO Output__
 
--   Attach / Detach a __GPIO Interrupt Handler__
+-   Attach / Detach a __GPIO Interrupt Handler Callback__
 
 We define the GPIO Operations like so: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L141-L159)
 
@@ -281,8 +281,8 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
   bl602_expander_readpin,    //  Read from GPIO Input
   bl602_expander_readbuf,    //  (Read Buffer Not Implemented)
   ...
-  bl602_expander_attach,     //  Attach GPIO Interrupt Handler
-  bl602_expander_detach      //  Detach GPIO Interrupt Handler
+  bl602_expander_attach,     //  Attach GPIO Interrupt Handler Callback
+  bl602_expander_detach      //  Detach GPIO Interrupt Handler Callback
 };
 ```
 
@@ -320,11 +320,11 @@ Let's look at GPIO Interrupts, which are more complicated...
 
 _BL602 EVB works OK with GPIO Interrupts?_
 
-As noted (eloquently) by Robert Lipe, it's __difficult to attach a GPIO Interrupt Handler__ with BL602 EVB...
+As noted (eloquently) by Robert Lipe, it's __difficult to attach a GPIO Interrupt Handler Callback__ with BL602 EVB...
 
 -   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
 
-> ![As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)](https://lupyuen.github.io/images/expander-button.jpg)
+> ![As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler Callback is hard (because our stars are misaligned)](https://lupyuen.github.io/images/expander-button.jpg)
 
 > [(Source)](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
 
@@ -342,15 +342,15 @@ All GPIO Interrupts are multiplexed into __One Single GPIO IRQ!__
 
 [(__BL602_IRQ_GPIO_INT0__ is the common GPIO IRQ)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505)
 
-BL602 EVB __demultiplexes the GPIO IRQ__ and calls the GPIO Interrupt Handlers.
+BL602 EVB __demultiplexes the GPIO IRQ__ and calls the GPIO Interrupt Handler Callbacks.
 
 ![Attaching a GPIO Interrupt with BL602 EVB](https://lupyuen.github.io/images/expander-code2a.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505)
 
-_So we call BL602 EVB to attach our own GPIO Interrupt Handler?_
+_So we call BL602 EVB to attach our own GPIO Interrupt Handler Callback?_
 
-Sadly we can't. BL602 EVB __doesn't expose a Public Function__ that we may call to attach our Interrupt Handler.
+Sadly we can't. BL602 EVB __doesn't expose a Public Function__ that we may call to attach our Interrupt Handler Callback.
 
 (__gpint_attach__ is a Private Function, as shown above)
 
@@ -364,17 +364,17 @@ Exactly! Our __GPIO Expander__ shall take over these duties from BL602 EVB...
 
 -   __Demultiplex__ the IRQ
 
--   Call the right __GPIO Interrupt Handler__
+-   Call the right __GPIO Interrupt Handler Callback__
 
 More about the implementation in a moment. Let's talk about calling the GPIO Expander...
 
 ## Attach Interrupt Handler
 
-_How do we attach a GPIO Interrupt Handler?_
+_How do we attach a GPIO Interrupt Handler Callback?_
 
-Because GPIO Expander implements the I/O Expander Interface, we may call __IOEP_ATTACH__ to attach an Interrupt Handler.
+Because GPIO Expander implements the I/O Expander Interface, we may call __IOEP_ATTACH__ to attach an Interrupt Handler Callback.
 
-Let's attach an Interrupt Handler that will be called when we press the __Push Button__ (GPIO 12) on PineDio Stack: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704)
+Let's attach an Interrupt Handler Callback that will be called when we press the __Push Button__ (GPIO 12) on PineDio Stack: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704)
 
 ```c
 #include <nuttx/ioexpander/gpio.h>
@@ -402,23 +402,23 @@ IOEXP_SETOPTION(
 );
 ```
 
-Finally we call GPIO Expander to __attach our Interrupt Handler__...
+Finally we call GPIO Expander to __attach our Interrupt Handler Callback__...
 
 ```c
-//  Attach our GPIO interrupt handler
+//  Attach our GPIO interrupt handler callback
 void *handle = IOEP_ATTACH(
   bl602_expander,                //  BL602 GPIO Expander
   (ioe_pinset_t) 1 << gpio_pin,  //  GPIO Pin converted to Pinset
-  button_isr_handler,            //  GPIO Interrupt Handler
+  button_isr_handler,            //  GPIO Interrupt Handler Callback
   NULL                           //  TODO: Set the callback argument
 );
 DEBUGASSERT(handle != NULL);
 ```
 
-The __Interrupt Handler__ is defined as...
+The __Interrupt Handler Callback__ is defined as...
 
 ```c
-//  Our GPIO Interrupt Handler
+//  Our GPIO Interrupt Handler Callback
 static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pinset, FAR void *arg) {
   gpioinfo("Button Pressed\n");
   return 0;
@@ -427,7 +427,7 @@ static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pin
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044)
 
-Note that the Interrupt Handler runs in the __BL602 Interrupt Context__.
+Note that the Interrupt Handler Callback runs in the __BL602 Interrupt Context__.
 
 Be careful!
 
@@ -435,7 +435,7 @@ Be careful!
 
 Another way to test the Push Button Interrupt is to use the __GPIO Command__. 
 
-(This only works if we don't call __IOEP_ATTACH__ to attach the Interrupt Handler)
+(This only works if we don't call __IOEP_ATTACH__ to attach the Interrupt Handler Callback)
 
 Enter this in the NuttX Shell...
 
@@ -469,7 +469,7 @@ Interrupt pin: Value=1
 
 _Who else is calling GPIO Expander to handle interrupts?_
 
-The __CST816S Driver__ for PineDio Stack's Touch Panel calls GPIO Expander to attach an Interrupt Handler (that's called when the screen is touched)...
+The __CST816S Driver__ for PineDio Stack's Touch Panel calls GPIO Expander to attach an Interrupt Handler Callback (that's called when the screen is touched)...
 
 -   [__"Initialise CST816S Driver"__](https://lupyuen.github.io/articles/touch#initialise-driver)
 
@@ -816,7 +816,7 @@ cst816s_register: Driver registered
 
 Which says that our NuttX Driver for [__CST816S Touch Panel__](https://lupyuen.github.io/articles/touch) has called GPIO Expander to configure GPIO 9 for __Falling Edge Trigger__. (High to Low)
 
-And the driver has called GPIO Expander to attach an __Interrupt Handler__ for GPIO 9.
+And the driver has called GPIO Expander to attach an __Interrupt Handler Callback__ for GPIO 9.
 
 In the NuttX Shell, enter this command to start the [__LVGL Test App__](https://github.com/lupyuen/lvgltest-nuttx)...
 
@@ -840,7 +840,7 @@ cst816s_get_touch_data:   y:       18
 
 [(See the Complete Log)](https://github.com/lupyuen/bl602_expander#test-touch-panel)
 
-Which says that our __Interrupt Handler__ for GPIO 9 has been triggered.
+Which says that our __Interrupt Handler Callback__ for GPIO 9 has been triggered.
 
 GPIO Expander handles the interrupt and __calls the Touch Panel Driver__. (Which fetches the Touch Data later)
 
@@ -870,7 +870,7 @@ bl602_expander_attach: Attach callback for gpio=12
 
 [(See the Complete Log)](https://github.com/lupyuen/bl602_expander#test-push-button)
 
-Then it calls GPIO Expander to __read GPIO 12__. And attach an __Interrupt Handler__ for GPIO 12.
+Then it calls GPIO Expander to __read GPIO 12__. And attach an __Interrupt Handler Callback__ for GPIO 12.
 
 When we press the Push Button, GPIO Expander __handles the interrupt__...
 
@@ -879,9 +879,9 @@ bl602_expander_interrupt: Interrupt!
 bl602_expander_interrupt: Call gpio=12
 ```
 
-And __calls the Interrupt Handler__ for GPIO 12.
+And __calls the Interrupt Handler Callback__ for GPIO 12.
 
-Finally the GPIO Command calls GPIO Expander to __detach the Interrupt Handler__...
+Finally the GPIO Command calls GPIO Expander to __detach the Interrupt Handler Callback__...
 
 ```text
 bl602_expander_detach: Detach callback for gpio=12
@@ -919,7 +919,7 @@ In the NuttX Shell, enter this command to start the [__LoRaWAN Test App__](https
 lorawan_test
 ```
 
-Our LoRaWAN App calls GPIO Expander to attach an __Interrupt Handler__ for GPIO 19...
+Our LoRaWAN App calls GPIO Expander to attach an __Interrupt Handler Callback__ for GPIO 19...
 
 ```text
 init_gpio: change DIO1 to Trigger GPIO Interrupt on Rising Edge
@@ -1205,7 +1205,7 @@ The function begins by populating the __Device State__ for GPIO Expander.
 
 (Including the __Semaphore__ that will lock the GPIO Expander)
 
-Next it disables Specific GPIO Interrupts, and attaches the __GPIO Expander Interrupt Handler__ to the GPIO IRQ...
+Next it disables the Specific GPIO Interrupts for all GPIOs, and attaches the __GPIO Expander Interrupt Handler__ to the GPIO IRQ...
 
 ```c
   /* Disable GPIO interrupts */
@@ -1233,7 +1233,7 @@ Next it disables Specific GPIO Interrupts, and attaches the __GPIO Expander Inte
 
 [(__irq_attach__ comes from the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136)
 
-(Specific GPIO Interrupts are enabled later when we attach an Interrupt Handler to the specific GPIO)
+(Specific GPIO Interrupts are enabled later when we attach an Interrupt Handler Callback to the specific GPIO)
 
 To prevent reuse of GPIOs, we prepare the array that will __mark the used GPIOs__...
 
@@ -1270,6 +1270,8 @@ Given the BL602 Pinset (from the Pin Definition), we call
 ```
 
 And we call [__gpio_lower_half__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443) to register the GPIO Input as "__/dev/gpioN__".
+
+(__N__ is the GPIO Pin Number)
 
 We quit if the GPIO is __already in use__.
 
@@ -1338,7 +1340,6 @@ For __other GPIOs__ (UART, I2C, SPI, PWM) we check for reused GPIOs...
     }
 
   /* TODO: Validate the Pin Functions (e.g. MISO vs MOSI) */
-
   return &priv->dev;
 }
 ```
@@ -1350,6 +1351,8 @@ And we don't call [__gpio_lower_half__](https://github.com/lupyuen/incubator-nut
 That's how we initialise our GPIO Expander at startup!
 
 ![Initialise GPIO Expander](https://lupyuen.github.io/images/expander-code6a.png)
+
+[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121)
 
 # Appendix: Set GPIO Direction
 
@@ -1392,7 +1395,7 @@ All other options and values are ignored.
 
 Note that we don't support __Disabling of Interrupts__.
 
-To disable a GPIO Interrupt, we __detach the Interrupt Handler__ instead. [(See this)](https://lupyuen.github.io/articles/expander#appendix-detach-gpio-interrupt)
+To disable a GPIO Interrupt, we __detach the Interrupt Handler Callback__ instead. [(See this)](https://lupyuen.github.io/articles/expander#appendix-detach-gpio-interrupt)
 
 Here's the implementation: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L456-L548)
 
@@ -1474,6 +1477,8 @@ Note that we copied __bl602_expander_set_intmod__ from [__BL602 EVB GPIO Driver_
 
 ![Set GPIO Option](https://lupyuen.github.io/images/expander-code7a.png)
 
+[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L456-L548)
+
 # Appendix: Write GPIO
 
 To __write to a GPIO Output__, our GPIO Expander calls the __BL602 GPIO Driver__: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L550-L594)
@@ -1506,6 +1511,8 @@ static int bl602_expander_writepin(
 [(__bl602_gpiowrite__ comes from the BL602 GPIO Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216)
 
 ![Write GPIO](https://lupyuen.github.io/images/expander-code9a.png)
+
+[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L550-L594)
 
 # Appendix: Read GPIO
 
@@ -1541,9 +1548,11 @@ static int bl602_expander_readpin(
 
 ![Read GPIO](https://lupyuen.github.io/images/expander-code8a.png)
 
+[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L596-L642)
+
 # Appendix: Attach GPIO Interrupt
 
-Here's how our GPIO Expander __attaches an Interrupt Handler__: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L814-L906)
+Here's how our GPIO Expander __attaches an Interrupt Handler Callback__: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L814-L906)
 
 ```c
 //  Attach a Callback Function to a GPIO Interrupt
@@ -1580,7 +1589,7 @@ We iterate through the bits of the Special Pinset to find the __GPIO Pin Number_
           cb = &priv->cb[gpio_pin];
 ```
 
-If the provided callback is null, we disable the Specific GPIO Interrupt and __detach the Interrupt Handler__ for the GPIO...
+If the provided callback is null, we disable the Specific GPIO Interrupt and __detach the Interrupt Handler Callback__ for the GPIO...
 
 ```c
           if (callback == NULL) /* Detach Callback */
@@ -1596,9 +1605,9 @@ If the provided callback is null, we disable the Specific GPIO Interrupt and __d
 
 [(__bl602_expander_intmask__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197)
 
-If the provided callback is non-null and there's no Interrupt Handler for the GPIO...
+If the provided callback is non-null and there's no Interrupt Handler Callback for the GPIO...
 
-We __attach the Interrupt Handler__ for the GPIO and enable the Specific GPIO Interrupt...
+We __attach the Interrupt Handler Callback__ for the GPIO and enable the Specific GPIO Interrupt...
 
 ```c
           else if (cb->cbfunc == NULL) /* Attach Callback */
@@ -1612,7 +1621,7 @@ We __attach the Interrupt Handler__ for the GPIO and enable the Specific GPIO In
             }
 ```
 
-If there's an existing Interrupt Handler for the GPIO, we quit because we __don't support multiple Interrupt Handlers__ for the same GPIO...
+If there's an existing Interrupt Handler Callback for the GPIO, we quit because we __don't support multiple Interrupt Handler Callbacks__ for the same GPIO...
 
 ```c
           else /* Callback already attached */
@@ -1641,13 +1650,15 @@ Finally we __unlock the GPIO Expander__...
 }
 ```
 
-And return the __Callback Handle__, which will be passed later to detach the Interrupt Handler.
+And return the __Callback Handle__, which will be passed later to detach the Interrupt Handler Callback.
 
 ![Attach GPIO Interrupt](https://lupyuen.github.io/images/expander-code10a.png)
 
+[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L814-L906)
+
 # Appendix: Detach GPIO Interrupt
 
-To __detach an Interrupt Handler__, our GPIO Expander does this: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L908-L950)
+To __detach an Interrupt Handler Callback__, our GPIO Expander does this: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L908-L950)
 
 ```c
 //  Detach and disable a GPIO Interrupt
@@ -1664,9 +1675,9 @@ static int bl602_expander_detach(
               (uintptr_t)&priv->cb[CONFIG_IOEXPANDER_NPINS - 1]);
 ```
 
-The function accepts a __Callback Handle__ that's returned when we attach an Interrupt Handler. [(See this)](https://lupyuen.github.io/articles/expander#appendix-attach-gpio-interrupt)
+The function accepts a __Callback Handle__ that's returned when we attach an Interrupt Handler Callback. [(See this)](https://lupyuen.github.io/articles/expander#appendix-attach-gpio-interrupt)
 
-TODO
+We disable the __Specific GPIO Interrupt__ for the GPIO...
 
 ```c
   /* Disable the GPIO Interrupt */
@@ -1674,7 +1685,7 @@ TODO
   bl602_expander_intmask(cb->pinset, 1);
 ```
 
-TODO
+And we clear the __Interrupt Handler Callback__ for the GPIO...
 
 ```c
   /* Clear the Interrupt Callback */
@@ -1688,6 +1699,8 @@ TODO
 [(__bl602_expander_intmask__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197)
 
 ![Detach GPIO Interrupt](https://lupyuen.github.io/images/expander-code11a.png)
+
+[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L908-L950)
 
 # Appendix: Handle GPIO Interrupt
 
@@ -1779,3 +1792,5 @@ Finally we call the __Callback Function__ that was attached to the GPIO...
 And we're done handling the GPIO IRQ Interrupt!
 
 ![Handle GPIO Interrupt](https://lupyuen.github.io/images/expander-code12a.png)
+
+[(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L327-L393)
