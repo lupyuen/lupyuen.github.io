@@ -97,7 +97,7 @@
 <li><a href="#appendix-handle-gpio-interrupt">18 Appendix: Handle GPIO Interrupt</a><ul></ul></li></ul></nav><p>📝 <em>3 May 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/expander-title.jpg" alt="NuttX GPIO Expander for PineDio Stack BL604" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> (Pine64’s newest RISC-V board) has an interesting problem on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a>…</p>
-<p><em><strong>Too Many GPIOs!</strong></em></p>
+<p><strong>Too Many GPIOs!</strong></p>
 <p>Let’s fix this with a <strong>GPIO Expander</strong>.</p>
 <p><em>Why too many GPIOs?</em></p>
 <p>All <strong>23 GPIOs</strong> on PineDio Stack BL604 are wired up…</p>
@@ -367,7 +367,7 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 <li><a href="https://www.robertlipe.com/buttons-on-bl602-nuttx/"><strong>“Buttons on BL602 NuttX”</strong></a></li>
 </ul>
 <blockquote>
-<p><img src="https://lupyuen.github.io/images/expander-button.png" alt="As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)" /></p>
+<p><img src="https://lupyuen.github.io/images/expander-button.jpg" alt="As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)" /></p>
 </blockquote>
 <blockquote>
 <p><a href="https://www.robertlipe.com/buttons-on-bl602-nuttx/">(Source)</a></p>
@@ -634,8 +634,9 @@ bl602_expander = bl602_expander_initialize(
 
   //  Omitted: Validate the GPIO Outputs, GPIO Interrupts and Other Pins</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L958-L1123">(Source)</a></p>
-<p>There’s something else we might validate at startup: Pin Functions…</p>
+<p>Let’s talk about something else we might validate at startup: Pin Functions.</p>
 <p><a href="https://lupyuen.github.io/articles/expander#appendix-initialise-gpio-expander">(More about GPIO Expander initialisation)</a></p>
+<p><strong>TODO:</strong> Validate that GPIO Inputs have <code>GPIO_INPUT</code>, GPIO Outputs have <code>GPIO_OUTPUT</code>, GPIO Interrupts have <code>GPIO_INPUT</code>. All GPIO Inputs / Outputs / Interrupts must have <code>GPIO_FUNC_SWGPIO</code>. All Other Pins must have either <code>GPIO_FUNC_UART</code>, <code>GPIO_FUNC_I2C</code>, <code>GPIO_FUNC_SPI</code> or <code>GPIO_FUNC_PWM</code>.</p>
 <p><img src="https://lupyuen.github.io/images/bl602-pins1a.png" alt="Pin Functions" /></p>
 <p><a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf">(From BL602 Reference Manual)</a></p>
 <h2 id="pin-functions"><a href="#pin-functions">6.1 Pin Functions</a></h2>
@@ -823,8 +824,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>Congratulations we have successfully tested GPIO Input, Output and Interrupt with GPIO Expander!</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan3">(More about the LoRaWAN Test App)</a></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
-<p>TODO</p>
-<p>I hope this article has provided everything you need to get started on creating <strong>your own NuttX Drivers and Apps</strong> on PineDio Stack.</p>
+<p>Now that we’ve fixed the GPIO problem with GPIO Expander, I hope it’s a lot easier to create <strong>NuttX Drivers and Apps</strong> on PineDio Stack.</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
