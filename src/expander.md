@@ -1,6 +1,6 @@
 # NuttX GPIO Expander for PineDio Stack BL604
 
-📝 _5 May 2022_
+📝 _3 May 2022_
 
 ![NuttX GPIO Expander for PineDio Stack BL604](https://lupyuen.github.io/images/expander-title.jpg)
 
@@ -1466,7 +1466,7 @@ static int bl602_expander_option(
 
 [(__bl602_expander_set_intmod__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L198-L246)
 
-Note that we copied __bl602_expander_set_intmod__ from BL602 EVB GPIO Driver and fixed this bug...
+Note that we copied __bl602_expander_set_intmod__ from [__BL602 EVB GPIO Driver__](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L171-L212) and fixed this bug...
 
 -   [__"Incorrect call to bl602_gpio_set_intmod"__](https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538)
 
@@ -1689,9 +1689,15 @@ TODO
 
 # Appendix: Handle GPIO Interrupt
 
-TODO
+Below is the __GPIO Expander Interrupt Handler__ that handles the GPIO IRQ Interrupt.
 
-Here's how our BL602 GPIO Expander handles a GPIO Interrupt: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L327-L393)
+The interrupt-handling logic was copied from the [__BL602 EVB GPIO Driver__](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L255-L303), so some details are a little fuzzy.
+
+(Like clearing the Interrupt Status)
+
+Remember that all GPIO Interrupts are multiplexed to a __single GPIO IRQ__.
+
+When the GPIO IRQ is triggered, we check the __Interrupt Status__ of each GPIO and handle accordingly: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L327-L393)
 
 ```c
 //  Handle GPIO Interrupt. Based on
@@ -1712,48 +1718,44 @@ static int bl602_expander_interrupt(
       /* Found the GPIO for the interrupt */
       if (1 == bl602_expander_get_intstatus(gpio_pin))
         {
-```
-
-TODO
-
-```c
           FAR struct bl602_expander_callback_s *cb = &priv->cb[gpio_pin];
           ioe_callback_t cbfunc = cb->cbfunc;
           FAR void* cbarg = cb->cbarg;
+```
 
+[(__bl602_expander_get_intstatus__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L247-L274)
+
+When we find the GPIO that triggered the interrupt, we attempt to __clear the Interrupt Status__ for the Specific GPIO...
+
+```c
           /* Attempt to clear the Interrupt Status */
           bl602_expander_intclear(gpio_pin, 1);
 ```
 
-TODO
+[(__bl602_expander_intclear__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L275-L300)
+
+Then we __wait for the Interrupt Status__ to be cleared...
 
 ```c
           /* Check Interrupt Status with timeout */
           time_out = 32;
-          do
-            {
-              time_out--;
-            }
+          do { time_out--; }
           while ((1 == bl602_expander_get_intstatus(gpio_pin)) && time_out);
+
+          /* Timeout for clearing the Interrupt Status */
+          if (!time_out) { gpiowarn("WARNING: Clear GPIO interrupt status fail.\n"); }
 ```
 
-TODO
-
-```c
-          if (!time_out)
-            {
-              gpiowarn("WARNING: Clear GPIO interrupt status fail.\n");
-            }
-```
-
-TODO
+We clear the Interrupt Status again, this time __setting to 0__ instead of 1...
 
 ```c
           /* If time_out==0, Interrupt Status not cleared */
           bl602_expander_intclear(gpio_pin, 0);
 ```
 
-TODO
+(Why?)
+
+Finally we call the __Callback Function__ that was attached to the GPIO...
 
 ```c
           /* NOTE: Callback will run in the context of Interrupt Handler */
@@ -1772,8 +1774,6 @@ TODO
 }
 ```
 
-[(__bl602_expander_intclear__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L275-L300)
-
-[(__bl602_expander_get_intstatus__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L247-L274)
+And we're done handling the GPIO IRQ Interrupt!
 
 ![Handle GPIO Interrupt](https://lupyuen.github.io/images/expander-code12a.png)
