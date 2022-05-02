@@ -1203,6 +1203,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 
 The function begins by populating the __Device State__ for GPIO Expander.
 
+(Including the __Semaphore__ that will lock the GPIO Expander)
+
 Next it disables Specific GPIO Interrupts, and attaches the __GPIO Expander Interrupt Handler__ to the GPIO IRQ...
 
 ```c
