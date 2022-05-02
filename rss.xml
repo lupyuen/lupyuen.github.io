@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX GPIO Expander for PineDio Stack BL604</title>
+            <link>https://lupyuen.github.io/articles/expander</link>
+            <description><![CDATA[PineDio Stack BL604 RISC-V Board has an interesting problem on Apache NuttX RTOS... Too many GPIOs! Let's fix this with a GPIO Expander]]></description>
+            <guid>https://lupyuen.github.io/articles/expander</guid>
+            <pubDate>Tue, 03 May 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX Touch Panel Driver for PineDio Stack BL604</title>
             <link>https://lupyuen.github.io/articles/touch</link>
             <description><![CDATA[How we created the Apache NuttX RTOS Driver for Hynitron CST816S I2C Touch Panel... For PineDio Stack BL604 RISC-V Board]]></description>
