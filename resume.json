@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX GPIO Expander for PineDio Stack BL604",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-05-03",
+      "website": "https://lupyuen.github.io/articles/expander",
+      "summary": "PineDio Stack BL604 RISC-V Board has an interesting problem on Apache NuttX RTOS... Too many GPIOs! Let's fix this with a GPIO Expander"
+    },
+    {
       "name": "NuttX Touch Panel Driver for PineDio Stack BL604",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-04-21",

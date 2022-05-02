@@ -6,7 +6,7 @@
 
 [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) (Pine64's newest RISC-V board) has an interesting problem on [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx)...
 
-___Too Many GPIOs!___
+__Too Many GPIOs!__
 
 Let's fix this with a __GPIO Expander__.
 
@@ -324,7 +324,7 @@ As noted (eloquently) by Robert Lipe, it's __difficult to attach a GPIO Interrup
 
 -   [__"Buttons on BL602 NuttX"__](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
 
-> ![As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)](https://lupyuen.github.io/images/expander-button.png)
+> ![As noted (eloquently) by Robert Lipe, attaching a BL602 GPIO Interrupt Handler is hard (because our stars are misaligned)](https://lupyuen.github.io/images/expander-button.jpg)
 
 > [(Source)](https://www.robertlipe.com/buttons-on-bl602-nuttx/)
 
@@ -682,9 +682,11 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 
 [(Source)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L958-L1123)
 
-There's something else we might validate at startup: Pin Functions...
+Let's talk about something else we might validate at startup: Pin Functions.
 
 [(More about GPIO Expander initialisation)](https://lupyuen.github.io/articles/expander#appendix-initialise-gpio-expander)
+
+__TODO:__ Validate that GPIO Inputs have `GPIO_INPUT`, GPIO Outputs have `GPIO_OUTPUT`, GPIO Interrupts have `GPIO_INPUT`. All GPIO Inputs / Outputs / Interrupts must have `GPIO_FUNC_SWGPIO`. All Other Pins must have either `GPIO_FUNC_UART`, `GPIO_FUNC_I2C`, `GPIO_FUNC_SPI` or `GPIO_FUNC_PWM`.
 
 ![Pin Functions](https://lupyuen.github.io/images/bl602-pins1a.png)
 
@@ -978,9 +980,7 @@ Congratulations we have successfully tested GPIO Input, Output and Interrupt wit
 
 # What's Next
 
-TODO
-
-I hope this article has provided everything you need to get started on creating __your own NuttX Drivers and Apps__ on PineDio Stack.
+Now that we've fixed the GPIO problem with GPIO Expander, I hope it's a lot easier to create __NuttX Drivers and Apps__ on PineDio Stack.
 
 Lemme know what you're building with PineDio Stack!
 
