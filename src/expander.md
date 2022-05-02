@@ -897,7 +897,7 @@ And read the GPIO Input one last time.
 
 ## Test LoRaWAN
 
-__LoRaWAN__ is the most thorough test for GPIO Expander. It depends on __3 GPIOs__ connected to the Semtech SX1262 LoRa Transceiver...
+__LoRaWAN__ is the Ultimate Test for GPIO Expander. It depends on __3 GPIOs__ connected to the Semtech SX1262 LoRa Transceiver...
 
 -   __SX1262 BUSY__ at __/dev/gpio10__
 
