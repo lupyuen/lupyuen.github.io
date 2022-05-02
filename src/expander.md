@@ -1008,6 +1008,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1518352162966802432)
 
+![Pin Functions](https://lupyuen.github.io/images/bl602-pins1a.png)
+
+[(From BL602 Reference Manual)](https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf)
+
 # Appendix: Validate Pin Function
 
 In NuttX, we set the __Pin Definitions__ at...
@@ -1018,7 +1022,7 @@ BL602 / BL604 gives us incredible flexibility in __selecting the GPIO Pins__ for
 
 -   [__"Pin Functions"__](https://lupyuen.github.io/articles/expander#pin-functions)
 
-(8 possible pins for SPI MISO!)
+(8 possible pins for SPI MISO! Pic above)
 
 But we might __pick the wrong pin__ by mistake!
 
