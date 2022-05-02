@@ -94,7 +94,7 @@
 <li><a href="#appendix-read-gpio">15 Appendix: Read GPIO</a><ul></ul></li>
 <li><a href="#appendix-attach-gpio-interrupt">16 Appendix: Attach GPIO Interrupt</a><ul></ul></li>
 <li><a href="#appendix-detach-gpio-interrupt">17 Appendix: Detach GPIO Interrupt</a><ul></ul></li>
-<li><a href="#appendix-handle-gpio-interrupt">18 Appendix: Handle GPIO Interrupt</a><ul></ul></li></ul></nav><p>📝 <em>5 May 2022</em></p>
+<li><a href="#appendix-handle-gpio-interrupt">18 Appendix: Handle GPIO Interrupt</a><ul></ul></li></ul></nav><p>📝 <em>3 May 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/expander-title.jpg" alt="NuttX GPIO Expander for PineDio Stack BL604" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> (Pine64’s newest RISC-V board) has an interesting problem on <a href="https://lupyuen.github.io/articles/nuttx"><strong>Apache NuttX RTOS</strong></a>…</p>
 <p><em><strong>Too Many GPIOs!</strong></em></p>
@@ -1204,7 +1204,7 @@ static int bl602_expander_option(
   return ret;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L198-L246">(<strong>bl602_expander_set_intmod</strong> is defined here)</a></p>
-<p>Note that we copied <strong>bl602_expander_set_intmod</strong> from BL602 EVB GPIO Driver and fixed this bug…</p>
+<p>Note that we copied <strong>bl602_expander_set_intmod</strong> from <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L171-L212"><strong>BL602 EVB GPIO Driver</strong></a> and fixed this bug…</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538"><strong>“Incorrect call to bl602_gpio_set_intmod”</strong></a></li>
 </ul>
@@ -1359,8 +1359,11 @@ static int bl602_expander_detach(
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197">(<strong>bl602_expander_intmask</strong> is defined here)</a></p>
 <p><img src="https://lupyuen.github.io/images/expander-code11a.png" alt="Detach GPIO Interrupt" /></p>
 <h1 id="appendix-handle-gpio-interrupt"><a href="#appendix-handle-gpio-interrupt">18 Appendix: Handle GPIO Interrupt</a></h1>
-<p>TODO</p>
-<p>Here’s how our BL602 GPIO Expander handles a GPIO Interrupt: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L327-L393">bl602_expander.c</a></p>
+<p>Below is the <strong>GPIO Expander Interrupt Handler</strong> that handles the GPIO IRQ Interrupt.</p>
+<p>The interrupt-handling logic was copied from the <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L255-L303"><strong>BL602 EVB GPIO Driver</strong></a>, so some details are a little fuzzy.</p>
+<p>(Like clearing the Interrupt Status)</p>
+<p>Remember that all GPIO Interrupts are multiplexed to a <strong>single GPIO IRQ</strong>.</p>
+<p>When the GPIO IRQ is triggered, we check the <strong>Interrupt Status</strong> of each GPIO and handle accordingly: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L327-L393">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Handle GPIO Interrupt. Based on
 //  https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L256-L304
 static int bl602_expander_interrupt(
@@ -1378,31 +1381,28 @@ static int bl602_expander_interrupt(
     {
       /* Found the GPIO for the interrupt */
       if (1 == bl602_expander_get_intstatus(gpio_pin))
-        {</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>          FAR struct bl602_expander_callback_s *cb = &amp;priv-&gt;cb[gpio_pin];
+        {
+          FAR struct bl602_expander_callback_s *cb = &amp;priv-&gt;cb[gpio_pin];
           ioe_callback_t cbfunc = cb-&gt;cbfunc;
-          FAR void* cbarg = cb-&gt;cbarg;
-
-          /* Attempt to clear the Interrupt Status */
+          FAR void* cbarg = cb-&gt;cbarg;</code></pre></div>
+<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L247-L274">(<strong>bl602_expander_get_intstatus</strong> is defined here)</a></p>
+<p>When we find the GPIO that triggered the interrupt, we attempt to <strong>clear the Interrupt Status</strong> for the Specific GPIO…</p>
+<div class="example-wrap"><pre class="language-c"><code>          /* Attempt to clear the Interrupt Status */
           bl602_expander_intclear(gpio_pin, 1);</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L275-L300">(<strong>bl602_expander_intclear</strong> is defined here)</a></p>
+<p>Then we <strong>wait for the Interrupt Status</strong> to be cleared…</p>
 <div class="example-wrap"><pre class="language-c"><code>          /* Check Interrupt Status with timeout */
           time_out = 32;
-          do
-            {
-              time_out--;
-            }
-          while ((1 == bl602_expander_get_intstatus(gpio_pin)) &amp;&amp; time_out);</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>          if (!time_out)
-            {
-              gpiowarn(&quot;WARNING: Clear GPIO interrupt status fail.\n&quot;);
-            }</code></pre></div>
-<p>TODO</p>
+          do { time_out--; }
+          while ((1 == bl602_expander_get_intstatus(gpio_pin)) &amp;&amp; time_out);
+
+          /* Timeout for clearing the Interrupt Status */
+          if (!time_out) { gpiowarn(&quot;WARNING: Clear GPIO interrupt status fail.\n&quot;); }</code></pre></div>
+<p>We clear the Interrupt Status again, this time <strong>setting to 0</strong> instead of 1…</p>
 <div class="example-wrap"><pre class="language-c"><code>          /* If time_out==0, Interrupt Status not cleared */
           bl602_expander_intclear(gpio_pin, 0);</code></pre></div>
-<p>TODO</p>
+<p>(Why?)</p>
+<p>Finally we call the <strong>Callback Function</strong> that was attached to the GPIO…</p>
 <div class="example-wrap"><pre class="language-c"><code>          /* NOTE: Callback will run in the context of Interrupt Handler */
           if (cbfunc == NULL)
             {
@@ -1417,8 +1417,7 @@ static int bl602_expander_interrupt(
     }
   return OK;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L275-L300">(<strong>bl602_expander_intclear</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L247-L274">(<strong>bl602_expander_get_intstatus</strong> is defined here)</a></p>
+<p>And we’re done handling the GPIO IRQ Interrupt!</p>
 <p><img src="https://lupyuen.github.io/images/expander-code12a.png" alt="Handle GPIO Interrupt" /></p>
 
     
