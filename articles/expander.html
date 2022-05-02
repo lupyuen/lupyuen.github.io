@@ -964,10 +964,14 @@ static const gpio_pinset_t bl602_other_pins[] =
 <p>Here’s the code: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Initialise the BL602 GPIO Expander
 FAR struct ioexpander_dev_s *bl602_expander_initialize(
-  const gpio_pinset_t *gpio_inputs,     uint8_t gpio_input_count,
-  const gpio_pinset_t *gpio_outputs,    uint8_t gpio_output_count,
-  const gpio_pinset_t *gpio_interrupts, uint8_t gpio_interrupt_count,
-  const gpio_pinset_t *other_pins,      uint8_t other_pin_count)
+  const gpio_pinset_t *gpio_inputs,      //  BL602 Pinsets for GPIO Input
+  uint8_t gpio_input_count,              //  Number of GPIO Inputs
+  const gpio_pinset_t *gpio_outputs,     //  BL602 Pinsets for GPIO Output
+  uint8_t gpio_output_count,             //  Number of GPIO Outputs
+  const gpio_pinset_t *gpio_interrupts,  //  BL602 Pinsets for GPIO Interrupts
+  uint8_t gpio_interrupt_count,          //  Number of GPIO Interrupts
+  const gpio_pinset_t *other_pins,       //  BL602 Pinsets for UART, I2C, SPI and UART Ports
+  uint8_t other_pin_count)               //  Number of Other Pins
 {
   DEBUGASSERT(gpio_input_count + gpio_output_count + gpio_interrupt_count +
     other_pin_count &lt;= CONFIG_IOEXPANDER_NPINS);
@@ -1102,7 +1106,10 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 <p>(In future we might allow this)</p>
 <p>Here’s the function, which doesn’t do anything: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L410-L454">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Set the direction of an GPIO Pin
-static int bl602_expander_direction(FAR struct ioexpander_dev_s *dev, uint8_t pin, int direction)
+static int bl602_expander_direction(
+  FAR struct ioexpander_dev_s *dev,  //  GPIO Expander
+  uint8_t pin,    //  Pin Number
+  int direction)  //  Direction (Input or Output)
 {
   gpioinfo(&quot;WARNING: Unimplemented direction: pin=%u, direction=%s\n&quot;,
            pin, (direction == IOEXPANDER_DIRECTION_IN) ? &quot;IN&quot; : &quot;OUT&quot;);
@@ -1123,7 +1130,11 @@ static int bl602_expander_direction(FAR struct ioexpander_dev_s *dev, uint8_t pi
 <p>To disable a GPIO Interrupt, we <strong>detach the Interrupt Handler</strong> instead. <a href="https://lupyuen.github.io/articles/expander#appendix-detach-gpio-interrupt">(See this)</a></p>
 <p>Here’s the implementation: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L456-L548">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Set GPIO Options
-static int bl602_expander_option(FAR struct ioexpander_dev_s *dev, uint8_t pin, int opt, FAR void *value)
+static int bl602_expander_option(
+  FAR struct ioexpander_dev_s *dev,  //  GPIO Expander
+  uint8_t pin,      //  Pin Number
+  int opt,          //  Option
+  FAR void *value)  //  Value
 {
   FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
   int ret = -ENOSYS;
@@ -1190,9 +1201,10 @@ static int bl602_expander_option(FAR struct ioexpander_dev_s *dev, uint8_t pin, 
 <h1 id="appendix-write-gpio"><a href="#appendix-write-gpio">14 Appendix: Write GPIO</a></h1>
 <p>To <strong>write to a GPIO Output</strong>, our GPIO Expander calls the <strong>BL602 GPIO Driver</strong>: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L550-L594">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Write to the GPIO Output Pin
-static int bl602_expander_writepin(FAR struct ioexpander_dev_s *dev,
-                                   uint8_t pin,
-                                   bool value)
+static int bl602_expander_writepin(
+  FAR struct ioexpander_dev_s *dev,  //  GPIO Expander
+  uint8_t pin,  //  Pin Number
+  bool value)   //  Output Value: 0 for Low, 1 for High
 {
   FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
   int ret;
@@ -1215,9 +1227,10 @@ static int bl602_expander_writepin(FAR struct ioexpander_dev_s *dev,
 <h1 id="appendix-read-gpio"><a href="#appendix-read-gpio">15 Appendix: Read GPIO</a></h1>
 <p>To <strong>read from a GPIO Input</strong>, our GPIO Expander also calls the <strong>BL602 GPIO Driver</strong>: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L596-L642">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Read the GPIO Input Pin
-static int bl602_expander_readpin(FAR struct ioexpander_dev_s *dev, 
-                                  uint8_t pin,
-                                  FAR bool *value)
+static int bl602_expander_readpin(
+  FAR struct ioexpander_dev_s *dev,  //  GPIO Expander
+  uint8_t pin,      //  Pin Number
+  FAR bool *value)  //  Returned Value: 0 for Low, 1 for High
 {
   FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
   int ret;
@@ -1239,12 +1252,13 @@ static int bl602_expander_readpin(FAR struct ioexpander_dev_s *dev,
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230">(<strong>bl602_gpioread</strong> comes from the BL602 GPIO Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/expander-code8a.png" alt="Read GPIO" /></p>
 <h1 id="appendix-attach-gpio-interrupt"><a href="#appendix-attach-gpio-interrupt">16 Appendix: Attach GPIO Interrupt</a></h1>
-<p>TODO</p>
-<p>Here’s how our BL602 GPIO Expander attaches a GPIO Interrupt Handler: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L814-L906">bl602_expander.c</a></p>
+<p>Here’s how our GPIO Expander <strong>attaches an Interrupt Handler</strong>: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L814-L906">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Attach a Callback Function to a GPIO Interrupt
-static FAR void *bl602_expander_attach(FAR struct ioexpander_dev_s *dev,
-                       ioe_pinset_t pinset,
-                       ioe_callback_t callback, FAR void *arg)
+static FAR void *bl602_expander_attach(
+  FAR struct ioexpander_dev_s *dev,  //  GPIO Expander
+  ioe_pinset_t pinset,      //  Bit N is 1 to indicate Pin N
+  ioe_callback_t callback,  //  Callback Function
+  FAR void *arg)            //  Callback Argument
 {
   FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
   FAR struct bl602_expander_callback_s *cb = NULL;
@@ -1252,17 +1266,20 @@ static FAR void *bl602_expander_attach(FAR struct ioexpander_dev_s *dev,
 
   /* Get exclusive access to the I/O Expander */
   int ret = bl602_expander_lock(priv);
-  if (ret &lt; 0) { return NULL; }
-
-  /* Handle each GPIO Pin in the pinset */
+  if (ret &lt; 0) { return NULL; }</code></pre></div>
+<p>We begin by <strong>locking the GPIO Expander</strong>. (Via a Semaphore)</p>
+<p>The function accepts a <strong>“Special Pinset”</strong>, in which <strong>Bit <code>N</code> is 1</strong> to specify <strong>GPIO Pin <code>N</code></strong>.</p>
+<p>(Not to be confused with BL602 Pinset, which numbers pins sequentially)</p>
+<p>We iterate through the bits of the Special Pinset to find the <strong>GPIO Pin Number</strong> that’s marked…</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Handle each GPIO Pin in the pinset */
   for (uint8_t gpio_pin = 0; gpio_pin &lt; CONFIG_IOEXPANDER_NPINS; gpio_pin++)
     {
       /* If GPIO Pin is set in the pinset... */
       if (pinset &amp; ((ioe_pinset_t)1 &lt;&lt; gpio_pin))
         {
-          cb = &amp;priv-&gt;cb[gpio_pin];
-
-          if (callback == NULL) /* Detach Callback */
+          cb = &amp;priv-&gt;cb[gpio_pin];</code></pre></div>
+<p>If the provided callback is null, we disable the Specific GPIO Interrupt and <strong>detach the Interrupt Handler</strong> for the GPIO…</p>
+<div class="example-wrap"><pre class="language-c"><code>          if (callback == NULL) /* Detach Callback */
             {
               /* Disable GPIO Interrupt and clear Interrupt Callback */
               bl602_expander_intmask(gpio_pin, 1);
@@ -1270,8 +1287,11 @@ static FAR void *bl602_expander_attach(FAR struct ioexpander_dev_s *dev,
               cb-&gt;cbfunc = NULL;
               cb-&gt;cbarg  = NULL;
               ret = 0;
-            }
-          else if (cb-&gt;cbfunc == NULL) /* Attach Callback */
+            }</code></pre></div>
+<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197">(<strong>bl602_expander_intmask</strong> is defined here)</a></p>
+<p>If the provided callback is non-null and there’s no Interrupt Handler for the GPIO…</p>
+<p>We <strong>attach the Interrupt Handler</strong> for the GPIO and enable the Specific GPIO Interrupt…</p>
+<div class="example-wrap"><pre class="language-c"><code>          else if (cb-&gt;cbfunc == NULL) /* Attach Callback */
             {
               /* Set Interrupt Callback and enable GPIO Interrupt */
               cb-&gt;pinset = gpio_pin;
@@ -1279,31 +1299,33 @@ static FAR void *bl602_expander_attach(FAR struct ioexpander_dev_s *dev,
               cb-&gt;cbarg  = arg;
               bl602_expander_intmask(gpio_pin, 0);
               ret = 0;
-            }
-          else /* Callback already attached */
+            }</code></pre></div>
+<p>If there’s an existing Interrupt Handler for the GPIO, we quit because we <strong>don’t support multiple Interrupt Handlers</strong> for the same GPIO…</p>
+<div class="example-wrap"><pre class="language-c"><code>          else /* Callback already attached */
             {
               gpioerr(&quot;ERROR: GPIO %d already attached\n&quot;, gpio_pin);
               ret = -EBUSY;
-            }
-
-          /* Only 1 GPIO Pin allowed */
-
+            }</code></pre></div>
+<p>This function only <strong>supports one GPIO</strong> (so technically we don’t support Pinsets)…</p>
+<div class="example-wrap"><pre class="language-c"><code>          /* Only 1 GPIO Pin allowed */
           DEBUGASSERT(pinset == ((ioe_pinset_t)1 &lt;&lt; gpio_pin));
           break;
         }
-    }
-
-  /* Unlock the I/O Expander and return the handle */
+    }</code></pre></div>
+<p>Finally we <strong>unlock the GPIO Expander</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Unlock the I/O Expander and return the handle */
   bl602_expander_unlock(priv);
   return (ret == 0) ? cb : NULL;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197">(<strong>bl602_expander_intmask</strong> is defined here)</a></p>
+<p>And return the <strong>Callback Handle</strong>, which will be passed later to detach the Interrupt Handler.</p>
 <p><img src="https://lupyuen.github.io/images/expander-code10a.png" alt="Attach GPIO Interrupt" /></p>
 <h1 id="appendix-detach-gpio-interrupt"><a href="#appendix-detach-gpio-interrupt">17 Appendix: Detach GPIO Interrupt</a></h1>
 <p>TODO</p>
 <p>Here’s how our BL602 GPIO Expander detaches a GPIO Interrupt Handler: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L908-L950">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Detach and disable a GPIO Interrupt
-static int bl602_expander_detach(FAR struct ioexpander_dev_s *dev, FAR void *handle)
+static int bl602_expander_detach(
+  FAR struct ioexpander_dev_s *dev,  //  GPIO Expander
+  FAR void *handle)  //  Callback Handle to detach
 {
   FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
   FAR struct bl602_expander_callback_s *cb =
@@ -1334,7 +1356,10 @@ static int bl602_expander_detach(FAR struct ioexpander_dev_s *dev, FAR void *han
 <p>Here’s how our BL602 GPIO Expander handles a GPIO Interrupt…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Handle GPIO Interrupt. Based on
 //  https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L256-L304
-static int bl602_expander_interrupt(int irq, void *context, void *arg)
+static int bl602_expander_interrupt(
+  int irq,        //  IRQ Number
+  void *context,  //  Interrupt Context
+  void *arg)      //  Interrupt Argument
 {
   FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)arg;
   uint32_t time_out = 0;
@@ -1415,7 +1440,10 @@ static int bl602_expander_interrupt(int irq, void *context, void *arg)
 <p><strong>bl602_irq_attach</strong> is defined below: <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L686-L727">cst816s.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Attach Interrupt Handler to GPIO Interrupt for Touch Controller
 //  Based on https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505
-static int bl602_irq_attach(gpio_pinset_t pinset, FAR isr_handler *callback, FAR void *arg)
+static int bl602_irq_attach(
+  gpio_pinset_t pinset,       //  BL602 Pinset
+  FAR isr_handler *callback,  //  Callback Function
+  FAR void *arg)              //  Callback Argument
 {
   int ret = 0;
   uint8_t gpio_pin = (pinset &amp; GPIO_PIN_MASK) &gt;&gt; GPIO_PIN_SHIFT;
