@@ -632,19 +632,31 @@ At startup, we __pass the pins to GPIO Expander__ during initialisation...
 ```c
 //  Initialise GPIO Expander at startup
 bl602_expander = bl602_expander_initialize(
-  bl602_gpio_inputs,     sizeof(bl602_gpio_inputs) / sizeof(bl602_gpio_inputs[0]),
-  bl602_gpio_outputs,    sizeof(bl602_gpio_outputs) / sizeof(bl602_gpio_outputs[0]),
-  bl602_gpio_interrupts, sizeof(bl602_gpio_interrupts) / sizeof(bl602_gpio_interrupts[0]),
-  bl602_other_pins,      sizeof(bl602_other_pins) / sizeof(bl602_other_pins[0]));
+  //  BL602 Pinsets for GPIO Inputs and number of pins
+  bl602_gpio_inputs,     
+  sizeof(bl602_gpio_inputs) / sizeof(bl602_gpio_inputs[0]),
+  //  BL602 Pinsets for GPIO Outputs and number of pins
+  bl602_gpio_outputs,    
+  sizeof(bl602_gpio_outputs) / sizeof(bl602_gpio_outputs[0]),
+  //  BL602 Pinsets for GPIO Interrupts and number of pins
+  bl602_gpio_interrupts, 
+  sizeof(bl602_gpio_interrupts) / sizeof(bl602_gpio_interrupts[0]),
+  //  BL602 Pinsets for Other Pins (UART, I2C, SPI, PWM) and number of pins
+  bl602_other_pins,      
+  sizeof(bl602_other_pins) / sizeof(bl602_other_pins[0]));
 ```
 
 GPIO Expander verifies that the __GPIOs are not reused__...
 
 ```c
 FAR struct ioexpander_dev_s *bl602_expander_initialize(
+  //  BL602 Pinsets for GPIO Inputs and number of pins
   const gpio_pinset_t *gpio_inputs,     uint8_t gpio_input_count,
+  //  BL602 Pinsets for GPIO Outputs and number of pins
   const gpio_pinset_t *gpio_outputs,    uint8_t gpio_output_count,
+  //  BL602 Pinsets for GPIO Interrupts and number of pins
   const gpio_pinset_t *gpio_interrupts, uint8_t gpio_interrupt_count,
+  //  BL602 Pinsets for Other Pins (UART, I2C, SPI, PWM) and number of pins
   const gpio_pinset_t *other_pins,      uint8_t other_pin_count) {
   ...
   //  Mark the GPIOs in use
@@ -658,7 +670,6 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
     uint8_t gpio_pin = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
 
     //  Check that the GPIO is not in use
-    DEBUGASSERT(gpio_pin < CONFIG_IOEXPANDER_NPINS);
     if (gpio_is_used[gpio_pin]) {
       gpioerr("ERROR: GPIO pin %d is already in use\n", gpio_pin);
       return NULL;
@@ -1166,52 +1177,53 @@ Here's the code: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/bl
 ```c
 //  Initialise the BL602 GPIO Expander
 FAR struct ioexpander_dev_s *bl602_expander_initialize(
-  const gpio_pinset_t *gpio_inputs,      //  BL602 Pinsets for GPIO Input
-  uint8_t gpio_input_count,              //  Number of GPIO Inputs
-  const gpio_pinset_t *gpio_outputs,     //  BL602 Pinsets for GPIO Output
-  uint8_t gpio_output_count,             //  Number of GPIO Outputs
-  const gpio_pinset_t *gpio_interrupts,  //  BL602 Pinsets for GPIO Interrupts
-  uint8_t gpio_interrupt_count,          //  Number of GPIO Interrupts
-  const gpio_pinset_t *other_pins,       //  BL602 Pinsets for UART, I2C, SPI and UART Ports
-  uint8_t other_pin_count)               //  Number of Other Pins
+  //  BL602 Pinsets for GPIO Input and number of pins
+  const gpio_pinset_t *gpio_inputs,
+  uint8_t gpio_input_count,
+  //  BL602 Pinsets for GPIO Output and number of pins
+  const gpio_pinset_t *gpio_outputs,     
+  uint8_t gpio_output_count,
+  //  BL602 Pinsets for GPIO Interrupts and number of pins
+  const gpio_pinset_t *gpio_interrupts,  
+  uint8_t gpio_interrupt_count,
+  //  BL602 Pinsets for Other Pins (UART, I2C, SPI, UART) and number of pins
+  const gpio_pinset_t *other_pins,
+  uint8_t other_pin_count)
 {
   DEBUGASSERT(gpio_input_count + gpio_output_count + gpio_interrupt_count +
     other_pin_count <= CONFIG_IOEXPANDER_NPINS);
 
   /* Use the one-and-only I/O Expander driver instance */
-
   FAR struct bl602_expander_dev_s *priv = &g_bl602_expander_dev;
 
   /* Initialize the device state structure */
-
   priv->dev.ops = &g_bl602_expander_ops;
   nxsem_init(&priv->exclsem, 0, 1);
 ```
 
 The function begins by populating the __Device State__ for GPIO Expander.
 
-Next it disables Individual GPIO Interrupts, and attaches the __GPIO Expander Interrupt Handler__ to the GPIO IRQ...
+Next it disables Specific GPIO Interrupts, and attaches the __GPIO Expander Interrupt Handler__ to the GPIO IRQ...
 
 ```c
   /* Disable GPIO interrupts */
-
   int ret = bl602_expander_irq_enable(false);
   if (ret < 0) { return NULL; }
 
   /* Disable interrupts for all GPIO Pins */
-
   for (uint8_t pin = 0; pin < CONFIG_IOEXPANDER_NPINS; pin++)
     {
       bl602_expander_intmask(pin, 1);
     }
 
   /* Attach the I/O expander interrupt handler and enable interrupts */
-
   irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, priv);
 
   ret = bl602_expander_irq_enable(true);
   if (ret < 0) { return NULL; }
 ```
+
+[(__bl602_expander_interrupt__ is explained here)](https://lupyuen.github.io/articles/expander#appendix-handle-gpio-interrupt)
 
 [(__bl602_expander_intmask__ is defined here)](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197)
 
@@ -1219,13 +1231,12 @@ Next it disables Individual GPIO Interrupts, and attaches the __GPIO Expander In
 
 [(__irq_attach__ comes from the BL602 IRQ Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136)
 
-(Individual GPIO Interrupts are enabled later when we attach an Interrupt Handler to the specific GPIO)
+(Specific GPIO Interrupts are enabled later when we attach an Interrupt Handler to the specific GPIO)
 
 To prevent reuse of GPIOs, we prepare the array that will __mark the used GPIOs__...
 
 ```c
   /* Mark the GPIOs in use */
-
   bool gpio_is_used[CONFIG_IOEXPANDER_NPINS];
   memset(gpio_is_used, 0, sizeof(gpio_is_used));
 ```
@@ -1630,9 +1641,7 @@ And return the __Callback Handle__, which will be passed later to detach the Int
 
 # Appendix: Detach GPIO Interrupt
 
-TODO
-
-Here's how our BL602 GPIO Expander detaches a GPIO Interrupt Handler: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L908-L950)
+To __detach an Interrupt Handler__, our GPIO Expander does this: [bl602_expander.c](https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L908-L950)
 
 ```c
 //  Detach and disable a GPIO Interrupt
@@ -1643,19 +1652,25 @@ static int bl602_expander_detach(
   FAR struct bl602_expander_dev_s *priv = (FAR struct bl602_expander_dev_s *)dev;
   FAR struct bl602_expander_callback_s *cb =
     (FAR struct bl602_expander_callback_s *)handle;
-
   DEBUGASSERT(priv != NULL && cb != NULL);
   DEBUGASSERT((uintptr_t)cb >= (uintptr_t)&priv->cb[0] &&
               (uintptr_t)cb <=
               (uintptr_t)&priv->cb[CONFIG_IOEXPANDER_NPINS - 1]);
-  UNUSED(priv);
-  gpioinfo("Detach callback for gpio=%d, callback=%p, arg=%p\n",
-           cb->pinset, cb->cbfunc, cb->cbarg);
+```
 
+The function accepts a __Callback Handle__ that was returned when attaching an Interrupt Handler. [(See this)](https://lupyuen.github.io/articles/expander#appendix-attach-gpio-interrupt)
+
+TODO
+
+```c
   /* Disable the GPIO Interrupt */
   DEBUGASSERT(cb->pinset < CONFIG_IOEXPANDER_NPINS);
   bl602_expander_intmask(cb->pinset, 1);
+```
 
+TODO
+
+```c
   /* Clear the Interrupt Callback */
   cb->pinset = 0;
   cb->cbfunc = NULL;
@@ -1750,19 +1765,7 @@ TODO
 
 ![](https://lupyuen.github.io/images/expander-code12a.png)
 
-# Appendix: GPIO Interrupt
-
-TODO
-
-Earlier we called these functions at startup to handle GPIO Interrupts...
-
--   [__bl602_irq_attach__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L731-L772): Attach our GPIO Interrupt Handler
-
--   [__bl602_irq_enable__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L774-L804): Enable GPIO Interrupt
-
-Let's look inside the functions.
-
-## Attach Interrupt Handler
+# Attach BL602 Interrupt
 
 TODO
 
@@ -1823,7 +1826,7 @@ This code calls two functions from the __BL602 GPIO Expander__...
 
 -   [__bl602_expander_intmask__](https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L856-L888): Set GPIO Interrupt Mask
 
-## Enable GPIO Interrupt
+# Enable BL602 Interrupt
 
 TODO
 
