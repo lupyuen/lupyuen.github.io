@@ -318,6 +318,7 @@ sudo usermod -a -G gpio    $USER
 sudo usermod -a -G dialout $USER
 
 ##  Logout and login to refresh the permissions
+logout
 
 ##  Install Rust: https://rustup.rs/
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh

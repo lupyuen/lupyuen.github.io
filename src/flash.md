@@ -1065,7 +1065,11 @@ sudo usermod -a -G dialout $USER
 sudo usermod -a -G uucp $USER
 ```
 
-__Logout and login__ for the changes to take effect.
+__Logout and login__ for the changes to take effect...
+
+```bash
+logout
+```
 
 Verify that our user is in the group...
 
