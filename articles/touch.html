@@ -858,13 +858,20 @@ static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,uint8_t *
 <li><a href="https://lupyuen.github.io/articles/bme280#set-i2c-sub-address"><strong>“Set I2C Sub Address”</strong></a></li>
 </ul>
 <h2 id="i2c-logging"><a href="#i2c-logging">9.2 I2C Logging</a></h2>
-<p>During development we discovered that <a href="https://lupyuen.github.io/articles/touch#get-i2c-touch-data"><strong>cst816s_get_touch_data</strong></a> won’t return any valid Touch Data unless we <strong>enable this I2C Warning</strong> in the BL602 I2C Driver: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L753-L761">bl602_i2c.c</a></p>
+<p>During development we discovered that <a href="https://lupyuen.github.io/articles/touch#get-i2c-touch-data"><strong>cst816s_get_touch_data</strong></a> won’t return any valid Touch Data unless we <strong>enable these two I2C Warnings</strong> in the BL602 I2C Driver: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L739-L765">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int bl602_i2c_transfer(struct i2c_master_s *dev, struct i2c_msg_s *msgs, int count) {
   ...
+  priv-&gt;msgid = i;
+#ifdef CONFIG_INPUT_CST816S
+  //  I2C Workaround #1 of 2 for CST816S: https://github.com/lupyuen/cst816s-nuttx#i2c-logging
+  i2cwarn(&quot;subflag=%d, subaddr=0x%lx, sublen=%d\n&quot;, priv-&gt;subflag, priv-&gt;subaddr, priv-&gt;sublen);
+#endif /* CONFIG_INPUT_CST816S */
+  bl602_i2c_start_transfer(priv);
+  ...  
   if (priv-&gt;i2cstate == EV_I2C_END_INT) {
 
 #ifdef CONFIG_INPUT_CST816S
-    //  Workaround for CST816S. See https://github.com/lupyuen/cst816s-nuttx#i2c-logging
+    //  I2C Workaround #2 of 2 for CST816S: https://github.com/lupyuen/cst816s-nuttx#i2c-logging
     i2cwarn(&quot;i2c transfer success\n&quot;);
 #endif  //  CONFIG_INPUT_CST816S</code></pre></div>
 <p>That’s why we must always <strong>enable I2C Warnings</strong> in our NuttX Build…</p>
@@ -890,6 +897,7 @@ cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=168
 <p>We’ll only get the <strong>Touch Up Event</strong> (with invalid Touch Coordinates).</p>
 <p><em>Why would I2C Logging affect the fetching of Touch Data over I2C?</em></p>
 <p>We’re not sure. This could be due to an <strong>I2C Timing Issue</strong> or a <strong>Race Condition</strong>.</p>
+<p>Or perhaps our <strong>I2C Read is done too soon</strong> after the Touch Interrupt, and we need to wait a while?</p>
 <p>(We might probe the I2C Bus with a Logic Analyser and learn more)</p>
 <p><em>Is it OK to enable logging for everything in NuttX?</em></p>
 <p>Not really. If we enable “Informational Debug Output” (<strong>CONFIG_DEBUG_INFO</strong>) in NuttX, we’ll get so much Debug Output that the <a href="https://github.com/lupyuen/lorawan_test"><strong>LoRaWAN Test App</strong></a> will fail.</p>
