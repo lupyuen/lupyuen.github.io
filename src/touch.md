@@ -1032,15 +1032,22 @@ This article explains why...
 
 ## I2C Logging
 
-During development we discovered that [__cst816s_get_touch_data__](https://lupyuen.github.io/articles/touch#get-i2c-touch-data) won't return any valid Touch Data unless we __enable this I2C Warning__ in the BL602 I2C Driver: [bl602_i2c.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L753-L761)
+During development we discovered that [__cst816s_get_touch_data__](https://lupyuen.github.io/articles/touch#get-i2c-touch-data) won't return any valid Touch Data unless we __enable these two I2C Warnings__ in the BL602 I2C Driver: [bl602_i2c.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L739-L765)
 
 ```c
 static int bl602_i2c_transfer(struct i2c_master_s *dev, struct i2c_msg_s *msgs, int count) {
   ...
+  priv->msgid = i;
+#ifdef CONFIG_INPUT_CST816S
+  //  I2C Workaround #1 of 2 for CST816S: https://github.com/lupyuen/cst816s-nuttx#i2c-logging
+  i2cwarn("subflag=%d, subaddr=0x%lx, sublen=%d\n", priv->subflag, priv->subaddr, priv->sublen);
+#endif /* CONFIG_INPUT_CST816S */
+  bl602_i2c_start_transfer(priv);
+  ...  
   if (priv->i2cstate == EV_I2C_END_INT) {
 
 #ifdef CONFIG_INPUT_CST816S
-    //  Workaround for CST816S. See https://github.com/lupyuen/cst816s-nuttx#i2c-logging
+    //  I2C Workaround #2 of 2 for CST816S: https://github.com/lupyuen/cst816s-nuttx#i2c-logging
     i2cwarn("i2c transfer success\n");
 #endif  //  CONFIG_INPUT_CST816S
 ```
@@ -1077,6 +1084,8 @@ We'll only get the __Touch Up Event__ (with invalid Touch Coordinates).
 _Why would I2C Logging affect the fetching of Touch Data over I2C?_
 
 We're not sure. This could be due to an __I2C Timing Issue__ or a __Race Condition__.
+
+Or perhaps our __I2C Read is done too soon__ after the Touch Interrupt, and we need to wait a while?
 
 (We might probe the I2C Bus with a Logic Analyser and learn more)
 
