@@ -2,7 +2,7 @@
 
 📝 _18 May 2022_
 
-![PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-title.jpg)
+![PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-title.jpg)
 
 _PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing_
 
@@ -82,7 +82,7 @@ These are our success criteria for NuttX on PineDio Stack...
 
     (With CST816S Touch Panel)
 
-TODO: _(Checkpoint Foxtrot)_
+Let's connect PineDio Stack to a Single-Board Computer to run the above tests automatically.
 
 ![TODO](https://lupyuen.github.io/images/auto2-pinedio3a.jpg)
 
