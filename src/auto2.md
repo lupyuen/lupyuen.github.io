@@ -2,13 +2,13 @@
 
 📝 _18 May 2022_
 
-![Pine64's PineDio Stack BL604 RISC-V Board (left, with the unglam rubber band) and Pine64's PineCone BL602 RISC-V Board (right) connected to a Single Board Computer](https://lupyuen.github.io/images/auto2-title.jpg)
+![PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-title.jpg)
 
-_Pine64's PineDio Stack BL604 RISC-V Board (left, with the unglam rubber band) and Pine64's PineCone BL602 RISC-V Board (right) connected to a Single Board Computer_
+_PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing_
 
-Pine64 is about to launch its most exciting RISC-V gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2) with LoRa and Touch Screen.
+Pine64 is about to launch its most exciting RISC-V gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2) with Touch Screen, LoRa and many other features.
 
-This is a cautionary tale concerning Alice, Bob and Chow, the __(Hypothetical) Embedded Devs__ working on the newly-released PineDio Stack gadget...
+This is a cautionary tale concerning Alice, Bob and Chow, the __(Hypothetical) Embedded Devs__ working on the newly-released PineDio Stack...
 
 > __Alice__: Hi All! I'm building an __I2C Driver__ for PineDio Stack's Accelerometer. Where can I get the latest build of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/pinedio2) for PineDio Stack?
 
