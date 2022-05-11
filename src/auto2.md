@@ -20,7 +20,7 @@ Here's a cautionary tale concerning Alice, Bob and Chow, the __(Hypothetical) Em
 
 > __Bob__: Uhhh I think it might be the BL602 Updates from __NuttX Mainline__ that I merged last night. I forgot to test the changes. Sorry!
 
-Sounds like a nightmare, but this story could be real. [__Robert Lipe__](https://www.robertlipe.com/) and I are already facing similar issues today.
+Sounds like a nightmare, but this story could be real. [__Robert Lipe__](https://www.robertlipe.com/) and I are already facing similar challenges today.
 
 Let's intervene and rewrite the narrative...
 
