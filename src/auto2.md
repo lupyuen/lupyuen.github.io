@@ -6,11 +6,11 @@
 
 _Pine64's PineDio Stack BL604 RISC-V Board (left, with the unglam rubber band) and Pine64's PineCone BL602 RISC-V Board (right) connected to a Single Board Computer_
 
-Pine64 is about to launch its most exciting RISC-V gadget: __PineDio Stack BL604 RISC-V Board__ with LoRa and Touch Screen.
+Pine64 is about to launch its most exciting RISC-V gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2) with LoRa and Touch Screen.
 
 This is a cautionary tale concerning Alice, Bob and Chow, the __(Hypothetical) Embedded Devs__ working on the newly-released PineDio Stack gadget...
 
-> __Alice__: Hi All! I'm building an __I2C Driver__ for PineDio Stack's Accelerometer. Where can I get the latest build of __Apache NuttX RTOS__ for PineDio Stack?
+> __Alice__: Hi All! I'm building an __I2C Driver__ for PineDio Stack's Accelerometer. Where can I get the latest build of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/pinedio2) for PineDio Stack?
 
 > __Bob__: You'll have to compile it yourself from the [__source code here__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio). But beware... Some folks reported (unconfirmed) that it might run differently depending on the RISC-V Compiler Toolchain.
 
@@ -24,7 +24,7 @@ Sounds like a nightmare, but this story could be real. [__Robert Lipe__](https:/
 
 Let's intervene and rewrite the narrative...
 
-> __Alice__: Hi All! I'm building an __I2C Driver__ for PineDio Stack's Accelerometer. Where can I get the latest build of __Apache NuttX RTOS__ for PineDio Stack?
+> __Alice__: Hi All! I'm building an __I2C Driver__ for PineDio Stack's Accelerometer. Where can I get the latest build of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/pinedio2) for PineDio Stack?
 
 > __Bob__: Just download the Compiled Firmware from the [__GitHub Releases here__](https://github.com/lupyuen/incubator-nuttx/releases?q=pinedio&expanded=true). It was [__built automatically__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L33-L76) by GitHub Actions with the same RISC-V Compiler Toolchain that we're all using.
 
