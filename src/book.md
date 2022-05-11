@@ -68,6 +68,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 -   ["NuttX GPIO Expander for PineDio Stack BL604"](https://lupyuen.github.io/articles/expander)
 
+-   ["(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/auto2)
+
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
 # Projects and Libraries on BL602
@@ -103,6 +105,8 @@ How we __flash firmware__ to BL602 and BL604 with __command-line tools__ on Linu
 -   ["Flashing Firmware to BL602"](https://lupyuen.github.io/articles/flash)
 
 -   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
+
+-   ["(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/auto2)
 
 -   ["BL602 EFlash Loader: Reverse Engineered with Ghidra"](https://lupyuen.github.io/articles/loader)
 
@@ -461,6 +465,8 @@ For __Apache NuttX OS__
 -   ["NuttX Touch Panel Driver for PineDio Stack BL604"](https://lupyuen.github.io/articles/touch)
 
 -   ["NuttX GPIO Expander for PineDio Stack BL604"](https://lupyuen.github.io/articles/expander)
+
+-   ["(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/auto2)
 
 -   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
 
