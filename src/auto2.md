@@ -6,7 +6,7 @@
 
 _PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing_
 
-Pine64 is about to launch its most exciting RISC-V gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2) with Touch Screen, LoRa and many other features.
+Pine64 is about to launch their most exciting RISC-V gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2) with Touch Screen, LoRa and many other features.
 
 This is a cautionary tale concerning Alice, Bob and Chow, the __(Hypothetical) Embedded Devs__ working on the newly-released PineDio Stack...
 
