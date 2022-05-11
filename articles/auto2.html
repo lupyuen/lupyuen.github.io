@@ -67,9 +67,43 @@
     <nav id="TOC"><ul>
 <li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
 <li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>18 May 2022</em></p>
-<p><img src="https://lupyuen.github.io/images/auto2-title.jpg" alt="" /></p>
-<p>TODO: Story</p>
-<p>TODO: Pine64 is about to launch its most exciting RISC-V gadget: PineDio Stack BL604 RISC-V Board with LoRa and Touch Screen. Here’s how we automatically flash and test every new release of Apache NuttX RTOS for PineDio Stack.</p>
+<p><img src="https://lupyuen.github.io/images/auto2-title.jpg" alt="Pine64’s PineDio Stack BL604 RISC-V Board (left, with the unglam rubber band) and Pine64’s PineCone BL602 RISC-V Board (right) connected to a Single Board Computer" /></p>
+<p><em>Pine64’s PineDio Stack BL604 RISC-V Board (left, with the unglam rubber band) and Pine64’s PineCone BL602 RISC-V Board (right) connected to a Single Board Computer</em></p>
+<p>Pine64 is about to launch its most exciting RISC-V gadget: <strong>PineDio Stack BL604 RISC-V Board</strong> with LoRa and Touch Screen.</p>
+<p>Here’s a cautionary tale concerning Alice, Bob and Chow, the <strong>(Hypothetical) Embedded Devs</strong> working on the newly-released PineDio Stack gadget…</p>
+<blockquote>
+<p><strong>Alice</strong>: Hi All! I’m building an <strong>I2C Driver</strong> for PineDio Stack’s Accelerometer. Where can I get the latest build of <strong>Apache NuttX RTOS</strong> for PineDio Stack?</p>
+</blockquote>
+<blockquote>
+<p><strong>Bob</strong>: You’ll have to compile it yourself from the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>source code here</strong></a>. But beware… Some folks reported (unconfirmed) that it might run differently depending on the RISC-V Compiler Toolchain.</p>
+</blockquote>
+<blockquote>
+<p><strong>Chow</strong>: OH CR*P! PineDio Stack’s <strong>I2C Touch Panel</strong> is no longer responding to touch! What changed?!</p>
+</blockquote>
+<blockquote>
+<p><strong>Alice</strong>: Is it because of the I2C Accelerometer Driver that I just committed to the repo?</p>
+</blockquote>
+<blockquote>
+<p><strong>Bob</strong>: Uhhh I think it might be the BL602 Updates from <strong>NuttX Mainline</strong> that I merged last night. I forgot to test the changes. Sorry!</p>
+</blockquote>
+<p>Sounds like a nightmare, but this story could be real. <a href="https://www.robertlipe.com/"><strong>Robert Lipe</strong></a> and I are already facing similar issues today.</p>
+<p>Let’s intervene and rewrite the narrative…</p>
+<blockquote>
+<p><strong>Alice</strong>: Hi All! I’m building an <strong>I2C Driver</strong> for PineDio Stack’s Accelerometer. Where can I get the latest build of <strong>Apache NuttX RTOS</strong> for PineDio Stack?</p>
+</blockquote>
+<blockquote>
+<p><strong>Bob</strong>: Just download the Compiled Firmware from the <a href="https://github.com/lupyuen/incubator-nuttx/releases?q=pinedio&amp;expanded=true"><strong>GitHub Releases here</strong></a>. It was <strong>built automatically</strong> by GitHub Actions with the same RISC-V Compiler Toolchain that we’re all using.</p>
+</blockquote>
+<blockquote>
+<p><strong>Chow</strong>: Hmmm PineDio Stack’s <strong>I2C Touch Panel</strong> works a little wonky today. What changed?</p>
+</blockquote>
+<blockquote>
+<p><strong>Alice</strong>: It can’t be caused by my new I2C Accelerometer Driver. My changes to the repo are still awaiting <strong>Automated Testing</strong>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Bob</strong>: I merged the BL602 Updates from <strong>NuttX Mainline</strong> last night. The I2C Touch Panel worked perfectly OK during Automated Testing, here’s the evidence: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Testing Log</strong></a>. Maybe we should do some static discharge? Switch off the AC, open the windows, remove all metal objects, …</p>
+</blockquote>
+<p>TODO</p>
 <h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
 <p>TODO</p>
 <p>Now that we’ve fixed the GPIO problem with GPIO Expander, I hope it’s a lot easier to create <strong>NuttX Drivers and Apps</strong> on PineDio Stack.</p>
