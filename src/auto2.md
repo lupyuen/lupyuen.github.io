@@ -58,7 +58,9 @@ Let's dive into the __Auto Flash and Test Script__ for PineDio Stack...
 
 -   [__`lupyuen/remote-bl602`__](https://github.com/lupyuen/remote-bl602)
 
-![TODO](https://lupyuen.github.io/images/auto2-pinedio2.jpg)
+![PineDio Stack BL604 connected to LoRa Antenna (swiped from the IoT Course I used to teach)](https://lupyuen.github.io/images/auto2-pinedio2.jpg)
+
+_PineDio Stack BL604 connected to LoRa Antenna (swiped from the IoT Course I used to teach)_
 
 # Testing Checkpoints
 
@@ -104,6 +106,8 @@ __GPIO 8 Jumper must be set to Low (Non-Flashing Mode)!__
 (Or the LoRaWAN Test App will fail because the timers will get triggered too quickly)
 
 ![TODO](https://lupyuen.github.io/images/auto2-jumper.jpg)
+
+TODO: [Remember to connect a LoRa Antenna!](https://lupyuen.github.io/images/auto2-pinedio2.jpg)
 
 # Test PineDio Stack
 
