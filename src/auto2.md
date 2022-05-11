@@ -8,7 +8,7 @@ _Pine64's PineDio Stack BL604 RISC-V Board (left, with the unglam rubber band) a
 
 Pine64 is about to launch its most exciting RISC-V gadget: __PineDio Stack BL604 RISC-V Board__ with LoRa and Touch Screen.
 
-Here's a cautionary tale concerning Alice, Bob and Chow, the __(Hypothetical) Embedded Devs__ working on the newly-released PineDio Stack gadget...
+This is a cautionary tale concerning Alice, Bob and Chow, the __(Hypothetical) Embedded Devs__ working on the newly-released PineDio Stack gadget...
 
 > __Alice__: Hi All! I'm building an __I2C Driver__ for PineDio Stack's Accelerometer. Where can I get the latest build of __Apache NuttX RTOS__ for PineDio Stack?
 
