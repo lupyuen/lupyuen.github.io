@@ -72,8 +72,8 @@
 <li><a href="#checkpoint-bravo">3.1 Checkpoint Bravo</a><ul></ul></li></ul></li>
 <li><a href="#testing-script">4 Testing Script</a><ul></ul></li>
 <li><a href="#run-the-script">5 Run The Script</a><ul></ul></li>
-<li><a href="#pinedio-stack-bl604">6 PineDio Stack BL604</a><ul></ul></li>
-<li><a href="#test-pinedio-stack-bl604">7 Test PineDio Stack BL604</a><ul></ul></li>
+<li><a href="#connect-pinedio-stack">6 Connect PineDio Stack</a><ul></ul></li>
+<li><a href="#test-pinedio-stack">7 Test PineDio Stack</a><ul></ul></li>
 <li><a href="#select-usb-device">8 Select USB Device</a><ul></ul></li>
 <li><a href="#upload-test-log">9 Upload Test Log</a><ul></ul></li>
 <li><a href="#spi-test-failure">10 SPI Test Failure</a><ul></ul></li>
@@ -132,17 +132,19 @@
 <p>(Needs one Human Touch, in lieu of a Robot Finger)</p>
 </li>
 <li>
-<p><strong>Testing Firmware Builds</strong> are auto-downloaded from <strong>GitHub Releases</strong></p>
+<p><strong>Firmware Builds</strong> are auto-downloaded from <strong>GitHub Releases</strong> for testing</p>
 <p>(Auto-published by GitHub Actions)</p>
 </li>
 <li>
 <p><strong>Testing Logs</strong> are auto-uploaded to GitHub Releases as Release Notes</p>
+<p><a href="https://youtu.be/JX7rWqWTOW4">(Watch the demo on YouTube)</a></p>
 </li>
 </ul>
 <p>Let’s dive into the <strong>Auto Flash and Test Script</strong> for PineDio Stack…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/remote-bl602"><strong><code>lupyuen/remote-bl602</code></strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/auto2-pinedio2.jpg" alt="TODO" /></p>
 <h1 id="testing-checkpoints"><a href="#testing-checkpoints">1 Testing Checkpoints</a></h1>
 <p>Before we study the script, let’s break down the Automated Testing into a series of <strong>Testing Checkpoints</strong>.</p>
 <p>These are our success criteria for NuttX on PineDio Stack…</p>
@@ -158,7 +160,7 @@
 </li>
 <li>
 <p><strong>GPIO Input, Output and Interrupt</strong> must work <em>(Checkpoint Delta)</em></p>
-<p>(Also Timers, Multithreading and SX1262 LoRa Transceiver)</p>
+<p>(Also Timers and Multithreading with SX1262 LoRa Transceiver)</p>
 </li>
 <li>
 <p><strong>I2C Transmit and Receive</strong> must work <em>(Checkpoint Echo)</em></p>
@@ -305,12 +307,9 @@ script -c remote-bl602/scripts/test.sh /tmp/release.log
 remote-bl602/scripts/upload.sh</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
 <p>More about this below.</p>
-<h1 id="pinedio-stack-bl604"><a href="#pinedio-stack-bl604">6 PineDio Stack BL604</a></h1>
+<p><img src="https://lupyuen.github.io/images/auto2-pinedio3a.jpg" alt="TODO" /></p>
+<h1 id="connect-pinedio-stack"><a href="#connect-pinedio-stack">6 Connect PineDio Stack</a></h1>
 <p>TODO</p>
-<p>Watch the demo on YouTube…</p>
-<ul>
-<li><a href="https://youtu.be/JX7rWqWTOW4">“Auto Flash and Test on PineDio Stack BL604”</a></li>
-</ul>
 <p>We connect PineDio Stack BL604 to the SBC for Auto Flash and Test like so…</p>
 <div><table><thead><tr><th>SBC</th><th>BL604</th><th>Function</th></tr></thead><tbody>
 <tr><td>GPIO 5</td><td>GPIO 8 <em>(GPIO Port)</em></td><td>Flashing Mode</td></tr>
@@ -319,9 +318,11 @@ remote-bl602/scripts/upload.sh</code></pre></div>
 <tr><td>USB</td><td>USB Port</td><td>USB UART</td></tr>
 </tbody></table>
 </div>
+<p><img src="https://lupyuen.github.io/images/auto2-pinedio.jpg" alt="TODO" /></p>
 <p><strong>GPIO 8 Jumper must be set to Low (Non-Flashing Mode)!</strong></p>
 <p>(Or the LoRaWAN Test App will fail because the timers will get triggered too quickly)</p>
-<h1 id="test-pinedio-stack-bl604"><a href="#test-pinedio-stack-bl604">7 Test PineDio Stack BL604</a></h1>
+<p><img src="https://lupyuen.github.io/images/auto2-jumper.jpg" alt="TODO" /></p>
+<h1 id="test-pinedio-stack"><a href="#test-pinedio-stack">7 Test PineDio Stack</a></h1>
 <p>TODO</p>
 <p>We auto flash and test PineDio Stack BL604 in two scripts.</p>
 <p>The first script auto-flashes the PineDio Stack Firmware <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml">(auto-built by GitHub Actions)</a> and runs the <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a>…</p>
@@ -365,6 +366,7 @@ remote-bl602/scripts/pinedio.sh
 #  Auto test PineDio Stack BL604: Touchscreen Test
 remote-bl602/scripts/pinedio2.sh</code></pre></div>
 <p>TODO: Fix the script to use the correct USB Device</p>
+<p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>TODO</p>
 <p>To <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
@@ -431,7 +433,10 @@ echo &#39;```&#39; &gt;&gt;/tmp/release2.log</code></pre></div>
 gh release edit \
     `cat /tmp/release.tag` \
     --notes-file /tmp/release2.log \
-    --repo lupyuen/incubator-nuttx</code></pre></div><h1 id="spi-test-failure"><a href="#spi-test-failure">10 SPI Test Failure</a></h1>
+    --repo lupyuen/incubator-nuttx</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/auto2-pinecone.jpg" alt="TODO" /></p>
+<h1 id="spi-test-failure"><a href="#spi-test-failure">10 SPI Test Failure</a></h1>
+<p>TODO</p>
 <p>Our Auto Test Scripts <code>test.sh</code> and <code>pinedio.sh</code> will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; spi_test2
 Get Status: received
@@ -1371,6 +1376,9 @@ Press Enter to shutdown</code></pre></div><h1 id="whats-next"><a href="#whats-ne
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1519541046803271682"><strong>this Twitter Thread</strong></a></li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/auto2-box.jpg" alt="" /></p>
+<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="" /></p>
 
     
 </body>
