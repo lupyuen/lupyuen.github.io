@@ -18,7 +18,7 @@ This is a cautionary tale concerning Alice, Bob and Chow, the __(Hypothetical) E
 
 > __Alice__: Is it because of the I2C Accelerometer Driver that I just committed to the repo?
 
-> __Bob__: Uhhh I think it might be the BL602 Updates from [__NuttX Mainline__](https://github.com/apache/incubator-nuttx) that I merged last night. I forgot to test the changes. Sorry!
+> __Bob__: Uhhh I think it might be the BL602 Updates from [__NuttX Mainline__](https://github.com/apache/incubator-nuttx) that I merged last night. I __forgot to test__ the changes. I think [__SPI and LoRaWAN__](https://lupyuen.github.io/articles/lorawan3) are broken too. Sorry!
 
 Sounds like a nightmare, but this story could be real. [__Robert Lipe__](https://www.robertlipe.com/) and I are already facing similar challenges today.
 
