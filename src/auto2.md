@@ -82,7 +82,7 @@ These are our success criteria for NuttX on PineDio Stack...
 
     (With CST816S Touch Panel)
 
-Let's connect PineDio Stack to a Single-Board Computer to run the above tests automatically.
+To run the above tests automatically, let's connect PineDio Stack to a Single-Board Computer.
 
 ![TODO](https://lupyuen.github.io/images/auto2-pinedio3a.jpg)
 
