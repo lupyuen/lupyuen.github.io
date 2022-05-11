@@ -78,13 +78,13 @@
 <p><strong>Bob</strong>: You’ll have to compile it yourself from the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>source code here</strong></a>. But beware… Some folks reported (unconfirmed) that it might run differently depending on the RISC-V Compiler Toolchain.</p>
 </blockquote>
 <blockquote>
-<p><strong>Chow</strong>: OH CR*P! PineDio Stack’s <strong>I2C Touch Panel</strong> is no longer responding to touch! What changed?!</p>
+<p><strong>Chow</strong>: OH CR*P! PineDio Stack’s <a href="https://lupyuen.github.io/articles/touch"><strong>I2C Touch Panel</strong></a> is no longer responding to touch! What changed?!</p>
 </blockquote>
 <blockquote>
 <p><strong>Alice</strong>: Is it because of the I2C Accelerometer Driver that I just committed to the repo?</p>
 </blockquote>
 <blockquote>
-<p><strong>Bob</strong>: Uhhh I think it might be the BL602 Updates from <strong>NuttX Mainline</strong> that I merged last night. I forgot to test the changes. Sorry!</p>
+<p><strong>Bob</strong>: Uhhh I think it might be the BL602 Updates from <a href="https://github.com/apache/incubator-nuttx"><strong>NuttX Mainline</strong></a> that I merged last night. I forgot to test the changes. Sorry!</p>
 </blockquote>
 <p>Sounds like a nightmare, but this story could be real. <a href="https://www.robertlipe.com/"><strong>Robert Lipe</strong></a> and I are already facing similar challenges today.</p>
 <p>Let’s intervene and rewrite the narrative…</p>
@@ -92,16 +92,16 @@
 <p><strong>Alice</strong>: Hi All! I’m building an <strong>I2C Driver</strong> for PineDio Stack’s Accelerometer. Where can I get the latest build of <strong>Apache NuttX RTOS</strong> for PineDio Stack?</p>
 </blockquote>
 <blockquote>
-<p><strong>Bob</strong>: Just download the Compiled Firmware from the <a href="https://github.com/lupyuen/incubator-nuttx/releases?q=pinedio&amp;expanded=true"><strong>GitHub Releases here</strong></a>. It was <strong>built automatically</strong> by GitHub Actions with the same RISC-V Compiler Toolchain that we’re all using.</p>
+<p><strong>Bob</strong>: Just download the Compiled Firmware from the <a href="https://github.com/lupyuen/incubator-nuttx/releases?q=pinedio&amp;expanded=true"><strong>GitHub Releases here</strong></a>. It was <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L33-L76"><strong>built automatically</strong></a> by GitHub Actions with the same RISC-V Compiler Toolchain that we’re all using.</p>
 </blockquote>
 <blockquote>
-<p><strong>Chow</strong>: Hmmm PineDio Stack’s <strong>I2C Touch Panel</strong> works a little wonky today. What changed?</p>
+<p><strong>Chow</strong>: Hmmm PineDio Stack’s <a href="https://lupyuen.github.io/articles/touch"><strong>I2C Touch Panel</strong></a> works a little wonky today. What changed?</p>
 </blockquote>
 <blockquote>
 <p><strong>Alice</strong>: It can’t be caused by my new I2C Accelerometer Driver. My changes to the repo are still awaiting <strong>Automated Testing</strong>.</p>
 </blockquote>
 <blockquote>
-<p><strong>Bob</strong>: I merged the BL602 Updates from <strong>NuttX Mainline</strong> last night. The I2C Touch Panel worked perfectly OK during Automated Testing, here’s the evidence: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Testing Log</strong></a>. Maybe we do some static discharge? Switch off the AC, open the windows, remove all metal objects, …</p>
+<p><strong>Bob</strong>: I merged the BL602 Updates from <a href="https://github.com/apache/incubator-nuttx"><strong>NuttX Mainline</strong></a> last night. The I2C Touch Panel worked perfectly OK during Automated Testing, here’s the evidence: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Testing Log</strong></a>. Maybe we do some static discharge? Switch off the AC, open the windows, remove all metal objects, …</p>
 </blockquote>
 <p>This article explains how we accomplished all that with PineDio Stack…</p>
 <ul>
