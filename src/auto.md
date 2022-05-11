@@ -6,6 +6,8 @@
 
 _PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test_
 
+[__UPDATE:__ Check out the new article on Automated Testing for PineDio Stack BL604](https://lupyuen.github.io/articles/auto2)
+
 Suppose we're __testing embedded firmware__ on the [__BL602 RISC-V SoC__](https://lupyuen.github.io/articles/pinecone).  And the firmware changes __every day__ (due to Daily Updates from upstream).
 
 Instead of flipping a jumper, restarting the board, flashing over UART, restarting again, repeating every day...
@@ -846,6 +848,8 @@ But for now... No more worries about merging hundreds of upstream commits (and t
 [(Source)](https://github.com/lupyuen/incubator-nuttx/pull/21)
 
 # What's Next
+
+[__UPDATE:__ Check out the new article on Automated Testing for PineDio Stack BL604](https://lupyuen.github.io/articles/auto2)
 
 After 14 months of flipping the jumper and smashing the button on BL602, I'm so glad we have an automated way to Flash and Test BL602!
 
