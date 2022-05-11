@@ -65,8 +65,24 @@
 
     <h1 class="title">(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>18 May 2022</em></p>
+<li><a href="#testing-checkpoints">1 Testing Checkpoints</a><ul></ul></li>
+<li><a href="#nuttx-must-boot">2 NuttX Must Boot</a><ul>
+<li><a href="#checkpoint-alpha">2.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
+<li><a href="#nuttx-must-not-crash">3 NuttX Must Not Crash</a><ul>
+<li><a href="#checkpoint-bravo">3.1 Checkpoint Bravo</a><ul></ul></li></ul></li>
+<li><a href="#testing-script">4 Testing Script</a><ul></ul></li>
+<li><a href="#run-the-script">5 Run The Script</a><ul></ul></li>
+<li><a href="#pinedio-stack-bl604">6 PineDio Stack BL604</a><ul></ul></li>
+<li><a href="#test-pinedio-stack-bl604">7 Test PineDio Stack BL604</a><ul></ul></li>
+<li><a href="#select-usb-device">8 Select USB Device</a><ul></ul></li>
+<li><a href="#upload-test-log">9 Upload Test Log</a><ul></ul></li>
+<li><a href="#spi-test-failure">10 SPI Test Failure</a><ul></ul></li>
+<li><a href="#lorawan-test-failure">11 LoRaWAN Test Failure</a><ul></ul></li>
+<li><a href="#output-log-for-upstream-build">12 Output Log for Upstream Build</a><ul></ul></li>
+<li><a href="#output-log-for-upstream-build-with-crash-analysis">13 Output Log for Upstream Build with Crash Analysis</a><ul></ul></li>
+<li><a href="#output-log-for-pinedio-stack-bl604-build">14 Output Log for PineDio Stack BL604 Build</a><ul></ul></li>
+<li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
+<li><a href="#notes">16 Notes</a><ul></ul></li></ul></nav><p>📝 <em>18 May 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/auto2-title.jpg" alt="Pine64’s PineDio Stack BL604 RISC-V Board (left, with the unglam rubber band) and Pine64’s PineCone BL602 RISC-V Board (right) connected to a Single Board Computer" /></p>
 <p><em>Pine64’s PineDio Stack BL604 RISC-V Board (left, with the unglam rubber band) and Pine64’s PineCone BL602 RISC-V Board (right) connected to a Single Board Computer</em></p>
 <p>Pine64 is about to launch its most exciting RISC-V gadget: <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604 RISC-V Board</strong></a> with LoRa and Touch Screen.</p>
@@ -115,8 +131,1222 @@
 <p>Mostly Automated Testing of <strong>I2C Touch Panel</strong></p>
 <p>(Needs one Human Touch, in lieu of a Robot Finger)</p>
 </li>
+<li>
+<p><strong>Testing Firmware Builds</strong> are auto-downloaded from <strong>GitHub Releases</strong></p>
+<p>(Auto-published by GitHub Actions)</p>
+</li>
+<li>
+<p><strong>Testing Logs</strong> are auto-uploaded to GitHub Releases as Release Notes</p>
+</li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<p>Let’s dive into the <strong>Auto Flash and Test Script</strong> for PineDio Stack…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/remote-bl602"><strong><code>lupyuen/remote-bl602</code></strong></a></li>
+</ul>
+<h1 id="testing-checkpoints"><a href="#testing-checkpoints">1 Testing Checkpoints</a></h1>
+<p>Before we study the script, let’s break down the Automated Testing into a series of <strong>Testing Checkpoints</strong>.</p>
+<p>Here’s our success criteria for Automated Testing of NuttX on PineDio Stack…</p>
+<ul>
+<li>
+<p><strong>NuttX must boot</strong> on PineDio Stack, with NuttX Drivers loaded <em>(Checkpoint Alpha)</em></p>
+</li>
+<li>
+<p><strong>NuttX must not crash</strong> on PineDio Stack <em>(Checkpoint Bravo)</em></p>
+</li>
+<li>
+<p><strong>SPI Transmit and Receive</strong> must work <em>(Checkpoint Charlie)</em></p>
+</li>
+<li>
+<p><strong>GPIO Input, Output and Interrupt</strong> must work <em>(Checkpoint Delta)</em></p>
+<p>(Also Timers, Multithreading and SX1262 LoRa Transceiver)</p>
+</li>
+<li>
+<p><strong>I2C Transmit and Receive</strong> must work <em>(Checkpoint Echo)</em></p>
+<p>(Also CST816S Touch Panel)</p>
+</li>
+</ul>
+<p>TODO: <em>(Checkpoint Foxtrot)</em></p>
+<h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">2 NuttX Must Boot</a></h1>
+<p><em>(Checkpoint Alpha)</em></p>
+<p>TODO</p>
+<h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">2.1 Checkpoint Alpha</a></h2>
+<p>TODO</p>
+<h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">3 NuttX Must Not Crash</a></h1>
+<p><em>(Checkpoint Bravo)</em></p>
+<p>TODO</p>
+<h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">3.1 Checkpoint Bravo</a></h2>
+<p>TODO</p>
+<h1 id="testing-script"><a href="#testing-script">4 Testing Script</a></h1>
+<p>TODO</p>
+<p>Read the article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/auto">“Auto Flash and Test NuttX on RISC-V BL602”</a></li>
+</ul>
+<p>Watch the demo on YouTube…</p>
+<ul>
+<li>
+<p><a href="https://youtu.be/JX7rWqWTOW4">“Auto Flash and Test on PineDio Stack BL604”</a></p>
+</li>
+<li>
+<p><a href="https://youtu.be/JtnOyl5cYjo">“Auto Flash and Test on PineCone BL602”</a></p>
+</li>
+</ul>
+<p>This script runs on a Linux Single-Board Computer (SBC) to automagically Flash and Test BL602, with the Latest Daily Build of Apache NuttX OS.</p>
+<p>The script sends the “<code>lorawan_test</code>” command to BL602 after booting, to test the LoRaWAN Stack.</p>
+<p>If BL602 crashes, the script runs a Crash Analysis to show the RISC-V Disassembly of the addresses in the Stack Trace.</p>
+<p>The scripts are here…</p>
+<ul>
+<li>
+<p><a href="scripts/test.sh">scripts/test.sh</a>: Auto Flash and Test PineCone BL602</p>
+</li>
+<li>
+<p><a href="scripts/pinedio.sh">scripts/pinedio.sh</a>: Auto Flash and Test PineDio Stack BL604</p>
+</li>
+<li>
+<p><a href="scripts/pinedio2.sh">scripts/pinedio2.sh</a>: Called by pinedio.sh</p>
+</li>
+<li>
+<p><a href="scripts/upload.sh">scripts/upload.sh</a>: Upload Test Log to GitHub Release Notes</p>
+</li>
+</ul>
+<p>NuttX Builds are done by GitHub Actions…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml">Daily Upstream Build</a> (Without the LoRaWAN Stack)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml">Release Build</a> (Includes the LoRaWAN Stack)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml">Downstream Build</a> (Merges the LoRaWAN Stack with upstream updates)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml">PineDio Stack BL604 Build</a> (Includes the LoRaWAN Stack, ST7789 Display Driver, Touch Panel Driver, LVGL Test App)</p>
+</li>
+</ul>
+<p>Why are we doing this?</p>
+<ul>
+<li>
+<p>Might be useful for <strong>Release Testing</strong> of NuttX (and other operating systems) on real hardware</p>
+</li>
+<li>
+<p>By auto-testing the <strong>LoRaWAN Stack</strong> on NuttX, we can be sure that GPIO Input / Output / Interrupts, SPI, ADC, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor are all working OK with the latest Daily Build of NuttX</p>
+</li>
+<li>
+<p>I write articles about NuttX OS. I need to pick the <strong>Latest Stable Build</strong> of NuttX for testing the NuttX code in my articles. <a href="https://lupyuen.github.io/articles/book#nuttx-on-bl602">(Like these)</a></p>
+</li>
+</ul>
+<h1 id="run-the-script"><a href="#run-the-script">5 Run The Script</a></h1>
+<p>TODO</p>
+<p>Watch the demo on YouTube…</p>
+<ul>
+<li><a href="https://youtu.be/JtnOyl5cYjo">“Auto Flash and Test on PineCone BL602”</a></li>
+</ul>
+<p>Connect SBC to BL602 and SX1262 like so…</p>
+<div><table><thead><tr><th>SBC</th><th>BL602</th><th>SX1262</th><th>Function</th></tr></thead><tbody>
+<tr><td>GPIO 2</td><td>GPIO 8</td><td></td><td>Flashing Mode</td></tr>
+<tr><td>GPIO 3</td><td>RST</td><td>RESET</td><td>Reset</td></tr>
+<tr><td>GND</td><td>GND</td><td></td><td>Ground</td></tr>
+<tr><td>USB</td><td>USB</td><td></td><td>USB UART</td></tr>
+</tbody></table>
+</div>
+<p>For auto-testing LoRaWAN, also connect BL602 to SX1262 as described below…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">“Connect SX1262”</a></li>
+</ul>
+<p>To run the flash and test script for the <strong>Daily Upstream Build</strong> (without LoRaWAN)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Allow the user to access the GPIO and UART ports
+sudo usermod -a -G gpio    $USER
+sudo usermod -a -G dialout $USER
+
+#  Logout and login to refresh the permissions
+logout
+
+#  Install rustup, select default option
+sudo curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sudo sh
+
+#  Install blflash for flashing BL602
+cargo install blflash
+
+#  Download the flash and test script
+git clone --recursive https://github.com/lupyuen/remote-bl602/
+
+#  Auto flash and test BL602
+remote-bl602/scripts/test.sh</code></pre></div>
+<p>(See the output log below)</p>
+<p>To run the flash and test script for the <strong>Release Build</strong> (includes LoRaWAN)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to download the Release Build (instead of the Upstream Build)
+export BUILD_PREFIX=release
+
+#  Auto flash and test BL602
+remote-bl602/scripts/test.sh</code></pre></div>
+<p>(See the output log below)</p>
+<p>To select the <strong>Downstream Build</strong> by <strong>Build Date</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to download the Downstream Build for 2022-05-04
+export BUILD_PREFIX=downstream
+export BUILD_DATE=2022-05-04
+
+#  Auto flash and test BL602
+remote-bl602/scripts/test.sh</code></pre></div>
+<p>For <strong>PineDio Stack BL604</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Auto flash and test PineDio Stack BL604: LoRaWAN Test
+remote-bl602/scripts/pinedio.sh
+
+#  Auto test PineDio Stack BL604: Touchscreen Test
+remote-bl602/scripts/pinedio2.sh</code></pre></div>
+<p>(See the output log below)</p>
+<p>We may also <strong>flash and test BL602 remotely</strong> over SSH…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/test.sh</code></pre></div>
+<p>To <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Run the script for Auto Flash and Test, capture the Test Log
+script -c remote-bl602/scripts/test.sh /tmp/release.log
+
+#  Upload the Test Log to the GitHub Release Notes
+remote-bl602/scripts/upload.sh</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
+<p>More about this below.</p>
+<h1 id="pinedio-stack-bl604"><a href="#pinedio-stack-bl604">6 PineDio Stack BL604</a></h1>
+<p>TODO</p>
+<p>Watch the demo on YouTube…</p>
+<ul>
+<li><a href="https://youtu.be/JX7rWqWTOW4">“Auto Flash and Test on PineDio Stack BL604”</a></li>
+</ul>
+<p>We connect PineDio Stack BL604 to the SBC for Auto Flash and Test like so…</p>
+<div><table><thead><tr><th>SBC</th><th>BL604</th><th>Function</th></tr></thead><tbody>
+<tr><td>GPIO 5</td><td>GPIO 8 <em>(GPIO Port)</em></td><td>Flashing Mode</td></tr>
+<tr><td>GPIO 6</td><td>RST <em>(JTAG Port)</em></td><td>Reset</td></tr>
+<tr><td>GND</td><td>GND <em>(JTAG Port)</em></td><td>Ground</td></tr>
+<tr><td>USB</td><td>USB Port</td><td>USB UART</td></tr>
+</tbody></table>
+</div>
+<p><strong>GPIO 8 Jumper must be set to Low (Non-Flashing Mode)!</strong></p>
+<p>(Or the LoRaWAN Test App will fail because the timers will get triggered too quickly)</p>
+<h1 id="test-pinedio-stack-bl604"><a href="#test-pinedio-stack-bl604">7 Test PineDio Stack BL604</a></h1>
+<p>TODO</p>
+<p>We auto flash and test PineDio Stack BL604 in two scripts.</p>
+<p>The first script auto-flashes the PineDio Stack Firmware <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml">(auto-built by GitHub Actions)</a> and runs the <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a>…</p>
+<ul>
+<li><a href="scripts/pinedio.sh">scripts/pinedio.sh</a></li>
+</ul>
+<p>The <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a> connects to a LoRaWAN Gateway (ChirpStack) and sends a LoRaWAN Data Packet to the Gateway.</p>
+<p>(Which means that Timers, SPI, GPIO Input / Ouput / Interrupt are working OK)</p>
+<p>The second script auto-restarts PineDio Stack and runs the <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> (to test the touchscreen)…</p>
+<ul>
+<li><a href="scripts/pinedio2.sh">scripts/pinedio2.sh</a></li>
+</ul>
+<p>The <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> renders a screen to the ST7789 SPI Display and waits for a Touch Event from the CST816S I2C Touch Panel.</p>
+<p>For the test to succeed, we must tap the screen to generate a Touch Event.</p>
+<p><a href="https://youtu.be/mb3zcacDGPc">(Later we might automate this with a “Robot Finger”)</a></p>
+<p>(See the output log below)</p>
+<h1 id="select-usb-device"><a href="#select-usb-device">8 Select USB Device</a></h1>
+<p>TODO</p>
+<p>When we connect both PineDio Stack BL604 and PineCone BL602 to the SBC, we’ll see two USB Devices: <code>/dev/ttyUSB0</code> and <code>/dev/ttyUSB1</code></p>
+<p>How will we know which USB Device is for PineDio Stack and PineCone?</p>
+<div class="example-wrap"><pre class="language-bash"><code># Show /dev/ttyUSB0
+lsusb -v -s 1:3 2&gt;&amp;1 | grep bcdDevice | colrm 1 23
+
+# Show /dev/ttyUSB1
+lsusb -v -s 1:4 2&gt;&amp;1 | grep bcdDevice | colrm 1 23
+
+# Output for Pinedio Stack BL604:
+# 2.64
+# See https://gist.github.com/lupyuen/dc8c482f2b31b25d329cd93dc44f0044
+
+# Output for PineCone BL602:
+# 2.63
+# See https://gist.github.com/lupyuen/3ba0dc0789fd282bbfcf9dd5c3ff8908</code></pre></div>
+<p>Here’s how we override the Default USB Device for PineDio Stack…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to use /dev/ttyUSB1
+export USB_DEVICE=/dev/ttyUSB1
+
+#  Auto flash and test PineDio Stack BL604: LoRaWAN Test
+remote-bl602/scripts/pinedio.sh
+
+#  Auto test PineDio Stack BL604: Touchscreen Test
+remote-bl602/scripts/pinedio2.sh</code></pre></div>
+<p>TODO: Fix the script to use the correct USB Device</p>
+<h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
+<p>TODO</p>
+<p>To <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Run the script for Auto Flash and Test, capture the Test Log
+script -c remote-bl602/scripts/test.sh /tmp/release.log
+
+#  Upload the Test Log to the GitHub Release Notes
+remote-bl602/scripts/upload.sh</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
+<p>The <code>script</code> command runs the Auto Flash and Test Script <code>test.sh</code>, and captures the Test Log to <code>/tmp/release.log</code>.</p>
+<p>Then we run this script to upload the Test Log to GitHub Release Notes…</p>
+<ul>
+<li><a href="scripts/upload.sh">scripts/upload.sh</a></li>
+</ul>
+<p>The <code>upload.sh</code> script begins by calling the GitHub CLI to download the Auto-Generated GitHub Release Notes (populated by the GitHub Actions Build)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Assumes the following files are present...
+#  /tmp/release.log: Test Log
+#  /tmp/release.tag: Release Tag (like pinedio-2022-05-10)
+
+#  Preserve the Auto-Generated GitHub Release Notes.
+#  Fetch the current GitHub Release Notes and extract the body text, like:
+#  &quot;Merge updates from master by @lupyuen in https://github.com/lupyuen/incubator-nuttx/pull/82&quot;
+gh release view \
+    `cat /tmp/release.tag` \
+    --json body \
+    --jq &#39;.body&#39; \
+    --repo lupyuen/incubator-nuttx \
+    &gt;/tmp/release.old</code></pre></div>
+<p>In case the script is run twice, we search for the Previous Test Log…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Find the position of the Previous Test Log, starting with &quot;```&quot;
+cat /tmp/release.old \
+    | grep &#39;```&#39; --max-count=1 --byte-offset \
+    | sed &#39;s/:.*//g&#39; \
+    &gt;/tmp/previous-log.txt
+prev=`cat /tmp/previous-log.txt`</code></pre></div>
+<p>And we remove the Previous Test Log, while preserving the Auto-Generated GitHub Release Notes…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  If Previous Test Log exists, discard it
+if [ &quot;$prev&quot; != &#39;&#39; ]; then
+    cat /tmp/release.old \
+        | head --bytes=$prev \
+        &gt;&gt;/tmp/release2.log
+else
+    #  Else copy the entire Release Notes
+    cat /tmp/release.old \
+        &gt;&gt;/tmp/release2.log
+    echo &quot;&quot; &gt;&gt;/tmp/release2.log
+fi</code></pre></div>
+<p>Just before adding the Test Log, we insert the Test Status…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Show the Test Status, like &quot;All OK! BL602 has successfully joined the LoRaWAN Network&quot;
+grep &quot;^===== &quot; /tmp/release.log \
+    | colrm 1 6 \
+    &gt;&gt;/tmp/release2.log</code></pre></div>
+<p>Then we embed the Test Log, taking care of the Special Characters…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Enquote the Test Log without Carriage Return and Terminal Control Characters
+#  https://stackoverflow.com/questions/17998978/removing-colors-from-output
+echo &#39;```text&#39; &gt;&gt;/tmp/release2.log
+cat /tmp/release.log \
+    | tr -d &#39;\r&#39; \
+    | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
+    &gt;&gt;/tmp/release2.log
+echo &#39;```&#39; &gt;&gt;/tmp/release2.log</code></pre></div>
+<p>Finally we call the GitHub CLI to upload the Auto-Generated GitHub Release Notes appended with the Test Log…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Upload the Test Log to the GitHub Release Notes
+gh release edit \
+    `cat /tmp/release.tag` \
+    --notes-file /tmp/release2.log \
+    --repo lupyuen/incubator-nuttx</code></pre></div><h1 id="spi-test-failure"><a href="#spi-test-failure">10 SPI Test Failure</a></h1>
+<p>Our Auto Test Scripts <code>test.sh</code> and <code>pinedio.sh</code> will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; spi_test2
+Get Status: received
+  a2 22 
+SX1262 Status is 2
+Read Register 8: received
+  a2 a2 a2 a2 80 
+SX1262 Register 8 is 0x80
+SX1262 is OK</code></pre></div>
+<p>This says that SX1262 Register 8 has value <code>0x80</code>, which is correct.</p>
+<p>If we see this error on BL602…</p>
+<div class="example-wrap"><pre class="language-text"><code>SX1262 Register 8 is 0x00
+Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
+<p>Check that the SX1262 Reset Pin is connected properly to the BL602 Reset Pin.</p>
+<p>(Which is connected to SBC GPIO 3)</p>
+<h1 id="lorawan-test-failure"><a href="#lorawan-test-failure">11 LoRaWAN Test Failure</a></h1>
+<p>TODO</p>
+<h1 id="output-log-for-upstream-build"><a href="#output-log-for-upstream-build">12 Output Log for Upstream Build</a></h1>
+<p>TODO</p>
+<p>Below is the log for the <strong>Daily Upstream Build</strong> (without the LoRaWAN Stack)…</p>
+<p>https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-05-05</p>
+<div class="example-wrap"><pre class="language-text"><code>pi@raspberrypi:~ $ ./upstream.sh
++ cd /home/pi/remote-bl602
++ git pull
+Already up to date.
++ /home/pi/remote-bl602/scripts/test.sh
++ &#39;[&#39; &#39;&#39; == &#39;&#39; &#39;]&#39;
++ export BUILD_PREFIX=upstream
++ BUILD_PREFIX=upstream
++ &#39;[&#39; &#39;&#39; == &#39;&#39; &#39;]&#39;
+++ date +%Y-%m-%d
++ export BUILD_DATE=2022-05-05
++ BUILD_DATE=2022-05-05
++ &#39;[&#39; &#39;&#39; == &#39;&#39; &#39;]&#39;
++ export USB_DEVICE=/dev/ttyUSB0
++ USB_DEVICE=/dev/ttyUSB0
++ source /home/pi/.cargo/env
+++ export PATH=/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+++ PATH=/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
++ set +x
+----- Download the latest upstream NuttX build for 2022-05-05
++ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-05-05/nuttx.zip -O /tmp/nuttx.zip
++ pushd /tmp
+/tmp ~/remote-bl602
++ unzip -o nuttx.zip
+Archive:  nuttx.zip
+  inflating: nuttx
+  inflating: nuttx.S
+  inflating: nuttx.bin
+  inflating: nuttx.config
+  inflating: nuttx.hex
+  inflating: nuttx.manifest
+  inflating: nuttx.map
++ popd
+~/remote-bl602
++ set +x
+----- Enable GPIO 2 and 3
+----- Set GPIO 2 and 3 as output
+----- Set GPIO 2 to High (BL602 Flashing Mode)
+----- Toggle GPIO 3 High-Low-High (Reset BL602)
+----- Toggle GPIO 3 High-Low-High (Reset BL602 again)
+----- BL602 is now in Flashing Mode
+----- Flash BL602 over USB UART with blflash
++ blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
+[INFO  blflash::flasher] Start connection...
+[TRACE blflash::flasher] 5ms send count 55
+[TRACE blflash::flasher] handshake sent elapsed 394.944µs
+[INFO  blflash::flasher] Connection Succeed
+[INFO  blflash] Bootrom version: 1
+[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+[INFO  blflash::flasher] Sending eflash_loader...
+[INFO  blflash::flasher] Finished 2.553035396s 11.19KiB/s
+[TRACE blflash::flasher] 5ms send count 500
+[TRACE blflash::flasher] handshake sent elapsed 5.208118ms
+[INFO  blflash::flasher] Entered eflash_loader
+[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
+[INFO  blflash::flasher] Erase flash addr: 10000 size: 135824
+[INFO  blflash::flasher] Program flash... 1895df5ad1ea24dcab7c6ba5f86692424ce419d1da4e4c5b7dc06b4324d2cd59
+[INFO  blflash::flasher] Program done 1.614955738s 82.18KiB/s
+[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
+[INFO  blflash] Success
++ set +x
+----- Set GPIO 2 to Low (BL602 Normal Mode)
+----- Toggle GPIO 3 High-Low-High (Reset BL602)
+----- BL602 is now in Normal Mode
+----- Toggle GPIO 3 High-Low-High (Reset BL602)
+----- Here is the BL602 Output...
+▒gpio_pin_register: Registering /dev/gpio0
+gpio_pin_register: Registering /dev/gpio1
+gpint_enable: Disable the interrupt
+gpio_pin_register: Registering /dev/gpio2
+bl602_spi_setfrequency: frequency=400000, actual=0
+bl602_spi_setbits: nbits=8
+bl602_spi_setmode: mode=0
+
+NuttShell (NSH) NuttX-10.3.0-RC1
+nsh&gt; uname -a
+NuttX 10.3.0-RC1 fdef3a7b92 May  5 2022 02:23:24 risc-v bl602evb
+nsh&gt; ls /dev
+/dev:
+ console
+ gpio0
+ gpio1
+ gpio2
+ i2c0
+ null
+ spi0
+ timer0
+ zero
+nsh&gt;
+----- Send command to BL602: lorawan_test
+lorawan_test
+nsh: lorawan_test: command not found
+nsh&gt;
+===== Boot OK
+
++ read -p &#39;Press Enter to shutdown&#39;
+Press Enter to shutdown</code></pre></div><h1 id="output-log-for-upstream-build-with-crash-analysis"><a href="#output-log-for-upstream-build-with-crash-analysis">13 Output Log for Upstream Build with Crash Analysis</a></h1>
+<p>TODO</p>
+<p>Below is the log for the <strong>Daily Upstream Build</strong> with Crash Analysis (without the LoRaWAN Stack)…</p>
+<div class="example-wrap"><pre class="language-text"><code>pi@raspberrypi:~/remote-bl602 $ sudo ./scripts/test.sh
++ &#39;[&#39; &#39;&#39; == &#39;&#39; &#39;]&#39;
++ export BUILD_PREFIX=upstream
++ BUILD_PREFIX=upstream
++ &#39;[&#39; &#39;&#39; == &#39;&#39; &#39;]&#39;
+++ date +%Y-%m-%d
++ export BUILD_DATE=2022-01-16
++ BUILD_DATE=2022-01-16
++ source /root/.cargo/env
+++ case &quot;:${PATH}:&quot; in
+++ export PATH=/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ PATH=/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++ set +x
+----- Download the latest upstream NuttX build for 2022-01-16
++ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-16/nuttx.zip -O /tmp/nuttx.zip
++ pushd /tmp
+/tmp /home/pi/remote-bl602
++ unzip -o nuttx.zip
+Archive:  nuttx.zip
+  inflating: nuttx
+  inflating: nuttx.S
+  inflating: nuttx.bin
+  inflating: nuttx.config
+  inflating: nuttx.hex
+  inflating: nuttx.manifest
+  inflating: nuttx.map
++ popd
+/home/pi/remote-bl602
++ set +x
+----- Enable GPIO 2 and 3
+----- Set GPIO 2 and 3 as output
+----- Set GPIO 2 to High (BL602 Flashing Mode)
+----- Toggle GPIO 3 High-Low-High (Reset BL602)
+----- Toggle GPIO 3 High-Low-High (Reset BL602 again)
+----- BL602 is now in Flashing Mode
+----- Flash BL602 over USB UART with blflash
++ blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
+[INFO  blflash::flasher] Start connection...
+[TRACE blflash::flasher] 5ms send count 55
+[TRACE blflash::flasher] handshake sent elapsed 233.442µs
+[INFO  blflash::flasher] Connection Succeed
+[INFO  blflash] Bootrom version: 1
+[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
+[INFO  blflash::flasher] Sending eflash_loader...
+[INFO  blflash::flasher] Finished 2.551582797s 11.20KiB/s
+[TRACE blflash::flasher] 5ms send count 500
+[TRACE blflash::flasher] handshake sent elapsed 5.459475ms
+[INFO  blflash::flasher] Entered eflash_loader
+[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: 10000 size: 85056 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
+[INFO  blflash] Success
++ set +x
+----- Set GPIO 2 to Low (BL602 Normal Mode)
+----- Toggle GPIO 3 High-Low-High (Reset BL602)
+----- BL602 is now in Normal Mode
+----- Toggle GPIO 3 High-Low-High (Reset BL602)
+----- Here is the BL602 Output...
+▒
+NuttShell (NSH) NuttX-10.2.0
+nsh&gt; irq_unexpected_isr: ERROR irq: 1
+up_assert: Assertion failed at file:irq/irq_unexpectedisr.c line: 51 task: Idle Task
+riscv_registerdump: EPC: deadbeee
+riscv_registerdump: A0: 00000002 A1: 420146b0 A2: 42015140 A3: 4201481c
+riscv_registerdump: A4: 420150d0 A5: 00000000 A6: 00000002 A7: 00000000
+riscv_registerdump: T0: 00006000 T1: 00000003 T2: 41bd5488 T3: 00000064
+riscv_registerdump: T4: 00000000 T5: 00000000 T6: c48af7e4
+riscv_registerdump: S0: deadbeef S1: deadbeef S2: 420146b0 S3: 42014000
+riscv_registerdump: S4: 42015000 S5: 42012510 S6: 00000001 S7: 23007000
+riscv_registerdump: S8: 4201fa38 S9: 00000001 S10: 00000c40 S11: 42010510
+riscv_registerdump: SP: 420126b0 FP: deadbeef TP: 005952e5 RA: deadbeef
+riscv_dumpstate: sp:     420144b0
+riscv_dumpstate: IRQ stack:
+riscv_dumpstate:   base: 42012540
+riscv_dumpstate:   size: 00002000
+riscv_stackdump: 420144a0: 00001fe0 23011000 420144f0 230053a0 deadbeef deadbeef 23010ca4 00000033
+riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510 42015000 00000001
+riscv_stackdump: 420144e0: 420125a8 42014000 42014500 230042e2 42014834 80007800 42014510 23001d3e
+riscv_stackdump: 42014500: 420171c0 42014000 42014520 23001cdc deadbeef deadbeef 42014540 23000db4
+riscv_stackdump: 42014520: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 00000000 23000d04
+riscv_dumpstate: sp:     420126b0
+riscv_dumpstate: User stack:
+riscv_dumpstate:   base: 42010530
+riscv_dumpstate:   size: 00001fe0
+riscv_showtasks:    PID    PRI      USED     STACK   FILLED    COMMAND
+riscv_showtasks:   ----   ----      8088      8192    98.7%!   irq
+riscv_dump_task:      0      0       436      8160     5.3%    Idle Task
+riscv_dump_task:      1    100       516      8144     6.3%    nsh_main
+
+----- Crash Analysis
+
+----- Code Address 230053a0
+23005396:       854e                    mv      a0,s3
+23005398:       00000097                auipc   ra,0x0
+2300539c:       c8c080e7                jalr    -884(ra) # 23005024 &lt;riscv_stackdump&gt;
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:364
+      if (CURRENT_REGS)
+230053a0:       7f0a2783                lw      a5,2032(s4)
+230053a4:       c399                    beqz    a5,230053aa &lt;up_assert+0x274&gt;
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:366
+          sp = CURRENT_REGS[REG_SP];
+230053a6:       0087a983                lw      s3,8(a5)
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:369
+
+----- Address 230042e2
+  up_assert(filename, linenum);
+230042da:       00001097                auipc   ra,0x1
+230042de:       e5c080e7                jalr    -420(ra) # 23005136 &lt;up_assert&gt;
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/libs/libc/assert/lib_assert.c:37
+  exit(EXIT_FAILURE);
+230042e2:       4505                    li      a0,1
+230042e4:       ffffe097                auipc   ra,0xffffe
+230042e8:       138080e7                jalr    312(ra) # 2300241c &lt;exit&gt;
+
+230042ec &lt;__errno&gt;:
+__errno():
+
+----- Code Address 23001d3e
+
+#else /* CONFIG_SMP */
+
+int sched_lock(void)
+{
+23001d3e:       1141                    addi    sp,sp,-16
+23001d40:       c422                    sw      s0,8(sp)
+23001d42:       c226                    sw      s1,4(sp)
+23001d44:       c606                    sw      ra,12(sp)
+23001d46:       0800                    addi    s0,sp,16
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/sched/sched/sched_lock.c:228
+
+----- Code Address 23001cdc
+  /* Record the new &quot;running&quot; task.  g_running_tasks[] is only used by
+   * assertion logic for reporting crashes.
+   */
+
+  g_running_tasks[this_cpu()] = this_task();
+23001cdc:       420147b7                lui     a5,0x42014
+23001ce0:       7fc7a703                lw      a4,2044(a5) # 420147fc &lt;g_readytorun&gt;
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/sched/irq/irq_dispatch.c:201
+}
+23001ce4:       40b2                    lw      ra,12(sp)
+23001ce6:       4422                    lw      s0,8(sp)
+
+----- Code Address 23000db4
+   * point state and the establish the correct address environment before
+   * returning from the interrupt.
+   */
+
+  if (regs != CURRENT_REGS)
+23000db4:       7f04a503                lw      a0,2032(s1)
+23000db8:       01250663                beq     a0,s2,23000dc4 &lt;riscv_dispatch_irq+0x70&gt;
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/chip/bl602_irq_dispatch.c:106
+    {
+#ifdef CONFIG_ARCH_FPU
+      /* Restore floating point registers */
+
+----- Code Address 23000d04
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_exception_common.S:120
+
+  /* If context switch is needed, return a new sp     */
+
+  mv         sp, a0
+23000d04:       812a                    mv      sp,a0
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_exception_common.S:121
+  REGLOAD    s0, REG_EPC(sp)     /* restore mepc      */
+23000d06:       4402                    lw      s0,0(sp)
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_exception_common.S:122
+  csrw       mepc, s0
+
+----- Data Address 4201481c
+4201481c g     O .bss   00000008 g_pendingtasks
+
+----- Data Address 42012510
+42012510 l    d  .bss   00000000 .bss
+42012510 l     O .bss   00000008 g_idleargv
+42012510 g       .bss   00000000 __bss_start
+
+----- Data Address 42010510
+42010510 l    d  .noinit        00000000 .noinit
+42010510 g       .data  00000000 __boot2_pt_addr_end
+42010510 g     O .noinit        00002000 g_idle_stack
+42010510 g       .data  00000000 _data_run_end
+42010510 g       .data  00000000 __boot2_pt_addr_start
+42010510 g       .data  00000000 __boot2_flash_cfg_start
+42010510 g       .data  00000000 __boot2_flash_cfg_end
+
+----- Data Address 42012540
+42012540 g     O .bss   00002000 g_intstackalloc
+
+----- Data Address 42012510
+42012510 l    d  .bss   00000000 .bss
+42012510 l     O .bss   00000008 g_idleargv
+42012510 g       .bss   00000000 __bss_start
+
+----- Data Address 42014540
+42014540 l     O .bss   00000080 g_uart0rxbuffer
+42014540 g     O .bss   00000000 g_intstacktop
+
+pi@raspberrypi:~/remote-bl602 $</code></pre></div><h1 id="output-log-for-pinedio-stack-bl604-build"><a href="#output-log-for-pinedio-stack-bl604-build">14 Output Log for PineDio Stack BL604 Build</a></h1>
+<p>TODO</p>
+<p>Below is the log for the <strong>PineDio Stack BL604 Build</strong> (includes the LoRaWAN Stack, ST7789 Display Driver, Touch Panel Driver, LVGL Test App)…</p>
+<p>https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-05</p>
+<div class="example-wrap"><pre class="language-text"><code>pi@raspberrypi:~ $ ./pinedio.sh
++ cd /home/pi/remote-bl602
++ git pull
+Already up to date.
++ lsusb -v -s 1:3
++ grep bcdDevice
++ colrm 1 23
+2.63
++ lsusb -v -s 1:4
++ grep bcdDevice
++ colrm 1 23
+2.64
++ export USB_DEVICE=/dev/ttyUSB1
++ USB_DEVICE=/dev/ttyUSB1
++ /home/pi/remote-bl602/scripts/pinedio.sh
++ &#39;[&#39; &#39;&#39; == &#39;&#39; &#39;]&#39;
++ export BUILD_PREFIX=pinedio
++ BUILD_PREFIX=pinedio
++ &#39;[&#39; &#39;&#39; == &#39;&#39; &#39;]&#39;
+++ date +%Y-%m-%d
++ export BUILD_DATE=2022-05-05
++ BUILD_DATE=2022-05-05
++ &#39;[&#39; /dev/ttyUSB1 == &#39;&#39; &#39;]&#39;
++ source /home/pi/.cargo/env
+++ export PATH=/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+++ PATH=/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
++ set +x
+----- Download the latest pinedio NuttX build for 2022-05-05
++ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/pinedio-2022-05-05/nuttx.zip -O /tmp/nuttx.zip
++ pushd /tmp
+/tmp ~/remote-bl602
++ unzip -o nuttx.zip
+Archive:  nuttx.zip
+  inflating: nuttx
+  inflating: nuttx.S
+  inflating: nuttx.bin
+  inflating: nuttx.board
+  inflating: nuttx.bringup
+  inflating: nuttx.config
+  inflating: nuttx.hex
+  inflating: nuttx.manifest
+  inflating: nuttx.map
++ popd
+~/remote-bl602
++ set +x
+----- Enable GPIO 5 and 6
+----- Set GPIO 5 and 6 as output
+----- Set GPIO 5 to High (BL602 Flashing Mode)
+----- Toggle GPIO 6 High-Low-High (Reset BL602)
+----- Toggle GPIO 6 High-Low-High (Reset BL602 again)
+----- BL602 is now in Flashing Mode
+----- Flash BL602 over USB UART with blflash
++ blflash flash /tmp/nuttx.bin --port /dev/ttyUSB1
+[INFO  blflash::flasher] Start connection...
+[TRACE blflash::flasher] 5ms send count 55
+[TRACE blflash::flasher] handshake sent elapsed 297.388µs
+[INFO  blflash::flasher] Connection Succeed
+[INFO  blflash] Bootrom version: 1
+[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 4, 40, ad, b8, e3, 4c, b9, 7c, 15, 0] }
+[INFO  blflash::flasher] Sending eflash_loader...
+[INFO  blflash::flasher] Finished 2.559526151s 11.17KiB/s
+[TRACE blflash::flasher] 5ms send count 500
+[TRACE blflash::flasher] handshake sent elapsed 5.21273ms
+[INFO  blflash::flasher] Entered eflash_loader
+[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
+[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
+[INFO  blflash::flasher] Erase flash addr: 10000 size: 504288
+[INFO  blflash::flasher] Program flash... 2bea6e72b3247483532ea61fb9415a9f6718d50bb9e7ffa8992ed078185a8f3f
+[INFO  blflash::flasher] Program done 6.002709982s 82.05KiB/s
+[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
+[INFO  blflash] Success
++ set +x
+----- Set GPIO 5 to Low (BL602 Normal Mode)
+----- Toggle GPIO 6 High-Low-High (Reset BL602)
+----- BL602 is now in Normal Mode
+----- Toggle GPIO 6 High-Low-High (Reset BL602)
+----- Here is the BL602 Output...
+▒gplh_enable: WARNING: pin9: Already detached
+gplh_enable: WARNING: pin12: Already detached
+gplh_enable: WARNING: pin19: Already detached
+cst816s_register: path=/dev/input0, addr=21
+cst816s_register: Driver registered
+
+NuttShell (NSH) NuttX-10.3.0-RC0
+nsh&gt; uname -a
+NuttX 10.3.0-RC0 4db8d2954d May  5 2022 08:58:49 risc-v bl602evb
+nsh&gt; ls /dev
+/dev:
+ console
+ gpio10
+ gpio12
+ gpio14
+ gpio15
+ gpio19
+ gpio20
+ gpio21
+ gpio3
+ gpio9
+ i2c0
+ input0
+ lcd0
+ null
+ spi0
+ spitest0
+ timer0
+ urandom
+ zero
+nsh&gt;
+----- Send command to BL602: lorawan_test
+lorawan_test
+init_entropy_pool
+offset = 2209
+temperature = 22.055979 Celsius
+offset = 2209
+temperature = 26.957306 Celsius
+offset = 2209
+temperature = 25.667484 Celsius
+offset = 2209
+temperature = 25.667484 Celsius
+
+##### ===================================== ######
+
+Application name   : lorawan_test
+Application version: 1.2.0
+GitHub base version: 5.0.0
+
+##### ===================================== ######
+
+init_event_queue
+TimerInit:     0x4201c76c
+TimerInit:     0x4201c788
+TimerInit:     0x4201c7a4
+TimerInit:     0x4201c820
+TimerInit:     0x4201c8d4
+TimerInit:     0x4201c8f0
+TimerInit:     0x4201c90c
+TimerInit:     0x4201c928
+TODO: RtcGetCalendarTime
+TODO: SX126xReset
+init_gpio
+DIO1 pintype before=5
+init_gpio: change DIO1 to Trigger GPIO gInterrupt on Rising Edge
+plh_enable: WARNING: pin19: Already detached
+DIO1 pintype after=8
+Starting process_dio1
+init_spi
+SX126xSetTxParams: power=22, rampTime=7
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1
+TimerInit:     0x4201b86c
+TimerInit:     0x4201b7d8
+RadioSetModem
+RadioSetModem
+RadioSetPublicNetwork: public syncword=3444
+RadioSleep
+callout_handler: lock
+process_dio1 started
+process_dio1: event=0x4201b894
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+TODO: EepromMcuReadBuffer
+RadioSetModem
+RadioSetPublicNetwork: public syncword=3444
+DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
+JoinEui     : 00-00-00-00-00-00-00-00
+Pin         : 00-00-00-00
+
+TimerInit:     0x4201c3c4
+TimerInit:     0x4201c3e0
+TimerInit:     0x4201c2a4
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+TODO: RtcBkupRead
+RadioSetChannel: freq=923200000
+RadioSetTxConfig: modem=1, power=13, fdev=0, bandwidth=0, datarate=10, coderate=1, preambleLen=8, fixLen=0, crcOn=1, freqHopOn=0, hopPeriod=0, iqInverted=0, timeout=4000
+RadioSetTxConfig: SpreadingFactor=10, Bandwidth=4, CodingRate=1, LowDatarateOptimize=0, PreambleLength=8, HeaderType=0, PayloadLength=255, CrcMode=1, InvertIQ=0
+RadioStandby
+RadioSetModem
+SX126xSetTxParams: power=13, rampTime=7
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1
+SecureElementRandomNumber: 0x2365edd0
+RadioSend: size=23
+00 00 00 00 00 00 00 00 00 5b b1 7b 37 e7 5e c1 4b d0 ed d6 02 42 41
+RadioSend: PreambleLength=8, HeaderType=0, PayloadLength=23, CrcMode=1, InvertIQ=0
+TimerStop:     0x4201b86c
+TimerStart2:   0x4201b86c, 4000 ms
+callout_reset: evq=0x420131a8, ev=0x4201b86c
+
+##### =========== MLME-Request ============ ######
+#####               MLME_JOIN               ######
+##### ===================================== ######
+STATUS      : OK
+StartTxProcess
+TimerInit:     0x4201a90c
+TimerSetValue: 0x4201a90c, 42249 ms
+OnTxTimerEvent: timeout in 42249 ms, event=0
+TimerStop:     0x4201a90c
+TimerSetValue: 0x4201a90c, 42249 ms
+TimerStart:    0x4201a90c
+TimerStop:     0x4201a90c
+TimerStart2:   0x4201a90c, 42249 ms
+callout_reset: evq=0x420131a8, ev=0x4201a90c
+handle_event_queue
+DIO1 add event
+handle_event_queue: ev=0x4201b894
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_TX_DONE
+TimerStop:     0x4201b86c
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+TimerSetValue: 0x4201c788, 4988 ms
+TimerStart:    0x4201c788
+TimerStop:     0x4201c788
+TimerStart2:   0x4201c788, 4988 ms
+callout_reset: evq=0x420131a8, ev=0x4201c788
+TimerSetValue: 0x4201c7a4, 5988 ms
+TimerStart:    0x4201c7a4
+TimerStop:     0x4201c7a4
+TimerStart2:   0x4201c7a4, 5988 ms
+callout_reset: evq=0x420131a8, ev=0x4201c7a4
+TODO: RtcGetCalendarTime
+callout_handler: unlock
+callout_handler: evq=0x420131a8, ev=0x4201c788
+callout_handler: lock
+handle_event_queue: ev=0x4201c788
+TimerStop:     0x4201c788
+RadioStandby
+RadioSetChannel: freq=923200000
+RadioSetRxConfig
+RadioStandby
+RadioSetModem
+RadioSetRxConfig done
+RadioRx
+TimerStop:     0x4201b7d8
+TimerStart2:   0x4201b7d8, 3000 ms
+callout_reset: evq=0x420131a8, ev=0x4201b7d8
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b894
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_PREAMBLE_DETECTED
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b894
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_HEADER_VALID
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b894
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_RX_DONE
+TimerStop:     0x4201b7d8
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+TimerStop:     0x4201c7a4
+OnTxData
+
+##### =========== MLME-Confirm ============ ######
+STATUS      : OK
+OnJoinRequest
+##### ===========   JOINED     ============ ######
+
+OTAA
+
+DevAddr     :  00F76FBF
+
+
+DATA RATE   : DR_2
+
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+UplinkProcess
+PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
+PrepareTxFrame: status=0, maxSize=11, currentSize=11
+LmHandlerSend: Data frame
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+RadioSetChannel: freq=923400000
+RadioSetTxConfig: modem=1, power=13, fdev=0, bandwidth=0, datarate=9, coderate=1, preambleLen=8, fixLen=0, crcOn=1, freqHopOn=0, hopPeriod=0, iqInverted=0, timeout=4000
+RadioSetTxConfig: SpreadingFactor=9, Bandwidth=4, CodingRate=1, LowDatarateOptimize=0, PreambleLength=8, HeaderType=0, PayloadLength=128, CrcMode=1, InvertIQ=0
+RadioStandby
+RadioSetModem
+SX126xSetTxParams: power=13, rampTime=7
+SX126xSetPaConfig: paDutyCycle=4, hpMax=7, deviceSel=0, paLut=1
+RadioSend: size=22
+40 bf 6f f7 00 00 01 00 01 34 9a 34 20 a6 ed 59 55 ae 23 55 11 70
+RadioSend: PreambleLength=8, HeaderType=0, PayloadLength=22, CrcMode=1, InvertIQ=0
+TimerStop:     0x4201b86c
+TimerStart2:   0x4201b86c, 4000 ms
+callout_reset: evq=0x420131a8, ev=0x4201b86c
+
+##### =========== MCPS-Request ============ ######
+#####           MCPS_UNCONFIRMED            ######
+##### ===================================== ######
+STATUS      : OK
+PrepareTxFrame: Transmit OK
+DIO1 add event
+handle_event_queue: ev=0x4201b894
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_TX_DONE
+TimerStop:     0x4201b86c
+TODO: RtcGetCalendarTime
+TODO: RtcBkupRead
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+TimerSetValue: 0x4201c788, 980 ms
+TimerStart:    0x4201c788
+TimerStop:     0x4201c788
+TimerStart2:   0x4201c788, 980 ms
+callout_reset: evq=0x420131a8, ev=0x4201c788
+TimerSetValue: 0x4201c7a4, 1988 ms
+TimerStart:    0x4201c7a4
+TimerStop:     0x4201c7a4
+TimerStart2:   0x4201c7a4, 1988 ms
+callout_reset: evq=0x420131a8, ev=0x4201c7a4
+TODO: RtcGetCalendarTime
+callout_handler: unlock
+callout_handler: evq=0x420131a8, ev=0x4201c788
+callout_handler: lock
+handle_event_queue: ev=0x4201c788
+TimerStop:     0x4201c788
+RadioStandby
+RadioSetChannel: freq=923400000
+RadioSetRxConfig
+RadioStandby
+RadioSetModem
+RadioSetRxConfig done
+RadioRx
+TimerStop:     0x4201b7d8
+TimerStart2:   0x4201b7d8, 3000 ms
+callout_reset: evq=0x420131a8, ev=0x4201b7d8
+RadioOnDioIrq
+RadioIrqProcess
+DIO1 add event
+handle_event_queue: ev=0x4201b894
+RadioOnDioIrq
+RadioIrqProcess
+IRQ_RX_TX_TIMEOUT
+TimerStop:     0x4201b7d8
+RadioOnDioIrq
+RadioIrqProcess
+RadioSleep
+TimerStop:     0x4201c7a4
+TimerStop:     0x4201c76c
+OnTxData
+
+##### =========== MCPS-Confirm ============ ######
+STATUS      : OK
+
+##### =====   UPLINK FRAME        1   ===== ######
+
+CLASS       : A
+
+TX PORT     : 1
+TX DATA     : UNCONFIRMED
+48 69 20 4E 75 74 74 58 00
+
+DATA RATE   : DR_3
+U/L FREQ    : 923400000
+TX POWER    : 0
+CHANNEL MASK: 0003
+
+TODO: EepromMcuWriteBuffer
+TODO: EepromMcuWriteBuffer
+UplinkProcess
+
+===== All OK! BL602 has successfully joined the LoRaWAN Network
+
++ /home/pi/remote-bl602/scripts/pinedio2.sh
++ &#39;[&#39; &#39;&#39; == &#39;&#39; &#39;]&#39;
++ export BUILD_PREFIX=pinedio
++ BUILD_PREFIX=pinedio
++ &#39;[&#39; &#39;&#39; == &#39;&#39; &#39;]&#39;
+++ date +%Y-%m-%d
++ export BUILD_DATE=2022-05-05
++ BUILD_DATE=2022-05-05
++ &#39;[&#39; /dev/ttyUSB1 == &#39;&#39; &#39;]&#39;
++ source /home/pi/.cargo/env
+++ export PATH=/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+++ PATH=/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
++ set +x
+----- Enable GPIO 5 and 6
+----- Set GPIO 5 and 6 as output
+----- Set GPIO 5 to Low (BL602 Normal Mode)
+----- Toggle GPIO 6 High-Low-High (Reset BL602)
+----- BL602 is now in Normal Mode
+----- Toggle GPIO 6 High-Low-High (Reset BL602)
+----- Here is the BL602 Output...
+▒gplh_enable: WARNING: pin9: Already detached
+gplh_enable: WARNING: pin12: Already detached
+gplh_enable: WARNING: pin19: Already detached
+cst816s_register: path=/dev/input0, addr=21
+cst816s_register: Driver registered
+
+NuttShell (NSH) NuttX-10.3.0-RC0
+nsh&gt; uname -a
+NuttX 10.3.0-RC0 4db8d2954d May  5 2022 08:58:49 risc-v bl602evb
+nsh&gt; ls /dev
+/dev:
+ console
+ gpio10
+ gpio12
+ gpio14
+ gpio15
+ gpio19
+ gpio20
+ gpio21
+ gpio3
+ gpio9
+ i2c0
+ input0
+ lcd0
+ null
+ spi0
+ spitest0
+ timer0
+ urandom
+ zero
+nsh&gt;
+----- Send command to BL602: lvgltest
+lvgltest
+tp_init: Opening /dev/input0
+cst816s_open:
+
+----- HELLO HUMAN: TOUCH PINEDIO STACK NOW
+cst816s_poll_notify:
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=0, y=0
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       0
+cst816s_get_touch_data:   y:       0
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:      83
+cst816s_get_touch_data:   y:       106
+cst816s_get_touch_data:
+cst816s_i2c_read:
+bl602_i2c_transfer: i2c transfer success
+bl602_i2c_transfer: i2c transfer success
+cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
+cst816s_get_touch_data: UP: id=0, touch=2, x=83, y=106
+cst16s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+
+===== All OK! BL604 has responded to touch
+
++ read -p &#39;Press Enter to shutdown&#39;
+Press Enter to shutdown</code></pre></div><h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
 <p>TODO</p>
 <p>Now that we’ve fixed the GPIO problem with GPIO Expander, I hope it’s a lot easier to create <strong>NuttX Drivers and Apps</strong> on PineDio Stack.</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
@@ -137,7 +1367,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto2.md"><strong><code>lupyuen.github.io/src/auto2.md</code></strong></a></p>
-<h1 id="notes"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes"><a href="#notes">16 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1519541046803271682"><strong>this Twitter Thread</strong></a></li>
 </ol>
