@@ -78,7 +78,7 @@ These are our success criteria for NuttX on PineDio Stack...
 
 -   __I2C Transmit and Receive__ must work _(Checkpoint Echo)_
 
-    (Also CST816S Touch Panel)
+    (With CST816S Touch Panel)
 
 TODO: _(Checkpoint Foxtrot)_
 
