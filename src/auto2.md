@@ -40,6 +40,8 @@ This article explains how we accomplished all that with PineDio Stack...
 
 -   Includes Automated Testing of __NuttX Mainline Updates__
 
+    [(Watch the demo on YouTube)](https://youtu.be/JX7rWqWTOW4)
+
 -   Mostly Automated Testing of __I2C Touch Panel__
 
     (Needs one Human Touch, in lieu of a Robot Finger)
@@ -50,7 +52,7 @@ This article explains how we accomplished all that with PineDio Stack...
 
 -   __Testing Logs__ are auto-uploaded to GitHub Releases as Release Notes
 
-    [(Watch the demo on YouTube)](https://youtu.be/JX7rWqWTOW4)
+    [(See the Testing Log)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
 Let's dive into the __Auto Flash and Test Script__ for PineDio Stack...
 
@@ -310,13 +312,227 @@ gh release edit \
 
 TODO
 
-# Output Log for Upstream Build
+# What's Next
+
+TODO
+
+Now that we've fixed the GPIO problem with GPIO Expander, I hope it's a lot easier to create __NuttX Drivers and Apps__ on PineDio Stack.
+
+Lemme know what you're building with PineDio Stack!
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Read "The RISC-V BL602 / BL604 Book"__](https://lupyuen.github.io/articles/book)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__`lupyuen.github.io/src/auto2.md`__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto2.md)
+
+# Notes
+
+1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1519541046803271682)
+
+# Appendix: Testing Script
+
+TODO
+
+Read the article...
+
+-   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
+
+Watch the demo on YouTube...
+
+-   ["Auto Flash and Test on PineDio Stack BL604"](https://youtu.be/JX7rWqWTOW4)
+
+-   ["Auto Flash and Test on PineCone BL602"](https://youtu.be/JtnOyl5cYjo)
+
+This script runs on a Linux Single-Board Computer (SBC) to automagically Flash and Test BL602, with the Latest Daily Build of Apache NuttX OS.
+
+The script sends the "`lorawan_test`" command to BL602 after booting, to test the LoRaWAN Stack.
+
+If BL602 crashes, the script runs a Crash Analysis to show the RISC-V Disassembly of the addresses in the Stack Trace.
+
+The scripts are here...
+
+-   [scripts/test.sh](scripts/test.sh): Auto Flash and Test PineCone BL602
+
+-   [scripts/pinedio.sh](scripts/pinedio.sh): Auto Flash and Test PineDio Stack BL604
+
+-   [scripts/pinedio2.sh](scripts/pinedio2.sh): Called by pinedio.sh
+
+-   [scripts/upload.sh](scripts/upload.sh): Upload Test Log to GitHub Release Notes
+
+NuttX Builds are done by GitHub Actions...
+
+-  [Daily Upstream Build](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml) (Without the LoRaWAN Stack)
+
+-  [Release Build](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml) (Includes the LoRaWAN Stack)
+
+-  [Downstream Build](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml) (Merges the LoRaWAN Stack with upstream updates)
+
+-  [PineDio Stack BL604 Build](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml) (Includes the LoRaWAN Stack, ST7789 Display Driver, Touch Panel Driver, LVGL Test App)
+
+Why are we doing this?
+
+-   Might be useful for __Release Testing__ of NuttX (and other operating systems) on real hardware
+
+-   By auto-testing the __LoRaWAN Stack__ on NuttX, we can be sure that GPIO Input / Output / Interrupts, SPI, ADC, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor are all working OK with the latest Daily Build of NuttX
+
+-   I write articles about NuttX OS. I need to pick the __Latest Stable Build__ of NuttX for testing the NuttX code in my articles. [(Like these)](https://lupyuen.github.io/articles/book#nuttx-on-bl602)
+
+# Appendix: Run The Script
+
+TODO
+
+Watch the demo on YouTube...
+
+-   ["Auto Flash and Test on PineCone BL602"](https://youtu.be/JtnOyl5cYjo)
+
+Connect SBC to BL602 and SX1262 like so...
+
+| SBC     | BL602    | SX1262 | Function
+| --------|----------|--------|----------
+| GPIO 2  | GPIO 8   |        | Flashing Mode
+| GPIO 3  | RST      | RESET  | Reset
+| GND     | GND      |        | Ground
+| USB     | USB      |        | USB UART
+
+For auto-testing LoRaWAN, also connect BL602 to SX1262 as described below...
+
+- ["Connect SX1262"](https://lupyuen.github.io/articles/spi2#connect-sx1262)
+
+To run the flash and test script for the __Daily Upstream Build__ (without LoRaWAN)...
+
+```bash
+##  Allow the user to access the GPIO and UART ports
+sudo usermod -a -G gpio    $USER
+sudo usermod -a -G dialout $USER
+
+##  Logout and login to refresh the permissions
+logout
+
+##  Install rustup, select default option
+sudo curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sudo sh
+
+##  Install blflash for flashing BL602
+cargo install blflash
+
+##  Download the flash and test script
+git clone --recursive https://github.com/lupyuen/remote-bl602/
+
+##  Auto flash and test BL602
+remote-bl602/scripts/test.sh
+```
+
+(See the output log below)
+
+To run the flash and test script for the __Release Build__ (includes LoRaWAN)...
+
+```bash
+##  Tell the script to download the Release Build (instead of the Upstream Build)
+export BUILD_PREFIX=release
+
+##  Auto flash and test BL602
+remote-bl602/scripts/test.sh
+```
+
+(See the output log below)
+
+To select the __Downstream Build__ by __Build Date__...
+
+```bash
+##  Tell the script to download the Downstream Build for 2022-05-04
+export BUILD_PREFIX=downstream
+export BUILD_DATE=2022-05-04
+
+##  Auto flash and test BL602
+remote-bl602/scripts/test.sh
+```
+
+For __PineDio Stack BL604__...
+
+```bash
+##  Auto flash and test PineDio Stack BL604: LoRaWAN Test
+remote-bl602/scripts/pinedio.sh
+
+##  Auto test PineDio Stack BL604: Touchscreen Test
+remote-bl602/scripts/pinedio2.sh
+```
+
+(See the output log below)
+
+We may also __flash and test BL602 remotely__ over SSH...
+
+```bash
+ssh my-sbc remote-bl602/scripts/test.sh
+```
+
+To __upload the Test Log__ to GitHub Release Notes...
+
+```bash
+##  Run the script for Auto Flash and Test, capture the Test Log
+script -c remote-bl602/scripts/test.sh /tmp/release.log
+
+##  Upload the Test Log to the GitHub Release Notes
+remote-bl602/scripts/upload.sh
+```
+
+[(See the Test Log)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+
+More about this below.
+
+# Appendix: Select USB Device
+
+TODO
+
+When we connect both PineDio Stack BL604 and PineCone BL602 to the SBC, we'll see two USB Devices: `/dev/ttyUSB0` and `/dev/ttyUSB1`
+
+How will we know which USB Device is for PineDio Stack and PineCone?
+
+```bash
+## Show /dev/ttyUSB0
+lsusb -v -s 1:3 2>&1 | grep bcdDevice | colrm 1 23
+
+## Show /dev/ttyUSB1
+lsusb -v -s 1:4 2>&1 | grep bcdDevice | colrm 1 23
+
+## Output for Pinedio Stack BL604:
+## 2.64
+## See https://gist.github.com/lupyuen/dc8c482f2b31b25d329cd93dc44f0044
+
+## Output for PineCone BL602:
+## 2.63
+## See https://gist.github.com/lupyuen/3ba0dc0789fd282bbfcf9dd5c3ff8908
+```
+
+Here's how we override the Default USB Device for PineDio Stack...
+
+```bash
+##  Tell the script to use /dev/ttyUSB1
+export USB_DEVICE=/dev/ttyUSB1
+
+##  Auto flash and test PineDio Stack BL604: LoRaWAN Test
+remote-bl602/scripts/pinedio.sh
+
+##  Auto test PineDio Stack BL604: Touchscreen Test
+remote-bl602/scripts/pinedio2.sh
+```
+
+TODO: Fix the script to use the correct USB Device
+
+# Appendix: Output Log for Upstream Build
 
 TODO
 
 Below is the log for the __Daily Upstream Build__ (without the LoRaWAN Stack)...
 
-https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-05-05
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-05-05)
 
 ```text
 pi@raspberrypi:~ $ ./upstream.sh
@@ -420,7 +636,7 @@ nsh>
 Press Enter to shutdown
 ```
 
-# Output Log for Upstream Build with Crash Analysis
+# Appendix: Output Log for Upstream Build with Crash Analysis
 
 TODO
 
@@ -630,13 +846,13 @@ int sched_lock(void)
 pi@raspberrypi:~/remote-bl602 $
 ```
 
-# Output Log for PineDio Stack BL604 Build
+# Appendix: Output Log for PineDio Stack BL604 Build
 
 TODO
 
 Below is the log for the __PineDio Stack BL604 Build__ (includes the LoRaWAN Stack, ST7789 Display Driver, Touch Panel Driver, LVGL Test App)...
 
-https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-05
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-05)
 
 ```text
 pi@raspberrypi:~ $ ./pinedio.sh
@@ -1229,220 +1445,6 @@ cst816s_get_touch_data:   y:       106
 + read -p 'Press Enter to shutdown'
 Press Enter to shutdown
 ```
-
-# What's Next
-
-TODO
-
-Now that we've fixed the GPIO problem with GPIO Expander, I hope it's a lot easier to create __NuttX Drivers and Apps__ on PineDio Stack.
-
-Lemme know what you're building with PineDio Stack!
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__Read "The RISC-V BL602 / BL604 Book"__](https://lupyuen.github.io/articles/book)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__`lupyuen.github.io/src/auto2.md`__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto2.md)
-
-# Notes
-
-1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1519541046803271682)
-
-# Appendix: Testing Script
-
-TODO
-
-Read the article...
-
--   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
-
-Watch the demo on YouTube...
-
--   ["Auto Flash and Test on PineDio Stack BL604"](https://youtu.be/JX7rWqWTOW4)
-
--   ["Auto Flash and Test on PineCone BL602"](https://youtu.be/JtnOyl5cYjo)
-
-This script runs on a Linux Single-Board Computer (SBC) to automagically Flash and Test BL602, with the Latest Daily Build of Apache NuttX OS.
-
-The script sends the "`lorawan_test`" command to BL602 after booting, to test the LoRaWAN Stack.
-
-If BL602 crashes, the script runs a Crash Analysis to show the RISC-V Disassembly of the addresses in the Stack Trace.
-
-The scripts are here...
-
--   [scripts/test.sh](scripts/test.sh): Auto Flash and Test PineCone BL602
-
--   [scripts/pinedio.sh](scripts/pinedio.sh): Auto Flash and Test PineDio Stack BL604
-
--   [scripts/pinedio2.sh](scripts/pinedio2.sh): Called by pinedio.sh
-
--   [scripts/upload.sh](scripts/upload.sh): Upload Test Log to GitHub Release Notes
-
-NuttX Builds are done by GitHub Actions...
-
--  [Daily Upstream Build](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml) (Without the LoRaWAN Stack)
-
--  [Release Build](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml) (Includes the LoRaWAN Stack)
-
--  [Downstream Build](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml) (Merges the LoRaWAN Stack with upstream updates)
-
--  [PineDio Stack BL604 Build](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml) (Includes the LoRaWAN Stack, ST7789 Display Driver, Touch Panel Driver, LVGL Test App)
-
-Why are we doing this?
-
--   Might be useful for __Release Testing__ of NuttX (and other operating systems) on real hardware
-
--   By auto-testing the __LoRaWAN Stack__ on NuttX, we can be sure that GPIO Input / Output / Interrupts, SPI, ADC, Timers, Message Queues, PThreads, Strong Random Number Generator and Internal Temperature Sensor are all working OK with the latest Daily Build of NuttX
-
--   I write articles about NuttX OS. I need to pick the __Latest Stable Build__ of NuttX for testing the NuttX code in my articles. [(Like these)](https://lupyuen.github.io/articles/book#nuttx-on-bl602)
-
-# Appendix: Run The Script
-
-TODO
-
-Watch the demo on YouTube...
-
--   ["Auto Flash and Test on PineCone BL602"](https://youtu.be/JtnOyl5cYjo)
-
-Connect SBC to BL602 and SX1262 like so...
-
-| SBC     | BL602    | SX1262 | Function
-| --------|----------|--------|----------
-| GPIO 2  | GPIO 8   |        | Flashing Mode
-| GPIO 3  | RST      | RESET  | Reset
-| GND     | GND      |        | Ground
-| USB     | USB      |        | USB UART
-
-For auto-testing LoRaWAN, also connect BL602 to SX1262 as described below...
-
-- ["Connect SX1262"](https://lupyuen.github.io/articles/spi2#connect-sx1262)
-
-To run the flash and test script for the __Daily Upstream Build__ (without LoRaWAN)...
-
-```bash
-##  Allow the user to access the GPIO and UART ports
-sudo usermod -a -G gpio    $USER
-sudo usermod -a -G dialout $USER
-
-##  Logout and login to refresh the permissions
-logout
-
-##  Install rustup, select default option
-sudo curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sudo sh
-
-##  Install blflash for flashing BL602
-cargo install blflash
-
-##  Download the flash and test script
-git clone --recursive https://github.com/lupyuen/remote-bl602/
-
-##  Auto flash and test BL602
-remote-bl602/scripts/test.sh
-```
-
-(See the output log below)
-
-To run the flash and test script for the __Release Build__ (includes LoRaWAN)...
-
-```bash
-##  Tell the script to download the Release Build (instead of the Upstream Build)
-export BUILD_PREFIX=release
-
-##  Auto flash and test BL602
-remote-bl602/scripts/test.sh
-```
-
-(See the output log below)
-
-To select the __Downstream Build__ by __Build Date__...
-
-```bash
-##  Tell the script to download the Downstream Build for 2022-05-04
-export BUILD_PREFIX=downstream
-export BUILD_DATE=2022-05-04
-
-##  Auto flash and test BL602
-remote-bl602/scripts/test.sh
-```
-
-For __PineDio Stack BL604__...
-
-```bash
-##  Auto flash and test PineDio Stack BL604: LoRaWAN Test
-remote-bl602/scripts/pinedio.sh
-
-##  Auto test PineDio Stack BL604: Touchscreen Test
-remote-bl602/scripts/pinedio2.sh
-```
-
-(See the output log below)
-
-We may also __flash and test BL602 remotely__ over SSH...
-
-```bash
-ssh my-sbc remote-bl602/scripts/test.sh
-```
-
-To __upload the Test Log__ to GitHub Release Notes...
-
-```bash
-##  Run the script for Auto Flash and Test, capture the Test Log
-script -c remote-bl602/scripts/test.sh /tmp/release.log
-
-##  Upload the Test Log to the GitHub Release Notes
-remote-bl602/scripts/upload.sh
-```
-
-[(See the Test Log)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
-
-More about this below.
-
-# Appendix: Select USB Device
-
-TODO
-
-When we connect both PineDio Stack BL604 and PineCone BL602 to the SBC, we'll see two USB Devices: `/dev/ttyUSB0` and `/dev/ttyUSB1`
-
-How will we know which USB Device is for PineDio Stack and PineCone?
-
-```bash
-## Show /dev/ttyUSB0
-lsusb -v -s 1:3 2>&1 | grep bcdDevice | colrm 1 23
-
-## Show /dev/ttyUSB1
-lsusb -v -s 1:4 2>&1 | grep bcdDevice | colrm 1 23
-
-## Output for Pinedio Stack BL604:
-## 2.64
-## See https://gist.github.com/lupyuen/dc8c482f2b31b25d329cd93dc44f0044
-
-## Output for PineCone BL602:
-## 2.63
-## See https://gist.github.com/lupyuen/3ba0dc0789fd282bbfcf9dd5c3ff8908
-```
-
-Here's how we override the Default USB Device for PineDio Stack...
-
-```bash
-##  Tell the script to use /dev/ttyUSB1
-export USB_DEVICE=/dev/ttyUSB1
-
-##  Auto flash and test PineDio Stack BL604: LoRaWAN Test
-remote-bl602/scripts/pinedio.sh
-
-##  Auto test PineDio Stack BL604: Touchscreen Test
-remote-bl602/scripts/pinedio2.sh
-```
-
-TODO: Fix the script to use the correct USB Device
 
 ![](https://lupyuen.github.io/images/auto2-box.jpg)
 
