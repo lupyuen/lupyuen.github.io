@@ -113,7 +113,7 @@ The __GPIO 8 Jumper__ must be set to __Low (Non-Flashing Mode)__...
 
 > ![GPIO 8 Jumper must be set to Low (Non-Flashing Mode)](https://lupyuen.github.io/images/auto2-jumper.jpg)
 
-(Or the LoRaWAN Test App will fail when the timers get triggered too quickly, not sure why)
+(Or the LoRaWAN Test will fail because the timers get triggered too quickly, not sure why)
 
 Remember to connect a __LoRa Antenna__! [(See this)](https://lupyuen.github.io/images/auto2-pinedio2.jpg)
 
