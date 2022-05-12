@@ -82,15 +82,21 @@ These are our success criteria for NuttX on PineDio Stack...
 
     (With CST816S Touch Panel)
 
-To run the above tests automatically, let's connect PineDio Stack to a Single-Board Computer.
+To run the above tests automatically, let's connect PineDio Stack to a __Single-Board Computer__.
 
-![TODO](https://lupyuen.github.io/images/auto2-pinedio3a.jpg)
+![GPIO 8, Reset and Ground on PineDio Stack BL604](https://lupyuen.github.io/images/auto2-pinedio3a.jpg)
 
-# Connect PineDio Stack
+_GPIO 8, Reset and Ground on PineDio Stack BL604_
 
-TODO
+# Connect PineDio Stack to SBC
 
-We connect PineDio Stack BL604 to the SBC for Auto Flash and Test like so...
+Our __Automated Testing Script__ runs on a Single-Board Computer (SBC) to...
+
+-   Control the __Flashing and Testing__ of PineDio Stack
+
+-   Capture the __Test Log__ and upload to the GitHub Release
+
+We __connect PineDio Stack__ to our SBC like so...
 
 | SBC     | BL604    | Function
 | --------|----------|----------
@@ -99,15 +105,25 @@ We connect PineDio Stack BL604 to the SBC for Auto Flash and Test like so...
 | GND     | GND _(JTAG Port)_     | Ground
 | USB     | USB Port              | USB UART
 
-![TODO](https://lupyuen.github.io/images/auto2-pinedio.jpg)
+__GPIO 8__ is exposed on the GPIO Port (inside PineDio Stack). __Reset and Ground__ are exposed on the JTAG Port (outside PineDio Stack).
 
-__GPIO 8 Jumper must be set to Low (Non-Flashing Mode)!__
+(See the pic above)
 
-(Or the LoRaWAN Test App will fail because the timers will get triggered too quickly)
+The __GPIO 8 Jumper__ must be set to __Low (Non-Flashing Mode)__...
 
-![TODO](https://lupyuen.github.io/images/auto2-jumper.jpg)
+> ![GPIO 8 Jumper must be set to Low (Non-Flashing Mode)](https://lupyuen.github.io/images/auto2-jumper.jpg)
 
-TODO: [Remember to connect a LoRa Antenna!](https://lupyuen.github.io/images/auto2-pinedio2.jpg)
+(Or the LoRaWAN Test App will fail when the timers get triggered too quickly, not sure why)
+
+Remember to connect a __LoRa Antenna__! [(See this)](https://lupyuen.github.io/images/auto2-pinedio2.jpg)
+
+Close the __Back Cover__ of PineDio Stack, without the GPS Base Board.
+
+We should see this...
+
+![PineDio Stack BL604 connected to SBC](https://lupyuen.github.io/images/auto2-pinedio.jpg)
+
+_PineDio Stack BL604 connected to SBC_
 
 # Test PineDio Stack
 
