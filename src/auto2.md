@@ -38,9 +38,9 @@ This article explains how we accomplished all that with PineDio Stack...
 
 -   __Fully Automated Testing__ of all __NuttX Releases__ for PineDio Stack: GPIO, SPI, Timers, Multithreading, LoRaWAN
 
--   Includes Automated Testing of __NuttX Mainline Updates__
-
     [(Watch the demo on YouTube)](https://youtu.be/JX7rWqWTOW4)
+
+-   Includes Automated Testing of __NuttX Mainline Updates__
 
 -   Mostly Automated Testing of __I2C Touch Panel__
 
