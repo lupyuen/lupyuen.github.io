@@ -119,7 +119,7 @@ Remember to connect a __LoRa Antenna__! [(See this)](https://lupyuen.github.io/i
 
 Close the __Back Cover__ of PineDio Stack, without the GPS Base Board.
 
-We should see this...
+We should see this. We're ready to run our Automated Testing Script!
 
 ![PineDio Stack BL604 connected to SBC](https://lupyuen.github.io/images/auto2-pinedio.jpg)
 
