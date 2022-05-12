@@ -280,6 +280,17 @@ From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pine
 echo "spi_test2" >$USB_DEVICE ; sleep 2
 ```
 
+TODO
+
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L125)
+
+```bash
+##  Check whether SX1262 is OK
+set +e  ##  Don't exit when any command fails
+match=$(grep "SX1262 Register 8 is 0x80" /tmp/test.log)
+set +e  ##  Don't exit when any command fails
+```
+
 Our Auto Test Scripts `test.sh` and `pinedio.sh` will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)...
 
 ```text
@@ -316,6 +327,36 @@ _(Checkpoint Delta)_
 
 TODO
 
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134)
+
+```bash
+echo ; echo "----- Send command to BL602: lorawan_test" ; sleep 2
+echo "" >$USB_DEVICE
+echo "lorawan_test" >$USB_DEVICE
+```
+
+TODO
+
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L142)
+
+```bash
+##  Check whether BL602 has joined the LoRaWAN Network
+set +e  ##  Don't exit when any command fails
+match=$(grep "JOINED" /tmp/test.log)
+set -e  ##  Exit when any command fails
+```
+
+TODO
+
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222)
+
+```bash
+##  Start the second script: pinedio2.sh
+SCRIPT_PATH="${BASH_SOURCE}"
+SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
+$SCRIPT_DIR/pinedio2.sh
+```
+
 ## Checkpoint Delta
 
 TODO
@@ -323,6 +364,28 @@ TODO
 # Touch Panel Test
 
 _(Checkpoint Echo)_
+
+TODO
+
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112)
+
+```bash
+echo ; echo "----- Send command to BL602: lvgltest" ; sleep 2
+echo "" >$USB_DEVICE
+echo "lvgltest" >$USB_DEVICE ; sleep 1
+echo ; echo "----- HELLO HUMAN: TOUCH PINEDIO STACK NOW" ; sleep 2
+```
+
+TODO
+
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L117-L120)
+
+```bash
+##  Check whether BL604 has responded to touch
+set +e  ##  Don't exit when any command fails
+match=$(grep "cst816s_get_touch_data: UP: id=0, touch=" /tmp/test.log)
+set -e  ##  Exit when any command fails
+```
 
 ## Checkpoint Echo
 
