@@ -301,6 +301,12 @@ set -e  ##  Exit when any command fails</code></pre></div><h2 id="checkpoint-bra
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;$USB_DEVICE ; sleep 2</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L125">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Check whether SX1262 is OK
+set +e  ##  Don&#39;t exit when any command fails
+match=$(grep &quot;SX1262 Register 8 is 0x80&quot; /tmp/test.log)
+set +e  ##  Don&#39;t exit when any command fails</code></pre></div>
 <p>Our Auto Test Scripts <code>test.sh</code> and <code>pinedio.sh</code> will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; spi_test2
 Get Status: received
@@ -321,11 +327,37 @@ Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
 <h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
 <p><em>(Checkpoint Delta)</em></p>
 <p>TODO</p>
-<h2 id="checkpoint-delta"><a href="#checkpoint-delta">7.1 Checkpoint Delta</a></h2>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>echo ; echo &quot;----- Send command to BL602: lorawan_test&quot; ; sleep 2
+echo &quot;&quot; &gt;$USB_DEVICE
+echo &quot;lorawan_test&quot; &gt;$USB_DEVICE</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L142">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has joined the LoRaWAN Network
+set +e  ##  Don&#39;t exit when any command fails
+match=$(grep &quot;JOINED&quot; /tmp/test.log)
+set -e  ##  Exit when any command fails</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Start the second script: pinedio2.sh
+SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
+SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
+$SCRIPT_DIR/pinedio2.sh</code></pre></div><h2 id="checkpoint-delta"><a href="#checkpoint-delta">7.1 Checkpoint Delta</a></h2>
 <p>TODO</p>
 <h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
 <p><em>(Checkpoint Echo)</em></p>
-<h2 id="checkpoint-echo"><a href="#checkpoint-echo">8.1 Checkpoint Echo</a></h2>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>echo ; echo &quot;----- Send command to BL602: lvgltest&quot; ; sleep 2
+echo &quot;&quot; &gt;$USB_DEVICE
+echo &quot;lvgltest&quot; &gt;$USB_DEVICE ; sleep 1
+echo ; echo &quot;----- HELLO HUMAN: TOUCH PINEDIO STACK NOW&quot; ; sleep 2</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L117-L120">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL604 has responded to touch
+set +e  ##  Don&#39;t exit when any command fails
+match=$(grep &quot;cst816s_get_touch_data: UP: id=0, touch=&quot; /tmp/test.log)
+set -e  ##  Exit when any command fails</code></pre></div><h2 id="checkpoint-echo"><a href="#checkpoint-echo">8.1 Checkpoint Echo</a></h2>
 <p>TODO</p>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>TODO</p>
