@@ -129,6 +129,84 @@ _PineDio Stack BL604 connected to SBC_
 
 TODO
 
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh)
+
+```bash
+set +x  ##  Disable echo
+echo "----- Download the latest $BUILD_PREFIX NuttX build for $BUILD_DATE"
+set -x  ##  Enable echo
+wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip -O /tmp/nuttx.zip
+pushd /tmp
+unzip -o nuttx.zip
+popd
+set +x  ##  Disable echo
+
+##  Write the Release Tag for populating the Release Log later
+echo "$BUILD_PREFIX-$BUILD_DATE" >/tmp/release.tag
+```
+
+TODO
+
+```bash
+echo "----- Enable GPIO 5 and 6"
+if [ ! -d /sys/class/gpio/gpio5 ]; then
+    echo 5 >/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with "Permission Denied"
+fi
+if [ ! -d /sys/class/gpio/gpio6 ]; then
+    echo 6 >/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with "Permission Denied"
+fi
+
+echo "----- Set GPIO 5 and 6 as output"
+echo out >/sys/class/gpio/gpio5/direction
+echo out >/sys/class/gpio/gpio6/direction
+```
+
+TODO
+
+```bash
+echo "----- Set GPIO 5 to High (BL602 Flashing Mode)"
+echo 1 >/sys/class/gpio/gpio5/value ; sleep 1
+
+echo "----- Toggle GPIO 6 High-Low-High (Reset BL602)"
+echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
+echo 0 >/sys/class/gpio/gpio6/value ; sleep 1
+echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
+```
+
+TODO
+
+```bash
+echo "----- BL602 is now in Flashing Mode"
+echo "----- Flash BL602 over USB UART with blflash"
+set -x  ##  Enable echo
+blflash flash /tmp/nuttx.bin --port $USB_DEVICE
+set +x  ##  Disable echo
+sleep 1
+```
+
+TODO
+
+```bash
+echo "----- Set GPIO 5 to Low (BL602 Normal Mode)"
+echo 0 >/sys/class/gpio/gpio5/value ; sleep 1
+
+echo "----- Toggle GPIO 6 High-Low-High (Reset BL602)"
+echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
+echo 0 >/sys/class/gpio/gpio6/value ; sleep 1
+echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
+```
+
+TODO
+
+```bash
+##  Set USB UART to 2 Mbps
+stty -F $USB_DEVICE raw 2000000
+
+##  Show the BL602 output and capture to /tmp/test.log.
+##  Run this in the background so we can kill it later.
+cat $USB_DEVICE | tee /tmp/test.log &
+```
+
 We auto flash and test PineDio Stack BL604 in two scripts.
 
 The first script auto-flashes the PineDio Stack Firmware [(auto-built by GitHub Actions)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml) and runs the [LoRaWAN Test App](https://github.com/lupyuen/lorawan_test)...
@@ -159,6 +237,14 @@ _(Checkpoint Alpha)_
 
 TODO
 
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111)
+
+```bash
+##  If BL602 has not crashed, send the test command to BL602
+echo "uname -a" >$USB_DEVICE ; sleep 1
+echo "ls /dev" >$USB_DEVICE ; sleep 1
+```
+
 ## Checkpoint Alpha
 
 TODO
@@ -169,6 +255,15 @@ _(Checkpoint Bravo)_
 
 TODO
 
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105)
+
+```bash
+##  Check whether BL602 has crashed
+set +e  ##  Don't exit when any command fails
+match=$(grep "registerdump" /tmp/test.log)
+set -e  ##  Exit when any command fails
+```
+
 ## Checkpoint Bravo
 
 TODO
@@ -178,6 +273,12 @@ TODO
 _(Checkpoint Charlie)_
 
 TODO
+
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111)
+
+```bash
+echo "spi_test2" >$USB_DEVICE ; sleep 2
+```
 
 Our Auto Test Scripts `test.sh` and `pinedio.sh` will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)...
 
