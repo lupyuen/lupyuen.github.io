@@ -66,7 +66,7 @@
     <h1 class="title">(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board</h1>
     <nav id="TOC"><ul>
 <li><a href="#testing-checkpoints">1 Testing Checkpoints</a><ul></ul></li>
-<li><a href="#connect-pinedio-stack">2 Connect PineDio Stack</a><ul></ul></li>
+<li><a href="#connect-pinedio-stack-to-sbc">2 Connect PineDio Stack to SBC</a><ul></ul></li>
 <li><a href="#test-pinedio-stack">3 Test PineDio Stack</a><ul></ul></li>
 <li><a href="#nuttx-must-boot">4 NuttX Must Boot</a><ul>
 <li><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
@@ -174,11 +174,20 @@
 <p>(With CST816S Touch Panel)</p>
 </li>
 </ul>
-<p>To run the above tests automatically, let’s connect PineDio Stack to a Single-Board Computer.</p>
-<p><img src="https://lupyuen.github.io/images/auto2-pinedio3a.jpg" alt="TODO" /></p>
-<h1 id="connect-pinedio-stack"><a href="#connect-pinedio-stack">2 Connect PineDio Stack</a></h1>
-<p>TODO</p>
-<p>We connect PineDio Stack BL604 to the SBC for Auto Flash and Test like so…</p>
+<p>To run the above tests automatically, let’s connect PineDio Stack to a <strong>Single-Board Computer</strong>.</p>
+<p><img src="https://lupyuen.github.io/images/auto2-pinedio3a.jpg" alt="GPIO 8, Reset and Ground on PineDio Stack BL604" /></p>
+<p><em>GPIO 8, Reset and Ground on PineDio Stack BL604</em></p>
+<h1 id="connect-pinedio-stack-to-sbc"><a href="#connect-pinedio-stack-to-sbc">2 Connect PineDio Stack to SBC</a></h1>
+<p>Our <strong>Automated Testing Script</strong> runs on a Single-Board Computer (SBC) to…</p>
+<ul>
+<li>
+<p>Control the <strong>Flashing and Testing</strong> of PineDio Stack</p>
+</li>
+<li>
+<p>Capture the <strong>Test Log</strong> and upload to the GitHub Release</p>
+</li>
+</ul>
+<p>We <strong>connect PineDio Stack</strong> to our SBC like so…</p>
 <div><table><thead><tr><th>SBC</th><th>BL604</th><th>Function</th></tr></thead><tbody>
 <tr><td>GPIO 5</td><td>GPIO 8 <em>(GPIO Port)</em></td><td>Flashing Mode</td></tr>
 <tr><td>GPIO 6</td><td>RST <em>(JTAG Port)</em></td><td>Reset</td></tr>
@@ -186,11 +195,18 @@
 <tr><td>USB</td><td>USB Port</td><td>USB UART</td></tr>
 </tbody></table>
 </div>
-<p><img src="https://lupyuen.github.io/images/auto2-pinedio.jpg" alt="TODO" /></p>
-<p><strong>GPIO 8 Jumper must be set to Low (Non-Flashing Mode)!</strong></p>
-<p>(Or the LoRaWAN Test App will fail because the timers will get triggered too quickly)</p>
-<p><img src="https://lupyuen.github.io/images/auto2-jumper.jpg" alt="TODO" /></p>
-<p>TODO: <a href="https://lupyuen.github.io/images/auto2-pinedio2.jpg">Remember to connect a LoRa Antenna!</a></p>
+<p><strong>GPIO 8</strong> is exposed on the GPIO Port (inside PineDio Stack). <strong>Reset and Ground</strong> are exposed on the JTAG Port (outside PineDio Stack).</p>
+<p>(See the pic above)</p>
+<p>The <strong>GPIO 8 Jumper</strong> must be set to <strong>Low (Non-Flashing Mode)</strong>…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/auto2-jumper.jpg" alt="GPIO 8 Jumper must be set to Low (Non-Flashing Mode)" /></p>
+</blockquote>
+<p>(Or the LoRaWAN Test App will fail when the timers get triggered too quickly, not sure why)</p>
+<p>Remember to connect a <strong>LoRa Antenna</strong>! <a href="https://lupyuen.github.io/images/auto2-pinedio2.jpg">(See this)</a></p>
+<p>Close the <strong>Back Cover</strong> of PineDio Stack, without the GPS Base Board.</p>
+<p>We should see this…</p>
+<p><img src="https://lupyuen.github.io/images/auto2-pinedio.jpg" alt="PineDio Stack BL604 connected to SBC" /></p>
+<p><em>PineDio Stack BL604 connected to SBC</em></p>
 <h1 id="test-pinedio-stack"><a href="#test-pinedio-stack">3 Test PineDio Stack</a></h1>
 <p>TODO</p>
 <p>We auto flash and test PineDio Stack BL604 in two scripts.</p>
