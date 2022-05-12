@@ -94,7 +94,11 @@ Our __Automated Testing Script__ runs on a Single-Board Computer (SBC) to...
 
 -   Control the __Flashing and Testing__ of PineDio Stack
 
+    (Via USB, GPIO 8 and Reset)
+
 -   Capture the __Test Log__ and upload to the GitHub Release
+
+    (Over USB)
 
 We __connect PineDio Stack__ to our SBC like so...
 
@@ -119,7 +123,11 @@ Remember to connect a __LoRa Antenna__! [(See this)](https://lupyuen.github.io/i
 
 Close the __Back Cover__ of PineDio Stack, without the GPS Base Board.
 
-We should see this. We're ready to run our Automated Testing Script!
+We'll see something similar to the pic below. We're ready to run our Automated Testing Script!
+
+_So PineDio Stack will be permanently connected to our SBC?_
+
+TODO
 
 ![PineDio Stack BL604 connected to SBC](https://lupyuen.github.io/images/auto2-pinedio.jpg)
 
