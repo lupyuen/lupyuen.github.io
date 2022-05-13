@@ -139,7 +139,7 @@ _PineDio Stack BL604 connected to SBC_
 
 # Run Automated Test
 
-To run the Automated Testing Script on our SBC...
+To run the __Automated Testing Script__ on our SBC...
 
 ```bash
 ##  Allow the user to access the GPIO and UART ports
@@ -163,7 +163,15 @@ git clone --recursive https://github.com/lupyuen/remote-bl602/
 remote-bl602/scripts/pinedio.sh
 ```
 
-TODO
+[(Watch the demo on YouTube)](https://youtu.be/JX7rWqWTOW4)
+
+This will download and test __Today's Build__ of NuttX for PineDio Stack NuttX (published on GitHub Releases).
+
+[(Here's the build for 2022-05-10)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+
+_Can we specify a different NuttX Build?_
+
+Just set __BUILD_DATE__ like so...
 
 ```bash
 ##  Tell the script to download the build for 2022-05-10
@@ -175,7 +183,7 @@ remote-bl602/scripts/pinedio.sh
 
 _Will this work over SSH?_
 
-Yep we may run the Automated Test remotely over SSH...
+Yep we may run the Automated Test __remotely over SSH__...
 
 ```bash
 ssh my-sbc remote-bl602/scripts/pinedio.sh
@@ -198,8 +206,6 @@ set +x  ##  Disable echo
 ##  Write the Release Tag for populating the Release Log later
 echo "$BUILD_PREFIX-$BUILD_DATE" >/tmp/release.tag
 ```
-
-![TODO](https://lupyuen.github.io/images/auto2-code1a.png)
 
 # NuttX Must Boot
 
@@ -442,6 +448,8 @@ set -e  ##  Exit when any command fails
 ## Checkpoint Echo
 
 TODO
+
+![TODO](https://lupyuen.github.io/images/auto2-code1a.png)
 
 # Upload Test Log
 
