@@ -72,7 +72,8 @@
 <li><a href="#nuttx-must-boot">4 NuttX Must Boot</a><ul>
 <li><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
 <li><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a><ul>
-<li><a href="#checkpoint-bravo">5.1 Checkpoint Bravo</a><ul></ul></li></ul></li>
+<li><a href="#decode-stack-trace">5.1 Decode Stack Trace</a><ul></ul></li>
+<li><a href="#checkpoint-bravo">5.2 Checkpoint Bravo</a><ul></ul></li></ul></li>
 <li><a href="#spi-test">6 SPI Test</a><ul>
 <li><a href="#checkpoint-charlie">6.1 Checkpoint Charlie</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-test">7 LoRaWAN Test</a><ul>
@@ -366,13 +367,56 @@ echo &quot;uname -a&quot; &gt;/dev/ttyUSB0 ; sleep 1
 echo &quot;ls /dev&quot; &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div><h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
 <p><em>(Checkpoint Bravo)</em></p>
 <p>TODO</p>
+<p><em>What happens when NuttX crashes during testing?</em></p>
+<p>NuttX shows a <strong>Stack Trace</strong> like this…</p>
+<p><img src="https://lupyuen.github.io/images/auto-stack.jpg" alt="NuttX Stack Trace" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
+<p>Let’s walk through the steps to <strong>decode the Stack Trace</strong>, then we’ll learn how our script decodes the Stack Trace for us.</p>
+<h2 id="decode-stack-trace"><a href="#decode-stack-trace">5.1 Decode Stack Trace</a></h2>
+<p>At the top is the <strong>Assertion Failure</strong> message…</p>
+<div class="example-wrap"><pre class="language-text"><code>irq_unexpected_isr: ERROR irq: 1
+up_assert: Assertion failed at file:irq/irq_unexpectedisr.c line: 51 task: Idle Task</code></pre></div>
+<p><strong>Always enable Debug Assertions</strong> in our NuttX Build Configuration. They are super helpful for catching problems. <a href="https://lupyuen.github.io/articles/spi2#enable-logging">(Here’s how)</a></p>
+<p>Next we see the <strong>Register Dump</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_registerdump: EPC: deadbeee
+riscv_registerdump: A0: 00000002 A1: 420146b0 A2: 42015140 A3: 420141c
+riscv_registerdump: A4: 420150d0 A5: 00000000 A6: 00000002 A7: 00000000
+riscv_registerdump: T0: 00006000 T1: 00000003 T2: 41bd5588 T3: 00000064
+riscv_registerdump: T4: 00000000 T5: 00000000 T6: c48ae7e4
+riscv_registerdump: S0: deadbeef S1: deadbeef S2: 420146b0 S3: 42014000
+riscv_registerdump: S4: 42015000 S5: 42012510 S6: 00000001 S7: 23007000
+riscv_registerdump: S8: 4201fa38 S9: 00000001 S10: 00000c40 S11: 42010510
+riscv_registerdump: SP: 420126b0 FP: deadbeef TP: 0c8a646d RA: deadbeef</code></pre></div>
+<p>Followed by the <strong>Interrupt Stack</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_dumpstate: sp:     420144b0
+riscv_dumpstate: IRQ stack:
+riscv_dumpstate:   base: 42012540
+riscv_dumpstate:   size: 00002000</code></pre></div>
+<p>The <strong>Stack Dump</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_stackdump: 420144a0: 00001fe0 23011000 420144f0 230053a0 deadbeef deadbeef 23010ca4 00000033
+riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510 42015000 00000001
+riscv_stackdump: 420144e0: 420125a8 42014000 42014500 230042e2 42014834 80007800 42014510 23001d3e
+riscv_stackdump: 42014500: 420171c0 42014000 42014520 23001cdc deadbeef deadbeef 42014540 23000db4
+riscv_stackdump: 42014520: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 00000000 23000d04</code></pre></div>
+<p>The <strong>User Stack</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_dumpstate: sp:     420126b0
+riscv_dumpstate: User stack:
+riscv_dumpstate:   base: 42010530
+riscv_dumpstate:   size: 00001fe0</code></pre></div>
+<p>Finally the <strong>Task List</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv_showtasks:    PID    PRI      USED     STACK   FILLED    COMMAND
+riscv_showtasks:   ----   ----      8088      8192    98.7%!   irq
+riscv_dump_task:      0      0       436      8160     5.3%    Idle Task
+riscv_dump_task:      1    100       516      8144     6.3%    nsh_main</code></pre></div>
+<p>(The Interrupt Stack <strong>irq</strong> seems to be overflowing, it might have caused NuttX to crash)</p>
+<p>In a while we’ll select the interesting addresses from above and decode them.</p>
+<h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">5.2 Checkpoint Bravo</a></h2>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has crashed
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;registerdump&quot; /tmp/test.log)
-set -e  ##  Exit when any command fails</code></pre></div><h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">5.1 Checkpoint Bravo</a></h2>
-<p>TODO</p>
-<h1 id="spi-test"><a href="#spi-test">6 SPI Test</a></h1>
+set -e  ##  Exit when any command fails</code></pre></div><h1 id="spi-test"><a href="#spi-test">6 SPI Test</a></h1>
 <p><em>(Checkpoint Charlie)</em></p>
 <p>TODO</p>
 <p>Our Auto Test Scripts <code>test.sh</code> and <code>pinedio.sh</code> will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)…</p>
@@ -406,11 +450,37 @@ set +e  ##  Don&#39;t exit when any command fails</code></pre></div>
 <p><em>(Checkpoint Delta)</em></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Send command to BL602: lorawan_test
-
 nsh&gt; lorawan_test
 init_entropy_pool
 offset = 2209
-temperature = 25.667484 Celsius</code></pre></div>
+temperature = 25.667484 Celsius
+...
+##### =========== MLME-Request ============ ######
+#####               MLME_JOIN               ######
+##### ===================================== ######
+STATUS      : OK
+...
+##### =========== MLME-Confirm ============ ######
+STATUS      : OK
+OnJoinRequest
+##### ===========   JOINED     ============ ######
+OTAA
+DevAddr     :  00F76FBF
+DATA RATE   : DR_2
+...
+##### =========== MCPS-Confirm ============ ######
+STATUS      : OK
+##### =====   UPLINK FRAME        1   ===== ######
+CLASS       : A
+TX PORT     : 1
+TX DATA     : UNCONFIRMED
+48 69 20 4E 75 74 74 58 00
+DATA RATE   : DR_3
+U/L FREQ    : 923400000
+TX POWER    : 0
+CHANNEL MASK: 0003
+...
+===== All OK! BL602 has successfully joined the LoRaWAN Network</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>We auto flash and test PineDio Stack BL604 in two scripts.</p>
 <p>The first script auto-flashes the PineDio Stack Firmware <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml">(auto-built by GitHub Actions)</a> and runs the <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a>…</p>
@@ -444,7 +514,21 @@ $SCRIPT_DIR/pinedio2.sh</code></pre></div><h1 id="touch-panel-test"><a href="#to
 nsh&gt; lvgltest
 tp_init: Opening /dev/input0
 cst816s_open: 
-HELLO HUMAN: TOUCH PINEDIO STACK NOW</code></pre></div>
+HELLO HUMAN: TOUCH PINEDIO STACK NOW
+...
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+...
+cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
+cst816s_get_touch_data: UP: id=0, touch=2, x=83, y=106
+cst16s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+===== All OK! BL604 has responded to touch</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>The second script auto-restarts PineDio Stack and runs the <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> (to test the touchscreen)…</p>
 <ul>
@@ -538,6 +622,109 @@ gh release edit \
 <p><img src="https://lupyuen.github.io/images/auto2-pinecone.jpg" alt="TODO" /></p>
 <h1 id="merge-updates-from-nuttx"><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a></h1>
 <p>TODO</p>
+<p>When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some <strong>Automated Testing</strong> (to be sure that nothing’s broken).</p>
+<p>Today we run a <strong>Daily Automated Test</strong> on the NuttX Mainline Branch for PineCone BL602…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases">(See the Automated Test Logs)</a></p>
+</li>
+</ul>
+<p>Now we need to <strong>connect an SBC to PineDio Stack</strong> and auto-run these tests…</p>
+<ul>
+<li>
+<p><strong>SPI Test App (spi_test2)</strong>: Verify that the SPI Driver can talk to SX1262</p>
+</li>
+<li>
+<p><strong>LoRaWAN Test App (lorawan_test)</strong>: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets</p>
+</li>
+<li>
+<p><strong>LVGL Test App (lvgltest)</strong>: Verify that ST7789 can render an LVGL Screen (over SPI) and read the CST816S Touch Panel (over I2C)</p>
+</li>
+<li>
+<p><strong>GPIO Command (gpio)</strong>: Verify that the BL604 GPIO Expander correctly triggers an interrupt when the Push Button is pressed…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; gpio -t 8 -w 1 /dev/gpio12
+Driver: /dev/gpio12
+  Interrupt pin: Value=1
+  Verify:        Value=1</code></pre></div>
+<p><a href="https://github.com/lupyuen/bl602_expander#test-push-button">(Source)</a></p>
+</li>
+</ul>
+<p>Right now we run these tests manually on PineDio Stack when we update the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a>.</p>
+<p>We record the <strong>Manual Test Logs</strong> in the Pull Requests…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/pulls?q=is%3Aclosed+base%3Apinedio"><strong>Pull Requests and Manual Test Logs for PineDio Stack</strong></a></li>
+</ul>
+<p><em>So we’ll run Automated Tests on PineCone BL602 AND PineDio Stack BL604?</em></p>
+<p>Yep we shall test and maintain two <strong>Stable Branches</strong> of NuttX for public consumption…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx"><strong><code>master</code> branch</strong></a> for PineCone BL602</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a> for PineDio Stack BL604</p>
+</li>
+</ul>
+<p>(Same for NuttX Apps)</p>
+<p><em>Are the branches any different?</em></p>
+<p>The code should be identical, though…</p>
+<ul>
+<li>
+<p>PineCone BL602 won’t use the <a href="https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus"><strong>Shared SPI Bus</strong></a> that we have created for PineDio Stack BL604</p>
+</li>
+<li>
+<p>PineCone BL602 won’t use the <a href="https://github.com/lupyuen/bl602_expander"><strong>GPIO Expander</strong></a> either</p>
+</li>
+</ul>
+<p>We control the options through the <strong>NuttX Build Configuration</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Configure build for PineDio Stack BL604
+./tools/configure.sh bl602evb:pinedio
+
+# Configure build for PineCone BL602
+./tools/configure.sh bl602evb:pinecone</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig">(See the PineCone config)</a></p>
+<p>This check for PineDio Stack should probably be improved: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151">board.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* Identify as PineDio Stack if both ST7789 and CST816S are present */
+#if defined(CONFIG_LCD_ST7789) &amp;&amp; defined(CONFIG_INPUT_CST816S)
+#define PINEDIO_STACK_BL604
+#endif /* CONFIG_LCD_ST7789 &amp;&amp; CONFIG_INPUT_CST816S */</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c">(<strong>PINEDIO_STACK_BL604</strong> enables the SPI Device Table in the SPI Driver)</a></p>
+<p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
+<p><a href="https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx">(Source)</a></p>
+<p><em>What about upstream updates from NuttX Mainline Branch?</em></p>
+<ul>
+<li>
+<p>Upstream updates from NuttX Mainline will first be merged and auto-tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/downstream"><strong><code>downstream</code> branch</strong></a></p>
+<p>(Every 2 weeks, depends on my writing mood)</p>
+</li>
+<li>
+<p>Then merged and auto-tested in the <a href="https://github.com/lupyuen/incubator-nuttx"><strong><code>master</code> (release) branch</strong></a></p>
+<p>(For PineCone BL602)</p>
+</li>
+<li>
+<p>Which gets merged and manually tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a></p>
+<p>(For PineDio Stack BL604)</p>
+</li>
+<li>
+<p>Updates in the <code>pinedio</code> branch are merged back to the <code>master</code> and the <code>downstream</code> branches and auto-tested on PineCone BL602</p>
+</li>
+<li>
+<p>Thus ultimately the <code>pinedio</code>, <code>master</code> and <code>downstream</code> branches will all have the <strong>exact same code</strong>, tested OK on PineCone BL602 and PineDio Stack BL604</p>
+<p>(And lagging behind NuttX Mainline by 2 weeks)</p>
+</li>
+</ul>
+<p>This is an extension of our original grand plan…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx"><strong>“Merge Updates From NuttX”</strong></a></li>
+</ul>
+<p><em>But how will we auto-test the Touch Panel on PineDio Stack?</em></p>
+<p>With a <strong>Robot Finger</strong>?</p>
+<p>Or let our SBC <strong>actuate a Motor</strong> that’s wrapped in an <strong>Anti-Static Bag</strong>?</p>
+<ul>
+<li><a href="https://www.youtube.com/shorts/hGSwetNr87o"><strong>Watch the video on YouTube</strong></a></li>
+</ul>
+<p>I’m open to ideas, please lemme know! 🙏</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Now that we’ve fixed the GPIO problem with GPIO Expander, I hope it’s a lot easier to create <strong>NuttX Drivers and Apps</strong> on PineDio Stack.</p>
