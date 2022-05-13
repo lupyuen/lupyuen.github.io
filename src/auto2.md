@@ -131,7 +131,7 @@ Yep I have a __Spare PineDio Stack__ permanently connected to my SBC.
 
 This PineDio Stack has a faulty ST7789 Display (hence it's a spare), so we __can't auto-test the ST7789 Display__.
 
-But since ST7789 Display and SX1262 LoRa Transceiver are connected to the same SPI Bus, it should be OK to test only the SX1262 Transceiver.
+(But since ST7789 Display and SX1262 LoRa Transceiver are connected to the same SPI Bus, it should be OK to test only the SX1262 Transceiver)
 
 ![PineDio Stack BL604 connected to SBC](https://lupyuen.github.io/images/auto2-pinedio.jpg)
 
