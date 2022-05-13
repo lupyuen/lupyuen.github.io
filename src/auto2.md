@@ -159,26 +159,34 @@ cargo install blflash
 ##  Download the flash and test script
 git clone --recursive https://github.com/lupyuen/remote-bl602/
 
-##  Auto flash and test PineDio Stack
-remote-bl602/scripts/pinedio.sh
+##  Run the script for Auto Flash and Test.
+##  Capture the Test Log in /tmp/release.log
+script -c remote-bl602/scripts/test.sh /tmp/release.log
+
+##  Optional: Upload the Test Log to the GitHub Release Notes
+remote-bl602/scripts/upload.sh
 ```
 
 [(Watch the demo on YouTube)](https://youtu.be/JX7rWqWTOW4)
 
-This will download and test __Today's Build__ of NuttX for PineDio Stack NuttX (published on GitHub Releases).
+This will download and test __Today's Build__ of NuttX for PineDio Stack NuttX (published on GitHub Releases). The script fails silently if there's no NuttX Build for today. (Sorry!)
 
 [(Here's the build for 2022-05-10)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
-_Can we specify a different NuttX Build?_
+_Can we pick a different NuttX Build?_
 
-Just set __BUILD_DATE__ like so...
+We pick a __NuttX Build__ from this list...
+
+-   [__NuttX Builds for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/releases?q=pinedio&expanded=true)
+
+Then we set __BUILD_DATE__ like so...
 
 ```bash
 ##  Tell the script to download the build for 2022-05-10
 export BUILD_DATE=2022-05-10
 
-##  Auto flash and test PineDio Stack
-remote-bl602/scripts/pinedio.sh
+##  Run the script for Auto Flash and Test, capture the Test Log
+script -c remote-bl602/scripts/test.sh /tmp/release.log
 ```
 
 _Will this work over SSH?_
@@ -188,6 +196,8 @@ Yep we may run the Automated Test __remotely over SSH__...
 ```bash
 ssh my-sbc remote-bl602/scripts/pinedio.sh
 ```
+
+## Download NuttX Build
 
 TODO
 
@@ -249,7 +259,7 @@ TODO
 echo "----- BL602 is now in Flashing Mode"
 echo "----- Flash BL602 over USB UART with blflash"
 set -x  ##  Enable echo
-blflash flash /tmp/nuttx.bin --port $USB_DEVICE
+blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
 set +x  ##  Disable echo
 sleep 1
 ```
@@ -270,11 +280,11 @@ TODO
 
 ```bash
 ##  Set USB UART to 2 Mbps
-stty -F $USB_DEVICE raw 2000000
+stty -F /dev/ttyUSB0 raw 2000000
 
 ##  Show the BL602 output and capture to /tmp/test.log.
 ##  Run this in the background so we can kill it later.
-cat $USB_DEVICE | tee /tmp/test.log &
+cat /dev/ttyUSB0 | tee /tmp/test.log &
 ```
 
 TODO
@@ -283,8 +293,8 @@ From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pine
 
 ```bash
 ##  If BL602 has not crashed, send the test command to BL602
-echo "uname -a" >$USB_DEVICE ; sleep 1
-echo "ls /dev" >$USB_DEVICE ; sleep 1
+echo "uname -a" >/dev/ttyUSB0 ; sleep 1
+echo "ls /dev" >/dev/ttyUSB0 ; sleep 1
 ```
 
 # NuttX Must Not Crash
@@ -315,7 +325,7 @@ TODO
 From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111)
 
 ```bash
-echo "spi_test2" >$USB_DEVICE ; sleep 2
+echo "spi_test2" >/dev/ttyUSB0 ; sleep 2
 ```
 
 TODO
@@ -379,8 +389,8 @@ From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pine
 
 ```bash
 echo ; echo "----- Send command to BL602: lorawan_test" ; sleep 2
-echo "" >$USB_DEVICE
-echo "lorawan_test" >$USB_DEVICE
+echo "" >/dev/ttyUSB0
+echo "lorawan_test" >/dev/ttyUSB0
 ```
 
 TODO
@@ -429,8 +439,8 @@ From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pine
 
 ```bash
 echo ; echo "----- Send command to BL602: lvgltest" ; sleep 2
-echo "" >$USB_DEVICE
-echo "lvgltest" >$USB_DEVICE ; sleep 1
+echo "" >/dev/ttyUSB0
+echo "lvgltest" >/dev/ttyUSB0 ; sleep 1
 echo ; echo "----- HELLO HUMAN: TOUCH PINEDIO STACK NOW" ; sleep 2
 ```
 
@@ -458,7 +468,8 @@ TODO
 To __upload the Test Log__ to GitHub Release Notes...
 
 ```bash
-##  Run the script for Auto Flash and Test, capture the Test Log
+##  Run the script for Auto Flash and Test.
+##  Capture the Test Log in /tmp/release.log
 script -c remote-bl602/scripts/test.sh /tmp/release.log
 
 ##  Upload the Test Log to the GitHub Release Notes
