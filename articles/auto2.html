@@ -312,7 +312,7 @@ BL602 is now in Normal Mode
 
 NuttShell (NSH) NuttX-10.3.0-RC0
 nsh&gt;</code></pre></div>
-<p>The NuttX Shell appears. Our script sends this command to reveal the <strong>NuttX Commit ID</strong> and Build Time…</p>
+<p>The NuttX Shell appears. Our script sends this command to reveal the <strong>NuttX Commit ID</strong> and Build Timestamp…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
 NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb</code></pre></div>
 <p>Then it lists the <strong>Device Drivers</strong> loaded on NuttX…</p>
@@ -331,37 +331,37 @@ NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb</code></pre></d
 <p>Yep NuttX has successfully booted on PineDio Stack! Let’s dive into our Automated Testing Script and see the implementation of the operations above.</p>
 <h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>echo &quot;----- Enable GPIO 5 and 6&quot;
+<div class="example-wrap"><pre class="language-bash"><code>#  Enable GPIO 5 and 6
 if [ ! -d /sys/class/gpio/gpio5 ]; then
-    echo 5 &gt;/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with &quot;Permission Denied&quot;
+  echo 5 &gt;/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with &quot;Permission Denied&quot;
 fi
 if [ ! -d /sys/class/gpio/gpio6 ]; then
-    echo 6 &gt;/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with &quot;Permission Denied&quot;
+  echo 6 &gt;/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with &quot;Permission Denied&quot;
 fi
 
-echo &quot;----- Set GPIO 5 and 6 as output&quot;
+#  Set GPIO 5 and 6 as output
 echo out &gt;/sys/class/gpio/gpio5/direction
 echo out &gt;/sys/class/gpio/gpio6/direction</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>echo &quot;----- Set GPIO 5 to High (BL602 Flashing Mode)&quot;
+<div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 5 to High (BL602 Flashing Mode)
 echo 1 &gt;/sys/class/gpio/gpio5/value ; sleep 1
 
-echo &quot;----- Toggle GPIO 6 High-Low-High (Reset BL602)&quot;
+#  Toggle GPIO 6 High-Low-High (Reset BL602)
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 0 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>echo &quot;----- BL602 is now in Flashing Mode&quot;
-echo &quot;----- Flash BL602 over USB UART with blflash&quot;
+<div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Flashing Mode
+#  Flash BL602 over USB UART with blflash
 set -x  ##  Enable echo
 blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
 set +x  ##  Disable echo
 sleep 1</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>echo &quot;----- Set GPIO 5 to Low (BL602 Normal Mode)&quot;
+<div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 5 to Low (BL602 Normal Mode)
 echo 0 &gt;/sys/class/gpio/gpio5/value ; sleep 1
 
-echo &quot;----- Toggle GPIO 6 High-Low-High (Reset BL602)&quot;
+#  Toggle GPIO 6 High-Low-High (Reset BL602)
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 0 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1</code></pre></div>
@@ -376,7 +376,7 @@ cat /dev/ttyUSB0 | tee /tmp/test.log &amp;</code></pre></div>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  If BL602 has not crashed, send the test command to BL602
 echo &quot;uname -a&quot; &gt;/dev/ttyUSB0 ; sleep 1
-echo &quot;ls /dev&quot; &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div><h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
+echo &quot;ls /dev&quot;  &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div><h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
 <p><em>(Checkpoint Bravo)</em></p>
 <p>TODO</p>
 <p><em>What happens when NuttX crashes during testing?</em></p>
