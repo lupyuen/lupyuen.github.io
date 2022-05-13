@@ -162,6 +162,7 @@
 </li>
 <li>
 <p><strong>NuttX must not crash</strong> on PineDio Stack <em>(Checkpoint Bravo)</em></p>
+<p>(If NuttX crashes, our script runs a Crash Analysis)</p>
 </li>
 <li>
 <p><strong>SPI Transmit and Receive</strong> must work <em>(Checkpoint Charlie)</em></p>
@@ -237,14 +238,19 @@ git clone --recursive https://github.com/lupyuen/remote-bl602/
 #  Capture the Test Log in /tmp/release.log
 script -c remote-bl602/scripts/test.sh /tmp/release.log
 
+#  TODO: Install the GitHub CLI for uploading Release Notes
+#  See https://cli.github.com
+
 #  Optional: Upload the Test Log to the GitHub Release Notes
 remote-bl602/scripts/upload.sh</code></pre></div>
 <p><a href="https://youtu.be/JX7rWqWTOW4">(Watch the demo on YouTube)</a></p>
 <p>This will download and test <strong>Today’s Build</strong> of NuttX for PineDio Stack NuttX (published on GitHub Releases).</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Here’s the build for 2022-05-10)</a></p>
 <p>If the Automated Test succeeds, we’ll see…</p>
-<div class="example-wrap"><pre class="language-text"><code>All OK! BL602 has successfully joined the LoRaWAN Network
-
+<div class="example-wrap"><pre class="language-text"><code>Download the latest pinedio NuttX build for 2022-05-10
+Flash BL602 over USB UART with blflash
+...
+All OK! BL602 has successfully joined the LoRaWAN Network
 All OK! BL604 has responded to touch</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
 <p>Beware: The script <strong>fails silently</strong> if there’s no NuttX Build for today. (Sorry!)</p>
@@ -281,9 +287,35 @@ popd
 #  &quot;pinedio-2022-05-10&quot;
 echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag</code></pre></div>
 <p>We’ll see <strong>release.tag</strong> later when we upload the Test Log to the GitHub Release.</p>
+<p>Let’s walk through the Automated Testing Script and find out how it implements each Testing Checkpoint.</p>
 <h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">4 NuttX Must Boot</a></h1>
 <p><em>(Checkpoint Alpha)</em></p>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0-RC0
+nsh&gt; uname -a
+NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb
+nsh&gt; ls /dev
+/dev:
+ console
+ gpio10
+ gpio12
+ gpio14
+ gpio15
+ gpio19
+ gpio20
+ gpio21
+ gpio3
+ gpio9
+ i2c0
+ input0
+ lcd0
+ null
+ spi0
+ spitest0
+ timer0
+ urandom
+ zero</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;----- Enable GPIO 5 and 6&quot;
@@ -343,14 +375,6 @@ set -e  ##  Exit when any command fails</code></pre></div><h2 id="checkpoint-bra
 <h1 id="spi-test"><a href="#spi-test">6 SPI Test</a></h1>
 <p><em>(Checkpoint Charlie)</em></p>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;/dev/ttyUSB0 ; sleep 2</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L125">pinedio.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Check whether SX1262 is OK
-set +e  ##  Don&#39;t exit when any command fails
-match=$(grep &quot;SX1262 Register 8 is 0x80&quot; /tmp/test.log)
-set +e  ##  Don&#39;t exit when any command fails</code></pre></div>
 <p>Our Auto Test Scripts <code>test.sh</code> and <code>pinedio.sh</code> will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; spi_test2
 Get Status: received
@@ -360,6 +384,7 @@ Read Register 8: received
   a2 a2 a2 a2 80 
 SX1262 Register 8 is 0x80
 SX1262 is OK</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>This says that SX1262 Register 8 has value <code>0x80</code>, which is correct.</p>
 <p>If we see this error on BL602…</p>
 <div class="example-wrap"><pre class="language-text"><code>SX1262 Register 8 is 0x00
@@ -368,9 +393,25 @@ Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
 <p>(Which is connected to SBC GPIO 3)</p>
 <h2 id="checkpoint-charlie"><a href="#checkpoint-charlie">6.1 Checkpoint Charlie</a></h2>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;/dev/ttyUSB0 ; sleep 2</code></pre></div>
+<p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L125">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Check whether SX1262 is OK
+set +e  ##  Don&#39;t exit when any command fails
+match=$(grep &quot;SX1262 Register 8 is 0x80&quot; /tmp/test.log)
+set +e  ##  Don&#39;t exit when any command fails</code></pre></div>
+<p>TODO</p>
 <h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
 <p><em>(Checkpoint Delta)</em></p>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>----- Send command to BL602: lorawan_test
+
+nsh&gt; lorawan_test
+init_entropy_pool
+offset = 2209
+temperature = 25.667484 Celsius</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>We auto flash and test PineDio Stack BL604 in two scripts.</p>
 <p>The first script auto-flashes the PineDio Stack Firmware <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml">(auto-built by GitHub Actions)</a> and runs the <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a>…</p>
 <ul>
@@ -378,6 +419,8 @@ Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
 </ul>
 <p>The <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a> connects to a LoRaWAN Gateway (ChirpStack) and sends a LoRaWAN Data Packet to the Gateway.</p>
 <p>(Which means that Timers, SPI, GPIO Input / Ouput / Interrupt are working OK)</p>
+<h2 id="checkpoint-delta"><a href="#checkpoint-delta">7.1 Checkpoint Delta</a></h2>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo ; echo &quot;----- Send command to BL602: lorawan_test&quot; ; sleep 2
 echo &quot;&quot; &gt;/dev/ttyUSB0
@@ -393,8 +436,16 @@ set -e  ##  Exit when any command fails</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>#  Start the second script: pinedio2.sh
 SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
 SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
-$SCRIPT_DIR/pinedio2.sh</code></pre></div><h2 id="checkpoint-delta"><a href="#checkpoint-delta">7.1 Checkpoint Delta</a></h2>
+$SCRIPT_DIR/pinedio2.sh</code></pre></div><h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
+<p><em>(Checkpoint Echo)</em></p>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>----- Send command to BL602: lvgltest
+
+nsh&gt; lvgltest
+tp_init: Opening /dev/input0
+cst816s_open: 
+HELLO HUMAN: TOUCH PINEDIO STACK NOW</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>The second script auto-restarts PineDio Stack and runs the <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> (to test the touchscreen)…</p>
 <ul>
 <li><a href="scripts/pinedio2.sh">scripts/pinedio2.sh</a></li>
@@ -402,8 +453,7 @@ $SCRIPT_DIR/pinedio2.sh</code></pre></div><h2 id="checkpoint-delta"><a href="#ch
 <p>The <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> renders a screen to the ST7789 SPI Display and waits for a Touch Event from the CST816S I2C Touch Panel.</p>
 <p>For the test to succeed, we must tap the screen to generate a Touch Event.</p>
 <p><a href="https://youtu.be/mb3zcacDGPc">(Later we might automate this with a “Robot Finger”)</a></p>
-<h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
-<p><em>(Checkpoint Echo)</em></p>
+<h2 id="checkpoint-echo"><a href="#checkpoint-echo">8.1 Checkpoint Echo</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo ; echo &quot;----- Send command to BL602: lvgltest&quot; ; sleep 2
@@ -415,8 +465,7 @@ echo ; echo &quot;----- HELLO HUMAN: TOUCH PINEDIO STACK NOW&quot; ; sleep 2</co
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL604 has responded to touch
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;cst816s_get_touch_data: UP: id=0, touch=&quot; /tmp/test.log)
-set -e  ##  Exit when any command fails</code></pre></div><h2 id="checkpoint-echo"><a href="#checkpoint-echo">8.1 Checkpoint Echo</a></h2>
-<p>TODO</p>
+set -e  ##  Exit when any command fails</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>TODO</p>
