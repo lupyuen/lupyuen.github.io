@@ -270,7 +270,7 @@ script -c remote-bl602/scripts/test.sh /tmp/release.log</code></pre></div>
 <p>Yep we may run the Automated Test <strong>remotely over SSH</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh</code></pre></div><h2 id="automated-nuttx-build"><a href="#automated-nuttx-build">3.1 Automated NuttX Build</a></h2>
 <p><em>How is NuttX for PineDio Stack built and published to GitHub Releases?</em></p>
-<p>Whenever we commit changes to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>NuttX Repo for PineDio Stack</strong></a>, GitHub Actions will trigger a new NuttX Build and <strong>publish the NuttX Firmware</strong> to GitHub Releases…</p>
+<p>Whenever we commit changes to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>NuttX Repo for PineDio Stack</strong></a>, GitHub Actions will trigger a new NuttX Build and <strong>publish the built firmware</strong> to GitHub Releases…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow for PineDio Stack</strong></a></li>
 </ul>
@@ -291,31 +291,42 @@ echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag</code></pre></di
 <p>Let’s walk through the Automated Testing Script and find out how it implements each Testing Checkpoint.</p>
 <h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">4 NuttX Must Boot</a></h1>
 <p><em>(Checkpoint Alpha)</em></p>
+<p>Earlier we’ve seen our Automated Testing Script downloading the NuttX Firmware from GitHub Releases.</p>
+<p>At the first Testing Checkpoint, our script <strong>flashes the NuttX Firmware</strong> to PineDio Stack…</p>
+<div class="example-wrap"><pre class="language-text"><code>Set GPIO 5 to High (BL602 Flashing Mode)
+Toggle GPIO 6 High-Low-High (Reset BL602)
+BL602 is now in Flashing Mode
+
+Flash BL602 over USB UART with blflash
++ blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
+Sending eflash_loader...
+Program flash... 
+Success</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-bl602-firmware-with-linux-macos-and-windows">(<strong>blflash</strong> is explained here)</a></p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0-RC0
-nsh&gt; uname -a
-NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb
-nsh&gt; ls /dev
+<div class="example-wrap"><pre class="language-text"><code>Set GPIO 5 to Low (BL602 Normal Mode)
+Toggle GPIO 6 High-Low-High (Reset BL602)
+BL602 is now in Normal Mode
+
+NuttShell (NSH) NuttX-10.3.0-RC0
+nsh&gt;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
+NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /dev
 /dev:
- console
- gpio10
- gpio12
- gpio14
- gpio15
- gpio19
- gpio20
- gpio21
- gpio3
- gpio9
- i2c0
- input0
- lcd0
- null
- spi0
- spitest0
- timer0
- urandom
- zero</code></pre></div>
+ console  i2c0
+ gpio10   input0
+ gpio12   lcd0
+ gpio14   null
+ gpio15   spi0
+ gpio19   spitest0
+ gpio20   timer0
+ gpio21   urandom
+ gpio3    zero
+ gpio9</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
 <p>TODO</p>
