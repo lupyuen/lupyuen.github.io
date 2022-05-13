@@ -214,7 +214,7 @@
 <p><img src="https://lupyuen.github.io/images/auto2-pinedio.jpg" alt="PineDio Stack BL604 connected to SBC" /></p>
 <p><em>PineDio Stack BL604 connected to SBC</em></p>
 <h1 id="run-automated-test"><a href="#run-automated-test">3 Run Automated Test</a></h1>
-<p>To run the Automated Testing Script on our SBC…</p>
+<p>To run the <strong>Automated Testing Script</strong> on our SBC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Allow the user to access the GPIO and UART ports
 sudo usermod -a -G gpio    $USER
 sudo usermod -a -G dialout $USER
@@ -234,14 +234,18 @@ git clone --recursive https://github.com/lupyuen/remote-bl602/
 
 #  Auto flash and test PineDio Stack
 remote-bl602/scripts/pinedio.sh</code></pre></div>
-<p>TODO</p>
+<p><a href="https://youtu.be/JX7rWqWTOW4">(Watch the demo on YouTube)</a></p>
+<p>This will download and test <strong>Today’s Build</strong> of NuttX for PineDio Stack NuttX (published on GitHub Releases).</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Here’s the build for 2022-05-10)</a></p>
+<p><em>Can we specify a different NuttX Build?</em></p>
+<p>Just set <strong>BUILD_DATE</strong> like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to download the build for 2022-05-10
 export BUILD_DATE=2022-05-10
 
 #  Auto flash and test PineDio Stack
 remote-bl602/scripts/pinedio.sh</code></pre></div>
 <p><em>Will this work over SSH?</em></p>
-<p>Yep we may run the Automated Test remotely over SSH…</p>
+<p>Yep we may run the Automated Test <strong>remotely over SSH</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh">pinedio.sh</a></p>
@@ -255,9 +259,7 @@ popd
 set +x  ##  Disable echo
 
 #  Write the Release Tag for populating the Release Log later
-echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
-<h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">4 NuttX Must Boot</a></h1>
+echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag</code></pre></div><h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">4 NuttX Must Boot</a></h1>
 <p><em>(Checkpoint Alpha)</em></p>
 <p>TODO</p>
 <h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
@@ -393,6 +395,7 @@ set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;cst816s_get_touch_data: UP: id=0, touch=&quot; /tmp/test.log)
 set -e  ##  Exit when any command fails</code></pre></div><h2 id="checkpoint-echo"><a href="#checkpoint-echo">8.1 Checkpoint Echo</a></h2>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>TODO</p>
 <p>To <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
