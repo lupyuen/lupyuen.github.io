@@ -282,7 +282,7 @@ NuttShell (NSH) NuttX-10.3.0-RC0
 nsh>
 ```
 
-The NuttX Shell appears. Our script sends this command to reveal the __NuttX Commit ID__ and Build Time...
+The NuttX Shell appears. Our script sends this command to reveal the __NuttX Commit ID__ and Build Timestamp...
 
 ```text
 nsh> uname -a
@@ -313,15 +313,15 @@ Yep NuttX has successfully booted on PineDio Stack! Let's dive into our Automate
 TODO
 
 ```bash
-echo "----- Enable GPIO 5 and 6"
+##  Enable GPIO 5 and 6
 if [ ! -d /sys/class/gpio/gpio5 ]; then
-    echo 5 >/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with "Permission Denied"
+  echo 5 >/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with "Permission Denied"
 fi
 if [ ! -d /sys/class/gpio/gpio6 ]; then
-    echo 6 >/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with "Permission Denied"
+  echo 6 >/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with "Permission Denied"
 fi
 
-echo "----- Set GPIO 5 and 6 as output"
+##  Set GPIO 5 and 6 as output
 echo out >/sys/class/gpio/gpio5/direction
 echo out >/sys/class/gpio/gpio6/direction
 ```
@@ -329,10 +329,10 @@ echo out >/sys/class/gpio/gpio6/direction
 TODO
 
 ```bash
-echo "----- Set GPIO 5 to High (BL602 Flashing Mode)"
+##  Set GPIO 5 to High (BL602 Flashing Mode)
 echo 1 >/sys/class/gpio/gpio5/value ; sleep 1
 
-echo "----- Toggle GPIO 6 High-Low-High (Reset BL602)"
+##  Toggle GPIO 6 High-Low-High (Reset BL602)
 echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
 echo 0 >/sys/class/gpio/gpio6/value ; sleep 1
 echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
@@ -341,8 +341,8 @@ echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
 TODO
 
 ```bash
-echo "----- BL602 is now in Flashing Mode"
-echo "----- Flash BL602 over USB UART with blflash"
+##  BL602 is now in Flashing Mode
+##  Flash BL602 over USB UART with blflash
 set -x  ##  Enable echo
 blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
 set +x  ##  Disable echo
@@ -352,10 +352,10 @@ sleep 1
 TODO
 
 ```bash
-echo "----- Set GPIO 5 to Low (BL602 Normal Mode)"
+##  Set GPIO 5 to Low (BL602 Normal Mode)
 echo 0 >/sys/class/gpio/gpio5/value ; sleep 1
 
-echo "----- Toggle GPIO 6 High-Low-High (Reset BL602)"
+##  Toggle GPIO 6 High-Low-High (Reset BL602)
 echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
 echo 0 >/sys/class/gpio/gpio6/value ; sleep 1
 echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
@@ -379,7 +379,7 @@ From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pine
 ```bash
 ##  If BL602 has not crashed, send the test command to BL602
 echo "uname -a" >/dev/ttyUSB0 ; sleep 1
-echo "ls /dev" >/dev/ttyUSB0 ; sleep 1
+echo "ls /dev"  >/dev/ttyUSB0 ; sleep 1
 ```
 
 # NuttX Must Not Crash
