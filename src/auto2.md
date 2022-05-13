@@ -169,9 +169,11 @@ remote-bl602/scripts/upload.sh
 
 [(Watch the demo on YouTube)](https://youtu.be/JX7rWqWTOW4)
 
-This will download and test __Today's Build__ of NuttX for PineDio Stack NuttX (published on GitHub Releases). The script fails silently if there's no NuttX Build for today. (Sorry!)
+This will download and test __Today's Build__ of NuttX for PineDio Stack NuttX (published on GitHub Releases).
 
 [(Here's the build for 2022-05-10)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+
+Beware: The script __fails silently__ if there's no NuttX Build for today. (Sorry!)
 
 _Can we pick a different NuttX Build?_
 
@@ -197,25 +199,26 @@ Yep we may run the Automated Test __remotely over SSH__...
 ssh my-sbc remote-bl602/scripts/pinedio.sh
 ```
 
-## Download NuttX Build
+## Automated NuttX Build
 
 TODO
 
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh)
+The __downloading of NuttX Firmware__ from GitHub Releases is implemented here: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L14-L42)
 
 ```bash
-set +x  ##  Disable echo
-echo "----- Download the latest $BUILD_PREFIX NuttX build for $BUILD_DATE"
-set -x  ##  Enable echo
+## BUILD_PREFIX is "pinedio"
+## BUILD_DATE defaults to today's date, like "2022-05-10"
 wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip -O /tmp/nuttx.zip
 pushd /tmp
 unzip -o nuttx.zip
 popd
-set +x  ##  Disable echo
 
-##  Write the Release Tag for populating the Release Log later
+##  Write the Release Tag for populating the Release Log later:
+##  "pinedio-2022-05-10"
 echo "$BUILD_PREFIX-$BUILD_DATE" >/tmp/release.tag
 ```
+
+We'll see __release.tag__ later when we upload the Test Log to the GitHub Release.
 
 # NuttX Must Boot
 
