@@ -291,8 +291,8 @@ echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag</code></pre></di
 <p>Let’s walk through the Automated Testing Script and find out how it implements each Testing Checkpoint.</p>
 <h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">4 NuttX Must Boot</a></h1>
 <p><em>(Checkpoint Alpha)</em></p>
-<p>Earlier we’ve seen our Automated Testing Script downloading the NuttX Firmware from GitHub Releases.</p>
-<p>At the first Testing Checkpoint, our script <strong>flashes the NuttX Firmware</strong> to PineDio Stack…</p>
+<p>Earlier we saw our Automated Testing Script downloading the NuttX Firmware from GitHub Releases.</p>
+<p>At the first checkpoint, our script <strong>flashes the NuttX Firmware</strong> to PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-text"><code>Set GPIO 5 to High (BL602 Flashing Mode)
 Toggle GPIO 6 High-Low-High (Reset BL602)
 BL602 is now in Flashing Mode
@@ -303,18 +303,19 @@ Sending eflash_loader...
 Program flash... 
 Success</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p>Our script restarts PineDio Stack in <strong>Flashing Mode</strong> and calls <strong>blflash</strong> to flash the NuttX Firmware.</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-bl602-firmware-with-linux-macos-and-windows">(<strong>blflash</strong> is explained here)</a></p>
-<p>TODO</p>
+<p>Next our script restarts PineDio Stack in <strong>Normal Mode</strong> to start the NuttX Firmware…</p>
 <div class="example-wrap"><pre class="language-text"><code>Set GPIO 5 to Low (BL602 Normal Mode)
 Toggle GPIO 6 High-Low-High (Reset BL602)
 BL602 is now in Normal Mode
 
 NuttShell (NSH) NuttX-10.3.0-RC0
 nsh&gt;</code></pre></div>
-<p>TODO</p>
+<p>The NuttX Shell appears. Our script sends this command to reveal the <strong>NuttX Commit ID</strong> and Build Time…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
 NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb</code></pre></div>
-<p>TODO</p>
+<p>Then it lists the <strong>Device Drivers</strong> loaded on NuttX…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /dev
 /dev:
  console  i2c0
@@ -327,7 +328,7 @@ NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb</code></pre></d
  gpio21   urandom
  gpio3    zero
  gpio9</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p>Yep NuttX has successfully booted on PineDio Stack! Let’s dive into our Automated Testing Script and see the implementation of the operations above.</p>
 <h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;----- Enable GPIO 5 and 6&quot;
