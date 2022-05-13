@@ -220,7 +220,7 @@ ssh my-sbc remote-bl602/scripts/pinedio.sh
 
 _How is NuttX for PineDio Stack built and published to GitHub Releases?_
 
-Whenever we commit changes to the [__NuttX Repo for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio), GitHub Actions will trigger a new NuttX Build and __publish the NuttX Firmware__ to GitHub Releases...
+Whenever we commit changes to the [__NuttX Repo for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio), GitHub Actions will trigger a new NuttX Build and __publish the built firmware__ to GitHub Releases...
 
 -   [__GitHub Actions Workflow for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml)
 
@@ -249,33 +249,59 @@ Let's walk through the Automated Testing Script and find out how it implements e
 
 _(Checkpoint Alpha)_
 
+Earlier we've seen our Automated Testing Script downloading the NuttX Firmware from GitHub Releases.
+
+At the first Testing Checkpoint, our script __flashes the NuttX Firmware__ to PineDio Stack...
+
+```text
+Set GPIO 5 to High (BL602 Flashing Mode)
+Toggle GPIO 6 High-Low-High (Reset BL602)
+BL602 is now in Flashing Mode
+
+Flash BL602 over USB UART with blflash
++ blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
+Sending eflash_loader...
+Program flash... 
+Success
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+
+[(__blflash__ is explained here)](https://lupyuen.github.io/articles/flash#flash-bl602-firmware-with-linux-macos-and-windows)
+
 TODO
 
 ```text
+Set GPIO 5 to Low (BL602 Normal Mode)
+Toggle GPIO 6 High-Low-High (Reset BL602)
+BL602 is now in Normal Mode
+
 NuttShell (NSH) NuttX-10.3.0-RC0
+nsh>
+```
+
+TODO
+
+```text
 nsh> uname -a
 NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb
+```
+
+TODO
+
+```text
 nsh> ls /dev
 /dev:
- console
- gpio10
- gpio12
- gpio14
- gpio15
- gpio19
- gpio20
- gpio21
- gpio3
+ console  i2c0
+ gpio10   input0
+ gpio12   lcd0
+ gpio14   null
+ gpio15   spi0
+ gpio19   spitest0
+ gpio20   timer0
+ gpio21   urandom
+ gpio3    zero
  gpio9
- i2c0
- input0
- lcd0
- null
- spi0
- spitest0
- timer0
- urandom
- zero
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
