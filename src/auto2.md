@@ -139,7 +139,7 @@ _PineDio Stack BL604 connected to SBC_
 
 # Run Automated Test
 
-To run the __Automated Testing Script__ on our SBC...
+To run the [__Automated Testing Script__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh) on our Single-Board Computer...
 
 ```bash
 ##  Allow the user to access the GPIO and UART ports
@@ -201,19 +201,25 @@ ssh my-sbc remote-bl602/scripts/pinedio.sh
 
 ## Automated NuttX Build
 
-TODO
+_How is NuttX for PineDio Stack built and published to GitHub Releases?_
 
-The __downloading of NuttX Firmware__ from GitHub Releases is implemented here: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L14-L42)
+Whenever we commit changes to the [__NuttX Repo for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio), GitHub Actions will trigger a new NuttX Build and __publish the NuttX Firmware__ to GitHub Releases...
+
+-   [__GitHub Actions Workflow for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml)
+
+Our script __downloads the NuttX Firmware__ from GitHub Releases for Automated Testing: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L14-L42)
 
 ```bash
-## BUILD_PREFIX is "pinedio"
-## BUILD_DATE defaults to today's date, like "2022-05-10"
+##  BUILD_PREFIX is "pinedio"
+##  BUILD_DATE defaults to today's date, like "2022-05-10"
+
+##  Download the NuttX Firmware from GitHub Releases
 wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip -O /tmp/nuttx.zip
 pushd /tmp
 unzip -o nuttx.zip
 popd
 
-##  Write the Release Tag for populating the Release Log later:
+##  Write the Release Tag for uploading the Test Log later:
 ##  "pinedio-2022-05-10"
 echo "$BUILD_PREFIX-$BUILD_DATE" >/tmp/release.tag
 ```
