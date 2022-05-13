@@ -173,6 +173,16 @@ This will download and test __Today's Build__ of NuttX for PineDio Stack NuttX (
 
 [(Here's the build for 2022-05-10)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
+If the Automated Test succeeds, we'll see...
+
+```text
+All OK! BL602 has successfully joined the LoRaWAN Network
+
+All OK! BL604 has responded to touch
+```
+
+[(See the Test Log)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+
 Beware: The script __fails silently__ if there's no NuttX Build for today. (Sorry!)
 
 _Can we pick a different NuttX Build?_
