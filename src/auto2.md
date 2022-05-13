@@ -360,6 +360,86 @@ _(Checkpoint Bravo)_
 
 TODO
 
+_What happens when NuttX crashes during testing?_
+
+NuttX shows a __Stack Trace__ like this...
+
+![NuttX Stack Trace](https://lupyuen.github.io/images/auto-stack.jpg)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
+
+Let's walk through the steps to __decode the Stack Trace__, then we'll learn how our script decodes the Stack Trace for us.
+
+## Decode Stack Trace
+
+At the top is the __Assertion Failure__ message...
+
+```text
+irq_unexpected_isr: ERROR irq: 1
+up_assert: Assertion failed at file:irq/irq_unexpectedisr.c line: 51 task: Idle Task
+```
+
+__Always enable Debug Assertions__ in our NuttX Build Configuration. They are super helpful for catching problems. [(Here's how)](https://lupyuen.github.io/articles/spi2#enable-logging)
+
+Next we see the __Register Dump__...
+
+```text
+riscv_registerdump: EPC: deadbeee
+riscv_registerdump: A0: 00000002 A1: 420146b0 A2: 42015140 A3: 420141c
+riscv_registerdump: A4: 420150d0 A5: 00000000 A6: 00000002 A7: 00000000
+riscv_registerdump: T0: 00006000 T1: 00000003 T2: 41bd5588 T3: 00000064
+riscv_registerdump: T4: 00000000 T5: 00000000 T6: c48ae7e4
+riscv_registerdump: S0: deadbeef S1: deadbeef S2: 420146b0 S3: 42014000
+riscv_registerdump: S4: 42015000 S5: 42012510 S6: 00000001 S7: 23007000
+riscv_registerdump: S8: 4201fa38 S9: 00000001 S10: 00000c40 S11: 42010510
+riscv_registerdump: SP: 420126b0 FP: deadbeef TP: 0c8a646d RA: deadbeef
+```
+
+Followed by the __Interrupt Stack__...
+
+```text
+riscv_dumpstate: sp:     420144b0
+riscv_dumpstate: IRQ stack:
+riscv_dumpstate:   base: 42012540
+riscv_dumpstate:   size: 00002000
+```
+
+The __Stack Dump__...
+
+```text
+riscv_stackdump: 420144a0: 00001fe0 23011000 420144f0 230053a0 deadbeef deadbeef 23010ca4 00000033
+riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510 42015000 00000001
+riscv_stackdump: 420144e0: 420125a8 42014000 42014500 230042e2 42014834 80007800 42014510 23001d3e
+riscv_stackdump: 42014500: 420171c0 42014000 42014520 23001cdc deadbeef deadbeef 42014540 23000db4
+riscv_stackdump: 42014520: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 00000000 23000d04
+```
+
+The __User Stack__...
+
+```text
+riscv_dumpstate: sp:     420126b0
+riscv_dumpstate: User stack:
+riscv_dumpstate:   base: 42010530
+riscv_dumpstate:   size: 00001fe0
+```
+
+Finally the __Task List__...
+
+```text
+riscv_showtasks:    PID    PRI      USED     STACK   FILLED    COMMAND
+riscv_showtasks:   ----   ----      8088      8192    98.7%!   irq
+riscv_dump_task:      0      0       436      8160     5.3%    Idle Task
+riscv_dump_task:      1    100       516      8144     6.3%    nsh_main
+```
+
+(The Interrupt Stack __irq__ seems to be overflowing, it might have caused NuttX to crash)
+
+In a while we'll select the interesting addresses from above and decode them.
+
+## Checkpoint Bravo
+
+TODO
+
 From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105)
 
 ```bash
@@ -368,10 +448,6 @@ set +e  ##  Don't exit when any command fails
 match=$(grep "registerdump" /tmp/test.log)
 set -e  ##  Exit when any command fails
 ```
-
-## Checkpoint Bravo
-
-TODO
 
 # SPI Test
 
@@ -438,11 +514,37 @@ TODO
 
 ```text
 ----- Send command to BL602: lorawan_test
-
 nsh> lorawan_test
 init_entropy_pool
 offset = 2209
 temperature = 25.667484 Celsius
+...
+###### =========== MLME-Request ============ ######
+######               MLME_JOIN               ######
+###### ===================================== ######
+STATUS      : OK
+...
+###### =========== MLME-Confirm ============ ######
+STATUS      : OK
+OnJoinRequest
+###### ===========   JOINED     ============ ######
+OTAA
+DevAddr     :  00F76FBF
+DATA RATE   : DR_2
+...
+###### =========== MCPS-Confirm ============ ######
+STATUS      : OK
+###### =====   UPLINK FRAME        1   ===== ######
+CLASS       : A
+TX PORT     : 1
+TX DATA     : UNCONFIRMED
+48 69 20 4E 75 74 74 58 00
+DATA RATE   : DR_3
+U/L FREQ    : 923400000
+TX POWER    : 0
+CHANNEL MASK: 0003
+...
+===== All OK! BL602 has successfully joined the LoRaWAN Network
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
@@ -504,6 +606,20 @@ nsh> lvgltest
 tp_init: Opening /dev/input0
 cst816s_open: 
 HELLO HUMAN: TOUCH PINEDIO STACK NOW
+...
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+...
+cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
+cst816s_get_touch_data: UP: id=0, touch=2, x=83, y=106
+cst16s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   0c
+cst816s_get_touch_data:   x:       83
+cst816s_get_touch_data:   y:       106
+===== All OK! BL604 has responded to touch
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
@@ -649,6 +765,120 @@ gh release edit \
 # Merge Updates From NuttX
 
 TODO
+
+When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some __Automated Testing__ (to be sure that nothing's broken).
+
+Today we run a __Daily Automated Test__ on the NuttX Mainline Branch for PineCone BL602...
+
+-   [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
+
+    [(See the Automated Test Logs)](https://github.com/lupyuen/incubator-nuttx/releases)
+
+Now we need to __connect an SBC to PineDio Stack__ and auto-run these tests...
+
+-   __SPI Test App (spi_test2)__: Verify that the SPI Driver can talk to SX1262
+
+-   __LoRaWAN Test App (lorawan_test)__: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets
+
+-   __LVGL Test App (lvgltest)__: Verify that ST7789 can render an LVGL Screen (over SPI) and read the CST816S Touch Panel (over I2C)
+
+-   __GPIO Command (gpio)__: Verify that the BL604 GPIO Expander correctly triggers an interrupt when the Push Button is pressed...
+
+    ```text
+    nsh> gpio -t 8 -w 1 /dev/gpio12
+    Driver: /dev/gpio12
+      Interrupt pin: Value=1
+      Verify:        Value=1
+    ```
+
+    [(Source)](https://github.com/lupyuen/bl602_expander#test-push-button)
+
+Right now we run these tests manually on PineDio Stack when we update the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio).
+
+We record the __Manual Test Logs__ in the Pull Requests...
+
+-   [__Pull Requests and Manual Test Logs for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/pulls?q=is%3Aclosed+base%3Apinedio)
+
+_So we'll run Automated Tests on PineCone BL602 AND PineDio Stack BL604?_
+
+Yep we shall test and maintain two __Stable Branches__ of NuttX for public consumption...
+
+-   [__`master` branch__](https://github.com/lupyuen/incubator-nuttx) for PineCone BL602
+
+-   [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio) for PineDio Stack BL604
+
+(Same for NuttX Apps)
+
+_Are the branches any different?_
+
+The code should be identical, though...
+
+-   PineCone BL602 won't use the [__Shared SPI Bus__](https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus) that we have created for PineDio Stack BL604
+
+-   PineCone BL602 won't use the [__GPIO Expander__](https://github.com/lupyuen/bl602_expander) either
+
+We control the options through the __NuttX Build Configuration__...
+
+```bash
+## Configure build for PineDio Stack BL604
+./tools/configure.sh bl602evb:pinedio
+
+## Configure build for PineCone BL602
+./tools/configure.sh bl602evb:pinecone
+```
+
+[(See the PineDio Stack config)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+
+[(See the PineCone config)](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig)
+
+This check for PineDio Stack should probably be improved: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151)
+
+```c
+/* Identify as PineDio Stack if both ST7789 and CST816S are present */
+#if defined(CONFIG_LCD_ST7789) && defined(CONFIG_INPUT_CST816S)
+#define PINEDIO_STACK_BL604
+#endif /* CONFIG_LCD_ST7789 && CONFIG_INPUT_CST816S */
+```
+
+[(__PINEDIO_STACK_BL604__ enables the SPI Device Table in the SPI Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c)
+
+![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
+
+[(Source)](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
+
+_What about upstream updates from NuttX Mainline Branch?_
+
+-   Upstream updates from NuttX Mainline will first be merged and auto-tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
+
+    (Every 2 weeks, depends on my writing mood)
+
+-   Then merged and auto-tested in the [__`master` (release) branch__](https://github.com/lupyuen/incubator-nuttx)
+
+    (For PineCone BL602)
+
+-   Which gets merged and manually tested in the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio)
+
+    (For PineDio Stack BL604)
+
+-   Updates in the `pinedio` branch are merged back to the `master` and the `downstream` branches and auto-tested on PineCone BL602
+
+-   Thus ultimately the `pinedio`, `master` and `downstream` branches will all have the __exact same code__, tested OK on PineCone BL602 and PineDio Stack BL604
+
+    (And lagging behind NuttX Mainline by 2 weeks)
+
+This is an extension of our original grand plan...
+
+-   [__"Merge Updates From NuttX"__](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
+
+_But how will we auto-test the Touch Panel on PineDio Stack?_
+
+With a __Robot Finger__?
+
+Or let our SBC __actuate a Motor__ that's wrapped in an __Anti-Static Bag__?
+
+-   [__Watch the video on YouTube__](https://www.youtube.com/shorts/hGSwetNr87o)
+
+I'm open to ideas, please lemme know! 🙏
 
 # What's Next
 
