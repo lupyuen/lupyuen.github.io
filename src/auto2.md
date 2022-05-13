@@ -310,7 +310,17 @@ Yep NuttX has successfully booted on PineDio Stack! Let's dive into our Automate
 
 ## Checkpoint Alpha
 
-TODO
+Our script controls PineDio Stack through GPIO 5 and 6 on our SBC...
+
+-   __SBC GPIO 5__: Selects Flashing Mode or Normal Mode on PineDio Stack
+
+    (Connected to PineDio Stack GPIO 8)
+
+-   __SBC GPIO 6__: Restarts PineDio Stack
+
+    (Connected to PineDio Stack Reset Pin)
+
+This is how our script __configures GPIO 5 and 6__ on our SBC: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L44-L110)
 
 ```bash
 ##  Enable GPIO 5 and 6
@@ -326,7 +336,7 @@ echo out >/sys/class/gpio/gpio5/direction
 echo out >/sys/class/gpio/gpio6/direction
 ```
 
-TODO
+To switch PineDio Stack to __Flashing Mode__, we set GPIO 5 to High and restart PineDio Stack...
 
 ```bash
 ##  Set GPIO 5 to High (BL602 Flashing Mode)
@@ -338,7 +348,7 @@ echo 0 >/sys/class/gpio/gpio6/value ; sleep 1
 echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
 ```
 
-TODO
+We run the __blflash__ command to flash the NuttX Firmware...
 
 ```bash
 ##  BL602 is now in Flashing Mode
@@ -349,7 +359,9 @@ set +x  ##  Disable echo
 sleep 1
 ```
 
-TODO
+[(__blflash__ is explained here)](https://lupyuen.github.io/articles/flash#flash-bl602-firmware-with-linux-macos-and-windows)
+
+After flashing NuttX, we switch PineDio Stack back to __Normal Mode__...
 
 ```bash
 ##  Set GPIO 5 to Low (BL602 Normal Mode)
@@ -361,7 +373,7 @@ echo 0 >/sys/class/gpio/gpio6/value ; sleep 1
 echo 1 >/sys/class/gpio/gpio6/value ; sleep 1
 ```
 
-TODO
+We configure the USB Port for 2 Mbps and __capture the Console Output__ from PineDio Stack...
 
 ```bash
 ##  Set USB UART to 2 Mbps
@@ -372,15 +384,15 @@ stty -F /dev/ttyUSB0 raw 2000000
 cat /dev/ttyUSB0 | tee /tmp/test.log &
 ```
 
-TODO
-
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111)
+Finally we send the __uname__ and __ls__ commands, to show the NuttX Build Details and the loaded Device Drivers...
 
 ```bash
 ##  If BL602 has not crashed, send the test command to BL602
 echo "uname -a" >/dev/ttyUSB0 ; sleep 1
 echo "ls /dev"  >/dev/ttyUSB0 ; sleep 1
 ```
+
+Let's move on to the second checkpoint.
 
 # NuttX Must Not Crash
 
