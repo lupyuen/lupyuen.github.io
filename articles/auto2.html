@@ -330,7 +330,18 @@ NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb</code></pre></d
  gpio9</code></pre></div>
 <p>Yep NuttX has successfully booted on PineDio Stack! Let’s dive into our Automated Testing Script and see the implementation of the operations above.</p>
 <h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
-<p>TODO</p>
+<p>Our script controls PineDio Stack through GPIO 5 and 6 on our SBC…</p>
+<ul>
+<li>
+<p><strong>SBC GPIO 5</strong>: Selects Flashing Mode or Normal Mode on PineDio Stack</p>
+<p>(Connected to PineDio Stack GPIO 8)</p>
+</li>
+<li>
+<p><strong>SBC GPIO 6</strong>: Restarts PineDio Stack</p>
+<p>(Connected to PineDio Stack Reset Pin)</p>
+</li>
+</ul>
+<p>This is how our script <strong>configures GPIO 5 and 6</strong> on our SBC: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L44-L110">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Enable GPIO 5 and 6
 if [ ! -d /sys/class/gpio/gpio5 ]; then
   echo 5 &gt;/sys/class/gpio/export ; sleep 1  ##  Must sleep or next GPIO command will fail with &quot;Permission Denied&quot;
@@ -342,7 +353,7 @@ fi
 #  Set GPIO 5 and 6 as output
 echo out &gt;/sys/class/gpio/gpio5/direction
 echo out &gt;/sys/class/gpio/gpio6/direction</code></pre></div>
-<p>TODO</p>
+<p>To switch PineDio Stack to <strong>Flashing Mode</strong>, we set GPIO 5 to High and restart PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 5 to High (BL602 Flashing Mode)
 echo 1 &gt;/sys/class/gpio/gpio5/value ; sleep 1
 
@@ -350,14 +361,15 @@ echo 1 &gt;/sys/class/gpio/gpio5/value ; sleep 1
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 0 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1</code></pre></div>
-<p>TODO</p>
+<p>We run the <strong>blflash</strong> command to flash the NuttX Firmware…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  BL602 is now in Flashing Mode
 #  Flash BL602 over USB UART with blflash
 set -x  ##  Enable echo
 blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
 set +x  ##  Disable echo
 sleep 1</code></pre></div>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/flash#flash-bl602-firmware-with-linux-macos-and-windows">(<strong>blflash</strong> is explained here)</a></p>
+<p>After flashing NuttX, we switch PineDio Stack back to <strong>Normal Mode</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Set GPIO 5 to Low (BL602 Normal Mode)
 echo 0 &gt;/sys/class/gpio/gpio5/value ; sleep 1
 
@@ -365,18 +377,19 @@ echo 0 &gt;/sys/class/gpio/gpio5/value ; sleep 1
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 0 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1</code></pre></div>
-<p>TODO</p>
+<p>We configure the USB Port for 2 Mbps and <strong>capture the Console Output</strong> from PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Set USB UART to 2 Mbps
 stty -F /dev/ttyUSB0 raw 2000000
 
 #  Show the BL602 output and capture to /tmp/test.log.
 #  Run this in the background so we can kill it later.
 cat /dev/ttyUSB0 | tee /tmp/test.log &amp;</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
+<p>Finally we send the <strong>uname</strong> and <strong>ls</strong> commands, to show the NuttX Build Details and the loaded Device Drivers…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  If BL602 has not crashed, send the test command to BL602
 echo &quot;uname -a&quot; &gt;/dev/ttyUSB0 ; sleep 1
-echo &quot;ls /dev&quot;  &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div><h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
+echo &quot;ls /dev&quot;  &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div>
+<p>Let’s move on to the second checkpoint.</p>
+<h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
 <p><em>(Checkpoint Bravo)</em></p>
 <p>TODO</p>
 <p><em>What happens when NuttX crashes during testing?</em></p>
