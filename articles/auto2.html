@@ -67,7 +67,7 @@
     <nav id="TOC"><ul>
 <li><a href="#testing-checkpoints">1 Testing Checkpoints</a><ul></ul></li>
 <li><a href="#connect-pinedio-stack-to-sbc">2 Connect PineDio Stack to SBC</a><ul></ul></li>
-<li><a href="#test-pinedio-stack">3 Test PineDio Stack</a><ul></ul></li>
+<li><a href="#run-automated-test">3 Run Automated Test</a><ul></ul></li>
 <li><a href="#nuttx-must-boot">4 NuttX Must Boot</a><ul>
 <li><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
 <li><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a><ul>
@@ -213,7 +213,36 @@
 <p>But since ST7789 Display and SX1262 LoRa Transceiver are connected to the same SPI Bus, it should be OK to test only the SX1262 Transceiver.</p>
 <p><img src="https://lupyuen.github.io/images/auto2-pinedio.jpg" alt="PineDio Stack BL604 connected to SBC" /></p>
 <p><em>PineDio Stack BL604 connected to SBC</em></p>
-<h1 id="test-pinedio-stack"><a href="#test-pinedio-stack">3 Test PineDio Stack</a></h1>
+<h1 id="run-automated-test"><a href="#run-automated-test">3 Run Automated Test</a></h1>
+<p>To run the Automated Testing Script on our SBC…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Allow the user to access the GPIO and UART ports
+sudo usermod -a -G gpio    $USER
+sudo usermod -a -G dialout $USER
+
+#  Logout and login to refresh the permissions
+logout
+
+#  TODO: Install rustup, select default option.
+#  See https://rustup.rs
+
+#  Install blflash for flashing PineDio Stack
+#  https://github.com/spacemeowx2/blflash
+cargo install blflash
+
+#  Download the flash and test script
+git clone --recursive https://github.com/lupyuen/remote-bl602/
+
+#  Auto flash and test PineDio Stack
+remote-bl602/scripts/pinedio.sh</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to download the build for 2022-05-10
+export BUILD_DATE=2022-05-10
+
+#  Auto flash and test PineDio Stack
+remote-bl602/scripts/pinedio.sh</code></pre></div>
+<p><em>Will this work over SSH?</em></p>
+<p>Yep we may run the Automated Test remotely over SSH…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>set +x  ##  Disable echo
@@ -227,6 +256,11 @@ set +x  ##  Disable echo
 
 #  Write the Release Tag for populating the Release Log later
 echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
+<h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">4 NuttX Must Boot</a></h1>
+<p><em>(Checkpoint Alpha)</em></p>
+<p>TODO</p>
+<h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;----- Enable GPIO 5 and 6&quot;
 if [ ! -d /sys/class/gpio/gpio5 ]; then
@@ -269,31 +303,11 @@ stty -F $USB_DEVICE raw 2000000
 #  Show the BL602 output and capture to /tmp/test.log.
 #  Run this in the background so we can kill it later.
 cat $USB_DEVICE | tee /tmp/test.log &amp;</code></pre></div>
-<p>We auto flash and test PineDio Stack BL604 in two scripts.</p>
-<p>The first script auto-flashes the PineDio Stack Firmware <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml">(auto-built by GitHub Actions)</a> and runs the <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a>…</p>
-<ul>
-<li><a href="scripts/pinedio.sh">scripts/pinedio.sh</a></li>
-</ul>
-<p>The <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a> connects to a LoRaWAN Gateway (ChirpStack) and sends a LoRaWAN Data Packet to the Gateway.</p>
-<p>(Which means that Timers, SPI, GPIO Input / Ouput / Interrupt are working OK)</p>
-<p>The second script auto-restarts PineDio Stack and runs the <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> (to test the touchscreen)…</p>
-<ul>
-<li><a href="scripts/pinedio2.sh">scripts/pinedio2.sh</a></li>
-</ul>
-<p>The <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> renders a screen to the ST7789 SPI Display and waits for a Touch Event from the CST816S I2C Touch Panel.</p>
-<p>For the test to succeed, we must tap the screen to generate a Touch Event.</p>
-<p><a href="https://youtu.be/mb3zcacDGPc">(Later we might automate this with a “Robot Finger”)</a></p>
-<p>(See the output log below)</p>
-<p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
-<h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">4 NuttX Must Boot</a></h1>
-<p><em>(Checkpoint Alpha)</em></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  If BL602 has not crashed, send the test command to BL602
 echo &quot;uname -a&quot; &gt;$USB_DEVICE ; sleep 1
-echo &quot;ls /dev&quot; &gt;$USB_DEVICE ; sleep 1</code></pre></div><h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
-<p>TODO</p>
-<h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
+echo &quot;ls /dev&quot; &gt;$USB_DEVICE ; sleep 1</code></pre></div><h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
 <p><em>(Checkpoint Bravo)</em></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105">pinedio.sh</a></p>
@@ -333,6 +347,13 @@ Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
 <h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
 <p><em>(Checkpoint Delta)</em></p>
 <p>TODO</p>
+<p>We auto flash and test PineDio Stack BL604 in two scripts.</p>
+<p>The first script auto-flashes the PineDio Stack Firmware <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml">(auto-built by GitHub Actions)</a> and runs the <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a>…</p>
+<ul>
+<li><a href="scripts/pinedio.sh">scripts/pinedio.sh</a></li>
+</ul>
+<p>The <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a> connects to a LoRaWAN Gateway (ChirpStack) and sends a LoRaWAN Data Packet to the Gateway.</p>
+<p>(Which means that Timers, SPI, GPIO Input / Ouput / Interrupt are working OK)</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo ; echo &quot;----- Send command to BL602: lorawan_test&quot; ; sleep 2
 echo &quot;&quot; &gt;$USB_DEVICE
@@ -350,6 +371,13 @@ SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
 SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
 $SCRIPT_DIR/pinedio2.sh</code></pre></div><h2 id="checkpoint-delta"><a href="#checkpoint-delta">7.1 Checkpoint Delta</a></h2>
 <p>TODO</p>
+<p>The second script auto-restarts PineDio Stack and runs the <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> (to test the touchscreen)…</p>
+<ul>
+<li><a href="scripts/pinedio2.sh">scripts/pinedio2.sh</a></li>
+</ul>
+<p>The <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> renders a screen to the ST7789 SPI Display and waits for a Touch Event from the CST816S I2C Touch Panel.</p>
+<p>For the test to succeed, we must tap the screen to generate a Touch Event.</p>
+<p><a href="https://youtu.be/mb3zcacDGPc">(Later we might automate this with a “Robot Finger”)</a></p>
 <h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
 <p><em>(Checkpoint Echo)</em></p>
 <p>TODO</p>
@@ -522,74 +550,13 @@ gh release edit \
 </ul>
 <h1 id="appendix-run-the-script"><a href="#appendix-run-the-script">14 Appendix: Run The Script</a></h1>
 <p>TODO</p>
-<p>Watch the demo on YouTube…</p>
-<ul>
-<li><a href="https://youtu.be/JtnOyl5cYjo">“Auto Flash and Test on PineCone BL602”</a></li>
-</ul>
-<p>Connect SBC to BL602 and SX1262 like so…</p>
-<div><table><thead><tr><th>SBC</th><th>BL602</th><th>SX1262</th><th>Function</th></tr></thead><tbody>
-<tr><td>GPIO 2</td><td>GPIO 8</td><td></td><td>Flashing Mode</td></tr>
-<tr><td>GPIO 3</td><td>RST</td><td>RESET</td><td>Reset</td></tr>
-<tr><td>GND</td><td>GND</td><td></td><td>Ground</td></tr>
-<tr><td>USB</td><td>USB</td><td></td><td>USB UART</td></tr>
-</tbody></table>
-</div>
-<p>For auto-testing LoRaWAN, also connect BL602 to SX1262 as described below…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">“Connect SX1262”</a></li>
-</ul>
-<p>To run the flash and test script for the <strong>Daily Upstream Build</strong> (without LoRaWAN)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Allow the user to access the GPIO and UART ports
-sudo usermod -a -G gpio    $USER
-sudo usermod -a -G dialout $USER
-
-#  Logout and login to refresh the permissions
-logout
-
-#  Install rustup, select default option
-sudo curl --proto &#39;=https&#39; --tlsv1.2 -sSf https://sh.rustup.rs | sudo sh
-
-#  Install blflash for flashing BL602
-cargo install blflash
-
-#  Download the flash and test script
-git clone --recursive https://github.com/lupyuen/remote-bl602/
-
-#  Auto flash and test BL602
-remote-bl602/scripts/test.sh</code></pre></div>
-<p>(See the output log below)</p>
-<p>To run the flash and test script for the <strong>Release Build</strong> (includes LoRaWAN)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to download the Release Build (instead of the Upstream Build)
-export BUILD_PREFIX=release
-
-#  Auto flash and test BL602
-remote-bl602/scripts/test.sh</code></pre></div>
-<p>(See the output log below)</p>
 <p>To select the <strong>Downstream Build</strong> by <strong>Build Date</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to download the Downstream Build for 2022-05-04
 export BUILD_PREFIX=downstream
 export BUILD_DATE=2022-05-04
 
 #  Auto flash and test BL602
-remote-bl602/scripts/test.sh</code></pre></div>
-<p>For <strong>PineDio Stack BL604</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Auto flash and test PineDio Stack BL604: LoRaWAN Test
-remote-bl602/scripts/pinedio.sh
-
-#  Auto test PineDio Stack BL604: Touchscreen Test
-remote-bl602/scripts/pinedio2.sh</code></pre></div>
-<p>(See the output log below)</p>
-<p>We may also <strong>flash and test BL602 remotely</strong> over SSH…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/test.sh</code></pre></div>
-<p>To <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Run the script for Auto Flash and Test, capture the Test Log
-script -c remote-bl602/scripts/test.sh /tmp/release.log
-
-#  Upload the Test Log to the GitHub Release Notes
-remote-bl602/scripts/upload.sh</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
-<p>More about this below.</p>
-<h1 id="appendix-select-usb-device"><a href="#appendix-select-usb-device">15 Appendix: Select USB Device</a></h1>
+remote-bl602/scripts/test.sh</code></pre></div><h1 id="appendix-select-usb-device"><a href="#appendix-select-usb-device">15 Appendix: Select USB Device</a></h1>
 <p>TODO</p>
 <p>When we connect both PineDio Stack BL604 and PineCone BL602 to the SBC, we’ll see two USB Devices: <code>/dev/ttyUSB0</code> and <code>/dev/ttyUSB1</code></p>
 <p>How will we know which USB Device is for PineDio Stack and PineCone?</p>
