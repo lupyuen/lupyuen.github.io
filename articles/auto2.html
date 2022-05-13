@@ -67,7 +67,8 @@
     <nav id="TOC"><ul>
 <li><a href="#testing-checkpoints">1 Testing Checkpoints</a><ul></ul></li>
 <li><a href="#connect-pinedio-stack-to-sbc">2 Connect PineDio Stack to SBC</a><ul></ul></li>
-<li><a href="#run-automated-test">3 Run Automated Test</a><ul></ul></li>
+<li><a href="#run-automated-test">3 Run Automated Test</a><ul>
+<li><a href="#download-nuttx-build">3.1 Download NuttX Build</a><ul></ul></li></ul></li>
 <li><a href="#nuttx-must-boot">4 NuttX Must Boot</a><ul>
 <li><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
 <li><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a><ul>
@@ -232,21 +233,29 @@ cargo install blflash
 #  Download the flash and test script
 git clone --recursive https://github.com/lupyuen/remote-bl602/
 
-#  Auto flash and test PineDio Stack
-remote-bl602/scripts/pinedio.sh</code></pre></div>
+#  Run the script for Auto Flash and Test.
+#  Capture the Test Log in /tmp/release.log
+script -c remote-bl602/scripts/test.sh /tmp/release.log
+
+#  Optional: Upload the Test Log to the GitHub Release Notes
+remote-bl602/scripts/upload.sh</code></pre></div>
 <p><a href="https://youtu.be/JX7rWqWTOW4">(Watch the demo on YouTube)</a></p>
-<p>This will download and test <strong>Today’s Build</strong> of NuttX for PineDio Stack NuttX (published on GitHub Releases).</p>
+<p>This will download and test <strong>Today’s Build</strong> of NuttX for PineDio Stack NuttX (published on GitHub Releases). The script fails silently if there’s no NuttX Build for today. (Sorry!)</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Here’s the build for 2022-05-10)</a></p>
-<p><em>Can we specify a different NuttX Build?</em></p>
-<p>Just set <strong>BUILD_DATE</strong> like so…</p>
+<p><em>Can we pick a different NuttX Build?</em></p>
+<p>We pick a <strong>NuttX Build</strong> from this list…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/releases?q=pinedio&amp;expanded=true"><strong>NuttX Builds for PineDio Stack</strong></a></li>
+</ul>
+<p>Then we set <strong>BUILD_DATE</strong> like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to download the build for 2022-05-10
 export BUILD_DATE=2022-05-10
 
-#  Auto flash and test PineDio Stack
-remote-bl602/scripts/pinedio.sh</code></pre></div>
+#  Run the script for Auto Flash and Test, capture the Test Log
+script -c remote-bl602/scripts/test.sh /tmp/release.log</code></pre></div>
 <p><em>Will this work over SSH?</em></p>
 <p>Yep we may run the Automated Test <strong>remotely over SSH</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh</code></pre></div><h2 id="download-nuttx-build"><a href="#download-nuttx-build">3.1 Download NuttX Build</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>set +x  ##  Disable echo
@@ -287,7 +296,7 @@ echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;----- BL602 is now in Flashing Mode&quot;
 echo &quot;----- Flash BL602 over USB UART with blflash&quot;
 set -x  ##  Enable echo
-blflash flash /tmp/nuttx.bin --port $USB_DEVICE
+blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
 set +x  ##  Disable echo
 sleep 1</code></pre></div>
 <p>TODO</p>
@@ -300,16 +309,16 @@ echo 0 &gt;/sys/class/gpio/gpio6/value ; sleep 1
 echo 1 &gt;/sys/class/gpio/gpio6/value ; sleep 1</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Set USB UART to 2 Mbps
-stty -F $USB_DEVICE raw 2000000
+stty -F /dev/ttyUSB0 raw 2000000
 
 #  Show the BL602 output and capture to /tmp/test.log.
 #  Run this in the background so we can kill it later.
-cat $USB_DEVICE | tee /tmp/test.log &amp;</code></pre></div>
+cat /dev/ttyUSB0 | tee /tmp/test.log &amp;</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  If BL602 has not crashed, send the test command to BL602
-echo &quot;uname -a&quot; &gt;$USB_DEVICE ; sleep 1
-echo &quot;ls /dev&quot; &gt;$USB_DEVICE ; sleep 1</code></pre></div><h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
+echo &quot;uname -a&quot; &gt;/dev/ttyUSB0 ; sleep 1
+echo &quot;ls /dev&quot; &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div><h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
 <p><em>(Checkpoint Bravo)</em></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105">pinedio.sh</a></p>
@@ -322,7 +331,7 @@ set -e  ##  Exit when any command fails</code></pre></div><h2 id="checkpoint-bra
 <p><em>(Checkpoint Charlie)</em></p>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;$USB_DEVICE ; sleep 2</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;/dev/ttyUSB0 ; sleep 2</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L125">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether SX1262 is OK
@@ -358,8 +367,8 @@ Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
 <p>(Which means that Timers, SPI, GPIO Input / Ouput / Interrupt are working OK)</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo ; echo &quot;----- Send command to BL602: lorawan_test&quot; ; sleep 2
-echo &quot;&quot; &gt;$USB_DEVICE
-echo &quot;lorawan_test&quot; &gt;$USB_DEVICE</code></pre></div>
+echo &quot;&quot; &gt;/dev/ttyUSB0
+echo &quot;lorawan_test&quot; &gt;/dev/ttyUSB0</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L142">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has joined the LoRaWAN Network
@@ -385,8 +394,8 @@ $SCRIPT_DIR/pinedio2.sh</code></pre></div><h2 id="checkpoint-delta"><a href="#ch
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo ; echo &quot;----- Send command to BL602: lvgltest&quot; ; sleep 2
-echo &quot;&quot; &gt;$USB_DEVICE
-echo &quot;lvgltest&quot; &gt;$USB_DEVICE ; sleep 1
+echo &quot;&quot; &gt;/dev/ttyUSB0
+echo &quot;lvgltest&quot; &gt;/dev/ttyUSB0 ; sleep 1
 echo ; echo &quot;----- HELLO HUMAN: TOUCH PINEDIO STACK NOW&quot; ; sleep 2</code></pre></div>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L117-L120">pinedio.sh</a></p>
@@ -399,7 +408,8 @@ set -e  ##  Exit when any command fails</code></pre></div><h2 id="checkpoint-ech
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>TODO</p>
 <p>To <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Run the script for Auto Flash and Test, capture the Test Log
+<div class="example-wrap"><pre class="language-bash"><code>#  Run the script for Auto Flash and Test.
+#  Capture the Test Log in /tmp/release.log
 script -c remote-bl602/scripts/test.sh /tmp/release.log
 
 #  Upload the Test Log to the GitHub Release Notes
