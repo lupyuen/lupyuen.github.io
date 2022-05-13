@@ -72,6 +72,8 @@ These are our success criteria for NuttX on PineDio Stack...
 
 -   __NuttX must not crash__ on PineDio Stack _(Checkpoint Bravo)_
 
+    (If NuttX crashes, our script runs a Crash Analysis)
+
 -   __SPI Transmit and Receive__ must work _(Checkpoint Charlie)_
 
 -   __GPIO Input, Output and Interrupt__ must work _(Checkpoint Delta)_
@@ -163,6 +165,9 @@ git clone --recursive https://github.com/lupyuen/remote-bl602/
 ##  Capture the Test Log in /tmp/release.log
 script -c remote-bl602/scripts/test.sh /tmp/release.log
 
+##  TODO: Install the GitHub CLI for uploading Release Notes
+##  See https://cli.github.com
+
 ##  Optional: Upload the Test Log to the GitHub Release Notes
 remote-bl602/scripts/upload.sh
 ```
@@ -176,8 +181,10 @@ This will download and test __Today's Build__ of NuttX for PineDio Stack NuttX (
 If the Automated Test succeeds, we'll see...
 
 ```text
+Download the latest pinedio NuttX build for 2022-05-10
+Flash BL602 over USB UART with blflash
+...
 All OK! BL602 has successfully joined the LoRaWAN Network
-
 All OK! BL604 has responded to touch
 ```
 
@@ -236,11 +243,42 @@ echo "$BUILD_PREFIX-$BUILD_DATE" >/tmp/release.tag
 
 We'll see __release.tag__ later when we upload the Test Log to the GitHub Release.
 
+Let's walk through the Automated Testing Script and find out how it implements each Testing Checkpoint.
+
 # NuttX Must Boot
 
 _(Checkpoint Alpha)_
 
 TODO
+
+```text
+NuttShell (NSH) NuttX-10.3.0-RC0
+nsh> uname -a
+NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb
+nsh> ls /dev
+/dev:
+ console
+ gpio10
+ gpio12
+ gpio14
+ gpio15
+ gpio19
+ gpio20
+ gpio21
+ gpio3
+ gpio9
+ i2c0
+ input0
+ lcd0
+ null
+ spi0
+ spitest0
+ timer0
+ urandom
+ zero
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
 ## Checkpoint Alpha
 
@@ -341,23 +379,6 @@ _(Checkpoint Charlie)_
 
 TODO
 
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111)
-
-```bash
-echo "spi_test2" >/dev/ttyUSB0 ; sleep 2
-```
-
-TODO
-
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L125)
-
-```bash
-##  Check whether SX1262 is OK
-set +e  ##  Don't exit when any command fails
-match=$(grep "SX1262 Register 8 is 0x80" /tmp/test.log)
-set +e  ##  Don't exit when any command fails
-```
-
 Our Auto Test Scripts `test.sh` and `pinedio.sh` will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)...
 
 ```text
@@ -370,6 +391,8 @@ Read Register 8: received
 SX1262 Register 8 is 0x80
 SX1262 is OK
 ```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
 This says that SX1262 Register 8 has value `0x80`, which is correct.
 
@@ -388,11 +411,41 @@ Check that the SX1262 Reset Pin is connected properly to the BL602 Reset Pin.
 
 TODO
 
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111)
+
+```bash
+echo "spi_test2" >/dev/ttyUSB0 ; sleep 2
+```
+
+TODO
+
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L125)
+
+```bash
+##  Check whether SX1262 is OK
+set +e  ##  Don't exit when any command fails
+match=$(grep "SX1262 Register 8 is 0x80" /tmp/test.log)
+set +e  ##  Don't exit when any command fails
+```
+
+TODO
+
 # LoRaWAN Test
 
 _(Checkpoint Delta)_
 
 TODO
+
+```text
+----- Send command to BL602: lorawan_test
+
+nsh> lorawan_test
+init_entropy_pool
+offset = 2209
+temperature = 25.667484 Celsius
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
 We auto flash and test PineDio Stack BL604 in two scripts.
 
@@ -403,6 +456,10 @@ The first script auto-flashes the PineDio Stack Firmware [(auto-built by GitHub 
 The [LoRaWAN Test App](https://github.com/lupyuen/lorawan_test) connects to a LoRaWAN Gateway (ChirpStack) and sends a LoRaWAN Data Packet to the Gateway.
 
 (Which means that Timers, SPI, GPIO Input / Ouput / Interrupt are working OK)
+
+## Checkpoint Delta
+
+TODO
 
 From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134)
 
@@ -434,9 +491,22 @@ SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
 $SCRIPT_DIR/pinedio2.sh
 ```
 
-## Checkpoint Delta
+# Touch Panel Test
+
+_(Checkpoint Echo)_
 
 TODO
+
+```text
+----- Send command to BL602: lvgltest
+
+nsh> lvgltest
+tp_init: Opening /dev/input0
+cst816s_open: 
+HELLO HUMAN: TOUCH PINEDIO STACK NOW
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
 The second script auto-restarts PineDio Stack and runs the [LVGL Test App](https://github.com/lupyuen/lvgltest-nuttx) (to test the touchscreen)...
 
@@ -448,9 +518,7 @@ For the test to succeed, we must tap the screen to generate a Touch Event.
 
 [(Later we might automate this with a "Robot Finger")](https://youtu.be/mb3zcacDGPc)
 
-# Touch Panel Test
-
-_(Checkpoint Echo)_
+## Checkpoint Echo
 
 TODO
 
@@ -473,10 +541,6 @@ set +e  ##  Don't exit when any command fails
 match=$(grep "cst816s_get_touch_data: UP: id=0, touch=" /tmp/test.log)
 set -e  ##  Exit when any command fails
 ```
-
-## Checkpoint Echo
-
-TODO
 
 ![TODO](https://lupyuen.github.io/images/auto2-code1a.png)
 
