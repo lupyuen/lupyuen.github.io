@@ -249,9 +249,9 @@ Let's walk through the Automated Testing Script and find out how it implements e
 
 _(Checkpoint Alpha)_
 
-Earlier we've seen our Automated Testing Script downloading the NuttX Firmware from GitHub Releases.
+Earlier we saw our Automated Testing Script downloading the NuttX Firmware from GitHub Releases.
 
-At the first Testing Checkpoint, our script __flashes the NuttX Firmware__ to PineDio Stack...
+At the first checkpoint, our script __flashes the NuttX Firmware__ to PineDio Stack...
 
 ```text
 Set GPIO 5 to High (BL602 Flashing Mode)
@@ -267,9 +267,11 @@ Success
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
+Our script restarts PineDio Stack in __Flashing Mode__ and calls __blflash__ to flash the NuttX Firmware.
+
 [(__blflash__ is explained here)](https://lupyuen.github.io/articles/flash#flash-bl602-firmware-with-linux-macos-and-windows)
 
-TODO
+Next our script restarts PineDio Stack in __Normal Mode__ to start the NuttX Firmware...
 
 ```text
 Set GPIO 5 to Low (BL602 Normal Mode)
@@ -280,14 +282,14 @@ NuttShell (NSH) NuttX-10.3.0-RC0
 nsh>
 ```
 
-TODO
+The NuttX Shell appears. Our script sends this command to reveal the __NuttX Commit ID__ and Build Time...
 
 ```text
 nsh> uname -a
 NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb
 ```
 
-TODO
+Then it lists the __Device Drivers__ loaded on NuttX...
 
 ```text
 nsh> ls /dev
@@ -304,7 +306,7 @@ nsh> ls /dev
  gpio9
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+Yep NuttX has successfully booted on PineDio Stack! Let's dive into our Automated Testing Script and see the implementation of the operations above.
 
 ## Checkpoint Alpha
 
