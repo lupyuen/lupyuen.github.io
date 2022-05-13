@@ -215,7 +215,7 @@
 <p><img src="https://lupyuen.github.io/images/auto2-pinedio.jpg" alt="PineDio Stack BL604 connected to SBC" /></p>
 <p><em>PineDio Stack BL604 connected to SBC</em></p>
 <h1 id="run-automated-test"><a href="#run-automated-test">3 Run Automated Test</a></h1>
-<p>To run the <strong>Automated Testing Script</strong> on our SBC…</p>
+<p>To run the <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh"><strong>Automated Testing Script</strong></a> on our Single-Board Computer…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Allow the user to access the GPIO and UART ports
 sudo usermod -a -G gpio    $USER
 sudo usermod -a -G dialout $USER
@@ -257,16 +257,22 @@ script -c remote-bl602/scripts/test.sh /tmp/release.log</code></pre></div>
 <p><em>Will this work over SSH?</em></p>
 <p>Yep we may run the Automated Test <strong>remotely over SSH</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh</code></pre></div><h2 id="automated-nuttx-build"><a href="#automated-nuttx-build">3.1 Automated NuttX Build</a></h2>
-<p>TODO</p>
-<p>The <strong>downloading of NuttX Firmware</strong> from GitHub Releases is implemented here: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L14-L42">pinedio.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code># BUILD_PREFIX is &quot;pinedio&quot;
-# BUILD_DATE defaults to today&#39;s date, like &quot;2022-05-10&quot;
+<p><em>How is NuttX for PineDio Stack built and published to GitHub Releases?</em></p>
+<p>Whenever we commit changes to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>NuttX Repo for PineDio Stack</strong></a>, GitHub Actions will trigger a new NuttX Build and <strong>publish the NuttX Firmware</strong> to GitHub Releases…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow for PineDio Stack</strong></a></li>
+</ul>
+<p>Our script <strong>downloads the NuttX Firmware</strong> from GitHub Releases for Automated Testing: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L14-L42">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  BUILD_PREFIX is &quot;pinedio&quot;
+#  BUILD_DATE defaults to today&#39;s date, like &quot;2022-05-10&quot;
+
+#  Download the NuttX Firmware from GitHub Releases
 wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip -O /tmp/nuttx.zip
 pushd /tmp
 unzip -o nuttx.zip
 popd
 
-#  Write the Release Tag for populating the Release Log later:
+#  Write the Release Tag for uploading the Test Log later:
 #  &quot;pinedio-2022-05-10&quot;
 echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag</code></pre></div>
 <p>We’ll see <strong>release.tag</strong> later when we upload the Test Log to the GitHub Release.</p>
