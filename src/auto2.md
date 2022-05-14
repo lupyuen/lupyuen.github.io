@@ -450,9 +450,7 @@ And hopefully we can heal NuttX on PineDio Stack!
 
 ## Checkpoint Bravo
 
-TODO
-
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105)
+Over to the implementation. Our script detects that NuttX has crashed when it sees the __registerdump__ keyword: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105)
 
 ```bash
 ##  Check whether BL602 has crashed
@@ -460,6 +458,44 @@ set +e  ##  Don't exit when any command fails
 match=$(grep "registerdump" /tmp/test.log)
 set -e  ##  Exit when any command fails
 ```
+
+Then it proceeds to __decode the Stack Dump__ by matching the addresses with the __RISC-V Disassembly__: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L153-L211)
+
+```bash
+##  If BL602 has crashed, do the Crash Analysis
+##  Find all code addresses 23?????? in the Output Log, remove duplicates, skip 23007000.
+##  Returns a newline-delimited list of addresses: "23011000\n230053a0\n..."
+grep --extended-regexp \
+  --only-matching \
+  "23[0-9a-f]{6}" \
+  /tmp/test.log \
+  | grep -v "23007000" \
+  | uniq \
+  >/tmp/test.addr
+
+##  For every address, show the corresponding line in the disassembly
+for addr in $(cat /tmp/test.addr); do
+  ##  Skip addresses that don't match
+  match=$(grep "$addr:" /tmp/nuttx.S)
+  if [ "$match" != "" ]; then
+    echo "----- Code Address $addr"
+    grep \
+      --context=5 \
+      --color=auto \
+      "$addr:" \
+      /tmp/nuttx.S
+    echo
+  fi
+done
+```
+
+The Crash Analysis is explained here...
+
+-   [__"NuttX Crash Analysis"__](https://lupyuen.github.io/articles/auto#nuttx-crash-analysis)
+
+TODO: Doesn't always work
+
+[(See this)](https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed)
 
 # SPI Test
 
