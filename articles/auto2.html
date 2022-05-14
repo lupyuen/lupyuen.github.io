@@ -72,8 +72,7 @@
 <li><a href="#nuttx-must-boot">4 NuttX Must Boot</a><ul>
 <li><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a><ul></ul></li></ul></li>
 <li><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a><ul>
-<li><a href="#decode-stack-trace">5.1 Decode Stack Trace</a><ul></ul></li>
-<li><a href="#checkpoint-bravo">5.2 Checkpoint Bravo</a><ul></ul></li></ul></li>
+<li><a href="#checkpoint-bravo">5.1 Checkpoint Bravo</a><ul></ul></li></ul></li>
 <li><a href="#spi-test">6 SPI Test</a><ul>
 <li><a href="#checkpoint-charlie">6.1 Checkpoint Charlie</a><ul></ul></li></ul></li>
 <li><a href="#lorawan-test">7 LoRaWAN Test</a><ul>
@@ -289,6 +288,12 @@ popd
 echo &quot;$BUILD_PREFIX-$BUILD_DATE&quot; &gt;/tmp/release.tag</code></pre></div>
 <p>We’ll see <strong>release.tag</strong> later when we upload the Test Log to the GitHub Release.</p>
 <p>Let’s walk through the Automated Testing Script and find out how it implements each Testing Checkpoint.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/auto2-boot1.png" alt="NuttX booting on PineDio Stack" /></p>
+</blockquote>
+<blockquote>
+<p><em>NuttX booting on PineDio Stack</em></p>
+</blockquote>
 <h1 id="nuttx-must-boot"><a href="#nuttx-must-boot">4 NuttX Must Boot</a></h1>
 <p><em>(Checkpoint Alpha)</em></p>
 <p>Earlier we saw our Automated Testing Script downloading the NuttX Firmware from GitHub Releases.</p>
@@ -329,6 +334,8 @@ NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb</code></pre></d
  gpio3    zero
  gpio9</code></pre></div>
 <p>Yep NuttX has successfully booted on PineDio Stack! Let’s dive into our Automated Testing Script and see the implementation of the operations above.</p>
+<p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX to PineDio Stack" /></p>
+<p><em>Flashing NuttX to PineDio Stack</em></p>
 <h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
 <p>Our script controls PineDio Stack through GPIO 5 and 6 on our SBC…</p>
 <ul>
@@ -389,15 +396,14 @@ cat /dev/ttyUSB0 | tee /tmp/test.log &amp;</code></pre></div>
 echo &quot;uname -a&quot; &gt;/dev/ttyUSB0 ; sleep 1
 echo &quot;ls /dev&quot;  &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div>
 <p>Let’s move on to the second checkpoint.</p>
-<h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
-<p><em>(Checkpoint Bravo)</em></p>
-<p>TODO</p>
-<p><em>What happens when NuttX crashes during testing?</em></p>
-<p>NuttX shows a <strong>Stack Trace</strong> like this…</p>
 <p><img src="https://lupyuen.github.io/images/auto-stack.jpg" alt="NuttX Stack Trace" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
+<h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
+<p><em>(Checkpoint Bravo)</em></p>
+<p><em>What happens when NuttX crashes during testing?</em></p>
+<p>NuttX shows a <strong>Stack Trace</strong>. (See pic above)</p>
+<p>TODO</p>
 <p>Let’s walk through the steps to <strong>decode the Stack Trace</strong>, then we’ll learn how our script decodes the Stack Trace for us.</p>
-<h2 id="decode-stack-trace"><a href="#decode-stack-trace">5.1 Decode Stack Trace</a></h2>
 <p>At the top is the <strong>Assertion Failure</strong> message…</p>
 <div class="example-wrap"><pre class="language-text"><code>irq_unexpected_isr: ERROR irq: 1
 up_assert: Assertion failed at file:irq/irq_unexpectedisr.c line: 51 task: Idle Task</code></pre></div>
@@ -435,7 +441,7 @@ riscv_dump_task:      0      0       436      8160     5.3%    Idle Task
 riscv_dump_task:      1    100       516      8144     6.3%    nsh_main</code></pre></div>
 <p>(The Interrupt Stack <strong>irq</strong> seems to be overflowing, it might have caused NuttX to crash)</p>
 <p>In a while we’ll select the interesting addresses from above and decode them.</p>
-<h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">5.2 Checkpoint Bravo</a></h2>
+<h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">5.1 Checkpoint Bravo</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has crashed
@@ -531,7 +537,10 @@ set -e  ##  Exit when any command fails</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>#  Start the second script: pinedio2.sh
 SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
 SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
-$SCRIPT_DIR/pinedio2.sh</code></pre></div><h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
+$SCRIPT_DIR/pinedio2.sh</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="LVGL Test App for testing the Touch Panel" /></p>
+<p><em>LVGL Test App for testing the Touch Panel</em></p>
+<h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
 <p><em>(Checkpoint Echo)</em></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Send command to BL602: lvgltest
