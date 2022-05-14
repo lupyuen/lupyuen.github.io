@@ -336,7 +336,7 @@ NuttX 10.3.0-RC0 3e60d2211d May 10 2022 01:55:54 risc-v bl602evb</code></pre></d
 <p>Shown above are these <strong>NuttX Device Drivers</strong>: <a href="https://lupyuen.github.io/articles/expander"><strong>GPIO Expander</strong></a>, <a href="https://lupyuen.github.io/articles/bme280"><strong>I2C</strong></a>, <a href="https://lupyuen.github.io/articles/touch"><strong>Touch Input</strong></a>, <a href="https://lupyuen.github.io/articles/st7789"><strong>LCD Display</strong></a>, <a href="https://lupyuen.github.io/articles/spi2"><strong>SPI Test</strong></a>, <a href="https://lupyuen.github.io/articles/lorawan3#appendix-posix-timers-and-message-queues"><strong>Timer</strong></a> and <a href="https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool"><strong>Random Number Generator</strong></a>.</p>
 <p>Yep NuttX has successfully booted on PineDio Stack! Let’s dive into our Automated Testing Script and see the implementation of the operations above.</p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX to PineDio Stack" /></p>
-<p><em>Flashing NuttX to PineDio Stack</em></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack"><em>Flashing NuttX to PineDio Stack</em></a></p>
 <h2 id="checkpoint-alpha"><a href="#checkpoint-alpha">4.1 Checkpoint Alpha</a></h2>
 <p>Our script controls PineDio Stack through GPIO 5 and 6 on our SBC…</p>
 <ul>
@@ -398,7 +398,7 @@ echo &quot;uname -a&quot; &gt;/dev/ttyUSB0 ; sleep 1
 echo &quot;ls /dev&quot;  &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div>
 <p>Let’s move on to the second checkpoint.</p>
 <p><img src="https://lupyuen.github.io/images/auto-stack.jpg" alt="NuttX Stack Trace" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17"><em>NuttX Register and Stack Dump</em></a></p>
 <h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
 <p><em>(Checkpoint Bravo)</em></p>
 <p><em>What happens when NuttX crashes during testing?</em></p>
@@ -411,7 +411,7 @@ riscv_registerdump: A0: 00000002 A1: 420146b0 A2: 42015140 A3: 420141c
 riscv_stackdump: 420144a0: 00001fe0 23011000 420144f0 230053a0 deadbeef deadbeef 23010ca4 00000033
 riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510 42015000 00000001</code></pre></div>
 <p>Our script can’t proceed with the Automated Testing, but it can help us make sense of these numbers to <strong>understand why NuttX crashed</strong>.</p>
-<p>Our script detects the crash and does a <strong>Crash Analysis</strong>…</p>
+<p>Our script detects the crash and does a <strong>Crash Analysis</strong> (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Crash Analysis
 Code Address 230053a0:
 /home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:364
@@ -424,6 +424,8 @@ Code Address 230042e2:
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
 <p>Through this Crash Analysis, we get some idea <strong>which lines of code</strong> caused the crash.</p>
 <p>And hopefully we can heal NuttX on PineDio Stack!</p>
+<p><img src="https://lupyuen.github.io/images/auto-stack3.png" alt="NuttX Crash Analysis" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17"><em>NuttX Crash Analysis</em></a></p>
 <h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">5.1 Checkpoint Bravo</a></h2>
 <p>Over to the implementation. Our script detects that NuttX has crashed when it sees the <strong>registerdump</strong> keyword: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has crashed
@@ -462,9 +464,25 @@ done</code></pre></div>
 </ul>
 <p>There’s a <strong>Design Flaw</strong> in our script that needs fixing… It doesn’t detect crashes while running the SPI, LoRaWAN and Touch Panel Tests. <a href="https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed">(See this)</a></p>
 <p>(We should probably use a <strong>State Machine</strong> instead of a long chain of hacky “if-else” statements)</p>
+<p><img src="https://lupyuen.github.io/images/pinedio-spi2.jpg" alt="Shared SPI Bus on PineDio Stack" /></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus"><em>Shared SPI Bus on PineDio Stack</em></a></p>
 <h1 id="spi-test"><a href="#spi-test">6 SPI Test</a></h1>
 <p><em>(Checkpoint Charlie)</em></p>
+<p>PineDio Stack has a complex <strong>SPI Bus</strong> that’s shared by 3 SPI Devices (pic above)…</p>
+<ul>
+<li>
+<p><strong>SPI Flash</strong></p>
+</li>
+<li>
+<p><strong>ST7789 Display</strong></p>
+</li>
+<li>
+<p><strong>SX1262 LoRa Transceiver</strong></p>
+</li>
+</ul>
+<p>That’s why we created an <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a> to manage the SPI Devices. </p>
 <p>TODO</p>
+<p>At the next checkpoint…</p>
 <p>Our Auto Test Scripts <code>test.sh</code> and <code>pinedio.sh</code> will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; spi_test2
 Get Status: received
