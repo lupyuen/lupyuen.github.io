@@ -245,6 +245,10 @@ We'll see __release.tag__ later when we upload the Test Log to the GitHub Releas
 
 Let's walk through the Automated Testing Script and find out how it implements each Testing Checkpoint.
 
+> ![NuttX booting on PineDio Stack](https://lupyuen.github.io/images/auto2-boot1.png)
+
+> _NuttX booting on PineDio Stack_
+
 # NuttX Must Boot
 
 _(Checkpoint Alpha)_
@@ -307,6 +311,10 @@ nsh> ls /dev
 ```
 
 Yep NuttX has successfully booted on PineDio Stack! Let's dive into our Automated Testing Script and see the implementation of the operations above.
+
+![Flashing NuttX to PineDio Stack](https://lupyuen.github.io/images/nuttx-flash2.png)
+
+_Flashing NuttX to PineDio Stack_
 
 ## Checkpoint Alpha
 
@@ -394,23 +402,21 @@ echo "ls /dev"  >/dev/ttyUSB0 ; sleep 1
 
 Let's move on to the second checkpoint.
 
-# NuttX Must Not Crash
-
-_(Checkpoint Bravo)_
-
-TODO
-
-_What happens when NuttX crashes during testing?_
-
-NuttX shows a __Stack Trace__ like this...
-
 ![NuttX Stack Trace](https://lupyuen.github.io/images/auto-stack.jpg)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
 
-Let's walk through the steps to __decode the Stack Trace__, then we'll learn how our script decodes the Stack Trace for us.
+# NuttX Must Not Crash
 
-## Decode Stack Trace
+_(Checkpoint Bravo)_
+
+_What happens when NuttX crashes during testing?_
+
+NuttX shows a __Stack Trace__. (See pic above)
+
+TODO
+
+Let's walk through the steps to __decode the Stack Trace__, then we'll learn how our script decodes the Stack Trace for us.
 
 At the top is the __Assertion Failure__ message...
 
@@ -632,6 +638,10 @@ SCRIPT_PATH="${BASH_SOURCE}"
 SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
 $SCRIPT_DIR/pinedio2.sh
 ```
+
+![LVGL Test App for testing the Touch Panel](https://lupyuen.github.io/images/touch-title.jpg)
+
+_LVGL Test App for testing the Touch Panel_
 
 # Touch Panel Test
 
