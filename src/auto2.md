@@ -493,9 +493,9 @@ The Crash Analysis is explained here...
 
 -   [__"NuttX Crash Analysis"__](https://lupyuen.github.io/articles/auto#nuttx-crash-analysis)
 
-TODO: Doesn't always work
+There's a __Design Flaw__ in our script that needs fixing... It doesn't detect crashes while running the SPI, LoRaWAN and Touch Panel Tests. [(See this)](https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed)
 
-[(See this)](https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed)
+(We should probably use a __State Machine__ instead of a long chain of hacky "if-else" statements)
 
 # SPI Test
 

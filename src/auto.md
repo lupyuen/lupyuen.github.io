@@ -676,6 +676,10 @@ These are the __Data Addresses__ decoded from the Stack Trace...
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
 
+There's a __Design Flaw__ in our script that needs fixing... It doesn't detect crashes while running the SPI, LoRaWAN and Touch Panel Tests. [(See this)](https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed)
+
+(We should probably use a __State Machine__ instead of a long chain of hacky "if-else" statements)
+
 # LoRaWAN Test
 
 _What's the best way to auto-test all the NuttX functions: GPIO, SPI, ADC, Interrupts, Timers, Threads, Message Queues, Random Number Generator, ...?_
