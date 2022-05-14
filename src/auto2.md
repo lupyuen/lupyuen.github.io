@@ -898,9 +898,7 @@ I'm open to ideas, please lemme know! 🙏
 
 # What's Next
 
-TODO
-
-Now that we've fixed the GPIO problem with GPIO Expander, I hope it's a lot easier to create __NuttX Drivers and Apps__ on PineDio Stack.
+I hope Alice, Bob and Chow will have a great time creating NuttX Drivers and Apps on PineDio Stack... And you too!
 
 Lemme know what you're building with PineDio Stack!
 
