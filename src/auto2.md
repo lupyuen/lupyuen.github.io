@@ -316,7 +316,7 @@ Yep NuttX has successfully booted on PineDio Stack! Let's dive into our Automate
 
 ![Flashing NuttX to PineDio Stack](https://lupyuen.github.io/images/nuttx-flash2.png)
 
-_Flashing NuttX to PineDio Stack_
+[_Flashing NuttX to PineDio Stack_](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
 
 ## Checkpoint Alpha
 
@@ -406,7 +406,7 @@ Let's move on to the second checkpoint.
 
 ![NuttX Stack Trace](https://lupyuen.github.io/images/auto-stack.jpg)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
+[_NuttX Register and Stack Dump_](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
 
 # NuttX Must Not Crash
 
@@ -428,7 +428,7 @@ riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510
 
 Our script can't proceed with the Automated Testing, but it can help us make sense of these numbers to __understand why NuttX crashed__.
 
-Our script detects the crash and does a __Crash Analysis__...
+Our script detects the crash and does a __Crash Analysis__ (pic below)...
 
 ```text
 ----- Crash Analysis
@@ -447,6 +447,10 @@ Code Address 230042e2:
 Through this Crash Analysis, we get some idea __which lines of code__ caused the crash.
 
 And hopefully we can heal NuttX on PineDio Stack!
+
+![NuttX Crash Analysis](https://lupyuen.github.io/images/auto-stack3.png)
+
+[_NuttX Crash Analysis_](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
 
 ## Checkpoint Bravo
 
@@ -497,11 +501,27 @@ There's a __Design Flaw__ in our script that needs fixing... It doesn't detect c
 
 (We should probably use a __State Machine__ instead of a long chain of hacky "if-else" statements)
 
+![Shared SPI Bus on PineDio Stack](https://lupyuen.github.io/images/pinedio-spi2.jpg)
+
+[_Shared SPI Bus on PineDio Stack_](https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus)
+
 # SPI Test
 
 _(Checkpoint Charlie)_
 
+PineDio Stack has a complex __SPI Bus__ that's shared by 3 SPI Devices (pic above)...
+
+-   __SPI Flash__
+
+-   __ST7789 Display__
+
+-   __SX1262 LoRa Transceiver__
+
+That's why we created an [__SPI Device Table__](https://lupyuen.github.io/articles/pinedio2#spi-device-table) to manage the SPI Devices. 
+
 TODO
+
+At the next checkpoint...
 
 Our Auto Test Scripts `test.sh` and `pinedio.sh` will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)...
 
