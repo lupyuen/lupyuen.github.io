@@ -310,6 +310,8 @@ nsh> ls /dev
  gpio9
 ```
 
+Shown above are these __NuttX Device Drivers__: [__GPIO Expander__](https://lupyuen.github.io/articles/expander), [__I2C__](https://lupyuen.github.io/articles/bme280), [__Touch Input__](https://lupyuen.github.io/articles/touch), [__LCD Display__](https://lupyuen.github.io/articles/st7789), [__SPI Test__](https://lupyuen.github.io/articles/spi2), [__Timer__](https://lupyuen.github.io/articles/lorawan3#appendix-posix-timers-and-message-queues) and [__Random Number Generator__](https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool).
+
 Yep NuttX has successfully booted on PineDio Stack! Let's dive into our Automated Testing Script and see the implementation of the operations above.
 
 ![Flashing NuttX to PineDio Stack](https://lupyuen.github.io/images/nuttx-flash2.png)
