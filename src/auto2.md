@@ -414,75 +414,39 @@ _(Checkpoint Bravo)_
 
 _What happens when NuttX crashes during testing?_
 
-NuttX shows a __Stack Trace__. (See pic above)
-
-TODO
-
-Let's walk through the steps to __decode the Stack Trace__, then we'll learn how our script decodes the Stack Trace for us.
-
-At the top is the __Assertion Failure__ message...
+NuttX shows a __Register and Stack Dump__, like the pic above...
 
 ```text
 irq_unexpected_isr: ERROR irq: 1
 up_assert: Assertion failed at file:irq/irq_unexpectedisr.c line: 51 task: Idle Task
-```
-
-__Always enable Debug Assertions__ in our NuttX Build Configuration. They are super helpful for catching problems. [(Here's how)](https://lupyuen.github.io/articles/spi2#enable-logging)
-
-Next we see the __Register Dump__...
-
-```text
 riscv_registerdump: EPC: deadbeee
 riscv_registerdump: A0: 00000002 A1: 420146b0 A2: 42015140 A3: 420141c
-riscv_registerdump: A4: 420150d0 A5: 00000000 A6: 00000002 A7: 00000000
-riscv_registerdump: T0: 00006000 T1: 00000003 T2: 41bd5588 T3: 00000064
-riscv_registerdump: T4: 00000000 T5: 00000000 T6: c48ae7e4
-riscv_registerdump: S0: deadbeef S1: deadbeef S2: 420146b0 S3: 42014000
-riscv_registerdump: S4: 42015000 S5: 42012510 S6: 00000001 S7: 23007000
-riscv_registerdump: S8: 4201fa38 S9: 00000001 S10: 00000c40 S11: 42010510
-riscv_registerdump: SP: 420126b0 FP: deadbeef TP: 0c8a646d RA: deadbeef
-```
-
-Followed by the __Interrupt Stack__...
-
-```text
-riscv_dumpstate: sp:     420144b0
-riscv_dumpstate: IRQ stack:
-riscv_dumpstate:   base: 42012540
-riscv_dumpstate:   size: 00002000
-```
-
-The __Stack Dump__...
-
-```text
+...
 riscv_stackdump: 420144a0: 00001fe0 23011000 420144f0 230053a0 deadbeef deadbeef 23010ca4 00000033
 riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510 42015000 00000001
-riscv_stackdump: 420144e0: 420125a8 42014000 42014500 230042e2 42014834 80007800 42014510 23001d3e
-riscv_stackdump: 42014500: 420171c0 42014000 42014520 23001cdc deadbeef deadbeef 42014540 23000db4
-riscv_stackdump: 42014520: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 00000000 23000d04
 ```
 
-The __User Stack__...
+Our script can't proceed with the Automated Testing, but it can help us make sense of these numbers to __understand why NuttX crashed__.
+
+Our script detects the crash and does a __Crash Analysis__...
 
 ```text
-riscv_dumpstate: sp:     420126b0
-riscv_dumpstate: User stack:
-riscv_dumpstate:   base: 42010530
-riscv_dumpstate:   size: 00001fe0
+----- Crash Analysis
+Code Address 230053a0:
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:364
+  if (CURRENT_REGS)
+    sp = CURRENT_REGS[REG_SP];
+
+Code Address 230042e2:
+/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/libs/libc/assert/lib_assert.c:37
+  exit(EXIT_FAILURE);
 ```
 
-Finally the __Task List__...
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
 
-```text
-riscv_showtasks:    PID    PRI      USED     STACK   FILLED    COMMAND
-riscv_showtasks:   ----   ----      8088      8192    98.7%!   irq
-riscv_dump_task:      0      0       436      8160     5.3%    Idle Task
-riscv_dump_task:      1    100       516      8144     6.3%    nsh_main
-```
+Through this Crash Analysis, we get some idea __which lines of code__ caused the crash.
 
-(The Interrupt Stack __irq__ seems to be overflowing, it might have caused NuttX to crash)
-
-In a while we'll select the interesting addresses from above and decode them.
+And hopefully we can heal NuttX on PineDio Stack!
 
 ## Checkpoint Bravo
 
