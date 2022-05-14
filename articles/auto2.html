@@ -425,12 +425,44 @@ Code Address 230042e2:
 <p>Through this Crash Analysis, we get some idea <strong>which lines of code</strong> caused the crash.</p>
 <p>And hopefully we can heal NuttX on PineDio Stack!</p>
 <h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">5.1 Checkpoint Bravo</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105">pinedio.sh</a></p>
+<p>Over to the implementation. Our script detects that NuttX has crashed when it sees the <strong>registerdump</strong> keyword: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has crashed
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;registerdump&quot; /tmp/test.log)
-set -e  ##  Exit when any command fails</code></pre></div><h1 id="spi-test"><a href="#spi-test">6 SPI Test</a></h1>
+set -e  ##  Exit when any command fails</code></pre></div>
+<p>Then it proceeds to <strong>decode the Stack Dump</strong> by matching the addresses with the <strong>RISC-V Disassembly</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L153-L211">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  If BL602 has crashed, do the Crash Analysis
+#  Find all code addresses 23?????? in the Output Log, remove duplicates, skip 23007000.
+#  Returns a newline-delimited list of addresses: &quot;23011000\n230053a0\n...&quot;
+grep --extended-regexp \
+  --only-matching \
+  &quot;23[0-9a-f]{6}&quot; \
+  /tmp/test.log \
+  | grep -v &quot;23007000&quot; \
+  | uniq \
+  &gt;/tmp/test.addr
+
+#  For every address, show the corresponding line in the disassembly
+for addr in $(cat /tmp/test.addr); do
+  #  Skip addresses that don&#39;t match
+  match=$(grep &quot;$addr:&quot; /tmp/nuttx.S)
+  if [ &quot;$match&quot; != &quot;&quot; ]; then
+    echo &quot;----- Code Address $addr&quot;
+    grep \
+      --context=5 \
+      --color=auto \
+      &quot;$addr:&quot; \
+      /tmp/nuttx.S
+    echo
+  fi
+done</code></pre></div>
+<p>The Crash Analysis is explained here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/auto#nuttx-crash-analysis"><strong>“NuttX Crash Analysis”</strong></a></li>
+</ul>
+<p>TODO: Doesn’t always work</p>
+<p><a href="https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed">(See this)</a></p>
+<h1 id="spi-test"><a href="#spi-test">6 SPI Test</a></h1>
 <p><em>(Checkpoint Charlie)</em></p>
 <p>TODO</p>
 <p>Our Auto Test Scripts <code>test.sh</code> and <code>pinedio.sh</code> will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)…</p>
