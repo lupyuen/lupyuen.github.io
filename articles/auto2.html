@@ -460,8 +460,8 @@ done</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/auto#nuttx-crash-analysis"><strong>“NuttX Crash Analysis”</strong></a></li>
 </ul>
-<p>TODO: Doesn’t always work</p>
-<p><a href="https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed">(See this)</a></p>
+<p>There’s a <strong>Design Flaw</strong> in our script that needs fixing… It doesn’t detect crashes while running the SPI, LoRaWAN and Touch Panel Tests. <a href="https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed">(See this)</a></p>
+<p>(We should probably use a <strong>State Machine</strong> instead of a long chain of hacky “if-else” statements)</p>
 <h1 id="spi-test"><a href="#spi-test">6 SPI Test</a></h1>
 <p><em>(Checkpoint Charlie)</em></p>
 <p>TODO</p>

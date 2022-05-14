@@ -580,6 +580,8 @@ riscv64-unknown-elf-objdump \
 <p>These are the <strong>Data Addresses</strong> decoded from the Stack Trace…</p>
 <p><img src="https://lupyuen.github.io/images/auto-stack4.jpg" alt="Data Addresses in Stack Trace" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
+<p>There’s a <strong>Design Flaw</strong> in our script that needs fixing… It doesn’t detect crashes while running the SPI, LoRaWAN and Touch Panel Tests. <a href="https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed">(See this)</a></p>
+<p>(We should probably use a <strong>State Machine</strong> instead of a long chain of hacky “if-else” statements)</p>
 <h1 id="lorawan-test"><a href="#lorawan-test">6 LoRaWAN Test</a></h1>
 <p><em>What’s the best way to auto-test all the NuttX functions: GPIO, SPI, ADC, Interrupts, Timers, Threads, Message Queues, Random Number Generator, …?</em></p>
 <p><a href="https://lupyuen.github.io/articles/lorawan3"><strong>LoRaWAN</strong></a> is the perfect way to give NuttX a <strong>thorough workout</strong>!</p>
