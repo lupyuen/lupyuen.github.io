@@ -530,7 +530,23 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
 <p><em>(Checkpoint Delta)</em></p>
 <p>Now comes the most complicated checkpoint: <strong>LoRaWAN Test</strong>.</p>
-<p>We’re ready to test the following features…</p>
+<p>For this test our script shall…</p>
+<ul>
+<li>
+<p>Send a <strong>Join LoRaWAN Network</strong> Request</p>
+<p>(To our ChirpStack LoRaWAN Gateway)</p>
+</li>
+<li>
+<p>Wait for the <strong>Join Network Response</strong> from gateway</p>
+</li>
+<li>
+<p>Then send a <strong>LoRaWAN Data Packet</strong> to the gateway</p>
+</li>
+</ul>
+<p><em>How will we know if LoRa and LoRaWAN are working OK on PineDio Stack?</em></p>
+<p>TODO</p>
+<p><em>Which NuttX features will be tested in the LoRaWAN Test?</em></p>
+<p>Plenty! We’ll test the following features…</p>
 <ul>
 <li>
 <p>GPIO Input, Output and Interrupt</p>
