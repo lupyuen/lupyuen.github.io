@@ -651,47 +651,48 @@ Plenty! We'll test these features in the LoRaWAN Test...
 
 -   __Strong Random Number Generator__: Generate the LoRaWAN Nonce [(See this)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
 
-_Let's run the LoRaWAN Test!_
+_Let's run the LoRaWAN Test already!_
 
-TODO
+Our script starts the LoRaWAN Test by sending the __lorawan_test__ command to PineDio Stack...
 
 ```text
------ Send command to BL602: lorawan_test
 nsh> lorawan_test
 init_entropy_pool
-offset = 2209
 temperature = 25.667484 Celsius
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
-TODO
+The test begins by reading BL604's [__Internal Temperature Sensor__](https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce) and using the temperature value to seed the [__Strong Random Number Generator__](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce).
+
+Then we send the __Join LoRaWAN Network__ Request to our LoRaWAN Gateway (ChirpStack)...
 
 ```text
-###### =========== MLME-Request ============ ######
-######               MLME_JOIN               ######
-###### ===================================== ######
+=========== MLME-Request ============
+              MLME_JOIN              
+=====================================
 STATUS      : OK
 ```
 
-TODO
+We receive the correct __Join Network Response__ from our LoRaWAN Gateway...
 
 ```text
-###### =========== MLME-Confirm ============ ######
+=========== MLME-Confirm ============
 STATUS      : OK
-OnJoinRequest
-###### ===========   JOINED     ============ ######
+===========   JOINED     ============
 OTAA
-DevAddr     :  00F76FBF
+DevAddr     : 00F76FBF
 DATA RATE   : DR_2
 ```
 
-TODO
+PineDio Stack has successfully joined the LoRaWAN Network!
+
+We proceed to send a __LoRaWAN Data Packet__ _("Hi NuttX")_ to our LoRaWAN Gateway...
 
 ```text
-###### =========== MCPS-Confirm ============ ######
+=========== MCPS-Confirm ============
 STATUS      : OK
-###### =====   UPLINK FRAME        1   ===== ######
+=====   UPLINK FRAME        1   =====
 CLASS       : A
 TX PORT     : 1
 TX DATA     : UNCONFIRMED
@@ -702,21 +703,13 @@ TX POWER    : 0
 CHANNEL MASK: 0003
 ```
 
-TODO
+Finally our script reports that the LoRaWAN Test has succeeded...
 
 ```text
 All OK! BL602 has successfully joined the LoRaWAN Network
 ```
 
-We auto flash and test PineDio Stack BL604 in two scripts.
-
-The first script auto-flashes the PineDio Stack Firmware [(auto-built by GitHub Actions)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml) and runs the [LoRaWAN Test App](https://github.com/lupyuen/lorawan_test)...
-
--   [scripts/pinedio.sh](scripts/pinedio.sh)
-
-The [LoRaWAN Test App](https://github.com/lupyuen/lorawan_test) connects to a LoRaWAN Gateway (ChirpStack) and sends a LoRaWAN Data Packet to the Gateway.
-
-(Which means that Timers, SPI, GPIO Input / Ouput / Interrupt are working OK)
+Which means that GPIO Input / Ouput / Interrupt, SPI, ADC, Timers, Multithreading, Message Queues and Strong Random Number Generator are all working OK!
 
 ## Checkpoint Delta
 
@@ -1168,326 +1161,6 @@ remote-bl602/scripts/pinedio2.sh
 ```
 
 TODO: Fix the script to use the correct USB Device
-
-# Appendix: Output Log for Upstream Build
-
-TODO
-
-Below is the log for the __Daily Upstream Build__ (without the LoRaWAN Stack)...
-
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-05-05)
-
-```text
-pi@raspberrypi:~ $ ./upstream.sh
-+ cd /home/pi/remote-bl602
-+ git pull
-Already up to date.
-+ /home/pi/remote-bl602/scripts/test.sh
-+ '[' '' == '' ']'
-+ export BUILD_PREFIX=upstream
-+ BUILD_PREFIX=upstream
-+ '[' '' == '' ']'
-++ date +%Y-%m-%d
-+ export BUILD_DATE=2022-05-05
-+ BUILD_DATE=2022-05-05
-+ '[' '' == '' ']'
-+ export USB_DEVICE=/dev/ttyUSB0
-+ USB_DEVICE=/dev/ttyUSB0
-+ source /home/pi/.cargo/env
-++ export PATH=/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
-++ PATH=/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/home/pi/.cargo/bin:/usr/lib/go-1.13.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
-+ set +x
------ Download the latest upstream NuttX build for 2022-05-05
-+ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-05-05/nuttx.zip -O /tmp/nuttx.zip
-+ pushd /tmp
-/tmp ~/remote-bl602
-+ unzip -o nuttx.zip
-Archive:  nuttx.zip
-  inflating: nuttx
-  inflating: nuttx.S
-  inflating: nuttx.bin
-  inflating: nuttx.config
-  inflating: nuttx.hex
-  inflating: nuttx.manifest
-  inflating: nuttx.map
-+ popd
-~/remote-bl602
-+ set +x
------ Enable GPIO 2 and 3
------ Set GPIO 2 and 3 as output
------ Set GPIO 2 to High (BL602 Flashing Mode)
------ Toggle GPIO 3 High-Low-High (Reset BL602)
------ Toggle GPIO 3 High-Low-High (Reset BL602 again)
------ BL602 is now in Flashing Mode
------ Flash BL602 over USB UART with blflash
-+ blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
-[INFO  blflash::flasher] Start connection...
-[TRACE blflash::flasher] 5ms send count 55
-[TRACE blflash::flasher] handshake sent elapsed 394.944µs
-[INFO  blflash::flasher] Connection Succeed
-[INFO  blflash] Bootrom version: 1
-[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
-[INFO  blflash::flasher] Sending eflash_loader...
-[INFO  blflash::flasher] Finished 2.553035396s 11.19KiB/s
-[TRACE blflash::flasher] 5ms send count 500
-[TRACE blflash::flasher] handshake sent elapsed 5.208118ms
-[INFO  blflash::flasher] Entered eflash_loader
-[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
-[INFO  blflash::flasher] Erase flash addr: 10000 size: 135824
-[INFO  blflash::flasher] Program flash... 1895df5ad1ea24dcab7c6ba5f86692424ce419d1da4e4c5b7dc06b4324d2cd59
-[INFO  blflash::flasher] Program done 1.614955738s 82.18KiB/s
-[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
-[INFO  blflash] Success
-+ set +x
------ Set GPIO 2 to Low (BL602 Normal Mode)
------ Toggle GPIO 3 High-Low-High (Reset BL602)
------ BL602 is now in Normal Mode
------ Toggle GPIO 3 High-Low-High (Reset BL602)
------ Here is the BL602 Output...
-▒gpio_pin_register: Registering /dev/gpio0
-gpio_pin_register: Registering /dev/gpio1
-gpint_enable: Disable the interrupt
-gpio_pin_register: Registering /dev/gpio2
-bl602_spi_setfrequency: frequency=400000, actual=0
-bl602_spi_setbits: nbits=8
-bl602_spi_setmode: mode=0
-
-NuttShell (NSH) NuttX-10.3.0-RC1
-nsh> uname -a
-NuttX 10.3.0-RC1 fdef3a7b92 May  5 2022 02:23:24 risc-v bl602evb
-nsh> ls /dev
-/dev:
- console
- gpio0
- gpio1
- gpio2
- i2c0
- null
- spi0
- timer0
- zero
-nsh>
------ Send command to BL602: lorawan_test
-lorawan_test
-nsh: lorawan_test: command not found
-nsh>
-===== Boot OK
-
-+ read -p 'Press Enter to shutdown'
-Press Enter to shutdown
-```
-
-# Appendix: Output Log for Upstream Build with Crash Analysis
-
-TODO
-
-Below is the log for the __Daily Upstream Build__ with Crash Analysis (without the LoRaWAN Stack)...
-
-```text
-pi@raspberrypi:~/remote-bl602 $ sudo ./scripts/test.sh
-+ '[' '' == '' ']'
-+ export BUILD_PREFIX=upstream
-+ BUILD_PREFIX=upstream
-+ '[' '' == '' ']'
-++ date +%Y-%m-%d
-+ export BUILD_DATE=2022-01-16
-+ BUILD_DATE=2022-01-16
-+ source /root/.cargo/env
-++ case ":${PATH}:" in
-++ export PATH=/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-++ PATH=/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-+ set +x
------ Download the latest upstream NuttX build for 2022-01-16
-+ wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-16/nuttx.zip -O /tmp/nuttx.zip
-+ pushd /tmp
-/tmp /home/pi/remote-bl602
-+ unzip -o nuttx.zip
-Archive:  nuttx.zip
-  inflating: nuttx
-  inflating: nuttx.S
-  inflating: nuttx.bin
-  inflating: nuttx.config
-  inflating: nuttx.hex
-  inflating: nuttx.manifest
-  inflating: nuttx.map
-+ popd
-/home/pi/remote-bl602
-+ set +x
------ Enable GPIO 2 and 3
------ Set GPIO 2 and 3 as output
------ Set GPIO 2 to High (BL602 Flashing Mode)
------ Toggle GPIO 3 High-Low-High (Reset BL602)
------ Toggle GPIO 3 High-Low-High (Reset BL602 again)
------ BL602 is now in Flashing Mode
------ Flash BL602 over USB UART with blflash
-+ blflash flash /tmp/nuttx.bin --port /dev/ttyUSB0
-[INFO  blflash::flasher] Start connection...
-[TRACE blflash::flasher] 5ms send count 55
-[TRACE blflash::flasher] handshake sent elapsed 233.442µs
-[INFO  blflash::flasher] Connection Succeed
-[INFO  blflash] Bootrom version: 1
-[TRACE blflash] Boot info: BootInfo { len: 14, bootrom_version: 1, otp_info: [0, 0, 0, 0, 3, 0, 0, 0, 61, 9d, c0, 5, b9, 18, 1d, 0] }
-[INFO  blflash::flasher] Sending eflash_loader...
-[INFO  blflash::flasher] Finished 2.551582797s 11.20KiB/s
-[TRACE blflash::flasher] 5ms send count 500
-[TRACE blflash::flasher] handshake sent elapsed 5.459475ms
-[INFO  blflash::flasher] Entered eflash_loader
-[INFO  blflash::flasher] Skip segment addr: 0 size: 47504 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: e000 size: 272 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: f000 size: 272 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: 10000 size: 85056 sha256 matches
-[INFO  blflash::flasher] Skip segment addr: 1f8000 size: 5671 sha256 matches
-[INFO  blflash] Success
-+ set +x
------ Set GPIO 2 to Low (BL602 Normal Mode)
------ Toggle GPIO 3 High-Low-High (Reset BL602)
------ BL602 is now in Normal Mode
------ Toggle GPIO 3 High-Low-High (Reset BL602)
------ Here is the BL602 Output...
-▒
-NuttShell (NSH) NuttX-10.2.0
-nsh> irq_unexpected_isr: ERROR irq: 1
-up_assert: Assertion failed at file:irq/irq_unexpectedisr.c line: 51 task: Idle Task
-riscv_registerdump: EPC: deadbeee
-riscv_registerdump: A0: 00000002 A1: 420146b0 A2: 42015140 A3: 4201481c
-riscv_registerdump: A4: 420150d0 A5: 00000000 A6: 00000002 A7: 00000000
-riscv_registerdump: T0: 00006000 T1: 00000003 T2: 41bd5488 T3: 00000064
-riscv_registerdump: T4: 00000000 T5: 00000000 T6: c48af7e4
-riscv_registerdump: S0: deadbeef S1: deadbeef S2: 420146b0 S3: 42014000
-riscv_registerdump: S4: 42015000 S5: 42012510 S6: 00000001 S7: 23007000
-riscv_registerdump: S8: 4201fa38 S9: 00000001 S10: 00000c40 S11: 42010510
-riscv_registerdump: SP: 420126b0 FP: deadbeef TP: 005952e5 RA: deadbeef
-riscv_dumpstate: sp:     420144b0
-riscv_dumpstate: IRQ stack:
-riscv_dumpstate:   base: 42012540
-riscv_dumpstate:   size: 00002000
-riscv_stackdump: 420144a0: 00001fe0 23011000 420144f0 230053a0 deadbeef deadbeef 23010ca4 00000033
-riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510 42015000 00000001
-riscv_stackdump: 420144e0: 420125a8 42014000 42014500 230042e2 42014834 80007800 42014510 23001d3e
-riscv_stackdump: 42014500: 420171c0 42014000 42014520 23001cdc deadbeef deadbeef 42014540 23000db4
-riscv_stackdump: 42014520: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 00000000 23000d04
-riscv_dumpstate: sp:     420126b0
-riscv_dumpstate: User stack:
-riscv_dumpstate:   base: 42010530
-riscv_dumpstate:   size: 00001fe0
-riscv_showtasks:    PID    PRI      USED     STACK   FILLED    COMMAND
-riscv_showtasks:   ----   ----      8088      8192    98.7%!   irq
-riscv_dump_task:      0      0       436      8160     5.3%    Idle Task
-riscv_dump_task:      1    100       516      8144     6.3%    nsh_main
-
------ Crash Analysis
-
------ Code Address 230053a0
-23005396:       854e                    mv      a0,s3
-23005398:       00000097                auipc   ra,0x0
-2300539c:       c8c080e7                jalr    -884(ra) # 23005024 <riscv_stackdump>
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:364
-      if (CURRENT_REGS)
-230053a0:       7f0a2783                lw      a5,2032(s4)
-230053a4:       c399                    beqz    a5,230053aa <up_assert+0x274>
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:366
-          sp = CURRENT_REGS[REG_SP];
-230053a6:       0087a983                lw      s3,8(a5)
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:369
-
------ Address 230042e2
-  up_assert(filename, linenum);
-230042da:       00001097                auipc   ra,0x1
-230042de:       e5c080e7                jalr    -420(ra) # 23005136 <up_assert>
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/libs/libc/assert/lib_assert.c:37
-  exit(EXIT_FAILURE);
-230042e2:       4505                    li      a0,1
-230042e4:       ffffe097                auipc   ra,0xffffe
-230042e8:       138080e7                jalr    312(ra) # 2300241c <exit>
-
-230042ec <__errno>:
-__errno():
-
------ Code Address 23001d3e
-
-#else /* CONFIG_SMP */
-
-int sched_lock(void)
-{
-23001d3e:       1141                    addi    sp,sp,-16
-23001d40:       c422                    sw      s0,8(sp)
-23001d42:       c226                    sw      s1,4(sp)
-23001d44:       c606                    sw      ra,12(sp)
-23001d46:       0800                    addi    s0,sp,16
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/sched/sched/sched_lock.c:228
-
------ Code Address 23001cdc
-  /* Record the new "running" task.  g_running_tasks[] is only used by
-   * assertion logic for reporting crashes.
-   */
-
-  g_running_tasks[this_cpu()] = this_task();
-23001cdc:       420147b7                lui     a5,0x42014
-23001ce0:       7fc7a703                lw      a4,2044(a5) # 420147fc <g_readytorun>
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/sched/irq/irq_dispatch.c:201
-}
-23001ce4:       40b2                    lw      ra,12(sp)
-23001ce6:       4422                    lw      s0,8(sp)
-
------ Code Address 23000db4
-   * point state and the establish the correct address environment before
-   * returning from the interrupt.
-   */
-
-  if (regs != CURRENT_REGS)
-23000db4:       7f04a503                lw      a0,2032(s1)
-23000db8:       01250663                beq     a0,s2,23000dc4 <riscv_dispatch_irq+0x70>
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/chip/bl602_irq_dispatch.c:106
-    {
-#ifdef CONFIG_ARCH_FPU
-      /* Restore floating point registers */
-
------ Code Address 23000d04
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_exception_common.S:120
-
-  /* If context switch is needed, return a new sp     */
-
-  mv         sp, a0
-23000d04:       812a                    mv      sp,a0
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_exception_common.S:121
-  REGLOAD    s0, REG_EPC(sp)     /* restore mepc      */
-23000d06:       4402                    lw      s0,0(sp)
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_exception_common.S:122
-  csrw       mepc, s0
-
------ Data Address 4201481c
-4201481c g     O .bss   00000008 g_pendingtasks
-
------ Data Address 42012510
-42012510 l    d  .bss   00000000 .bss
-42012510 l     O .bss   00000008 g_idleargv
-42012510 g       .bss   00000000 __bss_start
-
------ Data Address 42010510
-42010510 l    d  .noinit        00000000 .noinit
-42010510 g       .data  00000000 __boot2_pt_addr_end
-42010510 g     O .noinit        00002000 g_idle_stack
-42010510 g       .data  00000000 _data_run_end
-42010510 g       .data  00000000 __boot2_pt_addr_start
-42010510 g       .data  00000000 __boot2_flash_cfg_start
-42010510 g       .data  00000000 __boot2_flash_cfg_end
-
------ Data Address 42012540
-42012540 g     O .bss   00002000 g_intstackalloc
-
------ Data Address 42012510
-42012510 l    d  .bss   00000000 .bss
-42012510 l     O .bss   00000008 g_idleargv
-42012510 g       .bss   00000000 __bss_start
-
------ Data Address 42014540
-42014540 l     O .bss   00000080 g_uart0rxbuffer
-42014540 g     O .bss   00000000 g_intstacktop
-
-pi@raspberrypi:~/remote-bl602 $
-```
 
 # Appendix: Output Log for PineDio Stack BL604 Build
 
