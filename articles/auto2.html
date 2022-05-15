@@ -504,11 +504,16 @@ Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;/dev/ttyUSB0 ; sleep 2</code></pre></div>
 <p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L125">pinedio.sh</a></p>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L130">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether SX1262 is OK
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;SX1262 Register 8 is 0x80&quot; /tmp/test.log)
-set +e  ##  Don&#39;t exit when any command fails</code></pre></div>
+set +e  ##  Don&#39;t exit when any command fails
+
+#  If SX1262 is not OK, quit
+if [ &quot;$match&quot; == &quot;&quot; ]; then
+  echo; echo &quot;===== Error: SX1262 is NOT OK. Check the SPI connection&quot;
+  test_status=unknown</code></pre></div>
 <p>TODO</p>
 <h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
 <p><em>(Checkpoint Delta)</em></p>
