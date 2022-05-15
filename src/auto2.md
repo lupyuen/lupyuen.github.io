@@ -587,6 +587,8 @@ That's because the SPI Test Driver presents a [__simpler interface__](https://lu
 
 At the next checkpoint, the LoRaWAN Test App will call the SPI Test Driver to talk to the SX1262 LoRa Transceiver.
 
+[(We might switch to "/dev/spitest1" to fix an SPI Race Condition)](https://lupyuen.github.io/articles/pinedio2#sx1262-chip-select)
+
 _What about testing the SPI Flash and ST7789 Display?_
 
 In future we might test the __SPI Flash__ by reading the JEDEC ID.
