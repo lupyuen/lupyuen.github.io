@@ -523,6 +523,7 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <p><em>Why doesn’t it call the standard SPI Driver “/dev/spi0” instead?</em></p>
 <p>That’s because the SPI Test Driver presents a <a href="https://lupyuen.github.io/articles/spi2#inside-the-spi-test-app"><strong>simpler interface</strong></a> when we access the SPI Port from our NuttX App (in User Space).</p>
 <p>At the next checkpoint, the LoRaWAN Test App will call the SPI Test Driver to talk to the SX1262 LoRa Transceiver.</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#sx1262-chip-select">(We might switch to “/dev/spitest1” to fix an SPI Race Condition)</a></p>
 <p><em>What about testing the SPI Flash and ST7789 Display?</em></p>
 <p>In future we might test the <strong>SPI Flash</strong> by reading the JEDEC ID.</p>
 <p>Testing the <strong>ST7789 Display</strong> will be more tricky because it needs visual inspection. If you have any ideas, lemme know!</p>
