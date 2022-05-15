@@ -562,28 +562,31 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <p>Plenty! We’ll test these features in the LoRaWAN Test…</p>
 <ul>
 <li>
-<p><strong>GPIO Input</strong>: Read the Busy Status from SX1262</p>
+<p><strong>GPIO Input</strong>: Read the Busy Status from SX1262 via GPIO Expander <a href="https://lupyuen.github.io/articles/sx1262#check-busy-state">(See this)</a></p>
 </li>
 <li>
-<p><strong>GPIO Output</strong>: Enable Chip Select for SX1262</p>
+<p><strong>GPIO Output</strong>: Enable Chip Select for SX1262 via GPIO Expander <a href="https://lupyuen.github.io/articles/sx1262#spi-interface">(See this)</a></p>
 </li>
 <li>
-<p><strong>GPIO Interrupt</strong>: Triggered when SX1262 transmits or receives a LoRa Packet</p>
+<p><strong>GPIO Interrupt</strong>: Triggered when SX1262 transmits or receives a LoRa Packet <a href="https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt">(See this)</a></p>
 </li>
 <li>
-<p><strong>SPI</strong>: Transfer data and commands to SX1262</p>
+<p><strong>SPI</strong>: Transfer data and commands to SX1262 via SPI Test Driver <a href="https://lupyuen.github.io/articles/sx1262#spi-interface">(See this)</a></p>
 </li>
 <li>
-<p><strong>ADC and Internal Temperature Sensor</strong>: Seed the Strong Random Number Generator</p>
+<p><strong>ADC and Internal Temperature Sensor</strong>: Seed the Strong Random Number Generator <a href="https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce">(See this)</a></p>
 </li>
 <li>
-<p><strong>Timers</strong>: Detect timeouts for transmit and receive</p>
+<p><strong>Timers</strong>: Detect timeouts for transmit and receive <a href="https://lupyuen.github.io/articles/lorawan3#lorawan-event-loop">(See this)</a></p>
 </li>
 <li>
-<p><strong>Multithreading</strong>: Background thread handles received LoRa Packets</p>
+<p><strong>Multithreading</strong>: Background thread handles received LoRa Packets <a href="https://lupyuen.github.io/articles/sx1262#start-dio1-thread">(See this)</a></p>
 </li>
 <li>
-<p><strong>Strong Random Number Generator</strong>: Generate the LoRaWAN Nonce</p>
+<p><strong>Message Queue</strong>: Handles received LoRa Packets <a href="https://lupyuen.github.io/articles/sx1262#event-queue">(See this)</a></p>
+</li>
+<li>
+<p><strong>Strong Random Number Generator</strong>: Generate the LoRaWAN Nonce <a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce">(See this)</a></p>
 </li>
 </ul>
 <p><em>Let’s run the LoRaWAN Test!</em></p>
