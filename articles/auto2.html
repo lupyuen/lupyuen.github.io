@@ -468,22 +468,22 @@ done</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus"><em>Shared SPI Bus on PineDio Stack</em></a></p>
 <h1 id="spi-test"><a href="#spi-test">6 SPI Test</a></h1>
 <p><em>(Checkpoint Charlie)</em></p>
-<p>PineDio Stack has a complex <strong>SPI Bus</strong> that’s shared by 3 SPI Devices (pic above)…</p>
+<p>PineDio Stack has a complex <strong>SPI Bus</strong> that’s shared by <strong>3 SPI Devices</strong> (pic above)…</p>
 <ul>
 <li>
 <p><strong>SPI Flash</strong></p>
 </li>
 <li>
-<p><strong>ST7789 Display</strong></p>
+<p><strong>SX1262 LoRa Transceiver</strong></p>
 </li>
 <li>
-<p><strong>SX1262 LoRa Transceiver</strong></p>
+<p><strong>ST7789 Display</strong></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#swap-miso--mosi">(MISO and MOSI are swapped for ST7789)</a></p>
 </li>
 </ul>
 <p>That’s why we created an <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a> to manage the SPI Devices. </p>
-<p>TODO</p>
-<p>At the next checkpoint…</p>
-<p>Our Auto Test Scripts <code>test.sh</code> and <code>pinedio.sh</code> will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)…</p>
+<p><em>How do we test the SPI Bus and the SPI Device Table?</em></p>
+<p>Our script sends an SPI Command to the SX1262 LoRa Transceiver to <strong>read an SX1262 Register</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; spi_test2
 Get Status: received
   a2 22 
@@ -493,12 +493,12 @@ Read Register 8: received
 SX1262 Register 8 is 0x80
 SX1262 is OK</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
-<p>This says that SX1262 Register 8 has value <code>0x80</code>, which is correct.</p>
-<p>If we see this error on BL602…</p>
+<p><strong>spi_test2</strong> says that <strong>SX1262 Register 8</strong> has value <strong><code>0x80</code></strong>, which is correct.</p>
+<p>If we receive any other value for SX1262 Register 8…</p>
 <div class="example-wrap"><pre class="language-text"><code>SX1262 Register 8 is 0x00
 Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
-<p>Check that the SX1262 Reset Pin is connected properly to the BL602 Reset Pin.</p>
-<p>(Which is connected to SBC GPIO 3)</p>
+<p>Then our script halts with an error.</p>
+<p>Let’s look at the implementation.</p>
 <h2 id="checkpoint-charlie"><a href="#checkpoint-charlie">6.1 Checkpoint Charlie</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
