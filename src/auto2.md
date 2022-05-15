@@ -587,6 +587,12 @@ That's because the SPI Test Driver presents a [__simpler interface__](https://lu
 
 At the next checkpoint, the LoRaWAN Test App will call the SPI Test Driver to talk to the SX1262 LoRa Transceiver.
 
+_What about testing the SPI Flash and ST7789 Display?_
+
+In future we might test the __SPI Flash__ by reading the JEDEC ID.
+
+Testing the __ST7789 Display__ will be more tricky because it needs visual inspection. If you have any ideas, lemme know!
+
 # LoRaWAN Test
 
 _(Checkpoint Delta)_
