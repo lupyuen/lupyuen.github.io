@@ -527,11 +527,13 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <p><em>What about testing the SPI Flash and ST7789 Display?</em></p>
 <p>In future we might test the <strong>SPI Flash</strong> by reading the JEDEC ID.</p>
 <p>Testing the <strong>ST7789 Display</strong> will be more tricky because it needs visual inspection. If you have any ideas, lemme know!</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway" /></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3"><em>PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway</em></a></p>
 <h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
 <p><em>(Checkpoint Delta)</em></p>
 <p>Now comes the most complicated checkpoint: <strong>LoRaWAN Test</strong>.</p>
 <p>For this test our script shall…</p>
-<ul>
+<ol>
 <li>
 <p>Send a <strong>Join LoRaWAN Network</strong> Request</p>
 <p>(To our ChirpStack LoRaWAN Gateway)</p>
@@ -542,9 +544,20 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <li>
 <p>Then send a <strong>LoRaWAN Data Packet</strong> to the gateway</p>
 </li>
-</ul>
+</ol>
 <p><em>How will we know if LoRa and LoRaWAN are working OK on PineDio Stack?</em></p>
-<p>TODO</p>
+<p>Step 3 will succeed only if…</p>
+<ul>
+<li>
+<p>PineDio Stack <strong>correctly transmits</strong> the Join Network Request over LoRa and LoRaWAN</p>
+<p>(Step 1)</p>
+</li>
+<li>
+<p>And PineDio Stack <strong>correctly receives</strong> the Join Network Response over LoRa and LoRaWAN</p>
+<p>(Step 2)</p>
+</li>
+</ul>
+<p>Thus our script works well for verifying that LoRa and LoRaWAN both work OK on PineDio Stack.</p>
 <p><em>Which NuttX features will be tested in the LoRaWAN Test?</em></p>
 <p>Plenty! We’ll test the following features…</p>
 <ul>
