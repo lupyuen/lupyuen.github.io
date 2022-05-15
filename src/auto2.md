@@ -633,21 +633,23 @@ _Which NuttX features will be tested in the LoRaWAN Test?_
 
 Plenty! We'll test these features in the LoRaWAN Test...
 
--   __GPIO Input__: Read the Busy Status from SX1262
+-   __GPIO Input__: Read the Busy Status from SX1262 via GPIO Expander [(See this)](https://lupyuen.github.io/articles/sx1262#check-busy-state)
 
--   __GPIO Output__: Enable Chip Select for SX1262
+-   __GPIO Output__: Enable Chip Select for SX1262 via GPIO Expander [(See this)](https://lupyuen.github.io/articles/sx1262#spi-interface)
 
--   __GPIO Interrupt__: Triggered when SX1262 transmits or receives a LoRa Packet
+-   __GPIO Interrupt__: Triggered when SX1262 transmits or receives a LoRa Packet [(See this)](https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt)
 
--   __SPI__: Transfer data and commands to SX1262
+-   __SPI__: Transfer data and commands to SX1262 via SPI Test Driver [(See this)](https://lupyuen.github.io/articles/sx1262#spi-interface)
 
--   __ADC and Internal Temperature Sensor__: Seed the Strong Random Number Generator
+-   __ADC and Internal Temperature Sensor__: Seed the Strong Random Number Generator [(See this)](https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce)
 
--   __Timers__: Detect timeouts for transmit and receive
+-   __Timers__: Detect timeouts for transmit and receive [(See this)](https://lupyuen.github.io/articles/lorawan3#lorawan-event-loop)
 
--   __Multithreading__: Background thread handles received LoRa Packets
+-   __Multithreading__: Background thread handles received LoRa Packets [(See this)](https://lupyuen.github.io/articles/sx1262#start-dio1-thread)
 
--   __Strong Random Number Generator__: Generate the LoRaWAN Nonce
+-   __Message Queue__: Handles received LoRa Packets [(See this)](https://lupyuen.github.io/articles/sx1262#event-queue)
+
+-   __Strong Random Number Generator__: Generate the LoRaWAN Nonce [(See this)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
 
 _Let's run the LoRaWAN Test!_
 
