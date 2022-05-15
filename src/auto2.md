@@ -599,6 +599,18 @@ Testing the __ST7789 Display__ will be more tricky because it needs visual inspe
 
 _(Checkpoint Delta)_
 
+Now we're at the most complicated checkpoint: __LoRaWAN Test__.
+
+We're ready to test the following features...
+
+-   GPIO Input, Output and Interrupt
+
+-   SPI
+
+-   ADC and Internal Temperature Sensor
+
+-   Timers, Multithreading and Strong Random Number Generator
+
 TODO
 
 ```text
