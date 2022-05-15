@@ -595,6 +595,10 @@ In future we might test the __SPI Flash__ by reading the JEDEC ID.
 
 Testing the __ST7789 Display__ will be more tricky because it needs visual inspection. If you have any ideas, lemme know!
 
+![PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway](https://lupyuen.github.io/images/lorawan3-title.jpg)
+
+[_PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway_](https://lupyuen.github.io/articles/lorawan3)
+
 # LoRaWAN Test
 
 _(Checkpoint Delta)_
@@ -603,17 +607,27 @@ Now comes the most complicated checkpoint: __LoRaWAN Test__.
 
 For this test our script shall...
 
--   Send a __Join LoRaWAN Network__ Request
+1.  Send a __Join LoRaWAN Network__ Request
 
     (To our ChirpStack LoRaWAN Gateway)
 
--   Wait for the __Join Network Response__ from gateway
+1.  Wait for the __Join Network Response__ from gateway
 
--   Then send a __LoRaWAN Data Packet__ to the gateway
+1.  Then send a __LoRaWAN Data Packet__ to the gateway
 
 _How will we know if LoRa and LoRaWAN are working OK on PineDio Stack?_
 
-TODO
+Step 3 will succeed only if...
+
+-   PineDio Stack __correctly transmits__ the Join Network Request over LoRa and LoRaWAN
+
+    (Step 1)
+
+-   And PineDio Stack __correctly receives__ the Join Network Response over LoRa and LoRaWAN
+
+    (Step 2)
+
+Thus our script works well for verifying that LoRa and LoRaWAN both work OK on PineDio Stack.
 
 _Which NuttX features will be tested in the LoRaWAN Test?_
 
