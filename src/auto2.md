@@ -509,21 +509,21 @@ There's a __Design Flaw__ in our script that needs fixing... It doesn't detect c
 
 _(Checkpoint Charlie)_
 
-PineDio Stack has a complex __SPI Bus__ that's shared by 3 SPI Devices (pic above)...
+PineDio Stack has a complex __SPI Bus__ that's shared by __3 SPI Devices__ (pic above)...
 
 -   __SPI Flash__
 
+-   __SX1262 LoRa Transceiver__
+
 -   __ST7789 Display__
 
--   __SX1262 LoRa Transceiver__
+    [(MISO and MOSI are swapped for ST7789)](https://lupyuen.github.io/articles/pinedio2#swap-miso--mosi)
 
 That's why we created an [__SPI Device Table__](https://lupyuen.github.io/articles/pinedio2#spi-device-table) to manage the SPI Devices. 
 
-TODO
+_How do we test the SPI Bus and the SPI Device Table?_
 
-At the next checkpoint...
-
-Our Auto Test Scripts `test.sh` and `pinedio.sh` will check that the SX1262 LoRa Transceiver responds correctly to SPI Commands (like reading registers)...
+Our script sends an SPI Command to the SX1262 LoRa Transceiver to __read an SX1262 Register__...
 
 ```text
 nsh> spi_test2
@@ -538,18 +538,18 @@ SX1262 is OK
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
-This says that SX1262 Register 8 has value `0x80`, which is correct.
+__spi_test2__ says that __SX1262 Register 8__ has value __`0x80`__, which is correct.
 
-If we see this error on BL602...
+If we receive any other value for SX1262 Register 8...
 
 ```text
 SX1262 Register 8 is 0x00
 Error: SX1262 is NOT OK. Check the SPI connection
 ```
 
-Check that the SX1262 Reset Pin is connected properly to the BL602 Reset Pin.
+Then our script halts with an error.
 
-(Which is connected to SBC GPIO 3)
+Let's look at the implementation.
 
 ## Checkpoint Charlie
 
