@@ -414,12 +414,12 @@ riscv_stackdump: 420144c0: deadbeef 00000001 4201fa38 23007000 00000001 42012510
 <p>Our script detects the crash and does a <strong>Crash Analysis</strong> (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>----- Crash Analysis
 Code Address 230053a0:
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:364
+arch/risc-v/src/common/riscv_assert.c:364
   if (CURRENT_REGS)
     sp = CURRENT_REGS[REG_SP];
 
 Code Address 230042e2:
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/libs/libc/assert/lib_assert.c:37
+libs/libc/assert/lib_assert.c:37
   exit(EXIT_FAILURE);</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
 <p>Through this Crash Analysis, we get some idea <strong>which lines of code</strong> caused the crash.</p>
@@ -500,11 +500,9 @@ Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
 <p>Then our script halts with an error.</p>
 <p>Let’s look at the implementation.</p>
 <h2 id="checkpoint-charlie"><a href="#checkpoint-charlie">6.1 Checkpoint Charlie</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
+<p>Our script executes the SPI Test by sending the <strong>spi_test2</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;/dev/ttyUSB0 ; sleep 2</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L130">pinedio.sh</a></p>
+<p>And verifies that the result is correct: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L130">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether SX1262 is OK
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;SX1262 Register 8 is 0x80&quot; /tmp/test.log)
@@ -514,6 +512,15 @@ set +e  ##  Don&#39;t exit when any command fails
 if [ &quot;$match&quot; == &quot;&quot; ]; then
   echo; echo &quot;===== Error: SX1262 is NOT OK. Check the SPI connection&quot;
   test_status=unknown</code></pre></div>
+<p>Source code for <strong>spi_test2</strong> is located here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/spi_test2/spi_test2_main.c"><strong>examples/spi_test2</strong></a></li>
+</ul>
+<p>Note that <strong>spi_test2</strong> calls the <strong>SPI Test Driver “/dev/spitest0”</strong> which is explained here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#inside-the-spi-test-driver"><strong>“Inside the SPI Test Driver”</strong></a></li>
+</ul>
+<p><em>Why doesn’t it call the standard SPI Driver “/dev/spi0”?</em></p>
 <p>TODO</p>
 <h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
 <p><em>(Checkpoint Delta)</em></p>
