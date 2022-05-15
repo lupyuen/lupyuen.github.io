@@ -601,7 +601,23 @@ _(Checkpoint Delta)_
 
 Now comes the most complicated checkpoint: __LoRaWAN Test__.
 
-We're ready to test the following features...
+For this test our script shall...
+
+-   Send a __Join LoRaWAN Network__ Request
+
+    (To our ChirpStack LoRaWAN Gateway)
+
+-   Wait for the __Join Network Response__ from gateway
+
+-   Then send a __LoRaWAN Data Packet__ to the gateway
+
+_How will we know if LoRa and LoRaWAN are working OK on PineDio Stack?_
+
+TODO
+
+_Which NuttX features will be tested in the LoRaWAN Test?_
+
+Plenty! We'll test the following features...
 
 -   GPIO Input, Output and Interrupt
 
