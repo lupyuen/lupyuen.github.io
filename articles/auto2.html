@@ -557,27 +557,33 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <p>(Step 2)</p>
 </li>
 </ul>
-<p>Thus our script works well for verifying that LoRa and LoRaWAN both work OK on PineDio Stack.</p>
+<p>Thus our script works well for verifying that both LoRa and LoRaWAN work OK on PineDio Stack.</p>
 <p><em>Which NuttX features will be tested in the LoRaWAN Test?</em></p>
-<p>Plenty! We’ll test the following features…</p>
+<p>Plenty! We’ll test the following features in the LoRaWAN Test…</p>
 <ul>
 <li>
-<p>GPIO Input, Output and Interrupt</p>
+<p><strong>GPIO Input</strong>: Read the Busy Status from SX1262</p>
 </li>
 <li>
-<p>SPI</p>
+<p><strong>GPIO Output</strong>: Enable Chip Select for SX1262</p>
 </li>
 <li>
-<p>ADC and Internal Temperature Sensor</p>
+<p><strong>GPIO Interrupt</strong>: Triggered when SX1262 transmits or receives a LoRa Packet</p>
 </li>
 <li>
-<p>Timers</p>
+<p><strong>SPI</strong>: Transfer data and commands to SX1262</p>
 </li>
 <li>
-<p>Multithreading</p>
+<p><strong>ADC and Internal Temperature Sensor</strong>: Seed the Strong Random Number Generator</p>
 </li>
 <li>
-<p>Strong Random Number Generator</p>
+<p><strong>Timers</strong>: Detect timeouts for transmit and receive</p>
+</li>
+<li>
+<p><strong>Multithreading</strong>: Background thread handles received LoRa Packets</p>
+</li>
+<li>
+<p><strong>Strong Random Number Generator</strong>: Generate the LoRaWAN Nonce</p>
 </li>
 </ul>
 <p>TODO</p>
