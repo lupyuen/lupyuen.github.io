@@ -563,13 +563,18 @@ echo "spi_test2" >/dev/ttyUSB0 ; sleep 2
 
 TODO
 
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L125)
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L130)
 
 ```bash
 ##  Check whether SX1262 is OK
 set +e  ##  Don't exit when any command fails
 match=$(grep "SX1262 Register 8 is 0x80" /tmp/test.log)
 set +e  ##  Don't exit when any command fails
+
+##  If SX1262 is not OK, quit
+if [ "$match" == "" ]; then
+  echo; echo "===== Error: SX1262 is NOT OK. Check the SPI connection"
+  test_status=unknown
 ```
 
 TODO
