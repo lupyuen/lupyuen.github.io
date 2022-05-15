@@ -498,7 +498,7 @@ SX1262 is OK</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>SX1262 Register 8 is 0x00
 Error: SX1262 is NOT OK. Check the SPI connection</code></pre></div>
 <p>Then our script halts with an error.</p>
-<p>Let’s look at the implementation.</p>
+<p>Let’s look at the implementation of the checkpoint.</p>
 <h2 id="checkpoint-charlie"><a href="#checkpoint-charlie">6.1 Checkpoint Charlie</a></h2>
 <p>Our script executes the SPI Test by sending the <strong>spi_test2</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;spi_test2&quot; &gt;/dev/ttyUSB0 ; sleep 2</code></pre></div>
@@ -520,8 +520,9 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#inside-the-spi-test-driver"><strong>“Inside the SPI Test Driver”</strong></a></li>
 </ul>
-<p><em>Why doesn’t it call the standard SPI Driver “/dev/spi0”?</em></p>
-<p>TODO</p>
+<p><em>Why doesn’t it call the standard SPI Driver “/dev/spi0” instead?</em></p>
+<p>That’s because the SPI Test Driver presents a <a href="https://lupyuen.github.io/articles/spi2#inside-the-spi-test-app"><strong>simpler interface</strong></a> when we access the SPI Port from our NuttX App (in User Space).</p>
+<p>At the next checkpoint, the LoRaWAN Test App will call the SPI Test Driver to talk to the SX1262 LoRa Transceiver.</p>
 <h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
 <p><em>(Checkpoint Delta)</em></p>
 <p>TODO</p>
@@ -529,22 +530,23 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 nsh&gt; lorawan_test
 init_entropy_pool
 offset = 2209
-temperature = 25.667484 Celsius
-...
-##### =========== MLME-Request ============ ######
+temperature = 25.667484 Celsius</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>##### =========== MLME-Request ============ ######
 #####               MLME_JOIN               ######
 ##### ===================================== ######
-STATUS      : OK
-...
-##### =========== MLME-Confirm ============ ######
+STATUS      : OK</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>##### =========== MLME-Confirm ============ ######
 STATUS      : OK
 OnJoinRequest
 ##### ===========   JOINED     ============ ######
 OTAA
 DevAddr     :  00F76FBF
-DATA RATE   : DR_2
-...
-##### =========== MCPS-Confirm ============ ######
+DATA RATE   : DR_2</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>##### =========== MCPS-Confirm ============ ######
 STATUS      : OK
 ##### =====   UPLINK FRAME        1   ===== ######
 CLASS       : A
@@ -554,10 +556,9 @@ TX DATA     : UNCONFIRMED
 DATA RATE   : DR_3
 U/L FREQ    : 923400000
 TX POWER    : 0
-CHANNEL MASK: 0003
-...
-===== All OK! BL602 has successfully joined the LoRaWAN Network</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+CHANNEL MASK: 0003</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>All OK! BL602 has successfully joined the LoRaWAN Network</code></pre></div>
 <p>We auto flash and test PineDio Stack BL604 in two scripts.</p>
 <p>The first script auto-flashes the PineDio Stack Firmware <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml">(auto-built by GitHub Actions)</a> and runs the <a href="https://github.com/lupyuen/lorawan_test">LoRaWAN Test App</a>…</p>
 <ul>
