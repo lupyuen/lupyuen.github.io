@@ -631,7 +631,7 @@ Thus our script works well for verifying that both LoRa and LoRaWAN work OK on P
 
 _Which NuttX features will be tested in the LoRaWAN Test?_
 
-Plenty! We'll test the following features in the LoRaWAN Test...
+Plenty! We'll test these features in the LoRaWAN Test...
 
 -   __GPIO Input__: Read the Busy Status from SX1262
 
@@ -648,6 +648,8 @@ Plenty! We'll test the following features in the LoRaWAN Test...
 -   __Multithreading__: Background thread handles received LoRa Packets
 
 -   __Strong Random Number Generator__: Generate the LoRaWAN Nonce
+
+_Let's run the LoRaWAN Test!_
 
 TODO
 
