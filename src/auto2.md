@@ -549,7 +549,7 @@ Error: SX1262 is NOT OK. Check the SPI connection
 
 Then our script halts with an error.
 
-Let's look at the implementation.
+Let's look at the implementation of the checkpoint.
 
 ## Checkpoint Charlie
 
@@ -581,9 +581,11 @@ Note that __spi_test2__ calls the __SPI Test Driver "/dev/spitest0"__ which is e
 
 -   [__"Inside the SPI Test Driver"__](https://lupyuen.github.io/articles/spi2#inside-the-spi-test-driver)
 
-_Why doesn't it call the standard SPI Driver "/dev/spi0"?_
+_Why doesn't it call the standard SPI Driver "/dev/spi0" instead?_
 
-TODO
+That's because the SPI Test Driver presents a [__simpler interface__](https://lupyuen.github.io/articles/spi2#inside-the-spi-test-app) when we access the SPI Port from our NuttX App (in User Space).
+
+At the next checkpoint, the LoRaWAN Test App will call the SPI Test Driver to talk to the SX1262 LoRa Transceiver.
 
 # LoRaWAN Test
 
@@ -597,12 +599,22 @@ nsh> lorawan_test
 init_entropy_pool
 offset = 2209
 temperature = 25.667484 Celsius
-...
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+
+TODO
+
+```text
 ###### =========== MLME-Request ============ ######
 ######               MLME_JOIN               ######
 ###### ===================================== ######
 STATUS      : OK
-...
+```
+
+TODO
+
+```text
 ###### =========== MLME-Confirm ============ ######
 STATUS      : OK
 OnJoinRequest
@@ -610,7 +622,11 @@ OnJoinRequest
 OTAA
 DevAddr     :  00F76FBF
 DATA RATE   : DR_2
-...
+```
+
+TODO
+
+```text
 ###### =========== MCPS-Confirm ============ ######
 STATUS      : OK
 ###### =====   UPLINK FRAME        1   ===== ######
@@ -622,11 +638,13 @@ DATA RATE   : DR_3
 U/L FREQ    : 923400000
 TX POWER    : 0
 CHANNEL MASK: 0003
-...
-===== All OK! BL602 has successfully joined the LoRaWAN Network
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+TODO
+
+```text
+All OK! BL602 has successfully joined the LoRaWAN Network
+```
 
 We auto flash and test PineDio Stack BL604 in two scripts.
 
