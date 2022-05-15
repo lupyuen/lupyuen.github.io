@@ -433,12 +433,12 @@ Our script detects the crash and does a __Crash Analysis__ (pic below)...
 ```text
 ----- Crash Analysis
 Code Address 230053a0:
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/arch/risc-v/src/common/riscv_assert.c:364
+arch/risc-v/src/common/riscv_assert.c:364
   if (CURRENT_REGS)
     sp = CURRENT_REGS[REG_SP];
 
 Code Address 230042e2:
-/home/runner/work/incubator-nuttx/incubator-nuttx/nuttx/nuttx/libs/libc/assert/lib_assert.c:37
+libs/libc/assert/lib_assert.c:37
   exit(EXIT_FAILURE);
 ```
 
@@ -553,17 +553,13 @@ Let's look at the implementation.
 
 ## Checkpoint Charlie
 
-TODO
-
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111)
+Our script executes the SPI Test by sending the __spi_test2__ command to PineDio Stack: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L108-L111)
 
 ```bash
 echo "spi_test2" >/dev/ttyUSB0 ; sleep 2
 ```
 
-TODO
-
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L130)
+And verifies that the result is correct: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L122-L130)
 
 ```bash
 ##  Check whether SX1262 is OK
@@ -576,6 +572,16 @@ if [ "$match" == "" ]; then
   echo; echo "===== Error: SX1262 is NOT OK. Check the SPI connection"
   test_status=unknown
 ```
+
+Source code for __spi_test2__ is located here...
+
+-   [__examples/spi_test2__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/spi_test2/spi_test2_main.c)
+
+Note that __spi_test2__ calls the __SPI Test Driver "/dev/spitest0"__ which is explained here...
+
+-   [__"Inside the SPI Test Driver"__](https://lupyuen.github.io/articles/spi2#inside-the-spi-test-driver)
+
+_Why doesn't it call the standard SPI Driver "/dev/spi0"?_
 
 TODO
 
