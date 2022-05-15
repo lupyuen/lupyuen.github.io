@@ -627,23 +627,27 @@ Step 3 will succeed only if...
 
     (Step 2)
 
-Thus our script works well for verifying that LoRa and LoRaWAN both work OK on PineDio Stack.
+Thus our script works well for verifying that both LoRa and LoRaWAN work OK on PineDio Stack.
 
 _Which NuttX features will be tested in the LoRaWAN Test?_
 
-Plenty! We'll test the following features...
+Plenty! We'll test the following features in the LoRaWAN Test...
 
--   GPIO Input, Output and Interrupt
+-   __GPIO Input__: Read the Busy Status from SX1262
 
--   SPI
+-   __GPIO Output__: Enable Chip Select for SX1262
 
--   ADC and Internal Temperature Sensor
+-   __GPIO Interrupt__: Triggered when SX1262 transmits or receives a LoRa Packet
 
--   Timers
+-   __SPI__: Transfer data and commands to SX1262
 
--   Multithreading
+-   __ADC and Internal Temperature Sensor__: Seed the Strong Random Number Generator
 
--   Strong Random Number Generator
+-   __Timers__: Detect timeouts for transmit and receive
+
+-   __Multithreading__: Background thread handles received LoRa Packets
+
+-   __Strong Random Number Generator__: Generate the LoRaWAN Nonce
 
 TODO
 
