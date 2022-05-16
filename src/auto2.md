@@ -1,6 +1,6 @@
 # (Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board
 
-📝 _18 May 2022_
+📝 _20 May 2022_
 
 ![PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-title.jpg)
 
@@ -713,28 +713,32 @@ Which means that GPIO Input / Ouput / Interrupt, SPI, ADC, Timers, Multithreadin
 
 ## Checkpoint Delta
 
-TODO
-
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134)
+To start the LoRaWAN Test, our script sends the __lorawan_test__ command to PineDio Stack: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134)
 
 ```bash
-echo ; echo "----- Send command to BL602: lorawan_test" ; sleep 2
-echo "" >/dev/ttyUSB0
 echo "lorawan_test" >/dev/ttyUSB0
 ```
 
-TODO
-
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L142)
+And checks whether PineDio Stack has successfully __joined the LoRaWAN Network__: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L146)
 
 ```bash
 ##  Check whether BL602 has joined the LoRaWAN Network
 set +e  ##  Don't exit when any command fails
 match=$(grep "JOINED" /tmp/test.log)
 set -e  ##  Exit when any command fails
+
+##  If BL602 has joined the LoRaWAN Network, then everything is super hunky dory!
+if [ "$match" != "" ]; then
+  echo; echo "===== All OK! BL602 has successfully joined the LoRaWAN Network"
 ```
 
-TODO
+_What's inside lorawan_test?_
+
+__lorawan_test__ is the LoRaWAN Test App that's described in this article...
+
+-   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
+
+TODO: Semtech, sx1262, lorawan, GPIO Expander, SPI Device Table, SPI Test Driver, NimBLE Porting Layer
 
 From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222)
 
@@ -744,6 +748,10 @@ SCRIPT_PATH="${BASH_SOURCE}"
 SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
 $SCRIPT_DIR/pinedio2.sh
 ```
+
+TODO: ChirpStack
+
+TODO: Break down into smaller tests, like SPI Test
 
 ![LVGL Test App for testing the Touch Panel](https://lupyuen.github.io/images/touch-title.jpg)
 
