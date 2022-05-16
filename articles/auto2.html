@@ -587,7 +587,7 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <p><strong>Strong Random Number Generator</strong>: Generate the LoRaWAN Nonce <a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce">(See this)</a></p>
 </li>
 </ul>
-<p><em>Let’s run the LoRaWAN Test already!</em></p>
+<p><em>Alright let’s run the LoRaWAN Test already!</em></p>
 <p>Our script starts the LoRaWAN Test by sending the <strong>lorawan_test</strong> command to PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lorawan_test
 init_entropy_pool
@@ -623,7 +623,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>All OK! BL602 has successfully joined the LoRaWAN Network</code></pre></div>
 <p>Which means that GPIO Input / Ouput / Interrupt, SPI, ADC, Timers, Multithreading, Message Queues and Strong Random Number Generator are all working OK!</p>
 <h2 id="checkpoint-delta"><a href="#checkpoint-delta">7.1 Checkpoint Delta</a></h2>
-<p>To start the LoRaWAN Test, our script sends the <strong>lorawan_test</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
+<p>To run the LoRaWAN Test, our script sends the <strong>lorawan_test</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo &quot;lorawan_test&quot; &gt;/dev/ttyUSB0</code></pre></div>
 <p>And checks whether PineDio Stack has successfully <strong>joined the LoRaWAN Network</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L146">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has joined the LoRaWAN Network
@@ -639,16 +639,43 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></li>
 </ul>
-<p>TODO: Semtech, sx1262, lorawan, GPIO Expander, SPI Device Table, SPI Test Driver, NimBLE Porting Layer</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222">pinedio.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Start the second script: pinedio2.sh
-SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
-SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
-$SCRIPT_DIR/pinedio2.sh</code></pre></div>
-<p>TODO: ChirpStack</p>
-<p>TODO: Break down into smaller tests, like SPI Test</p>
+<p>The app was ported from <a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c"><strong>Semtech’s LoRaWAN Stack</strong></a> to NuttX and calls these <strong>NuttX Libraries</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx"><strong>LoRaWAN Library</strong></a> (ported from Semtech)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>SX1262 Library</strong></a> (also ported from Semtech)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>NimBLE Porting Layer</strong></a> (for Timers, Multithreading and Message Queues)</p>
+</li>
+</ul>
+<p>The <strong>Device Drivers</strong> called by the app are…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/spi2#spi-test-app-and-driver"><strong>SPI Test Driver</strong></a>: /dev/spitest0</p>
+<p>(Which calls the SPI Driver and <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a>)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/bl602_expander"><strong>GPIO Expander</strong></a>: </p>
+<ul>
+<li>/dev/gpio10 (SX1262 Busy)</li>
+<li>/dev/gpio15 (SX1262 Chip Select)</li>
+<li>/dev/gpio19 (SX1262 DIO1)</li>
+</ul>
+</li>
+</ul>
+<p><em>What about the ChirpStack LoRaWAN Gateway? What needs to be configured?</em></p>
+<p>For the LoRaWAN Test to succeed, we must configure the <strong>Device EUI, Join EUI and App Key</strong> from the ChirpStack LoRaWAN Gateway…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key"><strong>“Device EUI, Join EUI and App Key”</strong></a></li>
+</ul>
+<p><em>Isn’t the LoRaWAN Test testing way too much? GPIO, SPI, ADC, Timers, Multithreading, …</em></p>
+<p>Yeah someday we ought to build <strong>smaller tests for specific features</strong> like GPIO, ADC, Timers, Multithreading, … Similar to our SPI Test.</p>
+<p>But for now we’ll have to live with the inconvenience of identifying which specific feature could have caused the LoRaWAN Test to fail.</p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="LVGL Test App for testing the Touch Panel" /></p>
-<p><em>LVGL Test App for testing the Touch Panel</em></p>
+<p><a href="https://lupyuen.github.io/articles/touch"><em>LVGL Test App for testing the Touch Panel</em></a></p>
 <h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
 <p><em>(Checkpoint Echo)</em></p>
 <p>TODO</p>
@@ -682,6 +709,12 @@ cst816s_get_touch_data:   y:       106
 <p><a href="https://youtu.be/mb3zcacDGPc">(Later we might automate this with a “Robot Finger”)</a></p>
 <h2 id="checkpoint-echo"><a href="#checkpoint-echo">8.1 Checkpoint Echo</a></h2>
 <p>TODO</p>
+<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Start the second script: pinedio2.sh
+SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
+SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
+$SCRIPT_DIR/pinedio2.sh</code></pre></div>
+<p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>echo ; echo &quot;----- Send command to BL602: lvgltest&quot; ; sleep 2
 echo &quot;&quot; &gt;/dev/ttyUSB0
@@ -693,6 +726,7 @@ echo ; echo &quot;----- HELLO HUMAN: TOUCH PINEDIO STACK NOW&quot; ; sleep 2</co
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;cst816s_get_touch_data: UP: id=0, touch=&quot; /tmp/test.log)
 set -e  ##  Exit when any command fails</code></pre></div>
+<p>TODO: Why not accelerometer?</p>
 <p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>TODO</p>
