@@ -651,7 +651,7 @@ Plenty! We'll test these features in the LoRaWAN Test...
 
 -   __Strong Random Number Generator__: Generate the LoRaWAN Nonce [(See this)](https://lupyuen.github.io/articles/lorawan3#lorawan-nonce)
 
-_Let's run the LoRaWAN Test already!_
+_Alright let's run the LoRaWAN Test already!_
 
 Our script starts the LoRaWAN Test by sending the __lorawan_test__ command to PineDio Stack...
 
@@ -713,7 +713,7 @@ Which means that GPIO Input / Ouput / Interrupt, SPI, ADC, Timers, Multithreadin
 
 ## Checkpoint Delta
 
-To start the LoRaWAN Test, our script sends the __lorawan_test__ command to PineDio Stack: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134)
+To run the LoRaWAN Test, our script sends the __lorawan_test__ command to PineDio Stack: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134)
 
 ```bash
 echo "lorawan_test" >/dev/ttyUSB0
@@ -738,24 +738,41 @@ __lorawan_test__ is the LoRaWAN Test App that's described in this article...
 
 -   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
-TODO: Semtech, sx1262, lorawan, GPIO Expander, SPI Device Table, SPI Test Driver, NimBLE Porting Layer
+The app was ported from [__Semtech's LoRaWAN Stack__](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c) to NuttX and calls these __NuttX Libraries__...
 
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222)
+-   [__LoRaWAN Library__](https://github.com/lupyuen/LoRaMac-node-nuttx) (ported from Semtech)
 
-```bash
-##  Start the second script: pinedio2.sh
-SCRIPT_PATH="${BASH_SOURCE}"
-SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
-$SCRIPT_DIR/pinedio2.sh
-```
+-   [__SX1262 Library__](https://github.com/lupyuen/lora-sx1262/tree/lorawan) (also ported from Semtech)
 
-TODO: ChirpStack
+-   [__NimBLE Porting Layer__](https://github.com/lupyuen/nimble-porting-nuttx) (for Timers, Multithreading and Message Queues)
 
-TODO: Break down into smaller tests, like SPI Test
+The __Device Drivers__ called by the app are...
+
+-   [__SPI Test Driver__](https://lupyuen.github.io/articles/spi2#spi-test-app-and-driver): /dev/spitest0
+
+    (Which calls the SPI Driver and [__SPI Device Table__](https://lupyuen.github.io/articles/pinedio2#spi-device-table))
+
+-   [__GPIO Expander__](https://github.com/lupyuen/bl602_expander): 
+
+    -   /dev/gpio10 (SX1262 Busy)
+    -   /dev/gpio15 (SX1262 Chip Select)
+    -   /dev/gpio19 (SX1262 DIO1)
+
+_What about the ChirpStack LoRaWAN Gateway? What needs to be configured?_
+
+For the LoRaWAN Test to succeed, we must configure the __Device EUI, Join EUI and App Key__ from the ChirpStack LoRaWAN Gateway...
+
+-   [__"Device EUI, Join EUI and App Key"__](https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key)
+
+_Isn't the LoRaWAN Test testing way too much? GPIO, SPI, ADC, Timers, Multithreading, ..._
+
+Yeah someday we ought to build __smaller tests for specific features__ like GPIO, ADC, Timers, Multithreading, ... Similar to our SPI Test.
+
+But for now we'll have to live with the inconvenience of identifying which specific feature could have caused the LoRaWAN Test to fail.
 
 ![LVGL Test App for testing the Touch Panel](https://lupyuen.github.io/images/touch-title.jpg)
 
-_LVGL Test App for testing the Touch Panel_
+[_LVGL Test App for testing the Touch Panel_](https://lupyuen.github.io/articles/touch)
 
 # Touch Panel Test
 
@@ -802,6 +819,17 @@ For the test to succeed, we must tap the screen to generate a Touch Event.
 
 TODO
 
+From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222)
+
+```bash
+##  Start the second script: pinedio2.sh
+SCRIPT_PATH="${BASH_SOURCE}"
+SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
+$SCRIPT_DIR/pinedio2.sh
+```
+
+TODO
+
 From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112)
 
 ```bash
@@ -821,6 +849,8 @@ set +e  ##  Don't exit when any command fails
 match=$(grep "cst816s_get_touch_data: UP: id=0, touch=" /tmp/test.log)
 set -e  ##  Exit when any command fails
 ```
+
+TODO: Why not accelerometer?
 
 ![TODO](https://lupyuen.github.io/images/auto2-code1a.png)
 
