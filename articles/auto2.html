@@ -86,7 +86,7 @@
 <li><a href="#appendix-testing-script">13 Appendix: Testing Script</a><ul></ul></li>
 <li><a href="#appendix-run-the-script">14 Appendix: Run The Script</a><ul></ul></li>
 <li><a href="#appendix-select-usb-device">15 Appendix: Select USB Device</a><ul></ul></li>
-<li><a href="#appendix-output-log-for-pinedio-stack-bl604-build">16 Appendix: Output Log for PineDio Stack BL604 Build</a><ul></ul></li></ul></nav><p>📝 <em>18 May 2022</em></p>
+<li><a href="#appendix-output-log-for-pinedio-stack-bl604-build">16 Appendix: Output Log for PineDio Stack BL604 Build</a><ul></ul></li></ul></nav><p>📝 <em>20 May 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/auto2-title.jpg" alt="PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing" /></p>
 <p><em>PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing</em></p>
 <p>Pine64 is about to launch their most exciting RISC-V gadget: <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604 RISC-V Board</strong></a> with Touch Screen, LoRa and many other features.</p>
@@ -623,23 +623,30 @@ CHANNEL MASK: 0003</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>All OK! BL602 has successfully joined the LoRaWAN Network</code></pre></div>
 <p>Which means that GPIO Input / Ouput / Interrupt, SPI, ADC, Timers, Multithreading, Message Queues and Strong Random Number Generator are all working OK!</p>
 <h2 id="checkpoint-delta"><a href="#checkpoint-delta">7.1 Checkpoint Delta</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>echo ; echo &quot;----- Send command to BL602: lorawan_test&quot; ; sleep 2
-echo &quot;&quot; &gt;/dev/ttyUSB0
-echo &quot;lorawan_test&quot; &gt;/dev/ttyUSB0</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L142">pinedio.sh</a></p>
+<p>To start the LoRaWAN Test, our script sends the <strong>lorawan_test</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>echo &quot;lorawan_test&quot; &gt;/dev/ttyUSB0</code></pre></div>
+<p>And checks whether PineDio Stack has successfully <strong>joined the LoRaWAN Network</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L146">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has joined the LoRaWAN Network
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;JOINED&quot; /tmp/test.log)
-set -e  ##  Exit when any command fails</code></pre></div>
-<p>TODO</p>
+set -e  ##  Exit when any command fails
+
+#  If BL602 has joined the LoRaWAN Network, then everything is super hunky dory!
+if [ &quot;$match&quot; != &quot;&quot; ]; then
+  echo; echo &quot;===== All OK! BL602 has successfully joined the LoRaWAN Network&quot;</code></pre></div>
+<p><em>What’s inside lorawan_test?</em></p>
+<p><strong>lorawan_test</strong> is the LoRaWAN Test App that’s described in this article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></li>
+</ul>
+<p>TODO: Semtech, sx1262, lorawan, GPIO Expander, SPI Device Table, SPI Test Driver, NimBLE Porting Layer</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Start the second script: pinedio2.sh
 SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
 SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
 $SCRIPT_DIR/pinedio2.sh</code></pre></div>
+<p>TODO: ChirpStack</p>
+<p>TODO: Break down into smaller tests, like SPI Test</p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="LVGL Test App for testing the Touch Panel" /></p>
 <p><em>LVGL Test App for testing the Touch Panel</em></p>
 <h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
