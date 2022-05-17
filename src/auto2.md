@@ -908,11 +908,14 @@ TODO
 To __upload the Test Log__ to GitHub Release Notes...
 
 ```bash
-##  Run the script for Auto Flash and Test.
+##  Run the script for Auto Flash and Test for PineDio Stack BL604.
 ##  Capture the Test Log in /tmp/release.log
-script -c remote-bl602/scripts/test.sh /tmp/release.log
+script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 
-##  Upload the Test Log to the GitHub Release Notes
+##  TODO: Install the GitHub CLI for uploading Release Notes
+##  See https://cli.github.com
+
+##  Optional: Upload the Test Log to the GitHub Release Notes
 remote-bl602/scripts/upload.sh
 ```
 
