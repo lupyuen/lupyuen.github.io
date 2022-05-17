@@ -841,22 +841,14 @@ The script prompts us to touch the screen.
 When we touch the screen, the __CST816S Touch Panel Driver__ shows a __Touch Down Event__ with the coordinates of the touched point (read over I2C)...
 
 ```text
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       83
-cst816s_get_touch_data:   y:       106
+DOWN: id=0, touch=0, x=83, y=106
 ```
 
 As we lift our finger off the screen, the driver shows a __Touch Up Event__...
 
 ```text
-cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
-cst816s_get_touch_data: UP: id=0, touch=2, x=83, y=106
-cst16s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   0c
-cst816s_get_touch_data:   x:       83
-cst816s_get_touch_data:   y:       106
+Invalid touch data: id=9, touch=2, x=639, y=1688
+UP: id=0, touch=2, x=83, y=106
 ```
 
 [(Why the Touch Data is invalid)](https://lupyuen.github.io/articles/touch#touch-up-event)
