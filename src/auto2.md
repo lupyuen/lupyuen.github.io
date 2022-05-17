@@ -815,9 +815,11 @@ But we're not testing the Accelerometer because...
 
 -   Touch Panel is __probably more important__ than the Accelerometer for most devs
 
-_How do we test the Touch Panel and the I2C Bus?_
+_How do we test the Touch Panel and I2C Bus?_
 
 TODO: LVGL Test App
+
+TODO: Not automated
 
 TODO: Our script sends the __lvgltest__ command to start
 
