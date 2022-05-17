@@ -610,7 +610,7 @@ _(Checkpoint Delta)_
 
 Now comes the most complicated checkpoint: __LoRaWAN Test__.
 
-For this test our script shall...
+For this test our script shall do some wireless comms...
 
 1.  Send a __Join LoRaWAN Network__ Request
 
@@ -721,7 +721,11 @@ Which means that GPIO Input / Ouput / Interrupt, SPI, ADC, Timers, Multithreadin
 To run the LoRaWAN Test, our script sends the __lorawan_test__ command to PineDio Stack: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134)
 
 ```bash
+##  Send the LoRaWAN Test Command
 echo "lorawan_test" >/dev/ttyUSB0
+
+##  Wait 20 seconds to join the LoRaWAN Network
+sleep 20
 ```
 
 And checks whether PineDio Stack has successfully __joined the LoRaWAN Network__: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L146)
@@ -736,6 +740,14 @@ set -e  ##  Exit when any command fails
 if [ "$match" != "" ]; then
   echo; echo "===== All OK! BL602 has successfully joined the LoRaWAN Network"
 ```
+
+_What happens if PineDio Stack fails to join the LoRaWAN Network?_
+
+PineDio Stack will __retry repeatedly__ until it hits the timeout after 20 seconds.
+
+Be sure that the __LoRaWAN Gateway Settings__ are correct! The gateway will silently drop invalid requests without notifying our device.
+
+(More about this in a while)
 
 _What's inside lorawan_test?_
 
@@ -769,6 +781,10 @@ For the LoRaWAN Test to succeed, we must configure the __Device EUI, Join EUI an
 
 -   [__"Device EUI, Join EUI and App Key"__](https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key)
 
+Also verify that the __LoRaWAN Frequency__ is correct...
+
+-   [__"LoRaWAN Frequency"__](https://lupyuen.github.io/articles/lorawan3#lorawan-frequency)
+
 _Isn't the LoRaWAN Test testing way too much? GPIO, SPI, ADC, Timers, Multithreading, ..._
 
 Yeah someday we ought to build __smaller tests for specific features__ like GPIO, ADC, Timers, Multithreading, ... Similar to our SPI Test.
@@ -799,7 +815,7 @@ But we're not testing the Accelerometer because...
 
 -   Touch Panel is __probably more important__ than the Accelerometer for most devs
 
-TODO
+TODO: Our script sends the __lvgltest__ command to start
 
 ```text
 nsh> lvgltest
