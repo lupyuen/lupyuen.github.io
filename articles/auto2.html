@@ -698,10 +698,10 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <p>For our final checkpoint we shall test…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/bme280"><strong>I2C Driver</strong></a> from NuttX (/dev/i2c0)</p>
+<p><a href="https://lupyuen.github.io/articles/bme280"><strong>I2C Driver “/dev/i2c0”</strong></a> from NuttX</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/touch"><strong>CST816S Touch Panel</strong></a> connected to PineDio Stack (over I2C)</p>
+<p><a href="https://lupyuen.github.io/articles/touch"><strong>CST816S Touch Panel “/dev/input0”</strong></a> connected to the I2C Bus</p>
 </li>
 </ul>
 <p><em>Why not test the I2C Accelerometer instead?</em></p>
@@ -716,37 +716,34 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 </li>
 </ul>
 <p><em>How do we test the Touch Panel and I2C Bus?</em></p>
-<p>TODO: <a href="https://lupyuen.github.io/articles/touch#run-the-driver"><strong>LVGL Test App</strong></a></p>
-<p>TODO: Not automated</p>
-<p>TODO: Our script sends the <strong>lvgltest</strong> command to start</p>
+<p>Our <a href="https://lupyuen.github.io/articles/touch#run-the-driver"><strong>LVGL Test App</strong></a> includes a <strong>Touchscreen Calibration</strong> step that records the points touched on the Touch Panel.</p>
+<p>We’ll run the app, tap the screen and verify that the Touch Panel generates <strong>valid Touch Data</strong> over I2C when touched.</p>
+<p><em>So this isn’t automated?</em></p>
+<p>Well our script starts the app automatically, but we need to run over and <strong>tap the screen</strong> when prompted. Here’s how it works…</p>
+<p>Our script sends the <strong>lvgltest</strong> command to start the LVGL Test App…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
 tp_init: Opening /dev/input0
 cst816s_open: 
 HELLO HUMAN: TOUCH PINEDIO STACK NOW</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
-<p>TODO</p>
+<p>The script prompts us to touch the screen.</p>
+<p>When we touch the screen, the <strong>CST816S Touch Panel Driver</strong> shows a <strong>Touch Down Event</strong> with the coordinates of the touched point (read over I2C)…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
 cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       83
 cst816s_get_touch_data:   y:       106</code></pre></div>
-<p>TODO</p>
+<p>As we lift our finger off the screen, the driver shows a <strong>Touch Up Event</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
 cst816s_get_touch_data: UP: id=0, touch=2, x=83, y=106
 cst16s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   0c
 cst816s_get_touch_data:   x:       83
 cst816s_get_touch_data:   y:       106</code></pre></div>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/touch#touch-up-event">(Why the Touch Data is invalid)</a></p>
+<p>Our script <strong>detects the Touch Up Event</strong> and reports that the test has succeeded…</p>
 <div class="example-wrap"><pre class="language-text"><code>All OK! BL604 has responded to touch</code></pre></div>
-<p>TODO</p>
-<p>The second script auto-restarts PineDio Stack and runs the <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> (to test the touchscreen)…</p>
-<ul>
-<li><a href="scripts/pinedio2.sh">scripts/pinedio2.sh</a></li>
-</ul>
-<p>The <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> renders a screen to the ST7789 SPI Display and waits for a Touch Event from the CST816S I2C Touch Panel.</p>
-<p>For the test to succeed, we must tap the screen to generate a Touch Event.</p>
-<p><a href="https://youtu.be/mb3zcacDGPc">(Later we might automate this with a “Robot Finger”)</a></p>
+<p>Yep PineDio Stack’s Touch Panel and I2C Bus are working OK!</p>
 <h2 id="checkpoint-echo"><a href="#checkpoint-echo">8.1 Checkpoint Echo</a></h2>
 <p>TODO</p>
 <p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222">pinedio.sh</a></p>
@@ -766,7 +763,8 @@ echo ; echo &quot;----- HELLO HUMAN: TOUCH PINEDIO STACK NOW&quot; ; sleep 2</co
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;cst816s_get_touch_data: UP: id=0, touch=&quot; /tmp/test.log)
 set -e  ##  Exit when any command fails</code></pre></div>
-<p>TODO: Why not accelerometer?</p>
+<p>TODO</p>
+<p><a href="https://youtu.be/mb3zcacDGPc">(Later we might automate this with a “Robot Finger”)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>TODO</p>
