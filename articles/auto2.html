@@ -728,18 +728,10 @@ HELLO HUMAN: TOUCH PINEDIO STACK NOW</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>The script prompts us to touch the screen.</p>
 <p>When we touch the screen, the <strong>CST816S Touch Panel Driver</strong> shows a <strong>Touch Down Event</strong> with the coordinates of the touched point (read over I2C)…</p>
-<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       83
-cst816s_get_touch_data:   y:       106</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>DOWN: id=0, touch=0, x=83, y=106</code></pre></div>
 <p>As we lift our finger off the screen, the driver shows a <strong>Touch Up Event</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
-cst816s_get_touch_data: UP: id=0, touch=2, x=83, y=106
-cst16s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   0c
-cst816s_get_touch_data:   x:       83
-cst816s_get_touch_data:   y:       106</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Invalid touch data: id=9, touch=2, x=639, y=1688
+UP: id=0, touch=2, x=83, y=106</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/touch#touch-up-event">(Why the Touch Data is invalid)</a></p>
 <p>Our script <strong>detects the Touch Up Event</strong> and reports that the test has succeeded…</p>
 <div class="example-wrap"><pre class="language-text"><code>All OK! BL604 has responded to touch</code></pre></div>
