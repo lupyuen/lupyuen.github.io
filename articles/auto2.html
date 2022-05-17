@@ -760,11 +760,14 @@ set -e  ##  Exit when any command fails</code></pre></div>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>TODO</p>
 <p>To <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Run the script for Auto Flash and Test.
+<div class="example-wrap"><pre class="language-bash"><code>#  Run the script for Auto Flash and Test for PineDio Stack BL604.
 #  Capture the Test Log in /tmp/release.log
-script -c remote-bl602/scripts/test.sh /tmp/release.log
+script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 
-#  Upload the Test Log to the GitHub Release Notes
+#  TODO: Install the GitHub CLI for uploading Release Notes
+#  See https://cli.github.com
+
+#  Optional: Upload the Test Log to the GitHub Release Notes
 remote-bl602/scripts/upload.sh</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
 <p>The <code>script</code> command runs the Auto Flash and Test Script <code>test.sh</code>, and captures the Test Log to <code>/tmp/release.log</code>.</p>
