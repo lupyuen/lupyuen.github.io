@@ -778,32 +778,51 @@ But for now we'll have to live with the inconvenience of identifying which speci
 
 _(Checkpoint Echo)_
 
+For our final checkpoint we shall test...
+
+-   [__I2C Driver__](https://lupyuen.github.io/articles/bme280) from NuttX (/dev/i2c0)
+
+-   [__CST816S Touch Panel__](https://lupyuen.github.io/articles/touch) connected to PineDio Stack (over I2C)
+
 TODO
 
 ```text
------ Send command to BL602: lvgltest
-
 nsh> lvgltest
 tp_init: Opening /dev/input0
 cst816s_open: 
 HELLO HUMAN: TOUCH PINEDIO STACK NOW
-...
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+
+TODO
+
+```text
 cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
 cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       83
 cst816s_get_touch_data:   y:       106
-...
+```
+
+TODO
+
+```text
 cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
 cst816s_get_touch_data: UP: id=0, touch=2, x=83, y=106
 cst16s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   0c
 cst816s_get_touch_data:   x:       83
 cst816s_get_touch_data:   y:       106
-===== All OK! BL604 has responded to touch
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+TODO
+
+```text
+All OK! BL604 has responded to touch
+```
+
+TODO
 
 The second script auto-restarts PineDio Stack and runs the [LVGL Test App](https://github.com/lupyuen/lvgltest-nuttx) (to test the touchscreen)...
 
