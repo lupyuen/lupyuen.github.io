@@ -535,7 +535,7 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <h1 id="lorawan-test"><a href="#lorawan-test">7 LoRaWAN Test</a></h1>
 <p><em>(Checkpoint Delta)</em></p>
 <p>Now comes the most complicated checkpoint: <strong>LoRaWAN Test</strong>.</p>
-<p>For this test our script shall…</p>
+<p>For this test our script shall do some wireless comms…</p>
 <ol>
 <li>
 <p>Send a <strong>Join LoRaWAN Network</strong> Request</p>
@@ -629,7 +629,11 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>Which means that GPIO Input / Ouput / Interrupt, SPI, ADC, Timers, Multithreading, Message Queues and Strong Random Number Generator are all working OK!</p>
 <h2 id="checkpoint-delta"><a href="#checkpoint-delta">7.1 Checkpoint Delta</a></h2>
 <p>To run the LoRaWAN Test, our script sends the <strong>lorawan_test</strong> command to PineDio Stack: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L132-L134">pinedio.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>echo &quot;lorawan_test&quot; &gt;/dev/ttyUSB0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>#  Send the LoRaWAN Test Command
+echo &quot;lorawan_test&quot; &gt;/dev/ttyUSB0
+
+#  Wait 20 seconds to join the LoRaWAN Network
+sleep 20</code></pre></div>
 <p>And checks whether PineDio Stack has successfully <strong>joined the LoRaWAN Network</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L139-L146">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has joined the LoRaWAN Network
 set +e  ##  Don&#39;t exit when any command fails
@@ -639,6 +643,10 @@ set -e  ##  Exit when any command fails
 #  If BL602 has joined the LoRaWAN Network, then everything is super hunky dory!
 if [ &quot;$match&quot; != &quot;&quot; ]; then
   echo; echo &quot;===== All OK! BL602 has successfully joined the LoRaWAN Network&quot;</code></pre></div>
+<p><em>What happens if PineDio Stack fails to join the LoRaWAN Network?</em></p>
+<p>PineDio Stack will <strong>retry repeatedly</strong> until it hits the timeout after 20 seconds.</p>
+<p>Be sure that the <strong>LoRaWAN Gateway Settings</strong> are correct! The gateway will silently drop invalid requests without notifying our device.</p>
+<p>(More about this in a while)</p>
 <p><em>What’s inside lorawan_test?</em></p>
 <p><strong>lorawan_test</strong> is the LoRaWAN Test App that’s described in this article…</p>
 <ul>
@@ -676,6 +684,10 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key"><strong>“Device EUI, Join EUI and App Key”</strong></a></li>
 </ul>
+<p>Also verify that the <strong>LoRaWAN Frequency</strong> is correct…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lorawan3#lorawan-frequency"><strong>“LoRaWAN Frequency”</strong></a></li>
+</ul>
 <p><em>Isn’t the LoRaWAN Test testing way too much? GPIO, SPI, ADC, Timers, Multithreading, …</em></p>
 <p>Yeah someday we ought to build <strong>smaller tests for specific features</strong> like GPIO, ADC, Timers, Multithreading, … Similar to our SPI Test.</p>
 <p>But for now we’ll have to live with the inconvenience of identifying which specific feature could have caused the LoRaWAN Test to fail.</p>
@@ -703,7 +715,7 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <p>Touch Panel is <strong>probably more important</strong> than the Accelerometer for most devs</p>
 </li>
 </ul>
-<p>TODO</p>
+<p>TODO: Our script sends the <strong>lvgltest</strong> command to start</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
 tp_init: Opening /dev/input0
 cst816s_open: 
