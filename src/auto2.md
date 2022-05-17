@@ -817,7 +817,7 @@ But we're not testing the Accelerometer because...
 
 _How do we test the Touch Panel and I2C Bus?_
 
-TODO: LVGL Test App
+TODO: [__LVGL Test App__](https://lupyuen.github.io/articles/touch#run-the-driver)
 
 TODO: Not automated
 
