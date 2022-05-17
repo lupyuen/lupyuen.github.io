@@ -161,9 +161,14 @@ cargo install blflash
 ##  Download the flash and test script
 git clone --recursive https://github.com/lupyuen/remote-bl602/
 
-##  Run the script for Auto Flash and Test.
+##  Always sync the clock before running the script
+sudo apt install ntpdate
+sudo ntpdate -u time.nist.gov
+date
+
+##  Run the script for Auto Flash and Test for PineDio Stack BL604.
 ##  Capture the Test Log in /tmp/release.log
-script -c remote-bl602/scripts/test.sh /tmp/release.log
+script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 
 ##  TODO: Install the GitHub CLI for uploading Release Notes
 ##  See https://cli.github.com
@@ -783,6 +788,16 @@ For our final checkpoint we shall test...
 -   [__I2C Driver__](https://lupyuen.github.io/articles/bme280) from NuttX (/dev/i2c0)
 
 -   [__CST816S Touch Panel__](https://lupyuen.github.io/articles/touch) connected to PineDio Stack (over I2C)
+
+_Why not test the I2C Accelerometer instead?_
+
+[__PineDio Stack's Accelerometer__](https://lupyuen.github.io/articles/pinedio2#accelerometer) is connected to the same I2C Bus as the Touch Panel.
+
+But we're not testing the Accelerometer because...
+
+-   We don't have a __NuttX Driver__ for the Accelerometer
+
+-   Touch Panel is __probably more important__ than the Accelerometer for most devs
 
 TODO
 
