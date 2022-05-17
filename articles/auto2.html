@@ -678,28 +678,37 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <p><a href="https://lupyuen.github.io/articles/touch"><em>LVGL Test App for testing the Touch Panel</em></a></p>
 <h1 id="touch-panel-test"><a href="#touch-panel-test">8 Touch Panel Test</a></h1>
 <p><em>(Checkpoint Echo)</em></p>
+<p>For our final checkpoint we shall test…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280"><strong>I2C Driver</strong></a> from NuttX (/dev/i2c0)</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/touch"><strong>CST816S Touch Panel</strong></a> connected to PineDio Stack (over I2C)</p>
+</li>
+</ul>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>----- Send command to BL602: lvgltest
-
-nsh&gt; lvgltest
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
 tp_init: Opening /dev/input0
 cst816s_open: 
-HELLO HUMAN: TOUCH PINEDIO STACK NOW
-...
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
+HELLO HUMAN: TOUCH PINEDIO STACK NOW</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: DOWN: id=0, touch=0, x=83, y=106
 cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       83
-cst816s_get_touch_data:   y:       106
-...
-cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
+cst816s_get_touch_data:   y:       106</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
 cst816s_get_touch_data: UP: id=0, touch=2, x=83, y=106
 cst16s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   0c
 cst816s_get_touch_data:   x:       83
-cst816s_get_touch_data:   y:       106
-===== All OK! BL604 has responded to touch</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+cst816s_get_touch_data:   y:       106</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>All OK! BL604 has responded to touch</code></pre></div>
+<p>TODO</p>
 <p>The second script auto-restarts PineDio Stack and runs the <a href="https://github.com/lupyuen/lvgltest-nuttx">LVGL Test App</a> (to test the touchscreen)…</p>
 <ul>
 <li><a href="scripts/pinedio2.sh">scripts/pinedio2.sh</a></li>
