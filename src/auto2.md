@@ -887,8 +887,7 @@ TODO
 From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112)
 
 ```bash
-echo ; echo "----- Send command to BL602: lvgltest" ; sleep 2
-echo "" >/dev/ttyUSB0
+##  Send command to PineDio Stack: lvgltest
 echo "lvgltest" >/dev/ttyUSB0 ; sleep 1
 echo ; echo "----- HELLO HUMAN: TOUCH PINEDIO STACK NOW" ; sleep 2
 ```
