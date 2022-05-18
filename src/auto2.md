@@ -170,8 +170,8 @@ date
 ##  Capture the Test Log in /tmp/release.log
 script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 
-##  TODO: Install the GitHub CLI for uploading Release Notes
-##  See https://cli.github.com
+##  TODO: Install the GitHub CLI for uploading Release Notes: https://cli.github.com
+##  Log in a GitHub Token that has "repo" and "read:org" permissions
 
 ##  Optional: Upload the Test Log to the GitHub Release Notes
 remote-bl602/scripts/upload.sh
@@ -953,8 +953,8 @@ This how we __upload the Test Log__ to GitHub Release Notes...
 ##  Capture the Test Log in /tmp/release.log
 script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 
-##  TODO: Install the GitHub CLI for uploading Release Notes
-##  See https://cli.github.com
+##  TODO: Install the GitHub CLI for uploading Release Notes: https://cli.github.com
+##  Log in a GitHub Token that has "repo" and "read:org" permissions
 
 ##  Optional: Upload the Test Log to the GitHub Release Notes
 remote-bl602/scripts/upload.sh
@@ -970,12 +970,12 @@ Yes our Upload Script calls the __GitHub CLI__ to upload the Automated Test Log 
 
 -   [__GitHub CLI__](https://cli.github.com)
 
-We need to log in with a __GitHub Token__...
+We need to log in with a __GitHub Token__ that has permission to update the Release Notes...
 
 ```bash
 ##  TODO: Create a new GitHub Token at 
 ##  https://github.com/settings/tokens/new
-##  Token must have "repo" and "read:org" permssions
+##  Token must have "repo" and "read:org" permissions
 
 ##  Log in with the GitHub Token
 gh auth login --with-token
@@ -985,6 +985,8 @@ gh release list --repo lupyuen/incubator-nuttx
 ```
 
 _What's inside our Upload Script?_
+
+TODO
 
 The Upload Script begins by calling the GitHub CLI to download the Auto-Generated GitHub Release Notes (populated by the GitHub Actions Build): [__upload.sh__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh)
 
