@@ -4,7 +4,7 @@
 
 ![PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-title.jpg)
 
-_PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing_
+_PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing_
 
 Pine64 is about to launch their most exciting RISC-V gadget: [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2) with Touch Screen, LoRa and many other features.
 
@@ -1081,9 +1081,9 @@ gh release edit \
 
 That's it for uploading the Automated Test Log to GitHub!
 
-![PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-connect.jpg)
+![PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-connect.jpg)
 
-_PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing_
+_PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing_
 
 # Merge Updates From NuttX
 
