@@ -1,6 +1,6 @@
 # (Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board
 
-📝 _20 May 2022_
+📝 _22 May 2022_
 
 ![PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-title.jpg)
 
@@ -940,13 +940,17 @@ Hope it fits inside our Automated Testing Enclosure: [__IKEA 365+ 5.2L Food Cont
 
 # Upload Test Log
 
-The lesson we learnt from Alice, Bob and Chow: It's super helpful to __preserve the Automated Test Logs__!
+The lesson we learnt from Alice, Bob and Chow: It's super helpful to __preserve the Automated Test Logs__ for every NuttX Release!
 
 -   [__Automated Test Log for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
 (Especially when collaborating across time zones)
 
-This how we __upload the Test Log__ to GitHub Release Notes...
+![Automated Test Log for PineDio Stack](https://lupyuen.github.io/images/auto2-release.jpg)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+
+This how we __upload the Automated Test Log__ to GitHub Release Notes...
 
 ```bash
 ##  Run the script for Auto Flash and Test for PineDio Stack BL604.
@@ -970,7 +974,7 @@ Yes our Upload Script calls the __GitHub CLI__ to upload the Automated Test Log 
 
 -   [__GitHub CLI__](https://cli.github.com)
 
-We need to log in with a __GitHub Token__ that has permission to update the Release Notes...
+We need to install the GitHub CLI and log in with a __GitHub Token__ that has permission to update the Release Notes...
 
 ```bash
 ##  TODO: Create a new GitHub Token at 
@@ -985,6 +989,8 @@ gh release list --repo lupyuen/incubator-nuttx
 ```
 
 _What's inside our Upload Script?_
+
+Our Upload Script assumes
 
 TODO
 
