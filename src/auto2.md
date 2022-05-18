@@ -940,7 +940,7 @@ Hope it fits inside our Automated Testing Enclosure: [__IKEA 365+ 5.2L Food Cont
 
 # Upload Test Log
 
-TODO
+TODO: Alice, Bob and Chow, really helpful to preserve the Test Logs, especially when working across time zones
 
 To __upload the Test Log__ to GitHub Release Notes...
 
