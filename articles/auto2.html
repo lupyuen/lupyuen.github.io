@@ -743,12 +743,15 @@ UP: id=0, touch=2, x=83, y=106</code></pre></div>
 SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
 SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
 $SCRIPT_DIR/pinedio2.sh</code></pre></div>
-<p>The second script sends the <strong>lvgltest</strong> command to start the LVGL Test App: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112">pinedio2.sh</a></p>
+<p>The second script sends the <strong>lvgltest</strong> command to start the LVGL Test App: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L102-L108">pinedio2.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Send command to PineDio Stack: lvgltest
 echo &quot;lvgltest&quot; &gt;/dev/ttyUSB0 ; sleep 1
-echo ; echo &quot;----- HELLO HUMAN: TOUCH PINEDIO STACK NOW&quot; ; sleep 2</code></pre></div>
+echo ; echo &quot;----- HELLO HUMAN: TOUCH PINEDIO STACK NOW&quot; ; sleep 2
+
+#  Wait 30 seconds for the screen to be tapped
+sleep 30</code></pre></div>
 <p>And prompts us to tap the screen.</p>
-<p>The script searches for a <strong>Touch Up Event</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L110-L117">pinedio2.sh</a></p>
+<p>30 seconds later our script searches for a <strong>Touch Up Event</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L110-L117">pinedio2.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL604 has responded to touch
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;cst816s_get_touch_data: UP: id=0, touch=&quot; /tmp/test.log)
@@ -765,12 +768,25 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 </ul>
 <p>When the app starts, it runs a <strong>Touchscreen Calibration</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c"><strong>Source Code for Touchscreen Calibration</strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c"><strong>Source Code for Touchscreen Calibration</strong></a></p>
+</li>
+<li>
+<p><a href="https://youtube.com/shorts/2Nzjrlp5lcE?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
+</li>
 </ul>
 <p>Which we’re using to test PineDio Stack’s Touch Panel.</p>
-<p>TODO: Multiple touch down</p>
-<p><a href="https://youtu.be/mb3zcacDGPc">(Later we might automate this with a “Robot Finger”)</a></p>
-<p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
+<p><em>But the Touchreen Calibration needs us to tap the 4 corners. Our script only watches for one tap?</em></p>
+<p>Yeah remember that my Spare PineDio Stack has a defective ST7789 Display. So we can’t see the 4 corners anyway.</p>
+<p>Hopefully <strong>tapping the screen once</strong> in the centre will be sufficient for testing the Touch Panel.</p>
+<p>(Our script should probably validate that the reported coordinates are close to the centre of the screen)</p>
+<p><em>Can we fully automate the Touch Panel Test? And do away with the Manual Tapping?</em></p>
+<p>Yep we need some kind of <strong>Robot Finger</strong> to tap the screen.</p>
+<p>The finger thingy needs to apply <strong>sufficient pressure</strong> to the screen (but not too much) in order to wake up the Touch Panel. <a href="https://lupyuen.github.io/articles/touch#cst816s-touch-panel">(See this)</a></p>
+<p>We could use a <a href="https://web.archive.org/web/20220518023458/https://www.aliexpress.com/item/1005002449391401.html"><strong>Motorised Controller</strong></a> with an attached <a href="https://web.archive.org/web/20220518023454/https://www.aliexpress.com/item/32831863881.html"><strong>Stylus</strong></a>.</p>
+<p>Or a <a href="https://www.seeedstudio.com/Grove-Servo.html"><strong>Servo Motor</strong></a> wrapped with an <a href="https://youtu.be/mb3zcacDGPc"><strong>Electrostatic Discharge Bag</strong></a>.</p>
+<p>Hope it fits inside our Automated Testing Enclosure: <a href="https://www.ikea.com/sg/en/p/ikea-365-food-container-with-lid-rectangular-plastic-s69276794/"><strong>IKEA 365+ 5.2L Food Container</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/auto2-box.jpg" alt="Our Automated Testing Enclosure: IKEA 365+ 5.2L Food Container" /></p>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>TODO</p>
 <p>To <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
@@ -842,6 +858,8 @@ gh release edit \
     `cat /tmp/release.tag` \
     --notes-file /tmp/release2.log \
     --repo lupyuen/incubator-nuttx</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/auto2-pinecone.jpg" alt="TODO" /></p>
 <h1 id="merge-updates-from-nuttx"><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a></h1>
 <p>TODO</p>
@@ -1660,7 +1678,6 @@ cst816s_get_touch_data:   y:       106
 
 + read -p &#39;Press Enter to shutdown&#39;
 Press Enter to shutdown</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/auto2-box.jpg" alt="" /></p>
 <p>TODO2</p>
 <p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="" /></p>
 
