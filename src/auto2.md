@@ -863,9 +863,9 @@ Yep PineDio Stack's Touch Panel and I2C Bus are working OK!
 
 ## Checkpoint Echo
 
-TODO
+The Touch Panel Test lives in a separate script: [__pinedio2.sh__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh)
 
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222)
+We __launch the second script__ after completing the LoRaWAN Test: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222)
 
 ```bash
 ##  Start the second script: pinedio2.sh
@@ -874,9 +874,7 @@ SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
 $SCRIPT_DIR/pinedio2.sh
 ```
 
-TODO
-
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112)
+The second script sends the __lvgltest__ command to start the LVGL Test App: [pinedio2.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112)
 
 ```bash
 ##  Send command to PineDio Stack: lvgltest
@@ -884,18 +882,36 @@ echo "lvgltest" >/dev/ttyUSB0 ; sleep 1
 echo ; echo "----- HELLO HUMAN: TOUCH PINEDIO STACK NOW" ; sleep 2
 ```
 
-TODO
+And prompts us to tap the screen.
 
-From [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L117-L120)
+The script searches for a __Touch Up Event__: [pinedio2.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L110-L117)
 
 ```bash
 ##  Check whether BL604 has responded to touch
 set +e  ##  Don't exit when any command fails
 match=$(grep "cst816s_get_touch_data: UP: id=0, touch=" /tmp/test.log)
 set -e  ##  Exit when any command fails
+
+##  If BL604 has responded to touch, then everything is super hunky dory!
+if [ "$match" != "" ]; then
+  echo; echo "===== All OK! BL604 has responded to touch"
 ```
 
-TODO
+And reports that the test has succeeded.
+
+_What's inside lvgltest?_
+
+__lvgltest__ is our Test App for the __LVGL Graphics Library__...
+
+-   [__LVGL Test App__](https://github.com/lupyuen/lvgltest-nuttx)
+
+When the app starts, it runs a __Touchscreen Calibration__...
+
+-   [__Source Code for Touchscreen Calibration__](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c)
+
+Which we're using to test PineDio Stack's Touch Panel.
+
+TODO: Multiple touch down
 
 [(Later we might automate this with a "Robot Finger")](https://youtu.be/mb3zcacDGPc)
 
