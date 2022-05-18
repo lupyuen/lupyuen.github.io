@@ -1018,9 +1018,7 @@ gh release view \
 
 [("__gh release view__" is explained here)](https://cli.github.com/manual/gh_release_view)
 
-TODO
-
-In case the script is run twice, we search for the Previous Test Log...
+In case the script is run twice, we search for the __Previous Automated Test Log__...
 
 ```bash
 ##  Find the position of the Previous Test Log, starting with "```"
@@ -1031,9 +1029,7 @@ cat /tmp/release.old \
 prev=`cat /tmp/previous-log.txt`
 ```
 
-TODO
-
-And we remove the Previous Test Log, while preserving the Auto-Generated Release Notes...
+And we __remove the Previous Test Log__, while retaining the Auto-Generated Release Notes...
 
 ```bash
 ##  If Previous Test Log exists, discard it
@@ -1049,9 +1045,7 @@ else
 fi
 ```
 
-TODO
-
-Just before adding the Test Log, we insert the Test Status...
+Just before adding the Automated Test Log, we insert the __Test Status__...
 
 ```bash
 ##  Show the Test Status, like "All OK! BL602 has successfully joined the LoRaWAN Network"
@@ -1060,9 +1054,7 @@ grep "^===== " /tmp/release.log \
   >>/tmp/release2.log
 ```
 
-TODO
-
-Then we embed the Automated Test Log, taking care of the Special Characters...
+Then we __embed the Automated Test Log__, taking care of the Special Characters...
 
 ```bash
 ##  Enquote the Test Log without Carriage Return and Terminal Control Characters
@@ -1074,8 +1066,6 @@ cat /tmp/release.log \
   >>/tmp/release2.log
 echo '```' >>/tmp/release2.log
 ```
-
-TODO
 
 Finally we call the GitHub CLI to upload the Auto-Generated Release Notes appended with the Automated Test Log...
 
