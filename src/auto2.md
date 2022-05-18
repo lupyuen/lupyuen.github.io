@@ -229,6 +229,8 @@ Whenever we commit changes to the [__NuttX Repo for PineDio Stack__](https://git
 
 -   [__GitHub Actions Workflow for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml)
 
+    [(More about the GitHub Actions Workflow)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
+
 Our script __downloads the NuttX Firmware__ from GitHub Releases for Automated Testing: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L14-L42)
 
 ```bash
@@ -990,11 +992,9 @@ gh release list --repo lupyuen/incubator-nuttx
 
 _What's inside our Upload Script?_
 
-Our Upload Script assumes
+Our Upload Script assumes that the [__GitHub Actions Workflow__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml) has published a [__GitHub Release__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L93-L100) with [__Auto-Generated Release Notes__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L100).
 
-TODO
-
-The Upload Script begins by calling the GitHub CLI to download the Auto-Generated GitHub Release Notes (populated by the GitHub Actions Build): [__upload.sh__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh)
+The script begins by calling the GitHub CLI to download the Auto-Generated Release Notes: [upload.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh)
 
 ```bash
 ##  Assumes the following files are present...
