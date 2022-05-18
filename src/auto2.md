@@ -874,17 +874,20 @@ SCRIPT_DIR="$(cd -P "$(dirname -- "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
 $SCRIPT_DIR/pinedio2.sh
 ```
 
-The second script sends the __lvgltest__ command to start the LVGL Test App: [pinedio2.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112)
+The second script sends the __lvgltest__ command to start the LVGL Test App: [pinedio2.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L102-L108)
 
 ```bash
 ##  Send command to PineDio Stack: lvgltest
 echo "lvgltest" >/dev/ttyUSB0 ; sleep 1
 echo ; echo "----- HELLO HUMAN: TOUCH PINEDIO STACK NOW" ; sleep 2
+
+##  Wait 30 seconds for the screen to be tapped
+sleep 30
 ```
 
 And prompts us to tap the screen.
 
-The script searches for a __Touch Up Event__: [pinedio2.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L110-L117)
+30 seconds later our script searches for a __Touch Up Event__: [pinedio2.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L110-L117)
 
 ```bash
 ##  Check whether BL604 has responded to touch
@@ -909,13 +912,31 @@ When the app starts, it runs a __Touchscreen Calibration__...
 
 -   [__Source Code for Touchscreen Calibration__](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c)
 
+-   [__Watch the Demo on YouTube__](https://youtube.com/shorts/2Nzjrlp5lcE?feature=share)
+
 Which we're using to test PineDio Stack's Touch Panel.
 
-TODO: Multiple touch down
+_But the Touchreen Calibration needs us to tap the 4 corners. Our script only watches for one tap?_
 
-[(Later we might automate this with a "Robot Finger")](https://youtu.be/mb3zcacDGPc)
+Yeah remember that my Spare PineDio Stack has a defective ST7789 Display. So we can't see the 4 corners anyway.
 
-![TODO](https://lupyuen.github.io/images/auto2-code1a.png)
+Hopefully __tapping the screen once__ in the centre will be sufficient for testing the Touch Panel.
+
+(Our script should probably validate that the reported coordinates are close to the centre of the screen)
+
+_Can we fully automate the Touch Panel Test? And do away with the Manual Tapping?_
+
+Yep we need some kind of __Robot Finger__ to tap the screen.
+
+The finger thingy needs to apply __sufficient pressure__ to the screen (but not too much) in order to wake up the Touch Panel. [(See this)](https://lupyuen.github.io/articles/touch#cst816s-touch-panel)
+
+We could use a [__Motorised Controller__](https://web.archive.org/web/20220518023458/https://www.aliexpress.com/item/1005002449391401.html) with an attached [__Stylus__](https://web.archive.org/web/20220518023454/https://www.aliexpress.com/item/32831863881.html).
+
+Or a [__Servo Motor__](https://www.seeedstudio.com/Grove-Servo.html) wrapped with an [__Electrostatic Discharge Bag__](https://youtu.be/mb3zcacDGPc).
+
+Hope it fits inside our Automated Testing Enclosure: [__IKEA 365+ 5.2L Food Container__](https://www.ikea.com/sg/en/p/ikea-365-food-container-with-lid-rectangular-plastic-s69276794/)...
+
+![Our Automated Testing Enclosure: IKEA 365+ 5.2L Food Container](https://lupyuen.github.io/images/auto2-box.jpg)
 
 # Upload Test Log
 
@@ -1019,6 +1040,10 @@ gh release edit \
     --notes-file /tmp/release2.log \
     --repo lupyuen/incubator-nuttx
 ```
+
+![TODO](https://lupyuen.github.io/images/auto2-code1a.png)
+
+TODO
 
 ![TODO](https://lupyuen.github.io/images/auto2-pinecone.jpg)
 
@@ -1865,8 +1890,6 @@ cst816s_get_touch_data:   y:       106
 + read -p 'Press Enter to shutdown'
 Press Enter to shutdown
 ```
-
-![](https://lupyuen.github.io/images/auto2-box.jpg)
 
 TODO2
 
