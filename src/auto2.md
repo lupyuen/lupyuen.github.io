@@ -34,9 +34,9 @@ Let's intervene and rewrite the narrative...
 
 > __Bob__: I merged the BL602 Updates from [__NuttX Mainline__](https://github.com/apache/incubator-nuttx) last night. The I2C Touch Panel worked perfectly OK during Automated Testing, here's the evidence: [__Automated Testing Log__](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10). Maybe we do some static discharge? Switch off the AC, open the windows, remove all metal objects, ...
 
-![Automated Test Log for PineDio Stack](https://lupyuen.github.io/images/auto2-release.jpg)
+![Automated Testing Log for PineDio Stack](https://lupyuen.github.io/images/auto2-release.jpg)
 
-[_Automated Test Log for PineDio Stack_](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+[_Automated Testing Log for PineDio Stack_](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
 This article explains how we accomplished all that with PineDio Stack...
 
@@ -998,7 +998,7 @@ _What's inside our Upload Script?_
 
 Our Upload Script assumes that the [__GitHub Actions Workflow__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml) has published a [__GitHub Release__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L93-L100) with [__Auto-Generated Release Notes__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L100).
 
-The script begins by calling the GitHub CLI to download the Auto-Generated Release Notes: [upload.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh)
+The script begins by calling the __GitHub CLI to download__ the Auto-Generated Release Notes: [upload.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh)
 
 ```bash
 ##  Assumes the following files are present...
@@ -1067,7 +1067,7 @@ cat /tmp/release.log \
 echo '```' >>/tmp/release2.log
 ```
 
-Finally we call the GitHub CLI to upload the Auto-Generated Release Notes appended with the Automated Test Log...
+Finally we call the __GitHub CLI to upload__ the Auto-Generated Release Notes appended with the Automated Test Log...
 
 ```bash
 ##  Upload the Test Log to the GitHub Release Notes
@@ -1079,13 +1079,11 @@ gh release edit \
 
 [("__gh release edit__" is explained here)](https://cli.github.com/manual/gh_release_edit)
 
-TODO
+That's it for uploading the Automated Test Log to GitHub!
 
-![TODO](https://lupyuen.github.io/images/auto2-code1a.png)
+![PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-connect.jpg)
 
-TODO
-
-![TODO](https://lupyuen.github.io/images/auto2-pinecone.jpg)
+_PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing_
 
 # Merge Updates From NuttX
 
@@ -1931,6 +1929,3 @@ cst816s_get_touch_data:   y:       106
 Press Enter to shutdown
 ```
 
-TODO2
-
-![](https://lupyuen.github.io/images/auto2-connect.jpg)
