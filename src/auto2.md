@@ -34,6 +34,10 @@ Let's intervene and rewrite the narrative...
 
 > __Bob__: I merged the BL602 Updates from [__NuttX Mainline__](https://github.com/apache/incubator-nuttx) last night. The I2C Touch Panel worked perfectly OK during Automated Testing, here's the evidence: [__Automated Testing Log__](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10). Maybe we do some static discharge? Switch off the AC, open the windows, remove all metal objects, ...
 
+![Automated Test Log for PineDio Stack](https://lupyuen.github.io/images/auto2-release.jpg)
+
+[_Automated Test Log for PineDio Stack_](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+
 This article explains how we accomplished all that with PineDio Stack...
 
 -   __Fully Automated Testing__ of all __NuttX Releases__ for PineDio Stack: GPIO, SPI, Timers, Multithreading, LoRaWAN
