@@ -788,10 +788,12 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <p>Hope it fits inside our Automated Testing Enclosure: <a href="https://www.ikea.com/sg/en/p/ikea-365-food-container-with-lid-rectangular-plastic-s69276794/"><strong>IKEA 365+ 5.2L Food Container</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/auto2-box.jpg" alt="Our Automated Testing Enclosure: IKEA 365+ 5.2L Food Container" /></p>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
-<p>The lesson we learnt from Alice, Bob and Chow: It’s really helpful to <strong>preserve the Automated Test Logs</strong>!</p>
+<p>The lesson we learnt from Alice, Bob and Chow: It’s super helpful to <strong>preserve the Automated Test Logs</strong>!</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Test Log for PineDio Stack</strong></a></li>
+</ul>
 <p>(Especially when collaborating across time zones)</p>
-<p>TODO</p>
-<p>To <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
+<p>This how we <strong>upload the Test Log</strong> to GitHub Release Notes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Run the script for Auto Flash and Test for PineDio Stack BL604.
 #  Capture the Test Log in /tmp/release.log
 script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
@@ -801,13 +803,25 @@ script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 
 #  Optional: Upload the Test Log to the GitHub Release Notes
 remote-bl602/scripts/upload.sh</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
-<p>The <code>script</code> command runs the Auto Flash and Test Script <code>test.sh</code>, and captures the Test Log to <code>/tmp/release.log</code>.</p>
-<p>Then we run this script to upload the Test Log to GitHub Release Notes…</p>
+<p>The <strong>script</strong> command runs our Automated Testing Script and captures the Automated Test Log into <strong>/tmp/release.log</strong>.</p>
+<p>Our Upload Script <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh"><strong>upload.sh</strong></a> reads the Automated Test Log and <strong>uploads to GitHub Release Notes</strong>.</p>
+<p><em>So the Upload Script needs write access to GitHub Release Notes?</em></p>
+<p>Yes our Upload Script calls the <strong>GitHub CLI</strong> to upload the Automated Test Log to GitHub Release Notes…</p>
 <ul>
-<li><a href="scripts/upload.sh">scripts/upload.sh</a></li>
+<li><a href="https://cli.github.com"><strong>GitHub CLI</strong></a></li>
 </ul>
-<p>The <code>upload.sh</code> script begins by calling the GitHub CLI to download the Auto-Generated GitHub Release Notes (populated by the GitHub Actions Build)…</p>
+<p>We need to log in with a <strong>GitHub Token</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  TODO: Create a new GitHub Token at 
+#  https://github.com/settings/tokens/new
+#  Token must have &quot;repo&quot; and &quot;read:org&quot; permssions
+
+#  Log in with the GitHub Token
+gh auth login --with-token
+
+#  Verify that GitHub CLI can access GitHub Releases
+gh release list --repo lupyuen/incubator-nuttx</code></pre></div>
+<p><em>What’s inside our Upload Script?</em></p>
+<p>The Upload Script begins by calling the GitHub CLI to download the Auto-Generated GitHub Release Notes (populated by the GitHub Actions Build): <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh"><strong>upload.sh</strong></a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Assumes the following files are present...
 #  /tmp/release.log: Test Log
 #  /tmp/release.tag: Release Tag (like pinedio-2022-05-10)
@@ -816,50 +830,56 @@ remote-bl602/scripts/upload.sh</code></pre></div>
 #  Fetch the current GitHub Release Notes and extract the body text, like:
 #  &quot;Merge updates from master by @lupyuen in https://github.com/lupyuen/incubator-nuttx/pull/82&quot;
 gh release view \
-    `cat /tmp/release.tag` \
-    --json body \
-    --jq &#39;.body&#39; \
-    --repo lupyuen/incubator-nuttx \
-    &gt;/tmp/release.old</code></pre></div>
+  `cat /tmp/release.tag` \
+  --json body \
+  --jq &#39;.body&#39; \
+  --repo lupyuen/incubator-nuttx \
+  &gt;/tmp/release.old</code></pre></div>
+<p>TODO</p>
 <p>In case the script is run twice, we search for the Previous Test Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Find the position of the Previous Test Log, starting with &quot;```&quot;
 cat /tmp/release.old \
-    | grep &#39;```&#39; --max-count=1 --byte-offset \
-    | sed &#39;s/:.*//g&#39; \
-    &gt;/tmp/previous-log.txt
+  | grep &#39;```&#39; --max-count=1 --byte-offset \
+  | sed &#39;s/:.*//g&#39; \
+  &gt;/tmp/previous-log.txt
 prev=`cat /tmp/previous-log.txt`</code></pre></div>
+<p>TODO</p>
 <p>And we remove the Previous Test Log, while preserving the Auto-Generated GitHub Release Notes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  If Previous Test Log exists, discard it
 if [ &quot;$prev&quot; != &#39;&#39; ]; then
-    cat /tmp/release.old \
-        | head --bytes=$prev \
-        &gt;&gt;/tmp/release2.log
+  cat /tmp/release.old \
+    | head --bytes=$prev \
+    &gt;&gt;/tmp/release2.log
 else
-    #  Else copy the entire Release Notes
-    cat /tmp/release.old \
-        &gt;&gt;/tmp/release2.log
-    echo &quot;&quot; &gt;&gt;/tmp/release2.log
+  #  Else copy the entire Release Notes
+  cat /tmp/release.old \
+    &gt;&gt;/tmp/release2.log
+  echo &quot;&quot; &gt;&gt;/tmp/release2.log
 fi</code></pre></div>
+<p>TODO</p>
 <p>Just before adding the Test Log, we insert the Test Status…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Show the Test Status, like &quot;All OK! BL602 has successfully joined the LoRaWAN Network&quot;
 grep &quot;^===== &quot; /tmp/release.log \
-    | colrm 1 6 \
-    &gt;&gt;/tmp/release2.log</code></pre></div>
+  | colrm 1 6 \
+  &gt;&gt;/tmp/release2.log</code></pre></div>
+<p>TODO</p>
 <p>Then we embed the Test Log, taking care of the Special Characters…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Enquote the Test Log without Carriage Return and Terminal Control Characters
 #  https://stackoverflow.com/questions/17998978/removing-colors-from-output
 echo &#39;```text&#39; &gt;&gt;/tmp/release2.log
 cat /tmp/release.log \
-    | tr -d &#39;\r&#39; \
-    | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
-    &gt;&gt;/tmp/release2.log
+  | tr -d &#39;\r&#39; \
+  | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
+  &gt;&gt;/tmp/release2.log
 echo &#39;```&#39; &gt;&gt;/tmp/release2.log</code></pre></div>
+<p>TODO</p>
 <p>Finally we call the GitHub CLI to upload the Auto-Generated GitHub Release Notes appended with the Test Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Upload the Test Log to the GitHub Release Notes
 gh release edit \
-    `cat /tmp/release.tag` \
-    --notes-file /tmp/release2.log \
-    --repo lupyuen/incubator-nuttx</code></pre></div>
+  `cat /tmp/release.tag` \
+  --notes-file /tmp/release2.log \
+  --repo lupyuen/incubator-nuttx</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/auto2-pinecone.jpg" alt="TODO" /></p>
