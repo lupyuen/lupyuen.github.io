@@ -940,7 +940,9 @@ Hope it fits inside our Automated Testing Enclosure: [__IKEA 365+ 5.2L Food Cont
 
 # Upload Test Log
 
-The lesson we've learnt from Alice, Bob and Chow: It's really helpful to __preserve the Automated Test Logs__! (Especially when working across time zones)
+The lesson we learnt from Alice, Bob and Chow: It's really helpful to __preserve the Automated Test Logs__!
+
+(Especially when collaborating across time zones)
 
 TODO
 
