@@ -123,8 +123,8 @@
 <blockquote>
 <p><strong>Bob</strong>: I merged the BL602 Updates from <a href="https://github.com/apache/incubator-nuttx"><strong>NuttX Mainline</strong></a> last night. The I2C Touch Panel worked perfectly OK during Automated Testing, here’s the evidence: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Testing Log</strong></a>. Maybe we do some static discharge? Switch off the AC, open the windows, remove all metal objects, …</p>
 </blockquote>
-<p><img src="https://lupyuen.github.io/images/auto2-release.jpg" alt="Automated Test Log for PineDio Stack" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><em>Automated Test Log for PineDio Stack</em></a></p>
+<p><img src="https://lupyuen.github.io/images/auto2-release.jpg" alt="Automated Testing Log for PineDio Stack" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><em>Automated Testing Log for PineDio Stack</em></a></p>
 <p>This article explains how we accomplished all that with PineDio Stack…</p>
 <ul>
 <li>
@@ -829,7 +829,7 @@ gh auth login --with-token
 gh release list --repo lupyuen/incubator-nuttx</code></pre></div>
 <p><em>What’s inside our Upload Script?</em></p>
 <p>Our Upload Script assumes that the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow</strong></a> has published a <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L93-L100"><strong>GitHub Release</strong></a> with <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L100"><strong>Auto-Generated Release Notes</strong></a>.</p>
-<p>The script begins by calling the GitHub CLI to download the Auto-Generated Release Notes: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh">upload.sh</a></p>
+<p>The script begins by calling the <strong>GitHub CLI to download</strong> the Auto-Generated Release Notes: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh">upload.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Assumes the following files are present...
 #  /tmp/release.log: Test Log
 #  /tmp/release.tag: Release Tag (like pinedio-2022-05-10)
@@ -877,17 +877,16 @@ cat /tmp/release.log \
   | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
   &gt;&gt;/tmp/release2.log
 echo &#39;```&#39; &gt;&gt;/tmp/release2.log</code></pre></div>
-<p>Finally we call the GitHub CLI to upload the Auto-Generated Release Notes appended with the Automated Test Log…</p>
+<p>Finally we call the <strong>GitHub CLI to upload</strong> the Auto-Generated Release Notes appended with the Automated Test Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Upload the Test Log to the GitHub Release Notes
 gh release edit \
   `cat /tmp/release.tag` \
   --notes-file /tmp/release2.log \
   --repo lupyuen/incubator-nuttx</code></pre></div>
 <p><a href="https://cli.github.com/manual/gh_release_edit">(“<strong>gh release edit</strong>” is explained here)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/auto2-pinecone.jpg" alt="TODO" /></p>
+<p>That’s it for uploading the Automated Test Log to GitHub!</p>
+<p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing" /></p>
+<p><em>PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single Board Computer for Automated Testing</em></p>
 <h1 id="merge-updates-from-nuttx"><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a></h1>
 <p>TODO</p>
 <p>When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some <strong>Automated Testing</strong> (to be sure that nothing’s broken).</p>
@@ -1705,9 +1704,6 @@ cst816s_get_touch_data:   y:       106
 
 + read -p &#39;Press Enter to shutdown&#39;
 Press Enter to shutdown</code></pre></div>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="" /></p>
-
     
 </body>
 </html>
