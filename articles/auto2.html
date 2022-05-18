@@ -841,6 +841,7 @@ gh release view \
   --jq &#39;.body&#39; \
   --repo lupyuen/incubator-nuttx \
   &gt;/tmp/release.old</code></pre></div>
+<p><a href="https://cli.github.com/manual/gh_release_view">(“<strong>gh release view</strong>” is explained here)</a></p>
 <p>TODO</p>
 <p>In case the script is run twice, we search for the Previous Test Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Find the position of the Previous Test Log, starting with &quot;```&quot;
@@ -850,7 +851,7 @@ cat /tmp/release.old \
   &gt;/tmp/previous-log.txt
 prev=`cat /tmp/previous-log.txt`</code></pre></div>
 <p>TODO</p>
-<p>And we remove the Previous Test Log, while preserving the Auto-Generated GitHub Release Notes…</p>
+<p>And we remove the Previous Test Log, while preserving the Auto-Generated Release Notes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  If Previous Test Log exists, discard it
 if [ &quot;$prev&quot; != &#39;&#39; ]; then
   cat /tmp/release.old \
@@ -869,7 +870,7 @@ grep &quot;^===== &quot; /tmp/release.log \
   | colrm 1 6 \
   &gt;&gt;/tmp/release2.log</code></pre></div>
 <p>TODO</p>
-<p>Then we embed the Test Log, taking care of the Special Characters…</p>
+<p>Then we embed the Automated Test Log, taking care of the Special Characters…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Enquote the Test Log without Carriage Return and Terminal Control Characters
 #  https://stackoverflow.com/questions/17998978/removing-colors-from-output
 echo &#39;```text&#39; &gt;&gt;/tmp/release2.log
@@ -879,12 +880,13 @@ cat /tmp/release.log \
   &gt;&gt;/tmp/release2.log
 echo &#39;```&#39; &gt;&gt;/tmp/release2.log</code></pre></div>
 <p>TODO</p>
-<p>Finally we call the GitHub CLI to upload the Auto-Generated GitHub Release Notes appended with the Test Log…</p>
+<p>Finally we call the GitHub CLI to upload the Auto-Generated Release Notes appended with the Automated Test Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Upload the Test Log to the GitHub Release Notes
 gh release edit \
   `cat /tmp/release.tag` \
   --notes-file /tmp/release2.log \
   --repo lupyuen/incubator-nuttx</code></pre></div>
+<p><a href="https://cli.github.com/manual/gh_release_edit">(“<strong>gh release edit</strong>” is explained here)</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
 <p>TODO</p>
