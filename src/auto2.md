@@ -1012,6 +1012,8 @@ gh release view \
   >/tmp/release.old
 ```
 
+[("__gh release view__" is explained here)](https://cli.github.com/manual/gh_release_view)
+
 TODO
 
 In case the script is run twice, we search for the Previous Test Log...
@@ -1027,7 +1029,7 @@ prev=`cat /tmp/previous-log.txt`
 
 TODO
 
-And we remove the Previous Test Log, while preserving the Auto-Generated GitHub Release Notes...
+And we remove the Previous Test Log, while preserving the Auto-Generated Release Notes...
 
 ```bash
 ##  If Previous Test Log exists, discard it
@@ -1056,7 +1058,7 @@ grep "^===== " /tmp/release.log \
 
 TODO
 
-Then we embed the Test Log, taking care of the Special Characters...
+Then we embed the Automated Test Log, taking care of the Special Characters...
 
 ```bash
 ##  Enquote the Test Log without Carriage Return and Terminal Control Characters
@@ -1071,7 +1073,7 @@ echo '```' >>/tmp/release2.log
 
 TODO
 
-Finally we call the GitHub CLI to upload the Auto-Generated GitHub Release Notes appended with the Test Log...
+Finally we call the GitHub CLI to upload the Auto-Generated Release Notes appended with the Automated Test Log...
 
 ```bash
 ##  Upload the Test Log to the GitHub Release Notes
@@ -1080,6 +1082,8 @@ gh release edit \
   --notes-file /tmp/release2.log \
   --repo lupyuen/incubator-nuttx
 ```
+
+[("__gh release edit__" is explained here)](https://cli.github.com/manual/gh_release_edit)
 
 TODO
 
