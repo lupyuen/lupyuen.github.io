@@ -274,7 +274,10 @@ script -c remote-bl602/scripts/test.sh /tmp/release.log</code></pre></div>
 <p><em>How is NuttX for PineDio Stack built and published to GitHub Releases?</em></p>
 <p>Whenever we commit changes to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>NuttX Repo for PineDio Stack</strong></a>, GitHub Actions will trigger a new NuttX Build and <strong>publish the built firmware</strong> to GitHub Releases…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow for PineDio Stack</strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow for PineDio Stack</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(More about the GitHub Actions Workflow)</a></p>
+</li>
 </ul>
 <p>Our script <strong>downloads the NuttX Firmware</strong> from GitHub Releases for Automated Testing: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L14-L42">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  BUILD_PREFIX is &quot;pinedio&quot;
@@ -823,9 +826,8 @@ gh auth login --with-token
 #  Verify that GitHub CLI can access GitHub Releases
 gh release list --repo lupyuen/incubator-nuttx</code></pre></div>
 <p><em>What’s inside our Upload Script?</em></p>
-<p>Our Upload Script assumes</p>
-<p>TODO</p>
-<p>The Upload Script begins by calling the GitHub CLI to download the Auto-Generated GitHub Release Notes (populated by the GitHub Actions Build): <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh"><strong>upload.sh</strong></a></p>
+<p>Our Upload Script assumes that the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow</strong></a> has published a <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L93-L100"><strong>GitHub Release</strong></a> with <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L100"><strong>Auto-Generated Release Notes</strong></a>.</p>
+<p>The script begins by calling the GitHub CLI to download the Auto-Generated Release Notes: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh">upload.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Assumes the following files are present...
 #  /tmp/release.log: Test Log
 #  /tmp/release.tag: Release Tag (like pinedio-2022-05-10)
