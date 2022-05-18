@@ -844,16 +844,14 @@ gh release view \
   --repo lupyuen/incubator-nuttx \
   &gt;/tmp/release.old</code></pre></div>
 <p><a href="https://cli.github.com/manual/gh_release_view">(“<strong>gh release view</strong>” is explained here)</a></p>
-<p>TODO</p>
-<p>In case the script is run twice, we search for the Previous Test Log…</p>
+<p>In case the script is run twice, we search for the <strong>Previous Automated Test Log</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Find the position of the Previous Test Log, starting with &quot;```&quot;
 cat /tmp/release.old \
   | grep &#39;```&#39; --max-count=1 --byte-offset \
   | sed &#39;s/:.*//g&#39; \
   &gt;/tmp/previous-log.txt
 prev=`cat /tmp/previous-log.txt`</code></pre></div>
-<p>TODO</p>
-<p>And we remove the Previous Test Log, while preserving the Auto-Generated Release Notes…</p>
+<p>And we <strong>remove the Previous Test Log</strong>, while retaining the Auto-Generated Release Notes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  If Previous Test Log exists, discard it
 if [ &quot;$prev&quot; != &#39;&#39; ]; then
   cat /tmp/release.old \
@@ -865,14 +863,12 @@ else
     &gt;&gt;/tmp/release2.log
   echo &quot;&quot; &gt;&gt;/tmp/release2.log
 fi</code></pre></div>
-<p>TODO</p>
-<p>Just before adding the Test Log, we insert the Test Status…</p>
+<p>Just before adding the Automated Test Log, we insert the <strong>Test Status</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Show the Test Status, like &quot;All OK! BL602 has successfully joined the LoRaWAN Network&quot;
 grep &quot;^===== &quot; /tmp/release.log \
   | colrm 1 6 \
   &gt;&gt;/tmp/release2.log</code></pre></div>
-<p>TODO</p>
-<p>Then we embed the Automated Test Log, taking care of the Special Characters…</p>
+<p>Then we <strong>embed the Automated Test Log</strong>, taking care of the Special Characters…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Enquote the Test Log without Carriage Return and Terminal Control Characters
 #  https://stackoverflow.com/questions/17998978/removing-colors-from-output
 echo &#39;```text&#39; &gt;&gt;/tmp/release2.log
@@ -881,7 +877,6 @@ cat /tmp/release.log \
   | sed &#39;s/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;&lt;=&gt;?]*[-!&quot;#$%&amp;&#39;&quot;&#39;&quot;&#39;()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g&#39; \
   &gt;&gt;/tmp/release2.log
 echo &#39;```&#39; &gt;&gt;/tmp/release2.log</code></pre></div>
-<p>TODO</p>
 <p>Finally we call the GitHub CLI to upload the Auto-Generated Release Notes appended with the Automated Test Log…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Upload the Test Log to the GitHub Release Notes
 gh release edit \
