@@ -737,24 +737,38 @@ UP: id=0, touch=2, x=83, y=106</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>All OK! BL604 has responded to touch</code></pre></div>
 <p>Yep PineDio Stack’s Touch Panel and I2C Bus are working OK!</p>
 <h2 id="checkpoint-echo"><a href="#checkpoint-echo">8.1 Checkpoint Echo</a></h2>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222">pinedio.sh</a></p>
+<p>The Touch Panel Test lives in a separate script: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh"><strong>pinedio2.sh</strong></a></p>
+<p>We <strong>launch the second script</strong> after completing the LoRaWAN Test: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L219-L222">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Start the second script: pinedio2.sh
 SCRIPT_PATH=&quot;${BASH_SOURCE}&quot;
 SCRIPT_DIR=&quot;$(cd -P &quot;$(dirname -- &quot;${SCRIPT_PATH}&quot;)&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd)&quot;
 $SCRIPT_DIR/pinedio2.sh</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112">pinedio.sh</a></p>
+<p>The second script sends the <strong>lvgltest</strong> command to start the LVGL Test App: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L109-L112">pinedio2.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Send command to PineDio Stack: lvgltest
 echo &quot;lvgltest&quot; &gt;/dev/ttyUSB0 ; sleep 1
 echo ; echo &quot;----- HELLO HUMAN: TOUCH PINEDIO STACK NOW&quot; ; sleep 2</code></pre></div>
-<p>TODO</p>
-<p>From <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L117-L120">pinedio.sh</a></p>
+<p>And prompts us to tap the screen.</p>
+<p>The script searches for a <strong>Touch Up Event</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio2.sh#L110-L117">pinedio2.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL604 has responded to touch
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;cst816s_get_touch_data: UP: id=0, touch=&quot; /tmp/test.log)
-set -e  ##  Exit when any command fails</code></pre></div>
-<p>TODO</p>
+set -e  ##  Exit when any command fails
+
+#  If BL604 has responded to touch, then everything is super hunky dory!
+if [ &quot;$match&quot; != &quot;&quot; ]; then
+  echo; echo &quot;===== All OK! BL604 has responded to touch&quot;</code></pre></div>
+<p>And reports that the test has succeeded.</p>
+<p><em>What’s inside lvgltest?</em></p>
+<p><strong>lvgltest</strong> is our Test App for the <strong>LVGL Graphics Library</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lvgltest-nuttx"><strong>LVGL Test App</strong></a></li>
+</ul>
+<p>When the app starts, it runs a <strong>Touchscreen Calibration</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c"><strong>Source Code for Touchscreen Calibration</strong></a></li>
+</ul>
+<p>Which we’re using to test PineDio Stack’s Touch Panel.</p>
+<p>TODO: Multiple touch down</p>
 <p><a href="https://youtu.be/mb3zcacDGPc">(Later we might automate this with a “Robot Finger”)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto2-code1a.png" alt="TODO" /></p>
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
