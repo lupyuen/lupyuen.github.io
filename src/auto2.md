@@ -1109,19 +1109,45 @@ All NuttX Updates shall be tested on __PineCone BL602__ first, then merged and t
 
 That's why we need the __complicated setup__ for Automated Testing with PineCone and PineDio Stack. (Pic above)
 
-TODO
+![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
 
-_So we'll run Automated Tests on PineCone BL602 AND PineDio Stack BL604?_
+[(Source)](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
 
-Yep we shall test and maintain two __Stable Branches__ of NuttX for public consumption...
+## PineCone vs PineDio Stack
 
--   [__`master` branch__](https://github.com/lupyuen/incubator-nuttx) for PineCone BL602
+We're now testing and maintaining two __Stable Branches__ of NuttX for public consumption...
 
--   [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio) for PineDio Stack BL604
+-   [__Release Branch__](https://github.com/lupyuen/incubator-nuttx) for PineCone BL602
+
+-   [__PineDio Branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio) for PineDio Stack BL604
 
 (Same for NuttX Apps)
 
+_How do we keep NuttX Mainline in sync with PineCone and PineDio Stack?_
+
+TODO
+
+-   Upstream updates from NuttX Mainline will first be merged and auto-tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
+
+    (Every 2 weeks, depends on my writing mood)
+
+-   Then merged and auto-tested in the [__`master` (release) branch__](https://github.com/lupyuen/incubator-nuttx)
+
+    (For PineCone BL602)
+
+-   Which gets merged and manually tested in the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio)
+
+    (For PineDio Stack BL604)
+
+-   Updates in the `pinedio` branch are merged back to the `master` and the `downstream` branches and auto-tested on PineCone BL602
+
+-   Thus ultimately the `pinedio`, `master` and `downstream` branches will all have the __exact same code__, tested OK on PineCone BL602 and PineDio Stack BL604
+
+    (And lagging behind NuttX Mainline by 2 weeks)
+
 _Are the branches any different?_
+
+TODO
 
 The code should be identical, though...
 
@@ -1153,44 +1179,6 @@ This check for PineDio Stack should probably be improved: [board.h](https://gith
 ```
 
 [(__PINEDIO_STACK_BL604__ enables the SPI Device Table in the SPI Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c)
-
-![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
-
-[(Source)](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
-
-_What about upstream updates from NuttX Mainline Branch?_
-
--   Upstream updates from NuttX Mainline will first be merged and auto-tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
-
-    (Every 2 weeks, depends on my writing mood)
-
--   Then merged and auto-tested in the [__`master` (release) branch__](https://github.com/lupyuen/incubator-nuttx)
-
-    (For PineCone BL602)
-
--   Which gets merged and manually tested in the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio)
-
-    (For PineDio Stack BL604)
-
--   Updates in the `pinedio` branch are merged back to the `master` and the `downstream` branches and auto-tested on PineCone BL602
-
--   Thus ultimately the `pinedio`, `master` and `downstream` branches will all have the __exact same code__, tested OK on PineCone BL602 and PineDio Stack BL604
-
-    (And lagging behind NuttX Mainline by 2 weeks)
-
-This is an extension of our original grand plan...
-
--   [__"Merge Updates From NuttX"__](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
-
-_But how will we auto-test the Touch Panel on PineDio Stack?_
-
-With a __Robot Finger__?
-
-Or let our SBC __actuate a Motor__ that's wrapped in an __Anti-Static Bag__?
-
--   [__Watch the video on YouTube__](https://www.youtube.com/shorts/hGSwetNr87o)
-
-I'm open to ideas, please lemme know! 🙏
 
 # What's Next
 
