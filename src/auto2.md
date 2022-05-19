@@ -1089,50 +1089,23 @@ _PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board
 
 _Is PineDio Stack fully supported by NuttX Mainline?_
 
-Not quite. NuttX for PineDio Stack has __Experimental Features__ that aren't ready to be upstreamed into [__NuttX Mainline__](https://github.com/apache/incubator-nuttx)...
+Not quite. Our fork of NuttX for PineDio Stack has __Experimental Features__ that aren't ready to be upstreamed into [__NuttX Mainline__](https://github.com/apache/incubator-nuttx)...
 
--   SPI Device Table
+-   [__SPI Device Table__](https://lupyuen.github.io/articles/pinedio2#spi-device-table)
 
--   GPIO Expander
+-   [__GPIO Expander__](https://lupyuen.github.io/articles/expander)
 
--   CST816S Touch Panel Driver
+-   [__CST816S Touch Panel Driver__](https://lupyuen.github.io/articles/touch)
 
--   LoRa and LoRaWAN Libraries
+-   [__LoRa and LoRaWAN Libraries__](https://lupyuen.github.io/articles/lorawan3)
+
+Thus the onus is on us to __pull the updates regularly__ from NuttX Mainline and make sure they work on PineDio Stack.
+
+_So PineDio Stack might not have the latest features from NuttX Mainline?_
+
+We're __merging updates from NuttX Mainline__ into the PineDio Stack repo roughly __every 2 weeks__. (Depends on my writing mood)
 
 TODO
-
-When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some __Automated Testing__ (to be sure that nothing's broken).
-
-Today we run a __Daily Automated Test__ on the NuttX Mainline Branch for PineCone BL602...
-
--   [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
-
-    [(See the Automated Test Logs)](https://github.com/lupyuen/incubator-nuttx/releases)
-
-Now we need to __connect an SBC to PineDio Stack__ and auto-run these tests...
-
--   __SPI Test App (spi_test2)__: Verify that the SPI Driver can talk to SX1262
-
--   __LoRaWAN Test App (lorawan_test)__: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets
-
--   __LVGL Test App (lvgltest)__: Verify that ST7789 can render an LVGL Screen (over SPI) and read the CST816S Touch Panel (over I2C)
-
--   __GPIO Command (gpio)__: Verify that the BL604 GPIO Expander correctly triggers an interrupt when the Push Button is pressed...
-
-    ```text
-    nsh> gpio -t 8 -w 1 /dev/gpio12
-    Driver: /dev/gpio12
-      Interrupt pin: Value=1
-      Verify:        Value=1
-    ```
-
-    [(Source)](https://github.com/lupyuen/bl602_expander#test-push-button)
-
-Right now we run these tests manually on PineDio Stack when we update the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio).
-
-We record the __Manual Test Logs__ in the Pull Requests...
-
--   [__Pull Requests and Manual Test Logs for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/pulls?q=is%3Aclosed+base%3Apinedio)
 
 _So we'll run Automated Tests on PineCone BL602 AND PineDio Stack BL604?_
 
