@@ -889,55 +889,25 @@ gh release edit \
 <p><em>PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing</em></p>
 <h1 id="merge-updates-from-nuttx"><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a></h1>
 <p><em>Is PineDio Stack fully supported by NuttX Mainline?</em></p>
-<p>Not quite. NuttX for PineDio Stack has <strong>Experimental Features</strong> that aren’t ready to be upstreamed into <a href="https://github.com/apache/incubator-nuttx"><strong>NuttX Mainline</strong></a>…</p>
+<p>Not quite. Our fork of NuttX for PineDio Stack has <strong>Experimental Features</strong> that aren’t ready to be upstreamed into <a href="https://github.com/apache/incubator-nuttx"><strong>NuttX Mainline</strong></a>…</p>
 <ul>
 <li>
-<p>SPI Device Table</p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a></p>
 </li>
 <li>
-<p>GPIO Expander</p>
+<p><a href="https://lupyuen.github.io/articles/expander"><strong>GPIO Expander</strong></a></p>
 </li>
 <li>
-<p>CST816S Touch Panel Driver</p>
+<p><a href="https://lupyuen.github.io/articles/touch"><strong>CST816S Touch Panel Driver</strong></a></p>
 </li>
 <li>
-<p>LoRa and LoRaWAN Libraries</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3"><strong>LoRa and LoRaWAN Libraries</strong></a></p>
 </li>
 </ul>
+<p>Thus the onus is on us to <strong>pull the updates regularly</strong> from NuttX Mainline and make sure they work on PineDio Stack.</p>
+<p><em>So PineDio Stack might not have the latest features from NuttX Mainline?</em></p>
+<p>We’re <strong>merging updates from NuttX Mainline</strong> into the PineDio Stack repo roughly <strong>every 2 weeks</strong>. (Depends on my writing mood)</p>
 <p>TODO</p>
-<p>When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some <strong>Automated Testing</strong> (to be sure that nothing’s broken).</p>
-<p>Today we run a <strong>Daily Automated Test</strong> on the NuttX Mainline Branch for PineCone BL602…</p>
-<ul>
-<li>
-<p><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases">(See the Automated Test Logs)</a></p>
-</li>
-</ul>
-<p>Now we need to <strong>connect an SBC to PineDio Stack</strong> and auto-run these tests…</p>
-<ul>
-<li>
-<p><strong>SPI Test App (spi_test2)</strong>: Verify that the SPI Driver can talk to SX1262</p>
-</li>
-<li>
-<p><strong>LoRaWAN Test App (lorawan_test)</strong>: Verify that SX1262 can join a LoRaWAN Network (ChirpStack) and transmit Data Packets</p>
-</li>
-<li>
-<p><strong>LVGL Test App (lvgltest)</strong>: Verify that ST7789 can render an LVGL Screen (over SPI) and read the CST816S Touch Panel (over I2C)</p>
-</li>
-<li>
-<p><strong>GPIO Command (gpio)</strong>: Verify that the BL604 GPIO Expander correctly triggers an interrupt when the Push Button is pressed…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; gpio -t 8 -w 1 /dev/gpio12
-Driver: /dev/gpio12
-  Interrupt pin: Value=1
-  Verify:        Value=1</code></pre></div>
-<p><a href="https://github.com/lupyuen/bl602_expander#test-push-button">(Source)</a></p>
-</li>
-</ul>
-<p>Right now we run these tests manually on PineDio Stack when we update the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a>.</p>
-<p>We record the <strong>Manual Test Logs</strong> in the Pull Requests…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/pulls?q=is%3Aclosed+base%3Apinedio"><strong>Pull Requests and Manual Test Logs for PineDio Stack</strong></a></li>
-</ul>
 <p><em>So we’ll run Automated Tests on PineCone BL602 AND PineDio Stack BL604?</em></p>
 <p>Yep we shall test and maintain two <strong>Stable Branches</strong> of NuttX for public consumption…</p>
 <ul>
