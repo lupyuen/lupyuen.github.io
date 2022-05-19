@@ -1089,6 +1089,16 @@ _PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board
 
 TODO
 
+NuttX for PineDio Stack has features that aren't ready to be upstreamed into NuttX Mainline...
+
+-   SPI Device Table
+
+-   GPIO Expander
+
+-   CST816S Touch Panel Driver
+
+-   LoRa and LoRaWAN Libraries
+
 When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some __Automated Testing__ (to be sure that nothing's broken).
 
 Today we run a __Daily Automated Test__ on the NuttX Mainline Branch for PineCone BL602...
