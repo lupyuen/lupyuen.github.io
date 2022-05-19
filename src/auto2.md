@@ -1103,9 +1103,9 @@ Thus the onus is on us to __pull the updates regularly__ from NuttX Mainline and
 
 _So PineDio Stack might not have the latest features from NuttX Mainline?_
 
-We're __merging updates from NuttX Mainline__ into the PineDio Stack repo roughly __every 2 weeks__. (Depends on my writing mood)
+We're merging updates from NuttX Mainline into the PineDio Stack repo roughly __every 2 weeks__. (Depends on my writing mood)
 
-All NuttX Updates shall be tested on __PineCone BL602__ first, then merged and tested on __PineDio Stack BL604__. (Because PineCone is way more popular than PineDio Stack right now)
+All NuttX Updates are tested on __PineCone BL602__ first, then merged and tested on __PineDio Stack BL604__. (Because PineCone is way more popular than PineDio Stack right now)
 
 That's why we need the __complicated setup__ for Automated Testing with PineCone and PineDio Stack. (Pic above)
 
