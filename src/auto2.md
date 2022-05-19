@@ -1087,9 +1087,9 @@ _PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board
 
 # Merge Updates From NuttX
 
-TODO
+_Is PineDio Stack fully supported by NuttX Mainline?_
 
-NuttX for PineDio Stack has features that aren't ready to be upstreamed into NuttX Mainline...
+Not quite. NuttX for PineDio Stack has __Experimental Features__ that aren't ready to be upstreamed into [__NuttX Mainline__](https://github.com/apache/incubator-nuttx)...
 
 -   SPI Device Table
 
@@ -1098,6 +1098,8 @@ NuttX for PineDio Stack has features that aren't ready to be upstreamed into Nut
 -   CST816S Touch Panel Driver
 
 -   LoRa and LoRaWAN Libraries
+
+TODO
 
 When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some __Automated Testing__ (to be sure that nothing's broken).
 
