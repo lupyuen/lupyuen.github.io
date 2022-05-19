@@ -1115,7 +1115,7 @@ That's why we need the __complicated setup__ for Automated Testing with PineCone
 
 ## PineCone vs PineDio Stack
 
-We're now testing and maintaining two __Stable Branches__ of NuttX for public consumption...
+We're now testing and maintaining two __Stable Branches__ of NuttX for public consumption on BL602 and BL604...
 
 -   [__Release Branch__](https://github.com/lupyuen/incubator-nuttx) for PineCone BL602
 
