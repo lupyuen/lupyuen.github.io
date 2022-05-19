@@ -1089,7 +1089,7 @@ _PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board
 
 _Is PineDio Stack fully supported by NuttX Mainline?_
 
-Not quite. Our fork of NuttX for PineDio Stack has __Experimental Features__ that aren't ready to be upstreamed into [__NuttX Mainline__](https://github.com/apache/incubator-nuttx)...
+Not yet. Our fork of NuttX for PineDio Stack has __Experimental Features__ that aren't ready to be upstreamed into [__NuttX Mainline__](https://github.com/apache/incubator-nuttx)...
 
 -   [__SPI Device Table__](https://lupyuen.github.io/articles/pinedio2#spi-device-table)
 
