@@ -80,7 +80,8 @@
 <li><a href="#touch-panel-test">8 Touch Panel Test</a><ul>
 <li><a href="#checkpoint-echo">8.1 Checkpoint Echo</a><ul></ul></li></ul></li>
 <li><a href="#upload-test-log">9 Upload Test Log</a><ul></ul></li>
-<li><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a><ul></ul></li>
+<li><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a><ul>
+<li><a href="#pinecone-vs-pinedio-stack">10.1 PineCone vs PineDio Stack</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li>
 <li><a href="#appendix-testing-script">13 Appendix: Testing Script</a><ul></ul></li>
@@ -909,19 +910,44 @@ gh release edit \
 <p>We’re <strong>merging updates from NuttX Mainline</strong> into the PineDio Stack repo roughly <strong>every 2 weeks</strong>. (Depends on my writing mood)</p>
 <p>All NuttX Updates shall be tested on <strong>PineCone BL602</strong> first, then merged and tested on <strong>PineDio Stack BL604</strong>. (Because PineCone is way more popular than PineDio Stack right now)</p>
 <p>That’s why we need the <strong>complicated setup</strong> for Automated Testing with PineCone and PineDio Stack. (Pic above)</p>
-<p>TODO</p>
-<p><em>So we’ll run Automated Tests on PineCone BL602 AND PineDio Stack BL604?</em></p>
-<p>Yep we shall test and maintain two <strong>Stable Branches</strong> of NuttX for public consumption…</p>
+<p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
+<p><a href="https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx">(Source)</a></p>
+<h2 id="pinecone-vs-pinedio-stack"><a href="#pinecone-vs-pinedio-stack">10.1 PineCone vs PineDio Stack</a></h2>
+<p>We’re now testing and maintaining two <strong>Stable Branches</strong> of NuttX for public consumption…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx"><strong><code>master</code> branch</strong></a> for PineCone BL602</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx"><strong>Release Branch</strong></a> for PineCone BL602</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a> for PineDio Stack BL604</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>PineDio Branch</strong></a> for PineDio Stack BL604</p>
 </li>
 </ul>
 <p>(Same for NuttX Apps)</p>
+<p><em>How do we keep NuttX Mainline in sync with PineCone and PineDio Stack?</em></p>
+<p>TODO</p>
+<ul>
+<li>
+<p>Upstream updates from NuttX Mainline will first be merged and auto-tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/downstream"><strong><code>downstream</code> branch</strong></a></p>
+<p>(Every 2 weeks, depends on my writing mood)</p>
+</li>
+<li>
+<p>Then merged and auto-tested in the <a href="https://github.com/lupyuen/incubator-nuttx"><strong><code>master</code> (release) branch</strong></a></p>
+<p>(For PineCone BL602)</p>
+</li>
+<li>
+<p>Which gets merged and manually tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a></p>
+<p>(For PineDio Stack BL604)</p>
+</li>
+<li>
+<p>Updates in the <code>pinedio</code> branch are merged back to the <code>master</code> and the <code>downstream</code> branches and auto-tested on PineCone BL602</p>
+</li>
+<li>
+<p>Thus ultimately the <code>pinedio</code>, <code>master</code> and <code>downstream</code> branches will all have the <strong>exact same code</strong>, tested OK on PineCone BL602 and PineDio Stack BL604</p>
+<p>(And lagging behind NuttX Mainline by 2 weeks)</p>
+</li>
+</ul>
 <p><em>Are the branches any different?</em></p>
+<p>TODO</p>
 <p>The code should be identical, though…</p>
 <ul>
 <li>
@@ -945,41 +971,6 @@ gh release edit \
 #define PINEDIO_STACK_BL604
 #endif /* CONFIG_LCD_ST7789 &amp;&amp; CONFIG_INPUT_CST816S */</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c">(<strong>PINEDIO_STACK_BL604</strong> enables the SPI Device Table in the SPI Driver)</a></p>
-<p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
-<p><a href="https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx">(Source)</a></p>
-<p><em>What about upstream updates from NuttX Mainline Branch?</em></p>
-<ul>
-<li>
-<p>Upstream updates from NuttX Mainline will first be merged and auto-tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/downstream"><strong><code>downstream</code> branch</strong></a></p>
-<p>(Every 2 weeks, depends on my writing mood)</p>
-</li>
-<li>
-<p>Then merged and auto-tested in the <a href="https://github.com/lupyuen/incubator-nuttx"><strong><code>master</code> (release) branch</strong></a></p>
-<p>(For PineCone BL602)</p>
-</li>
-<li>
-<p>Which gets merged and manually tested in the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong><code>pinedio</code> branch</strong></a></p>
-<p>(For PineDio Stack BL604)</p>
-</li>
-<li>
-<p>Updates in the <code>pinedio</code> branch are merged back to the <code>master</code> and the <code>downstream</code> branches and auto-tested on PineCone BL602</p>
-</li>
-<li>
-<p>Thus ultimately the <code>pinedio</code>, <code>master</code> and <code>downstream</code> branches will all have the <strong>exact same code</strong>, tested OK on PineCone BL602 and PineDio Stack BL604</p>
-<p>(And lagging behind NuttX Mainline by 2 weeks)</p>
-</li>
-</ul>
-<p>This is an extension of our original grand plan…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx"><strong>“Merge Updates From NuttX”</strong></a></li>
-</ul>
-<p><em>But how will we auto-test the Touch Panel on PineDio Stack?</em></p>
-<p>With a <strong>Robot Finger</strong>?</p>
-<p>Or let our SBC <strong>actuate a Motor</strong> that’s wrapped in an <strong>Anti-Static Bag</strong>?</p>
-<ul>
-<li><a href="https://www.youtube.com/shorts/hGSwetNr87o"><strong>Watch the video on YouTube</strong></a></li>
-</ul>
-<p>I’m open to ideas, please lemme know! 🙏</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>I hope Alice, Bob and Chow will have a great time creating NuttX Drivers and Apps on PineDio Stack… And you too!</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
