@@ -1109,13 +1109,9 @@ All NuttX Updates are tested on __PineCone BL602__ first, then merged and tested
 
 That's why we need the __complicated setup__ for Automated Testing with PineCone and PineDio Stack. (Pic above)
 
-![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
+_Which means we have 2 branches of NuttX: BL602 and BL604?_
 
-[(Source)](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
-
-## PineCone vs PineDio Stack
-
-We're now testing and maintaining two __Stable Branches__ of NuttX for public consumption on BL602 and BL604...
+Yep. We're now testing and maintaining two __Stable Branches__ of NuttX for public consumption on BL602 and BL604...
 
 -   [__Release Branch__](https://github.com/lupyuen/incubator-nuttx) for PineCone BL602
 
@@ -1124,6 +1120,18 @@ We're now testing and maintaining two __Stable Branches__ of NuttX for public co
 (Same for NuttX Apps)
 
 _How do we keep NuttX Mainline in sync with PineCone and PineDio Stack?_
+
+TODO
+
+![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
+
+[(Source)](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
+
+## PineCone to PineDio Stack
+
+TODO
+
+## PineDio Stack to PineCone
 
 TODO
 
@@ -1148,6 +1156,12 @@ TODO
 _Are the branches any different?_
 
 TODO
+
+_Looks complicated! Why are we doing all this?_
+
+TODO: Common framework for apps and drivers
+
+TODO: Appeals to Linux coders
 
 The code should be identical, though...
 
