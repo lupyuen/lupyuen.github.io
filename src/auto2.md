@@ -1123,11 +1123,11 @@ _How do we keep NuttX Mainline in sync with PineCone and PineDio Stack?_
 
 Very carefully! And with lots of __Automation__. (GitHub Actions and Automated Testing)
 
-Let's watch how the updates from __NuttX Mainline get merged__ into PineCone and PineDio Stack...
+Let's watch how the __updates from NuttX Mainline__ get merged into PineCone and PineDio Stack...
 
 -   NuttX Mainline → PineCone Branch → PineDio Branch
 
-And how updates from PineDio Stack get __merged back into PineCone__...
+And how __updates from PineDio Stack__ get merged back into PineCone...
 
 -   PineDio Branch → PineCone Branch
 
