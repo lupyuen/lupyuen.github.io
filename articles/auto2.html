@@ -81,7 +81,8 @@
 <li><a href="#checkpoint-echo">8.1 Checkpoint Echo</a><ul></ul></li></ul></li>
 <li><a href="#upload-test-log">9 Upload Test Log</a><ul></ul></li>
 <li><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a><ul>
-<li><a href="#pinecone-vs-pinedio-stack">10.1 PineCone vs PineDio Stack</a><ul></ul></li></ul></li>
+<li><a href="#pinecone-to-pinedio-stack">10.1 PineCone to PineDio Stack</a><ul></ul></li>
+<li><a href="#pinedio-stack-to-pinecone">10.2 PineDio Stack to PineCone</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li>
 <li><a href="#appendix-testing-script">13 Appendix: Testing Script</a><ul></ul></li>
@@ -910,10 +911,8 @@ gh release edit \
 <p>We’re merging updates from NuttX Mainline into the PineDio Stack repo roughly <strong>every 2 weeks</strong>. (Depends on my writing mood)</p>
 <p>All NuttX Updates are tested on <strong>PineCone BL602</strong> first, then merged and tested on <strong>PineDio Stack BL604</strong>. (Because PineCone is way more popular than PineDio Stack right now)</p>
 <p>That’s why we need the <strong>complicated setup</strong> for Automated Testing with PineCone and PineDio Stack. (Pic above)</p>
-<p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
-<p><a href="https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx">(Source)</a></p>
-<h2 id="pinecone-vs-pinedio-stack"><a href="#pinecone-vs-pinedio-stack">10.1 PineCone vs PineDio Stack</a></h2>
-<p>We’re now testing and maintaining two <strong>Stable Branches</strong> of NuttX for public consumption on BL602 and BL604…</p>
+<p><em>Which means we have 2 branches of NuttX: BL602 and BL604?</em></p>
+<p>Yep. We’re now testing and maintaining two <strong>Stable Branches</strong> of NuttX for public consumption on BL602 and BL604…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx"><strong>Release Branch</strong></a> for PineCone BL602</p>
@@ -924,6 +923,12 @@ gh release edit \
 </ul>
 <p>(Same for NuttX Apps)</p>
 <p><em>How do we keep NuttX Mainline in sync with PineCone and PineDio Stack?</em></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
+<p><a href="https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx">(Source)</a></p>
+<h2 id="pinecone-to-pinedio-stack"><a href="#pinecone-to-pinedio-stack">10.1 PineCone to PineDio Stack</a></h2>
+<p>TODO</p>
+<h2 id="pinedio-stack-to-pinecone"><a href="#pinedio-stack-to-pinecone">10.2 PineDio Stack to PineCone</a></h2>
 <p>TODO</p>
 <ul>
 <li>
@@ -948,6 +953,9 @@ gh release edit \
 </ul>
 <p><em>Are the branches any different?</em></p>
 <p>TODO</p>
+<p><em>Looks complicated! Why are we doing all this?</em></p>
+<p>TODO: Common framework for apps and drivers</p>
+<p>TODO: Appeals to Linux coders</p>
 <p>The code should be identical, though…</p>
 <ul>
 <li>
