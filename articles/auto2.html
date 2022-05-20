@@ -933,7 +933,7 @@ gh release edit \
 </ul>
 <p><img src="https://lupyuen.github.io/images/auto2-merge1.jpg" alt="Merge Updates From NuttX to PineDio Stack" /></p>
 <h2 id="pinecone-to-pinedio-stack"><a href="#pinecone-to-pinedio-stack">10.1 PineCone to PineDio Stack</a></h2>
-<p>TODO</p>
+<p>The pic above shows how we <strong>merge the updates from NuttX Mainline</strong>  into the PineCone and PineDio Branches…</p>
 <ol>
 <li>
 <p>Every day we build <strong>Mainline NuttX (Upstream)</strong> every day with GitHub Actions. <a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(See this)</a></p>
@@ -956,10 +956,9 @@ gh release edit \
 <p>We run our <strong>Automated Testing</strong> on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.</p>
 </li>
 </ol>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/auto2-merge2.jpg" alt="Merge Updates From PineDio Stack to PineCone" /></p>
 <h2 id="pinedio-stack-to-pinecone"><a href="#pinedio-stack-to-pinecone">10.2 PineDio Stack to PineCone</a></h2>
-<p>TODO</p>
+<p>Now Reverse Uno: The pic above shows how we <strong>merge the updates from PineDio Branch</strong> back to PineCone Branch…</p>
 <ol>
 <li>
 <p>When we commit a change to the <strong>PineDio Branch</strong>, GitHub Actions triggers a build of the branch.</p>
@@ -976,7 +975,6 @@ gh release edit \
 <p>For one last time, we run our <strong>Automated Testing</strong> on PineCone BL602 to verify that the Downstream Build works OK with LoRaWAN.</p>
 </li>
 </ol>
-<p>TODO</p>
 <h2 id="merge-conflicts"><a href="#merge-conflicts">10.3 Merge Conflicts</a></h2>
 <p><em>Hol’ up… PineCone Branch merges updates from NuttX Mainline AND PineDio Branch? Won’t they clash?</em></p>
 <p>Yep maintaining the PineCone (Release) Branch is a delicate process…</p>
