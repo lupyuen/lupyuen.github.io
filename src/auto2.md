@@ -1145,7 +1145,7 @@ TODO
 
 4.  If the PineCone Branch has tested OK, we  __merge the PineCone (Release) Branch__ to the PineDio Branch.
 
-    We run our __Automated Testing__ with PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.
+    We run our __Automated Testing__ on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.
 
 TODO
 
