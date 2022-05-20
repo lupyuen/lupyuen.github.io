@@ -1121,7 +1121,13 @@ Yep. We're now testing and maintaining two __Stable Branches__ of NuttX for publ
 
 _How do we keep NuttX Mainline in sync with PineCone and PineDio Stack?_
 
+Very carefully! And with lots of automation. (GitHub Actions and Automated Testing)
+
 TODO
+
+-   NuttX Mainline → PineCone Branch → PineDio Branch
+
+-   PineDio Branch → PineCone Branch
 
 ![Merge Updates From NuttX to PineDio Stack](https://lupyuen.github.io/images/auto2-merge1.jpg)
 
