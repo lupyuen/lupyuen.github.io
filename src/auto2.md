@@ -1129,6 +1129,26 @@ TODO
 
 TODO
 
+1.  We __build Mainline NuttX (Upstream)__ every day with GitHub Actions. [(See this)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
+
+    We run our __Automated Testing__ daily to verify that the Upstream Build boots OK on PineCone BL602.
+
+    (Upstream Build doesn't include the LoRaWAN Stack)
+
+2.  If the Upstream Build has tested OK, we __merge Upstream NuttX__ into our Downstream Branch.
+
+    Our __Automated Testing__ checks the Downstream Branch with LoRaWAN on BL602.
+
+3.  If the Downstream Branch has tested OK with LoRaWAN on BL602, we  __merge the Downstream Branch__ to the PineCone (Release) Branch.
+
+    Our __Automated Testing__ checks the PineCone Branch with LoRaWAN on BL602.
+
+4.  If the PineCone Branch has tested OK with LoRaWAN on BL602, we  __merge the PineCone (Release) Branch__ to the PineDio Branch.
+
+    We run our __Automated Testing__ (with PineDio Stack) to verify that the PineDio Branch works OK with LoRaWAN and other PineDio Stack features.
+
+TODO
+
 ![Merge Updates From PineDio Stack to PineCone](https://lupyuen.github.io/images/auto2-merge2.jpg)
 
 ## PineDio Stack to PineCone
