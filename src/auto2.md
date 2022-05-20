@@ -1123,13 +1123,13 @@ _How do we keep NuttX Mainline in sync with PineCone and PineDio Stack?_
 
 TODO
 
-![Merge Updates From NuttX](https://lupyuen.github.io/images/auto-merge.jpg)
-
-[(Source)](https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx)
+![Merge Updates From NuttX to PineDio Stack](https://lupyuen.github.io/images/auto2-merge1.jpg)
 
 ## PineCone to PineDio Stack
 
 TODO
+
+![Merge Updates From PineDio Stack to PineCone](https://lupyuen.github.io/images/auto2-merge2.jpg)
 
 ## PineDio Stack to PineCone
 
