@@ -1131,7 +1131,7 @@ TODO
 
 1.  We __build Mainline NuttX (Upstream)__ every day with GitHub Actions. [(See this)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
 
-    We run our __Automated Testing__ daily to verify that the Upstream Build boots OK on PineCone BL602.
+    Every day we run our __Automated Testing__ to verify that the Upstream Build boots OK on PineCone BL602.
 
     (Upstream Build doesn't include the LoRaWAN Stack)
 
