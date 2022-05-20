@@ -926,6 +926,26 @@ gh release edit \
 <p><img src="https://lupyuen.github.io/images/auto2-merge1.jpg" alt="Merge Updates From NuttX to PineDio Stack" /></p>
 <h2 id="pinecone-to-pinedio-stack"><a href="#pinecone-to-pinedio-stack">10.1 PineCone to PineDio Stack</a></h2>
 <p>TODO</p>
+<ol>
+<li>
+<p>We <strong>build Mainline NuttX (Upstream)</strong> every day with GitHub Actions. <a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(See this)</a></p>
+<p>We run our <strong>Automated Testing</strong> daily to verify that the Upstream Build boots OK on PineCone BL602.</p>
+<p>(Upstream Build doesn’t include the LoRaWAN Stack)</p>
+</li>
+<li>
+<p>If the Upstream Build has tested OK, we <strong>merge Upstream NuttX</strong> into our Downstream Branch.</p>
+<p>Our <strong>Automated Testing</strong> checks the Downstream Branch with LoRaWAN on BL602.</p>
+</li>
+<li>
+<p>If the Downstream Branch has tested OK with LoRaWAN on BL602, we  <strong>merge the Downstream Branch</strong> to the PineCone (Release) Branch.</p>
+<p>Our <strong>Automated Testing</strong> checks the PineCone Branch with LoRaWAN on BL602.</p>
+</li>
+<li>
+<p>If the PineCone Branch has tested OK with LoRaWAN on BL602, we  <strong>merge the PineCone (Release) Branch</strong> to the PineDio Branch.</p>
+<p>We run our <strong>Automated Testing</strong> (with PineDio Stack) to verify that the PineDio Branch works OK with LoRaWAN and other PineDio Stack features.</p>
+</li>
+</ol>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/auto2-merge2.jpg" alt="Merge Updates From PineDio Stack to PineCone" /></p>
 <h2 id="pinedio-stack-to-pinecone"><a href="#pinedio-stack-to-pinecone">10.2 PineDio Stack to PineCone</a></h2>
 <p>TODO</p>
