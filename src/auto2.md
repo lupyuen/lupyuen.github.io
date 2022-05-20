@@ -1113,7 +1113,7 @@ _Which means we have 2 branches of NuttX: BL602 and BL604?_
 
 Yep. We're now testing and maintaining two __Stable Branches__ of NuttX for public consumption on BL602 and BL604...
 
--   [__Release Branch__](https://github.com/lupyuen/incubator-nuttx) for PineCone BL602
+-   [__PineCone (Release) Branch__](https://github.com/lupyuen/incubator-nuttx) for PineCone BL602
 
 -   [__PineDio Branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio) for PineDio Stack BL604
 
@@ -1135,17 +1135,17 @@ TODO
 
     (Upstream Build doesn't include the LoRaWAN Stack)
 
-2.  If the Upstream Build has tested OK, we __merge Upstream NuttX__ into our Downstream Branch.
+2.  Every 2 weeks, we __merge Upstream NuttX__ into our Downstream Branch.
 
-    Our __Automated Testing__ checks the Downstream Branch with LoRaWAN on BL602.
+    Our __Automated Testing__ verifies the Downstream Build with LoRaWAN on PineCone BL602.
 
-3.  If the Downstream Branch has tested OK with LoRaWAN on BL602, we  __merge the Downstream Branch__ to the PineCone (Release) Branch.
+3.  If the Downstream Branch has tested OK, we  __merge the Downstream Branch__ to the PineCone (Release) Branch.
 
-    Our __Automated Testing__ checks the PineCone Branch with LoRaWAN on BL602.
+    Our __Automated Testing__ verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602.
 
-4.  If the PineCone Branch has tested OK with LoRaWAN on BL602, we  __merge the PineCone (Release) Branch__ to the PineDio Branch.
+4.  If the PineCone Branch has tested OK, we  __merge the PineCone (Release) Branch__ to the PineDio Branch.
 
-    We run our __Automated Testing__ (with PineDio Stack) to verify that the PineDio Branch works OK with LoRaWAN and other PineDio Stack features.
+    We run our __Automated Testing__ with PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.
 
 TODO
 
