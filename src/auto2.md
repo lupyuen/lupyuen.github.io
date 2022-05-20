@@ -1135,15 +1135,21 @@ TODO
 
     (Upstream Build doesn't include the LoRaWAN Stack)
 
-2.  Every 2 weeks (roughly), we __merge Upstream NuttX__ into our Downstream Branch.
+2.  Every 2 weeks (roughly), we merge Upstream NuttX into our __Downstream Branch__.
+
+    GitHub Actions triggers a build for the Downstream Branch.
 
     Our __Automated Testing__ verifies the Downstream Build with LoRaWAN on PineCone BL602.
 
-3.  If the Downstream Branch has tested OK, we  __merge the Downstream Branch__ to the PineCone (Release) Branch.
+3.  If the Downstream Branch has tested OK, we merge the Downstream Branch to the __PineCone (Release) Branch__.
+
+    GitHub Actions triggers a build for the PineCone Branch.
 
     Our __Automated Testing__ verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602.
 
-4.  If the PineCone Branch has tested OK, we  __merge the PineCone (Release) Branch__ to the PineDio Branch.
+4.  If the PineCone Branch has tested OK, we __merge the PineCone (Release) Branch__ to the PineDio Branch.
+
+    GitHub Actions triggers a build for the PineDio Branch.
 
     We run our __Automated Testing__ on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.
 
@@ -1155,7 +1161,33 @@ TODO
 
 TODO
 
+1.  When we commit a change to the __PineDio Branch__, GitHub Actions triggers a build of the branch.
+
+    We run our __Automated Testing__ on PineDio Stack to verify that the build works OK with LoRaWAN and Touch Panel.
+
+1.  If the PineDio Branch has tested OK, we merge the PineDio Branch to the __PineCone (Release) Branch__.
+
+    GitHub Actions triggers a build for the PineCone Branch.
+
+    Our __Automated Testing__ verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602.
+
+1.  If the PineCone Branch has tested OK, we merge the PineCone (Release) Branch to the __Downstream Branch__.
+
+    GitHub Actions triggers a build for the Downstream Branch.
+
+    For one last time, we run our __Automated Testing__ on PineCone BL602 to verify that the Downstream Build works OK with LoRaWAN.
+
+TODO
+
 ## Merge Conflicts
+
+_Hol' up... PineCone Branch merges updates from NuttX Mainline AND PineDio Branch? Won't they clash?_
+
+Yep maintaining the PineCone (Release) Branch is a delicate process...
+
+We need to assure __peaceful coexistence__ of the features from both NuttX Mainline and PineDio Stack.
+
+Suppose NuttX Mainline implements a new feature: [__SPI DMA for BL602__](https://lupyuen.github.io/articles/pinedio2#spi-direct-memory-access).
 
 TODO: SPI Device Table, SPI DMA
 
