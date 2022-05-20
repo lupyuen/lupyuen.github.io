@@ -1209,7 +1209,7 @@ TODO: Common framework for apps and drivers
 
 TODO: Appeals to Linux coders
 
-TODO: Community Supported
+TODO: Only Community Supported RTOS for BL602
 
 TODO: Only other alternative: FreeRTOS
 
