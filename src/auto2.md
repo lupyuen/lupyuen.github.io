@@ -1135,7 +1135,7 @@ And how __updates from PineDio Stack__ get merged back into PineCone...
 
 ## PineCone to PineDio Stack
 
-TODO
+The pic above shows how we __merge the updates from NuttX Mainline__  into the PineCone and PineDio Branches...
 
 1.  Every day we build __Mainline NuttX (Upstream)__ every day with GitHub Actions. [(See this)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
 
@@ -1161,13 +1161,11 @@ TODO
 
     We run our __Automated Testing__ on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.
 
-TODO
-
 ![Merge Updates From PineDio Stack to PineCone](https://lupyuen.github.io/images/auto2-merge2.jpg)
 
 ## PineDio Stack to PineCone
 
-TODO
+Now Reverse Uno: The pic above shows how we __merge the updates from PineDio Branch__ back to PineCone Branch...
 
 1.  When we commit a change to the __PineDio Branch__, GitHub Actions triggers a build of the branch.
 
@@ -1184,8 +1182,6 @@ TODO
     GitHub Actions triggers a build for the Downstream Branch.
 
     For one last time, we run our __Automated Testing__ on PineCone BL602 to verify that the Downstream Build works OK with LoRaWAN.
-
-TODO
 
 ## Merge Conflicts
 
