@@ -1131,6 +1131,8 @@ And how __updates from PineDio Stack__ get merged back into PineCone...
 
 -   PineDio Branch → PineCone Branch
 
+Ultimately the PineCone and PineDio Branches will have the __exact same code__, tested OK on PineCone and PineDio Stack. (With different build settings)
+
 ![Merge Updates From NuttX to PineDio Stack](https://lupyuen.github.io/images/auto2-merge1.jpg)
 
 ## PineCone to PineDio Stack
@@ -1165,7 +1167,7 @@ The pic above shows how we __merge the updates from NuttX Mainline__  into the P
 
 ## PineDio Stack to PineCone
 
-Now Reverse Uno: The pic above shows how we __merge the updates from PineDio Branch__ back to PineCone Branch...
+Now Reverse Uno: The pic above shows how we __merge the updates from PineDio Branch__ back to PineCone Branch (like when we add a new feature for PineDio Stack)...
 
 1.  When we commit a change to the __PineDio Branch__, GitHub Actions triggers a build of the branch.
 
@@ -1208,32 +1210,6 @@ TODO: Appeals to Linux coders
 TODO: Only Community Supported RTOS for BL602
 
 TODO: Only other alternative: FreeRTOS
-
--   Upstream updates from NuttX Mainline will first be merged and auto-tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
-
-    (Every 2 weeks, depends on my writing mood)
-
--   Then merged and auto-tested in the [__`master` (release) branch__](https://github.com/lupyuen/incubator-nuttx)
-
-    (For PineCone BL602)
-
--   Which gets merged and manually tested in the [__`pinedio` branch__](https://github.com/lupyuen/incubator-nuttx/tree/pinedio)
-
-    (For PineDio Stack BL604)
-
--   Updates in the `pinedio` branch are merged back to the `master` and the `downstream` branches and auto-tested on PineCone BL602
-
--   Thus ultimately the `pinedio`, `master` and `downstream` branches will all have the __exact same code__, tested OK on PineCone BL602 and PineDio Stack BL604
-
-    (And lagging behind NuttX Mainline by 2 weeks)
-
-_Are the branches any different?_
-
-The code should be identical, though...
-
--   PineCone BL602 won't use the [__Shared SPI Bus__](https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus) that we have created for PineDio Stack BL604
-
--   PineCone BL602 won't use the [__GPIO Expander__](https://github.com/lupyuen/bl602_expander) either
 
 We control the options through the __NuttX Build Configuration__...
 
