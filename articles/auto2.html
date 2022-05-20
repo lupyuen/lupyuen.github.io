@@ -914,7 +914,7 @@ gh release edit \
 <p>Yep. We’re now testing and maintaining two <strong>Stable Branches</strong> of NuttX for public consumption on BL602 and BL604…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx"><strong>Release Branch</strong></a> for PineCone BL602</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx"><strong>PineCone (Release) Branch</strong></a> for PineCone BL602</p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>PineDio Branch</strong></a> for PineDio Stack BL604</p>
@@ -933,16 +933,16 @@ gh release edit \
 <p>(Upstream Build doesn’t include the LoRaWAN Stack)</p>
 </li>
 <li>
-<p>If the Upstream Build has tested OK, we <strong>merge Upstream NuttX</strong> into our Downstream Branch.</p>
-<p>Our <strong>Automated Testing</strong> checks the Downstream Branch with LoRaWAN on BL602.</p>
+<p>Every 2 weeks, we <strong>merge Upstream NuttX</strong> into our Downstream Branch.</p>
+<p>Our <strong>Automated Testing</strong> verifies the Downstream Build with LoRaWAN on PineCone BL602.</p>
 </li>
 <li>
-<p>If the Downstream Branch has tested OK with LoRaWAN on BL602, we  <strong>merge the Downstream Branch</strong> to the PineCone (Release) Branch.</p>
-<p>Our <strong>Automated Testing</strong> checks the PineCone Branch with LoRaWAN on BL602.</p>
+<p>If the Downstream Branch has tested OK, we  <strong>merge the Downstream Branch</strong> to the PineCone (Release) Branch.</p>
+<p>Our <strong>Automated Testing</strong> verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602.</p>
 </li>
 <li>
-<p>If the PineCone Branch has tested OK with LoRaWAN on BL602, we  <strong>merge the PineCone (Release) Branch</strong> to the PineDio Branch.</p>
-<p>We run our <strong>Automated Testing</strong> (with PineDio Stack) to verify that the PineDio Branch works OK with LoRaWAN and other PineDio Stack features.</p>
+<p>If the PineCone Branch has tested OK, we  <strong>merge the PineCone (Release) Branch</strong> to the PineDio Branch.</p>
+<p>We run our <strong>Automated Testing</strong> with PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.</p>
 </li>
 </ol>
 <p>TODO</p>
