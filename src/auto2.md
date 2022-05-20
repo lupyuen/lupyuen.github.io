@@ -1129,13 +1129,13 @@ TODO
 
 TODO
 
-1.  We __build Mainline NuttX (Upstream)__ every day with GitHub Actions. [(See this)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
+1.  Every day we build __Mainline NuttX (Upstream)__ every day with GitHub Actions. [(See this)](https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions)
 
-    Every day we run our __Automated Testing__ to verify that the Upstream Build boots OK on PineCone BL602.
+    Also daily we run our __Automated Testing__ to verify that the Upstream Build boots OK on PineCone BL602.
 
     (Upstream Build doesn't include the LoRaWAN Stack)
 
-2.  Every 2 weeks, we __merge Upstream NuttX__ into our Downstream Branch.
+2.  Every 2 weeks (roughly), we __merge Upstream NuttX__ into our Downstream Branch.
 
     Our __Automated Testing__ verifies the Downstream Build with LoRaWAN on PineCone BL602.
 
