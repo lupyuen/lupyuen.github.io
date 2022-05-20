@@ -1,6 +1,6 @@
 # (Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board
 
-📝 _22 May 2022_
+📝 _24 May 2022_
 
 ![PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-title.jpg)
 
