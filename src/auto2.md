@@ -1209,6 +1209,10 @@ TODO: Common framework for apps and drivers
 
 TODO: Appeals to Linux coders
 
+TODO: Community Supported
+
+TODO: Only other alternative: FreeRTOS
+
 -   Upstream updates from NuttX Mainline will first be merged and auto-tested in the [__`downstream` branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream)
 
     (Every 2 weeks, depends on my writing mood)
