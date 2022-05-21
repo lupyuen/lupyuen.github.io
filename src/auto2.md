@@ -1261,7 +1261,7 @@ We select the GPIO Driver through [__Kconfig and Menuconfig__](https://lupyuen.g
 
 _Wow looks like we're doing Everything Everywhere All at Once / Daily / Fortnightly for NuttX on PineDio Stack! Why are we doing all this?_
 
-PineDio Stack is the __most complex IoT gadget__ I've seen... __All 23 GPIOs__ in use, some multiplexed!
+PineDio Stack is the __most complex IoT gadget__ I've seen... [__All 23 GPIOs__](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment) in use, some multiplexed!
 
 TODO: Common framework for apps and drivers
 
