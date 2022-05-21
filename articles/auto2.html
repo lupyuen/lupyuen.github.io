@@ -83,11 +83,11 @@
 <li><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a><ul>
 <li><a href="#pinecone-to-pinedio-stack">10.1 PineCone to PineDio Stack</a><ul></ul></li>
 <li><a href="#pinedio-stack-to-pinecone">10.2 PineDio Stack to PineCone</a><ul></ul></li>
-<li><a href="#merge-conflicts">10.3 Merge Conflicts</a><ul></ul></li>
-<li><a href="#why-nuttx">10.4 Why NuttX</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#notes">12 Notes</a><ul></ul></li>
-<li><a href="#appendix-select-usb-device">13 Appendix: Select USB Device</a><ul></ul></li></ul></nav><p>📝 <em>24 May 2022</em></p>
+<li><a href="#merge-conflicts">10.3 Merge Conflicts</a><ul></ul></li></ul></li>
+<li><a href="#why-nuttx">11 Why NuttX</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-select-usb-device">14 Appendix: Select USB Device</a><ul></ul></li></ul></nav><p>📝 <em>24 May 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/auto2-title.jpg" alt="PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing" /></p>
 <p><em>PineDio Stack BL604 (left, with unglam rubber band) and PineCone BL602 (right) connected to Single-Board Computer for Automated Testing</em></p>
 <p>Pine64 is about to launch their most exciting RISC-V IoT gadget: <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604 RISC-V Board</strong></a> with Touch Screen, LoRa and many other features.</p>
@@ -1008,22 +1008,35 @@ gh release edit \
 #endif  //  CONFIG_LCD_ST7789 &amp;&amp; CONFIG_INPUT_CST816S</code></pre></div></li>
 </ul>
 <p><em>Is there a cleaner way to merge updates from NuttX Mainline?</em></p>
-<p>TODO: GPIO Expander is totally optional, selected via Kconfig / Menuconfig</p>
-<p>We control the options through the <strong>NuttX Build Configuration</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Configure build for PineDio Stack BL604
-./tools/configure.sh bl602evb:pinedio
+<p>The cleaner way to merge updates from NuttX Mainline might be to <strong>split the NuttX Drivers</strong> for PineCone and PineDio Stack.</p>
+<p>We did this for the <strong>NuttX GPIO Driver</strong>…</p>
+<ul>
+<li>
+<p>PineCone BL602 uses the <a href="https://lupyuen.github.io/articles/expander#bl602-evb-limitations"><strong>BL602 EVB GPIO Driver</strong></a></p>
+</li>
+<li>
+<p>PineDio Stack BL604 uses the <a href="https://lupyuen.github.io/articles/expander"><strong>GPIO Expander Driver</strong></a></p>
+</li>
+</ul>
+<p>We select the GPIO Driver through <a href="https://lupyuen.github.io/articles/expander#load-gpio-expander"><strong>Kconfig and Menuconfig</strong></a>. Or through the <strong>NuttX Build Configuration</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Configure build for PineCone BL602
+./tools/configure.sh bl602evb:pinecone
 
-# Configure build for PineCone BL602
-./tools/configure.sh bl602evb:pinecone</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
+# Configure build for PineDio Stack BL604
+./tools/configure.sh bl602evb:pinedio</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig">(See the PineCone config)</a></p>
-<h2 id="why-nuttx"><a href="#why-nuttx">10.4 Why NuttX</a></h2>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-inside5.jpg" alt="Inside PineDio Stack BL604" /></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2"><em>Inside PineDio Stack BL604</em></a></p>
+<h1 id="why-nuttx"><a href="#why-nuttx">11 Why NuttX</a></h1>
 <p><em>Wow looks like we’re doing Everything Everywhere All at Once / Daily / Fortnightly for NuttX on PineDio Stack! Why are we doing all this?</em></p>
+<p>PineDio Stack is the most complex IoT gadget I’ve ever seen… All 23 GPIOs in use, some multiplexed!</p>
 <p>TODO: Common framework for apps and drivers</p>
+<p>TODO: Careful coordination between devs, across time zones</p>
 <p>TODO: Appeals to Linux coders</p>
 <p>TODO: Only Community Supported RTOS for BL602</p>
 <p>TODO: Only other alternative: FreeRTOS</p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>I hope Alice, Bob and Chow will have a great time creating NuttX Drivers and Apps on PineDio Stack… And you too!</p>
 <p>Lemme know what you’re building with PineDio Stack!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -1043,11 +1056,11 @@ gh release edit \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/auto2.md"><strong><code>lupyuen.github.io/src/auto2.md</code></strong></a></p>
-<h1 id="notes"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1519541046803271682"><strong>this Twitter Thread</strong></a></li>
 </ol>
-<h1 id="appendix-select-usb-device"><a href="#appendix-select-usb-device">13 Appendix: Select USB Device</a></h1>
+<h1 id="appendix-select-usb-device"><a href="#appendix-select-usb-device">14 Appendix: Select USB Device</a></h1>
 <p>TODO</p>
 <p>When we connect both PineDio Stack BL604 and PineCone BL602 to the SBC, we’ll see two USB Devices: <code>/dev/ttyUSB0</code> and <code>/dev/ttyUSB1</code></p>
 <p>How will we know which USB Device is for PineDio Stack and PineCone?</p>
