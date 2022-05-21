@@ -1227,27 +1227,41 @@ Suppose NuttX Mainline implements a new feature: [__SPI DMA for BL602__](https:/
 
 _Is there a cleaner way to merge updates from NuttX Mainline?_
 
-TODO: GPIO Expander is totally optional, selected via Kconfig / Menuconfig
+The cleaner way to merge updates from NuttX Mainline might be to __split the NuttX Drivers__ for PineCone and PineDio Stack.
 
-We control the options through the __NuttX Build Configuration__...
+We did this for the __NuttX GPIO Driver__...
+
+-   PineCone BL602 uses the [__BL602 EVB GPIO Driver__](https://lupyuen.github.io/articles/expander#bl602-evb-limitations)
+
+-   PineDio Stack BL604 uses the [__GPIO Expander Driver__](https://lupyuen.github.io/articles/expander)
+
+We select the GPIO Driver through [__Kconfig and Menuconfig__](https://lupyuen.github.io/articles/expander#load-gpio-expander). Or through the __NuttX Build Configuration__...
 
 ```bash
-## Configure build for PineDio Stack BL604
-./tools/configure.sh bl602evb:pinedio
-
 ## Configure build for PineCone BL602
 ./tools/configure.sh bl602evb:pinecone
-```
 
-[(See the PineDio Stack config)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+## Configure build for PineDio Stack BL604
+./tools/configure.sh bl602evb:pinedio
+```
 
 [(See the PineCone config)](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig)
 
-## Why NuttX
+[(See the PineDio Stack config)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
+
+![Inside PineDio Stack BL604](https://lupyuen.github.io/images/pinedio2-inside5.jpg)
+
+[_Inside PineDio Stack BL604_](https://lupyuen.github.io/articles/pinedio2)
+
+# Why NuttX
 
 _Wow looks like we're doing Everything Everywhere All at Once / Daily / Fortnightly for NuttX on PineDio Stack! Why are we doing all this?_
 
+PineDio Stack is the most complex IoT gadget I've ever seen... All 23 GPIOs in use, some multiplexed!
+
 TODO: Common framework for apps and drivers
+
+TODO: Careful coordination between devs, across time zones
 
 TODO: Appeals to Linux coders
 
