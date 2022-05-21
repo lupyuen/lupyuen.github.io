@@ -1191,6 +1191,10 @@ Now Reverse Uno: The pic above shows how we __merge the updates from PineDio Bra
 
 That's what we do today to sync the PineDio and PineCone Branches.
 
+![GPIO Expander for PineDio Stack](https://lupyuen.github.io/images/expander-title.jpg)
+
+[_GPIO Expander for PineDio Stack_](https://lupyuen.github.io/articles/expander)
+
 ## Merge Conflicts
 
 _Hol' up... PineCone Branch merges updates from NuttX Mainline AND PineDio Branch? Won't they clash?_
@@ -1257,17 +1261,19 @@ We select the GPIO Driver through [__Kconfig and Menuconfig__](https://lupyuen.g
 
 _Wow looks like we're doing Everything Everywhere All at Once / Daily / Fortnightly for NuttX on PineDio Stack! Why are we doing all this?_
 
-PineDio Stack is the most complex IoT gadget I've ever seen... All 23 GPIOs in use, some multiplexed!
+PineDio Stack is the __most complex IoT gadget__ I've seen... __All 23 GPIOs__ in use, some multiplexed!
 
 TODO: Common framework for apps and drivers
 
-TODO: Careful coordination between devs, across time zones
+TODO: Mostly automated coordination between devs, across time zones
 
 TODO: Appeals to Linux coders
 
 TODO: Only Community Supported RTOS for BL602
 
-TODO: Only other alternative: FreeRTOS
+TODO: Only other alternative: FreeRTOS, BL IoT SDK, BL MCU SDK
+
+TODO: But we might face serious challenges creating complex firmware for PineDio Stack
 
 # What's Next
 
