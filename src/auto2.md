@@ -1201,7 +1201,7 @@ TODO: GPIO Expander is totally optional, selected via Kconfig / Menuconfig
 
 ## Why NuttX
 
-_Looks complicated! Why are we doing all this?_
+_Wow looks like we're doing Everything Everywhere All at Once for NuttX on PineDio Stack! Why are we doing all this?_
 
 TODO: Common framework for apps and drivers
 
