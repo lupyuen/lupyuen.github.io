@@ -1147,7 +1147,7 @@ The pic above shows how we __merge the updates from NuttX Mainline__  into the P
 
 2.  Every 2 weeks (roughly), we merge Upstream NuttX into our __Downstream Branch__.
 
-    GitHub Actions triggers a build for the Downstream Branch.
+    GitHub Actions triggers a build for the __Downstream Branch__. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/downstream/.github/workflows/bl602-downstream.yml#L7-L272)
 
     Our __Automated Testing__ verifies the Downstream Build with LoRaWAN on PineCone BL602.
 
@@ -1159,7 +1159,7 @@ The pic above shows how we __merge the updates from NuttX Mainline__  into the P
 
 4.  If the PineCone Branch has tested OK, we __merge the PineCone (Release) Branch__ to the PineDio Branch.
 
-    GitHub Actions triggers a build for the PineDio Branch.
+    GitHub Actions triggers a build for the __PineDio Branch__. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272)
 
     We run our __Automated Testing__ on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.
 
@@ -1169,19 +1169,19 @@ The pic above shows how we __merge the updates from NuttX Mainline__  into the P
 
 Now Reverse Uno: The pic above shows how we __merge the updates from PineDio Branch__ back to PineCone Branch (like when we add a new feature for PineDio Stack)...
 
-1.  When we commit a change to the __PineDio Branch__, GitHub Actions triggers a build of the branch.
+1.  When we commit a change to the __PineDio Branch__, GitHub Actions triggers a build of the branch. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L7-L77)
 
     We run our __Automated Testing__ on PineDio Stack to verify that the build works OK with LoRaWAN and Touch Panel.
 
 1.  If the PineDio Branch has tested OK, we merge the PineDio Branch to the __PineCone (Release) Branch__.
 
-    GitHub Actions triggers a build for the PineCone Branch.
+    GitHub Actions triggers a build for the __PineCone Branch__. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272)
 
     Our __Automated Testing__ verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602.
 
 1.  If the PineCone Branch has tested OK, we merge the PineCone (Release) Branch to the __Downstream Branch__.
 
-    GitHub Actions triggers a build for the Downstream Branch.
+    GitHub Actions triggers a build for the __Downstream Branch__. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/downstream/.github/workflows/bl602-downstream.yml#L7-L272)
 
     For one last time, we run our __Automated Testing__ on PineCone BL602 to verify that the Downstream Build works OK with LoRaWAN.
 
@@ -1193,23 +1193,35 @@ Yep maintaining the PineCone (Release) Branch is a delicate process...
 
 We need to assure __peaceful coexistence__ of the features from both NuttX Mainline and PineDio Stack.
 
-Suppose NuttX Mainline implements a new feature: [__SPI DMA for BL602__](https://lupyuen.github.io/articles/pinedio2#spi-direct-memory-access).
+Suppose NuttX Mainline implements a new feature: [__SPI DMA for BL602__](https://lupyuen.github.io/articles/pinedio2#spi-direct-memory-access)...
 
-TODO: SPI Device Table, SPI DMA
+-   We need to merge the SPI DMA changes into __SPI Driver__ for the PineCone Branch: [__bl602_spi.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c)
+
+-   But recall that the SPI Driver for the PineCone Branch also includes the [__SPI Device Table__](https://lupyuen.github.io/articles/pinedio2#spi-device-table) for PineDio Stack: [__bl602_spi.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L1335-L1473)
+
+-   Thus we need to __merge the SPI DMA__ changes very carefully into the SPI Driver. (Possibly changing the SPI Device Table too)
+
+-   To make the merging easier, we have __demarcated the SPI Device Table__ with the __PINEDIO_STACK_BL604__ macro: [__bl602_spi.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L1335-L1473)
+
+    ```c
+    //  If this is PineDio Stack...
+    #ifdef PINEDIO_STACK_BL604
+    //  Code for SPI Device Table goes here...
+    #endif  //  PINEDIO_STACK_BL604
+    ```
+
+-   __PINEDIO_STACK_BL604__ is defined below, should probably be improved: [__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151)
+
+    ```c
+    //  Identify as PineDio Stack if both ST7789 and CST816S are present
+    #if defined(CONFIG_LCD_ST7789) && defined(CONFIG_INPUT_CST816S)
+    #define PINEDIO_STACK_BL604
+    #endif  //  CONFIG_LCD_ST7789 && CONFIG_INPUT_CST816S
+    ```
+
+_Isn't there a cleaner way to merge updates from NuttX Mainline?_
 
 TODO: GPIO Expander is totally optional, selected via Kconfig / Menuconfig
-
-## Why NuttX
-
-_Wow looks like we're doing Everything Everywhere All at Once for NuttX on PineDio Stack! Why are we doing all this?_
-
-TODO: Common framework for apps and drivers
-
-TODO: Appeals to Linux coders
-
-TODO: Only Community Supported RTOS for BL602
-
-TODO: Only other alternative: FreeRTOS
 
 We control the options through the __NuttX Build Configuration__...
 
@@ -1225,16 +1237,17 @@ We control the options through the __NuttX Build Configuration__...
 
 [(See the PineCone config)](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig)
 
-This check for PineDio Stack should probably be improved: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151)
+## Why NuttX
 
-```c
-/* Identify as PineDio Stack if both ST7789 and CST816S are present */
-#if defined(CONFIG_LCD_ST7789) && defined(CONFIG_INPUT_CST816S)
-#define PINEDIO_STACK_BL604
-#endif /* CONFIG_LCD_ST7789 && CONFIG_INPUT_CST816S */
-```
+_Wow looks like we're doing Everything Everywhere All at Once for NuttX on PineDio Stack! Why are we doing all this?_
 
-[(__PINEDIO_STACK_BL604__ enables the SPI Device Table in the SPI Driver)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c)
+TODO: Common framework for apps and drivers
+
+TODO: Appeals to Linux coders
+
+TODO: Only Community Supported RTOS for BL602
+
+TODO: Only other alternative: FreeRTOS
 
 # What's Next
 
