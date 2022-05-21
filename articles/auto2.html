@@ -957,6 +957,7 @@ gh release edit \
 <p>We run our <strong>Automated Testing</strong> on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.</p>
 </li>
 </ol>
+<p>That’s what we do today to keep PineCone and PineDio Branches in sync with NuttX Mainline.</p>
 <p><img src="https://lupyuen.github.io/images/auto2-merge2.jpg" alt="Merge Updates From PineDio Stack to PineCone" /></p>
 <h2 id="pinedio-stack-to-pinecone"><a href="#pinedio-stack-to-pinecone">10.2 PineDio Stack to PineCone</a></h2>
 <p>Now Reverse Uno: The pic above shows how we <strong>merge the updates from PineDio Branch</strong> back to PineCone Branch (like when we add a new feature for PineDio Stack)…</p>
@@ -974,8 +975,10 @@ gh release edit \
 <p>If the PineCone Branch has tested OK, we merge the PineCone (Release) Branch to the <strong>Downstream Branch</strong>.</p>
 <p>GitHub Actions triggers a build for the <strong>Downstream Branch</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/downstream/.github/workflows/bl602-downstream.yml#L7-L272">(See this)</a></p>
 <p>For one last time, we run our <strong>Automated Testing</strong> on PineCone BL602 to verify that the Downstream Build works OK with LoRaWAN.</p>
+<p>Downstream Branch is now ready to <strong>accept new updates</strong> from NuttX Mainline. (Within the next 2 weeks)</p>
 </li>
 </ol>
+<p>That’s what we do today to sync the PineDio and PineCone Branches.</p>
 <h2 id="merge-conflicts"><a href="#merge-conflicts">10.3 Merge Conflicts</a></h2>
 <p><em>Hol’ up… PineCone Branch merges updates from NuttX Mainline AND PineDio Branch? Won’t they clash?</em></p>
 <p>Yep maintaining the PineCone (Release) Branch is a delicate process…</p>
@@ -1004,7 +1007,7 @@ gh release edit \
 #define PINEDIO_STACK_BL604
 #endif  //  CONFIG_LCD_ST7789 &amp;&amp; CONFIG_INPUT_CST816S</code></pre></div></li>
 </ul>
-<p><em>Isn’t there a cleaner way to merge updates from NuttX Mainline?</em></p>
+<p><em>Is there a cleaner way to merge updates from NuttX Mainline?</em></p>
 <p>TODO: GPIO Expander is totally optional, selected via Kconfig / Menuconfig</p>
 <p>We control the options through the <strong>NuttX Build Configuration</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Configure build for PineDio Stack BL604
@@ -1015,7 +1018,7 @@ gh release edit \
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig">(See the PineCone config)</a></p>
 <h2 id="why-nuttx"><a href="#why-nuttx">10.4 Why NuttX</a></h2>
-<p><em>Wow looks like we’re doing Everything Everywhere All at Once for NuttX on PineDio Stack! Why are we doing all this?</em></p>
+<p><em>Wow looks like we’re doing Everything Everywhere All at Once / Daily / Fortnightly for NuttX on PineDio Stack! Why are we doing all this?</em></p>
 <p>TODO: Common framework for apps and drivers</p>
 <p>TODO: Appeals to Linux coders</p>
 <p>TODO: Only Community Supported RTOS for BL602</p>
