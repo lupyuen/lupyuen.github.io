@@ -1163,6 +1163,8 @@ The pic above shows how we __merge the updates from NuttX Mainline__  into the P
 
     We run our __Automated Testing__ on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel.
 
+That's what we do today to keep PineCone and PineDio Branches in sync with NuttX Mainline.
+
 ![Merge Updates From PineDio Stack to PineCone](https://lupyuen.github.io/images/auto2-merge2.jpg)
 
 ## PineDio Stack to PineCone
@@ -1184,6 +1186,10 @@ Now Reverse Uno: The pic above shows how we __merge the updates from PineDio Bra
     GitHub Actions triggers a build for the __Downstream Branch__. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/downstream/.github/workflows/bl602-downstream.yml#L7-L272)
 
     For one last time, we run our __Automated Testing__ on PineCone BL602 to verify that the Downstream Build works OK with LoRaWAN.
+
+    Downstream Branch is now ready to __accept new updates__ from NuttX Mainline. (Within the next 2 weeks)
+
+That's what we do today to sync the PineDio and PineCone Branches.
 
 ## Merge Conflicts
 
@@ -1219,7 +1225,7 @@ Suppose NuttX Mainline implements a new feature: [__SPI DMA for BL602__](https:/
     #endif  //  CONFIG_LCD_ST7789 && CONFIG_INPUT_CST816S
     ```
 
-_Isn't there a cleaner way to merge updates from NuttX Mainline?_
+_Is there a cleaner way to merge updates from NuttX Mainline?_
 
 TODO: GPIO Expander is totally optional, selected via Kconfig / Menuconfig
 
@@ -1239,7 +1245,7 @@ We control the options through the __NuttX Build Configuration__...
 
 ## Why NuttX
 
-_Wow looks like we're doing Everything Everywhere All at Once for NuttX on PineDio Stack! Why are we doing all this?_
+_Wow looks like we're doing Everything Everywhere All at Once / Daily / Fortnightly for NuttX on PineDio Stack! Why are we doing all this?_
 
 TODO: Common framework for apps and drivers
 
