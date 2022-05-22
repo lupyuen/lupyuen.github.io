@@ -1163,7 +1163,7 @@ The pic above shows how we __merge the updates from NuttX Mainline__  into the P
 
 3.  If the Downstream Branch has tested OK, we merge the Downstream Branch to the __PineCone (Release) Branch__.
 
-    GitHub Actions triggers a build for the PineCone Branch.
+    GitHub Actions triggers a build for the __PineCone Branch__.
 
     Our __Automated Testing__ verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602. [(Like this)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-05-10)
 
@@ -1175,7 +1175,7 @@ The pic above shows how we __merge the updates from NuttX Mainline__  into the P
 
 That's what we do today to keep PineCone and PineDio Branches in sync with NuttX Mainline.
 
-(We do the same for NuttX Apps, just before every merge of NuttX OS)
+(We do the same for [__NuttX Apps__](https://github.com/lupyuen/incubator-nuttx-apps), just before every merge of NuttX OS)
 
 ![Merge Updates From PineDio Stack to PineCone](https://lupyuen.github.io/images/auto2-merge2.jpg)
 
@@ -1203,7 +1203,7 @@ Now Reverse Uno: The pic above shows how we __merge the updates from PineDio Bra
 
 That's what we do today to sync the PineDio and PineCone Branches.
 
-(We do the same for NuttX Apps, just before every merge of NuttX OS)
+(We do the same for [__NuttX Apps__](https://github.com/lupyuen/incubator-nuttx-apps), just before every merge of NuttX OS)
 
 ![GPIO Expander for PineDio Stack](https://lupyuen.github.io/images/expander-title.jpg)
 
