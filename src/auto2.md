@@ -183,7 +183,7 @@ remote-bl602/scripts/upload.sh
 
 [(Watch the demo on YouTube)](https://youtu.be/JX7rWqWTOW4)
 
-This will download and test __Today's Build__ of NuttX for PineDio Stack NuttX (published on GitHub Releases).
+This will download and test __Today's Build__ of NuttX for PineDio Stack (published on GitHub Releases).
 
 [(Here's the build for 2022-05-10)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
 
@@ -213,8 +213,9 @@ Then we set __BUILD_DATE__ like so...
 ##  Tell the script to download the build for 2022-05-10
 export BUILD_DATE=2022-05-10
 
-##  Run the script for Auto Flash and Test, capture the Test Log
-script -c remote-bl602/scripts/test.sh /tmp/release.log
+##  Run the script for Auto Flash and Test for PineDio Stack BL604.
+##  Capture the Test Log in /tmp/release.log
+script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 ```
 
 _Will this work over SSH?_
