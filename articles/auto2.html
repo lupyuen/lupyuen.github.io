@@ -910,6 +910,7 @@ gh release edit \
 <p>We’re merging updates from NuttX Mainline into the PineDio Stack repo roughly <strong>every 2 weeks</strong>. (Depends on my writing mood)</p>
 <p>All NuttX Updates are tested on <strong>PineCone BL602</strong> first, then merged and tested on <strong>PineDio Stack BL604</strong>. (Because PineCone is way more popular than PineDio Stack right now)</p>
 <p>That’s why we need the <strong>complicated setup</strong> for Automated Testing with PineCone and PineDio Stack. (Pic above)</p>
+<p><a href="https://lupyuen.github.io/articles/auto2?23#appendix-select-usb-device">(More about the USB Ports for PineCone and PineDio Stack)</a></p>
 <p><em>Which means we have 2 branches of NuttX: BL602 and BL604?</em></p>
 <p>Yep. We’re now testing and maintaining two <strong>Stable Branches</strong> of NuttX for public consumption on BL602 and BL604…</p>
 <ul>
@@ -1034,7 +1035,7 @@ gh release edit \
 <p><em>Wow looks like we’re doing Everything Everywhere All at Once / Daily / Fortnightly for NuttX on PineDio Stack! Why are we doing all this?</em></p>
 <p>PineDio Stack is the <strong>most complex IoT gadget</strong> I’ve seen… <a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment"><strong>All 23 GPIOs</strong></a> in use, some multiplexed!</p>
 <p>Thus we need a <strong>Common Framework</strong> to manage the complexity. And the framework shall be easily adopted by Alice, Bob, Chow and other devs worldwide to <strong>create Apps and Drivers</strong> for PineDio Stack…</p>
-<p>That Common Framework is <strong>Apache NuttX RTOS!</strong></p>
+<p>The Common Framework that we have selected is <strong>Apache NuttX RTOS!</strong></p>
 <p>NuttX <strong>looks like Linux</strong> (shrunk to a tiny footprint), so hopefully it appeals to coders familiar with Linux.</p>
 <p><em>Isn’t it difficult to coordinate our devs worldwide?</em></p>
 <p>That’s why we have <strong>automated as much as possible</strong>, from Automated Builds (GitHub Actions) to Automated Testing.</p>
@@ -1078,10 +1079,12 @@ gh release edit \
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1519541046803271682"><strong>this Twitter Thread</strong></a></li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing" /></p>
+<p><em>PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing</em></p>
 <h1 id="appendix-select-usb-device"><a href="#appendix-select-usb-device">14 Appendix: Select USB Device</a></h1>
-<p>TODO</p>
-<p>When we connect both PineDio Stack BL604 and PineCone BL602 to the SBC, we’ll see two USB Devices: <code>/dev/ttyUSB0</code> and <code>/dev/ttyUSB1</code></p>
-<p>How will we know which USB Device is for PineDio Stack and PineCone?</p>
+<p>When we connect both PineDio Stack BL604 and PineCone BL602 to our Single-Board Computer (pic above), we’ll see two USB Devices: <strong>/dev/ttyUSB0</strong> and <strong>/dev/ttyUSB1</strong></p>
+<p><em>How will we know which USB Device is for PineDio Stack and PineCone?</em></p>
+<p>Do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Show /dev/ttyUSB0
 lsusb -v -s 1:3 2&gt;&amp;1 | grep bcdDevice | colrm 1 23
 
@@ -1095,16 +1098,14 @@ lsusb -v -s 1:4 2&gt;&amp;1 | grep bcdDevice | colrm 1 23
 # Output for PineCone BL602:
 # 2.63
 # See https://gist.github.com/lupyuen/3ba0dc0789fd282bbfcf9dd5c3ff8908</code></pre></div>
-<p>Here’s how we override the Default USB Device for PineDio Stack…</p>
+<p>Here’s how we <strong>override the Default USB Device</strong> for PineDio Stack…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to use /dev/ttyUSB1
+#  (Default is /dev/ttyUSB0)
 export USB_DEVICE=/dev/ttyUSB1
 
-#  Auto flash and test PineDio Stack BL604: LoRaWAN Test
-remote-bl602/scripts/pinedio.sh
-
-#  Auto test PineDio Stack BL604: Touchscreen Test
-remote-bl602/scripts/pinedio2.sh</code></pre></div>
-<p>TODO: Fix the script to use the correct USB Device</p>
+#  Auto flash and test PineDio Stack BL604 at /dev/ttyUSB1
+remote-bl602/scripts/pinedio.sh</code></pre></div>
+<p><strong>TODO:</strong> We should automate this selection of USB Device in our Automated Testing Script.</p>
 
     
 </body>
