@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board</title>
+            <link>https://lupyuen.github.io/articles/auto2</link>
+            <description><![CDATA[Pine64 is about to launch the PineDio Stack BL604 RISC-V Board with LoRa and Touch Screen... Here's how we automatically flash and test every new release of Apache NuttX RTOS for PineDio Stack]]></description>
+            <guid>https://lupyuen.github.io/articles/auto2</guid>
+            <pubDate>Sun, 22 May 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX GPIO Expander for PineDio Stack BL604</title>
             <link>https://lupyuen.github.io/articles/expander</link>
             <description><![CDATA[PineDio Stack BL604 RISC-V Board has an interesting problem on Apache NuttX RTOS... Too many GPIOs! Let's fix this with a GPIO Expander]]></description>
