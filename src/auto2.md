@@ -1263,17 +1263,21 @@ _Wow looks like we're doing Everything Everywhere All at Once / Daily / Fortnigh
 
 PineDio Stack is the __most complex IoT gadget__ I've seen... [__All 23 GPIOs__](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment) in use, some multiplexed!
 
-Thus we need a __Common Framework__ to manage the complexity. And that will be easily adopted by Alice, Bob, Chow and other devs worldwide to __create apps and drivers__ for PineDio Stack...
+Thus we need a __Common Framework__ to manage the complexity. And the framework shall be easily adopted by Alice, Bob, Chow and other devs worldwide to __create Apps and Drivers__ for PineDio Stack...
 
 That Common Framework is __Apache NuttX RTOS!__
 
-_Isn't it difficult to coordinate the devs worldwide?_
+NuttX __looks like Linux__ (shrunk to a tiny footprint), so hopefully it appeals to coders familiar with Linux.
+
+_Isn't it difficult to coordinate our devs worldwide?_
 
 That's why we have __automated as much as possible__, from Automated Builds (GitHub Actions) to Automated Testing.
 
-So no dev gets left behind across the time zones.
+Updates are synced from __NuttX Mainline__ every 2 weeks, so PineDio Stack Devs will experience the same features as other NuttX Devs worldwide.
 
-TODO: Appeals to Linux coders
+With our grand plan, no dev gets left behind across the time zones!
+
+_Are there other options?_
 
 TODO: Only Community Supported RTOS for BL602
 
