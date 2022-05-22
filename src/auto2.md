@@ -1263,7 +1263,9 @@ _Wow looks like we're doing Everything Everywhere All at Once / Daily / Fortnigh
 
 PineDio Stack is the __most complex IoT gadget__ I've seen... [__All 23 GPIOs__](https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment) in use, some multiplexed!
 
-TODO: Common framework for apps and drivers
+Thus we need a __Common Framework__ to manage the complexity. And that will be easily adopted by Alice, Bob, Chow and other devs worldwide to __create apps and drivers__ for PineDio Stack...
+
+That Common Framework is __Apache NuttX RTOS!__
 
 TODO: Mostly automated coordination between devs, across time zones
 
