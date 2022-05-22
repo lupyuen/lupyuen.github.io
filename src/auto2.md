@@ -1279,11 +1279,19 @@ With our grand plan, no dev gets left behind across the time zones!
 
 _Are there other options?_
 
-TODO: Only Community Supported RTOS for BL602
+NuttX is the only __Community-Supported RTOS__ for BL602 and BL604.
 
-TODO: Only other alternative: FreeRTOS, BL IoT SDK, BL MCU SDK
+If community support is not required, we could consider these alternatives...
 
-TODO: But we might face serious challenges creating complex firmware for PineDio Stack
+-   [__BL IoT SDK__](https://github.com/bouffalolab/bl_iot_sdk)
+
+    (Supports WiFi and is based on FreeRTOS)
+
+-   [__BL MCU SDK__](https://github.com/bouffalolab/bl_mcu_sdk)
+
+    (Doesn't support WiFi, also based on FreeRTOS)
+
+But we might face serious challenges creating complex firmware for PineDio Stack.
 
 # What's Next
 
