@@ -1283,9 +1283,9 @@ The Common Framework that we have selected is __Apache NuttX RTOS!__
 
 NuttX __looks like Linux__ (shrunk to a tiny footprint), so hopefully it appeals to coders familiar with Linux.
 
-_Isn't it difficult to coordinate our devs worldwide?_
+_Isn't it difficult to coordinate our devs everywhere?_
 
-That's why we have __automated as much as possible__, from Automated Builds (GitHub Actions) to Automated Testing.
+That's why we have __automated everything__ as much as possible, from Automated Builds (GitHub Actions) to Automated Testing.
 
 Updates are synced from __NuttX Mainline__ every 2 weeks, so PineDio Stack Devs will experience the same features as other NuttX Devs worldwide.
 
