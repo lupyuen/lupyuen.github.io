@@ -1267,7 +1267,11 @@ Thus we need a __Common Framework__ to manage the complexity. And that will be e
 
 That Common Framework is __Apache NuttX RTOS!__
 
-TODO: Mostly automated coordination between devs, across time zones
+_Isn't it difficult to coordinate the devs worldwide?_
+
+That's why we have __automated as much as possible__, from Automated Builds (GitHub Actions) to Automated Testing.
+
+So no dev gets left behind across the time zones.
 
 TODO: Appeals to Linux coders
 
