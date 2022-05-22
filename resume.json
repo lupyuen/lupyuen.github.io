@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-05-22",
+      "website": "https://lupyuen.github.io/articles/auto2",
+      "summary": "Pine64 is about to launch the PineDio Stack BL604 RISC-V Board with LoRa and Touch Screen... Here's how we automatically flash and test every new release of Apache NuttX RTOS for PineDio Stack"
+    },
+    {
       "name": "NuttX GPIO Expander for PineDio Stack BL604",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-05-03",
