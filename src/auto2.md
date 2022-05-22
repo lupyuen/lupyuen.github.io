@@ -473,12 +473,19 @@ Over to the implementation. Our script detects that NuttX has crashed when it se
 set +e  ##  Don't exit when any command fails
 match=$(grep "registerdump" /tmp/test.log)
 set -e  ##  Exit when any command fails
+
+##  If NuttX has booted properly, run the LoRaWAN Test
+if [ "$match" != "" ]; then
+  ...
+else
+  ##  If NuttX has crashed, do the Crash Analysis
+  ...
 ```
 
 Then it proceeds to __decode the Stack Dump__ by matching the addresses with the __RISC-V Disassembly__: [pinedio.sh](https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L153-L211)
 
 ```bash
-##  If BL602 has crashed, do the Crash Analysis
+##  If NuttX has crashed, do the Crash Analysis.
 ##  Find all code addresses 23?????? in the Output Log, remove duplicates, skip 23007000.
 ##  Returns a newline-delimited list of addresses: "23011000\n230053a0\n..."
 grep --extended-regexp \
