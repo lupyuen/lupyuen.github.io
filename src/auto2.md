@@ -1109,6 +1109,8 @@ All NuttX Updates are tested on __PineCone BL602__ first, then merged and tested
 
 That's why we need the __complicated setup__ for Automated Testing with PineCone and PineDio Stack. (Pic above)
 
+[(More about the USB Ports for PineCone and PineDio Stack)](https://lupyuen.github.io/articles/auto2?23#appendix-select-usb-device)
+
 _Which means we have 2 branches of NuttX: BL602 and BL604?_
 
 Yep. We're now testing and maintaining two __Stable Branches__ of NuttX for public consumption on BL602 and BL604...
@@ -1265,7 +1267,7 @@ PineDio Stack is the __most complex IoT gadget__ I've seen... [__All 23 GPIOs__]
 
 Thus we need a __Common Framework__ to manage the complexity. And the framework shall be easily adopted by Alice, Bob, Chow and other devs worldwide to __create Apps and Drivers__ for PineDio Stack...
 
-That Common Framework is __Apache NuttX RTOS!__
+The Common Framework that we have selected is __Apache NuttX RTOS!__
 
 NuttX __looks like Linux__ (shrunk to a tiny footprint), so hopefully it appeals to coders familiar with Linux.
 
@@ -1317,13 +1319,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1519541046803271682)
 
+![PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing](https://lupyuen.github.io/images/auto2-connect.jpg)
+
+_PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing_
+
 # Appendix: Select USB Device
 
-TODO
+When we connect both PineDio Stack BL604 and PineCone BL602 to our Single-Board Computer (pic above), we'll see two USB Devices: __/dev/ttyUSB0__ and __/dev/ttyUSB1__
 
-When we connect both PineDio Stack BL604 and PineCone BL602 to the SBC, we'll see two USB Devices: `/dev/ttyUSB0` and `/dev/ttyUSB1`
+_How will we know which USB Device is for PineDio Stack and PineCone?_
 
-How will we know which USB Device is for PineDio Stack and PineCone?
+Do this...
 
 ```bash
 ## Show /dev/ttyUSB0
@@ -1341,17 +1347,15 @@ lsusb -v -s 1:4 2>&1 | grep bcdDevice | colrm 1 23
 ## See https://gist.github.com/lupyuen/3ba0dc0789fd282bbfcf9dd5c3ff8908
 ```
 
-Here's how we override the Default USB Device for PineDio Stack...
+Here's how we __override the Default USB Device__ for PineDio Stack...
 
 ```bash
 ##  Tell the script to use /dev/ttyUSB1
+##  (Default is /dev/ttyUSB0)
 export USB_DEVICE=/dev/ttyUSB1
 
-##  Auto flash and test PineDio Stack BL604: LoRaWAN Test
+##  Auto flash and test PineDio Stack BL604 at /dev/ttyUSB1
 remote-bl602/scripts/pinedio.sh
-
-##  Auto test PineDio Stack BL604: Touchscreen Test
-remote-bl602/scripts/pinedio2.sh
 ```
 
-TODO: Fix the script to use the correct USB Device
+__TODO:__ We should automate this selection of USB Device in our Automated Testing Script.
