@@ -441,9 +441,16 @@ libs/libc/assert/lib_assert.c:37
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has crashed
 set +e  ##  Don&#39;t exit when any command fails
 match=$(grep &quot;registerdump&quot; /tmp/test.log)
-set -e  ##  Exit when any command fails</code></pre></div>
+set -e  ##  Exit when any command fails
+
+#  If NuttX has booted properly, run the LoRaWAN Test
+if [ &quot;$match&quot; != &quot;&quot; ]; then
+  ...
+else
+  #  If NuttX has crashed, do the Crash Analysis
+  ...</code></pre></div>
 <p>Then it proceeds to <strong>decode the Stack Dump</strong> by matching the addresses with the <strong>RISC-V Disassembly</strong>: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L153-L211">pinedio.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>#  If BL602 has crashed, do the Crash Analysis
+<div class="example-wrap"><pre class="language-bash"><code>#  If NuttX has crashed, do the Crash Analysis.
 #  Find all code addresses 23?????? in the Output Log, remove duplicates, skip 23007000.
 #  Returns a newline-delimited list of addresses: &quot;23011000\n230053a0\n...&quot;
 grep --extended-regexp \
