@@ -26,7 +26,7 @@ Let's intervene and rewrite the narrative...
 
 > __Alice__: Hi All! I'm building an __I2C Driver__ for PineDio Stack's Accelerometer. Where can I get the latest build of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/pinedio2) for PineDio Stack?
 
-> __Bob__: Just download the Compiled Firmware from the [__GitHub Releases here__](https://github.com/lupyuen/incubator-nuttx/releases?q=pinedio&expanded=true). It was [__built automatically__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L33-L76) by GitHub Actions with the same RISC-V Compiler Toolchain that we're all using.
+> __Bob__: Just download the Compiled Firmware from the [__GitHub Releases here__](https://github.com/lupyuen/incubator-nuttx/releases?q=%22download%2Fpinedio%22&expanded=true). It was [__built automatically__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L33-L76) by GitHub Actions with the same RISC-V Compiler Toolchain that we're all using.
 
 > __Chow__: Hmmm PineDio Stack's [__I2C Touch Panel__](https://lupyuen.github.io/articles/touch) works a little wonky today. What changed?
 
@@ -205,7 +205,7 @@ _Can we pick a different NuttX Build?_
 
 We pick a __NuttX Build__ from this list...
 
--   [__NuttX Builds for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/releases?q=pinedio&expanded=true)
+-   [__NuttX Builds for PineDio Stack__](https://github.com/lupyuen/incubator-nuttx/releases?q=%22download%2Fpinedio%22&expanded=true)
 
 Then we set __BUILD_DATE__ like so...
 
