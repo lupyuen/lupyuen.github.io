@@ -40,6 +40,10 @@ _Why are we doing this?_
 
 -   I write articles about NuttX OS. I need to pick the __Latest Stable Build__ of NuttX for testing the NuttX code in my articles. [(Like these)](https://lupyuen.github.io/articles/book#nuttx-on-bl602)
 
+-   BL602 Devs can easily download the __latest tested build__ from GitHub Releases...
+
+    [__NuttX Releases for BL602__](https://github.com/lupyuen/incubator-nuttx/releases?q=%22download%2Frelease%22&expanded=true)
+
 _Will this work for other microcontrollers?_
 
 -   __ESP32__ has 2 buttons for flashing (BOOT and EN), very similar to BL602. Our Auto Flash and Test Script might work for ESP32 with some tweaking.
