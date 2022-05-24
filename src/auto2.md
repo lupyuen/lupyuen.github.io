@@ -1333,13 +1333,19 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1519541046803271682)
 
-1.  Automated Testing of PineCone BL602 is explained here...
+1.  Automated Testing of __PineCone BL602__ is explained here...
 
     [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
 
-1.  What if the Kconfig files in NuttX Mainline get updated? How do we sync the updates to the PineDio Stack Build Config?
+1.  The ST7789 Display on our Spare PineDio Stack for Automated Testing is faulty. How will we know if the __ST7789 Driver is working?__
 
-    Here's how we sync the updates to the __PineDio Stack Build Config__ after merging NuttX Mainline with PineDio Stack...
+    Right now I'm manually running the LVGL Test App on my Main PineDio Stack (with a functioning display), to check if the ST7789 Driver is OK.
+
+    The test results are manually recorded in the Pull Request. [(See this)](https://github.com/lupyuen/incubator-nuttx/pull/88)
+
+1.  What if the Kconfig files in NuttX Mainline get updated? How do we sync the updates to the __PineDio Stack Build Config__?
+
+    Here's how we sync the updates to the PineDio Stack Build Config, right after merging NuttX Mainline with PineDio Stack...
 
     ```bash
     ## Configure build for PineDio Stack BL604
