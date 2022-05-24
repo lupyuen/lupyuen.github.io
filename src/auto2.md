@@ -1155,23 +1155,23 @@ The pic above shows how we __merge the updates from NuttX Mainline__  into the P
 
     (Upstream Build doesn't include the LoRaWAN Stack)
 
-2.  Every 2 weeks (roughly), we merge Upstream NuttX into our [__Downstream Branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream).
+2.  Every 2 weeks (roughly), we merge Upstream NuttX into our [__Downstream Branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream). [(Like this)](https://github.com/lupyuen/incubator-nuttx/commit/70decce2bf2754e331648c24bcfbb7e377376f52)
 
     GitHub Actions triggers a build for the __Downstream Branch__. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/downstream/.github/workflows/bl602-downstream.yml#L7-L272)
 
-    Our __Automated Testing__ verifies the Downstream Build with LoRaWAN on PineCone BL602. [(Like this)](https://github.com/lupyuen/incubator-nuttx/releases/tag/downstream-2022-05-10)
+    Our __Automated Testing__ verifies the Downstream Build with LoRaWAN on PineCone BL602. [(Like this)](https://github.com/lupyuen/incubator-nuttx/releases/tag/downstream-2022-05-24)
 
-3.  If the Downstream Branch has tested OK, we merge the Downstream Branch to the __PineCone (Release) Branch__.
+3.  If the Downstream Branch has tested OK, we merge the Downstream Branch to the __PineCone (Release) Branch__. [(Like this)](https://github.com/lupyuen/incubator-nuttx/pull/87)
 
-    GitHub Actions triggers a build for the __PineCone Branch__.
+    GitHub Actions triggers a build for the __PineCone Branch__. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272)
 
-    Our __Automated Testing__ verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602. [(Like this)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-05-10)
+    Our __Automated Testing__ verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602. [(Like this)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-05-24)
 
-4.  If the PineCone Branch has tested OK, we __merge the PineCone (Release) Branch__ to the PineDio Branch.
+4.  If the PineCone Branch has tested OK, we __merge the PineCone (Release) Branch__ to the PineDio Branch. [(Like this)](https://github.com/lupyuen/incubator-nuttx/pull/88)
 
     GitHub Actions triggers a build for the __PineDio Branch__. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272)
 
-    We run our __Automated Testing__ on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel. [(Like this)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10)
+    We run our __Automated Testing__ on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel. [(Like this)](https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-24)
 
 That's what we do today to keep PineCone and PineDio Branches in sync with NuttX Mainline.
 
