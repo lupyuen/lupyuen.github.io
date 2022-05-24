@@ -1097,6 +1097,18 @@ gh release edit \
 <p>Automated Testing of PineCone BL602 is explained here…</p>
 <p><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></p>
 </li>
+<li>
+<p>What if the Kconfig files in NuttX Mainline get updated? How do we sync the updates to the PineDio Stack Build Config?</p>
+<p>Here’s how we sync the updates to the <strong>PineDio Stack Build Config</strong> after merging NuttX Mainline with PineDio Stack…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Configure build for PineDio Stack BL604
+./tools/configure.sh bl602evb:pinedio
+
+# Copy the updated Build Config to our repo
+cp .config boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig
+
+# So the next time we configure the build,
+# we will use the updated Build Config...
+# ./tools/configure.sh bl602evb:pinedio</code></pre></div></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing" /></p>
 <p><em>PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing</em></p>
