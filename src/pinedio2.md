@@ -925,6 +925,10 @@ _PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) f
 
 ## Automated Testing
 
+__UPDATE:__ Automated Testing for PineDio Stack is explained in this article...
+
+-   [__"(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/auto2)
+
 When we have multiple devs creating NuttX Apps and Drivers for PineDio Stack, it might be good to run some __Automated Testing__ (to be sure that nothing's broken).
 
 Today we run a __Daily Automated Test__ on the NuttX Mainline Branch for PineCone BL602...
