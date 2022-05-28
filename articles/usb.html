@@ -113,6 +113,7 @@
 <li><a href="#header-error">14.7.8 Header Error</a><ul></ul></li>
 <li><a href="#radioondioirq">14.7.9 RadioOnDioIrq</a><ul></ul></li></ul></li>
 <li><a href="#radiosleep-switch-to-sleep-mode">14.8 RadioSleep: Switch to Sleep Mode</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Oct 2021</em></p>
+<p><a href="https://codeberg.org/JF002/loramac-node"><strong>UPDATE:</strong> This PineDio USB driver is incomplete. Please use <strong>JF002/loramac-node</strong> instead</a></p>
 <p><em>What if our Laptop Computer could talk to other devices…</em></p>
 <p><em>Over a Long Range, Low Bandwidth wireless network like LoRa?</em></p>
 <p><a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/">(Up to 5 km or 3 miles in urban areas… 15 km or 10 miles in rural areas!)</a></p>
@@ -766,7 +767,7 @@ receive_message</code></pre></div>
 <p>Pinebook Pro (Manjaro Linux Arm64) has a built-in driver for CH341… But it <strong>doesn’t support SPI</strong>.</p>
 <p>Thus for our PineDio USB Driver we’re calling this <strong>CH341 SPI Driver</strong>…</p>
 <ul>
-<li><a href="https://github.com/rogerjames99/spi-ch341-usb"><strong>rogerjames99/spi-ch341-usb</strong></a></li>
+<li><a href="https://codeberg.org/JF002/spi-ch341-usb"><strong>JF002/spi-ch341-usb</strong></a></li>
 </ul>
 <p>We install the CH341 SPI Driver with these steps…</p>
 <ul>
@@ -1009,7 +1010,7 @@ static int sx126x_hal_read(
 <p><em>Does <strong>transfer_spi</strong> impose a limit on the size of SPI Transfers?</em></p>
 <p>With some tweaking, we discover that <strong>transfer_spi garbles the data when transferring 32 bytes or more</strong>!</p>
 <p>This seems to be a limitation of the <strong>CH341 SPI Driver</strong>.</p>
-<p><a href="https://github.com/rogerjames99/spi-ch341-usb/blob/master/spi-ch341-usb.c#L68">(Due to <strong>CH341_USB_MAX_BULK_SIZE</strong> maybe?)</a></p>
+<p><a href="https://codeberg.org/JF002/spi-ch341-usb/src/branch/remove-calls-to-spi_busnum_to_master/spi-ch341-usb.c#L68">(Due to <strong>CH341_USB_MAX_BULK_SIZE</strong> maybe?)</a></p>
 <p>Hence we limit all SPI Transfers to <strong>31 bytes</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Blocking call to transmit and receive buffers on SPI. Return 0 on success.
 static int transfer_spi(const uint8_t *tx_buf, uint8_t *rx_buf, uint16_t len) {
@@ -1172,7 +1173,7 @@ spi rx:
 <p><a href="https://wiki.pine64.org/wiki/Pinedio#Driver_development"><strong>“Driver Development (GPIO)”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/rogerjames99/spi-ch341-usb#using-gpios"><strong>“Using GPIOs (CH341)”</strong></a></p>
+<p><a href="https://codeberg.org/JF002/spi-ch341-usb#using-gpios"><strong>“Using GPIOs (CH341)”</strong></a></p>
 </li>
 </ul>
 <p>But the current PineDio USB Driver <strong>doesn’t use GPIO yet</strong>.</p>
@@ -1242,12 +1243,12 @@ spi rx:
   return 0;
 }</code></pre></div></li>
 </ol>
-<p>When we have implemented <a href="https://github.com/rogerjames99/spi-ch341-usb#reacting-on-gpio-input-interrupt"><strong>GPIO Interrupts</strong></a> in our driver, we can remove the <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L102-L112"><strong>Event Polling</strong></a>. And we run a <strong>Background Thread</strong> to handle LoRa Events.</p>
+<p>When we have implemented <a href="https://codeberg.org/JF002/spi-ch341-usb#reacting-on-gpio-input-interrupt"><strong>GPIO Interrupts</strong></a> in our driver, we can remove the <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L102-L112"><strong>Event Polling</strong></a>. And we run a <strong>Background Thread</strong> to handle LoRa Events.</p>
 <p>Here’s how we’ll do multithreading…</p>
 <p><img src="https://lupyuen.github.io/images/usb-handler.jpg" alt="Multithreading with NimBLE Porting Layer" /></p>
 <h1 id="multithreading-with-nimble-porting-layer"><a href="#multithreading-with-nimble-porting-layer">9 Multithreading with NimBLE Porting Layer</a></h1>
 <p><em>How will we receive LoRa Messages with GPIO Interrupts?</em></p>
-<p>After we have implemented <a href="https://github.com/rogerjames99/spi-ch341-usb#reacting-on-gpio-input-interrupt"><strong>GPIO Interrupts</strong></a> in our PineDio USB Driver, this is how we’ll <strong>receive LoRa Messages</strong> (see pic above)…</p>
+<p>After we have implemented <a href="https://codeberg.org/JF002/spi-ch341-usb#reacting-on-gpio-input-interrupt"><strong>GPIO Interrupts</strong></a> in our PineDio USB Driver, this is how we’ll <strong>receive LoRa Messages</strong> (see pic above)…</p>
 <ol>
 <li>
 <p>When SX1262 receives a LoRa Message, it triggers a <strong>GPIO Interrupt</strong> on Pin DIO1</p>
@@ -1368,7 +1369,7 @@ pacman -Q | grep headers
 sudo reboot
 
 # Install CH341 SPI Driver
-git clone https://github.com/rogerjames99/spi-ch341-usb.git
+git clone https://codeberg.org/JF002/spi-ch341-usb
 pushd spi-ch341-usb
 # TODO: Edit Makefile and change...
 #   KERNEL_DIR  = /usr/src/linux-headers-$(KVERSION)/
