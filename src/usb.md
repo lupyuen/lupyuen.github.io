@@ -2,6 +2,8 @@
 
 📝 _28 Oct 2021_
 
+[__UPDATE:__ This PineDio USB driver is incomplete. Please use __JF002/loramac-node__ instead](https://codeberg.org/JF002/loramac-node)
+
 _What if our Laptop Computer could talk to other devices..._
 
 _Over a Long Range, Low Bandwidth wireless network like LoRa?_
@@ -918,7 +920,7 @@ Pinebook Pro (Manjaro Linux Arm64) has a built-in driver for CH341... But it __d
 
 Thus for our PineDio USB Driver we're calling this __CH341 SPI Driver__...
 
--   [__rogerjames99/spi-ch341-usb__](https://github.com/rogerjames99/spi-ch341-usb)
+-   [__JF002/spi-ch341-usb__](https://codeberg.org/JF002/spi-ch341-usb)
 
 We install the CH341 SPI Driver with these steps...
 
@@ -1224,7 +1226,7 @@ With some tweaking, we discover that __transfer_spi garbles the data when transf
 
 This seems to be a limitation of the __CH341 SPI Driver__.
 
-[(Due to __CH341_USB_MAX_BULK_SIZE__ maybe?)](https://github.com/rogerjames99/spi-ch341-usb/blob/master/spi-ch341-usb.c#L68)
+[(Due to __CH341_USB_MAX_BULK_SIZE__ maybe?)](https://codeberg.org/JF002/spi-ch341-usb/src/branch/remove-calls-to-spi_busnum_to_master/spi-ch341-usb.c#L68)
 
 Hence we limit all SPI Transfers to __31 bytes__: [sx126x-linux.c](https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L669-L691)
 
@@ -1392,7 +1394,7 @@ We may call the GPIO Interface that's provided by the __CH341 SPI Driver__...
 
 -   [__"Driver Development (GPIO)"__](https://wiki.pine64.org/wiki/Pinedio#Driver_development)
 
--   [__"Using GPIOs (CH341)"__](https://github.com/rogerjames99/spi-ch341-usb#using-gpios)
+-   [__"Using GPIOs (CH341)"__](https://codeberg.org/JF002/spi-ch341-usb#using-gpios)
 
 But the current PineDio USB Driver __doesn't use GPIO yet__.
 
@@ -1474,7 +1476,7 @@ We need to mod these functions to call the __CH341 GPIO Interface__...
     }
     ```
 
-When we have implemented [__GPIO Interrupts__](https://github.com/rogerjames99/spi-ch341-usb#reacting-on-gpio-input-interrupt) in our driver, we can remove the [__Event Polling__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L102-L112). And we run a __Background Thread__ to handle LoRa Events.
+When we have implemented [__GPIO Interrupts__](https://codeberg.org/JF002/spi-ch341-usb#reacting-on-gpio-input-interrupt) in our driver, we can remove the [__Event Polling__](https://github.com/lupyuen/lora-sx1262/blob/master/src/main.c#L102-L112). And we run a __Background Thread__ to handle LoRa Events.
 
 Here's how we'll do multithreading...
 
@@ -1484,7 +1486,7 @@ Here's how we'll do multithreading...
 
 _How will we receive LoRa Messages with GPIO Interrupts?_
 
-After we have implemented [__GPIO Interrupts__](https://github.com/rogerjames99/spi-ch341-usb#reacting-on-gpio-input-interrupt) in our PineDio USB Driver, this is how we'll __receive LoRa Messages__ (see pic above)...
+After we have implemented [__GPIO Interrupts__](https://codeberg.org/JF002/spi-ch341-usb#reacting-on-gpio-input-interrupt) in our PineDio USB Driver, this is how we'll __receive LoRa Messages__ (see pic above)...
 
 1.  When SX1262 receives a LoRa Message, it triggers a __GPIO Interrupt__ on Pin DIO1
 
@@ -1617,7 +1619,7 @@ pacman -Q | grep headers
 sudo reboot
 
 ## Install CH341 SPI Driver
-git clone https://github.com/rogerjames99/spi-ch341-usb.git
+git clone https://codeberg.org/JF002/spi-ch341-usb
 pushd spi-ch341-usb
 ## TODO: Edit Makefile and change...
 ##   KERNEL_DIR  = /usr/src/linux-headers-$(KVERSION)/
