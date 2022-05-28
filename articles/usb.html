@@ -774,6 +774,7 @@ receive_message</code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/usb#appendix-install-ch341-spi-driver"><strong>“Install CH341 SPI Driver”</strong></a></li>
 </ul>
 <p>Now let’s call the CH341 SPI Driver from our PineDio USB Driver.</p>
+<p><a href="https://github.com/dimich-dmb/spi-ch341-usb.git">(Note: PineDio Wiki recommends <em>dimich-dmb/spi-ch341-usb</em>, but it didn’t transmit LoRa packets during my testing)</a></p>
 <h2 id="initialise-spi"><a href="#initialise-spi">7.1 Initialise SPI</a></h2>
 <p>Here’s how our PineDio USB Driver calls CH341 SPI Driver to <strong>initialise the SPI Bus</strong>: <a href="https://github.com/lupyuen/lora-sx1262/blob/master/src/sx126x-linux.c#L651-L667">sx126x-linux.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// SPI Bus
