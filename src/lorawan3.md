@@ -1234,9 +1234,9 @@ Thus we should __disable Info Logging__ on NuttX...
 
 (It's OK to enable Debug Assertions, Error Output and Warning Output)
 
-Since LoRaWAN is Time Sensitive, we ought to optimise SPI Data Transfers with DMA.
+Since LoRaWAN is Time Sensitive, we ought to [__optimise SPI Data Transfers with DMA__](https://lupyuen.github.io/articles/lorawan3#spi-with-dma).
 
-(See the section __"SPI With DMA"__ below)
+-   [__Why LoRaWAN is Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1)
 
 ![LoRaWAN is Time Sensitive](https://lupyuen.github.io/images/lorawan3-tx.png)
 
