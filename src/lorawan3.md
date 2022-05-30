@@ -1220,7 +1220,7 @@ Watch what happens if __our device gets too busy__...
 
 This might happen if our device is busy __writing debug logs__ to the console.
 
-(The LoRaWAN Gateway returns the Join Accept Response in under 1 second)
+[(LoRaWAN Gateway returns the Join Accept Response in a One-Second Window)](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1)
 
 Thus we should __disable Info Logging__ on NuttX...
 
