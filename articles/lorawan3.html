@@ -1004,7 +1004,7 @@ chirpstack-network-server[5749]:
 </tbody></table>
 </div>
 <p>This might happen if our device is busy <strong>writing debug logs</strong> to the console.</p>
-<p>(The LoRaWAN Gateway returns the Join Accept Response in under 1 second)</p>
+<p><a href="https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1">(LoRaWAN Gateway returns the Join Accept Response in a One-Second Window)</a></p>
 <p>Thus we should <strong>disable Info Logging</strong> on NuttX…</p>
 <ol>
 <li>
