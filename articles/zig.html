@@ -83,7 +83,7 @@
 <li><a href="#appendix-hello-app">13 Appendix: Hello App</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a general-purpose language for maintaining <strong>robust, optimal, and reusable software</strong>.</p>
-<p><a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602</strong></a> is a 32-bit <strong>RISC-V SoC</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602</strong></a> is a <strong>32-bit RISC-V SoC</strong> with WiFi and Bluetooth LE.</p>
 <p>Let’s run <strong>Zig on BL602!</strong></p>
 <p><em>We’re running Zig bare metal on BL602?</em></p>
 <p>Not quite. We’ll need more work to get Zig talking to <strong>BL602 Hardware</strong> and printing to the console.</p>
@@ -125,7 +125,7 @@ pub export fn hello_zig_main(
 <p>We begin by importing the <a href="https://ziglang.org/documentation/master/#Zig-Standard-Library"><strong>Zig Standard Library</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import the Zig Standard Library
 const std = @import(&quot;std&quot;);</code></pre></div>
-<p>Which has all kinds of <strong>algos, data structures and definitions</strong>.</p>
+<p>Which has all kinds of <strong>Algos, Data Structures and Definitions</strong>.</p>
 <p><a href="https://ziglang.org/documentation/master/std/">(More about the Zig Standard Library)</a></p>
 <h2 id="import-printf"><a href="#import-printf">1.2 Import printf</a></h2>
 <p>Next we cross into the grey zone between <strong>Zig and C</strong>…</p>
@@ -136,11 +136,19 @@ pub extern fn printf(
 <p>Here we import the <strong><code>printf()</code></strong> function from the C Standard Library.</p>
 <p>(Which is supported by NuttX because it’s <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX-Compliant</strong></a>)</p>
 <p><em>What’s <code>[*:0]const u8</code>?</em></p>
-<p>TODO</p>
-<p><a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers">Sentinel-Terminated Pointers</a></p>
+<p>That’s how we declare <strong>C Strings</strong> in Zig…</p>
+<div><table><thead><tr><th style="text-align: center"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>[*:0]</code></strong></td><td style="text-align: left">Pointer to a Null-Terminated Array…</td></tr>
+<tr><td style="text-align: center"><strong><code>const u8</code></strong></td><td style="text-align: left">Of Constant Unsigned Bytes</td></tr>
+</tbody></table>
+</div>
+<p>In Zig we call this a <a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers"><strong>Sentinel-Terminated Pointer</strong></a>.</p>
 <p><em>Why is the return type <code>c_int</code>?</em></p>
 <p>TODO: ABI compatibility with C</p>
 <p><a href="https://ziglang.org/documentation/master/#Primitive-Types">(See this)</a></p>
+<p><em>Did we forget something?</em></p>
+<p>For simplicity we excluded the variable arguments for <strong><code>printf()</code></strong>.</p>
+<p><a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers">(Here’s the proper declaration)</a></p>
 <h2 id="main-function"><a href="#main-function">1.3 Main Function</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Main Function
