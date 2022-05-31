@@ -114,6 +114,8 @@ _Did we forget something?_
 
 For simplicity we excluded the variable arguments for __`printf()`__.
 
+Our declaration for __`printf()`__ specifies only one parameter: the __Format String__. So it's good for printing one unformatted string.
+
 [(Here's the proper declaration)](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers)
 
 ## Main Function
