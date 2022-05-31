@@ -480,15 +480,57 @@ TODO
 
 ![Zig runs on BL602 with Apache NuttX RTOS](https://lupyuen.github.io/images/zig-title.jpg)
 
+# Embedded Zig
+
+TODO
+
+[__ZigEmbeddedGroup/microzig__](https://github.com/ZigEmbeddedGroup/microzig)
+
+```zig
+//  Import microzig library
+const micro = @import("microzig");
+
+//  Blink the LED
+pub fn main() void {
+  //  Open the LED GPIO at "/dev/gpio1"
+  const led_pin = micro.Pin("/dev/gpio1");
+
+  //  Configure the LED GPIO for Output
+  const led = micro.Gpio(led_pin, .{
+    .mode = .output,
+    .initial_state = .low,
+  });
+  led.init();
+
+  //  Loop forever blinking the LED
+  while (true) {
+    busyloop();
+    led.toggle();
+  }
+}
+
+//  Wait a short while
+fn busyloop() void {
+  const limit = 100_000;
+
+  var i: u24 = 0;
+  while (i < limit) : (i += 1) {
+    @import("std").mem.doNotOptimizeAway(i);
+  }
+}
+```
+
+Adapted from [blinky.zig](https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig)
+
 # Why Zig?
 
 TODO
 
-["Maintain it With Zig"](https://kristoff.it/blog/maintain-it-with-zig)
+[__"Maintain it With Zig"__](https://kristoff.it/blog/maintain-it-with-zig)
 
-["Compile a C/C++ Project with Zig"](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
+[__"Compile a C/C++ Project with Zig"__](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
 
-["How serious Zig about replacing C?"](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
+[__"How serious Zig about replacing C?"__)](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
 
 Zig looks great for maintaining complex C projects
 
@@ -500,7 +542,7 @@ So best way to maintain and extend them is to compile with Zig
 
 In future might be possible to build LoRaWAN IoT Apps in Zig
 
-Why not rewrite in Rust? Because we will have trouble syncing future updates to the C code
+Why not rewrite in Zig (or another modern language)? Because we will have trouble syncing future updates to the C code
 
 # What's Next
 
