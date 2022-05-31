@@ -97,32 +97,51 @@
 <p>I’m totally new to Zig, please bear with me as I wade through the water and start swimming in Zig! 🙏</p>
 <p><img src="https://lupyuen.github.io/images/zig-code1a.png" alt="Zig App bundled with Apache NuttX RTOS" /></p>
 <h1 id="zig-app"><a href="#zig-app">1 Zig App</a></h1>
-<p>Below is the <strong>barebones Zig App</strong> that’s bundled with Apache NuttX RTOS. Let’s run it on BL602: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig">hello_zig_main.zig</a></p>
+<p>Below is the <strong>barebones Zig App</strong> that’s bundled with Apache NuttX RTOS. We’ll run this on BL602: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig">hello_zig_main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import the Zig Standard Library
 const std = @import(&quot;std&quot;);
 
 //  Import printf() from C
-pub extern fn printf(_format: [*:0]const u8) c_int;
+pub extern fn printf(
+  _format: [*:0]const u8
+) c_int;
 
 //  Main Function
 pub export fn hello_zig_main(
-    _argc: c_int, 
-    _argv: [*]const [*]const u8
+  _argc: c_int, 
+  _argv: [*]const [*]const u8
 ) c_int {
-    _ = _argc;
-    _ = _argv;
-    _ = printf(&quot;Hello, Zig!\n&quot;);
-    return 0;
+  _ = _argc;
+  _ = _argv;
+  _ = printf(&quot;Hello, Zig!\n&quot;);
+  return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx#zig-app-for-nuttx">(We tweaked the code slightly)</a></p>
-<p>Let’s dive into the code…</p>
+<p>The code above prints to the NuttX Console…</p>
+<div class="example-wrap"><pre class="language-text"><code>Hello, Zig!</code></pre></div>
+<p>Let’s dive into the Zig code.</p>
+<p><img src="https://lupyuen.github.io/images/book-zig.jpg" alt="Zig on BL602" /></p>
 <h2 id="import-standard-library"><a href="#import-standard-library">1.1 Import Standard Library</a></h2>
-<p>TODO</p>
+<p>We begin by importing the <a href="https://ziglang.org/documentation/master/#Zig-Standard-Library"><strong>Zig Standard Library</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import the Zig Standard Library
-const std = @import(&quot;std&quot;);</code></pre></div><h2 id="import-printf"><a href="#import-printf">1.2 Import printf</a></h2>
-<p>TODO</p>
+const std = @import(&quot;std&quot;);</code></pre></div>
+<p>Which has all kinds of <strong>algos, data structures and definitions</strong>.</p>
+<p><a href="https://ziglang.org/documentation/master/std/">(More about the Zig Standard Library)</a></p>
+<h2 id="import-printf"><a href="#import-printf">1.2 Import printf</a></h2>
+<p>Next we cross into the grey zone between <strong>Zig and C</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import printf() from C
-pub extern fn printf(_format: [*:0]const u8) c_int;</code></pre></div><h2 id="main-function"><a href="#main-function">1.3 Main Function</a></h2>
+pub extern fn printf(
+  _format: [*:0]const u8
+) c_int;</code></pre></div>
+<p>Here we import the <strong><code>printf()</code></strong> function from the C Standard Library.</p>
+<p>(Which is supported by NuttX because it’s <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX-Compliant</strong></a>)</p>
+<p><em>What’s <code>[*:0]const u8</code>?</em></p>
+<p>TODO</p>
+<p><a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers">Sentinel-Terminated Pointers</a></p>
+<p><em>Why is the return type <code>c_int</code>?</em></p>
+<p>TODO: ABI compatibility with C</p>
+<p><a href="https://ziglang.org/documentation/master/#Primitive-Types">(See this)</a></p>
+<h2 id="main-function"><a href="#main-function">1.3 Main Function</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Main Function
 pub export fn hello_zig_main(
@@ -133,7 +152,12 @@ pub export fn hello_zig_main(
     _ = _argv;
     _ = printf(&quot;Hello, Zig!\n&quot;);
     return 0;
-}</code></pre></div><h1 id="enable-zig-app"><a href="#enable-zig-app">2 Enable Zig App</a></h1>
+}</code></pre></div>
+<p>TODO</p>
+<p><em>Doesn’t Zig have its own printf?</em></p>
+<p>Yep there’s indeed a <strong><code>print()</code></strong> function in Zig, and we ought to use it! <a href="https://ziglang.org/documentation/master/#Hello-World">(See this)</a></p>
+<p>Eventually we’ll fix our NuttX Zig App to use the <strong><code>print()</code></strong> function.</p>
+<h1 id="enable-zig-app"><a href="#enable-zig-app">2 Enable Zig App</a></h1>
 <p>TODO</p>
 <p>To enable the Zig App in NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
@@ -434,7 +458,10 @@ Hello, Zig!</code></pre></div><h1 id="appendix-hello-app"><a href="#appendix-hel
 <div class="example-wrap"><pre class="language-text"><code>riscv64-unknown-elf-ld: nuttx/staging/libapps.a(builtin_list.c.home.user.nuttx.apps.builtin.o):(.rodata.g_builtins+0xcc): 
 undefined reference to `hello_main&#39;</code></pre></div>
 <p>That’s why we define <code>hello_main</code> in our Zig App…</p>
-<div class="example-wrap"><pre class="language-zig"><code>pub export fn hello_main(_argc: c_int, _argv: [*]const [*]const u8) c_int {
+<div class="example-wrap"><pre class="language-zig"><code>pub export fn hello_main(
+    _argc: c_int, 
+    _argv: [*]const [*]const u8
+) c_int {
     _ = _argc;
     _ = _argv;
     _ = printf(&quot;Hello, Zig!\n&quot;);
