@@ -376,6 +376,8 @@ nsh> hello_zig
 Hello, Zig!
 ```
 
+![Zig runs on BL602 with Apache NuttX RTOS](https://lupyuen.github.io/images/zig-title.jpg)
+
 # Why Zig?
 
 TODO
