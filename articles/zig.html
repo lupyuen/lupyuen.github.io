@@ -76,11 +76,12 @@
 <li><a href="#floating-point-abi">6 Floating-Point ABI</a><ul></ul></li>
 <li><a href="#patch-elf-header">7 Patch ELF Header</a><ul></ul></li>
 <li><a href="#zig-runs-ok">8 Zig Runs OK!</a><ul></ul></li>
-<li><a href="#why-zig">9 Why Zig?</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li>
-<li><a href="#appendix-zig-on-risc-v-bl602-with-apache-nuttx-rtos">12 Appendix: Zig on RISC-V BL602 with Apache NuttX RTOS</a><ul></ul></li>
-<li><a href="#appendix-hello-app">13 Appendix: Hello App</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2022</em></p>
+<li><a href="#embedded-zig">9 Embedded Zig</a><ul></ul></li>
+<li><a href="#why-zig">10 Why Zig?</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li>
+<li><a href="#appendix-zig-on-risc-v-bl602-with-apache-nuttx-rtos">13 Appendix: Zig on RISC-V BL602 with Apache NuttX RTOS</a><ul></ul></li>
+<li><a href="#appendix-hello-app">14 Appendix: Hello App</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a general-purpose language for maintaining <strong>robust, optimal, and reusable software</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602</strong></a> is a <strong>32-bit RISC-V SoC</strong> with WiFi and Bluetooth LE.</p>
@@ -387,18 +388,53 @@ nsh&gt; hello_zig
 Hello, Zig!</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
-<h1 id="why-zig"><a href="#why-zig">9 Why Zig?</a></h1>
+<h1 id="embedded-zig"><a href="#embedded-zig">9 Embedded Zig</a></h1>
 <p>TODO</p>
-<p><a href="https://kristoff.it/blog/maintain-it-with-zig">“Maintain it With Zig”</a></p>
-<p><a href="https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j">“Compile a C/C++ Project with Zig”</a></p>
-<p><a href="https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&amp;utm_source=share">“How serious Zig about replacing C?”</a></p>
+<p><a href="https://github.com/ZigEmbeddedGroup/microzig"><strong>ZigEmbeddedGroup/microzig</strong></a></p>
+<div class="example-wrap"><pre class="language-zig"><code>//  Import microzig library
+const micro = @import(&quot;microzig&quot;);
+
+//  Blink the LED
+pub fn main() void {
+  //  Open the LED GPIO at &quot;/dev/gpio1&quot;
+  const led_pin = micro.Pin(&quot;/dev/gpio1&quot;);
+
+  //  Configure the LED GPIO for Output
+  const led = micro.Gpio(led_pin, .{
+    .mode = .output,
+    .initial_state = .low,
+  });
+  led.init();
+
+  //  Loop forever blinking the LED
+  while (true) {
+    busyloop();
+    led.toggle();
+  }
+}
+
+//  Wait a short while
+fn busyloop() void {
+  const limit = 100_000;
+
+  var i: u24 = 0;
+  while (i &lt; limit) : (i += 1) {
+    @import(&quot;std&quot;).mem.doNotOptimizeAway(i);
+  }
+}</code></pre></div>
+<p>Adapted from <a href="https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig">blinky.zig</a></p>
+<h1 id="why-zig"><a href="#why-zig">10 Why Zig?</a></h1>
+<p>TODO</p>
+<p><a href="https://kristoff.it/blog/maintain-it-with-zig"><strong>“Maintain it With Zig”</strong></a></p>
+<p><a href="https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j"><strong>“Compile a C/C++ Project with Zig”</strong></a></p>
+<p><a href="https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&amp;utm_source=share"><strong>“How serious Zig about replacing C?”</strong>)</a></p>
 <p>Zig looks great for maintaining complex C projects</p>
 <p>Today we’re running incredibly complex C projects on NuttX: LoRaWAN Library, LoRa SX1262 Library, NimBLE Porting Layer</p>
 <p>And we can’t afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)</p>
 <p>So best way to maintain and extend them is to compile with Zig</p>
 <p>In future might be possible to build LoRaWAN IoT Apps in Zig</p>
-<p>Why not rewrite in Rust? Because we will have trouble syncing future updates to the C code</p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<p>Why not rewrite in Zig (or another modern language)? Because we will have trouble syncing future updates to the C code</p>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -417,11 +453,11 @@ Hello, Zig!</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/zig.md"><strong><code>lupyuen.github.io/src/zig.md</code></strong></a></p>
-<h1 id="notes"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1529261120124354560"><strong>this Twitter Thread</strong></a></li>
 </ol>
-<h1 id="appendix-zig-on-risc-v-bl602-with-apache-nuttx-rtos"><a href="#appendix-zig-on-risc-v-bl602-with-apache-nuttx-rtos">12 Appendix: Zig on RISC-V BL602 with Apache NuttX RTOS</a></h1>
+<h1 id="appendix-zig-on-risc-v-bl602-with-apache-nuttx-rtos"><a href="#appendix-zig-on-risc-v-bl602-with-apache-nuttx-rtos">13 Appendix: Zig on RISC-V BL602 with Apache NuttX RTOS</a></h1>
 <p>TODO</p>
 <p>To build the Zig App for NuttX on BL602…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Enable Zig App in NuttX menuconfig
@@ -476,7 +512,7 @@ nsh&gt; hello_zig
 Hello, Zig!
 
 nsh&gt; hello
-Hello, Zig!</code></pre></div><h1 id="appendix-hello-app"><a href="#appendix-hello-app">13 Appendix: Hello App</a></h1>
+Hello, Zig!</code></pre></div><h1 id="appendix-hello-app"><a href="#appendix-hello-app">14 Appendix: Hello App</a></h1>
 <p>TODO</p>
 <p>Remember that we overwrote <code>hello.o</code> with our Zig Compiled Object File.</p>
 <p>NuttX Build will fail unless we provide the <code>hello_main</code> function…</p>
