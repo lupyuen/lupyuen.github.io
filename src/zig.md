@@ -30,48 +30,80 @@ I'm totally new to Zig, please bear with me as I wade through the water and star
 
 # Zig App
 
-Below is the __barebones Zig App__ that's bundled with Apache NuttX RTOS. Let's run it on BL602: [hello_zig_main.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig)
+Below is the __barebones Zig App__ that's bundled with Apache NuttX RTOS. We'll run this on BL602: [hello_zig_main.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig)
 
 ```zig
 //  Import the Zig Standard Library
 const std = @import("std");
 
 //  Import printf() from C
-pub extern fn printf(_format: [*:0]const u8) c_int;
+pub extern fn printf(
+  _format: [*:0]const u8
+) c_int;
 
 //  Main Function
 pub export fn hello_zig_main(
-    _argc: c_int, 
-    _argv: [*]const [*]const u8
+  _argc: c_int, 
+  _argv: [*]const [*]const u8
 ) c_int {
-    _ = _argc;
-    _ = _argv;
-    _ = printf("Hello, Zig!\n");
-    return 0;
+  _ = _argc;
+  _ = _argv;
+  _ = printf("Hello, Zig!\n");
+  return 0;
 }
 ```
 
 [(We tweaked the code slightly)](https://github.com/lupyuen/zig-bl602-nuttx#zig-app-for-nuttx)
 
-Let's dive into the code...
+The code above prints to the NuttX Console...
+
+```text
+Hello, Zig!
+```
+
+Let's dive into the Zig code.
+
+![Zig on BL602](https://lupyuen.github.io/images/book-zig.jpg)
 
 ## Import Standard Library
 
-TODO
+We begin by importing the [__Zig Standard Library__](https://ziglang.org/documentation/master/#Zig-Standard-Library)...
 
 ```zig
 //  Import the Zig Standard Library
 const std = @import("std");
 ```
 
+Which has all kinds of __algos, data structures and definitions__.
+
+[(More about the Zig Standard Library)](https://ziglang.org/documentation/master/std/)
+
 ## Import printf
 
-TODO
+Next we cross into the grey zone between __Zig and C__...
 
 ```zig
 //  Import printf() from C
-pub extern fn printf(_format: [*:0]const u8) c_int;
+pub extern fn printf(
+  _format: [*:0]const u8
+) c_int;
 ```
+
+Here we import the __`printf()`__ function from the C Standard Library.
+
+(Which is supported by NuttX because it's [__POSIX-Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance))
+
+_What's `[*:0]const u8`?_
+
+TODO
+
+[Sentinel-Terminated Pointers](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers)
+
+_Why is the return type `c_int`?_
+
+TODO: ABI compatibility with C
+
+[(See this)](https://ziglang.org/documentation/master/#Primitive-Types)
 
 ## Main Function
 
@@ -89,6 +121,14 @@ pub export fn hello_zig_main(
     return 0;
 }
 ```
+
+TODO
+
+_Doesn't Zig have its own printf?_
+
+Yep there's indeed a __`print()`__ function in Zig, and we ought to use it! [(See this)](https://ziglang.org/documentation/master/#Hello-World)
+
+Eventually we'll fix our NuttX Zig App to use the __`print()`__ function.
 
 # Enable Zig App
 
@@ -530,7 +570,10 @@ undefined reference to `hello_main'
 That's why we define `hello_main` in our Zig App...
 
 ```zig
-pub export fn hello_main(_argc: c_int, _argv: [*]const [*]const u8) c_int {
+pub export fn hello_main(
+    _argc: c_int, 
+    _argv: [*]const [*]const u8
+) c_int {
     _ = _argc;
     _ = _argv;
     _ = printf("Hello, Zig!\n");
