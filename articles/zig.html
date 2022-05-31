@@ -142,14 +142,15 @@ pub extern fn printf(
 <tr><td style="text-align: center"><strong><code>const u8</code></strong></td><td style="text-align: left">Of Constant Unsigned Bytes</td></tr>
 </tbody></table>
 </div>
-<p>In Zig we call this a <a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers"><strong>Sentinel-Terminated Pointer</strong></a>.</p>
+<p>Zig calls this a <a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers"><strong>Sentinel-Terminated Pointer</strong></a>.</p>
+<p>(That’s because it’s Terminated by Null, not because of “The Matrix”)</p>
 <p><em>Why is the return type <code>c_int</code>?</em></p>
-<p>TODO: ABI compatibility with C</p>
+<p>This says that <strong><code>printf()</code></strong> returns an <strong><code>int</code></strong> that’s compatible with C.</p>
 <p><a href="https://ziglang.org/documentation/master/#Primitive-Types">(See this)</a></p>
 <p><em>Did we forget something?</em></p>
-<p>For simplicity we excluded the variable arguments for <strong><code>printf()</code></strong>.</p>
+<p>For simplicity we excluded the <strong>Variable Arguments</strong> for <strong><code>printf()</code></strong>.</p>
 <p>Our declaration for <strong><code>printf()</code></strong> specifies only one parameter: the <strong>Format String</strong>. So it’s good for printing one unformatted string.</p>
-<p><a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers">(Here’s the proper declaration)</a></p>
+<p><a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers">(Here’s the full declaration)</a></p>
 <h2 id="main-function"><a href="#main-function">1.3 Main Function</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Main Function
