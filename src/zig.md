@@ -103,11 +103,11 @@ That's how we declare __C Strings__ in Zig...
 | __`const u8`__ | Of Constant Unsigned Bytes |
 | &nbsp; | &nbsp; |
 
-Which is somewhat similar to "`const char *`" in C, but more expressive.
+Which feels like "`const char *`" in C, but more expressive.
 
 Zig calls this a [__Sentinel-Terminated Pointer__](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers).
 
-(That's because it's Terminated by Null, not because of "The Matrix")
+(That's because it's Terminated by the Null Sentinel, not because of "The Matrix")
 
 _Why is the return type `c_int`?_
 
