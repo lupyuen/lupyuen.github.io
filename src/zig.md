@@ -26,21 +26,24 @@ In a while I'll explain the strange hack I did to run __Zig on BL602__...
 
 I'm totally new to Zig, please bear with me as I wade through the water and start swimming in Zig! 🙏
 
-# Zig App for NuttX
+![Zig App bundled with Apache NuttX RTOS](https://lupyuen.github.io/images/zig-code1a.png)
 
-TODO
+# Zig App
 
-Apache NuttX RTOS is bundled with a simple Zig App ... Let's run this on BL602: [hello_zig_main.zig](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello_zig/hello_zig_main.zig)
+Below is the __barebones Zig App__ that's bundled with Apache NuttX RTOS. Let's run it on BL602: [hello_zig_main.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig)
 
 ```zig
-//  Included Files
+//  Import the Zig Standard Library
 const std = @import("std");
 
-//  Externs
+//  Import printf() from C
 pub extern fn printf(_format: [*:0]const u8) c_int;
 
-//  hello_zig_main
-pub export fn hello_zig_main(_argc: c_int, _argv: [*]const [*]const u8) c_int {
+//  Main Function
+pub export fn hello_zig_main(
+    _argc: c_int, 
+    _argv: [*]const [*]const u8
+) c_int {
     _ = _argc;
     _ = _argv;
     _ = printf("Hello, Zig!\n");
@@ -48,23 +51,44 @@ pub export fn hello_zig_main(_argc: c_int, _argv: [*]const [*]const u8) c_int {
 }
 ```
 
-We fixed the last 2 lines to make the Zig compiler happy...
+[(We tweaked the code slightly)](https://github.com/lupyuen/zig-bl602-nuttx#zig-app-for-nuttx)
 
-```zig
-//  Previously: printf("Hello, Zig!\n");
-//  Zig needs us to use the returned value from printf()...
-_ = printf("Hello, Zig!\n");
+Let's dive into the code...
 
-//  Previously this was missing.
-//  Zig needs us to return a value...
-return 0;
-```
-
-[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig)
+## Import Standard Library
 
 TODO
 
-![](https://lupyuen.github.io/images/zig-code1a.png)
+```zig
+//  Import the Zig Standard Library
+const std = @import("std");
+```
+
+## Import printf
+
+TODO
+
+```zig
+//  Import printf() from C
+pub extern fn printf(_format: [*:0]const u8) c_int;
+```
+
+## Main Function
+
+TODO
+
+```zig
+//  Main Function
+pub export fn hello_zig_main(
+    _argc: c_int, 
+    _argv: [*]const [*]const u8
+) c_int {
+    _ = _argc;
+    _ = _argv;
+    _ = printf("Hello, Zig!\n");
+    return 0;
+}
+```
 
 # Enable Zig App
 
@@ -375,6 +399,8 @@ NuttShell (NSH) NuttX-10.3.0-RC2
 nsh> hello_zig
 Hello, Zig!
 ```
+
+TODO
 
 ![Zig runs on BL602 with Apache NuttX RTOS](https://lupyuen.github.io/images/zig-title.jpg)
 
