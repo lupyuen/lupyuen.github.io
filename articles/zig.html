@@ -65,7 +65,10 @@
 
     <h1 class="title">Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#zig-app-for-nuttx">1 Zig App for NuttX</a><ul></ul></li>
+<li><a href="#zig-app">1 Zig App</a><ul>
+<li><a href="#import-standard-library">1.1 Import Standard Library</a><ul></ul></li>
+<li><a href="#import-printf">1.2 Import printf</a><ul></ul></li>
+<li><a href="#main-function">1.3 Main Function</a><ul></ul></li></ul></li>
 <li><a href="#enable-zig-app">2 Enable Zig App</a><ul></ul></li>
 <li><a href="#build-fails-on-nuttx">3 Build Fails on NuttX</a><ul></ul></li>
 <li><a href="#compile-zig-app">4 Compile Zig App</a><ul></ul></li>
@@ -92,34 +95,45 @@
 <li><a href="https://github.com/lupyuen/zig-bl602-nuttx"><strong>lupyuen/zig-bl602-nuttx</strong></a></li>
 </ul>
 <p>I’m totally new to Zig, please bear with me as I wade through the water and start swimming in Zig! 🙏</p>
-<h1 id="zig-app-for-nuttx"><a href="#zig-app-for-nuttx">1 Zig App for NuttX</a></h1>
-<p>TODO</p>
-<p>Apache NuttX RTOS is bundled with a simple Zig App … Let’s run this on BL602: <a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello_zig/hello_zig_main.zig">hello_zig_main.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>//  Included Files
+<p><img src="https://lupyuen.github.io/images/zig-code1a.png" alt="Zig App bundled with Apache NuttX RTOS" /></p>
+<h1 id="zig-app"><a href="#zig-app">1 Zig App</a></h1>
+<p>Below is the <strong>barebones Zig App</strong> that’s bundled with Apache NuttX RTOS. Let’s run it on BL602: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig">hello_zig_main.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>//  Import the Zig Standard Library
 const std = @import(&quot;std&quot;);
 
-//  Externs
+//  Import printf() from C
 pub extern fn printf(_format: [*:0]const u8) c_int;
 
-//  hello_zig_main
-pub export fn hello_zig_main(_argc: c_int, _argv: [*]const [*]const u8) c_int {
+//  Main Function
+pub export fn hello_zig_main(
+    _argc: c_int, 
+    _argv: [*]const [*]const u8
+) c_int {
     _ = _argc;
     _ = _argv;
     _ = printf(&quot;Hello, Zig!\n&quot;);
     return 0;
 }</code></pre></div>
-<p>We fixed the last 2 lines to make the Zig compiler happy…</p>
-<div class="example-wrap"><pre class="language-zig"><code>//  Previously: printf(&quot;Hello, Zig!\n&quot;);
-//  Zig needs us to use the returned value from printf()...
-_ = printf(&quot;Hello, Zig!\n&quot;);
-
-//  Previously this was missing.
-//  Zig needs us to return a value...
-return 0;</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx#zig-app-for-nuttx">(We tweaked the code slightly)</a></p>
+<p>Let’s dive into the code…</p>
+<h2 id="import-standard-library"><a href="#import-standard-library">1.1 Import Standard Library</a></h2>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/zig-code1a.png" alt="" /></p>
-<h1 id="enable-zig-app"><a href="#enable-zig-app">2 Enable Zig App</a></h1>
+<div class="example-wrap"><pre class="language-zig"><code>//  Import the Zig Standard Library
+const std = @import(&quot;std&quot;);</code></pre></div><h2 id="import-printf"><a href="#import-printf">1.2 Import printf</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>//  Import printf() from C
+pub extern fn printf(_format: [*:0]const u8) c_int;</code></pre></div><h2 id="main-function"><a href="#main-function">1.3 Main Function</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>//  Main Function
+pub export fn hello_zig_main(
+    _argc: c_int, 
+    _argv: [*]const [*]const u8
+) c_int {
+    _ = _argc;
+    _ = _argv;
+    _ = printf(&quot;Hello, Zig!\n&quot;);
+    return 0;
+}</code></pre></div><h1 id="enable-zig-app"><a href="#enable-zig-app">2 Enable Zig App</a></h1>
 <p>TODO</p>
 <p>To enable the Zig App in NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
@@ -322,6 +336,7 @@ make</code></pre></div>
 
 nsh&gt; hello_zig
 Hello, Zig!</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <h1 id="why-zig"><a href="#why-zig">9 Why Zig?</a></h1>
 <p>TODO</p>
