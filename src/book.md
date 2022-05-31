@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _25 Apr 2022_
+📝 _30 May 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(51 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(55 articles and still growing!)__
 
 The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602__.
 
@@ -69,6 +69,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 -   ["NuttX GPIO Expander for PineDio Stack BL604"](https://lupyuen.github.io/articles/expander)
 
 -   ["(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/auto2)
+
+-   ["Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"](https://lupyuen.github.io/articles/zig)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
@@ -365,6 +367,14 @@ For __BL602 IoT SDK__
 -   ["Debug Rust on PineCone BL602 with VSCode and GDB"](https://lupyuen.github.io/articles/debug)
 
 -   ["Rust in XIP Flash Memory by 9names"](https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways)
+
+# Zig on BL602
+
+How we code BL602 and BL604 firmware __with Zig.__
+
+For __Apache NuttX OS__
+
+-   ["Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"](https://lupyuen.github.io/articles/zig)
 
 ![BASIC on BL602](https://lupyuen.github.io/images/book-basic.jpg)
 
