@@ -101,6 +101,9 @@ That's how we declare __C Strings__ in Zig...
 |:--:|:--|
 | __`[*:0]`__    | Pointer to a Null-Terminated Array... |
 | __`const u8`__ | Of Constant Unsigned Bytes |
+| &nbsp; | &nbsp; |
+
+Which is somewhat similar to "`const char *`" in C, but more expressive.
 
 Zig calls this a [__Sentinel-Terminated Pointer__](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers).
 
@@ -108,9 +111,52 @@ Zig calls this a [__Sentinel-Terminated Pointer__](https://ziglang.org/documenta
 
 _Why is the return type `c_int`?_
 
-This says that __`printf()`__ returns an __`int`__ that's compatible with C.
+This says that __`printf()`__ returns an __`int`__ that's compatible with C. [(See this)](https://ziglang.org/documentation/master/#Primitive-Types)
 
-[(See this)](https://ziglang.org/documentation/master/#Primitive-Types)
+## Main Function
+
+NuttX expects our Zig App to export a __Main Function__ that follows the C Convention. So we so this in Zig...
+
+```zig
+//  Main Function
+pub export fn hello_zig_main(
+  _argc: c_int, 
+  _argv: [*]const [*]const u8
+) c_int {
+```
+
+__`argc`__ and __`argv`__ should look familiar, though __`argv`__ looks complicated...
+
+-   "__`[*]const u8`__" is a Pointer to an Unknown Number of Constant Unsigned Bytes
+
+    (Like "`const uint8_t *`" in C)
+
+-   "__`[*]const [*]const u8`__" is a Pointer to an Unknown Number of the above Pointers
+
+    (Like "`const uint8_t *[]`" in C)
+
+    [(More about Zig Pointers)](https://ziglang.org/documentation/master/#Pointers)
+
+Inside the Main Function, we call __`printf()`__ to print a string...
+
+```zig
+  _ = _argc;
+  _ = _argv;
+  _ = printf("Hello, Zig!\n");
+  return 0;
+```
+
+_Why the "`_ = something`"?_
+
+This tells the Zig Compiler that we're not using the value of "`something`".
+
+The Zig Compiler helpfully stops us if we forget to use a Variable (like `_argc`) or the Returned Value for a Function (like for `printf`).
+
+_Doesn't Zig have its own printf?_
+
+Yep there's indeed a __`print()`__ function in Zig, and we ought to use it! [(See this)](https://ziglang.org/documentation/master/#Hello-World)
+
+Eventually we'll fix our Zig App to call the __`print()`__ function instead.
 
 _Did we forget something?_
 
@@ -119,31 +165,6 @@ For simplicity we excluded the __Variable Arguments__ for __`printf()`__.
 Our declaration for __`printf()`__ specifies only one parameter: the __Format String__. So it's good for printing one unformatted string.
 
 [(Here's the full declaration)](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers)
-
-## Main Function
-
-TODO
-
-```zig
-//  Main Function
-pub export fn hello_zig_main(
-    _argc: c_int, 
-    _argv: [*]const [*]const u8
-) c_int {
-    _ = _argc;
-    _ = _argv;
-    _ = printf("Hello, Zig!\n");
-    return 0;
-}
-```
-
-TODO
-
-_Doesn't Zig have its own printf?_
-
-Yep there's indeed a __`print()`__ function in Zig, and we ought to use it! [(See this)](https://ziglang.org/documentation/master/#Hello-World)
-
-Eventually we'll fix our NuttX Zig App to use the __`print()`__ function.
 
 # Enable Zig App
 
