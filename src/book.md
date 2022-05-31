@@ -368,6 +368,8 @@ For __BL602 IoT SDK__
 
 -   ["Rust in XIP Flash Memory by 9names"](https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways)
 
+![Zig on BL602](https://lupyuen.github.io/images/book-zig.jpg)
+
 # Zig on BL602
 
 How we code BL602 and BL604 firmware __with Zig.__
