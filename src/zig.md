@@ -102,21 +102,23 @@ That's how we declare __C Strings__ in Zig...
 | __`[*:0]`__    | Pointer to a Null-Terminated Array... |
 | __`const u8`__ | Of Constant Unsigned Bytes |
 
-In Zig we call this a [__Sentinel-Terminated Pointer__](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers).
+Zig calls this a [__Sentinel-Terminated Pointer__](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers).
+
+(That's because it's Terminated by Null, not because of "The Matrix")
 
 _Why is the return type `c_int`?_
 
-TODO: ABI compatibility with C
+This says that __`printf()`__ returns an __`int`__ that's compatible with C.
 
 [(See this)](https://ziglang.org/documentation/master/#Primitive-Types)
 
 _Did we forget something?_
 
-For simplicity we excluded the variable arguments for __`printf()`__.
+For simplicity we excluded the __Variable Arguments__ for __`printf()`__.
 
 Our declaration for __`printf()`__ specifies only one parameter: the __Format String__. So it's good for printing one unformatted string.
 
-[(Here's the proper declaration)](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers)
+[(Here's the full declaration)](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers)
 
 ## Main Function
 
