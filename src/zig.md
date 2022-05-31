@@ -6,7 +6,7 @@
 
 [__Zig__](https://ziglang.org) is a general-purpose language for maintaining __robust, optimal, and reusable software__.
 
-[__BL602__](https://lupyuen.github.io/articles/pinecone) is a 32-bit __RISC-V SoC__.
+[__BL602__](https://lupyuen.github.io/articles/pinecone) is a __32-bit RISC-V SoC__ with WiFi and Bluetooth LE.
 
 Let's run __Zig on BL602!__
 
@@ -74,7 +74,7 @@ We begin by importing the [__Zig Standard Library__](https://ziglang.org/documen
 const std = @import("std");
 ```
 
-Which has all kinds of __algos, data structures and definitions__.
+Which has all kinds of __Algos, Data Structures and Definitions__.
 
 [(More about the Zig Standard Library)](https://ziglang.org/documentation/master/std/)
 
@@ -95,15 +95,26 @@ Here we import the __`printf()`__ function from the C Standard Library.
 
 _What's `[*:0]const u8`?_
 
-TODO
+That's how we declare __C Strings__ in Zig...
 
-[Sentinel-Terminated Pointers](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers)
+|   |   |
+|:--:|:--|
+| __`[*:0]`__    | Pointer to a Null-Terminated Array... |
+| __`const u8`__ | Of Constant Unsigned Bytes |
+
+In Zig we call this a [__Sentinel-Terminated Pointer__](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers).
 
 _Why is the return type `c_int`?_
 
 TODO: ABI compatibility with C
 
 [(See this)](https://ziglang.org/documentation/master/#Primitive-Types)
+
+_Did we forget something?_
+
+For simplicity we excluded the variable arguments for __`printf()`__.
+
+[(Here's the proper declaration)](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers)
 
 ## Main Function
 
