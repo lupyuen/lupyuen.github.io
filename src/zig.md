@@ -168,6 +168,12 @@ Our declaration for __`printf()`__ specifies only one parameter: the __Format St
 
 # Enable Zig App
 
+We're ready to __build our Zig App__ in NuttX! Follow these steps to download and configure NuttX for BL602...
+
+-   [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+-   [__"Build NuttX"__](https://lupyuen.github.io/articles/nuttx#build-nuttx)
+
 TODO
 
 To enable the Zig App in NuttX...
