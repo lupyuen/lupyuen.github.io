@@ -376,41 +376,27 @@ nsh> hello_zig
 Hello, Zig!
 ```
 
-# Hello App
+# Why Zig?
 
 TODO
 
-Remember that we overwrote `hello.o` with our Zig Compiled Object File.
+["Maintain it With Zig"](https://kristoff.it/blog/maintain-it-with-zig)
 
-NuttX Build will fail unless we provide the `hello_main` function...
+["Compile a C/C++ Project with Zig"](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
 
-```text
-riscv64-unknown-elf-ld: nuttx/staging/libapps.a(builtin_list.c.home.user.nuttx.apps.builtin.o):(.rodata.g_builtins+0xcc): 
-undefined reference to `hello_main'
-```
+["How serious Zig about replacing C?"](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
 
-That's why we define `hello_main` in our Zig App...
+Zig looks great for maintaining complex C projects
 
-```zig
-pub export fn hello_main(_argc: c_int, _argv: [*]const [*]const u8) c_int {
-    _ = _argc;
-    _ = _argv;
-    _ = printf("Hello, Zig!\n");
-    return 0;
-}
-```
+Today we're running incredibly complex C projects on NuttX: LoRaWAN Library, LoRa SX1262 Library, NimBLE Porting Layer
 
-[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig)
+And we can't afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)
 
+So best way to maintain and extend them is to compile with Zig
 
-Which means that the `hello` app will call our Zig Code too...
+In future might be possible to build LoRaWAN IoT Apps in Zig
 
-```text
-NuttShell (NSH) NuttX-10.3.0-RC2
-
-nsh> hello
-Hello, Zig!
-```
+Why not rewrite in Rust? Because we will have trouble syncing future updates to the C code
 
 # What's Next
 
@@ -495,6 +481,42 @@ NuttShell (NSH) NuttX-10.3.0-RC2
 
 nsh> hello_zig
 Hello, Zig!
+
+nsh> hello
+Hello, Zig!
+```
+
+# Appendix: Hello App
+
+TODO
+
+Remember that we overwrote `hello.o` with our Zig Compiled Object File.
+
+NuttX Build will fail unless we provide the `hello_main` function...
+
+```text
+riscv64-unknown-elf-ld: nuttx/staging/libapps.a(builtin_list.c.home.user.nuttx.apps.builtin.o):(.rodata.g_builtins+0xcc): 
+undefined reference to `hello_main'
+```
+
+That's why we define `hello_main` in our Zig App...
+
+```zig
+pub export fn hello_main(_argc: c_int, _argv: [*]const [*]const u8) c_int {
+    _ = _argc;
+    _ = _argv;
+    _ = printf("Hello, Zig!\n");
+    return 0;
+}
+```
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig)
+
+
+Which means that the `hello` app will call our Zig Code too...
+
+```text
+NuttShell (NSH) NuttX-10.3.0-RC2
 
 nsh> hello
 Hello, Zig!
