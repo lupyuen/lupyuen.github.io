@@ -581,7 +581,9 @@ _But we can create IoT Apps in Zig right?_
 
 Yep totally! Since Zig interoperates well with C, we can create __IoT Apps in Zig__ that will call the C Libraries for LoRa / LoRaWAN / NimBLE.
 
-TODO: (I'm super impressed by)
+I'm super impressed by this Wayland Compositor in Zig, how it imports a __huge bunch of C Header Files__, and calls them from Zig!
+
+-   [__dreinharth/byway (Wayland Compositor in Zig)__](https://github.com/dreinharth/byway/blob/main/src/main.zig)
 
 # What's Next
 
@@ -604,8 +606,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1529261120124354560)
-
-1.  TODO: A complete Wayland Compositor in a single Zig file! [__dreinharth/byway (Wayland Compositor in Zig)__](https://github.com/dreinharth/byway/blob/main/src/main.zig)
 
 1.  TODO: ["A simple overview of Zig's std.log"](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
 
