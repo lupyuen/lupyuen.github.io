@@ -563,9 +563,15 @@ Zig might be the best way to maintain and extend these __IoT Projects__ on NuttX
 
 _Why not rewrite in Zig? Or another modern language?_
 
+That's because these C projects are still actively maintained and __can change at any moment.__
+
+(Like when LoRaWAN introduces new Regional Frequencies for wireless comms)
+
+Any rewrites for these projects will need to incorporate the updates very quickly.
+
 TODO
 
-Because these projects are still actively maintained upstream. We will have trouble syncing future updates to the C code
+We will have trouble syncing future updates to the C code
 
 And we can't afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)
 
