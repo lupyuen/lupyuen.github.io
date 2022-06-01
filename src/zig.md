@@ -286,7 +286,7 @@ BL602 is designated as __RV32IMACF__...
 
 Among all Zig Targets, only __`sifive_e76`__ has the same designation...
 
-```text
+```bash
 $ zig targets
 ...
 "sifive_e76": [ "a", "c", "f", "m" ],
@@ -317,13 +317,15 @@ That's because...
 
     (But keep the Single-Precision Floating-Point)
 
-[(More about RISC-V Feature Flags for Zig. Thanks Matheus!)](https://github.com/lupyuen/zig-bl602-nuttx/issues/1)
+    [(More about RISC-V Feature Flags for Zig. Thanks Matheus!)](https://github.com/lupyuen/zig-bl602-nuttx/issues/1)
+
+Now comes another fun challenge, with a weird hack...
+
+![Floating-Point ABI issue](https://lupyuen.github.io/images/zig-build2a.png)
 
 # Floating-Point ABI
 
-TODO
-
-When linking the Compiled Zig App with NuttX, we see this error...
+When we __link the Compiled Zig App__ with NuttX, we see this error (pic above)...
 
 ```text
 ##  Build NuttX to link the Zig Object from `hello.o`
@@ -335,131 +337,113 @@ riscv64-unknown-elf-ld: nuttx/staging/libapps.a(hello_main.c.home.user.nuttx.app
 can't link soft-float modules with single-float modules
 ```
 
-TODO
+_What is the meaning of this Soft-Float vs Single-Float? (Milk Shake?)_
 
-![](https://lupyuen.github.io/images/zig-build2a.png)
-
-That's because NuttX was compiled for (Single-Precision) __Hardware Floating-Point__ ABI (Application Binary Interface)...
+Let's sniff the __NuttX Object Files__ produced by the NuttX Build...
 
 ```bash
+##  Dump the ABI for the compiled NuttX code.
 ##  Do this BEFORE overwriting hello.o by hello_zig_main.o.
 ##  "*hello.o" expands to something like "hello_main.c.home.user.nuttx.apps.examples.hello.o"
 $ riscv64-unknown-elf-readelf -h -A $HOME/nuttx/apps/examples/hello/*hello.o
 ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2's complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              REL (Relocatable file)
-  Machine:                           RISC-V
-  Version:                           0x1
-  Entry point address:               0x0
-  Start of program headers:          0 (bytes into file)
-  Start of section headers:          4528 (bytes into file)
-  Flags:                             0x3, RVC, single-float ABI
-  Size of this header:               52 (bytes)
-  Size of program headers:           0 (bytes)
-  Number of program headers:         0
-  Size of section headers:           40 (bytes)
-  Number of section headers:         26
-  Section header string table index: 25
-Attribute Section: riscv
+  Flags: 0x3, RVC, single-float ABI
+  ...
 File Attributes
-  Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_c2p0"
 ```
 
 [(Source)](https://gist.github.com/lupyuen/5c090dead49eb50751578f28c15cecd5)
 
-[(NuttX was compiled with the GCC Flags `-march=rv32imafc -mabi=ilp32f`)](https://gist.github.com/lupyuen/288c980fdef75c334d32e669a921e623)
+![NuttX was compiled for (Single-Precision) Hardware Floating-Point ABI](https://lupyuen.github.io/images/zig-abi1a.png)
 
-TODO
+The __ELF Header__ says that the NuttX Object Files were compiled for the (Single-Precision) __Hardware Floating-Point__ ABI (Application Binary Interface).
 
-![](https://lupyuen.github.io/images/zig-abi1a.png)
+[(NuttX compiles with the GCC Flags `-march=rv32imafc -mabi=ilp32f`)](https://gist.github.com/lupyuen/288c980fdef75c334d32e669a921e623)
 
-Whereas Zig Compiler produces an Object File with __Software Floating-Point__ ABI...
+Whereas our __Zig Compiler__ produces an Object File with __Software Floating-Point__ ABI...
 
 ```bash
+##  Dump the ABI for the compiled Zig app
 $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
 ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-  Class:                             ELF32
-  Data:                              2's complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              REL (Relocatable file)
-  Machine:                           RISC-V
-  Version:                           0x1
-  Entry point address:               0x0
-  Start of program headers:          0 (bytes into file)
-  Start of section headers:          11968 (bytes into file)
-  Flags:                             0x1, RVC, soft-float ABI
-  Size of this header:               52 (bytes)
-  Size of program headers:           0 (bytes)
-  Number of program headers:         0
-  Size of section headers:           40 (bytes)
-  Number of section headers:         24
-  Section header string table index: 22
-Attribute Section: riscv
+  Flags: 0x1, RVC, soft-float ABI
+  ...
 File Attributes
-  Tag_RISCV_stack_align: 16-bytes
   Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_c2p0"
 ```
 
 [(Source)](https://gist.github.com/lupyuen/f04386a0b94ed1fb42a94d671edb1ba7)
 
-GCC won't allow us to link object files with Software Floating-Point and Hardware Floating-Point ABIs!
+![Zig Compiler produces an Object File with Software Floating-Point ABI](https://lupyuen.github.io/images/zig-abi2a.png)
 
-TODO: Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when `sifive_e76` supports Hardware Floating-Point?
+GCC won't let us link Object Files with __different ABIs__: Software Floating-Point vs Hardware Floating-Point!
 
-TODO
+Let's fix this with a quick hack...
 
-![](https://lupyuen.github.io/images/zig-abi2a.png)
+(__TODO:__ Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when `sifive_e76` supports Hardware Floating-Point?)
 
 # Patch ELF Header
 
-TODO
-
-Zig Compiler generates an Object File with __Software Floating-Point__ ABI (Application Binary Interface)...
+Earlier we discovered that the Zig Compiler generates an Object File with __Software Floating-Point__ ABI (Application Binary Interface)...
 
 ```bash
-##  Dump the ABI for the compiled app
+##  Dump the ABI for the compiled Zig app
 $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
 ...
 Flags: 0x1, RVC, soft-float ABI
+Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_c2p0"
 ```
 
-This won't link with NuttX because NuttX is compiled with Hardware Floating-Point ABI.
+But this won't link with NuttX because NuttX was compiled with __Hardware Floating-Point__ ABI.
 
-We fix this by modifying the ELF Header...
+We fix this by modifying the __ELF Header__...
 
--   Edit `hello_zig_main.o` in a Hex Editor
+-   Edit __`hello_zig_main.o`__ in a Hex Editor
 
     [(Like VSCode Hex Editor)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor)
 
--   Change byte `0x24` (Flags) from `0x01` (Soft Float) to `0x03` (Hard Float)
+-   Change byte __`0x24`__ (Flags) from __`0x01`__ (Soft Float) to __`0x03`__ (Hard Float)
 
     [(See this)](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header)
 
-TODO
-
-![](https://lupyuen.github.io/images/zig-hex2a.png)
+![Patch the ELF Header](https://lupyuen.github.io/images/zig-hex2a.png)
 
 We verify that the Object File has been changed to __Hardware Floating-Point__ ABI...
 
 ```bash
-##  Dump the ABI for the compiled app
+##  Dump the ABI for the modified object file
 $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
 ...
 Flags: 0x3, RVC, single-float ABI
+Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_c2p0"
 ```
 
-This is now Hardware Floating-Point ABI and will link with NuttX.
+This is now __Hardware Floating-Point__ ABI and will link with NuttX.
 
-Now we link the modified Object File with NuttX...
+_Is it really OK to change the ABI like this?_
+
+Well technically the __ABI is correctly generated__ by the Zig Compiler...
+
+```bash
+##  Dump the ABI for the compiled Zig app
+$ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
+...
+Flags: 0x1, RVC, soft-float ABI
+Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_c2p0"
+```
+
+The last line translates to __RV32IMACF__, which means that the RISC-V Instruction Set is indeed targeted for __Hardware Floating-Point__. 
+
+We're only editing the __ELF Header__, because it didn't seem to reflect the correct ABI for the Object File.
+
+(__TODO:__ Find the right way to fix the ELF Header Floating-Point ABI in the Zig Compiler)
+
+# Zig Runs OK!
+
+TODO
+
+We're ready to link the modified Object File with NuttX...
 
 ```bash
 ##  Copy the compiled app to NuttX and overwrite `hello.o`
@@ -467,18 +451,14 @@ Now we link the modified Object File with NuttX...
 cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
 
 ##  Build NuttX to link the Zig Object from `hello.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
 make
 ```
 
-The NuttX Build should now succeed.
+Finally our NuttX Build succeeds! 🎉
 
-TODO: Find the right way to fix the Floating-Point ABI in the Zig Compiler
-
-# Zig Runs OK!
-
-TODO
-
-The NuttX Build succeeds. Zig runs OK on NuttX BL602!
+Zig runs OK on NuttX BL602!
 
 ```text
 NuttShell (NSH) NuttX-10.3.0-RC2
