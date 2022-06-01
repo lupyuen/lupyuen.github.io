@@ -286,7 +286,7 @@ BL602 is designated as __RV32IMACF__...
 
 Among all Zig Targets, only __`sifive_e76`__ has the same designation...
 
-```bash
+```text
 $ zig targets
 ...
 "sifive_e76": [ "a", "c", "f", "m" ],
@@ -309,11 +309,11 @@ zig build-obj \
 
 That's because...
 
--   __`baseline_rv32`__ means RV32IMACFD 
+-   "__`baseline_rv32`__" means __RV32IMACFD__
 
-    (__`D`__ for Double-Precision Floating-Point)
+    ("D" for Double-Precision Floating-Point)
 
--   __`-d`__ means remove the Double-Precision Floating-Point (__`D`__)
+-   "__`-d`__" means remove the Double-Precision Floating-Point ("D")
 
     (But keep the Single-Precision Floating-Point)
 
