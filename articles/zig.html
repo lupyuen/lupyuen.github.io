@@ -199,21 +199,18 @@ pub export fn hello_zig_main(
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
 <p>And select <strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“Hello Zig Example”</strong>. (See pic above)</p>
 <p>Save the configuration and exit menuconfig.</p>
+<p>Something interesting happens when we build NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/zig-build1a.png" alt="Build fails on NuttX" /></p>
 <h1 id="build-fails-on-nuttx"><a href="#build-fails-on-nuttx">3 Build Fails on NuttX</a></h1>
-<p>TODO</p>
-<p>When we build NuttX…</p>
+<p>When we <strong>build NuttX</strong> with the Zig App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div>
-<p>We see this error…</p>
-<div class="example-wrap"><pre class="language-bash"><code>LD: nuttx
+<p>We’ll see this error (pic above)…</p>
+<div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 riscv64-unknown-elf-ld: nuttx/staging/libapps.a(builtin_list.c.home.user.nuttx.apps.builtin.o):(.rodata.g_builtins+0xbc): 
 undefined reference to `hello_zig_main&#39;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/497c90b862aef48b57ff3124f2ea94d8">(Source)</a></p>
-<p>Which looks similar to this issue…</p>
-<p>https://github.com/apache/incubator-nuttx/issues/6219</p>
-<p>This seems to be caused by the NuttX Build not calling the Zig Compiler.</p>
-<p>But no worries! Let’s compile the Zig App ourselves and link into NuttX.</p>
-<p>TODO</p>
+<p>Which is probably due to some <strong>incomplete Build Rules</strong> in the NuttX Makefiles. <a href="https://github.com/apache/incubator-nuttx/issues/6219">(See this)</a></p>
+<p>But no worries! Let’s compile the Zig App ourselves and link it into the NuttX Firmware.</p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">4 Compile Zig App</a></h1>
 <p>TODO</p>
 <p>Here’s how we compile our Zig App for RISC-V BL602 and link it with NuttX…</p>
@@ -221,17 +218,20 @@ undefined reference to `hello_zig_main&#39;</code></pre></div>
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
 
-#  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
+#  Compile the Zig App for BL602 
+#  (RV32IMACF with Hardware Floating-Point)
 zig build-obj \
-    -target riscv32-freestanding-none \
-    -mcpu sifive_e76 \
-    hello_zig_main.zig
+  -target riscv32-freestanding-none \
+  -mcpu sifive_e76 \
+  hello_zig_main.zig
 
 #  Copy the compiled app to NuttX and overwrite `hello.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
 
 #  Build NuttX to link the Zig Object from `hello.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
 make</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/zig-build3a.png" alt="" /></p>
@@ -260,11 +260,12 @@ make</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09d64c79e12b30e5eebc7d0a9c3b20a4">(Source)</a></p>
 <p>Thus we use <code>sifive_e76</code> as our CPU Target.</p>
 <p>Alternatively we may use <code>baseline_rv32-d</code> as our CPU Target…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
+<div class="example-wrap"><pre class="language-bash"><code>#  Compile the Zig App for BL602
+#  (RV32IMACF with Hardware Floating-Point)
 zig build-obj \
-    -target riscv32-freestanding-none \
-    -mcpu=baseline_rv32-d \
-    hello_zig_main.zig</code></pre></div>
+  -target riscv32-freestanding-none \
+  -mcpu=baseline_rv32-d \
+  hello_zig_main.zig</code></pre></div>
 <p>Because…</p>
 <ul>
 <li>
@@ -282,7 +283,10 @@ zig build-obj \
 <h1 id="floating-point-abi"><a href="#floating-point-abi">6 Floating-Point ABI</a></h1>
 <p>TODO</p>
 <p>When linking the Compiled Zig App with NuttX, we see this error…</p>
-<div class="example-wrap"><pre class="language-text"><code>$ make
+<div class="example-wrap"><pre class="language-text"><code>#  Build NuttX to link the Zig Object from `hello.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+$ cd $HOME/nuttx/nuttx
+$ make
 ...
 riscv64-unknown-elf-ld: nuttx/staging/libapps.a(hello_main.c.home.user.nuttx.apps.examples.hello.o): 
 can&#39;t link soft-float modules with single-float modules</code></pre></div>
