@@ -183,8 +183,10 @@ pub export fn hello_zig_main(
 <p>For simplicity we excluded the <strong>Variable Arguments</strong> for <strong><code>printf()</code></strong>.</p>
 <p>Our declaration for <strong><code>printf()</code></strong> specifies only one parameter: the <strong>Format String</strong>. So it’s good for printing one unformatted string.</p>
 <p><a href="https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers">(Here’s the full declaration)</a></p>
+<p><img src="https://lupyuen.github.io/images/zig-config1a.png" alt="Enable Zig App in NuttX" /></p>
 <h1 id="enable-zig-app"><a href="#enable-zig-app">2 Enable Zig App</a></h1>
-<p>We’re ready to <strong>build our Zig App</strong> in NuttX! Follow these steps to download and configure NuttX for BL602…</p>
+<p>We’re ready to <strong>build our Zig App</strong> in NuttX! </p>
+<p>Follow these steps to <strong>download and configure</strong> NuttX for BL602…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
@@ -193,13 +195,11 @@ pub export fn hello_zig_main(
 <p><a href="https://lupyuen.github.io/articles/nuttx#build-nuttx"><strong>“Build NuttX”</strong></a></p>
 </li>
 </ul>
-<p>TODO</p>
-<p>To enable the Zig App in NuttX…</p>
+<p>To <strong>enable the Zig App</strong> in NuttX, we do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
-<p>Select “Application Configuration &gt; Examples &gt; Hello Zig Example”</p>
+<p>And select <strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“Hello Zig Example”</strong></p>
+<p>(See pic above)</p>
 <p>Save the configuration and exit menuconfig.</p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/zig-config1a.png" alt="" /></p>
 <h1 id="build-fails-on-nuttx"><a href="#build-fails-on-nuttx">3 Build Fails on NuttX</a></h1>
 <p>TODO</p>
 <p>When we build NuttX…</p>
