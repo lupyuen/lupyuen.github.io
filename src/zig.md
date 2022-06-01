@@ -569,11 +569,9 @@ That's because these C projects are still actively maintained and __can change a
 
 (Like when LoRaWAN introduces new Regional Frequencies for wireless comms)
 
-Any rewrites for these projects will need to incorporate the updates very quickly.
+Any rewrites of these projects will need to __incorporate the updates__ very quickly. Which makes the maintenance of the rewritten projects super painful.
 
 TODO
-
-We will have trouble syncing future updates to the C code
 
 And we can't afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)
 
