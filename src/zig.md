@@ -539,7 +539,7 @@ _Why are we doing all this with Zig?_
 
 Here's why...
 
-> Zig has `zig cc` and `zig c++`, two commands that expose an interface flag-compatible with clang, allowing you to use the Zig compiler as a drop-in replacement for your existing C/C++ compiler.
+> Zig has `zig cc` and `zig c++`, two commands that expose an interface flag-compatible with clang, allowing you to use the Zig compiler as a __drop-in replacement for your existing C/C++ compiler__.
 
 [(Source)](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
 
@@ -549,7 +549,7 @@ Because of this, Zig works great for __maintaining complex C projects__...
 
 -   [__"Compile a C/C++ Project with Zig"__](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
 
--   [__"How serious Zig about replacing C?"__)](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
+-   [__"How serious (is) Zig about replacing C?"__](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
 
 Today we're running incredibly __complex C projects on NuttX__...
 
