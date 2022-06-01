@@ -317,8 +317,8 @@ File Attributes
   Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/5c090dead49eb50751578f28c15cecd5">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/zig-abi1a.png" alt="NuttX was compiled for (Single-Precision) Hardware Floating-Point ABI" /></p>
-<p>The <strong>ELF Header</strong> says that the NuttX Object Files were compiled for the (Single-Precision) <strong>Hardware Floating-Point</strong> ABI (Application Binary Interface).</p>
-<p><a href="https://gist.github.com/lupyuen/288c980fdef75c334d32e669a921e623">(NuttX compiles with the GCC Flags <code>-march=rv32imafc -mabi=ilp32f</code>)</a></p>
+<p>The <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header"><strong>ELF Header</strong></a> says that the NuttX Object Files were compiled for the (Single-Precision) <strong>Hardware Floating-Point</strong> ABI (Application Binary Interface).</p>
+<p><a href="https://gist.github.com/lupyuen/288c980fdef75c334d32e669a921e623">(NuttX compiles with the GCC Flags “<code>-march=rv32imafc -mabi=ilp32f</code>”)</a></p>
 <p>Whereas our <strong>Zig Compiler</strong> produces an Object File with <strong>Software Floating-Point</strong> ABI…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Dump the ABI for the compiled Zig app
 $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
@@ -331,7 +331,7 @@ File Attributes
 <p><img src="https://lupyuen.github.io/images/zig-abi2a.png" alt="Zig Compiler produces an Object File with Software Floating-Point ABI" /></p>
 <p>GCC won’t let us link Object Files with <strong>different ABIs</strong>: Software Floating-Point vs Hardware Floating-Point!</p>
 <p>Let’s fix this with a quick hack…</p>
-<p>(<strong>TODO:</strong> Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when <code>sifive_e76</code> supports Hardware Floating-Point?)</p>
+<p>(<strong>TODO:</strong> Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when <code>sifive_e76</code> supports Hardware Floating-Point? What’s the Zig equivalent of “<code>gcc -march=rv32imafc -mabi=ilp32f</code>”?)</p>
 <h1 id="patch-elf-header"><a href="#patch-elf-header">7 Patch ELF Header</a></h1>
 <p>Earlier we discovered that the Zig Compiler generates an Object File with <strong>Software Floating-Point</strong> ABI (Application Binary Interface)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Dump the ABI for the compiled Zig app
@@ -369,6 +369,8 @@ Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p>The last line translates to <strong>RV32IMACF</strong>, which means that the RISC-V Instruction Set is indeed targeted for <strong>Hardware Floating-Point</strong>. </p>
 <p>We’re only editing the <strong>ELF Header</strong>, because it didn’t seem to reflect the correct ABI for the Object File.</p>
 <p>(<strong>TODO:</strong> Find the right way to fix the ELF Header Floating-Point ABI in the Zig Compiler)</p>
+<p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="PineCone BL602 RISC-V Board" /></p>
+<p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64’s PineCone BL602 RISC-V Board</em></a></p>
 <h1 id="zig-runs-ok"><a href="#zig-runs-ok">8 Zig Runs OK!</a></h1>
 <p>We’re ready to link the <strong>Patched Object File</strong> with NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Copy the modified object file to NuttX and overwrite `hello.o`
@@ -379,17 +381,25 @@ cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
 make</code></pre></div>
-<p>Finally our NuttX Build succeeds! 🎉</p>
-<p>Follow these steps to flash and boot NuttX on BL602…</p>
-<p>TODO</p>
-<p>Zig runs OK on NuttX BL602!</p>
+<p>Finally our NuttX Build succeeds!</p>
+<p>Follow these steps to <strong>flash and boot NuttX</strong> on BL602…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#flash-nuttx"><strong>“Flash NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#run-nuttx"><strong>“Run NuttX”</strong></a></p>
+</li>
+</ul>
+<p>In the NuttX Shell, enter <strong><code>hello_zig</code></strong></p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0-RC2
 
 nsh&gt; hello_zig
 Hello, Zig!</code></pre></div>
-<p>TODO</p>
+<p>Yep Zig runs OK on BL602 with NuttX! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <h1 id="embedded-zig"><a href="#embedded-zig">9 Embedded Zig</a></h1>
+<p><em>How do we build Embedded Zig Apps with GPIO, I2C, SPI, …?</em></p>
 <p>TODO: microzig</p>
 <p><a href="https://github.com/ZigEmbeddedGroup/microzig"><strong>ZigEmbeddedGroup/microzig</strong></a></p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import microzig library
@@ -424,6 +434,7 @@ fn busyloop() void {
   }
 }</code></pre></div>
 <p>Adapted from <a href="https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig">blinky.zig</a></p>
+<p><em>Can Zig run on Bare Metal? Without an RTOS like NuttX?</em></p>
 <p>TODO: Bare metal Zig on RISC-V</p>
 <ul>
 <li><a href="https://github.com/nmeum/zig-riscv-embedded"><strong>nmeum/zig-riscv-embedded</strong></a></li>
