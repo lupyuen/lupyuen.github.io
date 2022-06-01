@@ -188,21 +188,21 @@ And select __"Application Configuration"__ → __"Examples"__ → __"Hello Zig E
 
 Save the configuration and exit menuconfig.
 
+Something interesting happens when we build NuttX...
+
 ![Build fails on NuttX](https://lupyuen.github.io/images/zig-build1a.png)
 
 # Build Fails on NuttX
 
-TODO
-
-When we build NuttX...
+When we __build NuttX__ with the Zig App...
 
 ```bash
 make
 ```
 
-We see this error...
+We'll see this error (pic above)...
 
-```bash
+```text
 LD: nuttx
 riscv64-unknown-elf-ld: nuttx/staging/libapps.a(builtin_list.c.home.user.nuttx.apps.builtin.o):(.rodata.g_builtins+0xbc): 
 undefined reference to `hello_zig_main'
@@ -210,15 +210,9 @@ undefined reference to `hello_zig_main'
 
 [(Source)](https://gist.github.com/lupyuen/497c90b862aef48b57ff3124f2ea94d8)
 
-Which looks similar to this issue...
+Which is probably due to some __incomplete Build Rules__ in the NuttX Makefiles. [(See this)](https://github.com/apache/incubator-nuttx/issues/6219)
 
-https://github.com/apache/incubator-nuttx/issues/6219
-
-This seems to be caused by the NuttX Build not calling the Zig Compiler.
-
-But no worries! Let's compile the Zig App ourselves and link into NuttX.
-
-TODO
+But no worries! Let's compile the Zig App ourselves and link it into the NuttX Firmware.
 
 # Compile Zig App
 
@@ -231,17 +225,20 @@ Here's how we compile our Zig App for RISC-V BL602 and link it with NuttX...
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
 
-##  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
+##  Compile the Zig App for BL602 
+##  (RV32IMACF with Hardware Floating-Point)
 zig build-obj \
-    -target riscv32-freestanding-none \
-    -mcpu sifive_e76 \
-    hello_zig_main.zig
+  -target riscv32-freestanding-none \
+  -mcpu sifive_e76 \
+  hello_zig_main.zig
 
 ##  Copy the compiled app to NuttX and overwrite `hello.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
 cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
 
 ##  Build NuttX to link the Zig Object from `hello.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
 make
 ```
 
@@ -292,11 +289,12 @@ Thus we use `sifive_e76` as our CPU Target.
 Alternatively we may use `baseline_rv32-d` as our CPU Target...
 
 ```bash
-##  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
+##  Compile the Zig App for BL602
+##  (RV32IMACF with Hardware Floating-Point)
 zig build-obj \
-    -target riscv32-freestanding-none \
-    -mcpu=baseline_rv32-d \
-    hello_zig_main.zig
+  -target riscv32-freestanding-none \
+  -mcpu=baseline_rv32-d \
+  hello_zig_main.zig
 ```
 
 Because...
@@ -322,6 +320,9 @@ TODO
 When linking the Compiled Zig App with NuttX, we see this error...
 
 ```text
+##  Build NuttX to link the Zig Object from `hello.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+$ cd $HOME/nuttx/nuttx
 $ make
 ...
 riscv64-unknown-elf-ld: nuttx/staging/libapps.a(hello_main.c.home.user.nuttx.apps.examples.hello.o): 
