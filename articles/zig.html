@@ -174,11 +174,11 @@ pub export fn hello_zig_main(
   _ = printf(&quot;Hello, Zig!\n&quot;);
   return 0;</code></pre></div>
 <p><em>Why the “<code>_ = something</code>”?</em></p>
-<p>This tells the Zig Compiler that we’re not using the value of “<code>something</code>”.</p>
+<p>This tells the Zig Compiler that we’re <strong>not using the value</strong> of “<code>something</code>”.</p>
 <p>The Zig Compiler helpfully stops us if we forget to use a Variable (like <code>_argc</code>) or the Returned Value for a Function (like for <code>printf</code>).</p>
 <p><em>Doesn’t Zig have its own printf?</em></p>
 <p>Yep there’s indeed a <strong><code>print()</code></strong> function in Zig, and we ought to use it! <a href="https://ziglang.org/documentation/master/#Hello-World">(See this)</a></p>
-<p>Eventually we’ll fix our Zig App to call the <strong><code>print()</code></strong> function instead.</p>
+<p>Eventually we’ll update our Zig App to call the <strong><code>print()</code></strong> function instead.</p>
 <p><em>Did we forget something?</em></p>
 <p>For simplicity we excluded the <strong>Variable Arguments</strong> for <strong><code>printf()</code></strong>.</p>
 <p>Our declaration for <strong><code>printf()</code></strong> specifies only one parameter: the <strong>Format String</strong>. So it’s good for printing one unformatted string.</p>
@@ -186,7 +186,7 @@ pub export fn hello_zig_main(
 <p><img src="https://lupyuen.github.io/images/zig-config1a.png" alt="Enable Zig App in NuttX" /></p>
 <h1 id="enable-zig-app"><a href="#enable-zig-app">2 Enable Zig App</a></h1>
 <p>We’re ready to <strong>build our Zig App</strong> in NuttX! </p>
-<p>Follow these steps to <strong>download and configure</strong> NuttX for BL602…</p>
+<p>Follow these steps to <strong>download and configure NuttX</strong> for BL602…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
@@ -197,9 +197,9 @@ pub export fn hello_zig_main(
 </ul>
 <p>To <strong>enable the Zig App</strong> in NuttX, we do this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
-<p>And select <strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“Hello Zig Example”</strong></p>
-<p>(See pic above)</p>
+<p>And select <strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“Hello Zig Example”</strong>. (See pic above)</p>
 <p>Save the configuration and exit menuconfig.</p>
+<p><img src="https://lupyuen.github.io/images/zig-build1a.png" alt="Build fails on NuttX" /></p>
 <h1 id="build-fails-on-nuttx"><a href="#build-fails-on-nuttx">3 Build Fails on NuttX</a></h1>
 <p>TODO</p>
 <p>When we build NuttX…</p>
@@ -214,7 +214,6 @@ undefined reference to `hello_zig_main&#39;</code></pre></div>
 <p>This seems to be caused by the NuttX Build not calling the Zig Compiler.</p>
 <p>But no worries! Let’s compile the Zig App ourselves and link into NuttX.</p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/zig-build1a.png" alt="" /></p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">4 Compile Zig App</a></h1>
 <p>TODO</p>
 <p>Here’s how we compile our Zig App for RISC-V BL602 and link it with NuttX…</p>
