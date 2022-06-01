@@ -220,9 +220,11 @@ But no worries! Let's compile the Zig App ourselves and link it into the NuttX F
 
 # Compile Zig App
 
-TODO
+Follow these steps to install the __Zig Compiler__...
 
-Here's how we compile our Zig App for RISC-V BL602 and link it with NuttX...
+-   [__"Zig: Getting Started"__](https://ziglang.org/learn/getting-started/)
+
+This is how we __compile our Zig App__ for BL602 and link it with NuttX...
 
 ```bash
 ##  Download our modified Zig App for NuttX
@@ -246,27 +248,31 @@ cd $HOME/nuttx/nuttx
 make
 ```
 
-TODO
+Note that we specify __"`build-obj`"__ when compiling our Zig App.
 
-![](https://lupyuen.github.io/images/zig-build3a.png)
+This generates a __RISC-V Object File__ `hello_zig_main.o` that will be linked into our NuttX Firmware.
+
+Let's talk about the Zig Target, which looks especially interesting for RISC-V...
+
+![Compile Zig App for BL602](https://lupyuen.github.io/images/zig-build3a.png)
 
 # Zig Target
 
-TODO
+_Why is the Zig Target riscv32-freestanding-none?_
 
-_Why is the target `riscv32-freestanding-none`?_
+Zig Targets have the form "_(arch)(sub)_-_(os)_-_(abi)_"...
 
-Zig Targets have the form `<arch><sub>-<os>-<abi>`...
+-   __`riscv32`__: Because BL602 is a 32-bit RISC-V processor
 
-`riscv32`: Because BL602 is a 32-bit RISC-V processor
+-   __`freestanding`__: Because Embedded Targets don't need an OS
 
-`freestanding`: Because embedded targets don't need an OS
+-   __`none`__: Because Embedded Targets don't specify the ABI
 
-`none`: Because embedded targets don't specify the ABI
+[(More about Zig Targets)](https://ziglang.org/documentation/master/#Targets)
 
-_Why is the target CPU `sifive_e76`?_
+_Why is the Target CPU sifive_e76?_
 
-BL602 is designated as RV32IMACF...
+BL602 is designated as __RV32IMACF__...
 
 | Designation | Meaning |
 |:---:|:---|
@@ -278,7 +284,7 @@ BL602 is designated as RV32IMACF...
 
 [(Source)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 
-Among all Zig Targets, only `sifive_e76` has the same designation...
+Among all Zig Targets, only __`sifive_e76`__ has the same designation...
 
 ```bash
 $ zig targets
@@ -288,9 +294,9 @@ $ zig targets
 
 [(Source)](https://gist.github.com/lupyuen/09d64c79e12b30e5eebc7d0a9c3b20a4)
 
-Thus we use `sifive_e76` as our CPU Target.
+Thus we use __`sifive_e76`__ as our Target CPU.
 
-Alternatively we may use `baseline_rv32-d` as our CPU Target...
+Or we may use __`baseline_rv32-d`__ as our Target CPU...
 
 ```bash
 ##  Compile the Zig App for BL602
@@ -301,21 +307,17 @@ zig build-obj \
   hello_zig_main.zig
 ```
 
-Because...
+That's because...
 
--   `baseline_rv32` means RV32IMACFD 
+-   __`baseline_rv32`__ means RV32IMACFD 
 
-    (D for Double-Precision Floating-Point)
+    (__`D`__ for Double-Precision Floating-Point)
 
--   `-d` means remove the Double-Precision Floating-Point (D)
+-   __`-d`__ means remove the Double-Precision Floating-Point (__`D`__)
 
     (But keep the Single-Precision Floating-Point)
 
-[(More about RISC-V Feature Flags. Thanks Matheus!)](https://github.com/lupyuen/zig-bl602-nuttx/issues/1)
-
-TODO
-
-![](https://lupyuen.github.io/images/zig-build4a.jpg)
+[(More about RISC-V Feature Flags for Zig. Thanks Matheus!)](https://github.com/lupyuen/zig-bl602-nuttx/issues/1)
 
 # Floating-Point ABI
 
@@ -540,6 +542,8 @@ TODO
 [__"Compile a C/C++ Project with Zig"__](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
 
 [__"How serious Zig about replacing C?"__)](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
+
+[__dreinharth/byway (Wayland Compositor in Zig)__](https://github.com/dreinharth/byway/blob/main/src/main.zig)
 
 Zig looks great for maintaining complex C projects
 
