@@ -483,9 +483,11 @@ Yep Zig runs OK on BL602 with NuttX! 🎉
 
 _Can we build Embedded Zig Apps with GPIO, I2C, SPI, ...?_
 
-TODO: microzig
+We're not quite there yet, but the [__Zig Embedded Group__](https://microzig.tech) is creating a __Common Interface and Hardware Abstraction Layer__ for Embedded Platforms...
 
-[__ZigEmbeddedGroup/microzig__](https://github.com/ZigEmbeddedGroup/microzig)
+-   [__ZigEmbeddedGroup/microzig__](https://github.com/ZigEmbeddedGroup/microzig)
+
+TODO
 
 ```zig
 //  Import microzig library
@@ -525,7 +527,7 @@ Adapted from [blinky.zig](https://github.com/ZigEmbeddedGroup/microzig/blob/mast
 
 _Will Zig run on Bare Metal? Without an RTOS like NuttX?_
 
-TODO: Bare metal Zig on RISC-V
+TODO: Bare metal Zig on RISC-V, HiFive1 RISC-V board
 
 -   [__nmeum/zig-riscv-embedded__](https://github.com/nmeum/zig-riscv-embedded)
 
@@ -571,7 +573,7 @@ That's because these C projects are still actively maintained and __can change a
 
 Any rewrites of these projects will need to __incorporate the updates__ very quickly. Which makes the maintenance of the rewritten projects super painful.
 
-(Also LoRaWAN is [__Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1), we can't change any code that might break the compliance with the LoRaWAN Spec)
+(Also LoRaWAN is [__Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1), we can't change any code that might break compliance with the LoRaWAN Spec)
 
 _So we'll have to keep the projects intact in C, but compile them with Zig Compiler instead?_
 
