@@ -577,6 +577,10 @@ _So we'll have to keep the projects intact in C, but compile them with Zig Compi
 
 Yep, probably the best way to maintain and extend these Complex IoT Projects is to __compile them as-is with Zig__.
 
+_But we can create new IoT Apps in Zig right?_
+
+Yep totally!
+
 TODO: Zig Apps
 
 # What's Next
