@@ -537,7 +537,13 @@ TODO: Bare metal Zig on RISC-V
 
 _Why are we doing all this with Zig?_
 
-Zig works great for __maintaining complex C projects__...
+Here's why...
+
+> Zig has `zig cc` and `zig c++`, two commands that expose an interface flag-compatible with clang, allowing you to use the Zig compiler as a drop-in replacement for your existing C/C++ compiler.
+
+[(Source)](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
+
+Because of this, Zig works great for __maintaining complex C projects__...
 
 -   [__"Maintain it With Zig"__](https://kristoff.it/blog/maintain-it-with-zig)
 
@@ -553,7 +559,7 @@ Today we're running incredibly __complex C projects on NuttX__...
 
 -   [__NimBLE Porting Layer__](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
 
-Zig might be the best way to maintain and extend these __Complex IoT Projects__ on NuttX.
+Zig might be the best way to maintain and extend these __IoT Projects__ on NuttX.
 
 _Why not rewrite in Zig? Or another modern language?_
 
