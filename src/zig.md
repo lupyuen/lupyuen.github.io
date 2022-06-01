@@ -481,7 +481,7 @@ Yep Zig runs OK on BL602 with NuttX! 🎉
 
 # Embedded Zig
 
-_Can we build Embedded Zig Apps with GPIO, I2C, SPI, ...?_
+_Can we build cross-platform Embedded Zig Apps with GPIO, I2C, SPI, ...?_
 
 We're not quite there yet, but the [__Zig Embedded Group__](https://microzig.tech) is creating a __Common Interface and Hardware Abstraction Layer__ for Embedded Platforms...
 
