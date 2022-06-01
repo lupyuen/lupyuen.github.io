@@ -327,7 +327,7 @@ Now comes another fun challenge, with a weird hack...
 
 When we __link the Compiled Zig App__ with NuttX, we see this error (pic above)...
 
-```text
+```bash
 ##  Build NuttX to link the Zig Object from `hello.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
 $ cd $HOME/nuttx/nuttx
@@ -441,12 +441,10 @@ We're only editing the __ELF Header__, because it didn't seem to reflect the cor
 
 # Zig Runs OK!
 
-TODO
-
 We're ready to link the modified Object File with NuttX...
 
 ```bash
-##  Copy the compiled app to NuttX and overwrite `hello.o`
+##  Copy the modified object file to NuttX and overwrite `hello.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
 cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
 
@@ -457,6 +455,8 @@ make
 ```
 
 Finally our NuttX Build succeeds! 🎉
+
+TODO
 
 Zig runs OK on NuttX BL602!
 
