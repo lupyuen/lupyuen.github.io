@@ -80,8 +80,7 @@
 <li><a href="#why-zig">10 Why Zig?</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li>
-<li><a href="#appendix-zig-on-risc-v-bl602-with-apache-nuttx-rtos">13 Appendix: Zig on RISC-V BL602 with Apache NuttX RTOS</a><ul></ul></li>
-<li><a href="#appendix-hello-app">14 Appendix: Hello App</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2022</em></p>
+<li><a href="#appendix-hello-app">13 Appendix: Hello App</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a general-purpose language for maintaining <strong>robust, optimal, and reusable software</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602</strong></a> is a <strong>32-bit RISC-V SoC</strong> with WiFi and Bluetooth LE.</p>
@@ -399,7 +398,7 @@ Hello, Zig!</code></pre></div>
 <p>Yep Zig runs OK on BL602 with NuttX! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <h1 id="embedded-zig"><a href="#embedded-zig">9 Embedded Zig</a></h1>
-<p><em>How do we build Embedded Zig Apps with GPIO, I2C, SPI, …?</em></p>
+<p><em>Can we build Embedded Zig Apps with GPIO, I2C, SPI, …?</em></p>
 <p>TODO: microzig</p>
 <p><a href="https://github.com/ZigEmbeddedGroup/microzig"><strong>ZigEmbeddedGroup/microzig</strong></a></p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import microzig library
@@ -434,7 +433,7 @@ fn busyloop() void {
   }
 }</code></pre></div>
 <p>Adapted from <a href="https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig">blinky.zig</a></p>
-<p><em>Can Zig run on Bare Metal? Without an RTOS like NuttX?</em></p>
+<p><em>Will Zig run on Bare Metal? Without an RTOS like NuttX?</em></p>
 <p>TODO: Bare metal Zig on RISC-V</p>
 <ul>
 <li><a href="https://github.com/nmeum/zig-riscv-embedded"><strong>nmeum/zig-riscv-embedded</strong></a></li>
@@ -475,62 +474,7 @@ fn busyloop() void {
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1529261120124354560"><strong>this Twitter Thread</strong></a></li>
 </ol>
-<h1 id="appendix-zig-on-risc-v-bl602-with-apache-nuttx-rtos"><a href="#appendix-zig-on-risc-v-bl602-with-apache-nuttx-rtos">13 Appendix: Zig on RISC-V BL602 with Apache NuttX RTOS</a></h1>
-<p>TODO</p>
-<p>To build the Zig App for NuttX on BL602…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Enable Zig App in NuttX menuconfig
-make menuconfig
-
-#  TODO: Select &quot;Application Configuration &gt; Examples &gt; Hello Zig Example&quot;
-#  Save the configuration and exit menuconfig.
-
-#  Build Nuttx
-make
-
-#  NuttX Build fails with Undefined Reference to `hello_zig_main`
-#  That&#39;s OK, here&#39;s the fix...
-
-#  Download our modified Zig App for NuttX
-git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
-cd zig-bl602-nuttx
-
-#  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
-zig build-obj \
-    -target riscv32-freestanding-none \
-    -mcpu sifive_e76 \
-    hello_zig_main.zig
-
-#  Dump the ABI for the compiled app
-riscv64-unknown-elf-readelf -h -A hello_zig_main.o
-#  Shows &quot;Flags: 0x1, RVC, soft-float ABI&quot;
-#  Which is Software Floating-Point.
-#  This won&#39;t link with NuttX because NuttX is compiled with Hardware Floating-Point
-
-#  We change Software Floating-Point to Hardware Floating-Point...
-#  Edit hello_zig_main.o in a Hex Editor, change byte 0x24 from 0x01 to 0x03
-#  (See https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header)
-
-#  Dump the ABI for the compiled app
-riscv64-unknown-elf-readelf -h -A hello_zig_main.o
-#  Shows &quot;Flags: 0x3, RVC, single-float ABI&quot;
-#  Which is Hardware Floating-Point and will link with NuttX
-
-#  Copy the compiled app to NuttX and overwrite `hello.o`
-#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
-cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
-
-#  Build NuttX to link the Zig Object from `hello.o`
-make
-
-#  NuttX build should now succeed</code></pre></div>
-<p>Boot NuttX and enter this at the NuttX Shell…</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0-RC2
-
-nsh&gt; hello_zig
-Hello, Zig!
-
-nsh&gt; hello
-Hello, Zig!</code></pre></div><h1 id="appendix-hello-app"><a href="#appendix-hello-app">14 Appendix: Hello App</a></h1>
+<h1 id="appendix-hello-app"><a href="#appendix-hello-app">13 Appendix: Hello App</a></h1>
 <p>TODO</p>
 <p>Remember that we overwrote <code>hello.o</code> with our Zig Compiled Object File.</p>
 <p>NuttX Build will fail unless we provide the <code>hello_main</code> function…</p>
