@@ -571,15 +571,13 @@ That's because these C projects are still actively maintained and __can change a
 
 Any rewrites of these projects will need to __incorporate the updates__ very quickly. Which makes the maintenance of the rewritten projects super painful.
 
-TODO
+(FYI: LoRaWAN is [__Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1), we can't change any code that might break the compliance with the LoRaWAN Spec)
 
-And we can't afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)
+_So we'll have to keep the projects intact in C, but compile them with Zig Compiler instead?_
 
-So best way to maintain and extend them is to compile with Zig
+Yep, probably the best way to maintain and extend these Complex IoT Projects is to __compile them as-is with Zig__.
 
-In future might be possible to build LoRaWAN IoT Apps in Zig
-
-LoRaWAN is [__Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1), we can't change any code that might break the compliance with the LoRaWAN Spec
+TODO: Zig Apps
 
 # What's Next
 
