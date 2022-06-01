@@ -551,7 +551,7 @@ Because of this, Zig works great for __maintaining complex C projects__...
 
 -   [__"How serious (is) Zig about replacing C?"__](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
 
-_How is this relevant to Embedded Apps on NuttX?_
+_How is this relevant to Embedded Apps and NuttX?_
 
 Today we're running incredibly __complex C projects on NuttX__...
 
