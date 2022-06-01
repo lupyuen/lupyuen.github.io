@@ -399,8 +399,11 @@ Hello, Zig!</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <h1 id="embedded-zig"><a href="#embedded-zig">9 Embedded Zig</a></h1>
 <p><em>Can we build Embedded Zig Apps with GPIO, I2C, SPI, …?</em></p>
-<p>TODO: microzig</p>
-<p><a href="https://github.com/ZigEmbeddedGroup/microzig"><strong>ZigEmbeddedGroup/microzig</strong></a></p>
+<p>We’re not quite there yet, but the <a href="https://microzig.tech"><strong>Zig Embedded Group</strong></a> is creating a <strong>Common Interface and Hardware Abstraction Layer</strong> for Embedded Platforms…</p>
+<ul>
+<li><a href="https://github.com/ZigEmbeddedGroup/microzig"><strong>ZigEmbeddedGroup/microzig</strong></a></li>
+</ul>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import microzig library
 const micro = @import(&quot;microzig&quot;);
 
@@ -434,7 +437,7 @@ fn busyloop() void {
 }</code></pre></div>
 <p>Adapted from <a href="https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig">blinky.zig</a></p>
 <p><em>Will Zig run on Bare Metal? Without an RTOS like NuttX?</em></p>
-<p>TODO: Bare metal Zig on RISC-V</p>
+<p>TODO: Bare metal Zig on RISC-V, HiFive1 RISC-V board</p>
 <ul>
 <li><a href="https://github.com/nmeum/zig-riscv-embedded"><strong>nmeum/zig-riscv-embedded</strong></a></li>
 </ul>
@@ -479,7 +482,7 @@ fn busyloop() void {
 <p>That’s because these C projects are still actively maintained and <strong>can change at any moment.</strong></p>
 <p>(Like when LoRaWAN introduces new Regional Frequencies for wireless comms)</p>
 <p>Any rewrites of these projects will need to <strong>incorporate the updates</strong> very quickly. Which makes the maintenance of the rewritten projects super painful.</p>
-<p>(Also LoRaWAN is <a href="https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1"><strong>Time Critical</strong></a>, we can’t change any code that might break the compliance with the LoRaWAN Spec)</p>
+<p>(Also LoRaWAN is <a href="https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1"><strong>Time Critical</strong></a>, we can’t change any code that might break compliance with the LoRaWAN Spec)</p>
 <p><em>So we’ll have to keep the projects intact in C, but compile them with Zig Compiler instead?</em></p>
 <p>Yeah probably the best way to maintain and extend these Complex IoT Projects is to <strong>compile them as-is with Zig</strong>.</p>
 <p><em>But we can create new IoT Apps in Zig right?</em></p>
