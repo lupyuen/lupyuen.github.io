@@ -269,7 +269,7 @@ make</code></pre></div>
 </div>
 <p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Source)</a></p>
 <p>Among all Zig Targets, only <strong><code>sifive_e76</code></strong> has the same designation…</p>
-<div class="example-wrap"><pre class="language-bash"><code>$ zig targets
+<div class="example-wrap"><pre class="language-text"><code>$ zig targets
 ...
 &quot;sifive_e76&quot;: [ &quot;a&quot;, &quot;c&quot;, &quot;f&quot;, &quot;m&quot; ],</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09d64c79e12b30e5eebc7d0a9c3b20a4">(Source)</a></p>
@@ -284,11 +284,11 @@ zig build-obj \
 <p>That’s because…</p>
 <ul>
 <li>
-<p><strong><code>baseline_rv32</code></strong> means RV32IMACFD </p>
-<p>(<strong><code>D</code></strong> for Double-Precision Floating-Point)</p>
+<p>“<strong><code>baseline_rv32</code></strong>” means <strong>RV32IMACFD</strong></p>
+<p>(“D” for Double-Precision Floating-Point)</p>
 </li>
 <li>
-<p><strong><code>-d</code></strong> means remove the Double-Precision Floating-Point (<strong><code>D</code></strong>)</p>
+<p>“<strong><code>-d</code></strong>” means remove the Double-Precision Floating-Point (“D”)</p>
 <p>(But keep the Single-Precision Floating-Point)</p>
 </li>
 </ul>
