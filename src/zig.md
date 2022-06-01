@@ -481,7 +481,7 @@ Yep Zig runs OK on BL602 with NuttX! 🎉
 
 # Embedded Zig
 
-_How do we build Embedded Zig Apps with GPIO, I2C, SPI, ...?_
+_Can we build Embedded Zig Apps with GPIO, I2C, SPI, ...?_
 
 TODO: microzig
 
@@ -523,7 +523,7 @@ fn busyloop() void {
 
 Adapted from [blinky.zig](https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig)
 
-_Can Zig run on Bare Metal? Without an RTOS like NuttX?_
+_Will Zig run on Bare Metal? Without an RTOS like NuttX?_
 
 TODO: Bare metal Zig on RISC-V
 
@@ -576,72 +576,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1529261120124354560)
-
-# Appendix: Zig on RISC-V BL602 with Apache NuttX RTOS
-
-TODO
-
-To build the Zig App for NuttX on BL602...
-
-```bash
-##  Enable Zig App in NuttX menuconfig
-make menuconfig
-
-##  TODO: Select "Application Configuration > Examples > Hello Zig Example"
-##  Save the configuration and exit menuconfig.
-
-##  Build Nuttx
-make
-
-##  NuttX Build fails with Undefined Reference to `hello_zig_main`
-##  That's OK, here's the fix...
-
-##  Download our modified Zig App for NuttX
-git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
-cd zig-bl602-nuttx
-
-##  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
-zig build-obj \
-    -target riscv32-freestanding-none \
-    -mcpu sifive_e76 \
-    hello_zig_main.zig
-
-##  Dump the ABI for the compiled app
-riscv64-unknown-elf-readelf -h -A hello_zig_main.o
-##  Shows "Flags: 0x1, RVC, soft-float ABI"
-##  Which is Software Floating-Point.
-##  This won't link with NuttX because NuttX is compiled with Hardware Floating-Point
-
-##  We change Software Floating-Point to Hardware Floating-Point...
-##  Edit hello_zig_main.o in a Hex Editor, change byte 0x24 from 0x01 to 0x03
-##  (See https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header)
-
-##  Dump the ABI for the compiled app
-riscv64-unknown-elf-readelf -h -A hello_zig_main.o
-##  Shows "Flags: 0x3, RVC, single-float ABI"
-##  Which is Hardware Floating-Point and will link with NuttX
-
-##  Copy the compiled app to NuttX and overwrite `hello.o`
-##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
-
-##  Build NuttX to link the Zig Object from `hello.o`
-make
-
-##  NuttX build should now succeed
-```
-
-Boot NuttX and enter this at the NuttX Shell...
-
-```text
-NuttShell (NSH) NuttX-10.3.0-RC2
-
-nsh> hello_zig
-Hello, Zig!
-
-nsh> hello
-Hello, Zig!
-```
 
 # Appendix: Hello App
 
