@@ -40,37 +40,35 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 -   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
 
+-   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
+
 -   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
 
 -   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
 
 -   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
 
--   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
-
 -   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
-
--   ["ADC and Internal Temperature Sensor Library"](https://github.com/lupyuen/bl602_adc_test)
-
--   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
-
--   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
-
--   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
 
 -   ["Rust talks I2C on Apache NuttX RTOS"](https://lupyuen.github.io/articles/rusti2c)
 
 -   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
 
--   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
-
 -   ["NuttX Touch Panel Driver for PineDio Stack BL604"](https://lupyuen.github.io/articles/touch)
-
--   ["NuttX GPIO Expander for PineDio Stack BL604"](https://lupyuen.github.io/articles/expander)
 
 -   ["(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/auto2)
 
 -   ["Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"](https://lupyuen.github.io/articles/zig)
+
+-   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
+
+-   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
+
+-   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
+
+-   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
+
+-   ["ADC and Internal Temperature Sensor Library"](https://github.com/lupyuen/bl602_adc_test)
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 

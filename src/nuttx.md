@@ -128,8 +128,6 @@ _open(), ioctl()_ and _sigaction()_ are common functions called by Linux Apps.
 
 NuttX Apps really look like Linux Apps!
 
-![help, ls and gpio commands](https://lupyuen.github.io/images/nuttx-gpio2a.png)
-
 # Configure NuttX
 
 Let's get adventurous and __add NuttX Commands__...
@@ -253,8 +251,6 @@ __Flash and run__ the NuttX Firmware with these steps...
 
 We're ready to test the new commands!
 
-![ls and gpio commands](https://lupyuen.github.io/images/nuttx-gpio2b.png)
-
 # GPIO Demo
 
 Let's run the new commands: __"help", "ls"__ and __"gpio"__.
@@ -305,11 +301,11 @@ NuttX reveals the devices that we may control...
 
     (Because we enabled the GPIO Driver)
 
--   __/dev/gpio2__ captures the GPIO Interrupt
-
 -   __/dev/gpio1__ writes to GPIO Output
 
     (But which GPIO Pin? We'll learn in a while)
+
+-   __/dev/gpio2__ captures the GPIO Interrupt
 
 -   __/dev/null__ is the Null Device
 
@@ -410,8 +406,6 @@ __Flash and run__ the NuttX Firmware with these steps...
 -   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
 
 We're ready to test the LED!
-
-![Testing the LED](https://lupyuen.github.io/images/nuttx-gpio4c.png)
 
 # Test the LED
 
@@ -818,6 +812,8 @@ Here are some topics that I'll explore in future articles...
 
     [__"PineDio Stack BL604 runs Apache NuttX RTOS"__](https://lupyuen.github.io/articles/pinedio2)
 
+    [__"NuttX GPIO Expander for PineDio Stack BL604"__](https://lupyuen.github.io/articles/expander)
+
 -   __SPI Driver__: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604!
 
     [__"SPI on Apache NuttX OS"__](https://lupyuen.github.io/articles/spi2)
@@ -828,9 +824,11 @@ Here are some topics that I'll explore in future articles...
 
     [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
--   __I2C__: We'll explore I2C on NuttX because it's super useful for IoT sensors...
+-   __I2C__: We'll explore I2C on NuttX because it's super useful for IoT Sensors and Touch Panels...
 
     [__"Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"__](https://lupyuen.github.io/articles/bme280)
+
+    [__"NuttX Touch Panel Driver for PineDio Stack BL604"__](https://lupyuen.github.io/articles/touch)
 
 -   __Graphics__: NuttX works great with the ST7789 SPI Display and LVGL Graphics Libary, right out of the box...
 
@@ -842,15 +840,19 @@ Here are some topics that I'll explore in future articles...
 
     [__"Rust talks I2C on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rusti2c)
 
+-   __Zig__: Works on NuttX too...
+
+    [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
+
 -   __IoT Sensors__: NuttX is great for IoT devices! Here's how we connect an Air Quality Sensor and encode Sensor Data efficiently with CBOR...
 
     [__"Connect IKEA Air Quality Sensor to Apache NuttX OS"__](https://lupyuen.github.io/articles/ikea)
 
     [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
 
--   __Automated Testing__: This is how we do daily automated testing of NuttX on BL602...
+-   __Automated Testing__: This is how we do daily automated testing of NuttX on BL602 and BL604...
 
-    [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
+    [__"(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/auto2)
 
 (BL602 IoT SDK / FreeRTOS is revamping right now to the [__new "hosal" HAL__](https://twitter.com/MisterTechBlog/status/1456259223323508748). Terrific time to explore NuttX now!)
 

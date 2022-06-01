@@ -439,9 +439,11 @@ We're only editing the __ELF Header__, because it didn't seem to reflect the cor
 
 (__TODO:__ Find the right way to fix the ELF Header Floating-Point ABI in the Zig Compiler)
 
+
+
 # Zig Runs OK!
 
-We're ready to link the modified Object File with NuttX...
+We're ready to link the __Patched Object File__ with NuttX...
 
 ```bash
 ##  Copy the modified object file to NuttX and overwrite `hello.o`
@@ -455,6 +457,8 @@ make
 ```
 
 Finally our NuttX Build succeeds! 🎉
+
+Follow these steps to flash and boot NuttX on BL602...
 
 TODO
 
