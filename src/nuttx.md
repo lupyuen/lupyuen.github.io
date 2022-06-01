@@ -288,14 +288,12 @@ ls /dev
 
 NuttX reveals the devices that we may control...
 
-(__NOTE:__ As of Dec 2021, gpin0 / gpout1 / gpint2 have been renamed to gpio0 / gpio1 / gpio2)
-
 ```text
 /dev:
  console
- gpin0
- gpint2
- gpout1
+ gpio0
+ gpio2
+ gpio1
  null
  timer0
  zero
@@ -303,21 +301,15 @@ NuttX reveals the devices that we may control...
 
 -   __/dev/console__ is the Serial (UART) Console
 
--   __/dev/gpin0__ reads from GPIO Input
+-   __/dev/gpio0__ reads from GPIO Input
 
     (Because we enabled the GPIO Driver)
 
-    (Renamed to __/dev/gpio0__ as of Dec 2021)
+-   __/dev/gpio2__ captures the GPIO Interrupt
 
--   __/dev/gpint2__ captures the GPIO Interrupt
-
-    (Renamed to __/dev/gpio2__ as of Dec 2021)
-
--   __/dev/gpout1__ writes to GPIO Output
+-   __/dev/gpio1__ writes to GPIO Output
 
     (But which GPIO Pin? We'll learn in a while)
-
-    (Renamed to __/dev/gpio1__ as of Dec 2021)
 
 -   __/dev/null__ is the Null Device
 
@@ -331,9 +323,7 @@ NuttX reveals the devices that we may control...
 
     [(Same as Linux)](https://en.wikipedia.org/wiki//dev/zero)
 
-Let's write to the GPIO Output at __/dev/gpout1__.
-
-(Renamed to __/dev/gpio1__ as of Dec 2021)
+Let's write to the GPIO Output at __/dev/gpio1__.
 
 ![gpio command](https://lupyuen.github.io/images/nuttx-gpio.png)
 
@@ -342,17 +332,15 @@ Let's write to the GPIO Output at __/dev/gpout1__.
 Enter this to set the __GPIO Output__ to High...
 
 ```bash
-gpio -o 1 /dev/gpout1
+gpio -o 1 /dev/gpio1
 ```
 
 (As explained in the pic above)
 
-(Renamed to __/dev/gpio1__ as of Dec 2021)
-
 The GPIO Output changes from __Low to High__...
 
 ```text
-Driver: /dev/gpout1
+Driver: /dev/gpio1
   Output pin:    Value=0
   Writing:       Value=1
   Verify:        Value=1
@@ -442,15 +430,13 @@ At startup, the Blue LED is __On__ (because the default GPIO Output is Low)...
 In the NuttX Shell, enter this to flip GPIO 11 to __High__...
 
 ```bash
-gpio -o 1 /dev/gpout1
+gpio -o 1 /dev/gpio1
 ```
-
-(Renamed to __/dev/gpio1__ as of Dec 2021)
 
 NuttX flips GPIO 11 from __Low to High__...
 
 ```text
-Driver: /dev/gpout1
+Driver: /dev/gpio1
   Output pin:    Value=0
   Writing:       Value=1
   Verify:        Value=1
@@ -465,15 +451,13 @@ So far so good!
 Enter this to flip GPIO 11 to __Low__...
 
 ```bash
-gpio -o 0 /dev/gpout1
+gpio -o 0 /dev/gpio1
 ```
-
-(Renamed to __/dev/gpio1__ as of Dec 2021)
 
 As expected, NuttX flips GPIO 11 from __High to Low__...
 
 ```text
-Driver: /dev/gpout1
+Driver: /dev/gpio1
   Output pin:    Value=1
   Writing:       Value=0
   Verify:        Value=0
@@ -999,15 +983,11 @@ Next we download and build NuttX...
     ```bash
     mkdir nuttx
     cd nuttx
-    git clone --recursive --branch gpio https://github.com/lupyuen/incubator-nuttx nuttx
-    git clone --recursive --branch gpio https://github.com/lupyuen/incubator-nuttx-apps apps
+    git clone --recursive https://github.com/lupyuen/incubator-nuttx nuttx
+    git clone --recursive https://github.com/lupyuen/incubator-nuttx-apps apps
     ```
 
-    __NOTE:__ This is the older "gpio" branch of NuttX that uses __"/dev/gpout1"__
-    
-    (Later versions of NuttX use __"/dev/gpio1"__ instead)
-
-    [(__For PineDio Stack BL604:__ The features described in this article are already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
+    [(Here are the features included)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
 
 1.  Configure NuttX...
 
@@ -1374,20 +1354,18 @@ We configure GPIO 11 as the GPIO Output Pin __BOARD_GPIO_OUT1__ in [board.h](htt
 After building and flashing NuttX to BL602, we run the __NuttX GPIO Command__ to toggle GPIO 11...
 
 ```bash
-nsh> gpio -o 1 /dev/gpout1
-Driver: /dev/gpout1
+nsh> gpio -o 1 /dev/gpio1
+Driver: /dev/gpio1
   Output pin:    Value=0
   Writing:       Value=1
   Verify:        Value=1
 
-nsh> gpio -o 0 /dev/gpout1
-Driver: /dev/gpout1
+nsh> gpio -o 0 /dev/gpio1
+Driver: /dev/gpio1
   Output pin:    Value=1
   Writing:       Value=0
   Verify:        Value=0
 ```
-
-(Renamed to __/dev/gpio1__ as of Dec 2021)
 
 NuttX changes GPIO 11 from __Low to High__ and back to Low.
 
@@ -1506,14 +1484,12 @@ bl602_configgpio enable output:
 We run the GPIO Command to set __GPIO 11 to High__...
 
 ```bash
-nsh> gpio -o 1 /dev/gpout1
-Driver: /dev/gpout1
+nsh> gpio -o 1 /dev/gpio1
+Driver: /dev/gpio1
   Output pin:    Value=0
   Writing:       Value=1
   Verify:        Value=1
 ```
-
-(Renamed to __/dev/gpio1__ as of Dec 2021)
 
 PineCone's Blue LED on GPIO 11 correctly __switches off__.
 
@@ -1522,14 +1498,12 @@ PineCone's Blue LED on GPIO 11 correctly __switches off__.
 We run the GPIO Command to set __GPIO 11 to Low__...
 
 ```bash
-nsh> gpio -o 0 /dev/gpout1
-Driver: /dev/gpout1
+nsh> gpio -o 0 /dev/gpio1
+Driver: /dev/gpio1
   Output pin:    Value=1
   Writing:       Value=0
   Verify:        Value=0
 ```
-
-(Renamed to __/dev/gpio1__ as of Dec 2021)
 
 And PineCone's Blue LED on GPIO 11 correctly __switches on__.
 

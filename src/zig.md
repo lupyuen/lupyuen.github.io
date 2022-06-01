@@ -166,29 +166,29 @@ Our declaration for __`printf()`__ specifies only one parameter: the __Format St
 
 [(Here's the full declaration)](https://ziglang.org/documentation/master/#Sentinel-Terminated-Pointers)
 
+![Enable Zig App in NuttX](https://lupyuen.github.io/images/zig-config1a.png)
+
 # Enable Zig App
 
-We're ready to __build our Zig App__ in NuttX! Follow these steps to download and configure NuttX for BL602...
+We're ready to __build our Zig App__ in NuttX! 
+
+Follow these steps to __download and configure__ NuttX for BL602...
 
 -   [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
 -   [__"Build NuttX"__](https://lupyuen.github.io/articles/nuttx#build-nuttx)
 
-TODO
-
-To enable the Zig App in NuttX...
+To __enable the Zig App__ in NuttX, we do this...
 
 ```bash
 make menuconfig
 ```
 
-Select "Application Configuration > Examples > Hello Zig Example"
+And select __"Application Configuration"__ → __"Examples"__ → __"Hello Zig Example"__
+
+(See pic above)
 
 Save the configuration and exit menuconfig.
-
-TODO
-
-![](https://lupyuen.github.io/images/zig-config1a.png)
 
 # Build Fails on NuttX
 
