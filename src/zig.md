@@ -357,9 +357,9 @@ File Attributes
 
 ![NuttX was compiled for (Single-Precision) Hardware Floating-Point ABI](https://lupyuen.github.io/images/zig-abi1a.png)
 
-The __ELF Header__ says that the NuttX Object Files were compiled for the (Single-Precision) __Hardware Floating-Point__ ABI (Application Binary Interface).
+The [__ELF Header__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header) says that the NuttX Object Files were compiled for the (Single-Precision) __Hardware Floating-Point__ ABI (Application Binary Interface).
 
-[(NuttX compiles with the GCC Flags `-march=rv32imafc -mabi=ilp32f`)](https://gist.github.com/lupyuen/288c980fdef75c334d32e669a921e623)
+[(NuttX compiles with the GCC Flags "`-march=rv32imafc -mabi=ilp32f`")](https://gist.github.com/lupyuen/288c980fdef75c334d32e669a921e623)
 
 Whereas our __Zig Compiler__ produces an Object File with __Software Floating-Point__ ABI...
 
@@ -381,7 +381,7 @@ GCC won't let us link Object Files with __different ABIs__: Software Floating-Po
 
 Let's fix this with a quick hack...
 
-(__TODO:__ Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when `sifive_e76` supports Hardware Floating-Point?)
+(__TODO:__ Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when `sifive_e76` supports Hardware Floating-Point? What's the Zig equivalent of "`gcc -march=rv32imafc -mabi=ilp32f`"?)
 
 # Patch ELF Header
 
@@ -439,7 +439,9 @@ We're only editing the __ELF Header__, because it didn't seem to reflect the cor
 
 (__TODO:__ Find the right way to fix the ELF Header Floating-Point ABI in the Zig Compiler)
 
+![PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
+[_Pine64's PineCone BL602 RISC-V Board_](https://lupyuen.github.io/articles/pinecone)
 
 # Zig Runs OK!
 
@@ -456,13 +458,15 @@ cd $HOME/nuttx/nuttx
 make
 ```
 
-Finally our NuttX Build succeeds! 🎉
+Finally our NuttX Build succeeds!
 
-Follow these steps to flash and boot NuttX on BL602...
+Follow these steps to __flash and boot NuttX__ on BL602...
 
-TODO
+-   [__"Flash NuttX"__](https://lupyuen.github.io/articles/nuttx#flash-nuttx)
 
-Zig runs OK on NuttX BL602!
+-   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
+
+In the NuttX Shell, enter __`hello_zig`__
 
 ```text
 NuttShell (NSH) NuttX-10.3.0-RC2
@@ -471,11 +475,13 @@ nsh> hello_zig
 Hello, Zig!
 ```
 
-TODO
+Yep Zig runs OK on BL602 with NuttX! 🎉
 
 ![Zig runs on BL602 with Apache NuttX RTOS](https://lupyuen.github.io/images/zig-title.jpg)
 
 # Embedded Zig
+
+_How do we build Embedded Zig Apps with GPIO, I2C, SPI, ...?_
 
 TODO: microzig
 
@@ -516,6 +522,8 @@ fn busyloop() void {
 ```
 
 Adapted from [blinky.zig](https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig)
+
+_Can Zig run on Bare Metal? Without an RTOS like NuttX?_
 
 TODO: Bare metal Zig on RISC-V
 
