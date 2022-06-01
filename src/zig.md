@@ -565,7 +565,7 @@ _Why not rewrite in Zig? Or another modern language?_
 
 TODO
 
-Because we will have trouble syncing future updates to the C code
+Because these projects are still actively maintained upstream. We will have trouble syncing future updates to the C code
 
 And we can't afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)
 
