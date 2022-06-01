@@ -214,8 +214,11 @@ undefined reference to `hello_zig_main&#39;</code></pre></div>
 <p>Which is probably due to some <strong>incomplete Build Rules</strong> in the NuttX Makefiles. <a href="https://github.com/apache/incubator-nuttx/issues/6219">(See this)</a></p>
 <p>But no worries! Let’s compile the Zig App ourselves and link it into the NuttX Firmware.</p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">4 Compile Zig App</a></h1>
-<p>TODO</p>
-<p>Here’s how we compile our Zig App for RISC-V BL602 and link it with NuttX…</p>
+<p>Follow these steps to install the <strong>Zig Compiler</strong>…</p>
+<ul>
+<li><a href="https://ziglang.org/learn/getting-started/"><strong>“Zig: Getting Started”</strong></a></li>
+</ul>
+<p>This is how we <strong>compile our Zig App</strong> for BL602 and link it with NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download our modified Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
@@ -235,17 +238,27 @@ cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
 make</code></pre></div>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/zig-build3a.png" alt="" /></p>
+<p>Note that we specify <strong>“<code>build-obj</code>”</strong> when compiling our Zig App.</p>
+<p>This generates a <strong>RISC-V Object File</strong> <code>hello_zig_main.o</code> that will be linked into our NuttX Firmware.</p>
+<p>Let’s talk about the Zig Target, which looks especially interesting for RISC-V…</p>
+<p><img src="https://lupyuen.github.io/images/zig-build3a.png" alt="Compile Zig App for BL602" /></p>
 <h1 id="zig-target"><a href="#zig-target">5 Zig Target</a></h1>
-<p>TODO</p>
-<p><em>Why is the target <code>riscv32-freestanding-none</code>?</em></p>
-<p>Zig Targets have the form <code>&lt;arch&gt;&lt;sub&gt;-&lt;os&gt;-&lt;abi&gt;</code>…</p>
-<p><code>riscv32</code>: Because BL602 is a 32-bit RISC-V processor</p>
-<p><code>freestanding</code>: Because embedded targets don’t need an OS</p>
-<p><code>none</code>: Because embedded targets don’t specify the ABI</p>
-<p><em>Why is the target CPU <code>sifive_e76</code>?</em></p>
-<p>BL602 is designated as RV32IMACF…</p>
+<p><em>Why is the Zig Target riscv32-freestanding-none?</em></p>
+<p>Zig Targets have the form “<em>(arch)(sub)</em>-<em>(os)</em>-<em>(abi)</em>”…</p>
+<ul>
+<li>
+<p><strong><code>riscv32</code></strong>: Because BL602 is a 32-bit RISC-V processor</p>
+</li>
+<li>
+<p><strong><code>freestanding</code></strong>: Because Embedded Targets don’t need an OS</p>
+</li>
+<li>
+<p><strong><code>none</code></strong>: Because Embedded Targets don’t specify the ABI</p>
+</li>
+</ul>
+<p><a href="https://ziglang.org/documentation/master/#Targets">(More about Zig Targets)</a></p>
+<p><em>Why is the Target CPU sifive_e76?</em></p>
+<p>BL602 is designated as <strong>RV32IMACF</strong>…</p>
 <div><table><thead><tr><th style="text-align: center">Designation</th><th style="text-align: left">Meaning</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong><code>RV32I</code></strong></td><td style="text-align: left">32-bit RISC-V with Base Integer Instructions</td></tr>
 <tr><td style="text-align: center"><strong><code>M</code></strong></td><td style="text-align: left">Integer Multiplication + Division</td></tr>
@@ -255,33 +268,31 @@ make</code></pre></div>
 </tbody></table>
 </div>
 <p><a href="https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions">(Source)</a></p>
-<p>Among all Zig Targets, only <code>sifive_e76</code> has the same designation…</p>
+<p>Among all Zig Targets, only <strong><code>sifive_e76</code></strong> has the same designation…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ zig targets
 ...
 &quot;sifive_e76&quot;: [ &quot;a&quot;, &quot;c&quot;, &quot;f&quot;, &quot;m&quot; ],</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09d64c79e12b30e5eebc7d0a9c3b20a4">(Source)</a></p>
-<p>Thus we use <code>sifive_e76</code> as our CPU Target.</p>
-<p>Alternatively we may use <code>baseline_rv32-d</code> as our CPU Target…</p>
+<p>Thus we use <strong><code>sifive_e76</code></strong> as our Target CPU.</p>
+<p>Or we may use <strong><code>baseline_rv32-d</code></strong> as our Target CPU…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Compile the Zig App for BL602
 #  (RV32IMACF with Hardware Floating-Point)
 zig build-obj \
   -target riscv32-freestanding-none \
   -mcpu=baseline_rv32-d \
   hello_zig_main.zig</code></pre></div>
-<p>Because…</p>
+<p>That’s because…</p>
 <ul>
 <li>
-<p><code>baseline_rv32</code> means RV32IMACFD </p>
-<p>(D for Double-Precision Floating-Point)</p>
+<p><strong><code>baseline_rv32</code></strong> means RV32IMACFD </p>
+<p>(<strong><code>D</code></strong> for Double-Precision Floating-Point)</p>
 </li>
 <li>
-<p><code>-d</code> means remove the Double-Precision Floating-Point (D)</p>
+<p><strong><code>-d</code></strong> means remove the Double-Precision Floating-Point (<strong><code>D</code></strong>)</p>
 <p>(But keep the Single-Precision Floating-Point)</p>
 </li>
 </ul>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/issues/1">(More about RISC-V Feature Flags. Thanks Matheus!)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/zig-build4a.jpg" alt="" /></p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/issues/1">(More about RISC-V Feature Flags for Zig. Thanks Matheus!)</a></p>
 <h1 id="floating-point-abi"><a href="#floating-point-abi">6 Floating-Point ABI</a></h1>
 <p>TODO</p>
 <p>When linking the Compiled Zig App with NuttX, we see this error…</p>
@@ -442,6 +453,7 @@ fn busyloop() void {
 <p><a href="https://kristoff.it/blog/maintain-it-with-zig"><strong>“Maintain it With Zig”</strong></a></p>
 <p><a href="https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j"><strong>“Compile a C/C++ Project with Zig”</strong></a></p>
 <p><a href="https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&amp;utm_source=share"><strong>“How serious Zig about replacing C?”</strong>)</a></p>
+<p><a href="https://github.com/dreinharth/byway/blob/main/src/main.zig"><strong>dreinharth/byway (Wayland Compositor in Zig)</strong></a></p>
 <p>Zig looks great for maintaining complex C projects</p>
 <p>Today we’re running incredibly complex C projects on NuttX: LoRaWAN Library, LoRa SX1262 Library, NimBLE Porting Layer</p>
 <p>And we can’t afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)</p>
