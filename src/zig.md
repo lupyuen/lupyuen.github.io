@@ -529,29 +529,43 @@ TODO: Bare metal Zig on RISC-V
 
 -   [__nmeum/zig-riscv-embedded__](https://github.com/nmeum/zig-riscv-embedded)
 
+![Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway](https://lupyuen.github.io/images/lorawan3-title.jpg)
+
+[_Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway_](https://lupyuen.github.io/articles/lorawan3)
+
 # Why Zig?
+
+_Why are we doing all this with Zig?_
+
+Zig works great for __maintaining complex C projects__...
+
+-   [__"Maintain it With Zig"__](https://kristoff.it/blog/maintain-it-with-zig)
+
+-   [__"Compile a C/C++ Project with Zig"__](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
+
+-   [__"How serious Zig about replacing C?"__)](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
+
+Today we're running incredibly __complex C projects on NuttX__...
+
+-   [__LoRa Wireless Networking__](https://lupyuen.github.io/articles/sx1262)
+
+-   [__LoRaWAN Networking__](https://lupyuen.github.io/articles/lorawan3)
+
+-   [__NimBLE Porting Layer__](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
+
+Zig might be the best way to maintain and extend these __Complex IoT Projects__ on NuttX.
+
+_Why not rewrite in Zig? Or another modern language?_
 
 TODO
 
-[__"Maintain it With Zig"__](https://kristoff.it/blog/maintain-it-with-zig)
-
-[__"Compile a C/C++ Project with Zig"__](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
-
-[__"How serious Zig about replacing C?"__)](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
-
-[__dreinharth/byway (Wayland Compositor in Zig)__](https://github.com/dreinharth/byway/blob/main/src/main.zig)
-
-Zig looks great for maintaining complex C projects
-
-Today we're running incredibly complex C projects on NuttX: LoRaWAN Library, LoRa SX1262 Library, NimBLE Porting Layer
+Because we will have trouble syncing future updates to the C code
 
 And we can't afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)
 
 So best way to maintain and extend them is to compile with Zig
 
 In future might be possible to build LoRaWAN IoT Apps in Zig
-
-Why not rewrite in Zig (or another modern language)? Because we will have trouble syncing future updates to the C code
 
 LoRaWAN is [__Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1), we can't change any code that might break the compliance with the LoRaWAN Spec
 
@@ -576,6 +590,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1529261120124354560)
+
+1.  TODO: A complete Wayland Compositor in a single Zig file! [__dreinharth/byway (Wayland Compositor in Zig)__](https://github.com/dreinharth/byway/blob/main/src/main.zig)
+
+1.  TODO: ["A simple overview of Zig's std.log"](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
+
+1.  TODO: ["make config is not running the compiler. I believe the problem must be in the application.mk in apps"](https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29)
+
+1.  TODO: ["Revert Zig Build"](https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e)
 
 # Appendix: Hello App
 
