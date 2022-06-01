@@ -571,7 +571,7 @@ That's because these C projects are still actively maintained and __can change a
 
 Any rewrites of these projects will need to __incorporate the updates__ very quickly. Which makes the maintenance of the rewritten projects super painful.
 
-(FYI: LoRaWAN is [__Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1), we can't change any code that might break the compliance with the LoRaWAN Spec)
+(Also LoRaWAN is [__Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1), we can't change any code that might break the compliance with the LoRaWAN Spec)
 
 _So we'll have to keep the projects intact in C, but compile them with Zig Compiler instead?_
 
