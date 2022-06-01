@@ -148,7 +148,7 @@ Inside the Main Function, we call __`printf()`__ to print a string...
 
 _Why the "`_ = something`"?_
 
-This tells the Zig Compiler that we're not using the value of "`something`".
+This tells the Zig Compiler that we're __not using the value__ of "`something`".
 
 The Zig Compiler helpfully stops us if we forget to use a Variable (like `_argc`) or the Returned Value for a Function (like for `printf`).
 
@@ -156,7 +156,7 @@ _Doesn't Zig have its own printf?_
 
 Yep there's indeed a __`print()`__ function in Zig, and we ought to use it! [(See this)](https://ziglang.org/documentation/master/#Hello-World)
 
-Eventually we'll fix our Zig App to call the __`print()`__ function instead.
+Eventually we'll update our Zig App to call the __`print()`__ function instead.
 
 _Did we forget something?_
 
@@ -172,7 +172,7 @@ Our declaration for __`printf()`__ specifies only one parameter: the __Format St
 
 We're ready to __build our Zig App__ in NuttX! 
 
-Follow these steps to __download and configure__ NuttX for BL602...
+Follow these steps to __download and configure NuttX__ for BL602...
 
 -   [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
@@ -184,11 +184,11 @@ To __enable the Zig App__ in NuttX, we do this...
 make menuconfig
 ```
 
-And select __"Application Configuration"__ → __"Examples"__ → __"Hello Zig Example"__
-
-(See pic above)
+And select __"Application Configuration"__ → __"Examples"__ → __"Hello Zig Example"__. (See pic above)
 
 Save the configuration and exit menuconfig.
+
+![Build fails on NuttX](https://lupyuen.github.io/images/zig-build1a.png)
 
 # Build Fails on NuttX
 
@@ -219,8 +219,6 @@ This seems to be caused by the NuttX Build not calling the Zig Compiler.
 But no worries! Let's compile the Zig App ourselves and link into NuttX.
 
 TODO
-
-![](https://lupyuen.github.io/images/zig-build1a.png)
 
 # Compile Zig App
 
