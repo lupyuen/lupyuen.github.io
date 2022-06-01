@@ -541,6 +541,8 @@ In future might be possible to build LoRaWAN IoT Apps in Zig
 
 Why not rewrite in Zig (or another modern language)? Because we will have trouble syncing future updates to the C code
 
+LoRaWAN is [__Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1), we can't change any code that might break the compliance with the LoRaWAN Spec
+
 # What's Next
 
 TODO
