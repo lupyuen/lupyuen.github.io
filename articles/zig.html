@@ -482,7 +482,7 @@ fn busyloop() void {
 <p>(FYI: LoRaWAN is <a href="https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1"><strong>Time Critical</strong></a>, we can’t change any code that might break the compliance with the LoRaWAN Spec)</p>
 <p><em>So we’ll have to keep the projects intact in C, but compile them with Zig Compiler instead?</em></p>
 <p>Yeah probably the best way to maintain and extend these Complex IoT Projects is to <strong>compile them as-is with Zig</strong>.</p>
-<p><em>But we can create IoT Apps in Zig right?</em></p>
+<p><em>But we can create new IoT Apps in Zig right?</em></p>
 <p>Yep totally! Since Zig interoperates well with C, we can create <strong>IoT Apps in Zig</strong> that will call the C Libraries for LoRa / LoRaWAN / NimBLE.</p>
 <p>I’m super impressed by this Wayland Compositor in Zig, how it imports a <strong>huge bunch of C Header Files</strong>, and calls them from Zig!</p>
 <ul>
