@@ -444,9 +444,11 @@ fn busyloop() void {
 <p><em>Why are we doing all this with Zig?</em></p>
 <p>Here’s why…</p>
 <blockquote>
-<p>Zig has <code>zig cc</code> and <code>zig c++</code>, two commands that expose an interface flag-compatible with clang, allowing you to use the Zig compiler as a <strong>drop-in replacement for your existing C/C++ compiler</strong>.</p>
+<p>“Zig has <code>zig cc</code> and <code>zig c++</code>, two commands that expose an interface flag-compatible with clang, allowing you to use the Zig compiler as a <strong>drop-in replacement for your existing C/C++ compiler</strong>.”</p>
 </blockquote>
+<blockquote>
 <p><a href="https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j">(Source)</a></p>
+</blockquote>
 <p>Because of this, Zig works great for <strong>maintaining complex C projects</strong>…</p>
 <ul>
 <li>
@@ -459,6 +461,7 @@ fn busyloop() void {
 <p><a href="https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&amp;utm_source=share"><strong>“How serious (is) Zig about replacing C?”</strong></a></p>
 </li>
 </ul>
+<p><em>How is this relevant to NuttX?</em></p>
 <p>Today we’re running incredibly <strong>complex C projects on NuttX</strong>…</p>
 <ul>
 <li>
