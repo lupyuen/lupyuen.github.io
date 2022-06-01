@@ -438,18 +438,41 @@ fn busyloop() void {
 <ul>
 <li><a href="https://github.com/nmeum/zig-riscv-embedded"><strong>nmeum/zig-riscv-embedded</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway" /></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3"><em>Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway</em></a></p>
 <h1 id="why-zig"><a href="#why-zig">10 Why Zig?</a></h1>
-<p>TODO</p>
+<p><em>Why are we doing all this with Zig?</em></p>
+<p>Zig works great for <strong>maintaining complex C projects</strong>…</p>
+<ul>
+<li>
 <p><a href="https://kristoff.it/blog/maintain-it-with-zig"><strong>“Maintain it With Zig”</strong></a></p>
+</li>
+<li>
 <p><a href="https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j"><strong>“Compile a C/C++ Project with Zig”</strong></a></p>
+</li>
+<li>
 <p><a href="https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&amp;utm_source=share"><strong>“How serious Zig about replacing C?”</strong>)</a></p>
-<p><a href="https://github.com/dreinharth/byway/blob/main/src/main.zig"><strong>dreinharth/byway (Wayland Compositor in Zig)</strong></a></p>
-<p>Zig looks great for maintaining complex C projects</p>
-<p>Today we’re running incredibly complex C projects on NuttX: LoRaWAN Library, LoRa SX1262 Library, NimBLE Porting Layer</p>
+</li>
+</ul>
+<p>Today we’re running incredibly <strong>complex C projects on NuttX</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262"><strong>LoRa Wireless Networking</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan3"><strong>LoRaWAN Networking</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer"><strong>NimBLE Porting Layer</strong></a></p>
+</li>
+</ul>
+<p>Zig might be the best way to maintain and extend these <strong>Complex IoT Projects</strong> on NuttX.</p>
+<p><em>Why not rewrite in Zig? Or another modern language?</em></p>
+<p>TODO</p>
+<p>Because we will have trouble syncing future updates to the C code</p>
 <p>And we can’t afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)</p>
 <p>So best way to maintain and extend them is to compile with Zig</p>
 <p>In future might be possible to build LoRaWAN IoT Apps in Zig</p>
-<p>Why not rewrite in Zig (or another modern language)? Because we will have trouble syncing future updates to the C code</p>
 <p>LoRaWAN is <a href="https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1"><strong>Time Critical</strong></a>, we can’t change any code that might break the compliance with the LoRaWAN Spec</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
@@ -472,7 +495,21 @@ fn busyloop() void {
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/zig.md"><strong><code>lupyuen.github.io/src/zig.md</code></strong></a></p>
 <h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1529261120124354560"><strong>this Twitter Thread</strong></a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1529261120124354560"><strong>this Twitter Thread</strong></a></p>
+</li>
+<li>
+<p>TODO: A complete Wayland Compositor in a single Zig file! <a href="https://github.com/dreinharth/byway/blob/main/src/main.zig"><strong>dreinharth/byway (Wayland Compositor in Zig)</strong></a></p>
+</li>
+<li>
+<p>TODO: <a href="https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d">“A simple overview of Zig’s std.log”</a></p>
+</li>
+<li>
+<p>TODO: <a href="https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29">“make config is not running the compiler. I believe the problem must be in the application.mk in apps”</a></p>
+</li>
+<li>
+<p>TODO: <a href="https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e">“Revert Zig Build”</a></p>
+</li>
 </ol>
 <h1 id="appendix-hello-app"><a href="#appendix-hello-app">13 Appendix: Hello App</a></h1>
 <p>TODO</p>
