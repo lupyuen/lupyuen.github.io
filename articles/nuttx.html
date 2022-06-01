@@ -200,7 +200,6 @@ int main(int argc, FAR char *argv[])
 </ol>
 <p><em>open(), ioctl()</em> and <em>sigaction()</em> are common functions called by Linux Apps.</p>
 <p>NuttX Apps really look like Linux Apps!</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio2a.png" alt="help, ls and gpio commands" /></p>
 <h1 id="configure-nuttx"><a href="#configure-nuttx">4 Configure NuttX</a></h1>
 <p>Let’s get adventurous and <strong>add NuttX Commands</strong>…</p>
 <ul>
@@ -277,7 +276,6 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </li>
 </ul>
 <p>We’re ready to test the new commands!</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio2b.png" alt="ls and gpio commands" /></p>
 <h1 id="gpio-demo"><a href="#gpio-demo">5 GPIO Demo</a></h1>
 <p>Let’s run the new commands: <strong>“help”, “ls”</strong> and <strong>“gpio”</strong>.</p>
 <p>In the NuttX Shell, enter…</p>
@@ -309,11 +307,11 @@ Builtin Apps:
 <p>(Because we enabled the GPIO Driver)</p>
 </li>
 <li>
-<p><strong>/dev/gpio2</strong> captures the GPIO Interrupt</p>
-</li>
-<li>
 <p><strong>/dev/gpio1</strong> writes to GPIO Output</p>
 <p>(But which GPIO Pin? We’ll learn in a while)</p>
+</li>
+<li>
+<p><strong>/dev/gpio2</strong> captures the GPIO Interrupt</p>
 </li>
 <li>
 <p><strong>/dev/null</strong> is the Null Device</p>
@@ -385,7 +383,6 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </li>
 </ul>
 <p>We’re ready to test the LED!</p>
-<p><img src="https://lupyuen.github.io/images/nuttx-gpio4c.png" alt="Testing the LED" /></p>
 <h1 id="test-the-led"><a href="#test-the-led">7 Test the LED</a></h1>
 <p>Let’s flip PineCone BL602’s <strong>LED on and off</strong>!</p>
 <p>The Blue LED is wired to GPIO 11 like so…</p>
@@ -677,6 +674,7 @@ poke &amp;h40000188, &amp;h00</code></pre></div></li>
 <li>
 <p><strong>PineDio Stack BL604</strong>: PineDio Stack is Pine64’s newest RISC-V board that comes with a Touchscreen and a LoRa SX1262 Transceiver…</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><strong>“PineDio Stack BL604 runs Apache NuttX RTOS”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/expander"><strong>“NuttX GPIO Expander for PineDio Stack BL604”</strong></a></p>
 </li>
 <li>
 <p><strong>SPI Driver</strong>: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604!</p>
@@ -688,8 +686,9 @@ poke &amp;h40000188, &amp;h00</code></pre></div></li>
 <p><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></p>
 </li>
 <li>
-<p><strong>I2C</strong>: We’ll explore I2C on NuttX because it’s super useful for IoT sensors…</p>
+<p><strong>I2C</strong>: We’ll explore I2C on NuttX because it’s super useful for IoT Sensors and Touch Panels…</p>
 <p><a href="https://lupyuen.github.io/articles/bme280"><strong>“Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/touch"><strong>“NuttX Touch Panel Driver for PineDio Stack BL604”</strong></a></p>
 </li>
 <li>
 <p><strong>Graphics</strong>: NuttX works great with the ST7789 SPI Display and LVGL Graphics Libary, right out of the box…</p>
@@ -701,13 +700,17 @@ poke &amp;h40000188, &amp;h00</code></pre></div></li>
 <p><a href="https://lupyuen.github.io/articles/rusti2c"><strong>“Rust talks I2C on Apache NuttX RTOS”</strong></a></p>
 </li>
 <li>
+<p><strong>Zig</strong>: Works on NuttX too…</p>
+<p><a href="https://lupyuen.github.io/articles/zig"><strong>“Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS”</strong></a></p>
+</li>
+<li>
 <p><strong>IoT Sensors</strong>: NuttX is great for IoT devices! Here’s how we connect an Air Quality Sensor and encode Sensor Data efficiently with CBOR…</p>
 <p><a href="https://lupyuen.github.io/articles/ikea"><strong>“Connect IKEA Air Quality Sensor to Apache NuttX OS”</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/cbor2"><strong>“Encode Sensor Data with CBOR on Apache NuttX OS”</strong></a></p>
 </li>
 <li>
-<p><strong>Automated Testing</strong>: This is how we do daily automated testing of NuttX on BL602…</p>
-<p><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></p>
+<p><strong>Automated Testing</strong>: This is how we do daily automated testing of NuttX on BL602 and BL604…</p>
+<p><a href="https://lupyuen.github.io/articles/auto2"><strong>“(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board”</strong></a></p>
 </li>
 </ul>
 <p>(BL602 IoT SDK / FreeRTOS is revamping right now to the <a href="https://twitter.com/MisterTechBlog/status/1456259223323508748"><strong>new “hosal” HAL</strong></a>. Terrific time to explore NuttX now!)</p>

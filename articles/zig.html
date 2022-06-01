@@ -370,7 +370,7 @@ Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p>We’re only editing the <strong>ELF Header</strong>, because it didn’t seem to reflect the correct ABI for the Object File.</p>
 <p>(<strong>TODO:</strong> Find the right way to fix the ELF Header Floating-Point ABI in the Zig Compiler)</p>
 <h1 id="zig-runs-ok"><a href="#zig-runs-ok">8 Zig Runs OK!</a></h1>
-<p>We’re ready to link the modified Object File with NuttX…</p>
+<p>We’re ready to link the <strong>Patched Object File</strong> with NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Copy the modified object file to NuttX and overwrite `hello.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
@@ -380,6 +380,7 @@ cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
 cd $HOME/nuttx/nuttx
 make</code></pre></div>
 <p>Finally our NuttX Build succeeds! 🎉</p>
+<p>Follow these steps to flash and boot NuttX on BL602…</p>
 <p>TODO</p>
 <p>Zig runs OK on NuttX BL602!</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0-RC2
