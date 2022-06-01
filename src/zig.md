@@ -24,6 +24,10 @@ In a while I'll explain the strange hack I did to run __Zig on BL602__...
 
 -   [__lupyuen/zig-bl602-nuttx__](https://github.com/lupyuen/zig-bl602-nuttx)
 
+_Why are we doing all this?_
+
+Later below I'll share my thoughts about __Embedded Zig__ and how we might use Zig to maintain __Complex IoT Apps__. (Like for LoRa and LoRaWAN)
+
 I'm totally new to Zig, please bear with me as I wade through the water and start swimming in Zig! 🙏
 
 ![Zig App bundled with Apache NuttX RTOS](https://lupyuen.github.io/images/zig-code1a.png)
