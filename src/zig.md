@@ -577,11 +577,9 @@ _So we'll have to keep the projects intact in C, but compile them with Zig Compi
 
 Yep, probably the best way to maintain and extend these Complex IoT Projects is to __compile them as-is with Zig__.
 
-_But we can create new IoT Apps in Zig right?_
+_But we can create IoT Apps in Zig right?_
 
-Yep totally!
-
-TODO: Zig Apps
+Yep totally! Since Zig interoperates well with C, we can create __IoT Apps in Zig__ that will call the C code for LoRa / LoRaWAN / NimBLE.
 
 # What's Next
 
