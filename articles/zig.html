@@ -442,7 +442,12 @@ fn busyloop() void {
 <p><a href="https://lupyuen.github.io/articles/lorawan3"><em>Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway</em></a></p>
 <h1 id="why-zig"><a href="#why-zig">10 Why Zig?</a></h1>
 <p><em>Why are we doing all this with Zig?</em></p>
-<p>Zig works great for <strong>maintaining complex C projects</strong>…</p>
+<p>Here’s why…</p>
+<blockquote>
+<p>Zig has <code>zig cc</code> and <code>zig c++</code>, two commands that expose an interface flag-compatible with clang, allowing you to use the Zig compiler as a drop-in replacement for your existing C/C++ compiler.</p>
+</blockquote>
+<p><a href="https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j">(Source)</a></p>
+<p>Because of this, Zig works great for <strong>maintaining complex C projects</strong>…</p>
 <ul>
 <li>
 <p><a href="https://kristoff.it/blog/maintain-it-with-zig"><strong>“Maintain it With Zig”</strong></a></p>
@@ -466,7 +471,7 @@ fn busyloop() void {
 <p><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer"><strong>NimBLE Porting Layer</strong></a></p>
 </li>
 </ul>
-<p>Zig might be the best way to maintain and extend these <strong>Complex IoT Projects</strong> on NuttX.</p>
+<p>Zig might be the best way to maintain and extend these <strong>IoT Projects</strong> on NuttX.</p>
 <p><em>Why not rewrite in Zig? Or another modern language?</em></p>
 <p>TODO</p>
 <p>Because we will have trouble syncing future updates to the C code</p>
