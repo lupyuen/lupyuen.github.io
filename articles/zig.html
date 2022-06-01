@@ -478,9 +478,8 @@ fn busyloop() void {
 <p><em>Why not rewrite in Zig? Or another modern language?</em></p>
 <p>That’s because these C projects are still actively maintained and <strong>can change at any moment.</strong></p>
 <p>(Like when LoRaWAN introduces new Regional Frequencies for wireless comms)</p>
-<p>Any rewrites for these projects will need to incorporate the updates very quickly.</p>
+<p>Any rewrites of these projects will need to <strong>incorporate the updates</strong> very quickly. Which makes the maintenance of the rewritten projects super painful.</p>
 <p>TODO</p>
-<p>We will have trouble syncing future updates to the C code</p>
 <p>And we can’t afford to make any code changes to the C code, in case the upstream code changes (e.g. new LoRaWAN Regions)</p>
 <p>So best way to maintain and extend them is to compile with Zig</p>
 <p>In future might be possible to build LoRaWAN IoT Apps in Zig</p>
