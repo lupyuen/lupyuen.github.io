@@ -493,7 +493,7 @@ TODO
 
 # Embedded Zig
 
-TODO
+TODO: microzig
 
 [__ZigEmbeddedGroup/microzig__](https://github.com/ZigEmbeddedGroup/microzig)
 
@@ -532,6 +532,10 @@ fn busyloop() void {
 ```
 
 Adapted from [blinky.zig](https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig)
+
+TODO: Bare metal Zig on RISC-V
+
+-   [__nmeum/zig-riscv-embedded__](https://github.com/nmeum/zig-riscv-embedded)
 
 # Why Zig?
 
