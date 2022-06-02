@@ -329,7 +329,7 @@ File Attributes
 <p><img src="https://lupyuen.github.io/images/zig-abi2a.png" alt="Zig Compiler produces an Object File with Software Floating-Point ABI" /></p>
 <p>GCC won’t let us link Object Files with <strong>different ABIs</strong>: Software Floating-Point vs Hardware Floating-Point!</p>
 <p>Let’s fix this with a quick hack…</p>
-<p>(<strong>TODO:</strong> Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when <code>sifive_e76</code> supports Hardware Floating-Point? What’s the Zig equivalent of “<code>gcc -march=rv32imafc -mabi=ilp32f</code>”?)</p>
+<p>(Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when <code>sifive_e76</code> supports Hardware Floating-Point? <a href="https://www.reddit.com/r/Zig/comments/v2zgvh/comment/iavw5xp/?utm_source=share&amp;utm_medium=web2x&amp;context=3">See this</a>)</p>
 <h1 id="patch-elf-header"><a href="#patch-elf-header">7 Patch ELF Header</a></h1>
 <p>Earlier we discovered that the Zig Compiler generates an Object File with <strong>Software Floating-Point</strong> ABI (Application Binary Interface)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Dump the ABI for the compiled Zig app
@@ -366,7 +366,6 @@ Flags: 0x1, RVC, soft-float ABI
 Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p>The last line translates to <strong>RV32IMACF</strong>, which means that the RISC-V Instruction Set is indeed targeted for <strong>Hardware Floating-Point</strong>. </p>
 <p>We’re only editing the <strong>ELF Header</strong>, because it didn’t seem to reflect the correct ABI for the Object File.</p>
-<p>(<strong>TODO:</strong> Find the right way to fix the ELF Header Floating-Point ABI in the Zig Compiler)</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64 PineCone BL602 RISC-V Board</em></a></p>
 <h1 id="zig-runs-ok"><a href="#zig-runs-ok">8 Zig Runs OK!</a></h1>
