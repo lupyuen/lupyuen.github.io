@@ -79,8 +79,7 @@
 <li><a href="#embedded-zig">9 Embedded Zig</a><ul></ul></li>
 <li><a href="#why-zig">10 Why Zig?</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#notes">12 Notes</a><ul></ul></li>
-<li><a href="#appendix-hello-app">13 Appendix: Hello App</a><ul></ul></li></ul></nav><p>📝 <em>2 Jun 2022</em></p>
+<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>2 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a general-purpose language for maintaining <strong>robust, optimal, and reusable software</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602</strong></a> is a <strong>32-bit RISC-V SoC</strong> with WiFi and Bluetooth LE.</p>
@@ -524,37 +523,24 @@ fn busyloop() void {
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1529261120124354560"><strong>this Twitter Thread</strong></a></p>
 </li>
 <li>
-<p>TODO: <a href="https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d">“A simple overview of Zig’s std.log”</a></p>
+<p>We should implement proper <strong>Zig Logging</strong> on Apache NuttX RTOS…</p>
+<p><a href="https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d"><strong>“A simple overview of Zig’s std.log”</strong></a></p>
 </li>
 <li>
-<p>TODO: <a href="https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29">“make config is not running the compiler. I believe the problem must be in the application.mk in apps”</a></p>
+<p><a href="https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29"><strong>Matheus Catarino França</strong></a> has a suggestion for fixing the NuttX Build for Zig Apps…</p>
+<blockquote>
+<p>“make config is not running the compiler. I believe the problem must be in the application.mk in apps”</p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29">(Source)</a></p>
+</blockquote>
 </li>
 <li>
-<p>TODO: <a href="https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e">“Revert Zig Build”</a></p>
+<p>This <strong>Revert Commit</strong> might tell us what’s missing from the NuttX Makefiles…</p>
+<p><a href="https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e"><strong>“Revert Zig Build”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-hello-app"><a href="#appendix-hello-app">13 Appendix: Hello App</a></h1>
-<p>TODO</p>
-<p>Remember that we overwrote <code>hello.o</code> with our Zig Compiled Object File.</p>
-<p>NuttX Build will fail unless we provide the <code>hello_main</code> function…</p>
-<div class="example-wrap"><pre class="language-text"><code>riscv64-unknown-elf-ld: nuttx/staging/libapps.a(builtin_list.c.home.user.nuttx.apps.builtin.o):(.rodata.g_builtins+0xcc): 
-undefined reference to `hello_main&#39;</code></pre></div>
-<p>That’s why we define <code>hello_main</code> in our Zig App…</p>
-<div class="example-wrap"><pre class="language-zig"><code>pub export fn hello_main(
-    _argc: c_int, 
-    _argv: [*]const [*]const u8
-) c_int {
-    _ = _argc;
-    _ = _argv;
-    _ = printf(&quot;Hello, Zig!\n&quot;);
-    return 0;
-}</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig">(Source)</a></p>
-<p>Which means that the <code>hello</code> app will call our Zig Code too…</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0-RC2
 
-nsh&gt; hello
-Hello, Zig!</code></pre></div>
     
 </body>
 </html>
