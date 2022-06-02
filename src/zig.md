@@ -381,7 +381,7 @@ GCC won't let us link Object Files with __different ABIs__: Software Floating-Po
 
 Let's fix this with a quick hack...
 
-(__TODO:__ Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when `sifive_e76` supports Hardware Floating-Point? What's the Zig equivalent of "`gcc -march=rv32imafc -mabi=ilp32f`"?)
+(Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when `sifive_e76` supports Hardware Floating-Point? [See this](https://www.reddit.com/r/Zig/comments/v2zgvh/comment/iavw5xp/?utm_source=share&utm_medium=web2x&context=3))
 
 # Patch ELF Header
 
@@ -436,8 +436,6 @@ Tag_RISCV_arch: "rv32i2p0_m2p0_a2p0_f2p0_c2p0"
 The last line translates to __RV32IMACF__, which means that the RISC-V Instruction Set is indeed targeted for __Hardware Floating-Point__. 
 
 We're only editing the __ELF Header__, because it didn't seem to reflect the correct ABI for the Object File.
-
-(__TODO:__ Find the right way to fix the ELF Header Floating-Point ABI in the Zig Compiler)
 
 ![Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
