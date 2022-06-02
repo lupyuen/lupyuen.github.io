@@ -486,7 +486,7 @@ fn busyloop() void {
 <p>Zig might be the best way to maintain and extend these <strong>IoT Projects</strong> on NuttX.</p>
 <p><em>Why not rewrite in Zig? Or another modern language?</em></p>
 <p>That’s because these C projects are still actively maintained and <strong>can change at any moment.</strong></p>
-<p>(Like when LoRaWAN introduces new Regional Frequencies for wireless networking)</p>
+<p>(Like when LoRaWAN introduces new <a href="https://github.com/Lora-net/LoRaMac-node/commit/379eef59fa95e22701230caa77476d9f55859f34"><strong>Regional Frequencies</strong></a> for wireless networking)</p>
 <p>Any rewrites of these projects will need to <strong>incorporate the updates</strong> very quickly. Which makes the maintenance of the rewritten projects horribly painful.</p>
 <p>(Also LoRaWAN is <a href="https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1"><strong>Time Critical</strong></a>, we can’t change any code that might break compliance with the LoRaWAN Spec)</p>
 <p><em>So we’ll have to keep the projects intact in C, but compile them with Zig Compiler instead?</em></p>
