@@ -402,6 +402,11 @@ Hello, Zig!</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left) over SPI" /></p>
 <p><a href="https://lupyuen.github.io/articles/spi2"><em>Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left) over SPI</em></a></p>
 <h1 id="embedded-zig"><a href="#embedded-zig">9 Embedded Zig</a></h1>
+<p><em>Will Zig run on Bare Metal? Without an RTOS like NuttX?</em></p>
+<p>Yep it can! Check out this project that runs <strong>Bare Metal Zig</strong> on the HiFive1 RISC-V board…</p>
+<ul>
+<li><a href="https://github.com/nmeum/zig-riscv-embedded"><strong>nmeum/zig-riscv-embedded</strong></a></li>
+</ul>
 <p><em>Can we build cross-platform Embedded Apps in Zig with GPIO, I2C, SPI, …?</em></p>
 <p>We’re not quite there yet, but the <a href="https://microzig.tech"><strong>Zig Embedded Group</strong></a> is creating a <strong>Common Interface and Hardware Abstraction Layer</strong> for Embedded Platforms…</p>
 <ul>
@@ -440,15 +445,12 @@ fn busyloop() void {
   }
 }</code></pre></div>
 <p>(Adapted from <a href="https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig">blinky.zig</a>)</p>
-<p><em>Will Zig run on Bare Metal? Without an RTOS like NuttX?</em></p>
-<p>TODO: Bare metal Zig on RISC-V, HiFive1 RISC-V board</p>
-<ul>
-<li><a href="https://github.com/nmeum/zig-riscv-embedded"><strong>nmeum/zig-riscv-embedded</strong></a></li>
-</ul>
+<p><em>But our existing firmware is all in C. Do we rewrite everything in Zig?</em></p>
+<p>Aha! Here comes the really interesting thing about Zig, read on to find out…</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway" /></p>
 <p><a href="https://lupyuen.github.io/articles/lorawan3"><em>Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway</em></a></p>
 <h1 id="why-zig"><a href="#why-zig">10 Why Zig?</a></h1>
-<p><em>Why are we doing all this with Zig?</em></p>
+<p><em>Why are we doing all this with Zig instead of C?</em></p>
 <p>Here’s why…</p>
 <blockquote>
 <p>“Zig has <code>zig cc</code> and <code>zig c++</code>, two commands that expose an interface flag-compatible with clang, allowing you to use the Zig compiler as a <strong>drop-in replacement for your existing C/C++ compiler</strong>.”</p>
@@ -468,6 +470,7 @@ fn busyloop() void {
 <p><a href="https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&amp;utm_source=share"><strong>“How serious (is) Zig about replacing C?”</strong></a></p>
 </li>
 </ul>
+<p>Thus we might enjoy the benefits of Zig, without rewriting in Zig!</p>
 <p><em>How is this relevant to Embedded Apps and NuttX?</em></p>
 <p>Today we’re running incredibly <strong>complex C projects on NuttX</strong>…</p>
 <ul>
