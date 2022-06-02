@@ -489,6 +489,12 @@ Let's talk about building real-world Embedded and IoT Apps with Zig...
 
 # Embedded Zig
 
+_Will Zig run on Bare Metal? Without an RTOS like NuttX?_
+
+Yep it can! Check out this project that runs __Bare Metal Zig__ on the HiFive1 RISC-V board...
+
+-   [__nmeum/zig-riscv-embedded__](https://github.com/nmeum/zig-riscv-embedded)
+
 _Can we build cross-platform Embedded Apps in Zig with GPIO, I2C, SPI, ...?_
 
 We're not quite there yet, but the [__Zig Embedded Group__](https://microzig.tech) is creating a __Common Interface and Hardware Abstraction Layer__ for Embedded Platforms...
@@ -533,11 +539,9 @@ fn busyloop() void {
 
 (Adapted from [blinky.zig](https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig))
 
-_Will Zig run on Bare Metal? Without an RTOS like NuttX?_
+_But our existing firmware is all in C. Do we rewrite everything in Zig?_
 
-TODO: Bare metal Zig on RISC-V, HiFive1 RISC-V board
-
--   [__nmeum/zig-riscv-embedded__](https://github.com/nmeum/zig-riscv-embedded)
+Aha! Here comes the really interesting thing about Zig, read on to find out...
 
 ![Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
@@ -545,7 +549,7 @@ TODO: Bare metal Zig on RISC-V, HiFive1 RISC-V board
 
 # Why Zig?
 
-_Why are we doing all this with Zig?_
+_Why are we doing all this with Zig instead of C?_
 
 Here's why...
 
@@ -560,6 +564,8 @@ Because of this, Zig works great for __maintaining complex C projects__...
 -   [__"Compile a C/C++ Project with Zig"__](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
 
 -   [__"How serious (is) Zig about replacing C?"__](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
+
+Thus we might enjoy the benefits of Zig, without rewriting in Zig!
 
 _How is this relevant to Embedded Apps and NuttX?_
 
