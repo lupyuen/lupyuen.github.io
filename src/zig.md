@@ -603,7 +603,9 @@ I'm super impressed by this Wayland Compositor in Zig, how it imports a __huge b
 
 # What's Next
 
-TODO
+This has been a very quick experiment with Zig on RISC-V Microcontrollers... But it looks __super promising!__
+
+Over the next couple of weeks I'll test Zig as a __drop-in replacement for GCC.__ Let's find out whether Zig will cure our headaches in maintaining Complex IoT Projects!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
