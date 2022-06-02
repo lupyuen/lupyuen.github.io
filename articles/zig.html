@@ -446,8 +446,8 @@ fn busyloop() void {
 <p>(Adapted from <a href="https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig">blinky.zig</a>)</p>
 <p><em>But our existing firmware is all in C. Do we rewrite everything in Zig?</em></p>
 <p>Aha! Here comes the really interesting thing about Zig, read on to find out…</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway" /></p>
-<p><a href="https://lupyuen.github.io/articles/lorawan3"><em>Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway</em></a></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="Pine64 PineDio Stack BL604 (left) talking LoRaWAN to RAKwireless WisGate (right)" /></p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3"><em>Pine64 PineDio Stack BL604 (left) talking LoRaWAN to RAKwireless WisGate (right)</em></a></p>
 <h1 id="why-zig"><a href="#why-zig">10 Why Zig?</a></h1>
 <p><em>Why are we doing all this with Zig instead of C?</em></p>
 <p>Here’s why…</p>
@@ -493,13 +493,13 @@ fn busyloop() void {
 <p>Yeah probably the best way to maintain and extend these Complex IoT Projects is to <strong>compile them as-is with Zig</strong>.</p>
 <p><em>But we can create new IoT Apps in Zig right?</em></p>
 <p>Yep totally! Since Zig interoperates well with C, we can create <strong>IoT Apps in Zig</strong> that will call the C Libraries for LoRa / LoRaWAN / NimBLE.</p>
-<p>I’m super impressed by this Wayland Compositor in Zig, how it imports a <strong>huge bunch of C Header Files</strong>, and calls them from Zig!</p>
+<p>I’m really impressed by this Wayland Compositor in Zig, how it imports a <strong>huge bunch of C Header Files</strong>, and calls them from Zig!</p>
 <ul>
 <li><a href="https://github.com/dreinharth/byway/blob/main/src/main.zig"><strong>dreinharth/byway (Wayland Compositor in Zig)</strong></a></li>
 </ul>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>This has been a very quick experiment with Zig on RISC-V Microcontrollers… But it looks <strong>super promising!</strong></p>
-<p>Over the next couple of weeks I’ll test Zig as a <strong>drop-in replacement for GCC.</strong> Let’s find out whether Zig will cure our headaches in maintaining Complex IoT Projects!</p>
+<p>In the coming weeks I’ll test Zig as a <strong>drop-in replacement for GCC.</strong> Let’s find out whether Zig will cure our headaches in <strong>maintaining Complex IoT Projects!</strong></p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
