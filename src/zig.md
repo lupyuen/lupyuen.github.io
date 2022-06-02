@@ -611,6 +611,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/Zig/comments/v2zgvh/zig_on_riscv_bl602_quick_peek_with_apache_nuttx/)
+
 -   [__Read "The RISC-V BL602 / BL604 Book"__](https://lupyuen.github.io/articles/book)
 
 -   [__Check out my articles__](https://lupyuen.github.io)
