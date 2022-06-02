@@ -583,9 +583,9 @@ _Why not rewrite in Zig? Or another modern language?_
 
 That's because these C projects are still actively maintained and __can change at any moment.__
 
-(Like when LoRaWAN introduces new Regional Frequencies for wireless comms)
+(Like when LoRaWAN introduces new Regional Frequencies for wireless networking)
 
-Any rewrites of these projects will need to __incorporate the updates__ very quickly. Which makes the maintenance of the rewritten projects super painful.
+Any rewrites of these projects will need to __incorporate the updates__ very quickly. Which makes the maintenance of the rewritten projects horribly painful.
 
 (Also LoRaWAN is [__Time Critical__](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1), we can't change any code that might break compliance with the LoRaWAN Spec)
 
