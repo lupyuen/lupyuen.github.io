@@ -80,7 +80,7 @@
 <li><a href="#why-zig">10 Why Zig?</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li>
-<li><a href="#appendix-hello-app">13 Appendix: Hello App</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2022</em></p>
+<li><a href="#appendix-hello-app">13 Appendix: Hello App</a><ul></ul></li></ul></nav><p>📝 <em>2 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a general-purpose language for maintaining <strong>robust, optimal, and reusable software</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602</strong></a> is a <strong>32-bit RISC-V SoC</strong> with WiFi and Bluetooth LE.</p>
@@ -368,8 +368,8 @@ Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p>The last line translates to <strong>RV32IMACF</strong>, which means that the RISC-V Instruction Set is indeed targeted for <strong>Hardware Floating-Point</strong>. </p>
 <p>We’re only editing the <strong>ELF Header</strong>, because it didn’t seem to reflect the correct ABI for the Object File.</p>
 <p>(<strong>TODO:</strong> Find the right way to fix the ELF Header Floating-Point ABI in the Zig Compiler)</p>
-<p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="PineCone BL602 RISC-V Board" /></p>
-<p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64’s PineCone BL602 RISC-V Board</em></a></p>
+<p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="Pine64 PineCone BL602 RISC-V Board" /></p>
+<p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64 PineCone BL602 RISC-V Board</em></a></p>
 <h1 id="zig-runs-ok"><a href="#zig-runs-ok">8 Zig Runs OK!</a></h1>
 <p>We’re ready to link the <strong>Patched Object File</strong> with NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Copy the modified object file to NuttX and overwrite `hello.o`
@@ -397,13 +397,17 @@ nsh&gt; hello_zig
 Hello, Zig!</code></pre></div>
 <p>Yep Zig runs OK on BL602 with NuttX! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
+<p>And that’s it for our (barebones) Zig Experiment today!</p>
+<p>Let’s talk about building real-world Embedded and IoT Apps with Zig…</p>
+<p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left) over SPI" /></p>
+<p><a href="https://lupyuen.github.io/articles/spi2"><em>Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left) over SPI</em></a></p>
 <h1 id="embedded-zig"><a href="#embedded-zig">9 Embedded Zig</a></h1>
-<p><em>Can we build cross-platform Embedded Zig Apps with GPIO, I2C, SPI, …?</em></p>
+<p><em>Can we build cross-platform Embedded Apps in Zig with GPIO, I2C, SPI, …?</em></p>
 <p>We’re not quite there yet, but the <a href="https://microzig.tech"><strong>Zig Embedded Group</strong></a> is creating a <strong>Common Interface and Hardware Abstraction Layer</strong> for Embedded Platforms…</p>
 <ul>
 <li><a href="https://github.com/ZigEmbeddedGroup/microzig"><strong>ZigEmbeddedGroup/microzig</strong></a></li>
 </ul>
-<p>TODO</p>
+<p>With the <a href="https://github.com/ZigEmbeddedGroup/microzig"><strong>microzig Library</strong></a>, someday we might <strong>blink the LED</strong> like so…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import microzig library
 const micro = @import(&quot;microzig&quot;);
 
@@ -435,7 +439,7 @@ fn busyloop() void {
     @import(&quot;std&quot;).mem.doNotOptimizeAway(i);
   }
 }</code></pre></div>
-<p>Adapted from <a href="https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig">blinky.zig</a></p>
+<p>(Adapted from <a href="https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig">blinky.zig</a>)</p>
 <p><em>Will Zig run on Bare Metal? Without an RTOS like NuttX?</em></p>
 <p>TODO: Bare metal Zig on RISC-V, HiFive1 RISC-V board</p>
 <ul>
