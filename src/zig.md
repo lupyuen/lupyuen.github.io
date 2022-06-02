@@ -583,7 +583,7 @@ _Why not rewrite in Zig? Or another modern language?_
 
 That's because these C projects are still actively maintained and __can change at any moment.__
 
-(Like when LoRaWAN introduces new Regional Frequencies for wireless networking)
+(Like when LoRaWAN introduces new [__Regional Frequencies__](https://github.com/Lora-net/LoRaMac-node/commit/379eef59fa95e22701230caa77476d9f55859f34) for wireless networking)
 
 Any rewrites of these projects will need to __incorporate the updates__ very quickly. Which makes the maintenance of the rewritten projects horribly painful.
 
