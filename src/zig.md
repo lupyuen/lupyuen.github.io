@@ -625,47 +625,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1529261120124354560)
 
-1.  TODO: ["A simple overview of Zig's std.log"](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
+1.  We should implement proper __Zig Logging__ on Apache NuttX RTOS...
 
-1.  TODO: ["make config is not running the compiler. I believe the problem must be in the application.mk in apps"](https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29)
+    [__"A simple overview of Zig's std.log"__](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
 
-1.  TODO: ["Revert Zig Build"](https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e)
+1.  [__Matheus Catarino França__](https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29) has a suggestion for fixing the NuttX Build for Zig Apps...
 
-# Appendix: Hello App
+    > "make config is not running the compiler. I believe the problem must be in the application.mk in apps"
 
-TODO
+    > [(Source)](https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29)
 
-Remember that we overwrote `hello.o` with our Zig Compiled Object File.
+1.  This __Revert Commit__ might tell us what's missing from the NuttX Makefiles...
 
-NuttX Build will fail unless we provide the `hello_main` function...
-
-```text
-riscv64-unknown-elf-ld: nuttx/staging/libapps.a(builtin_list.c.home.user.nuttx.apps.builtin.o):(.rodata.g_builtins+0xcc): 
-undefined reference to `hello_main'
-```
-
-That's why we define `hello_main` in our Zig App...
-
-```zig
-pub export fn hello_main(
-    _argc: c_int, 
-    _argv: [*]const [*]const u8
-) c_int {
-    _ = _argc;
-    _ = _argv;
-    _ = printf("Hello, Zig!\n");
-    return 0;
-}
-```
-
-[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/hello_zig_main.zig)
-
-
-Which means that the `hello` app will call our Zig Code too...
-
-```text
-NuttShell (NSH) NuttX-10.3.0-RC2
-
-nsh> hello
-Hello, Zig!
-```
+    [__"Revert Zig Build"__](https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e)
