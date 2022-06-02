@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/zig</link>
+            <description><![CDATA[How we run Zig on the BL602 RISC-V SoC... With Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/zig</guid>
+            <pubDate>Thu, 02 Jun 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board</title>
             <link>https://lupyuen.github.io/articles/auto2</link>
             <description><![CDATA[Pine64 is about to launch the PineDio Stack BL604 RISC-V Board with LoRa and Touch Screen... Here's how we automatically flash and test every new release of Apache NuttX RTOS for PineDio Stack]]></description>
