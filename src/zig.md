@@ -1,6 +1,6 @@
 # Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS
 
-📝 _7 Jun 2022_
+📝 _2 Jun 2022_
 
 ![Zig runs on BL602 with Apache NuttX RTOS](https://lupyuen.github.io/images/zig-title.jpg)
 
@@ -439,9 +439,9 @@ We're only editing the __ELF Header__, because it didn't seem to reflect the cor
 
 (__TODO:__ Find the right way to fix the ELF Header Floating-Point ABI in the Zig Compiler)
 
-![PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
+![Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
-[_Pine64's PineCone BL602 RISC-V Board_](https://lupyuen.github.io/articles/pinecone)
+[_Pine64 PineCone BL602 RISC-V Board_](https://lupyuen.github.io/articles/pinecone)
 
 # Zig Runs OK!
 
@@ -479,15 +479,23 @@ Yep Zig runs OK on BL602 with NuttX! 🎉
 
 ![Zig runs on BL602 with Apache NuttX RTOS](https://lupyuen.github.io/images/zig-title.jpg)
 
+And that's it for our (barebones) Zig Experiment today!
+
+Let's talk about building real-world Embedded and IoT Apps with Zig...
+
+![Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left) over SPI](https://lupyuen.github.io/images/spi2-title.jpg)
+
+[_Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left) over SPI_](https://lupyuen.github.io/articles/spi2)
+
 # Embedded Zig
 
-_Can we build cross-platform Embedded Zig Apps with GPIO, I2C, SPI, ...?_
+_Can we build cross-platform Embedded Apps in Zig with GPIO, I2C, SPI, ...?_
 
 We're not quite there yet, but the [__Zig Embedded Group__](https://microzig.tech) is creating a __Common Interface and Hardware Abstraction Layer__ for Embedded Platforms...
 
 -   [__ZigEmbeddedGroup/microzig__](https://github.com/ZigEmbeddedGroup/microzig)
 
-TODO
+With the [__microzig Library__](https://github.com/ZigEmbeddedGroup/microzig), someday we might __blink the LED__ like so...
 
 ```zig
 //  Import microzig library
@@ -523,7 +531,7 @@ fn busyloop() void {
 }
 ```
 
-Adapted from [blinky.zig](https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig)
+(Adapted from [blinky.zig](https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig))
 
 _Will Zig run on Bare Metal? Without an RTOS like NuttX?_
 
