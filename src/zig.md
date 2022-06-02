@@ -627,15 +627,17 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1529261120124354560)
 
-1.  We should implement proper __Zig Logging__ on Apache NuttX RTOS...
+1.  This article was inspired by a question from my [__GitHub Sponsor__](https://github.com/sponsors/lupyuen): "Can we run Zig on BL602 with Apache NuttX RTOS?"
+
+1.  Someday we should implement proper __Zig Logging__ on Apache NuttX RTOS...
 
     [__"A simple overview of Zig's std.log"__](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
 
 1.  [__Matheus Catarino França__](https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29) has a suggestion for fixing the NuttX Build for Zig Apps...
 
-    > "make config is not running the compiler. I believe the problem must be in the application.mk in apps"
+    _"make config is not running the compiler. I believe the problem must be in the application.mk in apps"_
 
-    > [(Source)](https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29)
+    [(Source)](https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29)
 
 1.  This __Revert Commit__ might tell us what's missing from the NuttX Makefiles...
 
