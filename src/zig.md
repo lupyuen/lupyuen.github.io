@@ -543,9 +543,9 @@ _But our existing firmware is all in C. Do we rewrite everything in Zig?_
 
 Aha! Here comes the really interesting thing about Zig, read on to find out...
 
-![Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway](https://lupyuen.github.io/images/lorawan3-title.jpg)
+![Pine64 PineDio Stack BL604 (left) talking LoRaWAN to RAKwireless WisGate (right)](https://lupyuen.github.io/images/lorawan3-title.jpg)
 
-[_Pine64 PineDio Stack talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway_](https://lupyuen.github.io/articles/lorawan3)
+[_Pine64 PineDio Stack BL604 (left) talking LoRaWAN to RAKwireless WisGate (right)_](https://lupyuen.github.io/articles/lorawan3)
 
 # Why Zig?
 
@@ -597,7 +597,7 @@ _But we can create new IoT Apps in Zig right?_
 
 Yep totally! Since Zig interoperates well with C, we can create __IoT Apps in Zig__ that will call the C Libraries for LoRa / LoRaWAN / NimBLE.
 
-I'm super impressed by this Wayland Compositor in Zig, how it imports a __huge bunch of C Header Files__, and calls them from Zig!
+I'm really impressed by this Wayland Compositor in Zig, how it imports a __huge bunch of C Header Files__, and calls them from Zig!
 
 -   [__dreinharth/byway (Wayland Compositor in Zig)__](https://github.com/dreinharth/byway/blob/main/src/main.zig)
 
@@ -605,7 +605,7 @@ I'm super impressed by this Wayland Compositor in Zig, how it imports a __huge b
 
 This has been a very quick experiment with Zig on RISC-V Microcontrollers... But it looks __super promising!__
 
-Over the next couple of weeks I'll test Zig as a __drop-in replacement for GCC.__ Let's find out whether Zig will cure our headaches in maintaining Complex IoT Projects!
+In the coming weeks I'll test Zig as a __drop-in replacement for GCC.__ Let's find out whether Zig will cure our headaches in __maintaining Complex IoT Projects!__
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
