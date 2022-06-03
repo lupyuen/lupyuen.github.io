@@ -451,7 +451,19 @@ zig build-obj \
 
 [(See this)](https://github.com/ziglang/zig/issues/9760#issuecomment-991738757)
 
-Stay Tuned!
+_Can we patch the Object File via Command Line?_
+
+Yep enter this at the Command Line to __patch the ELF Header__...
+
+```bash
+xxd -c 1 hello_zig_main.o \
+  | sed 's/00000024: 01/00000024: 03/' \
+  | xxd -r -c 1 - hello_zig_main2.o
+```
+
+This generates the patched Object File `hello_zig_main2.o`
+
+[(More about `xxd`)](https://www.tutorialspoint.com/unix_commands/xxd.htm)
 
 ![Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
