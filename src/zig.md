@@ -437,6 +437,22 @@ The last line translates to __RV32IMACF__, which means that the RISC-V Instructi
 
 We're only editing the __ELF Header__, because it didn't seem to reflect the correct ABI for the Object File.
 
+_Is there a proper fix for this?_
+
+In future the Zig Compiler might allow us to specify the __Floating-Point ABI__ as the target...
+
+```bash
+##  Compile the Zig App for BL602
+##  ("ilp32f" means Hardware Floating-Point ABI)
+zig build-obj \
+  -target riscv32-freestanding-ilp32f \
+  ...
+```
+
+[(See this)](https://github.com/ziglang/zig/issues/9760#issuecomment-991738757)
+
+Stay Tuned!
+
 ![Pine64 PineCone BL602 RISC-V Board](https://lupyuen.github.io/images/pinecone-jumperl.jpg)
 
 [_Pine64 PineCone BL602 RISC-V Board_](https://lupyuen.github.io/articles/pinecone)
