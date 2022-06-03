@@ -639,7 +639,13 @@ Check out the testing updates here...
 
 -   [__"Zig Compiler as Drop-In Replacement for GCC"__](https://github.com/lupyuen/zig-bl602-nuttx#zig-compiler-as-drop-in-replacement-for-gcc)
 
-(Yep it really works!)
+-   [__"LoRaWAN Library for NuttX"__](https://github.com/lupyuen/zig-bl602-nuttx#lorawan-library-for-nuttx)
+
+-   [__"LoRaWAN App for NuttX"__](https://github.com/lupyuen/zig-bl602-nuttx#lorawan-app-for-nuttx)
+
+-   [__"Convert LoRaWAN App to Zig"__](https://github.com/lupyuen/zig-bl602-nuttx#convert-lorawan-app-to-zig)
+
+(Spoiler: It really works!)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
