@@ -366,6 +366,15 @@ Flags: 0x1, RVC, soft-float ABI
 Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p>The last line translates to <strong>RV32IMACF</strong>, which means that the RISC-V Instruction Set is indeed targeted for <strong>Hardware Floating-Point</strong>. </p>
 <p>We’re only editing the <strong>ELF Header</strong>, because it didn’t seem to reflect the correct ABI for the Object File.</p>
+<p><em>Is there a proper fix for this?</em></p>
+<p>In future the Zig Compiler might allow us to specify the <strong>Floating-Point ABI</strong> as the target…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Compile the Zig App for BL602
+#  (&quot;ilp32f&quot; means Hardware Floating-Point ABI)
+zig build-obj \
+  -target riscv32-freestanding-ilp32f \
+  ...</code></pre></div>
+<p><a href="https://github.com/ziglang/zig/issues/9760#issuecomment-991738757">(See this)</a></p>
+<p>Stay Tuned!</p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64 PineCone BL602 RISC-V Board</em></a></p>
 <h1 id="zig-runs-ok"><a href="#zig-runs-ok">8 Zig Runs OK!</a></h1>
