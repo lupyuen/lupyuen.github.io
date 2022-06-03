@@ -589,6 +589,8 @@ Because of this, Zig works great for __maintaining complex C projects__...
 
 -   [__"Compile a C/C++ Project with Zig"__](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
 
+-   [__"Extend a C/C++ Project with Zig"__](https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di)
+
 -   [__"How serious (is) Zig about replacing C?"__](https://www.reddit.com/r/Zig/comments/urifjd/how_serious_zig_about_replacing_c/?utm_medium=android_app&utm_source=share)
 
 Thus we might enjoy the benefits of Zig, without rewriting in Zig!
