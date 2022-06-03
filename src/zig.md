@@ -633,6 +633,12 @@ This has been a very quick experiment with Zig on RISC-V Microcontrollers... But
 
 In the coming weeks I'll test Zig as a __drop-in replacement for GCC.__ Let's find out whether Zig will cure our headaches in __maintaining Complex IoT Projects!__
 
+Check out the testing updates here...
+
+-   [__"Zig Compiler as Drop-In Replacement for GCC"__](https://github.com/lupyuen/zig-bl602-nuttx#zig-compiler-as-drop-in-replacement-for-gcc)
+
+(Yep it really works!)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
