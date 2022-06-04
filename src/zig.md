@@ -643,6 +643,8 @@ Check out the testing updates here...
 
 -   [__"LoRaWAN App for NuttX"__](https://github.com/lupyuen/zig-bl602-nuttx#lorawan-app-for-nuttx)
 
+-   [__"Auto-Translate LoRaWAN App to Zig"__](https://github.com/lupyuen/zig-bl602-nuttx#auto-translate-lorawan-app-to-zig)
+
 -   [__"Convert LoRaWAN App to Zig"__](https://github.com/lupyuen/zig-bl602-nuttx#convert-lorawan-app-to-zig)
 
 (Spoiler: It really works!)
