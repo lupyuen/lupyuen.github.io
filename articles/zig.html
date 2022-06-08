@@ -177,8 +177,10 @@ pub export fn hello_zig_main(
 <p>This tells the Zig Compiler that we’re <strong>not using the value</strong> of “<code>something</code>”.</p>
 <p>The Zig Compiler helpfully stops us if we forget to use a Variable (like <code>_argc</code>) or the Returned Value for a Function (like for <code>printf</code>).</p>
 <p><em>Doesn’t Zig have its own printf?</em></p>
-<p>Yep there’s indeed a <strong><code>print()</code></strong> function in Zig, and we ought to use it! <a href="https://ziglang.org/documentation/master/#Hello-World">(See this)</a></p>
-<p>Eventually we’ll update our Zig App to call the <strong><code>print()</code></strong> function instead.</p>
+<p>Yep we should call <strong><code>std.log.debug()</code></strong> instead of <strong><code>printf()</code></strong>. See this…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/zig-bl602-nuttx#logging"><strong>“Zig Logging”</strong></a></li>
+</ul>
 <p><em>Did we forget something?</em></p>
 <p>For simplicity we excluded the <strong>Variable Arguments</strong> for <strong><code>printf()</code></strong>.</p>
 <p>Our declaration for <strong><code>printf()</code></strong> specifies only one parameter: the <strong>Format String</strong>. So it’s good for printing one unformatted string.</p>
@@ -565,8 +567,8 @@ fn busyloop() void {
 <p>This article was inspired by a question from my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsor</strong></a>: “Can we run Zig on BL602 with Apache NuttX RTOS?”</p>
 </li>
 <li>
-<p>Someday we should implement proper <strong>Zig Logging</strong> on Apache NuttX RTOS…</p>
-<p><a href="https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d"><strong>“A simple overview of Zig’s std.log”</strong></a></p>
+<p>For Embedded Platforms (like Apache NuttX RTOS), we need to implement our own <strong>Panic Handler</strong>…</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx#panic-handler"><strong>“Zig Panic Handler”</strong></a></p>
 </li>
 <li>
 <p><a href="https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29"><strong>Matheus Catarino França</strong></a> has a suggestion for fixing the NuttX Build for Zig Apps…</p>
