@@ -158,9 +158,9 @@ The Zig Compiler helpfully stops us if we forget to use a Variable (like `_argc`
 
 _Doesn't Zig have its own printf?_
 
-Yep there's indeed a __`print()`__ function in Zig, and we ought to use it! [(See this)](https://ziglang.org/documentation/master/#Hello-World)
+Yep we should call __`std.log.debug()`__ instead of __`printf()`__. See this...
 
-Eventually we'll update our Zig App to call the __`print()`__ function instead.
+-   [__"Zig Logging"__](https://github.com/lupyuen/zig-bl602-nuttx#logging)
 
 _Did we forget something?_
 
@@ -671,9 +671,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article was inspired by a question from my [__GitHub Sponsor__](https://github.com/sponsors/lupyuen): "Can we run Zig on BL602 with Apache NuttX RTOS?"
 
-1.  Someday we should implement proper __Zig Logging__ on Apache NuttX RTOS...
+1.  For Embedded Platforms (like Apache NuttX RTOS), we need to implement our own __Panic Handler__...
 
-    [__"A simple overview of Zig's std.log"__](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
+    [__"Zig Panic Handler"__](https://github.com/lupyuen/zig-bl602-nuttx#panic-handler)
 
 1.  [__Matheus Catarino França__](https://www.linkedin.com/feed/update/urn:li:activity:6935177950191341568/?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6935177950191341568%2C6935193220574285824%29) has a suggestion for fixing the NuttX Build for Zig Apps...
 
