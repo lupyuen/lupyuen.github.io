@@ -42,6 +42,8 @@ Will Zig make this a little less painful? Let's find out!
 
 TODO
 
+![](https://lupyuen.github.io/images/iot-code1a.png)
+
 # Convert LoRaWAN App to Zig
 
 TODO
@@ -101,6 +103,10 @@ pub export fn lorawan_test_main(
     //  and send a Data Packet
 ```
 
+TODO
+
+![](https://lupyuen.github.io/images/iot-code2a.png)
+
 To compile the LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig)...
 
 ```bash
@@ -132,6 +138,8 @@ cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
 cd $HOME/nuttx/nuttx
 make
 ```
+
+![](https://lupyuen.github.io/images/iot-code3a.png)
 
 Our LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig) compiles OK with Zig Compiler after making the following fixes...
 
@@ -789,6 +797,8 @@ pub fn log(
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546)
 
 This implementation calls `puts()`, which is supported by Apache NuttX RTOS since it's [__POSIX-Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance).
+
+![](https://lupyuen.github.io/images/iot-code4a.png)
 
 # Compare C and Zig
 
@@ -1460,6 +1470,8 @@ CHANNEL MASK: 0003
 ```
 
 [(See the complete log)](https://gist.github.com/lupyuen/477982242d897771d7a5780c8a9b0910)
+
+![](https://lupyuen.github.io/images/iot-code5a.png)
 
 # Appendix: Auto-Translate LoRaWAN App to Zig
 
