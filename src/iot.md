@@ -10,7 +10,9 @@ In our last article we learnt to run barebones __Zig on a Microcontroller__ (RIS
 
 -   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
 
-Today we shall run something way more sophisticated... A __Complex IoT Application__ with __Zig and LoRaWAN!__
+_But can we run something way more sophisticated?_
+
+Yes we can... Today we shall run a __Complex IoT Application__ with __Zig and LoRaWAN!__
 
 We'll do this on Pine64's [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2).
 
