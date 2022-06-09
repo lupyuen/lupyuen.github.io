@@ -12,7 +12,13 @@ In our last article we learnt to run barebones __Zig on a Microcontroller__ (RIS
 
 Today we shall run something way more sophisticated... A __Complex IoT Application__ with __Zig and LoRaWAN!__
 
+We'll do this on Pine64's [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2).
+
+(The steps should be similar for BL602, ESP32-C3, Arm Cortex-M and other 32-bit microcontrollers supported by Zig)
+
 TODO
+
+-   [__lupyuen/zig-bl602-nuttx__](https://github.com/lupyuen/zig-bl602-nuttx)
 
 # What's Next
 
