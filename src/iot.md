@@ -28,7 +28,9 @@ But the steps should be similar for BL602, ESP32-C3, Arm Cortex-M and other 32-b
 
 _Why are we doing this?_
 
-TODO
+I always felt dreadful maintaining and extending complex __IoT Apps in C__. [(Like this one)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c)
+
+Can we do this a little less painfully with Zig? Let's find out!
 
 -   [__lupyuen/zig-bl602-nuttx__](https://github.com/lupyuen/zig-bl602-nuttx)
 
