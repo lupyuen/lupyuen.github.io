@@ -10,13 +10,23 @@ In our last article we learnt to run barebones __Zig on a Microcontroller__ (RIS
 
 -   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
 
-_But can we run something way more sophisticated?_
+_But can we do something way more sophisticated with Zig?_
 
-Yes we can... Today we shall run a __Complex IoT Application__ with __Zig and LoRaWAN!__
+Yes we can! Today we shall run a complex __IoT Application__ with __Zig and LoRaWAN__...
 
-We'll do this on Pine64's [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2).
+-   Join a [__LoRaWAN Wireless Network__](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
 
-(The steps should be similar for BL602, ESP32-C3, Arm Cortex-M and other 32-bit microcontrollers supported by Zig)
+-   Transmit a __Data Packet__ to the LoRaWAN Network at regular intervals
+
+Which is the typical firmware we would run on __IoT Sensors__.
+
+_Will this run on any device?_
+
+We'll do this on Pine64's [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V Board.
+
+But the steps should be similar for BL602, ESP32-C3, Arm Cortex-M and other 32-bit microcontrollers supported by Zig.
+
+_Why are we doing this?_
 
 TODO
 
