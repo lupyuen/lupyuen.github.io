@@ -2,7 +2,15 @@
 
 📝 _16 Jun 2022_
 
-![](https://lupyuen.github.io/images/iot-title.jpg)
+![Pine64 PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN on Zig to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/iot-title.jpg)
+
+_Pine64 PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN on Zig to RAKwireless WisGate LoRaWAN Gateway (right)_
+
+In our last article we learnt to run barebones __Zig on a Microcontroller__ (RISC-V BL602) with a __Real-Time Operating System__ (Apache NuttX RTOS)...
+
+-   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
+
+Today we shall run something way more sophisticated... A __Complex IoT Application__ with __Zig and LoRaWAN!__
 
 TODO
 
