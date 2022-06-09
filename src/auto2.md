@@ -1267,6 +1267,8 @@ We select the GPIO Driver through [__Kconfig and Menuconfig__](https://lupyuen.g
 
 [(See the PineDio Stack config)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig)
 
+[(How we resolve Merge Conflicts between NuttX Mainline and our Downstream Branch)](https://gist.github.com/lupyuen/a6396ccbe9427087e73e5f29bf570eda)
+
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/pinedio2-inside5.jpg)
 
 [_Inside PineDio Stack BL604_](https://lupyuen.github.io/articles/pinedio2)
