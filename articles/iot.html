@@ -113,6 +113,7 @@
 <p><a href="https://lupyuen.github.io/articles/spi2"><em>Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left). This works too!</em></a></p>
 <h1 id="lorawan-network-stack"><a href="#lorawan-network-stack">1 LoRaWAN Network Stack</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="" /></p>
 <h1 id="convert-lorawan-app-to-zig"><a href="#convert-lorawan-app-to-zig">2 Convert LoRaWAN App to Zig</a></h1>
 <p>TODO</p>
 <p>Finally we convert the LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> from C to Zig, to show that we can build Complex IoT Apps in Zig.</p>
@@ -161,6 +162,8 @@ pub export fn lorawan_test_main(
 
     //  TODO: Call the LoRaWAN Library to Join LoRaWAN Network
     //  and send a Data Packet</code></pre></div>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/iot-code2a.png" alt="" /></p>
 <p>To compile the LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download our LoRaWAN Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
@@ -189,6 +192,7 @@ cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
 make</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/iot-code3a.png" alt="" /></p>
 <p>Our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> compiles OK with Zig Compiler after making the following fixes…</p>
 <h1 id="refer-to-auto-translated-zig-code"><a href="#refer-to-auto-translated-zig-code">3 Refer to Auto-Translated Zig Code</a></h1>
 <p>TODO</p>
@@ -633,6 +637,7 @@ pub fn log(
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546">(Source)</a></p>
 <p>This implementation calls <code>puts()</code>, which is supported by Apache NuttX RTOS since it’s <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX-Compliant</strong></a>.</p>
+<p><img src="https://lupyuen.github.io/images/iot-code4a.png" alt="" /></p>
 <h1 id="compare-c-and-zig"><a href="#compare-c-and-zig">12 Compare C and Zig</a></h1>
 <p>TODO</p>
 <p>The Original C Code and the Converted Zig Code for our LoRaWAN App look highly similar.</p>
@@ -1216,6 +1221,7 @@ U/L FREQ    : 923400000
 TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/477982242d897771d7a5780c8a9b0910">(See the complete log)</a></p>
+<p><img src="https://lupyuen.github.io/images/iot-code5a.png" alt="" /></p>
 <h1 id="appendix-auto-translate-lorawan-app-to-zig"><a href="#appendix-auto-translate-lorawan-app-to-zig">18 Appendix: Auto-Translate LoRaWAN App to Zig</a></h1>
 <p>TODO</p>
 <p>The Zig Compiler can auto-translate C code to Zig. <a href="https://ziglang.org/documentation/master/#C-Translation-CLI">(See this)</a></p>
