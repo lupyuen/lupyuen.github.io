@@ -30,7 +30,7 @@ _Why are we doing this?_
 
 I always felt dreadful maintaining and extending complex __IoT Apps in C__. [(Like this one)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c)
 
-Can we make this a little less painful with Zig? Let's find out!
+Will Zig make this a little less painful? Let's find out!
 
 -   [__lupyuen/zig-bl602-nuttx__](https://github.com/lupyuen/zig-bl602-nuttx)
 
