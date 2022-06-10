@@ -609,7 +609,7 @@ Zig might be the best way to maintain and extend these __IoT Projects__ on NuttX
 
 _Why not rewrite in Zig? Or another modern language?_
 
-That's because these C projects are still actively maintained and __can change at any moment.__
+That's because these C projects are still in [__Active Development__](https://github.com/Lora-net/LoRaMac-node/commits/master) and can __change at any moment.__
 
 (Like when LoRaWAN introduces new [__Regional Frequencies__](https://github.com/Lora-net/LoRaMac-node/commit/379eef59fa95e22701230caa77476d9f55859f34) for wireless networking)
 

@@ -64,7 +64,7 @@ We'll use __Semtech's Reference Implementation__ of the LoRaWAN Stack...
 
 -   [__Lora-net/LoRaMac-node__](https://github.com/Lora-net/LoRaMac-node)
 
-That we've ported to BL602 and BL604 with __Apache NuttX RTOS__...
+That we've ported to PineDio Stack BL604 with __Apache NuttX RTOS__...
 
 -   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
 
@@ -76,11 +76,17 @@ The same LoRaWAN Stack is available on many other platforms, including [__Zephyr
 
 _But the LoRaWAN Stack is in C! Will it work with Zig?_
 
-TODO
+Yep no worries! Zig will happily __import the LoRaWAN Stack from C__ without any wrappers or modifications.
+
+And we'll call the LoRaWAN Stack as though it were a Zig Library!
 
 _So we're not rewriting the LoRaWAN Stack in Zig?_
 
-TODO
+Rewriting the LoRaWAN Stack in Zig (or another language) sounds risky because the LoRaWAN Stack is still under [__Active Development__](https://github.com/Lora-net/LoRaMac-node/commits/master). It can change at any moment!
+
+We'll stick with the __C Implementation__ of the LoRaWAN Stack so that our Zig IoT App will enjoy the latest LoRaWAN updates and features.
+
+[(More about this)](https://lupyuen.github.io/articles/zig#why-zig)
 
 ![](https://lupyuen.github.io/images/iot-code1a.png)
 
