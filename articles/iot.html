@@ -134,7 +134,7 @@
 <ul>
 <li><a href="https://github.com/Lora-net/LoRaMac-node"><strong>Lora-net/LoRaMac-node</strong></a></li>
 </ul>
-<p>That we’ve ported to BL602 and BL604 with <strong>Apache NuttX RTOS</strong>…</p>
+<p>That we’ve ported to PineDio Stack BL604 with <strong>Apache NuttX RTOS</strong>…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></p>
@@ -146,9 +146,12 @@
 <p>The same LoRaWAN Stack is available on many other platforms, including <a href="https://docs.zephyrproject.org/latest/connectivity/lora_lorawan/index.html"><strong>Zephyr OS</strong></a> and <a href="beegee-tokyo/SX126x-Arduino"><strong>Arduino</strong></a>.</p>
 <p><a href="https://codeberg.org/JF002/loramac-node">(My good friend JF has ported the stack to Linux)</a></p>
 <p><em>But the LoRaWAN Stack is in C! Will it work with Zig?</em></p>
-<p>TODO</p>
+<p>Yep no worries! Zig will happily <strong>import the LoRaWAN Stack from C</strong> without any wrappers or modifications.</p>
+<p>And we’ll call the LoRaWAN Stack as though it were a Zig Library!</p>
 <p><em>So we’re not rewriting the LoRaWAN Stack in Zig?</em></p>
-<p>TODO</p>
+<p>Rewriting the LoRaWAN Stack in Zig (or another language) sounds risky because the LoRaWAN Stack is still under <a href="https://github.com/Lora-net/LoRaMac-node/commits/master"><strong>Active Development</strong></a>. It can change at any moment!</p>
+<p>We’ll stick with the <strong>C Implementation</strong> of the LoRaWAN Stack so that our Zig IoT App will enjoy the latest LoRaWAN updates and features.</p>
+<p><a href="https://lupyuen.github.io/articles/zig#why-zig">(More about this)</a></p>
 <p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="" /></p>
 <h1 id="convert-lorawan-app-to-zig"><a href="#convert-lorawan-app-to-zig">2 Convert LoRaWAN App to Zig</a></h1>
 <p>TODO</p>
