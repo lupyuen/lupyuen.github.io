@@ -287,7 +287,10 @@ pub export fn lorawan_test_main(
   return 0;
 }</code></pre></div>
 <p>TODO</p>
-<p>Original Main Function in C: <a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">main.c</a></p>
+<p><em>Wait… Our Zig code looks familiar?</em></p>
+<p>Yep it’s largely identical to the C code in the Demo App for the LoRaWAN Stack: <a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">main.c</a></p>
+<p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="Demo App for the LoRaWAN Stack" /></p>
+<p>TODO</p>
 <h1 id="cast-to-unsigned-integer"><a href="#cast-to-unsigned-integer">4 Cast To Unsigned Integer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L106-L113">lorawan_test.zig</a></p>
@@ -317,7 +320,9 @@ TxPeriodicity =
   );</code></pre></div>
 <p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L330-L333">(Source)</a></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="" /></p>
+<div class="example-wrap"><pre class="language-text"><code>unsigned 32-bit int cannot represent 
+all possible signed 32-bit values</code></pre></div>
+<p>TODO</p>
 <h1 id="transmit-data-packet"><a href="#transmit-data-packet">5 Transmit Data Packet</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203">lorawan_test.zig</a></p>
@@ -400,8 +405,23 @@ cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
 cd $HOME/nuttx/nuttx
 make</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/iot-code3a.png" alt="" /></p>
-<p>Our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> compiles OK with Zig Compiler after making the following fixes…</p>
-<h1 id="refer-to-auto-translated-zig-code"><a href="#refer-to-auto-translated-zig-code">7 Refer to Auto-Translated Zig Code</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>+ pushd ../zig-bl602-nuttx
+~/nuttx/zig-bl602-nuttx ~/nuttx/nuttx
++ zig build-obj --verbose-cimport -target riscv32-freestanding-none -mcpu=baseline_rv32-d -isystem /home/user/nuttx/nuttx/include -I /home/user/nuttx/apps/examples/lorawan_test lorawan_test.zig
+info(compilation): C import source: zig-cache/o/08fa8a0a89d15e88ae63a9f8e0af6c91/cimport.h
+info(compilation): C import .d file: zig-cache/o/08fa8a0a89d15e88ae63a9f8e0af6c91/cimport.h.d
+info(compilation): C import output: zig-cache/o/adbf03c74d351db638f34bb5535a8c3b/cimport.zig
++ xxd -c 1 lorawan_test.o
++ sed &#39;s/00000024: 01/00000024: 03/&#39;
++ xxd -r -c 1 - lorawan_test2.o
++ cp lorawan_test2.o lorawan_test.o
++ cp lorawan_test.o /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
++ ls -l lorawan_test.o /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
+-rw-r--r-- 1 user user 467724 Jun 10 16:44 /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
+-rw-r--r-- 1 user user 467724 Jun 10 16:44 lorawan_test.o
++ popd
+~/nuttx/nuttx</code></pre></div><h1 id="refer-to-auto-translated-zig-code"><a href="#refer-to-auto-translated-zig-code">7 Refer to Auto-Translated Zig Code</a></h1>
 <p>TODO</p>
 <p>Some parts of the LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> can get tricky to convert from C to Zig, like this C code…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Original C code...
