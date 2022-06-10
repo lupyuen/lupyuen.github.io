@@ -277,7 +277,7 @@ And we load some packages for __LoRaWAN Compliance__...
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &FragmentationParams);
 ```
 
-TODO
+Everything is ready! We can now __join a LoRaWAN Network__...
 
 ```zig
   // Init the Clock Sync and File Transfer status
@@ -288,14 +288,16 @@ TODO
   c.LmHandlerJoin();
 ```
 
-TODO
+[(LoRaWAN Keys and EUIs are defined here)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/peripherals/soft-se/se-identity.h)
+
+We start the __Transmit Timer__ that will transmit a LoRaWAN Data Packet (after we have joined the LoRaWAN Network)...
 
 ```zig
   // Set the Transmit Timer
   StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);
 ```
 
-TODO
+Finally we loop forever handling __LoRaWAN Events__...
 
 ```zig
   // Handle LoRaWAN Events
@@ -304,15 +306,19 @@ TODO
 }
 ```
 
-TODO
+(We'll talk about __handle_event_queue__ in a while)
+
+That's all for the Main Function of our Zig App!
 
 _Wait... Our Zig code looks familiar?_
 
 Yep it's largely identical to the C code in the __Demo App__ for the LoRaWAN Stack: [main.c](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
 
+Converting C code to Zig looks rather straightforward! In a while we'll talk about the tricky parts we encountered during the conversion.
+
 ![Demo App for the LoRaWAN Stack](https://lupyuen.github.io/images/iot-code1a.png)
 
-TODO
+[(Source)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
 
 # Cast To Unsigned Integer
 
