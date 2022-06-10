@@ -206,73 +206,69 @@ TODO
 /// Main Function that will be called by NuttX. We call the LoRaWAN Library 
 /// to Join a LoRaWAN Network and send a Data Packet.
 pub export fn lorawan_test_main(
-    _argc: c_int, 
-    _argv: [*]const [*]const u8
+  _argc: c_int, 
+  _argv: [*]const [*]const u8
 ) c_int {
-    _ = _argc;
-    _ = _argv;
+  _ = _argc;
+  _ = _argv;
 
-    // Init the Timer Struct at startup
-    TxTimer = std.mem.zeroes(c.TimerEvent_t);
+  // Init the Timer Struct at startup
+  TxTimer = std.mem.zeroes(c.TimerEvent_t);
 
-    // If we are using Entropy Pool and the BL602 ADC is available,
-    // add the Internal Temperature Sensor data to the Entropy Pool
-    // TODO: init_entropy_pool();
+  // Compute the interval between transmissions based on Duty Cycle
+  TxPeriodicity = @bitCast(u32,  // Cast to u32 because randr() can be negative
+    APP_TX_DUTYCYCLE +
+    c.randr(
+      -APP_TX_DUTYCYCLE_RND,
+      APP_TX_DUTYCYCLE_RND
+    )
+  );
 
-    // Compute the interval between transmissions based on Duty Cycle
-    TxPeriodicity = @bitCast(u32,  // Cast to u32 because randr() can be negative
-        APP_TX_DUTYCYCLE +
-        c.randr(
-            -APP_TX_DUTYCYCLE_RND,
-            APP_TX_DUTYCYCLE_RND
-        )
-    );
+  // Show the Firmware and GitHub Versions
+  const appVersion = c.Version_t {
+    .Value = c.FIRMWARE_VERSION,
+  };
+  const gitHubVersion = c.Version_t {
+    .Value = c.GITHUB_VERSION,
+  };
+  c.DisplayAppInfo("Zig LoRaWAN Test", &appVersion, &gitHubVersion);
 
-    // Show the Firmware and GitHub Versions
-    const appVersion = c.Version_t {
-        .Value = c.FIRMWARE_VERSION,
-    };
-    const gitHubVersion = c.Version_t {
-        .Value = c.GITHUB_VERSION,
-    };
-    c.DisplayAppInfo("Zig LoRaWAN Test", &appVersion, &gitHubVersion);
+  // Init LoRaWAN
+  if (LmHandlerInit(&LmHandlerCallbacks, &LmHandlerParams)
+    != c.LORAMAC_HANDLER_SUCCESS) {
+    std.log.err("LoRaMac wasn't properly initialized", .{});
+    // Fatal error, endless loop.
+    while (true) {}
+  }
 
-    // Init LoRaWAN
-    if (LmHandlerInit(&LmHandlerCallbacks, &LmHandlerParams)
-        != c.LORAMAC_HANDLER_SUCCESS) {
-        std.log.err("LoRaMac wasn't properly initialized", .{});
-        // Fatal error, endless loop.
-        while (true) {}
-    }
-    _ = &LmHandlerParams;       // For debugging
-    _ = &LmhpComplianceParams;  // For debugging
-    _ = &LmHandlerCallbacks;    // For debugging
+  // Set system maximum tolerated rx error in milliseconds
+  _ = c.LmHandlerSetSystemMaxRxError(20);
 
-    // Set system maximum tolerated rx error in milliseconds
-    _ = c.LmHandlerSetSystemMaxRxError(20);
+  // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
+  _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_COMPLIANCE,         &LmhpComplianceParams);
+  _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_CLOCK_SYNC,         null);
+  _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_REMOTE_MCAST_SETUP, null);
+  _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &FragmentationParams);
 
-    // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
-    _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_COMPLIANCE,         &LmhpComplianceParams);
-    _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_CLOCK_SYNC,         null);
-    _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_REMOTE_MCAST_SETUP, null);
-    _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &FragmentationParams);
+  // Init the Clock Sync and File Transfer status
+  IsClockSynched     = false;
+  IsFileTransferDone = false;
 
-    // Init the Clock Sync and File Transfer status
-    IsClockSynched     = false;
-    IsFileTransferDone = false;
+  // Join the LoRaWAN Network
+  c.LmHandlerJoin();
 
-    // Join the LoRaWAN Network
-    c.LmHandlerJoin();
+  // Set the Transmit Timer
+  StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);
 
-    // Set the Transmit Timer
-    StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);
-
-    // Handle LoRaWAN Events
-    handle_event_queue();  //  Never returns
-
-    return 0;
+  // Handle LoRaWAN Events
+  handle_event_queue();  //  Never returns
+  return 0;
 }
 ```
+
+TODO
+
+![](https://lupyuen.github.io/images/iot-code1a.png)
 
 # Transmit Data Packet
 
@@ -283,50 +279,48 @@ TODO
 ```zig
 /// Prepare the payload of a Data Packet transmit it
 fn PrepareTxFrame() void {
-    // If we haven't joined the LoRaWAN Network, try again later
-    if (c.LmHandlerIsBusy()) {
-        debug("PrepareTxFrame: Busy", .{});
-        return;
-    }
+  // If we haven't joined the LoRaWAN Network, try again later
+  if (c.LmHandlerIsBusy()) {
+    debug("PrepareTxFrame: Busy", .{});
+    return;
+  }
 
-    // Send a message to LoRaWAN
-    const msg: []const u8 = "Hi NuttX\x00";  // 9 bytes including null
-    debug("PrepareTxFrame: Transmit to LoRaWAN ({} bytes): {s}", .{ 
-        msg.len, msg 
-    });
+  // Send a message to LoRaWAN
+  const msg: []const u8 = "Hi NuttX\x00";  // 9 bytes including null
+  debug("PrepareTxFrame: Transmit to LoRaWAN ({} bytes): {s}", .{ 
+    msg.len, msg 
+  });
 
-    // Compose the transmit request
-    std.mem.copy(
-        u8, 
-        AppDataBuffer[0..msg.len], 
-        msg[0..msg.len]
-    );
-    var appData = c.LmHandlerAppData_t {
-        .Buffer     = @ptrCast([*c]u8, &AppDataBuffer),
-        .BufferSize = msg.len,
-        .Port       = 1,
-    };
+  // Compose the transmit request
+  std.mem.copy(
+    u8, 
+    AppDataBuffer[0..msg.len], 
+    msg[0..msg.len]
+  );
+  var appData = c.LmHandlerAppData_t {
+    .Buffer     = @ptrCast([*c]u8, &AppDataBuffer),
+    .BufferSize = msg.len,
+    .Port       = 1,
+  };
 
-    // Validate the message size and check if it can be transmitted
-    var txInfo: c.LoRaMacTxInfo_t = undefined;
-    const status = c.LoRaMacQueryTxPossible(appData.BufferSize, &txInfo);
-    debug("PrepareTxFrame: status={}, maxSize={}, currentSize={}", .{
-        status, 
-        txInfo.MaxPossibleApplicationDataSize, 
-        txInfo.CurrentPossiblePayloadSize
-    });
-    assert(status == c.LORAMAC_STATUS_OK);
+  // Validate the message size and check if it can be transmitted
+  var txInfo: c.LoRaMacTxInfo_t = undefined;
+  const status = c.LoRaMacQueryTxPossible(appData.BufferSize, &txInfo);
+  debug("PrepareTxFrame: status={}, maxSize={}, currentSize={}", .{
+    status, 
+    txInfo.MaxPossibleApplicationDataSize, 
+    txInfo.CurrentPossiblePayloadSize
+  });
+  assert(status == c.LORAMAC_STATUS_OK);
 
-    // Transmit the message
-    const sendStatus = c.LmHandlerSend(&appData, LmHandlerParams.IsTxConfirmed);
-    assert(sendStatus == c.LORAMAC_HANDLER_SUCCESS);
-    debug("PrepareTxFrame: Transmit OK", .{});
+  // Transmit the message
+  const sendStatus = c.LmHandlerSend(&appData, LmHandlerParams.IsTxConfirmed);
+  assert(sendStatus == c.LORAMAC_HANDLER_SUCCESS);
+  debug("PrepareTxFrame: Transmit OK", .{});
 }
 ```
 
 TODO: 9 bytes or shorter
-
-![](https://lupyuen.github.io/images/iot-code1a.png)
 
 # Convert LoRaWAN App to Zig
 
