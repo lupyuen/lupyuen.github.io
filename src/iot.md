@@ -40,6 +40,34 @@ Will Zig make this a little less painful? Let's find out!
 
 # LoRaWAN Network Stack
 
+_What's a LoRaWAN Network Stack?_
+
+To talk to a LoRaWAN Wireless Network, our IoT Gadget needs 3 things...
+
+-   __LoRa Radio Transceiver__
+
+    (Like PineDio Stack's onboard Semtech SX1262 Transceiver)
+
+-   __LoRa Driver__ that will transmit and receive LoRa Packets
+
+    (By controlling the LoRa Transceiver over SPI)
+
+-   __LoRaWAN Driver__ that will join a LoRaWAN Network and transmit LoRaWAN Data Packets
+
+    (By calling the LoRa Driver)
+
+Together, the LoRa Driver and LoRaWAN Driver make up the __LoRaWAN Network Stack__.
+
+_Which LoRaWAN Stack will we use?_
+
+TODO
+
+_Will the LoRaWAN Stack work with Zig?_
+
+TODO
+
+_So we're not rewriting the LoRaWAN Stack in Zig?_
+
 TODO
 
 ![](https://lupyuen.github.io/images/iot-code1a.png)
