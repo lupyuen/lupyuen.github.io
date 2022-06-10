@@ -277,7 +277,7 @@ And we load some packages for __LoRaWAN Compliance__...
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &FragmentationParams);
 ```
 
-Everything is ready! We can now __join a LoRaWAN Network__...
+Everything is hunky dory! We can now transmit a LoRaWAN Request to __join the LoRaWAN Network__...
 
 ```zig
   // Init the Clock Sync and File Transfer status
@@ -290,7 +290,7 @@ Everything is ready! We can now __join a LoRaWAN Network__...
 
 [(LoRaWAN Keys and EUIs are defined here)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/peripherals/soft-se/se-identity.h)
 
-We start the __Transmit Timer__ that will transmit a LoRaWAN Data Packet (after we have joined the LoRaWAN Network)...
+We start the __Transmit Timer__ that will send a LoRaWAN Data Packet at periodic intervals (right after we join the LoRaWAN Network)...
 
 ```zig
   // Set the Transmit Timer
@@ -314,7 +314,7 @@ _Wait... Our Zig Code looks familiar?_
 
 Yep our Zig Code is largely identical to the __C Code in the Demo App__ for the LoRaWAN Stack: [main.c](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
 
-Converting C code to Zig looks rather straightforward! In a while we'll talk about the tricky parts we encountered during the conversion.
+__Converting C Code to Zig__ looks rather straightforward! In a while we'll talk about the tricky parts we encountered during the conversion.
 
 ![Demo App for the LoRaWAN Stack](https://lupyuen.github.io/images/iot-code1a.png)
 
