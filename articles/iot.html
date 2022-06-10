@@ -107,6 +107,7 @@
 <p><em>Why are we doing this?</em></p>
 <p>I always dreaded maintaining and extending complex <strong>IoT Apps in C</strong>. <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">(Like this one)</a></p>
 <p>Will Zig make this a little less painful? Let’s find out!</p>
+<p>This is the Zig source code that we’ll study today…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/zig-bl602-nuttx"><strong>lupyuen/zig-bl602-nuttx</strong></a></li>
 </ul>
@@ -153,45 +154,68 @@
 <p>Rewriting the LoRaWAN Stack in Zig (or another language) sounds risky because the LoRaWAN Stack is still under <a href="https://github.com/Lora-net/LoRaMac-node/commits/master"><strong>Active Development</strong></a>. It can change at any moment!</p>
 <p>We’ll stick with the <strong>C Implementation</strong> of the LoRaWAN Stack so that our Zig IoT App will enjoy the latest LoRaWAN updates and features.</p>
 <p><a href="https://lupyuen.github.io/articles/zig#why-zig">(More about this)</a></p>
+<p><img src="https://lupyuen.github.io/images/iot-code2a.png" alt="Import LoRaWAN Library" /></p>
 <h1 id="import-lorawan-library"><a href="#import-lorawan-library">2 Import LoRaWAN Library</a></h1>
-<p>Let’s dive into our Zig IoT App!</p>
-<p>We import the <a href="https://lupyuen.github.io/articles/zig#import-standard-library"><strong>Zig Standard Library</strong></a> at the top of the app: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48">lorawan_test.zig</a></p>
+<p>Let’s dive into our Zig IoT App! We import the <a href="https://lupyuen.github.io/articles/zig#import-standard-library"><strong>Zig Standard Library</strong></a> at the top of our app: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48">lorawan_test.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the Zig Standard Library
 const std = @import(&quot;std&quot;);</code></pre></div>
-<p>TODO</p>
+<p>Next we call <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> to import the <strong>C Macros and C Hander Files</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the LoRaWAN Library from C
 const c = @cImport({
-    // NuttX Defines
-    @cDefine(&quot;__NuttX__&quot;,  &quot;&quot;);
-    @cDefine(&quot;NDEBUG&quot;,     &quot;&quot;);
-    @cDefine(&quot;ARCH_RISCV&quot;, &quot;&quot;);</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
-    @cDefine(&quot;LL&quot;, &quot;&quot;);
-    @cDefine(&quot;__int_c_join(a, b)&quot;, &quot;a&quot;);  //  Bypass zig/lib/include/stdint.h</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // NuttX Header Files
-    @cInclude(&quot;arch/types.h&quot;);
-    @cInclude(&quot;../../nuttx/include/limits.h&quot;);
-    @cInclude(&quot;stdio.h&quot;);</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // LoRaWAN Header Files
-    @cInclude(&quot;firmwareVersion.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/githubVersion.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/boards/utilities.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/mac/region/RegionCommon.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/Commissioning.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/LmHandler.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/packages/LmhpCompliance.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/packages/LmhpClockSync.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/packages/LmhpRemoteMcastSetup.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/packages/LmhpFragmentation.h&quot;);
-    @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandlerMsgDisplay.h&quot;);
+  // Define C Macros for NuttX on RISC-V, equivalent to...
+  // #define __NuttX__
+  // #define NDEBUG
+  // #define ARCH_RISCV
+
+  @cDefine(&quot;__NuttX__&quot;,  &quot;&quot;);
+  @cDefine(&quot;NDEBUG&quot;,     &quot;&quot;);
+  @cDefine(&quot;ARCH_RISCV&quot;, &quot;&quot;);</code></pre></div>
+<p>The code above defines the <strong>C Macros</strong> that will be called by the C Header Files coming up.</p>
+<p>Next comes a workaround for a <strong>C Macro Error</strong> that appears on Zig with Apache NuttX RTOS…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
+  @cDefine(&quot;LL&quot;, &quot;&quot;);
+  @cDefine(&quot;__int_c_join(a, b)&quot;, &quot;a&quot;);  //  Bypass zig/lib/include/stdint.h</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-macro-error">(More about this)</a></p>
+<p>We import the <strong>C Header Files</strong> for Apache NuttX RTOS…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Import the NuttX Header Files from C, equivalent to...
+  // #include &lt;arch/types.h&gt;
+  // #include &lt;../../nuttx/include/limits.h&gt;
+  // #include &lt;stdio.h&gt;
+
+  @cInclude(&quot;arch/types.h&quot;);
+  @cInclude(&quot;../../nuttx/include/limits.h&quot;);
+  @cInclude(&quot;stdio.h&quot;);</code></pre></div>
+<p>Followed by the C Header Files for our <strong>LoRaWAN Library</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Import LoRaWAN Header Files from C, based on
+  // https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40
+  @cInclude(&quot;firmwareVersion.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/githubVersion.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/boards/utilities.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/mac/region/RegionCommon.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/Commissioning.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/LmHandler.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/packages/LmhpCompliance.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/packages/LmhpClockSync.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/packages/LmhpRemoteMcastSetup.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/packages/LmhpFragmentation.h&quot;);
+  @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandlerMsgDisplay.h&quot;);
 });</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40">(Based on this C code)</a></p>
+<p>The LoRaWAN Library is now ready to be called by our Zig App!</p>
+<p>This is how we reference the LoRaWAN Library to define our <a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country/"><strong>LoRaWAN Region</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LoRaWAN Region
 const ACTIVE_REGION = c.LORAMAC_REGION_AS923;</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L44-L86">(Source)</a></p>
+<p><em>Why the “<strong><code>c.</code></strong>” in <code>c.LORAMAC_REGION_AS923</code>?</em></p>
+<p>Remember that we imported the LoRaWAN Library under the <strong>Namespace “<code>c</code>”</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import the LoRaWAN Library under Namespace &quot;c&quot;
+const c = @cImport({ ... });</code></pre></div>
+<p>Hence we use “<code>c.something</code>” to refer to the Constants and Functions defined in the LoRaWAN Library.</p>
+<p><em>Why did we define the C Macros like <code>__NuttX__</code>?</em></p>
+<p>These C Macros are needed by the <strong>NuttX Header Files</strong>.</p>
+<p>Without the macros, the NuttX Header Files won’t be imported correctly into Zig. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
+<p><em>Why did we import “arch/types.h”?</em></p>
+<p>This fixes a problem with the <strong>NuttX Types</strong>. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="" /></p>
 <h1 id="convert-lorawan-app-to-zig"><a href="#convert-lorawan-app-to-zig">3 Convert LoRaWAN App to Zig</a></h1>
 <p>TODO</p>
@@ -201,8 +225,6 @@ const ACTIVE_REGION = c.LORAMAC_REGION_AS923;</code></pre></div>
 <p>(700 lines of C code)</p>
 <p>And our converted LoRaWAN Zig App: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a></p>
 <p>(673 lines of Zig code)</p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/iot-code2a.png" alt="" /></p>
 <p>To compile the LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download our LoRaWAN Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
@@ -714,6 +736,7 @@ riscv64-unknown-elf-gcc \
   -DARCH_RISCV  \
   -pipe   src/sx126x-nuttx.c \
   -o  src/sx126x-nuttx.o</code></pre></div>
+<p>(We observed this with <code>make --trace</code> while building NuttX)</p>
 <p>We make these changes…</p>
 <ul>
 <li>
