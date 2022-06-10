@@ -46,7 +46,7 @@ To talk to a LoRaWAN Wireless Network, our IoT Gadget needs 3 things...
 
 -   __LoRa Radio Transceiver__
 
-    (Like PineDio Stack's onboard Semtech SX1262 Transceiver)
+    [(Like PineDio Stack's onboard Semtech SX1262 Transceiver)](https://www.semtech.com/products/wireless-rf/lora-core/sx1262)
 
 -   __LoRa Driver__ that will transmit and receive LoRa Packets
 
@@ -60,9 +60,21 @@ Together, the LoRa Driver and LoRaWAN Driver make up the __LoRaWAN Network Stack
 
 _Which LoRaWAN Stack will we use?_
 
-TODO
+We'll use __Semtech's Reference Implementation__ of the LoRaWAN Stack...
 
-_Will the LoRaWAN Stack work with Zig?_
+-   [__Lora-net/LoRaMac-node__](https://github.com/Lora-net/LoRaMac-node)
+
+That we've ported to BL602 and BL604 with __Apache NuttX RTOS__...
+
+-   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
+
+-   [__"LoRa SX1262 on Apache NuttX OS"__](https://lupyuen.github.io/articles/sx1262)
+
+The same LoRaWAN Stack is available on many other platforms, including [__Zephyr OS__](https://docs.zephyrproject.org/latest/connectivity/lora_lorawan/index.html) and [__Arduino__](beegee-tokyo/SX126x-Arduino).
+
+[(My good friend JF has ported the stack to Linux)](https://codeberg.org/JF002/loramac-node)
+
+_But the LoRaWAN Stack is in C! Will it work with Zig?_
 
 TODO
 
