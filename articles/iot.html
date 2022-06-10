@@ -112,6 +112,28 @@
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left). This works too!" /></p>
 <p><a href="https://lupyuen.github.io/articles/spi2"><em>Pine64 PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left). This works too!</em></a></p>
 <h1 id="lorawan-network-stack"><a href="#lorawan-network-stack">1 LoRaWAN Network Stack</a></h1>
+<p><em>What’s a LoRaWAN Network Stack?</em></p>
+<p>To talk to a LoRaWAN Wireless Network, our IoT Gadget needs 3 things…</p>
+<ul>
+<li>
+<p><strong>LoRa Radio Transceiver</strong></p>
+<p>(Like PineDio Stack’s onboard Semtech SX1262 Transceiver)</p>
+</li>
+<li>
+<p><strong>LoRa Driver</strong> that will transmit and receive LoRa Packets</p>
+<p>(By controlling the LoRa Transceiver over SPI)</p>
+</li>
+<li>
+<p><strong>LoRaWAN Driver</strong> that will join a LoRaWAN Network and transmit LoRaWAN Data Packets</p>
+<p>(By calling the LoRa Driver)</p>
+</li>
+</ul>
+<p>Together, the LoRa Driver and LoRaWAN Driver make up the <strong>LoRaWAN Network Stack</strong>.</p>
+<p><em>Which LoRaWAN Stack will we use?</em></p>
+<p>TODO</p>
+<p><em>Will the LoRaWAN Stack work with Zig?</em></p>
+<p>TODO</p>
+<p><em>So we’re not rewriting the LoRaWAN Stack in Zig?</em></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="" /></p>
 <h1 id="convert-lorawan-app-to-zig"><a href="#convert-lorawan-app-to-zig">2 Convert LoRaWAN App to Zig</a></h1>
