@@ -90,11 +90,9 @@ We'll stick with the __C Implementation__ of the LoRaWAN Stack so that our Zig I
 
 # Import LoRaWAN Library
 
-TODO
-
 Let's dive into our Zig IoT App!
 
-[lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48)
+We import the [__Zig Standard Library__](https://lupyuen.github.io/articles/zig#import-standard-library) at the top of the app: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48)
 
 ```zig
 /// Import the Zig Standard Library
