@@ -304,7 +304,13 @@ TODO
 
 TODO
 
-Original Main Function in C: [main.c](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
+_Wait... Our Zig code looks familiar?_
+
+Yep it's largely identical to the C code in the Demo App for the LoRaWAN Stack: [main.c](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
+
+![Demo App for the LoRaWAN Stack](https://lupyuen.github.io/images/iot-code1a.png)
+
+TODO
 
 # Cast To Unsigned Integer
 
@@ -347,7 +353,12 @@ TxPeriodicity =
 
 TODO
 
-![](https://lupyuen.github.io/images/iot-code1a.png)
+```text
+unsigned 32-bit int cannot represent 
+all possible signed 32-bit values
+```
+
+TODO
 
 # Transmit Data Packet
 
@@ -451,7 +462,26 @@ make
 
 ![](https://lupyuen.github.io/images/iot-code3a.png)
 
-Our LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig) compiles OK with Zig Compiler after making the following fixes...
+TODO
+
+```text
++ pushd ../zig-bl602-nuttx
+~/nuttx/zig-bl602-nuttx ~/nuttx/nuttx
++ zig build-obj --verbose-cimport -target riscv32-freestanding-none -mcpu=baseline_rv32-d -isystem /home/user/nuttx/nuttx/include -I /home/user/nuttx/apps/examples/lorawan_test lorawan_test.zig
+info(compilation): C import source: zig-cache/o/08fa8a0a89d15e88ae63a9f8e0af6c91/cimport.h
+info(compilation): C import .d file: zig-cache/o/08fa8a0a89d15e88ae63a9f8e0af6c91/cimport.h.d
+info(compilation): C import output: zig-cache/o/adbf03c74d351db638f34bb5535a8c3b/cimport.zig
++ xxd -c 1 lorawan_test.o
++ sed 's/00000024: 01/00000024: 03/'
++ xxd -r -c 1 - lorawan_test2.o
++ cp lorawan_test2.o lorawan_test.o
++ cp lorawan_test.o /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
++ ls -l lorawan_test.o /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
+-rw-r--r-- 1 user user 467724 Jun 10 16:44 /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
+-rw-r--r-- 1 user user 467724 Jun 10 16:44 lorawan_test.o
++ popd
+~/nuttx/nuttx
+```
 
 # Refer to Auto-Translated Zig Code
 
