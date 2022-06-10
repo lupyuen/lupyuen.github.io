@@ -220,12 +220,12 @@ const c = @cImport({ ... });</code></pre></div>
 <p>Without the macros, the NuttX Header Files won’t be imported correctly into Zig. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
 <p><em>Why did we import “arch/types.h”?</em></p>
 <p>This fixes a problem with the <strong>NuttX Types</strong>. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
-<p>Let’s head over to the Main Function for our Zig App…</p>
+<p>Let’s head over to the Main Function…</p>
 <h1 id="main-function"><a href="#main-function">3 Main Function</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158">lorawan_test.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We call the LoRaWAN Library 
-/// to Join a LoRaWAN Network and send a Data Packet.
+<p>This is the <a href="https://lupyuen.github.io/articles/zig#main-function"><strong>Main Function</strong></a> for our Zig App: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158">lorawan_test.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX.
+/// We call the LoRaWAN Library to join a 
+/// LoRaWAN Network and send a Data Packet.
 pub export fn lorawan_test_main(
   _argc: c_int, 
   _argv: [*]const [*]const u8
@@ -235,7 +235,8 @@ pub export fn lorawan_test_main(
 
   // Init the Timer Struct at startup
   TxTimer = std.mem.zeroes(c.TimerEvent_t);</code></pre></div>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-struct-initialisation-error">(We init <strong>TxTimer</strong> here because of this)</a></p>
+<p>We begin by computing the randomised <strong>interval between transmissions</strong> of LoRaWAN Data Packets…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Compute the interval between transmissions based on Duty Cycle
   TxPeriodicity = @bitCast(u32,  // Cast to u32 because randr() can be negative
     APP_TX_DUTYCYCLE +
@@ -245,7 +246,7 @@ pub export fn lorawan_test_main(
     )
   );</code></pre></div>
 <p>(We’ll talk about <strong>@bitCast</strong> in a while)</p>
-<p>TODO</p>
+<p>Next we show the <strong>App Version</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Show the Firmware and GitHub Versions
   const appVersion = c.Version_t {
     .Value = c.FIRMWARE_VERSION,
@@ -254,18 +255,19 @@ pub export fn lorawan_test_main(
     .Value = c.GITHUB_VERSION,
   };
   c.DisplayAppInfo(&quot;Zig LoRaWAN Test&quot;, &amp;appVersion, &amp;gitHubVersion);</code></pre></div>
-<p>TODO</p>
+<p>We <strong>initialise the LoRaWAN Library</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Init LoRaWAN
   if (LmHandlerInit(&amp;LmHandlerCallbacks, &amp;LmHandlerParams)
     != c.LORAMAC_HANDLER_SUCCESS) {
     std.log.err(&quot;LoRaMac wasn&#39;t properly initialized&quot;, .{});
+
     // Fatal error, endless loop.
     while (true) {}
   }</code></pre></div>
-<p>TODO</p>
+<p>We set the <strong>Max Tolerated Receive Error</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set system maximum tolerated rx error in milliseconds
   _ = c.LmHandlerSetSystemMaxRxError(20);</code></pre></div>
-<p>TODO</p>
+<p>And we load some packages for <strong>LoRaWAN Compliance</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_COMPLIANCE,         &amp;LmhpComplianceParams);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_CLOCK_SYNC,         null);
@@ -288,7 +290,7 @@ pub export fn lorawan_test_main(
 }</code></pre></div>
 <p>TODO</p>
 <p><em>Wait… Our Zig code looks familiar?</em></p>
-<p>Yep it’s largely identical to the C code in the Demo App for the LoRaWAN Stack: <a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">main.c</a></p>
+<p>Yep it’s largely identical to the C code in the <strong>Demo App</strong> for the LoRaWAN Stack: <a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">main.c</a></p>
 <p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="Demo App for the LoRaWAN Stack" /></p>
 <p>TODO</p>
 <h1 id="cast-to-unsigned-integer"><a href="#cast-to-unsigned-integer">4 Cast To Unsigned Integer</a></h1>
