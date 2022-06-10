@@ -326,16 +326,12 @@ __Converting C Code to Zig__ looks rather straightforward! In a while we'll talk
 
 # Cast To Unsigned Integer
 
-TODO
-
-[lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L106-L113)
+Earlier we saw this computation of the randomised __interval between transmissions__ of LoRaWAN Data Packets: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L106-L113)
 
 ```zig
-// In Zig: This is an unsigned integer (32-bit)
-var TxPeriodicity: u32 = 0;
-
-// Compute the interval between transmissions based on Duty Cycle.
-// Cast to u32 because randr() can be negative.
+// In Zig: Compute the interval between transmissions based on Duty Cycle.
+// TxPeriodicity is an unsigned integer (32-bit).
+// We cast to u32 because randr() can be negative.
 TxPeriodicity = @bitCast(u32,
   APP_TX_DUTYCYCLE +
   c.randr(
@@ -345,13 +341,13 @@ TxPeriodicity = @bitCast(u32,
 );
 ```
 
-TODO
+Let's find out why __@bitCast__ is needed.
+
+In the Original C Code we compute the interval __without any Explicit Casting__...
 
 ```c
-// In C: This is an unsigned integer (32-bit)
-uint32_t TxPeriodicity = 0;
-
-// Compute the interval between transmissions based on Duty Cycle.
+// In C: Compute the interval between transmissions based on Duty Cycle.
+// TxPeriodicity is an unsigned integer (32-bit).
 // Remember that randr() can be negative.
 TxPeriodicity = 
   APP_TX_DUTYCYCLE + 
@@ -363,11 +359,27 @@ TxPeriodicity =
 
 [(Source)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L330-L333)
 
-TODO
+_What happens if we compile this in Zig without casting?_
+
+Zig Compiler shows this error...
 
 ```text
 unsigned 32-bit int cannot represent 
 all possible signed 32-bit values
+```
+
+_What does it mean?_
+
+Well __TxPeriodicity__ is an __Unsigned Integer__ (32-bit)...
+
+```zig
+var TxPeriodicity: u32 = 0;
+```
+
+But [__randr__](https://github.com/Lora-net/LoRaMac-node/blob/master/src/boards/utilities.h#L94-L101) returns a __Signed Integer__...
+
+```c
+int32_t randr(int32_t min, int32_t max);
 ```
 
 TODO
