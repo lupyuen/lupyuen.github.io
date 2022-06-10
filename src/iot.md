@@ -196,17 +196,16 @@ _Why did we import "arch/types.h"?_
 
 This fixes a problem with the __NuttX Types__. [(See this)](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
 
-Let's head over to the Main Function for our Zig App...
+Let's head over to the Main Function...
 
 # Main Function
 
-TODO
-
-[lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158)
+This is the [__Main Function__](https://lupyuen.github.io/articles/zig#main-function) for our Zig App: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158)
 
 ```zig
-/// Main Function that will be called by NuttX. We call the LoRaWAN Library 
-/// to Join a LoRaWAN Network and send a Data Packet.
+/// Main Function that will be called by NuttX.
+/// We call the LoRaWAN Library to join a 
+/// LoRaWAN Network and send a Data Packet.
 pub export fn lorawan_test_main(
   _argc: c_int, 
   _argv: [*]const [*]const u8
@@ -218,7 +217,9 @@ pub export fn lorawan_test_main(
   TxTimer = std.mem.zeroes(c.TimerEvent_t);
 ```
 
-TODO
+[(We init __TxTimer__ here because of this)](https://lupyuen.github.io/articles/iot#appendix-struct-initialisation-error)
+
+We begin by computing the randomised __interval between transmissions__ of LoRaWAN Data Packets...
 
 ```zig
   // Compute the interval between transmissions based on Duty Cycle
@@ -233,7 +234,7 @@ TODO
 
 (We'll talk about __@bitCast__ in a while)
 
-TODO
+Next we show the __App Version__...
 
 ```zig
   // Show the Firmware and GitHub Versions
@@ -246,26 +247,27 @@ TODO
   c.DisplayAppInfo("Zig LoRaWAN Test", &appVersion, &gitHubVersion);
 ```
 
-TODO
+We __initialise the LoRaWAN Library__...
 
 ```zig
   // Init LoRaWAN
   if (LmHandlerInit(&LmHandlerCallbacks, &LmHandlerParams)
     != c.LORAMAC_HANDLER_SUCCESS) {
     std.log.err("LoRaMac wasn't properly initialized", .{});
+
     // Fatal error, endless loop.
     while (true) {}
   }
 ```
 
-TODO
+We set the __Max Tolerated Receive Error__...
 
 ```zig
   // Set system maximum tolerated rx error in milliseconds
   _ = c.LmHandlerSetSystemMaxRxError(20);
 ```
 
-TODO
+And we load some packages for __LoRaWAN Compliance__...
 
 ```zig
   // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
@@ -306,7 +308,7 @@ TODO
 
 _Wait... Our Zig code looks familiar?_
 
-Yep it's largely identical to the C code in the Demo App for the LoRaWAN Stack: [main.c](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
+Yep it's largely identical to the C code in the __Demo App__ for the LoRaWAN Stack: [main.c](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
 
 ![Demo App for the LoRaWAN Stack](https://lupyuen.github.io/images/iot-code1a.png)
 
