@@ -117,7 +117,7 @@
 <ul>
 <li>
 <p><strong>LoRa Radio Transceiver</strong></p>
-<p>(Like PineDio Stack’s onboard Semtech SX1262 Transceiver)</p>
+<p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262">(Like PineDio Stack’s onboard Semtech SX1262 Transceiver)</a></p>
 </li>
 <li>
 <p><strong>LoRa Driver</strong> that will transmit and receive LoRa Packets</p>
@@ -130,8 +130,22 @@
 </ul>
 <p>Together, the LoRa Driver and LoRaWAN Driver make up the <strong>LoRaWAN Network Stack</strong>.</p>
 <p><em>Which LoRaWAN Stack will we use?</em></p>
-<p>TODO</p>
-<p><em>Will the LoRaWAN Stack work with Zig?</em></p>
+<p>We’ll use <strong>Semtech’s Reference Implementation</strong> of the LoRaWAN Stack…</p>
+<ul>
+<li><a href="https://github.com/Lora-net/LoRaMac-node"><strong>Lora-net/LoRaMac-node</strong></a></li>
+</ul>
+<p>That we’ve ported to BL602 and BL604 with <strong>Apache NuttX RTOS</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sx1262"><strong>“LoRa SX1262 on Apache NuttX OS”</strong></a></p>
+</li>
+</ul>
+<p>The same LoRaWAN Stack is available on many other platforms, including <a href="https://docs.zephyrproject.org/latest/connectivity/lora_lorawan/index.html"><strong>Zephyr OS</strong></a> and <a href="beegee-tokyo/SX126x-Arduino"><strong>Arduino</strong></a>.</p>
+<p><a href="https://codeberg.org/JF002/loramac-node">(My good friend JF has ported the stack to Linux)</a></p>
+<p><em>But the LoRaWAN Stack is in C! Will it work with Zig?</em></p>
 <p>TODO</p>
 <p><em>So we’re not rewriting the LoRaWAN Stack in Zig?</em></p>
 <p>TODO</p>
