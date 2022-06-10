@@ -306,35 +306,41 @@ TODO
 
 Original Main Function in C: [main.c](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
 
-## Cast to Unsigned Integer
+# Cast To Unsigned Integer
 
 TODO
 
 [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L106-L113)
 
 ```zig
-  // In Zig: Compute the interval between transmissions based on Duty Cycle.
-  // Cast to u32 because randr() can be negative.
-  TxPeriodicity = @bitCast(u32,
-    APP_TX_DUTYCYCLE +
-    c.randr(
-      -APP_TX_DUTYCYCLE_RND,
-      APP_TX_DUTYCYCLE_RND
-    )
-  );
+// In Zig: This is an unsigned integer (32-bit)
+var TxPeriodicity: u32 = 0;
+
+// Compute the interval between transmissions based on Duty Cycle.
+// Cast to u32 because randr() can be negative.
+TxPeriodicity = @bitCast(u32,
+  APP_TX_DUTYCYCLE +
+  c.randr(
+    -APP_TX_DUTYCYCLE_RND,
+    APP_TX_DUTYCYCLE_RND
+  )
+);
 ```
 
 TODO
 
 ```c
-  // In C: Compute the interval between transmissions based on Duty Cycle.
-  // Remember that randr() can be negative.
-  TxPeriodicity = 
-    APP_TX_DUTYCYCLE + 
-    randr( 
-      -APP_TX_DUTYCYCLE_RND, 
-      APP_TX_DUTYCYCLE_RND 
-    );
+// In C: This is an unsigned integer (32-bit)
+uint32_t TxPeriodicity = 0;
+
+// Compute the interval between transmissions based on Duty Cycle.
+// Remember that randr() can be negative.
+TxPeriodicity = 
+  APP_TX_DUTYCYCLE + 
+  randr( 
+    -APP_TX_DUTYCYCLE_RND, 
+    APP_TX_DUTYCYCLE_RND 
+  );
 ```
 
 [(Source)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L330-L333)
