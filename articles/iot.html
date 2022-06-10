@@ -273,26 +273,29 @@ pub export fn lorawan_test_main(
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_CLOCK_SYNC,         null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_REMOTE_MCAST_SETUP, null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &amp;FragmentationParams);</code></pre></div>
-<p>TODO</p>
+<p>Everything is ready! We can now <strong>join a LoRaWAN Network</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Init the Clock Sync and File Transfer status
   IsClockSynched     = false;
   IsFileTransferDone = false;
 
   // Join the LoRaWAN Network
   c.LmHandlerJoin();</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/peripherals/soft-se/se-identity.h">(LoRaWAN Keys and EUIs are defined here)</a></p>
+<p>We start the <strong>Transmit Timer</strong> that will transmit a LoRaWAN Data Packet (after we have joined the LoRaWAN Network)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set the Transmit Timer
   StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);</code></pre></div>
-<p>TODO</p>
+<p>Finally we loop forever handling <strong>LoRaWAN Events</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Handle LoRaWAN Events
   handle_event_queue();  //  Never returns
   return 0;
 }</code></pre></div>
-<p>TODO</p>
+<p>(We’ll talk about <strong>handle_event_queue</strong> in a while)</p>
+<p>That’s all for the Main Function of our Zig App!</p>
 <p><em>Wait… Our Zig code looks familiar?</em></p>
 <p>Yep it’s largely identical to the C code in the <strong>Demo App</strong> for the LoRaWAN Stack: <a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">main.c</a></p>
+<p>Converting C code to Zig looks rather straightforward! In a while we’ll talk about the tricky parts we encountered during the conversion.</p>
 <p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="Demo App for the LoRaWAN Stack" /></p>
-<p>TODO</p>
+<p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">(Source)</a></p>
 <h1 id="cast-to-unsigned-integer"><a href="#cast-to-unsigned-integer">4 Cast To Unsigned Integer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L106-L113">lorawan_test.zig</a></p>
