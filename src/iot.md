@@ -312,7 +312,11 @@ That's all for the Main Function of our Zig App!
 
 _Wait... Our Zig Code looks familiar?_
 
-Yep our Zig Code is largely identical to the __C Code in the Demo App__ for the LoRaWAN Stack: [main.c](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
+Yep our Zig Code is largely identical to the __C Code in the Demo App__ for the LoRaWAN Stack...
+
+-   [__LoRaMac/fuota-test-01/main.c__](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
+
+    (Pic below)
 
 __Converting C Code to Zig__ looks rather straightforward! In a while we'll talk about the tricky parts we encountered during the conversion.
 
