@@ -67,7 +67,8 @@
     <nav id="TOC"><ul>
 <li><a href="#lorawan-network-stack">1 LoRaWAN Network Stack</a><ul></ul></li>
 <li><a href="#import-lorawan-library">2 Import LoRaWAN Library</a><ul></ul></li>
-<li><a href="#main-function">3 Main Function</a><ul></ul></li>
+<li><a href="#main-function">3 Main Function</a><ul>
+<li><a href="#cast-to-unsigned-integer">3.1 Cast to Unsigned Integer</a><ul></ul></li></ul></li>
 <li><a href="#transmit-data-packet">4 Transmit Data Packet</a><ul></ul></li>
 <li><a href="#convert-lorawan-app-to-zig">5 Convert LoRaWAN App to Zig</a><ul></ul></li>
 <li><a href="#refer-to-auto-translated-zig-code">6 Refer to Auto-Translated Zig Code</a><ul></ul></li>
@@ -157,6 +158,7 @@
 <p>We’ll stick with the <strong>C Implementation</strong> of the LoRaWAN Stack so that our Zig IoT App will enjoy the latest LoRaWAN updates and features.</p>
 <p><a href="https://lupyuen.github.io/articles/zig#why-zig">(More about this)</a></p>
 <p><img src="https://lupyuen.github.io/images/iot-code2a.png" alt="Import LoRaWAN Library" /></p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48">(Source)</a></p>
 <h1 id="import-lorawan-library"><a href="#import-lorawan-library">2 Import LoRaWAN Library</a></h1>
 <p>Let’s dive into our Zig IoT App! We import the <a href="https://lupyuen.github.io/articles/zig#import-standard-library"><strong>Zig Standard Library</strong></a> at the top of our app: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48">lorawan_test.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the Zig Standard Library
@@ -189,7 +191,7 @@ const c = @cImport({
   @cInclude(&quot;stdio.h&quot;);</code></pre></div>
 <p>Followed by the C Header Files for our <strong>LoRaWAN Library</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Import LoRaWAN Header Files from C, based on
-  // https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40
+  // https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40
   @cInclude(&quot;firmwareVersion.h&quot;);
   @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/githubVersion.h&quot;);
   @cInclude(&quot;../libs/liblorawan/src/boards/utilities.h&quot;);
@@ -202,7 +204,7 @@ const c = @cImport({
   @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandler/packages/LmhpFragmentation.h&quot;);
   @cInclude(&quot;../libs/liblorawan/src/apps/LoRaMac/common/LmHandlerMsgDisplay.h&quot;);
 });</code></pre></div>
-<p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40">(Based on this C code)</a></p>
+<p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40">(Based on this C code)</a></p>
 <p>The LoRaWAN Library is now ready to be called by our Zig App!</p>
 <p>This is how we reference the LoRaWAN Library to define our <a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country/"><strong>LoRaWAN Region</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LoRaWAN Region
@@ -232,57 +234,82 @@ pub export fn lorawan_test_main(
   _ = _argv;
 
   // Init the Timer Struct at startup
-  TxTimer = std.mem.zeroes(c.TimerEvent_t);
-
-  // Compute the interval between transmissions based on Duty Cycle
+  TxTimer = std.mem.zeroes(c.TimerEvent_t);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Compute the interval between transmissions based on Duty Cycle
   TxPeriodicity = @bitCast(u32,  // Cast to u32 because randr() can be negative
     APP_TX_DUTYCYCLE +
     c.randr(
       -APP_TX_DUTYCYCLE_RND,
       APP_TX_DUTYCYCLE_RND
     )
-  );
-
-  // Show the Firmware and GitHub Versions
+  );</code></pre></div>
+<p>(We’ll talk about <strong>@bitCast</strong> in a while)</p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Show the Firmware and GitHub Versions
   const appVersion = c.Version_t {
     .Value = c.FIRMWARE_VERSION,
   };
   const gitHubVersion = c.Version_t {
     .Value = c.GITHUB_VERSION,
   };
-  c.DisplayAppInfo(&quot;Zig LoRaWAN Test&quot;, &amp;appVersion, &amp;gitHubVersion);
-
-  // Init LoRaWAN
+  c.DisplayAppInfo(&quot;Zig LoRaWAN Test&quot;, &amp;appVersion, &amp;gitHubVersion);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Init LoRaWAN
   if (LmHandlerInit(&amp;LmHandlerCallbacks, &amp;LmHandlerParams)
     != c.LORAMAC_HANDLER_SUCCESS) {
     std.log.err(&quot;LoRaMac wasn&#39;t properly initialized&quot;, .{});
     // Fatal error, endless loop.
     while (true) {}
-  }
-
-  // Set system maximum tolerated rx error in milliseconds
-  _ = c.LmHandlerSetSystemMaxRxError(20);
-
-  // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Set system maximum tolerated rx error in milliseconds
+  _ = c.LmHandlerSetSystemMaxRxError(20);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_COMPLIANCE,         &amp;LmhpComplianceParams);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_CLOCK_SYNC,         null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_REMOTE_MCAST_SETUP, null);
-  _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &amp;FragmentationParams);
-
-  // Init the Clock Sync and File Transfer status
+  _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &amp;FragmentationParams);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Init the Clock Sync and File Transfer status
   IsClockSynched     = false;
   IsFileTransferDone = false;
 
   // Join the LoRaWAN Network
-  c.LmHandlerJoin();
-
-  // Set the Transmit Timer
-  StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);
-
-  // Handle LoRaWAN Events
+  c.LmHandlerJoin();</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Set the Transmit Timer
+  StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Handle LoRaWAN Events
   handle_event_queue();  //  Never returns
   return 0;
 }</code></pre></div>
+<p>TODO</p>
+<p>Original Main Function in C: <a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">main.c</a></p>
+<h2 id="cast-to-unsigned-integer"><a href="#cast-to-unsigned-integer">3.1 Cast to Unsigned Integer</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L106-L113">lorawan_test.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>  // In Zig: Compute the interval between transmissions based on Duty Cycle.
+  // Cast to u32 because randr() can be negative.
+  TxPeriodicity = @bitCast(u32,
+    APP_TX_DUTYCYCLE +
+    c.randr(
+      -APP_TX_DUTYCYCLE_RND,
+      APP_TX_DUTYCYCLE_RND
+    )
+  );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // In C: Compute the interval between transmissions based on Duty Cycle.
+  // Remember that randr() can be negative.
+  TxPeriodicity = 
+    APP_TX_DUTYCYCLE + 
+    randr( 
+      -APP_TX_DUTYCYCLE_RND, 
+      APP_TX_DUTYCYCLE_RND 
+    );</code></pre></div>
+<p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L330-L333">(Source)</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="" /></p>
 <h1 id="transmit-data-packet"><a href="#transmit-data-packet">4 Transmit Data Packet</a></h1>
