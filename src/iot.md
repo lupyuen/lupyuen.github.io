@@ -92,6 +92,8 @@ We'll stick with the __C Implementation__ of the LoRaWAN Stack so that our Zig I
 
 ![Import LoRaWAN Library](https://lupyuen.github.io/images/iot-code2a.png)
 
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48)
+
 # Import LoRaWAN Library
 
 Let's dive into our Zig IoT App! We import the [__Zig Standard Library__](https://lupyuen.github.io/articles/zig#import-standard-library) at the top of our app: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48)
@@ -145,7 +147,7 @@ Followed by the C Header Files for our __LoRaWAN Library__...
 
 ```zig
   // Import LoRaWAN Header Files from C, based on
-  // https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40
+  // https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40
   @cInclude("firmwareVersion.h");
   @cInclude("../libs/liblorawan/src/apps/LoRaMac/common/githubVersion.h");
   @cInclude("../libs/liblorawan/src/boards/utilities.h");
@@ -160,7 +162,7 @@ Followed by the C Header Files for our __LoRaWAN Library__...
 });
 ```
 
-[(Based on this C code)](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40)
+[(Based on this C code)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40)
 
 The LoRaWAN Library is now ready to be called by our Zig App!
 
@@ -214,7 +216,11 @@ pub export fn lorawan_test_main(
 
   // Init the Timer Struct at startup
   TxTimer = std.mem.zeroes(c.TimerEvent_t);
+```
 
+TODO
+
+```zig
   // Compute the interval between transmissions based on Duty Cycle
   TxPeriodicity = @bitCast(u32,  // Cast to u32 because randr() can be negative
     APP_TX_DUTYCYCLE +
@@ -223,7 +229,13 @@ pub export fn lorawan_test_main(
       APP_TX_DUTYCYCLE_RND
     )
   );
+```
 
+(We'll talk about __@bitCast__ in a while)
+
+TODO
+
+```zig
   // Show the Firmware and GitHub Versions
   const appVersion = c.Version_t {
     .Value = c.FIRMWARE_VERSION,
@@ -232,7 +244,11 @@ pub export fn lorawan_test_main(
     .Value = c.GITHUB_VERSION,
   };
   c.DisplayAppInfo("Zig LoRaWAN Test", &appVersion, &gitHubVersion);
+```
 
+TODO
+
+```zig
   // Init LoRaWAN
   if (LmHandlerInit(&LmHandlerCallbacks, &LmHandlerParams)
     != c.LORAMAC_HANDLER_SUCCESS) {
@@ -240,31 +256,88 @@ pub export fn lorawan_test_main(
     // Fatal error, endless loop.
     while (true) {}
   }
+```
 
+TODO
+
+```zig
   // Set system maximum tolerated rx error in milliseconds
   _ = c.LmHandlerSetSystemMaxRxError(20);
+```
 
+TODO
+
+```zig
   // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_COMPLIANCE,         &LmhpComplianceParams);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_CLOCK_SYNC,         null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_REMOTE_MCAST_SETUP, null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &FragmentationParams);
+```
 
+TODO
+
+```zig
   // Init the Clock Sync and File Transfer status
   IsClockSynched     = false;
   IsFileTransferDone = false;
 
   // Join the LoRaWAN Network
   c.LmHandlerJoin();
+```
 
+TODO
+
+```zig
   // Set the Transmit Timer
   StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);
+```
 
+TODO
+
+```zig
   // Handle LoRaWAN Events
   handle_event_queue();  //  Never returns
   return 0;
 }
 ```
+
+TODO
+
+Original Main Function in C: [main.c](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
+
+## Cast to Unsigned Integer
+
+TODO
+
+[lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L106-L113)
+
+```zig
+  // In Zig: Compute the interval between transmissions based on Duty Cycle.
+  // Cast to u32 because randr() can be negative.
+  TxPeriodicity = @bitCast(u32,
+    APP_TX_DUTYCYCLE +
+    c.randr(
+      -APP_TX_DUTYCYCLE_RND,
+      APP_TX_DUTYCYCLE_RND
+    )
+  );
+```
+
+TODO
+
+```c
+  // In C: Compute the interval between transmissions based on Duty Cycle.
+  // Remember that randr() can be negative.
+  TxPeriodicity = 
+    APP_TX_DUTYCYCLE + 
+    randr( 
+      -APP_TX_DUTYCYCLE_RND, 
+      APP_TX_DUTYCYCLE_RND 
+    );
+```
+
+[(Source)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L330-L333)
 
 TODO
 
