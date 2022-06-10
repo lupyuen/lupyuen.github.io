@@ -273,7 +273,7 @@ pub export fn lorawan_test_main(
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_CLOCK_SYNC,         null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_REMOTE_MCAST_SETUP, null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &amp;FragmentationParams);</code></pre></div>
-<p>Everything is ready! We can now <strong>join a LoRaWAN Network</strong>…</p>
+<p>Everything is hunky dory! We can now transmit a LoRaWAN Request to <strong>join the LoRaWAN Network</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Init the Clock Sync and File Transfer status
   IsClockSynched     = false;
   IsFileTransferDone = false;
@@ -281,7 +281,7 @@ pub export fn lorawan_test_main(
   // Join the LoRaWAN Network
   c.LmHandlerJoin();</code></pre></div>
 <p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/peripherals/soft-se/se-identity.h">(LoRaWAN Keys and EUIs are defined here)</a></p>
-<p>We start the <strong>Transmit Timer</strong> that will transmit a LoRaWAN Data Packet (after we have joined the LoRaWAN Network)…</p>
+<p>We start the <strong>Transmit Timer</strong> that will send a LoRaWAN Data Packet at periodic intervals (right after we join the LoRaWAN Network)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set the Transmit Timer
   StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);</code></pre></div>
 <p>Finally we loop forever handling <strong>LoRaWAN Events</strong>…</p>
@@ -293,7 +293,7 @@ pub export fn lorawan_test_main(
 <p>That’s all for the Main Function of our Zig App!</p>
 <p><em>Wait… Our Zig Code looks familiar?</em></p>
 <p>Yep our Zig Code is largely identical to the <strong>C Code in the Demo App</strong> for the LoRaWAN Stack: <a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">main.c</a></p>
-<p>Converting C code to Zig looks rather straightforward! In a while we’ll talk about the tricky parts we encountered during the conversion.</p>
+<p><strong>Converting C Code to Zig</strong> looks rather straightforward! In a while we’ll talk about the tricky parts we encountered during the conversion.</p>
 <p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="Demo App for the LoRaWAN Stack" /></p>
 <p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">(Source)</a></p>
 <h1 id="cast-to-unsigned-integer"><a href="#cast-to-unsigned-integer">4 Cast To Unsigned Integer</a></h1>
