@@ -223,7 +223,7 @@ We begin by computing the randomised __interval between transmissions__ of LoRaW
 
 ```zig
   // Compute the interval between transmissions based on Duty Cycle
-  TxPeriodicity = @bitCast(u32,  // Cast to u32 because randr() can be negative
+  TxPeriodicity = @intCast(u32,  // Cast to u32 because randr() can be negative
     APP_TX_DUTYCYCLE +
     c.randr(
       -APP_TX_DUTYCYCLE_RND,
@@ -232,7 +232,7 @@ We begin by computing the randomised __interval between transmissions__ of LoRaW
   );
 ```
 
-(We'll talk about __@bitCast__ in a while)
+(We'll talk about __@intCast__ in a while)
 
 Next we show the __App Version__...
 
@@ -324,7 +324,7 @@ __Converting C Code to Zig__ looks rather straightforward! In a while we'll talk
 
 [(Source)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390)
 
-# Cast To Unsigned Integer
+# Convert Integer Type
 
 Earlier we saw this computation of the randomised __interval between transmissions__ of LoRaWAN Data Packets: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L106-L113)
 
@@ -332,7 +332,7 @@ Earlier we saw this computation of the randomised __interval between transmissio
 // In Zig: Compute the interval between transmissions based on Duty Cycle.
 // TxPeriodicity is an unsigned integer (32-bit).
 // We cast to u32 because randr() can be negative.
-TxPeriodicity = @bitCast(u32,
+TxPeriodicity = @intCast(u32,
   APP_TX_DUTYCYCLE +
   c.randr(
     -APP_TX_DUTYCYCLE_RND,
@@ -341,9 +341,9 @@ TxPeriodicity = @bitCast(u32,
 );
 ```
 
-Let's find out why __@bitCast__ is needed.
+Let's find out why [__@intCast__](https://ziglang.org/documentation/master/#intCast) is needed.
 
-In the Original C Code we compute the interval __without any Explicit Casting__...
+In the Original C Code we compute the interval __without any Explicit Type Conversion__...
 
 ```c
 // In C: Compute the interval between transmissions based on Duty Cycle.
@@ -359,7 +359,7 @@ TxPeriodicity =
 
 [(Source)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L330-L333)
 
-_What happens if we compile this in Zig without casting?_
+_What happens if we compile this in Zig?_
 
 Zig Compiler shows this error...
 
@@ -370,19 +370,54 @@ all possible signed 32-bit values
 
 _What does it mean?_
 
-Well __TxPeriodicity__ is an __Unsigned Integer__ (32-bit)...
+Well __TxPeriodicity__ is an __Unsigned Integer__...
 
 ```zig
+/// Random interval between transmissions
 var TxPeriodicity: u32 = 0;
 ```
 
-But [__randr__](https://github.com/Lora-net/LoRaMac-node/blob/master/src/boards/utilities.h#L94-L101) returns a __Signed Integer__...
+But [__randr()__](https://github.com/Lora-net/LoRaMac-node/blob/master/src/boards/utilities.h#L94-L101) returns a __Signed Integer__...
 
 ```c
+/// Computes a random number between min and max
 int32_t randr(int32_t min, int32_t max);
 ```
 
-TODO
+Mixing __Signed and Unsigned Integers__ is a Bad Sign (pun intended)...
+
+__randr()__ could potentially cause __TxPeriodicity__ to underflow!
+
+_How does @intCast fix this?_
+
+When we write this with [__@intCast__](https://ziglang.org/documentation/master/#intCast)...
+
+```zig
+TxPeriodicity = @intCast(u32,
+  APP_TX_DUTYCYCLE +
+  c.randr(
+    -APP_TX_DUTYCYCLE_RND,
+    APP_TX_DUTYCYCLE_RND
+  )
+);
+```
+
+We're telling the Zig Compiler to convert the __Signed Result to an Unsigned Integer__.
+
+[(More about __@intCast__)](https://ziglang.org/documentation/master/#intCast)
+
+_What happens if there's an underflow?_
+
+The Signed-to-Unsigned Conversion fails and we'll see a __Runtime Error__...
+
+```text
+!ZIG PANIC!
+attempt to cast negative value to unsigned integer
+Stack Trace:
+0x23016dba
+```
+
+Great to have Zig watching our backs... When we do risky things! 👍
 
 # Transmit Data Packet
 
@@ -538,7 +573,7 @@ const APP_TX_DUTYCYCLE:     c_int = 40000;
 const APP_TX_DUTYCYCLE_RND: c_int = 5000;
 
 //  Cast to u32 because randr() can be negative
-var TxPeriodicity: u32 = @bitCast(u32,
+var TxPeriodicity: u32 = @intCast(u32,
     APP_TX_DUTYCYCLE +
     c.randr(
         -APP_TX_DUTYCYCLE_RND,
@@ -925,7 +960,7 @@ pub export fn lorawan_test_main(
     // TODO: init_entropy_pool();
 
     // Compute the interval between transmissions based on Duty Cycle
-    TxPeriodicity = @bitCast(u32,  // Cast to u32 because randr() can be negative
+    TxPeriodicity = @intCast(u32,  // Cast to u32 because randr() can be negative
         APP_TX_DUTYCYCLE +
         c.randr(
             -APP_TX_DUTYCYCLE_RND,
