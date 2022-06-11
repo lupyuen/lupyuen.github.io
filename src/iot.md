@@ -425,6 +425,8 @@ Stack Trace:
 
 Great to have Zig watching our backs... When we do risky things! 👍
 
+[(How we implemented a Custom Panic Handler)]()
+
 # Transmit Data Packet
 
 Back to our Zig App: This is how we __transmit a Data Packet__ to the LoRaWAN Network: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203)
@@ -822,103 +824,9 @@ If we prefer to live recklessly, this is how we disable the Safety Checks...
 
 -   ["@setRuntimeSafety"](https://ziglang.org/documentation/master/#setRuntimeSafety)
 
-# Panic Handler
+![Original C Code (left) and Converted Zig Code (right) for our LoRaWAN App look highly similar](https://lupyuen.github.io/images/iot-code4a.png)
 
-TODO
-
-_Some debug features don't seem to be working? Like `unreachable`, `std.debug.assert` and `std.debug.panic`?_
-
-That's because for Embedded Platforms we need to implement our own Panic Handler...
-
--   ["Using Zig to Provide Stack Traces on Kernel Panic for a Bare Bones Operating System"](https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html)
-
--   [Default Panic Handler: `std.debug.default_panic`](https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847)
-
-With our own Panic Handler, this Assertion Failure...
-
-```zig
-//  Create a short alias named `assert`
-const assert = std.debug.assert;
-
-//  Assertion Failure
-assert(TxPeriodicity != 0);
-```
-
-Will show this Stack Trace...
-
-```text
-!ZIG PANIC!
-reached unreachable code
-Stack Trace:
-0x23016394
-0x23016ce0
-```
-
-According to our RISC-V Disassembly, the first address `23016394` doesn't look interesting, because it's inside the `assert` function...
-
-```text
-/home/user/zig-linux-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/std/debug.zig:259
-pub fn assert(ok: bool) void {
-2301637c:	00b51c63          	bne	a0,a1,23016394 <std.debug.assert+0x2c>
-23016380:	a009                j	23016382 <std.debug.assert+0x1a>
-23016382:	2307e537          	lui	a0,0x2307e
-23016386:	f9850513          	addi	a0,a0,-104 # 2307df98 <__unnamed_4>
-2301638a:	4581                li	a1,0
-2301638c:	00000097          	auipc	ra,0x0
-23016390:	f3c080e7          	jalr	-196(ra) # 230162c8 <panic>
-    if (!ok) unreachable; // assertion failure
-23016394:	a009                j	23016396 <std.debug.assert+0x2e>
-```
-
-But the second address `23016ce0` reveals the assertion that failed...
-
-```text
-/home/user/nuttx/zig-bl602-nuttx/lorawan_test.zig:95
-    assert(TxPeriodicity != 0);
-23016ccc:	42013537          	lui	a0,0x42013
-23016cd0:	fbc52503          	lw	a0,-68(a0) # 42012fbc <TxPeriodicity>
-23016cd4:	00a03533          	snez	a0,a0
-23016cd8:	fffff097          	auipc	ra,0xfffff
-23016cdc:	690080e7          	jalr	1680(ra) # 23016368 <std.debug.assert>
-/home/user/nuttx/zig-bl602-nuttx/lorawan_test.zig:100
-    TxTimer = std.mem.zeroes(c.TimerEvent_t);
-23016ce0:	42016537          	lui	a0,0x42016
-```
-
-This is our implementation of the Zig Panic Handler...
-
-```zig
-/// Called by Zig when it hits a Panic. We print the Panic Message, Stack Trace and halt. See 
-/// https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html
-/// https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847
-pub fn panic(
-    message: []const u8, 
-    _stack_trace: ?*std.builtin.StackTrace
-) noreturn {
-    // Print the Panic Message
-    _ = _stack_trace;
-    _ = puts("\n!ZIG PANIC!");
-    _ = puts(@ptrCast([*c]const u8, message));
-
-    // Print the Stack Trace
-    _ = puts("Stack Trace:");
-    var it = std.debug.StackIterator.init(@returnAddress(), null);
-    while (it.next()) |return_address| {
-        _ = printf("%p\n", return_address);
-    }
-
-    // Halt
-    while(true) {}
-}
-```
-
-[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L501-L522)
-
-TODO
-
-![The Original C Code and the Converted Zig Code for our LoRaWAN App look highly similar](https://lupyuen.github.io/images/iot-code4a.png)
-
-_The [Original C Code](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323) and the [Converted Zig Code](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158) for our LoRaWAN App look highly similar_
+_[Original C Code](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323) (left) and [Converted Zig Code](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158) (right) for our LoRaWAN App look highly similar_
 
 # Zig Outcomes
 
@@ -1026,6 +934,98 @@ pub fn log(
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546)
 
 This implementation calls `puts()`, which is supported by Apache NuttX RTOS since it's [__POSIX-Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance).
+
+# Appendix: Panic Handler
+
+TODO
+
+_Some debug features don't seem to be working? Like `unreachable`, `std.debug.assert` and `std.debug.panic`?_
+
+That's because for Embedded Platforms we need to implement our own Panic Handler...
+
+-   ["Using Zig to Provide Stack Traces on Kernel Panic for a Bare Bones Operating System"](https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html)
+
+-   [Default Panic Handler: `std.debug.default_panic`](https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847)
+
+With our own Panic Handler, this Assertion Failure...
+
+```zig
+//  Create a short alias named `assert`
+const assert = std.debug.assert;
+
+//  Assertion Failure
+assert(TxPeriodicity != 0);
+```
+
+Will show this Stack Trace...
+
+```text
+!ZIG PANIC!
+reached unreachable code
+Stack Trace:
+0x23016394
+0x23016ce0
+```
+
+According to our RISC-V Disassembly, the first address `23016394` doesn't look interesting, because it's inside the `assert` function...
+
+```text
+/home/user/zig-linux-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/std/debug.zig:259
+pub fn assert(ok: bool) void {
+2301637c:	00b51c63          	bne	a0,a1,23016394 <std.debug.assert+0x2c>
+23016380:	a009                j	23016382 <std.debug.assert+0x1a>
+23016382:	2307e537          	lui	a0,0x2307e
+23016386:	f9850513          	addi	a0,a0,-104 # 2307df98 <__unnamed_4>
+2301638a:	4581                li	a1,0
+2301638c:	00000097          	auipc	ra,0x0
+23016390:	f3c080e7          	jalr	-196(ra) # 230162c8 <panic>
+    if (!ok) unreachable; // assertion failure
+23016394:	a009                j	23016396 <std.debug.assert+0x2e>
+```
+
+But the second address `23016ce0` reveals the assertion that failed...
+
+```text
+/home/user/nuttx/zig-bl602-nuttx/lorawan_test.zig:95
+    assert(TxPeriodicity != 0);
+23016ccc:	42013537          	lui	a0,0x42013
+23016cd0:	fbc52503          	lw	a0,-68(a0) # 42012fbc <TxPeriodicity>
+23016cd4:	00a03533          	snez	a0,a0
+23016cd8:	fffff097          	auipc	ra,0xfffff
+23016cdc:	690080e7          	jalr	1680(ra) # 23016368 <std.debug.assert>
+/home/user/nuttx/zig-bl602-nuttx/lorawan_test.zig:100
+    TxTimer = std.mem.zeroes(c.TimerEvent_t);
+23016ce0:	42016537          	lui	a0,0x42016
+```
+
+This is our implementation of the Zig Panic Handler...
+
+```zig
+/// Called by Zig when it hits a Panic. We print the Panic Message, Stack Trace and halt. See 
+/// https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html
+/// https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847
+pub fn panic(
+    message: []const u8, 
+    _stack_trace: ?*std.builtin.StackTrace
+) noreturn {
+    // Print the Panic Message
+    _ = _stack_trace;
+    _ = puts("\n!ZIG PANIC!");
+    _ = puts(@ptrCast([*c]const u8, message));
+
+    // Print the Stack Trace
+    _ = puts("Stack Trace:");
+    var it = std.debug.StackIterator.init(@returnAddress(), null);
+    while (it.next()) |return_address| {
+        _ = printf("%p\n", return_address);
+    }
+
+    // Halt
+    while(true) {}
+}
+```
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L501-L522)
 
 # Appendix: Zig Compiler as Drop-In Replacement for GCC
 
