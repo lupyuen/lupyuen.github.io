@@ -511,6 +511,12 @@ Finally we __transmit the message__ to the LoRaWAN Network...
 }
 ```
 
+And that's how __PrepareTxFrame__ transmits a Data Packet over LoRaWAN!
+
+_How is PrepareTxFrame is called?_
+
+TODO
+
 # Convert LoRaWAN App to Zig
 
 TODO
