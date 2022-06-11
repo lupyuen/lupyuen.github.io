@@ -72,23 +72,21 @@
 <li><a href="#transmit-data-packet">5 Transmit Data Packet</a><ul></ul></li>
 <li><a href="#logging">6 Logging</a><ul></ul></li>
 <li><a href="#compile-zig-app">7 Compile Zig App</a><ul></ul></li>
-<li><a href="#refer-to-auto-translated-zig-code">8 Refer to Auto-Translated Zig Code</a><ul></ul></li>
-<li><a href="#lorawan-zig-app-runs-ok">9 LoRaWAN Zig App Runs OK!</a><ul></ul></li>
-<li><a href="#safety-checks">10 Safety Checks</a><ul></ul></li>
-<li><a href="#panic-handler">11 Panic Handler</a><ul></ul></li>
-<li><a href="#compare-c-and-zig">12 Compare C and Zig</a><ul></ul></li>
-<li><a href="#zig-outcomes">13 Zig Outcomes</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
-<li><a href="#notes">15 Notes</a><ul></ul></li>
-<li><a href="#appendix-logging">16 Appendix: Logging</a><ul></ul></li>
-<li><a href="#appendix-zig-compiler-as-drop-in-replacement-for-gcc">17 Appendix: Zig Compiler as Drop-In Replacement for GCC</a><ul></ul></li>
-<li><a href="#appendix-lorawan-library-for-nuttx">18 Appendix: LoRaWAN Library for NuttX</a><ul></ul></li>
-<li><a href="#appendix-lorawan-app-for-nuttx">19 Appendix: LoRaWAN App for NuttX</a><ul></ul></li>
-<li><a href="#appendix-auto-translate-lorawan-app-to-zig">20 Appendix: Auto-Translate LoRaWAN App to Zig</a><ul></ul></li>
-<li><a href="#appendix-opaque-type-error">21 Appendix: Opaque Type Error</a><ul></ul></li>
-<li><a href="#appendix-fix-opaque-type">22 Appendix: Fix Opaque Type</a><ul></ul></li>
-<li><a href="#appendix-macro-error">23 Appendix: Macro Error</a><ul></ul></li>
-<li><a href="#appendix-struct-initialisation-error">24 Appendix: Struct Initialisation Error</a><ul></ul></li></ul></nav><p>📝 <em>16 Jun 2022</em></p>
+<li><a href="#run-zig-app">8 Run Zig App</a><ul></ul></li>
+<li><a href="#safety-checks">9 Safety Checks</a><ul></ul></li>
+<li><a href="#panic-handler">10 Panic Handler</a><ul></ul></li>
+<li><a href="#zig-outcomes">11 Zig Outcomes</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-logging">14 Appendix: Logging</a><ul></ul></li>
+<li><a href="#appendix-zig-compiler-as-drop-in-replacement-for-gcc">15 Appendix: Zig Compiler as Drop-In Replacement for GCC</a><ul></ul></li>
+<li><a href="#appendix-lorawan-library-for-nuttx">16 Appendix: LoRaWAN Library for NuttX</a><ul></ul></li>
+<li><a href="#appendix-lorawan-app-for-nuttx">17 Appendix: LoRaWAN App for NuttX</a><ul></ul></li>
+<li><a href="#appendix-auto-translate-lorawan-app-to-zig">18 Appendix: Auto-Translate LoRaWAN App to Zig</a><ul></ul></li>
+<li><a href="#appendix-opaque-type-error">19 Appendix: Opaque Type Error</a><ul></ul></li>
+<li><a href="#appendix-fix-opaque-type">20 Appendix: Fix Opaque Type</a><ul></ul></li>
+<li><a href="#appendix-macro-error">21 Appendix: Macro Error</a><ul></ul></li>
+<li><a href="#appendix-struct-initialisation-error">22 Appendix: Struct Initialisation Error</a><ul></ul></li></ul></nav><p>📝 <em>16 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/iot-title.jpg" alt="Pine64 PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN on Zig to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
 <p><em>Pine64 PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN on Zig to RAKwireless WisGate LoRaWAN Gateway (right)</em></p>
 <p>In our last article we learnt to run barebones <strong>Zig on a Microcontroller</strong> (RISC-V BL602) with a <strong>Real-Time Operating System</strong> (Apache NuttX RTOS)…</p>
@@ -505,7 +503,7 @@ xxd -c 1 lorawan_test.o \
   | xxd -r -c 1 - lorawan_test2.o
 cp lorawan_test2.o lorawan_test.o</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(More about this)</a></p>
-<p>Finally we inject our <strong>Compiled Zig App</strong> into the NuttX Project Directory…</p>
+<p>Finally we inject our <strong>Compiled Zig App</strong> into the NuttX Project Directory and link it into the <strong>NuttX Firmware</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Copy the compiled app to NuttX and overwrite `lorawan_test.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
@@ -513,8 +511,11 @@ cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
 #  Build NuttX to link the Zig Object from `lorawan_test.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
-make</code></pre></div>
-<p>And we link the Compiled Zig App into the <strong>NuttX Firmware</strong>.</p>
+make
+
+#  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
+mkdir /mnt/c/blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>+ pushd ../zig-bl602-nuttx
 ~/nuttx/zig-bl602-nuttx ~/nuttx/nuttx
@@ -531,38 +532,10 @@ info(compilation): C import output: zig-cache/o/adbf03c74d351db638f34bb5535a8c3b
 -rw-r--r-- 1 user user 467724 Jun 10 16:44 /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
 -rw-r--r-- 1 user user 467724 Jun 10 16:44 lorawan_test.o
 + popd
-~/nuttx/nuttx</code></pre></div><h1 id="refer-to-auto-translated-zig-code"><a href="#refer-to-auto-translated-zig-code">8 Refer to Auto-Translated Zig Code</a></h1>
+~/nuttx/nuttx</code></pre></div><h1 id="run-zig-app"><a href="#run-zig-app">8 Run Zig App</a></h1>
 <p>TODO</p>
-<p>Some parts of the LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> can get tricky to convert from C to Zig, like this C code…</p>
-<div class="example-wrap"><pre class="language-c"><code>//  Original C code...
-#define APP_TX_DUTYCYCLE     40000
-#define APP_TX_DUTYCYCLE_RND  5000
-
-uint32_t TxPeriodicity = 
-    APP_TX_DUTYCYCLE +
-    randr( 
-        -APP_TX_DUTYCYCLE_RND, 
-        APP_TX_DUTYCYCLE_RND
-    );</code></pre></div>
-<p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L283-L286">(Source)</a></p>
-<p>Which has conflicting signed (<code>randr</code>) and unsigned (<code>APP_TX_DUTYCYCLE</code>) types.</p>
-<p>We get help by referring to the auto-translated Zig Code: <a href="translated/lorawan_test_main.zig">translated/lorawan_test_main.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>//  Converted from C to Zig...
-const APP_TX_DUTYCYCLE:     c_int = 40000;
-const APP_TX_DUTYCYCLE_RND: c_int = 5000;
-
-//  Cast to u32 because randr() can be negative
-var TxPeriodicity: u32 = @intCast(u32,
-    APP_TX_DUTYCYCLE +
-    c.randr(
-        -APP_TX_DUTYCYCLE_RND,
-        APP_TX_DUTYCYCLE_RND
-    )
-);</code></pre></div>
-<p>Which resolves the conflicting types by casting the signed result to become unsigned.</p>
-<h1 id="lorawan-zig-app-runs-ok"><a href="#lorawan-zig-app-runs-ok">9 LoRaWAN Zig App Runs OK!</a></h1>
-<p>TODO</p>
-<p>After fixing the above issues, we test the LoRaWAN Zig App on NuttX: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack"><strong>“Flash PineDio Stack”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack"><strong>“Flash PineDio Stack”</strong></a></p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lorawan_test
 Application name   : Zig LoRaWAN Test
 ...
@@ -587,7 +560,7 @@ TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(See the complete log)</a></p>
 <p>LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!</p>
-<h1 id="safety-checks"><a href="#safety-checks">10 Safety Checks</a></h1>
+<h1 id="safety-checks"><a href="#safety-checks">9 Safety Checks</a></h1>
 <p>TODO</p>
 <p>The Zig Compiler reveals interesting insights when auto-translating our C code to Zig.</p>
 <p>This C code copies an array, byte by byte…</p>
@@ -647,7 +620,7 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#setRuntimeSafety">“@setRuntimeSafety”</a></li>
 </ul>
-<h1 id="panic-handler"><a href="#panic-handler">11 Panic Handler</a></h1>
+<h1 id="panic-handler"><a href="#panic-handler">10 Panic Handler</a></h1>
 <p>TODO</p>
 <p><em>Some debug features don’t seem to be working? Like <code>unreachable</code>, <code>std.debug.assert</code> and <code>std.debug.panic</code>?</em></p>
 <p>That’s because for Embedded Platforms we need to implement our own Panic Handler…</p>
@@ -718,134 +691,17 @@ pub fn panic(
     while(true) {}
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L501-L522">(Source)</a></p>
-<p><img src="https://lupyuen.github.io/images/iot-code4a.png" alt="" /></p>
-<h1 id="compare-c-and-zig"><a href="#compare-c-and-zig">12 Compare C and Zig</a></h1>
 <p>TODO</p>
-<p>The Original C Code and the Converted Zig Code for our LoRaWAN App look highly similar.</p>
-<p>Here’s the Main Function from our Original C Code…</p>
-<div class="example-wrap"><pre class="language-c"><code>/// Main Function that will be called by NuttX. We call the LoRaWAN Library 
-/// to Join a LoRaWAN Network and send a Data Packet.
-int main(int argc, FAR char *argv[]) {
-    //  If we are using Entropy Pool and the BL602 ADC is available,
-    //  add the Internal Temperature Sensor data to the Entropy Pool
-    init_entropy_pool();
-
-    //  Compute the interval between transmissions based on Duty Cycle
-    TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
-
-    const Version_t appVersion    = { .Value = FIRMWARE_VERSION };
-    const Version_t gitHubVersion = { .Value = GITHUB_VERSION };
-    DisplayAppInfo( &quot;lorawan_test&quot;, 
-                    &amp;appVersion,
-                    &amp;gitHubVersion );
-
-    //  Init LoRaWAN
-    if ( LmHandlerInit( &amp;LmHandlerCallbacks, &amp;LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS )
-    {
-        printf( &quot;LoRaMac wasn&#39;t properly initialized\n&quot; );
-        //  Fatal error, endless loop.
-        while ( 1 ) {}
-    }
-
-    // Set system maximum tolerated rx error in milliseconds
-    LmHandlerSetSystemMaxRxError( 20 );
-
-    // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
-    LmHandlerPackageRegister( PACKAGE_ID_COMPLIANCE, &amp;LmhpComplianceParams );
-    LmHandlerPackageRegister( PACKAGE_ID_CLOCK_SYNC, NULL );
-    LmHandlerPackageRegister( PACKAGE_ID_REMOTE_MCAST_SETUP, NULL );
-    LmHandlerPackageRegister( PACKAGE_ID_FRAGMENTATION, &amp;FragmentationParams );
-
-    IsClockSynched     = false;
-    IsFileTransferDone = false;
-
-    //  Join the LoRaWAN Network
-    LmHandlerJoin( );
-
-    //  Set the Transmit Timer
-    StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );
-
-    //  Handle LoRaWAN Events
-    handle_event_queue(NULL);  //  Never returns
-
-    return 0;
-}</code></pre></div>
-<p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323">(Source)</a></p>
-<p>And the Main Function from our Converted Zig Code (after some scrubbing)…</p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We call the LoRaWAN Library 
-/// to Join a LoRaWAN Network and send a Data Packet.
-pub export fn lorawan_test_main(
-    _argc: c_int, 
-    _argv: [*]const [*]const u8
-) c_int {
-    _ = _argc;
-    _ = _argv;
-
-    // Init the Timer Struct at startup
-    TxTimer = std.mem.zeroes(c.TimerEvent_t);
-
-    // If we are using Entropy Pool and the BL602 ADC is available,
-    // add the Internal Temperature Sensor data to the Entropy Pool
-    // TODO: init_entropy_pool();
-
-    // Compute the interval between transmissions based on Duty Cycle
-    TxPeriodicity = @intCast(u32,  // Cast to u32 because randr() can be negative
-        APP_TX_DUTYCYCLE +
-        c.randr(
-            -APP_TX_DUTYCYCLE_RND,
-            APP_TX_DUTYCYCLE_RND
-        )
-    );
-
-    // Show the Firmware and GitHub Versions
-    const appVersion = c.Version_t {
-        .Value = c.FIRMWARE_VERSION,
-    };
-    const gitHubVersion = c.Version_t {
-        .Value = c.GITHUB_VERSION,
-    };
-    c.DisplayAppInfo(&quot;Zig LoRaWAN Test&quot;, &amp;appVersion, &amp;gitHubVersion);
-
-    // Init LoRaWAN
-    if (LmHandlerInit(&amp;LmHandlerCallbacks, &amp;LmHandlerParams)
-        != c.LORAMAC_HANDLER_SUCCESS) {
-        std.log.err(&quot;LoRaMac wasn&#39;t properly initialized&quot;, .{});
-        // Fatal error, endless loop.
-        while (true) {}
-    }
-
-    // Set system maximum tolerated rx error in milliseconds
-    _ = c.LmHandlerSetSystemMaxRxError(20);
-
-    // The LoRa-Alliance Compliance protocol package should always be initialized and activated.
-    _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_COMPLIANCE,         &amp;LmhpComplianceParams);
-    _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_CLOCK_SYNC,         null);
-    _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_REMOTE_MCAST_SETUP, null);
-    _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &amp;FragmentationParams);
-
-    // Init the Clock Sync and File Transfer status
-    IsClockSynched     = false;
-    IsFileTransferDone = false;
-
-    // Join the LoRaWAN Network
-    c.LmHandlerJoin();
-
-    // Set the Transmit Timer
-    StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);
-
-    // Handle LoRaWAN Events
-    handle_event_queue();  //  Never returns
-
-    return 0;
-}</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158">(Source)</a></p>
-<h1 id="zig-outcomes"><a href="#zig-outcomes">13 Zig Outcomes</a></h1>
+<p><img src="https://lupyuen.github.io/images/iot-code4a.png" alt="The Original C Code and the Converted Zig Code for our LoRaWAN App look highly similar" /></p>
+<p><em>The <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323">Original C Code</a> and the <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158">Converted Zig Code</a> for our LoRaWAN App look highly similar</em></p>
+<h1 id="zig-outcomes"><a href="#zig-outcomes">11 Zig Outcomes</a></h1>
+<p><em>Once again… Why are we doing all this in Zig?</em></p>
 <p>TODO: Read the Internal Temperature Sensor</p>
 <p>TODO: Encode the Temperature Sensor Data with <a href="https://lupyuen.github.io/articles/cbor2">TinyCBOR</a> and transmit to The Things Network</p>
 <p>TODO: Monitor sensor data with <a href="https://lupyuen.github.io/articles/prometheus">Prometheus and Grafana</a></p>
 <p>TODO: Add new code with <a href="https://zig.news/mattnite/import-and-packages-23mb"><code>@import()</code></a></p>
 <p>TODO: <a href="https://lupyuen.github.io/articles/pinedio2#nuttx-apps">LVGL</a></p>
-<h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -864,7 +720,7 @@ pub export fn lorawan_test_main(
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/iot.md"><strong><code>lupyuen.github.io/src/iot.md</code></strong></a></p>
-<h1 id="notes"><a href="#notes">15 Notes</a></h1>
+<h1 id="notes"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1533595486577258496"><strong>this Twitter Thread</strong></a></p>
@@ -876,7 +732,7 @@ pub export fn lorawan_test_main(
 <p>TODO: <a href="https://ziglearn.org/chapter-4/"><strong>“Working with C”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-logging"><a href="#appendix-logging">16 Appendix: Logging</a></h1>
+<h1 id="appendix-logging"><a href="#appendix-logging">14 Appendix: Logging</a></h1>
 <p>TODO</p>
 <p>We have implemented Debug Logging <code>std.log.debug</code> that’s described here…</p>
 <ul>
@@ -927,7 +783,7 @@ pub fn log(
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546">(Source)</a></p>
 <p>This implementation calls <code>puts()</code>, which is supported by Apache NuttX RTOS since it’s <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX-Compliant</strong></a>.</p>
-<h1 id="appendix-zig-compiler-as-drop-in-replacement-for-gcc"><a href="#appendix-zig-compiler-as-drop-in-replacement-for-gcc">17 Appendix: Zig Compiler as Drop-In Replacement for GCC</a></h1>
+<h1 id="appendix-zig-compiler-as-drop-in-replacement-for-gcc"><a href="#appendix-zig-compiler-as-drop-in-replacement-for-gcc">15 Appendix: Zig Compiler as Drop-In Replacement for GCC</a></h1>
 <p>TODO</p>
 <p><em>Will Zig Compiler work as <a href="https://lupyuen.github.io/articles/zig#why-zig">Drop-In Replacement for GCC</a> for compiling NuttX Libraries?</em></p>
 <p>Let’s test it on the <a href="https://lupyuen.github.io/articles/sx1262">LoRa SX1262 Library</a> for Apache NuttX RTOS!</p>
@@ -1174,7 +1030,7 @@ U/L FREQ    : 923400000
 TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ada7f83a96eb36ad1b9fe09da4527003">(See the complete log)</a></p>
-<h1 id="appendix-lorawan-library-for-nuttx"><a href="#appendix-lorawan-library-for-nuttx">18 Appendix: LoRaWAN Library for NuttX</a></h1>
+<h1 id="appendix-lorawan-library-for-nuttx"><a href="#appendix-lorawan-library-for-nuttx">16 Appendix: LoRaWAN Library for NuttX</a></h1>
 <p>TODO</p>
 <p>Let’s compile the huge <a href="https://lupyuen.github.io/articles/lorawan3">LoRaWAN Library</a> with Zig Compiler.</p>
 <p>NuttX compiles the LoRaWAN Library like this…</p>
@@ -1249,7 +1105,7 @@ make</code></pre></div>
 <p>TODO: Compile the other files in the LoRaWAN Library with <code>build.zig</code></p>
 <p>https://ziglang.org/documentation/master/#Zig-Build-System</p>
 <p>TODO: Test the LoRaWAN Library</p>
-<h1 id="appendix-lorawan-app-for-nuttx"><a href="#appendix-lorawan-app-for-nuttx">19 Appendix: LoRaWAN App for NuttX</a></h1>
+<h1 id="appendix-lorawan-app-for-nuttx"><a href="#appendix-lorawan-app-for-nuttx">17 Appendix: LoRaWAN App for NuttX</a></h1>
 <p>TODO</p>
 <p>Now we compile the LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> with Zig Compiler.</p>
 <p>NuttX compiles the LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> like this…</p>
@@ -1352,7 +1208,7 @@ TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/477982242d897771d7a5780c8a9b0910">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/iot-code5a.png" alt="" /></p>
-<h1 id="appendix-auto-translate-lorawan-app-to-zig"><a href="#appendix-auto-translate-lorawan-app-to-zig">20 Appendix: Auto-Translate LoRaWAN App to Zig</a></h1>
+<h1 id="appendix-auto-translate-lorawan-app-to-zig"><a href="#appendix-auto-translate-lorawan-app-to-zig">18 Appendix: Auto-Translate LoRaWAN App to Zig</a></h1>
 <p>TODO</p>
 <p>The Zig Compiler can auto-translate C code to Zig. <a href="https://ziglang.org/documentation/master/#C-Translation-CLI">(See this)</a></p>
 <p>Here’s how we auto-translate our LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> from C to Zig…</p>
@@ -1487,7 +1343,7 @@ zig translate-c \
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L4535-L4565">(Source)</a></p>
 <p>We’ll refer to this auto-translated Zig Code when we manually convert our LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> from C to Zig.</p>
-<h1 id="appendix-opaque-type-error"><a href="#appendix-opaque-type-error">21 Appendix: Opaque Type Error</a></h1>
+<h1 id="appendix-opaque-type-error"><a href="#appendix-opaque-type-error">19 Appendix: Opaque Type Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>TODO</p>
 <p>When we reference <code>LmHandlerCallbacks</code> in our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
@@ -1582,7 +1438,7 @@ pub const union_uPingSlotInfo = extern union {
 }PingSlotInfo_t;</code></pre></div>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMac.h#L312-L333">(Source)</a></p>
 <p>We see that <code>sInfoFields</code> contains Bit Fields, that the Zig Compiler is unable to translate.</p>
-<h1 id="appendix-fix-opaque-type"><a href="#appendix-fix-opaque-type">22 Appendix: Fix Opaque Type</a></h1>
+<h1 id="appendix-fix-opaque-type"><a href="#appendix-fix-opaque-type">20 Appendix: Fix Opaque Type</a></h1>
 <p>TODO</p>
 <p>Earlier we saw that this fails to compile in our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    _ = &amp;LmHandlerCallbacks;</code></pre></div>
@@ -1637,7 +1493,7 @@ extern fn LmHandlerInit(
 ) c.LmHandlerErrorStatus_t;</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L707-L720">(Source)</a></p>
 <p>After fixing the Opaque Type, Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> yay!</p>
-<h1 id="appendix-macro-error"><a href="#appendix-macro-error">23 Appendix: Macro Error</a></h1>
+<h1 id="appendix-macro-error"><a href="#appendix-macro-error">21 Appendix: Macro Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>TODO</p>
 <p>While compiling our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>, we see this Macro Error…</p>
@@ -1670,7 +1526,7 @@ const c = @cImport({
     @cDefine(&quot;LL&quot;, &quot;&quot;);
     @cDefine(&quot;__int_c_join(a, b)&quot;, &quot;a&quot;);  //  Bypass zig/lib/include/stdint.h</code></pre></div>
 <p>Now Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a></p>
-<h1 id="appendix-struct-initialisation-error"><a href="#appendix-struct-initialisation-error">24 Appendix: Struct Initialisation Error</a></h1>
+<h1 id="appendix-struct-initialisation-error"><a href="#appendix-struct-initialisation-error">22 Appendix: Struct Initialisation Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>TODO</p>
 <p>Zig Compiler crashes when it tries to initialise the Timer Struct at startup…</p>
