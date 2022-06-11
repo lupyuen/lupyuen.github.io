@@ -609,16 +609,18 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p>We’ll get this <strong>Runtime Error</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>panic: index out of bounds</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Index-out-of-Bounds">(Source)</a></p>
+<p>TODO</p>
 <p>Here’s the list of <strong>Safety Checks</strong> done by Zig at runtime…</p>
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>“Zig Undefined Behavior”</strong></a></li>
 </ul>
 <p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler">(How we implemented a Custom Panic Handler)</a></p>
+<p><em>Can we turn off the Safety Checks?</em></p>
 <p>If we prefer to live a little recklessly (momentarily), this is how we <strong>disable the Safety Checks</strong>…</p>
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#setRuntimeSafety"><strong>@setRuntimeSafety</strong></a></li>
 </ul>
-<p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler">(How we implemented a Custom Panic Handler)</a></p>
 <p><img src="https://lupyuen.github.io/images/iot-code4a.png" alt="Original C Code (left) and Converted Zig Code (right) for our LoRaWAN App look highly similar" /></p>
 <p><em><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323">Original C Code</a> (left) and <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158">Converted Zig Code</a> (right) for our LoRaWAN App look highly similar</em></p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
