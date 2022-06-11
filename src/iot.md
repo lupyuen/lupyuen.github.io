@@ -600,11 +600,11 @@ We discuss the implementation of __Zig Logging__ in the Appendix...
 
 Now that we understand the code, we're ready to __compile our LoRaWAN Zig App__!
 
-We assume that __Apache NuttX RTOS__ has been downloaded and compiled for PineDio Stack BL604...
+We download and compile __Apache NuttX RTOS__ for PineDio Stack BL604...
 
 -   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
 
-Then we __download and compile__ our Zig App...
+Then we download and compile our __LoRaWAN Zig App__...
 
 ```bash
 ##  Download our LoRaWAN Zig App for NuttX
@@ -623,7 +623,11 @@ zig build-obj \
   lorawan_test.zig
 ```
 
-[(__target__ and __mcpu__ are explained here)](https://lupyuen.github.io/articles/zig#zig-target)
+[(See the Compile Log)](https://gist.github.com/lupyuen/b29186ad4ad870bcaaace704fd3def7d)
+
+Note that __target__ and __mcpu__ are specific to BL602...
+
+-   [__"Zig Target"__](https://lupyuen.github.io/articles/zig#zig-target)
 
 _How did we get the `-isystem` and `-I` options?_
 
@@ -663,26 +667,7 @@ mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash
 ```
 
-TODO
-
-```text
-+ pushd ../zig-bl602-nuttx
-~/nuttx/zig-bl602-nuttx ~/nuttx/nuttx
-+ zig build-obj --verbose-cimport -target riscv32-freestanding-none -mcpu=baseline_rv32-d -isystem /home/user/nuttx/nuttx/include -I /home/user/nuttx/apps/examples/lorawan_test lorawan_test.zig
-info(compilation): C import source: zig-cache/o/08fa8a0a89d15e88ae63a9f8e0af6c91/cimport.h
-info(compilation): C import .d file: zig-cache/o/08fa8a0a89d15e88ae63a9f8e0af6c91/cimport.h.d
-info(compilation): C import output: zig-cache/o/adbf03c74d351db638f34bb5535a8c3b/cimport.zig
-+ xxd -c 1 lorawan_test.o
-+ sed 's/00000024: 01/00000024: 03/'
-+ xxd -r -c 1 - lorawan_test2.o
-+ cp lorawan_test2.o lorawan_test.o
-+ cp lorawan_test.o /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
-+ ls -l lorawan_test.o /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
--rw-r--r-- 1 user user 467724 Jun 10 16:44 /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
--rw-r--r-- 1 user user 467724 Jun 10 16:44 lorawan_test.o
-+ popd
-~/nuttx/nuttx
-```
+We're ready to run our Zig App!
 
 # Run Zig App
 
@@ -722,6 +707,8 @@ CHANNEL MASK: 0003
 LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig) successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!
 
 # Safety Checks
+
+_Our IoT App is now in Zig instead of C. Do we gain anything?_
 
 TODO
 
