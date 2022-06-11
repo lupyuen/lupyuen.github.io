@@ -924,6 +924,8 @@ _The [Original C Code](https://github.com/lupyuen/lorawan_test/blob/main/lorawan
 
 _Once again... Why are we doing all this in Zig?_
 
+TODO: Minor workarounds, no showstoppers 
+
 TODO: Read the Internal Temperature Sensor
 
 TODO: Encode the Temperature Sensor Data with [TinyCBOR](https://lupyuen.github.io/articles/cbor2) and transmit to The Things Network
