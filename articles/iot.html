@@ -255,7 +255,7 @@ pub export fn lorawan_test_main(
     .Value = c.GITHUB_VERSION,
   };
   c.DisplayAppInfo(&quot;Zig LoRaWAN Test&quot;, &amp;appVersion, &amp;gitHubVersion);</code></pre></div>
-<p>We <strong>initialise the LoRaWAN Library</strong>…</p>
+<p>Then we <strong>initialise the LoRaWAN Library</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Init LoRaWAN
   if (LmHandlerInit(&amp;LmHandlerCallbacks, &amp;LmHandlerParams)
     != c.LORAMAC_HANDLER_SUCCESS) {
@@ -264,6 +264,7 @@ pub export fn lorawan_test_main(
     // Fatal error, endless loop.
     while (true) {}
   }</code></pre></div>
+<p>(We’ll explain “<code>.{}</code>” in a while)</p>
 <p>We set the <strong>Max Tolerated Receive Error</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set system maximum tolerated rx error in milliseconds
   _ = c.LmHandlerSetSystemMaxRxError(20);</code></pre></div>
@@ -358,51 +359,61 @@ Stack Trace:
 0x23016dba</code></pre></div>
 <p>Great to have Zig watching our backs… When we do risky things! 👍</p>
 <h1 id="transmit-data-packet"><a href="#transmit-data-packet">5 Transmit Data Packet</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203">lorawan_test.zig</a></p>
+<p>Back to our Zig App… This is how we <strong>transmit a Data Packet</strong> to the LoRaWAN Network: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203">lorawan_test.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Prepare the payload of a Data Packet transmit it
 fn PrepareTxFrame() void {
+
   // If we haven&#39;t joined the LoRaWAN Network, try again later
   if (c.LmHandlerIsBusy()) {
     debug(&quot;PrepareTxFrame: Busy&quot;, .{});
     return;
-  }
-
-  // Send a message to LoRaWAN
+  }</code></pre></div>
+<p>LoRaWAN won’t let us transmit data unless we’ve <strong>joined the LoRaWAN Network</strong>. So we check this first.</p>
+<p>Next we prepare the <strong>message to be sent</strong> (“<code>Hi NuttX</code>”)…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Send a message to LoRaWAN
   const msg: []const u8 = &quot;Hi NuttX\x00&quot;;  // 9 bytes including null
   debug(&quot;PrepareTxFrame: Transmit to LoRaWAN ({} bytes): {s}&quot;, .{ 
     msg.len, msg 
-  });
-
-  // Compose the transmit request
+  });</code></pre></div>
+<p>That’s <strong>9 bytes</strong>, including the Terminating Null.</p>
+<p><em>Why so smol?</em></p>
+<p>The first LoRaWAN message needs to be <strong>11 bytes</strong> or smaller, subsequent messages can be up to <strong>53 bytes</strong>.</p>
+<p>This depends on the <strong>LoRaWAN Data Rate</strong> and the LoRaWAN Region. <a href="https://lupyuen.github.io/articles/lorawan3#message-size">(See this)</a></p>
+<p>Then we copy the message into the <strong>LoRaWAN Buffer</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Copy the message into the LoRaWAN buffer
   std.mem.copy(
     u8, 
     AppDataBuffer[0..msg.len], 
     msg[0..msg.len]
-  );
+  );</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/std/#std;mem.copy">(<strong>std.mem.copy</strong> is documented here)</a></p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L724-L729">(<strong>AppDataBuffer</strong> is defined here)</a></p>
+<p>We compose the <strong>LoRaWAN Transmit Request</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Compose the transmit request
   var appData = c.LmHandlerAppData_t {
     .Buffer     = @ptrCast([*c]u8, &amp;AppDataBuffer),
     .BufferSize = msg.len,
     .Port       = 1,
-  };
-
-  // Validate the message size and check if it can be transmitted
+  };</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#ptrCast">(<strong>@ptrCast</strong> is needed for casting Zig Pointers to C)</a></p>
+<p>Remember that the <a href="https://lupyuen.github.io/articles/lorawan3#message-size"><strong>Max Message Size</strong></a> depends on the LoRaWAN Data Rate and the LoRaWAN Region?</p>
+<p>This is how we <strong>validate the Message Size</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Validate the message size and check if it can be transmitted
   var txInfo: c.LoRaMacTxInfo_t = undefined;
-  const status = c.LoRaMacQueryTxPossible(appData.BufferSize, &amp;txInfo);
-  debug(&quot;PrepareTxFrame: status={}, maxSize={}, currentSize={}&quot;, .{
-    status, 
-    txInfo.MaxPossibleApplicationDataSize, 
-    txInfo.CurrentPossiblePayloadSize
-  });
-  assert(status == c.LORAMAC_STATUS_OK);
-
-  // Transmit the message
-  const sendStatus = c.LmHandlerSend(&amp;appData, LmHandlerParams.IsTxConfirmed);
+  const status = c.LoRaMacQueryTxPossible(
+    appData.BufferSize,  // Message Size
+    &amp;txInfo              // Unused
+  );
+  assert(status == c.LORAMAC_STATUS_OK);</code></pre></div>
+<p>Finally we <strong>transmit the message</strong> to the LoRaWAN Network…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Transmit the message
+  const sendStatus = c.LmHandlerSend(
+    &amp;appData,                      // Transmit Request
+    LmHandlerParams.IsTxConfirmed  // False (No acknowledge required)
+  );
   assert(sendStatus == c.LORAMAC_HANDLER_SUCCESS);
   debug(&quot;PrepareTxFrame: Transmit OK&quot;, .{});
-}</code></pre></div>
-<p>TODO: 9 bytes or shorter</p>
-<h1 id="convert-lorawan-app-to-zig"><a href="#convert-lorawan-app-to-zig">6 Convert LoRaWAN App to Zig</a></h1>
+}</code></pre></div><h1 id="convert-lorawan-app-to-zig"><a href="#convert-lorawan-app-to-zig">6 Convert LoRaWAN App to Zig</a></h1>
 <p>TODO</p>
 <p>Finally we convert the LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> from C to Zig, to show that we can build Complex IoT Apps in Zig.</p>
 <p>The LoRaWAN App runs on PineDio Stack BL604 (RISC-V). The app connects to a LoRaWAN Gateway (like ChirpStack or The Things Network) and sends a Data Packet at regular intervals.</p>
