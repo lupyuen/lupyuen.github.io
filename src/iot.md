@@ -596,16 +596,16 @@ We discuss the implementation of __Zig Logging__ in the Appendix...
 
 # Compile Zig App
 
-TODO
-
-To compile the LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig)...
+Now that we understand the code, we're ready to __compile our LoRaWAN Zig App__!
 
 ```bash
 ##  Download our LoRaWAN Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
 
-##  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
+##  Compile the Zig App for BL602
+##  (RV32IMACF with Hardware Floating-Point)
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
 zig build-obj \
   --verbose-cimport \
   -target riscv32-freestanding-none \
@@ -613,13 +613,25 @@ zig build-obj \
   -isystem "$HOME/nuttx/nuttx/include" \
   -I "$HOME/nuttx/apps/examples/lorawan_test" \
   lorawan_test.zig
+```
 
+[(__target__ and __mcpu__ are explained here)](https://lupyuen.github.io/articles/zig#zig-target)
+
+_How did we get the `-isystem` and `-I` options?_
+
+TODO
+
+```bash
 ##  Patch the ELF Header of `lorawan_test.o` from Soft-Float ABI to Hard-Float ABI
 xxd -c 1 lorawan_test.o \
   | sed 's/00000024: 01/00000024: 03/' \
   | xxd -r -c 1 - lorawan_test2.o
 cp lorawan_test2.o lorawan_test.o
+```
 
+TODO
+
+```bash
 ##  Copy the compiled app to NuttX and overwrite `lorawan_test.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
 cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
