@@ -66,6 +66,8 @@ We'll use __Semtech's Reference Implementation__ of the LoRaWAN Stack...
 
 -   [__Lora-net/LoRaMac-node__](https://github.com/Lora-net/LoRaMac-node)
 
+    [(LoRaMAC Documentation)](https://stackforce.github.io/LoRaMac-doc/LoRaMac-doc-v4.6.0/index.html)
+
 That we've ported to PineDio Stack BL604 with __Apache NuttX RTOS__...
 
 -   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
@@ -673,9 +675,11 @@ We're ready to run our Zig App!
 
 TODO
 
+Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on PineDio Stack...
+
 [__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
 
-[__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
+[__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
 
 ```text
 nsh> lorawan_test
