@@ -714,41 +714,44 @@ LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/bl
 
 _Our IoT App is now in Zig instead of C. Do we gain anything?_
 
-TODO
+We claimed earlier that __Zig is watching our backs__ (in case we do something risky)...
 
-The Zig Compiler reveals interesting insights when auto-translating our C code to Zig.
+-   [__"Convert Integer Type"__](https://lupyuen.github.io/articles/iot#convert-integer-type)
 
-This C code copies an array, byte by byte...
+Let's dig for more evidence that Zig really tries to protect our programs...
+
+This __C Code__ (from the original LoRaWAN Demo) copies an array, byte by byte...
 
 ```c
-static int8_t FragDecoderWrite( uint32_t addr, uint8_t *data, uint32_t size ) {
-    ...
-    for(uint32_t i = 0; i < size; i++ ) {
-        UnfragmentedData[addr + i] = data[i];
-    }
-    return 0; // Success
-}
+static int8_t FragDecoderWrite(uint32_t addr, uint8_t *data, uint32_t size) {
+  ...
+  for (uint32_t i = 0; i < size; i++ ) {
+    UnfragmentedData[addr + i] = data[i];
+  }
 ```
 
 [(Source)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L539-L550)
 
-Here's the auto-translated Zig code...
+Our Zig Compiler has an fascinating feature: It can __translate C programs into Zig__!
+
+-   [__"Auto-Translate LoRaWAN App from C to Zig"__](https://lupyuen.github.io/articles/iot#appendix-auto-translate-lorawan-app-to-zig)
+
+When we feed the above C Code into Zig's Auto-Translator, it produces this functionally-equivalent __Zig Code__...
 
 ```zig
-pub fn FragDecoderWrite(arg_addr: u32, arg_data: [*c]u8, arg_size: u32) callconv(.C) i8 {
-    ...
-    var size = arg_size;
-    var i: u32 = 0;
-    while (i < size) : (i +%= 1) {
-        UnfragmentedData[addr +% i] = data[i];
-    }
-    return 0;
-}
+pub fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) callconv(.C) i8 {
+  ...
+  var i: u32 = 0;
+  while (i < size) : (i +%= 1) {
+    UnfragmentedData[addr +% i] = data[i];
+  }
 ```
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L4335-L4349)
 
-Note that the Array Indexing in C...
+_Hmmm something looks different?_
+
+Yep the __Array Indexing__ in C...
 
 ```c
 //  Array Indexing in C...
@@ -762,7 +765,7 @@ Gets translated to this in Zig...
 UnfragmentedData[addr +% i]
 ```
 
-`+` in C becomes `+%` in Zig!
+"__`+`__" in C becomes "__`+%`__" in Zig!
 
 _What's `+%` in Zig?_
 
@@ -774,20 +777,19 @@ But this isn't what we intended, since we don't expect the addition to overflow.
 
 ```zig
 export fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) i8 {
-    ...
-    var i: u32 = 0;
-    while (i < size) : (i += 1) {
-        UnfragmentedData[addr + i] = data[i];
-    }
-    return 0; // Success
-}
+  ...
+  var i: u32 = 0;
+  while (i < size) : (i += 1) {
+    //  We changed `+%` back to `+`
+    UnfragmentedData[addr + i] = data[i];
+  }
 ```
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L407-L416)
 
 _What happens if the addition overflows?_
 
-We'll see a Runtime Error...
+We'll see a __Runtime Error__...
 
 ```text
 panic: integer overflow
@@ -799,7 +801,7 @@ Which is probably a good thing, to ensure that our values are sensible.
 
 _What if our Array Index goes out of bounds?_
 
-We'll get this Runtime Error...
+We'll get this __Runtime Error__...
 
 ```text
 panic: index out of bounds
@@ -809,11 +811,13 @@ panic: index out of bounds
 
 Here's the list of __Safety Checks__ done by Zig at runtime...
 
--   ["Undefined Behavior"](https://ziglang.org/documentation/master/#Undefined-Behavior)
+-   [__"Zig Undefined Behavior"__](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
-If we prefer to live recklessly, this is how we disable the Safety Checks...
+TODO
 
--   ["@setRuntimeSafety"](https://ziglang.org/documentation/master/#setRuntimeSafety)
+If we prefer to live recklessly (momentarily), this is how we __disable the Safety Checks__...
+
+-   [__@setRuntimeSafety__](https://ziglang.org/documentation/master/#setRuntimeSafety)
 
 [(How we implemented a Custom Panic Handler)](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
