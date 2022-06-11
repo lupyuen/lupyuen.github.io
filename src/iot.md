@@ -1080,6 +1080,10 @@ pub export fn lorawan_test_main(
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158)
 
+# Zig Outcomes
+
+TODO
+
 # What's Next
 
 TODO: Clean up names of Types, Functions and Variables
@@ -1776,6 +1780,8 @@ We'll refer to this auto-translated Zig Code when we manually convert our LoRaWA
 
 # Appendix: Opaque Type Error
 
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+
 TODO
 
 When we reference `LmHandlerCallbacks` in our LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig)...
@@ -2002,6 +2008,8 @@ After fixing the Opaque Type, Zig Compiler successfully compiles our LoRaWAN Tes
 
 # Appendix: Macro Error
 
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+
 TODO
 
 While compiling our LoRaWAN Test App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig), we see this Macro Error...
@@ -2058,6 +2066,8 @@ const c = @cImport({
 Now Zig Compiler successfully compiles our LoRaWAN Test App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig)
 
 # Appendix: Struct Initialisation Error
+
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
 TODO
 
