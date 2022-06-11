@@ -556,64 +556,67 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!</p>
 <h1 id="safety-checks"><a href="#safety-checks">9 Safety Checks</a></h1>
 <p><em>Our IoT App is now in Zig instead of C. Do we gain anything?</em></p>
-<p>TODO</p>
-<p>The Zig Compiler reveals interesting insights when auto-translating our C code to Zig.</p>
-<p>This C code copies an array, byte by byte…</p>
-<div class="example-wrap"><pre class="language-c"><code>static int8_t FragDecoderWrite( uint32_t addr, uint8_t *data, uint32_t size ) {
-    ...
-    for(uint32_t i = 0; i &lt; size; i++ ) {
-        UnfragmentedData[addr + i] = data[i];
-    }
-    return 0; // Success
-}</code></pre></div>
+<p>We claimed earlier that <strong>Zig is watching our backs</strong> (in case we do something risky)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/iot#convert-integer-type"><strong>“Convert Integer Type”</strong></a></li>
+</ul>
+<p>Let’s dig for more evidence that Zig really tries to protect our programs…</p>
+<p>This <strong>C Code</strong> (from the original LoRaWAN Demo) copies an array, byte by byte…</p>
+<div class="example-wrap"><pre class="language-c"><code>static int8_t FragDecoderWrite(uint32_t addr, uint8_t *data, uint32_t size) {
+  ...
+  for (uint32_t i = 0; i &lt; size; i++ ) {
+    UnfragmentedData[addr + i] = data[i];
+  }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L539-L550">(Source)</a></p>
-<p>Here’s the auto-translated Zig code…</p>
-<div class="example-wrap"><pre class="language-zig"><code>pub fn FragDecoderWrite(arg_addr: u32, arg_data: [*c]u8, arg_size: u32) callconv(.C) i8 {
-    ...
-    var size = arg_size;
-    var i: u32 = 0;
-    while (i &lt; size) : (i +%= 1) {
-        UnfragmentedData[addr +% i] = data[i];
-    }
-    return 0;
-}</code></pre></div>
+<p>Our Zig Compiler has an fascinating feature: It can <strong>translate C programs into Zig</strong>!</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/iot#appendix-auto-translate-lorawan-app-to-zig"><strong>“Auto-Translate LoRaWAN App from C to Zig”</strong></a></li>
+</ul>
+<p>When we feed the above C Code into Zig’s Auto-Translator, it produces this functionally-equivalent <strong>Zig Code</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>pub fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) callconv(.C) i8 {
+  ...
+  var i: u32 = 0;
+  while (i &lt; size) : (i +%= 1) {
+    UnfragmentedData[addr +% i] = data[i];
+  }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L4335-L4349">(Source)</a></p>
-<p>Note that the Array Indexing in C…</p>
+<p><em>Hmmm something looks different?</em></p>
+<p>Yep the <strong>Array Indexing</strong> in C…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Array Indexing in C...
 UnfragmentedData[addr + i]</code></pre></div>
 <p>Gets translated to this in Zig…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Array Indexing in Zig...
 UnfragmentedData[addr +% i]</code></pre></div>
-<p><code>+</code> in C becomes <code>+%</code> in Zig!</p>
+<p>“<strong><code>+</code></strong>” in C becomes “<strong><code>+%</code></strong>” in Zig!</p>
 <p><em>What’s <code>+%</code> in Zig?</em></p>
 <p>That’s the Zig Operator for <a href="https://ziglang.org/documentation/master/#Wrapping-Operations"><strong>Wraparound Addition</strong></a>.</p>
 <p>Which means that the result wraps back to 0 (and beyond) if the addition overflows the integer.</p>
 <p>But this isn’t what we intended, since we don’t expect the addition to overflow. That’s why in our final converted Zig code, we revert <code>+%</code> back to <code>+</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>export fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) i8 {
-    ...
-    var i: u32 = 0;
-    while (i &lt; size) : (i += 1) {
-        UnfragmentedData[addr + i] = data[i];
-    }
-    return 0; // Success
-}</code></pre></div>
+  ...
+  var i: u32 = 0;
+  while (i &lt; size) : (i += 1) {
+    //  We changed `+%` back to `+`
+    UnfragmentedData[addr + i] = data[i];
+  }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L407-L416">(Source)</a></p>
 <p><em>What happens if the addition overflows?</em></p>
-<p>We’ll see a Runtime Error…</p>
+<p>We’ll see a <strong>Runtime Error</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>panic: integer overflow</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Integer-Overflow">(Source)</a></p>
 <p>Which is probably a good thing, to ensure that our values are sensible.</p>
 <p><em>What if our Array Index goes out of bounds?</em></p>
-<p>We’ll get this Runtime Error…</p>
+<p>We’ll get this <strong>Runtime Error</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>panic: index out of bounds</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Index-out-of-Bounds">(Source)</a></p>
 <p>Here’s the list of <strong>Safety Checks</strong> done by Zig at runtime…</p>
 <ul>
-<li><a href="https://ziglang.org/documentation/master/#Undefined-Behavior">“Undefined Behavior”</a></li>
+<li><a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>“Zig Undefined Behavior”</strong></a></li>
 </ul>
-<p>If we prefer to live recklessly, this is how we disable the Safety Checks…</p>
+<p>TODO</p>
+<p>If we prefer to live recklessly (momentarily), this is how we <strong>disable the Safety Checks</strong>…</p>
 <ul>
-<li><a href="https://ziglang.org/documentation/master/#setRuntimeSafety">“@setRuntimeSafety”</a></li>
+<li><a href="https://ziglang.org/documentation/master/#setRuntimeSafety"><strong>@setRuntimeSafety</strong></a></li>
 </ul>
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler">(How we implemented a Custom Panic Handler)</a></p>
 <p><img src="https://lupyuen.github.io/images/iot-code4a.png" alt="Original C Code (left) and Converted Zig Code (right) for our LoRaWAN App look highly similar" /></p>
