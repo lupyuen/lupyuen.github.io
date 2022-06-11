@@ -473,6 +473,11 @@ debug(&quot;Transmit to LoRaWAN&quot;, .{});</code></pre></div>
 </ul>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">7 Compile Zig App</a></h1>
 <p>Now that we understand the code, we’re ready to <strong>compile our LoRaWAN Zig App</strong>!</p>
+<p>We assume that <strong>Apache NuttX RTOS</strong> has been downloaded and compiled for PineDio Stack BL604…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinedio2#build-nuttx"><strong>“Build NuttX”</strong></a></li>
+</ul>
+<p>Then we <strong>download and compile</strong> our Zig App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download our LoRaWAN Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
@@ -489,13 +494,18 @@ zig build-obj \
   lorawan_test.zig</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/zig#zig-target">(<strong>target</strong> and <strong>mcpu</strong> are explained here)</a></p>
 <p><em>How did we get the <code>-isystem</code> and <code>-I</code> options?</em></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Patch the ELF Header of `lorawan_test.o` from Soft-Float ABI to Hard-Float ABI
+<p>Remember that we’ll link our Compiled Zig App with <strong>Apache NuttX RTOS.</strong></p>
+<p>Hence the <strong>Zig Compiler Options must be the same</strong> as the GCC Options used to compile NuttX.</p>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See the GCC Options for NuttX)</a></p>
+<p>Next comes a quirk specific to BL602: We must <strong>patch the ELF Header</strong> from Software Floating-Point ABI to Hardware Floating-Point ABI…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Patch the ELF Header of `lorawan_test.o` 
+#  from Soft-Float ABI to Hard-Float ABI
 xxd -c 1 lorawan_test.o \
   | sed &#39;s/00000024: 01/00000024: 03/&#39; \
   | xxd -r -c 1 - lorawan_test2.o
 cp lorawan_test2.o lorawan_test.o</code></pre></div>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(More about this)</a></p>
+<p>Finally we inject our <strong>Compiled Zig App</strong> into the NuttX Project Directory…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Copy the compiled app to NuttX and overwrite `lorawan_test.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
@@ -504,6 +514,7 @@ cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
 make</code></pre></div>
+<p>And we link the Compiled Zig App into the <strong>NuttX Firmware</strong>.</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>+ pushd ../zig-bl602-nuttx
 ~/nuttx/zig-bl602-nuttx ~/nuttx/nuttx
