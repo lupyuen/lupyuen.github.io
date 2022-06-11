@@ -198,6 +198,10 @@ This fixes a problem with the __NuttX Types__. [(See this)](https://lupyuen.gith
 
 Let's head over to the Main Function...
 
+![Zig App calls LoRaWAN Library imported from C](https://lupyuen.github.io/images/iot-code3a.png)
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158)
+
 # Main Function
 
 This is the [__Main Function__](https://lupyuen.github.io/articles/zig#main-function) for our Zig App: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158)
@@ -540,9 +544,13 @@ fn handle_event_queue() void {
 
 [(__UplinkProcess__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230)
 
+![LoRaWAN Gateway receives Data Packet from our Zig App](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
+
+_LoRaWAN Gateway receives Data Packet from our Zig App_
+
 # Logging
 
-Earlier we saw this Zig Code for printing a __Debug Message__...
+Earlier we saw this code for printing a __Debug Message__...
 
 ```zig
 // Message to be sent
@@ -556,31 +564,39 @@ debug("Transmit to LoRaWAN ({} bytes): {s}", .{
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L170-L176)
 
-The code above prints this message to the console...
+The code above prints this __Formatted Message__ to the console...
 
 ```text
 Transmit to LoRaWAN (9 bytes): Hi NuttX
 ```
 
+The __Format Specifiers__ `{}` and `{s}` embedded in the Format String are explained here...
+
+-   [__Zig Formatting__](https://ziglearn.org/chapter-2/#formatting)
+
+-   [__Format Specifiers__](https://github.com/ziglang/zig/blob/master/lib/std/fmt.zig#L27-L72)
+
+
+_What's `.{ ... }`?_
+
+`.{ ... }` creates an [__Anonymous Struct__](https://ziglearn.org/chapter-1/#anonymous-structs) with a variable number of arguments that will be passed to the __debug__ function for formatting.
+
+_And if we have no arguments?_
+
+Then we do this...
+
+```zig
+// Print the message without formatting
+debug("Transmit to LoRaWAN", .{});
+```
+
+We discuss the implementation of __Zig Logging__ in the Appendix...
+
+-   [__"Appendix: Logging"__](https://lupyuen.github.io/articles/iot#appendix-logging)
+
+# Compile Zig App
+
 TODO
-
-[Zig Formatting](https://ziglearn.org/chapter-2/#formatting)
-
-# Convert LoRaWAN App to Zig
-
-TODO
-
-Finally we convert the LoRaWAN App [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c) from C to Zig, to show that we can build Complex IoT Apps in Zig.
-
-The LoRaWAN App runs on PineDio Stack BL604 (RISC-V). The app connects to a LoRaWAN Gateway (like ChirpStack or The Things Network) and sends a Data Packet at regular intervals.
-
-Here's the original C code: [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c)
-
-(700 lines of C code)
-
-And our converted LoRaWAN Zig App: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig)
-
-(673 lines of Zig code)
 
 To compile the LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig)...
 
@@ -613,8 +629,6 @@ cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
 cd $HOME/nuttx/nuttx
 make
 ```
-
-![](https://lupyuen.github.io/images/iot-code3a.png)
 
 TODO
 
@@ -1046,34 +1060,20 @@ pub export fn lorawan_test_main(
 
 # Zig Outcomes
 
-TODO
+TODO: Read the Internal Temperature Sensor
+
+TODO: Encode the Temperature Sensor Data with [TinyCBOR](https://lupyuen.github.io/articles/cbor2) and transmit to The Things Network
+
+TODO: Monitor sensor data with [Prometheus and Grafana](https://lupyuen.github.io/articles/prometheus)
+
+TODO: Add new code with [`@import()`](https://zig.news/mattnite/import-and-packages-23mb)
+
+TODO: [LVGL](https://lupyuen.github.io/articles/pinedio2#nuttx-apps
+)
 
 # What's Next
 
-TODO: Clean up names of Types, Functions and Variables
-
-TODO: Read the Internal Temperature Sensor
-
-TODO: Encode the Temperature Sensor Data with TinyCBOR and transmit to The Things Network
-
-https://lupyuen.github.io/articles/cbor2
-
-TODO: Monitor sensor data with Prometheus and Grafana
-
-https://lupyuen.github.io/articles/prometheus
-
-TODO: Add new code with `@import()`
-
-https://zig.news/mattnite/import-and-packages-23mb
-
-TODO: Do we need to align buffers to 32 bits when exporting to C?
-
-```zig
-/// User application data
-/// (Aligned to 32-bit because it's exported to C)
-var AppDataBuffer: [LORAWAN_APP_DATA_BUFFER_MAX_SIZE]u8 align(4) = 
-    std.mem.zeroes([LORAWAN_APP_DATA_BUFFER_MAX_SIZE]u8);
-```
+TODO
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -1094,6 +1094,72 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1533595486577258496)
 
 1.  This article was inspired by a question from my [__GitHub Sponsor__](https://github.com/sponsors/lupyuen): "Can we run Zig on BL602 with Apache NuttX RTOS?"
+
+1.  TODO: [__"Working with C"__](https://ziglearn.org/chapter-4/)
+
+# Appendix: Logging
+
+TODO
+
+We have implemented Debug Logging `std.log.debug` that's described here...
+
+-   ["A simple overview of Zig's std.log"](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
+
+Here's how we call `std.log.debug` to print a log message...
+
+```zig
+//  Create a short alias named `debug`
+const debug  = std.log.debug;
+
+//  Message with 8 bytes
+const msg: []const u8 = "Hi NuttX";
+
+//  Print the message
+debug("Transmit to LoRaWAN ({} bytes): {s}", .{ 
+    msg.len, msg 
+});
+
+// Prints: Transmit to LoRaWAN (8 bytes): Hi NuttX
+```
+
+`.{ ... }` creates an [__Anonymous Struct__](https://ziglearn.org/chapter-1/#anonymous-structs) with a variable number of arguments that will be passed to `std.log.debug` for formatting.
+
+Below is our implementation of `std.log.debug`...
+
+```zig
+/// Called by Zig for `std.log.debug`, `std.log.info`, `std.log.err`, ...
+/// https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d
+pub fn log(
+    comptime _message_level: std.log.Level,
+    comptime _scope: @Type(.EnumLiteral),
+    comptime format: []const u8,
+    args: anytype,
+) void {
+    _ = _message_level;
+    _ = _scope;
+
+    // Format the message
+    var buf: [100]u8 = undefined;  // Limit to 100 chars
+    var slice = std.fmt.bufPrint(&buf, format, args)
+        catch { _ = puts("*** log error: buf too small"); return; };
+    
+    // Terminate the formatted message with a null
+    var buf2: [buf.len + 1 : 0]u8 = undefined;
+    std.mem.copy(
+        u8, 
+        buf2[0..slice.len], 
+        slice[0..slice.len]
+    );
+    buf2[slice.len] = 0;
+
+    // Print the formatted message
+    _ = puts(&buf2);
+}
+```
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546)
+
+This implementation calls `puts()`, which is supported by Apache NuttX RTOS since it's [__POSIX-Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance).
 
 # Appendix: Zig Compiler as Drop-In Replacement for GCC
 
@@ -2067,66 +2133,3 @@ pub export fn lorawan_test_main(
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L101)
 
-# Appendix: Logging
-
-TODO
-
-We have implemented Debug Logging `std.log.debug` that's described here...
-
--   ["A simple overview of Zig's std.log"](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
-
-Here's how we call `std.log.debug` to print a log message...
-
-```zig
-//  Create a short alias named `debug`
-const debug  = std.log.debug;
-
-//  Message with 8 bytes
-const msg: []const u8 = "Hi NuttX";
-
-//  Print the message
-debug("Transmit to LoRaWAN ({} bytes): {s}", .{ 
-    msg.len, msg 
-});
-
-// Prints: Transmit to LoRaWAN (8 bytes): Hi NuttX
-```
-
-`.{ ... }` creates an [__Anonymous Struct__](https://ziglearn.org/chapter-1/#anonymous-structs) with a variable number of arguments that will be passed to `std.log.debug` for printing.
-
-Below is our implementation of `std.log.debug`...
-
-```zig
-/// Called by Zig for `std.log.debug`, `std.log.info`, `std.log.err`, ...
-/// https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d
-pub fn log(
-    comptime _message_level: std.log.Level,
-    comptime _scope: @Type(.EnumLiteral),
-    comptime format: []const u8,
-    args: anytype,
-) void {
-    _ = _message_level;
-    _ = _scope;
-
-    // Format the message
-    var buf: [100]u8 = undefined;  // Limit to 100 chars
-    var slice = std.fmt.bufPrint(&buf, format, args)
-        catch { _ = puts("*** log error: buf too small"); return; };
-    
-    // Terminate the formatted message with a null
-    var buf2: [buf.len + 1 : 0]u8 = undefined;
-    std.mem.copy(
-        u8, 
-        buf2[0..slice.len], 
-        slice[0..slice.len]
-    );
-    buf2[slice.len] = 0;
-
-    // Print the formatted message
-    _ = puts(&buf2);
-}
-```
-
-[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546)
-
-This implementation calls `puts()`, which is supported by Apache NuttX RTOS since it's [__POSIX-Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance).
