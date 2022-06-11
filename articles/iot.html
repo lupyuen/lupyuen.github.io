@@ -360,7 +360,7 @@ attempt to cast negative value to unsigned integer
 Stack Trace:
 0x23016dba</code></pre></div>
 <p>Great to have Zig watching our backs… When we do risky things! 👍</p>
-<p><a href="">(How we implemented a Custom Panic Handler)</a></p>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler">(How we implemented a Custom Panic Handler)</a></p>
 <h1 id="transmit-data-packet"><a href="#transmit-data-packet">5 Transmit Data Packet</a></h1>
 <p>Back to our Zig App: This is how we <strong>transmit a Data Packet</strong> to the LoRaWAN Network: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203">lorawan_test.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Prepare the payload of a Data Packet 
@@ -621,6 +621,7 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#setRuntimeSafety">“@setRuntimeSafety”</a></li>
 </ul>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler">(How we implemented a Custom Panic Handler)</a></p>
 <p><img src="https://lupyuen.github.io/images/iot-code4a.png" alt="Original C Code (left) and Converted Zig Code (right) for our LoRaWAN App look highly similar" /></p>
 <p><em><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323">Original C Code</a> (left) and <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158">Converted Zig Code</a> (right) for our LoRaWAN App look highly similar</em></p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
