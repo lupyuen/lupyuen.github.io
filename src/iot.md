@@ -542,6 +542,26 @@ fn handle_event_queue() void {
 
 # Logging
 
+Earlier we saw this Zig Code for printing a __Debug Message__...
+
+```zig
+// Message to be sent
+const msg: []const u8 = "Hi NuttX\x00";  // 9 bytes including null
+
+// Print the message
+debug("Transmit to LoRaWAN ({} bytes): {s}", .{ 
+  msg.len, msg 
+});
+```
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L170-L176)
+
+The code above prints this message to the console...
+
+```text
+Transmit to LoRaWAN (9 bytes): Hi NuttX
+```
+
 TODO
 
 [Zig Formatting](https://ziglearn.org/chapter-2/#formatting)
@@ -888,70 +908,6 @@ pub fn panic(
 ```
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L501-L522)
-
-# Logging
-
-TODO
-
-We have implemented Debug Logging `std.log.debug` that's described here...
-
--   ["A simple overview of Zig's std.log"](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
-
-Here's how we call `std.log.debug` to print a log message...
-
-```zig
-//  Create a short alias named `debug`
-const debug  = std.log.debug;
-
-//  Message with 8 bytes
-const msg: []const u8 = "Hi NuttX";
-
-//  Print the message
-debug("Transmit to LoRaWAN ({} bytes): {s}", .{ 
-    msg.len, msg 
-});
-
-// Prints: Transmit to LoRaWAN (8 bytes): Hi NuttX
-```
-
-`.{ ... }` creates an [__Anonymous Struct__](https://ziglearn.org/chapter-1/#anonymous-structs) with a variable number of arguments that will be passed to `std.log.debug` for printing.
-
-Below is our implementation of `std.log.debug`...
-
-```zig
-/// Called by Zig for `std.log.debug`, `std.log.info`, `std.log.err`, ...
-/// https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d
-pub fn log(
-    comptime _message_level: std.log.Level,
-    comptime _scope: @Type(.EnumLiteral),
-    comptime format: []const u8,
-    args: anytype,
-) void {
-    _ = _message_level;
-    _ = _scope;
-
-    // Format the message
-    var buf: [100]u8 = undefined;  // Limit to 100 chars
-    var slice = std.fmt.bufPrint(&buf, format, args)
-        catch { _ = puts("*** log error: buf too small"); return; };
-    
-    // Terminate the formatted message with a null
-    var buf2: [buf.len + 1 : 0]u8 = undefined;
-    std.mem.copy(
-        u8, 
-        buf2[0..slice.len], 
-        slice[0..slice.len]
-    );
-    buf2[slice.len] = 0;
-
-    // Print the formatted message
-    _ = puts(&buf2);
-}
-```
-
-[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546)
-
-This implementation calls `puts()`, which is supported by Apache NuttX RTOS since it's [__POSIX-Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance).
 
 ![](https://lupyuen.github.io/images/iot-code4a.png)
 
@@ -2110,3 +2066,67 @@ pub export fn lorawan_test_main(
 ```
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L101)
+
+# Appendix: Logging
+
+TODO
+
+We have implemented Debug Logging `std.log.debug` that's described here...
+
+-   ["A simple overview of Zig's std.log"](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
+
+Here's how we call `std.log.debug` to print a log message...
+
+```zig
+//  Create a short alias named `debug`
+const debug  = std.log.debug;
+
+//  Message with 8 bytes
+const msg: []const u8 = "Hi NuttX";
+
+//  Print the message
+debug("Transmit to LoRaWAN ({} bytes): {s}", .{ 
+    msg.len, msg 
+});
+
+// Prints: Transmit to LoRaWAN (8 bytes): Hi NuttX
+```
+
+`.{ ... }` creates an [__Anonymous Struct__](https://ziglearn.org/chapter-1/#anonymous-structs) with a variable number of arguments that will be passed to `std.log.debug` for printing.
+
+Below is our implementation of `std.log.debug`...
+
+```zig
+/// Called by Zig for `std.log.debug`, `std.log.info`, `std.log.err`, ...
+/// https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d
+pub fn log(
+    comptime _message_level: std.log.Level,
+    comptime _scope: @Type(.EnumLiteral),
+    comptime format: []const u8,
+    args: anytype,
+) void {
+    _ = _message_level;
+    _ = _scope;
+
+    // Format the message
+    var buf: [100]u8 = undefined;  // Limit to 100 chars
+    var slice = std.fmt.bufPrint(&buf, format, args)
+        catch { _ = puts("*** log error: buf too small"); return; };
+    
+    // Terminate the formatted message with a null
+    var buf2: [buf.len + 1 : 0]u8 = undefined;
+    std.mem.copy(
+        u8, 
+        buf2[0..slice.len], 
+        slice[0..slice.len]
+    );
+    buf2[slice.len] = 0;
+
+    // Print the formatted message
+    _ = puts(&buf2);
+}
+```
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546)
+
+This implementation calls `puts()`, which is supported by Apache NuttX RTOS since it's [__POSIX-Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance).
