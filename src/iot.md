@@ -511,9 +511,61 @@ Finally we __transmit the message__ to the LoRaWAN Network...
 }
 ```
 
-And that's how __PrepareTxFrame__ transmits a Data Packet over LoRaWAN!
+And that's how [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203) transmits a Data Packet over LoRaWAN!
 
 _How is PrepareTxFrame is called?_
+
+After we have joined the LoRaWAN Network, our LoRaWAN Event Loop calls [__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230)...
+
+```zig
+/// LoRaWAN Event Loop that dequeues Events from the Event Queue and processes the Events
+fn handle_event_queue() void {
+
+    // Loop forever handling Events from the Event Queue
+    while (true) {
+        // Omitted: Handle the next Event from the Event Queue
+        ...
+
+        // If we have joined the network, do the uplink
+        if (!c.LmHandlerIsBusy()) {
+            UplinkProcess();
+        }
+```
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L449-L490)
+
+[__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230) then calls [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203) to transmit a Data Packet, when the Transmit Timer has expired.
+
+[(__UplinkProcess__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230)
+
+TODO
+
+In our Main Function we started a __Transmit Timer__...
+
+```zig
+/// Main Function
+pub export fn lorawan_test_main(...) c_int {
+  ...
+  // Start the Transmit Timer
+  StartTxProcess(LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER);
+```
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L150-L153)
+
+The Transmit Timer calls __OnTxTimerEvent__ at regular intervals...
+
+```zig
+/// Start the Transmit Timer
+fn StartTxProcess(txEvent: LmHandlerTxEvents_t) void {
+  switch (txEvent) {
+    LmHandlerTxEvents_t.LORAMAC_HANDLER_TX_ON_TIMER => {
+      // Schedule 1st packet transmission
+      c.TimerInit(&TxTimer, OnTxTimerEvent);
+      c.TimerSetValue(&TxTimer, TxPeriodicity);
+      OnTxTimerEvent(null);
+```
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L205-L218)
 
 TODO
 
