@@ -425,7 +425,7 @@ Stack Trace:
 
 Great to have Zig watching our backs... When we do risky things! 👍
 
-[(How we implemented a Custom Panic Handler)]()
+[(How we implemented a Custom Panic Handler)](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
 # Transmit Data Packet
 
@@ -823,6 +823,8 @@ Here's the list of __Safety Checks__ done by Zig at runtime...
 If we prefer to live recklessly, this is how we disable the Safety Checks...
 
 -   ["@setRuntimeSafety"](https://ziglang.org/documentation/master/#setRuntimeSafety)
+
+[(How we implemented a Custom Panic Handler)](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
 ![Original C Code (left) and Converted Zig Code (right) for our LoRaWAN App look highly similar](https://lupyuen.github.io/images/iot-code4a.png)
 
