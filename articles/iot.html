@@ -413,7 +413,11 @@ fn PrepareTxFrame() void {
   );
   assert(sendStatus == c.LORAMAC_HANDLER_SUCCESS);
   debug(&quot;PrepareTxFrame: Transmit OK&quot;, .{});
-}</code></pre></div><h1 id="convert-lorawan-app-to-zig"><a href="#convert-lorawan-app-to-zig">6 Convert LoRaWAN App to Zig</a></h1>
+}</code></pre></div>
+<p>And that’s how <strong>PrepareTxFrame</strong> transmits a Data Packet over LoRaWAN!</p>
+<p><em>How is PrepareTxFrame is called?</em></p>
+<p>TODO</p>
+<h1 id="convert-lorawan-app-to-zig"><a href="#convert-lorawan-app-to-zig">6 Convert LoRaWAN App to Zig</a></h1>
 <p>TODO</p>
 <p>Finally we convert the LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> from C to Zig, to show that we can build Complex IoT Apps in Zig.</p>
 <p>The LoRaWAN App runs on PineDio Stack BL604 (RISC-V). The app connects to a LoRaWAN Gateway (like ChirpStack or The Things Network) and sends a Data Packet at regular intervals.</p>
