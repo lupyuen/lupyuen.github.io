@@ -598,6 +598,12 @@ We discuss the implementation of __Zig Logging__ in the Appendix...
 
 Now that we understand the code, we're ready to __compile our LoRaWAN Zig App__!
 
+We assume that __Apache NuttX RTOS__ has been downloaded and compiled for PineDio Stack BL604...
+
+-   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
+
+Then we __download and compile__ our Zig App...
+
 ```bash
 ##  Download our LoRaWAN Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
@@ -619,17 +625,26 @@ zig build-obj \
 
 _How did we get the `-isystem` and `-I` options?_
 
-TODO
+Remember that we'll link our Compiled Zig App with __Apache NuttX RTOS.__
+
+Hence the __Zig Compiler Options must be the same__ as the GCC Options used to compile NuttX.
+
+[(See the GCC Options for NuttX)](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
+
+Next comes a quirk specific to BL602: We must __patch the ELF Header__ from Software Floating-Point ABI to Hardware Floating-Point ABI...
 
 ```bash
-##  Patch the ELF Header of `lorawan_test.o` from Soft-Float ABI to Hard-Float ABI
+##  Patch the ELF Header of `lorawan_test.o` 
+##  from Soft-Float ABI to Hard-Float ABI
 xxd -c 1 lorawan_test.o \
   | sed 's/00000024: 01/00000024: 03/' \
   | xxd -r -c 1 - lorawan_test2.o
 cp lorawan_test2.o lorawan_test.o
 ```
 
-TODO
+[(More about this)](https://lupyuen.github.io/articles/zig#patch-elf-header)
+
+Finally we inject our __Compiled Zig App__ into the NuttX Project Directory...
 
 ```bash
 ##  Copy the compiled app to NuttX and overwrite `lorawan_test.o`
@@ -641,6 +656,8 @@ cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
 cd $HOME/nuttx/nuttx
 make
 ```
+
+And we link the Compiled Zig App into the __NuttX Firmware__.
 
 TODO
 

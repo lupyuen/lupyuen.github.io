@@ -325,6 +325,8 @@ Now comes another fun challenge, with a weird hack...
 
 # Floating-Point ABI
 
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+
 When we __link the Compiled Zig App__ with NuttX, we see this error (pic above)...
 
 ```bash
@@ -623,7 +625,9 @@ Yeah probably the best way to maintain and extend these Complex IoT Projects is 
 
 _But we can create new IoT Apps in Zig right?_
 
-Yep totally! Since Zig interoperates well with C, we can create __IoT Apps in Zig__ that will call the C Libraries for LoRa / LoRaWAN / NimBLE.
+Yep totally! Since Zig interoperates well with C, we can create __IoT Apps in Zig__ that will call the C Libraries for LoRa / LoRaWAN / NimBLE...
+
+-   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
 
 I'm really impressed by this Wayland Compositor in Zig, how it imports a __huge bunch of C Header Files__, and calls them from Zig!
 
@@ -635,17 +639,9 @@ This has been a very quick experiment with Zig on RISC-V Microcontrollers... But
 
 In the coming weeks I'll test Zig as a __drop-in replacement for GCC.__ Let's find out whether Zig will cure our headaches in __maintaining Complex IoT Projects!__
 
-Check out the testing updates here...
+Check out the updates here...
 
--   [__"Zig Compiler as Drop-In Replacement for GCC"__](https://github.com/lupyuen/zig-bl602-nuttx#zig-compiler-as-drop-in-replacement-for-gcc)
-
--   [__"LoRaWAN Library for NuttX"__](https://github.com/lupyuen/zig-bl602-nuttx#lorawan-library-for-nuttx)
-
--   [__"LoRaWAN App for NuttX"__](https://github.com/lupyuen/zig-bl602-nuttx#lorawan-app-for-nuttx)
-
--   [__"Auto-Translate LoRaWAN App to Zig"__](https://github.com/lupyuen/zig-bl602-nuttx#auto-translate-lorawan-app-to-zig)
-
--   [__"Convert LoRaWAN App to Zig"__](https://github.com/lupyuen/zig-bl602-nuttx#convert-lorawan-app-to-zig)
+-   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
 
 (Spoiler: It really works!)
 
