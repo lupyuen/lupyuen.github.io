@@ -472,11 +472,11 @@ debug(&quot;Transmit to LoRaWAN&quot;, .{});</code></pre></div>
 </ul>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">7 Compile Zig App</a></h1>
 <p>Now that we understand the code, we’re ready to <strong>compile our LoRaWAN Zig App</strong>!</p>
-<p>We assume that <strong>Apache NuttX RTOS</strong> has been downloaded and compiled for PineDio Stack BL604…</p>
+<p>We download and compile <strong>Apache NuttX RTOS</strong> for PineDio Stack BL604…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pinedio2#build-nuttx"><strong>“Build NuttX”</strong></a></li>
 </ul>
-<p>Then we <strong>download and compile</strong> our Zig App…</p>
+<p>Then we download and compile our <strong>LoRaWAN Zig App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download our LoRaWAN Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
@@ -491,7 +491,11 @@ zig build-obj \
   -isystem &quot;$HOME/nuttx/nuttx/include&quot; \
   -I &quot;$HOME/nuttx/apps/examples/lorawan_test&quot; \
   lorawan_test.zig</code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/zig#zig-target">(<strong>target</strong> and <strong>mcpu</strong> are explained here)</a></p>
+<p><a href="https://gist.github.com/lupyuen/b29186ad4ad870bcaaace704fd3def7d">(See the Compile Log)</a></p>
+<p>Note that <strong>target</strong> and <strong>mcpu</strong> are specific to BL602…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/zig#zig-target"><strong>“Zig Target”</strong></a></li>
+</ul>
 <p><em>How did we get the <code>-isystem</code> and <code>-I</code> options?</em></p>
 <p>Remember that we’ll link our Compiled Zig App with <strong>Apache NuttX RTOS.</strong></p>
 <p>Hence the <strong>Zig Compiler Options must be the same</strong> as the GCC Options used to compile NuttX.</p>
@@ -517,23 +521,8 @@ make
 #  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
 mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>+ pushd ../zig-bl602-nuttx
-~/nuttx/zig-bl602-nuttx ~/nuttx/nuttx
-+ zig build-obj --verbose-cimport -target riscv32-freestanding-none -mcpu=baseline_rv32-d -isystem /home/user/nuttx/nuttx/include -I /home/user/nuttx/apps/examples/lorawan_test lorawan_test.zig
-info(compilation): C import source: zig-cache/o/08fa8a0a89d15e88ae63a9f8e0af6c91/cimport.h
-info(compilation): C import .d file: zig-cache/o/08fa8a0a89d15e88ae63a9f8e0af6c91/cimport.h.d
-info(compilation): C import output: zig-cache/o/adbf03c74d351db638f34bb5535a8c3b/cimport.zig
-+ xxd -c 1 lorawan_test.o
-+ sed &#39;s/00000024: 01/00000024: 03/&#39;
-+ xxd -r -c 1 - lorawan_test2.o
-+ cp lorawan_test2.o lorawan_test.o
-+ cp lorawan_test.o /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
-+ ls -l lorawan_test.o /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
--rw-r--r-- 1 user user 467724 Jun 10 16:44 /home/user/nuttx/apps/examples/lorawan_test/lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o
--rw-r--r-- 1 user user 467724 Jun 10 16:44 lorawan_test.o
-+ popd
-~/nuttx/nuttx</code></pre></div><h1 id="run-zig-app"><a href="#run-zig-app">8 Run Zig App</a></h1>
+<p>We’re ready to run our Zig App!</p>
+<h1 id="run-zig-app"><a href="#run-zig-app">8 Run Zig App</a></h1>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack"><strong>“Flash PineDio Stack”</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack"><strong>“Flash PineDio Stack”</strong></a></p>
@@ -562,6 +551,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(See the complete log)</a></p>
 <p>LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!</p>
 <h1 id="safety-checks"><a href="#safety-checks">9 Safety Checks</a></h1>
+<p><em>Our IoT App is now in Zig instead of C. Do we gain anything?</em></p>
 <p>TODO</p>
 <p>The Zig Compiler reveals interesting insights when auto-translating our C code to Zig.</p>
 <p>This C code copies an array, byte by byte…</p>
