@@ -472,28 +472,31 @@ debug(&quot;Transmit to LoRaWAN&quot;, .{});</code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/iot#appendix-logging"><strong>“Appendix: Logging”</strong></a></li>
 </ul>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">7 Compile Zig App</a></h1>
-<p>TODO</p>
-<p>To compile the LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
+<p>Now that we understand the code, we’re ready to <strong>compile our LoRaWAN Zig App</strong>!</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download our LoRaWAN Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
 
-#  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
+#  Compile the Zig App for BL602
+#  (RV32IMACF with Hardware Floating-Point)
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 zig build-obj \
   --verbose-cimport \
   -target riscv32-freestanding-none \
   -mcpu=baseline_rv32-d \
   -isystem &quot;$HOME/nuttx/nuttx/include&quot; \
   -I &quot;$HOME/nuttx/apps/examples/lorawan_test&quot; \
-  lorawan_test.zig
-
-#  Patch the ELF Header of `lorawan_test.o` from Soft-Float ABI to Hard-Float ABI
+  lorawan_test.zig</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/zig#zig-target">(<strong>target</strong> and <strong>mcpu</strong> are explained here)</a></p>
+<p><em>How did we get the <code>-isystem</code> and <code>-I</code> options?</em></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Patch the ELF Header of `lorawan_test.o` from Soft-Float ABI to Hard-Float ABI
 xxd -c 1 lorawan_test.o \
   | sed &#39;s/00000024: 01/00000024: 03/&#39; \
   | xxd -r -c 1 - lorawan_test2.o
-cp lorawan_test2.o lorawan_test.o
-
-#  Copy the compiled app to NuttX and overwrite `lorawan_test.o`
+cp lorawan_test2.o lorawan_test.o</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Copy the compiled app to NuttX and overwrite `lorawan_test.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp lorawan_test.o $HOME/nuttx/apps/examples/lorawan_test/*lorawan_test.o
 
