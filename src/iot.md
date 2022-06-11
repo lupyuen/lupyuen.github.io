@@ -423,30 +423,33 @@ Great to have Zig watching our backs... When we do risky things! 👍
 
 # Transmit Data Packet
 
-Back to our Zig App... This is how we __transmit a Data Packet__ to the LoRaWAN Network: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203)
+Back to our Zig App: This is how we __transmit a Data Packet__ to the LoRaWAN Network: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203)
 
 ```zig
-/// Prepare the payload of a Data Packet transmit it
+/// Prepare the payload of a Data Packet 
+/// and transmit it
 fn PrepareTxFrame() void {
 
-  // If we haven't joined the LoRaWAN Network, try again later
+  // If we haven't joined the LoRaWAN Network...
   if (c.LmHandlerIsBusy()) {
-    debug("PrepareTxFrame: Busy", .{});
+    // Try again later
     return;
   }
 ```
 
 LoRaWAN won't let us transmit data unless we've __joined the LoRaWAN Network__. So we check this first.
 
-Next we prepare the __message to be sent__ ("`Hi NuttX`")...
+Next we prepare the __message to be sent__ _("Hi NuttX")_...
 
 ```zig
-  // Send a message to LoRaWAN
+  // Message to be sent to LoRaWAN
   const msg: []const u8 = "Hi NuttX\x00";  // 9 bytes including null
   debug("PrepareTxFrame: Transmit to LoRaWAN ({} bytes): {s}", .{ 
     msg.len, msg 
   });
 ```
+
+(We'll talk about __debug__ in a while)
 
 That's __9 bytes__, including the Terminating Null.
 
@@ -459,11 +462,11 @@ This depends on the __LoRaWAN Data Rate__ and the LoRaWAN Region. [(See this)](h
 Then we copy the message into the __LoRaWAN Buffer__...
 
 ```zig
-  // Copy the message into the LoRaWAN buffer
+  // Copy message into LoRaWAN buffer
   std.mem.copy(
-    u8, 
-    AppDataBuffer[0..msg.len], 
-    msg[0..msg.len]
+    u8,              // Type
+    &AppDataBuffer,  // Destination
+    msg              // Source
   );
 ```
 
@@ -476,17 +479,15 @@ We compose the __LoRaWAN Transmit Request__...
 ```zig
   // Compose the transmit request
   var appData = c.LmHandlerAppData_t {
-    .Buffer     = @ptrCast([*c]u8, &AppDataBuffer),
+    .Buffer     = &AppDataBuffer,
     .BufferSize = msg.len,
     .Port       = 1,
   };
 ```
 
-[(__@ptrCast__ is needed for casting Zig Pointers to C)](https://ziglang.org/documentation/master/#ptrCast)
-
 Remember that the [__Max Message Size__](https://lupyuen.github.io/articles/lorawan3#message-size) depends on the LoRaWAN Data Rate and the LoRaWAN Region?
 
-This is how we __validate the Message Size__...
+This is how we __validate the Message Size__ to make sure that our message isn't too large...
 
 ```zig
   // Validate the message size and check if it can be transmitted
@@ -518,7 +519,8 @@ _How is PrepareTxFrame is called?_
 After we have joined the LoRaWAN Network, our LoRaWAN Event Loop calls [__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230)...
 
 ```zig
-/// LoRaWAN Event Loop that dequeues Events from the Event Queue and processes the Events
+/// LoRaWAN Event Loop that dequeues Events from 
+/// the Event Queue and processes the Events
 fn handle_event_queue() void {
 
   // Loop forever handling Events from the Event Queue
@@ -537,6 +539,12 @@ fn handle_event_queue() void {
 [__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230) then calls [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203) to transmit a Data Packet, when the Transmit Timer has expired.
 
 [(__UplinkProcess__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230)
+
+# Logging
+
+TODO
+
+[Zig Formatting](https://ziglearn.org/chapter-2/#formatting)
 
 # Convert LoRaWAN App to Zig
 
