@@ -247,7 +247,7 @@ Next we show the __App Version__...
   c.DisplayAppInfo("Zig LoRaWAN Test", &appVersion, &gitHubVersion);
 ```
 
-We __initialise the LoRaWAN Library__...
+Then we __initialise the LoRaWAN Library__...
 
 ```zig
   // Init LoRaWAN
@@ -259,6 +259,8 @@ We __initialise the LoRaWAN Library__...
     while (true) {}
   }
 ```
+
+(We'll explain "`.{}`" in a while)
 
 We set the __Max Tolerated Receive Error__...
 
@@ -421,55 +423,93 @@ Great to have Zig watching our backs... When we do risky things! 👍
 
 # Transmit Data Packet
 
-TODO
-
-[lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203)
+Back to our Zig App... This is how we __transmit a Data Packet__ to the LoRaWAN Network: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203)
 
 ```zig
 /// Prepare the payload of a Data Packet transmit it
 fn PrepareTxFrame() void {
+
   // If we haven't joined the LoRaWAN Network, try again later
   if (c.LmHandlerIsBusy()) {
     debug("PrepareTxFrame: Busy", .{});
     return;
   }
+```
 
+LoRaWAN won't let us transmit data unless we've __joined the LoRaWAN Network__. So we check this first.
+
+Next we prepare the __message to be sent__ ("`Hi NuttX`")...
+
+```zig
   // Send a message to LoRaWAN
   const msg: []const u8 = "Hi NuttX\x00";  // 9 bytes including null
   debug("PrepareTxFrame: Transmit to LoRaWAN ({} bytes): {s}", .{ 
     msg.len, msg 
   });
+```
 
-  // Compose the transmit request
+That's __9 bytes__, including the Terminating Null.
+
+_Why so smol?_
+
+The first LoRaWAN message needs to be __11 bytes__ or smaller, subsequent messages can be up to __53 bytes__.
+
+This depends on the __LoRaWAN Data Rate__ and the LoRaWAN Region. [(See this)](https://lupyuen.github.io/articles/lorawan3#message-size)
+
+Then we copy the message into the __LoRaWAN Buffer__...
+
+```zig
+  // Copy the message into the LoRaWAN buffer
   std.mem.copy(
     u8, 
     AppDataBuffer[0..msg.len], 
     msg[0..msg.len]
   );
+```
+
+[(__std.mem.copy__ is documented here)](https://ziglang.org/documentation/master/std/#std;mem.copy)
+
+[(__AppDataBuffer__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L724-L729)
+
+We compose the __LoRaWAN Transmit Request__...
+
+```zig
+  // Compose the transmit request
   var appData = c.LmHandlerAppData_t {
     .Buffer     = @ptrCast([*c]u8, &AppDataBuffer),
     .BufferSize = msg.len,
     .Port       = 1,
   };
+```
 
+[(__@ptrCast__ is needed for casting Zig Pointers to C)](https://ziglang.org/documentation/master/#ptrCast)
+
+Remember that the [__Max Message Size__](https://lupyuen.github.io/articles/lorawan3#message-size) depends on the LoRaWAN Data Rate and the LoRaWAN Region?
+
+This is how we __validate the Message Size__...
+
+```zig
   // Validate the message size and check if it can be transmitted
   var txInfo: c.LoRaMacTxInfo_t = undefined;
-  const status = c.LoRaMacQueryTxPossible(appData.BufferSize, &txInfo);
-  debug("PrepareTxFrame: status={}, maxSize={}, currentSize={}", .{
-    status, 
-    txInfo.MaxPossibleApplicationDataSize, 
-    txInfo.CurrentPossiblePayloadSize
-  });
+  const status = c.LoRaMacQueryTxPossible(
+    appData.BufferSize,  // Message Size
+    &txInfo              // Unused
+  );
   assert(status == c.LORAMAC_STATUS_OK);
+```
 
+Finally we __transmit the message__ to the LoRaWAN Network...
+
+```zig
   // Transmit the message
-  const sendStatus = c.LmHandlerSend(&appData, LmHandlerParams.IsTxConfirmed);
+  const sendStatus = c.LmHandlerSend(
+    &appData,                      // Transmit Request
+    LmHandlerParams.IsTxConfirmed  // False (No acknowledge required)
+  );
   assert(sendStatus == c.LORAMAC_HANDLER_SUCCESS);
   debug("PrepareTxFrame: Transmit OK", .{});
 }
 ```
-
-TODO: 9 bytes or shorter
 
 # Convert LoRaWAN App to Zig
 
