@@ -596,12 +596,32 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>The Data Packet appears in our <strong>LoRaWAN Gateway</strong> (ChirpStack), like in the pic above.</p>
 <p>Yep our LoRaWAN Zig App has successfully transmitted a Data Packet to the LoRaWAN Network! 🎉</p>
 <p><em>Can we test our app without a LoRaWAN Gateway?</em></p>
-<p>TODO: <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a></p>
-<p><a href="https://www.thethingsnetwork.org/map"><strong>The Things Network Coverage Map</strong></a></p>
+<p>Our app will work fine with <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a>, the worldwide free-to-use LoRaWAN Network.</p>
+<p>Check the Network Coverage here…</p>
+<ul>
+<li><a href="https://www.thethingsnetwork.org/map"><strong>The Things Network Coverage Map</strong></a></li>
+</ul>
+<p>And set the <a href="https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key"><strong>LoRaWAN Parameters</strong></a> like so…</p>
+<ul>
+<li>
+<p><strong>LORAWAN_DEVICE_EUI</strong>: Set this to the <strong>DevEUI</strong> from The Things Network</p>
+</li>
+<li>
+<p><strong>LORAWAN_JOIN_EUI</strong>: Set this to <code>{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }</code></p>
+</li>
+<li>
+<p><strong>APP_KEY, NWK_KEY</strong>: Set both to the <strong>AppKey</strong> from The Things Network</p>
+</li>
+</ul>
+<p>To get the <strong>DevEUI</strong> and <strong>AppKey</strong> from The Things Network…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network"><strong>“Add Device to The Things Network”</strong></a></li>
+</ul>
+<p>(I don’t think <strong>NWK_KEY</strong> is used)</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-ttn.png" alt="The Things Network receives Data Packet from our LoRaWAN App" /></p>
 <p><em>The Things Network receives Data Packet from our LoRaWAN App</em></p>
 <h1 id="safety-checks"><a href="#safety-checks">9 Safety Checks</a></h1>
-<p><em>Our IoT App is now in Zig instead of C. Do we gain anything?</em></p>
+<p><em>Our IoT App is now in Zig instead of C. Do we gain anything with Zig?</em></p>
 <p>We claimed earlier that <strong>Zig is watching our backs</strong> (in case we do something risky)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/iot#convert-integer-type"><strong>“Convert Integer Type”</strong></a></li>
