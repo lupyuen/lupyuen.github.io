@@ -328,7 +328,7 @@ Finally we loop forever handling __LoRaWAN Events__...
 }
 ```
 
-(We'll talk about __handle_event_queue__ in a while)
+(__handle_event_queue__ is explained in the Appendix)
 
 That's all for the Main Function of our Zig App!
 
@@ -561,6 +561,8 @@ fn handle_event_queue() void {
 [__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230) then calls [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203) to transmit a Data Packet, when the Transmit Timer has expired.
 
 [(__UplinkProcess__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230)
+
+(__handle_event_queue__ is explained in the Appendix)
 
 ![ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
 
