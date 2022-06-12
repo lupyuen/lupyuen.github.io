@@ -761,9 +761,25 @@ Yep our LoRaWAN Zig App has successfully transmitted a Data Packet to the LoRaWA
 
 _Can we test our app without a LoRaWAN Gateway?_
 
-TODO: [__The Things Network__](https://lupyuen.github.io/articles/ttn)
+Our app will work fine with [__The Things Network__](https://lupyuen.github.io/articles/ttn), the worldwide free-to-use LoRaWAN Network.
 
-[__The Things Network Coverage Map__](https://www.thethingsnetwork.org/map)
+Check the Network Coverage here...
+
+-   [__The Things Network Coverage Map__](https://www.thethingsnetwork.org/map)
+
+And set the [__LoRaWAN Parameters__](https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key) like so...
+
+-   __LORAWAN_DEVICE_EUI__: Set this to the __DevEUI__ from The Things Network
+
+-   __LORAWAN_JOIN_EUI__: Set this to `{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }`
+
+-   __APP_KEY, NWK_KEY__: Set both to the __AppKey__ from The Things Network
+
+To get the __DevEUI__ and __AppKey__ from The Things Network...
+
+-   [__"Add Device to The Things Network"__](https://lupyuen.github.io/articles/ttn#add-device-to-the-things-network)
+
+(I don't think __NWK_KEY__ is used)
 
 ![The Things Network receives Data Packet from our LoRaWAN App](https://lupyuen.github.io/images/lorawan3-ttn.png)
 
@@ -771,7 +787,7 @@ _The Things Network receives Data Packet from our LoRaWAN App_
 
 # Safety Checks
 
-_Our IoT App is now in Zig instead of C. Do we gain anything?_
+_Our IoT App is now in Zig instead of C. Do we gain anything with Zig?_
 
 We claimed earlier that __Zig is watching our backs__ (in case we do something risky)...
 
