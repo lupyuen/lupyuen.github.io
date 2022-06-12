@@ -155,8 +155,8 @@
 <p>The same LoRaWAN Stack is available on many other platforms, including <a href="https://docs.zephyrproject.org/latest/connectivity/lora_lorawan/index.html"><strong>Zephyr OS</strong></a> and <a href="beegee-tokyo/SX126x-Arduino"><strong>Arduino</strong></a>.</p>
 <p><a href="https://codeberg.org/JF002/loramac-node">(My good friend JF has ported the stack to Linux)</a></p>
 <p><em>But the LoRaWAN Stack is in C! Will it work with Zig?</em></p>
-<p>Yep no worries! Zig will happily <strong>import the LoRaWAN Stack from C</strong> without any wrappers or modifications.</p>
-<p>And we’ll call the LoRaWAN Stack as though it were a Zig Library!</p>
+<p>Yep no worries, Zig will happily <strong>import the LoRaWAN Stack from C</strong> without any wrappers or modifications.</p>
+<p>And we’ll call the LoRaWAN Stack as though it were a Zig Library.</p>
 <p><em>So we’re not rewriting the LoRaWAN Stack in Zig?</em></p>
 <p>Rewriting the LoRaWAN Stack in Zig (or another language) sounds risky because the LoRaWAN Stack is still under <a href="https://github.com/Lora-net/LoRaMac-node/commits/master"><strong>Active Development</strong></a>. It can change at any moment!</p>
 <p>We’ll stick with the <strong>C Implementation</strong> of the LoRaWAN Stack so that our Zig IoT App will enjoy the latest LoRaWAN updates and features.</p>
@@ -181,7 +181,7 @@
 <p><img src="https://lupyuen.github.io/images/iot-code2a.png" alt="Import LoRaWAN Library" /></p>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48">(Source)</a></p>
 <h1 id="import-lorawan-library"><a href="#import-lorawan-library">2 Import LoRaWAN Library</a></h1>
-<p>Let’s dive into our Zig IoT App! We import the <a href="https://lupyuen.github.io/articles/zig#import-standard-library"><strong>Zig Standard Library</strong></a> at the top of our app: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48">lorawan_test.zig</a></p>
+<p>Let’s dive into our Zig IoT App. We import the <a href="https://lupyuen.github.io/articles/zig#import-standard-library"><strong>Zig Standard Library</strong></a> at the top of our app: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48">lorawan_test.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the Zig Standard Library
 const std = @import(&quot;std&quot;);</code></pre></div>
 <p>Next we call <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> to import the <strong>C Macros and C Hander Files</strong>…</p>
@@ -323,7 +323,7 @@ pub export fn lorawan_test_main(
 <p>(Pic below)</p>
 </li>
 </ul>
-<p><strong>Converting C Code to Zig</strong> looks rather straightforward! In a while we’ll talk about the tricky parts we encountered during the conversion.</p>
+<p><strong>Converting C Code to Zig</strong> looks rather straightforward. In a while we’ll talk about the tricky parts we encountered during the conversion.</p>
 <p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="Demo App for the LoRaWAN Stack" /></p>
 <p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">(Source)</a></p>
 <h1 id="convert-integer-type"><a href="#convert-integer-type">4 Convert Integer Type</a></h1>
@@ -439,7 +439,7 @@ fn PrepareTxFrame() void {
   assert(sendStatus == c.LORAMAC_HANDLER_SUCCESS);
   debug(&quot;PrepareTxFrame: Transmit OK&quot;, .{});
 }</code></pre></div>
-<p>And that’s how <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203"><strong>PrepareTxFrame</strong></a> transmits a Data Packet over LoRaWAN!</p>
+<p>And that’s how <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203"><strong>PrepareTxFrame</strong></a> transmits a Data Packet over LoRaWAN.</p>
 <p><em>How is PrepareTxFrame is called?</em></p>
 <p>After we have joined the LoRaWAN Network, our LoRaWAN Event Loop calls <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230"><strong>UplinkProcess</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LoRaWAN Event Loop that dequeues Events from 
@@ -565,17 +565,21 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>In the NuttX Shell, enter this command to start our Zig App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
 <p>Our Zig App starts and transmits a LoRaWAN Request to <strong>join the LoRaWAN Network</strong>…</p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Application name   : Zig LoRaWAN Test</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Application name   : Zig LoRaWAN Test
+##### =========== MLME-Request ============ ######
+#####               MLME_JOIN               ######
+##### ===================================== ######</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(See the complete log)</a></p>
-<p>TODO</p>
+<p>5 seconds later, our app receives the <strong>Join Accept Response</strong> from our LoRaWAN Gateway (ChirpStack)…</p>
 <div class="example-wrap"><pre class="language-text"><code>##### =========== MLME-Confirm ============ ######
 STATUS      : OK
 ##### ===========   JOINED     ============ ######
 OTAA
 DevAddr     :  00D803AB
 DATA RATE   : DR_2</code></pre></div>
-<p>TODO</p>
+<p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(Source)</a></p>
+<p>We have successfully joined the LoRaWAN Network!</p>
+<p>Every 40 seconds, our app transmits a <strong>Data Packet</strong> <em>(“Hi NuttX”)</em> to the LoRaWAN Network…</p>
 <div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN (9 bytes): Hi NuttX
 ##### =========== MCPS-Confirm ============ ######
 STATUS      : OK
@@ -588,10 +592,12 @@ DATA RATE   : DR_3
 U/L FREQ    : 923200000
 TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
-<p>TODO</p>
-<p>LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!</p>
+<p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(Source)</a></p>
+<p>The Data Packet appears in our <strong>LoRaWAN Gateway</strong> (ChirpStack), like in the pic above.</p>
+<p>Yep our LoRaWAN Zig App has successfully transmitted a Data Packet to the LoRaWAN Network! 🎉</p>
 <p><em>Can we test our app without a LoRaWAN Gateway?</em></p>
-<p>TODO: TTN</p>
+<p>TODO: <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a></p>
+<p><a href="https://www.thethingsnetwork.org/map"><strong>The Things Network Coverage Map</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-ttn.png" alt="The Things Network receives Data Packet from our LoRaWAN App" /></p>
 <p><em>The Things Network receives Data Packet from our LoRaWAN App</em></p>
 <h1 id="safety-checks"><a href="#safety-checks">9 Safety Checks</a></h1>
