@@ -733,8 +733,15 @@ UnfragmentedData[addr +% i]</code></pre></div>
 </li>
 </ol>
 <h1 id="appendix-handle-lorawan-events"><a href="#appendix-handle-lorawan-events">13 Appendix: Handle LoRaWAN Events</a></h1>
-<p>TODO: Why NimBLE Porting Layer</p>
 <p>Let’s look at the <strong>Event Loop</strong> that handles the LoRa and LoRaWAN Events in our app.</p>
+<p><em>Our Event Loop looks different from the Original LoRaWAN Demo App?</em></p>
+<p>Yep the Original LoRaWAN Demo App handles LoRaWAN Events in a <strong>Busy-Wait Loop</strong>. <a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L366-L389">(See this)</a></p>
+<p>But since our Zig App runs on a Real-Time Operating System (RTOS), we can use the <strong>Multithreading Features</strong> (Timers and Event Queues) provided by the RTOS.</p>
+<p><em>So we’re directly calling the Timers and Event Queues from Apache NuttX RTOS?</em></p>
+<p>Not quite. We’re calling the Timers and Event Queues provided by <a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer"><strong>NimBLE Porting Layer</strong></a>.</p>
+<p>TODO: Why NimBLE Porting Layer</p>
+<p><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer">(More about NimBLE Porting Layer)</a></p>
+<p>TODO</p>
 <p>Our Event Loop forever reads LoRa and LoRaWAN Events from an <strong>Event Queue</strong> and handles them.</p>
 <p>The Event Queue is created in our LoRa SX1262 Library as explained here…</p>
 <ul>
