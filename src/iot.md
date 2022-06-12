@@ -620,12 +620,19 @@ We download and compile __Apache NuttX RTOS__ for PineDio Stack BL604...
 
 -   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
 
-Then we download and compile our __LoRaWAN Zig App__...
+Before compiling NuttX, configure the __LoRaWAN App Key, Device EUI and Join EUI__ in the LoRaWAN Library...
+
+-   [__"Device EUI, Join EUI and App Key"__](https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key)
+
+After building NuttX, we download and compile our __LoRaWAN Zig App__...
 
 ```bash
 ##  Download our LoRaWAN Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
+
+##  TODO: Edit lorawan_test.zig and set the LoRaWAN Region...
+##  const ACTIVE_REGION = c.LORAMAC_REGION_AS923;
 
 ##  Compile the Zig App for BL602
 ##  (RV32IMACF with Hardware Floating-Point)
@@ -697,19 +704,36 @@ Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on Pine
 
 -   [__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
 
+In the NuttX Shell, enter this command to start our Zig App...
+
+```bash
+lorawan_test
+```
+
+Our Zig App starts and transmits a LoRaWAN Request to __join the LoRaWAN Network__...
+
 TODO
 
 ```text
-nsh> lorawan_test
 Application name   : Zig LoRaWAN Test
-...
+```
+
+[(See the complete log)](https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b)
+
+TODO
+
+```text
 ###### =========== MLME-Confirm ============ ######
 STATUS      : OK
 ###### ===========   JOINED     ============ ######
 OTAA
 DevAddr     :  00D803AB
 DATA RATE   : DR_2
-...
+```
+
+TODO
+
+```text
 PrepareTxFrame: Transmit to LoRaWAN (9 bytes): Hi NuttX
 ###### =========== MCPS-Confirm ============ ######
 STATUS      : OK
@@ -724,7 +748,7 @@ TX POWER    : 0
 CHANNEL MASK: 0003
 ```
 
-[(See the complete log)](https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b)
+TODO
 
 LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig) successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!
 
