@@ -92,6 +92,20 @@ We'll stick with the __C Implementation__ of the LoRaWAN Stack so that our Zig I
 
 [(More about this)](https://lupyuen.github.io/articles/zig#why-zig)
 
+_Why is our Zig IoT App so complex anyway?_
+
+That's because...
+
+-   LoRaWAN Wireless Protocol is __Time-Critical__. If we're late by 1 second, LoRaWAN just won't work. [(See this)](https://gist.github.com/lupyuen/1d96b24c6bf5164cba652d903eedb9d1)
+
+-   Our app controls the __LoRa Radio Transceiver__ over SPI and GPIO. [(See this)](https://lupyuen.github.io/articles/sx1262#spi-interface)
+
+-   And it needs to handle __GPIO Interrupts__ from the LoRa Transceiver whenever a LoRa Packet is received. [(See this)](https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt)
+
+-   Which means our app needs to do __Multithreading with Timers and Message Queues__ efficiently. [(See this)](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
+
+Great way to test whether Zig can really handle Complex Embedded Apps!
+
 ![Import LoRaWAN Library](https://lupyuen.github.io/images/iot-code2a.png)
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48)
@@ -767,13 +781,15 @@ UnfragmentedData[addr +% i]
 
 "__`+`__" in C becomes "__`+%`__" in Zig!
 
-_What's `+%` in Zig?_
+_What's "`+%`" in Zig?_
 
 That's the Zig Operator for [__Wraparound Addition__](https://ziglang.org/documentation/master/#Wrapping-Operations).
 
-Which means that the result wraps back to 0 (and beyond) if the addition overflows the integer.
+Which means that the result __wraps back to 0__ (and beyond) if the addition overflows the integer.
 
-But this isn't what we intended, since we don't expect the addition to overflow. That's why in our final converted Zig code, we revert `+%` back to `+`...
+But this isn't what we intended, since we don't expect the addition to overflow.
+
+That's why in our final converted Zig code, we __revert "`+%`" back to "`+`"__...
 
 ```zig
 export fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) i8 {
@@ -789,7 +805,7 @@ export fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) i8 {
 
 _What happens if the addition overflows?_
 
-We'll see a __Runtime Error__...
+We'll see a Runtime Error...
 
 ```text
 panic: integer overflow
@@ -801,7 +817,7 @@ Which is probably a good thing, to ensure that our values are sensible.
 
 _What if our Array Index goes out of bounds?_
 
-We'll get this __Runtime Error__...
+We'll get another Runtime Error...
 
 ```text
 panic: index out of bounds
@@ -809,15 +825,17 @@ panic: index out of bounds
 
 [(Source)](https://ziglang.org/documentation/master/#Index-out-of-Bounds)
 
-TODO
+We handle Runtime Errors in our __Custom Panic Handler__, as explained here...
+
+-   [__"Zig Panic Handler"__](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
+
+_So Zig watches for underflow / overflow / out-of-bounds errors at runtime. Anything else?_
 
 Here's the list of __Safety Checks__ done by Zig at runtime...
 
 -   [__"Zig Undefined Behavior"__](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
-TODO
-
-[(How we implemented a Custom Panic Handler)](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
+Thus indeed, Zig tries very hard to catch all kinds of problems at runtime.
 
 _Can we turn off the Safety Checks?_
 
@@ -871,6 +889,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  This article was inspired by a question from my [__GitHub Sponsor__](https://github.com/sponsors/lupyuen): "Can we run Zig on BL602 with Apache NuttX RTOS?"
 
 1.  TODO: [__"Working with C"__](https://ziglearn.org/chapter-4/)
+
+# Appendix: Handle LoRaWAN Events
+
+TODO
 
 # Appendix: Logging
 
