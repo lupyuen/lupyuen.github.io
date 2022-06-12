@@ -458,8 +458,8 @@ fn handle_event_queue() void {
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L449-L490">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230"><strong>UplinkProcess</strong></a> then calls <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203"><strong>PrepareTxFrame</strong></a> to transmit a Data Packet, when the Transmit Timer has expired.</p>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230">(<strong>UplinkProcess</strong> is defined here)</a></p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="LoRaWAN Gateway receives Data Packet from our Zig App" /></p>
-<p><em>LoRaWAN Gateway receives Data Packet from our Zig App</em></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App" /></p>
+<p><em>ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App</em></p>
 <h1 id="logging"><a href="#logging">6 Logging</a></h1>
 <p>Earlier we saw this code for printing a <strong>Debug Message</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Message to be sent
@@ -543,11 +543,19 @@ make
 mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’re ready to run our Zig App!</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App" /></p>
+<p><em>ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App</em></p>
 <h1 id="run-zig-app"><a href="#run-zig-app">8 Run Zig App</a></h1>
-<p>TODO</p>
 <p>Follow these steps to <strong>flash and boot NuttX</strong> (with our Zig App inside) on PineDio Stack…</p>
+<ul>
+<li>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack"><strong>“Flash PineDio Stack”</strong></a></p>
+</li>
+<li>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack"><strong>“Boot PineDio Stack”</strong></a></p>
+</li>
+</ul>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lorawan_test
 Application name   : Zig LoRaWAN Test
 ...
@@ -572,6 +580,10 @@ TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(See the complete log)</a></p>
 <p>LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!</p>
+<p><em>Can we test our app without a LoRaWAN Gateway?</em></p>
+<p>TODO: TTN</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-ttn.png" alt="The Things Network receives Data Packet from our LoRaWAN App" /></p>
+<p><em>The Things Network receives Data Packet from our LoRaWAN App</em></p>
 <h1 id="safety-checks"><a href="#safety-checks">9 Safety Checks</a></h1>
 <p><em>Our IoT App is now in Zig instead of C. Do we gain anything?</em></p>
 <p>We claimed earlier that <strong>Zig is watching our backs</strong> (in case we do something risky)…</p>
@@ -581,18 +593,16 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>Let’s dig for more evidence that Zig really tries to protect our programs…</p>
 <p>This <strong>C Code</strong> (from the original LoRaWAN Demo) copies an array, byte by byte…</p>
 <div class="example-wrap"><pre class="language-c"><code>static int8_t FragDecoderWrite(uint32_t addr, uint8_t *data, uint32_t size) {
-  ...
   for (uint32_t i = 0; i &lt; size; i++ ) {
     UnfragmentedData[addr + i] = data[i];
   }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L539-L550">(Source)</a></p>
-<p>Our Zig Compiler has an fascinating feature: It can <strong>translate C programs into Zig</strong>!</p>
+<p>Our Zig Compiler has a fascinating feature: It can <strong>translate C programs into Zig</strong>!</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/iot#appendix-auto-translate-lorawan-app-to-zig"><strong>“Auto-Translate LoRaWAN App from C to Zig”</strong></a></li>
 </ul>
 <p>When we feed the above C Code into Zig’s Auto-Translator, it produces this functionally-equivalent <strong>Zig Code</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>pub fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) callconv(.C) i8 {
-  ...
   var i: u32 = 0;
   while (i &lt; size) : (i +%= 1) {
     UnfragmentedData[addr +% i] = data[i];
@@ -609,10 +619,11 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p><em>What’s “<code>+%</code>” in Zig?</em></p>
 <p>That’s the Zig Operator for <a href="https://ziglang.org/documentation/master/#Wrapping-Operations"><strong>Wraparound Addition</strong></a>.</p>
 <p>Which means that the result <strong>wraps back to 0</strong> (and beyond) if the addition overflows the integer.</p>
+<p><em>Exactly how we expect C to work right?</em></p>
+<p>Yep the Zig Compiler has faithfully translated the Wraparound Addition from C to Zig.</p>
 <p>But this isn’t what we intended, since we don’t expect the addition to overflow.</p>
 <p>That’s why in our final converted Zig code, we <strong>revert “<code>+%</code>” back to “<code>+</code>”</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>export fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) i8 {
-  ...
   var i: u32 = 0;
   while (i &lt; size) : (i += 1) {
     //  We changed `+%` back to `+`
