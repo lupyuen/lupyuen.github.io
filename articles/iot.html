@@ -734,6 +734,107 @@ UnfragmentedData[addr +% i]</code></pre></div>
 </ol>
 <h1 id="appendix-handle-lorawan-events"><a href="#appendix-handle-lorawan-events">13 Appendix: Handle LoRaWAN Events</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L451-L492">lorawan_test.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// LoRaWAN Event Loop that dequeues Events from the Event Queue and processes the Events
+fn handle_event_queue() void {
+    debug(&quot;handle_event_queue&quot;, .{});
+
+    // Loop forever handling Events from the Event Queue
+    while (true) {
+        // Get the next Event from the Event Queue
+        var ev: [*c]c.ble_npl_event = c.ble_npl_eventq_get(
+            &amp;event_queue,           //  Event Queue
+            c.BLE_NPL_TIME_FOREVER  //  No Timeout (Wait forever for event)
+        );
+
+        // If no Event due to timeout, wait for next Event.
+        // Should never happen since we wait forever for an Event.
+        if (ev == null) { debug(&quot;handle_event_queue: timeout&quot;, .{}); continue; }
+        debug(&quot;handle_event_queue: ev=0x{x}&quot;, .{ @ptrToInt(ev) });
+
+        // Remove the Event from the Event Queue
+        c.ble_npl_eventq_remove(&amp;event_queue, ev);
+
+        // Trigger the Event Handler Function
+        c.ble_npl_event_run(ev);
+
+        // Process the LoRaMac events
+        c.LmHandlerProcess();
+
+        // If we have joined the network, do the uplink
+        if (!c.LmHandlerIsBusy()) {
+            UplinkProcess();
+        }
+
+        // TODO: CRITICAL_SECTION_BEGIN();
+        if (IsMacProcessPending == 1) {
+            // Clear flag and prevent MCU to go into low power mode
+            IsMacProcessPending = 0;
+        } else {
+            // The MCU wakes up through events
+            // TODO: BoardLowPowerHandler();
+        }
+        // TODO: CRITICAL_SECTION_END();
+    }
+}</code></pre></div>
+<p>Let’s look at the <strong>Event Loop</strong> that handles the LoRa and LoRaWAN Events in our Event Queue:</p>
+<div class="example-wrap"><pre class="language-c"><code>/// Event Loop that dequeues Events from the Event Queue and processes the Events
+static void handle_event_queue(void *arg) {
+
+  //  Loop forever handling Events from the Event Queue
+  for (;;) {
+
+    //  Get the next Event from the Event Queue
+    struct ble_npl_event *ev = ble_npl_eventq_get(
+      &amp;event_queue,         //  Event Queue
+      BLE_NPL_TIME_FOREVER  //  No Timeout (Wait forever for event)
+    );</code></pre></div>
+<p>This code runs in the <strong>Foreground Thread</strong> of our NuttX App.</p>
+<p>Here we loop forever, <strong>waiting for Events</strong> from the Event Queue.</p>
+<p>When we receive an Event, we <strong>remove the Event</strong> from the Event Queue…</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  If no Event due to timeout, wait for next Event.
+    //  Should never happen since we wait forever for an Event.
+    if (ev == NULL) { printf(&quot;.&quot;); continue; }
+
+    //  Remove the Event from the Event Queue
+    ble_npl_eventq_remove(&amp;event_queue, ev);</code></pre></div>
+<p>We call the <strong>Event Handler Function</strong> that was registered with the Event…</p>
+<div class="example-wrap"><pre class="language-c"><code>    //  Trigger the Event Handler Function
+    ble_npl_event_run(ev);</code></pre></div>
+<ul>
+<li>
+<p>For DIO1 Interrupts: We call <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a> to handle the packet transmitted / received notification</p>
+</li>
+<li>
+<p>For Timer Events: We call the <strong>Timeout Function</strong> defined in the Timer</p>
+</li>
+</ul>
+<p>The rest of the Event Loop handles LoRaWAN Events. We’ll cover this in the next article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: Processes the LoRaMac events
+    LmHandlerProcess( );
+
+    //  For LoRaWAN: If we have joined the network, do the uplink
+    if (!LmHandlerIsBusy( )) {
+      UplinkProcess( );
+    }
+
+    //  For LoRaWAN: Handle Low Power Mode
+    CRITICAL_SECTION_BEGIN( );
+    if( IsMacProcessPending == 1 ) {
+      //  Clear flag and prevent MCU to go into low power modes.
+      IsMacProcessPending = 0;
+    } else {
+      //  The MCU wakes up through events
+      //  TODO: BoardLowPowerHandler( );
+    }
+    CRITICAL_SECTION_END( );
+  }
+}</code></pre></div>
+<p>And we loop back perpetually, waiting for Events and handling them.</p>
+<p>That’s how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!</p>
 <h1 id="appendix-logging"><a href="#appendix-logging">14 Appendix: Logging</a></h1>
 <p>TODO</p>
 <p>We have implemented Debug Logging <code>std.log.debug</code> that’s described here…</p>
