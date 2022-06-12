@@ -80,9 +80,9 @@ The same LoRaWAN Stack is available on many other platforms, including [__Zephyr
 
 _But the LoRaWAN Stack is in C! Will it work with Zig?_
 
-Yep no worries! Zig will happily __import the LoRaWAN Stack from C__ without any wrappers or modifications.
+Yep no worries, Zig will happily __import the LoRaWAN Stack from C__ without any wrappers or modifications.
 
-And we'll call the LoRaWAN Stack as though it were a Zig Library!
+And we'll call the LoRaWAN Stack as though it were a Zig Library.
 
 _So we're not rewriting the LoRaWAN Stack in Zig?_
 
@@ -112,7 +112,7 @@ Great way to test whether Zig can really handle Complex Embedded Apps!
 
 # Import LoRaWAN Library
 
-Let's dive into our Zig IoT App! We import the [__Zig Standard Library__](https://lupyuen.github.io/articles/zig#import-standard-library) at the top of our app: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48)
+Let's dive into our Zig IoT App. We import the [__Zig Standard Library__](https://lupyuen.github.io/articles/zig#import-standard-library) at the top of our app: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48)
 
 ```zig
 /// Import the Zig Standard Library
@@ -340,7 +340,7 @@ Yep our Zig Code is largely identical to the __C Code in the Demo App__ for the 
 
     (Pic below)
 
-__Converting C Code to Zig__ looks rather straightforward! In a while we'll talk about the tricky parts we encountered during the conversion.
+__Converting C Code to Zig__ looks rather straightforward. In a while we'll talk about the tricky parts we encountered during the conversion.
 
 ![Demo App for the LoRaWAN Stack](https://lupyuen.github.io/images/iot-code1a.png)
 
@@ -534,7 +534,7 @@ Finally we __transmit the message__ to the LoRaWAN Network...
 }
 ```
 
-And that's how [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203) transmits a Data Packet over LoRaWAN!
+And that's how [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203) transmits a Data Packet over LoRaWAN.
 
 _How is PrepareTxFrame is called?_
 
@@ -712,15 +712,16 @@ lorawan_test
 
 Our Zig App starts and transmits a LoRaWAN Request to __join the LoRaWAN Network__...
 
-TODO
-
 ```text
 Application name   : Zig LoRaWAN Test
+###### =========== MLME-Request ============ ######
+######               MLME_JOIN               ######
+###### ===================================== ######
 ```
 
 [(See the complete log)](https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b)
 
-TODO
+5 seconds later, our app receives the __Join Accept Response__ from our LoRaWAN Gateway (ChirpStack)...
 
 ```text
 ###### =========== MLME-Confirm ============ ######
@@ -731,7 +732,11 @@ DevAddr     :  00D803AB
 DATA RATE   : DR_2
 ```
 
-TODO
+[(Source)](https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b)
+
+We have successfully joined the LoRaWAN Network!
+
+Every 40 seconds, our app transmits a __Data Packet__ _("Hi NuttX")_ to the LoRaWAN Network...
 
 ```text
 PrepareTxFrame: Transmit to LoRaWAN (9 bytes): Hi NuttX
@@ -748,13 +753,17 @@ TX POWER    : 0
 CHANNEL MASK: 0003
 ```
 
-TODO
+[(Source)](https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b)
 
-LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig) successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!
+The Data Packet appears in our __LoRaWAN Gateway__ (ChirpStack), like in the pic above.
+
+Yep our LoRaWAN Zig App has successfully transmitted a Data Packet to the LoRaWAN Network! 🎉
 
 _Can we test our app without a LoRaWAN Gateway?_
 
-TODO: TTN
+TODO: [__The Things Network__](https://lupyuen.github.io/articles/ttn)
+
+[__The Things Network Coverage Map__](https://www.thethingsnetwork.org/map)
 
 ![The Things Network receives Data Packet from our LoRaWAN App](https://lupyuen.github.io/images/lorawan3-ttn.png)
 
