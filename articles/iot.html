@@ -497,10 +497,17 @@ debug(&quot;Transmit to LoRaWAN&quot;, .{});</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pinedio2#build-nuttx"><strong>“Build NuttX”</strong></a></li>
 </ul>
-<p>Then we download and compile our <strong>LoRaWAN Zig App</strong>…</p>
+<p>Before compiling NuttX, configure the <strong>LoRaWAN App Key, Device EUI and Join EUI</strong> in the LoRaWAN Library…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key"><strong>“Device EUI, Join EUI and App Key”</strong></a></li>
+</ul>
+<p>After building NuttX, we download and compile our <strong>LoRaWAN Zig App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download our LoRaWAN Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
+
+#  TODO: Edit lorawan_test.zig and set the LoRaWAN Region...
+#  const ACTIVE_REGION = c.LORAMAC_REGION_AS923;
 
 #  Compile the Zig App for BL602
 #  (RV32IMACF with Hardware Floating-Point)
@@ -555,18 +562,21 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack"><strong>“Boot PineDio Stack”</strong></a></p>
 </li>
 </ul>
+<p>In the NuttX Shell, enter this command to start our Zig App…</p>
+<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
+<p>Our Zig App starts and transmits a LoRaWAN Request to <strong>join the LoRaWAN Network</strong>…</p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lorawan_test
-Application name   : Zig LoRaWAN Test
-...
-##### =========== MLME-Confirm ============ ######
+<div class="example-wrap"><pre class="language-text"><code>Application name   : Zig LoRaWAN Test</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(See the complete log)</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>##### =========== MLME-Confirm ============ ######
 STATUS      : OK
 ##### ===========   JOINED     ============ ######
 OTAA
 DevAddr     :  00D803AB
-DATA RATE   : DR_2
-...
-PrepareTxFrame: Transmit to LoRaWAN (9 bytes): Hi NuttX
+DATA RATE   : DR_2</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN (9 bytes): Hi NuttX
 ##### =========== MCPS-Confirm ============ ######
 STATUS      : OK
 ##### =====   UPLINK FRAME        1   ===== ######
@@ -578,7 +588,7 @@ DATA RATE   : DR_3
 U/L FREQ    : 923200000
 TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(See the complete log)</a></p>
+<p>TODO</p>
 <p>LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!</p>
 <p><em>Can we test our app without a LoRaWAN Gateway?</em></p>
 <p>TODO: TTN</p>
