@@ -562,9 +562,9 @@ fn handle_event_queue() void {
 
 [(__UplinkProcess__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230)
 
-![LoRaWAN Gateway receives Data Packet from our Zig App](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
+![ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
 
-_LoRaWAN Gateway receives Data Packet from our Zig App_
+_ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App_
 
 # Logging
 
@@ -685,15 +685,19 @@ cp nuttx.bin /mnt/c/blflash
 
 We're ready to run our Zig App!
 
-# Run Zig App
+![ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
 
-TODO
+_ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App_
+
+# Run Zig App
 
 Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on PineDio Stack...
 
-[__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
+-   [__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
 
-[__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
+-   [__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
+
+TODO
 
 ```text
 nsh> lorawan_test
@@ -724,6 +728,14 @@ CHANNEL MASK: 0003
 
 LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig) successfully joins the LoRaWAN Network (ChirpStack on RAKwireless WisGate) and sends a Data Packet to the LoRaWAN Gateway yay!
 
+_Can we test our app without a LoRaWAN Gateway?_
+
+TODO: TTN
+
+![The Things Network receives Data Packet from our LoRaWAN App](https://lupyuen.github.io/images/lorawan3-ttn.png)
+
+_The Things Network receives Data Packet from our LoRaWAN App_
+
 # Safety Checks
 
 _Our IoT App is now in Zig instead of C. Do we gain anything?_
@@ -738,7 +750,6 @@ This __C Code__ (from the original LoRaWAN Demo) copies an array, byte by byte..
 
 ```c
 static int8_t FragDecoderWrite(uint32_t addr, uint8_t *data, uint32_t size) {
-  ...
   for (uint32_t i = 0; i < size; i++ ) {
     UnfragmentedData[addr + i] = data[i];
   }
@@ -746,7 +757,7 @@ static int8_t FragDecoderWrite(uint32_t addr, uint8_t *data, uint32_t size) {
 
 [(Source)](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L539-L550)
 
-Our Zig Compiler has an fascinating feature: It can __translate C programs into Zig__!
+Our Zig Compiler has a fascinating feature: It can __translate C programs into Zig__!
 
 -   [__"Auto-Translate LoRaWAN App from C to Zig"__](https://lupyuen.github.io/articles/iot#appendix-auto-translate-lorawan-app-to-zig)
 
@@ -754,7 +765,6 @@ When we feed the above C Code into Zig's Auto-Translator, it produces this funct
 
 ```zig
 pub fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) callconv(.C) i8 {
-  ...
   var i: u32 = 0;
   while (i < size) : (i +%= 1) {
     UnfragmentedData[addr +% i] = data[i];
@@ -787,13 +797,16 @@ That's the Zig Operator for [__Wraparound Addition__](https://ziglang.org/docume
 
 Which means that the result __wraps back to 0__ (and beyond) if the addition overflows the integer.
 
+_Exactly how we expect C to work right?_
+
+Yep the Zig Compiler has faithfully translated the Wraparound Addition from C to Zig.
+
 But this isn't what we intended, since we don't expect the addition to overflow.
 
 That's why in our final converted Zig code, we __revert "`+%`" back to "`+`"__...
 
 ```zig
 export fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) i8 {
-  ...
   var i: u32 = 0;
   while (i < size) : (i += 1) {
     //  We changed `+%` back to `+`
