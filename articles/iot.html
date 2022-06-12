@@ -313,7 +313,7 @@ pub export fn lorawan_test_main(
   handle_event_queue();  //  Never returns
   return 0;
 }</code></pre></div>
-<p>(We’ll talk about <strong>handle_event_queue</strong> in a while)</p>
+<p>(<strong>handle_event_queue</strong> is explained in the Appendix)</p>
 <p>That’s all for the Main Function of our Zig App!</p>
 <p><em>Wait… Our Zig Code looks familiar?</em></p>
 <p>Yep our Zig Code is largely identical to the <strong>C Code in the Demo App</strong> for the LoRaWAN Stack…</p>
@@ -458,6 +458,7 @@ fn handle_event_queue() void {
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L449-L490">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230"><strong>UplinkProcess</strong></a> then calls <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203"><strong>PrepareTxFrame</strong></a> to transmit a Data Packet, when the Transmit Timer has expired.</p>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230">(<strong>UplinkProcess</strong> is defined here)</a></p>
+<p>(<strong>handle_event_queue</strong> is explained in the Appendix)</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App" /></p>
 <p><em>ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App</em></p>
 <h1 id="logging"><a href="#logging">6 Logging</a></h1>
