@@ -958,6 +958,126 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
+[lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L451-L492)
+
+```zig
+/// LoRaWAN Event Loop that dequeues Events from the Event Queue and processes the Events
+fn handle_event_queue() void {
+    debug("handle_event_queue", .{});
+
+    // Loop forever handling Events from the Event Queue
+    while (true) {
+        // Get the next Event from the Event Queue
+        var ev: [*c]c.ble_npl_event = c.ble_npl_eventq_get(
+            &event_queue,           //  Event Queue
+            c.BLE_NPL_TIME_FOREVER  //  No Timeout (Wait forever for event)
+        );
+
+        // If no Event due to timeout, wait for next Event.
+        // Should never happen since we wait forever for an Event.
+        if (ev == null) { debug("handle_event_queue: timeout", .{}); continue; }
+        debug("handle_event_queue: ev=0x{x}", .{ @ptrToInt(ev) });
+
+        // Remove the Event from the Event Queue
+        c.ble_npl_eventq_remove(&event_queue, ev);
+
+        // Trigger the Event Handler Function
+        c.ble_npl_event_run(ev);
+
+        // Process the LoRaMac events
+        c.LmHandlerProcess();
+
+        // If we have joined the network, do the uplink
+        if (!c.LmHandlerIsBusy()) {
+            UplinkProcess();
+        }
+
+        // TODO: CRITICAL_SECTION_BEGIN();
+        if (IsMacProcessPending == 1) {
+            // Clear flag and prevent MCU to go into low power mode
+            IsMacProcessPending = 0;
+        } else {
+            // The MCU wakes up through events
+            // TODO: BoardLowPowerHandler();
+        }
+        // TODO: CRITICAL_SECTION_END();
+    }
+}
+```
+
+Let's look at the __Event Loop__ that handles the LoRa and LoRaWAN Events in our Event Queue:
+
+```c
+/// Event Loop that dequeues Events from the Event Queue and processes the Events
+static void handle_event_queue(void *arg) {
+
+  //  Loop forever handling Events from the Event Queue
+  for (;;) {
+
+    //  Get the next Event from the Event Queue
+    struct ble_npl_event *ev = ble_npl_eventq_get(
+      &event_queue,         //  Event Queue
+      BLE_NPL_TIME_FOREVER  //  No Timeout (Wait forever for event)
+    );
+```
+
+This code runs in the __Foreground Thread__ of our NuttX App.
+
+Here we loop forever, __waiting for Events__ from the Event Queue.
+
+When we receive an Event, we __remove the Event__ from the Event Queue...
+
+```c
+    //  If no Event due to timeout, wait for next Event.
+    //  Should never happen since we wait forever for an Event.
+    if (ev == NULL) { printf("."); continue; }
+
+    //  Remove the Event from the Event Queue
+    ble_npl_eventq_remove(&event_queue, ev);
+```
+
+We call the __Event Handler Function__ that was registered with the Event...
+
+```c
+    //  Trigger the Event Handler Function
+    ble_npl_event_run(ev);
+```
+
+-   For DIO1 Interrupts: We call [__RadioOnDioIrq__](https://lupyuen.github.io/articles/sx1262#radioondioirq) to handle the packet transmitted / received notification
+
+-   For Timer Events: We call the __Timeout Function__ defined in the Timer
+
+The rest of the Event Loop handles LoRaWAN Events. We'll cover this in the next article...
+
+-   [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
+
+```c
+    //  For LoRaWAN: Processes the LoRaMac events
+    LmHandlerProcess( );
+
+    //  For LoRaWAN: If we have joined the network, do the uplink
+    if (!LmHandlerIsBusy( )) {
+      UplinkProcess( );
+    }
+
+    //  For LoRaWAN: Handle Low Power Mode
+    CRITICAL_SECTION_BEGIN( );
+    if( IsMacProcessPending == 1 ) {
+      //  Clear flag and prevent MCU to go into low power modes.
+      IsMacProcessPending = 0;
+    } else {
+      //  The MCU wakes up through events
+      //  TODO: BoardLowPowerHandler( );
+    }
+    CRITICAL_SECTION_END( );
+  }
+}
+```
+
+And we loop back perpetually, waiting for Events and handling them.
+
+That's how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!
+
 # Appendix: Logging
 
 TODO
