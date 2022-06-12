@@ -956,9 +956,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Handle LoRaWAN Events
 
+Let's look at the __Event Loop__ that handles the LoRa and LoRaWAN Events in our app.
+
+_Our Event Loop looks different from the Original LoRaWAN Demo App?_
+
+Yep the Original LoRaWAN Demo App handles LoRaWAN Events in a __Busy-Wait Loop__. [(See this)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L366-L389)
+
+But since our Zig App runs on a Real-Time Operating System (RTOS), we can use the __Multithreading Features__ (Timers and Event Queues) provided by the RTOS.
+
+_So we're directly calling the Timers and Event Queues from Apache NuttX RTOS?_
+
+Not quite. We're calling the Timers and Event Queues provided by [__NimBLE Porting Layer__](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer).
+
 TODO: Why NimBLE Porting Layer
 
-Let's look at the __Event Loop__ that handles the LoRa and LoRaWAN Events in our app.
+[(More about NimBLE Porting Layer)](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
+
+TODO
 
 Our Event Loop forever reads LoRa and LoRaWAN Events from an __Event Queue__ and handles them.
 
