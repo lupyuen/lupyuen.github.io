@@ -1175,7 +1175,7 @@ _How do we read the Stack Trace?_
 
 We need to generate the __RISC-V Disassembly__ for our firmware. [(Like this)](https://lupyuen.github.io/articles/auto#disassemble-the-firmware)
 
-According to our RISC-V Disassembly, the first address `23016394` doesn't look interesting, because it's inside the __assert__ function...
+According to our RISC-V Disassembly, the first address __`23016394`__ doesn't look interesting, because it's inside the __assert__ function...
 
 ```text
 /home/user/zig-linux-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/std/debug.zig:259
@@ -1191,7 +1191,7 @@ pub fn assert(ok: bool) void {
 23016394:	a009                j	23016396 <std.debug.assert+0x2e>
 ```
 
-But the second address __23016ce0__ reveals the assertion that failed...
+But the second address __`23016ce0`__ reveals the assertion that failed...
 
 ```text
 /home/user/nuttx/zig-bl602-nuttx/lorawan_test.zig:95
@@ -1235,11 +1235,13 @@ pub fn panic(
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L501-L522)
 
+_How do we tell Zig Compiler to use this Panic Handler?_
+
 We just need to define this __panic__ function in the Root Zig Source File (like lorawan_test.zig), and the Zig Runtime will call it when there's a panic.
 
 # Appendix: Zig Compiler as Drop-In Replacement for GCC
 
-_Apache NuttX RTOS uses GCC compile the BL602 firmware. Will Zig Compiler work as [Drop-In Replacement for GCC](https://lupyuen.github.io/articles/zig#why-zig) for compiling NuttX Libraries?_
+_Apache NuttX RTOS uses GCC compile the BL602 firmware. Will Zig Compiler work as [Drop-In Replacement for GCC](https://lupyuen.github.io/articles/zig#why-zig) for compiling some NuttX modules?_
 
 Let's test it on the [__LoRa SX1262 Library__](https://lupyuen.github.io/articles/sx1262) for Apache NuttX RTOS.
 
@@ -1327,15 +1329,15 @@ riscv64-unknown-elf-gcc \
 
 (As observed with "__make --trace__" when building NuttX)
 
-We switch GCC to "__zig cc__" with these changes...
+We switch GCC to "__zig cc__" by making these changes...
 
--   Change `riscv64-unknown-elf-gcc` to `zig cc`
+-   Change "`riscv64-unknown-elf-gcc`" to "`zig cc`"
 
--   Add the target `-target riscv32-freestanding-none -mcpu=baseline_rv32-d`
+-   Add the target "`-target riscv32-freestanding-none -mcpu=baseline_rv32-d`""
 
--   Remove `-march=rv32imafc`
+-   Remove "`-march=rv32imafc`"
 
-And we run this to compile the LoRa SX1262 Library with "__zig cc__"...
+After making the changes, we run this to compile the LoRa SX1262 Library with "__zig cc__" and link it with the NuttX Firmware...
 
 ```bash
 ##  LoRa SX1262 Source Directory
@@ -1510,7 +1512,7 @@ CHANNEL MASK: 0003
 
 [(See the complete log)](https://gist.github.com/lupyuen/ada7f83a96eb36ad1b9fe09da4527003)
 
-Yep the LoRa SX1262 Library compiled with "__zig cc__" works perfectly fine on NuttX!
+Yep the LoRa SX1262 Library compiled with "__zig cc__" works perfectly fine with NuttX!
 
 _Zig Compiler uses Clang to compile the C code. But NuttX compiles with GCC. Won't we have problems with code compatibility?_
 
@@ -1520,9 +1522,11 @@ Apparently no problemo! The experiment above shows that "__zig cc__" (and Clang)
 
 # Appendix: LoRaWAN Library for NuttX
 
-TODO
+In the previous section we took __3 source files__ (from LoRa SX1262 Library), compiled them with "__zig cc__" and linked them with Apache NuttX RTOS.
 
-Let's compile the huge [LoRaWAN Library](https://lupyuen.github.io/articles/lorawan3) with Zig Compiler.
+_But will this work for larger NuttX Libraries?_
+
+Let's attempt to compile the huge (and complicated) [__LoRaWAN Library__](https://lupyuen.github.io/articles/lorawan3) with "zig cc".
 
 NuttX compiles the LoRaWAN Library like this...
 
@@ -1605,13 +1609,13 @@ We include the right header files into [LoRaMac.c](https://github.com/lupyuen/Lo
 
 [(See the changes)](https://github.com/lupyuen/LoRaMac-node-nuttx/commit/e36b54ea3351fc80f03d13a131527bf6733410ab)
 
-[LoRaMac.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMac.c) compiles OK with Zig Compiler.
+The modified [LoRaMac.c](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMac.c) compiles without errors with "zig cc".
 
-TODO: Compile the other files in the LoRaWAN Library with `build.zig`
+Unfortunately we haven't completed this experiment, because we have a [__long list of source files__](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/Makefile) in the LoRaWAN Library to compile with "zig cc".
 
-https://ziglang.org/documentation/master/#Zig-Build-System
+Instead of rewriting the [__NuttX Makefile__](https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/Makefile) to call "zig cc", we should probably compile with "__build.zig__" instead...
 
-TODO: Test the LoRaWAN Library
+-   [__"Zig Build System"__](https://ziglang.org/documentation/master/#Zig-Build-System)
 
 # Appendix: LoRaWAN App for NuttX
 
