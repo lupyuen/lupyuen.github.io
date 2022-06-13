@@ -923,7 +923,7 @@ TODO: So it seems the best we can do today is to code the high-level parts in Zi
 
 TODO: With Zig watching my back, I feel more confident extending the Zig App
 
-_Zig Compiler uses Clang to interpret C code. NuttX compiles with GCC. Won't we have problems with code compatibility?_
+_Zig Compiler uses Clang to interpret the C Header Files. But NuttX compiles with GCC. Won't we have problems with code compatibility?_
 
 TODO: We have validated Zig Compiler's Clang as a drop-in replacement for GCC
 
@@ -1096,7 +1096,7 @@ const msg: []const u8 = "Hi NuttX";
 
 //  Print the message
 debug("Transmit to LoRaWAN ({} bytes): {s}", .{ 
-    msg.len, msg 
+  msg.len, msg 
 });
 
 // Prints: Transmit to LoRaWAN (8 bytes): Hi NuttX
@@ -1110,30 +1110,30 @@ Below is our implementation of __std.log.debug__...
 /// Called by Zig for `std.log.debug`, `std.log.info`, `std.log.err`, ...
 /// https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d
 pub fn log(
-    comptime _message_level: std.log.Level,
-    comptime _scope: @Type(.EnumLiteral),
-    comptime format: []const u8,
-    args: anytype,
+  comptime _message_level: std.log.Level,
+  comptime _scope: @Type(.EnumLiteral),
+  comptime format: []const u8,
+  args: anytype,
 ) void {
-    _ = _message_level;
-    _ = _scope;
+  _ = _message_level;
+  _ = _scope;
 
-    // Format the message
-    var buf: [100]u8 = undefined;  // Limit to 100 chars
-    var slice = std.fmt.bufPrint(&buf, format, args)
-        catch { _ = puts("*** log error: buf too small"); return; };
+  // Format the message
+  var buf: [100]u8 = undefined;  // Limit to 100 chars
+  var slice = std.fmt.bufPrint(&buf, format, args)
+    catch { _ = puts("*** log error: buf too small"); return; };
     
-    // Terminate the formatted message with a null
-    var buf2: [buf.len + 1 : 0]u8 = undefined;
-    std.mem.copy(
-        u8, 
-        buf2[0..slice.len], 
-        slice[0..slice.len]
-    );
-    buf2[slice.len] = 0;
+  // Terminate the formatted message with a null
+  var buf2: [buf.len + 1 : 0]u8 = undefined;
+  std.mem.copy(
+    u8, 
+    buf2[0..slice.len], 
+    slice[0..slice.len]
+  );
+  buf2[slice.len] = 0;
 
-    // Print the formatted message
-    _ = puts(&buf2);
+  // Print the formatted message
+  _ = puts(&buf2);
 }
 ```
 
@@ -1173,7 +1173,7 @@ Stack Trace:
 
 _How do we read the Stack Trace?_
 
-We need to generate the __RISC-V Disassembly__ for our firmware.
+We need to generate the __RISC-V Disassembly__ for our firmware. [(Like this)](https://lupyuen.github.io/articles/auto#disassemble-the-firmware)
 
 According to our RISC-V Disassembly, the first address `23016394` doesn't look interesting, because it's inside the __assert__ function...
 
@@ -1213,39 +1213,37 @@ This is our implementation of the __Zig Panic Handler__...
 /// https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html
 /// https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847
 pub fn panic(
-    message: []const u8, 
-    _stack_trace: ?*std.builtin.StackTrace
+  message: []const u8, 
+  _stack_trace: ?*std.builtin.StackTrace
 ) noreturn {
-    // Print the Panic Message
-    _ = _stack_trace;
-    _ = puts("\n!ZIG PANIC!");
-    _ = puts(@ptrCast([*c]const u8, message));
+  // Print the Panic Message
+  _ = _stack_trace;
+  _ = puts("\n!ZIG PANIC!");
+  _ = puts(@ptrCast([*c]const u8, message));
 
-    // Print the Stack Trace
-    _ = puts("Stack Trace:");
-    var it = std.debug.StackIterator.init(@returnAddress(), null);
-    while (it.next()) |return_address| {
-        _ = printf("%p\n", return_address);
-    }
+  // Print the Stack Trace
+  _ = puts("Stack Trace:");
+  var it = std.debug.StackIterator.init(@returnAddress(), null);
+  while (it.next()) |return_address| {
+    _ = printf("%p\n", return_address);
+  }
 
-    // Halt
-    while(true) {}
+  // Halt
+  while(true) {}
 }
 ```
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L501-L522)
 
-We just need to define this __panic__ function in the Root Zig Source File (like lorawan_test.zig), and the Zig Compiler will call it when there's a panic.
+We just need to define this __panic__ function in the Root Zig Source File (like lorawan_test.zig), and the Zig Runtime will call it when there's a panic.
 
 # Appendix: Zig Compiler as Drop-In Replacement for GCC
 
-TODO
+_Apache NuttX RTOS uses GCC compile the BL602 firmware. Will Zig Compiler work as [Drop-In Replacement for GCC](https://lupyuen.github.io/articles/zig#why-zig) for compiling NuttX Libraries?_
 
-_Will Zig Compiler work as [Drop-In Replacement for GCC](https://lupyuen.github.io/articles/zig#why-zig) for compiling NuttX Libraries?_
+Let's test it on the [__LoRa SX1262 Library__](https://lupyuen.github.io/articles/sx1262) for Apache NuttX RTOS.
 
-Let's test it on the [LoRa SX1262 Library](https://lupyuen.github.io/articles/sx1262) for Apache NuttX RTOS!
-
-Here's how NuttX compiles the [LoRa SX1262 Library](https://lupyuen.github.io/articles/sx1262) with GCC...
+Here's how NuttX compiles the LoRa SX1262 Library with GCC...
 
 ```bash
 ##  LoRa SX1262 Source Directory
@@ -1327,9 +1325,9 @@ riscv64-unknown-elf-gcc \
   -o  src/sx126x-nuttx.o
 ```
 
-(We observed this with `make --trace` while building NuttX)
+(As observed with "__make --trace__" when building NuttX)
 
-We make these changes...
+We switch GCC to "__zig cc__" with these changes...
 
 -   Change `riscv64-unknown-elf-gcc` to `zig cc`
 
@@ -1337,7 +1335,7 @@ We make these changes...
 
 -   Remove `-march=rv32imafc`
 
-And we run this...
+And we run this to compile the LoRa SX1262 Library with "__zig cc__"...
 
 ```bash
 ##  LoRa SX1262 Source Directory
@@ -1452,7 +1450,7 @@ nuttx/include/nuttx/fs/fs.h:238:20: error: use of undeclared identifier 'NAME_MA
                    ^
 ```
 
-We fix this by including the right header files...
+We fix this by including the __right header files__...
 
 ```c
 #if defined(__NuttX__) && defined(__clang__)  //  Workaround for NuttX with zig cc
@@ -1469,7 +1467,7 @@ Into these source files...
 
 [(See the changes)](https://github.com/lupyuen/lora-sx1262/commit/8da7e4d7cc8f1455d750bc51d75c640eea221f41)
 
-We insert this code to tell us (at runtime) whether it was compiled with Zig Compiler or GCC...
+Also we insert this code to tell us (at runtime) whether it was __compiled with Zig Compiler__ or GCC...
 
 ```c
 void SX126xIoInit( void ) {
@@ -1484,7 +1482,7 @@ void SX126xIoInit( void ) {
 
 [(Source)](https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L119-L127)
 
-Compiled with `zig cc`, the LoRa SX1262 Library runs OK on NuttX yay!
+We run the __LoRaWAN Test App__ (compiled with GCC) that calls the LoRa SX1262 Library (compiled with "__zig cc__")...
 
 ```text
 nsh> lorawan_test
@@ -1511,6 +1509,14 @@ CHANNEL MASK: 0003
 ```
 
 [(See the complete log)](https://gist.github.com/lupyuen/ada7f83a96eb36ad1b9fe09da4527003)
+
+Yep the LoRa SX1262 Library compiled with "__zig cc__" works perfectly fine on NuttX!
+
+_Zig Compiler uses Clang to compile the C code. But NuttX compiles with GCC. Won't we have problems with code compatibility?_
+
+Apparently no problemo! The experiment above shows that "__zig cc__" (and Clang) is compatible with GCC (at least for BL602 NuttX).
+
+(Just make sure that we pass the same Compiler Options to both compilers)
 
 # Appendix: LoRaWAN Library for NuttX
 
