@@ -935,9 +935,7 @@ Yes it seems the best we can do today is to...
 
     (LoRaWAN Stack and Apache NuttX RTOS)
 
--   And Zig Compiler will do the __Zig-to-C__ plumbing for us
-
-    (As we've seen)
+And Zig Compiler will do the __Zig-to-C__ plumbing for us. (As we've seen)
 
 _Zig Compiler calls Clang to import the C Header Files. But NuttX compiles with GCC. Won't we have problems with code compatibility?_
 
