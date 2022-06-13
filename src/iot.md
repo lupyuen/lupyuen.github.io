@@ -913,21 +913,55 @@ _[Original C Code](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_tes
 
 # Zig Outcomes
 
-_Once again... Why are we doing all this in Zig?_
+_Once again... Why are we doing this in Zig?_
 
-TODO: Let's recap: We have a __complex chunk of firmware__ that needs to run on an IoT Gadget (PineDio Stack)...
+Let's recap: We have a __complex chunk of firmware__ that needs to run on an IoT Gadget (PineDio Stack)...
 
-TODO: We wished we could rewrite the LoRaWAN Stack in a modern, memory-safe language... But we can't. (Because LoRaWAN changes)
+-   It talks SPI to the __LoRa Radio Transceiver__
 
-TODO: So it seems the best we can do today is to code the high-level parts in Zig, and leave the low-level parts in C. (And let Zig figure out the Zig-to-C plumbing)
+-   It handles __GPIO Interrupts__ from the LoRa Transceiver
 
-TODO: With Zig watching my back, I feel more confident extending the Zig App
+-   It needs __Multithreading, Timers and Event Queues__ because the LoRaWAN Protocol is complicated and time-critical
+
+We wished we could __rewrite the LoRaWAN Stack__ in a modern, memory-safe language... But we can't. [(Because LoRaWAN changes)](https://lupyuen.github.io/articles/zig#why-zig)
+
+_But we can do this partially in Zig right?_
+
+Yes it seems the best we can do today is to code the __High-Level Parts in Zig__...
+
+And leave the __Low-Level Parts in C__, including the LoRaWAN Stack and the Apache NuttX RTOS.
+
+(Zig Compiler does the Zig-to-C plumbing for us, as we've seen)
 
 _Zig Compiler calls Clang to import the C Header Files. But NuttX compiles with GCC. Won't we have problems with code compatibility?_
 
-TODO: We have validated Zig Compiler's Clang as a drop-in replacement for GCC
+We have validated Zig Compiler's __Clang as a drop-in replacement__ for GCC...
 
-TODO: Minor workarounds, no showstoppers 
+-   [__"Zig Compiler as Drop-In Replacement for GCC"__](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
+
+-   [__"LoRaWAN Library (compiled with zig cc)"__](https://lupyuen.github.io/articles/iot#appendix-lorawan-library-for-nuttx)
+
+-   [__"LoRaWAN App (compiled with zig cc)"__](https://lupyuen.github.io/articles/iot#appendix-lorawan-app-for-nuttx)
+
+Hence we're confident that __Zig will interoperate correctly__ with the LoRaWAN Stack and Apache NuttX RTOS.
+
+(Well for BL602 NuttX at least)
+
+_Were there problems with Zig-to-C interoperability?_
+
+We hit some __minor interoperability issues__ and we found workarounds...
+
+-   [__"Opaque Type Error"__](https://lupyuen.github.io/articles/iot#appendix-opaque-type-error)
+
+-   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/iot#appendix-fix-opaque-type)
+
+-   [__"Macro Error"__](https://lupyuen.github.io/articles/iot#appendix-macro-error)
+
+-   [__"Struct Initialisation Error"__](https://lupyuen.github.io/articles/iot#appendix-struct-initialisation-error)
+
+No showstoppers, so our Zig App is good to go!
+
+TODO: With Zig watching my back, I feel more confident extending the Zig App
 
 TODO: Read the Internal Temperature Sensor
 
