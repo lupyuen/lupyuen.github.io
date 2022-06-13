@@ -999,7 +999,11 @@ _LVGL Touchscreen Apps might benefit from Zig_
 
 # What's Next
 
-TODO
+I hope this article has inspired you to create IoT apps in Zig!
+
+In the coming weeks I shall flesh out our Zig App, so that it works like a real __IoT Sensor Device.__
+
+(With Temperature Sensor, CBOR Encoding, The Things Network, ...)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
