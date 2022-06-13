@@ -2292,21 +2292,24 @@ Now Zig Compiler successfully compiles our LoRaWAN Test App [lorawan_test.zig](h
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
-Zig Compiler crashes when it tries to initialise the __Timer Struct__ at startup...
+When we initialise the __Timer Struct__ at startup...
 
 ```zig
 /// Timer to handle the application data transmission duty cycle
 var TxTimer: c.TimerEvent_t = 
   std.mem.zeroes(c.TimerEvent_t);
-
-// Zig Compiler crashes with...
-// TODO buf_write_value_bytes maybe typethread 11512 panic:
-// Unable to dump stack trace: debug info stripped
 ```
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L742-L755)
 
-So we initialise the Timer Struct in the Main Function instead...
+Zig Compiler crashes with this error...
+
+```text
+TODO buf_write_value_bytes maybe typethread 11512 panic:
+Unable to dump stack trace: debug info stripped
+```
+
+So we initialise the Timer Struct in the __Main Function__ instead...
 
 ```zig
 /// Timer to handle the application data transmission duty cycle.
