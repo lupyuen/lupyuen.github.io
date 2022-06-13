@@ -1862,7 +1862,7 @@ zig translate-c \
 
 Here's the original C code: [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c)
 
-And the auto-translation from C to Zig: [translated/lorawan_test_main.zig](translated/lorawan_test_main.zig)
+And the auto-translation from C to Zig: [translated/lorawan_test_main.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig)
 
 Here's a snippet from the original C code...
 
