@@ -973,7 +973,7 @@ I think it is! Zig has plenty of __Safety Checks__ to help ensure that we're doi
 
 Now I feel confident that I can __safely extend__ our Zig App to do more meaningful IoT things...
 
--   Read the BL602's __Internal Temperature Sensor__ [(Like this)](https://github.com/lupyuen/bl602_adc_test)
+-   Read BL602's __Internal Temperature Sensor__ [(Like this)](https://github.com/lupyuen/bl602_adc_test)
 
 -   Compress the Temperature Sensor Data with __CBOR__ [(Like this)](https://lupyuen.github.io/articles/cbor2)
 
