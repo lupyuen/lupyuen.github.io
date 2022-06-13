@@ -694,9 +694,7 @@ cp nuttx.bin /mnt/c/blflash
 
 We're ready to run our Zig App!
 
-![ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
-
-_ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App_
+![Running our LoRaWAN Zig App](https://lupyuen.github.io/images/lorawan3-flow.jpg)
 
 # Run Zig App
 
@@ -757,9 +755,11 @@ CHANNEL MASK: 0003
 
 [(Source)](https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b)
 
-The Data Packet appears in our __LoRaWAN Gateway__ (ChirpStack), like in the pic above.
+The Data Packet appears in our __LoRaWAN Gateway__ (ChirpStack), like in the pic below.
 
 Yep our LoRaWAN Zig App has successfully transmitted a Data Packet to the LoRaWAN Network! 🎉
+
+![ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App](https://lupyuen.github.io/images/lorawan3-chirpstack6.png)
 
 _Can we test our app without a LoRaWAN Gateway?_
 
@@ -907,19 +907,17 @@ If we prefer to live a little recklessly (momentarily), this is how we __disable
 
 -   [__@setRuntimeSafety__](https://ziglang.org/documentation/master/#setRuntimeSafety)
 
-![Original C Code (left) and Converted Zig Code (right) for our LoRaWAN App look highly similar](https://lupyuen.github.io/images/iot-code4a.png)
-
-_[Original C Code](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323) (left) and [Converted Zig Code](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158) (right) for our LoRaWAN App look highly similar_
+![PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio10a.jpg)
 
 # Zig Outcomes
 
 _Once again... Why are we doing this in Zig?_
 
-Let's recap: We have a __complex chunk of firmware__ that needs to run on an IoT Gadget (PineDio Stack)...
+Let's recap: We have a __complex chunk of firmware__ that needs to run on an IoT gadget (PineDio Stack)...
 
--   It talks SPI to the __LoRa Radio Transceiver__
+-   It talks SPI to the __LoRa Radio Transceiver__ to transmit packets
 
--   It handles __GPIO Interrupts__ from the LoRa Transceiver
+-   It handles __GPIO Interrupts__ from the LoRa Transceiver to receive packets
 
 -   It needs __Multithreading, Timers and Event Queues__ because the LoRaWAN Protocol is complicated and time-critical
 
@@ -927,11 +925,19 @@ We wished we could __rewrite the LoRaWAN Stack__ in a modern, memory-safe langua
 
 _But we can do this partially in Zig right?_
 
-Yes it seems the best we can do today is to code the __High-Level Parts in Zig__...
+Yes it seems the best we can do today is to...
 
-And leave the __Low-Level Parts in C__, including the LoRaWAN Stack and the Apache NuttX RTOS.
+-   Code the __High-Level Parts in Zig__
 
-(Zig Compiler does the Zig-to-C plumbing for us, as we've seen)
+    (Event Loop and Data Transmission)
+
+-   Leave the __Low-Level Parts in C__
+
+    (LoRaWAN Stack and Apache NuttX RTOS)
+
+-   And Zig Compiler will do the __Zig-to-C__ plumbing for us
+
+    (As we've seen)
 
 _Zig Compiler calls Clang to import the C Header Files. But NuttX compiles with GCC. Won't we have problems with code compatibility?_
 
@@ -961,18 +967,35 @@ We hit some __minor interoperability issues__ and we found workarounds...
 
 No showstoppers, so our Zig App is good to go!
 
-TODO: With Zig watching my back, I feel more confident extending the Zig App
+_Is Zig effective in managing the complexity of our firmware?_
 
-TODO: Read the Internal Temperature Sensor
+I think it is! Zig has plenty of __Safety Checks__ to help ensure that we're doing the right thing...
 
-TODO: Encode the Temperature Sensor Data with [TinyCBOR](https://lupyuen.github.io/articles/cbor2) and transmit to The Things Network
+-   [__"Safety Checks"__](https://lupyuen.github.io/articles/iot#safety-checks)
 
-TODO: Monitor sensor data with [Prometheus and Grafana](https://lupyuen.github.io/articles/prometheus)
+Now I feel confident that I can __safely extend__ our Zig App to do more meaningful IoT things...
 
-TODO: Add new code with [`@import()`](https://zig.news/mattnite/import-and-packages-23mb)
+-   Read the BL602's __Internal Temperature Sensor__ [(Like this)](https://github.com/lupyuen/bl602_adc_test)
 
-TODO: [LVGL](https://lupyuen.github.io/articles/pinedio2#nuttx-apps
-)
+-   Compress the Temperature Sensor Data with __CBOR__ [(Like this)](https://lupyuen.github.io/articles/cbor2)
+
+-   Transmit over LoRaWAN to __The Things Network__ [(Like this)](https://lupyuen.github.io/articles/ttn)
+
+-   Monitor the Sensor Data with __Prometheus and Grafana__ [(Like this)](https://lupyuen.github.io/articles/prometheus)
+
+We'll extend our Zig App the modular way thanks to [__@import__](https://zig.news/mattnite/import-and-packages-23mb)
+
+_Is there anything else that might benefit from Zig?_
+
+[__LVGL Touchscreen Apps__](https://lupyuen.github.io/articles/pinedio2#nuttx-apps) might be easier to maintain when we code them in Zig.
+
+(Since LVGL looks as complicated as LoRaWAN)
+
+Someday I'll try this!
+
+![LVGL Touchscreen Apps might benefit from Zig](https://lupyuen.github.io/images/pinedio2-title.jpg)
+
+_LVGL Touchscreen Apps might benefit from Zig_
 
 # What's Next
 
@@ -998,7 +1021,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article was inspired by a question from my [__GitHub Sponsor__](https://github.com/sponsors/lupyuen): "Can we run Zig on BL602 with Apache NuttX RTOS?"
 
-1.  TODO: [__"Working with C"__](https://ziglearn.org/chapter-4/)
+1.  These articles were super helpful for __Zig-to-C Interoperability__...
+
+    [__"Working with C"__](https://ziglearn.org/chapter-4/)
+
+    [__"Compile a C/C++ Project with Zig"__](https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j)
+
+    [__"Extend a C/C++ Project with Zig"__](https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di)
+
+    [__"Maintain it With Zig"__](https://kristoff.it/blog/maintain-it-with-zig)
 
 ![Handle LoRaWAN Events with NimBLE Porting Layer](https://lupyuen.github.io/images/sx1262-handler.jpg)
 
