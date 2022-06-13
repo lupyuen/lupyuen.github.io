@@ -991,7 +991,7 @@ _Is there anything else that might benefit from Zig?_
 
 (Since LVGL looks as complicated as LoRaWAN)
 
-Someday I'll try this!
+Someday I'll try LVGL on Zig... And we might possibly combine it with LoRaWAN in a single Zig App!
 
 ![LVGL Touchscreen Apps might benefit from Zig](https://lupyuen.github.io/images/pinedio2-title.jpg)
 
