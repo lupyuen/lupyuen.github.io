@@ -923,7 +923,7 @@ TODO: So it seems the best we can do today is to code the high-level parts in Zi
 
 TODO: With Zig watching my back, I feel more confident extending the Zig App
 
-_Zig Compiler calls Clang to interpret the C Header Files. But NuttX compiles with GCC. Won't we have problems with code compatibility?_
+_Zig Compiler calls Clang to import the C Header Files. But NuttX compiles with GCC. Won't we have problems with code compatibility?_
 
 TODO: We have validated Zig Compiler's Clang as a drop-in replacement for GCC
 
@@ -1517,7 +1517,7 @@ This shows that the LoRa SX1262 Library compiled with "__zig cc__" works perfect
 
 _Zig Compiler calls Clang to compile C code. But NuttX compiles with GCC. Won't we have problems with code compatibility?_
 
-Apparently no problemo! The experiment above shows that "__zig cc__" (and Clang) is compatible with GCC (at least for BL602 NuttX).
+Apparently no problemo! The experiment above shows that "__zig cc__" (with Clang) is compatible with GCC (at least for BL602 NuttX).
 
 (Just make sure that we pass the same Compiler Options to both compilers)
 
@@ -1911,12 +1911,10 @@ We'll see the auto-translated code in the upcoming sections...
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
-TODO
-
 When we reference `LmHandlerCallbacks` in our LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig)...
 
 ```zig
-    _ = &LmHandlerCallbacks;
+_ = &LmHandlerCallbacks;
 ```
 
 Zig Compiler will show this __Opaque Type Error__...
@@ -2041,14 +2039,14 @@ typedef union uPingSlotInfo
 
 We see that `sInfoFields` contains Bit Fields, that the Zig Compiler is unable to translate.
 
-# Appendix: Fix Opaque Type
+Let's fix this error in the next section...
 
-TODO
+# Appendix: Fix Opaque Type
 
 Earlier we saw that this fails to compile in our LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig)...
 
 ```zig
-    _ = &LmHandlerCallbacks;
+_ = &LmHandlerCallbacks;
 ```
 
 That's because `LmHandlerCallbacks` references the auto-imported type `MlmeReq_t`, which contains Bit Fields and can't be translated by the Zig Compiler.
@@ -2139,9 +2137,7 @@ After fixing the Opaque Type, Zig Compiler successfully compiles our LoRaWAN Tes
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
-TODO
-
-While compiling our LoRaWAN Test App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig), we see this Macro Error...
+While compiling our LoRaWAN Test App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig), we see this __Macro Error__...
 
 ```text
 zig-cache/o/23409ceec9a6e6769c416fde1695882f/cimport.zig:2904:32: 
@@ -2152,7 +2148,7 @@ pub const __INT64_C_SUFFIX__ = @compileError("unable to translate macro: undefin
 
 According to the Zig Docs, this means that the Zig Compiler failed to translate a C Macro...
 
--   ["C Macros"](https://ziglang.org/documentation/master/#C-Macros)
+-   [__"C Macros"__](https://ziglang.org/documentation/master/#C-Macros)
 
 So we define `LL` ourselves...
 
@@ -2198,9 +2194,7 @@ Now Zig Compiler successfully compiles our LoRaWAN Test App [lorawan_test.zig](h
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
-TODO
-
-Zig Compiler crashes when it tries to initialise the Timer Struct at startup...
+Zig Compiler crashes when it tries to initialise the __Timer Struct__ at startup...
 
 ```zig
 /// Timer to handle the application data transmission duty cycle
@@ -2231,4 +2225,3 @@ pub export fn lorawan_test_main(
 ```
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L101)
-
