@@ -813,12 +813,11 @@ fn handle_event_queue() void {
 <p>And we loop back perpetually, waiting for Events and handling them.</p>
 <p>That’s how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!</p>
 <h1 id="appendix-logging"><a href="#appendix-logging">14 Appendix: Logging</a></h1>
-<p>TODO</p>
-<p>We have implemented Debug Logging <code>std.log.debug</code> that’s described here…</p>
+<p>We have implemented Zig Debug Logging <strong>std.log.debug</strong> that’s described here…</p>
 <ul>
-<li><a href="https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d">“A simple overview of Zig’s std.log”</a></li>
+<li><a href="https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d"><strong>“A simple overview of Zig’s std.log”</strong></a></li>
 </ul>
-<p>Here’s how we call <code>std.log.debug</code> to print a log message…</p>
+<p>Here’s how we call <strong>std.log.debug</strong> to print a log message…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Create a short alias named `debug`
 const debug  = std.log.debug;
 
@@ -831,8 +830,8 @@ debug(&quot;Transmit to LoRaWAN ({} bytes): {s}&quot;, .{
 });
 
 // Prints: Transmit to LoRaWAN (8 bytes): Hi NuttX</code></pre></div>
-<p><code>.{ ... }</code> creates an <a href="https://ziglearn.org/chapter-1/#anonymous-structs"><strong>Anonymous Struct</strong></a> with a variable number of arguments that will be passed to <code>std.log.debug</code> for formatting.</p>
-<p>Below is our implementation of <code>std.log.debug</code>…</p>
+<p><code>.{ ... }</code> creates an <a href="https://ziglearn.org/chapter-1/#anonymous-structs"><strong>Anonymous Struct</strong></a> with a variable number of arguments that will be passed to <strong>std.log.debug</strong> for formatting.</p>
+<p>Below is our implementation of <strong>std.log.debug</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Called by Zig for `std.log.debug`, `std.log.info`, `std.log.err`, ...
 /// https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d
 pub fn log(
@@ -862,17 +861,16 @@ pub fn log(
     _ = puts(&amp;buf2);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546">(Source)</a></p>
-<p>This implementation calls <code>puts()</code>, which is supported by Apache NuttX RTOS since it’s <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX-Compliant</strong></a>.</p>
+<p>This implementation calls <strong>puts()</strong>, which is supported by Apache NuttX RTOS since it’s <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX-Compliant</strong></a>.</p>
 <h1 id="appendix-panic-handler"><a href="#appendix-panic-handler">15 Appendix: Panic Handler</a></h1>
-<p>TODO</p>
-<p><em>Some debug features don’t seem to be working? Like <code>unreachable</code>, <code>std.debug.assert</code> and <code>std.debug.panic</code>?</em></p>
-<p>That’s because for Embedded Platforms we need to implement our own Panic Handler…</p>
+<p><em>Some debug features don’t seem to be working? Like <strong>unreachable</strong>, <strong>std.debug.assert</strong> and <strong>std.debug.panic</strong>?</em></p>
+<p>That’s because for Embedded Platforms (like Apache NuttX RTOS) we need to implement our own <strong>Panic Handler</strong>…</p>
 <ul>
 <li>
-<p><a href="https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html">“Using Zig to Provide Stack Traces on Kernel Panic for a Bare Bones Operating System”</a></p>
+<p><a href="https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html"><strong>“Using Zig to Provide Stack Traces on Kernel Panic for a Bare Bones Operating System”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847">Default Panic Handler: <code>std.debug.default_panic</code></a></p>
+<p><a href="https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847"><strong>Default Panic Handler: std.debug.default_panic</strong></a></p>
 </li>
 </ul>
 <p>With our own Panic Handler, this Assertion Failure…</p>
@@ -887,7 +885,9 @@ reached unreachable code
 Stack Trace:
 0x23016394
 0x23016ce0</code></pre></div>
-<p>According to our RISC-V Disassembly, the first address <code>23016394</code> doesn’t look interesting, because it’s inside the <code>assert</code> function…</p>
+<p><em>How do we read the Stack Trace?</em></p>
+<p>We need to generate the <strong>RISC-V Disassembly</strong> for our firmware.</p>
+<p>According to our RISC-V Disassembly, the first address <code>23016394</code> doesn’t look interesting, because it’s inside the <strong>assert</strong> function…</p>
 <div class="example-wrap"><pre class="language-text"><code>/home/user/zig-linux-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/std/debug.zig:259
 pub fn assert(ok: bool) void {
 2301637c:	00b51c63          	bne	a0,a1,23016394 &lt;std.debug.assert+0x2c&gt;
@@ -899,7 +899,7 @@ pub fn assert(ok: bool) void {
 23016390:	f3c080e7          	jalr	-196(ra) # 230162c8 &lt;panic&gt;
     if (!ok) unreachable; // assertion failure
 23016394:	a009                j	23016396 &lt;std.debug.assert+0x2e&gt;</code></pre></div>
-<p>But the second address <code>23016ce0</code> reveals the assertion that failed…</p>
+<p>But the second address <strong>23016ce0</strong> reveals the assertion that failed…</p>
 <div class="example-wrap"><pre class="language-text"><code>/home/user/nuttx/zig-bl602-nuttx/lorawan_test.zig:95
     assert(TxPeriodicity != 0);
 23016ccc:	42013537          	lui	a0,0x42013
@@ -910,7 +910,7 @@ pub fn assert(ok: bool) void {
 /home/user/nuttx/zig-bl602-nuttx/lorawan_test.zig:100
     TxTimer = std.mem.zeroes(c.TimerEvent_t);
 23016ce0:	42016537          	lui	a0,0x42016</code></pre></div>
-<p>This is our implementation of the Zig Panic Handler…</p>
+<p>This is our implementation of the <strong>Zig Panic Handler</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Called by Zig when it hits a Panic. We print the Panic Message, Stack Trace and halt. See 
 /// https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html
 /// https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847
@@ -934,6 +934,7 @@ pub fn panic(
     while(true) {}
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L501-L522">(Source)</a></p>
+<p>We just need to define this <strong>panic</strong> function in the Root Zig Source File (like lorawan_test.zig), and the Zig Compiler will call it when there’s a panic.</p>
 <h1 id="appendix-zig-compiler-as-drop-in-replacement-for-gcc"><a href="#appendix-zig-compiler-as-drop-in-replacement-for-gcc">16 Appendix: Zig Compiler as Drop-In Replacement for GCC</a></h1>
 <p>TODO</p>
 <p><em>Will Zig Compiler work as <a href="https://lupyuen.github.io/articles/zig#why-zig">Drop-In Replacement for GCC</a> for compiling NuttX Libraries?</em></p>
