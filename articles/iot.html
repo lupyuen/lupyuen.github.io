@@ -699,7 +699,7 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p>TODO: We wished we could rewrite the LoRaWAN Stack in a modern, memory-safe language… But we can’t. (Because LoRaWAN changes)</p>
 <p>TODO: So it seems the best we can do today is to code the high-level parts in Zig, and leave the low-level parts in C. (And let Zig figure out the Zig-to-C plumbing)</p>
 <p>TODO: With Zig watching my back, I feel more confident extending the Zig App</p>
-<p><em>Zig Compiler calls Clang to interpret the C Header Files. But NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
+<p><em>Zig Compiler calls Clang to import the C Header Files. But NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
 <p>TODO: We have validated Zig Compiler’s Clang as a drop-in replacement for GCC</p>
 <p>TODO: Minor workarounds, no showstoppers </p>
 <p>TODO: Read the Internal Temperature Sensor</p>
@@ -1185,7 +1185,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ada7f83a96eb36ad1b9fe09da4527003">(See the complete log)</a></p>
 <p>This shows that the LoRa SX1262 Library compiled with “<strong>zig cc</strong>” works perfectly fine with NuttX!</p>
 <p><em>Zig Compiler calls Clang to compile C code. But NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
-<p>Apparently no problemo! The experiment above shows that “<strong>zig cc</strong>” (and Clang) is compatible with GCC (at least for BL602 NuttX).</p>
+<p>Apparently no problemo! The experiment above shows that “<strong>zig cc</strong>” (with Clang) is compatible with GCC (at least for BL602 NuttX).</p>
 <p>(Just make sure that we pass the same Compiler Options to both compilers)</p>
 <h1 id="appendix-lorawan-library-for-nuttx"><a href="#appendix-lorawan-library-for-nuttx">17 Appendix: LoRaWAN Library for NuttX</a></h1>
 <p>In the previous section we took <strong>3 source files</strong> (from LoRa SX1262 Library), compiled them with “<strong>zig cc</strong>” and linked them with Apache NuttX RTOS.</p>
@@ -1519,9 +1519,8 @@ zig translate-c \
 <p>We’ll see the auto-translated code in the upcoming sections…</p>
 <h1 id="appendix-opaque-type-error"><a href="#appendix-opaque-type-error">20 Appendix: Opaque Type Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p>TODO</p>
 <p>When we reference <code>LmHandlerCallbacks</code> in our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    _ = &amp;LmHandlerCallbacks;</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>_ = &amp;LmHandlerCallbacks;</code></pre></div>
 <p>Zig Compiler will show this <strong>Opaque Type Error</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:1353:5: error: opaque types have unknown size and therefore cannot be directly embedded in unions
     Fields: struct_sInfoFields,
@@ -1612,10 +1611,10 @@ pub const union_uPingSlotInfo = extern union {
 }PingSlotInfo_t;</code></pre></div>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMac.h#L312-L333">(Source)</a></p>
 <p>We see that <code>sInfoFields</code> contains Bit Fields, that the Zig Compiler is unable to translate.</p>
+<p>Let’s fix this error in the next section…</p>
 <h1 id="appendix-fix-opaque-type"><a href="#appendix-fix-opaque-type">21 Appendix: Fix Opaque Type</a></h1>
-<p>TODO</p>
 <p>Earlier we saw that this fails to compile in our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    _ = &amp;LmHandlerCallbacks;</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>_ = &amp;LmHandlerCallbacks;</code></pre></div>
 <p>That’s because <code>LmHandlerCallbacks</code> references the auto-imported type <code>MlmeReq_t</code>, which contains Bit Fields and can’t be translated by the Zig Compiler.</p>
 <p>Let’s convert <code>MlmeReq_t</code> to an Opaque Type, since we won’t be accessing the fields anyway…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// We use an Opaque Type to represent MLME Request, because it contains Bit Fields that can&#39;t be converted by Zig
@@ -1669,15 +1668,14 @@ extern fn LmHandlerInit(
 <p>After fixing the Opaque Type, Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> yay!</p>
 <h1 id="appendix-macro-error"><a href="#appendix-macro-error">22 Appendix: Macro Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p>TODO</p>
-<p>While compiling our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>, we see this Macro Error…</p>
+<p>While compiling our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>, we see this <strong>Macro Error</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>zig-cache/o/23409ceec9a6e6769c416fde1695882f/cimport.zig:2904:32: 
 error: unable to translate macro: undefined identifier `LL`
 pub const __INT64_C_SUFFIX__ = @compileError(&quot;unable to translate macro: undefined identifier `LL`&quot;); 
 // (no file):178:9</code></pre></div>
 <p>According to the Zig Docs, this means that the Zig Compiler failed to translate a C Macro…</p>
 <ul>
-<li><a href="https://ziglang.org/documentation/master/#C-Macros">“C Macros”</a></li>
+<li><a href="https://ziglang.org/documentation/master/#C-Macros"><strong>“C Macros”</strong></a></li>
 </ul>
 <p>So we define <code>LL</code> ourselves…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the LoRaWAN Library from C
@@ -1702,8 +1700,7 @@ const c = @cImport({
 <p>Now Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a></p>
 <h1 id="appendix-struct-initialisation-error"><a href="#appendix-struct-initialisation-error">23 Appendix: Struct Initialisation Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p>TODO</p>
-<p>Zig Compiler crashes when it tries to initialise the Timer Struct at startup…</p>
+<p>Zig Compiler crashes when it tries to initialise the <strong>Timer Struct</strong> at startup…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Timer to handle the application data transmission duty cycle
 var TxTimer: c.TimerEvent_t = 
     std.mem.zeroes(c.TimerEvent_t);
