@@ -565,13 +565,13 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </ul>
 <p>In the NuttX Shell, enter this command to start our Zig App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
-<p>Our Zig App starts and transmits a LoRaWAN Request to <strong>join the LoRaWAN Network</strong>…</p>
+<p>Our Zig App starts and transmits a LoRaWAN Request to <strong>join the LoRaWAN Network</strong> (by controlling the LoRa Transceiver over SPI)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Application name   : Zig LoRaWAN Test
 ##### =========== MLME-Request ============ ######
 #####               MLME_JOIN               ######
 ##### ===================================== ######</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(See the complete log)</a></p>
-<p>5 seconds later, our app receives the <strong>Join Accept Response</strong> from our LoRaWAN Gateway (ChirpStack)…</p>
+<p>5 seconds later, our app receives the <strong>Join Accept Response</strong> from our ChirpStack LoRaWAN Gateway (by handling the GPIO Interrupt triggered by the LoRa Transceiver)…</p>
 <div class="example-wrap"><pre class="language-text"><code>##### =========== MLME-Confirm ============ ######
 STATUS      : OK
 ##### ===========   JOINED     ============ ######
@@ -667,7 +667,7 @@ UnfragmentedData[addr +% i]</code></pre></div>
     UnfragmentedData[addr + i] = data[i];
   }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L407-L416">(Source)</a></p>
-<p><em>What happens if the addition overflows?</em></p>
+<p><em>But what happens if the addition overflows?</em></p>
 <p>We’ll see a Runtime Error…</p>
 <div class="example-wrap"><pre class="language-text"><code>panic: integer overflow</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Integer-Overflow">(Source)</a></p>
@@ -685,7 +685,7 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>“Zig Undefined Behavior”</strong></a></li>
 </ul>
-<p>Thus indeed, Zig tries very hard to catch all kinds of problems at runtime.</p>
+<p>Thus indeed, Zig tries very hard to catch all kinds of problems at runtime. And that’s super helpful for a complex app like ours.</p>
 <p><em>Can we turn off the Safety Checks?</em></p>
 <p>If we prefer to live a little recklessly (momentarily), this is how we <strong>disable the Safety Checks</strong>…</p>
 <ul>
@@ -695,6 +695,12 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p><em><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323">Original C Code</a> (left) and <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158">Converted Zig Code</a> (right) for our LoRaWAN App look highly similar</em></p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
 <p><em>Once again… Why are we doing all this in Zig?</em></p>
+<p>TODO: Let’s recap: We have a <strong>complex chunk of firmware</strong> that needs to run on an IoT Gadget (PineDio Stack)…</p>
+<p>TODO: We wished we could rewrite the LoRaWAN Stack in a modern, memory-safe language… But we can’t. (Because LoRaWAN changes)</p>
+<p>TODO: So it seems the best we can do today is to code the high-level parts in Zig, and leave the low-level parts in C. (And let Zig figure out the Zig-to-C plumbing)</p>
+<p>TODO: With Zig watching my back, I feel more confident extending the Zig App</p>
+<p><em>Zig Compiler uses Clang to interpret C code. NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
+<p>TODO: We have validated Zig Compiler’s Clang as a drop-in replacement for GCC</p>
 <p>TODO: Minor workarounds, no showstoppers </p>
 <p>TODO: Read the Internal Temperature Sensor</p>
 <p>TODO: Encode the Temperature Sensor Data with <a href="https://lupyuen.github.io/articles/cbor2">TinyCBOR</a> and transmit to The Things Network</p>
@@ -739,7 +745,8 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p>But since our Zig App runs on a Real-Time Operating System (RTOS), we can use the <strong>Multithreading Features</strong> (Timers and Event Queues) provided by the RTOS.</p>
 <p><em>So we’re directly calling the Timers and Event Queues from Apache NuttX RTOS?</em></p>
 <p>Not quite. We’re calling the Timers and Event Queues provided by <a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer"><strong>NimBLE Porting Layer</strong></a>.</p>
-<p>TODO: Why NimBLE Porting Layer</p>
+<p>NimBLE Porting Layer is a <a href="https://github.com/apache/mynewt-nimble/tree/master/porting/npl"><strong>Portable Multitasking Library</strong></a> that works on multiple operating systems: FreeRTOS, Linux, Mynewt, NuttX, RIOT.</p>
+<p>By calling NimBLE Porting Layer, our modded LoRaWAN Stack will run any of these operating systems (hopefully).</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer">(More about NimBLE Porting Layer)</a></p>
 <p>TODO</p>
 <p>Our Event Loop forever reads LoRa and LoRaWAN Events from an <strong>Event Queue</strong> and handles them.</p>
