@@ -1,6 +1,6 @@
 # Build an IoT App with Zig and LoRaWAN
 
-📝 _16 Jun 2022_
+📝 _15 Jun 2022_
 
 ![Pine64 PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN on Zig to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/iot-title.jpg)
 
