@@ -966,6 +966,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  TODO: [__"Working with C"__](https://ziglearn.org/chapter-4/)
 
+![Handle LoRaWAN Events with NimBLE Porting Layer](https://lupyuen.github.io/images/sx1262-handler.jpg)
+
 # Appendix: Handle LoRaWAN Events
 
 Let's look at the __Event Loop__ that handles the LoRa and LoRaWAN Events in our app.
@@ -982,11 +984,11 @@ Not quite. We're calling the Timers and Event Queues provided by [__NimBLE Porti
 
 NimBLE Porting Layer is a [__Portable Multitasking Library__](https://github.com/apache/mynewt-nimble/tree/master/porting/npl) that works on multiple operating systems: FreeRTOS, Linux, Mynewt, NuttX, RIOT.
 
-By calling NimBLE Porting Layer, our modded LoRaWAN Stack will run any of these operating systems (hopefully).
+By calling NimBLE Porting Layer, our modded LoRaWAN Stack will run on all of these operating systems (hopefully).
 
 [(More about NimBLE Porting Layer)](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
 
-TODO
+_Alright let's see the code!_
 
 Our Event Loop forever reads LoRa and LoRaWAN Events from an __Event Queue__ and handles them.
 
