@@ -445,7 +445,7 @@ Great to have Zig watching our backs... When we do risky things! 👍
 
 # Transmit Data Packet
 
-Back to our Zig App: This is how we __transmit a Data Packet__ to the LoRaWAN Network: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203)
+Back to our Zig App: This is how we __transmit a Data Packet__ to the LoRaWAN Network: [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L205)
 
 ```zig
 /// Prepare the payload of a Data Packet 
@@ -494,7 +494,7 @@ Then we copy the message into the __LoRaWAN Buffer__...
 
 [(__std.mem.copy__ is documented here)](https://ziglang.org/documentation/master/std/#std;mem.copy)
 
-[(__AppDataBuffer__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L724-L729)
+[(__AppDataBuffer__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L732-L737)
 
 We compose the __LoRaWAN Transmit Request__...
 
@@ -534,11 +534,11 @@ Finally we __transmit the message__ to the LoRaWAN Network...
 }
 ```
 
-And that's how [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203) transmits a Data Packet over LoRaWAN.
+And that's how [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L205) transmits a Data Packet over LoRaWAN.
 
 _How is PrepareTxFrame is called?_
 
-After we have joined the LoRaWAN Network, our LoRaWAN Event Loop calls [__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230)...
+After we have joined the LoRaWAN Network, our LoRaWAN Event Loop calls [__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L222-L232)...
 
 ```zig
 /// LoRaWAN Event Loop that dequeues Events from 
@@ -556,11 +556,11 @@ fn handle_event_queue() void {
     }
 ```
 
-[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L449-L490)
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L451-L492)
 
-[__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230) then calls [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203) to transmit a Data Packet, when the Transmit Timer has expired.
+[__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L222-L232) then calls [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L205) to transmit a Data Packet, when the Transmit Timer has expired.
 
-[(__UplinkProcess__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230)
+[(__UplinkProcess__ is defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L222-L232)
 
 [(__handle_event_queue__ is explained in the Appendix)](https://lupyuen.github.io/articles/iot#appendix-handle-lorawan-events)
 
@@ -865,7 +865,7 @@ export fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) i8 {
   }
 ```
 
-[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L407-L416)
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L403-L412)
 
 _But what happens if the addition overflows?_
 
@@ -899,7 +899,9 @@ Here's the list of __Safety Checks__ done by Zig at runtime...
 
 -   [__"Zig Undefined Behavior"__](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
-Thus indeed, Zig tries very hard to catch all kinds of problems at runtime. And that's super helpful for a complex app like ours.
+Thus indeed, Zig tries very hard to catch all kinds of problems at runtime.
+
+And that's super helpful for a complex app like ours.
 
 _Can we turn off the Safety Checks?_
 
