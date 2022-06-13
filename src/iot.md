@@ -712,7 +712,7 @@ In the NuttX Shell, enter this command to start our Zig App...
 lorawan_test
 ```
 
-Our Zig App starts and transmits a LoRaWAN Request to __join the LoRaWAN Network__...
+Our Zig App starts and transmits a LoRaWAN Request to __join the LoRaWAN Network__ (by controlling the LoRa Transceiver over SPI)...
 
 ```text
 Application name   : Zig LoRaWAN Test
@@ -723,7 +723,7 @@ Application name   : Zig LoRaWAN Test
 
 [(See the complete log)](https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b)
 
-5 seconds later, our app receives the __Join Accept Response__ from our LoRaWAN Gateway (ChirpStack)...
+5 seconds later, our app receives the __Join Accept Response__ from our ChirpStack LoRaWAN Gateway (by handling the GPIO Interrupt triggered by the LoRa Transceiver)...
 
 ```text
 ###### =========== MLME-Confirm ============ ######
@@ -867,7 +867,7 @@ export fn FragDecoderWrite(addr: u32, data: [*c]u8, size: u32) i8 {
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L407-L416)
 
-_What happens if the addition overflows?_
+_But what happens if the addition overflows?_
 
 We'll see a Runtime Error...
 
@@ -899,7 +899,7 @@ Here's the list of __Safety Checks__ done by Zig at runtime...
 
 -   [__"Zig Undefined Behavior"__](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
-Thus indeed, Zig tries very hard to catch all kinds of problems at runtime.
+Thus indeed, Zig tries very hard to catch all kinds of problems at runtime. And that's super helpful for a complex app like ours.
 
 _Can we turn off the Safety Checks?_
 
@@ -914,6 +914,18 @@ _[Original C Code](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_tes
 # Zig Outcomes
 
 _Once again... Why are we doing all this in Zig?_
+
+TODO: Let's recap: We have a __complex chunk of firmware__ that needs to run on an IoT Gadget (PineDio Stack)...
+
+TODO: We wished we could rewrite the LoRaWAN Stack in a modern, memory-safe language... But we can't. (Because LoRaWAN changes)
+
+TODO: So it seems the best we can do today is to code the high-level parts in Zig, and leave the low-level parts in C. (And let Zig figure out the Zig-to-C plumbing)
+
+TODO: With Zig watching my back, I feel more confident extending the Zig App
+
+_Zig Compiler uses Clang to interpret C code. NuttX compiles with GCC. Won't we have problems with code compatibility?_
+
+TODO: We have validated Zig Compiler's Clang as a drop-in replacement for GCC
 
 TODO: Minor workarounds, no showstoppers 
 
@@ -968,7 +980,9 @@ _So we're directly calling the Timers and Event Queues from Apache NuttX RTOS?_
 
 Not quite. We're calling the Timers and Event Queues provided by [__NimBLE Porting Layer__](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer).
 
-TODO: Why NimBLE Porting Layer
+NimBLE Porting Layer is a [__Portable Multitasking Library__](https://github.com/apache/mynewt-nimble/tree/master/porting/npl) that works on multiple operating systems: FreeRTOS, Linux, Mynewt, NuttX, RIOT.
+
+By calling NimBLE Porting Layer, our modded LoRaWAN Stack will run any of these operating systems (hopefully).
 
 [(More about NimBLE Porting Layer)](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
 
