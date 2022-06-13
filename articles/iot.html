@@ -383,7 +383,7 @@ Stack Trace:
 <p>Great to have Zig watching our backs… When we do risky things! 👍</p>
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler">(How we implemented a Custom Panic Handler)</a></p>
 <h1 id="transmit-data-packet"><a href="#transmit-data-packet">5 Transmit Data Packet</a></h1>
-<p>Back to our Zig App: This is how we <strong>transmit a Data Packet</strong> to the LoRaWAN Network: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203">lorawan_test.zig</a></p>
+<p>Back to our Zig App: This is how we <strong>transmit a Data Packet</strong> to the LoRaWAN Network: <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L205">lorawan_test.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Prepare the payload of a Data Packet 
 /// and transmit it
 fn PrepareTxFrame() void {
@@ -413,7 +413,7 @@ fn PrepareTxFrame() void {
     msg              // Source
   );</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/std/#std;mem.copy">(<strong>std.mem.copy</strong> is documented here)</a></p>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L724-L729">(<strong>AppDataBuffer</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L732-L737">(<strong>AppDataBuffer</strong> is defined here)</a></p>
 <p>We compose the <strong>LoRaWAN Transmit Request</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Compose the transmit request
   var appData = c.LmHandlerAppData_t {
@@ -439,9 +439,9 @@ fn PrepareTxFrame() void {
   assert(sendStatus == c.LORAMAC_HANDLER_SUCCESS);
   debug(&quot;PrepareTxFrame: Transmit OK&quot;, .{});
 }</code></pre></div>
-<p>And that’s how <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203"><strong>PrepareTxFrame</strong></a> transmits a Data Packet over LoRaWAN.</p>
+<p>And that’s how <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L205"><strong>PrepareTxFrame</strong></a> transmits a Data Packet over LoRaWAN.</p>
 <p><em>How is PrepareTxFrame is called?</em></p>
-<p>After we have joined the LoRaWAN Network, our LoRaWAN Event Loop calls <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230"><strong>UplinkProcess</strong></a>…</p>
+<p>After we have joined the LoRaWAN Network, our LoRaWAN Event Loop calls <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L222-L232"><strong>UplinkProcess</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LoRaWAN Event Loop that dequeues Events from 
 /// the Event Queue and processes the Events
 fn handle_event_queue() void {
@@ -455,9 +455,9 @@ fn handle_event_queue() void {
     if (!c.LmHandlerIsBusy()) {
       UplinkProcess();
     }</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L449-L490">(Source)</a></p>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230"><strong>UplinkProcess</strong></a> then calls <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L203"><strong>PrepareTxFrame</strong></a> to transmit a Data Packet, when the Transmit Timer has expired.</p>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L220-L230">(<strong>UplinkProcess</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L451-L492">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L222-L232"><strong>UplinkProcess</strong></a> then calls <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L205"><strong>PrepareTxFrame</strong></a> to transmit a Data Packet, when the Transmit Timer has expired.</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L222-L232">(<strong>UplinkProcess</strong> is defined here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-handle-lorawan-events">(<strong>handle_event_queue</strong> is explained in the Appendix)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App" /></p>
 <p><em>ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App</em></p>
@@ -666,7 +666,7 @@ UnfragmentedData[addr +% i]</code></pre></div>
     //  We changed `+%` back to `+`
     UnfragmentedData[addr + i] = data[i];
   }</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L407-L416">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L403-L412">(Source)</a></p>
 <p><em>But what happens if the addition overflows?</em></p>
 <p>We’ll see a Runtime Error…</p>
 <div class="example-wrap"><pre class="language-text"><code>panic: integer overflow</code></pre></div>
@@ -685,7 +685,8 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>“Zig Undefined Behavior”</strong></a></li>
 </ul>
-<p>Thus indeed, Zig tries very hard to catch all kinds of problems at runtime. And that’s super helpful for a complex app like ours.</p>
+<p>Thus indeed, Zig tries very hard to catch all kinds of problems at runtime.</p>
+<p>And that’s super helpful for a complex app like ours.</p>
 <p><em>Can we turn off the Safety Checks?</em></p>
 <p>If we prefer to live a little recklessly (momentarily), this is how we <strong>disable the Safety Checks</strong>…</p>
 <ul>
