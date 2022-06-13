@@ -551,8 +551,7 @@ make
 mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’re ready to run our Zig App!</p>
-<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App" /></p>
-<p><em>ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App</em></p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-flow.jpg" alt="Running our LoRaWAN Zig App" /></p>
 <h1 id="run-zig-app"><a href="#run-zig-app">8 Run Zig App</a></h1>
 <p>Follow these steps to <strong>flash and boot NuttX</strong> (with our Zig App inside) on PineDio Stack…</p>
 <ul>
@@ -594,8 +593,9 @@ U/L FREQ    : 923200000
 TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/0871ac515b18d9d68d3aacf831fd0f5b">(Source)</a></p>
-<p>The Data Packet appears in our <strong>LoRaWAN Gateway</strong> (ChirpStack), like in the pic above.</p>
+<p>The Data Packet appears in our <strong>LoRaWAN Gateway</strong> (ChirpStack), like in the pic below.</p>
 <p>Yep our LoRaWAN Zig App has successfully transmitted a Data Packet to the LoRaWAN Network! 🎉</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-chirpstack6.png" alt="ChirpStack LoRaWAN Gateway receives Data Packet from our Zig App" /></p>
 <p><em>Can we test our app without a LoRaWAN Gateway?</em></p>
 <p>Our app will work fine with <a href="https://lupyuen.github.io/articles/ttn"><strong>The Things Network</strong></a>, the worldwide free-to-use LoRaWAN Network.</p>
 <p>Check the Network Coverage here…</p>
@@ -691,17 +691,16 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#setRuntimeSafety"><strong>@setRuntimeSafety</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/iot-code4a.png" alt="Original C Code (left) and Converted Zig Code (right) for our LoRaWAN App look highly similar" /></p>
-<p><em><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323">Original C Code</a> (left) and <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158">Converted Zig Code</a> (right) for our LoRaWAN App look highly similar</em></p>
+<p><img src="https://lupyuen.github.io/images/spi2-pinedio10a.jpg" alt="PineDio Stack BL604" /></p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
 <p><em>Once again… Why are we doing this in Zig?</em></p>
-<p>Let’s recap: We have a <strong>complex chunk of firmware</strong> that needs to run on an IoT Gadget (PineDio Stack)…</p>
+<p>Let’s recap: We have a <strong>complex chunk of firmware</strong> that needs to run on an IoT gadget (PineDio Stack)…</p>
 <ul>
 <li>
-<p>It talks SPI to the <strong>LoRa Radio Transceiver</strong></p>
+<p>It talks SPI to the <strong>LoRa Radio Transceiver</strong> to transmit packets</p>
 </li>
 <li>
-<p>It handles <strong>GPIO Interrupts</strong> from the LoRa Transceiver</p>
+<p>It handles <strong>GPIO Interrupts</strong> from the LoRa Transceiver to receive packets</p>
 </li>
 <li>
 <p>It needs <strong>Multithreading, Timers and Event Queues</strong> because the LoRaWAN Protocol is complicated and time-critical</p>
@@ -709,9 +708,21 @@ UnfragmentedData[addr +% i]</code></pre></div>
 </ul>
 <p>We wished we could <strong>rewrite the LoRaWAN Stack</strong> in a modern, memory-safe language… But we can’t. <a href="https://lupyuen.github.io/articles/zig#why-zig">(Because LoRaWAN changes)</a></p>
 <p><em>But we can do this partially in Zig right?</em></p>
-<p>Yes it seems the best we can do today is to code the <strong>High-Level Parts in Zig</strong>…</p>
-<p>And leave the <strong>Low-Level Parts in C</strong>, including the LoRaWAN Stack and the Apache NuttX RTOS.</p>
-<p>(Zig Compiler does the Zig-to-C plumbing for us, as we’ve seen)</p>
+<p>Yes it seems the best we can do today is to…</p>
+<ul>
+<li>
+<p>Code the <strong>High-Level Parts in Zig</strong></p>
+<p>(Event Loop and Data Transmission)</p>
+</li>
+<li>
+<p>Leave the <strong>Low-Level Parts in C</strong></p>
+<p>(LoRaWAN Stack and Apache NuttX RTOS)</p>
+</li>
+<li>
+<p>And Zig Compiler will do the <strong>Zig-to-C</strong> plumbing for us</p>
+<p>(As we’ve seen)</p>
+</li>
+</ul>
 <p><em>Zig Compiler calls Clang to import the C Header Files. But NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
 <p>We have validated Zig Compiler’s <strong>Clang as a drop-in replacement</strong> for GCC…</p>
 <ul>
@@ -744,12 +755,33 @@ UnfragmentedData[addr +% i]</code></pre></div>
 </li>
 </ul>
 <p>No showstoppers, so our Zig App is good to go!</p>
-<p>TODO: With Zig watching my back, I feel more confident extending the Zig App</p>
-<p>TODO: Read the Internal Temperature Sensor</p>
-<p>TODO: Encode the Temperature Sensor Data with <a href="https://lupyuen.github.io/articles/cbor2">TinyCBOR</a> and transmit to The Things Network</p>
-<p>TODO: Monitor sensor data with <a href="https://lupyuen.github.io/articles/prometheus">Prometheus and Grafana</a></p>
-<p>TODO: Add new code with <a href="https://zig.news/mattnite/import-and-packages-23mb"><code>@import()</code></a></p>
-<p>TODO: <a href="https://lupyuen.github.io/articles/pinedio2#nuttx-apps">LVGL</a></p>
+<p><em>Is Zig effective in managing the complexity of our firmware?</em></p>
+<p>I think it is! Zig has plenty of <strong>Safety Checks</strong> to help ensure that we’re doing the right thing…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/iot#safety-checks"><strong>“Safety Checks”</strong></a></li>
+</ul>
+<p>Now I feel confident that I can <strong>safely extend</strong> our Zig App to do more meaningful IoT things…</p>
+<ul>
+<li>
+<p>Read the BL602’s <strong>Internal Temperature Sensor</strong> <a href="https://github.com/lupyuen/bl602_adc_test">(Like this)</a></p>
+</li>
+<li>
+<p>Compress the Temperature Sensor Data with <strong>CBOR</strong> <a href="https://lupyuen.github.io/articles/cbor2">(Like this)</a></p>
+</li>
+<li>
+<p>Transmit over LoRaWAN to <strong>The Things Network</strong> <a href="https://lupyuen.github.io/articles/ttn">(Like this)</a></p>
+</li>
+<li>
+<p>Monitor the Sensor Data with <strong>Prometheus and Grafana</strong> <a href="https://lupyuen.github.io/articles/prometheus">(Like this)</a></p>
+</li>
+</ul>
+<p>We’ll extend our Zig App the modular way thanks to <a href="https://zig.news/mattnite/import-and-packages-23mb"><strong>@import</strong></a></p>
+<p><em>Is there anything else that might benefit from Zig?</em></p>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#nuttx-apps"><strong>LVGL Touchscreen Apps</strong></a> might be easier to maintain when we code them in Zig.</p>
+<p>(Since LVGL looks as complicated as LoRaWAN)</p>
+<p>Someday I’ll try this!</p>
+<p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="LVGL Touchscreen Apps might benefit from Zig" /></p>
+<p><em>LVGL Touchscreen Apps might benefit from Zig</em></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -778,7 +810,11 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p>This article was inspired by a question from my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsor</strong></a>: “Can we run Zig on BL602 with Apache NuttX RTOS?”</p>
 </li>
 <li>
-<p>TODO: <a href="https://ziglearn.org/chapter-4/"><strong>“Working with C”</strong></a></p>
+<p>These articles were super helpful for <strong>Zig-to-C Interoperability</strong>…</p>
+<p><a href="https://ziglearn.org/chapter-4/"><strong>“Working with C”</strong></a></p>
+<p><a href="https://zig.news/kristoff/compile-a-c-c-project-with-zig-368j"><strong>“Compile a C/C++ Project with Zig”</strong></a></p>
+<p><a href="https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di"><strong>“Extend a C/C++ Project with Zig”</strong></a></p>
+<p><a href="https://kristoff.it/blog/maintain-it-with-zig"><strong>“Maintain it With Zig”</strong></a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/sx1262-handler.jpg" alt="Handle LoRaWAN Events with NimBLE Porting Layer" /></p>
