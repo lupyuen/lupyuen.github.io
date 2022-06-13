@@ -699,7 +699,7 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p>TODO: We wished we could rewrite the LoRaWAN Stack in a modern, memory-safe language… But we can’t. (Because LoRaWAN changes)</p>
 <p>TODO: So it seems the best we can do today is to code the high-level parts in Zig, and leave the low-level parts in C. (And let Zig figure out the Zig-to-C plumbing)</p>
 <p>TODO: With Zig watching my back, I feel more confident extending the Zig App</p>
-<p><em>Zig Compiler uses Clang to interpret the C Header Files. But NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
+<p><em>Zig Compiler calls Clang to interpret the C Header Files. But NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
 <p>TODO: We have validated Zig Compiler’s Clang as a drop-in replacement for GCC</p>
 <p>TODO: Minor workarounds, no showstoppers </p>
 <p>TODO: Read the Internal Temperature Sensor</p>
@@ -937,7 +937,7 @@ pub fn panic(
 <p><em>How do we tell Zig Compiler to use this Panic Handler?</em></p>
 <p>We just need to define this <strong>panic</strong> function in the Root Zig Source File (like lorawan_test.zig), and the Zig Runtime will call it when there’s a panic.</p>
 <h1 id="appendix-zig-compiler-as-drop-in-replacement-for-gcc"><a href="#appendix-zig-compiler-as-drop-in-replacement-for-gcc">16 Appendix: Zig Compiler as Drop-In Replacement for GCC</a></h1>
-<p><em>Apache NuttX RTOS uses GCC compile the BL602 firmware. Will Zig Compiler work as <a href="https://lupyuen.github.io/articles/zig#why-zig">Drop-In Replacement for GCC</a> for compiling some NuttX modules?</em></p>
+<p><em>Apache NuttX RTOS calls GCC to compile the BL602 firmware. Will Zig Compiler work as the <a href="https://lupyuen.github.io/articles/zig#why-zig">Drop-In Replacement for GCC</a> for compiling NuttX Modules?</em></p>
 <p>Let’s test it on the <a href="https://lupyuen.github.io/articles/sx1262"><strong>LoRa SX1262 Library</strong></a> for Apache NuttX RTOS.</p>
 <p>Here’s how NuttX compiles the LoRa SX1262 Library with GCC…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  LoRa SX1262 Source Directory
@@ -1137,7 +1137,7 @@ In file included from nuttx/include/stdio.h:34:
 nuttx/include/nuttx/fs/fs.h:238:20: error: use of undeclared identifier &#39;NAME_MAX&#39;
   char      parent[NAME_MAX + 1];
                    ^</code></pre></div>
-<p>We fix this by including the <strong>right header files</strong>…</p>
+<p>Which we fix this by including the <strong>right header files</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>#if defined(__NuttX__) &amp;&amp; defined(__clang__)  //  Workaround for NuttX with zig cc
 #include &lt;arch/types.h&gt;
 #include &quot;../../nuttx/include/limits.h&quot;
@@ -1152,11 +1152,12 @@ nuttx/include/nuttx/fs/fs.h:238:20: error: use of undeclared identifier &#39;NAM
 <p>Also we insert this code to tell us (at runtime) whether it was <strong>compiled with Zig Compiler</strong> or GCC…</p>
 <div class="example-wrap"><pre class="language-c"><code>void SX126xIoInit( void ) {
 #ifdef __clang__
-#warning Compiled with zig cc
-    puts(&quot;SX126xIoInit: Compiled with zig cc&quot;);
+  //  For zig cc
+  puts(&quot;SX126xIoInit: Compiled with zig cc&quot;);
 #else
 #warning Compiled with gcc
-    puts(&quot;SX126xIoInit: Compiled with gcc&quot;);
+  //  For gcc
+  puts(&quot;SX126xIoInit: Compiled with gcc&quot;);
 #endif  //  __clang__</code></pre></div>
 <p><a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L119-L127">(Source)</a></p>
 <p>We run the <strong>LoRaWAN Test App</strong> (compiled with GCC) that calls the LoRa SX1262 Library (compiled with “<strong>zig cc</strong>”)…</p>
@@ -1182,8 +1183,8 @@ U/L FREQ    : 923400000
 TX POWER    : 0
 CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/ada7f83a96eb36ad1b9fe09da4527003">(See the complete log)</a></p>
-<p>Yep the LoRa SX1262 Library compiled with “<strong>zig cc</strong>” works perfectly fine with NuttX!</p>
-<p><em>Zig Compiler uses Clang to compile the C code. But NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
+<p>This shows that the LoRa SX1262 Library compiled with “<strong>zig cc</strong>” works perfectly fine with NuttX!</p>
+<p><em>Zig Compiler calls Clang to compile C code. But NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
 <p>Apparently no problemo! The experiment above shows that “<strong>zig cc</strong>” (and Clang) is compatible with GCC (at least for BL602 NuttX).</p>
 <p>(Just make sure that we pass the same Compiler Options to both compilers)</p>
 <h1 id="appendix-lorawan-library-for-nuttx"><a href="#appendix-lorawan-library-for-nuttx">17 Appendix: LoRaWAN Library for NuttX</a></h1>
@@ -1265,8 +1266,16 @@ make</code></pre></div>
 <li><a href="https://ziglang.org/documentation/master/#Zig-Build-System"><strong>“Zig Build System”</strong></a></li>
 </ul>
 <h1 id="appendix-lorawan-app-for-nuttx"><a href="#appendix-lorawan-app-for-nuttx">18 Appendix: LoRaWAN App for NuttX</a></h1>
-<p>TODO</p>
-<p>Now we compile the LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> with Zig Compiler.</p>
+<p>Thus far we have tested “<strong>zig cc</strong>” as the <strong>drop-in replacement for GCC</strong> in 2 NuttX Modules…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc"><strong>LoRa SX1262 Library</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-lorawan-library-for-nuttx"><strong>LoRaWAN Library</strong></a> (partially)</p>
+</li>
+</ul>
+<p>Let’s do one last test: We compile the <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c"><strong>LoRaWAN Test App</strong></a> (in C) with “zig cc”.</p>
 <p>NuttX compiles the LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> like this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  App Source Directory
 cd $HOME/nuttx/apps/examples/lorawan_test/lorawan_test_main.c
@@ -1299,7 +1308,7 @@ riscv64-unknown-elf-gcc \
   -I &quot;$HOME/nuttx/apps/include&quot; \
   -Dmain=lorawan_test_main  lorawan_test_main.c \
   -o  lorawan_test_main.c.home.user.nuttx.apps.examples.lorawan_test.o</code></pre></div>
-<p>We switch to Zig Compiler…</p>
+<p>We switch GCC to “<strong>zig cc</strong>”…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  App Source Directory
 cd $HOME/nuttx/apps/examples/lorawan_test
 
@@ -1337,13 +1346,13 @@ zig cc \
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
 make</code></pre></div>
-<p>We include the right header files into <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L20-L23">lorawan_test_main.c</a>…</p>
+<p>As usual we include the right header files into <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L20-L23">lorawan_test_main.c</a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>#if defined(__NuttX__) &amp;&amp; defined(__clang__)  //  Workaround for NuttX with zig cc
 #include &lt;arch/types.h&gt;
 #include &quot;../../nuttx/include/limits.h&quot;
 #endif  //  defined(__NuttX__) &amp;&amp; defined(__clang__)</code></pre></div>
 <p><a href="https://github.com/lupyuen/lorawan_test/commit/3d4a451d44cf36b19ef8d900281a2f8f9590de62">(See the changes)</a></p>
-<p>Compiled with <code>zig cc</code>, the LoRaWAN App runs OK on NuttX yay!</p>
+<p>When compiled with “<strong>zig cc</strong>”, the LoRaWAN App runs OK on NuttX yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lorawan_test
 lorawan_test_main: Compiled with zig cc
 ...
@@ -1368,15 +1377,14 @@ CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/477982242d897771d7a5780c8a9b0910">(See the complete log)</a></p>
 <p><img src="https://lupyuen.github.io/images/iot-code5a.png" alt="" /></p>
 <h1 id="appendix-auto-translate-lorawan-app-to-zig"><a href="#appendix-auto-translate-lorawan-app-to-zig">19 Appendix: Auto-Translate LoRaWAN App to Zig</a></h1>
-<p>TODO</p>
-<p>The Zig Compiler can auto-translate C code to Zig. <a href="https://ziglang.org/documentation/master/#C-Translation-CLI">(See this)</a></p>
+<p>The Zig Compiler can <strong>auto-translate C code to Zig</strong>. <a href="https://ziglang.org/documentation/master/#C-Translation-CLI">(See this)</a></p>
 <p>Here’s how we auto-translate our LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> from C to Zig…</p>
 <ul>
 <li>
-<p>Change <code>zig cc</code> to <code>zig translate-c</code></p>
+<p>Change “<code>zig cc</code>” to “<code>zig translate-c</code>”</p>
 </li>
 <li>
-<p>Surround the C Flags by <code>-cflags</code> … <code>--</code></p>
+<p>Surround the C Compiler Options by “<code>-cflags</code> … <code>--</code>”</p>
 </li>
 </ul>
 <p>Like this…</p>
@@ -1501,13 +1509,16 @@ zig translate-c \
     return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L4535-L4565">(Source)</a></p>
-<p>We’ll refer to this auto-translated Zig Code when we manually convert our LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> from C to Zig.</p>
+<p><em>The Auto-Translated Zig Code looks super verbose?</em></p>
+<p>But the Auto-Translated Zig Code is a <strong>valuable reference</strong>!</p>
+<p>We referred to this auto-translated code when we created the <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig"><strong>LoRaWAN Zig App</strong></a> for this article.</p>
+<p>(Especially the tricky parts for Type Conversion and C Pointers)</p>
 <h1 id="appendix-opaque-type-error"><a href="#appendix-opaque-type-error">20 Appendix: Opaque Type Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>TODO</p>
 <p>When we reference <code>LmHandlerCallbacks</code> in our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    _ = &amp;LmHandlerCallbacks;</code></pre></div>
-<p>Zig Compiler will show this Opaque Type Error…</p>
+<p>Zig Compiler will show this <strong>Opaque Type Error</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:1353:5: error: opaque types have unknown size and therefore cannot be directly embedded in unions
     Fields: struct_sInfoFields,
     ^
@@ -1526,10 +1537,10 @@ zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:2277:5: note: while che
 <p>Opaque Type Error is explained here…</p>
 <ul>
 <li>
-<p><a href="https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di">“Extend a C/C++ Project with Zig”</a></p>
+<p><a href="https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di"><strong>“Extend a C/C++ Project with Zig”</strong></a></p>
 </li>
 <li>
-<p><a href="https://ziglang.org/documentation/master/#Translation-failures">“Translation failures”</a></p>
+<p><a href="https://ziglang.org/documentation/master/#Translation-failures"><strong>“Translation failures”</strong></a></p>
 </li>
 </ul>
 <p>Let’s trace through our Opaque Type Error…</p>
