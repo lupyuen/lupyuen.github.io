@@ -1753,6 +1753,8 @@ The Zig Compiler can __auto-translate C code to Zig__. [(See this)](https://zigl
 
 Here's how we auto-translate our LoRaWAN App [lorawan_test_main.c](https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c) from C to Zig...
 
+-   Take the "`zig cc`" command from the previous section
+
 -   Change "`zig cc`" to "`zig translate-c`"
 
 -   Surround the C Compiler Options by "`-cflags` ... `--`"
@@ -1895,11 +1897,11 @@ pub export fn lorawan_test_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int {
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L4535-L4565)
 
-_The Auto-Translated Zig Code looks super verbose?_
+_Wow the code looks super verbose?_
 
-But the Auto-Translated Zig Code is a __valuable reference__!
+Yep but the Auto-Translated Zig Code is a __valuable reference__!
 
-We referred to this auto-translated code when we created the [__LoRaWAN Zig App__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig) for this article.
+We referred to the auto-translated code when we created the [__LoRaWAN Zig App__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig) for this article.
 
 (Especially the tricky parts for Type Conversion and C Pointers)
 
