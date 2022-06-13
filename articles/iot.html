@@ -1381,6 +1381,9 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>Here’s how we auto-translate our LoRaWAN App <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c">lorawan_test_main.c</a> from C to Zig…</p>
 <ul>
 <li>
+<p>Take the “<code>zig cc</code>” command from the previous section</p>
+</li>
+<li>
 <p>Change “<code>zig cc</code>” to “<code>zig translate-c</code>”</p>
 </li>
 <li>
@@ -1509,9 +1512,9 @@ zig translate-c \
     return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L4535-L4565">(Source)</a></p>
-<p><em>The Auto-Translated Zig Code looks super verbose?</em></p>
-<p>But the Auto-Translated Zig Code is a <strong>valuable reference</strong>!</p>
-<p>We referred to this auto-translated code when we created the <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig"><strong>LoRaWAN Zig App</strong></a> for this article.</p>
+<p><em>Wow the code looks super verbose?</em></p>
+<p>Yep but the Auto-Translated Zig Code is a <strong>valuable reference</strong>!</p>
+<p>We referred to the auto-translated code when we created the <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig"><strong>LoRaWAN Zig App</strong></a> for this article.</p>
 <p>(Especially the tricky parts for Type Conversion and C Pointers)</p>
 <h1 id="appendix-opaque-type-error"><a href="#appendix-opaque-type-error">20 Appendix: Opaque Type Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
