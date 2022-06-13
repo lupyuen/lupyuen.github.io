@@ -1081,13 +1081,11 @@ That's how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!
 
 # Appendix: Logging
 
-TODO
+We have implemented Zig Debug Logging __std.log.debug__ that's described here...
 
-We have implemented Debug Logging `std.log.debug` that's described here...
+-   [__"A simple overview of Zig's std.log"__](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
 
--   ["A simple overview of Zig's std.log"](https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d)
-
-Here's how we call `std.log.debug` to print a log message...
+Here's how we call __std.log.debug__ to print a log message...
 
 ```zig
 //  Create a short alias named `debug`
@@ -1104,9 +1102,9 @@ debug("Transmit to LoRaWAN ({} bytes): {s}", .{
 // Prints: Transmit to LoRaWAN (8 bytes): Hi NuttX
 ```
 
-`.{ ... }` creates an [__Anonymous Struct__](https://ziglearn.org/chapter-1/#anonymous-structs) with a variable number of arguments that will be passed to `std.log.debug` for formatting.
+`.{ ... }` creates an [__Anonymous Struct__](https://ziglearn.org/chapter-1/#anonymous-structs) with a variable number of arguments that will be passed to __std.log.debug__ for formatting.
 
-Below is our implementation of `std.log.debug`...
+Below is our implementation of __std.log.debug__...
 
 ```zig
 /// Called by Zig for `std.log.debug`, `std.log.info`, `std.log.err`, ...
@@ -1141,19 +1139,17 @@ pub fn log(
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L519-L546)
 
-This implementation calls `puts()`, which is supported by Apache NuttX RTOS since it's [__POSIX-Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance).
+This implementation calls __puts()__, which is supported by Apache NuttX RTOS since it's [__POSIX-Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance).
 
 # Appendix: Panic Handler
 
-TODO
+_Some debug features don't seem to be working? Like __unreachable__, __std.debug.assert__ and __std.debug.panic__?_
 
-_Some debug features don't seem to be working? Like `unreachable`, `std.debug.assert` and `std.debug.panic`?_
+That's because for Embedded Platforms (like Apache NuttX RTOS) we need to implement our own __Panic Handler__...
 
-That's because for Embedded Platforms we need to implement our own Panic Handler...
+-   [__"Using Zig to Provide Stack Traces on Kernel Panic for a Bare Bones Operating System"__](https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html)
 
--   ["Using Zig to Provide Stack Traces on Kernel Panic for a Bare Bones Operating System"](https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html)
-
--   [Default Panic Handler: `std.debug.default_panic`](https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847)
+-   [__Default Panic Handler: std.debug.default_panic__](https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847)
 
 With our own Panic Handler, this Assertion Failure...
 
@@ -1175,7 +1171,11 @@ Stack Trace:
 0x23016ce0
 ```
 
-According to our RISC-V Disassembly, the first address `23016394` doesn't look interesting, because it's inside the `assert` function...
+_How do we read the Stack Trace?_
+
+We need to generate the __RISC-V Disassembly__ for our firmware.
+
+According to our RISC-V Disassembly, the first address `23016394` doesn't look interesting, because it's inside the __assert__ function...
 
 ```text
 /home/user/zig-linux-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/std/debug.zig:259
@@ -1191,7 +1191,7 @@ pub fn assert(ok: bool) void {
 23016394:	a009                j	23016396 <std.debug.assert+0x2e>
 ```
 
-But the second address `23016ce0` reveals the assertion that failed...
+But the second address __23016ce0__ reveals the assertion that failed...
 
 ```text
 /home/user/nuttx/zig-bl602-nuttx/lorawan_test.zig:95
@@ -1206,7 +1206,7 @@ But the second address `23016ce0` reveals the assertion that failed...
 23016ce0:	42016537          	lui	a0,0x42016
 ```
 
-This is our implementation of the Zig Panic Handler...
+This is our implementation of the __Zig Panic Handler__...
 
 ```zig
 /// Called by Zig when it hits a Panic. We print the Panic Message, Stack Trace and halt. See 
@@ -1234,6 +1234,8 @@ pub fn panic(
 ```
 
 [(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L501-L522)
+
+We just need to define this __panic__ function in the Root Zig Source File (like lorawan_test.zig), and the Zig Compiler will call it when there's a panic.
 
 # Appendix: Zig Compiler as Drop-In Replacement for GCC
 
