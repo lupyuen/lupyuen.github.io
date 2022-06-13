@@ -1795,16 +1795,15 @@ const c = @cImport({
 <p>Now Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a></p>
 <h1 id="appendix-struct-initialisation-error"><a href="#appendix-struct-initialisation-error">23 Appendix: Struct Initialisation Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p>Zig Compiler crashes when it tries to initialise the <strong>Timer Struct</strong> at startup…</p>
+<p>When we initialise the <strong>Timer Struct</strong> at startup…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Timer to handle the application data transmission duty cycle
 var TxTimer: c.TimerEvent_t = 
-  std.mem.zeroes(c.TimerEvent_t);
-
-// Zig Compiler crashes with...
-// TODO buf_write_value_bytes maybe typethread 11512 panic:
-// Unable to dump stack trace: debug info stripped</code></pre></div>
+  std.mem.zeroes(c.TimerEvent_t);</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L742-L755">(Source)</a></p>
-<p>So we initialise the Timer Struct in the Main Function instead…</p>
+<p>Zig Compiler crashes with this error…</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO buf_write_value_bytes maybe typethread 11512 panic:
+Unable to dump stack trace: debug info stripped</code></pre></div>
+<p>So we initialise the Timer Struct in the <strong>Main Function</strong> instead…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Timer to handle the application data transmission duty cycle.
 /// Init the timer in Main Function.
 var TxTimer: c.TimerEvent_t = undefined;
