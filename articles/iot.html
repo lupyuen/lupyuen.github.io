@@ -1595,7 +1595,7 @@ zig translate-c \
 <p>We’ll see the auto-translated code in the upcoming sections…</p>
 <h1 id="appendix-opaque-type-error"><a href="#appendix-opaque-type-error">20 Appendix: Opaque Type Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p>When we reference <code>LmHandlerCallbacks</code> in our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
+<p>When we reference <code>LmHandlerCallbacks</code> in our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L123-L134">lorawan_test.zig</a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>_ = &amp;LmHandlerCallbacks;</code></pre></div>
 <p>Zig Compiler will show this <strong>Opaque Type Error</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:1353:5: error: opaque types have unknown size and therefore cannot be directly embedded in unions
@@ -1619,129 +1619,143 @@ zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:2277:5: note: while che
 <p><a href="https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di"><strong>“Extend a C/C++ Project with Zig”</strong></a></p>
 </li>
 <li>
-<p><a href="https://ziglang.org/documentation/master/#Translation-failures"><strong>“Translation failures”</strong></a></p>
+<p><a href="https://ziglang.org/documentation/master/#Translation-failures"><strong>“Translation Failures”</strong></a></p>
 </li>
 </ul>
-<p>Let’s trace through our Opaque Type Error…</p>
+<p>Let’s trace through our Opaque Type Error, guided by the <a href="https://lupyuen.github.io/articles/iot#appendix-auto-translate-lorawan-app-to-zig"><strong>Auto-Translated Zig Code</strong></a> that we discussed earlier.</p>
 <div class="example-wrap"><pre class="language-zig"><code>export fn OnMacMlmeRequest(
-    status: c.LoRaMacStatus_t,
-    mlmeReq: [*c]c.MlmeReq_t, 
-    nextTxIn: c.TimerTime_t
+  status: c.LoRaMacStatus_t,
+  mlmeReq: [*c]c.MlmeReq_t, 
+  nextTxIn: c.TimerTime_t
 ) void {
-    c.DisplayMacMlmeRequestUpdate(status, mlmeReq, nextTxIn);
+  c.DisplayMacMlmeRequestUpdate(status, mlmeReq, nextTxIn);
 }</code></pre></div>
-<p>Our function <code>OnMacMlmeRequest</code> has a parameter of type <code>MlmeReq_t</code>, auto-imported by Zig Compiler as…</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L269-L277">(Source)</a></p>
+<p>Our function <strong><code>OnMacMlmeRequest</code></strong> has a parameter of type <strong><code>MlmeReq_t</code></strong>, auto-imported by Zig Compiler as…</p>
 <div class="example-wrap"><pre class="language-zig"><code>pub const MlmeReq_t = struct_sMlmeReq;
 
 pub const struct_sMlmeReq = extern struct {
-    Type: Mlme_t,
-    Req: union_uMlmeParam,
-    ReqReturn: RequestReturnParam_t,
+  Type: Mlme_t,
+  Req: union_uMlmeParam,
+  ReqReturn: RequestReturnParam_t,
 };</code></pre></div>
-<p>Which contains another auto-imported type <code>union_uMlmeParam</code>…</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L2132-L2137">(Source)</a></p>
+<p>Which contains another auto-imported type <strong><code>union_uMlmeParam</code></strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>pub const union_uMlmeParam = extern union {
-    Join: MlmeReqJoin_t,
-    TxCw: MlmeReqTxCw_t,
-    PingSlotInfo: MlmeReqPingSlotInfo_t,
-    DeriveMcKEKey: MlmeReqDeriveMcKEKey_t,
-    DeriveMcSessionKeyPair: MlmeReqDeriveMcSessionKeyPair_t,
+  Join: MlmeReqJoin_t,
+  TxCw: MlmeReqTxCw_t,
+  PingSlotInfo: MlmeReqPingSlotInfo_t,
+  DeriveMcKEKey: MlmeReqDeriveMcKEKey_t,
+  DeriveMcSessionKeyPair: MlmeReqDeriveMcSessionKeyPair_t,
 };</code></pre></div>
-<p>Which contains an <code>MlmeReqPingSlotInfo_t</code>…</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L2125-L2131">(Source)</a></p>
+<p>Which contains an <strong><code>MlmeReqPingSlotInfo_t</code></strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>pub const MlmeReqPingSlotInfo_t = struct_sMlmeReqPingSlotInfo;
 
 pub const struct_sMlmeReqPingSlotInfo = extern struct {
-    PingSlot: PingSlotInfo_t,
+  PingSlot: PingSlotInfo_t,
 };</code></pre></div>
-<p>Which contains a <code>PingSlotInfo_t</code>…</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L2111-L2114">(Source)</a></p>
+<p>Which contains a <strong><code>PingSlotInfo_t</code></strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>pub const PingSlotInfo_t = union_uPingSlotInfo;
 
 pub const union_uPingSlotInfo = extern union {
-    Value: u8,
-    Fields: struct_sInfoFields,
+  Value: u8,
+  Fields: struct_sInfoFields,
 };</code></pre></div>
-<p>Which contains a <code>struct_sInfoFields</code>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>pub const struct_sInfoFields = opaque {};</code></pre></div>
-<p>But the fields of <code>struct_sInfoFields</code> are not known by the Zig Compiler!</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L1900-L1904">(Source)</a></p>
+<p>Which contains a <strong><code>struct_sInfoFields</code></strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>pub const struct_sInfoFields = 
+  opaque {};</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L1899">(Source)</a></p>
+<p>But <strong><code>struct_sInfoFields</code></strong> is an Opaque Type… Its fields are not known by the Zig Compiler!</p>
+<p><em>Why is that?</em></p>
 <p>If we refer to the original C code…</p>
 <div class="example-wrap"><pre class="language-c"><code>typedef union uPingSlotInfo
 {
+  /*!
+   * Parameter for byte access
+   */
+  uint8_t Value;
+  /*!
+   * Structure containing the parameters for the PingSlotInfoReq
+   */
+  struct sInfoFields
+  {
     /*!
-     * Parameter for byte access
+     * Periodicity = 0: ping slot every second
+     * Periodicity = 7: ping slot every 128 seconds
      */
-    uint8_t Value;
+    uint8_t Periodicity     : 3;
     /*!
-     * Structure containing the parameters for the PingSlotInfoReq
+     * RFU
      */
-    struct sInfoFields
-    {
-        /*!
-         * Periodicity = 0: ping slot every second
-         * Periodicity = 7: ping slot every 128 seconds
-         */
-        uint8_t Periodicity     : 3;
-        /*!
-         * RFU
-         */
-        uint8_t RFU             : 5;
-    }Fields;
+    uint8_t RFU             : 5;
+  }Fields;
 }PingSlotInfo_t;</code></pre></div>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMac.h#L312-L333">(Source)</a></p>
-<p>We see that <code>sInfoFields</code> contains Bit Fields, that the Zig Compiler is unable to translate.</p>
+<p>We see that <strong><code>sInfoFields</code></strong> contains <strong>Bit Fields</strong>, that the Zig Compiler is unable to translate.</p>
 <p>Let’s fix this error in the next section…</p>
 <h1 id="appendix-fix-opaque-type"><a href="#appendix-fix-opaque-type">21 Appendix: Fix Opaque Type</a></h1>
-<p>Earlier we saw that this fails to compile in our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>…</p>
+<p>Earlier we saw that this fails to compile in our LoRaWAN Zig App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L123-L134">lorawan_test.zig</a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>_ = &amp;LmHandlerCallbacks;</code></pre></div>
-<p>That’s because <code>LmHandlerCallbacks</code> references the auto-imported type <code>MlmeReq_t</code>, which contains Bit Fields and can’t be translated by the Zig Compiler.</p>
-<p>Let’s convert <code>MlmeReq_t</code> to an Opaque Type, since we won’t be accessing the fields anyway…</p>
+<p>That’s because <strong><code>LmHandlerCallbacks</code></strong> references the auto-imported type <strong><code>MlmeReq_t</code></strong>, which contains <strong>Bit Fields</strong> and can’t be translated by the Zig Compiler.</p>
+<p>Let’s convert <strong><code>MlmeReq_t</code></strong> to an <strong>Opaque Type</strong>, since we won’t access the fields anyway…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// We use an Opaque Type to represent MLME Request, because it contains Bit Fields that can&#39;t be converted by Zig
 const MlmeReq_t = opaque {};</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L695-L696">(Source)</a></p>
-<p>We convert <code>LmHandlerCallbacks</code> to use our Opaque Type <code>MlmeReq_t</code>…</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L778-L781">(Source)</a></p>
+<p>We convert the <strong><code>LmHandlerCallbacks</code></strong> Struct to use our Opaque Type <strong><code>MlmeReq_t</code></strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Handler Callbacks. Adapted from 
 /// https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L2818-L2833
 pub const LmHandlerCallbacks_t = extern struct {
-    GetBatteryLevel: ?fn () callconv(.C) u8,
-    GetTemperature: ?fn () callconv(.C) f32,
-    GetRandomSeed: ?fn () callconv(.C) u32,
-    OnMacProcess: ?fn () callconv(.C) void,
-    OnNvmDataChange: ?fn (c.LmHandlerNvmContextStates_t, u16) callconv(.C) void,
-    OnNetworkParametersChange: ?fn ([*c]c.CommissioningParams_t) callconv(.C) void,
-    OnMacMcpsRequest: ?fn (c.LoRaMacStatus_t, [*c]c.McpsReq_t, c.TimerTime_t) callconv(.C) void,
-    /// Changed `[*c]c.MlmeReq_t` to `*MlmeReq_t`
-    OnMacMlmeRequest: ?fn (c.LoRaMacStatus_t, *MlmeReq_t, c.TimerTime_t) callconv(.C) void,
-    OnJoinRequest: ?fn ([*c]c.LmHandlerJoinParams_t) callconv(.C) void,
-    OnTxData: ?fn ([*c]c.LmHandlerTxParams_t) callconv(.C) void,
-    OnRxData: ?fn ([*c]c.LmHandlerAppData_t, [*c]c.LmHandlerRxParams_t) callconv(.C) void,
-    OnClassChange: ?fn (c.DeviceClass_t) callconv(.C) void,
-    OnBeaconStatusChange: ?fn ([*c]c.LoRaMacHandlerBeaconParams_t) callconv(.C) void,
-    OnSysTimeUpdate: ?fn (bool, i32) callconv(.C) void,
+  GetBatteryLevel: ?fn () callconv(.C) u8,
+  GetTemperature: ?fn () callconv(.C) f32,
+  GetRandomSeed: ?fn () callconv(.C) u32,
+  OnMacProcess: ?fn () callconv(.C) void,
+  OnNvmDataChange: ?fn (c.LmHandlerNvmContextStates_t, u16) callconv(.C) void,
+  OnNetworkParametersChange: ?fn ([*c]c.CommissioningParams_t) callconv(.C) void,
+  OnMacMcpsRequest: ?fn (c.LoRaMacStatus_t, [*c]c.McpsReq_t, c.TimerTime_t) callconv(.C) void,
+
+  /// Changed `[*c]c.MlmeReq_t` to `*MlmeReq_t`
+  OnMacMlmeRequest: ?fn (c.LoRaMacStatus_t, *MlmeReq_t, c.TimerTime_t) callconv(.C) void,
+
+  OnJoinRequest: ?fn ([*c]c.LmHandlerJoinParams_t) callconv(.C) void,
+  OnTxData: ?fn ([*c]c.LmHandlerTxParams_t) callconv(.C) void,
+  OnRxData: ?fn ([*c]c.LmHandlerAppData_t, [*c]c.LmHandlerRxParams_t) callconv(.C) void,
+  OnClassChange: ?fn (c.DeviceClass_t) callconv(.C) void,
+  OnBeaconStatusChange: ?fn ([*c]c.LoRaMacHandlerBeaconParams_t) callconv(.C) void,
+  OnSysTimeUpdate: ?fn (bool, i32) callconv(.C) void,
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L675-L693">(Source)</a></p>
-<p>We change all auto-imported <code>MlmeReq_t</code> references from…</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L758-L778">(Source)</a></p>
+<p>We change all auto-imported <strong><code>MlmeReq_t</code></strong> references from…</p>
 <div class="example-wrap"><pre class="language-zig"><code>[*c]c.MlmeReq_t</code></pre></div>
+<p>(C Pointer to <code>MlmeReq_t</code>)</p>
 <p>To our Opaque Type…</p>
 <div class="example-wrap"><pre class="language-zig"><code>*MlmeReq_t</code></pre></div>
-<p>We also change all auto-imported <code>LmHandlerCallbacks_t</code> references from…</p>
+<p>(Zig Pointer to <code>MlmeReq_t</code>)</p>
+<p>We also change all auto-imported <strong><code>LmHandlerCallbacks_t</code></strong> references from…</p>
 <div class="example-wrap"><pre class="language-zig"><code>[*c]c.LmHandlerCallbacks_t</code></pre></div>
-<p>To our converted <code>LmHandlerCallbacks_t</code>…</p>
+<p>(C Pointer to <code>LmHandlerCallbacks_t</code>)</p>
+<p>To our converted <strong><code>LmHandlerCallbacks_t</code></strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>*LmHandlerCallbacks_t</code></pre></div>
+<p>(Zig Pointer to <code>LmHandlerCallbacks_t</code>)</p>
 <p>Which means we need to import the affected LoRaWAN Functions ourselves…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Changed `[*c]c.MlmeReq_t` to `*MlmeReq_t`. Adapted from
 /// https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L2905
 extern fn DisplayMacMlmeRequestUpdate(
-    status: c.LoRaMacStatus_t, 
-    mlmeReq: *MlmeReq_t, 
-    nextTxIn: c.TimerTime_t
+  status:   c.LoRaMacStatus_t, 
+  mlmeReq:  *MlmeReq_t, 
+  nextTxIn: c.TimerTime_t
 ) void;
 
 /// Changed `[*c]c.LmHandlerCallbacks_t` to `*LmHandlerCallbacks_t`. Adapted from
 /// https://github.com/lupyuen/zig-bl602-nuttx/blob/main/translated/lorawan_test_main.zig#L2835
 extern fn LmHandlerInit(
-    callbacks: *LmHandlerCallbacks_t, 
-    handlerParams: [*c]c.LmHandlerParams_t
+  callbacks:     *LmHandlerCallbacks_t, 
+  handlerParams: [*c]c.LmHandlerParams_t
 ) c.LmHandlerErrorStatus_t;</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L707-L720">(Source)</a></p>
-<p>After fixing the Opaque Type, Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a> yay!</p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L790-L805">(Source)</a></p>
+<p>After fixing the Opaque Type, Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>.</p>
 <h1 id="appendix-macro-error"><a href="#appendix-macro-error">22 Appendix: Macro Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>While compiling our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>, we see this <strong>Macro Error</strong>…</p>
@@ -1753,12 +1767,13 @@ pub const __INT64_C_SUFFIX__ = @compileError(&quot;unable to translate macro: un
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#C-Macros"><strong>“C Macros”</strong></a></li>
 </ul>
-<p>So we define <code>LL</code> ourselves…</p>
+<p>So we define <strong><code>LL</code></strong> ourselves…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the LoRaWAN Library from C
 const c = @cImport({
-    // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
-    @cDefine(&quot;LL&quot;, &quot;&quot;);</code></pre></div>
-<p>(<code>LL</code> is the “long long” suffix for C Constants, which is probably not needed when we import C Types and Functions into Zig)</p>
+  // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
+  @cDefine(&quot;LL&quot;, &quot;&quot;);</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L14-L18">(Source)</a></p>
+<p><strong><code>LL</code></strong> is the “long long” suffix for C Constants, which is probably not needed when we import C Types and Functions into Zig.</p>
 <p>Then Zig Compiler emits this error…</p>
 <div class="example-wrap"><pre class="language-text"><code>zig-cache/o/83fc6cf7a78f5781f258f156f891554b/cimport.zig:2940:26: 
 error: unable to translate C expr: unexpected token &#39;##&#39;
@@ -1766,25 +1781,26 @@ pub const __int_c_join = @compileError(&quot;unable to translate C expr: unexpec
 // /home/user/zig-linux-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/include/stdint.h:282:9</code></pre></div>
 <p>Which refers to this line in <code>stdint.h</code>…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define __int_c_join(a, b) a ## b</code></pre></div>
-<p>The <code>__int_c_join</code> Macro fails because the <code>LL</code> suffix is now blank and the <code>##</code> Concatenation Operator fails.</p>
-<p>We redefine the <code>__int_c_join</code> Macro without the <code>##</code> Concatenation Operator…</p>
+<p>The <strong><code>__int_c_join</code></strong> Macro fails because the <strong><code>LL</code></strong> suffix is now blank and the <strong><code>##</code></strong> Concatenation Operator fails.</p>
+<p>We redefine the <strong><code>__int_c_join</code></strong> Macro without the <strong><code>##</code></strong> Concatenation Operator…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the LoRaWAN Library from C
 const c = @cImport({
-    // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
-    @cDefine(&quot;LL&quot;, &quot;&quot;);
-    @cDefine(&quot;__int_c_join(a, b)&quot;, &quot;a&quot;);  //  Bypass zig/lib/include/stdint.h</code></pre></div>
+  // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
+  @cDefine(&quot;LL&quot;, &quot;&quot;);
+  @cDefine(&quot;__int_c_join(a, b)&quot;, &quot;a&quot;);  //  Bypass zig/lib/include/stdint.h</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L14-L18">(Source)</a></p>
 <p>Now Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a></p>
 <h1 id="appendix-struct-initialisation-error"><a href="#appendix-struct-initialisation-error">23 Appendix: Struct Initialisation Error</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>Zig Compiler crashes when it tries to initialise the <strong>Timer Struct</strong> at startup…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Timer to handle the application data transmission duty cycle
 var TxTimer: c.TimerEvent_t = 
-    std.mem.zeroes(c.TimerEvent_t);
+  std.mem.zeroes(c.TimerEvent_t);
 
 // Zig Compiler crashes with...
 // TODO buf_write_value_bytes maybe typethread 11512 panic:
 // Unable to dump stack trace: debug info stripped</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L679-L684">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L742-L755">(Source)</a></p>
 <p>So we initialise the Timer Struct in the Main Function instead…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Timer to handle the application data transmission duty cycle.
 /// Init the timer in Main Function.
@@ -1792,11 +1808,11 @@ var TxTimer: c.TimerEvent_t = undefined;
 
 /// Main Function
 pub export fn lorawan_test_main(
-    _argc: c_int, 
-    _argv: [*]const [*]const u8
+  _argc: c_int, 
+  _argv: [*]const [*]const u8
 ) c_int {
-    // Init the Timer Struct at startup
-    TxTimer = std.mem.zeroes(c.TimerEvent_t);</code></pre></div>
+  // Init the Timer Struct at startup
+  TxTimer = std.mem.zeroes(c.TimerEvent_t);</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L101">(Source)</a></p>
 
     
