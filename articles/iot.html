@@ -694,14 +694,57 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/iot-code4a.png" alt="Original C Code (left) and Converted Zig Code (right) for our LoRaWAN App look highly similar" /></p>
 <p><em><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L271-L323">Original C Code</a> (left) and <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L90-L158">Converted Zig Code</a> (right) for our LoRaWAN App look highly similar</em></p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
-<p><em>Once again… Why are we doing all this in Zig?</em></p>
-<p>TODO: Let’s recap: We have a <strong>complex chunk of firmware</strong> that needs to run on an IoT Gadget (PineDio Stack)…</p>
-<p>TODO: We wished we could rewrite the LoRaWAN Stack in a modern, memory-safe language… But we can’t. (Because LoRaWAN changes)</p>
-<p>TODO: So it seems the best we can do today is to code the high-level parts in Zig, and leave the low-level parts in C. (And let Zig figure out the Zig-to-C plumbing)</p>
-<p>TODO: With Zig watching my back, I feel more confident extending the Zig App</p>
+<p><em>Once again… Why are we doing this in Zig?</em></p>
+<p>Let’s recap: We have a <strong>complex chunk of firmware</strong> that needs to run on an IoT Gadget (PineDio Stack)…</p>
+<ul>
+<li>
+<p>It talks SPI to the <strong>LoRa Radio Transceiver</strong></p>
+</li>
+<li>
+<p>It handles <strong>GPIO Interrupts</strong> from the LoRa Transceiver</p>
+</li>
+<li>
+<p>It needs <strong>Multithreading, Timers and Event Queues</strong> because the LoRaWAN Protocol is complicated and time-critical</p>
+</li>
+</ul>
+<p>We wished we could <strong>rewrite the LoRaWAN Stack</strong> in a modern, memory-safe language… But we can’t. <a href="https://lupyuen.github.io/articles/zig#why-zig">(Because LoRaWAN changes)</a></p>
+<p><em>But we can do this partially in Zig right?</em></p>
+<p>Yes it seems the best we can do today is to code the <strong>High-Level Parts in Zig</strong>…</p>
+<p>And leave the <strong>Low-Level Parts in C</strong>, including the LoRaWAN Stack and the Apache NuttX RTOS.</p>
+<p>(Zig Compiler does the Zig-to-C plumbing for us, as we’ve seen)</p>
 <p><em>Zig Compiler calls Clang to import the C Header Files. But NuttX compiles with GCC. Won’t we have problems with code compatibility?</em></p>
-<p>TODO: We have validated Zig Compiler’s Clang as a drop-in replacement for GCC</p>
-<p>TODO: Minor workarounds, no showstoppers </p>
+<p>We have validated Zig Compiler’s <strong>Clang as a drop-in replacement</strong> for GCC…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc"><strong>“Zig Compiler as Drop-In Replacement for GCC”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-lorawan-library-for-nuttx"><strong>“LoRaWAN Library (compiled with zig cc)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-lorawan-app-for-nuttx"><strong>“LoRaWAN App (compiled with zig cc)”</strong></a></p>
+</li>
+</ul>
+<p>Hence we’re confident that <strong>Zig will interoperate correctly</strong> with the LoRaWAN Stack and Apache NuttX RTOS.</p>
+<p>(Well for BL602 NuttX at least)</p>
+<p><em>Were there problems with Zig-to-C interoperability?</em></p>
+<p>We hit some <strong>minor interoperability issues</strong> and we found workarounds…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-opaque-type-error"><strong>“Opaque Type Error”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-fix-opaque-type"><strong>“Fix Opaque Type”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-macro-error"><strong>“Macro Error”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-struct-initialisation-error"><strong>“Struct Initialisation Error”</strong></a></p>
+</li>
+</ul>
+<p>No showstoppers, so our Zig App is good to go!</p>
+<p>TODO: With Zig watching my back, I feel more confident extending the Zig App</p>
 <p>TODO: Read the Internal Temperature Sensor</p>
 <p>TODO: Encode the Temperature Sensor Data with <a href="https://lupyuen.github.io/articles/cbor2">TinyCBOR</a> and transmit to The Things Network</p>
 <p>TODO: Monitor sensor data with <a href="https://lupyuen.github.io/articles/prometheus">Prometheus and Grafana</a></p>
