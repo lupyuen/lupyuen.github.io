@@ -1899,11 +1899,13 @@ pub export fn lorawan_test_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int {
 
 _Wow the code looks super verbose?_
 
-Yep but the Auto-Translated Zig Code is a __valuable reference__!
+Yeah but the Auto-Translated Zig Code is a __valuable reference__!
 
 We referred to the auto-translated code when we created the [__LoRaWAN Zig App__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig) for this article.
 
 (Especially the tricky parts for Type Conversion and C Pointers)
+
+We'll see the auto-translated code in the upcoming sections...
 
 # Appendix: Opaque Type Error
 
