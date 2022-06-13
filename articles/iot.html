@@ -738,6 +738,7 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p>TODO: <a href="https://ziglearn.org/chapter-4/"><strong>“Working with C”</strong></a></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/sx1262-handler.jpg" alt="Handle LoRaWAN Events with NimBLE Porting Layer" /></p>
 <h1 id="appendix-handle-lorawan-events"><a href="#appendix-handle-lorawan-events">13 Appendix: Handle LoRaWAN Events</a></h1>
 <p>Let’s look at the <strong>Event Loop</strong> that handles the LoRa and LoRaWAN Events in our app.</p>
 <p><em>Our Event Loop looks different from the Original LoRaWAN Demo App?</em></p>
@@ -746,9 +747,9 @@ UnfragmentedData[addr +% i]</code></pre></div>
 <p><em>So we’re directly calling the Timers and Event Queues from Apache NuttX RTOS?</em></p>
 <p>Not quite. We’re calling the Timers and Event Queues provided by <a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer"><strong>NimBLE Porting Layer</strong></a>.</p>
 <p>NimBLE Porting Layer is a <a href="https://github.com/apache/mynewt-nimble/tree/master/porting/npl"><strong>Portable Multitasking Library</strong></a> that works on multiple operating systems: FreeRTOS, Linux, Mynewt, NuttX, RIOT.</p>
-<p>By calling NimBLE Porting Layer, our modded LoRaWAN Stack will run any of these operating systems (hopefully).</p>
+<p>By calling NimBLE Porting Layer, our modded LoRaWAN Stack will run on all of these operating systems (hopefully).</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer">(More about NimBLE Porting Layer)</a></p>
-<p>TODO</p>
+<p><em>Alright let’s see the code!</em></p>
 <p>Our Event Loop forever reads LoRa and LoRaWAN Events from an <strong>Event Queue</strong> and handles them.</p>
 <p>The Event Queue is created in our LoRa SX1262 Library as explained here…</p>
 <ul>
