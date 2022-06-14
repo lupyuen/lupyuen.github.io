@@ -354,7 +354,7 @@ __Converting C Code to Zig__ looks rather straightforward. In a while we'll talk
 
 _Why did we call __LmHandlerInit__ instead of __c.LmHandlerInit__?_
 
-That's one of the tricky parts of our C-to-Zig conversion, as explined here...
+That's one of the tricky parts of our C-to-Zig conversion, as explained here...
 
 -   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/iot#appendix-fix-opaque-type)
 
