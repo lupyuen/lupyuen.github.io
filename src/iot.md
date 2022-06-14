@@ -2007,30 +2007,38 @@ _ = &LmHandlerCallbacks;
 Zig Compiler will show this __Opaque Type Error__...
 
 ```text
-zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:1353:5: error: opaque types have unknown size and therefore cannot be directly embedded in unions
+zig-cache/.../cimport.zig:1353:5: 
+error: opaque types have unknown size and 
+therefore cannot be directly embedded in unions
     Fields: struct_sInfoFields,
     ^
-zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:1563:5: note: while checking this field
+zig-cache/.../cimport.zig:1563:5: 
+note: while checking this field
     PingSlot: PingSlotInfo_t,
     ^
-zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:1579:5: note: while checking this field
+zig-cache/.../cimport.zig:1579:5: 
+note: while checking this field
     PingSlotInfo: MlmeReqPingSlotInfo_t,
     ^
-zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:1585:5: note: while checking this field
+zig-cache/.../cimport.zig:1585:5: 
+note: while checking this field
     Req: union_uMlmeParam,
     ^
-zig-cache/o/d4d456612514c342a153a8d34fbf5970/cimport.zig:2277:5: note: while checking this field
+zig-cache/.../cimport.zig:2277:5: 
+note: while checking this field
     OnMacMlmeRequest: ?fn (LoRaMacStatus_t, [*c]MlmeReq_t, TimerTime_t) callconv(.C) void,
     ^
 ```
 
 Opaque Type Error is explained here...
 
--   [__"Extend a C/C++ Project with Zig"__](https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di)
-
 -   [__"Translation Failures"__](https://ziglang.org/documentation/master/#Translation-failures)
 
+-   [__"Extend a C/C++ Project with Zig"__](https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di)
+
 Let's trace through our Opaque Type Error, guided by the [__Auto-Translated Zig Code__](https://lupyuen.github.io/articles/iot#appendix-auto-translate-lorawan-app-to-zig) that we discussed earlier.
+
+We start at the bottom with __`OnMacMlmeRequest`__...
 
 ```zig
 export fn OnMacMlmeRequest(
