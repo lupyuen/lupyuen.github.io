@@ -556,7 +556,7 @@ Finally we __transmit the message__ to the LoRaWAN Network...
 
 And that's how [__PrepareTxFrame__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L205) transmits a Data Packet over LoRaWAN.
 
-_How is PrepareTxFrame is called?_
+_How is PrepareTxFrame called?_
 
 After we have joined the LoRaWAN Network, our LoRaWAN Event Loop calls [__UplinkProcess__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L222-L232)...
 
