@@ -258,6 +258,8 @@ We begin by computing the randomised __interval between transmissions__ of LoRaW
 
 (We'll talk about __@intCast__ in a while)
 
+Our app sends LoRaWAN Data Packets every __40 seconds__ (roughly).  [(See this)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L52-L59)
+
 Next we show the __App Version__...
 
 ```zig
@@ -378,6 +380,8 @@ TxPeriodicity = @intCast(u32,
   )
 );
 ```
+
+[(Roughly 40 seconds)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L52-L59)
 
 Let's find out why [__@intCast__](https://ziglang.org/documentation/master/#intCast) is needed.
 
