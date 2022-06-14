@@ -104,7 +104,7 @@ That's because...
 
 -   Which means our app needs to do __Multithreading with Timers and Message Queues__ efficiently. [(See this)](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
 
-Great way to test whether Zig can really handle Complex Embedded Apps!
+Great way to test if Zig can really handle Complex Embedded Apps!
 
 ![Import LoRaWAN Library](https://lupyuen.github.io/images/iot-code2a.png)
 
@@ -119,7 +119,7 @@ Let's dive into our Zig IoT App. We import the [__Zig Standard Library__](https:
 const std = @import("std");
 ```
 
-Next we call [__@cImport__](https://ziglang.org/documentation/master/#cImport) to import the __C Macros and C Hander Files__...
+Then we call [__@cImport__](https://ziglang.org/documentation/master/#cImport) to import the __C Macros and C Header Files__...
 
 ```zig
 /// Import the LoRaWAN Library from C
@@ -159,6 +159,8 @@ We import the __C Header Files__ for Apache NuttX RTOS...
   @cInclude("stdio.h");
 ```
 
+[(More about the includes)](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
+
 Followed by the C Header Files for our __LoRaWAN Library__...
 
 ```zig
@@ -180,7 +182,7 @@ Followed by the C Header Files for our __LoRaWAN Library__...
 
 [(Based on this C code)](https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L24-L40)
 
-The LoRaWAN Library is now ready to be called by our Zig App!
+The LoRaWAN Library is ready to be called by our Zig App!
 
 This is how we reference the LoRaWAN Library to define our [__LoRaWAN Region__](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country/)...
 
@@ -199,6 +201,8 @@ Remember that we imported the LoRaWAN Library under the __Namespace "`c`"__...
 /// Import the LoRaWAN Library under Namespace "c"
 const c = @cImport({ ... });
 ```
+
+[(Source)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L5-L48)
 
 Hence we use "`c.something`" to refer to the Constants and Functions defined in the LoRaWAN Library.
 
