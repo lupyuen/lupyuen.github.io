@@ -452,7 +452,7 @@ fn PrepareTxFrame() void {
   debug(&quot;PrepareTxFrame: Transmit OK&quot;, .{});
 }</code></pre></div>
 <p>And that’s how <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L163-L205"><strong>PrepareTxFrame</strong></a> transmits a Data Packet over LoRaWAN.</p>
-<p><em>How is PrepareTxFrame is called?</em></p>
+<p><em>How is PrepareTxFrame called?</em></p>
 <p>After we have joined the LoRaWAN Network, our LoRaWAN Event Loop calls <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L222-L232"><strong>UplinkProcess</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LoRaWAN Event Loop that dequeues Events from 
 /// the Event Queue and processes the Events
