@@ -674,7 +674,7 @@ Note that __target__ and __mcpu__ are specific to BL602...
 
 -   [__"Zig Target"__](https://lupyuen.github.io/articles/zig#zig-target)
 
-_How did we get the `-isystem` and `-I` options?_
+_How did we get the Compiler Options `-isystem` and `-I`?_
 
 Remember that we'll link our Compiled Zig App with __Apache NuttX RTOS.__
 
