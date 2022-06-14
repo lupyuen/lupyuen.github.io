@@ -289,6 +289,7 @@ pub export fn lorawan_test_main(
     // Fatal error, endless loop.
     while (true) {}
   }</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L651-L682">(<strong>LmHandlerCallbacks</strong> and <strong>LmHandlerParams</strong> are defined here)</a></p>
 <p>(We’ll explain “<code>.{}</code>” in a while)</p>
 <p>We set the <strong>Max Tolerated Receive Error</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set system maximum tolerated rx error in milliseconds
@@ -299,6 +300,7 @@ pub export fn lorawan_test_main(
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_CLOCK_SYNC,         null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_REMOTE_MCAST_SETUP, null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &amp;FragmentationParams);</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L684-L709">(<strong>LmhpComplianceParams</strong> and <strong>FragmentationParams</strong> are defined here)</a></p>
 <p>Everything is hunky dory! We can now transmit a LoRaWAN Request to <strong>join the LoRaWAN Network</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Init the Clock Sync and File Transfer status
   IsClockSynched     = false;
@@ -317,6 +319,7 @@ pub export fn lorawan_test_main(
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-handle-lorawan-events">(<strong>handle_event_queue</strong> is explained in the Appendix)</a></p>
 <p>That’s all for the Main Function of our Zig App!</p>
+<p><img src="https://lupyuen.github.io/images/lorawan3-flow.jpg" alt="Our LoRaWAN Zig App" /></p>
 <p><em>Wait… Our Zig Code looks familiar?</em></p>
 <p>Yep our Zig Code is largely identical to the <strong>C Code in the Demo App</strong> for the LoRaWAN Stack…</p>
 <ul>
@@ -326,6 +329,11 @@ pub export fn lorawan_test_main(
 </li>
 </ul>
 <p><strong>Converting C Code to Zig</strong> looks rather straightforward. In a while we’ll talk about the tricky parts we encountered during the conversion.</p>
+<p><em>Why did we call <strong>LmHandlerInit</strong> instead of <strong>c.LmHandlerInit</strong>?</em></p>
+<p>That’s one of the tricky parts of our C-to-Zig conversion, as explined here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/iot#appendix-fix-opaque-type"><strong>“Fix Opaque Type”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/iot-code1a.png" alt="Demo App for the LoRaWAN Stack" /></p>
 <p><a href="https://github.com/Lora-net/LoRaMac-node/blob/master/src/apps/LoRaMac/fuota-test-01/B-L072Z-LRWAN1/main.c#L314-L390">(Source)</a></p>
 <h1 id="convert-integer-type"><a href="#convert-integer-type">4 Convert Integer Type</a></h1>
