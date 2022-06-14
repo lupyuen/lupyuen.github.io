@@ -74,9 +74,9 @@ That we've ported to PineDio Stack BL604 with __Apache NuttX RTOS__...
 
 -   [__"LoRa SX1262 on Apache NuttX OS"__](https://lupyuen.github.io/articles/sx1262)
 
-The same LoRaWAN Stack is available on many other platforms, including [__Zephyr OS__](https://docs.zephyrproject.org/latest/connectivity/lora_lorawan/index.html) and [__Arduino__](beegee-tokyo/SX126x-Arduino).
+The same LoRaWAN Stack is available on many other platforms, including [__Zephyr OS__](https://docs.zephyrproject.org/latest/connectivity/lora_lorawan/index.html) and [__Arduino__](https://github.com/beegee-tokyo/SX126x-Arduino).
 
-[(My good friend JF has ported the stack to Linux)](https://codeberg.org/JF002/loramac-node)
+[(My good friend JF is porting the LoRaWAN Stack to Linux)](https://codeberg.org/JF002/loramac-node)
 
 _But the LoRaWAN Stack is in C! Will it work with Zig?_
 
