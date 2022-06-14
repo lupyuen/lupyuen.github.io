@@ -284,6 +284,8 @@ Then we __initialise the LoRaWAN Library__...
   }
 ```
 
+[(__LmHandlerCallbacks__ and __LmHandlerParams__ are defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L651-L682)
+
 (We'll explain "`.{}`" in a while)
 
 We set the __Max Tolerated Receive Error__...
@@ -302,6 +304,8 @@ And we load some packages for __LoRaWAN Compliance__...
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_REMOTE_MCAST_SETUP, null);
   _ = c.LmHandlerPackageRegister(c.PACKAGE_ID_FRAGMENTATION,      &FragmentationParams);
 ```
+
+[(__LmhpComplianceParams__ and __FragmentationParams__ are defined here)](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L684-L709)
 
 Everything is hunky dory! We can now transmit a LoRaWAN Request to __join the LoRaWAN Network__...
 
@@ -336,6 +340,8 @@ Finally we loop forever handling __LoRaWAN Events__...
 
 That's all for the Main Function of our Zig App!
 
+![Our LoRaWAN Zig App](https://lupyuen.github.io/images/lorawan3-flow.jpg)
+
 _Wait... Our Zig Code looks familiar?_
 
 Yep our Zig Code is largely identical to the __C Code in the Demo App__ for the LoRaWAN Stack...
@@ -345,6 +351,12 @@ Yep our Zig Code is largely identical to the __C Code in the Demo App__ for the 
     (Pic below)
 
 __Converting C Code to Zig__ looks rather straightforward. In a while we'll talk about the tricky parts we encountered during the conversion.
+
+_Why did we call __LmHandlerInit__ instead of __c.LmHandlerInit__?_
+
+That's one of the tricky parts of our C-to-Zig conversion, as explined here...
+
+-   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/iot#appendix-fix-opaque-type)
 
 ![Demo App for the LoRaWAN Stack](https://lupyuen.github.io/images/iot-code1a.png)
 
