@@ -1001,6 +1001,8 @@ Now I feel confident that I can __safely extend__ our Zig App to do more meaning
 
 We'll extend our Zig App the modular way thanks to [__@import__](https://zig.news/mattnite/import-and-packages-23mb)
 
+![Extending our Zig App with CBOR, The Things Network, Prometheus and Grafana](https://lupyuen.github.io/images/prometheus-title.jpg)
+
 _Is there anything else that might benefit from Zig?_
 
 [__LVGL Touchscreen Apps__](https://lupyuen.github.io/articles/pinedio2#nuttx-apps) might be easier to maintain when we code them in Zig.
