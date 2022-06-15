@@ -548,6 +548,8 @@ Check this book again for future updates...
 
 1.  __Inside LoRaMAC: The LoRaWAN Stack__
 
+1.  __LVGL Touchscreen Apps with Zig__
+
 1.  __The Things Network on NuttX__
 
 1.  __LoRaWAN ChirpStack with Prometheus and Grafana__
