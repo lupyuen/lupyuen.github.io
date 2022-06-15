@@ -1838,8 +1838,6 @@ CHANNEL MASK: 0003
 
 [(See the complete log)](https://gist.github.com/lupyuen/477982242d897771d7a5780c8a9b0910)
 
-![](https://lupyuen.github.io/images/iot-code5a.png)
-
 # Appendix: Auto-Translate LoRaWAN App to Zig
 
 The Zig Compiler can __auto-translate C code to Zig__. [(See this)](https://ziglang.org/documentation/master/#C-Translation-CLI)
