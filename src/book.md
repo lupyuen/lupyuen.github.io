@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _9 Jun 2022_
+📝 _16 Jun 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -545,6 +545,8 @@ Incomplete port of __Apache Mynewt__ operating system...
 Check this book again for future updates...
 
 1.  __IoT Education with BL602 and BL604__
+
+1.  __Zig Reflection: Visualise the Call Flow in a C Library__
 
 1.  __Inside LoRaMAC: The LoRaWAN Stack__
 
