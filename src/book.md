@@ -546,7 +546,7 @@ Check this book again for future updates...
 
 1.  __IoT Education with BL602 and BL604__
 
-1.  __Zig Reflection: Visualise the Call Flow in a C Library__
+1.  __Zig Type Reflection: Visualise the Call Flow in a C Library__
 
 1.  __Inside LoRaMAC: The LoRaWAN Stack__
 
