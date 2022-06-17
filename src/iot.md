@@ -1063,7 +1063,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Interesting idea, let's explore that! [(See this)](https://www.reddit.com/r/Zig/comments/vbvj9e/comment/iclmwr9/?utm_source=share&utm_medium=web2x&context=3)
 
-1.  I'm now using [__Zig Type Reflection__](https://ziglang.org/documentation/master/#toc-typeInfo) to document the internals of the LoRaWAN Library...
+1.  I'm now using [__Zig Type Reflection__](https://ziglang.org/documentation/master/#typeInfo) to document the internals of the LoRaWAN Library...
 
     [__"Zig Type Reflection for LoRaWAN Library"__](https://github.com/lupyuen/zig-bl602-nuttx#zig-type-reflection)
 
