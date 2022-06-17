@@ -1059,6 +1059,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Maintain it With Zig"__](https://kristoff.it/blog/maintain-it-with-zig)
 
+1.  Can we use [__Zig Async Functions__](https://ziglang.org/documentation/master/#Async-Functions) to simplify our Zig IoT App?
+
+    Interesting idea, let's explore that! [(See this)](https://www.reddit.com/r/Zig/comments/vbvj9e/comment/iclmwr9/?utm_source=share&utm_medium=web2x&context=3)
+
+1.  I'm now using [__Zig Type Reflection__](https://ziglang.org/documentation/master/#toc-typeInfo) to document the internals of the LoRaWAN Library...
+
+    [__"Zig Type Reflection for LoRaWAN Library"__](https://github.com/lupyuen/zig-bl602-nuttx#zig-type-reflection)
+
+    The LoRaWAN Library is a popular library that runs on many platforms, would be great if Zig can create helpful docs for the complicated multithreaded library.
+
 ![Handle LoRaWAN Events with NimBLE Porting Layer](https://lupyuen.github.io/images/sx1262-handler.jpg)
 
 # Appendix: Handle LoRaWAN Events
