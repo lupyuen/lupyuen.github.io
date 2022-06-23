@@ -65,8 +65,15 @@
 
     <h1 class="title">Build a PinePhone App with Zig and zgt</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
+<li><a href="#inside-the-app">1 Inside The App</a><ul></ul></li>
+<li><a href="#install-zig-compiler">2 Install Zig Compiler</a><ul></ul></li>
+<li><a href="#install-zigmod">3 Install Zigmod</a><ul></ul></li>
+<li><a href="#build-the-app">4 Build The App</a><ul></ul></li>
+<li><a href="#run-the-app">5 Run The App</a><ul></ul></li>
+<li><a href="#vscode-remote">6 VSCode Remote</a><ul></ul></li>
+<li><a href="#pinebook-pro">7 Pinebook Pro</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a new-ish Programming Language that works well with C. And it comes with built-in <strong>Safety Checks</strong> at runtime.</p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>PinePhone</strong></a> is an Arm64 Linux Phone. PinePhone Apps are typically coded in C with GUI Toolkits like <a href="https://www.gtk.org"><strong>GTK</strong></a>.</p>
@@ -80,7 +87,145 @@
 <ul>
 <li><a href="https://github.com/lupyuen/zig-pinephone-gui"><strong>lupyuen/zig-pinephone-gui</strong></a></li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="inside-the-app"><a href="#inside-the-app">1 Inside The App</a></h1>
+<p>TODO</p>
+<p>Here’s the source code for the app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">main.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Import the zgt library and Zig Standard Library
+const zgt = @import(&quot;zgt&quot;);
+const std = @import(&quot;std&quot;);
+
+/// Main Function for our app
+pub fn main() !void {
+    // Init the zgt library
+    try zgt.backend.init();
+
+    // Fetch the Window
+    var window = try zgt.Window.init();
+
+    // Set the Window Contents
+    try window.set(
+        // One Column of Widgets
+        zgt.Column(.{}, .{
+            // Top Row of Widgets
+            zgt.Row(.{}, .{
+                // Save Button
+                zgt.Button(.{ .label = &quot;Save&quot;, .onclick = buttonClicked }),
+                // Run Button
+                zgt.Button(.{ .label = &quot;Run&quot;,  .onclick = buttonClicked }),
+            }),
+            // Expanded means the widget will take all the space it can
+            // in the parent container
+            zgt.Expanded(
+                // Editable Text Area
+                zgt.TextArea(.{ .text = &quot;Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!&quot; })
+            )
+        })  // End of Column
+    );  // End of Window
+
+    // Resize the Window (might not be correct for PinePhone)
+    window.resize(800, 600);
+
+    // Show the Window
+    window.show();
+
+    // Run the Event Loop to handle Touch Events
+    zgt.runEventLoop();
+}
+
+/// This function is called when the Buttons are clicked
+fn buttonClicked(button: *zgt.Button_Impl) !void {
+    // Print the Button Label to console
+    std.log.info(
+        &quot;You clicked button with text {s}&quot;,
+        .{ button.getLabel() }
+    );
+}</code></pre></div>
+<p>This app is based on zgt demo…</p>
+<p>https://github.com/zenith391/zgt#usage</p>
+<p>For comparison, here’s a typical GTK app coded in C…</p>
+<p>https://www.gtk.org/docs/getting-started/hello-world/</p>
+<p>Though I think our Zig app looks more like Vala than C…</p>
+<p>https://www.gtk.org/docs/language-bindings/vala/</p>
+<h1 id="install-zig-compiler"><a href="#install-zig-compiler">2 Install Zig Compiler</a></h1>
+<p>TODO</p>
+<p>On PinePhone, download the latest Zig Compiler <code>zig-linux-aarch64</code> from…</p>
+<p>https://ziglang.org/download/</p>
+<div class="example-wrap"><pre class="language-bash"><code># Download the Zig Compiler
+curl -O -L https://ziglang.org/builds/zig-linux-aarch64-0.10.0-dev.2674+d980c6a38.tar.xz
+
+# Extract the Zig Compiler
+tar xf zig-linux-aarch64-0.10.0-dev.2674+d980c6a38.tar.xz
+
+# Add to PATH. TODO: Also add this line to ~/.bashrc
+export PATH=&quot;$HOME/zig-linux-aarch64-0.10.0-dev.2674+d980c6a38:$PATH&quot;
+
+# Test the Zig Compiler, should show &quot;0.10.0-dev.2674+d980c6a38&quot;
+zig version</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/GridArt_20220622_102635788%7E2.jpg" alt="Zig Compiler on PinePhone" /></p>
+<p><em>Will Zig Compiler run on any PinePhone?</em></p>
+<p>I tested the Zig Compiler with Manjaro Phosh on PinePhone (pic above), but it will probably work on any PinePhone distro since the Zig Compiler is a self-contained Arm64 Binary.</p>
+<p><a href="https://twitter.com/techneo/status/1539510460726509568">(Zig Compiler works with Mobian on PinePhone too)</a></p>
+<h1 id="install-zigmod"><a href="#install-zigmod">3 Install Zigmod</a></h1>
+<p>TODO</p>
+<p>Download the latest <a href="https://nektro.github.io/zigmod/">Zigmod Package Manager</a> <code>zigmod-aarch64-linux</code> from…</p>
+<p>https://github.com/nektro/zigmod/releases</p>
+<div class="example-wrap"><pre class="language-bash"><code># Download Zigmod Package Manager
+curl -O -L https://github.com/nektro/zigmod/releases/download/r80/zigmod-aarch64-linux
+
+# Make it executable
+chmod +x zigmod-aarch64-linux 
+
+# Move it to the Zig Compiler directory, rename as zigmod
+mv zigmod-aarch64-linux zig-linux-aarch64-0.10.0-dev.2674+d980c6a38/zigmod
+
+# Test Zigmod, should show &quot;zigmod r80 linux aarch64 musl&quot;
+zigmod</code></pre></div><h1 id="build-the-app"><a href="#build-the-app">4 Build The App</a></h1>
+<p>TODO</p>
+<p>To build the app on PinePhone…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Download the Source Code
+git clone --recursive https://github.com/lupyuen/zig-pinephone-gui
+cd zig-pinephone-gui
+
+# Install the dependencies for zgt library
+pushd libs/zgt
+zigmod fetch
+popd
+
+# Build the app
+zig build</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/a44bc3faaf6d674d2b227aeb992ccfb8">(See the Build Log)</a></p>
+<p>If the build fails, check that the <code>gtk+-3.0</code> library is installed on PinePhone. <a href="https://github.com/zenith391/zgt/blob/master/build.zig#L9-L13">(Here’s why)</a></p>
+<p><a href="https://twitter.com/techneo/status/1539828828213616640">(The app builds OK on Mobian after installing <code>gtk+-3.0</code>)</a></p>
+<h1 id="run-the-app"><a href="#run-the-app">5 Run The App</a></h1>
+<p>TODO</p>
+<p>To run the app on PinePhone…</p>
+<div class="example-wrap"><pre class="language-bash"><code>zig-out/bin/zig-pinephone-gui</code></pre></div>
+<p>We should see the screen below.</p>
+<p>When we tap the <code>Run</code> and <code>Save</code> buttons, we should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>info: You clicked button with text Run
+info: You clicked button with text Save</code></pre></div>
+<p>Yep we have successfully built a Zig GUI App for PinePhone with zgt! 🎉</p>
+<p><em>Is the app fast and responsive on PinePhone?</em></p>
+<p>Yep it feels as fast and responsive as a GTK app coded in C.</p>
+<p>Remember that Zig is a compiled language, and our compiled app is directly calling the GTK Library.</p>
+<p><img src="https://lupyuen.github.io/images/PXL_20220622_061922131%7E2.jpg" alt="Zig GUI App for PinePhone" /></p>
+<h1 id="vscode-remote"><a href="#vscode-remote">6 VSCode Remote</a></h1>
+<p>TODO</p>
+<p>For convenience, we may use VSCode Remote to do Remote Development with PinePhone…</p>
+<p>https://code.visualstudio.com/docs/remote/remote-overview</p>
+<p>Just connect VSCode to PinePhone via SSH, as described here…</p>
+<p>https://code.visualstudio.com/docs/remote/ssh</p>
+<p>Remember to install the Zig Extension for VSCode…</p>
+<p>https://github.com/ziglang/vscode-zig</p>
+<p><img src="https://lupyuen.github.io/images/Screenshot%202022-06-22%20at%209.49.10%20AM%7E2.png" alt="VSCode Remote on PinePhone" /></p>
+<h1 id="pinebook-pro"><a href="#pinebook-pro">7 Pinebook Pro</a></h1>
+<p>TODO</p>
+<p><em>Will the Zig GUI App run on Arm64 laptops like Pinebook Pro?</em></p>
+<p>Yep! The same steps above will work on Pinebook Pro.</p>
+<p>Here’s our Zig GUI App running with Manjaro Xfce on Pinebook Pro…</p>
+<p><img src="https://lupyuen.github.io/images/Screenshot_2022-06-22_18-13-31_061534.png" alt="Our app running with Manjaro Xfce on Pinebook Pro" /></p>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<p>TODO</p>
 <p>I hope this article has inspired you to create PinePhone apps in Zig!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -96,7 +241,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinephone.md"><strong><code>lupyuen.github.io/src/pinephone.md</code></strong></a></p>
-<h1 id="notes"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1539782929114484736"><strong>this Twitter Thread</strong></a></li>
 </ol>
