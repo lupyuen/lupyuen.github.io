@@ -14,13 +14,15 @@ Let's find out! Our Zig App shall call the __zgt GUI Library__, which works with
 
 -   [__zenith391/zgt__](https://github.com/zenith391/zgt)
 
-(zgt is in Active Development, some features may change. [__Please support the project!__](https://github.com/zenith391/zgt) 🙏)
+zgt is in Active Development, some features may change. 
+
+[(Please support the zgt project! 🙏)](https://github.com/zenith391/zgt)
 
 Join me as we dive into our __Zig App for PinePhone__...
 
 -   [__lupyuen/zig-pinephone-gui__](https://github.com/lupyuen/zig-pinephone-gui)
 
-![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-screen2.png)
+> ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-screen2.png)
 
 # Inside The App
 
