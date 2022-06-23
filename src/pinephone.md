@@ -79,29 +79,31 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
 }
 ```
 
-This app is based on zgt demo...
+This app is based on the zgt demo...
 
-https://github.com/zenith391/zgt#usage
+-   [__zenith391/zgt__](https://github.com/zenith391/zgt#usage)
 
 For comparison, here's a typical GTK app coded in C...
 
-https://www.gtk.org/docs/getting-started/hello-world/
+-   [__GTK App in C__](https://www.gtk.org/docs/getting-started/hello-world)
 
 Though I think our Zig app looks more like Vala than C...
 
-https://www.gtk.org/docs/language-bindings/vala/
+-   [__GTK App in Vala__](https://www.gtk.org/docs/language-bindings/vala)
+
+_How do I learn Zig?_
 
 Zig hasn't reached version 1.0 yet so the docs are a little spotty. This is probably the best tutorial for Zig:
 
-https://ziglearn.org/
+-   [__Zig Learn__](https://ziglearn.org)
 
 After that the Zig Reference Reference Manual will be easier to understand:
 
-https://ziglang.org/documentation/master/
+-   [__Zig Reference Manual__](https://ziglang.org/documentation/master)
 
 We need to refer to the Zig Standard Library as well:
 
-https://ziglang.org/documentation/master/std/
+-   [__Zig Standard Library__](https://ziglang.org/documentation/master/std)
 
 # Install Zig Compiler
 
@@ -109,7 +111,7 @@ TODO
 
 On PinePhone, download the latest Zig Compiler `zig-linux-aarch64` from...
 
-https://ziglang.org/download/
+-   [__Zig Compiler Downloads__](https://ziglang.org/download)
 
 ```bash
 ## Download the Zig Compiler
@@ -139,7 +141,7 @@ TODO
 
 Download the latest [Zigmod Package Manager](https://nektro.github.io/zigmod/) `zigmod-aarch64-linux` from...
 
-https://github.com/nektro/zigmod/releases
+-   [__Zigmod Releases__](https://github.com/nektro/zigmod/releases)
 
 ```bash
 ## Download Zigmod Package Manager
@@ -216,15 +218,15 @@ TODO
 
 For convenience, we may use VSCode Remote to do Remote Development with PinePhone...
 
-https://code.visualstudio.com/docs/remote/remote-overview
+-   [__VSCode Remote__](https://code.visualstudio.com/docs/remote/remote-overview)
 
 Just connect VSCode to PinePhone via SSH, as described here...
 
-https://code.visualstudio.com/docs/remote/ssh
+-   [__VSCode Remote with SSH__](https://code.visualstudio.com/docs/remote/ssh)
 
 Remember to install the Zig Extension for VSCode...
 
-https://github.com/ziglang/vscode-zig
+-   [__Zig Extension for VSCode__](https://github.com/ziglang/vscode-zig)
 
 ![VSCode Remote on PinePhone](https://lupyuen.github.io/images/Screenshot%202022-06-22%20at%209.49.10%20AM~2.png)
 
