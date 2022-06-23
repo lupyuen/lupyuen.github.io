@@ -91,6 +91,18 @@ Though I think our Zig app looks more like Vala than C...
 
 https://www.gtk.org/docs/language-bindings/vala/
 
+Zig hasn't reached version 1.0 yet so the docs are a little spotty. This is probably the best tutorial for Zig:
+
+https://ziglearn.org/
+
+After that the Zig Reference Reference Manual will be easier to understand:
+
+https://ziglang.org/documentation/master/
+
+We need to refer to the Zig Standard Library as well:
+
+https://ziglang.org/documentation/master/std/
+
 # Install Zig Compiler
 
 TODO
