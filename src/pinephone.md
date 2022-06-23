@@ -20,6 +20,8 @@ Join me as we dive into our __Zig App for PinePhone__...
 
 -   [__lupyuen/zig-pinephone-gui__](https://github.com/lupyuen/zig-pinephone-gui)
 
+![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-screen2.png)
+
 # Inside The App
 
 TODO
