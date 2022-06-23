@@ -544,17 +544,19 @@ Incomplete port of __Apache Mynewt__ operating system...
 
 Check this book again for future updates...
 
-1.  __IoT Education with BL602 and BL604__
+-   __IoT Education with BL602 and BL604__
 
-1.  __Zig Type Reflection: Visualise the Call Flow in a C Library__
+-   __Zig Type Reflection: Visualise the Call Flow in a C Library__
 
-1.  __Inside LoRaMAC: The LoRaWAN Stack__
+-   __Inside LoRaMAC: The LoRaWAN Stack__
 
-1.  __LVGL Touchscreen Apps with Zig__
+-   __LVGL Touchscreen Apps with Zig__
 
-1.  __The Things Network on NuttX__
+-   __The Things Network on NuttX__
 
-1.  __LoRaWAN ChirpStack with Prometheus and Grafana__
+-   __LoRaWAN ChirpStack with Prometheus and Grafana__
+
+-   [__Zig on PinePhone__](https://lupyuen.github.io/articles/pinephone)
 
 ![About the Author](https://lupyuen.github.io/images/book-advocate.jpg)
 

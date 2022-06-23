@@ -1027,6 +1027,10 @@ In the coming weeks I shall flesh out our Zig App, so that it works like a real 
 
 (With Temperature Sensor, CBOR Encoding, The Things Network, ...)
 
+For the next article we'll take a quick detour and explore __Zig on PinePhone__...
+
+-   [__"Build a PinePhone App with Zig and zgt"__](https://lupyuen.github.io/articles/pinephone)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
