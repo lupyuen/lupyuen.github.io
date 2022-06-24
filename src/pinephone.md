@@ -253,11 +253,9 @@ And that's the complete code for our PinePhone App!
 
 # Install Zig Compiler
 
-TODO
+Let's get ready to build our PinePhone App.
 
-On PinePhone, download the latest Zig Compiler `zig-linux-aarch64` from...
-
--   [__Zig Compiler Downloads__](https://ziglang.org/download)
+On PinePhone, download the latest Zig Compiler __zig-linux-aarch64__ from the [__Zig Compiler Downloads__](https://ziglang.org/download), like so...
 
 ```bash
 ## Download the Zig Compiler
@@ -283,11 +281,7 @@ I tested the Zig Compiler with Manjaro Phosh on PinePhone (pic above), but it wi
 
 # Install Zigmod
 
-TODO
-
-Download the latest [Zigmod Package Manager](https://nektro.github.io/zigmod/) `zigmod-aarch64-linux` from...
-
--   [__Zigmod Releases__](https://github.com/nektro/zigmod/releases)
+Download the latest Zigmod Package Manager __zigmod-aarch64-linux__ from the [__Zigmod Releases__](https://github.com/nektro/zigmod/releases), like so...
 
 ```bash
 ## Download Zigmod Package Manager
