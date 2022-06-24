@@ -466,7 +466,7 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[__`lupyuen.github.io/src/pinephone.md`__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinephone.md)
+[__lupyuen.github.io/src/pinephone.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinephone.md)
 
 # Notes
 
@@ -480,9 +480,9 @@ As of June 2022, Zig hasn't reached version 1.0 so the docs are a little spotty.
 
 -   [__Zig Learn__](https://ziglearn.org)
 
-After that the Zig Reference Manual will be easier to understand...
+After that the Zig Language Reference will be easier to understand...
 
--   [__Zig Reference Manual__](https://ziglang.org/documentation/master)
+-   [__Zig Language Reference__](https://ziglang.org/documentation/master)
 
 We need to refer to the Zig Standard Library as well...
 
