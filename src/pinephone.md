@@ -356,6 +356,8 @@ info: You clicked button with text Run
 info: You clicked button with text Save
 ```
 
+[(Because of this)](https://lupyuen.github.io/articles/pinephone#handle-the-buttons)
+
 Yep we have successfully built a Zig App for PinePhone with zgt! 🎉
 
 ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title.jpg)
@@ -385,6 +387,10 @@ Our Zig App looks cleaner and less cluttered, with minimal repetition.
 _What about Runtime Safety?_
 
 TODO
+
+-   [__"Zig Build System"__](https://lupyuen.github.io/articles/pinephone#appendix-zig-build-system)
+
+-   [__"GTK Backend for zgt"__](https://lupyuen.github.io/articles/pinephone#appendix-gtk-backend-for-zgt)
 
 # Pinebook Pro
 
