@@ -26,7 +26,15 @@ Join me as we dive into our __Zig App for PinePhone__...
 
 # Inside The App
 
-TODO
+Let's create a __PinePhone App__ (pic above) that has...
+
+-   A __Save Button__
+
+-   A __Run Button__
+
+-   And an __Editable Text Box__
+
+This is how we do it in Zig...
 
 ![Source Code for our app](https://lupyuen.github.io/images/pinephone-code1a.png)
 
@@ -237,31 +245,9 @@ This tells the zgt Library to call __buttonClicked__ when the Save and Run Butto
 
 And that's the complete code for our PinePhone App!
 
-[(Our PinePhone App is based on the zgt demo)](https://github.com/zenith391/zgt#usage)
+[(For comparison, here's a GTK app coded in C)](https://www.gtk.org/docs/getting-started/hello-world)
 
-TODO
-
-For comparison, here's a typical GTK app coded in C...
-
--   [__GTK App in C__](https://www.gtk.org/docs/getting-started/hello-world)
-
-Though I think our Zig app looks more like Vala than C...
-
--   [__GTK App in Vala__](https://www.gtk.org/docs/language-bindings/vala)
-
-_How do I learn Zig?_
-
-Zig hasn't reached version 1.0 yet so the docs are a little spotty. This is probably the best tutorial for Zig:
-
--   [__Zig Learn__](https://ziglearn.org)
-
-After that the Zig Reference Reference Manual will be easier to understand:
-
--   [__Zig Reference Manual__](https://ziglang.org/documentation/master)
-
-We need to refer to the Zig Standard Library as well:
-
--   [__Zig Standard Library__](https://ziglang.org/documentation/master/std)
+[(Our PinePhone App is based on this zgt demo)](https://github.com/zenith391/zgt#usage)
 
 # Install Zig Compiler
 
@@ -423,3 +409,19 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1539782929114484736)
 
 ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title2.jpg)
+
+# Appendix: Learning Zig
+
+_How do I learn Zig?_
+
+As of June 2022, Zig hasn't reached version 1.0 so the docs are a little spotty. This is probably the best tutorial for Zig...
+
+-   [__Zig Learn__](https://ziglearn.org)
+
+After that the Zig Reference Reference Manual will be easier to understand...
+
+-   [__Zig Reference Manual__](https://ziglang.org/documentation/master)
+
+We need to refer to the Zig Standard Library as well...
+
+-   [__Zig Standard Library__](https://ziglang.org/documentation/master/std)
