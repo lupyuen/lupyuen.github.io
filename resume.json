@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Build a PinePhone App with Zig and zgt",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-06-25",
+      "website": "https://lupyuen.github.io/articles/pinephone",
+      "summary": "Can we use Zig to code PinePhone Apps? Maybe make them simpler and safer? Let's find out!"
+    },
+    {
       "name": "Build an IoT App with Zig and LoRaWAN",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-06-15",
