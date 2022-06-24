@@ -75,11 +75,11 @@
 <li><a href="#install-zigmod">3 Install Zigmod</a><ul></ul></li>
 <li><a href="#build-the-app">4 Build The App</a><ul></ul></li>
 <li><a href="#run-the-app">5 Run The App</a><ul></ul></li>
-<li><a href="#vscode-remote">6 VSCode Remote</a><ul></ul></li>
-<li><a href="#pinebook-pro">7 Pinebook Pro</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#notes">9 Notes</a><ul></ul></li>
-<li><a href="#appendix-learning-zig">10 Appendix: Learning Zig</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
+<li><a href="#pinebook-pro">6 Pinebook Pro</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#notes">8 Notes</a><ul></ul></li>
+<li><a href="#appendix-learning-zig">9 Appendix: Learning Zig</a><ul></ul></li>
+<li><a href="#appendix-vscode-remote">10 Appendix: VSCode Remote</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a new-ish Programming Language that works well with C. And it comes with built-in <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Safety Checks</strong></a> at runtime.</p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>PinePhone</strong></a> is an Arm64 Linux Phone. PinePhone Apps are typically coded in C with GUI Toolkits like <a href="https://www.gtk.org"><strong>GTK</strong></a>.</p>
@@ -110,7 +110,11 @@
 <p><strong>Editable Text Box</strong></p>
 </li>
 </ul>
-<p>This is how we do it in Zig: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">src/main.zig</a></p>
+<p>In a while we’ll learn to do this in Zig: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">src/main.zig</a></p>
+<p><em>What if we’re not familiar with Zig?</em></p>
+<p>The following sections assume that we’re familiar with C.</p>
+<p>The parts that look Zig-ish shall be explained with examples in C.</p>
+<p><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig">(If we’re keen to learn Zig, see this)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-code1a.png" alt="Source Code for our app" /></p>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">(Source)</a></p>
 <h2 id="import-libraries"><a href="#import-libraries">1.1 Import Libraries</a></h2>
@@ -124,7 +128,7 @@ const std = @import(&quot;std&quot;);</code></pre></div>
 <p>Next we define the <strong>Main Function</strong> for our app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L4-L13">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function for our app
 pub fn main() !void {</code></pre></div>
-<p>“<strong><code>!void</code></strong>” says that…</p>
+<p>“<strong><code>!void</code></strong>” is the Return Type for our Main Function…</p>
 <ul>
 <li>
 <p>Our Main Function doesn’t return any value.</p>
@@ -144,11 +148,12 @@ pub fn main() !void {</code></pre></div>
 <p><em>Why the <code>try</code>?</em></p>
 <p>Remember that our Main Function can <strong>return an Error</strong>.</p>
 <p>When <a href="https://ziglang.org/documentation/master/#try">“<strong><code>try</code></strong>”</a> detects an Error in the Called Function (like “zgt.backend.init”), it stops the Main Function and returns the Error to the caller.</p>
+<p>Let’s fill in the Window for our app…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/pinephone-screen2.png" alt="PinePhone App with Zig and zgt" /></p>
 </blockquote>
 <h2 id="set-the-widgets"><a href="#set-the-widgets">1.3 Set the Widgets</a></h2>
-<p>Now we <strong>populate the Widgets</strong> (UI Controls) for our Window: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
+<p>Now we <strong>populate the Widgets</strong> (UI Controls) into our Window: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set the Window Contents
   try window.set(
 
@@ -232,7 +237,7 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
 <p><em>What’s std.log.info?</em></p>
 <p>That’s the Zig equivalent of <strong>printf</strong> for Formatted Printing.</p>
 <p>In the Format String, “<strong><code>{s}</code></strong>” is similar to “<strong><code>%s</code></strong>” in C.</p>
-<p>(Though we normally write “<strong><code>{}</code></strong>” for printing numbers)</p>
+<p>(Though we write “<strong><code>{}</code></strong>” for printing numbers)</p>
 <p><a href="https://github.com/ziglang/zig/blob/master/lib/std/fmt.zig#L27-L72">(More about Format Specifiers)</a></p>
 <p><em>How is buttonClicked called?</em></p>
 <p>Earlier we did this: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
@@ -265,6 +270,8 @@ export PATH=&quot;$HOME/zig-linux-aarch64-0.10.0-dev.2674+d980c6a38:$PATH&quot;
 
 # Test the Zig Compiler, should show &quot;0.10.0-dev.2674+d980c6a38&quot;
 zig version</code></pre></div>
+<p>We may use SSH to run the above commands remotely on PinePhone.</p>
+<p>Or we may use <strong>VSCode Remote</strong> to run commands and edit source files on PinePhone. <a href="">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-compiler.jpg" alt="Zig Compiler on PinePhone" /></p>
 <p><em>Will Zig Compiler run on any PinePhone?</em></p>
 <p>I tested the Zig Compiler with Manjaro Phosh on PinePhone (pic above), but it will probably work on any PinePhone distro since the Zig Compiler is a self-contained Arm64 Binary.</p>
@@ -284,8 +291,7 @@ mv zigmod-aarch64-linux zig-linux-aarch64-0.10.0-dev.2674+d980c6a38/zigmod
 zigmod</code></pre></div>
 <p>Zigmod will be used in the next step to install the dependencies for zgt Library.</p>
 <h1 id="build-the-app"><a href="#build-the-app">4 Build The App</a></h1>
-<p>TODO</p>
-<p>To build the app on PinePhone…</p>
+<p>To build our Zig App on PinePhone…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Download the Source Code
 git clone --recursive https://github.com/lupyuen/zig-pinephone-gui
 cd zig-pinephone-gui
@@ -313,28 +319,13 @@ info: You clicked button with text Save</code></pre></div>
 <p>Yep it feels as fast and responsive as a GTK app coded in C.</p>
 <p>Remember that Zig is a compiled language, and our compiled app is directly calling the GTK Library.</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
-<h1 id="vscode-remote"><a href="#vscode-remote">6 VSCode Remote</a></h1>
-<p>TODO</p>
-<p>For convenience, we may use VSCode Remote to do Remote Development with PinePhone…</p>
-<ul>
-<li><a href="https://code.visualstudio.com/docs/remote/remote-overview"><strong>VSCode Remote</strong></a></li>
-</ul>
-<p>Just connect VSCode to PinePhone via SSH, as described here…</p>
-<ul>
-<li><a href="https://code.visualstudio.com/docs/remote/ssh"><strong>VSCode Remote with SSH</strong></a></li>
-</ul>
-<p>Remember to install the Zig Extension for VSCode…</p>
-<ul>
-<li><a href="https://github.com/ziglang/vscode-zig"><strong>Zig Extension for VSCode</strong></a></li>
-</ul>
-<p><img src="https://lupyuen.github.io/images/pinephone-vscode.png" alt="VSCode Remote on PinePhone" /></p>
-<h1 id="pinebook-pro"><a href="#pinebook-pro">7 Pinebook Pro</a></h1>
+<h1 id="pinebook-pro"><a href="#pinebook-pro">6 Pinebook Pro</a></h1>
 <p>TODO</p>
 <p><em>Will the Zig GUI App run on Arm64 laptops like Pinebook Pro?</em></p>
 <p>Yep! The same steps above will work on Pinebook Pro.</p>
 <p>Here’s our Zig GUI App running with Manjaro Xfce on Pinebook Pro…</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-pinebook.png" alt="Our app running with Manjaro Xfce on Pinebook Pro" /></p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article has inspired you to create PinePhone apps in Zig!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -351,11 +342,11 @@ info: You clicked button with text Save</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinephone.md"><strong><code>lupyuen.github.io/src/pinephone.md</code></strong></a></p>
-<h1 id="notes"><a href="#notes">9 Notes</a></h1>
+<h1 id="notes"><a href="#notes">8 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1539782929114484736"><strong>this Twitter Thread</strong></a></li>
 </ol>
-<h1 id="appendix-learning-zig"><a href="#appendix-learning-zig">10 Appendix: Learning Zig</a></h1>
+<h1 id="appendix-learning-zig"><a href="#appendix-learning-zig">9 Appendix: Learning Zig</a></h1>
 <p><em>How do we learn Zig?</em></p>
 <p>As of June 2022, Zig hasn’t reached version 1.0 so the docs are a little spotty. This is probably the best tutorial for Zig…</p>
 <ul>
@@ -370,6 +361,20 @@ info: You clicked button with text Save</code></pre></div>
 <li><a href="https://ziglang.org/documentation/master/std"><strong>Zig Standard Library</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pinephone-title2.jpg" alt="PinePhone App with Zig and zgt" /></p>
+<h1 id="appendix-vscode-remote"><a href="#appendix-vscode-remote">10 Appendix: VSCode Remote</a></h1>
+<p>For convenience, we may use VSCode Remote to do Remote Development with PinePhone…</p>
+<ul>
+<li><a href="https://code.visualstudio.com/docs/remote/remote-overview"><strong>VSCode Remote</strong></a></li>
+</ul>
+<p>Just connect VSCode to PinePhone via SSH, as described here…</p>
+<ul>
+<li><a href="https://code.visualstudio.com/docs/remote/ssh"><strong>VSCode Remote with SSH</strong></a></li>
+</ul>
+<p>Remember to install the Zig Extension for VSCode…</p>
+<ul>
+<li><a href="https://github.com/ziglang/vscode-zig"><strong>Zig Extension for VSCode</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/pinephone-vscode.png" alt="VSCode Remote on PinePhone" /></p>
 
     
 </body>
