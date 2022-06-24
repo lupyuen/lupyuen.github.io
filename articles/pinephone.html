@@ -83,7 +83,7 @@
 <li><a href="#appendix-vscode-remote">11 Appendix: VSCode Remote</a><ul></ul></li>
 <li><a href="#appendix-zig-handles-bad-pointers">12 Appendix: Zig Handles Bad Pointers</a><ul></ul></li>
 <li><a href="#appendix-zig-build-system">13 Appendix: Zig Build System</a><ul></ul></li>
-<li><a href="#appendix-gtk-backend-for-zgt">14 Appendix: GTK Backend for zgt</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
+<li><a href="#appendix-gtk-backend-for-zgt">14 Appendix: GTK Backend for zgt</a><ul></ul></li></ul></nav><p>📝 <em>26 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a new-ish Programming Language that works well with C. And it comes with built-in <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Safety Checks</strong></a> at runtime.</p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>PinePhone</strong></a> is an Arm64 Linux Phone. PinePhone Apps are typically coded in C with GUI Toolkits like <a href="https://www.gtk.org"><strong>GTK</strong></a>.</p>
@@ -429,17 +429,50 @@ Unable to init server: Could not connect: Connection refused
 <li><a href="https://github.com/ziglang/vscode-zig"><strong>Zig Extension for VSCode</strong></a></li>
 </ul>
 <h1 id="appendix-zig-handles-bad-pointers"><a href="#appendix-zig-handles-bad-pointers">12 Appendix: Zig Handles Bad Pointers</a></h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);
+<p><em>How does Zig handle bad pointers?</em></p>
+<p>Zig doesn’t validate pointers (like with a Borrow Checker) so it isn’t Memory Safe (yet)…</p>
+<ul>
+<li><a href="https://www.scattered-thoughts.net/writing/how-safe-is-zig"><strong>“How safe is zig?”</strong></a></li>
+</ul>
+<p>But it tries to be helpful when it encounters bad pointers. Let’s do an experiment…</p>
+<p>Remember this function from earlier?</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// This function is called when the Buttons are clicked
+fn buttonClicked(button: *zgt.Button_Impl) !void {
+
+  // Print the Button Label to console
+  std.log.info(
+    &quot;You clicked button with text {s}&quot;,
+    .{ button.getLabel() }
+  );
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55">(Source)</a></p>
+<p>The above code is potentially unsafe because it <strong>dereferences a pointer</strong> to a Button…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// `button` is a pointer to a Button Struct
+button.getLabel()</code></pre></div>
+<p>Let’s hack it by passing a <strong>Null Pointer</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Create a Null Pointer
+const bad_ptr = @intToPtr(
+  *zgt.Button_Impl,  // Pointer Type
+  0                  // Address
+);
+// Pass the Null Pointer to the function
 try buttonClicked(bad_ptr);</code></pre></div>
-<p>TODO</p>
+<p><a href="https://ziglang.org/documentation/master/#intToPtr">(<strong>@intToPtr</strong> is explained here)</a></p>
+<p>Note that <strong>@intToPtr</strong> is an Unsafe Builtin Function, we shouldn’t call it in normal programs.</p>
+<p>When we compile the above code, Zig Compiler helpfully <strong>stops us from creating a Null Pointer</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ zig build
 ./src/main.zig:8:21: error: pointer type &#39;*.zgt.button.Button_Impl&#39; does not allow address zero
     const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>const bad_ptr = @intToPtr(*zgt.Button_Impl, 0xdeadbee0);
+<p>Nice! Let’s circumvent the best intentions of Zig Compiler and create another Bad Pointer…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Create a Bad Pointer
+const bad_ptr = @intToPtr(
+  *zgt.Button_Impl,  // Pointer Type
+  0xdeadbee0         // Address
+);
+// Pass the Bad Pointer to the function
 try buttonClicked(bad_ptr);</code></pre></div>
-<p>TODO</p>
+<p>Zig Compiler no longer stops us. (Remember: <strong>@intToPtr</strong> is supposed to be unsafe anyway)</p>
+<p>When we run it, we get a helpful <strong>Stack Trace</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ zig-out/bin/zig-pinephone-gui 
 Segmentation fault at address 0xdeadbee8
 zig-pinephone-gui/libs/zgt/src/button.zig:62:9: 0x2184dc in .zgt.button.Button_Impl.getLabel (zig-pinephone-gui)
@@ -461,7 +494,9 @@ zig/lib/std/start.zig:480:12: 0x217832 in std.start.main (zig-pinephone-gui)
     return @call(.{ .modifier = .always_inline }, callMainWithArgs, .{ @intCast(usize, c_argc), c_argv, envp });
            ^
 ???:?:?: 0x7f6c902640b2 in ??? (???)
-Aborted</code></pre></div><h1 id="appendix-zig-build-system"><a href="#appendix-zig-build-system">13 Appendix: Zig Build System</a></h1>
+Aborted</code></pre></div>
+<p>Which will be super handy for troubleshooting our Zig App.</p>
+<h1 id="appendix-zig-build-system"><a href="#appendix-zig-build-system">13 Appendix: Zig Build System</a></h1>
 <p><em>How does “<code>zig build</code>” build our Zig App?</em></p>
 <p>Instead of Makefiles, Zig has a <strong>Build System</strong> (essentially a tiny custom Zig program) that automates the build steps…</p>
 <ul>
