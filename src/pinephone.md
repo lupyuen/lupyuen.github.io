@@ -68,47 +68,92 @@ pub fn main() !void {
 Then we initialise the zgt Library and __fetch the Window__ for our app...
 
 ```zig
-    // Init the zgt library
-    try zgt.backend.init();
+  // Init the zgt library
+  try zgt.backend.init();
 
-    // Fetch the Window
-    var window = try zgt.Window.init();
+  // Fetch the Window
+  var window = try zgt.Window.init();
 ```
+
+_Why the `try`?_
+
+Remember that our Main Function can __return an Error__.
+
+When ["__`try`__"](https://ziglang.org/documentation/master/#try) detects an Error in the Called Function (like "zgt.backend.init"), it stops the Main Function and returns the Error to the caller.
 
 ## Set the Widgets
 
-TODO
-
-[main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36)
+Now we __populate the Widgets__ for our Window: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36)
 
 ```zig
-    // Set the Window Contents
-    try window.set(
+  // Set the Window Contents
+  try window.set(
 
-        // One Column of Widgets
-        zgt.Column(.{}, .{
+    // One Column of Widgets
+    zgt.Column(.{}, .{
 
-            // Top Row of Widgets
-            zgt.Row(.{}, .{
-                // Save Button
-                zgt.Button(.{ .label = "Save", .onclick = buttonClicked }),
-                // Run Button
-                zgt.Button(.{ .label = "Run",  .onclick = buttonClicked }),
-            }),
+      // Top Row of Widgets
+      zgt.Row(.{}, .{
+
+        // Save Button
+        zgt.Button(.{ 
+            .label   = "Save", 
+            .onclick = buttonClicked 
+        }),
+
+        // Run Button
+        zgt.Button(.{ 
+            .label   = "Run",  
+            .onclick = buttonClicked 
+        }),
+      }),  // End of Row
 ```
 
-TODO
+This code creates a Row of Widgets: __Save Button__ and __Run Button__.
+
+(We'll talk about __buttonClicked__ in a while)
+
+Next we add an __Editable Text Area__...
 
 ```zig
-            // Expanded means the widget will take all the space it can
-            // in the parent container
-            zgt.Expanded(
-                // Editable Text Area
-                zgt.TextArea(.{ .text = "Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!" })
-            )
-        })  // End of Column
-    );  // End of Window
+      // Expanded means the widget will take all the space it can
+      // in the parent container
+      zgt.Expanded(
+
+        // Editable Text Area
+        zgt.TextArea(.{ 
+            .text = "Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!" 
+        })
+      )
+    })  // End of Column
+  );  // End of Window
 ```
+
+_What's `.{ ... }`?_
+
+`.{ ... }` creates an [__Anonymous Struct__](https://ziglearn.org/chapter-1/#anonymous-structs) that matches the Struct Type that's expected by the Called Function (like "zgt.Button").
+
+Thus this code...
+
+```zig
+// Button with Anonymous Struct
+zgt.Button(.{ 
+  .label   = "Save", 
+  .onclick = buttonClicked 
+}),
+```
+
+Is actually a shortcut for...
+
+```zig
+// Button with "zgt.Button_Impl.Config"
+zgt.Button(zgt.Button_Impl.Config { 
+  .label   = "Save", 
+  .onclick = buttonClicked 
+}),
+```
+
+Because the "zgt.Button" function expects a Struct of type "zgt.Button_Impl.Config".
 
 ## Show the Window
 
@@ -117,18 +162,18 @@ TODO
 [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46)
 
 ```zig
-    // Resize the Window (might not be correct for PinePhone)
-    window.resize(800, 600);
+  // Resize the Window (might not be correct for PinePhone)
+  window.resize(800, 600);
 
-    // Show the Window
-    window.show();
+  // Show the Window
+  window.show();
 ```
 
 TODO
 
 ```zig
-    // Run the Event Loop to handle Touch Events
-    zgt.runEventLoop();
+  // Run the Event Loop to handle Touch Events
+  zgt.runEventLoop();
 
 }  // End of Main Function
 ```
@@ -147,11 +192,11 @@ TODO
 /// This function is called when the Buttons are clicked
 fn buttonClicked(button: *zgt.Button_Impl) !void {
 
-    // Print the Button Label to console
-    std.log.info(
-        "You clicked button with text {s}",
-        .{ button.getLabel() }
-    );
+  // Print the Button Label to console
+  std.log.info(
+    "You clicked button with text {s}",
+    .{ button.getLabel() }
+  );
 }
 ```
 
