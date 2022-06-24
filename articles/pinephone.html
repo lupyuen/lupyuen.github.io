@@ -532,12 +532,12 @@ pub fn build(b: *std.build.Builder) void {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/iot#import-lorawan-library"><strong>“Import LoRaWAN Library”</strong></a></li>
 </ul>
-<p>TODO</p>
-<p>From <a href="https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig">libs/zgt/src/backends/gtk/backend.zig</a></p>
+<p>zgt imports the <strong>C Header Files for GTK</strong> like so: <a href="https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig">libs/zgt/src/backends/gtk/backend.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>pub const c = @cImport({
     @cInclude(&quot;gtk/gtk.h&quot;);
 });</code></pre></div>
-<p>From <a href="https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig#L322-L352">libs/zgt/src/backends/gtk/backend.zig</a></p>
+<p><a href="https://ziglang.org/documentation/master/#Import-from-C-Header-File">(<strong>@cImport</strong> is explained here)</a></p>
+<p>Then zgt calls the <strong>imported GTK Functions</strong> like this: <a href="https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig#L322-L352">backend.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>pub const Button = struct {
     peer: *c.GtkWidget,
 
@@ -553,22 +553,33 @@ pub fn build(b: *std.build.Builder) void {
     }
 
     pub fn create() BackendError!Button {
+
+        //  Call gtk_button_new_with_label() from GTK Library
         const button = c.gtk_button_new_with_label(&quot;&quot;) orelse return error.UnknownError;
+
+        //  Call gtk_widget_show() from GTK Library
         c.gtk_widget_show(button);
         try Button.setupEvents(button);
+
+        //  Call g_signal_connect_data() from GTK Library
         _ = c.g_signal_connect_data(button, &quot;clicked&quot;, @ptrCast(c.GCallback, gtkClicked), null, @as(c.GClosureNotify, null), 0);
         return Button{ .peer = button };
     }
 
     pub fn setLabel(self: *const Button, label: [:0]const u8) void {
+
+        //  Call gtk_button_set_label() from GTK Library
         c.gtk_button_set_label(@ptrCast(*c.GtkButton, self.peer), label);
     }
 
     pub fn getLabel(self: *const Button) [:0]const u8 {
+
+        //  Call gtk_button_get_label() from GTK Library
         const label = c.gtk_button_get_label(@ptrCast(*c.GtkButton, self.peer));
         return std.mem.span(label);
     }
 };</code></pre></div>
+<p>Super Brilliant! 👏</p>
 <p>TODO: <a href="https://github.com/zenith391/zgt/blob/master/build.zig">build.zig</a> bundles the right libraries: GTK, Win32, WebAssembly</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title2.jpg" alt="PinePhone App with Zig and zgt" /></p>
 
