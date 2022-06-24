@@ -341,9 +341,7 @@ If the build fails, check that the "__gtk+-3.0__" library is installed on PinePh
 
 # Run The App
 
-TODO
-
-To run the app on PinePhone...
+To run our Zig App on PinePhone...
 
 ```bash
 zig-out/bin/zig-pinephone-gui
@@ -351,14 +349,14 @@ zig-out/bin/zig-pinephone-gui
 
 We should see the screen below.
 
-When we tap the `Run` and `Save` buttons, we should see...
+When we tap the __Run__ and __Save__ Buttons, we should see...
 
 ```text
 info: You clicked button with text Run
 info: You clicked button with text Save
 ```
 
-Yep we have successfully built a Zig GUI App for PinePhone with zgt! 🎉
+Yep we have successfully built a Zig App for PinePhone with zgt! 🎉
 
 ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title.jpg)
 
@@ -372,18 +370,19 @@ Remember that Zig is a compiled language, and our compiled app is directly calli
 
 # Zig Outcomes
 
-_Have we gained anything by coding the app in Zig?_
+_Have we gained anything by coding our app in Zig?_
 
 If we compare our Zig App (pic above) with a typical GTK App in C...
 
-```c
-```
+> ![Typical GTK App in C](https://lupyuen.github.io/images/pinephone-code4.jpg)
 
-[(Source)]()
+> [(Source)](https://www.gtk.org/docs/getting-started/hello-world)
 
-Our Zig App looks cleaner and less cluttered.
+Our Zig App looks cleaner and less cluttered, with minimal repetition.
 
-(Hopefully it's also easier to extend and maintain)
+(Hopefully our Zig App is also easier to extend and maintain)
+
+_What about Runtime Safety?_
 
 TODO
 
