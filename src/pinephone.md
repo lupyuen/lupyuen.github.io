@@ -372,6 +372,8 @@ That's because Zig is a compiled language, and our compiled app calls the GTK Li
 
 ![Source Code of our Zig App](https://lupyuen.github.io/images/pinephone-code3.jpg)
 
+[(Source)](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
+
 # Zig Outcomes
 
 _Have we gained anything by coding our app in Zig?_
