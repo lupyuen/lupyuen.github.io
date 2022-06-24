@@ -83,7 +83,7 @@
 <li><a href="#appendix-vscode-remote">11 Appendix: VSCode Remote</a><ul></ul></li>
 <li><a href="#appendix-zig-handles-bad-pointers">12 Appendix: Zig Handles Bad Pointers</a><ul></ul></li>
 <li><a href="#appendix-zig-build-system">13 Appendix: Zig Build System</a><ul></ul></li>
-<li><a href="#appendix-gtk-backend-for-zgt">14 Appendix: GTK Backend for zgt</a><ul></ul></li></ul></nav><p>📝 <em>26 Jun 2022</em></p>
+<li><a href="#appendix-gtk-backend-for-zgt">14 Appendix: GTK Backend for zgt</a><ul></ul></li></ul></nav><p>📝 <em>25 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a new-ish Programming Language that works well with C. And it comes with built-in <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Safety Checks</strong></a> at runtime.</p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>PinePhone</strong></a> is an Arm64 Linux Phone. PinePhone Apps are typically coded in C with GUI Toolkits like <a href="https://www.gtk.org"><strong>GTK</strong></a>.</p>
@@ -615,7 +615,11 @@ pub fn build(b: *std.build.Builder) void {
     }
 };</code></pre></div>
 <p>Super Brilliant! 👏</p>
-<p>TODO: <a href="https://github.com/zenith391/zgt/blob/master/build.zig">build.zig</a> bundles the right libraries: GTK, Win32, WebAssembly</p>
+<p><em>How does zgt link our Zig App with the GTK Library?</em></p>
+<p>zgt uses a <strong>Zig Build Program</strong> to link the required GUI Libraries with the executable: GTK, Win32, WebAssembly…</p>
+<ul>
+<li><a href="https://github.com/zenith391/zgt/blob/master/build.zig"><strong>libs/zgt/build.zig</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/pinephone-title2.jpg" alt="PinePhone App with Zig and zgt" /></p>
 
     
