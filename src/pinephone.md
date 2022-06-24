@@ -343,7 +343,7 @@ If the build fails, check that the "__gtk+-3.0__" library is installed on PinePh
 
 # Run The App
 
-To run our Zig App on PinePhone...
+To run our Zig App on PinePhone, enter this...
 
 ```bash
 zig-out/bin/zig-pinephone-gui
