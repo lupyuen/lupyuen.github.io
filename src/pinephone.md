@@ -186,9 +186,7 @@ Let's talk about the Event Handling for our Buttons...
 
 ## Handle the Buttons
 
-TODO
-
-[main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55)
+Let's __print a message__ when the Buttons are clicked: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55)
 
 ```zig
 /// This function is called when the Buttons are clicked
@@ -203,6 +201,10 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
 ```
 
 TODO: `*zgt.Button_Impl`
+
+_How is buttonClicked called?_
+
+TODO
 
 This app is based on the zgt demo...
 
