@@ -26,13 +26,13 @@ Join me as we dive into our __Zig App for PinePhone__...
 
 # Inside The App
 
-Let's create a __PinePhone App__ (pic above) that has...
+Let's create a __PinePhone App__ (pic above) that has 3 Widgets (UI Controls)...
 
--   A __Save Button__
+-   __Save Button__
 
--   A __Run Button__
+-   __Run Button__
 
--   And an __Editable Text Box__
+-   __Editable Text Box__
 
 This is how we do it in Zig: [src/main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
 
@@ -89,9 +89,11 @@ Remember that our Main Function can __return an Error__.
 
 When ["__`try`__"](https://ziglang.org/documentation/master/#try) detects an Error in the Called Function (like "zgt.backend.init"), it stops the Main Function and returns the Error to the caller.
 
+> ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-screen2.png)
+
 ## Set the Widgets
 
-Now we __populate the Widgets__ for our Window: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36)
+Now we __populate the Widgets__ (UI Controls) for our Window: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36)
 
 ```zig
   // Set the Window Contents
