@@ -97,14 +97,14 @@ Now we __populate the Widgets__ for our Window: [main.zig](https://github.com/lu
 
         // Save Button
         zgt.Button(.{ 
-            .label   = "Save", 
-            .onclick = buttonClicked 
+          .label   = "Save", 
+          .onclick = buttonClicked 
         }),
 
         // Run Button
         zgt.Button(.{ 
-            .label   = "Run",  
-            .onclick = buttonClicked 
+          .label   = "Run",  
+          .onclick = buttonClicked 
         }),
       }),  // End of Row
 ```
@@ -113,25 +113,26 @@ This code creates a Row of Widgets: __Save Button__ and __Run Button__.
 
 (We'll talk about __buttonClicked__ in a while)
 
-Next we add an __Editable Text Area__...
+Next we add an __Editable Text Area__ that will fill up the rest of the Column...
 
 ```zig
-      // Expanded means the widget will take all the space it can
-      // in the parent container
+      // Expanded means the widget will take all 
+      // the space it can in the parent container (Column)
       zgt.Expanded(
 
         // Editable Text Area
         zgt.TextArea(.{ 
-            .text = "Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!" 
+          .text = "Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!" 
         })
-      )
-    })  // End of Column
-  );  // End of Window
+
+      )  // End of Expanded
+    })   // End of Column
+  );     // End of Window
 ```
 
 _What's `.{ ... }`?_
 
-`.{ ... }` creates an [__Anonymous Struct__](https://ziglearn.org/chapter-1/#anonymous-structs) that matches the Struct Type that's expected by the Called Function (like "zgt.Button").
+`.{ ... }` creates a Struct that matches the Struct Type expected by the Called Function (like "zgt.Button").
 
 Thus this code...
 
@@ -154,6 +155,8 @@ zgt.Button(zgt.Button_Impl.Config {
 ```
 
 Because the function __zgt.Button__ expects a Struct of type __zgt.Button_Impl.Config__.
+
+[(__Anonymous Struct__ is the proper name for `.{ ... }`)](https://ziglearn.org/chapter-1/#anonymous-structs)
 
 ## Show the Window
 
@@ -200,15 +203,41 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
 }
 ```
 
-TODO: `*zgt.Button_Impl`
+(__`*zgt.Button_Impl`__ means "pointer to a Button_Impl Struct")
+
+_What's std.log.info?_
+
+That's the Zig equivalent of __printf__ for Formatted Printing.
+
+In the Format String, "__`{s}`__" is the same as "__`%s`__" in C.
+
+(Though we write "__`{}`__" instead of "__`%d`__" for printing numbers)
+
+[(More about Format Specifiers)](https://github.com/ziglang/zig/blob/master/lib/std/fmt.zig#L27-L72)
 
 _How is buttonClicked called?_
 
+Earlier we did this: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36)
+
+```zig
+// Save Button
+zgt.Button(.{ 
+  .label   = "Save", 
+  .onclick = buttonClicked 
+}),
+
+// Run Button
+zgt.Button(.{ 
+  .label   = "Run",  
+  .onclick = buttonClicked 
+}),
+```
+
+This tells the zgt Library to call __buttonClicked__ when the Save Button and Run Button are clicked.
+
+[(Our PinePhone app is based on the zgt demo)](https://github.com/zenith391/zgt#usage)
+
 TODO
-
-This app is based on the zgt demo...
-
--   [__zenith391/zgt__](https://github.com/zenith391/zgt#usage)
 
 For comparison, here's a typical GTK app coded in C...
 
