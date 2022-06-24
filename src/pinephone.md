@@ -542,7 +542,7 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
 }
 ```
 
-[(Source)](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55)
+[(Source)](https://lupyuen.github.io/articles/pinephone#handle-the-buttons)
 
 The above code is potentially unsafe because it __dereferences a pointer__ to a Button...
 
@@ -567,7 +567,7 @@ try buttonClicked(bad_ptr);
 
 Note that __@intToPtr__ is an Unsafe Builtin Function, we shouldn't call it in normal programs.
 
-When we compile the above code, Zig Compiler helpfully __stops us from creating a Null Pointer__...
+When we compile the code above, Zig Compiler helpfully __stops us from creating a Null Pointer__...
 
 ```text
 $ zig build
