@@ -233,9 +233,11 @@ zgt.Button(.{
 }),
 ```
 
-This tells the zgt Library to call __buttonClicked__ when the Save Button and Run Button are clicked.
+This tells the zgt Library to call __buttonClicked__ when the Save and Run Buttons are clicked.
 
-[(Our PinePhone app is based on the zgt demo)](https://github.com/zenith391/zgt#usage)
+And that's the complete code for our PinePhone App!
+
+[(Our PinePhone App is based on the zgt demo)](https://github.com/zenith391/zgt#usage)
 
 TODO
 
