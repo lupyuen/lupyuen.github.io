@@ -73,7 +73,7 @@ pub fn main() !void {
 
 "__`!void`__" is the Return Type for our Main Function...
 
--   Our Main Function doesn't return any value.
+-   Our Main Function doesn't return any value
 
     (Hence "`void`")
 
@@ -91,7 +91,7 @@ Then we initialise the zgt Library and __fetch the Window__ for our app...
   var window = try zgt.Window.init();
 ```
 
-_Why the `try`?_
+_Why the "`try`"?_
 
 Remember that our Main Function can __return an Error__.
 
@@ -364,9 +364,9 @@ Yep we have successfully built a Zig App for PinePhone with zgt! 🎉
 
 _Is the app fast and responsive on PinePhone?_
 
-Yep it feels as fast and responsive as a GTK app coded in C.
+Yes our Zig App feels as fast and responsive as a GTK app coded in C.
 
-Remember that Zig is a compiled language, and our compiled app is directly calling the GTK Library.
+That's because Zig is a compiled language, and our compiled app calls the GTK Library directly.
 
 ![Source Code of our Zig App](https://lupyuen.github.io/images/pinephone-code3.jpg)
 
@@ -389,11 +389,11 @@ _What about Runtime Safety?_
 Remember that we used "__`try`__" to handle Runtime Errors?
 
 ```zig
-  // Init the zgt library
-  try zgt.backend.init();
+// Init the zgt library
+try zgt.backend.init();
 
-  // Fetch the Window
-  var window = try zgt.Window.init();
+// Fetch the Window
+var window = try zgt.Window.init();
 ```
 
 [(Source)](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L7-L13)
