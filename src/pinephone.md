@@ -354,7 +354,7 @@ Yep it feels as fast and responsive as a GTK app coded in C.
 
 Remember that Zig is a compiled language, and our compiled app is directly calling the GTK Library.
 
-![Zig GUI App for PinePhone](https://lupyuen.github.io/images/PXL_20220622_061922131~2.jpg)
+![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title.jpg)
 
 # VSCode Remote
 
@@ -408,20 +408,20 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1539782929114484736)
 
-![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title2.jpg)
-
 # Appendix: Learning Zig
 
-_How do I learn Zig?_
+_How do we learn Zig?_
 
 As of June 2022, Zig hasn't reached version 1.0 so the docs are a little spotty. This is probably the best tutorial for Zig...
 
 -   [__Zig Learn__](https://ziglearn.org)
 
-After that the Zig Reference Reference Manual will be easier to understand...
+After that the Zig Reference Manual will be easier to understand...
 
 -   [__Zig Reference Manual__](https://ziglang.org/documentation/master)
 
 We need to refer to the Zig Standard Library as well...
 
 -   [__Zig Standard Library__](https://ziglang.org/documentation/master/std)
+
+![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title2.jpg)
