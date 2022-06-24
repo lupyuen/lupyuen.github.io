@@ -460,7 +460,7 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
     .{ button.getLabel() }
   );
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/pinephone#handle-the-buttons">(Source)</a></p>
 <p>The above code is potentially unsafe because it <strong>dereferences a pointer</strong> to a Button…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// `button` is a pointer to a Button Struct
 button.getLabel()</code></pre></div>
@@ -474,7 +474,7 @@ const bad_ptr = @intToPtr(
 try buttonClicked(bad_ptr);</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#intToPtr">(<strong>@intToPtr</strong> is explained here)</a></p>
 <p>Note that <strong>@intToPtr</strong> is an Unsafe Builtin Function, we shouldn’t call it in normal programs.</p>
-<p>When we compile the above code, Zig Compiler helpfully <strong>stops us from creating a Null Pointer</strong>…</p>
+<p>When we compile the code above, Zig Compiler helpfully <strong>stops us from creating a Null Pointer</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ zig build
 ./src/main.zig:8:21: error: pointer type &#39;*.zgt.button.Button_Impl&#39; does not allow address zero
     const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);</code></pre></div>
