@@ -1,6 +1,6 @@
 # Build a PinePhone App with Zig and zgt
 
-📝 _26 Jun 2022_
+📝 _25 Jun 2022_
 
 ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title.jpg)
 
@@ -752,6 +752,10 @@ pub const Button = struct {
 
 Super Brilliant! 👏
 
-TODO: [build.zig](https://github.com/zenith391/zgt/blob/master/build.zig) bundles the right libraries: GTK, Win32, WebAssembly
+_How does zgt link our Zig App with the GTK Library?_
+
+zgt uses a __Zig Build Program__ to link the required GUI Libraries with the executable: GTK, Win32, WebAssembly...
+
+-   [__libs/zgt/build.zig__](https://github.com/zenith391/zgt/blob/master/build.zig)
 
 ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title2.jpg)
