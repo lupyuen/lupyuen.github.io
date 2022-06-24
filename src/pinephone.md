@@ -219,7 +219,7 @@ That's the Zig equivalent of __printf__ for Formatted Printing.
 
 In the Format String, "__`{s}`__" is similar to "__`%s`__" in C.
 
-(Though we normally write "__`{}`__" instead of "__`%d`__" for printing numbers)
+(Though we normally write "__`{}`__" for printing numbers)
 
 [(More about Format Specifiers)](https://github.com/ziglang/zig/blob/master/lib/std/fmt.zig#L27-L72)
 
