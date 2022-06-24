@@ -176,13 +176,13 @@ zgt.Button(.{
   .label   = &quot;Save&quot;, 
   .onclick = buttonClicked 
 }),</code></pre></div>
-<p>Is actually a shortcut for…</p>
+<p>Is actually the short form of…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Button with &quot;zgt.Button_Impl.Config&quot;
 zgt.Button(zgt.Button_Impl.Config { 
   .label   = &quot;Save&quot;, 
   .onclick = buttonClicked 
 }),</code></pre></div>
-<p>Because the “zgt.Button” function expects a Struct of type “zgt.Button_Impl.Config”.</p>
+<p>Because the function <strong>zgt.Button</strong> expects a Struct of type <strong>zgt.Button_Impl.Config</strong>.</p>
 <h2 id="show-the-window"><a href="#show-the-window">1.4 Show the Window</a></h2>
 <p>We set the Window Size and <strong>show the Window</strong>: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Resize the Window (might not be correct for PinePhone)
