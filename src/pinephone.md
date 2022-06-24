@@ -452,6 +452,57 @@ In the Remote Session, remember to install the Zig Extension for VSCode...
 
 -   [__Zig Extension for VSCode__](https://github.com/ziglang/vscode-zig)
 
+# Appendix: Zig Handles Bad Pointers
+
+TODO
+
+```zig
+const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);
+try buttonClicked(bad_ptr);
+```
+
+TODO
+
+```text
+$ zig build
+./src/main.zig:8:21: error: pointer type '*.zgt.button.Button_Impl' does not allow address zero
+    const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);
+```
+
+TODO
+
+```zig
+const bad_ptr = @intToPtr(*zgt.Button_Impl, 0xdeadbee0);
+try buttonClicked(bad_ptr);
+```
+
+TODO
+
+```text
+$ zig-out/bin/zig-pinephone-gui 
+Segmentation fault at address 0xdeadbee8
+zig-pinephone-gui/libs/zgt/src/button.zig:62:9: 0x2184dc in .zgt.button.Button_Impl.getLabel (zig-pinephone-gui)
+        if (self.peer) |*peer| {
+        ^
+zig-pinephone-gui/src/main.zig:56:27: 0x217269 in buttonClicked (zig-pinephone-gui)
+        .{ button.getLabel() }
+                          ^
+zig-pinephone-gui/src/main.zig:9:22: 0x216b0e in main (zig-pinephone-gui)
+    try buttonClicked(bad_ptr);
+                     ^
+zig/lib/std/start.zig:581:37: 0x21e657 in std.start.callMain (zig-pinephone-gui)
+            const result = root.main() catch |err| {
+                                    ^
+zig/lib/std/start.zig:515:12: 0x217a87 in std.start.callMainWithArgs (zig-pinephone-gui)
+    return @call(.{ .modifier = .always_inline }, callMain, .{});
+           ^
+zig/lib/std/start.zig:480:12: 0x217832 in std.start.main (zig-pinephone-gui)
+    return @call(.{ .modifier = .always_inline }, callMainWithArgs, .{ @intCast(usize, c_argc), c_argv, envp });
+           ^
+???:?:?: 0x7f6c902640b2 in ??? (???)
+Aborted
+```
+
 # Appendix: Zig Build System
 
 TODO
@@ -519,7 +570,9 @@ pub const c = @cImport({
 });
 ```
 
-TODO
+TODO: Zig works really well for importing C Header Files, as I have experienced here...
+
+-   [__"Import LoRaWAN Library"__](https://lupyuen.github.io/articles/iot#import-lorawan-library)
 
 From [libs/zgt/src/backends/gtk/backend.zig](https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig#L322-L352)
 
