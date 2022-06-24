@@ -281,15 +281,17 @@ export PATH="$HOME/zig-linux-aarch64-0.10.0-dev.2674+d980c6a38:$PATH"
 zig version
 ```
 
-We may use SSH to run the above commands remotely on PinePhone.
+It's OK to use SSH to run the above commands remotely on PinePhone.
 
-Or we may use __VSCode Remote__ to run commands and edit source files on PinePhone. [(See this)]()
+Or we may use __VSCode Remote__ to run commands and edit source files on PinePhone. [(See this)](https://lupyuen.github.io/articles/pinephone#appendix-vscode-remote)
 
 ![Zig Compiler on PinePhone](https://lupyuen.github.io/images/pinephone-compiler.jpg)
 
 _Will Zig Compiler run on any PinePhone?_
 
-I tested the Zig Compiler with Manjaro Phosh on PinePhone (pic above), but it will probably work on any PinePhone distro since the Zig Compiler is a self-contained Arm64 Binary.
+I tested the Zig Compiler with __Manjaro Phosh__ on PinePhone (pic above).
+
+But it will probably work on __any PinePhone distro__ since the Zig Compiler is a self-contained Arm64 Linux Binary.
 
 [(Zig Compiler works with Mobian on PinePhone too)](https://twitter.com/techneo/status/1539510460726509568)
 
@@ -311,7 +313,7 @@ mv zigmod-aarch64-linux zig-linux-aarch64-0.10.0-dev.2674+d980c6a38/zigmod
 zigmod
 ```
 
-Zigmod will be used in the next step to install the dependencies for zgt Library.
+We'll run Zigmod in the next step to install the dependencies for zgt Library.
 
 # Build The App
 
@@ -333,9 +335,9 @@ zig build
 
 [(See the Build Log)](https://gist.github.com/lupyuen/a44bc3faaf6d674d2b227aeb992ccfb8)
 
-If the build fails, check that the `gtk+-3.0` library is installed on PinePhone. [(Here's why)](https://github.com/zenith391/zgt/blob/master/build.zig#L9-L13)
+If the build fails, check that the "__gtk+-3.0__" library is installed on PinePhone. [(Here's why)](https://github.com/zenith391/zgt/blob/master/build.zig#L9-L13)
 
-[(The app builds OK on Mobian after installing `gtk+-3.0`)](https://twitter.com/techneo/status/1539828828213616640)
+[(Our app builds OK on Mobian after installing "gtk+-3.0")](https://twitter.com/techneo/status/1539828828213616640)
 
 # Run The App
 
@@ -358,13 +360,32 @@ info: You clicked button with text Save
 
 Yep we have successfully built a Zig GUI App for PinePhone with zgt! 🎉
 
+![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title.jpg)
+
 _Is the app fast and responsive on PinePhone?_
 
 Yep it feels as fast and responsive as a GTK app coded in C.
 
 Remember that Zig is a compiled language, and our compiled app is directly calling the GTK Library.
 
-![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title.jpg)
+![Source Code of our Zig App](https://lupyuen.github.io/images/pinephone-code3.jpg)
+
+# Zig Outcomes
+
+_Have we gained anything by coding the app in Zig?_
+
+If we compare our Zig App (pic above) with a typical GTK App in C...
+
+```c
+```
+
+[(Source)]()
+
+Our Zig App looks cleaner and less cluttered.
+
+(Hopefully it's also easier to extend and maintain)
+
+TODO
 
 # Pinebook Pro
 
