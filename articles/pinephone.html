@@ -81,8 +81,9 @@
 <li><a href="#notes">9 Notes</a><ul></ul></li>
 <li><a href="#appendix-learning-zig">10 Appendix: Learning Zig</a><ul></ul></li>
 <li><a href="#appendix-vscode-remote">11 Appendix: VSCode Remote</a><ul></ul></li>
-<li><a href="#appendix-zig-build-system">12 Appendix: Zig Build System</a><ul></ul></li>
-<li><a href="#appendix-gtk-backend-for-zgt">13 Appendix: GTK Backend for zgt</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
+<li><a href="#appendix-zig-handles-bad-pointers">12 Appendix: Zig Handles Bad Pointers</a><ul></ul></li>
+<li><a href="#appendix-zig-build-system">13 Appendix: Zig Build System</a><ul></ul></li>
+<li><a href="#appendix-gtk-backend-for-zgt">14 Appendix: GTK Backend for zgt</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a new-ish Programming Language that works well with C. And it comes with built-in <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Safety Checks</strong></a> at runtime.</p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>PinePhone</strong></a> is an Arm64 Linux Phone. PinePhone Apps are typically coded in C with GUI Toolkits like <a href="https://www.gtk.org"><strong>GTK</strong></a>.</p>
@@ -391,7 +392,40 @@ info: You clicked button with text Save</code></pre></div>
 <ul>
 <li><a href="https://github.com/ziglang/vscode-zig"><strong>Zig Extension for VSCode</strong></a></li>
 </ul>
-<h1 id="appendix-zig-build-system"><a href="#appendix-zig-build-system">12 Appendix: Zig Build System</a></h1>
+<h1 id="appendix-zig-handles-bad-pointers"><a href="#appendix-zig-handles-bad-pointers">12 Appendix: Zig Handles Bad Pointers</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);
+try buttonClicked(bad_ptr);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>$ zig build
+./src/main.zig:8:21: error: pointer type &#39;*.zgt.button.Button_Impl&#39; does not allow address zero
+    const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>const bad_ptr = @intToPtr(*zgt.Button_Impl, 0xdeadbee0);
+try buttonClicked(bad_ptr);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>$ zig-out/bin/zig-pinephone-gui 
+Segmentation fault at address 0xdeadbee8
+zig-pinephone-gui/libs/zgt/src/button.zig:62:9: 0x2184dc in .zgt.button.Button_Impl.getLabel (zig-pinephone-gui)
+        if (self.peer) |*peer| {
+        ^
+zig-pinephone-gui/src/main.zig:56:27: 0x217269 in buttonClicked (zig-pinephone-gui)
+        .{ button.getLabel() }
+                          ^
+zig-pinephone-gui/src/main.zig:9:22: 0x216b0e in main (zig-pinephone-gui)
+    try buttonClicked(bad_ptr);
+                     ^
+zig/lib/std/start.zig:581:37: 0x21e657 in std.start.callMain (zig-pinephone-gui)
+            const result = root.main() catch |err| {
+                                    ^
+zig/lib/std/start.zig:515:12: 0x217a87 in std.start.callMainWithArgs (zig-pinephone-gui)
+    return @call(.{ .modifier = .always_inline }, callMain, .{});
+           ^
+zig/lib/std/start.zig:480:12: 0x217832 in std.start.main (zig-pinephone-gui)
+    return @call(.{ .modifier = .always_inline }, callMainWithArgs, .{ @intCast(usize, c_argc), c_argv, envp });
+           ^
+???:?:?: 0x7f6c902640b2 in ??? (???)
+Aborted</code></pre></div><h1 id="appendix-zig-build-system"><a href="#appendix-zig-build-system">13 Appendix: Zig Build System</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#Zig-Build-System"><strong>Zig Build System</strong></a></li>
@@ -436,7 +470,7 @@ pub fn build(b: *std.build.Builder) void {
     @import(&quot;libs/zgt/build.zig&quot;)
         .install(exe, &quot;./libs/zgt&quot;)
         catch {};
-}</code></pre></div><h1 id="appendix-gtk-backend-for-zgt"><a href="#appendix-gtk-backend-for-zgt">13 Appendix: GTK Backend for zgt</a></h1>
+}</code></pre></div><h1 id="appendix-gtk-backend-for-zgt"><a href="#appendix-gtk-backend-for-zgt">14 Appendix: GTK Backend for zgt</a></h1>
 <p><em>zgt GUI Library works with GTK, Windows AND WebAssembly. How on earth does it achieve this incredible feat?</em></p>
 <p>TODO: Very cleverly!</p>
 <p><a href="https://github.com/zenith391/zgt/blob/master/src/backends">zgt Backends</a></p>
@@ -444,7 +478,10 @@ pub fn build(b: *std.build.Builder) void {
 <div class="example-wrap"><pre class="language-zig"><code>pub const c = @cImport({
     @cInclude(&quot;gtk/gtk.h&quot;);
 });</code></pre></div>
-<p>TODO</p>
+<p>TODO: Zig works really well for importing C Header Files, as I have experienced here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/iot#import-lorawan-library"><strong>“Import LoRaWAN Library”</strong></a></li>
+</ul>
 <p>From <a href="https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig#L322-L352">libs/zgt/src/backends/gtk/backend.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>pub const Button = struct {
     peer: *c.GtkWidget,
