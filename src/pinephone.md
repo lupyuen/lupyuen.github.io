@@ -1,6 +1,6 @@
 # Build a PinePhone App with Zig and zgt
 
-📝 _30 Jun 2022_
+📝 _26 Jun 2022_
 
 ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title.jpg)
 
@@ -506,14 +506,54 @@ In the Remote Session, remember to install the Zig Extension for VSCode...
 
 # Appendix: Zig Handles Bad Pointers
 
-TODO
+_How does Zig handle bad pointers?_
+
+Zig doesn't validate pointers (like with a Borrow Checker) so it isn't Memory Safe (yet)...
+
+-   [__"How safe is zig?"__](https://www.scattered-thoughts.net/writing/how-safe-is-zig)
+
+But it tries to be helpful when it encounters bad pointers. Let's do an experiment...
+
+Remember this function from earlier?
 
 ```zig
-const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);
+/// This function is called when the Buttons are clicked
+fn buttonClicked(button: *zgt.Button_Impl) !void {
+
+  // Print the Button Label to console
+  std.log.info(
+    "You clicked button with text {s}",
+    .{ button.getLabel() }
+  );
+}
+```
+
+[(Source)](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55)
+
+The above code is potentially unsafe because it __dereferences a pointer__ to a Button...
+
+```zig
+// `button` is a pointer to a Button Struct
+button.getLabel()
+```
+
+Let's hack it by passing a __Null Pointer__...
+
+```zig
+// Create a Null Pointer
+const bad_ptr = @intToPtr(
+  *zgt.Button_Impl,  // Pointer Type
+  0                  // Address
+);
+// Pass the Null Pointer to the function
 try buttonClicked(bad_ptr);
 ```
 
-TODO
+[(__@intToPtr__ is explained here)](https://ziglang.org/documentation/master/#intToPtr)
+
+Note that __@intToPtr__ is an Unsafe Builtin Function, we shouldn't call it in normal programs.
+
+When we compile the above code, Zig Compiler helpfully __stops us from creating a Null Pointer__...
 
 ```text
 $ zig build
@@ -521,14 +561,21 @@ $ zig build
     const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);
 ```
 
-TODO
+Nice! Let's circumvent the best intentions of Zig Compiler and create another Bad Pointer...
 
 ```zig
-const bad_ptr = @intToPtr(*zgt.Button_Impl, 0xdeadbee0);
+// Create a Bad Pointer
+const bad_ptr = @intToPtr(
+  *zgt.Button_Impl,  // Pointer Type
+  0xdeadbee0         // Address
+);
+// Pass the Bad Pointer to the function
 try buttonClicked(bad_ptr);
 ```
 
-TODO
+Zig Compiler no longer stops us. (Remember: __@intToPtr__ is supposed to be unsafe anyway)
+
+When we run it, we get a helpful __Stack Trace__...
 
 ```text
 $ zig-out/bin/zig-pinephone-gui 
@@ -554,6 +601,8 @@ zig/lib/std/start.zig:480:12: 0x217832 in std.start.main (zig-pinephone-gui)
 ???:?:?: 0x7f6c902640b2 in ??? (???)
 Aborted
 ```
+
+Which will be super handy for troubleshooting our Zig App.
 
 # Appendix: Zig Build System
 
