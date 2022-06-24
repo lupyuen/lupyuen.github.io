@@ -28,9 +28,9 @@ Join me as we dive into our __Zig App for PinePhone__...
 
 TODO
 
-![TODO](https://lupyuen.github.io/images/pinephone-code1a.png)
+![Source Code for our app](https://lupyuen.github.io/images/pinephone-code1a.png)
 
-Here's the source code for the app: [src/main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
+[(Source)](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
 
 ## Import Libraries
 
@@ -55,9 +55,15 @@ Next we define the __Main Function__ for our app: [main.zig](https://github.com/
 pub fn main() !void {
 ```
 
-"__`!void`__" says that our Main Function doesn't return any value. (Hence "`void`")
+"__`!void`__" says that...
 
-But our function might return an [__Error__](https://ziglang.org/documentation/master/#Errors). (Hence the "`!`")
+-   Our Main Function doesn't return any value.
+
+    (Hence "`void`")
+
+-   But our function might return an [__Error__](https://ziglang.org/documentation/master/#Errors)
+
+    (Hence the "`!`")
 
 Then we initialise the zgt Library and __fetch the Window__ for our app...
 
@@ -123,10 +129,13 @@ TODO
 ```zig
     // Run the Event Loop to handle Touch Events
     zgt.runEventLoop();
+
 }  // End of Main Function
 ```
 
-![TODO](https://lupyuen.github.io/images/pinephone-code2a.png)
+![Handle the Buttons](https://lupyuen.github.io/images/pinephone-code2a.png)
+
+[(Source)](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
 
 ## Handle the Buttons
 
