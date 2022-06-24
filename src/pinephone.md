@@ -34,7 +34,7 @@ Let's create a __PinePhone App__ (pic above) that has...
 
 -   And an __Editable Text Box__
 
-This is how we do it in Zig...
+This is how we do it in Zig: [src/main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
 
 ![Source Code for our app](https://lupyuen.github.io/images/pinephone-code1a.png)
 
