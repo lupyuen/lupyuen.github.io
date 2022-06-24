@@ -123,45 +123,77 @@ pub fn main() !void {</code></pre></div>
 </li>
 </ul>
 <p>Then we initialise the zgt Library and <strong>fetch the Window</strong> for our app…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Init the zgt library
-    try zgt.backend.init();
+<div class="example-wrap"><pre class="language-zig"><code>  // Init the zgt library
+  try zgt.backend.init();
 
-    // Fetch the Window
-    var window = try zgt.Window.init();</code></pre></div><h2 id="set-the-widgets"><a href="#set-the-widgets">1.3 Set the Widgets</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Set the Window Contents
-    try window.set(
+  // Fetch the Window
+  var window = try zgt.Window.init();</code></pre></div>
+<p><em>Why the <code>try</code>?</em></p>
+<p>Remember that our Main Function can <strong>return an Error</strong>.</p>
+<p>When <a href="https://ziglang.org/documentation/master/#try">“<strong><code>try</code></strong>”</a> detects an Error in the Called Function (like “zgt.backend.init”), it stops the Main Function and returns the Error to the caller.</p>
+<h2 id="set-the-widgets"><a href="#set-the-widgets">1.3 Set the Widgets</a></h2>
+<p>Now we <strong>populate the Widgets</strong> for our Window: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Set the Window Contents
+  try window.set(
 
-        // One Column of Widgets
-        zgt.Column(.{}, .{
+    // One Column of Widgets
+    zgt.Column(.{}, .{
 
-            // Top Row of Widgets
-            zgt.Row(.{}, .{
-                // Save Button
-                zgt.Button(.{ .label = &quot;Save&quot;, .onclick = buttonClicked }),
-                // Run Button
-                zgt.Button(.{ .label = &quot;Run&quot;,  .onclick = buttonClicked }),
-            }),</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>            // Expanded means the widget will take all the space it can
-            // in the parent container
-            zgt.Expanded(
-                // Editable Text Area
-                zgt.TextArea(.{ .text = &quot;Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!&quot; })
-            )
-        })  // End of Column
-    );  // End of Window</code></pre></div><h2 id="show-the-window"><a href="#show-the-window">1.4 Show the Window</a></h2>
+      // Top Row of Widgets
+      zgt.Row(.{}, .{
+
+        // Save Button
+        zgt.Button(.{ 
+            .label   = &quot;Save&quot;, 
+            .onclick = buttonClicked 
+        }),
+
+        // Run Button
+        zgt.Button(.{ 
+            .label   = &quot;Run&quot;,  
+            .onclick = buttonClicked 
+        }),
+      }),  // End of Row</code></pre></div>
+<p>This code creates a Row of Widgets: <strong>Save Button</strong> and <strong>Run Button</strong>.</p>
+<p>(We’ll talk about <strong>buttonClicked</strong> in a while)</p>
+<p>Next we add an <strong>Editable Text Area</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>      // Expanded means the widget will take all the space it can
+      // in the parent container
+      zgt.Expanded(
+
+        // Editable Text Area
+        zgt.TextArea(.{ 
+            .text = &quot;Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!&quot; 
+        })
+      )
+    })  // End of Column
+  );  // End of Window</code></pre></div>
+<p><em>What’s <code>.{ ... }</code>?</em></p>
+<p><code>.{ ... }</code> creates an <a href="https://ziglearn.org/chapter-1/#anonymous-structs"><strong>Anonymous Struct</strong></a> that matches the Struct Type that’s expected by the Called Function (like “zgt.Button”).</p>
+<p>Thus this code…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Button with Anonymous Struct
+zgt.Button(.{ 
+  .label   = &quot;Save&quot;, 
+  .onclick = buttonClicked 
+}),</code></pre></div>
+<p>Is actually a shortcut for…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Button with &quot;zgt.Button_Impl.Config&quot;
+zgt.Button(zgt.Button_Impl.Config { 
+  .label   = &quot;Save&quot;, 
+  .onclick = buttonClicked 
+}),</code></pre></div>
+<p>Because the “zgt.Button” function expects a Struct of type “zgt.Button_Impl.Config”.</p>
+<h2 id="show-the-window"><a href="#show-the-window">1.4 Show the Window</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46">main.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Resize the Window (might not be correct for PinePhone)
-    window.resize(800, 600);
+<div class="example-wrap"><pre class="language-zig"><code>  // Resize the Window (might not be correct for PinePhone)
+  window.resize(800, 600);
 
-    // Show the Window
-    window.show();</code></pre></div>
+  // Show the Window
+  window.show();</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Run the Event Loop to handle Touch Events
-    zgt.runEventLoop();
+<div class="example-wrap"><pre class="language-zig"><code>  // Run the Event Loop to handle Touch Events
+  zgt.runEventLoop();
 
 }  // End of Main Function</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/pinephone-code2a.png" alt="Handle the Buttons" /></p>
@@ -172,11 +204,11 @@ pub fn main() !void {</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>/// This function is called when the Buttons are clicked
 fn buttonClicked(button: *zgt.Button_Impl) !void {
 
-    // Print the Button Label to console
-    std.log.info(
-        &quot;You clicked button with text {s}&quot;,
-        .{ button.getLabel() }
-    );
+  // Print the Button Label to console
+  std.log.info(
+    &quot;You clicked button with text {s}&quot;,
+    .{ button.getLabel() }
+  );
 }</code></pre></div>
 <p>TODO: <code>*zgt.Button_Impl</code></p>
 <p>This app is based on the zgt demo…</p>
