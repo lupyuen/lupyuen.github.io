@@ -184,18 +184,19 @@ zgt.Button(zgt.Button_Impl.Config {
 }),</code></pre></div>
 <p>Because the “zgt.Button” function expects a Struct of type “zgt.Button_Impl.Config”.</p>
 <h2 id="show-the-window"><a href="#show-the-window">1.4 Show the Window</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46">main.zig</a></p>
+<p>We set the Window Size and <strong>show the Window</strong>: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Resize the Window (might not be correct for PinePhone)
   window.resize(800, 600);
 
   // Show the Window
   window.show();</code></pre></div>
-<p>TODO</p>
+<p>Finally we start the <strong>Event Loop</strong> that will handle Touch Events…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Run the Event Loop to handle Touch Events
   zgt.runEventLoop();
 
 }  // End of Main Function</code></pre></div>
+<p>We’re done with our Main Function!</p>
+<p>Let’s talk about the Event Handling for our Buttons…</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-code2a.png" alt="Handle the Buttons" /></p>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">(Source)</a></p>
 <h2 id="handle-the-buttons"><a href="#handle-the-buttons">1.5 Handle the Buttons</a></h2>
