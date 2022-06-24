@@ -143,7 +143,7 @@ zgt.Button(.{
 }),
 ```
 
-Is actually a shortcut for...
+Is actually the short form of...
 
 ```zig
 // Button with "zgt.Button_Impl.Config"
@@ -153,7 +153,7 @@ zgt.Button(zgt.Button_Impl.Config {
 }),
 ```
 
-Because the "zgt.Button" function expects a Struct of type "zgt.Button_Impl.Config".
+Because the function __zgt.Button__ expects a Struct of type __zgt.Button_Impl.Config__.
 
 ## Show the Window
 
