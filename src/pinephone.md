@@ -34,7 +34,15 @@ Let's create a __PinePhone App__ (pic above) that has 3 Widgets (UI Controls)...
 
 -   __Editable Text Box__
 
-This is how we do it in Zig: [src/main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
+In a while we'll learn to do this in Zig: [src/main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
+
+_What if we're not familiar with Zig?_
+
+The following sections assume that we're familiar with C.
+
+The parts that look Zig-ish shall be explained with examples in C.
+
+[(If we're keen to learn Zig, see this)](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
 
 ![Source Code for our app](https://lupyuen.github.io/images/pinephone-code1a.png)
 
@@ -63,7 +71,7 @@ Next we define the __Main Function__ for our app: [main.zig](https://github.com/
 pub fn main() !void {
 ```
 
-"__`!void`__" says that...
+"__`!void`__" is the Return Type for our Main Function...
 
 -   Our Main Function doesn't return any value.
 
@@ -89,11 +97,13 @@ Remember that our Main Function can __return an Error__.
 
 When ["__`try`__"](https://ziglang.org/documentation/master/#try) detects an Error in the Called Function (like "zgt.backend.init"), it stops the Main Function and returns the Error to the caller.
 
+Let's fill in the Window for our app...
+
 > ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-screen2.png)
 
 ## Set the Widgets
 
-Now we __populate the Widgets__ (UI Controls) for our Window: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36)
+Now we __populate the Widgets__ (UI Controls) into our Window: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36)
 
 ```zig
   // Set the Window Contents
@@ -221,7 +231,7 @@ That's the Zig equivalent of __printf__ for Formatted Printing.
 
 In the Format String, "__`{s}`__" is similar to "__`%s`__" in C.
 
-(Though we normally write "__`{}`__" for printing numbers)
+(Though we write "__`{}`__" for printing numbers)
 
 [(More about Format Specifiers)](https://github.com/ziglang/zig/blob/master/lib/std/fmt.zig#L27-L72)
 
@@ -271,6 +281,10 @@ export PATH="$HOME/zig-linux-aarch64-0.10.0-dev.2674+d980c6a38:$PATH"
 zig version
 ```
 
+We may use SSH to run the above commands remotely on PinePhone.
+
+Or we may use __VSCode Remote__ to run commands and edit source files on PinePhone. [(See this)]()
+
 ![Zig Compiler on PinePhone](https://lupyuen.github.io/images/pinephone-compiler.jpg)
 
 _Will Zig Compiler run on any PinePhone?_
@@ -301,9 +315,7 @@ Zigmod will be used in the next step to install the dependencies for zgt Library
 
 # Build The App
 
-TODO
-
-To build the app on PinePhone...
+To build our Zig App on PinePhone...
 
 ```bash
 ## Download the Source Code
@@ -353,24 +365,6 @@ Yep it feels as fast and responsive as a GTK app coded in C.
 Remember that Zig is a compiled language, and our compiled app is directly calling the GTK Library.
 
 ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title.jpg)
-
-# VSCode Remote
-
-TODO
-
-For convenience, we may use VSCode Remote to do Remote Development with PinePhone...
-
--   [__VSCode Remote__](https://code.visualstudio.com/docs/remote/remote-overview)
-
-Just connect VSCode to PinePhone via SSH, as described here...
-
--   [__VSCode Remote with SSH__](https://code.visualstudio.com/docs/remote/ssh)
-
-Remember to install the Zig Extension for VSCode...
-
--   [__Zig Extension for VSCode__](https://github.com/ziglang/vscode-zig)
-
-![VSCode Remote on PinePhone](https://lupyuen.github.io/images/pinephone-vscode.png)
 
 # Pinebook Pro
 
@@ -423,3 +417,19 @@ We need to refer to the Zig Standard Library as well...
 -   [__Zig Standard Library__](https://ziglang.org/documentation/master/std)
 
 ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title2.jpg)
+
+# Appendix: VSCode Remote
+
+For convenience, we may use VSCode Remote to do Remote Development with PinePhone...
+
+-   [__VSCode Remote__](https://code.visualstudio.com/docs/remote/remote-overview)
+
+Just connect VSCode to PinePhone via SSH, as described here...
+
+-   [__VSCode Remote with SSH__](https://code.visualstudio.com/docs/remote/ssh)
+
+Remember to install the Zig Extension for VSCode...
+
+-   [__Zig Extension for VSCode__](https://github.com/ziglang/vscode-zig)
+
+![VSCode Remote on PinePhone](https://lupyuen.github.io/images/pinephone-vscode.png)
