@@ -297,6 +297,8 @@ mv zigmod-aarch64-linux zig-linux-aarch64-0.10.0-dev.2674+d980c6a38/zigmod
 zigmod
 ```
 
+Zigmod will be used in the next step to install the dependencies for zgt Library.
+
 # Build The App
 
 TODO
