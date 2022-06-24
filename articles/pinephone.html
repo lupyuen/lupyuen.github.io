@@ -65,7 +65,12 @@
 
     <h1 class="title">Build a PinePhone App with Zig and zgt</h1>
     <nav id="TOC"><ul>
-<li><a href="#inside-the-app">1 Inside The App</a><ul></ul></li>
+<li><a href="#inside-the-app">1 Inside The App</a><ul>
+<li><a href="#import-libraries">1.1 Import Libraries</a><ul></ul></li>
+<li><a href="#main-function">1.2 Main Function</a><ul></ul></li>
+<li><a href="#set-the-widgets">1.3 Set the Widgets</a><ul></ul></li>
+<li><a href="#show-the-window">1.4 Show the Window</a><ul></ul></li>
+<li><a href="#handle-the-buttons">1.5 Handle the Buttons</a><ul></ul></li></ul></li>
 <li><a href="#install-zig-compiler">2 Install Zig Compiler</a><ul></ul></li>
 <li><a href="#install-zigmod">3 Install Zigmod</a><ul></ul></li>
 <li><a href="#build-the-app">4 Build The App</a><ul></ul></li>
@@ -75,7 +80,7 @@
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
 <li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
-<p><a href="https://ziglang.org"><strong>Zig</strong></a> is a new-ish Programming Language that works well with C. And it comes with built-in <strong>Safety Checks</strong> at runtime.</p>
+<p><a href="https://ziglang.org"><strong>Zig</strong></a> is a new-ish Programming Language that works well with C. And it comes with built-in <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Safety Checks</strong></a> at runtime.</p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>PinePhone</strong></a> is an Arm64 Linux Phone. PinePhone Apps are typically coded in C with GUI Toolkits like <a href="https://www.gtk.org"><strong>GTK</strong></a>.</p>
 <p><em>Can we use Zig to code PinePhone Apps? Maybe make them a little simpler and safer?</em></p>
 <p>Let’s find out! Our Zig App shall call the <strong>zgt GUI Library</strong>, which works with Linux (GTK), Windows and WebAssembly…</p>
@@ -91,23 +96,31 @@
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/pinephone-screen2.png" alt="PinePhone App with Zig and zgt" /></p>
 </blockquote>
-<p><img src="https://lupyuen.github.io/images/pinephone-code1a.png" alt="TODO" /></p>
 <h1 id="inside-the-app"><a href="#inside-the-app">1 Inside The App</a></h1>
 <p>TODO</p>
-<p>Here’s the source code for the app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">main.zig</a></p>
+<p><img src="https://lupyuen.github.io/images/pinephone-code1a.png" alt="TODO" /></p>
+<p>Here’s the source code for the app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">src/main.zig</a></p>
+<h2 id="import-libraries"><a href="#import-libraries">1.1 Import Libraries</a></h2>
+<p>We begin by importing the <a href="https://github.com/zenith391/zgt"><strong>zgt GUI Library</strong></a> and <a href="https://ziglang.org/documentation/master/#Zig-Standard-Library"><strong>Zig Standard Library</strong></a> into our app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L1-L4">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Import the zgt library and Zig Standard Library
 const zgt = @import(&quot;zgt&quot;);
 const std = @import(&quot;std&quot;);</code></pre></div>
-<p>TODO</p>
+<p>The Zig Standard Library has all kinds of <strong>Algos, Data Structures and Definitions</strong>.</p>
+<p><a href="https://ziglang.org/documentation/master/std/">(More about the Zig Standard Library)</a></p>
+<h2 id="main-function"><a href="#main-function">1.2 Main Function</a></h2>
+<p>Next we define the <strong>Main Function</strong> for our app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L4-L13">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function for our app
 pub fn main() !void {</code></pre></div>
-<p>TODO</p>
+<p>“<strong><code>!void</code></strong>” says that our Main Function doesn’t return any value. (Hence “<code>void</code>”)</p>
+<p>But our function might return an <a href="https://ziglang.org/documentation/master/#Errors"><strong>Error</strong></a>. (Hence the “<code>!</code>”)</p>
+<p>Then we initialise the zgt Library and <strong>fetch the Window</strong> for our app…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Init the zgt library
     try zgt.backend.init();
 
     // Fetch the Window
-    var window = try zgt.Window.init();</code></pre></div>
+    var window = try zgt.Window.init();</code></pre></div><h2 id="set-the-widgets"><a href="#set-the-widgets">1.3 Set the Widgets</a></h2>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Set the Window Contents
     try window.set(
 
@@ -129,8 +142,9 @@ pub fn main() !void {</code></pre></div>
                 zgt.TextArea(.{ .text = &quot;Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!&quot; })
             )
         })  // End of Column
-    );  // End of Window</code></pre></div>
+    );  // End of Window</code></pre></div><h2 id="show-the-window"><a href="#show-the-window">1.4 Show the Window</a></h2>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Resize the Window (might not be correct for PinePhone)
     window.resize(800, 600);
 
@@ -139,9 +153,11 @@ pub fn main() !void {</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Run the Event Loop to handle Touch Events
     zgt.runEventLoop();
-}</code></pre></div>
+}  // End of Main Function</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/pinephone-code2a.png" alt="TODO" /></p>
+<h2 id="handle-the-buttons"><a href="#handle-the-buttons">1.5 Handle the Buttons</a></h2>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// This function is called when the Buttons are clicked
 fn buttonClicked(button: *zgt.Button_Impl) !void {
 
@@ -151,6 +167,7 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
         .{ button.getLabel() }
     );
 }</code></pre></div>
+<p>TODO: <code>*zgt.Button_Impl</code></p>
 <p>This app is based on the zgt demo…</p>
 <ul>
 <li><a href="https://github.com/zenith391/zgt#usage"><strong>zenith391/zgt</strong></a></li>
