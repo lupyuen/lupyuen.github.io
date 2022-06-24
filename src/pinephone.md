@@ -24,6 +24,8 @@ Join me as we dive into our __Zig App for PinePhone__...
 
 > ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-screen2.png)
 
+![TODO](https://lupyuen.github.io/images/pinephone-code1a.png)
+
 # Inside The App
 
 TODO
@@ -34,19 +36,34 @@ Here's the source code for the app: [main.zig](https://github.com/lupyuen/zig-pi
 // Import the zgt library and Zig Standard Library
 const zgt = @import("zgt");
 const std = @import("std");
+```
 
+TODO
+
+```zig
 /// Main Function for our app
 pub fn main() !void {
+```
+
+TODO
+
+```zig
     // Init the zgt library
     try zgt.backend.init();
 
     // Fetch the Window
     var window = try zgt.Window.init();
+```
 
+TODO
+
+```zig
     // Set the Window Contents
     try window.set(
+
         // One Column of Widgets
         zgt.Column(.{}, .{
+
             // Top Row of Widgets
             zgt.Row(.{}, .{
                 // Save Button
@@ -54,6 +71,11 @@ pub fn main() !void {
                 // Run Button
                 zgt.Button(.{ .label = "Run",  .onclick = buttonClicked }),
             }),
+```
+
+TODO
+
+```zig
             // Expanded means the widget will take all the space it can
             // in the parent container
             zgt.Expanded(
@@ -62,19 +84,34 @@ pub fn main() !void {
             )
         })  // End of Column
     );  // End of Window
+```
 
+TODO
+
+```zig
     // Resize the Window (might not be correct for PinePhone)
     window.resize(800, 600);
 
     // Show the Window
     window.show();
+```
 
+TODO
+
+```zig
     // Run the Event Loop to handle Touch Events
     zgt.runEventLoop();
 }
+```
 
+![TODO](https://lupyuen.github.io/images/pinephone-code2a.png)
+
+TODO
+
+```zig
 /// This function is called when the Buttons are clicked
 fn buttonClicked(button: *zgt.Button_Impl) !void {
+
     // Print the Button Label to console
     std.log.info(
         "You clicked button with text {s}",
@@ -131,7 +168,7 @@ export PATH="$HOME/zig-linux-aarch64-0.10.0-dev.2674+d980c6a38:$PATH"
 zig version
 ```
 
-![Zig Compiler on PinePhone](https://lupyuen.github.io/images/GridArt_20220622_102635788~2.jpg)
+![Zig Compiler on PinePhone](https://lupyuen.github.io/images/pinephone-compiler.jpg)
 
 _Will Zig Compiler run on any PinePhone?_
 
@@ -232,7 +269,7 @@ Remember to install the Zig Extension for VSCode...
 
 -   [__Zig Extension for VSCode__](https://github.com/ziglang/vscode-zig)
 
-![VSCode Remote on PinePhone](https://lupyuen.github.io/images/Screenshot%202022-06-22%20at%209.49.10%20AM~2.png)
+![VSCode Remote on PinePhone](https://lupyuen.github.io/images/pinephone-vscode.png)
 
 # Pinebook Pro
 
@@ -244,7 +281,7 @@ Yep! The same steps above will work on Pinebook Pro.
 
 Here's our Zig GUI App running with Manjaro Xfce on Pinebook Pro...
 
-![Our app running with Manjaro Xfce on Pinebook Pro](https://lupyuen.github.io/images/Screenshot_2022-06-22_18-13-31_061534.png)
+![Our app running with Manjaro Xfce on Pinebook Pro](https://lupyuen.github.io/images/pinephone-pinebook.png)
 
 # What's Next
 
