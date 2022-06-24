@@ -14,6 +14,8 @@ Let's find out! Our Zig App shall call the __zgt GUI Library__, which works with
 
 -   [__zenith391/zgt__](https://github.com/zenith391/zgt)
 
+    [(See the docs)](https://github.com/zenith391/zgt/wiki)
+
 zgt is in Active Development, some features may change. 
 
 [(Please support the zgt project! 🙏)](https://github.com/zenith391/zgt)
@@ -455,6 +457,18 @@ Here's our Zig GUI App running with Manjaro Xfce on Pinebook Pro...
 # What's Next
 
 I hope this article has inspired you to create PinePhone apps in Zig!
+
+Check out the __Sample Apps__ for zgt...
+
+-   [__zgt Sample Apps__](https://github.com/zenith391/zgt/tree/master/examples)
+
+__zgt Widgets__ are explained in the zgt Wiki...
+
+-   [__zgt Wiki__](https://github.com/zenith391/zgt/wiki)
+
+Tips for learning Zig...
+
+-   [__Learning Zig__](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
