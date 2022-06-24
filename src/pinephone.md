@@ -474,6 +474,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/Zig/comments/vjqg88/build_a_pinephone_app_with_zig_and_zgt/)
+
 -   [__Check out my articles__](https://lupyuen.github.io)
 
 -   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
