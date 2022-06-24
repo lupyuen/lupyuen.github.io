@@ -98,16 +98,16 @@
 <p><img src="https://lupyuen.github.io/images/pinephone-screen2.png" alt="PinePhone App with Zig and zgt" /></p>
 </blockquote>
 <h1 id="inside-the-app"><a href="#inside-the-app">1 Inside The App</a></h1>
-<p>Let’s create a <strong>PinePhone App</strong> (pic above) that has…</p>
+<p>Let’s create a <strong>PinePhone App</strong> (pic above) that has 3 Widgets (UI Controls)…</p>
 <ul>
 <li>
-<p>A <strong>Save Button</strong></p>
+<p><strong>Save Button</strong></p>
 </li>
 <li>
-<p>A <strong>Run Button</strong></p>
+<p><strong>Run Button</strong></p>
 </li>
 <li>
-<p>And an <strong>Editable Text Box</strong></p>
+<p><strong>Editable Text Box</strong></p>
 </li>
 </ul>
 <p>This is how we do it in Zig: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">src/main.zig</a></p>
@@ -144,8 +144,11 @@ pub fn main() !void {</code></pre></div>
 <p><em>Why the <code>try</code>?</em></p>
 <p>Remember that our Main Function can <strong>return an Error</strong>.</p>
 <p>When <a href="https://ziglang.org/documentation/master/#try">“<strong><code>try</code></strong>”</a> detects an Error in the Called Function (like “zgt.backend.init”), it stops the Main Function and returns the Error to the caller.</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/pinephone-screen2.png" alt="PinePhone App with Zig and zgt" /></p>
+</blockquote>
 <h2 id="set-the-widgets"><a href="#set-the-widgets">1.3 Set the Widgets</a></h2>
-<p>Now we <strong>populate the Widgets</strong> for our Window: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
+<p>Now we <strong>populate the Widgets</strong> (UI Controls) for our Window: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set the Window Contents
   try window.set(
 
