@@ -388,9 +388,51 @@ _What about Runtime Safety?_
 
 TODO
 
--   [__"Zig Build System"__](https://lupyuen.github.io/articles/pinephone#appendix-zig-build-system)
+```zig
+  // Init the zgt library
+  try zgt.backend.init();
+
+  // Fetch the Window
+  var window = try zgt.Window.init();
+```
+
+[(Source)](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L7-L13)
+
+TODO
+
+```text
+$ zig-out/bin/zig-pinephone-gui 
+Unable to init server: Could not connect: Connection refused
+error: InitializationError
+zig-pinephone-gui/libs/zgt/src/backends/gtk/backend.zig:25:13: 0x21726e in .zgt.backends.gtk.backend.init (zig-pinephone-gui)
+            return BackendError.InitializationError;
+            ^
+zig-pinephone-gui/src/main.zig:9:5: 0x216b37 in main (zig-pinephone-gui)
+    try zgt.backend.init();
+    ^
+```
+
+TODO
+
+```text
+$ ./a.out
+Unable to init server: Could not connect: Connection refused
+(a.out:19579): Gtk-WARNING **: 19:17:31.039: cannot open display: 
+```
+
+_What about bad pointers?_
+
+Zig doesn't validate pointers (like with a Borrow Checker), but it tries to be helpful when it encounters bad pointers...
+
+-   [__"Zig Handles Bad Pointers"__](https://lupyuen.github.io/articles/pinephone#appendix-zig-handles-bad-pointers)
+
+_Anything else we should know about Zig?_
+
+TODO
 
 -   [__"GTK Backend for zgt"__](https://lupyuen.github.io/articles/pinephone#appendix-gtk-backend-for-zgt)
+
+-   [__"Zig Build System"__](https://lupyuen.github.io/articles/pinephone#appendix-zig-build-system)
 
 # Pinebook Pro
 
