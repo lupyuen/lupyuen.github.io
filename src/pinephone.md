@@ -4,7 +4,7 @@
 
 ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-title.jpg)
 
-[__Zig__](https://ziglang.org) is a new-ish Programming Language that works well with C. And it comes with built-in __Safety Checks__ at runtime.
+[__Zig__](https://ziglang.org) is a new-ish Programming Language that works well with C. And it comes with built-in [__Safety Checks__](https://ziglang.org/documentation/master/#Undefined-Behavior) at runtime.
 
 [__PinePhone__](https://wiki.pine64.org/index.php/PinePhone) is an Arm64 Linux Phone. PinePhone Apps are typically coded in C with GUI Toolkits like [__GTK__](https://www.gtk.org).
 
@@ -24,13 +24,17 @@ Join me as we dive into our __Zig App for PinePhone__...
 
 > ![PinePhone App with Zig and zgt](https://lupyuen.github.io/images/pinephone-screen2.png)
 
-![TODO](https://lupyuen.github.io/images/pinephone-code1a.png)
-
 # Inside The App
 
 TODO
 
-Here's the source code for the app: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
+![TODO](https://lupyuen.github.io/images/pinephone-code1a.png)
+
+Here's the source code for the app: [src/main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig)
+
+## Import Libraries
+
+We begin by importing the [__zgt GUI Library__](https://github.com/zenith391/zgt) and [__Zig Standard Library__](https://ziglang.org/documentation/master/#Zig-Standard-Library) into our app: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L1-L4)
 
 ```zig
 // Import the zgt library and Zig Standard Library
@@ -38,14 +42,24 @@ const zgt = @import("zgt");
 const std = @import("std");
 ```
 
-TODO
+The Zig Standard Library has all kinds of __Algos, Data Structures and Definitions__.
+
+[(More about the Zig Standard Library)](https://ziglang.org/documentation/master/std/)
+
+## Main Function
+
+Next we define the __Main Function__ for our app: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L4-L13)
 
 ```zig
 /// Main Function for our app
 pub fn main() !void {
 ```
 
-TODO
+"__`!void`__" says that our Main Function doesn't return any value. (Hence "`void`")
+
+But our function might return an [__Error__](https://ziglang.org/documentation/master/#Errors). (Hence the "`!`")
+
+Then we initialise the zgt Library and __fetch the Window__ for our app...
 
 ```zig
     // Init the zgt library
@@ -55,7 +69,11 @@ TODO
     var window = try zgt.Window.init();
 ```
 
+## Set the Widgets
+
 TODO
+
+[main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36)
 
 ```zig
     // Set the Window Contents
@@ -86,7 +104,11 @@ TODO
     );  // End of Window
 ```
 
+## Show the Window
+
 TODO
+
+[main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46)
 
 ```zig
     // Resize the Window (might not be correct for PinePhone)
@@ -101,12 +123,16 @@ TODO
 ```zig
     // Run the Event Loop to handle Touch Events
     zgt.runEventLoop();
-}
+}  // End of Main Function
 ```
 
 ![TODO](https://lupyuen.github.io/images/pinephone-code2a.png)
 
+## Handle the Buttons
+
 TODO
+
+[main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55)
 
 ```zig
 /// This function is called when the Buttons are clicked
@@ -119,6 +145,8 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
     );
 }
 ```
+
+TODO: `*zgt.Button_Impl`
 
 This app is based on the zgt demo...
 
