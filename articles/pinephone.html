@@ -135,7 +135,7 @@ pub fn main() !void {</code></pre></div>
 <p>“<strong><code>!void</code></strong>” is the Return Type for our Main Function…</p>
 <ul>
 <li>
-<p>Our Main Function doesn’t return any value.</p>
+<p>Our Main Function doesn’t return any value</p>
 <p>(Hence “<code>void</code>”)</p>
 </li>
 <li>
@@ -149,7 +149,7 @@ pub fn main() !void {</code></pre></div>
 
   // Fetch the Window
   var window = try zgt.Window.init();</code></pre></div>
-<p><em>Why the <code>try</code>?</em></p>
+<p><em>Why the “<code>try</code>”?</em></p>
 <p>Remember that our Main Function can <strong>return an Error</strong>.</p>
 <p>When <a href="https://ziglang.org/documentation/master/#try">“<strong><code>try</code></strong>”</a> detects an Error in the Called Function (like “zgt.backend.init”), it stops the Main Function and returns the Error to the caller.</p>
 <p>Let’s fill in the Window for our app…</p>
@@ -322,8 +322,8 @@ info: You clicked button with text Save</code></pre></div>
 <p>Yep we have successfully built a Zig App for PinePhone with zgt! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
 <p><em>Is the app fast and responsive on PinePhone?</em></p>
-<p>Yep it feels as fast and responsive as a GTK app coded in C.</p>
-<p>Remember that Zig is a compiled language, and our compiled app is directly calling the GTK Library.</p>
+<p>Yes our Zig App feels as fast and responsive as a GTK app coded in C.</p>
+<p>That’s because Zig is a compiled language, and our compiled app calls the GTK Library directly.</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-code3.jpg" alt="Source Code of our Zig App" /></p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">6 Zig Outcomes</a></h1>
 <p><em>Have we gained anything by coding our app in Zig?</em></p>
@@ -338,11 +338,11 @@ info: You clicked button with text Save</code></pre></div>
 <p>(Hopefully our Zig App is also easier to extend and maintain)</p>
 <p><em>What about Runtime Safety?</em></p>
 <p>Remember that we used “<strong><code>try</code></strong>” to handle Runtime Errors?</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Init the zgt library
-  try zgt.backend.init();
+<div class="example-wrap"><pre class="language-zig"><code>// Init the zgt library
+try zgt.backend.init();
 
-  // Fetch the Window
-  var window = try zgt.Window.init();</code></pre></div>
+// Fetch the Window
+var window = try zgt.Window.init();</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L7-L13">(Source)</a></p>
 <p>Zig Compiler stops us if we forget to handle the errors with “<code>try</code>”.</p>
 <p><em>What happens when our Zig App hits a Runtime Error?</em></p>
