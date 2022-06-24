@@ -78,7 +78,8 @@
 <li><a href="#vscode-remote">6 VSCode Remote</a><ul></ul></li>
 <li><a href="#pinebook-pro">7 Pinebook Pro</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
+<li><a href="#notes">9 Notes</a><ul></ul></li>
+<li><a href="#appendix-learning-zig">10 Appendix: Learning Zig</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a new-ish Programming Language that works well with C. And it comes with built-in <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Safety Checks</strong></a> at runtime.</p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>PinePhone</strong></a> is an Arm64 Linux Phone. PinePhone Apps are typically coded in C with GUI Toolkits like <a href="https://www.gtk.org"><strong>GTK</strong></a>.</p>
@@ -97,7 +98,19 @@
 <p><img src="https://lupyuen.github.io/images/pinephone-screen2.png" alt="PinePhone App with Zig and zgt" /></p>
 </blockquote>
 <h1 id="inside-the-app"><a href="#inside-the-app">1 Inside The App</a></h1>
-<p>TODO</p>
+<p>Let’s create a <strong>PinePhone App</strong> (pic above) that has…</p>
+<ul>
+<li>
+<p>A <strong>Save Button</strong></p>
+</li>
+<li>
+<p>A <strong>Run Button</strong></p>
+</li>
+<li>
+<p>And an <strong>Editable Text Box</strong></p>
+</li>
+</ul>
+<p>This is how we do it in Zig…</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-code1a.png" alt="Source Code for our app" /></p>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">(Source)</a></p>
 <h2 id="import-libraries"><a href="#import-libraries">1.1 Import Libraries</a></h2>
@@ -233,29 +246,8 @@ zgt.Button(.{
 }),</code></pre></div>
 <p>This tells the zgt Library to call <strong>buttonClicked</strong> when the Save and Run Buttons are clicked.</p>
 <p>And that’s the complete code for our PinePhone App!</p>
-<p><a href="https://github.com/zenith391/zgt#usage">(Our PinePhone App is based on the zgt demo)</a></p>
-<p>TODO</p>
-<p>For comparison, here’s a typical GTK app coded in C…</p>
-<ul>
-<li><a href="https://www.gtk.org/docs/getting-started/hello-world"><strong>GTK App in C</strong></a></li>
-</ul>
-<p>Though I think our Zig app looks more like Vala than C…</p>
-<ul>
-<li><a href="https://www.gtk.org/docs/language-bindings/vala"><strong>GTK App in Vala</strong></a></li>
-</ul>
-<p><em>How do I learn Zig?</em></p>
-<p>Zig hasn’t reached version 1.0 yet so the docs are a little spotty. This is probably the best tutorial for Zig:</p>
-<ul>
-<li><a href="https://ziglearn.org"><strong>Zig Learn</strong></a></li>
-</ul>
-<p>After that the Zig Reference Reference Manual will be easier to understand:</p>
-<ul>
-<li><a href="https://ziglang.org/documentation/master"><strong>Zig Reference Manual</strong></a></li>
-</ul>
-<p>We need to refer to the Zig Standard Library as well:</p>
-<ul>
-<li><a href="https://ziglang.org/documentation/master/std"><strong>Zig Standard Library</strong></a></li>
-</ul>
+<p><a href="https://www.gtk.org/docs/getting-started/hello-world">(For comparison, here’s a GTK app coded in C)</a></p>
+<p><a href="https://github.com/zenith391/zgt#usage">(Our PinePhone App is based on this zgt demo)</a></p>
 <h1 id="install-zig-compiler"><a href="#install-zig-compiler">2 Install Zig Compiler</a></h1>
 <p>TODO</p>
 <p>On PinePhone, download the latest Zig Compiler <code>zig-linux-aarch64</code> from…</p>
@@ -366,6 +358,20 @@ info: You clicked button with text Save</code></pre></div>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1539782929114484736"><strong>this Twitter Thread</strong></a></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/pinephone-title2.jpg" alt="PinePhone App with Zig and zgt" /></p>
+<h1 id="appendix-learning-zig"><a href="#appendix-learning-zig">10 Appendix: Learning Zig</a></h1>
+<p><em>How do I learn Zig?</em></p>
+<p>As of June 2022, Zig hasn’t reached version 1.0 so the docs are a little spotty. This is probably the best tutorial for Zig…</p>
+<ul>
+<li><a href="https://ziglearn.org"><strong>Zig Learn</strong></a></li>
+</ul>
+<p>After that the Zig Reference Reference Manual will be easier to understand…</p>
+<ul>
+<li><a href="https://ziglang.org/documentation/master"><strong>Zig Reference Manual</strong></a></li>
+</ul>
+<p>We need to refer to the Zig Standard Library as well…</p>
+<ul>
+<li><a href="https://ziglang.org/documentation/master/std"><strong>Zig Standard Library</strong></a></li>
+</ul>
 
     
 </body>
