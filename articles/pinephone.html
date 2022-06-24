@@ -338,12 +338,39 @@ info: You clicked button with text Save</code></pre></div>
 <p>(Hopefully our Zig App is also easier to extend and maintain)</p>
 <p><em>What about Runtime Safety?</em></p>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Init the zgt library
+  try zgt.backend.init();
+
+  // Fetch the Window
+  var window = try zgt.Window.init();</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L7-L13">(Source)</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>$ zig-out/bin/zig-pinephone-gui 
+Unable to init server: Could not connect: Connection refused
+error: InitializationError
+zig-pinephone-gui/libs/zgt/src/backends/gtk/backend.zig:25:13: 0x21726e in .zgt.backends.gtk.backend.init (zig-pinephone-gui)
+            return BackendError.InitializationError;
+            ^
+zig-pinephone-gui/src/main.zig:9:5: 0x216b37 in main (zig-pinephone-gui)
+    try zgt.backend.init();
+    ^</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>$ ./a.out
+Unable to init server: Could not connect: Connection refused
+(a.out:19579): Gtk-WARNING **: 19:17:31.039: cannot open display: </code></pre></div>
+<p><em>What about bad pointers?</em></p>
+<p>Zig doesn’t validate pointers (like with a Borrow Checker), but it tries to be helpful when it encounters bad pointers…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinephone#appendix-zig-handles-bad-pointers"><strong>“Zig Handles Bad Pointers”</strong></a></li>
+</ul>
+<p><em>Anything else we should know about Zig?</em></p>
+<p>TODO</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/pinephone#appendix-zig-build-system"><strong>“Zig Build System”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/pinephone#appendix-gtk-backend-for-zgt"><strong>“GTK Backend for zgt”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/pinephone#appendix-gtk-backend-for-zgt"><strong>“GTK Backend for zgt”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/pinephone#appendix-zig-build-system"><strong>“Zig Build System”</strong></a></p>
 </li>
 </ul>
 <h1 id="pinebook-pro"><a href="#pinebook-pro">7 Pinebook Pro</a></h1>
