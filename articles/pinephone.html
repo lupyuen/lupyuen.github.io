@@ -98,8 +98,8 @@
 </blockquote>
 <h1 id="inside-the-app"><a href="#inside-the-app">1 Inside The App</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/pinephone-code1a.png" alt="TODO" /></p>
-<p>Here’s the source code for the app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">src/main.zig</a></p>
+<p><img src="https://lupyuen.github.io/images/pinephone-code1a.png" alt="Source Code for our app" /></p>
+<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">(Source)</a></p>
 <h2 id="import-libraries"><a href="#import-libraries">1.1 Import Libraries</a></h2>
 <p>We begin by importing the <a href="https://github.com/zenith391/zgt"><strong>zgt GUI Library</strong></a> and <a href="https://ziglang.org/documentation/master/#Zig-Standard-Library"><strong>Zig Standard Library</strong></a> into our app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L1-L4">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Import the zgt library and Zig Standard Library
@@ -111,8 +111,17 @@ const std = @import(&quot;std&quot;);</code></pre></div>
 <p>Next we define the <strong>Main Function</strong> for our app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L4-L13">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function for our app
 pub fn main() !void {</code></pre></div>
-<p>“<strong><code>!void</code></strong>” says that our Main Function doesn’t return any value. (Hence “<code>void</code>”)</p>
-<p>But our function might return an <a href="https://ziglang.org/documentation/master/#Errors"><strong>Error</strong></a>. (Hence the “<code>!</code>”)</p>
+<p>“<strong><code>!void</code></strong>” says that…</p>
+<ul>
+<li>
+<p>Our Main Function doesn’t return any value.</p>
+<p>(Hence “<code>void</code>”)</p>
+</li>
+<li>
+<p>But our function might return an <a href="https://ziglang.org/documentation/master/#Errors"><strong>Error</strong></a></p>
+<p>(Hence the “<code>!</code>”)</p>
+</li>
+</ul>
 <p>Then we initialise the zgt Library and <strong>fetch the Window</strong> for our app…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Init the zgt library
     try zgt.backend.init();
@@ -153,8 +162,10 @@ pub fn main() !void {</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Run the Event Loop to handle Touch Events
     zgt.runEventLoop();
+
 }  // End of Main Function</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/pinephone-code2a.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/pinephone-code2a.png" alt="Handle the Buttons" /></p>
+<p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig">(Source)</a></p>
 <h2 id="handle-the-buttons"><a href="#handle-the-buttons">1.5 Handle the Buttons</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L46-L55">main.zig</a></p>
