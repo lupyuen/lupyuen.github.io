@@ -144,32 +144,33 @@ pub fn main() !void {</code></pre></div>
 
         // Save Button
         zgt.Button(.{ 
-            .label   = &quot;Save&quot;, 
-            .onclick = buttonClicked 
+          .label   = &quot;Save&quot;, 
+          .onclick = buttonClicked 
         }),
 
         // Run Button
         zgt.Button(.{ 
-            .label   = &quot;Run&quot;,  
-            .onclick = buttonClicked 
+          .label   = &quot;Run&quot;,  
+          .onclick = buttonClicked 
         }),
       }),  // End of Row</code></pre></div>
 <p>This code creates a Row of Widgets: <strong>Save Button</strong> and <strong>Run Button</strong>.</p>
 <p>(We’ll talk about <strong>buttonClicked</strong> in a while)</p>
-<p>Next we add an <strong>Editable Text Area</strong>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>      // Expanded means the widget will take all the space it can
-      // in the parent container
+<p>Next we add an <strong>Editable Text Area</strong> that will fill up the rest of the Column…</p>
+<div class="example-wrap"><pre class="language-zig"><code>      // Expanded means the widget will take all 
+      // the space it can in the parent container (Column)
       zgt.Expanded(
 
         // Editable Text Area
         zgt.TextArea(.{ 
-            .text = &quot;Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!&quot; 
+          .text = &quot;Hello World!\n\nThis is a Zig GUI App...\n\nBuilt for PinePhone...\n\nWith zgt Library!&quot; 
         })
-      )
-    })  // End of Column
-  );  // End of Window</code></pre></div>
+
+      )  // End of Expanded
+    })   // End of Column
+  );     // End of Window</code></pre></div>
 <p><em>What’s <code>.{ ... }</code>?</em></p>
-<p><code>.{ ... }</code> creates an <a href="https://ziglearn.org/chapter-1/#anonymous-structs"><strong>Anonymous Struct</strong></a> that matches the Struct Type that’s expected by the Called Function (like “zgt.Button”).</p>
+<p><code>.{ ... }</code> creates a Struct that matches the Struct Type expected by the Called Function (like “zgt.Button”).</p>
 <p>Thus this code…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Button with Anonymous Struct
 zgt.Button(.{ 
@@ -183,6 +184,7 @@ zgt.Button(zgt.Button_Impl.Config {
   .onclick = buttonClicked 
 }),</code></pre></div>
 <p>Because the function <strong>zgt.Button</strong> expects a Struct of type <strong>zgt.Button_Impl.Config</strong>.</p>
+<p><a href="https://ziglearn.org/chapter-1/#anonymous-structs">(<strong>Anonymous Struct</strong> is the proper name for <code>.{ ... }</code>)</a></p>
 <h2 id="show-the-window"><a href="#show-the-window">1.4 Show the Window</a></h2>
 <p>We set the Window Size and <strong>show the Window</strong>: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Resize the Window (might not be correct for PinePhone)
@@ -210,13 +212,28 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
     .{ button.getLabel() }
   );
 }</code></pre></div>
-<p>TODO: <code>*zgt.Button_Impl</code></p>
+<p>(<strong><code>*zgt.Button_Impl</code></strong> means “pointer to a Button_Impl Struct”)</p>
+<p><em>What’s std.log.info?</em></p>
+<p>That’s the Zig equivalent of <strong>printf</strong> for Formatted Printing.</p>
+<p>In the Format String, “<strong><code>{s}</code></strong>” is the same as “<strong><code>%s</code></strong>” in C.</p>
+<p>(Though we write “<strong><code>{}</code></strong>” instead of “<strong><code>%d</code></strong>” for printing numbers)</p>
+<p><a href="https://github.com/ziglang/zig/blob/master/lib/std/fmt.zig#L27-L72">(More about Format Specifiers)</a></p>
 <p><em>How is buttonClicked called?</em></p>
+<p>Earlier we did this: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L13-L36">main.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Save Button
+zgt.Button(.{ 
+  .label   = &quot;Save&quot;, 
+  .onclick = buttonClicked 
+}),
+
+// Run Button
+zgt.Button(.{ 
+  .label   = &quot;Run&quot;,  
+  .onclick = buttonClicked 
+}),</code></pre></div>
+<p>This tells the zgt Library to call <strong>buttonClicked</strong> when the Save Button and Run Button are clicked.</p>
+<p><a href="https://github.com/zenith391/zgt#usage">(Our PinePhone app is based on the zgt demo)</a></p>
 <p>TODO</p>
-<p>This app is based on the zgt demo…</p>
-<ul>
-<li><a href="https://github.com/zenith391/zgt#usage"><strong>zenith391/zgt</strong></a></li>
-</ul>
 <p>For comparison, here’s a typical GTK app coded in C…</p>
 <ul>
 <li><a href="https://www.gtk.org/docs/getting-started/hello-world"><strong>GTK App in C</strong></a></li>
