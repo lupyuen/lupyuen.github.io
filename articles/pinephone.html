@@ -309,26 +309,30 @@ zig build</code></pre></div>
 <p>If the build fails, check that the “<strong>gtk+-3.0</strong>” library is installed on PinePhone. <a href="https://github.com/zenith391/zgt/blob/master/build.zig#L9-L13">(Here’s why)</a></p>
 <p><a href="https://twitter.com/techneo/status/1539828828213616640">(Our app builds OK on Mobian after installing “gtk+-3.0”)</a></p>
 <h1 id="run-the-app"><a href="#run-the-app">5 Run The App</a></h1>
-<p>TODO</p>
-<p>To run the app on PinePhone…</p>
+<p>To run our Zig App on PinePhone…</p>
 <div class="example-wrap"><pre class="language-bash"><code>zig-out/bin/zig-pinephone-gui</code></pre></div>
 <p>We should see the screen below.</p>
-<p>When we tap the <code>Run</code> and <code>Save</code> buttons, we should see…</p>
+<p>When we tap the <strong>Run</strong> and <strong>Save</strong> Buttons, we should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>info: You clicked button with text Run
 info: You clicked button with text Save</code></pre></div>
-<p>Yep we have successfully built a Zig GUI App for PinePhone with zgt! 🎉</p>
+<p>Yep we have successfully built a Zig App for PinePhone with zgt! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
 <p><em>Is the app fast and responsive on PinePhone?</em></p>
 <p>Yep it feels as fast and responsive as a GTK app coded in C.</p>
 <p>Remember that Zig is a compiled language, and our compiled app is directly calling the GTK Library.</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-code3.jpg" alt="Source Code of our Zig App" /></p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">6 Zig Outcomes</a></h1>
-<p><em>Have we gained anything by coding the app in Zig?</em></p>
+<p><em>Have we gained anything by coding our app in Zig?</em></p>
 <p>If we compare our Zig App (pic above) with a typical GTK App in C…</p>
-<div class="example-wrap"><pre class="language-c"><code></code></pre></div>
-<p><a href="">(Source)</a></p>
-<p>Our Zig App looks cleaner and less cluttered.</p>
-<p>(Hopefully it’s also easier to extend and maintain)</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/pinephone-code4.jpg" alt="Typical GTK App in C" /></p>
+</blockquote>
+<blockquote>
+<p><a href="https://www.gtk.org/docs/getting-started/hello-world">(Source)</a></p>
+</blockquote>
+<p>Our Zig App looks cleaner and less cluttered, with minimal repetition.</p>
+<p>(Hopefully our Zig App is also easier to extend and maintain)</p>
+<p><em>What about Runtime Safety?</em></p>
 <p>TODO</p>
 <h1 id="pinebook-pro"><a href="#pinebook-pro">7 Pinebook Pro</a></h1>
 <p>TODO</p>
