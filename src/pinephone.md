@@ -157,9 +157,7 @@ Because the "zgt.Button" function expects a Struct of type "zgt.Button_Impl.Conf
 
 ## Show the Window
 
-TODO
-
-[main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46)
+We set the Window Size and __show the Window__: [main.zig](https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L36-L46)
 
 ```zig
   // Resize the Window (might not be correct for PinePhone)
@@ -169,7 +167,7 @@ TODO
   window.show();
 ```
 
-TODO
+Finally we start the __Event Loop__ that will handle Touch Events...
 
 ```zig
   // Run the Event Loop to handle Touch Events
@@ -177,6 +175,10 @@ TODO
 
 }  // End of Main Function
 ```
+
+We're done with our Main Function!
+
+Let's talk about the Event Handling for our Buttons...
 
 ![Handle the Buttons](https://lupyuen.github.io/images/pinephone-code2a.png)
 
