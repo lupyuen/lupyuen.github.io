@@ -645,9 +645,7 @@ This auto-importing of C Header Files works really well, as I have experienced h
 
 -   [__"Import LoRaWAN Library"__](https://lupyuen.github.io/articles/iot#import-lorawan-library)
 
-TODO
-
-From [libs/zgt/src/backends/gtk/backend.zig](https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig)
+zgt imports the __C Header Files for GTK__ like so: [libs/zgt/src/backends/gtk/backend.zig](https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig)
 
 ```zig
 pub const c = @cImport({
@@ -655,7 +653,9 @@ pub const c = @cImport({
 });
 ```
 
-From [libs/zgt/src/backends/gtk/backend.zig](https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig#L322-L352)
+[(__@cImport__ is explained here)](https://ziglang.org/documentation/master/#Import-from-C-Header-File)
+
+Then zgt calls the __imported GTK Functions__ like this: [backend.zig](https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig#L322-L352)
 
 ```zig
 pub const Button = struct {
@@ -673,23 +673,35 @@ pub const Button = struct {
     }
 
     pub fn create() BackendError!Button {
+
+        //  Call gtk_button_new_with_label() from GTK Library
         const button = c.gtk_button_new_with_label("") orelse return error.UnknownError;
+
+        //  Call gtk_widget_show() from GTK Library
         c.gtk_widget_show(button);
         try Button.setupEvents(button);
+
+        //  Call g_signal_connect_data() from GTK Library
         _ = c.g_signal_connect_data(button, "clicked", @ptrCast(c.GCallback, gtkClicked), null, @as(c.GClosureNotify, null), 0);
         return Button{ .peer = button };
     }
 
     pub fn setLabel(self: *const Button, label: [:0]const u8) void {
+
+        //  Call gtk_button_set_label() from GTK Library
         c.gtk_button_set_label(@ptrCast(*c.GtkButton, self.peer), label);
     }
 
     pub fn getLabel(self: *const Button) [:0]const u8 {
+
+        //  Call gtk_button_get_label() from GTK Library
         const label = c.gtk_button_get_label(@ptrCast(*c.GtkButton, self.peer));
         return std.mem.span(label);
     }
 };
 ```
+
+Super Brilliant! 👏
 
 TODO: [build.zig](https://github.com/zenith391/zgt/blob/master/build.zig) bundles the right libraries: GTK, Win32, WebAssembly
 
