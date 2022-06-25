@@ -508,6 +508,14 @@ We need to refer to the Zig Standard Library as well...
 
 -   [__Zig Standard Library__](https://ziglang.org/documentation/master/std)
 
+Check out the insightful articles at Zig News...
+
+-   [__Zig News__](https://zig.news)
+
+And join the Zig Community on Reddit...
+
+-   [__Zig on Reddit__](https://www.reddit.com/r/Zig/)
+
 ![VSCode Remote on PinePhone](https://lupyuen.github.io/images/pinephone-vscode.png)
 
 # Appendix: VSCode Remote
