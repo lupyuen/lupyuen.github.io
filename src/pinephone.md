@@ -492,6 +492,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1539782929114484736)
 
+1.  Zig works for complex PinePhone Apps too...
+
+    [__"Mepo: Fast, simple, and hackable OSM map viewer for Linux"__](https://sr.ht/~mil/Mepo/)
+
 # Appendix: Learning Zig
 
 _How do we learn Zig?_
@@ -515,6 +519,14 @@ Check out the insightful articles at Zig News...
 And join the Zig Community on Reddit...
 
 -   [__Zig on Reddit__](https://www.reddit.com/r/Zig/)
+
+The Gamedev Guide has some helpful articles on Zig...
+
+-   [__Zig Build__](https://ikrima.dev/dev-notes/zig/zig-build/)
+
+-   [__Zig Crash Course__](https://ikrima.dev/dev-notes/zig/zig-crash-course/)
+
+-   [__Zig Metaprogramming__](https://ikrima.dev/dev-notes/zig/zig-metaprogramming/)
 
 ![VSCode Remote on PinePhone](https://lupyuen.github.io/images/pinephone-vscode.png)
 
