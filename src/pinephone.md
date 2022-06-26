@@ -472,6 +472,12 @@ Tips for learning Zig...
 
 -   [__Learning Zig__](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
 
+Zig works great on __Microcontrollers__ too! Here's what I did...
+
+-   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
+
+-   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
@@ -479,6 +485,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/Zig/comments/vjqg88/build_a_pinephone_app_with_zig_and_zgt/)
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=31863269)
+
+-   [__My Current Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
 
 -   [__Check out my articles__](https://lupyuen.github.io)
 
