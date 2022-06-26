@@ -390,7 +390,11 @@ Our Zig App looks cleaner and less cluttered, with minimal repetition.
 
 _What about Runtime Safety?_
 
-Remember that we used "__`try`__" to handle Runtime Errors?
+Unlike C, Zig automatically does __Safety Checks__ on our app at runtime: Underflow, Overflow, Array Out-of-Bounds, ...
+
+-   [__"Zig Undefined Behavior"__](https://ziglang.org/documentation/master/#Undefined-Behavior)
+
+Here's another: Remember that we used "__`try`__" to handle Runtime Errors?
 
 ```zig
 // Init the zgt library
