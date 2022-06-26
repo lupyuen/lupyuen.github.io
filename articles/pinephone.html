@@ -341,7 +341,11 @@ info: You clicked button with text Save</code></pre></div>
 <p>Our Zig App looks cleaner and less cluttered, with minimal repetition.</p>
 <p>(Hopefully our Zig App is also easier to extend and maintain)</p>
 <p><em>What about Runtime Safety?</em></p>
-<p>Remember that we used “<strong><code>try</code></strong>” to handle Runtime Errors?</p>
+<p>Unlike C, Zig automatically does <strong>Safety Checks</strong> on our app at runtime: Underflow, Overflow, Array Out-of-Bounds, …</p>
+<ul>
+<li><a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>“Zig Undefined Behavior”</strong></a></li>
+</ul>
+<p>Here’s another: Remember that we used “<strong><code>try</code></strong>” to handle Runtime Errors?</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init the zgt library
 try zgt.backend.init();
 
