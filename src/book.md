@@ -64,6 +64,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 -   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
 
+-   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
+
 -   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
 
 -   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
@@ -264,6 +266,8 @@ For __Apache NuttX OS__
 
 -   ["NuttX Touch Panel Driver for PineDio Stack BL604"](https://lupyuen.github.io/articles/touch)
 
+-   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
+
 For __BL602 IoT SDK__
 
 -   ["PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"](https://lupyuen.github.io/articles/display)
@@ -383,6 +387,8 @@ For __Apache NuttX OS__
 -   ["Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"](https://lupyuen.github.io/articles/zig)
 
 -   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
+
+-   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
 
 ![BASIC on BL602](https://lupyuen.github.io/images/book-basic.jpg)
 
@@ -546,15 +552,13 @@ Check this book again for future updates...
 
 -   __IoT Education with BL602 and BL604__
 
--   __Zig Type Reflection: Visualise the Call Flow in a C Library__
-
--   __Inside LoRaMAC: The LoRaWAN Stack__
-
--   __LVGL Touchscreen Apps with Zig__
-
 -   __The Things Network on NuttX__
 
 -   __LoRaWAN ChirpStack with Prometheus and Grafana__
+
+-   __Zig Type Reflection: Visualise the Call Flow in a C Library__
+
+-   __Inside LoRaMAC: The LoRaWAN Stack__
 
 -   [__Zig on PinePhone__](https://lupyuen.github.io/articles/pinephone)
 
