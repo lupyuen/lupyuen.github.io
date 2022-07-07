@@ -2,13 +2,9 @@
 
 📝 _14 Jul 2022_
 
-![](https://lupyuen.github.io/images/lvgl-title.jpg)
+![LVGL Touchscreen App on Pine64's PineDio Stack BL604](https://lupyuen.github.io/images/lvgl-title.jpg)
 
-TODO
-
-[__LVGL__](https://docs.lvgl.io/master/) is a popular GUI Library in C that runs on many Embedded Devices.
-
-[(Smartwatches too!)](https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud#modify-the-pinetime-source-code)
+[__LVGL__](https://docs.lvgl.io/master/) is a popular __GUI Library__ in C that powers many Embedded Devices. [(Smartwatches too)](https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud#modify-the-pinetime-source-code)
 
 [__Zig__](https://ziglang.org) is a new-ish Programming Language that works well with C. And it comes with built-in [__Safety Checks__](https://ziglang.org/documentation/master/#Undefined-Behavior) at runtime.
 
