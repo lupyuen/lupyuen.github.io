@@ -14,7 +14,11 @@ _Maybe wrap the LVGL API in Zig to build simpler, safer LVGL Apps?_
 
 _Or will we get blocked by something beyond our control? (Like Bit Fields in C Structs)_
 
-Let's find out!
+Let's find out! We'll do this on Pine64's [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V Board (pic above) with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/pinedio2).
+
+(The steps should be similar for other platforms)
+
+Join me as we dive into our __LVGL Touchscreen App in Zig__...
 
 -   [__lupyuen/zig-lvgl-nuttx__](https://github.com/lupyuen/zig-lvgl-nuttx)
 
