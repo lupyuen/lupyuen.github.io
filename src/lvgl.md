@@ -12,7 +12,7 @@ _Can we use Zig to code an LVGL Touchscreen App?_
 
 _Maybe wrap the LVGL API in Zig to build simpler, safer LVGL Apps?_
 
-_Or will we get blocked by something along the way? (Like Bit Fields in C Structs)_
+_Or will we get blocked by something beyond our control? (Like Bit Fields in C Structs)_
 
 Let's find out!
 
