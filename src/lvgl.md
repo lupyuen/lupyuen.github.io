@@ -16,6 +16,8 @@ _Or will we get blocked by something along the way? (Like Bit Fields in C Struct
 
 Let's find out!
 
+-   [__lupyuen/zig-lvgl-nuttx__](https://github.com/lupyuen/zig-lvgl-nuttx)
+
 # What's Next
 
 TODO
