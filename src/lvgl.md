@@ -131,9 +131,15 @@ Note that we used "__`.?`__" to check for __Null Pointers__ returned by C Functi
 
 _But this looks virtually identical to C!_
 
-TODO: We no longer need to specify types like __lv_obj_t__
+Yep and we see that...
 
-TODO: Error Handling
+-   We no longer need to specify __Type Names__
+
+    (Like __lv_obj_t__)
+
+-   We made a few tweaks for __Error Handling__
+
+    (As we'll soon learn)
 
 _What's "`!void`"?_
 
@@ -173,9 +179,6 @@ Note that we used `.?` to check for Null Pointers returned by C Functions.
 When we run this code, we'll see a Zig Panic...
 
 ```text
-nsh> lvgltest
-Zig LVGL Test
-
 !ZIG PANIC!
 attempt to use null value
 Stack Trace:
