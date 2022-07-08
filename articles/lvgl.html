@@ -202,7 +202,7 @@
 </li>
 <li>
 <p>We write “<strong><code>.?</code></strong>” to catch <strong>Null Pointers</strong></p>
-<p>(More about this in the next section)</p>
+<p>(Coming up in the next section)</p>
 </li>
 </ul>
 <p><em>What’s “<code>!void</code>”?</em></p>
@@ -223,8 +223,8 @@
 <p>Earlier we saw our Zig App calling the <strong>LVGL Functions</strong> imported from C…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Zig calls a C function
 const disp_drv = c.get_disp_drv().?;</code></pre></div>
-<p>Note that we used “<strong><code>.?</code></strong>” to catch <strong>Null Pointers</strong> returned by C Functions.</p>
-<p><em>What happens if a C Function returns a Null Pointer to Zig?</em></p>
+<p>Note that we write “<strong><code>.?</code></strong>” to catch <strong>Null Pointers</strong> returned by C Functions.</p>
+<p><em>What happens if the C Function returns a Null Pointer to Zig?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Suppose this C function...
 lv_disp_drv_t *get_disp_drv(void) {
   // Returns a Null Pointer to Zig
@@ -245,12 +245,12 @@ Stack Trace:
 23023602: c92080e7 jalr  -878(ra) # 23023290 &lt;panic&gt;
 23023606: ff042503 lw    a0,-16(s0)
 2302360a: fea42623 sw    a0,-20(s0)</code></pre></div>
-<p>We see that <code>23023606</code> points to the line of code that encountered the Null Pointer.</p>
+<p><code>23023606</code> points to the line of code that caught the Null Pointer.</p>
 <p>So Zig really helps us to write safer programs.</p>
 <p><em>What if we omit “<code>.?</code>” and do this?</em></p>
 <div class="example-wrap"><pre class="language-zig"><code>const disp_drv = c.get_disp_drv();</code></pre></div>
-<p>This crashes with a RISC-V Exception when the code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.</p>
-<p>Thus we always use “<code>.?</code>” to catch Null Pointers returned by C Functions.</p>
+<p>This crashes with a <strong>RISC-V Exception</strong> when our code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.</p>
+<p>Thus we always write “<code>.?</code>” to catch Null Pointers returned by C Functions.</p>
 <p>(Hopefully someday we’ll have a Zig Lint Tool that will warn us if we forget to use “<code>.?</code>”)</p>
 <h1 id="import-c-functions"><a href="#import-c-functions">4 Import C Functions</a></h1>
 <p>TODO</p>
