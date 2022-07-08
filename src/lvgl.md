@@ -315,6 +315,10 @@ zig translate-c \
   >lvgltest.zig
 ```
 
+The target `-target riscv32-freestanding-none -mcpu=baseline_rv32-d` is specific to Zig and the BL602 RISC-V SoC...
+
+TODO
+
 To fix the translation we need to insert this...
 
 ```c
