@@ -32,11 +32,7 @@ We begin with a barebones __LVGL App in C__ that renders a line of text (pic abo
 
 -   Create a __Label Widget__
 
--   Set the __Properties__ of the Label
-
--   Set the __Text__ of the Label
-
--   Set the __Position__ of the Label
+-   Set the __Properties, Text and Position__ of the Label
 
 ```c
 static void create_widgets(void) {
