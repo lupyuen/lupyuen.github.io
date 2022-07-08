@@ -333,6 +333,8 @@ zig translate-c \
   -Dmain=lvgltest_main  \
   lvgltest.c \
   &gt;lvgltest.zig</code></pre></div>
+<p>The target <code>-target riscv32-freestanding-none -mcpu=baseline_rv32-d</code> is specific to Zig and the BL602 RISC-V SoC…</p>
+<p>TODO</p>
 <p>To fix the translation we need to insert this…</p>
 <div class="example-wrap"><pre class="language-c"><code>#if defined(__NuttX__) &amp;&amp; defined(__clang__)  //  Workaround for NuttX with zig cc
 #include &lt;arch/types.h&gt;
