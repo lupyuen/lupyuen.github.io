@@ -694,6 +694,10 @@ Sadly Zig won't import __C Structs containing Bit Fields__.
 
 TODO: Current version
 
+# Logging and Panic Handler
+
+TODO
+
 # What's Next
 
 TODO
