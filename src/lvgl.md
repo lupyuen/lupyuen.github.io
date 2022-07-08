@@ -315,22 +315,27 @@ const c = @cImport({ ... });
 
 That's why we write "`c.`_something_" when we refer to C Functions and Macros.
 
+_What about the Main Function of our Zig App?_
+
+It gets complicated. We'll talk later about the [__Main Function lvgltest_main__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L41-L109).
+
 # Compile Zig App
 
-TODO
+Below are the steps to __compile our Zig LVGL App__ for Apache NuttX RTOS and BL602 RISC-V SoC...
 
-We compile our Zig LVGL App...
+First we download and compile __Apache NuttX RTOS__ for PineDio Stack BL604...
+
+-   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
+
+After building NuttX, we download and compile our __Zig LVGL App__...
 
 ```bash
 ##  Download our Zig LVGL App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-lvgl-nuttx
 cd zig-lvgl-nuttx
-```
 
-TODO
-
-```bash
-##  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
+##  Compile the Zig App for BL602
+##  (RV32IMACF with Hardware Floating-Point)
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
 zig build-obj \
   --verbose-cimport \
@@ -344,7 +349,21 @@ zig build-obj \
   lvgltest.zig
 ```
 
-TODO
+TODO: See the Compile Log
+
+Note that __target__ and __mcpu__ are specific to BL602...
+
+-   [__"Zig Target"__](https://lupyuen.github.io/articles/zig#zig-target)
+
+_How did we get the Compiler Options `-isystem` and `-I`?_
+
+Remember that we'll link our Compiled Zig App with __Apache NuttX RTOS.__
+
+Hence the __Zig Compiler Options must be the same__ as the GCC Options used to compile NuttX.
+
+[(See the GCC Options for NuttX)](https://lupyuen.github.io/articles/lvgl#appendix-compiler-options)
+
+Next comes a quirk specific to BL602: We must __patch the ELF Header__ from Software Floating-Point ABI to Hardware Floating-Point ABI...
 
 ```bash
 ##  Patch the ELF Header of `lvgltest.o` from Soft-Float ABI to Hard-Float ABI
@@ -354,43 +373,49 @@ xxd -c 1 lvgltest.o \
 cp lvgltest2.o lvgltest.o
 ```
 
-TODO
+[(More about this)](https://lupyuen.github.io/articles/zig#patch-elf-header)
+
+Finally we inject our __Compiled Zig App__ into the NuttX Project Directory and link it into the __NuttX Firmware__...
 
 ```bash
 ##  Copy the compiled app to NuttX and overwrite `lvgltest.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
 cp lvgltest.o $HOME/nuttx/apps/examples/lvgltest/lvgltest*.o
-```
 
-TODO
-
-```bash
 ##  Build NuttX to link the Zig Object from `lvgltest.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
 make
+
+##  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
+mkdir /mnt/c/blflash
+cp nuttx.bin /mnt/c/blflash
 ```
+
+We're ready to run our Zig App!
+
+![LVGL Test App](https://lupyuen.github.io/images/lvgl-title.jpg)
 
 # Run Zig App
 
-TODO
+Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on PineDio Stack...
 
-When tested on PineDio Stack BL604, our Zig LVGL App correctly renders the screen and correctly handles touch input (pic below). Yay!
+-   [__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
+
+-   [__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
+
+In the NuttX Shell, enter this command to start our Zig App...
+
+```bash
+lvgltest
+```
+
+We should see...
 
 ```text
-NuttShell (NSH) NuttX-10.3.0
-nsh> lvgltest
 Zig LVGL Test
 tp_init: Opening /dev/input0
-cst816s_open: 
-cst816s_poll_notify: 
-cst816s_get_touch_data: 
-cst816s_i2c_read: 
 cst816s_get_touch_data: DOWN: id=0, touch=0, x=176, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       176
-cst816s_get_touch_data:   y:       23
 ...
 tp_cal result
 offset x:23, y:14
@@ -398,9 +423,13 @@ range x:189, y:162
 invert x/y:1, x:0, y:1
 ```
 
-[(Source)](https://gist.github.com/lupyuen/795d7660679c3e0288e8fe5bec190890)
+[(See the complete log)](https://gist.github.com/lupyuen/795d7660679c3e0288e8fe5bec190890)
 
-![LVGL Test App in C](https://lupyuen.github.io/images/lvgl-title.jpg)
+Our Zig App responds to touch and correctly renders the LVGL Screen (pic above).
+
+Yep we have successfully built an LVGL Touchscreen App with Zig!
+
+(We'll talk about Touch Input in a while)
 
 # Simplify LVGL API
 
@@ -485,6 +514,10 @@ TODO
 
 Let's wrap the LVGL API in Zig.
 
+## Get Active Screen
+
+TODO
+
 Here's the implementation of `getActiveScreen`, which returns the LVGL Active Screen...
 
 ```zig
@@ -507,6 +540,10 @@ pub fn getActiveScreen() !Object {
 ```
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L26-L34)
+
+## Object Struct
+
+TODO
 
 `Object` is a Zig Struct that wraps around an LVGL Object...
 
@@ -545,6 +582,10 @@ pub const Object = struct {
 ```
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L36-L58)
+
+## Label Struct
+
+TODO
 
 `Label` is a Zig Struct that wraps around an LVGL Label...
 
@@ -597,7 +638,7 @@ pub const Label = struct {
 
 Let's call the wrapped LVGL API...
 
-# After Wrapping LVGL API
+## After Wrapping LVGL
 
 TODO
 
@@ -643,157 +684,15 @@ fn createWidgetsWrapped() !void {
 
 (TODO: Convert `LV_LABEL_LONG_BREAK`, `LV_LABEL_ALIGN_CENTER` and other constants to Enums)
 
-Let's talk about creating the Zig Wrapper...
+![Our app calling the LVGL API wrapped with Zig](https://lupyuen.github.io/images/lvgl-code4a.png)
 
-![TODO](https://lupyuen.github.io/images/lvgl-code4a.png)
+# Zig vs Bit Fields
 
-# Auto-Generate Zig Wrapper
+_Zig sounds amazing! Is there anything that Zig won't do?_
 
-TODO
+Sadly Zig won't import __C Structs containing Bit Fields__.
 
-_Can we auto-generate the Wrapper Code?_
-
-We could use Zig Type Reflection...
-
--   ["Zig Type Reflection"](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/README.md#zig-type-reflection)
-
-But Zig Type Reflection doesn't include the Parameter Types.
-
-Instead, we can parse the Type Info JSON generated by Zig Compiler...
-
-```bash
-## Emit IR, BC and Type Info
-zig build-obj \
-  -femit-llvm-ir \
-  -femit-llvm-bc \
-  -femit-analysis \
-  --verbose-cimport \
-  -target riscv32-freestanding-none \
-  -mcpu=baseline_rv32-d \
-  -isystem "$HOME/nuttx/nuttx/include" \
-  -I "$HOME/nuttx/apps/graphics/lvgl" \
-  -I "$HOME/nuttx/apps/graphics/lvgl/lvgl" \
-  -I "$HOME/nuttx/apps/include" \
-  -I "$HOME/nuttx/apps/examples/lvgltest" \
-  lvgltest.zig
-```
-
-This produces the IR, BC and Type Info JSON files: 
-
-```text
-lvgltest.ll
-lvgltest.bc
-lvgltest-analysis.json
-```
-
-Let's look up the Type Info for the LVGL Function `lv_obj_align`.
-
-We search for `lv_obj_align` in `lvgltest-analysis.json`...
-
-```json
-"decls":
-  ...
-  {
-   "import": 99,
-   "src": 1962,
-   "name": "lv_obj_align",
-   "kind": "const",
-   "type": 148,
-   "value": 60
-  },
-```
-
-Then we look up type 148 in `lvgltest-analysis.json`...
-
-```bash
-$ jq '.types[148]' lvgltest-analysis.json
-{
-  "kind": 18,
-  "name": "fn(?*.cimport:10:11.struct__lv_obj_t, ?*const .cimport:10:11.struct__lv_obj_t, u8, i16, i16) callconv(.C) void",
-  "generic": false,
-  "ret": 70,
-  "args": [
-    79,
-    194,
-    95,
-    134,
-    134
-  ]
-}
-```
-
-The First Parameter has type 79, so we look up `lvgltest-analysis.json` and follow the trail...
-
-```bash
-$ jq '.types[79]' lvgltest-analysis.json
-{
-  "kind": 13,
-  "child": 120
-}
-## Kind 13 is `?` (Optional)
-
-$ jq '.types[120]' lvgltest-analysis.json
-{
-  "kind": 6,
-  "elem": 137
-}
-## Kind 6 is `*` (Pointer)
-
-$ jq '.types[137]' lvgltest-analysis.json
-{
-  "kind": 20,
-  "name": ".cimport:10:11.struct__lv_obj_t"
-}
-## Kind 20 is `struct`???
-```
-
-Which gives us the complete type of the First Parameter...
-
-```zig
-?*.cimport:10:11.struct__lv_obj_t
-```
-
-We don't have the Parameter Names though, we might need to parse the `.cimport` file.
-
-[(More about jq)](https://stedolan.github.io/jq/manual/)
-
-# Object-Oriented Wrapper for LVGL
-
-TODO
-
-_Is LVGL really Object-Oriented?_
-
-Yep the LVGL API is actually Object-Oriented since it uses Inheritance.
-
-All LVGL Widgets (Labels, Buttons, etc) have the same Base Type: `lv_obj_t`. But same LVGL Functions will work only for specific Widgets, some will work only on any Widget...
-
--   `lv_label_set_text` works only for Labels
-
--   `lv_obj_set_width` works for any Widget
-
-The LVGL Docs also say that LVGL is Object-Oriented...
-
--   ["Base object (lv_obj)"](https://docs.lvgl.io/latest/en/html/widgets/obj.html)
-
-Creating an Object-Oriented Zig Wrapper for LVGL might be challenging: Our Zig Wrapper needs to support `setWidth` for all LVGL Widgets.
-
-To do this we might use Zig Interfaces and `@fieldParentPtr`...
-
--   ["Interfaces in Zig"](https://zig.news/david_vanderson/interfaces-in-zig-o1c)
-
--   ["Zig Interfaces for the Uninitiated"](https://www.nmichaels.org/zig/interfaces.html)
-
-Which look somewhat similar to VTables in C++...
-
--   ["Allocgate is coming in Zig 0.9"](https://pithlessly.github.io/allocgate.html)
-
-_Are there any Object-Oriented Bindings for LVGL?_
-
-The official Python Bindings for LVGL appear to be Object-Oriented. This could inspire our Object-Oriented Wrapper in Zig...
-
--   [Python Bindings for LVGL](https://github.com/lvgl/lv_binding_micropython)
-
-However the Python Bindings are Dynamically Typed, might be tricky implementing them as Static Types in Zig.
+TODO: Current version
 
 # What's Next
 
@@ -1372,3 +1271,151 @@ fn createWidgetsUnwrapped() !void {
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147)
 
 The Zig Functions look very similar to C: [lvgltest.c](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L318)
+
+# Appendix: Auto-Generate Zig Wrapper
+
+TODO
+
+_Can we auto-generate the Wrapper Code?_
+
+We could use Zig Type Reflection...
+
+-   ["Zig Type Reflection"](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/README.md#zig-type-reflection)
+
+But Zig Type Reflection doesn't include the Parameter Types.
+
+Instead, we can parse the Type Info JSON generated by Zig Compiler...
+
+```bash
+## Emit IR, BC and Type Info
+zig build-obj \
+  -femit-llvm-ir \
+  -femit-llvm-bc \
+  -femit-analysis \
+  --verbose-cimport \
+  -target riscv32-freestanding-none \
+  -mcpu=baseline_rv32-d \
+  -isystem "$HOME/nuttx/nuttx/include" \
+  -I "$HOME/nuttx/apps/graphics/lvgl" \
+  -I "$HOME/nuttx/apps/graphics/lvgl/lvgl" \
+  -I "$HOME/nuttx/apps/include" \
+  -I "$HOME/nuttx/apps/examples/lvgltest" \
+  lvgltest.zig
+```
+
+This produces the IR, BC and Type Info JSON files: 
+
+```text
+lvgltest.ll
+lvgltest.bc
+lvgltest-analysis.json
+```
+
+Let's look up the Type Info for the LVGL Function `lv_obj_align`.
+
+We search for `lv_obj_align` in `lvgltest-analysis.json`...
+
+```json
+"decls":
+  ...
+  {
+   "import": 99,
+   "src": 1962,
+   "name": "lv_obj_align",
+   "kind": "const",
+   "type": 148,
+   "value": 60
+  },
+```
+
+Then we look up type 148 in `lvgltest-analysis.json`...
+
+```bash
+$ jq '.types[148]' lvgltest-analysis.json
+{
+  "kind": 18,
+  "name": "fn(?*.cimport:10:11.struct__lv_obj_t, ?*const .cimport:10:11.struct__lv_obj_t, u8, i16, i16) callconv(.C) void",
+  "generic": false,
+  "ret": 70,
+  "args": [
+    79,
+    194,
+    95,
+    134,
+    134
+  ]
+}
+```
+
+The First Parameter has type 79, so we look up `lvgltest-analysis.json` and follow the trail...
+
+```bash
+$ jq '.types[79]' lvgltest-analysis.json
+{
+  "kind": 13,
+  "child": 120
+}
+## Kind 13 is `?` (Optional)
+
+$ jq '.types[120]' lvgltest-analysis.json
+{
+  "kind": 6,
+  "elem": 137
+}
+## Kind 6 is `*` (Pointer)
+
+$ jq '.types[137]' lvgltest-analysis.json
+{
+  "kind": 20,
+  "name": ".cimport:10:11.struct__lv_obj_t"
+}
+## Kind 20 is `struct`???
+```
+
+Which gives us the complete type of the First Parameter...
+
+```zig
+?*.cimport:10:11.struct__lv_obj_t
+```
+
+We don't have the Parameter Names though, we might need to parse the `.cimport` file.
+
+[(More about jq)](https://stedolan.github.io/jq/manual/)
+
+## Object-Oriented Wrapper for LVGL
+
+TODO
+
+_Is LVGL really Object-Oriented?_
+
+Yep the LVGL API is actually Object-Oriented since it uses Inheritance.
+
+All LVGL Widgets (Labels, Buttons, etc) have the same Base Type: `lv_obj_t`. But same LVGL Functions will work only for specific Widgets, some will work only on any Widget...
+
+-   `lv_label_set_text` works only for Labels
+
+-   `lv_obj_set_width` works for any Widget
+
+The LVGL Docs also say that LVGL is Object-Oriented...
+
+-   ["Base object (lv_obj)"](https://docs.lvgl.io/latest/en/html/widgets/obj.html)
+
+Creating an Object-Oriented Zig Wrapper for LVGL might be challenging: Our Zig Wrapper needs to support `setWidth` for all LVGL Widgets.
+
+To do this we might use Zig Interfaces and `@fieldParentPtr`...
+
+-   ["Interfaces in Zig"](https://zig.news/david_vanderson/interfaces-in-zig-o1c)
+
+-   ["Zig Interfaces for the Uninitiated"](https://www.nmichaels.org/zig/interfaces.html)
+
+Which look somewhat similar to VTables in C++...
+
+-   ["Allocgate is coming in Zig 0.9"](https://pithlessly.github.io/allocgate.html)
+
+_Are there any Object-Oriented Bindings for LVGL?_
+
+The official Python Bindings for LVGL appear to be Object-Oriented. This could inspire our Object-Oriented Wrapper in Zig...
+
+-   [Python Bindings for LVGL](https://github.com/lvgl/lv_binding_micropython)
+
+However the Python Bindings are Dynamically Typed, might be tricky implementing them as Static Types in Zig.
