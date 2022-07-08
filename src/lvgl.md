@@ -10,9 +10,9 @@
 
 _Can we use Zig to code an LVGL Touchscreen App?_
 
-_Maybe wrap the LVGL API in Zig, making it a little safer and friendlier?_
+_Maybe make LVGL a little safer and friendlier... By wrapping the LVGL API in Zig?_
 
-_Or will we get blocked by something beyond our control? (Like Bit Fields in C Structs)_
+_Or will we get blocked by something beyond our control? (Like Bit Fields in LVGL Structs)_
 
 Let's find out! We'll do this on Pine64's [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V Board (pic above) with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/pinedio2).
 
