@@ -36,22 +36,23 @@ We begin with a barebones __LVGL App in C__ that renders a line of text (pic abo
 
 ```c
 static void create_widgets(void) {
-  //  Get the Active Screen
+
+  // Get the Active Screen
   lv_obj_t *screen = lv_scr_act();
 
-  //  Create a Label Widget
+  // Create a Label Widget
   lv_obj_t *label = lv_label_create(screen, NULL);
 
-  //  Wrap long lines in the label text
+  // Wrap long lines in the label text
   lv_label_set_long_mode(label, LV_LABEL_LONG_BREAK);
 
-  //  Interpret color codes in the label text
+  // Interpret color codes in the label text
   lv_label_set_recolor(label, true);
 
-  //  Center align the label text
+  // Center align the label text
   lv_label_set_align(label, LV_LABEL_ALIGN_CENTER);
 
-  //  Set the label text and colors
+  // Set the label text and colors
   lv_label_set_text(
     label, 
     "#ff0000 HELLO# "    //  Red Text
@@ -59,13 +60,13 @@ static void create_widgets(void) {
     "#0000ff STACK!# "   //  Blue Text
   );
 
-  //  Set the label width
+  // Set the label width
   lv_obj_set_width(label, 200);
 
-  //  Align the label to the center of the screen, shift 30 pixels up
+  // Align the label to the center of the screen, shift 30 pixels up
   lv_obj_align(label, NULL, LV_ALIGN_CENTER, 0, -30);
 
-  //  Omitted: LVGL Canvas (we'll find out why)
+  // Omitted: LVGL Canvas (we'll find out why)
 }
 ```
 
@@ -73,13 +74,139 @@ static void create_widgets(void) {
 
 Let's convert this to Zig.
 
+_What if we're not familiar with Zig?_
+
+The following sections assume that we're familiar with C.
+
+The parts that look Zig-ish shall be explained with examples in C.
+
+[(If we're keen to learn Zig, see this)](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
+
 _Where's the rest of the code that initialises LVGL?_
 
 We hit some complications converting the code to Zig, more about this in a while.
 
 # Zig LVGL App
 
+Now the same LVGL App, but __in Zig__...
+
+```zig
+fn createWidgetsUnwrapped() !void {
+
+  // Get the Active Screen
+  const screen = c.lv_scr_act().?;
+
+  // Create a Label Widget
+  const label = c.lv_label_create(screen, null).?;
+
+  // Wrap long lines in the label text
+  c.lv_label_set_long_mode(label, c.LV_LABEL_LONG_BREAK);
+
+  // Interpret color codes in the label text
+  c.lv_label_set_recolor(label, true);
+
+  // Center align the label text
+  c.lv_label_set_align(label, c.LV_LABEL_ALIGN_CENTER);
+
+  // Set the label text and colors.
+  // `++` is the operator that concatenates two strings or arrays.
+  c.lv_label_set_text(
+    label, 
+    "#ff0000 HELLO# "   ++  // Red Text
+    "#00aa00 PINEDIO# " ++  // Green Text
+    "#0000ff STACK!# "      // Blue Text
+  );
+
+  // Set the label width
+  c.lv_obj_set_width(label, 200);
+
+  // Align the label to the center of the screen, shift 30 pixels up
+  c.lv_obj_align(label, null, c.LV_ALIGN_CENTER, 0, -30);
+}
+```
+
+[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147)
+
+Note that we used "__`.?`__" to check for __Null Pointers__ returned by C Functions. More about this in the next section.
+
+_But this looks virtually identical to C!_
+
+TODO: Error Handling
+
+_What's "`!void`"?_
+
+"__`!void`__" is the Return Type for our Zig Function...
+
+-   Our Zig Function doesn't return any value
+
+    (Hence "`void`")
+
+-   But our function might return an [__Error__](https://ziglang.org/documentation/master/#Errors)
+
+    (Hence the "`!`")
+
+Let's talk about Null Pointers in Zig...
+
+# Zig Checks Null Pointers
+
 TODO
+
+_What happens if a C Function returns a Null Pointer..._
+
+```c
+lv_disp_drv_t *get_disp_drv(void) {
+  // Return a Null Pointer
+  return NULL;
+}
+```
+
+_And we call it from Zig?_
+
+```zig
+const disp_drv = c.get_disp_drv().?;
+```
+
+Note that we used `.?` to check for Null Pointers returned by C Functions.
+
+When we run this code, we'll see a Zig Panic...
+
+```text
+nsh> lvgltest
+Zig LVGL Test
+
+!ZIG PANIC!
+attempt to use null value
+Stack Trace:
+0x23023606
+```
+
+The Stack Trace Address `23023606` points to the line of code that encountered the Null Pointer...
+
+```text
+zig-lvgl-nuttx/lvgltest.zig:50
+    const disp_drv = c.get_disp_drv().?;
+230235f4:   23089537            lui     a0,0x23089
+230235f8:   5ac50513            addi    a0,a0,1452 # 230895ac <__unnamed_10>
+230235fc:   4581                li      a1,0
+230235fe:   00000097            auipc   ra,0x0
+23023602:   c92080e7            jalr    -878(ra) # 23023290 <panic>
+23023606:   ff042503            lw      a0,-16(s0)
+2302360a:   fea42623            sw      a0,-20(s0)
+```
+
+So Zig really helps us to write safer programs.
+
+_What if we omit `.?` and do this?_
+
+```zig
+const disp_drv = c.get_disp_drv();
+```
+
+This crashes with a RISC-V Exception when the code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.
+
+Thus we always use `.?` to check for Null Pointers returned by C Functions!
+
+(Hopefully someday we'll have a Zig Lint Tool that will warn us if we forget to use `.?`)
 
 # Compile Zig App
 
@@ -702,69 +829,6 @@ fn createWidgetsUnwrapped() !void {
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147)
 
 The Zig Functions look very similar to C: [lvgltest.c](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L318)
-
-Note that we used `.?` to check for Null Pointers returned by C Functions. Let's find out why...
-
-# Zig Checks Null Pointers
-
-TODO
-
-_What happens if a C Function returns a Null Pointer..._
-
-```c
-lv_disp_drv_t *get_disp_drv(void) {
-  // Return a Null Pointer
-  return NULL;
-}
-```
-
-_And we call it from Zig?_
-
-```zig
-const disp_drv = c.get_disp_drv().?;
-```
-
-Note that we used `.?` to check for Null Pointers returned by C Functions.
-
-When we run this code, we'll see a Zig Panic...
-
-```text
-nsh> lvgltest
-Zig LVGL Test
-
-!ZIG PANIC!
-attempt to use null value
-Stack Trace:
-0x23023606
-```
-
-The Stack Trace Address `23023606` points to the line of code that encountered the Null Pointer...
-
-```text
-zig-lvgl-nuttx/lvgltest.zig:50
-    const disp_drv = c.get_disp_drv().?;
-230235f4:   23089537            lui     a0,0x23089
-230235f8:   5ac50513            addi    a0,a0,1452 # 230895ac <__unnamed_10>
-230235fc:   4581                li      a1,0
-230235fe:   00000097            auipc   ra,0x0
-23023602:   c92080e7            jalr    -878(ra) # 23023290 <panic>
-23023606:   ff042503            lw      a0,-16(s0)
-2302360a:   fea42623            sw      a0,-20(s0)
-```
-
-So Zig really helps us to write safer programs.
-
-_What if we omit `.?` and do this?_
-
-```zig
-const disp_drv = c.get_disp_drv();
-```
-
-This crashes with a RISC-V Exception when the code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.
-
-Thus we always use `.?` to check for Null Pointers returned by C Functions!
-
-(Hopefully someday we'll have a Zig Lint Tool that will warn us if we forget to use `.?`)
 
 # Simplify LVGL API
 
