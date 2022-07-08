@@ -321,9 +321,13 @@ It gets complicated. We'll talk later about the [__Main Function lvgltest_main__
 
 # Compile Zig App
 
-Below are the steps to __compile our Zig LVGL App__ for Apache NuttX RTOS and BL602 RISC-V SoC...
+Below are the steps to __compile our Zig LVGL App__ for Apache NuttX RTOS and BL602 RISC-V SoC.
 
-First we download and compile __Apache NuttX RTOS__ for PineDio Stack BL604...
+First we download the latest version of __Zig Compiler__ (0.10.0 or later), extract it and add to PATH...
+
+-   [__Zig Compiler Downloads__](https://ziglang.org/download/)
+
+Then we download and compile __Apache NuttX RTOS__ for PineDio Stack BL604...
 
 -   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
 
@@ -868,6 +872,8 @@ And the auto-translation from C to Zig: [translated/lvgltest.zig](translated/lvg
 
 # Appendix: Zig Auto-Translation is Incomplete
 
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+
 TODO
 
 The Auto-Translation from C to Zig is missing 2 key functions: `lvgltest_main` and `create_widgets`...
@@ -901,6 +907,8 @@ We see that Zig couldn't translate the type `lv_disp_drv_t` because it's opaque.
 Let's find out why.
 
 # Appendix: Zig Opaque Types
+
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
 TODO
 
