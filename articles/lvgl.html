@@ -186,17 +186,16 @@
   c.lv_obj_align(label, null, c.LV_ALIGN_CENTER, 0, -30);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147">(Source)</a></p>
-<p>Note that we used “<strong><code>.?</code></strong>” to check for <strong>Null Pointers</strong> returned by C Functions. More about this in the next section.</p>
-<p><em>But this looks virtually identical to C!</em></p>
+<p><em>But this looks mighty similar to C!</em></p>
 <p>Yep and we see that…</p>
 <ul>
 <li>
-<p>We no longer need to specify <strong>Type Names</strong></p>
+<p>We no longer specify <strong>Type Names</strong></p>
 <p>(Like <strong>lv_obj_t</strong>)</p>
 </li>
 <li>
-<p>We made a few tweaks for <strong>Error Handling</strong></p>
-<p>(As we’ll soon learn)</p>
+<p>We used “<strong><code>.?</code></strong>” to catch <strong>Null Pointers</strong></p>
+<p>(More about this in the next section)</p>
 </li>
 </ul>
 <p><em>What’s “<code>!void</code>”?</em></p>
