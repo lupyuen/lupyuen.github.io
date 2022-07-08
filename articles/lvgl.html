@@ -66,22 +66,24 @@
     <h1 class="title">Build an LVGL Touchscreen App with Zig</h1>
     <nav id="TOC"><ul>
 <li><a href="#lvgl-app-in-c">1 LVGL App in C</a><ul></ul></li>
-<li><a href="#auto-translate-lvgl-app-to-zig">2 Auto-Translate LVGL App to Zig</a><ul></ul></li>
-<li><a href="#zig-auto-translation-is-incomplete">3 Zig Auto-Translation is Incomplete</a><ul></ul></li>
-<li><a href="#opaque-types">4 Opaque Types</a><ul></ul></li>
-<li><a href="#fix-opaque-types">5 Fix Opaque Types</a><ul></ul></li>
-<li><a href="#input-driver">6 Input Driver</a><ul></ul></li>
-<li><a href="#color-type">7 Color Type</a><ul></ul></li>
-<li><a href="#lvgl-app-in-zig">8 LVGL App in Zig</a><ul></ul></li>
-<li><a href="#clean-up">9 Clean Up</a><ul></ul></li>
-<li><a href="#zig-checks-null-pointers">10 Zig Checks Null Pointers</a><ul></ul></li>
-<li><a href="#simplify-lvgl-api">11 Simplify LVGL API</a><ul></ul></li>
-<li><a href="#wrap-lvgl-api">12 Wrap LVGL API</a><ul></ul></li>
-<li><a href="#after-wrapping-lvgl-api">13 After Wrapping LVGL API</a><ul></ul></li>
-<li><a href="#auto-generate-zig-wrapper">14 Auto-Generate Zig Wrapper</a><ul></ul></li>
-<li><a href="#object-oriented-wrapper-for-lvgl">15 Object-Oriented Wrapper for LVGL</a><ul></ul></li>
-<li><a href="#whats-next">16 What’s Next</a><ul></ul></li>
-<li><a href="#notes">17 Notes</a><ul></ul></li></ul></nav><p>📝 <em>14 Jul 2022</em></p>
+<li><a href="#zig-lvgl-app">2 Zig LVGL App</a><ul></ul></li>
+<li><a href="#compile-zig-app">3 Compile Zig App</a><ul></ul></li>
+<li><a href="#auto-translate-lvgl-app-to-zig">4 Auto-Translate LVGL App to Zig</a><ul></ul></li>
+<li><a href="#zig-auto-translation-is-incomplete">5 Zig Auto-Translation is Incomplete</a><ul></ul></li>
+<li><a href="#opaque-types">6 Opaque Types</a><ul></ul></li>
+<li><a href="#fix-opaque-types">7 Fix Opaque Types</a><ul></ul></li>
+<li><a href="#input-driver">8 Input Driver</a><ul></ul></li>
+<li><a href="#color-type">9 Color Type</a><ul></ul></li>
+<li><a href="#lvgl-app-in-zig">10 LVGL App in Zig</a><ul></ul></li>
+<li><a href="#clean-up">11 Clean Up</a><ul></ul></li>
+<li><a href="#zig-checks-null-pointers">12 Zig Checks Null Pointers</a><ul></ul></li>
+<li><a href="#simplify-lvgl-api">13 Simplify LVGL API</a><ul></ul></li>
+<li><a href="#wrap-lvgl-api">14 Wrap LVGL API</a><ul></ul></li>
+<li><a href="#after-wrapping-lvgl-api">15 After Wrapping LVGL API</a><ul></ul></li>
+<li><a href="#auto-generate-zig-wrapper">16 Auto-Generate Zig Wrapper</a><ul></ul></li>
+<li><a href="#object-oriented-wrapper-for-lvgl">17 Object-Oriented Wrapper for LVGL</a><ul></ul></li>
+<li><a href="#whats-next">18 What’s Next</a><ul></ul></li>
+<li><a href="#notes">19 Notes</a><ul></ul></li></ul></nav><p>📝 <em>14 Jul 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/lvgl-title.jpg" alt="LVGL Touchscreen App on Pine64’s PineDio Stack BL604" /></p>
 <p><a href="https://docs.lvgl.io/master/"><strong>LVGL</strong></a> is a popular <strong>GUI Library</strong> in C that powers the User Interfaces of many Embedded Devices. <a href="https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud#modify-the-pinetime-source-code">(Like smartwatches)</a></p>
 <p><a href="https://ziglang.org"><strong>Zig</strong></a> is a new-ish Programming Language that works well with C. And it comes with built-in <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Safety Checks</strong></a> at runtime.</p>
@@ -141,6 +143,12 @@
   //  Omitted: LVGL Canvas (we&#39;ll find out why)
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a> </p>
+<p>Let’s convert this to Zig.</p>
+<p><em>Where’s the rest of the code that initialises LVGL?</em></p>
+<p>We hit some complications converting the code to Zig, more about this in a while.</p>
+<h1 id="zig-lvgl-app"><a href="#zig-lvgl-app">2 Zig LVGL App</a></h1>
+<p>TODO</p>
+<h1 id="compile-zig-app"><a href="#compile-zig-app">3 Compile Zig App</a></h1>
 <p>TODO</p>
 <p>NuttX compiles the LVGL Test App with this GCC command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  App Source Directory
@@ -179,7 +187,7 @@ riscv64-unknown-elf-gcc \
   -o lvgltest.c.home.user.nuttx.apps.examples.lvgltest.o</code></pre></div>
 <p>(Observed from <code>make --trace</code>)</p>
 <p>Let’s convert the LVGL Test App from C to Zig…</p>
-<h1 id="auto-translate-lvgl-app-to-zig"><a href="#auto-translate-lvgl-app-to-zig">2 Auto-Translate LVGL App to Zig</a></h1>
+<h1 id="auto-translate-lvgl-app-to-zig"><a href="#auto-translate-lvgl-app-to-zig">4 Auto-Translate LVGL App to Zig</a></h1>
 <p>TODO</p>
 <p>The Zig Compiler can auto-translate C code to Zig. <a href="https://ziglang.org/documentation/master/#C-Translation-CLI">(See this)</a></p>
 <p>Here’s how we auto-translate our LVGL App <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c">lvgltest_main.c</a> from C to Zig…</p>
@@ -254,7 +262,7 @@ zig translate-c \
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/commit/1e8b0501c800209f0fa3f35f54b3742498d0e302">(See the changes)</a></p>
 <p>Here’s the original C code: <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c">lvgltest_main.c</a></p>
 <p>And the auto-translation from C to Zig: <a href="translated/lvgltest.zig">translated/lvgltest.zig</a></p>
-<h1 id="zig-auto-translation-is-incomplete"><a href="#zig-auto-translation-is-incomplete">3 Zig Auto-Translation is Incomplete</a></h1>
+<h1 id="zig-auto-translation-is-incomplete"><a href="#zig-auto-translation-is-incomplete">5 Zig Auto-Translation is Incomplete</a></h1>
 <p>TODO</p>
 <p>The Auto-Translation from C to Zig is missing 2 key functions: <code>lvgltest_main</code> and <code>create_widgets</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// lvgltest.c:129:13: warning: unable to translate function, demoted to extern
@@ -274,7 +282,7 @@ pub extern fn lvgltest_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int;</code>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/1e8b0501c800209f0fa3f35f54b3742498d0e302/lvgltest.c#L225-L228">(Source)</a></p>
 <p>We see that Zig couldn’t translate the type <code>lv_disp_drv_t</code> because it’s opaque.</p>
 <p>Let’s find out why.</p>
-<h1 id="opaque-types"><a href="#opaque-types">4 Opaque Types</a></h1>
+<h1 id="opaque-types"><a href="#opaque-types">6 Opaque Types</a></h1>
 <p>TODO</p>
 <p>To find out why the type is opaque, we search for <code>lv_disp_drv_t</code> in the Zig Translation…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// nuttx/apps/graphics/lvgl/lvgl/src/lv_hal/lv_hal_disp.h:154:9: 
@@ -309,7 +317,7 @@ typedef struct {
     ...
 } lv_disp_buf_t;</code></pre></div>
 <p>Let’s fix the Opaque Types.</p>
-<h1 id="fix-opaque-types"><a href="#fix-opaque-types">5 Fix Opaque Types</a></h1>
+<h1 id="fix-opaque-types"><a href="#fix-opaque-types">7 Fix Opaque Types</a></h1>
 <p>TODO</p>
 <p>Earlier we saw that Zig couldn’t translate and import these structs because they contain Bit Fields…</p>
 <ul>
@@ -410,7 +418,7 @@ void init_disp_buf(lv_disp_buf_t *disp_buf)
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5903-L5912"><code>create_widgets</code></a></p>
 </li>
 </ul>
-<h1 id="input-driver"><a href="#input-driver">6 Input Driver</a></h1>
+<h1 id="input-driver"><a href="#input-driver">8 Input Driver</a></h1>
 <p>TODO</p>
 <p>Our Input Driver <code>lv_indev_drv_t</code> is also an Opaque Type because it contains Bit Fields.</p>
 <p>We fix <code>lv_indev_drv_t</code> the same way as other Opaque Types: We allocate and initialise the structs in C (instead of Zig)…</p>
@@ -454,7 +462,7 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
   lv_indev_drv_register(indev_drv);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L282-L320">(Source)</a></p>
-<h1 id="color-type"><a href="#color-type">7 Color Type</a></h1>
+<h1 id="color-type"><a href="#color-type">9 Color Type</a></h1>
 <p>TODO</p>
 <p>We also commented out all references to <code>lv_color_t</code>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  LVGL Canvas Demo doesn&#39;t work with zig cc because of `lv_color_t`
@@ -485,7 +493,7 @@ const struct_unnamed_7 = opaque {};</code></pre></div>
         uint16_t red : 5;
     } ch;
     uint16_t full;
-} lv_color16_t;</code></pre></div><h1 id="lvgl-app-in-zig"><a href="#lvgl-app-in-zig">8 LVGL App in Zig</a></h1>
+} lv_color16_t;</code></pre></div><h1 id="lvgl-app-in-zig"><a href="#lvgl-app-in-zig">10 LVGL App in Zig</a></h1>
 <p>TODO</p>
 <p>We copy these functions from the Auto-Translated Zig code…</p>
 <ul>
@@ -550,7 +558,7 @@ range x:189, y:162
 invert x/y:1, x:0, y:1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/795d7660679c3e0288e8fe5bec190890">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/lvgl-title.jpg" alt="LVGL Test App in C" /></p>
-<h1 id="clean-up"><a href="#clean-up">9 Clean Up</a></h1>
+<h1 id="clean-up"><a href="#clean-up">11 Clean Up</a></h1>
 <p>TODO</p>
 <p>After cleaning up our Zig LVGL App, here’s our Main Function <code>lvgltest_main</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We render an LVGL Screen and
@@ -658,7 +666,7 @@ fn createWidgetsUnwrapped() !void {
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147">(Source)</a></p>
 <p>The Zig Functions look very similar to C: <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L318">lvgltest.c</a></p>
 <p>Note that we used <code>.?</code> to check for Null Pointers returned by C Functions. Let’s find out why…</p>
-<h1 id="zig-checks-null-pointers"><a href="#zig-checks-null-pointers">10 Zig Checks Null Pointers</a></h1>
+<h1 id="zig-checks-null-pointers"><a href="#zig-checks-null-pointers">12 Zig Checks Null Pointers</a></h1>
 <p>TODO</p>
 <p><em>What happens if a C Function returns a Null Pointer…</em></p>
 <div class="example-wrap"><pre class="language-c"><code>lv_disp_drv_t *get_disp_drv(void) {
@@ -692,7 +700,7 @@ Stack Trace:
 <p>This crashes with a RISC-V Exception when the code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.</p>
 <p>Thus we always use <code>.?</code> to check for Null Pointers returned by C Functions!</p>
 <p>(Hopefully someday we’ll have a Zig Lint Tool that will warn us if we forget to use <code>.?</code>)</p>
-<h1 id="simplify-lvgl-api"><a href="#simplify-lvgl-api">11 Simplify LVGL API</a></h1>
+<h1 id="simplify-lvgl-api"><a href="#simplify-lvgl-api">13 Simplify LVGL API</a></h1>
 <p>TODO</p>
 <p><em>Can we simplify the LVGL API in Zig? Such that this code…</em></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Get the Active Screen
@@ -739,7 +747,7 @@ consider using `try`, `catch`, or `if`
 <p><em>What if the LVGL API returns a Null Pointer to our Zig App?</em></p>
 <p>Our app will fail with this message…</p>
 <div class="example-wrap"><pre class="language-text"><code>lv_scr_act failed
-createWidgets failed: error.UnknownError</code></pre></div><h1 id="wrap-lvgl-api"><a href="#wrap-lvgl-api">12 Wrap LVGL API</a></h1>
+createWidgets failed: error.UnknownError</code></pre></div><h1 id="wrap-lvgl-api"><a href="#wrap-lvgl-api">14 Wrap LVGL API</a></h1>
 <p>TODO</p>
 <p>Let’s wrap the LVGL API in Zig.</p>
 <p>Here’s the implementation of <code>getActiveScreen</code>, which returns the LVGL Active Screen…</p>
@@ -838,7 +846,7 @@ pub const Label = struct {
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L60-L101">(Source)</a></p>
 <p>Let’s call the wrapped LVGL API…</p>
-<h1 id="after-wrapping-lvgl-api"><a href="#after-wrapping-lvgl-api">13 After Wrapping LVGL API</a></h1>
+<h1 id="after-wrapping-lvgl-api"><a href="#after-wrapping-lvgl-api">15 After Wrapping LVGL API</a></h1>
 <p>TODO</p>
 <p>With the wrapped LVGL API, our Zig App becomes simpler and safer…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Create the LVGL Widgets that will be rendered on the display. Calls the
@@ -877,7 +885,7 @@ fn createWidgetsWrapped() !void {
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181">(Source)</a></p>
 <p>(TODO: Convert <code>LV_LABEL_LONG_BREAK</code>, <code>LV_LABEL_ALIGN_CENTER</code> and other constants to Enums)</p>
 <p>Let’s talk about creating the Zig Wrapper…</p>
-<h1 id="auto-generate-zig-wrapper"><a href="#auto-generate-zig-wrapper">14 Auto-Generate Zig Wrapper</a></h1>
+<h1 id="auto-generate-zig-wrapper"><a href="#auto-generate-zig-wrapper">16 Auto-Generate Zig Wrapper</a></h1>
 <p>TODO</p>
 <p><em>Can we auto-generate the Wrapper Code?</em></p>
 <p>We could use Zig Type Reflection…</p>
@@ -956,7 +964,7 @@ $ jq &#39;.types[137]&#39; lvgltest-analysis.json
 <div class="example-wrap"><pre class="language-zig"><code>?*.cimport:10:11.struct__lv_obj_t</code></pre></div>
 <p>We don’t have the Parameter Names though, we might need to parse the <code>.cimport</code> file.</p>
 <p><a href="https://stedolan.github.io/jq/manual/">(More about jq)</a></p>
-<h1 id="object-oriented-wrapper-for-lvgl"><a href="#object-oriented-wrapper-for-lvgl">15 Object-Oriented Wrapper for LVGL</a></h1>
+<h1 id="object-oriented-wrapper-for-lvgl"><a href="#object-oriented-wrapper-for-lvgl">17 Object-Oriented Wrapper for LVGL</a></h1>
 <p>TODO</p>
 <p><em>Is LVGL really Object-Oriented?</em></p>
 <p>Yep the LVGL API is actually Object-Oriented since it uses Inheritance.</p>
@@ -993,7 +1001,7 @@ $ jq &#39;.types[137]&#39; lvgltest-analysis.json
 <li><a href="https://github.com/lvgl/lv_binding_micropython">Python Bindings for LVGL</a></li>
 </ul>
 <p>However the Python Bindings are Dynamically Typed, might be tricky implementing them as Static Types in Zig.</p>
-<h1 id="whats-next"><a href="#whats-next">16 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">18 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article has inspired you to create LVGL apps in Zig!</p>
 <ul>
@@ -1021,7 +1029,7 @@ $ jq &#39;.types[137]&#39; lvgltest-analysis.json
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl.md"><strong>lupyuen.github.io/src/lvgl.md</strong></a></p>
-<h1 id="notes"><a href="#notes">17 Notes</a></h1>
+<h1 id="notes"><a href="#notes">19 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1543395925116088320"><strong>this Twitter Thread</strong></a></li>
 </ol>
