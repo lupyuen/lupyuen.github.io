@@ -91,7 +91,7 @@
 <p><em>Maybe make LVGL a little safer and friendlier… By wrapping the LVGL API in Zig?</em></p>
 <p><em>Or will we get blocked by something beyond our control? (Like Bit Fields in LVGL Structs)</em></p>
 <p>Let’s find out! We’ll do this on Pine64’s <a href="https://lupyuen.github.io/articles/pinedio2"><strong>PineDio Stack BL604</strong></a> RISC-V Board (pic above) with <a href="https://lupyuen.github.io/articles/pinedio2"><strong>Apache NuttX RTOS</strong></a>.</p>
-<p>(The steps should be similar for other platforms)</p>
+<p>(The steps will be similar for other platforms)</p>
 <p>Join me as we dive into our <strong>LVGL Touchscreen App in Zig</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/zig-lvgl-nuttx"><strong>lupyuen/zig-lvgl-nuttx</strong></a></li>
@@ -793,7 +793,7 @@ var screen = lvgl.getActiveScreen();
 
 // Attempt to use the Active Screen
 _ = screen;</code></pre></div>
-<p>Zig Compiler stops with an error…</p>
+<p>Zig Compiler stops us with an error…</p>
 <div class="example-wrap"><pre class="language-text"><code>./lvgltest.zig:109:9:
 error: error is discarded. 
 consider using `try`, `catch`, or `if`
