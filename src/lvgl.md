@@ -127,19 +127,17 @@ fn createWidgetsUnwrapped() !void {
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147)
 
-Note that we used "__`.?`__" to check for __Null Pointers__ returned by C Functions. More about this in the next section.
-
-_But this looks virtually identical to C!_
+_But this looks mighty similar to C!_
 
 Yep and we see that...
 
--   We no longer need to specify __Type Names__
+-   We no longer specify __Type Names__
 
     (Like __lv_obj_t__)
 
--   We made a few tweaks for __Error Handling__
+-   We used "__`.?`__" to catch __Null Pointers__
 
-    (As we'll soon learn)
+    (More about this in the next section)
 
 _What's "`!void`"?_
 
