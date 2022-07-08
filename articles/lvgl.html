@@ -151,6 +151,7 @@
 <p><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig">(If we’re keen to learn Zig, see this)</a></p>
 <p><em>Where’s the rest of the code that initialises LVGL?</em></p>
 <p>We hit some complications converting the code to Zig, more about this in a while.</p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code2a.png" alt="Zig LVGL App" /></p>
 <h1 id="zig-lvgl-app"><a href="#zig-lvgl-app">2 Zig LVGL App</a></h1>
 <p>Now the same LVGL App, but <strong>in Zig</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>fn createWidgetsUnwrapped() !void {
@@ -194,7 +195,7 @@
 <p>(Like <strong>lv_obj_t</strong>)</p>
 </li>
 <li>
-<p>We used “<strong><code>.?</code></strong>” to catch <strong>Null Pointers</strong></p>
+<p>We write “<strong><code>.?</code></strong>” to catch <strong>Null Pointers</strong></p>
 <p>(More about this in the next section)</p>
 </li>
 </ul>
@@ -211,6 +212,7 @@
 </li>
 </ul>
 <p>Let’s talk about Null Pointers in Zig…</p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code3a.png" alt="LVGL App: C vs Zig" /></p>
 <h1 id="zig-checks-null-pointers"><a href="#zig-checks-null-pointers">3 Zig Checks Null Pointers</a></h1>
 <p>TODO</p>
 <p><em>What happens if a C Function returns a Null Pointer…</em></p>
@@ -946,6 +948,7 @@ fn createWidgetsWrapped() !void {
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181">(Source)</a></p>
 <p>(TODO: Convert <code>LV_LABEL_LONG_BREAK</code>, <code>LV_LABEL_ALIGN_CENTER</code> and other constants to Enums)</p>
 <p>Let’s talk about creating the Zig Wrapper…</p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code4a.png" alt="TODO" /></p>
 <h1 id="auto-generate-zig-wrapper"><a href="#auto-generate-zig-wrapper">16 Auto-Generate Zig Wrapper</a></h1>
 <p>TODO</p>
 <p><em>Can we auto-generate the Wrapper Code?</em></p>
