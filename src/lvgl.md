@@ -86,6 +86,8 @@ _Where's the rest of the code that initialises LVGL?_
 
 We hit some complications converting the code to Zig, more about this in a while.
 
+![Zig LVGL App](https://lupyuen.github.io/images/lvgl-code2a.png)
+
 # Zig LVGL App
 
 Now the same LVGL App, but __in Zig__...
@@ -135,7 +137,7 @@ Yep and we see that...
 
     (Like __lv_obj_t__)
 
--   We used "__`.?`__" to catch __Null Pointers__
+-   We write "__`.?`__" to catch __Null Pointers__
 
     (More about this in the next section)
 
@@ -152,6 +154,8 @@ _What's "`!void`"?_
     (Hence the "`!`")
 
 Let's talk about Null Pointers in Zig...
+
+![LVGL App: C vs Zig](https://lupyuen.github.io/images/lvgl-code3a.png)
 
 # Zig Checks Null Pointers
 
@@ -1079,6 +1083,8 @@ fn createWidgetsWrapped() !void {
 (TODO: Convert `LV_LABEL_LONG_BREAK`, `LV_LABEL_ALIGN_CENTER` and other constants to Enums)
 
 Let's talk about creating the Zig Wrapper...
+
+![TODO](https://lupyuen.github.io/images/lvgl-code4a.png)
 
 # Auto-Generate Zig Wrapper
 
