@@ -67,16 +67,16 @@
     <nav id="TOC"><ul>
 <li><a href="#lvgl-app-in-c">1 LVGL App in C</a><ul></ul></li>
 <li><a href="#zig-lvgl-app">2 Zig LVGL App</a><ul></ul></li>
-<li><a href="#compile-zig-app">3 Compile Zig App</a><ul></ul></li>
-<li><a href="#auto-translate-lvgl-app-to-zig">4 Auto-Translate LVGL App to Zig</a><ul></ul></li>
-<li><a href="#zig-auto-translation-is-incomplete">5 Zig Auto-Translation is Incomplete</a><ul></ul></li>
-<li><a href="#opaque-types">6 Opaque Types</a><ul></ul></li>
-<li><a href="#fix-opaque-types">7 Fix Opaque Types</a><ul></ul></li>
-<li><a href="#input-driver">8 Input Driver</a><ul></ul></li>
-<li><a href="#color-type">9 Color Type</a><ul></ul></li>
-<li><a href="#lvgl-app-in-zig">10 LVGL App in Zig</a><ul></ul></li>
-<li><a href="#clean-up">11 Clean Up</a><ul></ul></li>
-<li><a href="#zig-checks-null-pointers">12 Zig Checks Null Pointers</a><ul></ul></li>
+<li><a href="#zig-checks-null-pointers">3 Zig Checks Null Pointers</a><ul></ul></li>
+<li><a href="#compile-zig-app">4 Compile Zig App</a><ul></ul></li>
+<li><a href="#auto-translate-lvgl-app-to-zig">5 Auto-Translate LVGL App to Zig</a><ul></ul></li>
+<li><a href="#zig-auto-translation-is-incomplete">6 Zig Auto-Translation is Incomplete</a><ul></ul></li>
+<li><a href="#opaque-types">7 Opaque Types</a><ul></ul></li>
+<li><a href="#fix-opaque-types">8 Fix Opaque Types</a><ul></ul></li>
+<li><a href="#input-driver">9 Input Driver</a><ul></ul></li>
+<li><a href="#color-type">10 Color Type</a><ul></ul></li>
+<li><a href="#lvgl-app-in-zig">11 LVGL App in Zig</a><ul></ul></li>
+<li><a href="#clean-up">12 Clean Up</a><ul></ul></li>
 <li><a href="#simplify-lvgl-api">13 Simplify LVGL API</a><ul></ul></li>
 <li><a href="#wrap-lvgl-api">14 Wrap LVGL API</a><ul></ul></li>
 <li><a href="#after-wrapping-lvgl-api">15 After Wrapping LVGL API</a><ul></ul></li>
@@ -111,22 +111,23 @@
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-c"><code>static void create_widgets(void) {
-  //  Get the Active Screen
+
+  // Get the Active Screen
   lv_obj_t *screen = lv_scr_act();
 
-  //  Create a Label Widget
+  // Create a Label Widget
   lv_obj_t *label = lv_label_create(screen, NULL);
 
-  //  Wrap long lines in the label text
+  // Wrap long lines in the label text
   lv_label_set_long_mode(label, LV_LABEL_LONG_BREAK);
 
-  //  Interpret color codes in the label text
+  // Interpret color codes in the label text
   lv_label_set_recolor(label, true);
 
-  //  Center align the label text
+  // Center align the label text
   lv_label_set_align(label, LV_LABEL_ALIGN_CENTER);
 
-  //  Set the label text and colors
+  // Set the label text and colors
   lv_label_set_text(
     label, 
     &quot;#ff0000 HELLO# &quot;    //  Red Text
@@ -134,21 +135,108 @@
     &quot;#0000ff STACK!# &quot;   //  Blue Text
   );
 
-  //  Set the label width
+  // Set the label width
   lv_obj_set_width(label, 200);
 
-  //  Align the label to the center of the screen, shift 30 pixels up
+  // Align the label to the center of the screen, shift 30 pixels up
   lv_obj_align(label, NULL, LV_ALIGN_CENTER, 0, -30);
 
-  //  Omitted: LVGL Canvas (we&#39;ll find out why)
+  // Omitted: LVGL Canvas (we&#39;ll find out why)
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a> </p>
 <p>Let’s convert this to Zig.</p>
+<p><em>What if we’re not familiar with Zig?</em></p>
+<p>The following sections assume that we’re familiar with C.</p>
+<p>The parts that look Zig-ish shall be explained with examples in C.</p>
+<p><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig">(If we’re keen to learn Zig, see this)</a></p>
 <p><em>Where’s the rest of the code that initialises LVGL?</em></p>
 <p>We hit some complications converting the code to Zig, more about this in a while.</p>
 <h1 id="zig-lvgl-app"><a href="#zig-lvgl-app">2 Zig LVGL App</a></h1>
+<p>Now the same LVGL App, but <strong>in Zig</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>fn createWidgetsUnwrapped() !void {
+
+  // Get the Active Screen
+  const screen = c.lv_scr_act().?;
+
+  // Create a Label Widget
+  const label = c.lv_label_create(screen, null).?;
+
+  // Wrap long lines in the label text
+  c.lv_label_set_long_mode(label, c.LV_LABEL_LONG_BREAK);
+
+  // Interpret color codes in the label text
+  c.lv_label_set_recolor(label, true);
+
+  // Center align the label text
+  c.lv_label_set_align(label, c.LV_LABEL_ALIGN_CENTER);
+
+  // Set the label text and colors.
+  // `++` is the operator that concatenates two strings or arrays.
+  c.lv_label_set_text(
+    label, 
+    &quot;#ff0000 HELLO# &quot;   ++  // Red Text
+    &quot;#00aa00 PINEDIO# &quot; ++  // Green Text
+    &quot;#0000ff STACK!# &quot;      // Blue Text
+  );
+
+  // Set the label width
+  c.lv_obj_set_width(label, 200);
+
+  // Align the label to the center of the screen, shift 30 pixels up
+  c.lv_obj_align(label, null, c.LV_ALIGN_CENTER, 0, -30);
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147">(Source)</a></p>
+<p>Note that we used “<strong><code>.?</code></strong>” to check for <strong>Null Pointers</strong> returned by C Functions. More about this in the next section.</p>
+<p><em>But this looks virtually identical to C!</em></p>
+<p>TODO: Error Handling</p>
+<p><em>What’s “<code>!void</code>”?</em></p>
+<p>“<strong><code>!void</code></strong>” is the Return Type for our Zig Function…</p>
+<ul>
+<li>
+<p>Our Zig Function doesn’t return any value</p>
+<p>(Hence “<code>void</code>”)</p>
+</li>
+<li>
+<p>But our function might return an <a href="https://ziglang.org/documentation/master/#Errors"><strong>Error</strong></a></p>
+<p>(Hence the “<code>!</code>”)</p>
+</li>
+</ul>
+<p>Let’s talk about Null Pointers in Zig…</p>
+<h1 id="zig-checks-null-pointers"><a href="#zig-checks-null-pointers">3 Zig Checks Null Pointers</a></h1>
 <p>TODO</p>
-<h1 id="compile-zig-app"><a href="#compile-zig-app">3 Compile Zig App</a></h1>
+<p><em>What happens if a C Function returns a Null Pointer…</em></p>
+<div class="example-wrap"><pre class="language-c"><code>lv_disp_drv_t *get_disp_drv(void) {
+  // Return a Null Pointer
+  return NULL;
+}</code></pre></div>
+<p><em>And we call it from Zig?</em></p>
+<div class="example-wrap"><pre class="language-zig"><code>const disp_drv = c.get_disp_drv().?;</code></pre></div>
+<p>Note that we used <code>.?</code> to check for Null Pointers returned by C Functions.</p>
+<p>When we run this code, we’ll see a Zig Panic…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
+Zig LVGL Test
+
+!ZIG PANIC!
+attempt to use null value
+Stack Trace:
+0x23023606</code></pre></div>
+<p>The Stack Trace Address <code>23023606</code> points to the line of code that encountered the Null Pointer…</p>
+<div class="example-wrap"><pre class="language-text"><code>zig-lvgl-nuttx/lvgltest.zig:50
+    const disp_drv = c.get_disp_drv().?;
+230235f4:   23089537            lui     a0,0x23089
+230235f8:   5ac50513            addi    a0,a0,1452 # 230895ac &lt;__unnamed_10&gt;
+230235fc:   4581                li      a1,0
+230235fe:   00000097            auipc   ra,0x0
+23023602:   c92080e7            jalr    -878(ra) # 23023290 &lt;panic&gt;
+23023606:   ff042503            lw      a0,-16(s0)
+2302360a:   fea42623            sw      a0,-20(s0)</code></pre></div>
+<p>So Zig really helps us to write safer programs.</p>
+<p><em>What if we omit <code>.?</code> and do this?</em></p>
+<div class="example-wrap"><pre class="language-zig"><code>const disp_drv = c.get_disp_drv();</code></pre></div>
+<p>This crashes with a RISC-V Exception when the code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.</p>
+<p>Thus we always use <code>.?</code> to check for Null Pointers returned by C Functions!</p>
+<p>(Hopefully someday we’ll have a Zig Lint Tool that will warn us if we forget to use <code>.?</code>)</p>
+<h1 id="compile-zig-app"><a href="#compile-zig-app">4 Compile Zig App</a></h1>
 <p>TODO</p>
 <p>NuttX compiles the LVGL Test App with this GCC command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  App Source Directory
@@ -187,7 +275,7 @@ riscv64-unknown-elf-gcc \
   -o lvgltest.c.home.user.nuttx.apps.examples.lvgltest.o</code></pre></div>
 <p>(Observed from <code>make --trace</code>)</p>
 <p>Let’s convert the LVGL Test App from C to Zig…</p>
-<h1 id="auto-translate-lvgl-app-to-zig"><a href="#auto-translate-lvgl-app-to-zig">4 Auto-Translate LVGL App to Zig</a></h1>
+<h1 id="auto-translate-lvgl-app-to-zig"><a href="#auto-translate-lvgl-app-to-zig">5 Auto-Translate LVGL App to Zig</a></h1>
 <p>TODO</p>
 <p>The Zig Compiler can auto-translate C code to Zig. <a href="https://ziglang.org/documentation/master/#C-Translation-CLI">(See this)</a></p>
 <p>Here’s how we auto-translate our LVGL App <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c">lvgltest_main.c</a> from C to Zig…</p>
@@ -262,7 +350,7 @@ zig translate-c \
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/commit/1e8b0501c800209f0fa3f35f54b3742498d0e302">(See the changes)</a></p>
 <p>Here’s the original C code: <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c">lvgltest_main.c</a></p>
 <p>And the auto-translation from C to Zig: <a href="translated/lvgltest.zig">translated/lvgltest.zig</a></p>
-<h1 id="zig-auto-translation-is-incomplete"><a href="#zig-auto-translation-is-incomplete">5 Zig Auto-Translation is Incomplete</a></h1>
+<h1 id="zig-auto-translation-is-incomplete"><a href="#zig-auto-translation-is-incomplete">6 Zig Auto-Translation is Incomplete</a></h1>
 <p>TODO</p>
 <p>The Auto-Translation from C to Zig is missing 2 key functions: <code>lvgltest_main</code> and <code>create_widgets</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// lvgltest.c:129:13: warning: unable to translate function, demoted to extern
@@ -282,7 +370,7 @@ pub extern fn lvgltest_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int;</code>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/1e8b0501c800209f0fa3f35f54b3742498d0e302/lvgltest.c#L225-L228">(Source)</a></p>
 <p>We see that Zig couldn’t translate the type <code>lv_disp_drv_t</code> because it’s opaque.</p>
 <p>Let’s find out why.</p>
-<h1 id="opaque-types"><a href="#opaque-types">6 Opaque Types</a></h1>
+<h1 id="opaque-types"><a href="#opaque-types">7 Opaque Types</a></h1>
 <p>TODO</p>
 <p>To find out why the type is opaque, we search for <code>lv_disp_drv_t</code> in the Zig Translation…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// nuttx/apps/graphics/lvgl/lvgl/src/lv_hal/lv_hal_disp.h:154:9: 
@@ -317,7 +405,7 @@ typedef struct {
     ...
 } lv_disp_buf_t;</code></pre></div>
 <p>Let’s fix the Opaque Types.</p>
-<h1 id="fix-opaque-types"><a href="#fix-opaque-types">7 Fix Opaque Types</a></h1>
+<h1 id="fix-opaque-types"><a href="#fix-opaque-types">8 Fix Opaque Types</a></h1>
 <p>TODO</p>
 <p>Earlier we saw that Zig couldn’t translate and import these structs because they contain Bit Fields…</p>
 <ul>
@@ -418,7 +506,7 @@ void init_disp_buf(lv_disp_buf_t *disp_buf)
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5903-L5912"><code>create_widgets</code></a></p>
 </li>
 </ul>
-<h1 id="input-driver"><a href="#input-driver">8 Input Driver</a></h1>
+<h1 id="input-driver"><a href="#input-driver">9 Input Driver</a></h1>
 <p>TODO</p>
 <p>Our Input Driver <code>lv_indev_drv_t</code> is also an Opaque Type because it contains Bit Fields.</p>
 <p>We fix <code>lv_indev_drv_t</code> the same way as other Opaque Types: We allocate and initialise the structs in C (instead of Zig)…</p>
@@ -462,7 +550,7 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
   lv_indev_drv_register(indev_drv);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L282-L320">(Source)</a></p>
-<h1 id="color-type"><a href="#color-type">9 Color Type</a></h1>
+<h1 id="color-type"><a href="#color-type">10 Color Type</a></h1>
 <p>TODO</p>
 <p>We also commented out all references to <code>lv_color_t</code>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  LVGL Canvas Demo doesn&#39;t work with zig cc because of `lv_color_t`
@@ -493,7 +581,7 @@ const struct_unnamed_7 = opaque {};</code></pre></div>
         uint16_t red : 5;
     } ch;
     uint16_t full;
-} lv_color16_t;</code></pre></div><h1 id="lvgl-app-in-zig"><a href="#lvgl-app-in-zig">10 LVGL App in Zig</a></h1>
+} lv_color16_t;</code></pre></div><h1 id="lvgl-app-in-zig"><a href="#lvgl-app-in-zig">11 LVGL App in Zig</a></h1>
 <p>TODO</p>
 <p>We copy these functions from the Auto-Translated Zig code…</p>
 <ul>
@@ -558,7 +646,7 @@ range x:189, y:162
 invert x/y:1, x:0, y:1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/795d7660679c3e0288e8fe5bec190890">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/lvgl-title.jpg" alt="LVGL Test App in C" /></p>
-<h1 id="clean-up"><a href="#clean-up">11 Clean Up</a></h1>
+<h1 id="clean-up"><a href="#clean-up">12 Clean Up</a></h1>
 <p>TODO</p>
 <p>After cleaning up our Zig LVGL App, here’s our Main Function <code>lvgltest_main</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We render an LVGL Screen and
@@ -665,41 +753,6 @@ fn createWidgetsUnwrapped() !void {
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147">(Source)</a></p>
 <p>The Zig Functions look very similar to C: <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L318">lvgltest.c</a></p>
-<p>Note that we used <code>.?</code> to check for Null Pointers returned by C Functions. Let’s find out why…</p>
-<h1 id="zig-checks-null-pointers"><a href="#zig-checks-null-pointers">12 Zig Checks Null Pointers</a></h1>
-<p>TODO</p>
-<p><em>What happens if a C Function returns a Null Pointer…</em></p>
-<div class="example-wrap"><pre class="language-c"><code>lv_disp_drv_t *get_disp_drv(void) {
-  // Return a Null Pointer
-  return NULL;
-}</code></pre></div>
-<p><em>And we call it from Zig?</em></p>
-<div class="example-wrap"><pre class="language-zig"><code>const disp_drv = c.get_disp_drv().?;</code></pre></div>
-<p>Note that we used <code>.?</code> to check for Null Pointers returned by C Functions.</p>
-<p>When we run this code, we’ll see a Zig Panic…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgltest
-Zig LVGL Test
-
-!ZIG PANIC!
-attempt to use null value
-Stack Trace:
-0x23023606</code></pre></div>
-<p>The Stack Trace Address <code>23023606</code> points to the line of code that encountered the Null Pointer…</p>
-<div class="example-wrap"><pre class="language-text"><code>zig-lvgl-nuttx/lvgltest.zig:50
-    const disp_drv = c.get_disp_drv().?;
-230235f4:   23089537            lui     a0,0x23089
-230235f8:   5ac50513            addi    a0,a0,1452 # 230895ac &lt;__unnamed_10&gt;
-230235fc:   4581                li      a1,0
-230235fe:   00000097            auipc   ra,0x0
-23023602:   c92080e7            jalr    -878(ra) # 23023290 &lt;panic&gt;
-23023606:   ff042503            lw      a0,-16(s0)
-2302360a:   fea42623            sw      a0,-20(s0)</code></pre></div>
-<p>So Zig really helps us to write safer programs.</p>
-<p><em>What if we omit <code>.?</code> and do this?</em></p>
-<div class="example-wrap"><pre class="language-zig"><code>const disp_drv = c.get_disp_drv();</code></pre></div>
-<p>This crashes with a RISC-V Exception when the code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.</p>
-<p>Thus we always use <code>.?</code> to check for Null Pointers returned by C Functions!</p>
-<p>(Hopefully someday we’ll have a Zig Lint Tool that will warn us if we forget to use <code>.?</code>)</p>
 <h1 id="simplify-lvgl-api"><a href="#simplify-lvgl-api">13 Simplify LVGL API</a></h1>
 <p>TODO</p>
 <p><em>Can we simplify the LVGL API in Zig? Such that this code…</em></p>
