@@ -149,7 +149,7 @@ Yep and we see that...
 
 -   We write "__`.?`__" to catch __Null Pointers__
 
-    (More about this in the next section)
+    (Coming up in the next section)
 
 _What's "`!void`"?_
 
@@ -176,9 +176,9 @@ Earlier we saw our Zig App calling the __LVGL Functions__ imported from C...
 const disp_drv = c.get_disp_drv().?;
 ```
 
-Note that we used "__`.?`__" to catch __Null Pointers__ returned by C Functions.
+Note that we write "__`.?`__" to catch __Null Pointers__ returned by C Functions.
 
-_What happens if a C Function returns a Null Pointer to Zig?_
+_What happens if the C Function returns a Null Pointer to Zig?_
 
 ```c
 // Suppose this C function...
@@ -211,7 +211,7 @@ zig-lvgl-nuttx/lvgltest.zig:50
 2302360a: fea42623 sw    a0,-20(s0)
 ```
 
-We see that `23023606` points to the line of code that encountered the Null Pointer.
+`23023606` points to the line of code that caught the Null Pointer.
 
 So Zig really helps us to write safer programs.
 
@@ -221,9 +221,9 @@ _What if we omit "`.?`" and do this?_
 const disp_drv = c.get_disp_drv();
 ```
 
-This crashes with a RISC-V Exception when the code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.
+This crashes with a __RISC-V Exception__ when our code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.
 
-Thus we always use "`.?`" to catch Null Pointers returned by C Functions.
+Thus we always write "`.?`" to catch Null Pointers returned by C Functions.
 
 (Hopefully someday we'll have a Zig Lint Tool that will warn us if we forget to use "`.?`")
 
