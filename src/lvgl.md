@@ -8,7 +8,7 @@
 
 [__Zig__](https://ziglang.org) is a new-ish Programming Language that works well with C. And it comes with built-in [__Safety Checks__](https://ziglang.org/documentation/master/#Undefined-Behavior) at runtime.
 
-_Can we use Zig to code an LVGL Touchscreen App?_
+_Can we use Zig to code an LVGL Touchscreen Application?_
 
 _Maybe make LVGL a little safer and friendlier... By wrapping the LVGL API in Zig?_
 
