@@ -193,7 +193,7 @@
   c.lv_obj_align(label, null, c.LV_ALIGN_CENTER, 0, -30);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147">(Source)</a></p>
-<p>Our Zig App calls the LVGL Functions imported from C, as denoted by “<strong><code>c.</code></strong>”</p>
+<p>Our Zig App calls the LVGL Functions imported from C, as denoted by “<code>c.</code><em>something</em>”.</p>
 <p><em>But this looks mighty similar to C!</em></p>
 <p>Yep and we see that…</p>
 <ul>
@@ -301,8 +301,13 @@ const c = @cImport({
   @cInclude(&quot;tp.h&quot;);
   @cInclude(&quot;tp_cal.h&quot;);
 });</code></pre></div>
-<p>And our <strong>Application-Specific</strong> Header Files for LCD Display and Touch Panel on Apache NuttX RTOS.</p>
+<p>And our <strong>Application-Specific</strong> Header Files for LCD Display and Touch Panel.</p>
 <p>That’s how we import the LVGL Library into our Zig App!</p>
+<p><em>Why do we write “<code>c.</code>something” when we call C functions? Like “<code>c.lv_scr_act()</code>”?</em></p>
+<p>Remember that we import all C Functions and Macros into the <strong>“<code>c</code>” Namespace</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import Functions and Macros into &quot;c&quot; Namespace
+const c = @cImport({ ... });</code></pre></div>
+<p>That’s why we write “<code>c.</code><em>something</em>” when we refer to C Functions and Macros.</p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">5 Compile Zig App</a></h1>
 <p>TODO</p>
 <p>We compile our Zig LVGL App…</p>
