@@ -316,8 +316,12 @@ const c = @cImport({ ... });</code></pre></div>
 <p><em>What about the Main Function of our Zig App?</em></p>
 <p>It gets complicated. We’ll talk later about the <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L41-L109"><strong>Main Function lvgltest_main</strong></a>.</p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">5 Compile Zig App</a></h1>
-<p>Below are the steps to <strong>compile our Zig LVGL App</strong> for Apache NuttX RTOS and BL602 RISC-V SoC…</p>
-<p>First we download and compile <strong>Apache NuttX RTOS</strong> for PineDio Stack BL604…</p>
+<p>Below are the steps to <strong>compile our Zig LVGL App</strong> for Apache NuttX RTOS and BL602 RISC-V SoC.</p>
+<p>First we download the latest version of <strong>Zig Compiler</strong> (0.10.0 or later), extract it and add to PATH…</p>
+<ul>
+<li><a href="https://ziglang.org/download/"><strong>Zig Compiler Downloads</strong></a></li>
+</ul>
+<p>Then we download and compile <strong>Apache NuttX RTOS</strong> for PineDio Stack BL604…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pinedio2#build-nuttx"><strong>“Build NuttX”</strong></a></li>
 </ul>
@@ -741,6 +745,7 @@ zig translate-c \
 <p>Here’s the original C code: <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c">lvgltest_main.c</a></p>
 <p>And the auto-translation from C to Zig: <a href="translated/lvgltest.zig">translated/lvgltest.zig</a></p>
 <h1 id="appendix-zig-auto-translation-is-incomplete"><a href="#appendix-zig-auto-translation-is-incomplete">15 Appendix: Zig Auto-Translation is Incomplete</a></h1>
+<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>TODO</p>
 <p>The Auto-Translation from C to Zig is missing 2 key functions: <code>lvgltest_main</code> and <code>create_widgets</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// lvgltest.c:129:13: warning: unable to translate function, demoted to extern
@@ -761,6 +766,7 @@ pub extern fn lvgltest_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int;</code>
 <p>We see that Zig couldn’t translate the type <code>lv_disp_drv_t</code> because it’s opaque.</p>
 <p>Let’s find out why.</p>
 <h1 id="appendix-zig-opaque-types"><a href="#appendix-zig-opaque-types">16 Appendix: Zig Opaque Types</a></h1>
+<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>TODO</p>
 <p>To find out why the type is opaque, we search for <code>lv_disp_drv_t</code> in the Zig Translation…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// nuttx/apps/graphics/lvgl/lvgl/src/lv_hal/lv_hal_disp.h:154:9: 
