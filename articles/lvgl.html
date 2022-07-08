@@ -78,7 +78,7 @@
 <li><a href="#label-struct">8.3 Label Struct</a><ul></ul></li>
 <li><a href="#after-wrapping-lvgl">8.4 After Wrapping LVGL</a><ul></ul></li></ul></li>
 <li><a href="#zig-vs-bit-fields">9 Zig vs Bit Fields</a><ul></ul></li>
-<li><a href="#logging-and-panic-handler">10 Logging and Panic Handler</a><ul></ul></li>
+<li><a href="#zig-outcomes">10 Zig Outcomes</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li>
 <li><a href="#appendix-compiler-options">13 Appendix: Compiler Options</a><ul></ul></li>
@@ -594,8 +594,10 @@ fn createWidgetsWrapped() !void {
 <p><em>Zig sounds amazing! Is there anything that Zig won’t do?</em></p>
 <p>Sadly Zig won’t import <strong>C Structs containing Bit Fields</strong>.</p>
 <p>TODO: Current version</p>
-<h1 id="logging-and-panic-handler"><a href="#logging-and-panic-handler">10 Logging and Panic Handler</a></h1>
-<p>TODO</p>
+<h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
+<p><em>Have we gained anything by coding our LVGL App in Zig?</em></p>
+<p>TODO: Runtime Checks, Null Pointers, Wrapper</p>
+<p>TODO: But Bit Fields</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article has inspired you to create LVGL apps in Zig!</p>
@@ -626,7 +628,15 @@ fn createWidgetsWrapped() !void {
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl.md"><strong>lupyuen.github.io/src/lvgl.md</strong></a></p>
 <h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1543395925116088320"><strong>this Twitter Thread</strong></a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1543395925116088320"><strong>this Twitter Thread</strong></a></p>
+</li>
+<li>
+<p>Our Zig App includes a <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L225-L257"><strong>Custom Logger</strong></a> and <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L199-L225"><strong>Panic Handler</strong></a>.</p>
+<p>They are explained below…</p>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-logging"><strong>“Logging”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler"><strong>“Panic Handler”</strong></a></p>
+</li>
 </ol>
 <h1 id="appendix-compiler-options"><a href="#appendix-compiler-options">13 Appendix: Compiler Options</a></h1>
 <p>TODO</p>
