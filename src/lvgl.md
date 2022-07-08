@@ -24,15 +24,21 @@ Join me as we dive into our __LVGL Touchscreen App in Zig__...
 
 (Spoilers: Answers are Yes, Maybe, Somewhat)
 
+![LVGL App in C](https://lupyuen.github.io/images/lvgl-code1a.png)
+
+[(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148) 
+
 # LVGL App in C
 
-We begin with a barebones __LVGL App in C__ that renders a line of text (pic above)...
+We begin with a barebones __LVGL App in C__ that renders a line of text...
 
 -   Fetch the __Active Screen__ from LVGL
 
 -   Create a __Label Widget__
 
 -   Set the __Properties, Text and Position__ of the Label
+
+(Like the pic at the top of this article)
 
 ```c
 static void create_widgets(void) {
@@ -88,6 +94,8 @@ We hit some complications converting the code to Zig, more about this in a while
 
 ![Zig LVGL App](https://lupyuen.github.io/images/lvgl-code2a.png)
 
+[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147)
+
 # Zig LVGL App
 
 Now the same LVGL App, but __in Zig__...
@@ -129,6 +137,8 @@ fn createWidgetsUnwrapped() !void {
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147)
 
+Our Zig App calls the LVGL Functions imported from C, as denoted by "__`c.`__"
+
 _But this looks mighty similar to C!_
 
 Yep and we see that...
@@ -153,32 +163,32 @@ _What's "`!void`"?_
 
     (Hence the "`!`")
 
-Let's talk about Null Pointers in Zig...
+Let's talk about Null Pointers and Runtime Safety in Zig...
 
 ![LVGL App: C vs Zig](https://lupyuen.github.io/images/lvgl-code3a.png)
 
 # Zig Checks Null Pointers
 
-TODO
+Earlier we saw our Zig App calling the __LVGL Functions__ imported from C...
 
-_What happens if a C Function returns a Null Pointer..._
+```zig
+// Zig calls a C function
+const disp_drv = c.get_disp_drv().?;
+```
+
+Note that we used "__`.?`__" to catch __Null Pointers__ returned by C Functions.
+
+_What happens if a C Function returns a Null Pointer to Zig?_
 
 ```c
+// Suppose this C function...
 lv_disp_drv_t *get_disp_drv(void) {
-  // Return a Null Pointer
+  // Returns a Null Pointer to Zig
   return NULL;
 }
 ```
 
-_And we call it from Zig?_
-
-```zig
-const disp_drv = c.get_disp_drv().?;
-```
-
-Note that we used `.?` to check for Null Pointers returned by C Functions.
-
-When we run this code, we'll see a Zig Panic...
+When we run this code, we'll see a __Zig Panic__ and a Stack Trace...
 
 ```text
 !ZIG PANIC!
@@ -187,23 +197,25 @@ Stack Trace:
 0x23023606
 ```
 
-The Stack Trace Address `23023606` points to the line of code that encountered the Null Pointer...
+When we look up address `23023606` in the [__RISC-V Disassembly__](https://lupyuen.github.io/articles/auto#disassemble-the-firmware) for our firmware...
 
 ```text
 zig-lvgl-nuttx/lvgltest.zig:50
     const disp_drv = c.get_disp_drv().?;
-230235f4:   23089537            lui     a0,0x23089
-230235f8:   5ac50513            addi    a0,a0,1452 # 230895ac <__unnamed_10>
-230235fc:   4581                li      a1,0
-230235fe:   00000097            auipc   ra,0x0
-23023602:   c92080e7            jalr    -878(ra) # 23023290 <panic>
-23023606:   ff042503            lw      a0,-16(s0)
-2302360a:   fea42623            sw      a0,-20(s0)
+230235f4: 23089537 lui   a0,0x23089
+230235f8: 5ac50513 addi  a0,a0,1452 # 230895ac <__unnamed_10>
+230235fc: 4581     li    a1,0
+230235fe: 00000097 auipc ra,0x0
+23023602: c92080e7 jalr  -878(ra) # 23023290 <panic>
+23023606: ff042503 lw    a0,-16(s0)
+2302360a: fea42623 sw    a0,-20(s0)
 ```
+
+We see that `23023606` points to the line of code that encountered the Null Pointer.
 
 So Zig really helps us to write safer programs.
 
-_What if we omit `.?` and do this?_
+_What if we omit "`.?`" and do this?_
 
 ```zig
 const disp_drv = c.get_disp_drv();
@@ -211,9 +223,13 @@ const disp_drv = c.get_disp_drv();
 
 This crashes with a RISC-V Exception when the code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.
 
-Thus we always use `.?` to check for Null Pointers returned by C Functions!
+Thus we always use "`.?`" to catch Null Pointers returned by C Functions.
 
-(Hopefully someday we'll have a Zig Lint Tool that will warn us if we forget to use `.?`)
+(Hopefully someday we'll have a Zig Lint Tool that will warn us if we forget to use "`.?`")
+
+# Import C Functions
+
+TODO
 
 # Compile Zig App
 
