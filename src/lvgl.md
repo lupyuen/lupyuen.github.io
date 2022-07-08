@@ -71,6 +71,18 @@ static void create_widgets(void) {
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148) 
 
+Let's convert this to Zig.
+
+_Where's the rest of the code that initialises LVGL?_
+
+We hit some complications converting the code to Zig, more about this in a while.
+
+# Zig LVGL App
+
+TODO
+
+# Compile Zig App
+
 TODO
 
 NuttX compiles the LVGL Test App with this GCC command...
