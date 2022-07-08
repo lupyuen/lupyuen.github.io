@@ -22,7 +22,7 @@ Join me as we dive into our __LVGL Touchscreen App in Zig__...
 
 -   [__lupyuen/zig-lvgl-nuttx__](https://github.com/lupyuen/zig-lvgl-nuttx)
 
-(Spoilers: Answers are 1️⃣ Yes 2️⃣ Maybe 3️⃣ Somewhat)
+(Spoilers: Answers are Yes, Maybe, Somewhat)
 
 # What's Next
 
