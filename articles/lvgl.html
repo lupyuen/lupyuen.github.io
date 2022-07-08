@@ -65,7 +65,7 @@
 
     <h1 class="title">Build an LVGL Touchscreen App with Zig</h1>
     <nav id="TOC"><ul>
-<li><a href="#lvgl-test-app-in-c">1 LVGL Test App in C</a><ul></ul></li>
+<li><a href="#lvgl-app-in-c">1 LVGL App in C</a><ul></ul></li>
 <li><a href="#auto-translate-lvgl-app-to-zig">2 Auto-Translate LVGL App to Zig</a><ul></ul></li>
 <li><a href="#zig-auto-translation-is-incomplete">3 Zig Auto-Translation is Incomplete</a><ul></ul></li>
 <li><a href="#opaque-types">4 Opaque Types</a><ul></ul></li>
@@ -95,9 +95,25 @@
 <li><a href="https://github.com/lupyuen/zig-lvgl-nuttx"><strong>lupyuen/zig-lvgl-nuttx</strong></a></li>
 </ul>
 <p>(Spoilers: Answers are Yes, Maybe, Somewhat)</p>
-<h1 id="lvgl-test-app-in-c"><a href="#lvgl-test-app-in-c">1 LVGL Test App in C</a></h1>
-<p>TODO</p>
-<p>Here’s our barebones LVGL App in C (pic above): <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">lvgltest_main.c</a> </p>
+<h1 id="lvgl-app-in-c"><a href="#lvgl-app-in-c">1 LVGL App in C</a></h1>
+<p>We begin with a barebones <strong>LVGL App in C</strong> that renders a line of text (pic above)…</p>
+<ul>
+<li>
+<p>Fetch the <strong>Active Screen</strong> from LVGL</p>
+</li>
+<li>
+<p>Create a <strong>Label Widget</strong></p>
+</li>
+<li>
+<p>Set the <strong>Properties</strong> of the Label</p>
+</li>
+<li>
+<p>Set the <strong>Text</strong> of the Label</p>
+</li>
+<li>
+<p>Set the <strong>Position</strong> of the Label</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-c"><code>static void create_widgets(void) {
   //  Get the Active Screen
   lv_obj_t *screen = lv_scr_act();
@@ -128,8 +144,10 @@
   //  Align the label to the center of the screen, shift 30 pixels up
   lv_obj_align(label, NULL, LV_ALIGN_CENTER, 0, -30);
 
-  //  Omitted: LVGL Canvas
+  //  Omitted: LVGL Canvas (we&#39;ll find out why)
 }</code></pre></div>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a> </p>
+<p>TODO</p>
 <p>NuttX compiles the LVGL Test App with this GCC command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  App Source Directory
 cd $HOME/nuttx/apps/examples/lvgltest
