@@ -229,11 +229,13 @@ Thus we always write "`.?`" to catch Null Pointers returned by C Functions.
 
 (Hopefully someday we'll have a Zig Lint Tool that will warn us if we forget to use "`.?`")
 
+![Import C Functions and Macros](https://lupyuen.github.io/images/lvgl-code5a.png)
+
 # Import C Functions
 
-_How did we import the C Functions and Macros for LVGL?_
+_How do we import the C Functions and Macros for LVGL?_
 
-This is how we __imported the Functions and Macros__ from C: [lvgltest.zig](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L9-L39)
+This is how we __import the Functions and Macros__ from C into Zig: [lvgltest.zig](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L9-L39)
 
 ```zig
 /// Import the LVGL Library from C
@@ -251,7 +253,13 @@ const c = @cImport({
   // #define LV_LVGL_H_INCLUDE_SIMPLE
 ```
 
-TODO
+[(__@cImport__ is documented here)](https://ziglang.org/documentation/master/#Import-from-C-Header-File)
+
+At the top of our Zig App we set the __#define Macros__ that will be referenced by the C Header Files coming up.
+
+The settings above are specific to Apache NuttX RTOS and the BL602 RISC-V SoC. [(Here's why)](https://lupyuen.github.io/articles/lvgl#appendix-compiler-options)
+
+Next comes a workaround for a __C Macro Error__ that appears on Zig with Apache NuttX RTOS...
 
 ```zig
   // Workaround for "Unable to translate macro: undefined identifier `LL`"
@@ -259,7 +267,9 @@ TODO
   @cDefine("__int_c_join(a, b)", "a");  //  Bypass zig/lib/include/stdint.h
 ```
 
-TODO
+[(More about this)](https://lupyuen.github.io/articles/iot#appendix-macro-error)
+
+We import the __C Header Files__ for Apache NuttX RTOS...
 
 ```zig
   // NuttX Header Files. This is equivalent to...
@@ -274,7 +284,9 @@ TODO
   @cInclude("stdlib.h");
 ```
 
-TODO
+[(More about the includes)](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
+
+Followed by the C Header Files for the __LVGL Library__...
 
 ```zig
   // LVGL Header Files
@@ -288,7 +300,96 @@ TODO
 });
 ```
 
+And our __Application-Specific__ Header Files for LCD Display and Touch Panel on Apache NuttX RTOS.
+
+That's how we import the LVGL Library into our Zig App!
+
+# Compile Zig App
+
 TODO
+
+We compile our Zig LVGL App...
+
+```bash
+##  Download our Zig LVGL App for NuttX
+git clone --recursive https://github.com/lupyuen/zig-lvgl-nuttx
+cd zig-lvgl-nuttx
+```
+
+TODO
+
+```bash
+##  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+zig build-obj \
+  --verbose-cimport \
+  -target riscv32-freestanding-none \
+  -mcpu=baseline_rv32-d \
+  -isystem "$HOME/nuttx/nuttx/include" \
+  -I "$HOME/nuttx/apps/graphics/lvgl" \
+  -I "$HOME/nuttx/apps/graphics/lvgl/lvgl" \
+  -I "$HOME/nuttx/apps/include" \
+  -I "$HOME/nuttx/apps/examples/lvgltest" \
+  lvgltest.zig
+```
+
+TODO
+
+```bash
+##  Patch the ELF Header of `lvgltest.o` from Soft-Float ABI to Hard-Float ABI
+xxd -c 1 lvgltest.o \
+  | sed 's/00000024: 01/00000024: 03/' \
+  | xxd -r -c 1 - lvgltest2.o
+cp lvgltest2.o lvgltest.o
+```
+
+TODO
+
+```bash
+##  Copy the compiled app to NuttX and overwrite `lvgltest.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cp lvgltest.o $HOME/nuttx/apps/examples/lvgltest/lvgltest*.o
+```
+
+TODO
+
+```bash
+##  Build NuttX to link the Zig Object from `lvgltest.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
+make
+```
+
+# Run Zig App
+
+TODO
+
+When tested on PineDio Stack BL604, our Zig LVGL App correctly renders the screen and correctly handles touch input (pic below). Yay!
+
+```text
+NuttShell (NSH) NuttX-10.3.0
+nsh> lvgltest
+Zig LVGL Test
+tp_init: Opening /dev/input0
+cst816s_open: 
+cst816s_poll_notify: 
+cst816s_get_touch_data: 
+cst816s_i2c_read: 
+cst816s_get_touch_data: DOWN: id=0, touch=0, x=176, y=23
+cst816s_get_touch_data:   id:      0
+cst816s_get_touch_data:   flags:   19
+cst816s_get_touch_data:   x:       176
+cst816s_get_touch_data:   y:       23
+...
+tp_cal result
+offset x:23, y:14
+range x:189, y:162
+invert x/y:1, x:0, y:1
+```
+
+[(Source)](https://gist.github.com/lupyuen/795d7660679c3e0288e8fe5bec190890)
+
+![LVGL Test App in C](https://lupyuen.github.io/images/lvgl-title.jpg)
 
 # Simplify LVGL API
 
@@ -1140,82 +1241,6 @@ typedef union {
     uint16_t full;
 } lv_color16_t;
 ```
-
-# Appendix: LVGL App in Zig
-
-TODO
-
-We copy these functions from the Auto-Translated Zig code...
-
--   [`lvgltest_main`](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5913-L5944)
-
--   [`create_widgets`](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5903-L5912)
-
-And paste them into our Zig LVGL App...
-
-[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/ec4d58e84140cbf2b8fd6a80b65c06f6da97edfc/lvgltest.zig#L1-L164)
-
-We compile our Zig LVGL App...
-
-```bash
-##  Download our Zig LVGL App for NuttX
-git clone --recursive https://github.com/lupyuen/zig-lvgl-nuttx
-cd zig-lvgl-nuttx
-
-##  Compile the Zig App for BL602 (RV32IMACF with Hardware Floating-Point)
-zig build-obj \
-  --verbose-cimport \
-  -target riscv32-freestanding-none \
-  -mcpu=baseline_rv32-d \
-  -isystem "$HOME/nuttx/nuttx/include" \
-  -I "$HOME/nuttx/apps/graphics/lvgl" \
-  -I "$HOME/nuttx/apps/graphics/lvgl/lvgl" \
-  -I "$HOME/nuttx/apps/include" \
-  -I "$HOME/nuttx/apps/examples/lvgltest" \
-  lvgltest.zig
-
-##  Patch the ELF Header of `lvgltest.o` from Soft-Float ABI to Hard-Float ABI
-xxd -c 1 lvgltest.o \
-  | sed 's/00000024: 01/00000024: 03/' \
-  | xxd -r -c 1 - lvgltest2.o
-cp lvgltest2.o lvgltest.o
-
-##  Copy the compiled app to NuttX and overwrite `lvgltest.o`
-##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cp lvgltest.o $HOME/nuttx/apps/examples/lvgltest/lvgltest*.o
-
-##  Build NuttX to link the Zig Object from `lvgltest.o`
-##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cd $HOME/nuttx/nuttx
-make
-```
-
-When tested on PineDio Stack BL604, our Zig LVGL App correctly renders the screen and correctly handles touch input (pic below). Yay!
-
-```text
-NuttShell (NSH) NuttX-10.3.0
-nsh> lvgltest
-Zig LVGL Test
-tp_init: Opening /dev/input0
-cst816s_open: 
-cst816s_poll_notify: 
-cst816s_get_touch_data: 
-cst816s_i2c_read: 
-cst816s_get_touch_data: DOWN: id=0, touch=0, x=176, y=23
-cst816s_get_touch_data:   id:      0
-cst816s_get_touch_data:   flags:   19
-cst816s_get_touch_data:   x:       176
-cst816s_get_touch_data:   y:       23
-...
-tp_cal result
-offset x:23, y:14
-range x:189, y:162
-invert x/y:1, x:0, y:1
-```
-
-[(Source)](https://gist.github.com/lupyuen/795d7660679c3e0288e8fe5bec190890)
-
-![LVGL Test App in C](https://lupyuen.github.io/images/lvgl-title.jpg)
 
 # Appendix: Clean Up
 
