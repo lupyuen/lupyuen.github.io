@@ -137,7 +137,7 @@ fn createWidgetsUnwrapped() !void {
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147)
 
-Our Zig App calls the LVGL Functions imported from C, as denoted by "__`c.`__"
+Our Zig App calls the LVGL Functions imported from C, as denoted by "`c.`_something_".
 
 _But this looks mighty similar to C!_
 
@@ -300,9 +300,20 @@ Followed by the C Header Files for the __LVGL Library__...
 });
 ```
 
-And our __Application-Specific__ Header Files for LCD Display and Touch Panel on Apache NuttX RTOS.
+And our __Application-Specific__ Header Files for LCD Display and Touch Panel.
 
 That's how we import the LVGL Library into our Zig App!
+
+_Why do we write "`c.`something" when we call C functions? Like "`c.lv_scr_act()`"?_
+
+Remember that we import all C Functions and Macros into the __"`c`" Namespace__...
+
+```zig
+/// Import Functions and Macros into "c" Namespace
+const c = @cImport({ ... });
+```
+
+That's why we write "`c.`_something_" when we refer to C Functions and Macros.
 
 # Compile Zig App
 
