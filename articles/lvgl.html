@@ -226,7 +226,7 @@
 const disp_drv = c.get_disp_drv().?;</code></pre></div>
 <p>Note that we write “<strong><code>.?</code></strong>” to catch <strong>Null Pointers</strong> returned by C Functions.</p>
 <p><em>What happens if the C Function returns a Null Pointer to Zig?</em></p>
-<div class="example-wrap"><pre class="language-c"><code>// Suppose this C function...
+<div class="example-wrap"><pre class="language-c"><code>// Suppose this C Function...
 lv_disp_drv_t *get_disp_drv(void) {
   // Returns a Null Pointer to Zig
   return NULL;
