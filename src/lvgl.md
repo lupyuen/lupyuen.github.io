@@ -131,6 +131,8 @@ Note that we used "__`.?`__" to check for __Null Pointers__ returned by C Functi
 
 _But this looks virtually identical to C!_
 
+TODO: We no longer need to specify types like __lv_obj_t__
+
 TODO: Error Handling
 
 _What's "`!void`"?_
