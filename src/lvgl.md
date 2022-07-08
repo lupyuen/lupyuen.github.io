@@ -16,7 +16,7 @@ _Or will we get blocked by something beyond our control? (Like Bit Fields in LVG
 
 Let's find out! We'll do this on Pine64's [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V Board (pic above) with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/pinedio2).
 
-(The steps should be similar for other platforms)
+(The steps will be similar for other platforms)
 
 Join me as we dive into our __LVGL Touchscreen App in Zig__...
 
@@ -892,7 +892,7 @@ var screen = lvgl.getActiveScreen();
 _ = screen;
 ```
 
-Zig Compiler stops with an error...
+Zig Compiler stops us with an error...
 
 ```text
 ./lvgltest.zig:109:9:
