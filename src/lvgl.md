@@ -197,7 +197,7 @@ Stack Trace:
 0x23023606
 ```
 
-When we look up address `23023606` in the [__RISC-V Disassembly__](https://lupyuen.github.io/articles/auto#disassemble-the-firmware) for our firmware...
+Looking up address `23023606` in the [__RISC-V Disassembly__](https://lupyuen.github.io/articles/auto#disassemble-the-firmware) for our firmware...
 
 ```text
 zig-lvgl-nuttx/lvgltest.zig:50
@@ -211,9 +211,9 @@ zig-lvgl-nuttx/lvgltest.zig:50
 2302360a: fea42623 sw    a0,-20(s0)
 ```
 
-`23023606` points to the line of code that caught the Null Pointer.
+We discover that `23023606` points to the line of code that caught the Null Pointer.
 
-So Zig really helps us to write safer programs.
+Hence Zig is super helpful for writing __safer programs__.
 
 _What if we omit "`.?`" and do this?_
 
@@ -221,13 +221,17 @@ _What if we omit "`.?`" and do this?_
 const disp_drv = c.get_disp_drv();
 ```
 
-This crashes with a __RISC-V Exception__ when our code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.
+This crashes with a __RISC-V Exception__ when our program tries to dereference the Null Pointer in a __later part__ of the code.
+
+Which isn't as helpful as an immediate Zig Panic.
 
 Thus we always write "`.?`" to catch Null Pointers returned by C Functions.
 
 (Hopefully someday we'll have a Zig Lint Tool that will warn us if we forget to use "`.?`")
 
 # Import C Functions
+
+_How did we import the C Functions and Macros for LVGL?_
 
 TODO
 
