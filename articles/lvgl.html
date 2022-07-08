@@ -235,7 +235,7 @@ lv_disp_drv_t *get_disp_drv(void) {
 attempt to use null value
 Stack Trace:
 0x23023606</code></pre></div>
-<p>When we look up address <code>23023606</code> in the <a href="https://lupyuen.github.io/articles/auto#disassemble-the-firmware"><strong>RISC-V Disassembly</strong></a> for our firmware…</p>
+<p>Looking up address <code>23023606</code> in the <a href="https://lupyuen.github.io/articles/auto#disassemble-the-firmware"><strong>RISC-V Disassembly</strong></a> for our firmware…</p>
 <div class="example-wrap"><pre class="language-text"><code>zig-lvgl-nuttx/lvgltest.zig:50
     const disp_drv = c.get_disp_drv().?;
 230235f4: 23089537 lui   a0,0x23089
@@ -245,14 +245,16 @@ Stack Trace:
 23023602: c92080e7 jalr  -878(ra) # 23023290 &lt;panic&gt;
 23023606: ff042503 lw    a0,-16(s0)
 2302360a: fea42623 sw    a0,-20(s0)</code></pre></div>
-<p><code>23023606</code> points to the line of code that caught the Null Pointer.</p>
-<p>So Zig really helps us to write safer programs.</p>
+<p>We discover that <code>23023606</code> points to the line of code that caught the Null Pointer.</p>
+<p>Hence Zig is super helpful for writing <strong>safer programs</strong>.</p>
 <p><em>What if we omit “<code>.?</code>” and do this?</em></p>
 <div class="example-wrap"><pre class="language-zig"><code>const disp_drv = c.get_disp_drv();</code></pre></div>
-<p>This crashes with a <strong>RISC-V Exception</strong> when our code tries to dereference the Null Pointer later. Which is not as helpful as a Zig Panic.</p>
+<p>This crashes with a <strong>RISC-V Exception</strong> when our program tries to dereference the Null Pointer in a <strong>later part</strong> of the code.</p>
+<p>Which isn’t as helpful as an immediate Zig Panic.</p>
 <p>Thus we always write “<code>.?</code>” to catch Null Pointers returned by C Functions.</p>
 <p>(Hopefully someday we’ll have a Zig Lint Tool that will warn us if we forget to use “<code>.?</code>”)</p>
 <h1 id="import-c-functions"><a href="#import-c-functions">4 Import C Functions</a></h1>
+<p><em>How did we import the C Functions and Macros for LVGL?</em></p>
 <p>TODO</p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">5 Compile Zig App</a></h1>
 <p>TODO</p>
