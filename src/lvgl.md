@@ -24,11 +24,19 @@ Join me as we dive into our __LVGL Touchscreen App in Zig__...
 
 (Spoilers: Answers are Yes, Maybe, Somewhat)
 
-# LVGL Test App in C
+# LVGL App in C
 
-TODO
+We begin with a barebones __LVGL App in C__ that renders a line of text (pic above)...
 
-Here's our barebones LVGL App in C (pic above): [lvgltest_main.c](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148) 
+-   Fetch the __Active Screen__ from LVGL
+
+-   Create a __Label Widget__
+
+-   Set the __Properties__ of the Label
+
+-   Set the __Text__ of the Label
+
+-   Set the __Position__ of the Label
 
 ```c
 static void create_widgets(void) {
@@ -61,9 +69,13 @@ static void create_widgets(void) {
   //  Align the label to the center of the screen, shift 30 pixels up
   lv_obj_align(label, NULL, LV_ALIGN_CENTER, 0, -30);
 
-  //  Omitted: LVGL Canvas
+  //  Omitted: LVGL Canvas (we'll find out why)
 }
 ```
+
+[(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148) 
+
+TODO
 
 NuttX compiles the LVGL Test App with this GCC command...
 
