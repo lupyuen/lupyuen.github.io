@@ -698,9 +698,13 @@ Sadly Zig won't import __C Structs containing Bit Fields__.
 
 TODO: Current version
 
-# Logging and Panic Handler
+# Zig Outcomes
 
-TODO
+_Have we gained anything by coding our LVGL App in Zig?_
+
+TODO: Runtime Checks, Null Pointers, Wrapper
+
+TODO: But Bit Fields
 
 # What's Next
 
@@ -729,6 +733,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1543395925116088320)
+
+1.  Our Zig App includes a [__Custom Logger__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L225-L257) and [__Panic Handler__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L199-L225).
+
+    They are explained below...
+
+    [__"Logging"__](https://lupyuen.github.io/articles/iot#appendix-logging)
+
+    [__"Panic Handler"__](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
 # Appendix: Compiler Options
 
