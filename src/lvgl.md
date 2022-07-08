@@ -181,7 +181,7 @@ Note that we write "__`.?`__" to catch __Null Pointers__ returned by C Functions
 _What happens if the C Function returns a Null Pointer to Zig?_
 
 ```c
-// Suppose this C function...
+// Suppose this C Function...
 lv_disp_drv_t *get_disp_drv(void) {
   // Returns a Null Pointer to Zig
   return NULL;
