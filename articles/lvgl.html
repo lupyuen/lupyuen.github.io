@@ -483,7 +483,7 @@ pub fn getActiveScreen() !Object {
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L26-L34">(Source)</a></p>
 <p><em>What’s this unusual <code>if</code> expression?</em></p>
 <div class="example-wrap"><pre class="language-zig"><code>if (screen) |s| 
-    { ... } else { ... }</code></pre></div>
+  { ... } else { ... }</code></pre></div>
 <p>That’s how we check if <strong>screen</strong> is null.</p>
 <p>If <strong>screen</strong> is not null, then <strong>s</strong> becomes the non-null contents of <strong>screen</strong>. And we create an <strong>Object Struct</strong> with <strong>s</strong> inside…</p>
 <div class="example-wrap"><pre class="language-zig"><code>if (screen) |s| 
@@ -599,33 +599,33 @@ pub const Label = struct {
 /// https://docs.lvgl.io/7.11/widgets/label.html#label-recoloring-and-scrolling
 fn createWidgetsWrapped() !void {
 
-    // Get the Active Screen
-    var screen = try lvgl.getActiveScreen();
+  // Get the Active Screen
+  var screen = try lvgl.getActiveScreen();
 
-    // Create a Label Widget
-    var label = try screen.createLabel();
+  // Create a Label Widget
+  var label = try screen.createLabel();
 
-    // Wrap long lines in the label text
-    label.setLongMode(c.LV_LABEL_LONG_BREAK);
+  // Wrap long lines in the label text
+  label.setLongMode(c.LV_LABEL_LONG_BREAK);
 
-    // Interpret color codes in the label text
-    label.setRecolor(true);
+  // Interpret color codes in the label text
+  label.setRecolor(true);
 
-    // Center align the label text
-    label.setAlign(c.LV_LABEL_ALIGN_CENTER);
+  // Center align the label text
+  label.setAlign(c.LV_LABEL_ALIGN_CENTER);
 
-    // Set the label text and colors
-    label.setText(
-        &quot;#ff0000 HELLO# &quot; ++    // Red Text
-        &quot;#00aa00 PINEDIO# &quot; ++  // Green Text
-        &quot;#0000ff STACK!# &quot;      // Blue Text
-    );
+  // Set the label text and colors
+  label.setText(
+    &quot;#ff0000 HELLO# &quot; ++    // Red Text
+    &quot;#00aa00 PINEDIO# &quot; ++  // Green Text
+    &quot;#0000ff STACK!# &quot;      // Blue Text
+  );
 
-    // Set the label width
-    label.setWidth(200);
+  // Set the label width
+  label.setWidth(200);
 
-    // Align the label to the center of the screen, shift 30 pixels up
-    label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
+  // Align the label to the center of the screen, shift 30 pixels up
+  label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181">(Source)</a></p>
 <p>No more worries about catching Null Pointers!</p>
