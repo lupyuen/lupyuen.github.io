@@ -685,14 +685,39 @@ fn createWidgetsWrapped() !void {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#appendix-main-function"><strong>“Main Function”</strong></a></li>
 </ul>
-<p>And that’s why we handle <strong>Touch Input in C</strong> (instead of Zig), until we find another workaround.</p>
+<p>Also that’s why we handle <strong>Touch Input in C</strong> (instead of Zig), until we find a better solution.</p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Input Calibration in our Zig LVGL App" /></p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
 <p><em>Have we gained anything by coding our LVGL App in Zig?</em></p>
-<p>TODO: Runtime Checks, Null Pointers, Wrapper</p>
-<p>TODO: But Bit Fields</p>
+<p>The parts coded in Zig will benefit from the <strong>Safety Checks</strong> enforced by Zig at runtime: Overflow, Underflow, Array Out-of-Bounds…</p>
+<ul>
+<li><a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>“Zig Undefined Behavior”</strong></a></li>
+</ul>
+<p>We’ve seen earlier that Zig works well at catching <strong>Null Pointers</strong> and <strong>Application Errors</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#zig-checks-null-pointers"><strong>“Zig Checks Null Pointers”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#simplify-lvgl-api"><strong>“Simplify LVGL API”</strong></a></p>
+</li>
+</ul>
+<p>And that it’s possible to create a <strong>friendlier, safer interface</strong> for LVGL…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#wrap-lvgl-api"><strong>“Wrap LVGL API”</strong></a></li>
+</ul>
+<p><em>What about the downsides of Zig?</em></p>
+<p>Zig (version 0.10.0) has a serious limitation: It can’t work with <strong>C Structs containing Bit Fields</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>“Zig vs Bit Fields”</strong></a></li>
+</ul>
+<p>We found a crude workaround: Handle these structs in C (instead of Zig)</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Type”</strong></a></li>
+</ul>
+<p>But this might become a showstopper as we work with more advanced LVGL Widgets.</p>
+<p>I’ll do more experiments with LVGL on Zig and report the outcome.</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
-<p>TODO</p>
 <p>I hope this article has inspired you to create LVGL apps in Zig!</p>
 <p>Check out my earlier work on Zig, NuttX and LoRaWAN…</p>
 <ul>
@@ -975,6 +1000,7 @@ typedef struct {
 } lv_disp_buf_t;</code></pre></div>
 <p>Let’s fix the Opaque Types.</p>
 <h2 id="fix-opaque-types"><a href="#fix-opaque-types">17.1 Fix Opaque Types</a></h2>
+<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>TODO</p>
 <p>Earlier we saw that Zig couldn’t translate and import these structs because they contain Bit Fields…</p>
 <ul>
