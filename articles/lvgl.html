@@ -453,18 +453,17 @@ createWidgets failed: error.UnknownError</code></pre></div>
 <p>Earlier we saw the hypothetical <strong>LVGL API wrapped with Zig</strong>, let’s make it real in 3 steps…</p>
 <ul>
 <li>
-<p>Get Active Screen: TODO</p>
+<p>We write a function to fetch the <strong>Active Screen</strong> from LVGL</p>
 </li>
 <li>
-<p>Screen Struct: TODO</p>
+<p>We create a Zig Struct that wraps an <strong>LVGL Screen</strong></p>
 </li>
 <li>
-<p>Label Struct: TODO</p>
+<p>And another Zig Struct that wraps an <strong>LVGL Label</strong></p>
 </li>
 </ul>
 <h2 id="get-active-screen"><a href="#get-active-screen">8.1 Get Active Screen</a></h2>
-<p>TODO</p>
-<p>Here’s the implementation of <code>getActiveScreen</code>, which returns the LVGL Active Screen…</p>
+<p>Below is the implementation of <strong>getActiveScreen</strong>, which fetches the Active Screen from LVGL…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Return the Active Screen
 pub fn getActiveScreen() !Object {
 
@@ -482,9 +481,35 @@ pub fn getActiveScreen() !Object {
     }
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L26-L34">(Source)</a></p>
+<p><em>What’s this unusual <code>if</code> expression?</em></p>
+<div class="example-wrap"><pre class="language-zig"><code>if (screen) |s| 
+    { ... } else { ... }</code></pre></div>
+<p>That’s how we check if <strong>screen</strong> is null.</p>
+<p>If <strong>screen</strong> is not null, then <strong>s</strong> becomes the non-null contents of <strong>screen</strong>. And we create an <strong>Object Struct</strong> with <strong>s</strong> inside…</p>
+<div class="example-wrap"><pre class="language-zig"><code>if (screen) |s| 
+    { return Object.init(s); }
+    ...</code></pre></div>
+<p>But if <strong>screen</strong> is null, we do the <strong>else</strong> clause and return an Error…</p>
+<div class="example-wrap"><pre class="language-zig"><code>if (screen) |s| 
+    { ... }
+else
+    { return LvglError.UnknownError; }</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L117-L119">(<strong>LvglError</strong> is defined here)</a></p>
+<p>That’s why the Return Type for our function is <strong>!Object</strong></p>
+<div class="example-wrap"><pre class="language-zig"><code>pub fn getActiveScreen() !Object { ... }</code></pre></div>
+<p>It returns either an <strong>Object Struct</strong> or an <strong>Error</strong>. (“<code>!</code>” means Error)</p>
+<p>Let’s talk about the Object Struct…</p>
 <h2 id="object-struct"><a href="#object-struct">8.2 Object Struct</a></h2>
-<p>TODO</p>
-<p><code>Object</code> is a Zig Struct that wraps around an LVGL Object…</p>
+<p><strong>Object</strong> is a Zig Struct that wraps around an LVGL Object (like the Active Screen).</p>
+<p>It defines 2 Methods…</p>
+<ul>
+<li>
+<p><strong>init</strong>: Initialise the LVGL Object</p>
+</li>
+<li>
+<p><strong>createLabel</strong>: Create an LVGL Label as a child of the Object</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-zig"><code>/// LVGL Object
 pub const Object = struct {
 
@@ -518,8 +543,8 @@ pub const Object = struct {
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L36-L58">(Source)</a></p>
 <h2 id="label-struct"><a href="#label-struct">8.3 Label Struct</a></h2>
-<p>TODO</p>
-<p><code>Label</code> is a Zig Struct that wraps around an LVGL Label…</p>
+<p>Finally we have <strong>Label</strong>, a Zig Struct that wraps around an LVGL Label.</p>
+<p>It defines a whole bunch of Methods to set the <strong>Label Properties, Text and Position</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LVGL Label
 pub const Label = struct {
 
@@ -564,9 +589,10 @@ pub const Label = struct {
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L60-L101">(Source)</a></p>
 <p>Let’s call the wrapped LVGL API…</p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code4a.png" alt="Our app calling the LVGL API wrapped with Zig" /></p>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181">(Source)</a></p>
 <h2 id="after-wrapping-lvgl"><a href="#after-wrapping-lvgl">8.4 After Wrapping LVGL</a></h2>
-<p>TODO</p>
-<p>With the wrapped LVGL API, our Zig App becomes simpler and safer…</p>
+<p>With the <strong>wrapped LVGL API</strong>, our Zig App becomes simpler and safer…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Create the LVGL Widgets that will be rendered on the display. Calls the
 /// LVGL API that has been wrapped in Zig. Based on
 /// https://docs.lvgl.io/7.11/widgets/label.html#label-recoloring-and-scrolling
@@ -601,8 +627,8 @@ fn createWidgetsWrapped() !void {
     label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181">(Source)</a></p>
-<p>(TODO: Convert <code>LV_LABEL_LONG_BREAK</code>, <code>LV_LABEL_ALIGN_CENTER</code> and other constants to Enums)</p>
-<p><img src="https://lupyuen.github.io/images/lvgl-code4a.png" alt="Our app calling the LVGL API wrapped with Zig" /></p>
+<p>No more forgetting to check for Null Pointers!</p>
+<p>(Someday <strong>LV_LABEL_LONG_BREAK</strong>, <strong>LV_LABEL_ALIGN_CENTER</strong> and other constants will become Enums)</p>
 <h1 id="zig-vs-bit-fields"><a href="#zig-vs-bit-fields">9 Zig vs Bit Fields</a></h1>
 <p><em>Zig sounds amazing! Is there anything that Zig won’t do?</em></p>
 <p>Sadly Zig won’t import <strong>C Structs containing Bit Fields</strong>.</p>
