@@ -788,21 +788,21 @@ _Which LVGL Structs are affected?_
 
 So far we have identified these __LVGL Structs__ that contain Bit Fields...
 
--   [__Color Type__](https://lupyuen.github.io/articles/lvgl#color-type) (lv_color_t)
-
--   [__Display Driver__](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types) (lv_disp_drv_t)
+-   [__Color__](https://lupyuen.github.io/articles/lvgl#color-type) (lv_color_t)
 
 -   [__Display Buffer__](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types) (lv_disp_buf_t)
+
+-   [__Display Driver__](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types) (lv_disp_drv_t)
 
 -   [__Input Driver__](https://lupyuen.github.io/articles/lvgl#input-driver) (lv_indev_drv_t)
 
 _Is there a workaround?_
 
-Right now we're accessing the structs for Colors, Display Driver, Display Buffer and Input Driver __inside C Functions__...
+Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver __inside C Functions__...
 
 -   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
 
-And passing the __Struct Pointers__ to Zig.
+And we pass the __Struct Pointers__ to Zig.
 
 Which explains why we see pointers to LVGL Structs in our __Main Function__...
 
