@@ -844,13 +844,13 @@ We found a crude workaround: Handle these structs in C and pass the __Struct Poi
 
 But this might become a showstopper as we work with __advanced LVGL Widgets__.
 
-I'll do more experiments with LVGL on Zig and report the outcome.
+I'll run more experiments with LVGL on Zig and report the outcome.
 
 # What's Next
 
 I hope this article has inspired you to create LVGL Apps in Zig!
 
-(But if you would like to wait for Zig 1.0... That's OK too!)
+(But if you prefer to wait for Zig 1.0... That's OK too!)
 
 Check out my earlier work on Zig, NuttX and LoRaWAN...
 
