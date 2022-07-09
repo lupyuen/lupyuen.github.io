@@ -959,7 +959,7 @@ Because Zig won't work with [__C Structs containing Bit Fields__](https://lupyue
   _ = c.tp_init();
 ```
 
-These C Functions are specific to Apache NuttX RTOS...
+These C Functions are specific to __Apache NuttX RTOS__...
 
 -   [__lcddev_init__](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lcddev.c#L244-L333): Init LCD Driver
 
@@ -974,7 +974,7 @@ These C Functions are specific to Apache NuttX RTOS...
   c.init_indev_drv(indev_drv, c.tp_read);
 ```
 
-Again, Zig won't work with __Input Drivers__ because the C Struct contains Bit Fields, so we handle them in C...
+Again, Zig won't work with the __Input Driver__ because the C Struct contains Bit Fields, so we handle it in C...
 
 -   [__get_indev_drv__](https://lupyuen.github.io/articles/lvgl#input-driver): Get Input Driver
 
@@ -1008,6 +1008,8 @@ We've seen these Zig Functions earlier...
 
 This renders (in C) the LVGL Widgets for __Touch Panel Calibration__, as shown in the pic above.
 
+[(Watch the calibration demo on YouTube)](https://www.youtube.com/shorts/2Nzjrlp5lcE)
+
 (Can this be done in Zig? Needs exploration)
 
 ```zig
@@ -1025,6 +1027,12 @@ This renders (in C) the LVGL Widgets for __Touch Panel Calibration__, as shown i
 ```
 
 Finally we loop forever handling __LVGL Events__.
+
+_Why the "`_ = `something"?_
+
+This tells the Zig Compiler that we're __not using the value__ of "something".
+
+The Zig Compiler helpfully stops us if we forget to use a Variable (like ___argc__) or the Returned Value for a Function (like for __lv_task_handler__).
 
 # Appendix: Compiler Options
 
