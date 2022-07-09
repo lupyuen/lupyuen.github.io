@@ -453,10 +453,10 @@ createWidgets failed: error.UnknownError</code></pre></div>
 <p>Earlier we saw the hypothetical <strong>LVGL API wrapped with Zig</strong>, let’s make it real in 3 steps…</p>
 <ul>
 <li>
-<p>We write a function to fetch the <strong>Active Screen</strong> from LVGL</p>
+<p>Write a function to fetch the <strong>Active Screen</strong> from LVGL</p>
 </li>
 <li>
-<p>We create a Zig Struct that wraps an <strong>LVGL Screen</strong></p>
+<p>Create a Zig Struct that wraps an <strong>LVGL Screen</strong></p>
 </li>
 <li>
 <p>And another Zig Struct that wraps an <strong>LVGL Label</strong></p>
@@ -707,7 +707,7 @@ fn createWidgetsWrapped() !void {
 <li><a href="https://lupyuen.github.io/articles/lvgl#wrap-lvgl-api"><strong>“Wrap LVGL API”</strong></a></li>
 </ul>
 <p><em>What about the downsides of Zig?</em></p>
-<p>Zig (version 0.10.0) has a serious limitation: It can’t work with <strong>C Structs containing Bit Fields</strong>…</p>
+<p>Zig (version 0.10.0) has a serious limitation: It won’t work with <strong>C Structs containing Bit Fields</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>“Zig vs Bit Fields”</strong></a></li>
 </ul>
@@ -761,7 +761,7 @@ fn createWidgetsWrapped() !void {
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Input Calibration in our Zig LVGL App" /></p>
 <h1 id="appendix-main-function"><a href="#appendix-main-function">13 Appendix: Main Function</a></h1>
 <p>TODO</p>
-<p>Zig (version 0.10.0) has a serious limitation: It can’t work with <strong>C Structs containing Bit Fields</strong>…</p>
+<p>Zig (version 0.10.0) has a serious limitation: It won’t work with <strong>C Structs containing Bit Fields</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>“Zig vs Bit Fields”</strong></a></li>
 </ul>
