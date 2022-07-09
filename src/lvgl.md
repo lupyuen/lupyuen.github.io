@@ -890,7 +890,21 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 Below is our __Main Function__ in Zig that does the following...
 
-TODO
+-   Initialise the __LVGL Library__
+
+-   Initialise the __Display Buffer, Display Driver and LCD Driver__
+
+-   Register the __Display Driver__ with LVGL
+
+-   Initialise the __Touch Panel and Input Driver__
+
+-   Create the __LVGL Widgets__ for display
+
+-   Start the __Touch Panel Calibration__
+
+-   Forever handle __LVGL Events__
+
+From [lvgltest.zig](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109)
 
 ```zig
 /// Main Function that will be called by NuttX. We render an LVGL Screen and
@@ -899,83 +913,118 @@ pub export fn lvgltest_main(
     _argc: c_int, 
     _argv: [*]const [*]const u8
 ) c_int {
-    debug("Zig LVGL Test", .{});
-    // Command-line args are not used
-    _ = _argc;
-    _ = _argv;
+  debug("Zig LVGL Test", .{});
+  // Command-line args are not used
+  _ = _argc;
+  _ = _argv;
 
-    // Init LVGL Library
-    c.lv_init();
+  // Init LVGL Library
+  c.lv_init();
 
-    // Init Display Buffer
-    const disp_buf = c.get_disp_buf().?;
-    c.init_disp_buf(disp_buf);
+  // Init Display Buffer
+  const disp_buf = c.get_disp_buf().?;
+  c.init_disp_buf(disp_buf);
 
-    // Init Display Driver
-    const disp_drv = c.get_disp_drv().?;
-    c.init_disp_drv(disp_drv, disp_buf, monitorCallback);
+  // Init Display Driver
+  const disp_drv = c.get_disp_drv().?;
+  c.init_disp_drv(disp_drv, disp_buf, monitorCallback);
+```
 
-    // Init LCD Driver
-    if (c.lcddev_init(disp_drv) != c.EXIT_SUCCESS) {
-        // If failed, try Framebuffer Driver
-        if (c.fbdev_init(disp_drv) != c.EXIT_SUCCESS) {
-            // No possible drivers left, fail
-            return c.EXIT_FAILURE;
-        }
+Because Zig won't work with [__C Structs containing Bit Fields__](https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields), we handle them in C instead...
+
+-   [__get_disp_buf__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types): Get Display Buffer
+
+-   [__init_disp_buf__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types): Init Display Buffer
+
+-   [__get_disp_drv__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types): Get Display Driver
+
+-   [__init_disp_drv__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types): Init Display Driver
+
+```zig
+  // Init LCD Driver
+  if (c.lcddev_init(disp_drv) != c.EXIT_SUCCESS) {
+
+    // If failed, try Framebuffer Driver
+    if (c.fbdev_init(disp_drv) != c.EXIT_SUCCESS) {
+
+      // No possible drivers left, fail
+      return c.EXIT_FAILURE;
     }
+  }
 
-    // Register Display Driver
-    _ = c.lv_disp_drv_register(disp_drv);
+  // Register Display Driver with LVGL
+  _ = c.lv_disp_drv_register(disp_drv);
 
-    // Init Touch Panel
-    _ = c.tp_init();
+  // Init Touch Panel
+  _ = c.tp_init();
+```
 
-    // Init Input Device. tp_read will be called periodically
-    // to get the touched position and state
-    const indev_drv = c.get_indev_drv().?;
-    c.init_indev_drv(indev_drv, c.tp_read);
+These C Functions are specific to Apache NuttX RTOS...
 
-    // Create the widgets for display
-    createWidgetsUnwrapped()
-        catch |e| {
-            // In case of error, quit
-            std.log.err("createWidgets failed: {}", .{e});
-            return c.EXIT_FAILURE;
-        };
+-   [__lcddev_init__](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lcddev.c#L244-L333): Init LCD Driver
 
-    // To call the LVGL API that's wrapped in Zig, change
-    // `createWidgetsUnwrapped` above to `createWidgetsWrapped`
+-   [__fbdev_init__](https://github.com/lupyuen/lvgltest-nuttx/blob/main/fbdev.c#L351-L469): Init Framebuffer Driver
 
-    // Start Touch Panel calibration
-    c.tp_cal_create();
+-   [__tp_init__](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L62-L99): Init Touch Panel
 
-    // Loop forever handing LVGL tasks
-    while (true) {
-        // Handle LVGL tasks
-        _ = c.lv_task_handler();
+```zig
+  // Init Input Driver. tp_read will be called periodically
+  // to get the touched position and state
+  const indev_drv = c.get_indev_drv().?;
+  c.init_indev_drv(indev_drv, c.tp_read);
+```
 
-        // Sleep a while
-        _ = c.usleep(10000);
-    }
-    return 0;
+Again, Zig won't work with __Input Drivers__ because the C Struct contains Bit Fields, so we handle them in C...
+
+-   [__get_indev_drv__](https://lupyuen.github.io/articles/lvgl#input-driver): Get Input Driver
+
+-   [__init_indev_drv__](https://lupyuen.github.io/articles/lvgl#input-driver): Init Input Driver
+
+```zig
+  // Create the widgets for display
+  createWidgetsUnwrapped()
+    catch |e| {
+      // In case of error, quit
+      std.log.err("createWidgets failed: {}", .{e});
+      return c.EXIT_FAILURE;
+    };
+
+  // To call the LVGL API that's wrapped in Zig, change
+  // `createWidgetsUnwrapped` above to `createWidgetsWrapped`
+```
+
+We've seen these Zig Functions earlier...
+
+-   [__createWidgetsUnwrapped__](https://lupyuen.github.io/articles/lvgl#zig-lvgl-app): Create LVGL Widgets without Zig Wrapper
+
+-   [__createWidgetsWrapped__](https://lupyuen.github.io/articles/lvgl#after-wrapping): Create LVGL Widgets with Zig Wrapper
+
+```zig
+  // Start Touch Panel calibration
+  c.tp_cal_create();
+```
+
+[(__tp_cal_create__ is defined here)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp_cal.c#L244-L332)
+
+This renders (in C) the LVGL Widgets for __Touch Panel Calibration__, as shown in the pic above.
+
+(Can this be done in Zig? Needs exploration)
+
+```zig
+  // Loop forever handing LVGL tasks
+  while (true) {
+
+    // Handle LVGL tasks
+    _ = c.lv_task_handler();
+
+    // Sleep a while
+    _ = c.usleep(10000);
+  }
+  return 0;
 }
 ```
 
-[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109)
-
-Zig (version 0.10.0) has a serious limitation: It won't work with __C Structs containing Bit Fields__...
-
--   [__"Zig vs Bit Fields"__](https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields)
-
-Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver __inside C Functions__...
-
--   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
-
-And we pass the __Struct Pointers__ to Zig.
-
-Which explains why we see pointers to LVGL Structs in our Main Function above.
-
-Also that's why we handle __Touch Input in C__ (instead of Zig), until we find a better solution.
+Finally we loop forever handling __LVGL Events__.
 
 # Appendix: Compiler Options
 
