@@ -837,7 +837,7 @@ pub export fn lvgltest_main(
 
   // Init Touch Panel
   _ = c.tp_init();</code></pre></div>
-<p>These C Functions are specific to Apache NuttX RTOS…</p>
+<p>These C Functions are specific to <strong>Apache NuttX RTOS</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lcddev.c#L244-L333"><strong>lcddev_init</strong></a>: Init LCD Driver</p>
@@ -853,7 +853,7 @@ pub export fn lvgltest_main(
   // to get the touched position and state
   const indev_drv = c.get_indev_drv().?;
   c.init_indev_drv(indev_drv, c.tp_read);</code></pre></div>
-<p>Again, Zig won’t work with <strong>Input Drivers</strong> because the C Struct contains Bit Fields, so we handle them in C…</p>
+<p>Again, Zig won’t work with the <strong>Input Driver</strong> because the C Struct contains Bit Fields, so we handle it in C…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lvgl#input-driver"><strong>get_indev_drv</strong></a>: Get Input Driver</p>
@@ -885,6 +885,7 @@ pub export fn lvgltest_main(
   c.tp_cal_create();</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp_cal.c#L244-L332">(<strong>tp_cal_create</strong> is defined here)</a></p>
 <p>This renders (in C) the LVGL Widgets for <strong>Touch Panel Calibration</strong>, as shown in the pic above.</p>
+<p><a href="https://www.youtube.com/shorts/2Nzjrlp5lcE">(Watch the calibration demo on YouTube)</a></p>
 <p>(Can this be done in Zig? Needs exploration)</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Loop forever handing LVGL tasks
   while (true) {
@@ -898,6 +899,9 @@ pub export fn lvgltest_main(
   return 0;
 }</code></pre></div>
 <p>Finally we loop forever handling <strong>LVGL Events</strong>.</p>
+<p><em>Why the “<code>_ = </code>something”?</em></p>
+<p>This tells the Zig Compiler that we’re <strong>not using the value</strong> of “something”.</p>
+<p>The Zig Compiler helpfully stops us if we forget to use a Variable (like _<strong>argc</strong>) or the Returned Value for a Function (like for <strong>lv_task_handler</strong>).</p>
 <h1 id="appendix-compiler-options"><a href="#appendix-compiler-options">14 Appendix: Compiler Options</a></h1>
 <p>TODO</p>
 <p>NuttX compiles the LVGL Test App with this GCC command…</p>
