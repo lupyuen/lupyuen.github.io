@@ -888,6 +888,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Main Function
 
+Below is our __Main Function__ in Zig that does the following...
+
 TODO
 
 ```zig
