@@ -696,7 +696,7 @@ Let's call the wrapped LVGL API...
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181)
 
-## After Wrapping LVGL
+## After Wrapping
 
 With the __wrapped LVGL API__, our Zig App becomes simpler and safer...
 
@@ -809,6 +809,8 @@ And we pass the __Struct Pointers__ to Zig.
 Which explains why we see pointers to LVGL Structs in our __Main Function__...
 
 TODO
+
+And that's why we handle __Touch Input in C__ (instead of Zig), until we find another workaround.
 
 # Zig Outcomes
 
