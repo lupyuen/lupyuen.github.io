@@ -810,7 +810,7 @@ Which explains why we see pointers to LVGL Structs in our __Main Function__...
 
 -   [__"Main Function"__](https://lupyuen.github.io/articles/lvgl#appendix-main-function)
 
-And that's why we handle __Touch Input in C__ (instead of Zig), until we find another workaround.
+Also that's why we handle __Touch Input in C__ (instead of Zig), until we find a better solution.
 
 ![Touch Input Calibration in our Zig LVGL App](https://lupyuen.github.io/images/touch-title.jpg)
 
@@ -818,13 +818,35 @@ And that's why we handle __Touch Input in C__ (instead of Zig), until we find an
 
 _Have we gained anything by coding our LVGL App in Zig?_
 
-TODO: Runtime Checks, Null Pointers, Wrapper
+The parts coded in Zig will benefit from the __Safety Checks__ enforced by Zig at runtime: Overflow, Underflow, Array Out-of-Bounds...
 
-TODO: But Bit Fields
+-   [__"Zig Undefined Behavior"__](https://ziglang.org/documentation/master/#Undefined-Behavior)
+
+We've seen earlier that Zig works well at catching __Null Pointers__ and __Application Errors__...
+
+-   [__"Zig Checks Null Pointers"__](https://lupyuen.github.io/articles/lvgl#zig-checks-null-pointers)
+
+-   [__"Simplify LVGL API"__](https://lupyuen.github.io/articles/lvgl#simplify-lvgl-api)
+
+And that it's possible to create a __friendlier, safer interface__ for LVGL...
+
+-   [__"Wrap LVGL API"__](https://lupyuen.github.io/articles/lvgl#wrap-lvgl-api)
+
+_What about the downsides of Zig?_
+
+Zig (version 0.10.0) has a serious limitation: It can't work with __C Structs containing Bit Fields__...
+
+-   [__"Zig vs Bit Fields"__](https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields)
+
+We found a crude workaround: Handle these structs in C (instead of Zig)
+
+-   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
+
+But this might become a showstopper as we work with more advanced LVGL Widgets.
+
+I'll do more experiments with LVGL on Zig and report the outcome.
 
 # What's Next
-
-TODO
 
 I hope this article has inspired you to create LVGL apps in Zig!
 
@@ -1162,6 +1184,8 @@ typedef struct {
 Let's fix the Opaque Types.
 
 ## Fix Opaque Types
+
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
 TODO
 
