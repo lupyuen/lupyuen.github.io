@@ -556,7 +556,7 @@ _What's this unusual `if` expression?_
 
 ```zig
 if (screen) |s| 
-    { ... } else { ... }
+  { ... } else { ... }
 ```
 
 That's how we check if __screen__ is null.
@@ -706,33 +706,33 @@ With the __wrapped LVGL API__, our Zig App becomes simpler and safer...
 /// https://docs.lvgl.io/7.11/widgets/label.html#label-recoloring-and-scrolling
 fn createWidgetsWrapped() !void {
 
-    // Get the Active Screen
-    var screen = try lvgl.getActiveScreen();
+  // Get the Active Screen
+  var screen = try lvgl.getActiveScreen();
 
-    // Create a Label Widget
-    var label = try screen.createLabel();
+  // Create a Label Widget
+  var label = try screen.createLabel();
 
-    // Wrap long lines in the label text
-    label.setLongMode(c.LV_LABEL_LONG_BREAK);
+  // Wrap long lines in the label text
+  label.setLongMode(c.LV_LABEL_LONG_BREAK);
 
-    // Interpret color codes in the label text
-    label.setRecolor(true);
+  // Interpret color codes in the label text
+  label.setRecolor(true);
 
-    // Center align the label text
-    label.setAlign(c.LV_LABEL_ALIGN_CENTER);
+  // Center align the label text
+  label.setAlign(c.LV_LABEL_ALIGN_CENTER);
 
-    // Set the label text and colors
-    label.setText(
-        "#ff0000 HELLO# " ++    // Red Text
-        "#00aa00 PINEDIO# " ++  // Green Text
-        "#0000ff STACK!# "      // Blue Text
-    );
+  // Set the label text and colors
+  label.setText(
+    "#ff0000 HELLO# " ++    // Red Text
+    "#00aa00 PINEDIO# " ++  // Green Text
+    "#0000ff STACK!# "      // Blue Text
+  );
 
-    // Set the label width
-    label.setWidth(200);
+  // Set the label width
+  label.setWidth(200);
 
-    // Align the label to the center of the screen, shift 30 pixels up
-    label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
+  // Align the label to the center of the screen, shift 30 pixels up
+  label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
 }
 ```
 
