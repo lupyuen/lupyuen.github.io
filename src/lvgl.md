@@ -22,7 +22,7 @@ Join me as we dive into our __LVGL Touchscreen App in Zig__...
 
 -   [__lupyuen/zig-lvgl-nuttx__](https://github.com/lupyuen/zig-lvgl-nuttx)
 
-(Spoilers: Answers are Yes, Maybe, Somewhat)
+[(Spoilers: Answers are Yes, Maybe, Somewhat)](https://lupyuen.github.io/articles/lvgl#zig-outcomes)
 
 ![LVGL App in C](https://lupyuen.github.io/images/lvgl-code1a.png)
 
@@ -223,7 +223,7 @@ const disp_drv = c.get_disp_drv();
 
 This crashes with a __RISC-V Exception__ when our program tries to dereference the Null Pointer in a __later part__ of the code.
 
-Which isn't as helpful as an immediate Zig Panic.
+Which isn't as helpful as an immediate Zig Panic (upon receiving the Null Pointer).
 
 Thus we always write "`.?`" to catch Null Pointers returned by C Functions.
 
@@ -890,18 +890,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
-Zig (version 0.10.0) has a serious limitation: It won't work with __C Structs containing Bit Fields__...
-
--   [__"Zig vs Bit Fields"__](https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields)
-
-Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver __inside C Functions__...
-
--   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
-
-And we pass the __Struct Pointers__ to Zig.
-
-Which explains why we see pointers to LVGL Structs in our __Main Function__...
-
 ```zig
 /// Main Function that will be called by NuttX. We render an LVGL Screen and
 /// handle Touch Input.
@@ -972,6 +960,20 @@ pub export fn lvgltest_main(
 ```
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109)
+
+Zig (version 0.10.0) has a serious limitation: It won't work with __C Structs containing Bit Fields__...
+
+-   [__"Zig vs Bit Fields"__](https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields)
+
+Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver __inside C Functions__...
+
+-   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
+
+And we pass the __Struct Pointers__ to Zig.
+
+Which explains why we see pointers to LVGL Structs in our Main Function above.
+
+Also that's why we handle __Touch Input in C__ (instead of Zig), until we find a better solution.
 
 # Appendix: Compiler Options
 
