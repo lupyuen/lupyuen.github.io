@@ -521,17 +521,15 @@ createWidgets failed: error.UnknownError
 
 Earlier we saw the hypothetical __LVGL API wrapped with Zig__, let's make it real in 3 steps...
 
--   Get Active Screen: TODO
+-   We write a function to fetch the __Active Screen__ from LVGL
 
--   Screen Struct: TODO
+-   We create a Zig Struct that wraps an __LVGL Screen__
 
--   Label Struct: TODO
+-   And another Zig Struct that wraps an __LVGL Label__
 
 ## Get Active Screen
 
-TODO
-
-Here's the implementation of `getActiveScreen`, which returns the LVGL Active Screen...
+Below is the implementation of __getActiveScreen__, which fetches the Active Screen from LVGL...
 
 ```zig
 /// Return the Active Screen
@@ -554,11 +552,53 @@ pub fn getActiveScreen() !Object {
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L26-L34)
 
+_What's this unusual `if` expression?_
+
+```zig
+if (screen) |s| 
+    { ... } else { ... }
+```
+
+That's how we check if __screen__ is null.
+
+If __screen__ is not null, then __s__ becomes the non-null contents of __screen__. And we create an __Object Struct__ with __s__ inside...
+
+```zig
+if (screen) |s| 
+    { return Object.init(s); }
+    ...
+```
+
+But if __screen__ is null, we do the __else__ clause and return an Error...
+
+```zig
+if (screen) |s| 
+    { ... }
+else
+    { return LvglError.UnknownError; }
+```
+
+[(__LvglError__ is defined here)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L117-L119)
+
+That's why the Return Type for our function is __!Object__
+
+```zig
+pub fn getActiveScreen() !Object { ... }
+```
+
+It returns either an __Object Struct__ or an __Error__. ("`!`" means Error)
+
+Let's talk about the Object Struct...
+
 ## Object Struct
 
-TODO
+__Object__ is a Zig Struct that wraps around an LVGL Object (like the Active Screen).
 
-`Object` is a Zig Struct that wraps around an LVGL Object...
+It defines 2 Methods...
+
+-   __init__: Initialise the LVGL Object
+
+-   __createLabel__: Create an LVGL Label as a child of the Object
 
 ```zig
 /// LVGL Object
@@ -598,9 +638,9 @@ pub const Object = struct {
 
 ## Label Struct
 
-TODO
+Finally we have __Label__, a Zig Struct that wraps around an LVGL Label.
 
-`Label` is a Zig Struct that wraps around an LVGL Label...
+It defines a whole bunch of Methods to set the __Label Properties, Text and Position__...
 
 ```zig
 /// LVGL Label
@@ -651,11 +691,13 @@ pub const Label = struct {
 
 Let's call the wrapped LVGL API...
 
+![Our app calling the LVGL API wrapped with Zig](https://lupyuen.github.io/images/lvgl-code4a.png)
+
+[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181)
+
 ## After Wrapping LVGL
 
-TODO
-
-With the wrapped LVGL API, our Zig App becomes simpler and safer...
+With the __wrapped LVGL API__, our Zig App becomes simpler and safer...
 
 ```zig
 /// Create the LVGL Widgets that will be rendered on the display. Calls the
@@ -695,9 +737,9 @@ fn createWidgetsWrapped() !void {
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181)
 
-(TODO: Convert `LV_LABEL_LONG_BREAK`, `LV_LABEL_ALIGN_CENTER` and other constants to Enums)
+No more forgetting to check for Null Pointers!
 
-![Our app calling the LVGL API wrapped with Zig](https://lupyuen.github.io/images/lvgl-code4a.png)
+(Someday __LV_LABEL_LONG_BREAK__, __LV_LABEL_ALIGN_CENTER__ and other constants will become Enums)
 
 # Zig vs Bit Fields
 
