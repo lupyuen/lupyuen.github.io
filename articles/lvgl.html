@@ -761,85 +761,143 @@ fn createWidgetsWrapped() !void {
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Input Calibration in our Zig LVGL App" /></p>
 <h1 id="appendix-main-function"><a href="#appendix-main-function">13 Appendix: Main Function</a></h1>
 <p>Below is our <strong>Main Function</strong> in Zig that does the following…</p>
-<p>TODO</p>
+<ul>
+<li>
+<p>Initialise the <strong>LVGL Library</strong></p>
+</li>
+<li>
+<p>Initialise the <strong>Display Buffer, Display Driver and LCD Driver</strong></p>
+</li>
+<li>
+<p>Register the <strong>Display Driver</strong> with LVGL</p>
+</li>
+<li>
+<p>Initialise the <strong>Touch Panel and Input Driver</strong></p>
+</li>
+<li>
+<p>Create the <strong>LVGL Widgets</strong> for display</p>
+</li>
+<li>
+<p>Start the <strong>Touch Panel Calibration</strong></p>
+</li>
+<li>
+<p>Forever handle <strong>LVGL Events</strong></p>
+</li>
+</ul>
+<p>From <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109">lvgltest.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We render an LVGL Screen and
 /// handle Touch Input.
 pub export fn lvgltest_main(
     _argc: c_int, 
     _argv: [*]const [*]const u8
 ) c_int {
-    debug(&quot;Zig LVGL Test&quot;, .{});
-    // Command-line args are not used
-    _ = _argc;
-    _ = _argv;
+  debug(&quot;Zig LVGL Test&quot;, .{});
+  // Command-line args are not used
+  _ = _argc;
+  _ = _argv;
 
-    // Init LVGL Library
-    c.lv_init();
+  // Init LVGL Library
+  c.lv_init();
 
-    // Init Display Buffer
-    const disp_buf = c.get_disp_buf().?;
-    c.init_disp_buf(disp_buf);
+  // Init Display Buffer
+  const disp_buf = c.get_disp_buf().?;
+  c.init_disp_buf(disp_buf);
 
-    // Init Display Driver
-    const disp_drv = c.get_disp_drv().?;
-    c.init_disp_drv(disp_drv, disp_buf, monitorCallback);
+  // Init Display Driver
+  const disp_drv = c.get_disp_drv().?;
+  c.init_disp_drv(disp_drv, disp_buf, monitorCallback);</code></pre></div>
+<p>Because Zig won’t work with <a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>C Structs containing Bit Fields</strong></a>, we handle them in C instead…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>get_disp_buf</strong></a>: Get Display Buffer</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>init_disp_buf</strong></a>: Init Display Buffer</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>get_disp_drv</strong></a>: Get Display Driver</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>init_disp_drv</strong></a>: Init Display Driver</p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-zig"><code>  // Init LCD Driver
+  if (c.lcddev_init(disp_drv) != c.EXIT_SUCCESS) {
 
-    // Init LCD Driver
-    if (c.lcddev_init(disp_drv) != c.EXIT_SUCCESS) {
-        // If failed, try Framebuffer Driver
-        if (c.fbdev_init(disp_drv) != c.EXIT_SUCCESS) {
-            // No possible drivers left, fail
-            return c.EXIT_FAILURE;
-        }
+    // If failed, try Framebuffer Driver
+    if (c.fbdev_init(disp_drv) != c.EXIT_SUCCESS) {
+
+      // No possible drivers left, fail
+      return c.EXIT_FAILURE;
     }
+  }
 
-    // Register Display Driver
-    _ = c.lv_disp_drv_register(disp_drv);
+  // Register Display Driver with LVGL
+  _ = c.lv_disp_drv_register(disp_drv);
 
-    // Init Touch Panel
-    _ = c.tp_init();
+  // Init Touch Panel
+  _ = c.tp_init();</code></pre></div>
+<p>These C Functions are specific to Apache NuttX RTOS…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lcddev.c#L244-L333"><strong>lcddev_init</strong></a>: Init LCD Driver</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/fbdev.c#L351-L469"><strong>fbdev_init</strong></a>: Init Framebuffer Driver</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L62-L99"><strong>tp_init</strong></a>: Init Touch Panel</p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-zig"><code>  // Init Input Driver. tp_read will be called periodically
+  // to get the touched position and state
+  const indev_drv = c.get_indev_drv().?;
+  c.init_indev_drv(indev_drv, c.tp_read);</code></pre></div>
+<p>Again, Zig won’t work with <strong>Input Drivers</strong> because the C Struct contains Bit Fields, so we handle them in C…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#input-driver"><strong>get_indev_drv</strong></a>: Get Input Driver</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#input-driver"><strong>init_indev_drv</strong></a>: Init Input Driver</p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-zig"><code>  // Create the widgets for display
+  createWidgetsUnwrapped()
+    catch |e| {
+      // In case of error, quit
+      std.log.err(&quot;createWidgets failed: {}&quot;, .{e});
+      return c.EXIT_FAILURE;
+    };
 
-    // Init Input Device. tp_read will be called periodically
-    // to get the touched position and state
-    const indev_drv = c.get_indev_drv().?;
-    c.init_indev_drv(indev_drv, c.tp_read);
+  // To call the LVGL API that&#39;s wrapped in Zig, change
+  // `createWidgetsUnwrapped` above to `createWidgetsWrapped`</code></pre></div>
+<p>We’ve seen these Zig Functions earlier…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#zig-lvgl-app"><strong>createWidgetsUnwrapped</strong></a>: Create LVGL Widgets without Zig Wrapper</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#after-wrapping"><strong>createWidgetsWrapped</strong></a>: Create LVGL Widgets with Zig Wrapper</p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-zig"><code>  // Start Touch Panel calibration
+  c.tp_cal_create();</code></pre></div>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp_cal.c#L244-L332">(<strong>tp_cal_create</strong> is defined here)</a></p>
+<p>This renders (in C) the LVGL Widgets for <strong>Touch Panel Calibration</strong>, as shown in the pic above.</p>
+<p>(Can this be done in Zig? Needs exploration)</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Loop forever handing LVGL tasks
+  while (true) {
 
-    // Create the widgets for display
-    createWidgetsUnwrapped()
-        catch |e| {
-            // In case of error, quit
-            std.log.err(&quot;createWidgets failed: {}&quot;, .{e});
-            return c.EXIT_FAILURE;
-        };
+    // Handle LVGL tasks
+    _ = c.lv_task_handler();
 
-    // To call the LVGL API that&#39;s wrapped in Zig, change
-    // `createWidgetsUnwrapped` above to `createWidgetsWrapped`
-
-    // Start Touch Panel calibration
-    c.tp_cal_create();
-
-    // Loop forever handing LVGL tasks
-    while (true) {
-        // Handle LVGL tasks
-        _ = c.lv_task_handler();
-
-        // Sleep a while
-        _ = c.usleep(10000);
-    }
-    return 0;
+    // Sleep a while
+    _ = c.usleep(10000);
+  }
+  return 0;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109">(Source)</a></p>
-<p>Zig (version 0.10.0) has a serious limitation: It won’t work with <strong>C Structs containing Bit Fields</strong>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>“Zig vs Bit Fields”</strong></a></li>
-</ul>
-<p>Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver <strong>inside C Functions</strong>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Type”</strong></a></li>
-</ul>
-<p>And we pass the <strong>Struct Pointers</strong> to Zig.</p>
-<p>Which explains why we see pointers to LVGL Structs in our Main Function above.</p>
-<p>Also that’s why we handle <strong>Touch Input in C</strong> (instead of Zig), until we find a better solution.</p>
+<p>Finally we loop forever handling <strong>LVGL Events</strong>.</p>
 <h1 id="appendix-compiler-options"><a href="#appendix-compiler-options">14 Appendix: Compiler Options</a></h1>
 <p>TODO</p>
 <p>NuttX compiles the LVGL Test App with this GCC command…</p>
