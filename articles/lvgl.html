@@ -441,8 +441,8 @@ _ = screen;</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>./lvgltest.zig:109:9:
 error: error is discarded. 
 consider using `try`, `catch`, or `if`
-    _ = screen;
-        ^</code></pre></div>
+  _ = screen;
+      ^</code></pre></div>
 <p>Thus “<strong><code>try</code></strong>” is actually safer than “<code>.?</code>”, Zig Compiler mandates that we check for errors.</p>
 <p><em>What if LVGL returns a Null Pointer to Zig?</em></p>
 <p>Our app will fail gracefully with an <strong>Application Error</strong>…</p>
@@ -467,18 +467,18 @@ createWidgets failed: error.UnknownError</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>/// Return the Active Screen
 pub fn getActiveScreen() !Object {
 
-    // Get the Active Screen
-    const screen = c.lv_scr_act();
+  // Get the Active Screen
+  const screen = c.lv_scr_act();
 
-    // If successfully fetched...
-    if (screen) |s| {
-        // Wrap Active Screen as Object and return it
-        return Object.init(s);
-    } else {
-        // Unable to get Active Screen
-        std.log.err(&quot;lv_scr_act failed&quot;, .{});
-        return LvglError.UnknownError;
-    }
+  // If successfully fetched...
+  if (screen) |s| {
+    // Wrap Active Screen as Object and return it
+    return Object.init(s);
+  } else {
+    // Unable to get Active Screen
+    std.log.err(&quot;lv_scr_act failed&quot;, .{});
+    return LvglError.UnknownError;
+  }
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L26-L34">(Source)</a></p>
 <p><em>What’s this unusual <code>if</code> expression?</em></p>
@@ -487,16 +487,17 @@ pub fn getActiveScreen() !Object {
 <p>That’s how we check if <strong>screen</strong> is null.</p>
 <p>If <strong>screen</strong> is not null, then <strong>s</strong> becomes the non-null contents of <strong>screen</strong>. And we create an <strong>Object Struct</strong> with <strong>s</strong> inside…</p>
 <div class="example-wrap"><pre class="language-zig"><code>if (screen) |s| 
-    { return Object.init(s); }
-    ...</code></pre></div>
+  { return Object.init(s); }
+  ...</code></pre></div>
 <p>But if <strong>screen</strong> is null, we do the <strong>else</strong> clause and return an Error…</p>
 <div class="example-wrap"><pre class="language-zig"><code>if (screen) |s| 
-    { ... }
+  { ... }
 else
-    { return LvglError.UnknownError; }</code></pre></div>
+  { return LvglError.UnknownError; }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L117-L119">(<strong>LvglError</strong> is defined here)</a></p>
 <p>That’s why the Return Type for our function is <strong>!Object</strong></p>
-<div class="example-wrap"><pre class="language-zig"><code>pub fn getActiveScreen() !Object { ... }</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>pub fn getActiveScreen() !Object
+  { ... }</code></pre></div>
 <p>It returns either an <strong>Object Struct</strong> or an <strong>Error</strong>. (“<code>!</code>” means Error)</p>
 <p>Let’s talk about the Object Struct…</p>
 <h2 id="object-struct"><a href="#object-struct">8.2 Object Struct</a></h2>
@@ -513,33 +514,33 @@ else
 <div class="example-wrap"><pre class="language-zig"><code>/// LVGL Object
 pub const Object = struct {
 
-    /// Pointer to LVGL Object
-    obj: *c.lv_obj_t,
+  /// Pointer to LVGL Object
+  obj: *c.lv_obj_t,
 
-    /// Init the Object
-    pub fn init(obj: *c.lv_obj_t) Object {
-        return .{ .obj = obj };
+  /// Init the Object
+  pub fn init(obj: *c.lv_obj_t) Object {
+    return .{ .obj = obj };
+  }
+
+  /// Create a Label as a child of the Object
+  pub fn createLabel(self: *Object) !Label {
+
+    // Assume we won&#39;t copy from another Object 
+    const copy: ?*const c.lv_obj_t = null;
+
+    // Create the Label
+    const label = c.lv_label_create(self.obj, copy);
+
+    // If successfully created...
+    if (label) |l| {
+      // Wrap as Label and return it
+      return Label.init(l);
+    } else {
+      // Unable to create Label
+      std.log.err(&quot;lv_label_create failed&quot;, .{});
+      return LvglError.UnknownError;
     }
-
-    /// Create a Label as a child of the Object
-    pub fn createLabel(self: *Object) !Label {
-
-        // Assume we won&#39;t copy from another Object 
-        const copy: ?*const c.lv_obj_t = null;
-
-        // Create the Label
-        const label = c.lv_label_create(self.obj, copy);
-
-        // If successfully created...
-        if (label) |l| {
-            // Wrap as Label and return it
-            return Label.init(l);
-        } else {
-            // Unable to create Label
-            std.log.err(&quot;lv_label_create failed&quot;, .{});
-            return LvglError.UnknownError;
-        }
-    }
+  }
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L36-L58">(Source)</a></p>
 <h2 id="label-struct"><a href="#label-struct">8.3 Label Struct</a></h2>
@@ -548,44 +549,44 @@ pub const Object = struct {
 <div class="example-wrap"><pre class="language-zig"><code>/// LVGL Label
 pub const Label = struct {
 
-    /// Pointer to LVGL Label
-    obj: *c.lv_obj_t,
+  /// Pointer to LVGL Label
+  obj: *c.lv_obj_t,
 
-    /// Init the Label
-    pub fn init(obj: *c.lv_obj_t) Label {
-        return .{ .obj = obj };
-    }
+  /// Init the Label
+  pub fn init(obj: *c.lv_obj_t) Label {
+    return .{ .obj = obj };
+  }
 
-    /// Set the wrapping of long lines in the label text
-    pub fn setLongMode(self: *Label, long_mode: c.lv_label_long_mode_t) void {
-        c.lv_label_set_long_mode(self.obj, long_mode);
-    }
+  /// Set the wrapping of long lines in the label text
+  pub fn setLongMode(self: *Label, long_mode: c.lv_label_long_mode_t) void {
+    c.lv_label_set_long_mode(self.obj, long_mode);
+  }
 
-    /// Set the label text alignment
-    pub fn setAlign(self: *Label, alignment: c.lv_label_align_t) void {
-        c.lv_label_set_align(self.obj, alignment);
-    }
+  /// Set the label text alignment
+  pub fn setAlign(self: *Label, alignment: c.lv_label_align_t) void {
+    c.lv_label_set_align(self.obj, alignment);
+  }
 
-    /// Enable or disable color codes in the label text
-    pub fn setRecolor(self: *Label, en: bool) void {
-        c.lv_label_set_recolor(self.obj, en);
-    }
+  /// Enable or disable color codes in the label text
+  pub fn setRecolor(self: *Label, en: bool) void {
+    c.lv_label_set_recolor(self.obj, en);
+  }
 
-    /// Set the label text and colors
-    pub fn setText(self: *Label, text: [*c]const u8) void {
-        c.lv_label_set_text(self.obj, text);
-    }
+  /// Set the label text and colors
+  pub fn setText(self: *Label, text: [*c]const u8) void {
+    c.lv_label_set_text(self.obj, text);
+  }
 
-    /// Set the object width
-    pub fn setWidth(self: *Label, w: c.lv_coord_t) void {
-        c.lv_obj_set_width(self.obj, w);
-    }
+  /// Set the object width
+  pub fn setWidth(self: *Label, w: c.lv_coord_t) void {
+    c.lv_obj_set_width(self.obj, w);
+  }
 
-    /// Set the object alignment
-    pub fn alignObject(self: *Label, alignment: c.lv_align_t, x_ofs: c.lv_coord_t, y_ofs: c.lv_coord_t) void {
-        const base: ?*const c.lv_obj_t = null;
-        c.lv_obj_align(self.obj, base, alignment, x_ofs, y_ofs);
-    }
+  /// Set the object alignment
+  pub fn alignObject(self: *Label, alignment: c.lv_align_t, x_ofs: c.lv_coord_t, y_ofs: c.lv_coord_t) void {
+    const base: ?*const c.lv_obj_t = null;
+    c.lv_obj_align(self.obj, base, alignment, x_ofs, y_ofs);
+  }
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L60-L101">(Source)</a></p>
 <p>Let’s call the wrapped LVGL API…</p>
@@ -627,12 +628,22 @@ fn createWidgetsWrapped() !void {
     label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181">(Source)</a></p>
-<p>No more forgetting to check for Null Pointers!</p>
-<p>(Someday <strong>LV_LABEL_LONG_BREAK</strong>, <strong>LV_LABEL_ALIGN_CENTER</strong> and other constants will become Enums)</p>
+<p>No more worries about catching Null Pointers!</p>
+<p>(Someday <strong>LV_LABEL_LONG_BREAK</strong> and the other constants will become Enums)</p>
+<p><em>Wrapping the LVGL API in Zig sounds like a lot of work?</em></p>
+<p>Yep probably. Here are some ways to <strong>Auto-Generate the Zig Wrapper</strong> for LVGL…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#appendix-auto-generate-zig-wrapper"><strong>“Auto-Generate Zig Wrapper”</strong></a></li>
+</ul>
+<p>Also remember that LVGL is <strong>Object-Oriented</strong>. Designing the right wrapper with Zig might be challenging…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#object-oriented-wrapper-for-lvgl"><strong>“Object-Oriented Wrapper for LVGL”</strong></a></li>
+</ul>
 <h1 id="zig-vs-bit-fields"><a href="#zig-vs-bit-fields">9 Zig vs Bit Fields</a></h1>
-<p><em>Zig sounds amazing! Is there anything that Zig won’t do?</em></p>
+<p><em>Zig looks amazing! Is there anything that Zig won’t do?</em></p>
 <p>Sadly Zig won’t import <strong>C Structs containing Bit Fields</strong>.</p>
-<p>TODO: Current version</p>
+<p>(Zig Compiler version 0.10.0 has this issue, it might have been fixed in later versions of the compiler)</p>
+<p>TODO</p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
 <p><em>Have we gained anything by coding our LVGL App in Zig?</em></p>
 <p>TODO: Runtime Checks, Null Pointers, Wrapper</p>
@@ -640,6 +651,7 @@ fn createWidgetsWrapped() !void {
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article has inspired you to create LVGL apps in Zig!</p>
+<p>Check out my earlier work on Zig, NuttX and LoRaWAN…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/zig"><strong>“Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS”</strong></a></p>
