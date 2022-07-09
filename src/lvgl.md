@@ -808,9 +808,11 @@ And we pass the __Struct Pointers__ to Zig.
 
 Which explains why we see pointers to LVGL Structs in our __Main Function__...
 
-TODO
+-   [__"Main Function"__](https://lupyuen.github.io/articles/lvgl#appendix-main-function)
 
 And that's why we handle __Touch Input in C__ (instead of Zig), until we find another workaround.
+
+![Touch Input Calibration in our Zig LVGL App](https://lupyuen.github.io/images/touch-title.jpg)
 
 # Zig Outcomes
 
