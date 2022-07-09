@@ -642,8 +642,9 @@ fn createWidgetsWrapped() !void {
 <h1 id="zig-vs-bit-fields"><a href="#zig-vs-bit-fields">9 Zig vs Bit Fields</a></h1>
 <p><em>Zig sounds amazing! Is there anything that Zig won’t do?</em></p>
 <p>Sadly Zig won’t import <strong>C Structs containing Bit Fields</strong>.</p>
-<p>Zig calls it an <a href="https://ziglang.org/documentation/master/#Translation-failures"><strong>Opaque Type</strong></a> because it can’t access the fields inside these structs.</p>
-<p>(Zig Compiler version 0.10.0 has this issue, it might have been fixed in later versions of the compiler)</p>
+<p>Zig calls it an <a href="https://ziglang.org/documentation/master/#Translation-failures"><strong>Opaque Type</strong></a> because Zig can’t access the fields inside these structs.</p>
+<p>Any struct that <strong>contains an Opaque Type</strong> also becomes an Opaque Type. So yeah this quirk snowballs quickly.</p>
+<p>(Zig Compiler version 0.10.0 has this Bit Field limitation, it might have been fixed in later versions of the compiler)</p>
 <p><em>LVGL uses Bit Fields?</em></p>
 <p>If we look at LVGL’s Color Type <strong>lv_color_t</strong> (for 16-bit color)…</p>
 <div class="example-wrap"><pre class="language-c"><code>typedef union {
