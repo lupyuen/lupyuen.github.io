@@ -689,7 +689,7 @@ fn createWidgetsWrapped() !void {
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Input Calibration in our Zig LVGL App" /></p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
 <p><em>Have we gained anything by coding our LVGL App in Zig?</em></p>
-<p>The parts coded in Zig will benefit from the <strong>Safety Checks</strong> enforced by Zig at runtime: Overflow, Underflow, Array Out-of-Bounds…</p>
+<p>The parts coded in Zig will benefit from the <strong>Safety Checks</strong> enforced by Zig at runtime: Overflow, Underflow, Array Out-of-Bounds, …</p>
 <ul>
 <li><a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>“Zig Undefined Behavior”</strong></a></li>
 </ul>
@@ -711,14 +711,15 @@ fn createWidgetsWrapped() !void {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>“Zig vs Bit Fields”</strong></a></li>
 </ul>
-<p>We found a crude workaround: Handle these structs in C (instead of Zig)</p>
+<p>We found a crude workaround: Handle these structs in C and pass the <strong>Struct Pointers</strong> to Zig…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Type”</strong></a></li>
 </ul>
-<p>But this might become a showstopper as we work with more advanced LVGL Widgets.</p>
+<p>But this might become a showstopper as we work with <strong>advanced LVGL Widgets</strong>.</p>
 <p>I’ll do more experiments with LVGL on Zig and report the outcome.</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
-<p>I hope this article has inspired you to create LVGL apps in Zig!</p>
+<p>I hope this article has inspired you to create LVGL Apps in Zig!</p>
+<p>(But if you would like to wait for Zig 1.0… That’s OK too!)</p>
 <p>Check out my earlier work on Zig, NuttX and LoRaWAN…</p>
 <ul>
 <li>
@@ -757,8 +758,19 @@ fn createWidgetsWrapped() !void {
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler"><strong>“Panic Handler”</strong></a></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Input Calibration in our Zig LVGL App" /></p>
 <h1 id="appendix-main-function"><a href="#appendix-main-function">13 Appendix: Main Function</a></h1>
 <p>TODO</p>
+<p>Zig (version 0.10.0) has a serious limitation: It can’t work with <strong>C Structs containing Bit Fields</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>“Zig vs Bit Fields”</strong></a></li>
+</ul>
+<p>Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver <strong>inside C Functions</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Type”</strong></a></li>
+</ul>
+<p>And we pass the <strong>Struct Pointers</strong> to Zig.</p>
+<p>Which explains why we see pointers to LVGL Structs in our <strong>Main Function</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We render an LVGL Screen and
 /// handle Touch Input.
 pub export fn lvgltest_main(
@@ -1259,7 +1271,7 @@ $ jq &#39;.types[137]&#39; lvgltest-analysis.json
 <p>TODO</p>
 <p><em>Is LVGL really Object-Oriented?</em></p>
 <p>Yep the LVGL API is actually Object-Oriented since it uses Inheritance.</p>
-<p>All LVGL Widgets (Labels, Buttons, etc) have the same Base Type: <code>lv_obj_t</code>. But same LVGL Functions will work only for specific Widgets, some will work only on any Widget…</p>
+<p>All LVGL Widgets (Labels, Buttons, etc) have the same Base Type: <code>lv_obj_t</code>. But some LVGL Functions will work only for specific Widgets, whereas some LVGL Functions will work only on any Widget…</p>
 <ul>
 <li>
 <p><code>lv_label_set_text</code> works only for Labels</p>
