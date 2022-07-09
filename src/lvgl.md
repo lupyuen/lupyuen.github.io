@@ -500,8 +500,8 @@ Zig Compiler stops us with an error...
 ./lvgltest.zig:109:9:
 error: error is discarded. 
 consider using `try`, `catch`, or `if`
-    _ = screen;
-        ^
+  _ = screen;
+      ^
 ```
 
 Thus "__`try`__" is actually safer than "`.?`", Zig Compiler mandates that we check for errors.
@@ -535,18 +535,18 @@ Below is the implementation of __getActiveScreen__, which fetches the Active Scr
 /// Return the Active Screen
 pub fn getActiveScreen() !Object {
 
-    // Get the Active Screen
-    const screen = c.lv_scr_act();
+  // Get the Active Screen
+  const screen = c.lv_scr_act();
 
-    // If successfully fetched...
-    if (screen) |s| {
-        // Wrap Active Screen as Object and return it
-        return Object.init(s);
-    } else {
-        // Unable to get Active Screen
-        std.log.err("lv_scr_act failed", .{});
-        return LvglError.UnknownError;
-    }
+  // If successfully fetched...
+  if (screen) |s| {
+    // Wrap Active Screen as Object and return it
+    return Object.init(s);
+  } else {
+    // Unable to get Active Screen
+    std.log.err("lv_scr_act failed", .{});
+    return LvglError.UnknownError;
+  }
 }
 ```
 
@@ -565,17 +565,17 @@ If __screen__ is not null, then __s__ becomes the non-null contents of __screen_
 
 ```zig
 if (screen) |s| 
-    { return Object.init(s); }
-    ...
+  { return Object.init(s); }
+  ...
 ```
 
 But if __screen__ is null, we do the __else__ clause and return an Error...
 
 ```zig
 if (screen) |s| 
-    { ... }
+  { ... }
 else
-    { return LvglError.UnknownError; }
+  { return LvglError.UnknownError; }
 ```
 
 [(__LvglError__ is defined here)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L117-L119)
@@ -583,7 +583,8 @@ else
 That's why the Return Type for our function is __!Object__
 
 ```zig
-pub fn getActiveScreen() !Object { ... }
+pub fn getActiveScreen() !Object
+  { ... }
 ```
 
 It returns either an __Object Struct__ or an __Error__. ("`!`" means Error)
@@ -604,33 +605,33 @@ It defines 2 Methods...
 /// LVGL Object
 pub const Object = struct {
 
-    /// Pointer to LVGL Object
-    obj: *c.lv_obj_t,
+  /// Pointer to LVGL Object
+  obj: *c.lv_obj_t,
 
-    /// Init the Object
-    pub fn init(obj: *c.lv_obj_t) Object {
-        return .{ .obj = obj };
+  /// Init the Object
+  pub fn init(obj: *c.lv_obj_t) Object {
+    return .{ .obj = obj };
+  }
+
+  /// Create a Label as a child of the Object
+  pub fn createLabel(self: *Object) !Label {
+
+    // Assume we won't copy from another Object 
+    const copy: ?*const c.lv_obj_t = null;
+
+    // Create the Label
+    const label = c.lv_label_create(self.obj, copy);
+
+    // If successfully created...
+    if (label) |l| {
+      // Wrap as Label and return it
+      return Label.init(l);
+    } else {
+      // Unable to create Label
+      std.log.err("lv_label_create failed", .{});
+      return LvglError.UnknownError;
     }
-
-    /// Create a Label as a child of the Object
-    pub fn createLabel(self: *Object) !Label {
-
-        // Assume we won't copy from another Object 
-        const copy: ?*const c.lv_obj_t = null;
-
-        // Create the Label
-        const label = c.lv_label_create(self.obj, copy);
-
-        // If successfully created...
-        if (label) |l| {
-            // Wrap as Label and return it
-            return Label.init(l);
-        } else {
-            // Unable to create Label
-            std.log.err("lv_label_create failed", .{});
-            return LvglError.UnknownError;
-        }
-    }
+  }
 };
 ```
 
@@ -646,44 +647,44 @@ It defines a whole bunch of Methods to set the __Label Properties, Text and Posi
 /// LVGL Label
 pub const Label = struct {
 
-    /// Pointer to LVGL Label
-    obj: *c.lv_obj_t,
+  /// Pointer to LVGL Label
+  obj: *c.lv_obj_t,
 
-    /// Init the Label
-    pub fn init(obj: *c.lv_obj_t) Label {
-        return .{ .obj = obj };
-    }
+  /// Init the Label
+  pub fn init(obj: *c.lv_obj_t) Label {
+    return .{ .obj = obj };
+  }
 
-    /// Set the wrapping of long lines in the label text
-    pub fn setLongMode(self: *Label, long_mode: c.lv_label_long_mode_t) void {
-        c.lv_label_set_long_mode(self.obj, long_mode);
-    }
+  /// Set the wrapping of long lines in the label text
+  pub fn setLongMode(self: *Label, long_mode: c.lv_label_long_mode_t) void {
+    c.lv_label_set_long_mode(self.obj, long_mode);
+  }
 
-    /// Set the label text alignment
-    pub fn setAlign(self: *Label, alignment: c.lv_label_align_t) void {
-        c.lv_label_set_align(self.obj, alignment);
-    }
+  /// Set the label text alignment
+  pub fn setAlign(self: *Label, alignment: c.lv_label_align_t) void {
+    c.lv_label_set_align(self.obj, alignment);
+  }
 
-    /// Enable or disable color codes in the label text
-    pub fn setRecolor(self: *Label, en: bool) void {
-        c.lv_label_set_recolor(self.obj, en);
-    }
+  /// Enable or disable color codes in the label text
+  pub fn setRecolor(self: *Label, en: bool) void {
+    c.lv_label_set_recolor(self.obj, en);
+  }
 
-    /// Set the label text and colors
-    pub fn setText(self: *Label, text: [*c]const u8) void {
-        c.lv_label_set_text(self.obj, text);
-    }
+  /// Set the label text and colors
+  pub fn setText(self: *Label, text: [*c]const u8) void {
+    c.lv_label_set_text(self.obj, text);
+  }
 
-    /// Set the object width
-    pub fn setWidth(self: *Label, w: c.lv_coord_t) void {
-        c.lv_obj_set_width(self.obj, w);
-    }
+  /// Set the object width
+  pub fn setWidth(self: *Label, w: c.lv_coord_t) void {
+    c.lv_obj_set_width(self.obj, w);
+  }
 
-    /// Set the object alignment
-    pub fn alignObject(self: *Label, alignment: c.lv_align_t, x_ofs: c.lv_coord_t, y_ofs: c.lv_coord_t) void {
-        const base: ?*const c.lv_obj_t = null;
-        c.lv_obj_align(self.obj, base, alignment, x_ofs, y_ofs);
-    }
+  /// Set the object alignment
+  pub fn alignObject(self: *Label, alignment: c.lv_align_t, x_ofs: c.lv_coord_t, y_ofs: c.lv_coord_t) void {
+    const base: ?*const c.lv_obj_t = null;
+    c.lv_obj_align(self.obj, base, alignment, x_ofs, y_ofs);
+  }
 };
 ```
 
@@ -737,17 +738,29 @@ fn createWidgetsWrapped() !void {
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181)
 
-No more forgetting to check for Null Pointers!
+No more worries about catching Null Pointers!
 
-(Someday __LV_LABEL_LONG_BREAK__, __LV_LABEL_ALIGN_CENTER__ and other constants will become Enums)
+(Someday __LV_LABEL_LONG_BREAK__ and the other constants will become Enums)
+
+_Wrapping the LVGL API in Zig sounds like a lot of work?_
+
+Yep probably. Here are some ways to __Auto-Generate the Zig Wrapper__ for LVGL...
+
+-   [__"Auto-Generate Zig Wrapper"__](https://lupyuen.github.io/articles/lvgl#appendix-auto-generate-zig-wrapper)
+
+Also remember that LVGL is __Object-Oriented__. Designing the right wrapper with Zig might be challenging...
+
+-   [__"Object-Oriented Wrapper for LVGL"__](https://lupyuen.github.io/articles/lvgl#object-oriented-wrapper-for-lvgl)
 
 # Zig vs Bit Fields
 
-_Zig sounds amazing! Is there anything that Zig won't do?_
+_Zig looks amazing! Is there anything that Zig won't do?_
 
 Sadly Zig won't import __C Structs containing Bit Fields__.
 
-TODO: Current version
+(Zig Compiler version 0.10.0 has this issue, it might have been fixed in later versions of the compiler)
+
+TODO
 
 # Zig Outcomes
 
@@ -762,6 +775,8 @@ TODO: But Bit Fields
 TODO
 
 I hope this article has inspired you to create LVGL apps in Zig!
+
+Check out my earlier work on Zig, NuttX and LoRaWAN...
 
 -   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
 
