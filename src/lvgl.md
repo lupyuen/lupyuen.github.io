@@ -521,9 +521,9 @@ createWidgets failed: error.UnknownError
 
 Earlier we saw the hypothetical __LVGL API wrapped with Zig__, let's make it real in 3 steps...
 
--   We write a function to fetch the __Active Screen__ from LVGL
+-   Write a function to fetch the __Active Screen__ from LVGL
 
--   We create a Zig Struct that wraps an __LVGL Screen__
+-   Create a Zig Struct that wraps an __LVGL Screen__
 
 -   And another Zig Struct that wraps an __LVGL Label__
 
@@ -834,7 +834,7 @@ And that it's possible to create a __friendlier, safer interface__ for LVGL...
 
 _What about the downsides of Zig?_
 
-Zig (version 0.10.0) has a serious limitation: It can't work with __C Structs containing Bit Fields__...
+Zig (version 0.10.0) has a serious limitation: It won't work with __C Structs containing Bit Fields__...
 
 -   [__"Zig vs Bit Fields"__](https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields)
 
@@ -890,7 +890,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
-Zig (version 0.10.0) has a serious limitation: It can't work with __C Structs containing Bit Fields__...
+Zig (version 0.10.0) has a serious limitation: It won't work with __C Structs containing Bit Fields__...
 
 -   [__"Zig vs Bit Fields"__](https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields)
 
