@@ -103,7 +103,7 @@
 <ul>
 <li><a href="https://github.com/lupyuen/zig-lvgl-nuttx"><strong>lupyuen/zig-lvgl-nuttx</strong></a></li>
 </ul>
-<p>(Spoilers: Answers are Yes, Maybe, Somewhat)</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl#zig-outcomes">(Spoilers: Answers are Yes, Maybe, Somewhat)</a></p>
 <p><img src="https://lupyuen.github.io/images/lvgl-code1a.png" alt="LVGL App in C" /></p>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a> </p>
 <h1 id="lvgl-app-in-c"><a href="#lvgl-app-in-c">1 LVGL App in C</a></h1>
@@ -256,7 +256,7 @@ Stack Trace:
 <p><em>What if we omit “<code>.?</code>” and do this?</em></p>
 <div class="example-wrap"><pre class="language-zig"><code>const disp_drv = c.get_disp_drv();</code></pre></div>
 <p>This crashes with a <strong>RISC-V Exception</strong> when our program tries to dereference the Null Pointer in a <strong>later part</strong> of the code.</p>
-<p>Which isn’t as helpful as an immediate Zig Panic.</p>
+<p>Which isn’t as helpful as an immediate Zig Panic (upon receiving the Null Pointer).</p>
 <p>Thus we always write “<code>.?</code>” to catch Null Pointers returned by C Functions.</p>
 <p>(Hopefully someday we’ll have a Zig Lint Tool that will warn us if we forget to use “<code>.?</code>”)</p>
 <p><img src="https://lupyuen.github.io/images/lvgl-code5a.png" alt="Import C Functions and Macros" /></p>
@@ -761,16 +761,6 @@ fn createWidgetsWrapped() !void {
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Input Calibration in our Zig LVGL App" /></p>
 <h1 id="appendix-main-function"><a href="#appendix-main-function">13 Appendix: Main Function</a></h1>
 <p>TODO</p>
-<p>Zig (version 0.10.0) has a serious limitation: It won’t work with <strong>C Structs containing Bit Fields</strong>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>“Zig vs Bit Fields”</strong></a></li>
-</ul>
-<p>Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver <strong>inside C Functions</strong>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Type”</strong></a></li>
-</ul>
-<p>And we pass the <strong>Struct Pointers</strong> to Zig.</p>
-<p>Which explains why we see pointers to LVGL Structs in our <strong>Main Function</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We render an LVGL Screen and
 /// handle Touch Input.
 pub export fn lvgltest_main(
@@ -838,6 +828,17 @@ pub export fn lvgltest_main(
     return 0;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109">(Source)</a></p>
+<p>Zig (version 0.10.0) has a serious limitation: It won’t work with <strong>C Structs containing Bit Fields</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>“Zig vs Bit Fields”</strong></a></li>
+</ul>
+<p>Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver <strong>inside C Functions</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Type”</strong></a></li>
+</ul>
+<p>And we pass the <strong>Struct Pointers</strong> to Zig.</p>
+<p>Which explains why we see pointers to LVGL Structs in our Main Function above.</p>
+<p>Also that’s why we handle <strong>Touch Input in C</strong> (instead of Zig), until we find a better solution.</p>
 <h1 id="appendix-compiler-options"><a href="#appendix-compiler-options">14 Appendix: Compiler Options</a></h1>
 <p>TODO</p>
 <p>NuttX compiles the LVGL Test App with this GCC command…</p>
