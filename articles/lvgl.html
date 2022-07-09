@@ -343,7 +343,7 @@ zig build-obj \
   -I &quot;$HOME/nuttx/apps/include&quot; \
   -I &quot;$HOME/nuttx/apps/examples/lvgltest&quot; \
   lvgltest.zig</code></pre></div>
-<p>TODO: See the Compile Log</p>
+<p><a href="https://gist.github.com/lupyuen/86298a99cb87b43ac568c19daeb4081a">(See the Compile Log)</a></p>
 <p>Note that <strong>target</strong> and <strong>mcpu</strong> are specific to BL602…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/zig#zig-target"><strong>“Zig Target”</strong></a></li>
@@ -400,8 +400,7 @@ invert x/y:1, x:0, y:1</code></pre></div>
 <p>Yep we have successfully built an LVGL Touchscreen App with Zig!</p>
 <p>(We’ll talk about Touch Input in a while)</p>
 <h1 id="simplify-lvgl-api"><a href="#simplify-lvgl-api">7 Simplify LVGL API</a></h1>
-<p>TODO</p>
-<p><em>Can we simplify the LVGL API in Zig? Such that this code…</em></p>
+<p><em>Can we make LVGL a little friendlier with Zig? Such that this code…</em></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Get the Active Screen
 const screen = c.lv_scr_act().?;
 
@@ -427,10 +426,12 @@ label.setLongMode(c.LV_LABEL_LONG_BREAK);
 // Interpret color codes in the label text
 label.setRecolor(true);</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L150-L183">(Source)</a></p>
-<p>Yes we can! By wrapping the LVGL API in Zig, which we’ll do in the next section.</p>
-<p>Note that we now use <code>try</code> instead of <code>.?</code>.</p>
-<p><em>What happens if we forget to use <code>try</code>?</em></p>
-<p>If we don’t <code>try</code>, like this…</p>
+<p>Yes we can! By <strong>wrapping the LVGL API</strong> in Zig, which we’ll do in the next section.</p>
+<p>Note that we now use “<strong><code>try</code></strong>” instead of “<strong><code>.?</code></strong>” to check the values returned by LVGL…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Check that Active Screen is valid with `try`
+var screen = try lvgl.getActiveScreen();</code></pre></div>
+<p><em>What happens if we forget to “<code>try</code>”?</em></p>
+<p>If we don’t “<strong><code>try</code></strong>”, like this…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Get the Active Screen without `try`
 var screen = lvgl.getActiveScreen();
 
@@ -442,13 +443,25 @@ error: error is discarded.
 consider using `try`, `catch`, or `if`
     _ = screen;
         ^</code></pre></div>
-<p>Thus <code>try</code> is actually safer than <code>.?</code>, Zig Compiler mandates that we check for errors.</p>
-<p><em>What if the LVGL API returns a Null Pointer to our Zig App?</em></p>
-<p>Our app will fail with this message…</p>
+<p>Thus “<strong><code>try</code></strong>” is actually safer than “<code>.?</code>”, Zig Compiler mandates that we check for errors.</p>
+<p><em>What if LVGL returns a Null Pointer to Zig?</em></p>
+<p>Our app will fail gracefully with an <strong>Application Error</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>lv_scr_act failed
-createWidgets failed: error.UnknownError</code></pre></div><h1 id="wrap-lvgl-api"><a href="#wrap-lvgl-api">8 Wrap LVGL API</a></h1>
-<p>TODO</p>
-<p>Let’s wrap the LVGL API in Zig.</p>
+createWidgets failed: error.UnknownError</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L85-L93">(Because of this Error Handler)</a></p>
+<h1 id="wrap-lvgl-api"><a href="#wrap-lvgl-api">8 Wrap LVGL API</a></h1>
+<p>Earlier we saw the hypothetical <strong>LVGL API wrapped with Zig</strong>, let’s make it real in 3 steps…</p>
+<ul>
+<li>
+<p>Get Active Screen: TODO</p>
+</li>
+<li>
+<p>Screen Struct: TODO</p>
+</li>
+<li>
+<p>Label Struct: TODO</p>
+</li>
+</ul>
 <h2 id="get-active-screen"><a href="#get-active-screen">8.1 Get Active Screen</a></h2>
 <p>TODO</p>
 <p>Here’s the implementation of <code>getActiveScreen</code>, which returns the LVGL Active Screen…</p>
