@@ -353,7 +353,7 @@ zig build-obj \
   lvgltest.zig
 ```
 
-TODO: See the Compile Log
+[(See the Compile Log)](https://gist.github.com/lupyuen/86298a99cb87b43ac568c19daeb4081a)
 
 Note that __target__ and __mcpu__ are specific to BL602...
 
@@ -437,9 +437,7 @@ Yep we have successfully built an LVGL Touchscreen App with Zig!
 
 # Simplify LVGL API
 
-TODO
-
-_Can we simplify the LVGL API in Zig? Such that this code..._
+_Can we make LVGL a little friendlier with Zig? Such that this code..._
 
 ```zig
 // Get the Active Screen
@@ -475,13 +473,18 @@ label.setRecolor(true);
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L150-L183)
 
-Yes we can! By wrapping the LVGL API in Zig, which we'll do in the next section.
+Yes we can! By __wrapping the LVGL API__ in Zig, which we'll do in the next section.
 
-Note that we now use `try` instead of `.?`.
+Note that we now use "__`try`__" instead of "__`.?`__" to check the values returned by LVGL...
 
-_What happens if we forget to use `try`?_
+```zig
+// Check that Active Screen is valid with `try`
+var screen = try lvgl.getActiveScreen();
+```
 
-If we don't `try`, like this...
+_What happens if we forget to "`try`"?_
+
+If we don't "__`try`__", like this...
 
 ```zig
 // Get the Active Screen without `try`
@@ -501,22 +504,28 @@ consider using `try`, `catch`, or `if`
         ^
 ```
 
-Thus `try` is actually safer than `.?`, Zig Compiler mandates that we check for errors.
+Thus "__`try`__" is actually safer than "`.?`", Zig Compiler mandates that we check for errors.
 
-_What if the LVGL API returns a Null Pointer to our Zig App?_
+_What if LVGL returns a Null Pointer to Zig?_
 
-Our app will fail with this message...
+Our app will fail gracefully with an __Application Error__...
 
 ```text
 lv_scr_act failed
 createWidgets failed: error.UnknownError
 ```
 
+[(Because of this Error Handler)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L85-L93)
+
 # Wrap LVGL API
 
-TODO
+Earlier we saw the hypothetical __LVGL API wrapped with Zig__, let's make it real in 3 steps...
 
-Let's wrap the LVGL API in Zig.
+-   Get Active Screen: TODO
+
+-   Screen Struct: TODO
+
+-   Label Struct: TODO
 
 ## Get Active Screen
 
