@@ -758,9 +758,11 @@ _Zig sounds amazing! Is there anything that Zig won't do?_
 
 Sadly Zig won't import __C Structs containing Bit Fields__.
 
-Zig calls it an [__Opaque Type__](https://ziglang.org/documentation/master/#Translation-failures) because it can't access the fields inside these structs.
+Zig calls it an [__Opaque Type__](https://ziglang.org/documentation/master/#Translation-failures) because Zig can't access the fields inside these structs.
 
-(Zig Compiler version 0.10.0 has this issue, it might have been fixed in later versions of the compiler)
+Any struct that __contains an Opaque Type__ also becomes an Opaque Type. So yeah this quirk snowballs quickly.
+
+(Zig Compiler version 0.10.0 has this Bit Field limitation, it might have been fixed in later versions of the compiler)
 
 _LVGL uses Bit Fields?_
 
