@@ -818,7 +818,7 @@ Also that's why we handle __Touch Input in C__ (instead of Zig), until we find a
 
 _Have we gained anything by coding our LVGL App in Zig?_
 
-The parts coded in Zig will benefit from the __Safety Checks__ enforced by Zig at runtime: Overflow, Underflow, Array Out-of-Bounds...
+The parts coded in Zig will benefit from the __Safety Checks__ enforced by Zig at runtime: Overflow, Underflow, Array Out-of-Bounds, ...
 
 -   [__"Zig Undefined Behavior"__](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
@@ -838,17 +838,19 @@ Zig (version 0.10.0) has a serious limitation: It can't work with __C Structs co
 
 -   [__"Zig vs Bit Fields"__](https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields)
 
-We found a crude workaround: Handle these structs in C (instead of Zig)
+We found a crude workaround: Handle these structs in C and pass the __Struct Pointers__ to Zig...
 
 -   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
 
-But this might become a showstopper as we work with more advanced LVGL Widgets.
+But this might become a showstopper as we work with __advanced LVGL Widgets__.
 
 I'll do more experiments with LVGL on Zig and report the outcome.
 
 # What's Next
 
-I hope this article has inspired you to create LVGL apps in Zig!
+I hope this article has inspired you to create LVGL Apps in Zig!
+
+(But if you would like to wait for Zig 1.0... That's OK too!)
 
 Check out my earlier work on Zig, NuttX and LoRaWAN...
 
@@ -882,9 +884,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Panic Handler"__](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
+![Touch Input Calibration in our Zig LVGL App](https://lupyuen.github.io/images/touch-title.jpg)
+
 # Appendix: Main Function
 
 TODO
+
+Zig (version 0.10.0) has a serious limitation: It can't work with __C Structs containing Bit Fields__...
+
+-   [__"Zig vs Bit Fields"__](https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields)
+
+Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver __inside C Functions__...
+
+-   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
+
+And we pass the __Struct Pointers__ to Zig.
+
+Which explains why we see pointers to LVGL Structs in our __Main Function__...
 
 ```zig
 /// Main Function that will be called by NuttX. We render an LVGL Screen and
@@ -1511,7 +1527,7 @@ _Is LVGL really Object-Oriented?_
 
 Yep the LVGL API is actually Object-Oriented since it uses Inheritance.
 
-All LVGL Widgets (Labels, Buttons, etc) have the same Base Type: `lv_obj_t`. But same LVGL Functions will work only for specific Widgets, some will work only on any Widget...
+All LVGL Widgets (Labels, Buttons, etc) have the same Base Type: `lv_obj_t`. But some LVGL Functions will work only for specific Widgets, whereas some LVGL Functions will work only on any Widget...
 
 -   `lv_label_set_text` works only for Labels
 
