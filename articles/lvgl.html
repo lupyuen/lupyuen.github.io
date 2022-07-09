@@ -662,24 +662,24 @@ fn createWidgetsWrapped() !void {
 <p>So far we have identified these <strong>LVGL Structs</strong> that contain Bit Fields…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/lvgl#color-type"><strong>Color Type</strong></a> (lv_color_t)</p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types"><strong>Display Driver</strong></a> (lv_disp_drv_t)</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl#color-type"><strong>Color</strong></a> (lv_color_t)</p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types"><strong>Display Buffer</strong></a> (lv_disp_buf_t)</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types"><strong>Display Driver</strong></a> (lv_disp_drv_t)</p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lvgl#input-driver"><strong>Input Driver</strong></a> (lv_indev_drv_t)</p>
 </li>
 </ul>
 <p><em>Is there a workaround?</em></p>
-<p>Right now we’re accessing the structs for Colors, Display Driver, Display Buffer and Input Driver <strong>inside C Functions</strong>…</p>
+<p>Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver <strong>inside C Functions</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Type”</strong></a></li>
 </ul>
-<p>And passing the <strong>Struct Pointers</strong> to Zig.</p>
+<p>And we pass the <strong>Struct Pointers</strong> to Zig.</p>
 <p>Which explains why we see pointers to LVGL Structs in our <strong>Main Function</strong>…</p>
 <p>TODO</p>
 <h1 id="zig-outcomes"><a href="#zig-outcomes">10 Zig Outcomes</a></h1>
