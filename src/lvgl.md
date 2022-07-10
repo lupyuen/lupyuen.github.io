@@ -121,7 +121,7 @@ fn createWidgetsUnwrapped() !void {
   c.lv_label_set_align(label, c.LV_LABEL_ALIGN_CENTER);
 
   // Set the label text and colors.
-  // `++` is the operator that concatenates two strings or arrays.
+  // `++` concatenates two strings or arrays.
   c.lv_label_set_text(
     label, 
     "#ff0000 HELLO# "   ++  // Red Text
