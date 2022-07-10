@@ -1215,9 +1215,9 @@ We made 2 fixes to our C code to support Clang...
 
 Here's the original C code: [lvgltest.c](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c)
 
-And the Auto-Translation from C to Zig: [translated/lvgltest.zig](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig)
+And the Auto-Translation from C to Zig: [translated/lvgltest.zig](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5898-L5942)
 
-The Auto-Translation looks __far too verbose__ for a Zig App, but it's a good start for converting our LVGL App from C to Zig.
+The Auto-Translation looks __way too verbose__ for a Zig Program, but it's a good start for converting our LVGL App from C to Zig.
 
 We hit some issues with Opaque Types in the Auto-Translation, this is how we fixed them...
 
@@ -1230,6 +1230,8 @@ The Auto-Translation from C to Zig was initially __missing 2 key functions__...
 -   __lvgltest_main__: Main Function
 
 -   __create_widgets__: Create Widgets Function 
+
+The Auto-Translated Zig code shows...
 
 ```zig
 // lvgltest.c:129:13: warning: unable to translate function, demoted to extern
@@ -1254,7 +1256,7 @@ int lvgltest_main(int argc, FAR char *argv[]) {
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/1e8b0501c800209f0fa3f35f54b3742498d0e302/lvgltest.c#L225-L228)
 
-We see that Zig couldn't translate the struct for LVGL Display Driver __lv_disp_drv_t__ because it's an Opaque Type.
+We see that Zig couldn't import the struct for LVGL Display Driver __lv_disp_drv_t__ because it's an Opaque Type.
 
 Let's find out why...
 
