@@ -1404,49 +1404,29 @@ That's why our __Zig Main Function__ passes pointers to the Display Buffer and D
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
-TODO
+LVGL Input Driver __lv_indev_drv_t__ is an Opaque Type because it contains Bit Fields.
 
-Our Input Driver `lv_indev_drv_t` is also an Opaque Type because it contains Bit Fields.
-
-We fix `lv_indev_drv_t` the same way as other Opaque Types: We allocate and initialise the structs in C (instead of Zig)...
+We fix __lv_indev_drv_t__ the same way as other Opaque Types: We allocate and initialise the structs in C (instead of Zig)...
 
 ```c
-/****************************************************************************
- * Name: get_indev_drv
- *
- * Description:
- *   Return the static instance of Input Driver, because Zig can't
- *   allocate structs wth bitfields inside.
- *
- ****************************************************************************/
-
-lv_indev_drv_t *get_indev_drv(void)
-{
+// Return the static instance of Input Driver, because Zig can't
+// allocate structs wth bitfields inside.
+lv_indev_drv_t *get_indev_drv(void) {
   static lv_indev_drv_t indev_drv;
   return &indev_drv;
 }
 
-/****************************************************************************
- * Name: init_indev_drv
- *
- * Description:
- *   Initialise the Input Driver, because Zig can't access its fields.
- *
- ****************************************************************************/
-
+// Initialise the Input Driver, because Zig can't access its fields.
 void init_indev_drv(lv_indev_drv_t *indev_drv,
-  bool (*read_cb)(struct _lv_indev_drv_t *, lv_indev_data_t *))
-{
+  bool (*read_cb)(struct _lv_indev_drv_t *, lv_indev_data_t *)) {
   assert(indev_drv != NULL);
   assert(read_cb != NULL);
 
   lv_indev_drv_init(indev_drv);
   indev_drv->type = LV_INDEV_TYPE_POINTER;
 
-  /* This function will be called periodically (by the library) to get the
-   * mouse position and state.
-   */
-
+  // This function will be called periodically (by the library) to get the
+  // mouse position and state.
   indev_drv->read_cb = read_cb;
   lv_indev_drv_register(indev_drv);
 }
@@ -1458,24 +1438,23 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
-TODO
-
-We also commented out all references to `lv_color_t`...
+We fixed all references to __lv_color_t__...
 
 ```c
-//  LVGL Canvas Demo doesn't work with zig cc because of `lv_color_t`
+// LVGL Canvas Demo doesn't work with zig cc because of `lv_color_t`
 #if defined(CONFIG_USE_LV_CANVAS) && !defined(__clang__)  
 
-  //  Set the Canvas Buffer (Warning: Might take a lot of RAM!)
+  // Set the Canvas Buffer (Warning: Might take a lot of RAM!)
   static lv_color_t cbuf[LV_CANVAS_BUF_SIZE_TRUE_COLOR(CANVAS_WIDTH, CANVAS_HEIGHT)];
   ...
 ```
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L160-L165)
 
-That's because `lv_color_t` is also an Opaque Type...
+That's because __lv_color_t__ is an Opaque Type...
 
 ```zig
+// From Zig Auto-Translation
 pub const lv_color_t = lv_color16_t;
 
 pub const lv_color16_t = extern union {
@@ -1490,17 +1469,18 @@ const struct_unnamed_7 = opaque {};
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L520-L537)
 
-That contains Bit Fields...
+That contains __Bit Fields__...
 
 ```c
+// LVGL Color Type (16-bit color)
 typedef union {
-    struct {
-        // Bit fields for lv_color16_t (aliased to lv_color_t)
-        uint16_t blue : 5;
-        uint16_t green : 6;
-        uint16_t red : 5;
-    } ch;
-    uint16_t full;
+  struct {
+    // Bit fields for lv_color16_t (aliased to lv_color_t)
+    uint16_t blue : 5;
+    uint16_t green : 6;
+    uint16_t red : 5;
+  } ch;
+  uint16_t full;
 } lv_color16_t;
 ```
 
