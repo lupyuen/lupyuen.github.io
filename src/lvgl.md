@@ -14,7 +14,7 @@ _Maybe make LVGL a little safer and friendlier... By wrapping the LVGL API in Zi
 
 _Or will we get blocked by something beyond our control? (Like Bit Fields in LVGL Structs)_
 
-Let's find out! We'll do this on Pine64's [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V Board (pic above) with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/pinedio2).
+Let's find out! We'll do this on Pine64's [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V Board (pic above) with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest).
 
 (The steps will be similar for other platforms)
 
@@ -1038,9 +1038,7 @@ The Zig Compiler helpfully stops us if we forget to use a Variable (like ___argc
 
 # Appendix: Compiler Options
 
-TODO
-
-NuttX compiles the LVGL Test App with this GCC command...
+For the __LVGL App in C__, Apache NuttX RTOS compiles it with this GCC Command...
 
 ```bash
 ##  App Source Directory
@@ -1079,27 +1077,60 @@ riscv64-unknown-elf-gcc \
   -o lvgltest.c.home.user.nuttx.apps.examples.lvgltest.o
 ```
 
-(Observed from `make --trace`)
+(As observed from "`make --trace`")
 
-Let's convert the LVGL Test App from C to Zig...
+[(See lvgltest.c)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c)
+
+The above options for "__`-isystem`__" and "__`-I`__"...
+
+```text
+-isystem "$HOME/nuttx/nuttx/include"
+-I "$HOME/nuttx/apps/graphics/lvgl"
+-I "$HOME/nuttx/apps/graphics/lvgl/lvgl"
+-I "$HOME/nuttx/apps/include"
+```
+
+Were passed to the __Zig Compiler__...
+
+-   [__"Compile Zig App"__](https://lupyuen.github.io/articles/lvgl#compile-zig-app)
+
+As for the above "__`#defines`__"...
+
+```text
+-D__NuttX__
+-DNDEBUG
+-DARCH_RISCV
+-DLV_LVGL_H_INCLUDE_SIMPLE
+```
+
+We set them at the top of our __Zig Program__...
+
+-   [__"Import C Functions"__](https://lupyuen.github.io/articles/lvgl#import-c-functions)
+
+The GCC Options above were also passed to the Zig Compiler for Auto-Translating the LVGL App from C to Zig...
 
 # Appendix: Auto-Translate LVGL App to Zig
 
-TODO
+The Zig Compiler can __Auto-Translate C code to Zig__. [(See this)](https://ziglang.org/documentation/master/#C-Translation-CLI)
 
-The Zig Compiler can auto-translate C code to Zig. [(See this)](https://ziglang.org/documentation/master/#C-Translation-CLI)
+We used the Auto-Translation as a Reference when converting our LVGL App from C to Zig.
 
-Here's how we auto-translate our LVGL App [lvgltest_main.c](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c) from C to Zig...
+Here's how we Auto-Translate our LVGL App [__lvgltest.c__](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c) from C to Zig...
 
--   Take the GCC command from above
+-   Take the __GCC Command__ from the previous section
 
--   Change `riscv64-unknown-elf-gcc` to `zig translate-c`
+-   Change "__riscv64-unknown-elf-gcc__" to "__zig translate-c__"
 
--   Add the target `-target riscv32-freestanding-none -mcpu=baseline_rv32-d`
+-   Add the target...
 
--   Remove `-march=rv32imafc`
+    ```text
+    -target riscv32-freestanding-none \
+    -mcpu=baseline_rv32-d \
+    ```
 
--   Surround the C Flags by `-cflags` ... `--`
+-   Remove "__-march=rv32imafc__"
+
+-   Surround the C Flags by "__-cflags ... --__"
 
 Like this...
 
@@ -1141,48 +1172,60 @@ zig translate-c \
   >lvgltest.zig
 ```
 
-The target `-target riscv32-freestanding-none -mcpu=baseline_rv32-d` is specific to Zig and the BL602 RISC-V SoC...
+Note that __target__ and __mcpu__ are specific to BL602...
 
-TODO
+-   [__"Zig Target"__](https://lupyuen.github.io/articles/zig#zig-target)
 
-To fix the translation we need to insert this...
+Zig Compiler internally uses __Clang__ (instead of GCC) to interpret our C code.
 
-```c
-#if defined(__NuttX__) && defined(__clang__)  //  Workaround for NuttX with zig cc
-#include <arch/types.h>
-#include "../../nuttx/include/limits.h"
-#define FAR
-#endif  //  defined(__NuttX__) && defined(__clang__)
-```
+We made 2 fixes to our C code to support Clang...
 
-[(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L25-L29)
+-   We inserted this...
 
-And change this...
+    ```c
+    #if defined(__NuttX__) && defined(__clang__)  //  Workaround for NuttX with zig cc
+    #include <arch/types.h>
+    #include "../../nuttx/include/limits.h"
+    #define FAR
+    #endif  //  defined(__NuttX__) && defined(__clang__)
+    ```
 
-```c
-static void monitor_cb(lv_disp_drv_t * disp_drv, uint32_t time, uint32_t px)
-{
-#ifndef __clang__  //  Doesn't compile with zig cc
-  ginfo("%" PRIu32 " px refreshed in %" PRIu32 " ms\n", px, time);
-#endif  //  __clang__
-}
-```
+    [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L25-L29)
 
-[(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L95-L100)
+    [(Here's why)](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
 
-[(See the changes)](https://github.com/lupyuen/lvgltest-nuttx/commit/1e8b0501c800209f0fa3f35f54b3742498d0e302)
+-   We changed this...
 
-Here's the original C code: [lvgltest_main.c](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c)
+    ```c
+    static void monitor_cb(lv_disp_drv_t * disp_drv, uint32_t time, uint32_t px)
+    {
+    #ifndef __clang__  //  Doesn't compile with zig cc
+    ginfo("%" PRIu32 " px refreshed in %" PRIu32 " ms\n", px, time);
+    #endif  //  __clang__
+    }
+    ```
 
-And the auto-translation from C to Zig: [translated/lvgltest.zig](translated/lvgltest.zig)
+    [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L95-L100)
+
+    [(See the changes)](https://github.com/lupyuen/lvgltest-nuttx/commit/1e8b0501c800209f0fa3f35f54b3742498d0e302)
+
+Here's the original C code: [lvgltest.c](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c)
+
+And the Auto-Translation from C to Zig: [translated/lvgltest.zig](translated/lvgltest.zig)
+
+The Auto-Translation looks __far too verbose__ for a Zig App, but it's a good start for converting our LVGL App from C to Zig.
+
+We hit some issues with Opaque Types in the Auto-Translation, this is how we fixed them...
 
 # Appendix: Zig Auto-Translation is Incomplete
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
-TODO
+The Auto-Translation from C to Zig was initially __missing 2 key functions__...
 
-The Auto-Translation from C to Zig is missing 2 key functions: `lvgltest_main` and `create_widgets`...
+-   Main Function __lvgltest_main__ 
+
+-   Create Widgets Function __create_widgets__
 
 ```zig
 // lvgltest.c:129:13: warning: unable to translate function, demoted to extern
@@ -1195,7 +1238,7 @@ pub extern fn lvgltest_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int;
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/9e95d800f3a429c5f35970ca35cd43bd8fbd9529/translated/lvgltest.zig#L5901-L5904)
 
-When we look up `lvgltest.c` line 227...
+When we look up [lvgltest.c](https://github.com/lupyuen/lvgltest-nuttx/blob/1e8b0501c800209f0fa3f35f54b3742498d0e302/lvgltest.c#L225-L228) line 227...
 
 ```c
 int lvgltest_main(int argc, FAR char *argv[])
@@ -1208,17 +1251,27 @@ int lvgltest_main(int argc, FAR char *argv[])
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/1e8b0501c800209f0fa3f35f54b3742498d0e302/lvgltest.c#L225-L228)
 
-We see that Zig couldn't translate the type `lv_disp_drv_t` because it's opaque.
+We see that Zig couldn't translate the struct for LVGL Display Driver __lv_disp_drv_t__ because it's an Opaque Type.
 
-Let's find out why.
+Let's find out why...
 
 # Appendix: Zig Opaque Types
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
-TODO
+__Opaque Types__ are typically C Structs containinig __Bit Fields__, as explained here...
 
-To find out why the type is opaque, we search for `lv_disp_drv_t` in the Zig Translation...
+-   [__"Translation Failures"__](https://ziglang.org/documentation/master/#Translation-failures)
+
+-   [__"Extend a C/C++ Project with Zig"__](https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di)
+
+Zig Compiler won't let us access the __fields of an Opaque Type__. But it's OK to pass a __pointer to an Opaque Type__.
+
+Any struct that contains a (non-pointer) Opaque Type, also becomes an Opaque Type.
+
+In the previous section, the Zig Compiler has identified the struct for LVGL Display Driver __lv_disp_drv_t__ as an Opaque Type.
+
+To find out why, we search for __lv_disp_drv_t__ in the Auto-Translated Zig code...
 
 ```zig
 // nuttx/apps/graphics/lvgl/lvgl/src/lv_hal/lv_hal_disp.h:154:9: 
@@ -1236,27 +1289,30 @@ pub const lv_disp_buf_t = opaque {};
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/9e95d800f3a429c5f35970ca35cd43bd8fbd9529/translated/lvgltest.zig#L700-L704)
 
-Below are the C definitions of `lv_disp_drv_t`, `lv_disp_t` and `lv_disp_buf_t`.
+Below are the C definitions of __lv_disp_drv_t__, __lv_disp_t__ and __lv_disp_buf_t__ from LVGL.
 
-The structs couldn't be translated to Zig because they contain Bit Fields...
+It's clear that the structs couldn't be translated to Zig because they contain __Bit Fields__...
 
 ```c
+// LVGL Display Driver
 typedef struct _disp_drv_t {
-    uint32_t rotated : 1;
-    uint32_t dpi : 10;
-    ...
+  uint32_t rotated : 1;
+  uint32_t dpi     : 10;
+  ...
 } lv_disp_drv_t;
 
+// LVGL Display
 typedef struct _disp_t {
-    uint8_t del_prev  : 1;
-    uint32_t inv_p : 10;
-    ...
+  uint8_t del_prev  : 1;
+  uint32_t inv_p    : 10;
+  ...
 } lv_disp_t;
 
+// LVGL Display Buffer
 typedef struct {
-    volatile uint32_t last_area : 1;
-    volatile uint32_t last_part : 1;
-    ...
+  volatile uint32_t last_area : 1;
+  volatile uint32_t last_part : 1;
+  ...
 } lv_disp_buf_t;
 ```
 
@@ -1266,59 +1322,33 @@ Let's fix the Opaque Types.
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
-TODO
+Earlier we saw that Zig couldn't translate and import these C Structs because they contain Bit Fields...
 
-Earlier we saw that Zig couldn't translate and import these structs because they contain Bit Fields...
+-   __lv_disp_drv_t__ (LVGL Display Driver)
 
--   `lv_disp_drv_t` (Display Driver)
+-   __lv_disp_buf_t__ (LVGL Display Buffer)
 
--   `lv_disp_buf_t` (Display Buffer)
-
-Instead of creating instances of these structs in Zig, we do it in C instead...
+Instead of creating and accessing these structs in Zig, we __do it in C instead__...
 
 ```c
-/****************************************************************************
- * Name: get_disp_drv
- *
- * Description:
- *   Return the static instance of Display Driver, because Zig can't
- *   allocate structs wth bitfields inside.
- *
- ****************************************************************************/
-
-lv_disp_drv_t *get_disp_drv(void)
-{
+// Return the static instance of Display Driver, because Zig can't
+// allocate structs wth bitfields inside.
+lv_disp_drv_t *get_disp_drv(void) {
   static lv_disp_drv_t disp_drv;
   return &disp_drv;
 }
 
-/****************************************************************************
- * Name: get_disp_buf
- *
- * Description:
- *   Return the static instance of Display Buffer, because Zig can't
- *   allocate structs wth bitfields inside.
- *
- ****************************************************************************/
-
-lv_disp_buf_t *get_disp_buf(void)
-{
+// Return the static instance of Display Buffer, because Zig can't
+// allocate structs wth bitfields inside.
+lv_disp_buf_t *get_disp_buf(void) {
   static lv_disp_buf_t disp_buf;
   return &disp_buf;
 }
 
-/****************************************************************************
- * Name: init_disp_drv
- *
- * Description:
- *   Initialise the Display Driver, because Zig can't access its fields.
- *
- ****************************************************************************/
-
+// Initialise the Display Driver, because Zig can't access its fields.
 void init_disp_drv(lv_disp_drv_t *disp_drv,
   lv_disp_buf_t *disp_buf,
-  void (*monitor_cb)(struct _disp_drv_t *, uint32_t, uint32_t))
-{
+  void (*monitor_cb)(struct _disp_drv_t *, uint32_t, uint32_t)) {
   assert(disp_drv != NULL);
   assert(disp_buf != NULL);
   assert(monitor_cb != NULL);
@@ -1328,16 +1358,8 @@ void init_disp_drv(lv_disp_drv_t *disp_drv,
   disp_drv->monitor_cb = monitor_cb;
 }
 
-/****************************************************************************
- * Name: init_disp_buf
- *
- * Description:
- *   Initialise the Display Buffer, because Zig can't access the fields.
- *
- ****************************************************************************/
-
-void init_disp_buf(lv_disp_buf_t *disp_buf)
-{
+// Initialise the Display Buffer, because Zig can't access the fields.
+void init_disp_buf(lv_disp_buf_t *disp_buf) {
   assert(disp_buf != NULL);
   lv_disp_buf_init(disp_buf, buffer1, buffer2, DISPLAY_BUFFER_SIZE);
 }
@@ -1345,34 +1367,42 @@ void init_disp_buf(lv_disp_buf_t *disp_buf)
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lcddev.c#L335-L398)
 
-Then we fetch the pointers to these structs in our Main Function and initialise the structs...
+Then we modifiy our C Main Function to access these structs __via pointers__...
 
 ```c
-int lvgltest_main(int argc, FAR char *argv[])
-{
+int lvgltest_main(int argc, FAR char *argv[]) {
+  // Fetch pointers to Display Driver and Display Buffer
   lv_disp_drv_t *disp_drv = get_disp_drv();
   lv_disp_buf_t *disp_buf = get_disp_buf();
   ...
-  /* Basic LVGL display driver initialization */
+  // Init Display Buffer and Display Driver as pointers
   init_disp_buf(disp_buf);
   init_disp_drv(disp_drv, disp_buf, monitor_cb);
   ...
-  /* Touchpad Initialization */
+  // Init Input Driver as pointer
   lv_indev_drv_t *indev_drv = get_indev_drv();
   init_indev_drv(indev_drv, tp_read);
 ```
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L214-L293)
 
-(`get_indev_drv` and `init_indev_drv` are explained in the next section)
+(__get_indev_drv__ and __init_indev_drv__ are explained in the next section)
 
 After this modification, our Auto-Translation from C to Zig now contains the 2 missing functions...
 
--   [`lvgltest_main`](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5913-L5944)
+-   [__lvgltest_main__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5913-L5944)
 
--   [`create_widgets`](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5903-L5912)
+-   [__create_widgets__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5903-L5912)
+
+Which we used as a reference to convert our LVGL App from C to Zig.
+
+That's why our __Zig Main Function__ passes pointers to the Display Buffer and Display Driver, instead of working directly with the structs...
+
+-   [__"Main Function"__](https://lupyuen.github.io/articles/lvgl#appendix-main-function)
 
 ## Input Driver
+
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
 TODO
 
@@ -1425,6 +1455,8 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L282-L320)
 
 ## Color Type
+
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
 TODO
 
