@@ -306,7 +306,7 @@ And our __Application-Specific__ Header Files for LCD Display and Touch Panel.
 
 That's how we import the LVGL Library into our Zig App!
 
-_Why do we write "`c.`something" when we call C functions? Like "`c.lv_scr_act()`"?_
+_Why do we write "`c.`something" when we call C functions? Like "c.lv_scr_act()"?_
 
 Remember that we import all C Functions and Macros into the __"`c`" Namespace__...
 
