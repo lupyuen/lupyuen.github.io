@@ -165,7 +165,7 @@ _What's "`!void`"?_
 
     (Hence the "`!`")
 
-Let's talk about Null Pointers and Runtime Safety in Zig...
+Let's talk about Null Pointers and Runtime Safety...
 
 ![LVGL App: C vs Zig](https://lupyuen.github.io/images/lvgl-code3a.png)
 
