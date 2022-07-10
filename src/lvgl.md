@@ -78,7 +78,9 @@ static void create_widgets(void) {
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148) 
 
-Let's convert this to Zig.
+[(Docs for LVGL Label Widget)](https://docs.lvgl.io/7.11/widgets/label.html#)
+
+In a while we shall convert this LVGL App to Zig.
 
 _What if we're not familiar with Zig?_
 
