@@ -319,7 +319,7 @@ That's why we write "`c.`_something_" when we refer to C Functions and Macros.
 
 _What about the Main Function of our Zig App?_
 
-It gets complicated. We'll talk later about the [__Main Function lvgltest_main__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L41-L109).
+It gets complicated. We'll talk later about the Main Function.
 
 # Compile Zig App
 
@@ -552,7 +552,7 @@ pub fn getActiveScreen() !Object {
 }
 ```
 
-[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L26-L34)
+[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L26-L41)
 
 _What's this unusual `if` expression?_
 
@@ -563,7 +563,7 @@ if (screen) |s|
 
 That's how we check if __screen__ is null.
 
-If __screen__ is not null, then __s__ becomes the non-null contents of __screen__. And we create an __Object Struct__ with __s__ inside...
+If __screen__ is not null, then __s__ becomes the non-null value of __screen__. And we create an __Object Struct__ with __s__ inside...
 
 ```zig
 if (screen) |s| 
@@ -637,7 +637,7 @@ pub const Object = struct {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L36-L58)
+[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L43-L73)
 
 ## Label Struct
 
@@ -690,13 +690,13 @@ pub const Label = struct {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L60-L101)
+[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L75-L116)
 
 Let's call the wrapped LVGL API...
 
 ![Our app calling the LVGL API wrapped with Zig](https://lupyuen.github.io/images/lvgl-code4a.png)
 
-[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181)
+[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L150-L183)
 
 ## After Wrapping
 
@@ -738,7 +738,7 @@ fn createWidgetsWrapped() !void {
 }
 ```
 
-[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181)
+[(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L150-L183)
 
 No more worries about catching Null Pointers!
 
@@ -802,7 +802,7 @@ So far we have identified these __LVGL Structs__ that contain Bit Fields...
 
 _Is there a workaround?_
 
-Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver __inside C Functions__...
+Our workaround is to access the structs for Color, Display Buffer, Display Driver and Input Driver __inside C Functions__...
 
 -   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
 
