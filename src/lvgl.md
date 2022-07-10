@@ -1194,7 +1194,7 @@ We made 2 fixes to our C code to support Clang...
 
     [(Here's why)](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
 
--   We changed this...
+-   And changed this...
 
     ```c
     static void monitor_cb(lv_disp_drv_t * disp_drv, uint32_t time, uint32_t px)
@@ -1211,7 +1211,7 @@ We made 2 fixes to our C code to support Clang...
 
 Here's the original C code: [lvgltest.c](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c)
 
-And the Auto-Translation from C to Zig: [translated/lvgltest.zig](translated/lvgltest.zig)
+And the Auto-Translation from C to Zig: [translated/lvgltest.zig](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig)
 
 The Auto-Translation looks __far too verbose__ for a Zig App, but it's a good start for converting our LVGL App from C to Zig.
 
