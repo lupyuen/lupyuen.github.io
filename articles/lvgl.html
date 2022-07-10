@@ -1036,7 +1036,7 @@ zig translate-c \
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(Here’s why)</a></p>
 </li>
 <li>
-<p>We changed this…</p>
+<p>And changed this…</p>
 <div class="example-wrap"><pre class="language-c"><code>static void monitor_cb(lv_disp_drv_t * disp_drv, uint32_t time, uint32_t px)
 {
 #ifndef __clang__  //  Doesn&#39;t compile with zig cc
@@ -1048,7 +1048,7 @@ ginfo(&quot;%&quot; PRIu32 &quot; px refreshed in %&quot; PRIu32 &quot; ms\n&quo
 </li>
 </ul>
 <p>Here’s the original C code: <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c">lvgltest.c</a></p>
-<p>And the Auto-Translation from C to Zig: <a href="translated/lvgltest.zig">translated/lvgltest.zig</a></p>
+<p>And the Auto-Translation from C to Zig: <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig">translated/lvgltest.zig</a></p>
 <p>The Auto-Translation looks <strong>far too verbose</strong> for a Zig App, but it’s a good start for converting our LVGL App from C to Zig.</p>
 <p>We hit some issues with Opaque Types in the Auto-Translation, this is how we fixed them…</p>
 <h1 id="appendix-zig-auto-translation-is-incomplete"><a href="#appendix-zig-auto-translation-is-incomplete">16 Appendix: Zig Auto-Translation is Incomplete</a></h1>
