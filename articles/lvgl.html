@@ -315,7 +315,7 @@ const c = @cImport({
 const c = @cImport({ ... });</code></pre></div>
 <p>That’s why we write “<code>c.</code><em>something</em>” when we refer to C Functions and Macros.</p>
 <p><em>What about the Main Function of our Zig App?</em></p>
-<p>It gets complicated. We’ll talk later about the <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L41-L109"><strong>Main Function lvgltest_main</strong></a>.</p>
+<p>It gets complicated. We’ll talk later about the Main Function.</p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">5 Compile Zig App</a></h1>
 <p>Below are the steps to <strong>compile our Zig LVGL App</strong> for Apache NuttX RTOS and BL602 RISC-V SoC.</p>
 <p>First we download the latest version of <strong>Zig Compiler</strong> (0.10.0 or later), extract it and add to PATH…</p>
@@ -481,12 +481,12 @@ pub fn getActiveScreen() !Object {
     return LvglError.UnknownError;
   }
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L26-L34">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L26-L41">(Source)</a></p>
 <p><em>What’s this unusual <code>if</code> expression?</em></p>
 <div class="example-wrap"><pre class="language-zig"><code>if (screen) |s| 
   { ... } else { ... }</code></pre></div>
 <p>That’s how we check if <strong>screen</strong> is null.</p>
-<p>If <strong>screen</strong> is not null, then <strong>s</strong> becomes the non-null contents of <strong>screen</strong>. And we create an <strong>Object Struct</strong> with <strong>s</strong> inside…</p>
+<p>If <strong>screen</strong> is not null, then <strong>s</strong> becomes the non-null value of <strong>screen</strong>. And we create an <strong>Object Struct</strong> with <strong>s</strong> inside…</p>
 <div class="example-wrap"><pre class="language-zig"><code>if (screen) |s| 
   { return Object.init(s); }
   ...</code></pre></div>
@@ -543,7 +543,7 @@ pub const Object = struct {
     }
   }
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L36-L58">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L43-L73">(Source)</a></p>
 <h2 id="label-struct"><a href="#label-struct">8.3 Label Struct</a></h2>
 <p>Finally we have <strong>Label</strong>, a Zig Struct that wraps around an LVGL Label.</p>
 <p>It defines a whole bunch of Methods to set the <strong>Label Properties, Text and Position</strong>…</p>
@@ -589,10 +589,10 @@ pub const Label = struct {
     c.lv_obj_align(self.obj, base, alignment, x_ofs, y_ofs);
   }
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L60-L101">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L75-L116">(Source)</a></p>
 <p>Let’s call the wrapped LVGL API…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl-code4a.png" alt="Our app calling the LVGL API wrapped with Zig" /></p>
-<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L150-L183">(Source)</a></p>
 <h2 id="after-wrapping"><a href="#after-wrapping">8.4 After Wrapping</a></h2>
 <p>With the <strong>wrapped LVGL API</strong>, our Zig App becomes simpler and safer…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Create the LVGL Widgets that will be rendered on the display. Calls the
@@ -628,7 +628,7 @@ fn createWidgetsWrapped() !void {
   // Align the label to the center of the screen, shift 30 pixels up
   label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L149-L181">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L150-L183">(Source)</a></p>
 <p>No more worries about catching Null Pointers!</p>
 <p>(Someday <strong>LV_LABEL_LONG_BREAK</strong> and the other constants will become Enums)</p>
 <p><em>Wrapping the LVGL API in Zig sounds like a lot of work?</em></p>
@@ -677,7 +677,7 @@ fn createWidgetsWrapped() !void {
 </li>
 </ul>
 <p><em>Is there a workaround?</em></p>
-<p>Right now we access the structs for Color, Display Buffer, Display Driver and Input Driver <strong>inside C Functions</strong>…</p>
+<p>Our workaround is to access the structs for Color, Display Buffer, Display Driver and Input Driver <strong>inside C Functions</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Type”</strong></a></li>
 </ul>
