@@ -703,11 +703,15 @@ fn createWidgetsWrapped() !void {
 <p><a href="https://lupyuen.github.io/articles/lvgl#simplify-lvgl-api"><strong>“Simplify LVGL API”</strong></a></p>
 </li>
 </ul>
-<p>And that it’s possible to create a <strong>friendlier, safer interface</strong> for LVGL…</p>
+<p>And that it’s possible (with some effort) to create a <strong>friendlier, safer interface</strong> for LVGL…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#wrap-lvgl-api"><strong>“Wrap LVGL API”</strong></a></li>
 </ul>
 <p><em>What about the downsides of Zig?</em></p>
+<p>Zig doesn’t validate pointers (like with a Borrow Checker) so it isn’t <strong>Memory Safe</strong> (yet)…</p>
+<ul>
+<li><a href="https://www.scattered-thoughts.net/writing/how-safe-is-zig"><strong>“How safe is zig?”</strong></a></li>
+</ul>
 <p>Zig (version 0.10.0) has a serious limitation: It won’t work with <strong>C Structs containing Bit Fields</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#zig-vs-bit-fields"><strong>“Zig vs Bit Fields”</strong></a></li>
@@ -961,7 +965,7 @@ riscv64-unknown-elf-gcc \
 </ul>
 <p>The GCC Options above were also passed to the Zig Compiler for Auto-Translating the LVGL App from C to Zig…</p>
 <h1 id="appendix-auto-translate-lvgl-app-to-zig"><a href="#appendix-auto-translate-lvgl-app-to-zig">15 Appendix: Auto-Translate LVGL App to Zig</a></h1>
-<p>The Zig Compiler can <strong>Auto-Translate C code to Zig</strong>. <a href="https://ziglang.org/documentation/master/#C-Translation-CLI">(See this)</a></p>
+<p>Zig Compiler can <strong>Auto-Translate C code to Zig</strong>. <a href="https://ziglang.org/documentation/master/#C-Translation-CLI">(See this)</a></p>
 <p>We used the Auto-Translation as a Reference when converting our LVGL App from C to Zig.</p>
 <p>Here’s how we Auto-Translate our LVGL App <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c"><strong>lvgltest.c</strong></a> from C to Zig…</p>
 <ul>
@@ -1106,7 +1110,9 @@ typedef union {
 <p>Zig Compiler won’t let us access the <strong>fields of an Opaque Type</strong>. But it’s OK to pass a <strong>pointer to an Opaque Type</strong>.</p>
 <p>Any struct that contains a (non-pointer) Opaque Type, also becomes an Opaque Type.</p>
 <p><em>How do we discover Opaque Types?</em></p>
-<p>In the previous section, the Zig Compiler has identified the struct for LVGL Display Driver <strong>lv_disp_drv_t</strong> as an Opaque Type.</p>
+<p>In the previous section, Zig Compiler has identified the LVGL Display Driver <strong>lv_disp_drv_t</strong> as an Opaque Type…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// warning: local variable has opaque type
+lv_disp_drv_t disp_drv;</code></pre></div>
 <p>To find out why, we search for <strong>lv_disp_drv_t</strong> in the Auto-Translated Zig code…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// nuttx/apps/graphics/lvgl/lvgl/src/lv_hal/lv_hal_disp.h:154:9: 
 // warning: struct demoted to opaque type - has bitfield
@@ -1120,8 +1126,8 @@ pub const struct__disp_t = opaque {};
 
 pub const lv_disp_buf_t = opaque {};</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/9e95d800f3a429c5f35970ca35cd43bd8fbd9529/translated/lvgltest.zig#L700-L704">(Source)</a></p>
-<p>Below are the C definitions of <strong>lv_disp_drv_t</strong>, <strong>lv_disp_t</strong> and <strong>lv_disp_buf_t</strong> from LVGL.</p>
-<p>It’s clear that Zig Compiler couldn’t import the structs because they contain <strong>Bit Fields</strong>…</p>
+<p>Which says that <strong>lv_disp_drv_t</strong> contains Bit Fields.</p>
+<p>To verify, we look up the C definitions of <strong>lv_disp_drv_t</strong>, <strong>lv_disp_t</strong> and <strong>lv_disp_buf_t</strong> from LVGL…</p>
 <div class="example-wrap"><pre class="language-c"><code>// LVGL Display Driver
 typedef struct _disp_drv_t {
   uint32_t rotated : 1;
@@ -1142,6 +1148,7 @@ typedef struct {
   volatile uint32_t last_part : 1;
   ...
 } lv_disp_buf_t;</code></pre></div>
+<p>We’re now certain that Zig Compiler couldn’t import the structs because they indeed contain <strong>Bit Fields</strong>.</p>
 <p>Let’s fix the Opaque Types, by passing them as pointers…</p>
 <h2 id="fix-opaque-types"><a href="#fix-opaque-types">17.1 Fix Opaque Types</a></h2>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
@@ -1219,7 +1226,7 @@ void init_disp_buf(lv_disp_buf_t *disp_buf) {
 </ul>
 <h2 id="input-driver"><a href="#input-driver">17.2 Input Driver</a></h2>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p>LVGL Input Driver <strong>lv_indev_drv_t</strong> is an Opaque Type because it contains Bit Fields.</p>
+<p>LVGL Input Driver <strong>lv_indev_drv_t</strong> is another Opaque Type because it contains Bit Fields.</p>
 <p>We fix <strong>lv_indev_drv_t</strong> the same way as other Opaque Types: We allocate and initialise the structs in C (instead of Zig)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Return the static instance of Input Driver, because Zig can&#39;t
 // allocate structs wth bitfields inside.
@@ -1253,7 +1260,7 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
   static lv_color_t cbuf[LV_CANVAS_BUF_SIZE_TRUE_COLOR(CANVAS_WIDTH, CANVAS_HEIGHT)];
   ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L160-L165">(Source)</a></p>
-<p>That’s because <strong>lv_color_t</strong> is an Opaque Type…</p>
+<p>That’s because <strong>lv_color_t</strong> is another Opaque Type…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// From Zig Auto-Translation
 pub const lv_color_t = lv_color16_t;
 
@@ -1283,7 +1290,7 @@ typedef union {
 <li><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/README.md#zig-type-reflection"><strong>“Zig Type Reflection”</strong></a></li>
 </ul>
 <p>But Zig Type Reflection doesn’t include the <strong>Parameter Types</strong>.</p>
-<p>Instead, we can parse the <strong>Type Info JSON</strong> generated by Zig Compiler…</p>
+<p>Instead, we can look up the <strong>Type Info JSON</strong> generated by Zig Compiler…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Emit IR (LLVM), BC (LLVM) and Type Info JSON
 zig build-obj \
   -femit-llvm-ir \
@@ -1312,7 +1319,7 @@ lvgltest-analysis.json</code></pre></div>
    &quot;src&quot;: 1962,
    &quot;name&quot;: &quot;lv_obj_align&quot;,
    &quot;kind&quot;: &quot;const&quot;,
-   &quot;type&quot;: 148,
+   &quot;type&quot;: 148,  // lv_obj_align has Type 148
    &quot;value&quot;: 60
   },</code></pre></div>
 <p>Then we look up <strong>Type 148</strong> in <a href="https://github.com/lupyuen/zig-lvgl-nuttx/releases/download/v1.0.0/lvgltest-analysis.json">lvgltest-analysis.json</a></p>
@@ -1323,7 +1330,7 @@ lvgltest-analysis.json</code></pre></div>
   &quot;generic&quot;: false,
   &quot;ret&quot;: 70,
   &quot;args&quot;: [
-    79,
+    79,  // First Para has Type 79
     194,
     95,
     134,
