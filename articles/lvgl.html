@@ -309,7 +309,7 @@ const c = @cImport({
 });</code></pre></div>
 <p>And our <strong>Application-Specific</strong> Header Files for LCD Display and Touch Panel.</p>
 <p>That’s how we import the LVGL Library into our Zig App!</p>
-<p><em>Why do we write “<code>c.</code>something” when we call C functions? Like “<code>c.lv_scr_act()</code>”?</em></p>
+<p><em>Why do we write “<code>c.</code>something” when we call C functions? Like “c.lv_scr_act()”?</em></p>
 <p>Remember that we import all C Functions and Macros into the <strong>“<code>c</code>” Namespace</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import Functions and Macros into &quot;c&quot; Namespace
 const c = @cImport({ ... });</code></pre></div>
