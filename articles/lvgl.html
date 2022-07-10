@@ -1052,8 +1052,8 @@ ginfo(&quot;%&quot; PRIu32 &quot; px refreshed in %&quot; PRIu32 &quot; ms\n&quo
 </li>
 </ul>
 <p>Here’s the original C code: <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c">lvgltest.c</a></p>
-<p>And the Auto-Translation from C to Zig: <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig">translated/lvgltest.zig</a></p>
-<p>The Auto-Translation looks <strong>far too verbose</strong> for a Zig App, but it’s a good start for converting our LVGL App from C to Zig.</p>
+<p>And the Auto-Translation from C to Zig: <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5898-L5942">translated/lvgltest.zig</a></p>
+<p>The Auto-Translation looks <strong>way too verbose</strong> for a Zig Program, but it’s a good start for converting our LVGL App from C to Zig.</p>
 <p>We hit some issues with Opaque Types in the Auto-Translation, this is how we fixed them…</p>
 <h1 id="appendix-zig-auto-translation-is-incomplete"><a href="#appendix-zig-auto-translation-is-incomplete">16 Appendix: Zig Auto-Translation is Incomplete</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
@@ -1066,6 +1066,7 @@ ginfo(&quot;%&quot; PRIu32 &quot; px refreshed in %&quot; PRIu32 &quot; ms\n&quo
 <p><strong>create_widgets</strong>: Create Widgets Function </p>
 </li>
 </ul>
+<p>The Auto-Translated Zig code shows…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// lvgltest.c:129:13: warning: unable to translate function, demoted to extern
 pub extern fn create_widgets() callconv(.C) void;
 // lvgltest.c:227:17: warning: local variable has opaque type
@@ -1080,7 +1081,7 @@ pub extern fn lvgltest_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int;</code>
   lv_disp_buf_t disp_buf;
   ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/1e8b0501c800209f0fa3f35f54b3742498d0e302/lvgltest.c#L225-L228">(Source)</a></p>
-<p>We see that Zig couldn’t translate the struct for LVGL Display Driver <strong>lv_disp_drv_t</strong> because it’s an Opaque Type.</p>
+<p>We see that Zig couldn’t import the struct for LVGL Display Driver <strong>lv_disp_drv_t</strong> because it’s an Opaque Type.</p>
 <p>Let’s find out why…</p>
 <h1 id="appendix-zig-opaque-types"><a href="#appendix-zig-opaque-types">17 Appendix: Zig Opaque Types</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
