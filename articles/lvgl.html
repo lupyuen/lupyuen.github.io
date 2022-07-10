@@ -1056,10 +1056,10 @@ ginfo(&quot;%&quot; PRIu32 &quot; px refreshed in %&quot; PRIu32 &quot; ms\n&quo
 <p>The Auto-Translation from C to Zig was initially <strong>missing 2 key functions</strong>…</p>
 <ul>
 <li>
-<p>Main Function <strong>lvgltest_main</strong> </p>
+<p><strong>lvgltest_main</strong>: Main Function</p>
 </li>
 <li>
-<p>Create Widgets Function <strong>create_widgets</strong></p>
+<p><strong>create_widgets</strong>: Create Widgets Function </p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-zig"><code>// lvgltest.c:129:13: warning: unable to translate function, demoted to extern
@@ -1070,8 +1070,7 @@ pub extern fn create_widgets() callconv(.C) void;
 pub extern fn lvgltest_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int;</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/9e95d800f3a429c5f35970ca35cd43bd8fbd9529/translated/lvgltest.zig#L5901-L5904">(Source)</a></p>
 <p>When we look up <a href="https://github.com/lupyuen/lvgltest-nuttx/blob/1e8b0501c800209f0fa3f35f54b3742498d0e302/lvgltest.c#L225-L228">lvgltest.c</a> line 227…</p>
-<div class="example-wrap"><pre class="language-c"><code>int lvgltest_main(int argc, FAR char *argv[])
-{
+<div class="example-wrap"><pre class="language-c"><code>int lvgltest_main(int argc, FAR char *argv[]) {
   // lvgltest.c:227:17: warning: local variable has opaque type
   lv_disp_drv_t disp_drv;
   lv_disp_buf_t disp_buf;
@@ -1081,7 +1080,9 @@ pub extern fn lvgltest_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int;</code>
 <p>Let’s find out why…</p>
 <h1 id="appendix-zig-opaque-types"><a href="#appendix-zig-opaque-types">17 Appendix: Zig Opaque Types</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p><strong>Opaque Types</strong> are typically C Structs containinig <strong>Bit Fields</strong>, as explained here…</p>
+<p><em>What’s an Opaque Type in Zig?</em></p>
+<p><strong>Opaque Types</strong> are Zig Structs with unknown, inaccessible fields.</p>
+<p>When we import into Zig a <strong>C Struct that contains Bit Fields</strong>, it becomes an Opaque Type…</p>
 <ul>
 <li>
 <p><a href="https://ziglang.org/documentation/master/#Translation-failures"><strong>“Translation Failures”</strong></a></p>
@@ -1090,8 +1091,21 @@ pub extern fn lvgltest_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int;</code>
 <p><a href="https://zig.news/kristoff/extend-a-c-c-project-with-zig-55di"><strong>“Extend a C/C++ Project with Zig”</strong></a></p>
 </li>
 </ul>
+<p>For example, LVGL’s <strong>Color Type</strong> contains Bit Fields. It becomes an Opaque Type when we import into Zig…</p>
+<div class="example-wrap"><pre class="language-c"><code>// LVGL Color Type (16-bit color)
+typedef union {
+  struct {
+    // Bit Fields for RGB Color
+    uint16_t blue  : 5;
+    uint16_t green : 6;
+    uint16_t red   : 5;
+  } ch;
+  uint16_t full;
+} lv_color16_t;</code></pre></div>
+<p><em>What’s wrong with Opaque Types?</em></p>
 <p>Zig Compiler won’t let us access the <strong>fields of an Opaque Type</strong>. But it’s OK to pass a <strong>pointer to an Opaque Type</strong>.</p>
 <p>Any struct that contains a (non-pointer) Opaque Type, also becomes an Opaque Type.</p>
+<p><em>How do we discover Opaque Types?</em></p>
 <p>In the previous section, the Zig Compiler has identified the struct for LVGL Display Driver <strong>lv_disp_drv_t</strong> as an Opaque Type.</p>
 <p>To find out why, we search for <strong>lv_disp_drv_t</strong> in the Auto-Translated Zig code…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// nuttx/apps/graphics/lvgl/lvgl/src/lv_hal/lv_hal_disp.h:154:9: 
@@ -1107,7 +1121,7 @@ pub const struct__disp_t = opaque {};
 pub const lv_disp_buf_t = opaque {};</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/9e95d800f3a429c5f35970ca35cd43bd8fbd9529/translated/lvgltest.zig#L700-L704">(Source)</a></p>
 <p>Below are the C definitions of <strong>lv_disp_drv_t</strong>, <strong>lv_disp_t</strong> and <strong>lv_disp_buf_t</strong> from LVGL.</p>
-<p>It’s clear that the structs couldn’t be translated to Zig because they contain <strong>Bit Fields</strong>…</p>
+<p>It’s clear that Zig Compiler couldn’t import the structs because they contain <strong>Bit Fields</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// LVGL Display Driver
 typedef struct _disp_drv_t {
   uint32_t rotated : 1;
@@ -1128,16 +1142,16 @@ typedef struct {
   volatile uint32_t last_part : 1;
   ...
 } lv_disp_buf_t;</code></pre></div>
-<p>Let’s fix the Opaque Types.</p>
+<p>Let’s fix the Opaque Types, by passing them as pointers…</p>
 <h2 id="fix-opaque-types"><a href="#fix-opaque-types">17.1 Fix Opaque Types</a></h2>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p>Earlier we saw that Zig couldn’t translate and import these C Structs because they contain Bit Fields…</p>
+<p>Earlier we saw that Zig couldn’t import these C Structs because they contain <strong>Bit Fields</strong>…</p>
 <ul>
 <li>
-<p><strong>lv_disp_drv_t</strong> (LVGL Display Driver)</p>
+<p><strong>lv_disp_drv_t</strong>: LVGL Display Driver</p>
 </li>
 <li>
-<p><strong>lv_disp_buf_t</strong> (LVGL Display Buffer)</p>
+<p><strong>lv_disp_buf_t</strong>: LVGL Display Buffer</p>
 </li>
 </ul>
 <p>Instead of creating and accessing these structs in Zig, we <strong>do it in C instead</strong>…</p>
