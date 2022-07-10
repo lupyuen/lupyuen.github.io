@@ -1205,62 +1205,43 @@ void init_disp_buf(lv_disp_buf_t *disp_buf) {
 </ul>
 <h2 id="input-driver"><a href="#input-driver">17.2 Input Driver</a></h2>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p>TODO</p>
-<p>Our Input Driver <code>lv_indev_drv_t</code> is also an Opaque Type because it contains Bit Fields.</p>
-<p>We fix <code>lv_indev_drv_t</code> the same way as other Opaque Types: We allocate and initialise the structs in C (instead of Zig)…</p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: get_indev_drv
- *
- * Description:
- *   Return the static instance of Input Driver, because Zig can&#39;t
- *   allocate structs wth bitfields inside.
- *
- ****************************************************************************/
-
-lv_indev_drv_t *get_indev_drv(void)
-{
+<p>LVGL Input Driver <strong>lv_indev_drv_t</strong> is an Opaque Type because it contains Bit Fields.</p>
+<p>We fix <strong>lv_indev_drv_t</strong> the same way as other Opaque Types: We allocate and initialise the structs in C (instead of Zig)…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Return the static instance of Input Driver, because Zig can&#39;t
+// allocate structs wth bitfields inside.
+lv_indev_drv_t *get_indev_drv(void) {
   static lv_indev_drv_t indev_drv;
   return &amp;indev_drv;
 }
 
-/****************************************************************************
- * Name: init_indev_drv
- *
- * Description:
- *   Initialise the Input Driver, because Zig can&#39;t access its fields.
- *
- ****************************************************************************/
-
+// Initialise the Input Driver, because Zig can&#39;t access its fields.
 void init_indev_drv(lv_indev_drv_t *indev_drv,
-  bool (*read_cb)(struct _lv_indev_drv_t *, lv_indev_data_t *))
-{
+  bool (*read_cb)(struct _lv_indev_drv_t *, lv_indev_data_t *)) {
   assert(indev_drv != NULL);
   assert(read_cb != NULL);
 
   lv_indev_drv_init(indev_drv);
   indev_drv-&gt;type = LV_INDEV_TYPE_POINTER;
 
-  /* This function will be called periodically (by the library) to get the
-   * mouse position and state.
-   */
-
+  // This function will be called periodically (by the library) to get the
+  // mouse position and state.
   indev_drv-&gt;read_cb = read_cb;
   lv_indev_drv_register(indev_drv);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L282-L320">(Source)</a></p>
 <h2 id="color-type"><a href="#color-type">17.3 Color Type</a></h2>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
-<p>TODO</p>
-<p>We also commented out all references to <code>lv_color_t</code>…</p>
-<div class="example-wrap"><pre class="language-c"><code>//  LVGL Canvas Demo doesn&#39;t work with zig cc because of `lv_color_t`
+<p>We fixed all references to <strong>lv_color_t</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// LVGL Canvas Demo doesn&#39;t work with zig cc because of `lv_color_t`
 #if defined(CONFIG_USE_LV_CANVAS) &amp;&amp; !defined(__clang__)  
 
-  //  Set the Canvas Buffer (Warning: Might take a lot of RAM!)
+  // Set the Canvas Buffer (Warning: Might take a lot of RAM!)
   static lv_color_t cbuf[LV_CANVAS_BUF_SIZE_TRUE_COLOR(CANVAS_WIDTH, CANVAS_HEIGHT)];
   ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L160-L165">(Source)</a></p>
-<p>That’s because <code>lv_color_t</code> is also an Opaque Type…</p>
-<div class="example-wrap"><pre class="language-zig"><code>pub const lv_color_t = lv_color16_t;
+<p>That’s because <strong>lv_color_t</strong> is an Opaque Type…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// From Zig Auto-Translation
+pub const lv_color_t = lv_color16_t;
 
 pub const lv_color16_t = extern union {
     ch: struct_unnamed_7,
@@ -1271,15 +1252,16 @@ pub const lv_color16_t = extern union {
 // warning: struct demoted to opaque type - has bitfield
 const struct_unnamed_7 = opaque {};</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L520-L537">(Source)</a></p>
-<p>That contains Bit Fields…</p>
-<div class="example-wrap"><pre class="language-c"><code>typedef union {
-    struct {
-        // Bit fields for lv_color16_t (aliased to lv_color_t)
-        uint16_t blue : 5;
-        uint16_t green : 6;
-        uint16_t red : 5;
-    } ch;
-    uint16_t full;
+<p>That contains <strong>Bit Fields</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// LVGL Color Type (16-bit color)
+typedef union {
+  struct {
+    // Bit fields for lv_color16_t (aliased to lv_color_t)
+    uint16_t blue : 5;
+    uint16_t green : 6;
+    uint16_t red : 5;
+  } ch;
+  uint16_t full;
 } lv_color16_t;</code></pre></div><h1 id="appendix-auto-generate-zig-wrapper"><a href="#appendix-auto-generate-zig-wrapper">18 Appendix: Auto-Generate Zig Wrapper</a></h1>
 <p>TODO</p>
 <p><em>Can we auto-generate the Wrapper Code?</em></p>
