@@ -1591,7 +1591,13 @@ This might cause problems when we upgrade the LVGL Library.
 
 _Can we auto-generate the Zig Wrapper for LVGL?_
 
-We could use __Type Reflection__ in Zig...
+Earlier we talked about the __Zig Wrapper for LVGL__ that will make LVGL a little safer and friendlier...
+
+-   [__"Simplify LVGL API"__](https://lupyuen.github.io/articles/lvgl#simplify-lvgl-api)
+
+-   [__"Wrap LVGL API"__](https://lupyuen.github.io/articles/lvgl#wrap-lvgl-api)
+
+To Auto-Generate the LVGL Wrapper, we could use __Type Reflection__ in Zig...
 
 -   [__"Zig Type Reflection"__](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/README.md#zig-type-reflection)
 
