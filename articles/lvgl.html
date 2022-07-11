@@ -12,7 +12,7 @@
     content="Build an LVGL Touchscreen App with Zig" 
     data-rh="true">
 <meta property="og:description" 
-    content="Can we use Zig to build an LVGL Touchscreen App for Apache NuttX RTOS? Can we wrap the LVGL API in Zig to build simpler, safer LVGL Apps? Let's find out!"
+    content="Can we use Zig to build an LVGL Touchscreen App for Apache NuttX RTOS? Also wrap the LVGL API in Zig to build simpler, safer LVGL Apps? Let's find out!"
     data-rh="true">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/lvgl-title.jpg">
@@ -753,15 +753,7 @@ fn createWidgetsWrapped() !void {
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl.md"><strong>lupyuen.github.io/src/lvgl.md</strong></a></p>
 <h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
-<li>
-<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1543395925116088320"><strong>this Twitter Thread</strong></a></p>
-</li>
-<li>
-<p>Our Zig App includes a <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L225-L257"><strong>Custom Logger</strong></a> and <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L199-L225"><strong>Panic Handler</strong></a>.</p>
-<p>They are explained below…</p>
-<p><a href="https://lupyuen.github.io/articles/iot#appendix-logging"><strong>“Logging”</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler"><strong>“Panic Handler”</strong></a></p>
-</li>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1543395925116088320"><strong>this Twitter Thread</strong></a></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Input Calibration in our Zig LVGL App" /></p>
 <h1 id="appendix-main-function"><a href="#appendix-main-function">13 Appendix: Main Function</a></h1>
@@ -933,7 +925,18 @@ pub export fn lvgltest_main(
     _ = c.usleep(10000);
   }
   return 0;
-}</code></pre></div><h1 id="appendix-compiler-options"><a href="#appendix-compiler-options">14 Appendix: Compiler Options</a></h1>
+}</code></pre></div>
+<p>Our Zig App includes a <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L225-L257"><strong>Custom Logger</strong></a> and <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L199-L225"><strong>Panic Handler</strong></a>.</p>
+<p>They are explained below…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-logging"><strong>“Logging”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler"><strong>“Panic Handler”</strong></a></p>
+</li>
+</ul>
+<h1 id="appendix-compiler-options"><a href="#appendix-compiler-options">14 Appendix: Compiler Options</a></h1>
 <p>For the <strong>LVGL App in C</strong>, Apache NuttX RTOS compiles it with this GCC Command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  App Source Directory
 cd $HOME/nuttx/apps/examples/lvgltest
