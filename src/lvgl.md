@@ -859,6 +859,10 @@ I hope this article has inspired you to create LVGL Apps in Zig!
 
 (But if you prefer to wait for Zig 1.0... That's OK too!)
 
+Here are some tips for learning Zig...
+
+-   [__"Learning Zig"__](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
+
 Check out my earlier work on Zig, NuttX and LoRaWAN...
 
 -   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
