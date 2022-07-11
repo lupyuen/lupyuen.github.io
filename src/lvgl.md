@@ -1699,6 +1699,8 @@ Which gives us the complete type of the __First Parameter__...
 ?*.cimport:10:11.struct__lv_obj_t
 ```
 
+With this Type Info, we could generate the Zig Wrapper for all LVGL Functions.
+
 We don't have the Parameter Names though, we might need to parse the ".cimport" file.
 
 [(More about jq)](https://stedolan.github.io/jq/manual/)
