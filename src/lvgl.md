@@ -1248,7 +1248,7 @@ We made 2 fixes to our C code to support Clang...
     }
     ```
 
-    [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L95-L100)
+    [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L83-L98)
 
     [(See the changes)](https://github.com/lupyuen/lvgltest-nuttx/commit/1e8b0501c800209f0fa3f35f54b3742498d0e302)
 
