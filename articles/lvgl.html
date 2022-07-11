@@ -1284,6 +1284,10 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
   lv_indev_drv_register(indev_drv);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L282-L320">(Source)</a></p>
+<p>These functions are called by our <strong>Zig Main Function</strong> during initialisation…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#appendix-main-function"><strong>“Main Function”</strong></a></li>
+</ul>
 <h2 id="color-type"><a href="#color-type">17.3 Color Type</a></h2>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>We fixed all references to LVGL Color Type <strong>lv_color_t</strong>…</p>
