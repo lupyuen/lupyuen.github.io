@@ -1509,6 +1509,10 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L282-L320)
 
+These functions are called by our __Zig Main Function__ during initialisation...
+
+-   [__"Main Function"__](https://lupyuen.github.io/articles/lvgl#appendix-main-function)
+
 ## Color Type
 
 _(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
