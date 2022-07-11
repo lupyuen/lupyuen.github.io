@@ -1,6 +1,6 @@
 # Build an LVGL Touchscreen App with Zig
 
-📝 _14 Jul 2022_
+📝 _12 Jul 2022_
 
 ![LVGL Touchscreen App on Pine64's PineDio Stack BL604](https://lupyuen.github.io/images/lvgl-title.jpg)
 
