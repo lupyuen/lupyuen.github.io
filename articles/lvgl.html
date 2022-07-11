@@ -1421,6 +1421,7 @@ $ jq &#39;.types[137]&#39; lvgltest-analysis.json
 # Kind 20 is `struct`???</code></pre></div>
 <p>Which gives us the complete type of the <strong>First Parameter</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>?*.cimport:10:11.struct__lv_obj_t</code></pre></div>
+<p>With this Type Info, we could generate the Zig Wrapper for all LVGL Functions.</p>
 <p>We don’t have the Parameter Names though, we might need to parse the “.cimport” file.</p>
 <p><a href="https://stedolan.github.io/jq/manual/">(More about jq)</a></p>
 <h2 id="object-oriented-wrapper-for-lvgl"><a href="#object-oriented-wrapper-for-lvgl">18.1 Object-Oriented Wrapper for LVGL</a></h2>
