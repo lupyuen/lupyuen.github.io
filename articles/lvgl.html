@@ -104,7 +104,7 @@
 <li><a href="https://github.com/lupyuen/zig-lvgl-nuttx"><strong>lupyuen/zig-lvgl-nuttx</strong></a></li>
 </ul>
 <p><a href="https://lupyuen.github.io/articles/lvgl#zig-outcomes">(Spoiler: Answers are Yes, Maybe, Somewhat)</a></p>
-<p><img src="https://lupyuen.github.io/images/lvgl-code1a.png" alt="LVGL App in C" /></p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code1a.jpg" alt="LVGL App in C" /></p>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a> </p>
 <h1 id="lvgl-app-in-c"><a href="#lvgl-app-in-c">1 LVGL App in C</a></h1>
 <p>We begin with a barebones <strong>LVGL App in C</strong> that renders a line of text…</p>
@@ -162,7 +162,7 @@
 <p><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig">(If we’re keen to learn Zig, see this)</a></p>
 <p><em>Where’s the rest of the code that initialises LVGL?</em></p>
 <p>We hit some complications converting the code to Zig, more about this in a while.</p>
-<p><img src="https://lupyuen.github.io/images/lvgl-code2a.png" alt="Zig LVGL App" /></p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code2a.jpg" alt="Zig LVGL App" /></p>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147">(Source)</a></p>
 <h1 id="zig-lvgl-app"><a href="#zig-lvgl-app">2 Zig LVGL App</a></h1>
 <p>Now the same LVGL App, but <strong>in Zig</strong>…</p>
@@ -225,7 +225,7 @@
 </li>
 </ul>
 <p>Let’s talk about Null Pointers and Runtime Safety…</p>
-<p><img src="https://lupyuen.github.io/images/lvgl-code3a.png" alt="LVGL App: C vs Zig" /></p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code3a.jpg" alt="LVGL App: C vs Zig" /></p>
 <h1 id="zig-checks-null-pointers"><a href="#zig-checks-null-pointers">3 Zig Checks Null Pointers</a></h1>
 <p>Earlier we saw our Zig App calling the <strong>LVGL Functions</strong> imported from C…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Zig calls a C function
@@ -260,7 +260,7 @@ Stack Trace:
 <p>Which isn’t as helpful as an immediate Zig Panic (upon receiving the Null Pointer).</p>
 <p>Thus we always write “<code>.?</code>” to catch Null Pointers returned by C Functions.</p>
 <p>(Hopefully someday we’ll have a Zig Lint Tool that will warn us if we forget to use “<code>.?</code>”)</p>
-<p><img src="https://lupyuen.github.io/images/lvgl-code5a.png" alt="Import C Functions and Macros" /></p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code5a.jpg" alt="Import C Functions and Macros" /></p>
 <h1 id="import-c-functions"><a href="#import-c-functions">4 Import C Functions</a></h1>
 <p><em>How do we import the C Functions and Macros for LVGL?</em></p>
 <p>This is how we <strong>import the Functions and Macros</strong> from C into Zig: <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L9-L39">lvgltest.zig</a></p>
@@ -591,7 +591,7 @@ pub const Label = struct {
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig#L75-L116">(Source)</a></p>
 <p>Let’s call the wrapped LVGL API…</p>
-<p><img src="https://lupyuen.github.io/images/lvgl-code4a.png" alt="Our app calling the LVGL API wrapped with Zig" /></p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code4a.jpg" alt="Our app calling the LVGL API wrapped with Zig" /></p>
 <p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L150-L183">(Source)</a></p>
 <h2 id="after-wrapping"><a href="#after-wrapping">8.4 After Wrapping</a></h2>
 <p>With the <strong>wrapped LVGL API</strong>, our Zig App becomes simpler and safer…</p>
