@@ -1297,7 +1297,7 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
   // Set the Canvas Buffer (Warning: Might take a lot of RAM!)
   static lv_color_t cbuf[LV_CANVAS_BUF_SIZE_TRUE_COLOR(CANVAS_WIDTH, CANVAS_HEIGHT)];
   ...</code></pre></div>
-<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L160-L165">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L149-L156">(Source)</a></p>
 <p>That’s because <strong>lv_color_t</strong> is another Opaque Type…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// From Zig Auto-Translation
 pub const lv_color_t = lv_color16_t;
