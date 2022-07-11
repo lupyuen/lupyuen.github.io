@@ -1465,9 +1465,9 @@ int lvgltest_main(int argc, FAR char *argv[]) {
 
 After this modification, our Auto-Translation from C to Zig now contains the 2 missing functions...
 
--   [__lvgltest_main__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5913-L5944)
+-   [__lvgltest_main__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5913-L5944): Main Function
 
--   [__create_widgets__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5903-L5912)
+-   [__create_widgets__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/translated/lvgltest.zig#L5903-L5912): Create Widgets Function
 
 Which we used as a reference to convert our LVGL App from C to Zig.
 
