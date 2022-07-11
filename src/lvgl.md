@@ -740,7 +740,9 @@ fn createWidgetsWrapped() !void {
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L150-L183)
 
-No more worries about catching Null Pointers!
+[(Compare with earlier unwrapped version)](https://lupyuen.github.io/articles/lvgl#zig-lvgl-app)
+
+No more worries about catching __Null Pointers!__
 
 (Someday __LV_LABEL_LONG_BREAK__ and the other constants will become Enums)
 
