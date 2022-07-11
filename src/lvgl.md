@@ -1122,7 +1122,7 @@ riscv64-unknown-elf-gcc \
 
 (As observed from "`make --trace`")
 
-[(See lvgltest.c)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c)
+[(__lvgltest.c__ is located here)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c)
 
 The above options for "__`-isystem`__" and "__`-I`__"...
 
@@ -1133,7 +1133,7 @@ The above options for "__`-isystem`__" and "__`-I`__"...
 -I "$HOME/nuttx/apps/include"
 ```
 
-Were passed to the __Zig Compiler__...
+Were passed to the __Zig Compiler__ when compiling our Zig App...
 
 -   [__"Compile Zig App"__](https://lupyuen.github.io/articles/lvgl#compile-zig-app)
 
