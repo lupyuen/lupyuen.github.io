@@ -154,7 +154,7 @@
   // Omitted: LVGL Canvas (we&#39;ll find out why)
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148">(Source)</a> </p>
-<p><a href="https://docs.lvgl.io/7.11/widgets/label.html#">(Docs for LVGL Label Widget)</a></p>
+<p><a href="https://docs.lvgl.io/7.11/widgets/label.html#">(Docs for LVGL Label)</a></p>
 <p>In a while we shall convert this LVGL App to Zig.</p>
 <p><em>What if we’re not familiar with Zig?</em></p>
 <p>The following sections assume that we’re familiar with C.</p>
@@ -720,7 +720,7 @@ fn createWidgetsWrapped() !void {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Type”</strong></a></li>
 </ul>
-<p>But this might become a showstopper as we work with <strong>advanced LVGL Widgets</strong>.</p>
+<p>But this might become a showstopper as we work with <strong>advanced LVGL Widgets</strong>. (Like LVGL Canvas)</p>
 <p>I’ll run more experiments with LVGL on Zig and report the outcome.</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>I hope this article has inspired you to create LVGL Apps in Zig!</p>
@@ -789,8 +789,17 @@ fn createWidgetsWrapped() !void {
 <p>Forever handle <strong>LVGL Events</strong></p>
 </li>
 </ul>
-<p>From <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109">lvgltest.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We render an LVGL Screen and
+<p>We begin by importing the libraries and declaring our Main Function: <a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109">lvgltest.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import the Zig Standard Library
+const std = @import(&quot;std&quot;);
+
+/// Import our Wrapped LVGL Module
+const lvgl = @import(&quot;lvgl.zig&quot;);
+
+/// Omitted: Import the LVGL Library from C
+const c = @cImport({ ... });
+
+/// Main Function that will be called by NuttX. We render an LVGL Screen and
 /// handle Touch Input.
 pub export fn lvgltest_main(
     _argc: c_int, 
@@ -799,9 +808,26 @@ pub export fn lvgltest_main(
   debug(&quot;Zig LVGL Test&quot;, .{});
   // Command-line args are not used
   _ = _argc;
-  _ = _argv;
-
-  // Init LVGL Library
+  _ = _argv;</code></pre></div>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig">(<strong>lvgl.zig</strong> is located here)</a></p>
+<p><em>Why is argv declared as “[*]const [*]const u8”?</em></p>
+<p>That’s because…</p>
+<ul>
+<li>
+<p>“<strong>[*]const u8</strong>” is a Pointer to an Unknown Number of Unsigned Bytes</p>
+<p>(Like “const uint8_t *” in C)</p>
+</li>
+<li>
+<p>“<strong>[*]const [*]const u8</strong>” is a Pointer to an Unknown Number of the above Pointers</p>
+<p>(Like “const uint8_t *[]” in C)</p>
+</li>
+</ul>
+<p><a href="https://ziglang.org/documentation/master/#Pointers">(More about Zig Pointers)</a></p>
+<p><em>Why the “<code>_ = </code>something”?</em></p>
+<p>This tells the Zig Compiler that we’re <strong>not using the value</strong> of “something”.</p>
+<p>The Zig Compiler helpfully stops us if we forget to use a Variable (like _<strong>argc</strong>) or the Returned Value for a Function (like for <strong>lv_task_handler</strong>).</p>
+<p>Next we initialise the <strong>LVGL Library</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Init LVGL Library
   c.lv_init();
 
   // Init Display Buffer
@@ -826,6 +852,8 @@ pub export fn lvgltest_main(
 <p><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>init_disp_drv</strong></a>: Init Display Driver</p>
 </li>
 </ul>
+<p><a href="https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L188-L198">(<strong>monitorCallback</strong> is defined here)</a></p>
+<p>We initialise the <strong>LCD Driver</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Init LCD Driver
   if (c.lcddev_init(disp_drv) != c.EXIT_SUCCESS) {
 
@@ -867,6 +895,7 @@ pub export fn lvgltest_main(
 <p><a href="https://lupyuen.github.io/articles/lvgl#input-driver"><strong>init_indev_drv</strong></a>: Init Input Driver</p>
 </li>
 </ul>
+<p>We create the <strong>LVGL Widgets</strong> (the wrapped or unwrapped way)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Create the widgets for display
   createWidgetsUnwrapped()
     catch |e| {
@@ -886,12 +915,14 @@ pub export fn lvgltest_main(
 <p><a href="https://lupyuen.github.io/articles/lvgl#after-wrapping"><strong>createWidgetsWrapped</strong></a>: Create LVGL Widgets with Zig Wrapper</p>
 </li>
 </ul>
+<p>We prepare the <strong>Touch Panel Calibration</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Start Touch Panel calibration
   c.tp_cal_create();</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp_cal.c#L244-L332">(<strong>tp_cal_create</strong> is defined here)</a></p>
 <p>This renders (in C) the LVGL Widgets for <strong>Touch Panel Calibration</strong>, as shown in the pic above.</p>
 <p><a href="https://www.youtube.com/shorts/2Nzjrlp5lcE">(Watch the calibration demo on YouTube)</a></p>
 <p>(Can this be done in Zig? Needs exploration)</p>
+<p>Finally we loop forever handling <strong>LVGL Events</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Loop forever handing LVGL tasks
   while (true) {
 
@@ -902,12 +933,7 @@ pub export fn lvgltest_main(
     _ = c.usleep(10000);
   }
   return 0;
-}</code></pre></div>
-<p>Finally we loop forever handling <strong>LVGL Events</strong>.</p>
-<p><em>Why the “<code>_ = </code>something”?</em></p>
-<p>This tells the Zig Compiler that we’re <strong>not using the value</strong> of “something”.</p>
-<p>The Zig Compiler helpfully stops us if we forget to use a Variable (like _<strong>argc</strong>) or the Returned Value for a Function (like for <strong>lv_task_handler</strong>).</p>
-<h1 id="appendix-compiler-options"><a href="#appendix-compiler-options">14 Appendix: Compiler Options</a></h1>
+}</code></pre></div><h1 id="appendix-compiler-options"><a href="#appendix-compiler-options">14 Appendix: Compiler Options</a></h1>
 <p>For the <strong>LVGL App in C</strong>, Apache NuttX RTOS compiles it with this GCC Command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  App Source Directory
 cd $HOME/nuttx/apps/examples/lvgltest
@@ -1266,8 +1292,8 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
 pub const lv_color_t = lv_color16_t;
 
 pub const lv_color16_t = extern union {
-    ch: struct_unnamed_7,
-    full: u16,
+  ch: struct_unnamed_7,
+  full: u16,
 };
 
 // nuttx/apps/graphics/lvgl/lvgl/src/lv_core/../lv_draw/../lv_misc/lv_color.h:240:18:
@@ -1284,7 +1310,21 @@ typedef union {
     uint16_t red : 5;
   } ch;
   uint16_t full;
-} lv_color16_t;</code></pre></div><h1 id="appendix-auto-generate-zig-wrapper"><a href="#appendix-auto-generate-zig-wrapper">18 Appendix: Auto-Generate Zig Wrapper</a></h1>
+} lv_color16_t;</code></pre></div>
+<p>Hence we can’t work directly with the LVGL Color Type in Zig. (But we can pass pointers to it)</p>
+<p><em>Is that a problem?</em></p>
+<p>Some LVGL Widgets need us to <strong>specify the LVGL Color</strong>. (Like for LVGL Canvas)</p>
+<p>This gets tricky in Zig, since we can’t manipulate LVGL Color.</p>
+<p><a href="https://docs.lvgl.io/7.11/widgets/canvas.html">(More about LVGL Canvas)</a></p>
+<p><em>Why not fake the LVGL Color Type in Zig?</em></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Fake the LVGL Color Type in Zig
+const lv_color16_t = extern union {
+  ch:   u16,  // Bit Fields add up to 16 bits
+  full: u16,
+};</code></pre></div>
+<p>We could, but then the LVGL Types in Zig would become <strong>out of sync</strong> with the original LVGL Definitions in C.</p>
+<p>This might cause problems when we upgrade the LVGL Library.</p>
+<h1 id="appendix-auto-generate-zig-wrapper"><a href="#appendix-auto-generate-zig-wrapper">18 Appendix: Auto-Generate Zig Wrapper</a></h1>
 <p><em>Can we auto-generate the Zig Wrapper for LVGL?</em></p>
 <p>We could use <strong>Type Reflection</strong> in Zig…</p>
 <ul>
