@@ -78,7 +78,7 @@ static void create_widgets(void) {
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148) 
 
-[(Docs for LVGL Label Widget)](https://docs.lvgl.io/7.11/widgets/label.html#)
+[(Docs for LVGL Label)](https://docs.lvgl.io/7.11/widgets/label.html#)
 
 In a while we shall convert this LVGL App to Zig.
 
@@ -848,7 +848,7 @@ We found a crude workaround: Handle these structs in C and pass the __Struct Poi
 
 -   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
 
-But this might become a showstopper as we work with __advanced LVGL Widgets__.
+But this might become a showstopper as we work with __advanced LVGL Widgets__. (Like LVGL Canvas)
 
 I'll run more experiments with LVGL on Zig and report the outcome.
 
@@ -910,9 +910,18 @@ Below is our __Main Function__ in Zig that does the following...
 
 -   Forever handle __LVGL Events__
 
-From [lvgltest.zig](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109)
+We begin by importing the libraries and declaring our Main Function: [lvgltest.zig](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L44-L109)
 
 ```zig
+/// Import the Zig Standard Library
+const std = @import("std");
+
+/// Import our Wrapped LVGL Module
+const lvgl = @import("lvgl.zig");
+
+/// Omitted: Import the LVGL Library from C
+const c = @cImport({ ... });
+
 /// Main Function that will be called by NuttX. We render an LVGL Screen and
 /// handle Touch Input.
 pub export fn lvgltest_main(
@@ -923,7 +932,33 @@ pub export fn lvgltest_main(
   // Command-line args are not used
   _ = _argc;
   _ = _argv;
+```
 
+[(__lvgl.zig__ is located here)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgl.zig)
+
+_Why is argv declared as "[\*]const [\*]const u8"?_
+
+That's because...
+
+-   "__[\*]const u8__" is a Pointer to an Unknown Number of Unsigned Bytes
+
+    (Like "const uint8_t *" in C)
+
+-   "__[\*]const [\*]const u8__" is a Pointer to an Unknown Number of the above Pointers
+
+    (Like "const uint8_t *[]" in C)
+
+[(More about Zig Pointers)](https://ziglang.org/documentation/master/#Pointers)
+
+_Why the "`_ = `something"?_
+
+This tells the Zig Compiler that we're __not using the value__ of "something".
+
+The Zig Compiler helpfully stops us if we forget to use a Variable (like ___argc__) or the Returned Value for a Function (like for __lv_task_handler__).
+
+Next we initialise the __LVGL Library__...
+
+```zig
   // Init LVGL Library
   c.lv_init();
 
@@ -945,6 +980,10 @@ Because Zig won't work with [__C Structs containing Bit Fields__](https://lupyue
 -   [__get_disp_drv__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types): Get Display Driver
 
 -   [__init_disp_drv__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types): Init Display Driver
+
+[(__monitorCallback__ is defined here)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L188-L198)
+
+We initialise the __LCD Driver__...
 
 ```zig
   // Init LCD Driver
@@ -986,6 +1025,8 @@ Again, Zig won't work with the __Input Driver__ because the C Struct contains Bi
 
 -   [__init_indev_drv__](https://lupyuen.github.io/articles/lvgl#input-driver): Init Input Driver
 
+We create the __LVGL Widgets__ (the wrapped or unwrapped way)...
+
 ```zig
   // Create the widgets for display
   createWidgetsUnwrapped()
@@ -1005,6 +1046,8 @@ We've seen these Zig Functions earlier...
 
 -   [__createWidgetsWrapped__](https://lupyuen.github.io/articles/lvgl#after-wrapping): Create LVGL Widgets with Zig Wrapper
 
+We prepare the __Touch Panel Calibration__...
+
 ```zig
   // Start Touch Panel calibration
   c.tp_cal_create();
@@ -1017,6 +1060,8 @@ This renders (in C) the LVGL Widgets for __Touch Panel Calibration__, as shown i
 [(Watch the calibration demo on YouTube)](https://www.youtube.com/shorts/2Nzjrlp5lcE)
 
 (Can this be done in Zig? Needs exploration)
+
+Finally we loop forever handling __LVGL Events__...
 
 ```zig
   // Loop forever handing LVGL tasks
@@ -1031,14 +1076,6 @@ This renders (in C) the LVGL Widgets for __Touch Panel Calibration__, as shown i
   return 0;
 }
 ```
-
-Finally we loop forever handling __LVGL Events__.
-
-_Why the "`_ = `something"?_
-
-This tells the Zig Compiler that we're __not using the value__ of "something".
-
-The Zig Compiler helpfully stops us if we forget to use a Variable (like ___argc__) or the Returned Value for a Function (like for __lv_task_handler__).
 
 # Appendix: Compiler Options
 
@@ -1493,8 +1530,8 @@ That's because __lv_color_t__ is another Opaque Type...
 pub const lv_color_t = lv_color16_t;
 
 pub const lv_color16_t = extern union {
-    ch: struct_unnamed_7,
-    full: u16,
+  ch: struct_unnamed_7,
+  full: u16,
 };
 
 // nuttx/apps/graphics/lvgl/lvgl/src/lv_core/../lv_draw/../lv_misc/lv_color.h:240:18:
@@ -1518,6 +1555,30 @@ typedef union {
   uint16_t full;
 } lv_color16_t;
 ```
+
+Hence we can't work directly with the LVGL Color Type in Zig. (But we can pass pointers to it)
+
+_Is that a problem?_
+
+Some LVGL Widgets need us to __specify the LVGL Color__. (Like for LVGL Canvas)
+
+This gets tricky in Zig, since we can't manipulate LVGL Color.
+
+[(More about LVGL Canvas)](https://docs.lvgl.io/7.11/widgets/canvas.html)
+
+_Why not fake the LVGL Color Type in Zig?_
+
+```zig
+// Fake the LVGL Color Type in Zig
+const lv_color16_t = extern union {
+  ch:   u16,  // Bit Fields add up to 16 bits
+  full: u16,
+};
+```
+
+We could, but then the LVGL Types in Zig would become __out of sync__ with the original LVGL Definitions in C.
+
+This might cause problems when we upgrade the LVGL Library.
 
 # Appendix: Auto-Generate Zig Wrapper
 
