@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Build an LVGL Touchscreen App with Zig</title>
+            <link>https://lupyuen.github.io/articles/lvgl</link>
+            <description><![CDATA[Can we use Zig to build an LVGL Touchscreen App for Apache NuttX RTOS? Also wrap the LVGL API in Zig to build simpler, safer LVGL Apps? Let's find out!]]></description>
+            <guid>https://lupyuen.github.io/articles/lvgl</guid>
+            <pubDate>Tue, 12 Jul 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Build a PinePhone App with Zig and zgt</title>
             <link>https://lupyuen.github.io/articles/pinephone</link>
             <description><![CDATA[Can we use Zig to code PinePhone Apps? Maybe make them simpler and safer? Let's find out!]]></description>
