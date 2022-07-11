@@ -848,7 +848,7 @@ We found a crude workaround: Handle these structs in C and pass the __Struct Poi
 
 -   [__"Fix Opaque Type"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
 
-But this might become a showstopper as we work with __advanced LVGL Widgets__. (Like LVGL Canvas)
+But this might become a showstopper as we work with __Complex LVGL Widgets__. [(Like LVGL Canvas)](https://lupyuen.github.io/articles/lvgl#color-type)
 
 I'll run more experiments with LVGL on Zig and report the outcome.
 
