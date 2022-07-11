@@ -648,9 +648,10 @@ fn createWidgetsWrapped() !void {
 <p>(Zig Compiler version 0.10.0 has this Bit Field limitation, it might have been fixed in later versions of the compiler)</p>
 <p><em>LVGL uses Bit Fields?</em></p>
 <p>If we look at LVGL’s Color Type <strong>lv_color_t</strong> (for 16-bit color)…</p>
-<div class="example-wrap"><pre class="language-c"><code>typedef union {
+<div class="example-wrap"><pre class="language-c"><code>// LVGL Color Type (16-bit color)
+typedef union {
   struct {
-    // Bit Fields for lv_color16_t (aliased to lv_color_t)
+    // Bit Fields for RGB Color
     uint16_t blue  : 5;
     uint16_t green : 6;
     uint16_t red   : 5;
