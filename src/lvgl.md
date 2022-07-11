@@ -1017,6 +1017,8 @@ Again, Zig won't work with the __Input Driver__ because the C Struct contains Bi
 
 -   [__init_indev_drv__](https://lupyuen.github.io/articles/lvgl#input-driver): Init Input Driver
 
+-   [__tp_read__](https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L100-L200): Read Touch Input
+
 We create the __LVGL Widgets__ (the wrapped or unwrapped way)...
 
 ```zig
