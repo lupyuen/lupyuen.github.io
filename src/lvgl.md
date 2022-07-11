@@ -22,7 +22,7 @@ Join me as we dive into our __LVGL Touchscreen App in Zig__...
 
 -   [__lupyuen/zig-lvgl-nuttx__](https://github.com/lupyuen/zig-lvgl-nuttx)
 
-[(Spoilers: Answers are Yes, Maybe, Somewhat)](https://lupyuen.github.io/articles/lvgl#zig-outcomes)
+[(Spoiler: Answers are Yes, Maybe, Somewhat)](https://lupyuen.github.io/articles/lvgl#zig-outcomes)
 
 ![LVGL App in C](https://lupyuen.github.io/images/lvgl-code1a.png)
 
