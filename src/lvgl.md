@@ -882,14 +882,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1543395925116088320)
 
-1.  Our Zig App includes a [__Custom Logger__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L225-L257) and [__Panic Handler__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L199-L225).
-
-    They are explained below...
-
-    [__"Logging"__](https://lupyuen.github.io/articles/iot#appendix-logging)
-
-    [__"Panic Handler"__](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
-
 ![Touch Input Calibration in our Zig LVGL App](https://lupyuen.github.io/images/touch-title.jpg)
 
 # Appendix: Main Function
@@ -1076,6 +1068,14 @@ Finally we loop forever handling __LVGL Events__...
   return 0;
 }
 ```
+
+Our Zig App includes a [__Custom Logger__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L225-L257) and [__Panic Handler__](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L199-L225).
+
+They are explained below...
+
+-   [__"Logging"__](https://lupyuen.github.io/articles/iot#appendix-logging)
+
+-   [__"Panic Handler"__](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
 # Appendix: Compiler Options
 

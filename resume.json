@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Build an LVGL Touchscreen App with Zig",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-07-12",
+      "website": "https://lupyuen.github.io/articles/lvgl",
+      "summary": "Can we use Zig to build an LVGL Touchscreen App for Apache NuttX RTOS? Also wrap the LVGL API in Zig to build simpler, safer LVGL Apps? Let's find out!"
+    },
+    {
       "name": "Build a PinePhone App with Zig and zgt",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-06-25",
