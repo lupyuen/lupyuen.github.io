@@ -771,9 +771,10 @@ _LVGL uses Bit Fields?_
 If we look at LVGL's Color Type __lv_color_t__ (for 16-bit color)...
 
 ```c
+// LVGL Color Type (16-bit color)
 typedef union {
   struct {
-    // Bit Fields for lv_color16_t (aliased to lv_color_t)
+    // Bit Fields for RGB Color
     uint16_t blue  : 5;
     uint16_t green : 6;
     uint16_t red   : 5;
