@@ -24,7 +24,7 @@ Join me as we dive into our __LVGL Touchscreen App in Zig__...
 
 [(Spoiler: Answers are Yes, Maybe, Somewhat)](https://lupyuen.github.io/articles/lvgl#zig-outcomes)
 
-![LVGL App in C](https://lupyuen.github.io/images/lvgl-code1a.png)
+![LVGL App in C](https://lupyuen.github.io/images/lvgl-code1a.jpg)
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L107-L148) 
 
@@ -94,7 +94,7 @@ _Where's the rest of the code that initialises LVGL?_
 
 We hit some complications converting the code to Zig, more about this in a while.
 
-![Zig LVGL App](https://lupyuen.github.io/images/lvgl-code2a.png)
+![Zig LVGL App](https://lupyuen.github.io/images/lvgl-code2a.jpg)
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L114-L147)
 
@@ -167,7 +167,7 @@ _What's "`!void`"?_
 
 Let's talk about Null Pointers and Runtime Safety...
 
-![LVGL App: C vs Zig](https://lupyuen.github.io/images/lvgl-code3a.png)
+![LVGL App: C vs Zig](https://lupyuen.github.io/images/lvgl-code3a.jpg)
 
 # Zig Checks Null Pointers
 
@@ -231,7 +231,7 @@ Thus we always write "`.?`" to catch Null Pointers returned by C Functions.
 
 (Hopefully someday we'll have a Zig Lint Tool that will warn us if we forget to use "`.?`")
 
-![Import C Functions and Macros](https://lupyuen.github.io/images/lvgl-code5a.png)
+![Import C Functions and Macros](https://lupyuen.github.io/images/lvgl-code5a.jpg)
 
 # Import C Functions
 
@@ -694,7 +694,7 @@ pub const Label = struct {
 
 Let's call the wrapped LVGL API...
 
-![Our app calling the LVGL API wrapped with Zig](https://lupyuen.github.io/images/lvgl-code4a.png)
+![Our app calling the LVGL API wrapped with Zig](https://lupyuen.github.io/images/lvgl-code4a.jpg)
 
 [(Source)](https://github.com/lupyuen/zig-lvgl-nuttx/blob/main/lvgltest.zig#L150-L183)
 
