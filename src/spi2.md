@@ -1495,7 +1495,9 @@ During NuttX startup, we need to register our Device Driver like so...
 
     [(See the changes)](https://github.com/lupyuen/incubator-nuttx/commit/4cae36747314bacb49ff0bba3632fbb8136f3f66#diff-387529ed7b85b38e4e96d58de6cab8a83e706c26c97e9fc71db5ea5ff20be297)
 
-    __For ESP32:__ Edit the function [__esp32_bringup()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) and insert the code above. Change __"bl602_spibus_initialize"__ to __"esp32_spibus_initialize"__. [(Like this)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72)
+    __For ESP32:__ Edit the function [__esp32_bringup()__](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426) and insert the code above. Change __"bl602_spibus_initialize(0)"__ to __"esp32_spibus_initialize(2)"__. [(Like this)](https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72)
+
+    [(Thanks @4ever_freedom!)](https://twitter.com/4ever_freedom/status/1546857560623517699)
 
     ![Register our device driver at startup](https://lupyuen.github.io/images/spi2-newdriver4.png)
 
