@@ -1250,7 +1250,8 @@ int bl602_bringup(void)
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/commit/4cae36747314bacb49ff0bba3632fbb8136f3f66#diff-387529ed7b85b38e4e96d58de6cab8a83e706c26c97e9fc71db5ea5ff20be297">(See the changes)</a></p>
-<p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup()</strong></a> and insert the code above. Change <strong>“bl602_spibus_initialize”</strong> to <strong>“esp32_spibus_initialize”</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72">(Like this)</a></p>
+<p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup()</strong></a> and insert the code above. Change <strong>“bl602_spibus_initialize(0)”</strong> to <strong>“esp32_spibus_initialize(2)”</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72">(Like this)</a></p>
+<p><a href="https://twitter.com/4ever_freedom/status/1546857560623517699">(Thanks @4ever_freedom!)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver4.png" alt="Register our device driver at startup" /></p>
 </li>
 </ol>
