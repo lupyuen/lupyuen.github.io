@@ -1450,7 +1450,7 @@ void init_disp_buf(lv_disp_buf_t *disp_buf) {
 
 [(Source)](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lcddev.c#L335-L398)
 
-Then we modifiy our C Main Function to access these structs __via pointers__...
+Then we modify our C Main Function to access these structs __via pointers__...
 
 ```c
 int lvgltest_main(int argc, FAR char *argv[]) {
