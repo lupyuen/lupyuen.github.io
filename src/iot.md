@@ -1017,7 +1017,9 @@ _Is there anything else that might benefit from Zig?_
 
 (Since LVGL looks as complicated as LoRaWAN)
 
-Someday I'll try LVGL on Zig... And we might possibly combine it with LoRaWAN in a single Zig App!
+Someday I'll try LVGL on Zig... And we might possibly combine it with LoRaWAN in a single Zig App! Check the updates here...
+
+-   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
 
 ![LVGL Touchscreen Apps might benefit from Zig](https://lupyuen.github.io/images/pinedio2-title.jpg)
 
@@ -1034,6 +1036,10 @@ In the coming weeks I shall flesh out our Zig App, so that it works like a real 
 For the next article we'll take a quick detour and explore __Zig on PinePhone__...
 
 -   [__"Build a PinePhone App with Zig and zgt"__](https://lupyuen.github.io/articles/pinephone)
+
+And then back to __Zig on Apache NuttX RTOS__...
+
+-   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
