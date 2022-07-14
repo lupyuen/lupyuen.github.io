@@ -1237,7 +1237,7 @@ void init_disp_buf(lv_disp_buf_t *disp_buf) {
   lv_disp_buf_init(disp_buf, buffer1, buffer2, DISPLAY_BUFFER_SIZE);
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lcddev.c#L335-L398">(Source)</a></p>
-<p>Then we modifiy our C Main Function to access these structs <strong>via pointers</strong>…</p>
+<p>Then we modify our C Main Function to access these structs <strong>via pointers</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>int lvgltest_main(int argc, FAR char *argv[]) {
   // Fetch pointers to Display Driver and Display Buffer
   lv_disp_drv_t *disp_drv = get_disp_drv();
