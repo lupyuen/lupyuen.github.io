@@ -325,7 +325,7 @@ Now comes another fun challenge, with a weird hack...
 
 # Floating-Point ABI
 
-[_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_](https://github.com/ziglang/zig/issues/1499)
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
 When we __link the Compiled Zig App__ with NuttX, we see this error (pic above)...
 
