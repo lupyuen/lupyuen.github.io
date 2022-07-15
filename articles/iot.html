@@ -1806,7 +1806,7 @@ extern fn LmHandlerInit(
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L790-L805">(Source)</a></p>
 <p>After fixing the Opaque Type, Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>.</p>
 <h1 id="appendix-macro-error"><a href="#appendix-macro-error">22 Appendix: Macro Error</a></h1>
-<p><a href="https://github.com/ziglang/zig/issues/1499"><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></a></p>
+<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>While compiling our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a>, we see this <strong>Macro Error</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>zig-cache/o/23409ceec9a6e6769c416fde1695882f/cimport.zig:2904:32: 
 error: unable to translate macro: undefined identifier `LL`
@@ -1840,7 +1840,7 @@ const c = @cImport({
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L14-L18">(Source)</a></p>
 <p>Now Zig Compiler successfully compiles our LoRaWAN Test App <a href="https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig">lorawan_test.zig</a></p>
 <h1 id="appendix-struct-initialisation-error"><a href="#appendix-struct-initialisation-error">23 Appendix: Struct Initialisation Error</a></h1>
-<p><a href="https://github.com/ziglang/zig/issues/1499"><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></a></p>
+<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>When we initialise the <strong>Timer Struct</strong> at startup…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Timer to handle the application data transmission duty cycle
 var TxTimer: c.TimerEvent_t = 
