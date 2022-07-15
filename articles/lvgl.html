@@ -646,7 +646,7 @@ fn createWidgetsWrapped() !void {
 <p>Sadly Zig won’t import <strong>C Structs containing Bit Fields</strong>.</p>
 <p>Zig calls it an <a href="https://ziglang.org/documentation/master/#Translation-failures"><strong>Opaque Type</strong></a> because Zig can’t access the fields inside these structs.</p>
 <p>Any struct that <strong>contains an Opaque Type</strong> also becomes an Opaque Type. So yeah this quirk snowballs quickly.</p>
-<p>(Zig Compiler version 0.10.0 has this Bit Field limitation, it might have been fixed in later versions of the compiler)</p>
+<p><a href="https://github.com/ziglang/zig/issues/1499">(Zig Compiler version 0.10.0 has this Bit Field limitation, it might have been fixed in later versions of the compiler)</a></p>
 <p><em>LVGL uses Bit Fields?</em></p>
 <p>If we look at LVGL’s Color Type <strong>lv_color_t</strong> (for 16-bit color)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// LVGL Color Type (16-bit color)
@@ -1097,7 +1097,7 @@ ginfo(&quot;%&quot; PRIu32 &quot; px refreshed in %&quot; PRIu32 &quot; ms\n&quo
 <p>The Auto-Translation looks <strong>way too verbose</strong> for a Zig Program, but it’s a good start for converting our LVGL App from C to Zig.</p>
 <p>We hit some issues with Opaque Types in the Auto-Translation, this is how we fixed them…</p>
 <h1 id="appendix-zig-auto-translation-is-incomplete"><a href="#appendix-zig-auto-translation-is-incomplete">16 Appendix: Zig Auto-Translation is Incomplete</a></h1>
-<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
+<p><a href="https://github.com/ziglang/zig/issues/1499"><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></a></p>
 <p>The Auto-Translation from C to Zig was initially <strong>missing 2 key functions</strong>…</p>
 <ul>
 <li>
@@ -1125,7 +1125,7 @@ pub extern fn lvgltest_main(arg_argc: c_int, arg_argv: [*c][*c]u8) c_int;</code>
 <p>We see that Zig couldn’t import the struct for LVGL Display Driver <strong>lv_disp_drv_t</strong> because it’s an Opaque Type.</p>
 <p>Let’s find out why…</p>
 <h1 id="appendix-zig-opaque-types"><a href="#appendix-zig-opaque-types">17 Appendix: Zig Opaque Types</a></h1>
-<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
+<p><a href="https://github.com/ziglang/zig/issues/1499"><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></a></p>
 <p><em>What’s an Opaque Type in Zig?</em></p>
 <p><strong>Opaque Types</strong> are Zig Structs with unknown, inaccessible fields.</p>
 <p>When we import into Zig a <strong>C Struct that contains Bit Fields</strong>, it becomes an Opaque Type…</p>
@@ -1193,7 +1193,7 @@ typedef struct {
 <p>We’re now certain that Zig Compiler couldn’t import the structs because they indeed contain <strong>Bit Fields</strong>.</p>
 <p>Let’s fix the Opaque Types, by passing them as pointers…</p>
 <h2 id="fix-opaque-types"><a href="#fix-opaque-types">17.1 Fix Opaque Types</a></h2>
-<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
+<p><a href="https://github.com/ziglang/zig/issues/1499"><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></a></p>
 <p>Earlier we saw that Zig couldn’t import these C Structs because they contain <strong>Bit Fields</strong>…</p>
 <ul>
 <li>
@@ -1267,7 +1267,7 @@ void init_disp_buf(lv_disp_buf_t *disp_buf) {
 <li><a href="https://lupyuen.github.io/articles/lvgl#appendix-main-function"><strong>“Main Function”</strong></a></li>
 </ul>
 <h2 id="input-driver"><a href="#input-driver">17.2 Input Driver</a></h2>
-<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
+<p><a href="https://github.com/ziglang/zig/issues/1499"><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></a></p>
 <p>LVGL Input Driver <strong>lv_indev_drv_t</strong> is another Opaque Type because it contains Bit Fields.</p>
 <p>We fix <strong>lv_indev_drv_t</strong> the same way as other Opaque Types: We allocate and initialise the structs in C (instead of Zig)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Return the static instance of Input Driver, because Zig can&#39;t
@@ -1297,7 +1297,7 @@ void init_indev_drv(lv_indev_drv_t *indev_drv,
 <li><a href="https://lupyuen.github.io/articles/lvgl#appendix-main-function"><strong>“Main Function”</strong></a></li>
 </ul>
 <h2 id="color-type"><a href="#color-type">17.3 Color Type</a></h2>
-<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
+<p><a href="https://github.com/ziglang/zig/issues/1499"><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></a></p>
 <p>We fixed all references to LVGL Color Type <strong>lv_color_t</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// LVGL Canvas Demo doesn&#39;t work with zig cc because of `lv_color_t`
 #if defined(CONFIG_USE_LV_CANVAS) &amp;&amp; !defined(__clang__)  
