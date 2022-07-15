@@ -2024,7 +2024,7 @@ We'll see the auto-translated code in the upcoming sections...
 
 # Appendix: Opaque Type Error
 
-_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+[_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_](https://github.com/ziglang/zig/issues/1499)
 
 When we reference `LmHandlerCallbacks` in our LoRaWAN Zig App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig#L123-L134)...
 
@@ -2283,7 +2283,7 @@ After fixing the Opaque Type, Zig Compiler successfully compiles our LoRaWAN Tes
 
 # Appendix: Macro Error
 
-_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+[_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_](https://github.com/ziglang/zig/issues/1499)
 
 While compiling our LoRaWAN Test App [lorawan_test.zig](https://github.com/lupyuen/zig-bl602-nuttx/blob/main/lorawan_test.zig), we see this __Macro Error__...
 
@@ -2344,7 +2344,7 @@ Now Zig Compiler successfully compiles our LoRaWAN Test App [lorawan_test.zig](h
 
 # Appendix: Struct Initialisation Error
 
-_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+[_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_](https://github.com/ziglang/zig/issues/1499)
 
 When we initialise the __Timer Struct__ at startup...
 

@@ -766,7 +766,7 @@ Zig calls it an [__Opaque Type__](https://ziglang.org/documentation/master/#Tran
 
 Any struct that __contains an Opaque Type__ also becomes an Opaque Type. So yeah this quirk snowballs quickly.
 
-(Zig Compiler version 0.10.0 has this Bit Field limitation, it might have been fixed in later versions of the compiler)
+[(Zig Compiler version 0.10.0 has this Bit Field limitation, it might have been fixed in later versions of the compiler)](https://github.com/ziglang/zig/issues/1499)
 
 _LVGL uses Bit Fields?_
 
@@ -1271,7 +1271,7 @@ We hit some issues with Opaque Types in the Auto-Translation, this is how we fix
 
 # Appendix: Zig Auto-Translation is Incomplete
 
-_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+[_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_](https://github.com/ziglang/zig/issues/1499)
 
 The Auto-Translation from C to Zig was initially __missing 2 key functions__...
 
@@ -1310,7 +1310,7 @@ Let's find out why...
 
 # Appendix: Zig Opaque Types
 
-_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+[_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_](https://github.com/ziglang/zig/issues/1499)
 
 _What's an Opaque Type in Zig?_
 
@@ -1403,7 +1403,7 @@ Let's fix the Opaque Types, by passing them as pointers...
 
 ## Fix Opaque Types
 
-_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+[_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_](https://github.com/ziglang/zig/issues/1499)
 
 Earlier we saw that Zig couldn't import these C Structs because they contain __Bit Fields__...
 
@@ -1485,7 +1485,7 @@ That's why our __Zig Main Function__ passes pointers to the Display Buffer and D
 
 ## Input Driver
 
-_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+[_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_](https://github.com/ziglang/zig/issues/1499)
 
 LVGL Input Driver __lv_indev_drv_t__ is another Opaque Type because it contains Bit Fields.
 
@@ -1523,7 +1523,7 @@ These functions are called by our __Zig Main Function__ during initialisation...
 
 ## Color Type
 
-_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+[_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_](https://github.com/ziglang/zig/issues/1499)
 
 We fixed all references to LVGL Color Type __lv_color_t__...
 
