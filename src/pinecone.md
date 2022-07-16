@@ -407,16 +407,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-1.  I'm not a Pine64 employee and I'm not paid by Pine64 to write these articles on BL602. 
-
-    Pine64 sponsors my coffee ([as a GitHub Sponsor](https://github.com/sponsors/lupyuen)) and they send me samples (of gadgets, not coffee) for evaluation and experimentation.
-
-    (I'm not connected to Bouffalo Lab either)
-
-1.  Can we flash firmware to PineCone via a Web Browser through the [__Web Serial API__](https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc)? That would be really interesting.
-
-    The Web Serial API works OK for __sending commands to the BL602 Command Line Interface__. [(See this)](https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api)
-
 1.  __UPDATE:__ Bouffalo Lab has released a __revamped version of the BL602 IoT SDK__ based on the new "hosal" HAL.
 
     [(See this Twitter Thread)](https://twitter.com/MisterTechBlog/status/1456259223323508748)
@@ -426,3 +416,21 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     All new articles will be based on [__Apache NuttX OS__](https://lupyuen.github.io/articles/nuttx), which is not affected by the change.
 
     (NuttX uses its own community-supported HAL for BL602)
+
+1.  Got a question for Bouffalo Lab? Check out their __Developer Forum__...
+
+    [__"Bouffalo Lab Developer Forum"__](https://bbs.bouffalolab.com/)
+
+1.  Also check out the __Nutcracker Channel__ on Matrix, Telegram, Discord or IRC...
+
+    [__"Pine64 Chat Platforms"__](https://wiki.pine64.org/wiki/Main_Page#Chat_Platforms)
+
+1.  I'm not a Pine64 employee and I'm not paid by Pine64 to write these articles on BL602. 
+
+    Pine64 sponsors my coffee ([as a GitHub Sponsor](https://github.com/sponsors/lupyuen)) and they send me samples (of gadgets, not coffee) for evaluation and experimentation.
+
+    (I'm not connected to Bouffalo Lab either)
+
+1.  Can we flash firmware to PineCone via a Web Browser through the [__Web Serial API__](https://dev.to/unjavascripter/the-amazing-powers-of-the-web-web-serial-api-3ilc)? That would be really interesting.
+
+    The Web Serial API works OK for __sending commands to the BL602 Command Line Interface__. [(See this)](https://lupyuen.github.io/articles/lisp#web-browser-controls-bl602-with-web-serial-api)

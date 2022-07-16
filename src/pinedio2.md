@@ -495,23 +495,31 @@ Lemme know what you're building with PineDio Stack!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
--   [Sponsor me a coffee](https://github.com/sponsors/lupyuen)
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
--   [Discuss this article on Reddit](https://www.reddit.com/r/RISCV/comments/u0wwez/pinedio_stack_bl604_runs_apache_nuttx_rtos/)
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/RISCV/comments/u0wwez/pinedio_stack_bl604_runs_apache_nuttx_rtos/)
 
--   [Read "The RISC-V BL602 / BL604 Book"](https://lupyuen.github.io/articles/book)
+-   [__Read "The RISC-V BL602 / BL604 Book"__](https://lupyuen.github.io/articles/book)
 
--   [Check out my articles](https://lupyuen.github.io)
+-   [__Check out my articles__](https://lupyuen.github.io)
 
--   [RSS Feed](https://lupyuen.github.io/rss.xml)
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
-[`lupyuen.github.io/src/pinedio2.md`](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinedio2.md)
+[__lupyuen.github.io/src/pinedio2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinedio2.md)
 
 # Notes
 
-1.  This article is the expanded version of [this Twitter Thread](https://twitter.com/MisterTechBlog/status/1510406086326513668)
+1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1510406086326513668)
+
+1.  Got a question for Bouffalo Lab? Check out their __Developer Forum__...
+
+    [__"Bouffalo Lab Developer Forum"__](https://bbs.bouffalolab.com/)
+
+1.  Also check out the __Nutcracker Channel__ on Matrix, Telegram, Discord or IRC...
+
+    [__"Pine64 Chat Platforms"__](https://wiki.pine64.org/wiki/Main_Page#Chat_Platforms)
 
 1.  Besides NuttX, there are two other ways to code firmware for PineDio Stack...
 
