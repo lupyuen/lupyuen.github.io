@@ -664,7 +664,7 @@ config ESP32_SPI2_MISOPIN
 <p>BL602 sets Chip Select to <strong>High after EVERY byte</strong>!</p>
 <p>This will be a problem for <strong>Semtech SX1262</strong> (LoRa Transceiver)…</p>
 <p>It expects Chip Select to be <strong>High after the entire multi-byte command</strong> has been transmitted! (Not after every byte)</p>
-<p>(I don’t think ESP32 has this problem, please lemme know! 🙏)</p>
+<p><a href="https://twitter.com/4ever_freedom/status/1549235596115181569">(ESP32 doesn’t have this problem, according to @4ever_freedom)</a></p>
 <p><em>Can we control SPI Chip Select ourselves?</em></p>
 <p>Yes, we may control Chip Select ourselves with the <strong>GPIO Output</strong> function in NuttX.</p>
 <p>This means we designate a <strong>GPIO Output Pin</strong> that will be used for Chip Select.</p>
