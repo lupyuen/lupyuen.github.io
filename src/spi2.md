@@ -712,7 +712,7 @@ This will be a problem for __Semtech SX1262__ (LoRa Transceiver)...
 
 It expects Chip Select to be __High after the entire multi-byte command__ has been transmitted! (Not after every byte)
 
-(I don't think ESP32 has this problem, please lemme know! 🙏)
+[(ESP32 doesn't have this problem, according to @4ever_freedom)](https://twitter.com/4ever_freedom/status/1549235596115181569)
 
 _Can we control SPI Chip Select ourselves?_
 
