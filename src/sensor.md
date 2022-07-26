@@ -4,7 +4,11 @@
 
 ![TODO](https://lupyuen.github.io/images/sensor-title.jpg)
 
-TODO: With Zig programming language, we have a fun new way to create applications for Apache NuttX RTOS.
+TODO: With Zig programming language, we have a fun new way to create embedded applications for Apache NuttX RTOS.
+
+TODO: This article explains how we write a Zig program to read a NuttX Sensor: Bosch BME280 (Temperture / Humidity / Air Pressure)
+
+(Though the steps should be similar for other NuttX Sensors)
 
 TODO: What if we're not familiar with Zig?
 
@@ -70,7 +74,7 @@ That's the __Return Type__ of our function...
 
 _Why the "`c.`" prefix?_
 
-We write "`c.`_something_" for Functions and Macros __imported from C__.
+We write "`c.`_something_" for Functions, Types and Macros __imported from C__.
 
 (More about this in a while)
 
@@ -235,7 +239,7 @@ That's why in Zig we write the Third Parameter as...
 @as(c_int, 1)
 ```
 
-Which means that we pass the value `1` as a C Integer Type.
+Which means that we pass the value `1` as a __C Integer Type__.
 
 ## Poll Sensor
 
