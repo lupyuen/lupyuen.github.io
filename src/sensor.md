@@ -10,6 +10,8 @@ TODO: What if we're not familiar with Zig?
 
 TODO: But really, we prefer to do this in C?
 
+NuttX provides an excellent Sensor Test App in C. Our Zig Sensor App is derived from this Sensor Test App.
+
 TODO: Upcoming LoRaWAN, Visual Programming
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
@@ -384,6 +386,10 @@ For testing the Zig Sensor App, we connect the BME280 Sensor (Temperature / Humi
 | __`GPIO 2`__ | `SCL` | Blue
 | __`3V3`__ | `3.3V` | Red
 | __`GND`__ | `GND` | Black
+
+# Multiple Sensors
+
+TODO
 
 # What's Next
 
