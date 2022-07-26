@@ -369,7 +369,7 @@ Our Format String `{}.{:0>2}` says...
 |:---:|:---|
 | `{}` | Print __int__ as a number
 | `.` | Print `.`
-| `{:0>2}` | Print __frac__ as a 2-digit number, padded to the left by `0`
+| `{:0>2}` | Print __frac__ as a 2-digit number, padded at the left by `0`
 
 Which gives us the printed output `123.45`
 
