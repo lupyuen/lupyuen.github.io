@@ -86,6 +86,7 @@
 <ul>
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx"><strong>lupyuen/visual-zig-nuttx</strong></a></li>
 </ul>
+<p>TODO: What if we’re not familiar with Zig?</p>
 <p>TODO: Upcoming LoRaWAN, Visual Programming</p>
 <p><a href="https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h">Changes to NuttX Sensors</a></p>
 <h1 id="bosch-bme280-sensor"><a href="#bosch-bme280-sensor">1 Bosch BME280 Sensor</a></h1>
@@ -99,7 +100,7 @@
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145">sensortest.zig</a></p>
 <h2 id="open-sensor-device"><a href="#open-sensor-device">2.1 Open Sensor Device</a></h2>
-<p>TODO</p>
+<p>We begin by <strong>opening the Sensor Device</strong>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145">sensortest.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read Pressure and Temperature from 
 /// Barometer Sensor &quot;/dev/sensor/baro0&quot;
 fn test_sensor() !void {
@@ -109,14 +110,42 @@ fn test_sensor() !void {
     &quot;/dev/sensor/baro0&quot;,       // Path of Sensor Device
     c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
   );</code></pre></div>
-<p>TODO</p>
+<p><strong><code>open()</code></strong> should look familiar… On Linux we open Devices the same way.</p>
+<p><em>What’s “<code>!void</code>”?</em></p>
+<p>That’s the <strong>Return Type</strong> of our function…</p>
+<ul>
+<li>
+<p>Our function doesn’t return any value</p>
+<p>(Hence “<code>void</code>”)</p>
+</li>
+<li>
+<p>But it might return an <strong>Error</strong></p>
+<p>(Hence the “<code>!</code>”)</p>
+</li>
+</ul>
+<p><em>Why the “<code>c.</code>” prefix?</em></p>
+<p>We write “<code>c.</code><em>something</em>” to refer to Functions and Macros <strong>imported from C</strong>.</p>
+<p>(More about this in a while)</p>
+<p>Next we check if the Sensor Device has been <strong>successfully opened</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (fd &lt; 0) {
     std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
     return error.OpenError;
-  }</code></pre></div><h2 id="close-sensor-device-deferred"><a href="#close-sensor-device-deferred">2.2 Close Sensor Device (Deferred)</a></h2>
+  }</code></pre></div>
+<p>If the Sensor Device doesn’t exist, we print a Formatted Message to the <strong>Error Log</strong> and return an Error.</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65">(<strong>OpenError</strong> is defined here)</a></p>
+<p><em>What’s “<code>{s}</code>”?</em></p>
+<p>That’s how we print <strong>Formatted Strings</strong> in Zig. It’s equivalent to “<code>%s</code>” in C…</p>
+<div class="example-wrap"><pre class="language-c"><code>printf(&quot;Failed to open device:%s&quot;, strerror(errno()));`</code></pre></div>
+<p><em>What’s “<code>.{ ... }</code>”?</em></p>
+<p>That’s how we pass a <strong>list of Arguments</strong> for printing a Formatted Message.</p>
+<p><a href="https://ziglang.org/documentation/master/#Anonymous-Struct-Literals">(“<code>.{ ... }</code>” creates an Anonymous Struct)</a></p>
+<p>If we have no Arguments, we write “<code>.{}</code>”</p>
+<h2 id="close-sensor-device-deferred"><a href="#close-sensor-device-deferred">2.2 Close Sensor Device (Deferred)</a></h2>
+<p>Here comes a nifty trick in Zig…</p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Close the Sensor Device when this function returns
+<div class="example-wrap"><pre class="language-zig"><code>  // Close the Sensor Device when 
+  // this function returns
   defer {
     _ = c.close(fd);
   }</code></pre></div><h2 id="set-standby-interval"><a href="#set-standby-interval">2.3 Set Standby Interval</a></h2>
