@@ -82,25 +82,29 @@ If the Sensor Device doesn't exist, we print a Formatted Message to the __Error 
 
 _What's "`{s}`"?_
 
-That's how we print __Formatted Strings__ in Zig. It's equivalent to "`%s`" in C...
+That's for printing a __Formatted String__ in Zig.
+
+It's equivalent to "`%s`" in C...
 
 ```c
-printf("Failed to open device:%s", strerror(errno()));`
+printf("Failed to open device:%s", strerror(errno()));
 ```
 
 _What's "`.{ ... }`"?_
 
-That's how we pass a __list of Arguments__ for printing a Formatted Message.
-
-[("`.{ ... }`" creates an Anonymous Struct)](https://ziglang.org/documentation/master/#Anonymous-Struct-Literals)
+That's how we pass a __list of Arguments__ for a Formatted Message.
 
 If we have no Arguments, we write "`.{}`"
 
+[("`.{ ... }`" creates an Anonymous Struct)](https://ziglang.org/documentation/master/#Anonymous-Struct-Literals)
+
 ## Close Sensor Device (Deferred)
 
-Here comes a nifty trick in Zig...
+We've just opened the Sensor Device and we must __close it later__...
 
-TODO
+But the Control Flow gets complicated because we might need to __handle Errors__ and quit early. In C we'd use "`goto`" to code this.
+
+For Zig we do this nifty trick...
 
 ```zig
   // Close the Sensor Device when 
@@ -110,9 +114,21 @@ TODO
   }
 ```
 
+When we write __"`defer`"__, this chunk of code will be executed __when our function returns__.
+
+This brilliantly solves our headache of __closing the Sensor Device__ when we hit Errors later.
+
+_Why the "`_ =` something"?_
+
+Zig Compiler stops us if we forget to use the __Return Value__ of a Function.
+
+We write "`_ =` _something_" to tell Zig Compiler that we're not using the Return Value.
+
 ## Set Standby Interval
 
-TODO
+Some sensors (like BME280) will automatically measure Sensor Data at __Periodic Intervals__.
+
+Let's assume that our sensor will measure Sensor Data __every 1 second__...
 
 ```zig
   // TODO: Remove this definition when 
@@ -123,13 +139,15 @@ TODO
   // Set Standby Interval
   var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
   var ret = c.ioctl(
-    fd, 
-    SNIOC_SET_INTERVAL, 
-    &interval
+    fd,                  // Sensor Device
+    SNIOC_SET_INTERVAL,  // ioctl Command
+    &interval            // Standby Interval
   );
 ```
 
-TODO
+(__c_uint__ is equivalent to "unsigned int" in C)
+
+In case of error we quit...
 
 ```zig
   // Check for error
@@ -139,21 +157,23 @@ TODO
   }
 ```
 
+Which also closes the Sensor Device. (Due to our earlier "`defer`")
+
 ## Set Batch Latency
 
-TODO
+We set the __Batch Latency__, if it's needed by our sensor...
 
 ```zig
   // Set Batch Latency
   var latency: c_uint = 0;  // No latency
   ret = c.ioctl(
-    fd, 
-    c.SNIOC_BATCH, 
-    &latency
+    fd,             // Sensor Device
+    c.SNIOC_BATCH,  // ioctl Command
+    &latency        // Batch Latency
   );
 ```
 
-TODO
+And we check for error...
 
 ```zig
   // Check for error
@@ -165,14 +185,14 @@ TODO
 
 ## Enable Sensor
 
-TODO
+This is how we __enable our sensor__ before reading Sensor Data...
 
 ```zig
   // Enable Sensor and switch to Normal Power Mode
   ret = c.ioctl(
-    fd, 
-    c.SNIOC_ACTIVATE, 
-    @as(c_int, 1)
+    fd,                // Sensor Device
+    c.SNIOC_ACTIVATE,  // ioctl Command
+    @as(c_int, 1)      // Enable Sensor
   );
 
   // Check for error
@@ -181,6 +201,26 @@ TODO
     return error.EnableError;
   }
 ```
+
+_Why the "@as(c_int, 1)"?_
+
+As we've seen, Zig is pretty smart in __inferring the types__ of our variables and constants.
+
+But __ioctl()__ is declared in C as...
+
+```c
+int ioctl(int fd, int req, ...);
+```
+
+Note that the Third Parameter __doesn't specify a type__ and Zig Compiler gets stumped.
+
+That's why in Zig we explicitly pass the Third Parameter as...
+
+```zig
+@as(c_int, 1)
+```
+
+Which means that we pass the value `1` as a C Integer Type.
 
 ## Poll Sensor
 
@@ -251,9 +291,9 @@ TODO
 ```zig
   // Disable Sensor and switch to Low Power Mode
   ret = c.ioctl(
-    fd, 
-    c.SNIOC_ACTIVATE, 
-    @as(c_int, 0)
+    fd,                // Sensor Device
+    c.SNIOC_ACTIVATE,  // ioctl Command
+    @as(c_int, 0)      // Disable Sensor
   );
 
   // Check for error
