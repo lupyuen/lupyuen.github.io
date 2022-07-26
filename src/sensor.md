@@ -10,6 +10,8 @@ TODO: This article explains how we write a Zig program to read a NuttX Sensor: B
 
 (Though the steps should be similar for other NuttX Sensors)
 
+TODO: Why Zig?
+
 TODO: What if we're not familiar with Zig?
 
 TODO: But really, if we prefer to do this in C?
@@ -18,7 +20,7 @@ NuttX provides an excellent Sensor Test App in C...
 
 [sensortest.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c)
 
-Our Zig Sensor App is derived from this Sensor Test App.
+The Zig program in this article is derived from the NuttX Sensor Test App.
 
 TODO: Upcoming LoRaWAN, Visual Programming
 
@@ -39,6 +41,24 @@ TODO
 # Read Barometer Sensor
 
 TODO
+
+-   Open Sensor Device
+
+-   Set Standby Interval
+
+-   Set Batch Latency
+
+-   Enable Sensor
+
+-   Poll Sensor
+
+-   Read Sensor Data
+
+-   Print Sensor Data
+
+-   Disable Sensor
+
+-   Close Sensor Device
 
 [sensortest.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145)
 
@@ -243,16 +263,22 @@ Which means that we pass the value `1` as a __C Integer Type__.
 
 ## Poll Sensor
 
-TODO
+After the enabling the sensor, we __poll the sensor__ to check if Sensor Data is available...
 
 ```zig
   // Prepare to poll Sensor
-  var fds = std.mem.zeroes(c.struct_pollfd);
+  var fds = std.mem.zeroes(
+    c.struct_pollfd
+  );
   fds.fd = fd;
   fds.events = c.POLLIN;
 ```
 
-TODO
+__std.mem.zeroes__ creates a __pollfd__ Struct that's initialised with nulls.
+
+(The struct lives on the stack)
+
+After populating the struct, we poll it...
 
 ```zig
   // If Sensor Data is available...
@@ -261,14 +287,20 @@ TODO
     // Coming up: Read Sensor Data...
 ```
 
+We're finally ready to read the Sensor Data!
+
 ## Read Sensor Data
 
 TODO
 
 ```zig
     // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
-    const len = @sizeOf(@TypeOf(sensor_data));
+    var sensor_data = std.mem.zeroes(
+        c.struct_sensor_event_baro
+    );
+    const len = @sizeOf(
+        @TypeOf(sensor_data)
+    );
 ```
 
 TODO
@@ -278,8 +310,12 @@ TODO
     if (c.read(fd, &sensor_data, len) >= len) {
 
       // Convert the Sensor Data to Fixed-Point Numbers
-      const pressure    = float_to_fixed(sensor_data.pressure);
-      const temperature = float_to_fixed(sensor_data.temperature);
+      const pressure = float_to_fixed(
+        sensor_data.pressure
+      );
+      const temperature = float_to_fixed(
+        sensor_data.temperature
+      );
 ```
 
 ## Print Sensor Data
@@ -362,14 +398,24 @@ TODO
   if (c.poll(&fds, 1, -1) > 0) {
 
     // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(c.struct_sensor_event_humi);
-    const len = @sizeOf(@TypeOf(sensor_data));
+    var sensor_data = std.mem.zeroes(
+        c.struct_sensor_event_humi
+    );
+    const len = @sizeOf(
+        @TypeOf(sensor_data)
+    );
+```
 
+TODO
+
+```zig
     // Read the Sensor Data
     if (c.read(fd, &sensor_data, len) >= len) {
 
       // Convert the Sensor Data to Fixed-Point Numbers
-      const humidity = float_to_fixed(sensor_data.humidity);
+      const humidity = float_to_fixed(
+        sensor_data.humidity
+      );
 
       // Print the Sensor Data
       debug("humidity:{}.{:0>2}", .{
@@ -403,6 +449,10 @@ For testing the Zig Sensor App, we connect the BME280 Sensor (Temperature / Humi
 | __`GPIO 2`__ | `SCL` | Blue
 | __`3V3`__ | `3.3V` | Red
 | __`GND`__ | `GND` | Black
+
+# Fixed-Point Sensor Data
+
+TODO
 
 # Multiple Sensors
 
