@@ -291,19 +291,22 @@ We're finally ready to read the Sensor Data!
 
 ## Read Sensor Data
 
-TODO
+We __allocate a buffer__ (on the stack) to receive the Sensor Data...
 
 ```zig
     // Define the Sensor Data Type
     var sensor_data = std.mem.zeroes(
-        c.struct_sensor_event_baro
+      c.struct_sensor_event_baro
     );
+    // Size of the Sensor Data
     const len = @sizeOf(
-        @TypeOf(sensor_data)
+      @TypeOf(sensor_data)
     );
 ```
 
-TODO
+__std.mem.zeroes__ returns a __sensor_event_baro__ Struct, initialised with nulls.
+
+We __read the Sensor Data__ into the struct...
 
 ```zig
     // Read the Sensor Data
@@ -318,9 +321,17 @@ TODO
       );
 ```
 
+[(__float_to_fixed__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L40-L50)
+
+And convert the Pressure and Temperature from Floating-Point to __Fixed-Point Numbers__.
+
+(Which are similar to Floating-Point Numbers, but truncated to __2 decimal places__)
+
+(More about Fixed-Point Numbers in a while)
+
 ## Print Sensor Data
 
-TODO
+Now we have the Pressure and Temperature as Fixed-Point Numbers, let's __print the Sensor Data__...
 
 ```zig
       // Print the Sensor Data
@@ -332,9 +343,39 @@ TODO
         temperature.int,
         temperature.frac 
       });
+
+      // Will be printed as...
+      // pressure:1007.66
+      // temperature:27.70
 ```
 
-TODO
+Our Fixed-Point Numbers have two components...
+
+-   __int__: The integer part
+
+-   __frac__: The fraction part, scaled by 100
+
+So to represent `123.45`, we break it down as...
+
+-   __int__ = `123`
+
+-   __frac__ = `45`
+
+_Why print the numbers as `{}.{:0>2}`?_
+
+Our Format String `{}.{:0>2}` says...
+
+|   |   |
+|:---:|:---|
+| `{}` | Print __int__ as a number
+| `.` | Print `.`
+| `{:0>2}` | Print __frac__ as a 2-digit number, padded to the left by `0`
+
+Which gives us the printed output `123.45`
+
+[(More about Format Strings)](https://ziglearn.org/chapter-2/#formatting-specifiers)
+
+In case we can't read the Sensor Data, we write to the Error Log...
 
 ```zig        
     } else { std.log.err("Sensor data incorrect size", .{}); }
@@ -401,8 +442,9 @@ TODO
     var sensor_data = std.mem.zeroes(
         c.struct_sensor_event_humi
     );
+    // Size of the Sensor Data
     const len = @sizeOf(
-        @TypeOf(sensor_data)
+      @TypeOf(sensor_data)
     );
 ```
 
