@@ -183,6 +183,7 @@ fn test_sensor() !void {
     std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
     return error.IntervalError;
   }</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65">(<strong>IntervalError</strong> is defined here)</a></p>
 <p>Which also closes the Sensor Device. (Due to our earlier “<code>defer</code>”)</p>
 <h2 id="set-batch-latency"><a href="#set-batch-latency">2.4 Set Batch Latency</a></h2>
 <p>We set the <strong>Batch Latency</strong>, if it’s needed by our sensor…</p>
@@ -198,7 +199,9 @@ fn test_sensor() !void {
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
     return error.BatchError;
-  }</code></pre></div><h2 id="enable-sensor"><a href="#enable-sensor">2.5 Enable Sensor</a></h2>
+  }</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65">(<strong>BatchError</strong> is defined here)</a></p>
+<h2 id="enable-sensor"><a href="#enable-sensor">2.5 Enable Sensor</a></h2>
 <p>This is how we <strong>enable our sensor</strong> before reading Sensor Data…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Enable Sensor and switch to Normal Power Mode
   ret = c.ioctl(
@@ -228,7 +231,9 @@ fn test_sensor() !void {
   fds.events = c.POLLIN;</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // If Sensor Data is available...
-  if (c.poll(&amp;fds, 1, -1) &gt; 0) {</code></pre></div><h2 id="read-sensor-data"><a href="#read-sensor-data">2.7 Read Sensor Data</a></h2>
+  if (c.poll(&amp;fds, 1, -1) &gt; 0) {
+
+    // Coming up: Read Sensor Data...</code></pre></div><h2 id="read-sensor-data"><a href="#read-sensor-data">2.7 Read Sensor Data</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Define the Sensor Data Type
     var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
