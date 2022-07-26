@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _7 Jul 2022_
+📝 _26 Jul 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(57 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(58 articles and still growing!)__
 
 The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602__.
 
@@ -65,6 +65,8 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 -   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
 
 -   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
+
+-   ["Read NuttX Sensor Data with Zig"](https://lupyuen.github.io/articles/sensor)
 
 -   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
 
@@ -177,6 +179,8 @@ Read an I2C Sensor by calling the BL602 / BL604 __I2C Functions__.
 For __Apache NuttX OS__
 
 -   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
+
+-   ["Read NuttX Sensor Data with Zig"](https://lupyuen.github.io/articles/sensor)
 
 -   ["NuttX Touch Panel Driver for PineDio Stack BL604"](https://lupyuen.github.io/articles/touch)
 
@@ -307,6 +311,8 @@ For __Apache NuttX OS__
 -   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
 
 -   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
+
+-   ["Read NuttX Sensor Data with Zig"](https://lupyuen.github.io/articles/sensor)
 
 For __BL602 IoT SDK__
 
