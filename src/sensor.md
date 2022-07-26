@@ -40,7 +40,7 @@ TODO
 
 # Read Barometer Sensor
 
-TODO
+Let's walk through the steps to read the Temperature and Air Pressure from our __NuttX Barometer Sensor__...
 
 -   Open Sensor Device
 
@@ -59,8 +59,6 @@ TODO
 -   Disable Sensor
 
 -   Close Sensor Device
-
-[sensortest.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145)
 
 ## Open Sensor Device
 
@@ -325,7 +323,7 @@ We __read the Sensor Data__ into the struct...
 
 And convert the Pressure and Temperature from Floating-Point to __Fixed-Point Numbers__.
 
-(Which are similar to Floating-Point Numbers, but truncated to __2 decimal places__)
+Which are similar to Floating-Point Numbers, but truncated to __2 Decimal Places__.
 
 (More about Fixed-Point Numbers in a while)
 
@@ -349,11 +347,13 @@ Now we have the Pressure and Temperature as Fixed-Point Numbers, let's __print t
       // temperature:27.70
 ```
 
+_What are "int" and "frac"?_
+
 Our Fixed-Point Numbers have two components...
 
--   __int__: The integer part
+-   __int__: The Integer part
 
--   __frac__: The fraction part, scaled by 100
+-   __frac__: The Fraction part, scaled by 100
 
 So to represent `123.45`, we break it down as...
 
@@ -361,9 +361,9 @@ So to represent `123.45`, we break it down as...
 
 -   __frac__ = `45`
 
-_Why print the numbers as `{}.{:0>2}`?_
+_Why print the numbers as "`{}.{:0>2}`"?_
 
-Our Format String `{}.{:0>2}` says...
+Our Format String "`{}.{:0>2}`" says...
 
 |   |   |
 |:---:|:---|
@@ -384,7 +384,7 @@ In case we can't read the Sensor Data, we write to the Error Log...
 
 ## Disable Sensor
 
-TODO
+We finish by __disabling the sensor__...
 
 ```zig
   // Disable Sensor and switch to Low Power Mode
@@ -402,23 +402,27 @@ TODO
 }
 ```
 
-TODO
+And we're done reading the Temperature and Pressure from the NuttX Barometer Sensor!
 
-Here's the Air Pressure and Temperature read from the BME280 Barometer Sensor...
+_Have we forgotten to close the sensor?_
 
-```text
-nsh> sensortest test
-Zig Sensor Test
-test_sensor
-pressure:1007.66
-temperature:27.70
+Remember earlier we did this...
+
+```zig
+  // Close the Sensor Device when 
+  // this function returns
+  defer {
+    _ = c.close(fd);
+  }
 ```
+
+This closes the sensor automagically when we return from the function. Super handy!
 
 # Read Humidity Sensor
 
-TODO
+_What about the Humidity from our BME280 Sensor?_
 
-[sensortest.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L147-L234)
+We read the __Humidity Sensor Data__ the exact same way as above, with a few tweaks: [sensortest.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L147-L234)
 
 ```zig
 /// Read Humidity from Humidity Sensor 
@@ -432,7 +436,9 @@ fn test_sensor2() !void {
   );
 ```
 
-TODO
+We change the __path of the Sensor Device__.
+
+The Sensor Data Struct becomes __sensor_event_humi__...
 
 ```zig
   // If Sensor Data is available...
@@ -440,7 +446,7 @@ TODO
 
     // Define the Sensor Data Type
     var sensor_data = std.mem.zeroes(
-        c.struct_sensor_event_humi
+      c.struct_sensor_event_humi
     );
     // Size of the Sensor Data
     const len = @sizeOf(
@@ -448,7 +454,7 @@ TODO
     );
 ```
 
-TODO
+Which contains a single value for the __Humidity Sensor Data__...
 
 ```zig
     // Read the Sensor Data
@@ -464,18 +470,18 @@ TODO
         humidity.int, 
         humidity.frac 
       });
+
+      // Will be printed as...
+      // humidity:78.81
 ```
 
-Here's the Humidity read from the BME280 Humidity Sensor...
-
-```text
-nsh> sensortest test2
-Zig Sensor Test
-test_sensor2
-humidity:78.81
-```
+And we're done!
 
 # Import NuttX Functions
+
+TODO
+
+# Main Function
 
 TODO
 
@@ -491,6 +497,29 @@ For testing the Zig Sensor App, we connect the BME280 Sensor (Temperature / Humi
 | __`GPIO 2`__ | `SCL` | Blue
 | __`3V3`__ | `3.3V` | Red
 | __`GND`__ | `GND` | Black
+
+# Run Zig App
+
+TODO
+
+Here's the Air Pressure and Temperature read from the BME280 Barometer Sensor...
+
+```text
+nsh> sensortest test
+Zig Sensor Test
+test_sensor
+pressure:1007.66
+temperature:27.70
+```
+
+Here's the Humidity read from the BME280 Humidity Sensor...
+
+```text
+nsh> sensortest test2
+Zig Sensor Test
+test_sensor2
+humidity:78.81
+```
 
 # Fixed-Point Sensor Data
 
