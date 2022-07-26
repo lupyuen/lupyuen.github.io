@@ -4,13 +4,15 @@
 
 ![TODO](https://lupyuen.github.io/images/sensor-title.jpg)
 
-TODO
-
--   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
+TODO: With Zig programming language, we have a fun new way to create applications for Apache NuttX RTOS.
 
 TODO: What if we're not familiar with Zig?
 
+TODO: But really, we prefer to do this in C?
+
 TODO: Upcoming LoRaWAN, Visual Programming
+
+-   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
 
 [Changes to NuttX Sensors](https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h)
 
