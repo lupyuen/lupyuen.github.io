@@ -83,7 +83,9 @@
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
 <li><a href="#notes">8 Notes</a><ul></ul></li></ul></nav><p>📝 <em>31 Jul 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/sensor-title.jpg" alt="TODO" /></p>
-<p>TODO: With Zig programming language, we have a fun new way to create applications for Apache NuttX RTOS.</p>
+<p>TODO: With Zig programming language, we have a fun new way to create embedded applications for Apache NuttX RTOS.</p>
+<p>TODO: This article explains how we write a Zig program to read a NuttX Sensor: Bosch BME280 (Temperture / Humidity / Air Pressure)</p>
+<p>(Though the steps should be similar for other NuttX Sensors)</p>
 <p>TODO: What if we’re not familiar with Zig?</p>
 <p>TODO: But really, if we prefer to do this in C?</p>
 <p>NuttX provides an excellent Sensor Test App in C…</p>
@@ -129,7 +131,7 @@ fn test_sensor() !void {
 </li>
 </ul>
 <p><em>Why the “<code>c.</code>” prefix?</em></p>
-<p>We write “<code>c.</code><em>something</em>” for Functions and Macros <strong>imported from C</strong>.</p>
+<p>We write “<code>c.</code><em>something</em>” for Functions, Types and Macros <strong>imported from C</strong>.</p>
 <p>(More about this in a while)</p>
 <p>Next we check if the Sensor Device has been <strong>successfully opened</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
@@ -225,7 +227,7 @@ fn test_sensor() !void {
 <p>Note that the Third Parameter <strong>doesn’t specify a type</strong> and Zig Compiler gets stumped.</p>
 <p>That’s why in Zig we write the Third Parameter as…</p>
 <div class="example-wrap"><pre class="language-zig"><code>@as(c_int, 1)</code></pre></div>
-<p>Which means that we pass the value <code>1</code> as a C Integer Type.</p>
+<p>Which means that we pass the value <code>1</code> as a <strong>C Integer Type</strong>.</p>
 <h2 id="poll-sensor"><a href="#poll-sensor">2.6 Poll Sensor</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Prepare to poll Sensor
