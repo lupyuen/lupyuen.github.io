@@ -8,9 +8,13 @@ TODO: With Zig programming language, we have a fun new way to create application
 
 TODO: What if we're not familiar with Zig?
 
-TODO: But really, we prefer to do this in C?
+TODO: But really, if we prefer to do this in C?
 
-NuttX provides an excellent Sensor Test App in C. Our Zig Sensor App is derived from this Sensor Test App.
+NuttX provides an excellent Sensor Test App in C...
+
+[sensortest.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c)
+
+Our Zig Sensor App is derived from this Sensor Test App.
 
 TODO: Upcoming LoRaWAN, Visual Programming
 
