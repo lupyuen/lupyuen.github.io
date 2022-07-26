@@ -81,96 +81,95 @@
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145">sensortest.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read Pressure and Temperature from Barometer Sensor &quot;/dev/sensor/baro0&quot;
 fn test_sensor() !void {
-    debug(&quot;test_sensor&quot;, .{});
 
-    // Open the Sensor Device
-    const fd = c.open(
-        &quot;/dev/sensor/baro0&quot;,       // Path of Sensor Device
-        c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
-    );
+  // Open the Sensor Device
+  const fd = c.open(
+    &quot;/dev/sensor/baro0&quot;,       // Path of Sensor Device
+    c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+  );
 
-    // Check for error
-    if (fd &lt; 0) {
-        std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
-        return error.OpenError;
-    }
+  // Check for error
+  if (fd &lt; 0) {
+    std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
+    return error.OpenError;
+  }
 
-    // Close the Sensor Device when this function returns
-    defer {
-        _ = c.close(fd);
-    }
+  // Close the Sensor Device when this function returns
+  defer {
+    _ = c.close(fd);
+  }
 
-    // Set Standby Interval
-    // TODO: Remove this definition when SNIOC_SET_INTERVAL has been been fixed: https://github.com/apache/incubator-nuttx/issues/6642
-    const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
-    var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
-    var ret = c.ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
+  // Set Standby Interval
+  // TODO: Remove this definition when SNIOC_SET_INTERVAL has been been fixed: https://github.com/apache/incubator-nuttx/issues/6642
+  const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
+  var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
+  var ret = c.ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
 
-    // Check for error
-    if (ret &lt; 0 and errno() != c.ENOTSUP) {
-        std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
-        return error.IntervalError;
-    }
+  // Check for error
+  if (ret &lt; 0 and errno() != c.ENOTSUP) {
+    std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
+    return error.IntervalError;
+  }
 
-    // Set Batch Latency
-    var latency: c_uint = 0;  // No latency
-    ret = c.ioctl(fd, c.SNIOC_BATCH, &amp;latency);
+  // Set Batch Latency
+  var latency: c_uint = 0;  // No latency
+  ret = c.ioctl(fd, c.SNIOC_BATCH, &amp;latency);
 
-    // Check for error
-    if (ret &lt; 0 and errno() != c.ENOTSUP) {
-        std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
-        return error.BatchError;
-    }
+  // Check for error
+  if (ret &lt; 0 and errno() != c.ENOTSUP) {
+    std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
+    return error.BatchError;
+  }
 
-    // Enable Sensor and switch to Normal Power Mode
-    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
+  // Enable Sensor and switch to Normal Power Mode
+  ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
 
-    // Check for error
-    if (ret &lt; 0 and errno() != c.ENOTSUP) {
-        std.log.err(&quot;Failed to enable sensor:{s}&quot;, .{ c.strerror(errno()) });
-        return error.EnableError;
-    }
+  // Check for error
+  if (ret &lt; 0 and errno() != c.ENOTSUP) {
+    std.log.err(&quot;Failed to enable sensor:{s}&quot;, .{ c.strerror(errno()) });
+    return error.EnableError;
+  }
 
-    // Prepare to poll Sensor
-    var fds = std.mem.zeroes(c.struct_pollfd);
-    fds.fd = fd;
-    fds.events = c.POLLIN;
+  // Prepare to poll Sensor
+  var fds = std.mem.zeroes(c.struct_pollfd);
+  fds.fd = fd;
+  fds.events = c.POLLIN;
 
-    // If Sensor Data is available...
-    if (c.poll(&amp;fds, 1, -1) &gt; 0) {
+  // If Sensor Data is available...
+  if (c.poll(&amp;fds, 1, -1) &gt; 0) {
 
-        // Define the Sensor Data Type
-        var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
-        const len = @sizeOf(@TypeOf(sensor_data));
+    // Define the Sensor Data Type
+    var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
+    const len = @sizeOf(@TypeOf(sensor_data));
 
-        // Read the Sensor Data
-        if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
+    // Read the Sensor Data
+    if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
 
-            // Convert the Sensor Data to Fixed-Point Numbers
-            const pressure    = float_to_fixed(sensor_data.pressure);
-            const temperature = float_to_fixed(sensor_data.temperature);
+      // Convert the Sensor Data to Fixed-Point Numbers
+      const pressure    = float_to_fixed(sensor_data.pressure);
+      const temperature = float_to_fixed(sensor_data.temperature);
 
-            // Print the Sensor Data
-            debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
-                pressure.int, 
-                pressure.frac 
-            });
-            debug(&quot;temperature:{}.{:0&gt;2}&quot;, .{
-                temperature.int,
-                temperature.frac 
-            });
-            
-        } else { std.log.err(&quot;Sensor data incorrect size&quot;, .{}); }
-    } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }
+      // Print the Sensor Data
+      debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
+        pressure.int, 
+        pressure.frac 
+      });
+      debug(&quot;temperature:{}.{:0&gt;2}&quot;, .{
+        temperature.int,
+        temperature.frac 
+      });
+        
+    } else { std.log.err(&quot;Sensor data incorrect size&quot;, .{}); }
+  } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }
 
-    // Disable Sensor and switch to Low Power Mode
-    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
+  // Disable Sensor and switch to Low Power Mode
+  ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
 
-    // Check for error
-    if (ret &lt; 0) {
-        std.log.err(&quot;Failed to disable sensor:{s}&quot;, .{ c.strerror(errno()) });
-        return error.DisableError;
-    }
+  // Check for error
+  if (ret &lt; 0) {
+    std.log.err(&quot;Failed to disable sensor:{s}&quot;, .{ c.strerror(errno()) });
+    return error.DisableError;
+  }
 }</code></pre></div>
 <p>Here’s the Air Pressure and Temperature read from the BME280 Barometer Sensor…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test
@@ -182,92 +181,31 @@ temperature:27.70</code></pre></div><h1 id="read-humidity-sensor"><a href="#read
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L147-L234">sensortest.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read Humidity from Humidity Sensor &quot;/dev/sensor/humi0&quot;
 fn test_sensor2() !void {
-    debug(&quot;test_sensor2&quot;, .{});
 
-    // Open the Sensor Device
-    const fd = c.open(
-        &quot;/dev/sensor/humi0&quot;,       // Path of Sensor Device
-        c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
-    );
+  // Open the Sensor Device
+  const fd = c.open(
+    &quot;/dev/sensor/humi0&quot;,       // Path of Sensor Device
+    c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+  );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // If Sensor Data is available...
+  if (c.poll(&amp;fds, 1, -1) &gt; 0) {
 
-    // Check for error
-    if (fd &lt; 0) {
-        std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
-        return error.OpenError;
-    }
+    // Define the Sensor Data Type
+    var sensor_data = std.mem.zeroes(c.struct_sensor_event_humi);
+    const len = @sizeOf(@TypeOf(sensor_data));
 
-    // Close the Sensor Device when this function returns
-    defer {
-        _ = c.close(fd);
-    }
+    // Read the Sensor Data
+    if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
 
-    // Set Standby Interval
-    // TODO: Remove this definition when SNIOC_SET_INTERVAL has been been fixed: https://github.com/apache/incubator-nuttx/issues/6642
-    const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
-    var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
-    var ret = c.ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
+      // Convert the Sensor Data to Fixed-Point Numbers
+      const humidity = float_to_fixed(sensor_data.humidity);
 
-    // Check for error
-    if (ret &lt; 0 and errno() != c.ENOTSUP) {
-        std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
-        return error.IntervalError;
-    }
-
-    // Set Batch Latency
-    var latency: c_uint = 0;  // No latency
-    ret = c.ioctl(fd, c.SNIOC_BATCH, &amp;latency);
-
-    // Check for error
-    if (ret &lt; 0 and errno() != c.ENOTSUP) {
-        std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
-        return error.BatchError;
-    }
-
-    // Enable Sensor and switch to Normal Power Mode
-    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
-
-    // Check for error
-    if (ret &lt; 0 and errno() != c.ENOTSUP) {
-        std.log.err(&quot;Failed to enable sensor:{s}&quot;, .{ c.strerror(errno()) });
-        return error.EnableError;
-    }
-
-    // Prepare to poll Sensor
-    var fds = std.mem.zeroes(c.struct_pollfd);
-    fds.fd = fd;
-    fds.events = c.POLLIN;
-
-    // If Sensor Data is available...
-    if (c.poll(&amp;fds, 1, -1) &gt; 0) {
-
-        // Define the Sensor Data Type
-        var sensor_data = std.mem.zeroes(c.struct_sensor_event_humi);
-        const len = @sizeOf(@TypeOf(sensor_data));
-
-        // Read the Sensor Data
-        if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
-
-            // Convert the Sensor Data to Fixed-Point Numbers
-            const humidity = float_to_fixed(sensor_data.humidity);
-
-            // Print the Sensor Data
-            debug(&quot;humidity:{}.{:0&gt;2}&quot;, .{
-                humidity.int, 
-                humidity.frac 
-            });
-
-        } else { std.log.err(&quot;Sensor data incorrect size&quot;, .{}); }
-    } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }
-
-    // Disable Sensor and switch to Low Power Mode
-    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
-
-    // Check for error
-    if (ret &lt; 0) {
-        std.log.err(&quot;Failed to disable sensor:{s}&quot;, .{ c.strerror(errno()) });
-        return error.DisableError;
-    }
-}</code></pre></div>
+      // Print the Sensor Data
+      debug(&quot;humidity:{}.{:0&gt;2}&quot;, .{
+        humidity.int, 
+        humidity.frac 
+      });</code></pre></div>
 <p>Here’s the Humidity read from the BME280 Humidity Sensor…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test2
 Zig Sensor Test
