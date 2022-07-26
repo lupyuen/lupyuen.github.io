@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Read NuttX Sensor Data with Zig</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Read NuttX Sensor Data with Zig" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Using Zig to read Sensor Data on Apache NuttX RTOS... With Bosch BME280 Temperature / Humidity / Air Pressure Sensor"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/sensor-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Read NuttX Sensor Data with Zig</h1>
+    <nav id="TOC"><ul>
+<li><a href="#read-barometer-sensor">1 Read Barometer Sensor</a><ul></ul></li>
+<li><a href="#read-humidity-sensor">2 Read Humidity Sensor</a><ul></ul></li>
+<li><a href="#connect-bme280-sensor">3 Connect BME280 Sensor</a><ul></ul></li>
+<li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
+<li><a href="#notes">5 Notes</a><ul></ul></li></ul></nav><p>📝 <em>31 Jul 2022</em></p>
+<p><img src="https://lupyuen.github.io/images/sensor-title.jpg" alt="TODO" /></p>
+<p>TODO</p>
+<ul>
+<li><a href="https://github.com/lupyuen/visual-zig-nuttx"><strong>lupyuen/visual-zig-nuttx</strong></a></li>
+</ul>
+<p><a href="https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h">Changes to NuttX Sensors</a></p>
+<h1 id="read-barometer-sensor"><a href="#read-barometer-sensor">1 Read Barometer Sensor</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145">sensortest.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Read Pressure and Temperature from Barometer Sensor &quot;/dev/sensor/baro0&quot;
+fn test_sensor() !void {
+    debug(&quot;test_sensor&quot;, .{});
+
+    // Open the Sensor Device
+    const fd = c.open(
+        &quot;/dev/sensor/baro0&quot;,       // Path of Sensor Device
+        c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+    );
+
+    // Check for error
+    if (fd &lt; 0) {
+        std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
+        return error.OpenError;
+    }
+
+    // Close the Sensor Device when this function returns
+    defer {
+        _ = c.close(fd);
+    }
+
+    // Set Standby Interval
+    // TODO: Remove this definition when SNIOC_SET_INTERVAL has been been fixed: https://github.com/apache/incubator-nuttx/issues/6642
+    const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
+    var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
+    var ret = c.ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
+
+    // Check for error
+    if (ret &lt; 0 and errno() != c.ENOTSUP) {
+        std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
+        return error.IntervalError;
+    }
+
+    // Set Batch Latency
+    var latency: c_uint = 0;  // No latency
+    ret = c.ioctl(fd, c.SNIOC_BATCH, &amp;latency);
+
+    // Check for error
+    if (ret &lt; 0 and errno() != c.ENOTSUP) {
+        std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
+        return error.BatchError;
+    }
+
+    // Enable Sensor and switch to Normal Power Mode
+    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
+
+    // Check for error
+    if (ret &lt; 0 and errno() != c.ENOTSUP) {
+        std.log.err(&quot;Failed to enable sensor:{s}&quot;, .{ c.strerror(errno()) });
+        return error.EnableError;
+    }
+
+    // Prepare to poll Sensor
+    var fds = std.mem.zeroes(c.struct_pollfd);
+    fds.fd = fd;
+    fds.events = c.POLLIN;
+
+    // If Sensor Data is available...
+    if (c.poll(&amp;fds, 1, -1) &gt; 0) {
+
+        // Define the Sensor Data Type
+        var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
+        const len = @sizeOf(@TypeOf(sensor_data));
+
+        // Read the Sensor Data
+        if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
+
+            // Convert the Sensor Data to Fixed-Point Numbers
+            const pressure    = float_to_fixed(sensor_data.pressure);
+            const temperature = float_to_fixed(sensor_data.temperature);
+
+            // Print the Sensor Data
+            debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
+                pressure.int, 
+                pressure.frac 
+            });
+            debug(&quot;temperature:{}.{:0&gt;2}&quot;, .{
+                temperature.int,
+                temperature.frac 
+            });
+            
+        } else { std.log.err(&quot;Sensor data incorrect size&quot;, .{}); }
+    } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }
+
+    // Disable Sensor and switch to Low Power Mode
+    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
+
+    // Check for error
+    if (ret &lt; 0) {
+        std.log.err(&quot;Failed to disable sensor:{s}&quot;, .{ c.strerror(errno()) });
+        return error.DisableError;
+    }
+}</code></pre></div>
+<p>Here’s the Air Pressure and Temperature read from the BME280 Barometer Sensor…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test
+Zig Sensor Test
+test_sensor
+pressure:1007.66
+temperature:27.70</code></pre></div><h1 id="read-humidity-sensor"><a href="#read-humidity-sensor">2 Read Humidity Sensor</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L147-L234">sensortest.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Read Humidity from Humidity Sensor &quot;/dev/sensor/humi0&quot;
+fn test_sensor2() !void {
+    debug(&quot;test_sensor2&quot;, .{});
+
+    // Open the Sensor Device
+    const fd = c.open(
+        &quot;/dev/sensor/humi0&quot;,       // Path of Sensor Device
+        c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+    );
+
+    // Check for error
+    if (fd &lt; 0) {
+        std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
+        return error.OpenError;
+    }
+
+    // Close the Sensor Device when this function returns
+    defer {
+        _ = c.close(fd);
+    }
+
+    // Set Standby Interval
+    // TODO: Remove this definition when SNIOC_SET_INTERVAL has been been fixed: https://github.com/apache/incubator-nuttx/issues/6642
+    const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
+    var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
+    var ret = c.ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
+
+    // Check for error
+    if (ret &lt; 0 and errno() != c.ENOTSUP) {
+        std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
+        return error.IntervalError;
+    }
+
+    // Set Batch Latency
+    var latency: c_uint = 0;  // No latency
+    ret = c.ioctl(fd, c.SNIOC_BATCH, &amp;latency);
+
+    // Check for error
+    if (ret &lt; 0 and errno() != c.ENOTSUP) {
+        std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
+        return error.BatchError;
+    }
+
+    // Enable Sensor and switch to Normal Power Mode
+    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
+
+    // Check for error
+    if (ret &lt; 0 and errno() != c.ENOTSUP) {
+        std.log.err(&quot;Failed to enable sensor:{s}&quot;, .{ c.strerror(errno()) });
+        return error.EnableError;
+    }
+
+    // Prepare to poll Sensor
+    var fds = std.mem.zeroes(c.struct_pollfd);
+    fds.fd = fd;
+    fds.events = c.POLLIN;
+
+    // If Sensor Data is available...
+    if (c.poll(&amp;fds, 1, -1) &gt; 0) {
+
+        // Define the Sensor Data Type
+        var sensor_data = std.mem.zeroes(c.struct_sensor_event_humi);
+        const len = @sizeOf(@TypeOf(sensor_data));
+
+        // Read the Sensor Data
+        if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
+
+            // Convert the Sensor Data to Fixed-Point Numbers
+            const humidity = float_to_fixed(sensor_data.humidity);
+
+            // Print the Sensor Data
+            debug(&quot;humidity:{}.{:0&gt;2}&quot;, .{
+                humidity.int, 
+                humidity.frac 
+            });
+
+        } else { std.log.err(&quot;Sensor data incorrect size&quot;, .{}); }
+    } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }
+
+    // Disable Sensor and switch to Low Power Mode
+    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
+
+    // Check for error
+    if (ret &lt; 0) {
+        std.log.err(&quot;Failed to disable sensor:{s}&quot;, .{ c.strerror(errno()) });
+        return error.DisableError;
+    }
+}</code></pre></div>
+<p>Here’s the Humidity read from the BME280 Humidity Sensor…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test2
+Zig Sensor Test
+test_sensor2
+humidity:78.81</code></pre></div><h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">3 Connect BME280 Sensor</a></h1>
+<p>TODO</p>
+<p>For testing the Zig Sensor App, we connect the BME280 Sensor (Temperature / Humidity / Air Pressure) to Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a>…</p>
+<div><table><thead><tr><th style="text-align: center">BL602 Pin</th><th style="text-align: center">BME280 Pin</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>GPIO 1</code></strong></td><td style="text-align: center"><code>SDA</code></td><td style="text-align: left">Green</td></tr>
+<tr><td style="text-align: center"><strong><code>GPIO 2</code></strong></td><td style="text-align: center"><code>SCL</code></td><td style="text-align: left">Blue</td></tr>
+<tr><td style="text-align: center"><strong><code>3V3</code></strong></td><td style="text-align: center"><code>3.3V</code></td><td style="text-align: left">Red</td></tr>
+<tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td><td style="text-align: left">Black</td></tr>
+</tbody></table>
+</div><h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
+<p>TODO</p>
+<p>Here are some tips for learning Zig…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig"><strong>“Learning Zig”</strong></a></li>
+</ul>
+<p>Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/zig"><strong>“Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot"><strong>“Build an IoT App with Zig and LoRaWAN”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl"><strong>“Build an LVGL Touchscreen App with Zig”</strong></a></p>
+</li>
+</ul>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>Read “The RISC-V BL602 / BL604 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl.md"><strong>lupyuen.github.io/src/lvgl.md</strong></a></p>
+<h1 id="notes"><a href="#notes">5 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1548909434440585216"><strong>this Twitter Thread</strong></a></li>
+</ol>
+
+    
+</body>
+</html>
