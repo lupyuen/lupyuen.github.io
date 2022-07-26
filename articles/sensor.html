@@ -135,21 +135,30 @@ fn test_sensor() !void {
 <p>If the Sensor Device doesn’t exist, we print a Formatted Message to the <strong>Error Log</strong> and return an Error.</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65">(<strong>OpenError</strong> is defined here)</a></p>
 <p><em>What’s “<code>{s}</code>”?</em></p>
-<p>That’s how we print <strong>Formatted Strings</strong> in Zig. It’s equivalent to “<code>%s</code>” in C…</p>
-<div class="example-wrap"><pre class="language-c"><code>printf(&quot;Failed to open device:%s&quot;, strerror(errno()));`</code></pre></div>
+<p>That’s for printing a <strong>Formatted String</strong> in Zig.</p>
+<p>It’s equivalent to “<code>%s</code>” in C…</p>
+<div class="example-wrap"><pre class="language-c"><code>printf(&quot;Failed to open device:%s&quot;, strerror(errno()));</code></pre></div>
 <p><em>What’s “<code>.{ ... }</code>”?</em></p>
-<p>That’s how we pass a <strong>list of Arguments</strong> for printing a Formatted Message.</p>
-<p><a href="https://ziglang.org/documentation/master/#Anonymous-Struct-Literals">(“<code>.{ ... }</code>” creates an Anonymous Struct)</a></p>
+<p>That’s how we pass a <strong>list of Arguments</strong> for a Formatted Message.</p>
 <p>If we have no Arguments, we write “<code>.{}</code>”</p>
+<p><a href="https://ziglang.org/documentation/master/#Anonymous-Struct-Literals">(“<code>.{ ... }</code>” creates an Anonymous Struct)</a></p>
 <h2 id="close-sensor-device-deferred"><a href="#close-sensor-device-deferred">2.2 Close Sensor Device (Deferred)</a></h2>
-<p>Here comes a nifty trick in Zig…</p>
-<p>TODO</p>
+<p>We’ve just opened the Sensor Device and we must <strong>close it later</strong>…</p>
+<p>But the Control Flow gets complicated because we might need to <strong>handle Errors</strong> and quit early. In C we’d use “<code>goto</code>” to code this.</p>
+<p>For Zig we do this nifty trick…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Close the Sensor Device when 
   // this function returns
   defer {
     _ = c.close(fd);
-  }</code></pre></div><h2 id="set-standby-interval"><a href="#set-standby-interval">2.3 Set Standby Interval</a></h2>
-<p>TODO</p>
+  }</code></pre></div>
+<p>When we write <strong>“<code>defer</code>”</strong>, this chunk of code will be executed <strong>when our function returns</strong>.</p>
+<p>This brilliantly solves our headache of <strong>closing the Sensor Device</strong> when we hit Errors later.</p>
+<p><em>Why the “<code>_ =</code> something”?</em></p>
+<p>Zig Compiler stops us if we forget to use the <strong>Return Value</strong> of a Function.</p>
+<p>We write “<code>_ =</code> <em>something</em>” to tell Zig Compiler that we’re not using the Return Value.</p>
+<h2 id="set-standby-interval"><a href="#set-standby-interval">2.3 Set Standby Interval</a></h2>
+<p>Some sensors (like BME280) will automatically measure Sensor Data at <strong>Periodic Intervals</strong>.</p>
+<p>Let’s assume that our sensor will measure Sensor Data <strong>every 1 second</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // TODO: Remove this definition when 
   // SNIOC_SET_INTERVAL has been been fixed: 
   // https://github.com/apache/incubator-nuttx/issues/6642
@@ -158,43 +167,55 @@ fn test_sensor() !void {
   // Set Standby Interval
   var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
   var ret = c.ioctl(
-    fd, 
-    SNIOC_SET_INTERVAL, 
-    &amp;interval
+    fd,                  // Sensor Device
+    SNIOC_SET_INTERVAL,  // ioctl Command
+    &amp;interval            // Standby Interval
   );</code></pre></div>
-<p>TODO</p>
+<p>(<strong>c_uint</strong> is equivalent to “unsigned int” in C)</p>
+<p>In case of error we quit…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
     return error.IntervalError;
-  }</code></pre></div><h2 id="set-batch-latency"><a href="#set-batch-latency">2.4 Set Batch Latency</a></h2>
-<p>TODO</p>
+  }</code></pre></div>
+<p>Which also closes the Sensor Device. (Due to our earlier “<code>defer</code>”)</p>
+<h2 id="set-batch-latency"><a href="#set-batch-latency">2.4 Set Batch Latency</a></h2>
+<p>We set the <strong>Batch Latency</strong>, if it’s needed by our sensor…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set Batch Latency
   var latency: c_uint = 0;  // No latency
   ret = c.ioctl(
-    fd, 
-    c.SNIOC_BATCH, 
-    &amp;latency
+    fd,             // Sensor Device
+    c.SNIOC_BATCH,  // ioctl Command
+    &amp;latency        // Batch Latency
   );</code></pre></div>
-<p>TODO</p>
+<p>And we check for error…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
     return error.BatchError;
   }</code></pre></div><h2 id="enable-sensor"><a href="#enable-sensor">2.5 Enable Sensor</a></h2>
-<p>TODO</p>
+<p>This is how we <strong>enable our sensor</strong> before reading Sensor Data…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Enable Sensor and switch to Normal Power Mode
   ret = c.ioctl(
-    fd, 
-    c.SNIOC_ACTIVATE, 
-    @as(c_int, 1)
+    fd,                // Sensor Device
+    c.SNIOC_ACTIVATE,  // ioctl Command
+    @as(c_int, 1)      // Enable Sensor
   );
 
   // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to enable sensor:{s}&quot;, .{ c.strerror(errno()) });
     return error.EnableError;
-  }</code></pre></div><h2 id="poll-sensor"><a href="#poll-sensor">2.6 Poll Sensor</a></h2>
+  }</code></pre></div>
+<p><em>Why the “@as(c_int, 1)”?</em></p>
+<p>As we’ve seen, Zig is pretty smart in <strong>inferring the types</strong> of our variables and constants.</p>
+<p>But <strong>ioctl()</strong> is declared in C as…</p>
+<div class="example-wrap"><pre class="language-c"><code>int ioctl(int fd, int req, ...);</code></pre></div>
+<p>Note that the Third Parameter <strong>doesn’t specify a type</strong> and Zig Compiler gets stumped.</p>
+<p>That’s why in Zig we explicitly pass the Third Parameter as…</p>
+<div class="example-wrap"><pre class="language-zig"><code>@as(c_int, 1)</code></pre></div>
+<p>Which means that we pass the value <code>1</code> as a C Integer Type.</p>
+<h2 id="poll-sensor"><a href="#poll-sensor">2.6 Poll Sensor</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Prepare to poll Sensor
   var fds = std.mem.zeroes(c.struct_pollfd);
@@ -230,9 +251,9 @@ fn test_sensor() !void {
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Disable Sensor and switch to Low Power Mode
   ret = c.ioctl(
-    fd, 
-    c.SNIOC_ACTIVATE, 
-    @as(c_int, 0)
+    fd,                // Sensor Device
+    c.SNIOC_ACTIVATE,  // ioctl Command
+    @as(c_int, 0)      // Disable Sensor
   );
 
   // Check for error
