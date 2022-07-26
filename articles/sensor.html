@@ -129,12 +129,15 @@ fn test_sensor() !void {
 </li>
 </ul>
 <p><em>Why the “<code>c.</code>” prefix?</em></p>
-<p>We write “<code>c.</code><em>something</em>” to refer to Functions and Macros <strong>imported from C</strong>.</p>
+<p>We write “<code>c.</code><em>something</em>” for Functions and Macros <strong>imported from C</strong>.</p>
 <p>(More about this in a while)</p>
 <p>Next we check if the Sensor Device has been <strong>successfully opened</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (fd &lt; 0) {
-    std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
+    std.log.err(
+      &quot;Failed to open device:{s}&quot;,
+      .{ c.strerror(errno()) }
+    );
     return error.OpenError;
   }</code></pre></div>
 <p>If the Sensor Device doesn’t exist, we print a Formatted Message to the <strong>Error Log</strong> and return an Error.</p>
@@ -144,12 +147,12 @@ fn test_sensor() !void {
 <p>It’s equivalent to “<code>%s</code>” in C…</p>
 <div class="example-wrap"><pre class="language-c"><code>printf(&quot;Failed to open device:%s&quot;, strerror(errno()));</code></pre></div>
 <p><em>What’s “<code>.{ ... }</code>”?</em></p>
-<p>That’s how we pass a <strong>list of Arguments</strong> for a Formatted Message.</p>
+<p>That’s how we pass a <strong>list of Arguments</strong> when printing a Formatted Message.</p>
 <p>If we have no Arguments, we write “<code>.{}</code>”</p>
 <p><a href="https://ziglang.org/documentation/master/#Anonymous-Struct-Literals">(“<code>.{ ... }</code>” creates an Anonymous Struct)</a></p>
 <h2 id="close-sensor-device-deferred"><a href="#close-sensor-device-deferred">2.2 Close Sensor Device (Deferred)</a></h2>
 <p>We’ve just opened the Sensor Device and we must <strong>close it later</strong>…</p>
-<p>But the Control Flow gets complicated because we might need to <strong>handle Errors</strong> and quit early. In C we’d use “<code>goto</code>” to code this.</p>
+<p>But the Control Flow gets complicated because we might need to <strong>handle Errors</strong> and quit early. In C we’d code this with “<code>goto</code>”.</p>
 <p>For Zig we do this nifty trick…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Close the Sensor Device when 
   // this function returns
@@ -162,7 +165,7 @@ fn test_sensor() !void {
 <p>Zig Compiler stops us if we forget to use the <strong>Return Value</strong> of a Function.</p>
 <p>We write “<code>_ =</code> <em>something</em>” to tell Zig Compiler that we’re not using the Return Value.</p>
 <h2 id="set-standby-interval"><a href="#set-standby-interval">2.3 Set Standby Interval</a></h2>
-<p>Some sensors (like BME280) will automatically measure Sensor Data at <strong>Periodic Intervals</strong>.</p>
+<p>Some sensors (like BME280) will automatically measure Sensor Data at <strong>Periodic Intervals</strong>. <a href="https://lupyuen.github.io/articles/bme280#standby-interval">(See this)</a></p>
 <p>Let’s assume that our sensor will measure Sensor Data <strong>every 1 second</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // TODO: Remove this definition when 
   // SNIOC_SET_INTERVAL has been been fixed: 
@@ -177,7 +180,7 @@ fn test_sensor() !void {
     &amp;interval            // Standby Interval
   );</code></pre></div>
 <p>(<strong>c_uint</strong> is equivalent to “unsigned int” in C)</p>
-<p>In case of error we quit…</p>
+<p>In case of error, we quit…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
@@ -216,11 +219,11 @@ fn test_sensor() !void {
     return error.EnableError;
   }</code></pre></div>
 <p><em>Why the “@as(c_int, 1)”?</em></p>
-<p>As we’ve seen, Zig is pretty smart in <strong>inferring the types</strong> of our variables and constants.</p>
+<p>As we’ve seen, Zig can <strong>infer the types</strong> of our variables and constants. (So we don’t need to specify the types ourselves)</p>
 <p>But <strong>ioctl()</strong> is declared in C as…</p>
 <div class="example-wrap"><pre class="language-c"><code>int ioctl(int fd, int req, ...);</code></pre></div>
 <p>Note that the Third Parameter <strong>doesn’t specify a type</strong> and Zig Compiler gets stumped.</p>
-<p>That’s why in Zig we explicitly pass the Third Parameter as…</p>
+<p>That’s why in Zig we write the Third Parameter as…</p>
 <div class="example-wrap"><pre class="language-zig"><code>@as(c_int, 1)</code></pre></div>
 <p>Which means that we pass the value <code>1</code> as a C Integer Type.</p>
 <h2 id="poll-sensor"><a href="#poll-sensor">2.6 Poll Sensor</a></h2>
