@@ -8,6 +8,8 @@ TODO
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
 
+TODO: What if we're not familiar with Zig?
+
 TODO: Upcoming LoRaWAN, Visual Programming
 
 [Changes to NuttX Sensors](https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h)
@@ -30,7 +32,7 @@ TODO
 
 ## Open Sensor Device
 
-TODO
+We begin by __opening the Sensor Device__: [sensortest.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145)
 
 ```zig
 /// Read Pressure and Temperature from 
@@ -44,7 +46,27 @@ fn test_sensor() !void {
   );
 ```
 
-TODO
+__`open()`__ should look familiar... On Linux we open Devices the same way.
+
+_What's "`!void`"?_
+
+That's the __Return Type__ of our function...
+
+-   Our function doesn't return any value
+
+    (Hence "`void`")
+
+-   But it might return an __Error__
+
+    (Hence the "`!`")
+
+_Why the "`c.`" prefix?_
+
+We write "`c.`_something_" to refer to Functions and Macros __imported from C__.
+
+(More about this in a while)
+
+Next we check if the Sensor Device has been __successfully opened__...
 
 ```zig
   // Check for error
@@ -54,12 +76,35 @@ TODO
   }
 ```
 
+If the Sensor Device doesn't exist, we print a Formatted Message to the __Error Log__ and return an Error.
+
+[(__OpenError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65)
+
+_What's "`{s}`"?_
+
+That's how we print __Formatted Strings__ in Zig. It's equivalent to "`%s`" in C...
+
+```c
+printf("Failed to open device:%s", strerror(errno()));`
+```
+
+_What's "`.{ ... }`"?_
+
+That's how we pass a __list of Arguments__ for printing a Formatted Message.
+
+[("`.{ ... }`" creates an Anonymous Struct)](https://ziglang.org/documentation/master/#Anonymous-Struct-Literals)
+
+If we have no Arguments, we write "`.{}`"
+
 ## Close Sensor Device (Deferred)
+
+Here comes a nifty trick in Zig...
 
 TODO
 
 ```zig
-  // Close the Sensor Device when this function returns
+  // Close the Sensor Device when 
+  // this function returns
   defer {
     _ = c.close(fd);
   }
