@@ -70,7 +70,7 @@ That's the __Return Type__ of our function...
 
 _Why the "`c.`" prefix?_
 
-We write "`c.`_something_" to refer to Functions and Macros __imported from C__.
+We write "`c.`_something_" for Functions and Macros __imported from C__.
 
 (More about this in a while)
 
@@ -79,7 +79,10 @@ Next we check if the Sensor Device has been __successfully opened__...
 ```zig
   // Check for error
   if (fd < 0) {
-    std.log.err("Failed to open device:{s}", .{ c.strerror(errno()) });
+    std.log.err(
+      "Failed to open device:{s}",
+      .{ c.strerror(errno()) }
+    );
     return error.OpenError;
   }
 ```
@@ -100,7 +103,7 @@ printf("Failed to open device:%s", strerror(errno()));
 
 _What's "`.{ ... }`"?_
 
-That's how we pass a __list of Arguments__ for a Formatted Message.
+That's how we pass a __list of Arguments__ when printing a Formatted Message.
 
 If we have no Arguments, we write "`.{}`"
 
@@ -110,7 +113,7 @@ If we have no Arguments, we write "`.{}`"
 
 We've just opened the Sensor Device and we must __close it later__...
 
-But the Control Flow gets complicated because we might need to __handle Errors__ and quit early. In C we'd use "`goto`" to code this.
+But the Control Flow gets complicated because we might need to __handle Errors__ and quit early. In C we'd code this with "`goto`".
 
 For Zig we do this nifty trick...
 
@@ -134,7 +137,7 @@ We write "`_ =` _something_" to tell Zig Compiler that we're not using the Retur
 
 ## Set Standby Interval
 
-Some sensors (like BME280) will automatically measure Sensor Data at __Periodic Intervals__.
+Some sensors (like BME280) will automatically measure Sensor Data at __Periodic Intervals__. [(See this)](https://lupyuen.github.io/articles/bme280#standby-interval)
 
 Let's assume that our sensor will measure Sensor Data __every 1 second__...
 
@@ -155,7 +158,7 @@ Let's assume that our sensor will measure Sensor Data __every 1 second__...
 
 (__c_uint__ is equivalent to "unsigned int" in C)
 
-In case of error we quit...
+In case of error, we quit...
 
 ```zig
   // Check for error
@@ -216,7 +219,7 @@ This is how we __enable our sensor__ before reading Sensor Data...
 
 _Why the "@as(c_int, 1)"?_
 
-As we've seen, Zig is pretty smart in __inferring the types__ of our variables and constants.
+As we've seen, Zig can __infer the types__ of our variables and constants. (So we don't need to specify the types ourselves)
 
 But __ioctl()__ is declared in C as...
 
@@ -226,7 +229,7 @@ int ioctl(int fd, int req, ...);
 
 Note that the Third Parameter __doesn't specify a type__ and Zig Compiler gets stumped.
 
-That's why in Zig we explicitly pass the Third Parameter as...
+That's why in Zig we write the Third Parameter as...
 
 ```zig
 @as(c_int, 1)
