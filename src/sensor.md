@@ -165,6 +165,8 @@ In case of error we quit...
   }
 ```
 
+[(__IntervalError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65)
+
 Which also closes the Sensor Device. (Due to our earlier "`defer`")
 
 ## Set Batch Latency
@@ -190,6 +192,8 @@ And we check for error...
     return error.BatchError;
   }
 ```
+
+[(__BatchError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65)
 
 ## Enable Sensor
 
@@ -246,6 +250,8 @@ TODO
 ```zig
   // If Sensor Data is available...
   if (c.poll(&fds, 1, -1) > 0) {
+
+    // Coming up: Read Sensor Data...
 ```
 
 ## Read Sensor Data
