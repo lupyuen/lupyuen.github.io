@@ -779,6 +779,7 @@ const fd = c.open(
   &slice[0], 
   c.O_RDONLY | c.O_NONBLOCK
 );
+// Triggers a runtime panic if the Slice is empty
 ```
 
 [(More about Slices)](https://ziglang.org/documentation/master/#Slices)
