@@ -108,14 +108,24 @@
 </ul>
 <p><strong>Note:</strong> The NuttX Sensor API is going through <a href="https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h"><strong>some breaking changes</strong></a> as of Jul 2022. We’ll update the article when the API settles down.</p>
 <h1 id="bosch-bme280-sensor"><a href="#bosch-bme280-sensor">1 Bosch BME280 Sensor</a></h1>
-<p>TODO</p>
+<p>For today we’ll call this NuttX Driver for <strong>Bosch BME280 Sensor</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/bme280"><strong>“Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS”</strong></a></li>
 </ul>
-<p>“/dev/sensor/baro0”: Pressure and Temperature</p>
-<p>“/dev/sensor/humi0”: Humidity</p>
+<p>The BME280 Driver exposes two <strong>NuttX Sensor Devices</strong>…</p>
+<ul>
+<li>
+<p><strong>Barometer Sensor:</strong> /dev/sensor/baro0</p>
+<p>(For Temperature and Air Pressure)</p>
+</li>
+<li>
+<p><strong>Humidity Sensor:</strong> /dev/sensor/humi0</p>
+<p>(For Humidity)</p>
+</li>
+</ul>
+<p>We shall read both Sensor Devices to fetch the Sensor Data for <strong>Temperature, Air Pressue and Humidity.</strong></p>
 <h1 id="read-barometer-sensor"><a href="#read-barometer-sensor">2 Read Barometer Sensor</a></h1>
-<p>Let’s walk through the steps to read the Temperature and Air Pressure from our <strong>NuttX Barometer Sensor</strong>…</p>
+<p>Let’s walk through the code to read the Temperature and Air Pressure from our <strong>NuttX Barometer Sensor</strong> at “/dev/sensor/baro0”…</p>
 <ul>
 <li>
 <p>Open Sensor Device</p>
