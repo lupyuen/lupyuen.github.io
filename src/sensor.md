@@ -975,6 +975,34 @@ _Is there an easier way to test various NuttX Sensors?_
 
 TODO
 
+-   [__multisensor.zig__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig)
+
+Derived from the __NuttX Sensor Test App__ in C...
+
+-   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c)
+
+Auto-translated from C to Zig...
+
+-   [__Auto-Translate Sensor App to Zig__](https://github.com/lupyuen/visual-zig-nuttx#auto-translate-sensor-app-to-zig)
+
+Then cleaned up...
+
+-   [__Sensor App in Zig__](https://github.com/lupyuen/visual-zig-nuttx#sensor-app-in-zig)
+
+-   [__Run Zig Sensor App__](https://github.com/lupyuen/visual-zig-nuttx#run-zig-sensor-app)
+
+-   [__Fix Floating-Point Values__](https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values)
+
+-   [__Floating-Point Link Error__](https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error)
+
+-   [__Fixed-Point Printing__](https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing)
+
+-   [__Change to Static Buffer__](https://github.com/lupyuen/visual-zig-nuttx#change-to-static-buffer)
+
+-   [__Incorrect Alignment__](https://github.com/lupyuen/visual-zig-nuttx#incorrect-alignment)
+
+-   [__Clean Up__](https://github.com/lupyuen/visual-zig-nuttx#clean-up)
+
 # LoRaWAN and Visual Programming
 
 _Once again... Why are we doing this in Zig?_
@@ -1042,6 +1070,14 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
   };
 }
 ```
+
+TODO
+
+-   [__Fix Floating-Point Values__](https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values)
+
+-   [__Floating-Point Link Error__](https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error)
+
+-   [__Fixed-Point Printing__](https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing)
 
 TODO
 
