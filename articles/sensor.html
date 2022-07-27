@@ -79,13 +79,14 @@
 <li><a href="#read-humidity-sensor">3 Read Humidity Sensor</a><ul></ul></li>
 <li><a href="#import-nuttx-functions">4 Import NuttX Functions</a><ul></ul></li>
 <li><a href="#main-function">5 Main Function</a><ul></ul></li>
-<li><a href="#connect-bme280-sensor">6 Connect BME280 Sensor</a><ul></ul></li>
-<li><a href="#compile-zig-app">7 Compile Zig App</a><ul></ul></li>
-<li><a href="#run-zig-app">8 Run Zig App</a><ul></ul></li>
-<li><a href="#fixed-point-sensor-data">9 Fixed-Point Sensor Data</a><ul></ul></li>
-<li><a href="#multiple-sensors">10 Multiple Sensors</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>31 Jul 2022</em></p>
+<li><a href="#slice-vs-pointers">6 Slice vs Pointers</a><ul></ul></li>
+<li><a href="#connect-bme280-sensor">7 Connect BME280 Sensor</a><ul></ul></li>
+<li><a href="#compile-zig-app">8 Compile Zig App</a><ul></ul></li>
+<li><a href="#run-zig-app">9 Run Zig App</a><ul></ul></li>
+<li><a href="#fixed-point-sensor-data">10 Fixed-Point Sensor Data</a><ul></ul></li>
+<li><a href="#multiple-sensors">11 Multiple Sensors</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
+<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>31 Jul 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/sensor-title.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <p>With <strong>Zig programming language</strong>, we now have a fun new way to create embedded applications for <strong>Apache NuttX RTOS</strong>.</p>
 <p>Today we shall write a Zig program to read a NuttX Sensor: <strong>Bosch BME280 Sensor</strong> (Temperture / Humidity / Air Pressure).</p>
@@ -506,47 +507,57 @@ const sen = @import(&quot;./sensor.zig&quot;);
 const c = sen.c;
 
 /// Import the Multisensor Module
-const multi = @import(&quot;./multisensor.zig&quot;);
-
-///////////////////////////////////////////////////////////////////////////////
-//  Main Function
-
-/// Main Function that will be called by NuttX. We read the Sensor Data from a Sensor.
+const multi = @import(&quot;./multisensor.zig&quot;);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We read the Sensor Data from a Sensor.
 pub export fn sensortest_main(
     argc: c_int, 
     argv: [*c]const [*c]u8
 ) c_int {
-    debug(&quot;Zig Sensor Test&quot;, .{});
+  debug(&quot;Zig Sensor Test&quot;, .{});
 
-    // Quit if no args specified
-    if (argc &lt;= 1) { usage(); return -1; }
+  // Quit if no args specified
+  if (argc &lt;= 1) { usage(); return -1; }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Run a command like &quot;test&quot; or &quot;test2&quot;
+  if (argc == 2) {
 
-    // Run a command like &quot;test&quot; or &quot;test2&quot;
-    if (argc == 2) {
-        const cmd = std.mem.span(argv[1]);
-        if (std.mem.eql(u8, cmd, &quot;test&quot;)) {
-            test_sensor()
-                catch { return -1; };
-            return 0;
-        }
-        else if (std.mem.eql(u8, cmd, &quot;test2&quot;)) {
-            test_sensor2()
-                catch { return -1; };
-            return 0;
-        }
+    // Convert the command to a Slice
+    const cmd = std.mem.span(argv[1]);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>    // If the Slice is &quot;test&quot;...
+    if (std.mem.eql(u8, cmd, &quot;test&quot;)) {
+
+      // Read the Barometer Sensor
+      test_sensor()
+        catch { return -1; };
+      return 0;
+    }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>    // If the Slice is &quot;test2&quot;...
+    else if (std.mem.eql(u8, cmd, &quot;test2&quot;)) {
+
+      // Read the Humidity Sensor
+      test_sensor2()
+        catch { return -1; };
+      return 0;
     }
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Read the Sensor specified by the Command-Line Options
+  multi.test_multisensor(argc, argv)
+    catch |err| {
+      if (err == error.OptionError or err == error.NameError) { usage(); }
+      return -1;
+    };
 
-    // Read the Sensor specified by the Command-Line Options
-    multi.test_multisensor(argc, argv)
-        catch |err| {
-            if (err == error.OptionError or err == error.NameError) { usage(); }
-            return -1;
-        };
-
-    return 0;
+  return 0;
 }</code></pre></div>
+<p>TODO</p>
+<h1 id="slice-vs-pointers"><a href="#slice-vs-pointers">6 Slice vs Pointers</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
-<h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">6 Connect BME280 Sensor</a></h1>
+<h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">7 Connect BME280 Sensor</a></h1>
 <p>TODO</p>
 <p>For testing the Zig Sensor App, we connect the BME280 Sensor (Temperature / Humidity / Air Pressure) to Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center">BL602 Pin</th><th style="text-align: center">BME280 Pin</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
@@ -555,7 +566,7 @@ pub export fn sensortest_main(
 <tr><td style="text-align: center"><strong><code>3V3</code></strong></td><td style="text-align: center"><code>3.3V</code></td><td style="text-align: left">Red</td></tr>
 <tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td><td style="text-align: left">Black</td></tr>
 </tbody></table>
-</div><h1 id="compile-zig-app"><a href="#compile-zig-app">7 Compile Zig App</a></h1>
+</div><h1 id="compile-zig-app"><a href="#compile-zig-app">8 Compile Zig App</a></h1>
 <p>TODO</p>
 <p>Below are the steps to <strong>compile our Zig Sensor App</strong> for Apache NuttX RTOS and BL602 RISC-V SoC.</p>
 <p>First we download the latest version of <strong>Zig Compiler</strong> (0.10.0 or later), extract it and add to PATH…</p>
@@ -616,7 +627,7 @@ make
 mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’re ready to run our Zig App!</p>
-<h1 id="run-zig-app"><a href="#run-zig-app">8 Run Zig App</a></h1>
+<h1 id="run-zig-app"><a href="#run-zig-app">9 Run Zig App</a></h1>
 <p>TODO</p>
 <p>Follow these steps to <strong>flash and boot NuttX</strong> (with our Zig App inside) on PineDio Stack…</p>
 <ul>
@@ -639,11 +650,11 @@ temperature:27.70</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test2
 Zig Sensor Test
 test_sensor2
-humidity:78.81</code></pre></div><h1 id="fixed-point-sensor-data"><a href="#fixed-point-sensor-data">9 Fixed-Point Sensor Data</a></h1>
+humidity:78.81</code></pre></div><h1 id="fixed-point-sensor-data"><a href="#fixed-point-sensor-data">10 Fixed-Point Sensor Data</a></h1>
 <p>TODO</p>
-<h1 id="multiple-sensors"><a href="#multiple-sensors">10 Multiple Sensors</a></h1>
+<h1 id="multiple-sensors"><a href="#multiple-sensors">11 Multiple Sensors</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>Here are some tips for learning Zig…</p>
 <ul>
@@ -678,7 +689,7 @@ humidity:78.81</code></pre></div><h1 id="fixed-point-sensor-data"><a href="#fixe
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl.md"><strong>lupyuen.github.io/src/lvgl.md</strong></a></p>
-<h1 id="notes"><a href="#notes">12 Notes</a></h1>
+<h1 id="notes"><a href="#notes">13 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1548909434440585216"><strong>this Twitter Thread</strong></a></li>
 </ol>
