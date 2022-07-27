@@ -975,11 +975,54 @@ _Is there an easier way to test various NuttX Sensors?_
 
 TODO
 
+```text
+nsh> sensortest -n 1 baro0
+Zig Sensor Test
+test_multisensor
+SensorTest: Test /dev/sensor/baro0  with interval(1000000), latency(0)
+value1:1007.65
+value2:27.68
+SensorTest: Received message: baro0, number:1/1
+```
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx#clean-up)
+
+TODO
+
+```text
+nsh> sensortest -n 1 humi0
+Zig Sensor Test
+test_multisensor
+SensorTest: Test /dev/sensor/humi0  with interval(1000000), latency(0)
+value:78.91
+SensorTest: Received message: humi0, number:1/1
+```
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx#clean-up)
+
+TODO
+
+[(__usage__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253)
+
+TODO
+
 -   [__multisensor.zig__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig)
 
 Derived from the __NuttX Sensor Test App__ in C...
 
 -   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c)
+
+TODO
+
+The __NuttX Sensor Data Structs__ are defined at...
+
+-   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
+
+Here's the list of __NuttX Sensor Device Names__...
+
+-   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
+
+TODO
 
 Auto-translated from C to Zig...
 
