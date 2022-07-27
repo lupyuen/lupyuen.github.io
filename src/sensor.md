@@ -2,31 +2,39 @@
 
 📝 _31 Jul 2022_
 
-![TODO](https://lupyuen.github.io/images/sensor-title.jpg)
+![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title.jpg)
 
-TODO: With Zig programming language, we have a fun new way to create embedded applications for Apache NuttX RTOS.
+With __Zig programming language__, we now have a fun new way to create embedded applications for __Apache NuttX RTOS__.
 
-TODO: This article explains how we write a Zig program to read a NuttX Sensor: Bosch BME280 (Temperture / Humidity / Air Pressure)
+Today we shall write a Zig program to read a NuttX Sensor: __Bosch BME280 Sensor__ (Temperture / Humidity / Air Pressure).
 
-(Though the steps should be similar for other NuttX Sensors)
+And we'll run it on Pine64's __PineCone BL604 RISC-V Board__. (Pic above)
 
-TODO: Why Zig?
+(The steps will be similar for other sensors and microcontrollers)
 
-TODO: What if we're not familiar with Zig?
+_What if we're not familiar with Zig?_
 
-TODO: But really, if we prefer to do this in C?
+This article assumes that we're familiar with C.
 
-NuttX provides an excellent Sensor Test App in C...
+The Zig-ish parts shall be explained with examples in C.
 
-[sensortest.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c)
+[(If we're keen to learn Zig, see this)](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
+
+_But really... If we prefer to do this in C?_
+
+NuttX provides an excellent __Sensor Test App__ in C...
+
+-   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c)
 
 The Zig program in this article is derived from the NuttX Sensor Test App.
+
+_Why are we doing this in Zig?_
 
 TODO: Upcoming LoRaWAN, Visual Programming
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
 
-[Changes to NuttX Sensors](https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h)
+TODO: [Changes to NuttX Sensors](https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h)
 
 # Bosch BME280 Sensor
 
@@ -436,7 +444,7 @@ fn test_sensor2() !void {
   );
 ```
 
-We change the __path of the Sensor Device__.
+In the code above we changed the __path of the Sensor Device__.
 
 The Sensor Data Struct becomes __sensor_event_humi__...
 
@@ -477,6 +485,18 @@ Which contains a single value for the __Humidity Sensor Data__...
 
 And we're done!
 
+_Where's the list of Sensor Data Structs?_
+
+The __NuttX Sensor Data Structs__ are defined at...
+
+-   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/sensors/sensor.h#L290-L545)
+
+_What about the Sensor Device Names like baro0 and humi0?_
+
+Here's the list of __NuttX Sensor Device Names__...
+
+-   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L86-L119)
+
 # Import NuttX Functions
 
 TODO
@@ -484,6 +504,8 @@ TODO
 # Main Function
 
 TODO
+
+![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
 
 # Connect BME280 Sensor
 
