@@ -8,7 +8,7 @@ With __Zig programming language__, we now have a fun new way to create embedded 
 
 Today we shall write a Zig program to read a NuttX Sensor: __Bosch BME280 Sensor__ (Temperture / Humidity / Air Pressure).
 
-And we'll run it on Pine64's __PineCone BL604 RISC-V Board__. (Pic above)
+And we'll run it on Pine64's [__PineCone BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinecone). (Pic above)
 
 (The steps will be similar for other sensors and microcontrollers)
 
@@ -328,7 +328,8 @@ We __read the Sensor Data__ into the struct...
     // Read the Sensor Data
     if (c.read(fd, &sensor_data, len) >= len) {
 
-      // Convert the Sensor Data to Fixed-Point Numbers
+      // Convert the Sensor Data 
+      // to Fixed-Point Numbers
       const pressure = float_to_fixed(
         sensor_data.pressure
       );
@@ -478,7 +479,8 @@ Which contains a single value for the __Humidity Sensor Data__...
     // Read the Sensor Data
     if (c.read(fd, &sensor_data, len) >= len) {
 
-      // Convert the Sensor Data to Fixed-Point Numbers
+      // Convert the Sensor Data 
+      // to Fixed-Point Number
       const humidity = float_to_fixed(
         sensor_data.humidity
       );
@@ -788,9 +790,7 @@ const fd = c.open(
 
 # Connect BME280 Sensor
 
-TODO
-
-For testing the Zig Sensor App, we connect the BME280 Sensor (Temperature / Humidity / Air Pressure) to Pine64's [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone)...
+For testing the Zig Sensor App, we connect the BME280 Sensor (I2C) to Pine64's [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone) (pic above)...
 
 | BL602 Pin | BME280 Pin | Wire Colour
 |:---:|:---:|:---|
@@ -799,9 +799,21 @@ For testing the Zig Sensor App, we connect the BME280 Sensor (Temperature / Humi
 | __`3V3`__ | `3.3V` | Red
 | __`GND`__ | `GND` | Black
 
-# Compile Zig App
+The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98)
 
-TODO
+```c
+/* I2C Configuration */
+#define BOARD_I2C_SCL \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
+  GPIO_PIN2)
+#define BOARD_I2C_SDA \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
+  GPIO_PIN1)
+```
+
+[(Which pins can be used? See this)](https://lupyuen.github.io/articles/expander#pin-functions)
+
+# Compile Zig App
 
 Below are the steps to __compile our Zig Sensor App__ for Apache NuttX RTOS and BL602 RISC-V SoC.
 
@@ -809,20 +821,28 @@ First we download the latest version of __Zig Compiler__ (0.10.0 or later), extr
 
 -   [__Zig Compiler Downloads__](https://ziglang.org/download/)
 
-Then we download and compile __Apache NuttX RTOS__ for PineDio Stack BL604...
+Then we download and compile __Apache NuttX RTOS__ for BL602...
 
--   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
+-   [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
-TODO: Enable BME280 Sensor
+-   [__"Build NuttX"__](https://lupyuen.github.io/articles/nuttx#build-nuttx)
 
-TODO: Enable Sensor Test App
+Check that the following have been enabled in the NuttX Build...
+
+-   [__I2C0 Port__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
+
+-   [__I2C Character Driver__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
+
+-   [__BME280 Driver__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
+
+-   [__Sensor Driver Test App__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
 
 After building NuttX, we download and compile our __Zig Sensor App__...
 
 ```bash
-##  Download our Zig LVGL App for NuttX
-git clone --recursive https://github.com/lupyuen/zig-lvgl-nuttx
-cd zig-lvgl-nuttx
+##  Download our Zig Sensor App for NuttX
+git clone --recursive https://github.com/lupyuen/visual-zig-nuttx
+cd visual-zig-nuttx
 
 ##  Compile the Zig App for BL602
 ##  (RV32IMACF with Hardware Floating-Point)
@@ -832,14 +852,11 @@ zig build-obj \
   -target riscv32-freestanding-none \
   -mcpu=baseline_rv32-d \
   -isystem "$HOME/nuttx/nuttx/include" \
-  -I "$HOME/nuttx/apps/graphics/lvgl" \
-  -I "$HOME/nuttx/apps/graphics/lvgl/lvgl" \
   -I "$HOME/nuttx/apps/include" \
-  -I "$HOME/nuttx/apps/examples/lvgltest" \
-  lvgltest.zig
+  sensortest.zig
 ```
 
-[(See the Compile Log)](https://gist.github.com/lupyuen/86298a99cb87b43ac568c19daeb4081a)
+[(See the Compile Log)](https://gist.github.com/lupyuen/8d7a2a360bc4d14264c77f82da58b3dc)
 
 Note that __target__ and __mcpu__ are specific to BL602...
 
@@ -851,16 +868,17 @@ Remember that we'll link our Compiled Zig App with __Apache NuttX RTOS.__
 
 Hence the __Zig Compiler Options must be the same__ as the GCC Options used to compile NuttX.
 
-[(See the GCC Options for NuttX)](https://lupyuen.github.io/articles/lvgl#appendix-compiler-options)
+[(See the GCC Options for NuttX)](https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c)
 
 Next comes a quirk specific to BL602: We must __patch the ELF Header__ from Software Floating-Point ABI to Hardware Floating-Point ABI...
 
 ```bash
-##  Patch the ELF Header of `lvgltest.o` from Soft-Float ABI to Hard-Float ABI
-xxd -c 1 lvgltest.o \
+##  Patch the ELF Header of `sensortest.o` from 
+##  Soft-Float ABI to Hard-Float ABI
+xxd -c 1 sensortest.o \
   | sed 's/00000024: 01/00000024: 03/' \
-  | xxd -r -c 1 - lvgltest2.o
-cp lvgltest2.o lvgltest.o
+  | xxd -r -c 1 - sensortest2.o
+cp sensortest2.o sensortest.o
 ```
 
 [(More about this)](https://lupyuen.github.io/articles/zig#patch-elf-header)
@@ -868,11 +886,11 @@ cp lvgltest2.o lvgltest.o
 Finally we inject our __Compiled Zig App__ into the NuttX Project Directory and link it into the __NuttX Firmware__...
 
 ```bash
-##  Copy the compiled app to NuttX and overwrite `lvgltest.o`
+##  Copy the compiled app to NuttX and overwrite `sensortest.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cp lvgltest.o $HOME/nuttx/apps/examples/lvgltest/lvgltest*.o
+cp sensortest.o $HOME/nuttx/apps/testing/sensortest/sensortest*.o
 
-##  Build NuttX to link the Zig Object from `lvgltest.o`
+##  Build NuttX to link the Zig Object from `sensortest.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
 make
@@ -886,21 +904,19 @@ We're ready to run our Zig App!
 
 # Run Zig App
 
-TODO
+Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on BL602...
 
-Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on PineDio Stack...
+-   [__"Flash NuttX"__](https://lupyuen.github.io/articles/nuttx#flash-nuttx)
 
--   [__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
-
--   [__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
+-   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
 
 In the NuttX Shell, enter this command to start our Zig App...
 
 ```bash
-TODO
+sensortest test
 ```
 
-Here's the Air Pressure and Temperature read from the BME280 Barometer Sensor...
+Here's the __Air Pressure and Temperature__ read from the BME280 Barometer Sensor...
 
 ```text
 nsh> sensortest test
@@ -910,7 +926,15 @@ pressure:1007.66
 temperature:27.70
 ```
 
-Here's the Humidity read from the BME280 Humidity Sensor...
+This says that the Air Pressure is __1,007.66 millibars__ and the Temperature is __27.70 °C__.
+
+Then enter this...
+
+```bash
+sensortest test2
+```
+
+And here's the __Humidity__ read from the BME280 Humidity Sensor...
 
 ```text
 nsh> sensortest test2
@@ -919,9 +943,9 @@ test_sensor2
 humidity:78.81
 ```
 
-# Fixed-Point Sensor Data
+This says that the Relative Humidity is __78.81 %__.
 
-TODO
+Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctly from BME280 Sensor yay!
 
 # Multiple Sensors
 
@@ -960,5 +984,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1548909434440585216)
+
+# Appendix: Fixed-Point Sensor Data
+
+TODO
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title2.jpg)
