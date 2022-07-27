@@ -30,7 +30,7 @@ _But really... What if we prefer to do this in C?_
 
 NuttX provides an excellent __Sensor Test App__ in C...
 
--   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c)
+-   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c)
 
 That inspired the Zig program in this article...
 
@@ -499,13 +499,13 @@ _Where's the list of Sensor Data Structs?_
 
 The __NuttX Sensor Data Structs__ are defined at...
 
--   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/sensors/sensor.h#L290-L545)
+-   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
 
 _What about the Sensor Device Names like baro0 and humi0?_
 
 Here's the list of __NuttX Sensor Device Names__...
 
--   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L86-L119)
+-   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
 
 _How are test_sensor and test_sensor2 called?_
 
@@ -570,7 +570,7 @@ Then we import the __C Header Files__ for Apache NuttX RTOS...
 
 "types.h" and "limits.h" are needed for NuttX compatibility. [(See this)](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
 
-The other includes were copied from the __NuttX Sensor Test App__ in C: [sensortest.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L34-L42)
+The other includes were copied from the __NuttX Sensor Test App__ in C: [sensortest.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42)
 
 _What about NuttX Structs like sensor_event_baro and sensor_event_humi?_
 
