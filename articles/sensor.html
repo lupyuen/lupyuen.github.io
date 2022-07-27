@@ -127,6 +127,8 @@
 </li>
 </ul>
 <p>We shall read both Sensor Devices to fetch the Sensor Data for <strong>Temperature, Air Pressue and Humidity.</strong></p>
+<p><img src="https://lupyuen.github.io/images/sensor-code2a.png" alt="Read Barometer Sensor" /></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145">(Source)</a></p>
 <h1 id="read-barometer-sensor"><a href="#read-barometer-sensor">2 Read Barometer Sensor</a></h1>
 <p>Let’s walk through the code to read the Temperature and Air Pressure from our <strong>NuttX Barometer Sensor</strong> at “/dev/sensor/baro0”…</p>
 <ul>
@@ -393,6 +395,8 @@ fn test_sensor() !void {
     _ = c.close(fd);
   }</code></pre></div>
 <p>This closes the sensor automagically when we return from the function. Super handy!</p>
+<p><img src="https://lupyuen.github.io/images/sensor-code3a.png" alt="Read Barometer Sensor" /></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145">(Source)</a></p>
 <h1 id="read-humidity-sensor"><a href="#read-humidity-sensor">3 Read Humidity Sensor</a></h1>
 <p><em>What about the Humidity from our BME280 Sensor?</em></p>
 <p>We read the <strong>Humidity Sensor Data</strong> the exact same way as above, with a few tweaks: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L147-L234">sensortest.zig</a></p>
@@ -450,6 +454,8 @@ fn test_sensor2() !void {
 <p><em>How are test_sensor and test_sensor2 called?</em></p>
 <p>They are called by our <strong>Zig Main Function</strong>.</p>
 <p>(More about this in a while)</p>
+<p><img src="https://lupyuen.github.io/images/sensor-code5a.png" alt="Import NuttX Functions, Types and Macros" /></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L6-L30">(Source)</a></p>
 <h1 id="import-nuttx-functions"><a href="#import-nuttx-functions">4 Import NuttX Functions</a></h1>
 <p><em>How do we import into Zig the NuttX Functions? open(), ioctl(), read(), …</em></p>
 <p>This is how we <strong>import the NuttX Functions, Types and Macros</strong> from C into Zig: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L6-L30">sensor.zig</a></p>
@@ -499,6 +505,8 @@ pub const c = @cImport({
 <div class="example-wrap"><pre class="language-zig"><code>/// Import Functions, Types and Macros into &quot;c&quot; Namespace
 pub const c = @cImport({ ... });</code></pre></div>
 <p>That’s why we write “<code>c.</code><em>something</em>” when we refer to NuttX Functions, Types and Macros.</p>
+<p><img src="https://lupyuen.github.io/images/sensor-code4a.png" alt="Main Function" /></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51">(Source)</a></p>
 <h1 id="main-function"><a href="#main-function">5 Main Function</a></h1>
 <p>One more thing before we run our Zig program: The <strong>Main Function</strong>.</p>
 <p>We begin by importing the Zig Standard Library and <strong>NuttX Sensor Definitions</strong>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51">sensortest.zig</a></p>
@@ -723,6 +731,7 @@ make
 mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’re ready to run our Zig App!</p>
+<p><img src="https://lupyuen.github.io/images/sensor-run1a.png" alt="Zig Sensor App" /></p>
 <h1 id="run-zig-app"><a href="#run-zig-app">9 Run Zig App</a></h1>
 <p>Follow these steps to <strong>flash and boot NuttX</strong> (with our Zig App inside) on BL602…</p>
 <ul>
@@ -751,6 +760,7 @@ test_sensor2
 humidity:78.81</code></pre></div>
 <p>This says that the Relative Humidity is <strong>78.81 %</strong>.</p>
 <p>Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctly from BME280 Sensor yay!</p>
+<p><img src="https://lupyuen.github.io/images/sensor-run2a.png" alt="Multiple Sensors" /></p>
 <h1 id="multiple-sensors"><a href="#multiple-sensors">10 Multiple Sensors</a></h1>
 <p><em>To test a different sensor, do we rewrite the Zig Sensor App?</em></p>
 <p><em>Is there an easier way to test various NuttX Sensors?</em></p>
