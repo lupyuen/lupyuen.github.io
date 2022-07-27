@@ -79,7 +79,7 @@
 <li><a href="#read-humidity-sensor">3 Read Humidity Sensor</a><ul></ul></li>
 <li><a href="#import-nuttx-functions">4 Import NuttX Functions</a><ul></ul></li>
 <li><a href="#main-function">5 Main Function</a><ul></ul></li>
-<li><a href="#slice-vs-pointers">6 Slice vs Pointers</a><ul></ul></li>
+<li><a href="#slice-vs-pointer">6 Slice vs Pointer</a><ul></ul></li>
 <li><a href="#connect-bme280-sensor">7 Connect BME280 Sensor</a><ul></ul></li>
 <li><a href="#compile-zig-app">8 Compile Zig App</a><ul></ul></li>
 <li><a href="#run-zig-app">9 Run Zig App</a><ul></ul></li>
@@ -514,17 +514,20 @@ pub export fn sensortest_main(
     argc: c_int, 
     argv: [*c]const [*c]u8
 ) c_int {
-  debug(&quot;Zig Sensor Test&quot;, .{});
 
   // Quit if no args specified
   if (argc &lt;= 1) { usage(); return -1; }</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253">(<strong>usage</strong> is defined here)</a></p>
+<p>We check the <strong>Command-Line Argument</strong> passed to our program…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Run a command like &quot;test&quot; or &quot;test2&quot;
   if (argc == 2) {
 
     // Convert the command to a Slice
     const cmd = std.mem.span(argv[1]);</code></pre></div>
-<p>TODO</p>
+<p>Assume that “<strong>argv[1]</strong>” points to “test”, the command-line arg for our program.</p>
+<p><a href="https://ziglang.org/documentation/0.9.1/std/#root;mem.span"><strong>std.mem.span</strong></a> converts “test” to a <strong>Zig Slice</strong>.</p>
+<p>Let’s pretend a Slice works like a “String”, we’ll explain in the next section.</p>
+<p>This is how we <strong>compare our Slice</strong> with a String (that’s actually another Slice)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // If the Slice is &quot;test&quot;...
     if (std.mem.eql(u8, cmd, &quot;test&quot;)) {
 
@@ -533,7 +536,9 @@ pub export fn sensortest_main(
         catch { return -1; };
       return 0;
     }</code></pre></div>
-<p>TODO</p>
+<p>So if the command-line arg is “test”, we call <strong>test_sensor</strong> to read the Barometer Sensor. <a href="https://lupyuen.github.io/articles/sensor#read-barometer-sensor">(As seen earlier)</a></p>
+<p>If <strong>test_sensor</strong> returns an Error, the <strong>catch</strong> clause says that we quit.</p>
+<p>And if the command-line arg is “test2”…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // If the Slice is &quot;test2&quot;...
     else if (std.mem.eql(u8, cmd, &quot;test2&quot;)) {
 
@@ -543,7 +548,8 @@ pub export fn sensortest_main(
       return 0;
     }
   }</code></pre></div>
-<p>TODO</p>
+<p>We call <strong>test_sensor2</strong> to read the Humidity Sensor. <a href="https://lupyuen.github.io/articles/sensor#read-humidity-sensor">(As seen earlier)</a></p>
+<p>For other command-line args we run a <strong>Multisensor Test</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Read the Sensor specified by the Command-Line Options
   multi.test_multisensor(argc, argv)
     catch |err| {
@@ -553,8 +559,10 @@ pub export fn sensortest_main(
 
   return 0;
 }</code></pre></div>
+<p>(We’ll talk about Multisensor Test in a while)</p>
+<p><em>What’s “catch |err| { … }”?</em></p>
 <p>TODO</p>
-<h1 id="slice-vs-pointers"><a href="#slice-vs-pointers">6 Slice vs Pointers</a></h1>
+<h1 id="slice-vs-pointer"><a href="#slice-vs-pointer">6 Slice vs Pointer</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">7 Connect BME280 Sensor</a></h1>
