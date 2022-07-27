@@ -507,6 +507,12 @@ Here's the list of __NuttX Sensor Device Names__...
 
 -   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L86-L119)
 
+_How are test_sensor and test_sensor2 called?_
+
+They are called by our __Zig Main Function__.
+
+(More about this in a while)
+
 # Import NuttX Functions
 
 _How do we import into Zig the NuttX Functions? open(), ioctl(), read(), ..._
@@ -587,28 +593,33 @@ That's why we write "`c.`_something_" when we refer to NuttX Functions, Types an
 
 One more thing before we run our Zig program: The __Main Function__.
 
-TODO
-
-[sensortest.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51)
+We begin by importing the Zig Standard Library and __NuttX Sensor Definitions__: [sensortest.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51)
 
 ```zig
 /// Import the Zig Standard Library
 const std = @import("std");
 
-/// Import the Sensor Definitions
+/// Import the NuttX Sensor Definitions
 const sen = @import("./sensor.zig");
 
-/// Import the Sensor Library from C
+/// Import the NuttX Sensor Library
 const c = sen.c;
 
 /// Import the Multisensor Module
 const multi = @import("./multisensor.zig");
 ```
 
-TODO
+[(__sensor.zig__ is located here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig)
+
+__sen.c__ refers to the [__C Namespace__](https://lupyuen.github.io/articles/sensor#import-nuttx-functions) that contains the Functions, Types and Macros imported from NuttX.
+
+(We'll talk about the Multisensor Module in a while)
+
+Next we declare our __Main Function__ that will be called by NuttX...
 
 ```zig
-/// Main Function that will be called by NuttX. We read the Sensor Data from a Sensor.
+/// Main Function that will be called by NuttX. 
+/// We read the Sensor Data from a Sensor.
 pub export fn sensortest_main(
     argc: c_int, 
     argv: [*c]const [*c]u8
@@ -619,6 +630,8 @@ pub export fn sensortest_main(
 ```
 
 [(__usage__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253)
+
+TODO
 
 We check the __Command-Line Argument__ passed to our program...
 
@@ -684,6 +697,8 @@ For other command-line args we run a __Multisensor Test__...
 ```
 
 (We'll talk about Multisensor Test in a while)
+
+That's all for our Main Function!
 
 _What's "catch |err| { ... }"?_
 
