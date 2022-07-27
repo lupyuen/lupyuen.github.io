@@ -493,7 +493,58 @@ pub const c = @cImport({
 pub const c = @cImport({ ... });</code></pre></div>
 <p>That’s why we write “<code>c.</code><em>something</em>” when we refer to NuttX Functions, Types and Macros.</p>
 <h1 id="main-function"><a href="#main-function">5 Main Function</a></h1>
+<p>One more thing before we run our Zig program: The <strong>Main Function</strong>.</p>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51">sensortest.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import the Zig Standard Library
+const std = @import(&quot;std&quot;);
+
+/// Import the Sensor Definitions
+const sen = @import(&quot;./sensor.zig&quot;);
+
+/// Import the Sensor Library from C
+const c = sen.c;
+
+/// Import the Multisensor Module
+const multi = @import(&quot;./multisensor.zig&quot;);
+
+///////////////////////////////////////////////////////////////////////////////
+//  Main Function
+
+/// Main Function that will be called by NuttX. We read the Sensor Data from a Sensor.
+pub export fn sensortest_main(
+    argc: c_int, 
+    argv: [*c]const [*c]u8
+) c_int {
+    debug(&quot;Zig Sensor Test&quot;, .{});
+
+    // Quit if no args specified
+    if (argc &lt;= 1) { usage(); return -1; }
+
+    // Run a command like &quot;test&quot; or &quot;test2&quot;
+    if (argc == 2) {
+        const cmd = std.mem.span(argv[1]);
+        if (std.mem.eql(u8, cmd, &quot;test&quot;)) {
+            test_sensor()
+                catch { return -1; };
+            return 0;
+        }
+        else if (std.mem.eql(u8, cmd, &quot;test2&quot;)) {
+            test_sensor2()
+                catch { return -1; };
+            return 0;
+        }
+    }
+
+    // Read the Sensor specified by the Command-Line Options
+    multi.test_multisensor(argc, argv)
+        catch |err| {
+            if (err == error.OptionError or err == error.NameError) { usage(); }
+            return -1;
+        };
+
+    return 0;
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">6 Connect BME280 Sensor</a></h1>
 <p>TODO</p>
