@@ -585,7 +585,63 @@ That's why we write "`c.`_something_" when we refer to NuttX Functions, Types an
 
 # Main Function
 
+One more thing before we run our Zig program: The __Main Function__.
+
 TODO
+
+[sensortest.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51)
+
+```zig
+/// Import the Zig Standard Library
+const std = @import("std");
+
+/// Import the Sensor Definitions
+const sen = @import("./sensor.zig");
+
+/// Import the Sensor Library from C
+const c = sen.c;
+
+/// Import the Multisensor Module
+const multi = @import("./multisensor.zig");
+
+///////////////////////////////////////////////////////////////////////////////
+//  Main Function
+
+/// Main Function that will be called by NuttX. We read the Sensor Data from a Sensor.
+pub export fn sensortest_main(
+    argc: c_int, 
+    argv: [*c]const [*c]u8
+) c_int {
+    debug("Zig Sensor Test", .{});
+
+    // Quit if no args specified
+    if (argc <= 1) { usage(); return -1; }
+
+    // Run a command like "test" or "test2"
+    if (argc == 2) {
+        const cmd = std.mem.span(argv[1]);
+        if (std.mem.eql(u8, cmd, "test")) {
+            test_sensor()
+                catch { return -1; };
+            return 0;
+        }
+        else if (std.mem.eql(u8, cmd, "test2")) {
+            test_sensor2()
+                catch { return -1; };
+            return 0;
+        }
+    }
+
+    // Read the Sensor specified by the Command-Line Options
+    multi.test_multisensor(argc, argv)
+        catch |err| {
+            if (err == error.OptionError or err == error.NameError) { usage(); }
+            return -1;
+        };
+
+    return 0;
+}
+```
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
 
