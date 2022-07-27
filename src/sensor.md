@@ -989,7 +989,29 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1548909434440585216)
 
+![Converting to fixed-point number](https://lupyuen.github.io/images/sensor-code1a.png)
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49)
+
 # Appendix: Fixed-Point Sensor Data
+
+TODO
+
+[sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49)
+
+```zig
+/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
+/// We do this because `debug` has a problem with floats.
+pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
+    const scaled = @floatToInt(i32, f * 100.0);
+    const rem = @rem(scaled, 100);
+    const rem_abs = if (rem < 0) -rem else rem;
+    return .{
+        .int  = @divTrunc(scaled, 100),
+        .frac = @intCast(u8, rem_abs),
+    };
+}
+```
 
 TODO
 
