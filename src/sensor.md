@@ -8,7 +8,7 @@ With __Zig programming language__, we now have a fun new way to create embedded 
 
 Today we shall write a Zig program to read a NuttX Sensor: __Bosch BME280 Sensor__ (Temperture / Humidity / Air Pressure).
 
-And we'll run it on Pine64's [__PineCone BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinecone). (Pic above)
+And we'll run it on Pine64's [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone). (Pic above)
 
 (The steps will be similar for other sensors and microcontrollers)
 
@@ -948,6 +948,10 @@ This says that the Relative Humidity is __78.81 %__.
 Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctly from BME280 Sensor yay!
 
 # Multiple Sensors
+
+TODO
+
+# LoRaWAN and Visual Programming
 
 TODO
 
