@@ -765,6 +765,44 @@ humidity:78.81</code></pre></div>
 <p><em>To test a different sensor, do we rewrite the Zig Sensor App?</em></p>
 <p><em>Is there an easier way to test various NuttX Sensors?</em></p>
 <p>TODO</p>
+<ul>
+<li><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig"><strong>multisensor.zig</strong></a></li>
+</ul>
+<p>Derived from the <strong>NuttX Sensor Test App</strong> in C…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
+</ul>
+<p>Auto-translated from C to Zig…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/visual-zig-nuttx#auto-translate-sensor-app-to-zig"><strong>Auto-Translate Sensor App to Zig</strong></a></li>
+</ul>
+<p>Then cleaned up…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-app-in-zig"><strong>Sensor App in Zig</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#run-zig-sensor-app"><strong>Run Zig Sensor App</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values"><strong>Fix Floating-Point Values</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error"><strong>Floating-Point Link Error</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing"><strong>Fixed-Point Printing</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#change-to-static-buffer"><strong>Change to Static Buffer</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#incorrect-alignment"><strong>Incorrect Alignment</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up"><strong>Clean Up</strong></a></p>
+</li>
+</ul>
 <h1 id="lorawan-and-visual-programming"><a href="#lorawan-and-visual-programming">11 LoRaWAN and Visual Programming</a></h1>
 <p><em>Once again… Why are we doing this in Zig?</em></p>
 <p>We said earlier that Zig is super helpful for <strong>writing safer programs</strong> because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. <a href="https://ziglang.org/documentation/master/#Undefined-Behavior">(See the list)</a></p>
@@ -825,6 +863,18 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
     .frac = @intCast(u8, rem_abs),
   };
 }</code></pre></div>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values"><strong>Fix Floating-Point Values</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error"><strong>Floating-Point Link Error</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing"><strong>Fixed-Point Printing</strong></a></p>
+</li>
+</ul>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/sensor-title2.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 
