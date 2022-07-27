@@ -26,9 +26,11 @@ NuttX provides an excellent __Sensor Test App__ in C...
 
 -   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c)
 
-The Zig program in this article is derived from the NuttX Sensor Test App.
+That inspired the Zig program in this article.
 
 _Why are we doing this in Zig?_
+
+Zig is super helpful for __writing safer programs__ because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. [(See the list)](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
 TODO: Upcoming LoRaWAN, Visual Programming
 
