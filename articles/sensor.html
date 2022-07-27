@@ -474,26 +474,24 @@ pub const c = @cImport({
 <p>At the top of our Zig App we set the <strong>#define Macros</strong> that will be referenced by the C Header Files coming up.</p>
 <p>The settings above are specific to Apache NuttX RTOS and the BL602 RISC-V SoC. <a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(Here’s why)</a></p>
 <p>Next comes a workaround for a <strong>C Macro Error</strong> that appears on Zig with Apache NuttX RTOS…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;</span>
-  @<span class="ident">cDefine</span>(<span class="string">&quot;LL&quot;</span>, <span class="string">&quot;&quot;</span>);
-  @<span class="ident">cDefine</span>(<span class="string">&quot;__int_c_join(a, b)&quot;</span>, <span class="string">&quot;a&quot;</span>);  <span class="comment">//  Bypass zig/lib/include/stdint.h</span></code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>  // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
+  @cDefine(&quot;LL&quot;, &quot;&quot;);
+  @cDefine(&quot;__int_c_join(a, b)&quot;, &quot;a&quot;);  //  Bypass zig/lib/include/stdint.h</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-macro-error">(More about this)</a></p>
 <p>Then we import the <strong>C Header Files</strong> for Apache NuttX RTOS…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// NuttX Header Files. This is equivalent to...</span>
-  <span class="comment">// #include &quot;...&quot;;</span>
-  @<span class="ident">cInclude</span>(<span class="string">&quot;arch/types.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;../../nuttx/include/limits.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;nuttx/sensors/sensor.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;nuttx/config.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;sys/ioctl.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;inttypes.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;unistd.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;stdlib.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;stdio.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;fcntl.h&quot;</span>);
-  @<span class="ident">cInclude</span>(<span class="string">&quot;poll.h&quot;</span>);
+<div class="example-wrap"><pre class="language-zig"><code>  // NuttX Header Files. This is equivalent to...
+  // #include &quot;...&quot;;
+  @cInclude(&quot;arch/types.h&quot;);
+  @cInclude(&quot;../../nuttx/include/limits.h&quot;);
+  @cInclude(&quot;nuttx/sensors/sensor.h&quot;);
+  @cInclude(&quot;nuttx/config.h&quot;);
+  @cInclude(&quot;sys/ioctl.h&quot;);
+  @cInclude(&quot;inttypes.h&quot;);
+  @cInclude(&quot;unistd.h&quot;);
+  @cInclude(&quot;stdlib.h&quot;);
+  @cInclude(&quot;stdio.h&quot;);
+  @cInclude(&quot;fcntl.h&quot;);
+  @cInclude(&quot;poll.h&quot;);
 });</code></pre></div>
 <p>“types.h” and “limits.h” are needed for NuttX compatibility. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
 <p>The other includes were copied from the <strong>NuttX Sensor Test App</strong> in C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42">sensortest.c</a></p>
