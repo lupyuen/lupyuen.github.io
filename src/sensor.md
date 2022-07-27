@@ -1003,6 +1003,10 @@ Then cleaned up...
 
 -   [__Clean Up__](https://github.com/lupyuen/visual-zig-nuttx#clean-up)
 
+![Pine64 PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN on Zig to RAKwireless WisGate LoRaWAN Gateway (right)](https://lupyuen.github.io/images/iot-title.jpg)
+
+_Pine64 PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN on Zig to RAKwireless WisGate LoRaWAN Gateway (right)_
+
 # LoRaWAN and Visual Programming
 
 _Once again... Why are we doing this in Zig?_
@@ -1027,7 +1031,21 @@ And monitor the Sensor Data with __Prometheus and Grafana__...
 
 -   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
 
-TODO
+_And this LoRaWAN App will work for all kinds of NuttX Sensors?_
+
+Righto our Zig LoRaWAN App will eventually support __all types of NuttX Sensors__.
+
+But we've seen today that each kind of NuttX Sensor needs a lot of __boilerplate code__ to support the sensor.
+
+_Can we auto-generate the boilerplate code for each NuttX Sensor?_
+
+That's why I'm keen to experiment with __Visual Programming__ for NuttX Sensors.
+
+Perhaps we can __drag-n-drop a NuttX Sensor__ into our LoRaWAN App...
+
+And __auto-generate the Zig code__ for the NuttX Sensor!
+
+That would be an awesome way for people to mix-n-match various NuttX Sensors for IoT Gadgets!
 
 # What's Next
 
