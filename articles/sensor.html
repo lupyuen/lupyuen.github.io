@@ -622,7 +622,8 @@ if (std.mem.eql(u8, slice, &quot;test&quot;)) {
 const fd = c.open(
   &amp;slice[0], 
   c.O_RDONLY | c.O_NONBLOCK
-);</code></pre></div>
+);
+// Triggers a runtime panic if the Slice is empty</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Slices">(More about Slices)</a></p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">7 Connect BME280 Sensor</a></h1>
