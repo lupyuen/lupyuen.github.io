@@ -444,7 +444,54 @@ fn test_sensor2() !void {
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
 </ul>
 <h1 id="import-nuttx-functions"><a href="#import-nuttx-functions">4 Import NuttX Functions</a></h1>
-<p>TODO</p>
+<p><em>How do we import into Zig the NuttX Functions? open(), ioctl(), read(), …</em></p>
+<p>This is how we <strong>import the NuttX Functions, Types and Macros</strong> from C into Zig: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L6-L30">sensor.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import the Sensor Library from C
+pub const c = @cImport({
+  // NuttX Defines
+  @cDefine(&quot;__NuttX__&quot;,  &quot;&quot;);
+  @cDefine(&quot;NDEBUG&quot;,     &quot;&quot;);
+  @cDefine(&quot;ARCH_RISCV&quot;, &quot;&quot;);
+
+  // This is equivalent to...
+  // #define __NuttX__
+  // #define NDEBUG
+  // #define ARCH_RISCV</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#Import-from-C-Header-File">(<strong>@cImport</strong> is documented here)</a></p>
+<p>At the top of our Zig App we set the <strong>#define Macros</strong> that will be referenced by the C Header Files coming up.</p>
+<p>The settings above are specific to Apache NuttX RTOS and the BL602 RISC-V SoC. <a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(Here’s why)</a></p>
+<p>Next comes a workaround for a <strong>C Macro Error</strong> that appears on Zig with Apache NuttX RTOS…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;</span>
+  @<span class="ident">cDefine</span>(<span class="string">&quot;LL&quot;</span>, <span class="string">&quot;&quot;</span>);
+  @<span class="ident">cDefine</span>(<span class="string">&quot;__int_c_join(a, b)&quot;</span>, <span class="string">&quot;a&quot;</span>);  <span class="comment">//  Bypass zig/lib/include/stdint.h</span></code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-macro-error">(More about this)</a></p>
+<p>Then we import the <strong>C Header Files</strong> for Apache NuttX RTOS…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// NuttX Header Files. This is equivalent to...</span>
+  <span class="comment">// #include &quot;...&quot;;</span>
+  @<span class="ident">cInclude</span>(<span class="string">&quot;arch/types.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;../../nuttx/include/limits.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;nuttx/sensors/sensor.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;nuttx/config.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;sys/ioctl.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;inttypes.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;unistd.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;stdlib.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;stdio.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;fcntl.h&quot;</span>);
+  @<span class="ident">cInclude</span>(<span class="string">&quot;poll.h&quot;</span>);
+});</code></pre></div>
+<p>“types.h” and “limits.h” are needed for NuttX compatibility. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
+<p>The other includes were copied from the <strong>NuttX Sensor Test App</strong> in C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L34-L42">sensortest.c</a></p>
+<p><em>What about NuttX Structs like sensor_event_baro and sensor_event_humi?</em></p>
+<p><strong>NuttX Structs</strong> will be automatically imported with the code above.</p>
+<p>NuttX Macros like <strong>O_RDONLY</strong> and <strong>SNIOC_BATCH</strong> will get imported too.</p>
+<p><em>Why do we write “<code>c.</code>something” when we call NuttX functions? Like “c.open()”?</em></p>
+<p>Remember that we import all NuttX Functions, Types and Macros into the <strong>“<code>c</code>” Namespace</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import Functions, Types and Macros into &quot;c&quot; Namespace
+pub const c = @cImport({ ... });</code></pre></div>
+<p>That’s why we write “<code>c.</code><em>something</em>” when we refer to NuttX Functions, Types and Macros.</p>
 <h1 id="main-function"><a href="#main-function">5 Main Function</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
@@ -468,7 +515,9 @@ fn test_sensor2() !void {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pinedio2#build-nuttx"><strong>“Build NuttX”</strong></a></li>
 </ul>
-<p>After building NuttX, we download and compile our <strong>Zig LVGL App</strong>…</p>
+<p>TODO: Enable BME280 Sensor</p>
+<p>TODO: Enable Sensor Test App</p>
+<p>After building NuttX, we download and compile our <strong>Zig Sensor App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download our Zig LVGL App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-lvgl-nuttx
 cd zig-lvgl-nuttx
