@@ -444,6 +444,9 @@ fn test_sensor2() !void {
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
 </ul>
+<p><em>How are test_sensor and test_sensor2 called?</em></p>
+<p>They are called by our <strong>Zig Main Function</strong>.</p>
+<p>(More about this in a while)</p>
 <h1 id="import-nuttx-functions"><a href="#import-nuttx-functions">4 Import NuttX Functions</a></h1>
 <p><em>How do we import into Zig the NuttX Functions? open(), ioctl(), read(), …</em></p>
 <p>This is how we <strong>import the NuttX Functions, Types and Macros</strong> from C into Zig: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L6-L30">sensor.zig</a></p>
@@ -495,21 +498,24 @@ pub const c = @cImport({ ... });</code></pre></div>
 <p>That’s why we write “<code>c.</code><em>something</em>” when we refer to NuttX Functions, Types and Macros.</p>
 <h1 id="main-function"><a href="#main-function">5 Main Function</a></h1>
 <p>One more thing before we run our Zig program: The <strong>Main Function</strong>.</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51">sensortest.zig</a></p>
+<p>We begin by importing the Zig Standard Library and <strong>NuttX Sensor Definitions</strong>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51">sensortest.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the Zig Standard Library
 const std = @import(&quot;std&quot;);
 
-/// Import the Sensor Definitions
+/// Import the NuttX Sensor Definitions
 const sen = @import(&quot;./sensor.zig&quot;);
 
-/// Import the Sensor Library from C
+/// Import the NuttX Sensor Library
 const c = sen.c;
 
 /// Import the Multisensor Module
 const multi = @import(&quot;./multisensor.zig&quot;);</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. We read the Sensor Data from a Sensor.
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig">(<strong>sensor.zig</strong> is located here)</a></p>
+<p><strong>sen.c</strong> refers to the <a href="https://lupyuen.github.io/articles/sensor#import-nuttx-functions"><strong>C Namespace</strong></a> that contains the Functions, Types and Macros imported from NuttX.</p>
+<p>(We’ll talk about the Multisensor Module in a while)</p>
+<p>Next we declare our <strong>Main Function</strong> that will be called by NuttX…</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX. 
+/// We read the Sensor Data from a Sensor.
 pub export fn sensortest_main(
     argc: c_int, 
     argv: [*c]const [*c]u8
@@ -518,6 +524,7 @@ pub export fn sensortest_main(
   // Quit if no args specified
   if (argc &lt;= 1) { usage(); return -1; }</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253">(<strong>usage</strong> is defined here)</a></p>
+<p>TODO</p>
 <p>We check the <strong>Command-Line Argument</strong> passed to our program…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Run a command like &quot;test&quot; or &quot;test2&quot;
   if (argc == 2) {
@@ -560,6 +567,7 @@ pub export fn sensortest_main(
   return 0;
 }</code></pre></div>
 <p>(We’ll talk about Multisensor Test in a while)</p>
+<p>That’s all for our Main Function!</p>
 <p><em>What’s “catch |err| { … }”?</em></p>
 <p>TODO</p>
 <h1 id="slice-vs-pointer"><a href="#slice-vs-pointer">6 Slice vs Pointer</a></h1>
