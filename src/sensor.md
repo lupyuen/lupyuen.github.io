@@ -613,13 +613,14 @@ pub export fn sensortest_main(
     argc: c_int, 
     argv: [*c]const [*c]u8
 ) c_int {
-  debug("Zig Sensor Test", .{});
 
   // Quit if no args specified
   if (argc <= 1) { usage(); return -1; }
 ```
 
-TODO
+[(__usage__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253)
+
+We check the __Command-Line Argument__ passed to our program...
 
 ```zig
   // Run a command like "test" or "test2"
@@ -629,7 +630,13 @@ TODO
     const cmd = std.mem.span(argv[1]);
 ```
 
-TODO
+Assume that "__argv[1]__" points to "test", the command-line arg for our program.
+
+[__std.mem.span__](https://ziglang.org/documentation/0.9.1/std/#root;mem.span) converts "test" to a __Zig Slice__.
+
+Let's pretend a Slice works like a "String", we'll explain in the next section.
+
+This is how we __compare our Slice__ with a String (that's actually another Slice)...
 
 ```zig
     // If the Slice is "test"...
@@ -642,7 +649,11 @@ TODO
     }
 ```
 
-TODO
+So if the command-line arg is "test", we call __test_sensor__ to read the Barometer Sensor. [(As seen earlier)](https://lupyuen.github.io/articles/sensor#read-barometer-sensor)
+
+If __test_sensor__ returns an Error, the __catch__ clause says that we quit.
+
+And if the command-line arg is "test2"...
 
 ```zig
     // If the Slice is "test2"...
@@ -656,7 +667,9 @@ TODO
   }
 ```
 
-TODO
+We call __test_sensor2__ to read the Humidity Sensor. [(As seen earlier)](https://lupyuen.github.io/articles/sensor#read-humidity-sensor)
+
+For other command-line args we run a __Multisensor Test__...
 
 ```zig
   // Read the Sensor specified by the Command-Line Options
@@ -670,9 +683,13 @@ TODO
 }
 ```
 
+(We'll talk about Multisensor Test in a while)
+
+_What's "catch |err| { ... }"?_
+
 TODO
 
-# Slice vs Pointers
+# Slice vs Pointer
 
 TODO
 
