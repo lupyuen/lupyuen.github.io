@@ -802,13 +802,13 @@ humidity:78.81</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
 /// We do this because `debug` has a problem with floats.
 pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
-    const scaled = @floatToInt(i32, f * 100.0);
-    const rem = @rem(scaled, 100);
-    const rem_abs = if (rem &lt; 0) -rem else rem;
-    return .{
-        .int  = @divTrunc(scaled, 100),
-        .frac = @intCast(u8, rem_abs),
-    };
+  const scaled = @floatToInt(i32, f * 100.0);
+  const rem = @rem(scaled, 100);
+  const rem_abs = if (rem &lt; 0) -rem else rem;
+  return .{
+    .int  = @divTrunc(scaled, 100),
+    .frac = @intCast(u8, rem_abs),
+  };
 }</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/sensor-title2.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
