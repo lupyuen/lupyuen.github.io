@@ -102,7 +102,7 @@
 <p><em>But really… What if we prefer to do this in C?</em></p>
 <p>NuttX provides an excellent <strong>Sensor Test App</strong> in C…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
+<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
 </ul>
 <p>That inspired the Zig program in this article…</p>
 <ul>
@@ -437,12 +437,12 @@ fn test_sensor2() !void {
 <p><em>Where’s the list of Sensor Data Structs?</em></p>
 <p>The <strong>NuttX Sensor Data Structs</strong> are defined at…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
 </ul>
 <p><em>What about the Sensor Device Names like baro0 and humi0?</em></p>
 <p>Here’s the list of <strong>NuttX Sensor Device Names</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
+<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
 </ul>
 <p><em>How are test_sensor and test_sensor2 called?</em></p>
 <p>They are called by our <strong>Zig Main Function</strong>.</p>
@@ -487,7 +487,7 @@ pub const c = @cImport({
   @<span class="ident">cInclude</span>(<span class="string">&quot;poll.h&quot;</span>);
 });</code></pre></div>
 <p>“types.h” and “limits.h” are needed for NuttX compatibility. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
-<p>The other includes were copied from the <strong>NuttX Sensor Test App</strong> in C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L34-L42">sensortest.c</a></p>
+<p>The other includes were copied from the <strong>NuttX Sensor Test App</strong> in C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42">sensortest.c</a></p>
 <p><em>What about NuttX Structs like sensor_event_baro and sensor_event_humi?</em></p>
 <p><strong>NuttX Structs</strong> will be automatically imported with the code above.</p>
 <p>NuttX Macros like <strong>O_RDONLY</strong> and <strong>SNIOC_BATCH</strong> will get imported too.</p>
