@@ -530,9 +530,102 @@ For testing the Zig Sensor App, we connect the BME280 Sensor (Temperature / Humi
 | __`3V3`__ | `3.3V` | Red
 | __`GND`__ | `GND` | Black
 
+# Compile Zig App
+
+TODO
+
+Below are the steps to __compile our Zig Sensor App__ for Apache NuttX RTOS and BL602 RISC-V SoC.
+
+First we download the latest version of __Zig Compiler__ (0.10.0 or later), extract it and add to PATH...
+
+-   [__Zig Compiler Downloads__](https://ziglang.org/download/)
+
+Then we download and compile __Apache NuttX RTOS__ for PineDio Stack BL604...
+
+-   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
+
+After building NuttX, we download and compile our __Zig LVGL App__...
+
+```bash
+##  Download our Zig LVGL App for NuttX
+git clone --recursive https://github.com/lupyuen/zig-lvgl-nuttx
+cd zig-lvgl-nuttx
+
+##  Compile the Zig App for BL602
+##  (RV32IMACF with Hardware Floating-Point)
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+zig build-obj \
+  --verbose-cimport \
+  -target riscv32-freestanding-none \
+  -mcpu=baseline_rv32-d \
+  -isystem "$HOME/nuttx/nuttx/include" \
+  -I "$HOME/nuttx/apps/graphics/lvgl" \
+  -I "$HOME/nuttx/apps/graphics/lvgl/lvgl" \
+  -I "$HOME/nuttx/apps/include" \
+  -I "$HOME/nuttx/apps/examples/lvgltest" \
+  lvgltest.zig
+```
+
+[(See the Compile Log)](https://gist.github.com/lupyuen/86298a99cb87b43ac568c19daeb4081a)
+
+Note that __target__ and __mcpu__ are specific to BL602...
+
+-   [__"Zig Target"__](https://lupyuen.github.io/articles/zig#zig-target)
+
+_How did we get the Compiler Options `-isystem` and `-I`?_
+
+Remember that we'll link our Compiled Zig App with __Apache NuttX RTOS.__
+
+Hence the __Zig Compiler Options must be the same__ as the GCC Options used to compile NuttX.
+
+[(See the GCC Options for NuttX)](https://lupyuen.github.io/articles/lvgl#appendix-compiler-options)
+
+Next comes a quirk specific to BL602: We must __patch the ELF Header__ from Software Floating-Point ABI to Hardware Floating-Point ABI...
+
+```bash
+##  Patch the ELF Header of `lvgltest.o` from Soft-Float ABI to Hard-Float ABI
+xxd -c 1 lvgltest.o \
+  | sed 's/00000024: 01/00000024: 03/' \
+  | xxd -r -c 1 - lvgltest2.o
+cp lvgltest2.o lvgltest.o
+```
+
+[(More about this)](https://lupyuen.github.io/articles/zig#patch-elf-header)
+
+Finally we inject our __Compiled Zig App__ into the NuttX Project Directory and link it into the __NuttX Firmware__...
+
+```bash
+##  Copy the compiled app to NuttX and overwrite `lvgltest.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cp lvgltest.o $HOME/nuttx/apps/examples/lvgltest/lvgltest*.o
+
+##  Build NuttX to link the Zig Object from `lvgltest.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
+make
+
+##  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
+mkdir /mnt/c/blflash
+cp nuttx.bin /mnt/c/blflash
+```
+
+We're ready to run our Zig App!
+
 # Run Zig App
 
 TODO
+
+Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on PineDio Stack...
+
+-   [__"Flash PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack)
+
+-   [__"Boot PineDio Stack"__](https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack)
+
+In the NuttX Shell, enter this command to start our Zig App...
+
+```bash
+TODO
+```
 
 Here's the Air Pressure and Temperature read from the BME280 Barometer Sensor...
 
