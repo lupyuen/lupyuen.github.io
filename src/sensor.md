@@ -1011,6 +1011,22 @@ We said earlier that Zig is super helpful for __writing safer programs__ because
 
 We also plan to use the Zig code in this article for upcoming __LoRaWAN and Visual Programming__ projects.
 
+_Isn't LoRaWAN the long-range, low-power, low-bandwidth Wireless Network for IoT Gadgets?_
+
+Yep we have previously created a Zig app for the [__LoRaWAN Wireless Network__](https://makezine.com/2021/05/24/go-long-with-lora-radio/)...
+
+-   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
+
+Now we can integrate the Sensor Code from this article... To produce the firmware for an IoT Gadget that actually __transmits real Sensor Data__!
+
+We'll compress the Sensor Data with __CBOR__...
+
+-   [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
+
+And monitor the Sensor Data with __Prometheus and Grafana__...
+
+-   [__"Monitor IoT Devices in The Things Network with Prometheus and Grafana"__](https://lupyuen.github.io/articles/prometheus)
+
 TODO
 
 # What's Next
