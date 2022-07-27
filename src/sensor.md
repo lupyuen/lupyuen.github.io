@@ -555,7 +555,7 @@ The settings above are specific to Apache NuttX RTOS and the BL602 RISC-V SoC. [
 
 Next comes a workaround for a __C Macro Error__ that appears on Zig with Apache NuttX RTOS...
 
-```
+```zig
   // Workaround for "Unable to translate macro: undefined identifier `LL`"
   @cDefine("LL", "");
   @cDefine("__int_c_join(a, b)", "a");  //  Bypass zig/lib/include/stdint.h
@@ -565,7 +565,7 @@ Next comes a workaround for a __C Macro Error__ that appears on Zig with Apache 
 
 Then we import the __C Header Files__ for Apache NuttX RTOS...
 
-```
+```zig
   // NuttX Header Files. This is equivalent to...
   // #include "...";
   @cInclude("arch/types.h");
