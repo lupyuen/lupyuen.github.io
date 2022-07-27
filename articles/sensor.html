@@ -94,19 +94,19 @@
 <p>This article assumes that we’re familiar with C.</p>
 <p>The Zig-ish parts shall be explained with examples in C.</p>
 <p><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig">(If we’re keen to learn Zig, see this)</a></p>
-<p><em>But really… If we prefer to do this in C?</em></p>
+<p><em>Why are we doing this in Zig?</em></p>
+<p>Zig is super helpful for <strong>writing safer programs</strong> because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. <a href="https://ziglang.org/documentation/master/#Undefined-Behavior">(See the list)</a></p>
+<p>We also plan to use the Zig code in this article for upcoming <strong>LoRaWAN and Visual Programming</strong> projects. (More details below)</p>
+<p><em>But really… What if we prefer to do this in C?</em></p>
 <p>NuttX provides an excellent <strong>Sensor Test App</strong> in C…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
 </ul>
-<p>That inspired the Zig program in this article.</p>
-<p><em>Why are we doing this in Zig?</em></p>
-<p>Zig is super helpful for <strong>writing safer programs</strong> because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. <a href="https://ziglang.org/documentation/master/#Undefined-Behavior">(See the list)</a></p>
-<p>TODO: Upcoming LoRaWAN, Visual Programming</p>
+<p>That inspired the Zig program in this article…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx"><strong>lupyuen/visual-zig-nuttx</strong></a></li>
 </ul>
-<p>TODO: <a href="https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h">Changes to NuttX Sensors</a></p>
+<p><strong>Note:</strong> The NuttX Sensor API is going through <a href="https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h"><strong>some breaking changes</strong></a> as of Jul 2022. We’ll update the article when the API settles down.</p>
 <h1 id="bosch-bme280-sensor"><a href="#bosch-bme280-sensor">1 Bosch BME280 Sensor</a></h1>
 <p>TODO</p>
 <ul>
