@@ -342,7 +342,7 @@ We __read the Sensor Data__ into the struct...
       );
 ```
 
-[(__float_to_fixed__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L40-L50)
+[(__float_to_fixed__ is explained here)](https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data)
 
 And convert the Pressure and Temperature from Floating-Point to __Fixed-Point Numbers__.
 
@@ -1150,11 +1150,15 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
 
 TODO
 
--   [__Fix Floating-Point Values__](https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values)
+-   [__"Floating-Point Numbers (CBOR)"__](https://lupyuen.github.io/articles/cbor2#floating-point-numbers)
 
--   [__Floating-Point Link Error__](https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error)
+TODO
 
--   [__Fixed-Point Printing__](https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing)
+-   [__"Fix Floating-Point Values"__](https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values)
+
+-   [__"Floating-Point Link Error"__](https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error)
+
+-   [__"Fixed-Point Printing"__](https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing)
 
 TODO
 
