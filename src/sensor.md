@@ -509,7 +509,79 @@ Here's the list of __NuttX Sensor Device Names__...
 
 # Import NuttX Functions
 
-TODO
+_How do we import into Zig the NuttX Functions? open(), ioctl(), read(), ..._
+
+This is how we __import the NuttX Functions, Types and Macros__ from C into Zig: [sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L6-L30)
+
+```zig
+/// Import the Sensor Library from C
+pub const c = @cImport({
+  // NuttX Defines
+  @cDefine("__NuttX__",  "");
+  @cDefine("NDEBUG",     "");
+  @cDefine("ARCH_RISCV", "");
+
+  // This is equivalent to...
+  // #define __NuttX__
+  // #define NDEBUG
+  // #define ARCH_RISCV
+```
+
+[(__@cImport__ is documented here)](https://ziglang.org/documentation/master/#Import-from-C-Header-File)
+
+At the top of our Zig App we set the __#define Macros__ that will be referenced by the C Header Files coming up.
+
+The settings above are specific to Apache NuttX RTOS and the BL602 RISC-V SoC. [(Here's why)](https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c)
+
+Next comes a workaround for a __C Macro Error__ that appears on Zig with Apache NuttX RTOS...
+
+```
+  // Workaround for "Unable to translate macro: undefined identifier `LL`"
+  @cDefine("LL", "");
+  @cDefine("__int_c_join(a, b)", "a");  //  Bypass zig/lib/include/stdint.h
+```
+
+[(More about this)](https://lupyuen.github.io/articles/iot#appendix-macro-error)
+
+Then we import the __C Header Files__ for Apache NuttX RTOS...
+
+```
+  // NuttX Header Files. This is equivalent to...
+  // #include "...";
+  @cInclude("arch/types.h");
+  @cInclude("../../nuttx/include/limits.h");
+  @cInclude("nuttx/sensors/sensor.h");
+  @cInclude("nuttx/config.h");
+  @cInclude("sys/ioctl.h");
+  @cInclude("inttypes.h");
+  @cInclude("unistd.h");
+  @cInclude("stdlib.h");
+  @cInclude("stdio.h");
+  @cInclude("fcntl.h");
+  @cInclude("poll.h");
+});
+```
+
+"types.h" and "limits.h" are needed for NuttX compatibility. [(See this)](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
+
+The other includes were copied from the __NuttX Sensor Test App__ in C: [sensortest.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c#L34-L42)
+
+_What about NuttX Structs like sensor_event_baro and sensor_event_humi?_
+
+__NuttX Structs__ will be automatically imported with the code above.
+
+NuttX Macros like __O_RDONLY__ and __SNIOC_BATCH__ will get imported too.
+
+_Why do we write "`c.`something" when we call NuttX functions? Like "c.open()"?_
+
+Remember that we import all NuttX Functions, Types and Macros into the __"`c`" Namespace__...
+
+```zig
+/// Import Functions, Types and Macros into "c" Namespace
+pub const c = @cImport({ ... });
+```
+
+That's why we write "`c.`_something_" when we refer to NuttX Functions, Types and Macros.
 
 # Main Function
 
@@ -544,7 +616,11 @@ Then we download and compile __Apache NuttX RTOS__ for PineDio Stack BL604...
 
 -   [__"Build NuttX"__](https://lupyuen.github.io/articles/pinedio2#build-nuttx)
 
-After building NuttX, we download and compile our __Zig LVGL App__...
+TODO: Enable BME280 Sensor
+
+TODO: Enable Sensor Test App
+
+After building NuttX, we download and compile our __Zig Sensor App__...
 
 ```bash
 ##  Download our Zig LVGL App for NuttX
