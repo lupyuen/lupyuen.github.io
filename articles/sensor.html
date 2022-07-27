@@ -321,7 +321,7 @@ fn test_sensor() !void {
       const temperature = float_to_fixed(
         sensor_data.temperature
       );</code></pre></div>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L40-L50">(<strong>float_to_fixed</strong> is defined here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>float_to_fixed</strong> is explained here)</a></p>
 <p>And convert the Pressure and Temperature from Floating-Point to <strong>Fixed-Point Numbers</strong>.</p>
 <p>Which are similar to Floating-Point Numbers, but truncated to <strong>2 Decimal Places</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(Why we use Fixed-Point Numbers)</a></p>
@@ -915,14 +915,18 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
 }</code></pre></div>
 <p>TODO</p>
 <ul>
+<li><a href="https://lupyuen.github.io/articles/cbor2#floating-point-numbers"><strong>“Floating-Point Numbers (CBOR)”</strong></a></li>
+</ul>
+<p>TODO</p>
+<ul>
 <li>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values"><strong>Fix Floating-Point Values</strong></a></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values"><strong>“Fix Floating-Point Values”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error"><strong>Floating-Point Link Error</strong></a></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error"><strong>“Floating-Point Link Error”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing"><strong>Fixed-Point Printing</strong></a></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing"><strong>“Fixed-Point Printing”</strong></a></p>
 </li>
 </ul>
 <p>TODO</p>
