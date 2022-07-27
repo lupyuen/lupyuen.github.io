@@ -324,7 +324,7 @@ fn test_sensor() !void {
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L40-L50">(<strong>float_to_fixed</strong> is defined here)</a></p>
 <p>And convert the Pressure and Temperature from Floating-Point to <strong>Fixed-Point Numbers</strong>.</p>
 <p>Which are similar to Floating-Point Numbers, but truncated to <strong>2 Decimal Places</strong>.</p>
-<p>(More about Fixed-Point Numbers in a while)</p>
+<p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(Why we use Fixed-Point Numbers)</a></p>
 <h2 id="print-sensor-data"><a href="#print-sensor-data">2.8 Print Sensor Data</a></h2>
 <p>Now we have the Pressure and Temperature as Fixed-Point Numbers, let’s <strong>print the Sensor Data</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>      // Print the Sensor Data
@@ -825,7 +825,7 @@ humidity:78.81</code></pre></div>
 <p>Righto our Zig LoRaWAN App will eventually support <strong>all types of NuttX Sensors</strong>.</p>
 <p>But we’ve seen today that each kind of NuttX Sensor needs a lot of <strong>boilerplate code</strong> to support the sensor.</p>
 <p><em>Can we auto-generate the boilerplate code for each NuttX Sensor?</em></p>
-<p>That’s why I’m keen to experiment with <strong>Visual Programming</strong> for NuttX Sensors.</p>
+<p>That’s why I’m about to experiment with <strong>Visual Programming</strong> for NuttX Sensors.</p>
 <p>Perhaps we can <strong>drag-n-drop a NuttX Sensor</strong> into our LoRaWAN App…</p>
 <p>And <strong>auto-generate the Zig code</strong> for the NuttX Sensor!</p>
 <p>That would be an awesome way for people to mix-n-match various NuttX Sensors for IoT Gadgets!</p>
