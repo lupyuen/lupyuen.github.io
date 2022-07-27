@@ -56,6 +56,10 @@ The BME280 Driver exposes two __NuttX Sensor Devices__...
 
 We shall read both Sensor Devices to fetch the Sensor Data for __Temperature, Air Pressue and Humidity.__
 
+![Read Barometer Sensor](https://lupyuen.github.io/images/sensor-code2a.png)
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145)
+
 # Read Barometer Sensor
 
 Let's walk through the code to read the Temperature and Air Pressure from our __NuttX Barometer Sensor__ at "/dev/sensor/baro0"...
@@ -437,6 +441,10 @@ Remember earlier we did this...
 
 This closes the sensor automagically when we return from the function. Super handy!
 
+![Read Barometer Sensor](https://lupyuen.github.io/images/sensor-code3a.png)
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145)
+
 # Read Humidity Sensor
 
 _What about the Humidity from our BME280 Sensor?_
@@ -515,6 +523,10 @@ They are called by our __Zig Main Function__.
 
 (More about this in a while)
 
+![Import NuttX Functions, Types and Macros](https://lupyuen.github.io/images/sensor-code5a.png)
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L6-L30)
+
 # Import NuttX Functions
 
 _How do we import into Zig the NuttX Functions? open(), ioctl(), read(), ..._
@@ -590,6 +602,10 @@ pub const c = @cImport({ ... });
 ```
 
 That's why we write "`c.`_something_" when we refer to NuttX Functions, Types and Macros.
+
+![Main Function](https://lupyuen.github.io/images/sensor-code4a.png)
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51)
 
 # Main Function
 
@@ -902,6 +918,8 @@ cp nuttx.bin /mnt/c/blflash
 
 We're ready to run our Zig App!
 
+![Zig Sensor App](https://lupyuen.github.io/images/sensor-run1a.png)
+
 # Run Zig App
 
 Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on BL602...
@@ -946,6 +964,8 @@ humidity:78.81
 This says that the Relative Humidity is __78.81 %__.
 
 Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctly from BME280 Sensor yay!
+
+![Multiple Sensors](https://lupyuen.github.io/images/sensor-run2a.png)
 
 # Multiple Sensors
 
