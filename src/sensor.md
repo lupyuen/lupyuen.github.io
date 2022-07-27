@@ -949,9 +949,19 @@ Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctl
 
 # Multiple Sensors
 
+_To test a different sensor, do we rewrite the Zig Sensor App?_
+
+_Is there an easier way to test various NuttX Sensors?_
+
 TODO
 
 # LoRaWAN and Visual Programming
+
+_Once again... Why are we doing this in Zig?_
+
+We said earlier that Zig is super helpful for __writing safer programs__ because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. [(See the list)](https://ziglang.org/documentation/master/#Undefined-Behavior)
+
+We also plan to use the Zig code in this article for upcoming __LoRaWAN and Visual Programming__ projects.
 
 TODO
 
