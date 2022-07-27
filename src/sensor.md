@@ -20,23 +20,23 @@ The Zig-ish parts shall be explained with examples in C.
 
 [(If we're keen to learn Zig, see this)](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
 
-_But really... If we prefer to do this in C?_
+_Why are we doing this in Zig?_
+
+Zig is super helpful for __writing safer programs__ because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. [(See the list)](https://ziglang.org/documentation/master/#Undefined-Behavior)
+
+We also plan to use the Zig code in this article for upcoming __LoRaWAN and Visual Programming__ projects. (More details below)
+
+_But really... What if we prefer to do this in C?_
 
 NuttX provides an excellent __Sensor Test App__ in C...
 
 -   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/testing/sensortest/sensortest.c)
 
-That inspired the Zig program in this article.
-
-_Why are we doing this in Zig?_
-
-Zig is super helpful for __writing safer programs__ because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. [(See the list)](https://ziglang.org/documentation/master/#Undefined-Behavior)
-
-TODO: Upcoming LoRaWAN, Visual Programming
+That inspired the Zig program in this article...
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
 
-TODO: [Changes to NuttX Sensors](https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h)
+__Note:__ The NuttX Sensor API is going through [__some breaking changes__](https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h) as of Jul 2022. We'll update the article when the API settles down.
 
 # Bosch BME280 Sensor
 
