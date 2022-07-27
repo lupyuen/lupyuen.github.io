@@ -605,7 +605,7 @@ const sen = @import("./sensor.zig");
 /// Import the NuttX Sensor Library
 const c = sen.c;
 
-/// Import the Multisensor Module
+/// Import the Multi-Sensor Module
 const multi = @import("./multisensor.zig");
 ```
 
@@ -613,7 +613,7 @@ const multi = @import("./multisensor.zig");
 
 __sen.c__ refers to the [__C Namespace__](https://lupyuen.github.io/articles/sensor#import-nuttx-functions) that contains the Functions, Types and Macros imported from NuttX.
 
-(We'll talk about the Multisensor Module in a while)
+(We'll talk about the Multi-Sensor Module in a while)
 
 Next we declare our __Main Function__ that will be called by NuttX...
 
@@ -631,7 +631,19 @@ pub export fn sensortest_main(
 
 [(__usage__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253)
 
-TODO
+_Why is argv declared as "[\*c]const [\*c]u8"?_
+
+That's because...
+
+-   "__[\*c]u8__" is a C Pointer to an Unknown Number of Unsigned Bytes
+
+    (Like "uint8_t *" in C)
+
+-   "__[\*c]const [\*c]u8__" is a C Pointer to an Unknown Number of the above C Pointers
+
+    (Like "uint8_t *[]" in C)
+
+[(More about C Pointers in Zig)](https://ziglang.org/documentation/master/#C-Pointers)
 
 We check the __Command-Line Argument__ passed to our program...
 
@@ -688,6 +700,8 @@ For other command-line args we run a __Multisensor Test__...
   // Read the Sensor specified by the Command-Line Options
   multi.test_multisensor(argc, argv)
     catch |err| {
+
+      // Handle the error
       if (err == error.OptionError or err == error.NameError) { usage(); }
       return -1;
     };
@@ -696,17 +710,78 @@ For other command-line args we run a __Multisensor Test__...
 }
 ```
 
-(We'll talk about Multisensor Test in a while)
+(We'll talk about Multi-Sensor Test in a while)
 
 That's all for our Main Function!
 
-_What's "catch |err| { ... }"?_
+_What's "|err|"?_
 
-TODO
+If our function __test_multisensor__ fails with an Error...
+
+```zig
+  multi.test_multisensor(argc, argv)
+    catch |err| {
+      // Do something with err
+    }
+```
+
+Then __err__ will be set to the Error returned by __test_multisensor__.
 
 # Slice vs Pointer
 
+_Why do we need Slices? The usual Strings are perfectly splendid right?_
+
+Strings in C (like __argv[1]__ from the previous section) are represented like this...
+
 TODO
+
+That's a Pointer to an Array of characters, __terminated by Null__.
+
+_What if we make a mistake and overwrite the Terminating Null?_
+
+Disaster Ensues! Our String would overrun the Array and cause __Undefined Behaviour__ when we read the String!
+
+That's why we have __Slices__, a safer way to represent Strings (and other Arrays with dynamic sizes)...
+
+TODO
+
+A Slice has two components...
+
+-   __Pointer__ to an Array of characters (or another type)
+
+-   __Length__ of the Array (excluding the null)
+
+Because Slices are restricted by Length, it's a little harder to overrun our Strings by accident.
+
+To convert a Null-Terminated String to a Slice, we call [__std.mem.span__](https://ziglang.org/documentation/0.9.1/std/#root;mem.span)...
+
+```zig
+// Convert the command-line arg to a Slice
+const slice = std.mem.span(argv[1]);
+```
+
+And to compare two Slices, we call __std.mem.eql__...
+
+```zig
+// If the Slice is "test"...
+if (std.mem.eql(u8, slice, "test")) {
+  ...
+}
+```
+
+__u8__ (unsigned byte) refers to the type of data in the Slice.
+
+To convert a Slice back to a C Pointer, we write __&slice[0]__...
+
+```zig
+// Pass the Slice as a C Pointer
+const fd = c.open(
+  &slice[0], 
+  c.O_RDONLY | c.O_NONBLOCK
+);
+```
+
+[(More about Slices)](https://ziglang.org/documentation/master/#Slices)
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
 
