@@ -80,11 +80,12 @@
 <li><a href="#import-nuttx-functions">4 Import NuttX Functions</a><ul></ul></li>
 <li><a href="#main-function">5 Main Function</a><ul></ul></li>
 <li><a href="#connect-bme280-sensor">6 Connect BME280 Sensor</a><ul></ul></li>
-<li><a href="#run-zig-app">7 Run Zig App</a><ul></ul></li>
-<li><a href="#fixed-point-sensor-data">8 Fixed-Point Sensor Data</a><ul></ul></li>
-<li><a href="#multiple-sensors">9 Multiple Sensors</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>31 Jul 2022</em></p>
+<li><a href="#compile-zig-app">7 Compile Zig App</a><ul></ul></li>
+<li><a href="#run-zig-app">8 Run Zig App</a><ul></ul></li>
+<li><a href="#fixed-point-sensor-data">9 Fixed-Point Sensor Data</a><ul></ul></li>
+<li><a href="#multiple-sensors">10 Multiple Sensors</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li></ul></nav><p>📝 <em>31 Jul 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/sensor-title.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <p>With <strong>Zig programming language</strong>, we now have a fun new way to create embedded applications for <strong>Apache NuttX RTOS</strong>.</p>
 <p>Today we shall write a Zig program to read a NuttX Sensor: <strong>Bosch BME280 Sensor</strong> (Temperture / Humidity / Air Pressure).</p>
@@ -456,8 +457,78 @@ fn test_sensor2() !void {
 <tr><td style="text-align: center"><strong><code>3V3</code></strong></td><td style="text-align: center"><code>3.3V</code></td><td style="text-align: left">Red</td></tr>
 <tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td><td style="text-align: left">Black</td></tr>
 </tbody></table>
-</div><h1 id="run-zig-app"><a href="#run-zig-app">7 Run Zig App</a></h1>
+</div><h1 id="compile-zig-app"><a href="#compile-zig-app">7 Compile Zig App</a></h1>
 <p>TODO</p>
+<p>Below are the steps to <strong>compile our Zig Sensor App</strong> for Apache NuttX RTOS and BL602 RISC-V SoC.</p>
+<p>First we download the latest version of <strong>Zig Compiler</strong> (0.10.0 or later), extract it and add to PATH…</p>
+<ul>
+<li><a href="https://ziglang.org/download/"><strong>Zig Compiler Downloads</strong></a></li>
+</ul>
+<p>Then we download and compile <strong>Apache NuttX RTOS</strong> for PineDio Stack BL604…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pinedio2#build-nuttx"><strong>“Build NuttX”</strong></a></li>
+</ul>
+<p>After building NuttX, we download and compile our <strong>Zig LVGL App</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Download our Zig LVGL App for NuttX
+git clone --recursive https://github.com/lupyuen/zig-lvgl-nuttx
+cd zig-lvgl-nuttx
+
+#  Compile the Zig App for BL602
+#  (RV32IMACF with Hardware Floating-Point)
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+zig build-obj \
+  --verbose-cimport \
+  -target riscv32-freestanding-none \
+  -mcpu=baseline_rv32-d \
+  -isystem &quot;$HOME/nuttx/nuttx/include&quot; \
+  -I &quot;$HOME/nuttx/apps/graphics/lvgl&quot; \
+  -I &quot;$HOME/nuttx/apps/graphics/lvgl/lvgl&quot; \
+  -I &quot;$HOME/nuttx/apps/include&quot; \
+  -I &quot;$HOME/nuttx/apps/examples/lvgltest&quot; \
+  lvgltest.zig</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/86298a99cb87b43ac568c19daeb4081a">(See the Compile Log)</a></p>
+<p>Note that <strong>target</strong> and <strong>mcpu</strong> are specific to BL602…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/zig#zig-target"><strong>“Zig Target”</strong></a></li>
+</ul>
+<p><em>How did we get the Compiler Options <code>-isystem</code> and <code>-I</code>?</em></p>
+<p>Remember that we’ll link our Compiled Zig App with <strong>Apache NuttX RTOS.</strong></p>
+<p>Hence the <strong>Zig Compiler Options must be the same</strong> as the GCC Options used to compile NuttX.</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl#appendix-compiler-options">(See the GCC Options for NuttX)</a></p>
+<p>Next comes a quirk specific to BL602: We must <strong>patch the ELF Header</strong> from Software Floating-Point ABI to Hardware Floating-Point ABI…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Patch the ELF Header of `lvgltest.o` from Soft-Float ABI to Hard-Float ABI
+xxd -c 1 lvgltest.o \
+  | sed &#39;s/00000024: 01/00000024: 03/&#39; \
+  | xxd -r -c 1 - lvgltest2.o
+cp lvgltest2.o lvgltest.o</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(More about this)</a></p>
+<p>Finally we inject our <strong>Compiled Zig App</strong> into the NuttX Project Directory and link it into the <strong>NuttX Firmware</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Copy the compiled app to NuttX and overwrite `lvgltest.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+cp lvgltest.o $HOME/nuttx/apps/examples/lvgltest/lvgltest*.o
+
+#  Build NuttX to link the Zig Object from `lvgltest.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
+make
+
+#  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
+mkdir /mnt/c/blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
+<p>We’re ready to run our Zig App!</p>
+<h1 id="run-zig-app"><a href="#run-zig-app">8 Run Zig App</a></h1>
+<p>TODO</p>
+<p>Follow these steps to <strong>flash and boot NuttX</strong> (with our Zig App inside) on PineDio Stack…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#flash-pinedio-stack"><strong>“Flash PineDio Stack”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pinedio2#boot-pinedio-stack"><strong>“Boot PineDio Stack”</strong></a></p>
+</li>
+</ul>
+<p>In the NuttX Shell, enter this command to start our Zig App…</p>
+<div class="example-wrap"><pre class="language-bash"><code>TODO</code></pre></div>
 <p>Here’s the Air Pressure and Temperature read from the BME280 Barometer Sensor…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test
 Zig Sensor Test
@@ -468,11 +539,11 @@ temperature:27.70</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test2
 Zig Sensor Test
 test_sensor2
-humidity:78.81</code></pre></div><h1 id="fixed-point-sensor-data"><a href="#fixed-point-sensor-data">8 Fixed-Point Sensor Data</a></h1>
+humidity:78.81</code></pre></div><h1 id="fixed-point-sensor-data"><a href="#fixed-point-sensor-data">9 Fixed-Point Sensor Data</a></h1>
 <p>TODO</p>
-<h1 id="multiple-sensors"><a href="#multiple-sensors">9 Multiple Sensors</a></h1>
+<h1 id="multiple-sensors"><a href="#multiple-sensors">10 Multiple Sensors</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Here are some tips for learning Zig…</p>
 <ul>
@@ -507,7 +578,7 @@ humidity:78.81</code></pre></div><h1 id="fixed-point-sensor-data"><a href="#fixe
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl.md"><strong>lupyuen.github.io/src/lvgl.md</strong></a></p>
-<h1 id="notes"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1548909434440585216"><strong>this Twitter Thread</strong></a></li>
 </ol>
