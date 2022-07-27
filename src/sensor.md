@@ -348,7 +348,7 @@ And convert the Pressure and Temperature from Floating-Point to __Fixed-Point Nu
 
 Which are similar to Floating-Point Numbers, but truncated to __2 Decimal Places__.
 
-(More about Fixed-Point Numbers in a while)
+[(Why we use Fixed-Point Numbers)](https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data)
 
 ## Print Sensor Data
 
@@ -1039,7 +1039,7 @@ But we've seen today that each kind of NuttX Sensor needs a lot of __boilerplate
 
 _Can we auto-generate the boilerplate code for each NuttX Sensor?_
 
-That's why I'm keen to experiment with __Visual Programming__ for NuttX Sensors.
+That's why I'm about to experiment with __Visual Programming__ for NuttX Sensors.
 
 Perhaps we can __drag-n-drop a NuttX Sensor__ into our LoRaWAN App...
 
