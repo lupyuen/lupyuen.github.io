@@ -1,6 +1,6 @@
 # Read NuttX Sensor Data with Zig
 
-📝 _31 Jul 2022_
+📝 _29 Jul 2022_
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title.jpg)
 

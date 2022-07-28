@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Read NuttX Sensor Data with Zig",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-07-29",
+      "website": "https://lupyuen.github.io/articles/sensor",
+      "summary": "Using Zig to read Sensor Data on Apache NuttX RTOS... With Bosch BME280 Temperature / Humidity / Air Pressure Sensor"
+    },
+    {
       "name": "Build an LVGL Touchscreen App with Zig",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-07-12",
