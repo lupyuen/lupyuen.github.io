@@ -745,7 +745,7 @@ If our function __test_multisensor__ fails with an Error...
 
 Then __err__ will be set to the Error returned by __test_multisensor__.
 
-# Slice vs Pointer
+# Slice vs String
 
 _Why do we need Slices? The usual Strings are perfectly splendid right?_
 
@@ -759,7 +759,7 @@ _What if we make a mistake and overwrite the Terminating Null?_
 
 Disaster Ensues! Our String would overrun the Array and cause __Undefined Behaviour__ when we read the String!
 
-That's why we have __Slices__, a safer way to represent Strings (and other Arrays with dynamic sizes)...
+That's why we have __Slices__, a safer way to represent Strings (and other buffers with dynamic sizes)...
 
 ![Zig Slice](https://lupyuen.github.io/images/sensor-slice2.jpg)
 
@@ -771,7 +771,7 @@ A Slice has two components...
 
 Because Slices are restricted by Length, it's a little harder to overrun our Strings by accident.
 
-(If we access data outside the bounds of the Slice, our program halts with a [__Runtime Panic__](https://ziglang.org/documentation/master/#Index-out-of-Bounds))
+(If we access the bytes beyond the bounds of the Slice, our program halts with a [__Runtime Panic__](https://ziglang.org/documentation/master/#Index-out-of-Bounds))
 
 To convert a Null-Terminated String to a Slice, we call [__std.mem.span__](https://ziglang.org/documentation/0.9.1/std/#root;mem.span)...
 
