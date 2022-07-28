@@ -923,6 +923,8 @@ We're ready to run our Zig App!
 
 ![Zig Sensor App](https://lupyuen.github.io/images/sensor-run1a.png)
 
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx#read-barometer-sensor)
+
 # Run Zig App
 
 Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on BL602...
@@ -969,6 +971,8 @@ This says that the Relative Humidity is __78.81 %__.
 Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctly from BME280 Sensor yay!
 
 ![Multiple Sensors](https://lupyuen.github.io/images/sensor-run2a.png)
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx#clean-up)
 
 # Multiple Sensors
 
