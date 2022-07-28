@@ -372,7 +372,7 @@ Now we have the Pressure and Temperature as Fixed-Point Numbers, let's __print t
 
 _What are "int" and "frac"?_
 
-Our Fixed-Point Numbers have two Integer components...
+Our Fixed-Point Number has two Integer components...
 
 -   __int__: The Integer part
 
@@ -980,7 +980,7 @@ _To test a different sensor, do we rewrite the Zig Sensor App?_
 
 _Is there an easier way to test any NuttX Sensor?_
 
-This is how we test __any NuttX Sensor__, without rewriting our Zig Sensor App...
+This is how we test __any NuttX Sensor__, without rewriting our app...
 
 ```text
 nsh> sensortest -n 1 baro0
@@ -1021,16 +1021,17 @@ Here's the list of __Sensor Devices__ supported by the app...
 
 -   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
 
-To understand the printed values (like "value1" and "value2"), refer to the __Sensor Data Structs__...
+To understand the printed values (like "value1" and "value2") refer to the __Sensor Data Structs__...
 
 -   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
 
+_How does it work?_
 
-TODO
+Inside our Zig Sensor App is a __Multisensor Module__ that handles all sensors...
 
 -   [__multisensor.zig__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig)
 
-Derived from the __NuttX Sensor Test App__ in C...
+The Zig code was converted from the __NuttX Sensor Test App__ in C...
 
 -   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c)
 
@@ -1038,13 +1039,9 @@ Which is explained here...
 
 -   [__"Sensor Test App"__](https://lupyuen.github.io/articles/bme280#sensor-test-app)
 
-TODO
-
-Auto-translated from C to Zig...
+Below are the steps for converting the Sensor Test App from C to Zig...
 
 -   [__Auto-Translate Sensor App to Zig__](https://github.com/lupyuen/visual-zig-nuttx#auto-translate-sensor-app-to-zig)
-
-Then cleaned up...
 
 -   [__Sensor App in Zig__](https://github.com/lupyuen/visual-zig-nuttx#sensor-app-in-zig)
 
@@ -1183,7 +1180,7 @@ debug("pressure:{}.{:0>2}", .{
 
 _What are "int" and "frac"?_
 
-Our Fixed-Point Numbers have two Integer components...
+Our Fixed-Point Number has two Integer components...
 
 -   __int__: The Integer part
 
