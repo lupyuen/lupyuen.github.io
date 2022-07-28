@@ -4,9 +4,9 @@
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title.jpg)
 
-With __Zig programming language__, we have a fun new way to create embedded applications for __Apache NuttX RTOS__.
+With [__Zig Programming Language__](https://ziglang.org), we have a fun new way to create Embedded Applications for [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/).
 
-Today we shall write a Zig program to read a NuttX Sensor: __Bosch BME280 Sensor__ (Temperture / Humidity / Air Pressure).
+Today we shall write a Zig program that reads a NuttX Sensor: [__Bosch BME280 Sensor__](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/) for Temperture, Humidity and Air Pressure.
 
 And we'll run it on Pine64's [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone). (Pic above)
 
