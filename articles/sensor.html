@@ -221,7 +221,7 @@ fn test_sensor() !void {
 <p>Zig Compiler stops us if we forget to use the <strong>Return Value</strong> of a Function.</p>
 <p>We write “<code>_ =</code> <em>something</em>” to tell Zig Compiler that we’re not using the Return Value.</p>
 <h2 id="set-standby-interval"><a href="#set-standby-interval">2.3 Set Standby Interval</a></h2>
-<p>Some sensors (like BME280) will automatically measure Sensor Data at <strong>Periodic Intervals</strong>. <a href="https://lupyuen.github.io/articles/bme280#standby-interval">(See this)</a></p>
+<p>Some sensors (like BME280) will automatically measure Sensor Data at <strong>Periodic Intervals</strong>. <a href="https://lupyuen.github.io/articles/bme280#standby-interval">(Like this)</a></p>
 <p>Let’s assume that our sensor will measure Sensor Data <strong>every 1 second</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // TODO: Remove this definition when 
   // SNIOC_SET_INTERVAL has been been fixed: 
@@ -471,14 +471,14 @@ pub const c = @cImport({
   // #define NDEBUG
   // #define ARCH_RISCV</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Import-from-C-Header-File">(<strong>@cImport</strong> is documented here)</a></p>
-<p>At the top of our Zig App we set the <strong>#define Macros</strong> that will be referenced by the C Header Files coming up.</p>
-<p>The settings above are specific to Apache NuttX RTOS and the BL602 RISC-V SoC. <a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(Here’s why)</a></p>
-<p>Next comes a workaround for a <strong>C Macro Error</strong> that appears on Zig with Apache NuttX RTOS…</p>
+<p>At the top we set the <strong>#define Macros</strong> that will be referenced by the NuttX Header Files coming up.</p>
+<p>The settings above are specific to NuttX for BL602. <a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(Here’s why)</a></p>
+<p>Next comes a workaround for a <strong>C Macro Error</strong> that appears on Zig with NuttX…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
   @cDefine(&quot;LL&quot;, &quot;&quot;);
   @cDefine(&quot;__int_c_join(a, b)&quot;, &quot;a&quot;);  //  Bypass zig/lib/include/stdint.h</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-macro-error">(More about this)</a></p>
-<p>Then we import the <strong>C Header Files</strong> for Apache NuttX RTOS…</p>
+<p>Then we import the <strong>C Header Files</strong> for NuttX…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // NuttX Header Files. This is equivalent to...
   // #include &quot;...&quot;;
   @cInclude(&quot;arch/types.h&quot;);
