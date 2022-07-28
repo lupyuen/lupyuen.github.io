@@ -771,6 +771,8 @@ A Slice has two components...
 
 Because Slices are restricted by Length, it's a little harder to overrun our Strings by accident.
 
+(If we access data outside the bounds of the Slice, our Zig program halts with a [__Runtime Panic__](https://ziglang.org/documentation/master/#Index-out-of-Bounds))
+
 To convert a Null-Terminated String to a Slice, we call [__std.mem.span__](https://ziglang.org/documentation/0.9.1/std/#root;mem.span)...
 
 ```zig
@@ -1123,6 +1125,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1548909434440585216)
+
+1.  TODO: Panic Handler
+
+1.  TODO: Logger
 
 ![Converting to fixed-point number](https://lupyuen.github.io/images/sensor-code1a.png)
 
