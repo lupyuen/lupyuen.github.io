@@ -16,7 +16,7 @@ _Why are we doing this in Zig?_
 
 Zig is super helpful for __writing safer programs__ because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. [(See the list)](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
-The code in this article will be useful for programming __IoT Gadgets__ with Zig. We  plan to use the code for upcoming __LoRaWAN and Visual Programming__ projects. (More details below)
+The code in this article will be useful for programming __IoT Gadgets__ with Zig. We'll use the code in upcoming projects: __LoRaWAN and Visual Programming__. (More details below)
 
 _What if we're not familiar with Zig?_
 
@@ -372,7 +372,7 @@ Now we have the Pressure and Temperature as Fixed-Point Numbers, let's __print t
 
 _What are "int" and "frac"?_
 
-Our Fixed-Point Numbers have two components...
+Our Fixed-Point Numbers have two Integer components...
 
 -   __int__: The Integer part
 
@@ -1132,17 +1132,74 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _How do we use Fixed-Point Numbers for Sensor Data?_
 
-TODO
+Our Zig Sensor App reads Sensor Data as __Floating-Point Numbers__...
 
 -   [__"Read Sensor Data"__](https://lupyuen.github.io/articles/sensor#read-sensor-data)
 
 -   [__"Print Sensor Data"__](https://lupyuen.github.io/articles/sensor#print-sensor-data)
 
-_Why do we handle Sensor Data as Fixed-Point Numbers instead of Floating-Point?_
+And converts the Sensor Data to __Fixed-Point Numbers__ (2 decimal places) for printing...
 
-TODO
+```zig
+// Convert Pressure to a Fixed-Point Number
+const pressure = float_to_fixed(
+  sensor_data.pressure
+);
 
-[sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49)
+// Print the Pressure as a Fixed-Point Number
+debug("pressure:{}.{:0>2}", .{
+  pressure.int, 
+  pressure.frac 
+});
+```
+
+(More about __float_to_fixed__ in a while)
+
+_What are "int" and "frac"?_
+
+Our Fixed-Point Numbers have two Integer components...
+
+-   __int__: The Integer part
+
+-   __frac__: The Fraction part, scaled by 100
+
+So to represent `123.456`, we break it down as...
+
+-   __int__ = `123`
+
+-   __frac__ = `45`
+
+We drop the final digit `6` when we convert to Fixed-Point.
+
+_Why handle Sensor Data as Fixed-Point Numbers? Why not Floating-Point?_
+
+When we tried printing the Sensor Data as Floating-Point Numbers, we hit some __Linking and Runtime Issues__...
+
+-   [__"Fix Floating-Point Values"__](https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values)
+
+-   [__"Floating-Point Link Error"__](https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error)
+
+-   [__"Fixed-Point Printing"__](https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing)
+
+Computations on Floating-Point Numbers are OK, only printing is affected. So we print the numbers as Fixed-Point instead.
+
+(We observed these issues with Zig Compiler version 0.10.0, they might have been fixed in later versions of the compiler)
+
+_Won't our Sensor Data get less precise in Fixed-Point?_
+
+Yep we lose some precision with Fixed-Point Numbers. (Like the final digit `6` from earlier)
+
+But most IoT Gadgets will __truncate Sensor Data__ before transmission anyway.
+
+And for some data formats (like CBOR), we need __fewer bytes__ to transmit Fixed-Point Numbers instead of Floating-Point...
+
+-   [__"Floating-Point Numbers (CBOR)"__](https://lupyuen.github.io/articles/cbor2#floating-point-numbers)
+
+Thus we'll probably stick to Fixed-Point Numbers for our upcoming IoT projects.
+
+_How do we convert Floating-Point to Fixed-Point?_
+
+Below is the implementation of __float_to_fixed__, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): [sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49)
 
 ```zig
 /// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
@@ -1158,20 +1215,8 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
 }
 ```
 
-TODO
+(See the docs: [__@floatToInt__](https://ziglang.org/documentation/master/#floatToInt), [__@rem__](https://ziglang.org/documentation/master/#rem), [__@divTrunc__](https://ziglang.org/documentation/master/#divTrunc), [__@intCast__](https://ziglang.org/documentation/master/#intCast))
 
--   [__"Floating-Point Numbers (CBOR)"__](https://lupyuen.github.io/articles/cbor2#floating-point-numbers)
-
-TODO
-
--   [__"Fix Floating-Point Values"__](https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values)
-
--   [__"Floating-Point Link Error"__](https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error)
-
--   [__"Fixed-Point Printing"__](https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing)
-
-TODO
-
-_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
+This code has been tested for positive and negative numbers.
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title2.jpg)
