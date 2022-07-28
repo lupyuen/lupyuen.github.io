@@ -1015,6 +1015,17 @@ From the above output we see that Air Pressure is __1,007.65 millibars__, Temper
 
 [(See the Command-Line Arguments)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253)
 
+_Which sensors are supported?_
+
+Here's the list of __Sensor Devices__ supported by the app...
+
+-   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
+
+To understand the printed values (like "value1" and "value2"), refer to the __Sensor Data Structs__...
+
+-   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
+
+
 TODO
 
 -   [__multisensor.zig__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig)
@@ -1026,16 +1037,6 @@ Derived from the __NuttX Sensor Test App__ in C...
 Which is explained here...
 
 -   [__"Sensor Test App"__](https://lupyuen.github.io/articles/bme280#sensor-test-app)
-
-TODO
-
-The __NuttX Sensor Data Structs__ are defined at...
-
--   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
-
-Here's the list of __NuttX Sensor Device Names__...
-
--   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
 
 TODO
 
