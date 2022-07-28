@@ -633,7 +633,8 @@ const fd = c.open(
   &amp;slice[0], 
   c.O_RDONLY | c.O_NONBLOCK
 );
-// Triggers a runtime panic if the Slice is empty</code></pre></div>
+// Slice must be null-terminated.
+// Triggers a runtime panic if the Slice is empty.</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Slices">(More about Slices)</a></p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">7 Connect BME280 Sensor</a></h1>
@@ -931,6 +932,7 @@ debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
   pressure.frac 
 });</code></pre></div>
 <p>(More about <strong>float_to_fixed</strong> in a while)</p>
+<p>(Someday we might simply the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
 <p><em>What are “int” and “frac”?</em></p>
 <p>Our Fixed-Point Numbers have two Integer components…</p>
 <ul>
