@@ -79,7 +79,7 @@
 <li><a href="#read-humidity-sensor">3 Read Humidity Sensor</a><ul></ul></li>
 <li><a href="#import-nuttx-functions">4 Import NuttX Functions</a><ul></ul></li>
 <li><a href="#main-function">5 Main Function</a><ul></ul></li>
-<li><a href="#slice-vs-pointer">6 Slice vs Pointer</a><ul></ul></li>
+<li><a href="#slice-vs-string">6 Slice vs String</a><ul></ul></li>
 <li><a href="#connect-bme280-sensor">7 Connect BME280 Sensor</a><ul></ul></li>
 <li><a href="#compile-zig-app">8 Compile Zig App</a><ul></ul></li>
 <li><a href="#run-zig-app">9 Run Zig App</a><ul></ul></li>
@@ -598,14 +598,14 @@ pub export fn sensortest_main(
       // Do something with err
     }</code></pre></div>
 <p>Then <strong>err</strong> will be set to the Error returned by <strong>test_multisensor</strong>.</p>
-<h1 id="slice-vs-pointer"><a href="#slice-vs-pointer">6 Slice vs Pointer</a></h1>
+<h1 id="slice-vs-string"><a href="#slice-vs-string">6 Slice vs String</a></h1>
 <p><em>Why do we need Slices? The usual Strings are perfectly splendid right?</em></p>
 <p>Strings in C (like <strong>argv[1]</strong> from the previous section) are represented like this…</p>
 <p><img src="https://lupyuen.github.io/images/sensor-slice1.jpg" alt="Strings in C" /></p>
 <p>That’s a Pointer to an Array of characters, <strong>terminated by Null</strong>.</p>
 <p><em>What if we make a mistake and overwrite the Terminating Null?</em></p>
 <p>Disaster Ensues! Our String would overrun the Array and cause <strong>Undefined Behaviour</strong> when we read the String!</p>
-<p>That’s why we have <strong>Slices</strong>, a safer way to represent Strings (and other Arrays with dynamic sizes)…</p>
+<p>That’s why we have <strong>Slices</strong>, a safer way to represent Strings (and other buffers with dynamic sizes)…</p>
 <p><img src="https://lupyuen.github.io/images/sensor-slice2.jpg" alt="Zig Slice" /></p>
 <p>A Slice has two components…</p>
 <ul>
@@ -617,7 +617,7 @@ pub export fn sensortest_main(
 </li>
 </ul>
 <p>Because Slices are restricted by Length, it’s a little harder to overrun our Strings by accident.</p>
-<p>(If we access data outside the bounds of the Slice, our program halts with a <a href="https://ziglang.org/documentation/master/#Index-out-of-Bounds"><strong>Runtime Panic</strong></a>)</p>
+<p>(If we access the bytes beyond the bounds of the Slice, our program halts with a <a href="https://ziglang.org/documentation/master/#Index-out-of-Bounds"><strong>Runtime Panic</strong></a>)</p>
 <p>To convert a Null-Terminated String to a Slice, we call <a href="https://ziglang.org/documentation/0.9.1/std/#root;mem.span"><strong>std.mem.span</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Convert the command-line arg to a Slice
 const slice = std.mem.span(argv[1]);</code></pre></div>
