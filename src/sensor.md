@@ -751,7 +751,7 @@ _Why do we need Slices? The usual Strings are perfectly splendid right?_
 
 Strings in C (like __argv[1]__ from the previous section) are represented like this...
 
-TODO
+![Strings in C](https://lupyuen.github.io/images/sensor-slice1.jpg)
 
 That's a Pointer to an Array of characters, __terminated by Null__.
 
@@ -761,7 +761,7 @@ Disaster Ensues! Our String would overrun the Array and cause __Undefined Behavi
 
 That's why we have __Slices__, a safer way to represent Strings (and other Arrays with dynamic sizes)...
 
-TODO
+![Zig Slice](https://lupyuen.github.io/images/sensor-slice2.jpg)
 
 A Slice has two components...
 
@@ -1089,9 +1089,13 @@ That's why I'm about to experiment with __Visual Programming__ for NuttX Sensors
 
 Perhaps we can __drag-n-drop a NuttX Sensor__ into our LoRaWAN App...
 
-And __auto-generate the Zig code__ for the NuttX Sensor!
+And __auto-generate the Zig code__ for the NuttX Sensor! (Pic below)
 
 That would be an awesome way for people to mix-n-match various NuttX Sensors for IoT Gadgets!
+
+![Visual Programming for Zig with NuttX Sensors](https://lupyuen.github.io/images/sensor-visual.jpg)
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx)
 
 # What's Next
 
