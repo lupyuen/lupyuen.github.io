@@ -34,7 +34,7 @@ That inspired the Zig program in this article...
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
 
-Let's dive in and find out how we read NuttX Sensors in Zig!
+Let's dive in and find out how we read NuttX Sensors with Zig!
 
 __Note:__ The NuttX Sensor API is going through [__some breaking changes__](https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h) as of Jul 2022. We'll update the article when the API settles down.
 
