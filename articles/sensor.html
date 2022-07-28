@@ -341,7 +341,7 @@ fn test_sensor() !void {
       // pressure:1007.66
       // temperature:27.70</code></pre></div>
 <p><em>What are “int” and “frac”?</em></p>
-<p>Our Fixed-Point Numbers have two Integer components…</p>
+<p>Our Fixed-Point Number has two Integer components…</p>
 <ul>
 <li>
 <p><strong>int</strong>: The Integer part</p>
@@ -766,7 +766,7 @@ humidity:78.81</code></pre></div>
 <h1 id="multiple-sensors"><a href="#multiple-sensors">10 Multiple Sensors</a></h1>
 <p><em>To test a different sensor, do we rewrite the Zig Sensor App?</em></p>
 <p><em>Is there an easier way to test any NuttX Sensor?</em></p>
-<p>This is how we test <strong>any NuttX Sensor</strong>, without rewriting our Zig Sensor App…</p>
+<p>This is how we test <strong>any NuttX Sensor</strong>, without rewriting our app…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest -n 1 baro0
 Zig Sensor Test
 test_multisensor
@@ -792,15 +792,16 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
 </ul>
-<p>To understand the printed values (like “value1” and “value2”), refer to the <strong>Sensor Data Structs</strong>…</p>
+<p>To understand the printed values (like “value1” and “value2”) refer to the <strong>Sensor Data Structs</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
 </ul>
-<p>TODO</p>
+<p><em>How does it work?</em></p>
+<p>Inside our Zig Sensor App is a <strong>Multisensor Module</strong> that handles all sensors…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig"><strong>multisensor.zig</strong></a></li>
 </ul>
-<p>Derived from the <strong>NuttX Sensor Test App</strong> in C…</p>
+<p>The Zig code was converted from the <strong>NuttX Sensor Test App</strong> in C…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
 </ul>
@@ -808,13 +809,11 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/bme280#sensor-test-app"><strong>“Sensor Test App”</strong></a></li>
 </ul>
-<p>TODO</p>
-<p>Auto-translated from C to Zig…</p>
+<p>Below are the steps for converting the Sensor Test App from C to Zig…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/visual-zig-nuttx#auto-translate-sensor-app-to-zig"><strong>Auto-Translate Sensor App to Zig</strong></a></li>
-</ul>
-<p>Then cleaned up…</p>
-<ul>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#auto-translate-sensor-app-to-zig"><strong>Auto-Translate Sensor App to Zig</strong></a></p>
+</li>
 <li>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-app-in-zig"><strong>Sensor App in Zig</strong></a></p>
 </li>
@@ -944,7 +943,7 @@ debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
 <p>(More about <strong>float_to_fixed</strong> in a while)</p>
 <p>(Someday we might simply the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
 <p><em>What are “int” and “frac”?</em></p>
-<p>Our Fixed-Point Numbers have two Integer components…</p>
+<p>Our Fixed-Point Number has two Integer components…</p>
 <ul>
 <li>
 <p><strong>int</strong>: The Integer part</p>
