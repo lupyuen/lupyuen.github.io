@@ -765,8 +765,8 @@ humidity:78.81</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up">(Source)</a></p>
 <h1 id="multiple-sensors"><a href="#multiple-sensors">10 Multiple Sensors</a></h1>
 <p><em>To test a different sensor, do we rewrite the Zig Sensor App?</em></p>
-<p><em>Is there an easier way to test various NuttX Sensors?</em></p>
-<p>TODO</p>
+<p><em>Is there an easier way to test any NuttX Sensor?</em></p>
+<p>This is how we test <strong>any NuttX Sensor</strong>, without rewriting our Zig Sensor App…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest -n 1 baro0
 Zig Sensor Test
 test_multisensor
@@ -775,7 +775,9 @@ value1:1007.65
 value2:27.68
 SensorTest: Received message: baro0, number:1/1</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up">(Source)</a></p>
-<p>TODO</p>
+<p>Just specify the name of the Sensor Device (“baro0”) as a Command-Line Argument.</p>
+<p>(“-n 1” means read the Sensor Data once)</p>
+<p>Here’s another example for “humi0”…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest -n 1 humi0
 Zig Sensor Test
 test_multisensor
@@ -783,8 +785,8 @@ SensorTest: Test /dev/sensor/humi0  with interval(1000000), latency(0)
 value:78.91
 SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up">(Source)</a></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253">(<strong>usage</strong> is defined here)</a></p>
+<p>From the above output we see that Air Pressure is <strong>1,007.65 millibars</strong>, Temperature is <strong>27.68 °C</strong> and Relative Humidity is <strong>78.91 %</strong>.</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253">(See the Command-Line Arguments)</a></p>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig"><strong>multisensor.zig</strong></a></li>
@@ -792,6 +794,10 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p>Derived from the <strong>NuttX Sensor Test App</strong> in C…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
+</ul>
+<p>Which is explained here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/bme280#sensor-test-app"><strong>“Sensor Test App”</strong></a></li>
 </ul>
 <p>TODO</p>
 <p>The <strong>NuttX Sensor Data Structs</strong> are defined at…</p>
