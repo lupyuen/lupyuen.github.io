@@ -93,15 +93,14 @@
 <p>Today we shall write a Zig program to read a NuttX Sensor: <strong>Bosch BME280 Sensor</strong> (Temperture / Humidity / Air Pressure).</p>
 <p>And we’ll run it on Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a>. (Pic above)</p>
 <p>(The steps will be similar for other sensors and microcontrollers)</p>
-<p><em>What if we’re not familiar with Zig?</em></p>
-<p>This article assumes that we’re familiar with C.</p>
-<p>The Zig-ish parts shall be explained with examples in C.</p>
-<p><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig">(If we’re keen to learn Zig, see this)</a></p>
 <p><em>Why are we doing this in Zig?</em></p>
 <p>Zig is super helpful for <strong>writing safer programs</strong> because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. <a href="https://ziglang.org/documentation/master/#Undefined-Behavior">(See the list)</a></p>
-<p>We also plan to use the Zig code in this article for upcoming <strong>LoRaWAN and Visual Programming</strong> projects. (More details below)</p>
+<p>The code in this article will be useful for programming <strong>IoT Gadgets</strong> with Zig. We  plan to use the code for upcoming <strong>LoRaWAN and Visual Programming</strong> projects. (More details below)</p>
+<p><em>What if we’re not familiar with Zig?</em></p>
+<p>This article assumes that we’re familiar with C. The Zig-ish parts shall be explained with examples in C.</p>
+<p><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig">(Tips for learning Zig)</a></p>
 <p><em>But really… What if we prefer to do this in C?</em></p>
-<p>NuttX provides an excellent <strong>Sensor Test App</strong> in C…</p>
+<p>NuttX already provides an excellent <strong>Sensor Test App</strong> in C…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
 </ul>
@@ -109,6 +108,7 @@
 <ul>
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx"><strong>lupyuen/visual-zig-nuttx</strong></a></li>
 </ul>
+<p>Let’s dive in and find out how we read NuttX Sensors in Zig!</p>
 <p><strong>Note:</strong> The NuttX Sensor API is going through <a href="https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h"><strong>some breaking changes</strong></a> as of Jul 2022. We’ll update the article when the API settles down.</p>
 <h1 id="bosch-bme280-sensor"><a href="#bosch-bme280-sensor">1 Bosch BME280 Sensor</a></h1>
 <p>For today we’ll call this NuttX Driver for <strong>Bosch BME280 Sensor</strong>…</p>
@@ -900,6 +900,17 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/sensor-code1a.png" alt="Converting to fixed-point number" /></p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">(Source)</a></p>
 <h1 id="appendix-fixed-point-sensor-data"><a href="#appendix-fixed-point-sensor-data">14 Appendix: Fixed-Point Sensor Data</a></h1>
+<p><em>How do we use Fixed-Point Numbers for Sensor Data?</em></p>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sensor#read-sensor-data"><strong>“Read Sensor Data”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sensor#print-sensor-data"><strong>“Print Sensor Data”</strong></a></p>
+</li>
+</ul>
+<p><em>Why do we handle Sensor Data as Fixed-Point Numbers instead of Floating-Point?</em></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">sensor.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
@@ -930,7 +941,7 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
 </li>
 </ul>
 <p>TODO</p>
-<p>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</p>
+<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p><img src="https://lupyuen.github.io/images/sensor-title2.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 
     
