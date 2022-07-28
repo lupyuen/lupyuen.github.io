@@ -1162,4 +1162,6 @@ TODO
 
 TODO
 
+(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)
+
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title2.jpg)
