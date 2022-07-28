@@ -661,6 +661,8 @@ That's because...
 
     (Like "uint8_t *[]" in C)
 
+So it's roughly equivalent to "char **argv" in C.
+
 [(More about C Pointers in Zig)](https://ziglang.org/documentation/master/#C-Pointers)
 
 We check the __Command-Line Argument__ passed to our program...
@@ -712,7 +714,7 @@ And if the command-line arg is "test2"...
 
 We call __test_sensor2__ to read the Humidity Sensor. [(As seen earlier)](https://lupyuen.github.io/articles/sensor#read-humidity-sensor)
 
-For other command-line args we run a __Multisensor Test__...
+For other command-line args we run a __Multi-Sensor Test__...
 
 ```zig
   // Read the Sensor specified by the Command-Line Options
@@ -1027,7 +1029,7 @@ To understand the printed values (like "value1" and "value2") refer to the __Sen
 
 _How does it work?_
 
-Inside our Zig Sensor App is a __Multisensor Module__ that handles all sensors...
+Inside our Zig Sensor App is a __Multi-Sensor Module__ that handles all kinds of sensors...
 
 -   [__multisensor.zig__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig)
 
