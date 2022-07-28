@@ -617,6 +617,7 @@ pub export fn sensortest_main(
 </li>
 </ul>
 <p>Because Slices are restricted by Length, it’s a little harder to overrun our Strings by accident.</p>
+<p>(If we access data outside the bounds of the Slice, our Zig program halts with a <a href="https://ziglang.org/documentation/master/#Index-out-of-Bounds"><strong>Runtime Panic</strong></a>)</p>
 <p>To convert a Null-Terminated String to a Slice, we call <a href="https://ziglang.org/documentation/0.9.1/std/#root;mem.span"><strong>std.mem.span</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Convert the command-line arg to a Slice
 const slice = std.mem.span(argv[1]);</code></pre></div>
@@ -895,7 +896,15 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sensor.md"><strong>lupyuen.github.io/src/sensor.md</strong></a></p>
 <h1 id="notes"><a href="#notes">13 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1548909434440585216"><strong>this Twitter Thread</strong></a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1548909434440585216"><strong>this Twitter Thread</strong></a></p>
+</li>
+<li>
+<p>TODO: Panic Handler</p>
+</li>
+<li>
+<p>TODO: Logger</p>
+</li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/sensor-code1a.png" alt="Converting to fixed-point number" /></p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">(Source)</a></p>
