@@ -799,7 +799,8 @@ const fd = c.open(
   &slice[0], 
   c.O_RDONLY | c.O_NONBLOCK
 );
-// Triggers a runtime panic if the Slice is empty
+// Slice must be null-terminated.
+// Triggers a runtime panic if the Slice is empty.
 ```
 
 [(More about Slices)](https://ziglang.org/documentation/master/#Slices)
@@ -1160,6 +1161,8 @@ debug("pressure:{}.{:0>2}", .{
 ```
 
 (More about __float_to_fixed__ in a while)
+
+(Someday we might simply the printing with [__Custom Formatting__](https://ziglearn.org/chapter-2/#formatting))
 
 _What are "int" and "frac"?_
 
