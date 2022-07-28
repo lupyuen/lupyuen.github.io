@@ -95,7 +95,7 @@
 <p>(The steps will be similar for other sensors and microcontrollers)</p>
 <p><em>Why are we doing this in Zig?</em></p>
 <p>Zig is super helpful for <strong>writing safer programs</strong> because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. <a href="https://ziglang.org/documentation/master/#Undefined-Behavior">(See the list)</a></p>
-<p>The code in this article will be useful for programming <strong>IoT Gadgets</strong> with Zig. We  plan to use the code for upcoming <strong>LoRaWAN and Visual Programming</strong> projects. (More details below)</p>
+<p>The code in this article will be useful for programming <strong>IoT Gadgets</strong> with Zig. We’ll use the code in upcoming projects: <strong>LoRaWAN and Visual Programming</strong>. (More details below)</p>
 <p><em>What if we’re not familiar with Zig?</em></p>
 <p>This article assumes that we’re familiar with C. The Zig-ish parts shall be explained with examples in C.</p>
 <p><a href="https://lupyuen.github.io/articles/pinephone#appendix-learning-zig">(Tips for learning Zig)</a></p>
@@ -341,7 +341,7 @@ fn test_sensor() !void {
       // pressure:1007.66
       // temperature:27.70</code></pre></div>
 <p><em>What are “int” and “frac”?</em></p>
-<p>Our Fixed-Point Numbers have two components…</p>
+<p>Our Fixed-Point Numbers have two Integer components…</p>
 <ul>
 <li>
 <p><strong>int</strong>: The Integer part</p>
@@ -901,7 +901,7 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">(Source)</a></p>
 <h1 id="appendix-fixed-point-sensor-data"><a href="#appendix-fixed-point-sensor-data">14 Appendix: Fixed-Point Sensor Data</a></h1>
 <p><em>How do we use Fixed-Point Numbers for Sensor Data?</em></p>
-<p>TODO</p>
+<p>Our Zig Sensor App reads Sensor Data as <strong>Floating-Point Numbers</strong>…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/sensor#read-sensor-data"><strong>“Read Sensor Data”</strong></a></p>
@@ -910,25 +910,40 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sensor#print-sensor-data"><strong>“Print Sensor Data”</strong></a></p>
 </li>
 </ul>
-<p><em>Why do we handle Sensor Data as Fixed-Point Numbers instead of Floating-Point?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">sensor.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
-/// We do this because `debug` has a problem with floats.
-pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
-  const scaled = @floatToInt(i32, f * 100.0);
-  const rem = @rem(scaled, 100);
-  const rem_abs = if (rem &lt; 0) -rem else rem;
-  return .{
-    .int  = @divTrunc(scaled, 100),
-    .frac = @intCast(u8, rem_abs),
-  };
-}</code></pre></div>
-<p>TODO</p>
+<p>And converts the Sensor Data to <strong>Fixed-Point Numbers</strong> (2 decimal places) for printing…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Convert Pressure to a Fixed-Point Number
+const pressure = float_to_fixed(
+  sensor_data.pressure
+);
+
+// Print the Pressure as a Fixed-Point Number
+debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
+  pressure.int, 
+  pressure.frac 
+});</code></pre></div>
+<p>(More about <strong>float_to_fixed</strong> in a while)</p>
+<p><em>What are “int” and “frac”?</em></p>
+<p>Our Fixed-Point Numbers have two Integer components…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/cbor2#floating-point-numbers"><strong>“Floating-Point Numbers (CBOR)”</strong></a></li>
+<li>
+<p><strong>int</strong>: The Integer part</p>
+</li>
+<li>
+<p><strong>frac</strong>: The Fraction part, scaled by 100</p>
+</li>
 </ul>
-<p>TODO</p>
+<p>So to represent <code>123.456</code>, we break it down as…</p>
+<ul>
+<li>
+<p><strong>int</strong> = <code>123</code></p>
+</li>
+<li>
+<p><strong>frac</strong> = <code>45</code></p>
+</li>
+</ul>
+<p>We drop the final digit <code>6</code> when we convert to Fixed-Point.</p>
+<p><em>Why handle Sensor Data as Fixed-Point Numbers? Why not Floating-Point?</em></p>
+<p>When we tried printing the Sensor Data as Floating-Point Numbers, we hit some <strong>Linking and Runtime Issues</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values"><strong>“Fix Floating-Point Values”</strong></a></p>
@@ -940,8 +955,31 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing"><strong>“Fixed-Point Printing”</strong></a></p>
 </li>
 </ul>
-<p>TODO</p>
-<p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
+<p>Computations on Floating-Point Numbers are OK, only printing is affected. So we print the numbers as Fixed-Point instead.</p>
+<p>(We observed these issues with Zig Compiler version 0.10.0, they might have been fixed in later versions of the compiler)</p>
+<p><em>Won’t our Sensor Data get less precise in Fixed-Point?</em></p>
+<p>Yep we lose some precision with Fixed-Point Numbers. (Like the final digit <code>6</code> from earlier)</p>
+<p>But most IoT Gadgets will <strong>truncate Sensor Data</strong> before transmission anyway.</p>
+<p>And for some data formats (like CBOR), we need <strong>fewer bytes</strong> to transmit Fixed-Point Numbers instead of Floating-Point…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor2#floating-point-numbers"><strong>“Floating-Point Numbers (CBOR)”</strong></a></li>
+</ul>
+<p>Thus we’ll probably stick to Fixed-Point Numbers for our upcoming IoT projects.</p>
+<p><em>How do we convert Floating-Point to Fixed-Point?</em></p>
+<p>Below is the implementation of <strong>float_to_fixed</strong>, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">sensor.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
+/// We do this because `debug` has a problem with floats.
+pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
+  const scaled = @floatToInt(i32, f * 100.0);
+  const rem = @rem(scaled, 100);
+  const rem_abs = if (rem &lt; 0) -rem else rem;
+  return .{
+    .int  = @divTrunc(scaled, 100),
+    .frac = @intCast(u8, rem_abs),
+  };
+}</code></pre></div>
+<p>(See the docs: <a href="https://ziglang.org/documentation/master/#floatToInt"><strong>@floatToInt</strong></a>, <a href="https://ziglang.org/documentation/master/#rem"><strong>@rem</strong></a>, <a href="https://ziglang.org/documentation/master/#divTrunc"><strong>@divTrunc</strong></a>, <a href="https://ziglang.org/documentation/master/#intCast"><strong>@intCast</strong></a>)</p>
+<p>This code has been tested for positive and negative numbers.</p>
 <p><img src="https://lupyuen.github.io/images/sensor-title2.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 
     
