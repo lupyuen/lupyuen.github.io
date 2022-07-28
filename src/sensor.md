@@ -12,29 +12,29 @@ And we'll run it on Pine64's [__PineCone BL602 RISC-V Board__](https://lupyuen.g
 
 (The steps will be similar for other sensors and microcontrollers)
 
-_What if we're not familiar with Zig?_
-
-This article assumes that we're familiar with C.
-
-The Zig-ish parts shall be explained with examples in C.
-
-[(If we're keen to learn Zig, see this)](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
-
 _Why are we doing this in Zig?_
 
 Zig is super helpful for __writing safer programs__ because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. [(See the list)](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
-We also plan to use the Zig code in this article for upcoming __LoRaWAN and Visual Programming__ projects. (More details below)
+The code in this article will be useful for programming __IoT Gadgets__ with Zig. We  plan to use the code for upcoming __LoRaWAN and Visual Programming__ projects. (More details below)
+
+_What if we're not familiar with Zig?_
+
+This article assumes that we're familiar with C. The Zig-ish parts shall be explained with examples in C.
+
+[(Tips for learning Zig)](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
 
 _But really... What if we prefer to do this in C?_
 
-NuttX provides an excellent __Sensor Test App__ in C...
+NuttX already provides an excellent __Sensor Test App__ in C...
 
 -   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c)
 
 That inspired the Zig program in this article...
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
+
+Let's dive in and find out how we read NuttX Sensors in Zig!
 
 __Note:__ The NuttX Sensor API is going through [__some breaking changes__](https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h) as of Jul 2022. We'll update the article when the API settles down.
 
@@ -1130,6 +1130,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Fixed-Point Sensor Data
 
+_How do we use Fixed-Point Numbers for Sensor Data?_
+
+TODO
+
+-   [__"Read Sensor Data"__](https://lupyuen.github.io/articles/sensor#read-sensor-data)
+
+-   [__"Print Sensor Data"__](https://lupyuen.github.io/articles/sensor#print-sensor-data)
+
+_Why do we handle Sensor Data as Fixed-Point Numbers instead of Floating-Point?_
+
 TODO
 
 [sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49)
@@ -1162,6 +1172,6 @@ TODO
 
 TODO
 
-(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)
+_(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)_
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title2.jpg)
