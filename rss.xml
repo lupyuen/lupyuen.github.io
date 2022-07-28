@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Read NuttX Sensor Data with Zig</title>
+            <link>https://lupyuen.github.io/articles/sensor</link>
+            <description><![CDATA[Using Zig to read Sensor Data on Apache NuttX RTOS... With Bosch BME280 Temperature / Humidity / Air Pressure Sensor]]></description>
+            <guid>https://lupyuen.github.io/articles/sensor</guid>
+            <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Build an LVGL Touchscreen App with Zig</title>
             <link>https://lupyuen.github.io/articles/lvgl</link>
             <description><![CDATA[Can we use Zig to build an LVGL Touchscreen App for Apache NuttX RTOS? Also wrap the LVGL API in Zig to build simpler, safer LVGL Apps? Let's find out!]]></description>
