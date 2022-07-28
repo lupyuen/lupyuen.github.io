@@ -545,6 +545,7 @@ pub export fn sensortest_main(
 <p>(Like “uint8_t *[]” in C)</p>
 </li>
 </ul>
+<p>So it’s roughly equivalent to “char **argv” in C.</p>
 <p><a href="https://ziglang.org/documentation/master/#C-Pointers">(More about C Pointers in Zig)</a></p>
 <p>We check the <strong>Command-Line Argument</strong> passed to our program…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Run a command like &quot;test&quot; or &quot;test2&quot;
@@ -577,7 +578,7 @@ pub export fn sensortest_main(
     }
   }</code></pre></div>
 <p>We call <strong>test_sensor2</strong> to read the Humidity Sensor. <a href="https://lupyuen.github.io/articles/sensor#read-humidity-sensor">(As seen earlier)</a></p>
-<p>For other command-line args we run a <strong>Multisensor Test</strong>…</p>
+<p>For other command-line args we run a <strong>Multi-Sensor Test</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Read the Sensor specified by the Command-Line Options
   multi.test_multisensor(argc, argv)
     catch |err| {
@@ -797,7 +798,7 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
 </ul>
 <p><em>How does it work?</em></p>
-<p>Inside our Zig Sensor App is a <strong>Multisensor Module</strong> that handles all sensors…</p>
+<p>Inside our Zig Sensor App is a <strong>Multi-Sensor Module</strong> that handles all kinds of sensors…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig"><strong>multisensor.zig</strong></a></li>
 </ul>
