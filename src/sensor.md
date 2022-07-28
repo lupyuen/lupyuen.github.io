@@ -181,7 +181,7 @@ We write "`_ =` _something_" to tell Zig Compiler that we're not using the Retur
 
 ## Set Standby Interval
 
-Some sensors (like BME280) will automatically measure Sensor Data at __Periodic Intervals__. [(See this)](https://lupyuen.github.io/articles/bme280#standby-interval)
+Some sensors (like BME280) will automatically measure Sensor Data at __Periodic Intervals__. [(Like this)](https://lupyuen.github.io/articles/bme280#standby-interval)
 
 Let's assume that our sensor will measure Sensor Data __every 1 second__...
 
@@ -549,11 +549,11 @@ pub const c = @cImport({
 
 [(__@cImport__ is documented here)](https://ziglang.org/documentation/master/#Import-from-C-Header-File)
 
-At the top of our Zig App we set the __#define Macros__ that will be referenced by the C Header Files coming up.
+At the top we set the __#define Macros__ that will be referenced by the NuttX Header Files coming up.
 
-The settings above are specific to Apache NuttX RTOS and the BL602 RISC-V SoC. [(Here's why)](https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c)
+The settings above are specific to NuttX for BL602. [(Here's why)](https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c)
 
-Next comes a workaround for a __C Macro Error__ that appears on Zig with Apache NuttX RTOS...
+Next comes a workaround for a __C Macro Error__ that appears on Zig with NuttX...
 
 ```zig
   // Workaround for "Unable to translate macro: undefined identifier `LL`"
@@ -563,7 +563,7 @@ Next comes a workaround for a __C Macro Error__ that appears on Zig with Apache 
 
 [(More about this)](https://lupyuen.github.io/articles/iot#appendix-macro-error)
 
-Then we import the __C Header Files__ for Apache NuttX RTOS...
+Then we import the __C Header Files__ for NuttX...
 
 ```zig
   // NuttX Header Files. This is equivalent to...
