@@ -601,12 +601,12 @@ pub export fn sensortest_main(
 <h1 id="slice-vs-pointer"><a href="#slice-vs-pointer">6 Slice vs Pointer</a></h1>
 <p><em>Why do we need Slices? The usual Strings are perfectly splendid right?</em></p>
 <p>Strings in C (like <strong>argv[1]</strong> from the previous section) are represented like this…</p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/sensor-slice1.jpg" alt="Strings in C" /></p>
 <p>That’s a Pointer to an Array of characters, <strong>terminated by Null</strong>.</p>
 <p><em>What if we make a mistake and overwrite the Terminating Null?</em></p>
 <p>Disaster Ensues! Our String would overrun the Array and cause <strong>Undefined Behaviour</strong> when we read the String!</p>
 <p>That’s why we have <strong>Slices</strong>, a safer way to represent Strings (and other Arrays with dynamic sizes)…</p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/sensor-slice2.jpg" alt="Zig Slice" /></p>
 <p>A Slice has two components…</p>
 <ul>
 <li>
@@ -858,8 +858,10 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><em>Can we auto-generate the boilerplate code for each NuttX Sensor?</em></p>
 <p>That’s why I’m about to experiment with <strong>Visual Programming</strong> for NuttX Sensors.</p>
 <p>Perhaps we can <strong>drag-n-drop a NuttX Sensor</strong> into our LoRaWAN App…</p>
-<p>And <strong>auto-generate the Zig code</strong> for the NuttX Sensor!</p>
+<p>And <strong>auto-generate the Zig code</strong> for the NuttX Sensor! (Pic below)</p>
 <p>That would be an awesome way for people to mix-n-match various NuttX Sensors for IoT Gadgets!</p>
+<p><img src="https://lupyuen.github.io/images/sensor-visual.jpg" alt="Visual Programming for Zig with NuttX Sensors" /></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx">(Source)</a></p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>Here are some tips for learning Zig…</p>
