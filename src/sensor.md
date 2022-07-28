@@ -1141,9 +1141,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1548909434440585216)
 
-1.  TODO: Panic Handler
+1.  Our Zig App includes a [__Custom Logger__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L281-L316) and [__Panic Handler__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L255-L279). They are explained below...
 
-1.  TODO: Logger
+    [__"Logging"__](https://lupyuen.github.io/articles/iot#appendix-logging)
+
+    [__"Panic Handler"__](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
 ![Converting to fixed-point number](https://lupyuen.github.io/images/sensor-code1a.png)
 
