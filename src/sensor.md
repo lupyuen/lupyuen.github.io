@@ -978,9 +978,9 @@ Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctl
 
 _To test a different sensor, do we rewrite the Zig Sensor App?_
 
-_Is there an easier way to test various NuttX Sensors?_
+_Is there an easier way to test any NuttX Sensor?_
 
-TODO
+This is how we test __any NuttX Sensor__, without rewriting our Zig Sensor App...
 
 ```text
 nsh> sensortest -n 1 baro0
@@ -994,7 +994,11 @@ SensorTest: Received message: baro0, number:1/1
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx#clean-up)
 
-TODO
+Just specify the name of the Sensor Device ("baro0") as a Command-Line Argument.
+
+("-n 1" means read the Sensor Data once)
+
+Here's another example for "humi0"...
 
 ```text
 nsh> sensortest -n 1 humi0
@@ -1007,9 +1011,9 @@ SensorTest: Received message: humi0, number:1/1
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx#clean-up)
 
-TODO
+From the above output we see that Air Pressure is __1,007.65 millibars__, Temperature is __27.68 °C__ and Relative Humidity is __78.91 %__.
 
-[(__usage__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253)
+[(See the Command-Line Arguments)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253)
 
 TODO
 
@@ -1018,6 +1022,10 @@ TODO
 Derived from the __NuttX Sensor Test App__ in C...
 
 -   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c)
+
+Which is explained here...
+
+-   [__"Sensor Test App"__](https://lupyuen.github.io/articles/bme280#sensor-test-app)
 
 TODO
 
