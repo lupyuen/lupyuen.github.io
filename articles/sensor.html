@@ -787,6 +787,15 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up">(Source)</a></p>
 <p>From the above output we see that Air Pressure is <strong>1,007.65 millibars</strong>, Temperature is <strong>27.68 °C</strong> and Relative Humidity is <strong>78.91 %</strong>.</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253">(See the Command-Line Arguments)</a></p>
+<p><em>Which sensors are supported?</em></p>
+<p>Here’s the list of <strong>Sensor Devices</strong> supported by the app…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
+</ul>
+<p>To understand the printed values (like “value1” and “value2”), refer to the <strong>Sensor Data Structs</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
+</ul>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/multisensor.zig"><strong>multisensor.zig</strong></a></li>
@@ -798,15 +807,6 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p>Which is explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/bme280#sensor-test-app"><strong>“Sensor Test App”</strong></a></li>
-</ul>
-<p>TODO</p>
-<p>The <strong>NuttX Sensor Data Structs</strong> are defined at…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
-</ul>
-<p>Here’s the list of <strong>NuttX Sensor Device Names</strong>…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
 </ul>
 <p>TODO</p>
 <p>Auto-translated from C to Zig…</p>
