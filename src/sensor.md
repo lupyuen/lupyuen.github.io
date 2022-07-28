@@ -16,7 +16,7 @@ _Why are we doing this in Zig?_
 
 Zig is super helpful for __writing safer programs__ because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. [(See the list)](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
-The code in this article will be useful for programming __IoT Gadgets__ with Zig. We'll use the code in upcoming projects: __LoRaWAN and Visual Programming__. (More details below)
+The code in this article will be useful for programming __IoT Gadgets__ with Zig. We'll use the code in upcoming projects: __LoRaWAN and Visual Programming__. (Details below)
 
 _What if we're not familiar with Zig?_
 
