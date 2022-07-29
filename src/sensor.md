@@ -551,7 +551,7 @@ pub const c = @cImport({
 
 At the top we set the __#define Macros__ that will be referenced by the NuttX Header Files coming up.
 
-The settings above are specific to NuttX for BL602. [(Here's why)](https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c)
+The settings above are specific to NuttX for BL602. [(Because of the GCC Options)](https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c)
 
 Next comes a workaround for a __C Macro Error__ that appears on Zig with NuttX...
 
@@ -885,7 +885,7 @@ Note that __target__ and __mcpu__ are specific to BL602...
 
 _How did we get the Compiler Options `-isystem` and `-I`?_
 
-Remember that we'll link our Compiled Zig App with __Apache NuttX RTOS.__
+Remember that we'll link our Compiled Zig App into the NuttX Firmware.
 
 Hence the __Zig Compiler Options must be the same__ as the GCC Options used to compile NuttX.
 
@@ -941,7 +941,7 @@ In the NuttX Shell, enter this command to start our Zig App...
 sensortest test
 ```
 
-Here's the __Air Pressure and Temperature__ read from the BME280 Barometer Sensor...
+Which reads the __Air Pressure and Temperature__ from the BME280 Barometer Sensor...
 
 ```text
 nsh> sensortest test
@@ -959,7 +959,7 @@ Then enter this...
 sensortest test2
 ```
 
-And here's the __Humidity__ read from the BME280 Humidity Sensor...
+Which reads the __Humidity__ from the BME280 Humidity Sensor...
 
 ```text
 nsh> sensortest test2
@@ -996,11 +996,11 @@ SensorTest: Received message: baro0, number:1/1
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx#clean-up)
 
-Just specify the name of the Sensor Device ("baro0") as a Command-Line Argument.
+Just specify the name of the Sensor Device ("baro0") as the Command-Line Argument.
 
 ("-n 1" means read the Sensor Data once)
 
-Here's another example for "humi0"...
+And this is how we read "humi0"...
 
 ```text
 nsh> sensortest -n 1 humi0
@@ -1023,7 +1023,7 @@ Here's the list of __Sensor Devices__ supported by the app...
 
 -   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
 
-To understand the printed values (like "value1" and "value2") refer to the __Sensor Data Structs__...
+To understand the printed values (like "value1" and "value2"), we refer to the __Sensor Data Structs__...
 
 -   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
 
@@ -1071,7 +1071,7 @@ _Once again... Why are we doing this in Zig?_
 
 We said earlier that Zig is super helpful for __writing safer programs__ because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. [(See the list)](https://ziglang.org/documentation/master/#Undefined-Behavior)
 
-We also plan to use the Zig code in this article for upcoming __LoRaWAN and Visual Programming__ projects.
+And we plan to use the Zig code in this article for upcoming __LoRaWAN and Visual Programming__ projects.
 
 _Isn't LoRaWAN the long-range, low-power, low-bandwidth Wireless Network for IoT Gadgets?_
 
@@ -1079,7 +1079,7 @@ Yep we have previously created a Zig app for the [__LoRaWAN Wireless Network__](
 
 -   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
 
-Now we can integrate the Sensor Code from this article... To produce the firmware for an IoT Gadget that actually __transmits real Sensor Data__!
+Now we can integrate the Sensor Code from this article... To create the firmware for an IoT Gadget that actually __transmits real Sensor Data__!
 
 We'll compress the Sensor Data with __CBOR__...
 
@@ -1093,11 +1093,11 @@ _And this LoRaWAN App will work for all kinds of NuttX Sensors?_
 
 Righto our Zig LoRaWAN App will eventually support __all types of NuttX Sensors__.
 
-But we've seen today that each kind of NuttX Sensor needs a lot of __boilerplate code__ to support the sensor.
+But we've seen today that each kind of NuttX Sensor needs a lot of __boilerplate code__ (and error handling) to support every sensor.
 
 _Can we auto-generate the boilerplate code for each NuttX Sensor?_
 
-That's why I'm about to experiment with __Visual Programming__ for NuttX Sensors.
+I'm about to experiment with __Visual Programming__ for NuttX Sensors.
 
 Perhaps we can [__drag-n-drop a NuttX Sensor__](https://github.com/google/blockly) into our LoRaWAN App...
 
@@ -1167,7 +1167,7 @@ Our Zig Sensor App reads Sensor Data as __Floating-Point Numbers__...
 
 -   [__"Print Sensor Data"__](https://lupyuen.github.io/articles/sensor#print-sensor-data)
 
-And converts the Sensor Data to __Fixed-Point Numbers__ (2 decimal places) for printing...
+And converts the Sensor Data to [__Fixed-Point Numbers__](https://en.wikipedia.org/wiki/Fixed-point_arithmetic) (2 decimal places) for printing...
 
 ```zig
 // Convert Pressure to a Fixed-Point Number
@@ -1184,7 +1184,7 @@ debug("pressure:{}.{:0>2}", .{
 
 (More about __float_to_fixed__ in a while)
 
-(Someday we might simply the printing with [__Custom Formatting__](https://ziglearn.org/chapter-2/#formatting))
+(Someday we might simplify the printing with [__Custom Formatting__](https://ziglearn.org/chapter-2/#formatting))
 
 _What are "int" and "frac"?_
 
