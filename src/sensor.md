@@ -1099,11 +1099,11 @@ _Can we auto-generate the boilerplate code for each NuttX Sensor?_
 
 That's why I'm about to experiment with __Visual Programming__ for NuttX Sensors.
 
-Perhaps we can __drag-n-drop a NuttX Sensor__ into our LoRaWAN App...
+Perhaps we can [__drag-n-drop a NuttX Sensor__](https://github.com/google/blockly) into our LoRaWAN App...
 
 And __auto-generate the Zig code__ for the NuttX Sensor! (Pic below)
 
-That would be an awesome way for people to mix-n-match various NuttX Sensors for IoT Gadgets!
+That would be an awesome way to mix-n-match various NuttX Sensors for IoT Gadgets!
 
 ![Visual Programming for Zig with NuttX Sensors](https://lupyuen.github.io/images/sensor-visual.jpg)
 
@@ -1111,13 +1111,17 @@ That would be an awesome way for people to mix-n-match various NuttX Sensors for
 
 # What's Next
 
-TODO
+I hope you find this article helpful for creating your own Sensor App. Lemme know what you're building!
 
-Here are some tips for learning Zig...
+In the coming weeks I shall [__customise Blockly__](https://github.com/google/blockly) to auto-generate the Zig Sensor App. Someday we'll create Sensor Apps the drag-n-drop way!
+
+-   [__"Visual Programming for Zig with NuttX Sensors"__](https://github.com/lupyuen/visual-zig-nuttx)
+
+To learn more about Zig, check out these tips...
 
 -   [__"Learning Zig"__](https://lupyuen.github.io/articles/pinephone#appendix-learning-zig)
 
-Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL...
+See my earlier work on Zig, NuttX, LoRaWAN and LVGL...
 
 -   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
 
