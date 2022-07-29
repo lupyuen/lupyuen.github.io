@@ -472,7 +472,7 @@ pub const c = @cImport({
   // #define ARCH_RISCV</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Import-from-C-Header-File">(<strong>@cImport</strong> is documented here)</a></p>
 <p>At the top we set the <strong>#define Macros</strong> that will be referenced by the NuttX Header Files coming up.</p>
-<p>The settings above are specific to NuttX for BL602. <a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(Here’s why)</a></p>
+<p>The settings above are specific to NuttX for BL602. <a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(Because of the GCC Options)</a></p>
 <p>Next comes a workaround for a <strong>C Macro Error</strong> that appears on Zig with NuttX…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
   @cDefine(&quot;LL&quot;, &quot;&quot;);
@@ -707,7 +707,7 @@ zig build-obj \
 <li><a href="https://lupyuen.github.io/articles/zig#zig-target"><strong>“Zig Target”</strong></a></li>
 </ul>
 <p><em>How did we get the Compiler Options <code>-isystem</code> and <code>-I</code>?</em></p>
-<p>Remember that we’ll link our Compiled Zig App with <strong>Apache NuttX RTOS.</strong></p>
+<p>Remember that we’ll link our Compiled Zig App into the NuttX Firmware.</p>
 <p>Hence the <strong>Zig Compiler Options must be the same</strong> as the GCC Options used to compile NuttX.</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(See the GCC Options for NuttX)</a></p>
 <p>Next comes a quirk specific to BL602: We must <strong>patch the ELF Header</strong> from Software Floating-Point ABI to Hardware Floating-Point ABI…</p>
@@ -746,7 +746,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </ul>
 <p>In the NuttX Shell, enter this command to start our Zig App…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sensortest test</code></pre></div>
-<p>Here’s the <strong>Air Pressure and Temperature</strong> read from the BME280 Barometer Sensor…</p>
+<p>Which reads the <strong>Air Pressure and Temperature</strong> from the BME280 Barometer Sensor…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test
 Zig Sensor Test
 test_sensor
@@ -755,7 +755,7 @@ temperature:27.70</code></pre></div>
 <p>This says that the Air Pressure is <strong>1,007.66 millibars</strong> and the Temperature is <strong>27.70 °C</strong>.</p>
 <p>Then enter this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sensortest test2</code></pre></div>
-<p>And here’s the <strong>Humidity</strong> read from the BME280 Humidity Sensor…</p>
+<p>Which reads the <strong>Humidity</strong> from the BME280 Humidity Sensor…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test2
 Zig Sensor Test
 test_sensor2
@@ -776,9 +776,9 @@ value1:1007.65
 value2:27.68
 SensorTest: Received message: baro0, number:1/1</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up">(Source)</a></p>
-<p>Just specify the name of the Sensor Device (“baro0”) as a Command-Line Argument.</p>
+<p>Just specify the name of the Sensor Device (“baro0”) as the Command-Line Argument.</p>
 <p>(“-n 1” means read the Sensor Data once)</p>
-<p>Here’s another example for “humi0”…</p>
+<p>And this is how we read “humi0”…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest -n 1 humi0
 Zig Sensor Test
 test_multisensor
@@ -793,7 +793,7 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
 </ul>
-<p>To understand the printed values (like “value1” and “value2”) refer to the <strong>Sensor Data Structs</strong>…</p>
+<p>To understand the printed values (like “value1” and “value2”), we refer to the <strong>Sensor Data Structs</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
 </ul>
@@ -845,13 +845,13 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <h1 id="lorawan-and-visual-programming"><a href="#lorawan-and-visual-programming">11 LoRaWAN and Visual Programming</a></h1>
 <p><em>Once again… Why are we doing this in Zig?</em></p>
 <p>We said earlier that Zig is super helpful for <strong>writing safer programs</strong> because it catches problems at runtime: Overflow, Underflow, Array Out-of-Bounds and more. <a href="https://ziglang.org/documentation/master/#Undefined-Behavior">(See the list)</a></p>
-<p>We also plan to use the Zig code in this article for upcoming <strong>LoRaWAN and Visual Programming</strong> projects.</p>
+<p>And we plan to use the Zig code in this article for upcoming <strong>LoRaWAN and Visual Programming</strong> projects.</p>
 <p><em>Isn’t LoRaWAN the long-range, low-power, low-bandwidth Wireless Network for IoT Gadgets?</em></p>
 <p>Yep we have previously created a Zig app for the <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN Wireless Network</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/iot"><strong>“Build an IoT App with Zig and LoRaWAN”</strong></a></li>
 </ul>
-<p>Now we can integrate the Sensor Code from this article… To produce the firmware for an IoT Gadget that actually <strong>transmits real Sensor Data</strong>!</p>
+<p>Now we can integrate the Sensor Code from this article… To create the firmware for an IoT Gadget that actually <strong>transmits real Sensor Data</strong>!</p>
 <p>We’ll compress the Sensor Data with <strong>CBOR</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/cbor2"><strong>“Encode Sensor Data with CBOR on Apache NuttX OS”</strong></a></li>
@@ -862,9 +862,9 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 </ul>
 <p><em>And this LoRaWAN App will work for all kinds of NuttX Sensors?</em></p>
 <p>Righto our Zig LoRaWAN App will eventually support <strong>all types of NuttX Sensors</strong>.</p>
-<p>But we’ve seen today that each kind of NuttX Sensor needs a lot of <strong>boilerplate code</strong> to support the sensor.</p>
+<p>But we’ve seen today that each kind of NuttX Sensor needs a lot of <strong>boilerplate code</strong> (and error handling) to support every sensor.</p>
 <p><em>Can we auto-generate the boilerplate code for each NuttX Sensor?</em></p>
-<p>That’s why I’m about to experiment with <strong>Visual Programming</strong> for NuttX Sensors.</p>
+<p>I’m about to experiment with <strong>Visual Programming</strong> for NuttX Sensors.</p>
 <p>Perhaps we can <a href="https://github.com/google/blockly"><strong>drag-n-drop a NuttX Sensor</strong></a> into our LoRaWAN App…</p>
 <p>And <strong>auto-generate the Zig code</strong> for the NuttX Sensor! (Pic below)</p>
 <p>That would be an awesome way to mix-n-match various NuttX Sensors for IoT Gadgets!</p>
@@ -933,7 +933,7 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sensor#print-sensor-data"><strong>“Print Sensor Data”</strong></a></p>
 </li>
 </ul>
-<p>And converts the Sensor Data to <strong>Fixed-Point Numbers</strong> (2 decimal places) for printing…</p>
+<p>And converts the Sensor Data to <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Numbers</strong></a> (2 decimal places) for printing…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Convert Pressure to a Fixed-Point Number
 const pressure = float_to_fixed(
   sensor_data.pressure
@@ -945,7 +945,7 @@ debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
   pressure.frac 
 });</code></pre></div>
 <p>(More about <strong>float_to_fixed</strong> in a while)</p>
-<p>(Someday we might simply the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
+<p>(Someday we might simplify the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
 <p><em>What are “int” and “frac”?</em></p>
 <p>Our Fixed-Point Number has two Integer components…</p>
 <ul>
