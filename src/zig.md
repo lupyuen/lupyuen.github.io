@@ -629,6 +629,8 @@ Yep totally! Since Zig interoperates well with C, we can create __IoT Apps in Zi
 
 -   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
 
+-   [__"Read NuttX Sensor Data with Zig"__](https://lupyuen.github.io/articles/sensor)
+
 I'm really impressed by this Wayland Compositor in Zig, how it imports a __huge bunch of C Header Files__, and calls them from Zig!
 
 -   [__dreinharth/byway (Wayland Compositor in Zig)__](https://github.com/dreinharth/byway/blob/main/src/main.zig)
@@ -642,6 +644,8 @@ In the coming weeks I'll test Zig as a __drop-in replacement for GCC.__ Let's fi
 Check out the updates here...
 
 -   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
+
+-   [__"Read NuttX Sensor Data with Zig"__](https://lupyuen.github.io/articles/sensor)
 
 -   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
 

@@ -1033,6 +1033,8 @@ In the coming weeks I shall flesh out our Zig App, so that it works like a real 
 
 (With Temperature Sensor, CBOR Encoding, The Things Network, ...)
 
+-   [__"Read NuttX Sensor Data with Zig"__](https://lupyuen.github.io/articles/sensor)
+
 For the next article we'll take a quick detour and explore __Zig on PinePhone__...
 
 -   [__"Build a PinePhone App with Zig and zgt"__](https://lupyuen.github.io/articles/pinephone)
