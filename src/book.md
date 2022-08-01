@@ -38,45 +38,11 @@ Find out what's inside the __BL602 / BL604 System-on-a-Chip (SoC)__... And why i
 
 __Apache NuttX__ is a portable, embedded operating system that's officially supported on BL602 and BL604. (Alternative to FreeRTOS and BL602 IoT SDK)
 
--   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
-
 -   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
 
--   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
+-   ["Apache NuttX OS on RISC-V BL602 and BL604"](https://lupyuen.github.io/articles/nuttx)
 
--   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
-
--   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
-
--   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
-
--   ["Rust talks I2C on Apache NuttX RTOS"](https://lupyuen.github.io/articles/rusti2c)
-
--   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
-
--   ["NuttX Touch Panel Driver for PineDio Stack BL604"](https://lupyuen.github.io/articles/touch)
-
--   ["NuttX GPIO Expander for PineDio Stack BL604"](https://lupyuen.github.io/articles/expander)
-
--   ["(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/auto2)
-
--   ["Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"](https://lupyuen.github.io/articles/zig)
-
--   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
-
--   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
-
--   ["Read NuttX Sensor Data with Zig"](https://lupyuen.github.io/articles/sensor)
-
--   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
-
--   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
-
--   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
-
--   ["Auto Flash and Test NuttX on RISC-V BL602"](https://lupyuen.github.io/articles/auto)
-
--   ["ADC and Internal Temperature Sensor Library"](https://github.com/lupyuen/bl602_adc_test)
+More NuttX articles in the following sections...
 
 ![Projects and Libraries on BL602](https://lupyuen.github.io/images/book-project.jpg)
 
@@ -84,7 +50,7 @@ __Apache NuttX__ is a portable, embedded operating system that's officially supp
 
 How to create a simple __Blinky Project__ for BL602 / BL604 and build the project.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["How To Create NuttX Apps"](https://lupyuen.github.io/articles/spi2#appendix-create-a-nuttx-app)
 
@@ -128,7 +94,7 @@ For __BL602 IoT SDK__
 
 Learn to call the BL602 / BL604 __GPIO Functions__ to blink an LED.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["GPIO on NuttX"](https://lupyuen.github.io/articles/nuttx#gpio-demo)
 
@@ -152,7 +118,7 @@ For __BL602 IoT SDK__
 
 How we call the BL602 / BL604 __SPI Functions__ to access SPI Sensors, Displays and Network Transceivers.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["SPI on Apache NuttX OS"](https://lupyuen.github.io/articles/spi2)
 
@@ -176,7 +142,7 @@ For __BL602 IoT SDK__
 
 Read an I2C Sensor by calling the BL602 / BL604 __I2C Functions__.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
 
@@ -198,7 +164,7 @@ For __BL602 IoT SDK__
 
 UART is used by Air Quality Sensors, E-Ink Displays, GPS Receivers and LoRa Transceivers. To talk to these peripherals, we call the BL602 / BL604 __UART Functions__.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["Connect IKEA Air Quality Sensor to Apache NuttX OS"](https://lupyuen.github.io/articles/ikea)
 
@@ -212,7 +178,7 @@ For __BL602 IoT SDK__
 
 How we read __Analog Inputs with ADC__ on BL602 and BL604.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["ADC and Internal Temperature Sensor Library"](https://github.com/lupyuen/bl602_adc_test)
 
@@ -262,7 +228,7 @@ For __BL602 IoT SDK__
 
 Render text and graphics with the open-source __LVGL Library__.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
 
@@ -284,7 +250,7 @@ For __BL602 IoT SDK__
 
 Multitasking the easy way with __NimBLE Porting Layer__.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["Multithreading with NimBLE Porting Layer"](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
 
@@ -298,7 +264,7 @@ For __BL602 IoT SDK__
 
 Let's turn BL602 and BL604 into a real IoT gadget that transmits __long range, low power LoRa packets__...
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
 
@@ -356,13 +322,29 @@ Below are the older articles for __LoRa SX1276 Transceiver__
 
 -   ["PineCone BL602 RISC-V Board Receives LoRa Packets (SX1276)"](https://lupyuen.github.io/articles/lora2)
 
+![Zig on BL602](https://lupyuen.github.io/images/book-zig.jpg)
+
+# Zig on BL602
+
+How we code BL602 and BL604 firmware __with Zig.__
+
+For __Apache NuttX RTOS__
+
+-   ["Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"](https://lupyuen.github.io/articles/zig)
+
+-   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
+
+-   ["Read NuttX Sensor Data with Zig"](https://lupyuen.github.io/articles/sensor)
+
+-   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
+
 ![Rust on BL602](https://lupyuen.github.io/images/book-rust.jpg)
 
 # Rust on BL602
 
 How we code BL602 and BL604 firmware the __safer, simpler way with Rust.__
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["Rust on Apache NuttX OS"](https://lupyuen.github.io/articles/rust2)
 
@@ -382,27 +364,13 @@ For __BL602 IoT SDK__
 
 -   ["Rust in XIP Flash Memory by 9names"](https://lupyuen.github.io/articles/rust#rust-on-bl602-two-more-ways)
 
-![Zig on BL602](https://lupyuen.github.io/images/book-zig.jpg)
-
-# Zig on BL602
-
-How we code BL602 and BL604 firmware __with Zig.__
-
-For __Apache NuttX OS__
-
--   ["Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"](https://lupyuen.github.io/articles/zig)
-
--   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
-
--   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
-
 ![BASIC on BL602](https://lupyuen.github.io/images/book-basic.jpg)
 
 # BASIC on BL602
 
 Running the NuttX __BASIC Interpreter__ for BL602 and BL604.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["BASIC Interpreter on NuttX"](https://lupyuen.github.io/articles/nuttx#basic-interpreter)
 
@@ -434,7 +402,7 @@ For __BL602 IoT SDK__
 
 Tips for __troubleshooting BL602 and BL604 firmware__.
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["NuttX Logging"](https://lupyuen.github.io/articles/nuttx#appendix-nuttx-logging)
 
@@ -488,7 +456,7 @@ For __BL602 IoT SDK__
 
 Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard LoRa SX1262 Transceiver. 
 
-For __Apache NuttX OS__
+For __Apache NuttX RTOS__
 
 -   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
 
