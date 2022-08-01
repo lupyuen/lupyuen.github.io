@@ -1099,7 +1099,7 @@ _Can we auto-generate the boilerplate code for each NuttX Sensor?_
 
 I'm about to experiment with __Visual Programming__ for NuttX Sensors.
 
-Perhaps we can [__drag-n-drop a NuttX Sensor__](https://github.com/google/blockly) into our LoRaWAN App...
+Perhaps we can [__drag-n-drop a NuttX Sensor__](https://github.com/lupyuen3/blockly-zig-nuttx) into our LoRaWAN App...
 
 And __auto-generate the Zig code__ for the NuttX Sensor! (Pic below)
 
@@ -1113,9 +1113,11 @@ That would be an awesome way to mix-n-match various NuttX Sensors for IoT Gadget
 
 I hope you find this article helpful for creating your own Sensor App. Lemme know what you're building!
 
-In the coming weeks I shall [__customise Blockly__](https://github.com/google/blockly) to auto-generate the Zig Sensor App. Someday we'll create Sensor Apps the drag-n-drop way!
+In the coming weeks I shall [__customise Blockly__](https://github.com/lupyuen3/blockly-zig-nuttx) to auto-generate the Zig Sensor App. Someday we'll create Sensor Apps the drag-n-drop way!
 
 -   [__"Visual Programming for Zig with NuttX Sensors"__](https://github.com/lupyuen/visual-zig-nuttx)
+
+-   [__Blockly Source Code__](https://github.com/lupyuen3/blockly-zig-nuttx)
 
 To learn more about Zig, check out these tips...
 
@@ -1222,7 +1224,7 @@ Computations on Floating-Point Numbers are OK, only printing is affected. So we 
 
 (We observed these issues with Zig Compiler version 0.10.0, they might have been fixed in later versions of the compiler)
 
-_Won't our Sensor Data get less precise in Fixed-Point?_
+_Isn't our Sensor Data less precise in Fixed-Point?_
 
 Yep we lose some precision with Fixed-Point Numbers. (Like the final digit `6` from earlier)
 
