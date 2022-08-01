@@ -865,16 +865,21 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p>But we’ve seen today that each kind of NuttX Sensor needs a lot of <strong>boilerplate code</strong> (and error handling) to support every sensor.</p>
 <p><em>Can we auto-generate the boilerplate code for each NuttX Sensor?</em></p>
 <p>I’m about to experiment with <strong>Visual Programming</strong> for NuttX Sensors.</p>
-<p>Perhaps we can <a href="https://github.com/google/blockly"><strong>drag-n-drop a NuttX Sensor</strong></a> into our LoRaWAN App…</p>
+<p>Perhaps we can <a href="https://github.com/lupyuen3/blockly-zig-nuttx"><strong>drag-n-drop a NuttX Sensor</strong></a> into our LoRaWAN App…</p>
 <p>And <strong>auto-generate the Zig code</strong> for the NuttX Sensor! (Pic below)</p>
 <p>That would be an awesome way to mix-n-match various NuttX Sensors for IoT Gadgets!</p>
 <p><img src="https://lupyuen.github.io/images/sensor-visual.jpg" alt="Visual Programming for Zig with NuttX Sensors" /></p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx">(Source)</a></p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>I hope you find this article helpful for creating your own Sensor App. Lemme know what you’re building!</p>
-<p>In the coming weeks I shall <a href="https://github.com/google/blockly"><strong>customise Blockly</strong></a> to auto-generate the Zig Sensor App. Someday we’ll create Sensor Apps the drag-n-drop way!</p>
+<p>In the coming weeks I shall <a href="https://github.com/lupyuen3/blockly-zig-nuttx"><strong>customise Blockly</strong></a> to auto-generate the Zig Sensor App. Someday we’ll create Sensor Apps the drag-n-drop way!</p>
 <ul>
-<li><a href="https://github.com/lupyuen/visual-zig-nuttx"><strong>“Visual Programming for Zig with NuttX Sensors”</strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx"><strong>“Visual Programming for Zig with NuttX Sensors”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen3/blockly-zig-nuttx"><strong>Blockly Source Code</strong></a></p>
+</li>
 </ul>
 <p>To learn more about Zig, check out these tips…</p>
 <ul>
@@ -988,7 +993,7 @@ debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
 </ul>
 <p>Computations on Floating-Point Numbers are OK, only printing is affected. So we print the numbers as Fixed-Point instead.</p>
 <p>(We observed these issues with Zig Compiler version 0.10.0, they might have been fixed in later versions of the compiler)</p>
-<p><em>Won’t our Sensor Data get less precise in Fixed-Point?</em></p>
+<p><em>Isn’t our Sensor Data less precise in Fixed-Point?</em></p>
 <p>Yep we lose some precision with Fixed-Point Numbers. (Like the final digit <code>6</code> from earlier)</p>
 <p>But most IoT Gadgets will <strong>truncate Sensor Data</strong> before transmission anyway.</p>
 <p>And for some data formats (like CBOR), we need <strong>fewer bytes</strong> to transmit Fixed-Point Numbers instead of Floating-Point…</p>
