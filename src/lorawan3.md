@@ -1188,6 +1188,10 @@ _What can we check?_
 
     (See __"Empty LoRaWAN Message"__ below)
 
+1.  If we __fail to join__ the LoRaWAN Network, see these tips...
+
+    [__"Troubleshoot LoRaWAN on NuttX"__](https://gist.github.com/lupyuen/c03870b103f51649dcf608ffb1bc9e6b)
+
 1.  More troubleshooting tips...
 
     [__"Troubleshoot LoRaWAN"__](https://lupyuen.github.io/articles/wisgate#troubleshoot-lorawan)
