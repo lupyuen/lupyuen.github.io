@@ -244,7 +244,7 @@ We do this with another template in our Zig Code Generator: [generators/zig.js](
 ```javascript
 Zig.finish = function(code) {
   ...
-  // Main Function
+  // Compose Main Function
   code = [
     '/// Main Function\n',
     'pub fn main() !void {\n',
@@ -275,7 +275,8 @@ Next we define the __Header and Trailer__...
 Finally we combine them and return the result...
 
 ```javascript
-  // Combine Header, Code, Function Definitions and Trailer
+  // Combine Header, Code, 
+  // Function Definitions and Trailer
   return [
     header,
     '\n',
@@ -286,6 +287,8 @@ Finally we combine them and return the result...
   ].join('');
 };
 ```
+
+We'll talk about Function Definitions in a while.
 
 # Constants vs Variables
 
