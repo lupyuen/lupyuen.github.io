@@ -16,7 +16,7 @@ We're not quite done yet. We hit some __interesting challenges__, like Blockly's
 
 But it might work for creating __IoT Sensor Apps__ for Embedded Platforms. (Like Apache NuttX RTOS)
 
-(More about this below)
+(We'll talk about this below)
 
 Let's head down into our experiment with Blocky...
 
