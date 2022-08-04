@@ -209,7 +209,7 @@ Zig['controls_repeat_ext'] = function(block) {
 
 _What if we have two Repeat Loops? Won't "`count`" clash?_
 
-Blockly will helpfully generate another counter...
+Blockly will helpfully __generate another counter__ like "`count2`"...
 
 ```zig
 var count2: usize = 0;
