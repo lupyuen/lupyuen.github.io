@@ -2,11 +2,11 @@
 
 📝 _11 Aug 2022_
 
-![](https://lupyuen.github.io/images/blockly-title.jpg)
+![Zig Visual Programming with Blockly](https://lupyuen.github.io/images/blockly-title.jpg)
 
 _Can we create a Zig program visually... The Drag-n-Drop way?_
 
-Let's find out! Today we shall explore [__Blockly__](https://developers.google.com/blockly), the Scratch-like browser-based coding toolkit.
+Let's find out! Today we shall explore [__Blockly__](https://developers.google.com/blockly), the Scratch-like browser-based coding toolkit...
 
 And how we might customise Blockly to __create Zig programs__ visually.
 
