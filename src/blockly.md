@@ -4,11 +4,11 @@
 
 ![Zig Visual Programming with Blockly](https://lupyuen.github.io/images/blockly-title.jpg)
 
-_Can we create a Zig program visually... The Drag-n-Drop way?_
+_Can we create a Zig program visually... The Drag-and-Drop way?_
 
 Let's find out! Today we shall explore [__Blockly__](https://developers.google.com/blockly), the Scratch-like browser-based coding toolkit...
 
-And how we might customise Blockly to __create Zig programs__ visually.
+And how we might customise Blockly to __create Zig programs__ visually. (Pic above)
 
 _Will it work for any Zig program?_
 
@@ -16,9 +16,9 @@ We're not quite done yet. We hit some __interesting challenges__, like Blockly's
 
 But it might work for creating __IoT Sensor Apps__ for Embedded Platforms. (Like Apache NuttX RTOS)
 
-(We'll talk about this below)
+(More about this below)
 
-Let's head down into our experiment with Blocky...
+Let's head down into our Zig experiment with Blocky...
 
 -   [__lupyuen3/blockly-zig-nuttx__](https://github.com/lupyuen3/blockly-zig-nuttx)
 
