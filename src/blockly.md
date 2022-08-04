@@ -124,7 +124,7 @@ To understand the work involved, we'll look at three Blocks and how our Code Gen
 
 -   __Repeat Loop__
 
-We'll also study the __Main Function__ that's produced by our Code Generated.
+We'll also study the __Main Function__ that's produced by our Code Generator.
 
 ![Set Variable](https://lupyuen.github.io/images/blockly-run5.png)
 
@@ -132,7 +132,7 @@ We'll also study the __Main Function__ that's produced by our Code Generated.
 
 Blockly will let us assign Values to Variables. (Pic above)
 
-For simplicity we'll handle Variables as __Constants__. And they shall be __Floating-Point Numbers__. (We'll explain why)
+To keep things simple, we'll handle Variables as __Constants__. And they shall be __Floating-Point Numbers__. (We'll explain why)
 
 Thus the Block above will generate this Zig code...
 
@@ -140,7 +140,7 @@ Thus the Block above will generate this Zig code...
 const a: f32 = 123.45;
 ```
 
-This is how we generate the code with a template (String Interpolation): [generators/zig/variables.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/variables.js#L25-L32)
+This is how we generate the code with a template (through __String Interpolation__): [generators/zig/variables.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/variables.js#L25-L32)
 
 ```javascript
 Zig['variables_set'] = function(block) {
@@ -156,13 +156,13 @@ _Isn't this (gasp) JavaScript?_
 
 Blockly is coded in __plain old JavaScript__. Hence we'll write our Zig Code Generator in JavaScript too.
 
-(Maybe someday we'll convert the Zig Code Generator to WebAssembly and write it in Zig)
+(Maybe someday we'll convert the Zig Code Generator to WebAssembly and build it in Zig)
 
 ![Print Expression](https://lupyuen.github.io/images/blockly-run6.png)
 
 ## Print Expression
 
-To __print the value__ of an expression (pic above), we'll generate this Zig code...
+To __print the value__ of an expression (pic above), we generate this Zig code...
 
 ```zig
 debug("a={}", .{ a });
@@ -182,7 +182,7 @@ Zig['text_print'] = function(block) {
 
 ## Repeat Loop
 
-To run a __repeating loop__ (pic above), we'll generate this Zig code...
+To run a __repeating loop__ (pic above), we generate this Zig code...
 
 ```zig
 var count: usize = 0;
@@ -191,7 +191,7 @@ while (count < 10) : (count += 1) {
 }
 ```
 
-With this Zig Code Generator: [generators/zig/loops.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/loops.js#L19-L45)
+With this template in our Zig Code Generator: [generators/zig/loops.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/loops.js#L19-L45)
 
 ```javascript
 Zig['controls_repeat_ext'] = function(block) {
@@ -222,9 +222,7 @@ while (count2 < 10) : (count2 += 1) {
 
 ## Main Function
 
-TODO
-
-The generated Zig code needs to be wrapped like this, to become a valid Zig program...
+To become a valid Zig program, our generated Zig code needs to be wrapped into a __Main Function__ like this...
 
 ```zig
 /// Import Standard Library
@@ -241,7 +239,7 @@ const assert = std.debug.assert;
 const debug  = std.log.debug;
 ```
 
-We do this in the Zig Code Generator for Blockly: [generators/zig.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig.js#L132-L193)
+We do this with another template in our Zig Code Generator: [generators/zig.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig.js#L132-L193)
 
 ```javascript
 Zig.finish = function(code) {
@@ -253,10 +251,13 @@ Zig.finish = function(code) {
     code,
     '}',
   ].join('');
- 
-  // Convert the definitions dictionary into a list.
-  ...
+```
 
+The code above composes the __Main Function__.
+
+Next we define the __Header and Trailer__...
+
+```javascript
   // Compose Zig Header
   const header = [
     '/// Import Standard Library\n',
@@ -269,15 +270,18 @@ Zig.finish = function(code) {
     'const assert = std.debug.assert;\n',
     'const debug  = std.log.debug;\n',
   ].join('');
+```
 
-  // Combine Header, Definitions, Code and Trailer
+Finally we combine them and return the result...
+
+```javascript
+  // Combine Header, Code, Function Definitions and Trailer
   return [
     header,
     '\n',
-    // For Zig: No need to declare variables
-    // allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n'),
     code,
-    '\n\n',
+    (allDefs == '') ? '' : '\n\n',
+    allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n'),
     trailer,
   ].join('');
 };
