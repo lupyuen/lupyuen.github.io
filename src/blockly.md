@@ -26,6 +26,18 @@ And learn how how we ended up here...
 
 -   [__Blockly with Zig (Work in Progress)__](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
 
+# Zig Visual Program
+
+_What's Visual Programming?_
+
+With Blockly (and Scratch), we create Visual Programs by dragging and dropping __Interlocking Blocks__.
+
+This is a Visual Program that loops 10 times, printing the value `123.45`...
+
+![Blockly Visual Program](https://lupyuen.github.io/images/blockly-run1.png)
+
+TODO
+
 # Add a Zig Tab
 
 TODO
