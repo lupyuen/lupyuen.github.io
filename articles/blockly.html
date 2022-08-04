@@ -247,7 +247,7 @@ const debug  = std.log.debug;</code></pre></div>
 <p>We do this with another template in our Zig Code Generator: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig.js#L132-L193">generators/zig.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig.finish = function(code) {
   ...
-  // Main Function
+  // Compose Main Function
   code = [
     &#39;/// Main Function\n&#39;,
     &#39;pub fn main() !void {\n&#39;,
@@ -269,7 +269,8 @@ const debug  = std.log.debug;</code></pre></div>
     &#39;const debug  = std.log.debug;\n&#39;,
   ].join(&#39;&#39;);</code></pre></div>
 <p>Finally we combine them and return the result…</p>
-<div class="example-wrap"><pre class="language-javascript"><code>  // Combine Header, Code, Function Definitions and Trailer
+<div class="example-wrap"><pre class="language-javascript"><code>  // Combine Header, Code, 
+  // Function Definitions and Trailer
   return [
     header,
     &#39;\n&#39;,
@@ -278,7 +279,9 @@ const debug  = std.log.debug;</code></pre></div>
     allDefs.replace(/\n\n+/g, &#39;\n\n&#39;).replace(/\n*$/, &#39;\n\n&#39;),
     trailer,
   ].join(&#39;&#39;);
-};</code></pre></div><h1 id="constants-vs-variables"><a href="#constants-vs-variables">3 Constants vs Variables</a></h1>
+};</code></pre></div>
+<p>We’ll talk about Function Definitions in a while.</p>
+<h1 id="constants-vs-variables"><a href="#constants-vs-variables">3 Constants vs Variables</a></h1>
 <p>TODO: <a href="https://en.wikipedia.org/wiki/BASIC#Syntax">BASIC</a></p>
 <h1 id="why-float"><a href="#why-float">4 Why Float?</a></h1>
 <p>TODO</p>
