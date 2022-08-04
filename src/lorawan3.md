@@ -22,7 +22,7 @@ But if we're building an __IoT Sensor Device__ that will __transmit data packets
 
 We shall test LoRaWAN on NuttX with [__PineDio Stack BL604 RISC-V Board__](https://lupyuen.github.io/articles/pinedio2) (pic above) and its onboard Semtech SX1262 Transceiver.
 
-(LoRaWAN on NuttX will probably run on __ESP32__, since we're calling standard NuttX Interfaces)
+[(LoRaWAN on NuttX works OK on __ESP32__, thanks @4ever_freedom!)](https://twitter.com/4ever_freedom/status/1555048288272932864)
 
 ![Porting LoRaWAN to NuttX OS](https://lupyuen.github.io/images/sx1262-library5.jpg)
 
