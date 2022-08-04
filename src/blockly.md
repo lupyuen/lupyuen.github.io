@@ -90,7 +90,7 @@ Indeed it produces the right result!
 
 _Will this work with all Blocks?_
 
-Not quite. We have customised Blockly to support the __bare minimum of Blocks__.
+Not quite. We customised Blockly to support the __bare minimum of Blocks__.
 
 There's plenty more to be customised for Zig. Lemme know if you're keen to help! 🙏
 
@@ -291,16 +291,6 @@ Finally we combine them and return the result...
 
 TODO: [BASIC](https://en.wikipedia.org/wiki/BASIC#Syntax)
 
-# Blockly on Mobile
-
-TODO
-
-Blockly works OK with Mobile Web Browsers too...
-
-[lupyuen3.github.io/blockly-zig-nuttx/demos/code](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
-
-![Blocky on Mobile Web Browser](https://lupyuen.github.io/images/blockly-mobile.jpg)
-
 # Why Float?
 
 TODO
@@ -322,6 +312,18 @@ _Why limit to IoT Sensor Apps?_
 -   Make it easier to experiment with various IoT Sensors: Temperature, Humidity, Air Pressure, ...
 
 # Apache NuttX RTOS
+
+TODO
+
+# Blockly on Mobile
+
+TODO
+
+Blockly works OK with Mobile Web Browsers too...
+
+[lupyuen3.github.io/blockly-zig-nuttx/demos/code](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+
+![Blocky on Mobile Web Browser](https://lupyuen.github.io/images/blockly-mobile.jpg)
 
 TODO: mobile, vscode extension, tauri
 
