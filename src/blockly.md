@@ -28,11 +28,11 @@ And learn how how we ended up here...
 
 # Zig Visual Program
 
-_What's Visual Programming?_
+_What's Visual Programming in Blockly?_
 
 With Blockly (and Scratch), we create Visual Programs by dragging and dropping __Interlocking Blocks__.
 
-This is a Visual Program that loops 10 times, printing the value `123.45`...
+This is a Visual Program that loops 10 times, printing the number `123.45`...
 
 ![Blockly Visual Program](https://lupyuen.github.io/images/blockly-run1.png)
 
