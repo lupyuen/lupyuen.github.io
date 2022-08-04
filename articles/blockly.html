@@ -177,14 +177,14 @@ debug: a=1.23449996e+02</code></pre></div>
 <p><strong>Repeat Loop</strong></p>
 </li>
 </ul>
-<p>We’ll also study the <strong>Main Function</strong> that’s produced by our Code Generated.</p>
+<p>We’ll also study the <strong>Main Function</strong> that’s produced by our Code Generator.</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run5.png" alt="Set Variable" /></p>
 <h2 id="set-variable"><a href="#set-variable">2.1 Set Variable</a></h2>
 <p>Blockly will let us assign Values to Variables. (Pic above)</p>
-<p>For simplicity we’ll handle Variables as <strong>Constants</strong>. And they shall be <strong>Floating-Point Numbers</strong>. (We’ll explain why)</p>
+<p>To keep things simple, we’ll handle Variables as <strong>Constants</strong>. And they shall be <strong>Floating-Point Numbers</strong>. (We’ll explain why)</p>
 <p>Thus the Block above will generate this Zig code…</p>
 <div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;</code></pre></div>
-<p>This is how we generate the code with a template (String Interpolation): <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/variables.js#L25-L32">generators/zig/variables.js</a></p>
+<p>This is how we generate the code with a template (through <strong>String Interpolation</strong>): <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/variables.js#L25-L32">generators/zig/variables.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig[&#39;variables_set&#39;] = function(block) {
   // Variable setter.
   ...
@@ -193,10 +193,10 @@ debug: a=1.23449996e+02</code></pre></div>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">(More about String Interpolation)</a></p>
 <p><em>Isn’t this (gasp) JavaScript?</em></p>
 <p>Blockly is coded in <strong>plain old JavaScript</strong>. Hence we’ll write our Zig Code Generator in JavaScript too.</p>
-<p>(Maybe someday we’ll convert the Zig Code Generator to WebAssembly and write it in Zig)</p>
+<p>(Maybe someday we’ll convert the Zig Code Generator to WebAssembly and build it in Zig)</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run6.png" alt="Print Expression" /></p>
 <h2 id="print-expression"><a href="#print-expression">2.2 Print Expression</a></h2>
-<p>To <strong>print the value</strong> of an expression (pic above), we’ll generate this Zig code…</p>
+<p>To <strong>print the value</strong> of an expression (pic above), we generate this Zig code…</p>
 <div class="example-wrap"><pre class="language-zig"><code>debug(&quot;a={}&quot;, .{ a });</code></pre></div>
 <p>Here’s the implementation in our Zig Code Generator: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/text.js#L268-L272">generators/zig/text.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig[&#39;text_print&#39;] = function(block) {
@@ -206,12 +206,12 @@ debug: a=1.23449996e+02</code></pre></div>
 };</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/blockly-run4.png" alt="Repeat Loop" /></p>
 <h2 id="repeat-loop"><a href="#repeat-loop">2.3 Repeat Loop</a></h2>
-<p>To run a <strong>repeating loop</strong> (pic above), we’ll generate this Zig code…</p>
+<p>To run a <strong>repeating loop</strong> (pic above), we generate this Zig code…</p>
 <div class="example-wrap"><pre class="language-zig"><code>var count: usize = 0;
 while (count &lt; 10) : (count += 1) {
   ...
 }</code></pre></div>
-<p>With this Zig Code Generator: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/loops.js#L19-L45">generators/zig/loops.js</a></p>
+<p>With this template in our Zig Code Generator: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/loops.js#L19-L45">generators/zig/loops.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig[&#39;controls_repeat_ext&#39;] = function(block) {
   // Repeat n times.
   ...
@@ -231,8 +231,7 @@ while (count2 &lt; 10) : (count2 += 1) {
 }</code></pre></div>
 <p>(Try it out!)</p>
 <h2 id="main-function"><a href="#main-function">2.4 Main Function</a></h2>
-<p>TODO</p>
-<p>The generated Zig code needs to be wrapped like this, to become a valid Zig program…</p>
+<p>To become a valid Zig program, our generated Zig code needs to be wrapped into a <strong>Main Function</strong> like this…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import Standard Library
 const std = @import(&quot;std&quot;);
 
@@ -245,7 +244,7 @@ pub fn main() !void {
 /// Aliases for Standard Library
 const assert = std.debug.assert;
 const debug  = std.log.debug;</code></pre></div>
-<p>We do this in the Zig Code Generator for Blockly: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig.js#L132-L193">generators/zig.js</a></p>
+<p>We do this with another template in our Zig Code Generator: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig.js#L132-L193">generators/zig.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig.finish = function(code) {
   ...
   // Main Function
@@ -254,12 +253,10 @@ const debug  = std.log.debug;</code></pre></div>
     &#39;pub fn main() !void {\n&#39;,
     code,
     &#39;}&#39;,
-  ].join(&#39;&#39;);
- 
-  // Convert the definitions dictionary into a list.
-  ...
-
-  // Compose Zig Header
+  ].join(&#39;&#39;);</code></pre></div>
+<p>The code above composes the <strong>Main Function</strong>.</p>
+<p>Next we define the <strong>Header and Trailer</strong>…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>  // Compose Zig Header
   const header = [
     &#39;/// Import Standard Library\n&#39;,
     &#39;const std = @import(&quot;std&quot;);\n&#39;,
@@ -270,16 +267,15 @@ const debug  = std.log.debug;</code></pre></div>
     &#39;/// Aliases for Standard Library\n&#39;,
     &#39;const assert = std.debug.assert;\n&#39;,
     &#39;const debug  = std.log.debug;\n&#39;,
-  ].join(&#39;&#39;);
-
-  // Combine Header, Definitions, Code and Trailer
+  ].join(&#39;&#39;);</code></pre></div>
+<p>Finally we combine them and return the result…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>  // Combine Header, Code, Function Definitions and Trailer
   return [
     header,
     &#39;\n&#39;,
-    // For Zig: No need to declare variables
-    // allDefs.replace(/\n\n+/g, &#39;\n\n&#39;).replace(/\n*$/, &#39;\n\n\n&#39;),
     code,
-    &#39;\n\n&#39;,
+    (allDefs == &#39;&#39;) ? &#39;&#39; : &#39;\n\n&#39;,
+    allDefs.replace(/\n\n+/g, &#39;\n\n&#39;).replace(/\n*$/, &#39;\n\n&#39;),
     trailer,
   ].join(&#39;&#39;);
 };</code></pre></div><h1 id="constants-vs-variables"><a href="#constants-vs-variables">3 Constants vs Variables</a></h1>
