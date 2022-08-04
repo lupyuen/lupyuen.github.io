@@ -68,20 +68,20 @@ const assert = std.debug.assert;
 const debug  = std.log.debug;
 ```
 
-When we run the program with Zig...
+When we copy-n-paste the program and run it with Zig...
 
 ```bash
 $ zig run a.zig
-debug: 1.23449996e+02
-debug: 1.23449996e+02
-debug: 1.23449996e+02
-debug: 1.23449996e+02
-debug: 1.23449996e+02
-debug: 1.23449996e+02
-debug: 1.23449996e+02
-debug: 1.23449996e+02
-debug: 1.23449996e+02
-debug: 1.23449996e+02
+debug: a=1.23449996e+02
+debug: a=1.23449996e+02
+debug: a=1.23449996e+02
+debug: a=1.23449996e+02
+debug: a=1.23449996e+02
+debug: a=1.23449996e+02
+debug: a=1.23449996e+02
+debug: a=1.23449996e+02
+debug: a=1.23449996e+02
+debug: a=1.23449996e+02
 ```
 
 Indeed it produces the right result!
@@ -92,7 +92,7 @@ _Will this work with all Blocks?_
 
 Not quite. We have customised Blockly to support the __bare minimum of Blocks__.
 
-There's a lot more to be customised. Lemme know if you're keen to help! 🙏
+There's plenty more to be customised for Zig. Lemme know if you're keen to help! 🙏
 
 # Add a Zig Tab
 
