@@ -28,15 +28,71 @@ And learn how how we ended up here...
 
 # Zig Visual Program
 
-_What's Visual Programming in Blockly?_
+_What's Visual Programming like with Blockly?_
 
-With Blockly (and Scratch), we create Visual Programs by dragging and dropping __Interlocking Blocks__.
+With Blockly, we create Visual Programs by dragging and dropping __Interlocking Blocks__. (Exactly like Scratch and MakeCode)
 
 This is a Visual Program that loops 10 times, printing the number `123.45`...
 
 ![Blockly Visual Program](https://lupyuen.github.io/images/blockly-run1.png)
 
-TODO
+We can try dragging-n-dropping the Blocks here...
+
+-   [__Blockly with Zig (Work in Progress)__](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+
+To find the above Blocks, click the __Blocks Menu__ (at left) and look under __"Loops"__, __"Variables"__, __"Math"__ and __"Text"__.
+
+_But will it produce a Zig program?_
+
+Yep if we click the __Zig Tab__...
+
+![Zig Tab in Blockly](https://lupyuen.github.io/images/blockly-run3a.png)
+
+This __Zig Program__ appears...
+
+```zig
+/// Import Standard Library
+const std = @import("std");
+
+/// Main Function
+pub fn main() !void {
+  var count: usize = 0;
+  while (count < 10) : (count += 1) {
+    const a: f32 = 123.45;
+    debug("a={}", .{ a });
+  }
+}
+
+/// Aliases for Standard Library
+const assert = std.debug.assert;
+const debug  = std.log.debug;
+```
+
+When we run the program with Zig...
+
+```bash
+$ zig run a.zig
+debug: 1.23449996e+02
+debug: 1.23449996e+02
+debug: 1.23449996e+02
+debug: 1.23449996e+02
+debug: 1.23449996e+02
+debug: 1.23449996e+02
+debug: 1.23449996e+02
+debug: 1.23449996e+02
+debug: 1.23449996e+02
+debug: 1.23449996e+02
+```
+
+Indeed it produces the right result!
+
+(Not the tidiest output, but we'll come back to this)
+
+_Will this work with all Blocks?_
+
+Not quite. We have customised Blockly to support the __bare minimum of Blocks__.
+
+There's a lot more to be customised. Lemme know if you're keen to help! 🙏
 
 # Add a Zig Tab
 
