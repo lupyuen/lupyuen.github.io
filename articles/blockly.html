@@ -72,9 +72,9 @@
 <li><a href="#repeat-loop">2.3 Repeat Loop</a><ul></ul></li>
 <li><a href="#main-function">2.4 Main Function</a><ul></ul></li></ul></li>
 <li><a href="#define-functions">3 Define Functions</a><ul></ul></li>
-<li><a href="#blockly-is-typeless">4 Blockly Is Typeless</a><ul></ul></li>
+<li><a href="#blockly-is-typeless">4 Blockly is Typeless</a><ul></ul></li>
 <li><a href="#constants-vs-variables">5 Constants vs Variables</a><ul></ul></li>
-<li><a href="#blockly-on-desktop-and-mobile">6 Blockly on Desktop and Mobile</a><ul></ul></li>
+<li><a href="#desktop-and-mobile">6 Desktop and Mobile</a><ul></ul></li>
 <li><a href="#iot-sensor-apps">7 IoT Sensor Apps</a><ul></ul></li>
 <li><a href="#read-sensor-data">8 Read Sensor Data</a><ul></ul></li>
 <li><a href="#transmit-sensor-data">9 Transmit Sensor Data</a><ul></ul></li>
@@ -302,7 +302,7 @@ const b: f32 = try do_something(a, a);
 debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 <p>Thus indeed it’s possible to create <a href="https://lupyuen.github.io/images/blockly-run10.jpg"><strong>Complex Blockly Apps</strong></a> with Zig. <a href="https://lupyuen.github.io/images/blockly-run10.jpg">(Like this)</a></p>
 <p>The above templates are defined in our Code Generator at <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92">generators/zig/procedures.js</a></p>
-<h1 id="blockly-is-typeless"><a href="#blockly-is-typeless">4 Blockly Is Typeless</a></h1>
+<h1 id="blockly-is-typeless"><a href="#blockly-is-typeless">4 Blockly is Typeless</a></h1>
 <p><em>Why are our Constants declared as Floating-Point <code>f32</code>?</em></p>
 <p>Here comes the interesting challenge with Zig on Blockly…</p>
 <p><strong>Blockly is Typeless!</strong></p>
@@ -355,7 +355,7 @@ while (count &lt; 10) : (count += 1) {
 }</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Shadowing">(More about Shadowing)</a></p>
 <p>So yeah, supporting Zig on Blockly can get really challenging.</p>
-<h1 id="blockly-on-desktop-and-mobile"><a href="#blockly-on-desktop-and-mobile">6 Blockly on Desktop and Mobile</a></h1>
+<h1 id="desktop-and-mobile"><a href="#desktop-and-mobile">6 Desktop and Mobile</a></h1>
 <p><em>Can we build Blockly apps on Mobile Devices?</em></p>
 <p>Blockly works OK with Mobile Web Browsers…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-mobile.jpg" alt="Blocky on Mobile Web Browser" /></p>
