@@ -633,11 +633,11 @@ We'll do this in two steps...
 
 Assume we've read Temperature and Humidity from our sensor.
 
-This is how we might __compose a Sensor Data Message__ in Blockly...
+This is how we might __compose a Sensor Data Message__ with Blockly...
 
 > ![Compose Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual3.jpg)
 
-TODO: CBOR
+TODO: Why CBOR?
 
 This message compressed with CBOR...
 
@@ -652,9 +652,11 @@ This message compressed with CBOR...
 
 Will require only __11 Bytes!__ [(See this)](https://lupyuen.github.io/images/blockly-cbor.jpg)
 
-After composing our Sensor Data Message, this is how we might __transmit the Sensor Data Message__ in Blockly...
+After composing our Sensor Data Message, this is how we might __transmit the Sensor Data Message__ with Blockly...
 
 > ![Transmit Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual4.jpg)
+
+_It's OK to create Custom Blocks in Blockly? Like for "BME280 Sensor", "Compose Message" and "Transmit Message"?_
 
 TODO: Custom block
 
