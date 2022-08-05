@@ -91,7 +91,7 @@
 <p>Let’s find out! Today we shall explore <a href="https://developers.google.com/blockly"><strong>Blockly</strong></a>, the Scratch-like browser-based coding toolkit…</p>
 <p>And how we might customise Blockly to <strong>create Zig programs</strong> visually. (Pic above)</p>
 <p><em>Will it work for any Zig program?</em></p>
-<p>We’re not quite done yet. We hit some <strong>interesting challenges</strong>, like Blockly’s “Typelessness”.</p>
+<p>We’re not quite done yet. We hit some <strong>interesting challenges</strong>, like Blockly’s “Typelessness” and Zig’s “Anti-Shadowing”.</p>
 <p>But it might work for creating <strong>IoT Sensor Apps</strong> for Embedded Platforms. (Like Apache NuttX RTOS)</p>
 <p>(More about this below)</p>
 <p>Let’s head down into our Zig experiment with Blocky…</p>
@@ -400,7 +400,7 @@ while (count &lt; 10) : (count += 1) {
 </ul>
 <p>Let’s talk about the reading and sending of Sensor Data…</p>
 <h1 id="read-sensor-data"><a href="#read-sensor-data">8 Read Sensor Data</a></h1>
-<p>Earlier we talked about our IoT Sensor App <strong>reading Sensor Data</strong> (like Temperature) from a real sensor (like Bosch BME280).</p>
+<p>Earlier we talked about our IoT Sensor App <strong>reading Sensor Data</strong> (like Temperature) from a real sensor <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/">(like <strong>Bosch BME280</strong>)</a>.</p>
 <p>This is how it might look in Blockly…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/sensor-visual2.jpg" alt="Read Sensor Data in Blockly" /></p>
@@ -496,7 +496,7 @@ const temperature: f32 = blk: {
 <p>Block Expressions are a great way to <strong>prevent leakage</strong> of our Local Variables (like <code>fd</code>) into the Outer Scope and <a href="https://lupyuen.github.io/articles/blockly#constants-vs-variables"><strong>avoid Shadowing</strong></a>.</p>
 <p><a href="https://ziglang.org/documentation/master/#blocks">(More about Block Expressions)</a></p>
 <h1 id="transmit-sensor-data"><a href="#transmit-sensor-data">9 Transmit Sensor Data</a></h1>
-<p>Two sections ago we talked about our IoT Sensor App <strong>transmitting Sensor Data</strong> (like Temperature) to an IoT Network (like LoRaWAN).</p>
+<p>Two sections ago we talked about our IoT Sensor App <strong>transmitting Sensor Data</strong> (like Temperature) to a Wireless IoT Network <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/">(like <strong>LoRaWAN</strong>)</a>.</p>
 <p>We’ll do this in two steps…</p>
 <ul>
 <li>
