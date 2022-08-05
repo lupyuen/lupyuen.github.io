@@ -544,21 +544,48 @@ That's our tidy way of printing [__Fixed-Point Numbers__](https://en.wikipedia.o
 temperature=23.45
 ```
 
-More about this in the Appendix.
+Instead of the awful `2.34500007e+01` we earlier.
+
+(More about this in the Appendix)
 
 _What's `blk`?_
 
-[Blocks](https://ziglang.org/documentation/master/#blocks)
+That's how we return a value from the __Block Expression__...
 
-Blocks are expressions. When labeled, break can be used to return a value from the block:
+```zig
+// Read the Temperature
+const temperature: f32 = blk: {
+
+  // Return the Sensor Value
+  break :blk 23.45;
+};
+```
+
+This sets `temperature` to `23.45`.
+
+[(More about Block Expressions)](https://ziglang.org/documentation/master/#blocks)
 
 # Transmit Sensor Data
 
+Two sections ago we talked about our IoT Sensor App __transmitting Sensor Data__ (like Temperature) to an IoT Network (like LoRaWAN).
+
+We'll do this in two steps...
+
+-   __Compose__ the Sensor Data Message
+
+    (Compress our Sensor Data into a tiny Data Packet)
+
+-   __Transmit__ the Sensor Data Message
+
+    (Over LoRaWAN)
+
+Assume we've read Temperature and Humidity from our sensor.
+
+This is how we might __compose a Sensor Data Message__ in Blockly...
+
 TODO
 
-Earlier we talked about our IoT Sensor App __reading Sensor Data__ (like Temperature) from a real sensor (like Bosch BME280).
-
-This is how
+This is how we might __transmit a Sensor Data Message__ in Blockly...
 
 TODO: Custom block
 
