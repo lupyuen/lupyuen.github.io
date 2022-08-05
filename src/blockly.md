@@ -611,7 +611,7 @@ const temperature: f32 = blk: {
 
 This sets `temperature` to `23.45`.
 
-Block Expressions are a great way to prevent leakage of our Local Variables (like `fd`) into the Outer Scope.
+Block Expressions are a great way to __prevent leakage__ of our Local Variables (like `fd`) into the Outer Scope.
 
 [(More about Block Expressions)](https://ziglang.org/documentation/master/#blocks)
 
@@ -862,6 +862,8 @@ Blockly will NOT render correctly with `file://...`, it must be `http://localhos
 Drag-and-drop some Blocks and click the __Zig Tab.__
 
 The Zig Tab now shows the generated code in Zig.
+
+Some of the generated code might appear as Dart (instead of Zig) because we haven't completely converted our Code Generator from Dart to Zig.
 
 In case of problems, check the __JavaScript Console__. Ignore the `storage.js` error.
 
