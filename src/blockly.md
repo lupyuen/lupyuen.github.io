@@ -427,7 +427,7 @@ Let's talk about the reading and sending of Sensor Data...
 
 # Read Sensor Data
 
-TODO
+TODO: Custom block
 
 # Transmit Sensor Data
 
