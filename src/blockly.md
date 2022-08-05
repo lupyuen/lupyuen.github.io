@@ -393,15 +393,13 @@ _Whoa that's a lot to digest?_
 
 We'll break this down in the next section.
 
-TODO
+_But why build IoT Sensor Apps with Blockly and Zig?_
 
-_Why limit to IoT Sensor Apps?_
+-   __Types are simpler:__ Only floating-point numbers will be supported, no strings needed
 
--   Types are simpler: Only floating-point numbers will be supported, no strings needed
+-   __Blockly is Typeless.__ With Zig we can use Type Inference to deduce the missing types
 
--   Blockly is Typeless. With Zig we can use Type Inference to deduce the missing types
-
--   Make it easier to experiment with various IoT Sensors: Temperature, Humidity, Air Pressure, ...
+-   __Easier to experiment__ with various IoT Sensors: Temperature, Humidity, Air Pressure, ...
 
 # Read Sensor Data
 
