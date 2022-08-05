@@ -363,26 +363,6 @@ debug("b={}", .{ b });
 
 The above templates are defined in our Code Generator at [generators/zig/procedures.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92)
 
-# Constants vs Variables
-
-TODO: [BASIC](https://en.wikipedia.org/wiki/BASIC#Syntax)
-
-# IoT Sensor Apps
-
-TODO
-
-_Why limit to IoT Sensor Apps?_
-
--   Types are simpler: Only floating-point numbers will be supported, no strings needed
-
--   Blockly is Typeless. With Zig we can use Type Inference to deduce the missing types
-
--   Make it easier to experiment with various IoT Sensors: Temperature, Humidity, Air Pressure, ...
-
-# Apache NuttX RTOS
-
-TODO
-
 # Blockly on Mobile
 
 TODO
@@ -394,6 +374,28 @@ Blockly works OK with Mobile Web Browsers too...
 ![Blocky on Mobile Web Browser](https://lupyuen.github.io/images/blockly-mobile.jpg)
 
 TODO: mobile, vscode extension, tauri
+
+# IoT Sensor Apps
+
+Suppose we're building an IoT Sensor Gadget that will monitor the temperature and humidity.
+
+TODO
+
+_Why limit to IoT Sensor Apps?_
+
+-   Types are simpler: Only floating-point numbers will be supported, no strings needed
+
+-   Blockly is Typeless. With Zig we can use Type Inference to deduce the missing types
+
+-   Make it easier to experiment with various IoT Sensors: Temperature, Humidity, Air Pressure, ...
+
+# Read Sensor Data
+
+TODO
+
+# Transmit Sensor Data
+
+TODO
 
 # What's Next
 
