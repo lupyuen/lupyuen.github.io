@@ -371,11 +371,54 @@ _What other challenges do we have with Zig on Blockly?_
 
 Our Astute Reader would have seen this Oncoming Wreckage (from miles away)...
 
-TODO: Assign Twice
+![Redeclared Constants in Blockly](https://lupyuen.github.io/images/blockly-run12.jpg)
 
-TODO: Call me stupendously stubborn
+The __Double Assignment__ above will cause Constant Problems...
 
-TODO: Shadowing
+```zig
+// This is OK
+const a: f32 = 123.45;
+
+// Oops! `a` is redeclared...
+const a: f32 = 234.56;
+```
+
+Our Code Generator will have to stop this somehow.
+
+_Why not declare as a Variable? (Instead of a Constant)_
+
+```zig
+// This is OK
+var a: f32 = undefined;
+a = 123.45;
+a = 234.56;
+```
+
+Call me stupendously stubborn, but I think Constants look neater than Variables?
+
+Also we might have a problem with [__Shadowed Identifiers__](https://ziglang.org/documentation/master/#Shadowing)...
+
+![Shadowing in Blockly](https://lupyuen.github.io/images/blockly-run15.jpg)
+
+This code won't compile with Zig even if change `const` to `var`...
+
+```zig
+// This is OK
+const a: f32 = 123.45;
+debug("a={}", .{ a });
+
+var count: usize = 0;
+while (count < 10) : (count += 1) {
+
+  // Oops! `a` is shadowed...
+  const a: f32 = 234.56;
+  debug("a={}", .{ a });
+}
+```
+
+[(More about Shadowing)](https://ziglang.org/documentation/master/#Shadowing)
+
+So yeah, supporting Zig on Blockly can get really challenging.
 
 # Blockly on Desktop and Mobile
 
