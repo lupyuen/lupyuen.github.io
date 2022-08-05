@@ -319,6 +319,7 @@ const a: f32 = 123.45;
 <div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;
 const b: f32 = try do_something(a, a);
 debug(&quot;b={}&quot;, .{ b });</code></pre></div>
+<p>Thus indeed it’s possible to create <a href="https://lupyuen.github.io/images/blockly-run10.jpg"><strong>Complex Blockly Apps</strong></a> with Zig. <a href="https://lupyuen.github.io/images/blockly-run10.jpg">(Like this)</a></p>
 <p>The above templates are defined in our Code Generator at <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92">generators/zig/procedures.js</a></p>
 <h1 id="blockly-on-desktop-and-mobile"><a href="#blockly-on-desktop-and-mobile">5 Blockly on Desktop and Mobile</a></h1>
 <p><em>Can we build Blockly apps on Mobile Devices?</em></p>
@@ -340,7 +341,7 @@ debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 <h1 id="iot-sensor-apps"><a href="#iot-sensor-apps">6 IoT Sensor Apps</a></h1>
 <p><em>We said earlier that Blockly might be suitable for IoT Sensor Apps. Why?</em></p>
 <p>Suppose we’re building an <strong>IoT Sensor Device</strong> that will monitor Temperature and Humidity.</p>
-<p>The firmware in the device will periodically <strong>read and transmit the Sensor Data</strong> like this…</p>
+<p>The firmware in our device will periodically <strong>read and transmit the Sensor Data</strong> like this…</p>
 <p>TODO</p>
 <p>Which we might <strong>build with Blockly</strong> like so…</p>
 <p><img src="https://lupyuen.github.io/images/sensor-visual.jpg" alt="Visual Programming for Zig with NuttX Sensors" /></p>
@@ -361,6 +362,7 @@ debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 <p>(Or mix and match a bunch of IoT Sensors!)</p>
 </li>
 </ul>
+<p>Let’s talk about the reading and sending of Sensor Data…</p>
 <h1 id="read-sensor-data"><a href="#read-sensor-data">7 Read Sensor Data</a></h1>
 <p>TODO</p>
 <h1 id="transmit-sensor-data"><a href="#transmit-sensor-data">8 Transmit Sensor Data</a></h1>
