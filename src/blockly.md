@@ -377,7 +377,19 @@ TODO: mobile, vscode extension, tauri
 
 # IoT Sensor Apps
 
-Suppose we're building an IoT Sensor Gadget that will monitor the temperature and humidity.
+Suppose we're building an __IoT Sensor Device__ that will monitor Temperature and Humidity.
+
+The firmware in the device will run like this...
+
+TODO
+
+Which we might build with Blockly like this...
+
+![Visual Programming for Zig with NuttX Sensors](https://lupyuen.github.io/images/sensor-visual.jpg)
+
+_Whoa that's a lot to digest?_
+
+We'll break this down in the next section.
 
 TODO
 
