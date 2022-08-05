@@ -639,6 +639,19 @@ This is how we might __compose a Sensor Data Message__ in Blockly...
 
 TODO: CBOR
 
+This message compressed with CBOR...
+
+```json
+{
+  "t": 2345,
+  "h": 6789
+}
+```
+
+(Our numbers have been scaled up by 100)
+
+Will require only __11 Bytes!__ [(See this)](https://lupyuen.github.io/images/blockly-cbor.jpg)
+
 When we have composed our Sensor Data Message, this is how we might __transmit the Sensor Data Message__ in Blockly...
 
 > ![Transmit Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual4.jpg)
