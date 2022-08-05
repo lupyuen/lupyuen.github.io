@@ -377,13 +377,15 @@ TODO: mobile, vscode extension, tauri
 
 # IoT Sensor Apps
 
+_We said earlier that Blockly might be suitable for IoT Sensor Apps. Why?_
+
 Suppose we're building an __IoT Sensor Device__ that will monitor Temperature and Humidity.
 
-The firmware in the device will run like this...
+The firmware in the device will periodically __read and transmit the Sensor Data__ like this...
 
 TODO
 
-Which we might build with Blockly like this...
+Which we might __build with Blockly__ like so...
 
 ![Visual Programming for Zig with NuttX Sensors](https://lupyuen.github.io/images/sensor-visual.jpg)
 
