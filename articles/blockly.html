@@ -490,7 +490,7 @@ const temperature: f32 = blk: {
   break :blk 23.45;
 };</code></pre></div>
 <p>This sets <code>temperature</code> to <code>23.45</code>.</p>
-<p>Block Expressions are a great way to prevent leakage of our Local Variables (like <code>fd</code>) into the Outer Scope.</p>
+<p>Block Expressions are a great way to <strong>prevent leakage</strong> of our Local Variables (like <code>fd</code>) into the Outer Scope.</p>
 <p><a href="https://ziglang.org/documentation/master/#blocks">(More about Block Expressions)</a></p>
 <h1 id="transmit-sensor-data"><a href="#transmit-sensor-data">9 Transmit Sensor Data</a></h1>
 <p>Two sections ago we talked about our IoT Sensor App <strong>transmitting Sensor Data</strong> (like Temperature) to an IoT Network (like LoRaWAN).</p>
@@ -666,6 +666,7 @@ npm run publish
 <p>Blockly will NOT render correctly with <code>file://...</code>, it must be <code>http://localhost:port/...</code></p>
 <p>Drag-and-drop some Blocks and click the <strong>Zig Tab.</strong></p>
 <p>The Zig Tab now shows the generated code in Zig.</p>
+<p>Some of the generated code might appear as Dart (instead of Zig) because we haven’t completely converted our Code Generator from Dart to Zig.</p>
 <p>In case of problems, check the <strong>JavaScript Console</strong>. Ignore the <code>storage.js</code> error.</p>
 <p><em>Can we save the Blocks? So we don’t need to drag them again when retesting?</em></p>
 <p>Click the <strong>JSON Tab</strong> and copy the Blockly JSON that appears.</p>
