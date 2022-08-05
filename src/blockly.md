@@ -363,15 +363,17 @@ debug("b={}", .{ b });
 
 The above templates are defined in our Code Generator at [generators/zig/procedures.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92)
 
-# Blockly on Mobile
+# Blockly on Desktop and Mobile
 
-TODO
+_Can we build Blockly apps on Mobile Devices?_
 
-Blockly works OK with Mobile Web Browsers too...
-
-[lupyuen3.github.io/blockly-zig-nuttx/demos/code](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+Blockly works OK with Mobile Web Browsers...
 
 ![Blocky on Mobile Web Browser](https://lupyuen.github.io/images/blockly-mobile.jpg)
+
+[(Source)](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+
+_Is Blockly available as a non-web Desktop App?_
 
 TODO: mobile, vscode extension, tauri
 
@@ -389,17 +391,23 @@ Which we might __build with Blockly__ like so...
 
 ![Visual Programming for Zig with NuttX Sensors](https://lupyuen.github.io/images/sensor-visual.jpg)
 
-_Whoa that's a lot to digest?_
+_Whoa that's a lot to digest!_
 
-We'll break this down in the next section.
+We'll break down this IoT Sensor App in the next section.
 
 _But why build IoT Sensor Apps with Blockly and Zig?_
 
--   __Types are simpler:__ Only floating-point numbers will be supported, no strings needed
+-   __Types are simpler:__ Only Floating-Point Numbers will be supported for Sensor Data
 
--   __Blockly is Typeless.__ With Zig we can use Type Inference to deduce the missing types
+    (No strings needed)
+
+-   __Blockly is Typeless:__ With Zig we can use Type Inference to deduce the missing Types
+
+    (Doing this in C would be extremely painful)
 
 -   __Easier to experiment__ with various IoT Sensors: Temperature, Humidity, Air Pressure, ...
+
+    (Or mix and match a bunch of IoT Sensors!)
 
 # Read Sensor Data
 
@@ -438,6 +446,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1554650482240397312)
+
+# Appendix: Fixed-Point Numbers
+
+TODO
 
 # Appendix: Add a Zig Tab
 
