@@ -40,7 +40,7 @@ We can try dragging-n-dropping the Blocks here...
 
 -   [__Blockly with Zig (Work in Progress)__](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
 
-To find the above Blocks, click the __Blocks Menu__ (at left) and look under __"Loops"__, __"Variables"__, __"Math"__ and __"Text"__.
+To find the above Blocks, click the __Blocks Toolbox__ (at left) and look under __"Loops"__, __"Variables"__, __"Math"__ and __"Text"__.
 
 _But will it produce a Zig program?_
 
@@ -112,7 +112,7 @@ Sadly it doesn't have one for Zig. So we built our own __Zig Code Generator__ fo
 
 _Every Block generates its own Zig Code?_
 
-Yep our Code Generator needs to output Zig Code for __every kind of Block__.
+Our Code Generator needs to output Zig Code for __every kind of Block__.
 
 (Which makes it tiresome to customise Blockly for Zig)
 
@@ -177,6 +177,8 @@ Zig['text_print'] = function(block) {
   return `debug("${msg}={}", .{ ${msg} });\n`;
 };
 ```
+
+(It won't work with strings, we'll handle that later)
 
 ![Repeat Loop](https://lupyuen.github.io/images/blockly-run4.png)
 
@@ -488,7 +490,7 @@ Earlier we talked about our IoT Sensor App __reading Sensor Data__ (like Tempera
 
 This is how it might look in Blockly...
 
-![Read Sensor Data in Blockly](https://lupyuen.github.io/images/sensor-visual2.jpg)
+> ![Read Sensor Data in Blockly](https://lupyuen.github.io/images/sensor-visual2.jpg)
 
 (We'll populate Blockly with a whole bunch of __Sensor Blocks__ like BME280)
 
@@ -633,11 +635,13 @@ Assume we've read Temperature and Humidity from our sensor.
 
 This is how we might __compose a Sensor Data Message__ in Blockly...
 
-![Compose Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual3.jpg)
+> ![Compose Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual3.jpg)
 
-This is how we might __transmit a Sensor Data Message__ in Blockly...
+TODO: CBOR
 
-![Transmit Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual4.jpg)
+When we have composed our Sensor Data Message, this is how we might __transmit the Sensor Data Message__ in Blockly...
+
+> ![Transmit Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual4.jpg)
 
 TODO: Custom block
 
