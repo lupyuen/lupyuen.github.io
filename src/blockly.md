@@ -420,6 +420,8 @@ while (count < 10) : (count += 1) {
 
 So yeah, supporting Zig on Blockly can get really challenging.
 
+(Though supporting C on Blockly would be a total nightmare!)
+
 # Desktop and Mobile
 
 _Can we build Blockly apps on Mobile Devices?_
