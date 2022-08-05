@@ -448,14 +448,35 @@ debug(&quot;temperature={}&quot;, .{
 });</code></pre></div>
 <p>That’s our tidy way of printing <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Numbers</strong></a> (with 2 decimal places)…</p>
 <div class="example-wrap"><pre class="language-text"><code>temperature=23.45</code></pre></div>
-<p>More about this in the Appendix.</p>
+<p>Instead of the awful <code>2.34500007e+01</code> we earlier.</p>
+<p>(More about this in the Appendix)</p>
 <p><em>What’s <code>blk</code>?</em></p>
-<p><a href="https://ziglang.org/documentation/master/#blocks">Blocks</a></p>
-<p>Blocks are expressions. When labeled, break can be used to return a value from the block:</p>
+<p>That’s how we return a value from the <strong>Block Expression</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature
+const temperature: f32 = blk: {
+
+  // Return the Sensor Value
+  break :blk 23.45;
+};</code></pre></div>
+<p>This sets <code>temperature</code> to <code>23.45</code>.</p>
+<p><a href="https://ziglang.org/documentation/master/#blocks">(More about Block Expressions)</a></p>
 <h1 id="transmit-sensor-data"><a href="#transmit-sensor-data">9 Transmit Sensor Data</a></h1>
+<p>Two sections ago we talked about our IoT Sensor App <strong>transmitting Sensor Data</strong> (like Temperature) to an IoT Network (like LoRaWAN).</p>
+<p>We’ll do this in two steps…</p>
+<ul>
+<li>
+<p><strong>Compose</strong> the Sensor Data Message</p>
+<p>(Compress our Sensor Data into a tiny Data Packet)</p>
+</li>
+<li>
+<p><strong>Transmit</strong> the Sensor Data Message</p>
+<p>(Over LoRaWAN)</p>
+</li>
+</ul>
+<p>Assume we’ve read Temperature and Humidity from our sensor.</p>
+<p>This is how we might <strong>compose a Sensor Data Message</strong> in Blockly…</p>
 <p>TODO</p>
-<p>Earlier we talked about our IoT Sensor App <strong>reading Sensor Data</strong> (like Temperature) from a real sensor (like Bosch BME280).</p>
-<p>This is how</p>
+<p>This is how we might <strong>transmit a Sensor Data Message</strong> in Blockly…</p>
 <p>TODO: Custom block</p>
 <p><img src="https://lupyuen.github.io/images/sensor-visual.jpg" alt="Visual Programming for Zig with NuttX Sensors" /></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
