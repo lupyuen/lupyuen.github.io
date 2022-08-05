@@ -487,6 +487,7 @@ const temperature: f32 = blk: {
   break :blk 23.45;
 };</code></pre></div>
 <p>This sets <code>temperature</code> to <code>23.45</code>.</p>
+<p>Block Expressions are a great way to prevent leakage of our Local Variables (like <code>fd</code>) into the Outer Scope.</p>
 <p><a href="https://ziglang.org/documentation/master/#blocks">(More about Block Expressions)</a></p>
 <h1 id="transmit-sensor-data"><a href="#transmit-sensor-data">9 Transmit Sensor Data</a></h1>
 <p>Two sections ago we talked about our IoT Sensor App <strong>transmitting Sensor Data</strong> (like Temperature) to an IoT Network (like LoRaWAN).</p>
