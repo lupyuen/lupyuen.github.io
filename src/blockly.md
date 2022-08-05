@@ -488,7 +488,7 @@ Earlier we talked about our IoT Sensor App __reading Sensor Data__ (like Tempera
 
 This is how it might look in Blockly...
 
-TODO
+![Read Sensor Data in Blockly](https://lupyuen.github.io/images/sensor-visual2.jpg)
 
 (We'll populate Blockly with a whole bunch of __Sensor Blocks__ like BME280)
 
@@ -589,9 +589,9 @@ That's our tidy way of printing [__Fixed-Point Numbers__](https://en.wikipedia.o
 temperature=23.45
 ```
 
-Instead of the awful `2.34500007e+01` we earlier.
+Instead of the awful `2.34500007e+01` we saw earlier.
 
-(More about this in the Appendix)
+[(More about this in the Appendix)](https://lupyuen.github.io/articles/blockly#appendix-fixed-point-numbers)
 
 _What's `blk`?_
 
@@ -633,9 +633,11 @@ Assume we've read Temperature and Humidity from our sensor.
 
 This is how we might __compose a Sensor Data Message__ in Blockly...
 
-TODO
+![Compose Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual3.jpg)
 
 This is how we might __transmit a Sensor Data Message__ in Blockly...
+
+![Transmit Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual4.jpg)
 
 TODO: Custom block
 
