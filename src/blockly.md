@@ -333,11 +333,13 @@ Such apps work only with numeric __Sensor Data__ (like temperature, humidity). A
 
 _Can we define Zig Functions in Blockly?_
 
-TODO
+Sure! This __Function Block__...
 
 ![Define Blockly Function](https://lupyuen.github.io/images/blockly-run7a.jpg)
 
-TODO
+[(Parameters are defined in __"Settings"__)](https://lupyuen.github.io/images/blockly-run9.jpg)
+
+Will generate this perfectly valid __Zig Function__...
 
 ```zig
 fn do_something(x: f32, y: f32) !f32 {
@@ -347,13 +349,11 @@ fn do_something(x: f32, y: f32) !f32 {
 }
 ```
 
-[(To define the parameters, click on __"Settings"__)](https://lupyuen.github.io/images/blockly-run9.jpg)
-
-TODO
+And calling the above function...
 
 ![Call Blockly Function](https://lupyuen.github.io/images/blockly-run7b.jpg)
 
-TODO
+Works OK with Zig too...
 
 ```zig
 const a: f32 = 123.45;
@@ -361,9 +361,7 @@ const b: f32 = try do_something(a, a);
 debug("b={}", .{ b });
 ```
 
-TODO
-
-[generators/zig/procedures.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92)
+The above templates are defined in our Code Generator at [generators/zig/procedures.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92)
 
 # Constants vs Variables
 
