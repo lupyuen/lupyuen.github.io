@@ -333,7 +333,7 @@ Such apps work only with numeric __Sensor Data__ (like temperature, humidity). A
 
 _Can we define Zig Functions in Blockly?_
 
-Sure! This __Function Block__...
+Sure can! This __Function Block__...
 
 ![Define Blockly Function](https://lupyuen.github.io/images/blockly-run7a.jpg)
 
