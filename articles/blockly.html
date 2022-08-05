@@ -450,7 +450,7 @@ debug(&quot;temperature={}&quot;, .{
 <p><a href="https://lupyuen.github.io/articles/sensor#read-barometer-sensor">(As explained here)</a></p>
 <p><em>What a huge chunk of Zig!</em></p>
 <p>The complete implementation is a huger chunk of Zig, because we need to <strong>handle Errors</strong>. <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L27-L115">(See this)</a></p>
-<p>But it might be hunky dory for Blockly. We just need to define one Block for <strong>every Sensor</strong> supported by NuttX (like BME280).</p>
+<p>But it might be hunky dory for Blockly. We just need to define one Block for <strong>every Sensor</strong> supported by NuttX. (Like BME280)</p>
 <p>And every Block will churn out the <strong>Boilerplate Code</strong> (plus Error Handling) that we see above.</p>
 <p><em>Surely some of the code can be refactored into reusable Zig Functions?</em></p>
 <p>Refactoring the code can get tricky because the <strong>Sensor Data Struct and Fields</strong> are dependent on the Sensor…</p>
@@ -493,7 +493,7 @@ const temperature: f32 = blk: {
   break :blk 23.45;
 };</code></pre></div>
 <p>This sets <code>temperature</code> to <code>23.45</code>.</p>
-<p>Block Expressions are a great way to <strong>prevent leakage</strong> of our Local Variables (like <code>fd</code>) into the Outer Scope.</p>
+<p>Block Expressions are a great way to <strong>prevent leakage</strong> of our Local Variables (like <code>fd</code>) into the Outer Scope and <a href="https://lupyuen.github.io/articles/blockly#constants-vs-variables"><strong>avoid Shadowing</strong></a>.</p>
 <p><a href="https://ziglang.org/documentation/master/#blocks">(More about Block Expressions)</a></p>
 <h1 id="transmit-sensor-data"><a href="#transmit-sensor-data">9 Transmit Sensor Data</a></h1>
 <p>Two sections ago we talked about our IoT Sensor App <strong>transmitting Sensor Data</strong> (like Temperature) to an IoT Network (like LoRaWAN).</p>
@@ -519,9 +519,9 @@ const temperature: f32 = blk: {
   &quot;t&quot;: 2345,
   &quot;h&quot;: 6789
 }</code></pre></div>
-<p>(Our numbers have been scaled up by 100)</p>
+<p>(Numbers have been scaled up by 100)</p>
 <p>Will require only <strong>11 Bytes!</strong> <a href="https://lupyuen.github.io/images/blockly-cbor.jpg">(See this)</a></p>
-<p>When we have composed our Sensor Data Message, this is how we might <strong>transmit the Sensor Data Message</strong> in Blockly…</p>
+<p>After composing our Sensor Data Message, this is how we might <strong>transmit the Sensor Data Message</strong> in Blockly…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/sensor-visual4.jpg" alt="Transmit Sensor Data Message in Blockly" /></p>
 </blockquote>
