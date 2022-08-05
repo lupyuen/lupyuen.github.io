@@ -325,9 +325,36 @@ const a: f32 = 123.45;
 <h1 id="constants-vs-variables"><a href="#constants-vs-variables">5 Constants vs Variables</a></h1>
 <p><em>What other challenges do we have with Zig on Blockly?</em></p>
 <p>Our Astute Reader would have seen this Oncoming Wreckage (from miles away)…</p>
-<p>TODO: Assign Twice</p>
-<p>TODO: Call me stupendously stubborn</p>
-<p>TODO: Shadowing</p>
+<p><img src="https://lupyuen.github.io/images/blockly-run12.jpg" alt="Redeclared Constants in Blockly" /></p>
+<p>The <strong>Double Assignment</strong> above will cause Constant Problems…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// This is OK
+const a: f32 = 123.45;
+
+// Oops! `a` is redeclared...
+const a: f32 = 234.56;</code></pre></div>
+<p>Our Code Generator will have to stop this somehow.</p>
+<p><em>Why not declare as a Variable? (Instead of a Constant)</em></p>
+<div class="example-wrap"><pre class="language-zig"><code>// This is OK
+var a: f32 = undefined;
+a = 123.45;
+a = 234.56;</code></pre></div>
+<p>Call me stupendously stubborn, but I think Constants look neater than Variables?</p>
+<p>Also we might have a problem with <a href="https://ziglang.org/documentation/master/#Shadowing"><strong>Shadowed Identifiers</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/blockly-run15.jpg" alt="Shadowing in Blockly" /></p>
+<p>This code won’t compile with Zig even if change <code>const</code> to <code>var</code>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// This is OK
+const a: f32 = 123.45;
+debug(&quot;a={}&quot;, .{ a });
+
+var count: usize = 0;
+while (count &lt; 10) : (count += 1) {
+
+  // Oops! `a` is shadowed...
+  const a: f32 = 234.56;
+  debug(&quot;a={}&quot;, .{ a });
+}</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#Shadowing">(More about Shadowing)</a></p>
+<p>So yeah, supporting Zig on Blockly can get really challenging.</p>
 <h1 id="blockly-on-desktop-and-mobile"><a href="#blockly-on-desktop-and-mobile">6 Blockly on Desktop and Mobile</a></h1>
 <p><em>Can we build Blockly apps on Mobile Devices?</em></p>
 <p>Blockly works OK with Mobile Web Browsers…</p>
