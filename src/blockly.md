@@ -337,7 +337,7 @@ Sure can! This __Function Block__...
 
 ![Define Blockly Function](https://lupyuen.github.io/images/blockly-run7a.jpg)
 
-[(Parameters are defined in __"Settings"__)](https://lupyuen.github.io/images/blockly-run9.jpg)
+[(Parameters are defined in __Function Settings__)](https://lupyuen.github.io/images/blockly-run9.jpg)
 
 Will generate this perfectly valid __Zig Function__...
 
