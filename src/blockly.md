@@ -546,7 +546,7 @@ _What a huge chunk of Zig!_
 
 The complete implementation is a huger chunk of Zig, because we need to __handle Errors__. [(See this)](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L27-L115)
 
-But it might be hunky dory for Blockly. We just need to define one Block for __every Sensor__ supported by NuttX (like BME280).
+But it might be hunky dory for Blockly. We just need to define one Block for __every Sensor__ supported by NuttX. (Like BME280)
 
 And every Block will churn out the __Boilerplate Code__ (plus Error Handling) that we see above.
 
@@ -613,7 +613,7 @@ const temperature: f32 = blk: {
 
 This sets `temperature` to `23.45`.
 
-Block Expressions are a great way to __prevent leakage__ of our Local Variables (like `fd`) into the Outer Scope.
+Block Expressions are a great way to __prevent leakage__ of our Local Variables (like `fd`) into the Outer Scope and [__avoid Shadowing__](https://lupyuen.github.io/articles/blockly#constants-vs-variables).
 
 [(More about Block Expressions)](https://ziglang.org/documentation/master/#blocks)
 
@@ -648,11 +648,11 @@ This message compressed with CBOR...
 }
 ```
 
-(Our numbers have been scaled up by 100)
+(Numbers have been scaled up by 100)
 
 Will require only __11 Bytes!__ [(See this)](https://lupyuen.github.io/images/blockly-cbor.jpg)
 
-When we have composed our Sensor Data Message, this is how we might __transmit the Sensor Data Message__ in Blockly...
+After composing our Sensor Data Message, this is how we might __transmit the Sensor Data Message__ in Blockly...
 
 > ![Transmit Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual4.jpg)
 
