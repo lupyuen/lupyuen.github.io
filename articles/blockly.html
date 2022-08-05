@@ -303,23 +303,22 @@ const a: f32 = 123.45;
 <p>(More about this in a while)</p>
 <h1 id="zig-functions"><a href="#zig-functions">4 Zig Functions</a></h1>
 <p><em>Can we define Zig Functions in Blockly?</em></p>
-<p>TODO</p>
+<p>Sure! This <strong>Function Block</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run7a.jpg" alt="Define Blockly Function" /></p>
-<p>TODO</p>
+<p><a href="https://lupyuen.github.io/images/blockly-run9.jpg">(Parameters are defined in <strong>“Settings”</strong>)</a></p>
+<p>Will generate this perfectly valid <strong>Zig Function</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>fn do_something(x: f32, y: f32) !f32 {
   const a: f32 = 123.45;
   debug(&quot;a={}&quot;, .{ a });
   return x + y;
 }</code></pre></div>
-<p><a href="https://lupyuen.github.io/images/blockly-run9.jpg">(To define the parameters, click on <strong>“Settings”</strong>)</a></p>
-<p>TODO</p>
+<p>And calling the above function…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run7b.jpg" alt="Call Blockly Function" /></p>
-<p>TODO</p>
+<p>Works OK with Zig too…</p>
 <div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;
 const b: f32 = try do_something(a, a);
 debug(&quot;b={}&quot;, .{ b });</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92">generators/zig/procedures.js</a></p>
+<p>The above templates are defined in our Code Generator at <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92">generators/zig/procedures.js</a></p>
 <h1 id="constants-vs-variables"><a href="#constants-vs-variables">5 Constants vs Variables</a></h1>
 <p>TODO: <a href="https://en.wikipedia.org/wiki/BASIC#Syntax">BASIC</a></p>
 <h1 id="iot-sensor-apps"><a href="#iot-sensor-apps">6 IoT Sensor Apps</a></h1>
