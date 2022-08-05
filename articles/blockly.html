@@ -111,7 +111,7 @@
 <ul>
 <li><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/"><strong>Blockly with Zig (Work in Progress)</strong></a></li>
 </ul>
-<p>To find the above Blocks, click the <strong>Blocks Menu</strong> (at left) and look under <strong>“Loops”</strong>, <strong>“Variables”</strong>, <strong>“Math”</strong> and <strong>“Text”</strong>.</p>
+<p>To find the above Blocks, click the <strong>Blocks Toolbox</strong> (at left) and look under <strong>“Loops”</strong>, <strong>“Variables”</strong>, <strong>“Math”</strong> and <strong>“Text”</strong>.</p>
 <p><em>But will it produce a Zig program?</em></p>
 <p>Yep if we click the <strong>Zig Tab</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run3a.png" alt="Zig Tab in Blockly" /></p>
@@ -165,7 +165,7 @@ debug: a=1.23449996e+02</code></pre></div>
 </li>
 </ul>
 <p><em>Every Block generates its own Zig Code?</em></p>
-<p>Yep our Code Generator needs to output Zig Code for <strong>every kind of Block</strong>.</p>
+<p>Our Code Generator needs to output Zig Code for <strong>every kind of Block</strong>.</p>
 <p>(Which makes it tiresome to customise Blockly for Zig)</p>
 <p>To understand the work involved, we’ll look at three Blocks and how our Code Generator handles them…</p>
 <ul>
@@ -206,6 +206,7 @@ debug: a=1.23449996e+02</code></pre></div>
   ...
   return `debug(&quot;${msg}={}&quot;, .{ ${msg} });\n`;
 };</code></pre></div>
+<p>(It won’t work with strings, we’ll handle that later)</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run4.png" alt="Repeat Loop" /></p>
 <h2 id="repeat-loop"><a href="#repeat-loop">2.3 Repeat Loop</a></h2>
 <p>To run a <strong>repeating loop</strong> (pic above), we generate this Zig code…</p>
@@ -401,7 +402,9 @@ while (count &lt; 10) : (count += 1) {
 <h1 id="read-sensor-data"><a href="#read-sensor-data">8 Read Sensor Data</a></h1>
 <p>Earlier we talked about our IoT Sensor App <strong>reading Sensor Data</strong> (like Temperature) from a real sensor (like Bosch BME280).</p>
 <p>This is how it might look in Blockly…</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/sensor-visual2.jpg" alt="Read Sensor Data in Blockly" /></p>
+</blockquote>
 <p>(We’ll populate Blockly with a whole bunch of <strong>Sensor Blocks</strong> like BME280)</p>
 <p>And this is the Zig Code that we might auto-generate: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L27-L115">visual-zig-nuttx/visual/visual.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature
@@ -507,9 +510,14 @@ const temperature: f32 = blk: {
 </ul>
 <p>Assume we’ve read Temperature and Humidity from our sensor.</p>
 <p>This is how we might <strong>compose a Sensor Data Message</strong> in Blockly…</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/sensor-visual3.jpg" alt="Compose Sensor Data Message in Blockly" /></p>
-<p>This is how we might <strong>transmit a Sensor Data Message</strong> in Blockly…</p>
+</blockquote>
+<p>TODO: CBOR</p>
+<p>When we have composed our Sensor Data Message, this is how we might <strong>transmit the Sensor Data Message</strong> in Blockly…</p>
+<blockquote>
 <p><img src="https://lupyuen.github.io/images/sensor-visual4.jpg" alt="Transmit Sensor Data Message in Blockly" /></p>
+</blockquote>
 <p>TODO: Custom block</p>
 <p><img src="https://lupyuen.github.io/images/sensor-visual.jpg" alt="Visual Programming for Zig with NuttX Sensors" /></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
