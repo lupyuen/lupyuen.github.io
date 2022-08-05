@@ -427,11 +427,117 @@ Let's talk about the reading and sending of Sensor Data...
 
 # Read Sensor Data
 
+Earlier we talked about our IoT Sensor App __reading Sensor Data__ (like Temperature) from a real sensor (like Bosch BME280).
+
+This is how it might look in Blockly...
+
+TODO
+
+And this is the Zig Code that might be generated: [visual-zig-nuttx/visual/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L27-L115)
+
+```zig
+    // Read the Temperature
+    const temperature: f32 = blk: {
+        // Open the Sensor Device
+        const fd = c.open(
+            "/dev/sensor/baro0",       // Path of Sensor Device
+            c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+        );
+
+        // Check for error
+        if (fd < 0) {
+            std.log.err("Failed to open device:{s}", .{ c.strerror(errno()) });
+            return error.OpenError;
+        }
+
+        // Close the Sensor Device when this function returns
+        defer {
+            _ = c.close(fd);
+        }
+
+        // Set Standby Interval
+        // TODO: Remove this definition when SNIOC_SET_INTERVAL has been been fixed: https://github.com/apache/incubator-nuttx/issues/6642
+        const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
+        var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
+        var ret = c.ioctl(fd, SNIOC_SET_INTERVAL, &interval);
+
+        // Check for error
+        if (ret < 0 and errno() != c.ENOTSUP) {
+            std.log.err("Failed to set interval:{s}", .{ c.strerror(errno()) });
+            return error.IntervalError;
+        }
+
+        // Set Batch Latency
+        var latency: c_uint = 0;  // No latency
+        ret = c.ioctl(fd, c.SNIOC_BATCH, &latency);
+
+        // Check for error
+        if (ret < 0 and errno() != c.ENOTSUP) {
+            std.log.err("Failed to batch:{s}", .{ c.strerror(errno()) });
+            return error.BatchError;
+        }
+
+        // Enable Sensor and switch to Normal Power Mode
+        ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
+
+        // Check for error
+        if (ret < 0 and errno() != c.ENOTSUP) {
+            std.log.err("Failed to enable sensor:{s}", .{ c.strerror(errno()) });
+            return error.EnableError;
+        }
+
+        // Prepare to poll Sensor
+        var fds = std.mem.zeroes(c.struct_pollfd);
+        fds.fd = fd;
+        fds.events = c.POLLIN;
+        var sensor_value: f32 = undefined;
+
+        // If Sensor Data is available...
+        if (c.poll(&fds, 1, -1) > 0) {
+
+            // Define the Sensor Data Type
+            var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
+            const len = @sizeOf(@TypeOf(sensor_data));
+
+            // Read the Sensor Data
+            if (c.read(fd, &sensor_data, len) >= len) {
+
+                // Remember the Sensor Value
+                sensor_value = sensor_data.temperature;
+                
+            } else { std.log.err("Sensor data incorrect size", .{}); }
+        } else { std.log.err("Sensor data not available", .{}); }
+
+        // Disable Sensor and switch to Low Power Mode
+        ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
+
+        // Check for error
+        if (ret < 0) {
+            std.log.err("Failed to disable sensor:{s}", .{ c.strerror(errno()) });
+            return error.DisableError;
+        }
+        
+        // Return the Sensor Value
+        break :blk sensor_value;
+    };
+
+    // Print the Temperature
+    debug("temperature:{}", .{
+        floatToFixed(temperature)
+    });
+```
+
 TODO: Custom block
 
 # Transmit Sensor Data
 
 TODO
+
+Earlier we talked about our IoT Sensor App __reading Sensor Data__ (like Temperature) from a real sensor (like Bosch BME280).
+
+This is how
+
+![Visual Programming for Zig with NuttX Sensors](https://lupyuen.github.io/images/sensor-visual.jpg)
 
 # What's Next
 
@@ -466,6 +572,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: Fixed-Point Numbers
 
 TODO
+
+[visual-zig-nuttx/visual/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L15-L25)
+
+```zig
+const a: f32 = 123.45;
+debug("a={}", .{ floatToFixed(a) });
+```
 
 # Appendix: Add a Zig Tab
 
