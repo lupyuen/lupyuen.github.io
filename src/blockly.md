@@ -12,7 +12,7 @@ And how we might customise Blockly to __create Zig programs__ visually. (Pic abo
 
 _Will it work for any Zig program?_
 
-We're not quite done yet. We hit some __interesting challenges__, like Blockly's "Typelessness".
+We're not quite done yet. We hit some __interesting challenges__, like Blockly's "Typelessness" and Zig's "Anti-Shadowing".
 
 But it might work for creating __IoT Sensor Apps__ for Embedded Platforms. (Like Apache NuttX RTOS)
 
@@ -486,7 +486,7 @@ Let's talk about the reading and sending of Sensor Data...
 
 # Read Sensor Data
 
-Earlier we talked about our IoT Sensor App __reading Sensor Data__ (like Temperature) from a real sensor (like Bosch BME280).
+Earlier we talked about our IoT Sensor App __reading Sensor Data__ (like Temperature) from a real sensor [(like __Bosch BME280__)](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/).
 
 This is how it might look in Blockly...
 
@@ -619,7 +619,7 @@ Block Expressions are a great way to __prevent leakage__ of our Local Variables 
 
 # Transmit Sensor Data
 
-Two sections ago we talked about our IoT Sensor App __transmitting Sensor Data__ (like Temperature) to an IoT Network (like LoRaWAN).
+Two sections ago we talked about our IoT Sensor App __transmitting Sensor Data__ (like Temperature) to a Wireless IoT Network [(like __LoRaWAN__)](https://makezine.com/2021/05/24/go-long-with-lora-radio/).
 
 We'll do this in two steps...
 
