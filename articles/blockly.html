@@ -71,9 +71,9 @@
 <li><a href="#print-expression">2.2 Print Expression</a><ul></ul></li>
 <li><a href="#repeat-loop">2.3 Repeat Loop</a><ul></ul></li>
 <li><a href="#main-function">2.4 Main Function</a><ul></ul></li></ul></li>
-<li><a href="#constants-vs-variables">3 Constants vs Variables</a><ul></ul></li>
-<li><a href="#why-float">4 Why Float?</a><ul></ul></li>
-<li><a href="#blockly-is-typeless">5 Blockly Is Typeless</a><ul></ul></li>
+<li><a href="#blockly-is-typeless">3 Blockly Is Typeless</a><ul></ul></li>
+<li><a href="#zig-functions">4 Zig Functions</a><ul></ul></li>
+<li><a href="#constants-vs-variables">5 Constants vs Variables</a><ul></ul></li>
 <li><a href="#iot-sensor-apps">6 IoT Sensor Apps</a><ul></ul></li>
 <li><a href="#apache-nuttx-rtos">7 Apache NuttX RTOS</a><ul></ul></li>
 <li><a href="#blockly-on-mobile">8 Blockly on Mobile</a><ul></ul></li>
@@ -281,12 +281,30 @@ const debug  = std.log.debug;</code></pre></div>
   ].join(&#39;&#39;);
 };</code></pre></div>
 <p>We’ll talk about Function Definitions in a while.</p>
-<h1 id="constants-vs-variables"><a href="#constants-vs-variables">3 Constants vs Variables</a></h1>
+<h1 id="blockly-is-typeless"><a href="#blockly-is-typeless">3 Blockly Is Typeless</a></h1>
+<p><em>Why are our Constants declared as Floating-Point <code>f32</code>?</em></p>
+<p>Here comes the interesting challenge with Zig on Blockly…</p>
+<p><strong>Blockly is Typeless!</strong></p>
+<p>Blockly doesn’t recognise Types, so it will gladly accept this…</p>
+<p>TODO</p>
+<p>Which works fine with <a href="https://developer.mozilla.org/en-US/docs/Glossary/Dynamic_typing"><strong>Dynamically-Typed Languages</strong></a> like JavaScript…</p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Dynamic Type in JavaScript
+var a;
+a = 123.45;
+a = &#39;abc&#39;;</code></pre></div>
+<p>But not for <a href="https://developer.mozilla.org/en-US/docs/Glossary/Static_typing"><strong>Statically-Typed Languages</strong></a> like Zig!</p>
+<p>That’s why we constrain all Types as <code>f32</code>, until we figure out how to handle strings and other types…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Static Type in Zig
+const a: f32 = 123.45;
+// Nope we won&#39;t accept &quot;abc&quot;</code></pre></div>
+<p><em>Won’t that severely limit our Zig Programs?</em></p>
+<p><code>f32</code> is probably sufficient for simple <strong>IoT Sensor Apps</strong>.</p>
+<p>Such apps work only with numeric <strong>Sensor Data</strong> (like temperature, humidity). And they don’t need to manipulate strings.</p>
+<p>(More about this in a while)</p>
+<h1 id="zig-functions"><a href="#zig-functions">4 Zig Functions</a></h1>
+<p>TODO</p>
+<h1 id="constants-vs-variables"><a href="#constants-vs-variables">5 Constants vs Variables</a></h1>
 <p>TODO: <a href="https://en.wikipedia.org/wiki/BASIC#Syntax">BASIC</a></p>
-<h1 id="why-float"><a href="#why-float">4 Why Float?</a></h1>
-<p>TODO</p>
-<h1 id="blockly-is-typeless"><a href="#blockly-is-typeless">5 Blockly Is Typeless</a></h1>
-<p>TODO</p>
 <h1 id="iot-sensor-apps"><a href="#iot-sensor-apps">6 IoT Sensor Apps</a></h1>
 <p>TODO</p>
 <p><em>Why limit to IoT Sensor Apps?</em></p>
@@ -427,7 +445,7 @@ Code.renderContent = function() {
    }
  ];</code></pre></div>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx/pull/1/files#diff-a9a5784f43ce15ca76bb3e99eb6625c3ea15381e20eac6f7527ecbcb2945ac14">(See the changes)</a></p>
-<p>Now we compile our Zig Code Generator.</p>
+<p>Now we compile our Zig Code Generator…</p>
 <h1 id="appendix-build-blockly"><a href="#appendix-build-blockly">14 Appendix: Build Blockly</a></h1>
 <p>TODO</p>
 <p>Blockly builds fine with Linux, macOS and WSL. (But not plain old Windows CMD)</p>
@@ -450,6 +468,7 @@ npm run publish
 # cp *compressed* /mnt/c/blockly-zig-nuttx</code></pre></div>
 <p>This compiles and updates the Zig Code Generator in <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/zig_compressed.js">zig_compressed.js</a> and <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/zig_compressed.js.map">zig_compressed.js.map</a></p>
 <p>If we’re using VSCode, here’s the Build Task: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/.vscode/tasks.json">.vscode/tasks.json</a></p>
+<p>Let’s test our compiled Code Generator…</p>
 <h1 id="appendix-test-blockly"><a href="#appendix-test-blockly">15 Appendix: Test Blockly</a></h1>
 <p>TODO</p>
 <p>Browse to <code>blockly-zig-nuttx/demos/code</code> with a Local Web Server. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/">(Like Web Server for Chrome)</a></p>
@@ -458,8 +477,8 @@ npm run publish
 <p><img src="https://lupyuen.github.io/images/blockly-run3a.png" alt="Zig Tab in Blockly" /></p>
 <p>Blockly will NOT render correctly with <code>file://...</code>, it must be <code>http://localhost:port/...</code></p>
 <p>Drag-and-drop some Blocks and click the Zig Tab.</p>
-<p>The Zig Tab now shows the generated code in Dart (because we copied the Dart Code Generator).</p>
-<p>(In case of problems, check the JavaScript Console. Ignore the <code>storage.js</code> error)</p>
+<p>The Zig Tab now shows the generated code in Zig.</p>
+<p>In case of problems, check the JavaScript Console. Ignore the <code>storage.js</code> error.</p>
 
     
 </body>
