@@ -326,7 +326,7 @@ Thus indeed it's possible to create [__Complex Blockly Apps__](https://lupyuen.g
 
 The above templates are defined in our Code Generator at [generators/zig/procedures.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92)
 
-# Blockly Is Typeless
+# Blockly is Typeless
 
 _Why are our Constants declared as Floating-Point `f32`?_
 
@@ -420,7 +420,7 @@ while (count < 10) : (count += 1) {
 
 So yeah, supporting Zig on Blockly can get really challenging.
 
-# Blockly on Desktop and Mobile
+# Desktop and Mobile
 
 _Can we build Blockly apps on Mobile Devices?_
 
