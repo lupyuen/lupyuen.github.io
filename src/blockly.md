@@ -644,8 +644,14 @@ We should see this...
 
 Blockly will NOT render correctly with `file://...`, it must be `http://localhost:port/...`
 
-Drag-and-drop some Blocks and click the Zig Tab.
+Drag-and-drop some Blocks and click the __Zig Tab.__
 
 The Zig Tab now shows the generated code in Zig.
 
-In case of problems, check the JavaScript Console. Ignore the `storage.js` error.
+In case of problems, check the __JavaScript Console__. Ignore the `storage.js` error.
+
+_Can we save the Blocks? So we don't need to drag them again when retesting?_
+
+Click the __JSON Tab__ and copy the Blockly JSON that appears.
+
+Whenever we rebuild Blockly and reload the site, just paste the Blockly JSON back into the JSON Tab. The Blocks will be automagically restored.
