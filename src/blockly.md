@@ -422,7 +422,7 @@ while (count < 10) : (count += 1) {
 
 So yeah, supporting Zig on Blockly can get really challenging.
 
-(Though supporting C on Blockly would be a total nightmare!)
+(Though supporting C on Blockly without Type Inference would be a total nightmare!)
 
 # Desktop and Mobile
 
