@@ -300,7 +300,7 @@ __Blockly is Typeless!__
 
 Blockly doesn't recognise Types, so it will gladly accept this...
 
-TODO
+![Blocky is Typeless](https://lupyuen.github.io/images/blockly-run8.jpg)
 
 Which works fine with [__Dynamically-Typed Languages__](https://developer.mozilla.org/en-US/docs/Glossary/Dynamic_typing) like JavaScript...
 
@@ -331,7 +331,39 @@ Such apps work only with numeric __Sensor Data__ (like temperature, humidity). A
 
 # Zig Functions
 
+_Can we define Zig Functions in Blockly?_
+
 TODO
+
+![Define Blockly Function](https://lupyuen.github.io/images/blockly-run7a.jpg)
+
+TODO
+
+```zig
+fn do_something(x: f32, y: f32) !f32 {
+  const a: f32 = 123.45;
+  debug("a={}", .{ a });
+  return x + y;
+}
+```
+
+[(To define the parameters, click on __"Settings"__)](https://lupyuen.github.io/images/blockly-run9.jpg)
+
+TODO
+
+![Call Blockly Function](https://lupyuen.github.io/images/blockly-run7b.jpg)
+
+TODO
+
+```zig
+const a: f32 = 123.45;
+const b: f32 = try do_something(a, a);
+debug("b={}", .{ b });
+```
+
+TODO
+
+[generators/zig/procedures.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92)
 
 # Constants vs Variables
 
