@@ -514,6 +514,13 @@ const temperature: f32 = blk: {
 <p><img src="https://lupyuen.github.io/images/sensor-visual3.jpg" alt="Compose Sensor Data Message in Blockly" /></p>
 </blockquote>
 <p>TODO: CBOR</p>
+<p>This message compressed with CBOR…</p>
+<div class="example-wrap"><pre class="language-json"><code>{
+  &quot;t&quot;: 2345,
+  &quot;h&quot;: 6789
+}</code></pre></div>
+<p>(Our numbers have been scaled up by 100)</p>
+<p>Will require only <strong>11 Bytes!</strong> <a href="https://lupyuen.github.io/images/blockly-cbor.jpg">(See this)</a></p>
 <p>When we have composed our Sensor Data Message, this is how we might <strong>transmit the Sensor Data Message</strong> in Blockly…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/sensor-visual4.jpg" alt="Transmit Sensor Data Message in Blockly" /></p>
