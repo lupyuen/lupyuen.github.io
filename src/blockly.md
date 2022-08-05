@@ -361,6 +361,8 @@ const b: f32 = try do_something(a, a);
 debug("b={}", .{ b });
 ```
 
+Thus indeed it's possible to create [__Complex Blockly Apps__](https://lupyuen.github.io/images/blockly-run10.jpg) with Zig. [(Like this)](https://lupyuen.github.io/images/blockly-run10.jpg)
+
 The above templates are defined in our Code Generator at [generators/zig/procedures.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92)
 
 # Blockly on Desktop and Mobile
@@ -395,7 +397,7 @@ _We said earlier that Blockly might be suitable for IoT Sensor Apps. Why?_
 
 Suppose we're building an __IoT Sensor Device__ that will monitor Temperature and Humidity.
 
-The firmware in the device will periodically __read and transmit the Sensor Data__ like this...
+The firmware in our device will periodically __read and transmit the Sensor Data__ like this...
 
 TODO
 
@@ -420,6 +422,8 @@ _But why build IoT Sensor Apps with Blockly and Zig?_
 -   __Easier to experiment__ with various IoT Sensors: Temperature, Humidity, Air Pressure, ...
 
     (Or mix and match a bunch of IoT Sensors!)
+
+Let's talk about the reading and sending of Sensor Data...
 
 # Read Sensor Data
 
