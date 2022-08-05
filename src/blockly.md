@@ -373,9 +373,21 @@ Blockly works OK with Mobile Web Browsers...
 
 [(Source)](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
 
-_Is Blockly available as a non-web Desktop App?_
+_Is Blockly available as an offline, non-web Desktop App?_
 
-TODO: mobile, vscode extension, tauri
+Not yet. But we could package Blockly as a __VSCode Extension__ that will turn it into a Desktop App...
+
+-   [__Blockly Extension for VSCode__](https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming)
+
+Or we might package Blockly into a __Standalone App__ with Tauri...
+
+-   [__Tauri Desktop Bundler__](https://tauri.app/)
+
+_Why would we need a Desktop App for Blockly?_
+
+It's easier to __compile the Generated Zig Code__ when we're on a Desktop App.
+
+And a Desktop App is more convenient for __flashing the compiled code__ to Embedded Devices.
 
 # IoT Sensor Apps
 
