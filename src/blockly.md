@@ -290,17 +290,52 @@ Finally we combine them and return the result...
 
 We'll talk about Function Definitions in a while.
 
+# Blockly Is Typeless
+
+_Why are our Constants declared as Floating-Point `f32`?_
+
+Here comes the interesting challenge with Zig on Blockly...
+
+__Blockly is Typeless!__
+
+Blockly doesn't recognise Types, so it will gladly accept this...
+
+TODO
+
+Which works fine with [__Dynamically-Typed Languages__](https://developer.mozilla.org/en-US/docs/Glossary/Dynamic_typing) like JavaScript...
+
+```javascript
+// Dynamic Type in JavaScript
+var a;
+a = 123.45;
+a = 'abc';
+```
+
+But not for [__Statically-Typed Languages__](https://developer.mozilla.org/en-US/docs/Glossary/Static_typing) like Zig!
+
+That's why we constrain all Types as `f32`, until we figure out how to handle strings and other types...
+
+```zig
+// Static Type in Zig
+const a: f32 = 123.45;
+// Nope we won't accept "abc"
+```
+
+_Won't that severely limit our Zig Programs?_
+
+`f32` is probably sufficient for simple __IoT Sensor Apps__.
+
+Such apps work only with numeric __Sensor Data__ (like temperature, humidity). And they don't need to manipulate strings.
+
+(More about this in a while)
+
+# Zig Functions
+
+TODO
+
 # Constants vs Variables
 
 TODO: [BASIC](https://en.wikipedia.org/wiki/BASIC#Syntax)
-
-# Why Float?
-
-TODO
-
-# Blockly Is Typeless
-
-TODO
 
 # IoT Sensor Apps
 
@@ -488,7 +523,7 @@ Add our Code Generator to the Build Task: [scripts/gulpfiles/build_tasks.js](htt
 
 [(See the changes)](https://github.com/lupyuen3/blockly-zig-nuttx/pull/1/files#diff-a9a5784f43ce15ca76bb3e99eb6625c3ea15381e20eac6f7527ecbcb2945ac14)
 
-Now we compile our Zig Code Generator.
+Now we compile our Zig Code Generator...
 
 # Appendix: Build Blockly
 
@@ -521,6 +556,8 @@ This compiles and updates the Zig Code Generator in [zig_compressed.js](https://
 
 If we're using VSCode, here's the Build Task: [.vscode/tasks.json](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/.vscode/tasks.json)
 
+Let's test our compiled Code Generator...
+
 # Appendix: Test Blockly
 
 TODO
@@ -537,6 +574,6 @@ Blockly will NOT render correctly with `file://...`, it must be `http://localhos
 
 Drag-and-drop some Blocks and click the Zig Tab.
 
-The Zig Tab now shows the generated code in Dart (because we copied the Dart Code Generator).
+The Zig Tab now shows the generated code in Zig.
 
-(In case of problems, check the JavaScript Console. Ignore the `storage.js` error)
+In case of problems, check the JavaScript Console. Ignore the `storage.js` error.
