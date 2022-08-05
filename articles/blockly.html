@@ -73,10 +73,10 @@
 <li><a href="#main-function">2.4 Main Function</a><ul></ul></li></ul></li>
 <li><a href="#blockly-is-typeless">3 Blockly Is Typeless</a><ul></ul></li>
 <li><a href="#zig-functions">4 Zig Functions</a><ul></ul></li>
-<li><a href="#constants-vs-variables">5 Constants vs Variables</a><ul></ul></li>
+<li><a href="#blockly-on-mobile">5 Blockly on Mobile</a><ul></ul></li>
 <li><a href="#iot-sensor-apps">6 IoT Sensor Apps</a><ul></ul></li>
-<li><a href="#apache-nuttx-rtos">7 Apache NuttX RTOS</a><ul></ul></li>
-<li><a href="#blockly-on-mobile">8 Blockly on Mobile</a><ul></ul></li>
+<li><a href="#read-sensor-data">7 Read Sensor Data</a><ul></ul></li>
+<li><a href="#transmit-sensor-data">8 Transmit Sensor Data</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#notes">10 Notes</a><ul></ul></li>
 <li><a href="#appendix-add-a-zig-tab">11 Appendix: Add a Zig Tab</a><ul></ul></li>
@@ -319,9 +319,14 @@ const a: f32 = 123.45;
 const b: f32 = try do_something(a, a);
 debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 <p>The above templates are defined in our Code Generator at <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92">generators/zig/procedures.js</a></p>
-<h1 id="constants-vs-variables"><a href="#constants-vs-variables">5 Constants vs Variables</a></h1>
-<p>TODO: <a href="https://en.wikipedia.org/wiki/BASIC#Syntax">BASIC</a></p>
+<h1 id="blockly-on-mobile"><a href="#blockly-on-mobile">5 Blockly on Mobile</a></h1>
+<p>TODO</p>
+<p>Blockly works OK with Mobile Web Browsers too…</p>
+<p><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/">lupyuen3.github.io/blockly-zig-nuttx/demos/code</a></p>
+<p><img src="https://lupyuen.github.io/images/blockly-mobile.jpg" alt="Blocky on Mobile Web Browser" /></p>
+<p>TODO: mobile, vscode extension, tauri</p>
 <h1 id="iot-sensor-apps"><a href="#iot-sensor-apps">6 IoT Sensor Apps</a></h1>
+<p>Suppose we’re building an IoT Sensor Gadget that will monitor the temperature and humidity.</p>
 <p>TODO</p>
 <p><em>Why limit to IoT Sensor Apps?</em></p>
 <ul>
@@ -335,14 +340,10 @@ debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 <p>Make it easier to experiment with various IoT Sensors: Temperature, Humidity, Air Pressure, …</p>
 </li>
 </ul>
-<h1 id="apache-nuttx-rtos"><a href="#apache-nuttx-rtos">7 Apache NuttX RTOS</a></h1>
+<h1 id="read-sensor-data"><a href="#read-sensor-data">7 Read Sensor Data</a></h1>
 <p>TODO</p>
-<h1 id="blockly-on-mobile"><a href="#blockly-on-mobile">8 Blockly on Mobile</a></h1>
+<h1 id="transmit-sensor-data"><a href="#transmit-sensor-data">8 Transmit Sensor Data</a></h1>
 <p>TODO</p>
-<p>Blockly works OK with Mobile Web Browsers too…</p>
-<p><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/">lupyuen3.github.io/blockly-zig-nuttx/demos/code</a></p>
-<p><img src="https://lupyuen.github.io/images/blockly-mobile.jpg" alt="Blocky on Mobile Web Browser" /></p>
-<p>TODO: mobile, vscode extension, tauri</p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>See my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
