@@ -71,20 +71,21 @@
 <li><a href="#print-expression">2.2 Print Expression</a><ul></ul></li>
 <li><a href="#repeat-loop">2.3 Repeat Loop</a><ul></ul></li>
 <li><a href="#main-function">2.4 Main Function</a><ul></ul></li></ul></li>
-<li><a href="#blockly-is-typeless">3 Blockly Is Typeless</a><ul></ul></li>
-<li><a href="#zig-functions">4 Zig Functions</a><ul></ul></li>
-<li><a href="#blockly-on-desktop-and-mobile">5 Blockly on Desktop and Mobile</a><ul></ul></li>
-<li><a href="#iot-sensor-apps">6 IoT Sensor Apps</a><ul></ul></li>
-<li><a href="#read-sensor-data">7 Read Sensor Data</a><ul></ul></li>
-<li><a href="#transmit-sensor-data">8 Transmit Sensor Data</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-fixed-point-numbers">11 Appendix: Fixed-Point Numbers</a><ul></ul></li>
-<li><a href="#appendix-add-a-zig-tab">12 Appendix: Add a Zig Tab</a><ul></ul></li>
-<li><a href="#appendix-zig-code-generator">13 Appendix: Zig Code Generator</a><ul></ul></li>
-<li><a href="#appendix-load-code-generator">14 Appendix: Load Code Generator</a><ul></ul></li>
-<li><a href="#appendix-build-blockly">15 Appendix: Build Blockly</a><ul></ul></li>
-<li><a href="#appendix-test-blockly">16 Appendix: Test Blockly</a><ul></ul></li></ul></nav><p>📝 <em>11 Aug 2022</em></p>
+<li><a href="#zig-functions">3 Zig Functions</a><ul></ul></li>
+<li><a href="#blockly-is-typeless">4 Blockly Is Typeless</a><ul></ul></li>
+<li><a href="#constants-vs-variables">5 Constants vs Variables</a><ul></ul></li>
+<li><a href="#blockly-on-desktop-and-mobile">6 Blockly on Desktop and Mobile</a><ul></ul></li>
+<li><a href="#iot-sensor-apps">7 IoT Sensor Apps</a><ul></ul></li>
+<li><a href="#read-sensor-data">8 Read Sensor Data</a><ul></ul></li>
+<li><a href="#transmit-sensor-data">9 Transmit Sensor Data</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
+<li><a href="#appendix-fixed-point-numbers">12 Appendix: Fixed-Point Numbers</a><ul></ul></li>
+<li><a href="#appendix-add-a-zig-tab">13 Appendix: Add a Zig Tab</a><ul></ul></li>
+<li><a href="#appendix-zig-code-generator">14 Appendix: Zig Code Generator</a><ul></ul></li>
+<li><a href="#appendix-load-code-generator">15 Appendix: Load Code Generator</a><ul></ul></li>
+<li><a href="#appendix-build-blockly">16 Appendix: Build Blockly</a><ul></ul></li>
+<li><a href="#appendix-test-blockly">17 Appendix: Test Blockly</a><ul></ul></li></ul></nav><p>📝 <em>11 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/blockly-title.jpg" alt="Zig Visual Programming with Blockly" /></p>
 <p><em>Can we create a Zig program visually… The Drag-and-Drop way?</em></p>
 <p>Let’s find out! Today we shall explore <a href="https://developers.google.com/blockly"><strong>Blockly</strong></a>, the Scratch-like browser-based coding toolkit…</p>
@@ -281,8 +282,27 @@ const debug  = std.log.debug;</code></pre></div>
     trailer,
   ].join(&#39;&#39;);
 };</code></pre></div>
-<p>We’ll talk about Function Definitions in a while.</p>
-<h1 id="blockly-is-typeless"><a href="#blockly-is-typeless">3 Blockly Is Typeless</a></h1>
+<p>Let’s talk about Function Definitions…</p>
+<h1 id="zig-functions"><a href="#zig-functions">3 Zig Functions</a></h1>
+<p><em>Can we define Zig Functions in Blockly?</em></p>
+<p>Sure can! This <strong>Function Block</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/blockly-run7a.jpg" alt="Define Blockly Function" /></p>
+<p><a href="https://lupyuen.github.io/images/blockly-run9.jpg">(Parameters are defined in <strong>Function Settings</strong>)</a></p>
+<p>Will generate this perfectly valid <strong>Zig Function</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>fn do_something(x: f32, y: f32) !f32 {
+  const a: f32 = 123.45;
+  debug(&quot;a={}&quot;, .{ a });
+  return x + y;
+}</code></pre></div>
+<p>And calling the above function…</p>
+<p><img src="https://lupyuen.github.io/images/blockly-run7b.jpg" alt="Call Blockly Function" /></p>
+<p>Works OK with Zig too…</p>
+<div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;
+const b: f32 = try do_something(a, a);
+debug(&quot;b={}&quot;, .{ b });</code></pre></div>
+<p>Thus indeed it’s possible to create <a href="https://lupyuen.github.io/images/blockly-run10.jpg"><strong>Complex Blockly Apps</strong></a> with Zig. <a href="https://lupyuen.github.io/images/blockly-run10.jpg">(Like this)</a></p>
+<p>The above templates are defined in our Code Generator at <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92">generators/zig/procedures.js</a></p>
+<h1 id="blockly-is-typeless"><a href="#blockly-is-typeless">4 Blockly Is Typeless</a></h1>
 <p><em>Why are our Constants declared as Floating-Point <code>f32</code>?</em></p>
 <p>Here comes the interesting challenge with Zig on Blockly…</p>
 <p><strong>Blockly is Typeless!</strong></p>
@@ -302,26 +322,10 @@ const a: f32 = 123.45;
 <p><code>f32</code> is probably sufficient for simple <strong>IoT Sensor Apps</strong>.</p>
 <p>Such apps work only with numeric <strong>Sensor Data</strong> (like temperature, humidity). And they don’t need to manipulate strings.</p>
 <p>(More about this in a while)</p>
-<h1 id="zig-functions"><a href="#zig-functions">4 Zig Functions</a></h1>
-<p><em>Can we define Zig Functions in Blockly?</em></p>
-<p>Sure can! This <strong>Function Block</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/blockly-run7a.jpg" alt="Define Blockly Function" /></p>
-<p><a href="https://lupyuen.github.io/images/blockly-run9.jpg">(Parameters are defined in <strong>Function Settings</strong>)</a></p>
-<p>Will generate this perfectly valid <strong>Zig Function</strong>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>fn do_something(x: f32, y: f32) !f32 {
-  const a: f32 = 123.45;
-  debug(&quot;a={}&quot;, .{ a });
-  return x + y;
-}</code></pre></div>
-<p>And calling the above function…</p>
-<p><img src="https://lupyuen.github.io/images/blockly-run7b.jpg" alt="Call Blockly Function" /></p>
-<p>Works OK with Zig too…</p>
-<div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;
-const b: f32 = try do_something(a, a);
-debug(&quot;b={}&quot;, .{ b });</code></pre></div>
-<p>Thus indeed it’s possible to create <a href="https://lupyuen.github.io/images/blockly-run10.jpg"><strong>Complex Blockly Apps</strong></a> with Zig. <a href="https://lupyuen.github.io/images/blockly-run10.jpg">(Like this)</a></p>
-<p>The above templates are defined in our Code Generator at <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92">generators/zig/procedures.js</a></p>
-<h1 id="blockly-on-desktop-and-mobile"><a href="#blockly-on-desktop-and-mobile">5 Blockly on Desktop and Mobile</a></h1>
+<h1 id="constants-vs-variables"><a href="#constants-vs-variables">5 Constants vs Variables</a></h1>
+<p><em>What other challenges do we have for Zig on Blockly?</em></p>
+<p>TODO: Shadowing</p>
+<h1 id="blockly-on-desktop-and-mobile"><a href="#blockly-on-desktop-and-mobile">6 Blockly on Desktop and Mobile</a></h1>
 <p><em>Can we build Blockly apps on Mobile Devices?</em></p>
 <p>Blockly works OK with Mobile Web Browsers…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-mobile.jpg" alt="Blocky on Mobile Web Browser" /></p>
@@ -338,7 +342,7 @@ debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 <p><em>Why would we need a Desktop App for Blockly?</em></p>
 <p>It’s easier to <strong>compile the Generated Zig Code</strong> when we’re on a Desktop App.</p>
 <p>And a Desktop App is more convenient for <strong>flashing the compiled code</strong> to Embedded Devices.</p>
-<h1 id="iot-sensor-apps"><a href="#iot-sensor-apps">6 IoT Sensor Apps</a></h1>
+<h1 id="iot-sensor-apps"><a href="#iot-sensor-apps">7 IoT Sensor Apps</a></h1>
 <p><em>We said earlier that Blockly might be suitable for IoT Sensor Apps. Why?</em></p>
 <p>Suppose we’re building an <strong>IoT Sensor Device</strong> that will monitor Temperature and Humidity.</p>
 <p>The firmware in our device will periodically <strong>read and transmit the Sensor Data</strong> like this…</p>
@@ -363,107 +367,69 @@ debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 </li>
 </ul>
 <p>Let’s talk about the reading and sending of Sensor Data…</p>
-<h1 id="read-sensor-data"><a href="#read-sensor-data">7 Read Sensor Data</a></h1>
+<h1 id="read-sensor-data"><a href="#read-sensor-data">8 Read Sensor Data</a></h1>
 <p>Earlier we talked about our IoT Sensor App <strong>reading Sensor Data</strong> (like Temperature) from a real sensor (like Bosch BME280).</p>
 <p>This is how it might look in Blockly…</p>
 <p>TODO</p>
+<p>(We’ll populate Blockly with a whole bunch of <strong>Sensor Blocks</strong> like BME280)</p>
 <p>And this is the Zig Code that might be generated: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L27-L115">visual-zig-nuttx/visual/visual.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Read the Temperature
-    const temperature: f32 = blk: {
-        // Open the Sensor Device
-        const fd = c.open(
-            &quot;/dev/sensor/baro0&quot;,       // Path of Sensor Device
-            c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
-        );
+<div class="example-wrap"><pre class="language-zig"><code>  // Read the Temperature
+  const temperature: f32 = blk: {
 
-        // Check for error
-        if (fd &lt; 0) {
-            std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
-            return error.OpenError;
-        }
+    // Open the Sensor Device
+    const fd = c.open(
+      &quot;/dev/sensor/baro0&quot;,       // Path of Sensor Device
+      c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+    );
 
-        // Close the Sensor Device when this function returns
-        defer {
-            _ = c.close(fd);
-        }
+    // Close the Sensor Device when this block returns
+    defer {
+      _ = c.close(fd);
+    }
 
-        // Set Standby Interval
-        // TODO: Remove this definition when SNIOC_SET_INTERVAL has been been fixed: https://github.com/apache/incubator-nuttx/issues/6642
-        const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
-        var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
-        var ret = c.ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
+    // Enable Sensor and switch to Normal Power Mode
+    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
 
-        // Check for error
-        if (ret &lt; 0 and errno() != c.ENOTSUP) {
-            std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
-            return error.IntervalError;
-        }
+    // If Sensor Data is available...
+    var sensor_value: f32 = undefined;
+    if (c.poll(&amp;fds, 1, -1) &gt; 0) {
 
-        // Set Batch Latency
-        var latency: c_uint = 0;  // No latency
-        ret = c.ioctl(fd, c.SNIOC_BATCH, &amp;latency);
+      // Define the Sensor Data Type
+      var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
+      const len = @sizeOf(@TypeOf(sensor_data));
 
-        // Check for error
-        if (ret &lt; 0 and errno() != c.ENOTSUP) {
-            std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
-            return error.BatchError;
-        }
+      // Read the Sensor Data
+      if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
 
-        // Enable Sensor and switch to Normal Power Mode
-        ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
+        // Remember the Sensor Value
+        sensor_value = sensor_data.temperature;
+            
+      } else { std.log.err(&quot;Sensor data incorrect size&quot;, .{}); }
+    } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }
 
-        // Check for error
-        if (ret &lt; 0 and errno() != c.ENOTSUP) {
-            std.log.err(&quot;Failed to enable sensor:{s}&quot;, .{ c.strerror(errno()) });
-            return error.EnableError;
-        }
+    // Disable Sensor and switch to Low Power Mode
+    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
 
-        // Prepare to poll Sensor
-        var fds = std.mem.zeroes(c.struct_pollfd);
-        fds.fd = fd;
-        fds.events = c.POLLIN;
-        var sensor_value: f32 = undefined;
+    // Return the Sensor Value
+    break :blk sensor_value;
+  };
 
-        // If Sensor Data is available...
-        if (c.poll(&amp;fds, 1, -1) &gt; 0) {
-
-            // Define the Sensor Data Type
-            var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
-            const len = @sizeOf(@TypeOf(sensor_data));
-
-            // Read the Sensor Data
-            if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
-
-                // Remember the Sensor Value
-                sensor_value = sensor_data.temperature;
-                
-            } else { std.log.err(&quot;Sensor data incorrect size&quot;, .{}); }
-        } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }
-
-        // Disable Sensor and switch to Low Power Mode
-        ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
-
-        // Check for error
-        if (ret &lt; 0) {
-            std.log.err(&quot;Failed to disable sensor:{s}&quot;, .{ c.strerror(errno()) });
-            return error.DisableError;
-        }
-        
-        // Return the Sensor Value
-        break :blk sensor_value;
-    };
-
-    // Print the Temperature
-    debug(&quot;temperature:{}&quot;, .{
-        floatToFixed(temperature)
-    });</code></pre></div>
+  // Print the Temperature
+  debug(&quot;temperature={}&quot;, .{
+    floatToFixed(temperature)
+  });</code></pre></div>
+<p>When we run this on <strong>Apache NuttX RTOS</strong>, it will actually fetch the Temperature from the Bosch BME280 Sensor!</p>
+<p><a href="">(As explained here)</a></p>
+<p><em>What a huge chunk of Zig!</em></p>
+<p>TODO: Error Checking, Sensor Blocks</p>
+<p><em>What’s <code>blk</code>?</em></p>
 <p>TODO: Custom block</p>
-<h1 id="transmit-sensor-data"><a href="#transmit-sensor-data">8 Transmit Sensor Data</a></h1>
+<h1 id="transmit-sensor-data"><a href="#transmit-sensor-data">9 Transmit Sensor Data</a></h1>
 <p>TODO</p>
 <p>Earlier we talked about our IoT Sensor App <strong>reading Sensor Data</strong> (like Temperature) from a real sensor (like Bosch BME280).</p>
 <p>This is how</p>
 <p><img src="https://lupyuen.github.io/images/sensor-visual.jpg" alt="Visual Programming for Zig with NuttX Sensors" /></p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>See my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
 <ul>
@@ -494,15 +460,15 @@ debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/blockly.md"><strong>lupyuen.github.io/src/blockly.md</strong></a></p>
-<h1 id="notes"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1554650482240397312"><strong>this Twitter Thread</strong></a></li>
 </ol>
-<h1 id="appendix-fixed-point-numbers"><a href="#appendix-fixed-point-numbers">11 Appendix: Fixed-Point Numbers</a></h1>
+<h1 id="appendix-fixed-point-numbers"><a href="#appendix-fixed-point-numbers">12 Appendix: Fixed-Point Numbers</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L15-L25">visual-zig-nuttx/visual/visual.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;
-debug(&quot;a={}&quot;, .{ floatToFixed(a) });</code></pre></div><h1 id="appendix-add-a-zig-tab"><a href="#appendix-add-a-zig-tab">12 Appendix: Add a Zig Tab</a></h1>
+debug(&quot;a={}&quot;, .{ floatToFixed(a) });</code></pre></div><h1 id="appendix-add-a-zig-tab"><a href="#appendix-add-a-zig-tab">13 Appendix: Add a Zig Tab</a></h1>
 <p>TODO</p>
 <p>Blockly is bundled with a list of Demos…</p>
 <p><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/">lupyuen3.github.io/blockly-zig-nuttx/demos</a></p>
@@ -526,7 +492,7 @@ debug(&quot;a={}&quot;, .{ floatToFixed(a) });</code></pre></div><h1 id="appendi
 <p>We’ll see the Zig Tab like this…</p>
 <p><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/">lupyuen3.github.io/blockly-zig-nuttx/demos/code</a></p>
 <p><img src="https://lupyuen.github.io/images/blockly-run3a.png" alt="Zig Tab in Blockly" /></p>
-<h1 id="appendix-zig-code-generator"><a href="#appendix-zig-code-generator">13 Appendix: Zig Code Generator</a></h1>
+<h1 id="appendix-zig-code-generator"><a href="#appendix-zig-code-generator">14 Appendix: Zig Code Generator</a></h1>
 <p>TODO</p>
 <p>Blockly comes bundled with Code Generators for JavaScript, Python, Dart, …</p>
 <p>Let’s create a Code Generator for Zig, by copying from the Dart Code Generator.</p>
@@ -546,7 +512,7 @@ variables_dynamic.js</code></pre></div>
 <p>Edit <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/dart.js">generators/zig.js</a> and all files in <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig">generators/zig</a>.</p>
 <p>Change all <code>Dart</code> to <code>Zig</code>, preserve case.</p>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx/commit/efe185d6cac4306dcdc6b6a5f261b331bb992976">(See the changes)</a></p>
-<h1 id="appendix-load-code-generator"><a href="#appendix-load-code-generator">14 Appendix: Load Code Generator</a></h1>
+<h1 id="appendix-load-code-generator"><a href="#appendix-load-code-generator">15 Appendix: Load Code Generator</a></h1>
 <p>TODO</p>
 <p>Let’s load our Zig Code Generator in Blockly…</p>
 <p>Add the Zig Code Generator to <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/demos/code/index.html">demos/code/index.html</a>…</p>
@@ -586,7 +552,7 @@ Code.renderContent = function() {
  ];</code></pre></div>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx/pull/1/files#diff-a9a5784f43ce15ca76bb3e99eb6625c3ea15381e20eac6f7527ecbcb2945ac14">(See the changes)</a></p>
 <p>Now we compile our Zig Code Generator…</p>
-<h1 id="appendix-build-blockly"><a href="#appendix-build-blockly">15 Appendix: Build Blockly</a></h1>
+<h1 id="appendix-build-blockly"><a href="#appendix-build-blockly">16 Appendix: Build Blockly</a></h1>
 <p>TODO</p>
 <p>Blockly builds fine with Linux, macOS and WSL. (But not plain old Windows CMD)</p>
 <p>To build Blockly with the Zig Code Generator…</p>
@@ -609,7 +575,7 @@ npm run publish
 <p>This compiles and updates the Zig Code Generator in <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/zig_compressed.js">zig_compressed.js</a> and <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/zig_compressed.js.map">zig_compressed.js.map</a></p>
 <p>If we’re using VSCode, here’s the Build Task: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/.vscode/tasks.json">.vscode/tasks.json</a></p>
 <p>Let’s test our compiled Code Generator…</p>
-<h1 id="appendix-test-blockly"><a href="#appendix-test-blockly">16 Appendix: Test Blockly</a></h1>
+<h1 id="appendix-test-blockly"><a href="#appendix-test-blockly">17 Appendix: Test Blockly</a></h1>
 <p>TODO</p>
 <p>Browse to <code>blockly-zig-nuttx/demos/code</code> with a Local Web Server. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/">(Like Web Server for Chrome)</a></p>
 <p>We should see this…</p>
