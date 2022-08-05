@@ -601,6 +601,9 @@ That's how we return a value from the __Block Expression__...
 // Read the Temperature
 const temperature: f32 = blk: {
 
+  // Do something
+  var fd = ...
+
   // Return the Sensor Value
   break :blk 23.45;
 };
