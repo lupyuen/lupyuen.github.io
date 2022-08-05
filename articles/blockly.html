@@ -325,8 +325,18 @@ debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 <p>Blockly works OK with Mobile Web Browsers…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-mobile.jpg" alt="Blocky on Mobile Web Browser" /></p>
 <p><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/">(Source)</a></p>
-<p><em>Is Blockly available as a non-web Desktop App?</em></p>
-<p>TODO: mobile, vscode extension, tauri</p>
+<p><em>Is Blockly available as an offline, non-web Desktop App?</em></p>
+<p>Not yet. But we could package Blockly as a <strong>VSCode Extension</strong> that will turn it into a Desktop App…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming"><strong>Blockly Extension for VSCode</strong></a></li>
+</ul>
+<p>Or we might package Blockly into a <strong>Standalone App</strong> with Tauri…</p>
+<ul>
+<li><a href="https://tauri.app/"><strong>Tauri Desktop Bundler</strong></a></li>
+</ul>
+<p><em>Why would we need a Desktop App for Blockly?</em></p>
+<p>It’s easier to <strong>compile the Generated Zig Code</strong> when we’re on a Desktop App.</p>
+<p>And a Desktop App is more convenient for <strong>flashing the compiled code</strong> to Embedded Devices.</p>
 <h1 id="iot-sensor-apps"><a href="#iot-sensor-apps">6 IoT Sensor Apps</a></h1>
 <p><em>We said earlier that Blockly might be suitable for IoT Sensor Apps. Why?</em></p>
 <p>Suppose we’re building an <strong>IoT Sensor Device</strong> that will monitor Temperature and Humidity.</p>
