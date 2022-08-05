@@ -608,6 +608,8 @@ const temperature: f32 = blk: {
 
 This sets `temperature` to `23.45`.
 
+Block Expressions are a great way to prevent leakage of our Local Variables (like `fd`) into the Outer Scope.
+
 [(More about Block Expressions)](https://ziglang.org/documentation/master/#blocks)
 
 # Transmit Sensor Data
