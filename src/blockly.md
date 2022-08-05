@@ -288,7 +288,43 @@ Finally we combine them and return the result...
 };
 ```
 
-We'll talk about Function Definitions in a while.
+Let's talk about Function Definitions...
+
+# Zig Functions
+
+_Can we define Zig Functions in Blockly?_
+
+Sure can! This __Function Block__...
+
+![Define Blockly Function](https://lupyuen.github.io/images/blockly-run7a.jpg)
+
+[(Parameters are defined in __Function Settings__)](https://lupyuen.github.io/images/blockly-run9.jpg)
+
+Will generate this perfectly valid __Zig Function__...
+
+```zig
+fn do_something(x: f32, y: f32) !f32 {
+  const a: f32 = 123.45;
+  debug("a={}", .{ a });
+  return x + y;
+}
+```
+
+And calling the above function...
+
+![Call Blockly Function](https://lupyuen.github.io/images/blockly-run7b.jpg)
+
+Works OK with Zig too...
+
+```zig
+const a: f32 = 123.45;
+const b: f32 = try do_something(a, a);
+debug("b={}", .{ b });
+```
+
+Thus indeed it's possible to create [__Complex Blockly Apps__](https://lupyuen.github.io/images/blockly-run10.jpg) with Zig. [(Like this)](https://lupyuen.github.io/images/blockly-run10.jpg)
+
+The above templates are defined in our Code Generator at [generators/zig/procedures.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92)
 
 # Blockly Is Typeless
 
@@ -329,41 +365,11 @@ Such apps work only with numeric __Sensor Data__ (like temperature, humidity). A
 
 (More about this in a while)
 
-# Zig Functions
+# Constants vs Variables
 
-_Can we define Zig Functions in Blockly?_
+_What other challenges do we have for Zig on Blockly?_
 
-Sure can! This __Function Block__...
-
-![Define Blockly Function](https://lupyuen.github.io/images/blockly-run7a.jpg)
-
-[(Parameters are defined in __Function Settings__)](https://lupyuen.github.io/images/blockly-run9.jpg)
-
-Will generate this perfectly valid __Zig Function__...
-
-```zig
-fn do_something(x: f32, y: f32) !f32 {
-  const a: f32 = 123.45;
-  debug("a={}", .{ a });
-  return x + y;
-}
-```
-
-And calling the above function...
-
-![Call Blockly Function](https://lupyuen.github.io/images/blockly-run7b.jpg)
-
-Works OK with Zig too...
-
-```zig
-const a: f32 = 123.45;
-const b: f32 = try do_something(a, a);
-debug("b={}", .{ b });
-```
-
-Thus indeed it's possible to create [__Complex Blockly Apps__](https://lupyuen.github.io/images/blockly-run10.jpg) with Zig. [(Like this)](https://lupyuen.github.io/images/blockly-run10.jpg)
-
-The above templates are defined in our Code Generator at [generators/zig/procedures.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92)
+TODO: Shadowing
 
 # Blockly on Desktop and Mobile
 
@@ -433,99 +439,67 @@ This is how it might look in Blockly...
 
 TODO
 
+(We'll populate Blockly with a whole bunch of __Sensor Blocks__ like BME280)
+
 And this is the Zig Code that might be generated: [visual-zig-nuttx/visual/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L27-L115)
 
 ```zig
-    // Read the Temperature
-    const temperature: f32 = blk: {
-        // Open the Sensor Device
-        const fd = c.open(
-            "/dev/sensor/baro0",       // Path of Sensor Device
-            c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
-        );
+  // Read the Temperature
+  const temperature: f32 = blk: {
 
-        // Check for error
-        if (fd < 0) {
-            std.log.err("Failed to open device:{s}", .{ c.strerror(errno()) });
-            return error.OpenError;
-        }
+    // Open the Sensor Device
+    const fd = c.open(
+      "/dev/sensor/baro0",       // Path of Sensor Device
+      c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+    );
 
-        // Close the Sensor Device when this function returns
-        defer {
-            _ = c.close(fd);
-        }
+    // Close the Sensor Device when this block returns
+    defer {
+      _ = c.close(fd);
+    }
 
-        // Set Standby Interval
-        // TODO: Remove this definition when SNIOC_SET_INTERVAL has been been fixed: https://github.com/apache/incubator-nuttx/issues/6642
-        const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
-        var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
-        var ret = c.ioctl(fd, SNIOC_SET_INTERVAL, &interval);
+    // Enable Sensor and switch to Normal Power Mode
+    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
 
-        // Check for error
-        if (ret < 0 and errno() != c.ENOTSUP) {
-            std.log.err("Failed to set interval:{s}", .{ c.strerror(errno()) });
-            return error.IntervalError;
-        }
+    // If Sensor Data is available...
+    var sensor_value: f32 = undefined;
+    if (c.poll(&fds, 1, -1) > 0) {
 
-        // Set Batch Latency
-        var latency: c_uint = 0;  // No latency
-        ret = c.ioctl(fd, c.SNIOC_BATCH, &latency);
+      // Define the Sensor Data Type
+      var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
+      const len = @sizeOf(@TypeOf(sensor_data));
 
-        // Check for error
-        if (ret < 0 and errno() != c.ENOTSUP) {
-            std.log.err("Failed to batch:{s}", .{ c.strerror(errno()) });
-            return error.BatchError;
-        }
+      // Read the Sensor Data
+      if (c.read(fd, &sensor_data, len) >= len) {
 
-        // Enable Sensor and switch to Normal Power Mode
-        ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 1));
+        // Remember the Sensor Value
+        sensor_value = sensor_data.temperature;
+            
+      } else { std.log.err("Sensor data incorrect size", .{}); }
+    } else { std.log.err("Sensor data not available", .{}); }
 
-        // Check for error
-        if (ret < 0 and errno() != c.ENOTSUP) {
-            std.log.err("Failed to enable sensor:{s}", .{ c.strerror(errno()) });
-            return error.EnableError;
-        }
+    // Disable Sensor and switch to Low Power Mode
+    ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
 
-        // Prepare to poll Sensor
-        var fds = std.mem.zeroes(c.struct_pollfd);
-        fds.fd = fd;
-        fds.events = c.POLLIN;
-        var sensor_value: f32 = undefined;
+    // Return the Sensor Value
+    break :blk sensor_value;
+  };
 
-        // If Sensor Data is available...
-        if (c.poll(&fds, 1, -1) > 0) {
-
-            // Define the Sensor Data Type
-            var sensor_data = std.mem.zeroes(c.struct_sensor_event_baro);
-            const len = @sizeOf(@TypeOf(sensor_data));
-
-            // Read the Sensor Data
-            if (c.read(fd, &sensor_data, len) >= len) {
-
-                // Remember the Sensor Value
-                sensor_value = sensor_data.temperature;
-                
-            } else { std.log.err("Sensor data incorrect size", .{}); }
-        } else { std.log.err("Sensor data not available", .{}); }
-
-        // Disable Sensor and switch to Low Power Mode
-        ret = c.ioctl(fd, c.SNIOC_ACTIVATE, @as(c_int, 0));
-
-        // Check for error
-        if (ret < 0) {
-            std.log.err("Failed to disable sensor:{s}", .{ c.strerror(errno()) });
-            return error.DisableError;
-        }
-        
-        // Return the Sensor Value
-        break :blk sensor_value;
-    };
-
-    // Print the Temperature
-    debug("temperature:{}", .{
-        floatToFixed(temperature)
-    });
+  // Print the Temperature
+  debug("temperature={}", .{
+    floatToFixed(temperature)
+  });
 ```
+
+When we run this on __Apache NuttX RTOS__, it will actually fetch the Temperature from the Bosch BME280 Sensor!
+
+[(As explained here)]()
+
+_What a huge chunk of Zig!_
+
+TODO: Error Checking, Sensor Blocks
+
+_What's `blk`?_
 
 TODO: Custom block
 
