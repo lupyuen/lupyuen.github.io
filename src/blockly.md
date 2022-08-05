@@ -658,15 +658,21 @@ After composing our Sensor Data Message, this is how we might __transmit the Sen
 
 _It's OK to create Custom Blocks in Blockly? Like for "BME280 Sensor", "Compose Message" and "Transmit Message"?_
 
-TODO: Custom block
+Yep here are the steps to create a __Custom Block__ in Blockly...
+
+-   [__"Customise Blockly"__](https://lupyuen.github.io/articles/lisp#customise-blockly-for-ulisp)
+
+When our Custom Blocks are ready, we're all set to create IoT Sensor Apps!
 
 ![Visual Programming for Zig with NuttX Sensors](https://lupyuen.github.io/images/sensor-visual.jpg)
 
 # What's Next
 
-TODO
+This has been a fun experiment with Blockly. I hope we'll extend it to make it more accessible to __Zig Learners__!
 
-See my earlier work on Zig, NuttX, LoRaWAN and LVGL...
+I'll continue to customise Blockly for __NuttX Sensors__. Hopefully we'll create __IoT Sensor Apps__ the drag-n-drop way, real soon!
+
+Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL...
 
 -   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
 
