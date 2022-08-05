@@ -483,6 +483,9 @@ debug(&quot;temperature={}&quot;, .{
 <div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature
 const temperature: f32 = blk: {
 
+  // Do something
+  var fd = ...
+
   // Return the Sensor Value
   break :blk 23.45;
 };</code></pre></div>
