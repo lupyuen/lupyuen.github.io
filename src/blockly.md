@@ -572,7 +572,7 @@ if (c.read(fd, &sensor_data, len) >= len) {
 
 [(__`comptime` Generics__ might help)](https://ziglang.org/documentation/master/#Compile-Time-Parameters)
 
-_What's `floatToFixed`?_
+_What's floatToFixed?_
 
 ```zig
 // Read the Temperature as a Float
@@ -739,11 +739,11 @@ temperature=23.45
 
 Instead of the awful `2.34500007e+01` that we see typically with printed Floating-Point Numbers.
 
-_What's `floatToFixed`?_
+_What's floatToFixed?_
 
-We call `floatToFixed` to convert a Floating-Point Number to a [__Fixed-Point Number__](https://en.wikipedia.org/wiki/Fixed-point_arithmetic) (2 decimal places) for printing.
+We call __floatToFixed__ to convert a Floating-Point Number to a [__Fixed-Point Number__](https://en.wikipedia.org/wiki/Fixed-point_arithmetic) (2 decimal places) for printing.
 
-(We'll see `floatToFixed` in a while)
+(We'll see __floatToFixed__ in a while)
 
 _How do we represent Fixed-Point Numbers?_
 
@@ -761,11 +761,12 @@ So to represent `123.456`, we break it down as...
 
 We drop the final digit `6` when we convert to Fixed-Point.
 
-In Zig we define Fixed-Point Numbers as a __`FixedPoint` Struct__...
+In Zig we define Fixed-Point Numbers as a __FixedPoint Struct__...
 
 ```zig
 /// Fixed Point Number (2 decimal places)
 pub const FixedPoint = struct {
+
   /// Integer Component
   int: i32,
 
@@ -779,11 +780,11 @@ pub const FixedPoint = struct {
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L54-L75)
 
-(We'll explain `format` in a while)
+(We'll explain __format__ in a while)
 
 _How do we convert Floating-Point to Fixed-Point?_
 
-Below is the implementation of __`floatToFixed`__, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): [visual-zig-nuttx/visual/sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L39-L49)
+Below is the implementation of __floatToFixed__, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): [visual-zig-nuttx/visual/sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L39-L49)
 
 ```zig
 /// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
@@ -831,11 +832,22 @@ Thus we'll probably stick to Fixed-Point Numbers for our upcoming IoT projects.
 
 _How do we print Fixed-Point Numbers?_
 
-TODO
+This works OK for printing Fixed-Point Numbers...
+
+```zig
+// Print the Temperature as a
+// Fixed-Point Number (2 decimal places)
+debug("temperature={}", .{
+  floatToFixed(temperature)
+});
+```
+
+Because our Fixed-Point Struct includes a [__Custom Formatter__](https://ziglearn.org/chapter-2/#formatting))...
 
 ```zig
 /// Fixed Point Number (2 decimal places)
 pub const FixedPoint = struct {
+
   /// Integer Component
   int: i32,
 
@@ -861,13 +873,21 @@ pub const FixedPoint = struct {
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L54-L75)
 
-TODO
+_Why print the numbers as "`{}.{:0>2}`"?_
 
-(Someday we might simplify the printing with [__Custom Formatting__](https://ziglearn.org/chapter-2/#formatting))
+Our Format String "`{}.{:0>2}`" says...
+
+|   |   |
+|:---:|:---|
+| `{}` | Print __int__ as a number
+| `.` | Print `.`
+| `{:0>2}` | Print __frac__ as a 2-digit number, padded at the left by `0`
+
+Which gives us the printed output `123.45`
 
 # Appendix: Add a Zig Tab
 
-TODO
+This section explains how we added the Zig Tab to Blockly.
 
 Blockly is bundled with a list of Demos...
 
@@ -903,9 +923,9 @@ We'll see the Zig Tab like this...
 
 ![Zig Tab in Blockly](https://lupyuen.github.io/images/blockly-run3a.png)
 
-# Appendix: Zig Code Generator
+Let's create the Zig Code Generator...
 
-TODO
+# Appendix: Zig Code Generator
 
 Blockly comes bundled with Code Generators for JavaScript, Python, Dart, ...
 
@@ -936,9 +956,9 @@ Change all `Dart` to `Zig`, preserve case.
 
 [(See the changes)](https://github.com/lupyuen3/blockly-zig-nuttx/commit/efe185d6cac4306dcdc6b6a5f261b331bb992976)
 
-# Appendix: Load Code Generator
+Next we load our Code Generator...
 
-TODO
+# Appendix: Load Code Generator
 
 Let's load our Zig Code Generator in Blockly...
 
@@ -997,8 +1017,6 @@ Now we compile our Zig Code Generator...
 
 # Appendix: Build Blockly
 
-TODO
-
 Blockly builds fine with Linux, macOS and WSL. (But not plain old Windows CMD)
 
 To build Blockly with the Zig Code Generator...
@@ -1026,13 +1044,11 @@ This compiles and updates the Zig Code Generator in [zig_compressed.js](https://
 
 If we're using VSCode, here's the Build Task: [.vscode/tasks.json](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/.vscode/tasks.json)
 
-Let's test our compiled Code Generator...
+Finally we test our compiled Code Generator...
 
 # Appendix: Test Blockly
 
-TODO
-
-Browse to `blockly-zig-nuttx/demos/code` with a Local Web Server. [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/)
+Browse to __blockly-zig-nuttx/demos/code__ with a Local Web Server. [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/)
 
 We should see this...
 
@@ -1040,7 +1056,7 @@ We should see this...
 
 ![Zig Tab in Blockly](https://lupyuen.github.io/images/blockly-run3a.png)
 
-Blockly will NOT render correctly with `file://...`, it must be `http://localhost:port/...`
+Blockly will NOT render correctly with __file://...__, it must be __http://localhost:port/...__
 
 Drag-and-drop some Blocks and click the __Zig Tab.__
 
@@ -1048,7 +1064,7 @@ The Zig Tab now shows the generated code in Zig.
 
 Some of the generated code might appear as Dart (instead of Zig) because we haven't completely converted our Code Generator from Dart to Zig.
 
-In case of problems, check the __JavaScript Console__. Ignore the `storage.js` error.
+In case of problems, check the __JavaScript Console__. (Ignore the __storage.js__ error)
 
 _Can we save the Blocks? So we don't need to drag them again when retesting?_
 
