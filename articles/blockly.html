@@ -342,7 +342,7 @@ a = 234.56;</code></pre></div>
 <p>Call me stupendously stubborn, but I think Constants look neater than Variables?</p>
 <p>Also we might have a problem with <a href="https://ziglang.org/documentation/master/#Shadowing"><strong>Shadowed Identifiers</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run15.jpg" alt="Shadowing in Blockly" /></p>
-<p>This code won’t compile with Zig even if change <code>const</code> to <code>var</code>…</p>
+<p>This code won’t compile with Zig even if we change <code>const</code> to <code>var</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// This is OK
 const a: f32 = 123.45;
 debug(&quot;a={}&quot;, .{ a });
