@@ -509,28 +509,37 @@ const temperature: f32 = blk: {
 </li>
 </ul>
 <p>Assume we’ve read Temperature and Humidity from our sensor.</p>
-<p>This is how we might <strong>compose a Sensor Data Message</strong> with Blockly…</p>
+<p>This is how we shall <strong>compose a Sensor Data Message</strong> with Blockly…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/sensor-visual3.jpg" alt="Compose Sensor Data Message in Blockly" /></p>
 </blockquote>
-<p>TODO: Why CBOR?</p>
-<p>This message compressed with CBOR…</p>
+<p>The Block above will pack the Temperature and Humidity into this format…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
   &quot;t&quot;: 2345,
   &quot;h&quot;: 6789
 }</code></pre></div>
 <p>(Numbers have been scaled up by 100)</p>
-<p>Will require only <strong>11 Bytes!</strong> <a href="https://lupyuen.github.io/images/blockly-cbor.jpg">(See this)</a></p>
-<p>After composing our Sensor Data Message, this is how we might <strong>transmit the Sensor Data Message</strong> with Blockly…</p>
+<p>And compress it with <a href="https://lupyuen.github.io/articles/cbor2"><strong>Concise Binary Object Representation (CBOR)</strong></a>.</p>
+<p><em>Why CBOR? Why not JSON?</em></p>
+<p>The message above compressed with CBOR will require only <strong>11 bytes!</strong> <a href="https://lupyuen.github.io/images/blockly-cbor.jpg">(See this)</a></p>
+<p>That’s 8 bytes fewer than JSON!</p>
+<p>After composing our Sensor Data Message, we shall <strong>transmit the Sensor Data Message</strong> with Blockly…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/sensor-visual4.jpg" alt="Transmit Sensor Data Message in Blockly" /></p>
 </blockquote>
-<p><em>It’s OK to create Custom Blocks in Blockly? Like for “BME280 Sensor”, “Compose Message” and “Transmit Message”?</em></p>
+<p>This Block transmits our compressed CBOR Message to the <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN Wireless Network</strong></a>.</p>
+<p><em>Will Zig talk to LoRaWAN?</em></p>
+<p>Yep we have previously created a Zig app for LoRaWAN…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/iot"><strong>“Build an IoT App with Zig and LoRaWAN”</strong></a></li>
+</ul>
+<p>We’ll reuse the code to transmit our message to LoRaWAN.</p>
+<p><em>Is it OK to create Custom Blocks in Blockly? Like for “BME280 Sensor”, “Compose Message” and “Transmit Message”?</em></p>
 <p>Yep here are the steps to create a <strong>Custom Block</strong> in Blockly…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lisp#customise-blockly-for-ulisp"><strong>“Customise Blockly”</strong></a></li>
 </ul>
-<p>When our Custom Blocks are ready, we’re all set to create IoT Sensor Apps!</p>
+<p>When our Custom Blocks are done, we’re all set to create IoT Sensor Apps with Blockly!</p>
 <p><img src="https://lupyuen.github.io/images/sensor-visual.jpg" alt="Visual Programming for Zig with NuttX Sensors" /></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>This has been a fun experiment with Blockly. I hope we’ll extend it to make it more accessible to <strong>Zig Learners</strong>!</p>
@@ -572,7 +581,89 @@ const temperature: f32 = blk: {
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L15-L25">visual-zig-nuttx/visual/visual.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;
-debug(&quot;a={}&quot;, .{ floatToFixed(a) });</code></pre></div><h1 id="appendix-add-a-zig-tab"><a href="#appendix-add-a-zig-tab">13 Appendix: Add a Zig Tab</a></h1>
+debug(&quot;a={}&quot;, .{ floatToFixed(a) });</code></pre></div>
+<p><em>How do we use Fixed-Point Numbers for Sensor Data?</em></p>
+<p>Our Zig Sensor App reads Sensor Data as <strong>Floating-Point Numbers</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sensor#read-sensor-data"><strong>“Read Sensor Data”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sensor#print-sensor-data"><strong>“Print Sensor Data”</strong></a></p>
+</li>
+</ul>
+<p>And converts the Sensor Data to <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Numbers</strong></a> (2 decimal places) for printing…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Convert Pressure to a Fixed-Point Number
+const pressure = float_to_fixed(
+  sensor_data.pressure
+);
+
+// Print the Pressure as a Fixed-Point Number
+debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
+  pressure.int, 
+  pressure.frac 
+});</code></pre></div>
+<p>(More about <strong>float_to_fixed</strong> in a while)</p>
+<p>(Someday we might simplify the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
+<p><em>What are “int” and “frac”?</em></p>
+<p>Our Fixed-Point Number has two Integer components…</p>
+<ul>
+<li>
+<p><strong>int</strong>: The Integer part</p>
+</li>
+<li>
+<p><strong>frac</strong>: The Fraction part, scaled by 100</p>
+</li>
+</ul>
+<p>So to represent <code>123.456</code>, we break it down as…</p>
+<ul>
+<li>
+<p><strong>int</strong> = <code>123</code></p>
+</li>
+<li>
+<p><strong>frac</strong> = <code>45</code></p>
+</li>
+</ul>
+<p>We drop the final digit <code>6</code> when we convert to Fixed-Point.</p>
+<p><em>Why handle Sensor Data as Fixed-Point Numbers? Why not Floating-Point?</em></p>
+<p>When we tried printing the Sensor Data as Floating-Point Numbers, we hit some <strong>Linking and Runtime Issues</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values"><strong>“Fix Floating-Point Values”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error"><strong>“Floating-Point Link Error”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing"><strong>“Fixed-Point Printing”</strong></a></p>
+</li>
+</ul>
+<p>Computations on Floating-Point Numbers are OK, only printing is affected. So we print the numbers as Fixed-Point instead.</p>
+<p>(We observed these issues with Zig Compiler version 0.10.0, they might have been fixed in later versions of the compiler)</p>
+<p><em>Isn’t our Sensor Data less precise in Fixed-Point?</em></p>
+<p>Yep we lose some precision with Fixed-Point Numbers. (Like the final digit <code>6</code> from earlier)</p>
+<p>But most IoT Gadgets will <strong>truncate Sensor Data</strong> before transmission anyway.</p>
+<p>And for some data formats (like CBOR), we need <strong>fewer bytes</strong> to transmit Fixed-Point Numbers instead of Floating-Point…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor2#floating-point-numbers"><strong>“Floating-Point Numbers (CBOR)”</strong></a></li>
+</ul>
+<p>Thus we’ll probably stick to Fixed-Point Numbers for our upcoming IoT projects.</p>
+<p><em>How do we convert Floating-Point to Fixed-Point?</em></p>
+<p>Below is the implementation of <strong>float_to_fixed</strong>, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">sensor.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
+/// We do this because `debug` has a problem with floats.
+pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
+  const scaled = @floatToInt(i32, f * 100.0);
+  const rem = @rem(scaled, 100);
+  const rem_abs = if (rem &lt; 0) -rem else rem;
+  return .{
+    .int  = @divTrunc(scaled, 100),
+    .frac = @intCast(u8, rem_abs),
+  };
+}</code></pre></div>
+<p>(See the docs: <a href="https://ziglang.org/documentation/master/#floatToInt"><strong>@floatToInt</strong></a>, <a href="https://ziglang.org/documentation/master/#rem"><strong>@rem</strong></a>, <a href="https://ziglang.org/documentation/master/#divTrunc"><strong>@divTrunc</strong></a>, <a href="https://ziglang.org/documentation/master/#intCast"><strong>@intCast</strong></a>)</p>
+<p>This code has been tested for positive and negative numbers.</p>
+<h1 id="appendix-add-a-zig-tab"><a href="#appendix-add-a-zig-tab">13 Appendix: Add a Zig Tab</a></h1>
 <p>TODO</p>
 <p>Blockly is bundled with a list of Demos…</p>
 <p><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/">lupyuen3.github.io/blockly-zig-nuttx/demos</a></p>
