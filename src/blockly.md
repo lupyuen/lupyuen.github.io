@@ -458,7 +458,7 @@ Suppose we're building an __IoT Sensor Device__ that will monitor Temperature an
 
 The firmware in our device will periodically __read and transmit the Sensor Data__ like this...
 
-TODO
+![IoT Sensor App](https://lupyuen.github.io/images/blockly-iot.jpg)
 
 Which we might __build with Blockly__ like so...
 
