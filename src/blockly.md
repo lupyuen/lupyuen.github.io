@@ -633,13 +633,11 @@ We'll do this in two steps...
 
 Assume we've read Temperature and Humidity from our sensor.
 
-This is how we might __compose a Sensor Data Message__ with Blockly...
+This is how we shall __compose a Sensor Data Message__ with Blockly...
 
 > ![Compose Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual3.jpg)
 
-TODO: Why CBOR?
-
-This message compressed with CBOR...
+The Block above will pack the Temperature and Humidity into this format...
 
 ```json
 {
@@ -650,19 +648,35 @@ This message compressed with CBOR...
 
 (Numbers have been scaled up by 100)
 
-Will require only __11 Bytes!__ [(See this)](https://lupyuen.github.io/images/blockly-cbor.jpg)
+And compress it with [__Concise Binary Object Representation (CBOR)__](https://lupyuen.github.io/articles/cbor2).
 
-After composing our Sensor Data Message, this is how we might __transmit the Sensor Data Message__ with Blockly...
+_Why CBOR? Why not JSON?_
+
+The message above compressed with CBOR will require only __11 bytes!__ [(See this)](https://lupyuen.github.io/images/blockly-cbor.jpg)
+
+That's 8 bytes fewer than JSON!
+
+After composing our Sensor Data Message, we shall __transmit the Sensor Data Message__ with Blockly...
 
 > ![Transmit Sensor Data Message in Blockly](https://lupyuen.github.io/images/sensor-visual4.jpg)
 
-_It's OK to create Custom Blocks in Blockly? Like for "BME280 Sensor", "Compose Message" and "Transmit Message"?_
+This Block transmits our compressed CBOR Message to the [__LoRaWAN Wireless Network__](https://makezine.com/2021/05/24/go-long-with-lora-radio/).
+
+_Will Zig talk to LoRaWAN?_
+
+Yep we have previously created a Zig app for LoRaWAN...
+
+-   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
+
+We'll reuse the code to transmit our message to LoRaWAN.
+
+_Is it OK to create Custom Blocks in Blockly? Like for "BME280 Sensor", "Compose Message" and "Transmit Message"?_
 
 Yep here are the steps to create a __Custom Block__ in Blockly...
 
 -   [__"Customise Blockly"__](https://lupyuen.github.io/articles/lisp#customise-blockly-for-ulisp)
 
-When our Custom Blocks are ready, we're all set to create IoT Sensor Apps!
+When our Custom Blocks are done, we're all set to create IoT Sensor Apps with Blockly!
 
 ![Visual Programming for Zig with NuttX Sensors](https://lupyuen.github.io/images/sensor-visual.jpg)
 
@@ -708,6 +722,98 @@ TODO
 const a: f32 = 123.45;
 debug("a={}", .{ floatToFixed(a) });
 ```
+
+
+_How do we use Fixed-Point Numbers for Sensor Data?_
+
+Our Zig Sensor App reads Sensor Data as __Floating-Point Numbers__...
+
+-   [__"Read Sensor Data"__](https://lupyuen.github.io/articles/sensor#read-sensor-data)
+
+-   [__"Print Sensor Data"__](https://lupyuen.github.io/articles/sensor#print-sensor-data)
+
+And converts the Sensor Data to [__Fixed-Point Numbers__](https://en.wikipedia.org/wiki/Fixed-point_arithmetic) (2 decimal places) for printing...
+
+```zig
+// Convert Pressure to a Fixed-Point Number
+const pressure = float_to_fixed(
+  sensor_data.pressure
+);
+
+// Print the Pressure as a Fixed-Point Number
+debug("pressure:{}.{:0>2}", .{
+  pressure.int, 
+  pressure.frac 
+});
+```
+
+(More about __float_to_fixed__ in a while)
+
+(Someday we might simplify the printing with [__Custom Formatting__](https://ziglearn.org/chapter-2/#formatting))
+
+_What are "int" and "frac"?_
+
+Our Fixed-Point Number has two Integer components...
+
+-   __int__: The Integer part
+
+-   __frac__: The Fraction part, scaled by 100
+
+So to represent `123.456`, we break it down as...
+
+-   __int__ = `123`
+
+-   __frac__ = `45`
+
+We drop the final digit `6` when we convert to Fixed-Point.
+
+_Why handle Sensor Data as Fixed-Point Numbers? Why not Floating-Point?_
+
+When we tried printing the Sensor Data as Floating-Point Numbers, we hit some __Linking and Runtime Issues__...
+
+-   [__"Fix Floating-Point Values"__](https://github.com/lupyuen/visual-zig-nuttx#fix-floating-point-values)
+
+-   [__"Floating-Point Link Error"__](https://github.com/lupyuen/visual-zig-nuttx#floating-point-link-error)
+
+-   [__"Fixed-Point Printing"__](https://github.com/lupyuen/visual-zig-nuttx#fixed-point-printing)
+
+Computations on Floating-Point Numbers are OK, only printing is affected. So we print the numbers as Fixed-Point instead.
+
+(We observed these issues with Zig Compiler version 0.10.0, they might have been fixed in later versions of the compiler)
+
+_Isn't our Sensor Data less precise in Fixed-Point?_
+
+Yep we lose some precision with Fixed-Point Numbers. (Like the final digit `6` from earlier)
+
+But most IoT Gadgets will __truncate Sensor Data__ before transmission anyway.
+
+And for some data formats (like CBOR), we need __fewer bytes__ to transmit Fixed-Point Numbers instead of Floating-Point...
+
+-   [__"Floating-Point Numbers (CBOR)"__](https://lupyuen.github.io/articles/cbor2#floating-point-numbers)
+
+Thus we'll probably stick to Fixed-Point Numbers for our upcoming IoT projects.
+
+_How do we convert Floating-Point to Fixed-Point?_
+
+Below is the implementation of __float_to_fixed__, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): [sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49)
+
+```zig
+/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
+/// We do this because `debug` has a problem with floats.
+pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
+  const scaled = @floatToInt(i32, f * 100.0);
+  const rem = @rem(scaled, 100);
+  const rem_abs = if (rem < 0) -rem else rem;
+  return .{
+    .int  = @divTrunc(scaled, 100),
+    .frac = @intCast(u8, rem_abs),
+  };
+}
+```
+
+(See the docs: [__@floatToInt__](https://ziglang.org/documentation/master/#floatToInt), [__@rem__](https://ziglang.org/documentation/master/#rem), [__@divTrunc__](https://ziglang.org/documentation/master/#divTrunc), [__@intCast__](https://ziglang.org/documentation/master/#intCast))
+
+This code has been tested for positive and negative numbers.
 
 # Appendix: Add a Zig Tab
 
