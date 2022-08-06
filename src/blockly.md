@@ -402,7 +402,7 @@ Also we might have a problem with [__Shadowed Identifiers__](https://ziglang.org
 
 ![Shadowing in Blockly](https://lupyuen.github.io/images/blockly-run15.jpg)
 
-This code won't compile with Zig even if change `const` to `var`...
+This code won't compile with Zig even if we change `const` to `var`...
 
 ```zig
 // This is OK
