@@ -842,7 +842,7 @@ debug("temperature={}", .{
 });
 ```
 
-Because our Fixed-Point Struct includes a [__Custom Formatter__](https://ziglearn.org/chapter-2/#formatting))...
+Because our Fixed-Point Struct includes a [__Custom Formatter__](https://ziglearn.org/chapter-2/#formatting)...
 
 ```zig
 /// Fixed Point Number (2 decimal places)
