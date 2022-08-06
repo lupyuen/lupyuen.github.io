@@ -578,34 +578,26 @@ const temperature: f32 = blk: {
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1554650482240397312"><strong>this Twitter Thread</strong></a></li>
 </ol>
 <h1 id="appendix-fixed-point-numbers"><a href="#appendix-fixed-point-numbers">12 Appendix: Fixed-Point Numbers</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L15-L25">visual-zig-nuttx/visual/visual.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;
-debug(&quot;a={}&quot;, .{ floatToFixed(a) });</code></pre></div>
-<p><em>How do we use Fixed-Point Numbers for Sensor Data?</em></p>
-<p>Our Zig Sensor App reads Sensor Data as <strong>Floating-Point Numbers</strong>…</p>
+<p>Earlier we talked about reading <strong>Floating-Point Sensor Data</strong> (like Temperature)…</p>
 <ul>
-<li>
-<p><a href="https://lupyuen.github.io/articles/sensor#read-sensor-data"><strong>“Read Sensor Data”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/sensor#print-sensor-data"><strong>“Print Sensor Data”</strong></a></p>
-</li>
+<li><a href="https://lupyuen.github.io/articles/blockly#read-sensor-data"><strong>“Read Sensor Data”</strong></a></li>
 </ul>
-<p>And converts the Sensor Data to <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Numbers</strong></a> (2 decimal places) for printing…</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Convert Pressure to a Fixed-Point Number
-const pressure = float_to_fixed(
-  sensor_data.pressure
-);
+<p>And we wrote this to <strong>print our Sensor Data</strong>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L15-L25">visual-zig-nuttx/visual/visual.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Assume we&#39;ve read the Temperature as a Float
+const temperature: f32 = 23.45;
 
-// Print the Pressure as a Fixed-Point Number
-debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
-  pressure.int, 
-  pressure.frac 
+// Print the Temperature as a
+// Fixed-Point Number (2 decimal places)
+debug(&quot;temperature={}&quot;, .{
+  floatToFixed(temperature)
 });</code></pre></div>
-<p>(More about <strong>float_to_fixed</strong> in a while)</p>
-<p>(Someday we might simplify the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
-<p><em>What are “int” and “frac”?</em></p>
+<p>This prints the Temperature correctly as…</p>
+<div class="example-wrap"><pre class="language-text"><code>temperature=23.45</code></pre></div>
+<p>Instead of the awful <code>2.34500007e+01</code> that we see typically with printed Floating-Point Numbers.</p>
+<p><em>What’s <code>floatToFixed</code>?</em></p>
+<p>We call <code>floatToFixed</code> to convert a Floating-Point Number to a <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Number</strong></a> (2 decimal places) for printing.</p>
+<p>(We’ll see <code>floatToFixed</code> in a while)</p>
+<p><em>How do we represent Fixed-Point Numbers?</em></p>
 <p>Our Fixed-Point Number has two Integer components…</p>
 <ul>
 <li>
@@ -625,6 +617,35 @@ debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
 </li>
 </ul>
 <p>We drop the final digit <code>6</code> when we convert to Fixed-Point.</p>
+<p>In Zig we define Fixed-Point Numbers as a <strong><code>FixedPoint</code> Struct</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Fixed Point Number (2 decimal places)
+pub const FixedPoint = struct {
+  /// Integer Component
+  int: i32,
+
+  /// Fraction Component (scaled by 100)
+  frac: u8,
+
+  /// Format the output for Fixed Point Number (like 123.45)
+  pub fn format(...) !void { ... }
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L54-L75">(Source)</a></p>
+<p>(We’ll explain <code>format</code> in a while)</p>
+<p><em>How do we convert Floating-Point to Fixed-Point?</em></p>
+<p>Below is the implementation of <strong><code>floatToFixed</code></strong>, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L39-L49">visual-zig-nuttx/visual/sensor.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
+/// We do this because `debug` has a problem with floats.
+pub fn floatToFixed(f: f32) FixedPoint {
+  const scaled = @floatToInt(i32, f * 100.0);
+  const rem = @rem(scaled, 100);
+  const rem_abs = if (rem &lt; 0) -rem else rem;
+  return .{
+    .int  = @divTrunc(scaled, 100),
+    .frac = @intCast(u8, rem_abs),
+  };
+}</code></pre></div>
+<p>(See the docs: <a href="https://ziglang.org/documentation/master/#floatToInt"><strong>@floatToInt</strong></a>, <a href="https://ziglang.org/documentation/master/#rem"><strong>@rem</strong></a>, <a href="https://ziglang.org/documentation/master/#divTrunc"><strong>@divTrunc</strong></a>, <a href="https://ziglang.org/documentation/master/#intCast"><strong>@intCast</strong></a>)</p>
+<p>This code has been tested for positive and negative numbers.</p>
 <p><em>Why handle Sensor Data as Fixed-Point Numbers? Why not Floating-Point?</em></p>
 <p>When we tried printing the Sensor Data as Floating-Point Numbers, we hit some <strong>Linking and Runtime Issues</strong>…</p>
 <ul>
@@ -648,21 +669,34 @@ debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
 <li><a href="https://lupyuen.github.io/articles/cbor2#floating-point-numbers"><strong>“Floating-Point Numbers (CBOR)”</strong></a></li>
 </ul>
 <p>Thus we’ll probably stick to Fixed-Point Numbers for our upcoming IoT projects.</p>
-<p><em>How do we convert Floating-Point to Fixed-Point?</em></p>
-<p>Below is the implementation of <strong>float_to_fixed</strong>, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">sensor.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
-/// We do this because `debug` has a problem with floats.
-pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
-  const scaled = @floatToInt(i32, f * 100.0);
-  const rem = @rem(scaled, 100);
-  const rem_abs = if (rem &lt; 0) -rem else rem;
-  return .{
-    .int  = @divTrunc(scaled, 100),
-    .frac = @intCast(u8, rem_abs),
-  };
-}</code></pre></div>
-<p>(See the docs: <a href="https://ziglang.org/documentation/master/#floatToInt"><strong>@floatToInt</strong></a>, <a href="https://ziglang.org/documentation/master/#rem"><strong>@rem</strong></a>, <a href="https://ziglang.org/documentation/master/#divTrunc"><strong>@divTrunc</strong></a>, <a href="https://ziglang.org/documentation/master/#intCast"><strong>@intCast</strong></a>)</p>
-<p>This code has been tested for positive and negative numbers.</p>
+<p><em>How do we print Fixed-Point Numbers?</em></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Fixed Point Number (2 decimal places)
+pub const FixedPoint = struct {
+  /// Integer Component
+  int: i32,
+
+  /// Fraction Component (scaled by 100)
+  frac: u8,
+
+  /// Format the output for Fixed Point Number (like 123.45)
+  pub fn format(
+    self: FixedPoint,
+    comptime fmt: []const u8,
+    options: std.fmt.FormatOptions,
+    writer: anytype,
+  ) !void {
+    _ = fmt;
+    _ = options;
+    try writer.print(&quot;{}.{:0&gt;2}&quot;, .{
+      self.int, 
+      self.frac 
+    });
+  }
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L54-L75">(Source)</a></p>
+<p>TODO</p>
+<p>(Someday we might simplify the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
 <h1 id="appendix-add-a-zig-tab"><a href="#appendix-add-a-zig-tab">13 Appendix: Add a Zig Tab</a></h1>
 <p>TODO</p>
 <p>Blockly is bundled with a list of Demos…</p>
