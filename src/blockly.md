@@ -714,44 +714,38 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Fixed-Point Numbers
 
-TODO
+Earlier we talked about reading __Floating-Point Sensor Data__ (like Temperature)...
 
-[visual-zig-nuttx/visual/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L15-L25)
+-   [__"Read Sensor Data"__](https://lupyuen.github.io/articles/blockly#read-sensor-data)
 
-```zig
-const a: f32 = 123.45;
-debug("a={}", .{ floatToFixed(a) });
-```
-
-
-_How do we use Fixed-Point Numbers for Sensor Data?_
-
-Our Zig Sensor App reads Sensor Data as __Floating-Point Numbers__...
-
--   [__"Read Sensor Data"__](https://lupyuen.github.io/articles/sensor#read-sensor-data)
-
--   [__"Print Sensor Data"__](https://lupyuen.github.io/articles/sensor#print-sensor-data)
-
-And converts the Sensor Data to [__Fixed-Point Numbers__](https://en.wikipedia.org/wiki/Fixed-point_arithmetic) (2 decimal places) for printing...
+And we wrote this to __print our Sensor Data__: [visual-zig-nuttx/visual/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L15-L25)
 
 ```zig
-// Convert Pressure to a Fixed-Point Number
-const pressure = float_to_fixed(
-  sensor_data.pressure
-);
+// Assume we've read the Temperature as a Float
+const temperature: f32 = 23.45;
 
-// Print the Pressure as a Fixed-Point Number
-debug("pressure:{}.{:0>2}", .{
-  pressure.int, 
-  pressure.frac 
+// Print the Temperature as a
+// Fixed-Point Number (2 decimal places)
+debug("temperature={}", .{
+  floatToFixed(temperature)
 });
 ```
 
-(More about __float_to_fixed__ in a while)
+This prints the Temperature correctly as...
 
-(Someday we might simplify the printing with [__Custom Formatting__](https://ziglearn.org/chapter-2/#formatting))
+```text
+temperature=23.45
+```
 
-_What are "int" and "frac"?_
+Instead of the awful `2.34500007e+01` that we see typically with printed Floating-Point Numbers.
+
+_What's `floatToFixed`?_
+
+We call `floatToFixed` to convert a Floating-Point Number to a [__Fixed-Point Number__](https://en.wikipedia.org/wiki/Fixed-point_arithmetic) (2 decimal places) for printing.
+
+(We'll see `floatToFixed` in a while)
+
+_How do we represent Fixed-Point Numbers?_
 
 Our Fixed-Point Number has two Integer components...
 
@@ -766,6 +760,48 @@ So to represent `123.456`, we break it down as...
 -   __frac__ = `45`
 
 We drop the final digit `6` when we convert to Fixed-Point.
+
+In Zig we define Fixed-Point Numbers as a __`FixedPoint` Struct__...
+
+```zig
+/// Fixed Point Number (2 decimal places)
+pub const FixedPoint = struct {
+  /// Integer Component
+  int: i32,
+
+  /// Fraction Component (scaled by 100)
+  frac: u8,
+
+  /// Format the output for Fixed Point Number (like 123.45)
+  pub fn format(...) !void { ... }
+};
+```
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L54-L75)
+
+(We'll explain `format` in a while)
+
+_How do we convert Floating-Point to Fixed-Point?_
+
+Below is the implementation of __`floatToFixed`__, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): [visual-zig-nuttx/visual/sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L39-L49)
+
+```zig
+/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
+/// We do this because `debug` has a problem with floats.
+pub fn floatToFixed(f: f32) FixedPoint {
+  const scaled = @floatToInt(i32, f * 100.0);
+  const rem = @rem(scaled, 100);
+  const rem_abs = if (rem < 0) -rem else rem;
+  return .{
+    .int  = @divTrunc(scaled, 100),
+    .frac = @intCast(u8, rem_abs),
+  };
+}
+```
+
+(See the docs: [__@floatToInt__](https://ziglang.org/documentation/master/#floatToInt), [__@rem__](https://ziglang.org/documentation/master/#rem), [__@divTrunc__](https://ziglang.org/documentation/master/#divTrunc), [__@intCast__](https://ziglang.org/documentation/master/#intCast))
+
+This code has been tested for positive and negative numbers.
 
 _Why handle Sensor Data as Fixed-Point Numbers? Why not Floating-Point?_
 
@@ -793,27 +829,41 @@ And for some data formats (like CBOR), we need __fewer bytes__ to transmit Fixed
 
 Thus we'll probably stick to Fixed-Point Numbers for our upcoming IoT projects.
 
-_How do we convert Floating-Point to Fixed-Point?_
+_How do we print Fixed-Point Numbers?_
 
-Below is the implementation of __float_to_fixed__, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): [sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49)
+TODO
 
 ```zig
-/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
-/// We do this because `debug` has a problem with floats.
-pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
-  const scaled = @floatToInt(i32, f * 100.0);
-  const rem = @rem(scaled, 100);
-  const rem_abs = if (rem < 0) -rem else rem;
-  return .{
-    .int  = @divTrunc(scaled, 100),
-    .frac = @intCast(u8, rem_abs),
-  };
-}
+/// Fixed Point Number (2 decimal places)
+pub const FixedPoint = struct {
+  /// Integer Component
+  int: i32,
+
+  /// Fraction Component (scaled by 100)
+  frac: u8,
+
+  /// Format the output for Fixed Point Number (like 123.45)
+  pub fn format(
+    self: FixedPoint,
+    comptime fmt: []const u8,
+    options: std.fmt.FormatOptions,
+    writer: anytype,
+  ) !void {
+    _ = fmt;
+    _ = options;
+    try writer.print("{}.{:0>2}", .{
+      self.int, 
+      self.frac 
+    });
+  }
+};
 ```
 
-(See the docs: [__@floatToInt__](https://ziglang.org/documentation/master/#floatToInt), [__@rem__](https://ziglang.org/documentation/master/#rem), [__@divTrunc__](https://ziglang.org/documentation/master/#divTrunc), [__@intCast__](https://ziglang.org/documentation/master/#intCast))
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L54-L75)
 
-This code has been tested for positive and negative numbers.
+TODO
+
+(Someday we might simplify the printing with [__Custom Formatting__](https://ziglearn.org/chapter-2/#formatting))
 
 # Appendix: Add a Zig Tab
 
