@@ -26,6 +26,8 @@ And learn how how we ended up here...
 
 -   [__Blockly with Zig (Work in Progress)__](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
 
+-   [__Watch the Demo on YouTube__](https://youtu.be/192ZKA-1OqY)
+
 # Visual Program
 
 _What's Visual Programming like with Blockly?_
@@ -39,6 +41,8 @@ This is a Visual Program that loops 10 times, printing the number `123.45`...
 We can try dragging-n-dropping the Blocks here...
 
 -   [__Blockly with Zig (Work in Progress)__](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+
+-   [__Watch the Demo on YouTube__](https://youtu.be/192ZKA-1OqY)
 
 To find the above Blocks, click the __Blocks Toolbox__ (at left) and look under __"Loops"__, __"Variables"__, __"Math"__ and __"Text"__.
 
@@ -301,6 +305,8 @@ Sure can! This __Function Block__...
 ![Define Blockly Function](https://lupyuen.github.io/images/blockly-run7a.jpg)
 
 [(Parameters are defined in __Function Settings__)](https://lupyuen.github.io/images/blockly-run9.jpg)
+
+[(Watch the Demo on YouTube)](https://youtu.be/192ZKA-1OqY?t=56)
 
 Will generate this perfectly valid __Zig Function__...
 
