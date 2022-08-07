@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Zig Visual Programming with Blockly</title>
+            <link>https://lupyuen.github.io/articles/blockly</link>
+            <description><![CDATA[How we create a Zig program visually with Blockly, the drag-n-drop way... And how we might use it to build Sensor IoT Apps for Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/blockly</guid>
+            <pubDate>Sun, 07 Aug 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Read NuttX Sensor Data with Zig</title>
             <link>https://lupyuen.github.io/articles/sensor</link>
             <description><![CDATA[Using Zig to read Sensor Data on Apache NuttX RTOS... With Bosch BME280 Temperature / Humidity / Air Pressure Sensor]]></description>
