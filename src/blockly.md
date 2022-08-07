@@ -1,6 +1,6 @@
 # Zig Visual Programming with Blockly
 
-📝 _11 Aug 2022_
+📝 _7 Aug 2022_
 
 ![Zig Visual Programming with Blockly](https://lupyuen.github.io/images/blockly-title.jpg)
 

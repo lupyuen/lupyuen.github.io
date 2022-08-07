@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Zig Visual Programming with Blockly",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-08-07",
+      "website": "https://lupyuen.github.io/articles/blockly",
+      "summary": "How we create a Zig program visually with Blockly, the drag-n-drop way... And how we might use it to build Sensor IoT Apps for Apache NuttX RTOS"
+    },
+    {
       "name": "Read NuttX Sensor Data with Zig",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-07-29",
