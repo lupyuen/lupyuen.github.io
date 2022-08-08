@@ -1030,11 +1030,13 @@ Blockly builds fine with Linux, macOS and WSL. (But not plain old Windows CMD)
 To build Blockly with the Zig Code Generator...
 
 ```bash
+## Download Blockly and install the dependencies
 git clone --recursive https://github.com/lupyuen3/blockly-zig-nuttx
 cd blockly-zig-nuttx
 npm install
 
-## Run these steps when we change the Zig Code Generator
+## Build Blockly and the Code Generators.
+## Run these steps when we change the Zig Code Generator.
 npm run build
 npm run publish
 
