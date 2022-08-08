@@ -813,11 +813,13 @@ Code.renderContent = function() {
 <h1 id="appendix-build-blockly"><a href="#appendix-build-blockly">16 Appendix: Build Blockly</a></h1>
 <p>Blockly builds fine with Linux, macOS and WSL. (But not plain old Windows CMD)</p>
 <p>To build Blockly with the Zig Code Generator…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/lupyuen3/blockly-zig-nuttx
+<div class="example-wrap"><pre class="language-bash"><code># Download Blockly and install the dependencies
+git clone --recursive https://github.com/lupyuen3/blockly-zig-nuttx
 cd blockly-zig-nuttx
 npm install
 
-# Run these steps when we change the Zig Code Generator
+# Build Blockly and the Code Generators.
+# Run these steps when we change the Zig Code Generator.
 npm run build
 npm run publish
 
