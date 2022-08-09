@@ -36,7 +36,7 @@ That inspired the Zig program in this article...
 
 Let's dive in and find out how we read NuttX Sensors with Zig!
 
-__Note:__ The NuttX Sensor API is going through [__some breaking changes__](https://github.com/apache/incubator-nuttx/commits/master/include/nuttx/sensors/sensor.h) as of Jul 2022. We'll update the article when the API settles down.
+__Note:__ The NuttX Sensor API has been updated in Jul / Aug 2022. [(See the changes)](https://lupyuen.github.io/articles/sensor#appendix-updates-to-nuttx-sensor-api)
 
 # Bosch BME280 Sensor
 
@@ -1260,36 +1260,31 @@ This code has been tested for positive and negative numbers.
 
 # Appendix: Updates to NuttX Sensor API
 
-TODO
+This section describes the changes in the __NuttX Sensor API__ for Jul / Aug 2022. We have updated the code in this article for these changes...
 
-Change SNIOC_SET_INTERVAL to c.SNIOC_SET_INTERVAL
+-   __Device Paths__ for NuttX Sensors have been changed from "/dev/sensor/\*" to "/dev/sensor/sensor_\*"
 
-[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/62295db3a7dfdaed3fb11607c43f15a00b3e0523)
-
-
-Change /dev/sensor/* to /dev/sensor/sensor_*
-
-[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/bd9431f21f952b40dc3d5a10cbb786e4e1eb1a71)
+    [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/bd9431f21f952b40dc3d5a10cbb786e4e1eb1a71)
 
 
-Change &latency to latency
+-   __Sensor Structs__ have been renamed from `sensor_event_*` to `struct_sensor_*`
 
-[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/5753856d345783383fedb7a8313b9b58b5cef5d3)
+    [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/06e776d2e96e49c1f1b7594b2ff1d1c5617450a6)
 
+-   __Activate / Deactivate Sensor SNIOC_ACTIVATE__ is no longer needed
 
-Change &interval to interval
+    [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/5064ad014d84989f6461da6720b8b53a9b29194c)
 
-[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/783047f74d921917b55566a85c86361bf02b46b6)
+-   __Sensor Batch SNIOC_BATCH__ now accepts a Latency Value instead of a Pointer
 
+    [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/5753856d345783383fedb7a8313b9b58b5cef5d3)
 
-Rename struct_sensor_event_* to struct_sensor_*
+-   __Sensor Interval SNIOC_SET_INTERVAL__ now accepts an Interval Value instead of a Pointer
 
-[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/06e776d2e96e49c1f1b7594b2ff1d1c5617450a6)
+    [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/783047f74d921917b55566a85c86361bf02b46b6)
 
+-   __SNIOC_SET_INTERVAL__ was previously defined twice with different values. This has been fixed.
 
-No need to activate and deactivate sensors
-
-[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/5064ad014d84989f6461da6720b8b53a9b29194c)
-
+    [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/62295db3a7dfdaed3fb11607c43f15a00b3e0523)
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title2.jpg)
