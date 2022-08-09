@@ -659,6 +659,7 @@ static const struct sensor_ops_s g_humi_ops = {
 <div class="example-wrap"><pre class="language-c"><code>//  Called by NuttX to fetch pressure and temperature from sensor
 static int bme280_fetch_baro(
   FAR struct sensor_lowerhalf_s *lower,  //  Barometer Sensor
+  FAR struct file *filep,  // NuttX File
   FAR char *buffer,  //  Buffer to return Sensor Data
   size_t buflen      //  Size of Buffer
 ) {
@@ -685,6 +686,7 @@ static int bme280_fetch_baro(
 <div class="example-wrap"><pre class="language-c"><code>//  Called by NuttX to fetch humidity from sensor
 static int bme280_fetch_humi(
   FAR struct sensor_lowerhalf_s *lower,  //  Humidity Sensor
+  FAR struct file *filep,  // NuttX File
   FAR char *buffer,  //  Buffer to return Sensor Data
   size_t buflen      //  Size of Buffer
 ) {
