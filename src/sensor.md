@@ -258,10 +258,14 @@ __std.mem.zeroes__ creates a __pollfd__ Struct that's initialised with nulls.
 After populating the struct, we poll it...
 
 ```zig
-  // If Sensor Data is available...
-  if (c.poll(&fds, 1, -1) > 0) {
+  // Poll for Sensor Data
+  ret = c.poll(&fds, 1, -1);
 
-    // Coming up: Read Sensor Data...
+  // Check if Sensor Data is available
+  if (ret <= 0) {
+    std.log.err("Sensor data not available", .{});
+    return error.DataError;
+  }
 ```
 
 We're finally ready to read the Sensor Data!
@@ -271,39 +275,47 @@ We're finally ready to read the Sensor Data!
 We __allocate a buffer__ (on the stack) to receive the Sensor Data...
 
 ```zig
-    // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(
-      c.struct_sensor_event_baro
-    );
-    // Size of the Sensor Data
-    const len = @sizeOf(
-      @TypeOf(sensor_data)
-    );
+  // Define the Sensor Data Type
+  var sensor_data = std.mem.zeroes(
+    c.struct_sensor_baro
+  );
+  // Size of the Sensor Data
+  const len = @sizeOf(
+    @TypeOf(sensor_data)
+  );
 ```
 
-__std.mem.zeroes__ returns a __sensor_event_baro__ Struct, initialised with nulls.
+__std.mem.zeroes__ returns a __sensor_baro__ Struct, initialised with nulls.
 
 We __read the Sensor Data__ into the struct...
 
 ```zig
-    // Read the Sensor Data
-    if (c.read(fd, &sensor_data, len) >= len) {
+  // Read the Sensor Data
+  const read_len = c.read(fd, &sensor_data, len);
 
-      // Convert the Sensor Data 
-      // to Fixed-Point Numbers
-      const pressure = float_to_fixed(
-        sensor_data.pressure
-      );
-      const temperature = float_to_fixed(
-        sensor_data.temperature
-      );
+  // Check size of Sensor Data
+  if (read_len < len) {
+    std.log.err("Sensor data incorrect size", .{});
+    return error.SizeError;
+  }
 ```
 
-[(__float_to_fixed__ is explained here)](https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data)
+And convert the Pressure and Temperature from Floating-Point to __Fixed-Point Numbers__...
 
-And convert the Pressure and Temperature from Floating-Point to __Fixed-Point Numbers__.
+```zig
+  // Convert the Sensor Data 
+  // to Fixed-Point Numbers
+  const pressure = floatToFixed(
+    sensor_data.pressure
+  );
+  const temperature = floatToFixed(
+    sensor_data.temperature
+  );
+```
 
-Which are similar to Floating-Point Numbers, but truncated to __2 Decimal Places__.
+[(__floatToFixed__ is explained here)](https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data)
+
+Our Fixed-Point Numbers are similar to Floating-Point Numbers, but truncated to __2 Decimal Places__.
 
 [(Why we use Fixed-Point Numbers)](https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data)
 
@@ -312,19 +324,19 @@ Which are similar to Floating-Point Numbers, but truncated to __2 Decimal Places
 Now we have the Pressure and Temperature as Fixed-Point Numbers, let's __print the Sensor Data__...
 
 ```zig
-      // Print the Sensor Data
-      debug("pressure:{}.{:0>2}", .{
-        pressure.int, 
-        pressure.frac 
-      });
-      debug("temperature:{}.{:0>2}", .{
-        temperature.int,
-        temperature.frac 
-      });
+  // Print the Sensor Data
+  debug("pressure:{}.{:0>2}", .{
+    pressure.int, 
+    pressure.frac 
+  });
+  debug("temperature:{}.{:0>2}", .{
+    temperature.int,
+    temperature.frac 
+  });
 
-      // Will be printed as...
-      // pressure:1007.66
-      // temperature:27.70
+  // Will be printed as...
+  // pressure:1007.66
+  // temperature:27.70
 ```
 
 _What are "int" and "frac"?_
@@ -354,13 +366,6 @@ Our Format String "`{}.{:0>2}`" says...
 Which gives us the printed output `123.45`
 
 [(More about Format Strings)](https://ziglearn.org/chapter-2/#formatting-specifiers)
-
-In case we can't read the Sensor Data, we write to the Error Log...
-
-```zig        
-    } else { std.log.err("Sensor data incorrect size", .{}); }
-  } else { std.log.err("Sensor data not available", .{}); }
-```
 
 And we're done reading the Temperature and Pressure from the NuttX Barometer Sensor!
 
@@ -402,42 +407,38 @@ fn test_sensor2() !void {
 
 In the code above we changed the __path of the Sensor Device__.
 
-The Sensor Data Struct becomes __sensor_event_humi__...
+The Sensor Data Struct becomes __sensor_humi__...
 
 ```zig
-  // If Sensor Data is available...
-  if (c.poll(&fds, 1, -1) > 0) {
-
-    // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(
-      c.struct_sensor_event_humi
-    );
-    // Size of the Sensor Data
-    const len = @sizeOf(
-      @TypeOf(sensor_data)
-    );
+  // Define the Sensor Data Type
+  var sensor_data = std.mem.zeroes(
+    c.struct_sensor_humi
+  );
 ```
 
 Which contains a single value for the __Humidity Sensor Data__...
 
 ```zig
-    // Read the Sensor Data
-    if (c.read(fd, &sensor_data, len) >= len) {
+  // Read the Sensor Data
+  const read_len = c.read(fd, &sensor_data, len);
 
-      // Convert the Sensor Data 
-      // to Fixed-Point Number
-      const humidity = float_to_fixed(
-        sensor_data.humidity
-      );
+  // Omitted: Check size of Sensor Data
+  ...
 
-      // Print the Sensor Data
-      debug("humidity:{}.{:0>2}", .{
-        humidity.int, 
-        humidity.frac 
-      });
+  // Convert the Sensor Data 
+  // to Fixed-Point Number
+  const humidity = floatToFixed(
+    sensor_data.humidity
+  );
 
-      // Will be printed as...
-      // humidity:78.81
+  // Print the Sensor Data
+  debug("humidity:{}.{:0>2}", .{
+    humidity.int, 
+    humidity.frac 
+  });
+
+  // Will be printed as...
+  // humidity:78.81
 ```
 
 And we're done!
@@ -523,7 +524,7 @@ Then we import the __C Header Files__ for NuttX...
 
 The other includes were copied from the __NuttX Sensor Test App__ in C: [sensortest.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42)
 
-_What about NuttX Structs like sensor_event_baro and sensor_event_humi?_
+_What about NuttX Structs like sensor_baro and sensor_humi?_
 
 __NuttX Structs__ will be automatically imported with the code above.
 
@@ -1116,7 +1117,7 @@ And converts the Sensor Data to [__Fixed-Point Numbers__](https://en.wikipedia.o
 
 ```zig
 // Convert Pressure to a Fixed-Point Number
-const pressure = float_to_fixed(
+const pressure = floatToFixed(
   sensor_data.pressure
 );
 
@@ -1127,7 +1128,7 @@ debug("pressure:{}.{:0>2}", .{
 });
 ```
 
-(More about __float_to_fixed__ in a while)
+(More about __floatToFixed__ in a while)
 
 (Someday we might simplify the printing with [__Custom Formatting__](https://ziglearn.org/chapter-2/#formatting))
 
@@ -1175,12 +1176,12 @@ Thus we'll probably stick to Fixed-Point Numbers for our upcoming IoT projects.
 
 _How do we convert Floating-Point to Fixed-Point?_
 
-Below is the implementation of __float_to_fixed__, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): [sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49)
+Below is the implementation of __floatToFixed__, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): [sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49)
 
 ```zig
 /// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
 /// We do this because `debug` has a problem with floats.
-pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
+pub fn floatToFixed(f: f32) struct { int: i32, frac: u8 } {
   const scaled = @floatToInt(i32, f * 100.0);
   const rem = @rem(scaled, 100);
   const rem_abs = if (rem < 0) -rem else rem;
@@ -1204,7 +1205,7 @@ This section describes the changes in the __NuttX Sensor API__ for Jul / Aug 202
     [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/bd9431f21f952b40dc3d5a10cbb786e4e1eb1a71)
 
 
--   __Sensor Structs__ have been renamed from `sensor_event_*` to `struct_sensor_*`
+-   __Sensor Structs__ have been renamed from `sensor_event_*` to `sensor_*`
 
     [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/06e776d2e96e49c1f1b7594b2ff1d1c5617450a6)
 
