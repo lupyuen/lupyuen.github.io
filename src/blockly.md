@@ -550,7 +550,7 @@ When we run this on __Apache NuttX RTOS__, it will actually fetch the Temperatur
 
 _What a huge chunk of Zig!_
 
-The complete implementation is a huger chunk of Zig, because we need to __handle Errors__. [(See this)](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L27-L115)
+The complete implementation is a huger chunk of Zig, because we need to __handle Errors__. [(See this)](https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L33-L109)
 
 But it might be hunky dory for Blockly. We just need to define one Block for __every Sensor__ supported by NuttX. (Like BME280)
 
