@@ -460,7 +460,7 @@ debug(&quot;temperature={}&quot;, .{
 <p>When we run this on <strong>Apache NuttX RTOS</strong>, it will actually fetch the Temperature from the Bosch BME280 Sensor!</p>
 <p><a href="https://lupyuen.github.io/articles/sensor#read-barometer-sensor">(As explained here)</a></p>
 <p><em>What a huge chunk of Zig!</em></p>
-<p>The complete implementation is a huger chunk of Zig, because we need to <strong>handle Errors</strong>. <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/visual.zig#L27-L115">(See this)</a></p>
+<p>The complete implementation is a huger chunk of Zig, because we need to <strong>handle Errors</strong>. <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L33-L109">(See this)</a></p>
 <p>But it might be hunky dory for Blockly. We just need to define one Block for <strong>every Sensor</strong> supported by NuttX. (Like BME280)</p>
 <p>And every Block will churn out the <strong>Boilerplate Code</strong> (plus Error Handling) that we see above.</p>
 <p><em>Surely some of the code can be refactored into reusable Zig Functions?</em></p>
