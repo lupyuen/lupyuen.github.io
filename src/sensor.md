@@ -796,6 +796,10 @@ Check that the following have been enabled in the NuttX Build...
 
 -   [__Sensor Driver Test App__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
 
+Remember to set [__"Sensor Driver Test Stack Size"__](https://lupyuen.github.io/articles/bme280#configure-nuttx) to __4096__.
+
+(Because our Zig App needs additional Stack Space)
+
 After building NuttX, we download and compile our __Zig Sensor App__...
 
 ```bash
