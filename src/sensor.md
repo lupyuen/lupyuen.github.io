@@ -89,8 +89,8 @@ fn test_sensor() !void {
 
   // Open the Sensor Device
   const fd = c.open(
-    "/dev/sensor/sensor_baro0",       // Path of Sensor Device
-    c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+    "/dev/sensor/sensor_baro0",  // Path of Sensor Device
+    c.O_RDONLY | c.O_NONBLOCK    // Open for read-only
   );
 ```
 
@@ -400,8 +400,8 @@ fn test_sensor2() !void {
 
   // Open the Sensor Device
   const fd = c.open(
-    "/dev/sensor/sensor_humi0",       // Path of Sensor Device
-    c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+    "/dev/sensor/sensor_humi0",  // Path of Sensor Device
+    c.O_RDONLY | c.O_NONBLOCK    // Open for read-only
   );
 ```
 
