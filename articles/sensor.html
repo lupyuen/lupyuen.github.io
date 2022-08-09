@@ -222,11 +222,11 @@ fn test_sensor() !void {
   const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
 
   // Set Standby Interval
-  var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
+  const interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
   var ret = c.ioctl(
     fd,                  // Sensor Device
     SNIOC_SET_INTERVAL,  // ioctl Command
-    &amp;interval            // Standby Interval
+    interval             // Standby Interval
   );</code></pre></div>
 <p>(<strong>c_uint</strong> is equivalent to “unsigned int” in C)</p>
 <p>In case of error, we quit…</p>
@@ -240,11 +240,11 @@ fn test_sensor() !void {
 <h2 id="set-batch-latency"><a href="#set-batch-latency">2.4 Set Batch Latency</a></h2>
 <p>We set the <strong>Batch Latency</strong>, if it’s needed by our sensor…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set Batch Latency
-  var latency: c_uint = 0;  // No latency
+  const latency: c_uint = 0;  // No latency
   ret = c.ioctl(
     fd,             // Sensor Device
     c.SNIOC_BATCH,  // ioctl Command
-    &amp;latency        // Batch Latency
+    latency         // Batch Latency
   );</code></pre></div>
 <p>And we check for error…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
