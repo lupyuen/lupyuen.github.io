@@ -144,32 +144,22 @@
 <p><a href="https://lupyuen.github.io/articles/i2c#appendix-test-bme280-with-bus-pirate">(Here’s how)</a></p>
 <p>Next we connect BME280 to Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center">BL602 Pin</th><th style="text-align: center">BME280 Pin</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
-<tr><td style="text-align: center"><strong><code>GPIO 3</code></strong></td><td style="text-align: center"><code>SDA</code></td><td style="text-align: left">Green</td></tr>
-<tr><td style="text-align: center"><strong><code>GPIO 4</code></strong></td><td style="text-align: center"><code>SCL</code></td><td style="text-align: left">Blue</td></tr>
+<tr><td style="text-align: center"><strong><code>GPIO 1</code></strong></td><td style="text-align: center"><code>SDA</code></td><td style="text-align: left">Green</td></tr>
+<tr><td style="text-align: center"><strong><code>GPIO 2</code></strong></td><td style="text-align: center"><code>SCL</code></td><td style="text-align: left">Blue</td></tr>
 <tr><td style="text-align: center"><strong><code>3V3</code></strong></td><td style="text-align: center"><code>3.3V</code></td><td style="text-align: left">Red</td></tr>
 <tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td><td style="text-align: left">Black</td></tr>
 </tbody></table>
 </div>
-<p><img src="https://lupyuen.github.io/images/bme280-connect.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
-<p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/include/board.h#L85-L88">board.h</a></p>
+<p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
+<p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* I2C Configuration */
 #define BOARD_I2C_SCL \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
-  GPIO_PIN4)
+  GPIO_PIN2)
 #define BOARD_I2C_SDA \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
-  GPIO_PIN3)</code></pre></div>
+  GPIO_PIN1)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
-<p>We disabled the <strong>UART1 Port</strong> because it uses the same pins as I2C: <a href="https://github.com/lupyuen/incubator-nuttx/blob/bmp280/boards/risc-v/bl602/bl602evb/include/board.h#L63-L68">board.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef TODO  /* Remember to check for duplicate pins! */
-#define BOARD_UART_1_RX_PIN \
-  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_UART | \
-  GPIO_PIN3)
-#define BOARD_UART_1_TX_PIN \
-  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_UART | \
-  GPIO_PIN4)
-#endif  /* TODO */</code></pre></div>
-<p>(UART0 is used by the Serial Console)</p>
 <p><em>What if we’re connecting to ESP32?</em></p>
 <p><strong>For ESP32:</strong> The GPIO Pin Numbers for the I2C Port (I2C0) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/bme280/arch/xtensa/src/esp32/Kconfig#L797-L805">Kconfig</a> and menuconfig…</p>
 <div class="example-wrap"><pre class="language-text"><code>config ESP32_I2C0_SCLPIN
@@ -1417,8 +1407,8 @@ static void bl602_i2c_config_para(struct bl602_i2c_priv_s *priv) {
 <p>To use the NuttX BME280 Driver, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone --recursive --branch bme280 https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch bme280 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+git clone --recursive https://github.com/lupyuen/incubator-nuttx nuttx
+git clone --recursive https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add the BME280 Driver</strong> to our NuttX Project, follow these instructions…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bme280-nuttx#install-driver"><strong>“Install BME280 Driver”</strong></a></li>
