@@ -1057,9 +1057,7 @@ I hope you find this article helpful for creating your own Sensor App. Lemme kno
 
 In the coming weeks I shall [__customise Blockly__](https://github.com/lupyuen3/blockly-zig-nuttx) to auto-generate the Zig Sensor App. Someday we'll create Sensor Apps the drag-n-drop way!
 
--   [__"Visual Programming for Zig with NuttX Sensors"__](https://github.com/lupyuen/visual-zig-nuttx)
-
--   [__Blockly Source Code__](https://github.com/lupyuen3/blockly-zig-nuttx)
+-   [__"Zig Visual Programming with Blockly"__](https://lupyuen.github.io/articles/blockly)
 
 To learn more about Zig, check out these tips...
 
