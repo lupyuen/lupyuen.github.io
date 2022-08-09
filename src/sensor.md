@@ -1258,4 +1258,38 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
 
 This code has been tested for positive and negative numbers.
 
+# Appendix: Updates to NuttX Sensor API
+
+TODO
+
+Change SNIOC_SET_INTERVAL to c.SNIOC_SET_INTERVAL
+
+[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/62295db3a7dfdaed3fb11607c43f15a00b3e0523)
+
+
+Change /dev/sensor/* to /dev/sensor/sensor_*
+
+[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/bd9431f21f952b40dc3d5a10cbb786e4e1eb1a71)
+
+
+Change &latency to latency
+
+[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/5753856d345783383fedb7a8313b9b58b5cef5d3)
+
+
+Change &interval to interval
+
+[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/783047f74d921917b55566a85c86361bf02b46b6)
+
+
+Rename struct_sensor_event_* to struct_sensor_*
+
+[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/06e776d2e96e49c1f1b7594b2ff1d1c5617450a6)
+
+
+No need to activate and deactivate sensors
+
+[(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/5064ad014d84989f6461da6720b8b53a9b29194c)
+
+
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title2.jpg)
