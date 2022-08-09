@@ -324,21 +324,21 @@ static uint8_t bmp280_getreg8(FAR struct bmp280_dev_s *priv, uint8_t regaddr) {
 <p><img src="https://lupyuen.github.io/images/bme280-code5a.png" alt="Send the Register ID as I2C Sub Address (instead of I2C Data) when we’re reading a BMP280 Register" /></p>
 <h2 id="bmp280-driver-loads-ok"><a href="#bmp280-driver-loads-ok">2.6 BMP280 Driver Loads OK</a></h2>
 <p>We’ve patched the BMP280 Driver to send the Register ID as I2C Sub Address. Let’s run it!</p>
-<div class="example-wrap"><pre class="language-text"><code>sensor_custom_register: Registering /dev/sensor/baro0
+<div class="example-wrap"><pre class="language-text"><code>sensor_custom_register: Registering /dev/sensor/sensor_baro0
 bmp280_register: BMP280 driver loaded successfully!
 NuttShell (NSH) NuttX-10.2.0-RC0</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#bmp280-driver-loads-ok">(See the complete log)</a></p>
 <p>Yep our patched BMP280 Driver <strong>loads successfully</strong>!</p>
 <p>(Because it receives the correct Device ID from BMP280)</p>
-<p>BMP280 appears on NuttX as <strong>/dev/sensor/baro0</strong>…</p>
+<p>BMP280 appears on NuttX as <strong>/dev/sensor/sensor_baro0</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; ls /dev/sensor
 /dev/sensor:
- baro0</code></pre></div>
+ sensor_baro0</code></pre></div>
 <p>Let’s read the <strong>baro0</strong> device.</p>
 <p><a href="https://lupyuen.github.io/articles/bme280#appendix-log-i2c-transfers">(How we enable logging for BL602 I2C Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-run2a.jpg" alt="Our patched BMP280 Driver loads successfully" /></p>
 <h2 id="run-sensor-test-app"><a href="#run-sensor-test-app">2.7 Run Sensor Test App</a></h2>
-<p>NuttX provides a <strong>Sensor Test App</strong> that will read our BMP280 Device at <strong>/dev/sensor/baro0</strong>…</p>
+<p>NuttX provides a <strong>Sensor Test App</strong> that will read our BMP280 Device at <strong>/dev/sensor/sensor_baro0</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>testing/sensortest/sensortest.c</strong></a></li>
 </ul>
@@ -349,9 +349,9 @@ NuttShell (NSH) NuttX-10.2.0-RC0</code></pre></div>
 </ul>
 <p><a href="https://lupyuen.github.io/articles/bme280#configure-nuttx">(Details here)</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-config4a.png" alt="Enable the Sensor Test App" /></p>
-<p>Build, flash and run NuttX. To read 10 sensor values from <strong>/dev/sensor/baro0</strong>, enter this at the NuttX Shell…</p>
+<p>Build, flash and run NuttX. To read 10 sensor values from <strong>/dev/sensor/sensor_baro0</strong>, enter this at the NuttX Shell…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest -n 10 baro0
-SensorTest: Test /dev/sensor/baro0 with interval(1000000us), latency(0us)
+SensorTest: Test /dev/sensor/sensor_baro0 with interval(1000000us), latency(0us)
 baro0: timestamp:30680000 value1:674.93 value2:22.18
 baro0: timestamp:30680000 value1:674.93 value2:22.18
 baro0: timestamp:30680000 value1:674.93 value2:22.18
@@ -613,11 +613,11 @@ static int bme280_set_standby(
 <p>Sadly no. Thus our BME280 Driver shall implement a <strong>Composite Sensor</strong> that behaves like two NuttX Sensors combined…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L326-L331"><strong>Barometer Sensor: /dev/sensor/baro0</strong></a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L326-L331"><strong>Barometer Sensor: /dev/sensor/sensor_baro0</strong></a></p>
 <p>(For Pressure and Temperature)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L345-L349"><strong>Humidity Sensor: /dev/sensor/humi0</strong></a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L345-L349"><strong>Humidity Sensor: /dev/sensor/sensor_humi0</strong></a></p>
 <p>(For Humidity)</p>
 </li>
 </ul>
@@ -910,7 +910,7 @@ struct sensor_value {
 <div class="example-wrap"><pre class="language-bash"><code>sensortest -n 1 baro0</code></pre></div></li>
 <li>
 <p>We should see the <strong>Air Pressure</strong> and <strong>Temperature</strong> readings…</p>
-<div class="example-wrap"><pre class="language-text"><code>SensorTest: Test /dev/sensor/baro0 with interval(1000000us), latency(0us)
+<div class="example-wrap"><pre class="language-text"><code>SensorTest: Test /dev/sensor/sensor_baro0 with interval(1000000us), latency(0us)
 baro0: 
   timestamp: 43760000 
   value1:     1011.29 
@@ -923,7 +923,7 @@ SensorTest: Received message: baro0, number:1/1</code></pre></div>
 <div class="example-wrap"><pre class="language-bash"><code>sensortest -n 1 humi0</code></pre></div></li>
 <li>
 <p>We should see the <strong>Relative Humidity</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>SensorTest: Test /dev/sensor/humi0 with interval(1000000us), latency(0us)
+<div class="example-wrap"><pre class="language-text"><code>SensorTest: Test /dev/sensor/sensor_humi0 with interval(1000000us), latency(0us)
 humi0: 
   timestamp: 60120000 
   value:     90.58
@@ -955,9 +955,9 @@ int main(int argc, FAR char *argv[]) {
   //  len is Sensor Data size: sizeof(struct sensor_baro)
   FAR char *buffer = calloc(1, len);</code></pre></div>
 <p>The app begins by allocating a buffer for the Sensor Data Struct: <strong>sensor_baro</strong> (Barometer) or <strong>sensor_humi</strong> (Humidity).</p>
-<p>Next we open the Sensor Device: <strong>/dev/sensor/baro0</strong> (Barometer) or <strong>/dev/sensor/humi0</strong> (Humidity)…</p>
+<p>Next we open the Sensor Device: <strong>/dev/sensor/sensor_baro0</strong> (Barometer) or <strong>/dev/sensor/sensor_humi0</strong> (Humidity)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Open the Sensor Device.
-  //  devname looks like &quot;/dev/sensor/baro0&quot;
+  //  devname looks like &quot;/dev/sensor/sensor_baro0&quot;
   int fd = open(devname, O_RDONLY | O_NONBLOCK);
   if (fd &lt; 0) { /* Handle error */ ... }</code></pre></div>
 <p>We set the <a href="https://lupyuen.github.io/articles/bme280#standby-interval"><strong>Standby Interval</strong></a> and <strong>Batch Latency</strong>…</p>
@@ -1455,7 +1455,7 @@ make menuconfig </code></pre></div></li>
 <p>Select <strong>“Sensor Device Support”</strong></p>
 <p>Check the box for <strong>“Bosch BME280 Sensor”</strong></p>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
-<p>The BME280 Driver will appear in NuttX at <strong>/dev/sensor/baro0</strong> and <strong>/dev/sensor/humi0</strong></p>
+<p>The BME280 Driver will appear in NuttX at <strong>/dev/sensor/sensor_baro0</strong> and <strong>/dev/sensor/sensor_humi0</strong></p>
 </li>
 <li>
 <p>Enable <strong>Sensor Driver Test App</strong>…</p>
