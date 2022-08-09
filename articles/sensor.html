@@ -645,6 +645,8 @@ const fd = c.open(
 <p><a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>Sensor Driver Test App</strong></a></p>
 </li>
 </ul>
+<p>Remember to set <a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>“Sensor Driver Test Stack Size”</strong></a> to <strong>4096</strong>.</p>
+<p>(Because our Zig App needs additional Stack Space)</p>
 <p>After building NuttX, we download and compile our <strong>Zig Sensor App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Download our Zig Sensor App for NuttX
 git clone --recursive https://github.com/lupyuen/visual-zig-nuttx
