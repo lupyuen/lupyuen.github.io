@@ -264,53 +264,62 @@ fn test_sensor() !void {
 <p><strong>std.mem.zeroes</strong> creates a <strong>pollfd</strong> Struct that’s initialised with nulls.</p>
 <p>(The struct lives on the stack)</p>
 <p>After populating the struct, we poll it…</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // If Sensor Data is available...
-  if (c.poll(&amp;fds, 1, -1) &gt; 0) {
+<div class="example-wrap"><pre class="language-zig"><code>  // Poll for Sensor Data
+  ret = c.poll(&amp;fds, 1, -1);
 
-    // Coming up: Read Sensor Data...</code></pre></div>
+  // Check if Sensor Data is available
+  if (ret &lt;= 0) {
+    std.log.err(&quot;Sensor data not available&quot;, .{});
+    return error.DataError;
+  }</code></pre></div>
 <p>We’re finally ready to read the Sensor Data!</p>
 <h2 id="read-sensor-data"><a href="#read-sensor-data">2.6 Read Sensor Data</a></h2>
 <p>We <strong>allocate a buffer</strong> (on the stack) to receive the Sensor Data…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(
-      c.struct_sensor_event_baro
-    );
-    // Size of the Sensor Data
-    const len = @sizeOf(
-      @TypeOf(sensor_data)
-    );</code></pre></div>
-<p><strong>std.mem.zeroes</strong> returns a <strong>sensor_event_baro</strong> Struct, initialised with nulls.</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Define the Sensor Data Type
+  var sensor_data = std.mem.zeroes(
+    c.struct_sensor_baro
+  );
+  // Size of the Sensor Data
+  const len = @sizeOf(
+    @TypeOf(sensor_data)
+  );</code></pre></div>
+<p><strong>std.mem.zeroes</strong> returns a <strong>sensor_baro</strong> Struct, initialised with nulls.</p>
 <p>We <strong>read the Sensor Data</strong> into the struct…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Read the Sensor Data
-    if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
+<div class="example-wrap"><pre class="language-zig"><code>  // Read the Sensor Data
+  const read_len = c.read(fd, &amp;sensor_data, len);
 
-      // Convert the Sensor Data 
-      // to Fixed-Point Numbers
-      const pressure = float_to_fixed(
-        sensor_data.pressure
-      );
-      const temperature = float_to_fixed(
-        sensor_data.temperature
-      );</code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>float_to_fixed</strong> is explained here)</a></p>
-<p>And convert the Pressure and Temperature from Floating-Point to <strong>Fixed-Point Numbers</strong>.</p>
-<p>Which are similar to Floating-Point Numbers, but truncated to <strong>2 Decimal Places</strong>.</p>
+  // Check size of Sensor Data
+  if (read_len &lt; len) {
+    std.log.err(&quot;Sensor data incorrect size&quot;, .{});
+    return error.SizeError;
+  }</code></pre></div>
+<p>And convert the Pressure and Temperature from Floating-Point to <strong>Fixed-Point Numbers</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Convert the Sensor Data 
+  // to Fixed-Point Numbers
+  const pressure = floatToFixed(
+    sensor_data.pressure
+  );
+  const temperature = floatToFixed(
+    sensor_data.temperature
+  );</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>floatToFixed</strong> is explained here)</a></p>
+<p>Our Fixed-Point Numbers are similar to Floating-Point Numbers, but truncated to <strong>2 Decimal Places</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(Why we use Fixed-Point Numbers)</a></p>
 <h2 id="print-sensor-data"><a href="#print-sensor-data">2.7 Print Sensor Data</a></h2>
 <p>Now we have the Pressure and Temperature as Fixed-Point Numbers, let’s <strong>print the Sensor Data</strong>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>      // Print the Sensor Data
-      debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
-        pressure.int, 
-        pressure.frac 
-      });
-      debug(&quot;temperature:{}.{:0&gt;2}&quot;, .{
-        temperature.int,
-        temperature.frac 
-      });
+<div class="example-wrap"><pre class="language-zig"><code>  // Print the Sensor Data
+  debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
+    pressure.int, 
+    pressure.frac 
+  });
+  debug(&quot;temperature:{}.{:0&gt;2}&quot;, .{
+    temperature.int,
+    temperature.frac 
+  });
 
-      // Will be printed as...
-      // pressure:1007.66
-      // temperature:27.70</code></pre></div>
+  // Will be printed as...
+  // pressure:1007.66
+  // temperature:27.70</code></pre></div>
 <p><em>What are “int” and “frac”?</em></p>
 <p>Our Fixed-Point Number has two Integer components…</p>
 <ul>
@@ -340,9 +349,6 @@ fn test_sensor() !void {
 </div>
 <p>Which gives us the printed output <code>123.45</code></p>
 <p><a href="https://ziglearn.org/chapter-2/#formatting-specifiers">(More about Format Strings)</a></p>
-<p>In case we can’t read the Sensor Data, we write to the Error Log…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    } else { std.log.err(&quot;Sensor data incorrect size&quot;, .{}); }
-  } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }</code></pre></div>
 <p>And we’re done reading the Temperature and Pressure from the NuttX Barometer Sensor!</p>
 <p><em>Have we forgotten to close the sensor?</em></p>
 <p>Remember earlier we did this…</p>
@@ -367,36 +373,32 @@ fn test_sensor2() !void {
     c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
   );</code></pre></div>
 <p>In the code above we changed the <strong>path of the Sensor Device</strong>.</p>
-<p>The Sensor Data Struct becomes <strong>sensor_event_humi</strong>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // If Sensor Data is available...
-  if (c.poll(&amp;fds, 1, -1) &gt; 0) {
-
-    // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(
-      c.struct_sensor_event_humi
-    );
-    // Size of the Sensor Data
-    const len = @sizeOf(
-      @TypeOf(sensor_data)
-    );</code></pre></div>
+<p>The Sensor Data Struct becomes <strong>sensor_humi</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Define the Sensor Data Type
+  var sensor_data = std.mem.zeroes(
+    c.struct_sensor_humi
+  );</code></pre></div>
 <p>Which contains a single value for the <strong>Humidity Sensor Data</strong>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Read the Sensor Data
-    if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
+<div class="example-wrap"><pre class="language-zig"><code>  // Read the Sensor Data
+  const read_len = c.read(fd, &amp;sensor_data, len);
 
-      // Convert the Sensor Data 
-      // to Fixed-Point Number
-      const humidity = float_to_fixed(
-        sensor_data.humidity
-      );
+  // Omitted: Check size of Sensor Data
+  ...
 
-      // Print the Sensor Data
-      debug(&quot;humidity:{}.{:0&gt;2}&quot;, .{
-        humidity.int, 
-        humidity.frac 
-      });
+  // Convert the Sensor Data 
+  // to Fixed-Point Number
+  const humidity = floatToFixed(
+    sensor_data.humidity
+  );
 
-      // Will be printed as...
-      // humidity:78.81</code></pre></div>
+  // Print the Sensor Data
+  debug(&quot;humidity:{}.{:0&gt;2}&quot;, .{
+    humidity.int, 
+    humidity.frac 
+  });
+
+  // Will be printed as...
+  // humidity:78.81</code></pre></div>
 <p>And we’re done!</p>
 <p><em>Where’s the list of Sensor Data Structs?</em></p>
 <p>The <strong>NuttX Sensor Data Structs</strong> are defined at…</p>
@@ -452,7 +454,7 @@ pub const c = @cImport({
 });</code></pre></div>
 <p>“types.h” and “limits.h” are needed for NuttX compatibility. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
 <p>The other includes were copied from the <strong>NuttX Sensor Test App</strong> in C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42">sensortest.c</a></p>
-<p><em>What about NuttX Structs like sensor_event_baro and sensor_event_humi?</em></p>
+<p><em>What about NuttX Structs like sensor_baro and sensor_humi?</em></p>
 <p><strong>NuttX Structs</strong> will be automatically imported with the code above.</p>
 <p>NuttX Macros like <strong>O_RDONLY</strong> and <strong>SNIOC_BATCH</strong> will get imported too.</p>
 <p><em>Why do we write “<code>c.</code>something” when we call NuttX functions? Like “c.open()”?</em></p>
@@ -904,7 +906,7 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 </ul>
 <p>And converts the Sensor Data to <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Numbers</strong></a> (2 decimal places) for printing…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Convert Pressure to a Fixed-Point Number
-const pressure = float_to_fixed(
+const pressure = floatToFixed(
   sensor_data.pressure
 );
 
@@ -913,7 +915,7 @@ debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
   pressure.int, 
   pressure.frac 
 });</code></pre></div>
-<p>(More about <strong>float_to_fixed</strong> in a while)</p>
+<p>(More about <strong>floatToFixed</strong> in a while)</p>
 <p>(Someday we might simplify the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
 <p><em>What are “int” and “frac”?</em></p>
 <p>Our Fixed-Point Number has two Integer components…</p>
@@ -959,10 +961,10 @@ debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
 </ul>
 <p>Thus we’ll probably stick to Fixed-Point Numbers for our upcoming IoT projects.</p>
 <p><em>How do we convert Floating-Point to Fixed-Point?</em></p>
-<p>Below is the implementation of <strong>float_to_fixed</strong>, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">sensor.zig</a></p>
+<p>Below is the implementation of <strong>floatToFixed</strong>, which receives a Floating-Point Number and returns the Fixed-Point Number (as a Struct): <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L39-L49">sensor.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Convert the float to a fixed-point number (`int`.`frac`) with 2 decimal places.
 /// We do this because `debug` has a problem with floats.
-pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
+pub fn floatToFixed(f: f32) struct { int: i32, frac: u8 } {
   const scaled = @floatToInt(i32, f * 100.0);
   const rem = @rem(scaled, 100);
   const rem_abs = if (rem &lt; 0) -rem else rem;
@@ -981,7 +983,7 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/bd9431f21f952b40dc3d5a10cbb786e4e1eb1a71">(See the changes)</a></p>
 </li>
 <li>
-<p><strong>Sensor Structs</strong> have been renamed from <code>sensor_event_*</code> to <code>struct_sensor_*</code></p>
+<p><strong>Sensor Structs</strong> have been renamed from <code>sensor_event_*</code> to <code>sensor_*</code></p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/06e776d2e96e49c1f1b7594b2ff1d1c5617450a6">(See the changes)</a></p>
 </li>
 <li>
