@@ -87,7 +87,8 @@
 <li><a href="#lorawan-and-visual-programming">11 LoRaWAN and Visual Programming</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
 <li><a href="#notes">13 Notes</a><ul></ul></li>
-<li><a href="#appendix-fixed-point-sensor-data">14 Appendix: Fixed-Point Sensor Data</a><ul></ul></li></ul></nav><p>📝 <em>29 Jul 2022</em></p>
+<li><a href="#appendix-fixed-point-sensor-data">14 Appendix: Fixed-Point Sensor Data</a><ul></ul></li>
+<li><a href="#appendix-updates-to-nuttx-sensor-api">15 Appendix: Updates to NuttX Sensor API</a><ul></ul></li></ul></nav><p>📝 <em>29 Jul 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/sensor-title.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <p>With <a href="https://ziglang.org"><strong>Zig Programming Language</strong></a>, we have a fun new way to create Embedded Applications for <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>Today we shall write a Zig program that reads a NuttX Sensor: <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a> for Temperture, Humidity and Air Pressure.</p>
@@ -1016,6 +1017,20 @@ pub fn float_to_fixed(f: f32) struct { int: i32, frac: u8 } {
 }</code></pre></div>
 <p>(See the docs: <a href="https://ziglang.org/documentation/master/#floatToInt"><strong>@floatToInt</strong></a>, <a href="https://ziglang.org/documentation/master/#rem"><strong>@rem</strong></a>, <a href="https://ziglang.org/documentation/master/#divTrunc"><strong>@divTrunc</strong></a>, <a href="https://ziglang.org/documentation/master/#intCast"><strong>@intCast</strong></a>)</p>
 <p>This code has been tested for positive and negative numbers.</p>
+<h1 id="appendix-updates-to-nuttx-sensor-api"><a href="#appendix-updates-to-nuttx-sensor-api">15 Appendix: Updates to NuttX Sensor API</a></h1>
+<p>TODO</p>
+<p>Change SNIOC_SET_INTERVAL to c.SNIOC_SET_INTERVAL</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/62295db3a7dfdaed3fb11607c43f15a00b3e0523">(See the changes)</a></p>
+<p>Change /dev/sensor/* to /dev/sensor/sensor_*</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/bd9431f21f952b40dc3d5a10cbb786e4e1eb1a71">(See the changes)</a></p>
+<p>Change &amp;latency to latency</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/5753856d345783383fedb7a8313b9b58b5cef5d3">(See the changes)</a></p>
+<p>Change &amp;interval to interval</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/783047f74d921917b55566a85c86361bf02b46b6">(See the changes)</a></p>
+<p>Rename struct_sensor_event_* to struct_sensor_*</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/06e776d2e96e49c1f1b7594b2ff1d1c5617450a6">(See the changes)</a></p>
+<p>No need to activate and deactivate sensors</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/5064ad014d84989f6461da6720b8b53a9b29194c">(See the changes)</a></p>
 <p><img src="https://lupyuen.github.io/images/sensor-title2.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 
     
