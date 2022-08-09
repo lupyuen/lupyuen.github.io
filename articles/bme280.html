@@ -459,8 +459,8 @@ SensorTest: Received message: baro0, number:10/10</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>//  Fetch pressure, temperature and humidity from sensor
 static int bme280_fetch(
   FAR struct device *priv,  //  NuttX Device Struct
-  FAR struct sensor_event_baro *baro_data,  //  Returns pressure and temperature (if non-null)
-  FAR struct sensor_event_humi *humi_data   //  Returns humidity (if non-null)
+  FAR struct sensor_baro *baro_data,  //  Returns pressure and temperature (if non-null)
+  FAR struct sensor_humi *humi_data   //  Returns humidity (if non-null)
 ) {
 
   //  Zephyr BME280 Driver assumes that sensor is not in sleep mode
@@ -680,7 +680,7 @@ static int bme280_fetch_baro(
   );
 
   //  Validate buffer size
-  struct sensor_event_baro baro_data;
+  struct sensor_baro baro_data;
   if (buflen != sizeof(baro_data)) { return -EINVAL; }
 
   //  Fetch the sensor data
@@ -706,7 +706,7 @@ static int bme280_fetch_humi(
   );
 
   //  Validate buffer size
-  struct sensor_event_humi humi_data;
+  struct sensor_humi humi_data;
   if (buflen != sizeof(humi_data)) { return -EINVAL; }
 
   //  Fetch the sensor data
@@ -962,9 +962,9 @@ humi0:
 int main(int argc, FAR char *argv[]) {
   ...
   //  Allocate buffer for Sensor Data.
-  //  len is Sensor Data size: sizeof(struct sensor_event_baro)
+  //  len is Sensor Data size: sizeof(struct sensor_baro)
   FAR char *buffer = calloc(1, len);</code></pre></div>
-<p>The app begins by allocating a buffer for the Sensor Data Struct: <strong>sensor_event_baro</strong> (Barometer) or <strong>sensor_event_humi</strong> (Humidity).</p>
+<p>The app begins by allocating a buffer for the Sensor Data Struct: <strong>sensor_baro</strong> (Barometer) or <strong>sensor_humi</strong> (Humidity).</p>
 <p>Next we open the Sensor Device: <strong>/dev/sensor/baro0</strong> (Barometer) or <strong>/dev/sensor/humi0</strong> (Humidity)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Open the Sensor Device.
   //  devname looks like &quot;/dev/sensor/baro0&quot;
@@ -972,15 +972,11 @@ int main(int argc, FAR char *argv[]) {
   if (fd &lt; 0) { /* Handle error */ ... }</code></pre></div>
 <p>We set the <a href="https://lupyuen.github.io/articles/bme280#standby-interval"><strong>Standby Interval</strong></a> and <strong>Batch Latency</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set Standby Interval
-  int ret = ioctl(fd, SNIOC_SET_INTERVAL, &amp;interval);
+  int ret = ioctl(fd, SNIOC_SET_INTERVAL, interval);
   if (ret &lt; 0) { /* Handle error */ ... }
 
   //  Set Batch Latency
-  ret = ioctl(fd, SNIOC_BATCH, &amp;latency);
-  if (ret &lt; 0) { /* Handle error */ ... }</code></pre></div>
-<p>We enable the sensor by switching to <a href="https://lupyuen.github.io/articles/bme280#power-management"><strong>Normal Power Mode</strong></a>…</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Enable Sensor and switch to Normal Power Mode
-  ret = ioctl(fd, SNIOC_ACTIVATE, 1);
+  ret = ioctl(fd, SNIOC_BATCH, latency);
   if (ret &lt; 0) { /* Handle error */ ... }</code></pre></div>
 <p>We prepare to <strong>poll our sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Prepare to poll the Sensor
@@ -1005,12 +1001,8 @@ int main(int argc, FAR char *argv[]) {
     }
   }</code></pre></div>
 <p>(We’ll see <strong>g_sensor_info</strong> and <strong>print</strong> in a while)</p>
-<p>Finally we disable the sensor and switch to <a href="https://lupyuen.github.io/articles/bme280#power-management"><strong>Low Power Mode</strong></a>…</p>
-<div class="example-wrap"><pre class="language-c"><code>  //  Disable Sensor and switch to Low Power Mode
-  ret = ioctl(fd, SNIOC_ACTIVATE, 0);
-  if (ret &lt; 0) { /* Handle error */ ... }
-
-  //  Close the Sensor Device and free the buffer
+<p>Finally we <strong>close the sensor</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  //  Close the Sensor Device and free the buffer
   close(fd);
   free(buffer);</code></pre></div>
 <p>Let’s talk about the printing of Sensor Data.</p>
@@ -1027,8 +1019,8 @@ g_sensor_info[idx]
 static void print_valf2(const char *buffer, const char *name) {
 
   //  Cast buffer as Barometer Sensor Data
-  struct sensor_event_baro *event = 
-    (struct sensor_event_baro *) buffer;
+  struct sensor_baro *event = 
+    (struct sensor_baro *) buffer;
 
   //  Print Pressure and Temperature
   printf(
@@ -1045,8 +1037,8 @@ static void print_valf(const char *buffer, const char *name) {
 
   //  Cast buffer as Proximity Sensor Data,
   //  which has same size as Humidity Sensor Data
-  struct sensor_event_prox *event = 
-    (struct sensor_event_prox *) buffer;
+  struct sensor_prox *event = 
+    (struct sensor_prox *) buffer;
 
   //  Print Humidity or Proximity
   printf(
@@ -1056,11 +1048,11 @@ static void print_valf(const char *buffer, const char *name) {
     event-&gt;proximity
   );
 }</code></pre></div>
-<p><em>But we’re printing Humidity, not Proximity… Why cast to sensor_event_prox?</em></p>
-<p>Yep we should cast to <strong>sensor_event_humi</strong> instead…</p>
+<p><em>But we’re printing Humidity, not Proximity… Why cast to sensor_prox?</em></p>
+<p>Yep we should cast to <strong>sensor_humi</strong> instead…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Cast buffer as Humidity Sensor Data
-struct sensor_event_humi *event = 
-  (struct sensor_event_humi *) buffer;</code></pre></div>
+struct sensor_humi *event = 
+  (struct sensor_humi *) buffer;</code></pre></div>
 <p>The Sensor Test App reuses the same function <strong>print_valf</strong> for printing both Humidity and Proximity Sensor Data. Which is OK because both structs contain the same field types.</p>
 <p><em>How is the Print Function defined for each Sensor Type?</em></p>
 <p>The Print Functions are defined in the Lookup Table <strong>g_sensor_info</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/bme280/testing/sensortest/sensortest.c#L77-L110">sensortest.c</a></p>
@@ -1069,12 +1061,12 @@ static const struct sensor_info g_sensor_info[] = {
   ...
   //  Print Barometer Sensor Data with print_valf2
   { print_valf2, 
-    sizeof(struct sensor_event_baro), 
+    sizeof(struct sensor_baro), 
     &quot;baro&quot; },
 
   //  Print Humidity Sensor Data with print_valf
   { print_valf,  
-    sizeof(struct sensor_event_humi), 
+    sizeof(struct sensor_humi), 
     &quot;humi&quot; },</code></pre></div>
 <p>For our own Sensor App we probably won’t need this Lookup Table, since we know which Sensor Type we’re using.</p>
 <p>(And we don’t need to cast our Sensor Data Structs too)</p>
