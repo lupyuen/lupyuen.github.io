@@ -1204,25 +1204,34 @@ This section describes the changes in the __NuttX Sensor API__ for Jul / Aug 202
 
     [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/bd9431f21f952b40dc3d5a10cbb786e4e1eb1a71)
 
-
 -   __Sensor Structs__ have been renamed from `sensor_event_*` to `sensor_*`
 
     [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/06e776d2e96e49c1f1b7594b2ff1d1c5617450a6)
 
--   __Activate / Deactivate Sensor SNIOC_ACTIVATE__ is no longer needed
+-   __Activate / Deactivate Sensor (SNIOC_ACTIVATE)__ is no longer needed
 
     [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/5064ad014d84989f6461da6720b8b53a9b29194c)
 
--   __Sensor Batch SNIOC_BATCH__ now accepts a Latency Value instead of a Pointer
+-   __Sensor Batch (SNIOC_BATCH)__ now accepts a Latency Value instead of a Pointer
 
     [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/5753856d345783383fedb7a8313b9b58b5cef5d3)
 
--   __Sensor Interval SNIOC_SET_INTERVAL__ now accepts an Interval Value instead of a Pointer
+-   __Sensor Interval (SNIOC_SET_INTERVAL)__ now accepts an Interval Value instead of a Pointer
 
     [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/783047f74d921917b55566a85c86361bf02b46b6)
 
 -   __SNIOC_SET_INTERVAL__ was previously defined twice with different values. This has been fixed.
 
     [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/62295db3a7dfdaed3fb11607c43f15a00b3e0523)
+
+Our BME280 Driver has also been updated for the new Sensor API...
+
+-   __Sensor Operations (sensor_ops_s)__ now include a Struct File parameter
+
+    [(See the changes)](https://github.com/lupyuen/bme280-nuttx/commit/30755ca105d741b44d8889485b5f209183fffe35)
+
+-   __Set Interval (bme280_set_interval)__ now accepts an unsigned long pointer (previously unsigned int pointer)
+
+    [(See the changes)](https://github.com/lupyuen/bme280-nuttx/commit/3923cf436886fd5260932d880d818b8b9cc4bc31)
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title2.jpg)
