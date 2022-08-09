@@ -46,11 +46,11 @@ For today we'll call this NuttX Driver for __Bosch BME280 Sensor__...
 
 The BME280 Driver exposes two __NuttX Sensor Devices__...
 
--   __Barometer Sensor:__ /dev/sensor/baro0
+-   __Barometer Sensor:__ /dev/sensor/sensor_baro0
 
     (For Temperature and Air Pressure)
 
--   __Humidity Sensor:__ /dev/sensor/humi0
+-   __Humidity Sensor:__ /dev/sensor/sensor_humi0
 
     (For Humidity)
 
@@ -62,7 +62,7 @@ We shall read both Sensor Devices to fetch the Sensor Data for __Temperature, Ai
 
 # Read Barometer Sensor
 
-Let's walk through the code to read the Temperature and Air Pressure from our __NuttX Barometer Sensor__ at "/dev/sensor/baro0"...
+Let's walk through the code to read the Temperature and Air Pressure from our __NuttX Barometer Sensor__ at "/dev/sensor/sensor_baro0"...
 
 -   Open Sensor Device
 
@@ -84,12 +84,12 @@ We begin by __opening the Sensor Device__: [sensortest.zig](https://github.com/l
 
 ```zig
 /// Read Pressure and Temperature from 
-/// Barometer Sensor "/dev/sensor/baro0"
+/// Barometer Sensor "/dev/sensor/sensor_baro0"
 fn test_sensor() !void {
 
   // Open the Sensor Device
   const fd = c.open(
-    "/dev/sensor/baro0",       // Path of Sensor Device
+    "/dev/sensor/sensor_baro0",       // Path of Sensor Device
     c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
   );
 ```
@@ -395,12 +395,12 @@ We read the __Humidity Sensor Data__ the exact same way as above, with a few twe
 
 ```zig
 /// Read Humidity from Humidity Sensor 
-/// "/dev/sensor/humi0"
+/// "/dev/sensor/sensor_humi0"
 fn test_sensor2() !void {
 
   // Open the Sensor Device
   const fd = c.open(
-    "/dev/sensor/humi0",       // Path of Sensor Device
+    "/dev/sensor/sensor_humi0",       // Path of Sensor Device
     c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
   );
 ```
@@ -926,7 +926,7 @@ This is how we test __any NuttX Sensor__, without rewriting our app...
 nsh> sensortest -n 1 baro0
 Zig Sensor Test
 test_multisensor
-SensorTest: Test /dev/sensor/baro0  with interval(1000000), latency(0)
+SensorTest: Test /dev/sensor/sensor_baro0  with interval(1000000), latency(0)
 value1:1007.65
 value2:27.68
 SensorTest: Received message: baro0, number:1/1
@@ -944,7 +944,7 @@ And this is how we read "humi0"...
 nsh> sensortest -n 1 humi0
 Zig Sensor Test
 test_multisensor
-SensorTest: Test /dev/sensor/humi0  with interval(1000000), latency(0)
+SensorTest: Test /dev/sensor/sensor_humi0  with interval(1000000), latency(0)
 value:78.91
 SensorTest: Received message: humi0, number:1/1
 ```
