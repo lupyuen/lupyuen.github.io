@@ -1238,4 +1238,6 @@ Our BME280 Driver has also been updated for the new Sensor API...
 
     [(See the changes)](https://github.com/lupyuen/bme280-nuttx/commit/3923cf436886fd5260932d880d818b8b9cc4bc31)
 
+As of Aug 2022, there are [__more breaking changes__](https://github.com/apache/incubator-nuttx/commits/master/drivers/sensors/sensor.c) to the NuttX Sensor API. We'll update this section when the API has settled down.
+
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title2.jpg)
