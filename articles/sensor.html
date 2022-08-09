@@ -161,8 +161,8 @@ fn test_sensor() !void {
 
   // Open the Sensor Device
   const fd = c.open(
-    &quot;/dev/sensor/sensor_baro0&quot;,       // Path of Sensor Device
-    c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+    &quot;/dev/sensor/sensor_baro0&quot;,  // Path of Sensor Device
+    c.O_RDONLY | c.O_NONBLOCK    // Open for read-only
   );</code></pre></div>
 <p><strong><code>open()</code></strong> should look familiar… On Linux we open Devices the same way.</p>
 <p><em>What’s “<code>!void</code>”?</em></p>
@@ -369,8 +369,8 @@ fn test_sensor2() !void {
 
   // Open the Sensor Device
   const fd = c.open(
-    &quot;/dev/sensor/sensor_humi0&quot;,       // Path of Sensor Device
-    c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+    &quot;/dev/sensor/sensor_humi0&quot;,  // Path of Sensor Device
+    c.O_RDONLY | c.O_NONBLOCK    // Open for read-only
   );</code></pre></div>
 <p>In the code above we changed the <strong>path of the Sensor Device</strong>.</p>
 <p>The Sensor Data Struct becomes <strong>sensor_humi</strong>…</p>
