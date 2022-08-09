@@ -71,11 +71,9 @@
 <li><a href="#close-sensor-device-deferred">2.2 Close Sensor Device (Deferred)</a><ul></ul></li>
 <li><a href="#set-standby-interval">2.3 Set Standby Interval</a><ul></ul></li>
 <li><a href="#set-batch-latency">2.4 Set Batch Latency</a><ul></ul></li>
-<li><a href="#enable-sensor">2.5 Enable Sensor</a><ul></ul></li>
-<li><a href="#poll-sensor">2.6 Poll Sensor</a><ul></ul></li>
-<li><a href="#read-sensor-data">2.7 Read Sensor Data</a><ul></ul></li>
-<li><a href="#print-sensor-data">2.8 Print Sensor Data</a><ul></ul></li>
-<li><a href="#disable-sensor">2.9 Disable Sensor</a><ul></ul></li></ul></li>
+<li><a href="#poll-sensor">2.5 Poll Sensor</a><ul></ul></li>
+<li><a href="#read-sensor-data">2.6 Read Sensor Data</a><ul></ul></li>
+<li><a href="#print-sensor-data">2.7 Print Sensor Data</a><ul></ul></li></ul></li>
 <li><a href="#read-humidity-sensor">3 Read Humidity Sensor</a><ul></ul></li>
 <li><a href="#import-nuttx-functions">4 Import NuttX Functions</a><ul></ul></li>
 <li><a href="#main-function">5 Main Function</a><ul></ul></li>
@@ -143,9 +141,6 @@
 <p>Set Batch Latency</p>
 </li>
 <li>
-<p>Enable Sensor</p>
-</li>
-<li>
 <p>Poll Sensor</p>
 </li>
 <li>
@@ -153,9 +148,6 @@
 </li>
 <li>
 <p>Print Sensor Data</p>
-</li>
-<li>
-<p>Disable Sensor</p>
 </li>
 <li>
 <p>Close Sensor Device</p>
@@ -261,29 +253,7 @@ fn test_sensor() !void {
     return error.BatchError;
   }</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65">(<strong>BatchError</strong> is defined here)</a></p>
-<h2 id="enable-sensor"><a href="#enable-sensor">2.5 Enable Sensor</a></h2>
-<p>This is how we <strong>enable our sensor</strong> before reading Sensor Data…</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Enable Sensor and switch to Normal Power Mode
-  ret = c.ioctl(
-    fd,                // Sensor Device
-    c.SNIOC_ACTIVATE,  // ioctl Command
-    @as(c_int, 1)      // Enable Sensor
-  );
-
-  // Check for error
-  if (ret &lt; 0 and errno() != c.ENOTSUP) {
-    std.log.err(&quot;Failed to enable sensor:{s}&quot;, .{ c.strerror(errno()) });
-    return error.EnableError;
-  }</code></pre></div>
-<p><em>Why the “@as(c_int, 1)”?</em></p>
-<p>As we’ve seen, Zig can <strong>infer the types</strong> of our variables and constants. (So we don’t need to specify the types ourselves)</p>
-<p>But <strong>ioctl()</strong> is declared in C as…</p>
-<div class="example-wrap"><pre class="language-c"><code>int ioctl(int fd, int req, ...);</code></pre></div>
-<p>Note that the Third Parameter <strong>doesn’t specify a type</strong> and Zig Compiler gets stumped.</p>
-<p>That’s why in Zig we write the Third Parameter as…</p>
-<div class="example-wrap"><pre class="language-zig"><code>@as(c_int, 1)</code></pre></div>
-<p>Which means that we pass the value <code>1</code> as a <strong>C Integer Type</strong>.</p>
-<h2 id="poll-sensor"><a href="#poll-sensor">2.6 Poll Sensor</a></h2>
+<h2 id="poll-sensor"><a href="#poll-sensor">2.5 Poll Sensor</a></h2>
 <p>After the enabling the sensor, we <strong>poll the sensor</strong> to check if Sensor Data is available…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Prepare to poll Sensor
   var fds = std.mem.zeroes(
@@ -299,7 +269,7 @@ fn test_sensor() !void {
 
     // Coming up: Read Sensor Data...</code></pre></div>
 <p>We’re finally ready to read the Sensor Data!</p>
-<h2 id="read-sensor-data"><a href="#read-sensor-data">2.7 Read Sensor Data</a></h2>
+<h2 id="read-sensor-data"><a href="#read-sensor-data">2.6 Read Sensor Data</a></h2>
 <p>We <strong>allocate a buffer</strong> (on the stack) to receive the Sensor Data…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Define the Sensor Data Type
     var sensor_data = std.mem.zeroes(
@@ -326,7 +296,7 @@ fn test_sensor() !void {
 <p>And convert the Pressure and Temperature from Floating-Point to <strong>Fixed-Point Numbers</strong>.</p>
 <p>Which are similar to Floating-Point Numbers, but truncated to <strong>2 Decimal Places</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(Why we use Fixed-Point Numbers)</a></p>
-<h2 id="print-sensor-data"><a href="#print-sensor-data">2.8 Print Sensor Data</a></h2>
+<h2 id="print-sensor-data"><a href="#print-sensor-data">2.7 Print Sensor Data</a></h2>
 <p>Now we have the Pressure and Temperature as Fixed-Point Numbers, let’s <strong>print the Sensor Data</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>      // Print the Sensor Data
       debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
@@ -372,21 +342,7 @@ fn test_sensor() !void {
 <p><a href="https://ziglearn.org/chapter-2/#formatting-specifiers">(More about Format Strings)</a></p>
 <p>In case we can’t read the Sensor Data, we write to the Error Log…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    } else { std.log.err(&quot;Sensor data incorrect size&quot;, .{}); }
-  } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }</code></pre></div><h2 id="disable-sensor"><a href="#disable-sensor">2.9 Disable Sensor</a></h2>
-<p>We finish by <strong>disabling the sensor</strong>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Disable Sensor and switch to Low Power Mode
-  ret = c.ioctl(
-    fd,                // Sensor Device
-    c.SNIOC_ACTIVATE,  // ioctl Command
-    @as(c_int, 0)      // Disable Sensor
-  );
-
-  // Check for error
-  if (ret &lt; 0) {
-    std.log.err(&quot;Failed to disable sensor:{s}&quot;, .{ c.strerror(errno()) });
-    return error.DisableError;
-  }
-}</code></pre></div>
+  } else { std.log.err(&quot;Sensor data not available&quot;, .{}); }</code></pre></div>
 <p>And we’re done reading the Temperature and Pressure from the NuttX Barometer Sensor!</p>
 <p><em>Have we forgotten to close the sensor?</em></p>
 <p>Remember earlier we did this…</p>
