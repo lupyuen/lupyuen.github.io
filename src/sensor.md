@@ -188,11 +188,11 @@ Let's assume that our sensor will measure Sensor Data __every 1 second__...
   const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
 
   // Set Standby Interval
-  var interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
+  const interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
   var ret = c.ioctl(
     fd,                  // Sensor Device
     SNIOC_SET_INTERVAL,  // ioctl Command
-    &interval            // Standby Interval
+    interval             // Standby Interval
   );
 ```
 
@@ -218,11 +218,11 @@ We set the __Batch Latency__, if it's needed by our sensor...
 
 ```zig
   // Set Batch Latency
-  var latency: c_uint = 0;  // No latency
+  const latency: c_uint = 0;  // No latency
   ret = c.ioctl(
     fd,             // Sensor Device
     c.SNIOC_BATCH,  // ioctl Command
-    &latency        // Batch Latency
+    latency         // Batch Latency
   );
 ```
 
