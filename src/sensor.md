@@ -70,15 +70,11 @@ Let's walk through the code to read the Temperature and Air Pressure from our __
 
 -   Set Batch Latency
 
--   Enable Sensor
-
 -   Poll Sensor
 
 -   Read Sensor Data
 
 -   Print Sensor Data
-
--   Disable Sensor
 
 -   Close Sensor Device
 
@@ -242,45 +238,6 @@ And we check for error...
 
 [(__BatchError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65)
 
-## Enable Sensor
-
-This is how we __enable our sensor__ before reading Sensor Data...
-
-```zig
-  // Enable Sensor and switch to Normal Power Mode
-  ret = c.ioctl(
-    fd,                // Sensor Device
-    c.SNIOC_ACTIVATE,  // ioctl Command
-    @as(c_int, 1)      // Enable Sensor
-  );
-
-  // Check for error
-  if (ret < 0 and errno() != c.ENOTSUP) {
-    std.log.err("Failed to enable sensor:{s}", .{ c.strerror(errno()) });
-    return error.EnableError;
-  }
-```
-
-_Why the "@as(c_int, 1)"?_
-
-As we've seen, Zig can __infer the types__ of our variables and constants. (So we don't need to specify the types ourselves)
-
-But __ioctl()__ is declared in C as...
-
-```c
-int ioctl(int fd, int req, ...);
-```
-
-Note that the Third Parameter __doesn't specify a type__ and Zig Compiler gets stumped.
-
-That's why in Zig we write the Third Parameter as...
-
-```zig
-@as(c_int, 1)
-```
-
-Which means that we pass the value `1` as a __C Integer Type__.
-
 ## Poll Sensor
 
 After the enabling the sensor, we __poll the sensor__ to check if Sensor Data is available...
@@ -403,26 +360,6 @@ In case we can't read the Sensor Data, we write to the Error Log...
 ```zig        
     } else { std.log.err("Sensor data incorrect size", .{}); }
   } else { std.log.err("Sensor data not available", .{}); }
-```
-
-## Disable Sensor
-
-We finish by __disabling the sensor__...
-
-```zig
-  // Disable Sensor and switch to Low Power Mode
-  ret = c.ioctl(
-    fd,                // Sensor Device
-    c.SNIOC_ACTIVATE,  // ioctl Command
-    @as(c_int, 0)      // Disable Sensor
-  );
-
-  // Check for error
-  if (ret < 0) {
-    std.log.err("Failed to disable sensor:{s}", .{ c.strerror(errno()) });
-    return error.DisableError;
-  }
-}
 ```
 
 And we're done reading the Temperature and Pressure from the NuttX Barometer Sensor!
