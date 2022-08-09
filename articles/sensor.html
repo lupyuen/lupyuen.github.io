@@ -987,20 +987,31 @@ pub fn floatToFixed(f: f32) struct { int: i32, frac: u8 } {
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/06e776d2e96e49c1f1b7594b2ff1d1c5617450a6">(See the changes)</a></p>
 </li>
 <li>
-<p><strong>Activate / Deactivate Sensor SNIOC_ACTIVATE</strong> is no longer needed</p>
+<p><strong>Activate / Deactivate Sensor (SNIOC_ACTIVATE)</strong> is no longer needed</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/5064ad014d84989f6461da6720b8b53a9b29194c">(See the changes)</a></p>
 </li>
 <li>
-<p><strong>Sensor Batch SNIOC_BATCH</strong> now accepts a Latency Value instead of a Pointer</p>
+<p><strong>Sensor Batch (SNIOC_BATCH)</strong> now accepts a Latency Value instead of a Pointer</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/5753856d345783383fedb7a8313b9b58b5cef5d3">(See the changes)</a></p>
 </li>
 <li>
-<p><strong>Sensor Interval SNIOC_SET_INTERVAL</strong> now accepts an Interval Value instead of a Pointer</p>
+<p><strong>Sensor Interval (SNIOC_SET_INTERVAL)</strong> now accepts an Interval Value instead of a Pointer</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/783047f74d921917b55566a85c86361bf02b46b6">(See the changes)</a></p>
 </li>
 <li>
 <p><strong>SNIOC_SET_INTERVAL</strong> was previously defined twice with different values. This has been fixed.</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/62295db3a7dfdaed3fb11607c43f15a00b3e0523">(See the changes)</a></p>
+</li>
+</ul>
+<p>Our BME280 Driver has also been updated for the new Sensor API…</p>
+<ul>
+<li>
+<p><strong>Sensor Operations (sensor_ops_s)</strong> now include a Struct File parameter</p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/commit/30755ca105d741b44d8889485b5f209183fffe35">(See the changes)</a></p>
+</li>
+<li>
+<p><strong>Set Interval (bme280_set_interval)</strong> now accepts an unsigned long pointer (previously unsigned int pointer)</p>
+<p><a href="https://github.com/lupyuen/bme280-nuttx/commit/3923cf436886fd5260932d880d818b8b9cc4bc31">(See the changes)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/sensor-title2.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
