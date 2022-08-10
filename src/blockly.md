@@ -1047,7 +1047,10 @@ npm run publish
 ## cp build/*compressed* .
 
 ## For WSL: We can copy the generated files to c:\blockly-zig-nuttx for testing on Windows
-## cp *compressed* /mnt/c/blockly-zig-nuttx
+## cp *compressed*      /mnt/c/blockly-zig-nuttx
+## cp demos/code/*.*    /mnt/c/blockly-zig-nuttx/demos/code
+## cp generators/zig.js /mnt/c/blockly-zig-nuttx/generators
+## cp generators/zig/*  /mnt/c/blockly-zig-nuttx/generators/zig
 ```
 
 This compiles and updates the Zig Code Generator in [zig_compressed.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/zig_compressed.js) and [zig_compressed.js.map](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/zig_compressed.js.map)
