@@ -144,6 +144,8 @@ Thus the Block above will generate this Zig code...
 const a: f32 = 123.45;
 ```
 
+__UPDATE:__ We have removed `f32` from all `const` declarations, replying on __Type Inference__ instead. This works better for supporting CBOR Messages. [(Like this)](https://twitter.com/MisterTechBlog/status/1557386117757906944)
+
 This is how we generate the code with a template (through __String Interpolation__): [generators/zig/variables.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/variables.js#L25-L32)
 
 ```javascript
