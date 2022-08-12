@@ -914,6 +914,7 @@ debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
 });</code></pre></div>
 <p>(More about <strong>floatToFixed</strong> in a while)</p>
 <p>(Someday we might simplify the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
+<p><strong>UPDATE:</strong> We no longer need to call <strong>floatToFixed</strong> when logging only one Floating-Point Number. The Debug Logger auto-converts it to Fixed-Point for us. <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L266-L294">(See this)</a></p>
 <p><em>What are “int” and “frac”?</em></p>
 <p>Our Fixed-Point Number has two Integer components…</p>
 <ul>
