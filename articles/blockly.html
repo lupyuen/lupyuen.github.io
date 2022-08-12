@@ -615,7 +615,7 @@ debug(&quot;temperature={}&quot;, .{
 <p><em>What’s floatToFixed?</em></p>
 <p>We call <strong>floatToFixed</strong> to convert a Floating-Point Number to a <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Number</strong></a> (2 decimal places) for printing.</p>
 <p>(We’ll see <strong>floatToFixed</strong> in a while)</p>
-<p><strong>UPDATE:</strong> We no longer need to call <strong>floatToFixed</strong> when logging only one Floating-Point Number. The Debug Logger auto-converts it to Fixed-Point for us. <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L266-L294">(See this)</a></p>
+<p><strong>UPDATE:</strong> We no longer need to call <strong>floatToFixed</strong> when printing only one Floating-Point Number. The Debug Logger auto-converts it to Fixed-Point for us. <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L266-L294">(See this)</a></p>
 <p><em>How do we represent Fixed-Point Numbers?</em></p>
 <p>Our Fixed-Point Number has two Integer components…</p>
 <ul>
