@@ -196,7 +196,7 @@ debug: a=1.23449996e+02</code></pre></div>
 <p>To keep things simple, we’ll handle Variables as <strong>Constants</strong>. And they shall be <strong>Floating-Point Numbers</strong>. (We’ll explain why)</p>
 <p>Thus the Block above will generate this Zig code…</p>
 <div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;</code></pre></div>
-<p><strong>UPDATE:</strong> We have removed <code>f32</code> from all <code>const</code> declarations, replying on <strong>Type Inference</strong> instead. This works better for supporting CBOR Messages. <a href="https://twitter.com/MisterTechBlog/status/1557386117757906944">(Like so)</a></p>
+<p><strong>UPDATE:</strong> We have removed <code>f32</code> from all <code>const</code> declarations, replying on <strong>Type Inference</strong> instead. This works better for supporting CBOR Messages. <a href="https://twitter.com/MisterTechBlog/status/1557857587667775489">(Like so)</a></p>
 <p>This is how we generate the code with a template (through <strong>String Interpolation</strong>): <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/variables.js#L25-L32">generators/zig/variables.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig[&#39;variables_set&#39;] = function(block) {
   // Variable setter.
@@ -556,6 +556,9 @@ const temperature: f32 = blk: {
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>This has been a fun experiment with Blockly. I hope we’ll extend it to make it more accessible to <strong>Zig Learners</strong>!</p>
 <p>I’ll continue to customise Blockly for <strong>NuttX Sensors</strong>. Hopefully we’ll create <strong>IoT Sensor Apps</strong> the drag-n-drop way, real soon!</p>
+<ul>
+<li><a href="https://twitter.com/MisterTechBlog/status/1557857587667775489"><strong>Follow the updates on Twitter</strong></a></li>
+</ul>
 <p>Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
 <ul>
 <li>
