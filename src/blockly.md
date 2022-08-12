@@ -757,6 +757,8 @@ We call __floatToFixed__ to convert a Floating-Point Number to a [__Fixed-Point 
 
 (We'll see __floatToFixed__ in a while)
 
+__UPDATE:__ We no longer need to call __floatToFixed__ when logging only one Floating-Point Number. The Debug Logger auto-converts it to Fixed-Point for us. [(See this)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L266-L294)
+
 _How do we represent Fixed-Point Numbers?_
 
 Our Fixed-Point Number has two Integer components...

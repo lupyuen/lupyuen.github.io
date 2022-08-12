@@ -1134,6 +1134,8 @@ debug("pressure:{}.{:0>2}", .{
 
 (Someday we might simplify the printing with [__Custom Formatting__](https://ziglearn.org/chapter-2/#formatting))
 
+__UPDATE:__ We no longer need to call __floatToFixed__ when logging only one Floating-Point Number. The Debug Logger auto-converts it to Fixed-Point for us. [(See this)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L266-L294)
+
 _What are "int" and "frac"?_
 
 Our Fixed-Point Number has two Integer components...
