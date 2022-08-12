@@ -144,7 +144,7 @@ Thus the Block above will generate this Zig code...
 const a: f32 = 123.45;
 ```
 
-__UPDATE:__ We have removed `f32` from all `const` declarations, replying on __Type Inference__ instead. This works better for supporting CBOR Messages. [(Like so)](https://twitter.com/MisterTechBlog/status/1557386117757906944)
+__UPDATE:__ We have removed `f32` from all `const` declarations, replying on __Type Inference__ instead. This works better for supporting CBOR Messages. [(Like so)](https://twitter.com/MisterTechBlog/status/1557857587667775489)
 
 This is how we generate the code with a template (through __String Interpolation__): [generators/zig/variables.js](https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/variables.js#L25-L32)
 
@@ -693,6 +693,8 @@ When our Custom Blocks are done, we're all set to create IoT Sensor Apps with Bl
 This has been a fun experiment with Blockly. I hope we'll extend it to make it more accessible to __Zig Learners__!
 
 I'll continue to customise Blockly for __NuttX Sensors__. Hopefully we'll create __IoT Sensor Apps__ the drag-n-drop way, real soon!
+
+-   [__Follow the updates on Twitter__](https://twitter.com/MisterTechBlog/status/1557857587667775489)
 
 Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL...
 
