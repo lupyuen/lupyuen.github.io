@@ -20,9 +20,367 @@ And learn how how we ended up here...
 
 -   [__Watch the Demo on YouTube__](https://youtu.be/192ZKA-1OqY)
 
-# Zig Sensor App
+# Read Sensor Data
 
 TODO
+
+With Zig Generics and `comptime`, we can greatly simplify the reading of Sensor Data...
+
+```zig
+// Read the Temperature
+const temperature: f32 = try sen.readSensor(
+    c.struct_sensor_baro,       // Sensor Data Struct to be read
+    "temperature",              // Sensor Data Field to be returned
+    "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+);
+
+// Print the Temperature
+debug("temperature={}", .{ floatToFixed(temperature) });
+```
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/master/visual.zig#L15-L62)
+
+Here's the implementation of `readSensor`...
+
+https://github.com/lupyuen/visual-zig-nuttx/blob/1bb1c69ea4a9310e42b149e04ac26a7e4a1f4b58/sensor.zig#L34-L108
+
+Note that the Sensor Data Struct Type and the Sensor Data Field are declared as `comptime`...
+
+```zig
+/// Read a Sensor and return the Sensor Data
+pub fn readSensor(
+    comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
+    comptime field_name: []const u8,  // Sensor Data Field to be returned, like "temperature"
+    device_path: []const u8           // Path of Sensor Device, like "/dev/sensor/sensor_baro0"
+) !f32 { ...
+```
+
+Which means that the values will be substituted at Compile-Time. (Works like a C Macro)
+
+We can then refer to the Sensor Data Struct `sensor_baro` like this...
+
+```zig
+    // Define the Sensor Data Type
+    var sensor_data = std.mem.zeroes(
+        SensorType
+    );
+```
+
+And return a field `temperature` like this...
+
+```zig
+    // Return the Sensor Data Field
+    return @field(sensor_data, field_name);
+```
+
+Thus this program...
+
+https://github.com/lupyuen/visual-zig-nuttx/blob/a7404eae71dc37850e323848180414aa6ef7e0f7/visual.zig#L27-L61
+
+Produces this output...
+
+```text
+NuttShell (NSH) NuttX-10.3.0
+nsh> sensortest visual
+Zig Sensor Test
+Start main
+...
+temperature=30.18
+pressure=1007.69
+humidity=68.67
+End main
+```
+
+# CBOR Encoding
+
+TODO
+
+Blockly will emit the Zig code below for a typical IoT Sensor App: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
+```zig
+// Read Temperature from BME280 Sensor
+const temperature = try sen.readSensor(  // Read BME280 Sensor
+    c.struct_sensor_baro,       // Sensor Data Struct
+    "temperature",              // Sensor Data Field
+    "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+);
+
+// Read Pressure from BME280 Sensor
+const pressure = try sen.readSensor(  // Read BME280 Sensor
+    c.struct_sensor_baro,       // Sensor Data Struct
+    "pressure",                 // Sensor Data Field
+    "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+);
+
+// Read Humidity from BME280 Sensor
+const humidity = try sen.readSensor(  // Read BME280 Sensor
+    c.struct_sensor_humi,       // Sensor Data Struct
+    "humidity",                 // Sensor Data Field
+    "/dev/sensor/sensor_humi0"  // Path of Sensor Device
+);
+
+// Compose CBOR Message with Temperature, Pressure and Humidity
+const msg = try composeCbor(.{
+    "t", temperature,
+    "p", pressure,
+    "h", humidity,
+});
+
+// Transmit message to LoRaWAN
+try transmitLorawan(msg);
+```
+
+This reads the Temperature, Pressure and Humidity from BME280 Sensor, composes a CBOR Message that's encoded with the Sensor Data, and transmits the CBOR Message to LoRaWAN.
+
+_`composeCbor` will work for a variable number of arguments? Strings as well as numbers?_
+
+Yep, here's the implementation of `composeCbor`: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108)
+
+```zig
+/// TODO: Compose CBOR Message with Key-Value Pairs
+/// https://lupyuen.github.io/articles/cbor2
+fn composeCbor(args: anytype) !CborMessage {
+    debug("composeCbor", .{});
+    comptime {
+        assert(args.len % 2 == 0);  // Missing Key or Value
+    }
+
+    // Process each field...
+    comptime var i: usize = 0;
+    var msg = CborMessage{};
+    inline while (i < args.len) : (i += 2) {
+
+        // Get the key and value
+        const key   = args[i];
+        const value = args[i + 1];
+
+        // Print the key and value
+        debug("  {s}: {}", .{
+            @as([]const u8, key),
+            floatToFixed(value)
+        });
+
+        // Format the message for testing
+        var slice = std.fmt.bufPrint(
+            msg.buf[msg.len..], 
+            "{s}:{},",
+            .{
+                @as([]const u8, key),
+                floatToFixed(value)
+            }
+        ) catch { _ = std.log.err("Error: buf too small", .{}); return error.Overflow; };
+        msg.len += slice.len;
+    }
+    debug("  msg={s}", .{ msg.buf[0..msg.len] });
+    return msg;
+}
+
+/// TODO: CBOR Message
+/// https://lupyuen.github.io/articles/cbor2
+const CborMessage = struct {
+    buf: [256]u8 = undefined,  // Limit to 256 chars
+    len: usize = 0,
+};
+```
+
+Note that `composeCbor` is declared as `anytype`...
+
+```zig
+fn composeCbor(args: anytype) { ...
+```
+
+That's why `composeCbor` accepts a variable number of arguments with different types.
+
+To handle each argument, this `inline` / `comptime` loop is unrolled at Compile-Time...
+
+```zig
+    // Process each field...
+    comptime var i: usize = 0;
+    inline while (i < args.len) : (i += 2) {
+
+        // Get the key and value
+        const key   = args[i];
+        const value = args[i + 1];
+
+        // Print the key and value
+        debug("  {s}: {}", .{
+            @as([]const u8, key),
+            floatToFixed(value)
+        });
+        ...
+    }
+```
+
+_What happens if we omit a Key or a Value when calling `composeCbor`?_
+
+This `comptime` assertion check will fail at Compile-Time...
+
+```zig
+comptime {
+    assert(args.len % 2 == 0);  // Missing Key or Value
+}
+```
+
+# Custom Block
+
+TODO
+
+Let's create a Custom Block in Blockly for our Bosch BME280 Sensor...
+
+![BME280 Sensor Block](https://lupyuen.github.io/images/visual-block1.jpg)
+
+The Blocks above will generate this Zig code to read the Temperature from the BME280 Sensor...
+
+```zig
+// Read the Temperature from BME280 Sensor
+const temperature = try sen.readSensor(  // Read BME280 Sensor
+  c.struct_sensor_baro,       // Sensor Data Struct
+  "temperature",              // Sensor Data Field
+  "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+);
+
+// Print the Temperature
+debug("temperature={}", .{ temperature });
+```
+
+[(`readSensor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#zig-generics)
+
+# Custom Extension
+
+TODO
+
+To test our Custom Extension for Compose Message, let's build a Complex Sensor App that will read Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN...
+
+[lupyuen3.github.io/blockly-zig-nuttx/demos/code](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+
+![Complex Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
+
+The Blocks above will emit this Zig program...
+
+```zig
+/// Main Function
+pub fn main() !void {
+
+  // Every 10 seconds...
+  while (true) {
+    const temperature = try sen.readSensor(  // Read BME280 Sensor
+      c.struct_sensor_baro,       // Sensor Data Struct
+      "temperature",              // Sensor Data Field
+      "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+    );
+    debug("temperature={}", .{ temperature });
+
+    const pressure = try sen.readSensor(  // Read BME280 Sensor
+      c.struct_sensor_baro,       // Sensor Data Struct
+      "pressure",                 // Sensor Data Field
+      "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+    );
+    debug("pressure={}", .{ pressure });
+
+    const humidity = try sen.readSensor(  // Read BME280 Sensor
+      c.struct_sensor_humi,       // Sensor Data Struct
+      "humidity",                 // Sensor Data Field
+      "/dev/sensor/sensor_humi0"  // Path of Sensor Device
+    );
+    debug("humidity={}", .{ humidity });
+
+    const msg = try composeCbor(.{  // Compose CBOR Message
+      "t", temperature,
+      "p", pressure,
+      "h", humidity,
+    });
+
+    // Transmit message to LoRaWAN
+    try transmitLorawan(msg);
+
+    // Wait 10 seconds
+    _ = c.sleep(10);
+  }
+}
+```
+
+[(`composeCbor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#cbor-encoding)
+
+Copy the contents of the Main Function and paste here...
+
+[visual-zig-nuttx/blob/main/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
+The generated Zig code should correctly read the Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN...
+
+```text
+NuttShell (NSH) NuttX-10.3.0
+nsh> sensortest visual
+Zig Sensor Test
+Start main
+
+temperature=31.05
+pressure=1007.44
+humidity=71.49
+composeCbor
+  t: 31.05
+  p: 1007.44
+  h: 71.49
+  msg=t:31.05,p:1007.44,h:71.49,
+transmitLorawan
+  msg=t:31.05,p:1007.44,h:71.49,
+
+temperature=31.15
+pressure=1007.40
+humidity=70.86
+composeCbor
+  t: 31.15
+  p: 1007.40
+  h: 70.86
+  msg=t:31.15,p:1007.40,h:70.86,
+transmitLorawan
+  msg=t:31.15,p:1007.40,h:70.86,
+
+temperature=31.16
+pressure=1007.45
+humidity=70.42
+composeCbor
+  t: 31.16
+  p: 1007.45
+  h: 70.42
+  msg=t:31.16,p:1007.45,h:70.42,
+transmitLorawan
+  msg=t:31.16,p:1007.45,h:70.42,
+
+temperature=31.16
+pressure=1007.47
+humidity=70.39
+composeCbor
+  t: 31.16
+  p: 1007.47
+  h: 70.39
+  msg=t:31.16,p:1007.47,h:70.39,
+transmitLorawan
+  msg=t:31.16,p:1007.47,h:70.39,
+
+temperature=31.19
+pressure=1007.45
+humidity=70.35
+composeCbor
+  t: 31.19
+  p: 1007.45
+  h: 70.35
+  msg=t:31.19,p:1007.45,h:70.35,
+transmitLorawan
+  msg=t:31.19,p:1007.45,h:70.35,
+
+temperature=31.20
+pressure=1007.42
+humidity=70.65
+composeCbor
+  t: 31.20
+  p: 1007.42
+  h: 70.65
+  msg=t:31.20,p:1007.42,h:70.65,
+transmitLorawan
+  msg=t:31.20,p:1007.42,h:70.65,
+```
+
+(Tested with NuttX and BME280 on BL602)
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
 
