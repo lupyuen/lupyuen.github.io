@@ -99,14 +99,14 @@
 <p>TODO</p>
 <p>With Zig Generics and <code>comptime</code>, we can greatly simplify the reading of Sensor Data…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature
-const temperature: f32 = try sen.readSensor(
+const temperature = try sen.readSensor(
     c.struct_sensor_baro,       // Sensor Data Struct to be read
     &quot;temperature&quot;,              // Sensor Data Field to be returned
     &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
 );
 
 // Print the Temperature
-debug(&quot;temperature={}&quot;, .{ floatToFixed(temperature) });</code></pre></div>
+debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/master/visual.zig#L15-L62">(Source)</a></p>
 <p>Here’s the implementation of <code>readSensor</code>…</p>
 <p>https://github.com/lupyuen/visual-zig-nuttx/blob/1bb1c69ea4a9310e42b149e04ac26a7e4a1f4b58/sensor.zig#L34-L108</p>
