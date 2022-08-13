@@ -65,13 +65,168 @@
 
     <h1 class="title">Visual Programming with Zig and NuttX Sensors</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li>
-<li><a href="#notes">2 Notes</a><ul></ul></li></ul></nav><p>📝 <em>20 Aug 2022</em></p>
+<li><a href="#zig-sensor-app">1 Zig Sensor App</a><ul></ul></li>
+<li><a href="#connect-bme280-sensor">2 Connect BME280 Sensor</a><ul></ul></li>
+<li><a href="#compile-zig-app">3 Compile Zig App</a><ul></ul></li>
+<li><a href="#run-zig-app">4 Run Zig App</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
+<li><a href="#notes">6 Notes</a><ul></ul></li></ul></nav><p>📝 <em>20 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/visual-title.jpg" alt="Visual Programming with Zig and NuttX Sensors on Blockly" /></p>
 <p><em>What if we could drag-and-drop NuttX Sensors… To create IoT Sensor Apps?</em></p>
 <p>Let’s find out!</p>
+<p>TODO: And we’ll run it on Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a>.</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx"><strong>lupyuen/visual-zig-nuttx</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen3/blockly-zig-nuttx"><strong>lupyuen3/blockly-zig-nuttx</strong></a></p>
+</li>
+</ul>
+<p>And learn how how we ended up here…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/"><strong>Blockly with Zig (Work in Progress)</strong></a></p>
+</li>
+<li>
+<p><a href="https://youtu.be/192ZKA-1OqY"><strong>Watch the Demo on YouTube</strong></a></p>
+</li>
+</ul>
+<h1 id="zig-sensor-app"><a href="#zig-sensor-app">1 Zig Sensor App</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
+<h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">2 Connect BME280 Sensor</a></h1>
+<p>TODO</p>
+<p>For testing the Zig Sensor App, we connect the BME280 Sensor (I2C) to Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a> (pic above)…</p>
+<div><table><thead><tr><th style="text-align: center">BL602 Pin</th><th style="text-align: center">BME280 Pin</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong><code>GPIO 1</code></strong></td><td style="text-align: center"><code>SDA</code></td><td style="text-align: left">Green</td></tr>
+<tr><td style="text-align: center"><strong><code>GPIO 2</code></strong></td><td style="text-align: center"><code>SCL</code></td><td style="text-align: left">Blue</td></tr>
+<tr><td style="text-align: center"><strong><code>3V3</code></strong></td><td style="text-align: center"><code>3.3V</code></td><td style="text-align: left">Red</td></tr>
+<tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td><td style="text-align: left">Black</td></tr>
+</tbody></table>
+</div>
+<p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98">board.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* I2C Configuration */
+#define BOARD_I2C_SCL \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
+  GPIO_PIN2)
+#define BOARD_I2C_SDA \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
+  GPIO_PIN1)</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
+<h1 id="compile-zig-app"><a href="#compile-zig-app">3 Compile Zig App</a></h1>
+<p>TODO</p>
+<p>Below are the steps to <strong>compile our Zig Sensor App</strong> for Apache NuttX RTOS and BL602 RISC-V SoC.</p>
+<p>First we download the latest version of <strong>Zig Compiler</strong> (0.10.0 or later), extract it and add to PATH…</p>
+<ul>
+<li><a href="https://ziglang.org/download/"><strong>Zig Compiler Downloads</strong></a></li>
+</ul>
+<p>Then we download and compile <strong>Apache NuttX RTOS</strong> for BL602…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#build-nuttx"><strong>“Build NuttX”</strong></a></p>
+</li>
+</ul>
+<p>Check that the following have been enabled in the NuttX Build…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>I2C0 Port</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>I2C Character Driver</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>BME280 Driver</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>Sensor Driver Test App</strong></a></p>
+</li>
+</ul>
+<p>Remember to set <a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>“Sensor Driver Test Stack Size”</strong></a> to <strong>4096</strong>.</p>
+<p>(Because our Zig App needs additional Stack Space)</p>
+<p>After building NuttX, we download and compile our <strong>Zig Sensor App</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Download our Zig Sensor App for NuttX
+git clone --recursive https://github.com/lupyuen/visual-zig-nuttx
+cd visual-zig-nuttx
+
+#  Compile the Zig App for BL602
+#  (RV32IMACF with Hardware Floating-Point)
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+zig build-obj \
+  --verbose-cimport \
+  -target riscv32-freestanding-none \
+  -mcpu=baseline_rv32-d \
+  -isystem &quot;$HOME/nuttx/nuttx/include&quot; \
+  -I &quot;$HOME/nuttx/apps/include&quot; \
+  sensortest.zig</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/8d7a2a360bc4d14264c77f82da58b3dc">(See the Compile Log)</a></p>
+<p>Note that <strong>target</strong> and <strong>mcpu</strong> are specific to BL602…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/zig#zig-target"><strong>“Zig Target”</strong></a></li>
+</ul>
+<p><em>How did we get the Compiler Options <code>-isystem</code> and <code>-I</code>?</em></p>
+<p>Remember that we’ll link our Compiled Zig App into the NuttX Firmware.</p>
+<p>Hence the <strong>Zig Compiler Options must be the same</strong> as the GCC Options used to compile NuttX.</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(See the GCC Options for NuttX)</a></p>
+<p>Next comes a quirk specific to BL602: We must <strong>patch the ELF Header</strong> from Software Floating-Point ABI to Hardware Floating-Point ABI…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Patch the ELF Header of `sensortest.o` from 
+#  Soft-Float ABI to Hard-Float ABI
+xxd -c 1 sensortest.o \
+  | sed &#39;s/00000024: 01/00000024: 03/&#39; \
+  | xxd -r -c 1 - sensortest2.o
+cp sensortest2.o sensortest.o</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(More about this)</a></p>
+<p>Finally we inject our <strong>Compiled Zig App</strong> into the NuttX Project Directory and link it into the <strong>NuttX Firmware</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Copy the compiled app to NuttX and overwrite `sensortest.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+cp sensortest.o $HOME/nuttx/apps/testing/sensortest/sensortest*.o
+
+#  Build NuttX to link the Zig Object from `sensortest.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
+make
+
+#  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
+mkdir /mnt/c/blflash
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
+<p>We’re ready to run our Zig App!</p>
+<p><img src="https://lupyuen.github.io/images/sensor-run1a.png" alt="Zig Sensor App" /></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#read-barometer-sensor">(Source)</a></p>
+<h1 id="run-zig-app"><a href="#run-zig-app">4 Run Zig App</a></h1>
+<p>TODO</p>
+<p>Follow these steps to <strong>flash and boot NuttX</strong> (with our Zig App inside) on BL602…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#flash-nuttx"><strong>“Flash NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx#run-nuttx"><strong>“Run NuttX”</strong></a></p>
+</li>
+</ul>
+<p>In the NuttX Shell, enter this command to start our Zig App…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sensortest test</code></pre></div>
+<p>Which reads the <strong>Air Pressure and Temperature</strong> from the BME280 Barometer Sensor…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test
+Zig Sensor Test
+test_sensor
+pressure:1007.66
+temperature:27.70</code></pre></div>
+<p>This says that the Air Pressure is <strong>1,007.66 millibars</strong> and the Temperature is <strong>27.70 °C</strong>.</p>
+<p>Then enter this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>sensortest test2</code></pre></div>
+<p>Which reads the <strong>Humidity</strong> from the BME280 Humidity Sensor…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test2
+Zig Sensor Test
+test_sensor2
+humidity:78.81</code></pre></div>
+<p>This says that the Relative Humidity is <strong>78.81 %</strong>.</p>
+<p>Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctly from BME280 Sensor yay!</p>
+<p><img src="https://lupyuen.github.io/images/sensor-run2a.png" alt="Multiple Sensors" /></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up">(Source)</a></p>
+<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
 <ul>
@@ -102,7 +257,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/visual.md"><strong>lupyuen.github.io/src/visual.md</strong></a></p>
-<h1 id="notes"><a href="#notes">2 Notes</a></h1>
+<h1 id="notes"><a href="#notes">6 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1557857587667775489"><strong>this Twitter Thread</strong></a></li>
 </ol>
