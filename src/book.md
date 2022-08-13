@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _4 Aug 2022_
+📝 _13 Aug 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(59 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(60 articles and still growing!)__
 
 The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602__.
 
@@ -147,6 +147,8 @@ For __Apache NuttX RTOS__
 -   ["Apache NuttX Driver for BME280 Sensor: Ported from Zephyr OS"](https://lupyuen.github.io/articles/bme280)
 
 -   ["Read NuttX Sensor Data with Zig"](https://lupyuen.github.io/articles/sensor)
+
+-   ["Visual Programming with Zig and NuttX Sensors"](https://lupyuen.github.io/articles/visual)
 
 -   ["NuttX Touch Panel Driver for PineDio Stack BL604"](https://lupyuen.github.io/articles/touch)
 
@@ -280,6 +282,8 @@ For __Apache NuttX RTOS__
 
 -   ["Read NuttX Sensor Data with Zig"](https://lupyuen.github.io/articles/sensor)
 
+-   ["Visual Programming with Zig and NuttX Sensors"](https://lupyuen.github.io/articles/visual)
+
 For __BL602 IoT SDK__
 
 -   ["PineCone BL602 Talks LoRaWAN"](https://lupyuen.github.io/articles/lorawan)
@@ -338,6 +342,8 @@ For __Apache NuttX RTOS__
 
 -   ["Zig Visual Programming with Blockly"](https://lupyuen.github.io/articles/blockly)
 
+-   ["Visual Programming with Zig and NuttX Sensors"](https://lupyuen.github.io/articles/visual)
+
 -   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
 
 ![Rust on BL602](https://lupyuen.github.io/images/book-rust.jpg)
@@ -387,6 +393,24 @@ For __BL602 IoT SDK__
 -   ["uLisp and Blockly on PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/lisp)
 
 -   ["Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly"](https://lupyuen.github.io/articles/wasm)
+
+![Visual Programming on BL602](https://lupyuen.github.io/images/book-visual.jpg)
+
+# Visual Programming on BL602
+
+Let's code BL602 and BL604 the drag-and-drop way, with Blockly.
+
+For __Apache NuttX RTOS__
+
+-   ["Zig Visual Programming with Blockly"](https://lupyuen.github.io/articles/blockly)
+
+-   ["Visual Programming with Zig and NuttX Sensors"](https://lupyuen.github.io/articles/visual)
+
+For __BL602 IoT SDK__
+
+-   ["Rust on RISC-V BL602: Rhai Scripting"](https://lupyuen.github.io/articles/rhai)
+
+-   ["uLisp and Blockly on PineCone BL602 RISC-V Board"](https://lupyuen.github.io/articles/lisp)
 
 ![Machine Learning on BL602](https://lupyuen.github.io/images/book-ml.jpg)
 
