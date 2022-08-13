@@ -84,16 +84,17 @@
 <li><a href="#rust-on-bl602">17 Rust on BL602</a><ul></ul></li>
 <li><a href="#basic-on-bl602">18 BASIC on BL602</a><ul></ul></li>
 <li><a href="#lisp-on-bl602">19 Lisp on BL602</a><ul></ul></li>
-<li><a href="#machine-learning-on-bl602">20 Machine Learning on BL602</a><ul></ul></li>
-<li><a href="#troubleshooting-bl602">21 Troubleshooting BL602</a><ul></ul></li>
-<li><a href="#bootloader-for-bl602">22 Bootloader for BL602</a><ul></ul></li>
-<li><a href="#openocd-on-bl602">23 OpenOCD on BL602</a><ul></ul></li>
-<li><a href="#gdb-and-vscode-on-bl602">24 GDB and VSCode on BL602</a><ul></ul></li>
-<li><a href="#pinedio-stack-bl604">25 PineDio Stack BL604</a><ul></ul></li>
-<li><a href="#bl706-audio-video-board">26 BL706 Audio Video Board</a><ul></ul></li>
-<li><a href="#mynewt-on-bl602">27 Mynewt on BL602</a><ul></ul></li>
-<li><a href="#whats-next">28 What’s Next</a><ul></ul></li>
-<li><a href="#about-the-author">29 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>4 Aug 2022</em></p>
+<li><a href="#visual-programming-on-bl602">20 Visual Programming on BL602</a><ul></ul></li>
+<li><a href="#machine-learning-on-bl602">21 Machine Learning on BL602</a><ul></ul></li>
+<li><a href="#troubleshooting-bl602">22 Troubleshooting BL602</a><ul></ul></li>
+<li><a href="#bootloader-for-bl602">23 Bootloader for BL602</a><ul></ul></li>
+<li><a href="#openocd-on-bl602">24 OpenOCD on BL602</a><ul></ul></li>
+<li><a href="#gdb-and-vscode-on-bl602">25 GDB and VSCode on BL602</a><ul></ul></li>
+<li><a href="#pinedio-stack-bl604">26 PineDio Stack BL604</a><ul></ul></li>
+<li><a href="#bl706-audio-video-board">27 BL706 Audio Video Board</a><ul></ul></li>
+<li><a href="#mynewt-on-bl602">28 Mynewt on BL602</a><ul></ul></li>
+<li><a href="#whats-next">29 What’s Next</a><ul></ul></li>
+<li><a href="#about-the-author">30 About the Author</a><ul></ul></li></ul></nav><p>📝 <em>13 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/book-title.jpg" alt="PineCone BL602 RISC-V Board with Grove E-Ink Display" /></p>
 <p><em>PineCone BL602 RISC-V Board with Grove E-Ink Display</em></p>
 <p>Is there a book about the <strong>BL602 / BL604 SoC</strong> (RISC-V, WiFi and Bluetooth LE) that…</p>
@@ -109,7 +110,7 @@
 </li>
 </ol>
 <p><em>You’re reading the book right now!</em></p>
-<p>Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. <strong>(59 articles and still growing!)</strong></p>
+<p>Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. <strong>(60 articles and still growing!)</strong></p>
 <p>The programs in these articles have been tested on <strong>PineDio Stack BL604</strong> and <strong>PineCone BL602</strong>, but they should work on other <strong>BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602</strong>.</p>
 <p>Many thanks to <strong>Pine64</strong> for supporting my work on BL602 Open Source Education! Thanks also to <strong>Bouffalo Lab</strong> for the encouraging notes.</p>
 <p>If you find this book useful… <a href="https://github.com/sponsors/lupyuen"><strong>please sponsor me a coffee</strong></a>. Thank you! 🙏 😀</p>
@@ -257,6 +258,9 @@
 <p><a href="https://lupyuen.github.io/articles/sensor">“Read NuttX Sensor Data with Zig”</a></p>
 </li>
 <li>
+<p><a href="https://lupyuen.github.io/articles/visual">“Visual Programming with Zig and NuttX Sensors”</a></p>
+</li>
+<li>
 <p><a href="https://lupyuen.github.io/articles/touch">“NuttX Touch Panel Driver for PineDio Stack BL604”</a></p>
 </li>
 <li>
@@ -390,6 +394,9 @@
 <li>
 <p><a href="https://lupyuen.github.io/articles/sensor">“Read NuttX Sensor Data with Zig”</a></p>
 </li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/visual">“Visual Programming with Zig and NuttX Sensors”</a></p>
+</li>
 </ul>
 <p>For <strong>BL602 IoT SDK</strong></p>
 <ul>
@@ -470,6 +477,9 @@
 <p><a href="https://lupyuen.github.io/articles/blockly">“Zig Visual Programming with Blockly”</a></p>
 </li>
 <li>
+<p><a href="https://lupyuen.github.io/articles/visual">“Visual Programming with Zig and NuttX Sensors”</a></p>
+</li>
+<li>
 <p><a href="https://lupyuen.github.io/articles/lvgl">“Build an LVGL Touchscreen App with Zig”</a></p>
 </li>
 </ul>
@@ -525,15 +535,36 @@
 <p><a href="https://lupyuen.github.io/articles/wasm">“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/book-visual.jpg" alt="Visual Programming on BL602" /></p>
+<h1 id="visual-programming-on-bl602"><a href="#visual-programming-on-bl602">20 Visual Programming on BL602</a></h1>
+<p>Let’s code BL602 and BL604 the drag-and-drop way, with Blockly.</p>
+<p>For <strong>Apache NuttX RTOS</strong></p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/blockly">“Zig Visual Programming with Blockly”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/visual">“Visual Programming with Zig and NuttX Sensors”</a></p>
+</li>
+</ul>
+<p>For <strong>BL602 IoT SDK</strong></p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/rhai">“Rust on RISC-V BL602: Rhai Scripting”</a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lisp">“uLisp and Blockly on PineCone BL602 RISC-V Board”</a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/book-ml.jpg" alt="Machine Learning on BL602" /></p>
-<h1 id="machine-learning-on-bl602"><a href="#machine-learning-on-bl602">20 Machine Learning on BL602</a></h1>
+<h1 id="machine-learning-on-bl602"><a href="#machine-learning-on-bl602">21 Machine Learning on BL602</a></h1>
 <p>How we run <strong>TensorFlow Lite</strong> on BL602 and BL604 to create a Glowing LED.</p>
 <p>For <strong>BL602 IoT SDK</strong></p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tflite">“Machine Learning on RISC-V BL602 with TensorFlow Lite”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-troubleshoot.jpg" alt="Troubleshooting BL602" /></p>
-<h1 id="troubleshooting-bl602"><a href="#troubleshooting-bl602">21 Troubleshooting BL602</a></h1>
+<h1 id="troubleshooting-bl602"><a href="#troubleshooting-bl602">22 Troubleshooting BL602</a></h1>
 <p>Tips for <strong>troubleshooting BL602 and BL604 firmware</strong>.</p>
 <p>For <strong>Apache NuttX RTOS</strong></p>
 <ul>
@@ -560,13 +591,13 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-boot.jpg" alt="Bootloader for BL602" /></p>
-<h1 id="bootloader-for-bl602"><a href="#bootloader-for-bl602">22 Bootloader for BL602</a></h1>
+<h1 id="bootloader-for-bl602"><a href="#bootloader-for-bl602">23 Bootloader for BL602</a></h1>
 <p>All about the <strong>BL602 / BL604 Bootloader</strong>… And how it loads the Application Firmware into XIP Flash Memory.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/boot">“BL602 Bootloader”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-openocd.jpg" alt="OpenOCD on BL602" /></p>
-<h1 id="openocd-on-bl602"><a href="#openocd-on-bl602">23 OpenOCD on BL602</a></h1>
+<h1 id="openocd-on-bl602"><a href="#openocd-on-bl602">24 OpenOCD on BL602</a></h1>
 <p>Before debugging BL602 / BL604, we install <strong>OpenOCD</strong> to connect a <strong>JTAG Debugger</strong>.</p>
 <p>For <strong>BL602 IoT SDK</strong></p>
 <ul>
@@ -578,7 +609,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-debug.jpg" alt="GDB and VSCode on BL602" /></p>
-<h1 id="gdb-and-vscode-on-bl602"><a href="#gdb-and-vscode-on-bl602">24 GDB and VSCode on BL602</a></h1>
+<h1 id="gdb-and-vscode-on-bl602"><a href="#gdb-and-vscode-on-bl602">25 GDB and VSCode on BL602</a></h1>
 <p>How we <strong>debug BL602 / BL604 firmware</strong> with GDB and VSCode.</p>
 <p>For <strong>BL602 IoT SDK</strong></p>
 <ul>
@@ -590,7 +621,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-pinedio.jpg" alt="PineDio Stack BL604" /></p>
-<h1 id="pinedio-stack-bl604"><a href="#pinedio-stack-bl604">25 PineDio Stack BL604</a></h1>
+<h1 id="pinedio-stack-bl604"><a href="#pinedio-stack-bl604">26 PineDio Stack BL604</a></h1>
 <p>Sneak preview of the new <strong>PineDio Stack BL604</strong> with ST7789 Display and onboard LoRa SX1262 Transceiver. </p>
 <p>For <strong>Apache NuttX RTOS</strong></p>
 <ul>
@@ -659,13 +690,13 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-bl706.jpg" alt="BL706 Audio Video Board" /></p>
-<h1 id="bl706-audio-video-board"><a href="#bl706-audio-video-board">26 BL706 Audio Video Board</a></h1>
+<h1 id="bl706-audio-video-board"><a href="#bl706-audio-video-board">27 BL706 Audio Video Board</a></h1>
 <p>What’s inside the Bouffalo Lab RISC-V BL706 Audio Video Board… And how it differs from BL602 / BL604.</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/bl706">“RISC-V BL706 Audio Video Board”</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-mynewt.jpg" alt="Mynewt on BL602" /></p>
-<h1 id="mynewt-on-bl602"><a href="#mynewt-on-bl602">27 Mynewt on BL602</a></h1>
+<h1 id="mynewt-on-bl602"><a href="#mynewt-on-bl602">28 Mynewt on BL602</a></h1>
 <p>Incomplete port of <strong>Apache Mynewt</strong> operating system…</p>
 <ul>
 <li>
@@ -676,7 +707,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-next.jpg" alt="What’s Next" /></p>
-<h1 id="whats-next"><a href="#whats-next">28 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">29 What’s Next</a></h1>
 <p>Check this book again for future updates…</p>
 <ul>
 <li>
@@ -699,7 +730,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/book-advocate.jpg" alt="About the Author" /></p>
-<h1 id="about-the-author"><a href="#about-the-author">29 About the Author</a></h1>
+<h1 id="about-the-author"><a href="#about-the-author">30 About the Author</a></h1>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/advocate">“Better Open Source Advocate”</a></p>
