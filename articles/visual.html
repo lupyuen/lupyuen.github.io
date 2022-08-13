@@ -65,12 +65,15 @@
 
     <h1 class="title">Visual Programming with Zig and NuttX Sensors</h1>
     <nav id="TOC"><ul>
-<li><a href="#zig-sensor-app">1 Zig Sensor App</a><ul></ul></li>
-<li><a href="#connect-bme280-sensor">2 Connect BME280 Sensor</a><ul></ul></li>
-<li><a href="#compile-zig-app">3 Compile Zig App</a><ul></ul></li>
-<li><a href="#run-zig-app">4 Run Zig App</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
-<li><a href="#notes">6 Notes</a><ul></ul></li></ul></nav><p>📝 <em>20 Aug 2022</em></p>
+<li><a href="#read-sensor-data">1 Read Sensor Data</a><ul></ul></li>
+<li><a href="#cbor-encoding">2 CBOR Encoding</a><ul></ul></li>
+<li><a href="#custom-block">3 Custom Block</a><ul></ul></li>
+<li><a href="#custom-extension">4 Custom Extension</a><ul></ul></li>
+<li><a href="#connect-bme280-sensor">5 Connect BME280 Sensor</a><ul></ul></li>
+<li><a href="#compile-zig-app">6 Compile Zig App</a><ul></ul></li>
+<li><a href="#run-zig-app">7 Run Zig App</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#notes">9 Notes</a><ul></ul></li></ul></nav><p>📝 <em>20 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/visual-title.jpg" alt="Visual Programming with Zig and NuttX Sensors on Blockly" /></p>
 <p><em>What if we could drag-and-drop NuttX Sensors… To create IoT Sensor Apps?</em></p>
 <p>Let’s find out!</p>
@@ -92,10 +95,288 @@
 <p><a href="https://youtu.be/192ZKA-1OqY"><strong>Watch the Demo on YouTube</strong></a></p>
 </li>
 </ul>
-<h1 id="zig-sensor-app"><a href="#zig-sensor-app">1 Zig Sensor App</a></h1>
+<h1 id="read-sensor-data"><a href="#read-sensor-data">1 Read Sensor Data</a></h1>
 <p>TODO</p>
+<p>With Zig Generics and <code>comptime</code>, we can greatly simplify the reading of Sensor Data…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature
+const temperature: f32 = try sen.readSensor(
+    c.struct_sensor_baro,       // Sensor Data Struct to be read
+    &quot;temperature&quot;,              // Sensor Data Field to be returned
+    &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+);
+
+// Print the Temperature
+debug(&quot;temperature={}&quot;, .{ floatToFixed(temperature) });</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/master/visual.zig#L15-L62">(Source)</a></p>
+<p>Here’s the implementation of <code>readSensor</code>…</p>
+<p>https://github.com/lupyuen/visual-zig-nuttx/blob/1bb1c69ea4a9310e42b149e04ac26a7e4a1f4b58/sensor.zig#L34-L108</p>
+<p>Note that the Sensor Data Struct Type and the Sensor Data Field are declared as <code>comptime</code>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Read a Sensor and return the Sensor Data
+pub fn readSensor(
+    comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
+    comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
+    device_path: []const u8           // Path of Sensor Device, like &quot;/dev/sensor/sensor_baro0&quot;
+) !f32 { ...</code></pre></div>
+<p>Which means that the values will be substituted at Compile-Time. (Works like a C Macro)</p>
+<p>We can then refer to the Sensor Data Struct <code>sensor_baro</code> like this…</p>
+<div class="example-wrap"><pre class="language-zig"><code>    // Define the Sensor Data Type
+    var sensor_data = std.mem.zeroes(
+        SensorType
+    );</code></pre></div>
+<p>And return a field <code>temperature</code> like this…</p>
+<div class="example-wrap"><pre class="language-zig"><code>    // Return the Sensor Data Field
+    return @field(sensor_data, field_name);</code></pre></div>
+<p>Thus this program…</p>
+<p>https://github.com/lupyuen/visual-zig-nuttx/blob/a7404eae71dc37850e323848180414aa6ef7e0f7/visual.zig#L27-L61</p>
+<p>Produces this output…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0
+nsh&gt; sensortest visual
+Zig Sensor Test
+Start main
+...
+temperature=30.18
+pressure=1007.69
+humidity=68.67
+End main</code></pre></div><h1 id="cbor-encoding"><a href="#cbor-encoding">2 CBOR Encoding</a></h1>
+<p>TODO</p>
+<p>Blockly will emit the Zig code below for a typical IoT Sensor App: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">visual.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Read Temperature from BME280 Sensor
+const temperature = try sen.readSensor(  // Read BME280 Sensor
+    c.struct_sensor_baro,       // Sensor Data Struct
+    &quot;temperature&quot;,              // Sensor Data Field
+    &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+);
+
+// Read Pressure from BME280 Sensor
+const pressure = try sen.readSensor(  // Read BME280 Sensor
+    c.struct_sensor_baro,       // Sensor Data Struct
+    &quot;pressure&quot;,                 // Sensor Data Field
+    &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+);
+
+// Read Humidity from BME280 Sensor
+const humidity = try sen.readSensor(  // Read BME280 Sensor
+    c.struct_sensor_humi,       // Sensor Data Struct
+    &quot;humidity&quot;,                 // Sensor Data Field
+    &quot;/dev/sensor/sensor_humi0&quot;  // Path of Sensor Device
+);
+
+// Compose CBOR Message with Temperature, Pressure and Humidity
+const msg = try composeCbor(.{
+    &quot;t&quot;, temperature,
+    &quot;p&quot;, pressure,
+    &quot;h&quot;, humidity,
+});
+
+// Transmit message to LoRaWAN
+try transmitLorawan(msg);</code></pre></div>
+<p>This reads the Temperature, Pressure and Humidity from BME280 Sensor, composes a CBOR Message that’s encoded with the Sensor Data, and transmits the CBOR Message to LoRaWAN.</p>
+<p><em><code>composeCbor</code> will work for a variable number of arguments? Strings as well as numbers?</em></p>
+<p>Yep, here’s the implementation of <code>composeCbor</code>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108">visual.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// TODO: Compose CBOR Message with Key-Value Pairs
+/// https://lupyuen.github.io/articles/cbor2
+fn composeCbor(args: anytype) !CborMessage {
+    debug(&quot;composeCbor&quot;, .{});
+    comptime {
+        assert(args.len % 2 == 0);  // Missing Key or Value
+    }
+
+    // Process each field...
+    comptime var i: usize = 0;
+    var msg = CborMessage{};
+    inline while (i &lt; args.len) : (i += 2) {
+
+        // Get the key and value
+        const key   = args[i];
+        const value = args[i + 1];
+
+        // Print the key and value
+        debug(&quot;  {s}: {}&quot;, .{
+            @as([]const u8, key),
+            floatToFixed(value)
+        });
+
+        // Format the message for testing
+        var slice = std.fmt.bufPrint(
+            msg.buf[msg.len..], 
+            &quot;{s}:{},&quot;,
+            .{
+                @as([]const u8, key),
+                floatToFixed(value)
+            }
+        ) catch { _ = std.log.err(&quot;Error: buf too small&quot;, .{}); return error.Overflow; };
+        msg.len += slice.len;
+    }
+    debug(&quot;  msg={s}&quot;, .{ msg.buf[0..msg.len] });
+    return msg;
+}
+
+/// TODO: CBOR Message
+/// https://lupyuen.github.io/articles/cbor2
+const CborMessage = struct {
+    buf: [256]u8 = undefined,  // Limit to 256 chars
+    len: usize = 0,
+};</code></pre></div>
+<p>Note that <code>composeCbor</code> is declared as <code>anytype</code>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>fn composeCbor(args: anytype) { ...</code></pre></div>
+<p>That’s why <code>composeCbor</code> accepts a variable number of arguments with different types.</p>
+<p>To handle each argument, this <code>inline</code> / <code>comptime</code> loop is unrolled at Compile-Time…</p>
+<div class="example-wrap"><pre class="language-zig"><code>    // Process each field...
+    comptime var i: usize = 0;
+    inline while (i &lt; args.len) : (i += 2) {
+
+        // Get the key and value
+        const key   = args[i];
+        const value = args[i + 1];
+
+        // Print the key and value
+        debug(&quot;  {s}: {}&quot;, .{
+            @as([]const u8, key),
+            floatToFixed(value)
+        });
+        ...
+    }</code></pre></div>
+<p><em>What happens if we omit a Key or a Value when calling <code>composeCbor</code>?</em></p>
+<p>This <code>comptime</code> assertion check will fail at Compile-Time…</p>
+<div class="example-wrap"><pre class="language-zig"><code>comptime {
+    assert(args.len % 2 == 0);  // Missing Key or Value
+}</code></pre></div><h1 id="custom-block"><a href="#custom-block">3 Custom Block</a></h1>
+<p>TODO</p>
+<p>Let’s create a Custom Block in Blockly for our Bosch BME280 Sensor…</p>
+<p><img src="https://lupyuen.github.io/images/visual-block1.jpg" alt="BME280 Sensor Block" /></p>
+<p>The Blocks above will generate this Zig code to read the Temperature from the BME280 Sensor…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature from BME280 Sensor
+const temperature = try sen.readSensor(  // Read BME280 Sensor
+  c.struct_sensor_baro,       // Sensor Data Struct
+  &quot;temperature&quot;,              // Sensor Data Field
+  &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+);
+
+// Print the Temperature
+debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#zig-generics">(<code>readSensor</code> is explained here)</a></p>
+<h1 id="custom-extension"><a href="#custom-extension">4 Custom Extension</a></h1>
+<p>TODO</p>
+<p>To test our Custom Extension for Compose Message, let’s build a Complex Sensor App that will read Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN…</p>
+<p><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/">lupyuen3.github.io/blockly-zig-nuttx/demos/code</a></p>
+<p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="Complex Sensor App" /></p>
+<p>The Blocks above will emit this Zig program…</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Main Function
+pub fn main() !void {
+
+  // Every 10 seconds...
+  while (true) {
+    const temperature = try sen.readSensor(  // Read BME280 Sensor
+      c.struct_sensor_baro,       // Sensor Data Struct
+      &quot;temperature&quot;,              // Sensor Data Field
+      &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+    );
+    debug(&quot;temperature={}&quot;, .{ temperature });
+
+    const pressure = try sen.readSensor(  // Read BME280 Sensor
+      c.struct_sensor_baro,       // Sensor Data Struct
+      &quot;pressure&quot;,                 // Sensor Data Field
+      &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+    );
+    debug(&quot;pressure={}&quot;, .{ pressure });
+
+    const humidity = try sen.readSensor(  // Read BME280 Sensor
+      c.struct_sensor_humi,       // Sensor Data Struct
+      &quot;humidity&quot;,                 // Sensor Data Field
+      &quot;/dev/sensor/sensor_humi0&quot;  // Path of Sensor Device
+    );
+    debug(&quot;humidity={}&quot;, .{ humidity });
+
+    const msg = try composeCbor(.{  // Compose CBOR Message
+      &quot;t&quot;, temperature,
+      &quot;p&quot;, pressure,
+      &quot;h&quot;, humidity,
+    });
+
+    // Transmit message to LoRaWAN
+    try transmitLorawan(msg);
+
+    // Wait 10 seconds
+    _ = c.sleep(10);
+  }
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx#cbor-encoding">(<code>composeCbor</code> is explained here)</a></p>
+<p>Copy the contents of the Main Function and paste here…</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">visual-zig-nuttx/blob/main/visual.zig</a></p>
+<p>The generated Zig code should correctly read the Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0
+nsh&gt; sensortest visual
+Zig Sensor Test
+Start main
+
+temperature=31.05
+pressure=1007.44
+humidity=71.49
+composeCbor
+  t: 31.05
+  p: 1007.44
+  h: 71.49
+  msg=t:31.05,p:1007.44,h:71.49,
+transmitLorawan
+  msg=t:31.05,p:1007.44,h:71.49,
+
+temperature=31.15
+pressure=1007.40
+humidity=70.86
+composeCbor
+  t: 31.15
+  p: 1007.40
+  h: 70.86
+  msg=t:31.15,p:1007.40,h:70.86,
+transmitLorawan
+  msg=t:31.15,p:1007.40,h:70.86,
+
+temperature=31.16
+pressure=1007.45
+humidity=70.42
+composeCbor
+  t: 31.16
+  p: 1007.45
+  h: 70.42
+  msg=t:31.16,p:1007.45,h:70.42,
+transmitLorawan
+  msg=t:31.16,p:1007.45,h:70.42,
+
+temperature=31.16
+pressure=1007.47
+humidity=70.39
+composeCbor
+  t: 31.16
+  p: 1007.47
+  h: 70.39
+  msg=t:31.16,p:1007.47,h:70.39,
+transmitLorawan
+  msg=t:31.16,p:1007.47,h:70.39,
+
+temperature=31.19
+pressure=1007.45
+humidity=70.35
+composeCbor
+  t: 31.19
+  p: 1007.45
+  h: 70.35
+  msg=t:31.19,p:1007.45,h:70.35,
+transmitLorawan
+  msg=t:31.19,p:1007.45,h:70.35,
+
+temperature=31.20
+pressure=1007.42
+humidity=70.65
+composeCbor
+  t: 31.20
+  p: 1007.42
+  h: 70.65
+  msg=t:31.20,p:1007.42,h:70.65,
+transmitLorawan
+  msg=t:31.20,p:1007.42,h:70.65,</code></pre></div>
+<p>(Tested with NuttX and BME280 on BL602)</p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
-<h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">2 Connect BME280 Sensor</a></h1>
+<h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">5 Connect BME280 Sensor</a></h1>
 <p>TODO</p>
 <p>For testing the Zig Sensor App, we connect the BME280 Sensor (I2C) to Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 Board</strong></a> (pic above)…</p>
 <div><table><thead><tr><th style="text-align: center">BL602 Pin</th><th style="text-align: center">BME280 Pin</th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
@@ -114,7 +395,7 @@
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
   GPIO_PIN1)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
-<h1 id="compile-zig-app"><a href="#compile-zig-app">3 Compile Zig App</a></h1>
+<h1 id="compile-zig-app"><a href="#compile-zig-app">6 Compile Zig App</a></h1>
 <p>TODO</p>
 <p>Below are the steps to <strong>compile our Zig Sensor App</strong> for Apache NuttX RTOS and BL602 RISC-V SoC.</p>
 <p>First we download the latest version of <strong>Zig Compiler</strong> (0.10.0 or later), extract it and add to PATH…</p>
@@ -195,7 +476,7 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’re ready to run our Zig App!</p>
 <p><img src="https://lupyuen.github.io/images/sensor-run1a.png" alt="Zig Sensor App" /></p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#read-barometer-sensor">(Source)</a></p>
-<h1 id="run-zig-app"><a href="#run-zig-app">4 Run Zig App</a></h1>
+<h1 id="run-zig-app"><a href="#run-zig-app">7 Run Zig App</a></h1>
 <p>TODO</p>
 <p>Follow these steps to <strong>flash and boot NuttX</strong> (with our Zig App inside) on BL602…</p>
 <ul>
@@ -226,7 +507,7 @@ humidity:78.81</code></pre></div>
 <p>Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctly from BME280 Sensor yay!</p>
 <p><img src="https://lupyuen.github.io/images/sensor-run2a.png" alt="Multiple Sensors" /></p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up">(Source)</a></p>
-<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
 <ul>
@@ -257,7 +538,7 @@ humidity:78.81</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/visual.md"><strong>lupyuen.github.io/src/visual.md</strong></a></p>
-<h1 id="notes"><a href="#notes">6 Notes</a></h1>
+<h1 id="notes"><a href="#notes">9 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1557857587667775489"><strong>this Twitter Thread</strong></a></li>
 </ol>
