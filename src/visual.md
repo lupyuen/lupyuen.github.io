@@ -20,6 +20,40 @@ And learn how how we ended up here...
 
 -   [__Watch the Demo on YouTube__](https://youtu.be/192ZKA-1OqY)
 
+# Custom Blocks
+
+TODO
+
+## BME280 Sensor Block
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/visual-block5.jpg)
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/visual-block1.jpg)
+
+## Compose Message Block
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/visual-block7b.jpg)
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/visual-block9.jpg)
+
+## Transmit Message Block
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/visual-block7c.jpg)
+
+## Every Block
+
+TODO
+
 # Read Sensor Data
 
 TODO
@@ -590,3 +624,31 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1557857587667775489)
+
+TODO2
+
+![TODO](https://lupyuen.github.io/images/visual-block2.jpg)
+
+TODO3
+
+![TODO](https://lupyuen.github.io/images/visual-block3.jpg)
+
+TODO4
+
+![TODO](https://lupyuen.github.io/images/visual-block4.jpg)
+
+TODO6
+
+![TODO](https://lupyuen.github.io/images/visual-block6.jpg)
+
+TODO7
+
+![TODO](https://lupyuen.github.io/images/visual-block6a.jpg)
+
+TODO8
+
+![TODO](https://lupyuen.github.io/images/visual-block7a.jpg)
+
+TODO11
+
+![TODO](https://lupyuen.github.io/images/visual-block8.jpg)
