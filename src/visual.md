@@ -28,14 +28,14 @@ With Zig Generics and `comptime`, we can greatly simplify the reading of Sensor 
 
 ```zig
 // Read the Temperature
-const temperature: f32 = try sen.readSensor(
+const temperature = try sen.readSensor(
     c.struct_sensor_baro,       // Sensor Data Struct to be read
     "temperature",              // Sensor Data Field to be returned
     "/dev/sensor/sensor_baro0"  // Path of Sensor Device
 );
 
 // Print the Temperature
-debug("temperature={}", .{ floatToFixed(temperature) });
+debug("temperature={}", .{ temperature });
 ```
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/master/visual.zig#L15-L62)
