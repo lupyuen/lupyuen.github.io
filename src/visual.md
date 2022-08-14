@@ -4,9 +4,9 @@
 
 ![Visual Programming with Zig and NuttX Sensors on Blockly](https://lupyuen.github.io/images/visual-title.jpg)
 
-_What if we could drag-and-drop NuttX Sensors... To create IoT Sensor Apps?_
+_What if we could drag-and-drop NuttX Sensors... To create quick prototypes for IoT Sensor Apps?_
 
-Let's find out!
+Let's do it!
 
 TODO: And we'll run it on Pine64's [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone).
 
