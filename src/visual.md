@@ -8,6 +8,14 @@ _What if we could drag-and-drop NuttX Sensors... To create quick prototypes for 
 
 Let's do it!
 
+TODO: Pic above, Zig, IoT, encode sensor data, LoRaWAN
+
+_Why are we doing this?_
+
+TODO: Boilerplate, error handling, overwhelming for sensor coders, also for folks who need to experiment with various sensors
+
+_Why Zig?_
+
 TODO: And we'll run it on Pine64's [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone).
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
@@ -22,7 +30,7 @@ And learn how how we ended up here...
 
 # Custom Blocks
 
-TODO
+TODO: Interlocking blocks
 
 ## BME280 Sensor Block
 
