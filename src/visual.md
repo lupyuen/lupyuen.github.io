@@ -56,9 +56,7 @@ And learn how how we ended up here...
 
 # IoT Sensor App
 
-TODO
-
-_We said earlier that Blockly might be suitable for IoT Sensor Apps. Why?_
+TODO: _What's an IoT Sensor App anyway?_
 
 Suppose we're building an __IoT Sensor Device__ that will monitor Temperature and Humidity.
 
@@ -129,6 +127,12 @@ debug("temperature={}", .{ temperature });
 ```
 
 [(`readSensor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#zig-generics)
+
+_Why the full path "/dev/sensor/sensor_baro0"? Why not just "sensor_baro0"?_
+
+Call me stupendously stubborn, but I think it might be better for learners to discover the full path of NuttX Sensors? So we understand how to troubleshoot NuttX Sensors.
+
+TODO: Paths are changing
 
 ## Compose Message Block
 
@@ -497,11 +501,25 @@ TODO
 
 -   [__"Transmit Message"__](https://github.com/lupyuen3/blockly-zig-nuttx#transmit-message)
 
-# Upcoming Features
+TODO11
+
+![TODO](https://lupyuen.github.io/images/visual-block8.jpg)
+
+TODO3
+
+![TODO](https://lupyuen.github.io/images/visual-block3.jpg)
+
+TODO4
+
+![TODO](https://lupyuen.github.io/images/visual-block4.jpg)
+
+# Gotchas
 
 TODO: Multi every loops, scale 100
 
 TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
+
+TODO: Const vs var
 
 # What's Next
 
@@ -553,7 +571,7 @@ debug("temperature={}", .{ temperature });
 
 Here's the implementation of `readSensor`...
 
-https://github.com/lupyuen/visual-zig-nuttx/blob/1bb1c69ea4a9310e42b149e04ac26a7e4a1f4b58/sensor.zig#L34-L108
+[visual-zig-nuttx/sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108)
 
 Note that the Sensor Data Struct Type and the Sensor Data Field are declared as `comptime`...
 
@@ -586,7 +604,7 @@ And return a field `temperature` like this...
 
 Thus this program...
 
-https://github.com/lupyuen/visual-zig-nuttx/blob/a7404eae71dc37850e323848180414aa6ef7e0f7/visual.zig#L27-L61
+[visual-zig-nuttx/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L27-L61)
 
 Produces this output...
 
@@ -820,14 +838,6 @@ TODO2
 
 ![TODO](https://lupyuen.github.io/images/visual-block2.jpg)
 
-TODO3
-
-![TODO](https://lupyuen.github.io/images/visual-block3.jpg)
-
-TODO4
-
-![TODO](https://lupyuen.github.io/images/visual-block4.jpg)
-
 TODO6
 
 ![TODO](https://lupyuen.github.io/images/visual-block6.jpg)
@@ -839,7 +849,3 @@ TODO7
 TODO8
 
 ![TODO](https://lupyuen.github.io/images/visual-block7a.jpg)
-
-TODO11
-
-![TODO](https://lupyuen.github.io/images/visual-block8.jpg)
