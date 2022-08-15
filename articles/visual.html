@@ -128,28 +128,22 @@
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)" /></p>
 <p><a href="https://lupyuen.github.io/articles/spi2"><em>PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)</em></a></p>
 <h1 id="iot-sensor-app"><a href="#iot-sensor-app">1 IoT Sensor App</a></h1>
-<p>TODO: <em>What’s an IoT Sensor App anyway?</em></p>
-<p>Suppose we’re building an <strong>IoT Sensor Device</strong> that will monitor Temperature and Humidity.</p>
+<p><em>What’s an IoT Sensor App anyway?</em></p>
+<p>Suppose we’re building an <strong>IoT Sensor Device</strong> that will monitor Temperature, Humidity and Air Pressure.</p>
 <p>The firmware in our device will periodically <strong>read and transmit the Sensor Data</strong> like this…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="IoT Sensor App" /></p>
-<p>Which we might <strong>build with Blockly</strong> like so…</p>
+<p>Which we might build as an <strong>IoT Sensor App</strong> like so…</p>
 <p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="Complex Sensor App" /></p>
-<p>TODO: Simplified</p>
-<p><em>Whoa that’s a lot to digest!</em></p>
-<p>We’ll break down this IoT Sensor App in the next section.</p>
-<p><em>But why build IoT Sensor Apps with Blockly and Zig?</em></p>
+<p>That’s our focus for today: Creating apps that will…</p>
 <ul>
 <li>
-<p><strong>Types are simpler:</strong> Only Floating-Point Numbers will be supported for Sensor Data</p>
-<p>(No strings needed)</p>
+<p><strong>Read</strong> a NuttX Sensor (like Bosch BME280)</p>
 </li>
 <li>
-<p><strong>Blockly is Typeless:</strong> With Zig we can use Type Inference to deduce the missing Types</p>
-<p>(Doing this in C would be extremely painful)</p>
+<p><strong>Encode</strong> the Sensor Data with CBOR</p>
 </li>
 <li>
-<p><strong>Easier to experiment</strong> with various IoT Sensors: Temperature, Humidity, Air Pressure, …</p>
-<p>(Or mix and match a bunch of IoT Sensors!)</p>
+<p><strong>Transmit</strong> the Sensor Data over LoRaWAN</p>
 </li>
 </ul>
 <h1 id="nuttx-blocks"><a href="#nuttx-blocks">2 NuttX Blocks</a></h1>
