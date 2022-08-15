@@ -54,7 +54,7 @@ And learn how how we ended up here...
 
 [_PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)_](https://lupyuen.github.io/articles/spi2)
 
-# IoT Sensor App
+# Blockly for IoT Sensor Apps
 
 _What's an IoT Sensor App anyway?_
 
@@ -66,25 +66,29 @@ The firmware in our device will periodically __read and transmit the Sensor Data
 
 Which we might build as an __IoT Sensor App__ like so...
 
-![Complex Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
+![IoT Sensor App in Blockly](https://lupyuen.github.io/images/visual-block6.jpg)
 
-That's our focus for today: Creating apps that will...
+That's our focus for today: Create NuttX Firmware that will...
 
 -   __Read__ a NuttX Sensor (like Bosch BME280)
     
--   __Encode__ the Sensor Data with CBOR
+-   __Encode__ the Sensor Data with [__CBOR__](https://lupyuen.github.io/articles/cbor2)
 
--   __Transmit__ the Sensor Data over LoRaWAN
+-   __Transmit__ the Sensor Data over [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
 
 _How will we implement the drag-n-drop?_
 
-We'll implement the visual programming with [__Blockly__](https://developers.google.com/blockly), the Scratch-like browser-based coding toolkit.
+We'll implement the visual coding with [__Blockly__](https://developers.google.com/blockly), the Scratch-like browser-based coding toolkit.
 
 Previously we have __customised Blockly__ to generate Zig Programs...
 
 -   [__"Zig Visual Programming with Blockly"__](https://lupyuen.github.io/articles/blockly)
 
 Now we'll extend Blockly to produce IoT Sensor Apps.
+
+![NuttX Blocks that we have created for Blockly](https://lupyuen.github.io/images/visual-block8.jpg)
+
+_NuttX Blocks that we have created for Blockly_
 
 # NuttX Blocks
 
@@ -499,10 +503,6 @@ TODO
 
 -   [__"Transmit Message"__](https://github.com/lupyuen3/blockly-zig-nuttx#transmit-message)
 
-TODO11
-
-![TODO](https://lupyuen.github.io/images/visual-block8.jpg)
-
 TODO3
 
 ![TODO](https://lupyuen.github.io/images/visual-block3.jpg)
@@ -510,6 +510,10 @@ TODO3
 TODO4
 
 ![TODO](https://lupyuen.github.io/images/visual-block4.jpg)
+
+TODO
+
+![IoT Sensor App](https://lupyuen.github.io/images/blockly-iot.jpg)
 
 # Gotchas
 
