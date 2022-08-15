@@ -84,12 +84,23 @@
 <p><img src="https://lupyuen.github.io/images/visual-title.jpg" alt="Visual Programming with Zig and NuttX Sensors on Blockly" /></p>
 <p><em>What if we could drag-and-drop NuttX Sensors… To create quick prototypes for IoT Sensor Apps?</em></p>
 <p>Let’s do it! The pic above shows the <strong>IoT Sensor App</strong> that we’ll build with <strong>Visual Programming</strong>, the drag-and-drag way.</p>
-<p>This produces a <strong>Zig Program</strong> that will read the Sensor Data from a <strong>NuttX Sensor</strong>, encode the data (with CBOR) and transmit to a <strong>Wireless IoT Network</strong> (like LoRaWAN).</p>
-<p>And it will work great with <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> on Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a>.</p>
+<p>This produces a <strong>Zig Program</strong> that will…</p>
+<ul>
+<li>
+<p>Read the Sensor Data from a <strong>NuttX Sensor</strong> (like Bosch BME280)</p>
+</li>
+<li>
+<p>Encode the Sensor Data (with CBOR)</p>
+</li>
+<li>
+<p>Transmit the encoded data to a <strong>Wireless IoT Network</strong> (like LoRaWAN)</p>
+</li>
+</ul>
+<p>And it has been tested with <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> on Pine64’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>PineCone BL602 RISC-V Board</strong></a>.</p>
 <p><em>Why are we doing this?</em></p>
-<p>Programming NuttX Sensors today feels rather cumbersome, with lots of <strong>Boilerplate Code</strong> and Error Handling. Which might overwhelm the folks who are new to NuttX Sensors.</p>
+<p>Programming NuttX Sensors today feels rather cumbersome, with lots of <strong>Boilerplate Code</strong> and Error Handling. Which might overwhelm those among us who are new to NuttX Sensors.</p>
 <p>Perhaps we can wrap the code into a <strong>Visual Component</strong> that we’ll simply pick and drop into our program?</p>
-<p>This might also work well for <strong>quick experiments</strong> with various NuttX Sensors.</p>
+<p>This also might be perfect for <strong>quick experiments</strong> with various NuttX Sensors.</p>
 <p><em>Why Zig?</em></p>
 <p>TODO: Type Inference, C</p>
 <ul>
