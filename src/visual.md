@@ -56,37 +56,25 @@ And learn how how we ended up here...
 
 # IoT Sensor App
 
-TODO: _What's an IoT Sensor App anyway?_
+_What's an IoT Sensor App anyway?_
 
-Suppose we're building an __IoT Sensor Device__ that will monitor Temperature and Humidity.
+Suppose we're building an __IoT Sensor Device__ that will monitor Temperature, Humidity and Air Pressure.
 
 The firmware in our device will periodically __read and transmit the Sensor Data__ like this...
 
 ![IoT Sensor App](https://lupyuen.github.io/images/blockly-iot.jpg)
 
-Which we might __build with Blockly__ like so...
+Which we might build as an __IoT Sensor App__ like so...
 
 ![Complex Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
 
-TODO: Simplified
+That's our focus for today: Creating apps that will...
 
-_Whoa that's a lot to digest!_
+-   __Read__ a NuttX Sensor (like Bosch BME280)
+    
+-   __Encode__ the Sensor Data with CBOR
 
-We'll break down this IoT Sensor App in the next section.
-
-_But why build IoT Sensor Apps with Blockly and Zig?_
-
--   __Types are simpler:__ Only Floating-Point Numbers will be supported for Sensor Data
-
-    (No strings needed)
-
--   __Blockly is Typeless:__ With Zig we can use Type Inference to deduce the missing Types
-
-    (Doing this in C would be extremely painful)
-
--   __Easier to experiment__ with various IoT Sensors: Temperature, Humidity, Air Pressure, ...
-
-    (Or mix and match a bunch of IoT Sensors!)
+-   __Transmit__ the Sensor Data over LoRaWAN
 
 # NuttX Blocks
 
