@@ -62,136 +62,6 @@ TODO
 
 TODO
 
-# CBOR Encoding
-
-TODO
-
-Blockly will emit the Zig code below for a typical IoT Sensor App: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
-
-```zig
-// Read Temperature from BME280 Sensor
-const temperature = try sen.readSensor(  // Read BME280 Sensor
-    c.struct_sensor_baro,       // Sensor Data Struct
-    "temperature",              // Sensor Data Field
-    "/dev/sensor/sensor_baro0"  // Path of Sensor Device
-);
-
-// Read Pressure from BME280 Sensor
-const pressure = try sen.readSensor(  // Read BME280 Sensor
-    c.struct_sensor_baro,       // Sensor Data Struct
-    "pressure",                 // Sensor Data Field
-    "/dev/sensor/sensor_baro0"  // Path of Sensor Device
-);
-
-// Read Humidity from BME280 Sensor
-const humidity = try sen.readSensor(  // Read BME280 Sensor
-    c.struct_sensor_humi,       // Sensor Data Struct
-    "humidity",                 // Sensor Data Field
-    "/dev/sensor/sensor_humi0"  // Path of Sensor Device
-);
-
-// Compose CBOR Message with Temperature, Pressure and Humidity
-const msg = try composeCbor(.{
-    "t", temperature,
-    "p", pressure,
-    "h", humidity,
-});
-
-// Transmit message to LoRaWAN
-try transmitLorawan(msg);
-```
-
-This reads the Temperature, Pressure and Humidity from BME280 Sensor, composes a CBOR Message that's encoded with the Sensor Data, and transmits the CBOR Message to LoRaWAN.
-
-_`composeCbor` will work for a variable number of arguments? Strings as well as numbers?_
-
-Yep, here's the implementation of `composeCbor`: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108)
-
-```zig
-/// TODO: Compose CBOR Message with Key-Value Pairs
-/// https://lupyuen.github.io/articles/cbor2
-fn composeCbor(args: anytype) !CborMessage {
-    debug("composeCbor", .{});
-    comptime {
-        assert(args.len % 2 == 0);  // Missing Key or Value
-    }
-
-    // Process each field...
-    comptime var i: usize = 0;
-    var msg = CborMessage{};
-    inline while (i < args.len) : (i += 2) {
-
-        // Get the key and value
-        const key   = args[i];
-        const value = args[i + 1];
-
-        // Print the key and value
-        debug("  {s}: {}", .{
-            @as([]const u8, key),
-            floatToFixed(value)
-        });
-
-        // Format the message for testing
-        var slice = std.fmt.bufPrint(
-            msg.buf[msg.len..], 
-            "{s}:{},",
-            .{
-                @as([]const u8, key),
-                floatToFixed(value)
-            }
-        ) catch { _ = std.log.err("Error: buf too small", .{}); return error.Overflow; };
-        msg.len += slice.len;
-    }
-    debug("  msg={s}", .{ msg.buf[0..msg.len] });
-    return msg;
-}
-
-/// TODO: CBOR Message
-/// https://lupyuen.github.io/articles/cbor2
-const CborMessage = struct {
-    buf: [256]u8 = undefined,  // Limit to 256 chars
-    len: usize = 0,
-};
-```
-
-Note that `composeCbor` is declared as `anytype`...
-
-```zig
-fn composeCbor(args: anytype) { ...
-```
-
-That's why `composeCbor` accepts a variable number of arguments with different types.
-
-To handle each argument, this `inline` / `comptime` loop is unrolled at Compile-Time...
-
-```zig
-    // Process each field...
-    comptime var i: usize = 0;
-    inline while (i < args.len) : (i += 2) {
-
-        // Get the key and value
-        const key   = args[i];
-        const value = args[i + 1];
-
-        // Print the key and value
-        debug("  {s}: {}", .{
-            @as([]const u8, key),
-            floatToFixed(value)
-        });
-        ...
-    }
-```
-
-_What happens if we omit a Key or a Value when calling `composeCbor`?_
-
-This `comptime` assertion check will fail at Compile-Time...
-
-```zig
-comptime {
-    assert(args.len % 2 == 0);  // Missing Key or Value
-}
-```
-
 # Custom Block
 
 TODO
@@ -534,7 +404,7 @@ Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctl
 
 # What's Next
 
-TODO
+TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
 
 Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL...
 
@@ -712,6 +582,136 @@ pub fn readSensor(
 
     // Return the Sensor Data Field
     return @field(sensor_data, field_name);
+}
+```
+
+# Appendix: CBOR Encoding
+
+TODO
+
+Blockly will emit the Zig code below for a typical IoT Sensor App: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
+```zig
+// Read Temperature from BME280 Sensor
+const temperature = try sen.readSensor(  // Read BME280 Sensor
+    c.struct_sensor_baro,       // Sensor Data Struct
+    "temperature",              // Sensor Data Field
+    "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+);
+
+// Read Pressure from BME280 Sensor
+const pressure = try sen.readSensor(  // Read BME280 Sensor
+    c.struct_sensor_baro,       // Sensor Data Struct
+    "pressure",                 // Sensor Data Field
+    "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+);
+
+// Read Humidity from BME280 Sensor
+const humidity = try sen.readSensor(  // Read BME280 Sensor
+    c.struct_sensor_humi,       // Sensor Data Struct
+    "humidity",                 // Sensor Data Field
+    "/dev/sensor/sensor_humi0"  // Path of Sensor Device
+);
+
+// Compose CBOR Message with Temperature, Pressure and Humidity
+const msg = try composeCbor(.{
+    "t", temperature,
+    "p", pressure,
+    "h", humidity,
+});
+
+// Transmit message to LoRaWAN
+try transmitLorawan(msg);
+```
+
+This reads the Temperature, Pressure and Humidity from BME280 Sensor, composes a CBOR Message that's encoded with the Sensor Data, and transmits the CBOR Message to LoRaWAN.
+
+_`composeCbor` will work for a variable number of arguments? Strings as well as numbers?_
+
+Yep, here's the implementation of `composeCbor`: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108)
+
+```zig
+/// TODO: Compose CBOR Message with Key-Value Pairs
+/// https://lupyuen.github.io/articles/cbor2
+fn composeCbor(args: anytype) !CborMessage {
+    debug("composeCbor", .{});
+    comptime {
+        assert(args.len % 2 == 0);  // Missing Key or Value
+    }
+
+    // Process each field...
+    comptime var i: usize = 0;
+    var msg = CborMessage{};
+    inline while (i < args.len) : (i += 2) {
+
+        // Get the key and value
+        const key   = args[i];
+        const value = args[i + 1];
+
+        // Print the key and value
+        debug("  {s}: {}", .{
+            @as([]const u8, key),
+            floatToFixed(value)
+        });
+
+        // Format the message for testing
+        var slice = std.fmt.bufPrint(
+            msg.buf[msg.len..], 
+            "{s}:{},",
+            .{
+                @as([]const u8, key),
+                floatToFixed(value)
+            }
+        ) catch { _ = std.log.err("Error: buf too small", .{}); return error.Overflow; };
+        msg.len += slice.len;
+    }
+    debug("  msg={s}", .{ msg.buf[0..msg.len] });
+    return msg;
+}
+
+/// TODO: CBOR Message
+/// https://lupyuen.github.io/articles/cbor2
+const CborMessage = struct {
+    buf: [256]u8 = undefined,  // Limit to 256 chars
+    len: usize = 0,
+};
+```
+
+Note that `composeCbor` is declared as `anytype`...
+
+```zig
+fn composeCbor(args: anytype) { ...
+```
+
+That's why `composeCbor` accepts a variable number of arguments with different types.
+
+To handle each argument, this `inline` / `comptime` loop is unrolled at Compile-Time...
+
+```zig
+    // Process each field...
+    comptime var i: usize = 0;
+    inline while (i < args.len) : (i += 2) {
+
+        // Get the key and value
+        const key   = args[i];
+        const value = args[i + 1];
+
+        // Print the key and value
+        debug("  {s}: {}", .{
+            @as([]const u8, key),
+            floatToFixed(value)
+        });
+        ...
+    }
+```
+
+_What happens if we omit a Key or a Value when calling `composeCbor`?_
+
+This `comptime` assertion check will fail at Compile-Time...
+
+```zig
+comptime {
+    assert(args.len % 2 == 0);  // Missing Key or Value
 }
 ```
 
