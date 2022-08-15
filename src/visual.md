@@ -8,17 +8,23 @@ _What if we could drag-and-drop NuttX Sensors... To create quick prototypes for 
 
 Let's do it! The pic above shows the __IoT Sensor App__ that we'll build with __Visual Programming__, the drag-and-drag way.
 
-This produces a __Zig Program__ that will read the Sensor Data from a __NuttX Sensor__, encode the data (with CBOR) and transmit to a __Wireless IoT Network__ (like LoRaWAN).
+This produces a __Zig Program__ that will...
 
-And it will work great with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) on Pine64's [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone).
+-   Read the Sensor Data from a __NuttX Sensor__ (like Bosch BME280)
+    
+-   Encode the Sensor Data (with CBOR)
+
+-   Transmit the encoded data to a __Wireless IoT Network__ (like LoRaWAN)
+
+And it has been tested with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) on Pine64's [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone).
 
 _Why are we doing this?_
 
-Programming NuttX Sensors today feels rather cumbersome, with lots of __Boilerplate Code__ and Error Handling. Which might overwhelm the folks who are new to NuttX Sensors.
+Programming NuttX Sensors today feels rather cumbersome, with lots of __Boilerplate Code__ and Error Handling. Which might overwhelm those among us who are new to NuttX Sensors.
 
 Perhaps we can wrap the code into a __Visual Component__ that we'll simply pick and drop into our program?
 
-This might also work well for __quick experiments__ with various NuttX Sensors.
+This also might be perfect for __quick experiments__ with various NuttX Sensors.
 
 _Why Zig?_
 
