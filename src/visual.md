@@ -52,13 +52,45 @@ And learn how how we ended up here...
 
 ![PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)](https://lupyuen.github.io/images/spi2-title.jpg)
 
-_PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)_
+[_PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)_](https://lupyuen.github.io/articles/spi2)
 
 # IoT Sensor App
 
 TODO
 
-# Custom Blocks
+_We said earlier that Blockly might be suitable for IoT Sensor Apps. Why?_
+
+Suppose we're building an __IoT Sensor Device__ that will monitor Temperature and Humidity.
+
+The firmware in our device will periodically __read and transmit the Sensor Data__ like this...
+
+![IoT Sensor App](https://lupyuen.github.io/images/blockly-iot.jpg)
+
+Which we might __build with Blockly__ like so...
+
+![Complex Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
+
+TODO: Simplified
+
+_Whoa that's a lot to digest!_
+
+We'll break down this IoT Sensor App in the next section.
+
+_But why build IoT Sensor Apps with Blockly and Zig?_
+
+-   __Types are simpler:__ Only Floating-Point Numbers will be supported for Sensor Data
+
+    (No strings needed)
+
+-   __Blockly is Typeless:__ With Zig we can use Type Inference to deduce the missing Types
+
+    (Doing this in C would be extremely painful)
+
+-   __Easier to experiment__ with various IoT Sensors: Temperature, Humidity, Air Pressure, ...
+
+    (Or mix and match a bunch of IoT Sensors!)
+
+# NuttX Blocks
 
 TODO: Interlocking blocks
 
@@ -66,41 +98,21 @@ TODO: Interlocking blocks
 
 TODO
 
-![TODO](https://lupyuen.github.io/images/visual-block5.jpg)
+> ![TODO](https://lupyuen.github.io/images/visual-block5.jpg)
+
+TODO
+
+```zig
+try sen.readSensor(  // Read BME280 Sensor
+  c.struct_sensor_baro,       // Sensor Data Struct
+  "temperature",              // Sensor Data Field
+  "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+);
+```
 
 TODO: `comptime`
 
-![TODO](https://lupyuen.github.io/images/visual-block1.jpg)
-
-## Compose Message Block
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/visual-block7b.jpg)
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/visual-block9.jpg)
-
-## Transmit Message Block
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/visual-block7c.jpg)
-
-## Every Block
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/visual-block10.jpg)
-
-# Custom Block
-
-TODO
-
-Let's create a Custom Block in Blockly for our Bosch BME280 Sensor...
-
-![BME280 Sensor Block](https://lupyuen.github.io/images/visual-block1.jpg)
+> ![TODO](https://lupyuen.github.io/images/visual-block1.jpg)
 
 The Blocks above will generate this Zig code to read the Temperature from the BME280 Sensor...
 
@@ -118,9 +130,209 @@ debug("temperature={}", .{ temperature });
 
 [(`readSensor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#zig-generics)
 
-# Custom Extension
+## Compose Message Block
+
+TODO: Our Custom Extension for Compose Message...
+
+![Compose Message](https://lupyuen.github.io/images/visual-block7b.jpg)
+
+Will generate this Zig code...
+
+```zig
+const msg = try composeCbor(.{  // Compose CBOR Message
+  "t", temperature,
+  "p", pressure,
+  "h", humidity,
+});
+```
+
+[(`composeCbor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#cbor-encoding)
+
+TODO: Each Message Field...
+
+![Message Field](https://lupyuen.github.io/images/visual-block9.jpg)
+
+Will generate Zig code like this...
+
+```zig
+"t", temperature,
+```
+
+## Transmit Message Block
 
 TODO
+
+![TODO](https://lupyuen.github.io/images/visual-block7c.jpg)
+
+TODO
+
+```zig
+// Transmit message to LoRaWAN
+try transmitLorawan(msg);
+```
+
+## Every Block
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/visual-block10.jpg)
+
+TODO
+
+```zig
+// Every 10 seconds...
+while (true) {
+  // TODO: Body of loop
+  ...
+
+  // Wait 10 seconds
+  _ = c.sleep(10);
+}
+```
+
+TODO: Simplistic
+
+![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
+
+[_Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor_](https://lupyuen.github.io/articles/sensor)
+
+# Connect BME280 Sensor
+
+TODO
+
+For testing the Zig Sensor App, we connect the BME280 Sensor (I2C) to Pine64's [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone) (pic above)...
+
+| BL602 Pin | BME280 Pin | Wire Colour
+|:---:|:---:|:---|
+| __`GPIO 1`__ | `SDA` | Green 
+| __`GPIO 2`__ | `SCL` | Blue
+| __`3V3`__ | `3.3V` | Red
+| __`GND`__ | `GND` | Black
+
+The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98)
+
+```c
+/* I2C Configuration */
+#define BOARD_I2C_SCL \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
+  GPIO_PIN2)
+#define BOARD_I2C_SDA \
+  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
+  GPIO_PIN1)
+```
+
+[(Which pins can be used? See this)](https://lupyuen.github.io/articles/expander#pin-functions)
+
+# Compile Zig App
+
+TODO
+
+Below are the steps to __compile our Zig Sensor App__ for Apache NuttX RTOS and BL602 RISC-V SoC.
+
+First we download the latest version of __Zig Compiler__ (0.10.0 or later), extract it and add to PATH...
+
+-   [__Zig Compiler Downloads__](https://ziglang.org/download/)
+
+Then we download and compile __Apache NuttX RTOS__ for BL602...
+
+-   [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+-   [__"Build NuttX"__](https://lupyuen.github.io/articles/nuttx#build-nuttx)
+
+Check that the following have been enabled in the NuttX Build...
+
+-   [__I2C0 Port__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
+
+-   [__I2C Character Driver__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
+
+-   [__BME280 Driver__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
+
+-   [__Sensor Driver Test App__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
+
+Remember to set [__"Sensor Driver Test Stack Size"__](https://lupyuen.github.io/articles/bme280#configure-nuttx) to __4096__.
+
+(Because our Zig App needs additional Stack Space)
+
+After building NuttX, we download and compile our __Zig Sensor App__...
+
+```bash
+##  Download our Zig Sensor App for NuttX
+git clone --recursive https://github.com/lupyuen/visual-zig-nuttx
+cd visual-zig-nuttx
+
+##  Compile the Zig App for BL602
+##  (RV32IMACF with Hardware Floating-Point)
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+zig build-obj \
+  --verbose-cimport \
+  -target riscv32-freestanding-none \
+  -mcpu=baseline_rv32-d \
+  -isystem "$HOME/nuttx/nuttx/include" \
+  -I "$HOME/nuttx/apps/include" \
+  sensortest.zig
+```
+
+[(See the Compile Log)](https://gist.github.com/lupyuen/8d7a2a360bc4d14264c77f82da58b3dc)
+
+Note that __target__ and __mcpu__ are specific to BL602...
+
+-   [__"Zig Target"__](https://lupyuen.github.io/articles/zig#zig-target)
+
+_How did we get the Compiler Options `-isystem` and `-I`?_
+
+Remember that we'll link our Compiled Zig App into the NuttX Firmware.
+
+Hence the __Zig Compiler Options must be the same__ as the GCC Options used to compile NuttX.
+
+[(See the GCC Options for NuttX)](https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c)
+
+Next comes a quirk specific to BL602: We must __patch the ELF Header__ from Software Floating-Point ABI to Hardware Floating-Point ABI...
+
+```bash
+##  Patch the ELF Header of `sensortest.o` from 
+##  Soft-Float ABI to Hard-Float ABI
+xxd -c 1 sensortest.o \
+  | sed 's/00000024: 01/00000024: 03/' \
+  | xxd -r -c 1 - sensortest2.o
+cp sensortest2.o sensortest.o
+```
+
+[(More about this)](https://lupyuen.github.io/articles/zig#patch-elf-header)
+
+Finally we inject our __Compiled Zig App__ into the NuttX Project Directory and link it into the __NuttX Firmware__...
+
+```bash
+##  Copy the compiled app to NuttX and overwrite `sensortest.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cp sensortest.o $HOME/nuttx/apps/testing/sensortest/sensortest*.o
+
+##  Build NuttX to link the Zig Object from `sensortest.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
+make
+
+##  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
+mkdir /mnt/c/blflash
+cp nuttx.bin /mnt/c/blflash
+```
+
+We're ready to run our Zig App!
+
+# Run Zig App
+
+TODO
+
+Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on BL602...
+
+-   [__"Flash NuttX"__](https://lupyuen.github.io/articles/nuttx#flash-nuttx)
+
+-   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
+
+In the NuttX Shell, enter this command to start our Zig App...
+
+```bash
+sensortest visual
+```
 
 To test our Custom Extension for Compose Message, let's build a Complex Sensor App that will read Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN...
 
@@ -255,188 +467,43 @@ transmitLorawan
 
 (Tested with NuttX and BME280 on BL602)
 
-![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
-
-# Connect BME280 Sensor
+# Create Custom Blocks
 
 TODO
 
-For testing the Zig Sensor App, we connect the BME280 Sensor (I2C) to Pine64's [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone) (pic above)...
+-   [__"Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-block)
 
-| BL602 Pin | BME280 Pin | Wire Colour
-|:---:|:---:|:---|
-| __`GPIO 1`__ | `SDA` | Green 
-| __`GPIO 2`__ | `SCL` | Blue
-| __`3V3`__ | `3.3V` | Red
-| __`GND`__ | `GND` | Black
+-   [__"Create Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#create-custom-block)
 
-The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98)
+-   [__"Export Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#export-custom-block)
 
-```c
-/* I2C Configuration */
-#define BOARD_I2C_SCL \
-  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
-  GPIO_PIN2)
-#define BOARD_I2C_SDA \
-  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
-  GPIO_PIN1)
-```
+-   [__"Load Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#load-custom-block)
 
-[(Which pins can be used? See this)](https://lupyuen.github.io/articles/expander#pin-functions)
+-   [__"Show Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#show-custom-block)
 
-# Compile Zig App
+-   [__"Code Generator for Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-block)
 
-TODO
+-   [__"Build Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#build-custom-block)
 
-Below are the steps to __compile our Zig Sensor App__ for Apache NuttX RTOS and BL602 RISC-V SoC.
+-   [__"Test Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-block)
 
-First we download the latest version of __Zig Compiler__ (0.10.0 or later), extract it and add to PATH...
+-   [__"Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-extension)
 
--   [__Zig Compiler Downloads__](https://ziglang.org/download/)
+-   [__"Code Generator for Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-extension)
 
-Then we download and compile __Apache NuttX RTOS__ for BL602...
+-   [__"Test Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-extension)
 
--   [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+-   [__"Test Stubs"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-stubs)
 
--   [__"Build NuttX"__](https://lupyuen.github.io/articles/nuttx#build-nuttx)
+-   [__"Transmit Message"__](https://github.com/lupyuen3/blockly-zig-nuttx#transmit-message)
 
-Check that the following have been enabled in the NuttX Build...
+# Upcoming Features
 
--   [__I2C0 Port__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
-
--   [__I2C Character Driver__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
-
--   [__BME280 Driver__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
-
--   [__Sensor Driver Test App__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
-
-Remember to set [__"Sensor Driver Test Stack Size"__](https://lupyuen.github.io/articles/bme280#configure-nuttx) to __4096__.
-
-(Because our Zig App needs additional Stack Space)
-
-After building NuttX, we download and compile our __Zig Sensor App__...
-
-```bash
-##  Download our Zig Sensor App for NuttX
-git clone --recursive https://github.com/lupyuen/visual-zig-nuttx
-cd visual-zig-nuttx
-
-##  Compile the Zig App for BL602
-##  (RV32IMACF with Hardware Floating-Point)
-##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-zig build-obj \
-  --verbose-cimport \
-  -target riscv32-freestanding-none \
-  -mcpu=baseline_rv32-d \
-  -isystem "$HOME/nuttx/nuttx/include" \
-  -I "$HOME/nuttx/apps/include" \
-  sensortest.zig
-```
-
-[(See the Compile Log)](https://gist.github.com/lupyuen/8d7a2a360bc4d14264c77f82da58b3dc)
-
-Note that __target__ and __mcpu__ are specific to BL602...
-
--   [__"Zig Target"__](https://lupyuen.github.io/articles/zig#zig-target)
-
-_How did we get the Compiler Options `-isystem` and `-I`?_
-
-Remember that we'll link our Compiled Zig App into the NuttX Firmware.
-
-Hence the __Zig Compiler Options must be the same__ as the GCC Options used to compile NuttX.
-
-[(See the GCC Options for NuttX)](https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c)
-
-Next comes a quirk specific to BL602: We must __patch the ELF Header__ from Software Floating-Point ABI to Hardware Floating-Point ABI...
-
-```bash
-##  Patch the ELF Header of `sensortest.o` from 
-##  Soft-Float ABI to Hard-Float ABI
-xxd -c 1 sensortest.o \
-  | sed 's/00000024: 01/00000024: 03/' \
-  | xxd -r -c 1 - sensortest2.o
-cp sensortest2.o sensortest.o
-```
-
-[(More about this)](https://lupyuen.github.io/articles/zig#patch-elf-header)
-
-Finally we inject our __Compiled Zig App__ into the NuttX Project Directory and link it into the __NuttX Firmware__...
-
-```bash
-##  Copy the compiled app to NuttX and overwrite `sensortest.o`
-##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cp sensortest.o $HOME/nuttx/apps/testing/sensortest/sensortest*.o
-
-##  Build NuttX to link the Zig Object from `sensortest.o`
-##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cd $HOME/nuttx/nuttx
-make
-
-##  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
-mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash
-```
-
-We're ready to run our Zig App!
-
-![Zig Sensor App](https://lupyuen.github.io/images/sensor-run1a.png)
-
-[(Source)](https://github.com/lupyuen/visual-zig-nuttx#read-barometer-sensor)
-
-# Run Zig App
-
-TODO
-
-Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on BL602...
-
--   [__"Flash NuttX"__](https://lupyuen.github.io/articles/nuttx#flash-nuttx)
-
--   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
-
-In the NuttX Shell, enter this command to start our Zig App...
-
-```bash
-sensortest test
-```
-
-Which reads the __Air Pressure and Temperature__ from the BME280 Barometer Sensor...
-
-```text
-nsh> sensortest test
-Zig Sensor Test
-test_sensor
-pressure:1007.66
-temperature:27.70
-```
-
-This says that the Air Pressure is __1,007.66 millibars__ and the Temperature is __27.70 °C__.
-
-Then enter this...
-
-```bash
-sensortest test2
-```
-
-Which reads the __Humidity__ from the BME280 Humidity Sensor...
-
-```text
-nsh> sensortest test2
-Zig Sensor Test
-test_sensor2
-humidity:78.81
-```
-
-This says that the Relative Humidity is __78.81 %__.
-
-Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctly from BME280 Sensor yay!
-
-![Multiple Sensors](https://lupyuen.github.io/images/sensor-run2a.png)
-
-[(Source)](https://github.com/lupyuen/visual-zig-nuttx#clean-up)
-
-# What's Next
+TODO: Multi every loops, scale 100
 
 TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
+
+# What's Next
 
 Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL...
 
