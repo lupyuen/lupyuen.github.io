@@ -75,7 +75,7 @@
 <li><a href="#compile-zig-app">4 Compile Zig App</a><ul></ul></li>
 <li><a href="#run-zig-app">5 Run Zig App</a><ul></ul></li>
 <li><a href="#create-custom-blocks">6 Create Custom Blocks</a><ul></ul></li>
-<li><a href="#upcoming-features">7 Upcoming Features</a><ul></ul></li>
+<li><a href="#gotchas">7 Gotchas</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
 <li><a href="#notes">9 Notes</a><ul></ul></li>
 <li><a href="#appendix-read-sensor-data">10 Appendix: Read Sensor Data</a><ul></ul></li>
@@ -128,8 +128,7 @@
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)" /></p>
 <p><a href="https://lupyuen.github.io/articles/spi2"><em>PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)</em></a></p>
 <h1 id="iot-sensor-app"><a href="#iot-sensor-app">1 IoT Sensor App</a></h1>
-<p>TODO</p>
-<p><em>We said earlier that Blockly might be suitable for IoT Sensor Apps. Why?</em></p>
+<p>TODO: <em>What’s an IoT Sensor App anyway?</em></p>
 <p>Suppose we’re building an <strong>IoT Sensor Device</strong> that will monitor Temperature and Humidity.</p>
 <p>The firmware in our device will periodically <strong>read and transmit the Sensor Data</strong> like this…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="IoT Sensor App" /></p>
@@ -181,6 +180,9 @@ const temperature = try sen.readSensor(  // Read BME280 Sensor
 // Print the Temperature
 debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#zig-generics">(<code>readSensor</code> is explained here)</a></p>
+<p><em>Why the full path “/dev/sensor/sensor_baro0”? Why not just “sensor_baro0”?</em></p>
+<p>Call me stupendously stubborn, but I think it might be better for learners to discover the full path of NuttX Sensors? So we understand how to troubleshoot NuttX Sensors.</p>
+<p>TODO: Paths are changing</p>
 <h2 id="compose-message-block"><a href="#compose-message-block">2.2 Compose Message Block</a></h2>
 <p>TODO: Our Custom Extension for Compose Message…</p>
 <p><img src="https://lupyuen.github.io/images/visual-block7b.jpg" alt="Compose Message" /></p>
@@ -486,9 +488,16 @@ transmitLorawan
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#transmit-message"><strong>“Transmit Message”</strong></a></p>
 </li>
 </ul>
-<h1 id="upcoming-features"><a href="#upcoming-features">7 Upcoming Features</a></h1>
+<p>TODO11</p>
+<p><img src="https://lupyuen.github.io/images/visual-block8.jpg" alt="TODO" /></p>
+<p>TODO3</p>
+<p><img src="https://lupyuen.github.io/images/visual-block3.jpg" alt="TODO" /></p>
+<p>TODO4</p>
+<p><img src="https://lupyuen.github.io/images/visual-block4.jpg" alt="TODO" /></p>
+<h1 id="gotchas"><a href="#gotchas">7 Gotchas</a></h1>
 <p>TODO: Multi every loops, scale 100</p>
 <p>TODO: Pine64 sensors, <a href="https://www.waveshare.com/wiki/Pico-Environment-Sensor">Waveshare multisensor board</a></p>
+<p>TODO: Const vs var</p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
 <ul>
@@ -537,7 +546,7 @@ const temperature = try sen.readSensor(
 debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/master/visual.zig#L15-L62">(Source)</a></p>
 <p>Here’s the implementation of <code>readSensor</code>…</p>
-<p>https://github.com/lupyuen/visual-zig-nuttx/blob/1bb1c69ea4a9310e42b149e04ac26a7e4a1f4b58/sensor.zig#L34-L108</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">visual-zig-nuttx/sensor.zig</a></p>
 <p>Note that the Sensor Data Struct Type and the Sensor Data Field are declared as <code>comptime</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read a Sensor and return the Sensor Data
 pub fn readSensor(
@@ -555,7 +564,7 @@ pub fn readSensor(
 <div class="example-wrap"><pre class="language-zig"><code>    // Return the Sensor Data Field
     return @field(sensor_data, field_name);</code></pre></div>
 <p>Thus this program…</p>
-<p>https://github.com/lupyuen/visual-zig-nuttx/blob/a7404eae71dc37850e323848180414aa6ef7e0f7/visual.zig#L27-L61</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L27-L61">visual-zig-nuttx/visual.zig</a></p>
 <p>Produces this output…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0
 nsh&gt; sensortest visual
@@ -748,18 +757,12 @@ const CborMessage = struct {
 }</code></pre></div><h1 id="appendix-transmit-sensor-data"><a href="#appendix-transmit-sensor-data">12 Appendix: Transmit Sensor Data</a></h1>
 <p>TODO2</p>
 <p><img src="https://lupyuen.github.io/images/visual-block2.jpg" alt="TODO" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/visual-block3.jpg" alt="TODO" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/visual-block4.jpg" alt="TODO" /></p>
 <p>TODO6</p>
 <p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="TODO" /></p>
 <p>TODO7</p>
 <p><img src="https://lupyuen.github.io/images/visual-block6a.jpg" alt="TODO" /></p>
 <p>TODO8</p>
 <p><img src="https://lupyuen.github.io/images/visual-block7a.jpg" alt="TODO" /></p>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/visual-block8.jpg" alt="TODO" /></p>
 
     
 </body>
