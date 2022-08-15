@@ -6,7 +6,7 @@
 
 _What if we could drag-and-drop NuttX Sensors... To create quick prototypes for IoT Sensor Apps?_
 
-Let's do it! The pic above shows how we'll build an __IoT Sensor App__ through __Visual Programming__, the drag-and-drag way.
+Let's do it! The pic above shows the __IoT Sensor App__ that we'll build with __Visual Programming__, the drag-and-drag way.
 
 This produces a __Zig Program__ that will read the Sensor Data from a __NuttX Sensor__, encode the data (with CBOR) and transmit to a __Wireless IoT Network__ (like LoRaWAN).
 
@@ -14,11 +14,15 @@ And it will work great with [__Apache NuttX RTOS__](https://nuttx.apache.org/doc
 
 _Why are we doing this?_
 
-TODO: Boilerplate, error handling, overwhelming for sensor coders, also for folks who need to experiment with various sensors
+Programming NuttX Sensors today feels rather cumbersome, with lots of __Boilerplate Code__ and Error Handling. Which might overwhelm the folks who are new to NuttX Sensors.
+
+Perhaps we can wrap the code into a __Visual Component__ that we'll simply pick and drop into our program?
+
+This might also work well for __quick experiments__ with various NuttX Sensors.
 
 _Why Zig?_
 
-TODO: And we'll run it on 
+TODO: Type Inference, C
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
 
