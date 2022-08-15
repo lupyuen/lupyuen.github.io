@@ -26,9 +26,17 @@ Perhaps we can wrap the code into a __Visual Component__ that we'll simply pick 
 
 This also might be perfect for __quick experiments__ with various NuttX Sensors.
 
+(More about this below)
+
 _Why Zig?_
 
-TODO: Type Inference, C
+Zig has neat features (like __Type Inference__ and __Compile-Time Expressions__) that will greatly simplify the code that's auto-generated for our Visual Program.
+
+We could have done this in C... But it would've taken a lot more time and effort.
+
+(We'll come back to this)
+
+TODO:
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
 
