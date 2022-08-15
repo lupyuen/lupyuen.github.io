@@ -65,7 +65,7 @@
 
     <h1 class="title">Visual Programming with Zig and NuttX Sensors</h1>
     <nav id="TOC"><ul>
-<li><a href="#iot-sensor-app">1 IoT Sensor App</a><ul></ul></li>
+<li><a href="#blockly-for-iot-sensor-apps">1 Blockly for IoT Sensor Apps</a><ul></ul></li>
 <li><a href="#nuttx-blocks">2 NuttX Blocks</a><ul>
 <li><a href="#bme280-sensor-block">2.1 BME280 Sensor Block</a><ul></ul></li>
 <li><a href="#compose-message-block">2.2 Compose Message Block</a><ul></ul></li>
@@ -127,32 +127,34 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/spi2-title.jpg" alt="PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)" /></p>
 <p><a href="https://lupyuen.github.io/articles/spi2"><em>PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)</em></a></p>
-<h1 id="iot-sensor-app"><a href="#iot-sensor-app">1 IoT Sensor App</a></h1>
+<h1 id="blockly-for-iot-sensor-apps"><a href="#blockly-for-iot-sensor-apps">1 Blockly for IoT Sensor Apps</a></h1>
 <p><em>What’s an IoT Sensor App anyway?</em></p>
 <p>Suppose we’re building an <strong>IoT Sensor Device</strong> that will monitor Temperature, Humidity and Air Pressure.</p>
 <p>The firmware in our device will periodically <strong>read and transmit the Sensor Data</strong> like this…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="IoT Sensor App" /></p>
 <p>Which we might build as an <strong>IoT Sensor App</strong> like so…</p>
-<p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="Complex Sensor App" /></p>
-<p>That’s our focus for today: Creating apps that will…</p>
+<p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="IoT Sensor App in Blockly" /></p>
+<p>That’s our focus for today: Create NuttX Firmware that will…</p>
 <ul>
 <li>
 <p><strong>Read</strong> a NuttX Sensor (like Bosch BME280)</p>
 </li>
 <li>
-<p><strong>Encode</strong> the Sensor Data with CBOR</p>
+<p><strong>Encode</strong> the Sensor Data with <a href="https://lupyuen.github.io/articles/cbor2"><strong>CBOR</strong></a></p>
 </li>
 <li>
-<p><strong>Transmit</strong> the Sensor Data over LoRaWAN</p>
+<p><strong>Transmit</strong> the Sensor Data over <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a></p>
 </li>
 </ul>
 <p><em>How will we implement the drag-n-drop?</em></p>
-<p>We’ll implement the visual programming with <a href="https://developers.google.com/blockly"><strong>Blockly</strong></a>, the Scratch-like browser-based coding toolkit.</p>
+<p>We’ll implement the visual coding with <a href="https://developers.google.com/blockly"><strong>Blockly</strong></a>, the Scratch-like browser-based coding toolkit.</p>
 <p>Previously we have <strong>customised Blockly</strong> to generate Zig Programs…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/blockly"><strong>“Zig Visual Programming with Blockly”</strong></a></li>
 </ul>
 <p>Now we’ll extend Blockly to produce IoT Sensor Apps.</p>
+<p><img src="https://lupyuen.github.io/images/visual-block8.jpg" alt="NuttX Blocks that we have created for Blockly" /></p>
+<p><em>NuttX Blocks that we have created for Blockly</em></p>
 <h1 id="nuttx-blocks"><a href="#nuttx-blocks">2 NuttX Blocks</a></h1>
 <p>TODO: Interlocking blocks</p>
 <h2 id="bme280-sensor-block"><a href="#bme280-sensor-block">2.1 BME280 Sensor Block</a></h2>
@@ -489,12 +491,12 @@ transmitLorawan
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#transmit-message"><strong>“Transmit Message”</strong></a></p>
 </li>
 </ul>
-<p>TODO11</p>
-<p><img src="https://lupyuen.github.io/images/visual-block8.jpg" alt="TODO" /></p>
 <p>TODO3</p>
 <p><img src="https://lupyuen.github.io/images/visual-block3.jpg" alt="TODO" /></p>
 <p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/visual-block4.jpg" alt="TODO" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="IoT Sensor App" /></p>
 <h1 id="gotchas"><a href="#gotchas">7 Gotchas</a></h1>
 <p>TODO: Multi every loops, scale 100</p>
 <p>TODO: Pine64 sensors, <a href="https://www.waveshare.com/wiki/Pico-Environment-Sensor">Waveshare multisensor board</a></p>
