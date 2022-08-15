@@ -72,6 +72,8 @@ TODO
 
 TODO
 
+![TODO](https://lupyuen.github.io/images/visual-block10.jpg)
+
 # Custom Block
 
 TODO
