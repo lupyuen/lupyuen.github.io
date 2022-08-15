@@ -8,7 +8,7 @@ _What if we could drag-and-drop NuttX Sensors... To create quick prototypes for 
 
 Let's do it! The pic above shows the __IoT Sensor App__ that we'll build with __Visual Programming__, the drag-and-drag way.
 
-This produces a __Zig Program__ that will...
+This produces a [__Zig Program__](https://ziglang.org/) that will...
 
 -   Read the Sensor Data from a __NuttX Sensor__ (like Bosch BME280)
     
@@ -16,7 +16,7 @@ This produces a __Zig Program__ that will...
 
 -   Transmit the encoded data to a __Wireless IoT Network__ (like LoRaWAN)
 
-And it has been tested with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) on Pine64's [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone).
+And it has been tested with [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) on Pine64's [__PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/pinecone). (Pic below)
 
 _Why are we doing this?_
 
@@ -38,7 +38,7 @@ We could have done this in C... But it would've taken a lot more time and effort
 
 _Let's get started!_
 
-TODO:
+We'll head down into the Source Code for our project...
 
 -   [__lupyuen/visual-zig-nuttx__](https://github.com/lupyuen/visual-zig-nuttx)
 
@@ -46,9 +46,9 @@ TODO:
 
 And learn how how we ended up here...
 
--   [__Blockly with Zig (Work in Progress)__](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+-   [__Blockly with Zig and NuttX (Work in Progress)__](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
 
--   [__Watch the Demo on YouTube__](https://youtu.be/192ZKA-1OqY)
+-   [__Watch the Demo on YouTube__](https://youtu.be/GL2VWO4wNcA)
 
 ![PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)](https://lupyuen.github.io/images/spi2-title.jpg)
 
