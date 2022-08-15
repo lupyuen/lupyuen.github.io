@@ -76,6 +76,16 @@ That's our focus for today: Creating apps that will...
 
 -   __Transmit__ the Sensor Data over LoRaWAN
 
+_How will we implement the drag-n-drop?_
+
+We'll implement the visual programming with [__Blockly__](https://developers.google.com/blockly), the Scratch-like browser-based coding toolkit.
+
+Previously we have __customised Blockly__ to generate Zig Programs...
+
+-   [__"Zig Visual Programming with Blockly"__](https://lupyuen.github.io/articles/blockly)
+
+Now we'll extend Blockly to produce IoT Sensor Apps.
+
 # NuttX Blocks
 
 TODO: Interlocking blocks
@@ -89,7 +99,7 @@ TODO
 TODO
 
 ```zig
-try sen.readSensor(  // Read BME280 Sensor
+try sen.readSensor(           // Read BME280 Sensor
   c.struct_sensor_baro,       // Sensor Data Struct
   "temperature",              // Sensor Data Field
   "/dev/sensor/sensor_baro0"  // Path of Sensor Device
