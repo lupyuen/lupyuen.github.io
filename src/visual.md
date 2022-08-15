@@ -24,7 +24,7 @@ Programming NuttX Sensors today feels rather cumbersome, with lots of __Boilerpl
 
 Perhaps we can wrap the code into a __Visual Component__ that we'll simply pick and drop into our program?
 
-This also might be perfect for __quick experiments__ with various NuttX Sensors.
+This might also be perfect for __quick experiments__ with various NuttX Sensors.
 
 (More about this below)
 
@@ -35,6 +35,8 @@ Zig has neat features (like __Type Inference__ and __Compile-Time Expressions__)
 We could have done this in C... But it would've taken a lot more time and effort.
 
 (We'll come back to this)
+
+_Let's get started!_
 
 TODO:
 
