@@ -28,6 +28,14 @@ And learn how how we ended up here...
 
 -   [__Watch the Demo on YouTube__](https://youtu.be/192ZKA-1OqY)
 
+![PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)](https://lupyuen.github.io/images/spi2-title.jpg)
+
+_PineCone BL602 Board (right) connected to Semtech SX1262 LoRa Transceiver (left)_
+
+# IoT Sensor App
+
+TODO
+
 # Custom Blocks
 
 TODO: Interlocking blocks
@@ -585,7 +593,7 @@ pub fn readSensor(
 }
 ```
 
-# Appendix: CBOR Encoding
+# Appendix: Encode Sensor Data
 
 TODO
 
@@ -714,6 +722,8 @@ comptime {
     assert(args.len % 2 == 0);  // Missing Key or Value
 }
 ```
+
+# Appendix: Transmit Sensor Data
 
 TODO2
 
