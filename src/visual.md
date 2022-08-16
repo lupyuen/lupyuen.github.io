@@ -554,13 +554,17 @@ TODO
 
 TODO: LoRaWAN message size, frequency
 
+TODO: scale 100
+
+![Compose Message Block, scaled by 100](https://lupyuen.github.io/images/visual-block11.jpg)
+
 TODO: Test on [Waveshare LoRa SX1262 Breakout Board](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) because our current SX1262 board is reserved for [NuttX Automated Testing](https://lupyuen.github.io/articles/auto)
 
 ## Multithreading and Synchronisation
 
-TODO: Multi every loops, scale 100
+TODO: Multi every loops
 
-![Compose Message Block, scaled by 100](https://lupyuen.github.io/images/visual-block11.jpg)
+![Multiple Loops](https://lupyuen.github.io/images/visual-block12.jpg)
 
 TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
 
