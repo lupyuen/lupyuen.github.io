@@ -216,13 +216,9 @@
 <p><em>What’s <code>.{ ... }</code>?</em></p>
 <p>That’s how we pass a <strong>Variable Number of Arguments</strong> to a Zig Function.</p>
 <p><em>Is it safe? What if we make a mistake and omit a Key or a Value?</em></p>
-<p><strong>composeCbor</strong> uses <strong>Compile-Time Validation</strong> to check that the parameters are OK.</p>
-<p>If we omit a Key or a Value, the Zig Compiler will stop us during compilation.</p>
+<p><strong>composeCbor</strong> uses <strong>Compile-Time Validation</strong> to verify that the parameters are OK.</p>
+<p>If we omit a Key or a Value (or if they have the wrong Types), the Zig Compiler will stop us during compilation.</p>
 <p><a href="https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data">(<strong>composeCbor</strong> is explained here)</a></p>
-<p>Each <strong>Message Field</strong> is actually a smaller Block…</p>
-<p><img src="https://lupyuen.github.io/images/visual-block9.jpg" alt="Message Field" /></p>
-<p>That will produce <strong>Zig Code</strong> like this…</p>
-<div class="example-wrap"><pre class="language-zig"><code>&quot;t&quot;, temperature,</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="Transmit Message Block" /></p>
 <h2 id="transmit-message-block"><a href="#transmit-message-block">2.3 Transmit Message Block</a></h2>
 <p>TODO</p>
