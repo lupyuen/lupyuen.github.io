@@ -333,7 +333,7 @@ pub fn main() !void {
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig"><strong>visual-zig-nuttx/visual.zig</strong></a></li>
 </ul>
 <p>(Look for “Paste Visual Program Here”)</p>
-<p>We’re ready to build and test our Zig Sensor App with NuttX! But first we prep our hardware…</p>
+<p>We’re ready to build and test our IoT Sensor App with NuttX! But first we prep our hardware…</p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <p><a href="https://lupyuen.github.io/articles/sensor"><em>Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor</em></a></p>
 <h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">4 Connect BME280 Sensor</a></h1>
@@ -386,8 +386,9 @@ pub fn main() !void {
 </ul>
 <p>Remember to set <a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>“Sensor Driver Test Stack Size”</strong></a> to <strong>4096</strong>.</p>
 <p>(Because our Zig App needs additional Stack Space)</p>
-<p>After building NuttX, compile our <strong>Zig Sensor App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Zig Sensor App that we have downloaded earlier
+<p>After building NuttX, compile our <strong>IoT Sensor App</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>#  Zig Sensor App that we have downloaded earlier.
+#  TODO: Paste our visual program into visual-zig-nuttx/visual.zig
 cd visual-zig-nuttx
 
 #  Compile the Zig App for BL602
