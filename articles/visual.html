@@ -280,7 +280,7 @@ git clone --recursive https://github.com/lupyuen/visual-zig-nuttx</code></pre></
 <ul>
 <li><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/"><strong>Blockly with Zig and NuttX (Work in Progress)</strong></a></li>
 </ul>
-<p>Drag-n-drop the Blocks to assemble this…</p>
+<p>Drag-n-drop the Blocks to assemble this Visual Program…</p>
 <p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="Complex Sensor App" /></p>
 <p>To find the above Blocks, click the <strong>Blocks Toolbox</strong> (at left) and look under <strong>“Sensors”</strong>, <strong>“Variables”</strong> and <strong>“Text”</strong>…</p>
 <ul>
@@ -479,6 +479,10 @@ composeCbor
 transmitLorawan
   msg=t:31.15,p:1007.40,h:70.86,</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app">(See the Complete Log)</a></p>
+<p>To test the Zig program above on Linux / macOS / Windows (instead of NuttX), add the stubs below to simulate a NuttX Sensor…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/visual-zig-nuttx#test-stubs"><strong>“Test Stubs”</strong></a></li>
+</ul>
 <h1 id="why-zig"><a href="#why-zig">7 Why Zig</a></h1>
 <p>TODO: <em>Once again… Why are we doing this in Zig?</em></p>
 <h2 id="type-inference"><a href="#type-inference">7.1 Type Inference</a></h2>
@@ -495,6 +499,7 @@ transmitLorawan
 <p>TODO: Pine64 sensors, <a href="https://www.waveshare.com/wiki/Pico-Environment-Sensor">Waveshare multisensor board</a></p>
 <h2 id="blockly-limitations"><a href="#blockly-limitations">8.3 Blockly Limitations</a></h2>
 <p>TODO: Const vs var</p>
+<p>TODO: Multiple assignment</p>
 <h1 id="create-custom-blocks"><a href="#create-custom-blocks">9 Create Custom Blocks</a></h1>
 <p>TODO</p>
 <ul>
