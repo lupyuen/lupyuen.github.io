@@ -180,6 +180,8 @@ const msg = try composeCbor(.{  // Compose CBOR Message
 });
 ```
 
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
 Which calls our Zig Function [__composeCbor__](https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data) to create the CBOR Message.
 
 _What's `.{ ... }`?_
@@ -205,6 +207,8 @@ The __Transmit Message Block__ (above) transmits a CBOR Message to [__LoRaWAN__]
 try transmitLorawan(msg);
 ```
 
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
 And probably other __IoT Networks__ in future: NB-IoT, LTE-M, Matter, Bluetooth, WiFi, MQTT, ...
 
 [(__transmitLorawan__ is explained here)](https://lupyuen.github.io/articles/visual#appendix-transmit-sensor-data)
@@ -226,6 +230,8 @@ while (true) {
 }
 ```
 
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
 _What's "`_ = `something"?_
 
 Zig Compiler helpfully stops us if we forget to use the __Return Value__ of a function.
@@ -244,18 +250,40 @@ Blockly provides __Blockly Developer Tools__ for creating our Custom Blocks.
 
 We'll explain below.
 
-# All Together Now
+# Test NuttX Blocks
 
-TODO
+To test the NuttX Blocks, let's drag-n-drop an IoT Sensor App that will...
 
+-   __Read Sensor Data:__ Read the Temperature, Pressure and Humidity from BME280 Sensor
 
-To test our Custom Extension for Compose Message, let's build a Complex Sensor App that will read Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN...
+-   __Print Sensor Data:__ Print the Temperature, Pressure and Humidity values
 
-[lupyuen3.github.io/blockly-zig-nuttx/demos/code](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+-   __Compose Message:__ Create a CBOR Message with the Temperature, Pressure and Humidity values
+
+-   __Transmit Message:__ Send the CBOR Message to LoRaWAN
+
+First we download our __Zig Sensor App__ (that imports the NuttX Sensor API into Zig)...
+
+```bash
+##  Download our Zig Sensor App for NuttX
+git clone --recursive https://github.com/lupyuen/visual-zig-nuttx
+```
+
+(We'll paste our generated Zig Program inside here)
+
+Now head over to our __Custom Blockly Website__...
+
+-   [__Blockly with Zig and NuttX (Work in Progress)__](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+
+Drag-n-drop the Blocks to assemble this...
 
 ![Complex Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
 
-The Blocks above will emit this Zig program...
+To find the above Blocks, click the __Blocks Toolbox__ (at left) and look under __"Sensors"__, __"Variables"__ and __"Text"__...
+
+-   [__Watch the Demo on YouTube__](https://youtu.be/GL2VWO4wNcA)
+
+Click the __Zig Tab__. We'll see this Zig Program...
 
 ```zig
 /// Main Function
@@ -299,13 +327,17 @@ pub fn main() !void {
 }
 ```
 
-[(`composeCbor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#cbor-encoding)
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
 
-Copy the contents of the Main Function and paste here...
+Copy the code inside the __Main Function__. (Yep copy the __while__ loop)
 
-[visual-zig-nuttx/blob/main/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+Paste the code inside the __Zig Sensor App__ that we have downloaded earlier...
 
-TODO
+-   [__visual-zig-nuttx/visual.zig__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
+(Look for "Paste Visual Program Here")
+
+We're ready to build and test our Zig Sensor App with NuttX! But first we prep our hardware...
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
 
@@ -313,9 +345,7 @@ TODO
 
 # Connect BME280 Sensor
 
-TODO
-
-For testing the Zig Sensor App, we connect the BME280 Sensor (I2C) to Pine64's [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone) (pic above)...
+For testing our IoT Sensor App, we connect the BME280 Sensor (I2C) to Pine64's [__PineCone BL602 Board__](https://lupyuen.github.io/articles/pinecone) (pic above)...
 
 | BL602 Pin | BME280 Pin | Wire Colour
 |:---:|:---:|:---|
@@ -340,9 +370,7 @@ The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen
 
 # Compile Zig App
 
-TODO
-
-Below are the steps to __compile our Zig Sensor App__ for Apache NuttX RTOS and BL602 RISC-V SoC.
+Below are the steps to __compile our IoT Sensor App__ for NuttX.
 
 First we download the latest version of __Zig Compiler__ (0.10.0 or later), extract it and add to PATH...
 
@@ -368,11 +396,10 @@ Remember to set [__"Sensor Driver Test Stack Size"__](https://lupyuen.github.io/
 
 (Because our Zig App needs additional Stack Space)
 
-After building NuttX, we download and compile our __Zig Sensor App__...
+After building NuttX, compile our __Zig Sensor App__...
 
 ```bash
-##  Download our Zig Sensor App for NuttX
-git clone --recursive https://github.com/lupyuen/visual-zig-nuttx
+##  Zig Sensor App that we have downloaded earlier
 cd visual-zig-nuttx
 
 ##  Compile the Zig App for BL602
@@ -387,7 +414,7 @@ zig build-obj \
   sensortest.zig
 ```
 
-[(See the Compile Log)](https://gist.github.com/lupyuen/8d7a2a360bc4d14264c77f82da58b3dc)
+[(See the Compile Log)](https://gist.github.com/lupyuen/eddfb4a11ed306d478f47adece9d6e1a)
 
 Note that __target__ and __mcpu__ are specific to BL602...
 
@@ -431,7 +458,7 @@ mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash
 ```
 
-We're ready to run our Zig App!
+We're ready to run our IoT Sensor App!
 
 # Run Zig App
 
@@ -443,14 +470,13 @@ Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on BL60
 
 -   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
 
-In the NuttX Shell, enter this command to start our Zig App...
+In the NuttX Shell, enter this command to start our IoT Sensor App...
 
 ```bash
 sensortest visual
 ```
 
-
-The generated Zig code should correctly read the Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN...
+Our IoT Sensor App should correctly read the Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN (simulated)...
 
 ```text
 NuttShell (NSH) NuttX-10.3.0
@@ -479,53 +505,9 @@ composeCbor
   msg=t:31.15,p:1007.40,h:70.86,
 transmitLorawan
   msg=t:31.15,p:1007.40,h:70.86,
-
-temperature=31.16
-pressure=1007.45
-humidity=70.42
-composeCbor
-  t: 31.16
-  p: 1007.45
-  h: 70.42
-  msg=t:31.16,p:1007.45,h:70.42,
-transmitLorawan
-  msg=t:31.16,p:1007.45,h:70.42,
-
-temperature=31.16
-pressure=1007.47
-humidity=70.39
-composeCbor
-  t: 31.16
-  p: 1007.47
-  h: 70.39
-  msg=t:31.16,p:1007.47,h:70.39,
-transmitLorawan
-  msg=t:31.16,p:1007.47,h:70.39,
-
-temperature=31.19
-pressure=1007.45
-humidity=70.35
-composeCbor
-  t: 31.19
-  p: 1007.45
-  h: 70.35
-  msg=t:31.19,p:1007.45,h:70.35,
-transmitLorawan
-  msg=t:31.19,p:1007.45,h:70.35,
-
-temperature=31.20
-pressure=1007.42
-humidity=70.65
-composeCbor
-  t: 31.20
-  p: 1007.42
-  h: 70.65
-  msg=t:31.20,p:1007.42,h:70.65,
-transmitLorawan
-  msg=t:31.20,p:1007.42,h:70.65,
 ```
 
-(Tested with NuttX and BME280 on BL602)
+[(See the Complete Log)](https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app)
 
 # Why Zig
 
