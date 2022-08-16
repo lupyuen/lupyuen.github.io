@@ -334,6 +334,10 @@ pub fn main() !void {
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig"><strong>visual-zig-nuttx/visual.zig</strong></a></li>
 </ul>
 <p>(Look for “Paste Visual Program Here”)</p>
+<p><em>Can we save the Blocks? So we don’t need to drag them again when retesting?</em></p>
+<p>Click the <strong>JSON Tab</strong> and copy the Blockly JSON that appears.</p>
+<p>Whenever we reload Blockly, just paste the Blockly JSON back into the JSON Tab. The Blocks will be automagically restored.</p>
+<p><a href="https://gist.github.com/lupyuen/f7466a2e208eb68fd01a788c829b57e9">(See the Blockly JSON)</a></p>
 <p>We’re ready to build and test our IoT Sensor App with NuttX! But first we prep our hardware…</p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <p><a href="https://lupyuen.github.io/articles/sensor"><em>Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor</em></a></p>
@@ -498,6 +502,7 @@ transmitLorawan
 <p>TODO: Test on <a href="https://www.waveshare.com/wiki/Pico-LoRa-SX1262">Waveshare LoRa SX1262 Breakout Board</a> because our current SX1262 board is reserved for <a href="https://lupyuen.github.io/articles/auto">NuttX Automated Testing</a></p>
 <h2 id="multithreading-and-synchronisation"><a href="#multithreading-and-synchronisation">8.2 Multithreading and Synchronisation</a></h2>
 <p>TODO: Multi every loops, scale 100</p>
+<p><img src="https://lupyuen.github.io/images/visual-block11.jpg" alt="Compose Message Block, scaled by 100" /></p>
 <p>TODO: Pine64 sensors, <a href="https://www.waveshare.com/wiki/Pico-Environment-Sensor">Waveshare multisensor board</a></p>
 <h2 id="blockly-limitations"><a href="#blockly-limitations">8.3 Blockly Limitations</a></h2>
 <p>TODO: Const vs var</p>
