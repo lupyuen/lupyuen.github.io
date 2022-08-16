@@ -205,7 +205,7 @@ The __Transmit Message Block__ (above) transmits a CBOR Message to [__LoRaWAN__]
 try transmitLorawan(msg);
 ```
 
-And probably other __IoT Networks__ in future: NB-IoT, LTE-M, Thread, Bluetooth, WiFi, ...
+And probably other __IoT Networks__ in future: NB-IoT, LTE-M, Matter, Bluetooth, WiFi, ...
 
 [(__transmitLorawan__ is explained here)](https://lupyuen.github.io/articles/visual#appendix-transmit-sensor-data)
 
@@ -234,7 +234,7 @@ We write "`_ = ...`" to tell Zig Compiler that we won't be using the Return Valu
 
 _Sleepy fish? This sleeping looks fishy..._
 
-Yep this __sleep__ won't work for all kinds of IoT Sensor Apps.
+Yep this __sleep__ won't work for some types of IoT Sensor Apps.
 
 We'll come back to this in a while.
 
@@ -243,6 +243,69 @@ _How did we add these NuttX Blocks to Blockly?_
 Blockly provides __Blockly Developer Tools__ for creating our Custom Blocks.
 
 We'll explain below.
+
+# All Together Now
+
+TODO
+
+
+To test our Custom Extension for Compose Message, let's build a Complex Sensor App that will read Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN...
+
+[lupyuen3.github.io/blockly-zig-nuttx/demos/code](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
+
+![Complex Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
+
+The Blocks above will emit this Zig program...
+
+```zig
+/// Main Function
+pub fn main() !void {
+
+  // Every 10 seconds...
+  while (true) {
+    const temperature = try sen.readSensor(  // Read BME280 Sensor
+      c.struct_sensor_baro,       // Sensor Data Struct
+      "temperature",              // Sensor Data Field
+      "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+    );
+    debug("temperature={}", .{ temperature });
+
+    const pressure = try sen.readSensor(  // Read BME280 Sensor
+      c.struct_sensor_baro,       // Sensor Data Struct
+      "pressure",                 // Sensor Data Field
+      "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+    );
+    debug("pressure={}", .{ pressure });
+
+    const humidity = try sen.readSensor(  // Read BME280 Sensor
+      c.struct_sensor_humi,       // Sensor Data Struct
+      "humidity",                 // Sensor Data Field
+      "/dev/sensor/sensor_humi0"  // Path of Sensor Device
+    );
+    debug("humidity={}", .{ humidity });
+
+    const msg = try composeCbor(.{  // Compose CBOR Message
+      "t", temperature,
+      "p", pressure,
+      "h", humidity,
+    });
+
+    // Transmit message to LoRaWAN
+    try transmitLorawan(msg);
+
+    // Wait 10 seconds
+    _ = c.sleep(10);
+  }
+}
+```
+
+[(`composeCbor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#cbor-encoding)
+
+Copy the contents of the Main Function and paste here...
+
+[visual-zig-nuttx/blob/main/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
+TODO
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
 
@@ -386,61 +449,6 @@ In the NuttX Shell, enter this command to start our Zig App...
 sensortest visual
 ```
 
-To test our Custom Extension for Compose Message, let's build a Complex Sensor App that will read Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN...
-
-[lupyuen3.github.io/blockly-zig-nuttx/demos/code](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
-
-![Complex Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
-
-The Blocks above will emit this Zig program...
-
-```zig
-/// Main Function
-pub fn main() !void {
-
-  // Every 10 seconds...
-  while (true) {
-    const temperature = try sen.readSensor(  // Read BME280 Sensor
-      c.struct_sensor_baro,       // Sensor Data Struct
-      "temperature",              // Sensor Data Field
-      "/dev/sensor/sensor_baro0"  // Path of Sensor Device
-    );
-    debug("temperature={}", .{ temperature });
-
-    const pressure = try sen.readSensor(  // Read BME280 Sensor
-      c.struct_sensor_baro,       // Sensor Data Struct
-      "pressure",                 // Sensor Data Field
-      "/dev/sensor/sensor_baro0"  // Path of Sensor Device
-    );
-    debug("pressure={}", .{ pressure });
-
-    const humidity = try sen.readSensor(  // Read BME280 Sensor
-      c.struct_sensor_humi,       // Sensor Data Struct
-      "humidity",                 // Sensor Data Field
-      "/dev/sensor/sensor_humi0"  // Path of Sensor Device
-    );
-    debug("humidity={}", .{ humidity });
-
-    const msg = try composeCbor(.{  // Compose CBOR Message
-      "t", temperature,
-      "p", pressure,
-      "h", humidity,
-    });
-
-    // Transmit message to LoRaWAN
-    try transmitLorawan(msg);
-
-    // Wait 10 seconds
-    _ = c.sleep(10);
-  }
-}
-```
-
-[(`composeCbor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#cbor-encoding)
-
-Copy the contents of the Main Function and paste here...
-
-[visual-zig-nuttx/blob/main/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
 
 The generated Zig code should correctly read the Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN...
 
