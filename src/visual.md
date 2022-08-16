@@ -188,21 +188,11 @@ That's how we pass a __Variable Number of Arguments__ to a Zig Function.
 
 _Is it safe? What if we make a mistake and omit a Key or a Value?_
 
-__composeCbor__ uses __Compile-Time Validation__ to check that the parameters are OK.
+__composeCbor__ uses __Compile-Time Validation__ to verify that the parameters are OK.
 
-If we omit a Key or a Value, the Zig Compiler will stop us during compilation.
+If we omit a Key or a Value (or if they have the wrong Types), the Zig Compiler will stop us during compilation.
 
 [(__composeCbor__ is explained here)](https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data)
-
-Each __Message Field__ is actually a smaller Block...
-
-![Message Field](https://lupyuen.github.io/images/visual-block9.jpg)
-
-That will produce __Zig Code__ like this...
-
-```zig
-"t", temperature,
-```
 
 ![Transmit Message Block](https://lupyuen.github.io/images/visual-block7c.jpg)
 
