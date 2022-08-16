@@ -86,21 +86,35 @@ Previously we have __customised Blockly__ to generate Zig Programs...
 
 Now we'll extend Blockly to produce IoT Sensor Apps.
 
-![NuttX Blocks that we have created for Blockly](https://lupyuen.github.io/images/visual-block8.jpg)
+![NuttX Blocks that we have added to Blockly](https://lupyuen.github.io/images/visual-block8.jpg)
 
-_NuttX Blocks that we have created for Blockly_
+_NuttX Blocks that we have added to Blockly_
 
 # NuttX Blocks
 
-TODO: Interlocking blocks
+In Blockly, we create programs by picking and dropping __Interlocking Blocks__.
+
+Each Block will emit __Zig Code__ that we'll compile and run with NuttX.
+
+To support IoT Sensor Apps, we extend Blockly and add the following __NuttX Blocks__ (pic above)...
+
+-   __BME280 Sensor Block__: Read Temperature / Humidity / Pressure from [__Bosch BME280 Sensor__](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/)
+
+-   __Compose Message Block__: Compose a [__CBOR Message__](https://lupyuen.github.io/articles/cbor2) with our Sensor Data
+
+-   __Transmit Message Block__: Transmit a CBOR Message to [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
+
+-   __Every Block__: Do something every X seconds
+
+Let's inspect our NuttX Blocks and the Zig Code that they produce.
+
+> ![BME280 Sensor Block](https://lupyuen.github.io/images/visual-block5.jpg)
 
 ## BME280 Sensor Block
 
-TODO
+As pictured above, our __BME280 Sensor Block__ reads Temperature, Humidity and Pressure from the BME280 Sensor.
 
-> ![TODO](https://lupyuen.github.io/images/visual-block5.jpg)
-
-TODO
+Our Sensor Block will generate this __Zig Code__...
 
 ```zig
 try sen.readSensor(           // Read BME280 Sensor
@@ -110,37 +124,47 @@ try sen.readSensor(           // Read BME280 Sensor
 );
 ```
 
-TODO: `comptime`
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
 
-> ![TODO](https://lupyuen.github.io/images/visual-block1.jpg)
+This calls our Zig Function [__readSensor__](https://lupyuen.github.io/articles/visual#appendix-read-sensor-data) to read a NuttX Sensor at the specified path.
 
-The Blocks above will generate this Zig code to read the Temperature from the BME280 Sensor...
+(__readSensor__ is defined in the Sensor Module __sen__)
 
-```zig
-// Read the Temperature from BME280 Sensor
-const temperature = try sen.readSensor(  // Read BME280 Sensor
-  c.struct_sensor_baro,       // Sensor Data Struct
-  "temperature",              // Sensor Data Field
-  "/dev/sensor/sensor_baro0"  // Path of Sensor Device
-);
+_What's `try`?_
 
-// Print the Temperature
-debug("temperature={}", .{ temperature });
-```
+That's how we __handle errors__ in Zig. If __readSensor__ fails with an error, we stop the current function and return the error to the caller.
 
-[(`readSensor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#zig-generics)
+_But struct_sensor_baro is not a value, it's a Struct Type!_
 
-_Why the full path "/dev/sensor/sensor_baro0"? Why not just "sensor_baro0"?_
+Yep [__struct_sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) is actually a Struct Type that Zig has auto-imported from NuttX. [(As defined here)](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355)
 
-Call me stupendously stubborn, but I think it might be better for learners to discover the full path of NuttX Sensors? So we understand how to troubleshoot NuttX Sensors.
+_So Zig will let us pass Struct Types to a Function?_
 
-TODO: Paths are changing
+That's the neat thing about Zig... It will let us pass __Compile-Time Expressions__ (like Struct Types) to Zig Functions (like __readSensor__).
+
+The Zig Compiler will __substitute the Struct Type__ inside the code for __readSensor__. (Which works like a C Macro)
+
+[(More about __readSensor__ in the Appendix)](https://lupyuen.github.io/articles/visual#appendix-read-sensor-data)
+
+_Why the full path "/dev/sensor/sensor_baro0"? Why not just "baro0"?_
+
+Call me stupendously stubborn, but I think it might be better for learners to discover the full path of NuttX Sensors?
+
+So we have a better understanding of NuttX Sensors and how to troubleshoot them.
+
+[(The NuttX Sensor Path has just been renamed to "/dev/uorb/sensor_baro0")](https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/sensor.c#L50)
+
+_What about other sensors? BMP280, ADXL345, LSM330, ..._
+
+We plan to create a __Sensor Block for every sensor__ that's supported by NuttX.
+
+Thus we can build all kinds of IoT Sensor Apps by dragging-n-dropping the Sensor Blocks for BMP280, ADXL345, LSM330, ...
+
+![Compose Message Block](https://lupyuen.github.io/images/visual-block7b.jpg)
 
 ## Compose Message Block
 
 TODO: Our Custom Extension for Compose Message...
-
-![Compose Message](https://lupyuen.github.io/images/visual-block7b.jpg)
 
 Will generate this Zig code...
 
@@ -164,11 +188,9 @@ Will generate Zig code like this...
 "t", temperature,
 ```
 
+![Transmit Message Block](https://lupyuen.github.io/images/visual-block7c.jpg)
+
 ## Transmit Message Block
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/visual-block7c.jpg)
 
 TODO
 
@@ -177,11 +199,9 @@ TODO
 try transmitLorawan(msg);
 ```
 
+![Every Block](https://lupyuen.github.io/images/visual-block10.jpg)
+
 ## Every Block
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/visual-block10.jpg)
 
 TODO
 
