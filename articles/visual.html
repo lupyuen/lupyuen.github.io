@@ -221,21 +221,31 @@
 <p><a href="https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data">(<strong>composeCbor</strong> is explained here)</a></p>
 <p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="Transmit Message Block" /></p>
 <h2 id="transmit-message-block"><a href="#transmit-message-block">2.3 Transmit Message Block</a></h2>
-<p>TODO</p>
+<p>The <strong>Transmit Message Block</strong> (above) transmits a CBOR Message to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a> (the low-power, long-range, low-bandwidth network)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Transmit message to LoRaWAN
 try transmitLorawan(msg);</code></pre></div>
+<p>And probably other <strong>IoT Networks</strong> in future: NB-IoT, LTE-M, Thread, Bluetooth, WiFi, …</p>
+<p><a href="https://lupyuen.github.io/articles/visual#appendix-transmit-sensor-data">(<strong>transmitLorawan</strong> is explained here)</a></p>
 <p><img src="https://lupyuen.github.io/images/visual-block10.jpg" alt="Every Block" /></p>
 <h2 id="every-block"><a href="#every-block">2.4 Every Block</a></h2>
-<p>TODO</p>
+<p>Lastly we have the <strong>Every Block</strong> (above) that executes the Enclosed Blocks every X seconds…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Every 10 seconds...
 while (true) {
-  // TODO: Body of loop
+  // TODO: Enclosed Blocks
   ...
 
   // Wait 10 seconds
   _ = c.sleep(10);
 }</code></pre></div>
-<p>TODO: Simplistic</p>
+<p><em>What’s “<code>_ = </code>something”?</em></p>
+<p>Zig Compiler helpfully stops us if we forget to use the <strong>Return Value</strong> of a function.</p>
+<p>We write “<code>_ = ...</code>” to tell Zig Compiler that we won’t be using the Return Value of the <strong>sleep</strong> function. (Imported from NuttX)</p>
+<p><em>Sleepy fish? This sleeping looks fishy…</em></p>
+<p>Yep this <strong>sleep</strong> won’t work for all kinds of IoT Sensor Apps.</p>
+<p>We’ll come back to this in a while.</p>
+<p><em>How did we add these NuttX Blocks to Blockly?</em></p>
+<p>Blockly provides <strong>Blockly Developer Tools</strong> for creating our Custom Blocks.</p>
+<p>We’ll explain below.</p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <p><a href="https://lupyuen.github.io/articles/sensor"><em>Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor</em></a></p>
 <h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">3 Connect BME280 Sensor</a></h1>
