@@ -549,6 +549,8 @@ TODO
 
 TODO: LoRaWAN message size, frequency
 
+## Multithreading and Synchronisation
+
 TODO: Multi every loops, scale 100
 
 TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
