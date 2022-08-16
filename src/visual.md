@@ -283,6 +283,8 @@ To find the above Blocks, click the __Blocks Toolbox__ (at left) and look under 
 
 -   [__Watch the Demo on YouTube__](https://youtu.be/GL2VWO4wNcA)
 
+Note that we read __Humidity__ from __"sensor_humi0"__ instead of "sensor_baro0".
+
 Click the __Zig Tab__. We'll see this Zig Program...
 
 ```zig
@@ -530,7 +532,7 @@ TODO: readSensor
 
 TODO: composeCbor
 
-# Gotchas
+# Upcoming Fixes
 
 TODO
 
