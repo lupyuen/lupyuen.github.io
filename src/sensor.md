@@ -786,6 +786,10 @@ Then we download and compile __Apache NuttX RTOS__ for BL602...
 
 -   [__"Build NuttX"__](https://lupyuen.github.io/articles/nuttx#build-nuttx)
 
+The downloaded version of NuttX already includes our __BME280 Driver__...
+
+-   [__"Apache NuttX Driver for BME280 Sensor"__](https://lupyuen.github.io/articles/bme280)
+
 Check that the following have been enabled in the NuttX Build...
 
 -   [__I2C0 Port__](https://lupyuen.github.io/articles/bme280#configure-nuttx)
@@ -824,6 +828,8 @@ zig build-obj \
 Note that __target__ and __mcpu__ are specific to BL602...
 
 -   [__"Zig Target"__](https://lupyuen.github.io/articles/zig#zig-target)
+
+Also specific to BL602 is the __ARCH_RISCV__ Macro in [visual-zig-nuttx/sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L11)
 
 _How did we get the Compiler Options `-isystem` and `-I`?_
 
