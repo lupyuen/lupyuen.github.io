@@ -369,6 +369,10 @@ pub fn main() !void {
 <p><a href="https://lupyuen.github.io/articles/nuttx#build-nuttx"><strong>“Build NuttX”</strong></a></p>
 </li>
 </ul>
+<p>The downloaded version of NuttX already includes our <strong>BME280 Driver</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/bme280"><strong>“Apache NuttX Driver for BME280 Sensor”</strong></a></li>
+</ul>
 <p>Check that the following have been enabled in the NuttX Build…</p>
 <ul>
 <li>
@@ -406,6 +410,7 @@ zig build-obj \
 <ul>
 <li><a href="https://lupyuen.github.io/articles/zig#zig-target"><strong>“Zig Target”</strong></a></li>
 </ul>
+<p>Also specific to BL602 is the <strong>ARCH_RISCV</strong> Macro in <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L11">visual-zig-nuttx/sensor.zig</a></p>
 <p><em>How did we get the Compiler Options <code>-isystem</code> and <code>-I</code>?</em></p>
 <p>Remember that we’ll link our Compiled Zig App into the NuttX Firmware.</p>
 <p>Hence the <strong>Zig Compiler Options must be the same</strong> as the GCC Options used to compile NuttX.</p>
