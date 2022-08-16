@@ -174,11 +174,9 @@
 </li>
 </ul>
 <p>Let’s inspect our NuttX Blocks and the Zig Code that they produce.</p>
-<blockquote>
 <p><img src="https://lupyuen.github.io/images/visual-block5.jpg" alt="BME280 Sensor Block" /></p>
-</blockquote>
 <h2 id="bme280-sensor-block"><a href="#bme280-sensor-block">2.1 BME280 Sensor Block</a></h2>
-<p>As pictured above, our <strong>BME280 Sensor Block</strong> reads Temperature, Humidity and Pressure from the BME280 Sensor.</p>
+<p>As pictured above, our <strong>BME280 Sensor Block</strong> reads Temperature, Humidity and Pressure from the <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>.</p>
 <p>Our Sensor Block will generate this <strong>Zig Code</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>try sen.readSensor(           // Read BME280 Sensor
   c.struct_sensor_baro,       // Sensor Data Struct
@@ -187,7 +185,7 @@
 );</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>This calls our Zig Function <a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data"><strong>readSensor</strong></a> to read a NuttX Sensor at the specified path.</p>
-<p>(<strong>readSensor</strong> is defined in the Sensor Module <strong>sen</strong>)</p>
+<p><a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data">(<strong>readSensor</strong> is defined in the Sensor Module <strong>sen</strong>)</a></p>
 <p><em>What’s <code>try</code>?</em></p>
 <p>That’s how we <strong>handle errors</strong> in Zig. If <strong>readSensor</strong> fails with an error, we stop the current function and return the error to the caller.</p>
 <p><em>But struct_sensor_baro is not a value, it’s a Struct Type!</em></p>
@@ -197,7 +195,7 @@
 <p>The Zig Compiler will <strong>substitute the Struct Type</strong> inside the code for <strong>readSensor</strong>. (Which works like a C Macro)</p>
 <p><a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data">(More about <strong>readSensor</strong> in the Appendix)</a></p>
 <p><em>Why the full path “/dev/sensor/sensor_baro0”? Why not just “baro0”?</em></p>
-<p>Call me stupendously stubborn, but I think it might be better for learners to discover the full path of NuttX Sensors?</p>
+<p>Call me stupendously stubborn, but I think it might be better for learners to see the full path of NuttX Sensors?</p>
 <p>So we have a better understanding of NuttX Sensors and how to troubleshoot them.</p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/sensor.c#L50">(The NuttX Sensor Path has just been renamed to “/dev/uorb/sensor_baro0”)</a></p>
 <p><em>What about other sensors? BMP280, ADXL345, LSM330, …</em></p>
