@@ -166,9 +166,11 @@ Thus we can build all kinds of IoT Sensor Apps by dragging-n-dropping the Sensor
 
 ## Compose Message Block
 
-TODO: Our Custom Extension for Compose Message...
+The __Compose Message Block__ composes a [__CBOR Message__](https://lupyuen.github.io/articles/cbor2) with the specified Keys (Field Names) and Values (Sensor Data).
 
-Will generate this Zig code...
+CBOR Messages usually require __fewer bytes than JSON__ to represent the same data. They work better with Low-Bandwidth Networks. (Like LoRaWAN)
+
+The Block above will generate this __Zig Code__...
 
 ```zig
 const msg = try composeCbor(.{  // Compose CBOR Message
@@ -178,13 +180,25 @@ const msg = try composeCbor(.{  // Compose CBOR Message
 });
 ```
 
-[(`composeCbor` is explained here)](https://github.com/lupyuen/visual-zig-nuttx#cbor-encoding)
+Which calls our Zig Function [__composeCbor__](https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data) to create the CBOR Message.
 
-TODO: Each Message Field...
+_What's `.{ ... }`?_
+
+That's how we pass a __Variable Number of Arguments__ to a Zig Function.
+
+_Is it safe? What if we make a mistake and omit a Key or a Value?_
+
+__composeCbor__ uses __Compile-Time Validation__ to check that the parameters are OK.
+
+If we omit a Key or a Value, the Zig Compiler will stop us during compilation.
+
+[(__composeCbor__ is explained here)](https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data)
+
+Each __Message Field__ is actually a smaller Block...
 
 ![Message Field](https://lupyuen.github.io/images/visual-block9.jpg)
 
-Will generate Zig code like this...
+That will produce __Zig Code__ like this...
 
 ```zig
 "t", temperature,
