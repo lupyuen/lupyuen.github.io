@@ -490,6 +490,7 @@ transmitLorawan
 <h2 id="compile-time-expressions"><a href="#compile-time-expressions">7.2 Compile-Time Expressions</a></h2>
 <p>TODO: readSensor</p>
 <p>TODO: composeCbor</p>
+<p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="IoT Sensor App" /></p>
 <h1 id="upcoming-fixes"><a href="#upcoming-fixes">8 Upcoming Fixes</a></h1>
 <p>TODO</p>
 <h2 id="network-constraints"><a href="#network-constraints">8.1 Network Constraints</a></h2>
@@ -548,7 +549,6 @@ transmitLorawan
 <p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/visual-block4.jpg" alt="TODO" /></p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="IoT Sensor App" /></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
 <ul>
@@ -583,9 +583,11 @@ transmitLorawan
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1557857587667775489"><strong>this Twitter Thread</strong></a></li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/visual-block1.jpg" alt="BME280 Sensor Block" /></p>
 <h1 id="appendix-read-sensor-data"><a href="#appendix-read-sensor-data">12 Appendix: Read Sensor Data</a></h1>
 <p>TODO</p>
-<p>With Zig Generics and <code>comptime</code>, we can greatly simplify the reading of Sensor Data…</p>
+<p>As pictured above, our <strong>BME280 Sensor Block</strong> reads Temperature, Humidity and Pressure from the <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>.</p>
+<p>The Blocks above will generate this <strong>Zig Code</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature
 const temperature = try sen.readSensor(
     c.struct_sensor_baro,       // Sensor Data Struct to be read
@@ -595,7 +597,7 @@ const temperature = try sen.readSensor(
 
 // Print the Temperature
 debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/master/visual.zig#L15-L62">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>Here’s the implementation of <code>readSensor</code>…</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">visual-zig-nuttx/sensor.zig</a></p>
 <p>Note that the Sensor Data Struct Type and the Sensor Data Field are declared as <code>comptime</code>…</p>
@@ -704,40 +706,18 @@ pub fn readSensor(
     return @field(sensor_data, field_name);
 }</code></pre></div>
 <p><a href="https://ikrima.dev/dev-notes/zig/zig-metaprogramming/"><strong>“Zig Metaprogramming”</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/visual-block7b.jpg" alt="Compose Message Block" /></p>
 <h1 id="appendix-encode-sensor-data"><a href="#appendix-encode-sensor-data">13 Appendix: Encode Sensor Data</a></h1>
 <p>TODO</p>
-<p>Blockly will emit the Zig code below for a typical IoT Sensor App: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">visual.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// Read Temperature from BME280 Sensor
-const temperature = try sen.readSensor(  // Read BME280 Sensor
-    c.struct_sensor_baro,       // Sensor Data Struct
-    &quot;temperature&quot;,              // Sensor Data Field
-    &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
-);
-
-// Read Pressure from BME280 Sensor
-const pressure = try sen.readSensor(  // Read BME280 Sensor
-    c.struct_sensor_baro,       // Sensor Data Struct
-    &quot;pressure&quot;,                 // Sensor Data Field
-    &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
-);
-
-// Read Humidity from BME280 Sensor
-const humidity = try sen.readSensor(  // Read BME280 Sensor
-    c.struct_sensor_humi,       // Sensor Data Struct
-    &quot;humidity&quot;,                 // Sensor Data Field
-    &quot;/dev/sensor/sensor_humi0&quot;  // Path of Sensor Device
-);
-
-// Compose CBOR Message with Temperature, Pressure and Humidity
-const msg = try composeCbor(.{
-    &quot;t&quot;, temperature,
-    &quot;p&quot;, pressure,
-    &quot;h&quot;, humidity,
-});
-
-// Transmit message to LoRaWAN
-try transmitLorawan(msg);</code></pre></div>
-<p>This reads the Temperature, Pressure and Humidity from BME280 Sensor, composes a CBOR Message that’s encoded with the Sensor Data, and transmits the CBOR Message to LoRaWAN.</p>
+<p>The <strong>Compose Message Block</strong> composes a <a href="https://lupyuen.github.io/articles/cbor2"><strong>CBOR Message</strong></a> with the specified Keys (Field Names) and Values (Sensor Data).</p>
+<p>CBOR Messages usually require <strong>fewer bytes than JSON</strong> to represent the same data. They work better with Low-Bandwidth Networks. (Like LoRaWAN)</p>
+<p>The Block above will generate this <strong>Zig Code</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>const msg = try composeCbor(.{  // Compose CBOR Message
+  &quot;t&quot;, temperature,
+  &quot;p&quot;, pressure,
+  &quot;h&quot;, humidity,
+});</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p><em><code>composeCbor</code> will work for a variable number of arguments? Strings as well as numbers?</em></p>
 <p>Yep, here’s the implementation of <code>composeCbor</code>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108">visual.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// TODO: Compose CBOR Message with Key-Value Pairs
@@ -807,15 +787,14 @@ const CborMessage = struct {
 <p>This <code>comptime</code> assertion check will fail at Compile-Time…</p>
 <div class="example-wrap"><pre class="language-zig"><code>comptime {
     assert(args.len % 2 == 0);  // Missing Key or Value
-}</code></pre></div><h1 id="appendix-transmit-sensor-data"><a href="#appendix-transmit-sensor-data">14 Appendix: Transmit Sensor Data</a></h1>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/visual-block2.jpg" alt="TODO" /></p>
-<p>TODO6</p>
-<p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="TODO" /></p>
-<p>TODO7</p>
-<p><img src="https://lupyuen.github.io/images/visual-block6a.jpg" alt="TODO" /></p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/visual-block7a.jpg" alt="TODO" /></p>
+}</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="Transmit Message Block" /></p>
+<h1 id="appendix-transmit-sensor-data"><a href="#appendix-transmit-sensor-data">14 Appendix: Transmit Sensor Data</a></h1>
+<p>TODO</p>
+<p>The <strong>Transmit Message Block</strong> (above) transmits a CBOR Message to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a> (the low-power, long-range, low-bandwidth IoT Network)…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Transmit message to LoRaWAN
+try transmitLorawan(msg);</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 
     
 </body>
