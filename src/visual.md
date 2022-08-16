@@ -275,7 +275,7 @@ Now head over to our __Custom Blockly Website__...
 
 -   [__Blockly with Zig and NuttX (Work in Progress)__](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
 
-Drag-n-drop the Blocks to assemble this...
+Drag-n-drop the Blocks to assemble this Visual Program...
 
 ![Complex Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
 
@@ -518,6 +518,10 @@ transmitLorawan
 
 [(See the Complete Log)](https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app)
 
+To test the Zig program above on Linux / macOS / Windows (instead of NuttX), add the stubs below to simulate a NuttX Sensor...
+
+-   [__"Test Stubs"__](https://github.com/lupyuen/visual-zig-nuttx#test-stubs)
+
 # Why Zig
 
 TODO: _Once again... Why are we doing this in Zig?_
@@ -549,6 +553,8 @@ TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wi
 ## Blockly Limitations
 
 TODO: Const vs var
+
+TODO: Multiple assignment
 
 # Create Custom Blocks
 
