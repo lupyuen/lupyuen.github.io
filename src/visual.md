@@ -198,23 +198,27 @@ If we omit a Key or a Value (or if they have the wrong Types), the Zig Compiler 
 
 ## Transmit Message Block
 
-TODO
+The __Transmit Message Block__ (above) transmits a CBOR Message to [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) (the low-power, long-range, low-bandwidth network)...
 
 ```zig
 // Transmit message to LoRaWAN
 try transmitLorawan(msg);
 ```
 
+And probably other __IoT Networks__ in future: NB-IoT, LTE-M, Thread, Bluetooth, WiFi, ...
+
+[(__transmitLorawan__ is explained here)](https://lupyuen.github.io/articles/visual#appendix-transmit-sensor-data)
+
 ![Every Block](https://lupyuen.github.io/images/visual-block10.jpg)
 
 ## Every Block
 
-TODO
+Lastly we have the __Every Block__ (above) that executes the Enclosed Blocks every X seconds...
 
 ```zig
 // Every 10 seconds...
 while (true) {
-  // TODO: Body of loop
+  // TODO: Enclosed Blocks
   ...
 
   // Wait 10 seconds
@@ -222,7 +226,23 @@ while (true) {
 }
 ```
 
-TODO: Simplistic
+_What's "`_ = `something"?_
+
+Zig Compiler helpfully stops us if we forget to use the __Return Value__ of a function.
+
+We write "`_ = ...`" to tell Zig Compiler that we won't be using the Return Value of the __sleep__ function. (Imported from NuttX)
+
+_Sleepy fish? This sleeping looks fishy..._
+
+Yep this __sleep__ won't work for all kinds of IoT Sensor Apps.
+
+We'll come back to this in a while.
+
+_How did we add these NuttX Blocks to Blockly?_
+
+Blockly provides __Blockly Developer Tools__ for creating our Custom Blocks.
+
+We'll explain below.
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
 
