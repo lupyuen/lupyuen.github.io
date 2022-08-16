@@ -546,6 +546,8 @@ TODO
 
 TODO: LoRaWAN message size, frequency
 
+TODO: Test on [Waveshare LoRa SX1262 Breakout Board](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) because our current SX1262 board is reserved for [NuttX Automated Testing](https://lupyuen.github.io/articles/auto)
+
 ## Multithreading and Synchronisation
 
 TODO: Multi every loops, scale 100
