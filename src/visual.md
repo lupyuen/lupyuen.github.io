@@ -527,6 +527,22 @@ transmitLorawan
 
 (Tested with NuttX and BME280 on BL602)
 
+# Zig Makes It Simpler
+
+TODO: Type Inference
+
+TODO: readSensor
+
+TODO: composeCbor
+
+# Gotchas
+
+TODO: Multi every loops, scale 100
+
+TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
+
+TODO: Const vs var
+
 # Create Custom Blocks
 
 TODO
@@ -568,14 +584,6 @@ TODO4
 TODO
 
 ![IoT Sensor App](https://lupyuen.github.io/images/blockly-iot.jpg)
-
-# Gotchas
-
-TODO: Multi every loops, scale 100
-
-TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
-
-TODO: Const vs var
 
 # What's Next
 
