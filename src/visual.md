@@ -337,7 +337,7 @@ Paste the code inside the __Zig Sensor App__ that we have downloaded earlier...
 
 (Look for "Paste Visual Program Here")
 
-We're ready to build and test our Zig Sensor App with NuttX! But first we prep our hardware...
+We're ready to build and test our IoT Sensor App with NuttX! But first we prep our hardware...
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
 
@@ -396,10 +396,11 @@ Remember to set [__"Sensor Driver Test Stack Size"__](https://lupyuen.github.io/
 
 (Because our Zig App needs additional Stack Space)
 
-After building NuttX, compile our __Zig Sensor App__...
+After building NuttX, compile our __IoT Sensor App__...
 
 ```bash
-##  Zig Sensor App that we have downloaded earlier
+##  Zig Sensor App that we have downloaded earlier.
+##  TODO: Paste our visual program into visual-zig-nuttx/visual.zig
 cd visual-zig-nuttx
 
 ##  Compile the Zig App for BL602
