@@ -144,6 +144,8 @@ That's the neat thing about Zig... It will let us pass __Compile-Time Expression
 
 The Zig Compiler will __substitute the Struct Type__ inside the code for __readSensor__. (Which works like a C Macro)
 
+Another neat thing: __"temperature"__ above is also a Compile-Time Expression, because it's a Field Name in the [__sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct. Metaprogramming gets so cool!
+
 [(More about __readSensor__ in the Appendix)](https://lupyuen.github.io/articles/visual#appendix-read-sensor-data)
 
 _Why the full path "/dev/sensor/sensor_baro0"? Why not just "baro0"?_
