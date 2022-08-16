@@ -726,6 +726,8 @@ pub fn readSensor(
 }
 ```
 
+[__"Zig Metaprogramming"__](https://ikrima.dev/dev-notes/zig/zig-metaprogramming/)
+
 # Appendix: Encode Sensor Data
 
 TODO
