@@ -339,6 +339,14 @@ Paste the code inside the __Zig Sensor App__ that we have downloaded earlier...
 
 (Look for "Paste Visual Program Here")
 
+_Can we save the Blocks? So we don't need to drag them again when retesting?_
+
+Click the __JSON Tab__ and copy the Blockly JSON that appears.
+
+Whenever we reload Blockly, just paste the Blockly JSON back into the JSON Tab. The Blocks will be automagically restored.
+
+[(See the Blockly JSON)](https://gist.github.com/lupyuen/f7466a2e208eb68fd01a788c829b57e9)
+
 We're ready to build and test our IoT Sensor App with NuttX! But first we prep our hardware...
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
@@ -551,6 +559,8 @@ TODO: Test on [Waveshare LoRa SX1262 Breakout Board](https://www.waveshare.com/w
 ## Multithreading and Synchronisation
 
 TODO: Multi every loops, scale 100
+
+![Compose Message Block, scaled by 100](https://lupyuen.github.io/images/visual-block11.jpg)
 
 TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
 
