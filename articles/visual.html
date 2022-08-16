@@ -193,6 +193,7 @@
 <p><em>So Zig will let us pass Struct Types to a Function?</em></p>
 <p>That’s the neat thing about Zig… It will let us pass <strong>Compile-Time Expressions</strong> (like Struct Types) to Zig Functions (like <strong>readSensor</strong>).</p>
 <p>The Zig Compiler will <strong>substitute the Struct Type</strong> inside the code for <strong>readSensor</strong>. (Which works like a C Macro)</p>
+<p>Another neat thing: <strong>“temperature”</strong> above is also a Compile-Time Expression, because it’s a Field Name in the <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct. Metaprogramming gets so cool!</p>
 <p><a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data">(More about <strong>readSensor</strong> in the Appendix)</a></p>
 <p><em>Why the full path “/dev/sensor/sensor_baro0”? Why not just “baro0”?</em></p>
 <p>Call me stupendously stubborn, but I think it might be better for learners to see the full path of NuttX Sensors?</p>
