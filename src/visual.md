@@ -527,9 +527,15 @@ transmitLorawan
 
 (Tested with NuttX and BME280 on BL602)
 
-# Zig Makes It Simpler
+# Why Zig
 
-TODO: Type Inference
+TODO: _Once again... Why are we doing this in Zig?_
+
+## Type Inference
+
+TODO
+
+## Compile-Time Expressions
 
 TODO: readSensor
 
@@ -537,9 +543,17 @@ TODO: composeCbor
 
 # Gotchas
 
+TODO
+
+## Network Constraints
+
+TODO: LoRaWAN message size, frequency
+
 TODO: Multi every loops, scale 100
 
 TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
+
+## Blockly Limitations
 
 TODO: Const vs var
 
