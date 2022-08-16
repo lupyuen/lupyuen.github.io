@@ -198,14 +198,14 @@ If we omit a Key or a Value (or if they have the wrong Types), the Zig Compiler 
 
 ## Transmit Message Block
 
-The __Transmit Message Block__ (above) transmits a CBOR Message to [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) (the low-power, long-range, low-bandwidth network)...
+The __Transmit Message Block__ (above) transmits a CBOR Message to [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) (the low-power, long-range, low-bandwidth IoT Network)...
 
 ```zig
 // Transmit message to LoRaWAN
 try transmitLorawan(msg);
 ```
 
-And probably other __IoT Networks__ in future: NB-IoT, LTE-M, Matter, Bluetooth, WiFi, ...
+And probably other __IoT Networks__ in future: NB-IoT, LTE-M, Matter, Bluetooth, WiFi, MQTT, ...
 
 [(__transmitLorawan__ is explained here)](https://lupyuen.github.io/articles/visual#appendix-transmit-sensor-data)
 
@@ -230,13 +230,13 @@ _What's "`_ = `something"?_
 
 Zig Compiler helpfully stops us if we forget to use the __Return Value__ of a function.
 
-We write "`_ = ...`" to tell Zig Compiler that we won't be using the Return Value of the __sleep__ function. (Imported from NuttX)
+We write "`_ = ...`" to tell Zig Compiler that we won't use the Return Value of the __sleep__ function. (Imported from NuttX)
 
 _Sleepy fish? This sleeping looks fishy..._
 
 Yep this __sleep__ won't work for some types of IoT Sensor Apps.
 
-We'll come back to this in a while.
+We'll revisit this in a while.
 
 _How did we add these NuttX Blocks to Blockly?_
 
