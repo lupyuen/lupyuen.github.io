@@ -108,11 +108,11 @@ To support IoT Sensor Apps, we extend Blockly and add the following __NuttX Bloc
 
 Let's inspect our NuttX Blocks and the Zig Code that they produce.
 
-> ![BME280 Sensor Block](https://lupyuen.github.io/images/visual-block5.jpg)
+![BME280 Sensor Block](https://lupyuen.github.io/images/visual-block5.jpg)
 
 ## BME280 Sensor Block
 
-As pictured above, our __BME280 Sensor Block__ reads Temperature, Humidity and Pressure from the BME280 Sensor.
+As pictured above, our __BME280 Sensor Block__ reads Temperature, Humidity and Pressure from the [__Bosch BME280 Sensor__](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/).
 
 Our Sensor Block will generate this __Zig Code__...
 
@@ -128,7 +128,7 @@ try sen.readSensor(           // Read BME280 Sensor
 
 This calls our Zig Function [__readSensor__](https://lupyuen.github.io/articles/visual#appendix-read-sensor-data) to read a NuttX Sensor at the specified path.
 
-(__readSensor__ is defined in the Sensor Module __sen__)
+[(__readSensor__ is defined in the Sensor Module __sen__)](https://lupyuen.github.io/articles/visual#appendix-read-sensor-data)
 
 _What's `try`?_
 
@@ -148,7 +148,7 @@ The Zig Compiler will __substitute the Struct Type__ inside the code for __readS
 
 _Why the full path "/dev/sensor/sensor_baro0"? Why not just "baro0"?_
 
-Call me stupendously stubborn, but I think it might be better for learners to discover the full path of NuttX Sensors?
+Call me stupendously stubborn, but I think it might be better for learners to see the full path of NuttX Sensors?
 
 So we have a better understanding of NuttX Sensors and how to troubleshoot them.
 
