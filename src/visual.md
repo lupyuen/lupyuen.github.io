@@ -76,7 +76,7 @@ That's our focus for today: Create NuttX Firmware that will...
 
 -   __Transmit__ the Sensor Data over [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/)
 
-_How will we implement the drag-n-drop?_
+_How will we do the drag-n-drop?_
 
 We'll implement the visual coding with [__Blockly__](https://developers.google.com/blockly), the Scratch-like browser-based coding toolkit.
 
@@ -88,7 +88,7 @@ Now we'll extend Blockly to produce IoT Sensor Apps.
 
 ![NuttX Blocks that we have added to Blockly](https://lupyuen.github.io/images/visual-block8.jpg)
 
-_NuttX Blocks that we have added to Blockly_
+[_NuttX Blocks that we have added to Blockly_](https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/)
 
 # NuttX Blocks
 
