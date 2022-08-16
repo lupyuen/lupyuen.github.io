@@ -153,42 +153,59 @@
 <li><a href="https://lupyuen.github.io/articles/blockly"><strong>“Zig Visual Programming with Blockly”</strong></a></li>
 </ul>
 <p>Now we’ll extend Blockly to produce IoT Sensor Apps.</p>
-<p><img src="https://lupyuen.github.io/images/visual-block8.jpg" alt="NuttX Blocks that we have created for Blockly" /></p>
-<p><em>NuttX Blocks that we have created for Blockly</em></p>
+<p><img src="https://lupyuen.github.io/images/visual-block8.jpg" alt="NuttX Blocks that we have added to Blockly" /></p>
+<p><em>NuttX Blocks that we have added to Blockly</em></p>
 <h1 id="nuttx-blocks"><a href="#nuttx-blocks">2 NuttX Blocks</a></h1>
-<p>TODO: Interlocking blocks</p>
-<h2 id="bme280-sensor-block"><a href="#bme280-sensor-block">2.1 BME280 Sensor Block</a></h2>
-<p>TODO</p>
+<p>In Blockly, we create programs by picking and dropping <strong>Interlocking Blocks</strong>.</p>
+<p>Each Block will emit <strong>Zig Code</strong> that we’ll compile and run with NuttX.</p>
+<p>To support IoT Sensor Apps, we extend Blockly and add the following <strong>NuttX Blocks</strong> (pic above)…</p>
+<ul>
+<li>
+<p><strong>BME280 Sensor Block</strong>: Read Temperature / Humidity / Pressure from <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a></p>
+</li>
+<li>
+<p><strong>Compose Message Block</strong>: Compose a <a href="https://lupyuen.github.io/articles/cbor2"><strong>CBOR Message</strong></a> with our Sensor Data</p>
+</li>
+<li>
+<p><strong>Transmit Message Block</strong>: Transmit a CBOR Message to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a></p>
+</li>
+<li>
+<p><strong>Every Block</strong>: Do something every X seconds</p>
+</li>
+</ul>
+<p>Let’s inspect our NuttX Blocks and the Zig Code that they produce.</p>
 <blockquote>
-<p><img src="https://lupyuen.github.io/images/visual-block5.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/visual-block5.jpg" alt="BME280 Sensor Block" /></p>
 </blockquote>
-<p>TODO</p>
+<h2 id="bme280-sensor-block"><a href="#bme280-sensor-block">2.1 BME280 Sensor Block</a></h2>
+<p>As pictured above, our <strong>BME280 Sensor Block</strong> reads Temperature, Humidity and Pressure from the BME280 Sensor.</p>
+<p>Our Sensor Block will generate this <strong>Zig Code</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>try sen.readSensor(           // Read BME280 Sensor
   c.struct_sensor_baro,       // Sensor Data Struct
   &quot;temperature&quot;,              // Sensor Data Field
   &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
 );</code></pre></div>
-<p>TODO: <code>comptime</code></p>
-<blockquote>
-<p><img src="https://lupyuen.github.io/images/visual-block1.jpg" alt="TODO" /></p>
-</blockquote>
-<p>The Blocks above will generate this Zig code to read the Temperature from the BME280 Sensor…</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature from BME280 Sensor
-const temperature = try sen.readSensor(  // Read BME280 Sensor
-  c.struct_sensor_baro,       // Sensor Data Struct
-  &quot;temperature&quot;,              // Sensor Data Field
-  &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
-);
-
-// Print the Temperature
-debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx#zig-generics">(<code>readSensor</code> is explained here)</a></p>
-<p><em>Why the full path “/dev/sensor/sensor_baro0”? Why not just “sensor_baro0”?</em></p>
-<p>Call me stupendously stubborn, but I think it might be better for learners to discover the full path of NuttX Sensors? So we understand how to troubleshoot NuttX Sensors.</p>
-<p>TODO: Paths are changing</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
+<p>This calls our Zig Function <a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data"><strong>readSensor</strong></a> to read a NuttX Sensor at the specified path.</p>
+<p>(<strong>readSensor</strong> is defined in the Sensor Module <strong>sen</strong>)</p>
+<p><em>What’s <code>try</code>?</em></p>
+<p>That’s how we <strong>handle errors</strong> in Zig. If <strong>readSensor</strong> fails with an error, we stop the current function and return the error to the caller.</p>
+<p><em>But struct_sensor_baro is not a value, it’s a Struct Type!</em></p>
+<p>Yep <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>struct_sensor_baro</strong></a> is actually a Struct Type that Zig has auto-imported from NuttX. <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355">(As defined here)</a></p>
+<p><em>So Zig will let us pass Struct Types to a Function?</em></p>
+<p>That’s the neat thing about Zig… It will let us pass <strong>Compile-Time Expressions</strong> (like Struct Types) to Zig Functions (like <strong>readSensor</strong>).</p>
+<p>The Zig Compiler will <strong>substitute the Struct Type</strong> inside the code for <strong>readSensor</strong>. (Which works like a C Macro)</p>
+<p><a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data">(More about <strong>readSensor</strong> in the Appendix)</a></p>
+<p><em>Why the full path “/dev/sensor/sensor_baro0”? Why not just “baro0”?</em></p>
+<p>Call me stupendously stubborn, but I think it might be better for learners to discover the full path of NuttX Sensors?</p>
+<p>So we have a better understanding of NuttX Sensors and how to troubleshoot them.</p>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/sensor.c#L50">(The NuttX Sensor Path has just been renamed to “/dev/uorb/sensor_baro0”)</a></p>
+<p><em>What about other sensors? BMP280, ADXL345, LSM330, …</em></p>
+<p>We plan to create a <strong>Sensor Block for every sensor</strong> that’s supported by NuttX.</p>
+<p>Thus we can build all kinds of IoT Sensor Apps by dragging-n-dropping the Sensor Blocks for BMP280, ADXL345, LSM330, …</p>
+<p><img src="https://lupyuen.github.io/images/visual-block7b.jpg" alt="Compose Message Block" /></p>
 <h2 id="compose-message-block"><a href="#compose-message-block">2.2 Compose Message Block</a></h2>
 <p>TODO: Our Custom Extension for Compose Message…</p>
-<p><img src="https://lupyuen.github.io/images/visual-block7b.jpg" alt="Compose Message" /></p>
 <p>Will generate this Zig code…</p>
 <div class="example-wrap"><pre class="language-zig"><code>const msg = try composeCbor(.{  // Compose CBOR Message
   &quot;t&quot;, temperature,
@@ -199,14 +216,14 @@ debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
 <p>TODO: Each Message Field…</p>
 <p><img src="https://lupyuen.github.io/images/visual-block9.jpg" alt="Message Field" /></p>
 <p>Will generate Zig code like this…</p>
-<div class="example-wrap"><pre class="language-zig"><code>&quot;t&quot;, temperature,</code></pre></div><h2 id="transmit-message-block"><a href="#transmit-message-block">2.3 Transmit Message Block</a></h2>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="TODO" /></p>
+<div class="example-wrap"><pre class="language-zig"><code>&quot;t&quot;, temperature,</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="Transmit Message Block" /></p>
+<h2 id="transmit-message-block"><a href="#transmit-message-block">2.3 Transmit Message Block</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Transmit message to LoRaWAN
-try transmitLorawan(msg);</code></pre></div><h2 id="every-block"><a href="#every-block">2.4 Every Block</a></h2>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/visual-block10.jpg" alt="TODO" /></p>
+try transmitLorawan(msg);</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/visual-block10.jpg" alt="Every Block" /></p>
+<h2 id="every-block"><a href="#every-block">2.4 Every Block</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Every 10 seconds...
 while (true) {
