@@ -532,19 +532,112 @@ To test the Zig program above on Linux / macOS / Windows (instead of NuttX), add
 
 # Why Zig
 
-TODO: _Once again... Why are we doing this in Zig?_
+_Once again... Why are we doing this in Zig?_
+
+It's __easier to generate__ Zig Code for our IoT Sensor App. That's because Zig supports...
+
+1.  __Type Inference__
+
+1.  __Compile-Time Expressions__
+
+1.  __Compile-Time Variable Arguments__
+
+We could have programmed Blockly to generate C Code. But it would be messy, here's why...
 
 ## Type Inference
 
-TODO
+In many Compiled Languages (including C), we need to __specify the Types__ for our Constants (and Variables)...
+
+```zig
+// This is a Float (f32)
+const temperature: f32 = try sen.readSensor(...);
+
+// This is a Struct (CborMessage)
+const msg: CborMessage = try composeCbor(...);
+```
+
+But thanks to __Type Inference__, we may omit the Types in Zig...
+
+```zig
+// Zig infers that this is a Float
+const temperature = try sen.readSensor(...);
+
+// Zig infers that this is a Struct
+const msg = try composeCbor(...);
+```
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
+This simplifies the __Code Generation__ in Blockly, since we don't track the Types.
 
 ## Compile-Time Expressions
 
-TODO: readSensor
+Earlier we saw this for reading the BME280 Sensor...
 
-TODO: composeCbor
+```zig
+// Read Temperature from BME280 Sensor
+temperature = try sen.readSensor(
+  c.struct_sensor_baro,       // Sensor Data Struct
+  "temperature",              // Sensor Data Field
+  "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+);
+```
 
-![IoT Sensor App](https://lupyuen.github.io/images/blockly-iot.jpg)
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
+Looks concise and tidy, but __readSensor__ has 2 surprises...
+
+-   [__struct_sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) is actually a __Struct Type__
+
+    (Auto-imported by Zig from NuttX)
+
+-   __"temperature"__ is actually a __Struct Field Name__
+
+    (From the [__sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct)
+
+The Zig Compiler will __substitute the Struct Type__ and Field Name inside the code for __readSensor__. (Which works like a C Macro)
+
+[(More about __readSensor__ in the Appendix)](https://lupyuen.github.io/articles/visual#appendix-read-sensor-data)
+
+_Is this doable in C?_
+
+Possibly, if we define a C Macro that embeds the entire __readSensor__ function.
+
+(Which might be a headache for maintenance)
+
+## Variable Arguments
+
+Zig has a neat way of handling __Variable Arguments__ at Compile-Time.
+
+Remember __composeCbor__ from earlier?
+
+```zig
+// Compose CBOR Message with a 
+// Variable Number of Keys and Values
+const msg = try composeCbor(.{
+  "t", temperature,
+  "p", pressure,
+  "h", humidity,
+});
+```
+
+__composeCbor__ accepts a __Variable Number of Arguments__ and it uses __Compile-Time Validation__ to verify that the parameters are OK.
+
+If we omit a Key or a Value (or if they have the wrong Types), the Zig Compiler will stop us during compilation.
+
+[(__composeCbor__ is explained here)](https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data)
+
+_Could we have done this in C?_
+
+In C, we would call some [__messy macros__](https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L219-L323) to validate and manipulate the parameters at Compile-Time.
+
+Or implement as [__Variadic Functions in C__](https://en.cppreference.com/w/c/variadic), without the Compile-Time Type Checking.
+
+That's why Zig is a better target for Automatic Code Generation.
+
+![Expected firmware for our IoT Sensor Device](https://lupyuen.github.io/images/blockly-iot.jpg)
+
+[_Expected firmware for our IoT Sensor Device_](https://lupyuen.github.io/articles/visual#blockly-for-iot-sensor-apps)
 
 # Real World Complications
 
