@@ -447,7 +447,6 @@ mkdir /mnt/c/blflash
 cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’re ready to run our IoT Sensor App!</p>
 <h1 id="run-zig-app"><a href="#run-zig-app">6 Run Zig App</a></h1>
-<p>TODO</p>
 <p>Follow these steps to <strong>flash and boot NuttX</strong> (with our Zig App inside) on BL602…</p>
 <ul>
 <li>
@@ -573,7 +572,7 @@ const msg = try composeCbor(.{
 </blockquote>
 <p>To run this in the <strong>Real World</strong>, we need some tweaks…</p>
 <p><em>Is it really OK to transmit messages to LoRaWAN every 10 seconds?</em></p>
-<p>Nope! LoRaWAN sets limits on the <strong>Message Rate</strong>.</p>
+<p>Nope it’s NOT OK to send messages every 10 seconds! LoRaWAN sets limits on the <strong>Message Rate</strong>.</p>
 <p>We can send one LoRaWAN Message roughly <strong>every 60 seconds</strong>.</p>
 <p><em>So we tweak the Loop to run every 60 seconds?</em></p>
 <p>Well then our Sensor Data (Temperature / Pressure / Humidity) would become <strong>stale and inaccurate</strong>.</p>
@@ -583,8 +582,9 @@ const msg = try composeCbor(.{
 <p>(We’ll explain “x100” in a while)</p>
 <p>Missing from the pic: We need to compute the <strong>Average Temperature / Pressure / Humidity</strong> over the past 60 seconds.</p>
 <p>And we <strong>transmit the Average Sensor Data</strong>. (Instead of the Raw Sensor Data)</p>
+<p>This gives us better Sensor Data through <strong>frequent sampling</strong>, even though we’re sending one message every minute.</p>
 <p><em>Will Blockly and Zig support two Loops?</em></p>
-<p>Not yet. We have this problem with <strong>Sleepy Fishes</strong>…</p>
+<p>Not yet. With two Loops, we have the problem of <strong>Sleepy Fishes</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read Sensor Loop...
 while (true) {
   ...
@@ -600,7 +600,7 @@ while (true) {
 }
 
 // Oops! Transmit Loop will never run!</code></pre></div>
-<p>Because we loop forever calling <strong>sleep</strong> in the First Loop, we’ll never run the Second Loop.</p>
+<p>Because we loop forever calling <strong>sleep</strong> in the First Loop, we’ll never reach the Second Loop.</p>
 <p><em>So we should do this with Timers instead?</em></p>
 <p>Yep our Loops shall be implemented with proper <strong>Multithreaded Timers</strong>.</p>
 <p>Like from <strong>NimBLE Porting Layer</strong>. (Or just plain NuttX Timers)</p>
