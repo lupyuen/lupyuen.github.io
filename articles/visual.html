@@ -626,7 +626,7 @@ while (true) {
 </li>
 <li>
 <p>Since both Loops are running concurrently, we need to <strong>Lock the Sensor Data</strong> during access</p>
-<p>(Hence the locking and averaging in the pic above)</p>
+<p>(Hence the Locking and Averaging in the sketch above)</p>
 </li>
 </ul>
 <h2 id="message-constraints"><a href="#message-constraints">9.2 Message Constraints</a></h2>
@@ -635,7 +635,7 @@ while (true) {
 <p>Our app shall transmit LoRaWAN Messages <strong>every 60 seconds</strong>, due to the Message Rate limits. <a href="https://lupyuen.github.io/articles/lorawan3#message-interval">(Here’s why)</a></p>
 </li>
 <li>
-<p>CBOR Messages are smaller if we encode our <strong>Sensor Data as Integers</strong> (instead of Floats)</p>
+<p>CBOR Messages are smaller if we encode our <strong>Sensor Data as Integers</strong> (instead of Floating-Point Numbers)</p>
 <p>We propose to scale up our Sensor Data by 100 (pic below) and encode them as Integers. (Which preserves 2 decimal places)</p>
 <p><a href="https://lupyuen.github.io/articles/cbor2#floating-point-numbers">(More about CBOR Encoding)</a></p>
 </li>
@@ -650,8 +650,22 @@ while (true) {
 <p><img src="https://lupyuen.github.io/images/visual-block11.jpg" alt="Sensor Data scaled by 100 and encoded as integers" /></p>
 <p><em>Sensor Data scaled by 100 and encoded as integers</em></p>
 <h2 id="blockly-limitations"><a href="#blockly-limitations">9.3 Blockly Limitations</a></h2>
-<p>TODO: Const vs var</p>
-<p>TODO: Multiple assignment</p>
+<ul>
+<li>
+<p><strong>Double Asssignment</strong> fails with Zig and Blockly…</p>
+<p><img src="https://lupyuen.github.io/images/blockly-run12.jpg" alt="Double Asssignment" /></p>
+<p><a href="https://lupyuen.github.io/articles/blockly#constants-vs-variables">(More about this)</a></p>
+</li>
+<li>
+<p><strong>Shadowed Identifiers</strong> won’t work either…</p>
+<p><img src="https://lupyuen.github.io/images/blockly-run15.jpg" alt="Shadowed Identifiers" /></p>
+<p><a href="https://lupyuen.github.io/articles/blockly#constants-vs-variables">(More about this)</a></p>
+</li>
+<li>
+<p>Some Blocks won’t emit <strong>valid Zig Code</strong></p>
+</li>
+</ul>
+<p>There’s plenty to be fixed, please lemme know if you’re keen to help! 🙏</p>
 <p><img src="https://lupyuen.github.io/images/visual-arduino.jpg" alt="Connect a Sensor to our Microcontroller and it pops up in Blockly!" /></p>
 <p><em>Connect a Sensor to our Microcontroller and it pops up in Blockly!</em></p>
 <h1 id="visual-arduino"><a href="#visual-arduino">10 Visual Arduino?</a></h1>
@@ -662,7 +676,7 @@ while (true) {
 <blockquote>
 <p>“For example, you just plug a temperature sensor module in your board and it will identify the module type and you can pass this Temperature variable to use in your logic application”</p>
 </blockquote>
-<p>Just <strong>connect a Sensor</strong> to our Microcontroller… And it pops up in <strong>Blockly</strong>! (Pic above)</p>
+<p>Just <strong>connect a Sensor</strong> to our Microcontroller… And it pops up in <strong>Blockly</strong>, all ready for us to read the Sensor Data! (Pic above)</p>
 <p>To detect the Sensor, we could use <a href="https://en.m.wikipedia.org/wiki/Serial_presence_detect"><strong>SPD (Serial Presence Detection)</strong></a>, like for DDR Memory Modules.</p>
 <p>(Or maybe we scan the I2C Bus and read the Chip ID?)</p>
 <p>What do you think? Please let us know! 🙏</p>
