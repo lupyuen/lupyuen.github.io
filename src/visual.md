@@ -727,21 +727,19 @@ This is how we'll fix it...
 
 -   Since both Loops are running concurrently, we need to __Lock the Sensor Data__ during access
 
-    (That's why the pic above mentions locking and averaging)
-
-## Network Constraints
-
-TODO: LoRaWAN message size, frequency
+    (Hence the locking and averaging in the pic above)
 
 ## Message Constraints
 
-TODO: scale 100
+-   We'll transmit LoRaWAN Messages __every 60 seconds__, due to the Message Rate limits. [(Here's why)](https://lupyuen.github.io/articles/lorawan3#message-interval)
 
-![Compose Message Block, scaled by 100](https://lupyuen.github.io/images/visual-block11.jpg)
+TODO: scale 100
 
 TODO: Test on [Waveshare LoRa SX1262 Breakout Board](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) because our current SX1262 board is reserved for [NuttX Automated Testing](https://lupyuen.github.io/articles/auto)
 
 TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
+
+![Compose Message Block, scaled by 100](https://lupyuen.github.io/images/visual-block11.jpg)
 
 ## Blockly Limitations
 
