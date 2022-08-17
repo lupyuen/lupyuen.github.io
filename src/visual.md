@@ -683,7 +683,7 @@ And we __transmit the Average Sensor Data__. (Instead of the Raw Sensor Data)
 
 This gives us better Sensor Data through __frequent sampling__, even though we're sending one message every minute.
 
-(Some sensors like BME280 can actually do frequent sampling on their own)
+(Some sensors like BME280 can actually do frequent sampling on their own. Check for [__Standby Interval__](https://lupyuen.github.io/articles/bme280#standby-interval))
 
 _Will Blockly and Zig support two Loops?_
 
@@ -713,7 +713,7 @@ _So we should do this with Timers instead?_
 
 Yep our Loops shall be implemented with proper __Multithreaded Timers__.
 
-Like from __NimBLE Porting Layer__. (Or just plain NuttX Timers)
+Like from [__NimBLE Porting Layer__](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer). (Or just plain NuttX Timers)
 
 Let's sum up the tweaks that we need...
 
@@ -731,11 +731,11 @@ This is how we'll fix it...
 
 -   __sleep__ won't work for Multiple Loops. We'll switch to __Multithreaded Timers__ instead
 
-    (From __NimBLE Porting Layer__ or just plain NuttX Timers)
+    (From [__NimBLE Porting Layer__](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer) or just plain NuttX Timers)
 
 -   Our Read Sensor Loop needs to pass the __Aggregated Sensor Data__ to Transmit Loop
 
--   Since both Loops are running concurrently, we need to __Lock the Sensor Data__ during access
+-   Since both Loops run concurrently, we need to __Lock the Sensor Data__ during access
 
     (Hence the Locking and Averaging in the sketch above)
 
@@ -761,6 +761,10 @@ _Sensor Data scaled by 100 and encoded as integers_
 
 ## Blockly Limitations
 
+-   Some Blocks won't emit __valid Zig Code__
+
+    [(Because our Zig Code Generator for Blockly is incomplete)](https://lupyuen.github.io/articles/blockly#code-generator)
+
 -   __Double Asssignment__ fails with Zig and Blockly...
 
     ![Double Asssignment](https://lupyuen.github.io/images/blockly-run12.jpg)
@@ -773,7 +777,9 @@ _Sensor Data scaled by 100 and encoded as integers_
 
     [(More about this)](https://lupyuen.github.io/articles/blockly#constants-vs-variables)
 
--   Some Blocks won't emit __valid Zig Code__
+-   Copying the Zig Code from Blockly into NuttX feels cumbersome. We might streamline this by wrapping Blockly as a __Desktop App.__
+
+    [(More about this)](https://lupyuen.github.io/articles/blockly#desktop-and-mobile)
 
 There's plenty to be fixed, please lemme know if you're keen to help! 🙏
 
@@ -800,6 +806,8 @@ What do you think? Please let us know! 🙏
 (Would be great if we could create a Proof-of-Concept using Universal Perforated Board)
 
 # What's Next
+
+TODO
 
 Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL...
 
