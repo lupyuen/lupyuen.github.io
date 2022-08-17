@@ -489,13 +489,15 @@ Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on BL60
 
 -   [__"Run NuttX"__](https://lupyuen.github.io/articles/nuttx#run-nuttx)
 
-In the NuttX Shell, enter this command to start our IoT Sensor App...
+In the NuttX Shell, enter this command to start our __IoT Sensor App__...
 
 ```bash
 sensortest visual
 ```
 
-Our IoT Sensor App should correctly read the Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN (simulated)...
+[(__sensortest__ is explained here)](https://lupyuen.github.io/articles/sensor#main-function)
+
+Our IoT Sensor App should correctly read the __Temperature, Pressure and Humidity__ from BME280 Sensor, and transmit the values to LoRaWAN (simulated)...
 
 ```text
 NuttShell (NSH) NuttX-10.3.0
@@ -532,7 +534,7 @@ Yep we have successfully created an IoT Sensor App with Blockly, Zig and NuttX! 
 
 _Can we test without NuttX?_
 
-To test the Zig program above on Linux / macOS / Windows (instead of NuttX), add the stubs below to simulate a NuttX Sensor...
+To test our IoT Sensor App on __Linux / macOS / Windows__ (instead of NuttX), add the stubs below to simulate a NuttX Sensor...
 
 -   [__"Test Stubs"__](https://github.com/lupyuen/visual-zig-nuttx#test-stubs)
 
