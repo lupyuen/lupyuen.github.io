@@ -606,6 +606,8 @@ while (true) {
 <p>Yep our Loops shall be implemented with proper <strong>Multithreaded Timers</strong>.</p>
 <p>Like from <strong>NimBLE Porting Layer</strong>. (Or just plain NuttX Timers)</p>
 <p>Let’s sum up the tweaks that we need…</p>
+<p><img src="https://lupyuen.github.io/images/sensor-visual.jpg" alt="Grand Plan for our IoT Sensor App" /></p>
+<p><em>Grand Plan for our IoT Sensor App</em></p>
 <h1 id="upcoming-fixes"><a href="#upcoming-fixes">9 Upcoming Fixes</a></h1>
 <p>In the previous section we talked about the <strong>quirks in our IoT Sensor App</strong> and why it won’t work in the Real World.</p>
 <p>This is how we’ll fix it…</p>
@@ -620,6 +622,7 @@ while (true) {
 </li>
 <li>
 <p>Since both Loops are running concurrently, we need to <strong>Lock the Sensor Data</strong> during access</p>
+<p>(That’s why the pic above mentions locking and averaging)</p>
 </li>
 </ul>
 <h2 id="network-constraints"><a href="#network-constraints">9.2 Network Constraints</a></h2>
