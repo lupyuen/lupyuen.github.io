@@ -574,7 +574,7 @@ This means splitting into two loops: __Read Sensor Loop__ and __Transmit Loop__.
 
 (We'll explain "x100" in a while)
 
-Not shown in the pic: We need to compute the __Average Temperature / Pressure / Humidity__ over the past 60 seconds.
+Missing from the pic: We need to compute the __Average Temperature / Pressure / Humidity__ over the past 60 seconds.
 
 And we __transmit the Average Sensor Data__. (Instead of the Raw Sensor Data)
 
@@ -618,11 +618,11 @@ TODO
 
 TODO: Multi every loops
 
-TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
-
 ## Network Constraints
 
 TODO: LoRaWAN message size, frequency
+
+## Message Constraints
 
 TODO: scale 100
 
@@ -630,51 +630,25 @@ TODO: scale 100
 
 TODO: Test on [Waveshare LoRa SX1262 Breakout Board](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) because our current SX1262 board is reserved for [NuttX Automated Testing](https://lupyuen.github.io/articles/auto)
 
+TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
+
 ## Blockly Limitations
 
 TODO: Const vs var
 
 TODO: Multiple assignment
 
-# Create Custom Blocks
+# Visual Arduino?
 
 TODO
 
--   [__"Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-block)
+[__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/) has a fascinating idea for a Embedded Dev Tool that's __modular, visual, plug-and-play__...
 
--   [__"Create Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#create-custom-block)
+>   "I think creating some modular solution to compete with Arduino could be nice! Imagine that instead of wiring modules in the breadboard people just plug the device in the board and it recognize the device and add it to some graphical interface"
 
--   [__"Export Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#export-custom-block)
+>   "For example, you just plug a temperature sensor module in your board and it will identify the module type and you can pass this Temperature variable to use in your logic application"
 
--   [__"Load Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#load-custom-block)
-
--   [__"Show Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#show-custom-block)
-
--   [__"Code Generator for Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-block)
-
--   [__"Build Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#build-custom-block)
-
--   [__"Test Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-block)
-
--   [__"Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-extension)
-
--   [__"Code Generator for Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-extension)
-
--   [__"Test Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-extension)
-
--   [__"Test Stubs"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-stubs)
-
--   [__"Transmit Message"__](https://github.com/lupyuen3/blockly-zig-nuttx#transmit-message)
-
-TODO3
-
-![TODO](https://lupyuen.github.io/images/visual-block3.jpg)
-
-TODO4
-
-![TODO](https://lupyuen.github.io/images/visual-block4.jpg)
-
-TODO
+What do you think? Please let us know! 🙏
 
 # What's Next
 
@@ -988,3 +962,47 @@ try transmitLorawan(msg);
 ```
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
+# Appendix: Create Custom Blocks
+
+TODO: Previously we have __customised Blockly__ to generate Zig Programs...
+
+-   [__"Zig Visual Programming with Blockly"__](https://lupyuen.github.io/articles/blockly)
+
+Now we'll extend Blockly to produce IoT Sensor Apps.
+
+-   [__"Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-block)
+
+-   [__"Create Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#create-custom-block)
+
+-   [__"Export Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#export-custom-block)
+
+-   [__"Load Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#load-custom-block)
+
+-   [__"Show Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#show-custom-block)
+
+-   [__"Code Generator for Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-block)
+
+-   [__"Build Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#build-custom-block)
+
+-   [__"Test Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-block)
+
+-   [__"Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-extension)
+
+-   [__"Code Generator for Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-extension)
+
+-   [__"Test Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-extension)
+
+-   [__"Test Stubs"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-stubs)
+
+-   [__"Transmit Message"__](https://github.com/lupyuen3/blockly-zig-nuttx#transmit-message)
+
+TODO3
+
+![TODO](https://lupyuen.github.io/images/visual-block3.jpg)
+
+TODO4
+
+![TODO](https://lupyuen.github.io/images/visual-block4.jpg)
+
+TODO
