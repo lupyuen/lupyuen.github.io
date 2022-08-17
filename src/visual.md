@@ -735,13 +735,13 @@ This is how we'll fix it...
 
 -   Since both Loops are running concurrently, we need to __Lock the Sensor Data__ during access
 
-    (Hence the locking and averaging in the pic above)
+    (Hence the Locking and Averaging in the sketch above)
 
 ## Message Constraints
 
 -   Our app shall transmit LoRaWAN Messages __every 60 seconds__, due to the Message Rate limits. [(Here's why)](https://lupyuen.github.io/articles/lorawan3#message-interval)
 
--   CBOR Messages are smaller if we encode our __Sensor Data as Integers__ (instead of Floats)
+-   CBOR Messages are smaller if we encode our __Sensor Data as Integers__ (instead of Floating-Point Numbers)
 
     We propose to scale up our Sensor Data by 100 (pic below) and encode them as Integers. (Which preserves 2 decimal places)
 
@@ -759,9 +759,21 @@ _Sensor Data scaled by 100 and encoded as integers_
 
 ## Blockly Limitations
 
-TODO: Const vs var
+-   __Double Asssignment__ fails with Zig and Blockly...
 
-TODO: Multiple assignment
+    ![Double Asssignment](https://lupyuen.github.io/images/blockly-run12.jpg)
+
+    [(More about this)](https://lupyuen.github.io/articles/blockly#constants-vs-variables)
+
+-   __Shadowed Identifiers__ won't work either...
+
+    ![Shadowed Identifiers](https://lupyuen.github.io/images/blockly-run15.jpg)
+
+    [(More about this)](https://lupyuen.github.io/articles/blockly#constants-vs-variables)
+
+-   Some Blocks won't emit __valid Zig Code__
+
+There's plenty to be fixed, please lemme know if you're keen to help! 🙏
 
 ![Connect a Sensor to our Microcontroller and it pops up in Blockly!](https://lupyuen.github.io/images/visual-arduino.jpg)
 
@@ -775,7 +787,7 @@ _Connect a Sensor to our Microcontroller and it pops up in Blockly!_
 
 >   "For example, you just plug a temperature sensor module in your board and it will identify the module type and you can pass this Temperature variable to use in your logic application"
 
-Just __connect a Sensor__ to our Microcontroller... And it pops up in __Blockly__! (Pic above)
+Just __connect a Sensor__ to our Microcontroller... And it pops up in __Blockly__, all ready for us to read the Sensor Data! (Pic above)
 
 To detect the Sensor, we could use [__SPD (Serial Presence Detection)__](https://en.m.wikipedia.org/wiki/Serial_presence_detect), like for DDR Memory Modules.
 
