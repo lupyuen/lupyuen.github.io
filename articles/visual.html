@@ -457,9 +457,10 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx#run-nuttx"><strong>“Run NuttX”</strong></a></p>
 </li>
 </ul>
-<p>In the NuttX Shell, enter this command to start our IoT Sensor App…</p>
+<p>In the NuttX Shell, enter this command to start our <strong>IoT Sensor App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sensortest visual</code></pre></div>
-<p>Our IoT Sensor App should correctly read the Temperature, Pressure and Humidity from BME280 Sensor, and transmit the values to LoRaWAN (simulated)…</p>
+<p><a href="https://lupyuen.github.io/articles/sensor#main-function">(<strong>sensortest</strong> is explained here)</a></p>
+<p>Our IoT Sensor App should correctly read the <strong>Temperature, Pressure and Humidity</strong> from BME280 Sensor, and transmit the values to LoRaWAN (simulated)…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0
 nsh&gt; sensortest visual
 Zig Sensor Test
@@ -489,7 +490,7 @@ transmitLorawan
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app">(See the Complete Log)</a></p>
 <p>Yep we have successfully created an IoT Sensor App with Blockly, Zig and NuttX! 🎉</p>
 <p><em>Can we test without NuttX?</em></p>
-<p>To test the Zig program above on Linux / macOS / Windows (instead of NuttX), add the stubs below to simulate a NuttX Sensor…</p>
+<p>To test our IoT Sensor App on <strong>Linux / macOS / Windows</strong> (instead of NuttX), add the stubs below to simulate a NuttX Sensor…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx#test-stubs"><strong>“Test Stubs”</strong></a></li>
 </ul>
