@@ -747,6 +747,8 @@ TODO: Const vs var
 
 TODO: Multiple assignment
 
+![Visual Arduino](https://lupyuen.github.io/images/visual-arduino.jpg)
+
 # Visual Arduino?
 
 TODO
