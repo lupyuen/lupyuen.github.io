@@ -477,6 +477,10 @@ cp nuttx.bin /mnt/c/blflash
 
 We're ready to run our IoT Sensor App!
 
+![IoT Sensor App running on PineCone BL602](https://lupyuen.github.io/images/visual-run1.png)
+
+_IoT Sensor App running on PineCone BL602_
+
 # Run Zig App
 
 Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on BL602...
@@ -523,6 +527,10 @@ transmitLorawan
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app)
+
+Yep we have successfully created an IoT Sensor App with Blockly, Zig and NuttX! 🎉
+
+_Can we test without NuttX?_
 
 To test the Zig program above on Linux / macOS / Windows (instead of NuttX), add the stubs below to simulate a NuttX Sensor...
 
