@@ -741,11 +741,13 @@ This is how we'll fix it...
 
 -   We'll transmit LoRaWAN Messages __every 60 seconds__, due to the Message Rate limits. [(Here's why)](https://lupyuen.github.io/articles/lorawan3#message-interval)
 
+-   We'll probably test LoRaWAN with [__Waveshare LoRa SX1262 Breakout Board__](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) (non-sponsored)
+
+    (Because our current LoRa SX1262 Board is reserved for [__NuttX Automated Testing__](https://lupyuen.github.io/articles/auto))
+
 TODO: scale 100
 
-TODO: Test on [Waveshare LoRa SX1262 Breakout Board](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) because our current SX1262 board is reserved for [NuttX Automated Testing](https://lupyuen.github.io/articles/auto)
-
-TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
+TODO: Pine64 sensors, [Waveshare I2C Multi-Sensor Board](https://www.waveshare.com/wiki/Pico-Environment-Sensor) (non-sponsored)
 
 ![Compose Message Block, scaled by 100](https://lupyuen.github.io/images/visual-block11.jpg)
 
