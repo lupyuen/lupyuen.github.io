@@ -77,7 +77,8 @@
 <li><a href="#run-zig-app">6 Run Zig App</a><ul></ul></li>
 <li><a href="#why-zig">7 Why Zig</a><ul>
 <li><a href="#type-inference">7.1 Type Inference</a><ul></ul></li>
-<li><a href="#compile-time-expressions">7.2 Compile-Time Expressions</a><ul></ul></li></ul></li>
+<li><a href="#compile-time-expressions">7.2 Compile-Time Expressions</a><ul></ul></li>
+<li><a href="#variable-arguments">7.3 Variable Arguments</a><ul></ul></li></ul></li>
 <li><a href="#real-world-complications">8 Real World Complications</a><ul></ul></li>
 <li><a href="#upcoming-fixes">9 Upcoming Fixes</a><ul>
 <li><a href="#multithreading-and-synchronisation">9.1 Multithreading and Synchronisation</a><ul></ul></li>
@@ -491,13 +492,79 @@ transmitLorawan
 <li><a href="https://github.com/lupyuen/visual-zig-nuttx#test-stubs"><strong>“Test Stubs”</strong></a></li>
 </ul>
 <h1 id="why-zig"><a href="#why-zig">7 Why Zig</a></h1>
-<p>TODO: <em>Once again… Why are we doing this in Zig?</em></p>
+<p><em>Once again… Why are we doing this in Zig?</em></p>
+<p>It’s <strong>easier to generate</strong> Zig Code for our IoT Sensor App. That’s because Zig supports…</p>
+<ol>
+<li>
+<p><strong>Type Inference</strong></p>
+</li>
+<li>
+<p><strong>Compile-Time Expressions</strong></p>
+</li>
+<li>
+<p><strong>Compile-Time Variable Arguments</strong></p>
+</li>
+</ol>
+<p>We could have programmed Blockly to generate C Code. But it would be messy, here’s why…</p>
 <h2 id="type-inference"><a href="#type-inference">7.1 Type Inference</a></h2>
-<p>TODO</p>
+<p>In many Compiled Languages (including C), we need to <strong>specify the Types</strong> for our Constants (and Variables)…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// This is a Float (f32)
+const temperature: f32 = try sen.readSensor(...);
+
+// This is a Struct (CborMessage)
+const msg: CborMessage = try composeCbor(...);</code></pre></div>
+<p>But thanks to <strong>Type Inference</strong>, we may omit the Types in Zig…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Zig infers that this is a Float
+const temperature = try sen.readSensor(...);
+
+// Zig infers that this is a Struct
+const msg = try composeCbor(...);</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
+<p>This simplifies the <strong>Code Generation</strong> in Blockly, since we don’t track the Types.</p>
 <h2 id="compile-time-expressions"><a href="#compile-time-expressions">7.2 Compile-Time Expressions</a></h2>
-<p>TODO: readSensor</p>
-<p>TODO: composeCbor</p>
-<p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="IoT Sensor App" /></p>
+<p>Earlier we saw this for reading the BME280 Sensor…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Read Temperature from BME280 Sensor
+temperature = try sen.readSensor(
+  c.struct_sensor_baro,       // Sensor Data Struct
+  &quot;temperature&quot;,              // Sensor Data Field
+  &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+);</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
+<p>Looks concise and tidy, but <strong>readSensor</strong> has 2 surprises…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>struct_sensor_baro</strong></a> is actually a <strong>Struct Type</strong></p>
+<p>(Auto-imported by Zig from NuttX)</p>
+</li>
+<li>
+<p><strong>“temperature”</strong> is actually a <strong>Struct Field Name</strong></p>
+<p>(From the <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct)</p>
+</li>
+</ul>
+<p>The Zig Compiler will <strong>substitute the Struct Type</strong> and Field Name inside the code for <strong>readSensor</strong>. (Which works like a C Macro)</p>
+<p><a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data">(More about <strong>readSensor</strong> in the Appendix)</a></p>
+<p><em>Is this doable in C?</em></p>
+<p>Possibly, if we define a C Macro that embeds the entire <strong>readSensor</strong> function.</p>
+<p>(Which might be a headache for maintenance)</p>
+<h2 id="variable-arguments"><a href="#variable-arguments">7.3 Variable Arguments</a></h2>
+<p>Zig has a neat way of handling <strong>Variable Arguments</strong> at Compile-Time.</p>
+<p>Remember <strong>composeCbor</strong> from earlier?</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Compose CBOR Message with a 
+// Variable Number of Keys and Values
+const msg = try composeCbor(.{
+  &quot;t&quot;, temperature,
+  &quot;p&quot;, pressure,
+  &quot;h&quot;, humidity,
+});</code></pre></div>
+<p><strong>composeCbor</strong> accepts a <strong>Variable Number of Arguments</strong> and it uses <strong>Compile-Time Validation</strong> to verify that the parameters are OK.</p>
+<p>If we omit a Key or a Value (or if they have the wrong Types), the Zig Compiler will stop us during compilation.</p>
+<p><a href="https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data">(<strong>composeCbor</strong> is explained here)</a></p>
+<p><em>Could we have done this in C?</em></p>
+<p>In C, we would call some <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L219-L323"><strong>messy macros</strong></a> to validate and manipulate the parameters at Compile-Time.</p>
+<p>Or implement as <a href="https://en.cppreference.com/w/c/variadic"><strong>Variadic Functions in C</strong></a>, without the Compile-Time Type Checking.</p>
+<p>That’s why Zig is a better target for Automatic Code Generation.</p>
+<p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="Expected firmware for our IoT Sensor Device" /></p>
+<p><a href="https://lupyuen.github.io/articles/visual#blockly-for-iot-sensor-apps"><em>Expected firmware for our IoT Sensor Device</em></a></p>
 <h1 id="real-world-complications"><a href="#real-world-complications">8 Real World Complications</a></h1>
 <p>Remember earlier we drew the pic above for our <strong>IoT Sensor Firmware</strong>?</p>
 <p>Then we kinda glossed over the details and made this <strong>IoT Sensor App</strong>…</p>
