@@ -739,7 +739,7 @@ This is how we'll fix it...
 
 ## Message Constraints
 
--   We'll transmit LoRaWAN Messages __every 60 seconds__, due to the Message Rate limits. [(Here's why)](https://lupyuen.github.io/articles/lorawan3#message-interval)
+-   Our app shall transmit LoRaWAN Messages __every 60 seconds__, due to the Message Rate limits. [(Here's why)](https://lupyuen.github.io/articles/lorawan3#message-interval)
 
 -   We'll probably test LoRaWAN with [__Waveshare LoRa SX1262 Breakout Board__](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) (non-sponsored)
 
