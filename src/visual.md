@@ -705,6 +705,10 @@ Like from __NimBLE Porting Layer__. (Or just plain NuttX Timers)
 
 Let's sum up the tweaks that we need...
 
+![Grand Plan for our IoT Sensor App](https://lupyuen.github.io/images/sensor-visual.jpg)
+
+_Grand Plan for our IoT Sensor App_
+
 # Upcoming Fixes
 
 In the previous section we talked about the __quirks in our IoT Sensor App__ and why it won't work in the Real World.
@@ -720,6 +724,8 @@ This is how we'll fix it...
 -   Our Read Sensor Loop needs to pass the __Aggregated Sensor Data__ to Transmit Loop
 
 -   Since both Loops are running concurrently, we need to __Lock the Sensor Data__ during access
+
+    (That's why the pic above mentions locking and averaging)
 
 ## Network Constraints
 
