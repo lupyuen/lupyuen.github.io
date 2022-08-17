@@ -741,15 +741,21 @@ This is how we'll fix it...
 
 -   Our app shall transmit LoRaWAN Messages __every 60 seconds__, due to the Message Rate limits. [(Here's why)](https://lupyuen.github.io/articles/lorawan3#message-interval)
 
--   We'll probably test LoRaWAN with [__Waveshare LoRa SX1262 Breakout Board__](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) (non-sponsored)
+-   CBOR Messages are smaller if we encode our __Sensor Data as Integers__ (instead of Floats)
+
+    We propose to scale up our Sensor Data by 100 (pic below) and encode them as Integers. (Which preserves 2 decimal places)
+
+    [(More about CBOR Encoding)](https://lupyuen.github.io/articles/cbor2#floating-point-numbers)
+
+-   We'll probably test LoRaWAN with Waveshare's [__LoRa SX1262 Breakout Board__](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) (non-sponsored)
 
     (Because our current LoRa SX1262 Board is reserved for [__NuttX Automated Testing__](https://lupyuen.github.io/articles/auto))
 
-TODO: scale 100
+-   Waveshare's [__I2C Multi-Sensor Board__](https://www.waveshare.com/wiki/Pico-Environment-Sensor) (non-sponsored) looks super interesting for mixing-n-matching Multiple Sensors
 
-TODO: Pine64 sensors, [Waveshare I2C Multi-Sensor Board](https://www.waveshare.com/wiki/Pico-Environment-Sensor) (non-sponsored)
+![Sensor Data scaled by 100 and encoded as integers](https://lupyuen.github.io/images/visual-block11.jpg)
 
-![Compose Message Block, scaled by 100](https://lupyuen.github.io/images/visual-block11.jpg)
+_Sensor Data scaled by 100 and encoded as integers_
 
 ## Blockly Limitations
 
