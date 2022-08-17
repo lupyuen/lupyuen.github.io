@@ -722,9 +722,9 @@ while (true) {
 <p>The Blocks above will generate this <strong>Zig Code</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature
 const temperature = try sen.readSensor(
-    c.struct_sensor_baro,       // Sensor Data Struct to be read
-    &quot;temperature&quot;,              // Sensor Data Field to be returned
-    &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+  c.struct_sensor_baro,       // Sensor Data Struct to be read
+  &quot;temperature&quot;,              // Sensor Data Field to be returned
+  &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
 );
 
 // Print the Temperature
@@ -735,19 +735,19 @@ debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
 <p>Note that the Sensor Data Struct Type and the Sensor Data Field are declared as <code>comptime</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read a Sensor and return the Sensor Data
 pub fn readSensor(
-    comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
-    comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
-    device_path: []const u8           // Path of Sensor Device, like &quot;/dev/sensor/sensor_baro0&quot;
+  comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
+  comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
+  device_path: []const u8           // Path of Sensor Device, like &quot;/dev/sensor/sensor_baro0&quot;
 ) !f32 { ...</code></pre></div>
 <p>Which means that the values will be substituted at Compile-Time. (Works like a C Macro)</p>
 <p>We can then refer to the Sensor Data Struct <code>sensor_baro</code> like this…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(
-        SensorType
-    );</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>  // Define the Sensor Data Type
+  var sensor_data = std.mem.zeroes(
+    SensorType
+  );</code></pre></div>
 <p>And return a field <code>temperature</code> like this…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Return the Sensor Data Field
-    return @field(sensor_data, field_name);</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>  // Return the Sensor Data Field
+  return @field(sensor_data, field_name);</code></pre></div>
 <p>Thus this program…</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L27-L61">visual-zig-nuttx/visual.zig</a></p>
 <p>Produces this output…</p>
@@ -764,78 +764,78 @@ End main</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">visual-zig-nuttx/sensor.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read a Sensor and return the Sensor Data
 pub fn readSensor(
-    comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
-    comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
-    device_path: []const u8           // Path of Sensor Device, like &quot;/dev/sensor/sensor_baro0&quot;
+  comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
+  comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
+  device_path: []const u8           // Path of Sensor Device, like &quot;/dev/sensor/sensor_baro0&quot;
 ) !f32 {
-    // Open the Sensor Device
-    const fd = c.open(
-        &amp;device_path[0],           // Path of Sensor Device
-        c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
-    );
+  // Open the Sensor Device
+  const fd = c.open(
+    &amp;device_path[0],           // Path of Sensor Device
+    c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+  );
 
-    // Check for error
-    if (fd &lt; 0) {
-        std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
-        return error.OpenError;
-    }
+  // Check for error
+  if (fd &lt; 0) {
+    std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
+    return error.OpenError;
+  }
 
-    // Close the Sensor Device when this function returns
-    defer {
-        _ = c.close(fd);
-    }
+  // Close the Sensor Device when this function returns
+  defer {
+    _ = c.close(fd);
+  }
 
-    // Set Standby Interval
-    const interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
-    var ret = c.ioctl(fd, c.SNIOC_SET_INTERVAL, interval);
+  // Set Standby Interval
+  const interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
+  var ret = c.ioctl(fd, c.SNIOC_SET_INTERVAL, interval);
 
-    // Check for error
-    if (ret &lt; 0 and errno() != c.ENOTSUP) {
-        std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
-        return error.IntervalError;
-    }
+  // Check for error
+  if (ret &lt; 0 and errno() != c.ENOTSUP) {
+    std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
+    return error.IntervalError;
+  }
 
-    // Set Batch Latency
-    const latency: c_uint = 0;  // No latency
-    ret = c.ioctl(fd, c.SNIOC_BATCH, latency);
+  // Set Batch Latency
+  const latency: c_uint = 0;  // No latency
+  ret = c.ioctl(fd, c.SNIOC_BATCH, latency);
 
-    // Check for error
-    if (ret &lt; 0 and errno() != c.ENOTSUP) {
-        std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
-        return error.BatchError;
-    }
+  // Check for error
+  if (ret &lt; 0 and errno() != c.ENOTSUP) {
+    std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
+    return error.BatchError;
+  }
 
-    // Poll for Sensor Data
-    var fds = std.mem.zeroes(c.struct_pollfd);
-    fds.fd = fd;
-    fds.events = c.POLLIN;
-    ret = c.poll(&amp;fds, 1, -1);
+  // Poll for Sensor Data
+  var fds = std.mem.zeroes(c.struct_pollfd);
+  fds.fd = fd;
+  fds.events = c.POLLIN;
+  ret = c.poll(&amp;fds, 1, -1);
 
-    // Check if Sensor Data is available
-    if (ret &lt;= 0) {
-        std.log.err(&quot;Sensor data not available&quot;, .{});
-        return error.DataError;
-    }
+  // Check if Sensor Data is available
+  if (ret &lt;= 0) {
+    std.log.err(&quot;Sensor data not available&quot;, .{});
+    return error.DataError;
+  }
 
-    // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(
-        SensorType
-    );
-    const len = @sizeOf(
-        @TypeOf(sensor_data)
-    );
+  // Define the Sensor Data Type
+  var sensor_data = std.mem.zeroes(
+    SensorType
+  );
+  const len = @sizeOf(
+    @TypeOf(sensor_data)
+  );
 
-    // Read the Sensor Data
-    const read_len = c.read(fd, &amp;sensor_data, len);
+  // Read the Sensor Data
+  const read_len = c.read(fd, &amp;sensor_data, len);
 
-    // Check size of Sensor Data
-    if (read_len &lt; len) {
-        std.log.err(&quot;Sensor data incorrect size&quot;, .{});
-        return error.SizeError;
-    }
+  // Check size of Sensor Data
+  if (read_len &lt; len) {
+    std.log.err(&quot;Sensor data incorrect size&quot;, .{});
+    return error.SizeError;
+  }
 
-    // Return the Sensor Data Field
-    return @field(sensor_data, field_name);
+  // Return the Sensor Data Field
+  return @field(sensor_data, field_name);
 }</code></pre></div>
 <p><a href="https://ikrima.dev/dev-notes/zig/zig-metaprogramming/"><strong>“Zig Metaprogramming”</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/visual-block7b.jpg" alt="Compose Message Block" /></p>
@@ -855,71 +855,74 @@ pub fn readSensor(
 <div class="example-wrap"><pre class="language-zig"><code>/// TODO: Compose CBOR Message with Key-Value Pairs
 /// https://lupyuen.github.io/articles/cbor2
 fn composeCbor(args: anytype) !CborMessage {
-    debug(&quot;composeCbor&quot;, .{});
-    comptime {
-        assert(args.len % 2 == 0);  // Missing Key or Value
-    }
+  debug(&quot;composeCbor&quot;, .{});
+  comptime {
+    assert(args.len % 2 == 0);  // Missing Key or Value
+  }
 
-    // Process each field...
-    comptime var i: usize = 0;
-    var msg = CborMessage{};
-    inline while (i &lt; args.len) : (i += 2) {
+  // Process each field...
+  comptime var i: usize = 0;
+  var msg = CborMessage{};
+  inline while (i &lt; args.len) : (i += 2) {
 
-        // Get the key and value
-        const key   = args[i];
-        const value = args[i + 1];
+    // Get the key and value
+    const key   = args[i];
+    const value = args[i + 1];
 
-        // Print the key and value
-        debug(&quot;  {s}: {}&quot;, .{
-            @as([]const u8, key),
-            floatToFixed(value)
-        });
+    // Print the key and value
+    debug(&quot;  {s}: {}&quot;, .{
+      @as([]const u8, key),
+      floatToFixed(value)
+    });
 
-        // Format the message for testing
-        var slice = std.fmt.bufPrint(
-            msg.buf[msg.len..], 
-            &quot;{s}:{},&quot;,
-            .{
-                @as([]const u8, key),
-                floatToFixed(value)
-            }
-        ) catch { _ = std.log.err(&quot;Error: buf too small&quot;, .{}); return error.Overflow; };
-        msg.len += slice.len;
-    }
-    debug(&quot;  msg={s}&quot;, .{ msg.buf[0..msg.len] });
-    return msg;
+    // Format the message for testing
+    var slice = std.fmt.bufPrint(
+      msg.buf[msg.len..], 
+      &quot;{s}:{},&quot;,
+      .{
+        @as([]const u8, key),
+        floatToFixed(value)
+      }
+    ) catch { _ = std.log.err(&quot;Error: buf too small&quot;, .{}); return error.Overflow; };
+    msg.len += slice.len;
+  }
+  debug(&quot;  msg={s}&quot;, .{ msg.buf[0..msg.len] });
+  return msg;
 }
 
 /// TODO: CBOR Message
 /// https://lupyuen.github.io/articles/cbor2
 const CborMessage = struct {
-    buf: [256]u8 = undefined,  // Limit to 256 chars
-    len: usize = 0,
+  buf: [256]u8 = undefined,  // Limit to 256 chars
+  len: usize = 0,
 };</code></pre></div>
 <p>Note that <code>composeCbor</code> is declared as <code>anytype</code>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>fn composeCbor(args: anytype) { ...</code></pre></div>
 <p>That’s why <code>composeCbor</code> accepts a variable number of arguments with different types.</p>
 <p>To handle each argument, this <code>inline</code> / <code>comptime</code> loop is unrolled at Compile-Time…</p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Process each field...
-    comptime var i: usize = 0;
-    inline while (i &lt; args.len) : (i += 2) {
+<div class="example-wrap"><pre class="language-zig"><code>  // Process each field...
+  comptime var i: usize = 0;
+  inline while (i &lt; args.len) : (i += 2) {
 
-        // Get the key and value
-        const key   = args[i];
-        const value = args[i + 1];
+    // Get the key and value
+    const key   = args[i];
+    const value = args[i + 1];
 
-        // Print the key and value
-        debug(&quot;  {s}: {}&quot;, .{
-            @as([]const u8, key),
-            floatToFixed(value)
-        });
-        ...
-    }</code></pre></div>
+    // Print the key and value
+    debug(&quot;  {s}: {}&quot;, .{
+      @as([]const u8, key),
+      floatToFixed(value)
+    });
+    ...
+  }</code></pre></div>
 <p><em>What happens if we omit a Key or a Value when calling <code>composeCbor</code>?</em></p>
 <p>This <code>comptime</code> assertion check will fail at Compile-Time…</p>
 <div class="example-wrap"><pre class="language-zig"><code>comptime {
-    assert(args.len % 2 == 0);  // Missing Key or Value
+  assert(args.len % 2 == 0);  // Missing Key or Value
 }</code></pre></div>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor2"><strong>“Encode Sensor Data with CBOR on Apache NuttX OS”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="Transmit Message Block" /></p>
 <h1 id="appendix-transmit-sensor-data"><a href="#appendix-transmit-sensor-data">15 Appendix: Transmit Sensor Data</a></h1>
 <p>TODO</p>
@@ -927,6 +930,11 @@ const CborMessage = struct {
 <div class="example-wrap"><pre class="language-zig"><code>// Transmit message to LoRaWAN
 try transmitLorawan(msg);</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/iot"><strong>“Build an IoT App with Zig and LoRaWAN”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/visual-block3.jpg" alt="Blockly Developer Tools" /></p>
+<p><em>Blockly Developer Tools</em></p>
 <h1 id="appendix-create-custom-blocks"><a href="#appendix-create-custom-blocks">16 Appendix: Create Custom Blocks</a></h1>
 <p>TODO: Previously we have <strong>customised Blockly</strong> to generate Zig Programs…</p>
 <ul>
@@ -943,12 +951,18 @@ try transmitLorawan(msg);</code></pre></div>
 <li>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#export-custom-block"><strong>“Export Custom Block”</strong></a></p>
 </li>
+</ul>
+<p>TODO: Load into Blockly</p>
+<ul>
 <li>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#load-custom-block"><strong>“Load Custom Block”</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#show-custom-block"><strong>“Show Custom Block”</strong></a></p>
 </li>
+</ul>
+<p>TODO: Generate Code</p>
+<ul>
 <li>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-block"><strong>“Code Generator for Custom Block”</strong></a></p>
 </li>
@@ -958,6 +972,9 @@ try transmitLorawan(msg);</code></pre></div>
 <li>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-block"><strong>“Test Custom Block”</strong></a></p>
 </li>
+</ul>
+<p>TODO: Custom Extension</p>
+<ul>
 <li>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#custom-extension"><strong>“Custom Extension”</strong></a></p>
 </li>
@@ -967,18 +984,9 @@ try transmitLorawan(msg);</code></pre></div>
 <li>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-extension"><strong>“Test Custom Extension”</strong></a></p>
 </li>
-<li>
-<p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#test-stubs"><strong>“Test Stubs”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#transmit-message"><strong>“Transmit Message”</strong></a></p>
-</li>
 </ul>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/visual-block3.jpg" alt="TODO" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/visual-block4.jpg" alt="TODO" /></p>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/visual-block4.jpg" alt="Export Custom Block" /></p>
+<p><em>Export Custom Block</em></p>
 
     
 </body>
