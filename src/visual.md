@@ -649,9 +649,11 @@ To run this in the __Real World__, we need some tweaks...
 
 _Is it really OK to transmit messages to LoRaWAN every 10 seconds?_
 
-Nope it's NOT OK to send messages every 10 seconds! LoRaWAN sets limits on the __Message Rate__.
+Nope it's NOT OK to send messages every 10 seconds! LoRaWAN imposes limits on the __Message Rate__.
 
-We can send one LoRaWAN Message roughly __every 60 seconds__.
+We can send one LoRaWAN Message roughly __every 20 to 60 seconds__, depending on the Message Size.
+
+[(More about this)](https://lupyuen.github.io/articles/lorawan3#message-interval)
 
 _So we tweak the Loop to run every 60 seconds?_
 
