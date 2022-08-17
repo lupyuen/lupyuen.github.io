@@ -479,8 +479,6 @@ We're ready to run our IoT Sensor App!
 
 # Run Zig App
 
-TODO
-
 Follow these steps to __flash and boot NuttX__ (with our Zig App inside) on BL602...
 
 -   [__"Flash NuttX"__](https://lupyuen.github.io/articles/nuttx#flash-nuttx)
@@ -651,7 +649,7 @@ To run this in the __Real World__, we need some tweaks...
 
 _Is it really OK to transmit messages to LoRaWAN every 10 seconds?_
 
-Nope! LoRaWAN sets limits on the __Message Rate__.
+Nope it's NOT OK to send messages every 10 seconds! LoRaWAN sets limits on the __Message Rate__.
 
 We can send one LoRaWAN Message roughly __every 60 seconds__.
 
@@ -671,9 +669,11 @@ Missing from the pic: We need to compute the __Average Temperature / Pressure / 
 
 And we __transmit the Average Sensor Data__. (Instead of the Raw Sensor Data)
 
+This gives us better Sensor Data through __frequent sampling__, even though we're sending one message every minute.
+
 _Will Blockly and Zig support two Loops?_
 
-Not yet. We have this problem with __Sleepy Fishes__...
+Not yet. With two Loops, we have the problem of __Sleepy Fishes__...
 
 ```zig
 // Read Sensor Loop...
@@ -693,7 +693,7 @@ while (true) {
 // Oops! Transmit Loop will never run!
 ```
 
-Because we loop forever calling __sleep__ in the First Loop, we'll never run the Second Loop.
+Because we loop forever calling __sleep__ in the First Loop, we'll never reach the Second Loop.
 
 _So we should do this with Timers instead?_
 
