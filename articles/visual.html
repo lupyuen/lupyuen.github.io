@@ -78,16 +78,17 @@
 <li><a href="#why-zig">7 Why Zig</a><ul>
 <li><a href="#type-inference">7.1 Type Inference</a><ul></ul></li>
 <li><a href="#compile-time-expressions">7.2 Compile-Time Expressions</a><ul></ul></li></ul></li>
-<li><a href="#upcoming-fixes">8 Upcoming Fixes</a><ul>
-<li><a href="#network-constraints">8.1 Network Constraints</a><ul></ul></li>
-<li><a href="#multithreading-and-synchronisation">8.2 Multithreading and Synchronisation</a><ul></ul></li>
-<li><a href="#blockly-limitations">8.3 Blockly Limitations</a><ul></ul></li></ul></li>
-<li><a href="#create-custom-blocks">9 Create Custom Blocks</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li>
-<li><a href="#appendix-read-sensor-data">12 Appendix: Read Sensor Data</a><ul></ul></li>
-<li><a href="#appendix-encode-sensor-data">13 Appendix: Encode Sensor Data</a><ul></ul></li>
-<li><a href="#appendix-transmit-sensor-data">14 Appendix: Transmit Sensor Data</a><ul></ul></li></ul></nav><p>📝 <em>20 Aug 2022</em></p>
+<li><a href="#real-world-complications">8 Real World Complications</a><ul></ul></li>
+<li><a href="#upcoming-fixes">9 Upcoming Fixes</a><ul>
+<li><a href="#multithreading-and-synchronisation">9.1 Multithreading and Synchronisation</a><ul></ul></li>
+<li><a href="#network-constraints">9.2 Network Constraints</a><ul></ul></li>
+<li><a href="#blockly-limitations">9.3 Blockly Limitations</a><ul></ul></li></ul></li>
+<li><a href="#create-custom-blocks">10 Create Custom Blocks</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#notes">12 Notes</a><ul></ul></li>
+<li><a href="#appendix-read-sensor-data">13 Appendix: Read Sensor Data</a><ul></ul></li>
+<li><a href="#appendix-encode-sensor-data">14 Appendix: Encode Sensor Data</a><ul></ul></li>
+<li><a href="#appendix-transmit-sensor-data">15 Appendix: Transmit Sensor Data</a><ul></ul></li></ul></nav><p>📝 <em>20 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/visual-title.jpg" alt="Visual Programming with Zig and NuttX Sensors on Blockly" /></p>
 <p><em>What if we could drag-and-drop NuttX Sensors… To create quick prototypes for IoT Sensor Apps?</em></p>
 <p>Let’s do it! The pic above shows the <strong>IoT Sensor App</strong> that we’ll build with <strong>Visual Programming</strong>, the drag-and-drag way.</p>
@@ -281,7 +282,7 @@ git clone --recursive https://github.com/lupyuen/visual-zig-nuttx</code></pre></
 <li><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/"><strong>Blockly with Zig and NuttX (Work in Progress)</strong></a></li>
 </ul>
 <p>Drag-n-drop the Blocks to assemble this Visual Program…</p>
-<p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="Complex Sensor App" /></p>
+<p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="IoT Sensor App" /></p>
 <p>To find the above Blocks, click the <strong>Blocks Toolbox</strong> (at left) and look under <strong>“Sensors”</strong>, <strong>“Variables”</strong> and <strong>“Text”</strong>…</p>
 <ul>
 <li><a href="https://youtu.be/GL2VWO4wNcA"><strong>Watch the Demo on YouTube</strong></a></li>
@@ -495,21 +496,60 @@ transmitLorawan
 <p>TODO: readSensor</p>
 <p>TODO: composeCbor</p>
 <p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="IoT Sensor App" /></p>
-<h1 id="upcoming-fixes"><a href="#upcoming-fixes">8 Upcoming Fixes</a></h1>
+<h1 id="real-world-complications"><a href="#real-world-complications">8 Real World Complications</a></h1>
+<p>Remember earlier we drew the pic above for our <strong>IoT Sensor Firmware</strong>?</p>
+<p>Then we kinda glossed over the details and made this <strong>IoT Sensor App</strong>…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="IoT Sensor App" /></p>
+</blockquote>
+<p>To run this in the <strong>Real World</strong>, we need some tweaks…</p>
+<p><em>Is it really OK to transmit messages to LoRaWAN every 10 seconds?</em></p>
+<p>Nope! LoRaWAN sets limits on the <strong>Message Rate</strong>.</p>
+<p>We can send one LoRaWAN Message roughly <strong>every 60 seconds</strong>.</p>
+<p><em>So we tweak the Loop to run every 60 seconds?</em></p>
+<p>Well then our Sensor Data (Temperature / Pressure / Humidity) would become <strong>stale and inaccurate</strong>.</p>
+<p>We need to <strong>collect and aggregate</strong> the Sensor Data more often.</p>
+<p>This means splitting into two loops: <strong>Read Sensor Loop</strong> and <strong>Transmit Loop</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/visual-block12.jpg" alt="Multiple Loops" /></p>
+<p>(We’ll explain “x100” in a while)</p>
+<p>Not shown in the pic: We need to compute the <strong>Average Temperature / Pressure / Humidity</strong> over the past 60 seconds.</p>
+<p>And we <strong>transmit the Average Sensor Data</strong>. (Instead of the Raw Sensor Data)</p>
+<p><em>Will Blockly and Zig support two Loops?</em></p>
+<p>Not yet. We have this problem with <strong>Sleepy Fishes</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Read Sensor Loop...
+while (true) {
+  ...
+  // Wait 30 seconds
+  _ = c.sleep(30);
+}
+
+// Transmit Loop...
+while (true) {
+  ...
+  // Wait 60 seconds
+  _ = c.sleep(60);
+}
+
+// Oops! Transmit Loop will never run!</code></pre></div>
+<p>Because we loop forever calling <strong>sleep</strong> in the First Loop, we’ll never run the Second Loop.</p>
+<p><em>So we should do this with Timers instead?</em></p>
+<p>Yep our Loops shall be implemented with proper <strong>Multithreaded Timers</strong>.</p>
+<p>Like from <strong>NimBLE Porting Layer</strong>. (Or just plain NuttX Timers)</p>
+<p>Let’s sum up the tweaks that we need…</p>
+<h1 id="upcoming-fixes"><a href="#upcoming-fixes">9 Upcoming Fixes</a></h1>
 <p>TODO</p>
-<h2 id="network-constraints"><a href="#network-constraints">8.1 Network Constraints</a></h2>
+<h2 id="multithreading-and-synchronisation"><a href="#multithreading-and-synchronisation">9.1 Multithreading and Synchronisation</a></h2>
+<p>TODO: Multi every loops</p>
+<p>TODO: Pine64 sensors, <a href="https://www.waveshare.com/wiki/Pico-Environment-Sensor">Waveshare multisensor board</a></p>
+<h2 id="network-constraints"><a href="#network-constraints">9.2 Network Constraints</a></h2>
 <p>TODO: LoRaWAN message size, frequency</p>
 <p>TODO: scale 100</p>
 <p><img src="https://lupyuen.github.io/images/visual-block11.jpg" alt="Compose Message Block, scaled by 100" /></p>
 <p>TODO: Test on <a href="https://www.waveshare.com/wiki/Pico-LoRa-SX1262">Waveshare LoRa SX1262 Breakout Board</a> because our current SX1262 board is reserved for <a href="https://lupyuen.github.io/articles/auto">NuttX Automated Testing</a></p>
-<h2 id="multithreading-and-synchronisation"><a href="#multithreading-and-synchronisation">8.2 Multithreading and Synchronisation</a></h2>
-<p>TODO: Multi every loops</p>
-<p><img src="https://lupyuen.github.io/images/visual-block12.jpg" alt="Multiple Loops" /></p>
-<p>TODO: Pine64 sensors, <a href="https://www.waveshare.com/wiki/Pico-Environment-Sensor">Waveshare multisensor board</a></p>
-<h2 id="blockly-limitations"><a href="#blockly-limitations">8.3 Blockly Limitations</a></h2>
+<h2 id="blockly-limitations"><a href="#blockly-limitations">9.3 Blockly Limitations</a></h2>
 <p>TODO: Const vs var</p>
 <p>TODO: Multiple assignment</p>
-<h1 id="create-custom-blocks"><a href="#create-custom-blocks">9 Create Custom Blocks</a></h1>
+<h1 id="create-custom-blocks"><a href="#create-custom-blocks">10 Create Custom Blocks</a></h1>
 <p>TODO</p>
 <ul>
 <li>
@@ -557,7 +597,7 @@ transmitLorawan
 <p>TODO4</p>
 <p><img src="https://lupyuen.github.io/images/visual-block4.jpg" alt="TODO" /></p>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
 <ul>
 <li>
@@ -587,12 +627,12 @@ transmitLorawan
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/visual.md"><strong>lupyuen.github.io/src/visual.md</strong></a></p>
-<h1 id="notes"><a href="#notes">11 Notes</a></h1>
+<h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1557857587667775489"><strong>this Twitter Thread</strong></a></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/visual-block1.jpg" alt="BME280 Sensor Block" /></p>
-<h1 id="appendix-read-sensor-data"><a href="#appendix-read-sensor-data">12 Appendix: Read Sensor Data</a></h1>
+<h1 id="appendix-read-sensor-data"><a href="#appendix-read-sensor-data">13 Appendix: Read Sensor Data</a></h1>
 <p>TODO</p>
 <p>As pictured above, our <strong>BME280 Sensor Block</strong> reads Temperature, Humidity and Pressure from the <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>.</p>
 <p>The Blocks above will generate this <strong>Zig Code</strong>…</p>
@@ -715,7 +755,7 @@ pub fn readSensor(
 }</code></pre></div>
 <p><a href="https://ikrima.dev/dev-notes/zig/zig-metaprogramming/"><strong>“Zig Metaprogramming”</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/visual-block7b.jpg" alt="Compose Message Block" /></p>
-<h1 id="appendix-encode-sensor-data"><a href="#appendix-encode-sensor-data">13 Appendix: Encode Sensor Data</a></h1>
+<h1 id="appendix-encode-sensor-data"><a href="#appendix-encode-sensor-data">14 Appendix: Encode Sensor Data</a></h1>
 <p>TODO</p>
 <p>The <strong>Compose Message Block</strong> composes a <a href="https://lupyuen.github.io/articles/cbor2"><strong>CBOR Message</strong></a> with the specified Keys (Field Names) and Values (Sensor Data).</p>
 <p>CBOR Messages usually require <strong>fewer bytes than JSON</strong> to represent the same data. They work better with Low-Bandwidth Networks. (Like LoRaWAN)</p>
@@ -797,7 +837,7 @@ const CborMessage = struct {
     assert(args.len % 2 == 0);  // Missing Key or Value
 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="Transmit Message Block" /></p>
-<h1 id="appendix-transmit-sensor-data"><a href="#appendix-transmit-sensor-data">14 Appendix: Transmit Sensor Data</a></h1>
+<h1 id="appendix-transmit-sensor-data"><a href="#appendix-transmit-sensor-data">15 Appendix: Transmit Sensor Data</a></h1>
 <p>TODO</p>
 <p>The <strong>Transmit Message Block</strong> (above) transmits a CBOR Message to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a> (the low-power, long-range, low-bandwidth IoT Network)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Transmit message to LoRaWAN
