@@ -631,7 +631,7 @@ In C, we would call some [__messy macros__](https://github.com/lupyuen/stm32blue
 
 Or implement as [__Variadic Functions in C__](https://en.cppreference.com/w/c/variadic), without the Compile-Time Type Checking.
 
-That's why Zig is a better target for Automatic Code Generation.
+That's why Zig is a better target for Automated Code Generation in Blockly.
 
 ![Expected firmware for our IoT Sensor Device](https://lupyuen.github.io/images/blockly-iot.jpg)
 
@@ -663,13 +663,15 @@ This means splitting into two loops: __Read Sensor Loop__ and __Transmit Loop__.
 
 ![Multiple Loops](https://lupyuen.github.io/images/visual-block12.jpg)
 
-(We'll explain "x100" in a while)
+(We'll explain "x100" in the next section)
 
 Missing from the pic: We need to compute the __Average Temperature / Pressure / Humidity__ over the past 60 seconds.
 
 And we __transmit the Average Sensor Data__. (Instead of the Raw Sensor Data)
 
 This gives us better Sensor Data through __frequent sampling__, even though we're sending one message every minute.
+
+(Some sensors like BME280 can actually do frequent sampling on their own)
 
 _Will Blockly and Zig support two Loops?_
 
@@ -693,7 +695,7 @@ while (true) {
 // Oops! Transmit Loop will never run!
 ```
 
-Because we loop forever calling __sleep__ in the First Loop, we'll never reach the Second Loop.
+We loop forever (calling __sleep__) in the First Loop, thus we'll never reach the Second Loop.
 
 _So we should do this with Timers instead?_
 
@@ -735,7 +737,7 @@ TODO: Multiple assignment
 
 TODO
 
-[__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/) has a fascinating idea for a Embedded Dev Tool that's __modular, visual, plug-and-play__...
+[__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/) has a brilliant idea for an Embedded Dev Tool that's __modular, visual, plug-and-play__...
 
 >   "I think creating some modular solution to compete with Arduino could be nice! Imagine that instead of wiring modules in the breadboard people just plug the device in the board and it recognize the device and add it to some graphical interface"
 
