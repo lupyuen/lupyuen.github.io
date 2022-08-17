@@ -561,7 +561,7 @@ const msg = try composeCbor(.{
 <p><em>Could we have done this in C?</em></p>
 <p>In C, we would call some <a href="https://github.com/lupyuen/stm32bluepill-mynewt-sensor/blob/master/libs/sensor_coap/include/sensor_coap/sensor_coap.h#L219-L323"><strong>messy macros</strong></a> to validate and manipulate the parameters at Compile-Time.</p>
 <p>Or implement as <a href="https://en.cppreference.com/w/c/variadic"><strong>Variadic Functions in C</strong></a>, without the Compile-Time Type Checking.</p>
-<p>That’s why Zig is a better target for Automatic Code Generation.</p>
+<p>That’s why Zig is a better target for Automated Code Generation in Blockly.</p>
 <p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="Expected firmware for our IoT Sensor Device" /></p>
 <p><a href="https://lupyuen.github.io/articles/visual#blockly-for-iot-sensor-apps"><em>Expected firmware for our IoT Sensor Device</em></a></p>
 <h1 id="real-world-complications"><a href="#real-world-complications">8 Real World Complications</a></h1>
@@ -579,10 +579,11 @@ const msg = try composeCbor(.{
 <p>We need to <strong>collect and aggregate</strong> the Sensor Data more often.</p>
 <p>This means splitting into two loops: <strong>Read Sensor Loop</strong> and <strong>Transmit Loop</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/visual-block12.jpg" alt="Multiple Loops" /></p>
-<p>(We’ll explain “x100” in a while)</p>
+<p>(We’ll explain “x100” in the next section)</p>
 <p>Missing from the pic: We need to compute the <strong>Average Temperature / Pressure / Humidity</strong> over the past 60 seconds.</p>
 <p>And we <strong>transmit the Average Sensor Data</strong>. (Instead of the Raw Sensor Data)</p>
 <p>This gives us better Sensor Data through <strong>frequent sampling</strong>, even though we’re sending one message every minute.</p>
+<p>(Some sensors like BME280 can actually do frequent sampling on their own)</p>
 <p><em>Will Blockly and Zig support two Loops?</em></p>
 <p>Not yet. With two Loops, we have the problem of <strong>Sleepy Fishes</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read Sensor Loop...
@@ -600,7 +601,7 @@ while (true) {
 }
 
 // Oops! Transmit Loop will never run!</code></pre></div>
-<p>Because we loop forever calling <strong>sleep</strong> in the First Loop, we’ll never reach the Second Loop.</p>
+<p>We loop forever (calling <strong>sleep</strong>) in the First Loop, thus we’ll never reach the Second Loop.</p>
 <p><em>So we should do this with Timers instead?</em></p>
 <p>Yep our Loops shall be implemented with proper <strong>Multithreaded Timers</strong>.</p>
 <p>Like from <strong>NimBLE Porting Layer</strong>. (Or just plain NuttX Timers)</p>
@@ -621,7 +622,7 @@ while (true) {
 <p>TODO: Multiple assignment</p>
 <h1 id="visual-arduino"><a href="#visual-arduino">10 Visual Arduino?</a></h1>
 <p>TODO</p>
-<p><a href="https://www.linkedin.com/in/acassis/"><strong>Alan Carvalho de Assis</strong></a> has a fascinating idea for a Embedded Dev Tool that’s <strong>modular, visual, plug-and-play</strong>…</p>
+<p><a href="https://www.linkedin.com/in/acassis/"><strong>Alan Carvalho de Assis</strong></a> has a brilliant idea for an Embedded Dev Tool that’s <strong>modular, visual, plug-and-play</strong>…</p>
 <blockquote>
 <p>“I think creating some modular solution to compete with Arduino could be nice! Imagine that instead of wiring modules in the breadboard people just plug the device in the board and it recognize the device and add it to some graphical interface”</p>
 </blockquote>
