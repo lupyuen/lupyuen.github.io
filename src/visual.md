@@ -707,11 +707,19 @@ Let's sum up the tweaks that we need...
 
 # Upcoming Fixes
 
-TODO
+In the previous section we talked about the __quirks in our IoT Sensor App__ and why it won't work in the Real World.
+
+This is how we'll fix it...
 
 ## Multithreading and Synchronisation
 
-TODO: Multi every loops
+-   __sleep__ won't work for Multiple Loops. We'll switch to __Multithreaded Timers__ instead
+
+    (From __NimBLE Porting Layer__ or just plain NuttX Timers)
+
+-   Our Read Sensor Loop needs to pass the __Aggregated Sensor Data__ to Transmit Loop
+
+-   Since both Loops are running concurrently, we need to __Lock the Sensor Data__ during access
 
 ## Network Constraints
 
