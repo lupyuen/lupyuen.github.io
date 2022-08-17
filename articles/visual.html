@@ -588,7 +588,7 @@ const msg = try composeCbor(.{
 <p>Missing from the pic: We need to compute the <strong>Average Temperature / Pressure / Humidity</strong> over the past 60 seconds.</p>
 <p>And we <strong>transmit the Average Sensor Data</strong>. (Instead of the Raw Sensor Data)</p>
 <p>This gives us better Sensor Data through <strong>frequent sampling</strong>, even though we’re sending one message every minute.</p>
-<p>(Some sensors like BME280 can actually do frequent sampling on their own)</p>
+<p>(Some sensors like BME280 can actually do frequent sampling on their own. Check for <a href="https://lupyuen.github.io/articles/bme280#standby-interval"><strong>Standby Interval</strong></a>)</p>
 <p><em>Will Blockly and Zig support two Loops?</em></p>
 <p>Not yet. With two Loops, we have the problem of <strong>Sleepy Fishes</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read Sensor Loop...
@@ -609,7 +609,7 @@ while (true) {
 <p>We loop forever (calling <strong>sleep</strong>) in the First Loop, thus we’ll never reach the Second Loop.</p>
 <p><em>So we should do this with Timers instead?</em></p>
 <p>Yep our Loops shall be implemented with proper <strong>Multithreaded Timers</strong>.</p>
-<p>Like from <strong>NimBLE Porting Layer</strong>. (Or just plain NuttX Timers)</p>
+<p>Like from <a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer"><strong>NimBLE Porting Layer</strong></a>. (Or just plain NuttX Timers)</p>
 <p>Let’s sum up the tweaks that we need…</p>
 <p><img src="https://lupyuen.github.io/images/sensor-visual.jpg" alt="Grand Plan for our IoT Sensor App" /></p>
 <p><em>Grand Plan for our IoT Sensor App</em></p>
@@ -620,13 +620,13 @@ while (true) {
 <ul>
 <li>
 <p><strong>sleep</strong> won’t work for Multiple Loops. We’ll switch to <strong>Multithreaded Timers</strong> instead</p>
-<p>(From <strong>NimBLE Porting Layer</strong> or just plain NuttX Timers)</p>
+<p>(From <a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer"><strong>NimBLE Porting Layer</strong></a> or just plain NuttX Timers)</p>
 </li>
 <li>
 <p>Our Read Sensor Loop needs to pass the <strong>Aggregated Sensor Data</strong> to Transmit Loop</p>
 </li>
 <li>
-<p>Since both Loops are running concurrently, we need to <strong>Lock the Sensor Data</strong> during access</p>
+<p>Since both Loops run concurrently, we need to <strong>Lock the Sensor Data</strong> during access</p>
 <p>(Hence the Locking and Averaging in the sketch above)</p>
 </li>
 </ul>
@@ -653,6 +653,10 @@ while (true) {
 <h2 id="blockly-limitations"><a href="#blockly-limitations">9.3 Blockly Limitations</a></h2>
 <ul>
 <li>
+<p>Some Blocks won’t emit <strong>valid Zig Code</strong></p>
+<p><a href="https://lupyuen.github.io/articles/blockly#code-generator">(Because our Zig Code Generator for Blockly is incomplete)</a></p>
+</li>
+<li>
 <p><strong>Double Asssignment</strong> fails with Zig and Blockly…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run12.jpg" alt="Double Asssignment" /></p>
 <p><a href="https://lupyuen.github.io/articles/blockly#constants-vs-variables">(More about this)</a></p>
@@ -663,7 +667,8 @@ while (true) {
 <p><a href="https://lupyuen.github.io/articles/blockly#constants-vs-variables">(More about this)</a></p>
 </li>
 <li>
-<p>Some Blocks won’t emit <strong>valid Zig Code</strong></p>
+<p>Copying the Zig Code from Blockly into NuttX feels cumbersome. We might streamline this by wrapping Blockly as a <strong>Desktop App.</strong></p>
+<p><a href="https://lupyuen.github.io/articles/blockly#desktop-and-mobile">(More about this)</a></p>
 </li>
 </ul>
 <p>There’s plenty to be fixed, please lemme know if you’re keen to help! 🙏</p>
@@ -683,6 +688,7 @@ while (true) {
 <p>What do you think? Please let us know! 🙏</p>
 <p>(Would be great if we could create a Proof-of-Concept using Universal Perforated Board)</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<p>TODO</p>
 <p>Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
 <ul>
 <li>
