@@ -607,9 +607,21 @@ while (true) {
 <p>Like from <strong>NimBLE Porting Layer</strong>. (Or just plain NuttX Timers)</p>
 <p>Let’s sum up the tweaks that we need…</p>
 <h1 id="upcoming-fixes"><a href="#upcoming-fixes">9 Upcoming Fixes</a></h1>
-<p>TODO</p>
+<p>In the previous section we talked about the <strong>quirks in our IoT Sensor App</strong> and why it won’t work in the Real World.</p>
+<p>This is how we’ll fix it…</p>
 <h2 id="multithreading-and-synchronisation"><a href="#multithreading-and-synchronisation">9.1 Multithreading and Synchronisation</a></h2>
-<p>TODO: Multi every loops</p>
+<ul>
+<li>
+<p><strong>sleep</strong> won’t work for Multiple Loops. We’ll switch to <strong>Multithreaded Timers</strong> instead</p>
+<p>(From <strong>NimBLE Porting Layer</strong> or just plain NuttX Timers)</p>
+</li>
+<li>
+<p>Our Read Sensor Loop needs to pass the <strong>Aggregated Sensor Data</strong> to Transmit Loop</p>
+</li>
+<li>
+<p>Since both Loops are running concurrently, we need to <strong>Lock the Sensor Data</strong> during access</p>
+</li>
+</ul>
 <h2 id="network-constraints"><a href="#network-constraints">9.2 Network Constraints</a></h2>
 <p>TODO: LoRaWAN message size, frequency</p>
 <h2 id="message-constraints"><a href="#message-constraints">9.3 Message Constraints</a></h2>
