@@ -572,8 +572,9 @@ const msg = try composeCbor(.{
 </blockquote>
 <p>To run this in the <strong>Real World</strong>, we need some tweaks…</p>
 <p><em>Is it really OK to transmit messages to LoRaWAN every 10 seconds?</em></p>
-<p>Nope it’s NOT OK to send messages every 10 seconds! LoRaWAN sets limits on the <strong>Message Rate</strong>.</p>
-<p>We can send one LoRaWAN Message roughly <strong>every 60 seconds</strong>.</p>
+<p>Nope it’s NOT OK to send messages every 10 seconds! LoRaWAN imposes limits on the <strong>Message Rate</strong>.</p>
+<p>We can send one LoRaWAN Message roughly <strong>every 20 to 60 seconds</strong>, depending on the Message Size.</p>
+<p><a href="https://lupyuen.github.io/articles/lorawan3#message-interval">(More about this)</a></p>
 <p><em>So we tweak the Loop to run every 60 seconds?</em></p>
 <p>Well then our Sensor Data (Temperature / Pressure / Humidity) would become <strong>stale and inaccurate</strong>.</p>
 <p>We need to <strong>collect and aggregate</strong> the Sensor Data more often.</p>
