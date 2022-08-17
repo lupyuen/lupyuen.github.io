@@ -747,11 +747,11 @@ TODO: Const vs var
 
 TODO: Multiple assignment
 
-![Visual Arduino](https://lupyuen.github.io/images/visual-arduino.jpg)
+![Connect a Sensor to our Microcontroller and it pops up in Blockly!](https://lupyuen.github.io/images/visual-arduino.jpg)
+
+_Connect a Sensor to our Microcontroller and it pops up in Blockly!_
 
 # Visual Arduino?
-
-TODO
 
 [__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/) has a brilliant idea for an Embedded Dev Tool that's __modular, visual, plug-and-play__...
 
@@ -759,7 +759,15 @@ TODO
 
 >   "For example, you just plug a temperature sensor module in your board and it will identify the module type and you can pass this Temperature variable to use in your logic application"
 
+Just __connect a Sensor__ to our Microcontroller... And it pops up in __Blockly__! (Pic above)
+
+To detect the Sensor, we could use [__SPD (Serial Presence Detection)__](https://en.m.wikipedia.org/wiki/Serial_presence_detect), like for DDR Memory Modules.
+
+(Or maybe we scan the I2C Bus and read the Chip ID?)
+
 What do you think? Please let us know! 🙏
+
+(Would be great if we could create a Proof-of-Concept using Universal Perforated Board)
 
 # What's Next
 
