@@ -838,9 +838,9 @@ The Blocks above will generate this __Zig Code__...
 ```zig
 // Read the Temperature
 const temperature = try sen.readSensor(
-    c.struct_sensor_baro,       // Sensor Data Struct to be read
-    "temperature",              // Sensor Data Field to be returned
-    "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+  c.struct_sensor_baro,       // Sensor Data Struct to be read
+  "temperature",              // Sensor Data Field to be returned
+  "/dev/sensor/sensor_baro0"  // Path of Sensor Device
 );
 
 // Print the Temperature
@@ -858,9 +858,9 @@ Note that the Sensor Data Struct Type and the Sensor Data Field are declared as 
 ```zig
 /// Read a Sensor and return the Sensor Data
 pub fn readSensor(
-    comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
-    comptime field_name: []const u8,  // Sensor Data Field to be returned, like "temperature"
-    device_path: []const u8           // Path of Sensor Device, like "/dev/sensor/sensor_baro0"
+  comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
+  comptime field_name: []const u8,  // Sensor Data Field to be returned, like "temperature"
+  device_path: []const u8           // Path of Sensor Device, like "/dev/sensor/sensor_baro0"
 ) !f32 { ...
 ```
 
@@ -869,17 +869,17 @@ Which means that the values will be substituted at Compile-Time. (Works like a C
 We can then refer to the Sensor Data Struct `sensor_baro` like this...
 
 ```zig
-    // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(
-        SensorType
-    );
+  // Define the Sensor Data Type
+  var sensor_data = std.mem.zeroes(
+    SensorType
+  );
 ```
 
 And return a field `temperature` like this...
 
 ```zig
-    // Return the Sensor Data Field
-    return @field(sensor_data, field_name);
+  // Return the Sensor Data Field
+  return @field(sensor_data, field_name);
 ```
 
 Thus this program...
@@ -907,78 +907,78 @@ TODO
 ```zig
 /// Read a Sensor and return the Sensor Data
 pub fn readSensor(
-    comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
-    comptime field_name: []const u8,  // Sensor Data Field to be returned, like "temperature"
-    device_path: []const u8           // Path of Sensor Device, like "/dev/sensor/sensor_baro0"
+  comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
+  comptime field_name: []const u8,  // Sensor Data Field to be returned, like "temperature"
+  device_path: []const u8           // Path of Sensor Device, like "/dev/sensor/sensor_baro0"
 ) !f32 {
-    // Open the Sensor Device
-    const fd = c.open(
-        &device_path[0],           // Path of Sensor Device
-        c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
-    );
+  // Open the Sensor Device
+  const fd = c.open(
+    &device_path[0],           // Path of Sensor Device
+    c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
+  );
 
-    // Check for error
-    if (fd < 0) {
-        std.log.err("Failed to open device:{s}", .{ c.strerror(errno()) });
-        return error.OpenError;
-    }
+  // Check for error
+  if (fd < 0) {
+    std.log.err("Failed to open device:{s}", .{ c.strerror(errno()) });
+    return error.OpenError;
+  }
 
-    // Close the Sensor Device when this function returns
-    defer {
-        _ = c.close(fd);
-    }
+  // Close the Sensor Device when this function returns
+  defer {
+    _ = c.close(fd);
+  }
 
-    // Set Standby Interval
-    const interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
-    var ret = c.ioctl(fd, c.SNIOC_SET_INTERVAL, interval);
+  // Set Standby Interval
+  const interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
+  var ret = c.ioctl(fd, c.SNIOC_SET_INTERVAL, interval);
 
-    // Check for error
-    if (ret < 0 and errno() != c.ENOTSUP) {
-        std.log.err("Failed to set interval:{s}", .{ c.strerror(errno()) });
-        return error.IntervalError;
-    }
+  // Check for error
+  if (ret < 0 and errno() != c.ENOTSUP) {
+    std.log.err("Failed to set interval:{s}", .{ c.strerror(errno()) });
+    return error.IntervalError;
+  }
 
-    // Set Batch Latency
-    const latency: c_uint = 0;  // No latency
-    ret = c.ioctl(fd, c.SNIOC_BATCH, latency);
+  // Set Batch Latency
+  const latency: c_uint = 0;  // No latency
+  ret = c.ioctl(fd, c.SNIOC_BATCH, latency);
 
-    // Check for error
-    if (ret < 0 and errno() != c.ENOTSUP) {
-        std.log.err("Failed to batch:{s}", .{ c.strerror(errno()) });
-        return error.BatchError;
-    }
+  // Check for error
+  if (ret < 0 and errno() != c.ENOTSUP) {
+    std.log.err("Failed to batch:{s}", .{ c.strerror(errno()) });
+    return error.BatchError;
+  }
 
-    // Poll for Sensor Data
-    var fds = std.mem.zeroes(c.struct_pollfd);
-    fds.fd = fd;
-    fds.events = c.POLLIN;
-    ret = c.poll(&fds, 1, -1);
+  // Poll for Sensor Data
+  var fds = std.mem.zeroes(c.struct_pollfd);
+  fds.fd = fd;
+  fds.events = c.POLLIN;
+  ret = c.poll(&fds, 1, -1);
 
-    // Check if Sensor Data is available
-    if (ret <= 0) {
-        std.log.err("Sensor data not available", .{});
-        return error.DataError;
-    }
+  // Check if Sensor Data is available
+  if (ret <= 0) {
+    std.log.err("Sensor data not available", .{});
+    return error.DataError;
+  }
 
-    // Define the Sensor Data Type
-    var sensor_data = std.mem.zeroes(
-        SensorType
-    );
-    const len = @sizeOf(
-        @TypeOf(sensor_data)
-    );
+  // Define the Sensor Data Type
+  var sensor_data = std.mem.zeroes(
+    SensorType
+  );
+  const len = @sizeOf(
+    @TypeOf(sensor_data)
+  );
 
-    // Read the Sensor Data
-    const read_len = c.read(fd, &sensor_data, len);
+  // Read the Sensor Data
+  const read_len = c.read(fd, &sensor_data, len);
 
-    // Check size of Sensor Data
-    if (read_len < len) {
-        std.log.err("Sensor data incorrect size", .{});
-        return error.SizeError;
-    }
+  // Check size of Sensor Data
+  if (read_len < len) {
+    std.log.err("Sensor data incorrect size", .{});
+    return error.SizeError;
+  }
 
-    // Return the Sensor Data Field
-    return @field(sensor_data, field_name);
+  // Return the Sensor Data Field
+  return @field(sensor_data, field_name);
 }
 ```
 
@@ -1014,46 +1014,46 @@ Yep, here's the implementation of `composeCbor`: [visual.zig](https://github.com
 /// TODO: Compose CBOR Message with Key-Value Pairs
 /// https://lupyuen.github.io/articles/cbor2
 fn composeCbor(args: anytype) !CborMessage {
-    debug("composeCbor", .{});
-    comptime {
-        assert(args.len % 2 == 0);  // Missing Key or Value
-    }
+  debug("composeCbor", .{});
+  comptime {
+    assert(args.len % 2 == 0);  // Missing Key or Value
+  }
 
-    // Process each field...
-    comptime var i: usize = 0;
-    var msg = CborMessage{};
-    inline while (i < args.len) : (i += 2) {
+  // Process each field...
+  comptime var i: usize = 0;
+  var msg = CborMessage{};
+  inline while (i < args.len) : (i += 2) {
 
-        // Get the key and value
-        const key   = args[i];
-        const value = args[i + 1];
+    // Get the key and value
+    const key   = args[i];
+    const value = args[i + 1];
 
-        // Print the key and value
-        debug("  {s}: {}", .{
-            @as([]const u8, key),
-            floatToFixed(value)
-        });
+    // Print the key and value
+    debug("  {s}: {}", .{
+      @as([]const u8, key),
+      floatToFixed(value)
+    });
 
-        // Format the message for testing
-        var slice = std.fmt.bufPrint(
-            msg.buf[msg.len..], 
-            "{s}:{},",
-            .{
-                @as([]const u8, key),
-                floatToFixed(value)
-            }
-        ) catch { _ = std.log.err("Error: buf too small", .{}); return error.Overflow; };
-        msg.len += slice.len;
-    }
-    debug("  msg={s}", .{ msg.buf[0..msg.len] });
-    return msg;
+    // Format the message for testing
+    var slice = std.fmt.bufPrint(
+      msg.buf[msg.len..], 
+      "{s}:{},",
+      .{
+        @as([]const u8, key),
+        floatToFixed(value)
+      }
+    ) catch { _ = std.log.err("Error: buf too small", .{}); return error.Overflow; };
+    msg.len += slice.len;
+  }
+  debug("  msg={s}", .{ msg.buf[0..msg.len] });
+  return msg;
 }
 
 /// TODO: CBOR Message
 /// https://lupyuen.github.io/articles/cbor2
 const CborMessage = struct {
-    buf: [256]u8 = undefined,  // Limit to 256 chars
-    len: usize = 0,
+  buf: [256]u8 = undefined,  // Limit to 256 chars
+  len: usize = 0,
 };
 ```
 
@@ -1068,21 +1068,21 @@ That's why `composeCbor` accepts a variable number of arguments with different t
 To handle each argument, this `inline` / `comptime` loop is unrolled at Compile-Time...
 
 ```zig
-    // Process each field...
-    comptime var i: usize = 0;
-    inline while (i < args.len) : (i += 2) {
+  // Process each field...
+  comptime var i: usize = 0;
+  inline while (i < args.len) : (i += 2) {
 
-        // Get the key and value
-        const key   = args[i];
-        const value = args[i + 1];
+    // Get the key and value
+    const key   = args[i];
+    const value = args[i + 1];
 
-        // Print the key and value
-        debug("  {s}: {}", .{
-            @as([]const u8, key),
-            floatToFixed(value)
-        });
-        ...
-    }
+    // Print the key and value
+    debug("  {s}: {}", .{
+      @as([]const u8, key),
+      floatToFixed(value)
+    });
+    ...
+  }
 ```
 
 _What happens if we omit a Key or a Value when calling `composeCbor`?_
@@ -1091,9 +1091,11 @@ This `comptime` assertion check will fail at Compile-Time...
 
 ```zig
 comptime {
-    assert(args.len % 2 == 0);  // Missing Key or Value
+  assert(args.len % 2 == 0);  // Missing Key or Value
 }
 ```
+
+-   [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
 
 ![Transmit Message Block](https://lupyuen.github.io/images/visual-block7c.jpg)
 
@@ -1110,6 +1112,12 @@ try transmitLorawan(msg);
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
 
+-   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
+
+![Blockly Developer Tools](https://lupyuen.github.io/images/visual-block3.jpg)
+
+_Blockly Developer Tools_
+
 # Appendix: Create Custom Blocks
 
 TODO: Previously we have __customised Blockly__ to generate Zig Programs...
@@ -1124,9 +1132,13 @@ Now we'll extend Blockly to produce IoT Sensor Apps.
 
 -   [__"Export Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#export-custom-block)
 
+TODO: Load into Blockly
+
 -   [__"Load Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#load-custom-block)
 
 -   [__"Show Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#show-custom-block)
+
+TODO: Generate Code
 
 -   [__"Code Generator for Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-block)
 
@@ -1134,22 +1146,14 @@ Now we'll extend Blockly to produce IoT Sensor Apps.
 
 -   [__"Test Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-block)
 
+TODO: Custom Extension
+
 -   [__"Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-extension)
 
 -   [__"Code Generator for Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-extension)
 
 -   [__"Test Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-extension)
 
--   [__"Test Stubs"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-stubs)
+![Export Custom Block](https://lupyuen.github.io/images/visual-block4.jpg)
 
--   [__"Transmit Message"__](https://github.com/lupyuen3/blockly-zig-nuttx#transmit-message)
-
-TODO3
-
-![TODO](https://lupyuen.github.io/images/visual-block3.jpg)
-
-TODO4
-
-![TODO](https://lupyuen.github.io/images/visual-block4.jpg)
-
-TODO
+_Export Custom Block_
