@@ -277,7 +277,7 @@ Now head over to our __Custom Blockly Website__...
 
 Drag-n-drop the Blocks to assemble this Visual Program...
 
-![Complex Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
+![IoT Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
 
 To find the above Blocks, click the __Blocks Toolbox__ (at left) and look under __"Sensors"__, __"Variables"__ and __"Text"__...
 
@@ -546,9 +546,79 @@ TODO: composeCbor
 
 ![IoT Sensor App](https://lupyuen.github.io/images/blockly-iot.jpg)
 
+# Real World Complications
+
+Remember earlier we drew the pic above for our __IoT Sensor Firmware__?
+
+Then we kinda glossed over the details and made this __IoT Sensor App__...
+
+> ![IoT Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
+
+To run this in the __Real World__, we need some tweaks...
+
+_Is it really OK to transmit messages to LoRaWAN every 10 seconds?_
+
+Nope! LoRaWAN sets limits on the __Message Rate__.
+
+We can send one LoRaWAN Message roughly __every 60 seconds__.
+
+_So we tweak the Loop to run every 60 seconds?_
+
+Well then our Sensor Data (Temperature / Pressure / Humidity) would become __stale and inaccurate__.
+
+We need to __collect and aggregate__ the Sensor Data more often.
+
+This means splitting into two loops: __Read Sensor Loop__ and __Transmit Loop__...
+
+![Multiple Loops](https://lupyuen.github.io/images/visual-block12.jpg)
+
+(We'll explain "x100" in a while)
+
+Not shown in the pic: We need to compute the __Average Temperature / Pressure / Humidity__ over the past 60 seconds.
+
+And we __transmit the Average Sensor Data__. (Instead of the Raw Sensor Data)
+
+_Will Blockly and Zig support two Loops?_
+
+Not yet. We have this problem with __Sleepy Fishes__...
+
+```zig
+// Read Sensor Loop...
+while (true) {
+  ...
+  // Wait 30 seconds
+  _ = c.sleep(30);
+}
+
+// Transmit Loop...
+while (true) {
+  ...
+  // Wait 60 seconds
+  _ = c.sleep(60);
+}
+
+// Oops! Transmit Loop will never run!
+```
+
+Because we loop forever calling __sleep__ in the First Loop, we'll never run the Second Loop.
+
+_So we should do this with Timers instead?_
+
+Yep our Loops shall be implemented with proper __Multithreaded Timers__.
+
+Like from __NimBLE Porting Layer__. (Or just plain NuttX Timers)
+
+Let's sum up the tweaks that we need...
+
 # Upcoming Fixes
 
 TODO
+
+## Multithreading and Synchronisation
+
+TODO: Multi every loops
+
+TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
 
 ## Network Constraints
 
@@ -559,14 +629,6 @@ TODO: scale 100
 ![Compose Message Block, scaled by 100](https://lupyuen.github.io/images/visual-block11.jpg)
 
 TODO: Test on [Waveshare LoRa SX1262 Breakout Board](https://www.waveshare.com/wiki/Pico-LoRa-SX1262) because our current SX1262 board is reserved for [NuttX Automated Testing](https://lupyuen.github.io/articles/auto)
-
-## Multithreading and Synchronisation
-
-TODO: Multi every loops
-
-![Multiple Loops](https://lupyuen.github.io/images/visual-block12.jpg)
-
-TODO: Pine64 sensors, [Waveshare multisensor board](https://www.waveshare.com/wiki/Pico-Environment-Sensor)
 
 ## Blockly Limitations
 
