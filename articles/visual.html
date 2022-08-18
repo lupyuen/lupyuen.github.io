@@ -222,6 +222,7 @@
 <p><img src="https://lupyuen.github.io/images/visual-block7b.jpg" alt="Compose Message Block" /></p>
 <h2 id="compose-message-block"><a href="#compose-message-block">2.2 Compose Message Block</a></h2>
 <p>The <strong>Compose Message Block</strong> composes a <a href="https://lupyuen.github.io/articles/cbor2"><strong>CBOR Message</strong></a> with the specified Keys (Field Names) and Values (Sensor Data).</p>
+<p>(Think of CBOR as a compact, binary form of JSON)</p>
 <p>CBOR Messages usually require <strong>fewer bytes than JSON</strong> to represent the same data. They work better with Low-Bandwidth Networks. (Like LoRaWAN)</p>
 <p>The Block above will generate this <strong>Zig Code</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>const msg = try composeCbor(.{  // Compose CBOR Message
