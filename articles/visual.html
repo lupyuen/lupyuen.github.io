@@ -265,7 +265,10 @@ while (true) {
 <p>We’ll revisit this in a while.</p>
 <p><em>How did we add these NuttX Blocks to Blockly?</em></p>
 <p>Blockly provides <strong>Blockly Developer Tools</strong> for creating our Custom Blocks.</p>
-<p>We’ll explain below.</p>
+<p>We’ll explain the steps in the Appendix…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/visual#appendix-create-custom-blocks"><strong>“Create Custom Blocks”</strong></a></li>
+</ul>
 <h1 id="test-nuttx-blocks"><a href="#test-nuttx-blocks">3 Test NuttX Blocks</a></h1>
 <p>To test the NuttX Blocks, let’s drag-n-drop an IoT Sensor App that will…</p>
 <ul>
@@ -944,7 +947,6 @@ pub fn readSensor(
 <p><img src="https://lupyuen.github.io/images/visual-block7b.jpg" alt="Compose Message Block" /></p>
 <p><em>Compose Message Block</em></p>
 <h1 id="appendix-encode-sensor-data"><a href="#appendix-encode-sensor-data">14 Appendix: Encode Sensor Data</a></h1>
-<p>TODO</p>
 <p>The <strong>Compose Message Block</strong> composes a <a href="https://lupyuen.github.io/articles/cbor2"><strong>CBOR Message</strong></a> with the specified Keys (Field Names) and Values (Sensor Data).</p>
 <p>CBOR Messages usually require <strong>fewer bytes than JSON</strong> to represent the same data. They work better with Low-Bandwidth Networks. (Like LoRaWAN)</p>
 <p>The Block above will generate this <strong>Zig Code</strong>…</p>
@@ -954,8 +956,8 @@ pub fn readSensor(
   &quot;h&quot;, humidity,
 });</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
-<p><em><code>composeCbor</code> will work for a variable number of arguments? Strings as well as numbers?</em></p>
-<p>Yep, here’s the implementation of <code>composeCbor</code>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108">visual.zig</a></p>
+<p><em>composeCbor will work for a variable number of arguments? Strings as well as numbers?</em></p>
+<p>Yep, here’s the implementation of <strong>composeCbor</strong>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108">visual.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// TODO: Compose CBOR Message with Key-Value Pairs
 /// https://lupyuen.github.io/articles/cbor2
 fn composeCbor(args: anytype) !CborMessage {
@@ -992,19 +994,21 @@ fn composeCbor(args: anytype) !CborMessage {
   }
   debug(&quot;  msg={s}&quot;, .{ msg.buf[0..msg.len] });
   return msg;
-}
-
-/// TODO: CBOR Message
+}</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>floatToFixed</strong> is explained here)</a></p>
+<p><strong>CborMessage</strong> is a Struct that contains the CBOR Buffer…</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// TODO: CBOR Message
 /// https://lupyuen.github.io/articles/cbor2
 const CborMessage = struct {
   buf: [256]u8 = undefined,  // Limit to 256 chars
   len: usize = 0,
 };</code></pre></div>
-<p>Note that <code>composeCbor</code> is declared as <code>anytype</code>…</p>
+<p>Note that <strong>composeCbor</strong>’s parameter is declared as <strong><code>anytype</code></strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>fn composeCbor(args: anytype) { ...</code></pre></div>
-<p>That’s why <code>composeCbor</code> accepts a variable number of arguments with different types.</p>
-<p>To handle each argument, this <code>inline</code> / <code>comptime</code> loop is unrolled at Compile-Time…</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Process each field...
+<p>That’s why <strong>composeCbor</strong> accepts a variable number of arguments with different types.</p>
+<p>To handle each argument, the Zig Compiler will unroll (expand) this <strong><code>inline comptime</code></strong> loop at Compile-Time…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Zig Compiler will unroll (expand) this Loop.
+  // Process each field...
   comptime var i: usize = 0;
   inline while (i &lt; args.len) : (i += 2) {
 
@@ -1019,13 +1023,36 @@ const CborMessage = struct {
     });
     ...
   }</code></pre></div>
-<p><em>What happens if we omit a Key or a Value when calling <code>composeCbor</code>?</em></p>
-<p>This <code>comptime</code> assertion check will fail at Compile-Time…</p>
-<div class="example-wrap"><pre class="language-zig"><code>comptime {
-  assert(args.len % 2 == 0);  // Missing Key or Value
+<p>(Think of it as a C Macro, expanding our code at Compile-Time)</p>
+<p>Thus if we have 3 pairs of Key-Values, Zig Compiler will emit the above code 3 times.</p>
+<p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>floatToFixed</strong> is explained here)</a></p>
+<p><em>What happens if we omit a Key or a Value when calling composeCbor?</em></p>
+<p>This <code>comptime</code> Assertion Check will fail at Compile-Time…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Assertion fails if we&#39;re missing a Key or a Value
+comptime {
+  assert(args.len % 2 == 0);
 }</code></pre></div>
+<p><em>What happens if we pass incorrect Types for the Key or Value?</em></p>
+<p><strong>composeCbor</strong> expects the following Types…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/cbor2"><strong>“Encode Sensor Data with CBOR on Apache NuttX OS”</strong></a></li>
+<li>
+<p>Key should be a (string-like) <strong>Byte Slice</strong> (<code>[]const u8</code>)</p>
+</li>
+<li>
+<p>Value should be a <strong>Floating-Point Number</strong> (<code>f32</code>)</p>
+</li>
+</ul>
+<p>If the Types are incorrect, Zig Compiler will stop us here during compilation…</p>
+<div class="example-wrap"><pre class="language-zig"><code>    // Print the key and value
+    debug(&quot;  {s}: {}&quot;, .{
+      @as([]const u8, key),
+      floatToFixed(value)
+    });</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>floatToFixed</strong> is explained here)</a></p>
+<p><em>The implementation of CBOR Encoding is missing?</em></p>
+<p>Yep we shall import the <strong>TinyCBOR Library</strong> from C to implement the CBOR Encoding in <strong>composeCbor</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/cbor2"><strong>“Encode Sensor Data with CBOR”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="Transmit Message Block" /></p>
 <p><em>Transmit Message Block</em></p>
