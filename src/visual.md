@@ -248,7 +248,9 @@ _How did we add these NuttX Blocks to Blockly?_
 
 Blockly provides __Blockly Developer Tools__ for creating our Custom Blocks.
 
-We'll explain below.
+We'll explain the steps in the Appendix...
+
+-   [__"Create Custom Blocks"__](https://lupyuen.github.io/articles/visual#appendix-create-custom-blocks)
 
 # Test NuttX Blocks
 
@@ -1168,8 +1170,6 @@ _Compose Message Block_
 
 # Appendix: Encode Sensor Data
 
-TODO
-
 The __Compose Message Block__ composes a [__CBOR Message__](https://lupyuen.github.io/articles/cbor2) with the specified Keys (Field Names) and Values (Sensor Data).
 
 CBOR Messages usually require __fewer bytes than JSON__ to represent the same data. They work better with Low-Bandwidth Networks. (Like LoRaWAN)
@@ -1186,9 +1186,9 @@ const msg = try composeCbor(.{  // Compose CBOR Message
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
 
-_`composeCbor` will work for a variable number of arguments? Strings as well as numbers?_
+_composeCbor will work for a variable number of arguments? Strings as well as numbers?_
 
-Yep, here's the implementation of `composeCbor`: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108)
+Yep, here's the implementation of __composeCbor__: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108)
 
 ```zig
 /// TODO: Compose CBOR Message with Key-Value Pairs
@@ -1228,7 +1228,13 @@ fn composeCbor(args: anytype) !CborMessage {
   debug("  msg={s}", .{ msg.buf[0..msg.len] });
   return msg;
 }
+```
 
+[(__floatToFixed__ is explained here)](https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data)
+
+__CborMessage__ is a Struct that contains the CBOR Buffer...
+
+```zig
 /// TODO: CBOR Message
 /// https://lupyuen.github.io/articles/cbor2
 const CborMessage = struct {
@@ -1237,17 +1243,18 @@ const CborMessage = struct {
 };
 ```
 
-Note that `composeCbor` is declared as `anytype`...
+Note that __composeCbor__'s parameter is declared as __`anytype`__...
 
 ```zig
 fn composeCbor(args: anytype) { ...
 ```
 
-That's why `composeCbor` accepts a variable number of arguments with different types.
+That's why __composeCbor__ accepts a variable number of arguments with different types.
 
-To handle each argument, this `inline` / `comptime` loop is unrolled at Compile-Time...
+To handle each argument, the Zig Compiler will unroll (expand) this __`inline comptime`__ loop at Compile-Time...
 
 ```zig
+  // Zig Compiler will unroll (expand) this Loop.
   // Process each field...
   comptime var i: usize = 0;
   inline while (i < args.len) : (i += 2) {
@@ -1265,17 +1272,48 @@ To handle each argument, this `inline` / `comptime` loop is unrolled at Compile-
   }
 ```
 
-_What happens if we omit a Key or a Value when calling `composeCbor`?_
+(Think of it as a C Macro, expanding our code at Compile-Time)
 
-This `comptime` assertion check will fail at Compile-Time...
+Thus if we have 3 pairs of Key-Values, Zig Compiler will emit the above code 3 times.
+
+[(__floatToFixed__ is explained here)](https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data)
+
+_What happens if we omit a Key or a Value when calling composeCbor?_
+
+This `comptime` Assertion Check will fail at Compile-Time...
 
 ```zig
+// Assertion fails if we're missing a Key or a Value
 comptime {
-  assert(args.len % 2 == 0);  // Missing Key or Value
+  assert(args.len % 2 == 0);
 }
 ```
 
--   [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
+_What happens if we pass incorrect Types for the Key or Value?_
+
+__composeCbor__ expects the following Types...
+
+-   Key should be a (string-like) __Byte Slice__ (`[]const u8`)
+
+-   Value should be a __Floating-Point Number__ (`f32`)
+
+If the Types are incorrect, Zig Compiler will stop us here during compilation...
+
+```zig
+    // Print the key and value
+    debug("  {s}: {}", .{
+      @as([]const u8, key),
+      floatToFixed(value)
+    });
+```
+
+[(__floatToFixed__ is explained here)](https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data)
+
+_The implementation of CBOR Encoding is missing?_
+
+Yep we shall import the __TinyCBOR Library__ from C to implement the CBOR Encoding in __composeCbor__...
+
+-   [__"Encode Sensor Data with CBOR"__](https://lupyuen.github.io/articles/cbor2)
 
 ![Transmit Message Block](https://lupyuen.github.io/images/visual-block7c.jpg)
 
