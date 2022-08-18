@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "Visual Programming with Zig and NuttX Sensors",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-08-19",
+      "website": "https://lupyuen.github.io/articles/visual",
+      "summary": "What if we could drag-and-drop NuttX Sensors... To create IoT Sensor Apps in Zig? Let's find out!"
+    },
+    {
       "name": "Zig Visual Programming with Blockly",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-08-07",
