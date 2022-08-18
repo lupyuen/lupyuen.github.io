@@ -1,6 +1,6 @@
 # Visual Programming with Zig and NuttX Sensors
 
-📝 _20 Aug 2022_
+📝 _19 Aug 2022_
 
 ![Visual Programming with Zig and NuttX Sensors on Blockly](https://lupyuen.github.io/images/visual-title.jpg)
 
@@ -1369,7 +1369,7 @@ In the previous article we have __customised Blockly__ to generate Zig Programs.
 
 -   [__"Zig Visual Programming with Blockly"__](https://lupyuen.github.io/articles/blockly)
 
-For this article we added __Custom Blocks__ to Blockly to produce IoT Sensor Apps...
+For this article we __added Custom Blocks__ to Blockly to produce IoT Sensor Apps...
 
 -   [__"Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-block)
 
@@ -1377,13 +1377,13 @@ For this article we added __Custom Blocks__ to Blockly to produce IoT Sensor App
 
 -   [__"Export Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#export-custom-block)
 
-TODO: Load into Blockly
+This is how we __loaded our Custom Blocks__ into Blockly...
 
 -   [__"Load Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#load-custom-block)
 
 -   [__"Show Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#show-custom-block)
 
-TODO: Generate Code
+Each Custom Block has a __Code Generator__ that will emit Zig Code...
 
 -   [__"Code Generator for Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-block)
 
@@ -1391,13 +1391,17 @@ TODO: Generate Code
 
 -   [__"Test Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-block)
 
-TODO: Custom Extension
+The __Compose Message Block__ is more sophisticated, we implemented it as a Custom Extension in Blockly...
 
 -   [__"Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-extension)
 
 -   [__"Code Generator for Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#code-generator-for-custom-extension)
 
 -   [__"Test Custom Extension"__](https://github.com/lupyuen3/blockly-zig-nuttx#test-custom-extension)
+
+Official docs for __Blockly Custom Blocks__...
+
+-   [__"Customise Blockly"__](https://developers.google.com/blockly/guides/create-custom-blocks/overview)
 
 ![Export Custom Block](https://lupyuen.github.io/images/visual-block4.jpg)
 
