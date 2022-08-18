@@ -277,7 +277,7 @@ while (true) {
 <p><strong>Read Sensor Data:</strong> Read the Temperature, Pressure and Humidity from BME280 Sensor</p>
 </li>
 <li>
-<p><strong>Print Sensor Data:</strong> Print the Temperature, Pressure and Humidity values</p>
+<p><strong>Print Sensor Data:</strong> Print the above values</p>
 </li>
 <li>
 <p><strong>Compose Message:</strong> Create a CBOR Message with the Temperature, Pressure and Humidity values</p>
@@ -352,7 +352,7 @@ pub fn main() !void {
 <p>Click the <strong>JSON Tab</strong> and copy the Blockly JSON that appears.</p>
 <p>Whenever we reload Blockly, just paste the Blockly JSON back into the JSON Tab. The Blocks will be automagically restored.</p>
 <p><a href="https://gist.github.com/lupyuen/f7466a2e208eb68fd01a788c829b57e9">(See the Blockly JSON)</a></p>
-<p>We’re ready to build and test our IoT Sensor App with NuttX! But first we prep our hardware…</p>
+<p>We’re ready to build and test our IoT Sensor App! But first we prep our hardware…</p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <p><a href="https://lupyuen.github.io/articles/sensor"><em>Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor</em></a></p>
 <h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">4 Connect BME280 Sensor</a></h1>
@@ -375,11 +375,11 @@ pub fn main() !void {
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">5 Compile Zig App</a></h1>
 <p>Below are the steps to <strong>compile our IoT Sensor App</strong> for NuttX.</p>
-<p>First we download the latest version of <strong>Zig Compiler</strong> (0.10.0 or later), extract it and add to PATH…</p>
+<p>We download the latest version of <strong>Zig Compiler</strong> (0.10.0 or later), extract it and add to PATH…</p>
 <ul>
 <li><a href="https://ziglang.org/download/"><strong>Zig Compiler Downloads</strong></a></li>
 </ul>
-<p>Then we download and compile <strong>Apache NuttX RTOS</strong> for BL602…</p>
+<p>Then we download and compile <strong>NuttX for BL602</strong>…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
@@ -508,17 +508,17 @@ transmitLorawan
 <h1 id="why-zig"><a href="#why-zig">7 Why Zig</a></h1>
 <p><em>Once again… Why are we doing this in Zig?</em></p>
 <p>It’s <strong>easier to generate</strong> Zig Code for our IoT Sensor App. That’s because Zig supports…</p>
-<ol>
+<ul>
 <li>
-<p><strong>Type Inference</strong></p>
+<p><strong>Type Inference</strong>: Zig Compiler will fill in the missing Types</p>
 </li>
 <li>
-<p><strong>Compile-Time Expressions</strong></p>
+<p><strong>Compile-Time Expressions</strong>: Zig Compiler will let us manipulate Struct Types and Fields at Compile-Time</p>
 </li>
 <li>
-<p><strong>Compile-Time Variable Arguments</strong></p>
+<p><strong>Compile-Time Variable Arguments</strong>: Zig Compiler will validate the Variable Arguments for our Function</p>
 </li>
-</ol>
+</ul>
 <p>We could have programmed Blockly to generate C Code. But it would be messy, here’s why…</p>
 <h2 id="type-inference"><a href="#type-inference">7.1 Type Inference</a></h2>
 <p>In many Compiled Languages (including C), we need to <strong>specify the Types</strong> for our Constants (and Variables)…</p>
@@ -665,7 +665,7 @@ while (true) {
 <ul>
 <li>
 <p>Some Blocks won’t emit <strong>valid Zig Code</strong></p>
-<p><a href="https://lupyuen.github.io/articles/blockly#code-generator">(Because our Zig Code Generator for Blockly is incomplete)</a></p>
+<p><a href="https://lupyuen.github.io/articles/blockly#code-generator">(Our Zig Code Generator for Blockly is incomplete)</a></p>
 </li>
 <li>
 <p><strong>Double Asssignment</strong> fails with Zig and Blockly…</p>
