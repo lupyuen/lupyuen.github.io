@@ -260,7 +260,7 @@ To test the NuttX Blocks, let's drag-n-drop an IoT Sensor App that will...
 
 -   __Read Sensor Data:__ Read the Temperature, Pressure and Humidity from BME280 Sensor
 
--   __Print Sensor Data:__ Print the Temperature, Pressure and Humidity values
+-   __Print Sensor Data:__ Print the above values
 
 -   __Compose Message:__ Create a CBOR Message with the Temperature, Pressure and Humidity values
 
@@ -351,7 +351,7 @@ Whenever we reload Blockly, just paste the Blockly JSON back into the JSON Tab. 
 
 [(See the Blockly JSON)](https://gist.github.com/lupyuen/f7466a2e208eb68fd01a788c829b57e9)
 
-We're ready to build and test our IoT Sensor App with NuttX! But first we prep our hardware...
+We're ready to build and test our IoT Sensor App! But first we prep our hardware...
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-connect.jpg)
 
@@ -386,11 +386,11 @@ The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen
 
 Below are the steps to __compile our IoT Sensor App__ for NuttX.
 
-First we download the latest version of __Zig Compiler__ (0.10.0 or later), extract it and add to PATH...
+We download the latest version of __Zig Compiler__ (0.10.0 or later), extract it and add to PATH...
 
 -   [__Zig Compiler Downloads__](https://ziglang.org/download/)
 
-Then we download and compile __Apache NuttX RTOS__ for BL602...
+Then we download and compile __NuttX for BL602__...
 
 -   [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
@@ -548,11 +548,11 @@ _Once again... Why are we doing this in Zig?_
 
 It's __easier to generate__ Zig Code for our IoT Sensor App. That's because Zig supports...
 
-1.  __Type Inference__
+-   __Type Inference__: Zig Compiler will fill in the missing Types
 
-1.  __Compile-Time Expressions__
+-   __Compile-Time Expressions__: Zig Compiler will let us manipulate Struct Types and Fields at Compile-Time
 
-1.  __Compile-Time Variable Arguments__
+-   __Compile-Time Variable Arguments__: Zig Compiler will validate the Variable Arguments for our Function
 
 We could have programmed Blockly to generate C Code. But it would be messy, here's why...
 
@@ -767,7 +767,7 @@ _Sensor Data scaled by 100 and encoded as integers_
 
 -   Some Blocks won't emit __valid Zig Code__
 
-    [(Because our Zig Code Generator for Blockly is incomplete)](https://lupyuen.github.io/articles/blockly#code-generator)
+    [(Our Zig Code Generator for Blockly is incomplete)](https://lupyuen.github.io/articles/blockly#code-generator)
 
 -   __Double Asssignment__ fails with Zig and Blockly...
 
