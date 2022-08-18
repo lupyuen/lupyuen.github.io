@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Visual Programming with Zig and NuttX Sensors</title>
+            <link>https://lupyuen.github.io/articles/visual</link>
+            <description><![CDATA[What if we could drag-and-drop NuttX Sensors... To create IoT Sensor Apps in Zig? Let's find out!]]></description>
+            <guid>https://lupyuen.github.io/articles/visual</guid>
+            <pubDate>Fri, 19 Aug 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Zig Visual Programming with Blockly</title>
             <link>https://lupyuen.github.io/articles/blockly</link>
             <description><![CDATA[How we create a Zig program visually with Blockly, the drag-n-drop way... And how we might use it to build Sensor IoT Apps for Apache NuttX RTOS]]></description>
