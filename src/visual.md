@@ -1138,7 +1138,7 @@ We __allocate a buffer__ (on the stack) to receive the Sensor Data...
   );
 ```
 
-Remember that __SensorType__ is a `comptime` Compile-Time Type.
+Remember that __SensorType__ is a __`comptime`__ Compile-Time Type.
 
 Zig Compiler will change __SensorType__ to a Struct Type like __c.struct_sensor_baro__
 
@@ -1170,7 +1170,7 @@ Finally we return the __Sensor Data Field__...
 }
 ```
 
-Remember that __field_name__ is a `comptime` Compile-Time String.
+Remember that __field_name__ is a __`comptime`__ Compile-Time String.
 
 Zig Compiler will change __field_name__ to a Field Name like __"temperature"__
 
@@ -1183,6 +1183,8 @@ _Compose Message Block_
 # Appendix: Encode Sensor Data
 
 The __Compose Message Block__ composes a [__CBOR Message__](https://lupyuen.github.io/articles/cbor2) with the specified Keys (Field Names) and Values (Sensor Data).
+
+(Think of CBOR as a compact, binary form of JSON)
 
 CBOR Messages usually require __fewer bytes than JSON__ to represent the same data. They work better with Low-Bandwidth Networks. (Like LoRaWAN)
 
@@ -1198,9 +1200,21 @@ const msg = try composeCbor(.{  // Compose CBOR Message
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
 
-_composeCbor will work for a variable number of arguments? Strings as well as numbers?_
+Which will show this output...
 
-Yep, here's the implementation of __composeCbor__: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L65-L108)
+```text
+composeCbor
+  t: 31.05
+  p: 1007.44
+  h: 71.49
+  msg=t:31.05,p:1007.44,h:71.49,
+```
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app)
+
+_composeCbor accepts a variable number of arguments? Strings as well as numbers?_
+
+Yep, here's the implementation of __composeCbor__: [visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L59-L102)
 
 ```zig
 /// TODO: Compose CBOR Message with Key-Value Pairs
@@ -1250,8 +1264,8 @@ __CborMessage__ is a Struct that contains the CBOR Buffer...
 /// TODO: CBOR Message
 /// https://lupyuen.github.io/articles/cbor2
 const CborMessage = struct {
-  buf: [256]u8 = undefined,  // Limit to 256 chars
-  len: usize = 0,
+  buf: [256]u8 = undefined,  // Limit to 256 bytes
+  len: usize = 0,            // Length of buffer
 };
 ```
 
@@ -1263,7 +1277,7 @@ fn composeCbor(args: anytype) { ...
 
 That's why __composeCbor__ accepts a variable number of arguments with different types.
 
-To handle each argument, the Zig Compiler will unroll (expand) this __`inline comptime`__ loop at Compile-Time...
+To handle each argument, the Zig Compiler will unroll (expand) this __`inline`__ __`comptime`__ loop during compilation...
 
 ```zig
   // Zig Compiler will unroll (expand) this Loop.
@@ -1284,7 +1298,7 @@ To handle each argument, the Zig Compiler will unroll (expand) this __`inline co
   }
 ```
 
-(Think of it as a C Macro, expanding our code at Compile-Time)
+(Think of it as a C Macro, expanding our code during compilation)
 
 Thus if we have 3 pairs of Key-Values, Zig Compiler will emit the above code 3 times.
 
@@ -1292,7 +1306,7 @@ Thus if we have 3 pairs of Key-Values, Zig Compiler will emit the above code 3 t
 
 _What happens if we omit a Key or a Value when calling composeCbor?_
 
-This `comptime` Assertion Check will __fail at Compile-Time__...
+This __`comptime`__ Assertion Check will __fail during compilation__...
 
 ```zig
 // This assertion fails at Compile-Time
@@ -1301,18 +1315,6 @@ comptime {
   assert(args.len % 2 == 0);
 }
 ```
-
-Hence __composeCbor__ might look fragile with its Variable Arguments and Types...
-
-```zig
-const msg = try composeCbor(.{  // Compose CBOR Message
-  "t", temperature,
-  "p", pressure,
-  "h", humidity,
-});
-```
-
-But Zig Compiler will actually stop us at Compile-Time if we call it incorrectly.
 
 _What happens if we pass incorrect Types for the Key or Value?_
 
@@ -1334,6 +1336,18 @@ If the Types are incorrect, Zig Compiler will stop us here __during compilation_
 
 [(__floatToFixed__ is explained here)](https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data)
 
+Hence __composeCbor__ might look fragile with its Variable Arguments and Types...
+
+```zig
+const msg = try composeCbor(.{  // Compose CBOR Message
+  "t", temperature,
+  "p", pressure,
+  "h", humidity,
+});
+```
+
+But Zig Compiler will actually stop us during compilation if we pass invalid arguments.
+
 _The implementation of CBOR Encoding is missing?_
 
 Yep we shall import the __TinyCBOR Library__ from C to implement the CBOR Encoding in __composeCbor__...
@@ -1354,6 +1368,15 @@ try transmitLorawan(msg);
 ```
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
+
+Which will show this output...
+
+```text
+transmitLorawan
+  msg=t:31.05,p:1007.44,h:71.49,
+```
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app)
 
 The implementation of __transmitLorawan__ is currently a stub...
 
