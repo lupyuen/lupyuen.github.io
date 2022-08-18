@@ -1290,6 +1290,18 @@ comptime {
 }
 ```
 
+Hence __composeCbor__ might look fragile with its Variable Arguments and Types...
+
+```zig
+const msg = try composeCbor(.{  // Compose CBOR Message
+  "t", temperature,
+  "p", pressure,
+  "h", humidity,
+});
+```
+
+But Zig Compiler will actually stop us at Compile-Time if we call it incorrectly.
+
 _What happens if we pass incorrect Types for the Key or Value?_
 
 __composeCbor__ expects the following Types...
