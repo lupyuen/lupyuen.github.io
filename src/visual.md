@@ -1334,8 +1334,6 @@ _Transmit Message Block_
 
 # Appendix: Transmit Sensor Data
 
-TODO
-
 The __Transmit Message Block__ (above) transmits a CBOR Message to [__LoRaWAN__](https://makezine.com/2021/05/24/go-long-with-lora-radio/) (the low-power, long-range, low-bandwidth IoT Network)...
 
 ```zig
@@ -1345,6 +1343,20 @@ try transmitLorawan(msg);
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
 
+The implementation of __transmitLorawan__ is currently a stub...
+
+```zig
+/// TODO: Transmit message to LoRaWAN
+fn transmitLorawan(msg: CborMessage) !void { 
+  debug("transmitLorawan", .{});
+  debug("  msg={s}", .{ msg.buf[0..msg.len] });
+}
+```
+
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L107-L111)
+
+We shall implement LoRaWAN Messaging by calling the __LoRaWAN Library__ that's imported from C...
+
 -   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
 
 ![Blockly Developer Tools](https://lupyuen.github.io/images/visual-block3.jpg)
@@ -1353,11 +1365,11 @@ _Blockly Developer Tools_
 
 # Appendix: Create Custom Blocks
 
-TODO: Previously we have __customised Blockly__ to generate Zig Programs...
+In the previous article we have __customised Blockly__ to generate Zig Programs...
 
 -   [__"Zig Visual Programming with Blockly"__](https://lupyuen.github.io/articles/blockly)
 
-Now we'll extend Blockly to produce IoT Sensor Apps.
+For this article we added __Custom Blocks__ to Blockly to produce IoT Sensor Apps...
 
 -   [__"Custom Block"__](https://github.com/lupyuen3/blockly-zig-nuttx#custom-block)
 
