@@ -1280,10 +1280,11 @@ Thus if we have 3 pairs of Key-Values, Zig Compiler will emit the above code 3 t
 
 _What happens if we omit a Key or a Value when calling composeCbor?_
 
-This `comptime` Assertion Check will fail at Compile-Time...
+This `comptime` Assertion Check will __fail at Compile-Time__...
 
 ```zig
-// Assertion fails if we're missing a Key or a Value
+// This assertion fails at Compile-Time
+// if we're missing a Key or a Value
 comptime {
   assert(args.len % 2 == 0);
 }
@@ -1297,7 +1298,7 @@ __composeCbor__ expects the following Types...
 
 -   Value should be a __Floating-Point Number__ (`f32`)
 
-If the Types are incorrect, Zig Compiler will stop us here during compilation...
+If the Types are incorrect, Zig Compiler will stop us here __during compilation__...
 
 ```zig
     // Print the key and value
