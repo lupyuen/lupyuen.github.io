@@ -1027,8 +1027,9 @@ const CborMessage = struct {
 <p>Thus if we have 3 pairs of Key-Values, Zig Compiler will emit the above code 3 times.</p>
 <p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>floatToFixed</strong> is explained here)</a></p>
 <p><em>What happens if we omit a Key or a Value when calling composeCbor?</em></p>
-<p>This <code>comptime</code> Assertion Check will fail at Compile-Time…</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Assertion fails if we&#39;re missing a Key or a Value
+<p>This <code>comptime</code> Assertion Check will <strong>fail at Compile-Time</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// This assertion fails at Compile-Time
+// if we&#39;re missing a Key or a Value
 comptime {
   assert(args.len % 2 == 0);
 }</code></pre></div>
@@ -1042,7 +1043,7 @@ comptime {
 <p>Value should be a <strong>Floating-Point Number</strong> (<code>f32</code>)</p>
 </li>
 </ul>
-<p>If the Types are incorrect, Zig Compiler will stop us here during compilation…</p>
+<p>If the Types are incorrect, Zig Compiler will stop us here <strong>during compilation</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Print the key and value
     debug(&quot;  {s}: {}&quot;, .{
       @as([]const u8, key),
