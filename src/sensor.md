@@ -129,7 +129,7 @@ Next we check if the Sensor Device has been __successfully opened__...
 
 If the Sensor Device doesn't exist, we print a Formatted Message to the __Error Log__ and return an Error.
 
-[(__OpenError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65)
+[(__OpenError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163)
 
 _What's "`{s}`"?_
 
@@ -208,7 +208,7 @@ In case of error, we quit...
   }
 ```
 
-[(__IntervalError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65)
+[(__IntervalError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163)
 
 Which also closes the Sensor Device. (Due to our earlier "`defer`")
 
@@ -236,7 +236,7 @@ And we check for error...
   }
 ```
 
-[(__BatchError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65)
+[(__BatchError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163)
 
 ## Poll Sensor
 

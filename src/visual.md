@@ -837,9 +837,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 ![BME280 Sensor Block](https://lupyuen.github.io/images/visual-block1.jpg)
 
-# Appendix: Read Sensor Data
+_BME280 Sensor Block_
 
-TODO
+# Appendix: Read Sensor Data
 
 As pictured above, our __BME280 Sensor Block__ reads Temperature, Humidity and Pressure from the [__Bosch BME280 Sensor__](https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/).
 
@@ -859,11 +859,21 @@ debug("temperature={}", .{ temperature });
 
 [(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig)
 
-Here's the implementation of `readSensor`...
+Looks concise and tidy, but __readSensor__ has 2 surprises...
 
-[visual-zig-nuttx/sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108)
+-   [__struct_sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) is actually a __Struct Type__
 
-Note that the Sensor Data Struct Type and the Sensor Data Field are declared as `comptime`...
+    (Auto-imported by Zig from NuttX)
+
+-   __"temperature"__ is actually a __Struct Field Name__
+
+    (From the [__sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct)
+
+The Zig Compiler will __substitute the Struct Type__ and Field Name inside the code for __readSensor__. (Which works like a C Macro)
+
+_How does it work?_
+
+__readSensor__ declares the Sensor Data Struct Type and Sensor Data Field as __`comptime`__...
 
 ```zig
 /// Read a Sensor and return the Sensor Data
@@ -874,45 +884,50 @@ pub fn readSensor(
 ) !f32 { ...
 ```
 
-Which means that the values will be substituted at Compile-Time. (Works like a C Macro)
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108)
 
-We can then refer to the Sensor Data Struct `sensor_baro` like this...
+Which means that Zig Compiler will __substitute the values__ at Compile-Time (like a C Macro)...
+
+-   __SensorType__ changes to __c.struct_sensor_baro__
+
+-   __field_name__ changes to __"temperature"__
+
+__readSensor__ will then use __SensorType__ to refer to the [__sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct...
 
 ```zig
-  // Define the Sensor Data Type
+  // Define the Sensor Data Type.
+  // Zig Compiler replaces `SensorType` by `c.struct_sensor_baro`
   var sensor_data = std.mem.zeroes(
     SensorType
   );
 ```
 
-And return a field `temperature` like this...
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L89-L92)
+
+And __readSensor__ will use __field_name__ to refer to the __"temperature"__ field...
 
 ```zig
-  // Return the Sensor Data Field
-  return @field(sensor_data, field_name);
+  // Return the Sensor Data Field.
+  // Zig Compiler replaces `field_name` by "temperature"
+  return @field(
+    sensor_data,  // Sensor Data Type from above
+    field_name    // Field Name is "temperature"
+  );
 ```
 
-Thus this program...
+[(Source)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L106-L107)
 
-[visual-zig-nuttx/visual.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L27-L61)
+Check out this doc for details on __`comptime`__ and Zig Metaprogramming...
 
-Produces this output...
+-   [__"Zig Metaprogramming"__](https://ikrima.dev/dev-notes/zig/zig-metaprogramming/)
 
-```text
-NuttShell (NSH) NuttX-10.3.0
-nsh> sensortest visual
-Zig Sensor Test
-Start main
-...
-temperature=30.18
-pressure=1007.69
-humidity=68.67
-End main
-```
+_What's inside readSensor?_
 
-TODO
+Let's look at the implementation of __readSensor__ in [sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108) and walk through the steps for reading a NuttX Sensor...
 
-[visual-zig-nuttx/sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108)
+## Open Sensor Device
+
+We begin by __opening the NuttX Sensor Device__: [sensor.zig](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108)
 
 ```zig
 /// Read a Sensor and return the Sensor Data
@@ -921,43 +936,163 @@ pub fn readSensor(
   comptime field_name: []const u8,  // Sensor Data Field to be returned, like "temperature"
   device_path: []const u8           // Path of Sensor Device, like "/dev/sensor/sensor_baro0"
 ) !f32 {
+
   // Open the Sensor Device
   const fd = c.open(
     &device_path[0],           // Path of Sensor Device
     c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
   );
+```
 
+__`open()`__ should look familiar... On Linux we open Devices the same way.
+
+_What's "`[]const u8`"?_
+
+That's a __Slice of Bytes__, roughly equivalent to a String in C.
+
+[(More about Slices)](https://lupyuen.github.io/articles/sensor#slice-vs-string)
+
+_What's "`!f32`"?_
+
+That's the __Return Type__ of our function...
+
+-   Our function returns the Sensor Data as a 32-bit __Floating-Point Number__
+
+    (Hence "`f32`")
+
+-   But it might return an __Error__
+
+    (Hence the "`!`")
+
+_Why the "`c.`" prefix?_
+
+We write "`c.`_something_" for Functions, Types and Macros __imported from C__.
+
+[(As explained here)](https://lupyuen.github.io/articles/sensor#import-nuttx-functions)
+
+Next we check if the Sensor Device has been __successfully opened__...
+
+```zig
   // Check for error
   if (fd < 0) {
-    std.log.err("Failed to open device:{s}", .{ c.strerror(errno()) });
+    std.log.err(
+      "Failed to open device:{s}",
+      .{ c.strerror(errno()) }
+    );
     return error.OpenError;
   }
+```
 
+If the Sensor Device doesn't exist, we print a Formatted Message to the __Error Log__ and return an Error.
+
+[(__OpenError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163)
+
+_What's "`{s}`"?_
+
+That's for printing a __Formatted String__ in Zig.
+
+It's equivalent to "`%s`" in C...
+
+```c
+printf("Failed to open device:%s", strerror(errno()));
+```
+
+_What's "`.{ ... }`"?_
+
+That's how we pass a __list of Arguments__ when printing a Formatted Message.
+
+If we have no Arguments, we write "`.{}`"
+
+[("`.{ ... }`" creates an Anonymous Struct)](https://ziglang.org/documentation/master/#Anonymous-Struct-Literals)
+
+## Close Sensor Device (Deferred)
+
+We've just opened the Sensor Device and we must __close it later__...
+
+But the Control Flow gets complicated because we might need to __handle Errors__ and quit early. In C we'd code this with "`goto`".
+
+For Zig we do this nifty trick...
+
+```zig
   // Close the Sensor Device when this function returns
   defer {
     _ = c.close(fd);
   }
+```
 
+When we write __"`defer`"__, this chunk of code will be executed __when our function returns__.
+
+This brilliantly solves our headache of __closing the Sensor Device__ when we hit Errors later.
+
+_Why the "`_ =` something"?_
+
+Zig Compiler stops us if we forget to use the __Return Value__ of a Function.
+
+We write "`_ =` _something_" to tell Zig Compiler that we're not using the Return Value.
+
+## Set Standby Interval
+
+Some sensors (like BME280) will automatically measure Sensor Data at __Periodic Intervals__. [(Like this)](https://lupyuen.github.io/articles/bme280#standby-interval)
+
+Let's assume that our sensor will measure Sensor Data __every 1 second__...
+
+```zig
   // Set Standby Interval
   const interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
-  var ret = c.ioctl(fd, c.SNIOC_SET_INTERVAL, interval);
+  var ret = c.ioctl(
+    fd,                  // Sensor Device
+    SNIOC_SET_INTERVAL,  // ioctl Command
+    interval             // Standby Interval
+  );
+```
 
+(__c_uint__ is equivalent to "unsigned int" in C)
+
+In case of error, we quit...
+
+```zig
   // Check for error
   if (ret < 0 and errno() != c.ENOTSUP) {
     std.log.err("Failed to set interval:{s}", .{ c.strerror(errno()) });
     return error.IntervalError;
   }
+```
 
+[(__IntervalError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163)
+
+Which also closes the Sensor Device. (Due to our earlier "`defer`")
+
+## Set Batch Latency
+
+We set the __Batch Latency__, if it's needed by our sensor...
+
+```zig
   // Set Batch Latency
   const latency: c_uint = 0;  // No latency
-  ret = c.ioctl(fd, c.SNIOC_BATCH, latency);
+  ret = c.ioctl(
+    fd,             // Sensor Device
+    c.SNIOC_BATCH,  // ioctl Command
+    latency         // Batch Latency
+  );
+```
 
+And we check for error...
+
+```zig
   // Check for error
   if (ret < 0 and errno() != c.ENOTSUP) {
     std.log.err("Failed to batch:{s}", .{ c.strerror(errno()) });
     return error.BatchError;
   }
+```
 
+[(__BatchError__ is defined here)](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163)
+
+## Poll Sensor
+
+After the enabling the sensor, we __poll the sensor__ to check if Sensor Data is available...
+
+```zig
   // Poll for Sensor Data
   var fds = std.mem.zeroes(c.struct_pollfd);
   fds.fd = fd;
@@ -969,7 +1104,17 @@ pub fn readSensor(
     std.log.err("Sensor data not available", .{});
     return error.DataError;
   }
+```
 
+__std.mem.zeroes__ creates a __pollfd__ Struct that's initialised with nulls.
+
+(The struct lives on the stack)
+
+## Read Sensor Data
+
+We __allocate a buffer__ (on the stack) to receive the Sensor Data...
+
+```zig
   // Define the Sensor Data Type
   var sensor_data = std.mem.zeroes(
     SensorType
@@ -977,7 +1122,17 @@ pub fn readSensor(
   const len = @sizeOf(
     @TypeOf(sensor_data)
   );
+```
 
+Remember that __SensorType__ is a `comptime` Compile-Time Type.
+
+Zig Compiler will change __SensorType__ to a Struct Type like __c.struct_sensor_baro__
+
+__std.mem.zeroes__ returns a Sensor Data Struct, initialised with nulls.
+
+We __read the Sensor Data__ into the struct...
+
+```zig
   // Read the Sensor Data
   const read_len = c.read(fd, &sensor_data, len);
 
@@ -986,15 +1141,30 @@ pub fn readSensor(
     std.log.err("Sensor data incorrect size", .{});
     return error.SizeError;
   }
+```
 
+## Return Sensor Data
+
+Finally we return the __Sensor Data Field__...
+
+```zig
   // Return the Sensor Data Field
-  return @field(sensor_data, field_name);
+  return @field(
+    sensor_data,  // Sensor Data Type from above
+    field_name    // Field Name like "temperature"
+  );
 }
 ```
 
-[__"Zig Metaprogramming"__](https://ikrima.dev/dev-notes/zig/zig-metaprogramming/)
+Remember that __field_name__ is a `comptime` Compile-Time String.
+
+Zig Compiler will change __field_name__ to a Field Name like __"temperature"__
+
+And that's how __readSensor__ reads the Sensor Data from a NuttX Sensor!
 
 ![Compose Message Block](https://lupyuen.github.io/images/visual-block7b.jpg)
+
+_Compose Message Block_
 
 # Appendix: Encode Sensor Data
 
@@ -1108,6 +1278,8 @@ comptime {
 -   [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
 
 ![Transmit Message Block](https://lupyuen.github.io/images/visual-block7c.jpg)
+
+_Transmit Message Block_
 
 # Appendix: Transmit Sensor Data
 
