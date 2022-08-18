@@ -1065,22 +1065,29 @@ comptime {
 <p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="Transmit Message Block" /></p>
 <p><em>Transmit Message Block</em></p>
 <h1 id="appendix-transmit-sensor-data"><a href="#appendix-transmit-sensor-data">15 Appendix: Transmit Sensor Data</a></h1>
-<p>TODO</p>
 <p>The <strong>Transmit Message Block</strong> (above) transmits a CBOR Message to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a> (the low-power, long-range, low-bandwidth IoT Network)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Transmit message to LoRaWAN
 try transmitLorawan(msg);</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
+<p>The implementation of <strong>transmitLorawan</strong> is currently a stub…</p>
+<div class="example-wrap"><pre class="language-zig"><code>/// TODO: Transmit message to LoRaWAN
+fn transmitLorawan(msg: CborMessage) !void { 
+  debug(&quot;transmitLorawan&quot;, .{});
+  debug(&quot;  msg={s}&quot;, .{ msg.buf[0..msg.len] });
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L107-L111">(Source)</a></p>
+<p>We shall implement LoRaWAN Messaging by calling the <strong>LoRaWAN Library</strong> that’s imported from C…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/iot"><strong>“Build an IoT App with Zig and LoRaWAN”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/visual-block3.jpg" alt="Blockly Developer Tools" /></p>
 <p><em>Blockly Developer Tools</em></p>
 <h1 id="appendix-create-custom-blocks"><a href="#appendix-create-custom-blocks">16 Appendix: Create Custom Blocks</a></h1>
-<p>TODO: Previously we have <strong>customised Blockly</strong> to generate Zig Programs…</p>
+<p>In the previous article we have <strong>customised Blockly</strong> to generate Zig Programs…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/blockly"><strong>“Zig Visual Programming with Blockly”</strong></a></li>
 </ul>
-<p>Now we’ll extend Blockly to produce IoT Sensor Apps.</p>
+<p>For this article we added <strong>Custom Blocks</strong> to Blockly to produce IoT Sensor Apps…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx#custom-block"><strong>“Custom Block”</strong></a></p>
