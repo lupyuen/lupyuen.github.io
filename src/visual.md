@@ -569,10 +569,10 @@ const msg: CborMessage = try composeCbor(...);
 But thanks to __Type Inference__, we may omit the Types in Zig...
 
 ```zig
-// Zig infers that this is a Float
+// Zig Compiler infers that this is a Float
 const temperature = try sen.readSensor(...);
 
-// Zig infers that this is a Struct
+// Zig Compiler infers that this is a Struct
 const msg = try composeCbor(...);
 ```
 
@@ -807,15 +807,25 @@ What do you think? Please let us know! 🙏
 
 (Would be great if we could create a Proof-of-Concept using Universal Perforated Board)
 
+![Up Next: Prometheus, Grafana and The Things Network](https://lupyuen.github.io/images/prometheus-title.jpg)
+
+[_Up Next: Prometheus, Grafana and The Things Network_](https://lupyuen.github.io/articles/prometheus)
+
 # What's Next
 
-TODO
-
-Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL...
-
--   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
+This has been an exhilarating journey into __IoT, Zig and Visual Programming__ that spans four articles (including this one)...
 
 -   [__"Build an IoT App with Zig and LoRaWAN"__](https://lupyuen.github.io/articles/iot)
+
+-   [__"Read NuttX Sensor Data with Zig"__](https://lupyuen.github.io/articles/sensor)
+
+-   [__"Zig Visual Programming with Blockly"__](https://lupyuen.github.io/articles/blockly)
+
+I hope you'll join me for more!
+
+Check out my earlier work on Zig and NuttX...
+
+-   [__"Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"__](https://lupyuen.github.io/articles/zig)
 
 -   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
 
@@ -1403,6 +1413,6 @@ Official docs for __Blockly Custom Blocks__...
 
 -   [__"Customise Blockly"__](https://developers.google.com/blockly/guides/create-custom-blocks/overview)
 
-![Export Custom Block](https://lupyuen.github.io/images/visual-block4.jpg)
+![Block Exporter in Blockly Developer Tools](https://lupyuen.github.io/images/visual-block4.jpg)
 
-_Export Custom Block_
+_Block Exporter in Blockly Developer Tools_
