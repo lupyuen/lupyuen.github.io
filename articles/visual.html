@@ -527,10 +527,10 @@ const temperature: f32 = try sen.readSensor(...);
 // This is a Struct (CborMessage)
 const msg: CborMessage = try composeCbor(...);</code></pre></div>
 <p>But thanks to <strong>Type Inference</strong>, we may omit the Types in Zig…</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Zig infers that this is a Float
+<div class="example-wrap"><pre class="language-zig"><code>// Zig Compiler infers that this is a Float
 const temperature = try sen.readSensor(...);
 
-// Zig infers that this is a Struct
+// Zig Compiler infers that this is a Struct
 const msg = try composeCbor(...);</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>This simplifies the <strong>Code Generation</strong> in Blockly, since we don’t track the Types.</p>
@@ -697,15 +697,26 @@ while (true) {
 <p>(Or maybe we scan the I2C Bus and read the Chip ID?)</p>
 <p>What do you think? Please let us know! 🙏</p>
 <p>(Would be great if we could create a Proof-of-Concept using Universal Perforated Board)</p>
+<p><img src="https://lupyuen.github.io/images/prometheus-title.jpg" alt="Up Next: Prometheus, Grafana and The Things Network" /></p>
+<p><a href="https://lupyuen.github.io/articles/prometheus"><em>Up Next: Prometheus, Grafana and The Things Network</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
-<p>TODO</p>
-<p>Check out my earlier work on Zig, NuttX, LoRaWAN and LVGL…</p>
+<p>This has been an exhilarating journey into <strong>IoT, Zig and Visual Programming</strong> that spans four articles (including this one)…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/iot"><strong>“Build an IoT App with Zig and LoRaWAN”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sensor"><strong>“Read NuttX Sensor Data with Zig”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/blockly"><strong>“Zig Visual Programming with Blockly”</strong></a></p>
+</li>
+</ul>
+<p>I hope you’ll join me for more!</p>
+<p>Check out my earlier work on Zig and NuttX…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/zig"><strong>“Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/iot"><strong>“Build an IoT App with Zig and LoRaWAN”</strong></a></p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lvgl"><strong>“Build an LVGL Touchscreen App with Zig”</strong></a></p>
@@ -1136,8 +1147,8 @@ fn transmitLorawan(msg: CborMessage) !void {
 <ul>
 <li><a href="https://developers.google.com/blockly/guides/create-custom-blocks/overview"><strong>“Customise Blockly”</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/visual-block4.jpg" alt="Export Custom Block" /></p>
-<p><em>Export Custom Block</em></p>
+<p><img src="https://lupyuen.github.io/images/visual-block4.jpg" alt="Block Exporter in Blockly Developer Tools" /></p>
+<p><em>Block Exporter in Blockly Developer Tools</em></p>
 
     
 </body>
