@@ -168,6 +168,8 @@ Thus we can build all kinds of IoT Sensor Apps by dragging-n-dropping the Sensor
 
 The __Compose Message Block__ composes a [__CBOR Message__](https://lupyuen.github.io/articles/cbor2) with the specified Keys (Field Names) and Values (Sensor Data).
 
+(Think of CBOR as a compact, binary form of JSON)
+
 CBOR Messages usually require __fewer bytes than JSON__ to represent the same data. They work better with Low-Bandwidth Networks. (Like LoRaWAN)
 
 The Block above will generate this __Zig Code__...
