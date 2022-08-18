@@ -87,7 +87,14 @@
 <li><a href="#visual-arduino">10 Visual Arduino?</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#notes">12 Notes</a><ul></ul></li>
-<li><a href="#appendix-read-sensor-data">13 Appendix: Read Sensor Data</a><ul></ul></li>
+<li><a href="#appendix-read-sensor-data">13 Appendix: Read Sensor Data</a><ul>
+<li><a href="#open-sensor-device">13.1 Open Sensor Device</a><ul></ul></li>
+<li><a href="#close-sensor-device-deferred">13.2 Close Sensor Device (Deferred)</a><ul></ul></li>
+<li><a href="#set-standby-interval">13.3 Set Standby Interval</a><ul></ul></li>
+<li><a href="#set-batch-latency">13.4 Set Batch Latency</a><ul></ul></li>
+<li><a href="#poll-sensor">13.5 Poll Sensor</a><ul></ul></li>
+<li><a href="#read-sensor-data">13.6 Read Sensor Data</a><ul></ul></li>
+<li><a href="#return-sensor-data">13.7 Return Sensor Data</a><ul></ul></li></ul></li>
 <li><a href="#appendix-encode-sensor-data">14 Appendix: Encode Sensor Data</a><ul></ul></li>
 <li><a href="#appendix-transmit-sensor-data">15 Appendix: Transmit Sensor Data</a><ul></ul></li>
 <li><a href="#appendix-create-custom-blocks">16 Appendix: Create Custom Blocks</a><ul></ul></li></ul></nav><p>📝 <em>20 Aug 2022</em></p>
@@ -723,8 +730,8 @@ while (true) {
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1557857587667775489"><strong>this Twitter Thread</strong></a></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/visual-block1.jpg" alt="BME280 Sensor Block" /></p>
+<p><em>BME280 Sensor Block</em></p>
 <h1 id="appendix-read-sensor-data"><a href="#appendix-read-sensor-data">13 Appendix: Read Sensor Data</a></h1>
-<p>TODO</p>
 <p>As pictured above, our <strong>BME280 Sensor Block</strong> reads Temperature, Humidity and Pressure from the <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>.</p>
 <p>The Blocks above will generate this <strong>Zig Code</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature
@@ -737,82 +744,160 @@ const temperature = try sen.readSensor(
 // Print the Temperature
 debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
-<p>Here’s the implementation of <code>readSensor</code>…</p>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">visual-zig-nuttx/sensor.zig</a></p>
-<p>Note that the Sensor Data Struct Type and the Sensor Data Field are declared as <code>comptime</code>…</p>
+<p>Looks concise and tidy, but <strong>readSensor</strong> has 2 surprises…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>struct_sensor_baro</strong></a> is actually a <strong>Struct Type</strong></p>
+<p>(Auto-imported by Zig from NuttX)</p>
+</li>
+<li>
+<p><strong>“temperature”</strong> is actually a <strong>Struct Field Name</strong></p>
+<p>(From the <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct)</p>
+</li>
+</ul>
+<p>The Zig Compiler will <strong>substitute the Struct Type</strong> and Field Name inside the code for <strong>readSensor</strong>. (Which works like a C Macro)</p>
+<p><em>How does it work?</em></p>
+<p><strong>readSensor</strong> declares the Sensor Data Struct Type and Sensor Data Field as <strong><code>comptime</code></strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read a Sensor and return the Sensor Data
 pub fn readSensor(
   comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
   comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
   device_path: []const u8           // Path of Sensor Device, like &quot;/dev/sensor/sensor_baro0&quot;
 ) !f32 { ...</code></pre></div>
-<p>Which means that the values will be substituted at Compile-Time. (Works like a C Macro)</p>
-<p>We can then refer to the Sensor Data Struct <code>sensor_baro</code> like this…</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Define the Sensor Data Type
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">(Source)</a></p>
+<p>Which means that Zig Compiler will <strong>substitute the values</strong> at Compile-Time (like a C Macro)…</p>
+<ul>
+<li>
+<p><strong>SensorType</strong> changes to <strong>c.struct_sensor_baro</strong></p>
+</li>
+<li>
+<p><strong>field_name</strong> changes to <strong>“temperature”</strong></p>
+</li>
+</ul>
+<p><strong>readSensor</strong> will then use <strong>SensorType</strong> to refer to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Define the Sensor Data Type.
+  // Zig Compiler replaces `SensorType` by `c.struct_sensor_baro`
   var sensor_data = std.mem.zeroes(
     SensorType
   );</code></pre></div>
-<p>And return a field <code>temperature</code> like this…</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Return the Sensor Data Field
-  return @field(sensor_data, field_name);</code></pre></div>
-<p>Thus this program…</p>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L27-L61">visual-zig-nuttx/visual.zig</a></p>
-<p>Produces this output…</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0
-nsh&gt; sensortest visual
-Zig Sensor Test
-Start main
-...
-temperature=30.18
-pressure=1007.69
-humidity=68.67
-End main</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">visual-zig-nuttx/sensor.zig</a></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L89-L92">(Source)</a></p>
+<p>And <strong>readSensor</strong> will use <strong>field_name</strong> to refer to the <strong>“temperature”</strong> field…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Return the Sensor Data Field.
+  // Zig Compiler replaces `field_name` by &quot;temperature&quot;
+  return @field(
+    sensor_data,  // Sensor Data Type from above
+    field_name    // Field Name is &quot;temperature&quot;
+  );</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L106-L107">(Source)</a></p>
+<p>Check out this doc for details on <strong><code>comptime</code></strong> and Zig Metaprogramming…</p>
+<ul>
+<li><a href="https://ikrima.dev/dev-notes/zig/zig-metaprogramming/"><strong>“Zig Metaprogramming”</strong></a></li>
+</ul>
+<p><em>What’s inside readSensor?</em></p>
+<p>Let’s look at the implementation of <strong>readSensor</strong> in <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">sensor.zig</a> and walk through the steps for reading a NuttX Sensor…</p>
+<h2 id="open-sensor-device"><a href="#open-sensor-device">13.1 Open Sensor Device</a></h2>
+<p>We begin by <strong>opening the NuttX Sensor Device</strong>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">sensor.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read a Sensor and return the Sensor Data
 pub fn readSensor(
   comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
   comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
   device_path: []const u8           // Path of Sensor Device, like &quot;/dev/sensor/sensor_baro0&quot;
 ) !f32 {
+
   // Open the Sensor Device
   const fd = c.open(
     &amp;device_path[0],           // Path of Sensor Device
     c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
-  );
-
-  // Check for error
+  );</code></pre></div>
+<p><strong><code>open()</code></strong> should look familiar… On Linux we open Devices the same way.</p>
+<p><em>What’s “<code>[]const u8</code>”?</em></p>
+<p>That’s a <strong>Slice of Bytes</strong>, roughly equivalent to a String in C.</p>
+<p><a href="https://lupyuen.github.io/articles/sensor#slice-vs-string">(More about Slices)</a></p>
+<p><em>What’s “<code>!f32</code>”?</em></p>
+<p>That’s the <strong>Return Type</strong> of our function…</p>
+<ul>
+<li>
+<p>Our function returns the Sensor Data as a 32-bit <strong>Floating-Point Number</strong></p>
+<p>(Hence “<code>f32</code>”)</p>
+</li>
+<li>
+<p>But it might return an <strong>Error</strong></p>
+<p>(Hence the “<code>!</code>”)</p>
+</li>
+</ul>
+<p><em>Why the “<code>c.</code>” prefix?</em></p>
+<p>We write “<code>c.</code><em>something</em>” for Functions, Types and Macros <strong>imported from C</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/sensor#import-nuttx-functions">(As explained here)</a></p>
+<p>Next we check if the Sensor Device has been <strong>successfully opened</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (fd &lt; 0) {
-    std.log.err(&quot;Failed to open device:{s}&quot;, .{ c.strerror(errno()) });
+    std.log.err(
+      &quot;Failed to open device:{s}&quot;,
+      .{ c.strerror(errno()) }
+    );
     return error.OpenError;
-  }
-
-  // Close the Sensor Device when this function returns
+  }</code></pre></div>
+<p>If the Sensor Device doesn’t exist, we print a Formatted Message to the <strong>Error Log</strong> and return an Error.</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>OpenError</strong> is defined here)</a></p>
+<p><em>What’s “<code>{s}</code>”?</em></p>
+<p>That’s for printing a <strong>Formatted String</strong> in Zig.</p>
+<p>It’s equivalent to “<code>%s</code>” in C…</p>
+<div class="example-wrap"><pre class="language-c"><code>printf(&quot;Failed to open device:%s&quot;, strerror(errno()));</code></pre></div>
+<p><em>What’s “<code>.{ ... }</code>”?</em></p>
+<p>That’s how we pass a <strong>list of Arguments</strong> when printing a Formatted Message.</p>
+<p>If we have no Arguments, we write “<code>.{}</code>”</p>
+<p><a href="https://ziglang.org/documentation/master/#Anonymous-Struct-Literals">(“<code>.{ ... }</code>” creates an Anonymous Struct)</a></p>
+<h2 id="close-sensor-device-deferred"><a href="#close-sensor-device-deferred">13.2 Close Sensor Device (Deferred)</a></h2>
+<p>We’ve just opened the Sensor Device and we must <strong>close it later</strong>…</p>
+<p>But the Control Flow gets complicated because we might need to <strong>handle Errors</strong> and quit early. In C we’d code this with “<code>goto</code>”.</p>
+<p>For Zig we do this nifty trick…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Close the Sensor Device when this function returns
   defer {
     _ = c.close(fd);
-  }
-
-  // Set Standby Interval
+  }</code></pre></div>
+<p>When we write <strong>“<code>defer</code>”</strong>, this chunk of code will be executed <strong>when our function returns</strong>.</p>
+<p>This brilliantly solves our headache of <strong>closing the Sensor Device</strong> when we hit Errors later.</p>
+<p><em>Why the “<code>_ =</code> something”?</em></p>
+<p>Zig Compiler stops us if we forget to use the <strong>Return Value</strong> of a Function.</p>
+<p>We write “<code>_ =</code> <em>something</em>” to tell Zig Compiler that we’re not using the Return Value.</p>
+<h2 id="set-standby-interval"><a href="#set-standby-interval">13.3 Set Standby Interval</a></h2>
+<p>Some sensors (like BME280) will automatically measure Sensor Data at <strong>Periodic Intervals</strong>. <a href="https://lupyuen.github.io/articles/bme280#standby-interval">(Like this)</a></p>
+<p>Let’s assume that our sensor will measure Sensor Data <strong>every 1 second</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Set Standby Interval
   const interval: c_uint = 1_000_000;  // 1,000,000 microseconds (1 second)
-  var ret = c.ioctl(fd, c.SNIOC_SET_INTERVAL, interval);
-
-  // Check for error
+  var ret = c.ioctl(
+    fd,                  // Sensor Device
+    SNIOC_SET_INTERVAL,  // ioctl Command
+    interval             // Standby Interval
+  );</code></pre></div>
+<p>(<strong>c_uint</strong> is equivalent to “unsigned int” in C)</p>
+<p>In case of error, we quit…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
     return error.IntervalError;
-  }
-
-  // Set Batch Latency
+  }</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>IntervalError</strong> is defined here)</a></p>
+<p>Which also closes the Sensor Device. (Due to our earlier “<code>defer</code>”)</p>
+<h2 id="set-batch-latency"><a href="#set-batch-latency">13.4 Set Batch Latency</a></h2>
+<p>We set the <strong>Batch Latency</strong>, if it’s needed by our sensor…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Set Batch Latency
   const latency: c_uint = 0;  // No latency
-  ret = c.ioctl(fd, c.SNIOC_BATCH, latency);
-
-  // Check for error
+  ret = c.ioctl(
+    fd,             // Sensor Device
+    c.SNIOC_BATCH,  // ioctl Command
+    latency         // Batch Latency
+  );</code></pre></div>
+<p>And we check for error…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
     return error.BatchError;
-  }
-
-  // Poll for Sensor Data
+  }</code></pre></div>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>BatchError</strong> is defined here)</a></p>
+<h2 id="poll-sensor"><a href="#poll-sensor">13.5 Poll Sensor</a></h2>
+<p>After the enabling the sensor, we <strong>poll the sensor</strong> to check if Sensor Data is available…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Poll for Sensor Data
   var fds = std.mem.zeroes(c.struct_pollfd);
   fds.fd = fd;
   fds.events = c.POLLIN;
@@ -822,30 +907,42 @@ pub fn readSensor(
   if (ret &lt;= 0) {
     std.log.err(&quot;Sensor data not available&quot;, .{});
     return error.DataError;
-  }
-
-  // Define the Sensor Data Type
+  }</code></pre></div>
+<p><strong>std.mem.zeroes</strong> creates a <strong>pollfd</strong> Struct that’s initialised with nulls.</p>
+<p>(The struct lives on the stack)</p>
+<h2 id="read-sensor-data"><a href="#read-sensor-data">13.6 Read Sensor Data</a></h2>
+<p>We <strong>allocate a buffer</strong> (on the stack) to receive the Sensor Data…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Define the Sensor Data Type
   var sensor_data = std.mem.zeroes(
     SensorType
   );
   const len = @sizeOf(
     @TypeOf(sensor_data)
-  );
-
-  // Read the Sensor Data
+  );</code></pre></div>
+<p>Remember that <strong>SensorType</strong> is a <code>comptime</code> Compile-Time Type.</p>
+<p>Zig Compiler will change <strong>SensorType</strong> to a Struct Type like <strong>c.struct_sensor_baro</strong></p>
+<p><strong>std.mem.zeroes</strong> returns a Sensor Data Struct, initialised with nulls.</p>
+<p>We <strong>read the Sensor Data</strong> into the struct…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Read the Sensor Data
   const read_len = c.read(fd, &amp;sensor_data, len);
 
   // Check size of Sensor Data
   if (read_len &lt; len) {
     std.log.err(&quot;Sensor data incorrect size&quot;, .{});
     return error.SizeError;
-  }
-
-  // Return the Sensor Data Field
-  return @field(sensor_data, field_name);
+  }</code></pre></div><h2 id="return-sensor-data"><a href="#return-sensor-data">13.7 Return Sensor Data</a></h2>
+<p>Finally we return the <strong>Sensor Data Field</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Return the Sensor Data Field
+  return @field(
+    sensor_data,  // Sensor Data Type from above
+    field_name    // Field Name like &quot;temperature&quot;
+  );
 }</code></pre></div>
-<p><a href="https://ikrima.dev/dev-notes/zig/zig-metaprogramming/"><strong>“Zig Metaprogramming”</strong></a></p>
+<p>Remember that <strong>field_name</strong> is a <code>comptime</code> Compile-Time String.</p>
+<p>Zig Compiler will change <strong>field_name</strong> to a Field Name like <strong>“temperature”</strong></p>
+<p>And that’s how <strong>readSensor</strong> reads the Sensor Data from a NuttX Sensor!</p>
 <p><img src="https://lupyuen.github.io/images/visual-block7b.jpg" alt="Compose Message Block" /></p>
+<p><em>Compose Message Block</em></p>
 <h1 id="appendix-encode-sensor-data"><a href="#appendix-encode-sensor-data">14 Appendix: Encode Sensor Data</a></h1>
 <p>TODO</p>
 <p>The <strong>Compose Message Block</strong> composes a <a href="https://lupyuen.github.io/articles/cbor2"><strong>CBOR Message</strong></a> with the specified Keys (Field Names) and Values (Sensor Data).</p>
@@ -931,6 +1028,7 @@ const CborMessage = struct {
 <li><a href="https://lupyuen.github.io/articles/cbor2"><strong>“Encode Sensor Data with CBOR on Apache NuttX OS”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/visual-block7c.jpg" alt="Transmit Message Block" /></p>
+<p><em>Transmit Message Block</em></p>
 <h1 id="appendix-transmit-sensor-data"><a href="#appendix-transmit-sensor-data">15 Appendix: Transmit Sensor Data</a></h1>
 <p>TODO</p>
 <p>The <strong>Transmit Message Block</strong> (above) transmits a CBOR Message to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a> (the low-power, long-range, low-bandwidth IoT Network)…</p>

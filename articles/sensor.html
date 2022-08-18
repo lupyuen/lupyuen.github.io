@@ -190,7 +190,7 @@ fn test_sensor() !void {
     return error.OpenError;
   }</code></pre></div>
 <p>If the Sensor Device doesn’t exist, we print a Formatted Message to the <strong>Error Log</strong> and return an Error.</p>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65">(<strong>OpenError</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>OpenError</strong> is defined here)</a></p>
 <p><em>What’s “<code>{s}</code>”?</em></p>
 <p>That’s for printing a <strong>Formatted String</strong> in Zig.</p>
 <p>It’s equivalent to “<code>%s</code>” in C…</p>
@@ -235,7 +235,7 @@ fn test_sensor() !void {
     std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
     return error.IntervalError;
   }</code></pre></div>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65">(<strong>IntervalError</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>IntervalError</strong> is defined here)</a></p>
 <p>Which also closes the Sensor Device. (Due to our earlier “<code>defer</code>”)</p>
 <h2 id="set-batch-latency"><a href="#set-batch-latency">2.4 Set Batch Latency</a></h2>
 <p>We set the <strong>Batch Latency</strong>, if it’s needed by our sensor…</p>
@@ -252,7 +252,7 @@ fn test_sensor() !void {
     std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
     return error.BatchError;
   }</code></pre></div>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L55-L65">(<strong>BatchError</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>BatchError</strong> is defined here)</a></p>
 <h2 id="poll-sensor"><a href="#poll-sensor">2.5 Poll Sensor</a></h2>
 <p>After the enabling the sensor, we <strong>poll the sensor</strong> to check if Sensor Data is available…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Prepare to poll Sensor
