@@ -1033,6 +1033,13 @@ const CborMessage = struct {
 comptime {
   assert(args.len % 2 == 0);
 }</code></pre></div>
+<p>Hence <strong>composeCbor</strong> might look fragile with its Variable Arguments and Types…</p>
+<div class="example-wrap"><pre class="language-zig"><code>const msg = try composeCbor(.{  // Compose CBOR Message
+  &quot;t&quot;, temperature,
+  &quot;p&quot;, pressure,
+  &quot;h&quot;, humidity,
+});</code></pre></div>
+<p>But Zig Compiler will actually stop us at Compile-Time if we call it incorrectly.</p>
 <p><em>What happens if we pass incorrect Types for the Key or Value?</em></p>
 <p><strong>composeCbor</strong> expects the following Types…</p>
 <ul>
