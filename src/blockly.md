@@ -510,7 +510,7 @@ const temperature: f32 = blk: {
 
   // Open the Sensor Device
   const fd = c.open(
-    "/dev/sensor/sensor_baro0",  // Path of Sensor Device
+    "/dev/uorb/sensor_baro0",  // Path of Sensor Device
     c.O_RDONLY | c.O_NONBLOCK    // Open for read-only
   );
 

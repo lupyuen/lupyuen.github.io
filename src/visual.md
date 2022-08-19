@@ -120,7 +120,7 @@ Our Sensor Block will generate this __Zig Code__...
 try sen.readSensor(           // Read BME280 Sensor
   c.struct_sensor_baro,       // Sensor Data Struct
   "temperature",              // Sensor Data Field
-  "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+  "/dev/uorb/sensor_baro0"  // Path of Sensor Device
 );
 ```
 
@@ -148,7 +148,7 @@ Another neat thing: __"temperature"__ above is also a Compile-Time Expression, b
 
 [(More about __readSensor__ in the Appendix)](https://lupyuen.github.io/articles/visual#appendix-read-sensor-data)
 
-_Why the full path "/dev/sensor/sensor_baro0"? Why not just "baro0"?_
+_Why the full path "/dev/uorb/sensor_baro0"? Why not just "baro0"?_
 
 Call me stupendously stubborn, but I think it might be better for learners to see the full path of NuttX Sensors?
 
@@ -300,21 +300,21 @@ pub fn main() !void {
     const temperature = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_baro,       // Sensor Data Struct
       "temperature",              // Sensor Data Field
-      "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+      "/dev/uorb/sensor_baro0"  // Path of Sensor Device
     );
     debug("temperature={}", .{ temperature });
 
     const pressure = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_baro,       // Sensor Data Struct
       "pressure",                 // Sensor Data Field
-      "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+      "/dev/uorb/sensor_baro0"  // Path of Sensor Device
     );
     debug("pressure={}", .{ pressure });
 
     const humidity = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_humi,       // Sensor Data Struct
       "humidity",                 // Sensor Data Field
-      "/dev/sensor/sensor_humi0"  // Path of Sensor Device
+      "/dev/uorb/sensor_humi0"  // Path of Sensor Device
     );
     debug("humidity={}", .{ humidity });
 
@@ -591,7 +591,7 @@ Earlier we saw this for reading the BME280 Sensor...
 temperature = try sen.readSensor(
   c.struct_sensor_baro,       // Sensor Data Struct
   "temperature",              // Sensor Data Field
-  "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+  "/dev/uorb/sensor_baro0"  // Path of Sensor Device
 );
 ```
 
@@ -866,7 +866,7 @@ The Blocks above will generate this __Zig Code__...
 const temperature = try sen.readSensor(
   c.struct_sensor_baro,       // Sensor Data Struct to be read
   "temperature",              // Sensor Data Field to be returned
-  "/dev/sensor/sensor_baro0"  // Path of Sensor Device
+  "/dev/uorb/sensor_baro0"  // Path of Sensor Device
 );
 
 // Print the Temperature
@@ -896,7 +896,7 @@ __readSensor__ declares the Sensor Data Struct Type and Sensor Data Field as __`
 pub fn readSensor(
   comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
   comptime field_name: []const u8,  // Sensor Data Field to be returned, like "temperature"
-  device_path: []const u8           // Path of Sensor Device, like "/dev/sensor/sensor_baro0"
+  device_path: []const u8           // Path of Sensor Device, like "/dev/uorb/sensor_baro0"
 ) !f32 { ...
 ```
 
@@ -950,7 +950,7 @@ We begin by __opening the NuttX Sensor Device__: [sensor.zig](https://github.com
 pub fn readSensor(
   comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
   comptime field_name: []const u8,  // Sensor Data Field to be returned, like "temperature"
-  device_path: []const u8           // Path of Sensor Device, like "/dev/sensor/sensor_baro0"
+  device_path: []const u8           // Path of Sensor Device, like "/dev/uorb/sensor_baro0"
 ) !f32 {
 
   // Open the Sensor Device
