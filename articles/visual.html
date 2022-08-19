@@ -198,7 +198,7 @@
 <div class="example-wrap"><pre class="language-zig"><code>try sen.readSensor(           // Read BME280 Sensor
   c.struct_sensor_baro,       // Sensor Data Struct
   &quot;temperature&quot;,              // Sensor Data Field
-  &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+  &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
 );</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>This calls our Zig Function <a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data"><strong>readSensor</strong></a> to read a NuttX Sensor at the specified path.</p>
@@ -212,7 +212,7 @@
 <p>The Zig Compiler will <strong>substitute the Struct Type</strong> inside the code for <strong>readSensor</strong>. (Which works like a C Macro)</p>
 <p>Another neat thing: <strong>“temperature”</strong> above is also a Compile-Time Expression, because it’s a Field Name in the <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct. Metaprogramming gets so cool!</p>
 <p><a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data">(More about <strong>readSensor</strong> in the Appendix)</a></p>
-<p><em>Why the full path “/dev/sensor/sensor_baro0”? Why not just “baro0”?</em></p>
+<p><em>Why the full path “/dev/uorb/sensor_baro0”? Why not just “baro0”?</em></p>
 <p>Call me stupendously stubborn, but I think it might be better for learners to see the full path of NuttX Sensors?</p>
 <p>So we have a better understanding of NuttX Sensors and how to troubleshoot them.</p>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/sensor.c#L50">(The NuttX Sensor Path has just been renamed to “/dev/uorb/sensor_baro0”)</a></p>
@@ -310,21 +310,21 @@ pub fn main() !void {
     const temperature = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_baro,       // Sensor Data Struct
       &quot;temperature&quot;,              // Sensor Data Field
-      &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+      &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
     );
     debug(&quot;temperature={}&quot;, .{ temperature });
 
     const pressure = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_baro,       // Sensor Data Struct
       &quot;pressure&quot;,                 // Sensor Data Field
-      &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+      &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
     );
     debug(&quot;pressure={}&quot;, .{ pressure });
 
     const humidity = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_humi,       // Sensor Data Struct
       &quot;humidity&quot;,                 // Sensor Data Field
-      &quot;/dev/sensor/sensor_humi0&quot;  // Path of Sensor Device
+      &quot;/dev/uorb/sensor_humi0&quot;  // Path of Sensor Device
     );
     debug(&quot;humidity={}&quot;, .{ humidity });
 
@@ -541,7 +541,7 @@ const msg = try composeCbor(...);</code></pre></div>
 temperature = try sen.readSensor(
   c.struct_sensor_baro,       // Sensor Data Struct
   &quot;temperature&quot;,              // Sensor Data Field
-  &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+  &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
 );</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>Looks concise and tidy, but <strong>readSensor</strong> has 2 surprises…</p>
@@ -756,7 +756,7 @@ while (true) {
 const temperature = try sen.readSensor(
   c.struct_sensor_baro,       // Sensor Data Struct to be read
   &quot;temperature&quot;,              // Sensor Data Field to be returned
-  &quot;/dev/sensor/sensor_baro0&quot;  // Path of Sensor Device
+  &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
 );
 
 // Print the Temperature
@@ -780,7 +780,7 @@ debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
 pub fn readSensor(
   comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
   comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
-  device_path: []const u8           // Path of Sensor Device, like &quot;/dev/sensor/sensor_baro0&quot;
+  device_path: []const u8           // Path of Sensor Device, like &quot;/dev/uorb/sensor_baro0&quot;
 ) !f32 { ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">(Source)</a></p>
 <p>Which means that Zig Compiler will <strong>substitute the values</strong> at Compile-Time (like a C Macro)…</p>
@@ -819,7 +819,7 @@ pub fn readSensor(
 pub fn readSensor(
   comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
   comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
-  device_path: []const u8           // Path of Sensor Device, like &quot;/dev/sensor/sensor_baro0&quot;
+  device_path: []const u8           // Path of Sensor Device, like &quot;/dev/uorb/sensor_baro0&quot;
 ) !f32 {
 
   // Open the Sensor Device
