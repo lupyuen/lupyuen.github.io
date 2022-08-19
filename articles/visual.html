@@ -151,6 +151,7 @@
 <p><img src="https://lupyuen.github.io/images/blockly-iot.jpg" alt="IoT Sensor App" /></p>
 <p>Which we might build as an <strong>IoT Sensor App</strong> like so…</p>
 <p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="IoT Sensor App in Blockly" /></p>
+<p><em>NOTE: “/dev/sensor” has been changed to “/dev/uorb”</em></p>
 <p>That’s our focus for today: Create NuttX Firmware that will…</p>
 <ul>
 <li>
@@ -192,6 +193,7 @@
 </ul>
 <p>Let’s inspect our NuttX Blocks and the Zig Code that they produce.</p>
 <p><img src="https://lupyuen.github.io/images/visual-block5.jpg" alt="BME280 Sensor Block" /></p>
+<p><em>NOTE: “/dev/sensor” has been changed to “/dev/uorb”</em></p>
 <h2 id="bme280-sensor-block"><a href="#bme280-sensor-block">2.1 BME280 Sensor Block</a></h2>
 <p>As pictured above, our <strong>BME280 Sensor Block</strong> reads Temperature, Humidity and Pressure from the <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>.</p>
 <p>Our Sensor Block will generate this <strong>Zig Code</strong>…</p>
@@ -215,7 +217,6 @@
 <p><em>Why the full path “/dev/uorb/sensor_baro0”? Why not just “baro0”?</em></p>
 <p>Call me stupendously stubborn, but I think it might be better for learners to see the full path of NuttX Sensors?</p>
 <p>So we have a better understanding of NuttX Sensors and how to troubleshoot them.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/sensor.c#L50">(The NuttX Sensor Path has just been renamed to “/dev/uorb/sensor_baro0”)</a></p>
 <p><em>What about other sensors? BMP280, ADXL345, LSM330, …</em></p>
 <p>We plan to create a <strong>Sensor Block for every sensor</strong> that’s supported by NuttX.</p>
 <p>Thus we can build all kinds of IoT Sensor Apps by dragging-n-dropping the Sensor Blocks for BMP280, ADXL345, LSM330, …</p>
@@ -296,6 +297,7 @@ git clone --recursive https://github.com/lupyuen/visual-zig-nuttx</code></pre></
 </ul>
 <p>Drag-n-drop the Blocks to assemble this Visual Program…</p>
 <p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="IoT Sensor App" /></p>
+<p><em>NOTE: “/dev/sensor” has been changed to “/dev/uorb”</em></p>
 <p>To find the above Blocks, click the <strong>Blocks Toolbox</strong> (at left) and look under <strong>“Sensors”</strong>, <strong>“Variables”</strong> and <strong>“Text”</strong>…</p>
 <ul>
 <li><a href="https://youtu.be/GL2VWO4wNcA"><strong>Watch the Demo on YouTube</strong></a></li>
@@ -585,6 +587,7 @@ const msg = try composeCbor(.{
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/visual-block6.jpg" alt="IoT Sensor App" /></p>
 </blockquote>
+<p><em>NOTE: “/dev/sensor” has been changed to “/dev/uorb”</em></p>
 <p>To run this in the <strong>Real World</strong>, we need some tweaks…</p>
 <p><em>Is it really OK to transmit messages to LoRaWAN every 10 seconds?</em></p>
 <p>Nope it’s NOT OK to send messages every 10 seconds! LoRaWAN imposes limits on the <strong>Message Rate</strong>.</p>
@@ -595,6 +598,7 @@ const msg = try composeCbor(.{
 <p>We need to <strong>collect and aggregate</strong> the Sensor Data more often.</p>
 <p>This means splitting into two loops: <strong>Read Sensor Loop</strong> and <strong>Transmit Loop</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/visual-block12.jpg" alt="Multiple Loops" /></p>
+<p><em>NOTE: “/dev/sensor” has been changed to “/dev/uorb”</em></p>
 <p>(We’ll explain “x100” in the next section)</p>
 <p>Missing from the pic: We need to compute the <strong>Average Temperature / Pressure / Humidity</strong> over the past 60 seconds.</p>
 <p>And we <strong>transmit the Average Sensor Data</strong>. (Instead of the Raw Sensor Data)</p>
@@ -748,7 +752,7 @@ while (true) {
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1557857587667775489"><strong>this Twitter Thread</strong></a></li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/visual-block1.jpg" alt="BME280 Sensor Block" /></p>
-<p><em>BME280 Sensor Block</em></p>
+<p><em>NOTE: “/dev/sensor” has been changed to “/dev/uorb”</em></p>
 <h1 id="appendix-read-sensor-data"><a href="#appendix-read-sensor-data">13 Appendix: Read Sensor Data</a></h1>
 <p>As pictured above, our <strong>BME280 Sensor Block</strong> reads Temperature, Humidity and Pressure from the <a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/"><strong>Bosch BME280 Sensor</strong></a>.</p>
 <p>The Blocks above will generate this <strong>Zig Code</strong>…</p>
