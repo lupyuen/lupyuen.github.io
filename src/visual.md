@@ -68,6 +68,8 @@ Which we might build as an __IoT Sensor App__ like so...
 
 ![IoT Sensor App in Blockly](https://lupyuen.github.io/images/visual-block6.jpg)
 
+_NOTE: "/dev/sensor" has been changed to "/dev/uorb"_
+
 That's our focus for today: Create NuttX Firmware that will...
 
 -   __Read__ a NuttX Sensor (like Bosch BME280)
@@ -109,6 +111,8 @@ To support IoT Sensor Apps, we extend Blockly and add the following __NuttX Bloc
 Let's inspect our NuttX Blocks and the Zig Code that they produce.
 
 ![BME280 Sensor Block](https://lupyuen.github.io/images/visual-block5.jpg)
+
+_NOTE: "/dev/sensor" has been changed to "/dev/uorb"_
 
 ## BME280 Sensor Block
 
@@ -153,8 +157,6 @@ _Why the full path "/dev/uorb/sensor_baro0"? Why not just "baro0"?_
 Call me stupendously stubborn, but I think it might be better for learners to see the full path of NuttX Sensors?
 
 So we have a better understanding of NuttX Sensors and how to troubleshoot them.
-
-[(The NuttX Sensor Path has just been renamed to "/dev/uorb/sensor_baro0")](https://github.com/apache/incubator-nuttx/blob/master/drivers/sensors/sensor.c#L50)
 
 _What about other sensors? BMP280, ADXL345, LSM330, ..._
 
@@ -282,6 +284,8 @@ Now head over to our __Custom Blockly Website__...
 Drag-n-drop the Blocks to assemble this Visual Program...
 
 ![IoT Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
+
+_NOTE: "/dev/sensor" has been changed to "/dev/uorb"_
 
 To find the above Blocks, click the __Blocks Toolbox__ (at left) and look under __"Sensors"__, __"Variables"__ and __"Text"__...
 
@@ -659,6 +663,8 @@ Then we kinda glossed over the details and made this __IoT Sensor App__...
 
 > ![IoT Sensor App](https://lupyuen.github.io/images/visual-block6.jpg)
 
+_NOTE: "/dev/sensor" has been changed to "/dev/uorb"_
+
 To run this in the __Real World__, we need some tweaks...
 
 _Is it really OK to transmit messages to LoRaWAN every 10 seconds?_
@@ -678,6 +684,8 @@ We need to __collect and aggregate__ the Sensor Data more often.
 This means splitting into two loops: __Read Sensor Loop__ and __Transmit Loop__...
 
 ![Multiple Loops](https://lupyuen.github.io/images/visual-block12.jpg)
+
+_NOTE: "/dev/sensor" has been changed to "/dev/uorb"_
 
 (We'll explain "x100" in the next section)
 
@@ -853,7 +861,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 ![BME280 Sensor Block](https://lupyuen.github.io/images/visual-block1.jpg)
 
-_BME280 Sensor Block_
+_NOTE: "/dev/sensor" has been changed to "/dev/uorb"_
 
 # Appendix: Read Sensor Data
 
