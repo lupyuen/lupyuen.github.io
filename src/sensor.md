@@ -1210,9 +1210,9 @@ This code has been tested for positive and negative numbers.
 
 This section describes the changes in the __NuttX Sensor API__ for Jul / Aug 2022. We have updated the code in this article for these changes...
 
--   __Device Paths__ for NuttX Sensors have been changed from "/dev/uorb/\*" to "/dev/uorb/sensor_\*"
+-   __Device Paths__ for NuttX Sensors have been changed from "/dev/sensor/\*" to "/dev/uorb/sensor_\*"
 
-    [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/bd9431f21f952b40dc3d5a10cbb786e4e1eb1a71)
+    [(See the changes)](https://github.com/lupyuen/visual-zig-nuttx/commit/ac23df5d3a4770683f82a605df9db0a3c93d5755#diff-79d9791db74e17ca2e00fa8511bf05743260815e5a7834237dbbcd0e6a5bae53)
 
 -   __Sensor Structs__ have been renamed from `sensor_event_*` to `sensor_*`
 
@@ -1243,7 +1243,5 @@ Our BME280 Driver has also been updated for the new Sensor API...
 -   __Set Interval (bme280_set_interval)__ now accepts an unsigned long pointer (previously unsigned int pointer)
 
     [(See the changes)](https://github.com/lupyuen/bme280-nuttx/commit/3923cf436886fd5260932d880d818b8b9cc4bc31)
-
-As of Aug 2022, there are [__more breaking changes__](https://github.com/apache/incubator-nuttx/commits/master/drivers/sensors/sensor.c) to the NuttX Sensor API. We'll update this section when the API has settled down.
 
 ![Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor](https://lupyuen.github.io/images/sensor-title2.jpg)
