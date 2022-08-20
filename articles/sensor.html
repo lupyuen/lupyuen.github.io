@@ -982,8 +982,8 @@ pub fn floatToFixed(f: f32) struct { int: i32, frac: u8 } {
 <p>This section describes the changes in the <strong>NuttX Sensor API</strong> for Jul / Aug 2022. We have updated the code in this article for these changes…</p>
 <ul>
 <li>
-<p><strong>Device Paths</strong> for NuttX Sensors have been changed from “/dev/uorb/*” to “/dev/uorb/sensor_*”</p>
-<p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/bd9431f21f952b40dc3d5a10cbb786e4e1eb1a71">(See the changes)</a></p>
+<p><strong>Device Paths</strong> for NuttX Sensors have been changed from “/dev/sensor/*” to “/dev/uorb/sensor_*”</p>
+<p><a href="https://github.com/lupyuen/visual-zig-nuttx/commit/ac23df5d3a4770683f82a605df9db0a3c93d5755#diff-79d9791db74e17ca2e00fa8511bf05743260815e5a7834237dbbcd0e6a5bae53">(See the changes)</a></p>
 </li>
 <li>
 <p><strong>Sensor Structs</strong> have been renamed from <code>sensor_event_*</code> to <code>sensor_*</code></p>
@@ -1017,7 +1017,6 @@ pub fn floatToFixed(f: f32) struct { int: i32, frac: u8 } {
 <p><a href="https://github.com/lupyuen/bme280-nuttx/commit/3923cf436886fd5260932d880d818b8b9cc4bc31">(See the changes)</a></p>
 </li>
 </ul>
-<p>As of Aug 2022, there are <a href="https://github.com/apache/incubator-nuttx/commits/master/drivers/sensors/sensor.c"><strong>more breaking changes</strong></a> to the NuttX Sensor API. We’ll update this section when the API has settled down.</p>
 <p><img src="https://lupyuen.github.io/images/sensor-title2.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 
     
