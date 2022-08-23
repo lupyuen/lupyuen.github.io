@@ -535,6 +535,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
   _start = .;</code></pre></div>
 <p>We’ll change this to 0x4000 0000 for PinePhone, since Start of RAM is 0x4000 0000 and Image Load Offset is 0. (See below)</p>
 <p>We’ve seen the NuttX Image (which looks like a Linux Kernel Image), let’s compare with a PinePhone Linux Kernel Image and see how NuttX needs to be tweaked…</p>
+<p>(What is the significance of 0x4028 0000? Something specific to NXP i.MX8?)</p>
 <h1 id="pinephone-image"><a href="#pinephone-image">10 PinePhone Image</a></h1>
 <p>TODO</p>
 <p>Will NuttX run on PinePhone? Let’s analyse a PinePhone Linux Kernel Image with Ghidra, to look at the Linux Kernel Header and Startup Code.</p>
