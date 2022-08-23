@@ -163,9 +163,7 @@ The output file [__`nuttx`__](https://github.com/lupyuen/pinephone-nuttx/release
 
 # Test NuttX with QEMU: Single Core
 
-TODO
-
-This is how we test NuttX on QEMU with a Single Core of Arm Cortex-A53...
+We're ready to run NuttX! This is how we test __NuttX on QEMU__ with a Single Core of Arm Cortex-A53...
 
 ```bash
 ## Start QEMU (Single Core) with NuttX
@@ -180,7 +178,7 @@ qemu-system-aarch64 \
   -kernel ./nuttx
 ```
 
-Here's NuttX with a Single Core running on QEMU...
+QEMU shows this...
 
 ```text
 - Ready to Boot CPU
@@ -211,9 +209,9 @@ NuttShell (NSH) NuttX-10.4.0
 nsh> nx_start: CPU0: Beginning Idle Loop
 ```
 
-Welcome to the Land of NuttX!
+Welcome to NuttX Land!
 
-Enter "__`help`__" or "__`?`__" to see the NuttX Commands...
+Enter "__`help`__" or "__`?`__" to see the __NuttX Commands__...
 
 ```text
 nsh> help
@@ -256,7 +254,7 @@ nsh> ls /
  proc/
 ```
 
-We have started the Bare Minimum of __NuttX Devices__...
+We started the Bare Minimum of __NuttX Devices__...
 
 ```text
 nsh> ls /dev
@@ -308,8 +306,6 @@ Press __Ctrl-C__ to quit QEMU.
 
 # Build NuttX: Multi Core
 
-TODO
-
 From Single Core to Multi Core! Now we build NuttX for 4 Cores of Arm Cortex-A53...
 
 ```bash
@@ -332,7 +328,7 @@ aarch64-none-elf-objdump \
 
 The NuttX Output Files may be found here...
 
--   [NuttX for Arm Cortex-A53 Multi-Core](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.0)
+-   [__NuttX for Arm Cortex-A53 Multi-Core__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.0)
 
 # Test NuttX with QEMU: Multi Core
 
