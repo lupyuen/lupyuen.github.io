@@ -199,8 +199,7 @@ aarch64-none-elf-objdump \
 </ul>
 <p>The output file <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.1/nuttx"><strong><code>nuttx</code></strong></a> is the Arm64 <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>ELF Executable</strong></a> that we’ll run in the next step.</p>
 <h1 id="test-nuttx-with-qemu-single-core"><a href="#test-nuttx-with-qemu-single-core">5 Test NuttX with QEMU: Single Core</a></h1>
-<p>TODO</p>
-<p>This is how we test NuttX on QEMU with a Single Core of Arm Cortex-A53…</p>
+<p>We’re ready to run NuttX! This is how we test <strong>NuttX on QEMU</strong> with a Single Core of Arm Cortex-A53…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Start QEMU (Single Core) with NuttX
 qemu-system-aarch64 \
   -cpu cortex-a53 \
@@ -211,7 +210,7 @@ qemu-system-aarch64 \
   -serial chardev:con \
   -mon chardev=con,mode=readline \
   -kernel ./nuttx</code></pre></div>
-<p>Here’s NuttX with a Single Core running on QEMU…</p>
+<p>QEMU shows this…</p>
 <div class="example-wrap"><pre class="language-text"><code>- Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
@@ -238,8 +237,8 @@ nsh: mkfatfs: command not found
 
 NuttShell (NSH) NuttX-10.4.0
 nsh&gt; nx_start: CPU0: Beginning Idle Loop</code></pre></div>
-<p>Welcome to the Land of NuttX!</p>
-<p>Enter “<strong><code>help</code></strong>” or “<strong><code>?</code></strong>” to see the NuttX Commands…</p>
+<p>Welcome to NuttX Land!</p>
+<p>Enter “<strong><code>help</code></strong>” or “<strong><code>?</code></strong>” to see the <strong>NuttX Commands</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; help
 help usage:  help [-v] [&lt;cmd&gt;]
 
@@ -266,7 +265,7 @@ Hello, World!!</code></pre></div>
  dev/
  etc/
  proc/</code></pre></div>
-<p>We have started the Bare Minimum of <strong>NuttX Devices</strong>…</p>
+<p>We started the Bare Minimum of <strong>NuttX Devices</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /dev
 /dev:
  console
@@ -303,7 +302,6 @@ mkfatfs /dev/ram2
 mount -t vfat /dev/ram2 /tmp</code></pre></div>
 <p>Press <strong>Ctrl-C</strong> to quit QEMU.</p>
 <h1 id="build-nuttx-multi-core"><a href="#build-nuttx-multi-core">6 Build NuttX: Multi Core</a></h1>
-<p>TODO</p>
 <p>From Single Core to Multi Core! Now we build NuttX for 4 Cores of Arm Cortex-A53…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Erase the NuttX Configuration
 make distclean
@@ -322,7 +320,7 @@ aarch64-none-elf-objdump \
   2&gt;&amp;1</code></pre></div>
 <p>The NuttX Output Files may be found here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.0">NuttX for Arm Cortex-A53 Multi-Core</a></li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.0"><strong>NuttX for Arm Cortex-A53 Multi-Core</strong></a></li>
 </ul>
 <h1 id="test-nuttx-with-qemu-multi-core"><a href="#test-nuttx-with-qemu-multi-core">7 Test NuttX with QEMU: Multi Core</a></h1>
 <p>TODO</p>
