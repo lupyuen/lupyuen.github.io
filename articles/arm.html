@@ -77,9 +77,11 @@
 <li><a href="#pinephone-image">10 PinePhone Image</a><ul></ul></li>
 <li><a href="#will-nuttx-boot-on-pinephone">11 Will NuttX Boot On PinePhone?</a><ul></ul></li>
 <li><a href="#uart-driver-for-nuttx">12 UART Driver for NuttX</a><ul></ul></li>
-<li><a href="#todo">13 TODO</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
-<li><a href="#notes">15 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Aug 2022</em></p>
+<li><a href="#pinephone-on-rtos">13 PinePhone on RTOS</a><ul></ul></li>
+<li><a href="#pinephone-drivers-and-apps">14 PinePhone Drivers and Apps</a><ul></ul></li>
+<li><a href="#todo">15 TODO</a><ul></ul></li>
+<li><a href="#whats-next">16 What’s Next</a><ul></ul></li>
+<li><a href="#notes">17 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/arm-title.png" alt="Ghidra with Apache NuttX RTOS for Arm Cortex-A53" /></p>
 <p><em>Ghidra with Apache NuttX RTOS for Arm Cortex-A53</em></p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) runs on 64-bit <strong>Arm Cortex-A53</strong> with Multiple Cores…</p>
@@ -529,8 +531,10 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>TODO</p>
 <p>Will NuttX run on PinePhone? Let’s analyse a PinePhone Linux Kernel Image with Ghidra, to look at the Linux Kernel Header and Startup Code.</p>
 <p>We’ll use the PinePhone Jumpdrive Image, since it’s small…</p>
-<p>https://github.com/dreemurrs-embedded/Jumpdrive</p>
-<p>Download https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz</p>
+<ul>
+<li><a href="https://github.com/dreemurrs-embedded/Jumpdrive">dreemurrs-embedded/Jumpdrive</a></li>
+</ul>
+<p>Download <a href="https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz">pine64-pinephone.img.xz</a></p>
 <p>Expand <code>pine64-pinephone.img.xz</code></p>
 <p>Expand the files inside…</p>
 <div class="example-wrap"><pre class="language-bash"><code>gunzip Image.gz
@@ -555,7 +559,9 @@ tar xvf initramfs</code></pre></div>
 <p>We see Linux Kernel Magic Number <code>ARM\x64</code> at offset 0x38.</p>
 <p>Image Load Offset is 0, according to the header.</p>
 <p>Start of RAM is 0x4000 0000 according to this Memory Map…</p>
-<p>https://linux-sunxi.org/A64/Memory_map</p>
+<ul>
+<li><a href="https://linux-sunxi.org/A64/Memory_map"><strong>A64 Memory Map</strong></a></li>
+</ul>
 <p>So we shift <code>Image</code> in Ghidra to start at 0x4000 0000…</p>
 <ul>
 <li>
@@ -645,7 +651,49 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <li><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console">PinePhone Serial Debug Cable</a></li>
 </ul>
 <p>Which connects to the Headphone Port. Genius!</p>
-<h1 id="todo"><a href="#todo">13 TODO</a></h1>
+<h1 id="pinephone-on-rtos"><a href="#pinephone-on-rtos">13 PinePhone on RTOS</a></h1>
+<p>TODO</p>
+<p><em>Will an RTOS work well on Phones?</em></p>
+<p><a href="https://en.wikipedia.org/wiki/BlackBerry_10"><strong>BlackBerry 10</strong></a> phones ran on <a href="https://en.wikipedia.org/wiki/QNX"><strong>QNX</strong></a>, which is a Real-Time Operating System. (10 years ago!)</p>
+<p><em>What’s an RTOS anyway?</em></p>
+<p>On a <a href="https://en.wikipedia.org/wiki/Real-time_operating_system"><strong>Real-Time Operating System (RTOS)</strong></a>, the Task Scheduling Behaviour is predictable. Like: Task X will be scheduled to run <strong>within Y microseconds</strong>.</p>
+<p>An RTOS is not designed for High Processing Throughput. But it will guarantee (somewhat) that a Task will respond within a fixed period of time.</p>
+<p><em>What does it mean for PinePhone on RTOS?</em></p>
+<p>With an RTOS, I’m guessing the PinePhone User Interface will feel <strong>more responsive</strong>? And Incoming Calls and Text Messages will hopefully pop up quicker.</p>
+<p>That assumes we’ll assign the correct <strong>Priority for each Task</strong>. It sounds like we’re micro-managing the resources on PinePhone, but I’m curious to see the actual outcome.</p>
+<p>(And it will be super educational!)</p>
+<p><em>But NuttX might be too tiny for PinePhone?</em></p>
+<p>A tiny operating system (like NuttX), might be good for <strong>teaching the internals</strong> of a Phone Operating System.</p>
+<p>We might not get all PinePhone features to work.  But at least we’ll understand every single feature that we built!</p>
+<p>Tiny OSes are also easier to tweak. Think of the super-tweakable <strong>PineTime Smartwatch</strong>, which also runs on an RTOS. (FreeRTOS)</p>
+<p>(Maybe someday PineTime, PinePhone and Pinebook Pro will run NuttX for <strong>Educational Purposes</strong>!)</p>
+<h1 id="pinephone-drivers-and-apps"><a href="#pinephone-drivers-and-apps">14 PinePhone Drivers and Apps</a></h1>
+<p>TODO</p>
+<p>Here comes the hard part.</p>
+<p>No drivers? Well PinePhone comes bundled with a fixed set of peripherals: LCD Display, Touch Panel, LTE Modem, WiFi, BLE, microSD, eMMC, Power Mgmt, …</p>
+<p>And interfaces: UART, I2C, SPI, …</p>
+<p>Just build the drivers and we’re done? (Yep I sound really naive now)</p>
+<p>Just like PineDio Stack BL604: Display, Touch Panel, LoRaWAN, …</p>
+<ul>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_component_list#P.7_NAND/eMMC">eMMC</a></p>
+</li>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_component_list#P.14_WIFI+BT">WiFi</a></p>
+</li>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_component_list#P.15_MODEM-4G">LTE Modem</a></p>
+</li>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_component_list#P.6_POWER">Power</a></p>
+</li>
+<li>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_component_list#P.11_LCM/CTP">Touch Panel</a></p>
+</li>
+</ul>
+<p>No apps? Might be interesting to build PinePhone Apps the safer way with Zig</p>
+<p>Simple apps might work with LVGL and Zig</p>
+<h1 id="todo"><a href="#todo">15 TODO</a></h1>
 <p>TODO: Configure NuttX Memory Regions for Allwinner A64 SoC</p>
 <p>TODO: Copy NuttX to microSD Card</p>
 <p>A64 Boot ROM: https://linux-sunxi.org/BROM#A64</p>
@@ -672,7 +720,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>TODO: port NanoX (nxlib/microwindows) it could open doors to port X11 graphic applications from Linux</p>
 </li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">16 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -691,7 +739,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/arm.md"><strong>lupyuen.github.io/src/arm.md</strong></a></p>
-<h1 id="notes"><a href="#notes">15 Notes</a></h1>
+<h1 id="notes"><a href="#notes">17 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1561843749168173056"><strong>this Twitter Thread</strong></a></li>
 </ol>
