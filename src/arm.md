@@ -306,7 +306,7 @@ Press __Ctrl-C__ to quit QEMU.
 
 # Build NuttX: Multi Core
 
-From Single Core to Multi Core! Now we build NuttX for 4 Cores of Arm Cortex-A53...
+From Single Core to Multi Core! Now we build NuttX for __4 Cores__ of Arm Cortex-A53...
 
 ```bash
 ## Erase the NuttX Configuration
@@ -332,9 +332,7 @@ The NuttX Output Files may be found here...
 
 # Test NuttX with QEMU: Multi Core
 
-TODO
-
-And this is how we test NuttX on QEMU with 4 Cores of Arm Cortex-A53...
+And this is how we test NuttX on QEMU with __4 Cores__ of Arm Cortex-A53...
 
 ```bash
 ## Start QEMU (4 Cores) with NuttX
@@ -350,9 +348,9 @@ qemu-system-aarch64 \
   -kernel ./nuttx
 ```
 
-Note that `smp` is set to 4. [(Symmetric Multi-Processing)](https://developer.arm.com/documentation/den0024/a/Multi-core-processors/Multi-processing-systems/Symmetric-multi-processing?lang=en)
+Note that __`smp`__ is set to 4. [(Symmetric Multi-Processing)](https://developer.arm.com/documentation/den0024/a/Multi-core-processors/Multi-processing-systems/Symmetric-multi-processing?lang=en)
 
-Here's NuttX with 4 Cores running on QEMU...
+QEMU shows this...
 
 ```text
 - Ready to Boot CPU
@@ -361,7 +359,7 @@ Here's NuttX with 4 Cores running on QEMU...
 - Boot to C runtime for OS Initialize
 ```
 
-TODO
+NuttX boots on the __First Core__ of our emulated Arm Cortex-A53...
 
 ```text
 [CPU0] psci_detect: Detected PSCI v1.1
@@ -380,7 +378,7 @@ TODO
 [CPU0] uart_register: Registering /dev/ttyS0
 ```
 
-TODO: Here comes excitement
+Here comes excitement: NuttX boots on the __Second Core__ of our Arm Cortex-A53!
 
 ```text
 - Ready to Boot CPU
@@ -395,7 +393,7 @@ TODO: Here comes excitement
 [CPU0] arm64_start_cpu: Secondary CPU core 1 (MPID:0x1) is up
 ```
 
-TODO
+Followed by the __Third Core__...
 
 ```text
 - Ready to Boot CPU
@@ -410,7 +408,7 @@ TODO
 [CPU0] arm64_start_cpu: Secondary CPU core 2 (MPID:0x2) is up
 ```
 
-TODO
+Finally all __4 Cores__ are up!
 
 ```text
 - Ready to Boot CPU
@@ -428,7 +426,7 @@ TODO
 [CPU0] nx_start: CPU0: Beginning Idle Loop
 ```
 
-TODO
+__NuttX Shell__ appears...
 
 ```text
 nsh: sysinit: fopen failed: 2
@@ -437,7 +435,7 @@ NuttShell (NSH) NuttX-10.4.0
 nsh>
 ```
 
-TODO
+Even though we have 4 Cores, everything works as expected...
 
 ```text
 nsh> uname -a
@@ -449,39 +447,41 @@ nsh> hello
 Hello, World!
 ```
 
-We see each of the 4 Cores starting NuttX (CPU0 to CPU3). That's so cool!
+[__Symmetric Multi-Processing__](https://developer.arm.com/documentation/den0024/a/Multi-core-processors/Multi-processing-systems/Symmetric-multi-processing?lang=en) never looked so cool!
 
 (Can we use QEMU to partially emulate PinePhone? That would be extremely helpful!)
 
+![Arm64 Architecture-Specific Source Files](https://lupyuen.github.io/images/arm-source.png)
+
+_Arm64 Architecture-Specific Source Files_
+
 # Inside NuttX for Cortex-A53
 
-TODO
+Now we browse the __Source Files__ for the implementation of Cortex-A53 on NuttX.
 
-Now we browse the Source Files for the implementation of Cortex-A53 on NuttX.
-
-NuttX treats QEMU as a Target Board (as though it was a dev board). Here are the Source Files and Build Configuration for the QEMU Board...
+NuttX treats QEMU as a __Target Board__ (as though it was a dev board). Here are the Source Files and Build Configuration for the __QEMU Board__...
 
 -   [nuttx/boards/arm64/qemu/qemu-a53](https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53)
 
 (We'll clone this to create a Target Board for PinePhone)
 
-The Board-Specific Drivers for QEMU are started in [qemu-a53/src/qemu_bringup.c](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c)
+The __Board-Specific Drivers__ for QEMU are started in [qemu-a53/src/qemu_bringup.c](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c)
 
 (We'll start the PinePhone Drivers here)
 
-The QEMU Board calls the QEMU Architecture-Specific Drivers at...
+The QEMU Board calls the __QEMU Architecture-Specific Drivers__ at...
 
 -   [nuttx/arch/arm64/src/qemu](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/qemu)
 
-The UART Driver is located at [qemu/qemu_serial.c](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c) and [qemu/qemu_lowputc.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S)
+The __UART Driver__ is located at [qemu/qemu_serial.c](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c) and [qemu/qemu_lowputc.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S)
 
 (For PinePhone we'll create a UART Driver for Allwinner A64 SoC. I2C, SPI and other Low-Level A64 Drivers will be located here too)
 
-The QEMU Functions (Board and Architecture) call the Arm64 Architecture Functions at...
+The QEMU Functions (Board and Architecture) call the __Arm64 Architecture Functions__ (pic above)...
 
 -   [nuttx/arch/arm64/src/common](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common)
 
-Which implements all kinds of Arm64 Features: [FPU](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c), [Interrupts](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c), [MMU](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c), [Tasks](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c), [Timers](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c)...
+Which implement all kinds of Arm64 Features: [__FPU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c), [__MMU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c)...
 
 (We'll reuse them for PinePhone)
 
