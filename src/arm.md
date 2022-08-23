@@ -449,11 +449,11 @@ Hello, World!
 
 [__Symmetric Multi-Processing__](https://developer.arm.com/documentation/den0024/a/Multi-core-processors/Multi-processing-systems/Symmetric-multi-processing?lang=en) never looked so cool!
 
-(Can we use QEMU to partially emulate PinePhone? That would be extremely helpful!)
+(Can we use QEMU to emulate parts of PinePhone? That would be extremely helpful for testing!)
 
 ![Arm64 Architecture-Specific Source Files](https://lupyuen.github.io/images/arm-source.png)
 
-_Arm64 Architecture-Specific Source Files_
+[_Arm64 Architecture-Specific Source Files_](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common)
 
 # Inside NuttX for Cortex-A53
 
