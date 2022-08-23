@@ -236,10 +236,11 @@ lib_cxx_initialize: _sinit: 0x402a7000 _einit: 0x402a7000 _stext: 0x40280000 _et
 nsh: sysinit: fopen failed: 2
 nsh: mkfatfs: command not found
 
-NuttShell (NSH) NuttX-10.3.0-RC2
-nsh&gt; nx_start: CPU0: Beginning Idle Loop
-
-nsh&gt; help
+NuttShell (NSH) NuttX-10.4.0
+nsh&gt; nx_start: CPU0: Beginning Idle Loop</code></pre></div>
+<p>Welcome to the Land of NuttX!</p>
+<p>Enter “<strong><code>help</code></strong>” or “<strong><code>?</code></strong>” to see the NuttX Commands…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; help
 help usage:  help [-v] [&lt;cmd&gt;]
 
   .         cd        dmesg     help      mount     rmdir     true      xd        
@@ -250,32 +251,32 @@ help usage:  help [-v] [&lt;cmd&gt;]
   cat       df        free      mkrd      rm        time      usleep    
 
 Builtin Apps:
-  getprime  hello     nsh       ostest    sh        
-
-nsh&gt; uname -a
-NuttX 10.3.0-RC2 1e8f2a8 Aug 23 2022 07:04:54 arm64 qemu-a53
-
-nsh&gt; hello
+  getprime  hello     nsh       ostest    sh        </code></pre></div>
+<p>To be really sure that we’re <strong>emulating Arm64</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
+NuttX 10.3.0-RC2 1e8f2a8 Aug 23 2022 07:04:54 arm64 qemu-a53</code></pre></div>
+<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c"><strong>“Hello World”</strong></a> works as expected…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
 task_spawn: name=hello entry=0x4029b594 file_actions=0x402c9580 attr=0x402c9588 argv=0x402c96d0
 spawn_execattrs: Setting policy=2 priority=100 for pid=3
-Hello, World!!
-
-nsh&gt; ls /
+Hello, World!!</code></pre></div>
+<p>NuttX is <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html"><strong>POSIX Compliant</strong></a>, so the Developer Experience feels very much like Linux (but much smaller)…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /
 /:
  dev/
  etc/
- proc/
-
-nsh&gt; ls /dev
+ proc/</code></pre></div>
+<p>We have started the Bare Minimum of <strong>NuttX Devices</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /dev
 /dev:
  console
  null
  ram0
  ram2
  ttyS0
- zero
-
-nsh&gt; ls /proc
+ zero</code></pre></div>
+<p>With a few <strong>Background Processes</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /proc
 /proc:
  0/
  1/
@@ -285,9 +286,9 @@ nsh&gt; ls /proc
  fs/
  self/
  uptime
- version
-
-nsh&gt; ls /etc
+ version</code></pre></div>
+<p>And NuttX runs <strong>everything in RAM</strong>, no File System needed (for today)…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls /etc
 /etc:
  init.d/
 
@@ -300,12 +301,14 @@ nsh&gt; cat /etc/init.d/rcS
 mkrd -m 2 -s 512 1024
 mkfatfs /dev/ram2
 mount -t vfat /dev/ram2 /tmp</code></pre></div>
-<p>NuttX is <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html">POSIX Compliant</a>, so the developer experience feels very much like Linux. (But much smaller)</p>
-<p>And NuttX everything runs in RAM, no File System needed. (For now)</p>
+<p>Press <strong>Ctrl-C</strong> to quit QEMU.</p>
 <h1 id="build-nuttx-multi-core"><a href="#build-nuttx-multi-core">6 Build NuttX: Multi Core</a></h1>
 <p>TODO</p>
 <p>From Single Core to Multi Core! Now we build NuttX for 4 Cores of Arm Cortex-A53…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for 4 Cores
+<div class="example-wrap"><pre class="language-bash"><code># Erase the NuttX Configuration
+make distclean
+
+# Configure NuttX for 4 Cores
 ./tools/configure.sh -l qemu-a53:nsh_smp
 
 # Build NuttX
@@ -396,7 +399,7 @@ qemu-system-aarch64 \
 nsh: sysinit: fopen failed: 2
 nsh: mkfatfs: command not found
 
-NuttShell (NSH) NuttX-10.3.0-RC2
+NuttShell (NSH) NuttX-10.4.0
 nsh&gt; help
 help usage:  help [-v] [&lt;cmd&gt;]
 
