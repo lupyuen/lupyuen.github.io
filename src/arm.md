@@ -34,9 +34,7 @@ Many thanks to [__qinwei2004__](https://github.com/qinwei2004) and the NuttX Tea
 
 # Download NuttX
 
-TODO
-
-Download the Source Code for NuttX Mainline, which supports Arm Cortex-A53...
+__NuttX Mainline__ has the latest support for Arm Cortex-A53. Let's download the Source Code for our experiment...
 
 ```bash
 ## Create NuttX Directory
@@ -59,17 +57,19 @@ git clone \
 cd nuttx
 ```
 
-Install the Build Prerequisites, skip the RISC-V Toolchain...
+[(Having problems? Try my __`arm64`__ branch)](https://github.com/lupyuen/pinephone-nuttx#download-nuttx)
 
--   ["Install Prerequisites"](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+We'll build NuttX in a while. Install the __Build Prerequisites__ below, but skip the RISC-V Toolchain...
+
+-   [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+Let's download the Arm64 Toolchain instead...
 
 # Download Toolchain
 
-TODO
+We'll __cross-compile Arm64 NuttX__ on our computer. Download the Arm Toolchain for __AArch64 ELF Bare-Metal Target `aarch64-none-elf`__...
 
-Download the Arm Toolchain for AArch64 ELF Bare-Metal Target (`aarch64-none-elf`)...
-
--   [Arm GNU Toolchain Downloads](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+-   [__Arm GNU Toolchain Downloads__](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 For Linux x64 and WSL:
 
@@ -81,7 +81,7 @@ For macOS:
 
 (I don't recommend building NuttX on Plain Old Windows CMD, please use WSL instead)
 
-Add it to the `PATH`...
+Add the downloaded Arm Toolchain to the __`PATH`__...
 
 ```bash
 ## For Linux x64 and WSL:
@@ -91,31 +91,36 @@ export PATH="$PATH:$HOME/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf/bin"
 export PATH="$PATH:/Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf/bin"
 ```
 
-Check the toolchain...
+Check the Arm Toolchain...
 
 ```bash
-aarch64-none-elf-gcc -v
+$ aarch64-none-elf-gcc -v
+gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)
 ```
 
 [(Based on the instructions here)](https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53)
 
 # Download QEMU
 
-TODO
+Our experiment today will run on any Linux / macOS / Windows computer, __no PinePhone needed__.
+
+That's because we're emulating Arm Cortex-A53 with the awesome [__QEMU Machine Emulator__](https://www.qemu.org/).
 
 Download and install QEMU...
 
--   [Download QEMU](https://www.qemu.org/download/)
+-   [__Download QEMU__](https://www.qemu.org/download/)
 
-For macOS we may use `brew`...
+For macOS we may use __`brew`__...
 
 ```bash
 brew install qemu
 ```
 
+Let's build NuttX...
+
 # Build NuttX: Single Core
 
-TODO
+TODO: We'll run two experiemnts today: Single Core followed by Multi Core, which works more like PinePhone
 
 First we build NuttX for a Single Core of Arm Cortex-A53...
 
@@ -134,7 +139,9 @@ aarch64-none-elf-objdump \
   2>&1
 ```
 
-TODO: On my MacBook Pro 2012
+[(See the Build Log)](https://gist.github.com/lupyuen/2c5db82c3103f52ed7ca99804f9220c1)
+
+(On an old MacBook Pro 2012, NuttX builds in 2 minutes)
 
 The NuttX Output Files may be found here...
 
