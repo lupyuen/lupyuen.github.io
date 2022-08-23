@@ -725,7 +725,9 @@ To access the UART Port on PinePhone, we'll use this USB Serial Debug Cable...
 
 Which connects to the Headphone Port. Genius!
 
-TODO: UART Port in disguise
+![PinePhone UART Port in disguise](https://lupyuen.github.io/images/arm-uart.jpg)
+
+[_PinePhone UART Port in disguise_](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
 
 # PinePhone on RTOS
 
