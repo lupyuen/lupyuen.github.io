@@ -65,6 +65,8 @@ We'll build NuttX in a while. Install the __Build Prerequisites__ below, but ski
 
 Let's download the Arm64 Toolchain instead...
 
+![Arm64 Toolchain](https://lupyuen.github.io/images/arm-toolchain.png)
+
 # Download Toolchain
 
 We'll __cross-compile Arm64 NuttX__ on our computer. Download the Arm Toolchain for __AArch64 ELF Bare-Metal Target `aarch64-none-elf`__...
@@ -117,6 +119,8 @@ brew install qemu
 ```
 
 Let's build NuttX...
+
+> ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
 
 # Build NuttX: Single Core
 
