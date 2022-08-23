@@ -168,8 +168,17 @@ gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/arm-build.png" alt="Build NuttX" /></p>
 </blockquote>
 <h1 id="build-nuttx-single-core"><a href="#build-nuttx-single-core">4 Build NuttX: Single Core</a></h1>
-<p>TODO: We’ll run two experiemnts today: Single Core followed by Multi Core, which works more like PinePhone</p>
-<p>First we build NuttX for a Single Core of Arm Cortex-A53…</p>
+<p>We’ll run two experiments with QEMU…</p>
+<ul>
+<li>
+<p>NuttX on a <strong>Single Core</strong> of Arm Cortex-A53</p>
+</li>
+<li>
+<p>NuttX on <strong>4 Cores</strong> of Arm Cortex-A53</p>
+</li>
+</ul>
+<p>Which works like 4 Arm64 Processors running in parallel, similar to PinePhone.</p>
+<p>First we build NuttX for a <strong>Single Core</strong> of Arm Cortex-A53…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for Single Core
 ./tools/configure.sh -l qemu-a53:nsh
 
@@ -186,8 +195,9 @@ aarch64-none-elf-objdump \
 <p>(On an old MacBook Pro 2012, NuttX builds in 2 minutes)</p>
 <p>The NuttX Output Files may be found here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.1">NuttX for Arm Cortex-A53 Single Core</a></li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.1"><strong>NuttX for Arm Cortex-A53 Single Core</strong></a></li>
 </ul>
+<p>The output file <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.1/nuttx"><strong><code>nuttx</code></strong></a> is the Arm64 <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>ELF Executable</strong></a> that we’ll run in the next step.</p>
 <h1 id="test-nuttx-with-qemu-single-core"><a href="#test-nuttx-with-qemu-single-core">5 Test NuttX with QEMU: Single Core</a></h1>
 <p>TODO</p>
 <p>This is how we test NuttX on QEMU with a Single Core of Arm Cortex-A53…</p>
