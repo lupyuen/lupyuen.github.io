@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Apache NuttX RTOS now runs on Arm Cortex-A53 with Multi-Core SMP... Will it run on PinePhone? Let's find out!"
+    data-rh="true">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/arm-title.png">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone</h1>
+    <nav id="TOC"><ul>
+<li><a href="#download-nuttx">1 Download NuttX</a><ul></ul></li>
+<li><a href="#download-toolchain">2 Download Toolchain</a><ul></ul></li>
+<li><a href="#download-qemu">3 Download QEMU</a><ul></ul></li>
+<li><a href="#build-nuttx-single-core">4 Build NuttX: Single Core</a><ul></ul></li>
+<li><a href="#test-nuttx-with-qemu-single-core">5 Test NuttX with QEMU: Single Core</a><ul></ul></li>
+<li><a href="#build-nuttx-multi-core">6 Build NuttX: Multi Core</a><ul></ul></li>
+<li><a href="#test-nuttx-with-qemu-multi-core">7 Test NuttX with QEMU: Multi Core</a><ul></ul></li>
+<li><a href="#inside-nuttx-for-cortex-a53">8 Inside NuttX for Cortex-A53</a><ul></ul></li>
+<li><a href="#nuttx-image">9 NuttX Image</a><ul></ul></li>
+<li><a href="#pinephone-image">10 PinePhone Image</a><ul></ul></li>
+<li><a href="#will-nuttx-boot-on-pinephone">11 Will NuttX Boot On PinePhone?</a><ul></ul></li>
+<li><a href="#uart-driver-for-nuttx">12 UART Driver for NuttX</a><ul></ul></li>
+<li><a href="#todo">13 TODO</a><ul></ul></li>
+<li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
+<li><a href="#notes">15 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Aug 2022</em></p>
+<p><img src="https://lupyuen.github.io/images/arm-title.png" alt="Ghidra with Apache NuttX RTOS for Arm Cortex-A53" /></p>
+<p><em>Ghidra with Apache NuttX RTOS for Arm Cortex-A53</em></p>
+<p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) runs on 64-bit <strong>Arm Cortex-A53</strong> with Multiple Cores…</p>
+<ul>
+<li><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53"><strong>NuttX on Arm Cortex-A53</strong></a></li>
+</ul>
+<p><strong>Pine64 PinePhone</strong> is based on the <a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 SoC</strong></a> with 4 Cores of Arm Cortex-A53…</p>
+<ul>
+<li><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>PinePhone Wiki</strong></a></li>
+</ul>
+<p>Will NuttX run on PinePhone? Let’s find out!</p>
+<p><em>Why NuttX?</em></p>
+<p>NuttX is a <strong>tiny operating system</strong>. It might be a fun way to teach more people about the internals of Phone Operating Systems. (Without digging deep into the Linux Stack)</p>
+<p>Someday we might have a cheap, fast, responsive and tweakable phone running on NuttX!</p>
+<p><em>But why an RTOS for PinePhone? What about drivers and apps?</em></p>
+<p>Yep we have interesting challenges running NuttX on PinePhone, we’ll talk more below.</p>
+<p>First we experiment with NuttX on Arm Cortex-A53, <strong>emulated with QEMU</strong>. Then we discuss how it might work on PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
+</ul>
+<p>Many thanks to <a href="https://github.com/qinwei2004"><strong>qinwei2004</strong></a> and the NuttX Team for implementing <a href="https://github.com/apache/incubator-nuttx/pull/6478"><strong>Cortex-A53 support</strong></a>!</p>
+<h1 id="download-nuttx"><a href="#download-nuttx">1 Download NuttX</a></h1>
+<p>Download the Source Code for NuttX Mainline, which supports Arm Cortex-A53…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Create NuttX Directory
+mkdir nuttx
+cd nuttx
+
+# Download NuttX OS
+git clone \
+    --recursive \
+    --branch arm64 \
+    https://github.com/lupyuen/incubator-nuttx \
+    nuttx
+
+# Download NuttX Apps
+git clone \
+    --recursive \
+    --branch arm64 \
+    https://github.com/lupyuen/incubator-nuttx-apps \
+    apps
+
+# We&#39;ll build NuttX inside nuttx/nuttx
+cd nuttx</code></pre></div>
+<p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites">“Install Prerequisites”</a></li>
+</ul>
+<h1 id="download-toolchain"><a href="#download-toolchain">2 Download Toolchain</a></h1>
+<p>Download the Arm Toolchain for AArch64 ELF Bare-Metal Target (<code>aarch64-none-elf</code>)…</p>
+<ul>
+<li><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">Arm GNU Toolchain Downloads</a></li>
+</ul>
+<p>For Linux x64 and WSL:</p>
+<ul>
+<li><a href="https://developer.arm.com/-/media/Files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf.tar.xz">gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf.tar.xz</a></li>
+</ul>
+<p>For macOS:</p>
+<ul>
+<li><a href="https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-darwin-x86_64-aarch64-none-elf.pkg">arm-gnu-toolchain-11.3.rel1-darwin-x86_64-aarch64-none-elf.pkg</a></li>
+</ul>
+<p>(I don’t recommend building NuttX on Plain Old Windows CMD, please use WSL instead)</p>
+<p>Add it to the <code>PATH</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code># For Linux x64 and WSL:
+export PATH=&quot;$PATH:$HOME/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf/bin&quot;
+
+# For macOS:
+export PATH=&quot;$PATH:/Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf/bin&quot;</code></pre></div>
+<p>Check the toolchain…</p>
+<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v</code></pre></div>
+<p><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53">(Based on the instructions here)</a></p>
+<h1 id="download-qemu"><a href="#download-qemu">3 Download QEMU</a></h1>
+<p>Download and install QEMU…</p>
+<ul>
+<li><a href="https://www.qemu.org/download/">Download QEMU</a></li>
+</ul>
+<p>For macOS we may use <code>brew</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>brew install qemu</code></pre></div><h1 id="build-nuttx-single-core"><a href="#build-nuttx-single-core">4 Build NuttX: Single Core</a></h1>
+<p>First we build NuttX for a Single Core of Arm Cortex-A53…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for Single Core
+./tools/configure.sh -l qemu-a53:nsh
+
+# Build NuttX
+make
+
+# Dump the disassembly to nuttx.S
+aarch64-none-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1</code></pre></div>
+<p>The NuttX Output Files may be found here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.1">NuttX for Arm Cortex-A53 Single Core</a></li>
+</ul>
+<h1 id="test-nuttx-with-qemu-single-core"><a href="#test-nuttx-with-qemu-single-core">5 Test NuttX with QEMU: Single Core</a></h1>
+<p>This is how we test NuttX on QEMU with a Single Core of Arm Cortex-A53…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Start QEMU (Single Core) with NuttX
+qemu-system-aarch64 \
+  -cpu cortex-a53 \
+  -nographic \
+  -machine virt,virtualization=on,gic-version=3 \
+  -net none \
+  -chardev stdio,id=con,mux=on \
+  -serial chardev:con \
+  -mon chardev=con,mode=readline \
+  -kernel ./nuttx</code></pre></div>
+<p>Here’s NuttX with a Single Core running on QEMU…</p>
+<div class="example-wrap"><pre class="language-text"><code>- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+nx_start: Entry
+up_allocate_heap: heap_start=0x0x402c4000, heap_size=0x7d3c000
+gic_validate_dist_version: GICv3 version detect
+gic_validate_dist_version: GICD_TYPER = 0x37a0007
+gic_validate_dist_version: 224 SPIs implemented
+gic_validate_dist_version: 0 Extended SPIs implemented
+gic_validate_dist_version: Distributor has no Range Selector support
+gic_validate_redist_version: GICD_TYPER = 0x1000011
+gic_validate_redist_version: 16 PPIs implemented
+gic_validate_redist_version: no VLPI support, no direct LPI support
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 62.50MHz, cycle 62500
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x402a7000 _einit: 0x402a7000 _stext: 0x40280000 _etext: 0x402a8000
+nsh: sysinit: fopen failed: 2
+nsh: mkfatfs: command not found
+
+NuttShell (NSH) NuttX-10.3.0-RC2
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+
+nsh&gt; help
+help usage:  help [-v] [&lt;cmd&gt;]
+
+  .         cd        dmesg     help      mount     rmdir     true      xd        
+  [         cp        echo      hexdump   mv        set       truncate  
+  ?         cmp       exec      kill      printf    sleep     uname     
+  basename  dirname   exit      ls        ps        source    umount    
+  break     dd        false     mkdir     pwd       test      unset     
+  cat       df        free      mkrd      rm        time      usleep    
+
+Builtin Apps:
+  getprime  hello     nsh       ostest    sh        
+
+nsh&gt; uname -a
+NuttX 10.3.0-RC2 1e8f2a8 Aug 23 2022 07:04:54 arm64 qemu-a53
+
+nsh&gt; hello
+task_spawn: name=hello entry=0x4029b594 file_actions=0x402c9580 attr=0x402c9588 argv=0x402c96d0
+spawn_execattrs: Setting policy=2 priority=100 for pid=3
+Hello, World!!
+
+nsh&gt; ls /
+/:
+ dev/
+ etc/
+ proc/
+
+nsh&gt; ls /dev
+/dev:
+ console
+ null
+ ram0
+ ram2
+ ttyS0
+ zero
+
+nsh&gt; ls /proc
+/proc:
+ 0/
+ 1/
+ 2/
+ meminfo
+ memdump
+ fs/
+ self/
+ uptime
+ version
+
+nsh&gt; ls /etc
+/etc:
+ init.d/
+
+nsh&gt; ls /etc/init.d
+/etc/init.d:
+ rcS
+
+nsh&gt; cat /etc/init.d/rcS
+
+mkrd -m 2 -s 512 1024
+mkfatfs /dev/ram2
+mount -t vfat /dev/ram2 /tmp</code></pre></div>
+<p>NuttX is <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html">POSIX Compliant</a>, so the developer experience feels very much like Linux. (But much smaller)</p>
+<p>And NuttX everything runs in RAM, no File System needed. (For now)</p>
+<h1 id="build-nuttx-multi-core"><a href="#build-nuttx-multi-core">6 Build NuttX: Multi Core</a></h1>
+<p>From Single Core to Multi Core! Now we build NuttX for 4 Cores of Arm Cortex-A53…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for 4 Cores
+./tools/configure.sh -l qemu-a53:nsh_smp
+
+# Build NuttX
+make
+
+# Dump the disassembly to nuttx.S
+aarch64-none-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1</code></pre></div>
+<p>The NuttX Output Files may be found here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.0">NuttX for Arm Cortex-A53 Multi-Core</a></li>
+</ul>
+<h1 id="test-nuttx-with-qemu-multi-core"><a href="#test-nuttx-with-qemu-multi-core">7 Test NuttX with QEMU: Multi Core</a></h1>
+<p>And this is how we test NuttX on QEMU with 4 Cores of Arm Cortex-A53…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Start QEMU (4 Cores) with NuttX
+qemu-system-aarch64 \
+  -smp 4 \
+  -cpu cortex-a53 \
+  -nographic \
+  -machine virt,virtualization=on,gic-version=3 \
+  -net none \
+  -chardev stdio,id=con,mux=on \
+  -serial chardev:con \
+  -mon chardev=con,mode=readline \
+  -kernel ./nuttx</code></pre></div>
+<p>Note that <code>smp</code> is set to 4. <a href="https://developer.arm.com/documentation/den0024/a/Multi-core-processors/Multi-processing-systems/Symmetric-multi-processing?lang=en">(Symmetric Multi-Processing)</a></p>
+<p>Here’s NuttX with 4 Cores running on QEMU…</p>
+<div class="example-wrap"><pre class="language-text"><code>- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+[CPU0] psci_detect: Detected PSCI v1.1
+[CPU0] nx_start: Entry
+[CPU0] up_allocate_heap: heap_start=0x0x402db000, heap_size=0x7d25000
+[CPU0] gic_validate_dist_version: GICv3 version detect
+[CPU0] gic_validate_dist_version: GICD_TYPER = 0x37a0007
+[CPU0] gic_validate_dist_version: 224 SPIs implemented
+[CPU0] gic_validate_dist_version: 0 Extended SPIs implemented
+[CPU0] gic_validate_dist_version: Distributor has no Range Selector support
+[CPU0] gic_validate_redist_version: GICD_TYPER = 0x1000001
+[CPU0] gic_validate_redist_version: 16 PPIs implemented
+[CPU0] gic_validate_redist_version: no VLPI support, no direct LPI support
+[CPU0] up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 62.50MHz, cycle 62500
+[CPU0] uart_register: Registering /dev/console
+[CPU0] uart_register: Registering /dev/ttyS0
+
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+[CPU1] gic_validate_redist_version: GICD_TYPER = 0x101000101
+[CPU1] gic_validate_redist_version: 16 PPIs implemented
+[CPU1] gic_validate_redist_version: no VLPI support, no direct LPI support
+[CPU1] nx_idle_trampoline: CPU1: Beginning Idle Loop
+[CPU0] arm64_start_cpu: Secondary CPU core 1 (MPID:0x1) is up
+
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+[CPU2] gic_validate_redist_version: GICD_TYPER = 0x201000201
+[CPU2] gic_validate_redist_version: 16 PPIs implemented
+[CPU2] gic_validate_redist_version: no VLPI support, no direct LPI support
+[CPU2] nx_idle_trampoline: CPU2: Beginning Idle Loop
+[CPU0] arm64_start_cpu: Secondary CPU core 2 (MPID:0x2) is up
+
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+[CPU3] gic_validate_redist_version: GICD_TYPER = 0x301000311
+[CPU3] gic_validate_redist_version: 16 PPIs implemented
+[CPU3] gic_validate_redist_version: no VLPI support, no direct LPI support
+[CPU0] arm64_start_cpu: Secondary CPU core 3 (MPID:0x3) is up
+[CPU0] work_start_highpri: Starting high-priority kernel worker thread(s)
+[CPU0] nx_start_application: Starting init thread
+[CPU3] nx_idle_trampoline: CPU3: Beginning Idle Loop
+[CPU0] nx_start: CPU0: Beginning Idle Loop
+
+nsh: sysinit: fopen failed: 2
+nsh: mkfatfs: command not found
+
+NuttShell (NSH) NuttX-10.3.0-RC2
+nsh&gt; help
+help usage:  help [-v] [&lt;cmd&gt;]
+
+  .         cd        dmesg     help      mount     rmdir     true      xd        
+  [         cp        echo      hexdump   mv        set       truncate  
+  ?         cmp       exec      kill      printf    sleep     uname     
+  basename  dirname   exit      ls        ps        source    umount    
+  break     dd        false     mkdir     pwd       test      unset     
+  cat       df        free      mkrd      rm        time      usleep    
+
+Builtin Apps:
+  getprime  hello     nsh       ostest    sh        smp       taskset   
+
+nsh&gt; uname -a
+NuttX 10.3.0-RC2 1e8f2a8 Aug 21 2022 15:57:35 arm64 qemu-a53
+
+nsh&gt; hello
+[CPU0] task_spawn: name=hello entry=0x4029cee4 file_actions=0x402e52b0 attr=0x402e52b8 argv=0x402e5400
+[CPU0] spawn_execattrs: Setting policy=2 priority=100 for pid=6
+Hello, World!</code></pre></div>
+<p>We see each of the 4 Cores starting NuttX (CPU0 to CPU3). That’s so cool!</p>
+<p>(Can we use QEMU to partially emulate PinePhone? That would be extremely helpful!)</p>
+<h1 id="inside-nuttx-for-cortex-a53"><a href="#inside-nuttx-for-cortex-a53">8 Inside NuttX for Cortex-A53</a></h1>
+<p>Now we browse the Source Files for the implementation of Cortex-A53 on NuttX.</p>
+<p>NuttX treats QEMU as a Target Board (as though it was a dev board). Here are the Source Files and Build Configuration for the QEMU Board…</p>
+<ul>
+<li><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53">nuttx/boards/arm64/qemu/qemu-a53</a></li>
+</ul>
+<p>(We’ll clone this to create a Target Board for PinePhone)</p>
+<p>The Board-Specific Drivers for QEMU are started in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c">qemu-a53/src/qemu_bringup.c</a></p>
+<p>(We’ll start the PinePhone Drivers here)</p>
+<p>The QEMU Board calls the QEMU Architecture-Specific Drivers at…</p>
+<ul>
+<li><a href="https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/qemu">nuttx/arch/arm64/src/qemu</a></li>
+</ul>
+<p>The UART Driver is located at <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c">qemu/qemu_serial.c</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S">qemu/qemu_lowputc.S</a></p>
+<p>(For PinePhone we’ll create a UART Driver for Allwinner A64 SoC. I2C, SPI and other Low-Level A64 Drivers will be located here too)</p>
+<p>The QEMU Functions (Board and Architecture) call the Arm64 Architecture Functions at…</p>
+<ul>
+<li><a href="https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common">nuttx/arch/arm64/src/common</a></li>
+</ul>
+<p>Which implements all kinds of Arm64 Features: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c">FPU</a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c">Interrupts</a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c">MMU</a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c">Tasks</a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c">Timers</a>…</p>
+<p>(We’ll reuse them for PinePhone)</p>
+<h1 id="nuttx-image"><a href="#nuttx-image">9 NuttX Image</a></h1>
+<p>Next we analyse the NuttX Image with <a href="https://ghidra-sre.org/">Ghidra</a>, to understand the NuttX Image Header and Startup Code.</p>
+<p>Here’s the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx">NuttX ELF Image <code>nuttx</code></a> analysed by Ghidra…</p>
+<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%204.09.55%20PM.png" alt="Top Part of NuttX Image Header" /></p>
+<p>Note that the NuttX Image jumps to <code>real_start</code> (to skip the Image Header)…</p>
+<div class="example-wrap"><pre class="language-text"><code>40280000 4d 5a 00 91     add        x13,x18,#0x16
+40280004 0f 00 00 14     b          real_start</code></pre></div>
+<p><code>real_start</code> is defined at 0x4028 0040 with the Startup Code…</p>
+<p><img src="https://lupyuen.github.io/images/arm-title.png" alt="Bottom Part of NuttX Image Header" /></p>
+<p>We see something interesting: The Magic Number <code>ARM\x64</code> appears at address 0x4028 0038.</p>
+<p>Searching the net for this Magic Number reveals that it’s actually an Arm64 Linux Kernel Header!</p>
+<p>When we refer to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx.S">NuttX Arm64 Disassembly <code>nuttx.S</code></a>, we find happiness: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117">arch/arm64/src/common/arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>    /* Kernel startup entry point.
+     * ---------------------------
+     *
+     * The requirements are:
+     *   MMU = off, D-cache = off, I-cache = on or off,
+     *   x0 = physical address to the FDT blob.
+     *       it will be used when NuttX support device tree in the future
+     *
+     * This must be the very first address in the loaded image.
+     * It should be loaded at any 4K-aligned address.
+     */
+    .globl __start;
+__start:
+
+    /* DO NOT MODIFY. Image header expected by Linux boot-loaders.
+     *
+     * This add instruction has no meaningful effect except that
+     * its opcode forms the magic &quot;MZ&quot; signature of a PE/COFF file
+     * that is required for UEFI applications.
+     *
+     * Some bootloader (such imx8 uboot) checking the magic &quot;MZ&quot; to see
+     * if the image is a valid Linux image. but modifying the bootLoader is
+     * unnecessary unless we need to do a customize secure boot.
+     * so just put the &#39;&#39;MZ&quot; in the header to make bootloader happiness
+     */
+
+    add     x13, x18, #0x16      /* the magic &quot;MZ&quot; signature */
+    b       real_start           /* branch to kernel start */
+    .quad   0x480000              /* Image load offset from start of RAM */
+    .quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
+    .quad   __HEAD_FLAGS         /* Informative flags, little-endian */
+    .quad   0                    /* reserved */
+    .quad   0                    /* reserved */
+    .quad   0                    /* reserved */
+    .ascii  &quot;ARM\x64&quot;            /* Magic number, &quot;ARM\x64&quot; */
+    .long   0                    /* reserved */
+
+real_start:
+    /* Disable all exceptions and interrupts */</code></pre></div>
+<p>NuttX Image actually follows the Arm64 Linux Kernel Image Format! As defined here…</p>
+<ul>
+<li><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html">“Booting AArch64 Linux”</a></li>
+</ul>
+<p>Arm64 Linux Kernel Image contains a 64-byte header…</p>
+<div class="example-wrap"><pre class="language-text"><code>u32 code0;                    /* Executable code */
+u32 code1;                    /* Executable code */
+u64 text_offset;              /* Image load offset, little endian */
+u64 image_size;               /* Effective Image size, little endian */
+u64 flags;                    /* kernel flags, little endian */
+u64 res2      = 0;            /* reserved */
+u64 res3      = 0;            /* reserved */
+u64 res4      = 0;            /* reserved */
+u32 magic     = 0x644d5241;   /* Magic number, little endian, &quot;ARM\x64&quot; */
+u32 res5;                     /* reserved (used for PE COFF offset) */</code></pre></div>
+<p>Start of RAM is 0x4000 0000. The Image Load Offset in our NuttX Image Header is 0x48 0000 according to <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107">arch/arm64/src/common/arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>    .quad   0x480000              /* Image load offset from start of RAM */</code></pre></div>
+<p>This means that our NuttX Image will be loaded at 0x4048 0000.</p>
+<p>I wonder if this Image Load Offset should have been 0x28 0000? (Instead of 0x48 0000)</p>
+<p>Remember that Ghidra (and the Arm Disassembly) says that our NuttX Image is actually loaded at 0x4028 0000. (Instead of 0x4048 0000)</p>
+<p>RAM Size and RAM Start are defined in the NuttX Configuration: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig</a></p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_SIZE=134217728
+CONFIG_RAM_START=0x40000000</code></pre></div>
+<p>That’s 128 MB RAM. Which should fit inside PinePhone’s 2 GB RAM.</p>
+<p>The NuttX Image was built with this Linker Command, based on <code>make --trace</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-ld \
+  --entry=__start \
+  -nostdlib \
+  --cref \
+  -Map=nuttx/nuttx/nuttx.map \
+  -Tnuttx/nuttx/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld  \
+  -L nuttx/nuttx/staging \
+  -L nuttx/nuttx/arch/arm64/src/board  \
+  -o nuttx/nuttx/nuttx arm64_head.o  \
+  --start-group \
+  -lsched \
+  -ldrivers \
+  -lboards \
+  -lc \
+  -lmm \
+  -larch \
+  -lapps \
+  -lfs \
+  -lbinfmt \
+  -lboard /Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf/bin/../lib/gcc/aarch64-none-elf/11.3.1/libgcc.a /Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf/bin/../lib/gcc/aarch64-none-elf/11.3.1/../../../../aarch64-none-elf/lib/libm.a \
+  --end-group</code></pre></div>
+<p>NuttX Image begins at <code>__start</code>, which is defined as 0x4028 0000 in the NuttX Linker Script: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33">boards/arm64/qemu/qemu-a53/scripts/dramboot.ld</a></p>
+<div class="example-wrap"><pre class="language-text"><code>SECTIONS
+{
+  . = 0x40280000;  /* uboot load address */
+  _start = .;</code></pre></div>
+<p>We’ll change this to 0x4000 0000 for PinePhone, since Start of RAM is 0x4000 0000 and Image Load Offset is 0. (See below)</p>
+<p>We’ve seen the NuttX Image (which looks like a Linux Kernel Image), let’s compare with a PinePhone Linux Kernel Image and see how NuttX needs to be tweaked…</p>
+<h1 id="pinephone-image"><a href="#pinephone-image">10 PinePhone Image</a></h1>
+<p>Will NuttX run on PinePhone? Let’s analyse a PinePhone Linux Kernel Image with Ghidra, to look at the Linux Kernel Header and Startup Code.</p>
+<p>We’ll use the PinePhone Jumpdrive Image, since it’s small…</p>
+<p>https://github.com/dreemurrs-embedded/Jumpdrive</p>
+<p>Download https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz</p>
+<p>Expand <code>pine64-pinephone.img.xz</code></p>
+<p>Expand the files inside…</p>
+<div class="example-wrap"><pre class="language-bash"><code>gunzip Image.gz
+gunzip initramfs.gz
+tar xvf initramfs</code></pre></div>
+<p>Import the uncompressed <code>Image</code> (Linux Kernel) into Ghidra.</p>
+<p>For “Language” select AARCH64:LE:v8A:default…</p>
+<ul>
+<li>Processor: AARCH64 </li>
+<li>Variant: v8A </li>
+<li>Size: 64 </li>
+<li>Endian: little </li>
+<li>Compiler: default</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
+<p>Here’s the Jumpdrive <code>Image</code> (Linux Kernel) in Ghidra…</p>
+<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%205.40.58%20PM.png" alt="Jumpdrive Image in Ghidra" /></p>
+<p>According to the Linux Kernel Header…</p>
+<ul>
+<li><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html">“Booting AArch64 Linux”</a></li>
+</ul>
+<p>We see Linux Kernel Magic Number <code>ARM\x64</code> at offset 0x38.</p>
+<p>Image Load Offset is 0, according to the header.</p>
+<p>Start of RAM is 0x4000 0000 according to this Memory Map…</p>
+<p>https://linux-sunxi.org/A64/Memory_map</p>
+<p>So we shift <code>Image</code> in Ghidra to start at 0x4000 0000…</p>
+<ul>
+<li>
+<p>Click Window &gt; Memory Map</p>
+</li>
+<li>
+<p>Click “ram”</p>
+</li>
+<li>
+<p>Click the 4-Arrows icon (“Move a block to another address”)</p>
+</li>
+<li>
+<p>Change “New Start Address” to 40000000</p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-21%20at%207.07.15%20PM.png" alt="Change Start Address to 40000000" /></p>
+<p>Note that the first instruction at 0x4000 0000 jumps to 0x4081 0000 (to skip the Linux Kernel Header)…</p>
+<div class="example-wrap"><pre class="language-text"><code>40000000 00 40 20 14     b          FUN_40810000</code></pre></div>
+<p>(Note: The magic “MZ” signature is not needed)</p>
+<p>The Linux Kernel Code actually begins at 0x4081 0000…</p>
+<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%205.53.58%20PM.png" alt="Linux Kernel Code actually begins at 0x4081 0000" /></p>
+<h1 id="will-nuttx-boot-on-pinephone"><a href="#will-nuttx-boot-on-pinephone">11 Will NuttX Boot On PinePhone?</a></h1>
+<p><em>So will NuttX boot on PinePhone?</em></p>
+<p>It’s highly plausible! We discovered (with happiness) that NuttX already generates an Arm64 Linux Kernel Header.</p>
+<p>So NuttX could be a drop-in replacement for the PinePhone Linux Kernel! We just need to…</p>
+<ul>
+<li>
+<p>Write PinePhone Jumpdrive to a microSD Card (with Etcher, in FAT format)</p>
+</li>
+<li>
+<p>Overwrite <code>Image.gz</code> by the (gzipped) NuttX Binary Image <code>nuttx.bin.gz</code></p>
+</li>
+<li>
+<p>Insert the microSD Card into PinePhone</p>
+</li>
+<li>
+<p>Power on PinePhone</p>
+</li>
+</ul>
+<p>And NuttX should (theoretically) boot on PinePhone!</p>
+<p>As mentioned earlier, we should rebuild NuttX so that <code>__start</code> is changed to 0x4000 0000 (from 0x4028 0000), as defined in the NuttX Linker Script: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33">boards/arm64/qemu/qemu-a53/scripts/dramboot.ld</a></p>
+<div class="example-wrap"><pre class="language-text"><code>SECTIONS
+{
+  /* TODO: Change to 0x4000000 for PinePhone */
+  . = 0x40280000;  /* uboot load address */
+  _start = .;</code></pre></div>
+<p>Also the Image Load Offset in our NuttX Image Header should be changed to 0x0 (from 0x48 0000): <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107">arch/arm64/src/common/arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>    /* TODO: Change to 0x0 for PinePhone */
+    .quad   0x480000              /* Image load offset from start of RAM */</code></pre></div>
+<p>We’ll increase the RAM Size to 2 GB (from 128 MB): <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* TODO: Increase to 2 GB for PinePhone */
+CONFIG_RAM_SIZE=134217728
+CONFIG_RAM_START=0x40000000</code></pre></div>
+<p><em>But will we see anything when NuttX boots on PinePhone?</em></p>
+<p>Not yet. We’ll need to implement the UART Driver for NuttX…</p>
+<h1 id="uart-driver-for-nuttx"><a href="#uart-driver-for-nuttx">12 UART Driver for NuttX</a></h1>
+<p>We won’t see any output from NuttX until we implement the UART Driver for NuttX.</p>
+<p>These are the Source Files for the QEMU UART Driver (PL011)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S">arch/arm64/src/qemu/qemu_lowputc.S</a></p>
+<p><a href="https://krinkinmu.github.io/2020/11/29/PL011.html">(More about PL011 UART)</a></p>
+</li>
+</ul>
+<p>We’ll replace the code above with the UART Driver for Allwinner A64 SoC…</p>
+<ul>
+<li>
+<p><a href="https://linux-sunxi.org/A64/Memory_map">UART0 Memory Map</a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/UART">Allwinner A64 UART</a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf">Allwinner A64 User Manual</a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/A64">Allwinner A64 Info</a></p>
+</li>
+</ul>
+<p>To access the UART Port on PinePhone, we’ll use this USB Serial Debug Cable…</p>
+<ul>
+<li><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console">PinePhone Serial Debug Cable</a></li>
+</ul>
+<p>Which connects to the Headphone Port. Genius!</p>
+<h1 id="todo"><a href="#todo">13 TODO</a></h1>
+<p>TODO: Configure NuttX Memory Regions for Allwinner A64 SoC</p>
+<p>TODO: Copy NuttX to microSD Card</p>
+<p>A64 Boot ROM: https://linux-sunxi.org/BROM#A64</p>
+<p>A64 U-Boot: https://linux-sunxi.org/U-Boot</p>
+<p>A64 U-Boot SPL: https://linux-sunxi.org/BROM#U-Boot_SPL_limitations</p>
+<p>SD Card Layout: https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout</p>
+<p>TODO: Boot NuttX on PinePhone and test NuttX Shell</p>
+<p>TODO: Build NuttX Drivers for PinePhone’s LCD Display, Touch Panel, LTE Modem, WiFi, BLE, Power Mgmt, …</p>
+<p>TODO: From <a href="https://www.linkedin.com/in/acassis/">Alan Carvalho de Assis</a></p>
+<ul>
+<li>
+<p>I ran NuttX on PCDuino (ARM Cortex-A9 I think)</p>
+</li>
+<li>
+<p>also NuttX on iMX6 and BeagleBoneBlack</p>
+</li>
+<li>
+<p>nice to try evolve NuttX on Desktop direction</p>
+</li>
+<li>
+<p>Tom Window Manager that Greg ported to NuttX</p>
+</li>
+<li>
+<p>TODO: port NanoX (nxlib/microwindows) it could open doors to port X11 graphic applications from Linux</p>
+</li>
+</ul>
+<h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>My Current Project: “The RISC-V BL602 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/arm.md"><strong>lupyuen.github.io/src/arm.md</strong></a></p>
+<h1 id="notes"><a href="#notes">15 Notes</a></h1>
+<ol>
+<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1561843749168173056"><strong>this Twitter Thread</strong></a></li>
+</ol>
+
+    
+</body>
+</html>
