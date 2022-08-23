@@ -359,7 +359,11 @@ Here's NuttX with 4 Cores running on QEMU...
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize
+```
 
+TODO
+
+```text
 [CPU0] psci_detect: Detected PSCI v1.1
 [CPU0] nx_start: Entry
 [CPU0] up_allocate_heap: heap_start=0x0x402db000, heap_size=0x7d25000
@@ -374,7 +378,11 @@ Here's NuttX with 4 Cores running on QEMU...
 [CPU0] up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 62.50MHz, cycle 62500
 [CPU0] uart_register: Registering /dev/console
 [CPU0] uart_register: Registering /dev/ttyS0
+```
 
+TODO: Here comes excitement
+
+```text
 - Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
@@ -385,7 +393,11 @@ Here's NuttX with 4 Cores running on QEMU...
 [CPU1] gic_validate_redist_version: no VLPI support, no direct LPI support
 [CPU1] nx_idle_trampoline: CPU1: Beginning Idle Loop
 [CPU0] arm64_start_cpu: Secondary CPU core 1 (MPID:0x1) is up
+```
 
+TODO
+
+```text
 - Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
@@ -396,7 +408,11 @@ Here's NuttX with 4 Cores running on QEMU...
 [CPU2] gic_validate_redist_version: no VLPI support, no direct LPI support
 [CPU2] nx_idle_trampoline: CPU2: Beginning Idle Loop
 [CPU0] arm64_start_cpu: Secondary CPU core 2 (MPID:0x2) is up
+```
 
+TODO
+
+```text
 - Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
@@ -410,24 +426,20 @@ Here's NuttX with 4 Cores running on QEMU...
 [CPU0] nx_start_application: Starting init thread
 [CPU3] nx_idle_trampoline: CPU3: Beginning Idle Loop
 [CPU0] nx_start: CPU0: Beginning Idle Loop
+```
 
+TODO
+
+```text
 nsh: sysinit: fopen failed: 2
 nsh: mkfatfs: command not found
-
 NuttShell (NSH) NuttX-10.4.0
-nsh> help
-help usage:  help [-v] [<cmd>]
+nsh>
+```
 
-  .         cd        dmesg     help      mount     rmdir     true      xd        
-  [         cp        echo      hexdump   mv        set       truncate  
-  ?         cmp       exec      kill      printf    sleep     uname     
-  basename  dirname   exit      ls        ps        source    umount    
-  break     dd        false     mkdir     pwd       test      unset     
-  cat       df        free      mkrd      rm        time      usleep    
+TODO
 
-Builtin Apps:
-  getprime  hello     nsh       ostest    sh        smp       taskset   
-
+```text
 nsh> uname -a
 NuttX 10.3.0-RC2 1e8f2a8 Aug 21 2022 15:57:35 arm64 qemu-a53
 
