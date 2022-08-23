@@ -843,6 +843,8 @@ No apps? Might be interesting to build PinePhone Apps the safer way with Zig
 
 Simple apps might work with LVGL and Zig
 
+Can we build PinePhone Drivers in Zig?
+
 TODO: From [__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/)
 
 -   I ran NuttX on PCDuino (ARM Cortex-A9 I think)
