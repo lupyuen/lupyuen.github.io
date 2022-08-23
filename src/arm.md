@@ -554,6 +554,8 @@ real_start:
     /* Disable all exceptions and interrupts */
 ```
 
+[("MZ" refers to Mark Zbikowski)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
+
 NuttX Image actually follows the Arm64 Linux Kernel Image Format! As defined here...
 
 -   ["Booting AArch64 Linux"](https://www.kernel.org/doc/html/latest/arm64/booting.html)
@@ -702,7 +704,7 @@ Note that the first instruction at 0x4000 0000 jumps to 0x4081 0000 (to skip the
 40000000 00 40 20 14     b          FUN_40810000
 ```
 
-(Note: The magic "MZ" signature is not needed)
+[(Sorry Mr Zbikowski, we don't need your Magic Signature)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
 The Linux Kernel Code actually begins at 0x4081 0000...
 
