@@ -207,9 +207,15 @@ lib_cxx_initialize: _sinit: 0x402a7000 _einit: 0x402a7000 _stext: 0x40280000 _et
 nsh: sysinit: fopen failed: 2
 nsh: mkfatfs: command not found
 
-NuttShell (NSH) NuttX-10.3.0-RC2
+NuttShell (NSH) NuttX-10.4.0
 nsh> nx_start: CPU0: Beginning Idle Loop
+```
 
+Welcome to the Land of NuttX!
+
+Enter "__`help`__" or "__`?`__" to see the NuttX Commands...
+
+```text
 nsh> help
 help usage:  help [-v] [<cmd>]
 
@@ -222,21 +228,37 @@ help usage:  help [-v] [<cmd>]
 
 Builtin Apps:
   getprime  hello     nsh       ostest    sh        
+```
 
+To be really sure that we're __emulating Arm64__...
+
+```text
 nsh> uname -a
 NuttX 10.3.0-RC2 1e8f2a8 Aug 23 2022 07:04:54 arm64 qemu-a53
+```
 
+[__"Hello World"__](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c) works as expected...
+
+```text
 nsh> hello
 task_spawn: name=hello entry=0x4029b594 file_actions=0x402c9580 attr=0x402c9588 argv=0x402c96d0
 spawn_execattrs: Setting policy=2 priority=100 for pid=3
 Hello, World!!
+```
 
+NuttX is [__POSIX Compliant__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html), so the Developer Experience feels very much like Linux (but much smaller)...
+
+```text
 nsh> ls /
 /:
  dev/
  etc/
  proc/
+```
 
+We have started the Bare Minimum of __NuttX Devices__...
+
+```text
 nsh> ls /dev
 /dev:
  console
@@ -245,7 +267,11 @@ nsh> ls /dev
  ram2
  ttyS0
  zero
+```
 
+With a few __Background Processes__...
+
+```text
 nsh> ls /proc
 /proc:
  0/
@@ -257,7 +283,11 @@ nsh> ls /proc
  self/
  uptime
  version
+```
 
+And NuttX runs __everything in RAM__, no File System needed (for today)...
+
+```text
 nsh> ls /etc
 /etc:
  init.d/
@@ -274,9 +304,7 @@ mkfatfs /dev/ram2
 mount -t vfat /dev/ram2 /tmp
 ```
 
-NuttX is [POSIX Compliant](https://nuttx.apache.org/docs/latest/introduction/inviolables.html), so the developer experience feels very much like Linux. (But much smaller)
-
-And NuttX everything runs in RAM, no File System needed. (For now)
+Press __Ctrl-C__ to quit QEMU.
 
 # Build NuttX: Multi Core
 
@@ -285,6 +313,9 @@ TODO
 From Single Core to Multi Core! Now we build NuttX for 4 Cores of Arm Cortex-A53...
 
 ```bash
+## Erase the NuttX Configuration
+make distclean
+
 ## Configure NuttX for 4 Cores
 ./tools/configure.sh -l qemu-a53:nsh_smp
 
@@ -387,7 +418,7 @@ Here's NuttX with 4 Cores running on QEMU...
 nsh: sysinit: fopen failed: 2
 nsh: mkfatfs: command not found
 
-NuttShell (NSH) NuttX-10.3.0-RC2
+NuttShell (NSH) NuttX-10.4.0
 nsh> help
 help usage:  help [-v] [<cmd>]
 
