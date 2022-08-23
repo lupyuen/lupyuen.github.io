@@ -128,6 +128,7 @@ cd nuttx</code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></li>
 </ul>
 <p>Let’s download the Arm64 Toolchain instead…</p>
+<p><img src="https://lupyuen.github.io/images/arm-toolchain.png" alt="Arm64 Toolchain" /></p>
 <h1 id="download-toolchain"><a href="#download-toolchain">2 Download Toolchain</a></h1>
 <p>We’ll <strong>cross-compile Arm64 NuttX</strong> on our computer. Download the Arm Toolchain for <strong>AArch64 ELF Bare-Metal Target <code>aarch64-none-elf</code></strong>…</p>
 <ul>
@@ -162,6 +163,9 @@ gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div>
 <p>For macOS we may use <strong><code>brew</code></strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>brew install qemu</code></pre></div>
 <p>Let’s build NuttX…</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/arm-build.png" alt="Build NuttX" /></p>
+</blockquote>
 <h1 id="build-nuttx-single-core"><a href="#build-nuttx-single-core">4 Build NuttX: Single Core</a></h1>
 <p>TODO: We’ll run two experiemnts today: Single Core followed by Multi Core, which works more like PinePhone</p>
 <p>First we build NuttX for a Single Core of Arm Cortex-A53…</p>
