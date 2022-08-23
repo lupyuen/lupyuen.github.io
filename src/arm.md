@@ -581,9 +581,9 @@ Will NuttX run on PinePhone? Let's analyse a PinePhone Linux Kernel Image with G
 
 We'll use the PinePhone Jumpdrive Image, since it's small...
 
-https://github.com/dreemurrs-embedded/Jumpdrive
+-   [dreemurrs-embedded/Jumpdrive](https://github.com/dreemurrs-embedded/Jumpdrive)
 
-Download https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz
+Download [pine64-pinephone.img.xz](https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz)
 
 Expand `pine64-pinephone.img.xz`
 
@@ -620,7 +620,7 @@ Image Load Offset is 0, according to the header.
 
 Start of RAM is 0x4000 0000 according to this Memory Map...
 
-https://linux-sunxi.org/A64/Memory_map
+-   [__A64 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
 
 So we shift `Image` in Ghidra to start at 0x4000 0000...
 
@@ -724,6 +724,66 @@ To access the UART Port on PinePhone, we'll use this USB Serial Debug Cable...
 -   [PinePhone Serial Debug Cable](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
 
 Which connects to the Headphone Port. Genius!
+
+# PinePhone on RTOS
+
+TODO
+
+_Will an RTOS work well on Phones?_
+
+[__BlackBerry 10__](https://en.wikipedia.org/wiki/BlackBerry_10) phones ran on [__QNX__](https://en.wikipedia.org/wiki/QNX), which is a Real-Time Operating System. (10 years ago!)
+
+_What's an RTOS anyway?_
+
+On a [__Real-Time Operating System (RTOS)__](https://en.wikipedia.org/wiki/Real-time_operating_system), the Task Scheduling Behaviour is predictable. Like: Task X will be scheduled to run __within Y microseconds__.
+
+An RTOS is not designed for High Processing Throughput. But it will guarantee (somewhat) that a Task will respond within a fixed period of time.
+
+_What does it mean for PinePhone on RTOS?_
+
+With an RTOS, I'm guessing the PinePhone User Interface will feel __more responsive__? And Incoming Calls and Text Messages will hopefully pop up quicker.
+
+That assumes we'll assign the correct __Priority for each Task__. It sounds like we're micro-managing the resources on PinePhone, but I'm curious to see the actual outcome.
+
+(And it will be super educational!)
+
+_But NuttX might be too tiny for PinePhone?_
+
+A tiny operating system (like NuttX), might be good for __teaching the internals__ of a Phone Operating System.
+
+We might not get all PinePhone features to work.  But at least we'll understand every single feature that we built!
+
+Tiny OSes are also easier to tweak. Think of the super-tweakable __PineTime Smartwatch__, which also runs on an RTOS. (FreeRTOS)
+
+(Maybe someday PineTime, PinePhone and Pinebook Pro will run NuttX for __Educational Purposes__!)
+
+# PinePhone Drivers and Apps
+
+TODO
+
+Here comes the hard part.
+
+No drivers? Well PinePhone comes bundled with a fixed set of peripherals: LCD Display, Touch Panel, LTE Modem, WiFi, BLE, microSD, eMMC, Power Mgmt, ...
+
+And interfaces: UART, I2C, SPI, ...
+
+Just build the drivers and we're done? (Yep I sound really naive now)
+
+Just like PineDio Stack BL604: Display, Touch Panel, LoRaWAN, ...
+
+-   [eMMC](https://wiki.pine64.org/wiki/PinePhone_component_list#P.7_NAND/eMMC)
+
+-   [WiFi](https://wiki.pine64.org/wiki/PinePhone_component_list#P.14_WIFI+BT)
+
+-   [LTE Modem](https://wiki.pine64.org/wiki/PinePhone_component_list#P.15_MODEM-4G)
+
+-   [Power](https://wiki.pine64.org/wiki/PinePhone_component_list#P.6_POWER)
+
+-   [Touch Panel](https://wiki.pine64.org/wiki/PinePhone_component_list#P.11_LCM/CTP)
+
+No apps? Might be interesting to build PinePhone Apps the safer way with Zig
+
+Simple apps might work with LVGL and Zig
 
 # TODO
 
