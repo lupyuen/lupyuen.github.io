@@ -633,6 +633,8 @@ We'll change this to 0x4000 0000 for PinePhone, since Start of RAM is 0x4000 000
 
 We've seen the NuttX Image (which looks like a Linux Kernel Image), let's compare with a PinePhone Linux Kernel Image and see how NuttX needs to be tweaked...
 
+(What is the significance of 0x4028 0000? Something specific to NXP i.MX8?)
+
 # PinePhone Image
 
 TODO
