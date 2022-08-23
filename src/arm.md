@@ -118,6 +118,8 @@ For macOS we may use __`brew`__...
 brew install qemu
 ```
 
+QEMU runs surprisingly well for emulating 64-bit Arm Cortex-A53, especially for a light operating system like NuttX.
+
 Let's build NuttX...
 
 > ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
