@@ -34,6 +34,8 @@ Many thanks to [__qinwei2004__](https://github.com/qinwei2004) and the NuttX Tea
 
 # Download NuttX
 
+TODO
+
 Download the Source Code for NuttX Mainline, which supports Arm Cortex-A53...
 
 ```bash
@@ -44,15 +46,13 @@ cd nuttx
 ## Download NuttX OS
 git clone \
     --recursive \
-    --branch arm64 \
-    https://github.com/lupyuen/incubator-nuttx \
+    https://github.com/apache/incubator-nuttx \
     nuttx
 
 ## Download NuttX Apps
 git clone \
     --recursive \
-    --branch arm64 \
-    https://github.com/lupyuen/incubator-nuttx-apps \
+    https://github.com/apache/incubator-nuttx-apps \
     apps
 
 ## We'll build NuttX inside nuttx/nuttx
@@ -64,6 +64,8 @@ Install the Build Prerequisites, skip the RISC-V Toolchain...
 -   ["Install Prerequisites"](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
 # Download Toolchain
+
+TODO
 
 Download the Arm Toolchain for AArch64 ELF Bare-Metal Target (`aarch64-none-elf`)...
 
@@ -99,6 +101,8 @@ aarch64-none-elf-gcc -v
 
 # Download QEMU
 
+TODO
+
 Download and install QEMU...
 
 -   [Download QEMU](https://www.qemu.org/download/)
@@ -110,6 +114,8 @@ brew install qemu
 ```
 
 # Build NuttX: Single Core
+
+TODO
 
 First we build NuttX for a Single Core of Arm Cortex-A53...
 
@@ -128,11 +134,15 @@ aarch64-none-elf-objdump \
   2>&1
 ```
 
+TODO: On my MacBook Pro 2012
+
 The NuttX Output Files may be found here...
 
 -   [NuttX for Arm Cortex-A53 Single Core](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.1)
 
 # Test NuttX with QEMU: Single Core
+
+TODO
 
 This is how we test NuttX on QEMU with a Single Core of Arm Cortex-A53...
 
@@ -249,6 +259,8 @@ And NuttX everything runs in RAM, no File System needed. (For now)
 
 # Build NuttX: Multi Core
 
+TODO
+
 From Single Core to Multi Core! Now we build NuttX for 4 Cores of Arm Cortex-A53...
 
 ```bash
@@ -271,6 +283,8 @@ The NuttX Output Files may be found here...
 -   [NuttX for Arm Cortex-A53 Multi-Core](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.0)
 
 # Test NuttX with QEMU: Multi Core
+
+TODO
 
 And this is how we test NuttX on QEMU with 4 Cores of Arm Cortex-A53...
 
@@ -381,6 +395,8 @@ We see each of the 4 Cores starting NuttX (CPU0 to CPU3). That's so cool!
 
 # Inside NuttX for Cortex-A53
 
+TODO
+
 Now we browse the Source Files for the implementation of Cortex-A53 on NuttX.
 
 NuttX treats QEMU as a Target Board (as though it was a dev board). Here are the Source Files and Build Configuration for the QEMU Board...
@@ -410,6 +426,8 @@ Which implements all kinds of Arm64 Features: [FPU](https://github.com/apache/in
 (We'll reuse them for PinePhone)
 
 # NuttX Image
+
+TODO
 
 Next we analyse the NuttX Image with [Ghidra](https://ghidra-sre.org/), to understand the NuttX Image Header and Startup Code.
 
@@ -557,6 +575,8 @@ We've seen the NuttX Image (which looks like a Linux Kernel Image), let's compar
 
 # PinePhone Image
 
+TODO
+
 Will NuttX run on PinePhone? Let's analyse a PinePhone Linux Kernel Image with Ghidra, to look at the Linux Kernel Header and Startup Code.
 
 We'll use the PinePhone Jumpdrive Image, since it's small...
@@ -628,6 +648,8 @@ The Linux Kernel Code actually begins at 0x4081 0000...
 
 # Will NuttX Boot On PinePhone?
 
+TODO
+
 _So will NuttX boot on PinePhone?_
 
 It's highly plausible! We discovered (with happiness) that NuttX already generates an Arm64 Linux Kernel Header.
@@ -674,6 +696,8 @@ _But will we see anything when NuttX boots on PinePhone?_
 Not yet. We'll need to implement the UART Driver for NuttX...
 
 # UART Driver for NuttX
+
+TODO
 
 We won't see any output from NuttX until we implement the UART Driver for NuttX.
 
