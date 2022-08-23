@@ -833,11 +833,15 @@ No drivers? Well PinePhone comes bundled with a fixed set of peripherals...
 
 -   [__Power Management__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.6_POWER)
 
+-   And more
+
 And interfaces: UART, I2C, SPI, ...
 
 Just build the drivers and we're done? (Yep I sound really naive now)
 
 Just like PineDio Stack BL604: Display, Touch Panel, LoRaWAN, ...
+
+For Educational Purposes, we might not need all the PinePhone Drivers. Just pick the NuttX Drivers that we need, compile them into NuttX, copy to microSD and boot up PinePhone.
 
 No apps? Might be interesting to build PinePhone Apps the safer way with Zig
 
