@@ -126,9 +126,15 @@ Let's build NuttX...
 
 # Build NuttX: Single Core
 
-TODO: We'll run two experiemnts today: Single Core followed by Multi Core, which works more like PinePhone
+We'll run two experiments with QEMU...
 
-First we build NuttX for a Single Core of Arm Cortex-A53...
+-   NuttX on a __Single Core__ of Arm Cortex-A53
+
+-   NuttX on __4 Cores__ of Arm Cortex-A53
+
+Which works like 4 Arm64 Processors running in parallel, similar to PinePhone.
+
+First we build NuttX for a __Single Core__ of Arm Cortex-A53...
 
 ```bash
 ## Configure NuttX for Single Core
@@ -151,7 +157,9 @@ aarch64-none-elf-objdump \
 
 The NuttX Output Files may be found here...
 
--   [NuttX for Arm Cortex-A53 Single Core](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.1)
+-   [__NuttX for Arm Cortex-A53 Single Core__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.1)
+
+The output file [__`nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.1/nuttx) is the Arm64 [__ELF Executable__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) that we'll run in the next step.
 
 # Test NuttX with QEMU: Single Core
 
