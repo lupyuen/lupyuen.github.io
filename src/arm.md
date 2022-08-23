@@ -725,6 +725,8 @@ To access the UART Port on PinePhone, we'll use this USB Serial Debug Cable...
 
 Which connects to the Headphone Port. Genius!
 
+TODO: UART Port in disguise
+
 # PinePhone on RTOS
 
 TODO
@@ -756,6 +758,10 @@ We might not get all PinePhone features to work.  But at least we'll understand 
 Tiny OSes are also easier to tweak. Think of the super-tweakable __PineTime Smartwatch__, which also runs on an RTOS. (FreeRTOS)
 
 (Maybe someday PineTime, PinePhone and Pinebook Pro will run NuttX for __Educational Purposes__!)
+
+![PinePhone on Linux with a Zig GTK App](https://lupyuen.github.io/images/pinephone-title.jpg)
+
+[_PinePhone on Linux with a Zig GTK App_](https://lupyuen.github.io/articles/pinephone)
 
 # PinePhone Drivers and Apps
 
