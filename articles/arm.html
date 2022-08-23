@@ -406,9 +406,9 @@ nsh&gt; hello
 [CPU0] spawn_execattrs: Setting policy=2 priority=100 for pid=6
 Hello, World!</code></pre></div>
 <p><a href="https://developer.arm.com/documentation/den0024/a/Multi-core-processors/Multi-processing-systems/Symmetric-multi-processing?lang=en"><strong>Symmetric Multi-Processing</strong></a> never looked so cool!</p>
-<p>(Can we use QEMU to partially emulate PinePhone? That would be extremely helpful!)</p>
+<p>(Can we use QEMU to emulate parts of PinePhone? That would be extremely helpful for testing!)</p>
 <p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Architecture-Specific Source Files" /></p>
-<p><em>Arm64 Architecture-Specific Source Files</em></p>
+<p><a href="https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common"><em>Arm64 Architecture-Specific Source Files</em></a></p>
 <h1 id="inside-nuttx-for-cortex-a53"><a href="#inside-nuttx-for-cortex-a53">8 Inside NuttX for Cortex-A53</a></h1>
 <p>Now we browse the <strong>Source Files</strong> for the implementation of Cortex-A53 on NuttX.</p>
 <p>NuttX treats QEMU as a <strong>Target Board</strong> (as though it was a dev board). Here are the Source Files and Build Configuration for the <strong>QEMU Board</strong>…</p>
