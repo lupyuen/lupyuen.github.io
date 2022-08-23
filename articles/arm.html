@@ -302,7 +302,7 @@ mkfatfs /dev/ram2
 mount -t vfat /dev/ram2 /tmp</code></pre></div>
 <p>Press <strong>Ctrl-C</strong> to quit QEMU.</p>
 <h1 id="build-nuttx-multi-core"><a href="#build-nuttx-multi-core">6 Build NuttX: Multi Core</a></h1>
-<p>From Single Core to Multi Core! Now we build NuttX for 4 Cores of Arm Cortex-A53…</p>
+<p>From Single Core to Multi Core! Now we build NuttX for <strong>4 Cores</strong> of Arm Cortex-A53…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Erase the NuttX Configuration
 make distclean
 
@@ -323,8 +323,7 @@ aarch64-none-elf-objdump \
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.0"><strong>NuttX for Arm Cortex-A53 Multi-Core</strong></a></li>
 </ul>
 <h1 id="test-nuttx-with-qemu-multi-core"><a href="#test-nuttx-with-qemu-multi-core">7 Test NuttX with QEMU: Multi Core</a></h1>
-<p>TODO</p>
-<p>And this is how we test NuttX on QEMU with 4 Cores of Arm Cortex-A53…</p>
+<p>And this is how we test NuttX on QEMU with <strong>4 Cores</strong> of Arm Cortex-A53…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Start QEMU (4 Cores) with NuttX
 qemu-system-aarch64 \
   -smp 4 \
@@ -336,13 +335,13 @@ qemu-system-aarch64 \
   -serial chardev:con \
   -mon chardev=con,mode=readline \
   -kernel ./nuttx</code></pre></div>
-<p>Note that <code>smp</code> is set to 4. <a href="https://developer.arm.com/documentation/den0024/a/Multi-core-processors/Multi-processing-systems/Symmetric-multi-processing?lang=en">(Symmetric Multi-Processing)</a></p>
-<p>Here’s NuttX with 4 Cores running on QEMU…</p>
+<p>Note that <strong><code>smp</code></strong> is set to 4. <a href="https://developer.arm.com/documentation/den0024/a/Multi-core-processors/Multi-processing-systems/Symmetric-multi-processing?lang=en">(Symmetric Multi-Processing)</a></p>
+<p>QEMU shows this…</p>
 <div class="example-wrap"><pre class="language-text"><code>- Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize</code></pre></div>
-<p>TODO</p>
+<p>NuttX boots on the <strong>First Core</strong> of our emulated Arm Cortex-A53…</p>
 <div class="example-wrap"><pre class="language-text"><code>[CPU0] psci_detect: Detected PSCI v1.1
 [CPU0] nx_start: Entry
 [CPU0] up_allocate_heap: heap_start=0x0x402db000, heap_size=0x7d25000
@@ -357,7 +356,7 @@ qemu-system-aarch64 \
 [CPU0] up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 62.50MHz, cycle 62500
 [CPU0] uart_register: Registering /dev/console
 [CPU0] uart_register: Registering /dev/ttyS0</code></pre></div>
-<p>TODO: Here comes excitement</p>
+<p>Here comes excitement: NuttX boots on the <strong>Second Core</strong> of our Arm Cortex-A53!</p>
 <div class="example-wrap"><pre class="language-text"><code>- Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
@@ -368,7 +367,7 @@ qemu-system-aarch64 \
 [CPU1] gic_validate_redist_version: no VLPI support, no direct LPI support
 [CPU1] nx_idle_trampoline: CPU1: Beginning Idle Loop
 [CPU0] arm64_start_cpu: Secondary CPU core 1 (MPID:0x1) is up</code></pre></div>
-<p>TODO</p>
+<p>Followed by the <strong>Third Core</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>- Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
@@ -379,7 +378,7 @@ qemu-system-aarch64 \
 [CPU2] gic_validate_redist_version: no VLPI support, no direct LPI support
 [CPU2] nx_idle_trampoline: CPU2: Beginning Idle Loop
 [CPU0] arm64_start_cpu: Secondary CPU core 2 (MPID:0x2) is up</code></pre></div>
-<p>TODO</p>
+<p>Finally all <strong>4 Cores</strong> are up!</p>
 <div class="example-wrap"><pre class="language-text"><code>- Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
@@ -393,12 +392,12 @@ qemu-system-aarch64 \
 [CPU0] nx_start_application: Starting init thread
 [CPU3] nx_idle_trampoline: CPU3: Beginning Idle Loop
 [CPU0] nx_start: CPU0: Beginning Idle Loop</code></pre></div>
-<p>TODO</p>
+<p><strong>NuttX Shell</strong> appears…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh: sysinit: fopen failed: 2
 nsh: mkfatfs: command not found
 NuttShell (NSH) NuttX-10.4.0
 nsh&gt;</code></pre></div>
-<p>TODO</p>
+<p>Even though we have 4 Cores, everything works as expected…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
 NuttX 10.3.0-RC2 1e8f2a8 Aug 21 2022 15:57:35 arm64 qemu-a53
 
@@ -406,29 +405,30 @@ nsh&gt; hello
 [CPU0] task_spawn: name=hello entry=0x4029cee4 file_actions=0x402e52b0 attr=0x402e52b8 argv=0x402e5400
 [CPU0] spawn_execattrs: Setting policy=2 priority=100 for pid=6
 Hello, World!</code></pre></div>
-<p>We see each of the 4 Cores starting NuttX (CPU0 to CPU3). That’s so cool!</p>
+<p><a href="https://developer.arm.com/documentation/den0024/a/Multi-core-processors/Multi-processing-systems/Symmetric-multi-processing?lang=en"><strong>Symmetric Multi-Processing</strong></a> never looked so cool!</p>
 <p>(Can we use QEMU to partially emulate PinePhone? That would be extremely helpful!)</p>
+<p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Architecture-Specific Source Files" /></p>
+<p><em>Arm64 Architecture-Specific Source Files</em></p>
 <h1 id="inside-nuttx-for-cortex-a53"><a href="#inside-nuttx-for-cortex-a53">8 Inside NuttX for Cortex-A53</a></h1>
-<p>TODO</p>
-<p>Now we browse the Source Files for the implementation of Cortex-A53 on NuttX.</p>
-<p>NuttX treats QEMU as a Target Board (as though it was a dev board). Here are the Source Files and Build Configuration for the QEMU Board…</p>
+<p>Now we browse the <strong>Source Files</strong> for the implementation of Cortex-A53 on NuttX.</p>
+<p>NuttX treats QEMU as a <strong>Target Board</strong> (as though it was a dev board). Here are the Source Files and Build Configuration for the <strong>QEMU Board</strong>…</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53">nuttx/boards/arm64/qemu/qemu-a53</a></li>
 </ul>
 <p>(We’ll clone this to create a Target Board for PinePhone)</p>
-<p>The Board-Specific Drivers for QEMU are started in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c">qemu-a53/src/qemu_bringup.c</a></p>
+<p>The <strong>Board-Specific Drivers</strong> for QEMU are started in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c">qemu-a53/src/qemu_bringup.c</a></p>
 <p>(We’ll start the PinePhone Drivers here)</p>
-<p>The QEMU Board calls the QEMU Architecture-Specific Drivers at…</p>
+<p>The QEMU Board calls the <strong>QEMU Architecture-Specific Drivers</strong> at…</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/qemu">nuttx/arch/arm64/src/qemu</a></li>
 </ul>
-<p>The UART Driver is located at <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c">qemu/qemu_serial.c</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S">qemu/qemu_lowputc.S</a></p>
+<p>The <strong>UART Driver</strong> is located at <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c">qemu/qemu_serial.c</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S">qemu/qemu_lowputc.S</a></p>
 <p>(For PinePhone we’ll create a UART Driver for Allwinner A64 SoC. I2C, SPI and other Low-Level A64 Drivers will be located here too)</p>
-<p>The QEMU Functions (Board and Architecture) call the Arm64 Architecture Functions at…</p>
+<p>The QEMU Functions (Board and Architecture) call the <strong>Arm64 Architecture Functions</strong> (pic above)…</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common">nuttx/arch/arm64/src/common</a></li>
 </ul>
-<p>Which implements all kinds of Arm64 Features: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c">FPU</a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c">Interrupts</a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c">MMU</a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c">Tasks</a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c">Timers</a>…</p>
+<p>Which implement all kinds of Arm64 Features: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c"><strong>FPU</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c"><strong>Interrupts</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c"><strong>MMU</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c"><strong>Tasks</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c"><strong>Timers</strong></a>…</p>
 <p>(We’ll reuse them for PinePhone)</p>
 <h1 id="nuttx-image"><a href="#nuttx-image">9 NuttX Image</a></h1>
 <p>TODO</p>
