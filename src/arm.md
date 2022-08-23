@@ -763,7 +763,17 @@ TODO
 
 Here comes the hard part.
 
-No drivers? Well PinePhone comes bundled with a fixed set of peripherals: LCD Display, Touch Panel, LTE Modem, WiFi, BLE, microSD, eMMC, Power Mgmt, ...
+No drivers? Well PinePhone comes bundled with a fixed set of peripherals...
+
+-   [__LCD Display / Touch Panel__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.11_LCM/CTP)
+
+-   [__LTE Modem__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.15_MODEM-4G)
+
+-   [__WiFi / BLE__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.14_WIFI+BT)
+
+-   [__eMMC__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.7_NAND/eMMC)
+
+-   [__Power Management__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.6_POWER)
 
 And interfaces: UART, I2C, SPI, ...
 
@@ -771,39 +781,11 @@ Just build the drivers and we're done? (Yep I sound really naive now)
 
 Just like PineDio Stack BL604: Display, Touch Panel, LoRaWAN, ...
 
--   [eMMC](https://wiki.pine64.org/wiki/PinePhone_component_list#P.7_NAND/eMMC)
-
--   [WiFi](https://wiki.pine64.org/wiki/PinePhone_component_list#P.14_WIFI+BT)
-
--   [LTE Modem](https://wiki.pine64.org/wiki/PinePhone_component_list#P.15_MODEM-4G)
-
--   [Power](https://wiki.pine64.org/wiki/PinePhone_component_list#P.6_POWER)
-
--   [Touch Panel](https://wiki.pine64.org/wiki/PinePhone_component_list#P.11_LCM/CTP)
-
 No apps? Might be interesting to build PinePhone Apps the safer way with Zig
 
 Simple apps might work with LVGL and Zig
 
-# TODO
-
-TODO: Configure NuttX Memory Regions for Allwinner A64 SoC
-
-TODO: Copy NuttX to microSD Card
-
-A64 Boot ROM: https://linux-sunxi.org/BROM#A64
-
-A64 U-Boot: https://linux-sunxi.org/U-Boot
-
-A64 U-Boot SPL: https://linux-sunxi.org/BROM#U-Boot_SPL_limitations
-
-SD Card Layout: https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout
-
-TODO: Boot NuttX on PinePhone and test NuttX Shell
-
-TODO: Build NuttX Drivers for PinePhone's LCD Display, Touch Panel, LTE Modem, WiFi, BLE, Power Mgmt, ...
-
-TODO: From [Alan Carvalho de Assis](https://www.linkedin.com/in/acassis/)
+TODO: From [__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/)
 
 -   I ran NuttX on PCDuino (ARM Cortex-A9 I think)
 
@@ -836,3 +818,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1561843749168173056)
+
+1.  TODO: Boot Docs
+
+    [__A64 Boot ROM__](https://linux-sunxi.org/BROM#A64)
+
+    [__A64 U-Boot__](https://linux-sunxi.org/U-Boot)
+
+    [__A64 U-Boot SPL__](https://linux-sunxi.org/BROM#U-Boot_SPL_limitations)
+
+    [__SD Card Layout__](https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout)
