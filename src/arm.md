@@ -959,7 +959,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1561843749168173056)
 
-1.  TODO: Boot Docs
+1.  What happens when we power on PinePhone? How does it start the Kernel Image in the microSD Card?
+
+    These docs for Allwinner A64 may be helpful...
 
     [__A64 Boot ROM__](https://linux-sunxi.org/BROM#A64)
 
@@ -968,3 +970,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     [__A64 U-Boot SPL__](https://linux-sunxi.org/BROM#U-Boot_SPL_limitations)
 
     [__SD Card Layout__](https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout)
+
+# Appendix: Analyse NuttX Image with Ghidra
+
+TODO
+
+# Appendix: Analyse PinePhone Image with Ghidra
+
+TODO
