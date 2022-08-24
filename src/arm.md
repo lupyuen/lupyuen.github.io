@@ -920,7 +920,7 @@ Stay tuned for updates!
 
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 
-But today it's ready to turn PinePhone into a valuable __Educational Resource__!
+But today NuttX is ready to turn PinePhone into a valuable __Learning Resource__!
 
 There's plenty to be done for porting NuttX to PinePhone, please lemme know if you're keen to help 🙏
 
