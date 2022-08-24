@@ -686,7 +686,7 @@ For "Language" select AARCH64:LE:v8A:default...
 
 Here's the Jumpdrive `Image` (Linux Kernel) in Ghidra...
 
-![Jumpdrive Image in Ghidra](https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%205.40.58%20PM.png)
+![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra2.png)
 
 According to the Linux Kernel Header...
 
@@ -721,10 +721,6 @@ Note that the first instruction at 0x4000 0000 jumps to 0x4081 0000 (to skip the
 [(Sorry Mr Zbikowski, we don't need your Magic Signature)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
 The Linux Kernel Code actually begins at 0x4081 0000...
-
-![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra2.png)
-
-TODO
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra3.png)
 
