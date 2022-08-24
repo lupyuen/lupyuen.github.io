@@ -923,19 +923,17 @@ But we'll probably create our own __GUI Apps__ for PinePhone, like with __Zig an
 
 -   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
 
-(Can we build PinePhone Drivers with Zig? Might be interesting to explore!)
+(Can we build PinePhone Drivers the safer way with Zig? Might be interesting to explore!)
 
-TODO: From [__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/)
+_What about X11 Apps?_
 
--   I ran NuttX on PCDuino (ARM Cortex-A9 I think)
+According to [__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/)...
 
--   also NuttX on iMX6 and BeagleBoneBlack
+-   [__Tab Window Manager__](https://github.com/apache/incubator-nuttx-apps/tree/master/graphics/twm4nx) (or Tom's Window Manager) has been ported from X11 to NuttX
 
--   nice to try evolve NuttX on Desktop direction
+-   (Coming Soon) [__Nano-X Window System__](http://www.microwindows.org/) might make it easier to port X11 Apps to NuttX
 
--   Tom Window Manager that Greg ported to NuttX
-
--   TODO: port NanoX (nxlib/microwindows) it could open doors to port X11 graphic applications from Linux
+Stay tuned for updates!
 
 # What's Next
 
