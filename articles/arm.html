@@ -515,9 +515,10 @@ u32 res5;                     /* reserved (used for PE COFF offset) */</code></p
 <p>Maybe the Image Load Offset should have been <strong><code>0x28</code> <code>0000</code></strong>? (Instead of <code>0x48</code> <code>0000</code>)</p>
 <p>Everything else in the NuttX Header looks like a <strong>proper Linux Kernel Header</strong>.</p>
 <p>Yep our NuttX Image might actually boot on PinePhone with some patching!</p>
+<p><img src="https://lupyuen.github.io/images/arm-ram.png" alt="NuttX RAM" /></p>
 <h1 id="nuttx-ram"><a href="#nuttx-ram">10 NuttX RAM</a></h1>
 <p><em>How do we know that RAM starts at <code>0x4000</code> <code>0000</code>?</em></p>
-<p><strong>RAM Size and RAM Start</strong> are defined in the NuttX Configuration for Arm64: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
+<p><strong>RAM Size and RAM Start</strong> are defined in the NuttX Configuration for Arm64 (pic above): <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_SIZE=134217728
 CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>That’s 128 MB RAM. Which should fit inside PinePhone’s 2 GB RAM.</p>
@@ -632,24 +633,27 @@ tar xvf initramfs</code></pre></div></li>
 <p>The <strong>Linux Kernel Code</strong> actually begins at <code>0x4081</code> <code>0000</code>…</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra3.png" alt="Ghidra with PinePhone Linux Image" /></p>
 <p>After comparing our NuttX Image with a PinePhone Linux Image, we can conclude that they look quite similar!</p>
+<blockquote>
+<p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
+</blockquote>
 <h1 id="will-nuttx-boot-on-pinephone"><a href="#will-nuttx-boot-on-pinephone">12 Will NuttX Boot On PinePhone?</a></h1>
 <p><em>So will NuttX boot on PinePhone?</em></p>
 <p>It’s highly plausible! We discovered (with happiness) that NuttX already generates an Arm64 <strong>Linux Kernel Header.</strong></p>
 <p>Thus NuttX could be a <strong>drop-in replacement</strong> for the PinePhone Linux Kernel! We just need to…</p>
-<ul>
+<ol>
 <li>
-<p>Write <strong>PinePhone Jumpdrive</strong> to a microSD Card</p>
+<p>Write <a href="https://github.com/dreemurrs-embedded/Jumpdrive"><strong>PinePhone Jumpdrive</strong></a> to a microSD Card (pic above)</p>
 </li>
 <li>
 <p>Overwrite <strong><code>Image.gz</code></strong> by the (gzipped) NuttX Binary Image <strong><code>nuttx.bin</code></strong></p>
 </li>
 <li>
-<p>Insert the microSD Card into PinePhone</p>
+<p>Insert microSD Card into PinePhone</p>
 </li>
 <li>
 <p>Power on PinePhone</p>
 </li>
-</ul>
+</ol>
 <p>And NuttX should (theoretically) <strong>boot on PinePhone!</strong></p>
 <p><em>But we need some changes in NuttX?</em></p>
 <p>Yep 3 things we’ll modify in NuttX, as mentioned earlier…</p>
