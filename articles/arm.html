@@ -711,7 +711,6 @@ CONFIG_RAM_START=0x40000000</code></pre></div></li>
 <p><img src="https://lupyuen.github.io/images/arm-uart.jpg" alt="PinePhone UART Port in disguise" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone UART Port in disguise</em></a></p>
 <h1 id="pinephone-on-rtos"><a href="#pinephone-on-rtos">14 PinePhone on RTOS</a></h1>
-<p>TODO</p>
 <p><em>Will an RTOS work well on Phones?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/BlackBerry_10"><strong>BlackBerry 10</strong></a> phones ran on <a href="https://en.wikipedia.org/wiki/QNX"><strong>QNX</strong></a>, which is a Real-Time Operating System. (10 years ago!)</p>
 <p><em>What’s an RTOS anyway?</em></p>
@@ -724,14 +723,13 @@ CONFIG_RAM_START=0x40000000</code></pre></div></li>
 <p><em>But NuttX might be too tiny for PinePhone?</em></p>
 <p>A tiny operating system (like NuttX), might be good for <strong>teaching the internals</strong> of a Phone Operating System.</p>
 <p>We might not get all PinePhone features to work.  But at least we’ll understand every single feature that we built!</p>
-<p>Tiny OSes are also easier to tweak. Think of the super-tweakable <strong>PineTime Smartwatch</strong>, which also runs on an RTOS. (FreeRTOS)</p>
-<p>(Maybe someday PineTime, PinePhone and Pinebook Pro will run NuttX for <strong>Educational Purposes</strong>!)</p>
+<p>Tiny OSes are also easier to tweak. Think of the super-tweakable <a href="https://wiki.pine64.org/index.php/PineTime"><strong>PineTime Smartwatch</strong></a>, which also runs on an RTOS. (FreeRTOS)</p>
+<p>(Maybe someday PineTime, PinePhone and Pinebook Pro will run NuttX for Educational Purposes!)</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone on Linux with a Zig GTK App" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinephone"><em>PinePhone on Linux with a Zig GTK App</em></a></p>
 <h1 id="pinephone-drivers-and-apps"><a href="#pinephone-drivers-and-apps">15 PinePhone Drivers and Apps</a></h1>
-<p>TODO</p>
-<p>Here comes the hard part.</p>
-<p>No drivers? Well PinePhone comes bundled with a fixed set of peripherals…</p>
+<p><em>Are there NuttX Drivers for PinePhone?</em></p>
+<p>Here comes the hard part: We’ll have to <strong>code the Nuttx Driver</strong> for each PinePhone component…</p>
 <ul>
 <li>
 <p><a href="https://wiki.pine64.org/wiki/PinePhone_component_list#P.11_LCM/CTP"><strong>LCD Display / Touch Panel</strong></a></p>
@@ -749,16 +747,27 @@ CONFIG_RAM_START=0x40000000</code></pre></div></li>
 <p><a href="https://wiki.pine64.org/wiki/PinePhone_component_list#P.6_POWER"><strong>Power Management</strong></a></p>
 </li>
 <li>
-<p>And more</p>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_component_list"><strong>And more…</strong></a></p>
 </li>
 </ul>
-<p>And interfaces: UART, I2C, SPI, …</p>
-<p>Just build the drivers and we’re done? (Yep I sound really naive now)</p>
-<p>Just like PineDio Stack BL604: Display, Touch Panel, LoRaWAN, …</p>
-<p>For Educational Purposes, we might not need all the PinePhone Drivers. Just pick the NuttX Drivers that we need, compile them into NuttX, copy to microSD and boot up PinePhone.</p>
-<p>No apps? Might be interesting to build PinePhone Apps the safer way with Zig</p>
-<p>Simple apps might work with LVGL and Zig</p>
-<p>Can we build PinePhone Drivers in Zig?</p>
+<p>Some drivers might already exist in NuttX…</p>
+<ul>
+<li><a href="https://github.com/apache/incubator-nuttx/tree/master/drivers"><strong>NuttX Drivers</strong></a></li>
+</ul>
+<p><em>Do we really need all these PinePhone Drivers?</em></p>
+<p>For <strong>Educational Purposes</strong>, we might not need all the PinePhone Drivers.</p>
+<p>Just pick the PinePhone Drivers that we need, compile them into NuttX, copy to microSD and boot up PinePhone.</p>
+<p>This might be a quick way to experiment with the internals of NuttX on PinePhone.</p>
+<p><em>What about NuttX Apps for PinePhone?</em></p>
+<p>NuttX is bundled with some <strong>Demos and Utilities</strong>…</p>
+<ul>
+<li><a href="https://github.com/apache/incubator-nuttx-apps"><strong>NuttX Apps</strong></a></li>
+</ul>
+<p>But we’ll probably create our own <strong>GUI Apps</strong> for PinePhone, like with <strong>Zig and LVGL</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl"><strong>“Build an LVGL Touchscreen App with Zig”</strong></a></li>
+</ul>
+<p>(Can we build PinePhone Drivers with Zig? Might be interesting to explore!)</p>
 <p>TODO: From <a href="https://www.linkedin.com/in/acassis/"><strong>Alan Carvalho de Assis</strong></a></p>
 <ul>
 <li>
