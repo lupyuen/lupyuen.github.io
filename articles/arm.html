@@ -437,6 +437,7 @@ Hello, World!</code></pre></div>
 <p><em>NuttX can’t possibly boot on PinePhone right?</em></p>
 <p>It might! Let’s compare our <strong>NuttX Image</strong> with a <strong>PinePhone Linux Image</strong>. And find out what needs to be patched.</p>
 <p>We load our <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> into <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>, the popular open-source tool for Reverse Engineering.</p>
+<p>TODO: Load NuttX into Ghidra</p>
 <p>Ghidra says that our NuttX Image will be loaded at address <strong><code>0x4028</code> <code>0000</code></strong>. (Pic above)</p>
 <p>The Arm64 Instructions at the top of our NuttX Image will jump to <strong><code>real_start</code></strong> (to skip the header)…</p>
 <div class="example-wrap"><pre class="language-text"><code>40280000 4d 5a 00 91     add        x13,x18,#0x16
@@ -591,6 +592,7 @@ tar xvf initramfs</code></pre></div></li>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
+<p>TODO: Load PinePhone Kernel into Ghidra</p>
 <p>Here’s the Jumpdrive <code>Image</code> (Linux Kernel) in Ghidra…</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra2.png" alt="Ghidra with PinePhone Linux Image" /></p>
 <p><em>We should see the Linux Kernel Header?</em></p>
@@ -673,9 +675,8 @@ CONFIG_RAM_START=0x40000000</code></pre></div></li>
 <p><em>But will we see anything when NuttX boots on PinePhone?</em></p>
 <p>Not yet. We need to implement the UART Driver for NuttX…</p>
 <h1 id="uart-driver-for-nuttx"><a href="#uart-driver-for-nuttx">13 UART Driver for NuttX</a></h1>
-<p>TODO</p>
-<p>We won’t see any output from NuttX until we implement the UART Driver for NuttX.</p>
-<p>These are the Source Files for the QEMU UART Driver (PL011)…</p>
+<p>We won’t see any output from NuttX until we implement the <strong>UART Driver for NuttX</strong>.</p>
+<p><strong>For QEMU:</strong> These are the Source Files for the UART Driver (PL011)…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></p>
@@ -685,26 +686,27 @@ CONFIG_RAM_START=0x40000000</code></pre></div></li>
 <p><a href="https://krinkinmu.github.io/2020/11/29/PL011.html">(More about PL011 UART)</a></p>
 </li>
 </ul>
-<p>We’ll replace the code above with the UART Driver for Allwinner A64 SoC…</p>
+<p>We’ll redo the code above for the <strong>PinePhone UART Driver</strong> (Allwinner A64 SoC)…</p>
 <ul>
 <li>
-<p><a href="https://linux-sunxi.org/A64/Memory_map">UART0 Memory Map</a></p>
+<p><a href="https://linux-sunxi.org/A64/Memory_map"><strong>UART0 Memory Map</strong></a></p>
 </li>
 <li>
-<p><a href="https://linux-sunxi.org/UART">Allwinner A64 UART</a></p>
+<p><a href="https://linux-sunxi.org/UART"><strong>Allwinner A64 UART</strong></a></p>
 </li>
 <li>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf">Allwinner A64 User Manual</a></p>
+<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></p>
 </li>
 <li>
-<p><a href="https://linux-sunxi.org/A64">Allwinner A64 Info</a></p>
+<p><a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 Info</strong></a></p>
 </li>
 </ul>
-<p>To access the UART Port on PinePhone, we’ll use this USB Serial Debug Cable…</p>
+<p><em>Where’s the UART Port on PinePhone?</em></p>
+<p>To access the UART Port on PinePhone, we’ll use this <strong>USB Serial Debug Cable</strong>…</p>
 <ul>
-<li><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console">PinePhone Serial Debug Cable</a></li>
+<li><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>PinePhone Serial Debug Cable</strong></a></li>
 </ul>
-<p>Which connects to the Headphone Port. Genius!</p>
+<p>Which connects to PinePhone’s <strong>Headphone Port.</strong> Genius!</p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration">(Remember to flip the Headphone Switch to OFF)</a></p>
 <p><img src="https://lupyuen.github.io/images/arm-uart.jpg" alt="PinePhone UART Port in disguise" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone UART Port in disguise</em></a></p>
