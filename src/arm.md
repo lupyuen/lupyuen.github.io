@@ -718,7 +718,7 @@ Yep when we check the [__Linux Kernel Header__](https://www.kernel.org/doc/html/
 
 -   __Magic Number__ `ARM\x64` appears at offset `0x38`
 
--   __Image Load Offset__ is 0
+-   __Image Load Offset__ is `0` (offset `0x08`)
 
 Now the __Start of RAM__ is `0x4000` `0000` according to the PinePhone Memory Map...
 
@@ -750,54 +750,60 @@ The __Linux Kernel Code__ actually begins at `0x4081` `0000`...
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra3.png)
 
-# Will NuttX Boot On PinePhone?
+After comparing our NuttX Image with a PinePhone Linux Image, we can conclude that they look quite similar!
 
-TODO
+# Will NuttX Boot On PinePhone?
 
 _So will NuttX boot on PinePhone?_
 
-It's highly plausible! We discovered (with happiness) that NuttX already generates an Arm64 Linux Kernel Header.
+It's highly plausible! We discovered (with happiness) that NuttX already generates an Arm64 __Linux Kernel Header.__
 
-So NuttX could be a drop-in replacement for the PinePhone Linux Kernel! We just need to...
+Thus NuttX could be a __drop-in replacement__ for the PinePhone Linux Kernel! We just need to...
 
--   Write PinePhone Jumpdrive to a microSD Card (with Etcher, in FAT format)
+-   Write __PinePhone Jumpdrive__ to a microSD Card
 
--   Overwrite `Image.gz` by the (gzipped) NuttX Binary Image `nuttx.bin.gz`
+-   Overwrite __`Image.gz`__ by the (gzipped) NuttX Binary Image __`nuttx.bin`__
 
 -   Insert the microSD Card into PinePhone
 
 -   Power on PinePhone
 
-And NuttX should (theoretically) boot on PinePhone!
+And NuttX should (theoretically) __boot on PinePhone!__
 
-As mentioned earlier, we should rebuild NuttX so that `__start` is changed to 0x4000 0000 (from 0x4028 0000), as defined in the NuttX Linker Script: [boards/arm64/qemu/qemu-a53/scripts/dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33)
+_But we need some changes in NuttX?_
 
-```text
-SECTIONS
-{
-  /* TODO: Change to 0x4000000 for PinePhone */
-  . = 0x40280000;  /* uboot load address */
-  _start = .;
-```
+Yep 3 things we'll modify in NuttX, as mentioned earlier...
 
-Also the Image Load Offset in our NuttX Image Header should be changed to 0x0 (from 0x48 0000): [arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107)
+-   Change __`_start`__ to __`0x4000` `0000`__ (from `0x4028` `0000`) in the NuttX Linker Script: [dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33)
 
-```text
+    ```text
+    SECTIONS
+    {
+    /* TODO: Change to 0x4000000 for PinePhone */
+    . = 0x40280000;  /* uboot load address */
+    _start = .;
+    ```
+
+-  Change __Image Load Offset__ in our NuttX Header to __`0x0`__ (from `0x48` `0000`): [arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107)
+
+    ```text
     /* TODO: Change to 0x0 for PinePhone */
-    .quad   0x480000              /* Image load offset from start of RAM */
-```
+    .quad   0x480000  /* Image load offset from start of RAM */
+    ```
 
-We'll increase the RAM Size to 2 GB (from 128 MB): [boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
+-   Increase the __RAM Size__ to __2 GB__ (from 128 MB): [nsh_smp/defconfig](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
 
-```text
-/* TODO: Increase to 2 GB for PinePhone */
-CONFIG_RAM_SIZE=134217728
-CONFIG_RAM_START=0x40000000
-```
+    ```text
+    /* TODO: Increase to 2 GB for PinePhone */
+    CONFIG_RAM_SIZE=134217728
+    CONFIG_RAM_START=0x40000000
+    ```
+
+And hopefully NuttX will boot on PinePhone!
 
 _But will we see anything when NuttX boots on PinePhone?_
 
-Not yet. We'll need to implement the UART Driver for NuttX...
+Not yet. We need to implement the UART Driver for NuttX...
 
 # UART Driver for NuttX
 
