@@ -474,6 +474,7 @@ __start:
 
   add     x13, x18, #0x16      /* the magic &quot;MZ&quot; signature */
   b       real_start           /* branch to kernel start */</code></pre></div>
+<p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to Mark Zbikowski)</a></p>
 <p>Yep that’s the jump to <strong><code>real_start</code></strong> that we saw earlier.</p>
 <p>Followed by this header…</p>
 <div class="example-wrap"><pre class="language-text"><code>  .quad   0x480000              /* Image load offset from start of RAM */
@@ -486,7 +487,6 @@ __start:
   .long   0                    /* reserved */
 
 real_start: ...</code></pre></div>
-<p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to Mark Zbikowski)</a></p>
 <p>Our NuttX Image actually follows the <strong>Arm64 Linux Kernel Image Format</strong>! As defined here…</p>
 <ul>
 <li><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html"><strong>“Booting AArch64 Linux”</strong></a></li>
