@@ -497,7 +497,7 @@ It might! Let's compare our __NuttX Image__ with a __PinePhone Linux Image__. An
 
 We load our [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx) into [__Ghidra__](https://ghidra-sre.org/), the popular open-source tool for Reverse Engineering.
 
-Ghidra says that our NuttX Image will be loaded at address __`0x4028 0000`__. (Pic above)
+Ghidra says that our NuttX Image will be loaded at address __`0x4028` `0000`__. (Pic above)
 
 The Arm64 Instructions at the top of our NuttX Image will jump to __`real_start`__ (to skip the header)...
 
@@ -506,11 +506,11 @@ The Arm64 Instructions at the top of our NuttX Image will jump to __`real_start`
 40280004 0f 00 00 14     b          real_start
 ```
 
-After the header, __`real_start`__ is defined at `0x4028 0040` with the Startup Code...
+After the header, __`real_start`__ is defined at `0x4028` `0040` with the Startup Code...
 
 ![Ghidra with Apache NuttX RTOS for Arm Cortex-A53](https://lupyuen.github.io/images/arm-title.png)
 
-We see something interesting: The __Magic Number `ARM\x64`__ appears at address `0x4028 0038`. (Offset `0x38`)
+We see something interesting: The __Magic Number `ARM\x64`__ appears at address `0x4028` `0038`. (Offset `0x38`)
 
 Searching the net for this Magic Number reveals that it's actually an __Arm64 Linux Kernel Header!__
 
@@ -591,7 +591,7 @@ _Is there a proper Linux Header in our NuttX Image?_
 
 Let's do a quick check on our NuttX Header.
 
-The __Image Load Offset__ in our NuttX Header is __`0x48 0000`__ as we've seen earlier...
+The __Image Load Offset__ in our NuttX Header is __`0x48` `0000`__ as we've seen earlier...
 
 ```text
 .quad   0x480000  /* Image load offset from start of RAM */
@@ -599,19 +599,21 @@ The __Image Load Offset__ in our NuttX Header is __`0x48 0000`__ as we've seen e
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107)
 
-Our RAM starts at __`0x4000 0000`__. (We'll see later)
+Our RAM starts at __`0x4000` `0000`__. (We'll see later)
 
-This means that our NuttX Image will be loaded at __`0x4048 0000`__.
+This means that our NuttX Image will be loaded at __`0x4048` `0000`__.
 
-But Ghidra (and the Arm Disassembly) says that our NuttX Image is actually loaded at __`0x4028 0000`__! (Instead of `0x4048 0000`)
+But Ghidra (and the Arm Disassembly) says that our NuttX Image is actually loaded at __`0x4028` `0000`__! (Instead of `0x4048` `0000`)
 
-Maybe the Image Load Offset should have been __`0x28 0000`__? (Instead of `0x48 0000`)
+Maybe the Image Load Offset should have been __`0x28` `0000`__? (Instead of `0x48` `0000`)
 
-Everything else in the NuttX Header looks like a proper Linux Kernel Header. Yep our NuttX Image might actually boot on PinePhone with some patching!
+Everything else in the NuttX Header looks like a __proper Linux Kernel Header__.
+
+Yep our NuttX Image might actually boot on PinePhone with some patching!
 
 # NuttX RAM
 
-_How do we know that RAM starts at `0x4000 0000`?_
+_How do we know that RAM starts at `0x4000` `0000`?_
 
 __RAM Size and RAM Start__ are defined in the NuttX Configuration for Arm64: [nsh_smp/defconfig](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
 
@@ -622,9 +624,9 @@ CONFIG_RAM_START=0x40000000
 
 That's 128 MB RAM. Which should fit inside PinePhone's 2 GB RAM.
 
-_Why is our NuttX Image loaded at `0x4028 0000`?_
+_Why is our NuttX Image loaded at `0x4028` `0000`?_
 
-Our NuttX Image was built with this __Linker Command__, as observed with "`make --trace`"...
+Our NuttX Image was built with this __Linker Command__, as observed with "`make` `--trace`"...
 
 ```bash
 aarch64-none-elf-ld \
@@ -654,7 +656,7 @@ In the Linker Command above, we see the __NuttX Linker Script__...
 
 -   [boards/arm64/qemu/qemu-a53/scripts/dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33)
 
-Which defines __`_start`__ as `0x4028 0000`...
+Which defines __`_start`__ as `0x4028` `0000`...
 
 ```text
 SECTIONS
@@ -663,15 +665,15 @@ SECTIONS
   _start = .;
 ```
 
-That's why our NuttX Image is loaded at `0x4028 0000`!
+That's why our NuttX Image is loaded at `0x4028` `0000`!
 
 _Will this work with PinePhone?_
 
-We'll change `_start` to __`0x4000 0000`__ for PinePhone.
+We'll change `_start` to __`0x4000` `0000`__ for PinePhone.
 
-In a while we'll see that Start of RAM is __`0x4000 0000`__ and Image Load Offset is 0 for a PinePhone Linux Image.
+In a while we'll see that Start of RAM is __`0x4000` `0000`__ and Image Load Offset is 0 for a PinePhone Linux Image.
 
-(What's the significance of `0x4028 0000`? Something specific to NXP i.MX8?)
+(What's the significance of `0x4028` `0000`? Something specific to NXP i.MX8?)
 
 # PinePhone Image
 
@@ -718,23 +720,25 @@ Yep when we check the [__Linux Kernel Header__](https://www.kernel.org/doc/html/
 
 -   __Image Load Offset__ is 0
 
-Now the __Start of RAM__ is `0x4000 0000` according to the PinePhone Memory Map...
+Now the __Start of RAM__ is `0x4000` `0000` according to the PinePhone Memory Map...
 
 -   [__Allwinner A64 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
 
-So we shift `Image` in Ghidra to start at `0x4000 0000`...
+So we shift `Image` in Ghidra to start at `0x4000` `0000`...
 
--   Click Window > Memory Map
+-   Click "Window" > "Memory Map"
 
 -   Click "ram"
 
--   Click the 4-Arrows icon ("Move a block to another address")
+-   Click the icon with the Four Arrows
 
--   Change "New Start Address" to `40000000`
+    ("Move a block to another address")
+
+-   Set "New Start Address" to __`40000000`__
 
 ![Change Start Address to 40000000](https://lupyuen.github.io/images/Screenshot%202022-08-21%20at%207.07.15%20PM.png)
 
-The first instruction at `0x4000 0000` jumps to `0x4081 0000` (to skip the Linux Kernel Header)...
+The first instruction at `0x4000` `0000` jumps to `0x4081` `0000` (to skip the Linux Kernel Header)...
 
 ```text
 40000000 00 40 20 14     b          FUN_40810000
@@ -742,7 +746,7 @@ The first instruction at `0x4000 0000` jumps to `0x4081 0000` (to skip the Linux
 
 [(Sorry Mr Zbikowski, we don't need your Magic Signature)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
-The __Linux Kernel Code__ actually begins at `0x4081 0000`...
+The __Linux Kernel Code__ actually begins at `0x4081` `0000`...
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra3.png)
 
