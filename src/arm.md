@@ -609,22 +609,22 @@ Maybe the Image Load Offset should have been __`0x28 0000`__? (Instead of `0x48 
 
 Everything else in the NuttX Header looks like a proper Linux Kernel Header. Yep our NuttX Image might actually boot on PinePhone with some patching!
 
-# RAM Configuration
+# NuttX RAM
 
-TODO
+_How do we know that RAM starts at `0x4000 0000`?_
 
-RAM Size and RAM Start are defined in the NuttX Configuration...
+__RAM Size and RAM Start__ are defined in the NuttX Configuration for Arm64: [nsh_smp/defconfig](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
 
 ```text
 CONFIG_RAM_SIZE=134217728
 CONFIG_RAM_START=0x40000000
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
-
 That's 128 MB RAM. Which should fit inside PinePhone's 2 GB RAM.
 
-The NuttX Image was built with this Linker Command, based on `make --trace`...
+_Why is our NuttX Image loaded at `0x4028 0000`?_
+
+Our NuttX Image was built with this __Linker Command__, as observed with "`make --trace`"...
 
 ```bash
 aarch64-none-elf-ld \
@@ -650,7 +650,11 @@ aarch64-none-elf-ld \
   --end-group
 ```
 
-NuttX Image begins at `__start`, which is defined as 0x4028 0000 in the NuttX Linker Script: [boards/arm64/qemu/qemu-a53/scripts/dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33)
+In the Linker Command above, we see the __NuttX Linker Script__...
+
+-   [boards/arm64/qemu/qemu-a53/scripts/dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33)
+
+Which defines __`_start`__ as `0x4028 0000`...
 
 ```text
 SECTIONS
@@ -659,42 +663,46 @@ SECTIONS
   _start = .;
 ```
 
-We'll change this to 0x4000 0000 for PinePhone, since Start of RAM is 0x4000 0000 and Image Load Offset is 0. (See below)
+That's why our NuttX Image is loaded at `0x4028 0000`!
 
-We've seen the NuttX Image (which looks like a Linux Kernel Image), let's compare with a PinePhone Linux Kernel Image and see how NuttX needs to be tweaked...
+_Will this work with PinePhone?_
 
-(What is the significance of 0x4028 0000? Something specific to NXP i.MX8?)
+We'll change `_start` to __`0x4000 0000`__ for PinePhone.
+
+In a while we'll see that Start of RAM is __`0x4000 0000`__ and Image Load Offset is 0 for a PinePhone Linux Image.
+
+(What's the significance of `0x4028 0000`? Something specific to NXP i.MX8?)
 
 # PinePhone Image
 
-TODO
+We've seen our NuttX Image (which actually looks like a Linux Kernel Image). Let's compare with a __PinePhone Linux Kernel Image__ and see what needs to be patched in NuttX.
 
-Will NuttX run on PinePhone? Let's analyse a PinePhone Linux Kernel Image with Ghidra, to look at the Linux Kernel Header and Startup Code.
+We'll analyse the Linux Kernel in the __PinePhone Jumpdrive Image__, since it's small...
 
-We'll use the PinePhone Jumpdrive Image, since it's small...
+-   [__dreemurrs-embedded/Jumpdrive__](https://github.com/dreemurrs-embedded/Jumpdrive)
 
--   [dreemurrs-embedded/Jumpdrive](https://github.com/dreemurrs-embedded/Jumpdrive)
+Here are the steps...
 
-Download [pine64-pinephone.img.xz](https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz)
+1.  Download [__`pine64-pinephone.img.xz`__](https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz)
 
-Expand `pine64-pinephone.img.xz`
+1.  Extract the files from the microSD Image with [__Balena Etcher__](https://www.balena.io/etcher/)
 
-Expand the files inside...
+1.  Expand the extracted files...
 
-```bash
-gunzip Image.gz
-gunzip initramfs.gz
-tar xvf initramfs
-```
+    ```bash
+    gunzip Image.gz
+    gunzip initramfs.gz
+    tar xvf initramfs
+    ```
 
-Import the uncompressed `Image` (Linux Kernel) into Ghidra.
+1.  Import the uncompressed __`Image`__ (Linux Kernel) into Ghidra
 
-For "Language" select AARCH64:LE:v8A:default...
--   Processor: AARCH64 
--   Variant: v8A 
--   Size: 64 
--   Endian: little 
--   Compiler: default
+1.  For "Language" select "AARCH64:LE:v8A:default"...
+    -   Processor: `AARCH64`
+    -   Variant: `v8A`
+    -   Size: `64`
+    -   Endian: `little`
+    -   Compiler: `default`
 
 ![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png)
 
@@ -702,19 +710,19 @@ Here's the Jumpdrive `Image` (Linux Kernel) in Ghidra...
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra2.png)
 
-According to the Linux Kernel Header...
+_We should see the Linux Kernel Header?_
 
--   ["Booting AArch64 Linux"](https://www.kernel.org/doc/html/latest/arm64/booting.html)
+Yep when we check the [__Linux Kernel Header__](https://www.kernel.org/doc/html/latest/arm64/booting.html)...
 
-We see Linux Kernel Magic Number `ARM\x64` at offset 0x38.
+-   __Magic Number__ `ARM\x64` appears at offset `0x38`
 
-Image Load Offset is 0, according to the header.
+-   __Image Load Offset__ is 0
 
-Start of RAM is 0x4000 0000 according to this Memory Map...
+Now the __Start of RAM__ is `0x4000 0000` according to the PinePhone Memory Map...
 
--   [__A64 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
+-   [__Allwinner A64 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
 
-So we shift `Image` in Ghidra to start at 0x4000 0000...
+So we shift `Image` in Ghidra to start at `0x4000 0000`...
 
 -   Click Window > Memory Map
 
@@ -722,11 +730,11 @@ So we shift `Image` in Ghidra to start at 0x4000 0000...
 
 -   Click the 4-Arrows icon ("Move a block to another address")
 
--   Change "New Start Address" to 40000000
+-   Change "New Start Address" to `40000000`
 
 ![Change Start Address to 40000000](https://lupyuen.github.io/images/Screenshot%202022-08-21%20at%207.07.15%20PM.png)
 
-Note that the first instruction at 0x4000 0000 jumps to 0x4081 0000 (to skip the Linux Kernel Header)...
+The first instruction at `0x4000 0000` jumps to `0x4081 0000` (to skip the Linux Kernel Header)...
 
 ```text
 40000000 00 40 20 14     b          FUN_40810000
@@ -734,7 +742,7 @@ Note that the first instruction at 0x4000 0000 jumps to 0x4081 0000 (to skip the
 
 [(Sorry Mr Zbikowski, we don't need your Magic Signature)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
-The Linux Kernel Code actually begins at 0x4081 0000...
+The __Linux Kernel Code__ actually begins at `0x4081 0000`...
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra3.png)
 
