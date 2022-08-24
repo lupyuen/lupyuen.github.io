@@ -161,7 +161,7 @@ The NuttX Output Files may be found here...
 
 The output file [__`nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.1/nuttx) is the Arm64 [__ELF Executable__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) that we'll run in the next step.
 
-# Test NuttX with QEMU: Single Core
+# Test NuttX: Single Core
 
 We're ready to run NuttX! This is how we test __NuttX on QEMU__ with a Single Core of Arm Cortex-A53...
 
@@ -330,7 +330,7 @@ The NuttX Output Files may be found here...
 
 -   [__NuttX for Arm Cortex-A53 Multi-Core__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.0)
 
-# Test NuttX with QEMU: Multi Core
+# Test NuttX: Multi Core
 
 And this is how we test NuttX on QEMU with __4 Cores__ of Arm Cortex-A53...
 
@@ -455,9 +455,9 @@ Hello, World!
 
 [_Arm64 Architecture-Specific Source Files_](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common)
 
-# Inside NuttX for Cortex-A53
+# Inside NuttX for Arm64
 
-_What's inside the NuttX code for Cortex-A53?_
+_What's inside the NuttX code for Arm Cortex-A53?_
 
 Let's browse the __Source Files__ for the implementation of Cortex-A53 on NuttX.
 
@@ -516,7 +516,7 @@ We see something interesting: The __Magic Number `ARM\x64`__ appears at address 
 
 Searching the net for this Magic Number reveals that it's actually an __Arm64 Linux Kernel Header!__
 
-When we refer to the [__NuttX Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx.S), we find happiness: [arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117)
+When we refer to the [__NuttX Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx.S), we find happiness: [arch/arm64/src/common/arm64_head.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L79-L117)
 
 ```text
   /* Kernel startup entry point.
@@ -599,7 +599,7 @@ The __Image Load Offset__ in our NuttX Header is __`0x48` `0000`__ as we've seen
 .quad   0x480000  /* Image load offset from start of RAM */
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107)
+[(Source)](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L107)
 
 Our RAM starts at __`0x4000` `0000`__. (We'll see later)
 
@@ -619,7 +619,7 @@ Yep our NuttX Image might actually boot on PinePhone with some patching!
 
 _How do we know that RAM starts at `0x4000` `0000`?_
 
-__RAM Size and RAM Start__ are defined in the NuttX Configuration for Arm64 (pic above): [nsh_smp/defconfig](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
+__RAM Size and RAM Start__ are defined in the NuttX Configuration for Arm64 (pic above): [nsh_smp/defconfig](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
 
 ```text
 CONFIG_RAM_SIZE=134217728
@@ -658,7 +658,7 @@ aarch64-none-elf-ld \
 
 In the Linker Command above, we see the __NuttX Linker Script__...
 
--   [boards/arm64/qemu/qemu-a53/scripts/dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33)
+-   [boards/arm64/qemu/qemu-a53/scripts/dramboot.ld](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33)
 
 Which defines __`_start`__ as `0x4028` `0000`...
 
@@ -763,7 +763,7 @@ _But NuttX needs some changes for PinePhone?_
 
 Yep 3 things we'll modify in NuttX, as mentioned earlier...
 
--   Change __`_start`__ to __`0x4000` `0000`__ (from `0x4028` `0000`) in the NuttX Linker Script: [dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33)
+-   Change __`_start`__ to __`0x4000` `0000`__ (from `0x4028` `0000`) in the NuttX Linker Script: [dramboot.ld](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33)
 
     ```text
     SECTIONS
@@ -773,14 +773,14 @@ Yep 3 things we'll modify in NuttX, as mentioned earlier...
     _start = .;
     ```
 
--  Change __Image Load Offset__ in our NuttX Header to __`0x0`__ (from `0x48` `0000`): [arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107)
+-  Change __Image Load Offset__ in our NuttX Header to __`0x0`__ (from `0x48` `0000`): [arm64_head.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L107)
 
     ```text
     /* TODO: Change to 0x0 for PinePhone */
     .quad   0x480000  /* Image load offset from start of RAM */
     ```
 
--   Increase the __RAM Size__ to __2 GB__ (from 128 MB): [nsh_smp/defconfig](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
+-   Increase the __RAM Size__ to __2 GB__ (from 128 MB): [nsh_smp/defconfig](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
 
     ```text
     /* TODO: Increase to 2 GB for PinePhone */
