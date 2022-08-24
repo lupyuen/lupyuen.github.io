@@ -918,9 +918,11 @@ Stay tuned for updates!
 
 # What's Next
 
-TODO: Not ready for Daily Driver, but NuttX on PinePhone could become a valuable Educational Resource!
+__NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 
-There's plenty to be done for porting NuttX to PinePhone, please lemme know if you're keen to help! 🙏
+But today it's ready to turn PinePhone into a valuable __Educational Resource__!
+
+There's plenty to be done for porting NuttX to PinePhone, please lemme know if you're keen to help 🙏
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
