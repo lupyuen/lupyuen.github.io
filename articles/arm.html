@@ -591,7 +591,7 @@ tar xvf initramfs</code></pre></div></li>
 </ol>
 <p>Here’s the Jumpdrive <strong><code>Image</code></strong> (Linux Kernel) in Ghidra…</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra2.png" alt="Ghidra with PinePhone Linux Image" /></p>
-<p><em>We’re looking at the Linux Kernel Header?</em></p>
+<p><em>That’s the Linux Kernel Header?</em></p>
 <p>Right! The <a href="https://www.kernel.org/doc/html/latest/arm64/booting.html"><strong>Linux Kernel Header</strong></a> shows…</p>
 <ul>
 <li>
@@ -603,7 +603,7 @@ tar xvf initramfs</code></pre></div></li>
 <p>(At offset <code>0x08</code>, pic above)</p>
 </li>
 </ul>
-<p>The first instruction at <code>0x4000</code> <code>0000</code> jumps to <code>0x4081</code> <code>0000</code> (to skip the Linux Kernel Header)…</p>
+<p>The <strong>First Instruction</strong> at <code>0x4000</code> <code>0000</code> jumps to <code>0x4081</code> <code>0000</code> (to skip the Linux Kernel Header)…</p>
 <div class="example-wrap"><pre class="language-text"><code>40000000 00 40 20 14  b FUN_40810000</code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(Sorry Mr Zbikowski, we don’t need your Magic Signature)</a></p>
 <p>The <strong>Linux Kernel Code</strong> actually begins at <code>0x4081</code> <code>0000</code>…</p>
@@ -912,7 +912,7 @@ ghidraRun.bat</code></pre></div></li>
 <p>Set <strong>“New Start Address”</strong> to <strong><code>40000000</code></strong></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-21%20at%207.07.15%20PM.png" alt="Change Start Address to 40000000" /></p>
+<p><img src="https://lupyuen.github.io/images/arm-ghidra8.png" alt="Change Start Address to 40000000" /></p>
 <p>And we’re done with the analysis!</p>
 
     
