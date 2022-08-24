@@ -858,15 +858,15 @@ ghidraRun.bat</code></pre></div></li>
 <p>This is how we analyse the <strong>PinePhone Linux Kernel Image</strong> with <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>…</p>
 <ol>
 <li>
-<p>Assume that we have <strong>installed Ghidra</strong></p>
-<p>(From the previous section)</p>
-</li>
-<li>
-<p>Assume that we have extracted and uncompressed the PinePhone Kernel <strong><code>Image</code></strong>…</p>
+<p>Assume that we’ve extracted and uncompressed the PinePhone Kernel <strong><code>Image</code></strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/arm#pinephone-image"><strong>“PinePhone Image”</strong></a></p>
 </li>
 <li>
-<p>Go back to the <strong>Ghidra Main Window</strong> (“My Project”)</p>
+<p>Assume that we’ve created a <strong>Ghidra Project</strong></p>
+<p>(From the previous section)</p>
+</li>
+<li>
+<p>Go back to the <strong>Ghidra Project Window</strong>: “My Project”</p>
 <p>Click <strong>File</strong> → <strong>Import File</strong></p>
 <p>Select our PinePhone Kernel <strong><code>Image</code></strong></p>
 </li>
@@ -874,8 +874,7 @@ ghidraRun.bat</code></pre></div></li>
 <p>At the right of <strong>“Language”</strong>, click the <strong>“<code>...</code>” Button</strong> </p>
 </li>
 <li>
-<p>Enter <strong><code>aarch</code></strong> into the Filter Box.</p>
-<p>Select…</p>
+<p>Enter <strong><code>aarch</code></strong> into the Filter Box. Select…</p>
 <ul>
 <li>Processor: <strong><code>AARCH64</code></strong></li>
 <li>Variant: <strong><code>v8A</code></strong></li>
@@ -883,6 +882,8 @@ ghidraRun.bat</code></pre></div></li>
 <li>Endian: <strong><code>little</code></strong></li>
 <li>Compiler: <strong><code>default</code></strong></li>
 </ul>
+<p>Click <strong>OK</strong>. </p>
+<p>“Language” should now show <strong>“AARCH64:LE:v8A:default”</strong></p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra7.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
 </li>
 <li>
