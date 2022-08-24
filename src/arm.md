@@ -680,7 +680,7 @@ In a while we'll see that Start of RAM is __`0x4000` `0000`__ and Image Load Off
 
 # PinePhone Image
 
-We've seen our NuttX Image (which actually looks like a Linux Kernel Image). Now we compare with a __PinePhone Linux Kernel Image__ and see what needs to be patched in NuttX.
+We've seen our NuttX Image (which actually looks like a Linux Kernel Image). Now we compare with a __PinePhone Linux Kernel Image__ and find out what needs to be patched in NuttX.
 
 We'll analyse the Linux Kernel in the __PinePhone Jumpdrive Image__, since it's small...
 
@@ -728,7 +728,7 @@ The __First Instruction__ at `0x4000` `0000` jumps to `0x4081` `0000` (to skip t
 40000000 00 40 20 14  b FUN_40810000
 ```
 
-[(Sorry Mr Zbikowski, we don't need your Magic Signature)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
+[(Sorry Mr Zbikowski, PinePhone doesn't need your Magic Signature)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
 The __Linux Kernel Code__ actually begins at `0x4081` `0000`...
 
@@ -765,7 +765,7 @@ Yep 3 things we'll modify in NuttX, as mentioned earlier...
     ```text
     SECTIONS
     {
-    /* TODO: Change to 0x4000000 for PinePhone */
+    /* TODO: Change to 0x40000000 for PinePhone */
     . = 0x40280000;  /* uboot load address */
     _start = .;
     ```
@@ -949,7 +949,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  What happens when we power on PinePhone? How does it start the Kernel Image in the microSD Card?
 
-    These docs for Allwinner A64 may be helpful...
+    Check our these docs for Allwinner A64...
 
     [__A64 Boot ROM__](https://linux-sunxi.org/BROM#A64)
 
@@ -1049,7 +1049,7 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
 
     Select our PinePhone Kernel __`Image`__
 
-1.  At the right of __"Language"__, click the __"`...`" Button__ 
+1.  At the right of __Language__, click the __"`...`" Button__ 
 
 1.  Enter __`aarch`__ into the Filter Box. Select...
     -   Processor: __`AARCH64`__
@@ -1060,7 +1060,7 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
 
     Click __OK__. 
     
-    "Language" should now show __"AARCH64:LE:v8A:default"__
+    Language should now show __"AARCH64:LE:v8A:default"__
 
     ![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/arm-ghidra7.png)
 
@@ -1086,15 +1086,15 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
 
 1.  So we shift our PinePhone Image to start at __`0x4000` `0000`__...
 
-    Click __"Window"__ > __"Memory Map"__
+    Click __Window__ → __Memory Map__
 
-    Click __"ram"__
+    Click __ram__
 
-    Click the icon with the Four Arrows
+    Click the icon at top right with the Four Arrows (pic below)
 
-    ("Move a block to another address")
+    (The icon says "Move a block to another address")
 
-    Set __"New Start Address"__ to __`40000000`__
+    Set __New Start Address__ to __`40000000`__
 
 ![Change Start Address to 40000000](https://lupyuen.github.io/images/arm-ghidra8.png)
 
