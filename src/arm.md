@@ -1,6 +1,6 @@
 # Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone
 
-📝 _30 Aug 2022_
+📝 _25 Aug 2022_
 
 ![Ghidra with Apache NuttX RTOS for Arm Cortex-A53](https://lupyuen.github.io/images/arm-title.png)
 
@@ -34,7 +34,7 @@ Many thanks to [__qinwei2004__](https://github.com/qinwei2004) and the NuttX Tea
 
 # Download NuttX
 
-__NuttX Mainline__ has the latest support for Arm Cortex-A53. Let's download the Source Code for our experiment...
+__NuttX Mainline__ has the latest support for Arm Cortex-A53. We download the Source Code for our experiment...
 
 ```bash
 ## Create NuttX Directory
@@ -119,8 +119,6 @@ brew install qemu
 ```
 
 QEMU runs surprisingly well for emulating 64-bit Arm Cortex-A53, especially for a light operating system like NuttX.
-
-Let's build NuttX...
 
 ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
 
@@ -682,7 +680,7 @@ In a while we'll see that Start of RAM is __`0x4000` `0000`__ and Image Load Off
 
 # PinePhone Image
 
-We've seen our NuttX Image (which actually looks like a Linux Kernel Image). Let's compare with a __PinePhone Linux Kernel Image__ and see what needs to be patched in NuttX.
+We've seen our NuttX Image (which actually looks like a Linux Kernel Image). Now we compare with a __PinePhone Linux Kernel Image__ and see what needs to be patched in NuttX.
 
 We'll analyse the Linux Kernel in the __PinePhone Jumpdrive Image__, since it's small...
 
@@ -885,6 +883,8 @@ Some drivers might already exist in NuttX...
 
 -   [__NuttX Drivers__](https://github.com/apache/incubator-nuttx/tree/master/drivers)
 
+We've previously created NuttX Drivers for another Touchscreen Device: [__Pine64 PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2). (Pic below)
+
 _Do we really need all these PinePhone Drivers?_
 
 For __Educational Purposes__, we might not need all PinePhone Drivers.
@@ -915,13 +915,19 @@ According to [__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/).
 
 Stay tuned for updates!
 
+[(Need a Wayland Compositor? This Zig one looks portable)](https://github.com/dreinharth/byway)
+
+![NuttX on a Touchscreen Device: Pine64 PineDio Stack BL604](https://lupyuen.github.io/images/pinedio2-title.jpg)
+
+[_NuttX on a Touchscreen Device: Pine64 PineDio Stack BL604_](https://lupyuen.github.io/articles/pinedio2)
+
 # What's Next
 
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 
 But today NuttX is ready to turn PinePhone into a valuable __Learning Resource__!
 
-There's plenty to be done for porting NuttX to PinePhone, please lemme know if you're keen to help 🙏
+There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
