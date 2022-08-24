@@ -434,63 +434,63 @@ Hello, World!</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra1.png" alt="Ghidra with Apache NuttX RTOS for Arm Cortex-A53" /></p>
 <h1 id="nuttx-image"><a href="#nuttx-image">9 NuttX Image</a></h1>
 <p><em>NuttX can’t possibly boot on PinePhone right?</em></p>
-<p>It might! Let’s compare our NuttX Image with a PinePhone Linux Image. And find out what needs to be patched.</p>
-<p>TODO</p>
-<p>Next we analyse the NuttX Image with <a href="https://ghidra-sre.org/">Ghidra</a>, to understand the NuttX Image Header and Startup Code.</p>
-<p>Here’s the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx">NuttX ELF Image <code>nuttx</code></a> analysed by Ghidra…</p>
-<p>Note that the NuttX Image jumps to <code>real_start</code> (to skip the Image Header)…</p>
+<p>It might! Let’s compare our <strong>NuttX Image</strong> with a <strong>PinePhone Linux Image</strong>. And find out what needs to be patched.</p>
+<p>We load our <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> into <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>, the popular open-source tool for Reverse Engineering.</p>
+<p>Ghidra says that our NuttX Image will be loaded at address <strong><code>0x4028 0000</code></strong>. (Pic above)</p>
+<p>The Arm64 Instructions at the top of our NuttX Image will jump to <strong><code>real_start</code></strong> (to skip the header)…</p>
 <div class="example-wrap"><pre class="language-text"><code>40280000 4d 5a 00 91     add        x13,x18,#0x16
 40280004 0f 00 00 14     b          real_start</code></pre></div>
-<p><code>real_start</code> is defined at 0x4028 0040 with the Startup Code…</p>
+<p>After the header, <strong><code>real_start</code></strong> is defined at <code>0x4028 0040</code> with the Startup Code…</p>
 <p><img src="https://lupyuen.github.io/images/arm-title.png" alt="Ghidra with Apache NuttX RTOS for Arm Cortex-A53" /></p>
-<p>We see something interesting: The Magic Number <code>ARM\x64</code> appears at address 0x4028 0038.</p>
-<p>Searching the net for this Magic Number reveals that it’s actually an Arm64 Linux Kernel Header!</p>
-<p>When we refer to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx.S">NuttX Arm64 Disassembly <code>nuttx.S</code></a>, we find happiness: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117">arch/arm64/src/common/arm64_head.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>    /* Kernel startup entry point.
-     * ---------------------------
-     *
-     * The requirements are:
-     *   MMU = off, D-cache = off, I-cache = on or off,
-     *   x0 = physical address to the FDT blob.
-     *       it will be used when NuttX support device tree in the future
-     *
-     * This must be the very first address in the loaded image.
-     * It should be loaded at any 4K-aligned address.
-     */
-    .globl __start;
+<p>We see something interesting: The <strong>Magic Number <code>ARM\x64</code></strong> appears at address <code>0x4028 0038</code>. (Offset <code>0x38</code>)</p>
+<p>Searching the net for this Magic Number reveals that it’s actually an <strong>Arm64 Linux Kernel Header!</strong></p>
+<p>When we refer to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx.S"><strong>NuttX Disassembly <code>nuttx.S</code></strong></a>, we find happiness: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117">arch/arm64/src/common/arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* Kernel startup entry point.
+ * ---------------------------
+ *
+ * The requirements are:
+ *   MMU = off, D-cache = off, I-cache = on or off,
+ *   x0 = physical address to the FDT blob.
+ *       it will be used when NuttX support device tree in the future
+ *
+ * This must be the very first address in the loaded image.
+ * It should be loaded at any 4K-aligned address.
+ */
+.globl __start;
 __start:
 
-    /* DO NOT MODIFY. Image header expected by Linux boot-loaders.
-     *
-     * This add instruction has no meaningful effect except that
-     * its opcode forms the magic &quot;MZ&quot; signature of a PE/COFF file
-     * that is required for UEFI applications.
-     *
-     * Some bootloader (such imx8 uboot) checking the magic &quot;MZ&quot; to see
-     * if the image is a valid Linux image. but modifying the bootLoader is
-     * unnecessary unless we need to do a customize secure boot.
-     * so just put the &#39;&#39;MZ&quot; in the header to make bootloader happiness
-     */
+/* DO NOT MODIFY. Image header expected by Linux boot-loaders.
+ *
+ * This add instruction has no meaningful effect except that
+ * its opcode forms the magic &quot;MZ&quot; signature of a PE/COFF file
+ * that is required for UEFI applications.
+ *
+ * Some bootloader (such imx8 uboot) checking the magic &quot;MZ&quot; to see
+ * if the image is a valid Linux image. but modifying the bootLoader is
+ * unnecessary unless we need to do a customize secure boot.
+ * so just put the &#39;&#39;MZ&quot; in the header to make bootloader happiness
+ */
 
-    add     x13, x18, #0x16      /* the magic &quot;MZ&quot; signature */
-    b       real_start           /* branch to kernel start */
-    .quad   0x480000              /* Image load offset from start of RAM */
-    .quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
-    .quad   __HEAD_FLAGS         /* Informative flags, little-endian */
-    .quad   0                    /* reserved */
-    .quad   0                    /* reserved */
-    .quad   0                    /* reserved */
-    .ascii  &quot;ARM\x64&quot;            /* Magic number, &quot;ARM\x64&quot; */
-    .long   0                    /* reserved */
+add     x13, x18, #0x16      /* the magic &quot;MZ&quot; signature */
+b       real_start           /* branch to kernel start */</code></pre></div>
+<p>Yep that’s the jump to <strong><code>real_start</code></strong> we saw earlier.</p>
+<p>Followed by this header…</p>
+<div class="example-wrap"><pre class="language-text"><code>.quad   0x480000              /* Image load offset from start of RAM */
+.quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
+.quad   __HEAD_FLAGS         /* Informative flags, little-endian */
+.quad   0                    /* reserved */
+.quad   0                    /* reserved */
+.quad   0                    /* reserved */
+.ascii  &quot;ARM\x64&quot;            /* Magic number, &quot;ARM\x64&quot; */
+.long   0                    /* reserved */
 
-real_start:
-    /* Disable all exceptions and interrupts */</code></pre></div>
+real_start: ...</code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to Mark Zbikowski)</a></p>
-<p>NuttX Image actually follows the Arm64 Linux Kernel Image Format! As defined here…</p>
+<p>Our NuttX Image actually follows the <strong>Arm64 Linux Kernel Image Format</strong>! As defined here…</p>
 <ul>
-<li><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html">“Booting AArch64 Linux”</a></li>
+<li><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html"><strong>“Booting AArch64 Linux”</strong></a></li>
 </ul>
-<p>Arm64 Linux Kernel Image contains a 64-byte header…</p>
+<p>The doc says that a Linux Kernel Image (for Arm64) begins with this <strong>64-byte header</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>u32 code0;                    /* Executable code */
 u32 code1;                    /* Executable code */
 u64 text_offset;              /* Image load offset, little endian */
@@ -501,6 +501,8 @@ u64 res3      = 0;            /* reserved */
 u64 res4      = 0;            /* reserved */
 u32 magic     = 0x644d5241;   /* Magic number, little endian, &quot;ARM\x64&quot; */
 u32 res5;                     /* reserved (used for PE COFF offset) */</code></pre></div>
+<p><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html">(Source)</a></p>
+<p>TODO</p>
 <p>Start of RAM is 0x4000 0000. The Image Load Offset in our NuttX Image Header is 0x48 0000 according to <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107">arch/arm64/src/common/arm64_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>    .quad   0x480000              /* Image load offset from start of RAM */</code></pre></div>
 <p>This means that our NuttX Image will be loaded at 0x4048 0000.</p>
