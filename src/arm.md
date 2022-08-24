@@ -1010,7 +1010,9 @@ This is how we analyse our [__NuttX ELF Image `nuttx`__](https://github.com/lupy
 
     ![Ghidra Analysis Options](https://lupyuen.github.io/images/arm-ghidra6.png)
 
-And we're done with the analysis!
+And we're done with the analysis! We should see this...
+
+![NuttX Image analysed with Ghidra](https://lupyuen.github.io/images/arm-ghidra9.png)
 
 In case of problems, check these docs...
 
@@ -1089,4 +1091,6 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
 
 ![Change Start Address to 40000000](https://lupyuen.github.io/images/arm-ghidra8.png)
 
-And we're done with the analysis!
+And we're done with the analysis! We should see this...
+
+![PinePhone Image analysed with Ghidra](https://lupyuen.github.io/images/arm-ghidra10.png)
