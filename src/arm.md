@@ -295,8 +295,7 @@ nsh> ls /etc/init.d
  rcS
 
 nsh> cat /etc/init.d/rcS
-# Create a RAMDISK and mount it at /tmp
-
+## Create a RAMDISK and mount it at /tmp
 mkrd -m 2 -s 512 1024
 mkfatfs /dev/ram2
 mount -t vfat /dev/ram2 /tmp
