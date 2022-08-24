@@ -495,9 +495,9 @@ _NuttX can't possibly boot on PinePhone right?_
 
 It might! Let's compare our __NuttX Image__ with a __PinePhone Linux Image__. And find out what needs to be patched.
 
-We load our [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx) into [__Ghidra__](https://ghidra-sre.org/), the popular open-source tool for Reverse Engineering.
+Follow these steps to load our [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx) into [__Ghidra__](https://ghidra-sre.org/), the popular open-source tool for Reverse Engineering...
 
-TODO: Load NuttX into Ghidra
+-   [__"Analyse NuttX Image with Ghidra"__](https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra)
 
 Ghidra says that our NuttX Image will be loaded at address __`0x4028` `0000`__. (Pic above)
 
@@ -679,6 +679,8 @@ In a while we'll see that Start of RAM is __`0x4000` `0000`__ and Image Load Off
 
 (What's the significance of `0x4028` `0000`? Something specific to NXP i.MX8?)
 
+![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png)
+
 # PinePhone Image
 
 We've seen our NuttX Image (which actually looks like a Linux Kernel Image). Let's compare with a __PinePhone Linux Kernel Image__ and see what needs to be patched in NuttX.
@@ -701,20 +703,13 @@ Here are the steps...
     tar xvf initramfs
     ```
 
-1.  Import the uncompressed __`Image`__ (Linux Kernel) into Ghidra
+1.  Follow these steps to import the uncompressed __`Image`__ (Linux Kernel) into Ghidra
 
-1.  For "Language" select "AARCH64:LE:v8A:default"...
-    -   Processor: `AARCH64`
-    -   Variant: `v8A`
-    -   Size: `64`
-    -   Endian: `little`
-    -   Compiler: `default`
+    [__"Analyse PinePhone Image with Ghidra"__](https://lupyuen.github.io/articles/arm#appendix-analyse-pinephone-image-with-ghidra)
 
-![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png)
+1.  Check that we have set the "Language" as __"AARCH64:LE:v8A:default"__. (Pic above)
 
-TODO: Load PinePhone Kernel into Ghidra
-
-Here's the Jumpdrive `Image` (Linux Kernel) in Ghidra...
+Here's the Jumpdrive __`Image`__ (Linux Kernel) in Ghidra...
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra2.png)
 
@@ -973,8 +968,107 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Analyse NuttX Image with Ghidra
 
-TODO
+This is how we analyse our [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx) with [__Ghidra__](https://ghidra-sre.org/)...
+
+(Works for any ELF file actually)
+
+1.  Install [__Java Dev Kit (JDK) 11__](https://adoptium.net/releases.html?variant=openjdk11&jvmVariant=hotspot) (64-bit)
+
+1.  Download a [__Ghidra Release File__](https://github.com/NationalSecurityAgency/ghidra/releases).
+
+    Extract the Ghidra Release File.
+
+1.  Launch Ghidra...
+
+    ```bash
+    ## For Linux and macOS
+    ./ghidraRun
+    
+    ## For Windows
+    ghidraRun.bat
+    ```
+
+1.  The __Ghidra Help Window__ appears, with plenty of useful info that's not available elsewhere.
+
+    Minimise the Ghidra Help Window for now.
+    
+    (But remember to browse it when we have the time!)
+
+1.  In the __Ghidra Main Window__, click __File__ → __New Project__
+
+    For __Project Type__: Select __Non-Shared Project__
+
+    For __Project Name__: Enter __"My Project"__
+
+1.  Click __File__ → __Import File__
+
+    Select our [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx) 
+
+1.  Ghidra detects that our Executable is __"AARCH64:LE:v8A:default"__.
+
+    Click __OK__ and __OK__ again.
+
+1.  Double-click our ELF File __`nuttx`__
+
+    The __CodeBrowser Window__ appears.
+
+    (With a dragon-like spectre)
+
+1.  When prompted to analyze, click __Yes__ and __Analyze__.
+
+    Ignore the warnings.
+
+And we're done with the analysis!
+
+In case of problems, check these docs...
+
+-   [__"Ghidra Installation Guide"__](https://htmlpreview.github.io/?https://github.com/NationalSecurityAgency/ghidra/blob/stable/GhidraDocs/InstallationGuide.html)
+
+-   [__"An Introduction to Ghidra"__](https://git.mst.edu/slbnmc/ici-wiki/-/wikis/Tool-Guides/An-Introduction-to-Ghidra)
+
+-   [__Ghidra Repo__](https://github.com/NationalSecurityAgency/ghidra)
+
+Also check the Ghidra Help Window that we have minimised.
 
 # Appendix: Analyse PinePhone Image with Ghidra
 
-TODO
+This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](https://ghidra-sre.org/)...
+
+1.  Assume that we have installed Ghidra (from the previous section)
+
+1.  Assume that we have extracted and uncompressed the PinePhone Kernel __`Image`__...
+
+    [__"PinePhone Image"__](https://lupyuen.github.io/articles/arm#pinephone-image)
+
+1.  Go back to the __Ghidra Main Window__ ("My Project")
+
+1.  Click __File__ → __Import File__
+
+    Select our PinePhone Kernel __`Image`__
+
+1.  At the right of __"Language"__, click the __"`...`" Button__ 
+    
+1.  Enter __`aarch`__ into the Filter Box.
+
+    Select...
+    -   Processor: __`AARCH64`__
+    -   Variant: __`v8A`__
+    -   Size: __`64`__
+    -   Endian: __`little`__
+    -   Compiler: __`default`__
+
+    ![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png)
+
+1.  Click __OK__ and __OK__ again.
+
+1.  Double-click our __`Image`__ File
+
+    The __CodeBrowser Window__ appears.
+
+    (With a dragon-like spectre)
+
+1.  When prompted to analyze, click __Yes__ and __Analyze__.
+
+    Ignore the warnings.
+
+And we're done with the analysis!
