@@ -497,6 +497,8 @@ It might! Let's compare our __NuttX Image__ with a __PinePhone Linux Image__. An
 
 We load our [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx) into [__Ghidra__](https://ghidra-sre.org/), the popular open-source tool for Reverse Engineering.
 
+TODO: Load NuttX into Ghidra
+
 Ghidra says that our NuttX Image will be loaded at address __`0x4028` `0000`__. (Pic above)
 
 The Arm64 Instructions at the top of our NuttX Image will jump to __`real_start`__ (to skip the header)...
@@ -708,6 +710,8 @@ Here are the steps...
 
 ![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png)
 
+TODO: Load PinePhone Kernel into Ghidra
+
 Here's the Jumpdrive `Image` (Linux Kernel) in Ghidra...
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra2.png)
@@ -807,11 +811,9 @@ Not yet. We need to implement the UART Driver for NuttX...
 
 # UART Driver for NuttX
 
-TODO
+We won't see any output from NuttX until we implement the __UART Driver for NuttX__.
 
-We won't see any output from NuttX until we implement the UART Driver for NuttX.
-
-These are the Source Files for the QEMU UART Driver (PL011)...
+__For QEMU:__ These are the Source Files for the UART Driver (PL011)...
 
 -   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c)
 
@@ -819,21 +821,23 @@ These are the Source Files for the QEMU UART Driver (PL011)...
 
     [(More about PL011 UART)](https://krinkinmu.github.io/2020/11/29/PL011.html)
 
-We'll replace the code above with the UART Driver for Allwinner A64 SoC...
+We'll redo the code above for the __PinePhone UART Driver__ (Allwinner A64 SoC)...
 
--   [UART0 Memory Map](https://linux-sunxi.org/A64/Memory_map)
+-   [__UART0 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
 
--   [Allwinner A64 UART](https://linux-sunxi.org/UART)
+-   [__Allwinner A64 UART__](https://linux-sunxi.org/UART)
 
--   [Allwinner A64 User Manual](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+-   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
--   [Allwinner A64 Info](https://linux-sunxi.org/A64)
+-   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
 
-To access the UART Port on PinePhone, we'll use this USB Serial Debug Cable...
+_Where's the UART Port on PinePhone?_
 
--   [PinePhone Serial Debug Cable](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
+To access the UART Port on PinePhone, we'll use this __USB Serial Debug Cable__...
 
-Which connects to the Headphone Port. Genius!
+-   [__PinePhone Serial Debug Cable__](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
+
+Which connects to PinePhone's __Headphone Port.__ Genius!
 
 [(Remember to flip the Headphone Switch to OFF)](https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration)
 
