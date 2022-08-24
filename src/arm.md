@@ -707,7 +707,7 @@ Here are the steps...
 
     [__"Analyse PinePhone Image with Ghidra"__](https://lupyuen.github.io/articles/arm#appendix-analyse-pinephone-image-with-ghidra)
 
-1.  Check that we have set the "Language" as __"AARCH64:LE:v8A:default"__. (Pic above)
+1.  Check that we've set the "Language" as __"AARCH64:LE:v8A:default"__. (Pic above)
 
 Here's the Jumpdrive __`Image`__ (Linux Kernel) in Ghidra...
 
@@ -757,9 +757,9 @@ Thus NuttX could be a __drop-in replacement__ for the PinePhone Linux Kernel! We
 
 1.  Power on PinePhone
 
-And NuttX should (theoretically) __boot on PinePhone!__
+And NuttX will (theoretically) __boot on PinePhone!__
 
-_But we need some changes in NuttX?_
+_But NuttX needs some changes for PinePhone?_
 
 Yep 3 things we'll modify in NuttX, as mentioned earlier...
 
@@ -788,9 +788,7 @@ Yep 3 things we'll modify in NuttX, as mentioned earlier...
     CONFIG_RAM_START=0x40000000
     ```
 
-And hopefully NuttX will boot on PinePhone!
-
-_But will we see anything when NuttX boots on PinePhone?_
+_Will we see anything when NuttX boots on PinePhone?_
 
 Not yet. We need to implement the UART Driver for NuttX...
 
@@ -806,7 +804,7 @@ __For QEMU:__ These are the Source Files for the UART Driver (PL011)...
 
     [(More about PL011 UART)](https://krinkinmu.github.io/2020/11/29/PL011.html)
 
-We'll redo the code above for the __PinePhone UART Driver__ (Allwinner A64 SoC)...
+We'll redo the code above for the __PinePhone UART Driver__ (based on Allwinner A64 SoC)...
 
 -   [__UART0 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
 
@@ -868,7 +866,7 @@ Tiny OSes are also easier to tweak. Think of the super-tweakable [__PineTime Sma
 
 _Are there NuttX Drivers for PinePhone?_
 
-Here comes the hard part: We'll have to __code the Nuttx Driver__ for each PinePhone component...
+Here comes the hard part: We have to __code the Nuttx Driver__ for each PinePhone component...
 
 -   [__LCD Display / Touch Panel__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.11_LCM/CTP)
 
@@ -880,6 +878,8 @@ Here comes the hard part: We'll have to __code the Nuttx Driver__ for each PineP
 
 -   [__Power Management__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.6_POWER)
 
+-   [__Allwinner A64 SoC__](https://linux-sunxi.org/A64)
+
 -   [__And more...__](https://wiki.pine64.org/wiki/PinePhone_component_list)
 
 Some drivers might already exist in NuttX...
@@ -888,11 +888,11 @@ Some drivers might already exist in NuttX...
 
 _Do we really need all these PinePhone Drivers?_
 
-For __Educational Purposes__, we might not need all the PinePhone Drivers.
+For __Educational Purposes__, we might not need all PinePhone Drivers.
 
 Just pick the PinePhone Drivers that we need, compile them into NuttX, copy to microSD and boot up PinePhone.
 
-This might be a quick way to experiment with the internals of NuttX on PinePhone.
+Might be a quick way to __experiment with the internals__ of NuttX on PinePhone!
 
 _What about NuttX Apps for PinePhone?_
 
@@ -910,7 +910,7 @@ _What about X11 Apps?_
 
 According to [__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/)...
 
--   [__Tab Window Manager__](https://github.com/apache/incubator-nuttx-apps/tree/master/graphics/twm4nx) (or Tom's Window Manager) has been ported from X11 to NuttX
+-   [__Tab Window Manager__](https://github.com/apache/incubator-nuttx-apps/tree/master/graphics/twm4nx) (Tom's Window Manager) has been ported from X11 to NuttX
 
 -   (Coming Soon) [__Nano-X Window System__](http://www.microwindows.org/) might make it easier to port X11 Apps to NuttX
 
@@ -918,7 +918,7 @@ Stay tuned for updates!
 
 # What's Next
 
-TODO
+TODO: Not ready for Daily Driver, but NuttX on PinePhone could become a valuable Educational Resource!
 
 There's plenty to be done for porting NuttX to PinePhone, please lemme know if you're keen to help! 🙏
 
