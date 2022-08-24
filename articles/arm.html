@@ -561,7 +561,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>We’ll change <strong><code>_start</code></strong> to <strong><code>0x4000</code> <code>0000</code></strong> for PinePhone.</p>
 <p>In a while we’ll see that Start of RAM is <strong><code>0x4000</code> <code>0000</code></strong> and Image Load Offset is 0 for a PinePhone Linux Image.</p>
 <p>(What’s the significance of <code>0x4028</code> <code>0000</code>? Something specific to NXP i.MX8?)</p>
-<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
+<p><img src="https://lupyuen.github.io/images/arm-ghidra7.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
 <h1 id="pinephone-image"><a href="#pinephone-image">11 PinePhone Image</a></h1>
 <p>We’ve seen our NuttX Image (which actually looks like a Linux Kernel Image). Let’s compare with a <strong>PinePhone Linux Kernel Image</strong> and see what needs to be patched in NuttX.</p>
 <p>We’ll analyse the Linux Kernel in the <strong>PinePhone Jumpdrive Image</strong>, since it’s small…</p>
@@ -903,7 +903,7 @@ ghidraRun.bat</code></pre></div></li>
 <li>Endian: <strong><code>little</code></strong></li>
 <li>Compiler: <strong><code>default</code></strong></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
+<p><img src="https://lupyuen.github.io/images/arm-ghidra7.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
 </li>
 <li>
 <p>Click <strong>OK</strong> and <strong>OK</strong> again.</p>
