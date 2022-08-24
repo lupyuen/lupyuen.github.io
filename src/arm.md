@@ -713,7 +713,7 @@ Here's the Jumpdrive __`Image`__ (Linux Kernel) in Ghidra...
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra2.png)
 
-_We're looking at the Linux Kernel Header?_
+_That's the Linux Kernel Header?_
 
 Right! The [__Linux Kernel Header__](https://www.kernel.org/doc/html/latest/arm64/booting.html) shows...
 
@@ -725,7 +725,7 @@ Right! The [__Linux Kernel Header__](https://www.kernel.org/doc/html/latest/arm6
 
     (At offset `0x08`, pic above)
 
-The first instruction at `0x4000` `0000` jumps to `0x4081` `0000` (to skip the Linux Kernel Header)...
+The __First Instruction__ at `0x4000` `0000` jumps to `0x4081` `0000` (to skip the Linux Kernel Header)...
 
 ```text
 40000000 00 40 20 14  b FUN_40810000
@@ -1085,6 +1085,6 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
 
     Set __"New Start Address"__ to __`40000000`__
 
-![Change Start Address to 40000000](https://lupyuen.github.io/images/Screenshot%202022-08-21%20at%207.07.15%20PM.png)
+![Change Start Address to 40000000](https://lupyuen.github.io/images/arm-ghidra8.png)
 
 And we're done with the analysis!
