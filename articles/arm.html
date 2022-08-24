@@ -410,19 +410,20 @@ Hello, World!</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Architecture-Specific Source Files" /></p>
 <p><a href="https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common"><em>Arm64 Architecture-Specific Source Files</em></a></p>
 <h1 id="inside-nuttx-for-cortex-a53"><a href="#inside-nuttx-for-cortex-a53">8 Inside NuttX for Cortex-A53</a></h1>
-<p>Now we browse the <strong>Source Files</strong> for the implementation of Cortex-A53 on NuttX.</p>
+<p><em>What’s inside the NuttX code for Cortex-A53?</em></p>
+<p>Let’s browse the <strong>Source Files</strong> for the implementation of Cortex-A53 on NuttX.</p>
 <p>NuttX treats QEMU as a <strong>Target Board</strong> (as though it was a dev board). Here are the Source Files and Build Configuration for the <strong>QEMU Board</strong>…</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53">nuttx/boards/arm64/qemu/qemu-a53</a></li>
 </ul>
 <p>(We’ll clone this to create a Target Board for PinePhone)</p>
-<p>The <strong>Board-Specific Drivers</strong> for QEMU are started in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c">qemu-a53/src/qemu_bringup.c</a></p>
+<p>The <strong>Board-Specific Drivers</strong> for QEMU are started in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c">qemu_bringup.c</a></p>
 <p>(We’ll start the PinePhone Drivers here)</p>
 <p>The QEMU Board calls the <strong>QEMU Architecture-Specific Drivers</strong> at…</p>
 <ul>
 <li><a href="https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/qemu">nuttx/arch/arm64/src/qemu</a></li>
 </ul>
-<p>The <strong>UART Driver</strong> is located at <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c">qemu/qemu_serial.c</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S">qemu/qemu_lowputc.S</a></p>
+<p>The <strong>UART Driver</strong> is located at <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c">qemu_serial.c</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S">qemu_lowputc.S</a></p>
 <p>(For PinePhone we’ll create a UART Driver for Allwinner A64 SoC. I2C, SPI and other Low-Level A64 Drivers will be located here too)</p>
 <p>The QEMU Functions (Board and Architecture) call the <strong>Arm64 Architecture Functions</strong> (pic above)…</p>
 <ul>
@@ -430,16 +431,18 @@ Hello, World!</code></pre></div>
 </ul>
 <p>Which implement all kinds of Arm64 Features: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c"><strong>FPU</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c"><strong>Interrupts</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c"><strong>MMU</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c"><strong>Tasks</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c"><strong>Timers</strong></a>…</p>
 <p>(We’ll reuse them for PinePhone)</p>
+<p><img src="https://lupyuen.github.io/images/arm-ghidra1.png" alt="Ghidra with Apache NuttX RTOS for Arm Cortex-A53" /></p>
 <h1 id="nuttx-image"><a href="#nuttx-image">9 NuttX Image</a></h1>
+<p><em>NuttX can’t possibly boot on PinePhone right?</em></p>
+<p>It might! Let’s compare our NuttX Image with a PinePhone Linux Image. And find out what needs to be patched.</p>
 <p>TODO</p>
 <p>Next we analyse the NuttX Image with <a href="https://ghidra-sre.org/">Ghidra</a>, to understand the NuttX Image Header and Startup Code.</p>
 <p>Here’s the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx">NuttX ELF Image <code>nuttx</code></a> analysed by Ghidra…</p>
-<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%204.09.55%20PM.png" alt="Top Part of NuttX Image Header" /></p>
 <p>Note that the NuttX Image jumps to <code>real_start</code> (to skip the Image Header)…</p>
 <div class="example-wrap"><pre class="language-text"><code>40280000 4d 5a 00 91     add        x13,x18,#0x16
 40280004 0f 00 00 14     b          real_start</code></pre></div>
 <p><code>real_start</code> is defined at 0x4028 0040 with the Startup Code…</p>
-<p><img src="https://lupyuen.github.io/images/arm-title.png" alt="Bottom Part of NuttX Image Header" /></p>
+<p><img src="https://lupyuen.github.io/images/arm-title.png" alt="Ghidra with Apache NuttX RTOS for Arm Cortex-A53" /></p>
 <p>We see something interesting: The Magic Number <code>ARM\x64</code> appears at address 0x4028 0038.</p>
 <p>Searching the net for this Magic Number reveals that it’s actually an Arm64 Linux Kernel Header!</p>
 <p>When we refer to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx.S">NuttX Arm64 Disassembly <code>nuttx.S</code></a>, we find happiness: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117">arch/arm64/src/common/arm64_head.S</a></p>
@@ -592,7 +595,9 @@ tar xvf initramfs</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>40000000 00 40 20 14     b          FUN_40810000</code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(Sorry Mr Zbikowski, we don’t need your Magic Signature)</a></p>
 <p>The Linux Kernel Code actually begins at 0x4081 0000…</p>
-<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%205.53.58%20PM.png" alt="Linux Kernel Code actually begins at 0x4081 0000" /></p>
+<p><img src="https://lupyuen.github.io/images/arm-ghidra2.png" alt="Ghidra with PinePhone Linux Image" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/arm-ghidra3.png" alt="Ghidra with PinePhone Linux Image" /></p>
 <h1 id="will-nuttx-boot-on-pinephone"><a href="#will-nuttx-boot-on-pinephone">11 Will NuttX Boot On PinePhone?</a></h1>
 <p>TODO</p>
 <p><em>So will NuttX boot on PinePhone?</em></p>
