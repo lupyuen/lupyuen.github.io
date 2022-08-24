@@ -547,6 +547,8 @@ __start:
   b       real_start           /* branch to kernel start */
 ```
 
+[("MZ" refers to Mark Zbikowski)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
+
 Yep that's the jump to __`real_start`__ that we saw earlier.
 
 Followed by this header...
@@ -563,8 +565,6 @@ Followed by this header...
 
 real_start: ...
 ```
-
-[("MZ" refers to Mark Zbikowski)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
 Our NuttX Image actually follows the __Arm64 Linux Kernel Image Format__! As defined here...
 
