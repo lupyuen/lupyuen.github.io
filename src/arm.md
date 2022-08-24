@@ -1000,6 +1000,8 @@ This is how we analyse our [__NuttX ELF Image `nuttx`__](https://github.com/lupy
 
     For __Project Name__: Enter __"My Project"__
 
+    ![New Ghidra Project](https://lupyuen.github.io/images/arm-ghidra4.png)
+
 1.  Click __File__ → __Import File__
 
     Select our [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx) 
@@ -1007,6 +1009,8 @@ This is how we analyse our [__NuttX ELF Image `nuttx`__](https://github.com/lupy
 1.  Ghidra detects that our Executable is __"AARCH64:LE:v8A:default"__.
 
     Click __OK__ and __OK__ again.
+
+    ![Import Ghidra File](https://lupyuen.github.io/images/arm-ghidra5.png)
 
 1.  Double-click our ELF File __`nuttx`__
 
@@ -1017,6 +1021,8 @@ This is how we analyse our [__NuttX ELF Image `nuttx`__](https://github.com/lupy
 1.  When prompted to analyze, click __Yes__ and __Analyze__.
 
     Ignore the warnings.
+
+    ![Ghidra Analysis Options](https://lupyuen.github.io/images/arm-ghidra6.png)
 
 And we're done with the analysis!
 
@@ -1070,5 +1076,7 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
 1.  When prompted to analyze, click __Yes__ and __Analyze__.
 
     Ignore the warnings.
+
+    ![Ghidra Analysis Options](https://lupyuen.github.io/images/arm-ghidra6.png)
 
 And we're done with the analysis!
