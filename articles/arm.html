@@ -591,37 +591,18 @@ tar xvf initramfs</code></pre></div></li>
 </ol>
 <p>Here’s the Jumpdrive <strong><code>Image</code></strong> (Linux Kernel) in Ghidra…</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra2.png" alt="Ghidra with PinePhone Linux Image" /></p>
-<p><em>We should see the Linux Kernel Header?</em></p>
-<p>Yep when we check the <a href="https://www.kernel.org/doc/html/latest/arm64/booting.html"><strong>Linux Kernel Header</strong></a>…</p>
+<p><em>We’re looking at the Linux Kernel Header?</em></p>
+<p>Right! The <a href="https://www.kernel.org/doc/html/latest/arm64/booting.html"><strong>Linux Kernel Header</strong></a> shows…</p>
 <ul>
 <li>
-<p><strong>Magic Number</strong> <code>ARM\x64</code> appears at offset <code>0x38</code></p>
+<p><strong>Magic Number</strong> is <code>ARM\x64</code></p>
+<p>(At offset <code>0x38</code>)</p>
 </li>
 <li>
-<p><strong>Image Load Offset</strong> is <code>0</code> (at offset <code>0x08</code>)</p>
+<p><strong>Image Load Offset</strong> is <code>0</code></p>
+<p>(At offset <code>0x08</code>, pic above)</p>
 </li>
 </ul>
-<p>Now the <strong>Start of RAM</strong> is <code>0x4000</code> <code>0000</code> according to the PinePhone Memory Map…</p>
-<ul>
-<li><a href="https://linux-sunxi.org/A64/Memory_map"><strong>Allwinner A64 Memory Map</strong></a></li>
-</ul>
-<p>So we shift <code>Image</code> in Ghidra to start at <code>0x4000</code> <code>0000</code>…</p>
-<ul>
-<li>
-<p>Click “Window” &gt; “Memory Map”</p>
-</li>
-<li>
-<p>Click “ram”</p>
-</li>
-<li>
-<p>Click the icon with the Four Arrows</p>
-<p>(“Move a block to another address”)</p>
-</li>
-<li>
-<p>Set “New Start Address” to <strong><code>40000000</code></strong></p>
-</li>
-</ul>
-<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-21%20at%207.07.15%20PM.png" alt="Change Start Address to 40000000" /></p>
 <p>The first instruction at <code>0x4000</code> <code>0000</code> jumps to <code>0x4081</code> <code>0000</code> (to skip the Linux Kernel Header)…</p>
 <div class="example-wrap"><pre class="language-text"><code>40000000 00 40 20 14  b FUN_40810000</code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(Sorry Mr Zbikowski, we don’t need your Magic Signature)</a></p>
@@ -877,7 +858,8 @@ ghidraRun.bat</code></pre></div></li>
 <p>This is how we analyse the <strong>PinePhone Linux Kernel Image</strong> with <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>…</p>
 <ol>
 <li>
-<p>Assume that we have installed Ghidra (from the previous section)</p>
+<p>Assume that we have <strong>installed Ghidra</strong></p>
+<p>(From the previous section)</p>
 </li>
 <li>
 <p>Assume that we have extracted and uncompressed the PinePhone Kernel <strong><code>Image</code></strong>…</p>
@@ -885,8 +867,6 @@ ghidraRun.bat</code></pre></div></li>
 </li>
 <li>
 <p>Go back to the <strong>Ghidra Main Window</strong> (“My Project”)</p>
-</li>
-<li>
 <p>Click <strong>File</strong> → <strong>Import File</strong></p>
 <p>Select our PinePhone Kernel <strong><code>Image</code></strong></p>
 </li>
@@ -918,7 +898,21 @@ ghidraRun.bat</code></pre></div></li>
 <p>Ignore the warnings.</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra6.png" alt="Ghidra Analysis Options" /></p>
 </li>
+<li>
+<p><strong>Start of RAM</strong> is <code>0x4000</code> <code>0000</code> according to the PinePhone Memory Map…</p>
+<p><a href="https://linux-sunxi.org/A64/Memory_map"><strong>Allwinner A64 Memory Map</strong></a></p>
+<p><strong>Image Load Offset</strong> is <code>0</code> according to the Linux Kernel Header (offset <code>0x08</code>)</p>
+</li>
+<li>
+<p>So we shift our PinePhone Image to start at <strong><code>0x4000</code> <code>0000</code></strong>…</p>
+<p>Click <strong>“Window”</strong> &gt; <strong>“Memory Map”</strong></p>
+<p>Click <strong>“ram”</strong></p>
+<p>Click the icon with the Four Arrows</p>
+<p>(“Move a block to another address”)</p>
+<p>Set <strong>“New Start Address”</strong> to <strong><code>40000000</code></strong></p>
+</li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-21%20at%207.07.15%20PM.png" alt="Change Start Address to 40000000" /></p>
 <p>And we’re done with the analysis!</p>
 
     
