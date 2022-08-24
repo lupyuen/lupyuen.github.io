@@ -122,7 +122,7 @@ QEMU runs surprisingly well for emulating 64-bit Arm Cortex-A53, especially for 
 
 Let's build NuttX...
 
-> ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
+![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
 
 # Build NuttX: Single Core
 
@@ -673,7 +673,7 @@ That's why our NuttX Image is loaded at `0x4028` `0000`!
 
 _Will this work with PinePhone?_
 
-We'll change `_start` to __`0x4000` `0000`__ for PinePhone.
+We'll change __`_start`__ to __`0x4000` `0000`__ for PinePhone.
 
 In a while we'll see that Start of RAM is __`0x4000` `0000`__ and Image Load Offset is 0 for a PinePhone Linux Image.
 
@@ -724,7 +724,7 @@ Yep when we check the [__Linux Kernel Header__](https://www.kernel.org/doc/html/
 
 -   __Magic Number__ `ARM\x64` appears at offset `0x38`
 
--   __Image Load Offset__ is `0` (offset `0x08`)
+-   __Image Load Offset__ is `0` (at offset `0x08`)
 
 Now the __Start of RAM__ is `0x4000` `0000` according to the PinePhone Memory Map...
 
@@ -747,7 +747,7 @@ So we shift `Image` in Ghidra to start at `0x4000` `0000`...
 The first instruction at `0x4000` `0000` jumps to `0x4081` `0000` (to skip the Linux Kernel Header)...
 
 ```text
-40000000 00 40 20 14     b          FUN_40810000
+40000000 00 40 20 14  b FUN_40810000
 ```
 
 [(Sorry Mr Zbikowski, we don't need your Magic Signature)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
@@ -756,9 +756,9 @@ The __Linux Kernel Code__ actually begins at `0x4081` `0000`...
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra3.png)
 
-After comparing our NuttX Image with a PinePhone Linux Image, we can conclude that they look quite similar!
+After comparing our NuttX Image with a PinePhone Linux Image, we conclude that they look quite similar!
 
-> ![PinePhone Jumpdrive on microSD](https://lupyuen.github.io/images/arm-jumpdrive.png)
+![PinePhone Jumpdrive on microSD](https://lupyuen.github.io/images/arm-jumpdrive.png)
 
 # Will NuttX Boot On PinePhone?
 
