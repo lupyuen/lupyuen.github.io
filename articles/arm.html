@@ -436,8 +436,10 @@ Hello, World!</code></pre></div>
 <h1 id="nuttx-image"><a href="#nuttx-image">9 NuttX Image</a></h1>
 <p><em>NuttX can’t possibly boot on PinePhone right?</em></p>
 <p>It might! Let’s compare our <strong>NuttX Image</strong> with a <strong>PinePhone Linux Image</strong>. And find out what needs to be patched.</p>
-<p>We load our <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> into <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>, the popular open-source tool for Reverse Engineering.</p>
-<p>TODO: Load NuttX into Ghidra</p>
+<p>Follow these steps to load our <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> into <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>, the popular open-source tool for Reverse Engineering…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra"><strong>“Analyse NuttX Image with Ghidra”</strong></a></li>
+</ul>
 <p>Ghidra says that our NuttX Image will be loaded at address <strong><code>0x4028</code> <code>0000</code></strong>. (Pic above)</p>
 <p>The Arm64 Instructions at the top of our NuttX Image will jump to <strong><code>real_start</code></strong> (to skip the header)…</p>
 <div class="example-wrap"><pre class="language-text"><code>40280000 4d 5a 00 91     add        x13,x18,#0x16
@@ -559,6 +561,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>We’ll change <strong><code>_start</code></strong> to <strong><code>0x4000</code> <code>0000</code></strong> for PinePhone.</p>
 <p>In a while we’ll see that Start of RAM is <strong><code>0x4000</code> <code>0000</code></strong> and Image Load Offset is 0 for a PinePhone Linux Image.</p>
 <p>(What’s the significance of <code>0x4028</code> <code>0000</code>? Something specific to NXP i.MX8?)</p>
+<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
 <h1 id="pinephone-image"><a href="#pinephone-image">11 PinePhone Image</a></h1>
 <p>We’ve seen our NuttX Image (which actually looks like a Linux Kernel Image). Let’s compare with a <strong>PinePhone Linux Kernel Image</strong> and see what needs to be patched in NuttX.</p>
 <p>We’ll analyse the Linux Kernel in the <strong>PinePhone Jumpdrive Image</strong>, since it’s small…</p>
@@ -579,22 +582,14 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 gunzip initramfs.gz
 tar xvf initramfs</code></pre></div></li>
 <li>
-<p>Import the uncompressed <strong><code>Image</code></strong> (Linux Kernel) into Ghidra</p>
+<p>Follow these steps to import the uncompressed <strong><code>Image</code></strong> (Linux Kernel) into Ghidra</p>
+<p><a href="https://lupyuen.github.io/articles/arm#appendix-analyse-pinephone-image-with-ghidra"><strong>“Analyse PinePhone Image with Ghidra”</strong></a></p>
 </li>
 <li>
-<p>For “Language” select “AARCH64:LE:v8A:default”…</p>
-<ul>
-<li>Processor: <code>AARCH64</code></li>
-<li>Variant: <code>v8A</code></li>
-<li>Size: <code>64</code></li>
-<li>Endian: <code>little</code></li>
-<li>Compiler: <code>default</code></li>
-</ul>
+<p>Check that we have set the “Language” as <strong>“AARCH64:LE:v8A:default”</strong>. (Pic above)</p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
-<p>TODO: Load PinePhone Kernel into Ghidra</p>
-<p>Here’s the Jumpdrive <code>Image</code> (Linux Kernel) in Ghidra…</p>
+<p>Here’s the Jumpdrive <strong><code>Image</code></strong> (Linux Kernel) in Ghidra…</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra2.png" alt="Ghidra with PinePhone Linux Image" /></p>
 <p><em>We should see the Linux Kernel Header?</em></p>
 <p>Yep when we check the <a href="https://www.kernel.org/doc/html/latest/arm64/booting.html"><strong>Linux Kernel Header</strong></a>…</p>
@@ -816,9 +811,111 @@ CONFIG_RAM_START=0x40000000</code></pre></div></li>
 </li>
 </ol>
 <h1 id="appendix-analyse-nuttx-image-with-ghidra"><a href="#appendix-analyse-nuttx-image-with-ghidra">18 Appendix: Analyse NuttX Image with Ghidra</a></h1>
-<p>TODO</p>
+<p>This is how we analyse our <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> with <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>…</p>
+<p>(Works for any ELF file actually)</p>
+<ol>
+<li>
+<p>Install <a href="https://adoptium.net/releases.html?variant=openjdk11&amp;jvmVariant=hotspot"><strong>Java Dev Kit (JDK) 11</strong></a> (64-bit)</p>
+</li>
+<li>
+<p>Download a <a href="https://github.com/NationalSecurityAgency/ghidra/releases"><strong>Ghidra Release File</strong></a>.</p>
+<p>Extract the Ghidra Release File.</p>
+</li>
+<li>
+<p>Launch Ghidra…</p>
+<div class="example-wrap"><pre class="language-bash"><code># For Linux and macOS
+./ghidraRun
+
+# For Windows
+ghidraRun.bat</code></pre></div></li>
+<li>
+<p>The <strong>Ghidra Help Window</strong> appears, with plenty of useful info that’s not available elsewhere.</p>
+<p>Minimise the Ghidra Help Window for now.</p>
+<p>(But remember to browse it when we have the time!)</p>
+</li>
+<li>
+<p>In the <strong>Ghidra Main Window</strong>, click <strong>File</strong> → <strong>New Project</strong></p>
+<p>For <strong>Project Type</strong>: Select <strong>Non-Shared Project</strong></p>
+<p>For <strong>Project Name</strong>: Enter <strong>“My Project”</strong></p>
+</li>
+<li>
+<p>Click <strong>File</strong> → <strong>Import File</strong></p>
+<p>Select our <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> </p>
+</li>
+<li>
+<p>Ghidra detects that our Executable is <strong>“AARCH64:LE:v8A:default”</strong>.</p>
+<p>Click <strong>OK</strong> and <strong>OK</strong> again.</p>
+</li>
+<li>
+<p>Double-click our ELF File <strong><code>nuttx</code></strong></p>
+<p>The <strong>CodeBrowser Window</strong> appears.</p>
+<p>(With a dragon-like spectre)</p>
+</li>
+<li>
+<p>When prompted to analyze, click <strong>Yes</strong> and <strong>Analyze</strong>.</p>
+<p>Ignore the warnings.</p>
+</li>
+</ol>
+<p>And we’re done with the analysis!</p>
+<p>In case of problems, check these docs…</p>
+<ul>
+<li>
+<p><a href="https://htmlpreview.github.io/?https://github.com/NationalSecurityAgency/ghidra/blob/stable/GhidraDocs/InstallationGuide.html"><strong>“Ghidra Installation Guide”</strong></a></p>
+</li>
+<li>
+<p><a href="https://git.mst.edu/slbnmc/ici-wiki/-/wikis/Tool-Guides/An-Introduction-to-Ghidra"><strong>“An Introduction to Ghidra”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/NationalSecurityAgency/ghidra"><strong>Ghidra Repo</strong></a></p>
+</li>
+</ul>
+<p>Also check the Ghidra Help Window that we have minimised.</p>
 <h1 id="appendix-analyse-pinephone-image-with-ghidra"><a href="#appendix-analyse-pinephone-image-with-ghidra">19 Appendix: Analyse PinePhone Image with Ghidra</a></h1>
-<p>TODO</p>
+<p>This is how we analyse the <strong>PinePhone Linux Kernel Image</strong> with <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>…</p>
+<ol>
+<li>
+<p>Assume that we have installed Ghidra (from the previous section)</p>
+</li>
+<li>
+<p>Assume that we have extracted and uncompressed the PinePhone Kernel <strong><code>Image</code></strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/arm#pinephone-image"><strong>“PinePhone Image”</strong></a></p>
+</li>
+<li>
+<p>Go back to the <strong>Ghidra Main Window</strong> (“My Project”)</p>
+</li>
+<li>
+<p>Click <strong>File</strong> → <strong>Import File</strong></p>
+<p>Select our PinePhone Kernel <strong><code>Image</code></strong></p>
+</li>
+<li>
+<p>At the right of <strong>“Language”</strong>, click the <strong>“<code>...</code>” Button</strong> </p>
+</li>
+<li>
+<p>Enter <strong><code>aarch</code></strong> into the Filter Box.</p>
+<p>Select…</p>
+<ul>
+<li>Processor: <strong><code>AARCH64</code></strong></li>
+<li>Variant: <strong><code>v8A</code></strong></li>
+<li>Size: <strong><code>64</code></strong></li>
+<li>Endian: <strong><code>little</code></strong></li>
+<li>Compiler: <strong><code>default</code></strong></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
+</li>
+<li>
+<p>Click <strong>OK</strong> and <strong>OK</strong> again.</p>
+</li>
+<li>
+<p>Double-click our <strong><code>Image</code></strong> File</p>
+<p>The <strong>CodeBrowser Window</strong> appears.</p>
+<p>(With a dragon-like spectre)</p>
+</li>
+<li>
+<p>When prompted to analyze, click <strong>Yes</strong> and <strong>Analyze</strong>.</p>
+<p>Ignore the warnings.</p>
+</li>
+</ol>
+<p>And we’re done with the analysis!</p>
 
     
 </body>
