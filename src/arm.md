@@ -713,31 +713,17 @@ Here's the Jumpdrive __`Image`__ (Linux Kernel) in Ghidra...
 
 ![Ghidra with PinePhone Linux Image](https://lupyuen.github.io/images/arm-ghidra2.png)
 
-_We should see the Linux Kernel Header?_
+_We're looking at the Linux Kernel Header?_
 
-Yep when we check the [__Linux Kernel Header__](https://www.kernel.org/doc/html/latest/arm64/booting.html)...
+Right! The [__Linux Kernel Header__](https://www.kernel.org/doc/html/latest/arm64/booting.html) shows...
 
--   __Magic Number__ `ARM\x64` appears at offset `0x38`
+-   __Magic Number__ is `ARM\x64`
 
--   __Image Load Offset__ is `0` (at offset `0x08`)
+    (At offset `0x38`)
 
-Now the __Start of RAM__ is `0x4000` `0000` according to the PinePhone Memory Map...
+-   __Image Load Offset__ is `0`
 
--   [__Allwinner A64 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
-
-So we shift `Image` in Ghidra to start at `0x4000` `0000`...
-
--   Click "Window" > "Memory Map"
-
--   Click "ram"
-
--   Click the icon with the Four Arrows
-
-    ("Move a block to another address")
-
--   Set "New Start Address" to __`40000000`__
-
-![Change Start Address to 40000000](https://lupyuen.github.io/images/Screenshot%202022-08-21%20at%207.07.15%20PM.png)
+    (At offset `0x08`, pic above)
 
 The first instruction at `0x4000` `0000` jumps to `0x4081` `0000` (to skip the Linux Kernel Header)...
 
@@ -1040,7 +1026,9 @@ Also check the Ghidra Help Window that we have minimised.
 
 This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](https://ghidra-sre.org/)...
 
-1.  Assume that we have installed Ghidra (from the previous section)
+1.  Assume that we have __installed Ghidra__
+
+    (From the previous section)
 
 1.  Assume that we have extracted and uncompressed the PinePhone Kernel __`Image`__...
 
@@ -1048,7 +1036,7 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
 
 1.  Go back to the __Ghidra Main Window__ ("My Project")
 
-1.  Click __File__ → __Import File__
+    Click __File__ → __Import File__
 
     Select our PinePhone Kernel __`Image`__
 
@@ -1078,5 +1066,25 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
     Ignore the warnings.
 
     ![Ghidra Analysis Options](https://lupyuen.github.io/images/arm-ghidra6.png)
+
+1.  __Start of RAM__ is `0x4000` `0000` according to the PinePhone Memory Map...
+
+    [__Allwinner A64 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
+
+    __Image Load Offset__ is `0` according to the Linux Kernel Header (offset `0x08`)
+
+1.  So we shift our PinePhone Image to start at __`0x4000` `0000`__...
+
+    Click __"Window"__ > __"Memory Map"__
+
+    Click __"ram"__
+
+    Click the icon with the Four Arrows
+
+    ("Move a block to another address")
+
+    Set __"New Start Address"__ to __`40000000`__
+
+![Change Start Address to 40000000](https://lupyuen.github.io/images/Screenshot%202022-08-21%20at%207.07.15%20PM.png)
 
 And we're done with the analysis!
