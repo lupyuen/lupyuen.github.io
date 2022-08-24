@@ -851,8 +851,6 @@ Which connects to PinePhone's __Headphone Port.__ Genius!
 
 # PinePhone on RTOS
 
-TODO
-
 _Will an RTOS work well on Phones?_
 
 [__BlackBerry 10__](https://en.wikipedia.org/wiki/BlackBerry_10) phones ran on [__QNX__](https://en.wikipedia.org/wiki/QNX), which is a Real-Time Operating System. (10 years ago!)
@@ -877,9 +875,9 @@ A tiny operating system (like NuttX), might be good for __teaching the internals
 
 We might not get all PinePhone features to work.  But at least we'll understand every single feature that we built!
 
-Tiny OSes are also easier to tweak. Think of the super-tweakable __PineTime Smartwatch__, which also runs on an RTOS. (FreeRTOS)
+Tiny OSes are also easier to tweak. Think of the super-tweakable [__PineTime Smartwatch__](https://wiki.pine64.org/index.php/PineTime), which also runs on an RTOS. (FreeRTOS)
 
-(Maybe someday PineTime, PinePhone and Pinebook Pro will run NuttX for __Educational Purposes__!)
+(Maybe someday PineTime, PinePhone and Pinebook Pro will run NuttX for Educational Purposes!)
 
 ![PinePhone on Linux with a Zig GTK App](https://lupyuen.github.io/images/pinephone-title.jpg)
 
@@ -887,11 +885,9 @@ Tiny OSes are also easier to tweak. Think of the super-tweakable __PineTime Smar
 
 # PinePhone Drivers and Apps
 
-TODO
+_Are there NuttX Drivers for PinePhone?_
 
-Here comes the hard part.
-
-No drivers? Well PinePhone comes bundled with a fixed set of peripherals...
+Here comes the hard part: We'll have to __code the Nuttx Driver__ for each PinePhone component...
 
 -   [__LCD Display / Touch Panel__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.11_LCM/CTP)
 
@@ -903,21 +899,31 @@ No drivers? Well PinePhone comes bundled with a fixed set of peripherals...
 
 -   [__Power Management__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.6_POWER)
 
--   And more
+-   [__And more...__](https://wiki.pine64.org/wiki/PinePhone_component_list)
 
-And interfaces: UART, I2C, SPI, ...
+Some drivers might already exist in NuttX...
 
-Just build the drivers and we're done? (Yep I sound really naive now)
+-   [__NuttX Drivers__](https://github.com/apache/incubator-nuttx/tree/master/drivers)
 
-Just like PineDio Stack BL604: Display, Touch Panel, LoRaWAN, ...
+_Do we really need all these PinePhone Drivers?_
 
-For Educational Purposes, we might not need all the PinePhone Drivers. Just pick the NuttX Drivers that we need, compile them into NuttX, copy to microSD and boot up PinePhone.
+For __Educational Purposes__, we might not need all the PinePhone Drivers.
 
-No apps? Might be interesting to build PinePhone Apps the safer way with Zig
+Just pick the PinePhone Drivers that we need, compile them into NuttX, copy to microSD and boot up PinePhone.
 
-Simple apps might work with LVGL and Zig
+This might be a quick way to experiment with the internals of NuttX on PinePhone.
 
-Can we build PinePhone Drivers in Zig?
+_What about NuttX Apps for PinePhone?_
+
+NuttX is bundled with some __Demos and Utilities__...
+
+-   [__NuttX Apps__](https://github.com/apache/incubator-nuttx-apps)
+
+But we'll probably create our own __GUI Apps__ for PinePhone, like with __Zig and LVGL__...
+
+-   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
+
+(Can we build PinePhone Drivers with Zig? Might be interesting to explore!)
 
 TODO: From [__Alan Carvalho de Assis__](https://www.linkedin.com/in/acassis/)
 
