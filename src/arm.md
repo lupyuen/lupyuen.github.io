@@ -1026,30 +1026,32 @@ Also check the Ghidra Help Window that we have minimised.
 
 This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](https://ghidra-sre.org/)...
 
-1.  Assume that we have __installed Ghidra__
-
-    (From the previous section)
-
-1.  Assume that we have extracted and uncompressed the PinePhone Kernel __`Image`__...
+1.  Assume that we've extracted and uncompressed the PinePhone Kernel __`Image`__...
 
     [__"PinePhone Image"__](https://lupyuen.github.io/articles/arm#pinephone-image)
 
-1.  Go back to the __Ghidra Main Window__ ("My Project")
+1.  Assume that we've created a __Ghidra Project__
+
+    (From the previous section)
+
+1.  Go back to the __Ghidra Project Window__: "My Project"
 
     Click __File__ → __Import File__
 
     Select our PinePhone Kernel __`Image`__
 
 1.  At the right of __"Language"__, click the __"`...`" Button__ 
-    
-1.  Enter __`aarch`__ into the Filter Box.
 
-    Select...
+1.  Enter __`aarch`__ into the Filter Box. Select...
     -   Processor: __`AARCH64`__
     -   Variant: __`v8A`__
     -   Size: __`64`__
     -   Endian: __`little`__
     -   Compiler: __`default`__
+
+    Click __OK__. 
+    
+    "Language" should now show __"AARCH64:LE:v8A:default"__
 
     ![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/arm-ghidra7.png)
 
