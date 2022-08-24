@@ -564,7 +564,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>(What’s the significance of <code>0x4028</code> <code>0000</code>? Something specific to NXP i.MX8?)</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra7.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
 <h1 id="pinephone-image"><a href="#pinephone-image">11 PinePhone Image</a></h1>
-<p>We’ve seen our NuttX Image (which actually looks like a Linux Kernel Image). Now we compare with a <strong>PinePhone Linux Kernel Image</strong> and see what needs to be patched in NuttX.</p>
+<p>We’ve seen our NuttX Image (which actually looks like a Linux Kernel Image). Now we compare with a <strong>PinePhone Linux Kernel Image</strong> and find out what needs to be patched in NuttX.</p>
 <p>We’ll analyse the Linux Kernel in the <strong>PinePhone Jumpdrive Image</strong>, since it’s small…</p>
 <ul>
 <li><a href="https://github.com/dreemurrs-embedded/Jumpdrive"><strong>dreemurrs-embedded/Jumpdrive</strong></a></li>
@@ -606,7 +606,7 @@ tar xvf initramfs</code></pre></div></li>
 </ul>
 <p>The <strong>First Instruction</strong> at <code>0x4000</code> <code>0000</code> jumps to <code>0x4081</code> <code>0000</code> (to skip the Linux Kernel Header)…</p>
 <div class="example-wrap"><pre class="language-text"><code>40000000 00 40 20 14  b FUN_40810000</code></pre></div>
-<p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(Sorry Mr Zbikowski, we don’t need your Magic Signature)</a></p>
+<p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(Sorry Mr Zbikowski, PinePhone doesn’t need your Magic Signature)</a></p>
 <p>The <strong>Linux Kernel Code</strong> actually begins at <code>0x4081</code> <code>0000</code>…</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra3.png" alt="Ghidra with PinePhone Linux Image" /></p>
 <p>After comparing our NuttX Image with a PinePhone Linux Image, we conclude that they look quite similar!</p>
@@ -637,7 +637,7 @@ tar xvf initramfs</code></pre></div></li>
 <p>Change <strong><code>_start</code></strong> to <strong><code>0x4000</code> <code>0000</code></strong> (from <code>0x4028</code> <code>0000</code>) in the NuttX Linker Script: <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33">dramboot.ld</a></p>
 <div class="example-wrap"><pre class="language-text"><code>SECTIONS
 {
-/* TODO: Change to 0x4000000 for PinePhone */
+/* TODO: Change to 0x40000000 for PinePhone */
 . = 0x40280000;  /* uboot load address */
 _start = .;</code></pre></div></li>
 <li>
@@ -792,7 +792,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div></li>
 </li>
 <li>
 <p>What happens when we power on PinePhone? How does it start the Kernel Image in the microSD Card?</p>
-<p>These docs for Allwinner A64 may be helpful…</p>
+<p>Check our these docs for Allwinner A64…</p>
 <p><a href="https://linux-sunxi.org/BROM#A64"><strong>A64 Boot ROM</strong></a></p>
 <p><a href="https://linux-sunxi.org/U-Boot"><strong>A64 U-Boot</strong></a></p>
 <p><a href="https://linux-sunxi.org/BROM#U-Boot_SPL_limitations"><strong>A64 U-Boot SPL</strong></a></p>
@@ -880,7 +880,7 @@ ghidraRun.bat</code></pre></div></li>
 <p>Select our PinePhone Kernel <strong><code>Image</code></strong></p>
 </li>
 <li>
-<p>At the right of <strong>“Language”</strong>, click the <strong>“<code>...</code>” Button</strong> </p>
+<p>At the right of <strong>Language</strong>, click the <strong>“<code>...</code>” Button</strong> </p>
 </li>
 <li>
 <p>Enter <strong><code>aarch</code></strong> into the Filter Box. Select…</p>
@@ -892,7 +892,7 @@ ghidraRun.bat</code></pre></div></li>
 <li>Compiler: <strong><code>default</code></strong></li>
 </ul>
 <p>Click <strong>OK</strong>. </p>
-<p>“Language” should now show <strong>“AARCH64:LE:v8A:default”</strong></p>
+<p>Language should now show <strong>“AARCH64:LE:v8A:default”</strong></p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra7.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
 </li>
 <li>
@@ -915,11 +915,11 @@ ghidraRun.bat</code></pre></div></li>
 </li>
 <li>
 <p>So we shift our PinePhone Image to start at <strong><code>0x4000</code> <code>0000</code></strong>…</p>
-<p>Click <strong>“Window”</strong> &gt; <strong>“Memory Map”</strong></p>
-<p>Click <strong>“ram”</strong></p>
-<p>Click the icon with the Four Arrows</p>
-<p>(“Move a block to another address”)</p>
-<p>Set <strong>“New Start Address”</strong> to <strong><code>40000000</code></strong></p>
+<p>Click <strong>Window</strong> → <strong>Memory Map</strong></p>
+<p>Click <strong>ram</strong></p>
+<p>Click the icon at top right with the Four Arrows (pic below)</p>
+<p>(The icon says “Move a block to another address”)</p>
+<p>Set <strong>New Start Address</strong> to <strong><code>40000000</code></strong></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra8.png" alt="Change Start Address to 40000000" /></p>
