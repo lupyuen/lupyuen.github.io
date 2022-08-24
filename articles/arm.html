@@ -74,13 +74,14 @@
 <li><a href="#test-nuttx-with-qemu-multi-core">7 Test NuttX with QEMU: Multi Core</a><ul></ul></li>
 <li><a href="#inside-nuttx-for-cortex-a53">8 Inside NuttX for Cortex-A53</a><ul></ul></li>
 <li><a href="#nuttx-image">9 NuttX Image</a><ul></ul></li>
-<li><a href="#pinephone-image">10 PinePhone Image</a><ul></ul></li>
-<li><a href="#will-nuttx-boot-on-pinephone">11 Will NuttX Boot On PinePhone?</a><ul></ul></li>
-<li><a href="#uart-driver-for-nuttx">12 UART Driver for NuttX</a><ul></ul></li>
-<li><a href="#pinephone-on-rtos">13 PinePhone on RTOS</a><ul></ul></li>
-<li><a href="#pinephone-drivers-and-apps">14 PinePhone Drivers and Apps</a><ul></ul></li>
-<li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
-<li><a href="#notes">16 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Aug 2022</em></p>
+<li><a href="#ram-configuration">10 RAM Configuration</a><ul></ul></li>
+<li><a href="#pinephone-image">11 PinePhone Image</a><ul></ul></li>
+<li><a href="#will-nuttx-boot-on-pinephone">12 Will NuttX Boot On PinePhone?</a><ul></ul></li>
+<li><a href="#uart-driver-for-nuttx">13 UART Driver for NuttX</a><ul></ul></li>
+<li><a href="#pinephone-on-rtos">14 PinePhone on RTOS</a><ul></ul></li>
+<li><a href="#pinephone-drivers-and-apps">15 PinePhone Drivers and Apps</a><ul></ul></li>
+<li><a href="#whats-next">16 What’s Next</a><ul></ul></li>
+<li><a href="#notes">17 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/arm-title.png" alt="Ghidra with Apache NuttX RTOS for Arm Cortex-A53" /></p>
 <p><em>Ghidra with Apache NuttX RTOS for Arm Cortex-A53</em></p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) runs on 64-bit <strong>Arm Cortex-A53</strong> with Multiple Cores…</p>
@@ -445,44 +446,44 @@ Hello, World!</code></pre></div>
 <p>We see something interesting: The <strong>Magic Number <code>ARM\x64</code></strong> appears at address <code>0x4028 0038</code>. (Offset <code>0x38</code>)</p>
 <p>Searching the net for this Magic Number reveals that it’s actually an <strong>Arm64 Linux Kernel Header!</strong></p>
 <p>When we refer to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx.S"><strong>NuttX Disassembly <code>nuttx.S</code></strong></a>, we find happiness: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117">arch/arm64/src/common/arm64_head.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>/* Kernel startup entry point.
- * ---------------------------
- *
- * The requirements are:
- *   MMU = off, D-cache = off, I-cache = on or off,
- *   x0 = physical address to the FDT blob.
- *       it will be used when NuttX support device tree in the future
- *
- * This must be the very first address in the loaded image.
- * It should be loaded at any 4K-aligned address.
- */
-.globl __start;
+<div class="example-wrap"><pre class="language-text"><code>  /* Kernel startup entry point.
+   * ---------------------------
+   *
+   * The requirements are:
+   *   MMU = off, D-cache = off, I-cache = on or off,
+   *   x0 = physical address to the FDT blob.
+   *       it will be used when NuttX support device tree in the future
+   *
+   * This must be the very first address in the loaded image.
+   * It should be loaded at any 4K-aligned address.
+   */
+  .globl __start;
 __start:
 
-/* DO NOT MODIFY. Image header expected by Linux boot-loaders.
- *
- * This add instruction has no meaningful effect except that
- * its opcode forms the magic &quot;MZ&quot; signature of a PE/COFF file
- * that is required for UEFI applications.
- *
- * Some bootloader (such imx8 uboot) checking the magic &quot;MZ&quot; to see
- * if the image is a valid Linux image. but modifying the bootLoader is
- * unnecessary unless we need to do a customize secure boot.
- * so just put the &#39;&#39;MZ&quot; in the header to make bootloader happiness
- */
+  /* DO NOT MODIFY. Image header expected by Linux boot-loaders.
+   *
+   * This add instruction has no meaningful effect except that
+   * its opcode forms the magic &quot;MZ&quot; signature of a PE/COFF file
+   * that is required for UEFI applications.
+   *
+   * Some bootloader (such imx8 uboot) checking the magic &quot;MZ&quot; to see
+   * if the image is a valid Linux image. but modifying the bootLoader is
+   * unnecessary unless we need to do a customize secure boot.
+   * so just put the &#39;&#39;MZ&quot; in the header to make bootloader happiness
+   */
 
-add     x13, x18, #0x16      /* the magic &quot;MZ&quot; signature */
-b       real_start           /* branch to kernel start */</code></pre></div>
-<p>Yep that’s the jump to <strong><code>real_start</code></strong> we saw earlier.</p>
+  add     x13, x18, #0x16      /* the magic &quot;MZ&quot; signature */
+  b       real_start           /* branch to kernel start */</code></pre></div>
+<p>Yep that’s the jump to <strong><code>real_start</code></strong> that we saw earlier.</p>
 <p>Followed by this header…</p>
-<div class="example-wrap"><pre class="language-text"><code>.quad   0x480000              /* Image load offset from start of RAM */
-.quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
-.quad   __HEAD_FLAGS         /* Informative flags, little-endian */
-.quad   0                    /* reserved */
-.quad   0                    /* reserved */
-.quad   0                    /* reserved */
-.ascii  &quot;ARM\x64&quot;            /* Magic number, &quot;ARM\x64&quot; */
-.long   0                    /* reserved */
+<div class="example-wrap"><pre class="language-text"><code>  .quad   0x480000              /* Image load offset from start of RAM */
+  .quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
+  .quad   __HEAD_FLAGS         /* Informative flags, little-endian */
+  .quad   0                    /* reserved */
+  .quad   0                    /* reserved */
+  .quad   0                    /* reserved */
+  .ascii  &quot;ARM\x64&quot;            /* Magic number, &quot;ARM\x64&quot; */
+  .long   0                    /* reserved */
 
 real_start: ...</code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to Mark Zbikowski)</a></p>
@@ -502,15 +503,22 @@ u64 res4      = 0;            /* reserved */
 u32 magic     = 0x644d5241;   /* Magic number, little endian, &quot;ARM\x64&quot; */
 u32 res5;                     /* reserved (used for PE COFF offset) */</code></pre></div>
 <p><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html">(Source)</a></p>
+<p><em>Is there a proper Linux Header in our NuttX Image?</em></p>
+<p>Let’s do a quick check on our NuttX Header.</p>
+<p>The <strong>Image Load Offset</strong> in our NuttX Header is <strong><code>0x48 0000</code></strong> as we’ve seen earlier…</p>
+<div class="example-wrap"><pre class="language-text"><code>.quad   0x480000  /* Image load offset from start of RAM */</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107">(Source)</a></p>
+<p>Our RAM starts at <strong><code>0x4000 0000</code></strong>. (We’ll see later)</p>
+<p>This means that our NuttX Image will be loaded at <strong><code>0x4048 0000</code></strong>.</p>
+<p>But Ghidra (and the Arm Disassembly) says that our NuttX Image is actually loaded at <strong><code>0x4028 0000</code></strong>! (Instead of <code>0x4048 0000</code>)</p>
+<p>Maybe the Image Load Offset should have been <strong><code>0x28 0000</code></strong>? (Instead of <code>0x48 0000</code>)</p>
+<p>Everything else in the NuttX Header looks like a proper Linux Kernel Header. Yep our NuttX Image might actually boot on PinePhone with some patching!</p>
+<h1 id="ram-configuration"><a href="#ram-configuration">10 RAM Configuration</a></h1>
 <p>TODO</p>
-<p>Start of RAM is 0x4000 0000. The Image Load Offset in our NuttX Image Header is 0x48 0000 according to <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107">arch/arm64/src/common/arm64_head.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>    .quad   0x480000              /* Image load offset from start of RAM */</code></pre></div>
-<p>This means that our NuttX Image will be loaded at 0x4048 0000.</p>
-<p>I wonder if this Image Load Offset should have been 0x28 0000? (Instead of 0x48 0000)</p>
-<p>Remember that Ghidra (and the Arm Disassembly) says that our NuttX Image is actually loaded at 0x4028 0000. (Instead of 0x4048 0000)</p>
-<p>RAM Size and RAM Start are defined in the NuttX Configuration: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig</a></p>
+<p>RAM Size and RAM Start are defined in the NuttX Configuration…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_SIZE=134217728
 CONFIG_RAM_START=0x40000000</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">(Source)</a></p>
 <p>That’s 128 MB RAM. Which should fit inside PinePhone’s 2 GB RAM.</p>
 <p>The NuttX Image was built with this Linker Command, based on <code>make --trace</code>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-ld \
@@ -542,7 +550,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>We’ll change this to 0x4000 0000 for PinePhone, since Start of RAM is 0x4000 0000 and Image Load Offset is 0. (See below)</p>
 <p>We’ve seen the NuttX Image (which looks like a Linux Kernel Image), let’s compare with a PinePhone Linux Kernel Image and see how NuttX needs to be tweaked…</p>
 <p>(What is the significance of 0x4028 0000? Something specific to NXP i.MX8?)</p>
-<h1 id="pinephone-image"><a href="#pinephone-image">10 PinePhone Image</a></h1>
+<h1 id="pinephone-image"><a href="#pinephone-image">11 PinePhone Image</a></h1>
 <p>TODO</p>
 <p>Will NuttX run on PinePhone? Let’s analyse a PinePhone Linux Kernel Image with Ghidra, to look at the Linux Kernel Header and Startup Code.</p>
 <p>We’ll use the PinePhone Jumpdrive Image, since it’s small…</p>
@@ -598,7 +606,7 @@ tar xvf initramfs</code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(Sorry Mr Zbikowski, we don’t need your Magic Signature)</a></p>
 <p>The Linux Kernel Code actually begins at 0x4081 0000…</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra3.png" alt="Ghidra with PinePhone Linux Image" /></p>
-<h1 id="will-nuttx-boot-on-pinephone"><a href="#will-nuttx-boot-on-pinephone">11 Will NuttX Boot On PinePhone?</a></h1>
+<h1 id="will-nuttx-boot-on-pinephone"><a href="#will-nuttx-boot-on-pinephone">12 Will NuttX Boot On PinePhone?</a></h1>
 <p>TODO</p>
 <p><em>So will NuttX boot on PinePhone?</em></p>
 <p>It’s highly plausible! We discovered (with happiness) that NuttX already generates an Arm64 Linux Kernel Header.</p>
@@ -633,7 +641,7 @@ CONFIG_RAM_SIZE=134217728
 CONFIG_RAM_START=0x40000000</code></pre></div>
 <p><em>But will we see anything when NuttX boots on PinePhone?</em></p>
 <p>Not yet. We’ll need to implement the UART Driver for NuttX…</p>
-<h1 id="uart-driver-for-nuttx"><a href="#uart-driver-for-nuttx">12 UART Driver for NuttX</a></h1>
+<h1 id="uart-driver-for-nuttx"><a href="#uart-driver-for-nuttx">13 UART Driver for NuttX</a></h1>
 <p>TODO</p>
 <p>We won’t see any output from NuttX until we implement the UART Driver for NuttX.</p>
 <p>These are the Source Files for the QEMU UART Driver (PL011)…</p>
@@ -669,7 +677,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration">(Remember to flip the Headphone Switch to OFF)</a></p>
 <p><img src="https://lupyuen.github.io/images/arm-uart.jpg" alt="PinePhone UART Port in disguise" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone UART Port in disguise</em></a></p>
-<h1 id="pinephone-on-rtos"><a href="#pinephone-on-rtos">13 PinePhone on RTOS</a></h1>
+<h1 id="pinephone-on-rtos"><a href="#pinephone-on-rtos">14 PinePhone on RTOS</a></h1>
 <p>TODO</p>
 <p><em>Will an RTOS work well on Phones?</em></p>
 <p><a href="https://en.wikipedia.org/wiki/BlackBerry_10"><strong>BlackBerry 10</strong></a> phones ran on <a href="https://en.wikipedia.org/wiki/QNX"><strong>QNX</strong></a>, which is a Real-Time Operating System. (10 years ago!)</p>
@@ -687,7 +695,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>(Maybe someday PineTime, PinePhone and Pinebook Pro will run NuttX for <strong>Educational Purposes</strong>!)</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone on Linux with a Zig GTK App" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinephone"><em>PinePhone on Linux with a Zig GTK App</em></a></p>
-<h1 id="pinephone-drivers-and-apps"><a href="#pinephone-drivers-and-apps">14 PinePhone Drivers and Apps</a></h1>
+<h1 id="pinephone-drivers-and-apps"><a href="#pinephone-drivers-and-apps">15 PinePhone Drivers and Apps</a></h1>
 <p>TODO</p>
 <p>Here comes the hard part.</p>
 <p>No drivers? Well PinePhone comes bundled with a fixed set of peripherals…</p>
@@ -736,7 +744,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>TODO: port NanoX (nxlib/microwindows) it could open doors to port X11 graphic applications from Linux</p>
 </li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">16 What’s Next</a></h1>
 <p>TODO</p>
 <p>There’s plenty to be done, please lemme know if you’re keen to help! 🙏</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -756,7 +764,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/arm.md"><strong>lupyuen.github.io/src/arm.md</strong></a></p>
-<h1 id="notes"><a href="#notes">16 Notes</a></h1>
+<h1 id="notes"><a href="#notes">17 Notes</a></h1>
 <ol>
 <li>
 <p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1561843749168173056"><strong>this Twitter Thread</strong></a></p>
