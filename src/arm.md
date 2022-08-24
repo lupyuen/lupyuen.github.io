@@ -679,7 +679,7 @@ In a while we'll see that Start of RAM is __`0x4000` `0000`__ and Image Load Off
 
 (What's the significance of `0x4028` `0000`? Something specific to NXP i.MX8?)
 
-![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png)
+![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/arm-ghidra7.png)
 
 # PinePhone Image
 
@@ -1063,7 +1063,7 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
     -   Endian: __`little`__
     -   Compiler: __`default`__
 
-    ![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/Screenshot%202022-08-22%20at%203.39.06%20PM.png)
+    ![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/arm-ghidra7.png)
 
 1.  Click __OK__ and __OK__ again.
 
