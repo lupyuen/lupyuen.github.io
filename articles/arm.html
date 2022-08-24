@@ -600,7 +600,7 @@ tar xvf initramfs</code></pre></div></li>
 <p><strong>Magic Number</strong> <code>ARM\x64</code> appears at offset <code>0x38</code></p>
 </li>
 <li>
-<p><strong>Image Load Offset</strong> is 0</p>
+<p><strong>Image Load Offset</strong> is <code>0</code> (offset <code>0x08</code>)</p>
 </li>
 </ul>
 <p>Now the <strong>Start of RAM</strong> is <code>0x4000</code> <code>0000</code> according to the PinePhone Memory Map…</p>
@@ -629,17 +629,17 @@ tar xvf initramfs</code></pre></div></li>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(Sorry Mr Zbikowski, we don’t need your Magic Signature)</a></p>
 <p>The <strong>Linux Kernel Code</strong> actually begins at <code>0x4081</code> <code>0000</code>…</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra3.png" alt="Ghidra with PinePhone Linux Image" /></p>
+<p>After comparing our NuttX Image with a PinePhone Linux Image, we can conclude that they look quite similar!</p>
 <h1 id="will-nuttx-boot-on-pinephone"><a href="#will-nuttx-boot-on-pinephone">12 Will NuttX Boot On PinePhone?</a></h1>
-<p>TODO</p>
 <p><em>So will NuttX boot on PinePhone?</em></p>
-<p>It’s highly plausible! We discovered (with happiness) that NuttX already generates an Arm64 Linux Kernel Header.</p>
-<p>So NuttX could be a drop-in replacement for the PinePhone Linux Kernel! We just need to…</p>
+<p>It’s highly plausible! We discovered (with happiness) that NuttX already generates an Arm64 <strong>Linux Kernel Header.</strong></p>
+<p>Thus NuttX could be a <strong>drop-in replacement</strong> for the PinePhone Linux Kernel! We just need to…</p>
 <ul>
 <li>
-<p>Write PinePhone Jumpdrive to a microSD Card (with Etcher, in FAT format)</p>
+<p>Write <strong>PinePhone Jumpdrive</strong> to a microSD Card</p>
 </li>
 <li>
-<p>Overwrite <code>Image.gz</code> by the (gzipped) NuttX Binary Image <code>nuttx.bin.gz</code></p>
+<p>Overwrite <strong><code>Image.gz</code></strong> by the (gzipped) NuttX Binary Image <strong><code>nuttx.bin</code></strong></p>
 </li>
 <li>
 <p>Insert the microSD Card into PinePhone</p>
@@ -648,22 +648,30 @@ tar xvf initramfs</code></pre></div></li>
 <p>Power on PinePhone</p>
 </li>
 </ul>
-<p>And NuttX should (theoretically) boot on PinePhone!</p>
-<p>As mentioned earlier, we should rebuild NuttX so that <code>__start</code> is changed to 0x4000 0000 (from 0x4028 0000), as defined in the NuttX Linker Script: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33">boards/arm64/qemu/qemu-a53/scripts/dramboot.ld</a></p>
+<p>And NuttX should (theoretically) <strong>boot on PinePhone!</strong></p>
+<p><em>But we need some changes in NuttX?</em></p>
+<p>Yep 3 things we’ll modify in NuttX, as mentioned earlier…</p>
+<ul>
+<li>
+<p>Change <strong><code>_start</code></strong> to <strong><code>0x4000</code> <code>0000</code></strong> (from <code>0x4028</code> <code>0000</code>) in the NuttX Linker Script: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33">dramboot.ld</a></p>
 <div class="example-wrap"><pre class="language-text"><code>SECTIONS
 {
-  /* TODO: Change to 0x4000000 for PinePhone */
-  . = 0x40280000;  /* uboot load address */
-  _start = .;</code></pre></div>
-<p>Also the Image Load Offset in our NuttX Image Header should be changed to 0x0 (from 0x48 0000): <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107">arch/arm64/src/common/arm64_head.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>    /* TODO: Change to 0x0 for PinePhone */
-    .quad   0x480000              /* Image load offset from start of RAM */</code></pre></div>
-<p>We’ll increase the RAM Size to 2 GB (from 128 MB): <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig</a></p>
+/* TODO: Change to 0x4000000 for PinePhone */
+. = 0x40280000;  /* uboot load address */
+_start = .;</code></pre></div></li>
+<li>
+<p>Change <strong>Image Load Offset</strong> in our NuttX Header to <strong><code>0x0</code></strong> (from <code>0x48</code> <code>0000</code>): <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L107">arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* TODO: Change to 0x0 for PinePhone */
+.quad   0x480000  /* Image load offset from start of RAM */</code></pre></div></li>
+<li>
+<p>Increase the <strong>RAM Size</strong> to <strong>2 GB</strong> (from 128 MB): <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* TODO: Increase to 2 GB for PinePhone */
 CONFIG_RAM_SIZE=134217728
-CONFIG_RAM_START=0x40000000</code></pre></div>
+CONFIG_RAM_START=0x40000000</code></pre></div></li>
+</ul>
+<p>And hopefully NuttX will boot on PinePhone!</p>
 <p><em>But will we see anything when NuttX boots on PinePhone?</em></p>
-<p>Not yet. We’ll need to implement the UART Driver for NuttX…</p>
+<p>Not yet. We need to implement the UART Driver for NuttX…</p>
 <h1 id="uart-driver-for-nuttx"><a href="#uart-driver-for-nuttx">13 UART Driver for NuttX</a></h1>
 <p>TODO</p>
 <p>We won’t see any output from NuttX until we implement the UART Driver for NuttX.</p>
