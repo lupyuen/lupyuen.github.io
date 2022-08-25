@@ -1078,7 +1078,7 @@ if load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_z} /Image.gz; then
 fi
 ```
 
-The above U-Boot Script __`pine64-pinephone.txt`__ is compiled to __`boot.scr`__ by this Makefile: [Jumpdrive/blob/master/Makefile](https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/Makefile#L207-L209)
+The above U-Boot Script __`pine64-pinephone.txt`__ is compiled to __`boot.scr`__ by this Makefile: [Jumpdrive/Makefile](https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/Makefile#L207-L209)
 
 ```text
 %.scr: src/%.txt
