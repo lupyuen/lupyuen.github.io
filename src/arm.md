@@ -821,6 +821,10 @@ Which connects to PinePhone's __Headphone Port.__ Genius!
 
 [(Remember to flip the Headphone Switch to OFF)](https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration)
 
+PinePhone's __UART Log__ will look like this...
+
+-   [__"PinePhone UART Log"__](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
+
 ![PinePhone UART Port in disguise](https://lupyuen.github.io/images/arm-uart.jpg)
 
 [_PinePhone UART Port in disguise_](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
