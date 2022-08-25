@@ -562,6 +562,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p><em>Will this work with PinePhone?</em></p>
 <p>We’ll change <strong><code>_start</code></strong> to <strong><code>0x4000</code> <code>0000</code></strong> for PinePhone.</p>
 <p>In a while we’ll see that Start of RAM is <strong><code>0x4000</code> <code>0000</code></strong> and Image Load Offset is 0 for a PinePhone Linux Image.</p>
+<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(UPDATE: Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
 <p>(What’s the significance of <code>0x4028</code> <code>0000</code>? Something specific to NXP i.MX8?)</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra7.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
 <h1 id="pinephone-image"><a href="#pinephone-image">11 PinePhone Image</a></h1>
@@ -877,17 +878,20 @@ etc                proc               sys</code></pre></div>
 </li>
 <li>
 <p>Unzip <code>Image.gz</code> in RAM</p>
-<p>(At <code>0x4000</code> <code>0000</code> I think?)</p>
+<p>(At <code>0x4008</code> <code>0000</code>)</p>
 </li>
 <li>
 <p>Load the Linux Device Tree…</p>
 <p><code>sun50i-a64-pinephone-1.2.dtb</code></p>
+<p>(At <code>0x4FA0</code> <code>0000</code>)</p>
 </li>
 <li>
 <p>Load the RAM File System <code>initramfs.gz</code></p>
+<p>(At <code>0x4FE0</code> <code>0000</code>)</p>
 </li>
 <li>
 <p>Boot the Unzipped Linux Kernel in <code>Image</code></p>
+<p>(At <code>0x4008</code> <code>0000</code>)</p>
 </li>
 </ul>
 <p>Here’s the Source File: <a href="https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/src/pine64-pinephone.txt">Jumpdrive/src/pine64-pinephone.txt</a></p>
@@ -912,6 +916,14 @@ fi</code></pre></div>
 	@echo &quot;MKIMG $@&quot;
 	@mkimage -A arm -O linux -T script -C none -n &quot;U-Boot boot script&quot; -d $&lt; $@</code></pre></div>
 <p><a href="https://manpages.ubuntu.com/manpages/bionic/man1/mkimage.1.html">(<strong><code>mkimage</code></strong> is documented here)</a></p>
+<p><em>What are fdt_addr_r, kernel_addr_r and ramdisk_addr_r?</em></p>
+<p>They are <strong>Environment Variables</strong> defined in U-Boot…</p>
+<div class="example-wrap"><pre class="language-text"><code>=&gt; printenv
+fdt_addr_r=0x4FA00000
+kernel_addr_r=0x40080000
+ramdisk_addr_r=0x4FE00000</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/70a5b325c2cd6775a9cd7da759679fdb">(Source)</a></p>
+<p>U-Boot says that the <strong>Start of RAM <code>kernel_addr_r</code></strong> is <strong><code>0x4008</code> <code>0000</code></strong>.</p>
 <p><strong>For NuttX:</strong> We might need to modify the above U-Boot Script because…</p>
 <ul>
 <li>
@@ -1038,6 +1050,7 @@ ghidraRun.bat</code></pre></div></li>
 <p><strong>Start of RAM</strong> is <code>0x4000</code> <code>0000</code> according to the PinePhone Memory Map…</p>
 <p><a href="https://linux-sunxi.org/A64/Memory_map"><strong>Allwinner A64 Memory Map</strong></a></p>
 <p><strong>Image Load Offset</strong> is <code>0</code> according to the Linux Kernel Header (offset <code>0x08</code>)</p>
+<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(UPDATE: Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
 </li>
 <li>
 <p>So we shift our PinePhone Image to start at <strong><code>0x4000</code> <code>0000</code></strong>…</p>
