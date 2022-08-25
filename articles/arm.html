@@ -907,7 +907,7 @@ if load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_z} /Image.gz; then
     fi;
   fi;
 fi</code></pre></div>
-<p>The above U-Boot Script <strong><code>pine64-pinephone.txt</code></strong> is compiled to <strong><code>boot.scr</code></strong> by this Makefile: <a href="https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/Makefile#L207-L209">Jumpdrive/blob/master/Makefile</a></p>
+<p>The above U-Boot Script <strong><code>pine64-pinephone.txt</code></strong> is compiled to <strong><code>boot.scr</code></strong> by this Makefile: <a href="https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/Makefile#L207-L209">Jumpdrive/Makefile</a></p>
 <div class="example-wrap"><pre class="language-text"><code>%.scr: src/%.txt
 	@echo &quot;MKIMG $@&quot;
 	@mkimage -A arm -O linux -T script -C none -n &quot;U-Boot boot script&quot; -d $&lt; $@</code></pre></div>
