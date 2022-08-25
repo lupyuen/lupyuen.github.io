@@ -789,8 +789,6 @@ Yep 3 things we'll modify in NuttX, as mentioned earlier...
     CONFIG_RAM_START=0x40000000
     ```
 
-    [(UPDATE: `CONFIG_RAM_START` / Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
-
 _Will we see anything when NuttX boots on PinePhone?_
 
 Not yet. We need to implement the UART Driver for NuttX...
