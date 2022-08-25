@@ -1111,7 +1111,7 @@ kernel_addr_r=0x40080000
 ramdisk_addr_r=0x4FE00000
 ```
 
-[(Source)](https://gist.github.com/lupyuen/70a5b325c2cd6775a9cd7da759679fdb)
+[(Source)](https://github.com/lupyuen/pinephone-nuttx#pinephone-u-boot-log)
 
 U-Boot says that the __Start of RAM `kernel_addr_r`__ is __`0x4008` `0000`__.
 
