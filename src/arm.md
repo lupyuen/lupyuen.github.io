@@ -674,6 +674,8 @@ We'll change __`_start`__ to __`0x4000` `0000`__ for PinePhone.
 
 In a while we'll see that Start of RAM is __`0x4000` `0000`__ and Image Load Offset is 0 for a PinePhone Linux Image.
 
+[(UPDATE: Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
+
 (What's the significance of `0x4028` `0000`? Something specific to NXP i.MX8?)
 
 ![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/arm-ghidra7.png)
@@ -1047,15 +1049,21 @@ According to the log above, the U-Boot Bootloader runs the __U-Boot Script `boot
 
 -   Unzip `Image.gz` in RAM
 
-    (At `0x4000` `0000` I think?)
+    (At `0x4008` `0000`)
 
 -   Load the Linux Device Tree...
 
     `sun50i-a64-pinephone-1.2.dtb`
 
+    (At `0x4FA0` `0000`)
+
 -   Load the RAM File System `initramfs.gz`
 
+    (At `0x4FE0` `0000`)
+
 -   Boot the Unzipped Linux Kernel in `Image`
+
+    (At `0x4008` `0000`)
 
 Here's the Source File: [Jumpdrive/src/pine64-pinephone.txt](https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/src/pine64-pinephone.txt)
 
@@ -1087,6 +1095,21 @@ The above U-Boot Script __`pine64-pinephone.txt`__ is compiled to __`boot.scr`__
 ```
 
 [(__`mkimage`__ is documented here)](https://manpages.ubuntu.com/manpages/bionic/man1/mkimage.1.html)
+
+_What are fdt_addr_r, kernel_addr_r and ramdisk_addr_r?_
+
+They are __Environment Variables__ defined in U-Boot...
+
+```text
+=> printenv
+fdt_addr_r=0x4FA00000
+kernel_addr_r=0x40080000
+ramdisk_addr_r=0x4FE00000
+```
+
+[(Source)](https://gist.github.com/lupyuen/70a5b325c2cd6775a9cd7da759679fdb)
+
+U-Boot says that the __Start of RAM `kernel_addr_r`__ is __`0x4008` `0000`__.
 
 __For NuttX:__ We might need to modify the above U-Boot Script because...
 
@@ -1222,6 +1245,8 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
     [__Allwinner A64 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
 
     __Image Load Offset__ is `0` according to the Linux Kernel Header (offset `0x08`)
+
+    [(UPDATE: Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
 
 1.  So we shift our PinePhone Image to start at __`0x4000` `0000`__...
 
