@@ -1031,6 +1031,73 @@ etc                proc               sys
 
 We hope to see a similar UART Log when NuttX boots successfully on PinePhone.
 
+_What's `boot.scr`?_
+
+```text
+Found U-Boot script /boot.scr
+```
+
+According to the log above, the U-Boot Bootloader runs the __U-Boot Script `boot.scr`__ to...
+
+-   Light up the PinePhone LED (I think?)
+
+-   Load `Image.gz` into RAM
+
+    (At `0x4408` `0000`)
+
+-   Unzip `Image.gz` in RAM
+
+    (At `0x4000` `0000` I think?)
+
+-   Load the Linux Device Tree...
+
+    `sun50i-a64-pinephone-1.2.dtb`
+
+-   Load the RAM File System `initramfs.gz`
+
+-   Boot the Unzipped Linux Kernel in `Image`
+
+Here's the Source File: [Jumpdrive/src/pine64-pinephone.txt](https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/src/pine64-pinephone.txt)
+
+```bash
+setenv kernel_addr_z 0x44080000
+
+setenv bootargs loglevel=0 silent console=tty0 vt.global_cursor_default=0
+
+gpio set 114
+
+if load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_z} /Image.gz; then
+  unzip ${kernel_addr_z} ${kernel_addr_r}
+  if load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} /sun50i-a64-pinephone-1.2.dtb; then
+    if load ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} /initramfs.gz; then
+      booti ${kernel_addr_r} ${ramdisk_addr_r}:${filesize} ${fdt_addr_r};
+    else
+      booti ${kernel_addr_r} - ${fdt_addr_r};
+    fi;
+  fi;
+fi
+```
+
+The above U-Boot Script __`pine64-pinephone.txt`__ is compiled to __`boot.scr`__ by this Makefile: [Jumpdrive/blob/master/Makefile](https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/Makefile#L207-L209)
+
+```text
+%.scr: src/%.txt
+	@echo "MKIMG $@"
+	@mkimage -A arm -O linux -T script -C none -n "U-Boot boot script" -d $< $@
+```
+
+[(__`mkimage`__ is documented here)](https://manpages.ubuntu.com/manpages/bionic/man1/mkimage.1.html)
+
+__For NuttX:__ We might need to modify the above U-Boot Script because...
+
+-   NuttX doesn't need the __Linux Device Tree__
+
+-   NuttX doesn't need the __RAM File System__ either
+
+-   Which frees up more RAM for NuttX
+
+[(More about U-Boot Bootloader)](https://lupyuen.github.io/articles/arm#notes)
+
 # Appendix: Analyse NuttX Image with Ghidra
 
 This is how we analyse our [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx) with [__Ghidra__](https://ghidra-sre.org/)...
