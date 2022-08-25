@@ -616,7 +616,7 @@ Yep our NuttX Image might actually boot on PinePhone with some patching!
 
 _How do we know that RAM starts at `0x4000` `0000`?_
 
-__RAM Size and RAM Start__ are defined in the NuttX Configuration for Arm64 (pic above): [nsh_smp/defconfig](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
+__RAM Size and RAM Start__ are defined in the NuttX Configuration for Arm64 (pic above): [nsh/defconfig](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh/defconfig#L48-L49) and [nsh_smp/defconfig](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
 
 ```text
 CONFIG_RAM_SIZE=134217728
@@ -772,7 +772,7 @@ Yep 3 things we'll modify in NuttX, as mentioned earlier...
     _start = .;
     ```
 
-    [(UPDATE: Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
+    [(UPDATE: `_start` / Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
 
 -  Change __Image Load Offset__ in our NuttX Header to __`0x0`__ (from `0x48` `0000`): [arm64_head.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L107)
 
@@ -781,13 +781,15 @@ Yep 3 things we'll modify in NuttX, as mentioned earlier...
     .quad   0x480000  /* Image load offset from start of RAM */
     ```
 
--   Increase the __RAM Size__ to __2 GB__ (from 128 MB): [nsh_smp/defconfig](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
+-   Increase the __RAM Size__ to __2 GB__ (from 128 MB): [nsh/defconfig](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh/defconfig#L48-L49) and [nsh_smp/defconfig](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48)
 
     ```text
     /* TODO: Increase to 2 GB for PinePhone */
     CONFIG_RAM_SIZE=134217728
     CONFIG_RAM_START=0x40000000
     ```
+
+    [(UPDATE: `CONFIG_RAM_START` / Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
 
 _Will we see anything when NuttX boots on PinePhone?_
 
