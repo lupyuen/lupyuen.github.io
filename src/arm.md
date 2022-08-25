@@ -772,6 +772,8 @@ Yep 3 things we'll modify in NuttX, as mentioned earlier...
     _start = .;
     ```
 
+    [(UPDATE: Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
+
 -  Change __Image Load Offset__ in our NuttX Header to __`0x0`__ (from `0x48` `0000`): [arm64_head.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L107)
 
     ```text
