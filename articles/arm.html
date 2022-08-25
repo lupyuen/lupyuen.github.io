@@ -864,6 +864,67 @@ dev                init_functions.sh  splash.ppm
 error.ppm.gz       linuxrc            splash.ppm.gz
 etc                proc               sys</code></pre></div>
 <p>We hope to see a similar UART Log when NuttX boots successfully on PinePhone.</p>
+<p><em>What’s <code>boot.scr</code>?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>Found U-Boot script /boot.scr</code></pre></div>
+<p>According to the log above, the U-Boot Bootloader runs the <strong>U-Boot Script <code>boot.scr</code></strong> to…</p>
+<ul>
+<li>
+<p>Light up the PinePhone LED (I think?)</p>
+</li>
+<li>
+<p>Load <code>Image.gz</code> into RAM</p>
+<p>(At <code>0x4408</code> <code>0000</code>)</p>
+</li>
+<li>
+<p>Unzip <code>Image.gz</code> in RAM</p>
+<p>(At <code>0x4000</code> <code>0000</code> I think?)</p>
+</li>
+<li>
+<p>Load the Linux Device Tree…</p>
+<p><code>sun50i-a64-pinephone-1.2.dtb</code></p>
+</li>
+<li>
+<p>Load the RAM File System <code>initramfs.gz</code></p>
+</li>
+<li>
+<p>Boot the Unzipped Linux Kernel in <code>Image</code></p>
+</li>
+</ul>
+<p>Here’s the Source File: <a href="https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/src/pine64-pinephone.txt">Jumpdrive/src/pine64-pinephone.txt</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>setenv kernel_addr_z 0x44080000
+
+setenv bootargs loglevel=0 silent console=tty0 vt.global_cursor_default=0
+
+gpio set 114
+
+if load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_z} /Image.gz; then
+  unzip ${kernel_addr_z} ${kernel_addr_r}
+  if load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} /sun50i-a64-pinephone-1.2.dtb; then
+    if load ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} /initramfs.gz; then
+      booti ${kernel_addr_r} ${ramdisk_addr_r}:${filesize} ${fdt_addr_r};
+    else
+      booti ${kernel_addr_r} - ${fdt_addr_r};
+    fi;
+  fi;
+fi</code></pre></div>
+<p>The above U-Boot Script <strong><code>pine64-pinephone.txt</code></strong> is compiled to <strong><code>boot.scr</code></strong> by this Makefile: <a href="https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/Makefile#L207-L209">Jumpdrive/blob/master/Makefile</a></p>
+<div class="example-wrap"><pre class="language-text"><code>%.scr: src/%.txt
+	@echo &quot;MKIMG $@&quot;
+	@mkimage -A arm -O linux -T script -C none -n &quot;U-Boot boot script&quot; -d $&lt; $@</code></pre></div>
+<p><a href="https://manpages.ubuntu.com/manpages/bionic/man1/mkimage.1.html">(<strong><code>mkimage</code></strong> is documented here)</a></p>
+<p><strong>For NuttX:</strong> We might need to modify the above U-Boot Script because…</p>
+<ul>
+<li>
+<p>NuttX doesn’t need the <strong>Linux Device Tree</strong></p>
+</li>
+<li>
+<p>NuttX doesn’t need the <strong>RAM File System</strong> either</p>
+</li>
+<li>
+<p>Which frees up more RAM for NuttX</p>
+</li>
+</ul>
+<p><a href="https://lupyuen.github.io/articles/arm#notes">(More about U-Boot Bootloader)</a></p>
 <h1 id="appendix-analyse-nuttx-image-with-ghidra"><a href="#appendix-analyse-nuttx-image-with-ghidra">19 Appendix: Analyse NuttX Image with Ghidra</a></h1>
 <p>This is how we analyse our <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> with <a href="https://ghidra-sre.org/"><strong>Ghidra</strong></a>…</p>
 <p>(Works for any ELF file actually)</p>
