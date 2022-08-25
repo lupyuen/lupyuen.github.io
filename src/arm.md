@@ -963,6 +963,70 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__SD Card Layout__](https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout)
 
+![PinePhone connected to USB Serial Debug Cable](https://lupyuen.github.io/images/arm-uart2.jpg)
+
+[_PinePhone connected to USB Serial Debug Cable_](https://lupyuen.github.io/articles/arm#uart-driver-for-nuttx)
+
+# Appendix: PinePhone UART Log
+
+Earlier we talked about connecting a __USB Serial Debug Cable__ to PinePhone...
+
+-   [__"UART Driver for NuttX"__](https://lupyuen.github.io/articles/arm#uart-driver-for-nuttx)
+
+With the USB Serial Debug Cable we captured the __UART Log__ below from PinePhone running [__Jumpdrive__](https://github.com/dreemurrs-embedded/Jumpdrive)...
+
+```text
+$ screen /dev/ttyUSB0 115200
+
+DRAM: 2048 MiB
+Trying to boot from MMC1
+NOTICE:  BL31: v2.2(release):v2.2-904-gf9ea3a629
+NOTICE:  BL31: Built : 15:32:12, Apr  9 2020
+NOTICE:  BL31: Detected Allwinner A64/H64/R18 SoC (1689)
+NOTICE:  BL31: Found U-Boot DTB at 0x4064410, model: PinePhone
+NOTICE:  PSCI: System suspend is unavailable
+
+U-Boot 2020.07 (Nov 08 2020 - 00:15:12 +0100)
+
+DRAM:  2 GiB
+MMC:   Device 'mmc@1c11000': seq 1 is in use by 'mmc@1c10000'
+mmc@1c0f000: 0, mmc@1c10000: 2, mmc@1c11000: 1
+Loading Environment from FAT... *** Warning - bad CRC, using default environment
+
+starting USB...
+No working controllers found
+Hit any key to stop autoboot:  0 
+switch to partitions #0, OK
+mmc0 is current device
+Scanning mmc 0:1...
+Found U-Boot script /boot.scr
+653 bytes read in 3 ms (211.9 KiB/s)
+## Executing script at 4fc00000
+gpio: pin 114 (gpio 114) value is 1
+4275261 bytes read in 192 ms (21.2 MiB/s)
+Uncompressed size: 10170376 = 0x9B3008
+36162 bytes read in 4 ms (8.6 MiB/s)
+1078500 bytes read in 50 ms (20.6 MiB/s)
+## Flattened Device Tree blob at 4fa00000
+   Booting using the fdt blob at 0x4fa00000
+   Loading Ramdisk to 49ef8000, end 49fff4e4 ... OK
+   Loading Device Tree to 0000000049eec000, end 0000000049ef7d41 ... OK
+
+Starting kernel ...
+
+/ # uname -a
+Linux (none) 5.9.1jumpdrive #3 SMP Sun Nov 8 00:41:50 CET 2020 aarch64 GNU/Linux
+
+/ # ls
+bin                info.sh            root               telnet_connect.sh
+config             init               sbin               usr
+dev                init_functions.sh  splash.ppm
+error.ppm.gz       linuxrc            splash.ppm.gz
+etc                proc               sys
+```
+
+We hope to see a similar UART Log when NuttX boots successfully on PinePhone.
+
 # Appendix: Analyse NuttX Image with Ghidra
 
 This is how we analyse our [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.0/nuttx) with [__Ghidra__](https://ghidra-sre.org/)...
