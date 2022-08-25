@@ -641,7 +641,9 @@ tar xvf initramfs</code></pre></div></li>
 {
 /* TODO: Change to 0x40000000 for PinePhone */
 . = 0x40280000;  /* uboot load address */
-_start = .;</code></pre></div></li>
+_start = .;</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(UPDATE: Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
+</li>
 <li>
 <p>Change <strong>Image Load Offset</strong> in our NuttX Header to <strong><code>0x0</code></strong> (from <code>0x48</code> <code>0000</code>): <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L107">arm64_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* TODO: Change to 0x0 for PinePhone */
