@@ -522,7 +522,7 @@ u32 res5;                     /* reserved (used for PE COFF offset) */</code></p
 <p><img src="https://lupyuen.github.io/images/arm-ram.png" alt="NuttX RAM" /></p>
 <h1 id="nuttx-ram"><a href="#nuttx-ram">10 NuttX RAM</a></h1>
 <p><em>How do we know that RAM starts at <code>0x4000</code> <code>0000</code>?</em></p>
-<p><strong>RAM Size and RAM Start</strong> are defined in the NuttX Configuration for Arm64 (pic above): <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
+<p><strong>RAM Size and RAM Start</strong> are defined in the NuttX Configuration for Arm64 (pic above): <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh/defconfig#L48-L49">nsh/defconfig</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_SIZE=134217728
 CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>That’s 128 MB RAM. Which should fit inside PinePhone’s 2 GB RAM.</p>
@@ -642,17 +642,19 @@ tar xvf initramfs</code></pre></div></li>
 /* TODO: Change to 0x40000000 for PinePhone */
 . = 0x40280000;  /* uboot load address */
 _start = .;</code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(UPDATE: Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
+<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(UPDATE: <code>_start</code> / Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
 </li>
 <li>
 <p>Change <strong>Image Load Offset</strong> in our NuttX Header to <strong><code>0x0</code></strong> (from <code>0x48</code> <code>0000</code>): <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L107">arm64_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* TODO: Change to 0x0 for PinePhone */
 .quad   0x480000  /* Image load offset from start of RAM */</code></pre></div></li>
 <li>
-<p>Increase the <strong>RAM Size</strong> to <strong>2 GB</strong> (from 128 MB): <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
+<p>Increase the <strong>RAM Size</strong> to <strong>2 GB</strong> (from 128 MB): <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh/defconfig#L48-L49">nsh/defconfig</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* TODO: Increase to 2 GB for PinePhone */
 CONFIG_RAM_SIZE=134217728
-CONFIG_RAM_START=0x40000000</code></pre></div></li>
+CONFIG_RAM_START=0x40000000</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(UPDATE: <code>CONFIG_RAM_START</code> / Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
+</li>
 </ul>
 <p><em>Will we see anything when NuttX boots on PinePhone?</em></p>
 <p>Not yet. We need to implement the UART Driver for NuttX…</p>
