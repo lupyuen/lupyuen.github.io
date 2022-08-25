@@ -869,6 +869,8 @@ Here comes the hard part: We have to __code the Nuttx Driver__ for each PinePhon
 
 -   [__LTE Modem__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.15_MODEM-4G)
 
+    [(AT Commands actually)](https://wiki.pine64.org/index.php/PinePhone#AT_commands)
+
 -   [__WiFi / BLE__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.14_WIFI+BT)
 
 -   [__eMMC__](https://wiki.pine64.org/wiki/PinePhone_component_list#P.7_NAND/eMMC)
