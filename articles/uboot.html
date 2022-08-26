@@ -441,6 +441,13 @@ real_start: ... </code></pre></div>
 <p>Rightfully we should wait for <strong>THR Empty</strong> (Transmit Buffer Empty) before sending our data.</p>
 <p>And we should initialise the <strong>UART Baud Rate</strong>. We’ll come back to this.</p>
 <h1 id="nuttx-uart-driver"><a href="#nuttx-uart-driver">11 NuttX UART Driver</a></h1>
+<p>NuttX writes to the UART Port with some clever <strong>Arm Assembly Macros</strong>.</p>
+<p>This Assembly Code in NuttX…</p>
+<div class="example-wrap"><pre class="language-text"><code>hello:
+  PRINT(hello, &quot;HELLO NUTTX ON PINEPHONE!\r\n&quot;)</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L178-L179">(Source)</a></p>
+<p>Calls the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> to print a string at startup.</p>
+<p>Which is super convenient because our Startup Code has plenty of Assembly Code!</p>
 <p>TODO</p>
 <p>For PinePhone Allwinner A64 UART: We reused the previous code for transmitting output to UART…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* UART transmit character
