@@ -115,9 +115,13 @@ _Whoa! These docs look so dry..._
 
 There's an easier way to grok U-Boot. Let's watch PinePhone boot Jumpdrive!
 
+![U-Boot Bootloader on PinePhone](https://lupyuen.github.io/images/uboot-uboot.png)
+
+_U-Boot Bootloader on PinePhone_
+
 # Boot Log
 
-Now we can see what happens when PinePhone boots...
+Now we're ready to watch what happens when PinePhone boots...
 
 1.  Insert the __Jumpdrive microSD__ into PinePhone
 
@@ -326,13 +330,13 @@ When we match these addresses with our [__U-Boot Script__](https://github.com/dr
 
 _Aha! That's why our kernel must start at `0x4008` `0000`!_
 
-Yep! We can...
+Yep! Thus we can...
 
 -   Compile our own operating system to start at __`0x4008` `0000`__
 
 -   Replace __`Image.gz`__ in the microSD by our compiled OS (gzipped)
 
-And PinePhone will boot our own OS! (Theoretically)
+And PinePhone will __boot our own OS!__ (Theoretically)
 
 But there's a catch: U-Boot expects to find a Linux Kernel Header in our OS...
 
@@ -434,13 +438,31 @@ Not yet. We need to implement the UART Driver...
 
 # UART Output
 
-TODO
+Our operating system will show some output on PinePhone's __Serial Debug Console__ as it boots.
 
-![TODO](https://lupyuen.github.io/images/uboot-uart1.png)
+To do that, we'll talk to the __UART Controller__ on the Allwinner A64 SoC...
 
-TODO
+-   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
-![TODO](https://lupyuen.github.io/images/uboot-uart2.png)
+Flip the [__A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) to page 562 and we'll see the __UART Registers__...
+
+![A64 UART Controller Registers](https://lupyuen.github.io/images/uboot-uart1.png)
+
+PinePhone's Serial Console is connected to __UART0__ at __`0x01C2` `8000`__
+
+The First Register of UART0 is what we need: __UART_THR__ also at __`0x01C2` `8000`__...
+
+![A64 UART Register UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
+
+__UART_THR__ is the Transmit Holding Register.
+
+We'll write our output data to __`0x01C2` `8000`__, byte by byte, and the data will appear in the Serial Console. Let's do that!
+
+_Did we forget something?_
+
+Rightfully we should wait for __THR Empty__ (Transmit Buffer Empty) before sending our data.
+
+And we should initialise the __UART Baud Rate__. We'll come back to this.
 
 # NuttX UART Driver
 
