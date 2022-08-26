@@ -343,11 +343,83 @@ ramdisk_addr_r=0x4FE00000</code></pre></div>
 </li>
 </ul>
 <p><em>Aha! That’s why our kernel must start at <code>0x4008</code> <code>0000</code>!</em></p>
-<p>TODO</p>
+<p>Yep! We can…</p>
+<ul>
+<li>
+<p>Compile our own operating system to start at <strong><code>0x4008</code> <code>0000</code></strong></p>
+</li>
+<li>
+<p>Replace <strong><code>Image.gz</code></strong> in the microSD by our compiled OS (gzipped)</p>
+</li>
+</ul>
+<p>And PinePhone will boot our own OS! (Theoretically)</p>
+<p>But there’s a catch: U-Boot expects to find a Linux Kernel Header in our OS…</p>
 <h1 id="linux-kernel-header"><a href="#linux-kernel-header">8 Linux Kernel Header</a></h1>
-<p>TODO</p>
+<p><em>What! A Linux Kernel Header in our non-Linux OS?</em></p>
+<p>Yep it’s totally strange, but U-Boot Bootloader expects our OS to begin with an <strong>Arm64 Linux Kernel Header</strong> as defined here…</p>
+<ul>
+<li><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html"><strong>“Booting AArch64 Linux”</strong></a></li>
+</ul>
+<p>The doc says that a Linux Kernel Image (for Arm64) should begin with this <strong>64-byte header</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>u32 code0;                    /* Executable code */
+u32 code1;                    /* Executable code */
+u64 text_offset;              /* Image load offset, little endian */
+u64 image_size;               /* Effective Image size, little endian */
+u64 flags;                    /* kernel flags, little endian */
+u64 res2      = 0;            /* reserved */
+u64 res3      = 0;            /* reserved */
+u64 res4      = 0;            /* reserved */
+u32 magic     = 0x644d5241;   /* Magic number, little endian, &quot;ARM\x64&quot; */
+u32 res5;                     /* reserved (used for PE COFF offset) */</code></pre></div>
+<p><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html">(Source)</a></p>
+<p>Let’s make a Linux Kernel Header to appease U-Boot…</p>
 <h1 id="nuttx-header"><a href="#nuttx-header">9 NuttX Header</a></h1>
-<p>TODO</p>
+<p><em>How do we make a Linux Kernel Header in our non-Linux OS?</em></p>
+<p>Apache NuttX RTOS can help!</p>
+<p>This is how we created the <strong>Arm64 Linux Kernel Header</strong> in NuttX: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117">nuttx/arch/arm64/src/common/arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>  /* Kernel startup entry point.
+   * ---------------------------
+   *
+   * This must be the very first address in the loaded image.
+   * It should be loaded at any 4K-aligned address.
+   * __start will be set to 0x4008 0000 in the Linker Script
+   */
+  .globl __start;
+__start:
+
+  /* DO NOT MODIFY. Image header expected by Linux boot-loaders.
+   *
+   * This add instruction has no meaningful effect except that
+   * its opcode forms the magic &quot;MZ&quot; signature of a PE/COFF file
+   * that is required for UEFI applications.
+   */
+  add     x13, x18, #0x16      /* the magic &quot;MZ&quot; signature */
+  b       real_start           /* branch to kernel start */</code></pre></div>
+<p>(NuttX OS code begins at <strong><code>real_start</code></strong> after the header)</p>
+<p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to Mark Zbikowski)</a></p>
+<p>Then comes the rest of the header…</p>
+<div class="example-wrap"><pre class="language-text"><code>  .quad   0x0000               /* PinePhone Image load offset from start of RAM */
+  .quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
+  .quad   __HEAD_FLAGS         /* Informative flags, little-endian */
+  .quad   0                    /* reserved */
+  .quad   0                    /* reserved */
+  .quad   0                    /* reserved */
+  .ascii  &quot;ARM\x64&quot;            /* Magic number, &quot;ARM\x64&quot; */
+  .long   0                    /* reserved */
+
+/* NuttX OS Code begins here, after the header */
+real_start: ... </code></pre></div>
+<p><em>What’s the value of <code>__start</code>?</em></p>
+<p>Remember <strong><code>kernel_addr_r</code></strong>, the Kernel Start Address from U-Boot?</p>
+<p>In NuttX, we define the Kernel Start Address <strong><code>__start</code></strong> as <strong><code>0x4008</code> <code>0000</code></strong> in our Linker Script: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34">nuttx/boards/arm64/qemu/qemu-a53/scripts/dramboot</a></p>
+<div class="example-wrap"><pre class="language-text"><code>SECTIONS
+{
+  /* PinePhone uboot load address (kernel_addr_r) */
+  . = 0x40080000;
+  _start = .;</code></pre></div>
+<p>We’re almost ready to boot NuttX on PinePhone!</p>
+<p><em>Will we see anything when NuttX boots on PinePhone?</em></p>
+<p>Not yet. We need to implement the UART Driver for NuttX…</p>
 <h1 id="uart-output"><a href="#uart-output">10 UART Output</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="TODO" /></p>
