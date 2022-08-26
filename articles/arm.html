@@ -652,10 +652,15 @@ _start = .;</code></pre></div>
 <p>Increase the <strong>RAM Size</strong> to <strong>2 GB</strong> (from 128 MB): <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh/defconfig#L48-L49">nsh/defconfig</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* TODO: Increase to 2 GB for PinePhone */
 CONFIG_RAM_SIZE=134217728
-CONFIG_RAM_START=0x40000000</code></pre></div></li>
+CONFIG_RAM_START=0x40000000</code></pre></div>
+<p>(We’ll increase the RAM Size later, since we don’t need much RAM now)</p>
+</li>
 </ul>
 <p><em>Will we see anything when NuttX boots on PinePhone?</em></p>
 <p>Not yet. We need to implement the UART Driver for NuttX…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boots-on-pinephone"><strong>UPDATE:</strong> NuttX boots on PinePhone yay!</a></p>
+<p><img src="https://lupyuen.github.io/images/Screenshot_2022-08-26_08-04-34_080626.png" alt="NuttX boots on PinePhone yay!" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boots-on-pinephone"><em>NuttX boots on PinePhone yay!</em></a></p>
 <h1 id="uart-driver-for-nuttx"><a href="#uart-driver-for-nuttx">13 UART Driver for NuttX</a></h1>
 <p>We won’t see any output from NuttX until we implement the <strong>UART Driver for NuttX</strong>.</p>
 <p><strong>For QEMU:</strong> These are the Source Files for the UART Driver (PL011)…</p>
@@ -683,6 +688,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div></li>
 <p><a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 Info</strong></a></p>
 </li>
 </ul>
+<p><strong>UPDATE:</strong> We now have a partial implementation of the <a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boots-on-pinephone"><strong>PinePhone UART Driver</strong></a></p>
 <p><em>Where’s the UART Port on PinePhone?</em></p>
 <p>To access the UART Port on PinePhone, we’ll use this <strong>USB Serial Debug Cable</strong>…</p>
 <ul>
