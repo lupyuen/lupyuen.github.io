@@ -6,10 +6,6 @@
 
 _Apache NuttX RTOS booting on Pine64 PinePhone_
 
-TODO
-
--   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
-
 Suppose we're creating our own Operating System (non-Linux)  for Pine64 PinePhone...
 
 -   What's the file format?
@@ -19,11 +15,37 @@ Suppose we're creating our own Operating System (non-Linux)  for Pine64 PinePhon
 
 This article explains how we ported Apache NuttX RTOS to PinePhone. And we'll answer these questions along the way!
 
-![TODO](https://lupyuen.github.io/images/uboot-a64.jpg)
+Let's dive in and walk through the steps...
+
+-   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
+
+![Allwinner A64 SoC User Manual](https://lupyuen.github.io/images/uboot-a64.jpg)
+
+[_Allwinner A64 SoC User Manual_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
 # Allwinner A64 SoC
 
-TODO
+_What's inside PinePhone?_
+
+At the heart of PinePhone is the [__Allwinner A64 SoC__](https://linux-sunxi.org/A64) (System-on-a-Chip) with 4 Cores of 64-bit __Arm Cortex-A53__...
+
+-   [__PinePhone Wiki__](https://wiki.pine64.org/index.php/PinePhone)
+
+-   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
+
+-   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+The A64 SoC in PinePhone comes with __2GB RAM__ (or 3GB RAM via a mainboard upgrade)...
+
+-   [__Allwinner A64 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
+
+A64's __Memory Map__ says that the RAM starts at address __`0x4000` `0000`__.
+
+_So our OS will run at `0x4000` `0000`?_
+
+Not quite! Our OS will actually be loaded at __`0x4008` `0000`__
+
+We'll see why in a while, but first we talk about a Very Important Cable...
 
 ![PinePhone connected to USB Serial Debug Cable](https://lupyuen.github.io/images/arm-uart2.jpg)
 
@@ -31,7 +53,7 @@ TODO
 
 # USB Serial Debug Cable
 
-TODO
+TODO: I highly recommend it for PinePhone Hacking
 
 # U-Boot Bootloader
 
@@ -45,7 +67,7 @@ TODO
 
 TODO
 
-# Boot Addresses
+# Boot Address
 
 TODO
 
