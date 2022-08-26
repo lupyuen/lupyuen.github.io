@@ -430,7 +430,7 @@ We're almost ready to boot NuttX on PinePhone!
 
 _Will we see anything when NuttX boots on PinePhone?_
 
-Not yet. We need to implement the UART Driver for NuttX...
+Not yet. We need to implement the UART Driver...
 
 # UART Output
 
@@ -442,11 +442,161 @@ TODO
 
 ![TODO](https://lupyuen.github.io/images/uboot-uart2.png)
 
+# NuttX UART Driver
+
+TODO
+
+For PinePhone Allwinner A64 UART: We reused the previous code for transmitting output to UART...
+
+```text
+/* UART transmit character
+ * xb: register which contains the UART base address
+ * wt: register which contains the character to transmit
+ */
+
+.macro early_uart_transmit xb, wt
+    strb  \wt, [\xb]             /* -> UARTDR (Data Register) */
+.endm
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L87-L94)
+
+But we updated the UART Register Address for Allwinner A64 UART...
+
+```text
+ /* PinePhone Allwinner A64 UART0 Base Address: */
+ #define UART1_BASE_ADDRESS 0x01C28000
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L40-L45)
+
+Right now we don't check if UART is ready to transmit, so our UART output will have missing characters. This needs to be fixed...
+
+```text
+/* Wait for UART to be ready to transmit
+ * xb: register which contains the UART base address
+ * c: scratch register number
+ */
+
+.macro early_uart_ready xb, wt
+1:
+    # TODO: Wait for PinePhone Allwinner A64 UART
+    ...
+.endm
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85)
+
+We don't init the UART Port because U-Boot has kindly done it for us. This needs to be fixed...
+
+```text
+/* UART initialization
+ * xb: register which contains the UART base address
+ * c: scratch register number
+ */
+
+GTEXT(up_earlyserialinit)
+SECTION_FUNC(text, up_earlyserialinit)
+    # TODO: Set PinePhone Allwinner A64 Baud Rate Divisor:
+    # UART_LCR (DLAB), UART_DLL, UART_DLH
+    ...
+    ret
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72)
+
 # NuttX Log
 
 TODO
 
 ![Apache NuttX RTOS booting on Pine64 PinePhone](https://lupyuen.github.io/images/uboot-title2.png)
+
+Here's the UART Log of NuttX booting on PinePhone...
+
+```text
+DRAM: 2048 MiB
+Trying to boot from MMC1
+NOTICE:  BL31: v2.2(release):v2.2-904-gf9ea3a629
+NOTICE:  BL31: Built : 15:32:12, Apr  9 2020
+NOTICE:  BL31: Detected Allwinner A64/H64/R18 SoC (1689)
+NOTICE:  BL31: Found U-Boot DTB at 0x4064410, model: PinePhone
+NOTICE:  PSCI: System suspend is unavailable
+
+U-Boot 2020.07 (Nov 08 2020 - 00:15:12 +0100)
+
+DRAM:  2 GiB
+MMC:   Device 'mmc@1c11000': seq 1 is in use by 'mmc@1c10000'
+mmc@1c0f000: 0, mmc@1c10000: 2, mmc@1c11000: 1
+Loading Environment from FAT... *** Warning - bad CRC, using default environment
+
+starting USB...
+No working controllers found
+Hit any key to stop autoboot:  0 
+switch to partitions #0, OK
+mmc0 is current device
+Scanning mmc 0:1...
+Found U-Boot script /boot.scr
+653 bytes read in 3 ms (211.9 KiB/s)
+## Executing script at 4fc00000
+gpio: pin 114 (gpio 114) value is 1
+99784 bytes read in 8 ms (11.9 MiB/s)
+Uncompressed size: 278528 = 0x44000
+36162 bytes read in 4 ms (8.6 MiB/s)
+1078500 bytes read in 51 ms (20.2 MiB/s)
+## Flattened Device Tree blob at 4fa00000
+   Booting using the fdt blob at 0x4fa00000
+   Loading Ramdisk to 49ef8000, end 49fff4e4 ... OK
+   Loading Device Tree to 0000000049eec000, end 0000000049ef7d41 ... OK
+
+Starting kernel ...
+
+HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+f
+```
+
+# More UART
+
+TODO: Allwinner A64 UART
+
+```text
+UART_LCR
+Line Control Register
+Offset 0x0C 
+Bit 7: DLAB (Divisor Latch Access Bit)
+0x80
+
+Set DLAB to 1 (0x80):
+ldr x15, =UART1_BASE_ADDRESS
+mov x0, #0x80
+strb w0, [x15, #0x0C]
+
+Baud Rate = (Serial Clock Frequency) / (16 * Divisor)
+Divisor = (Serial Clock Frequency) / (16 * Baud Rate)
+Divisor = (Serial Clock Frequency / 16) / Baud Rate
+SCLK Serial Clock Frequency = ???
+
+UART_DLL
+Divisor Latch Low (lower 8 bits of divisor)
+Offset 0x00
+
+Write UART_DLL:
+mov x0, divisor % 256
+strb w0, [x15, #0x00]
+
+UART_DLH
+Divisor Latch High (upper 8 bits of divisor)
+Offset 0x04
+
+Write UART_DLH:
+mov x0, divisor / 256
+strb w0, [x15, #0x04]
+
+Set DLAB to 0:
+mov x0, #0x00
+strb w0, [x15, #0x0C]
+```
 
 # NuttX Source Code
 
