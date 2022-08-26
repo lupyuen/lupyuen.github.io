@@ -466,6 +466,21 @@ And we should initialise the __UART Baud Rate__. We'll come back to this.
 
 # NuttX UART Driver
 
+NuttX writes to the UART Port with some clever __Arm Assembly Macros__.
+
+This Assembly Code in NuttX...
+
+```text
+hello:
+  PRINT(hello, "HELLO NUTTX ON PINEPHONE!\r\n")
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L178-L179)
+
+Calls the [__`PRINT` Macro__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L58-L69) to print a string at startup.
+
+Which is super convenient because our Startup Code has plenty of Assembly Code!
+
 TODO
 
 For PinePhone Allwinner A64 UART: We reused the previous code for transmitting output to UART...
