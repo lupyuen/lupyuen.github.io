@@ -53,13 +53,15 @@ We'll see why in a while, but first we talk about a Very Important Cable...
 
 # USB Serial Debug Cable
 
+_Can we watch what happens when PinePhone boots?_
+
 TODO: I highly recommend it for PinePhone Hacking
 
-# U-Boot Bootloader
+# PinePhone Jumpdrive
 
 TODO
 
-# PinePhone Jumpdrive
+# U-Boot Bootloader
 
 TODO
 
