@@ -326,15 +326,111 @@ When we match these addresses with our [__U-Boot Script__](https://github.com/dr
 
 _Aha! That's why our kernel must start at `0x4008` `0000`!_
 
-TODO
+Yep! We can...
+
+-   Compile our own operating system to start at __`0x4008` `0000`__
+
+-   Replace __`Image.gz`__ in the microSD by our compiled OS (gzipped)
+
+And PinePhone will boot our own OS! (Theoretically)
+
+But there's a catch: U-Boot expects to find a Linux Kernel Header in our OS...
 
 # Linux Kernel Header
 
-TODO
+_What! A Linux Kernel Header in our non-Linux OS?_
+
+Yep it's totally strange, but U-Boot Bootloader expects our OS to begin with an __Arm64 Linux Kernel Header__ as defined here...
+
+-   [__"Booting AArch64 Linux"__](https://www.kernel.org/doc/html/latest/arm64/booting.html)
+
+The doc says that a Linux Kernel Image (for Arm64) should begin with this __64-byte header__...
+
+```text
+u32 code0;                    /* Executable code */
+u32 code1;                    /* Executable code */
+u64 text_offset;              /* Image load offset, little endian */
+u64 image_size;               /* Effective Image size, little endian */
+u64 flags;                    /* kernel flags, little endian */
+u64 res2      = 0;            /* reserved */
+u64 res3      = 0;            /* reserved */
+u64 res4      = 0;            /* reserved */
+u32 magic     = 0x644d5241;   /* Magic number, little endian, "ARM\x64" */
+u32 res5;                     /* reserved (used for PE COFF offset) */
+```
+
+[(Source)](https://www.kernel.org/doc/html/latest/arm64/booting.html)
+
+Let's make a Linux Kernel Header to appease U-Boot...
 
 # NuttX Header
 
-TODO
+_How do we make a Linux Kernel Header in our non-Linux OS?_
+
+Apache NuttX RTOS can help!
+
+This is how we created the __Arm64 Linux Kernel Header__ in NuttX: [nuttx/arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117)
+
+```text
+  /* Kernel startup entry point.
+   * ---------------------------
+   *
+   * This must be the very first address in the loaded image.
+   * It should be loaded at any 4K-aligned address.
+   * __start will be set to 0x4008 0000 in the Linker Script
+   */
+  .globl __start;
+__start:
+
+  /* DO NOT MODIFY. Image header expected by Linux boot-loaders.
+   *
+   * This add instruction has no meaningful effect except that
+   * its opcode forms the magic "MZ" signature of a PE/COFF file
+   * that is required for UEFI applications.
+   */
+  add     x13, x18, #0x16      /* the magic "MZ" signature */
+  b       real_start           /* branch to kernel start */
+```
+
+(NuttX OS code begins at __`real_start`__ after the header)
+
+[("MZ" refers to Mark Zbikowski)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
+
+Then comes the rest of the header...
+
+```text
+  .quad   0x0000               /* PinePhone Image load offset from start of RAM */
+  .quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
+  .quad   __HEAD_FLAGS         /* Informative flags, little-endian */
+  .quad   0                    /* reserved */
+  .quad   0                    /* reserved */
+  .quad   0                    /* reserved */
+  .ascii  "ARM\x64"            /* Magic number, "ARM\x64" */
+  .long   0                    /* reserved */
+
+/* NuttX OS Code begins here, after the header */
+real_start: ... 
+```
+
+_What's the value of `__start`?_
+
+Remember __`kernel_addr_r`__, the Kernel Start Address from U-Boot?
+
+In NuttX, we define the Kernel Start Address __`__start`__ as __`0x4008` `0000`__ in our Linker Script: [nuttx/boards/arm64/qemu/qemu-a53/scripts/dramboot](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34)
+
+```text
+SECTIONS
+{
+  /* PinePhone uboot load address (kernel_addr_r) */
+  . = 0x40080000;
+  _start = .;
+```
+
+We're almost ready to boot NuttX on PinePhone!
+
+_Will we see anything when NuttX boots on PinePhone?_
+
+Not yet. We need to implement the UART Driver for NuttX...
 
 # UART Output
 
