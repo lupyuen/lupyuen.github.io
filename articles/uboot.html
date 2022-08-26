@@ -72,7 +72,7 @@
 <li><a href="#u-boot-bootloader">3 U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#pinephone-jumpdrive">4 PinePhone Jumpdrive</a><ul></ul></li>
 <li><a href="#boot-log">5 Boot Log</a><ul></ul></li>
-<li><a href="#boot-addresses">6 Boot Addresses</a><ul></ul></li>
+<li><a href="#boot-address">6 Boot Address</a><ul></ul></li>
 <li><a href="#linux-kernel-header">7 Linux Kernel Header</a><ul></ul></li>
 <li><a href="#nuttx-header">8 NuttX Header</a><ul></ul></li>
 <li><a href="#uart-output">9 UART Output</a><ul></ul></li>
@@ -82,10 +82,6 @@
 <li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>1 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></p>
-<p>TODO</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
-</ul>
 <p>Suppose we’re creating our own Operating System (non-Linux)  for Pine64 PinePhone…</p>
 <ul>
 <li>What’s the file format?</li>
@@ -94,20 +90,45 @@
 <li>What happens when PinePhone powers on?</li>
 </ul>
 <p>This article explains how we ported Apache NuttX RTOS to PinePhone. And we’ll answer these questions along the way!</p>
-<p><img src="https://lupyuen.github.io/images/uboot-a64.jpg" alt="TODO" /></p>
+<p>Let’s dive in and walk through the steps…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/uboot-a64.jpg" alt="Allwinner A64 SoC User Manual" /></p>
+<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 SoC User Manual</em></a></p>
 <h1 id="allwinner-a64-soc"><a href="#allwinner-a64-soc">1 Allwinner A64 SoC</a></h1>
-<p>TODO</p>
+<p><em>What’s inside PinePhone?</em></p>
+<p>At the heart of PinePhone is the <a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 SoC</strong></a> (System-on-a-Chip) with 4 Cores of 64-bit <strong>Arm Cortex-A53</strong>…</p>
+<ul>
+<li>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>PinePhone Wiki</strong></a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 Info</strong></a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></p>
+</li>
+</ul>
+<p>The A64 SoC in PinePhone comes with <strong>2GB RAM</strong> (or 3GB RAM via a mainboard upgrade)…</p>
+<ul>
+<li><a href="https://linux-sunxi.org/A64/Memory_map"><strong>Allwinner A64 Memory Map</strong></a></li>
+</ul>
+<p>A64’s <strong>Memory Map</strong> says that the RAM starts at address <strong><code>0x4000</code> <code>0000</code></strong>.</p>
+<p><em>So our OS will run at <code>0x4000</code> <code>0000</code>?</em></p>
+<p>Not quite! Our OS will actually be loaded at <strong><code>0x4008</code> <code>0000</code></strong></p>
+<p>We’ll see why in a while, but first we talk about a Very Important Cable…</p>
 <p><img src="https://lupyuen.github.io/images/arm-uart2.jpg" alt="PinePhone connected to USB Serial Debug Cable" /></p>
 <p><a href="https://lupyuen.github.io/articles/arm#uart-driver-for-nuttx"><em>PinePhone connected to USB Serial Debug Cable</em></a></p>
 <h1 id="usb-serial-debug-cable"><a href="#usb-serial-debug-cable">2 USB Serial Debug Cable</a></h1>
-<p>TODO</p>
+<p>TODO: I highly recommend it for PinePhone Hacking</p>
 <h1 id="u-boot-bootloader"><a href="#u-boot-bootloader">3 U-Boot Bootloader</a></h1>
 <p>TODO</p>
 <h1 id="pinephone-jumpdrive"><a href="#pinephone-jumpdrive">4 PinePhone Jumpdrive</a></h1>
 <p>TODO</p>
 <h1 id="boot-log"><a href="#boot-log">5 Boot Log</a></h1>
 <p>TODO</p>
-<h1 id="boot-addresses"><a href="#boot-addresses">6 Boot Addresses</a></h1>
+<h1 id="boot-address"><a href="#boot-address">6 Boot Address</a></h1>
 <p>TODO</p>
 <h1 id="linux-kernel-header"><a href="#linux-kernel-header">7 Linux Kernel Header</a></h1>
 <p>TODO</p>
