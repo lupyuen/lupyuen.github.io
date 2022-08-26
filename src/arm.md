@@ -789,9 +789,17 @@ Yep 3 things we'll modify in NuttX, as mentioned earlier...
     CONFIG_RAM_START=0x40000000
     ```
 
+    (We'll increase the RAM Size later, since we don't need much RAM now)
+
 _Will we see anything when NuttX boots on PinePhone?_
 
 Not yet. We need to implement the UART Driver for NuttX...
+
+[__UPDATE:__ NuttX boots on PinePhone yay!](https://github.com/lupyuen/pinephone-nuttx#nuttx-boots-on-pinephone)
+
+![NuttX boots on PinePhone yay!](https://lupyuen.github.io/images/Screenshot_2022-08-26_08-04-34_080626.png)
+
+[_NuttX boots on PinePhone yay!_](https://github.com/lupyuen/pinephone-nuttx#nuttx-boots-on-pinephone)
 
 # UART Driver for NuttX
 
@@ -814,6 +822,8 @@ We'll redo the code above for the __PinePhone UART Driver__ (based on Allwinner 
 -   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
 -   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
+
+__UPDATE:__ We now have a partial implementation of the [__PinePhone UART Driver__](https://github.com/lupyuen/pinephone-nuttx#nuttx-boots-on-pinephone)
 
 _Where's the UART Port on PinePhone?_
 
