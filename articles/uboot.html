@@ -177,8 +177,10 @@
 </ul>
 <p><em>Whoa! These docs look so dry…</em></p>
 <p>There’s an easier way to grok U-Boot. Let’s watch PinePhone boot Jumpdrive!</p>
+<p><img src="https://lupyuen.github.io/images/uboot-uboot.png" alt="U-Boot Bootloader on PinePhone" /></p>
+<p><em>U-Boot Bootloader on PinePhone</em></p>
 <h1 id="boot-log"><a href="#boot-log">5 Boot Log</a></h1>
-<p>Now we can see what happens when PinePhone boots…</p>
+<p>Now we’re ready to watch what happens when PinePhone boots…</p>
 <ol>
 <li>
 <p>Insert the <strong>Jumpdrive microSD</strong> into PinePhone</p>
@@ -345,7 +347,7 @@ ramdisk_addr_r=0x4FE00000</code></pre></div>
 </li>
 </ul>
 <p><em>Aha! That’s why our kernel must start at <code>0x4008</code> <code>0000</code>!</em></p>
-<p>Yep! We can…</p>
+<p>Yep! Thus we can…</p>
 <ul>
 <li>
 <p>Compile our own operating system to start at <strong><code>0x4008</code> <code>0000</code></strong></p>
@@ -354,7 +356,7 @@ ramdisk_addr_r=0x4FE00000</code></pre></div>
 <p>Replace <strong><code>Image.gz</code></strong> in the microSD by our compiled OS (gzipped)</p>
 </li>
 </ul>
-<p>And PinePhone will boot our own OS! (Theoretically)</p>
+<p>And PinePhone will <strong>boot our own OS!</strong> (Theoretically)</p>
 <p>But there’s a catch: U-Boot expects to find a Linux Kernel Header in our OS…</p>
 <h1 id="linux-kernel-header"><a href="#linux-kernel-header">8 Linux Kernel Header</a></h1>
 <p><em>What! A Linux Kernel Header in our non-Linux OS?</em></p>
@@ -423,10 +425,21 @@ real_start: ... </code></pre></div>
 <p><em>Will we see anything when NuttX boots on PinePhone?</em></p>
 <p>Not yet. We need to implement the UART Driver…</p>
 <h1 id="uart-output"><a href="#uart-output">10 UART Output</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="TODO" /></p>
+<p>Our operating system will show some output on PinePhone’s <strong>Serial Debug Console</strong> as it boots.</p>
+<p>To do that, we’ll talk to the <strong>UART Controller</strong> on the Allwinner A64 SoC…</p>
+<ul>
+<li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
+</ul>
+<p>Flip the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 and we’ll see the <strong>UART Registers</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="A64 UART Controller Registers" /></p>
+<p>PinePhone’s Serial Console is connected to <strong>UART0</strong> at <strong><code>0x01C2</code> <code>8000</code></strong></p>
+<p>The First Register of UART0 is what we need: <strong>UART_THR</strong> also at <strong><code>0x01C2</code> <code>8000</code></strong>…</p>
+<p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Register UART_THR" /></p>
+<p><strong>UART_THR</strong> is the Transmit Holding Register.</p>
+<p>We’ll write our output data to <strong><code>0x01C2</code> <code>8000</code></strong>, byte by byte, and the data will appear in the Serial Console. Let’s do that!</p>
+<p><em>Did we forget something?</em></p>
+<p>Rightfully we should wait for <strong>THR Empty</strong> (Transmit Buffer Empty) before sending our data.</p>
+<p>And we should initialise the <strong>UART Baud Rate</strong>. We’ll come back to this.</p>
 <h1 id="nuttx-uart-driver"><a href="#nuttx-uart-driver">11 NuttX UART Driver</a></h1>
 <p>TODO</p>
 <p>For PinePhone Allwinner A64 UART: We reused the previous code for transmitting output to UART…</p>
