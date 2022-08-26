@@ -72,14 +72,15 @@
 <li><a href="#pinephone-jumpdrive">3 PinePhone Jumpdrive</a><ul></ul></li>
 <li><a href="#u-boot-bootloader">4 U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#boot-log">5 Boot Log</a><ul></ul></li>
-<li><a href="#boot-address">6 Boot Address</a><ul></ul></li>
-<li><a href="#linux-kernel-header">7 Linux Kernel Header</a><ul></ul></li>
-<li><a href="#nuttx-header">8 NuttX Header</a><ul></ul></li>
-<li><a href="#uart-output">9 UART Output</a><ul></ul></li>
-<li><a href="#nuttx-log">10 NuttX Log</a><ul></ul></li>
-<li><a href="#nuttx-source-code">11 NuttX Source Code</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#notes">13 Notes</a><ul></ul></li></ul></nav><p>📝 <em>1 Sep 2022</em></p>
+<li><a href="#boot-script">6 Boot Script</a><ul></ul></li>
+<li><a href="#boot-address">7 Boot Address</a><ul></ul></li>
+<li><a href="#linux-kernel-header">8 Linux Kernel Header</a><ul></ul></li>
+<li><a href="#nuttx-header">9 NuttX Header</a><ul></ul></li>
+<li><a href="#uart-output">10 UART Output</a><ul></ul></li>
+<li><a href="#nuttx-log">11 NuttX Log</a><ul></ul></li>
+<li><a href="#nuttx-source-code">12 NuttX Source Code</a><ul></ul></li>
+<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#notes">14 Notes</a><ul></ul></li></ul></nav><p>📝 <em>1 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></p>
 <p>Suppose we’re creating our own Operating System (non-Linux)  for Pine64 PinePhone…</p>
@@ -134,57 +135,230 @@
 <p><img src="https://lupyuen.github.io/images/arm-uart.jpg" alt="PinePhone UART Port in disguise" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone UART Port in disguise</em></a></p>
 <h1 id="pinephone-jumpdrive"><a href="#pinephone-jumpdrive">3 PinePhone Jumpdrive</a></h1>
-<p>TODO</p>
-<p>We’ll analyse the Linux Kernel in the <strong>PinePhone Jumpdrive Image</strong>, since it’s small…</p>
+<p>Let’s watch and learn how a <strong>Linux Kernel</strong> boots on PinePhone.</p>
+<p>We pick a small, simple Linux Kernel: <strong>PinePhone Jumpdrive</strong>…</p>
 <ul>
 <li><a href="https://github.com/dreemurrs-embedded/Jumpdrive"><strong>dreemurrs-embedded/Jumpdrive</strong></a></li>
 </ul>
-<p>Here are the steps…</p>
+<p>And prepare a <strong>microSD Card</strong> for Jumpdrive…</p>
 <ol>
 <li>
 <p>Download <a href="https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz"><strong><code>pine64-pinephone.img.xz</code></strong></a></p>
 </li>
 <li>
-<p>Extract the files from the microSD Image with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a></p>
+<p>Write the downloaded file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a></p>
+</li>
+<li>
+<p>Insert the microSD Card into PinePhone</p>
 </li>
 </ol>
+<p>Don’t power up PinePhone yet! We need to talk about PinePhone’s Bootloader…</p>
+<p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
+<p><em>PinePhone Jumpdrive on microSD</em></p>
 <h1 id="u-boot-bootloader"><a href="#u-boot-bootloader">4 U-Boot Bootloader</a></h1>
-<p>TODO</p>
-<p>Check our these docs for Allwinner A64…</p>
+<p><em>What happens when we power up PinePhone?</em></p>
+<p>The <a href="https://en.wikipedia.org/wiki/Das_U-Boot"><strong>U-Boot Bootloader</strong></a> runs, searching for a Linux Kernel to boot (on microSD or eMMC)…</p>
 <ul>
 <li>
-<p><a href="https://linux-sunxi.org/BROM#A64"><strong>A64 Boot ROM</strong></a></p>
+<p><a href="https://linux-sunxi.org/BROM#A64"><strong>Allwinner A64 Boot ROM</strong></a></p>
 </li>
 <li>
-<p><a href="https://linux-sunxi.org/U-Boot"><strong>A64 U-Boot</strong></a></p>
+<p><a href="https://linux-sunxi.org/U-Boot"><strong>Allwinner A64 U-Boot</strong></a></p>
 </li>
 <li>
-<p><a href="https://linux-sunxi.org/BROM#U-Boot_SPL_limitations"><strong>A64 U-Boot SPL</strong></a></p>
+<p><a href="https://linux-sunxi.org/BROM#U-Boot_SPL_limitations"><strong>Allwinner A64 U-Boot SPL</strong></a></p>
+<p>(Secondary Program Loader)</p>
 </li>
 <li>
 <p><a href="https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout"><strong>SD Card Layout</strong></a></p>
 </li>
 </ul>
+<p><em>Whoa! These docs look so dry…</em></p>
+<p>There’s an easier way to grok U-Boot. Let’s watch PinePhone boot Jumpdrive!</p>
 <h1 id="boot-log"><a href="#boot-log">5 Boot Log</a></h1>
+<p>Now we can see what happens when PinePhone boots…</p>
+<ol>
+<li>
+<p>Insert the <strong>Jumpdrive microSD</strong> into PinePhone</p>
+</li>
+<li>
+<p>Flip PinePhone’s <a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration"><strong>Headphone Switch</strong></a> to OFF</p>
+</li>
+<li>
+<p>Connect our computer to PinePhone via the <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>USB Serial Debug Cable</strong></a></p>
+</li>
+<li>
+<p>Launch a <strong>Serial Terminal</strong> (115.2 kbps) on our computer and connect to PinePhone…</p>
+<p>For Linux:</p>
+<div class="example-wrap"><pre class="language-bash"><code># Change ttyUSB0 to the USB Serial Device
+sudo screen /dev/ttyUSB0 115200</code></pre></div>
+<p>For macOS: Use <strong><code>screen</code></strong> or <a href="https://freeware.the-meiers.org/"><strong>CoolTerm</strong></a></p>
+<p>For Windows: Use <a href="https://www.putty.org/"><strong>PuTTY</strong></a></p>
+</li>
+<li>
+<p>Power up PinePhone</p>
+</li>
+</ol>
+<p>This is the <strong>Boot Log</strong> that we’ll see…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ sudo screen /dev/ttyUSB0 115200
+
+DRAM: 2048 MiB
+Trying to boot from MMC1
+NOTICE:  BL31: v2.2(release):v2.2-904-gf9ea3a629
+NOTICE:  BL31: Built : 15:32:12, Apr  9 2020
+NOTICE:  BL31: Detected Allwinner A64/H64/R18 SoC (1689)
+NOTICE:  BL31: Found U-Boot DTB at 0x4064410, model: PinePhone
+NOTICE:  PSCI: System suspend is unavailable</code></pre></div>
+<p><strong>BL31</strong> refers to <a href="https://chromium.googlesource.com/chromiumos/third_party/arm-trusted-firmware/+/v1.2-rc0/docs/firmware-design.md"><strong>Arm Trusted Firmware</strong></a>, the very first thing that runs on PinePhone.</p>
+<p>BL31 finds the <strong>Device Tree</strong> (DTB) for the U-Boot Bootloader, and starts U-Boot…</p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot 2020.07 (Nov 08 2020 - 00:15:12 +0100)
+DRAM:  2 GiB
+MMC:   Device &#39;mmc@1c11000&#39;: seq 1 is in use by &#39;mmc@1c10000&#39;
+mmc@1c0f000: 0, mmc@1c10000: 2, mmc@1c11000: 1
+Loading Environment from FAT... *** Warning - bad CRC, using default environment
+
+starting USB...
+No working controllers found
+Hit any key to stop autoboot:  0 </code></pre></div>
+<p>Yep U-Boot <strong>can be stopped!</strong> Later we’ll hit some keys to stop U-Boot and run some commands.</p>
+<p>But for now we let U-Boot do its booting thing…</p>
+<div class="example-wrap"><pre class="language-text"><code>switch to partitions #0, OK
+mmc0 is current device
+Scanning mmc 0:1...
+Found U-Boot script /boot.scr
+653 bytes read in 3 ms (211.9 KiB/s)</code></pre></div>
+<p>U-Boot scans our microSD and discovers a <strong>U-Boot Script <code>boot.scr</code></strong></p>
+<p>We’ll talk more about the script, which <strong>loads the Linux Kernel</strong> into RAM and starts it…</p>
+<div class="example-wrap"><pre class="language-text"><code># Executing script at 4fc00000
+gpio: pin 114 (gpio 114) value is 1
+4275261 bytes read in 192 ms (21.2 MiB/s)
+Uncompressed size: 10170376 = 0x9B3008
+36162 bytes read in 4 ms (8.6 MiB/s)
+1078500 bytes read in 50 ms (20.6 MiB/s)
+# Flattened Device Tree blob at 4fa00000
+   Booting using the fdt blob at 0x4fa00000
+   Loading Ramdisk to 49ef8000, end 49fff4e4 ... OK
+   Loading Device Tree to 0000000049eec000, end 0000000049ef7d41 ... OK
+
+Starting kernel ...
+/ #</code></pre></div>
+<p>The <strong>Linux Kernel</strong> is running! It works like we expect…</p>
+<div class="example-wrap"><pre class="language-text"><code>/ # uname -a
+Linux (none) 5.9.1jumpdrive #3 SMP Sun Nov 8 00:41:50 CET 2020 aarch64 GNU/Linux
+
+/ # ls
+bin                info.sh            root               telnet_connect.sh
+config             init               sbin               usr
+dev                init_functions.sh  splash.ppm
+error.ppm.gz       linuxrc            splash.ppm.gz
+etc                proc               sys</code></pre></div>
+<p>And that’s how PinePhone boots a Linux Kernel, thanks to the U-Boot Bootloader!</p>
+<h1 id="boot-script"><a href="#boot-script">6 Boot Script</a></h1>
+<p><em>What’s <code>boot.scr</code>?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>Found U-Boot script /boot.scr</code></pre></div>
+<p>According to the log above, the U-Boot Bootloader runs the <strong>U-Boot Script <code>boot.scr</code></strong> to…</p>
+<ul>
+<li>
+<p>Light up the PinePhone LED (I think?)</p>
+</li>
+<li>
+<p>Load the <strong>Linux Kernel <code>Image.gz</code></strong> into RAM</p>
+<p>(At <code>0x4408</code> <code>0000</code>)</p>
+</li>
+<li>
+<p>Unzip the <strong>Linux Kernel <code>Image.gz</code></strong> in RAM</p>
+<p>(At <code>0x4008</code> <code>0000</code>)</p>
+</li>
+<li>
+<p>Load the <strong>Linux Device Tree</strong>…</p>
+<p><code>sun50i-a64-pinephone-1.2.dtb</code></p>
+<p>(At <code>0x4FA0</code> <code>0000</code>)</p>
+</li>
+<li>
+<p>Load the <strong>RAM File System <code>initramfs.gz</code></strong></p>
+<p>(At <code>0x4FE0</code> <code>0000</code>)</p>
+</li>
+<li>
+<p>Boot the <strong>Unzipped Linux Kernel</strong> in RAM</p>
+<p>(At <code>0x4008</code> <code>0000</code>)</p>
+</li>
+</ul>
+<p>Here’s the Source File: <a href="https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/src/pine64-pinephone.txt">Jumpdrive/src/pine64-pinephone.txt</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>setenv kernel_addr_z 0x44080000
+
+setenv bootargs loglevel=0 silent console=tty0 vt.global_cursor_default=0
+
+gpio set 114
+
+if load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_z} /Image.gz; then
+  unzip ${kernel_addr_z} ${kernel_addr_r}
+  if load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} /sun50i-a64-pinephone-1.2.dtb; then
+    if load ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} /initramfs.gz; then
+      booti ${kernel_addr_r} ${ramdisk_addr_r}:${filesize} ${fdt_addr_r};
+    else
+      booti ${kernel_addr_r} - ${fdt_addr_r};
+    fi;
+  fi;
+fi</code></pre></div>
+<p>(We’ll explain fdt_addr_r, kernel_addr_r and ramdisk_addr_r)</p>
+<p>The above U-Boot Script <strong><code>pine64-pinephone.txt</code></strong> is compiled to <strong><code>boot.scr</code></strong> by this Makefile: <a href="https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/Makefile#L207-L209">Jumpdrive/Makefile</a></p>
+<div class="example-wrap"><pre class="language-text"><code>%.scr: src/%.txt
+	@echo &quot;MKIMG $@&quot;
+	@mkimage -A arm -O linux -T script -C none -n &quot;U-Boot boot script&quot; -d $&lt; $@</code></pre></div>
+<p><a href="https://manpages.ubuntu.com/manpages/bionic/man1/mkimage.1.html">(<strong><code>mkimage</code></strong> is documented here)</a></p>
+<h1 id="boot-address"><a href="#boot-address">7 Boot Address</a></h1>
+<p><em>What are fdt_addr_r, kernel_addr_r and ramdisk_addr_r?</em></p>
+<p>They are <strong>Environment Variables</strong> defined in U-Boot. To see the variables in U-Boot…</p>
+<ol>
+<li>
+<p>Power off PinePhone</p>
+</li>
+<li>
+<p>On our computer’s Serial Terminal, keep hitting Enter, don’t stop…</p>
+</li>
+<li>
+<p>Power up PinePhone</p>
+</li>
+</ol>
+<p>U-Boot should stop and reveal the <strong>U-Boot Prompt</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot 2020.07 (Nov 08 2020 - 00:15:12 +0100)
+Hit any key to stop autoboot:
+=&gt;</code></pre></div>
+<p>Enter <strong><code>printenv</code></strong> to print the <strong>Environment Variables</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>=&gt; printenv
+kernel_addr_r=0x40080000
+fdt_addr_r=0x4FA00000
+ramdisk_addr_r=0x4FE00000</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#pinephone-u-boot-log">(See the Complete Log)</a></p>
+<p>When we match these addresses with our <a href="https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/src/pine64-pinephone.txt"><strong>U-Boot Script</strong></a>, we discover…</p>
+<ul>
+<li>
+<p><strong><code>kernel_addr_r</code></strong>: Linux Kernel <code>Image</code> will be unzipped into RAM at <strong><code>0x4008</code> <code>0000</code></strong>. And it will execute at that address.</p>
+</li>
+<li>
+<p><strong><code>fdt_addr_r</code></strong>: Linux Device Tree <code>sun50i*.dtb</code> will be loaded into RAM at <strong><code>0x4FA0</code> <code>0000</code></strong></p>
+</li>
+<li>
+<p><strong><code>ramdisk_addr_r</code></strong>: Linux RAM File System <code>initramfs</code> will be loaded into RAM at <strong><code>0x4FE0</code> <code>0000</code></strong></p>
+</li>
+</ul>
+<p><em>Aha! That’s why our kernel must start at <code>0x4008</code> <code>0000</code>!</em></p>
 <p>TODO</p>
-<p><a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration">(Remember to flip the Headphone Switch to OFF)</a></p>
-<h1 id="boot-address"><a href="#boot-address">6 Boot Address</a></h1>
+<h1 id="linux-kernel-header"><a href="#linux-kernel-header">8 Linux Kernel Header</a></h1>
 <p>TODO</p>
-<h1 id="linux-kernel-header"><a href="#linux-kernel-header">7 Linux Kernel Header</a></h1>
+<h1 id="nuttx-header"><a href="#nuttx-header">9 NuttX Header</a></h1>
 <p>TODO</p>
-<h1 id="nuttx-header"><a href="#nuttx-header">8 NuttX Header</a></h1>
-<p>TODO</p>
-<h1 id="uart-output"><a href="#uart-output">9 UART Output</a></h1>
+<h1 id="uart-output"><a href="#uart-output">10 UART Output</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="TODO" /></p>
-<h1 id="nuttx-log"><a href="#nuttx-log">10 NuttX Log</a></h1>
+<h1 id="nuttx-log"><a href="#nuttx-log">11 NuttX Log</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/uboot-title2.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
-<h1 id="nuttx-source-code"><a href="#nuttx-source-code">11 NuttX Source Code</a></h1>
+<h1 id="nuttx-source-code"><a href="#nuttx-source-code">12 NuttX Source Code</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
 <p><strong>NuttX on PinePhone</strong> might take a while to become a <strong>Daily Driver</strong>…</p>
 <p>But today NuttX is ready to turn PinePhone into a valuable <strong>Learning Resource</strong>!</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
@@ -205,7 +379,7 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/uboot.md"><strong>lupyuen.github.io/src/uboot.md</strong></a></p>
-<h1 id="notes"><a href="#notes">13 Notes</a></h1>
+<h1 id="notes"><a href="#notes">14 Notes</a></h1>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1561843749168173056"><strong>this Twitter Thread</strong></a></li>
 </ol>
