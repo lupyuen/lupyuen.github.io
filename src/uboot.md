@@ -55,19 +55,57 @@ We'll see why in a while, but first we talk about a Very Important Cable...
 
 _Can we watch what happens when PinePhone boots?_
 
-TODO: I highly recommend it for PinePhone Hacking
+There's a magical cable for that: __USB Serial Debug Cable__ (pic above)...
+
+-   [__PinePhone Serial Debug Cable__](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
+
+It connects to PinePhone's __Headphone Port__ (pic below) and exposes PinePhone's hidden __UART Port.__ Genius!
+
+[(Remember to flip the Headphone Switch to OFF)](https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration)
+
+I highly recommend the USB Serial Debug Cable for __PinePhone Hacking__.
+
+_What secrets will the Debug Cable reveal?_
+
+We'll find out shortly! First we need to prep our microSD Card for hacking...
+
+![PinePhone UART Port in disguise](https://lupyuen.github.io/images/arm-uart.jpg)
+
+[_PinePhone UART Port in disguise_](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
 
 # PinePhone Jumpdrive
 
 TODO
 
+We'll analyse the Linux Kernel in the __PinePhone Jumpdrive Image__, since it's small...
+
+-   [__dreemurrs-embedded/Jumpdrive__](https://github.com/dreemurrs-embedded/Jumpdrive)
+
+Here are the steps...
+
+1.  Download [__`pine64-pinephone.img.xz`__](https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz)
+
+1.  Extract the files from the microSD Image with [__Balena Etcher__](https://www.balena.io/etcher/)
+
 # U-Boot Bootloader
 
 TODO
 
+Check our these docs for Allwinner A64...
+
+-   [__A64 Boot ROM__](https://linux-sunxi.org/BROM#A64)
+
+-   [__A64 U-Boot__](https://linux-sunxi.org/U-Boot)
+
+-   [__A64 U-Boot SPL__](https://linux-sunxi.org/BROM#U-Boot_SPL_limitations)
+
+-   [__SD Card Layout__](https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout)
+
 # Boot Log
 
 TODO
+
+[(Remember to flip the Headphone Switch to OFF)](https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration)
 
 # Boot Address
 

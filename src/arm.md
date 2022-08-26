@@ -971,7 +971,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  What happens when we power on PinePhone? How does it start the Kernel Image in the microSD Card?
 
-    Check our these docs for Allwinner A64...
+    Check out these docs for Allwinner A64...
 
     [__A64 Boot ROM__](https://linux-sunxi.org/BROM#A64)
 
