@@ -122,13 +122,52 @@
 <p><a href="https://lupyuen.github.io/articles/arm#uart-driver-for-nuttx"><em>PinePhone connected to USB Serial Debug Cable</em></a></p>
 <h1 id="usb-serial-debug-cable"><a href="#usb-serial-debug-cable">2 USB Serial Debug Cable</a></h1>
 <p><em>Can we watch what happens when PinePhone boots?</em></p>
-<p>TODO: I highly recommend it for PinePhone Hacking</p>
+<p>There’s a magical cable for that: <strong>USB Serial Debug Cable</strong> (pic above)…</p>
+<ul>
+<li><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>PinePhone Serial Debug Cable</strong></a></li>
+</ul>
+<p>It connects to PinePhone’s <strong>Headphone Port</strong> (pic below) and exposes PinePhone’s hidden <strong>UART Port.</strong> Genius!</p>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration">(Remember to flip the Headphone Switch to OFF)</a></p>
+<p>I highly recommend the USB Serial Debug Cable for <strong>PinePhone Hacking</strong>.</p>
+<p><em>What secrets will the Debug Cable reveal?</em></p>
+<p>We’ll find out shortly! First we need to prep our microSD Card for hacking…</p>
+<p><img src="https://lupyuen.github.io/images/arm-uart.jpg" alt="PinePhone UART Port in disguise" /></p>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone UART Port in disguise</em></a></p>
 <h1 id="pinephone-jumpdrive"><a href="#pinephone-jumpdrive">3 PinePhone Jumpdrive</a></h1>
 <p>TODO</p>
+<p>We’ll analyse the Linux Kernel in the <strong>PinePhone Jumpdrive Image</strong>, since it’s small…</p>
+<ul>
+<li><a href="https://github.com/dreemurrs-embedded/Jumpdrive"><strong>dreemurrs-embedded/Jumpdrive</strong></a></li>
+</ul>
+<p>Here are the steps…</p>
+<ol>
+<li>
+<p>Download <a href="https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz"><strong><code>pine64-pinephone.img.xz</code></strong></a></p>
+</li>
+<li>
+<p>Extract the files from the microSD Image with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a></p>
+</li>
+</ol>
 <h1 id="u-boot-bootloader"><a href="#u-boot-bootloader">4 U-Boot Bootloader</a></h1>
 <p>TODO</p>
+<p>Check our these docs for Allwinner A64…</p>
+<ul>
+<li>
+<p><a href="https://linux-sunxi.org/BROM#A64"><strong>A64 Boot ROM</strong></a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/U-Boot"><strong>A64 U-Boot</strong></a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/BROM#U-Boot_SPL_limitations"><strong>A64 U-Boot SPL</strong></a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout"><strong>SD Card Layout</strong></a></p>
+</li>
+</ul>
 <h1 id="boot-log"><a href="#boot-log">5 Boot Log</a></h1>
 <p>TODO</p>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration">(Remember to flip the Headphone Switch to OFF)</a></p>
 <h1 id="boot-address"><a href="#boot-address">6 Boot Address</a></h1>
 <p>TODO</p>
 <h1 id="linux-kernel-header"><a href="#linux-kernel-header">7 Linux Kernel Header</a></h1>
