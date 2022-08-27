@@ -734,6 +734,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/PINE64official/comments/wz0hit/pinephone_boots_apache_nuttx_rtos/)
+
 -   [__My Current Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
 
 -   [__Check out my articles__](https://lupyuen.github.io)
