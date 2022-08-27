@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>PinePhone boots Apache NuttX RTOS</title>
+            <link>https://lupyuen.github.io/articles/uboot</link>
+            <description><![CDATA[How we ported Apache NuttX RTOS to PinePhone... And what's inside the U-Boot Bootloader]]></description>
+            <guid>https://lupyuen.github.io/articles/uboot</guid>
+            <pubDate>Sun, 28 Aug 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone</title>
             <link>https://lupyuen.github.io/articles/arm</link>
             <description><![CDATA[Apache NuttX RTOS now runs on 64-bit Arm Cortex-A53 with Multi-Core Symmetric Multi-Processing... Will it run on PinePhone? Let's find out!]]></description>
