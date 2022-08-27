@@ -585,6 +585,8 @@ Let's do it!
 
     [__"Build NuttX for PinePhone"__](https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone)
 
+    [(Or download __`nuttx.bin`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.bin)
+
 1.  Compress the __NuttX Binary Image__...
 
     ```bash
@@ -594,10 +596,12 @@ Let's do it!
     gzip Image
     ```
 
+    [(Or download __`Image.gz`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/Image.gz)
+
 1.  Overwrite __`Image.gz`__ on __Jumpdrive microSD__...
 
     ```bash
-    ## Copy compressed image to microSD
+    ## Copy compressed NuttX Binary Image to Jumpdrive microSD
     ## TODO: Change the microSD Path
     cp Image.gz "/Volumes/NO NAME"
     ```
