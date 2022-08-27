@@ -656,67 +656,29 @@ HELLO NUTTX ON PINEPHONE!
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log)
 
+Yep NuttX boots on PinePhone... After replacing a single __`Image.gz`__ file!
+
 # UART Fixes
 
-TODO: UART Input won't work until we implement the UART Driver
+_Where's the rest of the boot output?_
 
-__For QEMU:__ These are the Source Files for the UART Driver (PL011)...
+We expect to see this output when NuttX boots...
+
+-   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
+
+But remember we said earlier that we don't check if the UART is __ready to transmit__?
+
+This needs to be fixed: [__`early_uart_ready`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85)
+
+[(More about this)](https://lupyuen.github.io/articles/uboot#nuttx-uart-macros)
+
+_Isn't NuttX supposed to accept commands entered in the Serial Console?_
+
+UART Input won't work until we implement the __UART Driver__...
 
 -   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c)
 
--   [arch/arm64/src/qemu/qemu_lowputc.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S)
-
-    [(More about PL011 UART)](https://krinkinmu.github.io/2020/11/29/PL011.html)
-
-We'll redo the code above for the __PinePhone UART Driver__ (based on Allwinner A64 SoC)...
-
--   [__UART0 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
-
--   [__Allwinner A64 UART__](https://linux-sunxi.org/UART)
-
--   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
-
--   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
-
-TODO: Allwinner A64 UART
-
-```text
-UART_LCR
-Line Control Register
-Offset 0x0C 
-Bit 7: DLAB (Divisor Latch Access Bit)
-0x80
-
-Set DLAB to 1 (0x80):
-ldr x15, =UART1_BASE_ADDRESS
-mov x0, #0x80
-strb w0, [x15, #0x0C]
-
-Baud Rate = (Serial Clock Frequency) / (16 * Divisor)
-Divisor = (Serial Clock Frequency) / (16 * Baud Rate)
-Divisor = (Serial Clock Frequency / 16) / Baud Rate
-SCLK Serial Clock Frequency = ???
-
-UART_DLL
-Divisor Latch Low (lower 8 bits of divisor)
-Offset 0x00
-
-Write UART_DLL:
-mov x0, divisor % 256
-strb w0, [x15, #0x00]
-
-UART_DLH
-Divisor Latch High (upper 8 bits of divisor)
-Offset 0x04
-
-Write UART_DLH:
-mov x0, divisor / 256
-strb w0, [x15, #0x04]
-
-Set DLAB to 0:
-mov x0, #0x00
-strb w0, [x15, #0x0C]
-```
+We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf).
 
 ![Arm64 Architecture-Specific Source Files](https://lupyuen.github.io/images/arm-source.png)
 
@@ -724,7 +686,9 @@ strb w0, [x15, #0x0C]
 
 # NuttX Source Code
 
-TODO: Apache NuttX RTOS has plenty of __Arm64 Code__ that will be helpful to creators of PinePhone Operating Systems...
+TODO
+
+Apache NuttX RTOS has plenty of __Arm64 Code__ that will be helpful to creators of PinePhone Operating Systems...
 
 [__Startup Code__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S)
 
@@ -886,3 +850,55 @@ The NuttX Output Files may be found here...
 -   [__TODO: NuttX for Arm Cortex-A53 Single Core__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.1)
 
 TODO: The output file [__`nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.1/nuttx) is the Arm64 [__ELF Executable__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) that we'll run in the next step.
+
+# Appendix: Allwinner A64 UART
+
+TODO
+
+Allwinner A64 UART
+
+-   [__UART0 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
+
+-   [__Allwinner A64 UART__](https://linux-sunxi.org/UART)
+
+-   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+-   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
+
+```text
+UART_LCR
+Line Control Register
+Offset 0x0C 
+Bit 7: DLAB (Divisor Latch Access Bit)
+0x80
+
+Set DLAB to 1 (0x80):
+ldr x15, =UART1_BASE_ADDRESS
+mov x0, #0x80
+strb w0, [x15, #0x0C]
+
+Baud Rate = (Serial Clock Frequency) / (16 * Divisor)
+Divisor = (Serial Clock Frequency) / (16 * Baud Rate)
+Divisor = (Serial Clock Frequency / 16) / Baud Rate
+SCLK Serial Clock Frequency = ???
+
+UART_DLL
+Divisor Latch Low (lower 8 bits of divisor)
+Offset 0x00
+
+Write UART_DLL:
+mov x0, divisor % 256
+strb w0, [x15, #0x00]
+
+UART_DLH
+Divisor Latch High (upper 8 bits of divisor)
+Offset 0x04
+
+Write UART_DLH:
+mov x0, divisor / 256
+strb w0, [x15, #0x04]
+
+Set DLAB to 0:
+mov x0, #0x00
+strb w0, [x15, #0x0C]
+```
