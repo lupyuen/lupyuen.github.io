@@ -1,6 +1,6 @@
 # PinePhone boots Apache NuttX RTOS
 
-📝 _1 Sep 2022_
+📝 _28 Aug 2022_
 
 ![Apache NuttX RTOS booting on Pine64 PinePhone](https://lupyuen.github.io/images/uboot-title.png)
 
@@ -52,7 +52,7 @@ We'll see why in a while, but first we talk about a Very Important Cable...
 
 ![PinePhone connected to USB Serial Debug Cable](https://lupyuen.github.io/images/arm-uart2.jpg)
 
-[_PinePhone connected to USB Serial Debug Cable_](https://lupyuen.github.io/articles/arm#uart-driver-for-nuttx)
+[_PinePhone connected to USB Serial Debug Cable_](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
 
 # USB Serial Debug Cable
 
@@ -191,7 +191,9 @@ Found U-Boot script /boot.scr
 
 U-Boot scans our microSD and discovers a __U-Boot Script `boot.scr`__
 
-We'll talk more about the script, which __loads the Linux Kernel__ into RAM and starts it...
+(We'll talk more about the script)
+
+The U-Boot Script __loads the Linux Kernel__ into RAM and starts it...
 
 ```text
 ## Executing script at 4fc00000
@@ -411,7 +413,7 @@ Then comes the rest of the header...
 
 ```text
   .quad   0x0000               /* PinePhone Image load offset from start of RAM */
-  .quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
+  .quad   _e_initstack - __start  /* Effective size of kernel image, little-endian */
   .quad   __HEAD_FLAGS         /* Informative flags, little-endian */
   .quad   0                    /* reserved */
   .quad   0                    /* reserved */
@@ -512,8 +514,8 @@ Which loads our __UART Base Address__...
 GTEXT(up_lowputc)
 SECTION_FUNC(text, up_lowputc)
   ldr   x15, =UART1_BASE_ADDRESS  /* Load UART Base Address */
-  early_uart_ready    x15, w2     /* Wait for UART ready */
-  early_uart_transmit x15, w0     /* Transmit to UART    */
+  early_uart_ready    x15, w2     /* Wait for UART ready    */
+  early_uart_transmit x15, w0     /* Transmit to UART       */
   ret
 ```
 
@@ -547,7 +549,7 @@ Right now we don't check if UART is __ready to transmit__, so our UART output wi
  */
 .macro early_uart_ready xb, wt
 1:
-  # TODO: Wait for PinePhone Allwinner A64 UART
+  ## TODO: Wait for PinePhone Allwinner A64 UART
   ...
 ```
 
@@ -560,8 +562,8 @@ Also we don't __initialise the UART Port__ because U-Boot has kindly done it for
  */
 GTEXT(up_earlyserialinit)
 SECTION_FUNC(text, up_earlyserialinit)
-  # TODO: Set PinePhone Allwinner A64 Baud Rate Divisor:
-  # UART_LCR (DLAB), UART_DLL, UART_DLH
+  ## TODO: Set PinePhone Allwinner A64 Baud Rate Divisor:
+  ## Write to UART_LCR (DLAB), UART_DLL and UART_DLH
   ...
 ```
 
