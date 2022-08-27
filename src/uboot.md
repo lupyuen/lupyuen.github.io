@@ -636,7 +636,7 @@ Uncompressed size: 278528 = 0x44000
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log)
 
-And NuttX runs...
+Then NuttX runs...
 
 ```text
 Starting kernel ...
@@ -668,7 +668,7 @@ UART Input won't work until we implement the __UART Driver__...
 
 -   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c)
 
-We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf).
+We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://lupyuen.github.io/articles/uboot#uart-output).
 
 ![Arm64 Source Files in NuttX](https://lupyuen.github.io/images/arm-source.png)
 
@@ -682,7 +682,7 @@ The __Arm64 Architecture Functions__ (pic above) are defined here...
 
 -   [nuttx/arch/arm64/src/common](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common)
 
-The functions here implement all kinds of Arm64 Features: [__FPU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_gicv3.c), [__MMU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_arch_timer.c), ...
+These functions implement all kinds of Arm64 Features: [__FPU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_gicv3.c), [__MMU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_arch_timer.c), ...
 
 The __Arm64 Startup Code__ (including Linux Kernel Header) is at...
 
@@ -714,7 +714,7 @@ The __QEMU Target for NuttX__ is described in this article...
 
 # What's Next
 
-Today we've seen that it's indeed possible to __boot our own OS__ on PinePhone... By __replacing a single file__ on Jumpdrive microSD!
+It's indeed possible to __boot our own OS__ on PinePhone... By __replacing a single file__ on Jumpdrive microSD!
 
 We've done that with __Apache NuttX RTOS__, which has plenty of code that will be helpful for PinePhone OS Developers.
 
@@ -756,7 +756,7 @@ Follow these steps to build __Apache NuttX RTOS__ for PinePhone...
 
 ## Download NuttX
 
-We download the Source Code...
+Download the Source Code for NuttX...
 
 ```bash
 ## Create NuttX Directory
@@ -841,7 +841,9 @@ aarch64-none-elf-objdump \
 
 [(See the Build Log)](https://gist.github.com/lupyuen/2c5db82c3103f52ed7ca99804f9220c1)
 
-(On an old MacBook Pro 2012, NuttX builds in 2 minutes)
+On an old MacBook Pro 2012, NuttX builds in 2 minutes.
+
+## Output Files
 
 The NuttX Output Files may be found here...
 
@@ -851,7 +853,11 @@ The [__NuttX Binary Image `nuttx.bin`__](https://github.com/lupyuen/pinephone-nu
 
 -   [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
 
-For Troubleshooting: Refer to the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx) or the [__NuttX Arm Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.S)
+For Troubleshooting: Refer to these files...
+
+-   [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx)
+
+-   [__NuttX Arm Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.S)
 
 This article explains how we may load the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx) into Ghidra for inspection...
 
@@ -873,7 +879,11 @@ Earlier we said that our implementation of __Allwinner A64 UART__ is incomplete.
 
     [(More about this)](https://lupyuen.github.io/articles/uboot#uart-fixes)
 
-Based on the __Allwinner A64 UART__ doc (page 562)...
+Let's talk about [__`up_earlyserialinit`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72).
+
+_How will we initialise the UART Port?_
+
+According to the __Allwinner A64 UART__ doc (page 562)...
 
 -   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
@@ -907,6 +917,8 @@ We might __initialise the UART Port__ in [__`up_earlyserialinit`__](https://gith
     mov  x0, #0x00
     strb w0, [x15, #0x0C]
     ```
+
+[(Confused? __`x0`__ and __`w0`__ are actually the same register, 64-bit vs 32-bit)](https://developer.arm.com/documentation/102374/0100/Registers-in-AArch64---general-purpose-registers)
 
 Where...
 
