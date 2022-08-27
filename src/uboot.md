@@ -847,11 +847,15 @@ aarch64-none-elf-objdump \
 
 The NuttX Output Files may be found here...
 
--   [__TODO: NuttX for Arm Cortex-A53 Single Core__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.1)
+-   [__Apache NuttX RTOS for PinePhone__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.3)
 
-TODO: The output file [__`nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.1/nuttx) is the Arm64 [__ELF Executable__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) that we'll run in the next step.
+TODO: The output file [__`nuttx.bin`__)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.bin)
+
+TODO: is the Arm64 [__ELF Executable__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) that we'll run in the next step.
 
 # Appendix: Allwinner A64 UART
+
+Earlier we said that our implementation for __Allwinner A64 UART__ is incomplete...
 
 TODO
 
