@@ -519,10 +519,15 @@ GTEXT(up_earlyserialinit)
 SECTION_FUNC(text, up_earlyserialinit)
   ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L171-L175">(<strong><code>up_earlyserialinit</code></strong> is called by our Startup Code)</a></p>
+<p>More about this in the Appendix…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/uboot#appendix-allwinner-a64-uart"><strong>“Allwinner A64 UART”</strong></a></li>
+</ul>
 <p>We’re finally ready to boot our own PinePhone Operating System!</p>
 <p><img src="https://lupyuen.github.io/images/uboot-title2.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log"><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></a></p>
 <h1 id="pinephone-boots-nuttx"><a href="#pinephone-boots-nuttx">12 PinePhone Boots NuttX</a></h1>
+<p><em>Can we boot our own OS on PinePhone… By replacing a single file on Jumpdrive microSD?</em></p>
 <p>Earlier we said that we’ll overwrite <strong><code>Image.gz</code> on Jumpdrive microSD</strong> to boot our own OS…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#boot-address"><strong>“Boot Address”</strong></a></li>
@@ -738,58 +743,66 @@ aarch64-none-elf-objdump \
 <p>TODO: The output file <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.bin"><strong><code>nuttx.bin</code></strong>)</a></p>
 <p>TODO: is the Arm64 <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>ELF Executable</strong></a> that we’ll run in the next step.</p>
 <h1 id="appendix-allwinner-a64-uart"><a href="#appendix-allwinner-a64-uart">18 Appendix: Allwinner A64 UART</a></h1>
-<p>Earlier we said that our implementation for <strong>Allwinner A64 UART</strong> is incomplete…</p>
-<p>TODO</p>
-<p>Allwinner A64 UART</p>
+<p>Earlier we said that our implementation of <strong>Allwinner A64 UART</strong> is incomplete…</p>
 <ul>
 <li>
-<p><a href="https://linux-sunxi.org/A64/Memory_map"><strong>UART0 Memory Map</strong></a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85"><strong><code>early_uart_ready</code></strong></a> needs to check if UART is <strong>ready to transmit</strong></p>
+<p><a href="https://lupyuen.github.io/articles/uboot#nuttx-uart-macros">(More about this)</a></p>
 </li>
 <li>
-<p><a href="https://linux-sunxi.org/UART"><strong>Allwinner A64 UART</strong></a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72"><strong><code>up_earlyserialinit</code></strong></a> needs to <strong>initialise the UART Port</strong></p>
+<p><a href="https://lupyuen.github.io/articles/uboot#nuttx-uart-macros">(More about this)</a></p>
 </li>
 <li>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></p>
-</li>
-<li>
-<p><a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 Info</strong></a></p>
+<p><a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c"><strong>UART Driver</strong></a> needs to support <strong>UART Input</strong></p>
+<p><a href="https://lupyuen.github.io/articles/uboot#uart-fixes">(More about this)</a></p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-text"><code>UART_LCR
-Line Control Register
-Offset 0x0C 
-Bit 7: DLAB (Divisor Latch Access Bit)
-0x80
+<p>Based on the <strong>Allwinner A64 UART</strong> doc (page 562)…</p>
+<ul>
+<li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
+</ul>
+<p>We might <strong>initialise the UART Port</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72"><strong><code>up_earlyserialinit</code></strong></a> like so…</p>
+<ol>
+<li>
+<p>Set <strong>DLAB Flag</strong> to allow update of UART Divisor…</p>
+<div class="example-wrap"><pre class="language-text"><code>ldr  x15, =UART1_BASE_ADDRESS
+mov  x0,  #0x80
+strb w0,  [x15, #0x0C]</code></pre></div></li>
+<li>
+<p>Write the <strong>UART Divisor</strong> (Least Significant Byte) to UART_DLL…</p>
+<div class="example-wrap"><pre class="language-text"><code>mov  x0, divisor % 256
+strb w0, [x15, #0x00]</code></pre></div></li>
+<li>
+<p>Write the <strong>UART Divisor</strong> (Most Significant Byte) to UART_DLH…</p>
+<div class="example-wrap"><pre class="language-text"><code>mov  x0, divisor / 256
+strb w0, [x15, #0x04]</code></pre></div></li>
+<li>
+<p>Clear <strong>DLAB Flag</strong> to disallow update of UART Divisor…</p>
+<div class="example-wrap"><pre class="language-text"><code>mov  x0, #0x00
+strb w0, [x15, #0x0C]</code></pre></div></li>
+</ol>
+<p>Where…</p>
+<ul>
+<li>
+<p><strong>DLAB (Divisor Latch Access Bit)</strong> is Bit 7 of UART_LCR</p>
+</li>
+<li>
+<p><strong>UART_LCR (Line Control Register)</strong> is at Offset <code>0x0C</code> of the UART Base Address</p>
+</li>
+<li>
+<p><strong>UART_DLL (Divisor Latch Low)</strong> is at Offset <code>0x00</code></p>
+</li>
+<li>
+<p><strong>UART_DLH (Divisor Latch High)</strong> is at Offset <code>0x04</code></p>
+</li>
+<li>
+<p><strong>UART Divisor</strong> is computed as…</p>
+<p>(Serial Clock Frequency / 16) / Baud Rate</p>
+</li>
+</ul>
+<p>TODO: What is the Serial Clock Frequency (SCLK)?</p>
 
-Set DLAB to 1 (0x80):
-ldr x15, =UART1_BASE_ADDRESS
-mov x0, #0x80
-strb w0, [x15, #0x0C]
-
-Baud Rate = (Serial Clock Frequency) / (16 * Divisor)
-Divisor = (Serial Clock Frequency) / (16 * Baud Rate)
-Divisor = (Serial Clock Frequency / 16) / Baud Rate
-SCLK Serial Clock Frequency = ???
-
-UART_DLL
-Divisor Latch Low (lower 8 bits of divisor)
-Offset 0x00
-
-Write UART_DLL:
-mov x0, divisor % 256
-strb w0, [x15, #0x00]
-
-UART_DLH
-Divisor Latch High (upper 8 bits of divisor)
-Offset 0x04
-
-Write UART_DLH:
-mov x0, divisor / 256
-strb w0, [x15, #0x04]
-
-Set DLAB to 0:
-mov x0, #0x00
-strb w0, [x15, #0x0C]</code></pre></div>
     
 </body>
 </html>
