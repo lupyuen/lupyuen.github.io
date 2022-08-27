@@ -645,9 +645,9 @@ HELLO NUTTX ON PINEPHONE!
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log)
 
-# Upcoming Fixes
+# UART Fixes
 
-TODO: UART Input
+TODO: UART Input won't work until we implement the UART Driver
 
 __For QEMU:__ These are the Source Files for the UART Driver (PL011)...
 
@@ -771,13 +771,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1561843749168173056)
 
+![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
+
 # Appendix: Build NuttX for PinePhone
 
-TODO
+Follow these steps to build __Apache NuttX RTOS__ for PinePhone...
 
 ## Download NuttX
-
-TODO
 
 We download the Source Code...
 
@@ -803,6 +803,8 @@ git clone \
 ## We'll build NuttX inside nuttx/nuttx
 cd nuttx
 ```
+
+## Install Prerequisites
 
 Install the __Build Prerequisites__ below, but skip the RISC-V Toolchain...
 
@@ -843,7 +845,7 @@ gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)
 
 ## Build NuttX
 
-TODO
+Finally we __configure and build__ NuttX...
 
 ```bash
 ## Configure NuttX for Arm Cortex-A53 Single Core
