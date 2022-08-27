@@ -668,23 +668,27 @@ UART Input won't work until we implement the __UART Driver__...
 
 We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf).
 
-![Arm64 Architecture-Specific Source Files](https://lupyuen.github.io/images/arm-source.png)
+![Arm64 Source Files in NuttX](https://lupyuen.github.io/images/arm-source.png)
 
-[_Arm64 Architecture-Specific Source Files_](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common)
+[_Arm64 Source Files in NuttX_](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common)
 
 # NuttX Source Code
 
-TODO
+Apache NuttX RTOS has plenty of __Arm64 Code__ that will be helpful to creators of PinePhone Operating Systems.
 
-Apache NuttX RTOS has plenty of __Arm64 Code__ that will be helpful to creators of PinePhone Operating Systems...
+The __Arm64 Architecture Functions__ (pic above) are defined here...
 
-[__Startup Code__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S)
+-   [nuttx/arch/arm64/src/common](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common)
 
-_What's inside the NuttX code for Arm Cortex-A53?_
+The functions here implement all kinds of Arm64 Features: [__FPU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_gicv3.c), [__MMU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_arch_timer.c), ...
 
-Let's browse the __Source Files__ for the implementation of Cortex-A53 on NuttX.
+The __Arm64 Startup Code__ (including Linux Kernel Header) is at...
 
-NuttX treats QEMU as a __Target Board__ (as though it was a dev board). Here are the Source Files and Build Configuration for the __QEMU Board__...
+-   [nuttx/arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S)
+
+Officially NuttX supports only one __Arm64 Target Board__: QEMU Emulator.
+
+Below are the Source Files and Build Configuration for __QEMU Emulator__...
 
 -   [nuttx/boards/arm64/qemu/qemu-a53](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/boards/arm64/qemu/qemu-a53)
 
@@ -700,21 +704,17 @@ The QEMU Board calls the __QEMU Architecture-Specific Drivers__ at...
 
 The __UART Driver__ is located at [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c) and [qemu_lowputc.S](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/qemu/qemu_lowputc.S)
 
-(For PinePhone we'll create a UART Driver for Allwinner A64 SoC. I2C, SPI and other Low-Level A64 Drivers will be located here too)
+(We'll port the UART Driver to PinePhone)
 
-The QEMU Functions (Board and Architecture) call the __Arm64 Architecture Functions__ (pic above)...
+The __QEMU Target for NuttX__ is described in this article...
 
--   [nuttx/arch/arm64/src/common](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common)
-
-Which implement all kinds of Arm64 Features: [__FPU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_gicv3.c), [__MMU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_arch_timer.c)...
-
--   [__"Inside NuttX for Arm64"__](https://lupyuen.github.io/articles/arm#inside-nuttx-for-arm64)
+-   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
 
 # What's Next
 
 Today we've seen that it's indeed possible to __boot our own OS__ on PinePhone... By __replacing a single file__ on Jumpdrive microSD!
 
-We've done that with __Apache NuttX RTOS__, which has plenty of code that will be useful for PinePhone OS Developers.
+We've done that with __Apache NuttX RTOS__, which has plenty of code that will be helpful for PinePhone OS Developers.
 
 _Will NuttX work with all PinePhone features?_
 
