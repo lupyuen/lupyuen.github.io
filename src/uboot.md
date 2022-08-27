@@ -114,7 +114,7 @@ The [__U-Boot Bootloader__](https://en.wikipedia.org/wiki/Das_U-Boot) runs, sear
 
 -   [__SD Card Layout__](https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout)
 
-_Whoa! These docs look so dry..._
+_Whoa! These docs look so superdry..._
 
 There's an easier way to grok U-Boot. Let's watch PinePhone boot Jumpdrive!
 
